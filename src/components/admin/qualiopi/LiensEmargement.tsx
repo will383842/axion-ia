@@ -31,6 +31,12 @@ export interface LienAffiche {
 
 export interface LiensEmargementProps {
   sessionId: string;
+  /**
+   * Des créneaux existent-ils ? Sans eux, les liens partent quand même — mais
+   * le stagiaire arrive sur « Aucune demi-journée à signer ». On prévient
+   * l'admin AVANT l'envoi plutôt que de le laisser diffuser des liens vides.
+   */
+  hasCreneaux?: boolean;
   emettreAction: (input: { sessionId: string }) => Promise<
     | {
         data: {
@@ -48,6 +54,7 @@ export interface LiensEmargementProps {
 
 export function LiensEmargement({
   sessionId,
+  hasCreneaux,
   emettreAction,
   revoquerAction,
 }: LiensEmargementProps): React.ReactElement {
@@ -109,6 +116,21 @@ export function LiensEmargement({
       <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
         Liens de signature
       </h2>
+      {/* 🔴 UI 2026-07-27 — l'émission ne vérifie NI les journées NI les
+          créneaux : les liens partaient, et le stagiaire tombait sur « Aucune
+          demi-journée à signer ». Un lien envoyé ne se reprend pas ; on avertit
+          donc avant, sans bloquer — envoyer les liens en avance reste un usage
+          légitime tant qu'on sait ce qu'on fait. */}
+      {hasCreneaux === false && (
+        <p
+          role="status"
+          className="mt-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-warning-soft)] p-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+        >
+          <strong>Aucun créneau n&apos;existe encore.</strong> Les liens partiront, mais le
+          stagiaire verra « Aucune demi-journée à signer ». Déclarez les journées puis générez les
+          créneaux avant d&apos;envoyer.
+        </p>
+      )}
       <p className="mt-[var(--space-admin-1)] mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Un lien personnel par stagiaire, valable jusqu&apos;à 48 h après la fin de session.
         Envoyez-les <strong>avant</strong> la session : chacun arrive avec son lien et signe sur son

@@ -26,6 +26,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -153,19 +154,56 @@ const setPriseEnChargeSchema = z.object({
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Génère un numéro séquentiel de facture : AXI-FACT-YYYY-NNN.
- * Lit le nombre de factures existantes pour l'année courante.
+ * Alloue le prochain numéro de la série légale des factures (`AXI-FACT-YYYY-NNN`).
+ *
+ * 🔴 Audit certification 2026-07-26 (V20, étape 0). Ce compteur portait sur
+ * `createdAt` — « toutes les lignes de `factures_formation` créées dans l'année ».
+ * Or cette table n'héberge pas UNE série mais QUATRE :
+ *   - la série légale des factures (préfixe `NUMBERING_PREFIX.facture`), celle-ci ;
+ *   - les AVOIRS (`facture-libre.ts`, `avoirDeId` non nul) : série légale
+ *     DISTINCTE, avec son propre compteur préfixé `AXI-AVO-` ;
+ *   - les brouillons de plan récurrent (`BROUILLON-<uuid>`, `plan-recurrent.ts`) :
+ *     numéro provisoire jusqu'au clic d'émission ;
+ *   - les reprises d'historique (`estImportee`), que le schéma qualifie lui-même
+ *     de « hors séquence AXI-FACT », et dont le `createdAt` est la date d'IMPORT
+ *     et non la date d'émission.
+ *
+ * Compter par `createdAt` additionne les quatre. Deux clics suffisent : une
+ * facture émise, puis un avoir, et l'appel suivant compte 2 lignes et saute au
+ * n° 003. Le 002 n'existera jamais — rupture de la séquence chronologique
+ * continue exigée par l'art. 242 nonies A ann. II du CGI. Et comme les cinq
+ * autres allocateurs de la MÊME série (facturation-service, facture-libre,
+ * plan-recurrent, factures-inter, facturation-1to1) comptent, eux, par PRÉFIXE,
+ * les deux dénominateurs dérivent l'un de l'autre et finissent par réémettre un
+ * numéro déjà porté par une pièce comptable (P2002 sur un registre légal).
+ *
+ * Second piège, celui qu'aucun retry ne rattrape : un brouillon de plan récurrent
+ * créé en décembre et émis en janvier porte un `createdAt` en N-1 et un numéro en
+ * N. Le compteur `createdAt` de l'année N ne le voit JAMAIS → il réalloue
+ * indéfiniment le même numéro, `withNumberRetry` recalcule la même valeur à chaque
+ * tentative, cinq P2002 d'affilée, échec dur, aucune facture émise.
+ *
+ * On aligne donc sur le prédicat préfixé des cinq autres allocateurs. Le préfixe
+ * de comptage et le préfixe d'écriture sont dérivés de la MÊME constante : c'est
+ * la divergence entre deux littéraux recopiés à la main qui a produit F63, puis
+ * V12. Ne pas réintroduire de littéral ici.
+ *
+ * ⚠️ Ceci n'est PAS le compteur définitif, et V20 n'est PAS refermé. `count + 1`
+ * reste faux en cas de SUPPRESSION d'une pièce : le compteur recule et réattribue
+ * un numéro déjà utilisé sans violer l'unicité, puisque la ligne a disparu — or
+ * l'art. 242 nonies A interdit le réemploi. C'est l'objet de L7 (`allocateNumero`
+ * sous verrou transactionnel, `MAX(seq) + 1`). L'étape 0 ne corrige QUE le
+ * DÉNOMINATEUR, et elle se fait maintenant parce que la table est vide (vérifié en
+ * production : `SELECT count(*) FROM factures_formation` = 0) : la fenêtre de
+ * correction sans reprise de données se referme à la première facture émise.
  */
 async function genererNumeroFacture(annee: number): Promise<string> {
-  const debut = new Date(`${annee}-01-01T00:00:00.000Z`);
-  const fin = new Date(`${annee + 1}-01-01T00:00:00.000Z`);
-  const count = await prisma.factureFormation.count({
-    where: {
-      createdAt: { gte: debut, lt: fin },
-    },
-  });
-  const seq = String(count + 1).padStart(3, "0");
-  return `AXI-FACT-${annee}-${seq}`;
+  return nextNumero("facture", annee, (prefixe) =>
+    prisma.factureFormation.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    }),
+  );
 }
 
 /**
@@ -437,10 +475,31 @@ export async function genererFactureFormationAction(input: {
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   // ── Numéro séquentiel + création atomique ─────────────────────────────────
-  // R7 : `genererNumeroFacture` est un `count+1` ; sous création concurrente deux
-  // factures peuvent lire le même count → même numéro. La contrainte @unique sur
-  // `numero` rejette le doublon (P2002) ; `withNumberRetry` ré-alloue et réessaie.
-  // L'allocation DOIT être DANS la closure pour être recalculée à chaque tentative.
+  // R7 : `genererNumeroFacture` lit la BORNE HAUTE de la série ; sous création
+  // concurrente deux factures peuvent lire le même maximum → même numéro. La
+  // contrainte @unique sur `numero` rejette le doublon (P2002) ; `withNumberRetry`
+  // ré-alloue et réessaie — et la reprise CONVERGE désormais, le maximum
+  // progressant dès qu'une insertion concurrente a abouti (avec `count+1` elle
+  // rejouait le même numéro cinq fois).
+  // L'allocation DOIT rester DANS la closure pour être recalculée à chaque tentative.
+  //
+  // V20 étape 0 — ce que le nouveau dénominateur garantit, et ce qu'il ne garantit
+  // PAS. Le compteur porte désormais sur `numero startsWith "AXI-FACT-<annee>-"` :
+  // la ligne gagnante entre immédiatement dans le dénominateur de la tentative
+  // suivante, donc le retry PROGRESSE sous CONCURRENCE. (Avec l'ancien filtre
+  // `createdAt`, une facture dont la LIGNE datait d'une année antérieure — un
+  // brouillon de plan récurrent émis en janvier — restait invisible au compteur :
+  // les 5 tentatives recalculaient le même numéro et l'action échouait en boucle.)
+  // En revanche il ne progresse TOUJOURS PAS sur un TROU de séquence : si 001 et
+  // 003 existent sans 002, count = 2 → réalloue 003 → P2002 → recount = 2 → même
+  // numéro → échec dur, car `withNumberRetry` relance une closure déterministe
+  // sans lui passer le n° de tentative (cf. numbering/retry.ts). Ne PAS « corriger »
+  // en passant `count + tentative` comme reclamations.ts : cela creuserait un trou
+  // de plus dans la série (collision sur 001 → la tentative 2 émettrait 003), soit
+  // exactement la rupture CGI 242 nonies A que ce lot referme. Non atteignable
+  // aujourd'hui (aucun chemin applicatif ne supprime de `factureFormation`, et
+  // `importerFacturesHistoriqueAction` refuse les préfixes AXI-FACT/AXI-AVO) ;
+  // fermé pour de bon par L7 (`allocateNumero`, MAX(seq)+1 sous verrou).
   const annee = new Date().getFullYear();
   const facture = await withNumberRetry(async () => {
     const numero = await genererNumeroFacture(annee);

@@ -142,6 +142,41 @@ export async function createSessionAction(
   // Titre par défaut si non fourni
   const titreSession = v.titreSession ?? formation.titre;
 
+  // 🔴 F8 — contrôle d'existence et d'APPARTENANCE du devis rattaché.
+  //
+  // `devisId` était accepté au schéma et écrit tel quel : rien ne vérifiait que
+  // le devis existe, ni qu'il appartienne au client de la session. Un identifiant
+  // périmé passait donc (FK `SetNull` : le lien disparaissait silencieusement au
+  // lieu d'échouer), et surtout RIEN n'interdisait de rattacher le devis d'un
+  // AUTRE client. La convention générée depuis ce devis aurait alors porté le
+  // prix et les conditions de quelqu'un d'autre — sur une pièce contractuelle.
+  //
+  // Le formulaire filtre déjà par client, mais une garde d'interface ne protège
+  // que les usages ordinaires : l'action est appelable directement.
+  if (v.devisId !== undefined) {
+    const devisLie = await prisma.devis.findUnique({
+      where: { id: v.devisId },
+      select: { id: true, clientId: true, statut: true },
+    });
+    if (!devisLie) {
+      return { error: "Devis introuvable : impossible de rattacher la session." };
+    }
+    if (v.clientId === undefined || devisLie.clientId !== v.clientId) {
+      return {
+        error:
+          "Le devis rattaché appartient à un autre client. Une convention générée depuis ce devis porterait le prix et les conditions d'un tiers.",
+      };
+    }
+    // Un devis en brouillon ou refusé n'a pas à engendrer de session ; un devis
+    // déjà transformé a la sienne. On tolère `transforme_convention` pour rester
+    // idempotent si la session est recréée après une erreur.
+    if (devisLie.statut !== "accepte" && devisLie.statut !== "transforme_convention") {
+      return {
+        error: `Seul un devis accepté peut être rattaché à une session (statut actuel : ${devisLie.statut}).`,
+      };
+    }
+  }
+
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
 

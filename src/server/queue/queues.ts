@@ -713,6 +713,50 @@ export function isLegacyBookingWorkersEnabled(): boolean {
 }
 
 /**
+ * Purge les restes Redis d'une file legacy DORMANTE (flag ci-dessus a false).
+ *
+ * LE PIEGE : `removeOnComplete` / `removeOnFail` ne rognent la retention qu'a
+ * l'EXECUTION d'un job. Une file sans consommateur ne trime donc plus jamais —
+ * son stock reste fige A VIE, pile au plafond. Mesure en prod le 2026-07-26 :
+ * 6 005 cles `bull:option-expiration:*`, 726 pour `option-reminder`, 245 pour
+ * `booking-crons` — 6 976 cles immortelles pour zero job utile. Les ZSET
+ * `repeat` des trois files sont a 0 : la decommission du commit 2c377916 a bien
+ * fonctionne, il ne reste que les carcasses de jobs. Rien a rallumer.
+ *
+ * POURQUOI `clean()` ET SURTOUT PAS `obliterate()` : `obliterate()` commence par
+ * `await this.pause()` (bullmq 5.76.8, queue.js:584) et ne supprime la cle
+ * `meta` — donc le drapeau `paused` — qu'a la toute fin de son script Lua. Une
+ * coupure Redis entre les deux laisse la file PAUSEE de facon permanente, et
+ * personne ne le verrait puisque la file est dormante. Le piege se declencherait
+ * le jour ou quelqu'un repose `LEGACY_BOOKING_WORKERS_ENABLED=true` : les crons
+ * seraient replanifies mais jamais consommes. `clean()` ne touche jamais a
+ * l'etat de la file.
+ *
+ * POURQUOI SEULEMENT `completed` ET `failed` : ce sont des dechets par
+ * construction. On ne touche NI a `wait` NI a `delayed`, qui seraient du travail
+ * en attente si un producteur reapparaissait.
+ *
+ * Best-effort : de l'entretien ne doit jamais empecher le worker de demarrer.
+ */
+async function purgeDormantLegacyQueue(queue: Pick<Queue, "clean">, label: string): Promise<void> {
+  try {
+    // grace=0 (tout est purgeable) + limit=0 → bullmq traduit en Infinity et
+    // boucle par lots de 10 000 jusqu'a epuisement (queue.js:546-561).
+    const completed = await queue.clean(0, 0, "completed");
+    const failed = await queue.clean(0, 0, "failed");
+    const total = completed.length + failed.length;
+    if (total > 0) {
+      console.warn(`[bullmq] file legacy dormante ${label} : ${total} jobs residuels purges`);
+    }
+  } catch (err) {
+    console.warn(
+      `[bullmq] purge des restes de ${label} impossible (non bloquant) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/**
  * Boot des cron jobs recurrents — appele une seule fois au demarrage du
  * worker (`pnpm worker`). Utilise des repeatable jobs BullMQ.
  *
@@ -1279,6 +1323,29 @@ export async function bootRepeatableJobs(): Promise<void> {
         { type, tick: new Date().toISOString() },
         { repeat: { pattern }, jobId },
       );
+    }
+  }
+
+  // ── Entretien : restes Redis des 3 files legacy dormantes ─────────────────
+  //
+  // VOLONTAIREMENT EN DERNIER, apres la planification de TOUS les crons — en
+  // particulier `retention-purge` (purge RGPD 03:00 UTC) et `formation-crons`.
+  // `worker.ts` await `bootRepeatableJobs()` sans timeout : un Redis lent sur
+  // ~6 000 cles ne doit jamais retarder l'enregistrement d'un cron d'obligation
+  // legale. Ce fichier porte deja la cicatrice de ce bug — cf. le garde en tete
+  // de fonction, qui ne depend plus que de `retentionPurgeQueue`. NE PAS le
+  // rejouer en remontant ces appels dans les blocs legacy ci-dessus.
+  //
+  // Une seule passe pour `booking-crons`, hors de la boucle des 11 crons.
+  if (!legacyBookingEnabled) {
+    if (optionExpirationQueue) {
+      await purgeDormantLegacyQueue(optionExpirationQueue, "option-expiration");
+    }
+    if (optionReminderQueue) {
+      await purgeDormantLegacyQueue(optionReminderQueue, "option-reminder");
+    }
+    if (bookingCronsQueue) {
+      await purgeDormantLegacyQueue(bookingCronsQueue, "booking-crons");
     }
   }
 }

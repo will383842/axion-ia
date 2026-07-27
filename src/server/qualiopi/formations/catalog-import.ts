@@ -40,7 +40,7 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
-import { formatDocumentNumber } from "../numbering/formats";
+import { nextNumero } from "../numbering/allocate";
 import { countLockingSessions } from "./edit-guard";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -395,16 +395,16 @@ async function createFormationWithNumero(
   // catalogue exact à l'import (cf. reconcileFormationFields).
   const catalogSnapshot = toCatalogSnapshot(data);
   for (let attempt = 0; attempt < 5; attempt++) {
-    // 🔴 Vérification E2E 2026-07-26 — F63 n'avait pas été propagé ici. Ce
-    // `count()` portait sur TOUTE la table alors que le numéro produit estampille
-    // l'année (`AXI-FORM-{year}-NNN`), donc les deux allocateurs de formation
-    // divergeaient : `numbering.ts` compte l'année, celui-ci comptait tout. Sans
-    // effet visible aujourd'hui (les 57 formations sont toutes en 2026), la
-    // divergence apparaît au 1er janvier — 001 d'un côté, 058 de l'autre.
-    const count = await db.formation.count({
-      where: { numero: { startsWith: `AXI-FORM-${year}-` } },
-    });
-    const numero = formatDocumentNumber("formation", year, count + 1);
+    // 🔴 V20 — même série que `allocateFormationNumero`, donc même mécanique
+    // OBLIGATOIREMENT. Deux allocateurs de la même série dont l'un compte et
+    // l'autre lit le max divergeraient dès le premier trou. (Le filtre d'année,
+    // posé ici par F63 le 2026-07-26, est désormais porté par `seriesPrefix`.)
+    const numero = await nextNumero("formation", year, (prefixe) =>
+      db.formation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     try {
       const created = await db.formation.create({
         // Cast contrôlé : champs Json (objectifs/programme/ressources) + enums

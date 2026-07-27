@@ -12,16 +12,26 @@
 //
 // SÉCURITÉ :
 //   - `DOCUSEAL_API_KEY` server-only (jamais exposée client)
-//   - Webhook : HMAC-SHA256 hex en header `X-Docuseal-Signature`
+//   - Webhook : header `X-Docuseal-Signature`, DEUX formats supportés
+//       · v2.x (celui qui tourne en prod) : `<timestamp_unix>.<hex64>`,
+//         message signé = `"<timestamp>.<corps_brut>"`
+//       · v1.x legacy : `<hex64>` nu, message signé = corps brut
 //     → comparaison timing-safe via `crypto.timingSafeEqual`
 //   - `DOCUSEAL_WEBHOOK_SECRET` distinct de l'API key (rotatable séparément)
+//
+// 🔴 HISTORIQUE À NE PAS RÉPÉTER (constat F4, 2026-07-26) : ce fichier a fait
+// échouer la signature électronique dans les DEUX sens sans qu'aucune alerte ne
+// parte — 422 à l'aller (champs pré-remplis attachés à TOUS les submitters),
+// 401 puis 400 au retour (format de signature v1 attendu alors que la prod
+// parle v2, et `event_id` exigé alors que DocuSeal ne l'envoie pas). Toute
+// évolution ici se valide contre le conteneur RÉEL, pas contre la doc.
 //
 // MODE DÉGRADÉ :
 //   - Si `DOCUSEAL_BASE_URL` ou `DOCUSEAL_API_KEY` absent → `isDocusealConfigured()`
 //     retourne false. Les Server Actions doivent fallback en mode hybride
 //     manuel (admin upload PDF signé physiquement — ADR 0014 §3).
 
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 // ============================================================
 // Configuration & gates
@@ -83,6 +93,21 @@ export interface DocusealSigner {
   role?: string;
   /** Phone E.164 (`+33...`) — facultatif (SMS notification DocuSeal). */
   phone?: string;
+  /**
+   * Champs pré-remplis PROPRES à ce signataire.
+   *
+   * 🔴 DocuSeal valide les noms de champs RÔLE PAR RÔLE : `fields[].default_value`
+   * est reversé dans `values` (`Submissions::NormalizeParamUtils`), puis
+   * `Submitters::NormalizeValues` est appelé avec `throw_errors: true` et les
+   * SEULS champs du rôle traité — un nom étranger à ce rôle lève
+   * `Unknown field: <nom>` et le contrôleur répond 422. La soumission ENTIÈRE
+   * est refusée, y compris la partie client pourtant valide : ce n'est pas une
+   * erreur partielle.
+   *
+   * Non renseigné : le signataire d'index 0 hérite de
+   * `CreateSubmissionOptions.fields`.
+   */
+  fields?: DocusealField[];
 }
 
 /**
@@ -104,6 +129,18 @@ export type DocusealSignOrder = "preserved" | "random";
 export interface DocusealField {
   name: string;
   default_value?: string | number | boolean;
+  /**
+   * Rend le champ NON MODIFIABLE par le signataire : il est rendu en statique
+   * au lieu d'un input pré-rempli (`submit_form/show.html.erb` ne saute du rendu
+   * statique que les champs NON readonly du submitter courant).
+   *
+   * 🔴 À poser sur tout champ qui porte un engagement chiffré (numéro de pièce,
+   * montant, date de validité) : sans lui le signataire peut RÉÉCRIRE la valeur
+   * avant de signer, et le document signé cesse de correspondre à la pièce
+   * émise. Le paramètre est accepté par l'API (`fields: [… :readonly …]` dans
+   * `api/submissions_controller.rb`) et appliqué par `assign_field_attrs`.
+   */
+  readonly?: boolean;
 }
 
 /** Options pour `createSubmission`. */
@@ -122,7 +159,13 @@ export interface CreateSubmissionOptions {
    * Si `"random"` : tous les signers reçoivent leur lien en parallèle.
    */
   signOrder?: DocusealSignOrder;
-  /** Fields pré-remplis avec valeurs Booking (raison sociale, montant, etc.). */
+  /**
+   * Champs pré-remplis du PREMIER signataire (`signers[0]`) — jamais des suivants.
+   *
+   * 🔴 Les noms doivent exister sur le rôle de `signers[0]` dans le template :
+   * un nom inconnu de ce rôle fait répondre 422 et la soumission entière est
+   * perdue. Pour pré-remplir un autre signataire, utiliser `signers[i].fields`.
+   */
   fields?: DocusealField[];
   /** Envoyer l'email automatique DocuSeal au signataire (sinon embed-only). */
   sendEmail?: boolean;
@@ -234,14 +277,32 @@ export async function createSubmission(
     template_id: opts.templateId,
     send_email: opts.sendEmail ?? false,
     submitters_order: signOrder,
-    submitters: opts.signers.map((s) => ({
-      email: s.email,
-      ...(s.name ? { name: s.name } : {}),
-      ...(s.role ? { role: s.role } : {}),
-      ...(s.phone ? { phone: s.phone } : {}),
-      ...(opts.fields ? { fields: opts.fields } : {}),
-      ...(opts.metadata ? { metadata: opts.metadata } : {}),
-    })),
+    submitters: opts.signers.map((s, i) => {
+      // 🔴 CAUSE RACINE DU 422 (constat F4, corrigé le 2026-07-26).
+      // `opts.fields` partait sur TOUS les submitters. Or DocuSeal reverse
+      // `fields[].default_value` dans `values`, puis valide RÔLE PAR RÔLE via
+      // `Submitters::NormalizeValues(..., throw_errors: true)`. Reproduit sur le
+      // conteneur de prod (DocuSeal 2.5.3, template « Devis Axion-IA V1 ») :
+      //   role="Client"   → résout devis_number / amount_ht / valid_until
+      //   role="Axion-IA" → UnknownFieldName: "Unknown field: devis_number"
+      // → HTTP 422, soumission ENTIÈRE refusée. Les champs pré-remplis
+      // appartiennent donc au PREMIER signataire, sauf si un signataire porte
+      // explicitement les siens.
+      const signerFields = s.fields ?? (i === 0 ? opts.fields : undefined);
+      return {
+        email: s.email,
+        ...(s.name ? { name: s.name } : {}),
+        ...(s.role ? { role: s.role } : {}),
+        ...(s.phone ? { phone: s.phone } : {}),
+        // Tableau VIDE ≠ clé absente : on n'émet `fields` que s'il y a
+        // réellement quelque chose à pré-remplir.
+        ...(signerFields && signerFields.length > 0 ? { fields: signerFields } : {}),
+        // metadata reste sur TOUS les submitters : le webhook porte la metadata
+        // DU submitter concerné, et le dispatch a besoin de `devisId`/`quoteId`
+        // quel que soit celui qui vient de signer.
+        ...(opts.metadata ? { metadata: opts.metadata } : {}),
+      };
+    }),
     ...(opts.webhookUrl ? { webhook_url: opts.webhookUrl } : {}),
   };
 
@@ -289,7 +350,14 @@ export interface ContractSubmissionInput {
    * fallback `contact@axion-ia.com`.
    */
   countersigner?: { email: string; name?: string };
-  /** Fields pré-remplis (raison sociale, montant, etc.). */
+  /**
+   * Champs pré-remplis du CLIENT (1er signataire) — jamais du contre-signataire.
+   *
+   * 🔴 Les noms doivent exister sur le rôle « Client » du template DocuSeal : un
+   * nom inconnu du rôle fait répondre 422 et la soumission entière est perdue
+   * (cause racine du constat F4). Se vérifie contre le template RÉEL du
+   * conteneur, pas contre la documentation.
+   */
   fields?: DocusealField[];
   /** Metadata propagée au webhook (typiquement `bookingId`). */
   metadata?: Record<string, string>;
@@ -426,20 +494,72 @@ export async function archiveSubmission(submissionId: string): Promise<void> {
 // ============================================================
 
 /**
- * Vérifie HMAC-SHA256 (format DocuSeal v1.x legacy).
- * Header : `X-Docuseal-Signature: <hex_digest>` (64 chars).
+ * Fenêtre d'acceptation du timestamp signé — identique à celle que DocuSeal
+ * s'applique à lui-même (`WebhookUrls::Signatures::TOLERANCE = 5 * 60`).
  *
- * @param rawBody Corps brut de la requête (Buffer ou string) — NE PAS reparser.
- * @param signatureHeader Valeur du header (hex SHA-256, longueur 64).
- * @returns true si signature valide.
+ * 🔴 NE PAS l'élargir « au cas où un retry rejouerait l'ancien header » : ce cas
+ * n'existe pas. `Signatures.sign(secret, body:, timestamp: Time.current.to_i)`
+ * réévalue l'horodatage À CHAQUE appel, et `send_webhook_request.rb` rappelle
+ * `sign` à l'intérieur du bloc Faraday, donc à chaque tentative. Émetteur et
+ * récepteur tournent sur la même machine : aucune dérive d'horloge à absorber.
+ */
+const DOCUSEAL_SIGNATURE_TOLERANCE_SECONDS = 300;
+
+/**
+ * Vérifie la signature du header `X-Docuseal-Signature`.
+ *
+ * 🔴 DEUX FORMATS — ET LA PROD N'UTILISE PAS CELUI QUI ÉTAIT CODÉ (constat F4) :
+ *
+ *  - DocuSeal v2.x (le conteneur de prod est en 2.5.3) émet
+ *    `<timestamp_unix>.<hex64>` et signe le message `"<timestamp>.<corps_brut>"`,
+ *    pas le corps seul. L'ancien code refusait tout header dont la longueur
+ *    n'était pas 64 : 100 % des callbacks repartaient en 401 — d'où une table
+ *    `docuseal_webhook_events` restée vide alors que le secret, lui, est bon.
+ *  - DocuSeal v1.x (legacy, conservé) : `<hex64>` nu, message = corps brut.
+ *
+ * Le fallback plaintext `X-Docuseal-Secret` ne rattrape rien : en prod
+ * `WebhookUrl.secret` vaut `{}`, donc DocuSeal n'émet JAMAIS ce header.
+ *
+ * @param rawBody Corps brut de la requête — NE PAS reparser puis re-sérialiser.
+ * @param signatureHeader Valeur du header.
+ * @returns true si la signature est valide.
  */
 export function verifyWebhookSignature(rawBody: string, signatureHeader: string | null): boolean {
   if (!signatureHeader) return false;
+
+  const dot = signatureHeader.indexOf(".");
+  if (dot > 0) {
+    // ── Format v2.x : "<timestamp>.<hex64>" ────────────────────────────────
+    const ts = signatureHeader.slice(0, dot);
+    const received = signatureHeader.slice(dot + 1);
+    if (!/^\d+$/.test(ts)) return false;
+    if (!/^[0-9a-fA-F]{64}$/.test(received)) return false;
+    if (Math.abs(Date.now() / 1000 - Number(ts)) > DOCUSEAL_SIGNATURE_TOLERANCE_SECONDS) {
+      return false;
+    }
+    const expected = createHmac("sha256", getWebhookSecret())
+      .update(`${ts}.${rawBody}`, "utf8")
+      .digest("hex");
+    return timingSafeHexEqual(received, expected);
+  }
+
+  // ── Format v1.x legacy : hex64 nu, message = corps brut ──────────────────
   if (signatureHeader.length !== 64) return false;
   const expected = createHmac("sha256", getWebhookSecret()).update(rawBody, "utf8").digest("hex");
-  // timingSafeEqual exige des Buffer de même longueur (déjà garanti via length check).
+  return timingSafeHexEqual(signatureHeader, expected);
+}
+
+/**
+ * Comparaison timing-safe de deux digests hexadécimaux.
+ * `Buffer.from("zzz…", "hex")` rend un buffer VIDE au lieu de throw : sans le
+ * garde sur la longueur, deux digests non-hex se compareraient « égaux ».
+ */
+function timingSafeHexEqual(a: string, b: string): boolean {
   try {
-    return timingSafeEqual(Buffer.from(signatureHeader, "hex"), Buffer.from(expected, "hex"));
+    const bufA = Buffer.from(a, "hex");
+    const bufB = Buffer.from(b, "hex");
+    if (bufA.length === 0 || bufA.length !== bufB.length) return false;
+    return timingSafeEqual(bufA, bufB);
   } catch {
     return false;
   }
@@ -465,9 +585,15 @@ export function verifyWebhookSecret(secretHeader: string | null): boolean {
  * (DocuSeal v2.x). Renvoie true si au moins un des 2 schémas matche.
  *
  * Sprint Correctif S+1 (P0-S1-5 2026-05-16) — env flag `DOCUSEAL_STRICT_HMAC=true`
- * désactive le fallback plaintext (force HMAC v1.x). Doctrine prod hardened :
- * activer le flag dès que DocuSeal v1.x est confirmé OU IP-allow-list configurée
- * côté Caddy/Cloudflare. Audit 2.D : plaintext forge si secret leak.
+ * désactive le fallback plaintext. Audit 2.D : plaintext forgeable si le secret fuit.
+ *
+ * 🔴 F4 (2026-07-26) : la doctrine « la prod utilise le plaintext v2.x » était
+ * FAUSSE. Vérifié sur le conteneur : `WebhookUrl.secret == {}`, donc DocuSeal
+ * n'émet AUCUN header `X-Docuseal-Secret` — cette branche est morte-née. Le seul
+ * chemin réel est la signature v2 `<ts>.<hex64>` traitée ci-dessus. Ne PAS
+ * activer `DOCUSEAL_STRICT_HMAC` dans la foulée de ce correctif : observer
+ * d'abord un vrai callback en 200 et une ligne dans `docuseal_webhook_events`,
+ * durcir ensuite — sinon on remplace une panne muette par une autre.
  */
 export function verifyWebhookAuth(
   rawBody: string,
@@ -503,17 +629,19 @@ export interface DocusealWebhookPayload {
 
 /**
  * Parse un payload webhook DocuSeal en `DocusealWebhookPayload` typé.
- * Throw si event_id absent (idempotence impossible) ou type inconnu.
+ * Throw si `event_type` est absent (payload inexploitable).
+ *
+ * 🔴 IDEMPOTENCE (constat F4) : l'ancien code exigeait `data.event_id` et la
+ * route répondait 400 sinon. Or le corps émis par DocuSeal 2.5.3 est exactement
+ * `{ event_type, timestamp, data }` (`lib/send_webhook_request.rb`) : il n'y a
+ * PAS d'`event_id`. Chaque callback authentique repartait donc en 400. On dérive
+ * désormais une clé déterministe — voir `deriveWebhookEventId`.
  */
 export function parseWebhookPayload(rawJson: string): DocusealWebhookPayload {
   const data = JSON.parse(rawJson) as Record<string, unknown>;
   const eventType = data["event_type"] as DocusealEventType | undefined;
-  const eventId = data["event_id"] as string | undefined;
   const timestamp = data["timestamp"] as string | undefined;
 
-  if (!eventId) {
-    throw new Error("[docuseal-webhook] missing event_id (idempotence impossible)");
-  }
   if (!eventType) {
     throw new Error("[docuseal-webhook] missing event_type");
   }
@@ -526,6 +654,13 @@ export function parseWebhookPayload(rawJson: string): DocusealWebhookPayload {
     (data["submission_id"] as string | number | undefined) ??
     "";
 
+  // `event_id` reste prioritaire s'il existe (DocuSeal v1.x, versions futures).
+  const explicitEventId = data["event_id"];
+  const eventId =
+    typeof explicitEventId === "string" && explicitEventId.trim() !== ""
+      ? explicitEventId.trim()
+      : deriveWebhookEventId(eventType, data["timestamp"], dataField);
+
   return {
     eventId,
     eventType,
@@ -534,4 +669,42 @@ export function parseWebhookPayload(rawJson: string): DocusealWebhookPayload {
     metadata: (dataField["metadata"] as Record<string, string> | undefined) ?? {},
     raw: data,
   };
+}
+
+/**
+ * Clé d'idempotence synthétique quand DocuSeal n'envoie pas d'`event_id`.
+ *
+ * 🔴 N'AGRÈGE QUE DES SCALAIRES STABLES. Hacher le bloc `data` entier serait un
+ * piège : `Submitters::SerializeForWebhook` le RE-SÉRIALISE à chaque tentative
+ * avec `expires_at: Accounts.link_expires_at(...)` = `40.minutes.from_now`,
+ * recalculé à l'appel — `documents[].url`, `audit_log_url` et
+ * `combined_document_url` portent donc une signature DIFFÉRENTE à chaque retry
+ * (et `updated_at` bouge aussi). La clé changerait à chaque tentative et la
+ * contrainte UNIQUE `docuseal_webhook_events.docuseal_event_id` ne
+ * dédupliquerait plus rien.
+ *
+ * Les trois composantes retenues sont stables entre tentatives :
+ *   - `event_type` ;
+ *   - le `timestamp` de PREMIER NIVEAU, qui vaut `webhook_event.created_at`
+ *     (`find_or_create_by!(webhook_url:, uuid: event_uuid)`) : figé pour un
+ *     événement donné — c'est le HEADER, lui, qui est re-signé à chaque essai ;
+ *   - `data.id` + `data.submission_id` (`SERIALIZE_PARAMS`), immuables.
+ *
+ * Deux signataires du même document donnent deux `data.id` distincts : deux
+ * clés, deux événements traités séparément — c'est voulu.
+ *
+ * Colonne `VarChar(120)` : `sha256:` + 64 hex = 71 caractères.
+ */
+function deriveWebhookEventId(
+  eventType: string,
+  timestamp: unknown,
+  dataField: Record<string, unknown>,
+): string {
+  const parts = [
+    eventType,
+    typeof timestamp === "string" || typeof timestamp === "number" ? String(timestamp) : "",
+    dataField["id"] !== undefined ? String(dataField["id"]) : "",
+    dataField["submission_id"] !== undefined ? String(dataField["submission_id"]) : "",
+  ];
+  return `sha256:${createHash("sha256").update(parts.join("|"), "utf8").digest("hex")}`;
 }

@@ -15,7 +15,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -59,12 +59,17 @@ async function allocuerNumero(annee: number, tentative = 1): Promise<string> {
   if (tentative > MAX_RETRY) {
     throw new Error("Impossible d'allouer un numéro unique après " + MAX_RETRY + " tentatives");
   }
-  const debut = new Date(`${annee}-01-01T00:00:00.000Z`);
-  const fin = new Date(`${annee + 1}-01-01T00:00:00.000Z`);
-  const count = await prisma.reclamation.count({
-    where: { dateReception: { gte: debut, lt: fin } },
-  });
-  return formatDocumentNumber("reclamation", annee, count + tentative);
+  // 🔴 V20 — duplicat EXACT de `registres/reclamations-service.ts` : deux
+  // chemins d'écriture concurrents sur la MÊME série `AXI-REC`. Tant que la
+  // déduplication n'est pas faite (chantier séparé), les deux DOIVENT lire le
+  // compteur de la même façon, sinon ils divergent au premier trou.
+  // `tentative` ne décale plus le numéro : la borne haute progresse seule.
+  return nextNumero("reclamation", annee, (prefixe) =>
+    prisma.reclamation.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    }),
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

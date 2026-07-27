@@ -5242,10 +5242,20 @@ model Devis {
   docusealEmbedUrl       String?              @map("docuseal_embed_url") @db.Text
   clientId               String               @map("client_id") @db.Uuid
   client                 Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
-  /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreTierId? }].
+  /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreCode?, offreTierId? }].
+  /// `offreCode` (AXI-OFF-NNN) référence TOUTES les offres ; `offreTierId` n'est
+  /// renseigné que pour les offres legacy à `tier_id` non nul. Les lignes émises
+  /// avant 2026-07 portent un champ `offreTierId` MIXTE : un vrai tierId pour les
+  /// 4 offres legacy, un CODE pour les 21 offres du catalogue V2 (le <select>
+  /// émettait `tierId ?? code`). Jamais réécrites — pièces émises. Toute jointure
+  /// sur `offres_site` doit tolérer les deux formes.
   lignes                 Json
   montantTotalHtCents    Int                  @map("montant_total_ht_cents")
-  /// Mention TVA (exonération 261-4-4° CGI par défaut).
+  /// Mention TVA SNAPSHOTÉE à la création, dérivée de `qualiopi.regime_tva` —
+  /// jamais une valeur en dur. La production est en régime « assujetti » (20 %) :
+  /// la mention est alors celle de l'assujettissement, PAS une exonération.
+  /// L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'inscrire
+  /// par défaut engagerait l'organisme sur un régime qu'il ne détient pas.
   mentionTva             String               @map("mention_tva") @db.Text
   /// direct | opco | cpf | france_travail.
   financementSuggere     String?              @map("financement_suggere") @db.VarChar(40)
@@ -8374,7 +8384,13 @@ model JournalProgression {
 /// niveau parcours. Null sur une séance ponctuelle hors contrat.
 model CoachingContract {
   id                                 String                   @id @default(uuid()) @db.Uuid
-  /// Numérotation séquentielle AXI-FORM-YYYY-NNN (réutilise le compteur formation).
+  /// Numérotation séquentielle AXI-COACH-YYYY-NNN (série PROPRE).
+  /// 🔴 Ce champ prescrivait de « réutiliser le compteur formation », c'est-à-dire
+  /// d'ajouter un TROISIÈME écrivain sur la série AXI-FORM — déjà partagée entre
+  /// `formations` et `documents_generes`, avec 3 numéros dupliqués constatés en
+  /// production. La table est vide et aucun allocateur applicatif n'écrit ici :
+  /// la dette est éteinte avant d'avoir été matérialisée. Si un allocateur est
+  /// écrit un jour, passer par `nextNumero("coaching", year, …)`.
   numero                             String                   @unique @db.VarChar(40)
   traineeId                          String?                  @map("trainee_id") @db.Uuid
   trainee                            Trainee?                 @relation(fields: [traineeId], references: [id], onDelete: SetNull)

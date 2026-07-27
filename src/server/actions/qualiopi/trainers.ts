@@ -14,7 +14,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminDelete,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
@@ -526,7 +530,11 @@ const deleteTrainerDevelopmentActionSchema = z.object({ id: z.string().uuid() })
 export async function deleteTrainerDevelopmentActionAction(input: {
   id: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // `requireAdminDelete` (super_admin strict) et non `requireAdminWrite` :
+  // `prisma.trainerDevelopmentAction.delete()` est un hard delete et le modele
+  // n'a pas de `deletedAt`. C'est la preuve de l'indicateur 22 (entretien et
+  // developpement des competences des formateurs) qui disparait sans recours.
+  const session = await requireAdminDelete();
   const parsed = deleteTrainerDevelopmentActionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;

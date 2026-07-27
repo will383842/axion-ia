@@ -21,6 +21,8 @@ vi.mock("@/lib/prisma", () => ({
     },
     factureFormation: {
       count: vi.fn(),
+      // Chemin d'allocation depuis V20 : borne haute lue par `nextNumero`.
+      findMany: vi.fn(),
       create: vi.fn(),
     },
   },
@@ -64,6 +66,7 @@ const mockPrisma = prisma as unknown as {
   trainingSession: { findUniqueOrThrow: ReturnType<typeof vi.fn> };
   factureFormation: {
     count: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
   };
 };
@@ -110,6 +113,7 @@ describe("genererFactureFormation", () => {
     vi.clearAllMocks();
     mockPrisma.trainingSession.findUniqueOrThrow.mockResolvedValue(makeSession());
     mockPrisma.factureFormation.count.mockResolvedValue(0);
+    mockPrisma.factureFormation.findMany.mockResolvedValue([]);
     mockPrisma.factureFormation.create.mockResolvedValue({
       id: "facture-uuid-1",
       numero: "AXI-FACT-2026-001",
@@ -186,8 +190,12 @@ describe("genererFactureFormation", () => {
 
   // ── Numéro séquentiel ─────────────────────────────────────────────────────
 
-  it("le numéro séquentiel utilise formatDocumentNumber('facture', year, count+1)", async () => {
-    mockPrisma.factureFormation.count.mockResolvedValue(3); // 3 factures existantes → seq=4
+  it("le numéro séquentiel est MAX(séquence) + 1, pas count + 1", async () => {
+    const annee = new Date().getFullYear();
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { numero: `AXI-FACT-${annee}-001` },
+      { numero: `AXI-FACT-${annee}-003` },
+    ]);
     await genererFactureFormation({
       sessionId: "sess-uuid-1",
       destinataire: "entreprise",
@@ -196,8 +204,34 @@ describe("genererFactureFormation", () => {
     const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
       data: Record<string, unknown>;
     };
-    const annee = new Date().getFullYear();
+    // 🔴 Le cœur de V20 : la série a un TROU en 002 (facture supprimée, création
+    // annulée). `count + 1` aurait rendu 003 — un numéro DÉJÀ ÉMIS, interdit par
+    // l'art. 242 nonies A ann. II du CGI. La borne haute rend 004.
     expect(createArg.data["numero"]).toBe(`AXI-FACT-${annee}-004`);
+    // Et le PRÉDICAT de lecture, pas seulement la valeur : c'est son absence de
+    // pin qui a laissé vivre le dénominateur `createdAt` de financements.ts.
+    expect(mockPrisma.factureFormation.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { numero: { startsWith: `AXI-FACT-${annee}-` } } }),
+    );
+  });
+
+  it("les avoirs et les brouillons n'entrent pas dans la série des factures", async () => {
+    const annee = new Date().getFullYear();
+    // Ces lignes vivent dans la MÊME table `factures_formation`. Le filtre par
+    // préfixe les écarte côté requête, `parseSequence` côté calcul.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { numero: `AXI-AVO-${annee}-001` },
+      { numero: "BROUILLON-9f3ac2b1e4d05a6c" },
+    ]);
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+    const createArg = mockPrisma.factureFormation.create.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect(createArg.data["numero"]).toBe(`AXI-FACT-${annee}-001`);
   });
 
   // ── Retry P2002 ───────────────────────────────────────────────────────────

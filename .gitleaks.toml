@@ -17,4 +17,21 @@ regexes = [
   '''placeholder''',
   '''xxxx+''',
   '''<.*?>''', # angle-bracket placeholders
+  # Valeurs de test qui se nomment elles-mêmes (« test-secret-… »).
+  #
+  # Ajouté 2026-07-27 : `docuseal.test.ts` déclare
+  # `const SECRET = "test-secret-32chars-min-len-ok"` pour satisfaire la
+  # longueur minimale exigée par la vérification de signature du webhook. La
+  # règle `generic-api-key` la relève sur son entropie (3.73) sans voir qu'elle
+  # s'annonce comme factice.
+  #
+  # Volontairement ÉTROIT : le préfixe `test-secret-` ou `test_secret_` est
+  # explicite, aucun secret réel ne le porterait. On ne met PAS `tests/` ni
+  # `*.test.ts` en `paths` — un vrai secret collé dans un test resterait alors
+  # invisible, ce qui est exactement ce que ce gate existe pour empêcher.
+  #
+  # ⚠️ gitleaks scanne l'HISTORIQUE (`git log -p`) : corriger le fichier ne
+  # suffirait pas, le commit d'origine porte toujours la chaîne. L'allowlist est
+  # le seul moyen sans réécrire l'historique.
+  '''(?i)test[_-]secret[_-]''',
 ]

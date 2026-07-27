@@ -75,8 +75,8 @@ export default async function CookiePreferencesPage({ params }: Props) {
           </p>
           <p>
             {isFr
-              ? "Le seul outil soumis à votre consentement est Microsoft Clarity (heatmaps et session replay anonymisé, transfert UE → US encadré par des clauses contractuelles types). Il dépose les cookies _clck et _clsk et n'est chargé qu'après votre accord explicite. Vous pouvez revenir sur ce choix ci-dessous, à tout moment."
-              : "The only tool subject to your consent is Microsoft Clarity (anonymised heatmaps and session replay, EU → US transfer under standard contractual clauses). It sets the _clck and _clsk cookies and only loads after your explicit agreement. You can change that choice below, at any time."}
+              ? "Deux outils sont soumis à votre consentement. Microsoft Clarity (heatmaps et session replay anonymisé, transfert UE → US encadré par des clauses contractuelles types) dépose les cookies _clck et _clsk et n'est chargé qu'après votre accord explicite via le bandeau ; votre choix est conservé 13 mois et révocable ci-dessous. Le calendrier de réservation Calendly, sur la page /appel, n'est chargé qu'après un clic sur « Afficher le calendrier » ; ce choix n'est volontairement PAS conservé — il vous est redemandé à chaque visite, et ne pas cliquer suffit à le retirer."
+              : "Two tools are subject to your consent. Microsoft Clarity (anonymised heatmaps and session replay, EU → US transfer under standard contractual clauses) sets the _clck and _clsk cookies and only loads after your explicit agreement via the banner; your choice is kept for 13 months and can be withdrawn below. The Calendly booking calendar, on the /appel page, only loads after you click “Show the calendar”; that choice is deliberately NOT stored — it is asked again on every visit, and simply not clicking is enough to withdraw it."}
           </p>
           <CookieConsentControl />
           <p>

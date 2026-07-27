@@ -42,6 +42,8 @@ import {
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { mentionTva } from "@/server/qualiopi/legal/tva";
+import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -160,6 +162,13 @@ export default async function SessionHubPage({ params }: PageProps) {
 
   const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
 
+  // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
+  // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
+  // tout si on l'envoyait au client sans le rouvrir.
+  // On l'annonce AVANT de générer, avec la liste exacte de ce qui manque.
+  const identiteOf = await getOrganismeIdentite();
+  const champsManquantsConvention = champsIdentiteManquants(identiteOf, "convention");
+
   // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
   const allTrainers = await listTrainers({ actifOnly: true });
   const formateurOptions = allTrainers.map((t) => ({
@@ -212,7 +221,16 @@ export default async function SessionHubPage({ params }: PageProps) {
     prisma.documentGenere.findMany({
       where: { sessionId: id },
       orderBy: { createdAt: "desc" },
-      select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
+      select: {
+        id: true,
+        type: true,
+        numero: true,
+        pdfUrl: true,
+        createdAt: true,
+        // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
+        // l'OF est incomplète (documents-service). L'écran ne le lisait pas.
+        metadata: true,
+      },
     }),
     prisma.trainee.findMany({
       where: { deletedAt: null },
@@ -240,13 +258,26 @@ export default async function SessionHubPage({ params }: PageProps) {
     };
   });
 
-  const documentsSerialized = documentsRaw.map((d) => ({
-    id: d.id,
-    type: d.type,
-    numero: d.numero,
-    pdfUrl: d.pdfUrl,
-    createdAt: d.createdAt.toISOString(),
-  }));
+  // 🔴 UI 2026-07-27 — un document SPÉCIMEN était indiscernable d'une pièce
+  // valable dans cette liste.
+  //
+  // Tant que le SIRET et le NDA ne sont pas renseignés, chaque convention,
+  // contrat et facture sort avec un filigrane SPÉCIMEN et un bandeau — mais
+  // l'écran affichait un numéro, une date et un lien, exactement comme une pièce
+  // opposable. On ne s'en apercevait qu'en ouvrant le PDF, voire jamais si on
+  // l'envoyait au client sans le rouvrir.
+  const documentsSerialized = documentsRaw.map((d) => {
+    const meta = d.metadata as { specimen?: boolean; champsManquants?: string[] } | null;
+    return {
+      id: d.id,
+      type: d.type,
+      numero: d.numero,
+      pdfUrl: d.pdfUrl,
+      createdAt: d.createdAt.toISOString(),
+      estSpecimen: meta?.specimen === true,
+      champsManquants: meta?.champsManquants ?? [],
+    };
+  });
 
   const enrollmentsLight = enrollmentsRaw.map((e) => ({
     id: e.id,
@@ -309,6 +340,24 @@ export default async function SessionHubPage({ params }: PageProps) {
           </>
         )}
       </div>
+
+      {champsManquantsConvention.length > 0 && (
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-4)]"
+        >
+          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-destructive-fg)]">
+            Les documents générés sortiront en SPÉCIMEN
+          </p>
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            L&apos;identité de l&apos;organisme est incomplète :{" "}
+            <strong>{champsManquantsConvention.join(", ")}</strong>. Convention, contrat et facture
+            porteront un filigrane et ne seront pas opposables — un organisme certificateur les
+            refuse. Renseignez ces champs dans <em>Configuration</em>, puis régénérez les pièces
+            déjà produites : elles ne se corrigent pas toutes seules.
+          </p>
+        </div>
+      )}
 
       <AdminPageHeader
         title={trainingSession.titreSession ?? trainingSession.formation.titre}

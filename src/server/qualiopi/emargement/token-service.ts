@@ -189,8 +189,31 @@ export async function creerTokenInscription(input: {
 export async function verifierToken(token: string): Promise<VerificationToken> {
   if (estStub()) return { ok: false, raison: "inconnu" };
 
+  // 🔴 Constaté le 2026-07-27 en arbitrant L9.
+  //
+  // Cette ligne aplatissait les SIX motifs de `verifyMagicToken` en un seul
+  // `signature_invalide`. Or `magic-token.ts` vérifie la signature D'ABORD, et
+  // ne teste l'expiration qu'ENSUITE : un jeton parfaitement authentique mais
+  // périmé ressortait donc « signature invalide ».
+  //
+  // Deux conséquences, et la seconde est la pire :
+  //   - le stagiaire lisait « lien invalide » là où « votre lien a expiré,
+  //     demandez-en un nouveau » lui aurait dit quoi faire ;
+  //   - la branche `expire` du bas de cette fonction était MORTE pour tout
+  //     jeton JWT périmé. Elle ne s'atteignait que par l'expiration stockée en
+  //     base, jamais par celle du jeton lui-même. Un correctif qui s'appuierait
+  //     sur elle aurait donc porté sur un chemin déjà inaccessible.
+  //
+  // Distinguer l'expiration n'ouvre aucun oracle : ce motif n'est atteignable
+  // qu'APRÈS validation du HMAC, donc par qui détient déjà un lien signé — il
+  // n'apprend rien sur les autres liens. Les motifs de FORME (`malformed_*`,
+  // `scope_mismatch`, `resource_mismatch`, `invalid_email`) restent fondus dans
+  // `signature_invalide` : eux se rencontrent en trafiquant un jeton, et les
+  // détailler renseignerait un attaquant sur la structure attendue.
   const verified = await verifyMagicToken(token, { scope: "emargement" });
-  if (!verified.ok) return { ok: false, raison: "signature_invalide" };
+  if (!verified.ok) {
+    return { ok: false, raison: verified.reason === "expired" ? "expire" : "signature_invalide" };
+  }
 
   const tokenHash = await sha256Hex(token);
   const ligne = await prisma.emargementToken.findUnique({

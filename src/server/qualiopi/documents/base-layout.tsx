@@ -36,14 +36,46 @@ registerQualiopiPdfFonts();
 // Helpers monétaires centralisés (fin des formatEur dupliqués par template)
 // ============================================================
 
+/**
+ * Remplace les espaces « fines insécables » par une espace insécable ordinaire.
+ *
+ * 🔴 Constaté et MESURÉ le 2026-07-26. Depuis CLDR 42 / ICU 72, `Intl` en fr-FR
+ * émet U+202F (NARROW NO-BREAK SPACE) comme séparateur de milliers. Vérifié :
+ * `Intl.NumberFormat("fr-FR",…).format(1440)` rend `1<U+202F>440,00<U+00A0>€`.
+ *
+ * Or AUCUNE des 8 polices de `public/fonts` ne possède ce glyphe — vérifié à
+ * fontkit, `hasGlyphForCodePoint(0x202F) === false` sur Fraunces ×3,
+ * Manrope ×3 et Inconsolata ×2. U+00A0, lui, est couvert 8/8 : c'est le témoin,
+ * et c'est pourquoi l'espace avant le « € » s'affichait correctement.
+ *
+ * Face à un codepoint non couvert, @react-pdf découpe le texte et bascule le
+ * fragment sur la police base-14 `Helvetica` en WinAnsiEncoding, où il écrit
+ * l'octet de poids faible : 0x202F & 0xFF = 0x2F, soit le caractère « / ».
+ * D'où « 1/440,00 € » sur TOUT montant ≥ 1 000 €, dans TOUS les PDF — devis,
+ * facture, convention, contrat, kits financeurs.
+ *
+ * Le correctif doit être TEXTUEL et non typographique : `src/lib/invoice-pdf.tsx`
+ * rend en Helvetica base-14, qu'aucun patch de police ne peut couvrir.
+ *
+ * ⚠️ Ne PAS appliquer ce nettoyage aux surfaces HTML (pages admin, emails) :
+ * U+202F y est le caractère correct et s'y affiche parfaitement. Il n'est
+ * fautif que dans un PDF.
+ */
+export function assainirEspacesPdf(texte: string): string {
+  // U+202F fine insécable · U+2009 fine · U+2060 gluon (invisibles, non couverts)
+  return texte.replace(/[  ⁠]/g, " ");
+}
+
 /** Formate un montant en EUROS (nombre) → "1 500,00 €" (virgule décimale FR). */
 export function formatEur(montant: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(montant);
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(montant),
+  );
 }
 
 /** Formate des CENTIMES (entier) → "1 500,00 €". Évite les erreurs d'arrondi flottant. */

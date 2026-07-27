@@ -22,6 +22,9 @@ import {
   getGlossaryTermBySlug,
   getRelatedGlossaryTerms,
   listGlossaryTermSlugs,
+  glossaryTermWordCount,
+  isGlossaryTermIndexable,
+  GLOSSARY_MIN_INDEX_WORDS,
   type GlossaryCategory,
 } from "./glossary-extension";
 import { GLOSSARY_TERMS_HARDCODE } from "@/lib/knowledge/legacy-mapping-glossary-hardcode";
@@ -152,6 +155,50 @@ describe("glossary-extension · lookup helpers", () => {
   it("getRelatedGlossaryTerms respecte le défaut limit=5", () => {
     const related = getRelatedGlossaryTerms("agent");
     expect(related.length).toBeLessThanOrEqual(5);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Gate d'indexation — constat F49 (audit certification 2026-07-26)
+//
+// Ces tests ne « verifient » pas que tout va bien : ils EPINGLENT un etat connu
+// et mauvais, pour qu'aucune modification du seuil ou de la metrique ne passe en
+// silence. Ils sont concus pour devenir rouges le jour ou du contenu est enrichi
+// — c'est le signal, pas le bug.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("glossary-extension · gate d'indexation (F49)", () => {
+  const counts = ALL_GLOSSARY_TERMS_EXTENDED.map(glossaryTermWordCount);
+
+  it("le seuil est aujourd'hui INATTEIGNABLE — etat constate, jamais assume", () => {
+    // Cette assertion seule aurait fait echouer la CI depuis le 2026-05-18 :
+    // max reel = 75 pour un seuil de 80. Quand elle deviendra rouge, c'est que
+    // du contenu a ete ecrit — retirer alors ce test, PAS baisser le seuil.
+    expect(Math.max(...counts)).toBeLessThan(GLOSSARY_MIN_INDEX_WORDS);
+  });
+
+  it("0 terme sur 60 passe le gate — remonter ce nombre a chaque lot enrichi", () => {
+    const indexables = listGlossaryTermSlugs().filter((s) => isGlossaryTermIndexable(s));
+    expect(
+      indexables.length,
+      "Un lot de contenu vient d'etre livre : mettre ce nombre a jour ici. " +
+        "NE JAMAIS corriger en baissant GLOSSARY_MIN_INDEX_WORDS ni en retirant " +
+        "le filtre isGlossaryTermIndexable de app/sitemap.ts (cf. JSDoc du seuil).",
+    ).toBe(0);
+  });
+
+  it("la metrique compte le texte EN, qui n'est pas rendu (EN off depuis 2026-05-16)", () => {
+    // Epingle la semantique actuelle : passer la metrique en FR-only change la
+    // valeur des 60 termes d'un coup, sur la page ET sur le sitemap. C'est un
+    // arbitrage produit (barre ISO ~55 en FR-only), pas un refactor.
+    const term = getGlossaryTermBySlug("rag");
+    if (!term) throw new Error("terme `rag` introuvable — fixture cassee");
+    const frSeulement = [term.fr, ...term.examples]
+      .join(" ")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean).length;
+    expect(glossaryTermWordCount(term)).toBeGreaterThan(frSeulement);
   });
 });
 

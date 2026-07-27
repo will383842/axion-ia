@@ -551,7 +551,14 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
 
       if (ind.statut !== "non_applicable") {
         if (ind.preuves.length > 0) {
-          lignes.push("**Preuves :**");
+          // 🔴 Constat F15, 2026-07-26. Ce bloc s'intitulait « Preuves » alors
+          // que la liste mélange, produits par le même code, des preuves réelles
+          // et des constats d'ABSENCE : « 0 réclamation enregistrée et traitée »,
+          // « Procédure de réclamations : non attestée publiée ». Ce manifeste
+          // est le document remis au certificateur — y présenter un manque comme
+          // une preuve est exactement ce qu'un auditeur relève.
+          // Titre neutre tant que `preuves: string[]` ne porte pas de polarité.
+          lignes.push("**Éléments constatés :**");
           for (const p of ind.preuves) {
             lignes.push(`- ${p}`);
           }

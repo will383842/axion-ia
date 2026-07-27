@@ -7,17 +7,37 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { resolveOffrePrice } from "@/server/qualiopi/offres/pricing-resolver";
+import {
+  resolveOffreDevisNoteFr,
+  resolveOffrePrice,
+  resolveOffrePriceEur,
+} from "@/server/qualiopi/offres/pricing-resolver";
 import type { OffreSite } from "@/server/qualiopi/offres/types";
 
 export interface OffreWithPrice {
   offre: OffreSite;
   /** Libellé prix FR résolu : legacy (tierId → pricing.ts) ou V2 (gamme+durée → matrice). */
   prixLabelFr: string;
+  /**
+   * Le même prix, en EUROS et FERME — `null` dès qu'aucun montant ne peut être
+   * inscrit sur une pièce (sur devis, fourchette, « à partir de », paliers).
+   *
+   * Résolu ICI, à côté du libellé, et pas chez l'appelant : c'est ce qui empêche
+   * qu'un écran affiche « Sur devis » tout en pré-remplissant un montant. Deux
+   * résolutions séparées finiraient par diverger.
+   */
+  prixHtEur: number | null;
+  /** Rappel effectif + frais à afficher sous le PU HT d'un devis. */
+  noteDevisFr: string;
 }
 
 function withPrice(offre: OffreSite): OffreWithPrice {
-  return { offre, prixLabelFr: resolveOffrePrice(offre, "fr") };
+  return {
+    offre,
+    prixLabelFr: resolveOffrePrice(offre, "fr"),
+    prixHtEur: resolveOffrePriceEur(offre),
+    noteDevisFr: resolveOffreDevisNoteFr(offre),
+  };
 }
 
 /** Toutes les offres (admin), triées par code. Stub-safe → [] au build. */

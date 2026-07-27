@@ -58,8 +58,10 @@ import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-a
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -133,16 +135,13 @@ async function resolveFormateurNom(
 }
 
 /** Extrait les objectifs pédagogiques depuis un champ Json. */
-function parseObjectifs(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.map((o: unknown) => {
-    if (typeof o === "string") return o;
-    if (typeof o === "object" && o !== null && "description" in o) {
-      return String((o as { description: unknown }).description);
-    }
-    return String(o);
-  });
-}
+/**
+ * Seule des cinq lectures d'`objectifsPedagogiques` à connaître `description`,
+ * donc la seule qui sortait juste sur le catalogue — c'est en la comparant aux
+ * quatre autres qu'on a trouvé le défaut (parcours à blanc 2026-07-27).
+ * Conservée sous son nom d'origine, mais déléguée : une seule implémentation.
+ */
+const parseObjectifs = normaliserObjectifsPedagogiques;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -305,7 +304,12 @@ export async function genererConventionTripartiteAction(input: {
   // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const nomOpco = session.client.opcoIdentifie ?? "OPCO (à préciser)";
+  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la convention
+  // tripartite doit lire « Akto ». Le motif existe déjà dans
+  // facturation-service.ts et facturation-1to1.ts.
+  const nomOpco = session.client.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
   const prixHt = session.montantHtCents / 100;
@@ -987,6 +991,46 @@ export async function genererCertificatRealisationAction(input: {
     };
   }
 
+  // 🔴 Constaté EN PRODUCTION le 2026-07-26 — et déjà matérialisé.
+  //
+  // Le statut d'abandon était la SEULE garde. Plus bas, la durée n'est pondérée
+  // par le taux de présence que `if (tauxPresencePct !== null)` : quand le taux
+  // est inconnu, le certificat atteste donc la durée PRÉVUE comme si elle avait
+  // été réalisée. Rien n'exigeait qu'une seule heure ait été constatée.
+  //
+  // Ce n'est pas théorique : un `certificat_realisation` a été émis le 22/07 en
+  // production alors que `emargement_signatures` comptait ZÉRO ligne. La pièce
+  // que l'auditrice contrôle en premier attestait d'heures que rien ne prouvait.
+  //
+  // R.6313-3 : un certificat de réalisation atteste d'heures RÉELLEMENT suivies.
+  // Deux conditions, donc, et elles sont distinctes :
+  //   1. le taux de présence doit avoir été MESURÉ — un taux inconnu n'est pas un
+  //      taux de 100 % ;
+  //   2. il doit reposer sur une TRACE — au moins une signature d'émargement
+  //      rattachée à cette inscription. Un taux saisi à la main sans émargement
+  //      est une déclaration, pas une preuve, et c'est précisément ce qu'un
+  //      contrôle de service fait sanctionne.
+  //
+  // On refuse plutôt que d'émettre une pièce fausse : un certificat manquant se
+  // rattrape en émargeant, un certificat surdéclaré engage l'organisme devant le
+  // financeur.
+  if (enrollment.tauxPresencePct === null) {
+    return {
+      error:
+        "Certificat refusé : le taux de présence n'a pas été calculé. Un certificat de réalisation atteste d'heures réellement suivies (R.6313-3) — il ne peut pas reposer sur la durée prévue.",
+    };
+  }
+
+  const signatures = await prisma.emargementSignature.count({
+    where: { enrollmentId: enrollment.id },
+  });
+  if (signatures === 0) {
+    return {
+      error:
+        "Certificat refusé : aucune signature d'émargement n'est rattachée à cette inscription. Le taux de présence doit reposer sur une trace vérifiable, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
+    };
+  }
+
   const identite = await getOrganismeIdentite();
   const session = enrollment.session;
   const trainee = enrollment.trainee;
@@ -1123,7 +1167,9 @@ export async function genererKitOpcoAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const nomOpco = session.client?.opcoIdentifie ?? "OPCO (à préciser)";
+  const nomOpco = session.client?.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroDossier = session.numeroDossierOpco ?? "—";
   const baremeCents = session.priseEnChargeMontantCents ?? 0;
 

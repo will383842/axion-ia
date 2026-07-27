@@ -13,7 +13,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminDelete,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -148,11 +152,30 @@ export async function validateTrainerDocumentAction(
 
 const deleteSchema = z.object({ id: uuid });
 
-/** Supprime une pièce (erreur de saisie). L'historique reste dans ActivityLog. */
+/**
+ * Supprime une piece formateur (diplome, CV, attestation).
+ *
+ * ⚠️ Le commentaire precedent disait « l'historique reste dans ActivityLog ».
+ * C'est trompeur : ActivityLog conserve la trace de L'ACTE, pas la PIECE. Apres
+ * cet appel, le fichier reste orphelin dans le storage mais son pointeur, son
+ * hash de scellement et son statut de validation sont perdus — la preuve des
+ * indicateurs 21/22 devient inexploitable devant un auditeur.
+ *
+ * D'ou `requireAdminDelete` (super_admin STRICT) et non `requireAdminWrite`
+ * (qui autorise le role `editor`). `TrainerDocument` n'a ni `deletedAt` ni
+ * `archivedAt` : il n'y a pas de corbeille, la garde est la seule protection.
+ *
+ * ⚠️ CE QUI RESTE A FAIRE, et que cette garde ne couvre PAS : `changes` n'est
+ * pas alimente ici, donc rien ne permet de reconstituer la piece supprimee. Un
+ * `findUnique` avant le `delete`, verse dans `changes`, protegerait tous les
+ * roles y compris `super_admin` (le seul compte existant a ce jour). Non fait
+ * dans ce lot : c'est un changement de comportement qui demande de reprendre
+ * les mocks Prisma des specs concernees. A traiter avec le soft-delete.
+ */
 export async function deleteTrainerDocumentAction(
   input: z.infer<typeof deleteSchema>,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  const session = await requireAdminDelete();
   const parsed = deleteSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;

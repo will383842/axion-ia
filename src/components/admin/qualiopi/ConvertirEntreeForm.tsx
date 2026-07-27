@@ -187,13 +187,18 @@ export function ConvertirEntreeForm({
           <label htmlFor={`siret-${entreeId}`} className={labelCls}>
             SIRET
           </label>
+          {/* maxLength 17 : tolère la forme espacée d'un Kbis, que le serveur
+              normalise en 14 chiffres. À 14, le collage serait tronqué en
+              silence puis rejeté pour longueur. Les id restent dérivés de
+              `entreeId` — ce formulaire est rendu N fois dans la liste des
+              entrées, des id fixes casseraient l'association label/aria. */}
           <input
             id={`siret-${entreeId}`}
             type="text"
             inputMode="numeric"
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
-            maxLength={14}
+            maxLength={17}
             placeholder="Optionnel"
             className={inputCls}
           />

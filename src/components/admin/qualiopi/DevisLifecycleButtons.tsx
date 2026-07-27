@@ -71,8 +71,17 @@ export function DevisLifecycleButtons({
       if ("error" in result) {
         setError(result.error);
       } else {
-        if (result.data.emailEnvoye) {
+        if (result.data.emailEnvoye && result.data.signatureCreee) {
           setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
+        } else if (result.data.emailEnvoye) {
+          // 🔴 F4 : ce message vert annonçait un « lien de signature » qui
+          // n'existait dans AUCUN des envois réels. Ne jamais promettre en vert
+          // ce que l'action n'a pas produit — l'admin doit savoir qu'il faut
+          // relancer autrement (PDF signé retourné, ou révision du devis).
+          setWarningMsg(
+            result.data.note ??
+              "Devis envoyé par email (PDF joint), mais SANS lien de signature électronique.",
+          );
         } else {
           // Statut passé à « envoyé », mais le client n'a rien reçu → avertissement.
           setWarningMsg(

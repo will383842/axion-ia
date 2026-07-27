@@ -128,7 +128,7 @@ export function GET() {
 
 ## Stratégie & positionnement
 
-- Mobile-first absolu, accessible WCAG 2.2 AA.
+- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted, pas de SaaS tiers).
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.

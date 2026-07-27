@@ -7,15 +7,31 @@
 // écran blanc INTERMITTENT et l'erreur bénigne « postMessage target origin
 // mismatch » (double handshake), corrigés au prix d'un F5.
 //
-// Nouvelle archi = embed NATIF officiel Calendly, immunisé contre l'hydratation :
-//   • Ce Server Component rend un markup STATIQUE `.calendly-inline-widget`
-//     avec `data-url` + le `<script async>` de widget.js, DIRECTEMENT dans le
-//     HTML SSR. Au chargement direct / F5, widget.js s'exécute au parse et
-//     AUTO-SCANNE le DOM → initialise le conteneur, SANS aucune dépendance à
-//     React ni à l'hydratation. C'est le chemin supporté officiellement.
-//     (Aucun hoistable rendu par un Client Component → leçon PR 173 respectée.)
-//   • `<CalendlyBoot>` (Client, rend `null`) couvre la navigation SPA et
-//     l'auto-guérison, avec une garde ANTI-DOUBLE-IFRAME → plus de course.
+// 2026-07-26 — LA VOIE « AUTO-INIT AU PARSE » A ÉTÉ SUPPRIMÉE VOLONTAIREMENT.
+// Ne la restaure PAS en croyant corriger la régression « écran blanc ».
+//
+// L'archi précédente rendait `.calendly-inline-widget[data-url]` + le
+// `<script async>` widget.js directement dans le HTML SSR. C'était le chemin
+// officiel Calendly et il était immunisé contre l'hydratation — mais il posait
+// les cookies tiers de calendly.com sur le terminal du visiteur AU PARSE, donc
+// avant que la CMP (`CookieConsent`, volontairement non rendue au SSR) puisse
+// seulement exister. Le gate de consentement était architecturalement
+// inatteignable : Calendly gagnait toujours la course. Article 82 de la loi
+// Informatique et Libertés : la simple ouverture de /fr/appel provoquait un
+// accès en écriture au terminal sans information ni consentement préalable.
+// Constat vérifié en prod le 2026-07-26 :
+//   curl -s https://axion-ia.com/fr/appel | grep -c 'calendly-inline-widget' → 1
+//
+// Le chargement est désormais déclenché par un clic explicite
+// (`CalendlyConsentGate`), motif « click-to-load » recommandé par la CNIL pour
+// les contenus tiers. Contrepartie assumée : un clic de plus dans le funnel, et
+// l'init redevient dépendante de l'hydratation — d'où le lien externe en CTA
+// PRIMAIRE dans le placeholder, qui reste cliquable sans JS.
+// Décision et arbitrage : docs/adr/0034-calendly-click-to-load.md (supersède la
+// partie « auto-init au parse » d'ADR 0030).
+//
+// `<CalendlyBoot>` est inchangé et reste la brique d'init (garde
+// ANTI-DOUBLE-IFRAME conservée) ; il n'est monté qu'après le clic.
 //
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
@@ -24,10 +40,7 @@
 // une COEP `credentialless` de la page d'arrivée persistait et bloquait
 // l'iframe, d'où l'ancien bug intermittent « il faut F5 »).
 
-import { CalendlyBoot } from "./CalendlyBoot";
-
-const CALENDLY_WIDGET_JS = "https://assets.calendly.com/assets/external/widget.js";
-const CALENDLY_EMBED_ID = "calendly-inline-embed";
+import { CalendlyConsentGate } from "./CalendlyConsentGate";
 
 interface CalendlyInlineWidgetProps {
   readonly calendlyUrl: string | undefined;
@@ -44,6 +57,14 @@ const CALENDLY_BRAND = {
 function buildCalendlyUrl(baseUrl: string): string {
   const url = new URL(baseUrl);
   url.searchParams.set("hide_event_type_details", "1");
+  // GARDER `hide_gdpr_banner=1`. Contre-intuitif, donc à ne pas « corriger » :
+  // le bandeau natif de Calendly s'affiche DANS l'iframe, donc APRÈS que la
+  // requête iframe a déjà déposé ses cookies. Il ne protège rien. Il
+  // superposerait en revanche une seconde demande de consentement,
+  // contradictoire avec la nôtre, juste après un clic explicite du visiteur.
+  // C'est notre placeholder (CalendlyConsentGate) qui informe et recueille — et
+  // qui, parce qu'on masque leur notice, mentionne les finalités propres de
+  // Calendly et lie calendly.com/privacy.
   url.searchParams.set("hide_gdpr_banner", "1");
   url.searchParams.set("primary_color", CALENDLY_BRAND.primary);
   url.searchParams.set("text_color", CALENDLY_BRAND.text);
@@ -83,45 +104,19 @@ export function CalendlyInlineWidget({
 
   return (
     <div>
-      {/* Préconnexions (hoistables — sûrs dans un Server Component). Réduisent la
-          latence du chargement de widget.js + du handshake de l'iframe, ce qui
-          diminue la fenêtre de course qui provoquait l'écran blanc intermittent. */}
-      <link rel="preconnect" href="https://assets.calendly.com" />
-      <link rel="preconnect" href="https://calendly.com" />
+      {/* Rien de Calendly n'est émis dans le HTML SSR : ni les deux
+          `<link rel="preconnect">` (ils ouvraient un handshake TLS vers Calendly
+          avant tout choix, ce qui fuite déjà l'IP du visiteur), ni widget.js, ni
+          le marqueur `.calendly-inline-widget[data-url]` que cherche l'auto-scan.
+          Le gate ne rend tout cela qu'après un clic explicite.
 
-      {/* Conteneur natif Calendly : classe + data-url reconnus par l'auto-scan de
-          widget.js. suppressHydrationWarning car widget.js injecte une <iframe>
-          enfant que React n'a pas rendue. */}
-      <div
-        id={CALENDLY_EMBED_ID}
-        className="calendly-inline-widget mx-auto w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg"
-        data-url={finalUrl}
-        suppressHydrationWarning
-        style={{ minWidth: "320px", height: `${height}px` }}
-        aria-label={isFr ? "Calendrier de prise de rendez-vous" : "Booking calendar"}
-      />
-
-      {/* Voie 1 (chargement direct / F5) : widget.js en SSR → auto-init au parse,
-          indépendant de l'hydratation React. `data-calendly-loader` permet au
-          shim de le retrouver sans en réinjecter un second. */}
-      <script src={CALENDLY_WIDGET_JS} async data-calendly-loader="" />
-
-      {/* Voie 2 (navigation SPA + auto-guérison) : ré-init manuel, garde-fou iframe. */}
-      <CalendlyBoot url={finalUrl} />
-
-      <div className="mx-auto mt-4 max-w-xl text-center">
-        <p className="text-fg-muted text-sm">
-          {isFr ? "Le calendrier ne s’affiche pas ?" : "Calendar not showing?"}{" "}
-          <a
-            href={calendlyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-terracotta font-medium underline underline-offset-2"
-          >
-            {isFr ? "Ouvrir Calendly directement →" : "Open Calendly directly →"}
-          </a>
-        </p>
-      </div>
+          L'ancien bloc de repli « Le calendrier ne s'affiche pas ? / Ouvrir
+          Calendly directement → » a été retiré ICI et non oublié : le
+          placeholder porte désormais son propre lien externe en CTA primaire,
+          vers la même cible. Le conserver afficherait deux liens concurrents
+          sous une question dont la prémisse est fausse avant le clic (rien n'est
+          censé s'afficher), sur une surface de recueil de consentement. */}
+      <CalendlyConsentGate url={finalUrl} fallbackUrl={calendlyUrl} isFr={isFr} height={height} />
     </div>
   );
 }

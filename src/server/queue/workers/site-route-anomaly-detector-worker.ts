@@ -185,15 +185,27 @@ export function startSiteRouteAnomalyDetectorWorker() {
       }
 
       // 6) Thin content (wordCount < 300)
+      //
+      // ⚠️ `dynamic_filesystem` etait exclu du filtre `type`, ce qui mettait
+      // 2 555 routes publiques live — l'essentiel du site — hors de portee du
+      // detecteur. Consequence mesuree le 2026-07-26 : les 60 pages
+      // `/fr/glossaire/[slug]`, sous le seuil, n'ont jamais ete flaguees, alors
+      // qu'elles etaient l'unique deficit d'indexation du site (constat F49).
+      // Le detecteur ne voyait pas ce qu'il etait cense detecter.
+      //
+      // Le `take` passe de 100 a 500. Il ne tronquait RIEN avec l'ancien filtre
+      // (17 `static` + 9 `dynamic_db` = 26 lignes) ; c'est l'elargissement qui le
+      // rend insuffisant — 112 routes thin au total, dont 86
+      // `dynamic_filesystem`. Compte en prod le 2026-07-26.
       const thinRoutes = await prisma.siteRoute.findMany({
         where: {
           visibility: "public",
           wordCount: { lt: 300, not: null },
           status: "live",
-          type: { in: ["static", "dynamic_db"] },
+          type: { in: ["static", "dynamic_db", "dynamic_filesystem"] },
         },
         select: { id: true, pathPattern: true, wordCount: true },
-        take: 100,
+        take: 500,
       });
       for (const route of thinRoutes) {
         await upsertAnomaly({

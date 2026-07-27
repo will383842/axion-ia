@@ -24,6 +24,8 @@ const mockEnrollmentFindUnique = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionJourFindMany = vi.fn();
 
+const mockSignatureCount = vi.fn();
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {
@@ -39,6 +41,12 @@ vi.mock("@/lib/prisma", () => ({
     // d'annoncer un « 09h00–17h00 » qui contredirait la feuille d'émargement.
     sessionJour: {
       findMany: (...args: unknown[]) => mockSessionJourFindMany(...args),
+    },
+    // 🔴 2026-07-26 — le certificat de réalisation exige desormais une TRACE
+    // d'emargement. Par defaut on en simule une : les tests historiques
+    // decrivent un dossier sain, et c'est le cas nominal.
+    emargementSignature: {
+      count: (...args: unknown[]) => mockSignatureCount(...args),
     },
   },
 }));
@@ -191,6 +199,8 @@ beforeEach(() => {
   mockGetOrganismeIdentite.mockResolvedValue(IDENTITE_MOCK);
   mockGenerateDocument.mockResolvedValue(DOC_RESULT_MOCK);
   mockSessionJourFindMany.mockResolvedValue([]);
+  // Dossier sain par defaut : une trace d'emargement existe.
+  mockSignatureCount.mockResolvedValue(1);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -398,7 +408,7 @@ describe("genererEmargementAction", () => {
       ],
       enrollments: [
         {
-          id: "enr-1",
+          id: ENROLLMENT_ID,
           trainee: { nom: "Dupont", prenom: "Marie", entreprise: "Tech" },
           emargementSignatures: [],
         },
@@ -728,5 +738,79 @@ describe("stub-aware — mode build stub.invalid", () => {
   it("genererEmargementAction retourne error en mode stub", async () => {
     const result = await genererEmargementAction({ sessionId: SESSION_ID });
     expect(result).toEqual({ error: "Génération désactivée en mode build (stub)" });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Certificat de réalisation sans preuve d'assiduité.
+//
+// Constaté EN PRODUCTION le 2026-07-26, et déjà matérialisé : un
+// `certificat_realisation` avait été émis le 22/07 alors que
+// `emargement_signatures` comptait ZÉRO ligne.
+//
+// Le statut d'abandon était la seule garde. Plus bas, la durée n'est pondérée
+// par le taux que `if (tauxPresencePct !== null)` — donc taux inconnu = durée
+// PRÉVUE certifiée comme réalisée. R.6313-3, indicateurs 9 et 11.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererCertificatRealisationAction — preuve d'assiduité exigée", () => {
+  function inscription(over: Record<string, unknown> = {}) {
+    return {
+      id: ENROLLMENT_ID,
+      statut: "presente",
+      tauxPresencePct: 100,
+      trainee: { id: "t-1", nom: "Martin", prenom: "Jean", fonction: null },
+      session: {
+        id: "s-1",
+        titreSession: "IA pour bien commencer",
+        dateDebut: new Date("2026-07-22"),
+        dateFin: new Date("2026-07-22"),
+        modalite: "presentiel",
+        dureeReelleHeures: 4,
+        formationSnapshot: null,
+        formation: { titre: "IA pour bien commencer", dureeHeures: 4 },
+        client: null,
+        coFormateurs: [],
+        formateurPrincipalId: null,
+      },
+      ...over,
+    };
+  }
+
+  beforeEach(() => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription());
+    mockSignatureCount.mockResolvedValue(1);
+  });
+
+  it("refuse quand le taux de présence n'a jamais été calculé", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription({ tauxPresencePct: null }));
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("taux de présence");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  // Le cas exact trouvé en production : un taux existe, aucune signature.
+  it("refuse quand aucune signature d'émargement n'est rattachée", async () => {
+    mockSignatureCount.mockResolvedValue(0);
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("signature");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("émet le certificat quand le taux est mesuré ET tracé", async () => {
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(false);
+    expect(mockGenerateDocument).toHaveBeenCalled();
+  });
+
+  // Un taux de 0 % est une MESURE, pas une absence de mesure : il doit passer la
+  // première garde et se faire refuser — ou non — sur d'autres critères, pas
+  // être confondu avec « non calculé ».
+  it("distingue un taux de 0 % d'un taux non calculé", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription({ tauxPresencePct: 0 }));
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) expect(r.error).not.toContain("n'a pas été calculé");
   });
 });

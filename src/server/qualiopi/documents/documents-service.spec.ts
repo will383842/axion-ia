@@ -17,7 +17,10 @@ import React from "react";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: {
+      // `count` reste utilisé par `estUneRegenerationDe` (filigrane COPIE).
       count: vi.fn(),
+      // `findMany` est le chemin d'ALLOCATION depuis V20 (borne haute).
+      findMany: vi.fn(),
       create: vi.fn(),
     },
     activityLog: {
@@ -41,7 +44,11 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 
 const mockPrisma = prisma as unknown as {
-  documentGenere: { count: ReturnType<typeof vi.fn>; create: ReturnType<typeof vi.fn> };
+  documentGenere: {
+    count: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+  };
   activityLog: { create: ReturnType<typeof vi.fn> };
 };
 const mockRender = renderPdfToBuffer as ReturnType<typeof vi.fn>;
@@ -76,6 +83,8 @@ beforeEach(() => {
   });
   mockStore.mockResolvedValue("https://r2/signed.pdf");
   mockPrisma.documentGenere.count.mockResolvedValue(0);
+  // Série documentaire vide → première allocation = …-001.
+  mockPrisma.documentGenere.findMany.mockResolvedValue([]);
   mockPrisma.documentGenere.create.mockResolvedValue({
     id: "doc-1",
     numero: "AXI-FACT-2026-001",
@@ -100,7 +109,21 @@ describe("generateDocument — garde-fou conformité systématique", () => {
     mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
 
     const res = await generateDocument({ type: "facture", buildElement });
-    expect(res.numero).toMatch(/^AXI-FACT-/);
+    // ⚠️ PIÈGE — `res.numero` vient du `create.mockResolvedValue` du beforeEach,
+    // PAS du numéro alloué. Asserter dessus ne testait donc RIEN : le test
+    // restait vert que le registre émette AXI-DOC ou AXI-FACT.
+    expect(res.numero).toBe("AXI-FACT-2026-001");
+
+    // 🔴 V19 — voici la vraie assertion : le numéro PASSÉ à `create`. Une facture
+    // est classée `AXI-DOC-…` dans le registre documentaire ; le PDF, lui, porte
+    // le numéro comptable de `factures_formation`. Une cote de classement qui
+    // ressemble à un numéro de facture est introuvable dans les livres — refus
+    // au contrôle. C'est le seul test exécutable du changement de scope.
+    const annee = new Date().getFullYear();
+    const alloue = mockPrisma.documentGenere.create.mock.calls[0]?.[0] as {
+      data: { numero: string };
+    };
+    expect(alloue.data.numero).toBe(`AXI-DOC-${annee}-001`);
 
     // La relecture config a bien eu lieu (identite non fournie).
     expect(mockGetIdentite).toHaveBeenCalledOnce();

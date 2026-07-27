@@ -30,7 +30,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
@@ -62,7 +62,6 @@ export interface GenererFactureResult {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MAX_ATTEMPTS = 5;
-const PREFIX_FACT = "AXI-FACT";
 
 /**
  * Crée une FactureFormation, calcule les lignes (forfait ou horaire OPCO),
@@ -228,10 +227,20 @@ export async function genererFactureFormation(
   let documentId: string | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `${PREFIX_FACT}-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — la boucle `for attempt` est CONSERVÉE, mais elle cesse d'être
+    // déterministe. Avec `count()`, les cinq tentatives recalculaient le même
+    // numéro et l'émission échouait définitivement. Le MAX, lui, progresse dès
+    // qu'une facture concurrente a été insérée : la reprise converge.
+    //
+    // On ne prend PAS de verrou consultatif ici : le rendu PDF a lieu à
+    // l'intérieur de cette boucle, et le tenir plusieurs centaines de
+    // millisecondes sérialiserait toute la facturation en épuisant le pool.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     // Construction FactureData (React.createElement, pas de JSX en .ts)
     const factureData: FactureData = {

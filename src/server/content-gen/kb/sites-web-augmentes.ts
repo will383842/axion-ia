@@ -456,12 +456,18 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   // ── Accessibilité et multilinguisme ───────────────────────────────────────
   {
     id: "web-047",
-    text: "Les sites web augmentés par l'IA développés par Axion-IA respectent les normes WCAG 2.1 niveau AA : le chatbot IA est opérable au clavier, les messages d'erreur sont explicites, et l'historique de conversation est accessible aux lecteurs d'écran.",
-    source: "Axion-IA — Standards accessibilité Web IA 2026",
+    // 🔴 Audit certification 2026-07-26 (X5). Même motif que form-075 : ce fait
+    // nourrit la RAG et ressort en pages publiques. Il affirmait un RÉSULTAT de
+    // conformité générique, alors que notre propre site échoue l'audit axe et
+    // qu'aucun rapport projet n'est archivé. On décrit ce qu'on applique — les
+    // critères — pas un niveau qu'on n'a pas mesuré. La source citée n'existait
+    // pas non plus dans le dépôt.
+    text: "Les sites web augmentés par l'IA développés par Axion-IA sont conçus selon les critères WCAG 2.1 niveau AA : chatbot opérable au clavier, messages d'erreur explicites, historique de conversation exposé aux lecteurs d'écran. Le niveau de conformité réellement atteint est mesuré projet par projet et restitué au client.",
+    source: "Axion-IA — Critères d'accessibilité appliqués aux sites livrés",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-07-26",
     verticales: ["sites_web_augmentes"],
-    confidence: 0.94,
+    confidence: 0.8,
   },
   {
     id: "web-048",

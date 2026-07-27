@@ -24,6 +24,12 @@ import { resolveLegacyRedirect } from "./lib/legacy-redirects";
 import { verifyFormateurSession } from "./lib/formateur-session";
 import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
 import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
+// Portail stagiaire — module PUR (aucun import Node : ni `next/headers`, ni Prisma).
+// Volontairement placé sous `server/portail/` et NON sous la zone qualiopi : c'est
+// exactement où vivent ses deux frères ci-dessus. Ainsi la proxy ne référence aucun
+// symbole qualiopi et reste scannée par `pnpm qualiopi:isolation-check`.
+// Import RELATIF comme ses deux voisins — pas d'alias.
+import { PORTAIL_COOKIE_NAME, localeSiPortailProtege } from "./server/portail/routes";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 const { auth } = NextAuth(authConfig);
@@ -153,6 +159,50 @@ const authPipeline = auth(async (req) => {
           return NextResponse.redirect(dest);
         }
       }
+    }
+  }
+
+  // 0sexies. Portail stagiaire — garde de session Edge (audit certif X3, 2026-07-26).
+  //
+  //   AVANT ce bloc, `/fr/portail/mon-espace` répondait 200 à un visiteur SANS
+  //   cookie : le refus était un `return <AccesRefuse/>` dans le Server Component.
+  //   Or dans l'App Router, un composant qui RETOURNE du JSX produit toujours un
+  //   rendu réussi — il n'existe aucun moyen d'y fixer le statut HTTP. Le portail
+  //   était donc le SEUL espace privé du site dont le contrôle d'accès vivait dans
+  //   le rendu et pas ici. C'est cette singularité qu'on supprime.
+  //
+  //   ⚠️ Contrairement à 0quater/0quinquies, le cookie portail est un jeton OPAQUE
+  //   validé en base, PAS un jeton signé HMAC : l'Edge ne peut donc tester que sa
+  //   PRÉSENCE, jamais sa validité (aucun appel Prisma possible en Edge runtime).
+  //   C'est suffisant pour ce qu'on ferme ici — un scanner n'a aucun cookie. Le cas
+  //   « cookie présent mais expiré » reste traité dans la page, qui garde son message.
+  //
+  //   ⚠️ GET/HEAD seulement, et c'est délibéré : les Server Actions du portail
+  //   POSTent sur l'URL de la page elle-même. Un 307 CONSERVE la méthode — garder
+  //   aussi les POST rejouerait l'action sur `/portail/demander-acces`. Rien n'est
+  //   perdu côté sécurité : chaque action s'authentifie seule via
+  //   `resolveTraineeIdFromCookie` (server/actions/qualiopi/portail.ts:86).
+  //
+  //   ⚠️ `emarger/[token]` est VOLONTAIREMENT hors du motif (voir portail/routes.ts) :
+  //   son jeton est dans le CHEMIN et le stagiaire arrive par e-mail SANS cookie.
+  //   L'y inclure casserait l'émargement en entier.
+  {
+    const localePortail = localeSiPortailProtege(req.nextUrl.pathname);
+    if (
+      localePortail &&
+      (req.method === "GET" || req.method === "HEAD") &&
+      !req.cookies.get(PORTAIL_COOKIE_NAME)?.value
+    ) {
+      const dest = new URL(`/${localePortail}/portail/demander-acces`, req.url);
+      // 307 (défaut de `NextResponse.redirect`) et surtout PAS 301/308 : la réponse
+      // dépend de l'état de session. Une redirection permanente serait mémorisée par
+      // le navigateur et enfermerait le stagiaire hors de son espace APRÈS connexion.
+      const res = NextResponse.redirect(dest);
+      // Même raison côté CDN : cette réponse varie selon le cookie. Sans en-tête, une
+      // règle « cache everything » Cloudflare pourrait la servir à un stagiaire
+      // authentifié — et le verrouiller dehors sans qu'aucun code ne soit en cause.
+      res.headers.set("Cache-Control", "private, no-store");
+      return res;
     }
   }
 

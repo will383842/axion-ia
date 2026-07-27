@@ -19,7 +19,7 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -39,8 +39,10 @@ import {
 } from "@/server/qualiopi/financements/facture-libre-pur";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
-import { isDocusealConfigured, createContractSubmission } from "@/lib/docuseal";
+import { isDocusealConfigured, createContractSubmission, DocusealApiError } from "@/lib/docuseal";
+import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
+import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -57,8 +59,24 @@ const ligneSchema = z.object({
   prixUnitaireHtCents: z.number().int().min(0),
   /** Taux de TVA de la ligne (%) — devis mixtes (formation 0 % + conseil 20 %). */
   tauxTvaPercent: z.number().min(0).max(100).optional(),
-  /** Référence optionnelle à une offre du catalogue (tierId). */
-  offreTierId: z.string().optional(),
+  /**
+   * Référence à une offre du catalogue par son `tier_id` pricing.ts.
+   * Ne vaut QUE pour les offres legacy qui en ont un ; les offres du catalogue
+   * V2 ont `tier_id = NULL` et ne sont identifiables que par `offreCode`.
+   */
+  offreTierId: z.string().max(80).optional(),
+  /**
+   * Code AXI-OFF-NNN de l'offre catalogue — la référence qui vaut pour TOUTES
+   * les offres. Sans cette clé, Zod la STRIPPERAIT en silence (l'objet n'est pas
+   * `.strict()`) : la ligne serait persistée sans sa référence, sans erreur.
+   *
+   * Les lignes émises avant ce correctif rangeaient ce code dans `offreTierId`
+   * (le <select> émettait `tierId ?? code`), à côté de vrais tierId pour les
+   * offres legacy : la colonne est donc MIXTE. Aucune n'est réécrite — un devis
+   * émis est une pièce immuable. Tout futur reporting qui joint
+   * `lignes->>'offreTierId'` sur `offres_site.tier_id` doit tolérer les deux.
+   */
+  offreCode: z.string().max(40).optional(),
 });
 
 const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
@@ -98,7 +116,7 @@ const createDevisSchema = z.object({
 
 /**
  * Crée un devis brouillon.
- * - Numéro : AXI-DEV-<année>-NNN (count+1 zero-paddé 3).
+ * - Numéro : AXI-DEV-<année>-NNN (borne haute de la série + 1).
  * - montantTotalHtCents = Σ lignes.quantite × lignes.prixUnitaireHtCents.
  * - mentionTva : dérivée du régime configuré (`null` si assujetti).
  * - dateValidite = maintenant + 30 jours.
@@ -183,10 +201,16 @@ export async function createDevisAction(
   const created = await withNumberRetry(async () => {
     // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
     // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    const count = await prisma.devis.count({
-      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
-    });
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // 🔴 V20 — borne haute, pas cardinalité. Le `startsWith` posé par F63
+    // corrigeait le DÉNOMINATEUR (compter la bonne année) mais pas la MÉCANIQUE :
+    // un devis supprimé faisait toujours reculer le compteur, et
+    // `withNumberRetry` rejouait le même `count()` — cinq fois le même numéro.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,
@@ -257,7 +281,9 @@ function adresseClientDevis(client: {
  */
 export async function sendDevisAction(
   id: string,
-): Promise<ActionResult<{ id: string; emailEnvoye: boolean; note?: string }>> {
+): Promise<
+  ActionResult<{ id: string; emailEnvoye: boolean; signatureCreee: boolean; note?: string }>
+> {
   // Stub-aware (build GH Actions) : aucune mutation au SSG.
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
@@ -305,6 +331,19 @@ export async function sendDevisAction(
   if (devis.statut !== "brouillon") {
     return {
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
+    };
+  }
+  // Un devis à 0,00 € ne doit pas partir en signature.
+  //
+  // Le garde côté formulaire ne protège rien : cette action est appelable depuis
+  // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
+  // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
+  // le PDF est rendu, DocuSeal ouvre une signature et le client reçoit une offre
+  // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
+  if (devis.montantTotalHtCents <= 0) {
+    return {
+      error:
+        "Devis à 0,00 € HT : chiffrez les lignes avant l'envoi (une offre sans prix ferme ne pré-remplit aucun montant).",
     };
   }
 
@@ -380,6 +419,20 @@ export async function sendDevisAction(
   const docusealTemplateId =
     process.env["DOCUSEAL_DEVIS_TEMPLATE_ID"] || process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
   const contactEmail = devis.client.contactEmail;
+  /**
+   * Une soumission était-elle attendue ? Distingue « DocuSeal non configuré »
+   * (silence normal) de « configuré mais en panne » (à signaler).
+   */
+  const signatureAttendue = isDocusealConfigured() && !!docusealTemplateId && !!contactEmail;
+  /** Motif d'échec DocuSeal — tracé au registre et remonté à l'admin. */
+  let docusealErreur: string | null = null;
+  // 🔴 F4 — jusqu'au 2026-07-26 ce bloc échouait en 422 à CHAQUE envoi (les
+  // champs pré-remplis partaient aussi sur le contre-signataire, cf.
+  // `src/lib/docuseal.ts`) et l'échec était avalé par un `console.warn` muet :
+  // le devis partait « envoyé », l'admin lisait « + lien de signature » en vert,
+  // et aucune soumission n'a jamais existé (0 côté DocuSeal, 2 devis en base
+  // avec docuseal_submission_id NULL). Une panne de signature doit REMONTER —
+  // c'est la seule protection contre une rechute muette.
   if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
     try {
       const result = await createContractSubmission({
@@ -388,10 +441,29 @@ export async function sendDevisAction(
           email: contactEmail,
           name: devis.client.contactNom ?? devis.client.raisonSociale,
         },
+        // 🔴 Ces 3 noms DOIVENT exister sur le rôle « Client » du template
+        // DocuSeal : les champs sont validés rôle par rôle et un nom inconnu
+        // fait répondre 422 — la soumission entière est perdue, ce n'est pas une
+        // erreur partielle. Toute modification se vérifie contre le template
+        // RÉEL du conteneur, pas contre la documentation.
+        //
+        // `readonly: true` : sans lui, le client peut RÉÉCRIRE le montant ou le
+        // numéro dans le formulaire avant de signer (les champs non-readonly de
+        // son propre rôle sont rendus en SAISIE). Un « bon pour accord » dont le
+        // signataire fixe lui-même le montant n'a aucune valeur probante et
+        // contredirait le PDF archivé.
         fields: [
-          { name: "devis_number", default_value: devis.numero },
-          { name: "amount_ht", default_value: (devis.montantTotalHtCents / 100).toFixed(2) },
-          { name: "valid_until", default_value: devis.dateValidite.toISOString().slice(0, 10) },
+          { name: "devis_number", default_value: devis.numero, readonly: true },
+          {
+            name: "amount_ht",
+            default_value: (devis.montantTotalHtCents / 100).toFixed(2),
+            readonly: true,
+          },
+          {
+            name: "valid_until",
+            default_value: devis.dateValidite.toISOString().slice(0, 10),
+            readonly: true,
+          },
         ],
         sendEmail: false, // l'email est envoyé par NOUS (template Axion-IA + PJ PDF)
         metadata: { devisId: devis.id, kind: "devis" },
@@ -399,9 +471,24 @@ export async function sendDevisAction(
       docusealSubmissionId = result.submissionId;
       docusealEmbedUrl = result.embedUrl || null;
     } catch (err) {
+      // Aucune donnée client dans le motif : Telegram est un canal tiers, hors
+      // du périmètre de l'ADR 0014 (qui n'exonère que DocuSeal, self-hosted).
+      // Le détail complet reste dans les logs serveur.
+      docusealErreur =
+        err instanceof DocusealApiError
+          ? `DocuSeal HTTP ${err.statusCode}`
+          : "erreur technique DocuSeal";
       console.warn("[sendDevisAction] soumission DocuSeal échouée (best-effort)", err);
+      // Sans cette alerte, une panne de signature reste invisible jusqu'à ce
+      // qu'un client se plaigne de ne pas pouvoir signer. `.catch()` obligatoire :
+      // une panne Telegram ne doit jamais faire échouer l'envoi d'un devis.
+      sendTelegram({
+        tag: "AUTO",
+        body: `⚠️ Devis ${devis.numero} : signature électronique NON créée (${docusealErreur}). Le devis part sans « bon pour accord » signable en ligne.`,
+      }).catch(() => {});
     }
   }
+  const signatureCreee = docusealSubmissionId !== null;
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   await prisma.$transaction([
@@ -473,6 +560,16 @@ export async function sendDevisAction(
     note = "PDF indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié.";
   }
 
+  // 🔴 F4 — la signature électronique était attendue et n'a pas été créée :
+  // l'email est parti SANS bouton « signer ». On le DIT, au lieu d'annoncer
+  // « + lien de signature » en vert comme avant. Le devis reste « envoyé »
+  // (fail-soft assumé) : c'est l'admin qui arbitre la suite.
+  if (signatureAttendue && !signatureCreee) {
+    const detail = docusealErreur !== null ? ` (${docusealErreur})` : "";
+    const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
+    note = `${prefixe}⚠️ La signature électronique n'a PAS pu être créée${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.devis.send",
     targetType: "Devis",
@@ -481,13 +578,24 @@ export async function sendDevisAction(
       statut: "envoye",
       pdfGenere: fichierPdfUrl !== null,
       docusealSubmissionId,
+      // Motif d'échec DocuSeal tracé au registre : le journal d'activité
+      // affichait `"docusealSubmissionId": null` sans jamais dire pourquoi, et
+      // les logs du conteneur partent au premier redémarrage.
+      docusealErreur,
       emailEnvoye,
       devisExpire: devis.replacesDevisId,
     },
     session,
   });
 
-  return { data: { id: idParsed.data, emailEnvoye, ...(note !== undefined ? { note } : {}) } };
+  return {
+    data: {
+      id: idParsed.data,
+      emailEnvoye,
+      signatureCreee,
+      ...(note !== undefined ? { note } : {}),
+    },
+  };
 }
 
 /**
@@ -539,6 +647,43 @@ export async function transformDevisToConventionAction(
     return { error: "Seul un devis accepté peut être transformé en convention." };
   }
 
+  // 🔴 Constat F7, audit de certification 2026-07-26.
+  //
+  // Cette action ne « transformait » rien : elle basculait le statut du devis à
+  // `transforme_convention` et s'arrêtait là. AUCUNE convention n'était générée.
+  // Le devis affichait donc « transformé en convention » alors qu'aucune pièce
+  // n'existait — et c'est précisément la pièce que l'auditrice réclame ensuite.
+  // Un état faux dans la piste d'audit est pire qu'un état manquant : il fait
+  // croire que l'obligation est remplie et fait chercher un document qui
+  // n'existe pas (L6353-1, indicateur 9).
+  //
+  // Une convention ne peut pas être produite depuis un devis seul : elle porte
+  // des dates, une modalité, un effectif et un formateur — c'est-à-dire une
+  // SESSION. On exige donc qu'une session soit rattachée à ce devis, et on
+  // génère la convention pour elle. Le statut ne bascule QUE si le document a
+  // réellement été produit.
+  const sessionLiee = await prisma.trainingSession.findFirst({
+    where: { devisId: idParsed.data },
+    select: { id: true, numero: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  if (!sessionLiee) {
+    return {
+      error:
+        "Aucune session n'est rattachée à ce devis. Créez la session de formation depuis ce devis, puis relancez la transformation : une convention porte des dates, une modalité et un effectif, qu'un devis seul ne fournit pas.",
+    };
+  }
+
+  const convention = await genererConventionAction({ sessionId: sessionLiee.id });
+  if ("error" in convention) {
+    // On ne bascule PAS le statut : mieux vaut un devis « accepté » sur lequel on
+    // peut réessayer qu'un devis qui se déclare transformé sans sa convention.
+    return {
+      error: `La convention n'a pas pu être générée pour la session ${sessionLiee.numero} — ${convention.error}. Le devis reste « accepté ».`,
+    };
+  }
+
   await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "transforme_convention" },
@@ -548,7 +693,11 @@ export async function transformDevisToConventionAction(
     action: "qualiopi.devis.transform_convention",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "transforme_convention" },
+    changes: {
+      statut: "transforme_convention",
+      sessionId: sessionLiee.id,
+      conventionNumero: convention.data.numero,
+    },
     session,
   });
 
@@ -635,10 +784,13 @@ export async function reviseDevisAction(
   const created = await withNumberRetry(async () => {
     // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
     // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    const count = await prisma.devis.count({
-      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
-    });
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // 🔴 V20 — même série que la création : même mécanique obligatoirement.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,

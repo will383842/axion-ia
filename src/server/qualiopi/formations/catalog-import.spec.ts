@@ -60,6 +60,22 @@ function makeFakeDb(config: FakeDbConfig = {}): {
   const db = {
     formation: {
       count: async () => count,
+      // 🔴 V20 — l'allocation lit désormais la BORNE HAUTE de la série. Ce faux
+      // `findMany` DOIT filtrer par préfixe ET tolérer les lignes sans `numero`
+      // (`rowFromCatalog` n'en pose pas). Un stub qui renverrait `[]` en dur
+      // laisserait le test « alloue des numéros AXI-FORM séquentiels valides »
+      // AU VERT alors que les 22 formations recevraient toutes `…-001` : le faux
+      // `create` ci-dessous n'impose aucune unicité, donc aucun P2002 ne le
+      // révélerait. C'est un faux-vert, pas un raccourci.
+      findMany: async ({ where }: { where: { numero: { startsWith: string } } }) => {
+        const prefixe = where.numero.startsWith;
+        const out: Array<{ numero: string }> = [];
+        for (const row of rows.values()) {
+          const numero = (row as { numero?: unknown }).numero;
+          if (typeof numero === "string" && numero.startsWith(prefixe)) out.push({ numero });
+        }
+        return out;
+      },
       findUnique: async ({ where }: { where: { slug: string } }) => rows.get(where.slug) ?? null,
       create: async ({ data }: { data: Record<string, unknown> }) => {
         count += 1;

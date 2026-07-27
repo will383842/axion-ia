@@ -18,7 +18,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 1   | Hetzner Online GmbH        | VPS + Storage Box backups offsite    | Allemagne (Frankfurt)   | papier | UE intra-zone              | 🟡 à signer     |
 | 2   | Cloudflare, Inc.           | CDN + DDoS + Turnstile captcha       | États-Unis              | online | SCC + EU-US DPF            | 🟡 à accepter   |
 | 3   | Telegram FZ-LLC            | Notifications admin (Bot API)        | Émirats Arabes Unis     | aucun  | Art. 49 + minimisation PII | ✅ ADR 0010     |
-| 4   | Sentry (self-hosted)       | Crash reporting + traces             | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 4   | Sentry (Functional Software) | Crash reporting + traces           | SaaS région UE (`ingest.de.sentry.io`) | online | SCC + EU-US DPF | 🟡 à signer     |
 | 5   | Plausible (self-hosted)    | Analytics anonymes                   | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 6   | Uptime Kuma (self-hosted)  | Monitoring uptime                    | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 7   | OpenAI, LLC                | LLM contenus (GPT-4o) — content-gen  | États-Unis              | online | SCC + EU-US DPF + ZDR      | 🟡 à signer     |
@@ -30,6 +30,36 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
 | 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
+| 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | online | SCC                        | 🟡 à accepter   |
+
+> 🆕 **Ligne 16 ajoutée 2026-07-26** (lot L10 / constat X2). Calendly était en
+> production depuis le 2026-05-26 — onze jours après le gel de la SSOT publique
+> du 2026-05-15 — et n'apparaissait dans AUCUN des trois registres, pendant que
+> `/sous-processeurs` se déclarait « exhaustive » (art. 13.1.e). Vérifié le
+> 2026-07-26 : `curl -s https://axion-ia.com/fr/sous-processeurs | grep -ci
+> calendly` → 0. Rien ne forçait la mise à jour lors de l'ajout d'un
+> sous-traitant : c'est ce défaut de mécanisation, et non un critère d'inclusion
+> trop étroit, qui est la cause racine. Un test Vitest
+> (`src/content/__tests__/subprocessors-coherence.spec.ts`) échoue désormais si
+> un hôte tiers est ajouté à `src/lib/csp.ts` sans entrée correspondante ici et
+> dans la SSOT.
+>
+> 🔴 **ACTION WILL** — accepter le DPA sur https://calendly.com/dpa (acceptation
+> au dashboard, même mécanisme que Cloudflare / Stripe / Sentry), puis passer
+> cette ligne à « ✅ accepté » avec la date. Tant que ce n'est pas fait, un
+> sous-traitant américain `active` sans DPA accepté est un écart art. 28.3.
+>
+> ⚠️ **Ligne 4 corrigée le même jour** : Sentry était déclaré self-hosted UE
+> intra-zone, DPA « NA ». C'est le SaaS Sentry région UE
+> (`ingest.de.sentry.io`, vérifié dans le HTML de production), ce que la SSOT
+> publique déclarait déjà correctement. Le DPA est donc bien à signer.
+>
+> ⚠️ **À traiter hors L10 — chantier `france-only`** : l'en-tête de ce registre
+> désigne « Axion-IA OÜ » et le droit estonien (AKI compétent), alors que
+> `legal.ts` publie « Axion-IA, société française » et « Autorité de contrôle
+> compétente : CNIL ». Ce n'est PAS une correction de deux lignes : « OÜ » et
+> « AKI » apparaissent aux lignes 1, 3, 4, 10, 263, 267 et 333 (dont une
+> échéance « Audit AKI annuel Q4 2026 »). Réécriture de document entier.
 
 > ⚠️ **Backblaze N'EST PAS utilisé**. Le code utilise Hetzner Storage Box uniquement
 > (`HETZNER_STORAGE_*` env vars). La mention Backblaze dans `src/content/legal.ts`

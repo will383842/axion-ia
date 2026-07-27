@@ -15,6 +15,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -31,13 +32,12 @@ const STATUT_LABELS: Record<string, string> = {
   perdu: "Perdu",
 };
 
-const OPCO_LABELS: Record<string, string> = {
-  atlas: "Atlas",
-  akto: "Akto",
-  opcommerce: "Opcommerce",
-  opco2i: "OPCO 2i",
-  constructys: "Constructys",
-};
+// Le OPCO_LABELS local (5 entrées) a été supprimé : c'était un duplicat
+// appauvri de `opco-referentiel.ts` (11 entrées). Il aurait affiché le slug
+// brut — « opco_ep », « uniformation » — dès que l'inférence ou la saisie
+// manuelle sortirait des 5 OPCO qu'il connaissait. Utiliser `opcoLabel()`.
+// ⚠️ Effet visible : « Opcommerce » devient « OPCOMMERCE » (libellé du
+// référentiel, aligné sur la marque).
 
 const TAILLE_LABELS: Record<string, string> = {
   TPE: "TPE",
@@ -72,7 +72,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Clients / Prospects"
-        description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO inféré depuis le code NAF."
+        description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO déduit de l'IDCC (source légale), à défaut du code NAF ; corrigeable par ligne."
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
@@ -164,7 +164,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {client.opcoIdentifie ? (
-                      (OPCO_LABELS[client.opcoIdentifie] ?? client.opcoIdentifie)
+                      opcoLabel(client.opcoIdentifie)
                     ) : (
                       <em className="text-[color:var(--color-admin-fg-muted)] not-italic">
                         À déterminer
@@ -191,7 +191,13 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <ClientBrancheForm id={client.id} idcc={client.idcc} taille={client.taille} />
+                    <ClientBrancheForm
+                      id={client.id}
+                      idcc={client.idcc}
+                      taille={client.taille}
+                      opcoIdentifie={client.opcoIdentifie}
+                      estParticulier={client.type === "particulier"}
+                    />
                   </td>
                 </tr>
               ))}

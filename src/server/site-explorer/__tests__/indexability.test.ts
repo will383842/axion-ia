@@ -3,8 +3,45 @@
 
 import { describe, it, expect } from "vitest";
 import { computeIndexability } from "../indexability";
+import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
 
 const FUTURE = new Date("2030-01-01T00:00:00Z"); // cohorte drip maximale
+
+describe("computeIndexability — glossaire (constat F49)", () => {
+  // Derive du SSOT : le test choisit automatiquement un terme encore sous le
+  // seuil. Il ne devient rouge que le jour ou LES 60 passeraient le gate —
+  // bonne nouvelle qui se traite en supprimant ce cas, pas en le contournant.
+  const slugThin = listGlossaryTermSlugs().find((s) => !isGlossaryTermIndexable(s));
+
+  it("un terme sous le seuil anti-thin → noindex (la prod sert `noindex, follow`)", () => {
+    if (!slugThin) throw new Error("aucun terme sous le seuil — supprimer ce cas");
+    const r = computeIndexability({
+      pathRendered: `/fr/glossaire/${slugThin}`,
+      pathPattern: "/fr/glossaire/[slug]",
+      section: "glossaire",
+    });
+    expect(r.indexable).toBe(false);
+    expect(r.reason).toMatch(/thin/i);
+  });
+
+  it("le hub /fr/glossaire reste indexable", () => {
+    const r = computeIndexability({
+      pathRendered: "/fr/glossaire",
+      pathPattern: "/fr/glossaire",
+      section: "glossaire",
+    });
+    expect(r.indexable).toBe(true);
+  });
+
+  it("un template non resolu `[slug]` ne conclut pas a un noindex", () => {
+    const r = computeIndexability({
+      pathRendered: null,
+      pathPattern: "/fr/glossaire/[slug]",
+      section: "glossaire",
+    });
+    expect(r.indexable).toBe(true);
+  });
+});
 
 describe("computeIndexability — articles (tier)", () => {
   it("tier_1_indexable → indexable", () => {

@@ -102,12 +102,14 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
         {/* SIRET */}
         <div className={fieldCls}>
           <label className={labelCls}>SIRET (facultatif)</label>
+          {/* 17 : forme espacée d'un Kbis tolérée, normalisée à 14 côté serveur. */}
           <input
             type="text"
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
             disabled={isPending}
-            maxLength={20}
+            inputMode="numeric"
+            maxLength={17}
             placeholder="14 chiffres"
             className={inputCls}
           />

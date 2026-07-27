@@ -1,12 +1,21 @@
 /**
  * Qualiopi — Retry atomique de numérotation séquentielle (R7 audit E2E 2026-06-06).
  *
- * Les numéros (AXI-CLI/DEV/FORM/SESS/FACT…) sont alloués par `count + 1` puis
- * insérés. Sous création concurrente, deux requêtes peuvent lire le même count
- * et générer le même numéro : la contrainte `@unique` en DB garantit qu'AUCUN
- * doublon n'est inséré (la 2ᵉ insertion reçoit P2002), mais l'erreur remontait
- * jusqu'à l'appelant. Ce helper ré-alloue et réessaie sur P2002 (jusqu'à
- * `attempts` fois) pour que l'opération réussisse de façon transparente.
+ * Les numéros (AXI-CLI/DEV/FORM/SESS/FACT…) sont alloués par `nextNumero`
+ * (MAX(séquence) + 1) puis insérés. Sous création concurrente, deux requêtes
+ * peuvent lire le même maximum et générer le même numéro : la contrainte
+ * `@unique` en DB garantit qu'AUCUN doublon n'est inséré (la 2ᵉ insertion reçoit
+ * P2002), mais l'erreur remontait jusqu'à l'appelant. Ce helper ré-alloue et
+ * réessaie sur P2002 (jusqu'à `attempts` fois).
+ *
+ * ⚠️ CE HELPER N'A ÉTÉ RÉELLEMENT UTILE QU'À PARTIR DU CORRECTIF V20. Tant que
+ * l'allocation reposait sur `count + 1`, relancer la closure recalculait un
+ * résultat DÉTERMINISTE : les cinq tentatives produisaient le même numéro et
+ * l'opération échouait durement. C'était un placebo, et six modules l'ont
+ * pourtant documenté comme « garde-fou final ». Avec la borne haute, le MAX
+ * progresse dès qu'une insertion concurrente a abouti : la reprise converge.
+ *
+ * COROLLAIRE : ne jamais remettre un `count()` dans une closure passée ici.
  *
  * Modèle pur (aucun import Prisma) : l'appelant fournit l'opération
  * « allouer le numéro + insérer » ; on relance la closure entière sur P2002.

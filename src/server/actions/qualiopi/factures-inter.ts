@@ -14,9 +14,11 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   computeTotauxFacture,
   isRegimeTva,
@@ -34,11 +36,18 @@ type ActionResult<T> = { data: T } | { error: string };
 
 const schema = z.object({ enrollmentId: z.string().uuid() });
 
+/**
+ * Prochain numéro de la série `AXI-FACT-YYYY-NNN` sur `factures_formation`.
+ * Le dénominateur était correct (filtré par préfixe) ; la mécanique ne l'était
+ * pas — un `count()` recule dès qu'une facture disparaît de la série.
+ */
 async function genererNumeroFacture(annee: number): Promise<string> {
-  const count = await prisma.factureFormation.count({
-    where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
-  });
-  return `AXI-FACT-${annee}-${String(count + 1).padStart(3, "0")}`;
+  return nextNumero("facture", annee, (prefixe) =>
+    prisma.factureFormation.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    }),
+  );
 }
 
 export async function genererFactureParInscriptionAction(
@@ -128,7 +137,10 @@ export async function genererFactureParInscriptionAction(
   let destinataireSiret: string | undefined;
   let destinataireAdresse: string | undefined;
   if (destinataire === "opco") {
-    destinataireNom = payeur?.opcoIdentifie ?? enrollment.session.client?.opcoIdentifie ?? "OPCO";
+    // Libellé, pas slug : c'est le nom du destinataire imprimé sur la facture.
+    // Cette branche est déjà gardée par `destinataire === "opco"` juste au-dessus.
+    const opcoId = payeur?.opcoIdentifie ?? enrollment.session.client?.opcoIdentifie ?? null;
+    destinataireNom = opcoId !== null ? opcoLabel(opcoId) : "OPCO";
   } else if (destinataire === "stagiaire") {
     destinataireNom = traineeNom;
   } else if (destinataire === "france_travail") {
