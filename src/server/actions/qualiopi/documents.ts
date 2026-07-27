@@ -58,6 +58,7 @@ import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-a
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
@@ -134,16 +135,13 @@ async function resolveFormateurNom(
 }
 
 /** Extrait les objectifs pédagogiques depuis un champ Json. */
-function parseObjectifs(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.map((o: unknown) => {
-    if (typeof o === "string") return o;
-    if (typeof o === "object" && o !== null && "description" in o) {
-      return String((o as { description: unknown }).description);
-    }
-    return String(o);
-  });
-}
+/**
+ * Seule des cinq lectures d'`objectifsPedagogiques` à connaître `description`,
+ * donc la seule qui sortait juste sur le catalogue — c'est en la comparant aux
+ * quatre autres qu'on a trouvé le défaut (parcours à blanc 2026-07-27).
+ * Conservée sous son nom d'origine, mais déléguée : une seule implémentation.
+ */
+const parseObjectifs = normaliserObjectifsPedagogiques;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod

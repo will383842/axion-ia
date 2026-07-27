@@ -20,6 +20,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
+import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objectifs";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
 import {
@@ -167,14 +168,13 @@ export async function genererAttestation1to1(
   const formateurNom = `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale;
 
   // Objectifs pédagogiques (figés) → string lisible.
-  const objectifsRaw = snap.objectifsPedagogiques;
-  let objectifsStr = "";
-  if (Array.isArray(objectifsRaw)) {
-    objectifsStr = (objectifsRaw as Array<{ libelle?: string } | string>)
-      .map((o) => (typeof o === "string" ? o : (o.libelle ?? "")))
-      .filter(Boolean)
-      .join(", ");
-  }
+  //
+  // 🔴 Parcours à blanc 2026-07-27. Ce code ne lisait que `libelle` ; le
+  // catalogue écrit `description`. Le `filter(Boolean)` transformait donc le
+  // défaut en SILENCE : l'attestation AFEST sortait sans aucun objectif, sans
+  // rien signaler. Moins voyant que le « [object Object] » de la voie
+  // collective, mais tout aussi faux sur une pièce probante.
+  const objectifsStr = objectifsPedagogiquesEnTexte(snap.objectifsPedagogiques);
 
   // 🔴 Audit certification 2026-07-26 (F21, SECOND passage). Ce fichier est le
   // miroir de `attestation-service.ts` et reproduisait le même défaut : la liste

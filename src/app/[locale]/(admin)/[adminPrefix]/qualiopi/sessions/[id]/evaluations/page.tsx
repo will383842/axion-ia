@@ -20,6 +20,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
 import { EvaluationForm } from "@/components/admin/qualiopi/EvaluationForm";
 import { GenererAttestationButton } from "@/components/admin/qualiopi/GenererAttestationButton";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import {
   createEvaluationAcquisAction,
   genererAttestationAction,
@@ -111,18 +112,14 @@ export default async function EvaluationsPage({ params }: PageProps) {
 
   if (!session) notFound();
 
-  // Extraire les objectifs pédagogiques de la formation (Json array)
-  // Format attendu : string[] ou { libelle: string }[] — on normalise en string[]
-  const rawObjectifs = session.formation?.objectifsPedagogiques;
-  const objectifsPedagogiques: string[] = Array.isArray(rawObjectifs)
-    ? rawObjectifs.map((o: unknown) => {
-        if (typeof o === "string") return o;
-        if (o !== null && typeof o === "object" && "libelle" in o) {
-          return String((o as { libelle: unknown }).libelle);
-        }
-        return String(o);
-      })
-    : [];
+  // 🔴 Parcours à blanc 2026-07-27. Cette normalisation ne connaissait que
+  // `libelle` et retombait sur `String(o)`. Or le catalogue écrit
+  // `{ id, verbe, description }` : la grille de compétences s'ouvrait donc avec
+  // cinq lignes préremplies « [object Object] », sur l'écran qui sert à évaluer
+  // les acquis (indicateur 11). Normalisation partagée désormais.
+  const objectifsPedagogiques = normaliserObjectifsPedagogiques(
+    session.formation?.objectifsPedagogiques,
+  );
 
   const sectionHeadCls =
     "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
