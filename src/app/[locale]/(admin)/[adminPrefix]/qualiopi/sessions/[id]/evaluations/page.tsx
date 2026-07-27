@@ -263,15 +263,42 @@ export default async function EvaluationsPage({ params }: PageProps) {
                       </tbody>
                     </table>
                     {/* Résumé évaluation finale */}
-                    {evalFinale && (
-                      <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        Évaluation finale (la plus récente) : score {evalFinale.scorePct} % —{" "}
-                        {NIVEAU_LABELS[evalFinale.niveauGlobal] ?? evalFinale.niveauGlobal}
-                        {evalFinale.recommandations
-                          ? ` — Recommandations : ${evalFinale.recommandations}`
-                          : ""}
-                      </p>
-                    )}
+                    {evalFinale &&
+                      (() => {
+                        // 🔴 UI 2026-07-27 — même faux échec que sur l'attestation,
+                        // corrigé là-bas mais pas ici. Une évaluation dont AUCUNE
+                        // compétence n'est notée affichait « score 0 % — Non
+                        // acquis » : un oubli de saisie devenait un échec à
+                        // l'écran, et c'est sur cet écran qu'on décide d'éditer
+                        // l'attestation. `scorePct = 0` et `niveauGlobal` sont ici
+                        // des artefacts d'une saisie vide, pas un résultat.
+                        const notes = Array.isArray(evalFinale.competences)
+                          ? (evalFinale.competences as unknown[])
+                          : [];
+                        const sansAucuneNote = notes.length === 0;
+                        return (
+                          <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            {sansAucuneNote ? (
+                              <>
+                                Évaluation finale enregistrée, mais{" "}
+                                <strong>aucune compétence n&apos;est notée</strong> : le score de 0
+                                % est un artefact de saisie, pas un résultat. L&apos;attestation
+                                portera « Évaluation des acquis non réalisée » tant que les
+                                compétences ne sont pas renseignées.
+                              </>
+                            ) : (
+                              <>
+                                Évaluation finale (la plus récente) : score {evalFinale.scorePct} %
+                                —{" "}
+                                {NIVEAU_LABELS[evalFinale.niveauGlobal] ?? evalFinale.niveauGlobal}
+                                {evalFinale.recommandations
+                                  ? ` — Recommandations : ${evalFinale.recommandations}`
+                                  : ""}
+                              </>
+                            )}
+                          </p>
+                        );
+                      })()}
                   </div>
                 ) : (
                   <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
