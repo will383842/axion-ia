@@ -32,11 +32,47 @@ Toute divergence = anomalie à traiter avant publication audit annuel.
 
 ## Étapes (annuel — T2 mai)
 
-### 1. Liste declared publique (legal.ts)
+### 1. Source de vérité n°1 — la SSOT `src/content/subprocessors.ts`
+
+⚠️ **Inversion 2026-07-26.** Ce runbook prenait `legal.ts` pour source n°1.
+C'est l'inverse : `subprocessors.ts` est la SSOT déclarée, `legal.ts` n'en est
+qu'un renvoi en prose. Auditer la prose d'abord entretenait la divergence — et
+depuis le lot L10, la section « Hébergement et transferts » de `legal.ts`
+n'énumère plus AUCUN sous-processeur, précisément pour ne plus pouvoir diverger.
+La commande ci-dessous ne retourne donc plus rien sur `legal.ts` : c'est voulu.
 
 ```bash
-grep -nE "OpenAI|Anthropic|Perplexity|Unsplash|Voyage|Hetzner|Cloudflare|Sentry|Stripe|Zoho|Plausible|Telegram" axionia/src/content/legal.ts | sort -u | head -30
+grep -nE '^    name:' src/content/subprocessors.ts
 ```
+
+### 1 bis. Source de vérité n°3 — actif dans le NAVIGATEUR du visiteur
+
+C'est la source qui manquait, et c'est par elle que Calendly est passé entre les
+mailles pendant deux mois. Le bon point de contrôle n'est PAS un grep des
+fichiers JSX : l'embed incriminé s'écrivait `src={CALENDLY_WIDGET_JS}` et
+`data-url={finalUrl}` — des identifiants, invisibles à toute recherche de
+littéral. Le point de contrôle est la **CSP** : aucun tiers ne peut charger dans
+le navigateur sans figurer dans `script-src` / `connect-src` / `frame-src`.
+
+```bash
+grep -oE 'https://[a-zA-Z0-9.*-]+' src/lib/csp.ts | sort -u
+```
+
+Tout hôte listé DOIT avoir une entrée dans `SUBPROCESSORS`, une ligne dans
+`_AUDIT/DPA-REGISTER.md`, ET être gaté sur consentement — ou être classé
+explicitement « justifié, non sous-traitant » dans
+`src/content/__tests__/subprocessors-coherence.spec.ts` avec son motif.
+
+⚠️ **N'utilisez PAS de lookahead négatif** dans les greps de ce runbook :
+`git grep -E` est du POSIX ERE, `(?!…)` échoue avec `fatal: Invalid preceding
+regular expression`, et ripgrep exige `--pcre2`. Un contrôle annuel qui ne
+trouve jamais rien en silence est pire que pas de contrôle — c'est exactement le
+mode de défaillance que cette section corrige.
+
+Ce contrôle manuel est doublé par un test automatique
+(`src/content/__tests__/subprocessors-coherence.spec.ts`) : une ligne de markdown
+lue une fois par an n'aurait pas rattrapé une feature mergée onze jours après le
+gel de la SSOT.
 
 Extraire la liste exhaustive des sous-processeurs nommés dans :
 
@@ -71,18 +107,28 @@ grep -E "^\| 20[0-9]{2}-" _AUDIT/DPA-REGISTER.md | awk -F'|' '{ gsub(/^[ \t]+|[ 
 
 ### 4. Croiser les 3 listes — matrice de cohérence
 
-| Sous-processeur | Déclaré legal.ts | Actif code/env | DPA signé < 12 mois | Cohérent ? |
-| --------------- | ---------------- | -------------- | ------------------- | ---------- |
-| OpenAI          | ?                | ?              | ?                   | ✅/❌      |
-| Anthropic       | ?                | ?              | ?                   | ✅/❌      |
-| Perplexity      | ?                | ?              | ?                   | ✅/❌      |
-| Unsplash        | ?                | ?              | ?                   | ✅/❌      |
-| Voyage AI       | ?                | ?              | ?                   | ✅/❌      |
-| Hetzner         | ?                | ?              | ?                   | ✅/❌      |
-| Cloudflare      | ?                | ?              | ?                   | ✅/❌      |
-| Sentry          | ?                | ?              | ?                   | ✅/❌      |
-| Stripe          | ?                | ?              | ?                   | ✅/❌      |
-| Zoho Mail       | ?                | ?              | ?                   | ✅/❌      |
+| Sous-processeur   | Déclaré legal.ts | Actif code/env | DPA signé < 12 mois | Cohérent ? |
+| ----------------- | ---------------- | -------------- | ------------------- | ---------- |
+| OpenAI            | ?                | ?              | ?                   | ✅/❌      |
+| Anthropic         | ?                | ?              | ?                   | ✅/❌      |
+| Perplexity        | ?                | ?              | ?                   | ✅/❌      |
+| Unsplash          | ?                | ?              | ?                   | ✅/❌      |
+| Voyage AI         | ?                | ?              | ?                   | ✅/❌      |
+| Hetzner           | ?                | ?              | ?                   | ✅/❌      |
+| Cloudflare        | ?                | ?              | ?                   | ✅/❌      |
+| Sentry            | ?                | ?              | ?                   | ✅/❌      |
+| Stripe            | ?                | ?              | ?                   | ✅/❌      |
+| Telegram          | ?                | ?              | ?                   | ✅/❌      |
+| DocuSeal          | ?                | ?              | ?                   | ✅/❌      |
+| OSM Nominatim     | ?                | ?              | ?                   | ✅/❌      |
+| Microsoft Clarity | ?                | ?              | ?                   | ✅/❌      |
+| Calendly          | ?                | ?              | ?                   | ✅/❌      |
+
+> ⚠️ « Zoho Mail » a été retiré de cette matrice le 2026-07-26 : il n'est plus
+> utilisé. L'email de production part par Nodemailer → SMTP local → PowerMTA
+> auto-hébergé (`src/lib/email/client.ts`). Auditer un fournisseur fantôme
+> donnait l'illusion d'une couverture pendant que cinq fournisseurs réels —
+> dont Calendly — n'étaient dans aucune ligne.
 
 ### 5. Traiter les anomalies
 

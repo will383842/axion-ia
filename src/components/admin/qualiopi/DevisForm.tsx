@@ -273,7 +273,8 @@ export function DevisForm({
     // ouvrait une signature, et le client recevait une offre ferme à zéro euro.
     if (total <= 0) {
       setError(
-        "Devis à 0,00 € HT : chiffrez au moins une ligne (une offre sans prix ferme ne pré-remplit aucun montant).",
+        // Le total calculé du devis en cours de saisie, pas un tarif.
+        "Devis à 0,00 € HT : chiffrez au moins une ligne (une offre sans prix ferme ne pré-remplit aucun montant).", // price-exempt
       );
       return;
     }

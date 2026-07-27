@@ -444,7 +444,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Données collectées",
-          body: "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker tiers.",
+          body: "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel.",
         },
         {
           title: "Finalités",
@@ -464,7 +464,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hébergement et transferts",
-          body: "Hébergement principal dans l'UE (Hetzner Frankfurt, Allemagne) et services edge Cloudflare (présence UE prioritaire). Les seuls transferts hors UE concernent les sous-processeurs IA américains (OpenAI, Anthropic, Perplexity) lorsqu'un contenu éditorial est généré ou un fact-check effectué — encadrés par les Clauses Contractuelles Types (SCC) de la Commission européenne et listés exhaustivement sur /sous-processeurs avec leur cadre de transfert international (SCC + DPF le cas échéant). Aucune donnée personnelle de visiteur n'est transmise à ces modèles (helper `pii-safe` + hard gate code).",
+          body: "Hébergement principal dans l'Union européenne (Allemagne) et services edge à présence européenne prioritaire. Plusieurs sous-traitants sont toutefois établis hors UE, ou y traitent des données : notamment des modèles d'IA américains lorsqu'un contenu éditorial est généré ou vérifié, et le service tiers de prise de rendez-vous embarqué sur la page /appel. La liste complète, avec pour chacun sa localisation et son cadre de transfert (Clauses Contractuelles Types, décision d'adéquation), est publiée et tenue à jour sur /sous-processeurs. Cette politique n'en donne volontairement aucune énumération nominative : /sous-processeurs est la source unique de vérité, et une prose qui n'énumère pas ne peut pas diverger d'elle. Aucune donnée personnelle de visiteur n'est transmise aux modèles d'IA (helper `pii-safe` + hard gate code).",
         },
         {
           title: "Sous-processeurs et destinataires des données",
@@ -493,7 +493,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Data collected",
-          body: "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no third-party trackers.",
+          body: "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page.",
         },
         {
           title: "Purposes",
@@ -513,7 +513,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hosting and transfers",
-          body: "Primary hosting in the EU (Hetzner Frankfurt, Germany) and Cloudflare edge services (EU presence prioritized). The only transfers outside the EU concern US AI sub-processors (OpenAI, Anthropic, Perplexity) when editorial content is generated or fact-checked — covered by the European Commission Standard Contractual Clauses (SCC) and listed exhaustively on /subprocessors with their international transfer framework (SCC + DPF where applicable). No visitor personal data is sent to these models (`pii-safe` helper + code-level hard gate).",
+          body: "Primary hosting in the European Union (Germany) and edge services with EU presence prioritized. Several sub-processors are however established outside the EU, or process data there: notably US AI models when editorial content is generated or fact-checked, and the third-party appointment booking service embedded on the /appel page. The complete list, with each one's location and transfer framework (Standard Contractual Clauses, adequacy decision), is published and kept up to date at /subprocessors. This policy deliberately gives no nominative enumeration: /subprocessors is the single source of truth, and prose that does not enumerate cannot diverge from it. No visitor personal data is sent to the AI models (`pii-safe` helper + code-level hard gate).",
         },
         {
           title: "Sub-processors and data recipients",
@@ -553,8 +553,12 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Microsoft Clarity est proposé en complément de Plausible pour les heatmaps de clic/scroll et le session replay anonymisé (masquage automatique des champs de formulaire). Il dépose 2 cookies : `_clck` (1 an, identifiant visiteur) et `_clsk` (1 jour, identifiant session). Le transfert UE → USA est encadré par les Clauses Contractuelles Types (SCC). Aucun cookie déposé sans votre consentement explicite via le bandeau cookies (CNIL art. 82 + RGPD art. 7) ; vous pouvez refuser ou retirer votre consentement à tout moment depuis /preferences-cookies. Durée de conservation du choix : 13 mois maximum (recommandation CNIL).",
         },
         {
+          title: "Calendrier de réservation (Calendly)",
+          body: "La page /appel intègre un calendrier fourni par Calendly LLC (Atlanta, États-Unis). Ce calendrier n'est PAS chargé à l'ouverture de la page : il ne s'affiche qu'après un clic explicite de votre part sur « Afficher le calendrier ». Tant que vous ne cliquez pas, aucune requête n'est adressée à Calendly et aucun cookie tiers n'est déposé. Après votre clic, Calendly reçoit votre adresse IP, dépose ses propres cookies sur le domaine calendly.com (certains proviennent de son infrastructure edge, pas de l'éditeur) et traite ces données pour ses propres finalités, décrites dans sa politique de confidentialité (calendly.com/privacy). Le transfert vers les États-Unis est encadré par les Clauses Contractuelles Types. Un lien « Ouvrir Calendly dans un nouvel onglet » reste disponible sans rien charger sur notre page.",
+        },
+        {
           title: "Cookies tiers",
-          body: "Aucun cookie publicitaire, aucun cookie réseau social, aucun cookie de tracking cross-site.",
+          body: "Aucun cookie publicitaire, aucun cookie réseau social, aucun cookie de tracking cross-site. Les seuls tiers susceptibles de déposer un cookie sont Microsoft Clarity, après acceptation du bandeau, et Calendly sur la page /appel, après votre clic explicite.",
         },
         {
           title: "Gérer vos cookies",
@@ -585,8 +589,12 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Microsoft Clarity is offered alongside Plausible for click/scroll heatmaps and anonymised session replay (automatic form field masking). It drops 2 cookies: `_clck` (1 year, visitor identifier) and `_clsk` (1 day, session identifier). The EU → US transfer is covered by Standard Contractual Clauses (SCC). No cookie is dropped without your explicit consent via the cookie banner (CNIL art. 82 + GDPR art. 7); you may decline or withdraw your consent at any time from /cookie-preferences. Consent retention: 13 months maximum (CNIL recommendation).",
         },
         {
+          title: "Booking calendar (Calendly)",
+          body: "The /appel page embeds a calendar provided by Calendly LLC (Atlanta, USA). This calendar is NOT loaded when the page opens: it appears only after you explicitly click “Show the calendar”. Until you click, no request is sent to Calendly and no third-party cookie is set. After your click, Calendly receives your IP address, sets its own cookies on the calendly.com domain (some of which come from its edge infrastructure rather than from the publisher) and processes that data for its own purposes, described in its privacy policy (calendly.com/privacy). The transfer to the United States is covered by Standard Contractual Clauses. An “Open Calendly in a new tab” link remains available without loading anything on our page.",
+        },
+        {
           title: "Third-party cookies",
-          body: "No advertising cookies, no social network cookies, no cross-site tracking cookies.",
+          body: "No advertising cookies, no social network cookies, no cross-site tracking cookies. The only third parties that may set a cookie are Microsoft Clarity, after the banner is accepted, and Calendly on the /appel page, after your explicit click.",
         },
         {
           title: "Manage your cookies",

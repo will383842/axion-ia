@@ -1,6 +1,18 @@
 // Server Actions admin /options 48h (M9 Tier 1 section 2).
 //
-// Doctrine doc 09b : options posees par les visiteurs sur slots calendar
+// ⚠️ SURFACE VESTIGIALE — le paragraphe ci-dessous decrit un comportement qui
+// n'existe plus. Depuis le 2026-07-09 (commit 2c377916) : le producteur amont a
+// ete supprime (Calendly a remplace le creneau public payant, Stripe est
+// neutralise), `bookings_options`, `calendar_slots` et `bookings` sont VIDES en
+// prod (0 / 0 / 0, verifie le 2026-07-26), et le worker d'expiration ne demarre
+// plus — il est derriere le flag `LEGACY_BOOKING_WORKERS_ENABLED`, absent des
+// containers. La page reste joignable par URL directe (masquee de la sidebar
+// admin) et ces actions restent fonctionnelles, mais rien ne les alimente.
+// Ce commentaire perime a produit un faux positif « files BullMQ en panne » a
+// l'audit de certification du 2026-07-26 (constat X1, infirme) : ne pas le
+// reintroduire au present.
+//
+// Doctrine doc 09b (HISTORIQUE, plus appliquee) : options posees par les visiteurs sur slots calendar
 // expirent automatiquement apres 48h (cf. option-expiration-worker). Avant
 // expiration, l'admin peut :
 //  - VALIDER → option.status='confirmed' + cree Booking ferme + email

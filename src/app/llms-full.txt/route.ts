@@ -127,7 +127,7 @@ URL : ${SITE_URL}/fr/methodologie
 
 ## Engagement
 
-- Mobile-first absolu, accessible WCAG 2.2 AA.
+- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
 - Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.

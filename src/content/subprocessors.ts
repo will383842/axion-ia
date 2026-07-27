@@ -6,7 +6,17 @@
 //
 // Critères inclusion : tout tiers qui PROCESSE des données client (PII ou
 // pseudonymisées) OU des données éditoriales (prompts content-gen, queries
-// research) côté infrastructure ou logique applicative.
+// research), que ce soit côté infrastructure, côté logique applicative, ou
+// DANS LE NAVIGATEUR DU VISITEUR (script tiers, iframe, embed, preconnect).
+//
+// ⚠️ Ce critère n'a jamais été le problème — Clarity et Turnstile, tous deux
+// 100 % navigateur, y figurent depuis toujours. La VRAIE cause de l'omission de
+// Calendly est chronologique : cette SSOT a été figée le 2026-05-15, et toute
+// la chaîne Calendly a atterri le 2026-05-26, onze jours plus tard. Rien ne
+// forçait la mise à jour. C'est
+// `src/content/__tests__/subprocessors-coherence.spec.ts` qui empêche désormais
+// la récidive — pas la formulation ci-dessus. Il est adossé à `src/lib/csp.ts`,
+// seul goulot qu'un tiers ne peut pas contourner pour charger.
 //
 // Auto-hébergés (DocuSeal, Mailwizz/PowerMTA, Plausible, Uptime Kuma) : pas
 // des sous-traitants externes au sens RGPD (Axion-IA est seule responsable),
@@ -25,7 +35,7 @@
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-05-15" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-07-26" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -158,6 +168,37 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     category: "communications",
     activationStatus: "active",
     documentationUrl: "https://telegram.org/privacy",
+  },
+  {
+    // Omis de cette liste du 2026-05-26 au 2026-07-26 pendant que
+    // /sous-processeurs se déclarait « exhaustive » (RGPD art. 13.1.e).
+    name: "Calendly LLC",
+    location: "Atlanta, Géorgie, États-Unis",
+    serversLocation: "États-Unis (AWS) + edge Cloudflare",
+    purposeFr:
+      "Prise de rendez-vous en ligne — calendrier embarqué sur la page /appel, affiché uniquement après une action explicite du visiteur (art. 82 loi Informatique et Libertés). Les événements de réservation sont reçus côté navigateur puis enregistrés (cf. ADR 0030).",
+    purposeEn:
+      "Online appointment booking — calendar embedded on the /appel page, displayed only after an explicit visitor action (art. 82 French Data Protection Act). Booking events are received client-side then stored (see ADR 0030).",
+    dataCategoriesFr:
+      "Nom, adresse email, téléphone et message saisis dans le formulaire de réservation ; adresse IP, user-agent et page référente ; cookies déposés sur le domaine calendly.com, dont certains le sont par l'infrastructure edge de l'éditeur et non par l'éditeur lui-même.",
+    dataCategoriesEn:
+      "Name, email address, phone and message entered in the booking form; IP address, user-agent and referring page; cookies set on the calendly.com domain, some of which come from the publisher's edge infrastructure rather than from the publisher itself.",
+    // 6.1.b et NON 6.1.a : réserver un appel de découverte relève des mesures
+    // précontractuelles. Le consentement en jeu ici est celui de l'art. 82
+    // (accès au terminal), instrument distinct — déclarer 6.1.a ouvrirait un
+    // droit de retrait art. 7.3 sur les réservations déjà enregistrées.
+    legalBasis: "6.1.b_contract",
+    // `auto_signable_dashboard` = MÉCANISME (« DPA auto-signable »), pas
+    // achèvement — même traitement que Cloudflare, Stripe et Sentry, dont le
+    // DPA s'accepte aussi au dashboard. Le geste restant de Will est tracé là
+    // où il doit l'être : ligne 16 de _AUDIT/DPA-REGISTER.md, « 🟡 à accepter ».
+    // NE PAS passer à "pending" : dans cette SSOT, "pending" n'est employé que
+    // conjointement à `pending_activation`, or Calendly est bel et bien actif.
+    dpaStatus: "auto_signable_dashboard",
+    transferFramework: "scc",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://calendly.com/dpa",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",
