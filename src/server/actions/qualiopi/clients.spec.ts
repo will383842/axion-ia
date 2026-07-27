@@ -26,6 +26,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const mockRequireAdminWrite = vi.fn();
 const mockLog = vi.fn();
 const mockCount = vi.fn();
+// 🔴 V20/L7 : l'allocateur est passé de `count()` à `findMany()` + MAX(seq).
+// Le commentaire de tête de ce fichier annonçait exactement ce changement.
+const mockFindMany = vi.fn();
 const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockFindUnique = vi.fn();
@@ -33,6 +36,7 @@ const mockFindUnique = vi.fn();
 vi.mock("@/lib/prisma", () => {
   const client = {
     count: (...a: unknown[]) => mockCount(...a),
+    findMany: (...a: unknown[]) => mockFindMany(...a),
     create: (...a: unknown[]) => mockCreate(...a),
     update: (...a: unknown[]) => mockUpdate(...a),
     findUnique: (...a: unknown[]) => mockFindUnique(...a),
@@ -61,6 +65,8 @@ beforeEach(() => {
   mockRequireAdminWrite.mockResolvedValue({ userId: "u1", role: "admin" });
   mockLog.mockResolvedValue(undefined);
   mockCount.mockResolvedValue(0);
+  // Aucun numéro existant → la série démarre à 001.
+  mockFindMany.mockResolvedValue([]);
   mockCreate.mockResolvedValue({ id: ID, numero: "AXI-CLI-001" });
   mockUpdate.mockResolvedValue({ id: ID });
   mockFindUnique.mockResolvedValue({ nafCode: null, idcc: null, opcoIdentifie: null });

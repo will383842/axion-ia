@@ -24,7 +24,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
@@ -40,7 +40,6 @@ export interface GenererFactureCoachingResult {
 }
 
 const MAX_ATTEMPTS = 5;
-const PREFIX_FACT = "AXI-FACT";
 
 /**
  * Heures réelles d'un contrat = Σ CompteRenduSeance.dureeMinutes des séances liées.
@@ -139,10 +138,15 @@ export async function genererFactureCoaching(
   let documentId: string | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `${PREFIX_FACT}-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — borne haute. Boucle de reprise conservée (rendu PDF à
+    // l'intérieur), désormais convergente. Même série AXI-FACT que la
+    // facturation de session : elles DOIVENT lire le compteur de la même façon.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     const factureData: FactureData = {
       numero,

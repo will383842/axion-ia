@@ -14,7 +14,7 @@ import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { inferOpco } from "@/server/qualiopi/crm/naf-opco";
-import { NUMBERING_PREFIX, SEQ_PAD_WIDTH } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -119,7 +119,7 @@ const updateClientSchema = z.object({
 
 /**
  * Crée un client prospect.
- * - Numéro alloué séquentiellement : AXI-CLI-NNN (count+1 zero-paddé 3).
+ * - Numéro alloué séquentiellement : AXI-CLI-NNN (borne haute + 1, sans millésime).
  * - opcoIdentifie inféré via inferOpco (IDCC prioritaire, repli NAF) si absent.
  * - Statut initial : prospect.
  */
@@ -144,8 +144,23 @@ export async function createClientAction(
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
-    const count = await prisma.client.count();
-    const numero = `${NUMBERING_PREFIX.client}-${String(count + 1).padStart(SEQ_PAD_WIDTH, "0")}`;
+    // 🔴 V20. `client.count()` portait sur TOUTE la table, sans le moindre
+    // filtre de préfixe : une ligne importée hors série, ou un client supprimé,
+    // décalait le compteur et faisait réémettre un numéro déjà attribué.
+    //
+    // ⚠️ `null` en second argument, et ce n'est PAS un oubli : `client` est la
+    // SEULE série sans millésime. Deux numéros `AXI-CLI-001` / `AXI-CLI-002`
+    // sont déjà émis sous ce format en production. Passer `year` ici ferait lire
+    // le préfixe `AXI-CLI-2026-`, qui ne correspond à aucune ligne existante →
+    // borne 0 → réémission de `AXI-CLI-001` → collision immédiate sur
+    // `clients_numero_key`. `seriesPrefix` connaît l'exception ; ne pas la
+    // contourner.
+    const numero = await nextNumero("client", null, (prefixe) =>
+      prisma.client.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.client.create({
       data: {
         numero,

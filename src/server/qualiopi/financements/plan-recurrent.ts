@@ -24,7 +24,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
@@ -225,11 +225,19 @@ export async function emettreFactureBrouillon(
   const annee = now.getFullYear();
   let numeroFinal: string | null = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — borne haute. Ce module est aussi celui qui POSE les lignes
+    // `BROUILLON-<uuid>` dans `factures_formation` : elles ne portent aucun
+    // numéro de série et `parseSequence` les écarte, là où un `count()` global
+    // les comptait comme des factures.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     try {
+      // Le `updateMany` conditionné au statut `brouillon` reste le verrou
+      // anti-double-émission : ne pas le remplacer par un `update` par id.
       const { count: updated } = await prisma.factureFormation.updateMany({
         where: { id: facture.id, statut: "brouillon" },
         data: {

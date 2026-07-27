@@ -14,7 +14,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -65,19 +65,22 @@ export async function createAuditMissionAction(
   try {
     created = await prisma.$transaction(async (tx) => {
       await tx.$executeRawUnsafe(`SELECT pg_advisory_xact_lock(hashtext('audit_seq_${year}'))`);
-      // 🔴 Vérification E2E 2026-07-26 — la borne HAUTE manquait : toute mission
-      // datée d'une année future était comptée dans la séquence de l'année
-      // courante, qui sautait donc des numéros. Fenêtre fermée, comme
-      // `reclamations.ts`.
-      const count = await tx.auditMission.count({
-        where: {
-          dateDebut: {
-            gte: new Date(Date.UTC(year, 0, 1)),
-            lt: new Date(Date.UTC(year + 1, 0, 1)),
-          },
-        },
-      });
-      const numero = formatDocumentNumber("audit", year, count + 1);
+      // 🔴 V20. Le verrou consultatif ci-dessus (le seul allocateur AXI-* à en
+      // avoir un) traitait la CONCURRENCE. Il ne pouvait rien contre la
+      // régression du compteur : une mission supprimée faisait reculer le
+      // `count()` et réattribuait un numéro déjà émis, verrou ou pas.
+      //
+      // Le dénominateur change aussi de nature : ce n'est plus une fenêtre de
+      // dates sur `dateDebut` (fermée le 2026-07-26) mais la SÉRIE elle-même
+      // (`AXI-AUD-<year>-`). Une ligne datée dans la fenêtre mais numérotée sur
+      // une autre série ne compte plus — et c'est bien le numéro, pas la date,
+      // qui fait la séquence.
+      const numero = await nextNumero("audit", year, (prefixe) =>
+        tx.auditMission.findMany({
+          where: { numero: { startsWith: prefixe } },
+          select: { numero: true },
+        }),
+      );
       const row = await tx.auditMission.create({
         data: {
           numero,

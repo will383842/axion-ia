@@ -364,7 +364,14 @@ describe("genererFactureFormationAction", () => {
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-test-id" });
     mockLogActivity.mockResolvedValue(undefined);
     mockPrisma.trainingSession.findUnique.mockResolvedValue(makeSession());
-    mockPrisma.factureFormation.count.mockResolvedValue(2); // seq = 3 → AXI-FACT-2026-003
+    // 🔴 V20 — le dénominateur n'est plus une cardinalité mais la SÉRIE lue par
+    // préfixe. Deux factures émises {001, 002} → la suivante est 003. Le pin sur
+    // `count` épinglait le comportement fautif et ne disait RIEN du prédicat :
+    // c'est cette absence qui a laissé passer le dénominateur `createdAt`.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { numero: "AXI-FACT-2026-001" },
+      { numero: "AXI-FACT-2026-002" },
+    ]);
     mockPrisma.factureFormation.create.mockResolvedValue({
       id: FACTURE_UUID,
       numero: "AXI-FACT-2026-003",
@@ -1245,14 +1252,24 @@ describe("Numérotation des factures — dénominateur de la série", () => {
     });
   });
 
-  it("compte par PRÉFIXE de série, jamais par fenêtre de création", async () => {
+  // 🔴 L'allocateur est passé de `count()` (V20 étape 0) à `findMany()` + MAX
+  // de séquence (V20 complet, L7). Ce qui est verrouillé ici n'a pas changé :
+  // le DÉNOMINATEUR ne doit jamais être une fenêtre de dates.
+  //
+  // `factures_formation` héberge QUATRE séries — factures `AXI-FACT-`, AVOIRS
+  // `AXI-AVO-` (série légale distincte), brouillons `BROUILLON-<uuid>` des plans
+  // récurrents, et reprises d'historique dont le `createdAt` est la date
+  // d'IMPORT. Compter par date les additionnait : facture 001 → avoir 001 → la
+  // facture suivante sortait 003, et le 002 n'existait jamais. Rupture de la
+  // séquence continue exigée par l'art. 242 nonies A ann. II du CGI.
+  it("interroge par PRÉFIXE de série, jamais par fenêtre de création", async () => {
     const wheres: Array<Record<string, unknown>> = [];
-    mockPrisma.factureFormation.count.mockImplementation(
-      (args: { where?: Record<string, unknown> }) => {
-        wheres.push(args?.where ?? {});
-        return Promise.resolve(0);
-      },
-    );
+    const capture = (args: { where?: Record<string, unknown> }) => {
+      wheres.push(args?.where ?? {});
+      return Promise.resolve([]);
+    };
+    mockPrisma.factureFormation.findMany.mockImplementation(capture);
+    mockPrisma.factureFormation.count.mockImplementation(() => Promise.resolve(0));
 
     await genererFactureFormationAction({
       sessionId: SESSION_UUID,
@@ -1260,9 +1277,10 @@ describe("Numérotation des factures — dénominateur de la série", () => {
       ventilation: "forfait",
     });
 
-    expect(wheres.length).toBeGreaterThan(0);
-    for (const w of wheres) {
-      // Un AVOIR (AXI-AVO-) ou un BROUILLON ne doit jamais entrer au dénominateur.
+    const requetesSerie = wheres.filter((w) => "numero" in w || "createdAt" in w);
+    expect(requetesSerie.length).toBeGreaterThan(0);
+    for (const w of requetesSerie) {
+      // Un AVOIR ou un BROUILLON ne doit jamais entrer au dénominateur.
       expect(w["createdAt"]).toBeUndefined();
       expect(JSON.stringify(w["numero"])).toContain("AXI-FACT-");
     }

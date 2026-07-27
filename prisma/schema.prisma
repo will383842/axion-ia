@@ -8384,7 +8384,13 @@ model JournalProgression {
 /// niveau parcours. Null sur une séance ponctuelle hors contrat.
 model CoachingContract {
   id                                 String                   @id @default(uuid()) @db.Uuid
-  /// Numérotation séquentielle AXI-FORM-YYYY-NNN (réutilise le compteur formation).
+  /// Numérotation séquentielle AXI-COACH-YYYY-NNN (série PROPRE).
+  /// 🔴 Ce champ prescrivait de « réutiliser le compteur formation », c'est-à-dire
+  /// d'ajouter un TROISIÈME écrivain sur la série AXI-FORM — déjà partagée entre
+  /// `formations` et `documents_generes`, avec 3 numéros dupliqués constatés en
+  /// production. La table est vide et aucun allocateur applicatif n'écrit ici :
+  /// la dette est éteinte avant d'avoir été matérialisée. Si un allocateur est
+  /// écrit un jour, passer par `nextNumero("coaching", year, …)`.
   numero                             String                   @unique @db.VarChar(40)
   traineeId                          String?                  @map("trainee_id") @db.Uuid
   trainee                            Trainee?                 @relation(fields: [traineeId], references: [id], onDelete: SetNull)

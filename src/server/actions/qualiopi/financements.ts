@@ -26,7 +26,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { formatDocumentNumber, NUMBERING_PREFIX } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
@@ -198,10 +198,12 @@ const setPriseEnChargeSchema = z.object({
  * correction sans reprise de données se referme à la première facture émise.
  */
 async function genererNumeroFacture(annee: number): Promise<string> {
-  const count = await prisma.factureFormation.count({
-    where: { numero: { startsWith: `${NUMBERING_PREFIX.facture}-${annee}-` } },
-  });
-  return formatDocumentNumber("facture", annee, count + 1);
+  return nextNumero("facture", annee, (prefixe) =>
+    prisma.factureFormation.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    }),
+  );
 }
 
 /**
@@ -473,10 +475,13 @@ export async function genererFactureFormationAction(input: {
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   // ── Numéro séquentiel + création atomique ─────────────────────────────────
-  // R7 : `genererNumeroFacture` est un `count+1` ; sous création concurrente deux
-  // factures peuvent lire le même count → même numéro. La contrainte @unique sur
-  // `numero` rejette le doublon (P2002) ; `withNumberRetry` ré-alloue et réessaie.
-  // L'allocation DOIT être DANS la closure pour être recalculée à chaque tentative.
+  // R7 : `genererNumeroFacture` lit la BORNE HAUTE de la série ; sous création
+  // concurrente deux factures peuvent lire le même maximum → même numéro. La
+  // contrainte @unique sur `numero` rejette le doublon (P2002) ; `withNumberRetry`
+  // ré-alloue et réessaie — et la reprise CONVERGE désormais, le maximum
+  // progressant dès qu'une insertion concurrente a abouti (avec `count+1` elle
+  // rejouait le même numéro cinq fois).
+  // L'allocation DOIT rester DANS la closure pour être recalculée à chaque tentative.
   //
   // V20 étape 0 — ce que le nouveau dénominateur garantit, et ce qu'il ne garantit
   // PAS. Le compteur porte désormais sur `numero startsWith "AXI-FACT-<annee>-"` :

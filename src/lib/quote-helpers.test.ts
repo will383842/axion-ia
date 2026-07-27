@@ -80,7 +80,7 @@ describe("computeQuotePricing", () => {
 describe("generateQuoteNumber", () => {
   it("formate DEVIS-YYYY-NNNN avec padding 4", async () => {
     const mockPrisma = {
-      quote: { count: vi.fn().mockResolvedValue(7) },
+      quote: { findMany: vi.fn().mockResolvedValue([{ number: "DEVIS-2026-0007" }]) },
     } as never;
     const n = await generateQuoteNumber(mockPrisma, 2026);
     expect(n).toBe("DEVIS-2026-0008");
@@ -88,18 +88,44 @@ describe("generateQuoteNumber", () => {
 
   it("padding à 4 chars même au-delà 9999", async () => {
     const mockPrisma = {
-      quote: { count: vi.fn().mockResolvedValue(9999) },
+      quote: { findMany: vi.fn().mockResolvedValue([{ number: "DEVIS-2026-9999" }]) },
     } as never;
     const n = await generateQuoteNumber(mockPrisma, 2026);
     expect(n).toBe("DEVIS-2026-10000"); // padStart laisse passer >4
   });
 
+  it("🔴 ne réattribue JAMAIS un numéro libéré par une suppression", async () => {
+    // Série {0001, 0002, 0003} dont le 0002 a été supprimé. `count + 1` rendait
+    // 0003 — un numéro déjà émis. La borne haute rend 0004.
+    const mockPrisma = {
+      quote: {
+        findMany: vi
+          .fn()
+          .mockResolvedValue([{ number: "DEVIS-2026-0001" }, { number: "DEVIS-2026-0003" }]),
+      },
+    } as never;
+    expect(await generateQuoteNumber(mockPrisma, 2026)).toBe("DEVIS-2026-0004");
+  });
+
+  it("le maximum est NUMÉRIQUE, pas lexicographique", async () => {
+    // En tri texte, "DEVIS-2026-9999" > "DEVIS-2026-10000".
+    const mockPrisma = {
+      quote: {
+        findMany: vi
+          .fn()
+          .mockResolvedValue([{ number: "DEVIS-2026-9999" }, { number: "DEVIS-2026-10000" }]),
+      },
+    } as never;
+    expect(await generateQuoteNumber(mockPrisma, 2026)).toBe("DEVIS-2026-10001");
+  });
+
   it("compteur par année (filtre prefix)", async () => {
-    const countSpy = vi.fn().mockResolvedValue(0);
-    const mockPrisma = { quote: { count: countSpy } } as never;
+    const findManySpy = vi.fn().mockResolvedValue([]);
+    const mockPrisma = { quote: { findMany: findManySpy } } as never;
     await generateQuoteNumber(mockPrisma, 2027);
-    expect(countSpy).toHaveBeenCalledWith({
+    expect(findManySpy).toHaveBeenCalledWith({
       where: { number: { startsWith: "DEVIS-2027-" } },
+      select: { number: true },
     });
   });
 });

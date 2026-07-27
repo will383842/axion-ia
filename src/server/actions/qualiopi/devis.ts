@@ -19,7 +19,7 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -116,7 +116,7 @@ const createDevisSchema = z.object({
 
 /**
  * Crée un devis brouillon.
- * - Numéro : AXI-DEV-<année>-NNN (count+1 zero-paddé 3).
+ * - Numéro : AXI-DEV-<année>-NNN (borne haute de la série + 1).
  * - montantTotalHtCents = Σ lignes.quantite × lignes.prixUnitaireHtCents.
  * - mentionTva : dérivée du régime configuré (`null` si assujetti).
  * - dateValidite = maintenant + 30 jours.
@@ -201,10 +201,16 @@ export async function createDevisAction(
   const created = await withNumberRetry(async () => {
     // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
     // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    const count = await prisma.devis.count({
-      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
-    });
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // 🔴 V20 — borne haute, pas cardinalité. Le `startsWith` posé par F63
+    // corrigeait le DÉNOMINATEUR (compter la bonne année) mais pas la MÉCANIQUE :
+    // un devis supprimé faisait toujours reculer le compteur, et
+    // `withNumberRetry` rejouait le même `count()` — cinq fois le même numéro.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,
@@ -778,10 +784,13 @@ export async function reviseDevisAction(
   const created = await withNumberRetry(async () => {
     // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
     // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
-    const count = await prisma.devis.count({
-      where: { numero: { startsWith: `AXI-DEV-${year}-` } },
-    });
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // 🔴 V20 — même série que la création : même mécanique obligatoirement.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,
