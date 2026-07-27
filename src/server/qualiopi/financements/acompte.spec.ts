@@ -256,3 +256,61 @@ describe("Message de plafonnement", () => {
     expect(r.motif).toContain("ramené à 30 %");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Réconciliation des quatre sources de l'acompte — 2026-07-27.
+//
+// Quatre endroits calculaient un acompte, et deux répondaient à des questions
+// DIFFÉRENTES sans le dire :
+//
+//   · `calculerAcompte()`        PROPOSE  — assiette = reste à charge
+//   · garde L6353-6 (facturation) REFUSE   — assiette = prix convenu
+//   · `contrat-formation.tsx`     IMPRIME  — B2C, plafonné
+//   · `convention.tsx`            IMPRIME  — B2B, aucun plafond légal
+//
+// L'invariant qui les rend compatibles, et que ce test verrouille :
+// **la proposition ne peut jamais franchir le plafond légal.**
+// 30 % du reste à charge est toujours ≤ 30 % du prix convenu, puisque le reste
+// à charge est toujours ≤ au total. Ce sont deux étages, pas deux règles
+// rivales — ce qui avait été pris pour une contradiction.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Invariant : la proposition reste sous le plafond légal", () => {
+  const CAS = [
+    { total: 200_000, priseEnCharge: 0, libelle: "sans financement" },
+    { total: 200_000, priseEnCharge: 120_000, libelle: "OPCO 60 %" },
+    { total: 200_000, priseEnCharge: 189_680, libelle: "CPF, reste 103,20 €" },
+    { total: 350_000, priseEnCharge: 100_000, libelle: "financement partiel" },
+    { total: 99_900, priseEnCharge: 0, libelle: "petit montant" },
+  ] as const;
+
+  for (const c of CAS) {
+    it(`${c.libelle} : l'acompte proposé ne dépasse pas 30 % du prix convenu`, () => {
+      const r = calculerAcompte({
+        montantTotalHtCents: c.total,
+        priseEnChargeCents: c.priseEnCharge,
+        nature: "particulier",
+        tauxAcomptePct: 30,
+        cpf: false,
+        subrogation: false,
+      });
+      const plafondLegal = Math.floor((c.total * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100);
+      expect(r.acompteCents).toBeLessThanOrEqual(plafondLegal);
+    });
+  }
+
+  // Le sens de la protection : ce que le particulier avance de sa poche, jamais
+  // un pourcentage de ce qu'un tiers paie à sa place.
+  it("l'assiette est bien le reste à charge, pas le total", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 200_000,
+      priseEnChargeCents: 120_000,
+      nature: "particulier",
+      tauxAcomptePct: 30,
+      cpf: false,
+      subrogation: false,
+    });
+    // 30 % de 80 000 = 24 000, et non 30 % de 200 000 = 60 000.
+    expect(r.acompteCents).toBe(24_000);
+  });
+});

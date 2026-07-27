@@ -74,6 +74,22 @@ interface DevisLigne {
   quantite: number;
   prixUnitaireHtCents: number;
   offreTierId?: string;
+  offreCode?: string;
+}
+
+/**
+ * Référence d'offre lisible d'une ligne, quelle que soit sa génération.
+ *
+ * Deux formes coexistent en base et aucune migration ne les réconciliera : les
+ * lignes émises avant ce correctif rangeaient un CODE (AXI-DEV-2026-002 porte
+ * `"offreTierId": "AXI-OFF-201"`) OU un vrai tierId selon l'offre, parce que le
+ * <select> émettait `tierId ?? code`. Les devis déjà émis sont des pièces
+ * immuables : on lit les deux formes, on n'en réécrit aucune.
+ */
+function refOffre(ligne: DevisLigne): string | null {
+  if (ligne.offreCode !== undefined && ligne.offreCode !== "") return ligne.offreCode;
+  if (ligne.offreTierId !== undefined && ligne.offreTierId !== "") return ligne.offreTierId;
+  return null;
 }
 
 function parseLignes(raw: unknown): DevisLigne[] {
@@ -302,9 +318,13 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                   >
                     <td className={cellCls}>
                       {ligne.designation}
-                      {ligne.offreTierId && (
+                      {/* 🔴 Le garde porte sur les DEUX formes, pas seulement le texte
+                          affiché : le laisser sur `offreTierId` seul ferait DISPARAÎTRE
+                          la référence d'offre pour tout le catalogue V2 dès que les
+                          nouvelles lignes cessent de renseigner ce champ. */}
+                      {refOffre(ligne) !== null && (
                         <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          Offre : {ligne.offreTierId}
+                          Offre : {refOffre(ligne)}
                         </div>
                       )}
                     </td>

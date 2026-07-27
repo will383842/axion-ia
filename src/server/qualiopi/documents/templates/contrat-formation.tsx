@@ -23,6 +23,7 @@ import {
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
 
 // ============================================================
 // Types
@@ -59,6 +60,12 @@ export interface ContratFormationData {
   prixNet: number;
   /** Pourcentage d'acompte après le délai de rétractation (plafonné à 30 % — L.6353-6). */
   acomptePercent?: number;
+  /**
+   * Montant d'acompte RÉELLEMENT convenu, en euros. Prioritaire sur le
+   * pourcentage : un contrat imprime ce qui a été convenu, il ne recalcule pas
+   * un plafond. Reste borné à 30 % du prix (L.6353-6) même s'il est fourni.
+   */
+  acompteEuros?: number;
   dateContrat: string;
 }
 
@@ -121,8 +128,36 @@ export function ContratFormationPdf({
 }): React.ReactElement {
   // L.6353-6 : l'acompte versé à l'expiration du délai de rétractation ne peut
   // excéder 30 % du prix convenu. On plafonne donc à 30 % par sécurité.
+  //
+  // 🔴 Réconciliation des sources de l'acompte, 2026-07-27. Quatre endroits du
+  // système calculaient un acompte, et deux d'entre eux répondaient à des
+  // questions DIFFÉRENTES sans le dire :
+  //
+  //   · `calculerAcompte()` PROPOSE un montant — assiette = reste à charge,
+  //     c'est-à-dire ce que le particulier avance réellement de sa poche ;
+  //   · la garde L6353-6 de `facturation-hub` REFUSE un dépassement — assiette =
+  //     prix convenu, lecture littérale de l'article ;
+  //   · ce contrat et la convention IMPRIMENT un montant.
+  //
+  // Les deux premières ne se contredisent pas : 30 % du reste à charge est
+  // toujours ≤ 30 % du prix convenu. L'une propose sous le plafond que l'autre
+  // fait respecter. Ce sont deux étages, pas deux règles rivales — et c'est ce
+  // qui a été pris à tort pour une contradiction.
+  //
+  // Le vrai défaut était ICI : `prixNet` reçoit `session.montantHtCents`, donc
+  // le TOTAL. Ce contrat imprimait 30 % du total — le PLAFOND — comme si c'était
+  // le montant demandé. Sur 2 000 € dont 1 200 € financés, il annonçait 600 €
+  // quand le calcul en propose 240. Le client signait un chiffre que le système
+  // n'appliquait pas.
+  //
+  // Un contrat n'a pas à recalculer un plafond : il imprime ce qui a été
+  // CONVENU. Si le montant est fourni, on l'imprime tel quel ; sinon on retombe
+  // sur le calcul historique, en le plafonnant toujours.
   const acomptePercent = Math.min(data.acomptePercent ?? 30, 30);
-  const acompte = (data.prixNet * acomptePercent) / 100;
+  const acompte =
+    data.acompteEuros !== undefined
+      ? Math.min(data.acompteEuros, (data.prixNet * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100)
+      : (data.prixNet * acomptePercent) / 100;
   const solde = data.prixNet - acompte;
   const natureAction =
     data.natureAction ?? "Action de formation (article L.6313-1 du Code du travail)";

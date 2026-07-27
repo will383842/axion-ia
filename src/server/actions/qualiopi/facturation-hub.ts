@@ -26,6 +26,9 @@ import {
   creerDossierDepuisSession,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
+// SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
+// applique. Ne pas la recopier en dur ici — c'est ainsi que deux règles divergent.
+import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
@@ -140,6 +143,11 @@ export async function genererFactureDepuisDevisAction(
       refClient: true,
       clientId: true,
       lignes: true,
+      // Nature du client : le plafond d'acompte de 30 % (art. L6353-6) est une
+      // règle de droit, pas un réglage commercial. Elle doit vivre au serveur —
+      // le template du contrat la « rattrape » par un Math.min(…, 30), ce qui
+      // corrige l'affichage du PDF mais n'empêche nullement d'ÉMETTRE la facture.
+      client: { select: { type: true } },
       facturesFormation: {
         where: { statut: { not: "annulee" }, avoirDeId: null },
         select: { numero: true, montantHtCents: true, montantTvaCents: true },
@@ -166,6 +174,39 @@ export async function genererFactureDepuisDevisAction(
     tauxEffectifPercent:
       f.montantHtCents > 0 ? Math.round((f.montantTvaCents / f.montantHtCents) * 100) : 0,
   }));
+
+  // ── Art. L6353-6 — plafond de l'acompte demandé à un PARTICULIER ──
+  //
+  // Le plafond porte sur la SOMME déjà appelée, pas sur le taux d'un appel :
+  // « il ne peut être payé une somme supérieure à 30 % du prix convenu ».
+  // Tester `acomptePercent > 30` ne suffit donc pas — `planifierFacturationDevis`
+  // ne refuse un acompte que s'il dépasse le RESTANT à facturer, si bien que
+  // trois factures d'acompte de 30 % passaient l'une après l'autre et portaient
+  // le total à 90 %. Le schéma Zod, lui, autorise jusqu'à 90 % en un seul appel
+  // (borne commerciale, valable entre professionnels).
+  //
+  // Assiette = le TOTAL HT du devis, c'est-à-dire le « prix convenu » de
+  // l'article — pas `resteAChargeCents`, que le PDF déclare lui-même
+  // « estimation indicative, non contractuelle », et qu'un particulier n'a de
+  // toute façon pas (pas d'OPCO).
+  if (parsed.data.acomptePercent !== undefined && devis.client.type === "particulier") {
+    const totalHtCents = lignesParsed.data.reduce(
+      (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
+      0,
+    );
+    const dejaFactureHtCents = devis.facturesFormation.reduce(
+      (acc, f) => acc + f.montantHtCents,
+      0,
+    );
+    const plafondHtCents = Math.floor((totalHtCents * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100);
+    const demandeHtCents = Math.round((totalHtCents * parsed.data.acomptePercent) / 100);
+    if (dejaFactureHtCents + demandeHtCents > plafondHtCents) {
+      const eur = (c: number): string => (c / 100).toFixed(2);
+      return {
+        error: `Acompte refusé : l'article L6353-6 plafonne à ${PLAFOND_ACOMPTE_PARTICULIER_PCT} % du prix convenu la somme appelée à un particulier (déjà facturé ${eur(dejaFactureHtCents)} € HT + ${eur(demandeHtCents)} € HT demandés > plafond ${eur(plafondHtCents)} € HT). Le solde s'échelonne au fur et à mesure du déroulement de l'action.`,
+      };
+    }
+  }
 
   const plan = planifierFacturationDevis({
     lignesDevis: lignesParsed.data as LigneFacture[],

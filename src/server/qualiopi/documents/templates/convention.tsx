@@ -117,6 +117,21 @@ export function ConventionPdf({
   data: ConventionData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
+  // 🔴 Réconciliation des sources de l'acompte, 2026-07-27.
+  //
+  // L'absence de plafond ici est VOULUE, et c'est la différence de fond avec
+  // `contrat-formation.tsx` : le plafond de 30 % de l'article L.6353-6 protège
+  // une PERSONNE PHYSIQUE qui finance sa propre formation. Une convention
+  // (L.6353-1) lie l'organisme à une personne morale ou à un financeur — aucun
+  // plafond légal ne s'y applique, l'acompte y est purement contractuel.
+  //
+  // Ne PAS « harmoniser » en plafonnant ici : ce serait s'interdire une clause
+  // parfaitement licite entre professionnels, et brouiller la raison d'être du
+  // plafond là où il compte vraiment.
+  //
+  // Le pourcentage par défaut de 30 % est un usage commercial, pas une règle de
+  // droit — sa coïncidence avec le plafond B2C est fortuite, et c'est
+  // précisément ce qui rend les deux documents faciles à confondre.
   const acomptePercent = data.acomptePercent ?? 30;
   const acompte = (data.prixHt * acomptePercent) / 100;
   const solde = data.prixHt - acompte;

@@ -59,8 +59,24 @@ const ligneSchema = z.object({
   prixUnitaireHtCents: z.number().int().min(0),
   /** Taux de TVA de la ligne (%) — devis mixtes (formation 0 % + conseil 20 %). */
   tauxTvaPercent: z.number().min(0).max(100).optional(),
-  /** Référence optionnelle à une offre du catalogue (tierId). */
-  offreTierId: z.string().optional(),
+  /**
+   * Référence à une offre du catalogue par son `tier_id` pricing.ts.
+   * Ne vaut QUE pour les offres legacy qui en ont un ; les offres du catalogue
+   * V2 ont `tier_id = NULL` et ne sont identifiables que par `offreCode`.
+   */
+  offreTierId: z.string().max(80).optional(),
+  /**
+   * Code AXI-OFF-NNN de l'offre catalogue — la référence qui vaut pour TOUTES
+   * les offres. Sans cette clé, Zod la STRIPPERAIT en silence (l'objet n'est pas
+   * `.strict()`) : la ligne serait persistée sans sa référence, sans erreur.
+   *
+   * Les lignes émises avant ce correctif rangeaient ce code dans `offreTierId`
+   * (le <select> émettait `tierId ?? code`), à côté de vrais tierId pour les
+   * offres legacy : la colonne est donc MIXTE. Aucune n'est réécrite — un devis
+   * émis est une pièce immuable. Tout futur reporting qui joint
+   * `lignes->>'offreTierId'` sur `offres_site.tier_id` doit tolérer les deux.
+   */
+  offreCode: z.string().max(40).optional(),
 });
 
 const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
@@ -309,6 +325,19 @@ export async function sendDevisAction(
   if (devis.statut !== "brouillon") {
     return {
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
+    };
+  }
+  // Un devis à 0,00 € ne doit pas partir en signature.
+  //
+  // Le garde côté formulaire ne protège rien : cette action est appelable depuis
+  // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
+  // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
+  // le PDF est rendu, DocuSeal ouvre une signature et le client reçoit une offre
+  // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
+  if (devis.montantTotalHtCents <= 0) {
+    return {
+      error:
+        "Devis à 0,00 € HT : chiffrez les lignes avant l'envoi (une offre sans prix ferme ne pré-remplit aucun montant).",
     };
   }
 

@@ -5,7 +5,10 @@
  * DevisForm — Création d&apos;un devis commercial formation.
  *
  * - Sélection du client (liste CRM).
- * - Lignes : designation / quantité / prixUnitaireHtCents / offreTierId optionnel.
+ * - Lignes : designation / quantité / prixUnitaireHtCents / offre catalogue.
+ * - Choisir une offre renseigne l'intitulé ET le PU HT depuis pricing.ts (SSOT),
+ *   sauf quand aucun prix FERME n'est dérivable (offre « sur devis », fourchette,
+ *   prix « à partir de », paliers d'effectif) : on ne pré-remplit RIEN, jamais 0.
  * - Financement suggéré + options OPCO si sélectionné.
  * - Mention TVA affichée en lecture seule, dérivée de `qualiopi.regime_tva`.
  * - Date de validité auto (+30 j) — affiché en informatif.
@@ -27,10 +30,19 @@ export interface ClientOption {
 }
 
 export interface OffreOption {
+  /** Vrai `tier_id` pricing.ts — `null` pour les offres du catalogue V2. */
   tierId: string | null;
   code: string;
   titreFr: string;
   prixLabelFr: string;
+  /**
+   * PU HT en centimes, pré-résolu par le serveur. `null` = aucun montant ferme :
+   * on ne pré-remplit RIEN plutôt que d'écrire 0 — un 0 pré-rempli part en
+   * signature sans que personne ne le voie.
+   */
+  prixHtCents: number | null;
+  /** Rappel effectif + frais, dérivé de l'offre côté serveur — jamais en dur. */
+  noteDevisFr: string;
 }
 
 export interface DevisFormProps {
@@ -50,7 +62,26 @@ interface Ligne {
   designation: string;
   quantite: string;
   prixUnitaireHtCents: string;
+  /**
+   * Vrai `tier_id` pricing.ts, "" sinon.
+   *
+   * Avant ce correctif le <select> émettait `o.tierId ?? o.code` : les offres du
+   * catalogue V2 (tier_id NULL, 21 des 26 offres actives) rangeaient donc un
+   * CODE dans un champ nommé tierId, et la référence n'était jointe à rien. Les
+   * devis déjà émis gardent cette forme — on ne réécrit pas une pièce émise.
+   */
   offreTierId: string;
+  /** Code AXI-OFF-NNN de l'offre catalogue, "" si aucune. */
+  offreCode: string;
+  /**
+   * Vrai tant que la désignation affichée vient de l'offre, pas de l'admin.
+   *
+   * Sans ce drapeau les deux comportements possibles sont également faux :
+   * écraser toujours efface une désignation tapée à la main ; n'écraser jamais
+   * fige le titre de la PREMIÈRE offre choisie, et la pièce part au client avec
+   * un libellé qui ne correspond plus à la référence portée sur la même ligne.
+   */
+  designationDepuisOffre: boolean;
 }
 
 type FinancementSuggere = "direct" | "opco" | "cpf" | "france_travail" | "";
@@ -77,7 +108,30 @@ const MODALITE_OPCO_OPTIONS: Array<{ value: ModaliteOpco; label: string }> = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 function emptyLigne(): Ligne {
-  return { designation: "", quantite: "1", prixUnitaireHtCents: "0", offreTierId: "" };
+  return {
+    designation: "",
+    quantite: "1",
+    prixUnitaireHtCents: "0",
+    offreTierId: "",
+    offreCode: "",
+    designationDepuisOffre: false,
+  };
+}
+
+/**
+ * Rappel dérivé de l'offre sélectionnée — le texte vient du serveur.
+ *
+ * Aucune logique ici, volontairement : ce qu'il faut dire dépend de l'effectif
+ * couvert (prix par groupe vs journée 1-to-1) et du régime de frais, deux
+ * choses qui ne se lisent que dans pricing.ts.
+ */
+function NoteOffre({ offre }: { offre: OffreOption | undefined }): React.ReactElement | null {
+  if (offre === undefined) return null;
+  return (
+    <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+      {offre.noteDevisFr}
+    </p>
+  );
 }
 
 function formatEur(cents: number): string {
@@ -127,6 +181,55 @@ export function DevisForm({
     setLignes((prev) => prev.map((l, i) => (i === idx ? { ...l, [key]: value } : l)));
   }
 
+  /**
+   * Saisie manuelle de la désignation : elle prend la main sur l'offre.
+   *
+   * `updateLigne` ne peut pas servir ici — il est MONO-CHAMP par construction,
+   * et c'est exactement ce qui empêchait le <select> d'écrire autre chose que
+   * l'identifiant de l'offre.
+   */
+  function setDesignation(idx: number, value: string) {
+    setLignes((prev) =>
+      prev.map((l, i) =>
+        i === idx ? { ...l, designation: value, designationDepuisOffre: false } : l,
+      ),
+    );
+  }
+
+  /**
+   * Sélection d'une offre : écrit la référence, l'intitulé ET le prix d'un coup.
+   *
+   * Les deux gardes ci-dessous ne sont pas cosmétiques, ne pas les simplifier :
+   *  - on ne recolle JAMAIS 0 par-dessus un chiffrage existant quand l'offre n'a
+   *    pas de prix ferme (`prixHtCents === null`) ;
+   *  - on ne remplace la désignation que si elle est vide OU si elle vient
+   *    elle-même d'une offre (cf. `designationDepuisOffre`), sinon un admin qui
+   *    choisit l'offre après avoir rédigé voit son travail effacé sans un mot.
+   */
+  function selectOffre(idx: number, code: string) {
+    const offre = offres.find((o) => o.code === code);
+    setLignes((prev) =>
+      prev.map((l, i) => {
+        if (i !== idx) return l;
+        if (offre === undefined) {
+          // « — Aucune — » : on relâche la référence, jamais les montants déjà
+          // affichés (l'admin peut vouloir garder un chiffrage hors catalogue).
+          return { ...l, offreCode: "", offreTierId: "", designationDepuisOffre: false };
+        }
+        const reprendreLeTitre = l.designation.trim() === "" || l.designationDepuisOffre;
+        return {
+          ...l,
+          offreCode: offre.code,
+          offreTierId: offre.tierId ?? "",
+          designation: reprendreLeTitre ? offre.titreFr : l.designation,
+          designationDepuisOffre: reprendreLeTitre,
+          prixUnitaireHtCents:
+            offre.prixHtCents !== null ? String(offre.prixHtCents) : l.prixUnitaireHtCents,
+        };
+      }),
+    );
+  }
+
   function addLigne() {
     setLignes((prev) => [...prev, emptyLigne()]);
   }
@@ -150,11 +253,28 @@ export function DevisForm({
       designation: l.designation.trim(),
       quantite: parseFloat(l.quantite) || 0,
       prixUnitaireHtCents: parseInt(l.prixUnitaireHtCents, 10) || 0,
+      // Deux références distinctes, volontairement : `offreCode` identifie
+      // TOUTES les offres, `offreTierId` n'est renseigné que pour les quelques
+      // offres legacy qui ont un vrai tier pricing.ts. Aucun taux de TVA n'est
+      // transmis ici — il se dérive du régime configuré, en aval.
       ...(l.offreTierId !== "" ? { offreTierId: l.offreTierId } : {}),
+      ...(l.offreCode !== "" ? { offreCode: l.offreCode } : {}),
     }));
 
     if (parsedLignes.some((l) => !l.designation || l.quantite <= 0)) {
       setError("Chaque ligne doit avoir une désignation et une quantité positive.");
+      return;
+    }
+
+    // Une ligne offerte à 0 € reste légitime ; un devis dont le TOTAL est nul,
+    // non. Le cas arrive sans faute de frappe : les offres sans prix ferme
+    // (« Sur demande », « Séminaire IA », toutes deux actives) ne pré-remplissent
+    // aucun prix, et rien en aval ne s'en apercevait — le PDF partait, DocuSeal
+    // ouvrait une signature, et le client recevait une offre ferme à zéro euro.
+    if (total <= 0) {
+      setError(
+        "Devis à 0,00 € HT : chiffrez au moins une ligne (une offre sans prix ferme ne pré-remplit aucun montant).",
+      );
       return;
     }
 
@@ -247,7 +367,7 @@ export function DevisForm({
                   id={`ligne-${idx}-designation`}
                   type="text"
                   value={ligne.designation}
-                  onChange={(e) => updateLigne(idx, "designation", e.target.value)}
+                  onChange={(e) => setDesignation(idx, e.target.value)}
                   disabled={isPending}
                   required
                   maxLength={500}
@@ -263,18 +383,19 @@ export function DevisForm({
                 </label>
                 <select
                   id={`ligne-${idx}-offre`}
-                  value={ligne.offreTierId}
-                  onChange={(e) => updateLigne(idx, "offreTierId", e.target.value)}
+                  value={ligne.offreCode}
+                  onChange={(e) => selectOffre(idx, e.target.value)}
                   disabled={isPending}
                   className={selectCls}
                 >
                   <option value="">— Aucune —</option>
                   {offres.map((o) => (
-                    <option key={o.code} value={o.tierId ?? o.code}>
-                      {o.code} — {o.titreFr}
+                    <option key={o.code} value={o.code}>
+                      {o.code} — {o.titreFr} · {o.prixLabelFr}
                     </option>
                   ))}
                 </select>
+                <NoteOffre offre={offres.find((o) => o.code === ligne.offreCode)} />
               </div>
 
               {/* Quantité */}
