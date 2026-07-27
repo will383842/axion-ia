@@ -43,6 +43,12 @@ export interface EmargementGridProps {
   sessionId: string;
   enrollments: EnrollmentRow[];
   creneaux: CreneauRow[];
+  /**
+   * Des journées ont-elles été déclarées ? L'état vide doit dire OÙ reprendre :
+   * sans journées, générer les créneaux les déduit de la plage de dates, ce qui
+   * est faux dès que les journées ne se suivent pas.
+   */
+  hasJours?: boolean;
   /** Appelée lors du submit. Doit matcher la signature AGENT B. */
   saveAction: (input: {
     sessionId: string;
@@ -90,6 +96,7 @@ export function EmargementGrid({
   sessionId,
   enrollments,
   creneaux,
+  hasJours,
   saveAction,
 }: EmargementGridProps): React.ReactElement {
   const router = useRouter();
@@ -224,9 +231,22 @@ export function EmargementGrid({
   }
 
   if (creneaux.length === 0) {
+    // 🔴 UI 2026-07-27 — ce message renvoyait vers « Générer les créneaux » sans
+    // dire que les JOURNÉES viennent d'abord. Sans journées déclarées, la
+    // génération déduit les créneaux de la plage de dates — ce que le code
+    // qualifie lui-même de faux dès que les journées ne se suivent pas. On
+    // envoyait donc l'utilisateur produire une feuille d'émargement fausse.
     return (
       <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-        Aucun créneau généré. Utilisez le bouton « Générer les créneaux » ci-dessus.
+        {hasJours === false ? (
+          <>
+            <strong>Commencez par déclarer les journées</strong> réellement animées, plus haut sur
+            cette page. Sans elles, les créneaux seraient déduits de la plage de dates — donc faux
+            dès que les journées ne se suivent pas, et la feuille d&apos;émargement avec.
+          </>
+        ) : (
+          <>Aucun créneau généré. Utilisez le bouton « Générer les créneaux » ci-dessus.</>
+        )}
       </p>
     );
   }
