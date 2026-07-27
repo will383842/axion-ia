@@ -12,6 +12,18 @@
  * juridiques fixes (articles de loi) et les helpers de formatage réglementaire.
  */
 
+/**
+ * Taux des pénalités de retard — fragment PARTAGÉ avec les CGV publiées.
+ *
+ * Reproduit à l'identique le taux de la clause « Retard de paiement » des CGV
+ * (`src/content/legal.ts`, FR et miroir EN). Une facture est un acte UNILATÉRAL :
+ * elle ne stipule aucun taux, elle rappelle celui du contrat. Un taux imprimé sur
+ * la facture mais absent des CGV est INOPPOSABLE — c'était le constat F52.
+ * `legal-mentions.spec.ts` verrouille la concordance dans les deux langues.
+ */
+export const TAUX_PENALITES_RETARD_FR =
+  "au taux d'intérêt appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10 points de pourcentage";
+
 /** Mentions légales fixes par type de document officiel (verbatim). */
 export const LEGAL_MENTIONS = {
   /** Convention de formation professionnelle (personnes morales). */
@@ -39,9 +51,26 @@ export const LEGAL_MENTIONS = {
    */
   factureTvaAssujetti:
     "TVA au taux standard en vigueur — aucune exonération ni franchise applicable.",
-  /** Facture B2B — pénalités de retard (art. L.441-10 C. com.). OBLIGATOIRE. */
+  /**
+   * Facture B2B — pénalités de retard (art. L.441-10 C. com.). OBLIGATOIRE.
+   *
+   * Le taux vient de `TAUX_PENALITES_RETARD_FR` : NE PAS le ré-inliner ici en
+   * littéral, c'est exactement la divergence que F52 a fermée (la facture
+   * annonçait « trois fois le taux d'intérêt légal », qui n'est stipulé dans
+   * aucune clause des CGV).
+   *
+   * « dès le jour suivant la date d'échéance » n'est pas cosmétique : L.441-9
+   * et R.441-1 imposent d'indiquer la date d'exigibilité, et les CGV la portent.
+   *
+   * NE PAS ajouter de renvoi « conformément aux CGV » : ce bloc est imprimé sans
+   * condition par `facture.tsx`, y compris quand le destinataire est un
+   * stagiaire particulier — un renvoi explicite aggraverait ce défaut au lieu de
+   * le corriger.
+   */
   facturePenalitesRetard:
-    "Tout retard de paiement entraîne de plein droit, sans qu'un rappel soit nécessaire, l'application de pénalités de retard calculées au taux de trois fois le taux d'intérêt légal en vigueur (article L.441-10 du Code de commerce).",
+    "Tout retard de paiement entraîne de plein droit, sans qu'un rappel soit nécessaire et dès le jour suivant la date d'échéance, l'application de pénalités de retard calculées " +
+    TAUX_PENALITES_RETARD_FR +
+    " (article L.441-10 du Code de commerce).",
   /** Facture B2B — indemnité forfaitaire de recouvrement de 40 € (art. D.441-5 C. com.). OBLIGATOIRE. */
   factureIndemniteRecouvrement:
     "Une indemnité forfaitaire pour frais de recouvrement de 40 € est due en cas de retard de paiement (articles L.441-10 et D.441-5 du Code de commerce).",
