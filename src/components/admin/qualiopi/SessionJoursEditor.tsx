@@ -53,6 +53,32 @@ function clefComparaison(jours: JourSaisi[]): string {
 const HEURE_DEBUT_DEFAUT = "09:00";
 const HEURE_FIN_DEFAUT = "17:00";
 
+/**
+ * Le bouton d'enregistrement est-il actif ?
+ *
+ * Extrait du composant pour être testable sans monter React — la règle a déjà
+ * bloqué le parcours une fois, elle mérite mieux qu'une relecture à l'œil.
+ *
+ * Deux motifs INDÉPENDANTS d'enregistrer :
+ * - `modifie` : l'admin a changé quelque chose ;
+ * - `aConfirmer` : les journées sont encore des PROPOSITIONS, et les valider
+ *   telles quelles est un geste à part entière — c'est lui qui fait passer
+ *   `horairesConfirmes` à vrai. Sans ce second motif, une proposition juste
+ *   était inconfirmable, et `emettreLiensSessionAction` refusait ensuite
+ *   d'émettre le moindre lien (`horaires_non_confirmes`) : plus aucune
+ *   signature possible sur la session.
+ */
+export function peutEnregistrerJours(etat: {
+  isPending: boolean;
+  modifie: boolean;
+  aDesHorairesNonConfirmes: boolean;
+  nbJours: number;
+}): boolean {
+  if (etat.isPending) return false;
+  if (etat.modifie) return true;
+  return etat.aDesHorairesNonConfirmes && etat.nbJours > 0;
+}
+
 export function SessionJoursEditor({
   sessionId,
   joursInitiaux,
@@ -77,6 +103,21 @@ export function SessionJoursEditor({
   // dès que l'admin saisit ses journées dans le désordre — bouton « Enregistrer »
   // actif à vide, et avertissement orange affiché en même temps que le succès.
   const modifie = clefComparaison(jours) !== clefComparaison(joursInitiaux);
+
+  // 🔴 Constat du parcours à blanc 2026-07-27 — impasse de confirmation.
+  //
+  // Les journées PROPOSÉES arrivent déjà dans `joursInitiaux`, donc `modifie`
+  // est faux dès l'ouverture. Le bouton restait désactivé alors que l'écran
+  // demande, en orange, de « vérifier les horaires réels, puis enregistrer ».
+  // Autrement dit : quand la proposition automatique tombait JUSTE — le cas
+  // nominal — il était impossible de la confirmer. Il fallait fausser un
+  // horaire pour débloquer le bouton, puis le remettre. Rien ne partait en
+  // base : ni feuille d'émargement, ni liens de signature.
+  //
+  // Confirmer un contenu inchangé est ici une ACTION à part entière, pas un
+  // enregistrement à vide : c'est ce qui fait passer `horairesConfirmes` de
+  // faux à vrai, et donc des horaires supposés à des horaires constatés.
+  const aConfirmer = aDesHorairesNonConfirmes && jours.length > 0;
 
   function majJour(index: number, champ: keyof JourSaisi, valeur: string) {
     setSucces(null);
@@ -221,10 +262,21 @@ export function SessionJoursEditor({
         <button
           type="button"
           onClick={enregistrer}
-          disabled={isPending || !modifie}
+          disabled={
+            !peutEnregistrerJours({
+              isPending,
+              modifie,
+              aDesHorairesNonConfirmes,
+              nbJours: jours.length,
+            })
+          }
           className="admin-button"
         >
-          {isPending ? "Enregistrement…" : "Enregistrer les journées"}
+          {isPending
+            ? "Enregistrement…"
+            : !modifie && aConfirmer
+              ? "Confirmer ces journées"
+              : "Enregistrer les journées"}
         </button>
       </div>
 
