@@ -331,3 +331,42 @@ describe("revoquerTokensInscription", () => {
     expect(arg.data.revokedMotif.length).toBe(500);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Un jeton EXPIRÉ était annoncé « signature invalide ».
+//
+// `verifierToken` aplatissait les six motifs de `verifyMagicToken` en un seul.
+// Or `magic-token.ts` vérifie la signature d'ABORD et l'expiration ENSUITE : un
+// jeton authentique mais périmé ressortait donc comme falsifié.
+//
+// Deux conséquences — un message inutilisable pour le stagiaire, et surtout la
+// branche `expire` de la fin de fonction rendue MORTE pour tout jeton JWT
+// périmé : elle ne s'atteignait que par l'expiration stockée en base.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("verifierToken — motif de refus d'un jeton périmé", () => {
+  it("distingue « expire » de « signature_invalide »", async () => {
+    mockVerify.mockResolvedValue({ ok: false, reason: "expired" });
+    const r = await verifierToken("jeton-authentique-mais-perime");
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.raison).toBe("expire");
+  });
+
+  // Les motifs de FORME restent fondus : ils se rencontrent en trafiquant un
+  // jeton, et les détailler renseignerait sur la structure attendue.
+  it("fond les motifs de forme dans « signature_invalide »", async () => {
+    for (const reason of [
+      "invalid_signature",
+      "malformed_token",
+      "malformed_payload",
+      "scope_mismatch",
+      "resource_mismatch",
+      "invalid_email",
+    ]) {
+      mockVerify.mockResolvedValue({ ok: false, reason });
+      const r = await verifierToken("jeton-trafique");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.raison, `motif ${reason}`).toBe("signature_invalide");
+    }
+  });
+});
