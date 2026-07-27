@@ -17,6 +17,7 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { DevisSignatureLinkCopy } from "@/components/admin/qualiopi/DevisSignatureLinkCopy";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { getClient } from "@/server/qualiopi/crm/clients";
@@ -330,6 +331,44 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           </div>
         )}
       </section>
+
+      {/* ── Signature électronique ───────────────────────────────────────── */}
+      {/*
+        🔴 F4 — cette page n'affichait NI `docusealEmbedUrl` NI
+        `docusealSubmissionId` : c'est le symptôme visible du constat (« aucun
+        bouton signer »). La donnée était pourtant déjà chargée par `getDevis()`.
+        L'alerte d'absence est restreinte au statut « envoyé » : sur un brouillon
+        la soumission n'existe pas encore, et sur un devis accepté / refusé /
+        expiré / transformé en convention il n'y a plus rien à signer — l'y
+        afficher serait un faux positif permanent (AXI-DEV-2026-002 est déjà en
+        `transforme_convention` sans soumission).
+      */}
+      {devis.docusealSubmissionId !== null && devis.docusealEmbedUrl !== null ? (
+        <section className="mb-[var(--space-admin-8)]">
+          <h2 className={sectionHeadCls}>Signature électronique</h2>
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+            <p className={infoLabelCls}>Soumission DocuSeal</p>
+            <p className={infoValueCls}>
+              <code>{devis.docusealSubmissionId}</code>
+            </p>
+            <DevisSignatureLinkCopy url={devis.docusealEmbedUrl} />
+          </div>
+        </section>
+      ) : (
+        devis.statut === "envoye" && (
+          <section className="mb-[var(--space-admin-8)]">
+            <h2 className={sectionHeadCls}>Signature électronique</h2>
+            <p
+              role="alert"
+              className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+            >
+              Aucune signature électronique n&apos;a été créée pour ce devis — le client ne peut pas
+              signer en ligne. Il ne peut accepter qu&apos;en retournant le PDF signé, ou en
+              révisant le devis pour réémettre une soumission.
+            </p>
+          </section>
+        )
+      )}
 
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">

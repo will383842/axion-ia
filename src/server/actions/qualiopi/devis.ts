@@ -39,7 +39,8 @@ import {
 } from "@/server/qualiopi/financements/facture-libre-pur";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
-import { isDocusealConfigured, createContractSubmission } from "@/lib/docuseal";
+import { isDocusealConfigured, createContractSubmission, DocusealApiError } from "@/lib/docuseal";
+import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
@@ -258,7 +259,9 @@ function adresseClientDevis(client: {
  */
 export async function sendDevisAction(
   id: string,
-): Promise<ActionResult<{ id: string; emailEnvoye: boolean; note?: string }>> {
+): Promise<
+  ActionResult<{ id: string; emailEnvoye: boolean; signatureCreee: boolean; note?: string }>
+> {
   // Stub-aware (build GH Actions) : aucune mutation au SSG.
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
@@ -381,6 +384,20 @@ export async function sendDevisAction(
   const docusealTemplateId =
     process.env["DOCUSEAL_DEVIS_TEMPLATE_ID"] || process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
   const contactEmail = devis.client.contactEmail;
+  /**
+   * Une soumission était-elle attendue ? Distingue « DocuSeal non configuré »
+   * (silence normal) de « configuré mais en panne » (à signaler).
+   */
+  const signatureAttendue = isDocusealConfigured() && !!docusealTemplateId && !!contactEmail;
+  /** Motif d'échec DocuSeal — tracé au registre et remonté à l'admin. */
+  let docusealErreur: string | null = null;
+  // 🔴 F4 — jusqu'au 2026-07-26 ce bloc échouait en 422 à CHAQUE envoi (les
+  // champs pré-remplis partaient aussi sur le contre-signataire, cf.
+  // `src/lib/docuseal.ts`) et l'échec était avalé par un `console.warn` muet :
+  // le devis partait « envoyé », l'admin lisait « + lien de signature » en vert,
+  // et aucune soumission n'a jamais existé (0 côté DocuSeal, 2 devis en base
+  // avec docuseal_submission_id NULL). Une panne de signature doit REMONTER —
+  // c'est la seule protection contre une rechute muette.
   if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
     try {
       const result = await createContractSubmission({
@@ -389,10 +406,29 @@ export async function sendDevisAction(
           email: contactEmail,
           name: devis.client.contactNom ?? devis.client.raisonSociale,
         },
+        // 🔴 Ces 3 noms DOIVENT exister sur le rôle « Client » du template
+        // DocuSeal : les champs sont validés rôle par rôle et un nom inconnu
+        // fait répondre 422 — la soumission entière est perdue, ce n'est pas une
+        // erreur partielle. Toute modification se vérifie contre le template
+        // RÉEL du conteneur, pas contre la documentation.
+        //
+        // `readonly: true` : sans lui, le client peut RÉÉCRIRE le montant ou le
+        // numéro dans le formulaire avant de signer (les champs non-readonly de
+        // son propre rôle sont rendus en SAISIE). Un « bon pour accord » dont le
+        // signataire fixe lui-même le montant n'a aucune valeur probante et
+        // contredirait le PDF archivé.
         fields: [
-          { name: "devis_number", default_value: devis.numero },
-          { name: "amount_ht", default_value: (devis.montantTotalHtCents / 100).toFixed(2) },
-          { name: "valid_until", default_value: devis.dateValidite.toISOString().slice(0, 10) },
+          { name: "devis_number", default_value: devis.numero, readonly: true },
+          {
+            name: "amount_ht",
+            default_value: (devis.montantTotalHtCents / 100).toFixed(2),
+            readonly: true,
+          },
+          {
+            name: "valid_until",
+            default_value: devis.dateValidite.toISOString().slice(0, 10),
+            readonly: true,
+          },
         ],
         sendEmail: false, // l'email est envoyé par NOUS (template Axion-IA + PJ PDF)
         metadata: { devisId: devis.id, kind: "devis" },
@@ -400,9 +436,24 @@ export async function sendDevisAction(
       docusealSubmissionId = result.submissionId;
       docusealEmbedUrl = result.embedUrl || null;
     } catch (err) {
+      // Aucune donnée client dans le motif : Telegram est un canal tiers, hors
+      // du périmètre de l'ADR 0014 (qui n'exonère que DocuSeal, self-hosted).
+      // Le détail complet reste dans les logs serveur.
+      docusealErreur =
+        err instanceof DocusealApiError
+          ? `DocuSeal HTTP ${err.statusCode}`
+          : "erreur technique DocuSeal";
       console.warn("[sendDevisAction] soumission DocuSeal échouée (best-effort)", err);
+      // Sans cette alerte, une panne de signature reste invisible jusqu'à ce
+      // qu'un client se plaigne de ne pas pouvoir signer. `.catch()` obligatoire :
+      // une panne Telegram ne doit jamais faire échouer l'envoi d'un devis.
+      sendTelegram({
+        tag: "AUTO",
+        body: `⚠️ Devis ${devis.numero} : signature électronique NON créée (${docusealErreur}). Le devis part sans « bon pour accord » signable en ligne.`,
+      }).catch(() => {});
     }
   }
+  const signatureCreee = docusealSubmissionId !== null;
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   await prisma.$transaction([
@@ -474,6 +525,16 @@ export async function sendDevisAction(
     note = "PDF indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié.";
   }
 
+  // 🔴 F4 — la signature électronique était attendue et n'a pas été créée :
+  // l'email est parti SANS bouton « signer ». On le DIT, au lieu d'annoncer
+  // « + lien de signature » en vert comme avant. Le devis reste « envoyé »
+  // (fail-soft assumé) : c'est l'admin qui arbitre la suite.
+  if (signatureAttendue && !signatureCreee) {
+    const detail = docusealErreur !== null ? ` (${docusealErreur})` : "";
+    const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
+    note = `${prefixe}⚠️ La signature électronique n'a PAS pu être créée${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+  }
+
   await logQualiopiActivity({
     action: "qualiopi.devis.send",
     targetType: "Devis",
@@ -482,13 +543,24 @@ export async function sendDevisAction(
       statut: "envoye",
       pdfGenere: fichierPdfUrl !== null,
       docusealSubmissionId,
+      // Motif d'échec DocuSeal tracé au registre : le journal d'activité
+      // affichait `"docusealSubmissionId": null` sans jamais dire pourquoi, et
+      // les logs du conteneur partent au premier redémarrage.
+      docusealErreur,
       emailEnvoye,
       devisExpire: devis.replacesDevisId,
     },
     session,
   });
 
-  return { data: { id: idParsed.data, emailEnvoye, ...(note !== undefined ? { note } : {}) } };
+  return {
+    data: {
+      id: idParsed.data,
+      emailEnvoye,
+      signatureCreee,
+      ...(note !== undefined ? { note } : {}),
+    },
+  };
 }
 
 /**
