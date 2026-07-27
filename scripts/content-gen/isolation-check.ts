@@ -202,6 +202,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/components\/admin\/ui\/AdminStatCard\.tsx$/,
   /^src\/components\/admin\/ui\/AdminSubmitButton\.tsx$/,
   /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
+  // Exception ajoutée 2026-07-27 (gate a11y, constat X5).
+  //
+  // Ce test LIT deux fiches KB content-gen pour vérifier qu'elles ne revendiquent
+  // pas la conformité WCAG tant que la déclaration légale dit « non audité à ce
+  // jour ». Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  //
+  // L'inverse serait pire — les fiches KB alimentent la RAG et ressortent en
+  // pages publiques. S'interdire de les contrôler au nom de l'isolation
+  // laisserait précisément passer l'écart déclaratif que ce gate existe pour
+  // empêcher, et sur les SUPPORTS DE FORMATION, terrain direct de l'audit
+  // Qualiopi.
+  /^tests\/unit\/ci\/gate-a11y-cablage\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL

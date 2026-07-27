@@ -182,6 +182,46 @@ describe("genererSupport", () => {
     });
   });
 
+  // 🔴 Parcours à blanc 2026-07-27. Ces deux champs revenaient VIDES en
+  // production, et aucun test ne pouvait le voir : la fixture ci-dessus les
+  // déclare en `string[]`, alors que l'import du catalogue écrit des OBJETS —
+  // `{ id, verbe, description }` et `{ type, libelle }`. Les 17 tests de ce
+  // fichier passaient donc au vert sur une forme de données qui n'existe nulle
+  // part en base.
+  //
+  // Conséquence sur le support imprimé : « Objectifs à définir » (le repli du
+  // builder) et disparition pure et simple de la section « Ressources
+  // pédagogiques », masquée par son propre `if (length > 0)`. Un support de
+  // formation remis au stagiaire et montré à l'auditeur.
+  it("lit les objectifs et les ressources sous la forme du CATALOGUE, pas seulement en string[]", async () => {
+    mockPrisma.formation.findUnique.mockResolvedValue({
+      ...FORMATION_FIXTURE,
+      objectifsPedagogiques: [
+        { id: "obj-1", verbe: "Décrire", description: "Décrire ce qu'est une IA générative" },
+        { id: "obj-2", verbe: "Identifier", description: "Identifier l'outil adapté" },
+      ],
+      ressourcesPedagogiques: [
+        { type: "support", libelle: "Support de présentation projeté en séance" },
+        { type: "memo", libelle: "Fiche mémo des méthodes vues" },
+      ],
+    });
+
+    await genererSupport({ formationId: FORMATION_UUID, type: "livret_stagiaire" });
+
+    const input = mockConstruire.mock.calls[0]![1] as {
+      objectifsPedagogiques: string[];
+      ressourcesPedagogiques: string[];
+    };
+    expect(input.objectifsPedagogiques).toEqual([
+      "Décrire ce qu'est une IA générative",
+      "Identifier l'outil adapté",
+    ]);
+    expect(input.ressourcesPedagogiques).toEqual([
+      "Support de présentation projeté en séance",
+      "Fiche mémo des méthodes vues",
+    ]);
+  });
+
   it("appelle titreSupport avec le bon type et titre", async () => {
     await genererSupport({ formationId: FORMATION_UUID, type: "memo" });
 
