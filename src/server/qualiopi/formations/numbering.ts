@@ -75,10 +75,10 @@ export async function allocateSessionNumero(opts?: AllocateSessionNumeroOpts): P
   // rang de série, ce qui est le comportement voulu.
   //
   // ⚠️ ATTENTION, DETTE CONNUE ET NON FERMÉE PAR CE LOT : `documents_generes`
-  // porte déjà `AXI-SESS-2026-003` (ancienne numérotation, cf. ADR 0034) alors
+  // porte déjà `AXI-SESS-2026-003` (ancienne numérotation, cf. ADR 0035) alors
   // que `training_sessions` s'arrête à -002. La prochaine session créée recevra
   // donc -003 et entrera en collision inter-registres avec cette pièce. Seule la
-  // purge des 9 tirages antérieurs (branche A de l'ADR 0034) ferme le cas.
+  // purge des 9 tirages antérieurs (branche A de l'ADR 0035) ferme le cas.
   return nextNumero(
     "session",
     year,

@@ -28,7 +28,7 @@ export const NUMBERING_PREFIX = {
   // Sans elle, ce registre EMPRUNTAIT AXI-FORM / AXI-SESS / AXI-DEV aux tables
   // métier : `AXI-FORM-2026-001` désigne à la fois une formation du catalogue
   // et un livret d'accueil. Vérifié en production le 2026-07-26 : 7 numéros
-  // dans ce cas. Voir DOCUMENT_REGISTER_TYPES plus bas et l'ADR 0034.
+  // dans ce cas. Voir DOCUMENT_REGISTER_TYPES plus bas et l'ADR 0035.
   document: "AXI-DOC",
   // Réservée à `coaching_contracts` (table vide à ce jour). Le schéma prescrivait
   // de « réutiliser le compteur formation » : un TROISIÈME écrivain sur AXI-FORM.
