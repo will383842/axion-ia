@@ -11,6 +11,8 @@
 "use server";
 
 import { z } from "zod";
+import { siretField } from "@/lib/siret-schema";
+import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   creerSousTraitant,
@@ -26,7 +28,10 @@ type ActionResult<T> = { data: T } | { error: string };
 
 const creerSousTraitantSchema = z.object({
   nom: z.string().min(1).max(250),
-  siret: z.string().max(20).optional(),
+  // Un sous-traitant de l'OF est un organisme français (indicateur 27) : même
+  // règle que pour un client. `max(20)` laissait passer n'importe quoi ; la
+  // valeur normalisée fait 14 caractères et tient dans la colonne VarChar(20).
+  siret: siretField.optional(),
   nda: z.string().max(20).optional(),
   objetPrestation: z.string().min(1),
   contratSigneAt: z.coerce.date().optional(),
@@ -55,7 +60,7 @@ export async function creerSousTraitantAction(input: {
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = creerSousTraitantSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const v = parsed.data;
 
   let sousTraitant: { id: string };

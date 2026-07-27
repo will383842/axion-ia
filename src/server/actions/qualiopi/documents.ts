@@ -60,6 +60,7 @@ import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/c
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -305,7 +306,12 @@ export async function genererConventionTripartiteAction(input: {
   // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const nomOpco = session.client.opcoIdentifie ?? "OPCO (à préciser)";
+  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la convention
+  // tripartite doit lire « Akto ». Le motif existe déjà dans
+  // facturation-service.ts et facturation-1to1.ts.
+  const nomOpco = session.client.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
   const prixHt = session.montantHtCents / 100;
@@ -1163,7 +1169,9 @@ export async function genererKitOpcoAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const nomOpco = session.client?.opcoIdentifie ?? "OPCO (à préciser)";
+  const nomOpco = session.client?.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroDossier = session.numeroDossierOpco ?? "—";
   const baremeCents = session.priseEnChargeMontantCents ?? 0;
 

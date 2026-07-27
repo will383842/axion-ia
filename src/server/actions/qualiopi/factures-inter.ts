@@ -17,6 +17,7 @@ import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   computeTotauxFacture,
   isRegimeTva,
@@ -128,7 +129,10 @@ export async function genererFactureParInscriptionAction(
   let destinataireSiret: string | undefined;
   let destinataireAdresse: string | undefined;
   if (destinataire === "opco") {
-    destinataireNom = payeur?.opcoIdentifie ?? enrollment.session.client?.opcoIdentifie ?? "OPCO";
+    // Libellé, pas slug : c'est le nom du destinataire imprimé sur la facture.
+    // Cette branche est déjà gardée par `destinataire === "opco"` juste au-dessus.
+    const opcoId = payeur?.opcoIdentifie ?? enrollment.session.client?.opcoIdentifie ?? null;
+    destinataireNom = opcoId !== null ? opcoLabel(opcoId) : "OPCO";
   } else if (destinataire === "stagiaire") {
     destinataireNom = traineeNom;
   } else if (destinataire === "france_travail") {
