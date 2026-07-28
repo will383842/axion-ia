@@ -395,12 +395,18 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   de count (admin-nav.ts est déjà whitelisté ci-dessus).
   // - backfill-hero-images.ts : script ops blog, import consommateur de
   //   src/server/content-gen/images/backfill-hero (rattrapage hero Unsplash).
+  // - services-ssot.spec.ts : garde-fou nommage des 5 services (2026-07-28).
+  //   Le marqueur vient d'UNE string dans son allowlist de fichiers exemptés
+  //   (`"server/content-gen/lib/category-mapper.ts"` — miroir de la migration
+  //   20260616180000, non renommable sans migration). Aucun import, aucun code
+  //   pipeline : exactement le même cas que `admin-nav.test.ts` ci-dessus.
   /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
   /^scripts\/activate-content-gen-value-metier\.ts$/,
   /^scripts\/depublish-en-translations\.ts$/,
   /^src\/components\/blog\/CategoryArticlesFilter\.tsx$/,
   /^src\/lib\/admin-nav\.test\.ts$/,
   /^src\/scripts\/backfill-hero-images\.ts$/,
+  /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
 ];
 
 /**
