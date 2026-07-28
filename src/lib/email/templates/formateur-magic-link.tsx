@@ -26,6 +26,11 @@ export function FormateurMagicLinkEmail({
 }) {
   const p = payload as unknown as Payload;
   const minutes = p.expiresInMin ?? 15;
+  // Adresse permanente de l'espace, dérivée du lien jetable en retirant le
+  // segment `/connexion/<token>`. Pas de lecture d'environnement ici : un
+  // template d'e-mail doit rester pur, et `magicLink` porte déjà l'origine
+  // publique résolue par `buildFormateurMagicLinkUrl`.
+  const espaceUrl = `${p.magicLink.split("/espace-formateur/")[0]}/espace-formateur`;
   return (
     <EmailLayout
       preview="Votre lien de connexion sécurisé à l'espace formateur"
@@ -66,6 +71,26 @@ export function FormateurMagicLinkEmail({
       >
         Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :<br />
         {p.magicLink}
+      </Text>
+      {/*
+        Adresse de RETOUR — ajoutée 2026-07-28.
+
+        Le lien ci-dessus vaut 15 minutes et ne sert qu'une fois. Sans cette
+        ligne, un formateur qui revient la semaine suivante n'a aucun moyen de
+        retrouver son espace : l'ancien e-mail ne vaut plus rien et l'adresse
+        n'était écrite nulle part. Il devait rappeler l'organisme pour qu'on lui
+        renvoie un lien. On donne donc le chemin permanent, distinct du lien
+        jetable.
+      */}
+      <Text
+        style={{
+          ...emailStyles.paragraphStyle,
+          fontSize: "12px",
+          color: emailStyles.COLORS.textMuted,
+        }}
+      >
+        Pour revenir plus tard, l&apos;adresse de votre espace est <strong>{espaceUrl}</strong> —
+        vous y demanderez un nouveau lien en saisissant cette même adresse e-mail.
       </Text>
     </EmailLayout>
   );

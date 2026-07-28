@@ -16,6 +16,7 @@ export default async function CoachingFormateursPage(): Promise<React.ReactEleme
     actif: f.actif,
     lastFormateurLoginAt: f.lastFormateurLoginAt ? f.lastFormateurLoginAt.toISOString() : null,
     sessionsCount: f._count.coachingSessions,
+    formationsCount: f._count.sessionsAnimees,
   }));
 
   return (

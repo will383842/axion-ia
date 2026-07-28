@@ -843,6 +843,22 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "formations",
     },
+    // 🔴 Déplacé depuis « Coaching 1-to-1 » le 2026-07-28.
+    //
+    // Cet écran gère l'accès de TOUS les formateurs, sans distinction : il
+    // liste `listFormateurs()` en entier. Il était pourtant rangé sous
+    // « Coaching 1-to-1 », héritage de l'époque où l'espace formateur ne
+    // servait qu'aux séances individuelles. Conséquence : pour envoyer un lien
+    // de connexion à quelqu'un qui n'anime que des formations collectives, il
+    // fallait aller le chercher dans le menu du 1-to-1 — personne ne l'y
+    // trouvait. Sa place est ici, à côté de la fiche formateur.
+    {
+      href: `${base}/coaching/formateurs`,
+      label: "Accès & connexions formateurs",
+      icon: "🧑‍🏫",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/remuneration`,
       label: "Rémunération formateurs",
@@ -1136,12 +1152,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/coaching/seances`,
       label: "Séances 1-to-1",
       icon: "🗂️",
-      group: "coaching-1to1",
-    },
-    {
-      href: `${base}/coaching/formateurs`,
-      label: "Accès & connexions formateurs",
-      icon: "🧑‍🏫",
       group: "coaching-1to1",
     },
     // ── banque d'images — 3 pôles (refonte UX 2026-07-08) ─────────────────
