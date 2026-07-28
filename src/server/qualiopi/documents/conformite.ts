@@ -39,7 +39,32 @@ const LABELS: Record<ChampIdentite, string> = {
  */
 const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   // Facture : mentions vendeur obligatoires (identité + adresse + SIRET).
-  facture: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  //
+  // 🔴 `nda` RETIRÉ le 2026-07-28, sur remarque de Will : « il ne faut pas que
+  // ce soit bloquant, on a 3 mois pour déclarer l'activité ». Il a raison, et
+  // c'est exactement le raisonnement qui avait déjà fait retirer `qualiopi` de
+  // ces listes trois jours plus tôt.
+  //
+  // Art. L.6351-1 C. trav. : la déclaration d'activité se dépose **dans les
+  // trois mois suivant la conclusion de la première convention de formation**.
+  // Au moment d'émettre cette première convention — et la facture qui la suit —
+  // l'organisme n'a donc légalement PAS ENCORE de NDA : c'est cette convention
+  // qui ouvre le délai. Exiger le numéro avant reproduisait l'impasse décrite
+  // plus bas pour Qualiopi.
+  //
+  // Et le NDA n'est pas une mention obligatoire de FACTURE : l'art. L.6352-4
+  // l'impose sur « les conventions, contrats et documents de nature
+  // contractuelle ou publicitaire ». Les mentions de facture relèvent de
+  // l'art. R123-238 C. com. et de l'art. 242 nonies A ann. II CGI — le NDA n'y
+  // figure pas.
+  //
+  // `siret` reste BLOQUANT : lui est bien une mention obligatoire (R123-238),
+  // et une facture émise sans lui est irrégulière.
+  //
+  // Le NDA reste exigé sur convention / tripartite / contrat, où L.6352-4
+  // s'applique — mais sans bloquer non plus : `generateDocument` les déclasse
+  // en SPÉCIMEN au lieu de refuser.
+  facture: ["raisonSociale", "siret", "adresseSiege"],
   // Convention / contrat : identité de l'OF prestataire.
   //
   // 🔴 `qualiopi` a été RETIRÉ de ces trois listes (audit certification
