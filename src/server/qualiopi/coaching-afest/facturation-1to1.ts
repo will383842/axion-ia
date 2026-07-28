@@ -30,7 +30,7 @@ import type { FactureData } from "@/server/qualiopi/documents/templates/facture"
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "@/server/qualiopi/financements/conditions-client";
 import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
-import { sumHeuresReelles } from "./heures";
+import { getHeuresReellesContrat } from "./heures";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
 export interface GenererFactureCoachingResult {
@@ -42,17 +42,17 @@ export interface GenererFactureCoachingResult {
 const MAX_ATTEMPTS = 5;
 
 /**
- * Heures réelles d'un contrat = Σ CompteRenduSeance.dureeMinutes des séances liées.
- * Délègue à `sumHeuresReelles` pour appliquer la MÊME règle de présence que
- * l'attestation (exclusion des seules absences actées) — sinon la facture
- * porterait des heures que l'attestation d'assiduité ne compte pas.
+ * Heures réelles d'un contrat.
+ *
+ * 🔴 Passe par `getHeuresReellesContrat`, c'est-à-dire par la MÊME fonction et
+ * les MÊMES critères que l'attestation, le BPF et le certificat — et sous le
+ * régime de preuve de CHAQUE parcours. Une facture qui ne dit pas la même chose
+ * que le certificat du même parcours est un motif de redressement à elle seule,
+ * et c'était déjà le cas : le BPF filtrait `estAfest` + `statut: realisee`, la
+ * facture ne filtrait rien.
  */
 async function heuresReellesContrat(coachingContractId: string): Promise<number> {
-  const crs = await prisma.compteRenduSeance.findMany({
-    where: { coachingSession: { coachingContractId } },
-    select: { dureeMinutes: true, presenceSigneeAt: true, beneficiairePresent: true },
-  });
-  return sumHeuresReelles(crs);
+  return getHeuresReellesContrat(coachingContractId);
 }
 
 export async function genererFactureCoaching(

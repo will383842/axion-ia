@@ -9,6 +9,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import {
+  heuresReellesSignees,
+  versSeancePourHeures,
+  SEANCE_HEURES_SELECT,
+} from "@/server/qualiopi/coaching-afest/heures";
 
 export interface BpfFinanceurDetail {
   opco: number;
@@ -192,7 +197,12 @@ async function aggregateCoaching(
         dateSeance: plage,
       },
       select: {
-        comptesRendus: { select: { dureeMinutes: true } },
+        // 🔴 Régime + sélecteur PARTAGÉS avec l'attestation, la facture et le
+        // certificat. Sommer ici des `dureeMinutes` bruts, comme avant, ferait
+        // déclarer au BPF des heures que le certificat du même parcours ne
+        // reconnaît pas.
+        regimePreuve: true,
+        comptesRendus: { select: SEANCE_HEURES_SELECT },
       },
     }),
   ]);
@@ -206,16 +216,18 @@ async function aggregateCoaching(
     }
   }
 
-  let totalMinutes = 0;
-  for (const session of coachingSessions) {
-    for (const cr of session.comptesRendus) {
-      if (cr.dureeMinutes !== null) {
-        totalMinutes += cr.dureeMinutes;
-      }
-    }
-  }
+  const nbHeuresStagiaires = coachingSessions.reduce(
+    (acc, session) =>
+      acc +
+      heuresReellesSignees(session.comptesRendus.map(versSeancePourHeures), session.regimePreuve),
+    0,
+  );
 
-  return { caHtCents, nbHeuresStagiaires: totalMinutes / 60, nbParcours: coachingSessions.length };
+  return {
+    caHtCents,
+    nbHeuresStagiaires: Math.round(nbHeuresStagiaires * 100) / 100,
+    nbParcours: coachingSessions.length,
+  };
 }
 
 export function bpfToCsv(bpf: BpfResult): string {
