@@ -135,7 +135,18 @@ describe("generateDocument — garde-fou conformité systématique", () => {
     };
     expect(payload.data.metadata?.specimen).toBe(true);
     expect(payload.data.metadata?.champsManquants).toEqual(
-      expect.arrayContaining(["SIRET", "numéro de déclaration d'activité (NDA)"]),
+      expect.arrayContaining(["raison sociale", "SIRET", "adresse du siège"]),
+    );
+    // 🔴 2026-07-28 — le NDA a été retiré de `CHAMPS_OBLIGATOIRES.facture` :
+    // l'art. L.6351-1 laisse trois mois après la première convention pour
+    // déposer la déclaration d'activité, donc au moment d'émettre cette
+    // convention et la facture qui la suit, le numéro n'existe pas encore. Et il
+    // n'est pas une mention obligatoire de facture (R123-238 C. com. + 242
+    // nonies A ann. II CGI). L'assertion inverse verrouille le contrat : si
+    // quelqu'un le remet dans la liste, ce test tombe — sans elle, la
+    // régression repasserait en silence.
+    expect(payload.data.metadata?.champsManquants).not.toContain(
+      "numéro de déclaration d'activité (NDA)",
     );
   });
 
