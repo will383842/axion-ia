@@ -9,6 +9,7 @@ import { consumeRessourcesMagicLink } from "@/server/ressources/magic-link";
 import { signFormateurSession } from "@/lib/formateur-session";
 import { setRessourcesCookie } from "@/server/ressources/cookie";
 import { RESSOURCES_BASE_PATH, RESSOURCES_CONNEXION_PATH } from "@/server/ressources/routes";
+import { publicUrl } from "@/lib/public-url";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,9 @@ export async function GET(
   { params }: { params: Promise<{ token: string; locale: string }> },
 ): Promise<Response> {
   const { token } = await params;
-  const failureUrl = new URL(`${RESSOURCES_CONNEXION_PATH}?erreur=lien_invalide`, request.url);
+  // 🔴 Même défaut que l'espace formateur : `request.url` porte l'adresse
+  // interne du conteneur derrière le proxy. Voir `@/lib/public-url`.
+  const failureUrl = publicUrl(`${RESSOURCES_CONNEXION_PATH}?erreur=lien_invalide`);
 
   const recipientId = await consumeRessourcesMagicLink(token);
   if (!recipientId) return NextResponse.redirect(failureUrl);
@@ -35,5 +38,5 @@ export async function GET(
     data: { lastRessourcesLoginAt: new Date() },
   });
 
-  return NextResponse.redirect(new URL(RESSOURCES_BASE_PATH, request.url));
+  return NextResponse.redirect(publicUrl(RESSOURCES_BASE_PATH));
 }
