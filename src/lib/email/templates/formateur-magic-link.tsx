@@ -30,7 +30,18 @@ export function FormateurMagicLinkEmail({
   // segment `/connexion/<token>`. Pas de lecture d'environnement ici : un
   // template d'e-mail doit rester pur, et `magicLink` porte déjà l'origine
   // publique résolue par `buildFormateurMagicLinkUrl`.
-  const espaceUrl = `${p.magicLink.split("/espace-formateur/")[0]}/espace-formateur`;
+  //
+  // ⚠️ `payload` est un `Record<string, unknown>` : le typage ne garantit RIEN
+  // de son contenu. Ma première version faisait `p.magicLink.split(...)` et
+  // levait « Cannot read properties of undefined » dès que le champ manquait —
+  // `templates-coverage.test.ts` rend justement chaque template avec un payload
+  // vide, et l'a attrapé. Un template d'e-mail doit se rendre quoi qu'on lui
+  // passe : une exception ici ferait échouer l'envoi ENTIER, pas seulement une
+  // ligne de bas de page.
+  const espaceUrl =
+    typeof p.magicLink === "string" && p.magicLink.includes("/espace-formateur/")
+      ? `${p.magicLink.split("/espace-formateur/")[0]}/espace-formateur`
+      : null;
   return (
     <EmailLayout
       preview="Votre lien de connexion sécurisé à l'espace formateur"
@@ -82,16 +93,18 @@ export function FormateurMagicLinkEmail({
         renvoie un lien. On donne donc le chemin permanent, distinct du lien
         jetable.
       */}
-      <Text
-        style={{
-          ...emailStyles.paragraphStyle,
-          fontSize: "12px",
-          color: emailStyles.COLORS.textMuted,
-        }}
-      >
-        Pour revenir plus tard, l&apos;adresse de votre espace est <strong>{espaceUrl}</strong> —
-        vous y demanderez un nouveau lien en saisissant cette même adresse e-mail.
-      </Text>
+      {espaceUrl === null ? null : (
+        <Text
+          style={{
+            ...emailStyles.paragraphStyle,
+            fontSize: "12px",
+            color: emailStyles.COLORS.textMuted,
+          }}
+        >
+          Pour revenir plus tard, l&apos;adresse de votre espace est <strong>{espaceUrl}</strong> —
+          vous y demanderez un nouveau lien en saisissant cette même adresse e-mail.
+        </Text>
+      )}
     </EmailLayout>
   );
 }
