@@ -30,6 +30,7 @@ import {
   validateSousTraitant,
   validateCpfEligibilite,
   getFinancementValidations,
+  validateFinancementMutualiseSansCertification,
 } from "./validation-service";
 
 const mockPrisma = prisma as unknown as {
@@ -61,6 +62,85 @@ function makeSession(overrides: Record<string, unknown> = {}) {
 // ─────────────────────────────────────────────────────────────────────────────
 // validateOpcoAccord
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 Soulevé par Will le 2026-07-28 : « si on n'a pas Qualiopi, on ne peut pas
+ * faire de demande OPCO non ? ». Exact — art. L.6316-1 : la certification
+ * conditionne l'accès aux fonds mutualisés. Elle ne conditionne PAS le droit de
+ * former : sans elle, on vend et on facture directement au client.
+ *
+ * Le cas qui compte le plus est celui du PAIEMENT DIRECT : il ne doit rien
+ * déclencher. C'est ainsi que se vendent les premières formations d'un
+ * organisme non encore certifié, et l'audit initial en dépend. Si cette règle
+ * se mettait à alerter là-dessus, elle produirait du bruit sur le seul mode de
+ * financement réellement praticable aujourd'hui.
+ */
+describe("validateFinancementMutualiseSansCertification", () => {
+  it("alerte sur OPCO tant que la certification n'est pas obtenue", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: "opco" }),
+      false,
+    );
+    expect(r.ok).toBe(false);
+    expect(r.gravite).toBe("warning");
+    expect(r.alerte).toContain("L.6316-1");
+  });
+
+  it("alerte aussi sur France Travail et CPF", () => {
+    for (const t of ["france_travail", "cpf"]) {
+      const r = validateFinancementMutualiseSansCertification(
+        makeSession({ financementType: t }),
+        false,
+      );
+      expect(r.ok, `${t} devrait alerter`).toBe(false);
+    }
+  });
+
+  it("se tait dès que la certification est obtenue", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: "opco" }),
+      true,
+    );
+    expect(r.ok).toBe(true);
+  });
+
+  // 🔴 Le cas qui doit rester silencieux.
+  it("ne dit RIEN sur un paiement direct par l'entreprise", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: "direct" }),
+      false,
+    );
+    expect(r.ok).toBe(true);
+    expect(r.alerte).toBeUndefined();
+  });
+
+  it("ne dit rien non plus sur un financement mixte", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: "mixte" }),
+      false,
+    );
+    expect(r.ok).toBe(true);
+  });
+
+  it("tolère un type de financement absent", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: null }),
+      false,
+    );
+    expect(r.ok).toBe(true);
+  });
+
+  // AVERTISSEMENT et non blocage : on prépare légitimement des sessions en
+  // anticipant la certification, et `validateOpcoAccord` empêche déjà tout
+  // démarrage réel sans accord écrit.
+  it("reste un avertissement, jamais un blocage critique", () => {
+    const r = validateFinancementMutualiseSansCertification(
+      makeSession({ financementType: "opco" }),
+      false,
+    );
+    expect(r.gravite).not.toBe("critique");
+  });
+});
 
 describe("validateOpcoAccord", () => {
   it("retourne ok=true si financementType != opco", () => {
@@ -452,8 +532,12 @@ describe("getFinancementValidations", () => {
       formation: { edofVerifieAt: null, cpfEligible: false },
     });
     const results = await getFinancementValidations("sess-uuid-1");
-    expect(results).toHaveLength(5);
+    // 6 depuis l'ajout de `certification_requise` (2026-07-28) : sans
+    // certification Qualiopi, aucun financement mutualisé n'est accessible
+    // (art. L.6316-1). Elle vient en tête, avant les validations de dossier.
+    expect(results).toHaveLength(6);
     const codes = results.map((r) => r.code);
+    expect(codes).toContain("certification_requise");
     expect(codes).toContain("opco_accord");
     expect(codes).toContain("opco_tripartite");
     expect(codes).toContain("cpf_edof");
