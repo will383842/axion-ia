@@ -62,7 +62,7 @@ export default async function ConfirmationPage({ params }: Props) {
                 : "You will receive a confirmation email at the address provided in the next few minutes."}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Cta href="/interventions" size="lg">
+              <Cta href="/formations" size="lg">
                 {isFr ? "Voir les formats standards" : "See standard formats"}
               </Cta>
               <Cta href="/" variant="outline" size="lg">

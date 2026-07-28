@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
-import { SERVICES, serviceFooter } from "@/content/services";
+import { SERVICES, serviceOfficial } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
@@ -18,12 +18,14 @@ export async function Footer() {
   const ofPublic = isQualiopiCertificationObtenue();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
-  // `src/content/services.ts` (libellé `footer*` — variante courte voulue par
-  // Will pour la colonne, le nom officiel long restant en JSON-LD/llms/breadcrumbs)
-  // dans l'ordre canonique + Tarifs en clôture. ❌ NE PAS réintroduire de libellé
-  // de service en dur ici ni « Essentielle » (un FORMAT de formation, pas un service).
+  // `src/content/services.ts`, dans l'ordre canonique + Tarifs en clôture.
+  // 2026-07-28 : la variante `footer*` a été SUPPRIMÉE du SSOT (elle avait dérivé
+  // en un nom différent du nom officiel). Le footer affiche désormais le nom
+  // officiel, exactement comme les breadcrumbs, le JSON-LD et llms.txt.
+  // ❌ NE PAS réintroduire de libellé de service en dur ici ni « Essentielle »
+  // (un FORMAT de formation, pas un service).
   const services = [
-    ...SERVICES.map((s) => ({ href: s.href, label: serviceFooter(s, isFr) })),
+    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 

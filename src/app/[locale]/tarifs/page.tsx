@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { setRequestLocale, getTranslations } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
@@ -34,6 +34,7 @@ import {
   formatTierPrice,
 } from "@/content/pricing";
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
 // Sprint Header refonte 2026-05-24 (Will). Page récap tarifs multi-modules.
 // Source de vérité unique = `pricing.ts` — aucun prix hardcodé ici. Tout
@@ -122,7 +123,6 @@ export default async function PricingPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
-  const t = await getTranslations();
 
   // Titre/description meta réutilisés à l'identique (SSOT avec generateMetadata)
   // pour le nœud CollectionPage ci-dessous.
@@ -163,7 +163,7 @@ export default async function PricingPage({ params }: Props) {
       id: "un-a-un",
       href: "/un-a-un",
       eyebrow: isFr ? "Coaching premium" : "Premium coaching",
-      title: t("nav.oneToOne"),
+      title: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       description: isFr
         ? "Journée 1-to-1 avec le dirigeant ou un collaborateur clé. Structuration et chiffrage précis des gains IA."
         : "1-on-1 day with the executive or a key team member. Structuring and precise quantification of AI gains.",
@@ -174,7 +174,7 @@ export default async function PricingPage({ params }: Props) {
       id: "audits",
       href: "/audit",
       eyebrow: isFr ? "Diagnostic" : "Diagnostic",
-      title: t("nav.auditShort"),
+      title: serviceOfficial(SERVICE_BY_ID.audit, isFr),
       description: isFr
         ? "4 niveaux pyramide TPE → ETI. Cartographie de vos opportunités IA chiffrées action par action."
         : "4-level pyramid SMB → mid-cap. Map of your AI opportunities, costed action by action.",
@@ -185,7 +185,7 @@ export default async function PricingPage({ params }: Props) {
       id: "implementations",
       href: "/implementation",
       eyebrow: isFr ? "Mise en production" : "Production deployment",
-      title: t("nav.implementationShort"),
+      title: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       description: isFr
         ? "Pilote, chatbot RAG, agents IA, automatisations, IA custom. Production en 4 à 12 semaines, support 30 j inclus."
         : "Pilot, RAG chatbot, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",

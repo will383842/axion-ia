@@ -46,8 +46,8 @@ export const LA_ROCHELLE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à La Rochelle : sessions dans votre établissement, chantier, agence ou en visio. Pour dirigeants de TPE/PME nautiques, touristiques, tech et commerçants rochelais souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à La Rochelle : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques dotés d'assistants intelligents, devis automatisés et contenus optimisés pour le référencement local.",
-      en: "Sites web augmentés IA à La Rochelle : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques dotés d'assistants intelligents, devis automatisés et contenus optimisés pour le référencement local.",
+      fr: "Sites web & SaaS IA à La Rochelle : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques dotés d'assistants intelligents, devis automatisés et contenus optimisés pour le référencement local.",
+      en: "Sites web & SaaS IA à La Rochelle : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques dotés d'assistants intelligents, devis automatisés et contenus optimisés pour le référencement local.",
     },
   },
   services: {

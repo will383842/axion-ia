@@ -46,8 +46,8 @@ export const WASQUEHAL_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Wasquehal : sessions dans votre bureau, commerce, cabinet ou en visio. Dirigeants TPE et PME wasquehaliens : commerçants, artisans, professions libérales, dirigeants tertiaires et e-commerce.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Wasquehal : plateformes et boutiques en ligne sur mesure pour TPE et PME de la métropole lilloise — agents conversationnels, recommandation produit, automatisation du service client.",
-      en: "Sites web augmentés IA à Wasquehal : plateformes et boutiques en ligne sur mesure pour TPE et PME de la métropole lilloise — agents conversationnels, recommandation produit, automatisation du service client.",
+      fr: "Sites web & SaaS IA à Wasquehal : plateformes et boutiques en ligne sur mesure pour TPE et PME de la métropole lilloise — agents conversationnels, recommandation produit, automatisation du service client.",
+      en: "Sites web & SaaS IA à Wasquehal : plateformes et boutiques en ligne sur mesure pour TPE et PME de la métropole lilloise — agents conversationnels, recommandation produit, automatisation du service client.",
     },
   },
   services: {

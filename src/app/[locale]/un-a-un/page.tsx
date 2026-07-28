@@ -48,12 +48,14 @@ import {
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { coachingFormulePath, COACHING_1TO1_ISO_DURATION } from "@/content/coaching-1to1";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import { ProcessSteps } from "@/components/sections/ProcessSteps";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { VisibiliteCallout } from "@/components/visibilite/VisibiliteCallout";
 import { ServiceHero } from "@/components/sections/ServiceHero";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -100,9 +102,7 @@ export default async function UnAUnHubPage({ params }: Props) {
   const recurringPrice = formatAmount(RECURRING_PRICE, loc);
   const entryPrice = formatAmount(Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE, RECURRING_PRICE), loc);
 
-  const breadcrumbItems = [
-    { href: path, label: isFr ? "Accompagnement 1 to 1" : "1-to-1 coaching" },
-  ];
+  const breadcrumbItems = [{ href: path, label: serviceOfficial(SERVICE_BY_ID.unAUn, isFr) }];
 
   // ==========================================================================
   // Les 2 formules 1-to-1 — équivalent des « paliers durée » de collectives.
@@ -339,6 +339,11 @@ export default async function UnAUnHubPage({ params }: Props) {
           <ChevronDown aria-hidden="true" className="text-terracotta h-5 w-5 animate-bounce" />
         </a>
       </div>
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="unAUn" isFr={isFr} />
 
       {/* 2 CARDS FORMULE */}
       <Section

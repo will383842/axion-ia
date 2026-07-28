@@ -37,9 +37,9 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       descEn: "Mission, approach and scope of work.",
     },
     {
-      href: "/interventions",
-      labelFr: "Nos interventions IA",
-      labelEn: "Our AI sessions",
+      href: "/formations",
+      labelFr: "Nos formations IA",
+      labelEn: "Our AI training",
       descFr: "Formations, ateliers et accompagnements proposés.",
       descEn: "Training, workshops and support offered.",
     },
@@ -53,9 +53,9 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
   ],
   interventions: [
     {
-      href: "/interventions",
-      labelFr: "Formations & interventions IA",
-      labelEn: "AI training & sessions",
+      href: "/formations",
+      labelFr: "Formations IA",
+      labelEn: "AI training",
       descFr: "Le détail des formats sur site et à distance.",
       descEn: "Details of on-site and remote formats.",
     },
@@ -174,9 +174,9 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       descEn: "Individual support for executives and managers.",
     },
     {
-      href: "/interventions",
-      labelFr: "Toutes nos interventions",
-      labelEn: "All our sessions",
+      href: "/formations",
+      labelFr: "Toutes nos formations",
+      labelEn: "All our training",
       descFr: "Formats collectifs en complément du 1-to-1.",
       descEn: "Group formats alongside 1-to-1 coaching.",
     },

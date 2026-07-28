@@ -46,8 +46,8 @@ export const LES_SABLES_D_OLONNE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 aux Sables-d'Olonne : sessions dans votre établissement, chantier, commerce ou en visio. Pour dirigeants de TPE/PME touristiques, nautiques et de la pêche souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA aux Sables-d'Olonne : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques avec assistants intelligents, devis automatisés et contenus optimisés pour le référencement balnéaire.",
-      en: "Sites web augmentés IA aux Sables-d'Olonne : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques avec assistants intelligents, devis automatisés et contenus optimisés pour le référencement balnéaire.",
+      fr: "Sites web & SaaS IA aux Sables-d'Olonne : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques avec assistants intelligents, devis automatisés et contenus optimisés pour le référencement balnéaire.",
+      en: "Sites web & SaaS IA aux Sables-d'Olonne : plateformes de réservation, sites vitrines touristiques multilingues et portails nautiques avec assistants intelligents, devis automatisés et contenus optimisés pour le référencement balnéaire.",
     },
   },
   services: {

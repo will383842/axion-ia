@@ -26,6 +26,7 @@ import { AuditWhyNow } from "@/components/services/audit/AuditWhyNow";
 import { AuditCtaBlock } from "@/components/services/audit/AuditCtaBlock";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { AUDIT_TIERS_META, auditTierPath } from "@/content/audit-taxonomy";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -36,6 +37,7 @@ import {
   buildHowToJsonLd,
   SITE_URL,
 } from "@/lib/seo";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 // ============================================================================
 // Hub /audit — refonte 2026-05-31 (Will), best practices 2026 alignées sur
@@ -163,7 +165,7 @@ export default async function AuditHub({ params }: Props) {
     })),
   });
 
-  const breadcrumbItems = [{ href: "/audit", label: isFr ? "Audit IA" : "AI audit" }];
+  const breadcrumbItems = [{ href: "/audit", label: serviceOfficial(SERVICE_BY_ID.audit, isFr) }];
 
   return (
     <>
@@ -181,6 +183,11 @@ export default async function AuditHub({ params }: Props) {
       {/* PREUVE SOCIALE — bandeau logos clients défilant, juste après le hero
           (Will 2026-05-31). */}
       <ClientLogosMarqueeBand isFr={isFr} />
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="audit" isFr={isFr} />
 
       {/* POURQUOI UN AUDIT — « L'IA, tout le monde en parle. Nous, on la rend
           rentable. » Contraste visuel (foncer ❌ vs méthode Axion-IA ✅) +
