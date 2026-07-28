@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
           // Cette description AFFIRME « certifié Qualiopi » : c'est donc
           // `isQualiopiCertificationObtenue()` qui doit la gater, jamais
           // `isQualiopiPublicDisclosureEnabled()`. Corrigé 2026-07-28 — la home
-          // avait été oubliée lors du découplage des deux notions par #401, et
+          // avait été oubliée lors du découplage des deux notions par la PR 401, et
           // serait repassée à l'affirmation dès `OF_PUBLIC_DISCLOSURE_ENABLED=true`
           // alors que la certification n'est pas obtenue (cf. en-tête de `flag.ts`,
           // qui qualifie cette situation d'illégale). Garde-fou :
