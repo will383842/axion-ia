@@ -58,6 +58,10 @@ export async function Footer() {
     // (page `/equipe/williams` servie uniquement en FR).
     ...(isFr ? [{ href: "/equipe/williams", label: "Fondateur" }] : []),
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
+    // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
+    // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
+    // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
+    { href: "/avis", label: isFr ? "Avis clients" : "Client reviews" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
