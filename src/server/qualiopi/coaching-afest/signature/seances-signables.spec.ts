@@ -16,6 +16,7 @@ import {
   finSeance,
   FENETRE_RATTRAPAGE_SEANCE_MS,
   type SeanceCandidate,
+  type EtatSeance,
 } from "./seances-signables";
 
 /** 10 juin 2026, 09:00 Paris = 07:00 UTC (heure d'été). */
@@ -158,7 +159,10 @@ describe("🔴 le scénario que ce module existe pour interdire", () => {
     expect(seancesSignables(douze, dernierJour)).toStrictEqual(["cr-11"]);
 
     const motifs = etatsSeances(douze, dernierJour)
-      .filter((e): e is { id: string; signable: false; motif: string } => !e.signable)
+      // 🔴 Le prédicat doit dériver d'`EtatSeance`, pas le redécrire à la main :
+      // la version manuscrite élargissait `motif` en `string`, ce qui n'est pas
+      // assignable à `MotifNonSignable` et faisait échouer la compilation.
+      .filter((e): e is Extract<EtatSeance, { signable: false }> => !e.signable)
       .map((e) => e.motif);
     expect(new Set(motifs)).toStrictEqual(new Set(["seance_trop_ancienne"]));
   });

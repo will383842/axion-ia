@@ -136,6 +136,33 @@ historique strictement préservé.
 `dureeReelleHeures` a désormais un **écrivain unique** : le chemin de clôture. La transaction de
 signature ne l'écrit pas.
 
+### 8. Bascule action / gate — livrée d'un seul tenant
+
+Ajouter un vrai système de signature sans **retirer** le mensonge n'aurait rien corrigé. Les deux
+moitiés partent donc dans le même changement :
+
+- **L'action admin ne signe plus.** `signerSeance1to1Action` posait `beneficiaireSigneAt`,
+  `formateurSigneAt` et `tuteurSigneAt` au clic d'un administrateur — quatre horodatages de
+  signature sans signataire, sans image, sans empreinte. Elle devient
+  `acterPresenceSeance1to1Action` et n'écrit plus que la présence **déclarée par l'organisme**
+  (`beneficiairePresent`, `presenceSigneeAt`), dont `legacy_boolean` dépend pour exclure les
+  absences actées. Le renommage fait partie du correctif : le nom affirmait ce que le code
+  prétendait faire. Sous `signature_reelle`, l'action **refuse** — ces colonnes n'y sont plus qu'un
+  cache dérivé, écrit par la seule transaction de signature.
+- **Le gate lit une preuve.** `checkAfestEnforcement` autorisait l'émission d'une attestation sur la
+  foi de la colonne que l'action venait de poser. Il passe par `presenceProuvee(seance, regime)` :
+  ligne `CoachingSeanceSignature` `role='beneficiaire'` non révoquée en `signature_reelle`, critère
+  historique inchangé en `legacy_boolean`.
+
+Séparés, ces deux gestes donnent soit un gate qui lit une colonne que plus personne n'écrit, soit
+une attestation adossée à un booléen que personne n'a signé. Un test de propriété sur la source
+(`presence-gate.spec.ts`) échoue si l'un des deux est rétabli seul — les tests de comportement ne
+voient pas cette classe de défaut, chaque moitié se comportant parfaitement isolément.
+
+**Neutralisation appliquée à TOUS les critères du gate**, pas seulement à la présence : le critère
+d'alternance est un `some()`, si bien qu'une séance annulée dont le compte-rendu avait été rempli
+avant l'annulation suffisait à attester l'alternance d'un parcours où elle n'avait jamais eu lieu.
+
 ## Conséquences
 
 **Positives** — l'émargement AFEST devient opposable ; les quatre surfaces cessent de diverger ; une

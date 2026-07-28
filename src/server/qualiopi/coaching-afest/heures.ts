@@ -96,8 +96,32 @@ export function versSeancePourHeures(cr: {
  * l'attestation à vie (le gate exige que toutes les séances soient signées) et
  * gonflait les heures d'une séance qui n'a pas eu lieu.
  */
-function neutralisee(s: SeancePourHeures): boolean {
+export function estNeutralisee(s: SeancePourHeures): boolean {
   return s.statut === "annulee" || s.statut === "absence_justifiee";
+}
+
+/**
+ * Cette séance porte-t-elle une PREUVE DE PRÉSENCE, sous le régime du parcours ?
+ *
+ * ⚠️ Ce n'est PAS la question à laquelle répond `heuresReellesSignees`, et les
+ * confondre serait une erreur : le comptage des heures exclut les seules
+ * absences ACTÉES (une séance non encore signée compte, sinon un parcours en
+ * cours se facturerait à zéro), tandis que ce prédicat-ci demande une preuve
+ * POSITIVE — c'est le critère du gate qui autorise l'émission d'une attestation.
+ * Une séance « pas encore signée » compte dans les heures et bloque l'attestation.
+ *
+ * Les deux vivent dans ce fichier pour une seule raison : c'est ici qu'est
+ * définie, une fois, la doctrine « ce qui vaut présence » selon le régime. Les
+ * dissocier est exactement par où les surfaces avaient divergé la première fois.
+ *
+ * - `signature_reelle` : la source est la LIGNE `CoachingSeanceSignature`
+ *   `role='beneficiaire'` non révoquée. `presenceSigneeAt` n'est plus qu'un
+ *   cache d'affichage et ne fait pas foi.
+ * - `legacy_boolean` : comportement historique — `presenceSigneeAt` non nul.
+ */
+export function presenceProuvee(s: SeancePourHeures, regime: RegimePreuve): boolean {
+  if (regime === "signature_reelle") return (s.signaturesBeneficiaire?.length ?? 0) > 0;
+  return s.presenceSigneeAt != null;
 }
 
 /**
@@ -138,7 +162,7 @@ export function heuresReellesSignees(
   regime: RegimePreuve,
 ): number {
   const minutes = comptesRendus.reduce((acc, cr) => {
-    if (neutralisee(cr)) return acc;
+    if (estNeutralisee(cr)) return acc;
 
     if (regime === "signature_reelle") {
       const signee = (cr.signaturesBeneficiaire?.length ?? 0) > 0;
