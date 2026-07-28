@@ -46,11 +46,42 @@ export const EDITOR_SNIPPETS: readonly EditorSnippet[] = [
     trigger: "/steps-3",
     html: `<ol class="steps"><li><strong>Étape 1.</strong> ...</li><li><strong>Étape 2.</strong> ...</li><li><strong>Étape 3.</strong> ...</li></ol>`,
   },
+  // CTA internes — un par service (audit maillage 2026-07-28). Avant, seul
+  // `/audit` disposait d'un snippet : les rédacteurs poussaient donc
+  // mécaniquement vers l'audit, ce qui explique une partie du déséquilibre de
+  // maillage interne mesuré (38 surfaces vers /audit contre 16 vers
+  // /sites-web-augmentes et 19 vers /un-a-un). Les 5 services ont désormais
+  // leur snippet, dans l'ordre canonique du SSOT `src/content/services.ts`.
+  // ⚠️ Libellés alignés sur les noms officiels — les garder synchronisés.
+  {
+    id: "cta-internal-formations",
+    label: "CTA — Formations IA",
+    trigger: "/cta-formations",
+    html: `<p class="cta-internal"><a href="/formations" rel="noopener"><strong>Découvrir les formations IA Axion-IA →</strong></a></p>`,
+  },
+  {
+    id: "cta-internal-un-a-un",
+    label: "CTA — Coaching IA 1-to-1",
+    trigger: "/cta-coaching",
+    html: `<p class="cta-internal"><a href="/un-a-un" rel="noopener"><strong>Réserver un coaching IA 1-to-1 →</strong></a></p>`,
+  },
   {
     id: "cta-internal-audit",
     label: "CTA — Audit IA",
     trigger: "/cta-audit",
     html: `<p class="cta-internal"><a href="/audit" rel="noopener"><strong>Réserver un audit IA Axion-IA →</strong></a></p>`,
+  },
+  {
+    id: "cta-internal-implementation",
+    label: "CTA — Implémentation IA",
+    trigger: "/cta-implementation",
+    html: `<p class="cta-internal"><a href="/implementation" rel="noopener"><strong>Déployer l'IA en production avec Axion-IA →</strong></a></p>`,
+  },
+  {
+    id: "cta-internal-sites-web",
+    label: "CTA — Sites web & SaaS IA",
+    trigger: "/cta-sites-web",
+    html: `<p class="cta-internal"><a href="/sites-web-augmentes" rel="noopener"><strong>Augmenter votre site avec l'IA →</strong></a></p>`,
   },
   {
     id: "cta-internal-reserver",

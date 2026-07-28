@@ -52,7 +52,7 @@ export default function LocaleError({ error, reset }: ErrorProps) {
         </p>
         <ul className="grid gap-3 sm:grid-cols-2">
           {[
-            { href: "/interventions", label: t("notFoundLinkInterventions") },
+            { href: "/formations", label: t("notFoundLinkFormations") },
             { href: "/audit", label: t("notFoundLinkAudit") },
             { href: "/cas-concrets", label: t("notFoundLinkCases") },
             { href: "/appel", label: t("notFoundLinkBook") },

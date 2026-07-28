@@ -46,8 +46,8 @@ export const ANTIBES_COPY: VilleCopy = {
       en: "Coaching un-à-un à Antibes pour dirigeants de TPE/PME : sessions individuelles sur site ou en visio pour monter en compétence IA opérationnelle, sans jargon, sur vos vrais sujets (yachting, hôtellerie, BTP, commerce, tech).",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Antibes : plateformes sur mesure pour brokers yachting, hôtels du Cap, restaurants de Juan-les-Pins ou artisans du BTP — multilingue, conversion optimisée, intégrations métier (PMS, CRM, agents conversationnels).",
-      en: "Sites web augmentés IA à Antibes : plateformes sur mesure pour brokers yachting, hôtels du Cap, restaurants de Juan-les-Pins ou artisans du BTP — multilingue, conversion optimisée, intégrations métier (PMS, CRM, agents conversationnels).",
+      fr: "Sites web & SaaS IA à Antibes : plateformes sur mesure pour brokers yachting, hôtels du Cap, restaurants de Juan-les-Pins ou artisans du BTP — multilingue, conversion optimisée, intégrations métier (PMS, CRM, agents conversationnels).",
+      en: "Sites web & SaaS IA à Antibes : plateformes sur mesure pour brokers yachting, hôtels du Cap, restaurants de Juan-les-Pins ou artisans du BTP — multilingue, conversion optimisée, intégrations métier (PMS, CRM, agents conversationnels).",
     },
   },
   services: {

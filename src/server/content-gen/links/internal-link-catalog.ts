@@ -32,8 +32,8 @@ const STATIC_CATALOG: readonly InternalLinkEntry[] = [
     ],
   },
   {
-    topic: "interventions formations IA",
-    url: "/interventions",
+    topic: "formations IA",
+    url: "/formations",
     keywords: ["intervention", "formation", "atelier", "sensibilisation IA", "accompagnement"],
   },
   {

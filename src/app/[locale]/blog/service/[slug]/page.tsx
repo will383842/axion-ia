@@ -70,7 +70,7 @@ export default async function BlogServicePage({ params }: Props) {
   const tier1Posts = posts.filter((p) => resolveTier(p) === "tier-1-indexable");
 
   const canonicalServiceHref =
-    slug === "audit" ? "/audit" : slug === "interventions" ? "/interventions" : "/implementation";
+    slug === "audit" ? "/audit" : slug === "interventions" ? "/formations" : "/implementation";
 
   const collectionJsonLd = buildCollectionPageJsonLd({
     locale: loc,

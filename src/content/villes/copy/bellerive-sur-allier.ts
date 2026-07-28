@@ -46,8 +46,8 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Bellerive-sur-Allier : sessions dans votre hôtel, restaurant, commerce ou en visio. Dirigeants TPE et PME bellerivois : hôteliers, restaurateurs, commerçants, professions libérales.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Bellerive-sur-Allier : plateformes sur mesure pour hôteliers et commerces du bassin de Vichy — réservation en ligne, agents conversationnels multilingues, automatisation du suivi curistes.",
-      en: "Sites web augmentés IA à Bellerive-sur-Allier : plateformes sur mesure pour hôteliers et commerces du bassin de Vichy — réservation en ligne, agents conversationnels multilingues, automatisation du suivi curistes.",
+      fr: "Sites web & SaaS IA à Bellerive-sur-Allier : plateformes sur mesure pour hôteliers et commerces du bassin de Vichy — réservation en ligne, agents conversationnels multilingues, automatisation du suivi curistes.",
+      en: "Sites web & SaaS IA à Bellerive-sur-Allier : plateformes sur mesure pour hôteliers et commerces du bassin de Vichy — réservation en ligne, agents conversationnels multilingues, automatisation du suivi curistes.",
     },
   },
   faqGeolocalisee: [

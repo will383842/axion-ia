@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
-import { SERVICES, serviceFooter } from "@/content/services";
+import { SERVICES, serviceOfficial } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
@@ -18,12 +18,14 @@ export async function Footer() {
   const ofPublic = isQualiopiCertificationObtenue();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
-  // `src/content/services.ts` (libellé `footer*` — variante courte voulue par
-  // Will pour la colonne, le nom officiel long restant en JSON-LD/llms/breadcrumbs)
-  // dans l'ordre canonique + Tarifs en clôture. ❌ NE PAS réintroduire de libellé
-  // de service en dur ici ni « Essentielle » (un FORMAT de formation, pas un service).
+  // `src/content/services.ts`, dans l'ordre canonique + Tarifs en clôture.
+  // 2026-07-28 : la variante `footer*` a été SUPPRIMÉE du SSOT (elle avait dérivé
+  // en un nom différent du nom officiel). Le footer affiche désormais le nom
+  // officiel, exactement comme les breadcrumbs, le JSON-LD et llms.txt.
+  // ❌ NE PAS réintroduire de libellé de service en dur ici ni « Essentielle »
+  // (un FORMAT de formation, pas un service).
   const services = [
-    ...SERVICES.map((s) => ({ href: s.href, label: serviceFooter(s, isFr) })),
+    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
@@ -56,6 +58,10 @@ export async function Footer() {
     // (page `/equipe/williams` servie uniquement en FR).
     ...(isFr ? [{ href: "/equipe/williams", label: "Fondateur" }] : []),
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
+    // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
+    // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
+    // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
+    { href: "/avis", label: isFr ? "Avis clients" : "Client reviews" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },

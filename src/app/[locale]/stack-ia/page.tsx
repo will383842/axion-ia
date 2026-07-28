@@ -839,7 +839,7 @@ export default async function StackIaPage({ params }: Props) {
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link
-              href="/interventions"
+              href="/formations"
               className="text-mocha-fg/85 hover:text-mocha-fg inline-flex items-center gap-1 text-base font-medium underline underline-offset-4"
             >
               {isFr ? "Voir les interventions" : "See the sessions"}

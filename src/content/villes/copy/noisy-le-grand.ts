@@ -46,8 +46,8 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Noisy-le-Grand : sessions dans votre bureau, cabinet, commerce ou en visio. Dirigeants TPE et PME noiséens : indépendants, professions libérales, dirigeants tertiaires et tech.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
-      en: "Sites web augmentés IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
+      fr: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
+      en: "Sites web & SaaS IA à Noisy-le-Grand : plateformes sur mesure pour TPE et PME tertiaires de Marne-la-Vallée — agents conversationnels intégrés, automatisation du suivi client, prise de RDV en ligne.",
     },
   },
   services: {

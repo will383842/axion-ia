@@ -13,7 +13,16 @@
  *   - le bloc « connaissances liées » des pages services.
  *
  * ⚠️ Doctrine : aucun tarif ici (les tarifs restent dans `src/content/pricing.ts`).
+ *
+ * ⚠️ Doctrine nommage (2026-07-28, audit positionnement) : `labelFr`/`labelEn`
+ * ne sont PLUS recopiés ici — ils DÉRIVENT de `src/content/services.ts` (SSOT
+ * unique du nom de service) via `SERVICE_ID_BY_KB_SLUG`. Les recopier avait
+ * produit une dérive de 5 noms pour un même service. En revanche `slug`,
+ * `verticales` et `tagNameFr/En` sont des CLÉS DE GROUNDING persistées en base
+ * (tags `service:*`, `KbFact.verticale`) : ne jamais les renommer sans migrer
+ * le seed ET les lignes existantes.
  */
+import { SERVICE_BY_ID, type ServiceId } from "@/content/services";
 
 /** Slugs de service canoniques (= suffixe du tag `service:<slug>`). */
 export const SERVICE_SLUGS = [
@@ -33,23 +42,45 @@ export interface ServiceDef {
   readonly verticales: readonly string[];
   /** Route de la page service publique. */
   readonly pageHref: string;
-  /** Libellé FR court (titres, breadcrumbs). */
+  /**
+   * Libellé FR court (titres, breadcrumbs) — DÉRIVÉ du SSOT
+   * `src/content/services.ts`, jamais saisi à la main ici.
+   */
   readonly labelFr: string;
+  /** Idem en EN, dérivé du SSOT. */
+  readonly labelEn: string;
   /** Libellé du tag KB (nameFr/nameEn de `KnowledgeTag`). */
   readonly tagNameFr: string;
   readonly tagNameEn: string;
 }
 
 /**
- * Catalogue des 5 services. `verticales` reprend EXACTEMENT les valeurs présentes
- * dans les fichiers `kb/*.ts` (avec underscores) — ne pas renommer sans migrer le seed.
+ * Pont slug KB → id du SSOT nommage. Le slug KB `interventions-formations` est
+ * une clé persistée (tags en base) : il porte encore l'ancien vocabulaire
+ * « interventions », alors que le service s'appelle désormais « Formations IA ».
+ * C'est volontaire — on ne renomme pas une clé de grounding pour un changement
+ * d'affichage.
  */
-export const SERVICE_DEFS: readonly ServiceDef[] = [
+const SERVICE_ID_BY_KB_SLUG: Record<ServiceSlug, ServiceId> = {
+  audit: "audit",
+  implementation: "implementation",
+  "interventions-formations": "formations",
+  "un-a-un": "unAUn",
+  "sites-web-augmentes": "sitesWeb",
+};
+
+/**
+ * Partie NON dérivable du catalogue : les clés de grounding persistées.
+ * `verticales` reprend EXACTEMENT les valeurs présentes dans les fichiers
+ * `kb/*.ts` (avec underscores) — ne pas renommer sans migrer le seed.
+ * `tagNameFr/En` sont les libellés des `KnowledgeTag` déjà créés en base :
+ * les renommer désynchroniserait le seed des lignes existantes.
+ */
+const SERVICE_KEYS: ReadonlyArray<Omit<ServiceDef, "labelFr" | "labelEn">> = [
   {
     slug: "audit",
     verticales: ["audits"],
     pageHref: "/audit",
-    labelFr: "Audit IA",
     tagNameFr: "Service : Audit IA",
     tagNameEn: "Service: AI Audit",
   },
@@ -57,9 +88,6 @@ export const SERVICE_DEFS: readonly ServiceDef[] = [
     slug: "implementation",
     verticales: ["implementations"],
     pageHref: "/implementation",
-    // labelFr (affichage) aligné sur le nom officiel SSOT `src/content/services.ts`
-    // (Will 2026-06-10). slug/verticales/tagName INCHANGÉS (clé grounding KB).
-    labelFr: "Implémentation & automatisation IA",
     tagNameFr: "Service : Implémentation IA",
     tagNameEn: "Service: AI Implementation",
   },
@@ -70,7 +98,6 @@ export const SERVICE_DEFS: readonly ServiceDef[] = [
     // pointe directement sur la cible canonique pour éviter le hop sur le bloc
     // « Connaissances liées » des fiches formations.
     pageHref: "/formations",
-    labelFr: "Formations & interventions IA",
     tagNameFr: "Service : Interventions & accompagnement",
     tagNameEn: "Service: Interventions & enablement",
   },
@@ -78,7 +105,6 @@ export const SERVICE_DEFS: readonly ServiceDef[] = [
     slug: "un-a-un",
     verticales: ["un_a_un"],
     pageHref: "/un-a-un",
-    labelFr: "Accompagnement 1 to 1",
     tagNameFr: "Service : Accompagnement un-à-un",
     tagNameEn: "Service: One-to-one support",
   },
@@ -86,11 +112,21 @@ export const SERVICE_DEFS: readonly ServiceDef[] = [
     slug: "sites-web-augmentes",
     verticales: ["sites_web_augmentes"],
     pageHref: "/sites-web-augmentes",
-    labelFr: "Sites web & SaaS Native IA",
     tagNameFr: "Service : Sites web augmentés",
     tagNameEn: "Service: AI-augmented websites",
   },
-] as const;
+];
+
+/**
+ * Catalogue des 5 services — libellés d'AFFICHAGE dérivés du SSOT nommage
+ * `src/content/services.ts`. Renommer un service là-bas se propage ici sans
+ * intervention (et le garde-fou `services-ssot.spec.ts` interdit de recoller
+ * un libellé en dur).
+ */
+export const SERVICE_DEFS: readonly ServiceDef[] = SERVICE_KEYS.map((k) => {
+  const ssot = SERVICE_BY_ID[SERVICE_ID_BY_KB_SLUG[k.slug]];
+  return { ...k, labelFr: ssot.officialFr, labelEn: ssot.officialEn };
+});
 
 /** Préfixe des tags de service. */
 export const SERVICE_TAG_PREFIX = "service:" as const;

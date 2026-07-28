@@ -46,8 +46,8 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à La Garenne-Colombes : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un prestataire.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à La Garenne-Colombes : sites vitrines et plateformes sur mesure pour cabinets et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés.",
-      en: "Sites web augmentés IA à La Garenne-Colombes : sites vitrines et plateformes sur mesure pour cabinets et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés.",
+      fr: "Sites web & SaaS IA à La Garenne-Colombes : sites vitrines et plateformes sur mesure pour cabinets et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés.",
+      en: "Sites web & SaaS IA à La Garenne-Colombes : sites vitrines et plateformes sur mesure pour cabinets et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés.",
     },
   },
   services: {

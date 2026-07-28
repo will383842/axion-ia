@@ -46,8 +46,8 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
       en: "Coaching 1-to-1 au Plessis-Robinson : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, professions libérales et prestataires techniques souhaitant piloter l'IA sans dépendre d'un tiers.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA au Plessis-Robinson : sites vitrines et portails B2B pour commerces, bureaux d'études et prestataires tech, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
-      en: "Sites web augmentés IA au Plessis-Robinson : sites vitrines et portails B2B pour commerces, bureaux d'études et prestataires tech, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      fr: "Sites web & SaaS IA au Plessis-Robinson : sites vitrines et portails B2B pour commerces, bureaux d'études et prestataires tech, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      en: "Sites web & SaaS IA au Plessis-Robinson : sites vitrines et portails B2B pour commerces, bureaux d'études et prestataires tech, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
     },
   },
   services: {
