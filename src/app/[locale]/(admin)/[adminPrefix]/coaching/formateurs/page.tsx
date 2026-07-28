@@ -1,8 +1,22 @@
-// Coaching 1-to-1 — comptes formateurs (activer/désactiver, envoyer un lien de
-// connexion passwordless). La fiche riche reste dans Formation / Qualiopi.
+// Comptes formateurs — activer/désactiver, envoyer un lien de connexion
+// passwordless. Concerne TOUS les formateurs, collectif comme 1-to-1 ; la fiche
+// riche reste dans Formation / Qualiopi. L'entrée de menu vit désormais sous
+// Formation / Qualiopi (déplacée le 2026-07-28), le chemin d'URL est conservé
+// pour ne pas casser les liens existants.
+
+import type { Metadata } from "next";
 
 import { listFormateurs } from "@/server/coaching-admin/queries";
 import { FormateurAccountManager } from "@/components/admin/coaching/FormateurAccountManager";
+
+// Cet écran était le seul du pôle Qualiopi sans titre : l'onglet du navigateur
+// affichait le nom générique du site. Le reste du back-office en manque aussi
+// (169 pages sur 254) — on ne corrige QUE celle-ci, parce qu'elle vient de
+// rejoindre un pôle où toutes les autres en ont un.
+export const metadata: Metadata = {
+  title: "Qualiopi — Accès & connexions formateurs | Axion-IA Admin",
+  robots: { index: false, follow: false },
+};
 
 export default async function CoachingFormateursPage(): Promise<React.ReactElement> {
   const rows = await listFormateurs();
