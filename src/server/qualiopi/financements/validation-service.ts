@@ -15,6 +15,7 @@ import type {
   FranceTravailDispositif,
 } from "../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de résultat
@@ -55,6 +56,52 @@ type TrainerSousTraitantFields = Pick<Trainer, "statut" | "sousTraitantVerifieAt
 // ─────────────────────────────────────────────────────────────────────────────
 // Validations
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Financement mutualisé demandé alors que la certification n'est PAS obtenue.
+ *
+ * 🔴 Constat du 2026-07-28, soulevé par Will : « si on n'a pas Qualiopi, on ne
+ * peut pas faire de demande OPCO non ? ». C'est exact — art. L.6316-1 du Code
+ * du travail et décret 2019-564 : la certification conditionne l'accès aux
+ * fonds mutualisés et publics (OPCO, CPF, France Travail, État, régions). Elle
+ * ne conditionne PAS le droit de dispenser des formations : un organisme non
+ * certifié vend et forme légalement, le client paie simplement sur ses fonds
+ * propres.
+ *
+ * Les surfaces publiques sont déjà protégées depuis l'audit de certification
+ * (`isQualiopiCertificationObtenue`) : `/certification-qualiopi` et
+ * `/financement-opco-france-travail` renvoient 404 tant que le certificat n'est
+ * pas délivré. Mais RIEN n'avertissait côté console : on pouvait typer une
+ * session « OPCO » et bâtir un devis dessus. Le jour où quelqu'un d'autre que
+ * Will saisit un dossier, il promet à un client une prise en charge
+ * impossible — argument de vente intenable, et l'accord n'arrivera jamais.
+ *
+ * ⚠️ AVERTISSEMENT, PAS BLOCAGE. Deux raisons de ne pas bloquer :
+ *   - on prépare légitimement des sessions en anticipant la certification ;
+ *   - `validateOpcoAccord` bloque déjà le DÉMARRAGE sans accord écrit, donc
+ *     aucune session mutualisée ne peut réellement partir entre-temps.
+ *
+ * L'alerte disparaît d'elle-même le jour où `QUALIOPI_CERTIFICATION_OBTENUE`
+ * passe à `"true"` — aucune dette à reprendre.
+ */
+export function validateFinancementMutualiseSansCertification(
+  session: SessionFinancementFields,
+  certificationObtenue: boolean,
+): ValidationResult {
+  if (certificationObtenue) return { ok: true };
+  // `direct` et `mixte` ne sont pas visés : le premier est intégralement sur
+  // fonds propres, le second reste finançable pour sa part directe.
+  const MUTUALISES = ["opco", "france_travail", "cpf"];
+  if (!MUTUALISES.includes(session.financementType ?? "")) return { ok: true };
+  return {
+    ok: false,
+    alerte:
+      "Financement mutualisé demandé alors que la certification Qualiopi n'est pas obtenue. " +
+      "L'accès aux fonds OPCO, CPF et France Travail l'exige (art. L.6316-1). " +
+      "Tant qu'elle n'est pas délivrée, cette session doit être facturée directement au client.",
+    gravite: "warning",
+  };
+}
 
 /**
  * Accord OPCO BLOQUANT : si financement=opco ET session non démarrée,
@@ -258,6 +305,16 @@ export async function getFinancementValidations(
   });
 
   const results: FinancementValidationEntry[] = [
+    // En tête : c'est la condition d'ACCÈS au financement mutualisé. Les
+    // validations qui suivent portent sur un dossier qu'on ne peut de toute
+    // façon pas ouvrir tant que celle-ci n'est pas levée.
+    {
+      code: "certification_requise",
+      result: validateFinancementMutualiseSansCertification(
+        session,
+        isQualiopiCertificationObtenue(),
+      ),
+    },
     { code: "opco_accord", result: validateOpcoAccord(session) },
     { code: "opco_tripartite", result: validateOpcoConventionTripartite(session) },
     { code: "cpf_edof", result: validateCpfEdof(session, session.formation) },

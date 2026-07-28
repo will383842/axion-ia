@@ -67,6 +67,36 @@ describe("champsIdentiteManquants", () => {
     expect(manquants).toHaveLength(1);
   });
 
+  // 🔴 2026-07-28. L'art. L.6351-1 laisse TROIS MOIS après la première
+  // convention pour déposer la déclaration d'activité : au moment d'émettre
+  // cette convention et la facture qui la suit, l'organisme n'a pas encore de
+  // NDA — c'est elle qui ouvre le délai. Et le NDA n'est pas une mention
+  // obligatoire de facture (R123-238 C. com. + 242 nonies A ann. II CGI ;
+  // L.6352-4 vise les documents contractuels et publicitaires).
+  //
+  // Même impasse que celle qui avait fait retirer `qualiopi` trois jours plus
+  // tôt : on ne peut pas exiger un numéro qui n'existe qu'après l'acte qu'il
+  // conditionne.
+  it("🔴 la facture n'exige PAS le NDA — 3 mois pour déclarer l'activité", () => {
+    const sansNda = { ...IDENTITE_COMPLETE, nda: "" };
+    expect(champsIdentiteManquants(sansNda, "facture")).toEqual([]);
+  });
+
+  it("le SIRET, lui, reste bloquant sur la facture (mention obligatoire R123-238)", () => {
+    const sansSiretNiNda = { ...IDENTITE_COMPLETE, siret: "", nda: "" };
+    const manquants = champsIdentiteManquants(sansSiretNiNda, "facture");
+    expect(manquants).toEqual(["SIRET"]);
+  });
+
+  it("le NDA reste exigé sur convention, tripartite et contrat (L.6352-4)", () => {
+    const sansNda = { ...IDENTITE_COMPLETE, nda: "" };
+    for (const type of ["convention", "convention_tripartite", "contrat"] as const) {
+      expect(champsIdentiteManquants(sansNda, type)).toContain(
+        "numéro de déclaration d'activité (NDA)",
+      );
+    }
+  });
+
   it("🔴 le numéro Qualiopi n'est JAMAIS exigé — ni convention, ni contrat, ni facture", () => {
     // Audit certification 2026-07-25 : l'exiger créait une impasse. L'arrêté du
     // 6 juin 2019 impose d'avoir réalisé une action pour déclencher l'audit
