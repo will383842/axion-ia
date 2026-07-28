@@ -235,6 +235,38 @@ export async function Footer() {
             <a href="/sitemap.xml" className={linkCn}>
               {t("footer.siteMap")}
             </a>
+            {/*
+              Espace formateur — ajouté 2026-07-28.
+
+              Il n'existait AUCUN chemin de retour : le lien magique reçu par
+              e-mail vaut 15 minutes et sert une seule fois, et l'adresse
+              n'était écrite nulle part sur le site. Un formateur qui revenait
+              la semaine suivante devait rappeler Will pour qu'il lui renvoie un
+              lien. Une seule ligne de footer suffit à supprimer ce détour.
+
+              `rel="nofollow"` : la cible est `noindex`, et ce footer est rendu
+              sur ~17 600 routes — sans cet attribut on créerait autant de liens
+              vers une page que les moteurs ne doivent pas explorer.
+
+              `prefetch={false}` : inutile de précharger un espace réservé que la
+              quasi-totalité des visiteurs n'ouvrira jamais. (Une balise `<a>`
+              aurait eu le même effet, mais `@next/next/no-html-link-for-pages`
+              l'interdit à juste titre sur une route interne.)
+            */}
+            <Dot />
+            {/*
+              `as never` : l'espace formateur n'est pas déclaré dans les
+              `pathnames` de next-intl (outil interne, hors routage localisé).
+              Même échappement que `FooterLinkList` plus bas dans ce fichier.
+            */}
+            <Link
+              href={"/espace-formateur" as never}
+              prefetch={false}
+              rel="nofollow"
+              className={linkCn}
+            >
+              {isFr ? "Espace formateur" : "Trainer area"}
+            </Link>
           </div>
         </div>
       </div>
