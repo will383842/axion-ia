@@ -101,12 +101,38 @@ describe("non-régression du chemin collectif", () => {
     );
   });
 
-  it("🔴 `MENTION_VERSION` (collectif) n'a PAS été bumpée pour l'AFEST", () => {
+  it("🔴 la version de mention AFEST est INDÉPENDANTE de celle du collectif", () => {
     // Le texte AFEST est différent, et c'est précisément pour cela qu'il a SA
     // propre version. Toucher celle du collectif rendrait invérifiable ce qui a
     // été présenté aux stagiaires des sessions déjà signées.
-    expect(MENTION_VERSION).toBe("v1");
+    //
+    // ⚠️ Ce test épinglait `MENTION_VERSION` sur le littéral « v1 ». C'était la
+    // mauvaise forme de garde, et la production l'a démontré : le collectif est
+    // légitimement passé en « v2 » (correctif de FORMULATION — la mention signée
+    // présentait l'horaire de la journée comme celui de la demi-journée, donc
+    // 8 h attestées pour 4 h animées). Épingler un littéral revenait à interdire
+    // au flux collectif de corriger sa propre mention — un test qui échoue sur
+    // un changement légitime finit par être supprimé, et la vraie garde avec lui.
+    //
+    // Ce qu'il faut réellement verrouiller, ce sont les deux invariants
+    // ci-dessous ; ils tiennent quelle que soit la version courante du collectif.
     expect(MENTION_VERSION_AFEST).not.toBe(MENTION_VERSION);
+    // L'AFEST ne DÉRIVE pas de la constante collective : une valeur dérivée
+    // suivrait silencieusement le prochain bump du collectif.
+    expect(MENTION_VERSION_AFEST).toBe("afest-v1");
+  });
+
+  it("🔴 un bump du collectif ne peut PAS rétro-invalider une signature scellée", () => {
+    // C'est LA propriété qui protège les empreintes déjà émises, et elle ne
+    // dépend pas de la valeur courante de `MENTION_VERSION` : `mentionVersion`
+    // est une colonne FIGÉE au moment de la signature, pas une valeur recalculée
+    // au moment de la vérification. Une ligne scellée sous « v1 » se recalcule
+    // donc à l'identique, même après le passage du module en « v2 ».
+    expect(TUPLE_COLLECTIF.mentionVersion).toBe("v1");
+    expect(TUPLE_COLLECTIF.mentionVersion).not.toBe(MENTION_VERSION);
+    expect(calculerSelfHash(TUPLE_COLLECTIF)).toBe(
+      "8906fd93529c5088720fc154d29aa2d391beaa30e925b2b2439f3fcbd60bfa8e",
+    );
   });
 
   it("🔴 les versions de tuple sont INDÉPENDANTES entre contextes", () => {
