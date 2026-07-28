@@ -36,20 +36,25 @@ const seance = (o: Partial<SeancePourHeures> = {}): SeancePourHeures => ({
 
 describe("presenceProuvee — la preuve de présence dépend du régime", () => {
   it("signature_reelle : seule la ligne de signature du bénéficiaire fait foi", () => {
-    expect(presenceProuvee(seance({ signaturesBeneficiaire: [{}] }), "signature_reelle")).toBe(true);
+    expect(presenceProuvee(seance({ signaturesBeneficiaire: [{}] }), "signature_reelle")).toBe(
+      true,
+    );
   });
 
   it("signature_reelle : le cache `presenceSigneeAt` seul ne prouve RIEN", () => {
     // C'est très exactement le faux positif que ce chantier retire : un
     // horodatage posé côté organisme, sans signataire ni empreinte derrière.
-    const cachePose = seance({ presenceSigneeAt: new Date("2026-01-01"), beneficiairePresent: true });
+    const cachePose = seance({
+      presenceSigneeAt: new Date("2026-01-01"),
+      beneficiairePresent: true,
+    });
     expect(presenceProuvee(cachePose, "signature_reelle")).toBe(false);
   });
 
   it("legacy_boolean : comportement historique préservé au caractère près", () => {
-    expect(presenceProuvee(seance({ presenceSigneeAt: new Date("2026-01-01") }), "legacy_boolean")).toBe(
-      true,
-    );
+    expect(
+      presenceProuvee(seance({ presenceSigneeAt: new Date("2026-01-01") }), "legacy_boolean"),
+    ).toBe(true);
     expect(presenceProuvee(seance(), "legacy_boolean")).toBe(false);
   });
 
