@@ -14,7 +14,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { Emargement1to1Pdf } from "@/server/qualiopi/documents/templates/emargement-1to1";
 import type { EmargementSeance1to1 } from "@/server/qualiopi/documents/templates/emargement-1to1";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
-import { sumHeuresReelles } from "./heures";
+import { heuresReellesSignees, SEANCE_HEURES_SELECT, versSeancePourHeures } from "./heures";
 
 export interface Emargement1to1Generated {
   documentId: string;
@@ -43,14 +43,19 @@ export async function genererEmargement1to1(
       emargementGenereeAt: true,
       trainer: { select: { nom: true, prenom: true } },
       trainee: { select: { nom: true, prenom: true, entreprise: true } },
+      regimePreuve: true,
       comptesRendus: {
         orderBy: { dateSeance: "asc" },
         select: {
           dateSeance: true,
-          dureeMinutes: true,
-          beneficiairePresent: true,
-          // Requis par sumHeuresReelles pour exclure les absences ACTÉES du total.
-          presenceSigneeAt: true,
+          // 🔴 Sélecteur PARTAGÉ avec les autres surfaces, jamais un select local.
+          // Le select local qu'il remplace omettait `statut` — une séance ANNULÉE
+          // restait donc comptée sur cette feuille alors qu'elle est exclue de la
+          // facture, du BPF et du certificat — et n'embarquait pas la relation de
+          // signature, si bien que le régime réel du parcours ne pouvait pas
+          // s'appliquer ici. C'est précisément par ce genre de select recopié que
+          // les quatre surfaces avaient divergé la première fois.
+          ...SEANCE_HEURES_SELECT,
         },
       },
     },
@@ -82,14 +87,23 @@ export async function genererEmargement1to1(
         ...(cs.beneficiaireEntreprise ? { entreprise: cs.beneficiaireEntreprise } : {}),
       };
 
+  // 🔴 La colonne « présent » et le TOTAL se lisent sous le MÊME régime.
+  //
+  // Sous `signature_reelle`, la présence est portée par la LIGNE DE SIGNATURE du
+  // bénéficiaire ; `beneficiairePresent` n'est plus qu'un cache d'affichage.
+  // Dissocier les deux produirait une feuille qui se contredit elle-même : des
+  // séances cochées « présent » dont les heures ne figurent pas au total — le
+  // pire des rendus devant un auditeur, puisqu'il donne raison au doute.
   const seances: EmargementSeance1to1[] = cs.comptesRendus.map((cr) => ({
     date: formatDate(new Date(cr.dateSeance)),
     dureeLabel: cr.dureeMinutes != null ? `${cr.dureeMinutes} min` : "—",
-    present: cr.beneficiairePresent,
+    present:
+      cs.regimePreuve === "signature_reelle" ? cr.signatures.length > 0 : cr.beneficiairePresent,
   }));
-  const totalHeures = sumHeuresReelles(cs.comptesRendus).toLocaleString("fr-FR", {
-    maximumFractionDigits: 2,
-  });
+  const totalHeures = heuresReellesSignees(
+    cs.comptesRendus.map(versSeancePourHeures),
+    cs.regimePreuve,
+  ).toLocaleString("fr-FR", { maximumFractionDigits: 2 });
 
   const generated = await generateDocument({
     type: "emargement",
