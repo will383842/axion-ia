@@ -32,6 +32,9 @@ import {
   CalendarClock,
   Hourglass,
   Inbox,
+  PhoneCall,
+  UserPlus,
+  Mic,
   BookOpenText,
   BrainCircuit,
   PenLine,
@@ -90,6 +93,14 @@ const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).fla
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
 const ICON_MAP: Record<string, LucideIcon> = {
   "Tableau de bord": LayoutDashboard,
+  // Boîte de réception (refonte 2026-07-29) — les anciens libellés « Contacts »
+  // n'avaient aucune entrée ici et retombaient tous sur l'icône dossier
+  // générique : cinq lignes visuellement identiques. Un canal = une icône.
+  Tout: Inbox,
+  "Appels réservés": PhoneCall,
+  Messages: Mail,
+  Candidatures: UserPlus,
+  "Demandes de podcast": Mic,
   Calendrier: CalendarDays,
   Réservations: ClipboardList,
   Devis: FileText,
@@ -130,8 +141,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
 // Icône d'« onglet principal » par groupe (niveau 1 de la hiérarchie).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
+  // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
+  // canal de la boîte de réception, pas une rubrique à part (cf. admin-nav.ts).
   contacts: Inbox,
-  "rendez-vous": CalendarClock,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,

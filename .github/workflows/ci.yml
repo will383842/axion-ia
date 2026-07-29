@@ -71,6 +71,12 @@ jobs:
         run: pnpm anti-hex:check
       - name: use-client justified
         run: pnpm use-client:check
+      # Refonte « Boîte de réception » 2026-07-29 — `buildAdminNav()` est un SSOT
+      # de CHAÎNES : rien ne reliait ses href aux fichiers `page.tsx`. Un dossier
+      # renommé laissait donc une entrée de menu vers un 404, sans que typecheck
+      # ni tests ne bronchent. Ce gate résout chaque href sur le disque.
+      - name: Admin nav → routes existantes
+        run: pnpm admin-nav:routes-check
       # Audit 2026-05-15 P1-22 — content-gen module isolation gate (§ 4.1bis
       # master prompt). Garantit qu'aucun fichier hors zones whitelisted
       # (src/server/content-gen/**, src/app/[locale]/(admin)/[adminPrefix]/

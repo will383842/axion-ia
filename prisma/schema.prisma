@@ -4732,6 +4732,22 @@ model CalendlyEvent {
   /// absent du payload Embed JS, reste null et Will complète manuellement.
   location           String?             @db.VarChar(500)
   source             CalendlyEventSource @default(embed_js)
+  /// URI API du scheduled_event (ex "https://api.calendly.com/scheduled_events/UUID").
+  /// C'est — avec `inviteeUri` — la SEULE donnée réelle que l'Embed JS transmet :
+  /// le postMessage `calendly.event_scheduled` ne contient QUE ces deux URI, jamais
+  /// le nom, l'email ni l'horaire (limitation Calendly documentée). Les stocker
+  /// permet l'enrichissement API (cf. `src/server/calendly/api.ts`) — immédiat si
+  /// `CALENDLY_API_TOKEN` est posé, rétroactif sinon. Cf. ADR 0036.
+  eventUri           String?             @map("event_uri") @db.VarChar(255)
+  /// URI API de l'invitee. Unique : c'est l'identité stable d'une réservation,
+  /// donc la clé de déduplication fiable (l'ancienne heuristique slug+IP+60 s
+  /// laissait passer deux réservations légitimes du même visiteur).
+  inviteeUri         String?             @unique @map("invitee_uri") @db.VarChar(255)
+  /// URLs d'annulation / report fournies par l'API Calendly (enrichissement).
+  cancelUrl          String?             @map("cancel_url") @db.VarChar(500)
+  rescheduleUrl      String?             @map("reschedule_url") @db.VarChar(500)
+  /// Horodatage du dernier enrichissement API réussi (null = jamais enrichi).
+  enrichedAt         DateTime?           @map("enriched_at")
   /// Payload complet du postMessage event (debug + future re-process).
   rawPayload         Json                @map("raw_payload")
   /// URL où l'event a été capté (ex "https://axion-ia.com/fr/appel").
@@ -4754,6 +4770,7 @@ model CalendlyEvent {
   @@index([inviteeEmail])
   @@index([capturedAt])
   @@index([linkedSubmissionId])
+  @@index([enrichedAt])
   @@map("calendly_events")
 }
 

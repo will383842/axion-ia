@@ -1,9 +1,15 @@
 // Form v2 (2026-05-28) — labels FR pour les 12 types unifiés + 5 enums DB.
 //
+// Déplacé le 2026-07-29 depuis `app/…/submissions/_v2/submission-type-labels.ts`
+// vers la couche `features/` : la boîte de réception unifiée en a besoin, et la
+// règle de frontières de modules interdit à `features/` d'importer depuis
+// `app/` (imports descendants uniquement).
+//
 // Source de vérité partagée entre :
 //   - SubmissionsV2.tsx (badge dans la liste)
 //   - SubmissionDetailContent.tsx (titre + subject reply)
 //   - SubmissionFilters.tsx (dropdown filtre par type)
+//   - features/admin-inbox/queries.ts (objet de la ligne unifiée)
 //
 // Stratégie : `submission.type` (DB enum) ∈ 5 valeurs ; les 5 nouveaux types
 // (presse, recrutement, speaker, investisseur, support_client) sont tous

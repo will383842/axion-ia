@@ -176,9 +176,42 @@ async function checkCloudflareR2(): Promise<{ status: Status; detail: string | n
   return { status: "ok", detail: `bucket=${bucket}` };
 }
 
+/**
+ * Statut Telegram + destination réelle des 3 groupes.
+ *
+ * Le bot « UP » ne prouvait rien sur l'ARRIVÉE des messages : `resolveTelegramChatId()`
+ * retombe silencieusement sur `TELEGRAM_CHAT_ID` quand un `TELEGRAM_CHAT_ID_<GROUPE>`
+ * manque. Trois canaux censés être séparés pouvaient donc atterrir au même endroit
+ * sans qu'aucun écran ne le dise. On affiche la répartition constatée.
+ */
 async function checkTelegram(): Promise<{ status: Status; detail: string | null }> {
   const token = process.env["TELEGRAM_BOT_TOKEN"];
   if (!token) return { status: "not-configured", detail: "TELEGRAM_BOT_TOKEN manquant" };
+
+  const groups = [
+    ["RDV", process.env["TELEGRAM_CHAT_ID_RDV"]],
+    ["Messages", process.env["TELEGRAM_CHAT_ID_MESSAGES"]],
+    ["Système", process.env["TELEGRAM_CHAT_ID_SYSTEM"]],
+  ] as const;
+  const fallback = process.env["TELEGRAM_CHAT_ID"];
+  const dedicated = groups.filter(([, id]) => Boolean(id)).map(([label]) => label);
+  const missing = groups.filter(([, id]) => !id).map(([label]) => label);
+
+  // Aucun chat_id nulle part = les messages ne partent VERS PERSONNE, même si
+  // le bot répond. C'est le seul cas réellement cassé.
+  if (dedicated.length === 0 && !fallback) {
+    return { status: "down", detail: "Bot OK mais AUCUN chat_id : rien n'est délivré" };
+  }
+
+  let routing: string;
+  if (missing.length === 0) {
+    routing = "3 groupes dédiés (RDV · Messages · Système)";
+  } else if (dedicated.length === 0) {
+    routing = `1 seul canal : ${missing.join(", ")} → TELEGRAM_CHAT_ID`;
+  } else {
+    routing = `${dedicated.join(", ")} dédié(s) · ${missing.join(", ")} → canal par défaut`;
+  }
+
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
       signal: AbortSignal.timeout(5000),
@@ -186,10 +219,41 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
     });
     if (!res.ok) return { status: "down", detail: `HTTP ${res.status}` };
     const data = (await res.json()) as { result?: { username?: string; first_name?: string } };
-    return { status: "ok", detail: data.result?.username ? `@${data.result.username}` : "ok" };
+    const name = data.result?.username ? `@${data.result.username}` : "bot OK";
+    return { status: missing.length === 0 ? "ok" : "unknown", detail: `${name} · ${routing}` };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: `API injoignable · ${routing}` };
   }
+}
+
+/**
+ * Statut du doublon WhatsApp (CallMeBot).
+ *
+ * Aucune carte n'existait : le canal est no-op silencieux tant que la clé et le
+ * numéro ne sont pas posés (cf. `server/notifications/channels/whatsapp.ts`), et
+ * rien dans la console ne permettait de savoir dans quel état on se trouvait —
+ * « je ne reçois pas de WhatsApp » était indiagnosticable depuis l'admin.
+ *
+ * Volontairement SANS appel réseau : CallMeBot n'a pas d'endpoint de santé, et
+ * un ping enverrait un vrai message WhatsApp à chaque ouverture de la page.
+ * On ne divulgue jamais la clé — seulement le numéro masqué.
+ */
+function checkWhatsApp(): { status: Status; detail: string | null } {
+  const key = process.env["WHATSAPP_CALLMEBOT_APIKEY"]?.trim();
+  const phone = process.env["WHATSAPP_NOTIFY_PHONE"]?.replace(/[\s-]/g, "");
+  if (!key && !phone) {
+    return {
+      status: "not-configured",
+      detail: "WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE manquants — canal inactif",
+    };
+  }
+  // Une seule des deux variables = panne muette : le canal skip sans rien dire.
+  if (!key)
+    return { status: "down", detail: "WHATSAPP_CALLMEBOT_APIKEY manquante — rien n'est envoyé" };
+  if (!phone)
+    return { status: "down", detail: "WHATSAPP_NOTIFY_PHONE manquant — rien n'est envoyé" };
+  const masked = phone.length > 4 ? `…${phone.slice(-4)}` : "configuré";
+  return { status: "ok", detail: `Doublon leads actif → ${masked}` };
 }
 
 // ─── Page ───────────────────────────────────────────────────────────────────
@@ -213,6 +277,10 @@ export default async function AdminInfraPage({ params }: PageProps) {
       checkHetznerBackups(),
       checkCloudflareR2(),
     ]);
+  // Synchrone et volontairement hors du Promise.all : CallMeBot n'a pas
+  // d'endpoint de santé, et le « pinger » enverrait un vrai WhatsApp à chaque
+  // ouverture de cette page.
+  const whatsapp = checkWhatsApp();
 
   const cards: Card[] = [
     {
@@ -297,10 +365,18 @@ export default async function AdminInfraPage({ params }: PageProps) {
     },
     {
       name: "Telegram bot",
-      role: "Alertes booking + ops · canal Will",
+      role: "Alertes RDV · messages · ops — 3 groupes",
       externalUrl: "https://web.telegram.org/",
       status: telegram.status,
       detail: telegram.detail,
+      paid: "0 €",
+    },
+    {
+      name: "WhatsApp (CallMeBot)",
+      role: "Doublon des leads humains (contact, devis, RDV, candidature, podcast)",
+      externalUrl: "https://www.callmebot.com/blog/free-api-whatsapp-messages/",
+      status: whatsapp.status,
+      detail: whatsapp.detail,
       paid: "0 €",
     },
     {

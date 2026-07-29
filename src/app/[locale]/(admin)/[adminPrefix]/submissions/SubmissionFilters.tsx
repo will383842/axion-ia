@@ -3,16 +3,54 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
+
+// Refonte « Boîte de réception » 2026-07-29 — filtre « Catégorie ».
+//
+// Le sélecteur « Type » ci-dessous porte l'enum DB `SubmissionType`, qui ne
+// compte que 5 valeurs : partenariat, presse, recrutement, speaker,
+// investisseur, support et « autre » y sont TOUS écrasés en « contact ». Il
+// était donc impossible d'isoler la presse depuis cette page — d'où les cinq
+// entrées de sidebar figées qui existaient pour contourner ce manque.
+// Ce second sélecteur expose `details.unifiedType`, le type fin réel (12
+// valeurs, cf. UNIFIED_TYPE_LABELS), et rend ces raccourcis superflus.
+//
+// Les deux groupes reprennent la structure du formulaire public : projet IA
+// d'un côté, autres demandes de l'autre.
+const CLIENT_UNIFIED_TYPES = [
+  "audit",
+  "implementation",
+  "formation",
+  "un_a_un",
+  "devis",
+  "support_client",
+] as const;
+const AUTRE_UNIFIED_TYPES = [
+  "partenariat",
+  "presse",
+  "recrutement",
+  "speaker",
+  "investisseur",
+  "autre",
+] as const;
 
 interface FiltersProps {
   initial: Record<string, string | undefined>;
+  /**
+   * Masque le sélecteur « Catégorie » sur les vues déjà verrouillées sur un
+   * sous-ensemble de types (onglets Clients / Presse / …) : le filtre y serait
+   * inopérant, `forcedTypes` étant prioritaire côté serveur. Afficher un
+   * contrôle sans effet est pire que ne pas l'afficher.
+   */
+  hideCategory?: boolean;
 }
 
-export function SubmissionFilters({ initial }: FiltersProps) {
+export function SubmissionFilters({ initial, hideCategory = false }: FiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [state, setState] = useState({
     type: initial.type ?? "all",
+    unifiedType: initial.unifiedType ?? "all",
     status: initial.status ?? "all",
     locale: initial.locale ?? "all",
     search: initial.search ?? "",
@@ -30,6 +68,9 @@ export function SubmissionFilters({ initial }: FiltersProps) {
     e.preventDefault();
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(state)) {
+      // `unifiedType` n'a aucun effet sur les vues à types forcés : ne pas le
+      // pousser dans l'URL évite un paramètre trompeur dans la barre d'adresse.
+      if (k === "unifiedType" && hideCategory) continue;
       if (v && v !== "all" && v !== "false" && v !== "") params.set(k, v);
     }
     router.push(`${pathname}?${params.toString()}`);
@@ -63,6 +104,36 @@ export function SubmissionFilters({ initial }: FiltersProps) {
             <option value="quote_request">Devis</option>
           </select>
         </div>
+
+        {hideCategory ? null : (
+          <div className="admin-field">
+            <label htmlFor="unifiedType" className="admin-label">
+              Catégorie
+            </label>
+            <select
+              id="unifiedType"
+              value={state.unifiedType}
+              onChange={(e) => setState({ ...state, unifiedType: e.target.value })}
+              className="admin-input"
+            >
+              <option value="all">Toutes</option>
+              <optgroup label="Projet IA">
+                {CLIENT_UNIFIED_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {UNIFIED_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Autres demandes">
+                {AUTRE_UNIFIED_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {UNIFIED_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        )}
 
         <div className="admin-field">
           <label htmlFor="status" className="admin-label">
