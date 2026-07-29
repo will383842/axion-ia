@@ -44,6 +44,8 @@ import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashIp } from "@/lib/security/ip-hash";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { sendTelegram } from "@/lib/telegram";
 import {
   signerDocument,
   type RefusSignatureDocument,
@@ -64,13 +66,26 @@ import { requireAdminWrite, logQualiopiActivity } from "./_guards";
  */
 const PARTIES_DEVIS: readonly PartieSignataire[] = partiesRequisesPour("devis") ?? [];
 
+/**
+ * Plafonds repris À L'IDENTIQUE d'`emargement-public.ts`.
+ *
+ * ⚠️ Volontairement pas plus généreux : un devis se signe UNE fois, là où un
+ * stagiaire signe plusieurs demi-journées avec le même lien. Si l'un des deux
+ * devait être plus serré, ce serait celui-ci.
+ */
+const LIMITE_PAR_JETON = { limit: 12, windowSec: 60 } as const;
+const LIMITE_PAR_IP = { limit: 600, windowSec: 60 } as const;
+
 export type RefusSignatureDevis =
   | RefusSignatureDocument
   | "lien_invalide"
   | "lien_expire"
   | "lien_revoque"
   | "requete_invalide"
-  | "stockage";
+  | "stockage"
+  /** Le lien est valide, mais le devis n'est plus en cours (refusé, accepté, remplacé). */
+  | "devis_non_signable"
+  | "trop_de_tentatives";
 
 export type ResultatSignatureDevis =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }
@@ -115,7 +130,12 @@ async function contexteRequete(): Promise<{
   const ua = entetes.get("user-agent");
   return {
     ipHash: hashIp(ipBrute),
-    userAgentSha256: ua === null ? null : createHash("sha256").update(ua).digest("hex"),
+    // ⚠️ `typeof !== "string"` et non `=== null` : `Headers.get()` rend
+    // `string | null` d'après la spec, mais tout ce qui rend `undefined` ferait
+    // lever `createHash().update(undefined)` — c'est-à-dire qu'un en-tête
+    // manquant ferait échouer une SIGNATURE. Le coût de la robustesse est nul,
+    // celui de la panne ne l'est pas.
+    userAgentSha256: typeof ua !== "string" ? null : createHash("sha256").update(ua).digest("hex"),
   };
 }
 
@@ -182,6 +202,41 @@ export async function signerDevisParJetonAction(input: {
   }
   const donnees = parse.data;
 
+  // ── Rate-limit, AVANT tout travail coûteux ──
+  //
+  // 🔴 Cette action est PUBLIQUE et écrit sur R2 une image pouvant peser
+  // jusqu'à 3 Mo, avant même d'ouvrir la transaction. Sans plafond, quiconque
+  // détient un lien valide peut la marteler et faire écrire autant d'objets.
+  // `emargement-public.ts` — le seul autre point de signature non authentifié du
+  // dépôt — pose exactement les deux mêmes bornes ; ne pas les reprendre ici
+  // laisserait la porte la plus récente moins gardée que la plus ancienne.
+  //
+  // ⚠️ Plafond PAR JETON, qu'aucun nombre de signataires ne dilue, ET par IP.
+  const empreinteJeton = createHash("sha256").update(donnees.token).digest("hex");
+  const parJeton = await checkRateLimit(`devis:sig:${empreinteJeton}`, LIMITE_PAR_JETON);
+  if (!parJeton.allowed) {
+    return {
+      ok: false,
+      raison: "trop_de_tentatives",
+      message: "Trop de tentatives. Patientez une minute avant de réessayer.",
+    };
+  }
+
+  // Contexte résolu ICI, une seule fois : il sert au plafond par IP puis à la
+  // ligne de preuve. Le recalculer deux fois lirait deux fois les en-têtes pour
+  // le même résultat.
+  const contexte = await contexteRequete();
+  if (contexte.ipHash !== null) {
+    const parIp = await checkRateLimit(`devis:ip:${contexte.ipHash}`, LIMITE_PAR_IP);
+    if (!parIp.allowed) {
+      return {
+        ok: false,
+        raison: "trop_de_tentatives",
+        message: "Trop de tentatives depuis ce réseau. Patientez une minute.",
+      };
+    }
+  }
+
   const verif = await verifierTokenDocument(donnees.token);
   if (!verif.ok) {
     const m = REFUS_JETON[verif.raison];
@@ -203,6 +258,41 @@ export async function signerDevisParJetonAction(input: {
     };
   }
 
+  // 🔴 LE DEVIS EST-IL ENCORE SIGNABLE ? Garde SERVEUR, et elle manquait.
+  //
+  // `lireDevisASigner` calcule bien `statutBloquant`, mais il n'est consommé que
+  // par la PAGE. Or la page ne protège rien : cette action est appelable depuis
+  // un onglet resté ouvert, ou directement. Le trou était concret —
+  // `declineDevisAction` pose `statut: "refuse"` sans toucher au jeton : le lien
+  // du client survivait au refus, et sa signature se serait inscrite, chaînée et
+  // scellée, sur un devis refusé. `accepterDevisSurSignature` ne l'aurait même
+  // pas rattrapé (il ne bascule que depuis `envoye`), laissant une pièce signée
+  // face à un CRM qui dit « refusé », et une preuve qu'on ne peut plus retirer
+  // que par révocation explicite.
+  //
+  // C'est le même raisonnement que celui déjà écrit sur le garde 0 € : « le
+  // garde côté formulaire ne protège rien ».
+  const devisCourant = await prisma.devis.findFirst({
+    where: { documentGenereId: verif.documentGenereId },
+    select: { statut: true, numero: true },
+  });
+  if (devisCourant === null) {
+    return { ok: false, raison: "piece_introuvable", message: "Devis introuvable." };
+  }
+  if (devisCourant.statut !== "envoye") {
+    // Message différencié : « déjà accepté » rassure, « n'est plus en cours »
+    // oriente vers l'interlocuteur. Aucun des deux n'apprend rien à qui ne
+    // détient pas déjà un lien valide.
+    return {
+      ok: false,
+      raison: "devis_non_signable",
+      message:
+        devisCourant.statut === "accepte" || devisCourant.statut === "transforme_convention"
+          ? "Ce devis a déjà fait l'objet d'un accord. Aucune nouvelle signature n'est nécessaire."
+          : "Ce devis n'est plus en cours : il a été retiré, refusé ou remplacé. Contactez votre interlocuteur pour en recevoir un nouveau.",
+    };
+  }
+
   try {
     const res = await signerDocument({
       documentGenereId: verif.documentGenereId,
@@ -214,7 +304,7 @@ export async function signerDevisParJetonAction(input: {
       methode: donnees.methode,
       partiesRequises: PARTIES_DEVIS,
       ...(donnees.imageDataUrl === undefined ? {} : { imageDataUrl: donnees.imageDataUrl }),
-      ...(await contexteRequete()),
+      ...contexte,
     });
     if (!res.ok) return res;
 
@@ -222,6 +312,26 @@ export async function signerDevisParJetonAction(input: {
     if (res.statutSignature === "signee") {
       await accepterDevisSurSignature(verif.documentGenereId);
     }
+
+    // 🔴 PRÉVENIR. Sans cette alerte, un client signe et PERSONNE ne le sait.
+    //
+    // Le devis reste alors `partielle` indéfiniment : il attend la
+    // contresignature de l'organisme, qui ne viendra pas puisque rien ne l'a
+    // signalée. Le client, lui, a signé et attend son exemplaire contresigné.
+    // C'est une panne silencieuse du circuit commercial, exactement de la même
+    // famille que le F4 corrigé le 2026-07-26 — « une panne de signature doit
+    // REMONTER ».
+    //
+    // ⚠️ Aucune donnée personnelle dans le corps : Telegram est un canal tiers.
+    // Le numéro de devis suffit à agir. `.catch()` obligatoire — une panne
+    // Telegram ne doit jamais annuler une signature déjà écrite et chaînée.
+    sendTelegram({
+      tag: "AUTO",
+      body:
+        res.statutSignature === "signee"
+          ? `✅ Devis ${devisCourant.numero} : signé par le client ET contresigné — passé en « accepté ».`
+          : `✍️ Devis ${devisCourant.numero} : le client vient de signer. À CONTRESIGNER dans la console pour conclure.`,
+    }).catch(() => {});
 
     return { ok: true, signatureId: res.signatureId, statutSignature: res.statutSignature };
   } catch (err) {

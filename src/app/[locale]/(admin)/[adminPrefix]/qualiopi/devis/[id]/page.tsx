@@ -450,6 +450,27 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           </p>
         )}
 
+        {/* 🔴 L'exemplaire signé — sans lui, la preuve n'existait QU'en base.
+            Le PDF remis au client et vu par l'auditeur continuait d'afficher des
+            cadres vides, alors que la signature était enregistrée et chaînée.
+
+            ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
+            l'empreinte est scellée et ne doit jamais être réécrite. */}
+        {signatures.length > 0 && (
+          <p className="mt-[var(--space-admin-4)]">
+            <a
+              href={`/api/admin/qualiopi/devis/${devis.id}/exemplaire-signe`}
+              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+            >
+              Télécharger l&apos;exemplaire signé (PDF)
+            </a>
+            <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Le devis avec les signatures apposées. La pièce d&apos;origine, scellée, reste
+              inchangée.
+            </span>
+          </p>
+        )}
+
         {/* ⚠️ L'alerte reste restreinte au statut « envoyé » : sur un brouillon
             aucun lien n'existe encore, et sur un devis accepté / refusé / expiré
             / transformé il n'y a plus rien à signer — l'afficher serait un faux

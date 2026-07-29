@@ -50,7 +50,15 @@ export async function envoyerDevisEmailAction(
   const devis = await prisma.devis.findUnique({
     where: { id: input.devisId },
     include: {
-      client: { select: { raisonSociale: true, contactEmail: true, contactNom: true } },
+      client: {
+        select: {
+          raisonSociale: true,
+          contactEmail: true,
+          contactNom: true,
+          // Voir devis.ts : la qualité porte l'opposabilité du pouvoir de signer.
+          contactFonction: true,
+        },
+      },
     },
   });
   if (!devis) return { error: "Devis introuvable." };
@@ -90,6 +98,7 @@ export async function envoyerDevisEmailAction(
         partie: "client",
         signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
         signataireEmail: to,
+        signataireQualite: devis.client.contactFonction,
         borneMetier: devis.dateValidite,
       });
       signatureUrl = publicUrl(`/fr/portail/signer-devis/${token}`).toString();

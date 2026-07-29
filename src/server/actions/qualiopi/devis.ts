@@ -42,6 +42,7 @@ import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture
 import { publicUrl } from "@/lib/public-url";
 import {
   creerTokenDocument,
+  revoquerTokensDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
 import { sendTelegram } from "@/lib/telegram";
@@ -325,6 +326,12 @@ export async function sendDevisAction(
           adresseVille: true,
           contactNom: true,
           contactEmail: true,
+          // 🔴 Repris comme QUALITÉ figée du signataire. Ce n'est pas
+          // décoratif : `signataireQualite` porte l'opposabilité du POUVOIR de
+          // signer — savoir que « Camille Durand » était directrice des
+          // ressources humaines au moment de l'engagement est ce qui permet, des
+          // années plus tard, de soutenir qu'elle pouvait engager la structure.
+          contactFonction: true,
         },
       },
     },
@@ -482,6 +489,7 @@ export async function sendDevisAction(
         // cette identité en base, jamais dans le formulaire.
         signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
         signataireEmail: contactEmail,
+        signataireQualite: devis.client.contactFonction,
         // La date de validité borne le lien : tenir une offre ferme au-delà
         // n'aurait aucun sens commercial.
         borneMetier: devis.dateValidite,
@@ -752,16 +760,38 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 
-  await prisma.devis.update({
+  const refuse = await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "refuse", declinedAt: new Date() },
+    select: { documentGenereId: true },
   });
+
+  // 🔴 Le lien de signature MEURT avec le devis refusé.
+  //
+  // Sans cela, le client garde un lien vivant sur un devis retiré, et rien
+  // n'empêche sa signature de s'inscrire — chaînée, scellée, irrévocable
+  // autrement que par révocation explicite — sur une pièce que l'organisme
+  // vient de refuser. `signerDevisParJetonAction` refuse désormais aussi sur le
+  // statut ; ce sont DEUX gardes, et ce n'est pas redondant : celle-ci ferme la
+  // porte, celle-là refuse d'ouvrir. Fermer seulement l'une des deux laisserait
+  // la fenêtre entre le refus et la prochaine tentative.
+  //
+  // ⚠️ Révoquer un JETON ne touche aucune signature déjà apposée : cela ferme un
+  // accès, cela n'efface pas une preuve.
+  let liensRevoques = 0;
+  if (refuse.documentGenereId !== null) {
+    liensRevoques = await revoquerTokensDocument({
+      documentGenereId: refuse.documentGenereId,
+      motif: "Devis refusé",
+      parAdminId: session.userId,
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis.decline",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "refuse" },
+    changes: { statut: "refuse", liensSignatureRevoques: liensRevoques },
     session,
   });
 

@@ -239,7 +239,8 @@ export function ClientEditForm({
             className={inputCls}
           />
           <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            Reprise comme qualité du signataire sur le devis.
+            Figée comme qualité du signataire au moment de la signature du devis — c&apos;est elle
+            qui atteste le pouvoir d&apos;engager la structure.
           </p>
         </div>
 

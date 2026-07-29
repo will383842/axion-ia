@@ -230,3 +230,55 @@ describe("🔴 DevisPdf — le devis SIGNÉ porte la preuve, sous les totaux", (
     expect(text).toContain("Lu et approuvé");
   });
 });
+
+describe("🔴 DevisPdf — le PARAMÈTRE `signatures` doit rester CONSOMMÉ", () => {
+  // Ce test existe à cause d'un défaut réel, trouvé en vérification E2E le
+  // 2026-07-30 : `devis.tsx` avait été câblé pour rendre une preuve, et AUCUN
+  // producteur ne lui en passait jamais. Le paramètre était mort, la signature
+  // n'existait qu'en base, et le PDF remis au client montrait des cadres vides.
+  //
+  // Un test sur le rendu ne l'aurait pas vu — il passe une preuve à la main.
+  // Celui-ci vérifie l'inverse : que la sortie DIFFÈRE selon qu'on en passe une.
+  // Si quelqu'un retire le branchement, deux rendus deviennent identiques et ce
+  // test tombe.
+  it("le rendu diffère RÉELLEMENT selon qu'une preuve est fournie", () => {
+    const sans = devisText(makeDevis());
+    const avec = devisText(
+      makeDevis({
+        signatures: {
+          client: {
+            signataireNom: "Camille Durand",
+            signeAtLisible: "30/07/2026 14:32",
+            empreinte: "b".repeat(64),
+            methode: "trace",
+            imageSrc: "data:image/png;base64,AAAA",
+          },
+        },
+      }),
+    );
+    expect(avec).not.toStrictEqual(sans);
+    expect(avec).toContain("Camille Durand");
+    expect(sans).not.toContain("Camille Durand");
+  });
+
+  it("rend une image PURGÉE (art. 17) pour ce qu'elle est, pas comme un blanc", () => {
+    // Un blanc silencieux se lirait « pas signé », et transformerait un droit
+    // exercé en apparence de manquement.
+    const text = devisText(
+      makeDevis({
+        signatures: {
+          client: {
+            signataireNom: "Camille Durand",
+            signeAtLisible: "30/07/2026 14:32",
+            empreinte: "c".repeat(64),
+            methode: "trace",
+            imageSrc: null,
+            imagePurgee: true,
+          },
+        },
+      }),
+    );
+    expect(text).toContain("supprimée à la demande du signataire");
+    expect(text).toContain("reste établie");
+  });
+});
