@@ -678,14 +678,58 @@ describe("genererKitFranceTravailAction", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("genererLettreMissionAction", () => {
+  const TRAINER_ID = "d1234567-89ab-cdef-0123-456789abcdef";
+
   it("génère la lettre de mission pour une session", async () => {
-    mockSessionFindUnique.mockResolvedValue(makeSession());
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue({
+      nom: "Jullin",
+      prenom: "Williams",
+      email: "w@axion-ia.fr",
+      telephone: null,
+      tarifJourneeHtCents: 80000,
+      sousTraitantNda: null,
+    });
 
     const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
 
     expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
     const call = mockGenerateDocument.mock.calls[0]![0]! as { type: string };
     expect(call.type).toBe("lettre_mission");
+  });
+
+  it("🔴 REFUSE de nommer un formateur qui n'existe pas", async () => {
+    // Le repli historique retombait sur la RAISON SOCIALE de l'organisme : la
+    // lettre désignait « Axion-IA SAS » comme formateur, c'est-à-dire une
+    // personne MORALE là où l'indicateur 21 attend une personne physique.
+    //
+    // ⚠️ Et la branche intermédiaire (nom lu dans le Json brut) était MORTE pour
+    // toute donnée bien formée : `parseCoFormateurs` n'accepte que `trainerId`,
+    // tandis que le repli lisait `id`, `nom` et `prenom`. On tombait donc
+    // directement sur la raison sociale.
+    //
+    // Depuis que la lettre est SIGNABLE, l'incohérence est visible : le service
+    // de signature refuse un signataire non résolvable, donc le générateur
+    // produisait une pièce que personne ne pouvait signer.
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: null }));
+    mockTrainerFindUnique.mockResolvedValue(null);
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("Aucun formateur") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse aussi quand le formateur désigné a été supprimé", async () => {
+    // `findUnique` rend `null` sur un formateur supprimé : sans ce refus on
+    // retombait sur la raison sociale par exactement le même chemin.
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue(null);
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("Aucun formateur") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 });
 

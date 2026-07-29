@@ -1489,11 +1489,39 @@ export async function genererLettreMissionAction(input: {
 
   const identite = await getOrganismeIdentite();
 
+  // 🔴 REFUS plutôt que fabrication d'un nom.
+  //
+  // Le repli historique était en cascade : formateur résolu → sinon un nom lu
+  // dans le Json brut → sinon LA RAISON SOCIALE DE L'ORGANISME. La dernière
+  // branche produisait une lettre de mission désignant « Axion-IA » comme
+  // formateur — une pièce d'indicateur 21 qui nomme une personne morale là où
+  // elle doit nommer une personne physique.
+  //
+  // ⚠️ Et la branche du milieu était morte pour toute donnée bien formée :
+  // `parseCoFormateurs` n'accepte que `trainerId`, tandis que le repli lisait
+  // `id`, `nom` et `prenom` — des champs que les entrées courantes ne portent
+  // pas. On tombait donc directement sur la raison sociale.
+  //
+  // Depuis que la lettre est SIGNABLE, l'incohérence devient visible : le
+  // service de signature refuse un signataire non résolvable (il ne scelle
+  // jamais une identité fabriquée), si bien que le générateur produisait une
+  // pièce que personne ne pouvait signer. Mieux vaut refuser de l'émettre.
+  //
+  // Impact MESURÉ avant ce changement, pas supposé : une seule session sans
+  // formateur principal en production, son `co_formateurs` est vide, et AUCUNE
+  // lettre de mission n'a jamais été émise. On retire donc le défaut avant son
+  // premier cas réel.
   const nomPrenom = trainer
     ? `${trainer.prenom} ${trainer.nom}`.trim()
     : premierRaw?.prenom && premierRaw?.nom
       ? `${premierRaw.prenom} ${premierRaw.nom}`.trim()
-      : identite.raisonSociale;
+      : "";
+  if (nomPrenom === "") {
+    return {
+      error:
+        "Aucun formateur n'est rattaché à cette session : une lettre de mission doit nommer la personne qui reçoit la mission. Désignez le formateur principal, puis régénérez la lettre.",
+    };
+  }
 
   const tarifJourHt = trainer?.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0;
 

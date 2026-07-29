@@ -703,3 +703,51 @@ describe("🔴 révocation d'un maillon interne INTERDITE", () => {
     expect(res.ok === false && res.raison).toBe("deja_revoquee");
   });
 });
+
+describe("🔴 le tuteur atteste À PROPOS du bénéficiaire — qu'il NOMME", () => {
+  it("refuse la signature du tuteur quand le bénéficiaire n'est pas nommé", async () => {
+    // `mentionAttestationAfest("tuteur", …)` produit « j'atteste que
+    // {beneficiaireNom} a réalisé les mises en situation ». Sans nom, le tuteur
+    // — un TIERS non contractant — scellerait une attestation qui ne désigne
+    // personne, et sa `mentionVersion` figée pointerait vers une phrase creuse.
+    //
+    // ⚠️ La garde d'identité ne portait que sur le SIGNATAIRE : le tuteur est
+    // parfaitement identifié ici, c'est la personne CITÉE qui manquait.
+    mockPrisma.compteRenduSeance.findUnique.mockResolvedValue(
+      contexte({
+        coachingSession: {
+          ...contexte().coachingSession,
+          beneficiaireNom: "",
+          trainee: null,
+        },
+      }),
+    );
+
+    const res = await signerSeanceAfest({
+      compteRenduSeanceId: SEANCE,
+      porteur: lienTuteur(),
+      methode: "trace",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+
+    expect(res).toStrictEqual({
+      ok: false,
+      raison: "nom_beneficiaire_absent",
+      message: expect.any(String),
+    });
+    expect(mockStore).not.toHaveBeenCalled();
+    expect(mockPrisma.coachingSeanceSignature.create).not.toHaveBeenCalled();
+  });
+
+  it("laisse passer le tuteur quand le bénéficiaire EST nommé", async () => {
+    const res = await signerSeanceAfest({
+      compteRenduSeanceId: SEANCE,
+      porteur: lienTuteur(),
+      methode: "trace",
+      imageDataUrl: IMAGE,
+      maintenant: MAINTENANT,
+    });
+    expect(res).toMatchObject({ ok: true });
+  });
+});

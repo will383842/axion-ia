@@ -257,6 +257,24 @@ function resoudreIdentite(
   const nom = (cs.tuteurEntrepriseNom ?? "").trim();
   const email = (cs.tuteurEntrepriseEmail ?? "").trim();
   if (nom === "" || email === "") return { ok: false, raison: "tuteur_absent" };
+
+  // 🔴 Le tuteur atteste À PROPOS du bénéficiaire, qu'il NOMME.
+  //
+  // `mentionAttestationAfest("tuteur", …)` produit littéralement « j'atteste que
+  // {beneficiaireNom} a réalisé les mises en situation de travail ». Sans nom de
+  // bénéficiaire, le tuteur — un TIERS non contractant — se voit présenter, puis
+  // scelle, une attestation qui ne désigne personne. La `mentionVersion` figée
+  // dans son empreinte pointerait vers une phrase creuse.
+  //
+  // ⚠️ La garde d'identité au-dessus est symétrique sur les trois rôles, mais
+  // elle ne portait que sur le SIGNATAIRE. Elle ne voyait donc pas ce cas : le
+  // tuteur est parfaitement identifié, c'est la personne CITÉE qui manque.
+  // Trouvé en écrivant l'écran, pas en relisant le service.
+  const beneficiaireNom = cs.trainee
+    ? `${cs.trainee.prenom} ${cs.trainee.nom}`.trim()
+    : (cs.beneficiaireNom ?? "").trim();
+  if (beneficiaireNom === "") return { ok: false, raison: "nom_beneficiaire_absent" };
+
   return { ok: true, identite: { nom, email } };
 }
 
