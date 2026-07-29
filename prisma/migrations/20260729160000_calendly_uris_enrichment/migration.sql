@@ -13,11 +13,15 @@
 -- Toutes les colonnes sont nullable → migration non bloquante, aucune donnée
 -- existante n'est touchée.
 
-ALTER TABLE "calendly_events" ADD COLUMN "event_uri" VARCHAR(255);
-ALTER TABLE "calendly_events" ADD COLUMN "invitee_uri" VARCHAR(255);
-ALTER TABLE "calendly_events" ADD COLUMN "cancel_url" VARCHAR(500);
-ALTER TABLE "calendly_events" ADD COLUMN "reschedule_url" VARCHAR(500);
-ALTER TABLE "calendly_events" ADD COLUMN "enriched_at" TIMESTAMP(3);
+-- `IF NOT EXISTS` partout : même convention que la migration d'origine de cette
+-- table. `prisma migrate deploy` tourne à chaque boot de conteneur et un
+-- redémarrage au milieu d'une application laisserait une migration à moitié
+-- posée — sans ces gardes, la reprise échouerait en boucle.
+ALTER TABLE "calendly_events" ADD COLUMN IF NOT EXISTS "event_uri" VARCHAR(255);
+ALTER TABLE "calendly_events" ADD COLUMN IF NOT EXISTS "invitee_uri" VARCHAR(255);
+ALTER TABLE "calendly_events" ADD COLUMN IF NOT EXISTS "cancel_url" VARCHAR(500);
+ALTER TABLE "calendly_events" ADD COLUMN IF NOT EXISTS "reschedule_url" VARCHAR(500);
+ALTER TABLE "calendly_events" ADD COLUMN IF NOT EXISTS "enriched_at" TIMESTAMP(3);
 
 -- Backfill des lignes déjà captées : les URI sont présentes dans raw_payload
 -- (le payload brut a toujours été stocké intégralement), simplement jamais
@@ -50,5 +54,5 @@ WHERE c."invitee_uri" IS NOT NULL
 -- L'unicité est posée APRÈS le backfill. Postgres autorise plusieurs NULL dans
 -- un index unique : les lignes manuelles et les captures antérieures sans URI
 -- ne s'entre-bloquent pas.
-CREATE UNIQUE INDEX "calendly_events_invitee_uri_key" ON "calendly_events"("invitee_uri");
-CREATE INDEX "calendly_events_enriched_at_idx" ON "calendly_events"("enriched_at");
+CREATE UNIQUE INDEX IF NOT EXISTS "calendly_events_invitee_uri_key" ON "calendly_events"("invitee_uri");
+CREATE INDEX IF NOT EXISTS "calendly_events_enriched_at_idx" ON "calendly_events"("enriched_at");
