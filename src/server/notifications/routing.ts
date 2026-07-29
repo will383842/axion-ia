@@ -160,9 +160,16 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // Reste no-op tant que WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE
   // ne sont pas définis côté Coolify (cf. `channels/whatsapp.ts`).
   "PODCAST_REQUEST_SUBMITTED",
-  // Réservations / RDV (création d'intention)
-  "BOOKING_CREATED",
-  "OPTION_POSTED",
+  // Réservations / RDV (création d'intention).
+  //
+  // `BOOKING_CREATED` et `OPTION_POSTED` ont été RETIRÉS le 2026-07-29 : le
+  // tunnel de réservation payante est éteint depuis l'audit 2026-07-09
+  // (`createBookingAction` / `postOption48hAction` n'existent plus), donc ces
+  // deux catégories n'ont plus aucun émetteur. Les garder ici laissait croire
+  // que WhatsApp couvrait des réservations qui ne peuvent plus se produire —
+  // et masquait le fait que le SEUL canal de RDV réellement vivant est Calendly.
+  // Les catégories elles-mêmes restent déclarées et routées : si le tunnel
+  // renaît, il suffit de rajouter les deux lignes ici.
   "CALENDLY_INVITEE_CREATED",
 ]);
 

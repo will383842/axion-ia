@@ -801,3 +801,77 @@ jobs:
             echo "::warning::Warmer capé ${cap}/${total} — surplus chauffé par trafic/crawl."
           fi
           echo "::notice::Warm terminé (best-effort, non bloquant)."
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # notify — annonce Telegram du résultat du déploiement (2026-07-29)
+  # ══════════════════════════════════════════════════════════════════════════
+  #
+  # POURQUOI CE JOB : les catégories `DEPLOY_SUCCESS` / `DEPLOY_FAILED` du hub
+  # de notifications existaient, étaient routées et formatées… mais n'avaient
+  # AUCUN émetteur. `scripts/deploy-prod.sh` appelle bien Telegram, seulement ce
+  # n'est plus le chemin réel : depuis l'externalisation du build (ADR 0026),
+  # c'est CE workflow qui déploie — et il ne disait rien. Un déploiement raté
+  # passait donc totalement inaperçu.
+  #
+  # TROIS GARDE-FOUS pour qu'il ne puisse JAMAIS casser un déploiement :
+  #   1. `needs: [build, deploy]` + `if: always()` → il s'exécute quel que soit
+  #      leur sort, y compris en échec (c'est justement le cas intéressant) ;
+  #   2. `continue-on-error: true` → son propre échec n'affecte pas la
+  #      conclusion du workflow ;
+  #   3. sans `TELEGRAM_BOT_TOKEN` ou sans chat_id, il s'arrête AVANT tout appel
+  #      réseau. Le workflow reste donc strictement identique tant que Will n'a
+  #      pas posé les secrets — aucun effet de bord à la fusion.
+  #
+  # Secrets à poser côté GitHub (Settings → Secrets → Actions) pour l'activer :
+  #   TELEGRAM_BOT_TOKEN     — le même que celui du site
+  #   TELEGRAM_CHAT_ID_SYSTEM — groupe « 🔔 Système » (repli : TELEGRAM_CHAT_ID)
+  notify:
+    name: Telegram — résultat du déploiement
+    needs: [build, deploy]
+    if: always()
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Annoncer le résultat
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID_SYSTEM || secrets.TELEGRAM_CHAT_ID }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+        run: |
+          set -u
+          if [ -z "${TG_TOKEN:-}" ] || [ -z "${TG_CHAT:-}" ]; then
+            echo "::notice::TELEGRAM_BOT_TOKEN / chat_id absents — notification ignorée (aucun appel réseau)."
+            exit 0
+          fi
+
+          # Succès = build ET deploy en success. `skipped` (workflow_dispatch
+          # avec skip_deploy) n'est pas un échec et ne doit pas alarmer.
+          if [ "${BUILD_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
+            emoji="🟢"; titre="Déploiement réussi"
+          else
+            emoji="🔴"; titre="ÉCHEC de déploiement"
+          fi
+
+          # Message en texte brut : pas de MarkdownV2, donc aucun risque qu'un
+          # caractère d'un titre de commit fasse échouer l'envoi (piège connu).
+          msg=$(printf '%s %s\n\nDépôt : %s\nBranche : %s\nCommit : %s\nAuteur : %s\nMessage : %s\n\nBuild : %s\nDeploy : %s\n\nDétail : %s' \
+            "${emoji}" "${titre}" \
+            "${GITHUB_REPOSITORY}" "${GITHUB_REF_NAME}" "${GITHUB_SHA:0:8}" \
+            "${GITHUB_ACTOR}" "$(git log -1 --pretty=%s 2>/dev/null || echo '(indisponible)')" \
+            "${BUILD_RESULT}" "${DEPLOY_RESULT}" \
+            "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}")
+
+          # `|| true` partout : un Telegram injoignable ne doit pas teinter le run.
+          code=$(curl -sS -o /tmp/tg.out -w '%{http_code}' -m 15 \
+            -X POST "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TG_CHAT}" \
+            --data-urlencode "text=${msg}" \
+            --data-urlencode "disable_notification=$([ "${emoji}" = "🟢" ] && echo true || echo false)" \
+            || echo "000")
+          if [ "${code}" = "200" ]; then
+            echo "::notice::Notification Telegram envoyée."
+          else
+            echo "::warning::Telegram a répondu ${code} — notification non délivrée (non bloquant)."
+            head -c 300 /tmp/tg.out || true
+          fi
