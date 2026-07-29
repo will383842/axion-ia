@@ -264,7 +264,7 @@ export default async function Page({
             documentGenereId={etatReleve.documentGenereId}
             numero={etatReleve.numero}
             parties={etatReleve.parties}
-            formateurPeutSigner={etatReleve.formateurPeutSigner}
+            peutAgir={etatReleve.peutAgir}
             mentions={etatReleve.mentions}
             plafondProbant={etatReleve.plafondProbant}
             signerAction={signerReleveFormateurAction}

@@ -45,7 +45,7 @@ export interface SignatureReleveProps {
   documentGenereId: string;
   numero: string;
   parties: PartieAffichee[];
-  formateurPeutSigner: boolean;
+  peutAgir: boolean;
   mentions: string[];
   plafondProbant: string;
   signerAction: (input: {
@@ -61,7 +61,7 @@ export function SignatureReleve({
   documentGenereId,
   numero,
   parties,
-  formateurPeutSigner,
+  peutAgir,
   mentions,
   plafondProbant,
   signerAction,
@@ -147,7 +147,7 @@ export function SignatureReleve({
         ))}
       </ul>
 
-      {formateurPeutSigner ? (
+      {peutAgir ? (
         <div className="mt-4 space-y-3">
           <div className="text-fg-muted space-y-1 text-xs">
             {mentions.map((m, i) => (

@@ -1,7 +1,11 @@
 /**
  * Lecture de l'état de signature du relevé de connexion d'une session.
  *
- * Alimente l'écran du formateur. LECTURE SEULE, aucune écriture.
+ * Alimente DEUX écrans — celui du formateur et celui de la console — par la
+ * MÊME lecture. Deux lectures parallèles divergeraient sur ce qui est affiché
+ * comme signé, et l'un finirait par contredire l'autre sur la même pièce.
+ *
+ * LECTURE SEULE, aucune écriture.
  *
  * ## Ce que cette lecture doit garantir
  *
@@ -43,8 +47,10 @@ export interface EtatSignatureReleve {
   /** Statut DÉRIVÉ porté par la pièce. Cache de lecture, jamais la vérité. */
   statutSignature: string;
   parties: EtatPartieReleve[];
-  /** Le formateur connecté peut-il signer maintenant ? */
-  formateurPeutSigner: boolean;
+  /** Le lecteur courant peut-il apposer SA signature maintenant ? */
+  peutAgir: boolean;
+  /** À quel titre il signerait — détermine aussi la mention affichée. */
+  pourPartie: PartieSignataire;
   /** Texte EXACT présenté au formateur, dans l'ordre d'affichage. */
   mentions: string[];
   /**
@@ -83,6 +89,56 @@ export async function lireEtatSignatureReleve(
   sessionId: string,
   trainerId: string,
 ): Promise<EtatSignatureReleve | null> {
+  return lireEtat(sessionId, { pourPartie: "formateur", trainerId });
+}
+
+/**
+ * Même lecture, côté CONSOLE, pour le visa du responsable pédagogique.
+ *
+ * 🔴 Factorisée avec la lecture formateur, et ce n'est pas de la coquetterie :
+ * deux lectures parallèles divergeraient sur ce qui est affiché comme signé, et
+ * l'écran de l'un finirait par contredire l'écran de l'autre sur la même pièce.
+ *
+ * ⚠️ Le rôle est vérifié ICI aussi, en plus de la Server Action et du service.
+ * Trois contrôles, et aucun n'est de trop : celui-ci évite de proposer un bouton
+ * à quelqu'un qui n'a pas le pouvoir d'engager l'organisme — un refus après clic
+ * se lit comme une panne.
+ */
+export async function lireEtatSignatureReleveConsole(
+  sessionId: string,
+  role: string,
+): Promise<EtatSignatureReleve | null> {
+  return lireEtat(sessionId, { pourPartie: "responsable_pedagogique", role });
+}
+
+type Lecteur =
+  | { pourPartie: "formateur"; trainerId: string }
+  | { pourPartie: "responsable_pedagogique"; role: string };
+
+/** Rôles habilités à engager l'organisme. Miroir de `habiliter()` du service. */
+const ROLES_HABILITES = new Set(["super_admin", "admin"]);
+
+/**
+ * UUID nul, employé quand il n'y a PAS de formateur à recouper.
+ *
+ * ⚠️ Pas une chaîne vide : `@db.Uuid` la refuse et la requête échoue en 500.
+ * Un UUID valide qui n'existe pas rend simplement zéro ligne, ce qui est
+ * exactement le sens voulu.
+ */
+const NEANT_UUID = "00000000-0000-0000-0000-000000000000";
+
+async function lireEtat(sessionId: string, lecteur: Lecteur): Promise<EtatSignatureReleve | null> {
+  // 🔴 Le filtre `sessionFormateurs` n'est posé QUE côté formateur.
+  //
+  // Une chaîne vide passée à une colonne `@db.Uuid` fait échouer la requête
+  // côté PostgreSQL — pas un refus propre, une erreur 500. Le rattachement ne
+  // concerne de toute façon que le formateur : côté console, l'habilitation
+  // vient du rôle, pas d'un lien à la session.
+  const filtreFormateur =
+    lecteur.pourPartie === "formateur"
+      ? { where: { trainerId: lecteur.trainerId }, select: { trainerId: true } }
+      : { where: { trainerId: NEANT_UUID }, select: { trainerId: true } };
+
   const piece = await prisma.documentGenere.findFirst({
     where: { sessionId, type: "releve_connexion" },
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
@@ -104,7 +160,7 @@ export async function lireEtatSignatureReleve(
       session: {
         select: {
           formateurPrincipalId: true,
-          sessionFormateurs: { where: { trainerId }, select: { trainerId: true } },
+          sessionFormateurs: filtreFormateur,
         },
       },
     },
@@ -137,8 +193,9 @@ export async function lireEtatSignatureReleve(
     (piece.metadata as Record<string, unknown>)["specimen"] === true;
 
   const rattache =
-    piece.session?.formateurPrincipalId === trainerId ||
-    (piece.session?.sessionFormateurs.length ?? 0) > 0;
+    lecteur.pourPartie === "formateur" &&
+    (piece.session?.formateurPrincipalId === lecteur.trainerId ||
+      (piece.session?.sessionFormateurs.length ?? 0) > 0);
 
   const identite = await getOrganismeIdentite();
   const circuit = circuitPour("releve_connexion");
@@ -148,10 +205,15 @@ export async function lireEtatSignatureReleve(
     numero: piece.numero,
     statutSignature: piece.statutSignature,
     parties,
-    formateurPeutSigner:
-      rattache && !estSpecimen && !parties.some((p) => p.partie === "formateur" && p.signee),
+    // Un SPÉCIMEN bloque les deux parties : la pièce n'a aucune valeur juridique
+    // tant que l'identité de l'organisme est incomplète.
+    peutAgir:
+      !estSpecimen &&
+      !parties.some((p) => p.partie === lecteur.pourPartie && p.signee) &&
+      (lecteur.pourPartie === "formateur" ? rattache : ROLES_HABILITES.has(lecteur.role)),
+    pourPartie: lecteur.pourPartie,
     mentions: mentionCompleteDocument(
-      "formateur",
+      lecteur.pourPartie,
       {
         pieceLibelle: circuit?.libelle ?? "relevé de connexion",
         pieceNumero: piece.numero,

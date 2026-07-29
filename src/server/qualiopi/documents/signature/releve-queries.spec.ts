@@ -24,7 +24,7 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
 
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { lireEtatSignatureReleve } from "./releve-queries";
+import { lireEtatSignatureReleve, lireEtatSignatureReleveConsole } from "./releve-queries";
 import { MENTION_VERSION_DOCUMENT } from "./mentions-document";
 
 type Mock = ReturnType<typeof vi.fn>;
@@ -93,7 +93,7 @@ describe("état de signature du relevé", () => {
 describe("🔴 ce que le formateur peut faire", () => {
   it("peut signer s'il est le principal et que rien n'est signé", async () => {
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(true);
+    expect(etat?.peutAgir).toBe(true);
   });
 
   it("peut signer s'il est rattaché par une ligne `SessionFormateur`", async () => {
@@ -103,7 +103,7 @@ describe("🔴 ce que le formateur peut faire", () => {
       }),
     );
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(true);
+    expect(etat?.peutAgir).toBe(true);
   });
 
   it("ne peut PAS signer s'il n'est rattaché à rien", async () => {
@@ -111,7 +111,7 @@ describe("🔴 ce que le formateur peut faire", () => {
       piece({ session: { formateurPrincipalId: null, sessionFormateurs: [] } }),
     );
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(false);
+    expect(etat?.peutAgir).toBe(false);
   });
 
   it("🔴 ne peut PAS signer un SPÉCIMEN — et l'écran le sait AVANT le clic", async () => {
@@ -122,14 +122,14 @@ describe("🔴 ce que le formateur peut faire", () => {
       piece({ metadata: { specimen: true, champsManquants: ["SIRET"] } }),
     );
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(false);
+    expect(etat?.peutAgir).toBe(false);
   });
 
   it("ne se laisse pas berner par un `metadata` qui n'est pas un objet", async () => {
     // Colonne `Json` : le type n'est PAS garanti côté application.
     mockPrisma.documentGenere.findFirst.mockResolvedValue(piece({ metadata: ["specimen"] }));
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(true);
+    expect(etat?.peutAgir).toBe(true);
   });
 
   it("ne peut plus signer une fois qu'il a signé", async () => {
@@ -147,7 +147,7 @@ describe("🔴 ce que le formateur peut faire", () => {
       }),
     );
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.formateurPeutSigner).toBe(false);
+    expect(etat?.peutAgir).toBe(false);
   });
 });
 
@@ -208,5 +208,69 @@ describe("🔴 ce qui est présenté au signataire", () => {
     // sont le même humain. Le taire laisserait croire à un contrôle croisé.
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
     expect(etat?.plafondProbant).toContain("deux qualités distinctes");
+  });
+});
+
+describe("🔴 chemin CONSOLE — visa du responsable pédagogique", () => {
+  it("un `super_admin` peut viser", async () => {
+    const etat = await lireEtatSignatureReleveConsole(SESSION, "super_admin");
+    expect(etat?.peutAgir).toBe(true);
+    expect(etat?.pourPartie).toBe("responsable_pedagogique");
+  });
+
+  it("🔴 un `editor` ne peut PAS viser — viser engage l'organisme", async () => {
+    // Le service le refuserait de toute façon (`habiliter()`). Le vérifier ici
+    // évite de lui proposer un bouton qui échouera : un refus après clic se lit
+    // comme une panne, et il réessaierait au lieu de demander les droits.
+    const etat = await lireEtatSignatureReleveConsole(SESSION, "editor");
+    expect(etat?.peutAgir).toBe(false);
+  });
+
+  it("ne peut plus viser une fois le visa posé", async () => {
+    mockPrisma.documentGenere.findFirst.mockResolvedValue(
+      piece({
+        signatures: [
+          {
+            partie: "responsable_pedagogique",
+            signataireNom: "Williams Jullin",
+            signataireQualite: null,
+            signeAt: new Date("2026-06-10T08:15:00.000Z"),
+            selfHash: "b".repeat(64),
+          },
+        ],
+      }),
+    );
+    const etat = await lireEtatSignatureReleveConsole(SESSION, "admin");
+    expect(etat?.peutAgir).toBe(false);
+  });
+
+  it("🔴 ne passe JAMAIS de chaîne vide au filtre `trainerId`", async () => {
+    // Une chaîne vide sur une colonne `@db.Uuid` fait échouer la requête côté
+    // PostgreSQL — une erreur 500, pas un refus propre. Régression introduite
+    // en factorisant les deux lectures, corrigée ici.
+    await lireEtatSignatureReleveConsole(SESSION, "admin");
+    const arg = mockPrisma.documentGenere.findFirst.mock.calls[0]?.[0] as {
+      select: { session: { select: { sessionFormateurs: { where: { trainerId: string } } } } };
+    };
+    const filtre = arg.select.session.select.sessionFormateurs.where.trainerId;
+    expect(filtre).not.toBe("");
+    expect(filtre).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
+  });
+
+  it("la mention affichée est celle du RESPONSABLE PÉDAGOGIQUE, pas du formateur", async () => {
+    // Les deux attestent des choses différentes : l'un anime, l'autre atteste
+    // l'exactitude. Leur faire signer le même texte serait faux.
+    const console_ = await lireEtatSignatureReleveConsole(SESSION, "admin");
+    const formateur = await lireEtatSignatureReleve(SESSION, TRAINER);
+    expect(console_?.mentions[0]).toContain("responsable pédagogique");
+    expect(console_?.mentions[0]).not.toBe(formateur?.mentions[0]);
+  });
+
+  it("un SPÉCIMEN bloque AUSSI le visa", async () => {
+    mockPrisma.documentGenere.findFirst.mockResolvedValue(
+      piece({ metadata: { specimen: true, champsManquants: ["SIRET"] } }),
+    );
+    const etat = await lireEtatSignatureReleveConsole(SESSION, "super_admin");
+    expect(etat?.peutAgir).toBe(false);
   });
 });
