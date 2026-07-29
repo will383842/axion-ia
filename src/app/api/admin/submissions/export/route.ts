@@ -16,6 +16,12 @@ export async function GET(request: NextRequest) {
     const sp = request.nextUrl.searchParams;
     const { filename, csv } = await exportSubmissionsCsvAction({
       type: (sp.get("type") as never) ?? undefined,
+      // Filtre « Catégorie » (2026-07-29) + types forcés des vues filtrées :
+      // l'export doit refléter exactement l'écran depuis lequel on le lance.
+      unifiedType: sp.get("unifiedType") ?? undefined,
+      ...(sp.getAll("unifiedTypeIn").length > 0
+        ? { unifiedTypeIn: sp.getAll("unifiedTypeIn") }
+        : {}),
       status: (sp.get("status") as never) ?? undefined,
       locale: (sp.get("locale") as never) ?? undefined,
       dateFrom: sp.get("dateFrom") ?? undefined,
