@@ -161,12 +161,16 @@ describe("🔴 l'absence de NDA est DITE, jamais tue", () => {
     // Or elle l'est souvent — l'art. L.6351-1 fait courir le délai à compter de
     // la PREMIÈRE convention.
     const texte = collectPdfTextNormalized(
-      React.createElement(QualiopiPage, {
-        identite: { ...IDENTITE_SANS_NDA },
-        docTitle: "Convention",
-        docNumber: "AXI-DOC-2026-001",
-        children: null,
-      }),
+      // ⚠️ `children` passe en TROISIÈME argument de `createElement`, jamais en
+      // prop : `react/no-children-prop` est une ERREUR de lint, pas un
+      // avertissement, et elle a mis Gate A au rouge.
+      <QualiopiPage
+        identite={{ ...IDENTITE_SANS_NDA }}
+        docTitle="Convention"
+        docNumber="AXI-DOC-2026-001"
+      >
+        {null}
+      </QualiopiPage>,
     );
     expect(texte).toContain("Déclaration d'activité non encore enregistrée");
     expect(texte).toContain("L.6351-1");
@@ -177,24 +181,26 @@ describe("🔴 l'absence de NDA est DITE, jamais tue", () => {
     // fausse si rien n'a été déposé. On constate l'absence, on ne la maquille
     // pas en démarche.
     const texte = collectPdfTextNormalized(
-      React.createElement(QualiopiPage, {
-        identite: { ...IDENTITE_SANS_NDA },
-        docTitle: "Convention",
-        docNumber: "AXI-DOC-2026-001",
-        children: null,
-      }),
+      <QualiopiPage
+        identite={{ ...IDENTITE_SANS_NDA }}
+        docTitle="Convention"
+        docNumber="AXI-DOC-2026-001"
+      >
+        {null}
+      </QualiopiPage>,
     );
     expect(texte).not.toContain("en cours d'enregistrement");
   });
 
   it("imprime le numéro dès qu'il existe, et ne dit plus rien d'autre", () => {
     const texte = collectPdfTextNormalized(
-      React.createElement(QualiopiPage, {
-        identite: { ...IDENTITE_SANS_NDA, nda: "84691234567" },
-        docTitle: "Convention",
-        docNumber: "AXI-DOC-2026-001",
-        children: null,
-      }),
+      <QualiopiPage
+        identite={{ ...IDENTITE_SANS_NDA, nda: "84691234567" }}
+        docTitle="Convention"
+        docNumber="AXI-DOC-2026-001"
+      >
+        {null}
+      </QualiopiPage>,
     );
     expect(texte).toContain("NDA 84691234567");
     expect(texte).not.toContain("non encore enregistrée");
