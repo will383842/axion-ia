@@ -192,6 +192,12 @@ interface AdminSidebarNavProps {
   siteExplorerAnomaliesHighCount?: number;
   /** Compteur contacts sans réponse (needsAttention=true ET non archivé). */
   unreadContactsCount?: number;
+  /**
+   * Compteurs « à traiter » de la boîte de réception, par canal (2026-07-29).
+   * Décision Will : le badge compte ce qu'il RESTE À FAIRE — il descend donc à
+   * zéro, contrairement à un compteur de volume qu'on finit par ignorer.
+   */
+  inboxCounts?: { appel: number; message: number; candidature: number; podcast: number };
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -208,6 +214,7 @@ export function AdminSidebarNav({
   alertsCount = 0,
   siteExplorerAnomaliesHighCount = 0,
   unreadContactsCount = 0,
+  inboxCounts,
   userEmail,
   accountHref,
   logoutAction,
@@ -421,6 +428,31 @@ export function AdminSidebarNav({
         tone: "danger",
         label: "anomalies critiques",
       };
+    }
+    // ── Boîte de réception (2026-07-29) ──────────────────────────────────
+    // Ordre important : les tests d'égalité EXACTE passent avant le
+    // `includes("/contacts/messages")` historique, sinon « Tout » (/contacts)
+    // capterait aussi les sous-routes.
+    if (inboxCounts) {
+      const base = accountHref ?? "";
+      const exact = (suffix: string): boolean => href === `${base}${suffix}`;
+      const total =
+        inboxCounts.appel + inboxCounts.message + inboxCounts.candidature + inboxCounts.podcast;
+      if (exact("/contacts") && total > 0) {
+        return { count: total, tone: "danger", label: "entrées à traiter" };
+      }
+      if (exact("/contacts/appels") && inboxCounts.appel > 0) {
+        return { count: inboxCounts.appel, tone: "danger", label: "appels à compléter" };
+      }
+      if (exact("/contacts/messages") && inboxCounts.message > 0) {
+        return { count: inboxCounts.message, tone: "danger", label: "messages sans réponse" };
+      }
+      if (exact("/contacts/candidatures") && inboxCounts.candidature > 0) {
+        return { count: inboxCounts.candidature, tone: "danger", label: "candidatures à traiter" };
+      }
+      if (exact("/podcast") && inboxCounts.podcast > 0) {
+        return { count: inboxCounts.podcast, tone: "warn", label: "demandes de podcast" };
+      }
     }
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
       return { count: unreadContactsCount, tone: "danger", label: "contacts sans réponse" };

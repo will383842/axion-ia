@@ -4,6 +4,7 @@
 
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { markInboxRead } from "@/features/admin-inbox/reads";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import {
@@ -39,6 +40,10 @@ export default async function PodcastRequestDetailPage({ params }: PageProps) {
 
   const request = await prisma.podcastRequest.findUnique({ where: { id } });
   if (!request) notFound();
+  // Boîte de réception (2026-07-29) — « non lu » façon boîte mail : ouvrir la
+  // fiche vaut lecture, sans geste. Best-effort : `markInboxRead` ne throw
+  // jamais, une demande client s'affiche même si l'accusé échoue.
+  await markInboxRead(session?.user?.id, "podcast_request", id);
 
   const base = `/${locale}/${adminPrefix}/podcast`;
   const leaderName = decryptPii(request.leaderName);

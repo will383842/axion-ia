@@ -67,6 +67,12 @@ const getUnreadContactsCount = unstable_cache(
   { revalidate: 30, tags: ["admin:contacts-unread"] },
 );
 
+import {
+  getInboxActionCounts,
+  EMPTY_INBOX_COUNTS,
+  type InboxActionCounts,
+} from "@/features/admin-inbox/counters";
+
 import "@/app/admin.css";
 import "@/app/print.css";
 
@@ -154,6 +160,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Sprint Notif Infra — Badge contacts sans réponse (needsAttention=true,
   // non archivés). Filtre par défaut de l'inbox côté listing.
   let unreadContactsCount = 0;
+  // Badges « à traiter » de la boîte de réception (2026-07-29).
+  let inboxCounts: InboxActionCounts = EMPTY_INBOX_COUNTS;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -164,23 +172,26 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       "cost_cap_80_active",
     ] as const;
 
-    const [failedCount, anomalyRows, siteExplorerHighCount, unreadCount] = await Promise.all([
-      getFailedJobsCount().catch(() => 0),
-      prisma.contentGenConfig
-        .findMany({
-          where: { key: { in: [...ANOMALY_KEYS] } },
-          select: { key: true, value: true, updatedAt: true },
-        })
-        .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
-      prisma.siteRouteAnomaly
-        .count({ where: { severity: "high", resolvedAt: null } })
-        .catch(() => 0),
-      getUnreadContactsCount(),
-    ]);
+    const [failedCount, anomalyRows, siteExplorerHighCount, unreadCount, inboxActionCounts] =
+      await Promise.all([
+        getFailedJobsCount().catch(() => 0),
+        prisma.contentGenConfig
+          .findMany({
+            where: { key: { in: [...ANOMALY_KEYS] } },
+            select: { key: true, value: true, updatedAt: true },
+          })
+          .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
+        prisma.siteRouteAnomaly
+          .count({ where: { severity: "high", resolvedAt: null } })
+          .catch(() => 0),
+        getUnreadContactsCount(),
+        getInboxActionCounts(),
+      ]);
 
     failedJobsCount = failedCount;
     siteExplorerAnomaliesHighCount = siteExplorerHighCount;
     unreadContactsCount = unreadCount;
+    inboxCounts = inboxActionCounts;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -308,6 +319,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             alertsCount={alertsCount}
             siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
             unreadContactsCount={unreadContactsCount}
+            inboxCounts={inboxCounts}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}

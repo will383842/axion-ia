@@ -1783,6 +1783,8 @@ model AdminUser {
   updatedAt         DateTime    @updatedAt @map("updated_at")
 
   activityLogs          ActivityLog[]
+  // Boîte de réception — accusés de lecture par admin (2026-07-29).
+  inboxReads            AdminInboxRead[]
   // Sprint X.1 — relations inverses booking V1
   bookingsCancelled     Booking[]             @relation("BookingCancelledBy")
   paymentsRecorded      Payment[]             @relation("PaymentRecordedBy")
@@ -4709,6 +4711,45 @@ model GeneratedVilleCasUsage {
 // `/appel`. Mode Embed JS gratuit : on écoute postMessage iframe Calendly
 // côté client + POST notre endpoint serveur. Capture les créations uniquement
 // (limitation Calendly Free — pas de webhook officiel). Cf. ADR 0030.
+
+// ============================================================
+// Boîte de réception — accusés de lecture (2026-07-29, ADR 0036)
+// ============================================================
+//
+// « Non lu » façon boîte mail : une entrée est non lue tant qu'aucun admin
+// n'a ouvert sa fiche, et le marquage s'efface tout seul à l'ouverture.
+//
+// Table DÉDIÉE plutôt qu'une colonne `readAt` sur chacune des 4 tables sources :
+//   1. on ne touche à aucun schéma existant (Submission, JobApplication et
+//      PodcastRequest portent des flux Qualiopi / RH / RGPD — pas la peine de
+//      les faire migrer pour un confort d'affichage) ;
+//   2. l'état est PAR ADMIN, ce qu'une colonne unique ne saurait pas exprimer :
+//      dans une boîte partagée, ce que Will a lu n'est pas lu pour un autre ;
+//   3. un nouveau canal se branche sans migration — une valeur d'enum de plus.
+
+enum AdminInboxEntity {
+  submission
+  calendly_event
+  job_application
+  podcast_request
+
+  @@map("admin_inbox_entity")
+}
+
+model AdminInboxRead {
+  id          String           @id @default(uuid()) @db.Uuid
+  adminUserId String           @map("admin_user_id") @db.Uuid
+  adminUser   AdminUser        @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  entityType  AdminInboxEntity @map("entity_type")
+  /// Id de la ligne source. Type texte volontaire : les sources mélangent des
+  /// UUID (Submission, PodcastRequest) et des cuid (CalendlyEvent).
+  entityId    String           @map("entity_id") @db.VarChar(64)
+  readAt      DateTime         @default(now()) @map("read_at")
+
+  @@unique([adminUserId, entityType, entityId])
+  @@index([adminUserId, entityType])
+  @@map("admin_inbox_reads")
+}
 
 model CalendlyEvent {
   id                 String              @id @default(cuid())

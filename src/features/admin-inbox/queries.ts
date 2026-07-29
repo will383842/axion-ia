@@ -27,6 +27,7 @@ import { RDV_STATUS_LABELS } from "@/features/admin-rendezvous/types";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { podcastRequestStatusLabel } from "@/features/admin-podcast-requests/statuses";
 import type { InboxChannel, InboxItem } from "./types";
+import { ENTITY_BY_CHANNEL, fetchReadIds } from "./reads";
 
 /**
  * Fenêtre lue par canal avant fusion.
@@ -78,6 +79,8 @@ async function fetchMessages(): Promise<InboxItem[]> {
   const res = await listSubmissionsAction({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return res.items.map((s) => ({
     key: `msg_${s.id}`,
+    sourceId: s.id,
+    unread: false,
     channel: "message" as const,
     detailHref: adminPath("fr", `contacts/messages/${s.id}`),
     receivedAt: s.submittedAt,
@@ -95,6 +98,8 @@ async function fetchAppels(): Promise<InboxItem[]> {
   const { rows } = await listRendezVous({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return rows.map((r) => ({
     key: r.key,
+    sourceId: r.sourceRecordId,
+    unread: false,
     channel: "appel" as const,
     detailHref: r.detailHref,
     // `startTime` est souvent nul (Calendly ne le transmet pas au navigateur) :
@@ -118,6 +123,8 @@ async function fetchCandidatures(): Promise<InboxItem[]> {
   const res = await listApplicationsAction({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return res.items.map((a) => ({
     key: `job_${a.id}`,
+    sourceId: a.id,
+    unread: false,
     channel: "candidature" as const,
     detailHref: adminPath("fr", `contacts/candidatures/${a.id}`),
     receivedAt: a.submittedAt,
@@ -149,6 +156,8 @@ async function fetchPodcast(): Promise<InboxItem[]> {
   });
   return rows.map((p) => ({
     key: `pod_${p.id}`,
+    sourceId: p.id,
+    unread: false,
     channel: "podcast" as const,
     detailHref: adminPath("fr", `podcast/${p.id}`),
     receivedAt: p.createdAt,
@@ -167,6 +176,12 @@ export interface InboxFilters {
   onlyAction?: boolean;
   page?: number;
   pageSize?: number;
+  /**
+   * Admin courant — sert à résoudre le « non lu », qui est un état PAR PERSONNE.
+   * Absent : tout est considéré lu, plutôt que d'afficher un faux « non lu »
+   * qui ne s'effacerait jamais.
+   */
+  adminUserId?: string | null;
 }
 
 export interface InboxResult {
@@ -178,6 +193,14 @@ export interface InboxResult {
   countsByChannel: Record<InboxChannel, number>;
   /** Nombre d'éléments en attente d'action, tous canaux confondus. */
   actionCount: number;
+  /**
+   * Éléments en attente d'action, PAR canal — c'est ce que portent les badges
+   * de la sidebar (décision Will 2026-07-29 : un badge doit compter ce qu'il
+   * reste à faire, donc descendre à zéro, sinon il finit ignoré).
+   */
+  actionByChannel: Record<InboxChannel, number>;
+  /** Non lus par l'admin courant, par canal. */
+  unreadByChannel: Record<InboxChannel, number>;
   /**
    * Vrai si au moins un canal a atteint `PER_CHANNEL_FETCH` : la vue est alors
    * potentiellement tronquée. Affiché à l'écran plutôt que tu, pour ne pas
@@ -220,13 +243,26 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
   const truncated = perChannel.some((arr) => arr.length >= PER_CHANNEL_FETCH);
   let all = perChannel.flat();
 
-  const countsByChannel: Record<InboxChannel, number> = {
+  // Accusés de lecture de l'admin courant — une seule requête pour les 4 canaux.
+  const readIds = await fetchReadIds(filters.adminUserId);
+  for (const it of all) {
+    it.unread = !readIds[ENTITY_BY_CHANNEL[it.channel]].has(it.sourceId);
+  }
+
+  const zero = (): Record<InboxChannel, number> => ({
     appel: 0,
     message: 0,
     candidature: 0,
     podcast: 0,
-  };
-  for (const it of all) countsByChannel[it.channel] += 1;
+  });
+  const countsByChannel = zero();
+  const actionByChannel = zero();
+  const unreadByChannel = zero();
+  for (const it of all) {
+    countsByChannel[it.channel] += 1;
+    if (it.needsAction) actionByChannel[it.channel] += 1;
+    if (it.unread) unreadByChannel[it.channel] += 1;
+  }
   const actionCount = all.filter((it) => it.needsAction).length;
 
   if (filters.channel) all = all.filter((it) => it.channel === filters.channel);
@@ -246,6 +282,8 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
     totalPages: Math.max(1, Math.ceil(total / pageSize)),
     countsByChannel,
     actionCount,
+    actionByChannel,
+    unreadByChannel,
     truncated,
     failedChannels,
   };

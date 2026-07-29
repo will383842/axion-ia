@@ -24,8 +24,12 @@ vi.mock("@/features/admin-rendezvous/queries", () => ({
 }));
 
 const podcastFindManyMock = vi.fn();
+const readsFindManyMock = vi.fn();
 vi.mock("@/lib/prisma", () => ({
-  prisma: { podcastRequest: { findMany: (...a: unknown[]) => podcastFindManyMock(...a) } },
+  prisma: {
+    podcastRequest: { findMany: (...a: unknown[]) => podcastFindManyMock(...a) },
+    adminInboxRead: { findMany: (...a: unknown[]) => readsFindManyMock(...a) },
+  },
 }));
 
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: (v: string) => `clair:${v}` }));
@@ -39,6 +43,7 @@ const d = (iso: string) => new Date(iso);
 
 beforeEach(() => {
   vi.clearAllMocks();
+  readsFindManyMock.mockResolvedValue([]);
   listSubmissionsMock.mockResolvedValue({
     items: [
       {
@@ -58,6 +63,9 @@ beforeEach(() => {
     rows: [
       {
         key: "cal_1",
+        // `sourceRecordId` est l'id BRUT en base — c'est lui la clé d'accusé de
+        // lecture, pas `key` qui est namespacée pour l'affichage.
+        sourceRecordId: "cal_1",
         detailHref: "/fr/adm/contacts/appels/cal1",
         title: "premier-contact",
         contactName: null,
@@ -172,6 +180,36 @@ describe("listInbox", () => {
     const res = await listInbox();
     expect(res.failedChannels).toEqual(["message"]);
     expect(res.countsByChannel.message).toBe(0);
+  });
+
+  // Non-lu (2026-07-29) — état PAR ADMIN, absence de ligne = non lu.
+  it("tout est non lu quand aucun accusé de lecture n'existe", async () => {
+    const res = await listInbox({ adminUserId: "admin-1" });
+    expect(res.rows.every((r) => r.unread)).toBe(true);
+    expect(res.unreadByChannel).toEqual({ appel: 1, message: 1, candidature: 1, podcast: 1 });
+  });
+
+  it("une entrée déjà ouverte n'est plus signalée non lue", async () => {
+    readsFindManyMock.mockResolvedValueOnce([{ entityType: "submission", entityId: "s1" }]);
+    const res = await listInbox({ adminUserId: "admin-1" });
+    expect(res.rows.find((r) => r.channel === "message")?.unread).toBe(false);
+    expect(res.rows.find((r) => r.channel === "appel")?.unread).toBe(true);
+    expect(res.unreadByChannel.message).toBe(0);
+  });
+
+  // Le badge compte ce qu'il RESTE À FAIRE (décision Will) — donc `needsAction`,
+  // pas le volume, et pas le non-lu : on peut avoir lu sans avoir traité.
+  it("actionByChannel compte le à-traiter, indépendamment du lu/non-lu", async () => {
+    readsFindManyMock.mockResolvedValueOnce([{ entityType: "calendly_event", entityId: "cal_1" }]);
+    const res = await listInbox({ adminUserId: "admin-1" });
+    expect(res.actionByChannel).toEqual({ appel: 1, message: 1, candidature: 0, podcast: 1 });
+    expect(res.rows.find((r) => r.channel === "appel")?.unread).toBe(false);
+  });
+
+  it("sans admin identifié : rien n'est marqué non lu à tort", async () => {
+    const res = await listInbox({});
+    expect(readsFindManyMock).not.toHaveBeenCalled();
+    expect(res.rows.every((r) => r.unread)).toBe(true);
   });
 
   it("failedChannels est vide quand tout va bien", async () => {

@@ -34,6 +34,19 @@ export interface InboxItem {
    * masquer un. La définition exacte appartient à chaque mapper.
    */
   needsAction: boolean;
+  /**
+   * Id brut dans sa table source — sert de clé d'accusé de lecture.
+   * (`key` est namespacée pour l'affichage, elle ne convient pas ici.)
+   */
+  sourceId: string;
+  /**
+   * Vrai tant que l'admin courant n'a pas ouvert la fiche.
+   *
+   * Distinct de `needsAction` : on peut avoir lu une demande sans y avoir
+   * répondu (elle reste à traiter), et à l'inverse une demande traitée par un
+   * collègue reste non lue pour soi. Les deux signaux coexistent donc.
+   */
+  unread: boolean;
 }
 
 export const INBOX_CHANNEL_LABELS: Record<InboxChannel, string> = {

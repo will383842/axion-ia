@@ -11,6 +11,7 @@
 // duplique aucune règle métier ici.
 
 import Link from "next/link";
+import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
 import {
   INBOX_CHANNEL_ICONS,
@@ -59,7 +60,13 @@ export default async function InboxPage({
   const onlyAction = sp["action"] === "1";
   const page = sp["page"] ? parseInt(sp["page"], 10) : 1;
 
+  // `adminUserId` résout le « non lu », qui est un état PAR PERSONNE : dans une
+  // boîte partagée, ce qu'un admin a ouvert ne l'est pas pour les autres.
+  const session = await auth();
+  const adminUserId = session?.user?.id ?? null;
+
   const result = await listInbox({
+    adminUserId,
     ...(channel ? { channel } : {}),
     ...(onlyAction ? { onlyAction: true } : {}),
     page,
@@ -101,8 +108,17 @@ export default async function InboxPage({
       header: "Canal",
       cell: (r) => (
         <span className="whitespace-nowrap">
+          {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
+              fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
+          {r.unread ? (
+            <span
+              className="mr-1 inline-block h-2 w-2 rounded-full bg-[color:var(--color-admin-info)] align-middle"
+              title="Non lu"
+              aria-label="Non lu"
+            />
+          ) : null}
           <span aria-hidden="true">{INBOX_CHANNEL_ICONS[r.channel]}</span>{" "}
-          <span className="text-[length:var(--text-admin-sm)]">
+          <span className={`text-[length:var(--text-admin-sm)] ${r.unread ? "font-semibold" : ""}`}>
             {INBOX_CHANNEL_LABELS[r.channel]}
           </span>
         </span>
@@ -113,7 +129,11 @@ export default async function InboxPage({
       header: "Reçu le",
       cell: (r) => <span className="whitespace-nowrap">{formatDate(r.receivedAt)}</span>,
     },
-    { key: "subject", header: "Objet", cell: (r) => r.subject },
+    {
+      key: "subject",
+      header: "Objet",
+      cell: (r) => <span className={r.unread ? "font-semibold" : ""}>{r.subject}</span>,
+    },
     {
       key: "contact",
       header: "Contact",
