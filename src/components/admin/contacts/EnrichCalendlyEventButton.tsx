@@ -28,12 +28,28 @@ export function EnrichCalendlyEventButton({ id, apiConfigured }: Props): React.R
   function onClick() {
     setResult(null);
     startTransition(async () => {
-      const r = await enrichCalendlyEventAction({ id });
-      if (r.ok) {
-        setResult({ ok: true, text: r.message });
-        router.refresh();
-      } else {
-        setResult({ ok: false, text: r.error });
+      // `try/catch` INDISPENSABLE : `enrichCalendlyEventAction` traduit ses
+      // propres échecs en `{ ok: false }`, mais la couche Server Action peut
+      // elle-même rejeter (erreur réseau, 500, session expirée, réponse
+      // illisible). Sans ce filet, la promesse rejetait en silence et le bouton
+      // ne rendait AUCUN message : l'admin cliquait, rien ne se passait, et
+      // rien n'expliquait pourquoi. Constaté en production le 2026-07-29 sur
+      // une réservation qui refusait de s'enrichir sans dire un mot.
+      try {
+        const r = await enrichCalendlyEventAction({ id });
+        if (r.ok) {
+          setResult({ ok: true, text: r.message });
+          router.refresh();
+        } else {
+          setResult({ ok: false, text: r.error });
+        }
+      } catch (e) {
+        setResult({
+          ok: false,
+          text: `La récupération n'a pas abouti (${
+            e instanceof Error ? e.message : "erreur inconnue"
+          }). Réessayez, ou complétez la fiche à la main.`,
+        });
       }
     });
   }
