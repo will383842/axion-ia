@@ -145,6 +145,51 @@ describe("fetchCalendlyInvitee — résolution", () => {
     expect(res.data.inviteePhone).toBe("+33700000000");
   });
 
+  // Régression 2026-07-29 constatée en production : sur le type d'event réel
+  // d'Axion-IA, Calendly range le numéro de l'invité dans `event.location`
+  // (type `outbound_call`). Sans ce repli, la fiche affichait le numéro dans
+  // « Lieu / URL Meet » et laissait « Téléphone » vide.
+  it("récupère le numéro depuis le lieu quand l'event est un appel téléphonique", async () => {
+    fetchMock.mockResolvedValueOnce(jsonRes({ resource: { name: "Jean" } })).mockResolvedValueOnce(
+      jsonRes({
+        resource: { location: { type: "outbound_call", location: "+33 7 43 33 12 01" } },
+      }),
+    );
+    const res = await fetchCalendlyInvitee(INVITEE_URI, EVENT_URI);
+    if (!res.ok) throw new Error("attendu ok");
+    expect(res.data.inviteePhone).toBe("+33 7 43 33 12 01");
+  });
+
+  // Garde-fou : une visio n'est pas un téléphone.
+  it("ne recopie JAMAIS une URL de visio dans le champ téléphone", async () => {
+    fetchMock.mockResolvedValueOnce(jsonRes({ resource: { name: "Jean" } })).mockResolvedValueOnce(
+      jsonRes({
+        resource: {
+          location: { type: "google_conference", join_url: "https://meet.google.com/xyz" },
+        },
+      }),
+    );
+    const res = await fetchCalendlyInvitee(INVITEE_URI, EVENT_URI);
+    if (!res.ok) throw new Error("attendu ok");
+    expect(res.data.inviteePhone).toBeNull();
+    expect(res.data.location).toBe("https://meet.google.com/xyz");
+  });
+
+  it("une question dédiée prime sur le lieu", async () => {
+    fetchMock
+      .mockResolvedValueOnce(
+        jsonRes({
+          resource: { questions_and_answers: [{ question: "Téléphone", answer: "+33600000000" }] },
+        }),
+      )
+      .mockResolvedValueOnce(
+        jsonRes({ resource: { location: { type: "outbound_call", location: "+33711111111" } } }),
+      );
+    const res = await fetchCalendlyInvitee(INVITEE_URI, EVENT_URI);
+    if (!res.ok) throw new Error("attendu ok");
+    expect(res.data.inviteePhone).toBe("+33600000000");
+  });
+
   it("ignore une réponse vide à la question téléphone", async () => {
     fetchMock.mockResolvedValueOnce(
       jsonRes({ resource: { questions_and_answers: [{ question: "Téléphone", answer: "  " }] } }),

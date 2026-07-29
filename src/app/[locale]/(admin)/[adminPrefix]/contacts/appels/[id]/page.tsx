@@ -78,7 +78,15 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
       <div className="admin-detail-grid mt-[var(--space-admin-4)]">
         <div className="admin-card admin-card-wide">
           <h2 className="admin-h2">Édition</h2>
+          {/* `key` indexée sur la dernière écriture : `CalendlyEventEditor` est un
+              composant client dont les champs sont initialisés par `useState`
+              depuis `initial`. Un `router.refresh()` re-rend bien l'arbre serveur,
+              mais React CONSERVE l'état du composant : après « Enrichir depuis
+              Calendly », le titre se mettait à jour pendant que le formulaire
+              restait vide — il fallait recharger la page pour voir les données
+              arrivées. Changer la clé force le remontage avec les vraies valeurs. */}
           <CalendlyEventEditor
+            key={event.updatedAt.toISOString()}
             id={event.id}
             initial={{
               inviteeName: event.inviteeName,

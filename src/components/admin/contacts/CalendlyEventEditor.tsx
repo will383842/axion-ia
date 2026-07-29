@@ -5,6 +5,7 @@
 
 import { useState, useTransition } from "react";
 import { updateCalendlyEventAction } from "@/features/admin-calendly/actions";
+import { toParisLocalInput, fromParisLocalInput } from "@/lib/calendar-grid";
 
 interface Initial {
   readonly inviteeName: string | null;
@@ -28,8 +29,11 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
     inviteeName: initial.inviteeName ?? "",
     inviteeEmail: initial.inviteeEmail ?? "",
     inviteePhone: initial.inviteePhone ?? "",
-    startTime: initial.startTime ? initial.startTime.slice(0, 16) : "",
-    endTime: initial.endTime ? initial.endTime.slice(0, 16) : "",
+    // Les champs `datetime-local` sont lus comme des heures de PARIS.
+    // `initial.*` est de l'ISO UTC : le tronquer afficherait l'heure UTC (un
+    // RDV de 11:30 s'affichait « 09:30 »). Cf. `toParisLocalInput`.
+    startTime: initial.startTime ? toParisLocalInput(new Date(initial.startTime)) : "",
+    endTime: initial.endTime ? toParisLocalInput(new Date(initial.endTime)) : "",
     location: initial.location ?? "",
     status: initial.status,
     notes: initial.notes ?? "",
@@ -49,8 +53,11 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         inviteeName: state.inviteeName || null,
         inviteeEmail: state.inviteeEmail || null,
         inviteePhone: state.inviteePhone || null,
-        startTime: state.startTime ? new Date(state.startTime).toISOString() : null,
-        endTime: state.endTime ? new Date(state.endTime).toISOString() : null,
+        // `new Date("2026-07-23T11:30")` interpréterait la saisie dans le fuseau
+        // du NAVIGATEUR : un aller-retour sans modification décalait le créneau
+        // de l'offset, à chaque enregistrement. On l'interprète en heure de Paris.
+        startTime: fromParisLocalInput(state.startTime)?.toISOString() ?? null,
+        endTime: fromParisLocalInput(state.endTime)?.toISOString() ?? null,
         location: state.location || null,
         status: state.status as "scheduled" | "canceled" | "completed" | "no_show",
         notes: state.notes || null,

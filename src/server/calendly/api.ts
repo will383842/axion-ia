@@ -104,18 +104,48 @@ function isValidCalendlyUri(uri: string): boolean {
   return parsed.protocol === "https:" && parsed.hostname === "api.calendly.com";
 }
 
-/** Extrait la 1ʳᵉ réponse non vide à une question de type téléphone. */
-function extractPhone(questionsAndAnswers: unknown, textReminderNumber: unknown): string | null {
+/** Types de « lieu » Calendly qui désignent en fait un appel téléphonique. */
+const PHONE_LOCATION_TYPES = new Set([
+  "outbound_call",
+  "inbound_call",
+  "physical", // rare, mais Calendly y range parfois un numéro saisi librement
+]);
+
+/**
+ * Extrait le numéro de l'invité, dans l'ordre de fiabilité décroissante :
+ * rappel SMS → question dédiée du formulaire → « lieu » quand le type d'event
+ * est un appel téléphonique.
+ *
+ * Ce dernier cas n'est pas un raffinement : sur le type d'event réellement
+ * utilisé par Axion-IA, Calendly range le numéro de l'invité dans
+ * `event.location` (`type: "outbound_call"`). Sans lui, la fiche affichait le
+ * numéro dans « Lieu / URL Meet » et laissait « Téléphone » vide — constaté en
+ * production le 2026-07-29 sur la première réservation enrichie.
+ */
+function extractPhone(
+  questionsAndAnswers: unknown,
+  textReminderNumber: unknown,
+  locationRaw?: unknown,
+): string | null {
   if (typeof textReminderNumber === "string" && textReminderNumber.trim()) {
     return textReminderNumber.trim().slice(0, 40);
   }
-  if (!Array.isArray(questionsAndAnswers)) return null;
-  for (const qa of questionsAndAnswers) {
-    if (typeof qa !== "object" || qa === null) continue;
-    const q = (qa as { question?: unknown }).question;
-    const a = (qa as { answer?: unknown }).answer;
-    if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
-    if (/t[ée]l[ée]phone|phone|mobile|portable/i.test(q)) return a.trim().slice(0, 40);
+  if (Array.isArray(questionsAndAnswers)) {
+    for (const qa of questionsAndAnswers) {
+      if (typeof qa !== "object" || qa === null) continue;
+      const q = (qa as { question?: unknown }).question;
+      const a = (qa as { answer?: unknown }).answer;
+      if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
+      if (/t[ée]l[ée]phone|phone|mobile|portable/i.test(q)) return a.trim().slice(0, 40);
+    }
+  }
+  if (typeof locationRaw === "object" && locationRaw !== null) {
+    const loc = locationRaw as Record<string, unknown>;
+    const type = typeof loc["type"] === "string" ? (loc["type"] as string) : "";
+    const value = typeof loc["location"] === "string" ? (loc["location"] as string).trim() : "";
+    // Garde-fou : ne jamais recopier une URL de visio dans un champ téléphone.
+    const looksLikePhone = /^[+\d][\d\s.()-]{5,}$/.test(value);
+    if (PHONE_LOCATION_TYPES.has(type) && looksLikePhone) return value.slice(0, 40);
   }
   return null;
 }
@@ -209,7 +239,11 @@ export async function fetchCalendlyInvitee(
     data: {
       inviteeName: stringOrNull(invitee["name"], 255),
       inviteeEmail: stringOrNull(invitee["email"], 255),
-      inviteePhone: extractPhone(invitee["questions_and_answers"], invitee["text_reminder_number"]),
+      inviteePhone: extractPhone(
+        invitee["questions_and_answers"],
+        invitee["text_reminder_number"],
+        event["location"],
+      ),
       startTime: parseDate(event["start_time"]),
       endTime: parseDate(event["end_time"]),
       timezone: stringOrNull(invitee["timezone"], 80),

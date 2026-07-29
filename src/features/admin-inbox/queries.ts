@@ -28,8 +28,23 @@ import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels
 import { podcastRequestStatusLabel } from "@/features/admin-podcast-requests/statuses";
 import type { InboxChannel, InboxItem } from "./types";
 
-/** Fenêtre lue par canal avant fusion. Borne dure : protège la mémoire. */
-const PER_CHANNEL_FETCH = 200;
+/**
+ * Fenêtre lue par canal avant fusion.
+ *
+ * ⚠️ PLAFONNÉE À 100 — ce n'est pas un choix esthétique. `listSubmissionsAction`
+ * et `listApplicationsAction` valident leur entrée avec `pageSize.max(100)` :
+ * au-delà, le `.parse()` Zod LÈVE. Le premier jet passait 200, ce qui faisait
+ * échouer le canal Messages à chaque chargement — et l'échec était avalé par le
+ * `Promise.allSettled` ci-dessous, écrit pour qu'un canal en panne ne vide pas
+ * la boîte entière. Le filet de sécurité masquait donc la panne qu'il aurait dû
+ * rendre visible : la boîte affichait « Message 0 » en permanence, sans erreur.
+ *
+ * Deux verrous posés depuis :
+ *   1. cette constante respecte la borne la plus basse des trois sources ;
+ *   2. `listInbox` remonte désormais `failedChannels`, affiché à l'écran — un
+ *      canal muet ne peut plus passer pour un canal vide.
+ */
+const PER_CHANNEL_FETCH = 100;
 
 const SUBMISSION_STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
@@ -100,7 +115,7 @@ async function fetchAppels(): Promise<InboxItem[]> {
 }
 
 async function fetchCandidatures(): Promise<InboxItem[]> {
-  const res = await listApplicationsAction({ page: 1, pageSize: 100 });
+  const res = await listApplicationsAction({ page: 1, pageSize: PER_CHANNEL_FETCH });
   return res.items.map((a) => ({
     key: `job_${a.id}`,
     channel: "candidature" as const,
@@ -116,21 +131,22 @@ async function fetchCandidatures(): Promise<InboxItem[]> {
 }
 
 async function fetchPodcast(): Promise<InboxItem[]> {
-  const rows = await prisma.podcastRequest
-    .findMany({
-      orderBy: { createdAt: "desc" },
-      take: PER_CHANNEL_FETCH,
-      select: {
-        id: true,
-        companyName: true,
-        leaderName: true,
-        email: true,
-        city: true,
-        status: true,
-        createdAt: true,
-      },
-    })
-    .catch(() => []);
+  // Pas de `.catch(() => [])` ici : il transformerait une panne en canal vide,
+  // exactement le masquage qu'on vient de corriger. L'échec doit remonter à
+  // `listInbox`, qui l'expose via `failedChannels`.
+  const rows = await prisma.podcastRequest.findMany({
+    orderBy: { createdAt: "desc" },
+    take: PER_CHANNEL_FETCH,
+    select: {
+      id: true,
+      companyName: true,
+      leaderName: true,
+      email: true,
+      city: true,
+      status: true,
+      createdAt: true,
+    },
+  });
   return rows.map((p) => ({
     key: `pod_${p.id}`,
     channel: "podcast" as const,
@@ -168,17 +184,38 @@ export interface InboxResult {
    * faire passer une troncature silencieuse pour une liste exhaustive.
    */
   truncated: boolean;
+  /**
+   * Canaux dont la lecture a ÉCHOUÉ (et non « qui sont vides »).
+   *
+   * Sans cette distinction, une panne se lit exactement comme une absence de
+   * données : c'est ce qui a permis au bug du `pageSize: 200` de vivre un
+   * déploiement entier derrière un paisible « Message 0 ». La page l'affiche.
+   */
+  failedChannels: InboxChannel[];
 }
+
+/** Ordre des lectures — doit rester aligné sur `settled` ci-dessous. */
+const FETCH_ORDER: ReadonlyArray<InboxChannel> = ["appel", "message", "candidature", "podcast"];
 
 export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult> {
   // `allSettled` : un canal en panne (table absente, PII indéchiffrable) ne doit
-  // pas vider la boîte entière — les autres restent lisibles.
+  // pas vider la boîte entière — les autres restent lisibles. Mais l'échec est
+  // désormais REMONTÉ, pas avalé (cf. `failedChannels`).
   const settled = await Promise.allSettled([
     fetchAppels(),
     fetchMessages(),
     fetchCandidatures(),
     fetchPodcast(),
   ]);
+  const failedChannels: InboxChannel[] = [];
+  settled.forEach((r, i) => {
+    if (r.status === "rejected") {
+      const channel = FETCH_ORDER[i];
+      if (channel) failedChannels.push(channel);
+      // Un canal muet est une panne, pas un détail : trace serveur explicite.
+      console.error(`[admin-inbox] canal « ${channel} » illisible :`, r.reason);
+    }
+  });
   const perChannel = settled.map((r) => (r.status === "fulfilled" ? r.value : []));
   const truncated = perChannel.some((arr) => arr.length >= PER_CHANNEL_FETCH);
   let all = perChannel.flat();
@@ -210,6 +247,7 @@ export async function listInbox(filters: InboxFilters = {}): Promise<InboxResult
     countsByChannel,
     actionCount,
     truncated,
+    failedChannels,
   };
 }
 

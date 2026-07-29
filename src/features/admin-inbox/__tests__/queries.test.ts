@@ -147,6 +147,42 @@ describe("listInbox", () => {
     expect(res.rows.some((r) => r.channel === "candidature")).toBe(false);
   });
 
+  // ── Régression 2026-07-29 (constatée EN PRODUCTION, pas par ces tests) ────
+  //
+  // `listInbox` passait `pageSize: 200` alors que `listSubmissionsAction` et
+  // `listApplicationsAction` valident `pageSize.max(100)` : le `.parse()` Zod
+  // levait, `Promise.allSettled` avalait l'erreur, et la boîte affichait
+  // « Message 0 » en permanence — sans la moindre alerte. Les mocks de ce
+  // fichier acceptent n'importe quel argument, donc rien ne pouvait le voir.
+  // On verrouille donc l'ARGUMENT, pas seulement le résultat.
+  it("ne demande jamais plus de 100 éléments par canal (borne Zod des actions)", async () => {
+    await listInbox();
+    for (const mock of [listSubmissionsMock, listApplicationsMock]) {
+      const arg = mock.mock.calls[0]?.[0] as { pageSize?: number } | undefined;
+      expect(arg?.pageSize, "pageSize absent").toBeDefined();
+      expect(arg?.pageSize).toBeGreaterThanOrEqual(10);
+      expect(arg?.pageSize).toBeLessThanOrEqual(100);
+    }
+  });
+
+  // Un canal muet doit se distinguer d'un canal vide : c'est précisément cette
+  // confusion qui a laissé le bug ci-dessus survivre à un déploiement.
+  it("remonte le canal en échec dans failedChannels", async () => {
+    listSubmissionsMock.mockRejectedValueOnce(new Error("zod: pageSize too big"));
+    const res = await listInbox();
+    expect(res.failedChannels).toEqual(["message"]);
+    expect(res.countsByChannel.message).toBe(0);
+  });
+
+  it("failedChannels est vide quand tout va bien", async () => {
+    expect((await listInbox()).failedChannels).toEqual([]);
+  });
+
+  it("nomme le bon canal, pas celui d'à côté (alignement de l'ordre des lectures)", async () => {
+    podcastFindManyMock.mockRejectedValueOnce(new Error("db down"));
+    expect((await listInbox()).failedChannels).toEqual(["podcast"]);
+  });
+
   it("signale la troncature quand un canal sature la fenêtre de lecture", async () => {
     podcastFindManyMock.mockResolvedValueOnce(
       Array.from({ length: PER_CHANNEL_FETCH }, (_, i) => ({
