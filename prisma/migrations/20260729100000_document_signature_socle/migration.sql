@@ -88,6 +88,28 @@ CREATE TYPE "DocumentStatutSignature" AS ENUM (
   'expiree'
 );
 
+-- Modalité de RECUEIL de la signature.
+--
+-- 🔴 Ajoutée après coup, et le motif mérite d'être écrit : la première forme de
+-- cette table n'en avait pas, et l'écriture du service a montré que sans elle,
+-- rien ne distingue une confirmation accessible d'un tracé manuscrit. Or le plan
+-- (II.2bis) pose les trois modes comme ÉGAUX en valeur probante, et le papier
+-- comme un chemin de plein droit — pas un repli honteux.
+--
+-- HACHÉE, pour la raison exacte qui l'a fait hacher côté AFEST : sans elle, un
+-- `UPDATE methode = 'trace'` transformerait après coup une confirmation
+-- accessible en signature manuscrite. C'est une falsification de la NATURE de la
+-- preuve, et elle serait indétectable.
+--
+-- ⚠️ Enum PROPRE, comme `EmargementMethode` et `coaching_signature_methode` le
+-- sont l'une de l'autre. Partager un enum entre deux familles de preuve, c'est
+-- s'interdire de faire évoluer l'une sans toucher à l'autre.
+CREATE TYPE "DocumentSignatureMethode" AS ENUM (
+  'trace',
+  'papier_scanne',
+  'confirmation_accessible'
+);
+
 -- La PARTIE qui signe, pas son identité. `axionia` est une partie comme une
 -- autre : une convention non contresignée par l'organisme n'est pas conclue.
 CREATE TYPE "DocumentPartieSignataire" AS ENUM (
@@ -133,6 +155,30 @@ CREATE TABLE "document_signatures" (
   "signataire_email" VARCHAR(320),
   "signataire_qualite" VARCHAR(200),
 
+  -- ── Modalité de recueil et exemplaire du tracé ──
+  --
+  -- Sans ces colonnes, le canal maison (phase 2, le tout prochain consommateur)
+  -- n'a nulle part où ranger la signature qu'il vient de faire tracer, et la
+  -- `SignatureZone` du PDF n'a rien à rendre. Les deux registres de présence
+  -- existants les portent tous les deux ; ce registre-ci les avait perdues.
+  --
+  -- ⚠️ AUCUN `DEFAULT` sur `methode` : elle entre dans le tuple haché.
+  "methode" "DocumentSignatureMethode" NOT NULL,
+  -- Clé R2 de l'image rasterisée. NULL pour `confirmation_accessible` (pas
+  -- d'image par construction), pour le papier non reversé, et APRÈS purge RGPD.
+  -- HORS tuple : elle doit rester effaçable.
+  "signature_key" TEXT,
+  -- 🔴 SHA-256 de l'IMAGE elle-même, pas de sa clé. Seul moyen de détecter la
+  -- substitution d'un objet de stockage sans toucher à la base. HACHÉ — et il
+  -- SURVIT à la purge de l'image, sinon l'effacement RGPD rendrait
+  -- `empreinte_invalide` sur des pièces intactes (le bug que le collectif a dû
+  -- corriger, et que l'AFEST a refusé de reproduire).
+  "signature_sha256" CHAR(64),
+  "mime_type" VARCHAR(60),
+  "size_bytes" INTEGER,
+  -- Date de purge effective de l'IMAGE. La ligne de preuve, elle, survit.
+  "image_purgee_at" TIMESTAMP(3),
+
   -- 🔴 L'empreinte du PDF EXACT qui a été signé.
   --
   -- C'est la colonne qui distingue « une signature existe » de « cette
@@ -163,9 +209,28 @@ CREATE TABLE "document_signatures" (
   "ip_hash" VARCHAR(64),
   "user_agent_sha256" CHAR(64),
 
+  -- 🔴 QUI, dans l'organisme, a versé cette preuve au dossier.
+  --
+  -- Renseignée sur les canaux où l'organisme ATTESTE l'identité du signataire —
+  -- le reversement d'une pièce signée à la main, notamment. NULL quand la
+  -- personne a signé elle-même depuis son propre accès, ou quand un fournisseur
+  -- tiers a certifié la signature.
+  --
+  -- Sans cette colonne, un reversement papier est ANONYME : « qui atteste que
+  -- cette signature manuscrite est bien celle de M. Durand ? » n'aurait pas de
+  -- réponse. C'est exactement l'objection que ce chantier oppose aux booléens
+  -- posés au clic — la reproduire ici serait absurde. Les deux registres de
+  -- présence portent déjà l'équivalent (`recueilli_par_trainer_id`).
+  --
+  -- HORS tuple : c'est de la provenance, pas le contenu de l'engagement.
+  "recueilli_par_admin_id" UUID,
+
   -- Révocation, jamais suppression.
   "revoked_at" TIMESTAMP(3),
   "revoked_motif" VARCHAR(500),
+  -- Qui a révoqué. Une révocation non imputée est une preuve retirée par
+  -- personne — et le registre perdrait précisément ce que l'auditeur cherche.
+  "revoked_by_id" UUID,
 
   -- Alignée sur `documents_generes.suppression_prevue_at` (rétention 5 ans).
   -- La LIGNE DE PREUVE survit à la purge de l'exemplaire, comme côté émargement.
@@ -178,6 +243,18 @@ CREATE TABLE "document_signatures" (
 ALTER TABLE "document_signatures"
   ADD CONSTRAINT "document_signatures_document_genere_id_fkey"
   FOREIGN KEY ("document_genere_id") REFERENCES "documents_generes"("id")
+  ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- RESTRICT sur les deux : supprimer un compte d'administration ne doit pas
+-- effacer la trace de qui a versé ou retiré une preuve. Un compte se SUSPEND.
+ALTER TABLE "document_signatures"
+  ADD CONSTRAINT "document_signatures_recueilli_par_admin_id_fkey"
+  FOREIGN KEY ("recueilli_par_admin_id") REFERENCES "admin_users"("id")
+  ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE "document_signatures"
+  ADD CONSTRAINT "document_signatures_revoked_by_id_fkey"
+  FOREIGN KEY ("revoked_by_id") REFERENCES "admin_users"("id")
   ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- Un motif de révocation vide est un motif absent : il ne dit rien à l'auditeur.
@@ -200,6 +277,38 @@ ALTER TABLE "document_signatures"
     ("provider" = 'docuseal' AND "provider_submission_id" IS NOT NULL)
     OR ("provider" <> 'docuseal' AND "provider_submission_id" IS NULL)
   );
+
+-- 🔴 La modalité doit correspondre à ce qui existe RÉELLEMENT.
+--
+-- · `trace` sans image, c'est affirmer qu'une personne a tracé une signature que
+--   personne ne pourra jamais produire ;
+-- · `papier_scanne` sans image, c'est affirmer l'existence d'un scan qui n'a pas
+--   été versé ;
+-- · `confirmation_accessible` AVEC image, c'est présenter un tracé là où la
+--   personne a précisément déclaré ne pas pouvoir en produire.
+--
+-- ⚠️ Conséquence ASSUMÉE : « signé sur papier, rangé dans un classeur, jamais
+-- photographié » n'est PAS enregistrable. C'est voulu. Une ligne de preuve sans
+-- image, sans certificat de tiers et sans confirmation nominative n'est adossée
+-- à rien — c'est exactement la catégorie de signature que ce chantier retire.
+-- Photographier la feuille (`papier_scanne`) coûte dix secondes.
+--
+-- ⚠️ Le CHECK porte sur `signature_sha256`, JAMAIS sur `signature_key` : la purge
+-- RGPD met la clé à NULL, et un CHECK sur la clé transformerait un effacement
+-- légitime en violation de contrainte.
+ALTER TABLE "document_signatures"
+  ADD CONSTRAINT "ck_document_signature_image_par_methode"
+  CHECK (
+    ("methode" = 'confirmation_accessible' AND "signature_sha256" IS NULL)
+    OR ("methode" <> 'confirmation_accessible' AND "signature_sha256" IS NOT NULL)
+  );
+
+-- Une image purgée laisse forcément une trace de sa purge, et réciproquement :
+-- sans cela, une clé effacée « par mégarde » serait indiscernable d'une purge
+-- RGPD régulière, et le registre ne saurait plus dire ce qu'il a détruit.
+ALTER TABLE "document_signatures"
+  ADD CONSTRAINT "ck_document_signature_purge_tracee"
+  CHECK ("image_purgee_at" IS NULL OR "signature_key" IS NULL);
 
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 4. Index

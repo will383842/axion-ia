@@ -401,6 +401,20 @@ enum SignatureProvider {
   interne
 }
 
+/// Modalité de recueil d'une signature au grain DOCUMENT.
+///
+/// ⚠️ Enum PROPRE — distinct de `EmargementMethode` (`canvas`) et de
+/// `coaching_signature_methode`. Les trois familles de preuve doivent pouvoir
+/// évoluer indépendamment ; partager l'enum les recouple par la porte de service.
+///
+/// 🔴 Les trois modes sont ÉGAUX en valeur probante (plan II.2bis) : une pièce
+/// signée sur papier photographié compte exactement autant qu'un tracé au doigt.
+enum DocumentSignatureMethode {
+  trace
+  papier_scanne
+  confirmation_accessible
+}
+
 /// Statut de signature DÉRIVÉ d'une pièce générée.
 /// `partielle` existe pour la tripartite et le protocole AFEST : sans lui, un
 /// dossier à 2 signatures sur 3 serait indiscernable d'un dossier non signé.
@@ -1780,6 +1794,9 @@ model AdminUser {
   siteSettingsUpdated   SiteSetting[]
   // Sprint Notif Infra 2026-05-26 — reply system admin
   submissionReplies     SubmissionReply[]
+  // Preuve de signature au grain document — provenance et révocation.
+  documentSignaturesRecueillies DocumentSignature[] @relation("DocumentSignatureRecueillie")
+  documentSignaturesRevoquees   DocumentSignature[] @relation("DocumentSignatureRevoquee")
 
   @@index([role])
   @@index([status])
@@ -6492,6 +6509,23 @@ model DocumentSignature {
   signataireEmail      String?                  @map("signataire_email") @db.VarChar(320)
   signataireQualite    String?                  @map("signataire_qualite") @db.VarChar(200)
 
+  /// Modalité de RECUEIL. HACHÉE : sans elle, un `UPDATE methode = 'trace'`
+  /// transformerait après coup une confirmation accessible en tracé manuscrit —
+  /// falsification de la NATURE de la preuve, indétectable.
+  /// ⚠️ PAS de `@default` : colonne hachée.
+  methode              DocumentSignatureMethode
+  /// Clé R2 de l'image rasterisée. NULL pour `confirmation_accessible` et APRÈS
+  /// purge RGPD. HORS tuple : elle doit rester effaçable.
+  signatureKey         String?                  @map("signature_key") @db.Text
+  /// SHA-256 de l'IMAGE elle-même — pas de sa clé. Seul moyen de détecter la
+  /// substitution d'un objet de stockage sans toucher à la base. HACHÉ, et il
+  /// SURVIT à la purge de l'image.
+  signatureSha256      String?                  @map("signature_sha256") @db.Char(64)
+  mimeType             String?                  @map("mime_type") @db.VarChar(60)
+  sizeBytes            Int?                     @map("size_bytes")
+  /// Purge effective de l'IMAGE. La ligne de preuve, elle, survit.
+  imagePurgeeAt        DateTime?                @map("image_purgee_at")
+
   /// 🔴 Empreinte du PDF EXACT qui a été signé — ce qui distingue « une
   /// signature existe » de « cette signature porte sur CETTE pièce ». Sans elle,
   /// régénérer le PDF après coup produirait un document que plus rien ne relie
@@ -6514,8 +6548,19 @@ model DocumentSignature {
   ipHash               String?                  @map("ip_hash") @db.VarChar(64)
   userAgentSha256      String?                  @map("user_agent_sha256") @db.Char(64)
 
+  /// 🔴 Qui, dans l'organisme, a versé cette preuve au dossier. Renseignée sur
+  /// les canaux où l'organisme ATTESTE l'identité du signataire (reversement
+  /// d'une pièce papier). NULL quand la personne a signé depuis son propre
+  /// accès, ou quand un tiers a certifié la signature. Sans elle, un reversement
+  /// papier serait ANONYME. HORS tuple : provenance, pas contenu.
+  recueilliParAdminId  String?                  @map("recueilli_par_admin_id") @db.Uuid
+  recueilliPar         AdminUser?               @relation("DocumentSignatureRecueillie", fields: [recueilliParAdminId], references: [id], onDelete: Restrict)
+
   revokedAt            DateTime?                @map("revoked_at")
   revokedMotif         String?                  @map("revoked_motif") @db.VarChar(500)
+  /// Une révocation non imputée est une preuve retirée par personne.
+  revokedById          String?                  @map("revoked_by_id") @db.Uuid
+  revokedBy            AdminUser?               @relation("DocumentSignatureRevoquee", fields: [revokedById], references: [id], onDelete: Restrict)
 
   /// Alignée sur `DocumentGenere.suppressionPrevueAt`. La ligne de preuve
   /// SURVIT à la purge de l'exemplaire, comme côté émargement.
