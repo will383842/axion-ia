@@ -23,6 +23,7 @@ import { DOCUMENT_REGISTER_TYPES } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { pieceSignable } from "@/server/qualiopi/documents/signature/parties-requises";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
 /**
@@ -367,6 +368,24 @@ export async function generateDocument(
           sizeBytes,
           estCopie: estUneRegeneration,
           suppressionPrevueAt,
+          // 🔴 Une pièce SIGNABLE naît EN ATTENTE de signature.
+          //
+          // Laissée à `non_requise`, elle dirait qu'elle suit son cours sans
+          // être signée, et le registre du mode auditeur ne la ferait jamais
+          // remonter — alors que « cette pièce est-elle signée ? » est
+          // exactement la question qu'un contrôle pose.
+          //
+          // ⚠️ La réponse vient du SSOT `parties-requises.ts`, jamais d'une
+          // liste locale et jamais d'un circuit appelant. La première version
+          // faisait poser `en_attente` par chaque circuit après coup : c'était
+          // N endroits à ne pas oublier, et un `UPDATE` de plus après un
+          // `create`. Le SSOT sait, donc c'est ici que ça se décide — une fois.
+          //
+          // ⚠️ Un SPÉCIMEN reste signable au sens du statut : il EXIGE une
+          // signature, il ne peut simplement pas la recevoir tant qu'il est
+          // déclassé (`signerDocument` le refuse explicitement). Le marquer
+          // `non_requise` masquerait une pièce qu'il faut précisément corriger.
+          ...(pieceSignable(input.type) ? { statutSignature: "en_attente" as const } : {}),
           // Traçabilité du déclassement : un document SPÉCIMEN doit rester
           // identifiable comme tel en base, pas seulement à l'impression.
           ...(specimen

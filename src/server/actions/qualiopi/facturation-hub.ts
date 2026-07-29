@@ -33,6 +33,7 @@ import {
   DELAI_RETRACTATION_PARTICULIER_JOURS,
   dateEncaissablePartir,
   encaissementAutorise,
+  dateEngagementParticulier,
 } from "@/server/qualiopi/financements/acompte";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
@@ -119,6 +120,42 @@ const DepuisDevisSchema = z.object({
    */
   acomptePercent: z.number().int().min(1).max(90).optional(),
 });
+
+/**
+ * Signatures du/des CONTRAT(S) de formation rattaché(s) à ce devis.
+ *
+ * ## Le chemin de rattachement, et pourquoi il est étroit
+ *
+ * `DocumentGenere` ne porte pas de `devisId`. Le seul lien fiable est
+ * `Devis → TrainingSession.devisId → DocumentGenere(type: "contrat")` : le
+ * contrat individuel est généré depuis une inscription, avec
+ * `refs: { sessionId, traineeId }` (cf. `genererContratFormationAction`).
+ *
+ * 🔴 On NE remonte PAS par `clientId`. Ce serait plus large — et donc plus
+ * PERMISSIF : un contrat ancien du même client, signé il y a six mois, ferait
+ * expirer le délai d'un tout autre engagement. Un rattachement approximatif sur
+ * une règle légale vaut moins que pas de rattachement du tout : sans lien de
+ * session, on retombe sur le repli `acceptedAt`, c'est-à-dire le comportement
+ * d'avant ce correctif.
+ *
+ * ⚠️ Les lignes RÉVOQUÉES sont volontairement RAMENÉES, pas filtrées en SQL :
+ * la règle « une révocation ne fait courir aucun délai » vit dans
+ * `dateEngagementParticulier`, et elle doit y vivre SEULE. La dupliquer dans un
+ * `where` laisserait les deux diverger sans que rien ne le signale.
+ *
+ * Plusieurs stagiaires ⇒ plusieurs contrats : la fonction pure retient la
+ * signature valable la plus tardive, donc le délai de tous est écoulé.
+ */
+async function lireSignaturesContratDuDevis(
+  devisId: string,
+): Promise<Array<{ signeAt: Date; revokedAt: Date | null }>> {
+  return prisma.documentSignature.findMany({
+    where: {
+      documentGenere: { type: "contrat", session: { devisId } },
+    },
+    select: { signeAt: true, revokedAt: true },
+  });
+}
 
 /**
  * Facture un devis ACCEPTÉ : acompte de X %, ou solde/totalité (les acomptes
@@ -210,19 +247,47 @@ export async function genererFactureDepuisDevisAction(
   // Le refus est AU SERVEUR, pas dans l'UI : une Server Action est appelable
   // directement, et un garde-fou d'UI ne protège que celui qui passe par l'UI.
   //
-  // ⚠️ Date d'engagement retenue = `acceptedAt` du devis. C'est l'intrant le plus
-  // fiable DISPONIBLE AUJOURD'HUI, et il est volontairement documenté comme
-  // provisoire : le jour où `DocumentSignature` existe, ce garde-fou doit lire la
-  // date de signature du CONTRAT (L6353-5 fait courir le délai à compter d'elle,
-  // pas de l'acceptation du devis). En attendant, ce contrôle est strictement
-  // meilleur que l'absence totale de contrôle qu'il remplace.
+  // ✅ 2026-07-29 — le délai court désormais depuis la SIGNATURE DU CONTRAT.
+  //
+  // Le dépôt le faisait courir depuis `Devis.acceptedAt`, faute de mieux : c'était
+  // l'intrant le plus fiable disponible, et il était documenté comme provisoire.
+  // Il ne l'est plus. L6353-5 fait courir les dix jours à compter de la conclusion
+  // du CONTRAT de formation (L6353-3) ; l'acceptation d'un devis n'existe nulle
+  // part dans le code du travail. Le registre `DocumentSignature` rend cette date
+  // lisible : la règle s'applique enfin à l'intrant que la loi désigne.
+  //
+  // `acceptedAt` reste le REPLI quand aucun contrat n'est signé — ce qui est le
+  // cas de tout l'historique antérieur au registre. Sans lui, ce correctif
+  // bloquerait d'un coup toute facturation de particulier ; avec lui, le
+  // comportement des dossiers sans contrat signé est INCHANGÉ.
+  //
+  // ⚠️ Cas d'inversion (contrat signé AVANT l'acceptation du devis) : la signature
+  // l'emporte quand même, et c'est assumé. C'est la seule date que L6353-5
+  // mentionne ; `acceptedAt` n'a jamais eu de portée légale, ce n'était qu'une
+  // approximation. Retenir la plus tardive des deux ferait attendre l'organisme
+  // au-delà de ce que la loi exige, sur la foi d'une donnée sans valeur juridique.
   if (devis.client.type === "particulier") {
-    if (!encaissementAutorise(devis.acceptedAt, new Date())) {
-      const encaissableLe = devis.acceptedAt ? dateEncaissablePartir(devis.acceptedAt) : null;
+    const engagement = dateEngagementParticulier({
+      signaturesContrat: await lireSignaturesContratDuDevis(devis.id),
+      devisAcceptedAt: devis.acceptedAt,
+    });
+    if (!encaissementAutorise(engagement.date, new Date())) {
+      const prefixe = `Facturation refusée : l'article L6353-6 interdit d'exiger ou de percevoir une somme d'un particulier avant l'expiration du délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours (art. L6353-5).`;
+      // Le message NOMME la source de la date : un admin doit pouvoir recouper le
+      // refus avec une pièce du dossier. Annoncer « accepté le … » alors qu'on a
+      // lu une signature de contrat rendrait le garde-fou inauditable.
+      if (engagement.date !== null) {
+        const encaissableLe = dateEncaissablePartir(engagement.date);
+        const origine =
+          engagement.source === "signature_contrat"
+            ? `Le contrat de formation a été signé le ${engagement.date.toLocaleDateString("fr-FR")}`
+            : `Aucun contrat de formation signé n'est rattaché à ce devis : le délai court, à titre de repli, depuis l'acceptation du devis le ${engagement.date.toLocaleDateString("fr-FR")}`;
+        return {
+          error: `${prefixe} ${origine} — facturation possible à partir du ${encaissableLe.toLocaleDateString("fr-FR")}.`,
+        };
+      }
       return {
-        error: encaissableLe
-          ? `Facturation refusée : l'article L6353-6 interdit d'exiger ou de percevoir une somme d'un particulier avant l'expiration du délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours (art. L6353-5). Ce devis a été accepté le ${devis.acceptedAt?.toLocaleDateString("fr-FR")} — facturation possible à partir du ${encaissableLe.toLocaleDateString("fr-FR")}.`
-          : "Facturation refusée : la date d'acceptation du devis est absente, le délai de rétractation de 10 jours (art. L6353-5) est donc incalculable. Renseignez l'acceptation du devis avant de facturer un particulier.",
+        error: `${prefixe} Ni signature du contrat de formation, ni date d'acceptation du devis : le délai est incalculable, et une date manquante ne vaut pas autorisation. Faites signer le contrat (ou renseignez l'acceptation du devis) avant de facturer un particulier.`,
       };
     }
   }

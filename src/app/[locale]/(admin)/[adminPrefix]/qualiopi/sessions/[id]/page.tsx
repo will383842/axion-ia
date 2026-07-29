@@ -25,6 +25,9 @@ import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntrep
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import { SignatureReleve } from "@/components/espace-formateur/SignatureReleve";
+import { viserReleveResponsablePedagogiqueAction } from "@/server/actions/qualiopi/releve-signature";
+import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/signature/releve-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import {
   enrollTraineeAction,
@@ -116,6 +119,10 @@ export default async function SessionHubPage({ params }: PageProps) {
   if (!userSession?.user || (role !== "admin" && role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
+
+  // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
+  // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
+  const etatReleveConsole = await lireEtatSignatureReleveConsole(id, role);
 
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id },
@@ -595,6 +602,30 @@ export default async function SessionHubPage({ params }: PageProps) {
           enrollments={enrollmentsLight}
           documentsExistants={documentsSerialized}
         />
+
+        {/*
+          Visa du responsable pédagogique sur le relevé de connexion.
+
+          ⚠️ Rendu SEULEMENT si un relevé existe : une session présentielle n'en
+          a pas, et un bloc vide se lirait comme une pièce manquante.
+
+          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+          et l'un finirait par contredire l'autre sur la même pièce.
+        */}
+        {etatReleveConsole !== null && (
+          <div className="mt-[var(--space-admin-6)]">
+            <SignatureReleve
+              documentGenereId={etatReleveConsole.documentGenereId}
+              numero={etatReleveConsole.numero}
+              parties={etatReleveConsole.parties}
+              peutAgir={etatReleveConsole.peutAgir}
+              mentions={etatReleveConsole.mentions}
+              plafondProbant={etatReleveConsole.plafondProbant}
+              signerAction={viserReleveResponsablePedagogiqueAction}
+            />
+          </div>
+        )}
       </section>
 
       {/* SECTION: questionnaires */}

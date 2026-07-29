@@ -99,7 +99,10 @@ function piece(over: Record<string, unknown> = {}) {
     coachingSessionId: null,
     signatures: [] as Array<{ id: string }>,
     coachingSession: null as { trainerId: string } | null,
-    session: { sessionFormateurs: [{ trainerId: TRAINER }] },
+    session: {
+      formateurPrincipalId: null,
+      sessionFormateurs: [{ trainerId: TRAINER, role: "co_formateur" }],
+    },
     ...over,
   };
 }
@@ -212,6 +215,33 @@ describe("🔴 autorisation du porteur", () => {
       entree({ porteur: { type: "organisme_authentifie", adminId: ADMIN, partie: "axionia" } }),
     );
     expect(res).toMatchObject({ ok: true });
+  });
+
+  it("🔴 accepte le formateur PRINCIPAL par la FK, même sans ligne `SessionFormateur`", async () => {
+    // Régression trouvée en revue croisée. La première version ne lisait que
+    // `sessionFormateurs` : le principal posé uniquement par la FK — cas que
+    // `resoudreAppartenance` déclare prioritaire, et qu'aucun dual-write ne
+    // garantit accompagné d'une ligne — était autorisé par la couche action puis
+    // REFUSÉ ici. Un refus qui n'a aucun sens pour lui, sur sa propre session.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      piece({ session: { formateurPrincipalId: TRAINER, sessionFormateurs: [] } }),
+    );
+    const res = await signerDocument(entree());
+    expect(res).toMatchObject({ ok: true });
+  });
+
+  it("refuse un formateur ni principal ni membre, même quand la session en a d'autres", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(
+      piece({
+        session: {
+          formateurPrincipalId: "88888888-8888-4888-8888-888888888888",
+          sessionFormateurs: [
+            { trainerId: "99999999-9999-4999-8999-999999999999", role: "co_formateur" },
+          ],
+        },
+      }),
+    );
+    attendRefus(await signerDocument(entree()), "porteur_non_autorise");
   });
 
   it("🔴 un formateur ne peut PAS signer au titre du CLIENT", async () => {
