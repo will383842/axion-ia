@@ -18,6 +18,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createDevisAction } from "@/server/actions/qualiopi/devis";
+import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
+import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -167,6 +169,15 @@ export function DevisForm({
   const [clientId, setClientId] = useState<string>(defaultClientId ?? "");
   const [lignes, setLignes] = useState<Ligne[]>([emptyLigne()]);
   const [financementSuggere, setFinancementSuggere] = useState<FinancementSuggere>("");
+  // 🔴 L'ACTIVITÉ n'était pas demandée, et son absence cassait TROIS choses :
+  //   · `genererFactureDepuisDevisAction` REFUSE un devis sans activité — la
+  //     chaîne devis → facture était rompue à son maillon central ;
+  //   · `normaliserLignesPourActivite` ne s'appliquait pas, donc la règle
+  //     d'exonération 261-4-4° (réservée à formation et 1-to-1) n'était pas
+  //     opposée aux lignes d'un audit ou d'un site web ;
+  //   · le PDF n'affichait pas `activiteLabel`.
+  // L'action l'acceptait depuis toujours ; seul le formulaire ne la posait pas.
+  const [activite, setActivite] = useState<ActiviteFacturation | "">("");
   const [nbParticipants, setNbParticipants] = useState<string>("");
   const [dureeHeures, setDureeHeures] = useState<string>("");
   const [modaliteOpco, setModaliteOpco] = useState<ModaliteOpco>("");
@@ -283,6 +294,7 @@ export function DevisForm({
       const result = await createDevisAction({
         clientId,
         lignes: parsedLignes,
+        ...(activite !== "" ? { activite } : {}),
         ...(financementSuggere !== "" ? { financementSuggere } : {}),
         ...(showOpco && nbParticipants !== ""
           ? { nbParticipants: parseInt(nbParticipants, 10) }
@@ -485,6 +497,30 @@ export function DevisForm({
         </h2>
 
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="devis-activite">
+              Activité *
+            </label>
+            <select
+              id="devis-activite"
+              value={activite}
+              onChange={(e) => setActivite(e.target.value as ActiviteFacturation | "")}
+              disabled={isPending}
+              className={selectCls}
+            >
+              <option value="">— Sélectionner une activité —</option>
+              {(Object.keys(ACTIVITE_LABELS) as ActiviteFacturation[]).map((cle) => (
+                <option key={cle} value={cle}>
+                  {ACTIVITE_LABELS[cle]}
+                </option>
+              ))}
+            </select>
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Détermine le régime de TVA applicable et conditionne le passage en facture. Sans elle,
+              le devis ne pourra pas être facturé.
+            </p>
+          </div>
+
           <div className={fieldCls}>
             <label className={labelCls} htmlFor="devis-financement">
               Financement suggéré
