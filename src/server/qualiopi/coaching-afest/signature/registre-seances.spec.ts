@@ -51,9 +51,7 @@ const JOUR = new Date("2026-06-10T00:00:00.000Z");
  * changement de tuple, et le test continuerait à passer en vérifiant un hachage
  * que plus personne n'émet.
  */
-function ligne(
-  over: Partial<LigneSeanceSignature> & { id: string },
-): Record<string, unknown> {
+function ligne(over: Partial<LigneSeanceSignature> & { id: string }): Record<string, unknown> {
   const base: LigneSeanceSignature = {
     coachingId: COACHING,
     compteRenduSeanceId: SEANCE,

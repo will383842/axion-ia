@@ -178,8 +178,7 @@ export async function listerRegistreSeancesAfest(
       empreinte: b.selfHash,
       recueilliSurPosteFormateur: b.recueilliParTrainerId !== null,
       imagePurgee: b.imagePurgeeAt !== null,
-      revocation:
-        b.revokedAt === null ? null : { at: b.revokedAt, motif: b.revokedMotif },
+      revocation: b.revokedAt === null ? null : { at: b.revokedAt, motif: b.revokedMotif },
       dernierMaillon: b.revokedAt === null && !empreintesChainees.has(b.selfHash),
       insertionTardive: Math.abs(ecartMs) > SEUIL_INSERTION_TARDIVE_MS,
     };
@@ -195,7 +194,9 @@ export async function listerRegistreSeancesAfest(
       // Le verrou de colonnes est TRAVERSÉ ici : sans lui, un renommage de
       // colonne dans le schéma passerait `tsc` et l'on découvrirait à l'audit
       // que la chaîne n'est plus recalculable.
-      resultat: verifierChaine(vivants.map((v) => maillonSeanceDepuisLigne(verrouColonnesSeance(v)))),
+      resultat: verifierChaine(
+        vivants.map((v) => maillonSeanceDepuisLigne(verrouColonnesSeance(v))),
+      ),
     });
   }
 
