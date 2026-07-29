@@ -15,7 +15,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/counters";
+import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";

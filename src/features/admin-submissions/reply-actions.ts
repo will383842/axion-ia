@@ -18,7 +18,7 @@
 
 import { z } from "zod";
 import { revalidatePath, updateTag } from "next/cache";
-import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/counters";
+import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";

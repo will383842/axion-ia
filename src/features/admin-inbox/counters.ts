@@ -19,7 +19,10 @@ import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import type { InboxChannel } from "./types";
 
-export const INBOX_COUNTS_TAG = "admin:inbox-counts";
+// Le tag vit dans un module sans dépendance (`./cache-tags`) : les Server
+// Actions qui l'utilisent n'ont pas à charger Prisma ni `unstable_cache`.
+export { INBOX_COUNTS_TAG } from "./cache-tags";
+import { INBOX_COUNTS_TAG } from "./cache-tags";
 
 export type InboxActionCounts = Record<InboxChannel, number>;
 
