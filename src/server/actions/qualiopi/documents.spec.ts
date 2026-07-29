@@ -71,8 +71,9 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
   getOrganismeIdentite: () => mockGetOrganismeIdentite(),
 }));
 
+const mockGetQualiopiConfig = vi.fn();
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
-  getQualiopiConfig: vi.fn().mockResolvedValue(null),
+  getQualiopiConfig: (...args: unknown[]) => mockGetQualiopiConfig(...args),
 }));
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -94,6 +95,7 @@ import {
   genererKitFranceTravailAction,
   genererLettreMissionAction,
   genererLivretAccueilAction,
+  genererContratFormationAction,
 } from "./documents";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -201,6 +203,7 @@ beforeEach(() => {
   mockSessionJourFindMany.mockResolvedValue([]);
   // Dossier sain par defaut : une trace d'emargement existe.
   mockSignatureCount.mockResolvedValue(1);
+  mockGetQualiopiConfig.mockResolvedValue(null);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -856,5 +859,70 @@ describe("genererCertificatRealisationAction — preuve d'assiduité exigée", (
     mockEnrollmentFindUnique.mockResolvedValue(inscription({ tauxPresencePct: 0 }));
     const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
     if ("error" in r) expect(r.error).not.toContain("n'a pas été calculé");
+  });
+});
+
+describe("🔴 contrat particulier — l'acompte ANNONCÉ est celui qui sera demandé", () => {
+  beforeEach(() => {
+    // 🔴 Second verrou du contrat particulier, INDÉPENDANT du SIRET : sans
+    // médiateur de la consommation agréé CECMC, l'action REFUSE (art. L.612-1
+    // C. conso.) — un refus dur, pas un déclassement en SPÉCIMEN. Il est vide
+    // en production ; on le renseigne ici pour atteindre le calcul d'acompte.
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom"
+        ? "CM2C"
+        : cle === "mediateur_consommation_url"
+          ? "https://cm2c.net"
+          : null,
+    );
+  });
+
+  it("prend pour assiette le RESTE À CHARGE, pas le prix total", async () => {
+    // Le défaut que ce test ferme : le gabarit accepte `acompteEuros` depuis le
+    // 2026-07-27 pour imprimer ce qui a été CONVENU, mais PERSONNE ne le lui
+    // fournissait. Il retombait donc sur 30 % de `prixNet`, c'est-à-dire du
+    // TOTAL. Sur 2 000 € dont 1 200 € financés, le contrat annonçait 600 € là
+    // où le calcul en propose 240 : le client signait un chiffre que le système
+    // n'appliquait pas.
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({
+        session: makeSession({
+          montantHtCents: 200_000,
+          priseEnChargeMontantCents: 120_000,
+          opcoSubrogation: true,
+        }),
+      }),
+    );
+
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ prixNet: number; acompteEuros?: number }>();
+    // Le prix total reste imprimé tel quel — c'est le prix convenu.
+    expect(data.prixNet).toBe(2000);
+    // Mais l'acompte est calculé sur le reste à charge (800 €), pas sur 2 000 €.
+    expect(data.acompteEuros).toBeDefined();
+    expect(data.acompteEuros!).toBeLessThanOrEqual(800 * 0.3);
+    expect(data.acompteEuros!).toBeLessThan(600);
+  });
+
+  it("🔴 l'acompte annoncé ne dépasse JAMAIS le plafond légal du prix convenu", async () => {
+    // Les deux étages ne se contredisent pas : 30 % du reste à charge est
+    // toujours ≤ 30 % du prix convenu, plafond que `facturation-hub` fait
+    // respecter au refus. Ce test l'énonce plutôt que de le supposer.
+    //
+    // ⚠️ L'action est rejouée ICI : `clearAllMocks` efface les appels entre
+    // chaque test, donc lire `donneesPdf()` sans rejouer ne lirait rien.
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({
+        session: makeSession({ montantHtCents: 200_000, priseEnChargeMontantCents: 0 }),
+      }),
+    );
+
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ acompteEuros?: number }>();
+    // Aucune prise en charge : reste à charge = prix convenu, donc le calcul
+    // touche exactement le plafond sans jamais le franchir.
+    expect(data.acompteEuros!).toBeLessThanOrEqual(2000 * 0.3);
   });
 });
