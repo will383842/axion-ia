@@ -95,11 +95,37 @@ describe("DevisPdf — mentions obligatoires", () => {
     expect(text).toContain(LEGAL_MENTIONS.factureExonerationTva);
   });
 
-  it("porte le bloc signature « Bon pour accord » (nom/fonction, date, signature)", () => {
+  it("porte le bloc signature « Bon pour accord », avec identité et date à remplir", () => {
+    // ⚠️ Ce test portait sur les libellés EXACTS de l'ancien bloc au stylo
+    // (« Nom et fonction du signataire », « Date : », « Signature : »). La
+    // bascule du 2026-07-30 vers `SignatureZone` les a remplacés — mais il avait
+    // raison sur le FOND, et il a rattrapé une vraie régression : la première
+    // version de la zone avait perdu l'emplacement de DATE.
+    //
+    // 🔴 Sur une pièce contractuelle, la date n'est pas décorative : c'est elle
+    // qui prouve QUAND l'engagement a été pris, et l'art. L.6353-1 exige que la
+    // convention soit conclue AVANT le début de l'action. Le test vérifie donc
+    // désormais la SUBSTANCE — le chemin papier reste intégralement praticable —
+    // plutôt que la formulation.
     expect(text).toContain("Bon pour accord");
-    expect(text).toContain("Nom et fonction du signataire");
-    expect(text).toContain("Date :");
-    expect(text).toContain("Signature :");
+    // Les deux parties du circuit (SSOT `parties-requises.ts`), l'organisme
+    // concluant en dernier.
+    expect(text).toContain("Pour le client");
+    expect(text).toContain("Pour l'organisme");
+    // De quoi dater et signer à la main.
+    expect(text).toContain("Fait à");
+    expect(text).toMatch(/Nom, qualité, signature/);
+    // Tant que rien n'est signé, la zone invite à signer — elle n'affirme pas
+    // qu'une signature existe.
+    expect(text).toContain("Lu et approuvé");
+  });
+
+  it("🔴 n'affirme AUCUNE signature tant qu'aucune preuve n'existe", () => {
+    // Le défaut que ce chantier retire partout : une case « signé » posée sans
+    // signataire, sans image et sans empreinte, pendant que le PDF rend
+    // « signé ». Un devis non signé ne doit porter ni horodatage ni empreinte.
+    expect(text).not.toContain("Signé le");
+    expect(text).not.toContain("Empreinte :");
   });
 });
 
@@ -157,5 +183,50 @@ describe("DevisPdf — identifiants émetteur manquants signalés (jamais masqu�
     const text = devisText(makeDevis({ identite: { ...IDENTITE, siret: "" } }));
     expect(text).toContain("Non renseigné");
     expect(text).toContain("SIRET de l'organisme");
+  });
+});
+
+describe("🔴 DevisPdf — le devis SIGNÉ porte la preuve, sous les totaux", () => {
+  // C'est la raison d'être de la bascule du 2026-07-30 : le client doit signer
+  // LA PIÈCE QU'IL LIT. Avant, il recevait ce PDF détaillé par e-mail et signait
+  // dans DocuSeal un document séparé à trois champs, qui ne désignait pas son
+  // objet. Ces tests garantissent que la preuve atterrit bien SUR ce document.
+  const text = devisText(
+    makeDevis({
+      signatures: {
+        client: {
+          signataireNom: "Camille Durand",
+          signataireQualite: "Directrice des ressources humaines",
+          signeAtLisible: "30/07/2026 à 14:32 (heure de Paris)",
+          empreinte: "f".repeat(64),
+          methode: "trace",
+          imageSrc: "data:image/png;base64,AAAA",
+        },
+      },
+    }),
+  );
+
+  it("rend l'identité FIGÉE du signataire, sa qualité et l'horodatage", () => {
+    expect(text).toContain("Camille Durand");
+    expect(text).toContain("Directrice des ressources humaines");
+    expect(text).toContain("Signé le 30/07/2026 à 14:32 (heure de Paris)");
+  });
+
+  it("🔴 affiche l'empreinte EN ENTIER — une empreinte tronquée ne se vérifie pas", () => {
+    expect(text).toContain(`Empreinte : ${"f".repeat(64)}`);
+  });
+
+  it("retire l'invitation à signer de la partie qui a signé", () => {
+    // Laisser « Lu et approuvé » sous une signature apposée ferait cohabiter une
+    // preuve et un cadre vide sur la même partie.
+    expect(text).toContain("Pour le client");
+    expect(text).not.toContain("Fait à");
+  });
+
+  it("⚠️ laisse le cadre de l'organisme OUVERT tant qu'il n'a pas contresigné", () => {
+    // Le devis n'est pas conclu par la seule signature du client : le SSOT
+    // déclare deux parties, et le PDF ne doit pas laisser croire l'inverse.
+    expect(text).toContain("Pour l'organisme");
+    expect(text).toContain("Lu et approuvé");
   });
 });

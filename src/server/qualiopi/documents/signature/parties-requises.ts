@@ -80,8 +80,47 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     libelle: "lettre de mission",
   },
 
+  // ── Canal A — maison, par lien public à jeton ──
+  //
+  // 🔴 Bascule du 2026-07-30, décidée avec Will. Le devis était déclaré
+  // `fournisseur` au motif qu'« un TIERS contractant attend un certificat
+  // opposable ». Ce motif reste vrai en principe ; il est devenu inapplicable en
+  // fait, et le circuit qu'il justifiait produisait un défaut pire que celui
+  // qu'il évitait.
+  //
+  // **Le fait.** `POST /api/templates/pdf` — l'endpoint sur lequel reposait la
+  // voie « template éphémère » du plan (§III.3) — n'existe pas sur l'instance
+  // DocuSeal de production. Vérifié contre le conteneur RÉEL, pas contre la
+  // documentation : `config/routes.rb` (docuseal/docuseal:latest, v2.5.3)
+  // déclare `resources :templates, only: %i[update show index destroy]`, et
+  // l'appel réel répond 404 là où `GET /api/templates/2` répond 200 avec le même
+  // jeton. Ces endpoints sont des fonctionnalités Pro.
+  //
+  // **Le défaut.** Faute de pouvoir créer un template par pièce, le circuit
+  // faisait signer un template PERMANENT à trois champs — `devis_number`,
+  // `amount_ht`, `valid_until` — pendant que le client lisait, en pièce jointe,
+  // un PDF détaillé portant les lignes, les quantités, les prix unitaires, la
+  // TVA et les totaux. Le client lisait donc un document et en signait un autre.
+  // Un bon pour accord qui ne désigne pas son objet est juridiquement fragile.
+  //
+  // Le plan interdisait explicitement le repli par template permanent dupliqué
+  // (« deux sources de vérité qui divergeront ») : c'est pourtant ce que le
+  // circuit faisait déjà, faute de mieux.
+  //
+  // **Le canal A répare la cause** : la signature porte sur le PDF RÉEL, celui
+  // dont l'empreinte est scellée dans `document_hash_sha256`. Une seule source
+  // de vérité, donc aucune divergence possible.
+  //
+  // ⚠️ Contrepartie ASSUMÉE : la preuve est produite par l'organisme, non
+  // attestée par un tiers indépendant. En signature simple, la présomption de
+  // l'art. 1367 C. civ. n'est de toute façon acquise qu'à la signature
+  // QUALIFIÉE, hors périmètre (ADR 0014) — ce qui protège est la qualité du
+  // faisceau, que la chaîne de hachage produit. Le jour où un grand compte
+  // exigera un certificat opposable, ce circuit repassera `fournisseur` : c'est
+  // une ligne à changer ici, et le socle porte déjà les deux canaux.
+  devis: { parties: ["client", "axionia"], canal: "maison", libelle: "devis" },
+
   // ── Canal D — un TIERS contractant attend un certificat opposable ──
-  devis: { parties: ["client", "axionia"], canal: "fournisseur", libelle: "devis" },
   convention: {
     parties: ["client", "axionia"],
     canal: "fournisseur",
