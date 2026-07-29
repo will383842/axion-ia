@@ -8,13 +8,21 @@
 //   2. `enrichCalendlyEventAction` — bouton admin (rattrapage d'une ligne
 //      ancienne, ou re-synchro après annulation côté Calendly).
 //
-// Règle d'écriture : on N'ÉCRASE JAMAIS une valeur saisie par un humain.
-// L'admin qui a recopié un nom depuis Gmail a raison contre l'API — sinon un
-// enrichissement tardif effacerait un travail manuel. Chaque champ n'est donc
-// écrit que s'il est vide en base (`?? undefined` + garde explicite).
+// Règle d'écriture, en deux moitiés :
+//
+//   • l'admin est propriétaire du QUI — nom, email, téléphone, lieu, notes. Un
+//     enrichissement tardif ne doit jamais effacer ce qui a été recopié à la
+//     main depuis Gmail : ces champs ne sont écrits que s'ils sont vides.
+//   • Calendly est propriétaire du QUAND — horaire et statut. Garder une
+//     ancienne heure après un déplacement d'invité produirait une fiche qui
+//     ment, ce qui est pire que pas de fiche du tout pour un agenda.
+//
+// Seul le statut terminal posé après coup (`completed` / `no_show`) est protégé :
+// il décrit ce qui s'est passé pendant l'appel, ce que l'API ne sait pas.
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { notify } from "@/server/notifications";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 
 export type EnrichOutcome = { ok: true; updatedFields: string[] } | { ok: false; reason: string };
@@ -97,8 +105,6 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   setIfEmpty("inviteeName", row.inviteeName, d.inviteeName);
   setIfEmpty("inviteeEmail", row.inviteeEmail, d.inviteeEmail);
   setIfEmpty("inviteePhone", row.inviteePhone, d.inviteePhone);
-  setIfEmpty("startTime", row.startTime, d.startTime);
-  setIfEmpty("endTime", row.endTime, d.endTime);
   setIfEmpty("location", row.location, d.location);
   setIfEmpty("cancelUrl", row.cancelUrl, d.cancelUrl);
   setIfEmpty("rescheduleUrl", row.rescheduleUrl, d.rescheduleUrl);
@@ -114,13 +120,38 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     updatedFields.push("eventTypeName");
   }
 
-  // Le statut est le SEUL champ qu'on autorise à écraser : une annulation
-  // faite côté Calendly doit remonter, c'est tout l'intérêt d'interroger
-  // l'API. On ne rétrograde jamais un statut posé manuellement en fin de
-  // parcours (`completed` / `no_show`), qui décrit ce qui s'est réellement
-  // passé et que l'API ne connaît pas.
+  // ── Champs dont Calendly est propriétaire ────────────────────────────────
+  //
+  // L'HORAIRE et le STATUT échappent à la règle « ne jamais écraser une saisie
+  // humaine », et c'est délibéré : Calendly est le système de référence du
+  // *quand*. Si un invité déplace son créneau depuis le mail Calendly, garder
+  // l'ancienne heure sous prétexte qu'un humain l'avait recopiée produirait une
+  // fiche qui ment — le pire résultat possible pour un agenda. L'admin reste
+  // propriétaire du *qui* (nom, email, téléphone), que l'API ne fait que
+  // compléter quand c'est vide.
+  //
+  // Ces deux transitions sont aussi les seules occasions de savoir qu'un RDV a
+  // bougé : sans webhook (Calendly Free), rien d'autre ne le signale.
+  const rescheduled =
+    d.startTime != null &&
+    row.startTime != null &&
+    d.startTime.getTime() !== row.startTime.getTime();
+  if (d.startTime != null && d.startTime.getTime() !== (row.startTime?.getTime() ?? NaN)) {
+    data["startTime"] = d.startTime;
+    updatedFields.push("startTime");
+  }
+  if (d.endTime != null && d.endTime.getTime() !== (row.endTime?.getTime() ?? NaN)) {
+    data["endTime"] = d.endTime;
+    updatedFields.push("endTime");
+  }
+
+  // On ne rétrograde jamais un statut posé manuellement en fin de parcours
+  // (`completed` / `no_show`) : il décrit ce qui s'est réellement passé pendant
+  // l'appel, ce que l'API ne peut pas savoir.
   const mapped = mapCalendlyStatus(d.calendlyStatus);
-  if (mapped && mapped !== row.status && row.status !== "completed" && row.status !== "no_show") {
+  const terminal = row.status === "completed" || row.status === "no_show";
+  const canceled = mapped === "canceled" && row.status !== "canceled" && !terminal;
+  if (mapped && mapped !== row.status && !terminal) {
     data["status"] = mapped;
     updatedFields.push("status");
   }
@@ -133,6 +164,45 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, reason: "db_write_failed" };
+  }
+
+  // Alerte Telegram sur les deux évènements qu'on vient tout juste de rendre
+  // détectables. Les catégories existaient depuis l'ADR 0030 mais n'avaient
+  // AUCUN émetteur : sans webhook, rien ne pouvait constater une annulation.
+  // Best-effort strict — `notify()` ne throw pas, et un échec d'alerte ne doit
+  // pas faire passer un enrichissement réussi pour un échec.
+  if (canceled || rescheduled) {
+    const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+    try {
+      if (canceled) {
+        await notify({
+          category: "CALENDLY_INVITEE_CANCELED",
+          payload: {
+            eventUri: eventId,
+            inviteeEmail,
+            reason: "Annulation constatée côté Calendly",
+          },
+          // Une annulation ne doit être annoncée qu'une fois, même si
+          // l'enrichissement est relancé à la main derrière.
+          dedupKey: `cal-cancel-${eventId}`,
+          dedupTtlSec: 86_400,
+        });
+      } else if (rescheduled && row.startTime && d.startTime) {
+        await notify({
+          category: "CALENDLY_INVITEE_RESCHEDULED",
+          payload: {
+            eventUri: eventId,
+            inviteeEmail,
+            oldStart: row.startTime.toISOString(),
+            newStart: d.startTime.toISOString(),
+          },
+          dedupKey: `cal-resched-${eventId}-${d.startTime.toISOString()}`,
+          dedupTtlSec: 86_400,
+        });
+      }
+    } catch (e) {
+      Sentry.captureException(e);
+    }
   }
 
   return { ok: true, updatedFields };

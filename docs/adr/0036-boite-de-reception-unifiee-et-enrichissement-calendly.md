@@ -124,10 +124,38 @@ nom, email, téléphone, début, fin, fuseau, lieu, liens d'annulation et de
 report. Ce module est **entièrement inerte sans `CALENDLY_API_TOKEN`** : aucune
 requête n'est émise, et le produit se comporte exactement comme avant.
 
-Règle d'écriture (`enrich.ts`) : **on n'écrase jamais une valeur saisie par un
-humain.** Seul le statut peut l'être — une annulation faite côté Calendly doit
-remonter — et jamais depuis `completed` / `no_show`, qui décrivent ce qui s'est
-réellement passé pendant l'appel et que l'API ne connaît pas.
+Règle d'écriture (`enrich.ts`), en deux moitiés :
+
+- **l'admin est propriétaire du QUI** — nom, email, téléphone, lieu. Ces champs
+  ne sont écrits que s'ils sont vides : un enrichissement tardif ne doit jamais
+  effacer ce qui a été recopié à la main depuis Gmail.
+- **Calendly est propriétaire du QUAND** — horaire et statut. Garder une
+  ancienne heure après qu'un invité a déplacé son créneau produirait une fiche
+  qui ment, ce qui est pire, pour un agenda, que pas de fiche du tout.
+
+Seul le statut terminal posé après coup (`completed` / `no_show`) est protégé :
+il décrit ce qui s'est passé pendant l'appel, ce que l'API ne peut pas savoir.
+
+### E. Les deux catégories de notification mortes sont réveillées
+
+`CALENDLY_INVITEE_CANCELED` et `CALENDLY_INVITEE_RESCHEDULED` existaient depuis
+l'ADR 0030 — routées, formatées, testées — mais **n'avaient aucun émetteur** :
+sans webhook, rien dans le produit ne pouvait constater qu'un RDV avait été
+annulé ou déplacé. L'enrichissement est le premier mécanisme capable de le
+détecter ; il émet donc l'alerte correspondante, avec un `dedupKey` par
+évènement pour qu'un « Enrichir » relancé à la main ne re-sonne pas.
+
+Un premier remplissage d'horaire (null → valeur) n'est pas un déplacement, et
+une annulation n'est jamais annoncée deux fois ni depuis un statut terminal.
+
+### F. Un gate CI relie la nav aux routes réelles
+
+`buildAdminNav()` est un SSOT de **chaînes** : rien — ni le compilateur, ni les
+tests d'origine — ne reliait ses `href` aux fichiers `page.tsx`. Un dossier
+renommé laissait donc une entrée de menu vers un 404, en silence. C'est le
+risque exact que fait courir un déplacement de routes.
+`pnpm admin-nav:routes-check` résout chaque href sur le disque (segments
+dynamiques `[id]` et groupes `(admin)` compris) et tourne en Gate A.
 
 Un bouton « Enrichir depuis Calendly » sur la fiche permet le rattrapage
 rétroactif : la migration recopie les URI depuis `raw_payload` pour les lignes
@@ -174,6 +202,23 @@ l'ADR 0030 (Calendly Standard, ~144 €/an, webhook signé).
 - Déduplication fondée sur une identité, plus sur une heuristique temporelle
 - L'alerte Telegram porte enfin un lien cliquable vers la fiche
 - Le CSV respecte le filtre affiché
+- Deux catégories de notification déclarées mais mortes deviennent vivantes
+- Un gate CI empêche qu'une entrée de menu pointe vers un 404
+
+**Constaté pendant l'audit, hors périmètre de cette PR** (à traiter à part) :
+
+- `DEPLOY_SUCCESS` / `DEPLOY_FAILED` n'ont **aucun émetteur** : `deploy-prod.sh`
+  appelle bien Telegram, mais le pipeline réel est `deploy-coolify.yml`, qui ne
+  notifie rien. Les déploiements sont silencieux.
+- `NEWSLETTER_CONFIRMED` / `NEWSLETTER_UNSUBSCRIBED` sont déclarées et routées
+  mais jamais émises (seul `NEWSLETTER_PENDING` l'est).
+- `BOOKING_CREATED` et `OPTION_*` sont sans émetteur depuis l'extinction du
+  tunnel de réservation payante — dont deux entrées mortes dans la liste
+  WhatsApp.
+- `PRESS_REQUEST_SUBMITTED`, `SPEAKER_INVITATION_RECEIVED` et
+  `INVESTOR_INQUIRY_RECEIVED` ne sont pas doublées sur WhatsApp. Conforme au
+  commentaire de `routing.ts` (« leads humains uniquement »), mais l'investisseur
+  est en severity `warn` : à confirmer avec Will.
 
 **Négatives / à surveiller**
 
