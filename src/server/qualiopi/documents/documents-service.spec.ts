@@ -99,6 +99,53 @@ afterEach(() => {
   else process.env["DATABASE_URL"] = savedDbUrl;
 });
 
+describe("🔴 statut de signature posé à la naissance de la pièce", () => {
+  beforeEach(() => {
+    // Identité INCOMPLÈTE volontairement : les pièces produites sont donc des
+    // SPÉCIMENS. C'est le cas réel d'Axion-IA aujourd'hui (SIRET et NDA
+    // manquants), et il vérifie au passage la décision documentée dans
+    // `generateDocument` — un SPÉCIMEN reste `en_attente`. Il EXIGE une
+    // signature, il ne peut simplement pas la recevoir tant qu'il est déclassé.
+    // Le marquer `non_requise` masquerait précisément la pièce à corriger.
+    mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
+  });
+
+  /** Statut réellement passé à `create`. */
+  function statutPasse(): string | undefined {
+    const appel = mockPrisma.documentGenere.create.mock.calls[0]?.[0] as {
+      data: { statutSignature?: string };
+    };
+    return appel.data.statutSignature;
+  }
+
+  it("une pièce SIGNABLE naît `en_attente`", async () => {
+    // Sans cela, elle dirait qu'elle suit son cours sans être signée, et le
+    // registre du mode auditeur ne la ferait jamais remonter — alors que
+    // « cette pièce est-elle signée ? » est la question qu'un contrôle pose.
+    await generateDocument({ type: "convention", buildElement });
+    expect(statutPasse()).toBe("en_attente");
+  });
+
+  it("une pièce NON signable ne reçoit aucun statut — le défaut `non_requise` s'applique", async () => {
+    // Sur les 26 types, la plupart sont des pièces ÉMISES, pas des engagements
+    // négociés. Leur poser `en_attente` remplirait le registre de pièces qui
+    // n'attendent rien, et le registre cesserait d'être lu.
+    await generateDocument({ type: "facture", buildElement });
+    expect(statutPasse()).toBeUndefined();
+  });
+
+  it("🔴 la décision vient du SSOT, pas d'une liste locale", async () => {
+    // Le relevé de connexion et la lettre de mission sont signables au même
+    // titre que la convention. Si ce test tombe alors que `parties-requises.ts`
+    // les déclare, c'est que quelqu'un a réintroduit une liste en dur ici.
+    for (const type of ["releve_connexion", "lettre_mission"] as const) {
+      mockPrisma.documentGenere.create.mockClear();
+      await generateDocument({ type, buildElement });
+      expect(statutPasse()).toBe("en_attente");
+    }
+  });
+});
+
 describe("generateDocument — garde-fou conformité systématique", () => {
   it("🔴 DÉCLASSE en spécimen (au lieu de refuser) quand la config OF est incomplète", async () => {
     // Audit certification 2026-07-25 — changement de contrat assumé.
