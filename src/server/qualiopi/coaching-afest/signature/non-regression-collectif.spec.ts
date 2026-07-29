@@ -34,6 +34,16 @@ import {
 } from "@/server/qualiopi/emargement/contresignature-hash";
 import { MENTION_VERSION_AFEST } from "./mentions-afest";
 import { HASH_VERSION_SEANCE } from "./seance-signature-hash";
+import {
+  HASH_VERSION_DOCUMENT,
+  calculerSelfHashDocument,
+  type TupleDocumentSignatureV1,
+} from "@/server/qualiopi/documents/signature/document-signature-hash";
+import {
+  MENTION_VERSION_DOCUMENT,
+  CONSENTEMENT_VERSION_DOCUMENT,
+} from "@/server/qualiopi/documents/signature/mentions-document";
+import { COLONNES_SCELLEES_DOCUMENT } from "@/server/qualiopi/documents/signature/document-reconstruction";
 
 const TUPLE_COLLECTIF: TupleSignatureV1 = {
   contexteType: "collectif",
@@ -139,8 +149,57 @@ describe("non-régression du chemin collectif", () => {
     expect(HASH_VERSION_COURANTE).toBe(1);
     expect(HASH_VERSION_CONTRESIGNATURE).toBe(1);
     expect(HASH_VERSION_SEANCE).toBe(1);
-    // Elles valent toutes 1 aujourd'hui, mais elles sont TROIS constantes
-    // distinctes : le jour où l'une bouge, les deux autres ne doivent pas.
+    expect(HASH_VERSION_DOCUMENT).toBe(1);
+    // Elles valent toutes 1 aujourd'hui, mais elles sont QUATRE constantes
+    // distinctes : le jour où l'une bouge, les trois autres ne doivent pas.
+  });
+
+  it("🔴 la version de mention DOCUMENT est INDÉPENDANTE des deux autres", () => {
+    expect(MENTION_VERSION_DOCUMENT).not.toBe(MENTION_VERSION);
+    expect(MENTION_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_AFEST);
+    // Elle ne DÉRIVE d'aucune des deux : une valeur dérivée suivrait
+    // silencieusement le prochain bump de l'autre famille.
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v1");
+    // Mention et consentement sont DEUX axes : reformuler le texte affiché ne
+    // change pas ce à quoi le signataire consent, et l'inverse.
+    expect(CONSENTEMENT_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_DOCUMENT);
+  });
+
+  it("🔴 le tuple DOCUMENT ne peut pas se confondre avec les trois autres", () => {
+    // Quatre familles de preuve, quatre discriminants. Deux tuples de forme
+    // différente qui produiraient la même empreinte seraient une collision
+    // exploitable — et une copie de fichier suffirait à l'introduire.
+    const TUPLE_DOCUMENT: TupleDocumentSignatureV1 = {
+      contexteType: "document_engagement",
+      documentGenereId: "11111111-1111-4111-8111-111111111111",
+      documentNumero: "AXI-CONV-2026-0042",
+      documentType: "convention",
+      documentHashSha256: "c".repeat(64),
+      partie: "client",
+      provider: "interne",
+      providerSubmissionId: null,
+      signataireNom: "Alice Dupont",
+      signataireEmail: "alice@example.com",
+      signataireQualite: null,
+      methode: "trace",
+      signatureSha256: "a".repeat(64),
+      mentionVersion: "doc-v1",
+      consentementVersion: "doc-consent-v1",
+      signeAtIso: "2026-06-10T10:15:30.123Z",
+      prevHash: null,
+    };
+    expect(TUPLE_DOCUMENT.contexteType).not.toBe(TUPLE_COLLECTIF.contexteType);
+    expect(calculerSelfHashDocument(TUPLE_DOCUMENT)).not.toBe(calculerSelfHash(TUPLE_COLLECTIF));
+  });
+
+  it("🔴 `COLONNES_SCELLEES_DOCUMENT` n'admet AUCUNE donnée effaçable", () => {
+    // La liste peut grandir ; ce qui ne doit jamais y entrer, ce sont les
+    // colonnes que l'article 17 permet d'effacer. Côté collectif, `ipHash` y est
+    // — et c'est ce qui a rendu `empreinte_invalide` des pièces intactes après
+    // chaque demande d'effacement.
+    for (const effaçable of ["ipHash", "userAgentSha256", "signatureKey", "imagePurgeeAt"]) {
+      expect(COLONNES_SCELLEES_DOCUMENT).not.toContain(effaçable);
+    }
   });
 
   it("🔴 `COLONNES_SCELLEES` (collectif) n'a pas été amputée ni étendue", () => {

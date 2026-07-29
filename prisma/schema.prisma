@@ -392,10 +392,52 @@ enum QuoteStatus {
 
 /// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted V1).
 /// `physical_signed` = signature papier scannée et uploadée par Will.
+/// `interne` = canal maison (chaîne de hachage + snapshot figé), ajouté par le
+/// socle de preuve de signature. Additif : aucune valeur retirée.
 enum SignatureProvider {
   docuseal
   manual_upload
   physical_signed
+  interne
+}
+
+/// Modalité de recueil d'une signature au grain DOCUMENT.
+///
+/// ⚠️ Enum PROPRE — distinct de `EmargementMethode` (`canvas`) et de
+/// `coaching_signature_methode`. Les trois familles de preuve doivent pouvoir
+/// évoluer indépendamment ; partager l'enum les recouple par la porte de service.
+///
+/// 🔴 Les trois modes sont ÉGAUX en valeur probante (plan II.2bis) : une pièce
+/// signée sur papier photographié compte exactement autant qu'un tracé au doigt.
+enum DocumentSignatureMethode {
+  trace
+  papier_scanne
+  confirmation_accessible
+}
+
+/// Statut de signature DÉRIVÉ d'une pièce générée.
+/// `partielle` existe pour la tripartite et le protocole AFEST : sans lui, un
+/// dossier à 2 signatures sur 3 serait indiscernable d'un dossier non signé.
+enum DocumentStatutSignature {
+  non_requise
+  en_attente
+  partielle
+  signee
+  refusee
+  expiree
+}
+
+/// La PARTIE qui signe, pas son identité. `axionia` en est une : une convention
+/// non contresignée par l'organisme n'est pas conclue.
+enum DocumentPartieSignataire {
+  client
+  financeur
+  formateur
+  beneficiaire
+  tuteur
+  sous_traitant
+  responsable_pedagogique
+  axionia
 }
 
 /// Sprint X.1 — statut ContractDocument.
@@ -1752,6 +1794,9 @@ model AdminUser {
   siteSettingsUpdated   SiteSetting[]
   // Sprint Notif Infra 2026-05-26 — reply system admin
   submissionReplies     SubmissionReply[]
+  // Preuve de signature au grain document — provenance et révocation.
+  documentSignaturesRecueillies DocumentSignature[] @relation("DocumentSignatureRecueillie")
+  documentSignaturesRevoquees   DocumentSignature[] @relation("DocumentSignatureRevoquee")
 
   @@index([role])
   @@index([status])
@@ -6410,16 +6455,123 @@ model DocumentGenere {
   /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
   fichierOriginalPath String?          @map("fichier_original_path") @db.Text
   metadata            Json             @default("{}")
+  /// Statut DÉRIVÉ des lignes `DocumentSignature`. Cache de lecture : la source
+  /// de vérité reste la table de signatures, jamais cette colonne.
+  /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
+  statutSignature     DocumentStatutSignature @default(non_requise) @map("statut_signature")
   createdAt           DateTime         @default(now()) @map("created_at")
   updatedAt           DateTime         @updatedAt @map("updated_at")
 
   enrollmentsAttestation Enrollment[] @relation("EnrollmentAttestation")
+  signatures             DocumentSignature[]
 
   @@index([type, sessionId])
   @@index([traineeId, type])
   @@index([coachingSessionId])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
+}
+
+/// Registre de preuve de SIGNATURE au grain DOCUMENT — canal maison ET tiers.
+///
+/// Répond, pour les dix circuits de signature contractuelle, à « cette pièce
+/// est-elle signée, par qui, quand, et où est l'exemplaire ? ». Auparavant,
+/// trois registres s'ignoraient (`emargement_signatures` par inscription,
+/// `contract_documents` par booking, `documents_generes` sans colonne de
+/// signature) et aucun ne savait répondre seul.
+///
+/// ⚠️ La preuve de PRÉSENCE ne vit PAS ici : `EmargementSignature` (collectif)
+/// et `CoachingSeanceSignature` (AFEST, grain séance × rôle). Deux tables, une
+/// doctrine — même cœur crypto, tuples et versions dédiés.
+///
+/// APPEND-ONLY : aucun `updatedAt`. Une correction passe par révocation puis
+/// nouvelle signature. Aucun `@default` sur une colonne hachée — un défaut
+/// transformerait un oubli d'insertion en valeur silencieuse et le `selfHash`
+/// cesserait de correspondre.
+model DocumentSignature {
+  id                   String                   @id @default(uuid()) @db.Uuid
+  documentGenereId     String                   @map("document_genere_id") @db.Uuid
+  /// RESTRICT : une preuve légale ne disparaît jamais en cascade. Conséquence
+  /// assumée — une pièce portant une signature non révoquée n'est plus supprimable.
+  documentGenere       DocumentGenere           @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
+
+  provider             SignatureProvider
+  /// Identifiant de submission côté fournisseur. NULL en canal maison — un CHECK
+  /// l'impose, pour qu'une ligne `interne` ne laisse pas croire à un certificat
+  /// opposable qui n'existe pas.
+  providerSubmissionId String?                  @map("provider_submission_id") @db.VarChar(120)
+
+  partie               DocumentPartieSignataire
+
+  /// Identité FIGÉE : le contact peut être renommé, réaffecté ou anonymisé
+  /// ensuite ; la preuve, elle, ne bouge plus.
+  signataireNom        String                   @map("signataire_nom") @db.VarChar(200)
+  signataireEmail      String?                  @map("signataire_email") @db.VarChar(320)
+  signataireQualite    String?                  @map("signataire_qualite") @db.VarChar(200)
+
+  /// Modalité de RECUEIL. HACHÉE : sans elle, un `UPDATE methode = 'trace'`
+  /// transformerait après coup une confirmation accessible en tracé manuscrit —
+  /// falsification de la NATURE de la preuve, indétectable.
+  /// ⚠️ PAS de `@default` : colonne hachée.
+  methode              DocumentSignatureMethode
+  /// Clé R2 de l'image rasterisée. NULL pour `confirmation_accessible` et APRÈS
+  /// purge RGPD. HORS tuple : elle doit rester effaçable.
+  signatureKey         String?                  @map("signature_key") @db.Text
+  /// SHA-256 de l'IMAGE elle-même — pas de sa clé. Seul moyen de détecter la
+  /// substitution d'un objet de stockage sans toucher à la base. HACHÉ, et il
+  /// SURVIT à la purge de l'image.
+  signatureSha256      String?                  @map("signature_sha256") @db.Char(64)
+  mimeType             String?                  @map("mime_type") @db.VarChar(60)
+  sizeBytes            Int?                     @map("size_bytes")
+  /// Purge effective de l'IMAGE. La ligne de preuve, elle, survit.
+  imagePurgeeAt        DateTime?                @map("image_purgee_at")
+
+  /// 🔴 Empreinte du PDF EXACT qui a été signé — ce qui distingue « une
+  /// signature existe » de « cette signature porte sur CETTE pièce ». Sans elle,
+  /// régénérer le PDF après coup produirait un document que plus rien ne relie
+  /// à l'acte de signature.
+  documentHashSha256   String                   @map("document_hash_sha256") @db.Char(64)
+
+  prevHash             String?                  @map("prev_hash") @db.Char(64)
+  selfHash             String                   @map("self_hash") @db.Char(64)
+  hashVersion          Int                      @map("hash_version")
+
+  mentionVersion       String                   @map("mention_version") @db.VarChar(20)
+  consentementVersion  String                   @map("consentement_version") @db.VarChar(20)
+
+  /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
+  /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
+  signeAt              DateTime                 @map("signe_at")
+  createdAt            DateTime                 @default(now()) @map("created_at")
+
+  /// Hors du tuple haché, donc effaçables sur demande RGPD sans casser la preuve.
+  ipHash               String?                  @map("ip_hash") @db.VarChar(64)
+  userAgentSha256      String?                  @map("user_agent_sha256") @db.Char(64)
+
+  /// 🔴 Qui, dans l'organisme, a versé cette preuve au dossier. Renseignée sur
+  /// les canaux où l'organisme ATTESTE l'identité du signataire (reversement
+  /// d'une pièce papier). NULL quand la personne a signé depuis son propre
+  /// accès, ou quand un tiers a certifié la signature. Sans elle, un reversement
+  /// papier serait ANONYME. HORS tuple : provenance, pas contenu.
+  recueilliParAdminId  String?                  @map("recueilli_par_admin_id") @db.Uuid
+  recueilliPar         AdminUser?               @relation("DocumentSignatureRecueillie", fields: [recueilliParAdminId], references: [id], onDelete: Restrict)
+
+  revokedAt            DateTime?                @map("revoked_at")
+  revokedMotif         String?                  @map("revoked_motif") @db.VarChar(500)
+  /// Une révocation non imputée est une preuve retirée par personne.
+  revokedById          String?                  @map("revoked_by_id") @db.Uuid
+  revokedBy            AdminUser?               @relation("DocumentSignatureRevoquee", fields: [revokedById], references: [id], onDelete: Restrict)
+
+  /// Alignée sur `DocumentGenere.suppressionPrevueAt`. La ligne de preuve
+  /// SURVIT à la purge de l'exemplaire, comme côté émargement.
+  suppressionPrevueAt  DateTime                 @map("suppression_prevue_at")
+
+  /// ⚠️ Les index UNIQUES sont PARTIELS (`WHERE revoked_at IS NULL`) et
+  /// l'anti-fork porte `NULLS NOT DISTINCT` : ils sont créés en SQL brut dans la
+  /// migration, Prisma ne sachant exprimer ni l'un ni l'autre.
+  @@index([documentGenereId, createdAt, id])
+  @@index([suppressionPrevueAt])
+  @@map("document_signatures")
 }
 
 // ============================================================
