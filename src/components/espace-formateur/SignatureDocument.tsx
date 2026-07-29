@@ -1,11 +1,18 @@
 "use client";
 // use-client: pavé de signature + Server Action. Aucun état global.
 /**
- * SignatureReleve — le formateur signe le relevé de connexion de sa session.
+ * SignatureDocument — l'écran de signature du canal MAISON, pour toute pièce.
  *
- * Première surface d'appel réelle du socle `DocumentSignature`. Jusqu'ici le
- * service existait sans écran : personne ne pouvait signer pour de vrai — le
- * reproche exact que ce chantier adresse à l'ancien AFEST.
+ * Anciennement `SignatureReleve`, renommé quand la lettre de mission est venue
+ * s'y brancher : le nom promettait une seule pièce alors que le composant en
+ * sert désormais deux, et un nom qui ment sur ce qu'il fait finit par produire
+ * un jumeau « pour l'autre pièce ». C'est exactement ce qu'il fallait éviter :
+ * deux écrans de signature divergeraient sur ce qu'ils affichent comme signé, et
+ * l'un finirait par contredire l'autre sur le même dossier.
+ *
+ * Il sert QUATRE surfaces aujourd'hui :
+ *  · relevé de connexion — espace formateur (signature) et console (visa) ;
+ *  · lettre de mission   — espace formateur (signature) et console (contreseing).
  *
  * ## Trois modes, ÉGAUX en valeur probante
  *
@@ -25,6 +32,12 @@
  * signée montre son signataire, son horodatage et son empreinte vérifiable.
  * Une case « signé » que rien n'étaye est précisément le défaut retiré côté
  * AFEST.
+ *
+ * ⚠️ Il ne réécrit AUCUNE mention. Les textes arrivent en `mentions`, produits
+ * par `mentionCompleteDocument` et versionnés par `MENTION_VERSION_DOCUMENT` :
+ * c'est cette version-là qui est scellée dans l'empreinte. Une phrase retouchée
+ * ici ferait pointer des empreintes déjà posées vers un texte jamais affiché, et
+ * « prouver ce qu'elle a signé » deviendrait impossible.
  */
 
 import { useState, useTransition } from "react";
@@ -41,13 +54,29 @@ export interface PartieAffichee {
   empreinte: string | null;
 }
 
-export interface SignatureReleveProps {
+export interface SignatureDocumentProps {
   documentGenereId: string;
+  /** Type lisible de la pièce, ex. « Lettre de mission ». Affiché en titre. */
+  titrePiece: string;
   numero: string;
   parties: PartieAffichee[];
   peutAgir: boolean;
+  /**
+   * Pourquoi le lecteur ne peut PAS signer, quand c'est le cas.
+   *
+   * 🔴 Optionnel, et son absence n'est pas un oubli : la lecture du relevé ne le
+   * produit pas encore. Quand il est fourni, il est AFFICHÉ — proposer un bouton
+   * qui refusera à coup sûr (spécimen, déjà signé, non-mandataire) fait lire un
+   * refus légitime comme une panne, et l'intéressé réessaie au lieu de faire
+   * corriger la cause.
+   */
+  motifBlocage?: string | null | undefined;
   mentions: string[];
   plafondProbant: string;
+  /** Libellé du bouton, ex. « Signer la lettre de mission ». */
+  libelleBouton: string;
+  /** Titre du pavé de signature, ex. « Signature du formateur ». */
+  labelSignature: string;
   signerAction: (input: {
     documentGenereId: string;
     methode: "trace" | "papier_scanne" | "confirmation_accessible";
@@ -57,15 +86,19 @@ export interface SignatureReleveProps {
 
 type Mode = "trace" | "accessible" | "papier";
 
-export function SignatureReleve({
+export function SignatureDocument({
   documentGenereId,
+  titrePiece,
   numero,
   parties,
   peutAgir,
+  motifBlocage,
   mentions,
   plafondProbant,
+  libelleBouton,
+  labelSignature,
   signerAction,
-}: SignatureReleveProps): React.ReactElement {
+}: SignatureDocumentProps): React.ReactElement {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("trace");
   const [trace, setTrace] = useState<string | null>(null);
@@ -73,13 +106,22 @@ export function SignatureReleve({
   const [erreur, setErreur] = useState<string | null>(null);
   const [enCours, demarrer] = useTransition();
 
-  // ⚠️ Le formateur doit AVOIR LU avant de signer. Une case pré-cochée ne
+  // ⚠️ Le signataire doit AVOIR LU avant de signer. Une case pré-cochée ne
   // prouverait rien : ce qu'on scelle, c'est qu'un texte VERSIONNÉ lui a été
   // présenté et qu'il l'a accepté.
   const [lu, setLu] = useState(false);
 
   const imageAEnvoyer = mode === "trace" ? trace : mode === "papier" ? photo : null;
   const pretASigner = lu && !enCours && (mode === "accessible" ? true : imageAEnvoyer !== null);
+
+  // 🔴 Le groupe de boutons radio est nommé par l'identifiant de la PIÈCE.
+  //
+  // La console affiche désormais deux pièces signables sur la même page (relevé
+  // de connexion et lettre de mission), et l'accueil formateur peut en afficher
+  // plusieurs. Un `name` constant les ferait entrer dans le MÊME groupe radio :
+  // choisir « papier » sur l'une décocherait l'autre, qui enverrait alors une
+  // modalité que personne n'a choisie — et la modalité entre dans le tuple haché.
+  const groupeModalite = `modalite-signature-${documentGenereId}`;
 
   function soumettre(): void {
     setErreur(null);
@@ -123,7 +165,7 @@ export function SignatureReleve({
   return (
     <section className="border-border rounded-lg border p-4">
       <h3 className="text-mocha text-sm font-semibold">
-        Relevé de connexion <span className="text-fg-muted font-normal">n° {numero}</span>
+        {titrePiece} <span className="text-fg-muted font-normal">n° {numero}</span>
       </h3>
 
       <ul className="mt-3 space-y-2">
@@ -147,6 +189,15 @@ export function SignatureReleve({
         ))}
       </ul>
 
+      {/* Le motif est dit AVANT le clic, et il est dit aussi quand la pièce est
+          déjà signée : un écran qui n'offre rien sans expliquer pourquoi se lit
+          comme une panne, et on réessaie au lieu de faire corriger la cause. */}
+      {!peutAgir && typeof motifBlocage === "string" && motifBlocage !== "" ? (
+        <p role="status" className="text-fg-muted mt-3 text-xs">
+          {motifBlocage}
+        </p>
+      ) : null}
+
       {peutAgir ? (
         <div className="mt-4 space-y-3">
           <div className="text-fg-muted space-y-1 text-xs">
@@ -168,7 +219,7 @@ export function SignatureReleve({
               <label key={valeur} className="flex items-center gap-1.5">
                 <input
                   type="radio"
-                  name="modalite-signature-releve"
+                  name={groupeModalite}
                   checked={mode === valeur}
                   onChange={() => {
                     setMode(valeur);
@@ -185,7 +236,7 @@ export function SignatureReleve({
               onChange={setTrace}
               onBasculerAccessible={() => setMode("accessible")}
               disabled={enCours}
-              label="Signature du formateur"
+              label={labelSignature}
             />
           ) : null}
 
@@ -223,7 +274,7 @@ export function SignatureReleve({
             onClick={soumettre}
             className="bg-mocha rounded px-3 py-1.5 text-xs text-white disabled:opacity-50"
           >
-            {enCours ? "Enregistrement…" : "Signer le relevé"}
+            {enCours ? "Enregistrement…" : libelleBouton}
           </button>
         </div>
       ) : null}

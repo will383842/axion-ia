@@ -21,7 +21,7 @@ import {
   contresignerDemiJourneeAction,
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
-import { SignatureReleve } from "@/components/espace-formateur/SignatureReleve";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
@@ -260,13 +260,16 @@ export default async function Page({
             Le relevé atteste la réalité du distanciel. Il porte deux signatures internes : la vôtre
             et le visa du responsable pédagogique.
           </p>
-          <SignatureReleve
+          <SignatureDocument
             documentGenereId={etatReleve.documentGenereId}
+            titrePiece="Relevé de connexion"
             numero={etatReleve.numero}
             parties={etatReleve.parties}
             peutAgir={etatReleve.peutAgir}
             mentions={etatReleve.mentions}
             plafondProbant={etatReleve.plafondProbant}
+            libelleBouton="Signer le relevé"
+            labelSignature="Signature du formateur"
             signerAction={signerReleveFormateurAction}
           />
         </section>

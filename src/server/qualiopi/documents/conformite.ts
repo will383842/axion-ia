@@ -83,9 +83,35 @@ const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   //
   // Le numéro reste imprimé sur les documents dès qu'il est renseigné
   // (cf. `QualiopiPage`, en-tête et pied de page).
-  convention: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  convention_tripartite: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  contrat: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  // 🔴 `nda` RETIRÉ de ces trois listes le 2026-07-29, sur remarque de Will :
+  // « il faut que ça fonctionne même sans, ils ne seront pas présents quand le
+  // certificateur Qualiopi va venir auditer ».
+  //
+  // C'est le MÊME raisonnement qui avait fait retirer le NDA de la facture la
+  // veille — et il vaut ici PLUS fortement encore. L'art. L.6351-1 fait courir
+  // le délai de déclaration « dans les trois mois suivant la conclusion de la
+  // PREMIÈRE convention de formation ». C'est donc cette convention-là qui
+  // OUVRE le délai : au moment de l'émettre, l'organisme n'a légalement pas de
+  // numéro. L'exiger revenait à demander le résultat avant la cause, exactement
+  // l'impasse circulaire décrite plus haut pour Qualiopi.
+  //
+  // ⚠️ L'art. L.6352-4 impose bien le NDA sur « les conventions, contrats et
+  // documents de nature contractuelle ou publicitaire ». Cette obligation n'est
+  // PAS niée : elle devient exigible une fois le numéro obtenu, et le pied de
+  // page l'imprime dès qu'il est renseigné. Ce qui change, c'est que son absence
+  // ne déclasse plus la pièce en SPÉCIMEN.
+  //
+  // 🔴 Et l'absence n'est PAS passée sous silence : `QualiopiPage` mentionne
+  // désormais explicitement que la déclaration n'est pas enregistrée, en citant
+  // l'article. Un auditeur préfère une pièce qui nomme sa propre lacune à une
+  // pièce muette — et infiniment à un filigrane SPÉCIMEN qui la rend sans
+  // valeur au moment même où on la lui présente.
+  //
+  // `siret` reste BLOQUANT : une personne morale qui contracte sans numéro
+  // d'immatriculation ne contracte pas.
+  convention: ["raisonSociale", "siret", "adresseSiege"],
+  convention_tripartite: ["raisonSociale", "siret", "adresseSiege"],
+  contrat: ["raisonSociale", "siret", "adresseSiege"],
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */

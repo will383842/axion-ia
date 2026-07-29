@@ -62,13 +62,38 @@ export async function genererEmargement1to1(
   });
   if (!cs) throw new Error(`CoachingSession introuvable : ${coachingSessionId}`);
 
-  // Idempotence.
+  // (voir `regimeDeLaPiece` en bas de fichier)
+  // ── Idempotence, MAIS bornée au régime de preuve (défaut H.3) ──
+  //
+  // 🔴 La feuille d'émargement est une pièce OPPOSABLE, et ses heures dépendent
+  // du régime de preuve du parcours. Sous `legacy_boolean` elles viennent des
+  // booléens de présence ; sous `signature_reelle` des lignes de signature non
+  // révoquées. Ce ne sont pas les mêmes chiffres.
+  //
+  // L'idempotence servait donc, après bascule, un PDF calculé sous l'ANCIEN
+  // régime — pendant que la facture, le BPF et le certificat du même parcours
+  // étaient recalculés sous le nouveau. Exactement la divergence « facture ≠
+  // certificat ≠ BPF » que ce chantier existe pour empêcher.
+  //
+  // ⚠️ Le défaut était INERTE tant que tout est en `legacy_boolean`, et se
+  // serait déclenché AU MOMENT EXACT de la bascule — quand plus personne ne
+  // l'aurait relié à ce chantier. C'est le profil de défaut le plus coûteux.
+  //
+  // On compare donc le régime figé sur la pièce à celui du parcours. Une pièce
+  // ancienne, produite avant que ce marquage existe, ne porte rien : on la
+  // considère `legacy_boolean`, qui EST le régime sous lequel elle a forcément
+  // été produite (le régime réel n'existe que depuis ce chantier).
   if (cs.emargementGenereeAt && cs.emargementDocumentId && !opts?.force) {
     const existing = await prisma.documentGenere.findUnique({
       where: { id: cs.emargementDocumentId },
-      select: { id: true, numero: true },
+      select: { id: true, numero: true, metadata: true },
     });
-    if (existing) return { documentId: existing.id, numero: existing.numero };
+    if (existing && regimeDeLaPiece(existing.metadata) === cs.regimePreuve) {
+      return { documentId: existing.id, numero: existing.numero };
+    }
+    // Régime différent → on RE-GÉNÈRE. La pièce précédente reste en base, avec
+    // son numéro et son empreinte : une preuve émise ne disparaît pas parce
+    // qu'elle a été remplacée.
   }
 
   // Snapshot légal (WS9) : fige le contenu engageant à la 1re émission de doc.
@@ -122,6 +147,13 @@ export async function genererEmargement1to1(
         },
       }),
     refs: { coachingSessionId },
+    // 🔴 Fige le régime SOUS LEQUEL cette feuille a été calculée.
+    //
+    // C'est ce marquage, et lui seul, qui permet à l'idempotence ci-dessus de
+    // savoir qu'une pièce est devenue obsolète. Le retirer rouvrirait le défaut
+    // H.3 en silence : la feuille resservirait indéfiniment des heures calculées
+    // sous un régime abandonné.
+    metadata: { regimePreuve: cs.regimePreuve },
   });
 
   await prisma.coachingSession.update({
@@ -130,4 +162,23 @@ export async function genererEmargement1to1(
   });
 
   return { documentId: generated.id, numero: generated.numero };
+}
+
+/**
+ * Régime de preuve sous lequel une pièce a été produite.
+ *
+ * ⚠️ `metadata` est une colonne `Json` : son type n'est PAS garanti côté
+ * application. On teste la forme plutôt que de caster.
+ *
+ * 🔴 Une pièce sans marquage rend `legacy_boolean`, et ce n'est pas un repli
+ * arbitraire : le régime réel n'existe que depuis ce chantier, donc toute pièce
+ * antérieure a NÉCESSAIREMENT été calculée sous l'ancien régime. Rendre `null`
+ * ou le régime courant ferait passer une feuille périmée pour à jour.
+ */
+export function regimeDeLaPiece(metadata: unknown): string {
+  if (typeof metadata !== "object" || metadata === null || Array.isArray(metadata)) {
+    return "legacy_boolean";
+  }
+  const valeur = (metadata as Record<string, unknown>)["regimePreuve"];
+  return typeof valeur === "string" ? valeur : "legacy_boolean";
 }

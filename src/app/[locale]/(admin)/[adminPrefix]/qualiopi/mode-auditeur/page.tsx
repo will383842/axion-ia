@@ -9,6 +9,7 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -100,6 +101,21 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
         description="Vue auditeur : manifeste des preuves disponibles par indicateur du Référentiel National Qualité (RNQ V9). Exportable au format JSON et Markdown pour transmission à l'organisme certificateur."
         actions={<ExportManifesteButton />}
       />
+
+      {/*
+        Le registre des signatures répond à une question que le manifeste ne
+        couvre pas : « cette pièce est-elle signée, par qui, et sa preuve
+        tient-elle ? ». Sans ce lien, la page existe sans être trouvable — et
+        une page qu'on ne trouve pas ne sert à personne le jour du contrôle.
+      */}
+      <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures`}
+          className="underline"
+        >
+          Registre des signatures — qui a signé quoi, et si la preuve tient
+        </Link>
+      </p>
 
       {/* ── Résumé global ─────────────────────────────────────────────── */}
       <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">

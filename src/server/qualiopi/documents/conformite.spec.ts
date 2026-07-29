@@ -88,12 +88,31 @@ describe("champsIdentiteManquants", () => {
     expect(manquants).toEqual(["SIRET"]);
   });
 
-  it("le NDA reste exigé sur convention, tripartite et contrat (L.6352-4)", () => {
+  it("🔴 le NDA n'est PLUS exigé nulle part — la première convention OUVRE le délai", () => {
+    // Changement du 2026-07-29. L'art. L.6351-1 fait courir le délai de
+    // déclaration « dans les trois mois suivant la conclusion de la PREMIÈRE
+    // convention de formation ». C'est donc cette convention qui ouvre le
+    // délai : au moment de l'émettre, l'organisme n'a légalement pas de numéro.
+    // L'exiger revenait à demander le résultat avant la cause — la même impasse
+    // circulaire qui avait déjà fait retirer Qualiopi de ces listes.
+    //
+    // ⚠️ L'obligation de L.6352-4 n'est pas niée : elle devient exigible une
+    // fois le numéro obtenu, et le pied de page l'imprime dès qu'il existe.
+    // Ce qui change, c'est que son absence ne déclasse plus la pièce en
+    // SPÉCIMEN au moment précis où on la présente à un certificateur.
     const sansNda = { ...IDENTITE_COMPLETE, nda: "" };
-    for (const type of ["convention", "convention_tripartite", "contrat"] as const) {
-      expect(champsIdentiteManquants(sansNda, type)).toContain(
-        "numéro de déclaration d'activité (NDA)",
-      );
+    for (const type of ["convention", "convention_tripartite", "contrat", "facture"] as const) {
+      expect(champsIdentiteManquants(sansNda, type)).toEqual([]);
+    }
+  });
+
+  it("🔴 un organisme SANS NDA ni Qualiopi produit des pièces NON déclassées", () => {
+    // C'est la situation réelle d'Axion-IA au moment de l'audit initial, et le
+    // scénario que ce garde-fou doit servir plutôt que saboter : ni NDA, ni
+    // numéro de certification, mais une identité légale complète.
+    const avantCertification = { ...IDENTITE_COMPLETE, nda: "", qualiopi: "" };
+    for (const type of ["convention", "convention_tripartite", "contrat", "facture"] as const) {
+      expect(champsIdentiteManquants(avantCertification, type)).toEqual([]);
     }
   });
 
@@ -110,17 +129,15 @@ describe("champsIdentiteManquants", () => {
     }
   });
 
-  it("convention exige l'identité légale de l'OF (raison sociale, SIRET, NDA, adresse)", () => {
+  it("convention exige l'identité légale de l'OF (raison sociale, SIRET, adresse)", () => {
     const manquants = champsIdentiteManquants(IDENTITE_VIDE, "convention");
     expect(manquants).toEqual(
-      expect.arrayContaining([
-        "raison sociale",
-        "SIRET",
-        "numéro de déclaration d'activité (NDA)",
-        "adresse du siège",
-      ]),
+      expect.arrayContaining(["raison sociale", "SIRET", "adresse du siège"]),
     );
+    // Ni Qualiopi ni NDA : le premier n'existe qu'APRÈS la certification, le
+    // second qu'après la première convention. Les exiger ici serait circulaire.
     expect(manquants).not.toContain("numéro de certification Qualiopi");
+    expect(manquants).not.toContain("numéro de déclaration d'activité (NDA)");
   });
 
   it("type non soumis au garde-fou → jamais de manque", () => {
@@ -147,9 +164,7 @@ describe("assertOrganismeComplet", () => {
       expect(err).toBeInstanceOf(OrganismeIncompletError);
       const e = err as OrganismeIncompletError;
       expect(e.type).toBe("convention");
-      expect(e.manquants).toEqual(
-        expect.arrayContaining(["SIRET", "numéro de déclaration d'activité (NDA)"]),
-      );
+      expect(e.manquants).toEqual(expect.arrayContaining(["SIRET", "raison sociale"]));
       expect(e.message).toMatch(/refusée/i);
     }
   });
