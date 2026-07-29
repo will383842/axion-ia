@@ -11,10 +11,11 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import { adminPath } from "@/lib/admin-path";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
@@ -70,6 +71,9 @@ export async function updateCalendlyEventAction(
     await prisma.calendlyEvent.update({ where: { id }, data });
     revalidatePath(adminPath("fr", "contacts/appels"));
     revalidatePath(adminPath("fr", `contacts/appels/${id}`));
+    // Le badge « à traiter » de la sidebar doit tomber tout de suite, pas
+    // dans 30 s : sinon le chiffre paraît faux juste après l'action.
+    updateTag(INBOX_COUNTS_TAG);
     return { ok: true };
   } catch (e) {
     Sentry.captureException(e);
@@ -189,6 +193,9 @@ export async function enrichCalendlyEventAction(
 
   revalidatePath(adminPath("fr", "contacts/appels"));
   revalidatePath(adminPath("fr", `contacts/appels/${parsed.data.id}`));
+  // Le badge « à traiter » de la sidebar doit tomber tout de suite, pas
+  // dans 30 s : sinon le chiffre paraît faux juste après l'action.
+  updateTag(INBOX_COUNTS_TAG);
 
   // Zéro champ mis à jour n'est pas un échec : c'est le cas normal quand la
   // fiche est déjà complète. Le dire explicitement évite de relancer en boucle.

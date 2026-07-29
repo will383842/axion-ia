@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
+import { markInboxRead } from "@/features/admin-inbox/reads";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
@@ -26,6 +27,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
   const a = await getApplicationDetailAction(id);
+  // Boîte de réception (2026-07-29) — « non lu » façon boîte mail : ouvrir la
+  // fiche vaut lecture, sans geste. Best-effort : `markInboxRead` ne throw
+  // jamais, une demande client s'affiche même si l'accusé échoue.
+  await markInboxRead(session?.user?.id, "job_application", id);
+
   if (!a) notFound();
 
   // Labels des questions de l'offre → rendu lisible des réponses (pas de JSON brut).

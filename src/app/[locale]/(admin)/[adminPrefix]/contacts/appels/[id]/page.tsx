@@ -9,6 +9,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { markInboxRead } from "@/features/admin-inbox/reads";
+import { auth } from "@/auth";
 import { AdminPageHeader } from "@/components/admin/ui";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
@@ -31,6 +33,12 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
   const { adminPrefix, id } = await params;
   const event = await prisma.calendlyEvent.findUnique({ where: { id } });
   if (!event) notFound();
+  const session = await auth();
+  // Boîte de réception (2026-07-29) — « non lu » façon boîte mail : ouvrir la
+  // fiche vaut lecture, sans geste de l'utilisateur. Best-effort et JAMAIS
+  // await-bloquant sur l'affichage : `markInboxRead` ne throw pas, et une
+  // demande client doit s'afficher même si l'accusé de lecture échoue.
+  await markInboxRead(session?.user?.id, "calendly_event", event.id);
 
   const backHref = `/fr/${adminPrefix}/contacts/appels`;
   const apiConfigured = isCalendlyApiConfigured();
