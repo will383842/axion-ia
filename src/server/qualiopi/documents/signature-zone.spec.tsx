@@ -16,7 +16,25 @@
 
 import React from "react";
 import { describe, it, expect } from "vitest";
-import { SignatureZone, type PreuveSignature, type SignaturePartie } from "./base-layout";
+import {
+  QualiopiPage,
+  SignatureZone,
+  type PreuveSignature,
+  type SignaturePartie,
+} from "./base-layout";
+import type { OrganismeIdentite } from "./organisme";
+
+const IDENTITE_SANS_NDA = {
+  raisonSociale: "Axion-IA SAS",
+  nda: "",
+  qualiopi: "",
+  siret: "12345678901234",
+  adresseSiege: "1 rue de la Paix, 75001 Paris",
+  adresseExercice: "1 rue de la Paix, 75001 Paris",
+  email: "contact@axion-ia.test",
+  telephone: "+33 1 00 00 00 00",
+  site: "https://axion-ia.test",
+} as OrganismeIdentite;
 import { collectPdfTextNormalized } from "./collect-pdf-text";
 
 const EMPREINTE = "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90";
@@ -133,5 +151,52 @@ describe("🔴 le PDF ne ment pas sur la nature de la preuve", () => {
     // qui se lirait comme une signature normale.
     const texte = rendre([{ titre: "Pour le client", signature: preuve({ imageSrc: null }) }]);
     expect(texte).toContain("indisponible");
+  });
+});
+
+describe("🔴 l'absence de NDA est DITE, jamais tue", () => {
+  it("affiche la mention légale quand le NDA est absent", () => {
+    // Le pied de page omettait simplement le NDA : un auditeur ne voyait rien,
+    // et ne pouvait pas distinguer un oubli de saisie d'une situation légitime.
+    // Or elle l'est souvent — l'art. L.6351-1 fait courir le délai à compter de
+    // la PREMIÈRE convention.
+    const texte = collectPdfTextNormalized(
+      React.createElement(QualiopiPage, {
+        identite: { ...IDENTITE_SANS_NDA },
+        docTitle: "Convention",
+        docNumber: "AXI-DOC-2026-001",
+        children: null,
+      }),
+    );
+    expect(texte).toContain("Déclaration d'activité non encore enregistrée");
+    expect(texte).toContain("L.6351-1");
+  });
+
+  it("🔴 ne prétend PAS qu'un dossier a été déposé", () => {
+    // « en cours d'enregistrement » serait une affirmation invérifiable, et
+    // fausse si rien n'a été déposé. On constate l'absence, on ne la maquille
+    // pas en démarche.
+    const texte = collectPdfTextNormalized(
+      React.createElement(QualiopiPage, {
+        identite: { ...IDENTITE_SANS_NDA },
+        docTitle: "Convention",
+        docNumber: "AXI-DOC-2026-001",
+        children: null,
+      }),
+    );
+    expect(texte).not.toContain("en cours d'enregistrement");
+  });
+
+  it("imprime le numéro dès qu'il existe, et ne dit plus rien d'autre", () => {
+    const texte = collectPdfTextNormalized(
+      React.createElement(QualiopiPage, {
+        identite: { ...IDENTITE_SANS_NDA, nda: "84691234567" },
+        docTitle: "Convention",
+        docNumber: "AXI-DOC-2026-001",
+        children: null,
+      }),
+    );
+    expect(texte).toContain("NDA 84691234567");
+    expect(texte).not.toContain("non encore enregistrée");
   });
 });
