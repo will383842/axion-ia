@@ -34,6 +34,7 @@ import {
   listerRegistreSignatures,
   type RapportPieceSignature,
 } from "@/server/qualiopi/documents/signature/registre-verification";
+import { revoquerSignatureAction } from "@/server/actions/qualiopi/signature-revocation";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -43,7 +44,12 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ anomalies?: string; session?: string }>;
+  searchParams: Promise<{
+    anomalies?: string;
+    session?: string;
+    revocation?: string;
+    raison?: string;
+  }>;
 }
 
 const LIBELLE_STATUT: Readonly<Record<string, string>> = {
@@ -122,7 +128,37 @@ function Compteur({
   );
 }
 
-function LignePiece({ piece }: { piece: RapportPieceSignature }): React.ReactElement {
+/**
+ * Retour de la révocation, traduit d'un CODE.
+ *
+ * ⚠️ Jamais le message brut de l'URL : un texte libre repris d'un paramètre et
+ * réaffiché est une injection en puissance. La page traduit, elle ne recopie pas.
+ */
+const MESSAGE_REVOCATION: Readonly<Record<string, string>> = {
+  ok: "Signature révoquée. La ligne reste en base avec son empreinte : une preuve retirée du décompte n'est pas une preuve effacée.",
+  role_insuffisant:
+    "Révoquer une signature engage l'organisme : seuls un administrateur ou le dirigeant peuvent le faire.",
+  demande_invalide:
+    "Le motif de révocation est obligatoire : sans lui, le registre ne dit rien à l'auditeur.",
+  refus_service: "Révocation refusée.",
+};
+
+const DETAIL_REFUS: Readonly<Record<string, string>> = {
+  revocation_maillon_interne_interdite:
+    "Cette signature n'est pas la dernière apposée sur la pièce : la révoquer romprait le chaînage et ferait apparaître le registre comme falsifié. Révoquez d'abord les signatures postérieures, puis re-signez dans l'ordre.",
+  deja_revoquee: "Cette signature est déjà révoquée.",
+  signature_introuvable: "Signature introuvable.",
+  motif_requis: "Le motif est obligatoire.",
+  porteur_non_autorise: "Vous n'êtes pas habilité à révoquer une signature.",
+};
+
+function LignePiece({
+  piece,
+  cheminRetour,
+}: {
+  piece: RapportPieceSignature;
+  cheminRetour: string;
+}): React.ReactElement {
   const anomaliesChaine = piece.chaine.anomalies;
   return (
     <tr className="border-b border-[color:var(--color-admin-border)] align-top last:border-b-0">
@@ -174,6 +210,37 @@ function LignePiece({ piece }: { piece: RapportPieceSignature }): React.ReactEle
                       Ne porte plus sur le PDF servi aujourd&apos;hui.
                     </span>
                   ) : null}
+                  {/*
+                    🔴 La révocation est la SEULE correction possible sur un
+                    registre append-only. Sans cette surface, une signature
+                    posée par erreur était définitive, et l'index unique partiel
+                    `WHERE revoked_at IS NULL` — celui qui autorise à re-signer —
+                    ne pouvait jamais servir.
+
+                    ⚠️ `<form action>` sans « use client » : zéro JavaScript.
+                    Le service refuse de lui-même un maillon non terminal, un
+                    motif vide et un compte non habilité — cet écran ne relâche
+                    rien, il rend seulement ces règles atteignables.
+                  */}
+                  <form action={revoquerSignatureAction} className="mt-1 flex gap-1">
+                    <input type="hidden" name="signatureId" value={s.signatureId} />
+                    <input type="hidden" name="retour" value={cheminRetour} />
+                    <input
+                      type="text"
+                      name="motif"
+                      required
+                      maxLength={500}
+                      placeholder="Motif de révocation (obligatoire)"
+                      aria-label={`Motif de révocation de la signature de ${s.signataireNom}`}
+                      className="flex-1 rounded border border-[color:var(--color-admin-border)] px-1 py-0.5 text-[length:var(--text-admin-xs)]"
+                    />
+                    <button
+                      type="submit"
+                      className="rounded border border-[color:var(--color-admin-danger)] px-2 py-0.5 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-danger)]"
+                    >
+                      Révoquer
+                    </button>
+                  </form>
                 </li>
               );
             })}
@@ -227,6 +294,8 @@ export default async function RegistreSignaturesPage({
   });
 
   const base = `/${locale}/${adminPrefix}/qualiopi/mode-auditeur`;
+  const cheminRetour = `${base}/signatures`;
+  const retourRevocation = filtres.revocation;
 
   return (
     <AdminPageShell width="wide">
@@ -234,6 +303,22 @@ export default async function RegistreSignaturesPage({
         title="Registre des signatures"
         description="Pièce par pièce : qui a signé, quand, et si la preuve tient. Lecture seule — aucune anomalie n'est corrigée depuis cet écran."
       />
+
+      {retourRevocation !== undefined ? (
+        <p
+          role="status"
+          className={
+            retourRevocation === "ok"
+              ? "mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-success)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+              : "mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+          }
+        >
+          {MESSAGE_REVOCATION[retourRevocation] ?? "Retour inconnu."}
+          {filtres.raison !== undefined && DETAIL_REFUS[filtres.raison] !== undefined
+            ? ` ${DETAIL_REFUS[filtres.raison]}`
+            : ""}
+        </p>
+      ) : null}
 
       {/* 🔴 Un registre tronqué en silence est PIRE qu'un registre absent : il a
           l'air exhaustif. On le dit avant tout le reste. */}
@@ -295,7 +380,7 @@ export default async function RegistreSignaturesPage({
             </thead>
             <tbody>
               {registre.pieces.map((p) => (
-                <LignePiece key={p.documentGenereId} piece={p} />
+                <LignePiece key={p.documentGenereId} piece={p} cheminRetour={cheminRetour} />
               ))}
             </tbody>
           </table>
