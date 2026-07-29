@@ -175,10 +175,25 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     </span>
                   </td>
                   <td className={cellCls}>
-                    <div className="font-medium">{client.raisonSociale}</div>
-                    {client.contactEmail && (
+                    {/* 🔴 Le nom devient le lien d'ÉDITION. Sans point d'entrée,
+                        la page `[id]/edit` reproduirait exactement le défaut
+                        qu'elle corrige : du code de mise à jour que rien
+                        n'appelle. */}
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}/edit`}
+                      className="font-medium text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      {client.raisonSociale}
+                    </Link>
+                    {client.contactEmail ? (
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {client.contactEmail}
+                      </div>
+                    ) : (
+                      // ⚠️ Dit ici, où l'admin peut agir : sans adresse de
+                      // contact, le devis part sans lien de signature.
+                      <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                        Aucun e-mail de contact
                       </div>
                     )}
                   </td>

@@ -231,3 +231,65 @@ describe("updateClientAction — ré-inférence OPCO (F6)", () => {
     expect(data.opcoIdentifie).toBeNull();
   });
 });
+
+describe("🔴 updateClientAction — le CONTACT est corrigible (chantier V18)", () => {
+  // Ces champs étaient acceptés par l'action depuis toujours, et AUCUNE
+  // interface ne les lui envoyait : seul `ClientBrancheForm` l'appelait, avec
+  // trois champs sans rapport. Une faute de frappe sur l'adresse de contact
+  // bloquait donc tout le circuit commercial — `devis.ts` refuse d'émettre un
+  // lien de signature sans `contactEmail` — sans moyen de la corriger.
+  //
+  // `ClientEditForm` ferme le manque. Ces tests garantissent que la porte
+  // serveur reste ouverte.
+
+  it("met à jour les champs de contact", async () => {
+    const r = await updateClientAction({
+      id: ID,
+      contactNom: "Camille Durand",
+      contactEmail: "camille@client.test",
+      contactTelephone: "+33 6 12 34 56 78",
+      contactFonction: "Directrice des ressources humaines",
+    });
+
+    expect("data" in r).toBe(true);
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.contactNom).toBe("Camille Durand");
+    expect(data.contactEmail).toBe("camille@client.test");
+    expect(data.contactFonction).toBe("Directrice des ressources humaines");
+  });
+
+  it("🔴 `null` efface une adresse fautive — sinon elle serait DÉFINITIVE", async () => {
+    // Même motif que pour le SIRET, en plus lourd : c'est à cette adresse que
+    // part le lien de signature du devis. Ne pas pouvoir la retirer laisserait
+    // l'interface proposer d'envoyer un engagement contractuel à un
+    // destinataire dont on sait qu'il est faux.
+    const r = await updateClientAction({ id: ID, contactEmail: null });
+
+    expect("data" in r).toBe(true);
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data.contactEmail).toBeNull();
+  });
+
+  it("refuse une adresse malformée plutôt que de l'écrire", async () => {
+    const r = await updateClientAction({ id: ID, contactEmail: "pas-une-adresse" });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("⚠️ un champ NON transmis n'est pas écrit — l'envoi différentiel en dépend", async () => {
+    // `ClientEditForm` n'envoie que ce qui a changé, et ce n'est pas une
+    // optimisation : transmettre `nafCode` à chaque enregistrement relancerait
+    // la ré-inférence OPCO, dont la seule protection est « uniquement si l'OPCO
+    // est vide en base ». Si l'action se mettait à écrire les clés absentes,
+    // cette garde deviendrait le dernier rempart contre l'annulation
+    // silencieuse d'une correction manuelle d'OPCO.
+    await updateClientAction({ id: ID, contactNom: "Seul ce champ" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect("contactEmail" in data).toBe(false);
+    expect("raisonSociale" in data).toBe(false);
+    expect("nafCode" in data).toBe(false);
+    expect("siret" in data).toBe(false);
+  });
+});

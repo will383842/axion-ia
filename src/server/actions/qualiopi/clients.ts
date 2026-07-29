@@ -91,7 +91,17 @@ const updateClientSchema = z.object({
   taille: z.enum(COMPANY_SIZES).optional(),
   adresse: z.string().optional(),
   contactNom: z.string().max(200).optional(),
-  contactEmail: z.string().email().optional(),
+  /**
+   * `.nullable()` en PLUS, exactement pour le motif déjà écrit sur `siret` : la
+   * chaîne vide rend `undefined` (= « ne rien changer »), elle ne peut donc pas
+   * effacer, et sans `null` une adresse saisie par erreur serait DÉFINITIVE.
+   *
+   * 🔴 Ici l'enjeu est plus lourd que pour le SIRET : c'est à cette adresse que
+   * part le LIEN DE SIGNATURE du devis. Une adresse fautive qu'on ne peut pas
+   * retirer laisserait l'écran d'édition proposer d'envoyer un engagement
+   * contractuel à un destinataire dont on sait qu'il est faux.
+   */
+  contactEmail: z.string().email().nullable().optional(),
   contactTelephone: z.string().max(40).optional(),
   contactFonction: z.string().max(150).optional(),
   /**
