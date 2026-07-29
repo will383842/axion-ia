@@ -18,7 +18,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
-import { contresignerDevisAction } from "@/server/actions/qualiopi/devis-signature";
+import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
@@ -439,7 +439,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           <DevisContresignature
             documentGenereId={devis.documentGenereId}
             organismeNom={identiteOrganisme.raisonSociale}
-            contresignerAction={contresignerDevisAction}
+            contresignerAction={contresignerPieceAction}
           />
         )}
 
@@ -459,7 +459,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         {signatures.length > 0 && (
           <p className="mt-[var(--space-admin-4)]">
             <a
-              href={`/api/admin/qualiopi/devis/${devis.id}/exemplaire-signe`}
+              href={`/api/qualiopi/devis/${devis.id}/exemplaire-signe`}
               className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
             >
               Télécharger l&apos;exemplaire signé (PDF)

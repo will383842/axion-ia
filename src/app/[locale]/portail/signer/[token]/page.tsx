@@ -1,7 +1,10 @@
 /**
- * Portail client — Signature du devis (« bon pour accord », canal A).
+ * Portail — Signature d'une PIÈCE contractuelle par lien public (canal A).
  *
- * URL : /{locale}/portail/signer-devis/{token}
+ * URL : /{locale}/portail/signer/{token}
+ *
+ * Vaut pour les huit circuits du SSOT. Le détail chiffré n'est chargé que pour
+ * un devis : c'est la seule pièce dont la substance est un tableau de lignes.
  *
  * ⚠️ Logée sous `portail/` et NON sous `devis/` : `portail/` est whitelisté par
  * `qualiopi:isolation-check`, `devis/` ne l'est pas. Même contrainte que
@@ -24,8 +27,8 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
-import { signerDevisParJetonAction } from "@/server/actions/qualiopi/devis-signature";
-import { DevisSignatureForm } from "@/components/portail/DevisSignatureForm";
+import { signerPieceParJetonAction } from "@/server/actions/qualiopi/piece-signature";
+import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { prisma } from "@/lib/prisma";
 import {
   REGIME_TVA_DEFAUT,
@@ -86,91 +89,112 @@ export default async function SignerDevisPage({ params }: PageProps) {
 
   const identite = await getOrganismeIdentite();
 
-  const regimeConfig = await getQualiopiConfig("regime_tva");
-  const regimeTva: RegimeTva = isRegimeTva(regimeConfig) ? regimeConfig : REGIME_TVA_DEFAUT;
-  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  // 🔴 La pièce d'abord, et son CIRCUIT depuis le SSOT. Cette page ne connaît
+  // aucune matrice : elle lit ce que `parties-requises.ts` déclare. Une liste
+  // écrite ici divergerait un jour de celle du service, en silence.
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: verif.documentGenereId },
+    select: { numero: true, type: true, pdfUrl: true },
+  });
+  if (piece === null) notFound();
 
-  const devis = await lireDevisASigner(verif.documentGenereId, regimeTva, tauxStandard);
-  if (devis === null) notFound();
-
-  if (devis.statutBloquant !== null) {
-    const messages: Record<string, { titre: string; detail: string }> = {
-      deja_accepte: {
-        titre: "Ce devis est déjà accepté",
-        detail: `Le devis ${devis.numero} a déjà fait l'objet d'un accord. Aucune nouvelle signature n'est nécessaire.`,
-      },
-      expire: {
-        titre: "Ce devis n'est plus en cours",
-        detail: `Le devis ${devis.numero} a expiré ou a été refusé. Contactez votre interlocuteur pour en recevoir un nouveau.`,
-      },
-      brouillon: {
-        titre: "Ce devis n'a pas encore été émis",
-        detail: "Contactez votre interlocuteur : ce lien a été ouvert avant l'envoi du devis.",
-      },
-    };
-    const m = messages[devis.statutBloquant]!;
-    return <Message titre={m.titre} detail={m.detail} />;
-  }
+  const circuit = circuitPour(piece.type);
+  if (circuit === null) notFound();
 
   // Cette partie a-t-elle DÉJÀ signé ? On le dit ici plutôt que de laisser le
-  // client tracer une signature pour se voir refuser en `deja_signe` après coup.
+  // signataire tracer une signature pour se voir refuser en `deja_signe` après
+  // coup.
   const dejaSignee = await prisma.documentSignature.count({
     where: { documentGenereId: verif.documentGenereId, partie: verif.partie, revokedAt: null },
   });
   if (dejaSignee > 0) {
     return (
       <Message
-        titre="Vous avez déjà signé ce devis"
-        detail={`Votre « bon pour accord » sur le devis ${devis.numero} est enregistré. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
+        titre="Vous avez déjà signé cette pièce"
+        detail={`Votre signature sur ${circuit.libelle} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
     );
   }
 
-  // Empreinte de la pièce : le PDF EXACT que la signature scellera. Une URL
-  // signée courte — 15 min suffisent pour lire avant de signer, et un lien
-  // public ne doit pas laisser fuiter une pièce contractuelle durablement.
-  const piece = await prisma.documentGenere.findUnique({
-    where: { id: verif.documentGenereId },
-    select: { pdfUrl: true },
-  });
+  // ── Détail chiffré : UNIQUEMENT pour un devis ──
+  //
+  // 🔴 C'est la raison d'être de la bascule pour le devis — le signataire doit
+  // avoir les lignes, les quantités et les totaux SOUS LES YEUX. Une convention
+  // ou un contrat n'a pas de lignes : leur substance est dans le PDF, dont le
+  // lien est affiché juste en dessous.
+  let devis: Awaited<ReturnType<typeof lireDevisASigner>> = null;
+  if (piece.type === "devis") {
+    const regimeConfig = await getQualiopiConfig("regime_tva");
+    const regimeTva: RegimeTva = isRegimeTva(regimeConfig) ? regimeConfig : REGIME_TVA_DEFAUT;
+    const tauxStandard =
+      (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+    devis = await lireDevisASigner(verif.documentGenereId, regimeTva, tauxStandard);
+    if (devis === null) notFound();
+
+    if (devis.statutBloquant !== null) {
+      const messages: Record<string, { titre: string; detail: string }> = {
+        deja_accepte: {
+          titre: "Ce devis est déjà accepté",
+          detail: `Le devis ${devis.numero} a déjà fait l'objet d'un accord. Aucune nouvelle signature n'est nécessaire.`,
+        },
+        expire: {
+          titre: "Ce devis n'est plus en cours",
+          detail: `Le devis ${devis.numero} a expiré ou a été refusé. Contactez votre interlocuteur pour en recevoir un nouveau.`,
+        },
+        brouillon: {
+          titre: "Ce devis n'a pas encore été émis",
+          detail: "Contactez votre interlocuteur : ce lien a été ouvert avant l'envoi du devis.",
+        },
+      };
+      const m = messages[devis.statutBloquant]!;
+      return <Message titre={m.titre} detail={m.detail} />;
+    }
+  }
+
+  // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent
+  // pour lire avant de signer, et un lien public ne doit pas laisser fuiter une
+  // pièce contractuelle durablement.
   let pdfUrl: string | null = null;
-  if (piece?.pdfUrl != null && piece.pdfUrl !== "") {
+  if (piece.pdfUrl != null && piece.pdfUrl !== "") {
     try {
       pdfUrl = await getSignedUrlR2(piece.pdfUrl, 15 * 60);
     } catch {
-      // Un lien de lecture indisponible ne doit pas empêcher de signer : le
-      // détail complet est affiché à l'écran, et c'est lui que le signataire lit.
+      // Un lien de lecture indisponible ne doit pas empêcher de signer.
       pdfUrl = null;
     }
   }
 
-  const circuit = circuitPour("devis");
   const mentions = mentionCompleteDocument(
     verif.partie,
     {
-      pieceLibelle: circuit?.libelle ?? "devis",
-      pieceNumero: devis.numero,
+      pieceLibelle: circuit.libelle,
+      pieceNumero: piece.numero,
       organisme: identite.raisonSociale,
     },
-    circuit?.canal === "maison",
+    circuit.canal === "maison",
   );
 
   return (
-    <DevisSignatureForm
+    <PieceSignatureForm
       token={token}
-      numero={devis.numero}
-      dateValiditeLisible={devis.dateValiditeLisible}
+      numero={piece.numero}
+      pieceLibelle={circuit.libelle}
+      dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
-      clientRaisonSociale={devis.clientRaisonSociale}
+      clientRaisonSociale={devis?.clientRaisonSociale ?? identite.raisonSociale}
       signataireNom={verif.signataireNom}
       signataireQualite={verif.signataireQualite}
-      lignes={devis.lignes}
-      totalHtLisible={devis.totalHtLisible}
-      totalTtcLisible={devis.totalTtcLisible}
-      mentionTva={devis.mentionTva}
+      {...(devis !== null
+        ? {
+            lignes: devis.lignes,
+            totalHtLisible: devis.totalHtLisible,
+            totalTtcLisible: devis.totalTtcLisible,
+            mentionTva: devis.mentionTva,
+          }
+        : {})}
       pdfUrl={pdfUrl}
       mention={mentions.join(" ")}
-      signerAction={signerDevisParJetonAction}
+      signerAction={signerPieceParJetonAction}
     />
   );
 }

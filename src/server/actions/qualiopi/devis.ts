@@ -494,7 +494,7 @@ export async function sendDevisAction(
         // n'aurait aucun sens commercial.
         borneMetier: devis.dateValidite,
       });
-      signatureUrl = publicUrl(`/fr/portail/signer-devis/${token}`).toString();
+      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
     } catch (err) {
       // Aucune donnée client dans le motif : Telegram est un canal tiers. Le
       // détail complet reste dans les logs serveur.

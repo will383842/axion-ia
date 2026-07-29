@@ -1,5 +1,5 @@
 /**
- * GET /api/admin/qualiopi/devis/[id]/exemplaire-signe
+ * GET /api/qualiopi/devis/[id]/exemplaire-signe
  *
  * Renvoie le devis AVEC les signatures apposées — le document qu'on remet au
  * client et qu'un auditeur regarde.
@@ -9,6 +9,12 @@
  * `document_signatures.document_hash_sha256`. Cet exemplaire en est une vue
  * DÉRIVÉE, rendue à la volée, jamais persistée et jamais renumérotée — voir
  * `devis-exemplaire-signe.ts` pour le raisonnement complet.
+ *
+ * ⚠️ Logée sous `api/qualiopi/` et NON sous `api/admin/qualiopi/` : seul le
+ * premier est whitelisté par `qualiopi:isolation-check`. On range au bon
+ * endroit plutôt que d'élargir la liste d'exceptions — c'est le raisonnement
+ * déjà tenu pour `src/server/portail/routes.ts`. Le préfixe d'URL est
+ * cosmétique : la garde est dans le corps de la route, pas dans le chemin.
  *
  * Auth : admin / super_admin uniquement. Le lien n'est pas public : l'exemplaire
  * porte l'identité des signataires et leurs tracés.

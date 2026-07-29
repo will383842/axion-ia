@@ -101,7 +101,7 @@ export async function envoyerDevisEmailAction(
         signataireQualite: devis.client.contactFonction,
         borneMetier: devis.dateValidite,
       });
-      signatureUrl = publicUrl(`/fr/portail/signer-devis/${token}`).toString();
+      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
     } catch (err) {
       signatureNote =
         err instanceof TokenDocumentError

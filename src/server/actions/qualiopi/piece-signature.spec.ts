@@ -1,5 +1,5 @@
 /**
- * Tests — devis-signature.ts (canal A).
+ * Tests — piece-signature.ts (canal A).
  *
  * Ces tests sont nés d'une vérification E2E menée le 2026-07-30, qui a trouvé
  * DEUX trous dans du code déjà écrit, déjà typé et déjà couvert par 3 830 tests
@@ -22,8 +22,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    documentGenere: { findUnique: vi.fn() },
     devis: { findFirst: vi.fn(), updateMany: vi.fn() },
-    documentSignature: { count: vi.fn() },
+    documentSignature: { count: vi.fn(), findMany: vi.fn() },
   },
 }));
 
@@ -56,12 +57,13 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { signerDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendTelegram } from "@/lib/telegram";
-import { signerDevisParJetonAction } from "./devis-signature";
+import { signerPieceParJetonAction } from "./piece-signature";
 
 type Mock = ReturnType<typeof vi.fn>;
 const mockPrisma = prisma as unknown as {
+  documentGenere: { findUnique: Mock };
   devis: { findFirst: Mock; updateMany: Mock };
-  documentSignature: { count: Mock };
+  documentSignature: { count: Mock; findMany: Mock };
 };
 const mockVerif = verifierTokenDocument as unknown as Mock;
 const mockSigner = signerDocument as unknown as Mock;
@@ -84,7 +86,14 @@ beforeEach(() => {
     signataireEmail: "camille@client.test",
     signataireQualite: "DRH",
   });
-  mockPrisma.devis.findFirst.mockResolvedValue({ statut: "envoye", numero: "AXI-DEV-2026-004" });
+  // La pièce est un DEVIS par défaut : c'est le seul type qui porte une
+  // objection métier, donc celui qui exerce le plus de chemins.
+  mockPrisma.documentGenere.findUnique.mockResolvedValue({
+    type: "devis",
+    numero: "AXI-DEV-2026-004",
+  });
+  mockPrisma.devis.findFirst.mockResolvedValue({ statut: "envoye" });
+  mockPrisma.documentSignature.findMany.mockResolvedValue([]);
   mockPrisma.devis.updateMany.mockResolvedValue({ count: 1 });
   mockSigner.mockResolvedValue({
     ok: true,
@@ -106,15 +115,15 @@ function entree(over: Record<string, unknown> = {}) {
 
 describe("🔴 le devis doit être ENCORE SIGNABLE — garde serveur", () => {
   it("accepte un devis `envoye`", async () => {
-    const res = await signerDevisParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: true });
     expect(mockSigner).toHaveBeenCalled();
   });
 
   it("🔴 REFUSE de signer un devis refusé — le trou trouvé le 2026-07-30", async () => {
-    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse", numero: "AXI-DEV-2026-004" });
-    const res = await signerDevisParJetonAction(entree());
-    expect(res).toMatchObject({ ok: false, raison: "devis_non_signable" });
+    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse" });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
     // Rien n'a été écrit : ni preuve, ni image sur R2.
     expect(mockSigner).not.toHaveBeenCalled();
   });
@@ -132,33 +141,65 @@ describe("🔴 le devis doit être ENCORE SIGNABLE — garde serveur", () => {
         signataireEmail: null,
         signataireQualite: null,
       });
-      mockPrisma.devis.findFirst.mockResolvedValue({ statut, numero: "N" });
-      const res = await signerDevisParJetonAction(entree());
-      expect(res).toMatchObject({ ok: false, raison: "devis_non_signable" });
+      mockPrisma.documentGenere.findUnique.mockResolvedValue({ type: "devis", numero: "N" });
+      mockPrisma.devis.findFirst.mockResolvedValue({ statut });
+      const res = await signerPieceParJetonAction(entree());
+      expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
       expect(mockSigner).not.toHaveBeenCalled();
     }
   });
 
   it("dit « déjà accepté » plutôt que « plus en cours » sur un devis conclu", async () => {
-    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "accepte", numero: "N" });
-    const res = await signerDevisParJetonAction(entree());
-    expect(res).toMatchObject({ ok: false, raison: "devis_non_signable" });
+    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "accepte" });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
     if (res.ok) return;
     expect(res.message).toContain("déjà fait l'objet d'un accord");
   });
 
   it("refuse si aucun devis ne porte cette pièce", async () => {
     mockPrisma.devis.findFirst.mockResolvedValue(null);
-    const res = await signerDevisParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("refuse une pièce absente du registre", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(null);
+    const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: false, raison: "piece_introuvable" });
     expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 une pièce NON signable au SSOT est refusée, même avec un jeton valide", async () => {
+    // `facture`, `attestation`, `convocation`… sont des pièces ÉMISES, pas des
+    // engagements négociés. Un jeton pointant dessus ne doit rien pouvoir écrire.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "facture",
+      numero: "AXI-FAC-2026-001",
+    });
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("⚠️ une pièce SANS objection métier (convention) passe sans lire `devis`", async () => {
+    // La généralisation ne doit pas exiger un devis pour toutes les pièces.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "convention",
+      numero: "AXI-CONV-2026-001",
+    });
+    mockPrisma.devis.findFirst.mockResolvedValue(null);
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(mockPrisma.devis.findFirst).not.toHaveBeenCalled();
   });
 });
 
 describe("🔴 limitation de débit — action PUBLIQUE", () => {
   it("plafonne AVANT tout travail coûteux", async () => {
     mockLimit.mockResolvedValue({ allowed: false });
-    const res = await signerDevisParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: false, raison: "trop_de_tentatives" });
     // 🔴 Le jeton n'est même pas vérifié : le plafond doit tomber en amont,
     // sinon il ne protège pas du travail qu'il est censé éviter.
@@ -167,16 +208,16 @@ describe("🔴 limitation de débit — action PUBLIQUE", () => {
   });
 
   it("plafonne par JETON et par IP", async () => {
-    await signerDevisParJetonAction(entree());
+    await signerPieceParJetonAction(entree());
     const cles = mockLimit.mock.calls.map((c) => String(c[0]));
-    expect(cles.some((k) => k.startsWith("devis:sig:"))).toBe(true);
-    expect(cles.some((k) => k.startsWith("devis:ip:"))).toBe(true);
+    expect(cles.some((k) => k.startsWith("piece:sig:"))).toBe(true);
+    expect(cles.some((k) => k.startsWith("piece:ip:"))).toBe(true);
   });
 
   it("⚠️ n'utilise JAMAIS le jeton en clair comme clé de plafond", async () => {
     // Une clé Redis contenant le jeton en clair le rendrait lisible par
     // quiconque inspecte le cache — c'est-à-dire signable.
-    await signerDevisParJetonAction(entree());
+    await signerPieceParJetonAction(entree());
     const cles = mockLimit.mock.calls.map((c) => String(c[0]));
     expect(cles.every((k) => !k.includes("jeton-en-clair"))).toBe(true);
   });
@@ -184,11 +225,14 @@ describe("🔴 limitation de débit — action PUBLIQUE", () => {
 
 describe("🔴 personne ne doit ignorer qu'un client a signé", () => {
   it("alerte, en demandant la contresignature, quand la pièce reste partielle", async () => {
-    await signerDevisParJetonAction(entree());
+    await signerPieceParJetonAction(entree());
     expect(mockTelegram).toHaveBeenCalledTimes(1);
     const body = String(mockTelegram.mock.calls[0]?.[0]?.body ?? "");
     expect(body).toContain("AXI-DEV-2026-004");
-    expect(body).toContain("CONTRESIGNER");
+    // 🔴 L'alerte doit dire QUOI FAIRE, pas seulement que la pièce est
+    // incomplète : « reste à signer : axionia » est actionnable.
+    expect(body).toContain("Reste à signer");
+    expect(body).toContain("axionia");
   });
 
   it("alerte différemment quand la pièce est intégralement signée", async () => {
@@ -198,21 +242,21 @@ describe("🔴 personne ne doit ignorer qu'un client a signé", () => {
       selfHash: "b".repeat(64),
       statutSignature: "signee",
     });
-    await signerDevisParJetonAction(entree());
+    await signerPieceParJetonAction(entree());
     const body = String(mockTelegram.mock.calls[0]?.[0]?.body ?? "");
-    expect(body).toContain("accepté");
+    expect(body).toContain("intégralement signée");
     expect(mockPrisma.devis.updateMany).toHaveBeenCalled();
   });
 
   it("⚠️ une panne Telegram n'annule PAS une signature déjà chaînée", async () => {
     mockTelegram.mockRejectedValue(new Error("telegram down"));
-    const res = await signerDevisParJetonAction(entree());
+    const res = await signerPieceParJetonAction(entree());
     expect(res).toMatchObject({ ok: true });
   });
 
   it("n'alerte pas sur un refus", async () => {
-    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse", numero: "N" });
-    await signerDevisParJetonAction(entree());
+    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse" });
+    await signerPieceParJetonAction(entree());
     expect(mockTelegram).not.toHaveBeenCalled();
   });
 });

@@ -2,7 +2,7 @@
 // use-client: pavé de signature (canvas + pointer events) + état local + Server Action.
 
 /**
- * Canal A — « Bon pour accord » du client sur son devis.
+ * Canal A — signature d'une PIÈCE contractuelle par un tiers, depuis son lien.
  *
  * ## Ce que cet écran doit garantir, et pourquoi
  *
@@ -39,19 +39,31 @@ export interface LigneAffichee {
   totalHtLisible: string;
 }
 
-export interface DevisSignatureFormProps {
+export interface PieceSignatureFormProps {
   token: string;
   numero: string;
-  dateValiditeLisible: string;
+  /** Date de validité — un devis en a une, une convention non. */
+  dateValiditeLisible: string | null;
   organismeNom: string;
   clientRaisonSociale: string;
   /** Identité FIGÉE à l'émission. Affichée pour vérification, jamais éditable. */
   signataireNom: string;
   signataireQualite: string | null;
-  lignes: LigneAffichee[];
-  totalHtLisible: string;
-  totalTtcLisible: string;
-  mentionTva: string | null;
+  /**
+   * Détail chiffré — RENSEIGNÉ uniquement pour un devis.
+   *
+   * 🔴 C'est la raison d'être de la bascule pour le devis : le signataire doit
+   * avoir les lignes, les quantités et les totaux SOUS LES YEUX. Une convention
+   * ou un contrat n'a pas de lignes ; leur substance est dans le PDF, dont le
+   * lien est affiché juste en dessous. Rendre un tableau vide sur ces pièces
+   * laisserait croire qu'il manque quelque chose.
+   */
+  lignes?: LigneAffichee[];
+  totalHtLisible?: string;
+  totalTtcLisible?: string;
+  mentionTva?: string | null;
+  /** Libellé de la pièce, depuis le SSOT (« convention de formation »…). */
+  pieceLibelle: string;
   /** Lien vers le PDF exact qui sera scellé. */
   pdfUrl: string | null;
   /** Mention affichée AU SIGNATAIRE, et dont la version est scellée. */
@@ -65,7 +77,7 @@ export interface DevisSignatureFormProps {
   >;
 }
 
-export function DevisSignatureForm({
+export function PieceSignatureForm({
   token,
   numero,
   dateValiditeLisible,
@@ -77,10 +89,11 @@ export function DevisSignatureForm({
   totalHtLisible,
   totalTtcLisible,
   mentionTva,
+  pieceLibelle,
   pdfUrl,
   mention,
   signerAction,
-}: DevisSignatureFormProps): React.ReactElement {
+}: PieceSignatureFormProps): React.ReactElement {
   const [trace, setTrace] = useState<string | null>(null);
   const [modeAccessible, setModeAccessible] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -113,10 +126,10 @@ export function DevisSignatureForm({
   if (signe) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h1 className="text-xl font-semibold text-gray-900">Votre accord est enregistré</h1>
+        <h1 className="text-xl font-semibold text-gray-900">Votre signature est enregistrée</h1>
         <p className="mt-3 text-sm text-gray-700">
-          {`Merci. Votre « bon pour accord » sur le devis ${numero} a bien été enregistré, horodaté et
-          rattaché au document que vous venez de lire.`}
+          {`Merci. Votre signature sur ${pieceLibelle} ${numero} a bien été enregistrée, horodatée et
+          rattachée au document que vous venez de lire.`}
         </p>
         <p className="mt-2 text-sm text-gray-600">
           {`${organismeNom} vous adressera l'exemplaire contresigné. Vous pouvez fermer cette page.`}
@@ -127,60 +140,76 @@ export function DevisSignatureForm({
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-10">
-      <h1 className="text-xl font-semibold text-gray-900">{`Devis ${numero}`}</h1>
+      <h1 className="text-xl font-semibold text-gray-900">
+        {`${pieceLibelle.charAt(0).toUpperCase()}${pieceLibelle.slice(1)} ${numero}`}
+      </h1>
       <p className="mt-1 text-sm text-gray-600">
-        {`Émis par ${organismeNom} à l'attention de ${clientRaisonSociale}. Valable jusqu'au ${dateValiditeLisible}.`}
+        {`Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`}
+        {dateValiditeLisible !== null ? ` Valable jusqu'au ${dateValiditeLisible}.` : ""}
       </p>
 
       {/* ── Ce qui est signé, sous les yeux du signataire ── */}
+      {/* 🔴 Le détail chiffré n'existe QUE pour un devis. Sur une convention ou
+          un contrat, la substance est dans le PDF — rendre un tableau vide
+          laisserait croire qu'il manque quelque chose. */}
       <section className="mt-8" aria-labelledby="recap-titre">
-        <h2 id="recap-titre" className="text-sm font-semibold text-gray-900">
-          Détail de la prestation
-        </h2>
-        <div className="mt-3 overflow-x-auto">
-          <table className="w-full min-w-[32rem] border-collapse text-sm">
-            <thead>
-              <tr className="border-b border-gray-300 text-left text-xs text-gray-600 uppercase">
-                <th scope="col" className="py-2 pr-3 font-medium">
-                  Désignation
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-medium">
-                  Qté
-                </th>
-                <th scope="col" className="py-2 pr-3 text-right font-medium">
-                  PU HT
-                </th>
-                <th scope="col" className="py-2 text-right font-medium">
-                  Total HT
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {lignes.map((l, i) => (
-                <tr key={i} className="border-b border-gray-200 align-top">
-                  <td className="py-2 pr-3 text-gray-900">{l.designation}</td>
-                  <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">{l.quantite}</td>
-                  <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">
-                    {l.prixUnitaireHtLisible}
-                  </td>
-                  <td className="py-2 text-right text-gray-900 tabular-nums">{l.totalHtLisible}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {lignes !== undefined && lignes.length > 0 ? (
+          <>
+            <h2 id="recap-titre" className="text-sm font-semibold text-gray-900">
+              Détail de la prestation
+            </h2>
+            <div className="mt-3 overflow-x-auto">
+              <table className="w-full min-w-[32rem] border-collapse text-sm">
+                <thead>
+                  <tr className="border-b border-gray-300 text-left text-xs text-gray-600 uppercase">
+                    <th scope="col" className="py-2 pr-3 font-medium">
+                      Désignation
+                    </th>
+                    <th scope="col" className="py-2 pr-3 text-right font-medium">
+                      Qté
+                    </th>
+                    <th scope="col" className="py-2 pr-3 text-right font-medium">
+                      PU HT
+                    </th>
+                    <th scope="col" className="py-2 text-right font-medium">
+                      Total HT
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lignes.map((l, i) => (
+                    <tr key={i} className="border-b border-gray-200 align-top">
+                      <td className="py-2 pr-3 text-gray-900">{l.designation}</td>
+                      <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">
+                        {l.quantite}
+                      </td>
+                      <td className="py-2 pr-3 text-right text-gray-700 tabular-nums">
+                        {l.prixUnitaireHtLisible}
+                      </td>
+                      <td className="py-2 text-right text-gray-900 tabular-nums">
+                        {l.totalHtLisible}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-        <dl className="mt-4 space-y-1 text-sm">
-          <div className="flex justify-between">
-            <dt className="text-gray-600">Total HT</dt>
-            <dd className="font-medium text-gray-900 tabular-nums">{totalHtLisible}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="font-semibold text-gray-900">Total TTC</dt>
-            <dd className="font-semibold text-gray-900 tabular-nums">{totalTtcLisible}</dd>
-          </div>
-        </dl>
-        {mentionTva !== null && <p className="mt-2 text-xs text-gray-600">{mentionTva}</p>}
+            <dl className="mt-4 space-y-1 text-sm">
+              <div className="flex justify-between">
+                <dt className="text-gray-600">Total HT</dt>
+                <dd className="font-medium text-gray-900 tabular-nums">{totalHtLisible ?? ""}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="font-semibold text-gray-900">Total TTC</dt>
+                <dd className="font-semibold text-gray-900 tabular-nums">
+                  {totalTtcLisible ?? ""}
+                </dd>
+              </div>
+            </dl>
+            {mentionTva != null && <p className="mt-2 text-xs text-gray-600">{mentionTva}</p>}
+          </>
+        ) : null}
 
         {pdfUrl !== null && (
           <p className="mt-4 text-sm">
