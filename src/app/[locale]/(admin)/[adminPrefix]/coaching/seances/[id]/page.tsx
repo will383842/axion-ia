@@ -10,6 +10,8 @@ import {
 } from "@/server/formateur/coaching-options";
 import { sumHeuresReelles } from "@/server/qualiopi/coaching-afest/heures";
 import { AfestPanel } from "@/components/admin/coaching/AfestPanel";
+import { RegistreSignaturesAfest } from "@/components/admin/coaching/RegistreSignaturesAfest";
+import { listerRegistreSeancesAfest } from "@/server/qualiopi/coaching-afest/signature/registre-seances";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
 
@@ -45,14 +47,23 @@ function Line({ label, value }: { label: string; value: React.ReactNode }): Reac
 
 export default async function AdminSeanceDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; locale: string; adminPrefix: string }>;
+  /** Codes de retour de la révocation, transmis par l'URL — jamais un message. */
+  searchParams: Promise<{ revocation?: string; raison?: string }>;
 }): Promise<React.ReactElement> {
   const { id, locale, adminPrefix } = await params;
+  const { revocation, raison } = await searchParams;
   const s = await getSessionAdmin(id);
   if (!s) notFound();
   const seancesHref = `/${locale}/${adminPrefix}/coaching/seances`;
+  const cheminCourant = `/${locale}/${adminPrefix}/coaching/seances/${s.id}`;
   const heuresReelles = sumHeuresReelles(s.comptesRendus);
+  // 🔴 Les signatures RÉELLES, à côté de la présence DÉCLARÉE qu'affiche le
+  // panneau AFEST. N'en montrer qu'une des deux reviendrait à présenter comme
+  // preuve ce qui n'est qu'une déclaration de l'organisme.
+  const registreSignatures = await listerRegistreSeancesAfest(s.id);
 
   return (
     <div className="space-y-4">
@@ -115,6 +126,13 @@ export default async function AdminSeanceDetailPage({
           presenceSignee: c.presenceSigneeAt != null,
         }))}
         documents={s.documentsGeneres}
+      />
+
+      <RegistreSignaturesAfest
+        registre={registreSignatures}
+        cheminRetour={cheminCourant}
+        revocation={revocation}
+        raison={raison}
       />
 
       <Block title="Cartographie de l'activité">

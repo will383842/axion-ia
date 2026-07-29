@@ -46,39 +46,15 @@ import {
   type StatutSeance,
 } from "./seances-signables";
 import { mentionCompleteAfest, MENTION_RECUEIL_ATTESTE_PAR_OF } from "./mentions-afest";
+// 🔴 Les libellés vivent dans un module FEUILLE : le registre admin les affiche
+// aussi, et les lui faire tirer d'ici lui imposerait Prisma et next-auth pour
+// écrire « Bénéficiaire ». Les recopier ferait pire — deux écrans nommant
+// différemment le même rôle dans un même dossier d'audit.
+import { LIBELLES_METHODE, LIBELLES_ROLE } from "./libelles-afest";
 import type { MethodeSignatureAfest, RoleSignataireAfest } from "./seance-signature-hash";
 
 /** Les trois rôles, dans l'ordre d'affichage. Ordre stable : l'écran s'y fie. */
 const ROLES: readonly RoleSignataireAfest[] = ["beneficiaire", "formateur", "tuteur"] as const;
-
-/**
- * Libellés des rôles.
- *
- * ⚠️ La distinction n'est PAS cosmétique et elle est portée par le schéma :
- * bénéficiaire et formateur apposent une SIGNATURE-PRÉSENCE ; le tuteur
- * entreprise apporte une CO-ATTESTATION DE RÉALITÉ. Il est un tiers, il n'était
- * pas nécessairement en salle, et lui faire signer « j'atteste avoir suivi »
- * serait faux — c'est déjà ce que dit `mentionAttestationAfest`.
- */
-const LIBELLES_ROLE: Readonly<Record<RoleSignataireAfest, string>> = {
-  beneficiaire: "Bénéficiaire — signature de présence",
-  formateur: "Formateur AFEST — signature de présence",
-  tuteur: "Tuteur en entreprise — co-attestation de réalité",
-};
-
-/**
- * Modalités, en clair.
- *
- * La modalité est HACHÉE dans le tuple : la dire à l'écran n'est pas un détail
- * d'ergonomie, c'est une partie de ce que la ligne prouve. Une confirmation
- * accessible et un tracé manuscrit ne se valent pas en apparence — ils se valent
- * en valeur probante, et c'est le rendu qui doit le porter, pas le silence.
- */
-const LIBELLES_METHODE: Readonly<Record<MethodeSignatureAfest, string>> = {
-  trace: "signature tracée",
-  papier_scanne: "feuille papier signée puis photographiée",
-  confirmation_accessible: "confirmation nominative (modalité accessible)",
-};
 
 /**
  * Motifs de non-signabilité, en clair, DITS AVANT LE CLIC.
