@@ -171,6 +171,24 @@ export default async function InboxPage({
         />
       </div>
 
+      {/* Un canal illisible se lit sinon exactement comme un canal vide — c'est
+          ce qui a permis à un `pageSize` invalide de vivre un déploiement entier
+          derrière un paisible « Message 0 ». Il ne peut plus passer inaperçu. */}
+      {result.failedChannels.length > 0 ? (
+        <div className="mb-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-danger-border)] bg-[color:var(--color-admin-danger-bg)] p-4 text-sm">
+          <p className="font-semibold">
+            ⚠️ {result.failedChannels.length === 1 ? "Un canal n'a" : "Des canaux n'ont"} pas pu
+            être chargé
+            {result.failedChannels.length === 1 ? "" : "s"} :{" "}
+            {result.failedChannels.map((c) => INBOX_CHANNEL_LABELS[c]).join(", ")}.
+          </p>
+          <p className="mt-2">
+            Les compteurs ci-dessus sont donc incomplets. Ouvrez le canal concerné directement pour
+            voir ses données, et signalez l&apos;incident — le détail est dans les journaux serveur.
+          </p>
+        </div>
+      ) : null}
+
       {/* Une troncature silencieuse ferait passer une liste partielle pour
           exhaustive : on l'affiche. */}
       {result.truncated ? (
