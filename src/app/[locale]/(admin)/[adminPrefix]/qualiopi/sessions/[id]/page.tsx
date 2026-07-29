@@ -25,9 +25,11 @@ import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntrep
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
-import { SignatureReleve } from "@/components/espace-formateur/SignatureReleve";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { viserReleveResponsablePedagogiqueAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/signature/releve-queries";
+import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import {
   enrollTraineeAction,
@@ -123,6 +125,11 @@ export default async function SessionHubPage({ params }: PageProps) {
   // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
   // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
   const etatReleveConsole = await lireEtatSignatureReleveConsole(id, role);
+
+  // Contreseing de la lettre de mission formateur, même règle de lecture.
+  // `null` quand aucune lettre n'a été générée — la section Documents ci-dessous
+  // porte le bouton qui la génère.
+  const etatLettreConsole = await lireEtatSignatureLettreMissionConsole(id, role);
 
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id },
@@ -615,14 +622,50 @@ export default async function SessionHubPage({ params }: PageProps) {
         */}
         {etatReleveConsole !== null && (
           <div className="mt-[var(--space-admin-6)]">
-            <SignatureReleve
+            <SignatureDocument
               documentGenereId={etatReleveConsole.documentGenereId}
+              titrePiece="Relevé de connexion"
               numero={etatReleveConsole.numero}
               parties={etatReleveConsole.parties}
               peutAgir={etatReleveConsole.peutAgir}
               mentions={etatReleveConsole.mentions}
               plafondProbant={etatReleveConsole.plafondProbant}
+              libelleBouton="Viser le relevé"
+              labelSignature="Visa du responsable pédagogique"
               signerAction={viserReleveResponsablePedagogiqueAction}
+            />
+          </div>
+        )}
+
+        {/*
+          Contreseing de la LETTRE DE MISSION FORMATEUR.
+
+          C'est la contrepartie du bouton « Lettre de mission formateur » de la
+          section ci-dessus : la pièce s'y génère, elle se contresigne ici. Les
+          deux cadres au stylo du §7 du modèle existaient depuis toujours sans
+          que rien ne les remplisse.
+
+          ⚠️ Rendu SEULEMENT si une lettre existe : un bloc vide se lirait comme
+          une pièce manquante alors qu'elle n'a simplement pas été demandée.
+
+          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+          et l'un finirait par contredire l'autre sur la même pièce.
+        */}
+        {etatLettreConsole !== null && (
+          <div className="mt-[var(--space-admin-6)]">
+            <SignatureDocument
+              documentGenereId={etatLettreConsole.documentGenereId}
+              titrePiece="Lettre de mission formateur"
+              numero={etatLettreConsole.numero}
+              parties={etatLettreConsole.parties}
+              peutAgir={etatLettreConsole.peutAgir}
+              motifBlocage={etatLettreConsole.motifBlocage}
+              mentions={etatLettreConsole.mentions}
+              plafondProbant={etatLettreConsole.plafondProbant}
+              libelleBouton="Contresigner la lettre de mission"
+              labelSignature="Signature pour l'organisme de formation"
+              signerAction={contresignerLettreMissionAction}
             />
           </div>
         )}

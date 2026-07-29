@@ -414,7 +414,22 @@ export function QualiopiPage({
   const footerIds = joinDefined(
     [
       identite.siret ? `SIRET ${identite.siret}` : "",
-      identite.nda ? `NDA ${identite.nda}` : "",
+      // 🔴 L'absence de NDA est DITE, pas passée sous silence.
+      //
+      // Le pied de page omettait simplement la mention : un auditeur ne voyait
+      // rien, et ne pouvait pas distinguer un oubli de saisie d'une situation
+      // légitime. Or elle l'est souvent — l'art. L.6351-1 fait courir le délai
+      // de déclaration à compter de la PREMIÈRE convention, si bien qu'au
+      // moment de l'émettre l'organisme n'a pas encore de numéro.
+      //
+      // ⚠️ La formulation ne prétend PAS qu'un dossier a été déposé (« en cours
+      // d'enregistrement » serait une affirmation invérifiable, fausse si rien
+      // n'a été déposé). Elle constate l'absence et cite l'article qui la rend
+      // possible. C'est la même règle que partout ailleurs dans ce dépôt : dire
+      // ce qui est, jamais ce qui arrange.
+      identite.nda
+        ? `NDA ${identite.nda}`
+        : "Déclaration d'activité non encore enregistrée (art. L.6351-1 C. trav.)",
       identite.qualiopi ? `Qualiopi ${identite.qualiopi}` : "",
     ],
     "  ·  ",

@@ -34,6 +34,10 @@ import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-fo
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import {
+  calculerAcompte,
+  PLAFOND_ACOMPTE_PARTICULIER_PCT,
+} from "@/server/qualiopi/financements/acompte";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
 import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-data";
@@ -422,6 +426,12 @@ export async function genererContratFormationAction(input: {
           dateFin: true,
           modalite: true,
           montantHtCents: true,
+          // 🔴 Nécessaire au calcul de l'acompte : l'assiette est le RESTE À
+          // CHARGE, pas le prix total. Sans cette lecture, le contrat annonçait
+          // 30 % du total — sur 2 000 € dont 1 200 € financés, 600 € au lieu de
+          // 240. Le client signait un chiffre que le système n'appliquait pas.
+          priseEnChargeMontantCents: true,
+          opcoSubrogation: true,
           formationSnapshot: true,
           formation: {
             select: {
@@ -442,6 +452,34 @@ export async function genererContratFormationAction(input: {
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
+
+  // 🔴 L'acompte ANNONCÉ vient désormais du calcul, plus d'un pourcentage
+  // recalculé dans le gabarit.
+  //
+  // Le gabarit accepte `acompteEuros` depuis le 2026-07-27, précisément pour
+  // que le contrat imprime ce qui a été CONVENU au lieu de recalculer un
+  // plafond. Mais personne ne le lui fournissait : il retombait donc toujours
+  // sur 30 % de `prixNet`, c'est-à-dire du TOTAL. Le correctif était à moitié
+  // posé — la moitié visible, pas la moitié agissante.
+  //
+  // `calculerAcompte` prend pour assiette le RESTE À CHARGE, ce que le
+  // particulier avance réellement de sa poche. Les deux étages ne se
+  // contredisent pas : 30 % du reste à charge est toujours ≤ 30 % du prix
+  // convenu, plafond que `facturation-hub` fait respecter au refus.
+  //
+  // ⚠️ Ne lève jamais : un contexte incohérent est ramené à des bornes sûres.
+  // Une exception ici bloquerait l'émission du contrat, ce qui est pire qu'un
+  // acompte à zéro.
+  const acompte = calculerAcompte({
+    montantTotalHtCents: session.montantHtCents,
+    priseEnChargeCents: session.priseEnChargeMontantCents ?? 0,
+    subrogation: session.opcoSubrogation === true,
+    // Un contrat individuel n'est pas un dossier CPF : le CPF passe par la
+    // Caisse des dépôts, jamais par un contrat de gré à gré avec l'organisme.
+    cpf: false,
+    nature: "particulier",
+    tauxAcomptePct: PLAFOND_ACOMPTE_PARTICULIER_PCT,
+  });
 
   const doc = await generateDocument({
     type: "contrat",
@@ -464,6 +502,8 @@ export async function genererContratFormationAction(input: {
           modalite: modaliteLabel(session.modalite),
           lieu: identite.adresseExercice || identite.adresseSiege || "—",
           prixNet: session.montantHtCents / 100,
+          // Ce que le système DEMANDERA réellement, pas un plafond recalculé.
+          acompteEuros: acompte.acompteCents / 100,
           dateContrat: formatDateFr(new Date()),
         },
         identite,
@@ -1489,11 +1529,39 @@ export async function genererLettreMissionAction(input: {
 
   const identite = await getOrganismeIdentite();
 
+  // 🔴 REFUS plutôt que fabrication d'un nom.
+  //
+  // Le repli historique était en cascade : formateur résolu → sinon un nom lu
+  // dans le Json brut → sinon LA RAISON SOCIALE DE L'ORGANISME. La dernière
+  // branche produisait une lettre de mission désignant « Axion-IA » comme
+  // formateur — une pièce d'indicateur 21 qui nomme une personne morale là où
+  // elle doit nommer une personne physique.
+  //
+  // ⚠️ Et la branche du milieu était morte pour toute donnée bien formée :
+  // `parseCoFormateurs` n'accepte que `trainerId`, tandis que le repli lisait
+  // `id`, `nom` et `prenom` — des champs que les entrées courantes ne portent
+  // pas. On tombait donc directement sur la raison sociale.
+  //
+  // Depuis que la lettre est SIGNABLE, l'incohérence devient visible : le
+  // service de signature refuse un signataire non résolvable (il ne scelle
+  // jamais une identité fabriquée), si bien que le générateur produisait une
+  // pièce que personne ne pouvait signer. Mieux vaut refuser de l'émettre.
+  //
+  // Impact MESURÉ avant ce changement, pas supposé : une seule session sans
+  // formateur principal en production, son `co_formateurs` est vide, et AUCUNE
+  // lettre de mission n'a jamais été émise. On retire donc le défaut avant son
+  // premier cas réel.
   const nomPrenom = trainer
     ? `${trainer.prenom} ${trainer.nom}`.trim()
     : premierRaw?.prenom && premierRaw?.nom
       ? `${premierRaw.prenom} ${premierRaw.nom}`.trim()
-      : identite.raisonSociale;
+      : "";
+  if (nomPrenom === "") {
+    return {
+      error:
+        "Aucun formateur n'est rattaché à cette session : une lettre de mission doit nommer la personne qui reçoit la mission. Désignez le formateur principal, puis régénérez la lettre.",
+    };
+  }
 
   const tarifJourHt = trainer?.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0;
 

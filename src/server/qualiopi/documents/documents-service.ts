@@ -118,6 +118,24 @@ export interface GenerateDocumentInput {
     coachingSessionId?: string;
   };
   /**
+   * Métadonnées de PRODUCTION à figer sur la pièce.
+   *
+   * 🔴 Sert à enregistrer les conditions dans lesquelles le PDF a été calculé,
+   * pas son contenu. L'usage qui l'a fait naître : le régime de preuve d'un
+   * parcours AFEST. Une feuille d'émargement produite sous `legacy_boolean`
+   * continuait d'être servie telle quelle après bascule en `signature_reelle`,
+   * parce que la génération est IDEMPOTENTE — la feuille disait alors une chose
+   * pendant que la facture, le BPF et le certificat du même parcours en
+   * disaient une autre.
+   *
+   * ⚠️ Ce n'est PAS un fourre-tout. Une donnée qui appartient au contenu de la
+   * pièce doit être dans le PDF, où elle est hachée ; ici rien n'est scellé.
+   *
+   * ⚠️ Le marquage SPÉCIMEN reste prioritaire et n'est jamais écrasé : c'est une
+   * information de conformité, pas une condition de calcul.
+   */
+  metadata?: Record<string, unknown>;
+  /**
    * Force le filigrane « COPIE ».
    *
    * Laissé vide, il est DÉDUIT : toute régénération d'un document de même type
@@ -388,8 +406,18 @@ export async function generateDocument(
           ...(pieceSignable(input.type) ? { statutSignature: "en_attente" as const } : {}),
           // Traçabilité du déclassement : un document SPÉCIMEN doit rester
           // identifiable comme tel en base, pas seulement à l'impression.
-          ...(specimen
-            ? { metadata: { specimen: true, champsManquants: specimen.manquants } }
+          //
+          // ⚠️ Les deux sources sont FUSIONNÉES, et le SPÉCIMEN est écrit en
+          // DERNIER : un appelant ne doit pas pouvoir effacer, même par
+          // inadvertance, le marquage qui dit que la pièce n'a pas de valeur
+          // juridique.
+          ...(specimen !== null || input.metadata !== undefined
+            ? {
+                metadata: {
+                  ...(input.metadata ?? {}),
+                  ...(specimen ? { specimen: true, champsManquants: specimen.manquants } : {}),
+                },
+              }
             : {}),
           ...(input.qrToken != null ? { qrToken: input.qrToken, qrTokenCreatedAt: now } : {}),
           ...(input.refs?.formationId != null ? { formationId: input.refs.formationId } : {}),
