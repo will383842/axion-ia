@@ -48,18 +48,27 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ q?: string }>;
 }
 
-export default async function QualiopiClientsPage({ params }: PageProps) {
+export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const { q } = await searchParams;
   const session = await auth();
   const role = session?.user?.role;
   if (!session?.user || (role !== "admin" && role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const clients = await listClients();
+  const recherche = (q ?? "").trim();
+  const clients = await listClients(recherche === "" ? undefined : { recherche });
 
+  // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
+  //
+  // Laisser « Total 3 » au-dessus d'une liste filtrée à 1 ligne fait douter de
+  // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
+  // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
+  // compteur.
   const prospects = clients.filter((c) => c.statut === "prospect").length;
   const actifs = clients.filter((c) => c.statut === "client_actif").length;
   const devisEnvoyes = clients.filter((c) => c.statut === "devis_envoye").length;
@@ -79,10 +88,52 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
         <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
           + Nouveau client
         </Link>
+
+        {/*
+          Recherche en <form method="get"> : aucun JavaScript client.
+          Le terme vit dans l'URL, donc il se partage, se met en favori et
+          survit à un rechargement — trois choses qu'un filtre en état local
+          ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
+          avec 4 millions d'établissements collectés côté prospection, filtrer
+          après chargement ne tiendrait de toute façon pas.
+        */}
+        <form method="get" className="flex flex-1 gap-[var(--space-admin-2)]">
+          <input
+            type="search"
+            name="q"
+            defaultValue={recherche}
+            placeholder="Rechercher : raison sociale, SIRET, SIREN, n° de fiche, contact…"
+            aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
+            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+          />
+          <button type="submit" className="admin-button">
+            Rechercher
+          </button>
+          {recherche !== "" ? (
+            <Link
+              href={`/${locale}/${adminPrefix}/qualiopi/clients`}
+              className="self-center text-[length:var(--text-admin-sm)] underline"
+            >
+              Effacer
+            </Link>
+          ) : null}
+        </form>
       </div>
 
+      {recherche !== "" ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {clients.length === 0
+            ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
+            : `${clients.length} résultat(s) pour « ${recherche} ».`}
+        </p>
+      ) : null}
+
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={clients.length} icon={Hash} />
+        <AdminStatCard
+          label={recherche === "" ? "Total" : "Résultats"}
+          value={clients.length}
+          icon={Hash}
+        />
         <AdminStatCard label="Prospects" value={prospects} icon={Users} />
         <AdminStatCard label="Devis envoyés" value={devisEnvoyes} tone="warning" icon={FileText} />
         <AdminStatCard label="Clients actifs" value={actifs} tone="success" icon={CheckCircle2} />
