@@ -290,9 +290,13 @@ function formatBody(event: NotificationEvent): string {
     case "DEPLOY_FAILED": {
       const p = event.payload;
       return [
+        formatKV("Branche", p.branch),
         formatKV("SHA", p.sha),
+        formatKV("Auteur", p.actor),
+        formatKV("Commit", p.subject?.slice(0, 160)),
         formatKV("Durée (s)", p.duration),
         formatKV("Erreur", p.error?.slice(0, 500)),
+        formatKV("Run", p.runUrl),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
