@@ -28,7 +28,12 @@ import {
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
 // SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
 // applique. Ne pas la recopier en dur ici — c'est ainsi que deux règles divergent.
-import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
+import {
+  PLAFOND_ACOMPTE_PARTICULIER_PCT,
+  DELAI_RETRACTATION_PARTICULIER_JOURS,
+  dateEncaissablePartir,
+  encaissementAutorise,
+} from "@/server/qualiopi/financements/acompte";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
@@ -143,6 +148,11 @@ export async function genererFactureDepuisDevisAction(
       refClient: true,
       clientId: true,
       lignes: true,
+      // Date d'engagement du particulier : fait courir le délai de rétractation
+      // de 10 jours (art. L6353-5). Sans elle dans le select, le garde-fou
+      // ci-dessous lirait `undefined` et laisserait passer TOUTES les factures —
+      // un garde-fou qui n'en est pas un.
+      acceptedAt: true,
       // Nature du client : le plafond d'acompte de 30 % (art. L6353-6) est une
       // règle de droit, pas un réglage commercial. Elle doit vivre au serveur —
       // le template du contrat la « rattrape » par un Math.min(…, 30), ce qui
@@ -189,6 +199,34 @@ export async function genererFactureDepuisDevisAction(
   // l'article — pas `resteAChargeCents`, que le PDF déclare lui-même
   // « estimation indicative, non contractuelle », et qu'un particulier n'a de
   // toute façon pas (pas d'OPCO).
+  // ── Art. L6353-6 (1) — délai de rétractation NON EXPIRÉ ──
+  //
+  // 🔴 Le trou : « aucune somme ne peut être exigée NI VERSÉE avant l'expiration
+  // du délai de rétractation » (10 j, L6353-5). Le calcul existait
+  // (`encaissableAPartirDu`) mais n'était **lu nulle part** dans `src/` — un
+  // contrôle en trompe-l'œil : le contrat annonçait une date que rien
+  // n'appliquait. Rien n'empêchait donc de facturer un particulier le jour même.
+  //
+  // Le refus est AU SERVEUR, pas dans l'UI : une Server Action est appelable
+  // directement, et un garde-fou d'UI ne protège que celui qui passe par l'UI.
+  //
+  // ⚠️ Date d'engagement retenue = `acceptedAt` du devis. C'est l'intrant le plus
+  // fiable DISPONIBLE AUJOURD'HUI, et il est volontairement documenté comme
+  // provisoire : le jour où `DocumentSignature` existe, ce garde-fou doit lire la
+  // date de signature du CONTRAT (L6353-5 fait courir le délai à compter d'elle,
+  // pas de l'acceptation du devis). En attendant, ce contrôle est strictement
+  // meilleur que l'absence totale de contrôle qu'il remplace.
+  if (devis.client.type === "particulier") {
+    if (!encaissementAutorise(devis.acceptedAt, new Date())) {
+      const encaissableLe = devis.acceptedAt ? dateEncaissablePartir(devis.acceptedAt) : null;
+      return {
+        error: encaissableLe
+          ? `Facturation refusée : l'article L6353-6 interdit d'exiger ou de percevoir une somme d'un particulier avant l'expiration du délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours (art. L6353-5). Ce devis a été accepté le ${devis.acceptedAt?.toLocaleDateString("fr-FR")} — facturation possible à partir du ${encaissableLe.toLocaleDateString("fr-FR")}.`
+          : "Facturation refusée : la date d'acceptation du devis est absente, le délai de rétractation de 10 jours (art. L6353-5) est donc incalculable. Renseignez l'acceptation du devis avant de facturer un particulier.",
+      };
+    }
+  }
+
   if (parsed.data.acomptePercent !== undefined && devis.client.type === "particulier") {
     const totalHtCents = lignesParsed.data.reduce(
       (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
