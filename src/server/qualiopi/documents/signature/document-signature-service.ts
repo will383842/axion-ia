@@ -42,6 +42,7 @@ import { Prisma } from "../../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { storeSignatureImage, supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import {
   calculerSelfHashDocument,
   HASH_VERSION_DOCUMENT,
@@ -247,7 +248,25 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
         take: 1,
       },
       coachingSession: { select: { trainerId: true } },
-      session: { select: { sessionFormateurs: { select: { trainerId: true } } } },
+      // 🔴 `formateurPrincipalId` EST lu, et ce n'est pas du zèle.
+      //
+      // La première version de ce service ne regardait que `sessionFormateurs`.
+      // Or `resoudreAppartenance` — source de vérité de l'appartenance dans tout
+      // le dépôt — pose que la FK `formateurPrincipalId` PRIME, et rien ne
+      // garantit qu'une ligne `SessionFormateur` accompagne toujours la FK
+      // (aucun dual-write n'a été trouvé). Résultat : le formateur principal
+      // d'une session était autorisé par la couche action, puis REFUSÉ ici avec
+      // `porteur_non_autorise` — un refus qui n'a aucun sens pour lui, sur sa
+      // propre session.
+      //
+      // Échec « fermé » donc sans faille de sécurité, mais une garde qui bloque
+      // le seul ayant droit ne protège rien : elle casse.
+      session: {
+        select: {
+          formateurPrincipalId: true,
+          sessionFormateurs: { select: { trainerId: true, role: true } },
+        },
+      },
     },
   });
 }
@@ -446,7 +465,21 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
   }
   if (porteur.type !== "formateur_authentifie") return true;
   if (ctx.coachingSession?.trainerId === porteur.trainerId) return true;
-  return (ctx.session?.sessionFormateurs ?? []).some((f) => f.trainerId === porteur.trainerId);
+  if (ctx.session === null) return false;
+
+  // 🔴 On délègue à `resoudreAppartenance`, source de vérité UNIQUE de
+  // l'appartenance formateur↔session dans tout le dépôt. Réimplémenter la règle
+  // ici — ce que faisait la première version — c'était exactement l'erreur que
+  // les commentaires de ce fichier dénoncent par ailleurs : une garde
+  // d'autorisation dupliquée est l'endroit où les deux copies divergent en
+  // silence. Elles avaient déjà divergé.
+  return resoudreAppartenance({
+    estPrincipalFk: ctx.session.formateurPrincipalId === porteur.trainerId,
+    roleSessionFormateur:
+      (ctx.session.sessionFormateurs.find((f) => f.trainerId === porteur.trainerId)?.role as
+        | RoleFormateur
+        | undefined) ?? null,
+  }).estMembre;
 }
 
 /**

@@ -1077,22 +1077,6 @@ export async function genererReleveConnexionDocumentAction(input: {
       : {}),
   });
 
-  // 🔴 La pièce naît EN ATTENTE de signature, pas `non_requise`.
-  //
-  // Le relevé porte deux cadres de signature depuis toujours ; les laisser à
-  // `non_requise` reviendrait à dire qu'il suit son cours sans être signé — et
-  // le registre du mode auditeur ne le ferait jamais remonter. C'est
-  // précisément la question qu'un contrôle pose : « cette pièce est-elle
-  // signée ? ».
-  //
-  // ⚠️ Écrit ICI et pas dans `generateDocument` : le défaut `non_requise` reste
-  // le bon pour les 24 autres types, qui ne se signent pas. Ce sont les
-  // circuits qui savent, pas le générateur.
-  await prisma.documentGenere.update({
-    where: { id: doc.id },
-    data: { statutSignature: "en_attente" },
-  });
-
   await logQualiopiActivity({
     action: "qualiopi.presence.releve.document",
     targetType: "DocumentGenere",

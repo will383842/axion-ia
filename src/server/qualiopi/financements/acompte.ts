@@ -70,6 +70,129 @@ export function encaissementAutorise(dateEngagement: Date | null, maintenant: Da
   return maintenant.getTime() >= dateEncaissablePartir(dateEngagement).getTime();
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Quelle date fait courir le délai — art. L6353-5
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * D'où vient la date d'engagement retenue. Le refus serveur l'affiche : dire
+ * « ce devis a été accepté le … » quand on a en réalité lu une signature de
+ * contrat produirait un message que l'admin ne peut pas recouper avec le
+ * dossier — et un garde-fou qu'on ne peut pas recouper n'est pas auditable.
+ */
+export type SourceDateEngagement =
+  /** Signature du contrat de formation — l'intrant que la loi désigne. */
+  | "signature_contrat"
+  /** Repli documenté : acceptation du devis, faute de contrat signé. */
+  | "acceptation_devis"
+  /** Rien d'exploitable ⇒ refus. */
+  | "aucune";
+
+/**
+ * Une ligne `DocumentSignature` réduite à ce que la règle légale consomme.
+ *
+ * Volontairement structurelle et non importée de Prisma : ce module reste PUR
+ * (aucun client, aucune horloge), ce qui permet d'éprouver la règle sans base.
+ */
+export interface SignatureContratLue {
+  signeAt: Date;
+  /** Non nul ⇒ la preuve a été retirée du dossier. */
+  revokedAt: Date | null;
+}
+
+export interface DateEngagementParticulier {
+  /** `null` ⇒ refus. Jamais un laissez-passer. */
+  date: Date | null;
+  source: SourceDateEngagement;
+}
+
+/**
+ * Date à partir de laquelle courent les dix jours de rétractation d'un particulier.
+ *
+ * ## Pourquoi cette fonction existe
+ *
+ * Le garde-fou d'encaissement faisait courir le délai depuis `Devis.acceptedAt`.
+ * C'était l'intrant le plus fiable DISPONIBLE à l'époque, et il était documenté
+ * comme provisoire. Il ne l'est plus : l'article L6353-5 fait courir le délai à
+ * compter de la **conclusion du CONTRAT de formation** (L6353-3), pas de
+ * l'acceptation d'un devis — laquelle n'a aucune existence dans le code du
+ * travail. Depuis que le registre `DocumentSignature` existe, cette date est
+ * lisible ; continuer à raisonner sur `acceptedAt` reviendrait à appliquer une
+ * règle légale sur un intrant que la loi ne mentionne pas.
+ *
+ * ## 🔴 Quelle signature fait foi, sur un contrat à DEUX parties
+ *
+ * Le circuit `contrat` déclare `["beneficiaire", "axionia"]` : le particulier
+ * signe, l'organisme contresigne. On retient **la signature NON RÉVOQUÉE la plus
+ * TARDIVE**, quelle que soit la partie. Trois raisons, dans cet ordre :
+ *
+ *  1. **La loi parle de la conclusion du contrat.** Un contrat bilatéral n'est
+ *     conclu qu'à la dernière signature : tant que l'organisme n'a pas
+ *     contresigné, il n'y a pas de contrat, donc rien dont se rétracter.
+ *  2. **C'est la lecture la plus protectrice.** Retenir la signature du
+ *     bénéficiaire ferait partir le délai PLUS TÔT, donc expirer la protection
+ *     plus tôt. Entre deux lectures défendables, un garde-fou dont la doctrine
+ *     est « dans le doute, refuser » prend la plus tardive.
+ *  3. **Elle n'est pas manipulable au détriment du particulier.** Retarder sa
+ *     propre contresignature ne fait que retarder le droit de facturer de
+ *     l'organisme : personne n'a intérêt à en jouer contre le client.
+ *
+ * ⚠️ Contrat encore PARTIELLEMENT signé (bénéficiaire seul) : on retient sa
+ * signature, la plus tardive posée à ce stade. On ne refuse pas sèchement, car
+ * cela ferait dépendre le droit de facturer d'un acte purement interne à
+ * l'organisme, et le résultat reste au moins aussi strict qu'une date
+ * d'acceptation de devis, toujours antérieure en pratique.
+ *
+ * ## 🔴 Une signature RÉVOQUÉE ne fait courir aucun délai
+ *
+ * `revokedAt` non nul = preuve retirée du dossier. La laisser démarrer le
+ * compteur reviendrait à faire courir une protection légale depuis un acte dont
+ * on affirme par ailleurs qu'il n'a plus de valeur — et, concrètement, une vieille
+ * signature révoquée ferait expirer le délai bien avant la signature valable qui
+ * l'a remplacée. On ignore donc les lignes révoquées, ici et pas seulement dans
+ * la requête SQL de l'appelant : la règle doit vivre à UN endroit.
+ *
+ * ## 🔴 L'absence de date reste un REFUS
+ *
+ * `date: null` ⇒ `encaissementAutorise` rend `false`. C'est la doctrine déjà
+ * posée : autoriser « faute de savoir » ferait de l'absence de donnée un
+ * passe-droit, précisément là où l'on ne peut rien prouver devant un contrôle.
+ */
+export function dateEngagementParticulier(input: {
+  /** TOUTES les signatures du/des contrat(s) rattaché(s), révoquées comprises. */
+  signaturesContrat: readonly SignatureContratLue[];
+  /** Repli : acceptation du devis. Sans valeur légale, mais mieux que rien. */
+  devisAcceptedAt: Date | null;
+}): DateEngagementParticulier {
+  const valides = input.signaturesContrat.filter((s) => s.revokedAt === null);
+
+  if (valides.length > 0) {
+    // ⚠️ On reste dans la branche « signature » dès qu'une signature valable
+    // existe, MÊME si sa date est illisible. Basculer alors sur le repli
+    // choisirait une date ANTÉRIEURE, donc plus permissive, sur la foi d'une
+    // donnée corrompue : le refus est la seule issue défendable.
+    let plusTardive = Number.NEGATIVE_INFINITY;
+    for (const s of valides) {
+      const t = s.signeAt.getTime();
+      if (Number.isFinite(t) && t > plusTardive) plusTardive = t;
+    }
+    return {
+      date: Number.isFinite(plusTardive) ? new Date(plusTardive) : null,
+      source: "signature_contrat",
+    };
+  }
+
+  // Repli DOCUMENTÉ, pas un équivalent. `acceptedAt` n'est pas la date que
+  // L6353-5 désigne ; elle en est l'approximation la plus proche tant qu'aucun
+  // contrat n'est signé. Le message de refus doit le dire, pour que l'admin
+  // sache que la date affichée n'est pas celle du contrat.
+  if (input.devisAcceptedAt !== null && Number.isFinite(input.devisAcceptedAt.getTime())) {
+    return { date: input.devisAcceptedAt, source: "acceptation_devis" };
+  }
+
+  return { date: null, source: "aucune" };
+}
+
 export type NatureClient = "entreprise" | "particulier";
 
 export interface ContexteAcompte {

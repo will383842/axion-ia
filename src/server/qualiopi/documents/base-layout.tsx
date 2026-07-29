@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 import {
   brandColor,
   QUALIOPI_BRAND_FONTS,
@@ -533,6 +533,33 @@ export function FieldRow({ label, value, required = false }: FieldRowProps): Rea
 
 // ---- SignatureZone ------------------------------------------
 
+/**
+ * Preuve de signature RÉELLE d'une partie, telle qu'elle sera rendue.
+ *
+ * 🔴 Toutes les valeurs sont FIGÉES au moment de la signature, jamais relues
+ * depuis l'entité vivante. Le contact peut être renommé, réaffecté ou anonymisé
+ * ensuite ; ce que le PDF affiche doit rester ce qui a été signé.
+ */
+export interface PreuveSignature {
+  /** Identité figée du signataire. */
+  signataireNom: string;
+  /** Qualité figée (« Directrice des ressources humaines »). Opposabilité du pouvoir de signer. */
+  signataireQualite?: string | null;
+  /** Horodatage déjà formaté en heure de PARIS par l'appelant — jamais UTC brut. */
+  signeAtLisible: string;
+  /** `selfHash` de la ligne de preuve. C'est lui qui rend la signature vérifiable. */
+  empreinte: string;
+  /** Modalité de recueil. Dire la vérité sur la NATURE de la preuve. */
+  methode: "trace" | "papier_scanne" | "confirmation_accessible";
+  /**
+   * Image du tracé. `null` pour une confirmation accessible (pas d'image par
+   * construction) et après purge RGPD.
+   */
+  imageSrc?: string | null;
+  /** Vrai si l'image a été purgée (art. 17). La ligne de preuve, elle, survit. */
+  imagePurgee?: boolean;
+}
+
 export interface SignaturePartie {
   /** Ex. « Pour l'organisme de formation ». */
   titre: string;
@@ -540,6 +567,15 @@ export interface SignaturePartie {
   nom?: string;
   /** Mention en bas de l'encadré (défaut : « Nom, qualité, signature et cachet »). */
   mention?: string;
+  /**
+   * Preuve réelle, quand elle existe.
+   *
+   * 🔴 ABSENTE = cadre vide à remplir au stylo, comportement historique
+   * INCHANGÉ. Ce n'est pas un état dégradé : le circuit papier reste un chemin
+   * de plein droit, et c'est le seul qui fonctionne quand la salle n'a pas de
+   * réseau. Supprimer les cadres vides serait une régression.
+   */
+  signature?: PreuveSignature | null;
 }
 
 interface SignatureZoneProps {
@@ -562,6 +598,43 @@ const signatureLocal = StyleSheet.create({
     color: brandColor("fg"),
     marginBottom: S.md,
   },
+  qualite: {
+    fontSize: T.xs,
+    color: brandColor("fg-soft"),
+    marginBottom: S.sm,
+  },
+  /**
+   * Le tracé rasterisé. Hauteur BORNÉE : `storage.ts` normalise à 1200×800 au
+   * plus, et un tracé large déborderait de l'encadré sans cette contrainte.
+   * `objectFit: contain` préserve les proportions — étirer une signature la
+   * dénature, et c'est elle qu'un expert comparerait.
+   */
+  trace: {
+    height: 44,
+    marginBottom: S.sm,
+    objectFit: "contain",
+    objectPositionX: "0%",
+  },
+  horodatage: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    marginTop: S.xs,
+  },
+  mentionPreuve: {
+    fontSize: T.xs,
+    color: brandColor("fg-muted"),
+    fontStyle: "italic",
+    marginBottom: S.xs,
+  },
+  /**
+   * L'empreinte en entier, jamais tronquée : une empreinte partielle ne se
+   * vérifie pas, et une preuve qu'on ne peut pas vérifier n'en est pas une.
+   */
+  empreinte: {
+    fontSize: 6,
+    color: brandColor("fg-muted"),
+    marginTop: S.xs,
+  },
   approuve: {
     fontSize: T.xs,
     fontStyle: "italic",
@@ -569,6 +642,66 @@ const signatureLocal = StyleSheet.create({
     marginBottom: S.sm,
   },
 });
+
+/**
+ * Rendu d'une signature RÉELLEMENT apposée.
+ *
+ * ## Ce que ce composant refuse de faire
+ *
+ * 🔴 Il n'affiche JAMAIS une case « signé » sans dire de quoi elle est faite.
+ * C'est précisément le défaut que ce chantier a retiré côté AFEST : quatre
+ * horodatages de signature posés au clic d'un administrateur, sans signataire,
+ * sans image, sans empreinte — et le PDF rendait « signé ».
+ *
+ * Chaque modalité est donc rendue POUR CE QU'ELLE EST :
+ *
+ * · `trace` / `papier_scanne` → l'image, parce qu'il y en a une ;
+ * · `confirmation_accessible` → une phrase explicite, PAS un cadre vide qui
+ *   ressemblerait à un tracé manquant. La personne a déclaré ne pas pouvoir
+ *   tracer ; sa confirmation nominative vaut autant (plan II.2bis), et le PDF
+ *   doit le dire au lieu de le laisser deviner ;
+ * · image PURGÉE (art. 17) → dit qu'elle a été effacée à la demande du
+ *   signataire. Un blanc silencieux se lirait comme « pas signé », et
+ *   transformerait un droit exercé en apparence de manquement.
+ *
+ * L'empreinte est toujours affichée : c'est elle qui rend la signature
+ * vérifiable par un tiers, et sans elle le reste n'est qu'une affirmation.
+ */
+function SignatureApposee({ preuve }: { preuve: PreuveSignature }): React.ReactElement {
+  return (
+    <View>
+      <Text style={pdfStyles.signatureBoxName}>{preuve.signataireNom}</Text>
+      {preuve.signataireQualite ? (
+        <Text style={signatureLocal.qualite}>{preuve.signataireQualite}</Text>
+      ) : null}
+
+      {preuve.imageSrc ? (
+        // eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer n'a pas d'attribut alt
+        <Image src={preuve.imageSrc} style={signatureLocal.trace} />
+      ) : preuve.imagePurgee === true ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Image de la signature supprimée à la demande du signataire (art. 17 RGPD). La signature
+          reste établie et son empreinte vérifiable.
+        </Text>
+      ) : preuve.methode === "confirmation_accessible" ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Signature recueillie par confirmation nominative, sans tracé manuscrit (modalité
+          accessible). Elle a la même valeur qu'une signature tracée.
+        </Text>
+      ) : (
+        <Text style={signatureLocal.mentionPreuve}>Image de signature indisponible.</Text>
+      )}
+
+      <Text style={signatureLocal.horodatage}>{`Signé le ${preuve.signeAtLisible}`}</Text>
+      {preuve.methode === "papier_scanne" ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Signature manuscrite sur papier, versée au dossier par l&apos;organisme.
+        </Text>
+      ) : null}
+      <Text style={signatureLocal.empreinte}>{`Empreinte : ${preuve.empreinte}`}</Text>
+    </View>
+  );
+}
 
 /**
  * Zone de signatures normalisée (1 à 3 parties). Remplace les
@@ -584,11 +717,17 @@ export function SignatureZone({ parties, intro, faitLe }: SignatureZoneProps): R
         {parties.map((p, i) => (
           <View key={i} style={pdfStyles.signatureBox}>
             <Text style={pdfStyles.signatureBoxTitle}>{p.titre}</Text>
-            <Text style={signatureLocal.approuve}>Lu et approuvé</Text>
-            {p.nom ? <Text style={pdfStyles.signatureBoxName}>{p.nom}</Text> : null}
-            <Text style={pdfStyles.signatureBoxMention}>
-              {p.mention ?? "Nom, qualité, signature et cachet"}
-            </Text>
+            {p.signature ? (
+              <SignatureApposee preuve={p.signature} />
+            ) : (
+              <>
+                <Text style={signatureLocal.approuve}>Lu et approuvé</Text>
+                {p.nom ? <Text style={pdfStyles.signatureBoxName}>{p.nom}</Text> : null}
+                <Text style={pdfStyles.signatureBoxMention}>
+                  {p.mention ?? "Nom, qualité, signature et cachet"}
+                </Text>
+              </>
+            )}
           </View>
         ))}
       </View>

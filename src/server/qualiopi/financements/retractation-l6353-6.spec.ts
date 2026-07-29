@@ -20,6 +20,7 @@ import {
   DELAI_RETRACTATION_PARTICULIER_JOURS,
   dateEncaissablePartir,
   encaissementAutorise,
+  dateEngagementParticulier,
 } from "./acompte";
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
@@ -73,6 +74,118 @@ describe("encaissementAutorise", () => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Depuis QUELLE date court le délai — art. L6353-5
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SIGNE_CONTRAT = new Date("2026-03-05T09:00:00.000Z");
+const CONTRESIGNE = new Date("2026-03-06T16:30:00.000Z");
+
+describe("dateEngagementParticulier", () => {
+  it("retient la signature du contrat, PAS l'acceptation du devis", () => {
+    // Le cœur du correctif. L6353-5 fait courir les dix jours à compter de la
+    // conclusion du CONTRAT ; l'acceptation d'un devis n'existe nulle part dans
+    // le code du travail. Tant que le garde-fou lisait `acceptedAt`, il
+    // appliquait une règle légale à un intrant que la loi ne mentionne pas.
+    const r = dateEngagementParticulier({
+      signaturesContrat: [{ signeAt: SIGNE_CONTRAT, revokedAt: null }],
+      devisAcceptedAt: ACCEPTE,
+    });
+    expect(r.source).toBe("signature_contrat");
+    expect(r.date?.toISOString()).toBe(SIGNE_CONTRAT.toISOString());
+  });
+
+  it("🔴 retient la DERNIÈRE signature : le contrat n'est conclu qu'à la contresignature", () => {
+    // Le circuit `contrat` déclare ["beneficiaire", "axionia"]. Retenir la
+    // signature du bénéficiaire ferait partir le délai plus TÔT, donc expirer la
+    // protection plus tôt. Entre deux lectures défendables, on prend la plus
+    // protectrice — et c'est aussi la lecture littérale de « conclusion du
+    // contrat » : un contrat bilatéral n'est conclu qu'à la dernière signature.
+    const r = dateEngagementParticulier({
+      signaturesContrat: [
+        { signeAt: SIGNE_CONTRAT, revokedAt: null },
+        { signeAt: CONTRESIGNE, revokedAt: null },
+      ],
+      devisAcceptedAt: ACCEPTE,
+    });
+    expect(r.date?.toISOString()).toBe(CONTRESIGNE.toISOString());
+  });
+
+  it("est indifférente à l'ordre de lecture des lignes", () => {
+    // La requête Prisma n'ordonne rien : si le résultat dépendait de l'ordre
+    // rendu par la base, la date d'encaissement changerait d'un appel à l'autre.
+    const r = dateEngagementParticulier({
+      signaturesContrat: [
+        { signeAt: CONTRESIGNE, revokedAt: null },
+        { signeAt: SIGNE_CONTRAT, revokedAt: null },
+      ],
+      devisAcceptedAt: null,
+    });
+    expect(r.date?.toISOString()).toBe(CONTRESIGNE.toISOString());
+  });
+
+  it("🔴 IGNORE une signature révoquée", () => {
+    // Une preuve retirée du dossier ne fait courir aucune protection légale.
+    // Sinon, une vieille signature révoquée ferait expirer le délai bien avant
+    // la signature valable qui l'a remplacée — révoquer raccourcirait
+    // rétroactivement une protection.
+    const r = dateEngagementParticulier({
+      signaturesContrat: [
+        { signeAt: new Date("2026-01-02T08:00:00.000Z"), revokedAt: new Date("2026-03-04") },
+        { signeAt: SIGNE_CONTRAT, revokedAt: null },
+      ],
+      devisAcceptedAt: null,
+    });
+    expect(r.source).toBe("signature_contrat");
+    expect(r.date?.toISOString()).toBe(SIGNE_CONTRAT.toISOString());
+  });
+
+  it("REPLI sur l'acceptation du devis quand TOUTES les signatures sont révoquées", () => {
+    const r = dateEngagementParticulier({
+      signaturesContrat: [{ signeAt: SIGNE_CONTRAT, revokedAt: new Date("2026-03-07") }],
+      devisAcceptedAt: ACCEPTE,
+    });
+    expect(r.source).toBe("acceptation_devis");
+    expect(r.date?.toISOString()).toBe(ACCEPTE.toISOString());
+  });
+
+  it("REPLI sur l'acceptation du devis quand aucun contrat n'est signé", () => {
+    // Sans ce repli, le correctif bloquerait d'un coup toute la facturation des
+    // particuliers antérieurs au registre de signatures. Avec lui, ces dossiers
+    // gardent EXACTEMENT le comportement d'avant.
+    const r = dateEngagementParticulier({ signaturesContrat: [], devisAcceptedAt: ACCEPTE });
+    expect(r.source).toBe("acceptation_devis");
+    expect(r.date?.toISOString()).toBe(ACCEPTE.toISOString());
+  });
+
+  it("🔴 ni signature ni acceptation ⇒ AUCUNE date, donc REFUS", () => {
+    const r = dateEngagementParticulier({ signaturesContrat: [], devisAcceptedAt: null });
+    expect(r.source).toBe("aucune");
+    expect(r.date).toBeNull();
+    expect(encaissementAutorise(r.date, new Date("2099-01-01"))).toBe(false);
+  });
+
+  it("🔴 une date de signature illisible REFUSE, elle ne retombe pas sur le repli", () => {
+    // Basculer sur `acceptedAt` choisirait une date antérieure, donc plus
+    // permissive, sur la foi d'une donnée corrompue.
+    const r = dateEngagementParticulier({
+      signaturesContrat: [{ signeAt: new Date("pas-une-date"), revokedAt: null }],
+      devisAcceptedAt: new Date("2020-01-01"),
+    });
+    expect(r.source).toBe("signature_contrat");
+    expect(r.date).toBeNull();
+    expect(encaissementAutorise(r.date, new Date("2099-01-01"))).toBe(false);
+  });
+
+  it("ne mute aucune entrée", () => {
+    const sig = { signeAt: SIGNE_CONTRAT, revokedAt: null };
+    const avant = SIGNE_CONTRAT.getTime();
+    dateEngagementParticulier({ signaturesContrat: [sig], devisAcceptedAt: ACCEPTE });
+    expect(SIGNE_CONTRAT.getTime()).toBe(avant);
+    expect(sig.revokedAt).toBeNull();
+  });
+});
+
 describe("le garde-fou est AU SERVEUR, et il est branché", () => {
   // Test de PROPRIÉTÉ. Le défaut d'origine n'était pas un mauvais calcul : le
   // calcul était juste. Il n'était appelé par personne. Un test de comportement
@@ -89,5 +202,22 @@ describe("le garde-fou est AU SERVEUR, et il est branché", () => {
     // Le garde-fou lit une date qui doit être dans le `select` Prisma : sans
     // elle, il lirait `undefined` et laisserait passer TOUTES les factures.
     expect(source).toMatch(/acceptedAt: true/);
+  });
+
+  it("la date d'engagement est DÉRIVÉE, pas relue directement de `acceptedAt`", async () => {
+    // Même nature de test, et pour la même raison : la fonction de sélection
+    // peut être parfaitement juste sans que personne l'appelle. Le hub doit
+    // passer par elle, et interroger réellement le registre de signatures —
+    // sans la requête, elle recevrait toujours une liste vide et retomberait
+    // silencieusement sur le repli `acceptedAt`, c'est-à-dire sur le défaut.
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const source = readFileSync(
+      join(process.cwd(), "src", "server", "actions", "qualiopi", "facturation-hub.ts"),
+      "utf8",
+    );
+    expect(source).toMatch(/dateEngagementParticulier\s*\(/);
+    expect(source).toMatch(/prisma\.documentSignature\.findMany/);
+    expect(source).toMatch(/type: "contrat"/);
   });
 });
