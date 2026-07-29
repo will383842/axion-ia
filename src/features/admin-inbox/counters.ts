@@ -27,8 +27,25 @@ const EMPTY: InboxActionCounts = { appel: 0, message: 0, candidature: 0, podcast
 
 async function computeInboxActionCounts(): Promise<InboxActionCounts> {
   const [message, appel, candidature, podcast] = await Promise.all([
-    // Aligné sur le badge « contacts sans réponse » préexistant.
-    prisma.submission.count({ where: { needsAttention: true, archivedAt: null } }).catch(() => 0),
+    // ⚠️ MIROIR EXACT du `needsAction` de `queries.ts` :
+    //   `replyCount === 0 && status ∉ {processed, archived}`
+    // sur le périmètre que la liste montre par défaut (ni archivé, ni corbeille).
+    //
+    // Le premier jet réutilisait `needsAttention: true`, critère du badge
+    // « contacts sans réponse » préexistant — proche, mais PAS identique : un
+    // message dont on a levé l'attention sans y répondre comptait dans la liste
+    // et pas dans le badge. Un badge qui annonce 3 devant une liste de 5 est
+    // pire que pas de badge : il apprend à se méfier du chiffre.
+    prisma.submission
+      .count({
+        where: {
+          archivedAt: null,
+          deletedAt: null,
+          replyCount: 0,
+          status: { notIn: ["processed", "archived"] },
+        },
+      })
+      .catch(() => 0),
     // Un appel programmé dont on ignore encore avec qui il a lieu.
     prisma.calendlyEvent
       .count({
