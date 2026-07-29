@@ -40,6 +40,36 @@ export const DELAI_RETRACTATION_PARTICULIER_JOURS = 10;
 /** Plafond légal de l'acompte d'un particulier (art. L6353-6). */
 export const PLAFOND_ACOMPTE_PARTICULIER_PCT = 30;
 
+/**
+ * Première date à laquelle une somme peut être appelée à un particulier.
+ *
+ * L'article L6353-6 pose TROIS obligations cumulatives, et le dépôt n'en
+ * appliquait qu'une : (1) aucune somme ne peut être **exigée NI VERSÉE** avant
+ * l'expiration du délai de rétractation ; (2) à l'issue, 30 % maximum ; (3) le
+ * solde s'échelonne au fur et à mesure du déroulement de l'action.
+ *
+ * Seul le point (2) était contrôlé. Le point (1) était **calculé et jamais lu** —
+ * `encaissableAPartirDu` n'était consommé nulle part dans `src/`.
+ */
+export function dateEncaissablePartir(dateEngagement: Date): Date {
+  return new Date(
+    dateEngagement.getTime() + DELAI_RETRACTATION_PARTICULIER_JOURS * 24 * 60 * 60 * 1000,
+  );
+}
+
+/**
+ * L'appel de fonds est-il autorisé à cette date ?
+ *
+ * 🔴 `null` ⇒ **refus**, et c'est délibéré. Sans date d'engagement, le délai de
+ * rétractation est incalculable ; autoriser « faute de savoir » reviendrait à
+ * faire de l'absence de donnée un laissez-passer, alors que c'est précisément le
+ * cas où l'on ne peut rien prouver devant un contrôle.
+ */
+export function encaissementAutorise(dateEngagement: Date | null, maintenant: Date): boolean {
+  if (dateEngagement === null) return false;
+  return maintenant.getTime() >= dateEncaissablePartir(dateEngagement).getTime();
+}
+
 export type NatureClient = "entreprise" | "particulier";
 
 export interface ContexteAcompte {
@@ -226,9 +256,11 @@ function resultatParticulier(arg: {
   const acompte = arrondirCentimes((resteACharge * taux) / 100);
   const solde = resteACharge - acompte;
 
-  const encaissableAPartirDu = dateSignature
-    ? new Date(dateSignature.getTime() + DELAI_RETRACTATION_PARTICULIER_JOURS * 24 * 60 * 60 * 1000)
-    : null;
+  // SSOT : la même fonction que celle qui REFUSE l'appel de fonds au serveur.
+  // Dupliquer le calcul ici, c'est laisser l'échéancier proposé au client et le
+  // garde-fou serveur diverger — un contrat qui annonce une date que le serveur
+  // n'applique pas.
+  const encaissableAPartirDu = dateSignature ? dateEncaissablePartir(dateSignature) : null;
 
   const echeancier: Echeance[] = [];
   if (acompte > 0) {
