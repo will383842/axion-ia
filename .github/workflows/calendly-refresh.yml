@@ -1,0 +1,88 @@
+name: Calendly · rafraîchissement horaire
+
+# Détecte les annulations et déplacements de rendez-vous Calendly (2026-07-30).
+#
+# POURQUOI CE WORKFLOW EXISTE
+# ───────────────────────────
+# Calendly (plan gratuit) n'envoie AUCUN webhook : il ne préviendra jamais le
+# site qu'un rendez-vous a été annulé ou déplacé. L'enrichissement sait le
+# détecter, mais il ne tournait qu'à la capture d'une réservation, ou au clic
+# manuel du bouton « Enrichir depuis Calendly » dans la console.
+#
+# Autrement dit : la détection existait sans jamais se déclencher. Constaté en
+# conditions réelles — un rendez-vous annulé restait « Planifié » dans la
+# console, sans alerte. Un bouton qu'il faut penser à cliquer n'est pas une
+# fonctionnalité.
+#
+# Ce workflow appelle donc l'application toutes les heures, qui repasse sur les
+# rendez-vous à venir encore marqués « Planifié ». Le webhook officiel serait
+# instantané, mais exige un abonnement Calendly Standard (~144 €/an) — voir
+# ADR 0030 option A. L'interrogation périodique donne le même résultat à une
+# heure près, avec le jeton gratuit déjà en place.
+#
+# COÛT : nul. Quelques appels API par heure, très en deçà des quotas Calendly.
+#
+# Auth : `REVALIDATE_SECRET`, déjà configuré côté GitHub ET côté conteneur —
+# rien à poser. Sans lui, le job sort proprement sans émettre de requête.
+
+on:
+  schedule:
+    # Toutes les heures, à la minute 17 — décalé de l'heure pile pour ne pas
+    # se retrouver dans la bousculade de tous les crons GitHub du monde, qui
+    # se déclenchent massivement à :00 et retardent l'exécution.
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+# Un seul rafraîchissement à la fois. `cancel-in-progress: false` : si un
+# passage déborde sur l'heure suivante, on laisse finir plutôt que de le tuer
+# au milieu d'une série d'appels API.
+concurrency:
+  group: calendly-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    name: Interroger Calendly (annulations et reports)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Rafraîchir les réservations à venir
+        env:
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+        run: |
+          set -u
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::notice::REVALIDATE_SECRET absent — rafraîchissement ignoré (aucun appel réseau)."
+            exit 0
+          fi
+
+          # `|| echo 000` : un site injoignable ne doit pas faire rougir un cron
+          # de maintenance. Le passage suivant réessaiera dans une heure.
+          code=$(curl -sS -o /tmp/refresh.json -w '%{http_code}' -m 120 \
+            -X POST "https://axion-ia.com/api/internal/calendly-refresh" \
+            -H "Content-Type: application/json" \
+            -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
+            || echo "000")
+
+          body=$(head -c 500 /tmp/refresh.json 2>/dev/null || echo "")
+          case "${code}" in
+            200)
+              echo "::notice::Rafraîchissement Calendly OK — ${body}"
+              # Rendre visible dans le résumé du run : on veut voir d'un coup
+              # d'œil si des statuts ont changé sans ouvrir les logs.
+              echo "### Calendly — rafraîchissement" >> "${GITHUB_STEP_SUMMARY}"
+              echo '```json' >> "${GITHUB_STEP_SUMMARY}"
+              echo "${body}" >> "${GITHUB_STEP_SUMMARY}"
+              echo '```' >> "${GITHUB_STEP_SUMMARY}"
+              ;;
+            404)
+              echo "::warning::Route /api/internal/calendly-refresh absente — normal avant le premier déploiement de cette PR."
+              ;;
+            *)
+              echo "::warning::Rafraîchissement non abouti (HTTP ${code}) — nouvelle tentative dans 1 h."
+              echo "${body}"
+              ;;
+          esac
