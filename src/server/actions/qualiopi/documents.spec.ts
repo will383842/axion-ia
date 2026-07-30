@@ -97,6 +97,9 @@ import {
   genererLivretAccueilAction,
   genererContratFormationAction,
 } from "./documents";
+// Importé pour lire les appels au journal d'audit : la trace de conformité est
+// le livrable du changement « avertir sans bloquer », elle doit être vérifiée.
+import { logQualiopiActivity } from "./_guards";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixtures communes
@@ -864,10 +867,10 @@ describe("genererCertificatRealisationAction — preuve d'assiduité exigée", (
 
 describe("🔴 contrat particulier — l'acompte ANNONCÉ est celui qui sera demandé", () => {
   beforeEach(() => {
-    // 🔴 Second verrou du contrat particulier, INDÉPENDANT du SIRET : sans
-    // médiateur de la consommation agréé CECMC, l'action REFUSE (art. L.612-1
-    // C. conso.) — un refus dur, pas un déclassement en SPÉCIMEN. Il est vide
-    // en production ; on le renseigne ici pour atteindre le calcul d'acompte.
+    // Le médiateur de la consommation est vide en production. Depuis le
+    // 2026-07-30 son absence n'empêche plus l'émission — elle déclenche un
+    // avertissement (cf. describe suivant). On le renseigne ici pour que ces
+    // tests-ci portent sur le calcul d'acompte et rien d'autre.
     mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
       cle === "mediateur_consommation_nom"
         ? "CM2C"
@@ -924,5 +927,93 @@ describe("🔴 contrat particulier — l'acompte ANNONCÉ est celui qui sera dem
     // Aucune prise en charge : reste à charge = prix convenu, donc le calcul
     // touche exactement le plafond sans jamais le franchir.
     expect(data.acompteEuros!).toBeLessThanOrEqual(2000 * 0.3);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Médiation de la consommation — avertir sans bloquer (décision Will 2026-07-30)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// L'audit de certification avait posé un REFUS dur : sans médiateur agréé
+// renseigné, pas de contrat individuel. Décision de ne plus bloquer.
+//
+// L'obligation légale (art. L.612-1 C. conso.) ne disparaît pas pour autant, et
+// ce n'est pas au code de la faire respecter. Ce que le code doit garantir, en
+// revanche, c'est que l'absence ne passe pas INAPERÇUE — c'est précisément ce
+// que ces tests verrouillent. Sans eux, « ne plus bloquer » dériverait en
+// « ne plus rien dire », et la différence entre les deux est tout le sujet.
+describe("contrat particulier — médiation absente : on avertit, on ne bloque plus", () => {
+  beforeEach(() => {
+    // Aucune configuration Qualiopi : l'état réel de la production.
+    mockGetQualiopiConfig.mockResolvedValue(null);
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment());
+  });
+
+  it("émet quand même le contrat, avec son numéro", async () => {
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(false);
+    if ("error" in r) return;
+    expect(r.data.numero).toBeTruthy();
+    expect(r.data.documentId).toBeTruthy();
+  });
+
+  it("retourne un avertissement qui NOMME ce qui manque et où le corriger", async () => {
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait plus être refusé");
+    // Un avertissement qui dit « attention » sans dire quoi faire ne sert à
+    // rien : on verrouille la présence du fondement et des clés à renseigner.
+    expect(r.data.avertissement).toBeDefined();
+    expect(r.data.avertissement).toContain("L.612-1");
+    expect(r.data.avertissement).toContain("mediateur_consommation_nom");
+  });
+
+  // La trace est le vrai livrable de ce changement. Le jour d'un contrôle, la
+  // question ne sera pas « le logiciel bloquait-il ? » mais « quels contrats
+  // ont été émis sans la mention ? » — sans cette clé, la réponse est
+  // introuvable ; avec elle, elle s'extrait du journal en une requête.
+  it("inscrit l'absence au journal d'audit, contrat par contrat", async () => {
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    const appels = vi.mocked(logQualiopiActivity).mock.calls;
+    const contrat = appels.find(
+      ([a]) => (a as { action: string }).action === "qualiopi.document.contrat.genere",
+    );
+    expect(contrat).toBeDefined();
+    const changes = (contrat![0] as { changes: Record<string, unknown> }).changes;
+    expect(changes["mentionMediationAbsente"]).toBe(true);
+    // Le numéro doit y figurer aussi : une trace sans identifiant de contrat
+    // ne permettrait pas de retrouver la pièce concernée.
+    expect(changes["numero"]).toBeTruthy();
+  });
+
+  it("médiateur renseigné : aucun avertissement, aucune trace d'absence", async () => {
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom"
+        ? "CM2C"
+        : cle === "mediateur_consommation_url"
+          ? "https://cm2c.net"
+          : null,
+    );
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait pas être refusé");
+    expect(r.data.avertissement).toBeUndefined();
+    const contrat = vi
+      .mocked(logQualiopiActivity)
+      .mock.calls.find(
+        ([a]) => (a as { action: string }).action === "qualiopi.document.contrat.genere",
+      );
+    const changes = (contrat![0] as { changes: Record<string, unknown> }).changes;
+    expect(changes["mentionMediationAbsente"]).toBeUndefined();
+  });
+
+  // Une valeur vide ou blanche n'est pas une adhésion : le garde-fou doit la
+  // traiter comme une absence, sans quoi il suffirait d'un espace pour éteindre
+  // l'avertissement sans rien avoir fait.
+  it("une valeur blanche vaut absence", async () => {
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom" ? "   " : "https://cm2c.net",
+    );
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait pas être refusé");
+    expect(r.data.avertissement).toBeDefined();
   });
 });
