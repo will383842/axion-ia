@@ -150,8 +150,8 @@ fi
 # troisième hypothèse fausse de ce script sur la forme de l'archive. On ne
 # devine donc plus RIEN : n'importe quel `.sqlite3`, et le plus gros s'il y en
 # a plusieurs (la vraie base pèse toujours plus qu'un fichier annexe).
-DB="$(find "${WORK_DIR}/payload" -type f -name '*.sqlite3' -printf '%s	%p
-' 2>/dev/null   | sort -rn | head -1 | cut -f2-)"
+DB="$(find "${WORK_DIR}/payload" -type f -name '*.sqlite3' -printf '%s\t%p\n' 2>/dev/null |
+  sort -rn | head -1 | cut -f2-)"
 PG_DUMP="$(find "${WORK_DIR}/payload" -type f \( -name '*.dump' -o -name '*.pgdump' \) 2>/dev/null | head -1)"
 
 # ─── 4. Intégrité SQLite ─────────────────────────────────────────────────────
@@ -171,23 +171,46 @@ if [ -n "${DB}" ] && [ -f "${DB}" ]; then
   # Une base valide mais VIDE passerait l'integrity_check en beauté. C'est le
   # faux positif le plus dangereux : voyant vert, zéro preuve. On compte donc.
   echo "▶ Contenu métier…"
-  TABLES=$(sqlite3 "${DB}" "SELECT name FROM sqlite_master WHERE type='table';" 2>/dev/null || echo "")
+  TABLES=$(sqlite3 "${DB}" \
+    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';" \
+    2>/dev/null || echo "")
   if [ -z "${TABLES}" ]; then
     echo "❌ Aucune table dans la base restaurée"
     notify_telegram "🔴 [DOCUSEAL-DRILL] Base restaurée SANS AUCUNE TABLE"
     exit 1
   fi
 
+  # On compte TOUTES les tables présentes, pas une liste de noms attendus.
+  #
+  # La liste codée en dur (`submissions submitters templates documents`) serait
+  # la quatrième hypothèse du même genre après le `-iter`, le dossier imbriqué
+  # et le nom du fichier : si Docuseal nomme ses tables autrement, la somme
+  # resterait à zéro et le drill crierait « sauvegarde vide » sur une base
+  # pleine. Un test de restauration constate, il ne présume pas.
   TOTAL=0
   DETAIL=""
-  for t in submissions submitters templates documents; do
-    if echo "${TABLES}" | grep -qx "${t}"; then
-      c=$(sqlite3 "${DB}" "SELECT COUNT(*) FROM ${t};" 2>/dev/null || echo 0)
-      echo "  ${t} : ${c}"
-      DETAIL="${DETAIL}${t}=${c} "
-      case "${c}" in (''|*[!0-9]*) ;; (*) TOTAL=$(( TOTAL + c ));; esac
-    fi
-  done
+  COUNTS=""
+  while IFS= read -r t; do
+    [ -n "${t}" ] || continue
+    c=$(sqlite3 "${DB}" "SELECT COUNT(*) FROM \"${t}\";" 2>/dev/null || echo 0)
+    case "${c}" in (''|*[!0-9]*) c=0 ;; esac
+    TOTAL=$(( TOTAL + c ))
+    COUNTS="${COUNTS}${c} ${t}
+"
+  done <<EOF
+${TABLES}
+EOF
+
+  # Les tables métier d'abord si elles existent, sinon les plus remplies : dans
+  # les deux cas on veut voir des chiffres, pas seulement un total.
+  echo "  tables : $(printf '%s\n' "${TABLES}" | grep -c . | tr -d ' ')"
+  while IFS=' ' read -r c t; do
+    [ -n "${t}" ] || continue
+    echo "  ${t} : ${c}"
+    DETAIL="${DETAIL}${t}=${c} "
+  done <<EOF
+$(printf '%s' "${COUNTS}" | sort -rn | head -6)
+EOF
 
   # Seuil volontairement à 1 : on ne prétend pas connaître le volume attendu,
   # on refuse seulement le cas « archive parfaitement valide et parfaitement
@@ -210,7 +233,7 @@ elif [ -n "${PG_DUMP}" ] && [ -f "${PG_DUMP}" ]; then
   DETAIL="pg_restore_list=${LINES}"
   echo "  pg_restore --list : ${LINES} entrées"
 else
-  echo "❌ Ni docuseal.sqlite3 ni docuseal.dump dans l'archive"
+  echo "❌ Aucune base exploitable dans l'archive (ni *.sqlite3, ni dump Postgres)"
   # Arborescence COMPLÈTE : un `ls` de la racine ne montrerait qu'un dossier et
   # laisserait croire l'archive vide — c'est ce qui m'a induit en erreur.
   find "${WORK_DIR}/payload" -maxdepth 3 | head -40 || true
