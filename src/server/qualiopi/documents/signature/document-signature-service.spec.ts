@@ -28,6 +28,7 @@ vi.mock("@/lib/prisma", () => ({
       count: vi.fn(),
       update: vi.fn(),
     },
+    documentSignatureToken: { findUnique: vi.fn() },
     trainer: { findUnique: vi.fn() },
     adminUser: { findUnique: vi.fn() },
     $transaction: vi.fn(),
@@ -68,6 +69,7 @@ const mockPrisma = prisma as unknown as {
     count: Mock;
     update: Mock;
   };
+  documentSignatureToken: { findUnique: Mock };
   trainer: { findUnique: Mock };
   adminUser: { findUnique: Mock };
   $transaction: Mock;
@@ -119,6 +121,41 @@ function entree(over: Record<string, unknown> = {}) {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Canal A — lien public à jeton
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TOKEN = "55555555-5555-4555-8555-555555555555";
+
+const PORTEUR_JETON: PorteurSignatureDocument = {
+  type: "signataire_jeton",
+  tokenId: TOKEN,
+  partie: "client",
+};
+
+/** Ligne de jeton VALIDE par défaut. Chaque test en dégrade un aspect. */
+function jeton(over: Record<string, unknown> = {}) {
+  return {
+    documentGenereId: DOC,
+    partie: "client",
+    signataireNom: "Camille Durand",
+    signataireEmail: "camille@client.test",
+    signataireQualite: "Directrice des ressources humaines",
+    // Largement postérieur à MAINTENANT.
+    expiresAt: new Date("2026-09-01T00:00:00.000Z"),
+    revokedAt: null,
+    ...over,
+  };
+}
+
+function entreeJeton(over: Record<string, unknown> = {}) {
+  return entree({
+    porteur: PORTEUR_JETON,
+    partiesRequises: ["client", "axionia"] as const,
+    ...over,
+  });
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   // ⚠️ `clearAllMocks` efface les appels, PAS les valeurs de retour : on les
@@ -134,6 +171,7 @@ beforeEach(() => {
       selfHash: args.data["selfHash"],
     }),
   );
+  mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(jeton());
   mockPrisma.trainer.findUnique.mockResolvedValue({
     nom: "Jullin",
     prenom: "Williams",
@@ -679,5 +717,132 @@ describe("🔴 révocation", () => {
       motif: "doublon",
     });
     expect(res).toMatchObject({ ok: false, raison: "deja_revoquee" });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Canal A — le porteur `signataire_jeton`
+//
+// C'est le premier porteur NON AUTHENTIFIÉ du dépôt. Toute sa sûreté tient dans
+// deux propriétés, et aucune des deux ne se voit en revue de diff :
+//
+//   · la garde d'autorisation est le JETON, revérifié ICI et pas seulement dans
+//     la couche action ;
+//   · l'identité scellée vient de la LIGNE DE JETON, jamais de l'entrée.
+//
+// Les tests ci-dessous existent pour qu'on ne puisse pas les affaiblir en
+// silence.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 canal A — autorisation par le jeton", () => {
+  it("accepte un jeton valide et scelle `interne`", async () => {
+    const res = await signerDocument(entreeJeton());
+    expect(res).toMatchObject({ ok: true });
+    expect(donneesCreees()["provider"]).toBe("interne");
+    // Un canal maison ne porte JAMAIS d'identifiant fournisseur.
+    expect(donneesCreees()["providerSubmissionId"]).toBeNull();
+  });
+
+  it("refuse un jeton qui vise une AUTRE pièce", async () => {
+    // Le cas concret : un lien légitime, reçu pour un autre devis, rejoué ici.
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
+      jeton({ documentGenereId: "99999999-9999-4999-8999-999999999999" }),
+    );
+    attendRefus(await signerDocument(entreeJeton()), "jeton_non_applicable");
+  });
+
+  it("refuse un jeton émis pour une AUTRE partie", async () => {
+    // Sans ce contrôle, un lien « client » écrirait une ligne au titre demandé
+    // par l'appelant, et l'identité scellée serait celle du client.
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(jeton({ partie: "financeur" }));
+    attendRefus(await signerDocument(entreeJeton()), "jeton_non_applicable");
+  });
+
+  it("🔴 refuse qu'un lien public engage l'ORGANISME", async () => {
+    // Même si un jeton `axionia` existait en base — émission détournée, bug
+    // d'émission — il ne doit pas pouvoir contresigner. Sans cette garde, la
+    // pièce passerait `signee` et paraîtrait conclue.
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(jeton({ partie: "axionia" }));
+    attendRefus(
+      await signerDocument(
+        entreeJeton({
+          porteur: { type: "signataire_jeton", tokenId: TOKEN, partie: "axionia" },
+          partiesRequises: ["client", "axionia"] as const,
+        }),
+      ),
+      "jeton_non_applicable",
+    );
+  });
+
+  it("refuse un jeton RÉVOQUÉ — le cas du devis révisé", async () => {
+    // L'ancienne version d'un devis reste en base ; son lien doit mourir avec
+    // elle, sinon le client signe le prix qu'on vient de corriger.
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
+      jeton({ revokedAt: new Date("2026-06-01T00:00:00.000Z") }),
+    );
+    attendRefus(await signerDocument(entreeJeton()), "jeton_inactif");
+  });
+
+  it("refuse un jeton EXPIRÉ", async () => {
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(
+      jeton({ expiresAt: new Date("2026-01-01T00:00:00.000Z") }),
+    );
+    attendRefus(await signerDocument(entreeJeton()), "jeton_inactif");
+  });
+
+  it("refuse un jeton inexistant", async () => {
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(null);
+    attendRefus(await signerDocument(entreeJeton()), "jeton_non_applicable");
+  });
+
+  it("🔴 vérifie le jeton AVANT de révéler qu'une signature existe déjà", async () => {
+    // Sinon un porteur de lien invalide apprend, par le motif de refus, l'état
+    // de signature d'une pièce qui ne le regarde pas.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue(piece({ signatures: [{ id: "s1" }] }));
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(null);
+    attendRefus(await signerDocument(entreeJeton()), "jeton_non_applicable");
+  });
+});
+
+describe("🔴 canal A — l'identité vient du JETON, jamais de l'entrée", () => {
+  it("scelle le nom et la qualité figés à l'émission", async () => {
+    await signerDocument(entreeJeton());
+    expect(donneesCreees()).toMatchObject({
+      signataireNom: "Camille Durand",
+      signataireEmail: "camille@client.test",
+      signataireQualite: "Directrice des ressources humaines",
+    });
+  });
+
+  it("🔴 ignore toute identité passée dans l'entrée", async () => {
+    // Le type l'interdit déjà ; ce test garde le comportement si quelqu'un
+    // élargit le type un jour. L'entrée ci-dessous est délibérément malformée.
+    await signerDocument(
+      entreeJeton({
+        porteur: {
+          type: "signataire_jeton",
+          tokenId: TOKEN,
+          partie: "client",
+          signataire: { nom: "Attaquant", email: "attaquant@ailleurs.test" },
+        } as unknown as PorteurSignatureDocument,
+      }),
+    );
+    expect(donneesCreees()["signataireNom"]).toBe("Camille Durand");
+    expect(donneesCreees()["signataireEmail"]).toBe("camille@client.test");
+  });
+
+  it("refuse quand le jeton ne porte aucun nom exploitable", async () => {
+    // Une signature juridiquement anonyme ne prouve rien. On refuse plutôt que
+    // de sceller un repli littéral.
+    mockPrisma.documentSignatureToken.findUnique.mockResolvedValue(jeton({ signataireNom: "   " }));
+    attendRefus(await signerDocument(entreeJeton()), "identite_non_resolvable");
+  });
+
+  it("n'impute la preuve à AUCUN administrateur", async () => {
+    // Le signataire agit depuis son propre lien nominatif : il répond de
+    // lui-même. `recueilliParAdminId` ne vaut que pour un reversement papier,
+    // où l'organisme atteste l'identité d'un tiers.
+    await signerDocument(entreeJeton());
+    expect(donneesCreees()["recueilliParAdminId"]).toBeNull();
   });
 });

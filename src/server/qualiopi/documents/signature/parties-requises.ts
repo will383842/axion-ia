@@ -80,16 +80,88 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     libelle: "lettre de mission",
   },
 
-  // ── Canal D — un TIERS contractant attend un certificat opposable ──
-  devis: { parties: ["client", "axionia"], canal: "fournisseur", libelle: "devis" },
+  // ── Canal A — maison, par lien public à jeton ──
+  //
+  // 🔴 Bascule du 2026-07-30, décidée avec Will. Le devis était déclaré
+  // `fournisseur` au motif qu'« un TIERS contractant attend un certificat
+  // opposable ». Ce motif reste vrai en principe ; il est devenu inapplicable en
+  // fait, et le circuit qu'il justifiait produisait un défaut pire que celui
+  // qu'il évitait.
+  //
+  // **Le fait.** `POST /api/templates/pdf` — l'endpoint sur lequel reposait la
+  // voie « template éphémère » du plan (§III.3) — n'existe pas sur l'instance
+  // DocuSeal de production. Vérifié contre le conteneur RÉEL, pas contre la
+  // documentation : `config/routes.rb` (docuseal/docuseal:latest, v2.5.3)
+  // déclare `resources :templates, only: %i[update show index destroy]`, et
+  // l'appel réel répond 404 là où `GET /api/templates/2` répond 200 avec le même
+  // jeton. Ces endpoints sont des fonctionnalités Pro.
+  //
+  // **Le défaut.** Faute de pouvoir créer un template par pièce, le circuit
+  // faisait signer un template PERMANENT à trois champs — `devis_number`,
+  // `amount_ht`, `valid_until` — pendant que le client lisait, en pièce jointe,
+  // un PDF détaillé portant les lignes, les quantités, les prix unitaires, la
+  // TVA et les totaux. Le client lisait donc un document et en signait un autre.
+  // Un bon pour accord qui ne désigne pas son objet est juridiquement fragile.
+  //
+  // Le plan interdisait explicitement le repli par template permanent dupliqué
+  // (« deux sources de vérité qui divergeront ») : c'est pourtant ce que le
+  // circuit faisait déjà, faute de mieux.
+  //
+  // **Le canal A répare la cause** : la signature porte sur le PDF RÉEL, celui
+  // dont l'empreinte est scellée dans `document_hash_sha256`. Une seule source
+  // de vérité, donc aucune divergence possible.
+  //
+  // ⚠️ Contrepartie ASSUMÉE : la preuve est produite par l'organisme, non
+  // attestée par un tiers indépendant. En signature simple, la présomption de
+  // l'art. 1367 C. civ. n'est de toute façon acquise qu'à la signature
+  // QUALIFIÉE, hors périmètre (ADR 0014) — ce qui protège est la qualité du
+  // faisceau, que la chaîne de hachage produit. Le jour où un grand compte
+  // exigera un certificat opposable, ce circuit repassera `fournisseur` : c'est
+  // une ligne à changer ici, et le socle porte déjà les deux canaux.
+  devis: { parties: ["client", "axionia"], canal: "maison", libelle: "devis" },
+
+  // ── Les cinq pièces contractuelles — canal A, bascule du 2026-07-30 ──
+  //
+  // 🔴 Elles étaient déclarées `fournisseur` au motif qu'« un TIERS contractant
+  // attend un certificat opposable ». Ce motif reste vrai en principe. Il était
+  // inapplicable en fait, et surtout : il ne décrivait AUCUN circuit réel.
+  //
+  // **L'état constaté.** `src/server/qualiopi/` n'appelait JAMAIS DocuSeal — les
+  // seules occurrences du mot étaient la valeur d'enum `provider: "docuseal"`.
+  // Ces cinq pièces n'avaient donc aucune signature électronique, d'aucune
+  // sorte. `fournisseur` décrivait une intention, pas un branchement.
+  //
+  // **Pourquoi le canal D reste hors d'atteinte.** Nos pièces sont des PDF
+  // react-pdf générés à la volée, numérotés au rendu. Les faire signer chez un
+  // tiers suppose de lui transmettre le PDF produit — c'est-à-dire
+  // `POST /api/templates/pdf`, qui N'EXISTE PAS sur l'instance de production
+  // (endpoint Pro ; 404 vérifié contre le conteneur v2.5.3 le 2026-07-29, cf.
+  // ADR 0037). L'alternative écartée par le plan — un modèle DocuSeal permanent
+  // par type de pièce — recréerait deux sources de vérité pour un même document
+  // contractuel, qui divergeraient.
+  //
+  // **Le choix.** Décision Will du 2026-07-30 : les cinq basculent sur le canal
+  // maison, comme le devis. L'alternative n'était pas « canal D » mais
+  // « aucune signature », ce qui n'a jamais protégé personne.
+  //
+  // ⚠️ Contrepartie ASSUMÉE, et c'est elle que la mention dit au signataire : la
+  // preuve est produite par l'organisme, non attestée par un tiers indépendant.
+  // En signature simple, la présomption de l'art. 1367 C. civ. n'est de toute
+  // façon acquise qu'à la signature QUALIFIÉE (hors périmètre, ADR 0014) : ce
+  // qui protège est la qualité du faisceau, que la chaîne de hachage produit.
+  //
+  // 🔴 Le jour où un financeur ou un sous-traitant exigera un certificat
+  // opposable, la pièce concernée repasse `fournisseur` — UN MOT ici, pièce par
+  // pièce, et le socle porte déjà les deux canaux. Ne pas basculer toute la
+  // table par symétrie : chaque circuit a son propre tiers et sa propre exigence.
   convention: {
     parties: ["client", "axionia"],
-    canal: "fournisseur",
+    canal: "maison",
     libelle: "convention de formation",
   },
   convention_tripartite: {
     parties: ["client", "financeur", "axionia"],
-    canal: "fournisseur",
+    canal: "maison",
     libelle: "convention tripartite",
   },
   // Contrat de formation avec un PARTICULIER (art. L.6353-3 à L.6353-7).
@@ -98,14 +170,15 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
   // lequel le garde-fou court aujourd'hui faute de mieux.
   contrat: {
     parties: ["beneficiaire", "axionia"],
-    canal: "fournisseur",
+    canal: "maison",
     libelle: "contrat de formation",
   },
   // Tiers contractant, pas un formateur de l'équipe : il attend un exemplaire
-  // certifié (indicateur 27 — clause de vérification RNQ).
+  // certifié (indicateur 27 — clause de vérification RNQ). ⚠️ C'est, avec la
+  // tripartite, le circuit le plus susceptible de réclamer un jour le canal D.
   contrat_sous_traitance: {
     parties: ["sous_traitant", "axionia"],
-    canal: "fournisseur",
+    canal: "maison",
     libelle: "contrat de sous-traitance",
   },
   // 🔴 NE PAS confondre avec l'émargement AFEST par séance : le protocole est la
@@ -113,10 +186,12 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
   // D.6313-3-1). Les confondre a été l'erreur des deux plans précédents.
   //
   // ⚠️ Le bénéficiaire est une personne physique SALARIÉE. Son adresse
-  // personnelle ne doit pas être exposée à l'entreprise dans le flux fournisseur.
+  // personnelle ne doit pas être exposée à l'entreprise — le canal maison le
+  // rend plus facile à tenir que le flux fournisseur, qui exposait un
+  // destinataire à chaque partie.
   protocole_afest: {
     parties: ["axionia", "client", "beneficiaire"],
-    canal: "fournisseur",
+    canal: "maison",
     libelle: "protocole individuel de formation en situation de travail",
   },
 };

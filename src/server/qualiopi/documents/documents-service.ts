@@ -113,6 +113,8 @@ export interface GenerateDocumentInput {
     formationId?: string;
     sessionId?: string;
     traineeId?: string;
+    /** Sous-traitant partie au contrat — sans lui, aucun lien de signature émissible. */
+    sousTraitantId?: string;
     clientId?: string;
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
@@ -367,6 +369,59 @@ export async function generateDocument(
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
 
+    /**
+     * 🔴 INSTANTANÉ des données de rendu — c'est ce qui rend l'exemplaire SIGNÉ
+     * possible sans reconstruire, type par type, ce que le template attendait.
+     *
+     * ## Le défaut que cela ferme
+     *
+     * Le socle `DocumentSignature` écrit la preuve en base, et AUCUN template ne
+     * la rendait : sur les onze qui appellent `SignatureZone`, aucun ne passait
+     * de prop `signature`. Le signataire signait, la preuve entrait au registre,
+     * et la pièce qu'on lui remettait continuait d'afficher des cadres vides.
+     *
+     * ## Pourquoi un instantané, et pas une reconstruction
+     *
+     * Reconstruire les données depuis les entités vivantes produirait un
+     * document DÉRIVÉ du présent : un prix révisé, un contact renommé, une
+     * session replanifiée, et l'exemplaire « signé » ne correspondrait plus à ce
+     * qui a été signé. C'est exactement la raison pour laquelle ce module
+     * snapshote déjà l'identité de l'organisme et le numéro.
+     *
+     * ⚠️ On ne RÉGÉNÈRE jamais la pièce : `hash_sha256` est scellé dans
+     * `document_signatures.document_hash_sha256`. L'exemplaire signé est un
+     * rendu à la volée, jamais persisté, jamais renuméroté.
+     *
+     * ⚠️ Les données sont déjà sérialisables : tous les templates portent leurs
+     * dates en chaînes préformatées, jamais en `Date`. Un `JSON.stringify`
+     * défensif refuse silencieusement le contraire plutôt que de faire échouer
+     * une génération de pièce pour un instantané qui n'est qu'un confort.
+     *
+     * 🔴 `identite` est capturée À PART, et ce n'est pas un détail : les formes
+     * de props ne sont PAS uniformes. `DevisPdf` et `ProtocoleAfestPdf` prennent
+     * `{ data }` avec l'identité DANS `data` ; `ConventionPdf`,
+     * `ConventionTripartitePdf`, `ContratFormationPdf` et
+     * `ContratSousTraitancePdf` prennent `{ data, identite }`. N'instantanéiser
+     * que `data` aurait produit, pour ces quatre-là, un exemplaire sans en-tête
+     * d'organisme — et le rendu aurait planté sur `identite.raisonSociale`.
+     */
+    let renderData: unknown = null;
+    try {
+      const props = elementToRender.props as { data?: unknown; identite?: unknown };
+      if (typeof props.data === "object" && props.data !== null) {
+        renderData = JSON.parse(
+          JSON.stringify({
+            data: props.data,
+            ...(typeof props.identite === "object" && props.identite !== null
+              ? { identite: props.identite }
+              : {}),
+          }),
+        ) as unknown;
+      }
+    } catch {
+      renderData = null;
+    }
+
     // 2. Upload R2 (fail-soft).
     const key = `documents/${year}/${input.type}/${numero}.pdf`;
     const pdfUrl = await storeAndSignPdf(buffer, key);
@@ -411,10 +466,13 @@ export async function generateDocument(
           // DERNIER : un appelant ne doit pas pouvoir effacer, même par
           // inadvertance, le marquage qui dit que la pièce n'a pas de valeur
           // juridique.
-          ...(specimen !== null || input.metadata !== undefined
+          ...(specimen !== null || input.metadata !== undefined || renderData !== null
             ? {
                 metadata: {
                   ...(input.metadata ?? {}),
+                  // Sous une clé DÉDIÉE : `metadata` porte déjà `specimen` et
+                  // `champsManquants`, que rien ne doit écraser.
+                  ...(renderData !== null ? { renderData } : {}),
                   ...(specimen ? { specimen: true, champsManquants: specimen.manquants } : {}),
                 },
               }
@@ -424,6 +482,9 @@ export async function generateDocument(
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
           ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
           ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.refs?.sousTraitantId != null
+            ? { sousTraitantId: input.refs.sousTraitantId }
+            : {}),
           ...(input.refs?.coachingSessionId != null
             ? { coachingSessionId: input.refs.coachingSessionId }
             : {}),

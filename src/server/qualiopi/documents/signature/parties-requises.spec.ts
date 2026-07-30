@@ -139,3 +139,23 @@ describe("🔴 test de propriété sur la SOURCE", () => {
     expect(fautifs).toStrictEqual([]);
   });
 });
+
+describe("🔴 canal du devis — épinglé", () => {
+  // Ce test ne vérifie pas un comportement : il rend DÉLIBÉRÉ un changement qui
+  // serait autrement invisible. Le devis a basculé `fournisseur` → `maison` le
+  // 2026-07-30, après le constat que `POST /api/templates/pdf` n'existe pas sur
+  // l'instance DocuSeal de production (endpoint Pro, 404 vérifié contre le
+  // conteneur réel). Le repasser sur le canal fournisseur sans rétablir un
+  // moyen de faire signer LA PIÈCE ELLE-MÊME ramènerait le défaut d'origine :
+  // le client lisait un document détaillé et en signait un autre, à trois
+  // champs, qui ne désignait pas son objet.
+  it("le devis se signe sur le canal MAISON, sur la pièce elle-même", () => {
+    expect(circuitPour("devis")?.canal).toBe("maison");
+  });
+
+  it("le devis reste à deux parties, l'organisme concluant en dernier", () => {
+    // La bascule de canal ne change PAS qui signe. Si elle l'avait fait, un
+    // devis passerait `signee` sur la seule signature du client.
+    expect(partiesRequisesPour("devis")).toStrictEqual(["client", "axionia"]);
+  });
+});

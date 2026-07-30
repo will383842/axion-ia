@@ -5,7 +5,10 @@
  *   - émission d'une facture libre (5 activités, lignes libres, TVA/ligne) ;
  *   - conversion devis accepté → facture ;
  *   - avoir (total ou partiel) ;
- *   - encaissement manuel (virement/chèque/espèces, partiel accepté).
+ *   - encaissement manuel (virement, carte, espèces — partiel accepté).
+ *     ⚠️ Le CHÈQUE n'est plus proposé en saisie (décision Will, 2026-07-30). Les
+ *     encaissements historiques enregistrés en chèque restent lisibles : on cesse
+ *     de proposer un moyen, on n'efface pas ce qui a été encaissé.
  *
  * Le retour d'émission expose `chorusProRequis` : client secteur public →
  * dépôt Chorus Pro OBLIGATOIRE (obligation en vigueur, hors réforme 2026).
@@ -456,6 +459,15 @@ const CreerDossierSchema = z.object({
   clientId: z.string().uuid().optional(),
   type: z.enum(["opco", "france_travail", "cpf", "mixte"]).optional(),
   financeurNom: z.string().max(120).optional(),
+  /**
+   * 🔴 Contact SIGNATAIRE du financeur, au grain du DOSSIER — pas de l'OPCO : la
+   * personne qui signe une convention tripartite est celle qui instruit CE
+   * dossier. Sans `financeurContactEmail`, aucun lien de signature n'est
+   * émissible pour la tripartite.
+   */
+  financeurContactNom: z.string().max(200).optional(),
+  financeurContactEmail: z.string().email().optional(),
+  financeurContactFonction: z.string().max(200).optional(),
   montantDemandeCents: z.number().int().positive().optional(),
   subrogation: z.boolean().optional(),
 });
@@ -490,6 +502,15 @@ export async function creerDossierFinancementAction(
           type: input.type,
           clientId: input.clientId,
           ...(input.financeurNom !== undefined ? { financeurNom: input.financeurNom } : {}),
+          ...(input.financeurContactNom !== undefined
+            ? { financeurContactNom: input.financeurContactNom }
+            : {}),
+          ...(input.financeurContactEmail !== undefined
+            ? { financeurContactEmail: input.financeurContactEmail }
+            : {}),
+          ...(input.financeurContactFonction !== undefined
+            ? { financeurContactFonction: input.financeurContactFonction }
+            : {}),
           ...(input.montantDemandeCents !== undefined
             ? { montantDemandeCents: input.montantDemandeCents }
             : {}),

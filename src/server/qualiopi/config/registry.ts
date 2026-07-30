@@ -264,6 +264,11 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     description:
       "Taux d'acompte par défaut, appliqué au RESTE À CHARGE (%). Plafonné à 30 % pour un particulier (art. L6353-6), sans limite entre professionnels.",
   },
+  nb_echeances_solde_defaut: {
+    ...num(3),
+    description:
+      "Nombre d'échéances du SOLDE par défaut (« en 3 fois »). Réparties sur la durée de l'action. ⚠️ Pour un particulier, un plancher LÉGAL de 2 s'applique dès que l'action le permet : une échéance unique serait le solde en une fois, ce que l'art. L6353-6 interdit. Plafonné au nombre de mois de l'action.",
+  },
   mode_facturation_defaut: {
     ...str("acompte_solde"),
     description:

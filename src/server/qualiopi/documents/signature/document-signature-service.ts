@@ -130,6 +130,28 @@ export type PorteurSignatureDocument =
       provider: "manual_upload" | "physical_signed";
       partie: PartieSignataire;
       signataire: IdentiteFournie;
+    }
+  | {
+      /**
+       * Canal A — maison, par LIEN PUBLIC à jeton. Le cas le plus courant du
+       * contractuel : un client signe depuis un lien reçu par e-mail, sans
+       * compte.
+       *
+       * 🔴 Aucune identité n'est acceptée de l'appelant, et c'est tout l'intérêt
+       * de ce porteur. Elle a été FIGÉE à l'émission du lien, côté serveur,
+       * depuis la fiche client, par une action d'administration authentifiée
+       * (`token-document.ts`). Ce service la relit dans la ligne de jeton —
+       * c'est-à-dire en BASE, comme l'exige la doctrine du canal maison.
+       *
+       * ⚠️ `tokenId` n'est PAS une trace : c'est la garde d'autorisation. Le
+       * service revérifie lui-même que le jeton vise CETTE pièce, AU TITRE de
+       * cette partie, et qu'il est toujours vivant. Il ne suppose jamais que la
+       * couche action l'a fait — c'est la même défense en profondeur que partout
+       * ailleurs ici.
+       */
+      type: "signataire_jeton";
+      tokenId: string;
+      partie: PartieSignataire;
     };
 
 export type RefusSignatureDocument =
@@ -144,7 +166,11 @@ export type RefusSignatureDocument =
   | "image_requise"
   | "image_interdite"
   | "submission_incoherente"
-  | "conflit_concurrent";
+  | "conflit_concurrent"
+  /** Canal A — le lien ne vise pas cette pièce, ou plus cette partie. */
+  | "jeton_non_applicable"
+  /** Canal A — lien révoqué ou périmé. Distingué : le client peut en redemander un. */
+  | "jeton_inactif";
 
 export type ResultatSignatureDocument =
   | {
@@ -201,6 +227,10 @@ const MESSAGES: Record<RefusSignatureDocument, string> = {
     "Le canal de signature et l'identifiant de submission ne concordent pas : une ligne maison ne peut pas porter d'identifiant fournisseur, et l'inverse.",
   conflit_concurrent:
     "Une autre signature est en cours d'enregistrement sur cette pièce. Réessayez dans un instant.",
+  jeton_non_applicable:
+    "Ce lien de signature ne correspond pas à cette pièce, ou pas à ce titre. Demandez un nouveau lien à votre interlocuteur.",
+  jeton_inactif:
+    "Ce lien de signature n'est plus valable : il a expiré ou a été remplacé. Demandez-en un nouveau à votre interlocuteur.",
 };
 
 function refus(raison: RefusSignatureDocument): ResultatSignatureDocument {
@@ -321,10 +351,36 @@ function nettoyer(valeur: string | null | undefined): string | null {
  */
 async function resoudreIdentite(
   porteur: PorteurSignatureDocument,
+  /** Jeton déjà relu et validé, sur le canal A uniquement. */
+  jeton: JetonPorteur | null,
 ): Promise<
   | { ok: true; identite: IdentiteSignataire }
   | { ok: false; raison: "identite_non_resolvable" | "porteur_non_autorise" }
 > {
+  // Canal A — l'identité vient de la LIGNE DE JETON, pas de l'entrée.
+  //
+  // 🔴 `jeton === null` ici serait un bug d'ordonnancement, pas une entrée
+  // invalide : `signerDocument` valide le jeton AVANT d'appeler cette fonction.
+  // On refuse plutôt que de retomber sur l'entrée — un repli silencieux
+  // rouvrirait exactement la faille que ce porteur ferme.
+  if (porteur.type === "signataire_jeton") {
+    if (jeton === null) return { ok: false, raison: "porteur_non_autorise" };
+    const nom = nettoyer(jeton.signataireNom);
+    if (nom === null) return { ok: false, raison: "identite_non_resolvable" };
+    return {
+      ok: true,
+      identite: {
+        nom,
+        email: nettoyer(jeton.signataireEmail),
+        qualite: nettoyer(jeton.signataireQualite),
+        // Le signataire agit depuis son propre lien nominatif : il répond de
+        // lui-même. L'organisme n'atteste pas son identité — il l'a seulement
+        // figée à l'émission, ce que `createdIpHash` et `createdAt` tracent.
+        recueilliParAdminId: null,
+      },
+    };
+  }
+
   if (porteur.type === "formateur_authentifie") {
     const t = await prisma.trainer.findUnique({
       where: { id: porteur.trainerId },
@@ -412,12 +468,83 @@ function providerDuPorteur(porteur: PorteurSignatureDocument): ProviderSignature
   switch (porteur.type) {
     case "formateur_authentifie":
     case "organisme_authentifie":
+    // Canal A : maison, comme B. L'identité vient de la base dans les deux cas —
+    // seul le MOMENT où elle y a été résolue diffère (émission vs signature).
+    case "signataire_jeton":
       return "interne";
     case "fournisseur":
       return porteur.provider;
     case "reversement_papier":
       return porteur.provider;
   }
+}
+
+/**
+ * 🔴 Parties qu'un LIEN PUBLIC ne peut jamais porter.
+ *
+ * Un jeton engage un tiers ; il ne doit pas pouvoir engager l'organisme ni
+ * attester au titre de la responsabilité pédagogique. Sans cette garde, un lien
+ * mal émis — ou une émission détournée — ferait contresigner l'organisme par la
+ * personne même à qui il envoie la pièce, et la convention paraîtrait conclue.
+ *
+ * ⚠️ Doublon DÉLIBÉRÉ avec la garde d'émission : l'émission décide, celle-ci
+ * garantit. C'est la même défense en profondeur que `PARTIES_PAR_CANAL_AUTHENTIFIE`.
+ */
+const PARTIES_INTERDITES_AU_JETON: ReadonlySet<PartieSignataire> = new Set([
+  "axionia",
+  "responsable_pedagogique",
+]);
+
+/** Ligne de jeton, relue pour AUTORISER puis pour figer l'identité. */
+interface JetonPorteur {
+  documentGenereId: string;
+  partie: PartieSignataire;
+  signataireNom: string;
+  signataireEmail: string | null;
+  signataireQualite: string | null;
+  expiresAt: Date;
+  revokedAt: Date | null;
+}
+
+/**
+ * Relit le jeton et vérifie qu'il vise bien CETTE pièce, À CE TITRE, et qu'il
+ * est encore vivant.
+ *
+ * 🔴 Le service ne suppose jamais que la couche action a vérifié : c'est ici que
+ * l'autorisation se joue, parce que c'est ici que la ligne de preuve s'écrit.
+ */
+async function verifierJeton(
+  ctx: ContextePiece,
+  tokenId: string,
+  partie: PartieSignataire,
+  maintenant: Date,
+): Promise<
+  | { ok: true; jeton: JetonPorteur }
+  | { ok: false; raison: "jeton_non_applicable" | "jeton_inactif" }
+> {
+  const jeton = await prisma.documentSignatureToken.findUnique({
+    where: { id: tokenId },
+    select: {
+      documentGenereId: true,
+      partie: true,
+      signataireNom: true,
+      signataireEmail: true,
+      signataireQualite: true,
+      expiresAt: true,
+      revokedAt: true,
+    },
+  });
+  if (jeton === null) return { ok: false, raison: "jeton_non_applicable" };
+  // Le lien vise-t-il cette pièce, et le porteur signe-t-il au titre que le lien
+  // lui donne ? Les deux, sinon un lien légitime servirait sur une autre pièce.
+  if (jeton.documentGenereId !== ctx.id) return { ok: false, raison: "jeton_non_applicable" };
+  if (jeton.partie !== partie) return { ok: false, raison: "jeton_non_applicable" };
+  if (PARTIES_INTERDITES_AU_JETON.has(partie)) return { ok: false, raison: "jeton_non_applicable" };
+  if (jeton.revokedAt !== null) return { ok: false, raison: "jeton_inactif" };
+  if (jeton.expiresAt.getTime() <= maintenant.getTime()) {
+    return { ok: false, raison: "jeton_inactif" };
+  }
+  return { ok: true, jeton };
 }
 
 /**
@@ -512,6 +639,27 @@ export async function signerDocument(
     return refus("porteur_non_autorise");
   }
 
+  // Canal A — la garde d'autorisation est le JETON lui-même, et elle est en
+  // base : elle ne peut donc pas tenir dans `porteurAutorise`, qui est pur.
+  // Placée ICI, au même rang que les autres gardes d'autorisation, et AVANT
+  // qu'on apprenne quoi que ce soit sur l'état de signature de la pièce.
+  let jeton: JetonPorteur | null = null;
+  if (porteur.type === "signataire_jeton") {
+    const v = await verifierJeton(ctx, porteur.tokenId, partie, maintenant);
+    if (!v.ok) {
+      // Seul le non-applicable est anormal : un lien périmé est un événement
+      // ordinaire, et le remonter à Sentry noierait les vraies tentatives.
+      if (v.raison === "jeton_non_applicable") {
+        Sentry.captureException(new Error("Jeton de signature présenté hors de son périmètre"), {
+          tags: { action: "signerDocument:jeton_non_applicable" },
+          extra: { documentGenereId: input.documentGenereId, partie },
+        });
+      }
+      return refus(v.raison);
+    }
+    jeton = v.jeton;
+  }
+
   // Placé APRÈS l'autorisation : sinon un appelant qui devine un identifiant de
   // pièce apprend si une autre partie a déjà signé.
   if (ctx.signatures.length > 0) return refus("deja_signe");
@@ -545,7 +693,7 @@ export async function signerDocument(
   }
 
   // ── 4. IDENTITÉ, résolue côté serveur sur le canal maison ──
-  const resolution = await resoudreIdentite(porteur);
+  const resolution = await resoudreIdentite(porteur, jeton);
   if (!resolution.ok) return refus(resolution.raison);
   const {
     nom: signataireNom,

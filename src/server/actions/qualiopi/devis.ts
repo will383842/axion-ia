@@ -39,7 +39,12 @@ import {
 } from "@/server/qualiopi/financements/facture-libre-pur";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
-import { isDocusealConfigured, createContractSubmission, DocusealApiError } from "@/lib/docuseal";
+import { publicUrl } from "@/lib/public-url";
+import {
+  creerTokenDocument,
+  revoquerTokensDocument,
+  TokenDocumentError,
+} from "@/server/qualiopi/documents/signature/token-document";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { genererConventionAction } from "@/server/actions/qualiopi/documents";
@@ -303,6 +308,9 @@ export async function sendDevisAction(
       activite: true,
       refClient: true,
       replacesDevisId: true,
+      // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
+      // elle (voir la transaction plus bas).
+      replacesDevis: { select: { documentGenereId: true } },
       financementSuggere: true,
       montantTotalHtCents: true,
       montantOpcoEstimeCents: true,
@@ -318,6 +326,12 @@ export async function sendDevisAction(
           adresseVille: true,
           contactNom: true,
           contactEmail: true,
+          // 🔴 Repris comme QUALITÉ figée du signataire. Ce n'est pas
+          // décoratif : `signataireQualite` porte l'opposabilité du POUVOIR de
+          // signer — savoir que « Camille Durand » était directrice des
+          // ressources humaines au moment de l'engagement est ce qui permet, des
+          // années plus tard, de soutenir qu'elle pouvait engager la structure.
+          contactFonction: true,
         },
       },
     },
@@ -349,6 +363,14 @@ export async function sendDevisAction(
 
   // ── 1. Génération du PDF (fail-soft : un rendu raté ne bloque pas l'envoi) ──
   let fichierPdfUrl: string | null = null;
+  /**
+   * Pièce NUMÉROTÉE produite par `generateDocument`.
+   *
+   * 🔴 Son `id` était produit puis JETÉ à chaque envoi — seul `numero` servait,
+   * pour composer une clé R2. C'est pourtant lui que la signature référence :
+   * sans lui, il n'y a rien à signer, seulement un PDF posé sur un bucket.
+   */
+  let documentGenereId: string | null = null;
   try {
     const identite = await getOrganismeIdentite();
 
@@ -407,88 +429,87 @@ export async function sendDevisAction(
     });
     // Clé R2 stable (l'URL signée retournée expire en 900 s — on stocke la clé).
     fichierPdfUrl = `documents/${yearGeneration}/devis/${doc.numero}.pdf`;
+    documentGenereId = doc.id;
   } catch (err) {
     console.warn("[sendDevisAction] génération PDF devis échouée (fail-soft)", err);
   }
 
-  // ── 2. Signature électronique « bon pour accord » (best-effort) ──
-  // On capture `embedUrl` (embed_src du 1er signataire = lien de signature du
-  // CLIENT) pour le glisser dans l'email d'envoi (CTA « Signer en ligne »).
-  let docusealSubmissionId: string | null = null;
-  let docusealEmbedUrl: string | null = null;
-  const docusealTemplateId =
-    process.env["DOCUSEAL_DEVIS_TEMPLATE_ID"] || process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
+  // ── 2. Signature électronique « bon pour accord » — CANAL MAISON ──
+  //
+  // 🔴 Bascule du 2026-07-30, décidée avec Will. Ce bloc créait une soumission
+  // DocuSeal sur un template PERMANENT à trois champs (`devis_number`,
+  // `amount_ht`, `valid_until`), pendant que le client recevait en pièce jointe
+  // le PDF DÉTAILLÉ — lignes, quantités, prix unitaires, TVA, totaux. Le client
+  // lisait donc un document et en signait un autre. Un bon pour accord qui ne
+  // désigne pas son objet est juridiquement fragile.
+  //
+  // La correction prévue au plan (§III.3) — un template ÉPHÉMÈRE par pièce via
+  // `POST /api/templates/pdf` — est IMPOSSIBLE sur l'instance de production.
+  // Vérifié contre le conteneur RÉEL, pas contre la doc, comme l'exige l'en-tête
+  // de `src/lib/docuseal.ts` : `config/routes.rb` (v2.5.3) déclare
+  // `resources :templates, only: %i[update show index destroy]`, et l'appel réel
+  // répond 404 là où `GET /api/templates/2` répond 200 avec le même jeton. Ces
+  // endpoints sont réservés aux offres Pro.
+  //
+  // Le lien maison fait signer LE PDF RÉEL, celui dont l'empreinte est scellée
+  // dans `document_hash_sha256`. Une seule source de vérité.
+  //
+  // ⚠️ Le circuit DocuSeal n'est PAS rebranché ailleurs : `docusealSubmissionId`
+  // et `docusealEmbedUrl` restent en base pour l'unique devis signé par cette
+  // voie avant la bascule, et ne reçoivent plus d'écriture.
+  let signatureUrl: string | null = null;
   const contactEmail = devis.client.contactEmail;
   /**
-   * Une soumission était-elle attendue ? Distingue « DocuSeal non configuré »
-   * (silence normal) de « configuré mais en panne » (à signaler).
+   * Un lien était-il attendu ? Distingue « pas de destinataire ni de pièce »
+   * (silence normal) de « attendu mais en panne » (à signaler).
+   *
+   * ⚠️ `documentGenereId` en fait partie : si le rendu du PDF a échoué en
+   * fail-soft, il n'y a aucune pièce à signer, et annoncer un lien de signature
+   * serait faux.
    */
-  const signatureAttendue = isDocusealConfigured() && !!docusealTemplateId && !!contactEmail;
-  /** Motif d'échec DocuSeal — tracé au registre et remonté à l'admin. */
-  let docusealErreur: string | null = null;
-  // 🔴 F4 — jusqu'au 2026-07-26 ce bloc échouait en 422 à CHAQUE envoi (les
-  // champs pré-remplis partaient aussi sur le contre-signataire, cf.
-  // `src/lib/docuseal.ts`) et l'échec était avalé par un `console.warn` muet :
-  // le devis partait « envoyé », l'admin lisait « + lien de signature » en vert,
-  // et aucune soumission n'a jamais existé (0 côté DocuSeal, 2 devis en base
-  // avec docuseal_submission_id NULL). Une panne de signature doit REMONTER —
-  // c'est la seule protection contre une rechute muette.
-  if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
+  const signatureAttendue = documentGenereId !== null && !!contactEmail;
+  /** Motif d'échec — tracé au registre et remonté à l'admin. */
+  let signatureErreur: string | null = null;
+  // 🔴 F4, et la leçon reste valable sur le canal maison : une panne de
+  // signature doit REMONTER. Jusqu'au 2026-07-26, l'échec était avalé par un
+  // `console.warn` muet — le devis partait « envoyé », l'admin lisait « + lien
+  // de signature » en vert, et aucune soumission n'existait. C'est la seule
+  // protection contre une rechute muette, quel que soit le canal.
+  if (documentGenereId !== null && contactEmail) {
     try {
-      const result = await createContractSubmission({
-        templateId: docusealTemplateId,
-        client: {
-          email: contactEmail,
-          name: devis.client.contactNom ?? devis.client.raisonSociale,
-        },
-        // 🔴 Ces 3 noms DOIVENT exister sur le rôle « Client » du template
-        // DocuSeal : les champs sont validés rôle par rôle et un nom inconnu
-        // fait répondre 422 — la soumission entière est perdue, ce n'est pas une
-        // erreur partielle. Toute modification se vérifie contre le template
-        // RÉEL du conteneur, pas contre la documentation.
-        //
-        // `readonly: true` : sans lui, le client peut RÉÉCRIRE le montant ou le
-        // numéro dans le formulaire avant de signer (les champs non-readonly de
-        // son propre rôle sont rendus en SAISIE). Un « bon pour accord » dont le
-        // signataire fixe lui-même le montant n'a aucune valeur probante et
-        // contredirait le PDF archivé.
-        fields: [
-          { name: "devis_number", default_value: devis.numero, readonly: true },
-          {
-            name: "amount_ht",
-            default_value: (devis.montantTotalHtCents / 100).toFixed(2),
-            readonly: true,
-          },
-          {
-            name: "valid_until",
-            default_value: devis.dateValidite.toISOString().slice(0, 10),
-            readonly: true,
-          },
-        ],
-        sendEmail: false, // l'email est envoyé par NOUS (template Axion-IA + PJ PDF)
-        metadata: { devisId: devis.id, kind: "devis" },
+      const { token } = await creerTokenDocument({
+        documentGenereId,
+        // Le SSOT donne le circuit ; on ne réécrit pas la liste ici. Le client
+        // est la partie qui reçoit le lien — l'organisme contresigne depuis la
+        // console, authentifié, et n'a donc jamais de jeton.
+        partie: "client",
+        // 🔴 Identité résolue depuis la FICHE CLIENT, côté serveur, et figée.
+        // C'est ce qui permet au signataire non authentifié de rester conforme à
+        // la doctrine du canal maison : au moment de signer, le service relit
+        // cette identité en base, jamais dans le formulaire.
+        signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+        signataireEmail: contactEmail,
+        signataireQualite: devis.client.contactFonction,
+        // La date de validité borne le lien : tenir une offre ferme au-delà
+        // n'aurait aucun sens commercial.
+        borneMetier: devis.dateValidite,
       });
-      docusealSubmissionId = result.submissionId;
-      docusealEmbedUrl = result.embedUrl || null;
+      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
     } catch (err) {
-      // Aucune donnée client dans le motif : Telegram est un canal tiers, hors
-      // du périmètre de l'ADR 0014 (qui n'exonère que DocuSeal, self-hosted).
-      // Le détail complet reste dans les logs serveur.
-      docusealErreur =
-        err instanceof DocusealApiError
-          ? `DocuSeal HTTP ${err.statusCode}`
-          : "erreur technique DocuSeal";
-      console.warn("[sendDevisAction] soumission DocuSeal échouée (best-effort)", err);
-      // Sans cette alerte, une panne de signature reste invisible jusqu'à ce
-      // qu'un client se plaigne de ne pas pouvoir signer. `.catch()` obligatoire :
-      // une panne Telegram ne doit jamais faire échouer l'envoi d'un devis.
+      // Aucune donnée client dans le motif : Telegram est un canal tiers. Le
+      // détail complet reste dans les logs serveur.
+      signatureErreur =
+        err instanceof TokenDocumentError ? err.motif : "erreur technique signature";
+      console.warn("[sendDevisAction] émission du lien de signature échouée (best-effort)", err);
+      // `.catch()` obligatoire : une panne Telegram ne doit jamais faire échouer
+      // l'envoi d'un devis.
       sendTelegram({
         tag: "AUTO",
-        body: `⚠️ Devis ${devis.numero} : signature électronique NON créée (${docusealErreur}). Le devis part sans « bon pour accord » signable en ligne.`,
+        body: `⚠️ Devis ${devis.numero} : lien de signature NON créé (${signatureErreur}). Le devis part sans « bon pour accord » signable en ligne.`,
       }).catch(() => {});
     }
   }
-  const signatureCreee = docusealSubmissionId !== null;
+  const signatureCreee = signatureUrl !== null;
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   await prisma.$transaction([
@@ -498,8 +519,11 @@ export async function sendDevisAction(
         statut: "envoye",
         sentAt: new Date(),
         ...(fichierPdfUrl !== null ? { fichierPdfUrl } : {}),
-        ...(docusealSubmissionId !== null ? { docusealSubmissionId } : {}),
-        ...(docusealEmbedUrl !== null ? { docusealEmbedUrl } : {}),
+        // 🔴 Rattachement à la pièce numérotée : c'est lui qui permet à la
+        // signature de désigner CE devis-ci. Sans cette ligne, le jeton pointe
+        // vers une pièce que le devis ne connaît pas, et `accepterDevisSurSignature`
+        // ne retrouverait rien à basculer.
+        ...(documentGenereId !== null ? { documentGenereId } : {}),
       },
     }),
     prisma.client.update({
@@ -512,6 +536,27 @@ export async function sendDevisAction(
           prisma.devis.update({
             where: { id: devis.replacesDevisId },
             data: { statut: "expire" as const },
+          }),
+        ]
+      : []),
+    // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction.
+    //
+    // Sans cela, le client détiendrait deux liens vivants : l'ancien, sur un
+    // devis désormais `expire`, et le nouveau. Rien ne l'empêcherait de signer
+    // la version périmée — celle dont on vient de corriger le prix — et la
+    // signature serait parfaitement valide, chaînée, opposable. C'est exactement
+    // le genre de « bon pour accord » qu'une révision existe pour éviter.
+    //
+    // ⚠️ La révocation du jeton ne touche AUCUNE signature déjà apposée : elle
+    // ferme le lien, elle n'efface pas une preuve.
+    ...(devis.replacesDevis?.documentGenereId != null
+      ? [
+          prisma.documentSignatureToken.updateMany({
+            where: { documentGenereId: devis.replacesDevis.documentGenereId, revokedAt: null },
+            data: {
+              revokedAt: new Date(),
+              revokedMotif: `Devis révisé — remplacé par ${devis.numero}`,
+            },
           }),
         ]
       : []),
@@ -534,7 +579,7 @@ export async function sendDevisAction(
         numero: devis.numero,
         montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
         dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
-        ...(docusealEmbedUrl !== null ? { signatureUrl: docusealEmbedUrl } : {}),
+        ...(signatureUrl !== null ? { signatureUrl } : {}),
       },
       {
         attachments: [{ filename: `${devis.numero}.pdf`, r2Key: fichierPdfUrl }],
@@ -565,9 +610,9 @@ export async function sendDevisAction(
   // « + lien de signature » en vert comme avant. Le devis reste « envoyé »
   // (fail-soft assumé) : c'est l'admin qui arbitre la suite.
   if (signatureAttendue && !signatureCreee) {
-    const detail = docusealErreur !== null ? ` (${docusealErreur})` : "";
+    const detail = signatureErreur !== null ? ` (${signatureErreur})` : "";
     const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
-    note = `${prefixe}⚠️ La signature électronique n'a PAS pu être créée${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
   }
 
   await logQualiopiActivity({
@@ -577,11 +622,14 @@ export async function sendDevisAction(
     changes: {
       statut: "envoye",
       pdfGenere: fichierPdfUrl !== null,
-      docusealSubmissionId,
-      // Motif d'échec DocuSeal tracé au registre : le journal d'activité
-      // affichait `"docusealSubmissionId": null` sans jamais dire pourquoi, et
-      // les logs du conteneur partent au premier redémarrage.
-      docusealErreur,
+      documentGenereId,
+      // ⚠️ Le LIEN lui-même n'est jamais journalisé : il vaut signature. Seul
+      // le fait qu'il ait été émis l'est.
+      lienSignatureEmis: signatureCreee,
+      // Motif d'échec tracé au registre : le journal affichait
+      // `"docusealSubmissionId": null` sans jamais dire pourquoi, et les logs du
+      // conteneur partent au premier redémarrage.
+      signatureErreur,
       emailEnvoye,
       devisExpire: devis.replacesDevisId,
     },
@@ -712,16 +760,38 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 
-  await prisma.devis.update({
+  const refuse = await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "refuse", declinedAt: new Date() },
+    select: { documentGenereId: true },
   });
+
+  // 🔴 Le lien de signature MEURT avec le devis refusé.
+  //
+  // Sans cela, le client garde un lien vivant sur un devis retiré, et rien
+  // n'empêche sa signature de s'inscrire — chaînée, scellée, irrévocable
+  // autrement que par révocation explicite — sur une pièce que l'organisme
+  // vient de refuser. `signerDevisParJetonAction` refuse désormais aussi sur le
+  // statut ; ce sont DEUX gardes, et ce n'est pas redondant : celle-ci ferme la
+  // porte, celle-là refuse d'ouvrir. Fermer seulement l'une des deux laisserait
+  // la fenêtre entre le refus et la prochaine tentative.
+  //
+  // ⚠️ Révoquer un JETON ne touche aucune signature déjà apposée : cela ferme un
+  // accès, cela n'efface pas une preuve.
+  let liensRevoques = 0;
+  if (refuse.documentGenereId !== null) {
+    liensRevoques = await revoquerTokensDocument({
+      documentGenereId: refuse.documentGenereId,
+      motif: "Devis refusé",
+      parAdminId: session.userId,
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis.decline",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "refuse" },
+    changes: { statut: "refuse", liensSignatureRevoques: liensRevoques },
     session,
   });
 

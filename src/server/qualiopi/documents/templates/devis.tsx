@@ -27,7 +27,9 @@ import {
   FieldRow,
   DataTable,
   LegalCallout,
+  SignatureZone,
   formatEurosFromCents,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -120,11 +122,9 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
     marginBottom: S.lg,
   },
-  accordLine: {
-    fontSize: T.base,
-    color: brandColor("fg"),
-    marginBottom: S.xl,
-  },
+  // ⚠️ `accordLine` a été retiré avec les trois lignes « Nom / Date / Signature »
+  // à remplir au stylo : `SignatureZone` porte désormais les cadres, vides ou
+  // renseignés. Le laisser aurait été du style mort.
 });
 
 // ============================================================
@@ -164,6 +164,19 @@ export interface DevisData {
   /** Reste à charge client estimé (centimes) — indicatif. */
   resteAChargeCents?: number;
   estCopie?: boolean;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Ce n'est pas un état dégradé : le circuit papier reste un chemin
+   * de plein droit — c'est le seul qui fonctionne quand le client veut imprimer,
+   * signer et scanner. Supprimer les cadres vides serait une régression.
+   *
+   * Renseignées, elles font rendre le tracé, l'horodatage et l'empreinte au bas
+   * du devis, SOUS les totaux. C'est ce qui fait que le client signe la pièce
+   * qu'il a lue, et non un document séparé à trois champs.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -296,15 +309,54 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           </Text>
         </LegalCallout>
 
-        {/* Signature client — « Bon pour accord » */}
+        {/* ── Bon pour accord — en bas du document, SOUS les totaux ──
+
+            🔴 C'est ICI que la signature doit apparaître, et pas ailleurs : le
+            signataire doit avoir les lignes, les quantités, les prix unitaires,
+            la TVA et les totaux SOUS LES YEUX au moment où il s'engage. C'était
+            précisément le défaut du circuit fournisseur — le client lisait ce
+            document-ci et en signait un autre, à trois champs, qui ne désignait
+            pas son objet.
+
+            ⚠️ `SignatureZone` rend chaque modalité POUR CE QU'ELLE EST et
+            n'affiche jamais une case « signé » sans dire de quoi elle est faite.
+            Tant qu'aucune preuve n'existe, elle rend les cadres vides — le
+            circuit papier reste ouvert. */}
         <View style={styles.accordBox} wrap={false}>
           <Text style={styles.accordTitle}>Bon pour accord</Text>
           <Text style={styles.accordHint}>
-            Signature du client précédée de la mention manuscrite « Bon pour accord ».
+            Le client accepte le présent devis dans son intégralité : désignations, quantités, prix
+            unitaires, taux de TVA et totaux ci-dessus.
           </Text>
-          <Text style={styles.accordLine}>Nom et fonction du signataire :</Text>
-          <Text style={styles.accordLine}>Date :</Text>
-          <Text style={styles.accordLine}>Signature :</Text>
+          {/* 🔴 L'emplacement de DATE n'est affiché que tant que personne n'a
+              signé, et il ne doit pas disparaître du chemin papier : sur une
+              pièce contractuelle, c'est la date qui prouve QUAND l'engagement a
+              été pris — et l'art. L.6353-1 exige que la convention soit conclue
+              AVANT le début de l'action. Une fois la signature apposée,
+              `SignatureApposee` porte l'horodatage réel, et laisser en plus une
+              ligne à remplir inviterait à en écrire une autre, contradictoire. */}
+          <SignatureZone
+            {...(data.signatures?.client == null && data.signatures?.axionia == null
+              ? { faitLe: "……………………………………, le ……………………………" }
+              : {})}
+            parties={[
+              {
+                titre: "Pour le client",
+                nom: data.client.raisonSociale,
+                mention: "Nom, qualité, signature — précédée de la mention « Bon pour accord »",
+                signature: data.signatures?.client ?? null,
+              },
+              {
+                // L'organisme CONCLUT : il contresigne ce que le client a
+                // accepté. L'ordre suit le SSOT (`parties-requises.ts`), où
+                // `axionia` figure en dernier — ce n'est pas décoratif.
+                titre: "Pour l'organisme",
+                nom: identite.raisonSociale,
+                mention: "Nom, qualité, signature et cachet",
+                signature: data.signatures?.axionia ?? null,
+              },
+            ]}
+          />
         </View>
       </QualiopiPage>
     </Document>

@@ -47,6 +47,13 @@ import {
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { mentionTva } from "@/server/qualiopi/legal/tva";
+import {
+  PieceSignaturePanel,
+  type SignatureApposeeVue,
+} from "@/components/admin/qualiopi/PieceSignaturePanel";
+import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
+import { emettreLienSignatureAction } from "@/server/actions/qualiopi/piece-lien-signature";
+import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
@@ -252,6 +259,50 @@ export default async function SessionHubPage({ params }: PageProps) {
       select: { id: true, nom: true, prenom: true, email: true },
     }),
   ]);
+
+  // ── Pièces CONTRACTUELLES de la session et leurs signatures ──
+  //
+  // 🔴 Source de vérité = les lignes `document_signatures`, jamais le statut
+  // dérivé porté par la pièce. Afficher le second sans le premier reproduirait
+  // le défaut que ce chantier retire partout : une case « signé » sans
+  // signataire, sans horodatage et sans empreinte.
+  //
+  // ⚠️ Filtré par le SSOT : `circuitPour` rend `null` pour une convocation, une
+  // attestation ou une facture — ce sont des pièces ÉMISES, pas des engagements
+  // négociés. Leur proposer un lien de signature n'aurait aucun sens.
+  const piecesSignables = documentsRaw.filter((d) => circuitPour(d.type) !== null);
+  const signaturesParPiece = new Map<string, SignatureApposeeVue[]>();
+  if (piecesSignables.length > 0) {
+    const lignes = await prisma.documentSignature.findMany({
+      where: { documentGenereId: { in: piecesSignables.map((d) => d.id) }, revokedAt: null },
+      select: {
+        id: true,
+        documentGenereId: true,
+        partie: true,
+        signataireNom: true,
+        signataireQualite: true,
+        signeAt: true,
+        selfHash: true,
+        methode: true,
+      },
+      // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur `signeAt`
+      // afficherait un ordre pouvant différer de celui du chaînage.
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    });
+    for (const l of lignes) {
+      const liste = signaturesParPiece.get(l.documentGenereId) ?? [];
+      liste.push({
+        id: l.id,
+        partie: l.partie,
+        signataireNom: l.signataireNom,
+        signataireQualite: l.signataireQualite,
+        signeAtLisible: l.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
+        empreinte: l.selfHash,
+        methode: l.methode,
+      });
+      signaturesParPiece.set(l.documentGenereId, liste);
+    }
+  }
 
   const enrollmentsSerialized = enrollmentsRaw.map((e) => {
     const acces = e.trainee.portailAcces[0];
@@ -609,6 +660,35 @@ export default async function SessionHubPage({ params }: PageProps) {
           enrollments={enrollmentsLight}
           documentsExistants={documentsSerialized}
         />
+
+        {/* 🔴 Signature des pièces CONTRACTUELLES.
+
+            Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
+            n'étaient appelables par personne : les cinq circuits seraient restés
+            du code de signature écrit, testé et inatteignable — le défaut que ce
+            chantier a déjà trouvé trois fois. */}
+        {piecesSignables.length > 0 && (
+          <div className="mt-[var(--space-admin-6)] space-y-[var(--space-admin-4)]">
+            <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
+              Signature des pièces contractuelles
+            </h3>
+            {piecesSignables.map((d) => {
+              const circuit = circuitPour(d.type)!;
+              return (
+                <PieceSignaturePanel
+                  key={d.id}
+                  documentGenereId={d.id}
+                  numero={d.numero}
+                  pieceLibelle={circuit.libelle}
+                  parties={circuit.parties}
+                  signatures={signaturesParPiece.get(d.id) ?? []}
+                  emettreAction={emettreLienSignatureAction}
+                  contresignerAction={contresignerPieceAction}
+                />
+              );
+            })}
+          </div>
+        )}
 
         {/*
           Visa du responsable pédagogique sur le relevé de connexion.

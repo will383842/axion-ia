@@ -1799,6 +1799,7 @@ model AdminUser {
   // Preuve de signature au grain document — provenance et révocation.
   documentSignaturesRecueillies DocumentSignature[] @relation("DocumentSignatureRecueillie")
   documentSignaturesRevoquees   DocumentSignature[] @relation("DocumentSignatureRevoquee")
+  documentSignatureTokensRevoques DocumentSignatureToken[] @relation("DocumentSignatureTokenRevoque")
 
   @@index([role])
   @@index([status])
@@ -5338,11 +5339,18 @@ model Devis {
   replacesDevisId        String?              @map("replaces_devis_id") @db.Uuid
   replacesDevis          Devis?               @relation("DevisRevision", fields: [replacesDevisId], references: [id], onDelete: SetNull)
   revisions              Devis[]              @relation("DevisRevision")
-  /// Soumission DocuSeal « bon pour accord » (signature électronique du devis).
+  /// ⚠️ HISTORIQUE — circuit DocuSeal, remplacé par le canal maison le
+  /// 2026-07-30. CONSERVÉES : le devis signé via DocuSeal avant cette bascule
+  /// garde sa trace. Effacer l'historique d'un circuit qu'on remplace, c'est
+  /// perdre la capacité de répondre plus tard à « comment cette pièce-là
+  /// a-t-elle été signée ? ». Aucune écriture nouvelle.
   docusealSubmissionId   String?              @map("docuseal_submission_id") @db.VarChar(120)
-  /// URL de signature DocuSeal du client (embed_src du 1er signataire) —
-  /// envoyée au client dans l'email pour qu'il signe en ligne.
   docusealEmbedUrl       String?              @map("docuseal_embed_url") @db.Text
+  /// Pièce NUMÉROTÉE sur laquelle porte la signature « bon pour accord ».
+  /// Alimentée à l'envoi par `generateDocument`, dont l'`id` était jusque-là
+  /// produit puis jeté. C'est elle que `DocumentSignature` référence.
+  documentGenereId       String?              @map("document_genere_id") @db.Uuid
+  documentGenere         DocumentGenere?      @relation("DevisPieceSignable", fields: [documentGenereId], references: [id], onDelete: SetNull)
   clientId               String               @map("client_id") @db.Uuid
   client                 Client               @relation(fields: [clientId], references: [id], onDelete: Restrict)
   /// Lignes : [{ designation, quantite, prixUnitaireHtCents, offreCode?, offreTierId? }].
@@ -5382,6 +5390,7 @@ model Devis {
 
   @@index([clientId])
   @@index([statut])
+  @@index([documentGenereId])
   @@map("devis")
 }
 
@@ -6493,6 +6502,11 @@ model DocumentGenere {
   trainee             Trainee?         @relation(fields: [traineeId], references: [id], onDelete: SetNull)
   clientId            String?          @map("client_id") @db.Uuid
   client              Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  /// 🔴 Sous-traitant partie au contrat. `genererContratSousTraitanceAction` ne
+  /// passait AUCUN `refs` : la pièce n'était reliée au sous-traitant par rien, et
+  /// il était donc impossible de savoir à qui adresser le lien de signature.
+  sousTraitantId      String?          @map("sous_traitant_id") @db.Uuid
+  sousTraitant        SousTraitant?    @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
   /// Null pour les documents de formation collective (inchangé).
   coachingSessionId   String?          @map("coaching_session_id") @db.Uuid
@@ -6522,10 +6536,13 @@ model DocumentGenere {
 
   enrollmentsAttestation Enrollment[] @relation("EnrollmentAttestation")
   signatures             DocumentSignature[]
+  signatureTokens        DocumentSignatureToken[]
+  devisPortes            Devis[]      @relation("DevisPieceSignable")
 
   @@index([type, sessionId])
   @@index([traineeId, type])
   @@index([coachingSessionId])
+  @@index([sousTraitantId])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
 }
@@ -6630,6 +6647,57 @@ model DocumentSignature {
   @@index([documentGenereId, createdAt, id])
   @@index([suppressionPrevueAt])
   @@map("document_signatures")
+}
+
+/// Canal A — lien de signature d'une pièce par un tiers NON authentifié.
+///
+/// Le socle `DocumentSignature` n'acceptait que des porteurs authentifiés, un
+/// fournisseur tiers ou un reversement papier. Le cas le plus courant du
+/// contractuel — un client qui signe depuis un lien reçu par e-mail — n'était
+/// couvert par aucun d'eux.
+///
+/// 🔴 L'identité du signataire est figée ICI, à l'ÉMISSION, par une action
+/// d'administration authentifiée qui la lit sur la fiche client. Au moment de
+/// signer, le service la relit dans cette table — donc en BASE, jamais dans ce
+/// que le formulaire déclare. C'est ce qui rend ce canal conforme à la doctrine
+/// du socle malgré un signataire non authentifié.
+model DocumentSignatureToken {
+  id                      String                   @id @default(uuid()) @db.Uuid
+
+  documentGenereId        String                   @map("document_genere_id") @db.Uuid
+  documentGenere          DocumentGenere           @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
+
+  /// 🔴 Partie au titre de laquelle ce lien permet de signer. Garde
+  /// d'AUTORISATION, pas une étiquette : sans elle, un lien émis pour le client
+  /// permettrait d'écrire une ligne `axionia`.
+  partie                  DocumentPartieSignataire
+
+  /// SHA-256 du jeton, jamais le clair.
+  tokenHash               String                   @unique @map("token_hash") @db.Char(64)
+
+  signataireNom           String                   @map("signataire_nom") @db.VarChar(200)
+  signataireEmail         String?                  @map("signataire_email") @db.VarChar(320)
+  signataireQualite       String?                  @map("signataire_qualite") @db.VarChar(200)
+  destinataireEmailSha256 String?                  @map("destinataire_email_sha256") @db.Char(64)
+
+  expiresAt               DateTime                 @map("expires_at")
+  /// Premier usage, à titre de trace. Le jeton n'est PAS consommé à l'ouverture.
+  usedAt                  DateTime?                @map("used_at")
+
+  revokedAt               DateTime?                @map("revoked_at")
+  revokedMotif            String?                  @map("revoked_motif") @db.VarChar(500)
+  revokedById             String?                  @map("revoked_by_id") @db.Uuid
+  revokedBy               AdminUser?               @relation("DocumentSignatureTokenRevoque", fields: [revokedById], references: [id], onDelete: SetNull)
+
+  createdIpHash           String?                  @map("created_ip_hash") @db.Char(64)
+  createdAt               DateTime                 @default(now()) @map("created_at")
+
+  /// ⚠️ L'index unique `document_signature_token_actif` est PARTIEL
+  /// (`WHERE revoked_at IS NULL`) : créé en SQL brut, Prisma ne sait pas
+  /// l'exprimer. Un seul jeton vivant par (pièce, partie).
+  @@index([documentGenereId])
+  @@index([expiresAt])
+  @@map("document_signature_tokens")
 }
 
 // ============================================================
@@ -6982,6 +7050,14 @@ model DossierFinancement {
   statut               DossierFinancementStatut @default(a_monter)
   /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
   financeurNom         String?                  @map("financeur_nom") @db.VarChar(120)
+  /// Personne physique qui signe pour le financeur SUR CE DOSSIER.
+  /// 🔴 Grain volontairement le DOSSIER et non l'OPCO : le gestionnaire change
+  /// d'un dossier à l'autre. Créer une table `Financeur` ferait une TROISIÈME
+  /// représentation (avec `financeurNom` et `Client.opcoIdentifie`), donc trois
+  /// sources à tenir synchronisées et une divergence silencieuse possible.
+  financeurContactNom      String?              @map("financeur_contact_nom") @db.VarChar(200)
+  financeurContactEmail    String?              @map("financeur_contact_email") @db.VarChar(320)
+  financeurContactFonction String?              @map("financeur_contact_fonction") @db.VarChar(200)
   /// N° du dossier chez le financeur (référence externe).
   numeroDossierExterne String?                  @map("numero_dossier_externe") @db.VarChar(80)
   subrogation          Boolean                  @default(false)
@@ -7243,7 +7319,15 @@ model Partenariat {
 /// sous-traitant individuel). Vérification data.gouv.fr + contrat.
 model SousTraitant {
   id                String    @id @default(uuid()) @db.Uuid
+  /// RAISON SOCIALE du sous-traitant. Distincte du contact ci-dessous.
   nom               String    @db.VarChar(250)
+  /// Personne physique qui SIGNE pour le sous-traitant.
+  /// 🔴 Sans `contactEmail`, aucun lien de signature ne peut être émis : le
+  /// canal A exige une adresse, et l'identité doit venir de la BASE.
+  contactNom        String?   @map("contact_nom") @db.VarChar(200)
+  contactEmail      String?   @map("contact_email") @db.VarChar(320)
+  /// Qualité FIGÉE à la signature — porte l'opposabilité du pouvoir de signer.
+  contactFonction   String?   @map("contact_fonction") @db.VarChar(200)
   siret             String?   @db.VarChar(20)
   nda               String?   @db.VarChar(20)
   objetPrestation   String    @map("objet_prestation") @db.Text
@@ -7255,6 +7339,8 @@ model SousTraitant {
   actif             Boolean   @default(true)
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  documentsGeneres  DocumentGenere[]
 
   @@index([actif])
   @@map("sous_traitants_of")

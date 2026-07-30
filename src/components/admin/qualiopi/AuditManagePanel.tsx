@@ -163,7 +163,7 @@ export function AuditManagePanel({
         </div>
         <div className="admin-field">
           <label className="admin-label" htmlFor="acompte-moyen">
-            Moyen (chèque, virement…)
+            Moyen (virement, carte…)
           </label>
           <input
             id="acompte-moyen"
