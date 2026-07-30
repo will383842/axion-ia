@@ -459,7 +459,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         {signatures.length > 0 && (
           <p className="mt-[var(--space-admin-4)]">
             <a
-              href={`/api/qualiopi/devis/${devis.id}/exemplaire-signe`}
+              href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
               className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
             >
               Télécharger l&apos;exemplaire signé (PDF)

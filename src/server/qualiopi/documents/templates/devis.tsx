@@ -29,7 +29,7 @@ import {
   LegalCallout,
   SignatureZone,
   formatEurosFromCents,
-  type PreuveSignature,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -176,10 +176,7 @@ export interface DevisData {
    * du devis, SOUS les totaux. C'est ce qui fait que le client signe la pièce
    * qu'il a lue, et non un document séparé à trois champs.
    */
-  signatures?: {
-    client?: PreuveSignature | null;
-    axionia?: PreuveSignature | null;
-  };
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================

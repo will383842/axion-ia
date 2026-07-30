@@ -1,8 +1,11 @@
 /**
- * GET /api/qualiopi/devis/[id]/exemplaire-signe
+ * GET /api/qualiopi/pieces/[id]/exemplaire-signe
  *
- * Renvoie le devis AVEC les signatures apposées — le document qu'on remet au
- * client et qu'un auditeur regarde.
+ * Renvoie une PIÈCE avec ses signatures apposées — le document qu'on remet au
+ * signataire et qu'un auditeur regarde. Vaut pour les six types rendus.
+ *
+ * ⚠️ `[id]` est un `DocumentGenere.id`, PAS un id de devis : la route est
+ * générique, comme le registre qu'elle sert.
  *
  * 🔴 Ce n'est PAS la pièce du registre, et il ne faut pas le confondre. La pièce
  * scellée reste l'original, dont l'empreinte est figée dans
@@ -22,7 +25,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
-import { rendreExemplaireSigneDevis } from "@/server/qualiopi/documents/signature/devis-exemplaire-signe";
+import { rendreExemplaireSigne } from "@/server/qualiopi/documents/signature/exemplaire-signe";
 
 export const dynamic = "force-dynamic";
 
@@ -37,17 +40,14 @@ export async function GET(
   }
 
   const { id } = await params;
-  const res = await rendreExemplaireSigneDevis(id);
+  const res = await rendreExemplaireSigne(id);
 
   if (!res.ok) {
-    // Motifs distincts : « aucune signature » n'est pas une erreur, c'est un
-    // état — et le dire évite de partir chercher une panne qui n'existe pas.
-    const statut = res.raison === "aucune_signature" ? 409 : 404;
-    const message =
-      res.raison === "aucune_signature"
-        ? "Ce devis ne porte aucune signature : il n'y a pas d'exemplaire signé à produire."
-        : "Devis introuvable, ou aucune pièce ne lui est rattachée.";
-    return NextResponse.json({ error: message }, { status: statut });
+    // Motifs distincts : « aucune signature » ou « instantané absent » ne sont
+    // pas des erreurs, ce sont des ÉTATS — et le dire évite de partir chercher
+    // une panne qui n'existe pas. Le message vient du module, qui sait pourquoi.
+    const statut = res.raison === "introuvable" ? 404 : 409;
+    return NextResponse.json({ error: res.message }, { status: statut });
   }
 
   return new NextResponse(new Uint8Array(res.buffer), {

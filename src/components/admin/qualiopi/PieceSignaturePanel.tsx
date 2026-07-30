@@ -178,6 +178,26 @@ export function PieceSignaturePanel({
         )}
       </div>
 
+      {/* 🔴 L'exemplaire signé — sans lui, la preuve n'existait QU'en base : le
+          document remis au signataire et vu par l'auditeur continuait d'afficher
+          des cadres vides, alors que la signature était enregistrée et chaînée.
+
+          ⚠️ Rendu à la volée. Ce n'est PAS la pièce du registre, dont
+          l'empreinte est scellée et ne doit jamais être réécrite. */}
+      {signatures.length > 0 && (
+        <p className="mt-[var(--space-admin-3)]">
+          <a
+            href={`/api/qualiopi/pieces/${documentGenereId}/exemplaire-signe`}
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+          >
+            Télécharger l&apos;exemplaire signé (PDF)
+          </a>
+          <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            La pièce d&apos;origine, scellée, reste inchangée.
+          </span>
+        </p>
+      )}
+
       {/* Lien émis — affiché UNE fois, non cliquable */}
       {lien !== null && (
         <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]">

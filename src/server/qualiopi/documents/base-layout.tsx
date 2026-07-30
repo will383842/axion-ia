@@ -26,6 +26,7 @@ import {
 } from "@/server/qualiopi/brand/brand-tokens";
 import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 // Ré-export pour que les templates puissent importer le type depuis base-layout.
 export type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -574,6 +575,20 @@ export interface PreuveSignature {
   /** Vrai si l'image a été purgée (art. 17). La ligne de preuve, elle, survit. */
   imagePurgee?: boolean;
 }
+
+/**
+ * Preuves apposées, indexées par PARTIE.
+ *
+ * 🔴 Forme UNIFORME pour les huit circuits, et c'est délibéré. La première
+ * version donnait au devis sa propre forme (`{ client, axionia }`) : à cinq
+ * templates de plus, on aurait eu cinq formes différentes, et l'exemplaire signé
+ * aurait dû savoir laquelle chacun attend. Une seule forme, indexée par la
+ * partie du SSOT, se branche partout sans traduction.
+ *
+ * ⚠️ Une clé ABSENTE ou `null` = cadre vide à remplir au stylo. Ce n'est pas un
+ * état dégradé : le circuit papier reste un chemin de plein droit.
+ */
+export type PreuvesParPartie = Partial<Record<PartieSignataire, PreuveSignature | null>>;
 
 export interface SignaturePartie {
   /** Ex. « Pour l'organisme de formation ». */
