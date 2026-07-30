@@ -191,3 +191,56 @@ describe("ReglementInterieurPdf — contenu légal", () => {
     expect(text).toContain("consignes de sécurité");
   });
 });
+
+describe("🔴 contrat particulier — l'échéancier DATÉ figure au contrat (L.6353-6 pt 3)", () => {
+  // La doctrine administrative impose que « les modalités de règlement,
+  // notamment l'échéancier, figurent dans le contrat de formation ». Jusqu'au
+  // 2026-07-30, ce contrat citait L.6353-6 sans donner UNE SEULE date : l'article
+  // était mentionné, l'obligation pas remplie.
+  //
+  // ⚠️ Ce test vérifie que le paramètre est CONSOMMÉ — la sortie doit DIFFÉRER
+  // selon qu'on fournit un échéancier. C'est la leçon du défaut F1 : un gabarit
+  // câblé qu'aucun producteur n'alimente passe tous les tests naïfs.
+  const ECHEANCIER = [
+    {
+      libelle: "Solde — échéance 1/3 (art. L6353-6)",
+      montantEuros: 350,
+      dueLeLisible: "15/09/2026",
+    },
+    {
+      libelle: "Solde — échéance 2/3 (art. L6353-6)",
+      montantEuros: 350,
+      dueLeLisible: "15/10/2026",
+    },
+    {
+      libelle: "Solde — échéance 3/3 (art. L6353-6)",
+      montantEuros: 350,
+      dueLeLisible: "15/11/2026",
+    },
+  ];
+
+  it("imprime chaque échéance avec sa DATE et son montant", () => {
+    const sans = collectPdfTextNormalized(
+      <ContratFormationPdf data={CONTRAT} identite={IDENTITE} />,
+    );
+    const avec = collectPdfTextNormalized(
+      <ContratFormationPdf
+        data={{ ...CONTRAT, echeancierSolde: ECHEANCIER }}
+        identite={IDENTITE}
+      />,
+    );
+    expect(avec).not.toStrictEqual(sans);
+    expect(avec).toContain("Échéancier du solde");
+    expect(avec).toContain("15/09/2026");
+    expect(avec).toContain("15/11/2026");
+    expect(sans).not.toContain("Échéancier du solde");
+  });
+
+  it("⚠️ sans échéancier, garde la ligne « solde échelonné » — ne fabrique aucune date", () => {
+    const sans = collectPdfTextNormalized(
+      <ContratFormationPdf data={CONTRAT} identite={IDENTITE} />,
+    );
+    expect(sans).toContain("Solde échelonné au fur et à mesure");
+    expect(sans).not.toMatch(/\d{2}\/\d{2}\/2026 — Solde/);
+  });
+});

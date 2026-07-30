@@ -67,6 +67,26 @@ export interface ContratFormationData {
    * un plafond. Reste borné à 30 % du prix (L.6353-6) même s'il est fourni.
    */
   acompteEuros?: number;
+  /**
+   * Échéancier DATÉ du solde — art. L.6353-6 point (3).
+   *
+   * 🔴 Ce n'est pas un agrément : la doctrine administrative impose que « les
+   * modalités de règlement, notamment l'échéancier, figurent dans le contrat de
+   * formation ». Jusqu'au 2026-07-30, ce contrat annonçait l'échelonnement sans
+   * en donner une seule date — l'obligation était citée, pas remplie.
+   *
+   * ⚠️ Calculé sur les bornes CONTRACTUELLES de l'action, jamais sur le rythme
+   * réel du stagiaire : un échéancier au prorata des heures consommées serait
+   * inconnaissable à la signature, donc impossible à écrire ici.
+   *
+   * Absent → on retombe sur la ligne « solde échelonné » sans date, ce qui est le
+   * comportement historique. On ne fabrique aucune échéance.
+   */
+  echeancierSolde?: ReadonlyArray<{
+    libelle: string;
+    montantEuros: number;
+    dueLeLisible: string | null;
+  }>;
   dateContrat: string;
   /**
    * Preuves de signature RÉELLEMENT apposées, par partie.
@@ -273,6 +293,24 @@ export function ContratFormationPdf({
             </Text>
             <Text style={local.amountValue}>{formatEur(solde)}</Text>
           </View>
+
+          {/* 🔴 L'échéancier DATÉ — ce que la doctrine exige au contrat.
+              Sans lui, la pièce citait L.6353-6 sans jamais dire QUAND le
+              stagiaire paie. Absent, on garde la ligne « solde échelonné »
+              ci-dessus : on ne fabrique aucune date. */}
+          {data.echeancierSolde !== undefined && data.echeancierSolde.length > 0 ? (
+            <View style={{ marginTop: 6 }}>
+              <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>Échéancier du solde</Text>
+              {data.echeancierSolde.map((e, i) => (
+                <View key={i} style={local.amountRow}>
+                  <Text style={local.amountLabel}>
+                    {e.dueLeLisible !== null ? `${e.dueLeLisible} — ${e.libelle}` : e.libelle}
+                  </Text>
+                  <Text style={local.amountValue}>{formatEur(e.montantEuros)}</Text>
+                </View>
+              ))}
+            </View>
+          ) : null}
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que

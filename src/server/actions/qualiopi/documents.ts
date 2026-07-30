@@ -479,6 +479,18 @@ export async function genererContratFormationAction(input: {
     cpf: false,
     nature: "particulier",
     tauxAcomptePct: PLAFOND_ACOMPTE_PARTICULIER_PCT,
+    // 🔴 Les bornes de l'action, sans lesquelles le point (3) de L6353-6 reste
+    // une citation : `calculerAcompte` ne peut DATER les échéances du solde que
+    // s'il connaît la période sur laquelle l'action se déroule.
+    //
+    // ⚠️ La signature n'a pas encore eu lieu — on prend donc `new Date()` comme
+    // date d'engagement présumée pour borner la première échéance après le délai
+    // de rétractation. Le contrat imprimé annonce un échéancier calculé à SA date
+    // d'émission ; si la signature est plus tardive, le garde-fou serveur
+    // (`encaissementAutorise`) reste l'autorité sur l'encaissement réel.
+    dateSignature: new Date(),
+    dateDebutAction: new Date(session.dateDebut),
+    dateFinAction: new Date(session.dateFin),
   });
 
   const doc = await generateDocument({
@@ -504,6 +516,20 @@ export async function genererContratFormationAction(input: {
           prixNet: session.montantHtCents / 100,
           // Ce que le système DEMANDERA réellement, pas un plafond recalculé.
           acompteEuros: acompte.acompteCents / 100,
+          // 🔴 L'échéancier DATÉ, transmis au gabarit. Sans cette ligne, la prop
+          // `echeancierSolde` serait un paramètre mort — exactement le défaut F1
+          // trouvé sur le devis (un gabarit câblé qu'aucun producteur n'alimente).
+          //
+          // ⚠️ On ne garde QUE les échéances du solde : la première ligne de
+          // `acompte.echeancier` est l'acompte, déjà affiché au-dessus. La
+          // dédoubler donnerait un contrat où le stagiaire paie deux fois.
+          echeancierSolde: acompte.echeancier
+            .filter((e) => !e.libelle.startsWith("Acompte"))
+            .map((e) => ({
+              libelle: e.libelle,
+              montantEuros: e.montantCents / 100,
+              dueLeLisible: e.dueLe === null ? null : formatDate(e.dueLe),
+            })),
           dateContrat: formatDateFr(new Date()),
         },
         identite,
