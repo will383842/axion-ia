@@ -188,10 +188,12 @@ function SessionDocButton({
 
 interface EnrollmentDocButtonProps {
   label: string;
-  action: (input: {
-    enrollmentId: string;
-  }) => Promise<
-    | { data: { documentId: string; numero: string } }
+  action: (input: { enrollmentId: string }) => Promise<
+    // `avertissement` : le document EST produit, mais il lui manque une mention
+    // que le logiciel ne peut pas fabriquer seul (cf. médiation de la
+    // consommation sur le contrat individuel). Distinct d'une erreur — le
+    // travail a abouti — mais ça ne doit pas se perdre dans un message vert.
+    | { data: { documentId: string; numero: string; avertissement?: string | undefined } }
     | { data: { resultat: "complete" | "partielle" | "aucune"; documentId: string | null } }
     | { error: string }
   >;
@@ -209,10 +211,12 @@ function EnrollmentDocButton({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
 
   function handleClick() {
     setError(null);
     setSuccess(null);
+    setWarning(null);
     startTransition(async () => {
       const result = await action({ enrollmentId });
       if ("error" in result) {
@@ -222,6 +226,11 @@ function EnrollmentDocButton({
       let msg: string;
       if ("numero" in result.data) {
         msg = `${label} — n° ${result.data.numero} généré.`;
+        // Affiché à part, en ambre, et NON fondu dans le message de succès :
+        // une réserve noyée dans une confirmation verte ne se lit pas.
+        if ("avertissement" in result.data && result.data.avertissement) {
+          setWarning(result.data.avertissement);
+        }
       } else {
         // attestation : resultat = complete | partielle | aucune
         const r = result.data as { resultat: string; documentId: string | null };
@@ -258,6 +267,14 @@ function EnrollmentDocButton({
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]"
         >
           {success}
+        </p>
+      )}
+      {warning && (
+        <p
+          role="status"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
+        >
+          ⚠️ {warning}
         </p>
       )}
     </div>
