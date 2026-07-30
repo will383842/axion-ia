@@ -135,13 +135,24 @@ if ! tar -xzf "${WORK_DIR}/backup.tar.gz" -C "${WORK_DIR}/payload" 2>"${WORK_DIR
   exit 1
 fi
 
-DB="${WORK_DIR}/payload/docuseal.sqlite3"
-PG_DUMP="${WORK_DIR}/payload/docuseal.dump"
+# ⚠️ On CHERCHE les fichiers au lieu de supposer leur chemin.
+#
+# Le premier jet lisait `payload/docuseal.sqlite3` en dur, parce que le script
+# de sauvegarde fait `tar -C payload -cf - .` — donc, en théorie, une archive
+# plate. En pratique l'archive de production contient un dossier `docuseal/`
+# à la racine, et le drill a conclu « aucune base dans l'archive » sur une
+# sauvegarde qui en contenait une.
+#
+# Deuxième faux positif du même genre après celui du `-iter` : deviner la forme
+# de l'archive est précisément ce qu'un test de restauration ne doit pas faire.
+# Son travail est de constater ce qu'il y a, pas de vérifier une hypothèse.
+DB="$(find "${WORK_DIR}/payload" -type f -name 'docuseal*.sqlite3' 2>/dev/null | head -1)"
+PG_DUMP="$(find "${WORK_DIR}/payload" -type f -name 'docuseal*.dump' 2>/dev/null | head -1)"
 
 # ─── 4. Intégrité SQLite ─────────────────────────────────────────────────────
 # Le backup a deux variantes (SQLite embarqué, ou Postgres si --pg). On teste
 # celle réellement présente plutôt que d'échouer sur l'absence de l'autre.
-if [ -f "${DB}" ]; then
+if [ -n "${DB}" ] && [ -f "${DB}" ]; then
   echo "▶ PRAGMA integrity_check…"
   INTEG=$(sqlite3 "${DB}" "PRAGMA integrity_check;" 2>&1 | head -1)
   if [ "${INTEG}" != "ok" ]; then
@@ -182,7 +193,7 @@ if [ -f "${DB}" ]; then
     exit 1
   fi
   echo "  total lignes métier : ${TOTAL}"
-elif [ -f "${PG_DUMP}" ]; then
+elif [ -n "${PG_DUMP}" ] && [ -f "${PG_DUMP}" ]; then
   echo "▶ Variante Postgres détectée — contrôle d'intégrité pg_restore --list…"
   LINES=$(pg_restore --list "${PG_DUMP}" 2>&1 | wc -l)
   if [ "${LINES}" -lt 10 ]; then
@@ -195,7 +206,9 @@ elif [ -f "${PG_DUMP}" ]; then
   echo "  pg_restore --list : ${LINES} entrées"
 else
   echo "❌ Ni docuseal.sqlite3 ni docuseal.dump dans l'archive"
-  ls -la "${WORK_DIR}/payload" || true
+  # Arborescence COMPLÈTE : un `ls` de la racine ne montrerait qu'un dossier et
+  # laisserait croire l'archive vide — c'est ce qui m'a induit en erreur.
+  find "${WORK_DIR}/payload" -maxdepth 3 | head -40 || true
   notify_telegram "🔴 [DOCUSEAL-DRILL] Archive sans base de données exploitable"
   exit 1
 fi
@@ -203,8 +216,8 @@ fi
 # ─── 6. Les PDF signés sont-ils là ? ─────────────────────────────────────────
 # La base porte les métadonnées de signature ; les PDF sont la pièce qu'on
 # présente. Une base intacte sans documents ne suffirait pas en audit.
-FILES_TAR="${WORK_DIR}/payload/files.tar"
-if [ -f "${FILES_TAR}" ]; then
+FILES_TAR="$(find "${WORK_DIR}/payload" -type f -name 'files.tar' 2>/dev/null | head -1)"
+if [ -n "${FILES_TAR}" ] && [ -f "${FILES_TAR}" ]; then
   FILE_COUNT=$(tar -tf "${FILES_TAR}" 2>/dev/null | grep -vc '/$' || echo 0)
   FILES_MB=$(( $(stat -c%s "${FILES_TAR}" 2>/dev/null || stat -f%z "${FILES_TAR}") / 1024 / 1024 ))
   echo "  PDF archivés : ${FILE_COUNT} fichiers (${FILES_MB} MB)"
