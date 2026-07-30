@@ -379,11 +379,13 @@ export async function genererConventionTripartiteAction(input: {
  */
 export async function genererContratFormationAction(input: {
   enrollmentId: string;
-}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+}): Promise<
+  ActionResult<{ documentId: string; numero: string; avertissement?: string | undefined }>
+> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
-  // 🔴 Audit certification 2026-07-26 (F50) — GARDE MÉDIATION.
+  // ⚠️ MÉDIATION DE LA CONSOMMATION — AVERTISSEMENT, PLUS BLOCAGE (2026-07-30).
   //
   // Le contrat de formation de l'article L.6353-3 s'adresse à une personne
   // physique agissant pour son propre compte, donc à un CONSOMMATEUR. L'article
@@ -391,23 +393,44 @@ export async function genererContratFormationAction(input: {
   // médiateur agréé et d'en publier les coordonnées — amende administrative
   // jusqu'à 15 000 € pour une personne morale.
   //
-  // La garde est posée ICI plutôt que dans le template : refuser au moment de
-  // générer, devant l'admin qui peut agir, vaut mieux que sortir un contrat
-  // irrégulier qu'on découvrira signé. Même logique que le refus d'émettre un
-  // lien d'émargement sans horaires confirmés.
+  // L'audit de certification (2026-07-26, F50) avait posé ici un REFUS pur et
+  // simple. Décision de Will du 2026-07-30 : ne plus bloquer. L'obligation
+  // légale, elle, ne disparaît pas — mais elle ne se règle pas dans le code, et
+  // un outil qui refuse de produire le document laisse l'admin sans issue le
+  // jour où il en a besoin. Le rôle du logiciel s'arrête à dire ce qui manque.
   //
-  // ⚠️ N'affecte QUE le contrat individuel. La convention B2B, elle, ne relève
-  // pas du droit de la consommation et reste générable sans médiateur.
+  // Donc : le contrat est émis, et l'absence de médiateur est
+  //   • rendue VISIBLE à l'admin (avertissement retourné avec le document) ;
+  //   • TRACÉE dans le journal d'audit, avec le numéro du contrat concerné.
+  //
+  // Ce second point est le plus important. Le jour d'un contrôle, la question
+  // ne sera pas « le logiciel bloquait-il ? » mais « quels contrats ont été
+  // émis sans la mention ? ». Sans trace, la réponse est introuvable ; avec
+  // elle, la liste s'extrait du journal en une requête.
+  //
+  // Pour faire disparaître l'avertissement : renseigner
+  // « mediateur_consommation_nom » et « mediateur_consommation_url » dans la
+  // configuration Qualiopi, après adhésion effective à un médiateur agréé.
+  //
+  // 🔴 PIÈGE À CONNAÎTRE le jour où ce sera fait : `contrat-formation.tsx`
+  // n'imprime AUCUNE clause de médiation, ni aujourd'hui ni avec les clés
+  // renseignées. Le refus posé en 2026-07-26 protégeait donc l'émission d'un
+  // document qui, même conforme côté configuration, n'aurait pas porté la
+  // mention — une conformité de façade. Renseigner les deux clés éteindra
+  // l'avertissement SANS ajouter la clause au contrat : il faudra aussi
+  // modifier le gabarit, sous peine de croire le contrat en règle alors qu'il
+  // ne l'est pas. Ne pas retirer ce commentaire avant que le gabarit l'imprime.
+  //
+  // ⚠️ N'affecte QUE le contrat individuel. La convention B2B ne relève pas du
+  // droit de la consommation et n'a jamais été concernée.
   const [mediateurNom, mediateurUrl] = await Promise.all([
     getQualiopiConfig("mediateur_consommation_nom"),
     getQualiopiConfig("mediateur_consommation_url"),
   ]);
-  if (!mediateurNom?.trim() || !mediateurUrl?.trim()) {
-    return {
-      error:
-        "Contrat individuel bloqué : aucun médiateur de la consommation n'est renseigné. Vendre une formation à un particulier impose d'avoir adhéré à un médiateur agréé CECMC et d'en publier les coordonnées (art. L.612-1 du Code de la consommation). Renseignez « mediateur_consommation_nom » et « mediateur_consommation_url » dans la configuration Qualiopi. Les conventions B2B ne sont pas concernées.",
-    };
-  }
+  const mediateurManquant = !mediateurNom?.trim() || !mediateurUrl?.trim();
+  const avertissementMediation = mediateurManquant
+    ? "Contrat émis SANS mention de médiation de la consommation : aucun médiateur n'est renseigné. Vendre une formation à un particulier impose d'avoir adhéré à un médiateur agréé CECMC et d'en publier les coordonnées (art. L.612-1 du Code de la consommation). Renseignez « mediateur_consommation_nom » et « mediateur_consommation_url » dans la configuration Qualiopi. Les conventions B2B ne sont pas concernées."
+    : undefined;
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -548,11 +571,26 @@ export async function genererContratFormationAction(input: {
     action: "qualiopi.document.contrat.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
-    changes: { documentId: doc.id, numero: doc.numero, sessionId: session.id },
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      sessionId: session.id,
+      // Trace de conformité. Le jour d'un contrôle, la question sera « quels
+      // contrats ont été émis sans la mention de médiation ? » — cette clé rend
+      // la liste extractible du journal, contrat par contrat, au lieu de la
+      // laisser introuvable.
+      ...(mediateurManquant ? { mentionMediationAbsente: true } : {}),
+    },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return {
+    data: {
+      documentId: doc.id,
+      numero: doc.numero,
+      ...(avertissementMediation ? { avertissement: avertissementMediation } : {}),
+    },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
