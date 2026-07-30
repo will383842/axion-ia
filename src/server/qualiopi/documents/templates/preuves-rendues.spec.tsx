@@ -36,6 +36,8 @@ import { ConventionTripartitePdf } from "./convention-tripartite";
 import { ContratFormationPdf } from "./contrat-formation";
 import { ContratSousTraitancePdf } from "./contrat-sous-traitance";
 import { ProtocoleAfestPdf } from "./protocole-afest";
+import { ReleveConnexionPdf } from "./releve-connexion";
+import { LettreMissionPdf } from "./lettre-mission";
 
 beforeAll(() => registerPdfTestFontsFallback());
 
@@ -194,6 +196,40 @@ const CAS: ReadonlyArray<{
       remuneration: "850 € HT / jour",
       conformiteVerifieeAt: "20/08/2026",
       dateContrat: "25/08/2026",
+    },
+  },
+  {
+    type: "releve_connexion",
+    Composant: ReleveConnexionPdf as unknown as ComposantTest,
+    partie: "formateur",
+    identiteEnProp: true,
+    data: {
+      numero: "AXI-REL-2026-001",
+      dateEmission: "06/06/2026",
+      intitule: "IA appliquée",
+      plateforme: "Zoom",
+      nomFormateur: "Williams Jullin",
+      sessions: [],
+      participants: [],
+    },
+  },
+  {
+    type: "lettre_mission",
+    Composant: LettreMissionPdf as unknown as ComposantTest,
+    partie: "formateur",
+    identiteEnProp: true,
+    data: {
+      numero: "AXI-LM-2026-001",
+      formateur: {
+        nomPrenom: "Williams Jullin",
+        adresse: "1 rue de la Paix, 75001 Paris",
+        email: "w@axion.test",
+        specialite: "Intelligence artificielle",
+      },
+      objetMission: "Animation de modules IA",
+      formations: [],
+      tarifJourHt: 850,
+      dateMission: "01/06/2026",
     },
   },
   {

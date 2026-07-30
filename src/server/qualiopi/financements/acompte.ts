@@ -230,6 +230,8 @@ export interface ContexteAcompte {
    */
   dateDebutAction?: Date;
   dateFinAction?: Date;
+  /** Nombre d'échéances de solde souhaité — « en 2 fois », « en 3 fois ». */
+  nbEcheancesSolde?: number;
 }
 
 export interface Echeance {
@@ -296,6 +298,26 @@ export function echelonnerSolde(arg: {
   encaissableAPartirDu: Date | null;
   dateDebutAction?: Date | undefined;
   dateFinAction?: Date | undefined;
+  /**
+   * Nombre d'échéances SOUHAITÉ — « en 2 fois », « en 3 fois ».
+   *
+   * 🔴 C'est une donnée COMMERCIALE, pas une déduction de la durée. La pratique
+   * du secteur est de proposer un paiement en une, deux ou trois fois ; déduire
+   * mécaniquement le nombre d'échéances des mois de l'action produirait douze
+   * échéances sur une formation d'un an, ce que personne ne propose.
+   *
+   * Non renseigné → une échéance par mois entamé (comportement par défaut).
+   *
+   * ⚠️ BORNÉ dans les deux sens :
+   *  · plafonné au nombre de mois disponibles — on ne case pas trois échéances
+   *    mensuelles distinctes dans une action de trois jours ;
+   *  · pour un PARTICULIER, plancher de 2 dès que l'action le permet. Une seule
+   *    échéance, c'est le solde en une fois — précisément ce que le point (3) de
+   *    L6353-6 interdit. Ce plancher n'est pas un réglage, c'est la loi.
+   */
+  nbEcheancesSouhaite?: number | undefined;
+  /** `true` pour un particulier : active le plancher légal de 2 échéances. */
+  plancherLegal?: boolean | undefined;
 }): Echeance[] {
   const solde = Math.max(0, entierSur(arg.soldeCents));
   if (solde === 0) return [];
@@ -323,23 +345,43 @@ export function echelonnerSolde(arg: {
       ? arg.encaissableAPartirDu
       : debutBrut;
 
-  // Nombre de mois ENTAMÉS entre la première échéance et la fin de l'action.
-  const moisEcoules =
-    (fin.getFullYear() - premiere.getFullYear()) * 12 + (fin.getMonth() - premiere.getMonth());
-  const nb = Math.max(1, moisEcoules + 1);
+  // Mois ENTAMÉS entre la première échéance et la fin de l'action : nombre
+  // maximal d'échéances mensuelles distinctes que l'action peut porter.
+  const moisDisponibles =
+    Math.max(
+      0,
+      (fin.getFullYear() - premiere.getFullYear()) * 12 + (fin.getMonth() - premiere.getMonth()),
+    ) + 1;
 
-  if (nb === 1) {
+  const souhaite =
+    arg.nbEcheancesSouhaite != null && Number.isFinite(arg.nbEcheancesSouhaite)
+      ? Math.max(1, Math.trunc(arg.nbEcheancesSouhaite))
+      : moisDisponibles;
+
+  let nb = Math.min(souhaite, moisDisponibles);
+  if (arg.plancherLegal === true && moisDisponibles >= 2) nb = Math.max(2, nb);
+
+  if (nb <= 1) {
     return [
       {
         libelle:
-          "Solde — l'action est trop courte pour un échelonnement mensuel (art. L6353-6, échelonnement matériellement impossible)",
+          moisDisponibles >= 2
+            ? "Solde — paiement en une fois (échéancier convenu)"
+            : "Solde — l'action est trop courte pour un échelonnement mensuel (art. L6353-6, échelonnement matériellement impossible)",
         montantCents: solde,
         dueLe: premiere,
       },
     ];
   }
 
-  // Arrondi à l'euro inférieur par échéance, le reste allant à la DERNIÈRE.
+  // 🔴 Les échéances sont RÉPARTIES sur toute la durée de l'action, pas collées
+  // aux premiers mois. « En 3 fois » sur six mois donne les mois 1, 3 et 5 —
+  // sinon on encaisserait tout dans le premier tiers, ce qui viderait
+  // l'échelonnement de son sens protecteur.
+  const pas = moisDisponibles / nb;
+
+  // Arrondi à l'euro inférieur par échéance, le reste à la DERNIÈRE : on ne
+  // réclame jamais plus tôt que prévu.
   const parEcheance = arrondirCentimes(Math.floor(solde / nb));
   const echeances: Echeance[] = [];
   let cumul = 0;
@@ -347,14 +389,14 @@ export function echelonnerSolde(arg: {
     echeances.push({
       libelle: `Solde — échéance ${i + 1}/${nb} (art. L6353-6)`,
       montantCents: parEcheance,
-      dueLe: moisSuivant(premiere, i),
+      dueLe: moisSuivant(premiere, Math.floor(i * pas)),
     });
     cumul += parEcheance;
   }
   echeances.push({
     libelle: `Solde — échéance ${nb}/${nb} (art. L6353-6)`,
     montantCents: solde - cumul,
-    dueLe: moisSuivant(premiere, nb - 1),
+    dueLe: moisSuivant(premiere, Math.floor((nb - 1) * pas)),
   });
   return echeances;
 }
@@ -419,6 +461,7 @@ export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
         dateSignature: ctx.dateSignature ?? null,
         dateDebutAction: ctx.dateDebutAction,
         dateFinAction: ctx.dateFinAction,
+        nbEcheancesSolde: ctx.nbEcheancesSolde,
         motif:
           "Financement CPF : la Caisse des Dépôts règle l'organisme après service fait, aucun acompte ne peut être demandé au titulaire. Le reste à charge suit le régime du particulier : encaissable après le délai de rétractation et obligatoirement échelonné (art. L6353-6).",
       });
@@ -450,6 +493,7 @@ export function calculerAcompte(ctx: ContexteAcompte): ResultatAcompte {
       dateSignature: ctx.dateSignature ?? null,
       dateDebutAction: ctx.dateDebutAction,
       dateFinAction: ctx.dateFinAction,
+      nbEcheancesSolde: ctx.nbEcheancesSolde,
     });
   }
 
@@ -501,6 +545,7 @@ function resultatParticulier(arg: {
   /** Bornes contractuelles de l'action — voir `ContexteAcompte`. */
   dateDebutAction?: Date | undefined;
   dateFinAction?: Date | undefined;
+  nbEcheancesSolde?: number | undefined;
   motif?: string;
 }): ResultatAcompte {
   const { resteACharge, dateSignature } = arg;
@@ -538,6 +583,9 @@ function resultatParticulier(arg: {
         encaissableAPartirDu,
         dateDebutAction: arg.dateDebutAction,
         dateFinAction: arg.dateFinAction,
+        nbEcheancesSouhaite: arg.nbEcheancesSolde,
+        // Particulier → plancher légal de 2 échéances dès que l'action le permet.
+        plancherLegal: true,
       }),
     );
   }

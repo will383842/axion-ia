@@ -491,6 +491,10 @@ export async function genererContratFormationAction(input: {
     dateSignature: new Date(),
     dateDebutAction: new Date(session.dateDebut),
     dateFinAction: new Date(session.dateFin),
+    // « En 3 fois » par défaut, réglable. ⚠️ Le plancher légal de 2 échéances du
+    // particulier reste appliqué par `calculerAcompte` : ce réglage ne peut pas
+    // descendre sous la loi.
+    nbEcheancesSolde: (await getQualiopiConfig("nb_echeances_solde_defaut")) || 3,
   });
 
   const doc = await generateDocument({

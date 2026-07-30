@@ -55,6 +55,8 @@ import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/c
 import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { ProtocoleAfestPdf } from "@/server/qualiopi/documents/templates/protocole-afest";
+import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
+import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 
 /**
  * Type de pièce → composant de rendu.
@@ -62,10 +64,10 @@ import { ProtocoleAfestPdf } from "@/server/qualiopi/documents/templates/protoco
  * 🔴 Table EXPLICITE, et non un `import()` dynamique sur le nom du type : un
  * type absent doit être un refus lisible, pas un module introuvable au runtime.
  *
- * ⚠️ `releve_connexion` et `lettre_mission` en sont ABSENTS volontairement pour
- * l'instant : leurs templates n'ont pas encore de prop `signatures`. Les y
- * ajouter sans câbler le template rendrait un exemplaire identique à l'original,
- * ce qui se lirait comme « pas signé ».
+ * ⚠️ Les HUIT circuits du SSOT y figurent depuis le 2026-07-30. Ajouter une
+ * entrée sans câbler la prop `signatures` du template rendrait un exemplaire
+ * IDENTIQUE à l'original — ce qui se lirait « pas signé ». Le test
+ * `preuves-rendues.spec.tsx` vérifie que la sortie diffère réellement.
  */
 type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
 
@@ -76,6 +78,8 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
   contrat: ContratFormationPdf as unknown as ComposantPiece,
   contrat_sous_traitance: ContratSousTraitancePdf as unknown as ComposantPiece,
   protocole_afest: ProtocoleAfestPdf as unknown as ComposantPiece,
+  releve_connexion: ReleveConnexionPdf as unknown as ComposantPiece,
+  lettre_mission: LettreMissionPdf as unknown as ComposantPiece,
 };
 
 export type RefusExemplaire =

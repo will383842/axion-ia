@@ -471,3 +471,95 @@ describe("🔴 calculerAcompte — le solde d'un particulier est DATÉ", () => {
     expect(r.echeancier.every((e) => e.dueLe !== null)).toBe(true);
   });
 });
+
+describe("🔴 échelonnerSolde — « en 1, 2 ou 3 fois » (pratique commerciale)", () => {
+  const D10 = new Date("2026-09-11T00:00:00.000Z");
+  const SIX_MOIS = {
+    dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+    dateFinAction: new Date("2027-02-15T00:00:00.000Z"),
+  };
+
+  it("respecte le nombre d'échéances demandé", () => {
+    for (const n of [2, 3, 4]) {
+      const e = echelonnerSolde({
+        soldeCents: 600_000,
+        encaissableAPartirDu: D10,
+        ...SIX_MOIS,
+        nbEcheancesSouhaite: n,
+      });
+      expect(e).toHaveLength(n);
+      expect(e.reduce((a, x) => a + x.montantCents, 0)).toBe(600_000);
+    }
+  });
+
+  it("🔴 RÉPARTIT les échéances sur toute la durée, pas sur les premiers mois", () => {
+    // « En 3 fois » sur six mois doit donner ~mois 1, 3 et 5. Les coller au
+    // début encaisserait tout dans le premier tiers et viderait
+    // l'échelonnement de son sens protecteur.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 3,
+    });
+    const mois = e.map((x) => x.dueLe!.getMonth());
+    // Trois mois DISTINCTS, et le dernier nettement après le premier.
+    expect(new Set(mois).size).toBe(3);
+    const ecart = (e[2]!.dueLe!.getTime() - e[0]!.dueLe!.getTime()) / (24 * 3600 * 1000);
+    expect(ecart).toBeGreaterThan(80);
+  });
+
+  it("🔴 PLANCHER LÉGAL : un particulier ne paie jamais le solde en une fois", () => {
+    // `nbEcheancesSouhaite: 1` demanderait le solde en une fois — c'est
+    // exactement ce que le point (3) de L6353-6 interdit. Le plancher n'est pas
+    // un réglage : il ne peut pas descendre sous la loi.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 1,
+      plancherLegal: true,
+    });
+    expect(e.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("⚠️ SANS plancher (entreprise), « en une fois » est accepté", () => {
+    // Entre professionnels, aucune obligation d'échelonnement : c'est purement
+    // commercial. Le libellé ne prétend pas à un échelonnement.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 1,
+    });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.libelle).toContain("une fois");
+    expect(e[0]!.libelle).not.toContain("matériellement impossible");
+  });
+
+  it("plafonne au nombre de mois disponibles", () => {
+    // On ne case pas 6 échéances mensuelles dans une action de deux jours.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-09-17T00:00:00.000Z"),
+      nbEcheancesSouhaite: 6,
+    });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.libelle).toContain("matériellement impossible");
+  });
+
+  it("⚠️ un nombre d'échéances absurde ne fait pas lever", () => {
+    for (const n of [0, -5, Number.NaN, 1e9]) {
+      expect(() =>
+        echelonnerSolde({
+          soldeCents: 600_000,
+          encaissableAPartirDu: D10,
+          ...SIX_MOIS,
+          nbEcheancesSouhaite: n,
+        }),
+      ).not.toThrow();
+    }
+  });
+});
