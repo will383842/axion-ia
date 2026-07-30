@@ -162,7 +162,7 @@ function MarkPaidForm({
       </div>
       <div className="admin-field">
         <label htmlFor={`reference-${invoiceId}`} className="admin-label">
-          Référence (numéro virement / chèque)
+          Référence (numéro de virement)
         </label>
         <input
           id={`reference-${invoiceId}`}

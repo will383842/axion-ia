@@ -5,7 +5,10 @@
  *   - émission d'une facture libre (5 activités, lignes libres, TVA/ligne) ;
  *   - conversion devis accepté → facture ;
  *   - avoir (total ou partiel) ;
- *   - encaissement manuel (virement/chèque/espèces, partiel accepté).
+ *   - encaissement manuel (virement, carte, espèces — partiel accepté).
+ *     ⚠️ Le CHÈQUE n'est plus proposé en saisie (décision Will, 2026-07-30). Les
+ *     encaissements historiques enregistrés en chèque restent lisibles : on cesse
+ *     de proposer un moyen, on n'efface pas ce qui a été encaissé.
  *
  * Le retour d'émission expose `chorusProRequis` : client secteur public →
  * dépôt Chorus Pro OBLIGATOIRE (obligation en vigueur, hors réforme 2026).
