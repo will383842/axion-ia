@@ -74,8 +74,16 @@ const EVENT_TYPE_TAG = "calendly-event-type";
  */
 const MAX_WINDOW_MS = 7 * 86_400_000 - 1_000;
 
-/** Horizon interrogé, en jours. Deux fenêtres. */
-const HORIZON_MS = 14 * 86_400_000;
+/**
+ * Horizon interrogé : 28 jours, soit quatre fenêtres.
+ *
+ * Passé de 14 à 28 le 2026-07-30, avec le rendu en grille mensuelle : une
+ * quinzaine laissait la moitié du mois vide, ce qui donnait l'impression d'un
+ * agenda saturé alors qu'il ne l'est pas. Coût réel : quatre appels réseau par
+ * intervalle de cache au lieu de deux, soit seize par heure — négligeable
+ * devant les quotas Calendly.
+ */
+const HORIZON_MS = 28 * 86_400_000;
 
 /** Aucun appel ne bloque un rendu plus longtemps que ça. */
 const TIMEOUT_MS = 6_000;
@@ -301,9 +309,20 @@ function parseSlots(body: unknown): CalendlySlot[] {
 export interface FetchAvailableSlotsOptions {
   /** URL publique de l'event-type (`NEXT_PUBLIC_CALENDLY_APPEL_URL`). */
   readonly schedulingUrl: string | undefined;
-  /** Nombre maximum de jours porteurs de créneaux rendus. */
+  /**
+   * Nombre maximum de jours porteurs de créneaux rendus.
+   *
+   * Défaut large depuis le passage en grille mensuelle : chaque case cliquable
+   * du calendrier pointe une ancre vers la liste des horaires de ce jour, donc
+   * tronquer les jours produirait des cases qui ne mènent nulle part.
+   */
   readonly maxDays?: number;
-  /** Nombre maximum de créneaux rendus par jour. */
+  /**
+   * Nombre maximum de créneaux rendus par jour.
+   *
+   * C'est le vrai garde-fou de poids : 28 jours × 8 liens plafonnent le HTML.
+   * Le lien « toutes les disponibilités » couvre le reste.
+   */
   readonly maxSlotsPerDay?: number;
   /** Injectable pour les tests — l'horloge est quantifiée, jamais lue telle quelle. */
   readonly nowMs?: number;
@@ -317,8 +336,8 @@ export interface FetchAvailableSlotsOptions {
  */
 export async function fetchAvailableSlots({
   schedulingUrl,
-  maxDays = 5,
-  maxSlotsPerDay = 6,
+  maxDays = 31,
+  maxSlotsPerDay = 8,
   nowMs = Date.now(),
 }: FetchAvailableSlotsOptions): Promise<CalendlyAvailability> {
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return { ok: false, reason: "not_configured" };

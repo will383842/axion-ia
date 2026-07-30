@@ -39,6 +39,53 @@ function setup() {
   return render(<CalendlySlotPicker days={DAYS} fallbackUrl={FALLBACK} isFr height={720} />);
 }
 
+describe("CalendlySlotPicker — grille mensuelle", () => {
+  it("rend une vraie grille de dates, pas seulement une liste de jours", () => {
+    setup();
+    // Le nom du mois, plus les dates SANS créneau de la semaine conservée :
+    // c'est cette continuité des jours qui fait un calendrier plutôt qu'une
+    // liste. Les créneaux du jeu de test tombent les 4 et 5 août, donc la
+    // semaine du lundi 3 au dimanche 9 est rendue en entier.
+    expect(screen.getByText(/août 2026/i)).toBeInTheDocument();
+    expect(screen.getByText("3")).toBeInTheDocument();
+    expect(screen.getByText("9")).toBeInTheDocument();
+  });
+
+  it("rogne les semaines sans aucun créneau au lieu d'étaler un mois vide", () => {
+    setup();
+    // Le 1er août est deux semaines avant les créneaux : sa ligne n'a rien à
+    // montrer. L'afficher donnait un calendrier d'apparence vide — le défaut
+    // que ce rognage corrige.
+    expect(screen.queryByText("1")).toBeNull();
+    expect(screen.queryByText("31")).toBeNull();
+  });
+
+  it("une date disponible mène par ancre à ses horaires, déjà présents dans la page", () => {
+    const { container } = setup();
+    const case4 = screen.getByRole("link", { name: /mardi 4 août.*2 créneaux/i });
+    expect(case4).toHaveAttribute("href", "#j-2026-08-04");
+    // L'ancre doit exister, sinon le clic ne mène nulle part.
+    expect(container.querySelector("#j-2026-08-04")).not.toBeNull();
+  });
+
+  it("les dates sans créneau sont visibles mais pas cliquables", () => {
+    setup();
+    // Le 6 août est dans la semaine conservée mais n'a aucun créneau : il doit
+    // rester affiché — sinon la grille perd sa continuité — sans être un lien.
+    expect(screen.getByText("6")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /6 août/i })).toBeNull();
+  });
+
+  it("les cases de la grille sont datées en jour PARISIEN, sans glissement de fuseau", () => {
+    setup();
+    // 2026-08-04T07:00:00Z = 09:00 à Paris, donc bien le 4 — et pas le 3.
+    // Le suffixe « créneaux » distingue la case de la grille des liens
+    // d'horaire, dont le libellé porte la même date (« Réserver mardi 4 août… »).
+    const case4 = screen.getByRole("link", { name: /mardi 4 août.*créneaux/i });
+    expect(case4).toHaveTextContent("4");
+  });
+});
+
 describe("CalendlySlotPicker", () => {
   it("affiche les créneaux immédiatement, sans clic préalable", () => {
     setup();
