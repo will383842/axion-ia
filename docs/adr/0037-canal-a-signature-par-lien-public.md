@@ -11,14 +11,14 @@
 Le circuit de signature du devis présentait un défaut de fond : **le client lisait un document et
 en signait un autre.**
 
-| | Contenu |
-| --- | --- |
+|                      | Contenu                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------- |
 | PDF joint à l'e-mail | Détaillé : lignes, désignations, quantités, prix unitaires, TVA par ligne, totaux, mentions |
-| Signé dans DocuSeal | **3 champs** : `devis_number`, `amount_ht`, `valid_until` |
+| Signé dans DocuSeal  | **3 champs** : `devis_number`, `amount_ht`, `valid_until`                                   |
 
 Un bon pour accord qui ne désigne pas son objet est juridiquement fragile. Le plan unifié avait
 identifié le problème et tranché la correction (§III.3) : **template éphémère par pièce** —
-`POST /api/templates/pdf` avec le PDF généré, champs placés par *text tags*, puis
+`POST /api/templates/pdf` avec le PDF généré, champs placés par _text tags_, puis
 `POST /api/submissions`. Il écartait explicitement la voie du template permanent dupliquant la mise
 en page react-pdf, au motif de « deux sources de vérité qui divergeront » — ce que le circuit
 faisait pourtant déjà, faute de mieux.
@@ -80,7 +80,7 @@ son identité au moment de signer.
 
 ➡️ **Elle est résolue à l'ÉMISSION**, depuis la fiche client, par une action d'administration
 authentifiée, et **figée** dans `document_signature_tokens`. Au moment de signer, le service la
-relit dans cette ligne — donc en base. La doctrine est respectée ; c'est le *moment* de la
+relit dans cette ligne — donc en base. La doctrine est respectée ; c'est le _moment_ de la
 résolution qui se déplace, et ce déplacement est explicite plutôt que subi.
 
 ⚠️ Conséquence assumée : corriger la fiche client après émission ne change pas le lien déjà envoyé.
@@ -88,13 +88,13 @@ Pour corriger, on révoque et on réémet. C'est la même exigence de snapshot q
 
 ### Gardes d'autorisation
 
-| Garde | Ce qu'elle empêche |
-| --- | --- |
-| Le jeton vise CETTE pièce | Rejouer sur un autre devis un lien légitime |
-| Le jeton vise CETTE partie | Écrire une ligne au titre demandé par l'appelant |
+| Garde                                                    | Ce qu'elle empêche                                                       |
+| -------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Le jeton vise CETTE pièce                                | Rejouer sur un autre devis un lien légitime                              |
+| Le jeton vise CETTE partie                               | Écrire une ligne au titre demandé par l'appelant                         |
 | `axionia` / `responsable_pedagogique` interdits au jeton | Qu'un lien public engage l'organisme, et fasse paraître la pièce conclue |
-| Révocation et expiration revérifiées | Signer la version périmée d'un devis révisé |
-| Un seul jeton vivant par (pièce, partie) | Qu'en révoquer un donne une fausse impression de sécurité |
+| Révocation et expiration revérifiées                     | Signer la version périmée d'un devis révisé                              |
+| Un seul jeton vivant par (pièce, partie)                 | Qu'en révoquer un donne une fausse impression de sécurité                |
 
 Toutes sont revérifiées **dans `signerDocument`**, pas seulement dans la couche action : le service
 ne fait confiance à aucun appelant, celui-ci compris.
