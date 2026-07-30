@@ -146,8 +146,13 @@ fi
 # Deuxième faux positif du même genre après celui du `-iter` : deviner la forme
 # de l'archive est précisément ce qu'un test de restauration ne doit pas faire.
 # Son travail est de constater ce qu'il y a, pas de vérifier une hypothèse.
-DB="$(find "${WORK_DIR}/payload" -type f -name 'docuseal*.sqlite3' 2>/dev/null | head -1)"
-PG_DUMP="$(find "${WORK_DIR}/payload" -type f -name 'docuseal*.dump' 2>/dev/null | head -1)"
+# Le fichier s'appelle `db.sqlite3` en production, pas `docuseal.sqlite3` —
+# troisième hypothèse fausse de ce script sur la forme de l'archive. On ne
+# devine donc plus RIEN : n'importe quel `.sqlite3`, et le plus gros s'il y en
+# a plusieurs (la vraie base pèse toujours plus qu'un fichier annexe).
+DB="$(find "${WORK_DIR}/payload" -type f -name '*.sqlite3' -printf '%s	%p
+' 2>/dev/null   | sort -rn | head -1 | cut -f2-)"
+PG_DUMP="$(find "${WORK_DIR}/payload" -type f \( -name '*.dump' -o -name '*.pgdump' \) 2>/dev/null | head -1)"
 
 # ─── 4. Intégrité SQLite ─────────────────────────────────────────────────────
 # Le backup a deux variantes (SQLite embarqué, ou Postgres si --pg). On teste
@@ -216,8 +221,15 @@ fi
 # ─── 6. Les PDF signés sont-ils là ? ─────────────────────────────────────────
 # La base porte les métadonnées de signature ; les PDF sont la pièce qu'on
 # présente. Une base intacte sans documents ne suffirait pas en audit.
+# Les PDF signés arrivent soit en `files.tar`, soit — c'est le cas réel — en
+# dossier `attachments/` déjà déployé dans l'archive. On accepte les deux.
 FILES_TAR="$(find "${WORK_DIR}/payload" -type f -name 'files.tar' 2>/dev/null | head -1)"
-if [ -n "${FILES_TAR}" ] && [ -f "${FILES_TAR}" ]; then
+ATTACH_DIR="$(find "${WORK_DIR}/payload" -type d -name 'attachments' 2>/dev/null | head -1)"
+if [ -n "${ATTACH_DIR}" ] && [ -d "${ATTACH_DIR}" ]; then
+  FILE_COUNT=$(find "${ATTACH_DIR}" -type f 2>/dev/null | wc -l | tr -d ' ')
+  echo "  PDF archivés : ${FILE_COUNT} fichiers (dossier attachments/)"
+  DETAIL="${DETAIL}pdf=${FILE_COUNT}"
+elif [ -n "${FILES_TAR}" ] && [ -f "${FILES_TAR}" ]; then
   FILE_COUNT=$(tar -tf "${FILES_TAR}" 2>/dev/null | grep -vc '/$' || echo 0)
   FILES_MB=$(( $(stat -c%s "${FILES_TAR}" 2>/dev/null || stat -f%z "${FILES_TAR}") / 1024 / 1024 ))
   echo "  PDF archivés : ${FILE_COUNT} fichiers (${FILES_MB} MB)"
