@@ -180,30 +180,50 @@ if [ -n "${DB}" ] && [ -f "${DB}" ]; then
     exit 1
   fi
 
-  # On compte TOUTES les tables présentes, pas une liste de noms attendus.
+  # On compte les tables réellement présentes, pas une liste de noms attendus.
   #
   # La liste codée en dur (`submissions submitters templates documents`) serait
   # la quatrième hypothèse du même genre après le `-iter`, le dossier imbriqué
   # et le nom du fichier : si Docuseal nomme ses tables autrement, la somme
   # resterait à zéro et le drill crierait « sauvegarde vide » sur une base
   # pleine. Un test de restauration constate, il ne présume pas.
+  #
+  # ⚠️ MAIS toutes les lignes ne se valent pas, et le premier passage réussi
+  # (2026-07-30) l'a montré crûment : le total de 140 lignes était constitué à
+  # 96 de `schema_migrations` — la table de plomberie de Rails, remplie dès
+  # l'installation, AVANT la moindre signature. Compter tout sans distinguer
+  # revenait à faire passer le seuil « au moins une ligne » par de la
+  # tuyauterie : voyant vert sur une base sans une seule signature. Soit
+  # exactement le faux positif que l'étape est censée empêcher, réintroduit par
+  # le remède.
+  #
+  # Les tables d'infrastructure sont donc comptées et affichées — on ne cache
+  # rien — mais EXCLUES du total qui décide.
   TOTAL=0
   DETAIL=""
   COUNTS=""
+  INFRA_TOTAL=0
   while IFS= read -r t; do
     [ -n "${t}" ] || continue
     c=$(sqlite3 "${DB}" "SELECT COUNT(*) FROM \"${t}\";" 2>/dev/null || echo 0)
     case "${c}" in (''|*[!0-9]*) c=0 ;; esac
-    TOTAL=$(( TOTAL + c ))
-    COUNTS="${COUNTS}${c} ${t}
+    case "${t}" in
+      schema_migrations|ar_internal_metadata)
+        INFRA_TOTAL=$(( INFRA_TOTAL + c ))
+        echo "  ${t} : ${c} (infrastructure — hors décompte)"
+        ;;
+      *)
+        TOTAL=$(( TOTAL + c ))
+        COUNTS="${COUNTS}${c} ${t}
 "
+        ;;
+    esac
   done <<EOF
 ${TABLES}
 EOF
 
-  # Les tables métier d'abord si elles existent, sinon les plus remplies : dans
-  # les deux cas on veut voir des chiffres, pas seulement un total.
-  echo "  tables : $(printf '%s\n' "${TABLES}" | grep -c . | tr -d ' ')"
+  # Les plus remplies d'abord : on veut des chiffres, pas seulement un total.
+  echo "  tables : $(printf '%s\n' "${TABLES}" | grep -c . | tr -d ' ') (dont infrastructure : ${INFRA_TOTAL} lignes)"
   while IFS=' ' read -r c t; do
     [ -n "${t}" ] || continue
     echo "  ${t} : ${c}"
@@ -212,15 +232,44 @@ EOF
 $(printf '%s' "${COUNTS}" | sort -rn | head -6)
 EOF
 
+  # Les tables qui portent les SIGNATURES, nommées et affichées même à zéro.
+  #
+  # Le classement par volume ci-dessus ne les montre que si elles sont dans les
+  # six premières. Or c'est précisément quand elles sont VIDES qu'il faut les
+  # voir — un zéro qu'on n'affiche pas se lit comme une absence de question.
+  #
+  # Leur absence ne fait PAS échouer le drill : Docuseal n'est plus la voie de
+  # signature du site (les signatures récentes passent par le circuit interne),
+  # une sauvegarde sans nouvelle soumission est donc un état normal et non un
+  # incident. Mais elle doit se lire d'un coup d'œil dans le rapport.
+  SIGN_TOTAL=0
+  SIGN_VUES=0
+  for t in submissions submitters templates documents; do
+    if printf '%s\n' "${TABLES}" | grep -qx "${t}"; then
+      c=$(sqlite3 "${DB}" "SELECT COUNT(*) FROM \"${t}\";" 2>/dev/null || echo 0)
+      case "${c}" in (''|*[!0-9]*) c=0 ;; esac
+      echo "  → ${t} : ${c}"
+      SIGN_TOTAL=$(( SIGN_TOTAL + c ))
+      SIGN_VUES=$(( SIGN_VUES + 1 ))
+    fi
+  done
+  DETAIL="${DETAIL}signatures=${SIGN_TOTAL} "
+  if [ "${SIGN_VUES}" -gt 0 ] && [ "${SIGN_TOTAL}" -eq 0 ]; then
+    echo "  ⚠️ Aucune signature dans cette sauvegarde — attendu si Docuseal n'est plus utilisé, à vérifier sinon"
+  fi
+
   # Seuil volontairement à 1 : on ne prétend pas connaître le volume attendu,
   # on refuse seulement le cas « archive parfaitement valide et parfaitement
   # vide », qui signifierait que la sauvegarde ne sauvegarde rien.
+  #
+  # `TOTAL` exclut désormais l'infrastructure : une base fraîchement installée,
+  # avec ses seules migrations Rails, ne passe plus pour une base sauvegardée.
   if [ "${TOTAL}" -lt 1 ]; then
-    echo "❌ Aucune ligne dans les tables métier — la sauvegarde ne contient aucune signature"
-    notify_telegram "🔴 [DOCUSEAL-DRILL] Base VALIDE mais VIDE — aucune signature sauvegardée"
+    echo "❌ Aucune ligne applicative — la base ne contient que sa plomberie (${INFRA_TOTAL} lignes d'infrastructure)"
+    notify_telegram "🔴 [DOCUSEAL-DRILL] Base VALIDE mais VIDE — que de l'infrastructure, aucune donnée"
     exit 1
   fi
-  echo "  total lignes métier : ${TOTAL}"
+  echo "  total lignes applicatives : ${TOTAL} (hors infrastructure)"
 elif [ -n "${PG_DUMP}" ] && [ -f "${PG_DUMP}" ]; then
   echo "▶ Variante Postgres détectée — contrôle d'intégrité pg_restore --list…"
   LINES=$(pg_restore --list "${PG_DUMP}" 2>&1 | wc -l)
