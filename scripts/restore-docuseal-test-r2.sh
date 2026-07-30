@@ -94,14 +94,38 @@ echo "  Téléchargé : ${SIZE_MB} MB"
 # Un échec ICI est le scénario le plus redouté : la sauvegarde existe mais la
 # passphrase ne l'ouvre plus. Sans ce drill, on ne l'apprendrait qu'en urgence.
 echo "▶ Déchiffrement…"
-if ! openssl enc -d -aes-256-cbc -pbkdf2 -salt \
-  -pass "env:BACKUP_ENCRYPTION_PASSPHRASE" \
-  -in "${WORK_DIR}/backup.enc" -out "${WORK_DIR}/backup.tar.gz" 2>"${WORK_DIR}/openssl.err"; then
-  echo "❌ Déchiffrement impossible — passphrase incorrecte ou archive corrompue"
+# ⚠️ `-iter 100000` OBLIGATOIRE : `encrypt_aes()` de backup-lib.sh — qui chiffre
+# les archives Docuseal — impose explicitement 100 000 itérations, alors que le
+# backup Postgres s'en remet à la valeur par défaut d'OpenSSL (10 000).
+#
+# Déchiffrer avec la mauvaise valeur produit un « bad decrypt » STRICTEMENT
+# identique à celui d'une passphrase erronée ou d'une archive corrompue. C'est
+# l'erreur commise au premier jet, en calquant ce script sur celui de Postgres :
+# le drill a déclaré inexploitable une sauvegarde parfaitement saine. Un faux
+# positif de cette nature est plus dangereux qu'un test absent — il envoie
+# chercher un problème inexistant, en pleine urgence, sur le composant dont on
+# a le plus besoin.
+#
+# On tente donc 100 000 (le cas réel), puis la valeur par défaut en repli, pour
+# rester compatible avec d'éventuelles archives plus anciennes encore sur R2.
+# La sauvegarde n'est déclarée en cause que si LES DEUX échouent.
+decrypt_ok=""
+for iter_args in "-iter 100000" ""; do
+  # shellcheck disable=SC2086
+  if openssl enc -d -aes-256-cbc -pbkdf2 -salt ${iter_args} \
+    -pass "env:BACKUP_ENCRYPTION_PASSPHRASE" \
+    -in "${WORK_DIR}/backup.enc" -out "${WORK_DIR}/backup.tar.gz" 2>"${WORK_DIR}/openssl.err"; then
+    decrypt_ok="${iter_args:-défaut}"
+    break
+  fi
+done
+if [ -z "${decrypt_ok}" ]; then
+  echo "❌ Déchiffrement impossible (ni iter=100000 ni défaut) — passphrase incorrecte ou archive corrompue"
   head -5 "${WORK_DIR}/openssl.err" || true
   notify_telegram "🔴 [DOCUSEAL-DRILL] Déchiffrement IMPOSSIBLE — la sauvegarde est inexploitable"
   exit 1
 fi
+echo "  déchiffré (${decrypt_ok})"
 
 mkdir -p "${WORK_DIR}/payload"
 if ! tar -xzf "${WORK_DIR}/backup.tar.gz" -C "${WORK_DIR}/payload" 2>"${WORK_DIR}/tar.err"; then
