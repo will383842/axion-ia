@@ -6502,6 +6502,11 @@ model DocumentGenere {
   trainee             Trainee?         @relation(fields: [traineeId], references: [id], onDelete: SetNull)
   clientId            String?          @map("client_id") @db.Uuid
   client              Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  /// 🔴 Sous-traitant partie au contrat. `genererContratSousTraitanceAction` ne
+  /// passait AUCUN `refs` : la pièce n'était reliée au sous-traitant par rien, et
+  /// il était donc impossible de savoir à qui adresser le lien de signature.
+  sousTraitantId      String?          @map("sous_traitant_id") @db.Uuid
+  sousTraitant        SousTraitant?    @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
   /// Null pour les documents de formation collective (inchangé).
   coachingSessionId   String?          @map("coaching_session_id") @db.Uuid
@@ -6537,6 +6542,7 @@ model DocumentGenere {
   @@index([type, sessionId])
   @@index([traineeId, type])
   @@index([coachingSessionId])
+  @@index([sousTraitantId])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
 }
@@ -7044,6 +7050,14 @@ model DossierFinancement {
   statut               DossierFinancementStatut @default(a_monter)
   /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
   financeurNom         String?                  @map("financeur_nom") @db.VarChar(120)
+  /// Personne physique qui signe pour le financeur SUR CE DOSSIER.
+  /// 🔴 Grain volontairement le DOSSIER et non l'OPCO : le gestionnaire change
+  /// d'un dossier à l'autre. Créer une table `Financeur` ferait une TROISIÈME
+  /// représentation (avec `financeurNom` et `Client.opcoIdentifie`), donc trois
+  /// sources à tenir synchronisées et une divergence silencieuse possible.
+  financeurContactNom      String?              @map("financeur_contact_nom") @db.VarChar(200)
+  financeurContactEmail    String?              @map("financeur_contact_email") @db.VarChar(320)
+  financeurContactFonction String?              @map("financeur_contact_fonction") @db.VarChar(200)
   /// N° du dossier chez le financeur (référence externe).
   numeroDossierExterne String?                  @map("numero_dossier_externe") @db.VarChar(80)
   subrogation          Boolean                  @default(false)
@@ -7305,7 +7319,15 @@ model Partenariat {
 /// sous-traitant individuel). Vérification data.gouv.fr + contrat.
 model SousTraitant {
   id                String    @id @default(uuid()) @db.Uuid
+  /// RAISON SOCIALE du sous-traitant. Distincte du contact ci-dessous.
   nom               String    @db.VarChar(250)
+  /// Personne physique qui SIGNE pour le sous-traitant.
+  /// 🔴 Sans `contactEmail`, aucun lien de signature ne peut être émis : le
+  /// canal A exige une adresse, et l'identité doit venir de la BASE.
+  contactNom        String?   @map("contact_nom") @db.VarChar(200)
+  contactEmail      String?   @map("contact_email") @db.VarChar(320)
+  /// Qualité FIGÉE à la signature — porte l'opposabilité du pouvoir de signer.
+  contactFonction   String?   @map("contact_fonction") @db.VarChar(200)
   siret             String?   @db.VarChar(20)
   nda               String?   @db.VarChar(20)
   objetPrestation   String    @map("objet_prestation") @db.Text
@@ -7317,6 +7339,8 @@ model SousTraitant {
   actif             Boolean   @default(true)
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  documentsGeneres  DocumentGenere[]
 
   @@index([actif])
   @@map("sous_traitants_of")

@@ -1824,6 +1824,11 @@ export async function genererContratSousTraitanceAction(input: {
   const doc = await generateDocument({
     type: "contrat_sous_traitance",
     identite,
+    // 🔴 Sans ce rattachement, la pièce n'était reliée au sous-traitant par RIEN :
+    // impossible, depuis un `documents_generes.id`, de savoir à qui adresser le
+    // lien de signature. Le contact ajouté sur la fiche serait resté
+    // inatteignable.
+    refs: { sousTraitantId },
     buildElement: (numero) =>
       React.createElement(ContratSousTraitancePdf, {
         data: {

@@ -34,6 +34,15 @@ const creerSousTraitantSchema = z.object({
   siret: siretField.optional(),
   nda: z.string().max(20).optional(),
   objetPrestation: z.string().min(1),
+  /**
+   * 🔴 Contact SIGNATAIRE. Sans `contactEmail`, aucun lien de signature ne peut
+   * être émis pour le contrat de sous-traitance — et l'indicateur 27 du RNQ
+   * l'exige signé. Le canal A résout l'identité depuis la BASE, jamais depuis un
+   * champ libre au moment de signer.
+   */
+  contactNom: z.string().max(200).optional(),
+  contactEmail: z.string().email().optional(),
+  contactFonction: z.string().max(200).optional(),
   contratSigneAt: z.coerce.date().optional(),
   actif: z.boolean().default(true),
 });
@@ -55,6 +64,9 @@ export async function creerSousTraitantAction(input: {
   siret?: string;
   nda?: string;
   objetPrestation: string;
+  contactNom?: string;
+  contactEmail?: string;
+  contactFonction?: string;
   contratSigneAt?: Date;
   actif?: boolean;
 }): Promise<ActionResult<{ id: string }>> {
@@ -71,6 +83,9 @@ export async function creerSousTraitantAction(input: {
       actif: v.actif,
       ...(v.siret !== undefined ? { siret: v.siret } : {}),
       ...(v.nda !== undefined ? { nda: v.nda } : {}),
+      ...(v.contactNom !== undefined ? { contactNom: v.contactNom } : {}),
+      ...(v.contactEmail !== undefined ? { contactEmail: v.contactEmail } : {}),
+      ...(v.contactFonction !== undefined ? { contactFonction: v.contactFonction } : {}),
       ...(v.contratSigneAt !== undefined ? { contratSigneAt: v.contratSigneAt } : {}),
     });
   } catch {

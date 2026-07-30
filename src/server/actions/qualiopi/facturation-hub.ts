@@ -456,6 +456,15 @@ const CreerDossierSchema = z.object({
   clientId: z.string().uuid().optional(),
   type: z.enum(["opco", "france_travail", "cpf", "mixte"]).optional(),
   financeurNom: z.string().max(120).optional(),
+  /**
+   * 🔴 Contact SIGNATAIRE du financeur, au grain du DOSSIER — pas de l'OPCO : la
+   * personne qui signe une convention tripartite est celle qui instruit CE
+   * dossier. Sans `financeurContactEmail`, aucun lien de signature n'est
+   * émissible pour la tripartite.
+   */
+  financeurContactNom: z.string().max(200).optional(),
+  financeurContactEmail: z.string().email().optional(),
+  financeurContactFonction: z.string().max(200).optional(),
   montantDemandeCents: z.number().int().positive().optional(),
   subrogation: z.boolean().optional(),
 });
@@ -490,6 +499,15 @@ export async function creerDossierFinancementAction(
           type: input.type,
           clientId: input.clientId,
           ...(input.financeurNom !== undefined ? { financeurNom: input.financeurNom } : {}),
+          ...(input.financeurContactNom !== undefined
+            ? { financeurContactNom: input.financeurContactNom }
+            : {}),
+          ...(input.financeurContactEmail !== undefined
+            ? { financeurContactEmail: input.financeurContactEmail }
+            : {}),
+          ...(input.financeurContactFonction !== undefined
+            ? { financeurContactFonction: input.financeurContactFonction }
+            : {}),
           ...(input.montantDemandeCents !== undefined
             ? { montantDemandeCents: input.montantDemandeCents }
             : {}),

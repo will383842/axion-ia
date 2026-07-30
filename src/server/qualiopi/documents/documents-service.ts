@@ -113,6 +113,8 @@ export interface GenerateDocumentInput {
     formationId?: string;
     sessionId?: string;
     traineeId?: string;
+    /** Sous-traitant partie au contrat — sans lui, aucun lien de signature émissible. */
+    sousTraitantId?: string;
     clientId?: string;
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
@@ -480,6 +482,9 @@ export async function generateDocument(
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
           ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
           ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.refs?.sousTraitantId != null
+            ? { sousTraitantId: input.refs.sousTraitantId }
+            : {}),
           ...(input.refs?.coachingSessionId != null
             ? { coachingSessionId: input.refs.coachingSessionId }
             : {}),

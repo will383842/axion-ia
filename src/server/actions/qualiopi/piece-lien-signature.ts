@@ -19,16 +19,24 @@
  * | --- | --- | --- |
  * | `client` | `Client.contactNom/Email/Fonction` | ✅ |
  * | `beneficiaire` | `Trainee.prenom/nom/email/fonction` | ✅ |
- * | `financeur` | — | ❌ aucun modèle en base |
- * | `sous_traitant` | `SousTraitant` | ❌ le modèle n'a NI e-mail NI contact |
+ * | `financeur` | `DossierFinancement.financeurContact*` | ✅ depuis 2026-07-30 |
+ * | `sous_traitant` | `SousTraitant.contact*` | ✅ depuis 2026-07-30 |
  *
- * 🔴 Les deux derniers ne sont pas un oubli de câblage : ce sont des données qui
- * n'existent pas. `SousTraitant` ne porte que `nom`, `siret`, `nda` et
- * `objetPrestation` ; il n'y a personne à qui envoyer un lien. La convention
- * tripartite et le contrat de sous-traitance restent donc signables sur PAPIER —
- * chemin de plein droit, jamais retiré — jusqu'à ce que ces contacts existent.
+ * ⚠️ Les deux derniers étaient refusés jusqu'au 2026-07-30, non par défaut de
+ * câblage mais parce que la donnée n'existait pas : `SousTraitant` ne portait que
+ * `nom`, `siret`, `nda`, `objetPrestation`, et le financeur n'existait que comme
+ * la chaîne `DossierFinancement.financeurNom`. La migration
+ * `20260730140000_contacts_signataires_tiers` a ajouté les contacts.
  *
- * Le refus le DIT, au lieu de laisser un bouton qui échouerait en 422.
+ * 🔴 Le contact du financeur est au grain du DOSSIER, pas de l'OPCO : la personne
+ * qui signe une tripartite est celle qui instruit CE dossier-là. Une table
+ * `Financeur` globale aurait fait une TROISIÈME représentation du financeur — avec
+ * `financeurNom` et `Client.opcoIdentifie` — donc trois sources à synchroniser et
+ * une divergence silencieuse possible (nommer un OPCO, faire signer l'autre).
+ *
+ * ⚠️ Quand un contact manque encore, on REFUSE en disant lequel — jamais un champ
+ * libre : saisir soi-même l'identité du signataire reviendrait à sceller « ce que
+ * l'organisme a bien voulu déclarer ».
  */
 
 "use server";
@@ -84,7 +92,12 @@ function nettoyer(v: string | null | undefined): string | null {
  */
 async function resoudreIdentite(
   partie: PartieSignataire,
-  piece: { clientId: string | null; traineeId: string | null },
+  piece: {
+    clientId: string | null;
+    traineeId: string | null;
+    sousTraitantId: string | null;
+    sessionId: string | null;
+  },
 ): Promise<{ ok: true; identite: IdentiteResolue } | { ok: false; motif: string }> {
   if (partie === "client") {
     if (piece.clientId === null) {
@@ -136,20 +149,85 @@ async function resoudreIdentite(
     return { ok: true, identite: { nom, email, qualite: nettoyer(t.fonction) } };
   }
 
-  // 🔴 Refus EXPLICITES — voir l'en-tête. Ce ne sont pas des câblages manquants,
-  // ce sont des données qui n'existent pas en base.
-  if (partie === "financeur") {
+  if (partie === "sous_traitant") {
+    if (piece.sousTraitantId === null) {
+      return {
+        ok: false,
+        motif:
+          "Cette pièce n'est rattachée à aucun sous-traitant. Régénérez le contrat : les pièces émises avant le 2026-07-30 ne portaient pas ce rattachement.",
+      };
+    }
+    const st = await prisma.sousTraitant.findUnique({
+      where: { id: piece.sousTraitantId },
+      select: { nom: true, contactNom: true, contactEmail: true, contactFonction: true },
+    });
+    if (st === null) return { ok: false, motif: "Sous-traitant introuvable." };
+    const email = nettoyer(st.contactEmail);
+    if (email === null) {
+      return {
+        ok: false,
+        motif:
+          "Ce sous-traitant n'a pas d'adresse de contact : renseignez-la sur sa fiche, puis réémettez le lien.",
+      };
+    }
     return {
-      ok: false,
-      motif:
-        "Aucun financeur n'est enregistré en base : il n'existe pas de fiche à laquelle rattacher un signataire. La convention tripartite se signe sur papier tant que ce contact n'existe pas.",
+      ok: true,
+      identite: {
+        // Repli sur la raison sociale : mieux vaut « Prestataire SARL » qu'un
+        // refus, dès lors qu'une adresse existe. Mais on ne FABRIQUE rien.
+        nom: nettoyer(st.contactNom) ?? st.nom,
+        email,
+        qualite: nettoyer(st.contactFonction),
+      },
     };
   }
-  if (partie === "sous_traitant") {
+
+  if (partie === "financeur") {
+    if (piece.sessionId === null) {
+      return {
+        ok: false,
+        motif:
+          "Cette pièce n'est rattachée à aucune session : impossible de retrouver le dossier de financement qui porte le contact du financeur.",
+      };
+    }
+    // 🔴 Le contact vit sur le DOSSIER, pas sur l'OPCO — voir l'en-tête. On prend
+    // le dossier le plus récent de la session : c'est celui en cours d'instruction.
+    const dossier = await prisma.dossierFinancement.findFirst({
+      where: { trainingSessionId: piece.sessionId },
+      orderBy: { createdAt: "desc" },
+      select: {
+        financeurNom: true,
+        financeurContactNom: true,
+        financeurContactEmail: true,
+        financeurContactFonction: true,
+      },
+    });
+    if (dossier === null) {
+      return {
+        ok: false,
+        motif:
+          "Aucun dossier de financement n'existe pour cette session : créez-le et renseignez le contact du financeur avant d'émettre le lien.",
+      };
+    }
+    const email = nettoyer(dossier.financeurContactEmail);
+    if (email === null) {
+      return {
+        ok: false,
+        motif:
+          "Le dossier de financement ne porte pas d'adresse de contact pour le financeur : renseignez-la sur le dossier, puis réémettez le lien.",
+      };
+    }
+    const nom = nettoyer(dossier.financeurContactNom) ?? nettoyer(dossier.financeurNom);
+    if (nom === null) {
+      return {
+        ok: false,
+        motif:
+          "Le dossier de financement ne nomme ni le financeur ni son contact : une signature sans signataire identifié ne prouve rien.",
+      };
+    }
     return {
-      ok: false,
-      motif:
-        "La fiche sous-traitant ne porte ni adresse électronique ni personne de contact (seulement nom, SIRET, NDA et objet). Il n'y a personne à qui envoyer un lien : le contrat de sous-traitance se signe sur papier tant que ces champs n'existent pas.",
+      ok: true,
+      identite: { nom, email, qualite: nettoyer(dossier.financeurContactFonction) },
     };
   }
 
@@ -200,6 +278,8 @@ export async function emettreLienSignatureAction(
       metadata: true,
       clientId: true,
       traineeId: true,
+      sousTraitantId: true,
+      sessionId: true,
       suppressionPrevueAt: true,
     },
   });
