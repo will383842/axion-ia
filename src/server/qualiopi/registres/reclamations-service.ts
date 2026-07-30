@@ -19,7 +19,7 @@ import type {
   ReclamationSource,
   ReclamationStatut,
 } from "../../../../prisma/generated/client";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -70,13 +70,24 @@ async function allocuerNumeroReclamation(annee: number, tentative = 1): Promise<
         " tentatives",
     );
   }
-  const debut = new Date(`${annee}-01-01T00:00:00.000Z`);
-  const fin = new Date(`${annee + 1}-01-01T00:00:00.000Z`);
-  const count = await prisma.reclamation.count({
-    where: { dateReception: { gte: debut, lt: fin } },
-  });
-  const seq = count + tentative;
-  return formatDocumentNumber("reclamation", annee, seq);
+  // 🔴 V20 — deux défauts corrigés d'un seul geste.
+  //
+  // (1) Le dénominateur était une FENÊTRE DE DATES sur `dateReception`, pas la
+  //     série : toute ligne tombant dans la fenêtre décalait le compteur, qu'elle
+  //     appartienne ou non à la série `AXI-REC-<annee>-`.
+  // (2) `count + tentative` CREUSAIT délibérément la série à chaque collision —
+  //     la reprise sautait des numéros au lieu de relire l'état réel. Un registre
+  //     de réclamations à trous inexpliqués est un constat d'audit à lui seul.
+  //
+  // La borne haute rend les deux inutiles : elle progresse d'elle-même dès
+  // qu'une insertion concurrente a abouti. `tentative` ne sert plus qu'à borner
+  // la boucle de reprise, plus à décaler le numéro.
+  return nextNumero("reclamation", annee, (prefixe) =>
+    prisma.reclamation.findMany({
+      where: { numero: { startsWith: prefixe } },
+      select: { numero: true },
+    }),
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

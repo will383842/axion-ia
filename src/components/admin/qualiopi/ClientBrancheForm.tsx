@@ -12,12 +12,22 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateClientAction } from "@/server/actions/qualiopi/clients";
+import { OPCO_IDS, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
 
 interface ClientBrancheFormProps {
   id: string;
   idcc?: string | null;
   taille?: CompanySize | null;
+  /** OPCO courant (inféré ou saisi). `null` = « à déterminer ». */
+  opcoIdentifie?: string | null;
+  /**
+   * Masque le champ OPCO. Un particulier (B2C) relève d'un contrat de formation
+   * professionnelle (C. trav. L6353-3) et n'a PAS d'OPCO : lui en proposer un
+   * inviterait à saisir un financeur inexistant, qui remonterait ensuite sur la
+   * convention et le dossier de financement.
+   */
+  estParticulier?: boolean;
 }
 
 const TAILLE_OPTIONS: ReadonlyArray<{ value: CompanySize; label: string }> = [
@@ -31,6 +41,8 @@ export function ClientBrancheForm({
   id,
   idcc,
   taille,
+  opcoIdentifie,
+  estParticulier = false,
 }: ClientBrancheFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -38,6 +50,10 @@ export function ClientBrancheForm({
   const [ok, setOk] = useState(false);
   const [idccValue, setIdccValue] = useState<string>(idcc ?? "");
   const [tailleValue, setTailleValue] = useState<string>(taille ?? "");
+  // Valeur d'origine mémorisée : c'est elle qui permet de distinguer « l'admin
+  // a délibérément changé l'OPCO » de « l'admin n'a pas touché au select ».
+  const opcoInitial = opcoIdentifie ?? "";
+  const [opcoValue, setOpcoValue] = useState<string>(opcoInitial);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -50,6 +66,23 @@ export function ClientBrancheForm({
         id,
         ...(idccTrim !== "" ? { idcc: idccTrim } : {}),
         ...(tailleValue !== "" ? { taille: tailleValue as CompanySize } : {}),
+        // 🔴 On n'envoie l'OPCO QUE s'il a changé, et JAMAIS `""`.
+        //
+        // Envoyer systématiquement la valeur affichée transformerait un OPCO
+        // simplement INFÉRÉ en saisie EXPLICITE : le serveur cesserait alors de
+        // le recalculer, et renseigner l'IDCC réel dans ce même formulaire
+        // laisserait l'ancien OPCO — faux — sur la convention tripartite. En
+        // omettant la clé quand rien n'a bougé, la ré-inférence serveur reste
+        // armée.
+        //
+        // L'option vide envoie `null` (« remettre en inféré »), pas `""` : une
+        // chaîne vide serait écrite en base, continuerait d'afficher
+        // « À déterminer » et désactiverait la ré-inférence à vie. Le schéma Zod
+        // la refuse désormais (`.min(1)`) — cette omission est la seconde
+        // ceinture.
+        ...(!estParticulier && opcoValue !== opcoInitial
+          ? { opcoIdentifie: opcoValue === "" ? null : opcoValue }
+          : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -104,6 +137,33 @@ export function ClientBrancheForm({
           ))}
         </select>
       </div>
+
+      {/* Secours manuel de l'inférence. Six OPCO sur onze ne sont couverts par
+          AUCUN code NAF de la table, et l'OPCO se déduit en droit de la
+          convention collective : sans ce champ, un client de ces branches
+          resterait « à déterminer » pour toujours, y compris sur la demande de
+          prise en charge envoyée au financeur. Masqué pour un particulier, qui
+          n'a pas d'OPCO. */}
+      {!estParticulier && (
+        <div className="min-w-0">
+          <label htmlFor={`opco-${id}`} className={labelCls}>
+            OPCO
+          </label>
+          <select
+            id={`opco-${id}`}
+            value={opcoValue}
+            onChange={(e) => setOpcoValue(e.target.value)}
+            className={inputCls}
+          >
+            <option value="">— (inféré)</option>
+            {OPCO_IDS.map((opco) => (
+              <option key={opco} value={opco}>
+                {OPCO_LABELS[opco]}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <button type="submit" disabled={isPending} className="admin-button">
         {isPending ? "Enregistrement…" : "Enregistrer"}

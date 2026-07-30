@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
-import { SERVICES, serviceFooter } from "@/content/services";
+import { SERVICES, serviceOfficial } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { BRAND } from "@/lib/brand";
@@ -18,12 +18,14 @@ export async function Footer() {
   const ofPublic = isQualiopiCertificationObtenue();
 
   // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
-  // `src/content/services.ts` (libellé `footer*` — variante courte voulue par
-  // Will pour la colonne, le nom officiel long restant en JSON-LD/llms/breadcrumbs)
-  // dans l'ordre canonique + Tarifs en clôture. ❌ NE PAS réintroduire de libellé
-  // de service en dur ici ni « Essentielle » (un FORMAT de formation, pas un service).
+  // `src/content/services.ts`, dans l'ordre canonique + Tarifs en clôture.
+  // 2026-07-28 : la variante `footer*` a été SUPPRIMÉE du SSOT (elle avait dérivé
+  // en un nom différent du nom officiel). Le footer affiche désormais le nom
+  // officiel, exactement comme les breadcrumbs, le JSON-LD et llms.txt.
+  // ❌ NE PAS réintroduire de libellé de service en dur ici ni « Essentielle »
+  // (un FORMAT de formation, pas un service).
   const services = [
-    ...SERVICES.map((s) => ({ href: s.href, label: serviceFooter(s, isFr) })),
+    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
@@ -56,6 +58,10 @@ export async function Footer() {
     // (page `/equipe/williams` servie uniquement en FR).
     ...(isFr ? [{ href: "/equipe/williams", label: "Fondateur" }] : []),
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
+    // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
+    // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
+    // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
+    { href: "/avis", label: isFr ? "Avis clients" : "Client reviews" },
     { href: "/presse", label: isFr ? "Presse" : "Press" },
     { href: "/contact", label: t("nav.contact") },
     { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
@@ -235,6 +241,38 @@ export async function Footer() {
             <a href="/sitemap.xml" className={linkCn}>
               {t("footer.siteMap")}
             </a>
+            {/*
+              Espace formateur — ajouté 2026-07-28.
+
+              Il n'existait AUCUN chemin de retour : le lien magique reçu par
+              e-mail vaut 15 minutes et sert une seule fois, et l'adresse
+              n'était écrite nulle part sur le site. Un formateur qui revenait
+              la semaine suivante devait rappeler Will pour qu'il lui renvoie un
+              lien. Une seule ligne de footer suffit à supprimer ce détour.
+
+              `rel="nofollow"` : la cible est `noindex`, et ce footer est rendu
+              sur ~17 600 routes — sans cet attribut on créerait autant de liens
+              vers une page que les moteurs ne doivent pas explorer.
+
+              `prefetch={false}` : inutile de précharger un espace réservé que la
+              quasi-totalité des visiteurs n'ouvrira jamais. (Une balise `<a>`
+              aurait eu le même effet, mais `@next/next/no-html-link-for-pages`
+              l'interdit à juste titre sur une route interne.)
+            */}
+            <Dot />
+            {/*
+              `as never` : l'espace formateur n'est pas déclaré dans les
+              `pathnames` de next-intl (outil interne, hors routage localisé).
+              Même échappement que `FooterLinkList` plus bas dans ce fichier.
+            */}
+            <Link
+              href={"/espace-formateur" as never}
+              prefetch={false}
+              rel="nofollow"
+              className={linkCn}
+            >
+              {isFr ? "Espace formateur" : "Trainer area"}
+            </Link>
           </div>
         </div>
       </div>

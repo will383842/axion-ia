@@ -181,6 +181,7 @@ export default async function EmargementPage({ params }: PageProps) {
           la grille : c'est l'ordre dans lequel l'admin travaille. */}
       <LiensEmargement
         sessionId={id}
+        hasCreneaux={hasCreneaux}
         emettreAction={emettreLiensSessionAction}
         revoquerAction={revoquerLiensSessionAction}
       />
@@ -218,6 +219,7 @@ export default async function EmargementPage({ params }: PageProps) {
             sessionId={id}
             enrollments={enrollmentRows}
             creneaux={creneauxRows}
+            hasJours={jours.length > 0}
             saveAction={saveEmargementAction}
           />
         )}

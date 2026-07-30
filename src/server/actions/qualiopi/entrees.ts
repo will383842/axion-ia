@@ -16,6 +16,8 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { siretField } from "@/lib/siret-schema";
+import { premierMessageZod } from "@/lib/zod-message";
 import { adminPath } from "@/lib/admin-path";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { createClientAction } from "@/server/actions/qualiopi/clients";
@@ -37,12 +39,14 @@ const convertirEntreeSchema = z.object({
   contactNom: z.string().max(200).optional(),
   contactEmail: z.string().email().optional(),
   contactTelephone: z.string().max(40).optional(),
-  siret: z.string().max(14).optional(),
+  siret: siretField.optional(),
   nafCode: z.string().max(6).optional(),
   notes: z.string().optional(),
 });
 
-export type ConvertirEntreeInput = z.infer<typeof convertirEntreeSchema>;
+// `z.input` et non `z.infer` : siretField porte un `.transform()`, entrée et
+// sortie divergent (cf. clients.ts).
+export type ConvertirEntreeInput = z.input<typeof convertirEntreeSchema>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Action
@@ -62,7 +66,9 @@ export async function convertirEntreeEnClientAction(
 ): Promise<ActionResult<{ id: string; numero: string; dejaExistant: boolean }>> {
   const session = await requireAdminWrite();
   const parsed = convertirEntreeSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  // Message par champ : sans lui, un SIRET refusé s'affiche « Données
+  // invalides » dans un formulaire replié, sans indiquer quoi corriger.
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const v = parsed.data;
 
   // Dédup — le statut « converti » se DÉRIVE par correspondance email (citext),

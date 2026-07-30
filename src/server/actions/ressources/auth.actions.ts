@@ -20,8 +20,21 @@ export interface RessourcesAuthState {
   readonly message: string;
 }
 
+/**
+ * Message générique (anti-énumération). Même correctif que l'espace formateur,
+ * 2026-07-28 : au-delà de 5 demandes en 15 minutes la limite anti-abus
+ * court-circuite l'envoi et renvoie ce message de succès. Sans la seconde
+ * phrase, la personne réessaie indéfiniment et prolonge son propre blocage,
+ * sans aucun moyen de le comprendre.
+ *
+ * Phrase affichée DANS TOUS LES CAS : invariante, elle n'apprend rien à qui
+ * sonde des adresses, et débloque le destinataire légitime.
+ */
 const GENERIC_MESSAGE =
-  "Si un accès correspond à cette adresse, un lien de connexion vient d'être envoyé. Vérifiez votre boîte (et vos spams).";
+  "Si un accès correspond à cette adresse, un lien de connexion vient d'être envoyé. " +
+  "Vérifiez votre boîte (et vos spams). Le lien est valable 15 minutes. " +
+  "Si vous en avez déjà demandé plusieurs, patientez un quart d'heure avant de réessayer : " +
+  "au-delà de cinq demandes rapprochées, les envois suivants sont suspendus.";
 
 const emailSchema = z.string().trim().toLowerCase().email();
 

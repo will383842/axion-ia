@@ -12,6 +12,7 @@ import {
   UN_A_UN_RECURRING_TIER,
   formatAmount,
   formatPrice,
+  getFormationBrackets,
   getFormationEntryPrice,
   type FormationCategorie,
   type FormationDuree,
@@ -89,6 +90,92 @@ export function resolveOffrePrice(
     return resolveOffrePriceLabelV2(offre.gamme, offre.dureeCode, locale);
   }
   return resolveOffrePriceLabel(offre.tierId, locale);
+}
+
+/**
+ * Prix HT en EUROS d'une offre — UNIQUEMENT quand il est FERME.
+ *
+ * `null` signifie « aucun montant ferme dérivable », jamais « zéro » : offre sur
+ * devis, tier disparu, gamme absente de la matrice, fourchette priceMin/priceMax,
+ * prix « à partir de » (`isFromPrice`) ou tier à paliers d'effectif (`subTiers`).
+ * Dans tous ces cas l'admin chiffre à la main — on n'invente jamais un montant
+ * sur une pièce commerciale.
+ *
+ * ⚠️ Ce n'est PAS le miroir de `resolveOffrePrice`, et il ne faut pas le
+ * « simplifier » pour qu'il le devienne : `formatPrice` sait rendre une
+ * FOURCHETTE (« 2 000 - 30 000 € HT » pour `codage-web`) ou un PLANCHER
+ * (« À partir de 1 190 € HT » pour les 8 tiers d'audit, `isFromPrice: true`),
+ * un nombre non. Inscrire ce plancher comme PU HT d'un devis — pièce ferme,
+ * signée « bon pour accord », transformable en convention — est une
+ * sous-facturation silencieuse (facteur 15 sur `codage-web`). Même piège sur
+ * `subTiers` : `intervention-essentielle` et `intervention-claude` portent un
+ * `priceFlat` qui n'est que le prix d'ENTRÉE de la tranche 2-15.
+ *
+ * Le débit d'un créneau (`booking-catalog`) lit bien `priceFlat` malgré
+ * `isFromPrice` — c'est un prix catalogue à périmètre fixe. Un devis, lui,
+ * engage sur un périmètre négocié : la règle Will 2026-07-17 « les audits sont
+ * TOUJOURS à partir de » y interdit le pré-remplissage.
+ */
+export function resolveOffrePriceEur(offre: {
+  tierId: string | null;
+  gamme: string | null;
+  dureeCode: string | null;
+  tarifType?: OffreTarifType | null;
+}): number | null {
+  if (offre.tarifType === "sur_devis") return null;
+  if (offre.gamme && offre.dureeCode) {
+    return (
+      getFormationEntryPrice(
+        offre.gamme as FormationCategorie,
+        offre.dureeCode as FormationDuree,
+      ) ?? null
+    );
+  }
+  if (!offre.tierId) return null;
+  const tier = findPricingTier(offre.tierId);
+  if (!tier) return null;
+  if (tier.priceMax != null) return null; // fourchette → pas ferme
+  if ((tier.subTiers?.length ?? 0) > 0) return null; // paliers d'effectif → pas ferme
+  if (tier.isFromPrice === true) return null; // plancher « à partir de » → pas ferme
+  return tier.priceFlat ?? null; // jamais `priceMin` seul
+}
+
+/**
+ * Rappel à afficher sous le PU HT d'un devis, dérivé de l'offre — jamais figé.
+ *
+ * Deux faits changent d'une offre à l'autre et se paient cher s'ils sont écrits
+ * en dur :
+ *  - l'EFFECTIF couvert : la matrice catalogue est un prix PAR GROUPE (laisser
+ *    Qté = 1), alors que `intervention-dirigeants`, `intervention-membre-equipe`
+ *    et `intervention-dirigeant-vision` sont facturés PAR PERSONNE ;
+ *  - les FRAIS : la matrice est documentée « intra-entreprise, hors frais de
+ *    déplacement » (pricing.ts), tandis que les interventions 1-to-1 portent
+ *    « déplacement / hébergement / repas en sus systématiquement ».
+ *
+ * Écrire une phrase unique serait donc faux dans un cas sur deux, et pousserait
+ * à l'erreur inverse (devis divisé par le nombre de participants).
+ */
+export function resolveOffreDevisNoteFr(offre: {
+  tierId: string | null;
+  gamme: string | null;
+  dureeCode: string | null;
+  tarifType?: OffreTarifType | null;
+}): string {
+  if (resolveOffrePriceEur(offre) === null) {
+    return "Aucun prix ferme dérivable (offre sur devis, fourchette, prix « à partir de » ou paliers d'effectif) — saisissez le PU HT à la main.";
+  }
+  if (offre.gamme && offre.dureeCode) {
+    const bracket = getFormationBrackets(
+      offre.gamme as FormationCategorie,
+      offre.dureeCode as FormationDuree,
+    )[0];
+    const effectif =
+      bracket !== undefined ? `${bracket.replace("-", " à ")} participants` : "Effectif à préciser";
+    return `${effectif} — prix par GROUPE, laisser Qté = 1. Intra-entreprise HT, hors frais de déplacement (ajouter une ligne si applicable).`;
+  }
+  const tier = offre.tierId !== null ? findPricingTier(offre.tierId) : null;
+  const effectif = tier?.groupSizeFr ?? "Effectif à préciser";
+  return `${effectif} — prix HT pour cet effectif. Frais de déplacement, hébergement et repas EN SUS (ajouter une ligne).`;
 }
 
 /** Dérive le type d'affichage tarifaire à partir d'un tier pricing.ts. */

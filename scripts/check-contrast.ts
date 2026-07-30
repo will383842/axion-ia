@@ -7,6 +7,8 @@
 // Alpha-channel pairs (e.g. `text-mocha-fg/70`) are pre-mixed with their
 // effective base color so the assertion is on the actually-rendered colour.
 
+import { readFileSync } from "node:fs";
+
 interface Rgb {
   r: number;
   g: number;
@@ -69,13 +71,13 @@ const palette = {
   // Foreground
   fg: "#1a1815",
   fgSoft: "#524b41",
-  fgMuted: "#6b6155",
+  fgMuted: "#5a4f44", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
   mochaFg: "#f7f3ea",
   // Accents
   primary: "#1a4dd9",
   primaryFg: "#ffffff",
   primarySoft: "#e8efff",
-  terracotta: "#c24a1b",
+  terracotta: "#b23f16", // resynchronisé 2026-07-26 (X5) — assombri pour AA le 26/07
   terracottaSoft: "#f5e3d8",
   terracottaDeep: "#8c3010",
   sage: "#5e6c54",
@@ -151,6 +153,71 @@ const pairs: Pair[] = [
     largeOnly: true,
   },
 ];
+
+// ── Garde-fou de parité : le miroir ne peut plus mentir ──────────────────────
+// 🔴 Audit certification 2026-07-26 (X5). Ce miroir avait dérivé SANS BRUIT : il
+// déclarait encore l'ancien terracotta et l'ancien fg-muted alors que globals.css
+// portait déjà les valeurs durcies. Le gate était donc VERT en mesurant des
+// couleurs mortes — le même défaut que le job nocturne « vs prod » qui n'atteignait
+// jamais la prod. Un miroir tenu à la main finit toujours par diverger ; on le
+// garde (il reste lisible d'un coup d'œil) mais on le confronte à sa source.
+const CSS_PATH = "src/app/globals.css"; // relatif à la racine (cf. scripts/check-radius.ts)
+const CSS_TOKENS = new Map<string, string>();
+for (const m of readFileSync(CSS_PATH, "utf8").matchAll(
+  /--color-([a-z0-9-]+):\s*(#[0-9a-f]{6})\b/gi,
+)) {
+  const nom = m[1];
+  const hex = m[2];
+  if (nom && hex) CSS_TOKENS.set(nom.toLowerCase(), hex.toLowerCase());
+}
+
+// Clé du miroir → nom du jeton CSS. Le type `Record<keyof typeof palette, string>`
+// force l'exhaustivité : ajouter une couleur au miroir sans la rattacher à un jeton
+// ne compile pas. Une couleur que personne ne rattache est une couleur que personne
+// ne maintient.
+const MIRROR_TO_CSS: Record<keyof typeof palette, string> = {
+  bg: "bg",
+  paper: "paper",
+  sand: "sand",
+  mocha: "mocha",
+  fg: "fg",
+  fgSoft: "fg-soft",
+  fgMuted: "fg-muted",
+  mochaFg: "mocha-fg",
+  primary: "primary",
+  primaryFg: "primary-fg",
+  primarySoft: "primary-soft",
+  terracotta: "terracotta",
+  terracottaSoft: "terracotta-soft",
+  terracottaDeep: "terracotta-deep",
+  sage: "sage",
+  accentOrange: "accent-orange",
+  accentPurple: "accent-purple",
+  accentGreen: "accent-green",
+  accentYellow: "accent-yellow",
+  accentRed: "accent-red",
+};
+
+let drift = 0;
+for (const cle of Object.keys(MIRROR_TO_CSS) as Array<keyof typeof palette>) {
+  const tokenCss = MIRROR_TO_CSS[cle];
+  const attendu = CSS_TOKENS.get(tokenCss);
+  const declare = palette[cle].toLowerCase();
+  if (attendu === undefined) {
+    console.error(`✗ --color-${tokenCss} absent de globals.css (miroir : ${cle})`);
+    drift++;
+  } else if (attendu !== declare) {
+    console.error(`✗ dérive ${cle} : globals.css=${attendu}, check-contrast=${declare}`);
+    drift++;
+  }
+}
+if (drift > 0) {
+  console.error(
+    `\n[contrast:check] ${drift} dérive(s) miroir ↔ globals.css. Corriger AVANT de lire ` +
+      `les ratios ci-dessous : ils portent sur des couleurs qui n'existent plus.`,
+  );
+  process.exit(1);
+}
 
 let failures = 0;
 for (const p of pairs) {

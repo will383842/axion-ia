@@ -18,6 +18,7 @@
 
 import { z } from "zod";
 import { revalidatePath, updateTag } from "next/cache";
+import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -158,6 +159,7 @@ export async function replyToSubmissionAction(
   // Sprint Notif Infra 2026-05-26 / fix P1-1 audit 2026-05-27 — invalide le
   // compteur unread cached du badge sidebar.
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
 
   if (!enqueued) {
     await prisma.submissionReply
@@ -197,6 +199,7 @@ export async function archiveSubmissionAction(id: string): Promise<{ ok: boolean
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { ok: true };
 }
 
@@ -214,6 +217,7 @@ export async function unarchiveSubmissionAction(id: string): Promise<{ ok: boole
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { ok: true };
 }
 
@@ -231,6 +235,7 @@ export async function bulkArchiveSubmissionsAction(ids: string[]): Promise<{ arc
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { archived: result.count };
 }
 
@@ -250,6 +255,7 @@ export async function bulkUnarchiveSubmissionsAction(
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { unarchived: result.count };
 }
 
@@ -276,6 +282,7 @@ export async function softDeleteSubmissionAction(id: string): Promise<{ ok: bool
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { ok: true };
 }
 
@@ -293,6 +300,7 @@ export async function restoreSubmissionAction(id: string): Promise<{ ok: boolean
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { ok: true };
 }
 
@@ -317,6 +325,7 @@ export async function markNeedsAttentionAction(
   });
   revalidatePath(adminPath("fr", "contacts/messages"));
   updateTag("admin:contacts-unread");
+  updateTag(INBOX_COUNTS_TAG);
   return { ok: true };
 }
 

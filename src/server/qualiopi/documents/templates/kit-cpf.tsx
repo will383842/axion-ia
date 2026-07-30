@@ -34,10 +34,15 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   pieceCheck: {
-    width: 16,
+    width: 9,
+    height: 9,
+    marginTop: 2,
+    marginRight: 7,
+    borderWidth: 0.8,
+    borderStyle: "solid",
     fontSize: 10,
+    borderColor: brandColor("sage"),
     color: brandColor("sage"),
-    fontWeight: "bold",
   },
   pieceLabel: {
     fontSize: 10,
@@ -140,7 +145,14 @@ export function KitCpfPdf({ data }: { data: KitCpfData }): React.ReactElement {
             { label: "Feuilles d'émargement ou relevés de connexion" },
           ].map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>
-              <Text style={styles.pieceCheck}>☐</Text>
+              {/* 🔴 Correctif glyphes 2026-07-26. C'etait un caractere « ☐ »
+                (U+2610), absent des 8 polices du projet — verifie a fontkit.
+                @react-pdf basculait sur Helvetica/WinAnsi et ecrivait l'octet
+                0x10, un caractere de CONTROLE : la colonne « pieces a fournir »
+                envoyee au financeur etait donc entierement VIDE, sans que rien
+                ne le signale. On dessine la case en geometrie plutot que de
+                dependre d'un glyphe : une bordure s'imprime toujours. */}
+              <View style={styles.pieceCheck} />
               <Text style={styles.pieceLabel}>{piece.label}</Text>
             </View>
           ))}

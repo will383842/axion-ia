@@ -17,7 +17,10 @@ import React from "react";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: {
+      // `count` reste utilisé par `estUneRegenerationDe` (filigrane COPIE).
       count: vi.fn(),
+      // `findMany` est le chemin d'ALLOCATION depuis V20 (borne haute).
+      findMany: vi.fn(),
       create: vi.fn(),
     },
     activityLog: {
@@ -41,7 +44,11 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 
 const mockPrisma = prisma as unknown as {
-  documentGenere: { count: ReturnType<typeof vi.fn>; create: ReturnType<typeof vi.fn> };
+  documentGenere: {
+    count: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+  };
   activityLog: { create: ReturnType<typeof vi.fn> };
 };
 const mockRender = renderPdfToBuffer as ReturnType<typeof vi.fn>;
@@ -76,6 +83,8 @@ beforeEach(() => {
   });
   mockStore.mockResolvedValue("https://r2/signed.pdf");
   mockPrisma.documentGenere.count.mockResolvedValue(0);
+  // Série documentaire vide → première allocation = …-001.
+  mockPrisma.documentGenere.findMany.mockResolvedValue([]);
   mockPrisma.documentGenere.create.mockResolvedValue({
     id: "doc-1",
     numero: "AXI-FACT-2026-001",
@@ -90,6 +99,53 @@ afterEach(() => {
   else process.env["DATABASE_URL"] = savedDbUrl;
 });
 
+describe("🔴 statut de signature posé à la naissance de la pièce", () => {
+  beforeEach(() => {
+    // Identité INCOMPLÈTE volontairement : les pièces produites sont donc des
+    // SPÉCIMENS. C'est le cas réel d'Axion-IA aujourd'hui (SIRET et NDA
+    // manquants), et il vérifie au passage la décision documentée dans
+    // `generateDocument` — un SPÉCIMEN reste `en_attente`. Il EXIGE une
+    // signature, il ne peut simplement pas la recevoir tant qu'il est déclassé.
+    // Le marquer `non_requise` masquerait précisément la pièce à corriger.
+    mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
+  });
+
+  /** Statut réellement passé à `create`. */
+  function statutPasse(): string | undefined {
+    const appel = mockPrisma.documentGenere.create.mock.calls[0]?.[0] as {
+      data: { statutSignature?: string };
+    };
+    return appel.data.statutSignature;
+  }
+
+  it("une pièce SIGNABLE naît `en_attente`", async () => {
+    // Sans cela, elle dirait qu'elle suit son cours sans être signée, et le
+    // registre du mode auditeur ne la ferait jamais remonter — alors que
+    // « cette pièce est-elle signée ? » est la question qu'un contrôle pose.
+    await generateDocument({ type: "convention", buildElement });
+    expect(statutPasse()).toBe("en_attente");
+  });
+
+  it("une pièce NON signable ne reçoit aucun statut — le défaut `non_requise` s'applique", async () => {
+    // Sur les 26 types, la plupart sont des pièces ÉMISES, pas des engagements
+    // négociés. Leur poser `en_attente` remplirait le registre de pièces qui
+    // n'attendent rien, et le registre cesserait d'être lu.
+    await generateDocument({ type: "facture", buildElement });
+    expect(statutPasse()).toBeUndefined();
+  });
+
+  it("🔴 la décision vient du SSOT, pas d'une liste locale", async () => {
+    // Le relevé de connexion et la lettre de mission sont signables au même
+    // titre que la convention. Si ce test tombe alors que `parties-requises.ts`
+    // les déclare, c'est que quelqu'un a réintroduit une liste en dur ici.
+    for (const type of ["releve_connexion", "lettre_mission"] as const) {
+      mockPrisma.documentGenere.create.mockClear();
+      await generateDocument({ type, buildElement });
+      expect(statutPasse()).toBe("en_attente");
+    }
+  });
+});
+
 describe("generateDocument — garde-fou conformité systématique", () => {
   it("🔴 DÉCLASSE en spécimen (au lieu de refuser) quand la config OF est incomplète", async () => {
     // Audit certification 2026-07-25 — changement de contrat assumé.
@@ -100,7 +156,21 @@ describe("generateDocument — garde-fou conformité systématique", () => {
     mockGetIdentite.mockResolvedValue(IDENTITE_VIDE);
 
     const res = await generateDocument({ type: "facture", buildElement });
-    expect(res.numero).toMatch(/^AXI-FACT-/);
+    // ⚠️ PIÈGE — `res.numero` vient du `create.mockResolvedValue` du beforeEach,
+    // PAS du numéro alloué. Asserter dessus ne testait donc RIEN : le test
+    // restait vert que le registre émette AXI-DOC ou AXI-FACT.
+    expect(res.numero).toBe("AXI-FACT-2026-001");
+
+    // 🔴 V19 — voici la vraie assertion : le numéro PASSÉ à `create`. Une facture
+    // est classée `AXI-DOC-…` dans le registre documentaire ; le PDF, lui, porte
+    // le numéro comptable de `factures_formation`. Une cote de classement qui
+    // ressemble à un numéro de facture est introuvable dans les livres — refus
+    // au contrôle. C'est le seul test exécutable du changement de scope.
+    const annee = new Date().getFullYear();
+    const alloue = mockPrisma.documentGenere.create.mock.calls[0]?.[0] as {
+      data: { numero: string };
+    };
+    expect(alloue.data.numero).toBe(`AXI-DOC-${annee}-001`);
 
     // La relecture config a bien eu lieu (identite non fournie).
     expect(mockGetIdentite).toHaveBeenCalledOnce();
@@ -112,7 +182,18 @@ describe("generateDocument — garde-fou conformité systématique", () => {
     };
     expect(payload.data.metadata?.specimen).toBe(true);
     expect(payload.data.metadata?.champsManquants).toEqual(
-      expect.arrayContaining(["SIRET", "numéro de déclaration d'activité (NDA)"]),
+      expect.arrayContaining(["raison sociale", "SIRET", "adresse du siège"]),
+    );
+    // 🔴 2026-07-28 — le NDA a été retiré de `CHAMPS_OBLIGATOIRES.facture` :
+    // l'art. L.6351-1 laisse trois mois après la première convention pour
+    // déposer la déclaration d'activité, donc au moment d'émettre cette
+    // convention et la facture qui la suit, le numéro n'existe pas encore. Et il
+    // n'est pas une mention obligatoire de facture (R123-238 C. com. + 242
+    // nonies A ann. II CGI). L'assertion inverse verrouille le contrat : si
+    // quelqu'un le remet dans la liste, ce test tombe — sans elle, la
+    // régression repasserait en silence.
+    expect(payload.data.metadata?.champsManquants).not.toContain(
+      "numéro de déclaration d'activité (NDA)",
     );
   });
 

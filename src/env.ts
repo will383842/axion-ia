@@ -65,6 +65,15 @@ export const env = createEnv({
 
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
+    // Personal Access Token Calendly (API v2) — OPTIONNEL, cf. ADR 0036.
+    // Absent = l'enrichissement des réservations est inerte et le produit se
+    // comporte exactement comme avant (URI captées, contact à compléter à la
+    // main). Posé = le serveur résout les URI du postMessage et remplit
+    // automatiquement nom / email / téléphone / horaire / lien d'annulation.
+    // À générer sur https://calendly.com/integrations/api_webhooks.
+    // ⚠️ Server-only : ne JAMAIS l'exposer via NEXT_PUBLIC_*.
+    CALENDLY_API_TOKEN: z.string().optional(),
+
     // ────────────────────────────────────────────────────────────────
     // Stripe Checkout V1 (Sprint X.2 — Booking V1) + ADR 0013.
     // Cert plateforme 2026-05-16 — fail-fast au boot prod si une clé manque
@@ -353,6 +362,7 @@ export const env = createEnv({
     WHATSAPP_CALLMEBOT_APIKEY: process.env.WHATSAPP_CALLMEBOT_APIKEY,
     WHATSAPP_NOTIFY_PHONE: process.env.WHATSAPP_NOTIFY_PHONE,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
+    CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     // Stripe Checkout V1 (Booking V1 — ADR 0013)
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,

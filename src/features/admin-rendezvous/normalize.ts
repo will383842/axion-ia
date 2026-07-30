@@ -43,7 +43,7 @@ export function fromCalendly(e: CalendlyEventRow): UnifiedRdv {
     key: `cal_${e.id}`,
     source: "calendly",
     sourceRecordId: e.id,
-    detailHref: adminPath("fr", `contacts/calendly/${e.id}`),
+    detailHref: adminPath("fr", `contacts/appels/${e.id}`),
     title: e.eventTypeName,
     startTime: e.startTime,
     endTime: e.endTime,

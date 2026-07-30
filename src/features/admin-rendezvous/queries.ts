@@ -32,7 +32,21 @@ async function fetchAllCalendly(): Promise<UnifiedRdv[]> {
     orderBy: [{ startTime: "desc" }, { capturedAt: "desc" }],
     take: MAX_FETCH,
   });
-  return (events as CalendlyEventRow[]).map(fromCalendly);
+  const rows = (events as CalendlyEventRow[]).map(fromCalendly);
+  // Re-tri EN MÉMOIRE sur l'ancre d'affichage (`startTime` sinon `capturedAt`),
+  // celle-là même qui décide du `dayKey`.
+  //
+  // Sans lui, l'ordre venait du `ORDER BY start_time DESC` de Postgres, qui
+  // place les NULL EN TÊTE : dès qu'une réservation était enrichie (donc dotée
+  // d'un horaire), elle tombait sous toutes celles restées sans heure, quelle
+  // que soit sa date. Constaté en production le 2026-07-29 — le RDV du 23/07
+  // s'affichait après ceux du 09/07 et du 01/07.
+  rows.sort((a, b) => {
+    const ta = (a.startTime ?? a.createdAt).getTime();
+    const tb = (b.startTime ?? b.createdAt).getTime();
+    return tb - ta;
+  });
+  return rows;
 }
 
 /** Tri intra-jour : créneaux horodatés d'abord (par heure), puis « heure ? ». */

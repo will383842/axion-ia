@@ -54,7 +54,7 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 // ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
 // /implementation). Sans ce flag, la home reste sur le comportement par défaut
@@ -80,8 +80,17 @@ export async function generateMetadata({ params }: HomeProps): Promise<Metadata>
       path: "/",
       title: titleStr,
       description: isFr
-        ? // Claim Qualiopi/OPCO gaté Phase B (fuyait en SERP, flag purgé 2026-07-14).
-          isQualiopiPublicDisclosureEnabled()
+        ? // Claim Qualiopi/OPCO gaté sur la CERTIFICATION RÉELLE, pas sur la simple
+          // visibilité des pages OF (il fuyait en SERP, flag purgé 2026-07-14).
+          // Cette description AFFIRME « certifié Qualiopi » : c'est donc
+          // `isQualiopiCertificationObtenue()` qui doit la gater, jamais
+          // `isQualiopiPublicDisclosureEnabled()`. Corrigé 2026-07-28 — la home
+          // avait été oubliée lors du découplage des deux notions par la PR 401, et
+          // serait repassée à l'affirmation dès `OF_PUBLIC_DISCLOSURE_ENABLED=true`
+          // alors que la certification n'est pas obtenue (cf. en-tête de `flag.ts`,
+          // qui qualifie cette situation d'illégale). Garde-fou :
+          // `server/qualiopi/config/__tests__/assertion-flag-surfaces.spec.ts`.
+          isQualiopiCertificationObtenue()
           ? "Formations IA finançables OPCO, certifié Qualiopi. Audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention entreprise."
           : "Formations IA en entreprise, audits, coaching 1-to-1, automatisation. Vos équipes gagnent du temps dès le lendemain de l'intervention, partout en France."
         : `Senior-only AI consultancy, zero middlemen. Audits, training, 1-to-1 coaching, implementations for SMBs. Measurable results, EU hosting, from ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS) ?? 0, "en", { compact: true })}.`,

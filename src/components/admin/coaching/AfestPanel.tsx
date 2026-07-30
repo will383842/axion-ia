@@ -23,7 +23,7 @@ import {
   genererSatisfaction1to1Action,
   genererFactureCoachingAction,
   genererKitCoachingAction,
-  signerSeance1to1Action,
+  acterPresenceSeance1to1Action,
 } from "@/server/actions/qualiopi/coaching-afest";
 
 const DOC_LABELS: Record<string, string> = {
@@ -696,20 +696,25 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
         </div>
       ) : null}
 
-      {/* Présence par séance (émargement signé) */}
+      {/* Présence par séance — DÉCLARÉE par l'organisme, pas signée.
+          Cet écran affichait « présence signée » et proposait « Signer la
+          présence » sur un bouton qui ne recueillait aucune signature : ni
+          signataire, ni tracé, ni empreinte. Les vraies signatures se recueillent
+          auprès des parties (bénéficiaire, formateur, tuteur), pas dans la
+          console de l'organisme. */}
       {props.seances.length > 0 ? (
         <div className="border-border mb-3 space-y-1 border-t pt-3">
           <p className="text-fg-muted text-xs">
-            {"Présence des séances (signature pour l'audit) :"}
+            {"Présence des séances (déclarée par l'organisme) :"}
           </p>
           {props.seances.map((s) => (
             <div key={s.id} className="flex items-center justify-between text-sm">
               <span>
                 {s.date}{" "}
                 {s.presenceSignee ? (
-                  <span className="text-success text-xs">présence signée</span>
+                  <span className="text-success text-xs">présence actée</span>
                 ) : (
-                  <span className="text-terracotta text-xs">non signée</span>
+                  <span className="text-terracotta text-xs">non actée</span>
                 )}
               </span>
               {!s.presenceSignee ? (
@@ -719,19 +724,17 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
                   onClick={() =>
                     run(
                       () =>
-                        signerSeance1to1Action({
+                        acterPresenceSeance1to1Action({
                           compteRenduId: s.id,
                           beneficiairePresent: true,
-                          beneficiaireSigne: true,
-                          formateurSigne: true,
                           revalidate: props.revalidatePath,
                         }),
-                      "Présence signée.",
+                      "Présence actée.",
                     )
                   }
                   className="border-border rounded-md border px-2 py-0.5 text-xs disabled:opacity-50"
                 >
-                  Signer la présence
+                  Acter la présence
                 </button>
               ) : null}
             </div>

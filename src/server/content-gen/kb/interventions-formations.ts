@@ -660,12 +660,23 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Accessibilité et inclusion ────────────────────────────────────────────
   {
     id: "form-075",
-    text: "Axion-IA garantit l'accessibilité de ses formations pour les personnes en situation de handicap : supports au format accessible (WCAG 2.1 AA), sous-titrage des sessions vidéo, et adaptation des exercices pratiques selon les besoins (référent handicap désigné).",
-    source: "Axion-IA — Charte accessibilité et inclusion formations 2026",
+    // 🔴 Audit certification 2026-07-26 (X5). Ce fait alimente la KB/RAG du
+    // content-gen : il ressort en clair dans des pages publiques GÉNÉRÉES, et il
+    // porte sur les SUPPORTS DE FORMATION — terrain direct de l'audit Qualiopi,
+    // pas le site web. Il revendiquait une conformité des supports et un
+    // sous-titrage vidéo qu'aucun élément du dépôt n'étaye. Une revendication de
+    // conformité non étayée n'est pas un argument commercial, c'est un écart.
+    // La source citée (« Charte … 2026 ») n'existe nulle part dans le dépôt :
+    // une seule occurrence, la chaîne elle-même. Elle est remplacée par ce qui
+    // est réellement vérifiable — le référent désigné dans le registry (ind. 26).
+    // On ne mentionne AUCUN partenariat réseau : la table `partenariats` est vide
+    // en production, et l'annoncer serait rejouer la sur-déclaration corrigée ici.
+    text: "Axion-IA désigne un référent handicap, joignable avant l'entrée en formation. Chaque situation est étudiée au cas par cas : le référent convient avec le bénéficiaire des adaptations possibles (supports, rythme, modalités, exercices pratiques) et l'oriente vers les acteurs spécialisés lorsque le besoin dépasse ces adaptations.",
+    source: "Axion-IA — Référent handicap désigné (RNQ indicateur 26)",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-07-26",
     verticales: ["interventions_formations"],
-    confidence: 0.95,
+    confidence: 0.8,
   },
   // ── Résultats terrain Axion-IA ────────────────────────────────────────────
   {

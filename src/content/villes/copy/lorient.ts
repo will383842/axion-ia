@@ -46,8 +46,8 @@ export const LORIENT_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Lorient : sessions dans votre entreprise portuaire, atelier nautique, commerce ou en visio. Pour dirigeants de TPE/PME de la pêche, de l'agroalimentaire et du nautisme souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
-      en: "Sites web augmentés IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
+      fr: "Sites web & SaaS IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
+      en: "Sites web & SaaS IA à Lorient : portails B2B agroalimentaires avec traçabilité et commandes automatisées, sites vitrines nautiques et touristiques, dotés d'assistants intelligents et de contenus optimisés.",
     },
   },
   services: {

@@ -588,3 +588,24 @@ describe("genererDossierAuditZip", () => {
     expect(index).toContain("[OMIS] registres/veille");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Constat F15 — une absence n'est pas une preuve.
+//
+// Le manifeste remis au certificateur listait sous « Preuves » des constats
+// d'ABSENCE produits par le même code que les preuves réelles :
+// « 0 réclamation enregistrée et traitée », « Procédure de réclamations : non
+// attestée publiée », « Responsable qualité : non renseigné ».
+//
+// `preuves: string[]` ne porte aucune polarité. Tant que le typage ternaire
+// (probant / neutre / lacune) n'est pas en place, le document ne doit pas
+// AFFIRMER ce qu'il ne sait pas.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Manifeste — ne présente plus un manque comme une preuve", () => {
+  it("l'en-tête de section est neutre, sur le document remis au certificateur", async () => {
+    const r = await genererManifesteAudit();
+    expect(r.markdown).toContain("**Éléments constatés :**");
+    expect(r.markdown).not.toContain("**Preuves :**");
+  });
+});

@@ -5,7 +5,10 @@
  *   - émission d'une facture libre (5 activités, lignes libres, TVA/ligne) ;
  *   - conversion devis accepté → facture ;
  *   - avoir (total ou partiel) ;
- *   - encaissement manuel (virement/chèque/espèces, partiel accepté).
+ *   - encaissement manuel (virement, carte, espèces — partiel accepté).
+ *     ⚠️ Le CHÈQUE n'est plus proposé en saisie (décision Will, 2026-07-30). Les
+ *     encaissements historiques enregistrés en chèque restent lisibles : on cesse
+ *     de proposer un moyen, on n'efface pas ce qui a été encaissé.
  *
  * Le retour d'émission expose `chorusProRequis` : client secteur public →
  * dépôt Chorus Pro OBLIGATOIRE (obligation en vigueur, hors réforme 2026).
@@ -26,6 +29,15 @@ import {
   creerDossierDepuisSession,
 } from "@/server/qualiopi/financements/dossier-financement";
 import { planifierFacturationDevis } from "@/server/qualiopi/financements/facture-libre-pur";
+// SSOT du plafond légal (art. L6353-6) : la même constante que `calculerAcompte`
+// applique. Ne pas la recopier en dur ici — c'est ainsi que deux règles divergent.
+import {
+  PLAFOND_ACOMPTE_PARTICULIER_PCT,
+  DELAI_RETRACTATION_PARTICULIER_JOURS,
+  dateEncaissablePartir,
+  encaissementAutorise,
+  dateEngagementParticulier,
+} from "@/server/qualiopi/financements/acompte";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
@@ -113,6 +125,42 @@ const DepuisDevisSchema = z.object({
 });
 
 /**
+ * Signatures du/des CONTRAT(S) de formation rattaché(s) à ce devis.
+ *
+ * ## Le chemin de rattachement, et pourquoi il est étroit
+ *
+ * `DocumentGenere` ne porte pas de `devisId`. Le seul lien fiable est
+ * `Devis → TrainingSession.devisId → DocumentGenere(type: "contrat")` : le
+ * contrat individuel est généré depuis une inscription, avec
+ * `refs: { sessionId, traineeId }` (cf. `genererContratFormationAction`).
+ *
+ * 🔴 On NE remonte PAS par `clientId`. Ce serait plus large — et donc plus
+ * PERMISSIF : un contrat ancien du même client, signé il y a six mois, ferait
+ * expirer le délai d'un tout autre engagement. Un rattachement approximatif sur
+ * une règle légale vaut moins que pas de rattachement du tout : sans lien de
+ * session, on retombe sur le repli `acceptedAt`, c'est-à-dire le comportement
+ * d'avant ce correctif.
+ *
+ * ⚠️ Les lignes RÉVOQUÉES sont volontairement RAMENÉES, pas filtrées en SQL :
+ * la règle « une révocation ne fait courir aucun délai » vit dans
+ * `dateEngagementParticulier`, et elle doit y vivre SEULE. La dupliquer dans un
+ * `where` laisserait les deux diverger sans que rien ne le signale.
+ *
+ * Plusieurs stagiaires ⇒ plusieurs contrats : la fonction pure retient la
+ * signature valable la plus tardive, donc le délai de tous est écoulé.
+ */
+async function lireSignaturesContratDuDevis(
+  devisId: string,
+): Promise<Array<{ signeAt: Date; revokedAt: Date | null }>> {
+  return prisma.documentSignature.findMany({
+    where: {
+      documentGenere: { type: "contrat", session: { devisId } },
+    },
+    select: { signeAt: true, revokedAt: true },
+  });
+}
+
+/**
  * Facture un devis ACCEPTÉ : acompte de X %, ou solde/totalité (les acomptes
  * déjà facturés sont déduits). Le devis doit porter une activité — c'est elle
  * qui pilote le régime TVA. La décision des lignes est un planificateur PUR
@@ -140,6 +188,16 @@ export async function genererFactureDepuisDevisAction(
       refClient: true,
       clientId: true,
       lignes: true,
+      // Date d'engagement du particulier : fait courir le délai de rétractation
+      // de 10 jours (art. L6353-5). Sans elle dans le select, le garde-fou
+      // ci-dessous lirait `undefined` et laisserait passer TOUTES les factures —
+      // un garde-fou qui n'en est pas un.
+      acceptedAt: true,
+      // Nature du client : le plafond d'acompte de 30 % (art. L6353-6) est une
+      // règle de droit, pas un réglage commercial. Elle doit vivre au serveur —
+      // le template du contrat la « rattrape » par un Math.min(…, 30), ce qui
+      // corrige l'affichage du PDF mais n'empêche nullement d'ÉMETTRE la facture.
+      client: { select: { type: true } },
       facturesFormation: {
         where: { statut: { not: "annulee" }, avoirDeId: null },
         select: { numero: true, montantHtCents: true, montantTvaCents: true },
@@ -166,6 +224,95 @@ export async function genererFactureDepuisDevisAction(
     tauxEffectifPercent:
       f.montantHtCents > 0 ? Math.round((f.montantTvaCents / f.montantHtCents) * 100) : 0,
   }));
+
+  // ── Art. L6353-6 — plafond de l'acompte demandé à un PARTICULIER ──
+  //
+  // Le plafond porte sur la SOMME déjà appelée, pas sur le taux d'un appel :
+  // « il ne peut être payé une somme supérieure à 30 % du prix convenu ».
+  // Tester `acomptePercent > 30` ne suffit donc pas — `planifierFacturationDevis`
+  // ne refuse un acompte que s'il dépasse le RESTANT à facturer, si bien que
+  // trois factures d'acompte de 30 % passaient l'une après l'autre et portaient
+  // le total à 90 %. Le schéma Zod, lui, autorise jusqu'à 90 % en un seul appel
+  // (borne commerciale, valable entre professionnels).
+  //
+  // Assiette = le TOTAL HT du devis, c'est-à-dire le « prix convenu » de
+  // l'article — pas `resteAChargeCents`, que le PDF déclare lui-même
+  // « estimation indicative, non contractuelle », et qu'un particulier n'a de
+  // toute façon pas (pas d'OPCO).
+  // ── Art. L6353-6 (1) — délai de rétractation NON EXPIRÉ ──
+  //
+  // 🔴 Le trou : « aucune somme ne peut être exigée NI VERSÉE avant l'expiration
+  // du délai de rétractation » (10 j, L6353-5). Le calcul existait
+  // (`encaissableAPartirDu`) mais n'était **lu nulle part** dans `src/` — un
+  // contrôle en trompe-l'œil : le contrat annonçait une date que rien
+  // n'appliquait. Rien n'empêchait donc de facturer un particulier le jour même.
+  //
+  // Le refus est AU SERVEUR, pas dans l'UI : une Server Action est appelable
+  // directement, et un garde-fou d'UI ne protège que celui qui passe par l'UI.
+  //
+  // ✅ 2026-07-29 — le délai court désormais depuis la SIGNATURE DU CONTRAT.
+  //
+  // Le dépôt le faisait courir depuis `Devis.acceptedAt`, faute de mieux : c'était
+  // l'intrant le plus fiable disponible, et il était documenté comme provisoire.
+  // Il ne l'est plus. L6353-5 fait courir les dix jours à compter de la conclusion
+  // du CONTRAT de formation (L6353-3) ; l'acceptation d'un devis n'existe nulle
+  // part dans le code du travail. Le registre `DocumentSignature` rend cette date
+  // lisible : la règle s'applique enfin à l'intrant que la loi désigne.
+  //
+  // `acceptedAt` reste le REPLI quand aucun contrat n'est signé — ce qui est le
+  // cas de tout l'historique antérieur au registre. Sans lui, ce correctif
+  // bloquerait d'un coup toute facturation de particulier ; avec lui, le
+  // comportement des dossiers sans contrat signé est INCHANGÉ.
+  //
+  // ⚠️ Cas d'inversion (contrat signé AVANT l'acceptation du devis) : la signature
+  // l'emporte quand même, et c'est assumé. C'est la seule date que L6353-5
+  // mentionne ; `acceptedAt` n'a jamais eu de portée légale, ce n'était qu'une
+  // approximation. Retenir la plus tardive des deux ferait attendre l'organisme
+  // au-delà de ce que la loi exige, sur la foi d'une donnée sans valeur juridique.
+  if (devis.client.type === "particulier") {
+    const engagement = dateEngagementParticulier({
+      signaturesContrat: await lireSignaturesContratDuDevis(devis.id),
+      devisAcceptedAt: devis.acceptedAt,
+    });
+    if (!encaissementAutorise(engagement.date, new Date())) {
+      const prefixe = `Facturation refusée : l'article L6353-6 interdit d'exiger ou de percevoir une somme d'un particulier avant l'expiration du délai de rétractation de ${DELAI_RETRACTATION_PARTICULIER_JOURS} jours (art. L6353-5).`;
+      // Le message NOMME la source de la date : un admin doit pouvoir recouper le
+      // refus avec une pièce du dossier. Annoncer « accepté le … » alors qu'on a
+      // lu une signature de contrat rendrait le garde-fou inauditable.
+      if (engagement.date !== null) {
+        const encaissableLe = dateEncaissablePartir(engagement.date);
+        const origine =
+          engagement.source === "signature_contrat"
+            ? `Le contrat de formation a été signé le ${engagement.date.toLocaleDateString("fr-FR")}`
+            : `Aucun contrat de formation signé n'est rattaché à ce devis : le délai court, à titre de repli, depuis l'acceptation du devis le ${engagement.date.toLocaleDateString("fr-FR")}`;
+        return {
+          error: `${prefixe} ${origine} — facturation possible à partir du ${encaissableLe.toLocaleDateString("fr-FR")}.`,
+        };
+      }
+      return {
+        error: `${prefixe} Ni signature du contrat de formation, ni date d'acceptation du devis : le délai est incalculable, et une date manquante ne vaut pas autorisation. Faites signer le contrat (ou renseignez l'acceptation du devis) avant de facturer un particulier.`,
+      };
+    }
+  }
+
+  if (parsed.data.acomptePercent !== undefined && devis.client.type === "particulier") {
+    const totalHtCents = lignesParsed.data.reduce(
+      (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
+      0,
+    );
+    const dejaFactureHtCents = devis.facturesFormation.reduce(
+      (acc, f) => acc + f.montantHtCents,
+      0,
+    );
+    const plafondHtCents = Math.floor((totalHtCents * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100);
+    const demandeHtCents = Math.round((totalHtCents * parsed.data.acomptePercent) / 100);
+    if (dejaFactureHtCents + demandeHtCents > plafondHtCents) {
+      const eur = (c: number): string => (c / 100).toFixed(2);
+      return {
+        error: `Acompte refusé : l'article L6353-6 plafonne à ${PLAFOND_ACOMPTE_PARTICULIER_PCT} % du prix convenu la somme appelée à un particulier (déjà facturé ${eur(dejaFactureHtCents)} € HT + ${eur(demandeHtCents)} € HT demandés > plafond ${eur(plafondHtCents)} € HT). Le solde s'échelonne au fur et à mesure du déroulement de l'action.`,
+      };
+    }
+  }
 
   const plan = planifierFacturationDevis({
     lignesDevis: lignesParsed.data as LigneFacture[],
@@ -312,6 +459,15 @@ const CreerDossierSchema = z.object({
   clientId: z.string().uuid().optional(),
   type: z.enum(["opco", "france_travail", "cpf", "mixte"]).optional(),
   financeurNom: z.string().max(120).optional(),
+  /**
+   * 🔴 Contact SIGNATAIRE du financeur, au grain du DOSSIER — pas de l'OPCO : la
+   * personne qui signe une convention tripartite est celle qui instruit CE
+   * dossier. Sans `financeurContactEmail`, aucun lien de signature n'est
+   * émissible pour la tripartite.
+   */
+  financeurContactNom: z.string().max(200).optional(),
+  financeurContactEmail: z.string().email().optional(),
+  financeurContactFonction: z.string().max(200).optional(),
   montantDemandeCents: z.number().int().positive().optional(),
   subrogation: z.boolean().optional(),
 });
@@ -346,6 +502,15 @@ export async function creerDossierFinancementAction(
           type: input.type,
           clientId: input.clientId,
           ...(input.financeurNom !== undefined ? { financeurNom: input.financeurNom } : {}),
+          ...(input.financeurContactNom !== undefined
+            ? { financeurContactNom: input.financeurContactNom }
+            : {}),
+          ...(input.financeurContactEmail !== undefined
+            ? { financeurContactEmail: input.financeurContactEmail }
+            : {}),
+          ...(input.financeurContactFonction !== undefined
+            ? { financeurContactFonction: input.financeurContactFonction }
+            : {}),
           ...(input.montantDemandeCents !== undefined
             ? { montantDemandeCents: input.montantDemandeCents }
             : {}),

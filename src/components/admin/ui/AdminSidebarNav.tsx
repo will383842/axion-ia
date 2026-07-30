@@ -32,6 +32,9 @@ import {
   CalendarClock,
   Hourglass,
   Inbox,
+  PhoneCall,
+  UserPlus,
+  Mic,
   BookOpenText,
   BrainCircuit,
   PenLine,
@@ -90,6 +93,14 @@ const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).fla
 // Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
 const ICON_MAP: Record<string, LucideIcon> = {
   "Tableau de bord": LayoutDashboard,
+  // Boîte de réception (refonte 2026-07-29) — les anciens libellés « Contacts »
+  // n'avaient aucune entrée ici et retombaient tous sur l'icône dossier
+  // générique : cinq lignes visuellement identiques. Un canal = une icône.
+  Tout: Inbox,
+  "Appels réservés": PhoneCall,
+  Messages: Mail,
+  Candidatures: UserPlus,
+  "Demandes de podcast": Mic,
   Calendrier: CalendarDays,
   Réservations: ClipboardList,
   Devis: FileText,
@@ -130,8 +141,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
 // Icône d'« onglet principal » par groupe (niveau 1 de la hiérarchie).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
+  // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
+  // canal de la boîte de réception, pas une rubrique à part (cf. admin-nav.ts).
   contacts: Inbox,
-  "rendez-vous": CalendarClock,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,
@@ -180,6 +192,12 @@ interface AdminSidebarNavProps {
   siteExplorerAnomaliesHighCount?: number;
   /** Compteur contacts sans réponse (needsAttention=true ET non archivé). */
   unreadContactsCount?: number;
+  /**
+   * Compteurs « à traiter » de la boîte de réception, par canal (2026-07-29).
+   * Décision Will : le badge compte ce qu'il RESTE À FAIRE — il descend donc à
+   * zéro, contrairement à un compteur de volume qu'on finit par ignorer.
+   */
+  inboxCounts?: { appel: number; message: number; candidature: number; podcast: number };
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -196,6 +214,7 @@ export function AdminSidebarNav({
   alertsCount = 0,
   siteExplorerAnomaliesHighCount = 0,
   unreadContactsCount = 0,
+  inboxCounts,
   userEmail,
   accountHref,
   logoutAction,
@@ -409,6 +428,31 @@ export function AdminSidebarNav({
         tone: "danger",
         label: "anomalies critiques",
       };
+    }
+    // ── Boîte de réception (2026-07-29) ──────────────────────────────────
+    // Ordre important : les tests d'égalité EXACTE passent avant le
+    // `includes("/contacts/messages")` historique, sinon « Tout » (/contacts)
+    // capterait aussi les sous-routes.
+    if (inboxCounts) {
+      const base = accountHref ?? "";
+      const exact = (suffix: string): boolean => href === `${base}${suffix}`;
+      const total =
+        inboxCounts.appel + inboxCounts.message + inboxCounts.candidature + inboxCounts.podcast;
+      if (exact("/contacts") && total > 0) {
+        return { count: total, tone: "danger", label: "entrées à traiter" };
+      }
+      if (exact("/contacts/appels") && inboxCounts.appel > 0) {
+        return { count: inboxCounts.appel, tone: "danger", label: "appels à compléter" };
+      }
+      if (exact("/contacts/messages") && inboxCounts.message > 0) {
+        return { count: inboxCounts.message, tone: "danger", label: "messages sans réponse" };
+      }
+      if (exact("/contacts/candidatures") && inboxCounts.candidature > 0) {
+        return { count: inboxCounts.candidature, tone: "danger", label: "candidatures à traiter" };
+      }
+      if (exact("/podcast") && inboxCounts.podcast > 0) {
+        return { count: inboxCounts.podcast, tone: "warn", label: "demandes de podcast" };
+      }
     }
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
       return { count: unreadContactsCount, tone: "danger", label: "contacts sans réponse" };

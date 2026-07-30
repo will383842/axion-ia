@@ -13,7 +13,7 @@ import {
   AdminFilterTabs,
 } from "@/components/admin/ui";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
-import { resolveSubmissionLabel } from "./submission-type-labels";
+import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { SubmissionRowActions } from "./SubmissionRowActions";
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
@@ -90,11 +90,17 @@ export async function SubmissionsV2({
     deleted,
   });
 
-  const csvUrl = `/api/admin/submissions/export?${new URLSearchParams({
+  // L'export doit porter le MÊME périmètre que l'écran : filtres de l'URL +
+  // types forcés de la vue (Clients / Presse / …). Sans `unifiedTypeIn`, le CSV
+  // d'un onglet filtré ramènerait toutes les soumissions du site.
+  const csvParams = new URLSearchParams({
     ...(searchParams["type"] ? { type: searchParams["type"] } : {}),
+    ...(searchParams["unifiedType"] ? { unifiedType: searchParams["unifiedType"] } : {}),
     ...(searchParams["status"] ? { status: searchParams["status"] } : {}),
     ...(searchParams["locale"] ? { locale: searchParams["locale"] } : {}),
-  }).toString()}`;
+  });
+  for (const t of forcedTypes ?? []) csvParams.append("unifiedTypeIn", t);
+  const csvUrl = `/api/admin/submissions/export?${csvParams.toString()}`;
 
   const base = `/fr/${adminPrefix}/${basePath}`;
   // Le détail existe UNIQUEMENT à /contacts/messages/[id] (canonique). Les vues
@@ -176,7 +182,10 @@ export async function SubmissionsV2({
         <AdminFilterTabs options={tabOptions} current={currentTab} label="Vue" />
       </div>
       <div className="mb-[var(--space-admin-6)]">
-        <SubmissionFilters initial={searchParams} />
+        <SubmissionFilters
+          initial={searchParams}
+          hideCategory={Boolean(forcedTypes && forcedTypes.length > 0)}
+        />
       </div>
       <AdminListScaffold
         title=""
@@ -199,6 +208,8 @@ export async function SubmissionsV2({
         paginationBaseHref={base}
         paginationPreservedParams={{
           type: searchParams["type"],
+          // Filtre « Catégorie » (unifiedType) — sinon perdu dès la page 2.
+          unifiedType: searchParams["unifiedType"],
           status: searchParams["status"],
           locale: searchParams["locale"],
           search: searchParams["search"],

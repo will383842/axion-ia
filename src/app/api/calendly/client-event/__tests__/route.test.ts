@@ -21,11 +21,13 @@ vi.mock("@/server/notifications", () => ({
 }));
 
 const calendlyFindFirst = vi.fn();
+const calendlyFindUnique = vi.fn();
 const calendlyCreate = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: {
       findFirst: (...args: unknown[]) => calendlyFindFirst(...args),
+      findUnique: (...args: unknown[]) => calendlyFindUnique(...args),
       create: (...args: unknown[]) => calendlyCreate(...args),
     },
   },
@@ -61,8 +63,10 @@ beforeEach(() => {
     resetAt: Date.now() + 60_000,
   });
   calendlyFindFirst.mockResolvedValue(null);
+  calendlyFindUnique.mockResolvedValue(null);
   calendlyCreate.mockResolvedValue({ id: "evt_abc" });
   notifyMock.mockResolvedValue({ ok: true, channels: {} });
+  delete process.env.CALENDLY_API_TOKEN;
 });
 
 describe("POST /api/calendly/client-event", () => {
@@ -138,5 +142,89 @@ describe("POST /api/calendly/client-event", () => {
     };
     expect(createArgs.data.inviteeName).toBeUndefined();
     expect(createArgs.data.inviteeEmail).toBeUndefined();
+  });
+});
+
+// ── Capture des URI (ADR 0036) ──────────────────────────────────────────────
+//
+// Ce que Calendly envoie RÉELLEMENT en Embed JS : deux URI, rien d'autre. Le
+// code d'origine ne lisait que `invitee.name` / `.email`, absents de ce
+// payload — toutes les réservations arrivaient donc vides. Ces tests
+// verrouillent l'extraction, car c'est la seule donnée exploitable dont on
+// dispose et sa perte est silencieuse.
+
+const REAL_EMBED_PAYLOAD = {
+  eventName: "calendly.event_scheduled" as const,
+  payload: {
+    event: { uri: "https://api.calendly.com/scheduled_events/EVT-UUID" },
+    invitee: { uri: "https://api.calendly.com/scheduled_events/EVT-UUID/invitees/INV-UUID" },
+  },
+  eventTypeSlug: "premier-contact",
+  pageUrl: "https://axion-ia.com/fr/appel",
+};
+
+describe("capture des URI Calendly", () => {
+  it("persiste event.uri et invitee.uri du payload réel", async () => {
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(REAL_EMBED_PAYLOAD, { ip: "1.2.3.4" }));
+    expect(res.status).toBe(200);
+    const createArgs = calendlyCreate.mock.calls[0]?.[0] as {
+      data: { eventUri?: string; inviteeUri?: string };
+    };
+    expect(createArgs.data.eventUri).toBe("https://api.calendly.com/scheduled_events/EVT-UUID");
+    expect(createArgs.data.inviteeUri).toBe(
+      "https://api.calendly.com/scheduled_events/EVT-UUID/invitees/INV-UUID",
+    );
+  });
+
+  it("rejette une URI qui n'est pas sur api.calendly.com", async () => {
+    const { POST } = await import("../route");
+    await POST(
+      makeRequest({
+        ...REAL_EMBED_PAYLOAD,
+        payload: {
+          event: { uri: "https://api.calendly.com.attacker.test/scheduled_events/X" },
+          invitee: { uri: "http://api.calendly.com/scheduled_events/X/invitees/Y" },
+        },
+      }),
+    );
+    const createArgs = calendlyCreate.mock.calls[0]?.[0] as {
+      data: { eventUri?: string; inviteeUri?: string };
+    };
+    expect(createArgs.data.eventUri).toBeUndefined();
+    expect(createArgs.data.inviteeUri).toBeUndefined();
+  });
+
+  it("dédup par invitee.uri, sans passer par l'heuristique IP + 60 s", async () => {
+    calendlyFindUnique.mockResolvedValueOnce({ id: "already_here" });
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(REAL_EMBED_PAYLOAD, { ip: "9.9.9.9" }));
+    expect(await res.json()).toEqual({ ok: true, deduped: true });
+    expect(calendlyCreate).not.toHaveBeenCalled();
+    // L'heuristique de repli rejetait à tort deux réservations légitimes prises
+    // coup sur coup depuis le même poste : elle ne doit plus être consultée dès
+    // qu'une URI est disponible.
+    expect(calendlyFindFirst).not.toHaveBeenCalled();
+  });
+
+  it("une violation d'unicité concurrente est un doublon, pas une 500", async () => {
+    calendlyCreate.mockRejectedValueOnce(Object.assign(new Error("unique"), { code: "P2002" }));
+    const { POST } = await import("../route");
+    const res = await POST(makeRequest(REAL_EMBED_PAYLOAD));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, deduped: true });
+    expect(notifyMock).not.toHaveBeenCalled();
+  });
+
+  it("sans jeton API, aucun enrichissement n'est tenté", async () => {
+    const { POST } = await import("../route");
+    await POST(makeRequest(REAL_EMBED_PAYLOAD));
+    // L'enrichissement relirait la ligne juste créée : aucune relecture ⇒ inerte.
+    expect(calendlyFindUnique).toHaveBeenCalledTimes(1); // la dédup, uniquement
+    const notifyArgs = notifyMock.mock.calls[0]?.[0] as {
+      payload: { inviteeName: string; eventStartTime: string };
+    };
+    expect(notifyArgs.payload.inviteeName).toBe("(non communiqué)");
+    expect(notifyArgs.payload.eventStartTime).toBe("(voir mail Calendly)");
   });
 });

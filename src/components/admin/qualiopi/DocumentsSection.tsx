@@ -64,6 +64,13 @@ export interface DocumentGenereInfo {
   numero: string;
   pdfUrl: string | null;
   createdAt: string;
+  /**
+   * Le PDF porte un filigrane SPÉCIMEN : l'identité de l'OF était incomplète au
+   * moment de la génération. La pièce n'est PAS opposable.
+   */
+  estSpecimen?: boolean;
+  /** Champs d'identité manquants — dit quoi renseigner pour régénérer. */
+  champsManquants?: string[];
 }
 
 export interface DocumentsSectionProps {
@@ -181,10 +188,12 @@ function SessionDocButton({
 
 interface EnrollmentDocButtonProps {
   label: string;
-  action: (input: {
-    enrollmentId: string;
-  }) => Promise<
-    | { data: { documentId: string; numero: string } }
+  action: (input: { enrollmentId: string }) => Promise<
+    // `avertissement` : le document EST produit, mais il lui manque une mention
+    // que le logiciel ne peut pas fabriquer seul (cf. médiation de la
+    // consommation sur le contrat individuel). Distinct d'une erreur — le
+    // travail a abouti — mais ça ne doit pas se perdre dans un message vert.
+    | { data: { documentId: string; numero: string; avertissement?: string | undefined } }
     | { data: { resultat: "complete" | "partielle" | "aucune"; documentId: string | null } }
     | { error: string }
   >;
@@ -202,10 +211,12 @@ function EnrollmentDocButton({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
 
   function handleClick() {
     setError(null);
     setSuccess(null);
+    setWarning(null);
     startTransition(async () => {
       const result = await action({ enrollmentId });
       if ("error" in result) {
@@ -215,6 +226,11 @@ function EnrollmentDocButton({
       let msg: string;
       if ("numero" in result.data) {
         msg = `${label} — n° ${result.data.numero} généré.`;
+        // Affiché à part, en ambre, et NON fondu dans le message de succès :
+        // une réserve noyée dans une confirmation verte ne se lit pas.
+        if ("avertissement" in result.data && result.data.avertissement) {
+          setWarning(result.data.avertissement);
+        }
       } else {
         // attestation : resultat = complete | partielle | aucune
         const r = result.data as { resultat: string; documentId: string | null };
@@ -251,6 +267,14 @@ function EnrollmentDocButton({
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]"
         >
           {success}
+        </p>
+      )}
+      {warning && (
+        <p
+          role="status"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
+        >
+          ⚠️ {warning}
         </p>
       )}
     </div>
@@ -489,6 +513,22 @@ export function DocumentsSection({
                   >
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] text-[color:var(--color-admin-fg)]">
                       {DOC_LABELS[doc.type] ?? doc.type}
+                      {/* 🔴 UI 2026-07-27 — un SPÉCIMEN était indiscernable d'une
+                          pièce valable : même numéro, même date, même lien. On ne
+                          s'en apercevait qu'en ouvrant le PDF, voire jamais si on
+                          l'envoyait au client sans le rouvrir. */}
+                      {doc.estSpecimen === true && (
+                        <span
+                          title={
+                            (doc.champsManquants ?? []).length > 0
+                              ? `Non opposable — identité de l'organisme incomplète : ${(doc.champsManquants ?? []).join(", ")}. Renseignez ces champs dans Configuration, puis régénérez le document.`
+                              : "Non opposable — identité de l'organisme incomplète."
+                          }
+                          className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-destructive-soft)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-destructive-fg)] uppercase"
+                        >
+                          Spécimen
+                        </span>
+                      )}
                     </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                       {doc.numero}

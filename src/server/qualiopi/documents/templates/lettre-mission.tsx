@@ -17,6 +17,7 @@ import {
   SignatureZone,
   formatEur,
   pdfStyles,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -50,6 +51,16 @@ export interface LettreMissionData {
   tarifJourHt: number;
   // Dates
   dateMission: string;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -172,10 +183,12 @@ export function LettreMissionPdf({
             parties={[
               {
                 titre: "Pour l'organisme de formation",
+                signature: data.signatures?.axionia ?? null,
                 nom: identite.raisonSociale || "Axion-IA SAS",
               },
               {
                 titre: "Pour le formateur",
+                signature: data.signatures?.formateur ?? null,
                 nom: data.formateur.nomPrenom,
                 mention: "Nom, signature",
               },

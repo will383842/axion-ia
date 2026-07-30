@@ -18,43 +18,73 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/render";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
-import type { NumberingType } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
+import { DOCUMENT_REGISTER_TYPES } from "@/server/qualiopi/numbering/formats";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { evaluerIdentite, exigeIdentiteComplete } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { pieceSignable } from "@/server/qualiopi/documents/signature/parties-requises";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
-/** Mappage DocumentType → NumberingType (NUMBERING_PREFIX). */
-const DOC_TYPE_TO_NUMBERING: Record<DocumentType, NumberingType> = {
-  convention: "formation",
-  convention_tripartite: "formation",
-  contrat: "formation",
-  convocation: "session",
-  emargement: "session",
-  releve_connexion: "session",
-  positionnement: "session",
-  grille_evaluation: "session",
-  satisfaction: "session",
+/**
+ * Mappage DocumentType → série de numérotation.
+ *
+ * 🔴 V19 — CE QUE CETTE TABLE FAISAIT DE FAUX, et pourquoi il ne faut pas la
+ * « simplifier » en revenant en arrière. Elle projetait 12 types sur la série
+ * « formation » et 6 sur « session », c'est-à-dire sur les séries des TABLES
+ * MÉTIER. Or `documents_generes` a son propre compteur : les deux registres
+ * frappaient les mêmes chaînes, chacun sans voir l'autre, et l'unicité de
+ * `numero` étant déclarée table par table, Postgres ne pouvait rien y faire.
+ * En production (SELECT du 2026-07-26), `AXI-FORM-2026-001` désigne la
+ * formation « IA Express » ET un livret d'accueil ; `AXI-SESS-2026-001` une
+ * session ET une feuille d'émargement ; 7 numéros portent chacun deux pièces
+ * sans rapport.
+ *
+ * RÈGLE, désormais tenue par le TYPE et non par la vigilance du lecteur : toute
+ * valeur de cette table appartient à `DOCUMENT_REGISTER_TYPES`. Remapper
+ * `livret_accueil: "formation"` ne compile plus. Ne conservent un préfixe propre
+ * que les séries dont le numéro est IMPRIMÉ sur la pièce remise au tiers et
+ * vérifié par QR — attestation et certificat de réalisation — et dont
+ * `documents_generes` est l'unique propriétaire.
+ *
+ * Cas `facture` / `devis` / `avoir` : le PDF imprime déjà le numéro de
+ * l'ENTITÉ comptable (`factureFormation.numero`, `devis.numero` — cf.
+ * facturation-service.ts « #7 »). Le numéro DocumentGenere n'est qu'une cote
+ * de classement interne. Le faire ressembler à un numéro de facture est
+ * précisément le piège : une pièce classée `AXI-FACT-…` introuvable dans les
+ * livres, c'est un refus au contrôle.
+ */
+const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPES)[number]> = {
+  convention: "document",
+  convention_tripartite: "document",
+  contrat: "document",
+  convocation: "document",
+  emargement: "document",
+  releve_connexion: "document",
+  positionnement: "document",
+  grille_evaluation: "document",
+  satisfaction: "document",
+  // Numéro imprimé sur la pièce remise au stagiaire et vérifié par QR.
   attestation: "attestation",
   attestation_partielle: "attestation",
   certificat_realisation: "certificat",
-  facture: "facture",
-  devis: "devis",
-  avoir: "avoir",
-  kit_opco: "formation",
-  kit_cpf: "formation",
-  kit_france_travail: "formation",
-  lettre_mission: "formation",
-  reglement_interieur: "formation",
-  livret_accueil: "formation",
-  protocole_afest: "formation",
-  // Inventaire des moyens pédagogiques (A14) — groupe AXI-FORM.
-  inventaire_moyens: "formation",
-  // Contrat de sous-traitance (ind. 27) — groupe AXI-FORM.
-  contrat_sous_traitance: "formation",
-  // Fiche formateur versée au dossier (ind. 21) — groupe AXI-FORM.
-  cv_formateur: "formation",
+  // Cote de classement interne — le PDF porte le numéro comptable de l'entité.
+  facture: "document",
+  devis: "document",
+  avoir: "document",
+  kit_opco: "document",
+  kit_cpf: "document",
+  kit_france_travail: "document",
+  lettre_mission: "document",
+  reglement_interieur: "document",
+  livret_accueil: "document",
+  protocole_afest: "document",
+  // Inventaire des moyens pédagogiques (A14).
+  inventaire_moyens: "document",
+  // Contrat de sous-traitance (ind. 27).
+  contrat_sous_traitance: "document",
+  // Fiche formateur versée au dossier (ind. 21).
+  cv_formateur: "document",
 };
 
 export interface GenerateDocumentInput {
@@ -83,10 +113,30 @@ export interface GenerateDocumentInput {
     formationId?: string;
     sessionId?: string;
     traineeId?: string;
+    /** Sous-traitant partie au contrat — sans lui, aucun lien de signature émissible. */
+    sousTraitantId?: string;
     clientId?: string;
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
   };
+  /**
+   * Métadonnées de PRODUCTION à figer sur la pièce.
+   *
+   * 🔴 Sert à enregistrer les conditions dans lesquelles le PDF a été calculé,
+   * pas son contenu. L'usage qui l'a fait naître : le régime de preuve d'un
+   * parcours AFEST. Une feuille d'émargement produite sous `legacy_boolean`
+   * continuait d'être servie telle quelle après bascule en `signature_reelle`,
+   * parce que la génération est IDEMPOTENTE — la feuille disait alors une chose
+   * pendant que la facture, le BPF et le certificat du même parcours en
+   * disaient une autre.
+   *
+   * ⚠️ Ce n'est PAS un fourre-tout. Une donnée qui appartient au contenu de la
+   * pièce doit être dans le PDF, où elle est hachée ; ici rien n'est scellé.
+   *
+   * ⚠️ Le marquage SPÉCIMEN reste prioritaire et n'est jamais écrasé : c'est une
+   * information de conformité, pas une condition de calcul.
+   */
+  metadata?: Record<string, unknown>;
   /**
    * Force le filigrane « COPIE ».
    *
@@ -262,7 +312,12 @@ export async function generateDocument(
 
   // 1. Allocation numéro séquentiel + rendu PDF (retry sur P2002 contrainte unique).
   const year = new Date().getFullYear();
-  const numberingType = DOC_TYPE_TO_NUMBERING[input.type] ?? "formation";
+  // Pas de `?? "formation"` : `DOC_TYPE_TO_NUMBERING` est un Record EXHAUSTIF
+  // sur `DocumentType`, le repli était du code mort. Pire, il aurait absorbé en
+  // silence l'oubli d'un futur type — en le renvoyant sur la série des
+  // formations, c'est-à-dire exactement la collision que V19 corrige. Sans lui,
+  // l'oubli devient une erreur de type au build.
+  const numberingType = DOC_TYPE_TO_NUMBERING[input.type];
 
   let created: { id: string; numero: string; pdfUrl: string | null; hashSha256: string } | null =
     null;
@@ -272,16 +327,26 @@ export async function generateDocument(
   while (attempt < MAX_ATTEMPTS) {
     attempt++;
 
-    // 1a. Compte les documents existants avec le même préfixe/année pour le séq.
-    const prefixPattern = `AXI-${getNumberingPrefixSegment(numberingType)}-${year}-`;
-    const count = await prisma.documentGenere.count({
-      where: {
-        numero: { startsWith: prefixPattern },
-      },
-    });
-
-    const seq = count + 1;
-    const numero = formatDocumentNumber(numberingType, year, seq);
+    // 1a. Prochain numéro de la série DOCUMENTAIRE — borne haute, pas cardinalité.
+    //
+    // 🔴 V20. `count(*) + 1` est DÉTERMINISTE : deux tours de cette boucle
+    // rendaient le MÊME numéro, donc la reprise sur P2002 rejouait cinq fois la
+    // même collision avant d'échouer durement. Un simple trou dans la série (une
+    // pièce purgée, une création annulée) verrouillait la génération pour de bon.
+    // `nextNumero` lit MAX(séquence) : il progresse dès qu'une insertion
+    // concurrente a abouti — la reprise CONVERGE — et un numéro déjà émis n'est
+    // jamais réattribué (CGI, art. 242 nonies A ann. II).
+    //
+    // 🔴 V19. La série lue est celle de `documents_generes` et d'elle seule. La
+    // table est écrite ici, à la main, parce qu'une série est le couple
+    // (PRÉFIXE, TABLE) : la déduire du type était précisément l'erreur qui
+    // faisait frapper `AXI-FORM-2026-001` par deux registres différents.
+    const numero = await nextNumero(numberingType, year, (prefixe) =>
+      prisma.documentGenere.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     // 🔴 Une régénération n'est JAMAIS un original. Chaque tirage alloue un
     // nouveau numéro séquentiel : sans filigrane, deux pièces d'apparence
@@ -304,6 +369,59 @@ export async function generateDocument(
     elementToRender = avecMarquageSpecimen(elementToRender, specimen);
     const { buffer, hashSha256, sizeBytes } = await renderPdfToBuffer(elementToRender);
 
+    /**
+     * 🔴 INSTANTANÉ des données de rendu — c'est ce qui rend l'exemplaire SIGNÉ
+     * possible sans reconstruire, type par type, ce que le template attendait.
+     *
+     * ## Le défaut que cela ferme
+     *
+     * Le socle `DocumentSignature` écrit la preuve en base, et AUCUN template ne
+     * la rendait : sur les onze qui appellent `SignatureZone`, aucun ne passait
+     * de prop `signature`. Le signataire signait, la preuve entrait au registre,
+     * et la pièce qu'on lui remettait continuait d'afficher des cadres vides.
+     *
+     * ## Pourquoi un instantané, et pas une reconstruction
+     *
+     * Reconstruire les données depuis les entités vivantes produirait un
+     * document DÉRIVÉ du présent : un prix révisé, un contact renommé, une
+     * session replanifiée, et l'exemplaire « signé » ne correspondrait plus à ce
+     * qui a été signé. C'est exactement la raison pour laquelle ce module
+     * snapshote déjà l'identité de l'organisme et le numéro.
+     *
+     * ⚠️ On ne RÉGÉNÈRE jamais la pièce : `hash_sha256` est scellé dans
+     * `document_signatures.document_hash_sha256`. L'exemplaire signé est un
+     * rendu à la volée, jamais persisté, jamais renuméroté.
+     *
+     * ⚠️ Les données sont déjà sérialisables : tous les templates portent leurs
+     * dates en chaînes préformatées, jamais en `Date`. Un `JSON.stringify`
+     * défensif refuse silencieusement le contraire plutôt que de faire échouer
+     * une génération de pièce pour un instantané qui n'est qu'un confort.
+     *
+     * 🔴 `identite` est capturée À PART, et ce n'est pas un détail : les formes
+     * de props ne sont PAS uniformes. `DevisPdf` et `ProtocoleAfestPdf` prennent
+     * `{ data }` avec l'identité DANS `data` ; `ConventionPdf`,
+     * `ConventionTripartitePdf`, `ContratFormationPdf` et
+     * `ContratSousTraitancePdf` prennent `{ data, identite }`. N'instantanéiser
+     * que `data` aurait produit, pour ces quatre-là, un exemplaire sans en-tête
+     * d'organisme — et le rendu aurait planté sur `identite.raisonSociale`.
+     */
+    let renderData: unknown = null;
+    try {
+      const props = elementToRender.props as { data?: unknown; identite?: unknown };
+      if (typeof props.data === "object" && props.data !== null) {
+        renderData = JSON.parse(
+          JSON.stringify({
+            data: props.data,
+            ...(typeof props.identite === "object" && props.identite !== null
+              ? { identite: props.identite }
+              : {}),
+          }),
+        ) as unknown;
+      }
+    } catch {
+      renderData = null;
+    }
+
     // 2. Upload R2 (fail-soft).
     const key = `documents/${year}/${input.type}/${numero}.pdf`;
     const pdfUrl = await storeAndSignPdf(buffer, key);
@@ -323,16 +441,50 @@ export async function generateDocument(
           sizeBytes,
           estCopie: estUneRegeneration,
           suppressionPrevueAt,
+          // 🔴 Une pièce SIGNABLE naît EN ATTENTE de signature.
+          //
+          // Laissée à `non_requise`, elle dirait qu'elle suit son cours sans
+          // être signée, et le registre du mode auditeur ne la ferait jamais
+          // remonter — alors que « cette pièce est-elle signée ? » est
+          // exactement la question qu'un contrôle pose.
+          //
+          // ⚠️ La réponse vient du SSOT `parties-requises.ts`, jamais d'une
+          // liste locale et jamais d'un circuit appelant. La première version
+          // faisait poser `en_attente` par chaque circuit après coup : c'était
+          // N endroits à ne pas oublier, et un `UPDATE` de plus après un
+          // `create`. Le SSOT sait, donc c'est ici que ça se décide — une fois.
+          //
+          // ⚠️ Un SPÉCIMEN reste signable au sens du statut : il EXIGE une
+          // signature, il ne peut simplement pas la recevoir tant qu'il est
+          // déclassé (`signerDocument` le refuse explicitement). Le marquer
+          // `non_requise` masquerait une pièce qu'il faut précisément corriger.
+          ...(pieceSignable(input.type) ? { statutSignature: "en_attente" as const } : {}),
           // Traçabilité du déclassement : un document SPÉCIMEN doit rester
           // identifiable comme tel en base, pas seulement à l'impression.
-          ...(specimen
-            ? { metadata: { specimen: true, champsManquants: specimen.manquants } }
+          //
+          // ⚠️ Les deux sources sont FUSIONNÉES, et le SPÉCIMEN est écrit en
+          // DERNIER : un appelant ne doit pas pouvoir effacer, même par
+          // inadvertance, le marquage qui dit que la pièce n'a pas de valeur
+          // juridique.
+          ...(specimen !== null || input.metadata !== undefined || renderData !== null
+            ? {
+                metadata: {
+                  ...(input.metadata ?? {}),
+                  // Sous une clé DÉDIÉE : `metadata` porte déjà `specimen` et
+                  // `champsManquants`, que rien ne doit écraser.
+                  ...(renderData !== null ? { renderData } : {}),
+                  ...(specimen ? { specimen: true, champsManquants: specimen.manquants } : {}),
+                },
+              }
             : {}),
           ...(input.qrToken != null ? { qrToken: input.qrToken, qrTokenCreatedAt: now } : {}),
           ...(input.refs?.formationId != null ? { formationId: input.refs.formationId } : {}),
           ...(input.refs?.sessionId != null ? { sessionId: input.refs.sessionId } : {}),
           ...(input.refs?.traineeId != null ? { traineeId: input.refs.traineeId } : {}),
           ...(input.refs?.clientId != null ? { clientId: input.refs.clientId } : {}),
+          ...(input.refs?.sousTraitantId != null
+            ? { sousTraitantId: input.refs.sousTraitantId }
+            : {}),
           ...(input.refs?.coachingSessionId != null
             ? { coachingSessionId: input.refs.coachingSessionId }
             : {}),
@@ -399,20 +551,13 @@ export async function generateDocument(
   };
 }
 
-/** Extrait le segment TYPE du préfixe (ex. "AXI-FORM" → "FORM"). */
-function getNumberingPrefixSegment(type: NumberingType): string {
-  const map: Record<NumberingType, string> = {
-    formation: "FORM",
-    session: "SESS",
-    attestation: "ATT",
-    certificat: "CERT",
-    facture: "FACT",
-    reclamation: "REC",
-    client: "CLI",
-    devis: "DEV",
-    offre: "OFF",
-    audit: "AUD",
-    avoir: "AVO",
-  };
-  return map[type] ?? "FORM";
-}
+// 🔴 `getNumberingPrefixSegment` a été SUPPRIMÉE (V19).
+//
+// Elle réécrivait à la main le segment de préfixe de chaque type — une SECONDE
+// source de vérité en face de `NUMBERING_PREFIX`, avec un repli `?? "FORM"` qui
+// renvoyait tout type inconnu sur la série des formations. C'est cette double
+// écriture qui a rendu la dérive possible et invisible : ajouter une entrée d'un
+// côté sans l'autre ne cassait rien, et n'était détecté par aucun test.
+//
+// La seule source est désormais `seriesPrefix()` (numbering/formats.ts), appelée
+// par `nextNumero`. Ne pas réintroduire de table de correspondance locale.

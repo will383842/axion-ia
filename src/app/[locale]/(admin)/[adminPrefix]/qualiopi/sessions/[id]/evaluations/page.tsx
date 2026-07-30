@@ -20,6 +20,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { prisma } from "@/lib/prisma";
 import { EvaluationForm } from "@/components/admin/qualiopi/EvaluationForm";
 import { GenererAttestationButton } from "@/components/admin/qualiopi/GenererAttestationButton";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import {
   createEvaluationAcquisAction,
   genererAttestationAction,
@@ -111,18 +112,14 @@ export default async function EvaluationsPage({ params }: PageProps) {
 
   if (!session) notFound();
 
-  // Extraire les objectifs pédagogiques de la formation (Json array)
-  // Format attendu : string[] ou { libelle: string }[] — on normalise en string[]
-  const rawObjectifs = session.formation?.objectifsPedagogiques;
-  const objectifsPedagogiques: string[] = Array.isArray(rawObjectifs)
-    ? rawObjectifs.map((o: unknown) => {
-        if (typeof o === "string") return o;
-        if (o !== null && typeof o === "object" && "libelle" in o) {
-          return String((o as { libelle: unknown }).libelle);
-        }
-        return String(o);
-      })
-    : [];
+  // 🔴 Parcours à blanc 2026-07-27. Cette normalisation ne connaissait que
+  // `libelle` et retombait sur `String(o)`. Or le catalogue écrit
+  // `{ id, verbe, description }` : la grille de compétences s'ouvrait donc avec
+  // cinq lignes préremplies « [object Object] », sur l'écran qui sert à évaluer
+  // les acquis (indicateur 11). Normalisation partagée désormais.
+  const objectifsPedagogiques = normaliserObjectifsPedagogiques(
+    session.formation?.objectifsPedagogiques,
+  );
 
   const sectionHeadCls =
     "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
@@ -263,15 +260,42 @@ export default async function EvaluationsPage({ params }: PageProps) {
                       </tbody>
                     </table>
                     {/* Résumé évaluation finale */}
-                    {evalFinale && (
-                      <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                        Évaluation finale (la plus récente) : score {evalFinale.scorePct} % —{" "}
-                        {NIVEAU_LABELS[evalFinale.niveauGlobal] ?? evalFinale.niveauGlobal}
-                        {evalFinale.recommandations
-                          ? ` — Recommandations : ${evalFinale.recommandations}`
-                          : ""}
-                      </p>
-                    )}
+                    {evalFinale &&
+                      (() => {
+                        // 🔴 UI 2026-07-27 — même faux échec que sur l'attestation,
+                        // corrigé là-bas mais pas ici. Une évaluation dont AUCUNE
+                        // compétence n'est notée affichait « score 0 % — Non
+                        // acquis » : un oubli de saisie devenait un échec à
+                        // l'écran, et c'est sur cet écran qu'on décide d'éditer
+                        // l'attestation. `scorePct = 0` et `niveauGlobal` sont ici
+                        // des artefacts d'une saisie vide, pas un résultat.
+                        const notes = Array.isArray(evalFinale.competences)
+                          ? (evalFinale.competences as unknown[])
+                          : [];
+                        const sansAucuneNote = notes.length === 0;
+                        return (
+                          <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            {sansAucuneNote ? (
+                              <>
+                                Évaluation finale enregistrée, mais{" "}
+                                <strong>aucune compétence n&apos;est notée</strong> : le score de 0
+                                % est un artefact de saisie, pas un résultat. L&apos;attestation
+                                portera « Évaluation des acquis non réalisée » tant que les
+                                compétences ne sont pas renseignées.
+                              </>
+                            ) : (
+                              <>
+                                Évaluation finale (la plus récente) : score {evalFinale.scorePct} %
+                                —{" "}
+                                {NIVEAU_LABELS[evalFinale.niveauGlobal] ?? evalFinale.niveauGlobal}
+                                {evalFinale.recommandations
+                                  ? ` — Recommandations : ${evalFinale.recommandations}`
+                                  : ""}
+                              </>
+                            )}
+                          </p>
+                        );
+                      })()}
                   </div>
                 ) : (
                   <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">

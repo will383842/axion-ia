@@ -170,7 +170,10 @@ export async function listFormateurs() {
       region: true,
       actif: true,
       lastFormateurLoginAt: true,
-      _count: { select: { coachingSessions: true } },
+      // 🔴 2026-07-28. Cet écran ne comptait QUE les séances 1-to-1 : un
+      // formateur animant dix formations collectives y affichait « 0 » et se
+      // lisait comme inactif. On compte les deux activités.
+      _count: { select: { coachingSessions: true, sessionsAnimees: true } },
     },
   });
 }

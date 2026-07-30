@@ -46,8 +46,8 @@ export const MANDELIEU_LA_NAPOULE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Mandelieu-la-Napoule : sessions dans votre établissement, club, commerce ou en visio. Pour dirigeants de TPE/PME du tourisme, du golf et du yachting souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Mandelieu-la-Napoule : plateformes de réservation multilingues, sites vitrines haut de gamme pour hôtels, golfs et acteurs du yachting, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
-      en: "Sites web augmentés IA à Mandelieu-la-Napoule : plateformes de réservation multilingues, sites vitrines haut de gamme pour hôtels, golfs et acteurs du yachting, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      fr: "Sites web & SaaS IA à Mandelieu-la-Napoule : plateformes de réservation multilingues, sites vitrines haut de gamme pour hôtels, golfs et acteurs du yachting, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      en: "Sites web & SaaS IA à Mandelieu-la-Napoule : plateformes de réservation multilingues, sites vitrines haut de gamme pour hôtels, golfs et acteurs du yachting, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
     },
   },
   services: {

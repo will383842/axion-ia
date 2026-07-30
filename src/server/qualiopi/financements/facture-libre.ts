@@ -37,7 +37,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
@@ -186,10 +186,13 @@ export async function genererFactureLibre(
   let factureCreee: { id: string; numero: string } | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — borne haute. Boucle de reprise conservée, désormais convergente.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     try {
       const facture = await prisma.factureFormation.create({
@@ -381,10 +384,16 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   let avoirCree: { id: string; numero: string } | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-AVO-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("avoir", annee, count + 1);
+    // 🔴 V20. `facture` et `avoir` partagent la TABLE `factures_formation` mais
+    // ce sont DEUX séries distinctes, discriminées par le préfixe. Partager la
+    // table ne partage pas le compteur — c'est précisément l'amalgame qui
+    // rendait faux le dénominateur de `actions/qualiopi/financements.ts`.
+    const numero = await nextNumero("avoir", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     try {
       const avoir = await prisma.factureFormation.create({

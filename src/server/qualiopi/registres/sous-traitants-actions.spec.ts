@@ -51,9 +51,15 @@ const mockGetSousTraitant = getSousTraitant as ReturnType<typeof vi.fn>;
 
 const ST_UUID = "550e8400-e29b-41d4-a716-446655440040";
 
+// SIRET Luhn-VALIDE. L'ancienne fixture « 12345678901234 » échoue la clé de
+// contrôle (vérifié par exécution) : depuis que `creerSousTraitantSchema` valide
+// le SIRET (F5), elle faisait échouer le safeParse et tombait 4 tests qui n'ont
+// rien à voir avec le SIRET. Ne pas y remettre une valeur inventée :
+// 12345678900015, 98765432100015, 11223344556670 et 73282932000074 sont
+// Luhn-valides (vérifiés).
 const INPUT_BASE = {
   nom: "FormIA Solutions",
-  siret: "12345678901234",
+  siret: "12345678900015",
   nda: "11073000273",
   objetPrestation: "Formation IA générative — sous-traitance partielle module 3",
 };
@@ -107,7 +113,10 @@ describe("creerSousTraitantAction", () => {
 
     expect("error" in result).toBe(true);
     if (!("error" in result)) return;
-    expect(result.error).toBe("Données invalides");
+    // Le message n'est plus le littéral générique : l'action remonte désormais
+    // le champ fautif, sans quoi un SIRET refusé s'afficherait « Données
+    // invalides » sans indiquer quoi corriger.
+    expect(result.error).toContain("nom");
   });
 
   it("retourne { error } générique si le service lève", async () => {

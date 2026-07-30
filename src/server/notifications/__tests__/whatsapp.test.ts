@@ -91,7 +91,6 @@ describe("shouldNotifyWhatsApp", () => {
       "QUOTE_REQUEST_RECEIVED",
       "AUDIT_REQUEST_SUBMITTED",
       "JOB_APPLICATION_RECEIVED",
-      "BOOKING_CREATED",
       "CALENDLY_INVITEE_CREATED",
       "PODCAST_REQUEST_SUBMITTED",
     ] as const) {
@@ -108,6 +107,22 @@ describe("shouldNotifyWhatsApp", () => {
       "DEPLOY_SUCCESS",
       "BOOKING_CANCELLED",
     ] as const) {
+      expect(shouldNotifyWhatsApp(c), c).toBe(false);
+    }
+  });
+
+  // Retiré de la liste WhatsApp le 2026-07-29 — pas un changement d'avis sur
+  // l'intérêt de doubler une réservation, mais un constat : le tunnel de
+  // réservation payante est éteint depuis l'audit 2026-07-09
+  // (`createBookingAction` / `postOption48hAction` n'existent plus), donc ces
+  // deux catégories n'ont PLUS AUCUN ÉMETTEUR. Les laisser entretenait
+  // l'illusion que WhatsApp couvrait des réservations impossibles, et masquait
+  // que le seul canal de RDV vivant est Calendly.
+  //
+  // Ce test échouera le jour où le tunnel renaîtra — c'est voulu : il faudra
+  // alors décider explicitement de re-doubler ces alertes sur WhatsApp.
+  it("faux pour le tunnel de réservation éteint (sans émetteur)", () => {
+    for (const c of ["BOOKING_CREATED", "OPTION_POSTED"] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }
   });

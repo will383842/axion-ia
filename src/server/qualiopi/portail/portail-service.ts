@@ -21,6 +21,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -90,26 +91,16 @@ export interface EspaceStagiaire {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * `objectifsPedagogiques` est un `Json` : selon l'origine (import catalogue, moteur
- * de génération, saisie manuelle) il peut être un tableau de chaînes, un tableau
- * d'objets `{ objectif }`, ou une chaîne unique. On normalise en `string[]` plutôt
- * que de supposer une forme — un `.map()` sur un objet ferait planter le portail.
+ * 🔴 Parcours à blanc 2026-07-27. Cette normalisation locale essayait
+ * `objectif | libelle | label | titre` — mais PAS `description`, la clé
+ * qu'écrit l'import du catalogue. Le `filter` renvoyait donc une liste vide :
+ * le portail stagiaire n'affichait aucun objectif pédagogique pour les
+ * 22 formations du catalogue, sans erreur ni trace.
+ *
+ * Remplacée par la normalisation partagée, qui couvre les deux familles de
+ * formes. Voir `@/server/qualiopi/formations/objectifs`.
  */
-function normaliserObjectifs(valeur: unknown): string[] {
-  if (typeof valeur === "string") return valeur.trim() ? [valeur.trim()] : [];
-  if (!Array.isArray(valeur)) return [];
-  return valeur
-    .map((o) => {
-      if (typeof o === "string") return o.trim();
-      if (o !== null && typeof o === "object") {
-        const rec = o as Record<string, unknown>;
-        const v = rec["objectif"] ?? rec["libelle"] ?? rec["label"] ?? rec["titre"];
-        return typeof v === "string" ? v.trim() : "";
-      }
-      return "";
-    })
-    .filter((o) => o.length > 0);
-}
+const normaliserObjectifs = normaliserObjectifsPedagogiques;
 
 /** Génère un token portail : 32 bytes → 64 chars hex. */
 function genererTokenPortail(): string {

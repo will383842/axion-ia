@@ -46,8 +46,8 @@ export const CANEJAN_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Canéjan : sessions dans votre bureau, atelier, cabinet, commerce ou en visio. Dirigeants TPE et PME canéjanais : artisans, commerçants, professions libérales, dirigeants tertiaires.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Canéjan : plateformes sur mesure pour TPE et PME du sud bordelais — devis en ligne, prise de RDV, agents conversationnels intégrés, automatisation du suivi client.",
-      en: "Sites web augmentés IA à Canéjan : plateformes sur mesure pour TPE et PME du sud bordelais — devis en ligne, prise de RDV, agents conversationnels intégrés, automatisation du suivi client.",
+      fr: "Sites web & SaaS IA à Canéjan : plateformes sur mesure pour TPE et PME du sud bordelais — devis en ligne, prise de RDV, agents conversationnels intégrés, automatisation du suivi client.",
+      en: "Sites web & SaaS IA à Canéjan : plateformes sur mesure pour TPE et PME du sud bordelais — devis en ligne, prise de RDV, agents conversationnels intégrés, automatisation du suivi client.",
     },
   },
   faqGeolocalisee: [

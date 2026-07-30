@@ -20,6 +20,7 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
+import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objectifs";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
 import {
@@ -38,6 +39,45 @@ export interface AttestationResult {
    * corriger.
    */
   motif?: string;
+  /**
+   * Renseigné quand la ré-émission a été REFUSÉE parce qu'elle aurait dégradé
+   * une attestation déjà remise. Voir `assertPasDeDegradation`.
+   */
+  refusDegradation?: string;
+}
+
+/** Ordre de gravité des résultats — `aucune` < `partielle` < `complete`. */
+const RANG_RESULTAT: Record<"aucune" | "partielle" | "complete", number> = {
+  aucune: 0,
+  partielle: 1,
+  complete: 2,
+};
+
+/**
+ * Refuse de RÉTROGRADER une attestation déjà émise, sans validation humaine.
+ *
+ * 🔴 Le passage d'un parcours en régime `signature_reelle` peut faire chuter ses
+ * heures — donc son taux, donc son résultat. Une ré-émission `force` écraserait
+ * alors `attestationDocumentId` et laisserait le document précédent ORPHELIN
+ * MAIS EN CIRCULATION : le bénéficiaire, l'employeur et le financeur détiennent
+ * une attestation « complète » que la base ne reconnaît plus, et que rien ne
+ * signale comme révoquée.
+ *
+ * L'idempotence ne protège pas de ce cas : `force` la contourne, et c'est
+ * précisément le drapeau qu'on utilise après une correction. On exige donc un
+ * arbitrage explicite (`autoriserDegradation`), qui doit s'accompagner d'une
+ * révocation traçable du document antérieur.
+ */
+function assertPasDeDegradation(
+  ancien: "complete" | "partielle" | "aucune" | null,
+  nouveau: "complete" | "partielle" | "aucune",
+  ancienDocumentId: string | null,
+  autoriserDegradation: boolean,
+): string | null {
+  if (autoriserDegradation) return null;
+  if (ancien === null || ancienDocumentId === null) return null;
+  if (RANG_RESULTAT[nouveau] >= RANG_RESULTAT[ancien]) return null;
+  return `Cette ré-émission dégraderait l'attestation de « ${ancien} » à « ${nouveau} ». Un document a déjà été remis (${ancienDocumentId}) : le remplacer sans le révoquer laisserait en circulation une attestation que la base ne reconnaît plus. Révoquez d'abord le document antérieur, puis relancez en autorisant explicitement la dégradation.`;
 }
 
 const formatDate = (d: Date) =>
@@ -75,7 +115,7 @@ function resolveBeneficiaire(cs: {
  */
 export async function genererAttestation1to1(
   coachingSessionId: string,
-  opts?: { force?: boolean },
+  opts?: { force?: boolean; autoriserDegradation?: boolean },
 ): Promise<AttestationResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { resultat: "aucune", documentId: null };
@@ -149,10 +189,32 @@ export async function genererAttestation1to1(
     resultat = "aucune";
   }
 
+  // 🔴 Garde anti-rétrogradation — AVANT toute écriture, y compris celle du
+  // résultat « aucune » qui écrase pourtant `attestationResultat`.
+  const refus = assertPasDeDegradation(
+    cs.attestationResultat,
+    resultat,
+    cs.attestationDocumentId,
+    opts?.autoriserDegradation === true,
+  );
+  if (refus !== null) {
+    return {
+      resultat: (cs.attestationResultat ?? "aucune") as "complete" | "partielle" | "aucune",
+      documentId: cs.attestationDocumentId ?? null,
+      refusDegradation: refus,
+    };
+  }
+
   if (resultat === "aucune") {
     await prisma.coachingSession.update({
       where: { id: coachingSessionId },
-      data: { attestationResultat: "aucune", attestationGenereeAt: new Date() },
+      data: {
+        attestationResultat: "aucune",
+        attestationGenereeAt: new Date(),
+        // La clôture reste l'écrivain unique, même quand elle n'émet rien.
+        heuresSigneesCloture: heuresReelles,
+        heuresSigneesClotureAt: new Date(),
+      },
     });
     return { resultat: "aucune", documentId: null };
   }
@@ -167,14 +229,13 @@ export async function genererAttestation1to1(
   const formateurNom = `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale;
 
   // Objectifs pédagogiques (figés) → string lisible.
-  const objectifsRaw = snap.objectifsPedagogiques;
-  let objectifsStr = "";
-  if (Array.isArray(objectifsRaw)) {
-    objectifsStr = (objectifsRaw as Array<{ libelle?: string } | string>)
-      .map((o) => (typeof o === "string" ? o : (o.libelle ?? "")))
-      .filter(Boolean)
-      .join(", ");
-  }
+  //
+  // 🔴 Parcours à blanc 2026-07-27. Ce code ne lisait que `libelle` ; le
+  // catalogue écrit `description`. Le `filter(Boolean)` transformait donc le
+  // défaut en SILENCE : l'attestation AFEST sortait sans aucun objectif, sans
+  // rien signaler. Moins voyant que le « [object Object] » de la voie
+  // collective, mais tout aussi faux sur une pièce probante.
+  const objectifsStr = objectifsPedagogiquesEnTexte(snap.objectifsPedagogiques);
 
   // 🔴 Audit certification 2026-07-26 (F21, SECOND passage). Ce fichier est le
   // miroir de `attestation-service.ts` et reproduisait le même défaut : la liste
@@ -300,6 +361,11 @@ export async function genererAttestation1to1(
     qrToken: token,
   });
 
+  // 🔴 ÉCRIVAIN UNIQUE de `dureeReelleHeures` : le chemin de CLÔTURE, et lui
+  // seul. La transaction de signature ne l'écrit pas — un cache posé à chaque
+  // signature oscillerait selon l'ordre des opérations. `heuresSigneesCloture`
+  // fige en plus la valeur ex-post, que `coachingSnapshot` ne peut pas porter
+  // (il est capturé au PREMIER document, donc au protocole EX-ANTE, donc à 0 h).
   await prisma.coachingSession.update({
     where: { id: coachingSessionId },
     data: {
@@ -307,6 +373,8 @@ export async function genererAttestation1to1(
       attestationDocumentId: generated.id,
       attestationGenereeAt: new Date(),
       dureeReelleHeures: heuresReelles,
+      heuresSigneesCloture: heuresReelles,
+      heuresSigneesClotureAt: new Date(),
     },
   });
 

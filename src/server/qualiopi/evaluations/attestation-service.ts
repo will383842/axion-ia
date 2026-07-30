@@ -27,6 +27,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objectifs";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import { getFinaleResultats, evaluationSansAucuneNote } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
@@ -231,20 +232,14 @@ export async function genererAttestationPourEnrollment(
     }
   }
 
-  // Objectifs pédagogiques → string lisible
-  let objectifsStr = "";
-  try {
-    const raw = formation.objectifsPedagogiques;
-    if (Array.isArray(raw)) {
-      objectifsStr = (raw as string[]).join(", ");
-    } else if (typeof raw === "string") {
-      objectifsStr = raw;
-    } else {
-      objectifsStr = String(raw ?? "");
-    }
-  } catch {
-    objectifsStr = "";
-  }
+  // Objectifs pédagogiques → string lisible.
+  //
+  // 🔴 Parcours à blanc 2026-07-27. Le `(raw as string[]).join(", ")` était un
+  // cast de confiance : le catalogue écrit `{ id, verbe, description }`, donc
+  // l'attestation remise au stagiaire imprimait « Objectifs : [object Object],
+  // [object Object], … ». Constaté sur une attestation réellement générée en
+  // production. Le repli `String(raw ?? "")` avait le même défaut.
+  const objectifsStr = objectifsPedagogiquesEnTexte(formation.objectifsPedagogiques);
 
   // Évaluation finale (null si pas d'évaluation)
   //

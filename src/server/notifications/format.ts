@@ -234,6 +234,10 @@ function formatBody(event: NotificationEvent): string {
     }
     case "CALENDLY_INVITEE_CREATED": {
       const p = event.payload;
+      // `eventUri` porte l'id de la ligne `calendly_events` (pas l'URI Calendly) :
+      // c'est ce que passe `POST /api/calendly/client-event`. On en fait donc un
+      // lien direct vers la fiche — l'alerte ne se contentait jusqu'ici d'afficher
+      // un identifiant brut, inexploitable depuis le téléphone.
       return [
         formatKV("Type RDV", p.eventName),
         formatKV("Invitee", p.inviteeName),
@@ -242,7 +246,10 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),
-        formatKV("ID", p.eventUri),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
+        ),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -283,9 +290,13 @@ function formatBody(event: NotificationEvent): string {
     case "DEPLOY_FAILED": {
       const p = event.payload;
       return [
+        formatKV("Branche", p.branch),
         formatKV("SHA", p.sha),
+        formatKV("Auteur", p.actor),
+        formatKV("Commit", p.subject?.slice(0, 160)),
         formatKV("Durée (s)", p.duration),
         formatKV("Erreur", p.error?.slice(0, 500)),
+        formatKV("Run", p.runUrl),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

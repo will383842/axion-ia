@@ -23,6 +23,7 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
@@ -205,7 +206,9 @@ export async function genererKitOpcoCoaching(coachingSessionId: string): Promise
           numero,
           dateEmission: formatDateFr(new Date()),
           identite,
-          nomOpco: contrat.client?.opcoIdentifie ?? "OPCO (à préciser)",
+          nomOpco: contrat.client?.opcoIdentifie
+            ? opcoLabel(contrat.client.opcoIdentifie)
+            : "OPCO (à préciser)",
           numeroDossier: contrat.numeroDossierOpco ?? "—",
           intituleFormation: snap.intitule,
           dateDebut,
@@ -371,7 +374,9 @@ export async function genererConventionTripartiteCoaching(
 
   const prixHt = contrat.montantHtCents / 100;
   const montantPrisEnCharge = calc.totalHtCents / 100;
-  const nomOpco = contrat.client.opcoIdentifie ?? "OPCO (à préciser)";
+  const nomOpco = contrat.client.opcoIdentifie
+    ? opcoLabel(contrat.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroPriseEnCharge = contrat.numeroDossierOpco ?? contrat.client.opcoNumeroAdherent ?? "—";
 
   const doc = await generateDocument({

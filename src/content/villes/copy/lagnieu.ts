@@ -46,8 +46,8 @@ export const LAGNIEU_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Lagnieu : sessions dans votre atelier, exploitation, commerce ou en visio. Pour dirigeants industriels, agriculteurs, artisans et gérants de TPE/PME du Bugey souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Lagnieu : sites vitrines pour artisans et commerces, portails B2B industriels avec devis automatisés, catalogues produits et assistants intelligents optimisés pour le référencement local du Bugey.",
-      en: "Sites web augmentés IA à Lagnieu : sites vitrines pour artisans et commerces, portails B2B industriels avec devis automatisés, catalogues produits et assistants intelligents optimisés pour le référencement local du Bugey.",
+      fr: "Sites web & SaaS IA à Lagnieu : sites vitrines pour artisans et commerces, portails B2B industriels avec devis automatisés, catalogues produits et assistants intelligents optimisés pour le référencement local du Bugey.",
+      en: "Sites web & SaaS IA à Lagnieu : sites vitrines pour artisans et commerces, portails B2B industriels avec devis automatisés, catalogues produits et assistants intelligents optimisés pour le référencement local du Bugey.",
     },
   },
   faqGeolocalisee: [

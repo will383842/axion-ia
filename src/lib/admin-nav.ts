@@ -22,10 +22,15 @@
 //   emojis pour ne pas casser le rendu V1 et permettre une migration
 //   incrémentale.
 
+// Refonte « Boîte de réception » 2026-07-29 : le groupe `rendez-vous` est
+// SUPPRIMÉ. Ses 3 items lisaient la même table `calendly_events` et le clic sur
+// une ligne du premier renvoyait déjà au détail du troisième — ce n'était donc
+// pas un pôle mais un écran unique éclaté. Il est fusionné dans l'unique entrée
+// « Appels réservés » du groupe `contacts`, désormais organisé par CANAL
+// D'ENTRÉE (appel / message / candidature / podcast) plutôt que par table.
 export type AdminNavGroup =
   | "main"
   | "contacts"
-  | "rendez-vous"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -123,8 +128,7 @@ export interface AdminNavItem {
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
-  contacts: "Contacts",
-  "rendez-vous": "Rendez-vous",
+  contacts: "Boîte de réception",
   content: "Contenu",
   content_gen: "Génération de contenu",
   qualiopi: "Formation / Qualiopi",
@@ -249,7 +253,6 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "contacts",
-  "rendez-vous",
   "content",
   "content_gen",
   "qualiopi",
@@ -397,54 +400,48 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "facturation",
       parent: `${base}`,
     },
-    // ── Contacts — TOUT ce qui entre par formulaire (refonte UX 2026-07-09 ;
-    //    fusion Recrutement → Contacts 2026-07-12, décision Will : messages
-    //    écrits + candidatures rassemblés dans un seul groupe « Contacts »).
-    //    Seuls les appels (Calendly) gardent leur groupe « Rendez-vous ».
+    // ── Boîte de réception — TOUT ce qui entre du monde extérieur ──────────
+    //
+    //    Refonte 2026-07-29. Avant : 11 entrées de sidebar (8 « Contacts » +
+    //    3 « Rendez-vous ») pour 4 objets réels, parce que la nav épousait le
+    //    schéma de base plutôt que le travail. Cinq de ces entrées étaient la
+    //    MÊME table `Submission` avec un filtre figé ; trois autres étaient la
+    //    MÊME table `calendly_events` affichée de trois façons.
+    //
+    //    Après : 5 entrées, une par CANAL D'ENTRÉE réel.
+    //      Tout            → vue unifiée des 4 sources (rien ne se perd)
+    //      Appels réservés → calendly_events (liste + calendrier en onglet)
+    //      Messages        → Submission (le tri fin passe par le filtre « Catégorie »)
+    //      Candidatures    → JobApplication (CV, workflow RH : vrai objet distinct)
+    //      Podcast         → PodcastRequest (vrai objet distinct)
+    //
+    //    Les vues filtrées de Submission ne disparaissent pas : elles gardent
+    //    leur route et restent joignables par la command palette (⌘K) et les
+    //    favoris — elles portent `parent`, ce qui les retire de la sidebar sans
+    //    rien casser. Réversible : retirer `parent`.
     {
-      href: `${base}/contacts/messages`,
-      label: "Tous les messages",
+      href: `${base}/contacts`,
+      label: "Tout",
       icon: "📥",
       group: "contacts",
     },
     {
-      href: `${base}/contacts/clients`,
-      label: "Clients",
-      icon: "💼",
+      href: `${base}/contacts/appels`,
+      label: "Appels réservés",
+      icon: "📞",
       group: "contacts",
     },
     {
-      href: `${base}/contacts/presse`,
-      label: "Presse",
-      icon: "📰",
+      href: `${base}/contacts/messages`,
+      label: "Messages",
+      icon: "✉️",
       group: "contacts",
     },
-    {
-      href: `${base}/contacts/partenariats`,
-      label: "Partenariats",
-      icon: "🤝",
-      group: "contacts",
-    },
-    {
-      href: `${base}/contacts/investisseurs`,
-      label: "Investisseurs",
-      icon: "📈",
-      group: "contacts",
-    },
-    // Recrutement — fusionné dans Contacts (2026-07-12). Candidatures aux offres
-    // publiées (JobApplication : CV/photo, workflow RH, route déplacée sous
-    // /contacts/candidatures) + messages du formulaire « devenir commercial »
-    // (Submission unifiedType=recrutement).
+    // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
-      label: "Candidatures aux offres",
+      label: "Candidatures",
       icon: "📨",
-      group: "contacts",
-    },
-    {
-      href: `${base}/contacts/commercial`,
-      label: "Messages recrutement",
-      icon: "🧑‍💼",
       group: "contacts",
     },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
@@ -457,24 +454,42 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "🎙️",
       group: "contacts",
     },
-    // ── Rendez-vous — APPELS (Calendly ≠ messages écrits) ───────────────────
+    // ▸ Vues filtrées de « Messages » — hors sidebar (cf. bloc ci-dessus),
+    //   conservées pour ⌘K, les favoris et les breadcrumbs.
     {
-      href: `${base}/contacts/rendez-vous`,
-      label: "RV téléphonique",
-      icon: "📞",
-      group: "rendez-vous",
+      href: `${base}/contacts/clients`,
+      label: "Messages · Clients",
+      icon: "💼",
+      group: "contacts",
+      parent: `${base}/contacts/messages`,
     },
     {
-      href: `${base}/contacts/rendez-vous/calendrier`,
-      label: "Calendrier RDV",
-      icon: "🗓️",
-      group: "rendez-vous",
+      href: `${base}/contacts/presse`,
+      label: "Messages · Presse",
+      icon: "📰",
+      group: "contacts",
+      parent: `${base}/contacts/messages`,
     },
     {
-      href: `${base}/contacts/calendly`,
-      label: "Appels Calendly",
-      icon: "📅",
-      group: "rendez-vous",
+      href: `${base}/contacts/partenariats`,
+      label: "Messages · Partenariats",
+      icon: "🤝",
+      group: "contacts",
+      parent: `${base}/contacts/messages`,
+    },
+    {
+      href: `${base}/contacts/investisseurs`,
+      label: "Messages · Investisseurs",
+      icon: "📈",
+      group: "contacts",
+      parent: `${base}/contacts/messages`,
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Messages · Recrutement",
+      icon: "🧑‍💼",
+      group: "contacts",
+      parent: `${base}/contacts/messages`,
     },
     // ── contenu ──────────────────────────────────────────────────────────
     { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
@@ -843,6 +858,22 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "formations",
     },
+    // 🔴 Déplacé depuis « Coaching 1-to-1 » le 2026-07-28.
+    //
+    // Cet écran gère l'accès de TOUS les formateurs, sans distinction : il
+    // liste `listFormateurs()` en entier. Il était pourtant rangé sous
+    // « Coaching 1-to-1 », héritage de l'époque où l'espace formateur ne
+    // servait qu'aux séances individuelles. Conséquence : pour envoyer un lien
+    // de connexion à quelqu'un qui n'anime que des formations collectives, il
+    // fallait aller le chercher dans le menu du 1-to-1 — personne ne l'y
+    // trouvait. Sa place est ici, à côté de la fiche formateur.
+    {
+      href: `${base}/coaching/formateurs`,
+      label: "Accès & connexions formateurs",
+      icon: "🧑‍🏫",
+      group: "qualiopi",
+      subGroup: "formations",
+    },
     {
       href: `${base}/qualiopi/remuneration`,
       label: "Rémunération formateurs",
@@ -1136,12 +1167,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/coaching/seances`,
       label: "Séances 1-to-1",
       icon: "🗂️",
-      group: "coaching-1to1",
-    },
-    {
-      href: `${base}/coaching/formateurs`,
-      label: "Accès & connexions formateurs",
-      icon: "🧑‍🏫",
       group: "coaching-1to1",
     },
     // ── banque d'images — 3 pôles (refonte UX 2026-07-08) ─────────────────

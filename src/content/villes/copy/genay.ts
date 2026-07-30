@@ -46,8 +46,8 @@ export const GENAY_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Genay : sessions dans votre atelier, entrepôt, bureau, commerce ou en visio. Dirigeants TPE et PME genaysiens : industriels, logisticiens, artisans, commerçants, professions libérales.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Genay : plateformes sur mesure pour TPE et PME du nord lyonnais — portails B2B, suivi de commandes, agents conversationnels intégrés, automatisation du service client.",
-      en: "Sites web augmentés IA à Genay : plateformes sur mesure pour TPE et PME du nord lyonnais — portails B2B, suivi de commandes, agents conversationnels intégrés, automatisation du service client.",
+      fr: "Sites web & SaaS IA à Genay : plateformes sur mesure pour TPE et PME du nord lyonnais — portails B2B, suivi de commandes, agents conversationnels intégrés, automatisation du service client.",
+      en: "Sites web & SaaS IA à Genay : plateformes sur mesure pour TPE et PME du nord lyonnais — portails B2B, suivi de commandes, agents conversationnels intégrés, automatisation du service client.",
     },
   },
   faqGeolocalisee: [

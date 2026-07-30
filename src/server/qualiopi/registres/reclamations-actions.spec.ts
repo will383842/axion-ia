@@ -21,6 +21,8 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn(),
       findUnique: vi.fn(),
       count: vi.fn(),
+      // Chemin d'allocation depuis V20 (borne haute sur la série AXI-REC).
+      findMany: vi.fn(),
     },
   },
 }));
@@ -55,6 +57,7 @@ const mockReclamation = (
       update: ReturnType<typeof vi.fn>;
       findUnique: ReturnType<typeof vi.fn>;
       count: ReturnType<typeof vi.fn>;
+      findMany: ReturnType<typeof vi.fn>;
     };
   }
 ).reclamation;
@@ -80,6 +83,7 @@ describe("creerReclamationAction", () => {
     mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
     mockLogActivity.mockResolvedValue(undefined);
     mockReclamation.count.mockResolvedValue(0);
+    mockReclamation.findMany.mockResolvedValue([]);
     mockReclamation.create.mockResolvedValue({
       id: RECLAMATION_UUID,
       numero: "AXI-REC-2026-001",
@@ -145,6 +149,7 @@ describe("creerReclamationAction", () => {
       vi.clearAllMocks();
       mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
       mockReclamation.count.mockResolvedValue(0);
+      mockReclamation.findMany.mockResolvedValue([]);
       mockReclamation.create.mockResolvedValue({
         id: `id-${source}`,
         numero: "AXI-REC-2026-001",

@@ -48,11 +48,17 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
     raisonSociale: c.raisonSociale,
   }));
 
+  // Le montant part d'ici en CENTIMES, déjà résolu côté serveur. Importer
+  // `pricing-resolver` dans le composant client tirerait tout `pricing.ts`
+  // (PRICING_CATEGORIES entier) dans le bundle admin et ferait sauter le gate
+  // `size-limit`. Ne pas « simplifier » en déplaçant la résolution côté client.
   const offreOptions = offresWithPrice.map((o) => ({
     tierId: o.offre.tierId,
     code: o.offre.code,
     titreFr: o.offre.titreFr,
     prixLabelFr: o.prixLabelFr,
+    prixHtCents: o.prixHtEur === null ? null : Math.round(o.prixHtEur * 100),
+    noteDevisFr: o.noteDevisFr,
   }));
 
   // Pré-sélection sûre : le clientId du searchParam n'est retenu que s'il

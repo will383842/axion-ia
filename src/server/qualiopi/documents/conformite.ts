@@ -39,7 +39,32 @@ const LABELS: Record<ChampIdentite, string> = {
  */
 const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   // Facture : mentions vendeur obligatoires (identité + adresse + SIRET).
-  facture: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  //
+  // 🔴 `nda` RETIRÉ le 2026-07-28, sur remarque de Will : « il ne faut pas que
+  // ce soit bloquant, on a 3 mois pour déclarer l'activité ». Il a raison, et
+  // c'est exactement le raisonnement qui avait déjà fait retirer `qualiopi` de
+  // ces listes trois jours plus tôt.
+  //
+  // Art. L.6351-1 C. trav. : la déclaration d'activité se dépose **dans les
+  // trois mois suivant la conclusion de la première convention de formation**.
+  // Au moment d'émettre cette première convention — et la facture qui la suit —
+  // l'organisme n'a donc légalement PAS ENCORE de NDA : c'est cette convention
+  // qui ouvre le délai. Exiger le numéro avant reproduisait l'impasse décrite
+  // plus bas pour Qualiopi.
+  //
+  // Et le NDA n'est pas une mention obligatoire de FACTURE : l'art. L.6352-4
+  // l'impose sur « les conventions, contrats et documents de nature
+  // contractuelle ou publicitaire ». Les mentions de facture relèvent de
+  // l'art. R123-238 C. com. et de l'art. 242 nonies A ann. II CGI — le NDA n'y
+  // figure pas.
+  //
+  // `siret` reste BLOQUANT : lui est bien une mention obligatoire (R123-238),
+  // et une facture émise sans lui est irrégulière.
+  //
+  // Le NDA reste exigé sur convention / tripartite / contrat, où L.6352-4
+  // s'applique — mais sans bloquer non plus : `generateDocument` les déclasse
+  // en SPÉCIMEN au lieu de refuser.
+  facture: ["raisonSociale", "siret", "adresseSiege"],
   // Convention / contrat : identité de l'OF prestataire.
   //
   // 🔴 `qualiopi` a été RETIRÉ de ces trois listes (audit certification
@@ -58,9 +83,35 @@ const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   //
   // Le numéro reste imprimé sur les documents dès qu'il est renseigné
   // (cf. `QualiopiPage`, en-tête et pied de page).
-  convention: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  convention_tripartite: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  contrat: ["raisonSociale", "siret", "nda", "adresseSiege"],
+  // 🔴 `nda` RETIRÉ de ces trois listes le 2026-07-29, sur remarque de Will :
+  // « il faut que ça fonctionne même sans, ils ne seront pas présents quand le
+  // certificateur Qualiopi va venir auditer ».
+  //
+  // C'est le MÊME raisonnement qui avait fait retirer le NDA de la facture la
+  // veille — et il vaut ici PLUS fortement encore. L'art. L.6351-1 fait courir
+  // le délai de déclaration « dans les trois mois suivant la conclusion de la
+  // PREMIÈRE convention de formation ». C'est donc cette convention-là qui
+  // OUVRE le délai : au moment de l'émettre, l'organisme n'a légalement pas de
+  // numéro. L'exiger revenait à demander le résultat avant la cause, exactement
+  // l'impasse circulaire décrite plus haut pour Qualiopi.
+  //
+  // ⚠️ L'art. L.6352-4 impose bien le NDA sur « les conventions, contrats et
+  // documents de nature contractuelle ou publicitaire ». Cette obligation n'est
+  // PAS niée : elle devient exigible une fois le numéro obtenu, et le pied de
+  // page l'imprime dès qu'il est renseigné. Ce qui change, c'est que son absence
+  // ne déclasse plus la pièce en SPÉCIMEN.
+  //
+  // 🔴 Et l'absence n'est PAS passée sous silence : `QualiopiPage` mentionne
+  // désormais explicitement que la déclaration n'est pas enregistrée, en citant
+  // l'article. Un auditeur préfère une pièce qui nomme sa propre lacune à une
+  // pièce muette — et infiniment à un filigrane SPÉCIMEN qui la rend sans
+  // valeur au moment même où on la lui présente.
+  //
+  // `siret` reste BLOQUANT : une personne morale qui contracte sans numéro
+  // d'immatriculation ne contracte pas.
+  convention: ["raisonSociale", "siret", "adresseSiege"],
+  convention_tripartite: ["raisonSociale", "siret", "adresseSiege"],
+  contrat: ["raisonSociale", "siret", "adresseSiege"],
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */

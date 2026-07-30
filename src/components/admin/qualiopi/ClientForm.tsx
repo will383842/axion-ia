@@ -12,6 +12,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createClientAction } from "@/server/actions/qualiopi/clients";
+import { checkSiretFormat } from "@/lib/siret";
 import type { CompanySize } from "@/server/qualiopi/crm/types";
 
 type ClientType = "entreprise" | "particulier";
@@ -69,6 +70,14 @@ export function ClientForm({
   const source = iv.source ?? "";
 
   const isParticulier = type === "particulier";
+
+  // Contrôle LOCAL du SIRET, purement indicatif : le serveur reste l'autorité
+  // (même module). On n'en fait délibérément PAS un gate du bouton — un
+  // formulaire indébloquable sur une divergence client/serveur coûterait plus
+  // cher que la saisie fautive qu'il éviterait.
+  const siretSaisi = siret.trim();
+  const siretCheck = siretSaisi === "" ? null : checkSiretFormat(siretSaisi);
+  const siretErreur = siretCheck !== null && !siretCheck.ok ? siretCheck.message : null;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -154,14 +163,38 @@ export function ClientForm({
               <label className={labelCls} htmlFor="c-siret">
                 SIRET
               </label>
+              {/* maxLength 17 et non 14 : un Kbis imprime « 732 829 320 00074 ».
+                  À 14, le navigateur TRONQUE le copier-coller, le serveur rejette
+                  pour longueur, et l'admin lit un message incompréhensible alors
+                  qu'il a bien collé 14 chiffres. Structurel, pas cosmétique.
+                  ⚠️ Ce commentaire est en position ENFANT, AVANT la balise : un
+                  commentaire JSX entre deux attributs est une erreur de syntaxe
+                  (la grammaire n'y admet qu'un attribut ou un spread). */}
               <input
                 id="c-siret"
                 value={siret}
                 onChange={(e) => setSiret(e.target.value)}
                 disabled={isPending}
-                maxLength={14}
+                inputMode="numeric"
+                autoComplete="off"
+                maxLength={17}
+                placeholder="14 chiffres"
+                aria-describedby="c-siret-hint"
+                aria-invalid={siretErreur !== null}
                 className={inputCls}
               />
+              <p
+                id="c-siret-hint"
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Facultatif. Laissez vide si inconnu, ou si le client est hors France — le SIRET est
+                un identifiant français.
+              </p>
+              {siretErreur !== null ? (
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">
+                  {siretErreur}
+                </p>
+              ) : null}
             </div>
             <div className={fieldCls}>
               <label className={labelCls} htmlFor="c-naf">

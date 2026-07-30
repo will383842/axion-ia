@@ -9,6 +9,7 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
@@ -101,6 +102,21 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
         actions={<ExportManifesteButton />}
       />
 
+      {/*
+        Le registre des signatures répond à une question que le manifeste ne
+        couvre pas : « cette pièce est-elle signée, par qui, et sa preuve
+        tient-elle ? ». Sans ce lien, la page existe sans être trouvable — et
+        une page qu'on ne trouve pas ne sert à personne le jour du contrôle.
+      */}
+      <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
+        <Link
+          href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures`}
+          className="underline"
+        >
+          Registre des signatures — qui a signé quoi, et si la preuve tient
+        </Link>
+      </p>
+
       {/* ── Résumé global ─────────────────────────────────────────────── */}
       <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
@@ -175,11 +191,27 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
                       </div>
                     </div>
 
-                    {/* Preuves textuelles */}
+                    {/* 🔴 Constat F15, audit de certification 2026-07-26.
+                        Ce bloc s'intitulait « Preuves » et décorait CHAQUE ligne
+                        d'un ✓ vert, sans distinction. Or la liste mélange des
+                        preuves réelles et des CONSTATS D'ABSENCE produits par le
+                        même code : « 0 réclamation enregistrée et traitée »,
+                        « Procédure de réclamations : non attestée publiée »,
+                        « Responsable qualité : non renseigné » s'affichaient
+                        donc comme des éléments favorables, cochés en vert, sur
+                        l'écran et dans le manifeste remis au certificateur.
+                        Présenter un manque comme une preuve est le pire défaut
+                        possible sur cet écran-là : l'auditrice le lit pour
+                        vérifier, pas pour être rassurée.
+                        La donnée `preuves: string[]` ne porte aucune polarité —
+                        le typage ternaire (probant / neutre / lacune) est le
+                        correctif de fond. En attendant, on cesse d'AFFIRMER ce
+                        qu'on ne sait pas : titre neutre, puce neutre. Le statut
+                        de couverture, lui, reste affiché par son badge. */}
                     {ind.preuves.length > 0 && (
                       <div className="mb-[var(--space-admin-3)]">
                         <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                          Preuves
+                          Éléments constatés
                         </p>
                         <ul className="space-y-[var(--space-admin-1)]">
                           {ind.preuves.map((preuve) => (
@@ -188,10 +220,10 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
                               className="flex items-center gap-[var(--space-admin-2)]"
                             >
                               <span
-                                className="shrink-0 text-xs text-[color:var(--color-admin-success)]"
+                                className="shrink-0 text-xs text-[color:var(--color-admin-fg-muted)]"
                                 aria-hidden="true"
                               >
-                                ✓
+                                •
                               </span>
                               <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
                                 {preuve}

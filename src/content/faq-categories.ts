@@ -23,8 +23,8 @@ export const FAQ_CATEGORIES: ReadonlyArray<FaqCategoryDef> = [
   },
   {
     slug: "interventions",
-    labelFr: "Formation & interventions IA",
-    labelEn: "AI training & sessions",
+    labelFr: "Formations IA",
+    labelEn: "AI training",
     descFr:
       "Formations et sessions IA sur site et à distance, ateliers, montée en compétence des équipes.",
     descEn: "On-site and remote AI training and sessions, workshops, team upskilling.",

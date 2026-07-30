@@ -64,7 +64,13 @@ describe("buildAdminNav SSOT", () => {
     // de relecture des emails commerciaux avant envoi (relance d'impayé, devis,
     // facture, contrat). Groupe qualiopi / sous-groupe administration, à côté
     // des Alertes. = 144.
-    expect(items.length).toBe(144);
+    // −1 (2026-07-29, refonte « Boîte de réception ») : les groupes Contacts (8)
+    // et Rendez-vous (3) — 11 entrées pour 4 objets réels — deviennent un seul
+    // groupe de 10 entrées : 5 canaux visibles (Tout, Appels réservés, Messages,
+    // Candidatures, Demandes de podcast) + 5 vues filtrées de Submission
+    // conservées hors sidebar (`parent`) pour ⌘K et les favoris. Les 3 anciennes
+    // routes RDV deviennent de simples redirections et sortent de la nav. = 143.
+    expect(items.length).toBe(143);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -164,10 +170,80 @@ describe("buildAdminNav SSOT", () => {
     const items = buildAdminNav("p");
     expect(items.some((it) => (it.group as string) === "recrutement")).toBe(false);
     expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("recrutement");
-    const candidatures = items.find((it) => it.label === "Candidatures aux offres");
+    const candidatures = items.find((it) => it.label === "Candidatures");
     expect(candidatures?.group).toBe("contacts");
     expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
-    expect(items.find((it) => it.label === "Messages recrutement")?.group).toBe("contacts");
+    expect(items.find((it) => it.label === "Messages · Recrutement")?.group).toBe("contacts");
+  });
+
+  // ── Refonte « Boîte de réception » 2026-07-29 ───────────────────────────
+  //
+  // Ces tests verrouillent la décision, pas la mise en forme : le problème
+  // corrigé (une entrée de sidebar par TABLE plutôt que par canal d'entrée)
+  // revient tout seul dès qu'on ajoute un écran sans y penser.
+  describe("boîte de réception unifiée", () => {
+    const items = buildAdminNav("p");
+    const visible = items.filter((it) => it.group === "contacts" && it.parent == null);
+
+    it("le groupe « rendez-vous » n'existe plus", () => {
+      expect(items.some((it) => (it.group as string) === "rendez-vous")).toBe(false);
+      expect(ADMIN_NAV_GROUP_ORDER as ReadonlyArray<string>).not.toContain("rendez-vous");
+      expect(ADMIN_NAV_GROUP_LABELS["contacts"]).toBe("Boîte de réception");
+    });
+
+    it("expose exactement 5 canaux visibles, un par type d'entrée réel", () => {
+      expect(visible.map((it) => it.href)).toEqual([
+        "/fr/p/contacts",
+        "/fr/p/contacts/appels",
+        "/fr/p/contacts/messages",
+        "/fr/p/contacts/candidatures",
+        "/fr/p/podcast",
+      ]);
+    });
+
+    // Le cœur du problème d'origine : trois entrées pour la même table
+    // `calendly_events`, dont la première renvoyait au détail de la troisième.
+    it("les 3 anciens onglets RDV ont disparu de la nav", () => {
+      for (const gone of [
+        "/fr/p/contacts/rendez-vous",
+        "/fr/p/contacts/rendez-vous/calendrier",
+        "/fr/p/contacts/calendly",
+      ]) {
+        expect(
+          items.some((it) => it.href === gone),
+          gone,
+        ).toBe(false);
+      }
+    });
+
+    // Rien ne doit être PERDU : les vues filtrées restent des routes valides,
+    // simplement retirées de la sidebar (⌘K les voit toujours).
+    it("les vues filtrées de Submission survivent hors sidebar", () => {
+      for (const href of [
+        "/fr/p/contacts/clients",
+        "/fr/p/contacts/presse",
+        "/fr/p/contacts/partenariats",
+        "/fr/p/contacts/investisseurs",
+        "/fr/p/contacts/commercial",
+      ]) {
+        const hit = items.find((it) => it.href === href);
+        expect(hit, href).toBeDefined();
+        expect(hit?.parent, href).toBe("/fr/p/contacts/messages");
+      }
+    });
+
+    // « Tout » est un préfixe de tous les autres : sans priorité au préfixe le
+    // plus long, chaque sous-page surlignerait « Tout » dans la sidebar.
+    it("les sous-pages ne rebasculent pas sur « Tout »", () => {
+      expect(findActiveNavHref(items, "/fr/p/contacts")).toBe("/fr/p/contacts");
+      expect(findActiveNavHref(items, "/fr/p/contacts/appels")).toBe("/fr/p/contacts/appels");
+      expect(findActiveNavHref(items, "/fr/p/contacts/appels/abc123")).toBe(
+        "/fr/p/contacts/appels",
+      );
+      expect(findActiveNavHref(items, "/fr/p/contacts/messages/xyz")).toBe(
+        "/fr/p/contacts/messages",
+      );
+    });
   });
 });
 

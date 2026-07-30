@@ -21,6 +21,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
+import type { CoachingSignataireRole } from "../../../../prisma/generated/client";
 
 /**
  * Fenêtre de signature après la fin de la session — décision D13.
@@ -47,7 +48,13 @@ export const FENETRE_APRES_FIN_MS = 48 * 60 * 60 * 1000;
  * Le refus se produit donc à la CRÉATION DU LIEN, c'est-à-dire devant l'admin
  * qui peut corriger, et non devant le stagiaire en salle qui ne le peut pas.
  */
-export type MotifRefusEmission = "journees_non_declarees" | "horaires_non_confirmes";
+export type MotifRefusEmission =
+  | "journees_non_declarees"
+  | "horaires_non_confirmes"
+  /** AFEST : le formateur signe authentifié, aucun lien ne lui est émis. */
+  | "role_non_eligible_au_lien"
+  /** AFEST : un lien sans destinataire ne peut être lié à personne. */
+  | "destinataire_absent";
 
 export class TokenEmargementError extends Error {
   readonly motif: MotifRefusEmission;
@@ -62,7 +69,30 @@ export class TokenEmargementError extends Error {
 export type RefusToken = "signature_invalide" | "inconnu" | "expire" | "revoque";
 
 export type VerificationToken =
-  | { ok: true; tokenId: string; enrollmentId: string | null; coachingId: string | null }
+  | {
+      ok: true;
+      tokenId: string;
+      enrollmentId: string | null;
+      coachingId: string | null;
+      /**
+       * Rôle du destinataire en contexte AFEST 1-to-1, `null` en collectif.
+       *
+       * 🔴 REMONTÉ, et ce n'est pas de la commodité : sans lui, le service de
+       * signature AFEST n'a aucune source fiable pour la garde « porteur ↔
+       * rôle », et un lien émis pour le tuteur pourrait écrire une signature de
+       * bénéficiaire.
+       */
+      coachingRole: CoachingSignataireRole | null;
+      /**
+       * Empreinte de l'adresse à laquelle le lien a été ENVOYÉ.
+       *
+       * 🔴 `verifyMagicToken` ne lie PAS le porteur à un destinataire : son
+       * `expected` ne contrôle que `scope` et `resourceId`, et l'e-mail du
+       * payload n'est sanity-checké que pour un « @ ». Le binding réel se fait
+       * donc ici, en base, contre l'adresse attendue côté parcours.
+       */
+      destinataireEmailSha256: string | null;
+    }
   | { ok: false; raison: RefusToken };
 
 function estStub(): boolean {
@@ -189,8 +219,31 @@ export async function creerTokenInscription(input: {
 export async function verifierToken(token: string): Promise<VerificationToken> {
   if (estStub()) return { ok: false, raison: "inconnu" };
 
+  // 🔴 Constaté le 2026-07-27 en arbitrant L9.
+  //
+  // Cette ligne aplatissait les SIX motifs de `verifyMagicToken` en un seul
+  // `signature_invalide`. Or `magic-token.ts` vérifie la signature D'ABORD, et
+  // ne teste l'expiration qu'ENSUITE : un jeton parfaitement authentique mais
+  // périmé ressortait donc « signature invalide ».
+  //
+  // Deux conséquences, et la seconde est la pire :
+  //   - le stagiaire lisait « lien invalide » là où « votre lien a expiré,
+  //     demandez-en un nouveau » lui aurait dit quoi faire ;
+  //   - la branche `expire` du bas de cette fonction était MORTE pour tout
+  //     jeton JWT périmé. Elle ne s'atteignait que par l'expiration stockée en
+  //     base, jamais par celle du jeton lui-même. Un correctif qui s'appuierait
+  //     sur elle aurait donc porté sur un chemin déjà inaccessible.
+  //
+  // Distinguer l'expiration n'ouvre aucun oracle : ce motif n'est atteignable
+  // qu'APRÈS validation du HMAC, donc par qui détient déjà un lien signé — il
+  // n'apprend rien sur les autres liens. Les motifs de FORME (`malformed_*`,
+  // `scope_mismatch`, `resource_mismatch`, `invalid_email`) restent fondus dans
+  // `signature_invalide` : eux se rencontrent en trafiquant un jeton, et les
+  // détailler renseignerait un attaquant sur la structure attendue.
   const verified = await verifyMagicToken(token, { scope: "emargement" });
-  if (!verified.ok) return { ok: false, raison: "signature_invalide" };
+  if (!verified.ok) {
+    return { ok: false, raison: verified.reason === "expired" ? "expire" : "signature_invalide" };
+  }
 
   const tokenHash = await sha256Hex(token);
   const ligne = await prisma.emargementToken.findUnique({
@@ -199,6 +252,8 @@ export async function verifierToken(token: string): Promise<VerificationToken> {
       id: true,
       enrollmentId: true,
       coachingId: true,
+      coachingRole: true,
+      destinataireEmailSha256: true,
       expiresAt: true,
       revokedAt: true,
       usedAt: true,
@@ -225,7 +280,123 @@ export async function verifierToken(token: string): Promise<VerificationToken> {
     tokenId: ligne.id,
     enrollmentId: ligne.enrollmentId,
     coachingId: ligne.coachingId,
+    coachingRole: ligne.coachingRole,
+    destinataireEmailSha256: ligne.destinataireEmailSha256,
   };
+}
+
+/**
+ * Crée un jeton de signature AFEST pour un (parcours, rôle) et retourne le CLAIR.
+ *
+ * Deux différences avec `creerTokenInscription`, et aucune n'est cosmétique.
+ *
+ * **La portée.** Un seul jeton vivant par (parcours, RÔLE), et non par parcours :
+ * le bénéficiaire à distance et le tuteur entreprise doivent pouvoir détenir
+ * deux liens distincts et vivants en même temps. L'index unique partiel
+ * `emargement_token_coaching_role_actif` l'impose ; toute création révoque le
+ * précédent DU MÊME RÔLE, dans la même transaction.
+ *
+ * **Le binding e-mail.** L'empreinte de l'adresse destinataire est stockée à
+ * l'émission. Sans elle, `verifyMagicToken` ne contrôlant que `scope` et
+ * `resourceId`, un lien transféré signerait au nom du destinataire initial —
+ * c'est-à-dire qu'un tuteur pourrait faire signer sa co-attestation par
+ * n'importe qui, y compris le bénéficiaire lui-même.
+ *
+ * ⚠️ Le rôle `formateur` est REFUSÉ : le formateur signe authentifié dans son
+ * espace, jamais par lien. Lui en émettre un rouvrirait la porte que
+ * l'authentification ferme.
+ *
+ * @param finFenetre Instant de référence de la fenêtre (fin de la dernière
+ *        séance connue). L'expiration du JETON n'est qu'un plafond secondaire :
+ *        la vraie borne est la garde temporelle PAR SÉANCE
+ *        (`seances-signables.ts`), qui vaut pour les trois porteurs.
+ */
+export async function creerTokenCoaching(input: {
+  coachingId: string;
+  role: CoachingSignataireRole;
+  /** Adresse à laquelle le lien sera envoyé. Jamais stockée en clair. */
+  destinataireEmail: string;
+  finFenetre: Date;
+  createdIpHash?: string | null;
+  maintenant?: Date;
+}): Promise<{ token: string; tokenId: string; expiresAt: Date }> {
+  if (input.role === "formateur") {
+    throw new TokenEmargementError(
+      "role_non_eligible_au_lien",
+      "Le formateur signe depuis son espace authentifié : aucun lien de signature ne lui est émis.",
+    );
+  }
+  const email = input.destinataireEmail.trim().toLowerCase();
+  if (email === "" || !email.includes("@")) {
+    throw new TokenEmargementError(
+      "destinataire_absent",
+      "Aucune adresse électronique n'est renseignée pour ce signataire : sans destinataire, le lien ne peut être lié à personne et n'aurait aucune valeur probante.",
+    );
+  }
+
+  const maintenant = input.maintenant ?? new Date();
+  const expiresAt = calculerExpiration(input.finFenetre, maintenant);
+
+  const token = await signMagicToken({
+    scope: "emargement",
+    resourceId: input.coachingId,
+    email,
+    ttlMs: Math.max(1, expiresAt.getTime() - maintenant.getTime()),
+  });
+  const tokenHash = await sha256Hex(token);
+  const destinataireEmailSha256 = await sha256Hex(email);
+
+  const ligne = await prisma.$transaction(async (tx) => {
+    // Révoque l'éventuel jeton actif DU MÊME RÔLE : sans cela l'index partiel
+    // ferait échouer l'insertion, et l'admin verrait une erreur Prisma brute.
+    await tx.emargementToken.updateMany({
+      where: { coachingId: input.coachingId, coachingRole: input.role, revokedAt: null },
+      data: { revokedAt: maintenant, revokedMotif: "Remplacé par un nouveau lien" },
+    });
+    return tx.emargementToken.create({
+      data: {
+        contexteType: "afest_1to1",
+        coachingId: input.coachingId,
+        coachingRole: input.role,
+        tokenHash,
+        destinataireEmailSha256,
+        expiresAt,
+        createdIpHash: input.createdIpHash ?? null,
+      },
+      select: { id: true },
+    });
+  });
+
+  return { token, tokenId: ligne.id, expiresAt };
+}
+
+/**
+ * Révoque les jetons actifs d'un parcours — tous, ou ceux d'un seul rôle.
+ *
+ * Cas d'usage : parcours annulé, erreur de destinataire, changement de tuteur,
+ * demande RGPD. Retourne le nombre de jetons révoqués.
+ */
+export async function revoquerTokensCoaching(input: {
+  coachingId: string;
+  role?: CoachingSignataireRole;
+  motif: string;
+  parAdminId?: string | null;
+}): Promise<number> {
+  if (estStub()) return 0;
+
+  const res = await prisma.emargementToken.updateMany({
+    where: {
+      coachingId: input.coachingId,
+      revokedAt: null,
+      ...(input.role !== undefined ? { coachingRole: input.role } : {}),
+    },
+    data: {
+      revokedAt: new Date(),
+      revokedMotif: input.motif.slice(0, 500),
+      revokedById: input.parAdminId ?? null,
+    },
+  });
+  return res.count;
 }
 
 /**

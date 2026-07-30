@@ -1,12 +1,23 @@
 /**
  * Espace formateur — tableau de bord (2026-06-13).
  * Liste les séances 1-to-1 du formateur + création.
+ *
+ * Porte aussi les LETTRES DE MISSION à signer. Le plan unifié situe cet écran
+ * ici et non sur la page d'une session, pour une raison de séquence : la lettre
+ * de mission est le contrat qui CONFIE la session, elle se signe donc avant que
+ * cette session ne fasse partie du quotidien du formateur. La chercher session
+ * par session serait le meilleur moyen qu'elle ne soit jamais signée — c'est
+ * exactement ce qui s'est passé jusqu'ici, où les deux cadres au stylo du modèle
+ * restaient vides faute d'écran.
  */
 
 import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
 import { listMySessions } from "@/server/formateur/queries";
 import { NewSessionForm } from "@/components/espace-formateur/NewSessionForm";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
+import { signerLettreMissionFormateurAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { coachingInterventionLabel, sessionStatutLabel } from "@/server/formateur/coaching-options";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
@@ -21,9 +32,56 @@ const STATUT_CLASS: Record<string, string> = {
 export default async function DashboardPage(): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
   const sessions = await listMySessions(trainerId);
+  // Lu APRÈS la garde d'authentification, comme tout le reste de cette page :
+  // la lecture ne connaît que `trainerId`, elle n'a aucun moyen de vérifier
+  // elle-même que l'appelant est bien ce formateur-là.
+  const lettresMission = await lireLettresMissionDuFormateur(trainerId);
 
   return (
     <div className="space-y-6">
+      {/*
+        Lettres de mission — EN TÊTE de page, avant les séances.
+
+        ⚠️ Rendu seulement s'il y en a : une liste vide se lirait comme une pièce
+        manquante alors que le cas normal, pour un formateur salarié permanent,
+        est qu'aucune lettre ne le nomme.
+
+        🔴 Les lettres déjà signées RESTENT affichées. Elles portent le nom du
+        signataire, l'horodatage en heure de Paris et l'empreinte : c'est le seul
+        endroit où le formateur peut constater ce qu'il a signé. Les masquer une
+        fois signées lui retirerait sa preuve.
+      */}
+      {lettresMission.length > 0 && (
+        <section className="space-y-3">
+          <h2 className="text-espresso font-serif text-xl">Lettres de mission</h2>
+          <p className="text-mocha text-sm">
+            La lettre de mission fixe le périmètre de votre intervention, votre rémunération et vos
+            engagements de confidentialité. Elle porte deux signatures : la vôtre et celle de
+            l&apos;organisme de formation.
+          </p>
+          {lettresMission.map((lettre) => (
+            <div key={lettre.documentGenereId} className="space-y-1">
+              <p className="text-fg-muted text-xs">
+                {lettre.sessionTitre} · {lettre.sessionNumero}
+              </p>
+              <SignatureDocument
+                documentGenereId={lettre.documentGenereId}
+                titrePiece="Lettre de mission"
+                numero={lettre.numero}
+                parties={lettre.parties}
+                peutAgir={lettre.peutAgir}
+                motifBlocage={lettre.motifBlocage}
+                mentions={lettre.mentions}
+                plafondProbant={lettre.plafondProbant}
+                libelleBouton="Signer la lettre de mission"
+                labelSignature="Signature du formateur"
+                signerAction={signerLettreMissionFormateurAction}
+              />
+            </div>
+          ))}
+        </section>
+      )}
+
       <Link
         href={FORMATEUR_SESSIONS_PATH}
         className="border-border hover:border-terracotta block rounded-lg border p-4 transition-colors"

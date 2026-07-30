@@ -288,7 +288,22 @@ export type NotificationEvent =
   // === Ops / infra ===
   | {
       category: "DEPLOY_SUCCESS" | "DEPLOY_FAILED";
-      payload: { sha: string; duration?: number; error?: string };
+      /**
+       * Contexte ajouté le 2026-07-29 avec le premier émetteur réel de ces
+       * catégories (`api/internal/deploy-notify`, appelé par GitHub Actions).
+       * Un SHA seul ne dit pas quoi regarder quand une alerte tombe la nuit :
+       * la branche, l'auteur, le sujet du commit et le lien vers le run sont
+       * ce qui permet de décider en dix secondes s'il faut se lever.
+       */
+      payload: {
+        sha: string;
+        duration?: number;
+        error?: string;
+        branch?: string;
+        actor?: string;
+        subject?: string;
+        runUrl?: string;
+      };
     }
   | {
       category: "BACKUP_SUCCESS" | "BACKUP_FAILED";

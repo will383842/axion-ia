@@ -46,8 +46,8 @@ export const FRONTIGNAN_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Frontignan : sessions dans votre domaine, mas conchylicole, restaurant, commerce ou en visio. Dirigeants TPE et PME frontignanais : viticulteurs, conchyliculteurs, restaurateurs, commerçants.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Frontignan : plateformes de vente directe pour viticulteurs et conchyliculteurs, sites touristiques multilingues, réservation en ligne pour restaurants et hébergements du bassin de Thau.",
-      en: "Sites web augmentés IA à Frontignan : plateformes de vente directe pour viticulteurs et conchyliculteurs, sites touristiques multilingues, réservation en ligne pour restaurants et hébergements du bassin de Thau.",
+      fr: "Sites web & SaaS IA à Frontignan : plateformes de vente directe pour viticulteurs et conchyliculteurs, sites touristiques multilingues, réservation en ligne pour restaurants et hébergements du bassin de Thau.",
+      en: "Sites web & SaaS IA à Frontignan : plateformes de vente directe pour viticulteurs et conchyliculteurs, sites touristiques multilingues, réservation en ligne pour restaurants et hébergements du bassin de Thau.",
     },
   },
   services: {

@@ -32,7 +32,8 @@ export type MagicScope =
   | "portal"
   | "formateur_login"
   | "ressources_login"
-  | "emargement";
+  | "emargement"
+  | "document_signature";
 
 /** TTL par scope, en millisecondes. */
 const TTL_MS: Record<MagicScope, number> = {
@@ -47,6 +48,15 @@ const TTL_MS: Record<MagicScope, number> = {
   // Ce plafond de 90 j n'existe que pour qu'un appel oubliant `ttlMs` ne crée
   // pas un lien éternel.
   emargement: 90 * 24 * 60 * 60 * 1000,
+  // Signature d'une PIÈCE contractuelle par un tiers non authentifié (canal A).
+  //
+  // ⚠️ Même doctrine que `emargement` : ce plafond n'est PAS la vraie fenêtre.
+  // Celle-ci est portée par `DocumentSignatureToken.expiresAt` en base et passée
+  // en `ttlMs` à la signature — pour un devis, elle s'aligne sur la date de
+  // validité, qui est la seule borne qui ait un sens commercial. Ce plafond de
+  // 90 j n'existe que pour qu'un appel oubliant `ttlMs` ne crée pas un lien
+  // éternel sur un engagement contractuel.
+  document_signature: 90 * 24 * 60 * 60 * 1000,
 };
 
 interface MagicPayload {

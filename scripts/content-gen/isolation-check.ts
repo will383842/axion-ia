@@ -202,6 +202,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/components\/admin\/ui\/AdminStatCard\.tsx$/,
   /^src\/components\/admin\/ui\/AdminSubmitButton\.tsx$/,
   /^tests\/e2e\/admin-baseline-screenshots\.spec\.ts$/,
+  // Exception ajoutée 2026-07-27 (gate a11y, constat X5).
+  //
+  // Ce test LIT deux fiches KB content-gen pour vérifier qu'elles ne revendiquent
+  // pas la conformité WCAG tant que la déclaration légale dit « non audité à ce
+  // jour ». Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  //
+  // L'inverse serait pire — les fiches KB alimentent la RAG et ressortent en
+  // pages publiques. S'interdire de les contrôler au nom de l'isolation
+  // laisserait précisément passer l'écart déclaratif que ce gate existe pour
+  // empêcher, et sur les SUPPORTS DE FORMATION, terrain direct de l'audit
+  // Qualiopi.
+  /^tests\/unit\/ci\/gate-a11y-cablage\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL
@@ -382,12 +395,18 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   de count (admin-nav.ts est déjà whitelisté ci-dessus).
   // - backfill-hero-images.ts : script ops blog, import consommateur de
   //   src/server/content-gen/images/backfill-hero (rattrapage hero Unsplash).
+  // - services-ssot.spec.ts : garde-fou nommage des 5 services (2026-07-28).
+  //   Le marqueur vient d'UNE string dans son allowlist de fichiers exemptés
+  //   (`"server/content-gen/lib/category-mapper.ts"` — miroir de la migration
+  //   20260616180000, non renommable sans migration). Aucun import, aucun code
+  //   pipeline : exactement le même cas que `admin-nav.test.ts` ci-dessus.
   /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
   /^scripts\/activate-content-gen-value-metier\.ts$/,
   /^scripts\/depublish-en-translations\.ts$/,
   /^src\/components\/blog\/CategoryArticlesFilter\.tsx$/,
   /^src\/lib\/admin-nav\.test\.ts$/,
   /^src\/scripts\/backfill-hero-images\.ts$/,
+  /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
 ];
 
 /**

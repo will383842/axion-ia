@@ -115,6 +115,9 @@ export async function lireFeuilleStagiaire(
         dejaSigne: c.emargementSignatures.length > 0,
         jourLisible: jourLisible(iso),
         demiJourneeLisible: LIBELLE_DEMI[c.demiJournee as DemiJourneeLabel],
+        // Grain JOURNÉE, et l'écran doit le dire : `session_jours` ne déclare
+        // pas d'horaire par demi-journée. Affiché nu sous « la matinée », ce
+        // « 09:30–13:30 » se lisait comme l'horaire de la matinée elle-même.
         horaires: `${jour.heureDebut}–${jour.heureFin}`,
         formateurNom: formateur === null ? "" : `${formateur.prenom} ${formateur.nom}`.trim(),
       },

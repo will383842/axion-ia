@@ -37,6 +37,7 @@ import {
   getSeminairesV2,
 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   FORMATION_DUREE_FACTS,
   getFormationImage,
@@ -69,6 +70,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -126,7 +128,7 @@ export default async function FormationsHub({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/formations",
-      label: isFr ? "Formations IA" : "AI trainings",
+      label: serviceOfficial(SERVICE_BY_ID.formations, isFr),
     },
   ];
 
@@ -469,6 +471,11 @@ export default async function FormationsHub({ params }: Props) {
           <ChevronDown aria-hidden="true" className="text-terracotta h-5 w-5 animate-bounce" />
         </a>
       </div>
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="formations" isFr={isFr} />
 
       {/* CATALOGUE — Refonte 2026-07-19 (Will) : l'axe durée disparaît. Le hub
           présente les 3 OFFRES GÉNÉRALES (cartes riches, prix publics par

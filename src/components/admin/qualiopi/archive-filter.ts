@@ -16,13 +16,18 @@
  *   1. Elles portent l'historique légal (sessions, conventions, attestations,
  *      factures — conservation 5 ans). `Formation` est d'ailleurs protégée par
  *      `onDelete: Restrict` côté `TrainingSession`.
- *   2. La numérotation `AXI-FORM-YYYY-NNN` est allouée par `count() + 1`
- *      (`allocateFormationNumero`). Supprimer des lignes fait RECULER le
- *      compteur : avec 57 formations numérotées 001→057, en retirer 34 ferait
- *      viser `…-024`, déjà pris → violation d'unicité. Et `withNumberRetry`
- *      recalcule le même `count()` à chaque tentative → plus AUCUNE formation
- *      créable. Toute suppression exigerait de passer d'abord la numérotation
- *      en `max(numero) + 1`.
+ *   2. HISTORIQUE — jusqu'au 2026-07-26, la numérotation `AXI-FORM-YYYY-NNN`
+ *      était allouée par `count() + 1`. Supprimer des lignes faisait RECULER le
+ *      compteur : avec 57 formations numérotées 001→057, en retirer 34 aurait
+ *      fait viser `…-024`, déjà pris → violation d'unicité ; et
+ *      `withNumberRetry` recalculait le même `count()` à chaque tentative →
+ *      plus AUCUNE formation créable. Ce commentaire prescrivait de « passer
+ *      d'abord la numérotation en `max(numero) + 1` » : c'est fait (V20,
+ *      `numbering/allocate.ts`). La numérotation ne s'oppose donc plus à une
+ *      suppression — mais `onDelete: Restrict` sur `TrainingSession`, si, et
+ *      c'est la raison 1 qui reste la bonne. Une suppression creuserait par
+ *      ailleurs un trou dans une série légale : à éviter pour cette raison-là,
+ *      pas pour un défaut d'allocateur désormais corrigé.
  *
  * Échappatoire volontairement NON exposée dans l'interface : `?vue=toutes` (ou
  * `?vue=archivees`) reste accepté sur ces deux pages. Une formation archivée

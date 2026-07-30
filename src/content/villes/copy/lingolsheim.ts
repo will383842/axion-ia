@@ -46,8 +46,8 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Lingolsheim : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, artisans, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Lingolsheim : sites vitrines pour commerces et artisans, portails de prise de rendez-vous pour cabinets de santé, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
-      en: "Sites web augmentés IA à Lingolsheim : sites vitrines pour commerces et artisans, portails de prise de rendez-vous pour cabinets de santé, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      fr: "Sites web & SaaS IA à Lingolsheim : sites vitrines pour commerces et artisans, portails de prise de rendez-vous pour cabinets de santé, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
+      en: "Sites web & SaaS IA à Lingolsheim : sites vitrines pour commerces et artisans, portails de prise de rendez-vous pour cabinets de santé, dotés d'assistants intelligents, devis automatisés et contenus optimisés.",
     },
   },
   services: {

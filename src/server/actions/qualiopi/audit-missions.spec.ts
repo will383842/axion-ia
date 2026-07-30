@@ -11,7 +11,8 @@ const mockLog = vi.fn();
 
 const tx = {
   $executeRawUnsafe: vi.fn(),
-  auditMission: { count: vi.fn(), create: vi.fn() },
+  // `findMany` : chemin d'allocation depuis V20 (borne haute sur la série).
+  auditMission: { count: vi.fn(), findMany: vi.fn(), create: vi.fn() },
 };
 const mockTransaction = vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx));
 const mockAuditUpdate = vi.fn();
@@ -45,6 +46,8 @@ beforeEach(() => {
   mockTransaction.mockImplementation(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx));
   tx.$executeRawUnsafe.mockResolvedValue(undefined);
   tx.auditMission.count.mockResolvedValue(0);
+  // Série AXI-AUD vide par défaut → première allocation = …-001.
+  tx.auditMission.findMany.mockResolvedValue([]);
   tx.auditMission.create.mockResolvedValue({ id: AID, numero: "AXI-AUD-2026-001" });
   mockAuditUpdate.mockResolvedValue({});
   mockSessionUpdate.mockResolvedValue({});

@@ -42,6 +42,9 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
   const [nda, setNda] = useState("");
   const [objetPrestation, setObjetPrestation] = useState("");
   const [contratSigneAt, setContratSigneAt] = useState("");
+  const [contactNom, setContactNom] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactFonction, setContactFonction] = useState("");
   const [actif, setActif] = useState(true);
 
   function handleSubmit(e: React.FormEvent) {
@@ -55,6 +58,12 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
         ...(siret.trim() ? { siret } : {}),
         ...(nda.trim() ? { nda } : {}),
         objetPrestation,
+        // ⚠️ Omis quand vides : le schéma refuse `""` sur `contactEmail`
+        // (`.email()`), et écrire une chaîne vide en base ne serait pas
+        // « pas de contact » — la résolution d'identité teste `null`.
+        ...(contactNom.trim() !== "" ? { contactNom: contactNom.trim() } : {}),
+        ...(contactEmail.trim() !== "" ? { contactEmail: contactEmail.trim() } : {}),
+        ...(contactFonction.trim() !== "" ? { contactFonction: contactFonction.trim() } : {}),
         ...(contratSigneAt ? { contratSigneAt: new Date(contratSigneAt) } : {}),
         actif,
       });
@@ -102,12 +111,14 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
         {/* SIRET */}
         <div className={fieldCls}>
           <label className={labelCls}>SIRET (facultatif)</label>
+          {/* 17 : forme espacée d'un Kbis tolérée, normalisée à 14 côté serveur. */}
           <input
             type="text"
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
             disabled={isPending}
-            maxLength={20}
+            inputMode="numeric"
+            maxLength={17}
             placeholder="14 chiffres"
             className={inputCls}
           />
@@ -125,6 +136,59 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
             placeholder="Numéro de déclaration d'activité"
             className={inputCls}
           />
+        </div>
+
+        {/* ── Contact SIGNATAIRE ──
+
+            🔴 Sans adresse, aucun lien de signature n'est émissible pour le
+            contrat de sous-traitance — que l'indicateur 27 du RNQ exige signé.
+            Le contrat reste signable sur papier, mais l'écran doit le dire ici,
+            là où l'admin peut agir. */}
+        <div className={fieldCls}>
+          <label className={labelCls}>Nom du contact signataire (facultatif)</label>
+          <input
+            type="text"
+            value={contactNom}
+            onChange={(e) => setContactNom(e.target.value)}
+            disabled={isPending}
+            maxLength={200}
+            placeholder="Personne physique qui signera le contrat"
+            className={inputCls}
+          />
+        </div>
+
+        <div className={fieldCls}>
+          <label className={labelCls}>E-mail du contact signataire</label>
+          <input
+            type="email"
+            value={contactEmail}
+            onChange={(e) => setContactEmail(e.target.value)}
+            disabled={isPending}
+            maxLength={320}
+            placeholder="adresse@prestataire.fr"
+            className={inputCls}
+          />
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Sans elle, le contrat de sous-traitance ne peut être signé qu&apos;au stylo : aucun lien
+            de signature ne pourra être émis.
+          </p>
+        </div>
+
+        <div className={fieldCls}>
+          <label className={labelCls}>Fonction du contact (facultatif)</label>
+          <input
+            type="text"
+            value={contactFonction}
+            onChange={(e) => setContactFonction(e.target.value)}
+            disabled={isPending}
+            maxLength={200}
+            placeholder="Gérant, dirigeant…"
+            className={inputCls}
+          />
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Figée comme qualité du signataire — c&apos;est elle qui atteste le pouvoir
+            d&apos;engager la structure.
+          </p>
         </div>
 
         {/* Date signature contrat */}

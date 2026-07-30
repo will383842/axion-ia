@@ -47,6 +47,8 @@ import { ImplementationFounderBand } from "@/components/services/implementation/
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
 import { ImplementationFaq } from "@/components/services/implementation/ImplementationFaq";
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 export const revalidate = 3600;
 
@@ -82,7 +84,7 @@ export default async function ImplementationListing({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/implementation",
-      label: isFr ? "Implémentation & automatisation IA" : "AI implementation & automation",
+      label: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
     },
   ];
 
@@ -220,6 +222,11 @@ export default async function ImplementationListing({ params }: Props) {
 
       {/* HERO value-first (sans prix) */}
       <ImplementationHero isFr={isFr} />
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="implementation" isFr={isFr} />
 
       {/* NOS SERVICES — positionnement + 4 piliers natifs */}
       <ImplementationServices isFr={isFr} />
