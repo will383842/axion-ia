@@ -21,7 +21,22 @@ jobs:
   gate-a:
     name: Gate A · per-commit
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 → 25 min le 2026-07-29. Ce n'est PAS du confort : le job tournait déjà
+    # à 14 min sur `main` — une marge d'une minute — et a commencé à se faire
+    # couper en plein vol. Le symptôme est trompeur : GitHub annule l'étape en
+    # cours (`use-client justified` selon le run) et marque le job « failed »,
+    # ce qui envoie chercher un défaut dans le code alors que TOUTES les
+    # vérifications ont réussi. Un run coupé saute aussi les gates suivantes.
+    #
+    # La cause est structurelle : la suite Vitest grossit (elle a dépassé
+    # 20 000 tests), et l'exécuter AVEC couverture est de loin l'étape la plus
+    # longue. 25 min redonne une marge réelle sans transformer un job
+    # réellement bloqué en attente interminable.
+    #
+    # Si ce budget redevient juste : ce n'est pas le timeout qu'il faudra
+    # remonter une troisième fois, mais la couverture qu'il faudra sortir du
+    # chemin critique (job dédié, non bloquant).
+    timeout-minutes: 25
     steps:
       # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
       # Sans full history, gitleaks fail avec "ambiguous argument" sur les

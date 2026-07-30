@@ -16,7 +16,6 @@ import { prisma } from "@/lib/prisma";
 import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { sendTelegram } from "@/lib/telegram";
 import { notify } from "@/server/notifications";
 import { redactEmail } from "@/lib/pii-redaction";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -83,9 +82,18 @@ export async function subscribeNewsletterAction(
     },
   });
 
-  // 6. Notifications via hub typé (cf. ADR 0027) — pilote migration.
-  // sendTelegram() reste utilisé sur d'autres call-sites du fichier (confirm,
-  // unsubscribe) pour limiter le scope de migration de ce sprint.
+  // 6. Notifications via hub typé (cf. ADR 0027).
+  // Migration achevée le 2026-07-29 : confirm et unsubscribe passaient encore
+  // par `sendTelegram()` en direct. Les messages ARRIVAIENT bien — ce n'était
+  // donc pas un silence — mais ils court-circuitaient le hub, donc le routage
+  // vers le groupe « 🔔 Système », la déduplication et le rate-limit. Les
+  // catégories `NEWSLETTER_CONFIRMED` / `NEWSLETTER_UNSUBSCRIBED` existaient
+  // depuis l'origine sans aucun émetteur.
+  //
+  // `redactEmail()` est CONSERVÉ dans le payload : ces deux notifications
+  // masquaient déjà l'adresse, et le hub n'a pas à en apprendre plus que
+  // l'ancien chemin. Réduire une protection en passant par un refactor serait
+  // exactement le genre de régression qu'on ne remarque jamais.
   if (sub.status === "pending") {
     await notify({
       category: "NEWSLETTER_PENDING",
@@ -155,10 +163,10 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
         confirmToken: null,
       },
     });
-    await sendTelegram({
-      tag: "NEWSLETTER",
-      body: `Confirmation opt-in\n• Email : \`${redactEmail(sub.email)}\`\n• Locale : ${sub.locale}`,
-      silent: true,
+    await notify({
+      category: "NEWSLETTER_CONFIRMED",
+      payload: { email: redactEmail(sub.email), locale: sub.locale },
+      dedupKey: `newsletter-confirmed-${sub.id}`,
     });
     return {
       ok: true,
@@ -210,10 +218,10 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
         unsubscribedAt: new Date(),
       },
     });
-    await sendTelegram({
-      tag: "NEWSLETTER",
-      body: `Désinscription\n• Email : \`${redactEmail(sub.email)}\`\n• Locale : ${sub.locale}`,
-      silent: true,
+    await notify({
+      category: "NEWSLETTER_UNSUBSCRIBED",
+      payload: { email: redactEmail(sub.email), locale: sub.locale },
+      dedupKey: `newsletter-unsub-${sub.id}`,
     });
     return { ok: true, alreadyUnsubscribed: false, email: sub.email };
   } catch (err) {
