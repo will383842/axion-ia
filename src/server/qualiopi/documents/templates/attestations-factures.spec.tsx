@@ -408,6 +408,21 @@ describe("🔴 FacturePdf — le RIB conditionne la possibilité de virer", () =
     expect(sans).not.toMatch(/FR\d{2}\d+/);
   });
 
+  it("🔴 demande au client de rappeler le n° de facture en référence", () => {
+    // Sans cette consigne, tout rapprochement est une devinette : un virement
+    // sans référence n'est identifiable que par montant et émetteur — ce qui
+    // suffit pour un client, pas pour dix, et pas du tout pour deux factures du
+    // même montant.
+    const avec = texte({ ...BASE, rib: RIB });
+    expect(avec).toContain("AXI-FACT-2026-001");
+    expect(avec).toMatch(/rappeler la référence/);
+  });
+
+  it("⚠️ n'affiche PAS la consigne quand il n'y a pas de RIB", () => {
+    // Demander une référence de virement sans donner d'IBAN n'aurait aucun sens.
+    expect(texte(BASE)).not.toMatch(/rappeler la référence/);
+  });
+
   it("⚠️ la sortie DIFFÈRE selon que le RIB est fourni", () => {
     // Un gabarit qui ignorerait la prop rendrait deux sorties identiques.
     expect(texte({ ...BASE, rib: RIB })).not.toStrictEqual(texte(BASE));

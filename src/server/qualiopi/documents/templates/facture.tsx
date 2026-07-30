@@ -336,6 +336,26 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
             {data.rib.banque ? <FieldRow label="Banque" value={data.rib.banque} /> : null}
             <FieldRow label="IBAN" value={data.rib.iban} />
             <FieldRow label="BIC" value={data.rib.bic} />
+            {/* 🔴 La consigne de RÉFÉRENCE, sans laquelle tout rapprochement est
+                une devinette.
+
+                Un virement qui arrive sans référence n'est identifiable que par
+                son montant et son émetteur — ce qui suffit pour un client, pas
+                pour dix, et surtout pas pour deux factures du même montant. Le
+                champ `receivedReference` existe côté encaissement ; encore
+                faut-il que le client ait quelque chose à mettre.
+
+                ⚠️ Rendue DANS le bloc RIB : sans coordonnées bancaires, demander
+                une référence de virement n'aurait aucun sens. */}
+            <Text
+              style={{
+                fontSize: T.xs,
+                color: brandColor("fg-soft"),
+                marginTop: S.sm,
+              }}
+            >
+              {`Merci de rappeler la référence « ${data.numero} » dans le libellé de votre virement.`}
+            </Text>
           </View>
         ) : null}
 
