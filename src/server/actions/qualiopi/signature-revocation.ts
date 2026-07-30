@@ -30,6 +30,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import * as Sentry from "@sentry/nextjs";
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import {
+  heuresReellesSignees,
+  SEANCE_HEURES_SELECT,
+  versSeancePourHeures,
+} from "@/server/qualiopi/coaching-afest/heures";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 import { revoquerSignatureDocument } from "@/server/qualiopi/documents/signature/document-signature-service";
 import { revoquerSignatureSeance } from "@/server/qualiopi/coaching-afest/signature/signature-afest-service";
@@ -117,6 +123,22 @@ export async function revoquerSignatureAction(donneesFormulaire: FormData): Prom
 }
 
 /**
+ * Heures RETENUES pour un parcours, avec SON régime de preuve.
+ *
+ * 🔴 Le régime RÉEL, jamais un défaut : `legacy_boolean` et `signature_reelle`
+ * ne comptent pas les mêmes séances, et se tromper de régime inscrirait un
+ * « impact » faux au journal — pire que pas d'impact du tout.
+ */
+async function heuresDuParcours(coachingId: string): Promise<number | null> {
+  const cs = await prisma.coachingSession.findUnique({
+    where: { id: coachingId },
+    select: { regimePreuve: true, comptesRendus: { select: SEANCE_HEURES_SELECT } },
+  });
+  if (cs === null) return null;
+  return heuresReellesSignees(cs.comptesRendus.map(versSeancePourHeures), cs.regimePreuve);
+}
+
+/**
  * Révoque une signature d'émargement AFEST 1-to-1 (famille `CoachingSeanceSignature`).
  *
  * ## Pourquoi une SECONDE action plutôt qu'un paramètre `famille`
@@ -136,6 +158,23 @@ export async function revoquerSignatureAction(donneesFormulaire: FormData): Prom
  *
  * ⚠️ Aucune suppression, jamais. La ligne révoquée reste en base avec son
  * empreinte.
+ *
+ * ## 🔴 L'impact en HEURES est chiffré et journalisé
+ *
+ * Révoquer une signature de séance n'est pas un geste de registre isolé : en
+ * régime `signature_reelle`, `heuresReellesSignees` ne compte QUE les séances
+ * dont le bénéficiaire a signé. Retirer une signature retire donc des HEURES —
+ * et les heures alimentent la facture, le BPF (R.6313-3), le certificat de
+ * réalisation et l'attestation.
+ *
+ * Une correction légitime peut faire BAISSER un montant déjà appelé auprès d'un
+ * OPCO ou de France Travail, ou rétrograder une attestation déjà remise. Ce
+ * n'est pas une raison de l'interdire — c'est une raison de la RENDRE VISIBLE.
+ * On mesure avant, on révoque, on mesure après, et on journalise l'écart.
+ *
+ * ⚠️ Cette action ne corrige AUCUNE pièce déjà émise, et ne prétend pas le
+ * faire : elle dit ce qui a bougé. Reprendre une facture ou une attestation est
+ * une décision, pas une conséquence mécanique.
  */
 export async function revoquerSignatureSeanceAfestAction(
   donneesFormulaire: FormData,
@@ -162,6 +201,16 @@ export async function revoquerSignatureSeanceAfestAction(
     redirect(`${retour}?revocation=demande_invalide`);
   }
 
+  // ── Mesure AVANT ──
+  //
+  // ⚠️ Lue ICI, avant toute écriture : après la révocation, l'état d'origine
+  // n'est plus reconstituable sans rejouer la chaîne.
+  const ligne = await prisma.coachingSeanceSignature.findUnique({
+    where: { id: parse.data.signatureId },
+    select: { coachingId: true, role: true },
+  });
+  const heuresAvant = ligne === null ? null : await heuresDuParcours(ligne.coachingId);
+
   const res = await revoquerSignatureSeance({
     signatureId: parse.data.signatureId,
     motif: parse.data.motif,
@@ -176,13 +225,43 @@ export async function revoquerSignatureSeanceAfestAction(
     redirect(`${retour}?revocation=refus_service&raison=${res.raison}`);
   }
 
+  // ── Mesure APRÈS ──
+  //
+  // ⚠️ RELUE, jamais déduite. Déduire « la séance faisait N minutes, donc on
+  // retire N » supposerait connaître le régime, la neutralisation et l'absence
+  // actée — trois règles qui vivent dans `heures.ts` et doivent y rester.
+  const heuresApres =
+    ligne === null ? null : ((await heuresDuParcours(ligne.coachingId)) ?? heuresAvant);
+  const deltaHeures =
+    heuresAvant !== null && heuresApres !== null
+      ? Math.round((heuresApres - heuresAvant) * 100) / 100
+      : null;
+
   await logQualiopiActivity({
     action: "qualiopi.signature.revocation",
     targetType: "CoachingSeanceSignature",
     targetId: parse.data.signatureId,
-    changes: { motif: parse.data.motif },
+    changes: {
+      motif: parse.data.motif,
+      ...(ligne !== null ? { coachingId: ligne.coachingId, role: ligne.role } : {}),
+      // 🔴 L'écart est la vraie information : c'est lui qui dit si une facture,
+      // un BPF, un certificat ou une attestation devient inexact.
+      ...(heuresAvant !== null ? { heuresAvant } : {}),
+      ...(heuresApres !== null ? { heuresApres } : {}),
+      ...(deltaHeures !== null ? { deltaHeures } : {}),
+    },
     session,
   });
+
+  if (deltaHeures !== null && deltaHeures !== 0) {
+    // Une révocation qui change le comptage doit REMONTER : sans alerte, l'écart
+    // n'existe que dans un journal que personne ne relit avant l'audit.
+    Sentry.captureMessage("Révocation AFEST modifiant le comptage d'heures", {
+      level: "warning",
+      tags: { action: "revoquerSignatureSeanceAfestAction" },
+      extra: { signatureId: parse.data.signatureId, heuresAvant, heuresApres, deltaHeures },
+    });
+  }
   Sentry.captureMessage("Signature AFEST révoquée", {
     level: "info",
     tags: { action: "revoquerSignatureSeanceAfestAction" },
