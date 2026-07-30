@@ -45,6 +45,7 @@ import {
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import { resolveRibFacture } from "@/lib/legal-identity";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import type {
@@ -734,6 +735,19 @@ export async function genererFacturePdfAction(input: {
     tauxTvaPercent?: number;
   }>;
 
+  // 🔴 Le RIB, sans lequel le client n'a AUCUNE coordonnée pour virer.
+  //
+  // Ce chemin — la RÉGÉNÉRATION d'un PDF de facture — était le seul des quatre
+  // producteurs à ne pas l'injecter : `facture-libre.ts`,
+  // `facturation-service.ts` et `facturation-1to1.ts` appellent tous
+  // `resolveRibFacture()`. Conséquence silencieuse : régénérer une facture en
+  // retirait les coordonnées bancaires, et le client recevait une pièce moins
+  // complète que l'originale — sans que rien ne le signale.
+  //
+  // ⚠️ `null` quand l'IBAN n'est pas configuré (`legal_overrides`) : le gabarit
+  // omet alors le bloc, ce qui est correct. On n'invente aucun IBAN.
+  const rib = await resolveRibFacture();
+
   const factureData: FactureData = {
     numero: facture.numero,
     dateEmission: formatDate(facture.emiseAt),
@@ -761,6 +775,7 @@ export async function genererFacturePdfAction(input: {
           },
         }
       : {}),
+    ...(rib !== null ? { rib } : {}),
   };
 
   // 🔴 Audit certification 2026-07-26 (F64). Ce chemin injectait le numéro
