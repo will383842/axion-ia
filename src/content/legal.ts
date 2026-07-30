@@ -74,8 +74,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "La création de liens pointant vers axion-ia.com est libre pour un usage loyal et non commercial, sous réserve de ne pas porter atteinte à l'image d'Axion-IA et de ne pas créer de confusion sur l'origine du contenu. Axion-IA n'exerce aucun contrôle sur les sites tiers accessibles depuis ses pages et décline toute responsabilité quant à leur contenu.",
         },
         {
+          // « Exclusivement B2B » contredisait les CGV, qui comportent depuis
+          // une section entière consacrée au particulier. Deux pages publiques
+          // qui se démentent l'une l'autre valent moins que pas de mention du
+          // tout : c'est la contradiction qu'un contrôle relève en premier.
+          // Formulation alignée le 2026-07-30 sur l'état réel — clientèle
+          // professionnelle, aucune adhésion à ce jour, adhésion préalable à
+          // toute vente à un consommateur.
           title: "Médiation de la consommation",
-          body: "Les prestations d'Axion-IA s'adressent exclusivement à une clientèle professionnelle (B2B), dans le cadre de l'activité de ses clients. En l'absence de relation avec des consommateurs, Axion-IA n'est pas tenue d'adhérer à un dispositif de médiation de la consommation au sens des articles L611-1 et L612-1 du Code de la consommation.",
+          body: "Les prestations d'Axion-IA sont commercialisées auprès d'une clientèle professionnelle, dans le cadre de l'activité de ses clients. En l'absence de relation contractuelle avec des consommateurs, Axion-IA n'a pas adhéré à ce jour à un dispositif de médiation de la consommation au sens des articles L.611-1 et L.612-1 du Code de la consommation. Les conditions générales de vente comportent néanmoins une section dédiée au particulier : toute vente à un consommateur suppose l'adhésion préalable à un médiateur agréé, dont les coordonnées seront alors publiées sur le site et reportées au contrat.",
         },
         {
           title: "Loi applicable",
@@ -284,12 +291,27 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           // ⚠️ BLOQUANT AVANT TOUTE VENTE À UN PARTICULIER — l'adhésion à un
-          // médiateur agréé est une obligation légale (L612-1), pas une option.
+          // médiateur agréé est une obligation légale (L.612-1), pas une option.
           // Le nom et l'adresse du médiateur doivent figurer ici et sur le site
           // dès qu'un particulier peut contracter. Tant qu'Axion-IA n'a pas
           // adhéré, la vente à un particulier n'est pas conforme.
+          //
+          // 2026-07-30 : la rédaction précédente annonçait au présent que « les
+          // coordonnées du médiateur compétent lui sont communiquées avec la
+          // confirmation d'inscription et figurent au contrat de formation ».
+          // Aucun médiateur n'étant renseigné, cette page publique affirmait
+          // une chose fausse — et sur un support contractuel, une affirmation
+          // inexacte se retourne contre celui qui l'a écrite, pas contre son
+          // lecteur. Le texte énonce désormais le droit (qui existe de toute
+          // façon), constate l'état réel, et prend l'engagement pour la suite.
+          //
+          // Le code tient déjà la même ligne : `documents.ts` refuse d'émettre
+          // un contrat individuel tant que `mediateur_consommation_nom` et
+          // `mediateur_consommation_url` sont vides. Le jour de l'adhésion,
+          // renseigner ces deux clés en configuration Qualiopi ET remplacer le
+          // paragraphe ci-dessous par le nom et l'adresse du médiateur.
           title: "Particulier — médiation de la consommation",
-          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, le particulier a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à Axion-IA, après avoir tenté de le résoudre directement par une réclamation écrite. Les coordonnées du médiateur compétent lui sont communiquées avec la confirmation d'inscription et figurent au contrat de formation. Le particulier conserve la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
+          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section et reportés au contrat de formation. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
         },
         {
           title: "Particulier — juridiction compétente",
