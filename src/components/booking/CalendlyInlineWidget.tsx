@@ -33,6 +33,24 @@
 // `<CalendlyBoot>` est inchangé et reste la brique d'init (garde
 // ANTI-DOUBLE-IFRAME conservée) ; il n'est monté qu'après le clic.
 //
+// 2026-07-30 — LE CLICK-TO-LOAD N'EST PLUS LE CHEMIN NOMINAL (ADR 0038).
+// Le placeholder d'ADR 0034 informait correctement, mais il occupait la place du
+// calendrier avec six lignes de prose là où le visiteur venait choisir une
+// heure — sur le funnel unique du site. Plutôt que d'arbitrer entre conformité
+// et conversion, on retire la cause : `fetchAvailableSlots()` interroge l'API
+// Calendly DEPUIS LE SERVEUR et `CalendlySlotPicker` rend les créneaux en HTML
+// statique. Le navigateur ne parle jamais à Calendly, donc l'article 82 ne
+// s'applique pas, donc il n'y a plus rien à faire consentir.
+//
+// `CalendlyConsentGate` n'est PAS supprimé : il devient le repli, et il reste
+// intégralement valable — il est ce qui s'affiche dès que les créneaux ne sont
+// pas disponibles (pas de jeton, API refusée ou injoignable, agenda plein). Ce
+// cas se produit notamment AU BUILD, où le jeton est absent. Ne pas le retirer
+// en le croyant mort.
+
+import { fetchAvailableSlots } from "@/server/calendly/availability";
+import { CalendlySlotPicker } from "./CalendlySlotPicker";
+//
 // CSP : `script-src` (soft public) autorise déjà `https://assets.calendly.com`
 // et `frame-src`/`connect-src` autorisent `calendly.com` + `*.calendly.com`.
 // COEP : `unsafe-none` site-wide (proxy.ts, audit 2026-07-07) pour que l'iframe
@@ -72,7 +90,7 @@ function buildCalendlyUrl(baseUrl: string): string {
   return url.toString();
 }
 
-export function CalendlyInlineWidget({
+export async function CalendlyInlineWidget({
   calendlyUrl,
   isFr,
   height = 720,
@@ -98,6 +116,23 @@ export function CalendlyInlineWidget({
         >
           {isFr ? "Nous écrire à la place" : "Contact us instead"}
         </a>
+      </div>
+    );
+  }
+
+  // Voie nominale : les créneaux résolus côté serveur. Ne throw jamais — toute
+  // défaillance (jeton absent, 403, réseau, agenda plein) tombe dans le repli
+  // ci-dessous, qui est le comportement d'avant ce changement.
+  const availability = await fetchAvailableSlots({ schedulingUrl: calendlyUrl });
+  if (availability.ok) {
+    return (
+      <div>
+        <CalendlySlotPicker
+          days={availability.days}
+          fallbackUrl={calendlyUrl}
+          isFr={isFr}
+          height={height}
+        />
       </div>
     );
   }

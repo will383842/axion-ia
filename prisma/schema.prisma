@@ -4829,6 +4829,8 @@ enum CalendlyEventSource {
   embed_js // capté via postMessage iframe Calendly (V1 par défaut)
   manual_import // ajouté manuellement par Will via admin
   webhook // réservé pour V2 future si upgrade Calendly Standard
+  api_poll // découvert par sondage horaire de l'API (ADR 0038) — réservation
+  // prise sur calendly.com, donc hors de portée du postMessage
 
   @@map("calendly_event_source")
 }

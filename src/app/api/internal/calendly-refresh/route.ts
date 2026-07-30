@@ -29,6 +29,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
 import { updateTag } from "next/cache";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
@@ -83,6 +84,15 @@ export async function POST(req: NextRequest): Promise<Response> {
     return Response.json({ ok: true, skipped: "calendly_api_not_configured" });
   }
 
+  // ÉTAPE 1 — découvrir ce qu'on ne connaît pas encore (ADR 0038).
+  //
+  // Doit passer AVANT le rafraîchissement : une réservation prise sur
+  // calendly.com n'existe dans aucune ligne, donc la boucle ci-dessous ne
+  // pourrait jamais la voir. Depuis que /appel affiche des créneaux qui mènent
+  // à calendly.com dans un nouvel onglet, c'est devenu le chemin principal.
+  // Ne throw jamais ; un échec ici ne doit pas empêcher le rafraîchissement.
+  const discovery = await discoverNewCalendlyEvents();
+
   const cutoff = new Date(Date.now() - GRACE_HOURS * 3600_000);
 
   // Candidats : ce qui peut ENCORE changer.
@@ -127,8 +137,9 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
   }
 
-  // Un statut qui bascule change le compteur « à traiter » de la sidebar.
-  if (updated > 0) {
+  // Un statut qui bascule — ou une réservation découverte — change le compteur
+  // « à traiter » de la sidebar.
+  if (updated > 0 || discovery.created > 0) {
     try {
       updateTag(INBOX_COUNTS_TAG);
     } catch {
@@ -138,6 +149,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   return Response.json({
     ok: true,
+    discovered: discovery.created,
+    ...(discovery.ok ? {} : { discoveryError: discovery.reason ?? "unknown" }),
+    ...(discovery.remaining ? { discoveryRemaining: discovery.remaining } : {}),
     examined: batch.length,
     updated,
     unchanged,
