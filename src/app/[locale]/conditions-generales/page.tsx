@@ -14,10 +14,14 @@ interface Props {
 }
 
 const SLUG = "conditions-generales" as const;
-// Date de dernière révision éditoriale des pages légales (alignée sur la
-// déclaration d'accessibilité, 6 mai 2026). À mettre à jour à chaque révision
-// de fond. Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
-const LAST_UPDATED_ISO = "2026-05-06";
+// Date de dernière révision de FOND de cette page — à tenir à jour, les CGV
+// renvoyant elles-mêmes à cette date pour déterminer la version applicable.
+// Label affiché localisé ; `lastUpdatedIso` alimente <time dateTime>.
+//
+// 2026-07-30 : révision du paragraphe « médiation de la consommation ». La
+// valeur précédente était calquée sur la déclaration d'accessibilité ; les
+// deux pages évoluent séparément, elles ne sont plus liées.
+const LAST_UPDATED_ISO = "2026-07-30";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -57,7 +61,7 @@ export default async function ConditionsGenerales({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "6 mai 2026" : "May 6, 2026"}
+        lastUpdated={isFr ? "30 juillet 2026" : "July 30, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
