@@ -15,6 +15,12 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { createSessionAction } from "@/server/actions/qualiopi/sessions";
 import { createRecurringSessionsAction } from "@/server/actions/qualiopi/sessions-recurrentes";
+import { LieuFieldset } from "@/components/admin/qualiopi/LieuFieldset";
+import {
+  LIEU_VALUES_VIDE,
+  lieuPayload,
+  type LieuValues,
+} from "@/components/admin/qualiopi/lieu-values";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -114,6 +120,7 @@ export function SessionForm({
   const devisRetenuValide = devisId === "" || devisDuClient.some((d) => d.id === devisId);
   if (!devisRetenuValide) setDevisId("");
   const [financementType, setFinancementType] = useState("");
+  const [lieu, setLieu] = useState<LieuValues>(LIEU_VALUES_VIDE);
 
   // Récurrence
   const [modeRecurrent, setModeRecurrent] = useState(false);
@@ -182,6 +189,7 @@ export function SessionForm({
                   | "mixte",
               }
             : {}),
+          ...lieuPayload(lieu),
         });
 
         if ("error" in result) {
@@ -222,6 +230,7 @@ export function SessionForm({
                   | "mixte",
               }
             : {}),
+          ...lieuPayload(lieu),
         });
 
         if ("error" in result) {
@@ -318,6 +327,14 @@ export function SessionForm({
           ))}
         </select>
       </div>
+
+      {/* ── Lieu de déroulement ───────────────────────────────────────────── */}
+      <LieuFieldset
+        value={lieu}
+        onChange={(patch) => setLieu((prev) => ({ ...prev, ...patch }))}
+        disabled={isPending}
+        idPrefix="session-lieu"
+      />
 
       {/* ── Client (optionnel) ────────────────────────────────────────────── */}
       {clients.length > 0 && (

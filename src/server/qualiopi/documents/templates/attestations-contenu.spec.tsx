@@ -127,13 +127,34 @@ describe("CertificatRealisationPdf — contenu", () => {
     expect(text).toContain("84691234567");
     expect(text).toContain("FR-2024-001");
   });
-  it("signale un NDA manquant au lieu de le masquer", () => {
+  // 🔴 Comportement INVERSÉ volontairement. Ce test exigeait auparavant
+  // « Non renseigné » sur un NDA absent. C'était cohérent avec un champ oublié,
+  // pas avec la réalité juridique : l'art. L.6351-1 fait courir le délai de
+  // déclaration à compter de la PREMIÈRE convention de formation, si bien qu'un
+  // organisme qui délivre sa première action n'a légitimement pas encore de
+  // numéro. Signaler l'absence en rouge sur un certificat remis au stagiaire et
+  // à son financeur transformait une situation régulière en défaut apparent.
+  //
+  // L'absence n'est pas masquée pour autant : le pied de page la nomme et cite
+  // l'article. Cf. `NdaFieldRow` (base-layout.tsx).
+  it("NDA absent : la ligne disparaît, le pied de page l'explique", () => {
     const t = collectPdfTextNormalized(
       React.createElement(CertificatRealisationPdf, {
         data: { ...CERTIFICAT, identite: { ...IDENTITE, nda: "" } },
       }),
     );
-    expect(t).toContain("Non renseigné");
+    expect(t).not.toContain("N° déclaration activité (NDA)");
+    expect(t).toContain("Déclaration d'activité non encore enregistrée");
+  });
+
+  it("NDA renseigné : la ligne réapparaît sans autre intervention", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(CertificatRealisationPdf, {
+        data: { ...CERTIFICAT, identite: { ...IDENTITE, nda: "84691234567" } },
+      }),
+    );
+    expect(t).toContain("N° déclaration activité (NDA)");
+    expect(t).toContain("84691234567");
   });
 
   // 🔴 F30 — le modèle annexé à l'arrêté du 21 décembre 2018 impose de qualifier

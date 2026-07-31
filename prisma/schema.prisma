@@ -6488,6 +6488,17 @@ enum DocumentType {
   /// l'export éphémère de `exports-pdf.ts` — celle-ci est numérotée, hashée et
   /// conservée, et `Trainer.cvUrl` pointe vers sa route de téléchargement.
   cv_formateur
+  /// Programme de l'action de formation — l'ANNEXE que la convention annonce
+  /// depuis toujours en section « Documents annexés » sans que rien ne la
+  /// produise. Également l'une des trois pièces exigées à l'appui de la
+  /// déclaration d'activité (art. R.6351-5), avec la première convention signée
+  /// et la liste des intervenants.
+  ///
+  /// Rendu depuis le SNAPSHOT de la session (`readFormationForDocs`), jamais
+  /// depuis la formation vivante : le programme annexé à une convention doit
+  /// décrire l'action telle qu'elle a été vendue, même si le catalogue évolue
+  /// ensuite.
+  programme
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,

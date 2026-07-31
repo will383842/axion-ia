@@ -12,6 +12,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   SignatureZone,
   pdfStyles,
   assainirEspacesPdf,
@@ -162,7 +163,7 @@ export function ConventionTripartitePdf({
           </Text>
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
-          <FieldRow label="NDA" value={identite.nda} required />
+          <NdaFieldRow nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style

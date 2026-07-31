@@ -34,6 +34,7 @@ import {
   FORMATION_SNAPSHOT_SELECT,
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
+import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -67,6 +68,14 @@ const createSessionSchema = z.object({
   devisId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
   recurrence: z.number().int().min(1).optional(),
+  // Lieu de déroulement — facultatif, mais imprimé sur la convention, la
+  // convocation et la feuille d'émargement dès qu'il est renseigné.
+  ...lieuInputSchema.shape,
+});
+
+const setSessionLieuSchema = z.object({
+  id: z.string().uuid(),
+  ...lieuInputSchema.shape,
 });
 
 const transitionSessionSchema = z.object({
@@ -215,6 +224,11 @@ export async function createSessionAction(
             // le cas majoritaire, il est visible en base, et il se corrige d'un
             // clic si un OPCO entre en jeu.
             financementType: v.financementType ?? "direct",
+            // Lieu de déroulement. `normaliserLieu` n'émet que les clés
+            // réellement fournies : une création sans bloc lieu laisse les
+            // colonnes à NULL, et les documents retombent alors sur l'adresse de
+            // l'organisme comme avant — aucune régression pour l'existant.
+            ...normaliserLieu(v),
           },
           select: { id: true, numero: true },
         });
@@ -277,6 +291,75 @@ export async function createSessionAction(
   });
 
   return { data: { id: created.id, numero: created.numero } };
+}
+
+/**
+ * Enregistre (ou corrige) le lieu de déroulement d'une session.
+ *
+ * Pourquoi une action dédiée plutôt qu'un champ de plus dans une hypothétique
+ * « édition de session » : il n'en existe aucune. `createSessionAction` et
+ * `transitionSessionAction` étaient jusqu'ici les deux seules écritures sur une
+ * session — autrement dit, une salle saisie de travers à la création restait
+ * fausse pour toujours, y compris sur la convention déjà remise au client.
+ *
+ * Le statut n'est PAS un verrou ici. On peut vouloir rectifier le lieu d'une
+ * session déjà réalisée (adresse mal saisie, salle changée le matin même) : le
+ * refuser figerait une erreur dans une pièce d'audit sans rien protéger. La
+ * traçabilité est assurée par le journal d'activité, qui enregistre l'ancienne
+ * et la nouvelle valeur.
+ *
+ * ⚠️ Les documents DÉJÀ générés ne sont pas régénérés : un PDF émis est figé, et
+ * c'est voulu. Après correction, il faut réémettre la pièce concernée.
+ */
+export async function setSessionLieuAction(
+  input: z.infer<typeof setSessionLieuSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = setSessionLieuSchema.safeParse(input);
+  if (!parsed.success) {
+    // Le message de zod est utile ici (URL de visio invalide) : le renvoyer
+    // plutôt qu'un « Données invalides » opaque devant lequel l'admin ne peut
+    // rien faire.
+    const premier = parsed.error.issues[0];
+    return { error: premier?.message ?? "Données invalides" };
+  }
+  const { id, ...lieuBrut } = parsed.data;
+  const lieu = normaliserLieu(lieuBrut);
+
+  const LIEU_SELECT = {
+    lieuType: true,
+    lieuIntitule: true,
+    lieuAdresse: true,
+    lieuCodePostal: true,
+    lieuVille: true,
+    lieuSalle: true,
+    lieuVisioUrl: true,
+  } as const;
+
+  let avant: Record<string, unknown> | null;
+  try {
+    avant = await prisma.trainingSession.findUnique({ where: { id }, select: LIEU_SELECT });
+  } catch {
+    return { error: "Erreur lors de la lecture de la session" };
+  }
+  if (!avant) return { error: "Session introuvable" };
+
+  try {
+    await prisma.trainingSession.update({ where: { id }, data: lieu as never });
+  } catch (err) {
+    Sentry.captureException(err);
+    return { error: "Erreur lors de l'enregistrement du lieu" };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.session.lieu.set",
+    targetType: "TrainingSession",
+    targetId: id,
+    changes: { avant, apres: lieu },
+    session,
+  });
+
+  return { data: { id } };
 }
 
 /**

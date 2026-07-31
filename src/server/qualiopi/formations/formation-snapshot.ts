@@ -83,6 +83,14 @@ export interface ResolvedFormationForDocs {
   objectifsPedagogiques: unknown;
   programmeDetaille: unknown;
   methodesPedagogiques: string | null;
+  /**
+   * Version du programme figée au snapshot. Exposée depuis l'introduction du
+   * document « Programme de l'action » : c'est le numéro qu'un auditeur recoupe
+   * entre l'annexe pédagogique et la convention. Il était capturé dans le
+   * snapshot depuis l'origine mais jamais rendu accessible aux gabarits.
+   */
+  versionProgramme: string | null;
+  certificationType: string | null;
   /** Provenance — utile pour l'observabilité/tests. */
   source: "snapshot" | "live";
 }
@@ -94,6 +102,8 @@ export interface LiveFormationForDocs {
   objectifsPedagogiques?: unknown;
   programmeDetaille?: unknown;
   methodesPedagogiques?: string | null;
+  versionProgramme?: string | null;
+  certificationType?: string | null;
 }
 
 /**
@@ -123,6 +133,8 @@ export function readFormationForDocs(
       objectifsPedagogiques: snapshot.objectifsPedagogiques ?? null,
       programmeDetaille: snapshot.programmeDetaille ?? null,
       methodesPedagogiques: snapshot.methodesPedagogiques ?? null,
+      versionProgramme: snapshot.versionProgramme ?? null,
+      certificationType: snapshot.certificationType ?? null,
       source: "snapshot",
     };
   }
@@ -132,6 +144,8 @@ export function readFormationForDocs(
     objectifsPedagogiques: live?.objectifsPedagogiques ?? null,
     programmeDetaille: live?.programmeDetaille ?? null,
     methodesPedagogiques: live?.methodesPedagogiques ?? null,
+    versionProgramme: live?.versionProgramme ?? null,
+    certificationType: live?.certificationType ?? null,
     source: "live",
   };
 }

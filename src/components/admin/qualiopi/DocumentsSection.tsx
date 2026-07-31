@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 
 import {
   genererConventionAction,
+  genererProgrammeAction,
   genererConventionTripartiteAction,
   genererContratFormationAction,
   genererEmargementAction,
@@ -86,6 +87,7 @@ export interface DocumentsSectionProps {
 const DOC_LABELS: Record<DocumentType, string> = {
   cv_formateur: "Fiche formateur (ind. 21)",
   convention: "Convention de formation (L.6353-1)",
+  programme: "Programme de l'action (annexe convention)",
   convention_tripartite: "Convention tripartite (OPCO)",
   contrat: "Contrat de formation (L.6353-3, particulier)",
   convocation: "Convocation",
@@ -330,6 +332,18 @@ export function DocumentsSection({
           <SessionDocButton
             label="Convention de formation"
             action={genererConventionAction}
+            sessionId={sessionId}
+            onDone={handleDone}
+          />
+          {/*
+            Placé juste après la convention, et pas en fin de grille : c'est son
+            annexe pédagogique, la convention la référence nommément en section
+            « Documents annexés ». Les deux se génèrent ensemble ou la première
+            promet une pièce qui n'accompagne pas.
+          */}
+          <SessionDocButton
+            label="Programme de l'action"
+            action={genererProgrammeAction}
             sessionId={sessionId}
             onDone={handleDone}
           />

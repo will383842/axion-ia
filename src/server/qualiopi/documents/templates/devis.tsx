@@ -25,6 +25,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   DataTable,
   LegalCallout,
   SignatureZone,
@@ -224,7 +225,7 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="Adresse du siège" value={identite.adresseSiege} required />
           <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
-          <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
+          <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
           {identite.qualiopi ? (
             <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}

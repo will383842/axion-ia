@@ -40,6 +40,7 @@ import {
   FORMATION_SNAPSHOT_SELECT,
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
+import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -74,6 +75,11 @@ const createRecurringSessionsSchema = z.object({
   titreSession: z.string().min(1).max(300).optional(),
   clientId: z.string().uuid().optional(),
   financementType: z.enum(FINANCEMENT_TYPES).optional(),
+  // Le lieu est saisi UNE fois et recopié sur chaque occurrence : une série
+  // récurrente se tient par définition au même endroit. Sans cela, le bloc
+  // « Lieu » du formulaire serait visible en mode récurrent mais silencieusement
+  // ignoré — pire qu'absent.
+  ...lieuInputSchema.shape,
 });
 
 const reportSessionSchema = z.object({
@@ -234,6 +240,7 @@ export async function createRecurringSessionsAction(
         if (v.financementType !== undefined) {
           createData.financementType = v.financementType as FinancementType;
         }
+        Object.assign(createData, normaliserLieu(v));
         const created: { id: string; numero: string } = await tx.trainingSession.create({
           data: createData,
           select: { id: true, numero: true },

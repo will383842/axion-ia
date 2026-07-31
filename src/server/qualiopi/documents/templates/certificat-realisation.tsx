@@ -18,6 +18,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  NdaFieldRow,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS, formatHeuresCentiemes } from "@/server/qualiopi/legal/legal-mentions";
@@ -180,7 +181,7 @@ export function CertificatRealisationPdf({
         {/* Organisme de formation — identifiants jamais masqués (pièce d'audit) */}
         <DocSection title="Organisme de formation">
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
-          <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
+          <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style
