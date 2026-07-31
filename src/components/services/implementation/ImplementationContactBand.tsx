@@ -27,7 +27,7 @@ export function ImplementationContactBand({
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <div className="max-w-2xl">
-            <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
+            <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
               {isFr ? "Une idée d'automatisation en tête ?" : "An automation idea in mind?"}
             </p>
             <h2
