@@ -7,8 +7,14 @@
 //   - `isNews = true`
 //   - `indexationTier = tier_1_indexable`
 //   - `status = published`
-//   - `publishedAt >= now - 48h` (fenêtre Google News stricte, cohérent
-//     `app/sitemap-news.xml/route.ts`)
+//
+// Audit indexation GSC 2026-07-31 — la fenêtre `publishedAt >= now - 48h`
+// (sémantique Google News SITEMAP, appliquée à tort à un flux RSS) rendait le
+// flux VIDE dès 48 h sans publication : contrôle live = `<channel>` sans aucun
+// `<item>`, signal « site mort » pour Feedly/Bing Copilot/Perplexity pourtant
+// Allow dans robots.txt. Sémantique RSS standard rétablie : les N derniers
+// items sans fenêtre (un lecteur déduplique par <guid>). La fenêtre 48 h reste
+// la règle du SITEMAP Google News (`app/sitemap-news.xml`), pas du flux.
 //
 // Fail-soft : si DB inaccessible (stub.invalid build OR P2021 bootstrap),
 // retourne XML vide valide (feed reader ignore gracieusement).
@@ -19,14 +25,13 @@ import { hasLocale } from "next-intl";
 import { SITE_URL } from "@/lib/seo";
 import { BRAND } from "@/lib/brand";
 
-// Force dynamic : fenêtre 48h glissante exige éval par request (CDN cache
+// Force dynamic : DB-driven, jamais figé sur le build stub (CDN cache
 // 5min derrière Cloudflare via Cache-Control).
 export const dynamic = "force-dynamic";
 export const revalidate = 300;
 
-// Cap dur cohérent avec Google News spec (cf. sitemap-news.xml).
+// Cap dur : les 50 dernières actualités (sémantique RSS standard, cf. en-tête).
 const ACTUALITES_FEED_MAX_ITEMS = 50;
-const FRESHNESS_WINDOW_MS = 48 * 60 * 60 * 1000;
 
 interface RouteContext {
   params: Promise<{ locale: string }>;
@@ -51,14 +56,12 @@ interface NewsRow {
 async function fetchRecentNewsRows(locale: Locale): Promise<NewsRow[]> {
   // Build-time short-circuit (stub.invalid GH Actions runner).
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
-  const cutoff = new Date(Date.now() - FRESHNESS_WINDOW_MS);
   try {
     return await prisma.article.findMany({
       where: {
         status: "published",
         isNews: true,
         indexationTier: "tier_1_indexable",
-        publishedAt: { gte: cutoff },
       },
       orderBy: { publishedAt: "desc" },
       take: ACTUALITES_FEED_MAX_ITEMS,
@@ -123,7 +126,7 @@ export async function GET(_req: Request, { params }: RouteContext) {
   <channel>
     <title>Axion-IA · Actualités ${locale.toUpperCase()}</title>
     <link>${SITE_URL}/${locale}/actualites</link>
-    <description>${isFr ? "Actualités IA business — analyse opérationnelle, marché, réglementation (fenêtre 48h glissante)." : "AI business news — operational analysis, market, regulation (48h sliding window)."}</description>
+    <description>${isFr ? "Actualités IA business — analyse opérationnelle, marché, réglementation." : "AI business news — operational analysis, market, regulation."}</description>
     <language>${locale === "fr" ? "fr-FR" : "en-US"}</language>
     <lastBuildDate>${newestDate.toUTCString()}</lastBuildDate>
     <ttl>60</ttl>
