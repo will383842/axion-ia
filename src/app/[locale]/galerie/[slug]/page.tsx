@@ -72,7 +72,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     ...(metaKeywords.length > 0 ? { keywords: metaKeywords } : {}),
     ...(tr.image.module ? { category: tr.image.module } : {}),
     alternates: {
-      canonical: `${siteUrl}/${locale}/${segment}/${tr.slug}`,
+      // Fix 2026-07-31 (audit indexation GSC) — le commentaire l.48 promet
+      // « Canonical FR (toujours) » mais le code déclarait chaque locale
+      // auto-canonique : une page /en/gallery/* se disait canonique d'elle-même
+      // alors que proxy.ts la 301 vers FR (signal contradictoire, impressions
+      // résiduelles /en/gallery/* en GSC). EN désactivé → canonique FR ;
+      // EN réactivé → chaque locale redevient auto-canonique (symétrique du
+      // gating `languages` ci-dessous).
+      canonical: isEnLocaleDisabled() ? frHreflang : `${siteUrl}/${locale}/${segment}/${tr.slug}`,
       // EN désactivé (301→FR) : ne PAS émettre l'alternate `en-US` — sinon on
       // signale à Google ~133 URLs /en/gallery/* qui ne font que 301, gaspillant
       // du crawl-budget (audit GSC A-04). Aligné sur le hub + le sitemap images.
