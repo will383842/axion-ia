@@ -153,8 +153,79 @@ function formatters(isFr: boolean) {
   };
 }
 
-const WEEKDAYS_FR = ["L", "M", "M", "J", "V", "S", "D"] as const;
-const WEEKDAYS_EN = ["M", "T", "W", "T", "F", "S", "S"] as const;
+// Trois lettres, comme Calendly — « L M M J V S D » demande un effort de
+// lecture parce que lundi/mardi et mardi/mercredi partagent leur initiale.
+const WEEKDAYS_FR = ["LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"] as const;
+const WEEKDAYS_EN = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"] as const;
+
+/**
+ * Feuille de style émise avec le composant — UN SEUL JOUR d'horaires à la fois,
+ * et pastille pleine sur le jour affiché. C'est ce qui manquait pour que ça se
+ * lise comme Calendly : empiler les 28 jours donnait une longue liste où le
+ * clic sur une date ne faisait que défiler.
+ *
+ * POURQUOI DU CSS ÉMIS ICI, et pas des classes Tailwind :
+ * les règles dépendent des clés de date du jeu de créneaux, donc des valeurs
+ * connues seulement à l'exécution — Tailwind ne compile que des classes
+ * littérales présentes dans les sources. Un `<style>` est autorisé :
+ * `style-src` porte `'unsafe-inline'` (`src/lib/csp.ts`).
+ *
+ * POURQUOI ÇA RESTE À ZÉRO JAVASCRIPT : la sélection passe par `:target`,
+ * c'est-à-dire l'ancre `#j-AAAA-MM-JJ` déjà posée sur chaque jour. Cliquer une
+ * date change le fragment d'URL, et le CSS seul fait le reste.
+ *
+ * DÉGRADATION — si `:has()` n'est pas supporté (Firefox < 121), AUCUNE de ces
+ * règles ne s'applique : on retombe exactement sur le comportement précédent,
+ * tous les jours empilés et l'ancre qui défile. Rien ne casse, et surtout aucun
+ * créneau ne devient inatteignable.
+ *
+ * ⚠️ PAS DE COULEUR EN DUR ici : `var(--color-terracotta)` / `--color-mocha-fg`
+ * viennent du `@theme` de `globals.css`. Le linter anti-hex couvre
+ * `src/components`, et c'est aussi le seul moyen de suivre les tokens si la
+ * palette bouge (cf. PIÈGE 3 sur l'appariement terracotta/mocha-fg).
+ */
+function styleUnJourALaFois(cles: readonly string[]): string {
+  // Filtrage par `parseKey` AVANT toute concaténation : ces clés viennent de
+  // l'API Calendly, et tout ce qui entre dans un `<style>` doit être une forme
+  // que l'on a nous-mêmes validée. `AAAA-MM-JJ` ne peut contenir ni `}` ni `<`,
+  // donc rien qui permette de sortir de la règle ou de la balise.
+  const dateKeys = cles.filter((k) => parseKey(k) !== null);
+  const premier = dateKeys[0];
+  if (!premier) return "";
+
+  const CAL = "[data-axion-cal]";
+  const JOURS = "[data-axion-jours]";
+  const pastillePleine = "background-color:var(--color-terracotta);color:var(--color-mocha-fg)";
+
+  // Les sélecteurs de pastille pleine sont regroupés en UNE règle : la
+  // déclaration est la même pour les 28 jours, la répéter gonflait le HTML de
+  // ~2,5 Ko pour rien (page tenue à un budget serré, cf. AGENTS.md).
+  const pleines = [
+    // Aucune ancre active (arrivée sur la page) → premier jour porteur, comme
+    // Calendly qui présélectionne la première date disponible.
+    `${CAL}:not(:has(${JOURS}>li:target)) a[href="#j-${premier}"]`,
+    // Puis, jour par jour, la pastille du jour ciblé.
+    ...dateKeys.map((key) => `${CAL}:has(#j-${key}:target) a[href="#j-${key}"]`),
+  ].join(",");
+
+  const regles = [
+    // Une ancre est active → on ne montre QUE ce jour-là.
+    `${CAL} ${JOURS}:has(>li:target)>li:not(:target){display:none}`,
+    // Aucune ancre → seul le premier jour est déplié.
+    `${CAL} ${JOURS}:not(:has(>li:target))>li:not(:first-child){display:none}`,
+    `${pleines}{${pastillePleine}}`,
+  ].join("");
+
+  // `@supports selector(:has(*))` — la garde n'est PAS décorative :
+  //   1. elle dit explicitement que tout ce bloc dépend de `:has()`, et donne
+  //      au navigateur qui ne l'implémente pas un repli propre (tous les jours
+  //      affichés, exactement le comportement d'avant) ;
+  //   2. elle protège les TESTS. jsdom ne sait pas analyser `:has()` : sans
+  //      cette enveloppe, son moteur de sélecteurs lève une `SyntaxError` dès
+  //      qu'un test interroge le DOM rendu, et TOUTE la suite du composant
+  //      tombe (constaté : 11 tests en échec). Encapsulé, le bloc est ignoré.
+  return `@supports selector(:has(*)){${regles}}`;
+}
 
 export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
@@ -173,9 +244,14 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
 
   return (
     <div
+      data-axion-cal=""
       className="border-border bg-paper mx-auto flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl border shadow-lg"
       style={box}
     >
+      {/* Contenu entièrement dérivé des clés de date (`AAAA-MM-JJ`, validées par
+          `parseKey`) — aucune donnée visiteur n'y transite. */}
+      <style dangerouslySetInnerHTML={{ __html: styleUnJourALaFois(days.map((d) => d.dateKey)) }} />
+
       <div className="border-border border-b px-5 py-3.5 text-center sm:px-6">
         <p className="text-fg text-lg font-semibold tracking-tight">
           {isFr ? "Choisissez votre créneau" : "Choose your slot"}
@@ -195,16 +271,16 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
         {/* ── Le calendrier ──────────────────────────────────────────── */}
         <div className="border-border shrink-0 px-4 py-4 md:min-h-0 md:overflow-y-auto md:border-r">
           {months.map((month) => (
-            <div key={`${month.y}-${month.m}`} className="mb-4 last:mb-0">
-              <p className="text-fg mb-2 text-center text-sm font-semibold first-letter:uppercase">
+            <div key={`${month.y}-${month.m}`} className="mb-5 last:mb-0">
+              <p className="text-fg mb-3 text-center text-lg font-semibold first-letter:uppercase">
                 {fmt.month.format(new Date(Date.UTC(month.y, month.m - 1, 1)))}
               </p>
-              <div className="grid grid-cols-7 gap-1">
+              <div className="grid grid-cols-7 gap-y-1.5">
                 {weekdays.map((w, i) => (
                   <div
                     key={`${w}-${i}`}
                     aria-hidden="true"
-                    className="text-fg-muted pb-1 text-center text-[11px] font-medium"
+                    className="text-fg-muted pb-1 text-center text-[10px] font-semibold tracking-wider"
                   >
                     {w}
                   </div>
@@ -216,7 +292,7 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
                     return (
                       <div
                         key={cell.key}
-                        className="text-fg-muted flex h-9 items-center justify-center text-sm"
+                        className="text-fg-muted flex h-10 items-center justify-center text-sm"
                       >
                         {cell.d}
                       </div>
@@ -224,42 +300,47 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
                   }
                   const libelle = fmt.dayLong.format(utcOf(cell.key));
                   return (
-                    <a
-                      key={cell.key}
-                      href={`#j-${cell.key}`}
-                      data-cta="appel_cal_day"
-                      aria-label={
-                        isFr
-                          ? `${libelle} — ${day.slots.length} créneaux disponibles`
-                          : `${libelle} — ${day.slots.length} slots available`
-                      }
-                      className="border-terracotta text-terracotta hover:bg-terracotta hover:text-mocha-fg focus-visible:ring-terracotta flex h-9 items-center justify-center rounded-lg border text-sm font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
-                    >
-                      {cell.d}
-                    </a>
+                    <div key={cell.key} className="flex items-center justify-center">
+                      {/* Pastille pleine et TEINTÉE, pas un contour : c'est ce
+                          qui rend une date disponible lisible d'un coup d'œil
+                          au milieu des dates grisées. Le fond à 10 % garde le
+                          texte terracotta largement au-dessus du seuil AA ; le
+                          survol bascule sur l'appariement plein du design
+                          system (`bg-terracotta` + `text-mocha-fg`). */}
+                      <a
+                        href={`#j-${cell.key}`}
+                        data-cta="appel_cal_day"
+                        aria-label={
+                          isFr
+                            ? `${libelle} — ${day.slots.length} créneaux disponibles`
+                            : `${libelle} — ${day.slots.length} slots available`
+                        }
+                        className="bg-terracotta/10 text-terracotta hover:bg-terracotta hover:text-mocha-fg focus-visible:ring-terracotta flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+                      >
+                        {cell.d}
+                      </a>
+                    </div>
                   );
                 })}
               </div>
             </div>
           ))}
-          <p className="text-fg-muted mt-2 text-center text-[11px] leading-snug">
-            {isFr
-              ? "Les dates encadrées ont des créneaux libres."
-              : "Outlined dates have available slots."}
-          </p>
         </div>
 
         {/* ── Les horaires ───────────────────────────────────────────── */}
         <div className="px-5 py-4 sm:px-6 md:min-h-0 md:overflow-y-auto">
-          <ul className="space-y-5">
+          <ul data-axion-jours="" className="mx-auto max-w-xs space-y-5 md:max-w-sm">
             {days.map((day) => (
               // `scroll-mt` : sans lui, l'ancre colle l'intitulé au bord haut de
               // la zone défilante et le rend illisible.
               <li key={day.dateKey} id={`j-${day.dateKey}`} className="scroll-mt-3">
-                <p className="text-fg text-sm font-semibold first-letter:uppercase">
+                <p className="text-fg mb-3 text-base font-semibold first-letter:uppercase">
                   {fmt.dayLong.format(utcOf(day.dateKey))}
                 </p>
-                <ul className="mt-2 flex flex-wrap gap-2">
+                {/* Boutons PLEINE LARGEUR empilés, comme la colonne d'horaires
+                    de Calendly : une cible large se vise mieux au pouce qu'une
+                    pastille, et la lecture verticale suit l'ordre du temps. */}
+                <ul className="space-y-2">
                   {day.slots.map((slot) => {
                     const heure = fmt.time.format(new Date(slot.startIso));
                     return (
@@ -274,7 +355,7 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
                               ? `Réserver ${fmt.dayLong.format(utcOf(day.dateKey))} à ${heure}`
                               : `Book ${fmt.dayLong.format(utcOf(day.dateKey))} at ${heure}`
                           }
-                          className="border-border-strong text-fg bg-paper hover:border-terracotta hover:text-terracotta focus-visible:ring-primary inline-flex h-10 items-center rounded-full border px-4 text-sm font-semibold tabular-nums transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                          className="border-terracotta text-terracotta hover:bg-terracotta hover:text-mocha-fg focus-visible:ring-terracotta flex h-11 w-full items-center justify-center rounded-lg border text-sm font-semibold tabular-nums transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                         >
                           {heure}
                         </a>

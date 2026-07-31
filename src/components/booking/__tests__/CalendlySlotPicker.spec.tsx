@@ -154,3 +154,70 @@ describe("CalendlySlotPicker", () => {
     expect(container.innerHTML).not.toContain("bg-terracotta text-paper");
   });
 });
+
+/**
+ * L'affichage « un seul jour à la fois », façon Calendly, repose entièrement sur
+ * une feuille de style émise avec le composant. jsdom n'applique pas `:has()` :
+ * on vérifie donc le CSS PRODUIT, pas son effet visuel — l'effet, lui, a été
+ * constaté dans un navigateur réel.
+ */
+describe("CalendlySlotPicker — un seul jour d'horaires à la fois", () => {
+  function styleEmis(): string {
+    const { container } = setup();
+    return container.querySelector("style")?.textContent ?? "";
+  }
+
+  it("masque les jours non ciblés, et déplie le premier jour à l'arrivée", () => {
+    const css = styleEmis();
+    // Une ancre active → tout le reste disparaît.
+    expect(css).toContain("[data-axion-jours]:has(>li:target)>li:not(:target){display:none}");
+    // Aucune ancre → seul le premier jour porteur reste, comme Calendly qui
+    // présélectionne la première date disponible.
+    expect(css).toContain(
+      "[data-axion-jours]:not(:has(>li:target))>li:not(:first-child){display:none}",
+    );
+  });
+
+  it("relie chaque pastille de date à son jour, sans JavaScript", () => {
+    const css = styleEmis();
+    for (const day of DAYS) {
+      expect(css).toContain(`:has(#j-${day.dateKey}:target) a[href="#j-${day.dateKey}"]`);
+    }
+  });
+
+  it("garde le repli intact là où `:has()` manque, et ne casse pas les tests", () => {
+    // La garde `@supports` porte DEUX promesses : un navigateur sans `:has()`
+    // affiche tous les jours (comportement d'avant, aucun créneau perdu), et
+    // jsdom — dont le moteur de sélecteurs lève une `SyntaxError` sur `:has()`
+    // — ignore le bloc au lieu de faire tomber toute la suite.
+    expect(styleEmis()).toMatch(/^@supports selector\(:has\(\*\)\)\{/);
+  });
+
+  it("ne colle aucune couleur en dur dans le style émis (linter anti-hex, tokens)", () => {
+    const css = styleEmis();
+    expect(css).toContain("var(--color-terracotta)");
+    expect(css).toContain("var(--color-mocha-fg)");
+    expect(css).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+  });
+
+  it("n'écrit dans la feuille de style que des clés de date validées", () => {
+    // Le contenu du `<style>` est concaténé à partir de valeurs venues de l'API
+    // Calendly : une clé mal formée ne doit jamais pouvoir sortir de la règle.
+    cleanup();
+    const { container } = render(
+      <CalendlySlotPicker
+        days={[{ dateKey: '2026-08-04"}</style><script>alert(1)</script>', slots: [] }, ...DAYS]}
+        fallbackUrl={FALLBACK}
+        isFr
+        height={720}
+      />,
+    );
+    const css = container.querySelector("style")?.textContent ?? "";
+    expect(css).not.toContain("<script");
+    expect(css).not.toContain("</style");
+    expect(css).not.toContain("alert(1)");
+    // La clé bidon est écartée : c'est le 4 août, premier jour VALIDE, qui sert
+    // de sélection par défaut.
+    expect(css).toContain('a[href="#j-2026-08-04"]');
+  });
+});
