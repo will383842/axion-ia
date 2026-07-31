@@ -320,8 +320,24 @@ export interface FetchAvailableSlotsOptions {
   /**
    * Nombre maximum de créneaux rendus par jour.
    *
-   * C'est le vrai garde-fou de poids : 28 jours × 8 liens plafonnent le HTML.
-   * Le lien « toutes les disponibilités » couvre le reste.
+   * ⚠️ CE PLAFOND GARDE LES PREMIERS CRÉNEAUX DE LA JOURNÉE, pas un échantillon
+   * réparti : les créneaux sont triés chronologiquement avant d'être tronqués.
+   * Trop bas, il ne raccourcit donc pas la liste — il SUPPRIME L'APRÈS-MIDI.
+   *
+   * Constaté en production le 2026-07-31 avec l'ancienne valeur (6) : les jours
+   * entiers n'affichaient que 09:00 → 11:30, alors que le vendredi — dont la
+   * matinée était déjà passée — proposait 12:30 → 15:00. L'après-midi existait
+   * bien côté Calendly, le plafond le masquait.
+   *
+   * 16 couvre une journée ouvrée complète au pas de 30 minutes (8 h). Le coût
+   * a été mesuré sur 28 jours, et il est faible parce que ce markup est très
+   * répétitif donc très compressible :
+   *     plafond  8 → 192 créneaux, 115 Ko brut, 4,1 Ko gz
+   *     plafond 16 → 384 créneaux, 211 Ko brut, 6,1 Ko gz   (+2,0 Ko gz)
+   * Aucun JavaScript n'est ajouté : le budget `First Load JS` est inchangé.
+   *
+   * Si l'agenda s'ouvrait un jour au-delà de 8 h par jour, remonter ce plafond
+   * plutôt que de laisser la troncature décider à la place du visiteur.
    */
   readonly maxSlotsPerDay?: number;
   /** Injectable pour les tests — l'horloge est quantifiée, jamais lue telle quelle. */
@@ -337,7 +353,7 @@ export interface FetchAvailableSlotsOptions {
 export async function fetchAvailableSlots({
   schedulingUrl,
   maxDays = 31,
-  maxSlotsPerDay = 8,
+  maxSlotsPerDay = 16,
   nowMs = Date.now(),
 }: FetchAvailableSlotsOptions): Promise<CalendlyAvailability> {
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return { ok: false, reason: "not_configured" };
