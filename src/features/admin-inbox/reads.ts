@@ -21,10 +21,7 @@ import type { InboxChannel } from "./types";
 
 /** Valeurs de l'enum Prisma `AdminInboxEntity`. */
 export type InboxEntityType =
-  | "submission"
-  | "calendly_event"
-  | "job_application"
-  | "podcast_request";
+  "submission" | "calendly_event" | "job_application" | "podcast_request";
 
 /** Canal d'affichage → table source. */
 export const ENTITY_BY_CHANNEL: Record<InboxChannel, InboxEntityType> = {

@@ -23,9 +23,7 @@
  */
 
 export type IndexationTier =
-  | "tier_1_indexable"
-  | "tier_2_noindex_follow"
-  | "tier_3_noindex_nofollow";
+  "tier_1_indexable" | "tier_2_noindex_follow" | "tier_3_noindex_nofollow";
 
 export type TierDecisionAction = "promote" | "demote" | "noop";
 

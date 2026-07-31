@@ -139,13 +139,7 @@ export interface VillePatrimoineNotable {
   readonly nom: string;
   /** Type : musée / monument / unesco / cité_metier / parc / autre. */
   readonly type:
-    | "musee"
-    | "monument"
-    | "unesco"
-    | "cite_metier"
-    | "parc"
-    | "site_archeologique"
-    | "autre";
+    "musee" | "monument" | "unesco" | "cite_metier" | "parc" | "site_archeologique" | "autre";
   readonly source: string;
   readonly verifiedOn: string;
 }
@@ -238,13 +232,7 @@ export interface VilleZoneActivite {
 export interface VilleEcoleUniversite {
   readonly nom: string;
   readonly type:
-    | "ecole_ingenieur"
-    | "ecole_commerce"
-    | "universite"
-    | "iut"
-    | "ens"
-    | "sciences_po"
-    | "autre";
+    "ecole_ingenieur" | "ecole_commerce" | "universite" | "iut" | "ens" | "sciences_po" | "autre";
   /** Spécialités principales (si pertinent IA/tech/business). */
   readonly specialites?: ReadonlyArray<string>;
   readonly source: string;
@@ -277,11 +265,7 @@ export interface VilleGrandGroupe {
   readonly secteur: string;
   /** Type d'implantation. */
   readonly typeImplantation:
-    | "siege_social"
-    | "site_majeur"
-    | "centre_rd"
-    | "usine_principale"
-    | "heritage";
+    "siege_social" | "site_majeur" | "centre_rd" | "usine_principale" | "heritage";
   readonly source: string;
   readonly verifiedOn: string;
 }

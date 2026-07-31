@@ -123,14 +123,12 @@ export async function ingestKbFromSitemap(
   const errors: Array<{ url: string; reason: string }> = [];
 
   for (const u of batch) {
-    const r = await ingestKbFromUrl(u.loc).catch(
-      (err): IngestUrlResult => ({
-        url: u.loc,
-        accepted: false,
-        status: "exception",
-        rejectReason: err instanceof Error ? err.message : String(err),
-      }),
-    );
+    const r = await ingestKbFromUrl(u.loc).catch((err): IngestUrlResult => ({
+      url: u.loc,
+      accepted: false,
+      status: "exception",
+      rejectReason: err instanceof Error ? err.message : String(err),
+    }));
     if (r.accepted) {
       accepted++;
     } else {

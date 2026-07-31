@@ -31,8 +31,4 @@ export interface VilleContext {
  * et les clés du dispatcher `[verticale]/page.tsx`.
  */
 export type VerticaleSlug =
-  | "audits"
-  | "interventions"
-  | "implementations"
-  | "un-a-un"
-  | "sites-web-ia";
+  "audits" | "interventions" | "implementations" | "un-a-un" | "sites-web-ia";

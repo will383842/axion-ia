@@ -24,12 +24,7 @@ export type ExternalLinkCategory =
 export type ExternalLinkScope = "national" | "regional" | "local" | "international";
 
 export type ExternalLinkStatus =
-  | "active"
-  | "redirect_acceptable"
-  | "redirect_problem"
-  | "404"
-  | "deprecated"
-  | "pending_verify";
+  "active" | "redirect_acceptable" | "redirect_problem" | "404" | "deprecated" | "pending_verify";
 
 export type ExternalLinkAuthority = 1 | 2 | 3 | 4 | 5;
 

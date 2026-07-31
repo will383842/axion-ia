@@ -186,8 +186,7 @@ function makeEnrollment(overrides: Record<string, unknown> = {}) {
  */
 function donneesPdf<T>(): T {
   const call = mockGenerateDocument.mock.calls[0]?.[0] as
-    | { buildElement: (n: string) => { props: { data: T } } }
-    | undefined;
+    { buildElement: (n: string) => { props: { data: T } } } | undefined;
   if (call === undefined) throw new Error("generateDocument n'a pas été appelé");
   return call.buildElement("AXI-TEST-2026-001").props.data;
 }

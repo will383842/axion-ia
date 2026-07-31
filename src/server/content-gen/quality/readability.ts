@@ -29,12 +29,7 @@ export interface ReadabilityResult {
   readonly avgWordsPerSentence: number;
   readonly avgSyllablesPerWord: number;
   readonly level:
-    | "très-facile"
-    | "facile"
-    | "idéal-b2b"
-    | "standard"
-    | "difficile"
-    | "très-difficile";
+    "très-facile" | "facile" | "idéal-b2b" | "standard" | "difficile" | "très-difficile";
 }
 
 function levelFromScore(score: number): ReadabilityResult["level"] {

@@ -52,23 +52,14 @@ import {
 
 /** Miroir de l'enum Prisma `TrainingSessionStatut`. */
 export type TrainingSessionStatutValue =
-  | "planifiee"
-  | "en_cours"
-  | "realisee"
-  | "annulee"
-  | "reportee";
+  "planifiee" | "en_cours" | "realisee" | "annulee" | "reportee";
 
 /** Miroir de l'enum Prisma `FeeLineStatut`. */
 export type FeeLineStatut = "previsionnel" | "calcule" | "valide" | "annule";
 
 /** Miroir de l'enum Prisma `StatementStatut`. */
 export type StatementStatut =
-  | "brouillon"
-  | "a_valider"
-  | "valide"
-  | "facture_recue"
-  | "paye"
-  | "annule";
+  "brouillon" | "a_valider" | "valide" | "facture_recue" | "paye" | "annule";
 
 /** Une règle telle qu'elle sort de la base : identifiée. */
 export interface RegleIdentifiee extends RegleRemuneration {
@@ -199,11 +190,7 @@ export function mapStatutCoaching(statut: CoachingSessionStatutValue): Prestatio
 
 /** Miroir de l'enum Prisma `AuditMissionStatut` (identique à TrainingSessionStatut). */
 export type AuditMissionStatutValue =
-  | "planifiee"
-  | "en_cours"
-  | "realisee"
-  | "annulee"
-  | "reportee";
+  "planifiee" | "en_cours" | "realisee" | "annulee" | "reportee";
 
 /**
  * Statut d'un audit dans le vocabulaire du moteur. `en_cours` → `planifiee` :

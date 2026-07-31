@@ -98,8 +98,7 @@ const createManualSchema = z.object({
 });
 
 export type CreateManualCalendlyEventState =
-  | { ok: true; eventId: string }
-  | { ok: false; error: string };
+  { ok: true; eventId: string } | { ok: false; error: string };
 
 export async function createManualCalendlyEventAction(
   input: z.input<typeof createManualSchema>,

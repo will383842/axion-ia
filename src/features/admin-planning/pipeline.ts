@@ -40,30 +40,15 @@ export type SubmissionStatusValue =
   | "lost";
 
 export type DevisStatutValue =
-  | "brouillon"
-  | "envoye"
-  | "accepte"
-  | "refuse"
-  | "expire"
-  | "transforme_convention";
+  "brouillon" | "envoye" | "accepte" | "refuse" | "expire" | "transforme_convention";
 
 export type SessionStatutValue = "planifiee" | "en_cours" | "realisee" | "annulee" | "reportee";
 
 export type FactureStatutValue =
-  | "brouillon"
-  | "emise"
-  | "partiellement_payee"
-  | "en_retard"
-  | "payee"
-  | "annulee";
+  "brouillon" | "emise" | "partiellement_payee" | "en_retard" | "payee" | "annulee";
 
 export type CodeEtage =
-  | "demande"
-  | "devis_envoye"
-  | "devis_accepte"
-  | "a_facturer"
-  | "facture_emise"
-  | "facture_payee";
+  "demande" | "devis_envoye" | "devis_accepte" | "a_facturer" | "facture_emise" | "facture_payee";
 
 export interface Etage {
   code: CodeEtage;
@@ -83,11 +68,7 @@ export interface Etage {
 }
 
 export type CodeFuite =
-  | "demande_perdue"
-  | "devis_refuse"
-  | "devis_expire"
-  | "session_annulee"
-  | "facture_annulee";
+  "demande_perdue" | "devis_refuse" | "devis_expire" | "session_annulee" | "facture_annulee";
 
 export interface Fuite {
   code: CodeFuite;

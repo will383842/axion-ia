@@ -8,11 +8,7 @@
  */
 
 export type VerticalSlug =
-  | "audits"
-  | "interventions_formations"
-  | "implementations"
-  | "un_a_un"
-  | "sites_web_augmentes";
+  "audits" | "interventions_formations" | "implementations" | "un_a_un" | "sites_web_augmentes";
 
 export const KEYWORD_CATALOG: Record<VerticalSlug, ReadonlyArray<string>> = {
   audits: [

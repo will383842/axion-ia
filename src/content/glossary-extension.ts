@@ -29,13 +29,7 @@ import {
 } from "@/lib/knowledge/legacy-mapping-glossary-hardcode";
 
 export type GlossaryCategory =
-  | "foundational"
-  | "agents"
-  | "rag"
-  | "models"
-  | "infra"
-  | "security"
-  | "evaluation";
+  "foundational" | "agents" | "rag" | "models" | "infra" | "security" | "evaluation";
 
 /**
  * Vue enrichie d'un terme glossaire (catégorie + mesh + aliases + examples).

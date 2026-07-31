@@ -157,8 +157,7 @@ export async function readLatestAnalysis(): Promise<BarometerAnalysisRecord | nu
 }
 
 export type GenerateAnalysisResult =
-  | { ok: true; regenerated: boolean; basedOnTotal: number }
-  | { ok: false; reason: string };
+  { ok: true; regenerated: boolean; basedOnTotal: number } | { ok: false; reason: string };
 
 /**
  * (Re)génère la synthèse si nécessaire et la persiste. Par défaut, ne régénère

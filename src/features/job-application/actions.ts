@@ -31,8 +31,7 @@ import type { Prisma } from "../../../prisma/generated/client";
 const CONSENT_VERSION = "careers-v1-2026-06-09";
 
 export type JobApplicationState =
-  | { ok: true; applicationId: string }
-  | { ok: false; error: string };
+  { ok: true; applicationId: string } | { ok: false; error: string };
 
 const opt = (max: number) =>
   z.preprocess((v) => (v === "" || v == null ? undefined : v), z.string().max(max).optional());

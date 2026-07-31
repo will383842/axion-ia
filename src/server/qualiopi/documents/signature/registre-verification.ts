@@ -79,11 +79,7 @@ import {
  * plus faux qu'un aveu d'ignorance.
  */
 export type StatutSignatureRecalcule =
-  | "non_requise"
-  | "en_attente"
-  | "partielle"
-  | "signee"
-  | "indeterminable";
+  "non_requise" | "en_attente" | "partielle" | "signee" | "indeterminable";
 
 /**
  * Ce que `verifierChaine` ne peut PAS voir, parce qu'elle ne regarde que la

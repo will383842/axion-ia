@@ -17,12 +17,7 @@ import type { RechercherOffresInput } from "@/server/chatbot/tools/rechercher-of
 export type SearchSlots = RechercherOffresInput;
 
 export type ChatIntent =
-  | "recherche_offre"
-  | "explication"
-  | "comparaison"
-  | "rdv"
-  | "lead"
-  | "hors_sujet";
+  "recherche_offre" | "explication" | "comparaison" | "rdv" | "lead" | "hors_sujet";
 
 export interface ExtractionResult {
   readonly slots: SearchSlots;

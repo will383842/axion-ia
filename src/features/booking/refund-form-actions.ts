@@ -17,10 +17,7 @@ export async function cancelBookingFormAction(
   const bookingId = String(formData.get("bookingId") ?? "");
   const reason = String(formData.get("reason") ?? "");
   const refundDecision = String(formData.get("refundDecision") ?? "auto_cgv") as
-    | "auto_cgv"
-    | "force_majeure"
-    | "keep_deposit"
-    | "custom";
+    "auto_cgv" | "force_majeure" | "keep_deposit" | "custom";
   const customRefundEurRaw = formData.get("customRefundEur")?.toString().trim();
   const customRefundCents = customRefundEurRaw
     ? Math.round(parseFloat(customRefundEurRaw) * 100)

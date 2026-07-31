@@ -42,14 +42,7 @@ import {
  * range écrit « entre 1 900 et … € » où le « € » est porté par le 2e membre.
  */
 export type PriceTokenMode =
-  | "full"
-  | "flat"
-  | "onsite"
-  | "range"
-  | "from"
-  | "entry"
-  | "compact"
-  | "num";
+  "full" | "flat" | "onsite" | "range" | "from" | "entry" | "compact" | "num";
 
 const VALID_MODES: ReadonlySet<string> = new Set<PriceTokenMode>([
   "full",
@@ -92,8 +85,7 @@ export function hasLabelToken(text: string): boolean {
  * qu'un `priceFlat`). On garde la distinction pour formater au plus juste.
  */
 type RegistryEntry =
-  | { kind: "tier"; tier: PricingTier }
-  | { kind: "subTier"; subTier: PricingSubTier };
+  { kind: "tier"; tier: PricingTier } | { kind: "subTier"; subTier: PricingSubTier };
 
 /**
  * Registre `id → entrée`, construit une seule fois en aplatissant

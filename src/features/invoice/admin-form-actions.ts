@@ -29,9 +29,7 @@ export async function markPaidManualFormAction(
     ? new Date(`${paidAtRaw}T12:00:00Z`).toISOString()
     : new Date().toISOString();
   const mode = String(formData.get("mode") ?? "manual_wire") as
-    | "manual_wire"
-    | "manual_check"
-    | "manual_cash";
+    "manual_wire" | "manual_check" | "manual_cash";
   const reference = formData.get("reference")?.toString().trim() || undefined;
   const notes = formData.get("notes")?.toString().trim() || undefined;
 

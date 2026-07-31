@@ -36,14 +36,7 @@ type Accent = "terracotta" | "primary" | "sage" | "mocha";
 
 interface ToolNode {
   slug:
-    | "chatgpt"
-    | "claude"
-    | "mistral"
-    | "copilot"
-    | "perplexity"
-    | "midjourney"
-    | "sora"
-    | "heygen";
+    "chatgpt" | "claude" | "mistral" | "copilot" | "perplexity" | "midjourney" | "sora" | "heygen";
   label: string;
   benefit: string;
   accent: Accent;

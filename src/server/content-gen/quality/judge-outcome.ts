@@ -31,10 +31,7 @@ export interface JudgeOutcomeInput {
 }
 
 export type JudgeOutcome =
-  | "quarantined_critical"
-  | "quality_improving"
-  | "approved"
-  | "needs_review";
+  "quarantined_critical" | "quality_improving" | "approved" | "needs_review";
 
 /**
  * Décide du statut de sortie de la boucle qualité.

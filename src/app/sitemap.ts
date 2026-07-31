@@ -165,11 +165,7 @@ type StaticSitemapId =
 // sont gérés via `next.config.ts`.
 
 type ServiceVillesKey =
-  | "audit"
-  | "interventions"
-  | "implementation"
-  | "un-a-un"
-  | "sites-web-augmentes";
+  "audit" | "interventions" | "implementation" | "un-a-un" | "sites-web-augmentes";
 
 type PathnameKey = keyof typeof routing.pathnames;
 

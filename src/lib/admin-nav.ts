@@ -68,11 +68,7 @@ export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "quali
  * à l'autre (Set<string> partagé côté sidebar).
  */
 export type QualiopiPole =
-  | "formations"
-  | "commercial"
-  | "conformite"
-  | "registres"
-  | "administration";
+  "formations" | "commercial" | "conformite" | "registres" | "administration";
 
 /**
  * Pôle (sous-groupe niveau 1) du groupe `documents-interventions` — refonte UX

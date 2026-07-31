@@ -78,11 +78,7 @@ const APPROFONDIE_PRICE_TIERS_EN: ReadonlyArray<{ size: string; price: string }>
   }));
 
 export type InterventionSlug =
-  | "essentielle"
-  | "approfondie"
-  | "dirigeants"
-  | "gagner-du-temps"
-  | "intervention-claude";
+  "essentielle" | "approfondie" | "dirigeants" | "gagner-du-temps" | "intervention-claude";
 
 /** Accent visuel par intervention — conserve la palette Editorial v3. */
 export type InterventionAccent = "terracotta" | "primary" | "sage" | "mocha";

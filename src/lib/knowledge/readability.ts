@@ -36,12 +36,7 @@ function countSyllables(word: string): number {
 export interface ReadabilityResult {
   readonly score: number; // arrondi à 0.1
   readonly grade:
-    | "very_easy"
-    | "easy"
-    | "standard"
-    | "fairly_difficult"
-    | "difficult"
-    | "very_difficult";
+    "very_easy" | "easy" | "standard" | "fairly_difficult" | "difficult" | "very_difficult";
   readonly wordCount: number;
   readonly sentenceCount: number;
   readonly syllableCount: number;

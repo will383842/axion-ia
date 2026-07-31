@@ -15,11 +15,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdminWrite } from "./_guards";
 
 export type AnnotationKind =
-  | "review_comment"
-  | "seo_suggestion"
-  | "factual_check"
-  | "typo"
-  | "content_request";
+  "review_comment" | "seo_suggestion" | "factual_check" | "typo" | "content_request";
 export type AnnotationStatus = "open" | "resolved" | "wont_fix";
 
 export interface CreateAnnotationInput {

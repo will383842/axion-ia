@@ -144,8 +144,7 @@ test.describe("Journey 5 — Speakable JSON-LD selector validation @sprint-a", (
 
         for (const item of items) {
           const speakable = (item as Record<string, unknown>)["speakable"] as
-            | Record<string, unknown>
-            | undefined;
+            Record<string, unknown> | undefined;
           if (speakable?.cssSelector) {
             const selectors = speakable.cssSelector;
             if (Array.isArray(selectors)) {

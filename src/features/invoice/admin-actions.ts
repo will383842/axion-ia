@@ -42,8 +42,7 @@ export type IssueInvoiceErrorCode =
   | "internal_error";
 
 export type IssueInvoiceResult =
-  | { ok: true; invoiceId: string; number: string }
-  | { ok: false; error: IssueInvoiceErrorCode };
+  { ok: true; invoiceId: string; number: string } | { ok: false; error: IssueInvoiceErrorCode };
 
 class AdminAuthError extends Error {
   readonly code: "unauthorized" | "forbidden";
@@ -233,11 +232,7 @@ export type ManualPaymentResult =
   | {
       ok: false;
       error:
-        | "unauthorized"
-        | "forbidden"
-        | "invalid_input"
-        | "invoice_not_found"
-        | "internal_error";
+        "unauthorized" | "forbidden" | "invalid_input" | "invoice_not_found" | "internal_error";
     };
 
 export async function markInvoicePaidManuallyAction(
@@ -353,11 +348,7 @@ export type CreditNoteResult =
   | {
       ok: false;
       error:
-        | "unauthorized"
-        | "forbidden"
-        | "invalid_input"
-        | "invoice_not_found"
-        | "internal_error";
+        "unauthorized" | "forbidden" | "invalid_input" | "invoice_not_found" | "internal_error";
     };
 
 export async function issueCreditNoteAction(

@@ -83,11 +83,7 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
 };
 
 export type RefusExemplaire =
-  | "introuvable"
-  | "aucune_signature"
-  | "type_non_rendu"
-  | "instantane_absent"
-  | "indisponible";
+  "introuvable" | "aucune_signature" | "type_non_rendu" | "instantane_absent" | "indisponible";
 
 export type ResultatExemplaire =
   | { ok: true; buffer: Buffer; nomFichier: string }
