@@ -21,6 +21,8 @@ import { routing } from "./i18n/routing";
 import { buildCspHeader, generateNonce, isStrictCspPath, isEmbedPath } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
+import { isNoindexStubRoute } from "./lib/seo-noindex-routes";
+import { parseUtmFromUrl, buildUtmSetCookie } from "./lib/utm";
 import { verifyFormateurSession } from "./lib/formateur-session";
 import { FORMATEUR_COOKIE_NAME } from "./server/formateur/routes";
 import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
@@ -282,6 +284,46 @@ const authPipeline = auth(async (req) => {
     );
     // Forward le nonce sur la response aussi pour tooling (ex. browser ext audit).
     response.headers.set("x-nonce", nonce);
+
+    // 3bis. X-Robots-Tag HTTP pour stubs pSEO anti-doorway (HCU 2024).
+    //
+    // RESSUSCITÉ de `middleware.ts` racine (audit indexation 2026-07-31) : ce
+    // fichier était du CODE MORT — Next 16 ne charge les conventions
+    // middleware/proxy que depuis `src/`, or il vivait à la racine du projet.
+    // Le header n'a donc JAMAIS été servi en prod malgré son commentaire
+    // « divise le coût crawl budget par ~5 ».
+    //
+    // Doublonne le `<meta robots noindex>` posé par `generateMetadata()` côté
+    // Server Component. Le header HTTP permet à Googlebot de voir le `noindex`
+    // SANS rendre le HTML complet → gain crawl budget sur les stubs pSEO
+    // (villes non pilotes, services×ville sans copy dédiée). `follow` préservé
+    // pour que le link juice traverse les stubs vers les pages pilotes et les
+    // hubs. Whitelist edge-safe : `lib/seo-noindex-routes.ts` (superset sûr,
+    // sync test `seo-noindex-routes.test.ts` — jamais de noindex sur une page
+    // indexable). Header statique par URL → aucun impact cache CDN.
+    if (isNoindexStubRoute(req.nextUrl.pathname)) {
+      response.headers.set("X-Robots-Tag", "noindex, follow");
+    }
+
+    // 3ter. Attribution UTM (ressuscité de `middleware.ts` racine, cf. 3bis) :
+    // cookie `axion_utm` (30 j) quand l'URL porte des paramètres utm_* (arrivée
+    // Google Ads / LinkedIn / newsletter). Fire UNIQUEMENT sur URL à query
+    // utm_* : les réponses concernées ne sont de toute façon pas des candidates
+    // utiles au cache CDN (variantes de query), donc pas de régression sur le
+    // fix crawl-perf Set-Cookie ci-dessous — qui whiteliste ce cookie.
+    //
+    // ⚠️ Les cookies `axion_ref_city`/`axion_ref_region` du middleware mort ne
+    // sont PAS portés : les poser sur chaque page ville (GET public sans query)
+    // remettrait un `Set-Cookie` sur toute la surface pSEO → Cloudflare
+    // repasserait en BYPASS (cf. bloc « Crawl perf ⭐ » ci-dessous), défaisant
+    // le déblocage du cache CDN du 2026-06-17. L'attribution ville/région
+    // reste donc dormante (comme elle l'a toujours été en prod, le middleware
+    // n'ayant jamais tourné) — la réactiver = décision produit à arbitrer
+    // contre le cache (piste : pose côté client).
+    const utm = parseUtmFromUrl(req.nextUrl.searchParams);
+    if (Object.keys(utm).length > 0) {
+      response.headers.append("set-cookie", buildUtmSetCookie(utm));
+    }
   }
   return response;
 });
@@ -324,10 +366,13 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
         const setCookies = res.headers.getSetCookie();
         if (setCookies.length > 0) {
           res.headers.delete("set-cookie");
-          // Réinjecte UNIQUEMENT le cookie de session (préserve les sessions connectées) ;
+          // Réinjecte UNIQUEMENT le cookie de session (préserve les sessions connectées)
+          // + `axion_utm` (attribution paid, posé seulement sur URL ?utm_* — cf. 3ter) ;
           // retire csrf/callback/NEXT_LOCALE qui bloquent le cache CDN.
           for (const cookie of setCookies) {
-            if (/session-token/i.test(cookie)) res.headers.append("set-cookie", cookie);
+            if (/session-token/i.test(cookie) || cookie.startsWith("axion_utm=")) {
+              res.headers.append("set-cookie", cookie);
+            }
           }
         }
       }
