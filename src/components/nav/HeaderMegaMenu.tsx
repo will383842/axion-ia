@@ -114,11 +114,16 @@ export function HeaderMegaMenu({
       }}
       className="relative"
     >
+      {/* `hover:text-mocha` retiré (2026-07-31) : le mocha sombre sur l'en-tête
+          terracotta ne donne que 2,84:1, contre 4,5 exigés en AA. Même
+          correction que dans `NavLink`, pour que tous les items du header se
+          comportent pareil au survol. Le retour visuel reste assuré par
+          l'ouverture du panneau et l'anneau de focus. */}
       <Link
         href={triggerHref as never}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="text-mocha-fg hover:text-mocha focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex items-center gap-1.5 rounded-sm px-1 text-[17px] font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        className="text-mocha-fg focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex items-center gap-1.5 rounded-sm px-1 text-[17px] font-semibold tracking-tight transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         data-cta-tracking={triggerTrackingId}
       >
         {triggerLabel}
