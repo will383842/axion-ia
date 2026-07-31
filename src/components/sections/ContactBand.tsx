@@ -44,7 +44,19 @@ export function ContactBand({
                 seuil qu'un futur ajustement de palette le referait tomber.)
                 La hiérarchie visuelle ne repose pas sur l'opacité : ce surtitre
                 reste distingué du titre par sa taille (12 px), ses capitales et
-                son interlettrage. */}
+                son interlettrage.
+
+                🔴 CE COMPOSANT N'EST PAS LE SEUL À RENDRE CE BANDEAU. Sept
+                copies quasi identiques coexistent (`AuditContactBand`,
+                `FormationContactBand`, `ImplementationContactBand`,
+                `CommercialContactBand`, `SitesWebContactBand`, plus deux
+                versions en ligne dans `formations/page.tsx` et
+                `un-a-un/page.tsx`). Corriger ici NE CORRIGE PAS les pages qui
+                utilisent une copie — erreur commise le 2026-07-31, qui a coûté
+                un cycle de déploiement complet avant d'être vue.
+                Avant tout changement de style sur ce bandeau :
+                    grep -rn 'mb-3 text-\[12px\] font-semibold tracking-\[0.16em\]' src
+                */}
             {eyebrow ? (
               <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
                 {eyebrow}
