@@ -8,6 +8,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { CalendlySlotPicker } from "../CalendlySlotPicker";
+import { SUBPROCESSORS } from "@/content/subprocessors";
 
 vi.mock("@/i18n/navigation", () => ({
   Link: ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -36,7 +37,7 @@ const DAYS = [
 
 function setup() {
   cleanup();
-  return render(<CalendlySlotPicker days={DAYS} fallbackUrl={FALLBACK} isFr height={720} />);
+  return render(<CalendlySlotPicker days={DAYS} isFr height={720} />);
 }
 
 describe("CalendlySlotPicker — grille mensuelle", () => {
@@ -124,22 +125,30 @@ describe("CalendlySlotPicker", () => {
     expect(link).toBeInTheDocument();
   });
 
-  it("garde une porte de sortie vers le calendrier complet", () => {
+  it("n'affiche plus de pied de boîte — ni lien global, ni mention de confirmation", () => {
+    // Retiré le 2026-07-31 sur demande de Will. Ces deux éléments avaient chacun
+    // leur test ; ils sont remplacés par celui-ci, pour que le retrait soit une
+    // décision tenue et pas une régression silencieuse.
     setup();
-    const all = screen.getByRole("link", { name: /toutes les disponibilités/i });
-    expect(all).toHaveAttribute("href", FALLBACK);
+    expect(screen.queryByRole("link", { name: /toutes les disponibilités/i })).toBeNull();
+    expect(screen.queryByText(/Calendly \(États-Unis\)/)).toBeNull();
+    expect(screen.queryByRole("link", { name: /sous-traitants/i })).toBeNull();
   });
 
-  it("informe en UNE ligne d'où se fait la confirmation — sans redevenir un pavé", () => {
+  it("le pavé d'ADR 0034 ne revient pas par la fenêtre", () => {
     setup();
-    expect(screen.getByText(/Calendly \(États-Unis\)/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /sous-traitants/i })).toHaveAttribute(
-      "href",
-      "/sous-processeurs",
-    );
-    // Le texte du placeholder d'ADR 0034 ne doit pas revenir par la fenêtre.
     expect(screen.queryByText(/Clauses Contractuelles Types/)).toBeNull();
     expect(screen.queryByText(/dépose ses propres cookies/)).toBeNull();
+  });
+
+  it("⚠️ Calendly reste déclaré comme sous-traitant, malgré le retrait de la mention", () => {
+    // La mention retirée était une INFORMATION de transparence, pas un recueil
+    // de consentement — mais elle ne doit pas être le seul endroit où Calendly
+    // apparaissait. Ce test verrouille la contrepartie du retrait : la
+    // divulgation vit désormais uniquement dans `/sous-processeurs`, et ce
+    // fichier-là est la source de cette page.
+    const noms = SUBPROCESSORS.map((s) => s.name).join(" | ");
+    expect(noms).toMatch(/Calendly/i);
   });
 
   it("occupe la même boîte que le repli (CLS = 0)", () => {
@@ -207,7 +216,6 @@ describe("CalendlySlotPicker — un seul jour d'horaires à la fois", () => {
     const { container } = render(
       <CalendlySlotPicker
         days={[{ dateKey: '2026-08-04"}</style><script>alert(1)</script>', slots: [] }, ...DAYS]}
-        fallbackUrl={FALLBACK}
         isFr
         height={720}
       />,

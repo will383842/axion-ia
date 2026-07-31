@@ -51,13 +51,10 @@
 // `Europe/Paris`, car lui part d'un instant réel.
 
 import * as React from "react";
-import { Link } from "@/i18n/navigation";
 import type { CalendlyAvailabilityDay } from "@/server/calendly/availability";
 
 interface CalendlySlotPickerProps {
   readonly days: readonly CalendlyAvailabilityDay[];
-  /** URL publique de l'event-type — cible du lien « toutes les disponibilités ». */
-  readonly fallbackUrl: string;
   readonly isFr: boolean;
   readonly height: number;
 }
@@ -227,7 +224,7 @@ function styleUnJourALaFois(cles: readonly string[]): string {
   return `@supports selector(:has(*)){${regles}}`;
 }
 
-export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: CalendlySlotPickerProps) {
+export function CalendlySlotPicker({ days, isFr, height }: CalendlySlotPickerProps) {
   const fmt = formatters(isFr);
   // Même boîte que le repli — voir PIÈGE 2.
   const box: React.CSSProperties = { minWidth: "320px", height: `${height}px` };
@@ -369,25 +366,25 @@ export function CalendlySlotPicker({ days, fallbackUrl, isFr, height }: Calendly
         </div>
       </div>
 
-      <div className="border-border bg-sand border-t px-5 py-2.5 text-center sm:px-6">
-        <a
-          href={fallbackUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cta="appel_slots_all"
-          className="text-terracotta text-sm font-semibold underline underline-offset-2"
-        >
-          {isFr ? "Voir toutes les disponibilités ↗" : "See all available times ↗"}
-        </a>
-        {/* Une ligne, pas un pavé : le visiteur n'a rien à consentir ici, mais
-            il a le droit de savoir où il atterrit en cliquant. */}
-        <p className="text-fg-muted mt-1 text-xs">
-          {isFr ? "Confirmation sur Calendly (États-Unis) · " : "Confirmation on Calendly (USA) · "}
-          <Link href="/sous-processeurs" className="underline underline-offset-2">
-            {isFr ? "nos sous-traitants" : "our sub-processors"}
-          </Link>
-        </p>
-      </div>
+      {/* PIED DE BOÎTE RETIRÉ le 2026-07-31, sur demande de Will. Il portait
+          deux choses, et aucune n'est perdue :
+
+          — « Voir toutes les disponibilités » : cette porte de sortie datait
+            d'un calendrier qui n'affichait que 5 jours. Depuis, la boîte montre
+            l'horizon entier (28 jours, jusqu'à 16 créneaux par jour), donc le
+            lien renvoyait vers ce que la page affiche déjà. Le REPLI, lui,
+            garde son propre lien externe en CTA primaire : si l'API échoue,
+            `CalendlyConsentGate` reste la porte de sortie.
+
+          — « Confirmation sur Calendly (États-Unis) · nos sous-traitants » :
+            information de transparence, PAS une obligation de consentement —
+            l'article 82 ne s'applique pas ici, le navigateur ne parle jamais à
+            Calendly avant un clic du visiteur (cf. en-tête de ce fichier).
+            ✅ VÉRIFIÉ AVANT RETRAIT : `Calendly LLC` reste déclaré comme
+            sous-traitant dans `src/content/subprocessors.ts`, donc publié sur
+            `/sous-processeurs`. La divulgation subsiste là où elle doit être.
+            ⚠️ Si un jour on retire Calendly de ce fichier, il faudra remettre
+            une information quelque part : ce serait alors la seule mention. */}
     </div>
   );
 }

@@ -150,10 +150,11 @@ export default async function AppelPage({ params, searchParams }: Props) {
               >
                 Discutons de votre projet IA
               </h1>
-              <p className="text-fg-soft mx-auto mt-3 max-w-2xl text-sm leading-relaxed sm:text-base">
-                Un échange de 30 minutes sans engagement pour explorer votre projet — formation,
-                accompagnement 1-to-1, audit, automatisation, implémentation ou SaaS web.
-              </p>
+              {/* Pas de sous-titre : il redisait ce que la page affiche déjà trois
+                  fois — « Sans engagement » est dans le surtitre ET dans les
+                  pastilles, « 30 minutes » dans les pastilles ET en tête du
+                  calendrier. Retiré sur demande de Will (2026-07-31) ; le
+                  calendrier remonte d'autant, ce qui sert le funnel. */}
             </div>
           </Container>
         </section>

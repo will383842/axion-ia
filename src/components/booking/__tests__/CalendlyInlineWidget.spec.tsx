@@ -84,14 +84,23 @@ describe("CalendlyInlineWidget — aiguillage", () => {
     expect(screen.getByText(/temporairement indisponible/i)).toBeInTheDocument();
   });
 
-  it("le lien « toutes les disponibilités » pointe l'URL BRUTE, sans nos paramètres d'embed", async () => {
+  it("aucun lien de créneau ne traîne nos paramètres d'embed", async () => {
+    // Le lien « toutes les disponibilités » a été retiré le 2026-07-31, et avec
+    // lui le test qui gardait ce point. L'inquiétude, elle, reste entière et se
+    // reporte sur les liens de créneaux : `hide_gdpr_banner` & co. n'ont de sens
+    // que dans l'iframe. Les traîner dans une navigation utilisateur masquerait
+    // la notice native de Calendly — alors que, cette fois, plus rien de notre
+    // côté ne la remplace, la mention du pied de boîte ayant elle aussi disparu.
     fetchAvailableSlotsMock.mockResolvedValue({ ok: true, days: DAYS });
-    await renderWidget(URL_PUBLIC);
+    const { container } = await renderWidget(URL_PUBLIC);
 
-    // `hide_gdpr_banner` & co. n'ont de sens que dans l'iframe : les traîner
-    // dans une navigation utilisateur masquerait la notice native de Calendly
-    // alors que, cette fois, plus rien de notre côté ne la remplace.
-    const all = screen.getByRole("link", { name: /toutes les disponibilités/i });
-    expect(all).toHaveAttribute("href", URL_PUBLIC);
+    const liens = [...container.querySelectorAll('a[href^="https://calendly.com"]')];
+    expect(liens.length).toBeGreaterThan(0);
+    for (const a of liens) {
+      const href = a.getAttribute("href") ?? "";
+      expect(href).not.toContain("hide_gdpr_banner");
+      expect(href).not.toContain("embed_domain");
+      expect(href).not.toContain("embed_type");
+    }
   });
 });
