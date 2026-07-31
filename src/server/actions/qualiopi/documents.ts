@@ -35,6 +35,8 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
+import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
+import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import {
   LIEU_DOCUMENT_SELECT,
   resolveLieuConvocation,
@@ -1748,6 +1750,160 @@ export async function genererReglementInterieurAction(input: {
     targetType: "TrainingSession",
     targetId: sessionId,
     changes: { documentId: doc.id, numero: doc.numero },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 13 bis. Programme de l'action de formation (annexe de la convention)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const NIVEAU_LABELS: Record<string, string> = {
+  debutant: "Débutant",
+  intermediaire: "Intermédiaire",
+  avance: "Avancé",
+  tous_niveaux: "Tous niveaux",
+};
+
+/**
+ * Libellé de la sanction de l'action (art. L.6353-1 : « modalités de sanction »).
+ *
+ * ⚠️ On ne promet JAMAIS une certification que l'action ne délivre pas. Une
+ * formation non certifiante sanctionne par une attestation de fin de formation
+ * — c'est exact, opposable, et suffisant. Annoncer « certification » sur une
+ * action `aucune` serait une allégation trompeuse au sens du Code de la
+ * consommation, sur la pièce même qui est annexée au contrat.
+ */
+function sanctionLabel(certificationType: string | null): string {
+  if (certificationType === "rncp") {
+    return "Certification enregistrée au Répertoire national des certifications professionnelles (RNCP).";
+  }
+  if (certificationType === "rs") {
+    return "Certification enregistrée au Répertoire spécifique (RS).";
+  }
+  return "Attestation de fin de formation mentionnant les objectifs, la nature, la durée de l'action et les résultats de l'évaluation des acquis.";
+}
+
+/**
+ * Génère le programme de l'action de formation d'une session.
+ *
+ * 🔴 C'est l'annexe que la convention annonce en section « Documents annexés »
+ * depuis l'origine, et que rien ne produisait — pour aucune des formations du
+ * catalogue. C'est aussi l'une des trois pièces exigées à l'appui de la
+ * déclaration d'activité (art. R.6351-5), avec la première convention signée et
+ * la liste des intervenants.
+ *
+ * Les données pédagogiques viennent du SNAPSHOT via `readFormationForDocs`,
+ * exactement comme la convention : les deux pièces d'un même dossier décrivent
+ * ainsi la même action, même si la formation est refondue plus tard.
+ */
+export async function genererProgrammeAction(input: {
+  sessionId: string;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = sessionIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId } = parsed.data;
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      titreSession: true,
+      modalite: true,
+      formationSnapshot: true,
+      ...LIEU_DOCUMENT_SELECT,
+      formation: {
+        select: {
+          titre: true,
+          dureeHeures: true,
+          objectifsPedagogiques: true,
+          programmeDetaille: true,
+          methodesPedagogiques: true,
+          moyensTechniques: true,
+          versionProgramme: true,
+          certificationType: true,
+          prerequis: true,
+          niveau: true,
+          accessibleHandicap: true,
+          seuilReussitePct: true,
+          offreSite: { select: { publicViseFr: true } },
+        },
+      },
+    },
+  });
+  if (!session) return { error: "Session introuvable" };
+
+  const identite = await getOrganismeIdentite();
+  const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
+  const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
+  const modules = lireModulesProgramme(formationDoc.programmeDetaille);
+
+  // Les modalités d'évaluation ne sont pas un champ libre de la formation :
+  // elles décrivent le dispositif RÉEL de la plateforme (positionnement amont,
+  // évaluation des acquis, satisfaction), dont le seuil de réussite est le seul
+  // paramètre variable. Les inventer par formation les ferait diverger de ce que
+  // le système produit effectivement.
+  const seuil = session.formation.seuilReussitePct;
+  const modalitesEvaluation =
+    `Évaluation des prérequis et du niveau par questionnaire de positionnement avant l'entrée en formation. ` +
+    `Évaluation des acquis en fin d'action au regard des objectifs pédagogiques ci-dessus ` +
+    `(seuil de réussite : ${seuil} %). ` +
+    `Recueil de la satisfaction des participants à l'issue de l'action.`;
+
+  const doc = await generateDocument({
+    type: "programme",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(ProgrammeFormationPdf, {
+        data: {
+          numero,
+          intitule: formationDoc.titre ?? session.titreSession,
+          ...(formationDoc.versionProgramme
+            ? { versionProgramme: formationDoc.versionProgramme }
+            : {}),
+          dateEdition: formatDateFr(new Date()),
+          dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
+          modalite: modaliteLabel(session.modalite),
+          lieu: resolveLieuDocument(session, identite),
+          publicVise: session.formation.offreSite.publicViseFr,
+          prerequis: session.formation.prerequis,
+          niveau: NIVEAU_LABELS[session.formation.niveau] ?? session.formation.niveau,
+          accessibleHandicap: session.formation.accessibleHandicap,
+          objectifs,
+          modules,
+          methodesPedagogiques:
+            formationDoc.methodesPedagogiques ?? session.formation.methodesPedagogiques,
+          ...(session.formation.moyensTechniques
+            ? { moyensTechniques: session.formation.moyensTechniques }
+            : {}),
+          modalitesEvaluation,
+          sanction: sanctionLabel(formationDoc.certificationType),
+          ...(identite.referentHandicapEmail
+            ? { referentHandicapEmail: identite.referentHandicapEmail }
+            : {}),
+        },
+        identite,
+      }),
+    refs: { sessionId },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.programme.genere",
+    targetType: "TrainingSession",
+    targetId: sessionId,
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      // Traçabilité utile en cas de contestation : d'où vient ce qui est imprimé,
+      // et le découpage était-il structuré au moment de l'édition.
+      source: formationDoc.source,
+      nbModules: modules.length,
+    },
     session: adminSession,
   });
 

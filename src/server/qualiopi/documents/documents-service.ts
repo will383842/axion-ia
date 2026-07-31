@@ -85,6 +85,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   contrat_sous_traitance: "document",
   // Fiche formateur versée au dossier (ind. 21).
   cv_formateur: "document",
+  // Programme de l'action, annexe de la convention (art. R.6351-5).
+  programme: "document",
 };
 
 export interface GenerateDocumentInput {

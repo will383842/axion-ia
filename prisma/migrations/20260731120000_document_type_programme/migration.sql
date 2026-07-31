@@ -1,0 +1,28 @@
+-- ADR 0036 (complément) — Le PROGRAMME de l'action de formation devient une pièce.
+--
+-- ## Ce que cette migration ferme
+--
+-- La convention de formation annonce depuis toujours, en section « Documents
+-- annexés » : « – Programme détaillé de la formation ». Cette annexe n'existait
+-- pas. Aucune valeur de `DocumentType` ne la portait, aucune page (publique ou
+-- admin) ne rendait `Formation.programme_detaille`, et le ZIP « dossier de
+-- session » n'empaquette que des documents générés — donc pas elle.
+--
+-- Autrement dit, la pièce contractuelle référençait une annexe que rien ne
+-- produisait, pour les 22 formations du catalogue, depuis l'origine.
+--
+-- L'enjeu est double :
+--   1. contractuel — une convention qui annexe un document inexistant ;
+--   2. réglementaire — le programme de l'action est l'une des trois pièces
+--      exigées à l'appui de la déclaration d'activité (art. R.6351-5 C. trav.),
+--      avec la première convention signée et la liste des intervenants.
+--
+-- Le CONTENU, lui, existait déjà : `programme_detaille` est peuplé par le moteur
+-- de contenu et figé dans `training_sessions.formation_snapshot` à la création de
+-- la session. Seul le contenant manquait.
+--
+-- Postgres ALTER TYPE ADD VALUE — non transactionnel mais sûr (ajout d'une
+-- valeur d'enum, jamais de retrait). `IF NOT EXISTS` rend la migration
+-- ré-exécutable, ce qui compte : l'entrypoint rejoue `migrate deploy` à chaque
+-- démarrage de conteneur.
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'programme';
