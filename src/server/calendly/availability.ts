@@ -101,9 +101,65 @@ export interface CalendlyAvailabilityDay {
   readonly slots: readonly CalendlySlot[];
 }
 
+/**
+ * Ce que l'appel a RÉELLEMENT fait — joint aussi bien au succès qu'à l'échec.
+ *
+ * Sans ça, un succès partiel est indiscernable d'un agenda qui s'arrête : les
+ * fenêtres lointaines qui échouent sont volontairement avalées (voir plus bas),
+ * donc la page affiche moins de jours sans que rien ne le signale. Constaté le
+ * 2026-07-31 — impossible de dire, depuis l'extérieur, si les créneaux
+ * s'arrêtaient à J+21 parce que Calendly n'en offrait pas ou parce que notre
+ * 4ᵉ fenêtre avait échoué.
+ */
+export interface CalendlyAvailabilityDiagnostics {
+  /** Profondeur demandée, en jours. */
+  readonly horizonDays: number;
+  /** Nombre de fenêtres émises (l'API refuse plus de 7 jours par requête). */
+  readonly windowsRequested: number;
+  readonly windowsOk: number;
+  readonly windowsFailed: number;
+  /**
+   * Vrai quand des créneaux ont été rendus MALGRÉ l'échec d'au moins une
+   * fenêtre : la couverture affichée est alors plus courte que l'horizon, et ce
+   * n'est pas la faute de l'agenda.
+   */
+  readonly partial: boolean;
+  /** Début du dernier créneau retenu — la borne réelle de réservation. */
+  readonly lastSlotIso: string | null;
+  /** Fin de l'horizon demandé, pour comparer d'un coup d'œil avec `lastSlotIso`. */
+  readonly horizonEndIso: string;
+  /** Détail par échec, dans l'ordre des fenêtres. Vide si tout a répondu. */
+  readonly failures: readonly CalendlyCallFailure[];
+}
+
+export interface CalendlyCallFailure {
+  readonly reason: Extract<CalendlyAvailabilityFailure, "forbidden" | "api_error">;
+  /** Statut HTTP quand il y en a eu un ; absent sur timeout/DNS/TLS. */
+  readonly status?: number;
+  /**
+   * Ce que Calendly a répondu dans le corps, resserré.
+   *
+   * 🔴 C'EST LE POINT QUI A COÛTÉ TROIS ALLERS-RETOURS le 2026-07-30 : un 403
+   * `Insufficient scope` porte un champ `required_scopes` parfaitement explicite
+   * dans son corps, que l'ancien code jetait avant de le lire. On croyait à un
+   * jeton invalide (401) alors qu'il manquait juste une permission.
+   */
+  readonly detail?: string;
+}
+
 export type CalendlyAvailability =
-  | { readonly ok: true; readonly days: readonly CalendlyAvailabilityDay[] }
-  | { readonly ok: false; readonly reason: CalendlyAvailabilityFailure };
+  | {
+      readonly ok: true;
+      readonly days: readonly CalendlyAvailabilityDay[];
+      readonly diagnostics: CalendlyAvailabilityDiagnostics;
+    }
+  | {
+      readonly ok: false;
+      readonly reason: CalendlyAvailabilityFailure;
+      readonly diagnostics?: CalendlyAvailabilityDiagnostics;
+      /** Détail du premier échec réseau/HTTP, quand il y en a eu un. */
+      readonly failure?: CalendlyCallFailure;
+    };
 
 export type CalendlyAvailabilityFailure =
   /** Pas de Personal Access Token : module inerte, cas nominal (build). */
@@ -123,9 +179,68 @@ interface GetOk {
   readonly ok: true;
   readonly body: unknown;
 }
-interface GetErr {
+interface GetErr extends CalendlyCallFailure {
   readonly ok: false;
-  readonly reason: Extract<CalendlyAvailabilityFailure, "forbidden" | "api_error">;
+}
+
+/**
+ * Résume le corps d'une réponse d'erreur Calendly en une ligne exploitable.
+ *
+ * Calendly répond `{ title, message, details: [{ parameter, message }] }`, et
+ * ajoute `required_scopes` sur un 403 de portée insuffisante. On garde ces trois
+ * informations et rien d'autre : le but est de pouvoir DIAGNOSTIQUER sans jamais
+ * recopier un corps entier dans un journal.
+ *
+ * ⚠️ Ne peut pas fuiter le jeton : il voyage dans l'en-tête `Authorization` de
+ * la REQUÊTE, jamais dans le corps de la RÉPONSE. Le retour est en outre
+ * tronqué, pour qu'une API bavarde ne remplisse pas les journaux.
+ */
+function summarizeError(body: unknown): string | undefined {
+  const b = record(body);
+  if (!b) return undefined;
+
+  const morceaux: string[] = [];
+  const title = b["title"];
+  const message = b["message"];
+  if (typeof title === "string" && title.trim()) morceaux.push(title.trim());
+  if (typeof message === "string" && message.trim() && message !== title) {
+    morceaux.push(message.trim());
+  }
+
+  // `required_scopes` : la clé qui disait tout et qu'on ne lisait pas.
+  const scopes = b["required_scopes"];
+  if (Array.isArray(scopes) && scopes.length > 0) {
+    morceaux.push(`required_scopes=${scopes.filter((s) => typeof s === "string").join(",")}`);
+  }
+
+  const details = b["details"];
+  if (Array.isArray(details)) {
+    for (const d of details.slice(0, 3)) {
+      const dr = record(d);
+      const dm = dr?.["message"];
+      if (typeof dm === "string" && dm.trim()) morceaux.push(dm.trim());
+    }
+  }
+
+  const resume = morceaux.join(" · ").slice(0, 300);
+  return resume || undefined;
+}
+
+/**
+ * Caviarde le jeton s'il apparaît dans un texte destiné aux journaux.
+ *
+ * Défense en profondeur : le jeton voyage dans l'en-tête `Authorization` de la
+ * requête, donc en théorie il ne peut pas revenir dans le corps d'une réponse.
+ * Mais « en théorie » ne suffit pas pour une valeur qui donne accès en lecture
+ * aux coordonnées des clients — et certaines API renvoient l'identifiant reçu
+ * dans leur message d'erreur. Un journal se conserve, se copie, et part chez un
+ * sous-traitant : il ne doit jamais pouvoir porter un secret.
+ */
+function caviarder(texte: string | undefined): string | undefined {
+  if (!texte) return texte;
+  const token = process.env.CALENDLY_API_TOKEN?.trim();
+  if (!token || token.length < 8) return texte;
+  return texte.split(token).join("[JETON]");
 }
 
 /**
@@ -174,18 +289,51 @@ async function calendlyGet(url: string, revalidate: number, tag: string): Promis
       // configuration contradictoire que Next ignore purement et simplement.
       next: { revalidate, tags: [tag] },
     });
-  } catch {
-    return { ok: false, reason: "api_error" };
+  } catch (e) {
+    // Timeout, DNS, TLS : pas de statut, mais le NOM de l'erreur distingue déjà
+    // un `TimeoutError` d'un échec de résolution — ce que « api_error » seul ne
+    // disait pas.
+    const nom = e instanceof Error ? e.name : "unknown";
+    return { ok: false, reason: "api_error", detail: `fetch:${nom}`.slice(0, 300) };
   }
 
-  if (res.status === 401 || res.status === 403) return { ok: false, reason: "forbidden" };
-  if (!res.ok) return { ok: false, reason: "api_error" };
+  if (!res.ok) {
+    // On LIT le corps avant de conclure. C'est tout l'objet de ce correctif :
+    // le statut seul confond « jeton invalide » et « jeton aux portées
+    // insuffisantes », et seul le corps fait la différence.
+    let detail: string | undefined;
+    try {
+      detail = caviarder(summarizeError((await res.json()) as unknown));
+    } catch {
+      // Corps vide ou non-JSON : le statut reste, c'est déjà mieux que rien.
+    }
+    const reason = res.status === 401 || res.status === 403 ? "forbidden" : "api_error";
+    // Diffusion conditionnelle et non `detail: undefined` : `exactOptionalPropertyTypes`
+    // distingue « clé absente » de « clé à undefined ».
+    return { ok: false, reason, status: res.status, ...(detail ? { detail } : {}) };
+  }
 
   try {
     return { ok: true, body: (await res.json()) as unknown };
   } catch {
-    return { ok: false, reason: "api_error" };
+    return { ok: false, reason: "api_error", status: res.status, detail: "corps illisible" };
   }
+}
+
+/** Préfixe stable, pour retrouver ces lignes dans les journaux du conteneur. */
+const LOG = "[calendly:availability]";
+
+/**
+ * Journalise un diagnostic côté serveur.
+ *
+ * `console.warn` et pas Sentry : ces situations ne sont pas des exceptions mais
+ * des états dégradés attendus (jeton absent au build, agenda vide, fenêtre
+ * lointaine en échec). Elles doivent apparaître dans les journaux du conteneur
+ * sans polluer le suivi d'erreurs. Rien de personnel n'y transite : des
+ * compteurs, des dates de créneaux, et un résumé d'erreur d'API.
+ */
+function journaliser(message: string, contexte: Record<string, unknown>): void {
+  console.warn(`${LOG} ${message}`, JSON.stringify(contexte));
 }
 
 function record(value: unknown): Record<string, unknown> | null {
@@ -202,13 +350,15 @@ function record(value: unknown): Record<string, unknown> | null {
  */
 async function resolveEventTypeUri(
   schedulingUrl: string,
-): Promise<string | GetErr["reason"] | null> {
+): Promise<{ uri: string } | { failure: GetErr } | null> {
   const me = await calendlyGet(
     `${CALENDLY_API_BASE}/users/me`,
     EVENT_TYPE_REVALIDATE_SECONDS,
     EVENT_TYPE_TAG,
   );
-  if (!me.ok) return me.reason;
+  // On renvoie l'échec ENTIER, pas seulement sa catégorie : c'est ici que
+  // transitait le `required_scopes` d'un 403, jusqu'ici perdu en route.
+  if (!me.ok) return { failure: me };
 
   const userUri = record(record(me.body)?.["resource"])?.["uri"];
   if (typeof userUri !== "string" || !userUri) return null;
@@ -218,7 +368,7 @@ async function resolveEventTypeUri(
     EVENT_TYPE_REVALIDATE_SECONDS,
     EVENT_TYPE_TAG,
   );
-  if (!list.ok) return list.reason;
+  if (!list.ok) return { failure: list };
 
   const collection = record(list.body)?.["collection"];
   if (!Array.isArray(collection)) return null;
@@ -230,7 +380,7 @@ async function resolveEventTypeUri(
     const uri = et["uri"];
     const sched = et["scheduling_url"];
     if (typeof uri !== "string" || typeof sched !== "string") continue;
-    if (canonicalPath(sched) === wanted) return uri;
+    if (canonicalPath(sched) === wanted) return { uri };
   }
   return null;
 }
@@ -247,12 +397,29 @@ function windowStart(nowMs: number, stepMs: number): Date {
   return new Date(Math.floor(nowMs / stepMs) * stepMs + stepMs);
 }
 
+/**
+ * Sous cette durée, une fenêtre résiduelle ne vaut pas son appel réseau.
+ *
+ * 🔴 SANS CE SEUIL, L'HORIZON DE 28 JOURS EN PRODUISAIT CINQ, dont une de
+ * QUATRE SECONDES. Chaque fenêtre mesure `7 j − 1 s` (marge de sécurité sous la
+ * borne API), donc quatre d'affilée couvrent `28 j − 4 s` : il restait 4
+ * secondes, et la boucle émettait une requête entière pour elles. À raison d'une
+ * régénération tous les quarts d'heure, cela faisait ~96 appels par jour pour
+ * rien — et surtout une requête concurrente de plus à chaque rendu, sur une API
+ * qui applique des quotas. Débusqué le 2026-07-31 par le compteur
+ * `windowsRequested` que ce même correctif a introduit.
+ *
+ * Une minute est très au-delà du résidu observé (4 s) et très en deçà d'un
+ * créneau réservable (30 min) : aucune disponibilité ne peut être perdue.
+ */
+const MIN_WINDOW_MS = 60_000;
+
 /** Découpe l'horizon en fenêtres contiguës toutes inférieures à la borne API. */
 function buildWindows(start: Date): ReadonlyArray<{ start: Date; end: Date }> {
   const windows: Array<{ start: Date; end: Date }> = [];
   const horizonEnd = start.getTime() + HORIZON_MS;
   let cursor = start.getTime();
-  while (cursor < horizonEnd) {
+  while (horizonEnd - cursor >= MIN_WINDOW_MS) {
     const end = Math.min(cursor + MAX_WINDOW_MS, horizonEnd);
     windows.push({ start: new Date(cursor), end: new Date(end) });
     cursor = end;
@@ -359,13 +526,20 @@ export async function fetchAvailableSlots({
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return { ok: false, reason: "not_configured" };
   if (!isPublicCalendlyUrl(schedulingUrl)) return { ok: false, reason: "bad_url" };
 
-  const eventTypeUri = await resolveEventTypeUri(schedulingUrl);
-  if (eventTypeUri === "forbidden" || eventTypeUri === "api_error") {
-    return { ok: false, reason: eventTypeUri };
+  const resolved = await resolveEventTypeUri(schedulingUrl);
+  if (resolved && "failure" in resolved) {
+    const { ok: _ignore, ...failure } = resolved.failure;
+    journaliser("résolution de l'event-type en échec", failure);
+    return { ok: false, reason: failure.reason, failure };
   }
-  if (!eventTypeUri) return { ok: false, reason: "no_event_type" };
+  if (!resolved) {
+    journaliser("aucun event-type ne correspond à l'URL publique", { schedulingUrl });
+    return { ok: false, reason: "no_event_type" };
+  }
+  const eventTypeUri = resolved.uri;
 
-  const windows = buildWindows(windowStart(nowMs, SLOTS_REVALIDATE_SECONDS * 1_000));
+  const debut = windowStart(nowMs, SLOTS_REVALIDATE_SECONDS * 1_000);
+  const windows = buildWindows(debut);
   const responses = await Promise.all(
     windows.map((w) =>
       calendlyGet(
@@ -379,12 +553,34 @@ export async function fetchAvailableSlots({
     ),
   );
 
+  const failures = responses
+    .filter((r): r is GetErr => !r.ok)
+    .map(({ ok: _ignore, ...f }) => f satisfies CalendlyCallFailure);
+
+  /** Construit le diagnostic une fois la borne réelle connue. */
+  const diagnostiquer = (lastSlotIso: string | null): CalendlyAvailabilityDiagnostics => ({
+    horizonDays: Math.round(HORIZON_MS / 86_400_000),
+    windowsRequested: windows.length,
+    windowsOk: responses.length - failures.length,
+    windowsFailed: failures.length,
+    partial: failures.length > 0 && failures.length < responses.length,
+    lastSlotIso,
+    horizonEndIso: new Date(debut.getTime() + HORIZON_MS).toISOString(),
+    failures,
+  });
+
   // Une fenêtre lointaine qui échoue ne doit pas emporter les créneaux proches,
   // qui sont les plus utiles. On n'abandonne que si TOUT a échoué.
   const succeeded = responses.filter((r): r is GetOk => r.ok);
   if (succeeded.length === 0) {
-    const firstFailure = responses.find((r): r is GetErr => !r.ok);
-    return { ok: false, reason: firstFailure?.reason ?? "api_error" };
+    const firstFailure = failures[0];
+    journaliser("toutes les fenêtres ont échoué", { failures });
+    return {
+      ok: false,
+      reason: firstFailure?.reason ?? "api_error",
+      ...(firstFailure ? { failure: firstFailure } : {}),
+      diagnostics: diagnostiquer(null),
+    };
   }
 
   // Les fenêtres se touchent bout à bout : un créneau pile sur la jointure peut
@@ -397,7 +593,10 @@ export async function fetchAvailableSlots({
   }
 
   const sorted = [...deduped.values()].sort((a, b) => a.startIso.localeCompare(b.startIso));
-  if (sorted.length === 0) return { ok: false, reason: "no_slots" };
+  if (sorted.length === 0) {
+    journaliser("aucun créneau libre sur l'horizon", { horizonDays: HORIZON_MS / 86_400_000 });
+    return { ok: false, reason: "no_slots", diagnostics: diagnostiquer(null) };
+  }
 
   const byDay = new Map<string, CalendlySlot[]>();
   for (const slot of sorted) {
@@ -411,5 +610,20 @@ export async function fetchAvailableSlots({
     .slice(0, maxDays)
     .map(([dateKey, slots]) => ({ dateKey, slots: slots.slice(0, maxSlotsPerDay) }));
 
-  return { ok: true, days };
+  const diagnostics = diagnostiquer(sorted.at(-1)?.startIso ?? null);
+
+  // Le succès PARTIEL est le cas sournois : la page s'affiche normalement, mais
+  // avec moins de jours que demandé. Sans cette ligne, rien ne distingue « le
+  // calendrier est plein jusqu'à J+21 » de « notre 4ᵉ requête a échoué ».
+  if (diagnostics.partial) {
+    journaliser("couverture PARTIELLE — des fenêtres ont échoué, l'agenda paraît plus court", {
+      windowsFailed: diagnostics.windowsFailed,
+      windowsRequested: diagnostics.windowsRequested,
+      lastSlotIso: diagnostics.lastSlotIso,
+      horizonEndIso: diagnostics.horizonEndIso,
+      failures: diagnostics.failures,
+    });
+  }
+
+  return { ok: true, days, diagnostics };
 }

@@ -102,9 +102,16 @@ describe("fetchAvailableSlots — le repli est le comportement par défaut", () 
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  // `toMatchObject` et non `toEqual` sur les trois cas suivants : depuis
+  // l'ajout de l'observabilité (2026-07-31), le repli transporte aussi un
+  // `diagnostics` et parfois un `failure`. Ce qui est testé ICI reste inchangé —
+  // pas d'exception, et la bonne raison. Le contenu du diagnostic a ses propres
+  // tests plus bas.
   it("401/403 (jeton révoqué ou plan sans accès API) : `forbidden`, pas d'exception", async () => {
     routeFetch({ me: jsonRes({ message: "nope" }, 403) });
-    await expect(fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW })).resolves.toEqual({
+    await expect(
+      fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW }),
+    ).resolves.toMatchObject({
       ok: false,
       reason: "forbidden",
     });
@@ -112,7 +119,9 @@ describe("fetchAvailableSlots — le repli est le comportement par défaut", () 
 
   it("réseau injoignable : `api_error`, pas d'exception", async () => {
     fetchMock.mockRejectedValue(new Error("ETIMEDOUT"));
-    await expect(fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW })).resolves.toEqual({
+    await expect(
+      fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW }),
+    ).resolves.toMatchObject({
       ok: false,
       reason: "api_error",
     });
@@ -137,7 +146,9 @@ describe("fetchAvailableSlots — le repli est le comportement par défaut", () 
 
   it("agenda plein : `no_slots` plutôt qu'un calendrier vide", async () => {
     routeFetch({ times: () => jsonRes({ collection: [] }) });
-    await expect(fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW })).resolves.toEqual({
+    await expect(
+      fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW }),
+    ).resolves.toMatchObject({
       ok: false,
       reason: "no_slots",
     });
@@ -352,6 +363,165 @@ describe("fetchAvailableSlots — la fenêtre de temps est une clé de cache", (
       expect(end.getTime() - start.getTime()).toBeGreaterThan(0);
       expect(end.getTime() - start.getTime()).toBeLessThan(7 * 86_400_000);
     }
+  });
+});
+
+/**
+ * Observabilité (2026-07-31).
+ *
+ * Ces tests protègent une capacité de DIAGNOSTIC, pas une fonctionnalité
+ * visible. Ils existent parce que deux pannes ont coûté cher faute d'elle :
+ *   • 2026-07-30 — un 403 « portées insuffisantes » pris pour un jeton invalide,
+ *     alors que le corps de la réponse portait `required_scopes` en toutes
+ *     lettres. Trois allers-retours perdus.
+ *   • 2026-07-31 — `/appel` s'arrêtait à J+21 sur un horizon de 28 jours, sans
+ *     qu'on puisse dire si l'agenda s'arrêtait là ou si une fenêtre avait
+ *     échoué. Les deux rendent exactement la même page.
+ */
+describe("fetchAvailableSlots — observabilité", () => {
+  it("🔴 remonte `required_scopes` d'un 403, au lieu de le jeter", async () => {
+    routeFetch({
+      me: jsonRes(
+        {
+          title: "Permission Denied",
+          message: "Insufficient scope",
+          required_scopes: ["event_type_available_times:read"],
+        },
+        403,
+      ),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(false);
+    if (res.ok) return;
+
+    expect(res.reason).toBe("forbidden");
+    expect(res.failure?.status).toBe(403);
+    // La distinction qui manquait : 403 de PORTÉE, pas jeton invalide.
+    expect(res.failure?.detail).toContain("Insufficient scope");
+    expect(res.failure?.detail).toContain("required_scopes=event_type_available_times:read");
+  });
+
+  it("🔴 signale une couverture PARTIELLE quand une fenêtre échoue", async () => {
+    // La 1ʳᵉ fenêtre répond, les suivantes tombent : la page s'affichera
+    // normalement mais avec un agenda plus court que l'horizon. Sans le
+    // drapeau `partial`, rien ne distingue ça d'un agenda réellement vide.
+    routeFetch({
+      times: (url) =>
+        url.includes("2026-08-03")
+          ? jsonRes({ collection: [slot("2026-08-04T07:00:00Z")] })
+          : jsonRes({ message: "Rate limit exceeded" }, 429),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+
+    const d = res.diagnostics;
+    expect(d.partial).toBe(true);
+    expect(d.windowsOk).toBe(1);
+    expect(d.windowsFailed).toBe(d.windowsRequested - 1);
+    expect(d.failures[0]?.status).toBe(429);
+    expect(d.failures[0]?.detail).toContain("Rate limit exceeded");
+    // La borne réelle de réservation, à comparer avec la fin de l'horizon.
+    expect(d.lastSlotIso).toBe("2026-08-04T07:00:00.000Z");
+    expect(new Date(d.horizonEndIso).getTime()).toBeGreaterThan(
+      new Date(d.lastSlotIso ?? 0).getTime(),
+    );
+  });
+
+  it("ne crie PAS au partiel quand toutes les fenêtres ont répondu", async () => {
+    // Le cas à ne pas confondre : l'agenda s'arrête tôt, mais l'API a tout
+    // répondu. C'est alors le réglage Calendly qui limite, pas notre code — et
+    // c'est exactement la question posée le 2026-07-31.
+    routeFetch({
+      times: (url) =>
+        url.includes("2026-08-03")
+          ? jsonRes({ collection: [slot("2026-08-04T07:00:00Z")] })
+          : jsonRes({ collection: [] }),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+
+    expect(res.diagnostics.partial).toBe(false);
+    expect(res.diagnostics.windowsFailed).toBe(0);
+    expect(res.diagnostics.horizonDays).toBe(28);
+  });
+
+  it("🔴 n'émet AUCUNE requête pour une fenêtre résiduelle de quelques secondes", async () => {
+    // Chaque fenêtre mesure `7 j − 1 s`, donc quatre couvrent `28 j − 4 s` : il
+    // restait 4 secondes, et la boucle dépensait une requête entière pour elles
+    // — ~96 appels par jour pour rien, et une requête concurrente de plus à
+    // chaque rendu sur une API à quotas. Quatre fenêtres suffisent pour 28 jours.
+    routeFetch({ times: () => jsonRes({ collection: [slot("2026-08-04T07:00:00Z")] }) });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+    expect(res.diagnostics.windowsRequested).toBe(4);
+
+    // Et le rognage ne doit RIEN coûter en couverture : la dernière fenêtre
+    // s'arrête à moins d'une minute de l'horizon, très en deçà d'un créneau.
+    const fins = fetchMock.mock.calls
+      .map((appel) => /end_time=([^&]+)/.exec(String(appel[0]))?.[1])
+      .filter((v): v is string => Boolean(v))
+      .map((v) => new Date(decodeURIComponent(v)).getTime());
+    const horizonFin = new Date(res.diagnostics.horizonEndIso).getTime();
+    expect(horizonFin - Math.max(...fins)).toBeLessThan(60_000);
+  });
+
+  it("joint le diagnostic même quand TOUT échoue", async () => {
+    routeFetch({ times: () => jsonRes({ message: "Server error" }, 500) });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(false);
+    if (res.ok) return;
+
+    expect(res.reason).toBe("api_error");
+    expect(res.diagnostics?.windowsOk).toBe(0);
+    expect(res.diagnostics?.partial).toBe(false); // tout est tombé : pas « partiel »
+    expect(res.failure?.detail).toContain("Server error");
+  });
+
+  it("nomme la cause d'un échec réseau au lieu d'un `api_error` muet", async () => {
+    fetchMock.mockImplementation((url: string) => {
+      if (url.includes("/users/me")) {
+        return Promise.resolve(jsonRes({ resource: { uri: USER_URI } }));
+      }
+      if (url.includes("/event_types?")) {
+        return Promise.resolve(
+          jsonRes({ collection: [{ uri: EVENT_TYPE_URI, scheduling_url: PUBLIC_URL }] }),
+        );
+      }
+      return Promise.reject(Object.assign(new Error("timed out"), { name: "TimeoutError" }));
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(false);
+    if (res.ok) return;
+    expect(res.failure?.detail).toBe("fetch:TimeoutError");
+  });
+
+  it("🔴 caviarde le jeton si l'API le renvoie dans son message d'erreur", async () => {
+    // Le diagnostic part dans les journaux du conteneur, qui se conservent et
+    // se copient. Un jeton Calendly donne accès en lecture aux coordonnées des
+    // clients : il ne doit jamais pouvoir y atterrir, même par la main de
+    // l'API. Cas non hypothétique — plusieurs API renvoient l'identifiant reçu
+    // dans leur message de rejet.
+    routeFetch({
+      me: jsonRes({ message: "Invalid token: pat_test_token" }, 401),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(false);
+    if (res.ok) return;
+
+    expect(res.failure?.detail).not.toContain("pat_test_token");
+    expect(res.failure?.detail).toContain("[JETON]");
+    // Le reste du message survit : caviarder ne doit pas rendre muet.
+    expect(res.failure?.detail).toContain("Invalid token");
   });
 });
 
