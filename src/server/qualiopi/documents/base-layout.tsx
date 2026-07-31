@@ -547,6 +547,48 @@ export function FieldRow({ label, value, required = false }: FieldRowProps): Rea
   );
 }
 
+interface NdaFieldRowProps {
+  /**
+   * Libellé de la ligne. Il varie d'une pièce à l'autre (« NDA », « N°
+   * déclaration activité (NDA) », « NDA organisme ») — on ne l'uniformise pas
+   * ici, ce serait modifier onze documents légaux pour une question de style.
+   */
+  label?: string;
+  /** Numéro de déclaration d'activité. Vide ⇒ la ligne entière est omise. */
+  nda: string;
+}
+
+/**
+ * Ligne « numéro de déclaration d'activité », OMISE tant que le numéro n'existe
+ * pas.
+ *
+ * 🔴 Onze gabarits rendaient ce champ en `FieldRow … required`, ce qui imprime
+ * « Non renseigné » en rouge. Or l'absence de NDA n'est pas une saisie oubliée :
+ * l'art. L.6351-1 fait courir le délai de déclaration à compter de la PREMIÈRE
+ * convention de formation, si bien qu'au moment d'émettre celle-ci l'organisme
+ * n'a légalement pas encore de numéro. C'est la raison pour laquelle le NDA a
+ * cessé de déclasser ces pièces en SPÉCIMEN (cf. `conformite.ts`) — mais le
+ * corps du document continuait, lui, à pointer l'absence en rouge. La pièce se
+ * contredisait : un pied de page qui explique posément la situation, et juste
+ * au-dessus un champ signalé manquant.
+ *
+ * C'est exactement le geste F29 déjà appliqué à la ligne « Certification
+ * Qualiopi » quelques lignes plus bas dans ces mêmes gabarits, pour le même
+ * motif : attirer l'œil en rouge sur une absence légitime est pire que
+ * l'omettre — devant un client, un OPCO ou un auditeur.
+ *
+ * ⚠️ L'absence n'est PAS passée sous silence pour autant : `QualiopiPage` porte
+ * en pied de page « Déclaration d'activité non encore enregistrée (art. L.6351-1
+ * C. trav.) ». C'est là, une fois, à sa place — et non répété en rouge au milieu
+ * de l'identité du prestataire. Dès que le numéro est saisi, la ligne réapparaît
+ * partout sans autre intervention.
+ */
+export function NdaFieldRow({ label = "NDA", nda }: NdaFieldRowProps): React.ReactElement | null {
+  const numero = typeof nda === "string" ? nda.trim() : "";
+  if (numero === "") return null;
+  return <FieldRow label={label} value={numero} />;
+}
+
 // ---- SignatureZone ------------------------------------------
 
 /**

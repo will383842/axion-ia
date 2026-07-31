@@ -12,6 +12,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   DataTable,
   BulletList,
   SignatureZone,
@@ -89,7 +90,7 @@ export function LettreMissionPdf({
           </Text>
           <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
           <FieldRow label="SIRET" value={identite.siret} required />
-          <FieldRow label="NDA" value={identite.nda} required />
+          <NdaFieldRow nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style

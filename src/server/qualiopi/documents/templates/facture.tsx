@@ -24,6 +24,7 @@ import {
   QualiopiPage,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   DataTable,
   LegalCallout,
   formatEurosFromCents,
@@ -254,7 +255,7 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           {identite.tvaIntracom ? (
             <FieldRow label="N° TVA intracommunautaire" value={identite.tvaIntracom} />
           ) : null}
-          <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
+          <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
           {identite.qualiopi ? (
             <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}

@@ -18,6 +18,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   BulletList,
   SignatureZone,
   type PreuvesParPartie,
@@ -123,7 +124,7 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
         <DocSection title="Parties">
           <FieldRow label="Organisme de formation" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
-          <FieldRow label="NDA" value={identite.nda} required />
+          <NdaFieldRow nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style

@@ -16,6 +16,7 @@ import {
   pdfStyles,
   DocSection,
   FieldRow,
+  NdaFieldRow,
   DataTable,
   SignatureZone,
 } from "@/server/qualiopi/documents/base-layout";
@@ -132,7 +133,7 @@ export function EmargementPdf({
           <FieldRow label="Formation" value={data.intituleFormation} />
           <FieldRow label="Session" value={data.numeroSession} />
           <FieldRow label="Lieu" value={data.lieu} />
-          <FieldRow label="NDA organisme" value={data.nda || identite.nda} required />
+          <NdaFieldRow label="NDA organisme" nda={data.nda || identite.nda} />
           {/* Ancrage : ce nombre, figé dans un document numéroté et archivé,
               rend détectable la suppression des dernières signatures — que le
               chaînage seul ne voit pas. */}

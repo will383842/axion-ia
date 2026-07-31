@@ -21,6 +21,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
+import { SessionLieuForm } from "@/components/admin/qualiopi/SessionLieuForm";
+import { lieuValuesDepuisSession } from "@/components/admin/qualiopi/lieu-values";
 import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntreprisesSection";
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -157,6 +159,13 @@ export default async function SessionHubPage({ params }: PageProps) {
       interEntreprises: true,
       sessionParentId: true,
       sessionReporteeId: true,
+      lieuType: true,
+      lieuIntitule: true,
+      lieuAdresse: true,
+      lieuCodePostal: true,
+      lieuVille: true,
+      lieuSalle: true,
+      lieuVisioUrl: true,
       formation: {
         select: {
           id: true,
@@ -577,6 +586,12 @@ export default async function SessionHubPage({ params }: PageProps) {
             statut={trainingSession.statut as TrainingSessionStatut}
           />
         </div>
+      </section>
+
+      {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
+        <SessionLieuForm sessionId={id} initial={lieuValuesDepuisSession(trainingSession)} />
       </section>
 
       {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}

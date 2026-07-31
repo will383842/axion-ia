@@ -34,6 +34,12 @@ import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-fo
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
+import {
+  LIEU_DOCUMENT_SELECT,
+  resolveLieuConvocation,
+  resolveLieuDocument,
+} from "@/server/qualiopi/lieu/resolve-lieu-document";
 import {
   calculerAcompte,
   PLAFOND_ACOMPTE_PARTICULIER_PCT,
@@ -180,6 +186,7 @@ export async function genererConventionAction(input: {
       dateDebut: true,
       dateFin: true,
       modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
       nbParticipantsPrevus: true,
       montantHtCents: true,
       formationSnapshot: true,
@@ -229,7 +236,7 @@ export async function genererConventionAction(input: {
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
-          lieu: identite.adresseExercice || identite.adresseSiege || "—",
+          lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
           prixHt: session.montantHtCents / 100,
           dateConvention: formatDateFr(new Date()),
@@ -275,6 +282,7 @@ export async function genererConventionTripartiteAction(input: {
       dateDebut: true,
       dateFin: true,
       modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
       nbParticipantsPrevus: true,
       montantHtCents: true,
       opcoSubrogation: true,
@@ -341,7 +349,7 @@ export async function genererConventionTripartiteAction(input: {
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
-          lieu: identite.adresseExercice || identite.adresseSiege || "—",
+          lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
           prixHt,
           montantPrisEnCharge,
@@ -448,6 +456,7 @@ export async function genererContratFormationAction(input: {
           dateDebut: true,
           dateFin: true,
           modalite: true,
+          ...LIEU_DOCUMENT_SELECT,
           montantHtCents: true,
           // 🔴 Nécessaire au calcul de l'acompte : l'assiette est le RESTE À
           // CHARGE, pas le prix total. Sans cette lecture, le contrat annonçait
@@ -539,7 +548,7 @@ export async function genererContratFormationAction(input: {
           dateDebut: formatDate(new Date(session.dateDebut)),
           dateFin: formatDate(new Date(session.dateFin)),
           modalite: modaliteLabel(session.modalite),
-          lieu: identite.adresseExercice || identite.adresseSiege || "—",
+          lieu: resolveLieuDocument(session, identite),
           prixNet: session.montantHtCents / 100,
           // Ce que le système DEMANDERA réellement, pas un plafond recalculé.
           acompteEuros: acompte.acompteCents / 100,
@@ -623,6 +632,7 @@ export async function genererConvocationAction(input: {
           dateDebut: true,
           dateFin: true,
           modalite: true,
+          ...LIEU_DOCUMENT_SELECT,
           formationSnapshot: true,
           formation: { select: { dureeHeures: true } },
           coFormateurs: true,
@@ -659,6 +669,8 @@ export async function genererConvocationAction(input: {
   const horairesReels =
     plages.length === 0 ? "horaires communiqués par l'organisme" : plages.join(", ");
 
+  const lieuConvocation = resolveLieuConvocation(session, identite);
+
   const doc = await generateDocument({
     type: "convocation",
     buildElement: (numero) =>
@@ -675,6 +687,11 @@ export async function genererConvocationAction(input: {
           horaires: horairesReels,
           dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
           modalite: modaliteLabelLower(session.modalite),
+          // Le gabarit masque déjà cette ligne en distanciel. `undefined` plutôt
+          // que « — » : une convocation qui affiche « Lieu : — » est pire que
+          // muette, elle laisse croire que l'information a été cherchée et
+          // qu'elle n'existe pas.
+          ...(lieuConvocation !== undefined ? { lieu: lieuConvocation } : {}),
           nomFormateur: formateurNom,
           contactEmail: identite.email,
           nomStagiaire,
@@ -730,6 +747,7 @@ export async function genererEmargementAction(input: {
       titreSession: true,
       dateDebut: true,
       modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
       enrollments: {
         where: { statut: { notIn: ["exclu", "abandon"] } },
         select: {
@@ -818,7 +836,7 @@ export async function genererEmargementAction(input: {
           numero,
           intituleFormation: feuille.intituleFormation,
           numeroSession: feuille.numeroSession,
-          lieu: identite.adresseExercice || identite.adresseSiege || "—",
+          lieu: resolveLieuDocument(session, identite),
           nda: identite.nda,
           journees,
           totalSignatures: feuille.totalSignatures,
@@ -1554,6 +1572,7 @@ export async function genererLettreMissionAction(input: {
       dateDebut: true,
       dateFin: true,
       modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
       coFormateurs: true,
       formateurPrincipalId: true,
       formationSnapshot: true,
@@ -1658,7 +1677,10 @@ export async function genererLettreMissionAction(input: {
               intitule: session.titreSession,
               dateDebut: formatDate(new Date(session.dateDebut)),
               dateFin: formatDate(new Date(session.dateFin)),
-              lieuOuModalite: modaliteLabel(session.modalite),
+              // Le lieu RÉEL prime sur la modalité : c'est là que le formateur
+              // doit se rendre. Repli sur la modalité seule quand aucun lieu
+              // n'est saisi — comportement historique, jamais un « — » nu.
+              lieuOuModalite: formatLieu(session) ?? modaliteLabel(session.modalite),
               dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
             },
           ],
