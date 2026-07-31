@@ -14,6 +14,13 @@ interface Payload {
   modalite: string;
   numeroSession: string;
   lienPortail?: string;
+  /**
+   * Lien PERSONNEL de signature de présence (émargement). Présent uniquement si
+   * ce rappel est le premier à mettre un lien en circulation pour cette
+   * inscription — sinon le lien déjà distribué reste le seul valide et cet
+   * e-mail n'en parle pas (cf. `getLienEmargementSiPremier`).
+   */
+  lienEmargement?: string;
 }
 
 export const qualiopiRappelJ7Subject = (
@@ -53,6 +60,21 @@ export function QualiopiRappelJ7Email({
         N&apos;oubliez pas de consulter votre convocation et les informations pratiques dans votre
         espace stagiaire avant la date de démarrage.
       </Text>
+      {p.lienEmargement ? (
+        <>
+          <Text style={emailStyles.paragraphStyle}>
+            <strong>Votre lien personnel de signature de présence :</strong> le jour de la
+            formation, ouvrez-le sur votre téléphone pour signer chaque demi-journée.
+          </Text>
+          <Text style={emailStyles.paragraphStyle}>
+            <a href={p.lienEmargement}>Signer ma présence</a>
+          </Text>
+          <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+            Ce lien est strictement personnel — il vaut signature, ne le transférez à personne. Il
+            reste valable jusqu&apos;à 48 h après la fin de la session.
+          </Text>
+        </>
+      ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         Référence session : {p.numeroSession}
       </Text>
