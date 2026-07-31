@@ -124,6 +124,21 @@ export async function CalendlyInlineWidget({
   // défaillance (jeton absent, 403, réseau, agenda plein) tombe dans le repli
   // ci-dessous, qui est le comportement d'avant ce changement.
   const availability = await fetchAvailableSlots({ schedulingUrl: calendlyUrl });
+  // La raison était jusqu'ici JETÉE ici même : on retombait sur le pavé de
+  // consentement sans qu'aucune trace ne dise pourquoi. Trois allers-retours
+  // perdus le 2026-07-30 à confondre un jeton invalide avec un jeton aux portées
+  // insuffisantes. `failure.detail` porte désormais le corps résumé de la
+  // réponse Calendly — dont `required_scopes` sur un 403.
+  //
+  // `not_configured` est EXCLU volontairement : c'est le cas nominal du build
+  // GitHub Actions, où le jeton est un secret de runtime Coolify. Le journaliser
+  // rendrait 17 000 lignes de bruit à chaque build, et le bruit tue l'alerte.
+  if (!availability.ok && availability.reason !== "not_configured") {
+    console.warn(
+      "[calendly:appel] créneaux indisponibles, repli sur le pavé de consentement",
+      JSON.stringify({ reason: availability.reason, failure: availability.failure ?? null }),
+    );
+  }
   if (availability.ok) {
     return (
       <div>
