@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound, redirect, permanentRedirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -252,12 +252,16 @@ export default async function BlogArticle({ params }: Props) {
 
   const view = await loadBlogArticleForView(slug, loc);
   if (!view) {
-    // Audit indexation 2026-05-15 P0-5 — redirect 301 via ArticleSlugHistory si
-    // rename slug. Préserve SEO accumulé (avant patch : 404 immédiat = perte
+    // Audit indexation 2026-05-15 P0-5 — redirect permanent via ArticleSlugHistory
+    // si rename slug. Préserve SEO accumulé (avant patch : 404 immédiat = perte
     // totale du link juice). FR + EN supportés.
+    // Fix 2026-07-31 — `redirect()` émettait un 307 Temporary : Google ne
+    // consolide pas les signaux sur un 307 et re-crawle l'ancien slug
+    // indéfiniment (même doctrine anti-307 que proxy.ts). `permanentRedirect()`
+    // émet le 308 attendu par le commentaire d'origine.
     const redirectInfo = await findArticleSlugRedirect(slug, loc as "fr" | "en");
     if (redirectInfo && !redirectInfo.isNews) {
-      redirect(`/${loc}/blog/${redirectInfo.newSlug}`);
+      permanentRedirect(`/${loc}/blog/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si Article archived/draft.

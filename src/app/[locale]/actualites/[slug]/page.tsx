@@ -18,7 +18,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import Image from "next/image";
 import { routing } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -215,19 +215,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function NewsArticlePage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  // FR-only (doctrine v1.2) — EN redirigé vers FR.
-  if (locale !== "fr") redirect(`/fr/actualites/${slug}`);
+  // FR-only (doctrine v1.2) — EN redirigé vers FR. Permanent (308) : aligné sur
+  // la doctrine 301 EN→FR de proxy.ts (fix anti-307 2026-07-31).
+  if (locale !== "fr") permanentRedirect(`/fr/actualites/${slug}`);
   setRequestLocale(locale);
 
   const t = await loadNewsArticle(slug);
   if (!t) {
     // Audit indexation 2026-05-15 P0-5 — chercher dans ArticleSlugHistory avant
-    // de rendre Tombstone/404. Si rename slug, redirect 301 vers le slug courant
-    // (préserve SEO accumulé). Doit être avant le tombstone (slug renommé peut
-    // toujours être published).
+    // de rendre Tombstone/404. Si rename slug, redirect permanent vers le slug
+    // courant (préserve SEO accumulé). Doit être avant le tombstone (slug renommé
+    // peut toujours être published).
+    // Fix 2026-07-31 — `redirect()` émettait un 307 Temporary (Google ne
+    // consolide pas) ; `permanentRedirect()` émet le 308 attendu.
     const redirectInfo = await findArticleSlugRedirect(slug, "fr");
     if (redirectInfo && redirectInfo.isNews) {
-      redirect(`/fr/actualites/${redirectInfo.newSlug}`);
+      permanentRedirect(`/fr/actualites/${redirectInfo.newSlug}`);
     }
 
     // Audit indexation 2026-05-15 P0-7 — soft-410 si l'article est archived ou
