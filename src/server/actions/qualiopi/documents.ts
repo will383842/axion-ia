@@ -160,6 +160,21 @@ const parseObjectifs = normaliserObjectifsPedagogiques;
 // ─────────────────────────────────────────────────────────────────────────────
 
 const sessionIdSchema = z.object({ sessionId: z.string().uuid() });
+
+/**
+ * Entrée de la convention bipartite — seul document de session paramétrable.
+ *
+ * `acomptePercent` : 0–100, entier. PAS de plafond à 30 % et c'est voulu — le
+ * gabarit le documente : le plafond de l'art. L.6353-6 protège une personne
+ * physique (contrat B2C), une convention lie des professionnels et l'acompte y
+ * est purement contractuel. `0` est une valeur légitime (convention établie
+ * après la tenue de l'action : « payable en totalité à réception de facture »).
+ * Absent → 30 %, l'usage commercial en vigueur, inchangé pour l'existant.
+ */
+const genererConventionSchema = z.object({
+  sessionId: z.string().uuid(),
+  acomptePercent: z.number().int().min(0).max(100).optional(),
+});
 const enrollmentIdSchema = z.object({ enrollmentId: z.string().uuid() });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -172,13 +187,14 @@ const enrollmentIdSchema = z.object({ enrollmentId: z.string().uuid() });
  */
 export async function genererConventionAction(input: {
   sessionId: string;
+  acomptePercent?: number;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
-  const parsed = sessionIdSchema.safeParse(input);
+  const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, acomptePercent } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -248,6 +264,10 @@ export async function genererConventionAction(input: {
           lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
           prixHt: session.montantHtCents / 100,
+          // Absent → le gabarit applique 30 % (usage commercial). `0` = payable
+          // en totalité à réception de facture — le gabarit rend la mention, pas
+          // une ligne « Acompte (0 %) : 0,00 € ».
+          ...(acomptePercent !== undefined ? { acomptePercent } : {}),
           dateConvention: formatDateFr(new Date()),
         },
         identite,
@@ -262,7 +282,9 @@ export async function genererConventionAction(input: {
     action: "qualiopi.document.convention.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero },
+    // L'acompte est une CLAUSE de la pièce : sa valeur (et le fait qu'elle ait
+    // été choisie ou laissée au défaut) appartient au journal.
+    changes: { documentId: doc.id, numero: doc.numero, acomptePercent: acomptePercent ?? 30 },
     session: adminSession,
   });
 

@@ -102,6 +102,34 @@ describe("ConventionPdf — contenu", () => {
     expect(text).toContain("84691234567");
     expect(text).toContain("1 rue de la Paix, 75001 Paris");
   });
+  it("acompte par défaut : 30 % — comportement historique inchangé", () => {
+    // 2800 × 30 % = 840. Le défaut ne doit JAMAIS bouger silencieusement :
+    // c'est la clause de toutes les conventions émises sans choix explicite.
+    // `collectPdfText` joint les enfants JSX par des espaces → « ( 30 %) ».
+    expect(text).toMatch(/Acompte à la signature \( ?30 ?%\)/);
+  });
+  it("acomptePercent personnalisé : le pourcentage ET le montant suivent", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: { ...CONVENTION, acomptePercent: 50 },
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toMatch(/Acompte à la signature \( ?50 ?%\)/);
+  });
+  it("acompte 0 : mention « totalité à réception de facture », jamais « (0 %) : 0,00 € »", () => {
+    // Convention régularisée APRÈS la tenue de l'action : un acompte « à la
+    // signature » n'a plus d'objet. Une ligne à 0,00 € se lirait comme une
+    // erreur de génération sur la pièce que le client signe.
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: { ...CONVENTION, acomptePercent: 0 },
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toContain("Payable en totalité à réception de facture");
+    expect(t).not.toContain("Acompte à la signature");
+  });
   it("signale un SIRET OF manquant au lieu de le masquer", () => {
     const t = collectPdfTextNormalized(
       React.createElement(ConventionPdf, {

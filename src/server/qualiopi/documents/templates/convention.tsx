@@ -224,14 +224,30 @@ export function ConventionPdf({
             <Text style={local.amountLabel}>Prix total HT</Text>
             <Text style={local.amountValue}>{formatEur(data.prixHt)}</Text>
           </View>
-          <View style={local.amountRow}>
-            <Text style={local.amountLabel}>Acompte à la signature ({acomptePercent} %)</Text>
-            <Text style={local.amountValue}>{formatEur(acompte)}</Text>
-          </View>
-          <View style={local.amountRow}>
-            <Text style={local.amountLabel}>Solde à la fin de la formation</Text>
-            <Text style={local.amountValue}>{formatEur(solde)}</Text>
-          </View>
+          {/*
+            Acompte à 0 : on ne rend PAS « Acompte (0 %) : 0,00 € » — une clause
+            qui annonce un versement nul se lit comme une erreur de génération,
+            et prête à discussion au moment de payer. On écrit ce qui est
+            convenu : la totalité à réception de facture. C'est le cas normal
+            d'une convention régularisée APRÈS la tenue de l'action, où un
+            « acompte à la signature » n'a plus d'objet.
+          */}
+          {acompte > 0 ? (
+            <>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>Acompte à la signature ({acomptePercent} %)</Text>
+                <Text style={local.amountValue}>{formatEur(acompte)}</Text>
+              </View>
+              <View style={local.amountRow}>
+                <Text style={local.amountLabel}>Solde à la fin de la formation</Text>
+                <Text style={local.amountValue}>{formatEur(solde)}</Text>
+              </View>
+            </>
+          ) : (
+            <Text style={pdfStyles.paragraph}>
+              Payable en totalité à réception de facture — aucun acompte à la signature.
+            </Text>
+          )}
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que
