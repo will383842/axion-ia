@@ -78,7 +78,7 @@ const email = (def = "") => ({
 /**
  * Champ téléphone — vide autorisé, espaces de tête/queue retirés.
  *
- * `qualiopi.responsable_qualite_telephone` portait « ␣+33743331201 » : l'espace
+ * `qualiopi.responsable_qualite_telephone` portait « ␣+33755512345 » : l'espace
  * de tête survivait à la lecture comme à l'écriture. `trim()` suffit ici — on
  * ne normalise pas le format, un OF peut légitimement écrire un numéro
  * international ou un poste interne.

@@ -59,7 +59,7 @@ export const env = createEnv({
     // Optionnelles : sans elles le canal WhatsApp est un no-op silencieux (le reste
     // des notifs Telegram continue normalement). Cf. `src/server/notifications/channels/whatsapp.ts`.
     //   - WHATSAPP_CALLMEBOT_APIKEY : la clé renvoyée par le bot CallMeBot sur WhatsApp.
-    //   - WHATSAPP_NOTIFY_PHONE     : le numéro destinataire au format international (ex. +33743331201).
+    //   - WHATSAPP_NOTIFY_PHONE     : le numéro destinataire au format international (ex. +33755512345).
     WHATSAPP_CALLMEBOT_APIKEY: z.string().optional(),
     WHATSAPP_NOTIFY_PHONE: z.string().optional(),
 

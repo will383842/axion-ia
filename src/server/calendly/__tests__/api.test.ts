@@ -152,12 +152,12 @@ describe("fetchCalendlyInvitee — résolution", () => {
   it("récupère le numéro depuis le lieu quand l'event est un appel téléphonique", async () => {
     fetchMock.mockResolvedValueOnce(jsonRes({ resource: { name: "Jean" } })).mockResolvedValueOnce(
       jsonRes({
-        resource: { location: { type: "outbound_call", location: "+33 7 43 33 12 01" } },
+        resource: { location: { type: "outbound_call", location: "+33 7 55 51 23 45" } },
       }),
     );
     const res = await fetchCalendlyInvitee(INVITEE_URI, EVENT_URI);
     if (!res.ok) throw new Error("attendu ok");
-    expect(res.data.inviteePhone).toBe("+33 7 43 33 12 01");
+    expect(res.data.inviteePhone).toBe("+33 7 55 51 23 45");
   });
 
   // Garde-fou : une visio n'est pas un téléphone.

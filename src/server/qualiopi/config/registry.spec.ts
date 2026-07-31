@@ -139,7 +139,7 @@ describe("registre Qualiopi — clés email", () => {
 });
 
 describe("registre Qualiopi — clés téléphone", () => {
-  // `qualiopi.responsable_qualite_telephone` portait « ␣+33743331201 » : l'espace
+  // `qualiopi.responsable_qualite_telephone` portait « ␣+33755512345 » : l'espace
   // de tête survivait à la lecture comme à l'écriture.
   const CLES_TEL = [
     "telephone_organisme",
@@ -149,9 +149,9 @@ describe("registre Qualiopi — clés téléphone", () => {
 
   it("retire l'espace de tête sans imposer de format", () => {
     for (const cle of CLES_TEL) {
-      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse(" +33 7 43 33 12 01");
+      const r = QUALIOPI_CONFIG_REGISTRY[cle].schema.safeParse(" +33 7 55 51 23 45");
       expect(r.success).toBe(true);
-      if (r.success) expect(r.data).toBe("+33 7 43 33 12 01");
+      if (r.success) expect(r.data).toBe("+33 7 55 51 23 45");
     }
   });
 });
