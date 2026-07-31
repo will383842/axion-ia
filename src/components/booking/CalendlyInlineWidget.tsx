@@ -142,12 +142,7 @@ export async function CalendlyInlineWidget({
   if (availability.ok) {
     return (
       <div>
-        <CalendlySlotPicker
-          days={availability.days}
-          fallbackUrl={calendlyUrl}
-          isFr={isFr}
-          height={height}
-        />
+        <CalendlySlotPicker days={availability.days} isFr={isFr} height={height} />
       </div>
     );
   }
