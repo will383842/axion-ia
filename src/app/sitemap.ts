@@ -380,9 +380,15 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     "guides",
     // Sprint S+4-A 2026-05-18 (audit 22-TYPE-11) — sub-sitemap glossaire (hub + 60 termes).
     "glossaire",
-    // Sprint S+4-D 2026-05-18 (audit 19-TYPE-8-PRESSE P1-18) — sub-sitemap presse
-    // (`/presse/[slug]` × N locales, lastmod = `publishedAt` réel par release).
-    "presse",
+    // "presse" RETIRÉ de generateSitemaps() 2026-07-31 (audit indexation GSC) —
+    // même bug et même remède que "blog" ci-dessus : depuis le passage DB-driven
+    // du builder (2026-07-06), la route metadata était pré-rendue VIDE au build
+    // stub.invalid et resservie ~24h, pendant que le gate de l'index (runtime,
+    // vraie DB) la listait → incohérence index↔route observée en live le
+    // 2026-07-31 (urlset vide servi ET listé). Déplacé vers le Route Handler
+    // runtime `force-dynamic` `/sitemap-presse.xml` (CUSTOM_SITEMAPS, gaté
+    // anti-vide). Le `case "presse"` du switch est CONSERVÉ : le Route Handler
+    // réutilise ce builder via `sitemap({id:"presse"})`.
     "implementation",
     "implantations",
     // Audit indexation 2026-06-20 — décision Will (B) : les ~5000 pages

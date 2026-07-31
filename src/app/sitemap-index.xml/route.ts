@@ -98,6 +98,12 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   "/sitemap-recrutement.xml",
   // Offres d'emploi (/carrieres) — DB-driven (offres publiées indexables).
   "/sitemap-carrieres.xml",
+  // Presse DB-driven — migré de la convention metadata vers un Route Handler
+  // runtime le 2026-07-31 (audit indexation GSC) : la route metadata était bakée
+  // VIDE au build stub pendant que le gate runtime la listait (incohérence
+  // index↔route observée en live). Même pattern que blog/knowledge. ⚠️ Listé
+  // CONDITIONNELLEMENT (cf. GET) : uniquement si ≥ 1 communiqué publié émis.
+  "/sitemap-presse.xml",
   // Avis clients (/avis) — DB-driven runtime : hub + chaque avis publié (avec
   // photo pour Google Images) + facettes curées. Toujours ≥ 2 URLs (hub +
   // deposer) → jamais un urlset vide. Cf. `app/sitemap-avis.xml/route.ts`.
@@ -282,6 +288,7 @@ export async function GET(): Promise<Response> {
   const customSitemaps = CUSTOM_SITEMAPS.filter((path) => {
     if (path === "/sitemap-knowledge.xml") return kbEmittableCount > 0;
     if (path === "/sitemap-blog.xml") return blogEmittableCount > 0;
+    if (path === "/sitemap-presse.xml") return presseEmittableCount > 0;
     if (path === "/sitemap-news.xml") return newsEmittableCount > 0;
     if (path === "/sitemap-news-evergreen.xml") return evergreenEmittableCount > 0;
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
@@ -290,17 +297,15 @@ export async function GET(): Promise<Response> {
     return true;
   });
 
-  const generatedBlocks = sitemaps
-    // Gate anti-vide du sous-sitemap `presse` (DB-driven, vide tant qu'aucun
-    // communiqué n'est publié en console) — cf. `presseEmittableCount` ci-dessus.
-    .filter(({ id }) => id !== "presse" || presseEmittableCount > 0)
-    .map(({ id }) => {
-      const lm = lastmodForGeneratedId(id, lastmods);
-      return `  <sitemap>
+  // NB : `presse` n'apparaît plus dans `generateSitemaps()` (2026-07-31) — son
+  // gate anti-vide vit désormais dans le filtre `customSitemaps` ci-dessus.
+  const generatedBlocks = sitemaps.map(({ id }) => {
+    const lm = lastmodForGeneratedId(id, lastmods);
+    return `  <sitemap>
     <loc>${SITE_URL}/sitemap/${id}.xml</loc>
     <lastmod>${lm}</lastmod>
   </sitemap>`;
-    });
+  });
 
   const customBlocks = customSitemaps.map((path) => {
     // sitemap-news.xml           → max(updatedAt) Article isNews
