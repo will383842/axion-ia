@@ -8,6 +8,37 @@ updates:
       time: "06:00"
       timezone: Europe/Paris
     open-pull-requests-limit: 5
+    # Majors bloquées volontairement (2026-07-31).
+    #
+    # Les 4 PR dependabot alors ouvertes (PR 166, 366, 403, 404) échouaient TOUTES
+    # sur Gate A, chacune pour une raison différente, mais toujours la même cause
+    # de fond : un saut de major groupé avec des pairs qui ne peuvent pas suivre.
+    #   - PR 166 : typescript ^5 -> ^7 alors que @typescript-eslint reste en 8.x
+    #              => TypeError "Cannot read properties of undefined (reading 'Cjs')"
+    #   - PR 366 : eslint ^9 -> ^10 alors que eslint-plugin-react est transitif
+    #              (via eslint-config-next, non bumpable par dependabot)
+    #              => "Error while loading rule 'react/display-name'"
+    #   - PR 403 : prisma 5.22 -> 7.9 ; en Prisma 7 `url`/`directUrl` sortent de
+    #              schema.prisma vers prisma.config.ts et PrismaClient exige un
+    #              `adapter`. Cela touche le contrat "stub.invalid" de l'ADR 0026
+    #              (le stub Proxy se déclenche sur DATABASE_URL) + Gate D.
+    #              => chantier avec ADR dédié, jamais un bump automatique.
+    #   - PR 404 : vitest 2 -> 4 mais `vite` n'est PAS une dépendance directe,
+    #              dependabot ne peut donc pas l'aligner
+    #              => ERR_PACKAGE_PATH_NOT_EXPORTED './module-runner'
+    #
+    # Effet de bord grave : ces 4 zombies saturaient open-pull-requests-limit (5)
+    # et empêchaient dependabot d'ouvrir toute autre mise à jour.
+    #
+    # `version-update:semver-major` ne filtre QUE les mises à jour de version.
+    # Les alertes de sécurité Dependabot ne sont pas concernées et continuent
+    # de passer, y compris si le correctif implique une major.
+    #
+    # Une montée de major reste possible : en PR manuelle, délibérée, une seule
+    # à la fois, avec ses pairs alignés à la main.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       next-stack:
         patterns:
