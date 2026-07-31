@@ -184,6 +184,13 @@ export async function genererConventionAction(input: {
     where: { id: sessionId },
     select: {
       id: true,
+      // 🔴 Sans lui, `DocumentGenere.clientId` restait NULL et le lien de
+      // signature « client » était refusé (« Aucun client n'est rattaché à
+      // cette pièce ») — le circuit convention: [client, axionia] était déclaré
+      // mais structurellement inatteignable. Constaté sur la PREMIÈRE
+      // convention réelle (AXI-DOC-2026-003, INVEST SUN, 2026-07-31).
+      // Gardé par refs-circuits.spec.ts.
+      clientId: true,
       titreSession: true,
       dateDebut: true,
       dateFin: true,
@@ -245,7 +252,10 @@ export async function genererConventionAction(input: {
         },
         identite,
       }),
-    refs: { sessionId },
+    // `clientId` est non-null ici : la garde « Session sans client » a déjà
+    // refusé la génération sinon. C'est lui qui rend le lien de signature
+    // « client » émissible sur la pièce.
+    refs: { sessionId, clientId: session.clientId! },
   });
 
   await logQualiopiActivity({
@@ -280,6 +290,10 @@ export async function genererConventionTripartiteAction(input: {
     where: { id: sessionId },
     select: {
       id: true,
+      // Même défaut, même remède que la convention bipartite : sans `clientId`
+      // dans les refs, le lien de signature « client » de la tripartite était
+      // refusé à l'émission. Gardé par refs-circuits.spec.ts.
+      clientId: true,
       titreSession: true,
       dateDebut: true,
       dateFin: true,
@@ -360,7 +374,10 @@ export async function genererConventionTripartiteAction(input: {
         },
         identite,
       }),
-    refs: { sessionId },
+    // Non-null : la garde « Session sans client » a déjà refusé sinon. La
+    // partie « financeur », elle, se résout via `sessionId` (dossier de
+    // financement le plus récent) — les deux refs sont donc nécessaires.
+    refs: { sessionId, clientId: session.clientId! },
   });
 
   await logQualiopiActivity({
