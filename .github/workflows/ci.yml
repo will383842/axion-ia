@@ -21,7 +21,22 @@ jobs:
   gate-a:
     name: Gate A · per-commit
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 → 25 min le 2026-07-29. Ce n'est PAS du confort : le job tournait déjà
+    # à 14 min sur `main` — une marge d'une minute — et a commencé à se faire
+    # couper en plein vol. Le symptôme est trompeur : GitHub annule l'étape en
+    # cours (`use-client justified` selon le run) et marque le job « failed »,
+    # ce qui envoie chercher un défaut dans le code alors que TOUTES les
+    # vérifications ont réussi. Un run coupé saute aussi les gates suivantes.
+    #
+    # La cause est structurelle : la suite Vitest grossit (elle a dépassé
+    # 20 000 tests), et l'exécuter AVEC couverture est de loin l'étape la plus
+    # longue. 25 min redonne une marge réelle sans transformer un job
+    # réellement bloqué en attente interminable.
+    #
+    # Si ce budget redevient juste : ce n'est pas le timeout qu'il faudra
+    # remonter une troisième fois, mais la couverture qu'il faudra sortir du
+    # chemin critique (job dédié, non bloquant).
+    timeout-minutes: 25
     steps:
       # fetch-depth: 0 requis pour gitleaks (diff commit^..HEAD).
       # Sans full history, gitleaks fail avec "ambiguous argument" sur les
@@ -33,7 +48,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -71,6 +86,12 @@ jobs:
         run: pnpm anti-hex:check
       - name: use-client justified
         run: pnpm use-client:check
+      # Refonte « Boîte de réception » 2026-07-29 — `buildAdminNav()` est un SSOT
+      # de CHAÎNES : rien ne reliait ses href aux fichiers `page.tsx`. Un dossier
+      # renommé laissait donc une entrée de menu vers un 404, sans que typecheck
+      # ni tests ne bronchent. Ce gate résout chaque href sur le disque.
+      - name: Admin nav → routes existantes
+        run: pnpm admin-nav:routes-check
       # Audit 2026-05-15 P1-22 — content-gen module isolation gate (§ 4.1bis
       # master prompt). Garantit qu'aucun fichier hors zones whitelisted
       # (src/server/content-gen/**, src/app/[locale]/(admin)/[adminPrefix]/
@@ -120,7 +141,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -502,7 +523,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm

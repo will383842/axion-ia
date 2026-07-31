@@ -46,8 +46,8 @@ export const BETHUNE_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Béthune : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME béthunois : artisans, commerçants, professions libérales, industriels.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
-      en: "Sites web augmentés IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
+      fr: "Sites web & SaaS IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
+      en: "Sites web & SaaS IA à Béthune : plateformes sur mesure pour TPE et PME du Pas-de-Calais — devis en ligne, agents conversationnels intégrés, automatisation du suivi client et de la prise de commande.",
     },
   },
   services: {

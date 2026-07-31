@@ -84,7 +84,7 @@ export function AcompteFormationPanel({
         </div>
         <div className="admin-field">
           <label className="admin-label" htmlFor="fmt-acompte-moyen">
-            Moyen (chèque, virement…)
+            Moyen (virement, carte…)
           </label>
           <input
             id="fmt-acompte-moyen"

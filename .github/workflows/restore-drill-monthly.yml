@@ -120,10 +120,65 @@ jobs:
             exit 1
           fi
 
+  # ══════════════════════════════════════════════════════════════════════════
+  # restore-docuseal — la PREUVE de signature se restaure-t-elle vraiment ?
+  # ══════════════════════════════════════════════════════════════════════════
+  #
+  # Ajouté le 2026-07-29. `docuseal.sqlite3` porte les signatures électroniques
+  # (conventions, contrats, lettres de mission, émargements). Pour un organisme
+  # certifié, c'est de la preuve opposable, pas du confort : le jour où un
+  # auditeur Qualiopi ou un client la réclame, l'absence de preuve se retourne
+  # contre nous. La sauvegarde existait ; personne n'avait jamais vérifié
+  # qu'elle se ROUVRE.
+  #
+  # Le job va jusqu'au contenu métier (cf. le script) : une archive
+  # parfaitement valide et parfaitement VIDE serait le pire faux positif —
+  # voyant vert, zéro preuve.
+  restore-docuseal:
+    name: Drill restore Docuseal (R2 → SQLite éphémère)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: ${{ vars.MONTHLY_RESTORE_DRILL_ENABLED != 'false' }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install aws-cli + sqlite3
+        run: |
+          aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
+          sqlite3 --version >/dev/null 2>&1 || sudo apt-get install -y sqlite3
+      - name: Drill restore Docuseal + report RestoreDrill
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          BACKUP_REPORT_URL: https://axion-ia.com
+          BACKUP_INGEST_SECRET: ${{ secrets.BACKUP_INGEST_SECRET }}
+          BACKUP_SOURCE: github_ci
+        run: |
+          chmod +x scripts/restore-docuseal-test-r2.sh scripts/backup-lib.sh
+          export COMPONENT="docuseal" COMPONENT_LABEL="DOCUSEAL-DRILL"
+          # shellcheck source=scripts/backup-lib.sh
+          source scripts/backup-lib.sh
+          START=$(date +%s)
+          set +e
+          bash scripts/restore-docuseal-test-r2.sh --type daily
+          RC=$?
+          set -e
+          DUR=$(( $(date +%s) - START ))
+          if [ "$RC" -eq 0 ]; then
+            report_restore_drill "passed" "null" "$DUR" "r2" "latest-daily"
+          else
+            report_restore_drill "failed" "null" "$DUR" "r2" "latest-daily" "restore_rc_${RC}"
+            exit "$RC"
+          fi
+
   notify-failure:
     name: Notify drill failure
     runs-on: ubuntu-latest
-    needs: [restore-postgres, secrets-integrity]
+    needs: [restore-postgres, restore-docuseal, secrets-integrity]
     if: failure()
     steps:
       - name: Post Telegram alert

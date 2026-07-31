@@ -116,7 +116,8 @@ const CATEGORY_INTRO_FR: Record<Subprocessor["category"], string> = {
   core_infra:
     "Hébergement, CDN et sécurité réseau — le socle technique qui fait tourner l'application.",
   payments: "Encaissement des paiements et signature électronique des contrats et devis.",
-  communications: "Notifications d'exploitation au gérant et géocodage des villes saisies.",
+  communications:
+    "Notifications d'exploitation au gérant, prise de rendez-vous en ligne et géocodage des villes saisies.",
   analytics_obs: "Mesure d'audience sans cookie, supervision des erreurs et analyse UX.",
   content_gen_ai:
     "Modèles d'IA mobilisés pour la génération éditoriale — prompts uniquement, jamais de données client.",
@@ -124,7 +125,8 @@ const CATEGORY_INTRO_FR: Record<Subprocessor["category"], string> = {
 const CATEGORY_INTRO_EN: Record<Subprocessor["category"], string> = {
   core_infra: "Hosting, CDN and network security — the technical backbone running the application.",
   payments: "Payment collection and e-signature of contracts and quotes.",
-  communications: "Operational notifications to the manager and geocoding of submitted cities.",
+  communications:
+    "Operational notifications to the manager, online appointment booking and geocoding of submitted cities.",
   analytics_obs: "Cookie-less audience measurement, error monitoring and UX analysis.",
   content_gen_ai: "AI models used for editorial generation — prompts only, never any client data.",
 };

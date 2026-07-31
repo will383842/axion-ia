@@ -14,7 +14,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminDelete,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   isTrainerHabilite,
   type TrainerHabilitationFields,
@@ -196,7 +200,26 @@ export async function setTrainerHabilitationsAction(
   const session = await requireAdminWrite();
   const parsed = setHabilitationsSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { id, formationsHabilitees } = parsed.data;
+  const { id, formationsHabilitees: demandees } = parsed.data;
+
+  // 🔴 Constaté EN PRODUCTION le 2026-07-26. Le tableau legacy tolère des ids de
+  // formations supprimées ; celui du dirigeant en portait 33, tous orphelins.
+  // Le formulaire les renvoyait sans pouvoir les afficher, la clé étrangère les
+  // rejetait, et la transaction entière était annulée — plus AUCUNE habilitation
+  // ne pouvait être enregistrée, sans aucune issue par l'interface. Le
+  // commentaire ci-dessous décrivait déjà le risque ; il s'était réalisé.
+  //
+  // On écarte donc les ids qui n'existent plus, plutôt que de faire échouer
+  // l'enregistrement entier. Refuser en bloc n'apporte aucune sécurité ici : une
+  // formation supprimée n'est pas une habilitation à conserver, c'est une
+  // habilitation devenue sans objet.
+  const existantes = await prisma.formation.findMany({
+    where: { id: { in: demandees } },
+    select: { id: true },
+  });
+  const connues = new Set(existantes.map((f) => f.id));
+  const formationsHabilitees = demandees.filter((fid) => connues.has(fid));
+  const ecartees = demandees.length - formationsHabilitees.length;
 
   // ── Dual-write : le tableau legacy ET la table normalisée ────────────────────
   // `Trainer.formationsHabilitees` (`String[]`) reste la source lue par
@@ -240,7 +263,7 @@ export async function setTrainerHabilitationsAction(
     action: "qualiopi.trainer.habilitations",
     targetType: "Trainer",
     targetId: id,
-    changes: { formationsHabilitees },
+    changes: { formationsHabilitees, orphelinsEcartes: ecartees },
     session,
   });
 
@@ -341,16 +364,24 @@ export async function assignTrainerToSessionAction(
   let tarifSnapshot: number | null = null;
 
   if (trainerId !== null) {
-    let trainer: (TrainerHabilitationFields & { tarifJourneeHtCents: number | null }) | null;
+    // Les habilitations viennent de `TrainerHabilitation`, jamais de la colonne
+    // legacy `formationsHabilitees` : celle-ci contenait des slugs en production
+    // et la garde y comparait des UUID, donc refusait tout le monde (F11).
+    let trainer:
+      | (Omit<TrainerHabilitationFields, "formationIdsHabilites"> & {
+          tarifJourneeHtCents: number | null;
+          habilitations: { formationId: string }[];
+        })
+      | null;
     try {
       trainer = await prisma.trainer.findUnique({
         where: { id: trainerId },
         select: {
           actif: true,
           statut: true,
-          formationsHabilitees: true,
           sousTraitantVerifieAt: true,
           tarifJourneeHtCents: true,
+          habilitations: { select: { formationId: true } },
         },
       });
     } catch {
@@ -358,7 +389,10 @@ export async function assignTrainerToSessionAction(
     }
     if (!trainer) return { error: "Formateur introuvable" };
 
-    const check = isTrainerHabilite(trainer, trainingSession.formationId);
+    const check = isTrainerHabilite(
+      { ...trainer, formationIdsHabilites: trainer.habilitations.map((h) => h.formationId) },
+      trainingSession.formationId,
+    );
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
@@ -496,7 +530,11 @@ const deleteTrainerDevelopmentActionSchema = z.object({ id: z.string().uuid() })
 export async function deleteTrainerDevelopmentActionAction(input: {
   id: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // `requireAdminDelete` (super_admin strict) et non `requireAdminWrite` :
+  // `prisma.trainerDevelopmentAction.delete()` est un hard delete et le modele
+  // n'a pas de `deletedAt`. C'est la preuve de l'indicateur 22 (entretien et
+  // developpement des competences des formateurs) qui disparait sans recours.
+  const session = await requireAdminDelete();
   const parsed = deleteTrainerDevelopmentActionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id } = parsed.data;

@@ -41,6 +41,18 @@ const STATUT_LABELS: Record<string, string> = {
   annulee: "Annulée",
 };
 
+/**
+ * Libellés des modes de paiement — table de LECTURE.
+ *
+ * ⚠️ « Chèque » y RESTE volontairement, alors que l'organisme ne le propose plus
+ * en saisie (décision Will, 2026-07-30). Le retirer d'ici afficherait un code
+ * brut (`cheque`, `manual_check`) sur des encaissements historiques : on cesse de
+ * PROPOSER un moyen, on n'efface pas ce qui a été encaissé.
+ *
+ * 🔴 Ne pas confondre lecture et saisie. Les surfaces de SAISIE
+ * (`AcompteFormationPanel`, `AuditManagePanel`, `FactureFormationActions`,
+ * `InvoiceActions`) ne mentionnent plus le chèque.
+ */
 const MODE_LABELS: Record<string, string> = {
   manual_wire: "Virement",
   sepa_credit_transfer: "Virement",
@@ -140,6 +152,13 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
           paidAt: true,
           mode: true,
           receivedReference: true,
+          notes: true,
+          // 🔴 QUI a enregistré l'encaissement. La donnée existait en base
+          // (`recordedByAdminId`) et n'était affichée nulle part : à un contrôle,
+          // « qui a saisi ce paiement » est exactement ce qu'on demande. Le
+          // journal d'activité le porte aussi, mais personne ne l'ouvre en
+          // regardant une facture.
+          recordedByAdmin: { select: { name: true } },
         },
       },
       avoirs: {
@@ -363,7 +382,13 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
                   {p.mode ? ` · ${MODE_LABELS[p.mode] ?? p.mode}` : ""}
                   {p.receivedReference ? ` · réf. ${p.receivedReference}` : ""}
                   {p.status !== "succeeded" ? ` · ${p.status}` : ""}
+                  {p.recordedByAdmin?.name ? ` · saisi par ${p.recordedByAdmin.name}` : ""}
                 </span>
+                {p.notes !== null && p.notes !== "" ? (
+                  <span className="block w-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {p.notes}
+                  </span>
+                ) : null}
               </li>
             ))}
           </ul>

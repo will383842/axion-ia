@@ -32,7 +32,7 @@ export default async function LocaleNotFound() {
   const t = await getTranslations("errors");
 
   const suggestions = [
-    { href: "/interventions", label: t("notFoundLinkInterventions") },
+    { href: "/formations", label: t("notFoundLinkFormations") },
     { href: "/audit", label: t("notFoundLinkAudit") },
     { href: "/cas-concrets", label: t("notFoundLinkCases") },
     { href: "/appel", label: t("notFoundLinkBook") },

@@ -17,7 +17,7 @@
  */
 
 import React from "react";
-import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 import {
   brandColor,
   QUALIOPI_BRAND_FONTS,
@@ -26,6 +26,7 @@ import {
 } from "@/server/qualiopi/brand/brand-tokens";
 import { registerQualiopiPdfFonts } from "@/server/qualiopi/documents/fonts";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 // Ré-export pour que les templates puissent importer le type depuis base-layout.
 export type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -36,14 +37,46 @@ registerQualiopiPdfFonts();
 // Helpers monétaires centralisés (fin des formatEur dupliqués par template)
 // ============================================================
 
+/**
+ * Remplace les espaces « fines insécables » par une espace insécable ordinaire.
+ *
+ * 🔴 Constaté et MESURÉ le 2026-07-26. Depuis CLDR 42 / ICU 72, `Intl` en fr-FR
+ * émet U+202F (NARROW NO-BREAK SPACE) comme séparateur de milliers. Vérifié :
+ * `Intl.NumberFormat("fr-FR",…).format(1440)` rend `1<U+202F>440,00<U+00A0>€`.
+ *
+ * Or AUCUNE des 8 polices de `public/fonts` ne possède ce glyphe — vérifié à
+ * fontkit, `hasGlyphForCodePoint(0x202F) === false` sur Fraunces ×3,
+ * Manrope ×3 et Inconsolata ×2. U+00A0, lui, est couvert 8/8 : c'est le témoin,
+ * et c'est pourquoi l'espace avant le « € » s'affichait correctement.
+ *
+ * Face à un codepoint non couvert, @react-pdf découpe le texte et bascule le
+ * fragment sur la police base-14 `Helvetica` en WinAnsiEncoding, où il écrit
+ * l'octet de poids faible : 0x202F & 0xFF = 0x2F, soit le caractère « / ».
+ * D'où « 1/440,00 € » sur TOUT montant ≥ 1 000 €, dans TOUS les PDF — devis,
+ * facture, convention, contrat, kits financeurs.
+ *
+ * Le correctif doit être TEXTUEL et non typographique : `src/lib/invoice-pdf.tsx`
+ * rend en Helvetica base-14, qu'aucun patch de police ne peut couvrir.
+ *
+ * ⚠️ Ne PAS appliquer ce nettoyage aux surfaces HTML (pages admin, emails) :
+ * U+202F y est le caractère correct et s'y affiche parfaitement. Il n'est
+ * fautif que dans un PDF.
+ */
+export function assainirEspacesPdf(texte: string): string {
+  // U+202F fine insécable · U+2009 fine · U+2060 gluon (invisibles, non couverts)
+  return texte.replace(/[  ⁠]/g, " ");
+}
+
 /** Formate un montant en EUROS (nombre) → "1 500,00 €" (virgule décimale FR). */
 export function formatEur(montant: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(montant);
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(montant),
+  );
 }
 
 /** Formate des CENTIMES (entier) → "1 500,00 €". Évite les erreurs d'arrondi flottant. */
@@ -268,6 +301,39 @@ export const pdfStyles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  watermarkSpecimen: {
+    position: "absolute",
+    top: "40%",
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    fontSize: 68,
+    color: brandColor("terracotta"),
+    opacity: 0.16,
+    transform: "rotate(-45deg)",
+    fontFamily: QUALIOPI_BRAND_FONTS.serif,
+    fontWeight: "bold",
+  },
+  specimenBanner: {
+    borderWidth: 1,
+    borderColor: brandColor("terracotta"),
+    backgroundColor: brandColor("terracotta-soft"),
+    borderRadius: 4,
+    padding: S.md,
+    marginBottom: S.lg,
+  },
+  specimenBannerTitle: {
+    fontSize: T.sm,
+    fontWeight: "bold",
+    color: brandColor("terracotta-deep"),
+    marginBottom: 2,
+  },
+  specimenBannerText: {
+    fontSize: T.xs,
+    color: brandColor("fg-soft"),
+    lineHeight: T.lineNormal,
+  },
+
   // ---- Pied de page (identité + adresse postale, répété par page) ----
   footer: {
     position: "absolute",
@@ -311,6 +377,14 @@ interface QualiopiPageProps {
   docNumber: string;
   identite: OrganismeIdentite;
   estCopie?: boolean;
+  /**
+   * Document déclassé faute d'identité complète : filigrane « SPÉCIMEN » et
+   * bandeau d'explication en tête. Injecté par `generateDocument`, jamais
+   * par les appelants (cf. `avecMarquageSpecimen`).
+   */
+  estSpecimen?: boolean;
+  /** Motif du déclassement, affiché dans le bandeau (champs manquants). */
+  specimenMotif?: string;
   /** Sur-titre optionnel au-dessus de la raison sociale (ex. « Organisme de formation »). */
   eyebrow?: string;
   children: React.ReactNode;
@@ -333,13 +407,30 @@ export function QualiopiPage({
   docNumber,
   identite,
   estCopie = false,
+  estSpecimen = false,
+  specimenMotif,
   eyebrow = "Organisme de formation",
   children,
 }: QualiopiPageProps): React.ReactElement {
   const footerIds = joinDefined(
     [
       identite.siret ? `SIRET ${identite.siret}` : "",
-      identite.nda ? `NDA ${identite.nda}` : "",
+      // 🔴 L'absence de NDA est DITE, pas passée sous silence.
+      //
+      // Le pied de page omettait simplement la mention : un auditeur ne voyait
+      // rien, et ne pouvait pas distinguer un oubli de saisie d'une situation
+      // légitime. Or elle l'est souvent — l'art. L.6351-1 fait courir le délai
+      // de déclaration à compter de la PREMIÈRE convention, si bien qu'au
+      // moment de l'émettre l'organisme n'a pas encore de numéro.
+      //
+      // ⚠️ La formulation ne prétend PAS qu'un dossier a été déposé (« en cours
+      // d'enregistrement » serait une affirmation invérifiable, fausse si rien
+      // n'a été déposé). Elle constate l'absence et cite l'article qui la rend
+      // possible. C'est la même règle que partout ailleurs dans ce dépôt : dire
+      // ce qui est, jamais ce qui arrange.
+      identite.nda
+        ? `NDA ${identite.nda}`
+        : "Déclaration d'activité non encore enregistrée (art. L.6351-1 C. trav.)",
       identite.qualiopi ? `Qualiopi ${identite.qualiopi}` : "",
     ],
     "  ·  ",
@@ -350,6 +441,11 @@ export function QualiopiPage({
     <Page size="A4" style={pdfStyles.page}>
       {/* Filigrane COPIE */}
       {estCopie && <Text style={pdfStyles.watermark}>COPIE</Text>}
+
+      {/* Filigrane SPÉCIMEN — identité de l'OF incomplète (art. L.6353-1 C. trav.,
+          L441-9 C. com.). Le document reste produit pour que la chaîne soit
+          exerçable, mais ne peut pas être confondu avec une pièce valable. */}
+      {estSpecimen && <Text style={pdfStyles.watermarkSpecimen}>SPÉCIMEN</Text>}
 
       {/* En-tête */}
       <View style={pdfStyles.header} fixed>
@@ -366,6 +462,19 @@ export function QualiopiPage({
           <Text style={pdfStyles.headerDocNumber}>{docNumber}</Text>
         </View>
       </View>
+
+      {/* Bandeau SPÉCIMEN — dit explicitement pourquoi le document est déclassé
+          et ce qu'il faut renseigner. Le filigrane seul ne suffit pas : le
+          lecteur doit savoir quoi corriger. */}
+      {estSpecimen && (
+        <View style={pdfStyles.specimenBanner}>
+          <Text style={pdfStyles.specimenBannerTitle}>SPÉCIMEN — sans valeur juridique</Text>
+          <Text style={pdfStyles.specimenBannerText}>
+            {specimenMotif ??
+              "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client, un financeur ou un auditeur."}
+          </Text>
+        </View>
+      )}
 
       {/* Contenu */}
       {children}
@@ -440,6 +549,47 @@ export function FieldRow({ label, value, required = false }: FieldRowProps): Rea
 
 // ---- SignatureZone ------------------------------------------
 
+/**
+ * Preuve de signature RÉELLE d'une partie, telle qu'elle sera rendue.
+ *
+ * 🔴 Toutes les valeurs sont FIGÉES au moment de la signature, jamais relues
+ * depuis l'entité vivante. Le contact peut être renommé, réaffecté ou anonymisé
+ * ensuite ; ce que le PDF affiche doit rester ce qui a été signé.
+ */
+export interface PreuveSignature {
+  /** Identité figée du signataire. */
+  signataireNom: string;
+  /** Qualité figée (« Directrice des ressources humaines »). Opposabilité du pouvoir de signer. */
+  signataireQualite?: string | null;
+  /** Horodatage déjà formaté en heure de PARIS par l'appelant — jamais UTC brut. */
+  signeAtLisible: string;
+  /** `selfHash` de la ligne de preuve. C'est lui qui rend la signature vérifiable. */
+  empreinte: string;
+  /** Modalité de recueil. Dire la vérité sur la NATURE de la preuve. */
+  methode: "trace" | "papier_scanne" | "confirmation_accessible";
+  /**
+   * Image du tracé. `null` pour une confirmation accessible (pas d'image par
+   * construction) et après purge RGPD.
+   */
+  imageSrc?: string | null;
+  /** Vrai si l'image a été purgée (art. 17). La ligne de preuve, elle, survit. */
+  imagePurgee?: boolean;
+}
+
+/**
+ * Preuves apposées, indexées par PARTIE.
+ *
+ * 🔴 Forme UNIFORME pour les huit circuits, et c'est délibéré. La première
+ * version donnait au devis sa propre forme (`{ client, axionia }`) : à cinq
+ * templates de plus, on aurait eu cinq formes différentes, et l'exemplaire signé
+ * aurait dû savoir laquelle chacun attend. Une seule forme, indexée par la
+ * partie du SSOT, se branche partout sans traduction.
+ *
+ * ⚠️ Une clé ABSENTE ou `null` = cadre vide à remplir au stylo. Ce n'est pas un
+ * état dégradé : le circuit papier reste un chemin de plein droit.
+ */
+export type PreuvesParPartie = Partial<Record<PartieSignataire, PreuveSignature | null>>;
+
 export interface SignaturePartie {
   /** Ex. « Pour l'organisme de formation ». */
   titre: string;
@@ -447,6 +597,15 @@ export interface SignaturePartie {
   nom?: string;
   /** Mention en bas de l'encadré (défaut : « Nom, qualité, signature et cachet »). */
   mention?: string;
+  /**
+   * Preuve réelle, quand elle existe.
+   *
+   * 🔴 ABSENTE = cadre vide à remplir au stylo, comportement historique
+   * INCHANGÉ. Ce n'est pas un état dégradé : le circuit papier reste un chemin
+   * de plein droit, et c'est le seul qui fonctionne quand la salle n'a pas de
+   * réseau. Supprimer les cadres vides serait une régression.
+   */
+  signature?: PreuveSignature | null;
 }
 
 interface SignatureZoneProps {
@@ -469,6 +628,43 @@ const signatureLocal = StyleSheet.create({
     color: brandColor("fg"),
     marginBottom: S.md,
   },
+  qualite: {
+    fontSize: T.xs,
+    color: brandColor("fg-soft"),
+    marginBottom: S.sm,
+  },
+  /**
+   * Le tracé rasterisé. Hauteur BORNÉE : `storage.ts` normalise à 1200×800 au
+   * plus, et un tracé large déborderait de l'encadré sans cette contrainte.
+   * `objectFit: contain` préserve les proportions — étirer une signature la
+   * dénature, et c'est elle qu'un expert comparerait.
+   */
+  trace: {
+    height: 44,
+    marginBottom: S.sm,
+    objectFit: "contain",
+    objectPositionX: "0%",
+  },
+  horodatage: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    marginTop: S.xs,
+  },
+  mentionPreuve: {
+    fontSize: T.xs,
+    color: brandColor("fg-muted"),
+    fontStyle: "italic",
+    marginBottom: S.xs,
+  },
+  /**
+   * L'empreinte en entier, jamais tronquée : une empreinte partielle ne se
+   * vérifie pas, et une preuve qu'on ne peut pas vérifier n'en est pas une.
+   */
+  empreinte: {
+    fontSize: 6,
+    color: brandColor("fg-muted"),
+    marginTop: S.xs,
+  },
   approuve: {
     fontSize: T.xs,
     fontStyle: "italic",
@@ -476,6 +672,66 @@ const signatureLocal = StyleSheet.create({
     marginBottom: S.sm,
   },
 });
+
+/**
+ * Rendu d'une signature RÉELLEMENT apposée.
+ *
+ * ## Ce que ce composant refuse de faire
+ *
+ * 🔴 Il n'affiche JAMAIS une case « signé » sans dire de quoi elle est faite.
+ * C'est précisément le défaut que ce chantier a retiré côté AFEST : quatre
+ * horodatages de signature posés au clic d'un administrateur, sans signataire,
+ * sans image, sans empreinte — et le PDF rendait « signé ».
+ *
+ * Chaque modalité est donc rendue POUR CE QU'ELLE EST :
+ *
+ * · `trace` / `papier_scanne` → l'image, parce qu'il y en a une ;
+ * · `confirmation_accessible` → une phrase explicite, PAS un cadre vide qui
+ *   ressemblerait à un tracé manquant. La personne a déclaré ne pas pouvoir
+ *   tracer ; sa confirmation nominative vaut autant (plan II.2bis), et le PDF
+ *   doit le dire au lieu de le laisser deviner ;
+ * · image PURGÉE (art. 17) → dit qu'elle a été effacée à la demande du
+ *   signataire. Un blanc silencieux se lirait comme « pas signé », et
+ *   transformerait un droit exercé en apparence de manquement.
+ *
+ * L'empreinte est toujours affichée : c'est elle qui rend la signature
+ * vérifiable par un tiers, et sans elle le reste n'est qu'une affirmation.
+ */
+function SignatureApposee({ preuve }: { preuve: PreuveSignature }): React.ReactElement {
+  return (
+    <View>
+      <Text style={pdfStyles.signatureBoxName}>{preuve.signataireNom}</Text>
+      {preuve.signataireQualite ? (
+        <Text style={signatureLocal.qualite}>{preuve.signataireQualite}</Text>
+      ) : null}
+
+      {preuve.imageSrc ? (
+        // eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer n'a pas d'attribut alt
+        <Image src={preuve.imageSrc} style={signatureLocal.trace} />
+      ) : preuve.imagePurgee === true ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Image de la signature supprimée à la demande du signataire (art. 17 RGPD). La signature
+          reste établie et son empreinte vérifiable.
+        </Text>
+      ) : preuve.methode === "confirmation_accessible" ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Signature recueillie par confirmation nominative, sans tracé manuscrit (modalité
+          accessible). Elle a la même valeur qu'une signature tracée.
+        </Text>
+      ) : (
+        <Text style={signatureLocal.mentionPreuve}>Image de signature indisponible.</Text>
+      )}
+
+      <Text style={signatureLocal.horodatage}>{`Signé le ${preuve.signeAtLisible}`}</Text>
+      {preuve.methode === "papier_scanne" ? (
+        <Text style={signatureLocal.mentionPreuve}>
+          Signature manuscrite sur papier, versée au dossier par l&apos;organisme.
+        </Text>
+      ) : null}
+      <Text style={signatureLocal.empreinte}>{`Empreinte : ${preuve.empreinte}`}</Text>
+    </View>
+  );
+}
 
 /**
  * Zone de signatures normalisée (1 à 3 parties). Remplace les
@@ -491,11 +747,17 @@ export function SignatureZone({ parties, intro, faitLe }: SignatureZoneProps): R
         {parties.map((p, i) => (
           <View key={i} style={pdfStyles.signatureBox}>
             <Text style={pdfStyles.signatureBoxTitle}>{p.titre}</Text>
-            <Text style={signatureLocal.approuve}>Lu et approuvé</Text>
-            {p.nom ? <Text style={pdfStyles.signatureBoxName}>{p.nom}</Text> : null}
-            <Text style={pdfStyles.signatureBoxMention}>
-              {p.mention ?? "Nom, qualité, signature et cachet"}
-            </Text>
+            {p.signature ? (
+              <SignatureApposee preuve={p.signature} />
+            ) : (
+              <>
+                <Text style={signatureLocal.approuve}>Lu et approuvé</Text>
+                {p.nom ? <Text style={pdfStyles.signatureBoxName}>{p.nom}</Text> : null}
+                <Text style={pdfStyles.signatureBoxMention}>
+                  {p.mention ?? "Nom, qualité, signature et cachet"}
+                </Text>
+              </>
+            )}
           </View>
         ))}
       </View>

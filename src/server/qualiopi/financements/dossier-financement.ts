@@ -13,6 +13,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { opcoLabel } from "./opco-referentiel";
 import type { DossierFinancementStatut, Prisma } from "../../../../prisma/generated/client";
 
 /** Transitions autorisées (machine à états — tout le reste est rejeté). */
@@ -157,8 +158,16 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
     data: {
       type,
       subrogation: session.opcoSubrogation,
-      ...(session.client?.opcoIdentifie != null
-        ? { financeurNom: session.client.opcoIdentifie }
+      // 🔴 GARDE DE TYPE — l'OPCO n'est le financeur QUE d'un dossier OPCO (ou
+      // mixte). Un dossier CPF a pour financeur la Caisse des Dépôts, un dossier
+      // France Travail l'opérateur public : y inscrire l'OPCO du client
+      // afficherait un financeur FAUX sur le hub facturation. Le `type` était
+      // calculé JUSTE AU-DESSUS puis ignoré. Le défaut était dormant tant que
+      // `opcoIdentifie` restait vide en base ; F6 le remplit, donc il devient
+      // visible — d'où la garde, posée dans le MÊME commit.
+      // Libellé et non slug : la colonne stocke « akto », on écrit « Akto ».
+      ...(session.client?.opcoIdentifie != null && (type === "opco" || type === "mixte")
+        ? { financeurNom: opcoLabel(session.client.opcoIdentifie) }
         : {}),
       ...(session.numeroDossierOpco != null
         ? { numeroDossierExterne: session.numeroDossierOpco }
@@ -171,7 +180,11 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
           ? [
               {
                 payeurType: "opco_subroge",
-                payeurNom: session.client?.opcoIdentifie ?? "OPCO",
+                // Pas de garde de type ici : cette branche est déjà conditionnée
+                // par `session.opcoSubrogation`, qui implique un financement OPCO.
+                payeurNom: session.client?.opcoIdentifie
+                  ? opcoLabel(session.client.opcoIdentifie)
+                  : "OPCO",
                 montantAttenduCents: priseEnCharge,
               },
               ...(resteACharge > 0

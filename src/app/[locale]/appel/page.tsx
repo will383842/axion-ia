@@ -14,7 +14,20 @@ import { CalendlyInlineWidget } from "@/components/booking/CalendlyInlineWidget"
 import { CalendlyEventCapture } from "@/components/booking/CalendlyEventCapture";
 import { ArrowRight, Clock, Shield, CheckCircle, Calendar } from "lucide-react";
 
-export const revalidate = 86400;
+/**
+ * 15 minutes — c'est la fraîcheur des CRÉNEAUX affichés, pas celle du texte.
+ *
+ * Aligné sur `SLOTS_REVALIDATE_SECONDS` (`src/server/calendly/availability.ts`).
+ * La valeur doit être écrite en littéral : Next exige qu'elle soit analysable
+ * statiquement, donc l'importer ne marcherait pas.
+ *
+ * ⚠️ NE PAS remonter à 86400 en croyant économiser des régénérations. Hériter
+ * de l'intervalle du `fetch` ne suffit pas ici : au build GitHub Actions le
+ * jeton Calendly est absent, aucun appel n'a lieu, et la route conserverait son
+ * intervalle d'origine — la page servirait alors le repli prérendu pendant
+ * toute cette durée avant d'aller chercher le moindre créneau.
+ */
+export const revalidate = 900;
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -150,9 +163,11 @@ export default async function AppelPage({ params, searchParams }: Props) {
               sidebar (portrait + steps + trust) empilée DESSOUS.
             - Desktop (≥lg) : grid 2 cols, sidebar à gauche sticky, widget à
               droite (réordonnés via lg:order-1/lg:order-2).
-            Widget Calendly entouré d'un cadre moderne (shadow multi-layer +
-            glow décoratif terracotta + ring border). Le widget se charge en
-            afterInteractive (pas d'impact LCP). */}
+            Calendrier entouré d'un cadre moderne (shadow multi-layer + glow
+            décoratif terracotta + ring border).
+            Depuis ADR 0038 le contenu de ce cadre est rendu côté serveur
+            (créneaux en HTML statique) : plus rien de Calendly n'est chargé par
+            le navigateur tant que le visiteur ne clique pas un créneau. */}
         <section aria-labelledby="appel-calendar-h2" className="bg-canvas pb-12 sm:pb-16">
           <Container>
             <h2 id="appel-calendar-h2" className="sr-only">
@@ -245,9 +260,16 @@ export default async function AppelPage({ params, searchParams }: Props) {
                 {/* Sprint Notif Infra 2026-05-26 / Chantier 3 — capture client
                     des events `event_scheduled` emis par l'iframe Calendly.
                     Aucune UI rendue, listener postMessage passif post-mount.
-                    Limitation honnete (cf. ADR 0030) : seules les CREATIONS
-                    depuis /appel sont captees ; annulations/reschedules
-                    geres via boite Gmail Will. */}
+
+                    CONSERVÉ APRÈS ADR 0038, et ce n'est pas un oubli : le
+                    sélecteur de créneaux n'ouvre aucune iframe, donc plus aucun
+                    postMessage ne lui parviendra par cette voie. Mais le repli
+                    `CalendlyConsentGate` monte toujours l'iframe, et c'est LUI
+                    que rendent le build et tout incident d'API. Le retirer
+                    rendrait ces réservations-là invisibles.
+                    La capture des réservations faites sur calendly.com (nouvel
+                    onglet), elle, ne passe pas par ici : elle est assurée par
+                    le sondage horaire `api/internal/calendly-refresh`. */}
                 {CALENDLY_APPEL_URL && (
                   <CalendlyEventCapture
                     calendlyUrl={CALENDLY_APPEL_URL}

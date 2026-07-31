@@ -68,7 +68,7 @@ const SERVICE_META = {
   },
   interventions: {
     accent: "terracotta" as const,
-    href: "/interventions" as const,
+    href: "/formations" as const,
     labelFr: "Interventions IA",
     labelEn: "AI sessions",
     eyebrowFr: "Interventions IA en entreprise",

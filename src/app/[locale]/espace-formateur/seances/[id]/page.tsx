@@ -9,6 +9,9 @@ import Link from "next/link";
 import { requireFormateur } from "@/server/formateur/guard";
 import { getSessionForFormateur } from "@/server/formateur/queries";
 import { SeanceEditor } from "@/components/espace-formateur/SeanceEditor";
+import { EmargementAfest } from "@/components/espace-formateur/EmargementAfest";
+import { lireEtatSignaturesAfest } from "@/server/qualiopi/coaching-afest/signature/seance-queries";
+import { signerSeanceAfestFormateurAction } from "@/server/actions/qualiopi/afest-signature";
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 
@@ -31,6 +34,13 @@ export default async function SeancePage({
   const { id } = await params;
   const s = await getSessionForFormateur(id, trainerId);
   if (!s) notFound();
+
+  // Émargement par séance — lu APRÈS la garde de propriété, comme tout le reste.
+  //
+  // `null` quand le parcours n'est pas cadré en AFEST : le bloc ne s'affiche
+  // alors pas du tout. Afficher un émargement AFEST vide sur un coaching
+  // ordinaire laisserait croire à des signatures manquantes.
+  const etatSignatures = await lireEtatSignaturesAfest(id, trainerId);
 
   const data = {
     id: s.id,
@@ -108,6 +118,28 @@ export default async function SeancePage({
         </p>
       </div>
       <SeanceEditor session={data} />
+
+      {/*
+        Émargement AFEST — placé APRÈS l'éditeur, et c'est l'ordre du geste réel :
+        la durée réelle de la séance se saisit dans le compte-rendu, et sans elle
+        les horaires sont indéterminables — donc la séance non signable.
+      */}
+      {etatSignatures !== null && (
+        <section className="space-y-3">
+          <h2 className="text-espresso font-serif text-xl">Émargement des séances</h2>
+          <p className="text-mocha text-sm">
+            Chaque séance porte trois signatures : celle du bénéficiaire, la vôtre, et la
+            co-attestation du tuteur en entreprise. Elles sont horodatées et scellées par une
+            empreinte chaînée à la précédente.
+          </p>
+          <EmargementAfest
+            coachingSessionId={etatSignatures.coachingSessionId}
+            seances={etatSignatures.seances}
+            plafondProbant={etatSignatures.plafondProbant}
+            signerAction={signerSeanceAfestFormateurAction}
+          />
+        </section>
+      )}
     </div>
   );
 }

@@ -34,6 +34,10 @@ import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-fo
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import {
+  calculerAcompte,
+  PLAFOND_ACOMPTE_PARTICULIER_PCT,
+} from "@/server/qualiopi/financements/acompte";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { CvFormateurPdf } from "@/server/qualiopi/documents/templates/cv-formateur";
 import { buildCvFormateurData } from "@/server/qualiopi/documents/cv-formateur-data";
@@ -58,8 +62,10 @@ import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-a
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -133,16 +139,13 @@ async function resolveFormateurNom(
 }
 
 /** Extrait les objectifs pédagogiques depuis un champ Json. */
-function parseObjectifs(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.map((o: unknown) => {
-    if (typeof o === "string") return o;
-    if (typeof o === "object" && o !== null && "description" in o) {
-      return String((o as { description: unknown }).description);
-    }
-    return String(o);
-  });
-}
+/**
+ * Seule des cinq lectures d'`objectifsPedagogiques` à connaître `description`,
+ * donc la seule qui sortait juste sur le catalogue — c'est en la comparant aux
+ * quatre autres qu'on a trouvé le défaut (parcours à blanc 2026-07-27).
+ * Conservée sous son nom d'origine, mais déléguée : une seule implémentation.
+ */
+const parseObjectifs = normaliserObjectifsPedagogiques;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
@@ -305,7 +308,12 @@ export async function genererConventionTripartiteAction(input: {
   // Données formation depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const nomOpco = session.client.opcoIdentifie ?? "OPCO (à préciser)";
+  // Libellé, pas slug : `opcoIdentifie` stocke « akto », la convention
+  // tripartite doit lire « Akto ». Le motif existe déjà dans
+  // facturation-service.ts et facturation-1to1.ts.
+  const nomOpco = session.client.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
   const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
   const prixHt = session.montantHtCents / 100;
@@ -371,9 +379,58 @@ export async function genererConventionTripartiteAction(input: {
  */
 export async function genererContratFormationAction(input: {
   enrollmentId: string;
-}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+}): Promise<
+  ActionResult<{ documentId: string; numero: string; avertissement?: string | undefined }>
+> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  // ⚠️ MÉDIATION DE LA CONSOMMATION — AVERTISSEMENT, PLUS BLOCAGE (2026-07-30).
+  //
+  // Le contrat de formation de l'article L.6353-3 s'adresse à une personne
+  // physique agissant pour son propre compte, donc à un CONSOMMATEUR. L'article
+  // L.612-1 du Code de la consommation impose alors d'avoir adhéré à un
+  // médiateur agréé et d'en publier les coordonnées — amende administrative
+  // jusqu'à 15 000 € pour une personne morale.
+  //
+  // L'audit de certification (2026-07-26, F50) avait posé ici un REFUS pur et
+  // simple. Décision de Will du 2026-07-30 : ne plus bloquer. L'obligation
+  // légale, elle, ne disparaît pas — mais elle ne se règle pas dans le code, et
+  // un outil qui refuse de produire le document laisse l'admin sans issue le
+  // jour où il en a besoin. Le rôle du logiciel s'arrête à dire ce qui manque.
+  //
+  // Donc : le contrat est émis, et l'absence de médiateur est
+  //   • rendue VISIBLE à l'admin (avertissement retourné avec le document) ;
+  //   • TRACÉE dans le journal d'audit, avec le numéro du contrat concerné.
+  //
+  // Ce second point est le plus important. Le jour d'un contrôle, la question
+  // ne sera pas « le logiciel bloquait-il ? » mais « quels contrats ont été
+  // émis sans la mention ? ». Sans trace, la réponse est introuvable ; avec
+  // elle, la liste s'extrait du journal en une requête.
+  //
+  // Pour faire disparaître l'avertissement : renseigner
+  // « mediateur_consommation_nom » et « mediateur_consommation_url » dans la
+  // configuration Qualiopi, après adhésion effective à un médiateur agréé.
+  //
+  // 🔴 PIÈGE À CONNAÎTRE le jour où ce sera fait : `contrat-formation.tsx`
+  // n'imprime AUCUNE clause de médiation, ni aujourd'hui ni avec les clés
+  // renseignées. Le refus posé en 2026-07-26 protégeait donc l'émission d'un
+  // document qui, même conforme côté configuration, n'aurait pas porté la
+  // mention — une conformité de façade. Renseigner les deux clés éteindra
+  // l'avertissement SANS ajouter la clause au contrat : il faudra aussi
+  // modifier le gabarit, sous peine de croire le contrat en règle alors qu'il
+  // ne l'est pas. Ne pas retirer ce commentaire avant que le gabarit l'imprime.
+  //
+  // ⚠️ N'affecte QUE le contrat individuel. La convention B2B ne relève pas du
+  // droit de la consommation et n'a jamais été concernée.
+  const [mediateurNom, mediateurUrl] = await Promise.all([
+    getQualiopiConfig("mediateur_consommation_nom"),
+    getQualiopiConfig("mediateur_consommation_url"),
+  ]);
+  const mediateurManquant = !mediateurNom?.trim() || !mediateurUrl?.trim();
+  const avertissementMediation = mediateurManquant
+    ? "Contrat émis SANS mention de médiation de la consommation : aucun médiateur n'est renseigné. Vendre une formation à un particulier impose d'avoir adhéré à un médiateur agréé CECMC et d'en publier les coordonnées (art. L.612-1 du Code de la consommation). Renseignez « mediateur_consommation_nom » et « mediateur_consommation_url » dans la configuration Qualiopi. Les conventions B2B ne sont pas concernées."
+    : undefined;
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
@@ -392,6 +449,12 @@ export async function genererContratFormationAction(input: {
           dateFin: true,
           modalite: true,
           montantHtCents: true,
+          // 🔴 Nécessaire au calcul de l'acompte : l'assiette est le RESTE À
+          // CHARGE, pas le prix total. Sans cette lecture, le contrat annonçait
+          // 30 % du total — sur 2 000 € dont 1 200 € financés, 600 € au lieu de
+          // 240. Le client signait un chiffre que le système n'appliquait pas.
+          priseEnChargeMontantCents: true,
+          opcoSubrogation: true,
           formationSnapshot: true,
           formation: {
             select: {
@@ -412,6 +475,50 @@ export async function genererContratFormationAction(input: {
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const objectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
   const nomPrenom = `${trainee.prenom} ${trainee.nom}`.trim();
+
+  // 🔴 L'acompte ANNONCÉ vient désormais du calcul, plus d'un pourcentage
+  // recalculé dans le gabarit.
+  //
+  // Le gabarit accepte `acompteEuros` depuis le 2026-07-27, précisément pour
+  // que le contrat imprime ce qui a été CONVENU au lieu de recalculer un
+  // plafond. Mais personne ne le lui fournissait : il retombait donc toujours
+  // sur 30 % de `prixNet`, c'est-à-dire du TOTAL. Le correctif était à moitié
+  // posé — la moitié visible, pas la moitié agissante.
+  //
+  // `calculerAcompte` prend pour assiette le RESTE À CHARGE, ce que le
+  // particulier avance réellement de sa poche. Les deux étages ne se
+  // contredisent pas : 30 % du reste à charge est toujours ≤ 30 % du prix
+  // convenu, plafond que `facturation-hub` fait respecter au refus.
+  //
+  // ⚠️ Ne lève jamais : un contexte incohérent est ramené à des bornes sûres.
+  // Une exception ici bloquerait l'émission du contrat, ce qui est pire qu'un
+  // acompte à zéro.
+  const acompte = calculerAcompte({
+    montantTotalHtCents: session.montantHtCents,
+    priseEnChargeCents: session.priseEnChargeMontantCents ?? 0,
+    subrogation: session.opcoSubrogation === true,
+    // Un contrat individuel n'est pas un dossier CPF : le CPF passe par la
+    // Caisse des dépôts, jamais par un contrat de gré à gré avec l'organisme.
+    cpf: false,
+    nature: "particulier",
+    tauxAcomptePct: PLAFOND_ACOMPTE_PARTICULIER_PCT,
+    // 🔴 Les bornes de l'action, sans lesquelles le point (3) de L6353-6 reste
+    // une citation : `calculerAcompte` ne peut DATER les échéances du solde que
+    // s'il connaît la période sur laquelle l'action se déroule.
+    //
+    // ⚠️ La signature n'a pas encore eu lieu — on prend donc `new Date()` comme
+    // date d'engagement présumée pour borner la première échéance après le délai
+    // de rétractation. Le contrat imprimé annonce un échéancier calculé à SA date
+    // d'émission ; si la signature est plus tardive, le garde-fou serveur
+    // (`encaissementAutorise`) reste l'autorité sur l'encaissement réel.
+    dateSignature: new Date(),
+    dateDebutAction: new Date(session.dateDebut),
+    dateFinAction: new Date(session.dateFin),
+    // « En 3 fois » par défaut, réglable. ⚠️ Le plancher légal de 2 échéances du
+    // particulier reste appliqué par `calculerAcompte` : ce réglage ne peut pas
+    // descendre sous la loi.
+    nbEcheancesSolde: (await getQualiopiConfig("nb_echeances_solde_defaut")) || 3,
+  });
 
   const doc = await generateDocument({
     type: "contrat",
@@ -434,6 +541,22 @@ export async function genererContratFormationAction(input: {
           modalite: modaliteLabel(session.modalite),
           lieu: identite.adresseExercice || identite.adresseSiege || "—",
           prixNet: session.montantHtCents / 100,
+          // Ce que le système DEMANDERA réellement, pas un plafond recalculé.
+          acompteEuros: acompte.acompteCents / 100,
+          // 🔴 L'échéancier DATÉ, transmis au gabarit. Sans cette ligne, la prop
+          // `echeancierSolde` serait un paramètre mort — exactement le défaut F1
+          // trouvé sur le devis (un gabarit câblé qu'aucun producteur n'alimente).
+          //
+          // ⚠️ On ne garde QUE les échéances du solde : la première ligne de
+          // `acompte.echeancier` est l'acompte, déjà affiché au-dessus. La
+          // dédoubler donnerait un contrat où le stagiaire paie deux fois.
+          echeancierSolde: acompte.echeancier
+            .filter((e) => !e.libelle.startsWith("Acompte"))
+            .map((e) => ({
+              libelle: e.libelle,
+              montantEuros: e.montantCents / 100,
+              dueLeLisible: e.dueLe === null ? null : formatDate(e.dueLe),
+            })),
           dateContrat: formatDateFr(new Date()),
         },
         identite,
@@ -448,11 +571,26 @@ export async function genererContratFormationAction(input: {
     action: "qualiopi.document.contrat.genere",
     targetType: "Enrollment",
     targetId: enrollmentId,
-    changes: { documentId: doc.id, numero: doc.numero, sessionId: session.id },
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      sessionId: session.id,
+      // Trace de conformité. Le jour d'un contrôle, la question sera « quels
+      // contrats ont été émis sans la mention de médiation ? » — cette clé rend
+      // la liste extractible du journal, contrat par contrat, au lieu de la
+      // laisser introuvable.
+      ...(mediateurManquant ? { mentionMediationAbsente: true } : {}),
+    },
     session: adminSession,
   });
 
-  return { data: { documentId: doc.id, numero: doc.numero } };
+  return {
+    data: {
+      documentId: doc.id,
+      numero: doc.numero,
+      ...(avertissementMediation ? { avertissement: avertissementMediation } : {}),
+    },
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -929,6 +1067,8 @@ export async function genererCertificatRealisationAction(input: {
           dateDebut: true,
           dateFin: true,
           dureeReelleHeures: true,
+          // F30 — portée sur le certificat de réalisation (arrêté 21/12/2018).
+          modalite: true,
           formationSnapshot: true,
           formation: {
             select: {
@@ -956,6 +1096,46 @@ export async function genererCertificatRealisationAction(input: {
     return {
       error:
         "Certificat refusé : le stagiaire est en abandon/exclu. Aucun certificat de réalisation ne peut être émis (R.6313-3).",
+    };
+  }
+
+  // 🔴 Constaté EN PRODUCTION le 2026-07-26 — et déjà matérialisé.
+  //
+  // Le statut d'abandon était la SEULE garde. Plus bas, la durée n'est pondérée
+  // par le taux de présence que `if (tauxPresencePct !== null)` : quand le taux
+  // est inconnu, le certificat atteste donc la durée PRÉVUE comme si elle avait
+  // été réalisée. Rien n'exigeait qu'une seule heure ait été constatée.
+  //
+  // Ce n'est pas théorique : un `certificat_realisation` a été émis le 22/07 en
+  // production alors que `emargement_signatures` comptait ZÉRO ligne. La pièce
+  // que l'auditrice contrôle en premier attestait d'heures que rien ne prouvait.
+  //
+  // R.6313-3 : un certificat de réalisation atteste d'heures RÉELLEMENT suivies.
+  // Deux conditions, donc, et elles sont distinctes :
+  //   1. le taux de présence doit avoir été MESURÉ — un taux inconnu n'est pas un
+  //      taux de 100 % ;
+  //   2. il doit reposer sur une TRACE — au moins une signature d'émargement
+  //      rattachée à cette inscription. Un taux saisi à la main sans émargement
+  //      est une déclaration, pas une preuve, et c'est précisément ce qu'un
+  //      contrôle de service fait sanctionne.
+  //
+  // On refuse plutôt que d'émettre une pièce fausse : un certificat manquant se
+  // rattrape en émargeant, un certificat surdéclaré engage l'organisme devant le
+  // financeur.
+  if (enrollment.tauxPresencePct === null) {
+    return {
+      error:
+        "Certificat refusé : le taux de présence n'a pas été calculé. Un certificat de réalisation atteste d'heures réellement suivies (R.6313-3) — il ne peut pas reposer sur la durée prévue.",
+    };
+  }
+
+  const signatures = await prisma.emargementSignature.count({
+    where: { enrollmentId: enrollment.id },
+  });
+  if (signatures === 0) {
+    return {
+      error:
+        "Certificat refusé : aucune signature d'émargement n'est rattachée à cette inscription. Le taux de présence doit reposer sur une trace vérifiable, pas sur une saisie (R.6313-3, indicateurs 9 et 11).",
     };
   }
 
@@ -1017,6 +1197,11 @@ export async function genererCertificatRealisationAction(input: {
           dateFin: formatDate(new Date(session.dateFin)),
           // ⚠️ dureeHeures en décimal — formatHeuresCentiemes appelé dans le template
           dureeHeures,
+          // F30 — modalité réelle de la session. Le modèle annexé à l'arrêté du
+          // 21 décembre 2018 distingue présentiel et distanciel, et un contrôle
+          // de service fait porte précisément là-dessus. La nature de l'action
+          // prend son défaut « action de formation » dans le template.
+          modalite: session.modalite,
         },
       }),
     // ⚠️ `traineeId` fait partie de l'IDENTITÉ de la pièce : ces documents sont
@@ -1090,7 +1275,9 @@ export async function genererKitOpcoAction(input: {
   if (!session) return { error: "Session introuvable" };
 
   const identite = await getOrganismeIdentite();
-  const nomOpco = session.client?.opcoIdentifie ?? "OPCO (à préciser)";
+  const nomOpco = session.client?.opcoIdentifie
+    ? opcoLabel(session.client.opcoIdentifie)
+    : "OPCO (à préciser)";
   const numeroDossier = session.numeroDossierOpco ?? "—";
   const baremeCents = session.priseEnChargeMontantCents ?? 0;
 
@@ -1410,11 +1597,39 @@ export async function genererLettreMissionAction(input: {
 
   const identite = await getOrganismeIdentite();
 
+  // 🔴 REFUS plutôt que fabrication d'un nom.
+  //
+  // Le repli historique était en cascade : formateur résolu → sinon un nom lu
+  // dans le Json brut → sinon LA RAISON SOCIALE DE L'ORGANISME. La dernière
+  // branche produisait une lettre de mission désignant « Axion-IA » comme
+  // formateur — une pièce d'indicateur 21 qui nomme une personne morale là où
+  // elle doit nommer une personne physique.
+  //
+  // ⚠️ Et la branche du milieu était morte pour toute donnée bien formée :
+  // `parseCoFormateurs` n'accepte que `trainerId`, tandis que le repli lisait
+  // `id`, `nom` et `prenom` — des champs que les entrées courantes ne portent
+  // pas. On tombait donc directement sur la raison sociale.
+  //
+  // Depuis que la lettre est SIGNABLE, l'incohérence devient visible : le
+  // service de signature refuse un signataire non résolvable (il ne scelle
+  // jamais une identité fabriquée), si bien que le générateur produisait une
+  // pièce que personne ne pouvait signer. Mieux vaut refuser de l'émettre.
+  //
+  // Impact MESURÉ avant ce changement, pas supposé : une seule session sans
+  // formateur principal en production, son `co_formateurs` est vide, et AUCUNE
+  // lettre de mission n'a jamais été émise. On retire donc le défaut avant son
+  // premier cas réel.
   const nomPrenom = trainer
     ? `${trainer.prenom} ${trainer.nom}`.trim()
     : premierRaw?.prenom && premierRaw?.nom
       ? `${premierRaw.prenom} ${premierRaw.nom}`.trim()
-      : identite.raisonSociale;
+      : "";
+  if (nomPrenom === "") {
+    return {
+      error:
+        "Aucun formateur n'est rattaché à cette session : une lettre de mission doit nommer la personne qui reçoit la mission. Désignez le formateur principal, puis régénérez la lettre.",
+    };
+  }
 
   const tarifJourHt = trainer?.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0;
 
@@ -1677,6 +1892,11 @@ export async function genererContratSousTraitanceAction(input: {
   const doc = await generateDocument({
     type: "contrat_sous_traitance",
     identite,
+    // 🔴 Sans ce rattachement, la pièce n'était reliée au sous-traitant par RIEN :
+    // impossible, depuis un `documents_generes.id`, de savoir à qui adresser le
+    // lien de signature. Le contact ajouté sur la fiche serait resté
+    // inatteignable.
+    refs: { sousTraitantId },
     buildElement: (numero) =>
       React.createElement(ContratSousTraitancePdf, {
         data: {
@@ -1772,16 +1992,21 @@ export async function verserFicheFormateurAction(input: {
     return { error: "Formateur désactivé : réactivez-le avant de verser sa fiche." };
   }
 
-  // Résolution des titres des formations habilitées (ids → titres).
-  let titresHabilitations: string[] = [];
-  if (trainer.formationsHabilitees.length > 0) {
-    const formations = await prisma.formation.findMany({
-      where: { id: { in: trainer.formationsHabilitees } },
-      select: { titre: true },
-      orderBy: { titre: "asc" },
-    });
-    titresHabilitations = formations.map((f) => f.titre);
-  }
+  // Titres des formations habilitées, lus depuis `TrainerHabilitation` — la source
+  // qui fait foi pour la garde d'assignation.
+  //
+  // 🔴 Audit certification 2026-07-25 (F11) : cette résolution interrogeait
+  // `formation.id IN trainer.formationsHabilitees`, or la colonne legacy contient
+  // des SLUGS en production. Elle ne résolvait donc RIEN, et le CV formateur —
+  // pièce de preuve de l'indicateur 21 — sortait sans aucune habilitation, pendant
+  // que la liste des formateurs en annonçait 33. Deux pièces du même dossier se
+  // contredisaient.
+  const habilitations = await prisma.trainerHabilitation.findMany({
+    where: { trainerId: trainer.id },
+    select: { formation: { select: { titre: true } } },
+    orderBy: { formation: { titre: "asc" } },
+  });
+  const titresHabilitations: string[] = habilitations.map((h) => h.formation.titre);
 
   const identite = await getOrganismeIdentite();
   const maintenant = new Date();

@@ -1,7 +1,10 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import {
+  isQualiopiPublicDisclosureEnabled,
+  isQualiopiCertificationObtenue,
+} from "@/server/qualiopi/config/flag";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import {
   isRoutableArticleSlug,
@@ -173,7 +176,6 @@ type PathnameKey = keyof typeof routing.pathnames;
 const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   "/design",
   "/components",
-  "/sections",
   "/desabonnement",
   "/mes-donnees",
   // Audit méta-cert 2026-05-15 AGENT 13 P1-1 — `/mes-donnees/export` exposait
@@ -619,10 +621,17 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // Phase A tant que l'agrément n'est pas public). On la garde HORS sitemap tant
     // que `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" pour éviter une URL 404 dans
     // pages.xml (incohérence GSC + crawl budget gaspillé).
-    if (key === "/certification-qualiopi" && !isQualiopiPublicDisclosureEnabled()) continue;
+    if (
+      key === "/certification-qualiopi" &&
+      (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
+    )
+      continue;
     // Page financement OPCO/France Travail : Phase-B only (mentions financement
     // interdites avant l'agrément OF) → hors sitemap en Phase A.
-    if (key === "/financement-opco-france-travail" && !isQualiopiPublicDisclosureEnabled())
+    if (
+      key === "/financement-opco-france-travail" &&
+      (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
+    )
       continue;
     for (const locale of effectiveLocales) {
       const url = localeUrl(key, locale);

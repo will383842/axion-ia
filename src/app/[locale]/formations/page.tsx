@@ -37,6 +37,7 @@ import {
   getSeminairesV2,
 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 import {
   FORMATION_DUREE_FACTS,
   getFormationImage,
@@ -68,7 +69,8 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // brand SVG inline + animations CSS subtiles. Remplace HeroMatrix (trop dense)
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -89,7 +91,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   // Claim Qualiopi/OPCO gaté Phase B — il fuyait en SERP alors que tout le reste
   // de la page est gaté (purge du flag 2026-07-14). ISR 1h le réinjecte au flip.
-  const qualiopiSerp = isQualiopiPublicDisclosureEnabled()
+  // Audit F13 (2026-07-25) : ce drapeau gate une AFFIRMATION de certification,
+  // pas la visibilité de la page. Il exige donc la certification réelle.
+  const qualiopiSerp = isQualiopiCertificationObtenue()
     ? "certifié Qualiopi, finançables OPCO"
     : "générales, par métier ou par secteur d'activité";
   return buildProductMetadata({
@@ -124,7 +128,7 @@ export default async function FormationsHub({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/formations",
-      label: isFr ? "Formations IA" : "AI trainings",
+      label: serviceOfficial(SERVICE_BY_ID.formations, isFr),
     },
   ];
 
@@ -143,7 +147,7 @@ export default async function FormationsHub({ params }: Props) {
   const minPriceLabel = formatAmount(minEur, "fr");
   // Claims certification/financement du héros — gatés Phase B (ISR 1h les
   // réinjecte au flip du flag, comme la meta).
-  const ofPublicHero = isQualiopiPublicDisclosureEnabled();
+  const ofPublicHero = isQualiopiCertificationObtenue();
 
   /** « 4 heures » · « 1 journée » · « 2 journées (scindable 2×1j) ». */
   const dureeLabelFr = (f: {
@@ -467,6 +471,11 @@ export default async function FormationsHub({ params }: Props) {
           <ChevronDown aria-hidden="true" className="text-terracotta h-5 w-5 animate-bounce" />
         </a>
       </div>
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="formations" isFr={isFr} />
 
       {/* CATALOGUE — Refonte 2026-07-19 (Will) : l'axe durée disparaît. Le hub
           présente les 3 OFFRES GÉNÉRALES (cartes riches, prix publics par

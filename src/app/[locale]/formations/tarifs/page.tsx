@@ -33,7 +33,7 @@ import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
 import { FinancingBadges } from "@/components/qualiopi/FinancingBadges";
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 export const revalidate = 3600;
 
@@ -45,7 +45,7 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   // Suffixe Qualiopi/finançable — GATED Phase B (claim illégal avant agrément).
-  const qualiopiSuffix = isQualiopiPublicDisclosureEnabled()
+  const qualiopiSuffix = isQualiopiCertificationObtenue()
     ? " Organisme certifié Qualiopi, formations finançables (OPCO, France Travail)."
     : "";
   const { minEur, maxEur } = getFormationCatalogPriceRange();

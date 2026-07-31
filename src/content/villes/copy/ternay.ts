@@ -46,8 +46,8 @@ export const TERNAY_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Ternay : sessions dans votre bureau, atelier, entrepôt, cabinet, commerce ou en visio. Dirigeants TPE et PME ternaysiens : artisans, commerçants, professions libérales, dirigeants tertiaires et logistiques.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Ternay : plateformes sur mesure pour TPE et PME du sud lyonnais — portails B2B, suivi de commandes, prise de RDV, agents conversationnels intégrés, automatisation du service client.",
-      en: "Sites web augmentés IA à Ternay : plateformes sur mesure pour TPE et PME du sud lyonnais — portails B2B, suivi de commandes, prise de RDV, agents conversationnels intégrés, automatisation du service client.",
+      fr: "Sites web & SaaS IA à Ternay : plateformes sur mesure pour TPE et PME du sud lyonnais — portails B2B, suivi de commandes, prise de RDV, agents conversationnels intégrés, automatisation du service client.",
+      en: "Sites web & SaaS IA à Ternay : plateformes sur mesure pour TPE et PME du sud lyonnais — portails B2B, suivi de commandes, prise de RDV, agents conversationnels intégrés, automatisation du service client.",
     },
   },
   faqGeolocalisee: [

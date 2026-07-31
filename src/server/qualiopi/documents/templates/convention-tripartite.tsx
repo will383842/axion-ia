@@ -14,6 +14,8 @@ import {
   FieldRow,
   SignatureZone,
   pdfStyles,
+  assainirEspacesPdf,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -25,6 +27,9 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 export interface ConventionTripartiteData {
   numero: string;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   // Partie cliente
   client: {
     raisonSociale: string;
@@ -55,6 +60,17 @@ export interface ConventionTripartiteData {
   resteAChargeClient: number;
   // Date convention
   dateConvention: string;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Renseignées, `SignatureZone` rend le tracé, l'horodatage et l'empreinte.
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -99,12 +115,20 @@ const local = StyleSheet.create({
 // Helpers
 // ============================================================
 
+// 🔴 Correctif glyphes 2026-07-26. `Intl` fr-FR emet U+202F (fine insecable)
+// comme separateur de milliers ; aucune police du projet ne possede ce glyphe,
+// @react-pdf bascule sur Helvetica/WinAnsi et ecrit l'octet 0x2F, soit « / ».
+// Tout montant >= 1 000 EUR sortait donc « 1/440,00 € ». Detail mesure dans
+// `assainirEspacesPdf` (base-layout.tsx). Ce duplicat local echappait au
+// correctif du helper partage : il doit assainir lui aussi.
 function formatEur(montant: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(montant);
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+    }).format(montant),
+  );
 }
 
 // ============================================================
@@ -125,6 +149,8 @@ export function ConventionTripartitePdf({
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
         <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.convention}</Text>
@@ -137,7 +163,19 @@ export function ConventionTripartitePdf({
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
 
@@ -200,7 +238,16 @@ export function ConventionTripartitePdf({
             <Text style={local.amountLabel}>Reste à charge client</Text>
             <Text style={local.amountValue}>{formatEur(data.resteAChargeClient)}</Text>
           </View>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
         </DocSection>
 
         {/* 4. Conditions d'annulation */}
@@ -236,10 +283,19 @@ export function ConventionTripartitePdf({
             parties={[
               {
                 titre: "Pour l'organisme de formation",
+                signature: data.signatures?.axionia ?? null,
                 nom: identite.raisonSociale || "Axion-IA SAS",
               },
-              { titre: "Pour le client", nom: data.client.raisonSociale },
-              { titre: "Pour l'OPCO", nom: data.opco.nom },
+              {
+                titre: "Pour le client",
+                signature: data.signatures?.client ?? null,
+                nom: data.client.raisonSociale,
+              },
+              {
+                titre: "Pour l'OPCO",
+                signature: data.signatures?.financeur ?? null,
+                nom: data.opco.nom,
+              },
             ]}
           />
         </DocSection>

@@ -36,6 +36,7 @@ import {
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { coachingFormulePath, coachingFormatPath } from "@/content/coaching-1to1";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
 // ----------------------------------------------------------------------------
 // Configs spécifiques aux 2 formats — seules variations vs template commun.
@@ -240,7 +241,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
   const famillePathFr = coachingFormulePath("membre-equipe", "fr");
   const formatPathFr = coachingFormatPath(slug, "fr");
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/un-a-un", label: serviceOfficial(SERVICE_BY_ID.unAUn, isFr) },
     {
       href: famillePathFr,
       label: isFr ? family.labelFr : family.labelEn,

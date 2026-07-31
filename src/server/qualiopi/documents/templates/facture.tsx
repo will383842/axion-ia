@@ -6,7 +6,9 @@
  *   - SIRET / NDA / Qualiopi (en-tête + bloc facturation, `required`).
  *   - Date d'émission, date d'échéance, date de réalisation de la prestation
  *     (art. 242 nonies A CGI).
- *   - TVA : exonération art. 261-4-4° CGI (formation professionnelle continue).
+ *   - TVA : mention DÉRIVÉE du régime configuré (`regime_tva`), jamais figée.
+ *     Assujetti → aucune mention ; exonération 261-4-4° ou franchise 293 B →
+ *     mention correspondante. Voir F25.
  *   - Pénalités de retard (art. L.441-10), indemnité forfaitaire 40 €
  *     (art. D.441-5), absence d'escompte (art. L.441-9) — C. commerce, B2B.
  *
@@ -166,6 +168,9 @@ export interface FactureData {
   subrogationOpco?: SubrogationOpco;
   rib?: RibFacture;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   /** Avoir (facture rectificative, montants négatifs) — change le titre du document. */
   estAvoir?: boolean;
   /** Numéro de la facture d'origine rectifiée (obligatoire sur un avoir). */
@@ -198,6 +203,8 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         docNumber={`N° ${data.numero}`}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
         <DocSection title="Informations de facturation">
@@ -222,6 +229,31 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
           />
           <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
           <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
+          {/*
+            🔴 F26 — mentions obligatoires de toute société commerciale :
+            forme juridique, capital social et RCS + ville (art. R123-238 C. com.),
+            n° de TVA intracommunautaire dès 150 € (art. 242 nonies A CGI).
+            Elles manquaient : la facture n'était pas régulière.
+
+            Chaque bloc est conditionnel — tant que `legal_overrides` n'est pas
+            complété, on omet plutôt que d'imprimer un libellé vide, qui se lirait
+            comme une donnée perdue.
+          */}
+          {identite.formeJuridique ? (
+            <FieldRow label="Forme juridique" value={identite.formeJuridique} />
+          ) : null}
+          {identite.capitalSocial ? (
+            <FieldRow label="Capital social" value={identite.capitalSocial} />
+          ) : null}
+          {identite.rcsVille ? (
+            <FieldRow
+              label="RCS"
+              value={identite.siren ? `${identite.rcsVille} ${identite.siren}` : identite.rcsVille}
+            />
+          ) : null}
+          {identite.tvaIntracom ? (
+            <FieldRow label="N° TVA intracommunautaire" value={identite.tvaIntracom} />
+          ) : null}
           <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
           {identite.qualiopi ? (
             <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
@@ -304,6 +336,26 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
             {data.rib.banque ? <FieldRow label="Banque" value={data.rib.banque} /> : null}
             <FieldRow label="IBAN" value={data.rib.iban} />
             <FieldRow label="BIC" value={data.rib.bic} />
+            {/* 🔴 La consigne de RÉFÉRENCE, sans laquelle tout rapprochement est
+                une devinette.
+
+                Un virement qui arrive sans référence n'est identifiable que par
+                son montant et son émetteur — ce qui suffit pour un client, pas
+                pour dix, et surtout pas pour deux factures du même montant. Le
+                champ `receivedReference` existe côté encaissement ; encore
+                faut-il que le client ait quelque chose à mettre.
+
+                ⚠️ Rendue DANS le bloc RIB : sans coordonnées bancaires, demander
+                une référence de virement n'aurait aucun sens. */}
+            <Text
+              style={{
+                fontSize: T.xs,
+                color: brandColor("fg-soft"),
+                marginTop: S.sm,
+              }}
+            >
+              {`Merci de rappeler la référence « ${data.numero} » dans le libellé de votre virement.`}
+            </Text>
           </View>
         ) : null}
 

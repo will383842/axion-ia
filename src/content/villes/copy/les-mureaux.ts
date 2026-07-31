@@ -46,8 +46,8 @@ export const LES_MUREAUX_COPY: VilleCopy = {
       en: "Coaching 1-to-1 aux Mureaux : sessions dans votre atelier, bureau d'études ou en visio. Pour dirigeants de TPE/PME industrielles, artisans et prestataires techniques souhaitant piloter l'IA eux-mêmes.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA aux Mureaux : portails B2B industriels avec devis automatisés et catalogues techniques, sites vitrines pour artisans et commerces, dotés d'assistants intelligents et de contenus optimisés.",
-      en: "Sites web augmentés IA aux Mureaux : portails B2B industriels avec devis automatisés et catalogues techniques, sites vitrines pour artisans et commerces, dotés d'assistants intelligents et de contenus optimisés.",
+      fr: "Sites web & SaaS IA aux Mureaux : portails B2B industriels avec devis automatisés et catalogues techniques, sites vitrines pour artisans et commerces, dotés d'assistants intelligents et de contenus optimisés.",
+      en: "Sites web & SaaS IA aux Mureaux : portails B2B industriels avec devis automatisés et catalogues techniques, sites vitrines pour artisans et commerces, dotés d'assistants intelligents et de contenus optimisés.",
     },
   },
   services: {

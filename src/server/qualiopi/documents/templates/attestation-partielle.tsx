@@ -100,6 +100,8 @@ export interface ResultatsPartielsData {
   heuresTotales: number;
   evaluationObtenue?: string;
   competencesPartiellesValidees: string;
+  /** Réserves : partiellement acquis, non acquis, non évalués (F21). */
+  competencesReserves?: string;
 }
 
 export interface AttestationPartielleData {
@@ -215,6 +217,12 @@ export function AttestationPartiellePdf({
             <Text style={styles.resultLabel}>Compétences partiellement validées</Text>
             <Text style={styles.resultValue}>{data.resultats.competencesPartiellesValidees}</Text>
           </View>
+          {data.resultats.competencesReserves ? (
+            <View style={styles.resultRow}>
+              <Text style={styles.resultLabel}>Réserves</Text>
+              <Text style={styles.resultValue}>{data.resultats.competencesReserves}</Text>
+            </View>
+          ) : null}
         </DocSection>
 
         {/* QR de vérification */}

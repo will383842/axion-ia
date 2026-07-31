@@ -42,7 +42,13 @@ export function GET() {
   // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
   // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
   // est active. Catégorie = défaut SSOT du registre de config.
-  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
+  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
+  // simple visibilité des pages OF. Lecture env directe conservée (convention
+  // de ce fichier), mais sur le drapeau de certification.
+  const qualiopiCertified =
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
   const qualiopiSection = qualiopiCertified
     ? `
 
@@ -122,7 +128,7 @@ export function GET() {
 
 ## Stratégie & positionnement
 
-- Mobile-first absolu, accessible WCAG 2.2 AA.
+- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
 - Notifications Telegram + emails automatiques (PowerMTA self-hosted, pas de SaaS tiers).
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.
@@ -144,7 +150,7 @@ export function GET() {
 
 - \`/admin/*\` — espace privé staff Axion-IA (Auth.js JWT + 2FA TOTP).
 - \`/fr/mes-donnees\` — espace utilisateur authentifié (RGPD self-service).
-- \`/fr/design\`, \`/fr/components\`, \`/fr/sections\` — pages design system / preview internes.
+- \`/fr/design\`, \`/fr/components\` — pages design system / preview internes.
 - \`/api/*\` (sauf \`/api/og\`) — endpoints serveur (auth, admin, GDPR, webhooks).
 - \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
 `;

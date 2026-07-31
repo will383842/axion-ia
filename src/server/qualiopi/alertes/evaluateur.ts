@@ -8,6 +8,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
@@ -192,7 +193,11 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
   const sessions = await prisma.trainingSession.findMany({
     where: {
       statut: { in: ["planifiee", "en_cours"] },
-      dateDebut: { lte: horizon },
+      // 🔴 Vérification E2E 2026-07-26 — `lte: horizon` seul n'avait PAS de borne
+      // basse : toute session sans formateur, si ancienne soit-elle, ressortait
+      // avec le message « démarre le <date passée> ». C'est exactement le piège
+      // que `regleSessionBloqueeEnCours` garde déjà (`gte: daysAgo(365)`).
+      dateDebut: { lte: horizon, gte: daysAgo(365, now) },
       formateurPrincipalId: null,
     },
     select: { id: true, numero: true, titreSession: true, dateDebut: true },
@@ -382,6 +387,21 @@ async function regleQualiopiExpiration(now: Date): Promise<AlerteCandidate[]> {
 async function regleBpf(now: Date): Promise<AlerteCandidate[]> {
   const annee = now.getFullYear();
   const anneeBpf = annee - 1; // BPF de l'année N-1, à déposer avant le 31 mai de l'année N.
+
+  // 🔴 Audit certification 2026-07-26 (F56). L'obligation de déposer un BPF
+  // (art. L6352-11) ne naît qu'avec la DÉCLARATION D'ACTIVITÉ. Sans NDA,
+  // l'organisme n'est pas encore un organisme de formation au sens du code du
+  // travail : il ne doit aucun bilan.
+  //
+  // La règle concluait à un manquement à partir de la seule absence de dépôt, et
+  // affichait « BPF en retard — régularisation urgente auprès de la DREETS » en
+  // CRITIQUE à un organisme qui n'était pas déclaré. Sur un écran qu'un
+  // certificateur peut ouvrir, l'alerte l'amène à une conclusion fausse et
+  // défavorable. Et deux faux positifs en critique apprennent à ignorer le
+  // niveau critique — le jour où une vraie alerte tombe, elle se noie.
+  const nda = await getQualiopiConfig("nda_numero");
+  if (typeof nda !== "string" || nda.trim() === "") return [];
+
   const anneeDeposee = await getQualiopiConfig("bpf_annee_deposee");
   const bpfDepose = typeof anneeDeposee === "number" && anneeDeposee >= anneeBpf;
   if (bpfDepose) return [];
@@ -492,7 +512,6 @@ async function regleCvFormateurPerime(now: Date): Promise<AlerteCandidate[]> {
  *  Note: les Trainers sous-traitants individuels ont sousTraitantVerifieAt.
  */
 async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]> {
-  const threshold60 = daysFromNow(60, now);
   const alertes: AlerteCandidate[] = [];
 
   // Trainers sous-traitants actifs avec date de vérification périmée (proxy Qualiopi)
@@ -500,6 +519,19 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
     where: { actif: true, statut: "sous_traitant" },
     select: { id: true, nom: true, prenom: true, sousTraitantVerifieAt: true },
   });
+
+  // 🔴 Vérification E2E 2026-07-26 — faux positif à 100 %, niveau CRITIQUE.
+  // `sousTraitantVerifieAt` est la date à laquelle la vérification data.gouv.fr
+  // a été FAITE (schema.prisma) — donc une date PASSÉE. La règle la comparait à
+  // `now + 60 j` puis calculait `verifieAt - now`, toujours ≤ 0 : un
+  // sous-traitant vérifié hier était déclaré « expiré ». La preuve de conformité
+  // servait à conclure au manquement.
+  //
+  // Sémantique correcte, conforme au commentaire de tête de la règle : une
+  // vérification vaut 12 mois à compter du jour où elle a été faite.
+  const VALIDITE_MOIS = 12;
+  const perime = daysAgo(365, now); // vérification trop ancienne → expirée
+  const bientotPerime = daysAgo(365 - 60, now); // expire sous 60 jours
 
   for (const t of trainersST) {
     if (!t.sousTraitantVerifieAt) {
@@ -511,29 +543,27 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
         cibleType: "Trainer",
         cibleId: t.id,
       });
-    } else if (t.sousTraitantVerifieAt <= threshold60) {
+    } else if (t.sousTraitantVerifieAt <= perime) {
+      alertes.push({
+        code: "sous_traitant_qualiopi_expire",
+        niveau: "critique",
+        titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
+        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} date du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")} : elle a plus de ${VALIDITE_MOIS} mois.`,
+        cibleType: "Trainer",
+        cibleId: t.id,
+      });
+    } else if (t.sousTraitantVerifieAt <= bientotPerime) {
       const joursRestants = Math.ceil(
-        (t.sousTraitantVerifieAt.getTime() - now.getTime()) / (24 * 60 * 60 * 1000),
+        (t.sousTraitantVerifieAt.getTime() - perime.getTime()) / (24 * 60 * 60 * 1000),
       );
-      if (joursRestants <= 0) {
-        alertes.push({
-          code: "sous_traitant_qualiopi_expire",
-          niveau: "critique",
-          titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
-          message: `La vérification du formateur sous-traitant ${t.prenom} ${t.nom} a expiré.`,
-          cibleType: "Trainer",
-          cibleId: t.id,
-        });
-      } else {
-        alertes.push({
-          code: "sous_traitant_qualiopi_expire_j60",
-          niveau: "important",
-          titre: "Qualiopi sous-traitant expire dans 60 jours",
-          message: `La vérification du formateur sous-traitant ${t.prenom} ${t.nom} expire dans ${joursRestants} jours.`,
-          cibleType: "Trainer",
-          cibleId: t.id,
-        });
-      }
+      alertes.push({
+        code: "sous_traitant_qualiopi_expire_j60",
+        niveau: "important",
+        titre: "Qualiopi sous-traitant expire dans 60 jours",
+        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} (du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")}) atteint ${VALIDITE_MOIS} mois dans ${joursRestants} jours.`,
+        cibleType: "Trainer",
+        cibleId: t.id,
+      });
     }
   }
 
@@ -551,6 +581,12 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
       statut: "planifiee",
       dateDebut: { lte: j7, gt: now },
       opcoStatut: "non_demande",
+      // 🔴 Vérification E2E 2026-07-26 — même défaut que F56, dans la MÊME
+      // fonction, sur la requête d'à côté : `non_demande` est la valeur par
+      // défaut du schéma, donc toute session à J-7 qu'aucun OPCO ne finance
+      // levait « sans accord OPCO ». La garde est identique à celle du bloc
+      // ci-dessous.
+      OR: [{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }],
     },
     select: { id: true, numero: true, dateDebut: true },
   });
@@ -565,12 +601,23 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
     });
   }
 
-  // Sessions démarrées sans accord (en_cours avec opcoStatut non_demande ou demande)
+  // Sessions démarrées sans accord OPCO.
+  //
+  // 🔴 F56 — `opcoStatut` vaut `non_demande` PAR DÉFAUT (schema.prisma). Filtrer
+  // dessus seul faisait donc lever une alerte CRITIQUE « formation démarrée sans
+  // accord OPCO » sur TOUTE session passée en `en_cours`, y compris celles qu'aucun
+  // OPCO ne finance — vérifié en production : 0 dossier de financement,
+  // `opcoSubrogation = false`, et l'alerte tombait quand même.
+  //
+  // Un OPCO n'est concerné que si un dossier de financement existe, ou si la
+  // subrogation de paiement a été demandée. Sans l'un des deux, il n'y a pas
+  // d'accord à obtenir, donc pas de manquement.
   const demarreeSansAccord = await prisma.trainingSession.findMany({
     where: {
       statut: "en_cours",
       dateDebut: { lte: now },
       opcoStatut: { in: ["non_demande", "demande_en_cours"] },
+      OR: [{ opcoSubrogation: true }, { dossiersFinancement: { some: {} } }],
     },
     select: { id: true, numero: true },
   });
@@ -616,12 +663,18 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
   const j60 = daysAgo(60, now);
   const alertes: AlerteCandidate[] = [];
 
+  // 🔴 Audit certification 2026-07-26 (F59). La règle ne regardait que le statut
+  // `emise`. Or une facture partiellement réglée reste due pour son solde — et
+  // c'est précisément le cas du RESTE À CHARGE : l'OPCO verse sa part, la facture
+  // bascule en `partiellement_payee`, et si l'entreprise ne règle jamais la
+  // sienne, AUCUNE alerte ne tombe. Jamais. Le trou portait exactement sur le
+  // scénario de financement mixte, le plus fréquent en formation professionnelle.
   const factures = await prisma.factureFormation.findMany({
     where: {
-      statut: "emise",
+      statut: { in: ["emise", "partiellement_payee"] },
       echeanceAt: { not: null, lte: j30 },
     },
-    select: { id: true, numero: true, echeanceAt: true },
+    select: { id: true, numero: true, echeanceAt: true, statut: true },
   });
 
   for (const f of factures) {
@@ -631,7 +684,7 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
         code: "facture_impayee_j60",
         niveau: "critique",
         titre: "Facture impayée depuis +60 jours",
-        message: `La facture ${f.numero} est impayée depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
+        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
         cibleType: "FactureFormation",
         cibleId: f.id,
       });
@@ -640,7 +693,7 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
         code: "facture_impayee_j30",
         niveau: "important",
         titre: "Facture impayée depuis +30 jours",
-        message: `La facture ${f.numero} est impayée depuis plus de 30 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
+        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 30 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
         cibleType: "FactureFormation",
         cibleId: f.id,
       });
@@ -677,20 +730,49 @@ async function regleConventionFormation(now: Date): Promise<AlerteCandidate[]> {
   const limite = daysFromNow(5, now);
   const sessions = await prisma.trainingSession.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gte: now, lte: limite },
-      documents: { none: { type: { in: ["convention", "convention_tripartite"] } } },
+      // 🔴 Constat F7, 2026-07-26 — la règle ne regardait QUE les sessions
+      // `planifiee` démarrant dans les 5 jours. Une session DÉJÀ DÉMARRÉE sans
+      // convention était donc parfaitement silencieuse, alors que c'est le cas
+      // le plus grave : l'obligation est dépassée, plus seulement imminente.
+      // Vérifié en production : `AXI-SESS-2026-001` est `en_cours` depuis le
+      // 08/07, sans convention, et un certificat de réalisation a même été émis
+      // — sans qu'aucune alerte ne se lève.
+      //
+      // Borne basse d'un an : sans elle, le premier passage du cron déverserait
+      // une salve sur tout l'historique (piège déjà rencontré sur R03bis).
+      statut: { in: ["planifiee", "en_cours", "realisee"] },
+      dateDebut: { lte: limite, gte: daysAgo(365, now) },
+      // 🔴 Vérification E2E 2026-07-26 — la règle n'acceptait que la convention.
+      // Vendue à un particulier, la pièce exigée par le code du travail est un
+      // CONTRAT de formation (L6353-3), type `contrat` : une session
+      // parfaitement en règle levait quand même une alerte CRITIQUE
+      // « Convention manquante ». La règle ne vérifiait pas quelle obligation
+      // s'applique.
+      documents: {
+        none: { type: { in: ["convention", "convention_tripartite", "contrat"] } },
+      },
     },
-    select: { id: true, numero: true, dateDebut: true },
+    select: { id: true, numero: true, dateDebut: true, statut: true },
   });
-  return sessions.map((s) => ({
-    code: "convention_formation_manquante",
-    niveau: "critique" as AlerteNiveau,
-    titre: "Convention de formation manquante avant démarrage",
-    message: `La convention de formation (L.6353-1) de la session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) n'est pas générée. Obligatoire avant démarrage (ind.9⭐).`,
-    cibleType: "TrainingSession",
-    cibleId: s.id,
-  }));
+  return sessions.map((s) => {
+    // Le message doit dire au lecteur où il en est : « à produire avant le
+    // démarrage » et « la session a démarré sans » n'appellent pas la même
+    // urgence, même si le niveau reste critique dans les deux cas.
+    const dejaDemarree = s.statut !== "planifiee";
+    const dateFr = s.dateDebut.toLocaleDateString("fr-FR");
+    return {
+      code: "convention_formation_manquante",
+      niveau: "critique" as AlerteNiveau,
+      titre: dejaDemarree
+        ? "Session démarrée SANS convention de formation"
+        : "Convention de formation manquante avant démarrage",
+      message: dejaDemarree
+        ? `La session ${s.numero} a démarré le ${dateFr} sans convention (L.6353-1) ni contrat de formation (L.6353-3). L'obligation n'est plus imminente, elle est dépassée : régulariser et documenter le retard (ind.9⭐).`
+        : `Aucune convention (L.6353-1) ni contrat de formation (L.6353-3) n'est généré pour la session ${s.numero} (début le ${dateFr}). Obligatoire avant démarrage (ind.9⭐).`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
 }
 
 /** R18 (LOT 4) — Revue trimestrielle à réaliser (info, non bloquante — décision B4).
@@ -763,6 +845,26 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
 
 type RegleFn = (now: Date) => Promise<AlerteCandidate[]>;
 
+/** R-outbox — Des emails commerciaux attendent une validation manuelle.
+ *
+ *  Une corbeille de validation ne vaut que si quelqu'un l'ouvre. Sans ce
+ *  signal, un devis « marqué envoyé » pouvait rester indéfiniment non expédié.
+ *  Le seuil est à 1 : l'attente n'est pas un état normal, c'est une action due.
+ */
+async function regleEmailsEnAttente(): Promise<AlerteCandidate[]> {
+  const n = await compterEnAttente();
+  if (n === 0) return [];
+  return [
+    {
+      code: "emails_en_attente_validation",
+      niveau: "important",
+      titre: "Des emails attendent votre validation",
+      message: `${n} email${n > 1 ? "s" : ""} en attente dans la corbeille de validation. Tant qu'ils ne sont pas approuvés, rien ne part chez le client.`,
+      cibleType: "EmailOutbox",
+    },
+  ];
+}
+
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
@@ -777,6 +879,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "qualiopi_expiration", fn: regleQualiopiExpiration },
   { nom: "bpf", fn: regleBpf },
   { nom: "veille_inactive", fn: regleVeilleInactive },
+  { nom: "emails_en_attente_validation", fn: regleEmailsEnAttente },
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
   { nom: "opco", fn: regleOpco },

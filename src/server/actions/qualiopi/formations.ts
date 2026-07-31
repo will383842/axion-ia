@@ -10,7 +10,8 @@
  * archiveFormationAction      : retire une formation du catalogue actif (WS6).
  * duplicateFormationAction    : clone une formation en brouillon nouvelle version (WS6).
  *
- * TVA : exonérée 261-4-4° CGI (pas de TVA sur formations).
+ * TVA : selon `qualiopi.regime_tva` (assujetti par défaut). Ne JAMAIS coder
+ * une exonération en dur — cf. `src/server/qualiopi/config/tva.ts`.
  * Montants formation : résolus via offre / pricing.ts (jamais hardcodés ici).
  */
 

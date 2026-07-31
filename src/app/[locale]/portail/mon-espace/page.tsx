@@ -32,6 +32,7 @@ import {
   quitterPortailAction,
 } from "@/server/actions/qualiopi/portail";
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
+import { PositionnementPortailForm } from "@/components/portail/PositionnementPortailForm";
 import { HandicapDeclarationForm } from "@/components/portail/HandicapDeclarationForm";
 import { RgpdActions } from "@/components/portail/RgpdActions";
 import { QuitterPortailButton } from "@/components/portail/QuitterPortailButton";
@@ -78,7 +79,23 @@ interface PageProps {
 export default async function PortailMonEspacePage({ params }: PageProps) {
   const { locale } = await params;
 
-  // Lire le cookie portail
+  // Lire le cookie portail.
+  //
+  // Défense en profondeur — le refus de PREMIÈRE ligne n'est plus ici. Depuis
+  // l'audit X3 (2026-07-26), `src/proxy.ts` bloc 0sexies redirige (307) vers
+  // `/portail/demander-acces` dès que le cookie est ABSENT : c'est lui qui garantit
+  // le non-200 que voit un scanner, parce qu'un Server Component qui `return` du
+  // JSX rend TOUJOURS un 200 — on ne peut pas fixer le statut depuis ici.
+  //
+  // Les branches ci-dessous ne sont PAS mortes pour autant : elles couvrent le
+  // cookie PRÉSENT mais invalide (expiré, révoqué, profil illisible), que l'Edge ne
+  // sait pas distinguer sans appel Prisma. Elles conservent le message différencié.
+  //
+  // 🔴 NE PAS convertir la branche `introuvable` en `notFound()` : le `catch` plus
+  // bas attrape aussi les pannes de connexion Prisma et les échecs de `decryptPii`.
+  // Un 404 marketing ferait disparaître « contactez l'organisme de formation » au
+  // moment précis où cette phrase sert, et une panne d'infra deviendrait un 404 muet
+  // sur lequel aucune supervision ne se déclenche.
   const cookieToken = await getPortailToken();
 
   if (!cookieToken) {
@@ -185,19 +202,32 @@ export default async function PortailMonEspacePage({ params }: PageProps) {
           </p>
         </Section>
 
-        {/* Questionnaires de satisfaction */}
+        {/* Questionnaires : positionnement (avant) et satisfaction (à chaud / à froid) */}
         {questionnairesNonRepondus.length > 0 && (
-          <Section titre="Évaluations à remplir">
+          <Section titre="Questionnaires à remplir">
             <ul className="space-y-4">
               {questionnairesNonRepondus.map((q) => (
                 <li key={q.token} className="rounded-lg border border-gray-200 bg-white p-4">
                   <p className="mb-3 text-sm font-medium text-gray-900">
                     {QUESTIONNAIRE_TYPE_LABELS[q.type] ?? q.type}
                   </p>
-                  <SatisfactionPortailForm
-                    questionnaireToken={q.token}
-                    soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
-                  />
+                  {/* 🔴 Audit F17 (2026-07-26) : ce bloc rendait SatisfactionPortailForm
+                      pour les TROIS types, sans tester q.type — le bénéficiaire devait
+                      donc noter sa satisfaction /5 AVANT la formation, et aucune analyse
+                      du besoin n'était collectée (off.4 ⭐ et off.8 non couvrables, même
+                      en remplissant la base). L'aiguillage sur le type est le correctif. */}
+                  {q.type === "positionnement" ? (
+                    <PositionnementPortailForm
+                      questionnaireToken={q.token}
+                      objectifs={q.objectifs}
+                      soumettreAction={soumettreSatisfactionPortailAction}
+                    />
+                  ) : (
+                    <SatisfactionPortailForm
+                      questionnaireToken={q.token}
+                      soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
+                    />
+                  )}
                 </li>
               ))}
             </ul>

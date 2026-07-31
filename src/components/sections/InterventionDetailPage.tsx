@@ -37,6 +37,7 @@ import { getFamily } from "@/content/interventions-taxonomy";
 import { formatAmount } from "@/content/pricing";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
 interface Props {
   slug: InterventionDetailSlug;
@@ -78,7 +79,7 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
   const flexibleCtaHref = `/interventions/demande?objet=${encodeURIComponent(config.contactObject)}`;
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions" : "Sessions" },
+    { href: "/un-a-un", label: serviceOfficial(SERVICE_BY_ID.unAUn, isFr) },
     {
       href: locale === "fr" ? family.pathFr : family.pathEn,
       label: isFr ? family.labelFr : family.labelEn,

@@ -17,6 +17,7 @@ import type { AlerteNiveau } from "../../../../prisma/generated/client";
 const CODES_ATTENDUS: string[] = [
   "referent_handicap_absent",
   "responsable_qualite_absent",
+  "emails_en_attente_validation",
   "emargement_manquant",
   "session_sans_formateur",
   // Ajouté 2026-07-20 : comble l'angle mort où une session non émargée restait

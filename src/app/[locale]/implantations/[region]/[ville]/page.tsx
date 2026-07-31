@@ -238,7 +238,7 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
       labelEn: "On-site interventions",
       descFr: `Ateliers et formations IA sur site à ${v} — demi-journée à 2 jours, sur vos données réelles, avec vos équipes. TPE, PME, ETI et grandes entreprises.`,
       descEn: `On-site AI workshops in ${v} — half-day to 2 days, on your real data, with your teams. Micro-businesses, SMBs, mid-market, large enterprises.`,
-      mainServiceHref: "/interventions",
+      mainServiceHref: "/formations",
     },
     {
       slug: "un-a-un",
@@ -266,8 +266,8 @@ function buildVerticales(v: string): ReadonlyArray<VerticaleMeta> {
     },
     {
       slug: "sites-web-ia",
-      labelFr: "Sites web augmentés IA",
-      labelEn: "AI-augmented websites",
+      labelFr: "Sites web & SaaS IA",
+      labelEn: "AI websites & SaaS",
       descFr: `Sites web, applications métier et plateformes SaaS augmentées par l'IA — conçus pour vos clients à ${v} et en France. RGPD, hébergement UE.`,
       descEn: `Websites, business apps and AI-augmented SaaS platforms — for your clients in ${v} and across France. GDPR, EU hosting.`,
       mainServiceHref: "/sites-web-augmentes",

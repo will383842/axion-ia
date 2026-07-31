@@ -24,6 +24,8 @@ const mockEnrollmentFindUnique = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionJourFindMany = vi.fn();
 
+const mockSignatureCount = vi.fn();
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {
@@ -39,6 +41,12 @@ vi.mock("@/lib/prisma", () => ({
     // d'annoncer un « 09h00–17h00 » qui contredirait la feuille d'émargement.
     sessionJour: {
       findMany: (...args: unknown[]) => mockSessionJourFindMany(...args),
+    },
+    // 🔴 2026-07-26 — le certificat de réalisation exige desormais une TRACE
+    // d'emargement. Par defaut on en simule une : les tests historiques
+    // decrivent un dossier sain, et c'est le cas nominal.
+    emargementSignature: {
+      count: (...args: unknown[]) => mockSignatureCount(...args),
     },
   },
 }));
@@ -63,8 +71,9 @@ vi.mock("@/server/qualiopi/documents/organisme", () => ({
   getOrganismeIdentite: () => mockGetOrganismeIdentite(),
 }));
 
+const mockGetQualiopiConfig = vi.fn();
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
-  getQualiopiConfig: vi.fn().mockResolvedValue(null),
+  getQualiopiConfig: (...args: unknown[]) => mockGetQualiopiConfig(...args),
 }));
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -86,7 +95,11 @@ import {
   genererKitFranceTravailAction,
   genererLettreMissionAction,
   genererLivretAccueilAction,
+  genererContratFormationAction,
 } from "./documents";
+// Importé pour lire les appels au journal d'audit : la trace de conformité est
+// le livrable du changement « avertir sans bloquer », elle doit être vérifiée.
+import { logQualiopiActivity } from "./_guards";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixtures communes
@@ -191,6 +204,9 @@ beforeEach(() => {
   mockGetOrganismeIdentite.mockResolvedValue(IDENTITE_MOCK);
   mockGenerateDocument.mockResolvedValue(DOC_RESULT_MOCK);
   mockSessionJourFindMany.mockResolvedValue([]);
+  // Dossier sain par defaut : une trace d'emargement existe.
+  mockSignatureCount.mockResolvedValue(1);
+  mockGetQualiopiConfig.mockResolvedValue(null);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -398,7 +414,7 @@ describe("genererEmargementAction", () => {
       ],
       enrollments: [
         {
-          id: "enr-1",
+          id: ENROLLMENT_ID,
           trainee: { nom: "Dupont", prenom: "Marie", entreprise: "Tech" },
           emargementSignatures: [],
         },
@@ -668,14 +684,58 @@ describe("genererKitFranceTravailAction", () => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe("genererLettreMissionAction", () => {
+  const TRAINER_ID = "d1234567-89ab-cdef-0123-456789abcdef";
+
   it("génère la lettre de mission pour une session", async () => {
-    mockSessionFindUnique.mockResolvedValue(makeSession());
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue({
+      nom: "Jullin",
+      prenom: "Williams",
+      email: "w@axion-ia.fr",
+      telephone: null,
+      tarifJourneeHtCents: 80000,
+      sousTraitantNda: null,
+    });
 
     const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
 
     expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
     const call = mockGenerateDocument.mock.calls[0]![0]! as { type: string };
     expect(call.type).toBe("lettre_mission");
+  });
+
+  it("🔴 REFUSE de nommer un formateur qui n'existe pas", async () => {
+    // Le repli historique retombait sur la RAISON SOCIALE de l'organisme : la
+    // lettre désignait « Axion-IA SAS » comme formateur, c'est-à-dire une
+    // personne MORALE là où l'indicateur 21 attend une personne physique.
+    //
+    // ⚠️ Et la branche intermédiaire (nom lu dans le Json brut) était MORTE pour
+    // toute donnée bien formée : `parseCoFormateurs` n'accepte que `trainerId`,
+    // tandis que le repli lisait `id`, `nom` et `prenom`. On tombait donc
+    // directement sur la raison sociale.
+    //
+    // Depuis que la lettre est SIGNABLE, l'incohérence est visible : le service
+    // de signature refuse un signataire non résolvable, donc le générateur
+    // produisait une pièce que personne ne pouvait signer.
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: null }));
+    mockTrainerFindUnique.mockResolvedValue(null);
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("Aucun formateur") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse aussi quand le formateur désigné a été supprimé", async () => {
+    // `findUnique` rend `null` sur un formateur supprimé : sans ce refus on
+    // retombait sur la raison sociale par exactement le même chemin.
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue(null);
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("Aucun formateur") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 });
 
@@ -728,5 +788,232 @@ describe("stub-aware — mode build stub.invalid", () => {
   it("genererEmargementAction retourne error en mode stub", async () => {
     const result = await genererEmargementAction({ sessionId: SESSION_ID });
     expect(result).toEqual({ error: "Génération désactivée en mode build (stub)" });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Certificat de réalisation sans preuve d'assiduité.
+//
+// Constaté EN PRODUCTION le 2026-07-26, et déjà matérialisé : un
+// `certificat_realisation` avait été émis le 22/07 alors que
+// `emargement_signatures` comptait ZÉRO ligne.
+//
+// Le statut d'abandon était la seule garde. Plus bas, la durée n'est pondérée
+// par le taux que `if (tauxPresencePct !== null)` — donc taux inconnu = durée
+// PRÉVUE certifiée comme réalisée. R.6313-3, indicateurs 9 et 11.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererCertificatRealisationAction — preuve d'assiduité exigée", () => {
+  function inscription(over: Record<string, unknown> = {}) {
+    return {
+      id: ENROLLMENT_ID,
+      statut: "presente",
+      tauxPresencePct: 100,
+      trainee: { id: "t-1", nom: "Martin", prenom: "Jean", fonction: null },
+      session: {
+        id: "s-1",
+        titreSession: "IA pour bien commencer",
+        dateDebut: new Date("2026-07-22"),
+        dateFin: new Date("2026-07-22"),
+        modalite: "presentiel",
+        dureeReelleHeures: 4,
+        formationSnapshot: null,
+        formation: { titre: "IA pour bien commencer", dureeHeures: 4 },
+        client: null,
+        coFormateurs: [],
+        formateurPrincipalId: null,
+      },
+      ...over,
+    };
+  }
+
+  beforeEach(() => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription());
+    mockSignatureCount.mockResolvedValue(1);
+  });
+
+  it("refuse quand le taux de présence n'a jamais été calculé", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription({ tauxPresencePct: null }));
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("taux de présence");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  // Le cas exact trouvé en production : un taux existe, aucune signature.
+  it("refuse quand aucune signature d'émargement n'est rattachée", async () => {
+    mockSignatureCount.mockResolvedValue(0);
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(true);
+    if ("error" in r) expect(r.error).toContain("signature");
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("émet le certificat quand le taux est mesuré ET tracé", async () => {
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(false);
+    expect(mockGenerateDocument).toHaveBeenCalled();
+  });
+
+  // Un taux de 0 % est une MESURE, pas une absence de mesure : il doit passer la
+  // première garde et se faire refuser — ou non — sur d'autres critères, pas
+  // être confondu avec « non calculé ».
+  it("distingue un taux de 0 % d'un taux non calculé", async () => {
+    mockEnrollmentFindUnique.mockResolvedValue(inscription({ tauxPresencePct: 0 }));
+    const r = await genererCertificatRealisationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) expect(r.error).not.toContain("n'a pas été calculé");
+  });
+});
+
+describe("🔴 contrat particulier — l'acompte ANNONCÉ est celui qui sera demandé", () => {
+  beforeEach(() => {
+    // Le médiateur de la consommation est vide en production. Depuis le
+    // 2026-07-30 son absence n'empêche plus l'émission — elle déclenche un
+    // avertissement (cf. describe suivant). On le renseigne ici pour que ces
+    // tests-ci portent sur le calcul d'acompte et rien d'autre.
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom"
+        ? "CM2C"
+        : cle === "mediateur_consommation_url"
+          ? "https://cm2c.net"
+          : null,
+    );
+  });
+
+  it("prend pour assiette le RESTE À CHARGE, pas le prix total", async () => {
+    // Le défaut que ce test ferme : le gabarit accepte `acompteEuros` depuis le
+    // 2026-07-27 pour imprimer ce qui a été CONVENU, mais PERSONNE ne le lui
+    // fournissait. Il retombait donc sur 30 % de `prixNet`, c'est-à-dire du
+    // TOTAL. Sur 2 000 € dont 1 200 € financés, le contrat annonçait 600 € là
+    // où le calcul en propose 240 : le client signait un chiffre que le système
+    // n'appliquait pas.
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({
+        session: makeSession({
+          montantHtCents: 200_000,
+          priseEnChargeMontantCents: 120_000,
+          opcoSubrogation: true,
+        }),
+      }),
+    );
+
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ prixNet: number; acompteEuros?: number }>();
+    // Le prix total reste imprimé tel quel — c'est le prix convenu.
+    expect(data.prixNet).toBe(2000);
+    // Mais l'acompte est calculé sur le reste à charge (800 €), pas sur 2 000 €.
+    expect(data.acompteEuros).toBeDefined();
+    expect(data.acompteEuros!).toBeLessThanOrEqual(800 * 0.3);
+    expect(data.acompteEuros!).toBeLessThan(600);
+  });
+
+  it("🔴 l'acompte annoncé ne dépasse JAMAIS le plafond légal du prix convenu", async () => {
+    // Les deux étages ne se contredisent pas : 30 % du reste à charge est
+    // toujours ≤ 30 % du prix convenu, plafond que `facturation-hub` fait
+    // respecter au refus. Ce test l'énonce plutôt que de le supposer.
+    //
+    // ⚠️ L'action est rejouée ICI : `clearAllMocks` efface les appels entre
+    // chaque test, donc lire `donneesPdf()` sans rejouer ne lirait rien.
+    mockEnrollmentFindUnique.mockResolvedValue(
+      makeEnrollment({
+        session: makeSession({ montantHtCents: 200_000, priseEnChargeMontantCents: 0 }),
+      }),
+    );
+
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+
+    const data = donneesPdf<{ acompteEuros?: number }>();
+    // Aucune prise en charge : reste à charge = prix convenu, donc le calcul
+    // touche exactement le plafond sans jamais le franchir.
+    expect(data.acompteEuros!).toBeLessThanOrEqual(2000 * 0.3);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Médiation de la consommation — avertir sans bloquer (décision Will 2026-07-30)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// L'audit de certification avait posé un REFUS dur : sans médiateur agréé
+// renseigné, pas de contrat individuel. Décision de ne plus bloquer.
+//
+// L'obligation légale (art. L.612-1 C. conso.) ne disparaît pas pour autant, et
+// ce n'est pas au code de la faire respecter. Ce que le code doit garantir, en
+// revanche, c'est que l'absence ne passe pas INAPERÇUE — c'est précisément ce
+// que ces tests verrouillent. Sans eux, « ne plus bloquer » dériverait en
+// « ne plus rien dire », et la différence entre les deux est tout le sujet.
+describe("contrat particulier — médiation absente : on avertit, on ne bloque plus", () => {
+  beforeEach(() => {
+    // Aucune configuration Qualiopi : l'état réel de la production.
+    mockGetQualiopiConfig.mockResolvedValue(null);
+    mockEnrollmentFindUnique.mockResolvedValue(makeEnrollment());
+  });
+
+  it("émet quand même le contrat, avec son numéro", async () => {
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    expect("error" in r).toBe(false);
+    if ("error" in r) return;
+    expect(r.data.numero).toBeTruthy();
+    expect(r.data.documentId).toBeTruthy();
+  });
+
+  it("retourne un avertissement qui NOMME ce qui manque et où le corriger", async () => {
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait plus être refusé");
+    // Un avertissement qui dit « attention » sans dire quoi faire ne sert à
+    // rien : on verrouille la présence du fondement et des clés à renseigner.
+    expect(r.data.avertissement).toBeDefined();
+    expect(r.data.avertissement).toContain("L.612-1");
+    expect(r.data.avertissement).toContain("mediateur_consommation_nom");
+  });
+
+  // La trace est le vrai livrable de ce changement. Le jour d'un contrôle, la
+  // question ne sera pas « le logiciel bloquait-il ? » mais « quels contrats
+  // ont été émis sans la mention ? » — sans cette clé, la réponse est
+  // introuvable ; avec elle, elle s'extrait du journal en une requête.
+  it("inscrit l'absence au journal d'audit, contrat par contrat", async () => {
+    await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    const appels = vi.mocked(logQualiopiActivity).mock.calls;
+    const contrat = appels.find(
+      ([a]) => (a as { action: string }).action === "qualiopi.document.contrat.genere",
+    );
+    expect(contrat).toBeDefined();
+    const changes = (contrat![0] as { changes: Record<string, unknown> }).changes;
+    expect(changes["mentionMediationAbsente"]).toBe(true);
+    // Le numéro doit y figurer aussi : une trace sans identifiant de contrat
+    // ne permettrait pas de retrouver la pièce concernée.
+    expect(changes["numero"]).toBeTruthy();
+  });
+
+  it("médiateur renseigné : aucun avertissement, aucune trace d'absence", async () => {
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom"
+        ? "CM2C"
+        : cle === "mediateur_consommation_url"
+          ? "https://cm2c.net"
+          : null,
+    );
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait pas être refusé");
+    expect(r.data.avertissement).toBeUndefined();
+    const contrat = vi
+      .mocked(logQualiopiActivity)
+      .mock.calls.find(
+        ([a]) => (a as { action: string }).action === "qualiopi.document.contrat.genere",
+      );
+    const changes = (contrat![0] as { changes: Record<string, unknown> }).changes;
+    expect(changes["mentionMediationAbsente"]).toBeUndefined();
+  });
+
+  // Une valeur vide ou blanche n'est pas une adhésion : le garde-fou doit la
+  // traiter comme une absence, sans quoi il suffirait d'un espace pour éteindre
+  // l'avertissement sans rien avoir fait.
+  it("une valeur blanche vaut absence", async () => {
+    mockGetQualiopiConfig.mockImplementation(async (cle: string) =>
+      cle === "mediateur_consommation_nom" ? "   " : "https://cm2c.net",
+    );
+    const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
+    if ("error" in r) throw new Error("le contrat ne devrait pas être refusé");
+    expect(r.data.avertissement).toBeDefined();
   });
 });

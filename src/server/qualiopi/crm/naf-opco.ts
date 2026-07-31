@@ -6,19 +6,38 @@
  *
  * Sources : liste officielle des branches par OPCO (DGEFP 2024).
  * Module PUR (pas d'import Prisma/next) — testable sans DB.
+ *
+ * ⚠️ ORDRE DE PRÉSÉANCE — l'OPCO est déterminé LÉGALEMENT par la convention
+ * collective (IDCC), PAS par le code NAF. `prisma/schema.prisma` le dit
+ * lui-même sur le champ `Client.idcc` : « saisi, NAF non fiable ». Le NAF n'est
+ * qu'une heuristique de repli. Dans tout nouveau code, appeler `inferOpco()`
+ * — qui interroge l'IDCC d'abord — et jamais `inferOpcoFromNaf()` seul.
  */
+
+import type { OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 
 /**
  * Map : code NAF exact (5 caractères, ex. "6201Z") → identifiant OPCO.
  *
- * Couverture :
- * - Atlas       : informatique, numérique, conseil
- * - Akto        : HCR, services à la personne
- * - Opcommerce  : commerce de détail / gros
- * - OPCO 2i     : industrie métallurgie
- * - Constructys : construction / BTP
+ * ⚠️ COUVERTURE PARTIELLE, ASSUMÉE — 134 codes pour 5 OPCO sur les 11 du
+ * référentiel (`opco-referentiel.ts`). Divisions NAF présentes : 24, 25, 28,
+ * 41-43, 47, 55, 56, 58, 62, 63, 70, 71, 73, 85 (un seul code), 88, 96.
+ * SIX OPCO ne sont atteignables par AUCUN code : OPCO EP, Mobilités, Afdas,
+ * Uniformation, Ocapiat, OPCO Santé. Un client relevant de l'un d'eux ressort
+ * donc `null`. C'est le comportement VOULU — « à déterminer » sur une
+ * convention tripartite vaut mieux qu'un financeur faux — et c'est pourquoi
+ * l'écran Clients DOIT conserver une saisie manuelle de secours
+ * (`ClientBrancheForm`). Ne pas « compléter » cette map au jugé : chaque
+ * ajout doit être adossé à une source citable.
+ *
+ * Couverture par OPCO :
+ * - Atlas       : informatique, numérique, conseil (16)
+ * - Akto        : HCR, services à la personne, organismes de formation (16)
+ * - Opcommerce  : commerce de détail / gros (33)
+ * - OPCO 2i     : industrie métallurgie (34)
+ * - Constructys : construction / BTP (35)
  */
-export const NAF_OPCO_MAP: Record<string, string> = {
+export const NAF_OPCO_MAP: Record<string, OpcoId> = {
   // ── Atlas (informatique, numérique, conseil, pub) ──
   "6201Z": "atlas",
   "6202A": "atlas",
@@ -165,31 +184,128 @@ export const NAF_OPCO_MAP: Record<string, string> = {
   "4399D": "constructys",
   "4399E": "constructys",
   "7111Z": "constructys",
+
+  // ── Enseignement (section 85) — UN SEUL code déclaré, à dessein ──
+  // 8559A « Formation continue d'adultes » relève de la CCN des organismes de
+  // formation (IDCC 1516), rattachée à AKTO. Les onze autres codes de la
+  // section (8510Z→8553Z, 8559B, 8560Z) dépendent de leur convention collective
+  // et se répartissent entre OPCO EP, Afdas et Uniformation : les ajouter au
+  // jugé mettrait un financeur FAUX sur une pièce opposable à un auditeur.
+  // Voir aussi NAF_PREFIX4_SANS_REPLI plus bas — sans quoi 8559B hériterait
+  // d'AKTO par le repli de classe.
+  "8559A": "akto",
 } as const;
 
 /**
- * Infère l'OPCO depuis un code NAF (APE).
+ * Classes NAF (4 caractères) où le repli par classe est INTERDIT : leurs
+ * sous-codes relèvent d'OPCO différents, seule la correspondance exacte à
+ * 5 caractères y fait foi.
  *
- * - Recherche d'abord la correspondance exacte 5 caractères.
- * - Retourne `null` si inconnu ou si `naf` est null/undefined/vide.
- *
- * @param naf  Code NAF/APE (ex. "6201Z", "62.01Z" accepté — le point est ignoré).
+ * « 8559 » : 8559A (formation continue d'adultes → AKTO) et 8559B (« Autres
+ * enseignements » : langues, soutien scolaire, artistique, sportif → Afdas,
+ * Uniformation ou OPCO EP selon la branche) ne partagent PAS le même OPCO.
+ * Sans cette liste, déclarer 8559A suffirait à étiqueter 8559B en AKTO.
  */
-export function inferOpcoFromNaf(naf: string | null | undefined): string | null {
+export const NAF_PREFIX4_SANS_REPLI: ReadonlySet<string> = new Set(["8559"]);
+
+/** Une entrée IDCC → OPCO, avec la référence qui l'établit. */
+export interface IdccOpco {
+  readonly opco: OpcoId;
+  /**
+   * Source traçable. NON décorative : cette valeur finit imprimée sur une
+   * convention tripartite et un kit OPCO ; un auditeur Qualiopi (ind. 23/24,
+   * veille légale) doit pouvoir remonter à la règle. N'ajouter AUCUNE entrée
+   * sans source — un champ rempli sans fondement est plus dommageable en audit
+   * qu'un « à déterminer » assumé.
+   *
+   * ⚠️ Pas de date de consultation figée ici : une date gelée dans le code
+   * atteste une veille qui n'a pas lieu. La fraîcheur se tient dans le registre
+   * de veille légale, qui est la pièce opposable.
+   */
+  readonly source: string;
+}
+
+/**
+ * IDCC (4 chiffres) → OPCO. Source AUTORITAIRE : c'est la convention collective
+ * qui rattache une entreprise à son OPCO, le NAF n'en est qu'un indice.
+ */
+export const IDCC_OPCO_MAP: Record<string, IdccOpco> = {
+  "1516": {
+    opco: "akto",
+    source:
+      "CCN des organismes de formation, IDCC 1516 — branche « Organismes de formation » rattachée à AKTO (akto.fr/nos-secteurs-activite ; opco.fr/trouver/ape-8559A/idcc-1516). À revérifier à chaque mise à jour du référentiel OPCO — registre de veille légale, ind. 23/24.",
+  },
+};
+
+/**
+ * Infère l'OPCO depuis un code NAF (APE). HEURISTIQUE de repli seulement :
+ * préférer `inferOpco()`, qui interroge d'abord l'IDCC (source légale).
+ *
+ * - Correspondance exacte 5 caractères d'abord.
+ * - Puis repli par classe (4 caractères), sauf classes ambiguës.
+ * - `null` si inconnu, ou si `naf` est null/undefined/vide.
+ *
+ * @param naf  Code NAF/APE (ex. "6201Z" ; « 62.01Z » et « 62 01 Z » acceptés).
+ */
+export function inferOpcoFromNaf(naf: string | null | undefined): OpcoId | null {
   if (!naf) return null;
-  // Normaliser : retirer le point éventuel (ex. "62.01Z" → "6201Z"), majuscules
-  const normalized = naf.replace(".", "").toUpperCase().trim();
+  // Retirer TOUS les séparateurs, pas seulement le premier : `replace(".", "")`
+  // sans le drapeau /g laissait « 85.59.A » à moitié normalisé (« 8559.A »),
+  // donc introuvable, donc silencieusement null.
+  const normalized = naf.replace(/[\s.]/g, "").toUpperCase().trim();
   if (normalized.length === 0) return null;
 
   // Correspondance exacte (5 caractères)
   const exact = NAF_OPCO_MAP[normalized];
   if (exact !== undefined) return exact;
 
-  // Correspondance par préfixe 4 caractères (fallback)
+  // 🔴 GARDE DE LONGUEUR — le champ Zod est `max(6)` SANS `.min()` : « 85 » et
+  // « 855 » sont des saisies acceptées. Sans ce test, `slice(0, 4)` renvoie la
+  // saisie tronquée telle quelle et le repli ci-dessous rattrape la première
+  // clé qui commence par là : toute la section Enseignement saisie en abrégé
+  // basculerait en AKTO. Reproduit avant correctif.
+  if (normalized.length < 4) return null;
+
   const prefix4 = normalized.slice(0, 4);
+  if (NAF_PREFIX4_SANS_REPLI.has(prefix4)) return null;
+
+  // Repli par classe NAF (4 premiers caractères).
   for (const [key, opco] of Object.entries(NAF_OPCO_MAP)) {
     if (key.startsWith(prefix4)) return opco;
   }
 
   return null;
+}
+
+/**
+ * Infère l'OPCO depuis le code IDCC de la convention collective. Source
+ * AUTORITAIRE — à préférer au NAF chaque fois qu'elle est renseignée.
+ *
+ * @param idcc  Code IDCC (ex. "1516" ; « 01516 » et « 1 516 » acceptés).
+ */
+export function inferOpcoFromIdcc(idcc: string | null | undefined): OpcoId | null {
+  if (!idcc) return null;
+  const chiffres = idcc.replace(/\D/g, "");
+  if (chiffres.length === 0) return null;
+  // Un IDCC tient sur 4 chiffres, parfois saisi avec un zéro de tête. On refuse
+  // au-delà plutôt que de tronquer : « 11516 » n'est pas « 1516 », et deviner
+  // ici reviendrait à désigner un financeur au hasard.
+  if (chiffres.length > 5 || (chiffres.length === 5 && !chiffres.startsWith("0"))) return null;
+  const cle = chiffres.padStart(4, "0").slice(-4);
+  return IDCC_OPCO_MAP[cle]?.opco ?? null;
+}
+
+/**
+ * Inférence combinée, à utiliser partout : IDCC prioritaire (la convention
+ * collective détermine l'OPCO en droit), repli NAF (heuristique).
+ *
+ * Les deux clés sont REQUISES (valeurs nullables) et non optionnelles :
+ * `exactOptionalPropertyTypes` est actif, une clé optionnelle obligerait chaque
+ * appelant à un `?? null` supplémentaire pour compiler.
+ */
+export function inferOpco(input: {
+  idcc: string | null | undefined;
+  naf: string | null | undefined;
+}): OpcoId | null {
+  return inferOpcoFromIdcc(input.idcc) ?? inferOpcoFromNaf(input.naf);
 }

@@ -21,6 +21,7 @@ import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import type {
   EnrollmentStatut,
   DocumentType,
@@ -58,6 +59,15 @@ export interface QuestionnaireResume {
   type: QuestionnaireType;
   token: string;
   reponduAt: Date | null;
+  /** Titre de la session rattachée — affiché en tête du questionnaire. */
+  sessionTitre: string;
+  /**
+   * Objectifs pédagogiques de la formation. Le questionnaire de POSITIONNEMENT
+   * demande au bénéficiaire de s'auto-évaluer sur chacun : c'est ce qui en fait
+   * une évaluation des acquis à l'entrée (off.8) et non un simple déclaratif,
+   * et ce qui rend la progression mesurable face à l'évaluation finale.
+   */
+  objectifs: string[];
 }
 
 /** Espace stagiaire complet retourné par getEspaceStagiaire. */
@@ -79,6 +89,18 @@ export interface EspaceStagiaire {
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers internes
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 Parcours à blanc 2026-07-27. Cette normalisation locale essayait
+ * `objectif | libelle | label | titre` — mais PAS `description`, la clé
+ * qu'écrit l'import du catalogue. Le `filter` renvoyait donc une liste vide :
+ * le portail stagiaire n'affichait aucun objectif pédagogique pour les
+ * 22 formations du catalogue, sans erreur ni trace.
+ *
+ * Remplacée par la normalisation partagée, qui couvre les deux familles de
+ * formes. Voir `@/server/qualiopi/formations/objectifs`.
+ */
+const normaliserObjectifs = normaliserObjectifsPedagogiques;
 
 /** Génère un token portail : 32 bytes → 64 chars hex. */
 function genererTokenPortail(): string {
@@ -281,6 +303,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               titreSession: true,
               dateDebut: true,
               dateFin: true,
+              formation: { select: { objectifsPedagogiques: true } },
             },
           },
         },
@@ -326,13 +349,19 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       }),
   );
 
-  const questionnaires: QuestionnaireResume[] = trainee.enrollments
-    .flatMap((e) => e.questionnaires)
-    .map((q) => ({
+  // On repart de l'inscription (et non des seuls questionnaires) pour rattacher a
+  // chacun le titre de sa session et les objectifs de sa formation — necessaires au
+  // questionnaire de POSITIONNEMENT (off.8).
+  const questionnaires: QuestionnaireResume[] = trainee.enrollments.flatMap((e) => {
+    const objectifs = normaliserObjectifs(e.session?.formation?.objectifsPedagogiques);
+    return e.questionnaires.map((q) => ({
       type: q.type,
       token: q.token,
       reponduAt: q.reponduAt ?? null,
+      sessionTitre: e.session?.titreSession ?? "",
+      objectifs,
     }));
+  });
 
   const detailsChiffre = trainee.handicapDetailsChiffre ?? null;
   const details = detailsChiffre !== null ? decryptPii(detailsChiffre) : null;

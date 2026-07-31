@@ -5,6 +5,7 @@
 //   - villes (hub + 5 verticales) → drip temporel `isVilleIndexable(slug, now)`
 //   - régions → `getIndexableRegions()`
 //   - articles DB (blog/guides/actualités/connaissances) → `IndexationTier`
+//   - termes du glossaire → gate anti-thin `isGlossaryTermIndexable(slug)`
 //   - routes stub anti-doorway → `isNoindexStubRoute()`
 //   - pages statiques exclues du sitemap → liste `NOINDEX_STATIC_PATHS`
 //
@@ -15,6 +16,7 @@
 import { isVilleIndexable } from "@/content/villes";
 import { getIndexableRegions } from "@/content/regions";
 import { isNoindexStubRoute } from "@/lib/seo-noindex-routes";
+import { isGlossaryTermIndexable, GLOSSARY_MIN_INDEX_WORDS } from "@/content/glossary-extension";
 
 /** Tier d'indexation d'un article (miroir de l'enum Prisma `IndexationTier`). */
 export type ArticleIndexationTier =
@@ -48,7 +50,6 @@ export interface IndexabilityResult {
 const NOINDEX_STATIC_PATHS: ReadonlySet<string> = new Set([
   "/design",
   "/components",
-  "/sections",
   "/desabonnement",
   "/mes-donnees",
   "/mes-donnees/export",
@@ -116,6 +117,43 @@ export function computeIndexability(
       return { indexable: false, reason: "Ville hors cohorte drip (noindex temporaire)" };
     }
     if (villeSlug) return { indexable: true, reason: "" };
+  }
+
+  // 3 bis) Glossaire : `isGlossaryTermIndexable` est le MEME SSOT que le rendu
+  //    (`/glossaire/[slug]/page.tsx` emet `noindex, follow` sous le seuil) et que
+  //    `app/sitemap.ts`. Sans cette branche, le Site Explorer declarait les 60
+  //    termes INDEXABLES alors que la prod sert `noindex` — verifie le
+  //    2026-07-26 : 61 lignes `site_routes` sur ce pattern avec
+  //    `is_indexable = t`, zero `noindex_reason`. L'outil cense detecter les
+  //    trous d'indexation affirmait le contraire de la production : c'est ce qui
+  //    a permis au constat F49 de passer inapercu.
+  //
+  //    ⚠️ `is_indexable` N'EST PAS QU'UN AFFICHAGE. Trois consommateurs :
+  //      1. l'UI « Toutes les URLs » — filtre, tri et compteurs KPI
+  //         (`src/server/actions/site-explorer/site-routes.ts`) ;
+  //      2. le worker GSC (`site-route-gsc-worker.ts`), qui echantillonne
+  //         `where: { isIndexable: true }`, 400 URLs/run sur un pool de 2 162.
+  //         CONSEQUENCE ASSUMEE : les 60 pages glossaire sortent du pool de
+  //         rafraichissement GSC — elles y etaient, leurs 60 lignes ont un
+  //         `gsc_data_at` non nul — et leurs `gscClicks/gscImpressions/
+  //         gscPosition` se figent a leur derniere valeur tout en restant
+  //         affiches. C'est souhaitable (des pages `noindex` ne doivent pas
+  //         bruler du quota GSC), mais ce n'est PAS cosmetique ;
+  //      3. `discovery-runner.ts`, qui persiste le champ a chaque run.
+  //    Aucun effet en revanche sur le sitemap ni sur le rendu public : les deux
+  //    appellent deja `isGlossaryTermIndexable` directement.
+  //
+  //    Deux cas volontairement laisses indexables : le hub `/fr/glossaire` (pas
+  //    de slug) et le template non resolu `/fr/glossaire/[slug]` — on ne conclut
+  //    rien sur un placeholder plutot que d'inventer un noindex.
+  if (input.section === "glossaire") {
+    const termSlug = rest[0];
+    if (termSlug && !termSlug.startsWith("[") && !isGlossaryTermIndexable(termSlug)) {
+      return {
+        indexable: false,
+        reason: `Terme sous le seuil anti-thin (${GLOSSARY_MIN_INDEX_WORDS} mots cumulés)`,
+      };
+    }
   }
 
   // 4) Filet stub anti-doorway (couvre régions/villes non gérées ci-dessus via

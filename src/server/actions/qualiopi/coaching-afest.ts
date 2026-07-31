@@ -22,6 +22,12 @@ import { genererEmargement1to1 } from "@/server/qualiopi/coaching-afest/emargeme
 import { genererFactureCoaching } from "@/server/qualiopi/coaching-afest/facturation-1to1";
 import { validateCoachingFinancement } from "@/server/qualiopi/coaching-afest/financement-1to1";
 import {
+  SEANCE_HEURES_SELECT,
+  estNeutralisee,
+  presenceProuvee,
+  versSeancePourHeures,
+} from "@/server/qualiopi/coaching-afest/heures";
+import {
   genererKitOpcoCoaching,
   genererKitCpfCoaching,
   genererKitFranceTravailCoaching,
@@ -66,20 +72,43 @@ async function checkAfestEnforcement(
     getQualiopiConfig("afest_formateur_habilitation_requise"),
     getQualiopiConfig("afest_perimetre_certifie"),
   ]);
-  if (!tuteurRequis && !habilitationRequise && !perimetreCertifie) return null;
+  // 🔴 Audit certification 2026-07-26 (F65). Ce garde sortait ici quand les trois
+  // drapeaux étaient à `false` — ce qui est le cas en production. Une attestation
+  // AFEST était donc émissible sans cartographie de l'activité, sans une seule
+  // phase réflexive tracée et sans aucun émargement signé.
+  //
+  // Or ces éléments ne sont pas des OPTIONS d'organisation : l'article
+  // D.6313-3-1 les rend CONSTITUTIFS de l'AFEST — analyse de l'activité, mises
+  // en situation, phases réflexives, évaluations. Sans eux, ce n'est pas une
+  // action de formation en situation de travail, et l'attester est une
+  // affirmation fausse.
+  //
+  // On distingue donc désormais :
+  //   - les contrôles CONSTITUTIFS, appliqués à toute attestation AFEST quels
+  //     que soient les drapeaux (ci-dessous, bloc `kind === "attestation"`) ;
+  //   - les exigences ORGANISATIONNELLES — tuteur d'entreprise, habilitation
+  //     formateur — qui restent pilotées par drapeau, car elles relèvent d'un
+  //     arbitrage avec le certificateur.
+  const controlesConstitutifs = kind === "attestation";
+  if (!tuteurRequis && !habilitationRequise && !perimetreCertifie && !controlesConstitutifs) {
+    return null;
+  }
 
   const cs = await prisma.coachingSession.findUnique({
     where: { id: coachingSessionId },
     select: {
       tuteurEntrepriseNom: true,
+      regimePreuve: true,
       trainer: { select: { afestHabiliteAt: true } },
       cartographie: { select: { taches: true } },
       comptesRendus: {
         select: {
           misesEnSituation: true,
           phasesReflexives: true,
-          presenceSigneeAt: true,
-          dureeMinutes: true,
+          // 🔴 Sélecteur PARTAGÉ, jamais un select local : c'est lui qui embarque
+          // `statut` et la relation de signature, sans lesquels ce gate ne peut
+          // ni neutraliser une séance annulée, ni voir une signature réelle.
+          ...SEANCE_HEURES_SELECT,
         },
       },
     },
@@ -92,12 +121,47 @@ async function checkAfestEnforcement(
   if (habilitationRequise && cs.trainer.afestHabiliteAt == null) {
     return "Le formateur n'a pas d'habilitation AFEST tracée (exigence activée).";
   }
-  if (perimetreCertifie) {
+  // Cartographie : exigée dès le périmètre certifié, ou pour toute attestation —
+  // l'analyse préalable de l'activité est le point de départ de l'AFEST
+  // (D.6313-3-1 §1). Attester sans elle revient à attester un accompagnement
+  // qui n'est pas une AFEST.
+  if (perimetreCertifie || controlesConstitutifs) {
     const taches = cs.cartographie?.taches;
     if (!Array.isArray(taches) || taches.length === 0) {
       return "Cartographie de l'activité incomplète : au moins une tâche doit être identifiée (analyse préalable AFEST, D.6313-3-1 §1).";
     }
     if (kind === "attestation") {
+      // 🔴 Les séances ANNULÉES / en ABSENCE JUSTIFIÉE sortent du gate, ET ne
+      // peuvent pas non plus le satisfaire.
+      //
+      // Sans cette neutralisation, une absence légitime bloquait l'attestation à
+      // VIE : la séance n'aurait jamais ni durée ni signature, et le gate exigeait
+      // les deux de toutes les séances. C'est la raison d'être de l'enum
+      // `coaching_seance_statut`.
+      //
+      // ⚠️ Le filtre s'applique AUSSI à l'alternance : ce critère est un `some()`,
+      // si bien qu'une séance annulée dont le compte-rendu avait été rempli avant
+      // l'annulation aurait suffi à attester l'alternance d'un parcours où elle
+      // n'a jamais eu lieu. Neutraliser d'un côté sans neutraliser de l'autre
+      // ouvre le trou plutôt que de le fermer.
+      //
+      // Sans effet rétroactif : la colonne `statut` est arrivée avec un défaut
+      // `realisee`, donc aucune séance existante n'en sort.
+      const retenuesBrutes = cs.comptesRendus.filter(
+        (cr) => !estNeutralisee(versSeancePourHeures(cr)),
+      );
+      const retenues = retenuesBrutes.map(versSeancePourHeures);
+
+      // Le cas « aucune séance retenue » se diagnostique AVANT l'alternance :
+      // sinon un parcours entièrement annulé se verrait reprocher une alternance
+      // manquante, ce qui envoie chercher la correction au mauvais endroit.
+      if (cs.comptesRendus.length === 0) {
+        return "Aucune séance enregistrée — impossible d'attester la présence.";
+      }
+      if (retenues.length === 0) {
+        return "Aucune séance retenue (toutes annulées ou justifiées) — impossible d'attester la présence.";
+      }
+
       const hasContent = (arr: unknown, key: string): boolean =>
         Array.isArray(arr) &&
         arr.some((x) => {
@@ -105,24 +169,34 @@ async function checkAfestEnforcement(
           const v = (x as Record<string, unknown>)[key];
           return typeof v === "string" && v.trim().length > 0;
         });
-      const alternanceTracee = cs.comptesRendus.some(
+      const alternanceTracee = retenuesBrutes.some(
         (cr) =>
           hasContent(cr.misesEnSituation, "cas") && hasContent(cr.phasesReflexives, "situation"),
       );
       if (!alternanceTracee) {
         return "Aucune alternance tracée (mise en situation + phase réflexive) sur les comptes-rendus — requis pour attester un parcours AFEST.";
       }
-      // Présence signée par séance (preuve d'audit) — requise en périmètre certifié.
-      if (cs.comptesRendus.length === 0) {
-        return "Aucune séance enregistrée — impossible d'attester la présence.";
-      }
       // Toutes les séances doivent porter une durée (traçabilité des heures).
-      if (cs.comptesRendus.some((cr) => cr.dureeMinutes == null)) {
+      // ⚠️ Critère INDÉPENDANT de la signature : il est préservé tel quel.
+      if (retenues.some((s) => s.dureeMinutes == null)) {
         return "Une ou plusieurs séances n'ont pas de durée renseignée — impossible d'attester les heures (traçabilité Qualiopi).";
       }
-      const toutesSignees = cs.comptesRendus.every((cr) => cr.presenceSigneeAt != null);
-      if (!toutesSignees) {
-        return "Présence non signée sur une ou plusieurs séances — signez l'émargement de chaque séance avant d'attester (preuve d'audit AFEST).";
+      // 🔴 Preuve de présence, sous le RÉGIME DU PARCOURS.
+      //
+      // Ce gate lisait directement la colonne de présence — celle que l'ancienne
+      // action `signerSeance1to1Action` posait au simple clic d'un admin. Il
+      // autorisait donc l'émission d'une attestation sur la foi d'un booléen que
+      // personne n'avait signé. Sous `signature_reelle`, le critère est désormais
+      // la LIGNE de signature du bénéficiaire, non révoquée.
+      //
+      // ⚠️ Ce repointage et le retrait des `*SigneAt` de l'action admin sont
+      // livrés dans le MÊME commit, à dessein : séparés, on obtiendrait soit un
+      // gate qui lit une colonne qu'on n'écrit plus, soit l'inverse.
+      const toutesProuvees = retenues.every((s) => presenceProuvee(s, cs.regimePreuve));
+      if (!toutesProuvees) {
+        return cs.regimePreuve === "signature_reelle"
+          ? "Signature du bénéficiaire manquante sur une ou plusieurs séances — faites signer l'émargement de chaque séance avant d'attester (preuve d'audit AFEST)."
+          : "Présence non signée sur une ou plusieurs séances — signez l'émargement de chaque séance avant d'attester (preuve d'audit AFEST).";
       }
     }
   }
@@ -291,19 +365,36 @@ export async function genererEmargement1to1Action(
   }
 }
 
-// ─── Signature de présence d'une séance ──────────────────────────────────────
+// ─── Présence ACTÉE par l'organisme (≠ signature) ────────────────────────────
 
-const signSchema = z.object({
+const presenceSchema = z.object({
   compteRenduId: z.string().uuid(),
   beneficiairePresent: z.boolean().optional(),
-  beneficiaireSigne: z.boolean().optional(),
-  formateurSigne: z.boolean().optional(),
-  tuteurSigne: z.boolean().optional(),
   revalidate: z.string().optional(),
 });
 
-export async function signerSeance1to1Action(
-  input: z.input<typeof signSchema>,
+/**
+ * Acte la présence d'une séance 1-to-1 — DÉCLARATION DE L'ORGANISME.
+ *
+ * 🔴 Cette action ne signe RIEN, et son ancien nom (`signerSeance1to1Action`)
+ * disait le contraire. Elle posait `beneficiaireSigneAt`, `formateurSigneAt` et
+ * `tuteurSigneAt` au simple clic d'un administrateur : quatre horodatages de
+ * SIGNATURE, sans signataire identifié, sans image, sans empreinte, sans chaîne.
+ * Une signature juridiquement anonyme (art. 1367) affirmée par la partie qui en
+ * bénéficie — c'est-à-dire pire qu'une absence de signature, parce qu'un dossier
+ * de contrôle y lit une preuve là où il n'y en a aucune.
+ *
+ * Ce qui reste ici est légitime et n'est pas retiré : `beneficiairePresent` et
+ * `presenceSigneeAt` sont la présence DÉCLARÉE par l'organisme, dont le régime
+ * `legacy_boolean` dépend pour exclure les absences actées. Les supprimer
+ * casserait tous les parcours existants.
+ *
+ * ➡️ Les vraies signatures passent par `signerSeanceAfest` : le bénéficiaire, le
+ * formateur et le tuteur signent depuis leur appareil ou le poste du formateur.
+ * Aucun chemin admin ne peut plus poser un `*SigneAt`.
+ */
+export async function acterPresenceSeance1to1Action(
+  input: z.input<typeof presenceSchema>,
 ): Promise<AfestActionResult> {
   let session;
   try {
@@ -311,24 +402,36 @@ export async function signerSeance1to1Action(
   } catch {
     return { ok: false, error: "Non autorisé." };
   }
-  const parsed = signSchema.safeParse(input);
+  const parsed = presenceSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Paramètres invalides." };
   const d = parsed.data;
   // Vérifie l'existence + récupère le parcours pour la traçabilité d'audit.
   const cr = await prisma.compteRenduSeance.findUnique({
     where: { id: d.compteRenduId },
-    select: { coachingSessionId: true },
+    select: { coachingSessionId: true, coachingSession: { select: { regimePreuve: true } } },
   });
   if (!cr) return { ok: false, error: "Compte-rendu introuvable." };
+
+  // 🔴 Sous `signature_reelle`, ces deux colonnes ne sont plus qu'un CACHE
+  // dérivé, écrit par la seule transaction de signature. Les laisser écrire ici
+  // empoisonnerait ce cache avec une valeur qu'aucune signature n'appuie —
+  // la feuille d'émargement afficherait « présent » sur une séance dont les
+  // heures ne sont pas comptées, soit exactement la contradiction que ce
+  // chantier corrige. Inerte aujourd'hui : tous les parcours sont en legacy.
+  if (cr.coachingSession.regimePreuve === "signature_reelle") {
+    return {
+      ok: false,
+      error:
+        "Ce parcours est en régime de signature réelle : la présence y est portée par la signature du bénéficiaire, elle ne peut pas être actée depuis la console.",
+    };
+  }
+
   const now = new Date();
   const data: Prisma.CompteRenduSeanceUpdateInput = { presenceSigneeAt: now };
   if (d.beneficiairePresent !== undefined) data.beneficiairePresent = d.beneficiairePresent;
-  if (d.beneficiaireSigne) data.beneficiaireSigneAt = now;
-  if (d.formateurSigne) data.formateurSigneAt = now;
-  if (d.tuteurSigne) data.tuteurSigneAt = now;
   await prisma.compteRenduSeance.update({ where: { id: d.compteRenduId }, data });
   await logQualiopiActivity({
-    action: "qualiopi.coaching.seance.signee",
+    action: "qualiopi.coaching.seance.presence_actee",
     targetType: "CompteRenduSeance",
     targetId: d.compteRenduId,
     changes: { presenceSigneeAt: now, coachingSessionId: cr.coachingSessionId },

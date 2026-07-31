@@ -40,7 +40,7 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
-import { formatDocumentNumber } from "../numbering/formats";
+import { nextNumero } from "../numbering/allocate";
 import { countLockingSessions } from "./edit-guard";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -395,8 +395,16 @@ async function createFormationWithNumero(
   // catalogue exact à l'import (cf. reconcileFormationFields).
   const catalogSnapshot = toCatalogSnapshot(data);
   for (let attempt = 0; attempt < 5; attempt++) {
-    const count = await db.formation.count();
-    const numero = formatDocumentNumber("formation", year, count + 1);
+    // 🔴 V20 — même série que `allocateFormationNumero`, donc même mécanique
+    // OBLIGATOIREMENT. Deux allocateurs de la même série dont l'un compte et
+    // l'autre lit le max divergeraient dès le premier trou. (Le filtre d'année,
+    // posé ici par F63 le 2026-07-26, est désormais porté par `seriesPrefix`.)
+    const numero = await nextNumero("formation", year, (prefixe) =>
+      db.formation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     try {
       const created = await db.formation.create({
         // Cast contrôlé : champs Json (objectifs/programme/ressources) + enums

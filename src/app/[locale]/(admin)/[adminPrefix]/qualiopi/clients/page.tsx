@@ -15,6 +15,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -31,13 +32,12 @@ const STATUT_LABELS: Record<string, string> = {
   perdu: "Perdu",
 };
 
-const OPCO_LABELS: Record<string, string> = {
-  atlas: "Atlas",
-  akto: "Akto",
-  opcommerce: "Opcommerce",
-  opco2i: "OPCO 2i",
-  constructys: "Constructys",
-};
+// Le OPCO_LABELS local (5 entrées) a été supprimé : c'était un duplicat
+// appauvri de `opco-referentiel.ts` (11 entrées). Il aurait affiché le slug
+// brut — « opco_ep », « uniformation » — dès que l'inférence ou la saisie
+// manuelle sortirait des 5 OPCO qu'il connaissait. Utiliser `opcoLabel()`.
+// ⚠️ Effet visible : « Opcommerce » devient « OPCOMMERCE » (libellé du
+// référentiel, aligné sur la marque).
 
 const TAILLE_LABELS: Record<string, string> = {
   TPE: "TPE",
@@ -48,18 +48,27 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ q?: string }>;
 }
 
-export default async function QualiopiClientsPage({ params }: PageProps) {
+export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const { q } = await searchParams;
   const session = await auth();
   const role = session?.user?.role;
   if (!session?.user || (role !== "admin" && role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const clients = await listClients();
+  const recherche = (q ?? "").trim();
+  const clients = await listClients(recherche === "" ? undefined : { recherche });
 
+  // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
+  //
+  // Laisser « Total 3 » au-dessus d'une liste filtrée à 1 ligne fait douter de
+  // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
+  // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
+  // compteur.
   const prospects = clients.filter((c) => c.statut === "prospect").length;
   const actifs = clients.filter((c) => c.statut === "client_actif").length;
   const devisEnvoyes = clients.filter((c) => c.statut === "devis_envoye").length;
@@ -72,17 +81,59 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Clients / Prospects"
-        description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO inféré depuis le code NAF."
+        description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO déduit de l'IDCC (source légale), à défaut du code NAF ; corrigeable par ligne."
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
         <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
           + Nouveau client
         </Link>
+
+        {/*
+          Recherche en <form method="get"> : aucun JavaScript client.
+          Le terme vit dans l'URL, donc il se partage, se met en favori et
+          survit à un rechargement — trois choses qu'un filtre en état local
+          ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
+          avec 4 millions d'établissements collectés côté prospection, filtrer
+          après chargement ne tiendrait de toute façon pas.
+        */}
+        <form method="get" className="flex flex-1 gap-[var(--space-admin-2)]">
+          <input
+            type="search"
+            name="q"
+            defaultValue={recherche}
+            placeholder="Rechercher : raison sociale, SIRET, SIREN, n° de fiche, contact…"
+            aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
+            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+          />
+          <button type="submit" className="admin-button">
+            Rechercher
+          </button>
+          {recherche !== "" ? (
+            <Link
+              href={`/${locale}/${adminPrefix}/qualiopi/clients`}
+              className="self-center text-[length:var(--text-admin-sm)] underline"
+            >
+              Effacer
+            </Link>
+          ) : null}
+        </form>
       </div>
 
+      {recherche !== "" ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          {clients.length === 0
+            ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
+            : `${clients.length} résultat(s) pour « ${recherche} ».`}
+        </p>
+      ) : null}
+
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={clients.length} icon={Hash} />
+        <AdminStatCard
+          label={recherche === "" ? "Total" : "Résultats"}
+          value={clients.length}
+          icon={Hash}
+        />
         <AdminStatCard label="Prospects" value={prospects} icon={Users} />
         <AdminStatCard label="Devis envoyés" value={devisEnvoyes} tone="warning" icon={FileText} />
         <AdminStatCard label="Clients actifs" value={actifs} tone="success" icon={CheckCircle2} />
@@ -124,10 +175,25 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                     </span>
                   </td>
                   <td className={cellCls}>
-                    <div className="font-medium">{client.raisonSociale}</div>
-                    {client.contactEmail && (
+                    {/* 🔴 Le nom devient le lien d'ÉDITION. Sans point d'entrée,
+                        la page `[id]/edit` reproduirait exactement le défaut
+                        qu'elle corrige : du code de mise à jour que rien
+                        n'appelle. */}
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}/edit`}
+                      className="font-medium text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                    >
+                      {client.raisonSociale}
+                    </Link>
+                    {client.contactEmail ? (
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {client.contactEmail}
+                      </div>
+                    ) : (
+                      // ⚠️ Dit ici, où l'admin peut agir : sans adresse de
+                      // contact, le devis part sans lien de signature.
+                      <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                        Aucun e-mail de contact
                       </div>
                     )}
                   </td>
@@ -164,7 +230,7 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {client.opcoIdentifie ? (
-                      (OPCO_LABELS[client.opcoIdentifie] ?? client.opcoIdentifie)
+                      opcoLabel(client.opcoIdentifie)
                     ) : (
                       <em className="text-[color:var(--color-admin-fg-muted)] not-italic">
                         À déterminer
@@ -191,7 +257,13 @@ export default async function QualiopiClientsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <ClientBrancheForm id={client.id} idcc={client.idcc} taille={client.taille} />
+                    <ClientBrancheForm
+                      id={client.id}
+                      idcc={client.idcc}
+                      taille={client.taille}
+                      opcoIdentifie={client.opcoIdentifie}
+                      estParticulier={client.type === "particulier"}
+                    />
                   </td>
                 </tr>
               ))}

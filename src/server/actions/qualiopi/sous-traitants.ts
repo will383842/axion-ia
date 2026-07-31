@@ -11,6 +11,8 @@
 "use server";
 
 import { z } from "zod";
+import { siretField } from "@/lib/siret-schema";
+import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   creerSousTraitant,
@@ -26,9 +28,21 @@ type ActionResult<T> = { data: T } | { error: string };
 
 const creerSousTraitantSchema = z.object({
   nom: z.string().min(1).max(250),
-  siret: z.string().max(20).optional(),
+  // Un sous-traitant de l'OF est un organisme français (indicateur 27) : même
+  // règle que pour un client. `max(20)` laissait passer n'importe quoi ; la
+  // valeur normalisée fait 14 caractères et tient dans la colonne VarChar(20).
+  siret: siretField.optional(),
   nda: z.string().max(20).optional(),
   objetPrestation: z.string().min(1),
+  /**
+   * 🔴 Contact SIGNATAIRE. Sans `contactEmail`, aucun lien de signature ne peut
+   * être émis pour le contrat de sous-traitance — et l'indicateur 27 du RNQ
+   * l'exige signé. Le canal A résout l'identité depuis la BASE, jamais depuis un
+   * champ libre au moment de signer.
+   */
+  contactNom: z.string().max(200).optional(),
+  contactEmail: z.string().email().optional(),
+  contactFonction: z.string().max(200).optional(),
   contratSigneAt: z.coerce.date().optional(),
   actif: z.boolean().default(true),
 });
@@ -50,12 +64,15 @@ export async function creerSousTraitantAction(input: {
   siret?: string;
   nda?: string;
   objetPrestation: string;
+  contactNom?: string;
+  contactEmail?: string;
+  contactFonction?: string;
   contratSigneAt?: Date;
   actif?: boolean;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = creerSousTraitantSchema.safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const v = parsed.data;
 
   let sousTraitant: { id: string };
@@ -66,6 +83,9 @@ export async function creerSousTraitantAction(input: {
       actif: v.actif,
       ...(v.siret !== undefined ? { siret: v.siret } : {}),
       ...(v.nda !== undefined ? { nda: v.nda } : {}),
+      ...(v.contactNom !== undefined ? { contactNom: v.contactNom } : {}),
+      ...(v.contactEmail !== undefined ? { contactEmail: v.contactEmail } : {}),
+      ...(v.contactFonction !== undefined ? { contactFonction: v.contactFonction } : {}),
       ...(v.contratSigneAt !== undefined ? { contratSigneAt: v.contratSigneAt } : {}),
     });
   } catch {

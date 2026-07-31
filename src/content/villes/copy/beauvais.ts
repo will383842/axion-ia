@@ -46,8 +46,8 @@ export const BEAUVAIS_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Beauvais : sessions dans votre atelier, commerce, cabinet ou en visio. Dirigeants TPE et PME beauvaisiens : artisans, commerçants, professions libérales, industriels agroalimentaires.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
-      en: "Sites web augmentés IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
+      fr: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
+      en: "Sites web & SaaS IA à Beauvais : plateformes sur mesure pour TPE et PME de l'Oise — réservation, devis en ligne, agents conversationnels intégrés, automatisation du suivi client.",
     },
   },
   services: {

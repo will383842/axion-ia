@@ -37,10 +37,11 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions } from "./conditions-client";
 import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
 import {
   normaliserLignesPourActivite,
@@ -137,6 +138,7 @@ export async function genererFactureLibre(
       adresseVille: true,
       contactEmail: true,
       estPublic: true,
+      delaiPaiementJours: true,
     },
   });
 
@@ -156,10 +158,21 @@ export async function genererFactureLibre(
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   // Échéance (délai client — une facture libre n'est pas subrogée) + RIB.
-  const [delaiClient, rib] = await Promise.all([
+  //
+  // 🔴 Vérification E2E 2026-07-26 — le délai propre au client n'était pas lu :
+  // F61 posait la colonne et le résolveur, mais aucun émetteur ne les branchait.
+  const [delaiGlobal, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
     resolveRibFacture(),
   ]);
+  const delaiClient = resoudreConditions(
+    {
+      delaiPaiementJours: client.delaiPaiementJours ?? null,
+      tauxAcomptePct: null,
+      modeFacturation: null,
+    },
+    { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
+  ).delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(
@@ -173,10 +186,13 @@ export async function genererFactureLibre(
   let factureCreee: { id: string; numero: string } | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — borne haute. Boucle de reprise conservée, désormais convergente.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     try {
       const facture = await prisma.factureFormation.create({
@@ -368,10 +384,16 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
   let avoirCree: { id: string; numero: string } | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-AVO-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("avoir", annee, count + 1);
+    // 🔴 V20. `facture` et `avoir` partagent la TABLE `factures_formation` mais
+    // ce sont DEUX séries distinctes, discriminées par le préfixe. Partager la
+    // table ne partage pas le compteur — c'est précisément l'amalgame qui
+    // rendait faux le dénominateur de `actions/qualiopi/financements.ts`.
+    const numero = await nextNumero("avoir", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     try {
       const avoir = await prisma.factureFormation.create({

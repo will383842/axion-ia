@@ -17,7 +17,6 @@ export const routing = defineRouting({
     "/": "/",
     "/design": "/design",
     "/components": "/components",
-    "/sections": "/sections",
 
     // Module 1 — Formations IA (remplace l'offre /interventions collective).
     // /formations est PUBLIC/live (décision Will 2026-06-11). en == fr : EN est

@@ -21,7 +21,10 @@ name: Nightly · Gate D
 # Pré-requis VPS / config :
 #   - STAGING_URL (variable repo) : URL staging si déployée, sinon prod.
 #   - DATABASE_URL_TEST_RESTORE (secret) : DB jetable pour restore-drill.
-#   - PLAYWRIGHT_BASE_URL passe via env.
+#   - E2E_BASE_URL passe via env (nom lu par playwright.config.ts — voir F18 :
+#     ce job a envoye PLAYWRIGHT_BASE_URL pendant au moins 10 nuits, ce qui le
+#     faisait retomber sur localhost:3000 sans build et echouer en connexion
+#     refusee, gate a11y comprise).
 
 on:
   schedule:
@@ -32,27 +35,75 @@ permissions:
   contents: read
 
 jobs:
-  playwright-staging:
-    name: Full Playwright (chromium) vs prod
+  # 🔴 Audit certification 2026-07-26 (X5) — ce job REMPLACE `playwright-staging`.
+  #
+  # L'ancien job s'appelait « Full Playwright (chromium) vs prod » et n'a jamais
+  # ouvert une URL de axion-ia.com : il exportait un nom d'environnement que rien
+  # ne lit (playwright.config.ts lit E2E_BASE_URL). Playwright retombait sur
+  # http://localhost:3000, y démarrait son webServer alors que ce job ne fait
+  # aucun build → « Could not find a production build » → 76 nuits d'échec en
+  # ERR_CONNECTION_REFUSED, gate a11y comprise.
+  #
+  # POURQUOI ON NE S'EST PAS CONTENTÉ DE CORRIGER LE NOM DE LA VARIABLE (fait le
+  # 2026-07-26, F18) : la suite complète lance les 21 specs. Braquées sur la prod,
+  # elles SOUMETTENT le formulaire de contact (tests/e2e/flows/contact-submission
+  # .spec.ts remplit nom/email/message, coche le consentement et clique « Envoyer »
+  # — donc écriture en base de PRODUCTION et envoi d'email, chaque nuit, avec des
+  # données personnelles fictives), tentent des connexions sur la console admin
+  # (flows/admin-auth, flows/admin-routes) et comparent des captures prod à des
+  # baselines prises en local (admin-baseline-screenshots).
+  # Ajouter un build à ce job n'est pas une option : le SSG (~18k routes) exige le
+  # free-disk, le bind-mount sur /mnt et le heap 6144 empilés dans ci.yml — gate-b
+  # met 21 min rien que pour ça, ce job plafonne à 30.
+  # On ne garde donc que ce qui mesure la prod SANS RIEN Y ÉCRIRE : l'audit
+  # axe-core, en lecture seule.
+  a11y-prod:
+    name: A11y axe-core WCAG 2.2 AA vs prod (15 pages, lecture seule)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
+    if: ${{ vars.NIGHTLY_A11Y_ENABLED != 'false' && vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Install Playwright chromium
         run: pnpm exec playwright install --with-deps chromium
-      - name: Run E2E flows (chromium) vs prod
+      - name: axe-core vs prod — 0 violation serious/critical
         env:
-          PLAYWRIGHT_BASE_URL: ${{ vars.STAGING_URL || 'https://axion-ia.com' }}
-        run: pnpm test:e2e --project=chromium
+          # 🔴 Audit 2026-07-26 (F18) : playwright.config.ts lit E2E_BASE_URL, pas
+          # PLAYWRIGHT_BASE_URL. Avec le mauvais nom, Playwright retombait sur
+          # http://localhost:3000, demarrait son webServer (aucun build en CI) et
+          # TOUS les tests echouaient en ERR_CONNECTION_REFUSED — dont la gate a11y
+          # « 0 serious/critical ». Le job s'appelait « vs prod » sans jamais
+          # atteindre la prod.
+          E2E_BASE_URL: https://axion-ia.com
+        # On cible le FICHIER, pas le tag : le filtre `--grep @a11y` est OUVERT
+        # (tests/e2e/sprint-a-user-journeys.spec.ts le porte déjà, et rien
+        # n'empêche qu'une spec qui écrit le porte demain). Un job pointé sur la
+        # PROD ne doit pas dépendre d'un filtre que personne ne relit.
+        # `--retries=1` (au lieu des 2 retries CI de playwright.config.ts) borne le
+        # budget : 15 tests × 2 tentatives / 4 workers ≈ 14 min, sous les 30 min du
+        # job. Avec 3 tentatives à 90 s, un premier passage tout rouge frôlait le
+        # timeout — soit le « rouge d'infra » que ce lot supprime.
+        run: pnpm exec playwright test tests/e2e/a11y.spec.ts --project=chromium --retries=1
+      - name: Upload a11y report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: a11y-prod-report
+          path: playwright-report/
+          # 30 jours = confort de diagnostic. ⚠️ Ce n'est PAS une pièce du dossier
+          # Qualiopi : l'indicateur 26 porte sur le référent handicap, les réseaux
+          # et la procédure d'adaptation (src/server/qualiopi/config/registry.ts,
+          # lignes 191-198), pas sur l'accessibilité numérique du site. Et un
+          # artefact GitHub à 30 jours n'est pas consultable par l'auditrice.
+          retention-days: 30
 
   pnpm-audit:
     name: pnpm audit (deps CVE scan)
@@ -63,7 +114,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -119,7 +170,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -187,7 +238,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10.33.4
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -214,7 +265,7 @@ jobs:
   notify-failure:
     name: Notify nightly failure
     runs-on: ubuntu-latest
-    needs: [playwright-staging, pnpm-audit, zap-baseline, mail-tester, backup-drill, lighthouse-history]
+    needs: [a11y-prod, pnpm-audit, zap-baseline, mail-tester, backup-drill, lighthouse-history]
     if: failure()
     steps:
       - name: Post Telegram alert

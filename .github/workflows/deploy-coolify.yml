@@ -251,6 +251,13 @@ jobs:
             DATABASE_URL=postgresql://stub:stub@stub.invalid:5432/stub
             REDIS_URL=redis://stub.invalid:6379
             BUILD_SSG_VILLES_INDEXABLE_ONLY=true
+            # F32 — lus par des pages SSG, donc évalués AU BUILD. Sans eux,
+            # `notFound()` est figé dans l'image et aucun réglage Coolify ne peut
+            # le lever. Pilotés par des variables de dépôt pour rester
+            # modifiables sans toucher au code ; défaut `false` = rien n'est
+            # affirmé.
+            OF_PUBLIC_DISCLOSURE_ENABLED=${{ vars.OF_PUBLIC_DISCLOSURE_ENABLED || 'false' }}
+            QUALIOPI_CERTIFICATION_OBTENUE=${{ vars.QUALIOPI_CERTIFICATION_OBTENUE || 'false' }}
           # Secret BuildKit (jamais baké dans l'image GHCR publique) — clé de
           # chiffrement des Server Actions. Si le secret GH `NEXT_SERVER_ACTIONS_
           # ENCRYPTION_KEY` est absent → chaîne vide → build INERTE (Next génère
@@ -542,7 +549,7 @@ jobs:
           version: 10.33.4
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -634,7 +641,7 @@ jobs:
           version: 10.33.4
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -794,3 +801,89 @@ jobs:
             echo "::warning::Warmer capé ${cap}/${total} — surplus chauffé par trafic/crawl."
           fi
           echo "::notice::Warm terminé (best-effort, non bloquant)."
+
+
+  # ══════════════════════════════════════════════════════════════════════════
+  # notify — annonce Telegram du résultat du déploiement (2026-07-29)
+  # ══════════════════════════════════════════════════════════════════════════
+  #
+  # POURQUOI CE JOB : les catégories `DEPLOY_SUCCESS` / `DEPLOY_FAILED` du hub
+  # de notifications existaient, étaient routées et formatées… mais n'avaient
+  # AUCUN émetteur. `scripts/deploy-prod.sh` appelle bien Telegram, seulement ce
+  # n'est plus le chemin réel : depuis l'externalisation du build (ADR 0026),
+  # c'est CE workflow qui déploie — et il était muet. Un déploiement raté
+  # passait donc totalement inaperçu.
+  #
+  # POURQUOI IL APPELLE L'APPLICATION plutôt que Telegram en direct :
+  #   • AUCUN NOUVEAU SECRET — `REVALIDATE_SECRET` est déjà configuré ici (le
+  #     job `warm` s'en sert) et côté conteneur. Un `curl` direct vers Telegram
+  #     aurait imposé de dupliquer `TELEGRAM_BOT_TOKEN` dans GitHub, donc
+  #     d'attendre une action humaine avant que quoi que ce soit fonctionne.
+  #   • le message passe par le hub : routage vers le groupe « 🔔 Système »,
+  #     déduplication, rate-limit, format cohérent avec les autres alertes.
+  #
+  # TROIS GARDE-FOUS pour qu'il ne puisse JAMAIS casser un déploiement :
+  #   1. `needs: [build, deploy]` + `if: always()` → il s'exécute quel que soit
+  #      leur sort, y compris en échec (c'est justement le cas intéressant) ;
+  #   2. `continue-on-error: true` → son propre échec n'affecte pas la
+  #      conclusion du workflow ;
+  #   3. sans `REVALIDATE_SECRET`, il sort AVANT tout appel réseau.
+  #
+  # ⚠️ Au TOUT PREMIER run après fusion, la route n'existe pas encore dans le
+  # conteneur en ligne (elle arrive avec ce même déploiement) → 404 attendu et
+  # signalé en warning. Le run suivant fonctionnera.
+  notify:
+    name: Telegram — résultat du déploiement
+    needs: [build, deploy]
+    if: always()
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+      - name: Annoncer le résultat
+        env:
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+        run: |
+          set -u
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::notice::REVALIDATE_SECRET absent — notification ignorée (aucun appel réseau)."
+            exit 0
+          fi
+
+          # Succès = build ET deploy OK. `skipped` (workflow_dispatch avec
+          # skip_deploy) n'est pas un échec et ne doit pas déclencher d'alarme.
+          if [ "${BUILD_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
+            success=true
+          else
+            success=false
+          fi
+
+          subject=$(git log -1 --pretty=%s 2>/dev/null || echo "")
+          payload=$(jq -nc \
+            --argjson success "${success}" \
+            --arg sha "${GITHUB_SHA:0:8}" \
+            --arg branch "${GITHUB_REF_NAME}" \
+            --arg actor "${GITHUB_ACTOR}" \
+            --arg subject "${subject}" \
+            --arg buildResult "${BUILD_RESULT}" \
+            --arg deployResult "${DEPLOY_RESULT}" \
+            --arg runUrl "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            '{success:$success,sha:$sha,branch:$branch,actor:$actor,subject:$subject,buildResult:$buildResult,deployResult:$deployResult,runUrl:$runUrl}')
+
+          # `|| echo 000` : une app injoignable ne doit pas teinter le run.
+          code=$(curl -sS -o /tmp/notify.out -w '%{http_code}' -m 20 \
+            -X POST "https://axion-ia.com/api/internal/deploy-notify" \
+            -H "Content-Type: application/json" \
+            -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
+            --data "${payload}" || echo "000")
+
+          case "${code}" in
+            200) echo "::notice::Notification de déploiement envoyée (success=${success})." ;;
+            404) echo "::warning::Route /api/internal/deploy-notify absente — normal au premier run après fusion." ;;
+            *)   echo "::warning::Notification non délivrée (HTTP ${code}) — non bloquant."
+                 head -c 300 /tmp/notify.out || true ;;
+          esac

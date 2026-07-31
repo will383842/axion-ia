@@ -1,0 +1,565 @@
+/**
+ * Tests — calcul de l'acompte (F61).
+ *
+ * Chaque cas correspond à une règle de droit ou à une conséquence financière
+ * réelle. Ce ne sont pas des tests de couverture : ce sont les quatre situations
+ * dans lesquelles se tromper coûte de l'argent ou expose à une irrégularité.
+ */
+
+import { describe, it, expect } from "vitest";
+import {
+  calculerAcompte,
+  PLAFOND_ACOMPTE_PARTICULIER_PCT,
+  DELAI_RETRACTATION_PARTICULIER_JOURS,
+  type ContexteAcompte,
+  echelonnerSolde,
+} from "./acompte";
+
+const base: ContexteAcompte = {
+  montantTotalHtCents: 200_000, // 2 000 €
+  priseEnChargeCents: 0,
+  subrogation: false,
+  cpf: false,
+  nature: "entreprise",
+  tauxAcomptePct: 30,
+};
+
+describe("CPF", () => {
+  it("n'appelle AUCUN acompte — c'est la Caisse des Dépôts qui règle", () => {
+    const r = calculerAcompte({ ...base, cpf: true });
+    expect(r.acompteCents).toBe(0);
+    expect(r.motif).toContain("Caisse des Dépôts");
+  });
+});
+
+describe("Subrogation", () => {
+  it("prise en charge à 100 % avec subrogation → aucun acompte", () => {
+    const r = calculerAcompte({ ...base, priseEnChargeCents: 200_000, subrogation: true });
+    expect(r.acompteCents).toBe(0);
+    expect(r.resteAChargeCents).toBe(0);
+    expect(r.motif).toContain("directement l'organisme");
+  });
+
+  // 🔴 Le cas qui compte : une prise en charge PARTIELLE laisse un reste à
+  // charge, et l'acompte doit porter sur CE montant — pas sur le total. S'en
+  // remettre au total reviendrait à réclamer à l'entreprise une part que son
+  // OPCO va payer.
+  it("prise en charge partielle → l'acompte porte sur le RESTE À CHARGE", () => {
+    const r = calculerAcompte({
+      ...base,
+      montantTotalHtCents: 200_000,
+      priseEnChargeCents: 120_000, // OPCO couvre 1 200 €
+      subrogation: true,
+      tauxAcomptePct: 30,
+    });
+    expect(r.resteAChargeCents).toBe(80_000); // 800 €
+    expect(r.acompteCents).toBe(24_000); // 30 % de 800 €, pas de 2 000 €
+    expect(r.soldeCents).toBe(56_000);
+  });
+
+  it("permet de demander la TOTALITÉ du reste à charge en acompte", () => {
+    const r = calculerAcompte({
+      ...base,
+      priseEnChargeCents: 120_000,
+      tauxAcomptePct: 100,
+    });
+    expect(r.acompteCents).toBe(80_000);
+    expect(r.soldeCents).toBe(0);
+    expect(r.echeancier).toHaveLength(1);
+  });
+});
+
+describe("Particulier — art. L6353-6", () => {
+  it("plafonne à 30 % même si un taux supérieur est demandé", () => {
+    const r = calculerAcompte({ ...base, nature: "particulier", tauxAcomptePct: 50 });
+    expect(r.plafonne).toBe(true);
+    expect(r.acompteCents).toBe(60_000); // 30 % de 2 000 €
+    expect(r.motif).toContain("L6353-6");
+  });
+
+  it("accepte un taux INFÉRIEUR au plafond — on peut demander moins", () => {
+    const r = calculerAcompte({ ...base, nature: "particulier", tauxAcomptePct: 10 });
+    expect(r.plafonne).toBe(false);
+    expect(r.acompteCents).toBe(20_000);
+  });
+
+  // 🔴 Aucune somme ne peut être encaissée avant le 10e jour.
+  it("repousse l'encaissement de 10 jours après la signature", () => {
+    const signature = new Date("2026-03-01T00:00:00.000Z");
+    const r = calculerAcompte({ ...base, nature: "particulier", dateSignature: signature });
+    expect(r.encaissableAPartirDu).not.toBeNull();
+    const attendu = new Date(
+      signature.getTime() + DELAI_RETRACTATION_PARTICULIER_JOURS * 24 * 60 * 60 * 1000,
+    );
+    expect(r.encaissableAPartirDu?.toISOString()).toBe(attendu.toISOString());
+  });
+
+  // 🔴 L'échelonnement est une OBLIGATION, pas une facilité commerciale.
+  it("échelonne toujours le solde, jamais un règlement unique", () => {
+    const r = calculerAcompte({ ...base, nature: "particulier" });
+    const solde = r.echeancier.find((e) => e.libelle.includes("Solde"));
+    expect(solde?.libelle).toContain("échelonné");
+    expect(solde?.libelle).toContain("L6353-6");
+  });
+
+  it("le plafond est bien celui du code du travail", () => {
+    expect(PLAFOND_ACOMPTE_PARTICULIER_PCT).toBe(30);
+  });
+});
+
+describe("Entreprise — aucune limite légale", () => {
+  it("applique le taux au montant total quand il n'y a pas de financeur", () => {
+    const r = calculerAcompte(base);
+    expect(r.acompteCents).toBe(60_000);
+    expect(r.soldeCents).toBe(140_000);
+    expect(r.echeancier).toHaveLength(2);
+  });
+
+  it("accepte un acompte de 50 %, interdit à un particulier", () => {
+    const r = calculerAcompte({ ...base, tauxAcomptePct: 50 });
+    expect(r.acompteCents).toBe(100_000);
+    expect(r.plafonne).toBe(false);
+  });
+
+  it("taux à 0 → aucun acompte, le solde vaut le total", () => {
+    const r = calculerAcompte({ ...base, tauxAcomptePct: 0 });
+    expect(r.acompteCents).toBe(0);
+    expect(r.soldeCents).toBe(200_000);
+  });
+});
+
+describe("Robustesse — ne lève jamais", () => {
+  it("borne une prise en charge supérieure au total", () => {
+    const r = calculerAcompte({ ...base, priseEnChargeCents: 999_999 });
+    expect(r.resteAChargeCents).toBe(0);
+    expect(r.acompteCents).toBe(0);
+  });
+
+  it("borne un taux aberrant", () => {
+    expect(calculerAcompte({ ...base, tauxAcomptePct: -20 }).acompteCents).toBe(0);
+    expect(calculerAcompte({ ...base, tauxAcomptePct: 500 }).acompteCents).toBe(200_000);
+  });
+
+  it("arrondit à l'euro INFÉRIEUR — on ne réclame jamais plus que le taux prévu", () => {
+    // 33 % de 1 001,00 € = 330,33 € → ramené à 330,00 €.
+    // Le montant est choisi pour PRODUIRE des centimes : avec 1 000 € le calcul
+    // tombe juste et ne testerait pas l'arrondi.
+    const r = calculerAcompte({ ...base, montantTotalHtCents: 100_100, tauxAcomptePct: 33 });
+    expect(r.acompteCents).toBe(33_000);
+    expect(r.acompteCents % 100).toBe(0);
+    // Et le solde absorbe la différence : rien ne se perd.
+    expect(r.acompteCents + r.soldeCents).toBe(100_100);
+  });
+
+  it("montant total nul → tout à zéro, aucune échéance", () => {
+    const r = calculerAcompte({ ...base, montantTotalHtCents: 0 });
+    expect(r.acompteCents).toBe(0);
+    expect(r.echeancier).toHaveLength(0);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vérification E2E 2026-07-26 — deux défauts trouvés par contre-vérification.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("CPF avec un titulaire particulier", () => {
+  // 🔴 La branche CPF s'exécutait avant le test sur `nature`. Le reste à charge
+  // CPF est un cas métier DÉCLARÉ (`qualiopi.cpf_reste_a_charge = 103,20 €` en
+  // production) : il ressortait en règlement unique, sans rétractation, sans
+  // échelonnement, sans mention L6353-6. Le CPF retire l'acompte, pas les
+  // protections du particulier sur ce qu'il paie lui-même.
+  const ctx = {
+    montantTotalHtCents: 200_000,
+    priseEnChargeCents: 189_680,
+    nature: "particulier" as const,
+    tauxAcomptePct: 30,
+    cpf: true,
+    subrogation: false,
+    dateSignature: new Date("2026-09-01T00:00:00Z"),
+  };
+
+  it("ne demande aucun acompte", () => {
+    expect(calculerAcompte(ctx).acompteCents).toBe(0);
+  });
+
+  it("échelonne le reste à charge et cite L6353-6", () => {
+    const r = calculerAcompte(ctx);
+    expect(r.echeancier).toHaveLength(1);
+    expect(r.echeancier[0]!.libelle).toContain("L6353-6");
+    expect(r.echeancier[0]!.montantCents).toBe(10_320);
+  });
+
+  it("ouvre l'encaissement après le délai de rétractation", () => {
+    const r = calculerAcompte(ctx);
+    expect(r.encaissableAPartirDu).toBeInstanceOf(Date);
+    expect(r.encaissableAPartirDu!.getTime()).toBeGreaterThan(ctx.dateSignature.getTime());
+  });
+
+  it("sans reste à charge, revient au cas CPF pur", () => {
+    const r = calculerAcompte({ ...ctx, priseEnChargeCents: 200_000 });
+    expect(r.echeancier).toHaveLength(0);
+    expect(r.motif).toContain("Caisse des Dépôts");
+  });
+});
+
+describe("Entrées non numériques", () => {
+  // 🔴 Le JSDoc promettait des bornes sûres ; `Math.trunc(NaN)` vaut `NaN`, qui
+  // traversait tout le calcul. `if (acompte > 0)` étant faux pour NaN,
+  // l'échéancier ressortait VIDE et l'invariante « somme = reste à charge » ne
+  // détectait rien.
+  const base = {
+    montantTotalHtCents: 200_000,
+    priseEnChargeCents: 0,
+    nature: "entreprise" as const,
+    tauxAcomptePct: 30,
+    cpf: false,
+    subrogation: false,
+  };
+
+  for (const [nom, ctx] of [
+    ["montant NaN", { ...base, montantTotalHtCents: NaN }],
+    ["montant Infinity", { ...base, montantTotalHtCents: Infinity }],
+    ["prise en charge NaN", { ...base, priseEnChargeCents: NaN }],
+    ["taux NaN", { ...base, tauxAcomptePct: NaN }],
+  ] as const) {
+    it(`${nom} → aucun montant NaN en sortie`, () => {
+      const r = calculerAcompte(ctx);
+      for (const v of [r.acompteCents, r.soldeCents, r.resteAChargeCents]) {
+        expect(Number.isFinite(v)).toBe(true);
+      }
+      expect(r.motif).not.toContain("NaN");
+      for (const e of r.echeancier) expect(Number.isFinite(e.montantCents)).toBe(true);
+    });
+  }
+
+  it("un taux NaN vaut 0, et l'objet reste cohérent avec lui-même", () => {
+    const r = calculerAcompte({ ...base, tauxAcomptePct: NaN });
+    expect(r.acompteCents).toBe(0);
+    expect(r.soldeCents).toBe(r.resteAChargeCents);
+    expect(r.echeancier.reduce((t, e) => t + e.montantCents, 0)).toBe(r.resteAChargeCents);
+  });
+});
+
+describe("Message de plafonnement", () => {
+  // Annonçait « le taux de 100 % a été ramené à 30 % » quand on avait demandé
+  // 500 : il lisait la valeur déjà bornée à 100.
+  it("cite le taux réellement saisi", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 100_000,
+      priseEnChargeCents: 0,
+      nature: "particulier",
+      tauxAcomptePct: 500,
+      cpf: false,
+      subrogation: false,
+    });
+    expect(r.plafonne).toBe(true);
+    expect(r.motif).toContain("500 %");
+    expect(r.motif).toContain("ramené à 30 %");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Réconciliation des quatre sources de l'acompte — 2026-07-27.
+//
+// Quatre endroits calculaient un acompte, et deux répondaient à des questions
+// DIFFÉRENTES sans le dire :
+//
+//   · `calculerAcompte()`        PROPOSE  — assiette = reste à charge
+//   · garde L6353-6 (facturation) REFUSE   — assiette = prix convenu
+//   · `contrat-formation.tsx`     IMPRIME  — B2C, plafonné
+//   · `convention.tsx`            IMPRIME  — B2B, aucun plafond légal
+//
+// L'invariant qui les rend compatibles, et que ce test verrouille :
+// **la proposition ne peut jamais franchir le plafond légal.**
+// 30 % du reste à charge est toujours ≤ 30 % du prix convenu, puisque le reste
+// à charge est toujours ≤ au total. Ce sont deux étages, pas deux règles
+// rivales — ce qui avait été pris pour une contradiction.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("Invariant : la proposition reste sous le plafond légal", () => {
+  const CAS = [
+    { total: 200_000, priseEnCharge: 0, libelle: "sans financement" },
+    { total: 200_000, priseEnCharge: 120_000, libelle: "OPCO 60 %" },
+    { total: 200_000, priseEnCharge: 189_680, libelle: "CPF, reste 103,20 €" },
+    { total: 350_000, priseEnCharge: 100_000, libelle: "financement partiel" },
+    { total: 99_900, priseEnCharge: 0, libelle: "petit montant" },
+  ] as const;
+
+  for (const c of CAS) {
+    it(`${c.libelle} : l'acompte proposé ne dépasse pas 30 % du prix convenu`, () => {
+      const r = calculerAcompte({
+        montantTotalHtCents: c.total,
+        priseEnChargeCents: c.priseEnCharge,
+        nature: "particulier",
+        tauxAcomptePct: 30,
+        cpf: false,
+        subrogation: false,
+      });
+      const plafondLegal = Math.floor((c.total * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100);
+      expect(r.acompteCents).toBeLessThanOrEqual(plafondLegal);
+    });
+  }
+
+  // Le sens de la protection : ce que le particulier avance de sa poche, jamais
+  // un pourcentage de ce qu'un tiers paie à sa place.
+  it("l'assiette est bien le reste à charge, pas le total", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 200_000,
+      priseEnChargeCents: 120_000,
+      nature: "particulier",
+      tauxAcomptePct: 30,
+      cpf: false,
+      subrogation: false,
+    });
+    // 30 % de 80 000 = 24 000, et non 30 % de 200 000 = 60 000.
+    expect(r.acompteCents).toBe(24_000);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L6353-6 point (3) — ÉCHELONNEMENT du solde
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 Le point (3) était ANNONCÉ sans être appliqué : le solde sortait en une
+ * échéance unique SANS DATE. Or la doctrine administrative impose que « les
+ * modalités de règlement, notamment l'échéancier, figurent dans le contrat de
+ * formation » — un échéancier sans date ne remplit pas cette exigence.
+ *
+ * ⚠️ L'échelonnement porte sur les bornes CONTRACTUELLES de l'action, jamais sur
+ * le rythme réel du stagiaire. Un prorata des heures consommées serait
+ * inconnaissable à la signature — donc impossible à écrire au contrat — et
+ * rendrait le paiement dépendant de la diligence du client, ce qui est
+ * inexploitable en e-learning asynchrone.
+ */
+describe("🔴 échelonnerSolde — L6353-6 point (3)", () => {
+  const D10 = new Date("2026-09-11T00:00:00.000Z"); // fin du délai de rétractation
+
+  it("découpe le solde en échéances mensuelles sur la durée de l'action", () => {
+    const e = echelonnerSolde({
+      soldeCents: 300_000,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-11-20T00:00:00.000Z"),
+    });
+    // Septembre, octobre, novembre → 3 échéances.
+    expect(e).toHaveLength(3);
+    expect(e.every((x) => x.dueLe !== null)).toBe(true);
+  });
+
+  it("🔴 la somme des échéances est EXACTEMENT le solde", () => {
+    // Un centime perdu dans les arrondis, c'est un contrat dont les échéances ne
+    // totalisent pas le prix annoncé.
+    for (const solde of [300_000, 299_999, 100_001, 7, 1_234_567]) {
+      const e = echelonnerSolde({
+        soldeCents: solde,
+        encaissableAPartirDu: D10,
+        dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+        dateFinAction: new Date("2027-02-20T00:00:00.000Z"),
+      });
+      expect(e.reduce((a, x) => a + x.montantCents, 0)).toBe(solde);
+    }
+  });
+
+  it("🔴 les arrondis vont à la DERNIÈRE échéance, jamais aux premières", () => {
+    // On ne réclame jamais plus tôt que prévu.
+    const e = echelonnerSolde({
+      soldeCents: 100_001,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-11-20T00:00:00.000Z"),
+    });
+    const derniere = e[e.length - 1]!.montantCents;
+    for (const x of e.slice(0, -1)) expect(x.montantCents).toBeLessThanOrEqual(derniere);
+  });
+
+  it("🔴 aucune échéance ne précède la fin du délai de rétractation", () => {
+    // Action démarrant AVANT la fin du délai : la première échéance est repoussée.
+    const e = echelonnerSolde({
+      soldeCents: 200_000,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-01T00:00:00.000Z"),
+      dateFinAction: new Date("2026-11-30T00:00:00.000Z"),
+    });
+    for (const x of e) {
+      expect(x.dueLe).not.toBeNull();
+      expect(x.dueLe!.getTime()).toBeGreaterThanOrEqual(D10.getTime());
+    }
+  });
+
+  it("⚠️ une action TROP COURTE rend une seule échéance, et le DIT", () => {
+    // L'échelonnement d'une action d'une journée est matériellement impossible.
+    // Le prétendre serait une affirmation fausse sur une pièce contractuelle.
+    const e = echelonnerSolde({
+      soldeCents: 150_000,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-09-16T00:00:00.000Z"),
+    });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.libelle).toContain("matériellement impossible");
+    expect(e[0]!.dueLe).not.toBeNull();
+  });
+
+  it("🔴 sans bornes d'action, NE FABRIQUE AUCUNE DATE", () => {
+    // Une échéance datée à tort serait annoncée au client et opposable — pire
+    // qu'une échéance sans date, qui dit honnêtement que le rythme suit l'action.
+    const e = echelonnerSolde({ soldeCents: 200_000, encaissableAPartirDu: D10 });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.dueLe).toBeNull();
+    expect(e[0]!.libelle).toContain("dates à préciser");
+  });
+
+  it("rend un échéancier VIDE pour un solde nul", () => {
+    expect(echelonnerSolde({ soldeCents: 0, encaissableAPartirDu: D10 })).toStrictEqual([]);
+  });
+
+  it("⚠️ ne lève pas sur un solde non numérique", () => {
+    // Une exception ici bloquerait la création d'un contrat.
+    expect(() =>
+      echelonnerSolde({ soldeCents: Number.NaN, encaissableAPartirDu: D10 }),
+    ).not.toThrow();
+  });
+
+  it("préserve la fin de mois (31 janvier → 28/29 février)", () => {
+    const e = echelonnerSolde({
+      soldeCents: 300_000,
+      encaissableAPartirDu: new Date("2026-01-01T00:00:00.000Z"),
+      dateDebutAction: new Date("2026-01-31T00:00:00.000Z"),
+      dateFinAction: new Date("2026-03-31T00:00:00.000Z"),
+    });
+    expect(e).toHaveLength(3);
+    // La 2e échéance ne doit pas déborder sur mars.
+    expect(e[1]!.dueLe!.getMonth()).toBe(1);
+  });
+});
+
+describe("🔴 calculerAcompte — le solde d'un particulier est DATÉ", () => {
+  it("produit des échéances datées quand les bornes de l'action sont connues", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 400_000,
+      priseEnChargeCents: 0,
+      subrogation: false,
+      cpf: false,
+      nature: "particulier",
+      tauxAcomptePct: 30,
+      dateSignature: new Date("2026-09-01T00:00:00.000Z"),
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-12-15T00:00:00.000Z"),
+    });
+    // 1 acompte + plusieurs échéances de solde, toutes datées.
+    expect(r.echeancier.length).toBeGreaterThan(2);
+    expect(r.echeancier.every((e) => e.dueLe !== null)).toBe(true);
+    // 🔴 L'échéancier doit totaliser le reste à charge — sinon le contrat annonce
+    // un prix que ses échéances ne recomposent pas.
+    expect(r.echeancier.reduce((a, e) => a + e.montantCents, 0)).toBe(r.resteAChargeCents);
+  });
+
+  it("⚠️ CPF : aucun acompte, mais le reste à charge reste échelonné et daté", () => {
+    const r = calculerAcompte({
+      montantTotalHtCents: 200_000,
+      priseEnChargeCents: 50_000,
+      subrogation: false,
+      cpf: true,
+      nature: "particulier",
+      tauxAcomptePct: 30,
+      dateSignature: new Date("2026-09-01T00:00:00.000Z"),
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-12-15T00:00:00.000Z"),
+    });
+    expect(r.acompteCents).toBe(0);
+    expect(r.echeancier.every((e) => e.dueLe !== null)).toBe(true);
+  });
+});
+
+describe("🔴 échelonnerSolde — « en 1, 2 ou 3 fois » (pratique commerciale)", () => {
+  const D10 = new Date("2026-09-11T00:00:00.000Z");
+  const SIX_MOIS = {
+    dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+    dateFinAction: new Date("2027-02-15T00:00:00.000Z"),
+  };
+
+  it("respecte le nombre d'échéances demandé", () => {
+    for (const n of [2, 3, 4]) {
+      const e = echelonnerSolde({
+        soldeCents: 600_000,
+        encaissableAPartirDu: D10,
+        ...SIX_MOIS,
+        nbEcheancesSouhaite: n,
+      });
+      expect(e).toHaveLength(n);
+      expect(e.reduce((a, x) => a + x.montantCents, 0)).toBe(600_000);
+    }
+  });
+
+  it("🔴 RÉPARTIT les échéances sur toute la durée, pas sur les premiers mois", () => {
+    // « En 3 fois » sur six mois doit donner ~mois 1, 3 et 5. Les coller au
+    // début encaisserait tout dans le premier tiers et viderait
+    // l'échelonnement de son sens protecteur.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 3,
+    });
+    const mois = e.map((x) => x.dueLe!.getMonth());
+    // Trois mois DISTINCTS, et le dernier nettement après le premier.
+    expect(new Set(mois).size).toBe(3);
+    const ecart = (e[2]!.dueLe!.getTime() - e[0]!.dueLe!.getTime()) / (24 * 3600 * 1000);
+    expect(ecart).toBeGreaterThan(80);
+  });
+
+  it("🔴 PLANCHER LÉGAL : un particulier ne paie jamais le solde en une fois", () => {
+    // `nbEcheancesSouhaite: 1` demanderait le solde en une fois — c'est
+    // exactement ce que le point (3) de L6353-6 interdit. Le plancher n'est pas
+    // un réglage : il ne peut pas descendre sous la loi.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 1,
+      plancherLegal: true,
+    });
+    expect(e.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("⚠️ SANS plancher (entreprise), « en une fois » est accepté", () => {
+    // Entre professionnels, aucune obligation d'échelonnement : c'est purement
+    // commercial. Le libellé ne prétend pas à un échelonnement.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      ...SIX_MOIS,
+      nbEcheancesSouhaite: 1,
+    });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.libelle).toContain("une fois");
+    expect(e[0]!.libelle).not.toContain("matériellement impossible");
+  });
+
+  it("plafonne au nombre de mois disponibles", () => {
+    // On ne case pas 6 échéances mensuelles dans une action de deux jours.
+    const e = echelonnerSolde({
+      soldeCents: 600_000,
+      encaissableAPartirDu: D10,
+      dateDebutAction: new Date("2026-09-15T00:00:00.000Z"),
+      dateFinAction: new Date("2026-09-17T00:00:00.000Z"),
+      nbEcheancesSouhaite: 6,
+    });
+    expect(e).toHaveLength(1);
+    expect(e[0]!.libelle).toContain("matériellement impossible");
+  });
+
+  it("⚠️ un nombre d'échéances absurde ne fait pas lever", () => {
+    for (const n of [0, -5, Number.NaN, 1e9]) {
+      expect(() =>
+        echelonnerSolde({
+          soldeCents: 600_000,
+          encaissableAPartirDu: D10,
+          ...SIX_MOIS,
+          nbEcheancesSouhaite: n,
+        }),
+      ).not.toThrow();
+    }
+  });
+});

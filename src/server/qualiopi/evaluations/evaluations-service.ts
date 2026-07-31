@@ -112,6 +112,147 @@ export async function listEvaluationsForEnrollment(
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * Résultats détaillés de l'évaluation finale, objectif par objectif.
+ *
+ * 🔴 Audit certification 2026-07-26 (F21). `getFinaleReussite` ne remontait
+ * qu'un booléen, et l'attestation imprimait donc sous « Compétences acquises »
+ * la liste COMPLÈTE des objectifs du catalogue — un stagiaire noté « non
+ * acquis » sur trois objectifs sur cinq était attesté sur les cinq. L'article
+ * L6353-1 exige les RÉSULTATS de l'évaluation des acquis, pas le programme.
+ *
+ * On remonte donc le détail, et c'est à l'appelant de ne pas le recopier.
+ */
+export interface ResultatsFinale {
+  reussite: boolean;
+  scorePct: number;
+  niveauGlobal: string;
+  /** Libellés répartis par note. Une compétence non notée n'est dans aucune. */
+  acquis: string[];
+  partiels: string[];
+  nonAcquis: string[];
+  /** Compétences attendues mais laissées sans note — à signaler, jamais à taire. */
+  nonEvalues: string[];
+}
+
+/** Forme d'une compétence telle que stockée dans la colonne Json `competences`. */
+interface CompetenceStockee {
+  libelle?: unknown;
+  note?: unknown;
+}
+
+/**
+ * Retourne le détail de l'évaluation finale la plus récente, ou `null`.
+ *
+ * `competences` est une colonne `Json` : son contenu n'est pas garanti par le
+ * typage. On la lit défensivement — un libellé manquant est ignoré plutôt que
+ * de faire échouer la génération de l'attestation.
+ */
+export async function getFinaleResultats(enrollmentId: string): Promise<ResultatsFinale | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return null;
+  }
+  const finale = await prisma.evaluationAcquis.findFirst({
+    where: { enrollmentId, type: "finale" },
+    orderBy: { dateEvaluation: "desc" },
+    select: {
+      reussite: true,
+      scorePct: true,
+      niveauGlobal: true,
+      competences: true,
+    },
+  });
+  if (finale === null) return null;
+
+  return repartirCompetences(finale);
+}
+
+/**
+ * Vrai si l'évaluation ne comporte AUCUNE compétence notée.
+ *
+ * 🔴 Vérification E2E 2026-07-26. F22 avait sorti les compétences non notées du
+ * calcul, mais la conséquence n'était pas propagée : une évaluation enregistrée
+ * avec toutes les cases vides donne `scoreMax = 0`, donc `scorePct = 0`, donc
+ * `reussite = false` — et ces trois valeurs sont PERSISTÉES. L'attestation
+ * imprimait alors « Non validée — score 0 % », c'est-à-dire exactement le faux
+ * échec que F22 prétendait fermer, un étage plus haut.
+ *
+ * Un commentaire de test affirmait même le contraire (« l'attestation porte
+ * alors "Évaluation des acquis non réalisée" ») : c'était faux, cette branche
+ * n'était atteinte que sans AUCUNE ligne en base.
+ */
+export function evaluationSansAucuneNote(r: ResultatsFinale): boolean {
+  return r.acquis.length === 0 && r.partiels.length === 0 && r.nonAcquis.length === 0;
+}
+
+/**
+ * Répartit les compétences d'une évaluation par note. Partagé entre la voie
+ * collective et la voie AFEST 1-to-1.
+ *
+ * 🔴 Ce partage n'est pas une commodité : c'est la garantie que les deux
+ * familles d'attestation restituent les résultats de la MÊME façon. Mon premier
+ * correctif F21 n'avait touché que la voie collective, et l'AFEST a continué
+ * pendant ce temps à imprimer le programme sous « Compétences acquises ».
+ * Dupliquer la logique aurait reproduit la divergence.
+ */
+function repartirCompetences(finale: {
+  reussite: boolean;
+  scorePct: number;
+  niveauGlobal: unknown;
+  competences: unknown;
+}): ResultatsFinale {
+  const lignes: CompetenceStockee[] = Array.isArray(finale.competences)
+    ? (finale.competences as CompetenceStockee[])
+    : [];
+
+  const acquis: string[] = [];
+  const partiels: string[] = [];
+  const nonAcquis: string[] = [];
+  const nonEvalues: string[] = [];
+
+  for (const c of lignes) {
+    if (c === null || typeof c !== "object") continue;
+    const libelle = typeof c.libelle === "string" ? c.libelle.trim() : "";
+    if (libelle === "") continue;
+    if (c.note === 3) acquis.push(libelle);
+    else if (c.note === 2) partiels.push(libelle);
+    else if (c.note === 1) nonAcquis.push(libelle);
+    else nonEvalues.push(libelle);
+  }
+
+  return {
+    reussite: finale.reussite,
+    scorePct: finale.scorePct,
+    niveauGlobal: String(finale.niveauGlobal),
+    acquis,
+    partiels,
+    nonAcquis,
+    nonEvalues,
+  };
+}
+
+/**
+ * Même chose pour un parcours AFEST 1-to-1, indexé par `coachingSessionId`.
+ *
+ * L'AFEST est le dispositif où l'évaluation individuelle est le cœur du sujet au
+ * regard de L6353-1 : y restituer le programme au lieu des résultats est plus
+ * grave encore qu'en collectif.
+ */
+export async function getFinaleResultats1to1(
+  coachingSessionId: string,
+): Promise<ResultatsFinale | null> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return null;
+  }
+  const finale = await prisma.evaluationAcquis.findFirst({
+    where: { coachingSessionId, type: "finale" },
+    orderBy: { dateEvaluation: "desc" },
+    select: { reussite: true, scorePct: true, niveauGlobal: true, competences: true },
+  });
+  if (finale === null) return null;
+  return repartirCompetences(finale);
+}
+
+/**
  * Retourne la réussite de l'évaluation finale la plus récente.
  * Retourne `null` si aucune évaluation finale n'existe.
  */

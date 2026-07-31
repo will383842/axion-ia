@@ -20,6 +20,7 @@ import {
   FieldRow,
   BulletList,
   SignatureZone,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
@@ -81,6 +82,17 @@ export interface ProtocoleAfestData {
   qrToken?: string;
   qrDataUrl?: string;
   estCopie?: boolean;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * ⚠️ L'ORDRE des cadres suit le SSOT, où `axionia` figure EN PREMIER pour
+   * cette pièce : l'organisme propose le cadrage avant que l'entreprise et le
+   * bénéficiaire y adhèrent. Ce n'est pas le cas des autres circuits.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -112,7 +124,19 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
           <FieldRow label="Organisme de formation" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           {data.beneficiaire.entreprise ? (
             <FieldRow label="Entreprise" value={data.beneficiaire.entreprise} />
@@ -185,9 +209,9 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
           <SignatureZone
             faitLe={`${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
             parties={[
-              { titre: "L'organisme" },
-              { titre: "L'entreprise" },
-              { titre: "Le bénéficiaire" },
+              { titre: "L'organisme", signature: data.signatures?.axionia ?? null },
+              { titre: "L'entreprise", signature: data.signatures?.client ?? null },
+              { titre: "Le bénéficiaire", signature: data.signatures?.beneficiaire ?? null },
             ]}
           />
         </DocSection>

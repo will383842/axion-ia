@@ -102,10 +102,46 @@ export interface CertificatRealisationData {
   dateFin: string;
   /** Durée réalisée en heures décimales. Sera affichée en centièmes (ex. 7 → "7,00"). */
   dureeHeures: number;
+  /**
+   * Nature de l'action, parmi les catégories de l'article L6313-1 du code du
+   * travail.
+   *
+   * 🔴 Audit certification 2026-07-26 (F30). Le modèle de certificat annexé à
+   * l'arrêté du 21 décembre 2018 impose de qualifier l'action : le document
+   * n'en portait aucune trace. Un OPCO qui reçoit un certificat sans nature
+   * d'action ne sait pas au titre de quel dispositif il rembourse.
+   *
+   * Axion-IA ne dispense que des actions de formation — d'où le défaut. Le champ
+   * existe pour que le jour où un bilan de compétences ou une VAE serait
+   * proposé, la pièce ne mente pas par omission.
+   */
+  natureAction?: "action_formation" | "bilan_competences" | "vae" | "apprentissage";
+  /**
+   * Modalité d'exécution. Le modèle réglementaire distingue le présentiel du
+   * distanciel — un contrôle de service fait porte précisément sur ce point.
+   */
+  modalite?: "presentiel" | "distanciel" | "hybride";
   qrToken?: string;
   qrDataUrl?: string;
   estCopie?: boolean;
 }
+
+/** Libellés réglementaires — article L6313-1 du code du travail. */
+const NATURE_ACTION_LABELS: Record<
+  NonNullable<CertificatRealisationData["natureAction"]>,
+  string
+> = {
+  action_formation: "Action de formation",
+  bilan_competences: "Bilan de compétences",
+  vae: "Action permettant de faire valider les acquis de l'expérience",
+  apprentissage: "Action de formation par apprentissage",
+};
+
+const MODALITE_LABELS: Record<NonNullable<CertificatRealisationData["modalite"]>, string> = {
+  presentiel: "Présentiel",
+  distanciel: "À distance",
+  hybride: "Mixte (présentiel et à distance)",
+};
 
 // ============================================================
 // Composant principal
@@ -145,7 +181,19 @@ export function CertificatRealisationPdf({
         <DocSection title="Organisme de formation">
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="N° déclaration activité (NDA)" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="Adresse" value={identite.adresseSiege} required />
         </DocSection>
@@ -169,7 +217,21 @@ export function CertificatRealisationPdf({
 
         {/* Action de formation */}
         <DocSection title="Action de formation réalisée">
+          {/*
+            F30 — la nature de l'action et sa modalité figurent au modèle annexé
+            à l'arrêté du 21 décembre 2018. Le défaut « action de formation »
+            couvre le seul cas qu'Axion-IA pratique ; il est explicite ici plutôt
+            que sous-entendu, parce qu'un certificat muet sur ce point oblige le
+            financeur à le supposer.
+          */}
+          <FieldRow
+            label="Nature de l'action"
+            value={NATURE_ACTION_LABELS[data.natureAction ?? "action_formation"]}
+          />
           <FieldRow label="Intitulé de l'action" value={data.intituleAction} />
+          {data.modalite ? (
+            <FieldRow label="Modalité d'exécution" value={MODALITE_LABELS[data.modalite]} />
+          ) : null}
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
         </DocSection>

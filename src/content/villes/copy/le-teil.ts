@@ -46,8 +46,8 @@ export const LE_TEIL_COPY: VilleCopy = {
       en: "Coaching 1-to-1 au Teil : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants TPE et PME teillois : industriels, agriculteurs, artisans, commerçants, professions libérales.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
-      en: "Sites web augmentés IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
+      fr: "Sites web & SaaS IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
+      en: "Sites web & SaaS IA au Teil : plateformes sur mesure pour TPE et PME du sud-Ardèche — devis en ligne BTP, vente directe agricole, agents conversationnels intégrés, automatisation du suivi client.",
     },
   },
   faqGeolocalisee: [

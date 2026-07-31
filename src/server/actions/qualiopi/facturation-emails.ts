@@ -16,6 +16,11 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import { publicUrl } from "@/lib/public-url";
+import {
+  creerTokenDocument,
+  TokenDocumentError,
+} from "@/server/qualiopi/documents/signature/token-document";
 
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -30,7 +35,10 @@ const EnvoyerDevisSchema = z.object({
 
 export async function envoyerDevisEmailAction(
   rawInput: unknown,
-): Promise<{ data: { enqueued: boolean; to: string } } | { error: string }> {
+): Promise<
+  | { data: { enqueued: boolean; garePourValidation: boolean; to: string; note?: string } }
+  | { error: string }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -41,7 +49,17 @@ export async function envoyerDevisEmailAction(
 
   const devis = await prisma.devis.findUnique({
     where: { id: input.devisId },
-    include: { client: { select: { raisonSociale: true, contactEmail: true } } },
+    include: {
+      client: {
+        select: {
+          raisonSociale: true,
+          contactEmail: true,
+          contactNom: true,
+          // Voir devis.ts : la qualité porte l'opposabilité du pouvoir de signer.
+          contactFonction: true,
+        },
+      },
+    },
   });
   if (!devis) return { error: "Devis introuvable." };
 
@@ -56,7 +74,44 @@ export async function envoyerDevisEmailAction(
     return { error: "PDF absent : envoyer le devis (génération du PDF) avant l'envoi par email." };
   }
 
-  const { enqueued } = await enqueueEmail(
+  // ── Lien de signature : RÉÉMIS, jamais rejoué ──
+  //
+  // 🔴 On ne stocke que le HASH du jeton : le clair n'existe qu'une fois, au
+  // moment de l'émission. Un renvoi ne peut donc pas « retrouver » le lien
+  // précédent — il en émet un neuf, ce qui révoque l'ancien (index unique
+  // partiel sur (pièce, partie)).
+  //
+  // ⚠️ Conséquence à connaître : renvoyer l'e-mail INVALIDE le lien déjà reçu
+  // par le client. C'est le comportement voulu — deux liens vivants sur une même
+  // pièce signifieraient qu'en révoquer un donne une fausse impression de
+  // sécurité — mais cela veut dire qu'un renvoi « pour information » casse le
+  // lien en cours. Le message de retour le dit à l'admin.
+  //
+  // ⚠️ Fail-soft : un devis doit pouvoir être renvoyé même si le lien échoue.
+  // L'e-mail part alors SANS bouton de signature, et on le DIT.
+  let signatureUrl: string | null = null;
+  let signatureNote: string | null = null;
+  if (devis.documentGenereId !== null && devis.statut === "envoye") {
+    try {
+      const { token } = await creerTokenDocument({
+        documentGenereId: devis.documentGenereId,
+        partie: "client",
+        signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+        signataireEmail: to,
+        signataireQualite: devis.client.contactFonction,
+        borneMetier: devis.dateValidite,
+      });
+      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
+    } catch (err) {
+      signatureNote =
+        err instanceof TokenDocumentError
+          ? `Lien de signature non émis (${err.motif}) : l'email part sans bouton « signer ».`
+          : "Lien de signature non émis : l'email part sans bouton « signer ».";
+      console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
+    }
+  }
+
+  const { enqueued, garePourValidation = false } = await enqueueEmail(
     "devis-envoi",
     to,
     "fr",
@@ -65,27 +120,48 @@ export async function envoyerDevisEmailAction(
       numero: devis.numero,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
       dateValiditeLabel: dateFr(devis.dateValidite),
-      ...(devis.docusealEmbedUrl !== null && devis.docusealEmbedUrl !== ""
-        ? { signatureUrl: devis.docusealEmbedUrl }
-        : {}),
+      ...(signatureUrl !== null ? { signatureUrl } : {}),
       ...(input.messagePersonnalise !== undefined
         ? { messagePersonnalise: input.messagePersonnalise }
         : {}),
     },
     {
       attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
+      // 🔴 Vérification E2E 2026-07-26. Sans `clientId`, aucune règle
+      // d'automatisation PAR CLIENT ne peut jamais s'appliquer : le `where` de
+      // `resoudreMode` se réduit aux règles globales. L'écran affichait donc des
+      // réglages par client structurellement inertes.
+      clientId: devis.clientId,
+      sujet: `Devis ${devis.numero} — Axion-IA`,
     },
   );
-  if (!enqueued) return { error: "File d'envoi indisponible — réessayer." };
+
+  // 🔴 `enqueued: false` ne signifie PAS un échec : c'est aussi ce que renvoie
+  // un email correctement GARÉ en corbeille de validation. Le traiter comme une
+  // erreur affichait « File d'envoi indisponible — réessayer » sur un succès,
+  // sautait la journalisation, et invitait l'admin à recliquer — chaque reclic
+  // créant une ligne de plus en corbeille, sans déduplication.
+  if (!enqueued && !garePourValidation) {
+    return { error: "File d'envoi indisponible — réessayer." };
+  }
 
   await logQualiopiActivity({
     action: "facturation.email.devis",
     targetType: "Devis",
     targetId: devis.id,
-    changes: { to, numero: devis.numero },
+    // ⚠️ Le LIEN n'est jamais journalisé : il vaut signature. Seul le fait
+    // qu'il ait été réémis l'est.
+    changes: { to, numero: devis.numero, lienSignatureReemis: signatureUrl !== null },
     session,
   });
-  return { data: { enqueued, to } };
+  return {
+    data: {
+      enqueued,
+      garePourValidation,
+      to,
+      ...(signatureNote !== null ? { note: signatureNote } : {}),
+    },
+  };
 }
 
 const EnvoyerFactureSchema = z.object({
@@ -96,7 +172,9 @@ const EnvoyerFactureSchema = z.object({
 
 export async function envoyerFactureEmailAction(
   rawInput: unknown,
-): Promise<{ data: { enqueued: boolean; to: string } } | { error: string }> {
+): Promise<
+  { data: { enqueued: boolean; garePourValidation: boolean; to: string } } | { error: string }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
@@ -134,7 +212,7 @@ export async function envoyerFactureEmailAction(
 
   const estAvoir = facture.avoirDeId !== null;
   const montantDu = facture.montantTtcCents ?? facture.montantHtCents;
-  const { enqueued } = await enqueueEmail(
+  const { enqueued, garePourValidation = false } = await enqueueEmail(
     "facture-envoi",
     to,
     "fr",
@@ -152,9 +230,15 @@ export async function envoyerFactureEmailAction(
     },
     {
       attachments: [{ filename: `${facture.numero}.pdf`, r2Key }],
+      // Voir le commentaire de l'envoi de devis : sans `clientId`, les règles
+      // par client sont inertes ; et `enqueued: false` peut signifier « garé ».
+      ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
+      sujet: `${estAvoir ? "Avoir" : "Facture"} ${facture.numero} — Axion-IA`,
     },
   );
-  if (!enqueued) return { error: "File d'envoi indisponible — réessayer." };
+  if (!enqueued && !garePourValidation) {
+    return { error: "File d'envoi indisponible — réessayer." };
+  }
 
   await logQualiopiActivity({
     action: "facturation.email.facture",
@@ -163,5 +247,5 @@ export async function envoyerFactureEmailAction(
     changes: { to, numero: facture.numero, estAvoir, pdfHash: doc.hashSha256 },
     session,
   });
-  return { data: { enqueued, to } };
+  return { data: { enqueued, garePourValidation, to } };
 }

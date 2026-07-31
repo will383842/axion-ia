@@ -32,11 +32,24 @@ export interface ClientOption {
   numero: string;
 }
 
+export interface DevisOption {
+  id: string;
+  numero: string;
+  clientId: string;
+  clientNom: string;
+  montantHtCents: number;
+}
+
 export interface SessionFormProps {
   /** Formations publiées disponibles pour la session. */
   formations: FormationOption[];
   /** Clients disponibles pour rattachement optionnel. */
   clients?: ClientOption[];
+  /**
+   * Devis ACCEPTÉS, rattachables à la session (F8).
+   * `clientId` sert au filtrage : un devis n'est pertinent que pour son client.
+   */
+  devis?: DevisOption[];
   /** Callback après création réussie — reçoit l&apos;id de la session créée. */
   onSuccess?: (sessionId: string) => void;
   /** URL de redirection après création (alternative à onSuccess). */
@@ -74,6 +87,7 @@ const FREQUENCE_OPTIONS = [
 export function SessionForm({
   formations,
   clients = [],
+  devis = [],
   onSuccess,
   redirectAfterCreate,
 }: SessionFormProps): React.ReactElement {
@@ -91,6 +105,14 @@ export function SessionForm({
   const [nbParticipants, setNbParticipants] = useState("1");
   const [montantHt, setMontantHt] = useState("0");
   const [clientId, setClientId] = useState("");
+  const [devisId, setDevisId] = useState("");
+
+  // Un devis n'appartient qu'à un client. Changer de client doit donc relâcher
+  // le devis retenu, sinon on enverrait à l'action un couple incohérent que
+  // seule une lecture attentive de la base révélerait plus tard.
+  const devisDuClient = devis.filter((d) => d.clientId === clientId);
+  const devisRetenuValide = devisId === "" || devisDuClient.some((d) => d.id === devisId);
+  if (!devisRetenuValide) setDevisId("");
   const [financementType, setFinancementType] = useState("");
 
   // Récurrence
@@ -149,6 +171,7 @@ export function SessionForm({
           nbParticipantsPrevus: nbPart,
           ...(titreSession.trim() ? { titreSession: titreSession.trim() } : {}),
           ...(clientId ? { clientId } : {}),
+          ...(devisId ? { devisId } : {}),
           ...(financementType
             ? {
                 financementType: financementType as
@@ -188,6 +211,7 @@ export function SessionForm({
           montantHtCents: montantCents,
           ...(titreSession.trim() ? { titreSession: titreSession.trim() } : {}),
           ...(clientId ? { clientId } : {}),
+          ...(devisId ? { devisId } : {}),
           ...(financementType
             ? {
                 financementType: financementType as
@@ -297,28 +321,70 @@ export function SessionForm({
 
       {/* ── Client (optionnel) ────────────────────────────────────────────── */}
       {clients.length > 0 && (
-        <div className="mb-[var(--space-admin-5)]">
-          <label className={labelCls} htmlFor="session-client">
-            Client{" "}
-            <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
-              (optionnel)
-            </span>
-          </label>
-          <select
-            id="session-client"
-            value={clientId}
-            onChange={(e) => setClientId(e.target.value)}
-            disabled={isPending}
-            className={selectCls}
-          >
-            <option value="">— Aucun client —</option>
-            {clients.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.numero} — {c.raisonSociale}
-              </option>
-            ))}
-          </select>
-        </div>
+        <>
+          <div className="mb-[var(--space-admin-5)]">
+            <label className={labelCls} htmlFor="session-client">
+              Client{" "}
+              <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
+                (optionnel)
+              </span>
+            </label>
+            <select
+              id="session-client"
+              value={clientId}
+              onChange={(e) => setClientId(e.target.value)}
+              disabled={isPending}
+              className={selectCls}
+            >
+              <option value="">— Aucun client —</option>
+              {clients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.numero} — {c.raisonSociale}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 🔴 F8 — rattachement du devis.
+            La colonne `devis_id` existait et l'action savait l'écrire, mais
+            aucun écran ne permettait de choisir le devis : le lien était
+            inatteignable. Et depuis F7, « Transformer en convention » EXIGE une
+            session rattachée — sans ce champ, le bouton refusait toujours.
+
+            Filtré sur le client choisi : un devis n'est pertinent que pour SON
+            client. Proposer les autres fabriquerait des rattachements
+            incohérents que rien ne rattraperait — la convention porterait alors
+            le prix d'un devis appartenant à quelqu'un d'autre. */}
+          <div className="mb-[var(--space-admin-5)]">
+            <label className={labelCls} htmlFor="session-devis">
+              Devis d&apos;origine{" "}
+              <span className="font-normal text-[color:var(--color-admin-fg-muted)] normal-case">
+                (optionnel)
+              </span>
+            </label>
+            <select
+              id="session-devis"
+              value={devisId}
+              onChange={(e) => setDevisId(e.target.value)}
+              disabled={isPending || clientId === ""}
+              className={selectCls}
+            >
+              <option value="">— Aucun devis —</option>
+              {devisDuClient.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.numero} — {(d.montantHtCents / 100).toLocaleString("fr-FR")} € HT
+                </option>
+              ))}
+            </select>
+            <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {clientId === ""
+                ? "Choisissez d'abord un client pour voir ses devis acceptés."
+                : devisDuClient.length === 0
+                  ? "Aucun devis accepté pour ce client. « Transformer en convention » restera indisponible tant qu'aucune session n'est rattachée à un devis."
+                  : "Rattacher le devis permet de générer la convention depuis la fiche du devis, et trace le lien commercial → pédagogique du dossier."}
+            </p>
+          </div>
+        </>
       )}
 
       {/* ── Financement (optionnel) ───────────────────────────────────────── */}
@@ -377,7 +443,7 @@ export function SessionForm({
             required
           />
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            TVA exonérée — art. 261-4-4° CGI (formation professionnelle continue).
+            TVA appliquée selon le régime configuré (Paramètres → Qualiopi → Régime de TVA).
           </p>
         </div>
       </div>

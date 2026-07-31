@@ -115,7 +115,7 @@ export function GenererFactureButton({
       </h3>
 
       <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-        TVA exonérée — art. 261-4-4° CGI (formation professionnelle).
+        TVA appliquée selon le régime configuré (Paramètres → Qualiopi → Régime de TVA).
       </p>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">

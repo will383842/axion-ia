@@ -10,6 +10,10 @@
  *
  * Doctrine définitions :
  *  - 3-5 phrases pédagogiques (≤ 25 mots/phrase) pour cap noindex 80 mots auto
+ *    ⚠️ SPEC JAMAIS RESPECTEE A LA LIVRAISON : mesure le 2026-07-26, le champ
+ *    `fr` fait une phrase, pas 3-5. D'ou 0/60 termes au-dessus du seuil et 60
+ *    pages `noindex` depuis leur premier jour. Lire le JSDoc de
+ *    `GLOSSARY_MIN_INDEX_WORDS` plus bas AVANT toute « correction ».
  *  - Bilingue FR canonique + EN miroir (politique 2026-05-16 EN redirige FR)
  *  - Slugs kebab-case stables (jamais renommer rétroactivement — slug-history)
  *
@@ -476,13 +480,13 @@ const NEW_TERMS_EXTENDED: readonly GlossaryTermExtended[] = [
   {
     slug: "sonnet-model",
     term: "Sonnet (Claude)",
-    fr: "Modèle Claude intermédiaire (entre Haiku rapide et Opus premium). Sweet spot prix/qualité en 2026. ~3 €/Mtok input. Choix par défaut Axion-IA pour content-gen.",
-    en: "Intermediate Claude model (between fast Haiku and premium Opus). Price/quality sweet spot in 2026. ~3 €/Mtok input. Axion-IA default for content-gen.",
+    fr: "Modèle Claude intermédiaire (entre Haiku rapide et Opus premium). Sweet spot prix/qualité en 2026. ~3 €/Mtok input.",
+    en: "Intermediate Claude model (between fast Haiku and premium Opus). Price/quality sweet spot in 2026. ~3 €/Mtok input.",
     category: "models",
     relatedSlugs: ["claude-anthropic", "opus-model", "haiku-model", "llm"],
     aliases: ["Claude Sonnet"],
     examples: [
-      "En pratique : Claude Sonnet 4.6 est utilisé pour 80 % de la génération de contenu pSEO d'Axion-IA.",
+      "En pratique : Sonnet est le palier que la plupart des équipes retiennent quand Haiku ne suffit plus et qu'Opus coûte trop cher.",
     ],
   },
   {
@@ -825,10 +829,46 @@ export function listGlossaryTermSlugs(): readonly string[] {
  * SSOT partagé entre `/glossaire/[slug]/page.tsx` (qui émet `noindex`) ET le sitemap
  * (audit indexation 2026-06-17 : avant ce partage, le sitemap listait les termes thin
  * que la page rendait `noindex` → incohérence sitemap↔page, perte de confiance Google).
+ *
+ * ── ETAT REEL, mesure le 2026-07-26 (constat F49) ────────────────────────────
+ * AUCUN des 60 termes n'atteint ce seuil. Cumule FR+EN+exemples : min 45,
+ * moyenne 60,3, max 75 (`latency-p95`). Consequence sur les DEUX consommateurs :
+ * les 60 pages sortent en `noindex, follow` et `/sitemap/glossaire.xml` n'emet
+ * que le hub. Ce n'est pas un accident de calibrage — c'est la doctrine
+ * editoriale de l'en-tete de ce fichier qui n'a jamais ete appliquee.
+ *
+ * ── DEUX « CORRECTIFS » INTERDITS ────────────────────────────────────────────
+ * 1. Baisser ce seuil. 2. Retirer le `.filter(isGlossaryTermIndexable)` de
+ * `app/sitemap.ts`. Les deux mettraient d'un coup 60 pages d'environ 41 mots de
+ * prose FR unique, baties sur le meme gabarit, dans le sitemap ET en `index` :
+ * profil doorway/thin vise par HCU 2024, sur un domaine deja sous surveillance
+ * d'indexation. Le correctif est d'ECRIRE du contenu, pas de deplacer la barre.
+ *
+ * ── ARBITRAGE EN ATTENTE (Will) ──────────────────────────────────────────────
+ * La metrique cumule le texte EN, qui n'est plus rendu (EN desactive depuis le
+ * 2026-05-16). Substance FR reelle mesuree : min 31, moyenne 40,9, max 53.
+ * Passer en FR-only impose de retraduire la barre : ~55 = strict equivalent de
+ * l'actuelle (ratio mesure FR/cumule = 0,68), ou 300 pour s'aligner sur le seuil
+ * `thin_content` du detecteur d'anomalies interne. Tant que l'arbitrage n'est
+ * pas rendu, NE PAS toucher a la metrique : elle change la valeur des 60 termes
+ * d'un coup, sur la page ET sur le sitemap simultanement. Passer en FR-only sans
+ * bouger le seuil serait un NO-OP (max FR-only = 53 < 80).
+ *
+ * Si `EN_LOCALE_ENABLED=true` revient un jour, il faudra un
+ * `isGlossaryTermIndexableFor(locale)` : une barre FR-only ne dit rien de la
+ * substance EN, et le sitemap emet aussi les `/en/glossary/<slug>`.
  */
 export const GLOSSARY_MIN_INDEX_WORDS = 80;
 
-/** Compte les mots cumulés (FR + EN + exemples) d'un terme. */
+/**
+ * Compte les mots cumulés (FR + EN + exemples) d'un terme.
+ *
+ * ⚠️ Inclut `term.en`, qui n'est PAS rendu (locale EN desactivee), et exclut
+ * `term.aliases`, qui l'est. Ce n'est donc ni « ce que la page rend » (mesure a
+ * 220-286 mots par `site_routes.word_count`, extraits de termes lies compris),
+ * ni la substance unique. Changer cette formule est l'arbitrage decrit
+ * ci-dessus, pas un refactor.
+ */
 export function glossaryTermWordCount(term: GlossaryTermExtended): number {
   const text = [term.fr, term.en, ...term.examples].join(" ");
   return text.trim().split(/\s+/).filter(Boolean).length;

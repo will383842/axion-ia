@@ -123,8 +123,14 @@ export function EmargementForm({
                 <p className="font-medium text-gray-900">
                   {c.jourLisible} — {c.demiJourneeLisible}
                 </p>
+                {/*
+                  « Journée » n'est pas un ornement : ces horaires sont ceux de
+                  la journée entière, pas de la demi-journée nommée juste
+                  au-dessus. Affichés nus, les deux demi-journées d'un même jour
+                  portaient la même plage sans que rien ne l'explique.
+                */}
                 <p className="text-sm text-gray-600">
-                  {c.horaires}
+                  Journée : {c.horaires}
                   {c.formateurNom !== "" && ` · ${c.formateurNom}`}
                 </p>
               </div>

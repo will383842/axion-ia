@@ -125,8 +125,13 @@ export default async function PublicAuthorPage({ params }: Props) {
                 }}
               >
                 <strong>Transparence IA</strong> —{" "}
+                {/* 🔴 Vérification E2E 2026-07-26 — ce repli promettait que les
+                    contenus « sont supervisés par l'équipe », alors que le
+                    worker publie automatiquement tous les types de contenu sans
+                    relecture humaine. Même correction que sur le bandeau IA,
+                    /fr/transparence et la charte éditoriale. */}
                 {profile.personaDisclaimer ??
-                  `${profile.displayName} est une persona éditoriale Axion-IA. Le portrait associé est généré par IA. Les contenus signés sont supervisés par l'équipe Axion-IA.`}
+                  `${profile.displayName} est une persona éditoriale Axion-IA. Le portrait associé est généré par IA. Les contenus signés sont produits par IA générative et contrôlés automatiquement avant publication.`}
               </p>
             ) : null}
           </header>

@@ -30,10 +30,16 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions, type ModeFacturation } from "./conditions-client";
+
+/** Garde de type : la colonne est un enum Prisma, la config une chaîne libre. */
+function estModeFacturation(v: unknown): v is ModeFacturation {
+  return v === "acompte_solde" || v === "solde_unique";
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -56,7 +62,6 @@ export interface GenererFactureResult {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MAX_ATTEMPTS = 5;
-const PREFIX_FACT = "AXI-FACT";
 
 /**
  * Crée une FactureFormation, calcule les lignes (forfait ou horaire OPCO),
@@ -171,12 +176,39 @@ export async function genererFactureFormation(
 
   // Échéance : délai configurable (SiteSetting) — financeur (subrogation OPCO)
   // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
-  const [delaiClient, delaiFinanceur, rib] = await Promise.all([
-    getQualiopiConfig("delai_paiement_jours"),
-    getQualiopiConfig("delai_paiement_financeur_jours"),
-    resolveRibFacture(),
-  ]);
-  const delaiJours = session.opcoSubrogation ? delaiFinanceur : delaiClient;
+  const [delaiClientGlobal, delaiFinanceur, tauxAcompteGlobal, modeFacturationGlobal, rib] =
+    await Promise.all([
+      getQualiopiConfig("delai_paiement_jours"),
+      getQualiopiConfig("delai_paiement_financeur_jours"),
+      getQualiopiConfig("taux_acompte_defaut_pct"),
+      getQualiopiConfig("mode_facturation_defaut"),
+      resolveRibFacture(),
+    ]);
+
+  // 🔴 Vérification E2E 2026-07-26 — F61 était livré en dormance : les colonnes
+  // `Client.delaiPaiementJours` / `tauxAcomptePct` / `modeFacturation` et le
+  // résolveur `resoudreConditions` existaient, mais AUCUN émetteur de facture
+  // ne les lisait. Le réglage par client, demandé explicitement, n'avait donc
+  // aucun effet. Branché ici — subrogation OPCO exceptée : c'est alors le
+  // financeur qui paie, pas le client, et son délai propre s'applique.
+  const conditions = resoudreConditions(
+    {
+      delaiPaiementJours: session.client?.delaiPaiementJours ?? null,
+      tauxAcomptePct: session.client?.tauxAcomptePct ?? null,
+      modeFacturation: estModeFacturation(session.client?.modeFacturation)
+        ? session.client.modeFacturation
+        : null,
+    },
+    {
+      delaiPaiementJours: delaiClientGlobal,
+      tauxAcomptePct: tauxAcompteGlobal,
+      modeFacturation: estModeFacturation(modeFacturationGlobal)
+        ? modeFacturationGlobal
+        : "acompte_solde",
+    },
+  );
+
+  const delaiJours = session.opcoSubrogation ? delaiFinanceur : conditions.delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(
@@ -195,10 +227,20 @@ export async function genererFactureFormation(
   let documentId: string | null = null;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `${PREFIX_FACT}-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — la boucle `for attempt` est CONSERVÉE, mais elle cesse d'être
+    // déterministe. Avec `count()`, les cinq tentatives recalculaient le même
+    // numéro et l'émission échouait définitivement. Le MAX, lui, progresse dès
+    // qu'une facture concurrente a été insérée : la reprise converge.
+    //
+    // On ne prend PAS de verrou consultatif ici : le rendu PDF a lieu à
+    // l'intérieur de cette boucle, et le tenir plusieurs centaines de
+    // millisecondes sérialiserait toute la facturation en épuisant le pool.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
 
     // Construction FactureData (React.createElement, pas de JSX en .ts)
     const factureData: FactureData = {

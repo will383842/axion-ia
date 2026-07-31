@@ -58,6 +58,49 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
     clients = [];
   }
 
+  // 🔴 F8 — le devis et la session ne pouvaient PAS être reliés.
+  //
+  // La colonne `training_sessions.devis_id` existe, et `createSessionAction`
+  // sait l'écrire — mais AUCUN écran ne permettait de choisir le devis. Le lien
+  // était donc inatteignable en pratique, et depuis F7 c'est bloquant :
+  // « Transformer en convention » EXIGE une session rattachée, donc le bouton
+  // refusait systématiquement. Les deux correctifs se bloquaient l'un l'autre.
+  //
+  // On ne propose que les devis ACCEPTÉS : un devis en brouillon, envoyé ou
+  // refusé n'a pas à engendrer de session, et un devis déjà transformé a la
+  // sienne. Le client est embarqué pour que le formulaire puisse filtrer — un
+  // devis n'est pertinent que pour SON client, sinon on fabriquerait des
+  // rattachements incohérents que rien ne rattraperait ensuite.
+  let devis: Array<{
+    id: string;
+    numero: string;
+    clientId: string;
+    clientNom: string;
+    montantHtCents: number;
+  }> = [];
+  try {
+    const lignes = await prisma.devis.findMany({
+      where: { statut: "accepte" },
+      select: {
+        id: true,
+        numero: true,
+        clientId: true,
+        montantTotalHtCents: true,
+        client: { select: { raisonSociale: true } },
+      },
+      orderBy: { numero: "desc" },
+    });
+    devis = lignes.map((d) => ({
+      id: d.id,
+      numero: d.numero,
+      clientId: d.clientId,
+      clientNom: d.client.raisonSociale,
+      montantHtCents: d.montantTotalHtCents,
+    }));
+  } catch {
+    devis = [];
+  }
+
   const sessionsListUrl = `/${locale}/${adminPrefix}/qualiopi/sessions`;
 
   return (
@@ -79,6 +122,7 @@ export default async function NouvelleSessionPage({ params }: PageProps) {
       <SessionForm
         formations={formations}
         clients={clients}
+        devis={devis}
         redirectAfterCreate={sessionsListUrl}
       />
     </AdminPageShell>

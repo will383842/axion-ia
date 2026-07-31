@@ -26,9 +26,9 @@ export interface CommercialProductsEarningsProps {
 }
 
 const FAMILY_LINK: Record<string, string> = {
-  "com-formation-1j": "/interventions",
-  "com-formation-2j": "/interventions",
-  "com-formation-3j": "/interventions",
+  "com-formation-1j": "/formations",
+  "com-formation-2j": "/formations",
+  "com-formation-3j": "/formations",
   "com-un-a-un": "/un-a-un",
   "com-audit": "/audit",
   "com-integration": "/implementation",
@@ -87,7 +87,7 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         {flats.map((c) => (
           <Link
             key={c.id}
-            href={(FAMILY_LINK[c.id] ?? "/interventions") as never}
+            href={(FAMILY_LINK[c.id] ?? "/formations") as never}
             className="group border-terracotta/25 bg-halo-warm hover:border-terracotta/50 relative flex flex-col overflow-hidden rounded-2xl border-2 p-6 transition-colors"
           >
             <span aria-hidden="true" className="bg-terracotta absolute inset-x-0 top-0 h-1" />

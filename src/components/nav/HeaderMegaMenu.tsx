@@ -130,10 +130,18 @@ export function HeaderMegaMenu({
         </span>
       </Link>
 
+      {/* 🔴 Audit a11y/UX 2026-07-26 : ce panneau reste DANS LE DOM quand il est
+          ferme (opacity-0 + pointer-events-none, pas `hidden`, pour conserver la
+          transition). Un element `absolute` compte dans le scrollWidth du document :
+          ancre a gauche d'un declencheur situe dans la moitie droite du header, ses
+          720 px depassaient de 223 px a 1440 — soit une barre de defilement
+          horizontale sur TOUT le site, menu ouvert ou non. `max-w` borne le panneau
+          a la fenetre ; l'alignement a droite (cf. HeaderResourcesMenu) evite le
+          debordement a la source. */}
       <div
         role="region"
         aria-label={panelLabel}
-        className={`bg-paper text-fg shadow-card border-border-strong/40 absolute top-full ${alignClass} z-50 mt-3 ${panelWidth} rounded-2xl border transition duration-150 ${
+        className={`bg-paper text-fg shadow-card border-border-strong/40 absolute top-full ${alignClass} z-50 mt-3 ${panelWidth} max-w-[calc(100vw-2rem)] rounded-2xl border transition duration-150 ${
           open
             ? "pointer-events-auto translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-1 opacity-0"

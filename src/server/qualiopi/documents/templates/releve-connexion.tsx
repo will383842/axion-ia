@@ -20,6 +20,7 @@ import {
   FieldRow,
   DataTable,
   SignatureZone,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
@@ -69,6 +70,16 @@ export interface ReleveConnexionData {
   /** Durée minimale requise pour valider la présence, en pourcentage (ex: 80). */
   dureeMinimaleRequisePercent: number;
   participants: ReleveConnexionParticipant[];
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -154,11 +165,13 @@ export function ReleveConnexionPdf({
           parties={[
             {
               titre: "Signature du formateur / de la formatrice",
+              signature: data.signatures?.formateur ?? null,
               nom: `Nom : ${data.nomFormateur}`,
               mention: "Date :",
             },
             {
               titre: "Visa du responsable pédagogique",
+              signature: data.signatures?.responsable_pedagogique ?? null,
               nom: "Nom :",
               mention: "Date :",
             },

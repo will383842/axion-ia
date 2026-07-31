@@ -33,9 +33,6 @@ const COMMON_DISALLOW = [
   "/components",
   "/fr/components",
   "/en/components",
-  "/sections",
-  "/fr/sections",
-  "/en/sections",
   // Brand-fix 2026-06-20 — logos CLIENTS (Jardiland, Gedimat, Safti…) servis
   // sous /logos/clients/*.svg. Affichés via le bandeau preuve-sociale
   // (ClientLogosBand) haut de page, Google Images les indexait comme image
@@ -80,7 +77,39 @@ const COMMON_DISALLOW = [
 // C'est un risque bien plus documenté et bien plus concret que la question
 // `Google-Extended` (cf. commentaire l.13-14). Longest-match : cet `Allow`
 // l'emporte sur le `Disallow: /_next/`, sans rouvrir `/_next/data` ni le reste.
-const COMMON_ALLOW = ["/", "/api/og", "/api/avis/photo", "/_next/image", "/_next/static"];
+// AUDIT GEO/AEO — `/api/markdown/` AJOUTÉ (verrou n°2 de l'audit du 2026-07-20,
+// resté ouvert).
+//
+// `/llms.txt` ANNONCE le canal d'ingestion
+// `https://axion-ia.com/api/markdown/actualites/{slug}` aux moteurs IA, et la
+// route existe et fonctionne (`api/markdown/[type]/[slug]/route.ts` → 200
+// `text/markdown`, ~10 ko de contenu réel, 5 types : blog, actualites, guides,
+// cas-concrets, centre-aide, faq, kb).
+//
+// Or `Disallow: /api/` figure dans les DOUZE blocs user-agent et rien
+// n'autorisait `/api/markdown/`. On publiait donc une invitation à ingérer un
+// contenu qu'aucun crawler respectueux n'avait le droit de lire — les deux
+// fichiers se contredisaient, et c'est le silencieux qui gagnait.
+//
+// 🔴 CE CORRECTIF NE TOUCHE PAS À LA DOCTRINE `Google-Extended` (cf. l.4-14).
+// `COMMON_ALLOW` n'est distribué qu'aux blocs AUTORISÉS (`*`, Bingbot, bots de
+// citation). Les bots d'entraînement ont `disallow: "/"` SANS liste d'`allow`,
+// et robots.txt fait correspondre un agent à son groupe le PLUS SPÉCIFIQUE :
+// GPTBot, ClaudeBot, anthropic-ai, Google-Extended et Applebot-Extended restent
+// intégralement bloqués. Le correctif SERT la doctrine « bloquer training,
+// garder citation » au lieu de la contredire.
+//
+// Longest-match : cet `Allow` l'emporte sur `Disallow: /api/`, exactement comme
+// `/api/og` et `/api/avis/photo` ci-dessus, sans rouvrir `/api/auth`,
+// `/api/admin`, les webhooks ni les routes RGPD.
+const COMMON_ALLOW = [
+  "/",
+  "/api/og",
+  "/api/avis/photo",
+  "/api/markdown/",
+  "/_next/image",
+  "/_next/static",
+];
 
 const AI_BOTS_ALLOWED = [
   // SEARCH / CITATION uniquement (ces UA citent, ils n'entraînent pas) :

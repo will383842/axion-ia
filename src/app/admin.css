@@ -59,6 +59,28 @@
 
     --color-admin-terracotta: #c24a1b; /* terracotta éditoriale — brand Axion-IA, CTA admin */
 
+    /* 🔴 `accent` et `accent-fg` étaient RÉFÉRENCÉS PAR 84 FICHIERS et DÉFINIS
+       NULLE PART.
+
+       Conséquence constatée en production le 2026-07-29 : le bouton « Approuver
+       et envoyer » de la file d'e-mails s'écrit
+       `bg-[color:var(--color-admin-accent)] text-white`. Le fond ne s'appliquait
+       jamais — il restait donc du texte BLANC sur le beige de la page, illisible.
+       Le bouton existait, il était invisible.
+
+       ⚠️ Un jeton absent ne casse rien bruyamment : la propriété CSS est
+       simplement ignorée. C'est la panne la plus difficile à voir en revue de
+       diff, et elle touche chaque bouton principal de la console.
+
+       Même remède que pour `error` ci-dessus : un alias unique répare les 84
+       usages plutôt que 84 remplacements — et la prochaine référence à `accent`
+       fonctionnera d'office.
+
+       Contraste vérifié : #c24a1b sur blanc = 4,90:1, au-dessus du seuil AA de
+       4,5:1 pour du texte normal. */
+    --color-admin-accent: var(--color-admin-terracotta);
+    --color-admin-accent-fg: #ffffff;
+
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
     --color-admin-info-soft: #e8efff; /* = --color-primary-soft */
     --color-admin-info-fg: #ffffff;

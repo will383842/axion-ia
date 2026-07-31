@@ -1,4 +1,22 @@
 /**
+ * 🔴 Audit certification 2026-07-26 (F62). Cette mention était FAUSSE sur deux
+ * points démontrables dans le code, et une divulgation art. 50 inexacte est
+ * pire qu'absente : elle documente elle-même l'écart.
+ *
+ *   1. Elle nommait « Claude Sonnet 4.6, Anthropic ». Or le routeur de
+ *      génération porte `text: [openaiProvider]` depuis le 2026-07-09 —
+ *      Anthropic a été retiré du chaînage texte, avec un commentaire interdisant
+ *      de l'y remettre sans accord. Les articles sont écrits par GPT-4o.
+ *
+ *   2. Elle promettait une relecture « par l'équipe Axion-IA avant
+ *      publication ». Le worker de publication porte pourtant :
+ *      « décision Will "full auto" — publication automatique de TOUS les types
+ *      de contenu, SANS relecture humaine ». Le seul filtre est un juge LLM.
+ *
+ * La formulation retenue dit ce qui se passe réellement : rédaction par IA,
+ * contrôle AUTOMATIQUE avant publication. Elle reste conforme à l'art. 50 sans
+ * revendiquer une supervision humaine qui n'existe pas.
+ *
  * AiContentDisclaimer — Bandeau visible AI Act EU art. 50 disclosure.
  *
  * Méta-cert 2026-05-15 AGENT 20 P0-1 — l'AI Act EU 2024/1689 art. 50 §4
@@ -34,8 +52,8 @@ export function AiContentDisclaimer({ locale, className }: AiContentDisclaimerPr
   const isFr = locale === "fr";
   const headline = isFr ? "Contenu IA-assisté" : "AI-assisted content";
   const body = isFr
-    ? "Cet article a été rédigé avec l'assistance de l'IA (Claude Sonnet 4.6, Anthropic) et relu par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
-    : "This article was drafted with the assistance of AI (Claude Sonnet 4.6, Anthropic) and reviewed by the Axion-IA team prior to publication. In accordance with article 50 of the EU AI Act (2024/1689).";
+    ? "Cet article a été rédigé par une IA générative (OpenAI GPT-4o), puis contrôlé automatiquement avant publication (vérification factuelle et contrôle éditorial). Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
+    : "This article was drafted by generative AI (OpenAI GPT-4o), then automatically checked before publication (fact-checking and editorial review). In accordance with article 50 of the EU AI Act (2024/1689).";
   const linkLabel = isFr
     ? "En savoir plus sur la transparence IA →"
     : "Learn more about AI transparency →";

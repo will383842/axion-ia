@@ -26,6 +26,7 @@ import { readContenuDetaille } from "@/server/qualiopi/engine/content-schema";
 import { construireSupport, titreSupport } from "./support-builder";
 import { renderSupportToStored } from "./render-support";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import type { SupportType, SupportContenu, FormationInput } from "./types";
 import type { SupportFormation } from "../../../../prisma/generated/client";
 
@@ -109,11 +110,25 @@ function toFormationInput(f: {
     titre: f.titre,
     dureeHeures: f.dureeHeures,
     ...(f.modalite ? { modalite: f.modalite } : {}),
-    objectifsPedagogiques: jsonToStringArray(f.objectifsPedagogiques),
+    // 🔴 Parcours à blanc 2026-07-27. `jsonToStringArray` ne RETIENT que les
+    // chaînes (`filter(typeof v === "string")`). Or le catalogue écrit des
+    // OBJETS : `{ id, verbe, description }` pour les objectifs,
+    // `{ type, libelle }` pour les ressources. Les deux listes revenaient donc
+    // VIDES pour les 22 formations en production — et le défaut ne se voyait
+    // pas comme une erreur : le support imprimait « Objectifs à définir » (le
+    // repli du builder) et la section « Ressources pédagogiques » disparaissait
+    // entièrement, masquée par son propre `if (length > 0)`.
+    //
+    // Sur un support de formation remis au stagiaire et montré à l'auditeur,
+    // « Objectifs à définir » se lit comme un support non terminé.
+    //
+    // `jsonToStringArray` reste en place pour les `livrables_*`, qui sont bien
+    // des tableaux de chaînes.
+    objectifsPedagogiques: normaliserObjectifsPedagogiques(f.objectifsPedagogiques),
     programmeDetaille,
     methodesPedagogiques: f.methodesPedagogiques ? [f.methodesPedagogiques] : [],
     moyensTechniques: f.moyensTechniques ? [f.moyensTechniques] : [],
-    ressourcesPedagogiques: jsonToStringArray(f.ressourcesPedagogiques),
+    ressourcesPedagogiques: normaliserObjectifsPedagogiques(f.ressourcesPedagogiques),
     ...(contenuDetaille ? { contenuDetaille } : {}),
     ...(filRouge ? { filRouge } : {}),
     ...(hasLivrables ? { livrables } : {}),

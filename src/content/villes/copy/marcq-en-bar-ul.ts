@@ -46,8 +46,8 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
       en: "Coaching 1-to-1 à Marcq-en-Barœul : sessions dans vos locaux ou en visio pour dirigeants de TPE/PME, consultants, professions libérales et indépendants souhaitant piloter l'IA sans dépendre d'un tiers.",
     },
     sitesWeb: {
-      fr: "Sites web augmentés IA à Marcq-en-Barœul : sites vitrines et portails B2B pour cabinets, agences et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés pour le référencement local.",
-      en: "Sites web augmentés IA à Marcq-en-Barœul : sites vitrines et portails B2B pour cabinets, agences et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés pour le référencement local.",
+      fr: "Sites web & SaaS IA à Marcq-en-Barœul : sites vitrines et portails B2B pour cabinets, agences et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés pour le référencement local.",
+      en: "Sites web & SaaS IA à Marcq-en-Barœul : sites vitrines et portails B2B pour cabinets, agences et commerces, dotés d'assistants intelligents, prise de rendez-vous automatisée et contenus optimisés pour le référencement local.",
     },
   },
   services: {

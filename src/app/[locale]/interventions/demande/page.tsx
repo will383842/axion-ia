@@ -12,6 +12,7 @@ import { mapObjetToSubject } from "@/lib/intervention-subject-mapping";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { INTERVENTION_FORMATS } from "@/content/interventions-taxonomy";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
 // ============================================================================
 // Sprint 14.10.7 fix Will (2026-05-12) — page formulaire repensée :
@@ -73,7 +74,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
   const defaultSubject = mapObjetToSubject(objet);
 
   const breadcrumbItems = [
-    { href: "/interventions", label: isFr ? "Interventions entreprise" : "Corporate AI sessions" },
+    { href: "/formations", label: serviceOfficial(SERVICE_BY_ID.formations, isFr) },
     { href: "/interventions/demande", label: isFr ? "Demande" : "Request" },
   ];
 

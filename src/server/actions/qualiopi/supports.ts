@@ -6,14 +6,20 @@
  * regenererSupportAction  : regénère un support existant (incrémente la version).
  * supprimerSupportAction  : supprime un SupportFormation par id.
  *
- * Pattern : requireAdminWrite + Zod + ActionResult + logQualiopiActivity.
+ * Pattern : requireAdminWrite + Zod + ActionResult + logQualiopiActivity —
+ *           SAUF `supprimerSupportAction`, passee en `requireAdminDelete`
+ *           (super_admin strict), cf. le commentaire de l'action.
  * Voir enrollments.ts comme référence de structure.
  */
 
 "use server";
 
 import { z } from "zod";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireAdminDelete,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   genererSupport,
   genererTousSupports,
@@ -175,7 +181,22 @@ export async function regenererSupportAction(input: {
 export async function supprimerSupportAction(input: {
   id: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // `requireAdminDelete` (super_admin strict) : `supprimerSupport()` fait un
+  // `prisma.supportFormation.delete()`, sans `deletedAt`.
+  //
+  // L'indicateur en jeu est le 19 (« Ressources pedagogiques mises a
+  // disposition », critere 4) — PAS 8/9, qui sont le positionnement a l'entree
+  // et l'information sur les conditions de deroulement. C'est bien le 19 que
+  // `conformite-service.ts` calcule sur `supportFormation` (statut=genere ET
+  // pdfKey non null), et qu'il declare aujourd'hui non couvert. Supprimer un
+  // support fait donc basculer un indicateur silencieusement.
+  //
+  // ⚠️ Cette garde ne protege PAS contre l'ecrasement : `genererSupportAction`
+  // et `regenererSupportAction` reecrivent la ligne en place (contenu, pdfKey,
+  // hashSha256, version++) et restent volontairement en `requireAdminWrite` —
+  // produire un support est une tache editoriale. Le vrai manque est l'absence
+  // d'historique de version cote modele, pas le niveau de garde.
+  const session = await requireAdminDelete();
 
   const parsed = supprimerSupportSchema.safeParse(input);
   if (!parsed.success) {

@@ -41,6 +41,7 @@ import {
 import { createStripeCheckoutSessionAction } from "@/features/payment/actions";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { Prisma, BookingStatus } from "../../../prisma/generated/client";
+import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 
 // ====================================================================
 // Helpers auth + résultats
@@ -238,7 +239,14 @@ export async function sendContractAndDepositRequestAction(
     const archivedUntil = new Date(now);
     archivedUntil.setFullYear(archivedUntil.getFullYear() + 10);
 
-    const vatRateRaw = legalSnapshot.vatRate ?? 0;
+    // 🔴 Constaté le 2026-07-27. `?? 0` faisait d'un instantané légal SANS taux
+    // une TVA à ZÉRO — silencieusement, sur une facture. Un champ absent n'est
+    // pas une exonération : c'est une donnée manquante, et le repli prudent est
+    // le taux de droit commun, pas son contraire.
+    // Cette pile ne lit PAS `qualiopi.regime_tva` et c'est délibéré (la brancher
+    // lui AJOUTERAIT une capacité d'exonération qu'elle n'a pas). Le taux
+    // standard est donc écrit ici, depuis le SSOT.
+    const vatRateRaw = legalSnapshot.vatRate ?? TAUX_TVA_STANDARD;
     const PrismaRuntime = (await import("../../../prisma/generated/client")).Prisma;
     const vatRateDec = new PrismaRuntime.Decimal(vatRateRaw);
     const amountTtcDeposit = legalSnapshot.vatReverseCharge

@@ -16,6 +16,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 import sharp from "sharp";
+// sharp 0.35 : le namespace n'est plus accessible via l'import par défaut
+// (`sharp.Gravity` ne résout plus). Le type se nomme explicitement.
+import type { Gravity } from "sharp";
 import { Worker } from "bullmq";
 import * as Sentry from "@sentry/nextjs";
 
@@ -81,17 +84,16 @@ const VARIANTS: ReadonlyArray<VariantDef> = [
 ] as const;
 
 /** Positions de recadrage selon le type visuel. */
-const CROP_CONFIG: Record<ImageType, { ogPosition: sharp.Gravity; squarePosition: sharp.Gravity }> =
-  {
-    banniere: { ogPosition: "centre", squarePosition: "attention" },
-    carre: { ogPosition: "centre", squarePosition: "centre" },
-    affiche: { ogPosition: "west", squarePosition: "attention" },
-    infographie: { ogPosition: "north", squarePosition: "north" },
-    editorial: { ogPosition: "centre", squarePosition: "centre" },
-    photo: { ogPosition: "attention", squarePosition: "attention" },
-    dataviz: { ogPosition: "centre", squarePosition: "centre" },
-    logo: { ogPosition: "centre", squarePosition: "centre" },
-  };
+const CROP_CONFIG: Record<ImageType, { ogPosition: Gravity; squarePosition: Gravity }> = {
+  banniere: { ogPosition: "centre", squarePosition: "attention" },
+  carre: { ogPosition: "centre", squarePosition: "centre" },
+  affiche: { ogPosition: "west", squarePosition: "attention" },
+  infographie: { ogPosition: "north", squarePosition: "north" },
+  editorial: { ogPosition: "centre", squarePosition: "centre" },
+  photo: { ogPosition: "attention", squarePosition: "attention" },
+  dataviz: { ogPosition: "centre", squarePosition: "centre" },
+  logo: { ogPosition: "centre", squarePosition: "centre" },
+};
 
 /** Types qui doivent utiliser `fit: 'contain'` (fond blanc) plutôt que `cover`. */
 const CONTAIN_TYPES: ReadonlySet<ImageType> = new Set(["carre", "dataviz", "logo"]);

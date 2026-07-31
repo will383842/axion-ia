@@ -21,7 +21,6 @@ import {
   formatEurosFromCents,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 
 // ============================================================
@@ -37,7 +36,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   pieceCheck: {
-    width: 16,
+    width: 9,
+    height: 9,
+    marginTop: 2,
+    marginRight: 7,
+    borderWidth: 0.8,
+    borderStyle: "solid",
     fontSize: 10,
     color: brandColor("sage"),
     fontWeight: "bold",
@@ -73,6 +77,20 @@ const styles = StyleSheet.create({
 // ============================================================
 // Types de données
 // ============================================================
+
+/**
+ * Pied de kit financeur : NDA, et le n° Qualiopi UNIQUEMENT s'il existe.
+ *
+ * 🔴 F29 — « à renseigner » est une note de chantier destinée à Will. Elle
+ * s'imprimait telle quelle sur un document adressé à un financeur, où elle se
+ * lit comme un dossier bâclé. Un organisme non encore certifié n'a pas de numéro
+ * Qualiopi : on omet la mention au lieu d'annoncer qu'elle manque.
+ */
+function qualiopiLigne(identite: OrganismeIdentite): string {
+  const nda = identite.nda ? `NDA : ${identite.nda}` : "";
+  const qualiopi = identite.qualiopi ? `Certification Qualiopi : ${identite.qualiopi}` : "";
+  return [nda, qualiopi].filter((p) => p !== "").join(" — ");
+}
 
 export type DispositifFranceTravail = "AIF" | "POEI" | "CSP";
 
@@ -119,15 +137,24 @@ const DISPOSITIF_LABELS: Record<DispositifFranceTravail, string> = {
   CSP: "CSP — Contrat de Sécurisation Professionnelle",
 };
 
+/**
+ * Pièces à joindre au dossier France Travail.
+ *
+ * 🔴 F25 (3e passage) — `mentionTvaRegime` est un PARAMÈTRE, il n'est pas
+ * déduit ici. La checklist annonçait l'exonération 261-4-4° en dur alors que le
+ * pied de page avait déjà été corrigé : on continuait donc à annoncer à France
+ * Travail une exonération non détenue, dans la liste même des pièces à fournir.
+ */
 function getPiecesRequises(
   dispositif: DispositifFranceTravail,
+  mentionTvaRegime: string | null,
 ): Array<{ label: string; condition: string | null }> {
   const commun: Array<{ label: string; condition: string | null }> = [
     { label: "Accord de financement France Travail", condition: null },
     { label: "Engagement du bénéficiaire / Protocole de formation", condition: null },
     { label: "Attestation de fin de formation (ou certificat de réalisation)", condition: null },
     { label: "Feuilles d'émargement ou relevés de connexion", condition: null },
-    { label: "Facture exonérée de TVA (Art. 261-4-4° CGI)", condition: null },
+    { label: "Facture", condition: mentionTvaRegime },
   ];
   if (dispositif === "POEI") {
     commun.unshift({
@@ -155,7 +182,7 @@ function getPiecesRequises(
 export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): React.ReactElement {
   const { identite } = data;
   const prenomNom = `${data.beneficiaire.prenom} ${data.beneficiaire.nom}`.trim();
-  const pieces = getPiecesRequises(data.dispositif);
+  const pieces = getPiecesRequises(data.dispositif, identite.mentionTvaRegime ?? null);
 
   return (
     <Document>
@@ -207,7 +234,14 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
         <DocSection title="Pièces constitutives du dossier">
           {pieces.map((piece, idx) => (
             <View key={idx} style={styles.pieceRow}>
-              <Text style={styles.pieceCheck}>☐</Text>
+              {/* 🔴 Correctif glyphes 2026-07-26. C'etait un caractere « ☐ »
+                (U+2610), absent des 8 polices du projet — verifie a fontkit.
+                @react-pdf basculait sur Helvetica/WinAnsi et ecrivait l'octet
+                0x10, un caractere de CONTROLE : la colonne « pieces a fournir »
+                envoyee au financeur etait donc entierement VIDE, sans que rien
+                ne le signale. On dessine la case en geometrie plutot que de
+                dependre d'un glyphe : une bordure s'imprime toujours. */}
+              <View style={styles.pieceCheck} />
               <View style={styles.pieceLabelBlock}>
                 <Text style={styles.pieceLabel}>{piece.label}</Text>
                 {piece.condition ? (
@@ -248,10 +282,17 @@ export function KitFranceTravailPdf({ data }: { data: KitFranceTravailData }): R
 
         {/* Mentions légales */}
         <View style={pdfStyles.section}>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
-          <Text style={pdfStyles.legalNote}>
-            {`NDA : ${identite.nda || "à renseigner"} — Qualiopi : ${identite.qualiopi || "à renseigner"}`}
-          </Text>
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
+          <Text style={pdfStyles.legalNote}>{qualiopiLigne(identite)}</Text>
         </View>
       </QualiopiPage>
     </Document>

@@ -42,23 +42,40 @@ export function requiresQuote(
 /**
  * Génère un numéro de devis séquentiel `DEVIS-YYYY-NNNN`.
  *
- * Implémentation V1 (skeleton) : count existing pour l'année courante + 1.
- * Race conditions possibles si 2 admins génèrent en parallèle — à durcir
- * Sprint X.10 via `pg_advisory_lock(hashtext('quote_counter_' || year))`.
+ * 🔴 V20 — cette fonction faisait `count() + 1`. Une cardinalité n'est pas une
+ * borne : un devis supprimé faisait RECULER le compteur et réattribuait un
+ * numéro déjà émis, sans jamais violer l'unicité puisque la ligne avait disparu.
+ * On lit désormais le maximum réel de la série.
  *
- * Format aligné avec `Invoice.number` (Sprint X.10) qui suivra `AXION-2026-NNNN`
- * — ici on garde `DEVIS-YYYY-NNNN` pour distinguer (Will visuel).
+ * Le calcul est NUMÉRIQUE et non lexicographique : un `MAX(number)` textuel
+ * classerait `DEVIS-2026-9999` APRÈS `DEVIS-2026-10000`, le zero-padding n'étant
+ * garanti qu'à 4 chiffres.
+ *
+ * Cette série reste volontairement HORS de `NUMBERING_PREFIX` : format différent
+ * (`DEVIS-YYYY-NNNN`, pad 4), colonne différente (`number`, pas `numero`), table
+ * différente (`quotes`, pile Booking). L'y fondre créerait une correspondance
+ * fausse entre deux registres qui n'ont rien à voir.
  */
 export async function generateQuoteNumber(
   prismaClient: Pick<PrismaClient, "quote">,
   year: number = new Date().getUTCFullYear(),
 ): Promise<string> {
   const prefix = `DEVIS-${year}-`;
-  // count via where startsWith — index sur `number` côté Postgres rend ça rapide.
-  const count = await prismaClient.quote.count({
+  // Lecture filtrée par préfixe — index sur `number` côté Postgres.
+  const rows = await prismaClient.quote.findMany({
     where: { number: { startsWith: prefix } },
+    select: { number: true },
   });
-  const padded = String(count + 1).padStart(4, "0");
+  let borne = 0;
+  for (const row of rows) {
+    const reste = row.number.slice(prefix.length);
+    // Ancrage strict : tout ce qui n'est pas exactement `<prefixe><chiffres>`
+    // (reprise d'historique, suffixe de révision…) est hors série.
+    if (!/^\d+$/.test(reste)) continue;
+    const n = Number.parseInt(reste, 10);
+    if (Number.isSafeInteger(n) && n > borne) borne = n;
+  }
+  const padded = String(borne + 1).padStart(4, "0");
   return `${prefix}${padded}`;
 }
 

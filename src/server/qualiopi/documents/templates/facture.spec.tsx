@@ -70,9 +70,17 @@ describe("FacturePdf — mentions obligatoires", () => {
     expect(text).toContain("Date de réalisation de la prestation");
   });
 
-  it("porte les pénalités de retard (art. L.441-10 C. com.)", () => {
+  it("porte les pénalités de retard au taux stipulé aux CGV (art. L.441-10 C. com.)", () => {
     expect(text).toContain(LEGAL_MENTIONS.facturePenalitesRetard);
-    expect(text).toContain("trois fois le taux d'intérêt légal");
+    // F52 : le taux imprimé doit être celui STIPULÉ aux CGV (BCE + 10 points).
+    // Ce test figeait « trois fois le taux d'intérêt légal » — c'est LUI qui
+    // verrouillait la divergence. L'assertion négative vise la formulation
+    // FAUTIVE, pas le mot « trois fois » : le rappel du plancher de L.441-10 II
+    // reste licite.
+    expect(text).toContain("Banque centrale européenne");
+    expect(text).toContain("majoré de 10 points de pourcentage");
+    expect(text).toContain("dès le jour suivant la date d'échéance");
+    expect(text).not.toContain("calculées au taux de trois fois");
   });
 
   it("porte l'indemnité forfaitaire de 40 € (art. D.441-5 C. com.)", () => {

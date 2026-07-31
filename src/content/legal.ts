@@ -74,8 +74,15 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "La création de liens pointant vers axion-ia.com est libre pour un usage loyal et non commercial, sous réserve de ne pas porter atteinte à l'image d'Axion-IA et de ne pas créer de confusion sur l'origine du contenu. Axion-IA n'exerce aucun contrôle sur les sites tiers accessibles depuis ses pages et décline toute responsabilité quant à leur contenu.",
         },
         {
+          // « Exclusivement B2B » contredisait les CGV, qui comportent depuis
+          // une section entière consacrée au particulier. Deux pages publiques
+          // qui se démentent l'une l'autre valent moins que pas de mention du
+          // tout : c'est la contradiction qu'un contrôle relève en premier.
+          // Formulation alignée le 2026-07-30 sur l'état réel — clientèle
+          // professionnelle, aucune adhésion à ce jour, adhésion préalable à
+          // toute vente à un consommateur.
           title: "Médiation de la consommation",
-          body: "Les prestations d'Axion-IA s'adressent exclusivement à une clientèle professionnelle (B2B), dans le cadre de l'activité de ses clients. En l'absence de relation avec des consommateurs, Axion-IA n'est pas tenue d'adhérer à un dispositif de médiation de la consommation au sens des articles L611-1 et L612-1 du Code de la consommation.",
+          body: "Les prestations d'Axion-IA sont commercialisées auprès d'une clientèle professionnelle, dans le cadre de l'activité de ses clients. En l'absence de relation contractuelle avec des consommateurs, Axion-IA n'a pas adhéré à ce jour à un dispositif de médiation de la consommation au sens des articles L.611-1 et L.612-1 du Code de la consommation. Les conditions générales de vente comportent néanmoins une section dédiée au particulier : toute vente à un consommateur suppose l'adhésion préalable à un médiateur agréé, dont les coordonnées seront alors publiées sur le site et reportées au contrat.",
         },
         {
           title: "Loi applicable",
@@ -146,11 +153,11 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Conditions",
       titleEm: "générales",
       intro:
-        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations réservées aux clients professionnels (B2B). Elles intègrent les dispositions propres aux actions de formation professionnelle (articles L.6313-1 et suivants du Code du travail). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
+        "Conditions générales de vente et d'utilisation (CGV/CGU) régissant les services d'Axion-IA SAS : formations et interventions IA sur site, audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Prestations principalement destinées aux clients professionnels ; les dispositions propres aux particuliers figurent dans une section dédiée. Elles intègrent les dispositions propres aux actions de formation professionnelle (articles L.6313-1 et suivants du Code du travail). La version applicable est celle en vigueur à la date de dernière mise à jour indiquée ci-dessous.",
       sections: [
         {
           title: "Objet et champ d'application",
-          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent exclusivement à des clients professionnels (B2B) agissant dans le cadre de leur activité ; elles ne constituent pas une vente à des consommateurs.",
+          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire.",
         },
         {
           title: "Dispositions propres à la formation professionnelle",
@@ -217,8 +224,32 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement, et le contrat peut être résolu si l'empêchement devient définitif.",
         },
         {
+          // 🔴 Audit certification 2026-07-26 (F51). Le barème des CGV (7 j / 2 j
+          // calendaires) contredisait celui des conventions de formation
+          // (15 j / 8 j OUVRÉS). Les deux documents sont signés ensemble — la
+          // convention liste les CGV en annexe — et donnaient donc deux chiffres
+          // différents sur le même fait : une annulation à 10 jours coûtait 0 %
+          // d'un côté, 50 % de l'autre. En cas de litige, l'ambiguïté
+          // s'interprète contre le rédacteur (art. 1190 C. civ.).
+          // Aligné sur la convention, qui est le document signé par action et
+          // celui que lit un financeur. Le report gratuit, promesse publique des
+          // CGV, est conservé et repris dans la convention.
           title: "Annulation, report et remboursement",
-          body: "Toute annulation à l'initiative du Client : plus de 7 jours avant la date prévue, remboursement intégral des sommes versées ; entre 7 et 2 jours, 50 % du prix restent dus ; à moins de 2 jours, le prix reste dû en totalité, le créneau étant reportable une fois sans frais. Lorsque la prestation prend la forme d'une action de formation, les modalités spécifiques (convention ou contrat de formation, conditions de dédit et d'abandon, financement éventuel) sont précisées au devis ou dans la convention applicable.",
+          body: "Toute annulation à l'initiative du Client s'apprécie en jours ouvrés avant la date de début de la prestation : à plus de 15 jours ouvrés, aucune somme n'est due et les acomptes versés sont intégralement remboursés ; entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. Dans tous les cas, la prestation est reportable une fois sans frais à une date convenue entre les parties, le report se substituant alors à l'annulation. Ce barème est identique à celui figurant dans la convention et dans le contrat de formation. Les conditions de dédit et d'abandon en cours d'exécution sont précisées ci-après.",
+        },
+        {
+          // F53 — le renvoi « conditions de dédit et d'abandon précisées dans la
+          // convention » pointait vers une convention qui n'en contenait aucune :
+          // un abandon en cours de session n'était régi par aucun texte.
+          title: "Dédit et abandon en cours d'exécution",
+          body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un tiers (OPCO, France Travail, autre financeur), la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
+        },
+        {
+          // F53 — aucune clause de sous-traitance n'existait, alors que
+          // l'indicateur Qualiopi 27 en fait un point d'audit et que le dépôt
+          // génère déjà des contrats de sous-traitance.
+          title: "Sous-traitance",
+          body: "Axion-IA peut confier tout ou partie de l'exécution d'une prestation à un intervenant externe qualifié, sous-traitant au sens de l'article 1er de la loi n° 75-1334 du 31 décembre 1975. Axion-IA demeure seule responsable de la bonne exécution de la prestation vis-à-vis du Client et se porte garante du respect, par ses sous-traitants, des engagements de confidentialité, de protection des données personnelles et de qualité applicables. Le Client est informé de l'identité de l'intervenant avant le début de l'action.",
         },
         {
           title: "Réversibilité et restitution",
@@ -233,12 +264,62 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Sauf opposition écrite du Client, Axion-IA peut mentionner le nom et le logo du Client ainsi qu'une description générale de la prestation à titre de référence commerciale, dans le respect de la confidentialité des informations sensibles.",
         },
         {
-          title: "Absence de droit de rétractation",
-          body: "Les prestations étant conclues entre professionnels, le droit de rétractation prévu par le Code de la consommation ne s'applique pas. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+          title: "Rétractation du Client professionnel",
+          body: "Les prestations conclues entre professionnels ne relèvent pas du droit de rétractation prévu par le Code de la consommation. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
+        },
+        {
+          // 🔴 Audit certification 2026-07-26 (F50). Les CGV affirmaient être
+          // réservées aux professionnels, tout en prévoyant six lignes plus haut
+          // le contrat de formation pour « un particulier à titre individuel » —
+          // que le code génère effectivement (genererContratFormationAction).
+          // Un particulier se voyait donc opposer des CGV qui n'énonçaient ni
+          // l'interdiction de paiement avant rétractation, ni le plafond de 30 %
+          // (L6353-6), qui ÉCARTAIENT la médiation de la consommation — laquelle
+          // est une obligation d'adhésion (L612-1, amende jusqu'à 15 000 € pour
+          // une personne morale) — et qui imposaient une clause attributive de
+          // juridiction inopposable à un consommateur (R631-3 C. conso).
+          title: "Dispositions applicables au particulier (consommateur)",
+          body: "Lorsqu'une formation est souscrite par une personne physique pour son propre compte, en dehors de toute activité professionnelle, les dispositions suivantes s'appliquent et prévalent sur toute clause contraire des présentes. La relation est régie par un contrat de formation professionnelle conforme aux articles L.6353-3 à L.6353-7 du Code du travail. Ce contrat mentionne l'objet, la nature, la durée, les effectifs, le prix et les modalités de règlement, ainsi que les sanctions applicables et les titres des intervenants.",
+        },
+        {
+          title: "Particulier — délai de rétractation et interdiction de paiement",
+          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique.",
+        },
+        {
+          title: "Particulier — abandon et force majeure",
+          body: "Si le particulier est empêché de suivre la formation par un cas de force majeure dûment reconnu, le contrat est résilié de plein droit et seules les prestations effectivement dispensées sont dues, à due proportion de leur valeur prévue au contrat (art. L.6353-7 du Code du travail). Aucune pénalité ni indemnité de dédit ne peut lui être réclamée à ce titre.",
+        },
+        {
+          // ⚠️ BLOQUANT AVANT TOUTE VENTE À UN PARTICULIER — l'adhésion à un
+          // médiateur agréé est une obligation légale (L.612-1), pas une option.
+          // Le nom et l'adresse du médiateur doivent figurer ici et sur le site
+          // dès qu'un particulier peut contracter. Tant qu'Axion-IA n'a pas
+          // adhéré, la vente à un particulier n'est pas conforme.
+          //
+          // 2026-07-30 : la rédaction précédente annonçait au présent que « les
+          // coordonnées du médiateur compétent lui sont communiquées avec la
+          // confirmation d'inscription et figurent au contrat de formation ».
+          // Aucun médiateur n'étant renseigné, cette page publique affirmait
+          // une chose fausse — et sur un support contractuel, une affirmation
+          // inexacte se retourne contre celui qui l'a écrite, pas contre son
+          // lecteur. Le texte énonce désormais le droit (qui existe de toute
+          // façon), constate l'état réel, et prend l'engagement pour la suite.
+          //
+          // Le code tient déjà la même ligne : `documents.ts` refuse d'émettre
+          // un contrat individuel tant que `mediateur_consommation_nom` et
+          // `mediateur_consommation_url` sont vides. Le jour de l'adhésion,
+          // renseigner ces deux clés en configuration Qualiopi ET remplacer le
+          // paragraphe ci-dessous par le nom et l'adresse du médiateur.
+          title: "Particulier — médiation de la consommation",
+          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section et reportés au contrat de formation. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
+        },
+        {
+          title: "Particulier — juridiction compétente",
+          body: "La clause attributive de compétence prévue aux présentes n'est pas opposable au particulier. Celui-ci peut saisir, à son choix, la juridiction du lieu où il demeurait au moment de la conclusion du contrat, celle du lieu de survenance du fait dommageable, ou l'une des juridictions territorialement compétentes en application du Code de procédure civile (art. R.631-3 du Code de la consommation).",
         },
         {
           title: "Réclamations et règlement des litiges",
-          body: "Toute réclamation est adressée à contact@axion-ia.com ; les parties s'efforcent de résoudre amiablement tout différend avant toute action contentieuse. La clientèle étant exclusivement professionnelle, le dispositif de médiation de la consommation n'est pas applicable.",
+          body: "Toute réclamation est adressée à contact@axion-ia.com ; les parties s'efforcent de résoudre amiablement tout différend avant toute action contentieuse. Entre professionnels, le dispositif de médiation de la consommation n'est pas applicable. Lorsque le Client est un particulier, la médiation de la consommation s'applique dans les conditions énoncées à la section qui lui est consacrée.",
         },
         {
           title: "Indépendance des clauses",
@@ -385,7 +466,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Données collectées",
-          body: "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker tiers.",
+          body: "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel.",
         },
         {
           title: "Finalités",
@@ -405,7 +486,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hébergement et transferts",
-          body: "Hébergement principal dans l'UE (Hetzner Frankfurt, Allemagne) et services edge Cloudflare (présence UE prioritaire). Les seuls transferts hors UE concernent les sous-processeurs IA américains (OpenAI, Anthropic, Perplexity) lorsqu'un contenu éditorial est généré ou un fact-check effectué — encadrés par les Clauses Contractuelles Types (SCC) de la Commission européenne et listés exhaustivement sur /sous-processeurs avec leur cadre de transfert international (SCC + DPF le cas échéant). Aucune donnée personnelle de visiteur n'est transmise à ces modèles (helper `pii-safe` + hard gate code).",
+          body: "Hébergement principal dans l'Union européenne (Allemagne) et services edge à présence européenne prioritaire. Plusieurs sous-traitants sont toutefois établis hors UE, ou y traitent des données : notamment des modèles d'IA américains lorsqu'un contenu éditorial est généré ou vérifié, et le service tiers de prise de rendez-vous embarqué sur la page /appel. La liste complète, avec pour chacun sa localisation et son cadre de transfert (Clauses Contractuelles Types, décision d'adéquation), est publiée et tenue à jour sur /sous-processeurs. Cette politique n'en donne volontairement aucune énumération nominative : /sous-processeurs est la source unique de vérité, et une prose qui n'énumère pas ne peut pas diverger d'elle. Aucune donnée personnelle de visiteur n'est transmise aux modèles d'IA (helper `pii-safe` + hard gate code).",
         },
         {
           title: "Sous-processeurs et destinataires des données",
@@ -413,7 +494,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "IA générative et transparence (AI Act EU)",
-          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés avec l'assistance de modèles d'IA générative (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar pour le fact-checking) puis supervisés par l'équipe Axion-IA avant publication. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
+          body: "Certains contenus éditoriaux du site (Articles signés Manon, fiches de villes, FAQ) sont rédigés par des modèles d'IA générative (OpenAI GPT-4o pour la rédaction, Perplexity Sonar pour la vérification factuelle) puis soumis à des contrôles automatisés avant publication — vérification factuelle, contrôle éditorial et alignement doctrine. La relecture humaine n'est pas systématique. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689), la nature IA-assistée de ces contenus est divulguée publiquement — voir la fiche transparence sur /equipe/manon. Les prompts envoyés à ces modèles ne contiennent aucune donnée personnelle de visiteur (helper `pii-safe` + hard gate code sur la base de connaissances). Vous pouvez vous opposer à tout traitement de vos données par un modèle IA (RGPD art. 21) en écrivant à contact@axion-ia.com.",
         },
       ],
       metaSeo: {
@@ -434,7 +515,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Data collected",
-          body: "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no third-party trackers.",
+          body: "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page.",
         },
         {
           title: "Purposes",
@@ -454,7 +535,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Hosting and transfers",
-          body: "Primary hosting in the EU (Hetzner Frankfurt, Germany) and Cloudflare edge services (EU presence prioritized). The only transfers outside the EU concern US AI sub-processors (OpenAI, Anthropic, Perplexity) when editorial content is generated or fact-checked — covered by the European Commission Standard Contractual Clauses (SCC) and listed exhaustively on /subprocessors with their international transfer framework (SCC + DPF where applicable). No visitor personal data is sent to these models (`pii-safe` helper + code-level hard gate).",
+          body: "Primary hosting in the European Union (Germany) and edge services with EU presence prioritized. Several sub-processors are however established outside the EU, or process data there: notably US AI models when editorial content is generated or fact-checked, and the third-party appointment booking service embedded on the /appel page. The complete list, with each one's location and transfer framework (Standard Contractual Clauses, adequacy decision), is published and kept up to date at /subprocessors. This policy deliberately gives no nominative enumeration: /subprocessors is the single source of truth, and prose that does not enumerate cannot diverge from it. No visitor personal data is sent to the AI models (`pii-safe` helper + code-level hard gate).",
         },
         {
           title: "Sub-processors and data recipients",
@@ -462,7 +543,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Generative AI and transparency (EU AI Act)",
-          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is drafted with the assistance of generative AI models (OpenAI GPT-4o, Anthropic Claude, Perplexity Sonar for fact-checking) and then supervised by the Axion-IA team before publication. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
+          body: "Certain editorial content on the site (articles signed by Manon, city pages, FAQs) is written by generative AI models (OpenAI GPT-4o for drafting, Perplexity Sonar for fact-checking) and then subjected to automated checks before publication — fact-checking, editorial control and doctrine alignment. Human review is not systematic. In accordance with article 50 of the EU AI Act (2024/1689), the AI-assisted nature of this content is publicly disclosed — see the transparency notice at /equipe/manon. Prompts sent to these models contain no visitor personal data (`pii-safe` helper + code-level hard gate on the knowledge base). You may object to any processing of your data by an AI model (GDPR art. 21) by writing to contact@axion-ia.com.",
         },
       ],
       metaSeo: {
@@ -494,8 +575,12 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Microsoft Clarity est proposé en complément de Plausible pour les heatmaps de clic/scroll et le session replay anonymisé (masquage automatique des champs de formulaire). Il dépose 2 cookies : `_clck` (1 an, identifiant visiteur) et `_clsk` (1 jour, identifiant session). Le transfert UE → USA est encadré par les Clauses Contractuelles Types (SCC). Aucun cookie déposé sans votre consentement explicite via le bandeau cookies (CNIL art. 82 + RGPD art. 7) ; vous pouvez refuser ou retirer votre consentement à tout moment depuis /preferences-cookies. Durée de conservation du choix : 13 mois maximum (recommandation CNIL).",
         },
         {
+          title: "Calendrier de réservation (Calendly)",
+          body: "La page /appel intègre un calendrier fourni par Calendly LLC (Atlanta, États-Unis). Ce calendrier n'est PAS chargé à l'ouverture de la page : il ne s'affiche qu'après un clic explicite de votre part sur « Afficher le calendrier ». Tant que vous ne cliquez pas, aucune requête n'est adressée à Calendly et aucun cookie tiers n'est déposé. Après votre clic, Calendly reçoit votre adresse IP, dépose ses propres cookies sur le domaine calendly.com (certains proviennent de son infrastructure edge, pas de l'éditeur) et traite ces données pour ses propres finalités, décrites dans sa politique de confidentialité (calendly.com/privacy). Le transfert vers les États-Unis est encadré par les Clauses Contractuelles Types. Un lien « Ouvrir Calendly dans un nouvel onglet » reste disponible sans rien charger sur notre page.",
+        },
+        {
           title: "Cookies tiers",
-          body: "Aucun cookie publicitaire, aucun cookie réseau social, aucun cookie de tracking cross-site.",
+          body: "Aucun cookie publicitaire, aucun cookie réseau social, aucun cookie de tracking cross-site. Les seuls tiers susceptibles de déposer un cookie sont Microsoft Clarity, après acceptation du bandeau, et Calendly sur la page /appel, après votre clic explicite.",
         },
         {
           title: "Gérer vos cookies",
@@ -526,8 +611,12 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Microsoft Clarity is offered alongside Plausible for click/scroll heatmaps and anonymised session replay (automatic form field masking). It drops 2 cookies: `_clck` (1 year, visitor identifier) and `_clsk` (1 day, session identifier). The EU → US transfer is covered by Standard Contractual Clauses (SCC). No cookie is dropped without your explicit consent via the cookie banner (CNIL art. 82 + GDPR art. 7); you may decline or withdraw your consent at any time from /cookie-preferences. Consent retention: 13 months maximum (CNIL recommendation).",
         },
         {
+          title: "Booking calendar (Calendly)",
+          body: "The /appel page embeds a calendar provided by Calendly LLC (Atlanta, USA). This calendar is NOT loaded when the page opens: it appears only after you explicitly click “Show the calendar”. Until you click, no request is sent to Calendly and no third-party cookie is set. After your click, Calendly receives your IP address, sets its own cookies on the calendly.com domain (some of which come from its edge infrastructure rather than from the publisher) and processes that data for its own purposes, described in its privacy policy (calendly.com/privacy). The transfer to the United States is covered by Standard Contractual Clauses. An “Open Calendly in a new tab” link remains available without loading anything on our page.",
+        },
+        {
           title: "Third-party cookies",
-          body: "No advertising cookies, no social network cookies, no cross-site tracking cookies.",
+          body: "No advertising cookies, no social network cookies, no cross-site tracking cookies. The only third parties that may set a cookie are Microsoft Clarity, after the banner is accepted, and Calendly on the /appel page, after your explicit click.",
         },
         {
           title: "Manage your cookies",

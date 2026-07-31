@@ -35,7 +35,7 @@ import { FOUNDER } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
 // sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
 // dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
-import { isQualiopiPublicDisclosureEnabled } from "@/server/qualiopi/config/flag";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -146,7 +146,9 @@ export default async function About({ params }: Props) {
   // hardcodés). Aucune allégation Qualiopi/financement ici (gatées Phase B ailleurs).
   // Divulgation OF (Qualiopi/financement) — Phase B uniquement. Les Q/R gatées
   // ci-dessous s'affichent automatiquement dès l'activation du flag.
-  const ofPublic = isQualiopiPublicDisclosureEnabled();
+  // Audit F13 (2026-07-25) : pilote la FAQ « certifié Qualiopi » et « finançable »,
+  // donc des affirmations — exige la certification réelle, pas la visibilité.
+  const ofPublic = isQualiopiCertificationObtenue();
 
   const aboutFaq = isFr
     ? [

@@ -83,6 +83,8 @@ describe("creerReclamation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockPrisma.reclamation.count.mockResolvedValue(0);
+    // Chemin d'allocation depuis V20 : borne haute, série vide par défaut.
+    mockPrisma.reclamation.findMany.mockResolvedValue([]);
     mockPrisma.reclamation.create.mockResolvedValue(makeReclamation());
   });
 
@@ -95,9 +97,11 @@ describe("creerReclamation", () => {
       dateReception: new Date("2026-06-01T10:00:00.000Z"),
     });
 
-    expect(mockPrisma.reclamation.count).toHaveBeenCalledWith(
+    // 🔴 Le dénominateur est désormais la SÉRIE, pas une fenêtre de dates : une
+    // ligne reçue dans l'année mais numérotée hors série ne compte plus.
+    expect(mockPrisma.reclamation.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: expect.objectContaining({ dateReception: expect.any(Object) }),
+        where: { numero: { startsWith: "AXI-REC-2026-" } },
       }),
     );
     expect(mockPrisma.reclamation.create).toHaveBeenCalledWith(
@@ -108,8 +112,12 @@ describe("creerReclamation", () => {
     expect(result.numero).toBe("AXI-REC-2026-001");
   });
 
-  it("génère AXI-REC-2026-004 si count = 3", async () => {
-    mockPrisma.reclamation.count.mockResolvedValue(3);
+  it("génère AXI-REC-2026-004 si le maximum de la série est 003", async () => {
+    // Trou volontaire en 002 : `count + 1` aurait rendu 003, déjà émis.
+    mockPrisma.reclamation.findMany.mockResolvedValue([
+      { numero: "AXI-REC-2026-001" },
+      { numero: "AXI-REC-2026-003" },
+    ]);
     mockPrisma.reclamation.create.mockResolvedValue(
       makeReclamation({ numero: "AXI-REC-2026-004" }),
     );

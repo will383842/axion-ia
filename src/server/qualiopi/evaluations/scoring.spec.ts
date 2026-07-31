@@ -19,11 +19,26 @@ describe("computeEvaluationScore", () => {
     expect(result.scorePct).toBe(67); // round(6/9*100) = 67
   });
 
-  it("retourne scoreMax = nb_compétences × 3 même avec notes absentes", () => {
+  // 🔴 F22 — une compétence non notée SORT du calcul.
+  //
+  // Elle valait auparavant 0 tout en comptant dans `scoreMax`, donc MOINS qu'un
+  // « non acquis » (1) : un oubli de saisie pesait plus lourd qu'un échec
+  // déclaré. Elle est désormais reportée séparément sur l'attestation, sous
+  // « Non évalués » — visible, donc corrigeable.
+  it("F22 : exclut du score les compétences non notées", () => {
     const result = computeEvaluationScore([{ note: 3 }, {}, { note: 2 }]);
-    expect(result.scoreMax).toBe(9);
-    expect(result.scoreObtenu).toBe(5); // 3 + 0 + 2
-    expect(result.scorePct).toBe(56); // round(5/9*100)
+    expect(result.scoreMax).toBe(6); // 2 compétences notées × 3
+    expect(result.scoreObtenu).toBe(5); // 3 + 2
+    expect(result.scorePct).toBe(83); // round(5/6*100)
+  });
+
+  it("F22 : un oubli de saisie ne fabrique plus un échec", () => {
+    // 3 objectifs « acquis » sur 5, 2 cases sautées. Ancien calcul : 9/15 = 60 %,
+    // sous le seuil de 70 % → échec attribué au stagiaire pour une omission du
+    // formateur. Nouveau calcul : les 3 notés valent 100 %.
+    const result = computeEvaluationScore([{ note: 3 }, { note: 3 }, { note: 3 }, {}, {}]);
+    expect(result.scorePct).toBe(100);
+    expect(reussiteFromScore(result.scorePct, 70)).toBe(true);
   });
 
   it("retourne scorePct = 0 si scoreMax = 0 (liste vide)", () => {
@@ -38,10 +53,13 @@ describe("computeEvaluationScore", () => {
     expect(result.scorePct).toBe(100);
   });
 
-  it("retourne 0 % quand toutes les notes sont absentes", () => {
+  it("retourne 0 % quand aucune compétence n'est notée", () => {
+    // `scoreMax` à 0 : aucune évaluation n'a eu lieu. Le distinguer d'un vrai 0 %
+    // est le rôle de l'attestation, qui porte alors « Évaluation des acquis non
+    // réalisée » plutôt qu'un score.
     const result = computeEvaluationScore([{}, {}, {}]);
     expect(result.scoreObtenu).toBe(0);
-    expect(result.scoreMax).toBe(9);
+    expect(result.scoreMax).toBe(0);
     expect(result.scorePct).toBe(0);
   });
 

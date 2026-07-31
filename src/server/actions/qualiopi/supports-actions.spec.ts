@@ -26,6 +26,11 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-test-id" }),
+  // OBLIGATOIRE : les 6 tests de `describe("supprimerSupportAction")` echouent
+  // sans cette entree. Meme `userId` que `requireAdminWrite` — les assertions
+  // portent sur le contenu de `logQualiopiActivity`, qui recoit desormais la
+  // session rendue par `requireAdminDelete`.
+  requireAdminDelete: vi.fn().mockResolvedValue({ userId: "admin-test-id" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 

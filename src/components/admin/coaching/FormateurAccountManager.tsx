@@ -18,6 +18,7 @@ interface Formateur {
   actif: boolean;
   lastFormateurLoginAt: string | null;
   sessionsCount: number;
+  formationsCount: number;
 }
 
 export function FormateurAccountManager({
@@ -60,7 +61,8 @@ export function FormateurAccountManager({
             <th className="py-1.5">Formateur</th>
             <th>E-mail</th>
             <th>Région</th>
-            <th className="text-right">Séances</th>
+            <th className="text-right">Séances 1-to-1</th>
+            <th className="text-right">Formations</th>
             <th>Dernière connexion</th>
             <th>Compte</th>
             <th></th>
@@ -75,6 +77,7 @@ export function FormateurAccountManager({
               <td>{f.email}</td>
               <td>{f.region ?? "—"}</td>
               <td className="text-right">{f.sessionsCount}</td>
+              <td className="text-right">{f.formationsCount}</td>
               <td className="text-fg-muted text-xs">
                 {f.lastFormateurLoginAt
                   ? new Date(f.lastFormateurLoginAt).toLocaleDateString("fr-FR")

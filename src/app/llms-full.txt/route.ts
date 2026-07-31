@@ -42,7 +42,13 @@ export function GET() {
   );
   // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
   // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
-  const qualiopiCertified = process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true";
+  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
+  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
+  // simple visibilité des pages OF. Lecture env directe conservée (convention
+  // de ce fichier), mais sur le drapeau de certification.
+  const qualiopiCertified =
+    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
+    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
   const qualiopiBlock = qualiopiCertified
     ? `
 
@@ -121,7 +127,7 @@ URL : ${SITE_URL}/fr/methodologie
 
 ## Engagement
 
-- Mobile-first absolu, accessible WCAG 2.2 AA.
+- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
 - Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
 - Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
 - Pas de mensualité, pas d'engagement, devis fixe.

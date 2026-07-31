@@ -54,3 +54,75 @@ export function timeInParis(date: Date): string {
     minute: "2-digit",
   }).format(date);
 }
+
+// ── Conversion Europe/Paris ⇄ UTC pour les champs `datetime-local` ───────────
+//
+// Un `<input type="datetime-local">` ne connaît AUCUN fuseau : il rend et
+// renvoie « YYYY-MM-DDTHH:mm » que l'utilisateur lit comme une heure locale.
+// Deux erreurs symétriques en découlent si on l'alimente naïvement :
+//
+//   • à l'affichage, `date.toISOString().slice(0, 16)` montre l'heure UTC —
+//     un rendez-vous de 11 h 30 à Paris s'affiche « 09:30 » ;
+//   • à l'enregistrement, `new Date("2026-07-23T09:30")` est interprété dans le
+//     fuseau du NAVIGATEUR : un simple aller-retour sans rien modifier décale
+//     le créneau de l'offset. Enregistrer deux fois le décale deux fois.
+//
+// Constaté en production le 2026-07-29 sur la première réservation enrichie :
+// la liste affichait 11:30 (correct) pendant que la fiche affichait 09:30.
+// Le bug était inoffensif tant que tous les horaires étaient nuls.
+//
+// Tout passe donc par ces deux fonctions, réciproques l'une de l'autre.
+
+/** Décalage Europe/Paris à un instant donné, en ms (DST-aware). */
+function parisOffsetMs(instant: Date): number {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    hour12: false,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).formatToParts(instant);
+  const get = (type: string): number => Number(parts.find((p) => p.type === type)?.value ?? "0");
+  // `hour12: false` peut rendre « 24 » à minuit selon le moteur → on borne.
+  const asUtc = Date.UTC(
+    get("year"),
+    get("month") - 1,
+    get("day"),
+    get("hour") % 24,
+    get("minute"),
+    get("second"),
+  );
+  return asUtc - instant.getTime();
+}
+
+/**
+ * Instant UTC → valeur d'un `<input type="datetime-local">`, en heure de Paris.
+ * @example toParisLocalInput(new Date("2026-07-23T09:30:00Z")) === "2026-07-23T11:30"
+ */
+export function toParisLocalInput(date: Date): string {
+  return new Date(date.getTime() + parisOffsetMs(date)).toISOString().slice(0, 16);
+}
+
+/**
+ * Valeur d'un `<input type="datetime-local">` (lue comme heure de Paris) →
+ * instant UTC. Indépendant du fuseau du navigateur, contrairement à `new Date()`.
+ *
+ * @returns `null` si la saisie est vide ou illisible (jamais de `Invalid Date`).
+ */
+export function fromParisLocalInput(local: string): Date | null {
+  // Format vérifié explicitement : `Date.parse` est laxiste et accepte des
+  // chaînes arbitraires (« pas une date » → 1999-12-31 sur V8), ce qui
+  // produirait un rendez-vous silencieusement daté n'importe quand.
+  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(local);
+  if (!m) return null;
+  const naive = Date.parse(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:00Z`);
+  if (Number.isNaN(naive)) return null;
+  // Deux passes : la première estime l'offset, la seconde le corrige lorsque
+  // l'estimation tombe de l'autre côté d'un changement d'heure.
+  let utc = naive - parisOffsetMs(new Date(naive));
+  utc = naive - parisOffsetMs(new Date(utc));
+  return new Date(utc);
+}

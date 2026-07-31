@@ -17,6 +17,9 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
+import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { getClient } from "@/server/qualiopi/crm/clients";
@@ -73,6 +76,22 @@ interface DevisLigne {
   quantite: number;
   prixUnitaireHtCents: number;
   offreTierId?: string;
+  offreCode?: string;
+}
+
+/**
+ * Référence d'offre lisible d'une ligne, quelle que soit sa génération.
+ *
+ * Deux formes coexistent en base et aucune migration ne les réconciliera : les
+ * lignes émises avant ce correctif rangeaient un CODE (AXI-DEV-2026-002 porte
+ * `"offreTierId": "AXI-OFF-201"`) OU un vrai tierId selon l'offre, parce que le
+ * <select> émettait `tierId ?? code`. Les devis déjà émis sont des pièces
+ * immuables : on lit les deux formes, on n'en réécrit aucune.
+ */
+function refOffre(ligne: DevisLigne): string | null {
+  if (ligne.offreCode !== undefined && ligne.offreCode !== "") return ligne.offreCode;
+  if (ligne.offreTierId !== undefined && ligne.offreTierId !== "") return ligne.offreTierId;
+  return null;
 }
 
 function parseLignes(raw: unknown): DevisLigne[] {
@@ -114,6 +133,35 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     orderBy: { createdAt: "asc" },
   });
   const dejaFactureHtCents = facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
+
+  // ── État RÉEL de la signature, lu du registre de preuve ──
+  //
+  // 🔴 Source de vérité = les lignes `document_signatures`, jamais le statut
+  // dérivé porté par la pièce. Afficher le second sans le premier reproduirait
+  // le défaut que ce chantier retire partout : une case « signé » sans
+  // signataire, sans horodatage et sans empreinte.
+  const signatures =
+    devis.documentGenereId !== null
+      ? await prisma.documentSignature.findMany({
+          where: { documentGenereId: devis.documentGenereId, revokedAt: null },
+          select: {
+            id: true,
+            partie: true,
+            signataireNom: true,
+            signataireQualite: true,
+            signeAt: true,
+            selfHash: true,
+            methode: true,
+          },
+          // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
+          // `signeAt` afficherait un ordre qui peut différer de celui du
+          // chaînage, et donnerait à lire une séquence qui n'est pas la vraie.
+          orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+        })
+      : [];
+  const clientASigne = signatures.some((s) => s.partie === "client");
+  const organismeASigne = signatures.some((s) => s.partie === "axionia");
+  const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const lignes = parseLignes(devis.lignes);
@@ -263,7 +311,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Mention TVA</h2>
         <p className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          {devis.mentionTva}
+          {/*
+            🔴 F25 — un devis sans mention n'est pas un devis sans régime : c'est
+            le régime « assujetti », qui n'appelle aucune mention d'exonération.
+            Laisser l'encart vide se lirait comme une donnée manquante, et
+            pousserait à « corriger » en ajoutant une exonération non détenue.
+          */}
+          {devis.mentionTva !== null && devis.mentionTva !== ""
+            ? devis.mentionTva
+            : "Assujetti à la TVA au taux standard — aucune mention d'exonération applicable."}
         </p>
       </section>
 
@@ -293,9 +349,13 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                   >
                     <td className={cellCls}>
                       {ligne.designation}
-                      {ligne.offreTierId && (
+                      {/* 🔴 Le garde porte sur les DEUX formes, pas seulement le texte
+                          affiché : le laisser sur `offreTierId` seul ferait DISPARAÎTRE
+                          la référence d'offre pour tout le catalogue V2 dès que les
+                          nouvelles lignes cessent de renseigner ce champ. */}
+                      {refOffre(ligne) !== null && (
                         <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                          Offre : {ligne.offreTierId}
+                          Offre : {refOffre(ligne)}
                         </div>
                       )}
                     </td>
@@ -320,6 +380,110 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               </tbody>
             </table>
           </div>
+        )}
+      </section>
+
+      {/* ── Signature électronique ───────────────────────────────────────── */}
+      {/*
+        Cette section affichait la soumission DocuSeal et un champ « copier le
+        lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
+        sans objet, et c'est un GAIN de sûreté : on ne stocke que le HASH du
+        jeton, si bien que la console ne détient plus le lien personnel du
+        client. Le composant `DevisSignatureLinkCopy` disait lui-même pourquoi ce
+        lien était dangereux à exposer — « un admin qui l'ouvre peut signer à sa
+        place, et l'audit trail enregistrerait l'IP d'Axion-IA sous la signature
+        du client ». Le problème n'est plus atténué, il est supprimé.
+
+        On affiche désormais les signatures RÉELLEMENT apposées, lues du registre
+        de preuve, avec de quoi les vérifier.
+      */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Signature électronique</h2>
+
+        {/* Signatures RÉELLEMENT apposées, avec ce dont elles sont faites. */}
+        {signatures.length > 0 && (
+          <ul className="mb-[var(--space-admin-4)] space-y-[var(--space-admin-3)]">
+            {signatures.map((s) => (
+              <li
+                key={s.id}
+                className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
+              >
+                <p className={infoLabelCls}>
+                  {s.partie === "client" ? "Accord du client" : "Contresignature de l'organisme"}
+                </p>
+                <p className={infoValueCls}>
+                  {s.signataireNom}
+                  {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
+                </p>
+                <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                  {`Signé le ${s.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`}
+                  {s.methode === "confirmation_accessible"
+                    ? " — confirmation nominative, sans tracé manuscrit"
+                    : ""}
+                </p>
+                {/* 🔴 L'empreinte EN ENTIER : une empreinte tronquée ne se
+                    vérifie pas, et une preuve invérifiable n'en est pas une. */}
+                <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
+                  <code>{s.selfHash}</code>
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* 🔴 L'organisme CONCLUT — il contresigne ce que le client a accepté.
+            Le bouton n'apparaît donc qu'une fois le client signataire : c'est la
+            même règle que celle que l'action refuse côté serveur, et l'écran ne
+            doit pas proposer ce que le serveur refusera. */}
+        {devis.documentGenereId !== null && clientASigne && !organismeASigne && (
+          <DevisContresignature
+            documentGenereId={devis.documentGenereId}
+            organismeNom={identiteOrganisme.raisonSociale}
+            contresignerAction={contresignerPieceAction}
+          />
+        )}
+
+        {clientASigne && organismeASigne && (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Devis intégralement signé. La chaîne de preuve est vérifiable dans Qualiopi › Mode
+            auditeur › Signatures.
+          </p>
+        )}
+
+        {/* 🔴 L'exemplaire signé — sans lui, la preuve n'existait QU'en base.
+            Le PDF remis au client et vu par l'auditeur continuait d'afficher des
+            cadres vides, alors que la signature était enregistrée et chaînée.
+
+            ⚠️ Rendu à la volée : ce n'est PAS la pièce du registre, dont
+            l'empreinte est scellée et ne doit jamais être réécrite. */}
+        {signatures.length > 0 && (
+          <p className="mt-[var(--space-admin-4)]">
+            <a
+              href={`/api/qualiopi/pieces/${devis.documentGenereId}/exemplaire-signe`}
+              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
+            >
+              Télécharger l&apos;exemplaire signé (PDF)
+            </a>
+            <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Le devis avec les signatures apposées. La pièce d&apos;origine, scellée, reste
+              inchangée.
+            </span>
+          </p>
+        )}
+
+        {/* ⚠️ L'alerte reste restreinte au statut « envoyé » : sur un brouillon
+            aucun lien n'existe encore, et sur un devis accepté / refusé / expiré
+            / transformé il n'y a plus rien à signer — l'afficher serait un faux
+            positif permanent. */}
+        {devis.statut === "envoye" && !clientASigne && (
+          <p
+            role="alert"
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]"
+          >
+            {devis.documentGenereId === null
+              ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
+              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email en émet un nouveau et invalide le précédent."}
+          </p>
         )}
       </section>
 

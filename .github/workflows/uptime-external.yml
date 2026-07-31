@@ -63,7 +63,7 @@ jobs:
       # nouvelle entrée à chaque fois ; `restore-keys` relit la plus récente.
       - name: Restaurer l'état précédent
         id: cache-restore
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: state
           key: uptime-state-${{ github.run_id }}
@@ -138,7 +138,7 @@ jobs:
       # prochain run relira celle-ci via restore-keys.
       - name: Sauvegarder l'état
         if: always()
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: state
           key: uptime-state-${{ github.run_id }}

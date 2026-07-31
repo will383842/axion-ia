@@ -116,6 +116,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbSousTraitantsConformes,
     nbTrainersAvecCVRecent,
     nbSupportsGeneres,
+    nbFormationsActivesAvecSupport,
+    nbFormationsActives,
     nbPartenariatsHandicap,
     nbVeilleLegaleExploitee,
     nbVeilleMetiersExploitee,
@@ -271,6 +273,25 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
     // off.19 : supports RÉELLEMENT produits (statut=genere ET pdfKey non null), pas un brouillon.
     prisma.supportFormation.count({ where: { statut: "genere", pdfKey: { not: null } } }),
+    // off.19 — COUVERTURE, pas volumétrie : combien de formations ACTIVES portent
+    // au moins un support finalisé, et non combien de supports existent.
+    //
+    // 🔴 Corrigé le 2026-07-26 après contre-vérification. La version précédente
+    // de ce commentaire affirmait « 13 supports concentrés sur 2 formations
+    // suffisaient à masquer que 20 des 22 formations actives n'avaient aucune
+    // ressource ». C'était faux, et dans le sens qui MINIMISE : les deux
+    // formations qui portent ces supports sont toutes deux ARCHIVÉES. La
+    // couverture réelle du catalogue actif est de 0 sur 22, pas 2 sur 22.
+    // Vérifié en base le 2026-07-26 : jointure formations × supports_formation
+    // groupée par statut → archive : 2, actif : 0.
+    prisma.supportFormation
+      .findMany({
+        where: { statut: "genere", pdfKey: { not: null }, formation: { statut: "actif" } },
+        select: { formationId: true },
+        distinct: ["formationId"],
+      })
+      .then((r) => r.length),
+    prisma.formation.count({ where: { statut: "actif" } }),
     // off.26 : partenariats du réseau HANDICAP spécifiquement (≠ partenariat commercial).
     prisma.partenariat.count({ where: { type: "reseau_handicap" } }),
     // off.23/24/25 : veille EXPLOITÉE (actionDecidee non vide) et RÉCENTE (< 12 mois).
@@ -575,15 +596,25 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   // off.19 : ressources pédagogiques mises à disposition — [P1] supports RÉELLEMENT
   //          finalisés (statut=genere ET pdfKey non null), pas un brouillon IA jamais rendu.
+  // [audit 2026-07-26] Couverture, pas volumétrie. L'ancien calcul (`nbSupportsGeneres > 0`)
+  // déclarait l'indicateur couvert dès UN support finalisé : en production, 13 supports
+  // concentrés sur 2 formations suffisaient à masquer que 20 des 22 formations actives
+  // n'avaient aucune ressource. Seuil retenu : TOUTES les formations actives doivent être
+  // dotées — c'est ce que vérifie un auditeur qui tire une formation au hasard.
+  const tauxCouvertureSupports =
+    nbFormationsActives > 0
+      ? Math.round((nbFormationsActivesAvecSupport / nbFormationsActives) * 100)
+      : 0;
   set(
     19,
     [
-      `${nbSupportsGeneres} support(s) pédagogique(s) finalisé(s) (généré + PDF disponible)`,
-      nbSupportsGeneres === 0 && nbSupports > 0
-        ? `${nbSupports} support(s) au total (aucun finalisé)`
-        : `${nbSupports} support(s) au total`,
+      `${nbFormationsActivesAvecSupport}/${nbFormationsActives} formation(s) active(s) dotée(s) d'au moins une ressource finalisée (${tauxCouvertureSupports} %)`,
+      `${nbSupportsGeneres} support(s) finalisé(s) (généré + PDF disponible) sur ${nbSupports} au total`,
+      nbFormationsActives > 0 && nbFormationsActivesAvecSupport < nbFormationsActives
+        ? `${nbFormationsActives - nbFormationsActivesAvecSupport} formation(s) active(s) SANS aucune ressource — off.19 exige la mise à disposition pour chaque prestation`
+        : `Toutes les formations actives disposent d'une ressource`,
     ],
-    nbSupportsGeneres > 0,
+    nbFormationsActives > 0 && nbFormationsActivesAvecSupport === nbFormationsActives,
   );
   set(
     20,

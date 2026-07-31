@@ -17,6 +17,7 @@ import { consumeFormateurMagicLink } from "@/server/formateur/magic-link";
 import { signFormateurSession } from "@/lib/formateur-session";
 import { setFormateurCookie } from "@/server/formateur/cookie";
 import { FORMATEUR_BASE_PATH, FORMATEUR_CONNEXION_PATH } from "@/server/formateur/routes";
+import { publicUrl } from "@/lib/public-url";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,10 @@ export async function GET(
 ): Promise<Response> {
   const { token } = await params;
 
-  const failureUrl = new URL(`${FORMATEUR_CONNEXION_PATH}?erreur=lien_invalide`, request.url);
+  // 🔴 PAS `new URL(..., request.url)` : derrière le proxy, `request.url` porte
+  // l'adresse interne du conteneur et le navigateur recevait
+  // `https://0.0.0.0:3000/…` (ERR_ADDRESS_INVALID). Voir `@/lib/public-url`.
+  const failureUrl = publicUrl(`${FORMATEUR_CONNEXION_PATH}?erreur=lien_invalide`);
 
   const trainerId = await consumeFormateurMagicLink(token);
   if (!trainerId) {
@@ -49,5 +53,5 @@ export async function GET(
     data: { lastFormateurLoginAt: new Date() },
   });
 
-  return NextResponse.redirect(new URL(FORMATEUR_BASE_PATH, request.url));
+  return NextResponse.redirect(publicUrl(FORMATEUR_BASE_PATH));
 }

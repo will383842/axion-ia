@@ -17,6 +17,7 @@ import {
   SignatureZone,
   formatEur,
   pdfStyles,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 
@@ -50,6 +51,16 @@ export interface LettreMissionData {
   tarifJourHt: number;
   // Dates
   dateMission: string;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -79,7 +90,17 @@ export function LettreMissionPdf({
           <FieldRow label="Raison sociale" value={identite.raisonSociale || "Axion-IA SAS"} />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? <FieldRow label="Qualiopi" value={identite.qualiopi} /> : null}
           <FieldRow label="Adresse" value={identite.adresseSiege} required />
 
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
@@ -162,10 +183,12 @@ export function LettreMissionPdf({
             parties={[
               {
                 titre: "Pour l'organisme de formation",
+                signature: data.signatures?.axionia ?? null,
                 nom: identite.raisonSociale || "Axion-IA SAS",
               },
               {
                 titre: "Pour le formateur",
+                signature: data.signatures?.formateur ?? null,
                 nom: data.formateur.nomPrenom,
                 mention: "Nom, signature",
               },

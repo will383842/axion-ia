@@ -142,6 +142,41 @@ export async function createSessionAction(
   // Titre par défaut si non fourni
   const titreSession = v.titreSession ?? formation.titre;
 
+  // 🔴 F8 — contrôle d'existence et d'APPARTENANCE du devis rattaché.
+  //
+  // `devisId` était accepté au schéma et écrit tel quel : rien ne vérifiait que
+  // le devis existe, ni qu'il appartienne au client de la session. Un identifiant
+  // périmé passait donc (FK `SetNull` : le lien disparaissait silencieusement au
+  // lieu d'échouer), et surtout RIEN n'interdisait de rattacher le devis d'un
+  // AUTRE client. La convention générée depuis ce devis aurait alors porté le
+  // prix et les conditions de quelqu'un d'autre — sur une pièce contractuelle.
+  //
+  // Le formulaire filtre déjà par client, mais une garde d'interface ne protège
+  // que les usages ordinaires : l'action est appelable directement.
+  if (v.devisId !== undefined) {
+    const devisLie = await prisma.devis.findUnique({
+      where: { id: v.devisId },
+      select: { id: true, clientId: true, statut: true },
+    });
+    if (!devisLie) {
+      return { error: "Devis introuvable : impossible de rattacher la session." };
+    }
+    if (v.clientId === undefined || devisLie.clientId !== v.clientId) {
+      return {
+        error:
+          "Le devis rattaché appartient à un autre client. Une convention générée depuis ce devis porterait le prix et les conditions d'un tiers.",
+      };
+    }
+    // Un devis en brouillon ou refusé n'a pas à engendrer de session ; un devis
+    // déjà transformé a la sienne. On tolère `transforme_convention` pour rester
+    // idempotent si la session est recréée après une erreur.
+    if (devisLie.statut !== "accepte" && devisLie.statut !== "transforme_convention") {
+      return {
+        error: `Seul un devis accepté peut être rattaché à une session (statut actuel : ${devisLie.statut}).`,
+      };
+    }
+  }
+
   // Snapshot légal (WS5) — fige la formation telle que vendue à cette session.
   const formationSnapshot = buildFormationSnapshot(formation, new Date());
 
@@ -168,7 +203,18 @@ export async function createSessionAction(
             statut: "planifiee",
             ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
             ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
-            ...(v.financementType !== undefined ? { financementType: v.financementType } : {}),
+            // 🔴 Audit certification 2026-07-26 (F58). `financementType` était
+            // facultatif ET sans valeur par défaut : une session créée sans le
+            // préciser restait à NULL. Le BPF s'en sortait par un repli
+            // silencieux (`?? "direct"`), donc le chiffre d'affaires n'était pas
+            // perdu — mais une session réellement financée par un OPCO et laissée
+            // à NULL était comptée en « financement direct » dans un bilan
+            // déclaré à la DREETS, sans qu'aucun écran ne le signale.
+            //
+            // Le défaut explicite vaut mieux que le repli caché : « direct » est
+            // le cas majoritaire, il est visible en base, et il se corrige d'un
+            // clic si un OPCO entre en jeu.
+            financementType: v.financementType ?? "direct",
           },
           select: { id: true, numero: true },
         });

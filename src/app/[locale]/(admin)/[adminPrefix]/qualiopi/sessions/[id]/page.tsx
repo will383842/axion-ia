@@ -25,6 +25,11 @@ import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntrep
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
+import { viserReleveResponsablePedagogiqueAction } from "@/server/actions/qualiopi/releve-signature";
+import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/signature/releve-queries";
+import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
 import {
   enrollTraineeAction,
@@ -40,6 +45,17 @@ import {
   saisirReponsesQuestionnaireAction,
 } from "@/server/actions/qualiopi/satisfaction";
 import { prisma } from "@/lib/prisma";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { mentionTva } from "@/server/qualiopi/legal/tva";
+import {
+  PieceSignaturePanel,
+  type SignatureApposeeVue,
+} from "@/components/admin/qualiopi/PieceSignaturePanel";
+import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
+import { emettreLienSignatureAction } from "@/server/actions/qualiopi/piece-lien-signature";
+import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
+import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -113,6 +129,15 @@ export default async function SessionHubPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
+  // État de signature du relevé de connexion, lu APRÈS la garde de rôle.
+  // `null` quand la session n'a pas de relevé — cas NORMAL du présentiel.
+  const etatReleveConsole = await lireEtatSignatureReleveConsole(id, role);
+
+  // Contreseing de la lettre de mission formateur, même règle de lecture.
+  // `null` quand aucune lettre n'a été générée — la section Documents ci-dessous
+  // porte le bouton qui la génère.
+  const etatLettreConsole = await lireEtatSignatureLettreMissionConsole(id, role);
+
   const trainingSession = await prisma.trainingSession.findUnique({
     where: { id },
     select: {
@@ -155,6 +180,15 @@ export default async function SessionHubPage({ params }: PageProps) {
   });
 
   if (!trainingSession) notFound();
+
+  const mentionTvaSession = mentionTva(await getQualiopiConfig("regime_tva"));
+
+  // 🔴 UI 2026-07-27 — l'écran ne prévenait JAMAIS que les documents sortiraient
+  // en SPÉCIMEN. On le découvrait en ouvrant le PDF, une fois généré — ou pas du
+  // tout si on l'envoyait au client sans le rouvrir.
+  // On l'annonce AVANT de générer, avec la liste exacte de ce qui manque.
+  const identiteOf = await getOrganismeIdentite();
+  const champsManquantsConvention = champsIdentiteManquants(identiteOf, "convention");
 
   // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
   const allTrainers = await listTrainers({ actifOnly: true });
@@ -208,7 +242,16 @@ export default async function SessionHubPage({ params }: PageProps) {
     prisma.documentGenere.findMany({
       where: { sessionId: id },
       orderBy: { createdAt: "desc" },
-      select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
+      select: {
+        id: true,
+        type: true,
+        numero: true,
+        pdfUrl: true,
+        createdAt: true,
+        // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
+        // l'OF est incomplète (documents-service). L'écran ne le lisait pas.
+        metadata: true,
+      },
     }),
     prisma.trainee.findMany({
       where: { deletedAt: null },
@@ -216,6 +259,50 @@ export default async function SessionHubPage({ params }: PageProps) {
       select: { id: true, nom: true, prenom: true, email: true },
     }),
   ]);
+
+  // ── Pièces CONTRACTUELLES de la session et leurs signatures ──
+  //
+  // 🔴 Source de vérité = les lignes `document_signatures`, jamais le statut
+  // dérivé porté par la pièce. Afficher le second sans le premier reproduirait
+  // le défaut que ce chantier retire partout : une case « signé » sans
+  // signataire, sans horodatage et sans empreinte.
+  //
+  // ⚠️ Filtré par le SSOT : `circuitPour` rend `null` pour une convocation, une
+  // attestation ou une facture — ce sont des pièces ÉMISES, pas des engagements
+  // négociés. Leur proposer un lien de signature n'aurait aucun sens.
+  const piecesSignables = documentsRaw.filter((d) => circuitPour(d.type) !== null);
+  const signaturesParPiece = new Map<string, SignatureApposeeVue[]>();
+  if (piecesSignables.length > 0) {
+    const lignes = await prisma.documentSignature.findMany({
+      where: { documentGenereId: { in: piecesSignables.map((d) => d.id) }, revokedAt: null },
+      select: {
+        id: true,
+        documentGenereId: true,
+        partie: true,
+        signataireNom: true,
+        signataireQualite: true,
+        signeAt: true,
+        selfHash: true,
+        methode: true,
+      },
+      // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur `signeAt`
+      // afficherait un ordre pouvant différer de celui du chaînage.
+      orderBy: [{ createdAt: "asc" }, { id: "asc" }],
+    });
+    for (const l of lignes) {
+      const liste = signaturesParPiece.get(l.documentGenereId) ?? [];
+      liste.push({
+        id: l.id,
+        partie: l.partie,
+        signataireNom: l.signataireNom,
+        signataireQualite: l.signataireQualite,
+        signeAtLisible: l.signeAt.toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
+        empreinte: l.selfHash,
+        methode: l.methode,
+      });
+      signaturesParPiece.set(l.documentGenereId, liste);
+    }
+  }
 
   const enrollmentsSerialized = enrollmentsRaw.map((e) => {
     const acces = e.trainee.portailAcces[0];
@@ -236,13 +323,26 @@ export default async function SessionHubPage({ params }: PageProps) {
     };
   });
 
-  const documentsSerialized = documentsRaw.map((d) => ({
-    id: d.id,
-    type: d.type,
-    numero: d.numero,
-    pdfUrl: d.pdfUrl,
-    createdAt: d.createdAt.toISOString(),
-  }));
+  // 🔴 UI 2026-07-27 — un document SPÉCIMEN était indiscernable d'une pièce
+  // valable dans cette liste.
+  //
+  // Tant que le SIRET et le NDA ne sont pas renseignés, chaque convention,
+  // contrat et facture sort avec un filigrane SPÉCIMEN et un bandeau — mais
+  // l'écran affichait un numéro, une date et un lien, exactement comme une pièce
+  // opposable. On ne s'en apercevait qu'en ouvrant le PDF, voire jamais si on
+  // l'envoyait au client sans le rouvrir.
+  const documentsSerialized = documentsRaw.map((d) => {
+    const meta = d.metadata as { specimen?: boolean; champsManquants?: string[] } | null;
+    return {
+      id: d.id,
+      type: d.type,
+      numero: d.numero,
+      pdfUrl: d.pdfUrl,
+      createdAt: d.createdAt.toISOString(),
+      estSpecimen: meta?.specimen === true,
+      champsManquants: meta?.champsManquants ?? [],
+    };
+  });
 
   const enrollmentsLight = enrollmentsRaw.map((e) => ({
     id: e.id,
@@ -305,6 +405,24 @@ export default async function SessionHubPage({ params }: PageProps) {
           </>
         )}
       </div>
+
+      {champsManquantsConvention.length > 0 && (
+        <div
+          role="status"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-[var(--space-admin-4)]"
+        >
+          <p className="text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-destructive-fg)]">
+            Les documents générés sortiront en SPÉCIMEN
+          </p>
+          <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            L&apos;identité de l&apos;organisme est incomplète :{" "}
+            <strong>{champsManquantsConvention.join(", ")}</strong>. Convention, contrat et facture
+            porteront un filigrane et ne seront pas opposables — un organisme certificateur les
+            refuse. Renseignez ces champs dans <em>Configuration</em>, puis régénérez les pièces
+            déjà produites : elles ne se corrigent pas toutes seules.
+          </p>
+        </div>
+      )}
 
       <AdminPageHeader
         title={trainingSession.titreSession ?? trainingSession.formation.titre}
@@ -370,9 +488,15 @@ export default async function SessionHubPage({ params }: PageProps) {
                 currency: "EUR",
               })}
             </p>
-            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Exonéré TVA (261-4-4° CGI)
-            </p>
+            {/* 🔴 Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
+                en dur, juste sous un Montant HT que le PDF facture à 20 %. La
+                mention suit désormais `qualiopi.regime_tva` et disparaît en
+                régime assujetti, comme sur les documents. */}
+            {mentionTvaSession !== null && (
+              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {mentionTvaSession}
+              </p>
+            )}
           </div>
 
           {/* Client */}
@@ -536,6 +660,95 @@ export default async function SessionHubPage({ params }: PageProps) {
           enrollments={enrollmentsLight}
           documentsExistants={documentsSerialized}
         />
+
+        {/* 🔴 Signature des pièces CONTRACTUELLES.
+
+            Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
+            n'étaient appelables par personne : les cinq circuits seraient restés
+            du code de signature écrit, testé et inatteignable — le défaut que ce
+            chantier a déjà trouvé trois fois. */}
+        {piecesSignables.length > 0 && (
+          <div className="mt-[var(--space-admin-6)] space-y-[var(--space-admin-4)]">
+            <h3 className="text-[length:var(--text-admin-sm)] font-semibold">
+              Signature des pièces contractuelles
+            </h3>
+            {piecesSignables.map((d) => {
+              const circuit = circuitPour(d.type)!;
+              return (
+                <PieceSignaturePanel
+                  key={d.id}
+                  documentGenereId={d.id}
+                  numero={d.numero}
+                  pieceLibelle={circuit.libelle}
+                  parties={circuit.parties}
+                  signatures={signaturesParPiece.get(d.id) ?? []}
+                  emettreAction={emettreLienSignatureAction}
+                  contresignerAction={contresignerPieceAction}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/*
+          Visa du responsable pédagogique sur le relevé de connexion.
+
+          ⚠️ Rendu SEULEMENT si un relevé existe : une session présentielle n'en
+          a pas, et un bloc vide se lirait comme une pièce manquante.
+
+          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+          et l'un finirait par contredire l'autre sur la même pièce.
+        */}
+        {etatReleveConsole !== null && (
+          <div className="mt-[var(--space-admin-6)]">
+            <SignatureDocument
+              documentGenereId={etatReleveConsole.documentGenereId}
+              titrePiece="Relevé de connexion"
+              numero={etatReleveConsole.numero}
+              parties={etatReleveConsole.parties}
+              peutAgir={etatReleveConsole.peutAgir}
+              mentions={etatReleveConsole.mentions}
+              plafondProbant={etatReleveConsole.plafondProbant}
+              libelleBouton="Viser le relevé"
+              labelSignature="Visa du responsable pédagogique"
+              signerAction={viserReleveResponsablePedagogiqueAction}
+            />
+          </div>
+        )}
+
+        {/*
+          Contreseing de la LETTRE DE MISSION FORMATEUR.
+
+          C'est la contrepartie du bouton « Lettre de mission formateur » de la
+          section ci-dessus : la pièce s'y génère, elle se contresigne ici. Les
+          deux cadres au stylo du §7 du modèle existaient depuis toujours sans
+          que rien ne les remplisse.
+
+          ⚠️ Rendu SEULEMENT si une lettre existe : un bloc vide se lirait comme
+          une pièce manquante alors qu'elle n'a simplement pas été demandée.
+
+          Le composant est celui de l'espace formateur, RÉUTILISÉ tel quel. Deux
+          écrans de signature divergeraient sur ce qu'ils affichent comme signé,
+          et l'un finirait par contredire l'autre sur la même pièce.
+        */}
+        {etatLettreConsole !== null && (
+          <div className="mt-[var(--space-admin-6)]">
+            <SignatureDocument
+              documentGenereId={etatLettreConsole.documentGenereId}
+              titrePiece="Lettre de mission formateur"
+              numero={etatLettreConsole.numero}
+              parties={etatLettreConsole.parties}
+              peutAgir={etatLettreConsole.peutAgir}
+              motifBlocage={etatLettreConsole.motifBlocage}
+              mentions={etatLettreConsole.mentions}
+              plafondProbant={etatLettreConsole.plafondProbant}
+              libelleBouton="Contresigner la lettre de mission"
+              labelSignature="Signature pour l'organisme de formation"
+              signerAction={contresignerLettreMissionAction}
+            />
+          </div>
+        )}
       </section>
 
       {/* SECTION: questionnaires */}

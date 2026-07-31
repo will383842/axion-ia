@@ -20,12 +20,64 @@ import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
+import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objectifs";
 import { ensureCoachingSnapshot, COACHING_SNAPSHOT_SELECT } from "./coaching-snapshot";
 import { getHeuresReelles1to1, computeTaux1to1 } from "./heures";
+import {
+  getFinaleResultats1to1,
+  evaluationSansAucuneNote,
+} from "@/server/qualiopi/evaluations/evaluations-service";
 
 export interface AttestationResult {
   resultat: "complete" | "partielle" | "aucune";
   documentId: string | null;
+  /**
+   * Raison d'un refus d'émission, à afficher à l'admin (F65).
+   *
+   * Un « aucune » silencieux est indiscernable d'un bug : l'admin clique, rien
+   * ne se passe, et il recommence. Le motif dit ce qui manque et comment le
+   * corriger.
+   */
+  motif?: string;
+  /**
+   * Renseigné quand la ré-émission a été REFUSÉE parce qu'elle aurait dégradé
+   * une attestation déjà remise. Voir `assertPasDeDegradation`.
+   */
+  refusDegradation?: string;
+}
+
+/** Ordre de gravité des résultats — `aucune` < `partielle` < `complete`. */
+const RANG_RESULTAT: Record<"aucune" | "partielle" | "complete", number> = {
+  aucune: 0,
+  partielle: 1,
+  complete: 2,
+};
+
+/**
+ * Refuse de RÉTROGRADER une attestation déjà émise, sans validation humaine.
+ *
+ * 🔴 Le passage d'un parcours en régime `signature_reelle` peut faire chuter ses
+ * heures — donc son taux, donc son résultat. Une ré-émission `force` écraserait
+ * alors `attestationDocumentId` et laisserait le document précédent ORPHELIN
+ * MAIS EN CIRCULATION : le bénéficiaire, l'employeur et le financeur détiennent
+ * une attestation « complète » que la base ne reconnaît plus, et que rien ne
+ * signale comme révoquée.
+ *
+ * L'idempotence ne protège pas de ce cas : `force` la contourne, et c'est
+ * précisément le drapeau qu'on utilise après une correction. On exige donc un
+ * arbitrage explicite (`autoriserDegradation`), qui doit s'accompagner d'une
+ * révocation traçable du document antérieur.
+ */
+function assertPasDeDegradation(
+  ancien: "complete" | "partielle" | "aucune" | null,
+  nouveau: "complete" | "partielle" | "aucune",
+  ancienDocumentId: string | null,
+  autoriserDegradation: boolean,
+): string | null {
+  if (autoriserDegradation) return null;
+  if (ancien === null || ancienDocumentId === null) return null;
+  if (RANG_RESULTAT[nouveau] >= RANG_RESULTAT[ancien]) return null;
+  return `Cette ré-émission dégraderait l'attestation de « ${ancien} » à « ${nouveau} ». Un document a déjà été remis (${ancienDocumentId}) : le remplacer sans le révoquer laisserait en circulation une attestation que la base ne reconnaît plus. Révoquez d'abord le document antérieur, puis relancez en autorisant explicitement la dégradation.`;
 }
 
 const formatDate = (d: Date) =>
@@ -63,7 +115,7 @@ function resolveBeneficiaire(cs: {
  */
 export async function genererAttestation1to1(
   coachingSessionId: string,
-  opts?: { force?: boolean },
+  opts?: { force?: boolean; autoriserDegradation?: boolean },
 ): Promise<AttestationResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { resultat: "aucune", documentId: null };
@@ -117,16 +169,52 @@ export async function genererAttestation1to1(
 
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
   const seuilHeuresMin = await getQualiopiConfig("afest_seuil_heures_min");
+
+  // 🔴 F65 — un taux `null` signifie « aucune durée conventionnelle renseignée »,
+  // donc assiduité INCALCULABLE. On refuse d'attester plutôt que de retenir un
+  // taux par défaut : attester une assiduité qu'on ne sait pas mesurer est
+  // exactement ce qu'un contrôle de service fait sanctionne.
+  if (taux === null) {
+    return {
+      resultat: "aucune",
+      documentId: null,
+      motif:
+        "Durée conventionnelle du parcours non renseignée : l'assiduité n'est pas calculable, l'attestation ne peut pas être émise. Renseignez les heures prévues à la convention.",
+    };
+  }
+
   let resultat = classifierPresence(taux, seuilPresencePct);
   // Plancher absolu d'heures (optionnel, gated). En dessous → aucune.
   if (seuilHeuresMin > 0 && heuresReelles < seuilHeuresMin) {
     resultat = "aucune";
   }
 
+  // 🔴 Garde anti-rétrogradation — AVANT toute écriture, y compris celle du
+  // résultat « aucune » qui écrase pourtant `attestationResultat`.
+  const refus = assertPasDeDegradation(
+    cs.attestationResultat,
+    resultat,
+    cs.attestationDocumentId,
+    opts?.autoriserDegradation === true,
+  );
+  if (refus !== null) {
+    return {
+      resultat: (cs.attestationResultat ?? "aucune") as "complete" | "partielle" | "aucune",
+      documentId: cs.attestationDocumentId ?? null,
+      refusDegradation: refus,
+    };
+  }
+
   if (resultat === "aucune") {
     await prisma.coachingSession.update({
       where: { id: coachingSessionId },
-      data: { attestationResultat: "aucune", attestationGenereeAt: new Date() },
+      data: {
+        attestationResultat: "aucune",
+        attestationGenereeAt: new Date(),
+        // La clôture reste l'écrivain unique, même quand elle n'émet rien.
+        heuresSigneesCloture: heuresReelles,
+        heuresSigneesClotureAt: new Date(),
+      },
     });
     return { resultat: "aucune", documentId: null };
   }
@@ -141,27 +229,62 @@ export async function genererAttestation1to1(
   const formateurNom = `${cs.trainer.prenom} ${cs.trainer.nom}`.trim() || identite.raisonSociale;
 
   // Objectifs pédagogiques (figés) → string lisible.
-  const objectifsRaw = snap.objectifsPedagogiques;
-  let objectifsStr = "";
-  if (Array.isArray(objectifsRaw)) {
-    objectifsStr = (objectifsRaw as Array<{ libelle?: string } | string>)
-      .map((o) => (typeof o === "string" ? o : (o.libelle ?? "")))
-      .filter(Boolean)
-      .join(", ");
-  }
+  //
+  // 🔴 Parcours à blanc 2026-07-27. Ce code ne lisait que `libelle` ; le
+  // catalogue écrit `description`. Le `filter(Boolean)` transformait donc le
+  // défaut en SILENCE : l'attestation AFEST sortait sans aucun objectif, sans
+  // rien signaler. Moins voyant que le « [object Object] » de la voie
+  // collective, mais tout aussi faux sur une pièce probante.
+  const objectifsStr = objectifsPedagogiquesEnTexte(snap.objectifsPedagogiques);
 
-  // Évaluation finale 1-to-1 (si présente).
-  const finale = await prisma.evaluationAcquis.findFirst({
-    where: { coachingSessionId, type: "finale" },
-    orderBy: { dateEvaluation: "desc" },
-    select: { reussite: true },
-  });
+  // 🔴 Audit certification 2026-07-26 (F21, SECOND passage). Ce fichier est le
+  // miroir de `attestation-service.ts` et reproduisait le même défaut : la liste
+  // COMPLÈTE des objectifs du parcours s'imprimait sous « Compétences acquises »,
+  // sans que rien ne consulte l'évaluation. Mon premier correctif n'avait touché
+  // que la voie collective — la famille AFEST passait encore.
+  //
+  // Le défaut était même plus visible ici : le code lisait bien l'évaluation,
+  // mais SEULEMENT le booléen de réussite. Une attestation AFEST pouvait donc
+  // afficher « Évaluation finale : Non validée » et, juste en dessous,
+  // l'intégralité des objectifs comme acquis.
+  //
+  // C'est d'autant plus grave que l'AFEST est précisément le dispositif où
+  // l'évaluation individuelle est le cœur du sujet au regard de L6353-1.
+  const resultatsFinale = await getFinaleResultats1to1(coachingSessionId);
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation existante mais dont AUCUNE
+  // compétence n'est notée doit être traitée comme « non réalisée », pas comme
+  // un échec : `scorePct = 0` et `reussite = false` y sont des artefacts de
+  // saisie vide, pas un résultat. Sans ce test, l'attestation portait
+  // « Non validée — score 0 % » — le faux échec que F22 ferme au niveau du
+  // calcul, réintroduit au niveau du document.
+  const sansAucuneNote = resultatsFinale !== null && evaluationSansAucuneNote(resultatsFinale);
   const evaluationObtenue =
-    finale == null
+    resultatsFinale === null || sansAucuneNote
       ? undefined
-      : finale.reussite
-        ? "Évaluation finale : Réussite"
-        : "Évaluation finale : Non validée";
+      : `${resultatsFinale.reussite ? "Réussite" : "Non validée"} — score ${resultatsFinale.scorePct} %`;
+
+  // Ce qui s'imprime sous « Compétences acquises » : les objectifs RÉELLEMENT
+  // notés acquis, jamais le programme.
+  const competencesAcquisesStr =
+    resultatsFinale === null || sansAucuneNote
+      ? "Évaluation des acquis non réalisée"
+      : resultatsFinale.acquis.length > 0
+        ? resultatsFinale.acquis.join(", ")
+        : "Aucun objectif évalué comme acquis";
+
+  const reservesStr = [
+    resultatsFinale && resultatsFinale.partiels.length > 0
+      ? `Partiellement acquis : ${resultatsFinale.partiels.join(", ")}`
+      : null,
+    resultatsFinale && resultatsFinale.nonAcquis.length > 0
+      ? `Non acquis : ${resultatsFinale.nonAcquis.join(", ")}`
+      : null,
+    resultatsFinale && resultatsFinale.nonEvalues.length > 0
+      ? `Non évalués : ${resultatsFinale.nonEvalues.join(", ")}`
+      : null,
+  ]
+    .filter((l): l is string => l !== null)
+    .join(" · ");
 
   // Dates : 1re et dernière séance avec compte-rendu (sinon dateSeance du parcours).
   const dates = cs.comptesRendus
@@ -206,7 +329,8 @@ export async function genererAttestation1to1(
                 heuresSuivies: heuresReelles,
                 heuresTotales,
                 ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-                competencesAcquises: objectifsStr,
+                competencesAcquises: competencesAcquisesStr,
+                ...(reservesStr !== "" ? { competencesReserves: reservesStr } : {}),
               },
               qrToken: token,
               qrDataUrl: qrUrl,
@@ -223,7 +347,8 @@ export async function genererAttestation1to1(
                 heuresSuivies: heuresReelles,
                 heuresTotales,
                 ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-                competencesPartiellesValidees: objectifsStr,
+                competencesPartiellesValidees: competencesAcquisesStr,
+                ...(reservesStr !== "" ? { competencesReserves: reservesStr } : {}),
               },
               qrToken: token,
               qrDataUrl: qrUrl,
@@ -236,6 +361,11 @@ export async function genererAttestation1to1(
     qrToken: token,
   });
 
+  // 🔴 ÉCRIVAIN UNIQUE de `dureeReelleHeures` : le chemin de CLÔTURE, et lui
+  // seul. La transaction de signature ne l'écrit pas — un cache posé à chaque
+  // signature oscillerait selon l'ordre des opérations. `heuresSigneesCloture`
+  // fige en plus la valeur ex-post, que `coachingSnapshot` ne peut pas porter
+  // (il est capturé au PREMIER document, donc au protocole EX-ANTE, donc à 0 h).
   await prisma.coachingSession.update({
     where: { id: coachingSessionId },
     data: {
@@ -243,6 +373,8 @@ export async function genererAttestation1to1(
       attestationDocumentId: generated.id,
       attestationGenereeAt: new Date(),
       dureeReelleHeures: heuresReelles,
+      heuresSigneesCloture: heuresReelles,
+      heuresSigneesClotureAt: new Date(),
     },
   });
 

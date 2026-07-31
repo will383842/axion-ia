@@ -357,7 +357,7 @@ export function FactureFormationActions({
                 onChange={(e) => setReference(e.target.value)}
                 disabled={isPending}
                 className={inputCls}
-                placeholder="N° de virement / chèque"
+                placeholder="Référence du virement"
               />
             </div>
           </div>

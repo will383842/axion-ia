@@ -71,8 +71,18 @@ export function NewQuoteForm({ bookingId, defaultAmountHtCents }: Props) {
       </div>
 
       <div className="admin-field">
+        {/* 🔴 Constaté le 2026-07-27. Ce formulaire proposait par DÉFAUT un taux
+            de 0 % ET l'autoliquidation cochée — donc une double exonération —
+            sous un libellé annonçant « TVA 20 % ». Cocher `vatReverseCharge`
+            met la TVA à zéro (`computeQuotePricing`), le libellé disait donc
+            l'inverse de ce que la case fait.
+            Le régime d'Axion-IA est `assujetti` à 20 %, et cette pile ne lit
+            PAS `qualiopi.regime_tva` : le défaut doit donc être écrit ici, et
+            écrit juste. L'autoliquidation reste possible, mais elle se coche
+            délibérément — c'est un cas de vente intracommunautaire, pas l'usage
+            courant. */}
         <label htmlFor="nq-vat" className="admin-label">
-          Taux TVA (%) — 0 si reverse charge UE
+          Taux TVA (%) — mettre 0 uniquement en cas d&apos;autoliquidation UE
         </label>
         <input
           id="nq-vat"
@@ -81,7 +91,7 @@ export function NewQuoteForm({ bookingId, defaultAmountHtCents }: Props) {
           step="0.01"
           min="0"
           max="30"
-          defaultValue="0"
+          defaultValue="20"
           required
           className="admin-input"
           disabled={pending}
@@ -90,8 +100,8 @@ export function NewQuoteForm({ bookingId, defaultAmountHtCents }: Props) {
 
       <div className="admin-field">
         <label className="admin-label">
-          <input type="checkbox" name="vatReverseCharge" defaultChecked disabled={pending} /> TVA 20
-          % (Axion-IA France)
+          <input type="checkbox" name="vatReverseCharge" disabled={pending} /> Autoliquidation — TVA
+          non applicable, art. 196 directive 2006/112/CE (client assujetti hors France)
         </label>
       </div>
 

@@ -10,8 +10,14 @@
  */
 
 import { cookies } from "next/headers";
+import { PORTAIL_COOKIE_NAME } from "@/server/portail/routes";
 
-const COOKIE_NAME = "portail_session";
+// SSOT du nom de cookie : il est aussi lu par la garde Edge de `src/proxy.ts`
+// (bloc 0sexies), qui ne peut pas importer ce fichier-ci — il tire `next/headers`.
+// Le renommer sans toucher `server/portail/routes.ts` rouvrirait le constat X3 EN
+// SILENCE : la garde ne verrait plus jamais de cookie et redirigerait vers le
+// formulaire de demande d'accès des stagiaires pourtant connectés.
+const COOKIE_NAME = PORTAIL_COOKIE_NAME;
 /** 90 jours en secondes. */
 const MAX_AGE_SECONDS = 90 * 24 * 60 * 60;
 

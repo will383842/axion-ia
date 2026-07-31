@@ -24,10 +24,11 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { resoudreConditions } from "./conditions-client";
 import {
   normaliserLignesPourActivite,
   calculerProchaineGeneration,
@@ -168,7 +169,9 @@ export async function emettreFactureBrouillon(
 
   const facture = await prisma.factureFormation.findUniqueOrThrow({
     where: { id: factureId },
-    include: { client: { select: { contactEmail: true, adresse: true } } },
+    include: {
+      client: { select: { contactEmail: true, adresse: true, delaiPaiementJours: true } },
+    },
   });
   if (facture.statut !== "brouillon") {
     throw new Error("Seule une facture en brouillon s'émet.");
@@ -196,10 +199,19 @@ export async function emettreFactureBrouillon(
       : lignesBrutes;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
-  const [delaiClient, rib] = await Promise.all([
+  // 🔴 Vérification E2E 2026-07-26 — délai propre au client, non lu jusqu'ici.
+  const [delaiGlobal, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
     resolveRibFacture(),
   ]);
+  const delaiClient = resoudreConditions(
+    {
+      delaiPaiementJours: facture.client?.delaiPaiementJours ?? null,
+      tauxAcomptePct: null,
+      modeFacturation: null,
+    },
+    { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
+  ).delaiPaiementJours;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(
@@ -213,11 +225,19 @@ export async function emettreFactureBrouillon(
   const annee = now.getFullYear();
   let numeroFinal: string | null = null;
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const count = await prisma.factureFormation.count({
-      where: { numero: { startsWith: `AXI-FACT-${annee}-` } },
-    });
-    const numero = formatDocumentNumber("facture", annee, count + 1);
+    // 🔴 V20 — borne haute. Ce module est aussi celui qui POSE les lignes
+    // `BROUILLON-<uuid>` dans `factures_formation` : elles ne portent aucun
+    // numéro de série et `parseSequence` les écarte, là où un `count()` global
+    // les comptait comme des factures.
+    const numero = await nextNumero("facture", annee, (prefixe) =>
+      prisma.factureFormation.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     try {
+      // Le `updateMany` conditionné au statut `brouillon` reste le verrou
+      // anti-double-émission : ne pas le remplacer par un `update` par id.
       const { count: updated } = await prisma.factureFormation.updateMany({
         where: { id: facture.id, statut: "brouillon" },
         data: {

@@ -19,9 +19,12 @@ import {
   FieldRow,
   SignatureZone,
   pdfStyles,
+  assainirEspacesPdf,
+  type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { PLAFOND_ACOMPTE_PARTICULIER_PCT } from "@/server/qualiopi/financements/acompte";
 
 // ============================================================
 // Types
@@ -30,6 +33,9 @@ import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 export interface ContratFormationData {
   numero: string;
   estCopie?: boolean;
+  /** Injecte par `generateDocument` quand l'identite de l'OF est incomplete. */
+  estSpecimen?: boolean;
+  specimenMotif?: string;
   // Stagiaire (personne physique signataire et financeur)
   stagiaire: {
     nomPrenom: string;
@@ -51,11 +57,48 @@ export interface ContratFormationData {
   dateFin: string;
   modalite: "Présentiel" | "Distanciel" | "Mixte";
   lieu: string;
-  // Conditions financières (prix net — formation exonérée de TVA)
+  // Conditions financières (la mention TVA suit `qualiopi.regime_tva`)
   prixNet: number;
   /** Pourcentage d'acompte après le délai de rétractation (plafonné à 30 % — L.6353-6). */
   acomptePercent?: number;
+  /**
+   * Montant d'acompte RÉELLEMENT convenu, en euros. Prioritaire sur le
+   * pourcentage : un contrat imprime ce qui a été convenu, il ne recalcule pas
+   * un plafond. Reste borné à 30 % du prix (L.6353-6) même s'il est fourni.
+   */
+  acompteEuros?: number;
+  /**
+   * Échéancier DATÉ du solde — art. L.6353-6 point (3).
+   *
+   * 🔴 Ce n'est pas un agrément : la doctrine administrative impose que « les
+   * modalités de règlement, notamment l'échéancier, figurent dans le contrat de
+   * formation ». Jusqu'au 2026-07-30, ce contrat annonçait l'échelonnement sans
+   * en donner une seule date — l'obligation était citée, pas remplie.
+   *
+   * ⚠️ Calculé sur les bornes CONTRACTUELLES de l'action, jamais sur le rythme
+   * réel du stagiaire : un échéancier au prorata des heures consommées serait
+   * inconnaissable à la signature, donc impossible à écrire ici.
+   *
+   * Absent → on retombe sur la ligne « solde échelonné » sans date, ce qui est le
+   * comportement historique. On ne fabrique aucune échéance.
+   */
+  echeancierSolde?: ReadonlyArray<{
+    libelle: string;
+    montantEuros: number;
+    dueLeLisible: string | null;
+  }>;
   dateContrat: string;
+  /**
+   * Preuves de signature RÉELLEMENT apposées, par partie.
+   *
+   * 🔴 ABSENTES = cadres vides à remplir au stylo, comportement historique
+   * INCHANGÉ. Le circuit papier reste un chemin de plein droit.
+   *
+   * Renseignées, `SignatureZone` rend le tracé, l'horodatage et l'empreinte.
+   * Sans ce branchement, la preuve n'existait QU'en base : le signataire signait
+   * et la pièce qu'on lui remettait affichait encore des cadres vides.
+   */
+  signatures?: PreuvesParPartie;
 }
 
 // ============================================================
@@ -88,12 +131,20 @@ const local = StyleSheet.create({
 // Helpers
 // ============================================================
 
+// 🔴 Correctif glyphes 2026-07-26. `Intl` fr-FR emet U+202F (fine insecable)
+// comme separateur de milliers ; aucune police du projet ne possede ce glyphe,
+// @react-pdf bascule sur Helvetica/WinAnsi et ecrit l'octet 0x2F, soit « / ».
+// Tout montant >= 1 000 EUR sortait donc « 1/440,00 € ». Detail mesure dans
+// `assainirEspacesPdf` (base-layout.tsx). Ce duplicat local echappait au
+// correctif du helper partage : il doit assainir lui aussi.
 function formatEur(montant: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(montant);
+  return assainirEspacesPdf(
+    new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "EUR",
+      minimumFractionDigits: 2,
+    }).format(montant),
+  );
 }
 
 // ============================================================
@@ -109,8 +160,36 @@ export function ContratFormationPdf({
 }): React.ReactElement {
   // L.6353-6 : l'acompte versé à l'expiration du délai de rétractation ne peut
   // excéder 30 % du prix convenu. On plafonne donc à 30 % par sécurité.
+  //
+  // 🔴 Réconciliation des sources de l'acompte, 2026-07-27. Quatre endroits du
+  // système calculaient un acompte, et deux d'entre eux répondaient à des
+  // questions DIFFÉRENTES sans le dire :
+  //
+  //   · `calculerAcompte()` PROPOSE un montant — assiette = reste à charge,
+  //     c'est-à-dire ce que le particulier avance réellement de sa poche ;
+  //   · la garde L6353-6 de `facturation-hub` REFUSE un dépassement — assiette =
+  //     prix convenu, lecture littérale de l'article ;
+  //   · ce contrat et la convention IMPRIMENT un montant.
+  //
+  // Les deux premières ne se contredisent pas : 30 % du reste à charge est
+  // toujours ≤ 30 % du prix convenu. L'une propose sous le plafond que l'autre
+  // fait respecter. Ce sont deux étages, pas deux règles rivales — et c'est ce
+  // qui a été pris à tort pour une contradiction.
+  //
+  // Le vrai défaut était ICI : `prixNet` reçoit `session.montantHtCents`, donc
+  // le TOTAL. Ce contrat imprimait 30 % du total — le PLAFOND — comme si c'était
+  // le montant demandé. Sur 2 000 € dont 1 200 € financés, il annonçait 600 €
+  // quand le calcul en propose 240. Le client signait un chiffre que le système
+  // n'appliquait pas.
+  //
+  // Un contrat n'a pas à recalculer un plafond : il imprime ce qui a été
+  // CONVENU. Si le montant est fourni, on l'imprime tel quel ; sinon on retombe
+  // sur le calcul historique, en le plafonnant toujours.
   const acomptePercent = Math.min(data.acomptePercent ?? 30, 30);
-  const acompte = (data.prixNet * acomptePercent) / 100;
+  const acompte =
+    data.acompteEuros !== undefined
+      ? Math.min(data.acompteEuros, (data.prixNet * PLAFOND_ACOMPTE_PARTICULIER_PCT) / 100)
+      : (data.prixNet * acomptePercent) / 100;
   const solde = data.prixNet - acompte;
   const natureAction =
     data.natureAction ?? "Action de formation (article L.6313-1 du Code du travail)";
@@ -126,6 +205,8 @@ export function ContratFormationPdf({
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie ? { estCopie: true as const } : {})}
+        {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
+        {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
         <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.contratParticulier}</Text>
@@ -138,7 +219,19 @@ export function ContratFormationPdf({
           <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
           <FieldRow label="SIRET" value={identite.siret} required />
           <FieldRow label="NDA" value={identite.nda} required />
-          <FieldRow label="Certification Qualiopi" value={identite.qualiopi} required />
+          {/*
+            🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
+            Marquée `required`, elle imprimait « Non renseigné » dans le style
+            des champs manquants sur chaque convention, contrat et certificat —
+            c'est-à-dire précisément les pièces qui partent chez le client, chez
+            l'OPCO et chez le certificateur. Attirer l'œil en rouge sur une
+            absence est pire que l'omettre : un organisme non encore certifié
+            n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
+            aucune raison d'exister. Même traitement que la facture et le devis.
+          */}
+          {identite.qualiopi ? (
+            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+          ) : null}
           <FieldRow label="Siège social" value={identite.adresseSiege} required />
           <FieldRow label="Email" value={identite.email || "—"} />
           <FieldRow label="Téléphone" value={identite.telephone || "—"} />
@@ -200,7 +293,34 @@ export function ContratFormationPdf({
             </Text>
             <Text style={local.amountValue}>{formatEur(solde)}</Text>
           </View>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.factureExonerationTva}</Text>
+
+          {/* 🔴 L'échéancier DATÉ — ce que la doctrine exige au contrat.
+              Sans lui, la pièce citait L.6353-6 sans jamais dire QUAND le
+              stagiaire paie. Absent, on garde la ligne « solde échelonné »
+              ci-dessus : on ne fabrique aucune date. */}
+          {data.echeancierSolde !== undefined && data.echeancierSolde.length > 0 ? (
+            <View style={{ marginTop: 6 }}>
+              <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>Échéancier du solde</Text>
+              {data.echeancierSolde.map((e, i) => (
+                <View key={i} style={local.amountRow}>
+                  <Text style={local.amountLabel}>
+                    {e.dueLeLisible !== null ? `${e.dueLeLisible} — ${e.libelle}` : e.libelle}
+                  </Text>
+                  <Text style={local.amountValue}>{formatEur(e.montantEuros)}</Text>
+                </View>
+              ))}
+            </View>
+          ) : null}
+          {/*
+            🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
+            constante. L'exonération 261-4-4° était imprimée en dur alors que
+            `regime_tva` vaut « assujetti » : on annonçait une exonération non
+            détenue sur une pièce contractuelle et sur les kits financeurs.
+            `null` en régime assujetti → aucun bloc, ce qui est correct.
+          */}
+          {identite.mentionTvaRegime ? (
+            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+          ) : null}
           <Text style={pdfStyles.paragraph}>
             Conformément à l'article L.6353-6 du Code du travail, aucune somme ne peut être exigée
             du stagiaire avant l'expiration du délai de rétractation. À l'issue de ce délai, il ne
@@ -255,10 +375,12 @@ export function ContratFormationPdf({
             parties={[
               {
                 titre: "Pour l'organisme de formation",
+                signature: data.signatures?.axionia ?? null,
                 nom: identite.raisonSociale || "Axion-IA SAS",
               },
               {
                 titre: "Le stagiaire",
+                signature: data.signatures?.beneficiaire ?? null,
                 nom: data.stagiaire.nomPrenom,
                 mention: "Mention manuscrite « Lu et approuvé », date et signature",
               },

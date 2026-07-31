@@ -31,8 +31,10 @@ import { signMagicToken, verifyMagicToken } from "@/lib/magic-token";
 import {
   calculerExpiration,
   creerTokenInscription,
+  creerTokenCoaching,
   verifierToken,
   revoquerTokensInscription,
+  revoquerTokensCoaching,
   TokenEmargementError,
   FENETRE_APRES_FIN_MS,
 } from "./token-service";
@@ -329,5 +331,194 @@ describe("revoquerTokensInscription", () => {
       data: { revokedMotif: string };
     };
     expect(arg.data.revokedMotif.length).toBe(500);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 Un jeton EXPIRÉ était annoncé « signature invalide ».
+//
+// `verifierToken` aplatissait les six motifs de `verifyMagicToken` en un seul.
+// Or `magic-token.ts` vérifie la signature d'ABORD et l'expiration ENSUITE : un
+// jeton authentique mais périmé ressortait donc comme falsifié.
+//
+// Deux conséquences — un message inutilisable pour le stagiaire, et surtout la
+// branche `expire` de la fin de fonction rendue MORTE pour tout jeton JWT
+// périmé : elle ne s'atteignait que par l'expiration stockée en base.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("verifierToken — motif de refus d'un jeton périmé", () => {
+  it("distingue « expire » de « signature_invalide »", async () => {
+    mockVerify.mockResolvedValue({ ok: false, reason: "expired" });
+    const r = await verifierToken("jeton-authentique-mais-perime");
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.raison).toBe("expire");
+  });
+
+  // Les motifs de FORME restent fondus : ils se rencontrent en trafiquant un
+  // jeton, et les détailler renseignerait sur la structure attendue.
+  it("fond les motifs de forme dans « signature_invalide »", async () => {
+    for (const reason of [
+      "invalid_signature",
+      "malformed_token",
+      "malformed_payload",
+      "scope_mismatch",
+      "resource_mismatch",
+      "invalid_email",
+    ]) {
+      mockVerify.mockResolvedValue({ ok: false, reason });
+      const r = await verifierToken("jeton-trafique");
+      expect(r.ok).toBe(false);
+      if (!r.ok) expect(r.raison, `motif ${reason}`).toBe("signature_invalide");
+    }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AFEST 1-to-1 — portée (parcours × rôle) et binding e-mail
+// ─────────────────────────────────────────────────────────────────────────────
+
+const COACHING = "11111111-1111-4111-8111-111111111111";
+const FIN_FENETRE = new Date("2026-06-10T17:00:00.000Z");
+const MAINTENANT = new Date("2026-06-10T09:00:00.000Z");
+
+/** SHA-256 hex, calculé indépendamment du service — sinon le test s'auto-valide. */
+async function sha256(s: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+describe("creerTokenCoaching", () => {
+  it("émet un lien tuteur, stocke le HASH du destinataire et JAMAIS son adresse", async () => {
+    await creerTokenCoaching({
+      coachingId: COACHING,
+      role: "tuteur",
+      destinataireEmail: "  Tuteur@Entreprise.TEST ",
+      finFenetre: FIN_FENETRE,
+      maintenant: MAINTENANT,
+    });
+    const data = mockPrisma.emargementToken.create.mock.calls[0]?.[0]?.data as Record<
+      string,
+      unknown
+    >;
+    expect(data["contexteType"]).toBe("afest_1to1");
+    expect(data["coachingId"]).toBe(COACHING);
+    expect(data["coachingRole"]).toBe("tuteur");
+    // 🔴 Normalisé (casse + espaces) puis haché. L'adresse en clair ne doit
+    // figurer nulle part : la ligne survit cinq ans.
+    expect(data["destinataireEmailSha256"]).toBe(await sha256("tuteur@entreprise.test"));
+    expect(JSON.stringify(data)).not.toContain("Entreprise.TEST");
+  });
+
+  it("🔴 ne révoque QUE les liens du même rôle — bénéficiaire et tuteur coexistent", async () => {
+    await creerTokenCoaching({
+      coachingId: COACHING,
+      role: "beneficiaire",
+      destinataireEmail: "benef@example.test",
+      finFenetre: FIN_FENETRE,
+      maintenant: MAINTENANT,
+    });
+    const where = mockPrisma.emargementToken.updateMany.mock.calls[0]?.[0]?.where as Record<
+      string,
+      unknown
+    >;
+    expect(where).toStrictEqual({
+      coachingId: COACHING,
+      coachingRole: "beneficiaire",
+      revokedAt: null,
+    });
+  });
+
+  it("🔴 REFUSE d'émettre un lien pour le formateur — il signe authentifié", async () => {
+    await expect(
+      creerTokenCoaching({
+        coachingId: COACHING,
+        role: "formateur",
+        destinataireEmail: "formateur@axion.test",
+        finFenetre: FIN_FENETRE,
+        maintenant: MAINTENANT,
+      }),
+    ).rejects.toBeInstanceOf(TokenEmargementError);
+    expect(mockPrisma.emargementToken.create).not.toHaveBeenCalled();
+  });
+
+  it("REFUSE un destinataire vide — un lien sans destinataire n'est lié à personne", async () => {
+    await expect(
+      creerTokenCoaching({
+        coachingId: COACHING,
+        role: "tuteur",
+        destinataireEmail: "   ",
+        finFenetre: FIN_FENETRE,
+        maintenant: MAINTENANT,
+      }),
+    ).rejects.toMatchObject({ motif: "destinataire_absent" });
+  });
+
+  it("transmet l'adresse au magic-token et borne le TTL sur l'expiration", async () => {
+    const { expiresAt } = await creerTokenCoaching({
+      coachingId: COACHING,
+      role: "tuteur",
+      destinataireEmail: "tuteur@entreprise.test",
+      finFenetre: FIN_FENETRE,
+      maintenant: MAINTENANT,
+    });
+    expect(mockSign).toHaveBeenCalledWith({
+      scope: "emargement",
+      resourceId: COACHING,
+      email: "tuteur@entreprise.test",
+      ttlMs: expiresAt.getTime() - MAINTENANT.getTime(),
+    });
+  });
+});
+
+describe("verifierToken — contexte AFEST", () => {
+  it("🔴 remonte le RÔLE et l'empreinte du destinataire", async () => {
+    // Sans ces deux champs, la garde « porteur ↔ rôle » et le binding e-mail du
+    // service de signature n'ont aucune source fiable : un lien tuteur écrirait
+    // une ligne bénéficiaire, et un lien transféré signerait au nom d'un autre.
+    mockPrisma.emargementToken.findUnique.mockResolvedValue({
+      id: "tok-afest",
+      enrollmentId: null,
+      coachingId: COACHING,
+      coachingRole: "tuteur",
+      destinataireEmailSha256: "d".repeat(64),
+      expiresAt: new Date(Date.now() + 60_000),
+      revokedAt: null,
+      usedAt: new Date(),
+    });
+    const r = await verifierToken("tok.en");
+    expect(r).toMatchObject({
+      ok: true,
+      coachingId: COACHING,
+      coachingRole: "tuteur",
+      destinataireEmailSha256: "d".repeat(64),
+    });
+  });
+});
+
+describe("revoquerTokensCoaching", () => {
+  it("révoque tous les rôles quand aucun n'est précisé", async () => {
+    mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 2 });
+    const n = await revoquerTokensCoaching({ coachingId: COACHING, motif: "Parcours annulé" });
+    expect(n).toBe(2);
+    expect(mockPrisma.emargementToken.updateMany.mock.calls[0]?.[0]?.where).toStrictEqual({
+      coachingId: COACHING,
+      revokedAt: null,
+    });
+  });
+
+  it("cible un seul rôle quand il est précisé (changement de tuteur)", async () => {
+    mockPrisma.emargementToken.updateMany.mockResolvedValue({ count: 1 });
+    await revoquerTokensCoaching({
+      coachingId: COACHING,
+      role: "tuteur",
+      motif: "Changement de tuteur",
+    });
+    expect(mockPrisma.emargementToken.updateMany.mock.calls[0]?.[0]?.where).toStrictEqual({
+      coachingId: COACHING,
+      revokedAt: null,
+      coachingRole: "tuteur",
+    });
   });
 });

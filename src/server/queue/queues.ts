@@ -8,6 +8,7 @@
 
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
+import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
 import type {
   EmailJobData,
   EmailJobName,
@@ -616,8 +617,24 @@ export async function enqueueEmail(
     entityId?: string;
     /** PJ (clé R2, jamais de binaire dans Redis) — Hub facturation. */
     attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
+    /**
+     * Client concerné — sert au réglage d'automatisation PAR CLIENT (F60).
+     * Sans lui, seules les règles globales s'appliquent.
+     */
+    clientId?: string | null;
+    /**
+     * Sujet lisible, utilisé UNIQUEMENT quand l'email part en validation :
+     * l'écran d'approbation doit montrer quelque chose avant le rendu complet.
+     * Sans lui, un email garé s'afficherait sous son nom technique.
+     */
+    sujet?: string;
+    /**
+     * Court-circuite la validation. Réservé à l'envoi DEPUIS la corbeille, une
+     * fois l'email approuvé — sinon on bouclerait indéfiniment.
+     */
+    bypassValidation?: boolean;
   },
-): Promise<{ enqueued: boolean }> {
+): Promise<{ enqueued: boolean; garePourValidation?: boolean; outboxId?: string }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
       console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
@@ -626,6 +643,36 @@ export async function enqueueEmail(
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
     return { enqueued: false };
   }
+  // 🔴 Audit certification 2026-07-26 (F60) — corbeille de validation.
+  //
+  // Les emails commerciaux (relance d'impayé, devis, facture, contrat) sont
+  // garés pour relecture ; la chaîne Qualiopi part seule. Voir `outbox-policy.ts`
+  // pour le raisonnement — retenir une convocation exposerait un stagiaire à ne
+  // jamais la recevoir, et les indicateurs 4, 9, 11, 30 et 32 en dépendent.
+  //
+  // Toute défaillance de cette couche retombe sur l'envoi direct : l'incertitude
+  // ne doit jamais retenir un email.
+  if (options?.bypassValidation !== true) {
+    const mode = await resoudreMode(template, options?.clientId ?? null);
+    if (mode === "validation") {
+      const outboxId = await garerPourValidation({
+        template,
+        recipient: to,
+        locale,
+        payload,
+        sujet: options?.sujet ?? template,
+        clientId: options?.clientId ?? null,
+        entityType: options?.entityType ?? null,
+        entityId: options?.entityId ?? null,
+        ...(options?.attachments ? { attachments: options.attachments } : {}),
+      });
+      if (outboxId !== null) {
+        return { enqueued: false, garePourValidation: true, outboxId };
+      }
+      // Mise en attente impossible : on envoie plutôt que de perdre le message.
+    }
+  }
+
   const data: EmailJobData = {
     template,
     to,
@@ -663,6 +710,50 @@ export async function enqueueEmail(
  */
 export function isLegacyBookingWorkersEnabled(): boolean {
   return process.env.LEGACY_BOOKING_WORKERS_ENABLED === "true";
+}
+
+/**
+ * Purge les restes Redis d'une file legacy DORMANTE (flag ci-dessus a false).
+ *
+ * LE PIEGE : `removeOnComplete` / `removeOnFail` ne rognent la retention qu'a
+ * l'EXECUTION d'un job. Une file sans consommateur ne trime donc plus jamais —
+ * son stock reste fige A VIE, pile au plafond. Mesure en prod le 2026-07-26 :
+ * 6 005 cles `bull:option-expiration:*`, 726 pour `option-reminder`, 245 pour
+ * `booking-crons` — 6 976 cles immortelles pour zero job utile. Les ZSET
+ * `repeat` des trois files sont a 0 : la decommission du commit 2c377916 a bien
+ * fonctionne, il ne reste que les carcasses de jobs. Rien a rallumer.
+ *
+ * POURQUOI `clean()` ET SURTOUT PAS `obliterate()` : `obliterate()` commence par
+ * `await this.pause()` (bullmq 5.76.8, queue.js:584) et ne supprime la cle
+ * `meta` — donc le drapeau `paused` — qu'a la toute fin de son script Lua. Une
+ * coupure Redis entre les deux laisse la file PAUSEE de facon permanente, et
+ * personne ne le verrait puisque la file est dormante. Le piege se declencherait
+ * le jour ou quelqu'un repose `LEGACY_BOOKING_WORKERS_ENABLED=true` : les crons
+ * seraient replanifies mais jamais consommes. `clean()` ne touche jamais a
+ * l'etat de la file.
+ *
+ * POURQUOI SEULEMENT `completed` ET `failed` : ce sont des dechets par
+ * construction. On ne touche NI a `wait` NI a `delayed`, qui seraient du travail
+ * en attente si un producteur reapparaissait.
+ *
+ * Best-effort : de l'entretien ne doit jamais empecher le worker de demarrer.
+ */
+async function purgeDormantLegacyQueue(queue: Pick<Queue, "clean">, label: string): Promise<void> {
+  try {
+    // grace=0 (tout est purgeable) + limit=0 → bullmq traduit en Infinity et
+    // boucle par lots de 10 000 jusqu'a epuisement (queue.js:546-561).
+    const completed = await queue.clean(0, 0, "completed");
+    const failed = await queue.clean(0, 0, "failed");
+    const total = completed.length + failed.length;
+    if (total > 0) {
+      console.warn(`[bullmq] file legacy dormante ${label} : ${total} jobs residuels purges`);
+    }
+  } catch (err) {
+    console.warn(
+      `[bullmq] purge des restes de ${label} impossible (non bloquant) :`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
 }
 
 /**
@@ -1232,6 +1323,29 @@ export async function bootRepeatableJobs(): Promise<void> {
         { type, tick: new Date().toISOString() },
         { repeat: { pattern }, jobId },
       );
+    }
+  }
+
+  // ── Entretien : restes Redis des 3 files legacy dormantes ─────────────────
+  //
+  // VOLONTAIREMENT EN DERNIER, apres la planification de TOUS les crons — en
+  // particulier `retention-purge` (purge RGPD 03:00 UTC) et `formation-crons`.
+  // `worker.ts` await `bootRepeatableJobs()` sans timeout : un Redis lent sur
+  // ~6 000 cles ne doit jamais retarder l'enregistrement d'un cron d'obligation
+  // legale. Ce fichier porte deja la cicatrice de ce bug — cf. le garde en tete
+  // de fonction, qui ne depend plus que de `retentionPurgeQueue`. NE PAS le
+  // rejouer en remontant ces appels dans les blocs legacy ci-dessus.
+  //
+  // Une seule passe pour `booking-crons`, hors de la boucle des 11 crons.
+  if (!legacyBookingEnabled) {
+    if (optionExpirationQueue) {
+      await purgeDormantLegacyQueue(optionExpirationQueue, "option-expiration");
+    }
+    if (optionReminderQueue) {
+      await purgeDormantLegacyQueue(optionReminderQueue, "option-reminder");
+    }
+    if (bookingCronsQueue) {
+      await purgeDormantLegacyQueue(bookingCronsQueue, "booking-crons");
     }
   }
 }

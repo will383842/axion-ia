@@ -124,20 +124,39 @@ export function EvaluationForm({
       return;
     }
 
+    // 🔴 Audit certification 2026-07-26 (F22). La note était facultative des deux
+    // côtés. Une compétence listée mais non notée sort désormais du calcul du
+    // score (cf. `scoring.ts`) et s'imprime sur l'attestation sous « Non
+    // évalués » : un trou de saisie reste donc visible dans le dossier. Autant
+    // le refuser ici, où il se corrige en un clic.
+    const nonNotees = competencesFilled.filter((c) => !["1", "2", "3"].includes(c.note));
+    if (nonNotees.length > 0) {
+      const libelles = nonNotees.map((c) => `« ${c.libelle.trim()} »`).join(", ");
+      setError(
+        `Notez chaque compétence avant d'enregistrer — sans note pour ${libelles}, l'attestation portera la mention « non évalué ».`,
+      );
+      return;
+    }
+
     // Construire le payload
-    const competencesPayload: CompetenceInput[] = competencesFilled.map((c, idx) => {
+    const competencesPayload: CompetenceInput[] = competencesFilled.map((c) => {
       const parsed = parseInt(c.note, 10);
-      const result: CompetenceInput = {
+      return {
         libelle: c.libelle.trim(),
-        objectifRef: c.libelle.trim(), // référence = libellé de l'objectif
+        // 🔴 F23 — la référence était écrite DEUX FOIS, dans deux formats : le
+        // libellé, puis écrasé par `objectif-${idx + 1}` pour les lignes
+        // pré-remplies. Or un rang n'est pas une identité : réordonner ou
+        // insérer un objectif dans la fiche formation faisait silencieusement
+        // pointer ailleurs toutes les évaluations déjà enregistrées — sur des
+        // pièces conservées plusieurs années.
+        //
+        // Le libellé est la seule clé stable disponible, et c'est aussi celle
+        // du questionnaire de positionnement : les deux se recoupent donc
+        // directement, ce qui rend la progression entrée→sortie lisible (F24).
+        objectifRef: c.libelle.trim(),
         ...(parsed === 1 || parsed === 2 || parsed === 3 ? { note: parsed as 1 | 2 | 3 } : {}),
         ...(c.observations.trim() !== "" ? { observations: c.observations.trim() } : {}),
       };
-      // Utiliser l'index de l'objectif comme référence si objectifs préremplis
-      if (idx < objectifsPedagogiques.length) {
-        result.objectifRef = `objectif-${idx + 1}`;
-      }
-      return result;
     });
 
     startTransition(async () => {

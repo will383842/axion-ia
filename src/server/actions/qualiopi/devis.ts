@@ -9,7 +9,7 @@
  * declineDevisAction : bascule statut → refusé.
  * reviseDevisAction  : crée une NOUVELLE version brouillon (replacesDevisId).
  *
- * TVA : exonéré 261-4-4° CGI → mentionTva = LEGAL_MENTIONS.factureExonerationTva.
+ * TVA : régime lu dans la config (`regime_tva`), JAMAIS codé en dur.
  * Montants : TOUJOURS en CENTIMES (Int). Zéro valeur en dur.
  */
 
@@ -19,15 +19,16 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
-import { formatDocumentNumber } from "@/server/qualiopi/numbering/formats";
+import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
   isRegimeTva,
+  mentionTva,
   REGIME_TVA_DEFAUT,
   TAUX_TVA_STANDARD,
   type RegimeTva,
@@ -38,8 +39,15 @@ import {
 } from "@/server/qualiopi/financements/facture-libre-pur";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
-import { isDocusealConfigured, createContractSubmission } from "@/lib/docuseal";
+import { publicUrl } from "@/lib/public-url";
+import {
+  creerTokenDocument,
+  revoquerTokensDocument,
+  TokenDocumentError,
+} from "@/server/qualiopi/documents/signature/token-document";
+import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
+import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -56,8 +64,24 @@ const ligneSchema = z.object({
   prixUnitaireHtCents: z.number().int().min(0),
   /** Taux de TVA de la ligne (%) — devis mixtes (formation 0 % + conseil 20 %). */
   tauxTvaPercent: z.number().min(0).max(100).optional(),
-  /** Référence optionnelle à une offre du catalogue (tierId). */
-  offreTierId: z.string().optional(),
+  /**
+   * Référence à une offre du catalogue par son `tier_id` pricing.ts.
+   * Ne vaut QUE pour les offres legacy qui en ont un ; les offres du catalogue
+   * V2 ont `tier_id = NULL` et ne sont identifiables que par `offreCode`.
+   */
+  offreTierId: z.string().max(80).optional(),
+  /**
+   * Code AXI-OFF-NNN de l'offre catalogue — la référence qui vaut pour TOUTES
+   * les offres. Sans cette clé, Zod la STRIPPERAIT en silence (l'objet n'est pas
+   * `.strict()`) : la ligne serait persistée sans sa référence, sans erreur.
+   *
+   * Les lignes émises avant ce correctif rangeaient ce code dans `offreTierId`
+   * (le <select> émettait `tierId ?? code`), à côté de vrais tierId pour les
+   * offres legacy : la colonne est donc MIXTE. Aucune n'est réécrite — un devis
+   * émis est une pièce immuable. Tout futur reporting qui joint
+   * `lignes->>'offreTierId'` sur `offres_site.tier_id` doit tolérer les deux.
+   */
+  offreCode: z.string().max(40).optional(),
 });
 
 const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
@@ -97,9 +121,9 @@ const createDevisSchema = z.object({
 
 /**
  * Crée un devis brouillon.
- * - Numéro : AXI-DEV-<année>-NNN (count+1 zero-paddé 3).
+ * - Numéro : AXI-DEV-<année>-NNN (borne haute de la série + 1).
  * - montantTotalHtCents = Σ lignes.quantite × lignes.prixUnitaireHtCents.
- * - mentionTva = LEGAL_MENTIONS.factureExonerationTva.
+ * - mentionTva : dérivée du régime configuré (`null` si assujetti).
  * - dateValidite = maintenant + 30 jours.
  * - Si financementSuggere==="opco" et nbParticipants/dureeHeures/modaliteOpco fournis
  *   → estimateOpcoCoverage renseigne montantOpcoEstimeCents/resteAChargeCents.
@@ -157,17 +181,48 @@ export async function createDevisAction(
     resteAChargeCents = coverage.resteAChargeCents;
   }
 
+  // 🔴 Audit certification 2026-07-26 (F25) — le régime de TVA se LIT, il ne se
+  // décrète pas ici.
+  //
+  // `mentionTva` était figé à l'exonération 261-4-4° à la création, quel que
+  // soit `regime_tva`. La production est pourtant configurée en « assujetti », et
+  // le PDF, lui, calcule bien la mention depuis le régime : l'écran du devis
+  // affichait donc « Exonéré de TVA » pendant que le PDF facturait 20 %. Les deux
+  // devis émis portent cette mention en base.
+  //
+  // L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'afficher
+  // sans l'avoir engage l'organisme sur un régime qu'il ne détient pas — et un
+  // devis accepté fait foi de l'offre.
+  const regimeTvaCreation = await getQualiopiConfig("regime_tva");
+  // `Devis.mentionTva` est NOT NULL et fige le régime de la pièce. `mentionTva()`
+  // rend `null` pour « assujetti » — c'est correct pour un PDF, qui n'a alors
+  // rien à afficher, mais pas pour une colonne d'archive : une chaîne vide
+  // rendrait « assujetti » et « non renseigné » indiscernables plus tard.
+  const mentionTvaCreation =
+    mentionTva(isRegimeTva(regimeTvaCreation) ? regimeTvaCreation : REGIME_TVA_DEFAUT) ??
+    LEGAL_MENTIONS.factureTvaAssujetti;
+
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
-    const count = await prisma.devis.count();
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+    // 🔴 V20 — borne haute, pas cardinalité. Le `startsWith` posé par F63
+    // corrigeait le DÉNOMINATEUR (compter la bonne année) mais pas la MÉCANIQUE :
+    // un devis supprimé faisait toujours reculer le compteur, et
+    // `withNumberRetry` rejouait le même `count()` — cinq fois le même numéro.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,
         clientId: v.clientId,
         lignes: v.lignes as never,
         montantTotalHtCents,
-        mentionTva: LEGAL_MENTIONS.factureExonerationTva,
+        mentionTva: mentionTvaCreation,
         statut: "brouillon",
         dateValidite,
         ...(v.activite !== undefined ? { activite: v.activite } : {}),
@@ -231,7 +286,9 @@ function adresseClientDevis(client: {
  */
 export async function sendDevisAction(
   id: string,
-): Promise<ActionResult<{ id: string; emailEnvoye: boolean; note?: string }>> {
+): Promise<
+  ActionResult<{ id: string; emailEnvoye: boolean; signatureCreee: boolean; note?: string }>
+> {
   // Stub-aware (build GH Actions) : aucune mutation au SSG.
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
@@ -251,6 +308,9 @@ export async function sendDevisAction(
       activite: true,
       refClient: true,
       replacesDevisId: true,
+      // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
+      // elle (voir la transaction plus bas).
+      replacesDevis: { select: { documentGenereId: true } },
       financementSuggere: true,
       montantTotalHtCents: true,
       montantOpcoEstimeCents: true,
@@ -266,6 +326,12 @@ export async function sendDevisAction(
           adresseVille: true,
           contactNom: true,
           contactEmail: true,
+          // 🔴 Repris comme QUALITÉ figée du signataire. Ce n'est pas
+          // décoratif : `signataireQualite` porte l'opposabilité du POUVOIR de
+          // signer — savoir que « Camille Durand » était directrice des
+          // ressources humaines au moment de l'engagement est ce qui permet, des
+          // années plus tard, de soutenir qu'elle pouvait engager la structure.
+          contactFonction: true,
         },
       },
     },
@@ -281,9 +347,30 @@ export async function sendDevisAction(
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
     };
   }
+  // Un devis à 0,00 € ne doit pas partir en signature.
+  //
+  // Le garde côté formulaire ne protège rien : cette action est appelable depuis
+  // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
+  // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
+  // le PDF est rendu, DocuSeal ouvre une signature et le client reçoit une offre
+  // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
+  if (devis.montantTotalHtCents <= 0) {
+    return {
+      error:
+        "Devis à 0,00 € HT : chiffrez les lignes avant l'envoi (une offre sans prix ferme ne pré-remplit aucun montant).",
+    };
+  }
 
   // ── 1. Génération du PDF (fail-soft : un rendu raté ne bloque pas l'envoi) ──
   let fichierPdfUrl: string | null = null;
+  /**
+   * Pièce NUMÉROTÉE produite par `generateDocument`.
+   *
+   * 🔴 Son `id` était produit puis JETÉ à chaque envoi — seul `numero` servait,
+   * pour composer une clé R2. C'est pourtant lui que la signature référence :
+   * sans lui, il n'y a rien à signer, seulement un PDF posé sur un bucket.
+   */
+  let documentGenereId: string | null = null;
   try {
     const identite = await getOrganismeIdentite();
 
@@ -342,40 +429,87 @@ export async function sendDevisAction(
     });
     // Clé R2 stable (l'URL signée retournée expire en 900 s — on stocke la clé).
     fichierPdfUrl = `documents/${yearGeneration}/devis/${doc.numero}.pdf`;
+    documentGenereId = doc.id;
   } catch (err) {
     console.warn("[sendDevisAction] génération PDF devis échouée (fail-soft)", err);
   }
 
-  // ── 2. Signature électronique « bon pour accord » (best-effort) ──
-  // On capture `embedUrl` (embed_src du 1er signataire = lien de signature du
-  // CLIENT) pour le glisser dans l'email d'envoi (CTA « Signer en ligne »).
-  let docusealSubmissionId: string | null = null;
-  let docusealEmbedUrl: string | null = null;
-  const docusealTemplateId =
-    process.env["DOCUSEAL_DEVIS_TEMPLATE_ID"] || process.env["DOCUSEAL_QUOTE_TEMPLATE_ID"];
+  // ── 2. Signature électronique « bon pour accord » — CANAL MAISON ──
+  //
+  // 🔴 Bascule du 2026-07-30, décidée avec Will. Ce bloc créait une soumission
+  // DocuSeal sur un template PERMANENT à trois champs (`devis_number`,
+  // `amount_ht`, `valid_until`), pendant que le client recevait en pièce jointe
+  // le PDF DÉTAILLÉ — lignes, quantités, prix unitaires, TVA, totaux. Le client
+  // lisait donc un document et en signait un autre. Un bon pour accord qui ne
+  // désigne pas son objet est juridiquement fragile.
+  //
+  // La correction prévue au plan (§III.3) — un template ÉPHÉMÈRE par pièce via
+  // `POST /api/templates/pdf` — est IMPOSSIBLE sur l'instance de production.
+  // Vérifié contre le conteneur RÉEL, pas contre la doc, comme l'exige l'en-tête
+  // de `src/lib/docuseal.ts` : `config/routes.rb` (v2.5.3) déclare
+  // `resources :templates, only: %i[update show index destroy]`, et l'appel réel
+  // répond 404 là où `GET /api/templates/2` répond 200 avec le même jeton. Ces
+  // endpoints sont réservés aux offres Pro.
+  //
+  // Le lien maison fait signer LE PDF RÉEL, celui dont l'empreinte est scellée
+  // dans `document_hash_sha256`. Une seule source de vérité.
+  //
+  // ⚠️ Le circuit DocuSeal n'est PAS rebranché ailleurs : `docusealSubmissionId`
+  // et `docusealEmbedUrl` restent en base pour l'unique devis signé par cette
+  // voie avant la bascule, et ne reçoivent plus d'écriture.
+  let signatureUrl: string | null = null;
   const contactEmail = devis.client.contactEmail;
-  if (isDocusealConfigured() && docusealTemplateId && contactEmail) {
+  /**
+   * Un lien était-il attendu ? Distingue « pas de destinataire ni de pièce »
+   * (silence normal) de « attendu mais en panne » (à signaler).
+   *
+   * ⚠️ `documentGenereId` en fait partie : si le rendu du PDF a échoué en
+   * fail-soft, il n'y a aucune pièce à signer, et annoncer un lien de signature
+   * serait faux.
+   */
+  const signatureAttendue = documentGenereId !== null && !!contactEmail;
+  /** Motif d'échec — tracé au registre et remonté à l'admin. */
+  let signatureErreur: string | null = null;
+  // 🔴 F4, et la leçon reste valable sur le canal maison : une panne de
+  // signature doit REMONTER. Jusqu'au 2026-07-26, l'échec était avalé par un
+  // `console.warn` muet — le devis partait « envoyé », l'admin lisait « + lien
+  // de signature » en vert, et aucune soumission n'existait. C'est la seule
+  // protection contre une rechute muette, quel que soit le canal.
+  if (documentGenereId !== null && contactEmail) {
     try {
-      const result = await createContractSubmission({
-        templateId: docusealTemplateId,
-        client: {
-          email: contactEmail,
-          name: devis.client.contactNom ?? devis.client.raisonSociale,
-        },
-        fields: [
-          { name: "devis_number", default_value: devis.numero },
-          { name: "amount_ht", default_value: (devis.montantTotalHtCents / 100).toFixed(2) },
-          { name: "valid_until", default_value: devis.dateValidite.toISOString().slice(0, 10) },
-        ],
-        sendEmail: false, // l'email est envoyé par NOUS (template Axion-IA + PJ PDF)
-        metadata: { devisId: devis.id, kind: "devis" },
+      const { token } = await creerTokenDocument({
+        documentGenereId,
+        // Le SSOT donne le circuit ; on ne réécrit pas la liste ici. Le client
+        // est la partie qui reçoit le lien — l'organisme contresigne depuis la
+        // console, authentifié, et n'a donc jamais de jeton.
+        partie: "client",
+        // 🔴 Identité résolue depuis la FICHE CLIENT, côté serveur, et figée.
+        // C'est ce qui permet au signataire non authentifié de rester conforme à
+        // la doctrine du canal maison : au moment de signer, le service relit
+        // cette identité en base, jamais dans le formulaire.
+        signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+        signataireEmail: contactEmail,
+        signataireQualite: devis.client.contactFonction,
+        // La date de validité borne le lien : tenir une offre ferme au-delà
+        // n'aurait aucun sens commercial.
+        borneMetier: devis.dateValidite,
       });
-      docusealSubmissionId = result.submissionId;
-      docusealEmbedUrl = result.embedUrl || null;
+      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
     } catch (err) {
-      console.warn("[sendDevisAction] soumission DocuSeal échouée (best-effort)", err);
+      // Aucune donnée client dans le motif : Telegram est un canal tiers. Le
+      // détail complet reste dans les logs serveur.
+      signatureErreur =
+        err instanceof TokenDocumentError ? err.motif : "erreur technique signature";
+      console.warn("[sendDevisAction] émission du lien de signature échouée (best-effort)", err);
+      // `.catch()` obligatoire : une panne Telegram ne doit jamais faire échouer
+      // l'envoi d'un devis.
+      sendTelegram({
+        tag: "AUTO",
+        body: `⚠️ Devis ${devis.numero} : lien de signature NON créé (${signatureErreur}). Le devis part sans « bon pour accord » signable en ligne.`,
+      }).catch(() => {});
     }
   }
+  const signatureCreee = signatureUrl !== null;
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   await prisma.$transaction([
@@ -385,8 +519,11 @@ export async function sendDevisAction(
         statut: "envoye",
         sentAt: new Date(),
         ...(fichierPdfUrl !== null ? { fichierPdfUrl } : {}),
-        ...(docusealSubmissionId !== null ? { docusealSubmissionId } : {}),
-        ...(docusealEmbedUrl !== null ? { docusealEmbedUrl } : {}),
+        // 🔴 Rattachement à la pièce numérotée : c'est lui qui permet à la
+        // signature de désigner CE devis-ci. Sans cette ligne, le jeton pointe
+        // vers une pièce que le devis ne connaît pas, et `accepterDevisSurSignature`
+        // ne retrouverait rien à basculer.
+        ...(documentGenereId !== null ? { documentGenereId } : {}),
       },
     }),
     prisma.client.update({
@@ -402,6 +539,27 @@ export async function sendDevisAction(
           }),
         ]
       : []),
+    // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction.
+    //
+    // Sans cela, le client détiendrait deux liens vivants : l'ancien, sur un
+    // devis désormais `expire`, et le nouveau. Rien ne l'empêcherait de signer
+    // la version périmée — celle dont on vient de corriger le prix — et la
+    // signature serait parfaitement valide, chaînée, opposable. C'est exactement
+    // le genre de « bon pour accord » qu'une révision existe pour éviter.
+    //
+    // ⚠️ La révocation du jeton ne touche AUCUNE signature déjà apposée : elle
+    // ferme le lien, elle n'efface pas une preuve.
+    ...(devis.replacesDevis?.documentGenereId != null
+      ? [
+          prisma.documentSignatureToken.updateMany({
+            where: { documentGenereId: devis.replacesDevis.documentGenereId, revokedAt: null },
+            data: {
+              revokedAt: new Date(),
+              revokedMotif: `Devis révisé — remplacé par ${devis.numero}`,
+            },
+          }),
+        ]
+      : []),
   ]);
 
   // ── 4. Email au client (PDF joint + lien de signature) ──
@@ -412,7 +570,7 @@ export async function sendDevisAction(
   let emailEnvoye = false;
   let note: string | undefined;
   if (contactEmail && fichierPdfUrl !== null) {
-    const { enqueued } = await enqueueEmail(
+    const { enqueued, garePourValidation = false } = await enqueueEmail(
       "devis-envoi",
       contactEmail,
       "fr",
@@ -421,20 +579,40 @@ export async function sendDevisAction(
         numero: devis.numero,
         montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
         dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
-        ...(docusealEmbedUrl !== null ? { signatureUrl: docusealEmbedUrl } : {}),
+        ...(signatureUrl !== null ? { signatureUrl } : {}),
       },
       {
         attachments: [{ filename: `${devis.numero}.pdf`, r2Key: fichierPdfUrl }],
       },
     );
     emailEnvoye = enqueued;
-    if (!enqueued)
+    // 🔴 Vérification E2E 2026-07-26. Un email garé pour validation n'est PAS
+    // enfilé — `enqueued` est donc faux. Sans distinguer les deux cas, l'admin
+    // lisait « file d'attente indisponible, réessayer » alors que l'email
+    // l'attendait sagement dans la corbeille de validation : le message
+    // l'envoyait diagnostiquer une panne inexistante, et réessayer aurait garé
+    // un doublon.
+    if (garePourValidation) {
+      note =
+        "Devis marqué envoyé. L'email attend votre validation dans Emails → À valider ; il partira une fois approuvé.";
+    } else if (!enqueued) {
       note =
         "File d'attente email indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié — réessayer plus tard.";
+    }
   } else if (!contactEmail) {
     note = "Aucun email de contact client : le devis est marqué envoyé, mais rien n'a été expédié.";
   } else {
     note = "PDF indisponible : le devis est marqué envoyé, mais l'email n'a pas pu être expédié.";
+  }
+
+  // 🔴 F4 — la signature électronique était attendue et n'a pas été créée :
+  // l'email est parti SANS bouton « signer ». On le DIT, au lieu d'annoncer
+  // « + lien de signature » en vert comme avant. Le devis reste « envoyé »
+  // (fail-soft assumé) : c'est l'admin qui arbitre la suite.
+  if (signatureAttendue && !signatureCreee) {
+    const detail = signatureErreur !== null ? ` (${signatureErreur})` : "";
+    const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
+    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
   }
 
   await logQualiopiActivity({
@@ -444,14 +622,28 @@ export async function sendDevisAction(
     changes: {
       statut: "envoye",
       pdfGenere: fichierPdfUrl !== null,
-      docusealSubmissionId,
+      documentGenereId,
+      // ⚠️ Le LIEN lui-même n'est jamais journalisé : il vaut signature. Seul
+      // le fait qu'il ait été émis l'est.
+      lienSignatureEmis: signatureCreee,
+      // Motif d'échec tracé au registre : le journal affichait
+      // `"docusealSubmissionId": null` sans jamais dire pourquoi, et les logs du
+      // conteneur partent au premier redémarrage.
+      signatureErreur,
       emailEnvoye,
       devisExpire: devis.replacesDevisId,
     },
     session,
   });
 
-  return { data: { id: idParsed.data, emailEnvoye, ...(note !== undefined ? { note } : {}) } };
+  return {
+    data: {
+      id: idParsed.data,
+      emailEnvoye,
+      signatureCreee,
+      ...(note !== undefined ? { note } : {}),
+    },
+  };
 }
 
 /**
@@ -503,6 +695,43 @@ export async function transformDevisToConventionAction(
     return { error: "Seul un devis accepté peut être transformé en convention." };
   }
 
+  // 🔴 Constat F7, audit de certification 2026-07-26.
+  //
+  // Cette action ne « transformait » rien : elle basculait le statut du devis à
+  // `transforme_convention` et s'arrêtait là. AUCUNE convention n'était générée.
+  // Le devis affichait donc « transformé en convention » alors qu'aucune pièce
+  // n'existait — et c'est précisément la pièce que l'auditrice réclame ensuite.
+  // Un état faux dans la piste d'audit est pire qu'un état manquant : il fait
+  // croire que l'obligation est remplie et fait chercher un document qui
+  // n'existe pas (L6353-1, indicateur 9).
+  //
+  // Une convention ne peut pas être produite depuis un devis seul : elle porte
+  // des dates, une modalité, un effectif et un formateur — c'est-à-dire une
+  // SESSION. On exige donc qu'une session soit rattachée à ce devis, et on
+  // génère la convention pour elle. Le statut ne bascule QUE si le document a
+  // réellement été produit.
+  const sessionLiee = await prisma.trainingSession.findFirst({
+    where: { devisId: idParsed.data },
+    select: { id: true, numero: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  if (!sessionLiee) {
+    return {
+      error:
+        "Aucune session n'est rattachée à ce devis. Créez la session de formation depuis ce devis, puis relancez la transformation : une convention porte des dates, une modalité et un effectif, qu'un devis seul ne fournit pas.",
+    };
+  }
+
+  const convention = await genererConventionAction({ sessionId: sessionLiee.id });
+  if ("error" in convention) {
+    // On ne bascule PAS le statut : mieux vaut un devis « accepté » sur lequel on
+    // peut réessayer qu'un devis qui se déclare transformé sans sa convention.
+    return {
+      error: `La convention n'a pas pu être générée pour la session ${sessionLiee.numero} — ${convention.error}. Le devis reste « accepté ».`,
+    };
+  }
+
   await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "transforme_convention" },
@@ -512,7 +741,11 @@ export async function transformDevisToConventionAction(
     action: "qualiopi.devis.transform_convention",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "transforme_convention" },
+    changes: {
+      statut: "transforme_convention",
+      sessionId: sessionLiee.id,
+      conventionNumero: convention.data.numero,
+    },
     session,
   });
 
@@ -527,16 +760,38 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 
-  await prisma.devis.update({
+  const refuse = await prisma.devis.update({
     where: { id: idParsed.data },
     data: { statut: "refuse", declinedAt: new Date() },
+    select: { documentGenereId: true },
   });
+
+  // 🔴 Le lien de signature MEURT avec le devis refusé.
+  //
+  // Sans cela, le client garde un lien vivant sur un devis retiré, et rien
+  // n'empêche sa signature de s'inscrire — chaînée, scellée, irrévocable
+  // autrement que par révocation explicite — sur une pièce que l'organisme
+  // vient de refuser. `signerDevisParJetonAction` refuse désormais aussi sur le
+  // statut ; ce sont DEUX gardes, et ce n'est pas redondant : celle-ci ferme la
+  // porte, celle-là refuse d'ouvrir. Fermer seulement l'une des deux laisserait
+  // la fenêtre entre le refus et la prochaine tentative.
+  //
+  // ⚠️ Révoquer un JETON ne touche aucune signature déjà apposée : cela ferme un
+  // accès, cela n'efface pas une preuve.
+  let liensRevoques = 0;
+  if (refuse.documentGenereId !== null) {
+    liensRevoques = await revoquerTokensDocument({
+      documentGenereId: refuse.documentGenereId,
+      motif: "Devis refusé",
+      parAdminId: session.userId,
+    });
+  }
 
   await logQualiopiActivity({
     action: "qualiopi.devis.decline",
     targetType: "Devis",
     targetId: idParsed.data,
-    changes: { statut: "refuse" },
+    changes: { statut: "refuse", liensSignatureRevoques: liensRevoques },
     session,
   });
 
@@ -597,8 +852,15 @@ export async function reviseDevisAction(
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7)
   const created = await withNumberRetry(async () => {
-    const count = await prisma.devis.count();
-    const numero = formatDocumentNumber("devis", year, count + 1);
+    // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
+    // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
+    // 🔴 V20 — même série que la création : même mécanique obligatoirement.
+    const numero = await nextNumero("devis", year, (prefixe) =>
+      prisma.devis.findMany({
+        where: { numero: { startsWith: prefixe } },
+        select: { numero: true },
+      }),
+    );
     return prisma.devis.create({
       data: {
         numero,

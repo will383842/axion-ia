@@ -58,6 +58,8 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -94,7 +96,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
   const breadcrumbItems = [
     {
       href: "/sites-web-augmentes" as const,
-      label: isFr ? "Sites web & SaaS Native IA" : "AI websites & SaaS",
+      label: serviceOfficial(SERVICE_BY_ID.sitesWeb, isFr),
     },
   ];
 
@@ -209,6 +211,11 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
 
       {/* PREUVE SOCIALE — bandeau logos clients défilant (juste après le hero) */}
       <ClientLogosMarqueeBand isFr={isFr} />
+
+      {/* POSITIONNEMENT — bandeau « parcours » commun aux 5 hubs (audit
+          positionnement 2026-07-28). Placé APRÈS le hero pour ne pas
+          déplacer l'élément LCP. */}
+      <ServiceJourneyBand currentId="sitesWeb" isFr={isFr} />
 
       {/* POURQUOI — contraste « tout refaire ❌ vs augmenter l'existant ✅ » */}
       <SitesWebWhy isFr={isFr} />

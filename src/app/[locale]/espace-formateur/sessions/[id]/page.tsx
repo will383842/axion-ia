@@ -21,6 +21,9 @@ import {
   contresignerDemiJourneeAction,
 } from "@/server/actions/qualiopi/emargement-formateur";
 import { EmargementGroupe } from "@/components/espace-formateur/EmargementGroupe";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
+import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
+import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
 import {
   FORMATEUR_SESSIONS_PATH,
@@ -59,6 +62,8 @@ export default async function Page({
   // afficher un état incohérent.
   const identite = await getOrganismeIdentite();
   const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale, trainerId);
+  // Lu APRÈS la garde de propriété, comme tout le reste de cette page.
+  const etatReleve = await lireEtatSignatureReleve(id, trainerId);
 
   const lieu = [session.lieuVille, session.lieuCodePostal]
     .filter((v): v is string => Boolean(v))
@@ -241,6 +246,34 @@ export default async function Page({
           />
         )}
       </section>
+
+      {/*
+        Relevé de connexion FOAD — la pièce du distanciel.
+        ⚠️ Rendu SEULEMENT si un relevé a été généré : une session présentielle
+        n'en a pas, et afficher un bloc vide laisserait croire à une pièce
+        manquante. `null` est le cas NORMAL, pas une erreur.
+      */}
+      {etatReleve !== null && (
+        <section className="space-y-3">
+          <h2 className="text-espresso font-serif text-xl">Relevé de connexion</h2>
+          <p className="text-mocha text-sm">
+            Le relevé atteste la réalité du distanciel. Il porte deux signatures internes : la vôtre
+            et le visa du responsable pédagogique.
+          </p>
+          <SignatureDocument
+            documentGenereId={etatReleve.documentGenereId}
+            titrePiece="Relevé de connexion"
+            numero={etatReleve.numero}
+            parties={etatReleve.parties}
+            peutAgir={etatReleve.peutAgir}
+            mentions={etatReleve.mentions}
+            plafondProbant={etatReleve.plafondProbant}
+            libelleBouton="Signer le relevé"
+            labelSignature="Signature du formateur"
+            signerAction={signerReleveFormateurAction}
+          />
+        </section>
+      )}
     </div>
   );
 }

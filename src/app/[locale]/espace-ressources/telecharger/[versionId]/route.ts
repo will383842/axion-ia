@@ -17,6 +17,7 @@ import { getSignedUrlR2, isR2Configured } from "@/lib/r2-storage";
 import { getRecipientSession } from "@/server/ressources/guard";
 import { listDocumentsForRecipientEmail } from "@/server/ressources/queries";
 import { RESSOURCES_CONNEXION_PATH } from "@/server/ressources/routes";
+import { publicUrl } from "@/lib/public-url";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export async function GET(
 ): Promise<Response> {
   const session = await getRecipientSession();
   if (!session) {
-    return NextResponse.redirect(new URL(RESSOURCES_CONNEXION_PATH, request.url));
+    return NextResponse.redirect(publicUrl(RESSOURCES_CONNEXION_PATH));
   }
 
   const { versionId } = await params;

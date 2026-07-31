@@ -39,11 +39,79 @@ const LABELS: Record<ChampIdentite, string> = {
  */
 const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
   // Facture : mentions vendeur obligatoires (identité + adresse + SIRET).
-  facture: ["raisonSociale", "siret", "nda", "adresseSiege"],
-  // Convention / contrat : OF identifié + certifié pour une action finançable.
-  convention: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
-  convention_tripartite: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
-  contrat: ["raisonSociale", "siret", "nda", "qualiopi", "adresseSiege"],
+  //
+  // 🔴 `nda` RETIRÉ le 2026-07-28, sur remarque de Will : « il ne faut pas que
+  // ce soit bloquant, on a 3 mois pour déclarer l'activité ». Il a raison, et
+  // c'est exactement le raisonnement qui avait déjà fait retirer `qualiopi` de
+  // ces listes trois jours plus tôt.
+  //
+  // Art. L.6351-1 C. trav. : la déclaration d'activité se dépose **dans les
+  // trois mois suivant la conclusion de la première convention de formation**.
+  // Au moment d'émettre cette première convention — et la facture qui la suit —
+  // l'organisme n'a donc légalement PAS ENCORE de NDA : c'est cette convention
+  // qui ouvre le délai. Exiger le numéro avant reproduisait l'impasse décrite
+  // plus bas pour Qualiopi.
+  //
+  // Et le NDA n'est pas une mention obligatoire de FACTURE : l'art. L.6352-4
+  // l'impose sur « les conventions, contrats et documents de nature
+  // contractuelle ou publicitaire ». Les mentions de facture relèvent de
+  // l'art. R123-238 C. com. et de l'art. 242 nonies A ann. II CGI — le NDA n'y
+  // figure pas.
+  //
+  // `siret` reste BLOQUANT : lui est bien une mention obligatoire (R123-238),
+  // et une facture émise sans lui est irrégulière.
+  //
+  // Le NDA reste exigé sur convention / tripartite / contrat, où L.6352-4
+  // s'applique — mais sans bloquer non plus : `generateDocument` les déclasse
+  // en SPÉCIMEN au lieu de refuser.
+  facture: ["raisonSociale", "siret", "adresseSiege"],
+  // Convention / contrat : identité de l'OF prestataire.
+  //
+  // 🔴 `qualiopi` a été RETIRÉ de ces trois listes (audit certification
+  // 2026-07-25). Motif : le numéro de certification n'est pas une mention
+  // obligatoire de la convention ou du contrat de formation — les art.
+  // L.6353-1/-2 C. trav. en régissent le CONTENU (nature, durée, effectif,
+  // prix, modalités), pas la certification du prestataire. Qualiopi conditionne
+  // l'accès aux FONDS MUTUALISÉS (OPCO, CPF, France Travail), ce que l'OPCO
+  // vérifie de son côté.
+  //
+  // L'exiger ici créait une impasse : l'arrêté du 6 juin 2019 impose d'avoir
+  // mis en œuvre une action de formation pour déclencher l'audit initial ;
+  // délivrer cette action suppose une convention ; la convention était refusée
+  // faute d'un numéro qui n'existe qu'APRÈS la certification. Un organisme
+  // nouvellement créé ne pouvait donc jamais démarrer.
+  //
+  // Le numéro reste imprimé sur les documents dès qu'il est renseigné
+  // (cf. `QualiopiPage`, en-tête et pied de page).
+  // 🔴 `nda` RETIRÉ de ces trois listes le 2026-07-29, sur remarque de Will :
+  // « il faut que ça fonctionne même sans, ils ne seront pas présents quand le
+  // certificateur Qualiopi va venir auditer ».
+  //
+  // C'est le MÊME raisonnement qui avait fait retirer le NDA de la facture la
+  // veille — et il vaut ici PLUS fortement encore. L'art. L.6351-1 fait courir
+  // le délai de déclaration « dans les trois mois suivant la conclusion de la
+  // PREMIÈRE convention de formation ». C'est donc cette convention-là qui
+  // OUVRE le délai : au moment de l'émettre, l'organisme n'a légalement pas de
+  // numéro. L'exiger revenait à demander le résultat avant la cause, exactement
+  // l'impasse circulaire décrite plus haut pour Qualiopi.
+  //
+  // ⚠️ L'art. L.6352-4 impose bien le NDA sur « les conventions, contrats et
+  // documents de nature contractuelle ou publicitaire ». Cette obligation n'est
+  // PAS niée : elle devient exigible une fois le numéro obtenu, et le pied de
+  // page l'imprime dès qu'il est renseigné. Ce qui change, c'est que son absence
+  // ne déclasse plus la pièce en SPÉCIMEN.
+  //
+  // 🔴 Et l'absence n'est PAS passée sous silence : `QualiopiPage` mentionne
+  // désormais explicitement que la déclaration n'est pas enregistrée, en citant
+  // l'article. Un auditeur préfère une pièce qui nomme sa propre lacune à une
+  // pièce muette — et infiniment à un filigrane SPÉCIMEN qui la rend sans
+  // valeur au moment même où on la lui présente.
+  //
+  // `siret` reste BLOQUANT : une personne morale qui contracte sans numéro
+  // d'immatriculation ne contracte pas.
+  convention: ["raisonSociale", "siret", "adresseSiege"],
+  convention_tripartite: ["raisonSociale", "siret", "adresseSiege"],
+  contrat: ["raisonSociale", "siret", "adresseSiege"],
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */
@@ -88,10 +156,46 @@ export class OrganismeIncompletError extends Error {
  * Lève `OrganismeIncompletError` si l'identité de l'OF est incomplète pour un
  * document à valeur juridique/fiscale (facture, convention, tripartite,
  * contrat). No-op pour les autres types. À appeler AVANT le rendu PDF.
+ *
+ * ⚠️ La chaîne de génération principale (`generateDocument`) n'appelle PLUS
+ * cette fonction : elle utilise `evaluerIdentite` et déclasse le document en
+ * SPÉCIMEN plutôt que de refuser. Conservée pour les appelants qui veulent un
+ * refus dur (facturation 1-to-1) et pour les tests.
  */
 export function assertOrganismeComplet(identite: OrganismeIdentite, type: DocumentType): void {
   const manquants = champsIdentiteManquants(identite, type);
   if (manquants.length > 0) {
     throw new OrganismeIncompletError(type, manquants);
   }
+}
+
+/**
+ * Verdict de conformité d'identité, sans exception.
+ *
+ * Remplace le couple « bloquer ou laisser passer en silence » par un troisième
+ * état : le document est produit, mais **déclassé en SPÉCIMEN** et marqué comme
+ * tel (filigrane + bandeau listant les champs manquants + `metadata.specimen`
+ * en base). Deux propriétés en découlent :
+ *
+ *   1. plus rien ne bloque — toute la chaîne reste exerçable, y compris avant
+ *      l'obtention du SIRET, du NDA ou de la certification ;
+ *   2. aucun document incomplet ne peut être confondu avec une pièce valable,
+ *      ce qui était le risque que ce module existe pour écarter.
+ *
+ * `conforme: true` ⇒ document officiel normal.
+ */
+export function evaluerIdentite(
+  identite: OrganismeIdentite,
+  type: DocumentType,
+): { conforme: boolean; manquants: string[]; motif: string | null } {
+  const manquants = champsIdentiteManquants(identite, type);
+  if (manquants.length === 0) return { conforme: true, manquants: [], motif: null };
+  return {
+    conforme: false,
+    manquants,
+    motif:
+      `Identité de l'organisme incomplète — ${manquants.join(", ")}. ` +
+      `Document émis en SPÉCIMEN, sans valeur juridique. ` +
+      `Renseignez ces valeurs dans Qualiopi › Configuration pour émettre un document officiel.`,
+  };
 }

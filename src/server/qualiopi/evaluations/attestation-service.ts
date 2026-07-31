@@ -27,8 +27,9 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { makeQrToken, qrDataUrl } from "@/server/qualiopi/documents/qr";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { objectifsPedagogiquesEnTexte } from "@/server/qualiopi/formations/objectifs";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { getFinaleReussite } from "./evaluations-service";
+import { getFinaleResultats, evaluationSansAucuneNote } from "./evaluations-service";
 import { AttestationPdf } from "@/server/qualiopi/documents/templates/attestation";
 import { AttestationPartiellePdf } from "@/server/qualiopi/documents/templates/attestation-partielle";
 import { envoyerAttestationDisponible } from "@/server/qualiopi/notifications/notifications-service";
@@ -231,29 +232,65 @@ export async function genererAttestationPourEnrollment(
     }
   }
 
-  // Objectifs pédagogiques → string lisible
-  let objectifsStr = "";
-  try {
-    const raw = formation.objectifsPedagogiques;
-    if (Array.isArray(raw)) {
-      objectifsStr = (raw as string[]).join(", ");
-    } else if (typeof raw === "string") {
-      objectifsStr = raw;
-    } else {
-      objectifsStr = String(raw ?? "");
-    }
-  } catch {
-    objectifsStr = "";
-  }
+  // Objectifs pédagogiques → string lisible.
+  //
+  // 🔴 Parcours à blanc 2026-07-27. Le `(raw as string[]).join(", ")` était un
+  // cast de confiance : le catalogue écrit `{ id, verbe, description }`, donc
+  // l'attestation remise au stagiaire imprimait « Objectifs : [object Object],
+  // [object Object], … ». Constaté sur une attestation réellement générée en
+  // production. Le repli `String(raw ?? "")` avait le même défaut.
+  const objectifsStr = objectifsPedagogiquesEnTexte(formation.objectifsPedagogiques);
 
   // Évaluation finale (null si pas d'évaluation)
-  const finaleReussite = await getFinaleReussite(enrollmentId);
+  //
+  // 🔴 Audit certification 2026-07-26 (F21) — on lit désormais le DÉTAIL, pas
+  // seulement le verdict. `objectifsStr` (la liste complète du catalogue) était
+  // imprimée sous « Compétences acquises » sans que rien ne consulte
+  // l'évaluation : l'attestation affirmait l'acquisition de tous les objectifs,
+  // y compris ceux notés « non acquis ». L6353-1 exige les résultats de
+  // l'évaluation ; le document restituait le programme.
+  const resultatsFinale = await getFinaleResultats(enrollmentId);
+  // 🔴 Vérification E2E 2026-07-26. Une évaluation existante mais dont AUCUNE
+  // compétence n'est notée doit être traitée comme « non réalisée », pas comme
+  // un échec : `scorePct = 0` et `reussite = false` y sont des artefacts de
+  // saisie vide, pas un résultat. Sans ce test, l'attestation portait
+  // « Non validée — score 0 % » — le faux échec que F22 ferme au niveau du
+  // calcul, réintroduit au niveau du document.
+  const sansAucuneNote = resultatsFinale !== null && evaluationSansAucuneNote(resultatsFinale);
   const evaluationObtenue =
-    finaleReussite === null
+    resultatsFinale === null || sansAucuneNote
       ? undefined
-      : finaleReussite
-        ? "Évaluation finale : Réussite"
-        : "Évaluation finale : Non validée";
+      : `${resultatsFinale.reussite ? "Réussite" : "Non validée"} — score ${resultatsFinale.scorePct} %`;
+
+  // Ce qui s'imprime sous « Compétences acquises ».
+  //
+  // Trois cas, et aucun ne consiste à recopier le programme :
+  //   - évaluation faite  → uniquement les objectifs réellement notés « acquis » ;
+  //   - aucun acquis      → le dire, plutôt que de laisser une ligne vide qui se
+  //                         lirait comme une omission de mise en page ;
+  //   - pas d'évaluation  → l'annoncer explicitement. Une attestation muette sur
+  //                         ce point serait interprétée comme une acquisition.
+  const competencesAcquisesStr =
+    resultatsFinale === null || sansAucuneNote
+      ? "Évaluation des acquis non réalisée"
+      : resultatsFinale.acquis.length > 0
+        ? resultatsFinale.acquis.join(", ")
+        : "Aucun objectif évalué comme acquis";
+
+  // Les réserves, quand il y en a. Absentes du PDF si tout est acquis : une
+  // rubrique « Non acquis : — » attire l'œil sur un vide sans rien signifier.
+  const partiels = resultatsFinale?.partiels ?? [];
+  const nonAcquis = resultatsFinale?.nonAcquis ?? [];
+  // Une compétence attendue et non notée n'est ni acquise ni échouée : elle est
+  // manquante. La taire ferait passer un oubli de saisie pour un échec (cf. F22).
+  const nonEvalues = resultatsFinale?.nonEvalues ?? [];
+  const competencesReserves = [
+    partiels.length > 0 ? `Partiellement acquis : ${partiels.join(", ")}` : null,
+    nonAcquis.length > 0 ? `Non acquis : ${nonAcquis.join(", ")}` : null,
+    nonEvalues.length > 0 ? `Non évalués : ${nonEvalues.join(", ")}` : null,
+  ]
+    .filter((l): l is string => l !== null)
+    .join(" · ");
 
   const formatDate = (d: Date) =>
     d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -297,7 +334,8 @@ export async function genererAttestationPourEnrollment(
               heuresSuivies,
               heuresTotales: dureeHeures,
               ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-              competencesAcquises: objectifsStr,
+              competencesAcquises: competencesAcquisesStr,
+              ...(competencesReserves !== "" ? { competencesReserves } : {}),
             },
             qrToken: token,
             qrDataUrl: qrUrl,
@@ -315,7 +353,8 @@ export async function genererAttestationPourEnrollment(
               heuresSuivies,
               heuresTotales: dureeHeures,
               ...(evaluationObtenue !== undefined ? { evaluationObtenue } : {}),
-              competencesPartiellesValidees: objectifsStr,
+              competencesPartiellesValidees: competencesAcquisesStr,
+              ...(competencesReserves !== "" ? { competencesReserves } : {}),
             },
             qrToken: token,
             qrDataUrl: qrUrl,

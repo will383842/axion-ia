@@ -23,6 +23,7 @@ import { AttestationPdf } from "./attestation";
 import { AttestationPartiellePdf } from "./attestation-partielle";
 import { CertificatRealisationPdf } from "./certificat-realisation";
 import { FacturePdf } from "./facture";
+import { collectPdfTextNormalized } from "../collect-pdf-text";
 import { KitOpcoPdf } from "./kit-opco";
 import { KitCpfPdf } from "./kit-cpf";
 import { KitFranceTravailPdf } from "./kit-france-travail";
@@ -371,4 +372,59 @@ describe("KitFranceTravailPdf", () => {
       }),
     );
   }, 30_000);
+});
+
+describe("🔴 FacturePdf — le RIB conditionne la possibilité de virer", () => {
+  // Constat du 2026-07-30 : sur les QUATRE producteurs de facture, un seul — la
+  // RÉGÉNÉRATION (`genererFacturePdfAction`) — n'injectait pas le RIB. Régénérer
+  // une facture en retirait donc les coordonnées bancaires, et le client recevait
+  // une pièce moins complète que l'originale, sans alerte.
+  const BASE = {
+    numero: "AXI-FACT-2026-001",
+    dateEmission: "06/06/2026",
+    dateEcheance: "20/06/2026",
+    identite: IDENTITE_FIXTURE,
+    client: { raisonSociale: "Acme SAS" },
+    lignes: [{ designation: "Formation", quantite: 1, prixUnitaireHtCents: 280000 }],
+    regimeTva: "assujetti" as const,
+  };
+  const RIB = { iban: "FR7630001007941234567890185", bic: "BDFEFRPPCCT", titulaire: "Axion-IA" };
+
+  const texte = (data: unknown) =>
+    collectPdfTextNormalized(React.createElement(FacturePdf, { data: data as never }));
+
+  it("imprime l'IBAN et le BIC quand le RIB est fourni", () => {
+    const avec = texte({ ...BASE, rib: RIB });
+    expect(avec).toContain("FR7630001007941234567890185");
+    expect(avec).toContain("BDFEFRPPCCT");
+  });
+
+  it("🔴 n'invente AUCUN IBAN quand le RIB est absent", () => {
+    // L'IBAN n'est pas configuré en production (`legal_overrides` sans `iban`).
+    // Le gabarit doit omettre le bloc, jamais afficher un gabarit vide ni une
+    // valeur de repli — une coordonnée bancaire fausse enverrait un virement
+    // ailleurs.
+    const sans = texte(BASE);
+    expect(sans).not.toMatch(/FR\d{2}\d+/);
+  });
+
+  it("🔴 demande au client de rappeler le n° de facture en référence", () => {
+    // Sans cette consigne, tout rapprochement est une devinette : un virement
+    // sans référence n'est identifiable que par montant et émetteur — ce qui
+    // suffit pour un client, pas pour dix, et pas du tout pour deux factures du
+    // même montant.
+    const avec = texte({ ...BASE, rib: RIB });
+    expect(avec).toContain("AXI-FACT-2026-001");
+    expect(avec).toMatch(/rappeler la référence/);
+  });
+
+  it("⚠️ n'affiche PAS la consigne quand il n'y a pas de RIB", () => {
+    // Demander une référence de virement sans donner d'IBAN n'aurait aucun sens.
+    expect(texte(BASE)).not.toMatch(/rappeler la référence/);
+  });
+
+  it("⚠️ la sortie DIFFÈRE selon que le RIB est fourni", () => {
+    // Un gabarit qui ignorerait la prop rendrait deux sorties identiques.
+    expect(texte({ ...BASE, rib: RIB })).not.toStrictEqual(texte(BASE));
+  });
 });

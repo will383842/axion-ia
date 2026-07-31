@@ -16,7 +16,7 @@ import { interventionTypeLabel } from "@/lib/intervention-label";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
-import { resolveSubmissionLabel } from "./submission-type-labels";
+import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 
 interface Props {
   adminPrefix: string;

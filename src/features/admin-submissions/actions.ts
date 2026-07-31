@@ -488,10 +488,19 @@ export async function exportSubmissionsCsvAction(
   const parsed = listSubmissionsSchema.parse({ ...input, pageSize: 100, page: 1 });
 
   // Activity log d'audit RGPD
-  const exportFilters: { type: string; status: string; locale: string } = {
+  const exportFilters: {
+    type: string;
+    status: string;
+    locale: string;
+    unifiedType?: string;
+    unifiedTypeIn?: string[];
+  } = {
     type: parsed.type,
     status: parsed.status,
     locale: parsed.locale,
+    // Le journal RGPD doit décrire le périmètre RÉELLEMENT exporté.
+    ...(parsed.unifiedType ? { unifiedType: parsed.unifiedType } : {}),
+    ...(parsed.unifiedTypeIn?.length ? { unifiedTypeIn: parsed.unifiedTypeIn } : {}),
   };
   await prisma.activityLog.create({
     data: {
@@ -505,6 +514,16 @@ export async function exportSubmissionsCsvAction(
 
   const where: Record<string, unknown> = {};
   if (parsed.type !== "all") where.type = parsed.type;
+  // Filtre fin « Catégorie » (2026-07-29) — sans ça, l'export renverrait TOUTES
+  // les soumissions alors que l'écran n'en montre qu'une catégorie : un CSV qui
+  // ne correspond pas à ce qu'on regarde est pire qu'un export absent.
+  if (parsed.unifiedTypeIn && parsed.unifiedTypeIn.length > 0) {
+    where.OR = parsed.unifiedTypeIn.map((t) => ({
+      details: { path: ["unifiedType"], equals: t },
+    }));
+  } else if (parsed.unifiedType) {
+    where.details = { path: ["unifiedType"], equals: parsed.unifiedType };
+  }
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.locale !== "all") where.locale = parsed.locale;
 
