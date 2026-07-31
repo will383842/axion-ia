@@ -209,6 +209,36 @@ describe("fetchAvailableSlots — nominal", () => {
     expect(res.days[0]?.slots).toHaveLength(2);
   });
 
+  it("garde l'APRÈS-MIDI d'une journée ouvrée complète, au plafond par défaut", async () => {
+    // Régression constatée en production le 2026-07-31 : le plafond tronque les
+    // créneaux TRIÉS, donc un plafond trop bas ne raccourcit pas la liste — il
+    // supprime la fin de journée. Avec 6, les jours entiers s'arrêtaient à
+    // 11:30. Une journée 09:00→17:00 au pas de 30 min fait 16 créneaux : le
+    // défaut doit les tenir, sinon plus personne ne peut réserver l'après-midi.
+    const journeeComplete = Array.from({ length: 16 }, (_, i) => {
+      const h = 7 + Math.floor(i / 2); // 07:00 UTC = 09:00 à Paris en été.
+      const mn = i % 2 ? "30" : "00";
+      return slot(`2026-08-04T${String(h).padStart(2, "0")}:${mn}:00Z`);
+    });
+
+    routeFetch({
+      times: (url) =>
+        url.includes("2026-08-03")
+          ? jsonRes({ collection: journeeComplete })
+          : jsonRes({ collection: [] }),
+    });
+
+    const res = await fetchAvailableSlots({ schedulingUrl: PUBLIC_URL, nowMs: NOW });
+    expect(res.ok).toBe(true);
+    if (!res.ok) return;
+
+    const heures = res.days[0]?.slots.map((s) => s.startIso) ?? [];
+    expect(heures).toHaveLength(16);
+    // Le dernier créneau est bien celui de fin d'après-midi (14:30 UTC = 16:30
+    // à Paris), pas un créneau de milieu de matinée.
+    expect(heures.at(-1)).toBe("2026-08-04T14:30:00.000Z");
+  });
+
   it("ignore les créneaux pris, sans horaire, ou dont l'URL de réservation n'est pas Calendly", async () => {
     routeFetch({
       times: (url) =>

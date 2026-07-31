@@ -74,8 +74,16 @@ const EVENT_TYPE_TAG = "calendly-event-type";
  */
 const MAX_WINDOW_MS = 7 * 86_400_000 - 1_000;
 
-/** Horizon interrogé, en jours. Deux fenêtres. */
-const HORIZON_MS = 14 * 86_400_000;
+/**
+ * Horizon interrogé : 28 jours, soit quatre fenêtres.
+ *
+ * Passé de 14 à 28 le 2026-07-30, avec le rendu en grille mensuelle : une
+ * quinzaine laissait la moitié du mois vide, ce qui donnait l'impression d'un
+ * agenda saturé alors qu'il ne l'est pas. Coût réel : quatre appels réseau par
+ * intervalle de cache au lieu de deux, soit seize par heure — négligeable
+ * devant les quotas Calendly.
+ */
+const HORIZON_MS = 28 * 86_400_000;
 
 /** Aucun appel ne bloque un rendu plus longtemps que ça. */
 const TIMEOUT_MS = 6_000;
@@ -301,9 +309,36 @@ function parseSlots(body: unknown): CalendlySlot[] {
 export interface FetchAvailableSlotsOptions {
   /** URL publique de l'event-type (`NEXT_PUBLIC_CALENDLY_APPEL_URL`). */
   readonly schedulingUrl: string | undefined;
-  /** Nombre maximum de jours porteurs de créneaux rendus. */
+  /**
+   * Nombre maximum de jours porteurs de créneaux rendus.
+   *
+   * Défaut large depuis le passage en grille mensuelle : chaque case cliquable
+   * du calendrier pointe une ancre vers la liste des horaires de ce jour, donc
+   * tronquer les jours produirait des cases qui ne mènent nulle part.
+   */
   readonly maxDays?: number;
-  /** Nombre maximum de créneaux rendus par jour. */
+  /**
+   * Nombre maximum de créneaux rendus par jour.
+   *
+   * ⚠️ CE PLAFOND GARDE LES PREMIERS CRÉNEAUX DE LA JOURNÉE, pas un échantillon
+   * réparti : les créneaux sont triés chronologiquement avant d'être tronqués.
+   * Trop bas, il ne raccourcit donc pas la liste — il SUPPRIME L'APRÈS-MIDI.
+   *
+   * Constaté en production le 2026-07-31 avec l'ancienne valeur (6) : les jours
+   * entiers n'affichaient que 09:00 → 11:30, alors que le vendredi — dont la
+   * matinée était déjà passée — proposait 12:30 → 15:00. L'après-midi existait
+   * bien côté Calendly, le plafond le masquait.
+   *
+   * 16 couvre une journée ouvrée complète au pas de 30 minutes (8 h). Le coût
+   * a été mesuré sur 28 jours, et il est faible parce que ce markup est très
+   * répétitif donc très compressible :
+   *     plafond  8 → 192 créneaux, 115 Ko brut, 4,1 Ko gz
+   *     plafond 16 → 384 créneaux, 211 Ko brut, 6,1 Ko gz   (+2,0 Ko gz)
+   * Aucun JavaScript n'est ajouté : le budget `First Load JS` est inchangé.
+   *
+   * Si l'agenda s'ouvrait un jour au-delà de 8 h par jour, remonter ce plafond
+   * plutôt que de laisser la troncature décider à la place du visiteur.
+   */
   readonly maxSlotsPerDay?: number;
   /** Injectable pour les tests — l'horloge est quantifiée, jamais lue telle quelle. */
   readonly nowMs?: number;
@@ -317,8 +352,8 @@ export interface FetchAvailableSlotsOptions {
  */
 export async function fetchAvailableSlots({
   schedulingUrl,
-  maxDays = 5,
-  maxSlotsPerDay = 6,
+  maxDays = 31,
+  maxSlotsPerDay = 16,
   nowMs = Date.now(),
 }: FetchAvailableSlotsOptions): Promise<CalendlyAvailability> {
   if (!process.env.CALENDLY_API_TOKEN?.trim()) return { ok: false, reason: "not_configured" };
