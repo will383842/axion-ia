@@ -161,8 +161,8 @@ importers:
         specifier: ^3.10.1
         version: 3.10.1
       lucide-react:
-        specifier: ^1.14.0
-        version: 1.16.0(react@19.2.8)
+        specifier: ^1.27.0
+        version: 1.27.0(react@19.2.8)
       next:
         specifier: 16.2.12
         version: 16.2.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.60.0)(@types/node@20.19.39)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -4147,6 +4147,11 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
+  baseline-browser-mapping@2.11.8:
+    resolution: {integrity: sha512-zAgkquC2WYF0PIc6XbNYkA2uuxxFavzgmX61R+dHDUa558V8Ejf8ozTZFR6QzM24RWu4kBcRkhJ5kpz77j9fnQ==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
   basic-ftp@5.3.1:
     resolution: {integrity: sha512-bopVNp6ugyA150DDuZfPFdt1KZ5a94ZDiwX4hMgZDzF+GttD80lEy8kj98kbyhLXnPvhtIo93mdnLIjpCAeeOw==}
     engines: {node: '>=10.0.0'}
@@ -4698,8 +4703,8 @@ packages:
   electron-to-chromium@1.5.351:
     resolution: {integrity: sha512-9D7Iqx8RImSvCnOsj86rCH6eQjZFQoM04Jn6HnZVM0Nu/G58/gmKYQ1d12MZTbjQbQSTGI8nwEy07ErsA2slLA==}
 
-  electron-to-chromium@1.5.398:
-    resolution: {integrity: sha512-AsvhAxopJGh6museTDMIjn6JpDYOfgu4RLlygomt87MUwBUqTfd/1EiPtx10/LZE8xpTvkP2E9Gafq7lkLtodQ==}
+  electron-to-chromium@1.5.399:
+    resolution: {integrity: sha512-lEcqhErbHjXRvd41rnWLpzbyU/IXfIYo7QwaFWmxGeLiLyY2TBCdHnWY88vB+p3ubnihRypDm66panXl7TylLA==}
 
   emoji-regex-xs@1.0.0:
     resolution: {integrity: sha512-LRlerrMYoIDrT6jgpeZ2YYl/L8EulRTt5hQcYjy5AInh7HWXKimpqx68aknBFpGL2+/IcogTcaydJEgaTmOpDg==}
@@ -6020,8 +6025,8 @@ packages:
     resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
     engines: {node: '>=12'}
 
-  lucide-react@1.16.0:
-    resolution: {integrity: sha512-dYwyPzb4MEKpGUmNYk3WKWPnMrHs3FKM+q94kAnJrcDIqqn1hq2xY8scaS2ovsOCM5D51ey2gaRG3PBb1vgoYQ==}
+  lucide-react@1.27.0:
+    resolution: {integrity: sha512-rJicGl/3Fly/E0rOH1YmPZ6e49JCnKknh1ox1vpHnkfjujAkKA6sqUZvH3MTAaXXjgexyUwgNwTJzTtYuAFYJw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -12100,6 +12105,8 @@ snapshots:
 
   baseline-browser-mapping@2.11.7: {}
 
+  baseline-browser-mapping@2.11.8: {}
+
   basic-ftp@5.3.1: {}
 
   bidi-js@1.0.3:
@@ -12162,9 +12169,9 @@ snapshots:
 
   browserslist@4.28.7:
     dependencies:
-      baseline-browser-mapping: 2.11.7
+      baseline-browser-mapping: 2.11.8
       caniuse-lite: 1.0.30001806
-      electron-to-chromium: 1.5.398
+      electron-to-chromium: 1.5.399
       node-releases: 2.0.51
       update-browserslist-db: 1.2.3(browserslist@4.28.7)
 
@@ -12640,7 +12647,7 @@ snapshots:
 
   electron-to-chromium@1.5.351: {}
 
-  electron-to-chromium@1.5.398: {}
+  electron-to-chromium@1.5.399: {}
 
   emoji-regex-xs@1.0.0: {}
 
@@ -14297,7 +14304,7 @@ snapshots:
 
   lru-cache@7.18.3: {}
 
-  lucide-react@1.16.0(react@19.2.8):
+  lucide-react@1.27.0(react@19.2.8):
     dependencies:
       react: 19.2.8
 

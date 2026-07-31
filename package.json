@@ -145,7 +145,7 @@
     "ioredis": "^5.10.1",
     "jsdom": "^25.0.1",
     "jszip": "^3.10.1",
-    "lucide-react": "^1.14.0",
+    "lucide-react": "^1.27.0",
     "next": "16.2.12",
     "next-auth": "5.0.0-beta.32",
     "next-intl": "^4.11.0",
