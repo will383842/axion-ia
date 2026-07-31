@@ -20,6 +20,7 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: { findMany: vi.fn() },
     trainer: { findMany: vi.fn() },
     factureFormation: { findMany: vi.fn() },
+    dossierFinancement: { findMany: vi.fn() },
     veille: { findFirst: vi.fn() },
     revueDirection: { findUnique: vi.fn(), findFirst: vi.fn() },
     rgpdDemande: { findMany: vi.fn() },
@@ -54,6 +55,7 @@ const mp = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
+  dossierFinancement: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
   revueDirection: {
     findUnique: ReturnType<typeof vi.fn>;
@@ -73,6 +75,7 @@ function setupEmptyMocks() {
   mp.trainingSession.findMany.mockResolvedValue([]);
   mp.trainer.findMany.mockResolvedValue([]);
   mp.factureFormation.findMany.mockResolvedValue([]);
+  mp.dossierFinancement.findMany.mockResolvedValue([]);
   mp.veille.findFirst.mockResolvedValue({ dateVeille: new Date() }); // veille récente
   mp.revueDirection.findUnique.mockResolvedValue({ statut: "valide" }); // BPF déposé
   mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" }); // revue récente (cadence OK)
@@ -572,6 +575,63 @@ describe("evaluerAlertes — factures impayées", () => {
     const f60 = alertes.find((x) => x.code === "facture_impayee_j60");
     expect(f60).toBeDefined();
     expect(f60?.niveau).toBe("critique");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle dossiers de financement (suivi OPCO / France Travail)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — dossiers de financement", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("dossier envoyé +30 j sans réponse → alerte importante avec le n° externe", async () => {
+    // La règle fait DEUX findMany (sans réponse, puis retard de paiement) :
+    // répondre dans l'ordre des appels, pas une valeur unique.
+    mp.dossierFinancement.findMany
+      .mockResolvedValueOnce([
+        {
+          id: "dos-00000001",
+          financeurNom: "OPCO Atlas",
+          numeroDossierExterne: "ATL-2026-0042",
+          envoyeAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000),
+        },
+      ])
+      .mockResolvedValueOnce([]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "dossier_financement_sans_reponse");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("ATL-2026-0042");
+    expect(a?.message).toContain("OPCO Atlas");
+    expect(a?.cibleType).toBe("DossierFinancement");
+  });
+
+  it("échéance financeur dépassée sans paiement → alerte CRITIQUE (trésorerie due)", async () => {
+    mp.dossierFinancement.findMany.mockResolvedValueOnce([]).mockResolvedValueOnce([
+      {
+        id: "dos-00000002",
+        financeurNom: "OPCO EP",
+        numeroDossierExterne: null,
+        echeanceFinanceurAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "financeur_paiement_en_retard");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.message).toContain("OPCO EP");
+  });
+
+  it("aucun dossier en souffrance → aucune alerte de financement", async () => {
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((x) => x.code === "dossier_financement_sans_reponse")).toHaveLength(0);
+    expect(alertes.filter((x) => x.code === "financeur_paiement_en_retard")).toHaveLength(0);
   });
 });
 

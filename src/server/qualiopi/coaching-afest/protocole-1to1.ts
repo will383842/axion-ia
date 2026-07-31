@@ -88,6 +88,11 @@ export async function genererProtocoleAfest(
     where: { id: coachingSessionId },
     select: {
       id: true,
+      // 🔴 Recopié dans `DocumentGenere.traineeId` : c'est lui qui rend le lien
+      // de signature « bénéficiaire » émissible sur le protocole. Sans lui, le
+      // circuit [axionia, client, beneficiaire] refusait la partie bénéficiaire
+      // (« Aucun bénéficiaire n'est rattaché à cette pièce »).
+      traineeId: true,
       dateSeance: true,
       coachingSnapshot: true,
       ...COACHING_SNAPSHOT_SELECT,
@@ -180,7 +185,16 @@ export async function genererProtocoleAfest(
           qrDataUrl: qrUrl,
         },
       }),
-    refs: { coachingSessionId },
+    // `traineeId` rend la partie « bénéficiaire » émissible (lien public).
+    //
+    // ⚠️ La partie « client » du circuit reste NON émissible par lien, et c'est
+    // un fait de schéma, pas un oubli : `CoachingSession` n'a AUCUNE FK vers
+    // `Client` — un coaching peut exister sans fiche CRM, l'entreprise n'y est
+    // que du texte libre (`beneficiaireEntreprise`). Fabriquer un rattachement
+    // ici scellerait une identité que personne n'a saisie. Tant que le schéma
+    // n'évolue pas, l'admin obtient le refus explicite « Aucun client n'est
+    // rattaché à cette pièce » — actionnable, et honnête.
+    refs: { coachingSessionId, ...(cs.traineeId ? { traineeId: cs.traineeId } : {}) },
     qrToken: token,
   });
 

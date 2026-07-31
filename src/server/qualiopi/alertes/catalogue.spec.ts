@@ -47,6 +47,11 @@ const CODES_ATTENDUS: string[] = [
   "bareme_opco_perime",
   "facture_impayee_j30",
   "facture_impayee_j60",
+  // Suivi des dossiers de financement (2026-07-31) — `echeanceFinanceurAt`
+  // existait au schéma sans aucun consommateur : financeur en retard ou dossier
+  // envoyé sans réponse ne déclenchaient rien.
+  "dossier_financement_sans_reponse",
+  "financeur_paiement_en_retard",
   "job_ia_echoue",
   "suppression_rgpd_j30",
   "revue_trimestrielle_a_faire",

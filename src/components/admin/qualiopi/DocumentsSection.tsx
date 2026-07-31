@@ -185,6 +185,111 @@ function SessionDocButton({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Sous-composant : convention (seul document de session paramétrable)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * La convention porte une CLAUSE que les autres documents n'ont pas : l'acompte.
+ * Le gabarit l'acceptait depuis le 2026-07-27 mais aucun écran ne le
+ * transmettait — toute convention sortait à 30 %, y compris régularisée après
+ * la tenue de l'action, où « acompte à la signature » n'a plus d'objet.
+ *
+ * Champ vide = 30 % (usage commercial, comportement historique). `0` = payable
+ * en totalité à réception de facture. Pas de plafond B2B (cf. gabarit) — le
+ * plafond L.6353-6 ne concerne que le contrat B2C, qui a son propre calcul.
+ */
+function ConventionDocButton({
+  sessionId,
+  onDone,
+}: {
+  sessionId: string;
+  onDone: (numero: string) => void;
+}): React.ReactElement {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [acompte, setAcompte] = useState("");
+
+  function handleClick() {
+    setError(null);
+    setSuccess(null);
+    // Validation locale AVANT l'action : « 150 » renverrait un « Données
+    // invalides » générique — dire la borne ici, devant le champ fautif.
+    let acomptePercent: number | undefined;
+    if (acompte.trim() !== "") {
+      const n = Number(acompte);
+      if (!Number.isInteger(n) || n < 0 || n > 100) {
+        setError("Acompte : entier entre 0 et 100 (vide = 30 %).");
+        return;
+      }
+      acomptePercent = n;
+    }
+    startTransition(async () => {
+      const result = await genererConventionAction({
+        sessionId,
+        ...(acomptePercent !== undefined ? { acomptePercent } : {}),
+      });
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        const msg = `Convention de formation — n° ${result.data.numero} généré.`;
+        setSuccess(msg);
+        onDone(result.data.numero);
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-1)]">
+      <button
+        type="button"
+        onClick={handleClick}
+        disabled={isPending}
+        className="admin-button"
+        aria-label="Générer : Convention de formation"
+      >
+        {isPending ? "Génération…" : "Convention de formation"}
+      </button>
+      <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+        <span>Acompte (%)</span>
+        <input
+          type="number"
+          inputMode="numeric"
+          min={0}
+          max={100}
+          step={1}
+          value={acompte}
+          onChange={(e) => setAcompte(e.target.value)}
+          disabled={isPending}
+          placeholder="30"
+          aria-label="Acompte à la signature en pourcentage (vide = 30, 0 = payable en totalité)"
+          className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)] focus:ring-1 focus:ring-[color:var(--color-admin-accent)] focus:outline-none"
+        />
+        <span>0 = totalité à réception de facture</span>
+      </label>
+      {error && (
+        <p
+          role="alert"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+        >
+          {error}
+        </p>
+      )}
+      {success && (
+        <p
+          role="status"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]"
+        >
+          {success}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Sous-composant : bouton générique enrollment-level
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -329,12 +434,7 @@ export function DocumentsSection({
           Documents communs à toute la session (convention, émargement, livret…).
         </p>
         <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
-          <SessionDocButton
-            label="Convention de formation"
-            action={genererConventionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-          />
+          <ConventionDocButton sessionId={sessionId} onDone={handleDone} />
           {/*
             Placé juste après la convention, et pas en fin de grille : c'est son
             annexe pédagogique, la convention la référence nommément en section

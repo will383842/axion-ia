@@ -215,6 +215,23 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
+  // 🔴 2026-07-31 — `echeanceFinanceurAt` existait au schéma (« les OPCO paient
+  // à 30-60 j ») et RIEN ne le lisait : un financeur en retard ne déclenchait
+  // rien, un dossier envoyé sans réponse restait invisible. Le suivi reposait
+  // sur la mémoire de l'admin — exactement ce que le tableau d'alertes existe
+  // pour remplacer.
+  dossier_financement_sans_reponse: {
+    niveau: "important",
+    titre: "Dossier de financement envoyé sans réponse depuis +30 jours",
+    resolutionAuto: true,
+  },
+  financeur_paiement_en_retard: {
+    niveau: "critique",
+    titre: "Paiement du financeur en retard (échéance dépassée)",
+    resolutionAuto: true,
+  },
+
   // ── IA / système ──────────────────────────────────────────────────────────
   // Émise par le worker engine (qualiopi-formation-engine-worker) sur échec
   // définitif de génération IA (tentatives BullMQ épuisées).
