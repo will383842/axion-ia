@@ -703,6 +703,73 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
   return alertes;
 }
 
+/**
+ * Suivi des dossiers de financement (OPCO / France Travail).
+ *
+ * 🔴 2026-07-31 — `DossierFinancement.echeanceFinanceurAt` existait au schéma,
+ * avec son commentaire (« les OPCO paient à 30-60 j »), et RIEN ne le lisait.
+ * Même famille de défaut que les refs des circuits de signature : la donnée
+ * est saisie, aucun consommateur. Conséquence : un financeur en retard de
+ * paiement ou un dossier envoyé jamais instruit ne déclenchaient AUCUN signal —
+ * le suivi reposait sur la mémoire de l'admin.
+ *
+ * Deux règles :
+ *  1. `dossier_financement_sans_reponse` — statut `envoye` depuis +30 j sans
+ *     accord ni refus. 30 j = le délai d'instruction usuel d'un OPCO ; au-delà,
+ *     relancer est légitime et attendre en silence fait perdre le financement.
+ *  2. `financeur_paiement_en_retard` — accord obtenu (voire facturé), échéance
+ *     de paiement saisie et DÉPASSÉE, paiement non reçu. Critique : c'est de la
+ *     trésorerie due, et les OPCO ne relancent jamais d'eux-mêmes.
+ *
+ * ⚠️ Distinct de `facture_impayee_j30/j60` : celles-ci partent de la FACTURE et
+ * de son échéance propre. Un dossier subrogé peut être en retard AVANT toute
+ * facture (accord reçu, échéance passée) — c'est précisément le cas que la
+ * facturation ne voit pas.
+ */
+async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
+  const alertes: AlerteCandidate[] = [];
+
+  // 1. Envoyé sans réponse depuis +30 jours.
+  const sansReponse = await prisma.dossierFinancement.findMany({
+    where: { statut: "envoye", envoyeAt: { not: null, lte: daysAgo(30, now) } },
+    select: { id: true, financeurNom: true, numeroDossierExterne: true, envoyeAt: true },
+  });
+  for (const d of sansReponse) {
+    if (!d.envoyeAt) continue;
+    alertes.push({
+      code: "dossier_financement_sans_reponse",
+      niveau: "important",
+      titre: "Dossier de financement envoyé sans réponse depuis +30 jours",
+      message: `Le dossier ${d.numeroDossierExterne ?? d.id.slice(0, 8)} (${d.financeurNom ?? "financeur non nommé"}) est parti le ${d.envoyeAt.toLocaleDateString("fr-FR")} sans accord ni refus : relancer le financeur.`,
+      cibleType: "DossierFinancement",
+      cibleId: d.id,
+    });
+  }
+
+  // 2. Échéance de paiement du financeur dépassée, paiement non reçu.
+  const enRetard = await prisma.dossierFinancement.findMany({
+    where: {
+      statut: { in: ["accord_recu", "facture"] },
+      echeanceFinanceurAt: { not: null, lte: now },
+      paiementRecuAt: null,
+    },
+    select: { id: true, financeurNom: true, numeroDossierExterne: true, echeanceFinanceurAt: true },
+  });
+  for (const d of enRetard) {
+    if (!d.echeanceFinanceurAt) continue;
+    alertes.push({
+      code: "financeur_paiement_en_retard",
+      niveau: "critique",
+      titre: "Paiement du financeur en retard (échéance dépassée)",
+      message: `Le paiement du dossier ${d.numeroDossierExterne ?? d.id.slice(0, 8)} (${d.financeurNom ?? "financeur non nommé"}) était attendu le ${d.echeanceFinanceurAt.toLocaleDateString("fr-FR")} et n'est pas reçu : relancer le financeur.`,
+      cibleType: "DossierFinancement",
+      cibleId: d.id,
+    });
+  }
+
+  return alertes;
+}
+
 /** R16 — Demandes RGPD non traitées > 30 jours. */
 async function regleRgpdSuppression(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(30, now);
@@ -886,6 +953,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "convention_tripartite", fn: regleConventionTripartite },
   { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
+  { nom: "dossiers_financement", fn: regleDossiersFinancement },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
