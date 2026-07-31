@@ -20,6 +20,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
@@ -57,6 +58,41 @@ function dateKey(d: Date): string {
  *
  * Format retourné : `${baseUrl}/fr/portail/acces/${token}`
  */
+/**
+ * Lien d'émargement personnel pour le rappel J-7 — créé SEULEMENT si aucun
+ * jeton vivant n'existe pour cette inscription.
+ *
+ * 🔴 Pourquoi cette prudence : un jeton d'émargement ne se relit jamais (seul
+ * son hash est en base) et toute création RÉVOQUE le précédent (index unique
+ * partiel). Créer aveuglément ici tuerait donc un lien déjà distribué — par la
+ * console (« Émettre les liens ») ou par un envoi précédent — et le stagiaire
+ * cliquerait un lien mort le jour de la session. La règle : l'e-mail n'inclut
+ * un lien QUE s'il est le premier à en mettre un en circulation ; sinon il
+ * n'en parle pas (le lien existant reste le seul valide).
+ *
+ * Fail-soft assumé : si la session n'a pas ses journées confirmées
+ * (`TokenEmargementError`), le rappel part SANS lien plutôt que de ne pas
+ * partir — retenir un rappel J-7 casserait l'obligation d'information, et la
+ * console signale déjà les journées non confirmées à l'admin.
+ */
+async function getLienEmargementSiPremier(
+  enrollmentId: string,
+  dateFinSession: Date,
+  baseUrl: string,
+): Promise<string | null> {
+  try {
+    const actif = await prisma.emargementToken.findFirst({
+      where: { enrollmentId, revokedAt: null, expiresAt: { gt: new Date() } },
+      select: { id: true },
+    });
+    if (actif) return null;
+    const { token } = await creerTokenInscription({ enrollmentId, dateFinSession });
+    return `${baseUrl}/fr/portail/emarger/${token}`;
+  } catch {
+    return null;
+  }
+}
+
 async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
   const fallback = `${baseUrl}/fr/portail/mon-espace`;
   try {
@@ -182,6 +218,15 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
     const { trainee } = enrollment;
     try {
       const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
+      // Lien de signature de présence — demandé par Will (2026-07-31) : compter
+      // sur le formateur pour distribuer les liens en salle, c'est un oubli
+      // garanti à l'échelle. Chaque stagiaire reçoit le sien D'AVANCE ; le mode
+      // groupe de l'espace formateur reste le filet en salle.
+      const lienEmargement = await getLienEmargementSiPremier(
+        enrollment.id,
+        session.dateFin,
+        baseUrl,
+      );
       await enqueueEmail(
         "qualiopi-rappel-j7",
         trainee.email,
@@ -195,6 +240,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<void> {
           modalite: session.modalite,
           numeroSession: session.numero,
           lienPortail,
+          ...(lienEmargement !== null ? { lienEmargement } : {}),
         },
         { jobId: `qualiopi-rappel-j7-${enrollment.id}-${dk}` },
       );

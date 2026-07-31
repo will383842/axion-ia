@@ -29,7 +29,19 @@ vi.mock("@/lib/prisma", () => ({
     portailAcces: {
       findFirst: vi.fn(),
     },
+    emargementToken: {
+      findFirst: vi.fn(),
+    },
   },
+}));
+
+// Jeton d'émargement du rappel J-7 — créé seulement si aucun jeton vivant.
+vi.mock("@/server/qualiopi/emargement/token-service", () => ({
+  creerTokenInscription: vi.fn().mockResolvedValue({
+    token: "e".repeat(80),
+    tokenId: "tok-uuid-1",
+    expiresAt: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+  }),
 }));
 
 // Mock portail-service.creerAcces (fall-through quand portailAcces.findFirst retourne null)
@@ -56,6 +68,7 @@ vi.mock("@/server/qualiopi/satisfaction/satisfaction-service", () => ({
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerAcces } from "@/server/qualiopi/portail/portail-service";
+import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { creerQuestionnaire } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import {
   envoyerConvocation,
@@ -78,10 +91,12 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
+  emargementToken: { findFirst: ReturnType<typeof vi.fn> };
 };
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
 const mockCreerQuestionnaire = creerQuestionnaire as ReturnType<typeof vi.fn>;
+const mockCreerTokenInscription = creerTokenInscription as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Fixtures
@@ -216,6 +231,48 @@ describe("envoyerRappelJ7", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+    // Par défaut : aucun jeton d'émargement vivant → le rappel crée et inclut le lien.
+    mockPrisma.emargementToken.findFirst.mockResolvedValue(null);
+    mockCreerTokenInscription.mockResolvedValue({
+      token: "e".repeat(80),
+      tokenId: "tok-uuid-1",
+      expiresAt: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+    });
+  });
+
+  it("aucun jeton vivant → le payload porte le lien d'émargement personnel", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    const lien = (call[3] as Record<string, unknown>)["lienEmargement"] as string;
+    expect(lien).toContain("/fr/portail/emarger/");
+    expect(lien).toContain("e".repeat(80));
+  });
+
+  // 🔴 Le cœur de la sémantique : un jeton ne se relit pas (hash seul) et toute
+  // création révoque le précédent. Créer aveuglément tuerait un lien déjà
+  // distribué par la console — le stagiaire cliquerait un lien mort le jour J.
+  it("jeton vivant existant → PAS de création (le lien distribué reste le seul valide)", async () => {
+    mockPrisma.emargementToken.findFirst.mockResolvedValue({ id: "tok-existant" });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockCreerTokenInscription).not.toHaveBeenCalled();
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["lienEmargement"]).toBeUndefined();
+  });
+
+  // Fail-soft : journées non confirmées (TokenEmargementError) → le rappel J-7
+  // part SANS lien plutôt que de ne pas partir. Retenir un rappel casserait
+  // l'obligation d'information ; la console signale déjà le problème à l'admin.
+  it("création de jeton en échec → l'e-mail part quand même, sans lien", async () => {
+    mockCreerTokenInscription.mockRejectedValue(new Error("horaires_non_confirmes"));
+    mockPrisma.trainingSession.findUnique.mockResolvedValue(fakeSessionWithEnrollments);
+    await envoyerRappelJ7(SESSION_ID);
+    expect(mockEnqueueEmail).toHaveBeenCalledTimes(2);
+    const call = mockEnqueueEmail.mock.calls[0] as unknown[];
+    expect((call[3] as Record<string, unknown>)["lienEmargement"]).toBeUndefined();
+    // Le reste du payload est intact — le lien portail notamment.
+    expect((call[3] as Record<string, unknown>)["lienPortail"]).toContain("/portail/acces/");
   });
 
   it("enqueue 1 email par enrollment (2 au total)", async () => {

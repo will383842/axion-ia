@@ -23,6 +23,11 @@ const COPY = {
     body: (titre: string, debut: string, fin: string, lieu: string, modalite: string) =>
       `Nous avons le plaisir de vous convoquer à la formation « ${titre} » du ${debut} au ${fin} — ${modalite} — ${lieu}.`,
     kit: "Votre convocation officielle et les modalités pratiques (accès, matériel, règlement intérieur) sont disponibles dans votre espace stagiaire.",
+    // Annonce SANS lien, et c'est voulu : un jeton d'émargement créé ici serait
+    // révoqué par celui du rappel J-7 (un seul jeton vivant par inscription), et
+    // le stagiaire cliquerait un lien mort le jour J. On annonce, le J-7 livre.
+    emargement:
+      "Quelques jours avant la session, vous recevrez par e-mail votre lien personnel de signature de présence — gardez-le pour le jour de la formation.",
     cta: "Accéder à mon espace",
     refRow: (n: string) => `Référence session : ${n}`,
   },
@@ -62,6 +67,7 @@ export function QualiopiConvocationEmail({
         {t.body(p.titreFormation, p.dateDebut, p.dateFin, p.lieu, p.modalite)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>{t.kit}</Text>
+      <Text style={emailStyles.paragraphStyle}>{t.emargement}</Text>
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         {t.refRow(p.numeroSession)}
       </Text>
