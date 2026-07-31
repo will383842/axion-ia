@@ -37,8 +37,16 @@ export function ContactBand({
       <Container>
         <div className="flex flex-col items-center gap-8 text-center md:flex-row md:items-center md:justify-between md:text-left">
           <div className="max-w-2xl">
+            {/* ⚠️ PAS D'OPACITÉ sur le surtitre ci-dessous. `text-mocha-fg/75`
+                sur le fond terracotta plein ne donnait que 3,63:1, sous le seuil
+                AA de 4,5 — relevé par axe-core en production le 2026-07-31. À
+                pleine opacité : 5,24:1. (`/90` passerait à 4,55, mais si près du
+                seuil qu'un futur ajustement de palette le referait tomber.)
+                La hiérarchie visuelle ne repose pas sur l'opacité : ce surtitre
+                reste distingué du titre par sa taille (12 px), ses capitales et
+                son interlettrage. */}
             {eyebrow ? (
-              <p className="text-mocha-fg/75 mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
+              <p className="text-mocha-fg mb-3 text-[12px] font-semibold tracking-[0.16em] uppercase">
                 {eyebrow}
               </p>
             ) : null}

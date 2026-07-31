@@ -118,7 +118,23 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - run: pnpm install --frozen-lockfile --prod
+      # `--ignore-scripts` — SANS LUI CE JOB N'AUDITE RIEN DU TOUT.
+      #
+      # `package.json` déclare `"prepare": "husky"`. Avec `--prod`, pnpm
+      # n'installe pas les devDependencies — dont husky — puis exécute quand même
+      # le script `prepare` : la commande `husky` n'existe pas, l'install sort en
+      # `ELIFECYCLE` (sans message explicite), et le job meurt AVANT l'étape
+      # d'audit.
+      #
+      # Conséquence constatée le 2026-07-31 : le scan CVE était rouge six nuits
+      # d'affilée et n'avait donc JAMAIS tourné. Un job rouge donne l'illusion
+      # d'un signal ; ici il n'y avait aucune couverture.
+      #
+      # On ignore les scripts plutôt que de neutraliser `prepare` dans
+      # `package.json` (`husky || true`) : ça garde les hooks git intacts pour
+      # tout le monde en local, et l'audit n'a de toute façon besoin que du
+      # lockfile résolu, jamais d'un script de cycle de vie.
+      - run: pnpm install --frozen-lockfile --prod --ignore-scripts
       - name: pnpm audit (production deps) — hard fail high/critical
         run: |
           set -e

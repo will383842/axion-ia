@@ -23,7 +23,8 @@ interface NavLinkProps {
 }
 
 // Editorial v3 — desktop on terracotta header (fixe, pas de scroll-aware) :
-// italique mocha sur item actif, underline animée mocha-fg.
+// italique + underline pleine mocha-fg sur item actif (voir le garde-fou de
+// contraste plus bas — l'actif était en mocha sombre, non conforme AA).
 // Mobile (drawer 2026): rangée à tuile emoji + chevron, actif = terracotta.
 export function NavLink({
   href,
@@ -84,9 +85,29 @@ export function NavLink({
         // Sinon, force le single-line pour éviter tout retour à la ligne
         // intempestif quand le container devient étroit (≤ ~1400px).
         multiline ? "text-center leading-[1.15] whitespace-pre-line" : "whitespace-nowrap",
+        // ⚠️ NE PAS REMETTRE `text-mocha` ICI. Le mocha sombre sur l'en-tête
+        // terracotta ne donne que 2,84:1, très en dessous du seuil AA de 4,5 —
+        // relevé par axe-core en production sur /fr/audit, /fr/interventions et
+        // /fr/implementation (nightly rouge six nuits d'affilée, 2026-07-31).
+        // `text-mocha-fg` donne 4,82:1.
+        //
+        // Seules ces trois pages échouaient parce que ce sont les seules des 15
+        // pages auditées à avoir une entrée de menu correspondante, donc un lien
+        // ACTIF. /fr/appel n'en a pas.
+        //
+        // L'état actif reste parfaitement identifiable SANS la couleur : il
+        // porte l'italique ET le soulignement plein (`after:w-full`), là où un
+        // lien inactif n'a pas de soulignement. C'est d'ailleurs plus conforme
+        // au critère WCAG 1.4.1 (ne pas véhiculer une information par la seule
+        // couleur) que ne l'était la version précédente.
+        //
+        // `hover:text-mocha` a disparu de la ligne inactive pour la même raison
+        // — c'était le même contraste de 2,84:1, simplement non testé par axe
+        // qui n'évalue pas le survol. Le retour au survol reste assuré par le
+        // soulignement qui se déploie (`hover:after:w-full`).
         isActive
-          ? "text-mocha italic after:w-full"
-          : "text-mocha-fg hover:text-mocha [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",
+          ? "text-mocha-fg italic after:w-full"
+          : "text-mocha-fg [[data-tone=terracotta]_&]:after:w-0 [[data-tone=terracotta]_&]:hover:after:w-full",
       )}
     >
       {label}
