@@ -107,7 +107,13 @@ const emargementEntrySchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Format date invalide (YYYY-MM-DD)"),
   demiJournee: z.enum(DEMI_JOURNEE_VALUES),
   present: z.boolean(),
-  dureeRealiseeMinutes: z.number().int().min(0).optional(),
+  // Plafond absolu de bon sens : un créneau ne peut pas dépasser la journée.
+  // Le vrai plafond — la durée PRÉVUE du créneau — est appliqué côté serveur, où
+  // elle est connue. Sans borne, un taux > 100 % partait en base, et
+  // `documents.ts` en dérivait un certificat de réalisation annonçant PLUS
+  // d'heures que la formation n'en compte. Le champ pourcentage voisin
+  // (`enrollments.ts`) était déjà borné à 100 ; celui-ci ne l'était pas.
+  dureeRealiseeMinutes: z.number().int().min(0).max(1440).optional(),
 });
 
 const saveEmargementSchema = z.object({
@@ -125,7 +131,7 @@ const importReleveConnexionSchema = z.object({
 const setPresenceCreneauManualSchema = z.object({
   creneauId: z.string().uuid(),
   present: z.boolean(),
-  dureeRealiseeMinutes: z.number().int().min(0),
+  dureeRealiseeMinutes: z.number().int().min(0).max(1440),
   commentaire: z.string().optional(),
 });
 
@@ -315,6 +321,13 @@ export async function generateSessionCreneauxAction(input: {
   // l'ancienne durée → présence SURÉVALUÉE sur une pièce probante, jusqu'à un
   // save d'émargement ultérieur sans rapport. Le commentaire ci-dessus promettait
   // « recalcule », sans jamais l'exécuter.
+  //
+  // NB (merge #382) : le recalcul est limité à `aRecalculer` (enrollments dont la
+  // durée prévue a changé). Un créneau fraîchement CRÉÉ porte present:false /
+  // réalisé:0 → taux 0 %, aucun recalcul utile ; c'est la RÉCONCILIATION d'une
+  // durée qui déplace le dénominateur. Le fix du doublage hybride journée/demi-
+  // journées vit dans `taux.ts` (computeTauxPresence) et s'applique à chaque
+  // recomputeTauxPresence.
   for (const enrollmentId of aRecalculer) {
     await recomputeTauxPresence(enrollmentId);
   }
@@ -408,6 +421,14 @@ export async function saveEmargementAction(input: {
     let dureeRealiseeMinutes = entry.dureeRealiseeMinutes ?? 0;
     if (entry.present && entry.dureeRealiseeMinutes === undefined) {
       dureeRealiseeMinutes = existingCreneau?.dureePrevueMinutes ?? 0;
+    }
+
+    // Plafond au PRÉVU du créneau : au-delà, `computeTauxPresence` écrit un taux
+    // supérieur à 100 % en base, dont `documents.ts` dérive un certificat de
+    // réalisation annonçant plus d'heures que la formation n'en compte.
+    const prevuConnu = existingCreneau?.dureePrevueMinutes;
+    if (prevuConnu !== undefined && prevuConnu > 0 && dureeRealiseeMinutes > prevuConnu) {
+      dureeRealiseeMinutes = prevuConnu;
     }
 
     // ⚠️ La PROVENANCE d'un créneau importé ne doit jamais être réécrite.

@@ -18,6 +18,8 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listSessionsForAdmin } from "@/server/qualiopi/presence/queries";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -60,6 +62,11 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
   }
 
   const sessions = await listSessionsForAdmin();
+
+  // Même seuil que la grille d'émargement, le détail de session et l'attestation.
+  // Il était figé à 80 ici : réglé à 90, une session à 85 % s'affichait verte dans
+  // cette liste et « partielle » sur la page de détail, pour la même quantité.
+  const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
 
   const enCours = sessions.filter((s) => s.statut === "en_cours").length;
   const planifiees = sessions.filter((s) => s.statut === "planifiee").length;
@@ -176,11 +183,14 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
                     {s.tauxPresenceMoyen !== null ? (
                       <span
                         className={
-                          s.tauxPresenceMoyen >= 80
+                          s.tauxPresenceMoyen >= seuilPresencePct
                             ? "text-[color:var(--color-admin-success)]"
-                            : s.tauxPresenceMoyen >= 60
+                            : s.tauxPresenceMoyen >= SEUIL_PARTIELLE_PCT
                               ? "text-[color:var(--color-admin-warning)]"
-                              : "text-[color:var(--color-admin-error)]"
+                              : // `--color-admin-destructive` et non `--color-admin-error` :
+                                // ce dernier n'est défini nulle part, la couleur du taux le
+                                // plus critique était donc simplement héritée.
+                                "text-[color:var(--color-admin-destructive)]"
                         }
                       >
                         {s.tauxPresenceMoyen} %

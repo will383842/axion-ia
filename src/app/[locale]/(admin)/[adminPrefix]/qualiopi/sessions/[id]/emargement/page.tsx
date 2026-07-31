@@ -18,6 +18,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getSessionEmargement } from "@/server/qualiopi/presence/queries";
 import { classifierPresence } from "@/server/qualiopi/presence/taux";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { EmargementGrid } from "@/components/admin/qualiopi/EmargementGrid";
 import { ImportReleveForm } from "@/components/admin/qualiopi/ImportReleveForm";
 import { GenererCreneauxButton } from "@/components/admin/qualiopi/GenererCreneauxButton";
@@ -86,6 +87,12 @@ export default async function EmargementPage({ params }: PageProps) {
   if (!data) notFound();
 
   const { session, enrollments, creneaux, jours } = data;
+
+  // Seuil de qualification « complète » depuis la config Qualiopi (défaut 80).
+  // ⚠️ Doit être le MÊME seuil que l'attestation (`attestation-service.ts`) et le
+  // relevé PDF, sinon la grille affiche « Complète » là où l'attestation générée
+  // sera « partielle » dès que l'admin règle `seuil_presence_pct` ≠ 80.
+  const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct").catch(() => 80);
 
   // Prépare les props pour EmargementGrid (clés sérialisables)
   // c.date est un DateTime Prisma (Date JS) → on extrait la partie ISO date (Europe/Paris).
@@ -219,6 +226,7 @@ export default async function EmargementPage({ params }: PageProps) {
             sessionId={id}
             enrollments={enrollmentRows}
             creneaux={creneauxRows}
+            seuilCompletePct={seuilPresencePct}
             hasJours={jours.length > 0}
             saveAction={saveEmargementAction}
           />
@@ -261,7 +269,7 @@ export default async function EmargementPage({ params }: PageProps) {
               </thead>
               <tbody>
                 {enrollments.map((e) => {
-                  const cat = classifierPresence(e.tauxPresencePct ?? 0);
+                  const cat = classifierPresence(e.tauxPresencePct ?? 0, seuilPresencePct);
                   return (
                     <tr
                       key={e.id}

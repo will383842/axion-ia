@@ -14,6 +14,7 @@
 import { useState, useTransition, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { DemiJourneeLabel } from "@/server/qualiopi/presence/types";
+import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props (serialisables depuis Server Component)
@@ -43,6 +44,8 @@ export interface EmargementGridProps {
   sessionId: string;
   enrollments: EnrollmentRow[];
   creneaux: CreneauRow[];
+  /** Seuil « présence complète » (config `seuil_presence_pct`, défaut 80). */
+  seuilCompletePct: number;
   /**
    * Des journées ont-elles été déclarées ? L'état vide doit dire OÙ reprendre :
    * sans journées, générer les créneaux les déduit de la plage de dates, ce qui
@@ -72,10 +75,17 @@ const DJ_LABELS: Record<DemiJourneeLabel, string> = {
   journee: "Journée",
 };
 
-function classifierCouleur(taux: number | null): string {
+/**
+ * Couleur du taux. `seuilCompletePct` vient de la config Qualiopi
+ * (`seuil_presence_pct`) : il était figé à 80 ici alors que l'attestation et le
+ * récapitulatif de la page classifient avec le seuil configuré. Réglé à 90, un
+ * taux de 85 % s'affichait vert dans la grille et « partielle » dix lignes plus
+ * bas. Le plancher 60 % (« partielle ») est une constante métier, pas un réglage.
+ */
+function classifierCouleur(taux: number | null, seuilCompletePct: number): string {
   if (taux === null) return "text-[color:var(--color-admin-fg-muted)]";
-  if (taux >= 80) return "text-[color:var(--color-admin-success)]";
-  if (taux >= 60) return "text-[color:var(--color-admin-warning)]";
+  if (taux >= seuilCompletePct) return "text-[color:var(--color-admin-success)]";
+  if (taux >= SEUIL_PARTIELLE_PCT) return "text-[color:var(--color-admin-warning)]";
   // `--color-admin-destructive` et non `--color-admin-error` : ce dernier n'est
   // défini nulle part dans admin.css, la déclaration était donc invalide et la
   // couleur héritée. Le taux le plus critique — celui qui refuse l'attestation —
@@ -96,6 +106,7 @@ export function EmargementGrid({
   sessionId,
   enrollments,
   creneaux,
+  seuilCompletePct,
   hasJours,
   saveAction,
 }: EmargementGridProps): React.ReactElement {
@@ -207,9 +218,20 @@ export function EmargementGrid({
             date: col.date,
             demiJournee: col.demiJournee,
             present: cell.present,
-            ...(cell.present && !isNaN(parsed) && parsed > 0
-              ? { dureeRealiseeMinutes: parsed }
-              : {}),
+            // ⚠️ On envoie TOUJOURS la durée, y compris case décochée.
+            //
+            // Auparavant le champ était omis dès que `present` était faux, et le
+            // serveur le remplaçait alors par 0. Or `present` est DÉRIVÉ pour un
+            // créneau importé (réalisé ≥ 50 % du prévu) : un stagiaire connecté
+            // 100 min sur 420 a `present = false` sans être absent. Un simple
+            // clic « Enregistrer », même sans rien modifier, effaçait ses
+            // 100 minutes — la seule trace de sa connexion, sur un enregistrement
+            // à valeur probante.
+            //
+            // L'état de la cellule porte déjà la valeur serveur pour les cases
+            // non touchées : la renvoyer telle quelle est neutre, et décocher
+            // reste une correction explicite possible.
+            ...(!isNaN(parsed) && parsed >= 0 ? { dureeRealiseeMinutes: parsed } : {}),
           });
         }
       }
@@ -337,7 +359,7 @@ export function EmargementGrid({
 
                 {/* Taux présence */}
                 <td className={tdCls}>
-                  <span className={classifierCouleur(enrollment.tauxPresencePct)}>
+                  <span className={classifierCouleur(enrollment.tauxPresencePct, seuilCompletePct)}>
                     {enrollment.tauxPresencePct !== null ? `${enrollment.tauxPresencePct} %` : "—"}
                   </span>
                 </td>

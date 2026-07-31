@@ -67,6 +67,124 @@ describe("computeTauxPresence", () => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Collision de granularité `journee` vs demi-journées (session hybride)
+//
+// Le dénominateur est ce qui décide de l'attestation : doublé, il plafonne le
+// taux à ~50 % et fait délivrer une attestation « partielle » à un stagiaire
+// assidu. Ces tests portent sur `minutesPrevues`, pas seulement sur `tauxPct`.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("computeTauxPresence — dédoublonnage journée / demi-journées", () => {
+  const J1 = new Date("2026-06-10T00:00:00.000Z");
+  const J2 = new Date("2026-06-11T00:00:00.000Z");
+
+  it("ne compte PAS deux fois un jour porté à la fois en journée et en demi-journées", () => {
+    // Créneaux présentiels générés, puis import distanciel du même jour.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+      { date: J1, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 400 },
+    ]);
+    // Sans dédoublonnage : 400/840 = 48 % → attestation « aucune » à tort.
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.minutesRealisees).toBe(400);
+    expect(result.tauxPct).toBe(95);
+  });
+
+  it("reste correct si l'admin régénère les créneaux APRÈS l'import", () => {
+    // `generateSessionCreneauxAction` ignore les créneaux `journee` : il recrée
+    // matin + après-midi. Le taux ne doit pas retomber de moitié pour autant.
+    const apresImport = computeTauxPresence([
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 420 },
+    ]);
+    const apresRegeneration = computeTauxPresence([
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 420 },
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+      { date: J1, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+    ]);
+    expect(apresRegeneration.tauxPct).toBe(apresImport.tauxPct);
+    expect(apresRegeneration.tauxPct).toBe(100);
+  });
+
+  it("préserve la présence présentielle d'un stagiaire absent du relevé distanciel", () => {
+    // Inscrit non rapproché : l'import lui pose un créneau `journee` à 0 min
+    // réalisé, mais son émargement présentiel du même jour reste la preuve.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 0 },
+    ]);
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.minutesRealisees).toBe(420);
+    expect(result.tauxPct).toBe(100);
+  });
+
+  it("dédoublonne jour par jour, sans mélanger les dates (session multi-jours)", () => {
+    // J1 présentiel pur, J2 importé en distanciel par-dessus ses demi-journées.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J2, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+      { date: J2, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 0 },
+      { date: J2, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 210 },
+    ]);
+    // 840 prévues (2 jours), pas 1 260. Réalisé : 420 (J1) + 210 (J2).
+    expect(result.minutesPrevues).toBe(840);
+    expect(result.minutesRealisees).toBe(630);
+    expect(result.tauxPct).toBe(75);
+  });
+
+  it("accepte une date en chaîne ISO comme clé de jour", () => {
+    const result = computeTauxPresence([
+      {
+        date: "2026-06-10",
+        demiJournee: "matin",
+        dureePrevueMinutes: 210,
+        dureeRealiseeMinutes: 0,
+      },
+      {
+        date: "2026-06-10",
+        demiJournee: "journee",
+        dureePrevueMinutes: 420,
+        dureeRealiseeMinutes: 420,
+      },
+    ]);
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.tauxPct).toBe(100);
+  });
+
+  it("VERROU — la journée réellement hybride est sous-évaluée, et c'est assumé", () => {
+    // Matin présentiel émargé (210/210) + après-midi distanciel importé, qui pose
+    // un créneau `journee` couvrant DÉJÀ la journée entière (420 prévues, 210
+    // faites). La vérité métier est 100 % ; on retourne 50 %.
+    //
+    // Ce test EXISTE POUR ÉCHOUER si quelqu'un remplace le `max()` par une somme
+    // partielle « plus intelligente ». Sous-évaluer est le sens sûr : c'est la
+    // SURévaluation que sanctionne un contrôle de service fait. Corriger ce cas
+    // suppose de représenter une journée hybride, ce que le modèle ne sait pas
+    // faire — pas de bricoler l'agrégation.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "journee", dureePrevueMinutes: 420, dureeRealiseeMinutes: 210 },
+    ]);
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.minutesRealisees).toBe(210);
+    expect(result.tauxPct).toBe(50);
+  });
+
+  it("somme normalement des demi-journées sans créneau `journee` concurrent", () => {
+    // Non-régression : le cas présentiel pur ne doit rien changer.
+    const result = computeTauxPresence([
+      { date: J1, demiJournee: "matin", dureePrevueMinutes: 210, dureeRealiseeMinutes: 210 },
+      { date: J1, demiJournee: "apres_midi", dureePrevueMinutes: 210, dureeRealiseeMinutes: 105 },
+    ]);
+    expect(result.minutesPrevues).toBe(420);
+    expect(result.minutesRealisees).toBe(315);
+    expect(result.tauxPct).toBe(75);
+  });
+});
+
 describe("classifierPresence", () => {
   // ── Seuil défaut (80) ──
   it("80 % → 'complete' (≥ seuil défaut 80)", () => {

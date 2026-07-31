@@ -228,6 +228,32 @@ describe("generateSessionCreneauxAction", () => {
     expect(mockUpsertCreneau).not.toHaveBeenCalled();
   });
 
+  it("recalcule le taux et invalide le cache — le dénominateur vient de changer", async () => {
+    // Le recalcul est ciblé sur les inscrits RÉCONCILIÉS (durée prévue modifiée),
+    // pas déclenché sur une simple création (present:false/réalisé:0 → taux 0,
+    // rien à recalculer). Ici on force la réconciliation des 2 inscrits : un
+    // créneau existant avec une durée DIFFÉRENTE de celle générée → `aRecalculer`.
+    // Sans recalcul, `tauxPresencePct` restait figé et le cron d'attestation
+    // (`attestation-service.ts`) émettait une attestation sur un taux périmé.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "cre-existant",
+      dureePrevueMinutes: 999,
+      libelle: "ancien libellé",
+    });
+
+    await generateSessionCreneauxAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+    });
+
+    expect(mockRecompute).toHaveBeenCalledTimes(2); // 2 inscrits réconciliés
+    expect(mockRecompute.mock.calls.map((c) => c[0]).sort()).toEqual(["enroll-1", "enroll-2"]);
+
+    // UN SEUL appel, après la boucle : `redis.keys()` est bloquant O(N).
+    expect(mockInvalidateCache).toHaveBeenCalledTimes(1);
+    // Et sur l'année de la SESSION, pas l'année courante.
+    expect(mockInvalidateCache).toHaveBeenCalledWith(2026);
+  });
+
   it("retourne { error } si la session n'existe pas", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(null);
 
@@ -430,6 +456,55 @@ describe("saveEmargementAction", () => {
     expect(result.data.updated).toBe(1);
   });
 
+  it("plafonne le réalisé au prévu du créneau — un taux > 100 % est impossible", async () => {
+    // Sans plafond, un admin saisissant 600 min sur un créneau de 210 écrivait
+    // 286 % en base, et `documents.ts` en dérivait un certificat de réalisation
+    // annonçant PLUS d'heures que la formation n'en compte. Le champ pourcentage
+    // voisin (`enrollments.ts`) était déjà borné à 100 ; celui-ci ne l'était pas.
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, dureeRealiseeMinutes: 600 }],
+    });
+
+    const call = mockCall<{ dureeRealiseeMinutes: number }>(mockUpsertCreneau);
+    expect(call.dureeRealiseeMinutes).toBe(210);
+  });
+
+  it("rejette une durée aberrante au-delà d'une journée (garde Zod)", async () => {
+    const result = await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, dureeRealiseeMinutes: 100000 }],
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpsertCreneau).not.toHaveBeenCalled();
+  });
+
+  it("n'écrase PAS le réalisé quand la grille renvoie la valeur d'un créneau importé", async () => {
+    // `present` est DÉRIVÉ pour un import (réalisé ≥ 50 % du prévu) : un
+    // stagiaire connecté 100 min sur 420 a `present = false` sans être absent.
+    // La grille renvoie désormais toujours la durée, y compris case décochée —
+    // un clic « Enregistrer » ne doit plus remettre ses 100 minutes à 0.
+    mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
+      id: "c1",
+      dureePrevueMinutes: 420,
+      source: "import_zoom",
+      libelle: "2026-06-10 journée",
+      enrollmentId: "enr-1",
+      enrollment: { session: { dateDebut: new Date("2026-06-10T08:00:00Z") } },
+    });
+
+    await saveEmargementAction({
+      sessionId: "550e8400-e29b-41d4-a716-446655440000",
+      entries: [{ ...validEntry, present: false, dureeRealiseeMinutes: 100 }],
+    });
+
+    const call = mockCall<{ dureeRealiseeMinutes: number; source: string }>(mockUpsertCreneau);
+    expect(call.dureeRealiseeMinutes).toBe(100);
+    // La provenance reste celle de l'import.
+    expect(call.source).toBe("import_zoom");
+  });
+
   it("utilise dureePrevueMinutes si present=true et dureeRealiseeMinutes absent", async () => {
     mockPrisma.presenceCreneau.findUnique.mockResolvedValue({
       id: "c1",
@@ -608,6 +683,14 @@ describe("importReleveConnexionAction", () => {
     });
     mockStoreAndSignCsv.mockResolvedValue(null);
     mockPrisma.releveConnexionImport.create.mockResolvedValue({ id: "import-new-id" });
+    // ⚠️ INDISPENSABLE ici, et pas seulement dans le `describe` voisin.
+    // `importReleveConnexionAction` appelle `genererCreneaux` pour dériver la
+    // durée d'une journée. Ce mock n'était posé que dans le `beforeEach` de
+    // `generateSessionCreneauxAction` ; `vi.clearAllMocks()` efface les APPELS
+    // mais pas les `mockReturnValue`, si bien que la valeur FUYAIT d'une suite à
+    // l'autre. Lancer ces tests seuls (`vitest -t "importReleveConnexionAction"`)
+    // donnait 12 échecs sur 14 : les assertions passaient par accident.
+    mockGenererCreneaux.mockReturnValue(makeCreneaux());
     mockUpsertCreneau.mockResolvedValue("creneau-new-id");
     mockRecompute.mockResolvedValue(90);
     // Par défaut : aucun créneau « journée » hérité d'un import antérieur.
