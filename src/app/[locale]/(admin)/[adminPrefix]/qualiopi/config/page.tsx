@@ -23,6 +23,10 @@ import {
   QUALIOPI_CONFIG_REGISTRY,
   type QualiopiConfigKey,
 } from "@/server/qualiopi/config/site-settings";
+import {
+  QUALIOPI_CONFIG_OPTION_LABELS,
+  resolveQualiopiConfigLabel,
+} from "@/server/qualiopi/config/labels";
 import { getQualiopiReferenceDataStatus } from "@/server/qualiopi/seed/reference-data";
 import { prisma } from "@/lib/prisma";
 
@@ -44,19 +48,6 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  // Libellés lisibles (non techniques) pour les clés jargon et leurs valeurs.
-  // Seules les clés listées ici sont « traduites » ; les autres gardent leur clé.
-  const FRIENDLY_LABELS: Record<string, string> = {
-    regime_tva: "Régime de TVA (facturation)",
-  };
-  const FRIENDLY_OPTION_LABELS: Record<string, Record<string, string>> = {
-    regime_tva: {
-      assujetti: "Assujetti — TVA 20 % (par défaut, sûr)",
-      exoneration_261: "Exonéré — formation pro (art. 261-4-4°, attestation DREETS requise)",
-      franchise_293b: "Franchise en base (art. 293 B)",
-    },
-  };
-
   const current = await getAllQualiopiConfig();
   const referenceStatus = await getQualiopiReferenceDataStatus(prisma);
   const keys = Object.keys(QUALIOPI_CONFIG_REGISTRY) as QualiopiConfigKey[];
@@ -65,15 +56,16 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     const value = current[k];
     // Clés à valeurs énumérées (ex. regime_tva) → rendues en <select> côté UI.
     const options = entry.schema instanceof z.ZodEnum ? [...entry.schema.options] : undefined;
-    const label = FRIENDLY_LABELS[k];
-    const optionLabels = FRIENDLY_OPTION_LABELS[k];
+    const { label, isFallback } = resolveQualiopiConfigLabel(k);
+    const optionLabels = QUALIOPI_CONFIG_OPTION_LABELS[k];
     return {
       key: k,
+      label,
+      isFallback,
       description: entry.description,
       value: value == null ? "" : String(value),
       isNumber: typeof entry.default === "number",
       ...(options ? { options } : {}),
-      ...(label ? { label } : {}),
       ...(optionLabels ? { optionLabels } : {}),
     };
   });

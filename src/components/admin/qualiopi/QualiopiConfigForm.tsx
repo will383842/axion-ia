@@ -17,8 +17,16 @@ export interface ConfigField {
   isNumber: boolean;
   /** Valeurs autorisées (clé énumérée) → rendu en <select> au lieu d'un input. */
   options?: string[];
-  /** Libellé lisible affiché à la place de la clé technique (ex. « Régime de TVA »). */
-  label?: string;
+  /**
+   * Libellé lisible affiché comme texte PRINCIPAL du champ (ex. « SIRET de
+   * l'organisme »). Toujours renseigné par la page (dictionnaire `labels.ts`,
+   * avec repli formaté si une clé future n'y figure pas encore) — la clé
+   * technique brute (`f.key`) reste affichée séparément, en petit texte
+   * discret, jamais comme seul libellé.
+   */
+  label: string;
+  /** Le libellé ci-dessus vient du repli générique (clé absente du dictionnaire) — affiche un avertissement discret. */
+  isFallback?: boolean;
   /** Libellés lisibles des options (ex. exoneration_261 → « Exonéré formation »). */
   optionLabels?: Record<string, string>;
 }
@@ -70,6 +78,10 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
     "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
   const inputCls =
     "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-1 focus:ring-[color:var(--color-admin-accent)]";
+  // Clé technique brute : discrète, utile au support (ticket, log, requête SQL),
+  // jamais le libellé principal — voir contrat `ConfigField.label`.
+  const techKeyCls =
+    "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 
   return (
     <form
@@ -80,8 +92,18 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
         {fields.map((f) => (
           <div key={f.key} className="flex flex-col gap-[var(--space-admin-1)]">
             <label className={labelCls} htmlFor={`cfg-${f.key}`}>
-              {f.label ?? f.key}
+              {f.label}
             </label>
+            {/* Clé technique brute : jamais le libellé principal, juste un repère
+                discret pour le support (ticket, log, requête SQL directe). */}
+            <span className={techKeyCls} title="Clé technique (base de données)">
+              {f.key}
+              {f.isFallback && (
+                <span className="ml-[var(--space-admin-1)] text-[color:var(--color-admin-warning-fg)]">
+                  ⚠ libellé non traduit — à ajouter dans labels.ts
+                </span>
+              )}
+            </span>
             <span className={descCls}>{f.description}</span>
             {f.options ? (
               <select
