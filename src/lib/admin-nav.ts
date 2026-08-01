@@ -34,6 +34,7 @@ export type AdminNavGroup =
   | "content"
   | "content_gen"
   | "qualiopi"
+  | "finances"
   | "documents-interventions"
   | "coaching-1to1"
   | "image-bank"
@@ -73,8 +74,7 @@ export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "quali
  *   4. intervenants   — les humains qui animent (formateurs, sous-traitants)
  *   5. conformite     — TOUTES les preuves Qualiopi au même endroit
  *                       (indicateurs, registres, veille, revue, auditeur)
- *   6. finances       — l'argent (hub facturation, plans, cockpit)
- *   7. reglages_suivi — setup, RGPD, alertes, corbeille e-mails
+ *   6. reglages_suivi — setup, RGPD, alertes, corbeille e-mails
  *
  * NB : clés volontairement DISTINCTES des `ContentGenPole` (pas de collision
  * « reglages » → `reglages_suivi`) pour que l'état plié/déplié d'un pôle ne
@@ -86,7 +86,6 @@ export type QualiopiPole =
   | "catalogue"
   | "intervenants"
   | "conformite"
-  | "finances"
   | "reglages_suivi";
 
 /**
@@ -146,7 +145,13 @@ export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   contacts: "Boîte de réception",
   content: "Contenu",
   content_gen: "Génération de contenu",
-  qualiopi: "Formation / Qualiopi",
+  // Renommé le 2026-08-01 (question Will : « pourquoi l'activité audit IA est
+  // dans Qualiopi ? ») : l'onglet contient TOUTE l'activité (formations,
+  // coachings, audits, clients, devis) — « Qualiopi » n'est que la partie
+  // conformité. Le nom de la certification prêtait un périmètre certifié à des
+  // prestations de conseil qui n'en relèvent pas.
+  qualiopi: "Formations & prestations",
+  finances: "Finances",
   "documents-interventions": "Documents",
   "coaching-1to1": "Coaching 1-to-1",
   "image-bank": "Banque d'images",
@@ -195,7 +200,6 @@ export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
   catalogue: "📚 Catalogue & vente",
   intervenants: "👥 Intervenants",
   conformite: "✅ Conformité Qualiopi",
-  finances: "💰 Finances",
   reglages_suivi: "⚙️ Réglages & suivi",
 };
 
@@ -209,7 +213,6 @@ export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
   "catalogue",
   "intervenants",
   "conformite",
-  "finances",
   "reglages_suivi",
 ];
 
@@ -277,6 +280,7 @@ export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "content",
   "content_gen",
   "qualiopi",
+  "finances",
   "documents-interventions",
   "coaching-1to1",
   "image-bank",
@@ -929,8 +933,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/cockpit-financier`,
       label: "Cockpit financier",
       icon: "📈",
-      group: "qualiopi",
-      subGroup: "finances",
+      group: "finances",
     },
     {
       href: `${base}/qualiopi/audits`,
@@ -982,22 +985,19 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/facturation`,
       label: "Facturation (Hub)",
       icon: "🧾",
-      group: "qualiopi",
-      subGroup: "finances",
+      group: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/new`,
       label: "Facture directe",
       icon: "➕",
-      group: "qualiopi",
-      subGroup: "finances",
+      group: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/plans`,
       label: "Plans récurrents",
       icon: "🔁",
-      group: "qualiopi",
-      subGroup: "finances",
+      group: "finances",
     },
     {
       // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
@@ -1006,8 +1006,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       href: `${base}/qualiopi/financements`,
       label: "Alertes financement (sessions)",
       icon: "🚨",
-      group: "qualiopi",
-      subGroup: "finances",
+      group: "finances",
     },
     // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
     {
