@@ -123,7 +123,7 @@ export function SubmissionRowActions({
               type="button"
               disabled={isPending}
               onClick={() => setConfirmErase(true)}
-              className="admin-button-ghost text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+              className="admin-button-ghost admin-button-ghost-danger"
               title="Supprimer définitivement (RGPD, irréversible)"
             >
               🗑️ Supprimer définitivement
