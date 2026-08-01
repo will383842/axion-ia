@@ -76,6 +76,7 @@ import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-a
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
+import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
@@ -1745,7 +1746,6 @@ export async function genererLettreMissionAction(input: {
           numero,
           formateur: {
             nomPrenom,
-            adresse: "—",
             email: trainer?.email ?? identite.email,
             ...(trainer?.telephone !== null && trainer?.telephone !== undefined
               ? { telephone: trainer.telephone }
@@ -1853,17 +1853,37 @@ const lettreCadreListeSchema = z.object({
   dateFin: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
-const lettreCadreSchema = lettreCadreListeSchema.extend({
-  sessionIds: z.array(z.string().uuid()).min(1).max(100),
-});
+const lettreCadreSchema = lettreCadreListeSchema
+  .extend({
+    sessionIds: z.array(z.string().uuid()).max(100).default([]),
+    // Coachings AFEST 1-to-1 et audits (Will 2026-08-01 : « on peut avoir des
+    // sous-traitants aussi » sur ces prestations). Optionnels — une lettre-cadre
+    // peut ne couvrir que des formations, que des coachings, ou un mélange.
+    coachingIds: z.array(z.string().uuid()).max(100).default([]),
+    auditIds: z.array(z.string().uuid()).max(100).default([]),
+  })
+  .refine((v) => v.sessionIds.length + v.coachingIds.length + v.auditIds.length > 0, {
+    message: "Aucune prestation sélectionnée",
+  });
+
+/** Ligne candidate renvoyée à l'écran de composition de la lettre-cadre. */
+interface PrestationCandidate {
+  id: string;
+  numero: string;
+  titre: string;
+  du: string;
+  au: string;
+}
 
 /**
- * Formations candidates à une lettre-CADRE : celles de la période dont le
- * formateur principal est celui de la session d'origine.
+ * Prestations candidates à une lettre-CADRE : formations collectives, coachings
+ * AFEST 1-to-1 et audits de la période dont l'intervenant est le formateur
+ * principal de la session d'origine.
  *
- * ⚠️ Pré-filtre SQL large (FK OU affectation), recoupé en mémoire par
- * `resolvePrincipalTrainerId` — le même motif que `lireLettresMissionDuFormateur`,
- * pour la même raison : seul le résolveur sait retomber sur le Json legacy.
+ * ⚠️ Sessions : pré-filtre SQL large (FK OU affectation), recoupé en mémoire
+ * par `resolvePrincipalTrainerId` — le même motif que
+ * `lireLettresMissionDuFormateur`, seul le résolveur sait retomber sur le Json
+ * legacy. Coachings et audits portent une FK directe, pas de résolveur.
  */
 export async function listerSessionsLettreCadreAction(input: {
   sessionId: string;
@@ -1872,7 +1892,9 @@ export async function listerSessionsLettreCadreAction(input: {
 }): Promise<
   ActionResult<{
     formateur: string;
-    sessions: Array<{ id: string; numero: string; titre: string; du: string; au: string }>;
+    sessions: PrestationCandidate[];
+    coachings: PrestationCandidate[];
+    audits: PrestationCandidate[];
   }>
 > {
   await requireAdminWrite();
@@ -1909,22 +1931,40 @@ export async function listerSessionsLettreCadreAction(input: {
   const finExclue = dateDepuisIso(dateFin);
   finExclue.setUTCDate(finExclue.getUTCDate() + 1);
 
-  const candidates = await prisma.trainingSession.findMany({
-    where: {
-      dateDebut: { gte: debut, lt: finExclue },
-      OR: [{ formateurPrincipalId: trainerId }, { sessionFormateurs: { some: { trainerId } } }],
-    },
-    orderBy: { dateDebut: "asc" },
-    select: {
-      id: true,
-      numero: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      formateurPrincipalId: true,
-      coFormateurs: true,
-    },
-  });
+  const [candidates, coachings, audits] = await Promise.all([
+    prisma.trainingSession.findMany({
+      where: {
+        dateDebut: { gte: debut, lt: finExclue },
+        OR: [{ formateurPrincipalId: trainerId }, { sessionFormateurs: { some: { trainerId } } }],
+      },
+      orderBy: { dateDebut: "asc" },
+      select: {
+        id: true,
+        numero: true,
+        titreSession: true,
+        dateDebut: true,
+        dateFin: true,
+        formateurPrincipalId: true,
+        coFormateurs: true,
+      },
+    }),
+    prisma.coachingSession.findMany({
+      where: { trainerId, dateSeance: { gte: debut, lt: finExclue } },
+      orderBy: { dateSeance: "asc" },
+      select: {
+        id: true,
+        interventionSlug: true,
+        dateSeance: true,
+        dateSeanceFin: true,
+        beneficiaireEntreprise: true,
+      },
+    }),
+    prisma.auditMission.findMany({
+      where: { formateurId: trainerId, dateDebut: { gte: debut, lt: finExclue } },
+      orderBy: { dateDebut: "asc" },
+      select: { id: true, numero: true, titre: true, dateDebut: true, dateFin: true },
+    }),
+  ]);
 
   return {
     data: {
@@ -1938,6 +1978,24 @@ export async function listerSessionsLettreCadreAction(input: {
           du: formatDate(new Date(s.dateDebut)),
           au: formatDate(new Date(s.dateFin)),
         })),
+      coachings: coachings.map((c) => ({
+        id: c.id,
+        numero: "",
+        // L'entreprise, jamais le NOM du bénéficiaire : l'écran de composition
+        // n'a pas besoin d'exposer une personne physique.
+        titre: `${coachingInterventionLabel(c.interventionSlug)}${
+          c.beneficiaireEntreprise ? ` (${c.beneficiaireEntreprise})` : ""
+        }`,
+        du: formatDate(new Date(c.dateSeance)),
+        au: formatDate(new Date(c.dateSeanceFin ?? c.dateSeance)),
+      })),
+      audits: audits.map((a) => ({
+        id: a.id,
+        numero: a.numero,
+        titre: a.titre,
+        du: formatDate(new Date(a.dateDebut)),
+        au: formatDate(new Date(a.dateFin)),
+      })),
     },
   };
 }
@@ -1965,14 +2023,16 @@ export async function genererLettreMissionCadreAction(input: {
   sessionId: string;
   dateDebut: string;
   dateFin: string;
-  sessionIds: string[];
+  sessionIds?: string[];
+  coachingIds?: string[];
+  auditIds?: string[];
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = lettreCadreSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId, dateDebut, dateFin, sessionIds } = parsed.data;
+  const { sessionId, dateDebut, dateFin, sessionIds, coachingIds, auditIds } = parsed.data;
   if (dateDebut > dateFin) return { error: "La date de début est postérieure à la date de fin." };
 
   const origine = await prisma.trainingSession.findUnique({
@@ -2005,48 +2065,130 @@ export async function genererLettreMissionCadreAction(input: {
   const refus = refusLettreSelonStatut(trainer.statut, nomPrenom);
   if (refus !== null) return { error: refus };
 
-  const sessions = await prisma.trainingSession.findMany({
-    where: { id: { in: sessionIds } },
-    orderBy: { dateDebut: "asc" },
-    select: {
-      id: true,
-      numero: true,
-      titreSession: true,
-      dateDebut: true,
-      dateFin: true,
-      modalite: true,
-      ...LIEU_DOCUMENT_SELECT,
-      formateurPrincipalId: true,
-      coFormateurs: true,
-      formationSnapshot: true,
-      formation: { select: { slug: true, dureeHeures: true } },
-    },
-  });
-  if (sessions.length !== sessionIds.length) {
-    return { error: "Une des sessions sélectionnées est introuvable. Rechargez la liste." };
+  // Liste vide = pas de requête : `in: []` rendrait [] de toute façon, et les
+  // trois familles sont indépendantes.
+  const [sessions, coachings, audits] = await Promise.all([
+    sessionIds.length === 0
+      ? []
+      : prisma.trainingSession.findMany({
+          where: { id: { in: sessionIds } },
+          orderBy: { dateDebut: "asc" },
+          select: {
+            id: true,
+            numero: true,
+            titreSession: true,
+            dateDebut: true,
+            dateFin: true,
+            modalite: true,
+            ...LIEU_DOCUMENT_SELECT,
+            formateurPrincipalId: true,
+            coFormateurs: true,
+            formationSnapshot: true,
+            formation: { select: { slug: true, dureeHeures: true } },
+          },
+        }),
+    coachingIds.length === 0
+      ? []
+      : prisma.coachingSession.findMany({
+          where: { id: { in: coachingIds } },
+          orderBy: { dateSeance: "asc" },
+          select: {
+            id: true,
+            trainerId: true,
+            interventionSlug: true,
+            dateSeance: true,
+            dateSeanceFin: true,
+            beneficiaireEntreprise: true,
+            ...LIEU_DOCUMENT_SELECT,
+          },
+        }),
+    auditIds.length === 0
+      ? []
+      : prisma.auditMission.findMany({
+          where: { id: { in: auditIds } },
+          orderBy: { dateDebut: "asc" },
+          select: {
+            id: true,
+            numero: true,
+            titre: true,
+            formateurId: true,
+            dateDebut: true,
+            dateFin: true,
+            dureeHeures: true,
+            ...LIEU_DOCUMENT_SELECT,
+          },
+        }),
+  ]);
+  if (
+    sessions.length !== sessionIds.length ||
+    coachings.length !== coachingIds.length ||
+    audits.length !== auditIds.length
+  ) {
+    return { error: "Une des prestations sélectionnées est introuvable. Rechargez la liste." };
   }
+  // 🔴 Chaque prestation doit appartenir au formateur de la lettre — les
+  // sessions via le résolveur (Json legacy), coachings et audits via leur FK.
   const etrangere = sessions.find((s) => resolvePrincipalTrainerId(s) !== trainerId);
   if (etrangere !== undefined) {
     return {
       error: `La session ${etrangere.numero} n'a pas ${nomPrenom} pour formateur principal : elle ne peut pas figurer sur sa lettre de mission.`,
     };
   }
+  if (coachings.some((c) => c.trainerId !== trainerId)) {
+    return {
+      error: `Un des coachings sélectionnés n'est pas animé par ${nomPrenom} : il ne peut pas figurer sur sa lettre de mission.`,
+    };
+  }
+  const auditEtranger = audits.find((a) => a.formateurId !== trainerId);
+  if (auditEtranger !== undefined) {
+    return {
+      error: `L'audit ${auditEtranger.numero} n'est pas confié à ${nomPrenom} : il ne peut pas figurer sur sa lettre de mission.`,
+    };
+  }
 
   const identite = await getOrganismeIdentite();
   const regles = await chargerReglesRemuneration(trainerId);
 
-  const formations: FormationConfiee[] = sessions.map((s) => {
-    const formationDoc = readFormationForDocs(s.formationSnapshot, s.formation);
-    return {
-      intitule: s.titreSession,
-      dateDebut: formatDate(new Date(s.dateDebut)),
-      dateFin: formatDate(new Date(s.dateFin)),
-      lieuOuModalite: formatLieu(s) ?? modaliteLabel(s.modalite),
-      dureeHeures: formationDoc.dureeHeures ?? s.formation.dureeHeures,
-    };
-  });
-  const remunerations = compresserRemunerations(
-    sessions.map((s) => ({
+  /** Heures d'un créneau, 0 si la fin manque (le gabarit affichera « — »). */
+  const heuresCreneau = (debut: Date, fin: Date | null): number => {
+    if (fin === null) return 0;
+    const h = (fin.getTime() - debut.getTime()) / 3_600_000;
+    return h > 0 ? Math.round(h * 10) / 10 : 0;
+  };
+
+  const formations: FormationConfiee[] = [
+    ...sessions.map((s) => {
+      const formationDoc = readFormationForDocs(s.formationSnapshot, s.formation);
+      return {
+        intitule: s.titreSession,
+        dateDebut: formatDate(new Date(s.dateDebut)),
+        dateFin: formatDate(new Date(s.dateFin)),
+        lieuOuModalite: formatLieu(s) ?? modaliteLabel(s.modalite),
+        dureeHeures: formationDoc.dureeHeures ?? s.formation.dureeHeures,
+      };
+    }),
+    // L'ENTREPRISE bénéficiaire, jamais le nom de la personne accompagnée : la
+    // lettre part chez le sous-traitant, elle n'a pas à porter l'identité d'un
+    // tiers physique que le protocole AFEST couvre déjà.
+    ...coachings.map((c) => ({
+      intitule: `Coaching 1-to-1 — ${coachingInterventionLabel(c.interventionSlug)}${
+        c.beneficiaireEntreprise ? ` (${c.beneficiaireEntreprise})` : ""
+      }`,
+      dateDebut: formatDate(new Date(c.dateSeance)),
+      dateFin: formatDate(new Date(c.dateSeanceFin ?? c.dateSeance)),
+      lieuOuModalite: formatLieu(c) ?? "—",
+      dureeHeures: heuresCreneau(new Date(c.dateSeance), c.dateSeanceFin),
+    })),
+    ...audits.map((a) => ({
+      intitule: `Audit — ${a.titre}`,
+      dateDebut: formatDate(new Date(a.dateDebut)),
+      dateFin: formatDate(new Date(a.dateFin)),
+      lieuOuModalite: formatLieu(a) ?? "—",
+      dureeHeures: a.dureeHeures ?? 0,
+    })),
+  ];
+  const remunerations = compresserRemunerations([
+    ...sessions.map((s) => ({
       intitule: s.titreSession,
       libelle: libelleRemuneration(
         resolveRegle(regles, {
@@ -2058,7 +2200,31 @@ export async function genererLettreMissionCadreAction(input: {
         trainer.tarifJourneeHtCents,
       ),
     })),
-  );
+    ...coachings.map((c) => ({
+      intitule: `Coaching 1-to-1 — ${coachingInterventionLabel(c.interventionSlug)}`,
+      libelle: libelleRemuneration(
+        resolveRegle(regles, {
+          trainerId,
+          prestationType: "coaching_1to1",
+          interventionSlug: c.interventionSlug,
+          date: new Date(c.dateSeance),
+        }),
+        trainer.tarifJourneeHtCents,
+      ),
+    })),
+    ...audits.map((a) => ({
+      intitule: `Audit — ${a.titre}`,
+      libelle: libelleRemuneration(
+        resolveRegle(regles, {
+          trainerId,
+          prestationType: "audit",
+          interventionSlug: null,
+          date: new Date(a.dateDebut),
+        }),
+        trainer.tarifJourneeHtCents,
+      ),
+    })),
+  ]);
 
   const doc = await generateDocument({
     type: "lettre_mission",
@@ -2068,7 +2234,6 @@ export async function genererLettreMissionCadreAction(input: {
           numero,
           formateur: {
             nomPrenom,
-            adresse: "—",
             email: trainer.email,
             ...(trainer.telephone !== null ? { telephone: trainer.telephone } : {}),
             specialite: "Formation Intelligence Artificielle",
@@ -2077,7 +2242,7 @@ export async function genererLettreMissionCadreAction(input: {
               : {}),
           },
           objetMission:
-            "Animation des formations professionnelles continues listées ci-dessous, dans le cadre des programmes pédagogiques définis par l'organisme de formation.",
+            "Animation et réalisation des prestations listées ci-dessous (formations professionnelles continues, accompagnements individuels, audits le cas échéant), dans le cadre des programmes et référentiels définis par l'organisme de formation.",
           periode: {
             du: formatDateFr(dateDepuisIso(dateDebut)),
             au: formatDateFr(dateDepuisIso(dateFin)),
@@ -2091,7 +2256,13 @@ export async function genererLettreMissionCadreAction(input: {
       }),
     refs: { trainerId },
     metadata: {
-      lettreCadre: { du: dateDebut, au: dateFin, sessionIds: sessions.map((s) => s.id) },
+      lettreCadre: {
+        du: dateDebut,
+        au: dateFin,
+        sessionIds: sessions.map((s) => s.id),
+        coachingIds: coachings.map((c) => c.id),
+        auditIds: audits.map((a) => a.id),
+      },
     },
   });
 
@@ -2105,6 +2276,8 @@ export async function genererLettreMissionCadreAction(input: {
       du: dateDebut,
       au: dateFin,
       sessions: sessions.length,
+      coachings: coachings.length,
+      audits: audits.length,
     },
     session: adminSession,
   });

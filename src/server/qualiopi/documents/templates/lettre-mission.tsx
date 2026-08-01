@@ -47,7 +47,15 @@ export interface LettreMissionData {
   formateur: {
     nomPrenom: string;
     siretOuSirenOuNaf?: string;
-    adresse: string;
+    /**
+     * Adresse PROFESSIONNELLE du sous-traitant (son entreprise), jamais son
+     * domicile. Optionnelle depuis le 2026-08-01 (question Will, minimisation
+     * RGPD) : la fiche formateur n'ayant aucun champ d'adresse, le générateur
+     * imprimait un « — » figé — pire que l'absence, il criait le champ
+     * manquant sur une pièce contractuelle. La ligne disparaît proprement.
+     * ⚠️ Jamais l'adresse d'Axion-IA en repli : elle identifie l'AUTRE partie.
+     */
+    adresse?: string;
     email: string;
     telephone?: string;
     specialite: string;
@@ -129,7 +137,17 @@ export function LettreMissionPdf({
           {data.formateur.siretOuSirenOuNaf ? (
             <FieldRow label="SIRET / SIREN / NAF" value={data.formateur.siretOuSirenOuNaf} />
           ) : null}
-          <FieldRow label="Adresse" value={data.formateur.adresse} />
+          {/*
+            Adresse PROFESSIONNELLE, ligne optionnelle (2026-08-01). Le « — »
+            historique est filtré ici pour que les pièces legacy re-rendues
+            depuis `metadata.renderData` en profitent aussi. Jamais l'adresse
+            de l'organisme en repli : elle identifie l'AUTRE partie (section 1).
+          */}
+          {data.formateur.adresse &&
+          data.formateur.adresse.trim() !== "" &&
+          data.formateur.adresse.trim() !== "—" ? (
+            <FieldRow label="Adresse professionnelle" value={data.formateur.adresse} />
+          ) : null}
           <FieldRow label="Email" value={data.formateur.email} />
           {data.formateur.telephone ? (
             <FieldRow label="Téléphone" value={data.formateur.telephone} />
@@ -143,15 +161,21 @@ export function LettreMissionPdf({
           {data.periode ? (
             <Text style={pdfStyles.paragraph}>
               La présente lettre vaut lettre de mission-cadre pour la période du {data.periode.du}{" "}
-              au {data.periode.au} : elle confie au formateur l&apos;ensemble des formations listées
-              en section 3, chacune demeurant soumise aux mêmes obligations et au barème de
-              rémunération de la section 4.
+              au {data.periode.au} : elle confie au formateur l&apos;ensemble des prestations
+              listées en section 3 — formations, accompagnements individuels et audits le cas
+              échéant — chacune demeurant soumise aux mêmes obligations et au barème de rémunération
+              de la section 4.
             </Text>
           ) : null}
         </DocSection>
 
-        {/* 3. Formations confiées */}
-        <DocSection title="3. Formation(s) confiée(s)">
+        {/* 3. Prestations confiées */}
+        {/* « Prestation(s) » en mode cadre : la lettre-cadre peut confier des
+            coachings AFEST et des audits en plus des formations (Will,
+            2026-08-01) — « Formation(s) » y serait faux. */}
+        <DocSection
+          title={data.periode ? "3. Prestation(s) confiée(s)" : "3. Formation(s) confiée(s)"}
+        >
           <DataTable
             columns={[
               { key: "intitule", header: "Intitulé", flex: 2 },
@@ -164,7 +188,9 @@ export function LettreMissionPdf({
               intitule: f.intitule,
               dateDebut: f.dateDebut,
               dateFin: f.dateFin,
-              duree: `${f.dureeHeures} h`,
+              // Durée inconnue (séance legacy sans heure de fin) : « — », jamais
+              // « 0 h » — un zéro se lirait comme une durée convenue.
+              duree: f.dureeHeures > 0 ? `${f.dureeHeures} h` : "—",
               lieuOuModalite: f.lieuOuModalite,
             }))}
           />

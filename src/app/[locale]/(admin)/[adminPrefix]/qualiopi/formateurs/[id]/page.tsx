@@ -35,6 +35,9 @@ import {
 } from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
+import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
+import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
+import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
 
@@ -103,11 +106,14 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   if (!trainer) notFound();
 
   const formations = await listFormationsLite();
-  const [documents, indispos, regles, formationOptions] = await Promise.all([
+  const [documents, indispos, regles, formationOptions, lettresConsole] = await Promise.all([
     listTrainerDocumentsFull(trainer.id),
     listIndisposFormateur(trainer.id),
     listReglesFormateur(trainer.id),
     listFormationOptions(),
+    // Lettres de mission à contresigner — la fiche formateur est la SEULE
+    // surface qui couvre les lettres-cadre sans session (coaching/audit).
+    lireLettresMissionConsoleDuFormateur(trainer.id, role),
   ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
 
@@ -221,6 +227,50 @@ export default async function FicheFormateurPage({ params }: PageProps) {
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
       <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
+
+      {/*
+        Lettres de mission du formateur — contreseing de l'organisme (2026-08-01).
+
+        Cette surface existe pour un cas que la page de session ne couvre pas :
+        une lettre-CADRE ne couvrant QUE des coachings ou des audits n'apparaît
+        sur aucune page de session — sans bloc ici, l'organisme ne pourrait
+        jamais la contresigner et elle resterait à demi signée pour toujours.
+
+        ⚠️ Rendu SEULEMENT s'il y en a : un formateur salarié ou dirigeant n'a
+        aucune lettre (le générateur les refuse), un bloc vide se lirait comme
+        une pièce manquante.
+      */}
+      {lettresConsole.length > 0 && (
+        <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
+          <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Lettres de mission — contreseing de l&apos;organisme
+          </h2>
+          <div className="flex flex-col gap-[var(--space-admin-4)]">
+            {lettresConsole.map((lettre) => (
+              <div key={lettre.documentGenereId}>
+                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  {lettre.estCadre
+                    ? `Lettre-cadre — ${lettre.periodeLisible ?? "période non renseignée"}`
+                    : `${lettre.sessionTitre} · ${lettre.sessionNumero}`}
+                </p>
+                <SignatureDocument
+                  documentGenereId={lettre.documentGenereId}
+                  titrePiece={lettre.estCadre ? "Lettre de mission-cadre" : "Lettre de mission"}
+                  numero={lettre.numero}
+                  parties={lettre.parties}
+                  peutAgir={lettre.peutAgir}
+                  motifBlocage={lettre.motifBlocage}
+                  mentions={lettre.mentions}
+                  plafondProbant={lettre.plafondProbant}
+                  libelleBouton="Contresigner la lettre de mission"
+                  labelSignature="Signature pour l'organisme de formation"
+                  signerAction={contresignerLettreMissionAction}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <TrainerAvailabilityPanel trainerId={trainer.id} indispos={indispos} />
 

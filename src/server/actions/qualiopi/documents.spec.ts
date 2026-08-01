@@ -25,6 +25,8 @@ const mockEnrollmentFindUnique = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionJourFindMany = vi.fn();
 const mockCompensationRuleFindMany = vi.fn();
+const mockCoachingFindMany = vi.fn();
+const mockAuditFindMany = vi.fn();
 
 const mockSignatureCount = vi.fn();
 
@@ -38,6 +40,13 @@ vi.mock("@/lib/prisma", () => ({
     // paie), plus le tarif générique de la fiche.
     trainerCompensationRule: {
       findMany: (...args: unknown[]) => mockCompensationRuleFindMany(...args),
+    },
+    // La lettre-CADRE peut couvrir coachings AFEST et audits.
+    coachingSession: {
+      findMany: (...args: unknown[]) => mockCoachingFindMany(...args),
+    },
+    auditMission: {
+      findMany: (...args: unknown[]) => mockAuditFindMany(...args),
     },
     enrollment: {
       findUnique: (...args: unknown[]) => mockEnrollmentFindUnique(...args),
@@ -220,6 +229,8 @@ beforeEach(() => {
   // Aucun barème par défaut → la lettre retombe sur le tarif de la fiche.
   mockCompensationRuleFindMany.mockResolvedValue([]);
   mockSessionFindMany.mockResolvedValue([]);
+  mockCoachingFindMany.mockResolvedValue([]);
+  mockAuditFindMany.mockResolvedValue([]);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1029,6 +1040,163 @@ describe("genererLettreMissionCadreAction", () => {
     });
 
     expect(result).toMatchObject({ error: expect.stringContaining("introuvable") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  // ── Coachings AFEST + audits (Will 2026-08-01 : « on peut avoir des
+  // sous-traitants aussi » sur ces prestations) ──
+
+  const COACHING_ID = "c1111111-1111-4111-8111-111111111111";
+  const AUDIT_ID = "a1111111-1111-4111-8111-111111111111";
+
+  function armerMixte() {
+    armerNominal();
+    mockSessionFindMany.mockResolvedValue([makeSessionCadre(SESSION_ID, "IA Opérationnelle")]);
+    mockCoachingFindMany.mockResolvedValue([
+      {
+        id: COACHING_ID,
+        trainerId: TRAINER_ID,
+        interventionSlug: "coaching-decouverte",
+        dateSeance: new Date("2026-10-05T09:00:00Z"),
+        dateSeanceFin: new Date("2026-10-05T12:00:00Z"),
+        beneficiaireEntreprise: "INVEST SUN",
+        lieuType: null,
+        lieuIntitule: null,
+        lieuAdresse: null,
+        lieuCodePostal: null,
+        lieuVille: null,
+        lieuSalle: null,
+        lieuVisioUrl: null,
+      },
+    ]);
+    mockAuditFindMany.mockResolvedValue([
+      {
+        id: AUDIT_ID,
+        numero: "AXI-AUD-2026-001",
+        titre: "Audit IA process",
+        formateurId: TRAINER_ID,
+        dateDebut: new Date("2026-11-02T09:00:00Z"),
+        dateFin: new Date("2026-11-03T17:00:00Z"),
+        dureeHeures: 14,
+        lieuType: null,
+        lieuIntitule: null,
+        lieuAdresse: null,
+        lieuCodePostal: null,
+        lieuVille: null,
+        lieuSalle: null,
+        lieuVisioUrl: null,
+      },
+    ]);
+  }
+
+  it("couvre formations + coachings + audits sur la même lettre, ancrée sur le formateur", async () => {
+    armerMixte();
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID],
+      coachingIds: [COACHING_ID],
+      auditIds: [AUDIT_ID],
+    });
+
+    expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
+    const call = mockGenerateDocument.mock.calls[0]![0]! as {
+      refs: Record<string, unknown>;
+      metadata: { lettreCadre: Record<string, unknown> };
+    };
+    expect(call.refs).toEqual({ trainerId: TRAINER_ID });
+    expect(call.metadata.lettreCadre["coachingIds"]).toEqual([COACHING_ID]);
+    expect(call.metadata.lettreCadre["auditIds"]).toEqual([AUDIT_ID]);
+
+    const data = donneesPdf<{ formations: Array<{ intitule: string; dureeHeures: number }> }>();
+    expect(data.formations).toHaveLength(3);
+    // L'ENTREPRISE bénéficiaire, jamais le nom d'une personne physique.
+    expect(data.formations[1]!.intitule).toContain("Coaching 1-to-1");
+    expect(data.formations[1]!.intitule).toContain("INVEST SUN");
+    expect(data.formations[1]!.dureeHeures).toBe(3);
+    expect(data.formations[2]!.intitule).toContain("Audit — Audit IA process");
+  });
+
+  it("🔴 le barème coaching se résout sur SON type de prestation, pas celui des formations", async () => {
+    armerMixte();
+    mockCompensationRuleFindMany.mockResolvedValue([
+      {
+        trainerId: TRAINER_ID,
+        prestationType: "coaching_1to1",
+        interventionSlug: null,
+        model: "taux_horaire",
+        tauxJourneeHtCents: null,
+        tauxHoraireHtCents: 12000,
+        forfaitHtCents: null,
+        commissionPct: null,
+        effectiveFrom: new Date("2026-01-01T00:00:00Z"),
+        effectiveTo: null,
+      },
+    ]);
+
+    await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID],
+      coachingIds: [COACHING_ID],
+    });
+
+    const data = donneesPdf<{
+      remunerations: Array<{ intitule: string | null; libelle: string }>;
+    }>();
+    expect(data.remunerations).toHaveLength(2);
+    // Formation → repli tarif fiche ; coaching → règle horaire dédiée.
+    expect(data.remunerations[0]!.libelle).toContain("600,00");
+    expect(data.remunerations[1]!.libelle).toContain("120,00");
+    expect(data.remunerations[1]!.libelle).toContain("heure");
+  });
+
+  it("🔴 refuse un coaching animé par quelqu'un d'autre", async () => {
+    armerMixte();
+    mockCoachingFindMany.mockResolvedValue([
+      {
+        id: COACHING_ID,
+        trainerId: "e9999999-9999-4999-8999-999999999999",
+        interventionSlug: "coaching-decouverte",
+        dateSeance: new Date("2026-10-05T09:00:00Z"),
+        dateSeanceFin: null,
+        beneficiaireEntreprise: null,
+        lieuType: null,
+        lieuIntitule: null,
+        lieuAdresse: null,
+        lieuCodePostal: null,
+        lieuVille: null,
+        lieuSalle: null,
+        lieuVisioUrl: null,
+      },
+    ]);
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID],
+      coachingIds: [COACHING_ID],
+    });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("coaching") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse une lettre-cadre sans AUCUNE prestation cochée", async () => {
+    armerNominal();
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [],
+    });
+
+    expect(result).toMatchObject({ error: expect.any(String) });
     expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 });

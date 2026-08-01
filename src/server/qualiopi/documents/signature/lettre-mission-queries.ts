@@ -349,6 +349,73 @@ export async function lireLettresMissionDuFormateur(
 }
 
 /**
+ * Toutes les lettres de mission d'UN formateur, côté CONSOLE (fiche formateur).
+ *
+ * Cette entrée existe pour un cas que la page de session ne couvre pas : une
+ * lettre-CADRE ne couvrant QUE des coachings ou des audits n'apparaît sur
+ * aucune page de session — sans surface ici, l'organisme ne pourrait jamais la
+ * contresigner et elle resterait à demi signée pour toujours.
+ *
+ * Même règle d'appartenance et même déduplication que l'écran du formateur :
+ * l'organisme contresigne ce que le formateur a sous les yeux, rien d'autre.
+ */
+export async function lireLettresMissionConsoleDuFormateur(
+  trainerId: string,
+  role: string,
+): Promise<EtatSignatureLettreMission[]> {
+  const filtre = filtreUuid(trainerId);
+
+  const pieces = await prisma.documentGenere.findMany({
+    where: {
+      type: "lettre_mission",
+      OR: [
+        { trainerId: filtre },
+        {
+          session: {
+            is: {
+              OR: [
+                { formateurPrincipalId: filtre },
+                { sessionFormateurs: { some: { trainerId: filtre } } },
+              ],
+            },
+          },
+        },
+      ],
+    },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    select: SELECTION_PIECE,
+  });
+
+  const identite = await getOrganismeIdentite();
+  const lecteur: Lecteur = { pourPartie: "axionia", role };
+
+  const retenues = new Set<string>();
+  const etats: EtatSignatureLettreMission[] = [];
+  for (const piece of pieces as unknown as PieceLue[]) {
+    // Appartenance : l'ancre PRIME, le résolveur de session couvre le legacy.
+    const mandataire =
+      piece.trainerId ??
+      (piece.session === null
+        ? null
+        : resolvePrincipalTrainerId({
+            formateurPrincipalId: piece.session.formateurPrincipalId,
+            coFormateurs: piece.session.coFormateurs,
+          }));
+    if (mandataire !== trainerId) continue;
+
+    const cle =
+      piece.session === null
+        ? `cadre:${cleLettreCadre(piece.metadata) ?? piece.id}`
+        : piece.session.id;
+    if (retenues.has(cle)) continue;
+    retenues.add(cle);
+
+    etats.push(construireEtat(piece, lecteur, identite.raisonSociale));
+  }
+  return etats;
+}
+
+/**
  * Même lecture, côté CONSOLE, pour le contreseing de l'organisme.
  *
  * Rend `null` quand aucune lettre de mission n'a été générée pour la session —

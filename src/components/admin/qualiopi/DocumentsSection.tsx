@@ -202,6 +202,66 @@ function SessionDocButton({
  * formations du formateur principal sur la période (revalidées côté serveur,
  * la liste cliente n'est jamais crue) → cases cochées → génération.
  */
+/** Prestation candidate telle que renvoyée par l'action de liste. */
+interface PrestationCandidate {
+  id: string;
+  numero: string;
+  titre: string;
+  du: string;
+  au: string;
+}
+
+/** Un groupe de cases à cocher (formations, coachings ou audits). */
+function GroupePrestations({
+  titre,
+  prefixe,
+  items,
+  cochees,
+  setCochees,
+}: {
+  titre: string;
+  prefixe: string;
+  items: PrestationCandidate[];
+  cochees: Set<string>;
+  setCochees: React.Dispatch<React.SetStateAction<Set<string>>>;
+}): React.ReactElement | null {
+  if (items.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-1)]">
+      <p className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg)]">
+        {titre}
+      </p>
+      <ul className="flex flex-col gap-[var(--space-admin-1)]">
+        {items.map((p) => {
+          const cle = `${prefixe}:${p.id}`;
+          return (
+            <li key={p.id}>
+              <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
+                <input
+                  type="checkbox"
+                  checked={cochees.has(cle)}
+                  onChange={(e) => {
+                    setCochees((prev) => {
+                      const next = new Set(prev);
+                      if (e.target.checked) next.add(cle);
+                      else next.delete(cle);
+                      return next;
+                    });
+                  }}
+                />
+                <span>
+                  {p.titre}
+                  {p.numero ? ` · ${p.numero}` : ""} · du {p.du} au {p.au}
+                </span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
 function LettreMissionButtons({
   sessionId,
   onDone,
@@ -215,13 +275,13 @@ function LettreMissionButtons({
   const [dateDebut, setDateDebut] = useState("");
   const [dateFin, setDateFin] = useState("");
   const [formateur, setFormateur] = useState<string | null>(null);
-  const [candidates, setCandidates] = useState<Array<{
-    id: string;
-    numero: string;
-    titre: string;
-    du: string;
-    au: string;
-  }> | null>(null);
+  // Trois familles de prestations, cochables indépendamment : formations
+  // collectives, coachings AFEST 1-to-1, audits (Will 2026-08-01).
+  const [candidates, setCandidates] = useState<{
+    sessions: PrestationCandidate[];
+    coachings: PrestationCandidate[];
+    audits: PrestationCandidate[];
+  } | null>(null);
   const [cochees, setCochees] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -237,10 +297,20 @@ function LettreMissionButtons({
         return;
       }
       setFormateur(res.data.formateur);
-      setCandidates(res.data.sessions);
+      setCandidates({
+        sessions: res.data.sessions,
+        coachings: res.data.coachings,
+        audits: res.data.audits,
+      });
       // Toutes cochées par défaut : le cas nominal est « tout ce que ce
       // formateur anime sur la période », décocher est l'exception.
-      setCochees(new Set(res.data.sessions.map((s) => s.id)));
+      setCochees(
+        new Set([
+          ...res.data.sessions.map((s) => `s:${s.id}`),
+          ...res.data.coachings.map((c) => `c:${c.id}`),
+          ...res.data.audits.map((a) => `a:${a.id}`),
+        ]),
+      );
     });
   }
 
@@ -248,11 +318,14 @@ function LettreMissionButtons({
     setError(null);
     setSuccess(null);
     startTransition(async () => {
+      const ids = [...cochees];
       const res = await genererLettreMissionCadreAction({
         sessionId,
         dateDebut,
         dateFin,
-        sessionIds: [...cochees],
+        sessionIds: ids.filter((k) => k.startsWith("s:")).map((k) => k.slice(2)),
+        coachingIds: ids.filter((k) => k.startsWith("c:")).map((k) => k.slice(2)),
+        auditIds: ids.filter((k) => k.startsWith("a:")).map((k) => k.slice(2)),
       });
       if ("error" in res) {
         setError(res.error);
@@ -265,6 +338,11 @@ function LettreMissionButtons({
       router.refresh();
     });
   }
+
+  const total =
+    candidates === null
+      ? 0
+      : candidates.sessions.length + candidates.coachings.length + candidates.audits.length;
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-1)]">
@@ -309,42 +387,40 @@ function LettreMissionButtons({
               disabled={isPending || dateDebut === "" || dateFin === ""}
               className="admin-button"
             >
-              {isPending ? "Recherche…" : "Chercher les formations"}
+              {isPending ? "Recherche…" : "Chercher les prestations"}
             </button>
           </div>
-          {candidates !== null && candidates.length === 0 && (
+          {candidates !== null && total === 0 && (
             <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Aucune formation de ce formateur sur cette période.
+              Aucune prestation de ce formateur sur cette période.
             </p>
           )}
-          {candidates !== null && candidates.length > 0 && (
+          {candidates !== null && total > 0 && (
             <>
               <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                Formations de {formateur} sur la période — décochez celles à exclure :
+                Prestations de {formateur} sur la période — décochez celles à exclure :
               </p>
-              <ul className="flex flex-col gap-[var(--space-admin-1)]">
-                {candidates.map((s) => (
-                  <li key={s.id}>
-                    <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
-                      <input
-                        type="checkbox"
-                        checked={cochees.has(s.id)}
-                        onChange={(e) => {
-                          setCochees((prev) => {
-                            const next = new Set(prev);
-                            if (e.target.checked) next.add(s.id);
-                            else next.delete(s.id);
-                            return next;
-                          });
-                        }}
-                      />
-                      <span>
-                        {s.titre} · {s.numero} · du {s.du} au {s.au}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
+              <GroupePrestations
+                titre="Formations collectives"
+                prefixe="s"
+                items={candidates.sessions}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
+              <GroupePrestations
+                titre="Coachings 1-to-1 / AFEST"
+                prefixe="c"
+                items={candidates.coachings}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
+              <GroupePrestations
+                titre="Audits"
+                prefixe="a"
+                items={candidates.audits}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
               <button
                 type="button"
                 onClick={generer}
@@ -353,7 +429,7 @@ function LettreMissionButtons({
               >
                 {isPending
                   ? "Génération…"
-                  : `Générer la lettre-cadre (${cochees.size} formation${cochees.size > 1 ? "s" : ""})`}
+                  : `Générer la lettre-cadre (${cochees.size} prestation${cochees.size > 1 ? "s" : ""})`}
               </button>
             </>
           )}
