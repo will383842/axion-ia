@@ -84,6 +84,14 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/admin-nav\.ts$/,
   /^src\/components\/admin\/ui\/AdminBreadcrumbs\.tsx$/,
   /^src\/app\/globals\.css$/,
+  // Garde-fou du système de design de la console (refonte UI 2026-08-01) — il
+  // scanne TOUT l'arbre admin, y compris les pages content-gen, pour vérifier
+  // que chaque jeton et chaque classe `.admin-*` référencés sont bien définis
+  // dans admin.css. Le marqueur apparaît uniquement dans sa liste de chaînes
+  // `admin-*` qui ne sont PAS des classes CSS : la clé de stockage local
+  // `admin-content-gen-poles-collapsed-v1`. Aucun code de pipeline.
+  // Même nature d'exception que admin-nav.ts et AdminBreadcrumbs.tsx ci-dessus.
+  /^src\/components\/admin\/ui\/__tests__\/admin-design-tokens\.test\.ts$/,
   // KB readers — content-gen consomme la KB via getKnowledgeReadersForContentGen()
   // (lecture seule, Sprint 11.5 KB ingest URLs externes).
   /^src\/lib\/knowledge\/readers\.ts$/,
