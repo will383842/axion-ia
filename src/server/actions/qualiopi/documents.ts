@@ -64,7 +64,13 @@ import { CertificatRealisationPdf } from "@/server/qualiopi/documents/templates/
 import { KitOpcoPdf } from "@/server/qualiopi/documents/templates/kit-opco";
 import { KitCpfPdf } from "@/server/qualiopi/documents/templates/kit-cpf";
 import { KitFranceTravailPdf } from "@/server/qualiopi/documents/templates/kit-france-travail";
-import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
+import {
+  LettreMissionPdf,
+  type FormationConfiee,
+  type LigneRemuneration,
+} from "@/server/qualiopi/documents/templates/lettre-mission";
+import { resolveRegle, type RegleRemuneration } from "@/server/qualiopi/remuneration/calcul";
+import { libelleRemuneration } from "@/server/qualiopi/remuneration/libelle";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
@@ -1617,7 +1623,10 @@ export async function genererLettreMissionAction(input: {
       coFormateurs: true,
       formateurPrincipalId: true,
       formationSnapshot: true,
-      formation: { select: { dureeHeures: true } },
+      // `slug` : la clé de résolution du barème (`TrainerCompensationRule.
+      // interventionSlug`) — la lettre imprime désormais la rémunération que la
+      // paie appliquera, pas le tarif générique de la fiche.
+      formation: { select: { slug: true, dureeHeures: true } },
     },
   });
   if (!session) return { error: "Session introuvable" };
@@ -1637,6 +1646,7 @@ export async function genererLettreMissionAction(input: {
     prenom: string;
     email: string;
     telephone: string | null;
+    statut: string;
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
   } | null = null;
@@ -1649,6 +1659,7 @@ export async function genererLettreMissionAction(input: {
         prenom: true,
         email: true,
         telephone: true,
+        statut: true,
         tarifJourneeHtCents: true,
         sousTraitantNda: true,
       },
@@ -1691,7 +1702,40 @@ export async function genererLettreMissionAction(input: {
     };
   }
 
+  // 🔴 Réservée aux SOUS-TRAITANTS (2026-08-01). Le document s'intitule
+  // « Lettre de mission formateur sous-traitant » et le générateur ne regardait
+  // pas le statut : un salarié recevait la même lettre — sans fondement, son
+  // contrat de travail couvre déjà l'animation — et le dirigeant se serait
+  // confié une mission à lui-même. (Statut inconnu = formateur legacy résolu
+  // depuis le Json seul : on n'invente pas un refus sur une donnée absente.)
+  if (trainer !== null) {
+    const refus = refusLettreSelonStatut(trainer.statut, nomPrenom);
+    if (refus !== null) return { error: refus };
+  }
+
   const tarifJourHt = trainer?.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0;
+
+  // 🔴 La rémunération vient du barème RÉSOLU — le même `resolveRegle` que la
+  // paie mensuelle (`statements.ts`). Avant ce branchement, la lettre imprimait
+  // le tarif générique de la fiche pendant que la paie appliquait la règle :
+  // deux chiffres contradictoires possibles sur une pièce SIGNÉE.
+  const regles = principalTrainerId ? await chargerReglesRemuneration(principalTrainerId) : [];
+  const remunerations = compresserRemunerations([
+    {
+      intitule: session.titreSession,
+      libelle: libelleRemuneration(
+        principalTrainerId
+          ? resolveRegle(regles, {
+              trainerId: principalTrainerId,
+              prestationType: "formation_collective",
+              interventionSlug: session.formation.slug,
+              date: new Date(session.dateDebut),
+            })
+          : null,
+        trainer?.tarifJourneeHtCents ?? null,
+      ),
+    },
+  ]);
 
   const doc = await generateDocument({
     type: "lettre_mission",
@@ -1726,11 +1770,14 @@ export async function genererLettreMissionAction(input: {
             },
           ],
           tarifJourHt,
+          remunerations,
           dateMission: formatDateFr(new Date()),
         },
         identite,
       }),
-    refs: { sessionId },
+    // `trainerId` en plus de la session : c'est lui qui rend la pièce
+    // retrouvable et signable sans détour par la session (cf. lettre-cadre).
+    refs: { sessionId, ...(principalTrainerId !== null ? { trainerId: principalTrainerId } : {}) },
   });
 
   await logQualiopiActivity({
@@ -1738,6 +1785,327 @@ export async function genererLettreMissionAction(input: {
     targetType: "TrainingSession",
     targetId: sessionId,
     changes: { documentId: doc.id, numero: doc.numero },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+/**
+ * Refus de la lettre selon le statut du formateur — `null` si elle est due.
+ *
+ * Le message explique le POURQUOI : un bouton qui refuse sans dire pour qui la
+ * pièce existe pousserait l'admin à contourner, pas à comprendre.
+ */
+function refusLettreSelonStatut(statut: string, nomPrenom: string): string | null {
+  if (statut === "salarie") {
+    return `${nomPrenom} est enregistré comme salarié : son contrat de travail couvre déjà l'animation, une lettre de mission de sous-traitance n'a pas de fondement pour lui. Elle est réservée aux formateurs sous-traitants.`;
+  }
+  if (statut === "dirigeant") {
+    return `${nomPrenom} est le dirigeant-formateur de l'organisme : il ne peut pas se confier une mission à lui-même par lettre de sous-traitance. Ses compétences se justifient par CV et diplômes (indicateur 21).`;
+  }
+  return null;
+}
+
+/**
+ * Règles de rémunération du formateur, converties pour `resolveRegle`.
+ * (Conversion Decimal→number : jamais de `Decimal` hors de Prisma.)
+ */
+async function chargerReglesRemuneration(trainerId: string): Promise<RegleRemuneration[]> {
+  const rules = await prisma.trainerCompensationRule.findMany({ where: { trainerId } });
+  return rules.map((r) => {
+    const base: RegleRemuneration = {
+      trainerId: r.trainerId,
+      prestationType: r.prestationType,
+      interventionSlug: r.interventionSlug,
+      model: r.model,
+      effectiveFrom: r.effectiveFrom,
+      effectiveTo: r.effectiveTo,
+    };
+    if (r.tauxJourneeHtCents !== null) base.tauxJourneeHtCents = r.tauxJourneeHtCents;
+    if (r.tauxHoraireHtCents !== null) base.tauxHoraireHtCents = r.tauxHoraireHtCents;
+    if (r.forfaitHtCents !== null) base.forfaitHtCents = r.forfaitHtCents;
+    if (r.commissionPct !== null) base.commissionPct = r.commissionPct.toNumber();
+    return base;
+  });
+}
+
+/**
+ * Une seule ligne quand toutes les formations partagent le même barème —
+ * répéter dix fois la même phrase ferait chercher une différence qui n'existe
+ * pas. Dès qu'un libellé diffère, chaque formation garde sa ligne nominative.
+ */
+function compresserRemunerations(lignes: LigneRemuneration[]): LigneRemuneration[] {
+  if (lignes.length > 1 && lignes.every((l) => l.libelle === lignes[0]!.libelle)) {
+    return [{ intitule: null, libelle: lignes[0]!.libelle }];
+  }
+  return lignes;
+}
+
+/** `yyyy-mm-dd` (input date) → Date UTC minuit. Le schéma zod garantit la forme. */
+function dateDepuisIso(iso: string): Date {
+  return new Date(`${iso}T00:00:00.000Z`);
+}
+
+const lettreCadreListeSchema = z.object({
+  sessionId: z.string().uuid(),
+  dateDebut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  dateFin: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+});
+
+const lettreCadreSchema = lettreCadreListeSchema.extend({
+  sessionIds: z.array(z.string().uuid()).min(1).max(100),
+});
+
+/**
+ * Formations candidates à une lettre-CADRE : celles de la période dont le
+ * formateur principal est celui de la session d'origine.
+ *
+ * ⚠️ Pré-filtre SQL large (FK OU affectation), recoupé en mémoire par
+ * `resolvePrincipalTrainerId` — le même motif que `lireLettresMissionDuFormateur`,
+ * pour la même raison : seul le résolveur sait retomber sur le Json legacy.
+ */
+export async function listerSessionsLettreCadreAction(input: {
+  sessionId: string;
+  dateDebut: string;
+  dateFin: string;
+}): Promise<
+  ActionResult<{
+    formateur: string;
+    sessions: Array<{ id: string; numero: string; titre: string; du: string; au: string }>;
+  }>
+> {
+  await requireAdminWrite();
+  if (isStub()) return { error: "Indisponible en mode build (stub)" };
+
+  const parsed = lettreCadreListeSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId, dateDebut, dateFin } = parsed.data;
+  if (dateDebut > dateFin) return { error: "La date de début est postérieure à la date de fin." };
+
+  const origine = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: { formateurPrincipalId: true, coFormateurs: true },
+  });
+  if (!origine) return { error: "Session introuvable" };
+  const trainerId = resolvePrincipalTrainerId(origine);
+  if (trainerId === null) {
+    return {
+      error:
+        "Aucun formateur principal n'est désigné sur cette session : désignez-le d'abord, la lettre-cadre est établie à son nom.",
+    };
+  }
+
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: { nom: true, prenom: true, statut: true },
+  });
+  if (!trainer) return { error: "Formateur introuvable" };
+  const nomPrenom = `${trainer.prenom} ${trainer.nom}`.trim();
+  const refus = refusLettreSelonStatut(trainer.statut, nomPrenom);
+  if (refus !== null) return { error: refus };
+
+  const debut = dateDepuisIso(dateDebut);
+  const finExclue = dateDepuisIso(dateFin);
+  finExclue.setUTCDate(finExclue.getUTCDate() + 1);
+
+  const candidates = await prisma.trainingSession.findMany({
+    where: {
+      dateDebut: { gte: debut, lt: finExclue },
+      OR: [{ formateurPrincipalId: trainerId }, { sessionFormateurs: { some: { trainerId } } }],
+    },
+    orderBy: { dateDebut: "asc" },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      formateurPrincipalId: true,
+      coFormateurs: true,
+    },
+  });
+
+  return {
+    data: {
+      formateur: nomPrenom,
+      sessions: candidates
+        .filter((s) => resolvePrincipalTrainerId(s) === trainerId)
+        .map((s) => ({
+          id: s.id,
+          numero: s.numero,
+          titre: s.titreSession,
+          du: formatDate(new Date(s.dateDebut)),
+          au: formatDate(new Date(s.dateFin)),
+        })),
+    },
+  };
+}
+
+/**
+ * Génère une lettre de mission-CADRE : UNE lettre, UNE signature du
+ * sous-traitant, couvrant toutes les formations cochées de la période.
+ *
+ * Décision Will 2026-08-01 (« les deux, au choix au moment de générer ») : la
+ * lettre par session reste `genererLettreMissionAction`, inchangée ; celle-ci
+ * s'y ajoute pour le formateur récurrent — à 200 formateurs, une signature par
+ * session ne tient pas.
+ *
+ * 🔴 La pièce est ancrée par `refs.trainerId`, PAS par une session : c'est ce
+ * rattachement que l'espace formateur et l'action de signature lisent. Les
+ * sessions couvertes vivent dans `metadata.lettreCadre` — affichage et
+ * rapprochement console, jamais l'autorisation.
+ *
+ * ⚠️ La liste reçue du client est REVALIDÉE session par session : chacune doit
+ * avoir pour formateur principal celui de la lettre. Sans ce recoupement, un
+ * identifiant étranger glissé dans la requête ferait signer au sous-traitant
+ * une formation qui ne lui est pas confiée.
+ */
+export async function genererLettreMissionCadreAction(input: {
+  sessionId: string;
+  dateDebut: string;
+  dateFin: string;
+  sessionIds: string[];
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = lettreCadreSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId, dateDebut, dateFin, sessionIds } = parsed.data;
+  if (dateDebut > dateFin) return { error: "La date de début est postérieure à la date de fin." };
+
+  const origine = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: { formateurPrincipalId: true, coFormateurs: true },
+  });
+  if (!origine) return { error: "Session introuvable" };
+  const trainerId = resolvePrincipalTrainerId(origine);
+  if (trainerId === null) {
+    return {
+      error:
+        "Aucun formateur principal n'est désigné sur cette session : désignez-le d'abord, la lettre-cadre est établie à son nom.",
+    };
+  }
+
+  const trainer = await prisma.trainer.findUnique({
+    where: { id: trainerId },
+    select: {
+      nom: true,
+      prenom: true,
+      email: true,
+      telephone: true,
+      statut: true,
+      tarifJourneeHtCents: true,
+      sousTraitantNda: true,
+    },
+  });
+  if (!trainer) return { error: "Formateur introuvable" };
+  const nomPrenom = `${trainer.prenom} ${trainer.nom}`.trim();
+  const refus = refusLettreSelonStatut(trainer.statut, nomPrenom);
+  if (refus !== null) return { error: refus };
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: { id: { in: sessionIds } },
+    orderBy: { dateDebut: "asc" },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      modalite: true,
+      ...LIEU_DOCUMENT_SELECT,
+      formateurPrincipalId: true,
+      coFormateurs: true,
+      formationSnapshot: true,
+      formation: { select: { slug: true, dureeHeures: true } },
+    },
+  });
+  if (sessions.length !== sessionIds.length) {
+    return { error: "Une des sessions sélectionnées est introuvable. Rechargez la liste." };
+  }
+  const etrangere = sessions.find((s) => resolvePrincipalTrainerId(s) !== trainerId);
+  if (etrangere !== undefined) {
+    return {
+      error: `La session ${etrangere.numero} n'a pas ${nomPrenom} pour formateur principal : elle ne peut pas figurer sur sa lettre de mission.`,
+    };
+  }
+
+  const identite = await getOrganismeIdentite();
+  const regles = await chargerReglesRemuneration(trainerId);
+
+  const formations: FormationConfiee[] = sessions.map((s) => {
+    const formationDoc = readFormationForDocs(s.formationSnapshot, s.formation);
+    return {
+      intitule: s.titreSession,
+      dateDebut: formatDate(new Date(s.dateDebut)),
+      dateFin: formatDate(new Date(s.dateFin)),
+      lieuOuModalite: formatLieu(s) ?? modaliteLabel(s.modalite),
+      dureeHeures: formationDoc.dureeHeures ?? s.formation.dureeHeures,
+    };
+  });
+  const remunerations = compresserRemunerations(
+    sessions.map((s) => ({
+      intitule: s.titreSession,
+      libelle: libelleRemuneration(
+        resolveRegle(regles, {
+          trainerId,
+          prestationType: "formation_collective",
+          interventionSlug: s.formation.slug,
+          date: new Date(s.dateDebut),
+        }),
+        trainer.tarifJourneeHtCents,
+      ),
+    })),
+  );
+
+  const doc = await generateDocument({
+    type: "lettre_mission",
+    buildElement: (numero) =>
+      React.createElement(LettreMissionPdf, {
+        data: {
+          numero,
+          formateur: {
+            nomPrenom,
+            adresse: "—",
+            email: trainer.email,
+            ...(trainer.telephone !== null ? { telephone: trainer.telephone } : {}),
+            specialite: "Formation Intelligence Artificielle",
+            ...(trainer.sousTraitantNda !== null
+              ? { siretOuSirenOuNaf: trainer.sousTraitantNda }
+              : {}),
+          },
+          objetMission:
+            "Animation des formations professionnelles continues listées ci-dessous, dans le cadre des programmes pédagogiques définis par l'organisme de formation.",
+          periode: {
+            du: formatDateFr(dateDepuisIso(dateDebut)),
+            au: formatDateFr(dateDepuisIso(dateFin)),
+          },
+          formations,
+          tarifJourHt: trainer.tarifJourneeHtCents ? trainer.tarifJourneeHtCents / 100 : 0,
+          remunerations,
+          dateMission: formatDateFr(new Date()),
+        },
+        identite,
+      }),
+    refs: { trainerId },
+    metadata: {
+      lettreCadre: { du: dateDebut, au: dateFin, sessionIds: sessions.map((s) => s.id) },
+    },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.lettre_mission_cadre.genere",
+    targetType: "Trainer",
+    targetId: trainerId,
+    changes: {
+      documentId: doc.id,
+      numero: doc.numero,
+      du: dateDebut,
+      au: dateFin,
+      sessions: sessions.length,
+    },
     session: adminSession,
   });
 

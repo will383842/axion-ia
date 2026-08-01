@@ -50,6 +50,9 @@ function piece(over: Record<string, unknown> = {}) {
     numero: "AXI-LM-2026-0004",
     statutSignature: "en_attente",
     metadata: {},
+    // Ancre directe absente par défaut : les fixtures historiques décrivent des
+    // lettres LEGACY, résolues par la session — et doivent le rester.
+    trainerId: null,
     signatures: [] as Array<Record<string, unknown>>,
     session: {
       id: SESSION,
@@ -107,9 +110,10 @@ describe("lecture côté FORMATEUR", () => {
     // nul, qui rend zéro ligne : exactement le sens voulu.
     await lireLettresMissionDuFormateur("");
     const arg = mockPrisma.documentGenere.findMany.mock.calls[0]?.[0] as {
-      where: { session: { is: { OR: Array<Record<string, unknown>> } } };
+      where: { OR: Array<Record<string, unknown>> };
     };
-    const clauses = JSON.stringify(arg.where.session.is.OR);
+    // Les DEUX branches (ancre directe + détour session) sont assainies.
+    const clauses = JSON.stringify(arg.where.OR);
     expect(clauses).not.toContain('""');
     expect(clauses).toContain("00000000-0000-0000-0000-000000000000");
   });
@@ -418,5 +422,101 @@ describe("🔴 chemin CONSOLE — contreseing de l'organisme", () => {
     };
     expect(arg.orderBy).toStrictEqual([{ createdAt: "desc" }, { id: "desc" }]);
     expect(arg.where["type"]).toBe("lettre_mission");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lettres-CADRE (2026-08-01) — mandat par ancre directe, sans session
+// ─────────────────────────────────────────────────────────────────────────────
+
+function pieceCadre(over: Record<string, unknown> = {}) {
+  return piece({
+    id: "55555555-5555-4555-8555-555555555555",
+    numero: "AXI-LM-2026-0009",
+    session: null,
+    trainerId: TRAINER,
+    metadata: {
+      lettreCadre: {
+        du: "2026-09-01",
+        au: "2026-12-31",
+        sessionIds: [SESSION],
+      },
+    },
+    ...over,
+  });
+}
+
+describe("lettres-CADRE", () => {
+  it("le formateur ancré la voit, avec sa période lisible", async () => {
+    mockPrisma.documentGenere.findMany.mockResolvedValue([pieceCadre()]);
+
+    const [etat] = await lireLettresMissionDuFormateur(TRAINER);
+
+    expect(etat).toBeDefined();
+    expect(etat!.estCadre).toBe(true);
+    expect(etat!.periodeLisible).toContain("septembre 2026");
+    expect(etat!.periodeLisible).toContain("décembre 2026");
+    // Pas de session : le rattachement affiché est la période, rien d'autre.
+    expect(etat!.sessionTitre).toBe("");
+    expect(etat!.peutAgir).toBe(true);
+  });
+
+  it("🔴 refuse le bouton à un formateur qui n'est PAS l'ancre — même sans session à résoudre", async () => {
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      pieceCadre({ trainerId: AUTRE_TRAINER }),
+    ]);
+
+    // La pièce ne le concerne pas : elle ne doit pas APPARAÎTRE du tout.
+    expect(await lireLettresMissionDuFormateur(TRAINER)).toStrictEqual([]);
+  });
+
+  it("🔴 l'ancre directe PRIME sur la résolution par session", async () => {
+    // Pièce ancrée sur AUTRE_TRAINER mais dont la session résout vers TRAINER
+    // (réaffectation après émission). C'est l'ancre — ce que le générateur a
+    // imprimé — qui fait foi : TRAINER ne doit PAS pouvoir signer un mandat qui
+    // nomme quelqu'un d'autre.
+    mockPrisma.documentGenere.findMany.mockResolvedValue([piece({ trainerId: AUTRE_TRAINER })]);
+
+    expect(await lireLettresMissionDuFormateur(TRAINER)).toStrictEqual([]);
+  });
+
+  it("une réémission de la MÊME période remplace la précédente ; une autre période coexiste", async () => {
+    const t2 = { du: "2027-01-01", au: "2027-03-31", sessionIds: [] };
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      // Tri createdAt desc simulé : la plus récente d'abord.
+      pieceCadre({ id: "66666666-6666-4666-8666-666666666666" }),
+      pieceCadre(), // même période → écartée
+      pieceCadre({ id: "77777777-7777-4777-8777-777777777777", metadata: { lettreCadre: t2 } }),
+    ]);
+
+    const etats = await lireLettresMissionDuFormateur(TRAINER);
+    expect(etats).toHaveLength(2);
+    expect(etats[0]!.documentGenereId).toBe("66666666-6666-4666-8666-666666666666");
+  });
+
+  it("métadonnée illisible : la pièce reste visible, en lettre de session dégradée", async () => {
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      pieceCadre({ metadata: { lettreCadre: "corrompu" } }),
+    ]);
+
+    const [etat] = await lireLettresMissionDuFormateur(TRAINER);
+    expect(etat).toBeDefined();
+    expect(etat!.estCadre).toBe(false);
+    expect(etat!.periodeLisible).toBeNull();
+  });
+
+  it("la console la rapproche des sessions couvertes (metadata), jamais pour l'autorisation", async () => {
+    mockPrisma.documentGenere.findFirst.mockResolvedValue(pieceCadre());
+
+    const etat = await lireEtatSignatureLettreMissionConsole(SESSION, "admin");
+
+    expect(etat?.estCadre).toBe(true);
+    expect(etat?.peutAgir).toBe(true);
+    const arg = mockPrisma.documentGenere.findFirst.mock.calls[0]?.[0] as {
+      where: { OR: unknown[] };
+    };
+    // La requête cherche la lettre de session OU la lettre-cadre qui couvre
+    // cette session par ses métadonnées.
+    expect(arg.where.OR).toHaveLength(2);
   });
 });

@@ -198,6 +198,50 @@ describe("LettreMissionPdf", () => {
   it("rend un PDF valide (%PDF)", async () => {
     await expectPdf(<LettreMissionPdf data={data} identite={identite} />);
   }, 30_000);
+
+  it("rend une lettre-CADRE : période + plusieurs formations + rémunérations par formation", async () => {
+    await expectPdf(
+      <LettreMissionPdf
+        data={{
+          ...data,
+          periode: { du: "01/09/2026", au: "31/12/2026" },
+          formations: [
+            ...data.formations,
+            {
+              intitule: "IA pour l'immobilier",
+              dateDebut: "10/10/2026",
+              dateFin: "10/10/2026",
+              lieuOuModalite: "Saint-Étienne / Présentiel",
+              dureeHeures: 7,
+            },
+          ],
+          remunerations: [
+            {
+              intitule: "Introduction à l'IA générative",
+              libelle: "850,00 € HT par jour d'animation",
+            },
+            {
+              intitule: "IA pour l'immobilier",
+              libelle: "40 % du chiffre d'affaires HT de la prestation",
+            },
+          ],
+        }}
+        identite={identite}
+      />,
+    );
+  }, 30_000);
+
+  it("rend une rémunération compressée en une ligne « toutes formations »", async () => {
+    await expectPdf(
+      <LettreMissionPdf
+        data={{
+          ...data,
+          remunerations: [{ intitule: null, libelle: "850,00 € HT par jour d'animation" }],
+        }}
+        identite={identite}
+      />,
+    );
+  }, 30_000);
 });
 
 // ============================================================

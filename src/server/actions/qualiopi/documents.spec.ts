@@ -20,9 +20,11 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const mockSessionFindUnique = vi.fn();
+const mockSessionFindMany = vi.fn();
 const mockEnrollmentFindUnique = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionJourFindMany = vi.fn();
+const mockCompensationRuleFindMany = vi.fn();
 
 const mockSignatureCount = vi.fn();
 
@@ -30,6 +32,12 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {
       findUnique: (...args: unknown[]) => mockSessionFindUnique(...args),
+      findMany: (...args: unknown[]) => mockSessionFindMany(...args),
+    },
+    // La lettre de mission imprime la rémunération RÉSOLUE (le barème de la
+    // paie), plus le tarif générique de la fiche.
+    trainerCompensationRule: {
+      findMany: (...args: unknown[]) => mockCompensationRuleFindMany(...args),
     },
     enrollment: {
       findUnique: (...args: unknown[]) => mockEnrollmentFindUnique(...args),
@@ -94,6 +102,7 @@ import {
   genererKitCpfAction,
   genererKitFranceTravailAction,
   genererLettreMissionAction,
+  genererLettreMissionCadreAction,
   genererLivretAccueilAction,
   genererContratFormationAction,
 } from "./documents";
@@ -148,6 +157,7 @@ function makeSession(overrides: Record<string, unknown> = {}) {
       opcoNumeroAdherent: "ADH-12345",
     },
     formation: {
+      slug: "ia-operationnelle",
       dureeHeures: 14,
       titre: "IA Opérationnelle",
       objectifsPedagogiques: [
@@ -207,6 +217,9 @@ beforeEach(() => {
   // Dossier sain par defaut : une trace d'emargement existe.
   mockSignatureCount.mockResolvedValue(1);
   mockGetQualiopiConfig.mockResolvedValue(null);
+  // Aucun barème par défaut → la lettre retombe sur le tarif de la fiche.
+  mockCompensationRuleFindMany.mockResolvedValue([]);
+  mockSessionFindMany.mockResolvedValue([]);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -686,22 +699,100 @@ describe("genererKitFranceTravailAction", () => {
 describe("genererLettreMissionAction", () => {
   const TRAINER_ID = "d1234567-89ab-cdef-0123-456789abcdef";
 
-  it("génère la lettre de mission pour une session", async () => {
+  /** Formateur sous-traitant nominal — le seul statut auquel la lettre est due. */
+  const SOUS_TRAITANT = {
+    nom: "Jullin",
+    prenom: "Williams",
+    email: "w@axion-ia.fr",
+    telephone: null,
+    statut: "sous_traitant",
+    tarifJourneeHtCents: 80000,
+    sousTraitantNda: null,
+  };
+
+  it("génère la lettre de mission pour une session, ancrée sur le formateur", async () => {
     mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
-    mockTrainerFindUnique.mockResolvedValue({
-      nom: "Jullin",
-      prenom: "Williams",
-      email: "w@axion-ia.fr",
-      telephone: null,
-      tarifJourneeHtCents: 80000,
-      sousTraitantNda: null,
-    });
+    mockTrainerFindUnique.mockResolvedValue(SOUS_TRAITANT);
 
     const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
 
     expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
-    const call = mockGenerateDocument.mock.calls[0]![0]! as { type: string };
+    const call = mockGenerateDocument.mock.calls[0]![0]! as {
+      type: string;
+      refs: Record<string, string>;
+    };
     expect(call.type).toBe("lettre_mission");
+    // 🔴 L'ancre du mandat. Sans elle, l'autorisation de signature repasse par
+    // le détour de la session — le chemin legacy qu'on cherche à éteindre.
+    expect(call.refs).toMatchObject({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+  });
+
+  // 🔴 Sans règle de rémunération, la lettre n'imprime plus un tarif nu : elle
+  // le dit « tarif général du formateur » — et si la fiche n'a rien, elle
+  // l'ÉCRIT au lieu d'imprimer 0,00 € (un faux gratuit signé est irrattrapable).
+  it("imprime le tarif de la fiche en repli quand aucun barème n'existe", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue(SOUS_TRAITANT);
+
+    await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    const data = donneesPdf<{
+      remunerations: Array<{ intitule: string | null; libelle: string }>;
+    }>();
+    expect(data.remunerations).toHaveLength(1);
+    expect(data.remunerations[0]!.libelle).toContain("800,00");
+    expect(data.remunerations[0]!.libelle).toContain("tarif général");
+  });
+
+  it("🔴 imprime la règle RÉSOLUE quand elle existe — le même barème que la paie", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue(SOUS_TRAITANT);
+    // Commission 40 % du CA sur cette formation précise, en vigueur.
+    mockCompensationRuleFindMany.mockResolvedValue([
+      {
+        trainerId: TRAINER_ID,
+        prestationType: "formation_collective",
+        interventionSlug: "ia-operationnelle",
+        model: "commission_ca_pct",
+        tauxJourneeHtCents: null,
+        tauxHoraireHtCents: null,
+        forfaitHtCents: null,
+        commissionPct: { toNumber: () => 40 },
+        effectiveFrom: new Date("2026-01-01T00:00:00Z"),
+        effectiveTo: null,
+      },
+    ]);
+
+    await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    const data = donneesPdf<{ remunerations: Array<{ libelle: string }> }>();
+    // Avant ce branchement : la lettre annonçait 800,00 € / jour pendant que la
+    // paie appliquait 40 % du CA. Deux chiffres contradictoires, pièce signée.
+    expect(data.remunerations[0]!.libelle).toContain("40 %");
+    expect(data.remunerations[0]!.libelle).not.toContain("800,00");
+  });
+
+  // 🔴 Le document s'intitule « Lettre de mission formateur SOUS-TRAITANT ».
+  // Un salarié est couvert par son contrat de travail ; le dirigeant ne peut pas
+  // se confier une mission à lui-même. Le générateur ne regardait pas le statut.
+  it("refuse la lettre pour un salarié, en expliquant pourquoi", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue({ ...SOUS_TRAITANT, statut: "salarie" });
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("salarié") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse la lettre pour le dirigeant-formateur", async () => {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue({ ...SOUS_TRAITANT, statut: "dirigeant" });
+
+    const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("dirigeant") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 
   it("🔴 REFUSE de nommer un formateur qui n'existe pas", async () => {
@@ -735,6 +826,209 @@ describe("genererLettreMissionAction", () => {
     const result = await genererLettreMissionAction({ sessionId: SESSION_ID });
 
     expect(result).toMatchObject({ error: expect.stringContaining("Aucun formateur") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 13 bis. Lettre de mission-CADRE
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("genererLettreMissionCadreAction", () => {
+  const TRAINER_ID = "d1234567-89ab-cdef-0123-456789abcdef";
+  const SESSION_2 = "b2222222-2222-4222-8222-222222222222";
+
+  const SOUS_TRAITANT = {
+    nom: "Blanc",
+    prenom: "Marie",
+    email: "m@exemple.fr",
+    telephone: null,
+    statut: "sous_traitant",
+    tarifJourneeHtCents: 60000,
+    sousTraitantNda: null,
+  };
+
+  function makeSessionCadre(id: string, titre: string, overrides: Record<string, unknown> = {}) {
+    return {
+      id,
+      numero: `AXI-SESS-2026-${id.slice(0, 3)}`,
+      titreSession: titre,
+      dateDebut: new Date("2026-09-10T09:00:00Z"),
+      dateFin: new Date("2026-09-10T17:00:00Z"),
+      modalite: "presentiel",
+      lieuType: null,
+      lieuIntitule: null,
+      lieuAdresse: null,
+      lieuCodePostal: null,
+      lieuVille: null,
+      lieuSalle: null,
+      lieuVisioUrl: null,
+      formateurPrincipalId: TRAINER_ID,
+      coFormateurs: [],
+      formationSnapshot: null,
+      formation: { slug: "ia-operationnelle", dureeHeures: 7 },
+      ...overrides,
+    };
+  }
+
+  function armerNominal() {
+    mockSessionFindUnique.mockResolvedValue(makeSession({ formateurPrincipalId: TRAINER_ID }));
+    mockTrainerFindUnique.mockResolvedValue(SOUS_TRAITANT);
+    mockSessionFindMany.mockResolvedValue([
+      makeSessionCadre(SESSION_ID, "IA Opérationnelle"),
+      makeSessionCadre(SESSION_2, "IA pour l'immobilier", {
+        formation: { slug: "ia-immobilier", dureeHeures: 7 },
+      }),
+    ]);
+  }
+
+  it("génère UNE lettre couvrant les sessions cochées, ancrée sur le formateur seul", async () => {
+    armerNominal();
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID, SESSION_2],
+    });
+
+    expect(result).toEqual({ data: { documentId: DOCUMENT_ID, numero: NUMERO } });
+    const call = mockGenerateDocument.mock.calls[0]![0]! as {
+      type: string;
+      refs: Record<string, unknown>;
+      metadata: { lettreCadre: { du: string; au: string; sessionIds: string[] } };
+    };
+    expect(call.type).toBe("lettre_mission");
+    // 🔴 AUCUNE session en refs : le mandat est le formateur. Les sessions
+    // couvertes vivent en métadonnées (affichage), jamais dans l'autorisation.
+    expect(call.refs).toEqual({ trainerId: TRAINER_ID });
+    expect(call.metadata.lettreCadre.sessionIds).toEqual([SESSION_ID, SESSION_2]);
+
+    const data = donneesPdf<{
+      periode: { du: string; au: string };
+      formations: Array<{ intitule: string }>;
+    }>();
+    expect(data.periode).toBeDefined();
+    expect(data.formations.map((f) => f.intitule)).toEqual([
+      "IA Opérationnelle",
+      "IA pour l'immobilier",
+    ]);
+  });
+
+  it("compresse la rémunération en une ligne quand toutes les formations partagent le barème", async () => {
+    armerNominal();
+
+    await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID, SESSION_2],
+    });
+
+    const data = donneesPdf<{ remunerations: Array<{ intitule: string | null }> }>();
+    // Même repli (tarif fiche) partout → une seule ligne « toutes formations ».
+    expect(data.remunerations).toHaveLength(1);
+    expect(data.remunerations[0]!.intitule).toBeNull();
+  });
+
+  it("garde une ligne PAR formation quand les barèmes diffèrent", async () => {
+    armerNominal();
+    mockCompensationRuleFindMany.mockResolvedValue([
+      {
+        trainerId: TRAINER_ID,
+        prestationType: "formation_collective",
+        interventionSlug: "ia-immobilier",
+        model: "commission_ca_pct",
+        tauxJourneeHtCents: null,
+        tauxHoraireHtCents: null,
+        forfaitHtCents: null,
+        commissionPct: { toNumber: () => 40 },
+        effectiveFrom: new Date("2026-01-01T00:00:00Z"),
+        effectiveTo: null,
+      },
+    ]);
+
+    await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID, SESSION_2],
+    });
+
+    const data = donneesPdf<{
+      remunerations: Array<{ intitule: string | null; libelle: string }>;
+    }>();
+    expect(data.remunerations).toHaveLength(2);
+    expect(data.remunerations[1]!.libelle).toContain("40 %");
+    expect(data.remunerations[0]!.libelle).toContain("600,00");
+  });
+
+  // 🔴 La liste cliente n'est JAMAIS crue : un identifiant étranger glissé dans
+  // la requête ferait signer au sous-traitant une formation qui ne lui est pas
+  // confiée — avec son nom imprimé et scellé dessus.
+  it("refuse une session dont le formateur principal est quelqu'un d'autre", async () => {
+    armerNominal();
+    mockSessionFindMany.mockResolvedValue([
+      makeSessionCadre(SESSION_ID, "IA Opérationnelle"),
+      makeSessionCadre(SESSION_2, "Autre formation", {
+        formateurPrincipalId: "e9999999-9999-4999-8999-999999999999",
+      }),
+    ]);
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID, SESSION_2],
+    });
+
+    expect(result).toMatchObject({
+      error: expect.stringContaining("formateur principal"),
+    });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse un salarié — même règle que la lettre de session", async () => {
+    armerNominal();
+    mockTrainerFindUnique.mockResolvedValue({ ...SOUS_TRAITANT, statut: "salarie" });
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID],
+    });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("salarié") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse une période inversée", async () => {
+    armerNominal();
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-12-31",
+      dateFin: "2026-09-01",
+      sessionIds: [SESSION_ID],
+    });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("postérieure") });
+    expect(mockGenerateDocument).not.toHaveBeenCalled();
+  });
+
+  it("refuse quand une session cochée a disparu entre la liste et la génération", async () => {
+    armerNominal();
+    mockSessionFindMany.mockResolvedValue([makeSessionCadre(SESSION_ID, "IA Opérationnelle")]);
+
+    const result = await genererLettreMissionCadreAction({
+      sessionId: SESSION_ID,
+      dateDebut: "2026-09-01",
+      dateFin: "2026-12-31",
+      sessionIds: [SESSION_ID, SESSION_2],
+    });
+
+    expect(result).toMatchObject({ error: expect.stringContaining("introuvable") });
     expect(mockGenerateDocument).not.toHaveBeenCalled();
   });
 });

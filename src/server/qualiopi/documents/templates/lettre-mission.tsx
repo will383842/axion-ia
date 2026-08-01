@@ -34,6 +34,12 @@ export interface FormationConfiee {
   dureeHeures: number;
 }
 
+/** Une ligne de rémunération. `intitule` null = toutes les formations confiées. */
+export interface LigneRemuneration {
+  intitule: string | null;
+  libelle: string;
+}
+
 export interface LettreMissionData {
   numero: string;
   estCopie?: boolean;
@@ -49,7 +55,19 @@ export interface LettreMissionData {
   // Mission
   objetMission: string;
   formations: FormationConfiee[];
+  /**
+   * Période couverte (lettre-CADRE). Absente = lettre de session unique,
+   * comportement historique inchangé.
+   */
+  periode?: { du: string; au: string };
   tarifJourHt: number;
+  /**
+   * Rémunération par formation, résolue depuis `TrainerCompensationRule` — le
+   * MÊME barème que la paie mensuelle. Absente = repli historique sur
+   * `tarifJourHt` (lettres émises avant le branchement du 2026-08-01, rendues
+   * à l'identique via `metadata.renderData`).
+   */
+  remunerations?: LigneRemuneration[];
   // Dates
   dateMission: string;
   /**
@@ -122,6 +140,14 @@ export function LettreMissionPdf({
         {/* 2. Objet et périmètre */}
         <DocSection title="2. Objet et périmètre de la mission">
           <Text style={pdfStyles.paragraph}>{data.objetMission}</Text>
+          {data.periode ? (
+            <Text style={pdfStyles.paragraph}>
+              La présente lettre vaut lettre de mission-cadre pour la période du {data.periode.du}{" "}
+              au {data.periode.au} : elle confie au formateur l&apos;ensemble des formations listées
+              en section 3, chacune demeurant soumise aux mêmes obligations et au barème de
+              rémunération de la section 4.
+            </Text>
+          ) : null}
         </DocSection>
 
         {/* 3. Formations confiées */}
@@ -146,7 +172,24 @@ export function LettreMissionPdf({
 
         {/* 4. Tarif */}
         <DocSection title="4. Rémunération">
-          <FieldRow label="Tarif journalier HT" value={formatEur(data.tarifJourHt) + " / jour"} />
+          {/*
+            🔴 Depuis le 2026-08-01, la rémunération vient du barème résolu
+            (`TrainerCompensationRule`, le même que la paie mensuelle), une
+            ligne par formation quand les règles diffèrent. Le repli
+            `tarifJourHt` ne sert plus qu'aux lettres émises avant ce
+            branchement, re-rendues à l'identique depuis `metadata.renderData`.
+          */}
+          {data.remunerations && data.remunerations.length > 0 ? (
+            data.remunerations.map((r, i) => (
+              <FieldRow
+                key={i}
+                label={r.intitule ?? "Toutes formations confiées"}
+                value={r.libelle}
+              />
+            ))
+          ) : (
+            <FieldRow label="Tarif journalier HT" value={formatEur(data.tarifJourHt) + " / jour"} />
+          )}
           <Text style={pdfStyles.legalNote}>
             La facturation s'effectue sur présentation de facture conforme par le formateur, après
             chaque session réalisée. Le tarif est exprimé hors taxes (TVA selon régime applicable au

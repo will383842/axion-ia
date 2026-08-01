@@ -62,7 +62,12 @@ export default async function DashboardPage(): Promise<React.ReactElement> {
           {lettresMission.map((lettre) => (
             <div key={lettre.documentGenereId} className="space-y-1">
               <p className="text-fg-muted text-xs">
-                {lettre.sessionTitre} · {lettre.sessionNumero}
+                {/* Une lettre-CADRE ne se rattache pas à une session : elle
+                    s'annonce par sa période, sinon le formateur signerait un
+                    mandat sans savoir ce qu'il couvre. */}
+                {lettre.estCadre
+                  ? `Lettre-cadre — ${lettre.periodeLisible ?? "période non renseignée"}`
+                  : `${lettre.sessionTitre} · ${lettre.sessionNumero}`}
               </p>
               <SignatureDocument
                 documentGenereId={lettre.documentGenereId}
