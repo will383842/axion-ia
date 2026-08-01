@@ -184,6 +184,105 @@
     --color-admin-rail-badge-danger: #e5484d; /* badge rouge (jobs, anomalies, contacts) */
     --color-admin-rail-badge-warn: #f5a623; /* badge ambre (alertes ops) */
     --color-admin-rail-avatar-bg: #ed7c4d; /* pastille avatar footer */
+    --color-admin-rail-text: var(--color-admin-rail-fg); /* alias — cf. bloc « jetons fantômes » */
+
+    /* =====================================================================
+     * JETONS FANTÔMES — alias de compatibilité (refonte UI 2026-08-01).
+     *
+     * 🔴 CONSTAT MESURÉ : 25 jetons `--*-admin-*` étaient RÉFÉRENCÉS par le
+     * code de la console et DÉFINIS NULLE PART — 295 occurrences réparties
+     * sur ~100 fichiers. `--color-admin-surface` à lui seul : 120 usages
+     * dans 65 fichiers, presque toujours en `bg-[color:var(…)]`.
+     *
+     * Un jeton absent ne casse RIEN bruyamment : la déclaration CSS est
+     * simplement ignorée. Les cartes concernées n'avaient donc aucun fond
+     * (elles héritaient du beige de la page), les textes « danger » aucune
+     * couleur rouge, les fonds d'alerte aucun halo. C'est la cause première
+     * du rendu « plat / inachevé » de la console.
+     *
+     * Même remède que pour `accent` et `error` plus haut : un alias unique
+     * répare tous les usages plutôt que 295 remplacements — et la prochaine
+     * référence à l'un de ces noms fonctionnera d'office.
+     *
+     * ⚠️ Un test de non-régression interdit désormais toute NOUVELLE
+     * référence à un jeton non défini :
+     *   src/components/admin/ui/__tests__/admin-tokens-defined.test.ts
+     * Si ce test échoue, c'est qu'un jeton a été inventé au fil de l'eau :
+     * soit on le définit ici, soit on corrige la référence.
+     * ===================================================================== */
+
+    /* Surfaces — « surface » = la surface d'une carte/panneau, donc papier. */
+    --color-admin-surface: var(--color-admin-paper);
+    --color-admin-surface-1: var(--color-admin-paper);
+    --color-admin-surface-2: var(--color-admin-paper-alt);
+    --color-admin-surface-alt: var(--color-admin-paper-alt);
+    --color-admin-surface-soft: var(--color-admin-paper-alt);
+    --color-admin-surface-subtle: var(--color-admin-paper-alt);
+    --color-admin-bg-subtle: var(--color-admin-paper-alt);
+    --color-admin-canvas: var(--color-admin-bg);
+    --color-admin-hover: var(--color-admin-surface-hover);
+
+    /* Foreground */
+    --color-admin-fg-default: var(--color-admin-fg);
+    --color-admin-muted: var(--color-admin-fg-muted);
+    --color-admin-text-muted: var(--color-admin-fg-muted);
+
+    /* Bordures */
+    --color-admin-border-default: var(--color-admin-border);
+
+    /* Action primaire — « primary » désigne l'accent de marque (terracotta),
+       PAS le bleu éditorial public : dans la console, le bleu est réservé à
+       l'information (badges, liens), l'action est terracotta comme le rail. */
+    --color-admin-primary: var(--color-admin-accent);
+
+    /* Statuts — familles `danger` (synonyme de destructive) et `*-subtle`. */
+    --color-admin-danger: var(--color-admin-destructive);
+    --color-admin-danger-fg: var(--color-admin-destructive-fg);
+    --color-admin-danger-bg: var(--color-admin-destructive-soft);
+    --color-admin-danger-border: var(--color-admin-destructive);
+    --color-admin-error-subtle: var(--color-admin-destructive-soft);
+    --color-admin-success-subtle: var(--color-admin-success-soft);
+    --color-admin-warning-subtle: var(--color-admin-warning-soft);
+    --color-admin-warning-bg: var(--color-admin-warning-soft);
+    --color-admin-warning-border: var(--color-admin-warning);
+
+    /* Espacement — palier zéro (utilisé en `py-[var(--space-admin-0)]`). */
+    --space-admin-0: 0px;
+
+    /* Graisses — référencées en `font-[var(--font-weight-admin-semibold)]`.
+       Sans ces jetons, les titres et libellés concernés s'affichaient en
+       graisse normale : la hiérarchie voulue disparaissait silencieusement. */
+    --font-weight-admin-medium: 500;
+    --font-weight-admin-semibold: 600;
+    --font-weight-admin-bold: 700;
+
+    /* =====================================================================
+     * Contrôles de formulaire (refonte UI 2026-08-01).
+     *
+     * La console n'avait AUCUN jeton de gabarit de contrôle : chaque champ,
+     * bouton et select fixait ses propres paddings, d'où des hauteurs qui ne
+     * s'alignaient jamais sur une même ligne. Ces jetons donnent une grille
+     * de hauteurs unique, consommée par `.admin-button`, `.admin-input`,
+     * `.admin-select` et la couche de normalisation `@layer base` plus bas.
+     * ===================================================================== */
+    --control-admin-h-sm: 30px;
+    --control-admin-h-md: 36px;
+    --control-admin-h-lg: 42px;
+    --control-admin-px: 12px;
+    --radius-admin-pill: 999px;
+
+    /* Anneau de focus unique pour toute la console (le bleu et le terracotta
+       coexistaient au hasard des composants). Terracotta = accent de marque. */
+    --color-admin-ring: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
+    --ring-admin-width: 3px;
+
+    /* Surface « creusée » — en-têtes de tableau, blocs de code, puits JSON.
+       Distincte de `paper-alt` (qui reste une surface posée, pas creusée). */
+    --color-admin-surface-sunken: #f4f1ea;
+
+    /* Ombres de survol pour les surfaces cliquables — un cran au-dessus de
+       l'élévation au repos, sans « saut » de mise en page. */
+    --shadow-admin-hover: 0 4px 10px rgb(0 0 0 / 0.06), 0 12px 24px rgb(0 0 0 / 0.08);
   }
 }
 
@@ -207,6 +306,211 @@
     sans-serif;
   --font-sans:
     var(--font-admin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto, sans-serif;
+}
+
+/* =============================================================
+ * Normalisation des contrôles natifs (refonte UI 2026-08-01).
+ *
+ * 🔴 CONSTAT MESURÉ : la console compte 107 `<select>` natifs, 51 cases à
+ * cocher natives et des centaines de champs sans classe. Aucun composant
+ * `AdminSelect` / `AdminCheckbox` n'existait. Ces contrôles s'affichaient
+ * donc avec le rendu par défaut du système d'exploitation — c'est ce qui
+ * data le plus violemment l'interface (chevron gris Windows, case bleue
+ * système), bien plus que les couleurs ou les rayons.
+ *
+ * ⚠️ POURQUOI `@layer base` ET PAS UNE COUCHE MAISON :
+ * en cascade CSS, l'ordre des couches prime sur la spécificité, et une règle
+ * HORS couche l'emporte sur toutes les couches. Une couche maison déclarée
+ * ici arriverait APRÈS `utilities` (Tailwind déclare `theme, base, components,
+ * utilities` dès `globals.css`) et écraserait alors les classes utilitaires
+ * posées sur les champs par les pages — exactement l'inverse de ce qu'on veut.
+ * En réinjectant dans la couche `base` EXISTANTE, ces règles se placent AVANT
+ * `utilities` : elles fournissent un défaut soigné que n'importe quelle classe
+ * Tailwind d'une page peut encore surcharger. Aucun site d'appel à modifier.
+ *
+ * Cloisonné aux shells admin — le site public n'est pas touché.
+ * =============================================================*/
+@layer base {
+  /* ----- Champs texte, zones de texte, listes déroulantes ----- */
+  :where(.admin-layout-v2, .admin-layout) :is(select, textarea),
+  :where(.admin-layout-v2, .admin-layout)
+    input:is(
+      [type="text"],
+      [type="email"],
+      [type="url"],
+      [type="tel"],
+      [type="number"],
+      [type="password"],
+      [type="search"],
+      [type="date"],
+      [type="time"],
+      [type="datetime-local"],
+      [type="month"],
+      [type="week"]
+    ) {
+    background-color: var(--color-admin-paper);
+    color: var(--color-admin-fg);
+    border: 1px solid var(--color-admin-border-strong);
+    border-radius: var(--radius-admin-md);
+    padding: 0 var(--control-admin-px);
+    font-size: var(--text-admin-md);
+    font-family: inherit;
+    line-height: var(--lh-admin-tight);
+    transition:
+      border-color var(--duration-admin-fast) var(--easing-admin),
+      box-shadow var(--duration-admin-fast) var(--easing-admin);
+  }
+
+  /* Hauteur : imposée aux contrôles d'une seule ligne uniquement. Une zone de
+     texte doit rester libre de grandir, d'où l'exclusion de `textarea`. */
+  :where(.admin-layout-v2, .admin-layout) select,
+  :where(.admin-layout-v2, .admin-layout)
+    input:is(
+      [type="text"],
+      [type="email"],
+      [type="url"],
+      [type="tel"],
+      [type="number"],
+      [type="password"],
+      [type="search"],
+      [type="date"],
+      [type="time"],
+      [type="datetime-local"],
+      [type="month"],
+      [type="week"]
+    ) {
+    height: var(--control-admin-h-md);
+  }
+
+  :where(.admin-layout-v2, .admin-layout) textarea {
+    padding-block: 8px;
+    line-height: var(--lh-admin-body);
+    resize: vertical;
+  }
+
+  :where(.admin-layout-v2, .admin-layout) :is(input, textarea, select)::placeholder {
+    color: var(--color-admin-fg-disabled);
+  }
+
+  :where(.admin-layout-v2, .admin-layout)
+    :is(input, textarea, select):hover:not(:disabled, [readonly]) {
+    border-color: var(--color-admin-fg-disabled);
+  }
+
+  :where(.admin-layout-v2, .admin-layout) :is(input, textarea, select):focus-visible {
+    outline: none;
+    border-color: var(--color-admin-accent);
+    box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+  }
+
+  :where(.admin-layout-v2, .admin-layout) :is(input, textarea, select):disabled {
+    background-color: var(--color-admin-surface-sunken);
+    color: var(--color-admin-fg-disabled);
+    cursor: not-allowed;
+  }
+
+  /* ----- Liste déroulante : chevron maison (le chevron système est LA
+     signature « formulaire de 2010 » la plus visible de la console) ----- */
+  :where(.admin-layout-v2, .admin-layout) select {
+    appearance: none;
+    /* Chevron SVG inline — `%23` encode le `#` d'une couleur hexadécimale,
+       obligatoire dans une URL de données. Teinte = --color-admin-fg-soft. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23524b41' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+  /* `multiple` et `size>1` s'affichent en liste : ni chevron, ni hauteur fixe. */
+  :where(.admin-layout-v2, .admin-layout) select:is([multiple], [size]:not([size="1"])) {
+    height: auto;
+    padding-right: var(--control-admin-px);
+    padding-block: 6px;
+    background-image: none;
+  }
+
+  /* ----- Cases à cocher et boutons radio ----- */
+  :where(.admin-layout-v2, .admin-layout) input:is([type="checkbox"], [type="radio"]) {
+    appearance: none;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 1.5px solid var(--color-admin-border-strong);
+    background-color: var(--color-admin-paper);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition:
+      background-color var(--duration-admin-fast) var(--easing-admin),
+      border-color var(--duration-admin-fast) var(--easing-admin);
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="checkbox"] {
+    border-radius: 5px;
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="radio"] {
+    border-radius: 50%;
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    input:is([type="checkbox"], [type="radio"]):hover:not(:disabled) {
+    border-color: var(--color-admin-accent);
+  }
+  :where(.admin-layout-v2, .admin-layout) input:is([type="checkbox"], [type="radio"]):checked {
+    background-color: var(--color-admin-accent);
+    border-color: var(--color-admin-accent);
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  }
+  /* État indéterminé (case « tout sélectionner » d'une liste partiellement
+     cochée) : sans cette règle, `appearance: none` le rendait indistinguable
+     d'une case vide. */
+  :where(.admin-layout-v2, .admin-layout) input[type="checkbox"]:indeterminate {
+    background-color: var(--color-admin-accent);
+    border-color: var(--color-admin-accent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.5' stroke-linecap='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="radio"]:checked {
+    background-image: radial-gradient(circle, #ffffff 0 3px, transparent 3.5px);
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    input:is([type="checkbox"], [type="radio"]):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+  }
+  :where(.admin-layout-v2, .admin-layout) input:is([type="checkbox"], [type="radio"]):disabled {
+    background-color: var(--color-admin-surface-sunken);
+    border-color: var(--color-admin-border);
+    cursor: not-allowed;
+  }
+
+  /* ----- Sélecteur de fichier : le bouton natif porte le style du secondaire ----- */
+  :where(.admin-layout-v2, .admin-layout) input[type="file"] {
+    font-size: var(--text-admin-md);
+    color: var(--color-admin-fg-soft);
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="file"]::file-selector-button {
+    margin-right: var(--space-admin-5);
+    height: var(--control-admin-h-sm);
+    padding-inline: var(--space-admin-5);
+    border: 1px solid var(--color-admin-border-strong);
+    border-radius: var(--radius-admin-md);
+    background-color: var(--color-admin-paper);
+    color: var(--color-admin-fg);
+    font-family: inherit;
+    font-size: var(--text-admin-sm);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  :where(.admin-layout-v2, .admin-layout) input[type="file"]::file-selector-button:hover {
+    background-color: var(--color-admin-surface-hover);
+  }
+
+  /* ----- Curseurs et barres de progression ----- */
+  :where(.admin-layout-v2, .admin-layout) :is(input[type="range"], progress) {
+    accent-color: var(--color-admin-accent);
+  }
 }
 
 /* =============================================================
@@ -315,13 +619,19 @@
  * pour grands textes/boutons selon WCAG 2.1 §1.4.3).
  * =============================================================*/
 @layer admin-actions {
+  /* Refonte UI 2026-08-01 — aligné sur `.admin-button` (même couleur, même
+     hauteur de contrôle). Les deux classes coexistaient avec des gabarits
+     différents : deux boutons primaires côte à côte n'avaient pas la même
+     hauteur (visible sur « Générateur de contenus »). */
   .admin-button-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #c24a1b;
-    color: #ffffff;
-    padding: var(--space-admin-2) var(--space-admin-6);
+    gap: var(--space-admin-4);
+    background-color: var(--color-admin-accent);
+    color: var(--color-admin-accent-fg);
+    min-height: var(--control-admin-h-md);
+    padding: 0 var(--space-admin-6);
     border-radius: var(--radius-admin-md);
     font-size: var(--text-admin-sm);
     font-weight: 600;
@@ -476,6 +786,23 @@
   flex-direction: column;
   gap: 16px;
 }
+/* Refonte UI 2026-08-01 — un bouton enfant DIRECT d'un `.admin-form` (colonne
+   flex) héritait de `align-items: stretch` et s'étirait sur toute la largeur
+   du formulaire. Invisible tant que `.admin-button` valait `width: 100%` ;
+   flagrant une fois la largeur passée en automatique. Les boutons rangés dans
+   `.admin-form-actions` ne sont pas concernés (rangée flex).
+   Un `w-full` explicite (connexion, 2FA) reste prioritaire : une largeur
+   déclarée l'emporte sur la taille intrinsèque d'un `align-self`. */
+.admin-form
+  > :is(
+    .admin-button,
+    .admin-button-secondary,
+    .admin-button-ghost,
+    .admin-button-danger,
+    .admin-button-cta
+  ) {
+  align-self: flex-start;
+}
 .admin-field {
   display: block;
 }
@@ -485,14 +812,52 @@
   font-weight: 500;
   margin-bottom: 6px;
 }
+/* Refonte UI 2026-08-01 — `.admin-input` consomme désormais les jetons ADMIN
+   (et non les jetons publics `--color-paper` / `--color-border-strong`) : la
+   console avait deux vocabulaires de couleur concurrents pour le même champ.
+   Hauteur alignée sur la grille de contrôles, focus terracotta unique. */
 .admin-input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-admin-md); /* 6 → 10px */
-  font-size: 14px;
-  background-color: var(--color-paper);
-  color: var(--color-fg);
+  height: var(--control-admin-h-md);
+  padding: 0 var(--control-admin-px);
+  border: 1px solid var(--color-admin-border-strong);
+  border-radius: var(--radius-admin-md);
+  font-size: var(--text-admin-md);
+  line-height: var(--lh-admin-tight);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-fg);
+  transition:
+    border-color var(--duration-admin-fast) var(--easing-admin),
+    box-shadow var(--duration-admin-fast) var(--easing-admin);
+}
+.admin-input::placeholder {
+  color: var(--color-admin-fg-disabled);
+}
+.admin-input:hover:not(:disabled, [readonly]) {
+  border-color: var(--color-admin-fg-disabled);
+}
+.admin-input:focus-visible {
+  outline: none;
+  border-color: var(--color-admin-accent);
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+}
+.admin-input:disabled {
+  background-color: var(--color-admin-surface-sunken);
+  color: var(--color-admin-fg-disabled);
+  cursor: not-allowed;
+}
+/* Liste déroulante stylée — classe RÉFÉRENCÉE par 9 champs et jamais définie
+   avant cette refonte (les selects concernés tombaient sur le rendu système). */
+.admin-select {
+  width: 100%;
+  height: var(--control-admin-h-md);
+  padding: 0 32px 0 var(--control-admin-px);
+  border: 1px solid var(--color-admin-border-strong);
+  border-radius: var(--radius-admin-md);
+  font-size: var(--text-admin-md);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-fg);
+  cursor: pointer;
 }
 .admin-input-totp {
   letter-spacing: 0.2em;
@@ -504,49 +869,207 @@
   font-family: var(--font-inconsolata, monospace);
   text-align: center;
 }
+/* =============================================================
+ * Boutons de la console — refonte UI 2026-08-01.
+ *
+ * 🔴 DEUX DÉFAUTS STRUCTURELS corrigés ici :
+ *
+ * 1. `width: 100%` par défaut. `.admin-button` est posé 257 fois. Hors d'un
+ *    conteneur flex, le bouton s'étirait sur toute la largeur : d'où les
+ *    énormes pavés bleus pleine largeur de « Salle de presse ». Deux sites
+ *    d'appel ajoutaient déjà `w-full` explicitement — preuve que la largeur
+ *    automatique était bien l'attente des auteurs. Passage en `inline-flex` ;
+ *    les rares formulaires qui veulent la pleine largeur (connexion, 2FA)
+ *    portent désormais `w-full` explicitement.
+ *
+ * 2. Couleur `--color-primary` = le BLEU éditorial du site public. La console
+ *    affichait donc des actions bleues à côté d'actions terracotta
+ *    (`.admin-button-cta`) sans règle discernable, et le rail actif est
+ *    terracotta. Une seule couleur d'action désormais : terracotta.
+ *    Le bleu reste réservé à l'information (badges, liens de contexte).
+ *
+ * `.admin-button-cta` devient un alias de `.admin-button` (même rendu) — les
+ * 13 sites d'appel restent valides, sans divergence possible.
+ * =============================================================*/
 .admin-button {
-  width: 100%;
-  padding: 12px 24px;
-  background-color: var(--color-primary);
-  color: var(--color-primary-fg);
-  border: none;
-  border-radius: var(--radius-admin-md); /* 6 → 10px */
-  font-size: 14px;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-admin-4);
+  width: auto;
+  min-height: var(--control-admin-h-md);
+  padding: 0 var(--space-admin-6);
+  background-color: var(--color-admin-accent);
+  color: var(--color-admin-accent-fg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-admin-md);
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
+  line-height: var(--lh-admin-tight);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   margin-top: 0;
+  transition:
+    background-color var(--duration-admin-fast) var(--easing-admin),
+    box-shadow var(--duration-admin-fast) var(--easing-admin);
 }
-.admin-button:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
+.admin-button:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: #a83d17;
 }
-.admin-button:disabled {
-  opacity: 0.6;
+.admin-button:active:not(:disabled, [aria-disabled="true"]) {
+  background-color: #93350f;
+}
+.admin-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+}
+.admin-button:disabled,
+.admin-button[aria-disabled="true"] {
+  opacity: 0.5;
   cursor: not-allowed;
 }
-.admin-button-ghost {
-  padding: 8px 16px;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-admin-md); /* 6 → 10px */
-  background-color: var(--color-paper);
+
+/* Secondaire — action de même importance mais non destructrice ni primaire.
+   🔴 Classe RÉFÉRENCÉE 16 fois et JAMAIS DÉFINIE avant cette refonte : ces
+   boutons s'affichaient donc avec le rendu gris par défaut du navigateur. */
+.admin-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-admin-4);
+  min-height: var(--control-admin-h-md);
+  padding: 0 var(--space-admin-6);
+  border: 1px solid var(--color-admin-border-strong);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-fg);
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
+  line-height: var(--lh-admin-tight);
+  text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
-  font-size: 13px;
+  transition:
+    background-color var(--duration-admin-fast) var(--easing-admin),
+    border-color var(--duration-admin-fast) var(--easing-admin);
+}
+.admin-button-secondary:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: var(--color-admin-surface-hover);
+  border-color: var(--color-admin-fg-disabled);
+}
+.admin-button-secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
 }
 
+/* Fantôme — action tertiaire, discrète (liens de liste, actions de ligne). */
+.admin-button-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-admin-3);
+  min-height: var(--control-admin-h-sm);
+  padding: 0 var(--space-admin-5);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-fg-soft);
+  cursor: pointer;
+  font-size: var(--text-admin-sm);
+  font-weight: 500;
+  line-height: var(--lh-admin-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-admin-fast) var(--easing-admin),
+    color var(--duration-admin-fast) var(--easing-admin);
+}
+.admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: var(--color-admin-surface-hover);
+  color: var(--color-admin-fg);
+}
+.admin-button-ghost:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+}
+
+/* Destructive — 🔴 également référencée 7 fois et jamais définie. */
+.admin-button-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-admin-4);
+  min-height: var(--control-admin-h-md);
+  padding: 0 var(--space-admin-6);
+  border: 1px solid transparent;
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-destructive);
+  color: #ffffff;
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
+  line-height: var(--lh-admin-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--duration-admin-fast) var(--easing-admin);
+}
+.admin-button-danger:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: #96301f;
+}
+.admin-button-danger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+}
+.admin-button-danger:disabled,
+.admin-button-danger[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* État désactivé porté par un `<span>` (pas de pseudo-classe `:disabled`
+   possible) — 🔴 référencée 2 fois, jamais définie. */
+.admin-button-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Refonte UI 2026-08-01 — bandeaux : jetons admin (l'erreur empruntait un fond
+   TERRACOTTA au site public, donc la même teinte que le bouton d'action, et un
+   texte rouge dessus : le message d'échec se confondait avec un CTA). Bordure
+   ramenée à un filet de la même famille que le fond, texte en ton « fg ». */
 .admin-alert {
-  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-admin-4);
+  font-size: var(--text-admin-sm);
+  line-height: var(--lh-admin-body);
   margin: 0;
   padding: 10px 12px;
-  border-radius: var(--radius-admin-md); /* 6 → 10px */
+  border-radius: var(--radius-admin-md);
 }
 .admin-alert-error {
-  color: var(--color-accent-red);
-  background-color: var(--color-terracotta-soft);
-  border: 1px solid var(--color-accent-red);
+  color: var(--color-admin-destructive-fg);
+  background-color: var(--color-admin-destructive-soft);
+  border: 1px solid var(--color-admin-destructive);
 }
 .admin-alert-success {
-  color: var(--color-sage);
-  background-color: var(--color-sage-soft);
-  border: 1px solid var(--color-sage);
+  color: var(--color-admin-success-fg);
+  background-color: var(--color-admin-success-soft);
+  border: 1px solid var(--color-admin-success);
+}
+/* 🔴 Ton « information » référencé par le code et jamais défini. */
+.admin-alert-info {
+  color: var(--color-admin-fg);
+  background-color: var(--color-admin-info-soft);
+  border: 1px solid var(--color-admin-info);
+}
+.admin-alert-warning {
+  color: var(--color-admin-warning-fg);
+  background-color: var(--color-admin-warning-soft);
+  border: 1px solid var(--color-admin-warning);
 }
 
 .admin-dashboard-head {
@@ -561,22 +1084,29 @@
   gap: 16px;
   margin-bottom: 32px;
 }
+/* Refonte UI 2026-08-01 — rayon aligné sur `AdminCard` (16px) et jetons admin
+   au lieu des jetons publics, pour que les cartes « legacy » et les cartes de
+   la bibliothèque de composants soient indiscernables sur une même page. */
 .admin-card {
-  padding: 24px;
-  background-color: var(--color-paper);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-admin-lg); /* 8 → 12px (modernisation, ex-override P3 bakée) */
-  box-shadow: var(--shadow-admin-1); /* élévation douce (était plat) */
+  padding: var(--space-admin-card);
+  background-color: var(--color-admin-paper);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-xl);
+  box-shadow: var(--shadow-admin-1);
 }
 .admin-card-label {
-  font-size: 12px;
-  color: var(--color-fg-muted);
+  font-size: var(--text-admin-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-admin-fg-muted);
   margin: 0;
   text-transform: uppercase;
 }
 .admin-kpi-value {
   font-size: 32px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
   margin: 8px 0 0;
 }
 .admin-kpi-link {
@@ -736,6 +1266,10 @@
   align-items: center;
 }
 
+/* Refonte UI 2026-08-01 — tableaux : jetons admin, en-tête sur surface
+   creusée, chiffres en chasse fixe (les colonnes de montants ne s'alignaient
+   pas verticalement), et suppression du filet sous la dernière ligne (il
+   doublait la bordure de la carte englobante). */
 .admin-table-wrapper {
   padding: 0;
   overflow-x: auto;
@@ -743,91 +1277,117 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--text-admin-sm);
+  font-variant-numeric: tabular-nums;
 }
 .admin-table th,
 .admin-table td {
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-admin-border);
   vertical-align: top;
 }
 .admin-table th {
-  background-color: var(--color-bg);
+  background-color: var(--color-admin-surface-sunken);
   font-weight: 600;
-  font-size: 11px;
+  font-size: var(--text-admin-xs);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-fg-muted);
+  letter-spacing: 0.05em;
+  color: var(--color-admin-fg-muted);
+  white-space: nowrap;
+}
+.admin-table tbody tr {
+  transition: background-color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-table tbody tr:hover {
-  background-color: var(--color-sand-soft, var(--color-bg));
+  background-color: var(--color-admin-surface-hover);
+}
+.admin-table tbody tr:last-child :is(td, th) {
+  border-bottom: 0;
 }
 .admin-table-empty {
   text-align: center;
   padding: 32px;
-  color: var(--color-fg-muted);
+  color: var(--color-admin-fg-muted);
 }
 
+/* Refonte UI 2026-08-01 — pastille : forme « pilule » alignée sur `AdminBadge`
+   de la bibliothèque, qui cohabitait avec ces badges rectangulaires à 4px sur
+   les mêmes pages. */
 .admin-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-admin-2);
+  padding: 3px 10px;
+  border-radius: var(--radius-admin-pill);
+  font-size: var(--text-admin-xs);
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
+/* 🔴 Deux tons référencés par le code et jamais définis : les pastilles
+   concernées n'avaient ni fond ni couleur (texte nu dans le tableau). */
+.admin-badge-warning {
+  background-color: var(--color-admin-warning-soft);
+  color: var(--color-admin-warning-fg);
+}
+.admin-badge-error {
+  background-color: var(--color-admin-destructive-soft);
+  color: var(--color-admin-destructive-fg);
+}
+/* Refonte UI 2026-08-01 — les tons empruntaient les jetons PUBLICS, dont les
+   variantes « soft » sont pensées comme fonds de section, pas comme fonds de
+   pastille : `--color-sage` sur `--color-sage-soft` donnait un vert pâle sur
+   vert pâle, quasi illisible (« TRAITÉ », « VALIDÉ », « CONFIRMÉ »). On
+   repasse sur les jetons de statut admin, dont les `*-fg` sont précisément
+   calibrés pour être lus sur leur `*-soft`. */
 .admin-badge-new {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary);
+  background-color: var(--color-admin-info-soft);
+  color: var(--color-admin-info);
 }
 .admin-badge-in_progress {
-  background-color: var(--color-terracotta-soft);
-  color: var(--color-terracotta-deep);
+  background-color: var(--color-admin-warning-soft);
+  color: var(--color-admin-warning-fg);
 }
 .admin-badge-processed {
-  background-color: var(--color-sage-soft);
-  color: var(--color-sage);
+  background-color: var(--color-admin-success-soft);
+  color: var(--color-admin-success-fg);
 }
 .admin-badge-archived {
-  background-color: var(--color-bg);
-  color: var(--color-fg-muted);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-admin-neutral-soft);
+  color: var(--color-admin-neutral);
 }
 .admin-badge-pending {
-  background-color: var(--color-terracotta-soft);
-  color: var(--color-terracotta-deep);
+  background-color: var(--color-admin-warning-soft);
+  color: var(--color-admin-warning-fg);
 }
 .admin-badge-confirmed,
 .admin-badge-validated {
-  background-color: var(--color-sage-soft);
-  color: var(--color-sage);
+  background-color: var(--color-admin-success-soft);
+  color: var(--color-admin-success-fg);
 }
 .admin-badge-prereserved {
-  background-color: var(--color-terracotta-soft);
-  color: var(--color-terracotta-deep);
+  background-color: var(--color-admin-warning-soft);
+  color: var(--color-admin-warning-fg);
 }
 .admin-badge-reserved {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary);
+  background-color: var(--color-admin-info-soft);
+  color: var(--color-admin-info);
 }
 .admin-badge-available {
-  background-color: var(--color-bg);
-  color: var(--color-fg-muted);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-admin-neutral-soft);
+  color: var(--color-admin-neutral);
 }
 .admin-badge-blocked {
-  background-color: var(--color-bg);
-  color: var(--color-fg-muted);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-admin-neutral-soft);
+  color: var(--color-admin-neutral);
 }
 .admin-badge-cancelled,
 .admin-badge-refused,
 .admin-badge-expired {
-  background-color: var(--color-bg);
-  color: var(--color-fg-muted);
-  border: 1px solid var(--color-border);
+  background-color: var(--color-admin-destructive-soft);
+  color: var(--color-admin-destructive-fg);
 }
 
 .admin-pagination {
@@ -887,9 +1447,9 @@
 
 /* M9 T1.2 — Options admin urgency + boutons */
 .admin-button-active {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  background-color: var(--color-admin-info-soft);
+  color: var(--color-admin-info);
+  border-color: var(--color-admin-info);
 }
 .admin-urgency-critical {
   background-color: var(--color-terracotta-soft);
@@ -901,15 +1461,20 @@
   content: "⚠ ";
   color: var(--color-terracotta);
 }
+/* Valider / Refuser — alignés sur les jetons de statut admin (refonte UI
+   2026-08-01). Ils s'appuyaient sur les jetons publics `--color-sage` et
+   `--color-accent-red`, moins saturés, d'où un texte blanc limite lisible. */
 .admin-button-validate {
-  background-color: var(--color-sage);
+  background-color: var(--color-admin-success);
+  color: #ffffff;
 }
 .admin-button-validate:hover:not(:disabled) {
-  background-color: var(--color-sage);
+  background-color: var(--color-admin-success);
   filter: brightness(0.92);
 }
 .admin-button-refuse {
-  background-color: var(--color-accent-red);
+  background-color: var(--color-admin-destructive);
+  color: #ffffff;
 }
 .admin-button-refuse:hover:not(:disabled) {
   filter: brightness(0.92);
@@ -1561,4 +2126,254 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
+}
+
+/* =============================================================
+ * CLASSES FANTÔMES — refonte UI 2026-08-01.
+ *
+ * 🔴 CONSTAT MESURÉ : 18 classes `.admin-*` étaient posées en `className`
+ * par le code de la console et DÉFINIES NULLE PART. Comme pour les jetons
+ * (cf. bloc « jetons fantômes » en tête de fichier), rien ne casse
+ * bruyamment : l'élément s'affiche simplement avec le rendu par défaut du
+ * navigateur. Concrètement, les 16 boutons `.admin-button-secondary` de la
+ * salle de presse et des documents Qualiopi étaient de VRAIS boutons gris
+ * système, au milieu d'une console stylée.
+ *
+ * Les styles ci-dessous ont été déduits du site d'appel de chaque classe,
+ * pas inventés — chaque bloc cite le fichier qui la consomme.
+ *
+ * ⚠️ Un test de non-régression interdit désormais toute nouvelle classe
+ * `.admin-*` non définie :
+ *   src/components/admin/ui/__tests__/admin-tokens-defined.test.ts
+ * =============================================================*/
+
+/* Grille à deux colonnes des écrans d'édition (connaissances/[id]). */
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-admin-6);
+  align-items: start;
+}
+
+/* Barre d'actions en pied de formulaire (connaissances, échéanciers…). */
+.admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-admin-5);
+  margin-top: var(--space-admin-5);
+}
+
+/* Rangée d'actions groupées d'une fiche (offres-emploi/[id]). */
+.admin-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-admin-4);
+}
+
+/* Micro-formulaire à un seul bouton posé dans une rangée d'actions : sans
+   cette règle, chaque `<form>` étant un bloc, les boutons s'empilaient
+   verticalement au lieu de s'aligner (offres-emploi/[id]). */
+.admin-inline-form {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-admin-4);
+}
+
+/* Zone danger — carte de suppression définitive (connaissances/[id]).
+   Le fond très légèrement teinté signale le risque sans crier. */
+.admin-danger-zone {
+  border-color: var(--color-admin-destructive);
+  background-color: color-mix(
+    in srgb,
+    var(--color-admin-destructive-soft) 45%,
+    var(--color-admin-paper)
+  );
+}
+
+/* Étiquette de banque d'images (image-bank/library/[id]). */
+.admin-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-pill);
+  background-color: var(--color-admin-surface-sunken);
+  color: var(--color-admin-fg-soft);
+  font-size: var(--text-admin-xs);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Fragment de code dans une phrase (content-gen/external-links). */
+.admin-code-inline {
+  padding: 1px 6px;
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-sm);
+  background-color: var(--color-admin-surface-sunken);
+  font-family: var(--font-inconsolata, ui-monospace, monospace);
+  font-size: 0.9em;
+  word-break: break-word;
+}
+
+/* Valeur d'une ligne de fiche descriptive (image-bank) — le pendant appuyé
+   de `.admin-meta`, qui reste la version atténuée. */
+.admin-meta-strong {
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
+  color: var(--color-admin-fg);
+}
+
+/* Réserve visuelle d'une image non encore chargée (image-bank). Sans style,
+   la div était de hauteur nulle : la carte s'affichait donc sans son visuel
+   ET sans emplacement réservé — d'où un décalage à l'arrivée de l'image. */
+.admin-image-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 1px dashed var(--color-admin-border-strong);
+  border-radius: var(--radius-admin-lg);
+  background-color: var(--color-admin-surface-sunken);
+}
+.admin-image-placeholder-large {
+  aspect-ratio: 3 / 2;
+}
+
+/* Aperçu d'un brouillon de connaissance (connaissances/[id]/apercu). */
+.admin-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-admin-6);
+  max-width: 760px;
+  margin-inline: auto;
+}
+.admin-preview-banner {
+  padding: 10px 14px;
+  border: 1px solid var(--color-admin-warning);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-warning-soft);
+  color: var(--color-admin-warning-fg);
+  font-size: var(--text-admin-sm);
+}
+.admin-preview-content {
+  padding: var(--space-admin-8);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-xl);
+  background-color: var(--color-admin-paper);
+  box-shadow: var(--shadow-admin-1);
+}
+.admin-preview-content h1 {
+  font-size: var(--text-admin-2xl);
+  font-weight: 700;
+  line-height: var(--lh-admin-tight);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-admin-5);
+}
+.admin-preview-excerpt {
+  font-size: var(--text-admin-lg);
+  line-height: var(--lh-admin-body);
+  color: var(--color-admin-fg-soft);
+  margin: 0 0 var(--space-admin-5);
+}
+/* Corps rendu depuis du HTML assaini : aucune classe ne peut être posée sur
+   les balises produites, la typographie doit donc être décrite ici. */
+.admin-preview-body {
+  font-size: var(--text-admin-base);
+  line-height: var(--lh-admin-loose);
+  color: var(--color-admin-fg);
+}
+.admin-preview-body > * + * {
+  margin-top: var(--space-admin-5);
+}
+.admin-preview-body :is(h2, h3, h4) {
+  font-weight: 700;
+  line-height: var(--lh-admin-tight);
+  margin-top: var(--space-admin-8);
+}
+.admin-preview-body h2 {
+  font-size: var(--text-admin-xl);
+}
+.admin-preview-body h3 {
+  font-size: var(--text-admin-lg);
+}
+.admin-preview-body :is(ul, ol) {
+  padding-left: 1.4em;
+  list-style-position: outside;
+}
+.admin-preview-body ul {
+  list-style-type: disc;
+}
+.admin-preview-body ol {
+  list-style-type: decimal;
+}
+.admin-preview-body li + li {
+  margin-top: var(--space-admin-3);
+}
+.admin-preview-body a {
+  color: var(--color-admin-info);
+  text-decoration: underline;
+}
+.admin-preview-body blockquote {
+  padding-left: var(--space-admin-6);
+  border-left: 3px solid var(--color-admin-accent);
+  color: var(--color-admin-fg-soft);
+}
+.admin-preview-body :is(code, pre) {
+  font-family: var(--font-inconsolata, ui-monospace, monospace);
+  font-size: 0.9em;
+}
+.admin-preview-body pre {
+  padding: var(--space-admin-5);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-surface-sunken);
+  overflow-x: auto;
+}
+
+/* Panneau latéral de workflow éditorial (connaissances/[id]). Chaque
+   transition est un `<form>` distinct : sans séparateur ni espacement, les
+   boutons se touchaient et l'on ne voyait pas où finissait une action. */
+.admin-workflow-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-admin-5);
+  position: sticky;
+  top: var(--space-admin-6);
+}
+.admin-workflow-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-admin-4);
+  padding-top: var(--space-admin-5);
+  border-top: 1px solid var(--color-admin-border);
+}
+.admin-workflow-danger {
+  border-top-color: var(--color-admin-destructive);
+}
+
+/* Messages de résultat d'action serveur — 21 usages, jamais définis : les
+   « ✓ Enregistré » et les « Erreur : … » s'affichaient dans la couleur du
+   texte courant, donc strictement identiques l'un à l'autre. */
+.admin-success {
+  margin: 0;
+  font-size: var(--text-admin-sm);
+  font-weight: 500;
+  color: var(--color-admin-success);
+}
+.admin-error {
+  margin: 0;
+  font-size: var(--text-admin-sm);
+  font-weight: 500;
+  color: var(--color-admin-destructive);
+}
+
+/* Texte d'aide sous un champ ou un bloc (content-gen/observatoire, 7 usages).
+   🔴 Référencée et jamais définie : ces paragraphes explicatifs s'affichaient
+   à la même taille et dans la même couleur que le contenu principal, alors
+   qu'ils sont censés s'effacer derrière lui. */
+.admin-help {
+  margin: 0;
+  font-size: var(--text-admin-sm);
+  line-height: var(--lh-admin-body);
+  color: var(--color-admin-fg-muted);
 }

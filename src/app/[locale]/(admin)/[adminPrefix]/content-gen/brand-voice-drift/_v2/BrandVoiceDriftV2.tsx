@@ -115,7 +115,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
               </thead>
               <tbody>
                 {stats.recentDrifts.map((drift) => (
-                  <tr key={drift.id} className="border-t border-[color:var(--border-admin)]">
+                  <tr key={drift.id} className="border-t border-[color:var(--color-admin-border)]">
                     <td className="px-3 py-2">
                       <code className="text-xs">{drift.articleId.slice(0, 12)}…</code>
                     </td>
@@ -164,7 +164,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
           </div>
         )}
 
-        <div className="mt-[var(--space-admin-5)] border-t border-[color:var(--border-admin)] pt-[var(--space-admin-4)]">
+        <div className="mt-[var(--space-admin-5)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4)]">
           <h3 className="admin-h3 mb-[var(--space-admin-3)]">Seuils de détection</h3>
           <ul className="admin-meta-block text-sm">
             <li>

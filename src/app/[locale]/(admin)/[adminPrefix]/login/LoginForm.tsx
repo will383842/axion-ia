@@ -83,7 +83,10 @@ export function LoginForm() {
           {state.error}
         </p>
       )}
-      <button type="submit" className="admin-button" disabled={pending}>
+      {/* `w-full` explicite : depuis la refonte UI 2026-08-01, `.admin-button`
+          s'ajuste à son contenu. Le bouton de connexion est le cas où la
+          pleine largeur est voulue (formulaire vertical étroit). */}
+      <button type="submit" className="admin-button w-full" disabled={pending}>
         {pending ? "Connexion..." : show2FA ? "Vérifier le code 2FA" : "Continuer"}
       </button>
     </form>

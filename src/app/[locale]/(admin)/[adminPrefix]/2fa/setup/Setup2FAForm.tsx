@@ -36,7 +36,10 @@ export function Setup2FAForm() {
           {state.error}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="admin-button">
+      {/* `w-full` explicite — cf. LoginForm : `.admin-button` s'ajuste à son
+          contenu depuis la refonte UI 2026-08-01, la pleine largeur est ici
+          voulue (formulaire vertical étroit d'activation). */}
+      <button type="submit" disabled={pending} className="admin-button w-full">
         {pending ? "Vérification..." : "Activer 2FA"}
       </button>
     </form>
