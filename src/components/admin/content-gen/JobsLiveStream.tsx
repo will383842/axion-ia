@@ -76,9 +76,9 @@ function statusColor(status: string): string {
 }
 
 function qualityBadgeClass(score: number): string {
-  if (score >= 75) return "bg-green-100 text-green-800";
-  if (score >= 50) return "bg-yellow-100 text-yellow-800";
-  return "bg-red-100 text-red-800";
+  if (score >= 75) return "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]";
+  if (score >= 50) return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
+  return "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]";
 }
 
 interface Props {
@@ -204,7 +204,7 @@ export function JobsLiveStream({ jobId, initialStatus }: Props): React.ReactElem
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {connected && !done ? (
             <span className="inline-flex items-center gap-1">
-              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
+              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-[color:var(--color-admin-success)]" />
               En direct
             </span>
           ) : done ? (

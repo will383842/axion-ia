@@ -26,9 +26,9 @@ const QUALITY_DOTS: Array<{
   label: string;
   cls: string;
 }> = [
-  { value: "green", label: "Parfaite", cls: "bg-green-500" },
-  { value: "orange", label: "À retoucher", cls: "bg-orange-500" },
-  { value: "red", label: "Cassée / problème", cls: "bg-red-500" },
+  { value: "green", label: "Parfaite", cls: "bg-[color:var(--color-admin-success)]" },
+  { value: "orange", label: "À retoucher", cls: "bg-[color:var(--color-admin-warning)]" },
+  { value: "red", label: "Cassée / problème", cls: "bg-[color:var(--color-admin-destructive)]" },
 ];
 
 export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
@@ -122,23 +122,23 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
   return (
     <div className="space-y-1">
       {/* Barre d'actions groupées */}
-      <div className="flex flex-wrap items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm">
+      <div className="flex flex-wrap items-center gap-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] px-3 py-2 text-sm">
         <label className="flex cursor-pointer items-center gap-2">
           <input type="checkbox" checked={allSelected} onChange={toggleAll} className="rounded" />
-          <span className="text-gray-600">
+          <span className="text-[color:var(--color-admin-fg-muted)]">
             {selected.size > 0 ? `${selected.size} sélectionnée(s)` : "Tout sélectionner"}
           </span>
         </label>
         {selected.size > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-gray-400">Feu :</span>
+            <span className="text-[color:var(--color-admin-fg-disabled)]">Feu :</span>
             {QUALITY_DOTS.map((d) => (
               <button
                 key={d.value}
                 type="button"
                 disabled={isPending}
                 onClick={() => bulkQuality(d.value)}
-                className={`h-4 w-4 rounded-full ${d.cls} ring-offset-1 hover:ring-2 hover:ring-gray-400`}
+                className={`h-4 w-4 rounded-full ${d.cls} ring-offset-1 hover:ring-2 hover:ring-[color:var(--color-admin-border-strong)]`}
                 title={`Marquer « ${d.label} »`}
                 aria-label={`Marquer la sélection ${d.label}`}
               />
@@ -147,16 +147,16 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               type="button"
               disabled={isPending}
               onClick={() => bulkQuality("unset")}
-              className="rounded border border-gray-300 px-1.5 py-0.5 text-xs text-gray-500 hover:bg-white"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-paper)]"
             >
               Réinitialiser
             </button>
-            <span className="ml-2 text-gray-400">GSC :</span>
+            <span className="ml-2 text-[color:var(--color-admin-fg-disabled)]">GSC :</span>
             <button
               type="button"
               disabled={isPending}
               onClick={() => bulkGsc(true)}
-              className="rounded border border-gray-300 px-1.5 py-0.5 text-xs text-gray-600 hover:bg-white"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-paper)]"
             >
               Marquer demandé
             </button>
@@ -164,15 +164,15 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               type="button"
               disabled={isPending}
               onClick={() => bulkGsc(false)}
-              className="rounded border border-gray-300 px-1.5 py-0.5 text-xs text-gray-600 hover:bg-white"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-paper)]"
             >
               Décocher
             </button>
             <button
               type="button"
               onClick={bulkCopy}
-              className={`rounded border px-1.5 py-0.5 text-xs hover:bg-white ${
-                bulkCopied ? "border-green-400 text-green-600" : "border-gray-300 text-gray-600"
+              className={`rounded border px-1.5 py-0.5 text-xs hover:bg-[color:var(--color-admin-paper)] ${
+                bulkCopied ? "border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success)]" : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
               }`}
             >
               {bulkCopied ? "✓ Copiées" : "📋 Copier les URLs"}
@@ -189,8 +189,8 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
         return (
           <div
             key={route.id}
-            className={`flex items-center gap-3 rounded-lg border bg-white px-3 py-2.5 text-sm hover:bg-gray-50 ${
-              checked ? "border-blue-300 bg-blue-50/40" : "border-gray-200"
+            className={`flex items-center gap-3 rounded-lg border bg-[color:var(--color-admin-paper)] px-3 py-2.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)] ${
+              checked ? "border-[color:var(--color-admin-info)] bg-[color:var(--color-admin-info-soft)]/40" : "border-[color:var(--color-admin-border)]"
             } ${route.removedAt ? "opacity-60" : ""}`}
           >
             <input
@@ -219,7 +219,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                     aria-label={`${displayPath} : ${d.label}`}
                     className={`h-3.5 w-3.5 rounded-full ${d.cls} transition-opacity ${
                       active
-                        ? "opacity-100 ring-2 ring-gray-700 ring-offset-1"
+                        ? "opacity-100 ring-2 ring-[color:var(--color-admin-accent)] ring-offset-1"
                         : "opacity-25 hover:opacity-70"
                     }`}
                   />
@@ -231,12 +231,12 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
             <div className="min-w-0 flex-1">
               <Link
                 href={adminPath("fr", `site-explorer/${route.id}`)}
-                className="block truncate font-mono text-xs text-blue-600 hover:underline"
+                className="block truncate font-mono text-xs text-[color:var(--color-admin-info)] hover:underline"
               >
                 {displayPath}
               </Link>
               {route.metaTitle && (
-                <p className="mt-0.5 truncate text-xs text-gray-500">{route.metaTitle}</p>
+                <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">{route.metaTitle}</p>
               )}
             </div>
 
@@ -245,18 +245,18 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               {/* Indexable / noindex (live) */}
               {route.isIndexable === null ? (
                 <span
-                  className="hidden rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500 sm:inline"
+                  className="hidden rounded bg-[color:var(--color-admin-neutral-soft)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] sm:inline"
                   title="Pas encore calculé (lancez la découverte)"
                 >
                   —
                 </span>
               ) : route.isIndexable ? (
-                <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-xs font-medium text-emerald-700">
+                <span className="rounded bg-[color:var(--color-admin-success-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-success-fg)]">
                   Indexable
                 </span>
               ) : (
                 <span
-                  className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium text-amber-700"
+                  className="rounded bg-[color:var(--color-admin-warning-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-warning-fg)]"
                   title={route.noindexReason ?? "noindex"}
                 >
                   Noindex
@@ -264,7 +264,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               )}
 
               {route.category && (
-                <span className="hidden rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 lg:inline">
+                <span className="hidden rounded bg-[color:var(--color-admin-neutral-soft)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] lg:inline">
                   {route.category}
                 </span>
               )}
@@ -274,7 +274,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               {/* Trafic GSC */}
               {route.gscImpressions !== null && (
                 <span
-                  className="hidden text-xs text-gray-400 xl:inline"
+                  className="hidden text-xs text-[color:var(--color-admin-fg-disabled)] xl:inline"
                   title="Clics / impressions / position moyenne (GSC 28j)"
                 >
                   {route.gscClicks ?? 0}c · {route.gscImpressions}i
@@ -283,7 +283,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               )}
 
               {anomalyCount > 0 && (
-                <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
+                <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-destructive-fg)]">
                   ⚠️ {anomalyCount}
                 </span>
               )}
@@ -291,7 +291,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
 
             {/* GSC demandé */}
             <label
-              className="flex shrink-0 cursor-pointer items-center gap-1 text-xs text-gray-500"
+              className="flex shrink-0 cursor-pointer items-center gap-1 text-xs text-[color:var(--color-admin-fg-muted)]"
               title="J'ai demandé l'indexation dans Google Search Console"
             >
               <input
@@ -313,7 +313,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Voir la page en live"
-                  className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                  className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
                   aria-label={`Voir ${displayPath}`}
                 >
                   🌐
@@ -323,7 +323,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                 <a
                   href={route.editorRoute}
                   title="Éditer"
-                  className="rounded p-1 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
+                  className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-info-soft)] hover:text-[color:var(--color-admin-info)]"
                   aria-label={`Éditer ${displayPath}`}
                 >
                   ✏️
@@ -372,7 +372,7 @@ function CopyUrlButton({ url, disabled }: { url: string; disabled?: boolean }) {
       title={disabled ? "URL template (non copiable)" : `Copier ${url}`}
       aria-label={`Copier l'URL ${url}`}
       className={`rounded p-1 ${
-        copied ? "text-green-600" : "text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+        copied ? "text-[color:var(--color-admin-success)]" : "text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
       } disabled:cursor-not-allowed disabled:opacity-30`}
     >
       {copied ? "✓" : "📋"}

@@ -17,10 +17,10 @@ export function SiteRouteRow({ route }: Props) {
   const anomalyCount = route._count?.anomalies ?? 0;
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm hover:bg-gray-50">
+    <div className="flex items-center gap-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-4 py-3 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]">
       {/* Indentation profondeur */}
       {route.depth > 1 && (
-        <span className="shrink-0 text-gray-300" style={{ paddingLeft: (route.depth - 1) * 16 }}>
+        <span className="shrink-0 text-[color:var(--color-admin-fg-disabled)]" style={{ paddingLeft: (route.depth - 1) * 16 }}>
           └
         </span>
       )}
@@ -29,19 +29,19 @@ export function SiteRouteRow({ route }: Props) {
       <div className="min-w-0 flex-1">
         <Link
           href={adminPath("fr", `site-explorer/${route.id}`)}
-          className="block truncate font-mono text-xs text-blue-600 hover:underline"
+          className="block truncate font-mono text-xs text-[color:var(--color-admin-info)] hover:underline"
         >
           {displayPath}
         </Link>
         {route.metaTitle && (
-          <p className="mt-0.5 truncate text-xs text-gray-500">{route.metaTitle}</p>
+          <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">{route.metaTitle}</p>
         )}
       </div>
 
       {/* Badges */}
       <div className="flex shrink-0 items-center gap-2">
         {route.section && (
-          <span className="hidden rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-600 md:inline">
+          <span className="hidden rounded bg-[color:var(--color-admin-neutral-soft)] px-1.5 py-0.5 text-xs text-[color:var(--color-admin-fg-muted)] md:inline">
             {route.section}
           </span>
         )}
@@ -49,13 +49,13 @@ export function SiteRouteRow({ route }: Props) {
         <SiteRouteStatusBadge status={route.status} httpStatus={route.httpStatus} />
 
         {route.wordCount !== null && (
-          <span className="hidden text-xs text-gray-400 lg:inline">
+          <span className="hidden text-xs text-[color:var(--color-admin-fg-disabled)] lg:inline">
             {route.wordCount.toLocaleString("fr-FR")} mots
           </span>
         )}
 
         {anomalyCount > 0 && (
-          <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
+          <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-destructive-fg)]">
             ⚠️ {anomalyCount}
           </span>
         )}
@@ -69,7 +69,7 @@ export function SiteRouteRow({ route }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             title="Voir la page en live"
-            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
             aria-label={`Voir ${displayPath}`}
           >
             🌐
@@ -80,7 +80,7 @@ export function SiteRouteRow({ route }: Props) {
           <a
             href={route.editorRoute}
             title="Éditer"
-            className="rounded p-1 text-gray-400 hover:bg-blue-50 hover:text-blue-600"
+            className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-info-soft)] hover:text-[color:var(--color-admin-info)]"
             aria-label={`Éditer ${displayPath}`}
           >
             ✏️

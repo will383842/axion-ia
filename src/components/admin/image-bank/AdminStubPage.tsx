@@ -24,7 +24,7 @@ export function AdminStubPage({
       </Link>
       <h1 className="text-3xl font-bold">{title}</h1>
       <p className="text-fg-muted">{description}</p>
-      <p className="rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+      <p className="rounded border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-warning-soft)] p-4 text-sm text-[color:var(--color-admin-warning-fg)]">
         Cette section est prévue {sprint ?? "Sprint 2.x"}. L&apos;ancre route et la nav admin sont
         déjà câblées.
       </p>

@@ -32,7 +32,7 @@ function ConfirmButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded bg-red-700 px-4 py-2 text-white hover:bg-red-800 disabled:opacity-50"
+      className="admin-button-danger"
     >
       {pending ? "Suppression…" : "Supprimer définitivement (RGPD art. 17)"}
     </button>
@@ -69,7 +69,7 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
         />
         <button
           type="submit"
-          className="border-border-strong rounded border px-4 py-2 hover:bg-gray-50"
+          className="border-border-strong rounded border px-4 py-2 hover:bg-[color:var(--color-admin-surface-sunken)]"
         >
           Rechercher
         </button>
@@ -132,8 +132,8 @@ export function ForgetIpHashForm({ initialIpHash, usageLogs, downloadLogs }: Pro
             <p
               className={`rounded border p-3 text-sm ${
                 feedback.startsWith("✅")
-                  ? "border-green-200 bg-green-50 text-green-800"
-                  : "border-red-200 bg-red-50 text-red-800"
+                  ? "border-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]"
+                  : "border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]"
               }`}
             >
               {feedback}

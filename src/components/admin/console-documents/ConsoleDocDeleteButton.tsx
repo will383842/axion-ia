@@ -36,11 +36,11 @@ export function ConsoleDocDeleteButton({
         type="button"
         onClick={onDelete}
         disabled={pending}
-        className="text-fg-muted text-xs underline hover:text-red-700 disabled:opacity-60"
+        className="text-fg-muted text-xs underline hover:text-[color:var(--color-admin-destructive-fg)] disabled:opacity-60"
       >
         {pending ? "Suppression…" : "Supprimer"}
       </button>
-      {error ? <span className="text-xs text-red-700">{error}</span> : null}
+      {error ? <span className="text-xs text-[color:var(--color-admin-destructive-fg)]">{error}</span> : null}
     </span>
   );
 }

@@ -254,4 +254,33 @@ describe("système de design de la console admin", () => {
     // entrée disparaît, retirer la ligne correspondante ci-dessous.
     expect([...offenders].sort()).toEqual(INERT_UTILITIES_BASELINE);
   });
+
+  // La console a sa propre palette (ivoire, mocha, terracotta) exposée par des
+  // jetons. Vingt fichiers — site-explorer, keyword-strategy, documents de
+  // console — peignaient en dur avec la palette Tailwind par défaut : tuiles
+  // bleu/vert/violet et gris FROIDS au milieu d'une interface chaude. Ils
+  // étaient reconnaissables au premier coup d'œil comme « une autre
+  // application ». Normalisés le 2026-08-01 (couche 3).
+  //
+  // Les valeurs arbitraires restent autorisées (`bg-[color:var(--…)]`,
+  // `text-[#…]` étant déjà interdit par le contrôle anti-hex) : seules les
+  // classes de la palette NOMMÉE de Tailwind sont refusées.
+  it("n'utilise aucune couleur de la palette Tailwind par défaut", () => {
+    const PALETTE =
+      /\b(text|bg|border|ring|divide|from|via|to|outline|decoration|shadow|accent|caret|fill|stroke)-(gray|slate|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(50|\d{3})\b/g;
+
+    const offenders: string[] = [];
+    for (const file of files) {
+      const src = readFileSync(file, "utf8");
+      for (const line of src.split(/\r?\n/)) {
+        // Les commentaires citent parfois une classe pour expliquer ce qui a
+        // été retiré — les compter serait un faux positif.
+        const code = line.replace(/\/\/.*$/, "").replace(/\/\*[\s\S]*?\*\//g, "");
+        for (const m of code.matchAll(PALETTE)) {
+          offenders.push(`${file.slice(ROOT.length + 1).replace(/\\/g, "/")} :: ${m[0]}`);
+        }
+      }
+    }
+    expect([...new Set(offenders)].sort()).toEqual([]);
+  });
 });

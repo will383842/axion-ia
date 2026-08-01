@@ -35,9 +35,9 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
 };
 
 function cellTone(count: number): string {
-  if (count === 0) return "bg-red-50 text-red-700 font-semibold";
-  if (count === 1) return "bg-yellow-50 text-yellow-700";
-  return "bg-green-50 text-green-700";
+  if (count === 0) return "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)] font-semibold";
+  if (count === 1) return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
+  return "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]";
 }
 
 function EquityRow({
@@ -178,11 +178,11 @@ export async function CityEquityV2({ adminPrefix: _adminPrefix, campaignId, tier
                   <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-right">
                     {s.totalJobs}
                   </td>
-                  <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-right text-green-700">
+                  <td className="px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-right text-[color:var(--color-admin-success-fg)]">
                     {s.citiesWithType}
                   </td>
                   <td
-                    className={`px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-right ${s.citiesWithoutType > 0 ? "font-semibold text-red-700" : "text-[color:var(--color-admin-fg-soft)]"}`}
+                    className={`px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-right ${s.citiesWithoutType > 0 ? "font-semibold text-[color:var(--color-admin-destructive-fg)]" : "text-[color:var(--color-admin-fg-soft)]"}`}
                   >
                     {s.citiesWithoutType}
                   </td>

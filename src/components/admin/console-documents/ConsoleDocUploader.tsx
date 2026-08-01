@@ -55,7 +55,7 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
     <form
       ref={formRef}
       onSubmit={onSubmit}
-      className="border-border space-y-3 rounded-lg border bg-white p-4"
+      className="border-border space-y-3 rounded-lg border bg-[color:var(--color-admin-paper)] p-4"
     >
       <div>
         <label className="text-mocha mb-1 block text-sm font-medium" htmlFor="cd-title">
@@ -105,7 +105,7 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
         </label>
       ) : null}
 
-      {error ? <p className="text-sm text-red-700">{error}</p> : null}
+      {error ? <p className="text-sm text-[color:var(--color-admin-destructive-fg)]">{error}</p> : null}
 
       <div className="flex items-center gap-2">
         <button
