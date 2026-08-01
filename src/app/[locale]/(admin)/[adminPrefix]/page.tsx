@@ -1,31 +1,25 @@
-// Dashboard admin (Sprint X.14 — Booking V1 V2).
+// Accueil admin — TABLEAU DE BORD DE PILOTAGE (refonte console phase 3,
+// audit UX 2026-08-01). La page ne fait que l'auth + le garde-fou prefetch ;
+// tout le contenu est rendu par le wrapper `DashboardV2Wrapper`, qui assemble
+// les données via `src/server/admin/pilotage-dashboard.ts` (stub-safe ADR 0026).
 //
-// Spec : _AUDIT/BOOKING-DEPOSIT-ADMIN-2026-05-12/04-PLAN-EXECUTION.md §Sprint X.14
-// + 03-ARCHITECTURE-CIBLE.md §5.4 — section dashboard "Prêts à valider" D49.
-//
-// Périmètre V1 livré ici (P0) :
-//   - KPIs 3 lignes : aujourd'hui / cette semaine / ce mois
-//   - Section "Prêts à valider" (D49 — status=awaiting_admin_validation)
-//   - Section "En attente client" (status=contract_payment_sent)
-//   - Section "Demandes options" (status=option_pending — parcours A à valider)
-//   - Section "Cadrages à venir" (status=cadrage_scheduled)
-//   - Section "Activité récente" (5 ActivityLog)
-//
-// P1 reportés Sprint X.14b : Cmd+K palette, mobile drawer, breadcrumbs,
-//   keyboard shortcuts globaux, heatmap link X.9, chart revenus 12 mois link X.11.
+// Le sélecteur de période du dashboard est un querystring `?periode=semaine|
+// mois|annee` (liens serveur, zéro JS client) — d'où le `searchParams`.
 
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
+import { parsePeriode } from "@/server/admin/pilotage-dashboard";
 import { DashboardV2Wrapper } from "./_v2/DashboardV2Wrapper";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
+  searchParams: Promise<Record<string, string | undefined>>;
 }
 
-export default async function AdminDashboardPage({ params }: PageProps) {
+export default async function AdminDashboardPage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const session = await auth();
   if (!session?.user) {
@@ -43,10 +37,15 @@ export default async function AdminDashboardPage({ params }: PageProps) {
     redirect(`/fr/${adminPrefix}/login`);
   }
 
-  // Refonte admin mai 2026 — bascule V2 derrière flag ADMIN_V2_ENABLED
-  // (ou cookie admin_v2=1 per-session). V1 par défaut.
   const role = (session.user as { role?: string }).role ?? "—";
+  const sp = await searchParams;
+  const periode = parsePeriode(sp["periode"]);
   return (
-    <DashboardV2Wrapper adminPrefix={adminPrefix} email={session.user.email ?? null} role={role} />
+    <DashboardV2Wrapper
+      adminPrefix={adminPrefix}
+      email={session.user.email ?? null}
+      role={role}
+      periode={periode}
+    />
   );
 }

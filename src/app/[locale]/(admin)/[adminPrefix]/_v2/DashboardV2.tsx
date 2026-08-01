@@ -1,38 +1,32 @@
-// Refonte admin mai 2026 — PR 6 (ADR 0028, PATTERNS.md §4 dashboard).
+// Tableau de bord de PILOTAGE (refonte console phase 3, audit UX 2026-08-01).
 //
-// Dashboard V2 — utilise AdminPageShell + AdminStatCard + AdminCard.
-// Server Component, prend `adminPrefix` + données déjà fetchées en props
-// (le fetch reste dans la page racine V1 pour éviter doublon DB).
+// Server Component pur : toutes les données arrivent en props, déjà assemblées
+// par `getPilotageDashboard` (le fetch reste dans le wrapper — un seul point
+// d'entrée DB). Sept sections, du plus urgent au plus froid, puis l'activité
+// récente et les liens d'exploitation en bas de page. Zéro lib graphique :
+// les seules « courbes » sont des barres CSS rendues côté serveur.
 //
-// Nettoyage 2026-07-09 (audit vestiges booking) :
-//   Les sections « Aujourd'hui » (Prêts à valider / Options à valider /
-//   Cadrages / Paiements du jour), « Activité » (Interventions semaine+mois /
-//   Encaissé / Factures en retard) et les 4 SnapshotCard (readyToValidate,
-//   pendingOptionRows, waitingClientRows, cadrageRows) lisaient les tables de
-//   l'ancien flux de réservation payante (Booking / BookingOption / Payment /
-//   Invoice). Ce flux est éteint : Calendly a remplacé le créneau public
-//   (`createBookingAction` / `postOption48hAction` n'existent plus) et Stripe
-//   est neutralisé → ces blocs affichaient 0 / listes vides en permanence,
-//   au prix de 13 requêtes DB inutiles à chaque ouverture de l'accueil admin.
-//   Retirés ici (les onglets correspondants sont déjà masqués, cf. PR 283).
-//   NB : ne pas préfixer un numéro de PR par « # » dans src/app —
-//   `scripts/check-anti-hex.sh` y verrait une couleur hex codée en dur.
-//   Restent les 3 repères contenu + l'activité récente, réellement alimentés.
+// NB : ne pas préfixer un numéro de PR par « # » dans src/app —
+// `scripts/check-anti-hex.sh` y verrait une couleur hex codée en dur.
 
 import Link from "next/link";
-import { Inbox, Newspaper, Mail } from "lucide-react";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import type { PilotageDashboard } from "@/server/admin/pilotage-dashboard";
+import { EnTetePilotage } from "./pilotage/EnTetePilotage";
+import { AlertesCritiques } from "./pilotage/AlertesCritiques";
+import { CalendrierPrevisionnel } from "./pilotage/CalendrierPrevisionnel";
+import { ActiviteSection } from "./pilotage/ActiviteSection";
+import { FormateursSection } from "./pilotage/FormateursSection";
+import { FinancierSection } from "./pilotage/FinancierSection";
+import { PipelineSection } from "./pilotage/PipelineSection";
+import { libelleRole } from "./pilotage/format";
 
 interface DashboardV2Props {
   adminPrefix: string;
   email: string | null;
   role: string;
   logoutAction: () => Promise<void> | void;
-  kpis: {
-    totalSubmissions: number;
-    totalArticles: number;
-    totalSubscribers: number;
-  };
+  dashboard: PilotageDashboard;
   activityRows: ReadonlyArray<{ id: string; primary: string; secondary: string }>;
 }
 
@@ -41,15 +35,15 @@ export function DashboardV2({
   email,
   role,
   logoutAction,
-  kpis,
+  dashboard,
   activityRows,
 }: DashboardV2Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Tableau de bord"
-        description={`Connecté en tant que ${email ?? "—"} · ${role}`}
+        title="Tableau de bord de pilotage"
+        description={`Connecté en tant que ${email ?? "—"} · ${libelleRole(role)}`}
         actions={
           <form action={logoutAction}>
             <button type="submit" className="admin-button-ghost">
@@ -59,15 +53,37 @@ export function DashboardV2({
         }
       />
 
-      <section
-        aria-label="Repères contenu"
-        className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3"
-      >
-        <AdminStatCard label="Soumissions totales" value={kpis.totalSubmissions} icon={Inbox} />
-        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} icon={Newspaper} />
-        <AdminStatCard label="Abonnés newsletter" value={kpis.totalSubscribers} icon={Mail} />
-      </section>
+      {/* 1 — Sélecteur de période + tuiles de pilotage. */}
+      <EnTetePilotage
+        adminPrefix={adminPrefix}
+        periode={dashboard.periode}
+        periodeLabel={dashboard.periodeLabel}
+        tuiles={dashboard.tuiles}
+      />
 
+      {/* 2 — Alertes critiques (toujours visible, même vide). */}
+      <AlertesCritiques adminPrefix={adminPrefix} alertes={dashboard.alertesCritiques} />
+
+      {/* 3 — Calendrier & prévisionnel (le cœur). */}
+      <CalendrierPrevisionnel
+        adminPrefix={adminPrefix}
+        calendrier={dashboard.calendrier}
+        previsionnelBloque={dashboard.previsionnelBloque}
+      />
+
+      {/* 4 — Activité par famille de prestation. */}
+      <ActiviteSection activites={dashboard.activites} periodeLabel={dashboard.periodeLabel} />
+
+      {/* 5 — Formateurs. */}
+      <FormateursSection adminPrefix={adminPrefix} formateurs={dashboard.formateurs} />
+
+      {/* 6 — Financier. */}
+      <FinancierSection adminPrefix={adminPrefix} financier={dashboard.financier} />
+
+      {/* 7 — Pipeline commercial. */}
+      <PipelineSection adminPrefix={adminPrefix} pipeline={dashboard.pipeline} />
+
+      {/* Activité récente — volontairement en bas de page. */}
       <AdminCard className="mb-[var(--space-admin-6)]">
         <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Activité récente
