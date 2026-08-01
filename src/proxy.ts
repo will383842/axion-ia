@@ -63,6 +63,38 @@ const authPipeline = auth(async (req) => {
     return NextResponse.redirect(new URL(`/fr${req.nextUrl.search}`, req.url), 301);
   }
 
+  // 0a-ter. 410 Gone — famille fantôme `/ia-<ville>` (audit GSC 2026-08-01).
+  //
+  //   Les buckets GSC « Introuvable (404) » et « Erreur serveur (5xx) » sont
+  //   dominés par des CENTAINES d'URLs `/fr/ia-<ville>` (ia-paris, ia-caen…).
+  //   Ce motif n'a JAMAIS existé dans ce codebase (vérifié : aucune route, rien
+  //   dans l'historique git, rien dans llms.txt/llms-full.txt). Signature d'un
+  //   MIROIR EXTERNE du site (copieur type HTTrack — mêmes listes GSC : URLs
+  //   suffixées `-1/-2/-3` comme `contact-1`, `appel-2`) dont les liens mangés
+  //   pointent vers le domaine réel.
+  //
+  //   Un 404 laisse Google re-tester ces URLs pendant des mois ; le 410 signale
+  //   « définitivement disparu » → purge rapide de l'index + arrêt des re-crawls
+  //   (économie directe de budget de crawl). Périmètre STRICT : premier segment
+  //   (après locale éventuelle) commençant par `ia-` — aucune route légitime ne
+  //   matche (vérifié routing.ts + arborescence app/). Les suffixes `-N` du même
+  //   miroir ne sont PAS traités : des slugs villes légitimes finissent en -N
+  //   (bassens-73, valence-82…), un motif générique serait dangereux.
+  //
+  //   `Cache-Control` public : CF cache la réponse, l'origin n'est plus tapée.
+  {
+    const m = req.nextUrl.pathname.match(/^\/(?:(?:fr|en)\/)?ia-[a-z0-9-]+\/?$/);
+    if (m) {
+      return new NextResponse("Gone", {
+        status: 410,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "public, max-age=86400, s-maxage=604800",
+        },
+      });
+    }
+  }
+
   // 0a-bis. Aplatissement des chaînes de redirection legacy (audit indexation 2026-06-17).
   //   Un ancien slug NON-préfixé créait une chaîne à 2 sauts :
   //     `/interventions` → (0bis ajoute /fr) `/fr/interventions` → (next.config) `/fr/formations`.
