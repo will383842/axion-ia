@@ -24,7 +24,10 @@ interface PageProps {
   params: Promise<{ adminPrefix: string }>;
 }
 
-type Status = "ok" | "degraded" | "down" | "not-configured" | "unknown";
+// "not-checked" (distinct de "unknown") : aucune tentative de vérification live
+// n'existe pour cette card — pas un échec de check, l'absence assumée d'un check.
+// Introduit pour ne plus afficher un "● UP" figé jamais vérifié (audit UX admin).
+type Status = "ok" | "degraded" | "down" | "not-configured" | "unknown" | "not-checked";
 
 interface Card {
   name: string;
@@ -168,6 +171,41 @@ async function checkHetznerBackups(): Promise<{ status: Status; detail: string |
   }
 }
 
+/**
+ * Statut live du VPS Hetzner lui-même (pas seulement de ses backups).
+ *
+ * Avant : la card "Hetzner Cloud" affichait un "ok" codé en dur, jamais
+ * vérifié — contrairement aux ~14 autres cards de cette grille qui font un
+ * vrai fetch(). Réutilise les MÊMES credentials que checkHetznerBackups()
+ * (HETZNER_API_TOKEN + HETZNER_SERVER_ID, déjà en place) : aucun nouveau
+ * secret requis, donc pas de raison de laisser un statut mensonger ici.
+ */
+async function checkHetznerServer(): Promise<{ status: Status; detail: string | null }> {
+  const token = process.env["HETZNER_API_TOKEN"];
+  const serverId = process.env["HETZNER_SERVER_ID"];
+  if (!token || !serverId)
+    return { status: "not-configured", detail: "HETZNER_API_TOKEN + HETZNER_SERVER_ID manquants" };
+  try {
+    const res = await fetch(`https://api.hetzner.cloud/v1/servers/${serverId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+      cache: "no-store",
+    });
+    if (!res.ok) return { status: "down", detail: `HTTP ${res.status}` };
+    const data = (await res.json()) as {
+      server?: { status?: string; public_net?: { ipv4?: { ip?: string } } };
+    };
+    const serverStatus = data.server?.status ?? "?";
+    const ip = data.server?.public_net?.ipv4?.ip;
+    return {
+      status: serverStatus === "running" ? "ok" : "degraded",
+      detail: `ID ${serverId} · ${serverStatus}${ip ? ` · ${ip}` : ""}`,
+    };
+  } catch {
+    return { status: "unknown", detail: "API unreachable" };
+  }
+}
+
 async function checkCloudflareR2(): Promise<{ status: Status; detail: string | null }> {
   const accessKey = process.env["R2_ACCESS_KEY_ID"];
   const bucket = process.env["R2_BUCKET_NAME"];
@@ -266,17 +304,27 @@ export default async function AdminInfraPage({ params }: PageProps) {
   }
 
   // Run all live checks in parallel — best-effort, timeouts handled.
-  const [coolify, uptimeRobot, cloudflare, sentry, plausible, telegram, hetznerBackup, r2] =
-    await Promise.all([
-      checkCoolify(),
-      checkUptimeRobot(),
-      checkCloudflare(),
-      checkSentry(),
-      checkPlausible(),
-      checkTelegram(),
-      checkHetznerBackups(),
-      checkCloudflareR2(),
-    ]);
+  const [
+    coolify,
+    uptimeRobot,
+    cloudflare,
+    sentry,
+    plausible,
+    telegram,
+    hetznerBackup,
+    hetznerServer,
+    r2,
+  ] = await Promise.all([
+    checkCoolify(),
+    checkUptimeRobot(),
+    checkCloudflare(),
+    checkSentry(),
+    checkPlausible(),
+    checkTelegram(),
+    checkHetznerBackups(),
+    checkHetznerServer(),
+    checkCloudflareR2(),
+  ]);
   // Synchrone et volontairement hors du Promise.all : CallMeBot n'a pas
   // d'endpoint de santé, et le « pinger » enverrait un vrai WhatsApp à chaque
   // ouverture de cette page.
@@ -287,8 +335,8 @@ export default async function AdminInfraPage({ params }: PageProps) {
       name: "Hetzner Cloud",
       role: "VPS axionia-web (CPX32 8 GB / 150 GB), datacenter Nuremberg",
       externalUrl: "https://console.hetzner.com/projects",
-      status: "ok",
-      detail: "ID 130002660 · 178.105.55.15",
+      status: hetznerServer.status,
+      detail: hetznerServer.detail ?? "ID 130002660 · 178.105.55.15",
       paid: "6,49 €/mois TTC · paiement Hetzner",
     },
     {
@@ -324,19 +372,27 @@ export default async function AdminInfraPage({ params }: PageProps) {
       paid: "0 € (auto-hébergé)",
     },
     {
+      // Pas de vrai check ici : le repo est PRIVÉ, l'API GitHub y répondrait
+      // 404 sans token — il faudrait créer un secret dédié (PAT) rien que
+      // pour ce ping. Coût/complexité jugés disqualifiants pour une simple
+      // card de lien. Mieux vaut un badge honnête que faire semblant.
       name: "GitHub repo",
       role: "Code source, branches, PRs",
       externalUrl: "https://github.com/will383842/axion-ia",
-      status: "ok",
-      detail: "main = production",
+      status: "not-checked",
+      detail:
+        "main = production · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
       paid: "0 € (Free private repo)",
     },
     {
+      // Même raison que GitHub repo ci-dessus : l'API Actions runs d'un repo
+      // privé exige aussi un token dédié.
       name: "GitHub Actions",
       role: "CI tests + auto-deploy Coolify",
       externalUrl: "https://github.com/will383842/axion-ia/actions",
-      status: "ok",
-      detail: "Workflow deploy-coolify.yml live",
+      status: "not-checked",
+      detail:
+        "Workflow deploy-coolify.yml · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
       paid: "0 € (2000 min/mois free)",
     },
     {

@@ -17,7 +17,29 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { importCatalogFormationsAction } from "@/server/actions/qualiopi/import-catalog";
-import type { CatalogImportReport } from "@/server/qualiopi/formations/catalog-import";
+import type {
+  CatalogImportReport,
+  ReconciledField,
+} from "@/server/qualiopi/formations/catalog-import";
+
+/**
+ * Libellés humains des 7 champs réconciliables (`RECONCILED_FIELDS`). Un
+ * admin non technicien ne doit jamais voir de camelCase brut (`ratioPratiquePct`,
+ * `accessibleHandicap`…) dans un rapport d'écart.
+ */
+const RECONCILED_FIELD_LABELS: Record<ReconciledField, string> = {
+  titre: "Titre",
+  objectifsPedagogiques: "Objectifs pédagogiques",
+  programmeDetaille: "Programme détaillé",
+  methodesPedagogiques: "Méthodes pédagogiques",
+  ratioPratiquePct: "Ratio pratique",
+  accessibleHandicap: "Accessibilité handicap",
+  certificationType: "Type de certification",
+};
+
+function driftFieldLabel(field: ReconciledField): string {
+  return RECONCILED_FIELD_LABELS[field] ?? field;
+}
 
 export function ImportCatalogFormationsButton(): React.ReactElement {
   const router = useRouter();
@@ -84,8 +106,8 @@ export function ImportCatalogFormationsButton(): React.ReactElement {
             )}
             {report.skippedOffreAbsente > 0 && (
               <span className="text-[color:var(--color-admin-warning)]">
-                {report.skippedOffreAbsente} sans offre rattachée — lancez d&apos;abord{" "}
-                <code>pnpm qualiopi:seed</code>.
+                {report.skippedOffreAbsente} sans offre rattachée — initialisez d&apos;abord le
+                référentiel depuis la page Configuration.
               </span>
             )}
           </p>
@@ -99,7 +121,8 @@ export function ImportCatalogFormationsButton(): React.ReactElement {
               <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-4)] text-left text-[color:var(--color-admin-fg-muted)]">
                 {driftItems.map((item) => (
                   <li key={item.slug}>
-                    <code>{item.slug}</code> — {(item.driftFields ?? []).join(", ")}
+                    <code>{item.slug}</code> —{" "}
+                    {(item.driftFields ?? []).map(driftFieldLabel).join(", ")}
                   </li>
                 ))}
               </ul>
