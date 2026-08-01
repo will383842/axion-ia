@@ -1,18 +1,19 @@
 /**
- * Admin — Qualiopi · 🔴 À traiter (refonte console phase 1, 2026-08-01).
+ * Admin — Qualiopi · À traiter (refonte console phase 1, 2026-08-01 ; passage
+ * aux pictogrammes lucide couche 4, même date).
  *
  * LA porte d'entrée de la console. Verdict de Will sur l'ancienne organisation :
  * « on ne sait pas où regarder, on ne sait pas par quoi commencer ». Cette page
  * répond à la seule question du matin : « qu'est-ce que je dois faire ? »
  *
- * Quatre blocs, dans l'ordre d'urgence :
- *   ✍️  Signatures — pièces à contresigner (quelqu'un a signé, il manque une
- *       partie) et signatures client qui n'ont pas commencé.
- *   ✉️  E-mails — la corbeille de validation F60.
- *   🚨  Alertes & relances — les alertes actives de l'évaluateur quotidien
- *       (OPCO sans réponse, impayés, devis dormants, vigilance URSSAF, NDA…).
+ * Trois blocs, dans l'ordre d'urgence :
+ *   - Signatures — pièces à contresigner (quelqu'un a signé, il manque une
+ *     partie) et signatures client qui n'ont pas commencé.
+ *   - E-mails — la corbeille de validation F60.
+ *   - Alertes & relances — les alertes actives de l'évaluateur quotidien
+ *     (OPCO sans réponse, impayés, devis dormants, vigilance URSSAF, NDA…).
  *
- * 🔴 Zéro logique propre : les chiffres viennent de `compterQualiopiNav()`
+ * Zéro logique propre : les chiffres viennent de `compterQualiopiNav()`
  * (le MÊME module que les pastilles de la sidebar) et les listes des services
  * existants. Cette page AGRÈGE, elle ne recalcule rien — un chiffre calculé
  * deux fois dirait un jour deux choses différentes.
@@ -32,24 +33,46 @@ import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { depuisMaintenant, joursEcoules } from "@/lib/admin/relative-time";
+import {
+  PenLine,
+  Mail,
+  CircleAlert,
+  TriangleAlert,
+  Clock,
+  Inbox,
+  Wrench,
+  ChevronRight,
+  CheckCheck,
+  Signature,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 /**
  * Pastille de résumé en tête de page. Rendue seulement si le compteur est
  * non nul : une rangée de zéros n'apprend rien et dilue ce qui compte.
  */
 function Resume({
-  emoji,
+  icon: Icon,
+  ton,
   n,
   libelle,
 }: {
-  emoji: string;
+  icon: LucideIcon;
+  /** Teinte du pictogramme — seul le compte critique se distingue. */
+  ton?: "danger" | "warning";
   n: number;
   libelle: string;
 }): React.ReactElement | null {
   if (n === 0) return null;
+  const teinte =
+    ton === "danger"
+      ? "text-[color:var(--color-admin-destructive)]"
+      : ton === "warning"
+        ? "text-[color:var(--color-admin-warning)]"
+        : "text-[color:var(--color-admin-fg-muted)]";
   return (
     <span className="inline-flex items-center gap-[var(--space-admin-3)] rounded-[var(--radius-admin-pill)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-      <span aria-hidden="true">{emoji}</span>
+      <Icon size={15} aria-hidden="true" className={`shrink-0 ${teinte}`} />
       <strong className="tabular-nums">{n}</strong>
       <span className="text-[color:var(--color-admin-fg-soft)]">{libelle}</span>
     </span>
@@ -154,13 +177,13 @@ export default async function ATraiterPage({ params }: PageProps) {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="🔴 À traiter"
+        title="À traiter"
         description="Tout ce qui attend une action, au même endroit — signatures, e-mails, relances, alertes. Quand cette page est vide, tout est à jour."
       />
 
       {rienAFaire ? (
         <AdminEmptyState
-          icon={<span className="text-[22px]">✨</span>}
+          icon={<CheckCheck size={22} aria-hidden="true" />}
           title="Rien à traiter — tout est à jour"
           description="Les pastilles rouges de la navigation vous ramèneront ici dès que quelque chose attendra une action."
         />
@@ -168,18 +191,29 @@ export default async function ATraiterPage({ params }: PageProps) {
         // Résumé en tête : combien, et de quelle nature. Avant, il fallait
         // faire défiler la page pour savoir ce qui attendait.
         <div className="mb-[var(--space-admin-7)] flex flex-wrap items-center gap-[var(--space-admin-3)]">
-          <Resume emoji="✍️" n={signatures.length} libelle="signature(s)" />
-          <Resume emoji="✉️" n={compteurs.emails} libelle="e-mail(s) à valider" />
-          <Resume emoji="🔴" n={critiques.length} libelle="alerte(s) critique(s)" />
-          <Resume emoji="🟠" n={importantes.length} libelle="alerte(s) importante(s)" />
+          <Resume icon={PenLine} n={signatures.length} libelle="signature(s)" />
+          <Resume icon={Mail} n={compteurs.emails} libelle="e-mail(s) à valider" />
+          <Resume
+            icon={CircleAlert}
+            ton="danger"
+            n={critiques.length}
+            libelle="alerte(s) critique(s)"
+          />
+          <Resume
+            icon={TriangleAlert}
+            ton="warning"
+            n={importantes.length}
+            libelle="alerte(s) importante(s)"
+          />
         </div>
       )}
 
-      {/* ✍️ Signatures */}
+      {/* Signatures */}
       {signatures.length > 0 && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            ✍️ Signatures en attente <span className={pastille}>{signatures.length}</span>
+            <Signature size={18} aria-hidden="true" className="shrink-0" />
+            Signatures en attente <span className={pastille}>{signatures.length}</span>
           </h2>
           <p className={sousTitreCarte}>
             Une pièce reste bloquée tant qu’il manque une signature — la vôtre ou celle du client.
@@ -204,9 +238,22 @@ export default async function ATraiterPage({ params }: PageProps) {
                 <li key={s.id}>
                   <Link href={cible} className={tuile}>
                     <span className="flex min-w-0 items-start gap-[var(--space-admin-4)]">
-                      <span aria-hidden="true" className="shrink-0 leading-[1.4]">
-                        {aContresigner ? "🖊️" : "⏳"}
-                      </span>
+                      {/* Deux attentes de nature opposée : « à contresigner »
+                          appelle un geste de votre part, « en attente » appelle
+                          une relance. Le pictogramme le dit avant la phrase. */}
+                      {aContresigner ? (
+                        <PenLine
+                          size={17}
+                          aria-hidden="true"
+                          className="mt-[2px] shrink-0 text-[color:var(--color-admin-accent)]"
+                        />
+                      ) : (
+                        <Clock
+                          size={17}
+                          aria-hidden="true"
+                          className="mt-[2px] shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                        />
+                      )}
                       <span className="min-w-0">
                         <span className="block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
                           <strong>
@@ -227,7 +274,10 @@ export default async function ATraiterPage({ params }: PageProps) {
                         </span>
                       </span>
                     </span>
-                    <span className="admin-button-ghost shrink-0">Ouvrir →</span>
+                    <span className="admin-button-ghost inline-flex shrink-0 items-center gap-[var(--space-admin-1)]">
+                      Ouvrir
+                      <ChevronRight size={15} aria-hidden="true" />
+                    </span>
                   </Link>
                 </li>
               );
@@ -236,26 +286,29 @@ export default async function ATraiterPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* ✉️ E-mails à valider */}
+      {/* E-mails à valider */}
       {compteurs.emails > 0 && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            ✉️ E-mails à valider <span className={pastille}>{compteurs.emails}</span>
+            <Mail size={18} aria-hidden="true" className="shrink-0" />
+            E-mails à valider <span className={pastille}>{compteurs.emails}</span>
           </h2>
           <p className={sousTitreCarte}>
             Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
           </p>
           <Link href={`${base}/qualiopi/emails`} className="admin-button">
-            📬 Ouvrir la corbeille de validation
+            <Inbox size={16} aria-hidden="true" />
+            Ouvrir la corbeille de validation
           </Link>
         </div>
       )}
 
-      {/* 🚨 Alertes & relances */}
+      {/* Alertes & relances */}
       {(critiques.length > 0 || importantes.length > 0) && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            🚨 Alertes &amp; relances{" "}
+            <TriangleAlert size={18} aria-hidden="true" className="shrink-0" />
+            Alertes &amp; relances{" "}
             <span className={pastille}>{critiques.length + importantes.length}</span>
           </h2>
           <p className={sousTitreCarte}>
@@ -274,9 +327,19 @@ export default async function ATraiterPage({ params }: PageProps) {
                   }`}
                 >
                   <span className="flex min-w-0 items-start gap-[var(--space-admin-4)]">
-                    <span aria-hidden="true" className="shrink-0 leading-[1.4]">
-                      {critique ? "🔴" : "🟠"}
-                    </span>
+                    {critique ? (
+                      <CircleAlert
+                        size={17}
+                        aria-hidden="true"
+                        className="mt-[2px] shrink-0 text-[color:var(--color-admin-destructive)]"
+                      />
+                    ) : (
+                      <TriangleAlert
+                        size={17}
+                        aria-hidden="true"
+                        className="mt-[2px] shrink-0 text-[color:var(--color-admin-warning)]"
+                      />
+                    )}
                     <span className="min-w-0">
                       <span className="block text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
                         {a.titre}
@@ -300,7 +363,8 @@ export default async function ATraiterPage({ params }: PageProps) {
           </ul>
           <p className="mt-[var(--space-admin-6)]">
             <Link href={`${base}/qualiopi/alertes`} className="admin-button-secondary">
-              🔧 Gérer les alertes (marquer lu / résoudre)
+              <Wrench size={16} aria-hidden="true" />
+              Gérer les alertes (marquer lu / résoudre)
             </Link>
           </p>
         </div>
