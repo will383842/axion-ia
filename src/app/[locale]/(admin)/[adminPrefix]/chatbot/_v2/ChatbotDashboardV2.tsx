@@ -80,7 +80,7 @@ export function ChatbotDashboardV2({
           </h2>
           <Link
             href={`${base}/escalades`}
-            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-info)] hover:underline"
+            className="admin-link text-[length:var(--text-admin-sm)]"
           >
             Tout voir →
           </Link>

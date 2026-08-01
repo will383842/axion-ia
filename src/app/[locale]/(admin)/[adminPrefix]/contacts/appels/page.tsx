@@ -28,7 +28,9 @@ import {
   AdminTable,
   AdminPagination,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
+import { ExternalLink } from "lucide-react";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
@@ -76,14 +78,15 @@ export default async function AppelsPage({
       actions={
         <div className="flex gap-2">
           <ManualCalendlyEventButton />
-          <Link
+          <AdminButton
             href="https://calendly.com/event_types/user/me"
             target="_blank"
             rel="noopener noreferrer"
-            className="admin-button-ghost"
+            variant="ghost"
+            iconAfter={ExternalLink}
           >
-            Tableau de bord Calendly →
-          </Link>
+            Tableau de bord Calendly
+          </AdminButton>
         </div>
       }
     />

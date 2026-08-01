@@ -12,6 +12,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import {
@@ -384,33 +385,16 @@ export async function CoverageListV2({
             )}
           />
 
-          {totalPages > 1 ? (
-            <div className="mt-[var(--space-admin-4)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
-              <span className="admin-meta">
-                Page {page} / {totalPages} · {total} au total
-              </span>
-              <div className="flex items-center gap-[var(--space-admin-2)]">
-                {page > 1 ? (
-                  <Link href={buildUrl({ page: page - 1 })} className="admin-button-ghost">
-                    ← Précédent
-                  </Link>
-                ) : (
-                  <span className="admin-button-ghost opacity-40" aria-disabled="true">
-                    ← Précédent
-                  </span>
-                )}
-                {page < totalPages ? (
-                  <Link href={buildUrl({ page: page + 1 })} className="admin-button-ghost">
-                    Suivant →
-                  </Link>
-                ) : (
-                  <span className="admin-button-ghost opacity-40" aria-disabled="true">
-                    Suivant →
-                  </span>
-                )}
-              </div>
-            </div>
-          ) : null}
+          <AdminPagination
+            page={page}
+            totalPages={totalPages}
+            baseHref={base}
+            preservedParams={{
+              view: view === "active" ? undefined : view,
+              status,
+              serviceSector: sector,
+            }}
+          />
         </>
       )}
     </AdminPageShell>

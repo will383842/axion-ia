@@ -127,7 +127,7 @@ export default async function MediaCoverageListPage({ params }: PageProps) {
         rowAction={(row) => (
           <Link
             href={`${base}/couverture/${row.id}`}
-            className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
+            className="admin-link text-[length:var(--text-admin-sm)] font-medium"
           >
             Éditer
           </Link>

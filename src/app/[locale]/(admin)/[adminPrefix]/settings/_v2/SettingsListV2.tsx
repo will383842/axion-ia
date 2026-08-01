@@ -3,12 +3,14 @@
 // Settings V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
   AdminCard,
   AdminTable,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 
@@ -79,12 +81,14 @@ export function SettingsListV2({ adminPrefix, settings }: Props): React.ReactEle
           getRowId={(s) => s.key}
           caption="Liste des paramètres"
           rowAction={(s) => (
-            <Link
+            <AdminButton
               href={`/fr/${adminPrefix}/settings/${encodeURIComponent(s.key)}`}
-              className="admin-link"
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
             >
-              Éditer →
-            </Link>
+              Éditer
+            </AdminButton>
           )}
         />
       )}

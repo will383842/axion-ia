@@ -50,7 +50,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-3">
-        <a href={backUrl} className="text-sm text-[color:var(--color-admin-info)] hover:underline">
+        <a href={backUrl} className="admin-link text-sm">
           ← Site Explorer
         </a>
         <span className="text-[color:var(--color-admin-fg-disabled)]">/</span>
@@ -124,7 +124,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
                     "fr",
                     `site-explorer/${(a as { siteRoute?: { pathPattern: string } }).siteRoute ? "" : ""}`,
                   )}
-                  className="font-mono text-xs text-[color:var(--color-admin-info)] hover:underline"
+                  className="admin-link font-mono text-xs"
                 >
                   {a.siteRoute.pathRendered ?? a.siteRoute.pathPattern}
                 </a>

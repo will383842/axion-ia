@@ -32,7 +32,7 @@ export function SiteRouteRow({ route }: Props) {
       <div className="min-w-0 flex-1">
         <Link
           href={adminPath("fr", `site-explorer/${route.id}`)}
-          className="block truncate font-mono text-xs text-[color:var(--color-admin-info)] hover:underline"
+          className="admin-link block truncate font-mono text-xs"
         >
           {displayPath}
         </Link>

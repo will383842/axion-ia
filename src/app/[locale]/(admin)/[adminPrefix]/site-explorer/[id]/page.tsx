@@ -77,7 +77,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-3">
-        <a href={backUrl} className="text-sm text-[color:var(--color-admin-info)] hover:underline">
+        <a href={backUrl} className="admin-link text-sm">
           ← Site Explorer
         </a>
         <span className="text-[color:var(--color-admin-fg-disabled)]">/</span>

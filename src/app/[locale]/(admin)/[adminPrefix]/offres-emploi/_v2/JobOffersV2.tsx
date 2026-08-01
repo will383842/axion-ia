@@ -5,6 +5,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -12,6 +13,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
@@ -185,9 +187,14 @@ export function JobOffersV2({
           getRowId={(o) => o.id}
           caption="Liste des offres d'emploi"
           rowAction={(o) => (
-            <Link href={`/fr/${adminPrefix}/offres-emploi/${o.id}`} className="admin-link">
-              Éditer →
-            </Link>
+            <AdminButton
+              href={`/fr/${adminPrefix}/offres-emploi/${o.id}`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Éditer
+            </AdminButton>
           )}
         />
       )}

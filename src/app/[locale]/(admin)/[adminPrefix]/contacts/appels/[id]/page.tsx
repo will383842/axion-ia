@@ -11,7 +11,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { markInboxRead } from "@/features/admin-inbox/reads";
 import { auth } from "@/auth";
-import { AdminPageHeader } from "@/components/admin/ui";
+import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
+import { ExternalLink } from "lucide-react";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
@@ -60,14 +61,15 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
         actions={
           <div className="flex items-start gap-2">
             <EnrichCalendlyEventButton id={event.id} apiConfigured={apiConfigured} />
-            <a
+            <AdminButton
               href="https://calendly.com/event_types/user/me"
               target="_blank"
               rel="noopener noreferrer"
-              className="admin-button-ghost"
+              variant="ghost"
+              iconAfter={ExternalLink}
             >
-              Tableau de bord Calendly →
-            </a>
+              Tableau de bord Calendly
+            </AdminButton>
           </div>
         }
       />

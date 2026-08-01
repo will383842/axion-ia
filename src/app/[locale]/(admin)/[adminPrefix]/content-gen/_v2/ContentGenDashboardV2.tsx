@@ -6,7 +6,13 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminButton,
+} from "@/components/admin/ui";
 import {
   FileText,
   ListChecks,
@@ -17,6 +23,7 @@ import {
   Gauge,
   ShieldCheck,
   Database,
+  ArrowRight,
 } from "lucide-react";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
@@ -118,9 +125,9 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               className="admin-input w-[120px]"
             />
           </label>
-          <button type="submit" className="admin-button-cta">
-            Régénérer le lot tier-1 →
-          </button>
+          <AdminButton type="submit" iconAfter={ArrowRight}>
+            Régénérer le lot tier-1
+          </AdminButton>
         </form>
       </AdminCard>
 
@@ -131,9 +138,9 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             Aucune campagne active. Créez votre première campagne depuis un preset ou en mode libre.
           </p>
           <div className="mt-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-4)]">
-            <Link href={`${base}/coverage/presets`} className="admin-button-cta">
-              Choisir un preset →
-            </Link>
+            <AdminButton href={`${base}/coverage/presets`} iconAfter={ArrowRight}>
+              Choisir un preset
+            </AdminButton>
             <Link href={`${base}/campaigns/new`} className="admin-button-ghost">
               Campagne libre
             </Link>
@@ -233,9 +240,14 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
                 ? "🟡 en progression"
                 : "🟢 bonne couverture"}
             {" · "}
-            <Link href={`${base}/city-coverage`} className="admin-link">
-              Détail villes →
-            </Link>
+            <AdminButton
+              href={`${base}/city-coverage`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Détail villes
+            </AdminButton>
           </p>
         </div>
       </AdminCard>
@@ -253,9 +265,9 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             <strong>Échecs :</strong> {kpis.activeQueue.failed}
           </li>
           <li>
-            <Link href={`${base}/jobs`} className="admin-button-ghost">
-              Voir la file d&apos;attente →
-            </Link>
+            <AdminButton href={`${base}/jobs`} variant="ghost" iconAfter={ArrowRight}>
+              Voir la file d&apos;attente
+            </AdminButton>
           </li>
         </ul>
       </AdminCard>
@@ -493,9 +505,9 @@ function QuickGenForm({
           className="admin-input"
         />
       ))}
-      <button type="submit" className="admin-button">
-        Lancer →
-      </button>
+      <AdminButton type="submit" iconAfter={ArrowRight}>
+        Lancer
+      </AdminButton>
     </form>
   );
 }

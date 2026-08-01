@@ -5,10 +5,10 @@
 // "policies"` que /settings/policies (SSOT unique) — on préserve les autres champs
 // via closure sur `cfg` (aucun reset).
 
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { ArrowRight, ExternalLink } from "lucide-react";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminButton } from "@/components/admin/ui";
 import { updatePolicies, type ContentPolicies } from "@/server/actions/content-gen/policies";
 
 interface Props {
@@ -69,30 +69,32 @@ export function NewsControlV2({
               <>
                 {" "}
                 — aucune source active : aucune actualité ne sera générée.{" "}
-                <Link href={`${base}/rss`} className="admin-link">
-                  Ajouter une source →
-                </Link>
+                <AdminButton href={`${base}/rss`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+                  Ajouter une source
+                </AdminButton>
               </>
             ) : (
               <>
                 {" · "}
-                <Link href={`${base}/rss`} className="admin-link">
-                  Gérer les sources →
-                </Link>
+                <AdminButton href={`${base}/rss`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+                  Gérer les sources
+                </AdminButton>
               </>
             )}
           </li>
           <li>
             <strong>Actualités publiées (indexables) :</strong> {publishedNewsCount}
             {" · "}
-            <a
+            <AdminButton
               href="/fr/actualites"
               target="_blank"
               rel="noopener noreferrer"
-              className="admin-link"
+              variant="ghost"
+              size="sm"
+              iconAfter={ExternalLink}
             >
-              Voir la page publique /actualites →
-            </a>
+              Voir la page publique /actualites
+            </AdminButton>
           </li>
         </ul>
       </AdminCard>
@@ -155,9 +157,14 @@ export function NewsControlV2({
 
         <p className="admin-meta-block mt-[var(--space-admin-4)]">
           Réglages avancés (score auto-publish, seuils anti-plagiat, rétention) :{" "}
-          <Link href={`${base}/settings/policies`} className="admin-link">
-            Policies content-gen →
-          </Link>
+          <AdminButton
+            href={`${base}/settings/policies`}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            Policies content-gen
+          </AdminButton>
         </p>
       </AdminCard>
     </AdminPageShell>

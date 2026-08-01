@@ -6,6 +6,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -13,6 +14,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 
@@ -175,9 +177,14 @@ export function FaqV2({
           getRowId={(f) => f.id}
           caption="Liste des questions FAQ"
           rowAction={(f) => (
-            <Link href={`/fr/${adminPrefix}/faq/${f.id}`} className="admin-link">
-              Éditer →
-            </Link>
+            <AdminButton
+              href={`/fr/${adminPrefix}/faq/${f.id}`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Éditer
+            </AdminButton>
           )}
         />
       )}

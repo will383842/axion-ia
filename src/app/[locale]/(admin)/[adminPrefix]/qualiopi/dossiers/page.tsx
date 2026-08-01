@@ -34,10 +34,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import {
   lireDossiersPipeline,
   COLONNES_PIPELINE,
@@ -156,8 +158,6 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
     "inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[color:var(--color-admin-error)] px-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold text-white";
   const ligne =
     "flex flex-wrap items-center justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0";
-  const lien =
-    "text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] hover:underline";
   const badge =
     "inline-flex items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
   // Liens-filtres : même pilule dans les deux états, seule la surface change —
@@ -184,9 +184,14 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
             {l.prochaineAction}
           </span>
         </span>
-        <Link href={`${base}${l.cheminFiche}`} className={lien}>
-          Ouvrir →
-        </Link>
+        <AdminButton
+          href={`${base}${l.cheminFiche}`}
+          variant="ghost"
+          size="sm"
+          iconAfter={ArrowRight}
+        >
+          Ouvrir
+        </AdminButton>
       </li>
     );
   };
@@ -207,9 +212,14 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
             Ces dossiers sont terminés et payés : ils sortent du pipeline du quotidien mais restent
             consultables ici (rien n&apos;est supprimé).
           </p>
-          <Link href={urlAvec({ archives: false })} className={lien}>
-            ← Retour au pipeline
-          </Link>
+          <AdminButton
+            href={urlAvec({ archives: false })}
+            variant="ghost"
+            size="sm"
+            icon={ArrowLeft}
+          >
+            Retour au pipeline
+          </AdminButton>
         </div>
       )}
 

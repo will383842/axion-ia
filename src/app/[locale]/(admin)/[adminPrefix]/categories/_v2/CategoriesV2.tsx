@@ -6,6 +6,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -13,6 +14,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 
@@ -176,9 +178,14 @@ export function CategoriesV2({
           getRowId={(c) => c.id}
           caption="Liste des catégories"
           rowAction={(c) => (
-            <Link href={`/fr/${adminPrefix}/categories/${c.id}`} className="admin-link">
-              Éditer →
-            </Link>
+            <AdminButton
+              href={`/fr/${adminPrefix}/categories/${c.id}`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Éditer
+            </AdminButton>
           )}
         />
       )}

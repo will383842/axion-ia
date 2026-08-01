@@ -3,8 +3,14 @@
 // Image bank Overview V2 — AdminPageShell + AdminPageHeader + AdminStatCard.
 
 import Link from "next/link";
-import { CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
-import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { ArrowRight, CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminStatCard,
+  AdminButton,
+} from "@/components/admin/ui";
 import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
 
 interface ImageRow {
@@ -156,19 +162,29 @@ export function OverviewV2({
         <h2 className="admin-h2">Liens rapides</h2>
         <ul className="admin-meta-block flex flex-wrap gap-[var(--space-admin-5)]">
           <li>
-            <Link href={`${base}/analytics`} className="admin-link">
-              Voir les statistiques détaillées →
-            </Link>
+            <AdminButton
+              href={`${base}/analytics`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Voir les statistiques détaillées
+            </AdminButton>
           </li>
           <li>
-            <Link href={`${base}/sitemap-status`} className="admin-link">
-              Statut Sitemap &amp; IndexNow →
-            </Link>
+            <AdminButton
+              href={`${base}/sitemap-status`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Statut Sitemap &amp; IndexNow
+            </AdminButton>
           </li>
           <li>
-            <Link href={`${base}/settings`} className="admin-link">
-              Paramètres →
-            </Link>
+            <AdminButton href={`${base}/settings`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+              Paramètres
+            </AdminButton>
           </li>
         </ul>
       </AdminCard>

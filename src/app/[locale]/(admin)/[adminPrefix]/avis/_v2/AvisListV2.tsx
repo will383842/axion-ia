@@ -1,6 +1,7 @@
 // Avis clients V2 — liste + modération (AdminPageShell + AdminTable + actions inline).
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -8,6 +9,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { AdminReview } from "@/features/admin-reviews/actions";
@@ -166,9 +168,14 @@ export function AvisListV2({
           caption="Liste des avis clients"
           rowAction={(r) => (
             <div className="flex flex-wrap items-center gap-2">
-              <Link href={`${base}/${r.id}`} className="admin-link">
-                Voir →
-              </Link>
+              <AdminButton
+                href={`${base}/${r.id}`}
+                variant="ghost"
+                size="sm"
+                iconAfter={ArrowRight}
+              >
+                Voir
+              </AdminButton>
               {r.status !== "published" ? (
                 <form action={publishForm}>
                   <input type="hidden" name="id" value={r.id} />
