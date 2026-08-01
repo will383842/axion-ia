@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { resolveAdminThumbSrc } from "@/server/image-bank/utils/paths";
 import { ImageDetailV2 } from "./_v2/ImageDetailV2";
 
 export const dynamic = "force-dynamic";
@@ -57,7 +58,10 @@ export default async function ImageDetailPage({ params }: PageProps) {
         subModule: image.subModule,
         seoScore: image.seoScore,
         requiresHumanReview: image.requiresHumanReview,
+        requiresHumanTaxonomy: image.requiresHumanTaxonomy,
         publishedAt: image.publishedAt,
+        thumbSrc: resolveAdminThumbSrc(image),
+        lqipDataUri: image.lqipDataUri,
         translations: image.translations.map((t) => ({
           id: t.id,
           languageCode: t.languageCode,

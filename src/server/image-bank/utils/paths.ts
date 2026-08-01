@@ -70,3 +70,38 @@ export function getStorageBasePath(): string {
   }
   return `public${STORAGE_URL_PREFIX}`;
 }
+
+/**
+ * Résout l'URL d'affichage d'une miniature admin (audit UX 2026-08 — la console
+ * n'affichait AUCUNE vraie image nulle part, un carré gris partout, sur une
+ * bibliothèque de 200+ images choisies à l'aveugle par titre/slug).
+ *
+ * Gère les deux familles de stockage déjà en place côté public (`GalleryGrid`) :
+ *   - UUID-based (upload admin, Docker volume ou CDN) : `thumbnailPath`/`filePath`
+ *     commencent par `/image-bank` → préfixés par `IMAGE_BANK_CDN_URL` (vide en
+ *     dev → chemin relatif servi par le même serveur).
+ *   - Slug-based (images seedées dans `public/images/…`) : chemin relatif sans
+ *     slash de tête → normalisé avec un slash unique.
+ *
+ * Priorité `thumbnailPath` (variant Sharp basse résolution, ~300px, généré au
+ * pipeline d'import) → repli sur `filePath` (image principale) si la miniature
+ * n'a pas encore été générée → `null` si aucune des deux n'existe (import en
+ * échec ou en cours) : dans ce cas l'appelant garde le placeholder gris.
+ */
+export function resolveAdminThumbSrc(
+  image: { id: string; thumbnailPath?: string | null; filePath?: string | null },
+  baseUrl: string = process.env.IMAGE_BANK_CDN_URL ?? "",
+): string | null {
+  const path = image.thumbnailPath || image.filePath;
+  if (!path) return null;
+  if (path.startsWith("/image-bank")) return `${baseUrl}${path}`;
+  // Upload admin en PROD : `publicUrlFromLocalPath` a stocké le chemin DISQUE
+  // du volume (`//var/data/image-bank/…`), qui n'est pas une URL servable.
+  // On reconstruit l'URL comme le fait la galerie publique (`GalleryGrid`,
+  // motif prouvé en prod) : `{CDN}/image-bank/{uuid}/…` — `thumb.webp` vit
+  // dans le même dossier que les variants servis.
+  if (path.includes("/var/data/") || path.startsWith("//")) {
+    return `${baseUrl}/image-bank/${image.id}/thumb.webp`;
+  }
+  return path.startsWith("/") ? path : `/${path}`;
+}

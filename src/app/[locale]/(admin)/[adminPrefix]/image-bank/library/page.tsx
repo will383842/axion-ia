@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { resolveAdminThumbSrc } from "@/server/image-bank/utils/paths";
 import { LibraryV2 } from "./_v2/LibraryV2";
 
 export const dynamic = "force-dynamic";
@@ -54,6 +55,8 @@ export default async function LibraryPage({ params, searchParams }: PageProps) {
         module: img.module,
         seoScore: img.seoScore,
         publishedAt: img.publishedAt,
+        thumbSrc: resolveAdminThumbSrc(img),
+        lqipDataUri: img.lqipDataUri,
         translations: img.translations.map((t) => ({ title: t.title })),
       }))}
     />
