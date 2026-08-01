@@ -61,6 +61,10 @@ import { axionIaStackGrounding } from "@/server/qualiopi/engine/grounding";
 import { evaluateFormationQuality } from "@/server/qualiopi/engine/evaluate";
 import { hasUnsourcedClaims } from "@/server/qualiopi/engine/anti-hallucination";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
+import {
+  construireAlerteJobIaEchoue,
+  resoudreNomFormationPourAlerte,
+} from "@/server/qualiopi/alertes/job-ia-echoue";
 // Modules créés par l'autre agent — importés en avance (erreurs "Cannot find module" transitoires)
 import { runAdversarialCritique } from "@/server/qualiopi/engine/adversarial-critique";
 import { validateExcellence } from "@/server/qualiopi/engine/validation-excellence";
@@ -1129,12 +1133,16 @@ async function stepGenerateContent(
   // ferait retomber les supports en squelette sans alerte). On lève une erreur
   // visible + une alerte système, et le statut reste relançable.
   if (modulesContenu.length === 0) {
+    // 🔴 Audit du 2026-08-01 (défaut P0) — cette alerte remonte telle quelle sur
+    // /qualiopi/a-traiter, la toute première page de la console. Le titre reste
+    // métier et le message nomme la formation (formation.titre), jamais son UUID
+    // brut : un UUID ne dit rien à Will, un nom de formation si.
     void creerOuDedup({
       code: "job_ia_echoue",
       niveau: "important",
-      titre: "Contenu détaillé vide",
+      titre: "Génération IA d'une formation en échec",
       message:
-        `La génération du contenu détaillé de la formation ${formation.id} n'a produit ` +
+        `La génération du contenu détaillé de « ${formation.titre} » n'a produit ` +
         `aucun module exploitable (${modules.length} module(s) en entrée). Relancer la génération.`,
       cibleType: "Formation",
       cibleId: formation.id,
@@ -1549,16 +1557,25 @@ export function startFormationEngineWorker(): Worker<FormationEngineJobData> {
     const attemptsMade = job?.attemptsMade ?? 0;
     const maxAttempts = job?.opts?.attempts ?? 1;
     if (formationId && attemptsMade >= maxAttempts) {
-      void creerOuDedup({
-        code: "job_ia_echoue",
-        niveau: "important",
-        titre: "Job IA en échec (dead letter queue)",
-        message:
-          `La génération IA de la formation ${formationId} a échoué après ${attemptsMade} ` +
-          `tentative(s) : ${err.message}`.slice(0, 1000),
-        cibleType: "Formation",
-        cibleId: formationId,
-      }).catch((e) =>
+      // 🔴 Audit du 2026-08-01 (défaut P0) — cette alerte est la toute première
+      // chose que Will voit en ouvrant la console (/qualiopi/a-traiter). Le
+      // titre/message d'origine exposait « dead letter queue » (jargon BullMQ),
+      // l'UUID brut de la formation et `err.message` (trace JS/BullMQ). Rien de
+      // tout ça n'est actionnable pour un non-technicien : le détail technique
+      // complet reste dans le `console.error` ci-dessus pour le diagnostic, seul
+      // un résumé métier va dans le champ `message` affiché à l'écran.
+      void (async () => {
+        const nomFormation = await resoudreNomFormationPourAlerte(formationId);
+        const { titre, message } = construireAlerteJobIaEchoue(nomFormation, attemptsMade);
+        await creerOuDedup({
+          code: "job_ia_echoue",
+          niveau: "important",
+          titre,
+          message,
+          cibleType: "Formation",
+          cibleId: formationId,
+        });
+      })().catch((e) =>
         console.error(
           "[qualiopi:engine] alerte job_ia_echoue fail-soft:",
           e instanceof Error ? e.message : String(e),

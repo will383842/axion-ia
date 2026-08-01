@@ -809,13 +809,93 @@ async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
   }));
 }
 
+/**
+ * Sélection Prisma partagée pour résoudre un libellé humain de dossier de
+ * financement (voir `libelleDossier` ci-dessous) — factorisée pour ne pas
+ * dupliquer les 4 relations entre les deux requêtes de `regleDossiersFinancement`.
+ */
+const SELECT_DOSSIER_LIBELLE = {
+  client: { select: { raisonSociale: true } },
+  trainingSession: {
+    select: { numero: true, titreSession: true, client: { select: { raisonSociale: true } } },
+  },
+  coachingContract: {
+    select: { numero: true, client: { select: { raisonSociale: true } } },
+  },
+  auditMission: {
+    select: { numero: true, titre: true, client: { select: { raisonSociale: true } } },
+  },
+  devis: {
+    select: { numero: true, client: { select: { raisonSociale: true } } },
+  },
+} as const;
+
+interface DossierPourLibelle {
+  numeroDossierExterne: string | null;
+  client: { raisonSociale: string } | null;
+  trainingSession: {
+    numero: string;
+    titreSession: string;
+    client: { raisonSociale: string } | null;
+  } | null;
+  coachingContract: { numero: string; client: { raisonSociale: string } | null } | null;
+  auditMission: {
+    numero: string;
+    titre: string;
+    client: { raisonSociale: string } | null;
+  } | null;
+  devis: { numero: string; client: { raisonSociale: string } | null } | null;
+}
+
+/**
+ * Libellé humain d'un dossier de financement pour les messages d'alerte.
+ *
+ * 🔴 Audit du 2026-08-01 (défaut P1) — sans `numeroDossierExterne`, le message
+ * retombait sur `d.id.slice(0, 8)`, un fragment d'UUID illisible pour Will.
+ * `DossierFinancement` n'a pas de client obligatoire : le rattachement se fait
+ * soit directement (`client`), soit via l'entité financée (session, contrat de
+ * coaching, mission d'audit, devis) qui porte elle-même un client optionnel.
+ * On descend cette chaîne de relations et on ne retombe sur un intitulé
+ * générique que si AUCUNE d'elles n'est renseignée (cas jamais rencontré en
+ * pratique, mais un dossier de financement orphelin de toute relation est
+ * concevable en théorie — d'où ce filet documenté plutôt qu'un UUID inventé).
+ */
+function libelleDossier(d: DossierPourLibelle): string {
+  if (d.numeroDossierExterne) return d.numeroDossierExterne;
+  if (d.client) return d.client.raisonSociale;
+  if (d.trainingSession) {
+    return (
+      d.trainingSession.client?.raisonSociale ??
+      `session ${d.trainingSession.numero} (${d.trainingSession.titreSession})`
+    );
+  }
+  if (d.coachingContract) {
+    return (
+      d.coachingContract.client?.raisonSociale ?? `contrat de coaching ${d.coachingContract.numero}`
+    );
+  }
+  if (d.auditMission) {
+    return d.auditMission.client?.raisonSociale ?? `mission d'audit « ${d.auditMission.titre} »`;
+  }
+  if (d.devis) {
+    return d.devis.client?.raisonSociale ?? `devis ${d.devis.numero}`;
+  }
+  return "dossier sans référence identifiable";
+}
+
 async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
   const alertes: AlerteCandidate[] = [];
 
   // 1. Envoyé sans réponse depuis +30 jours.
   const sansReponse = await prisma.dossierFinancement.findMany({
     where: { statut: "envoye", envoyeAt: { not: null, lte: daysAgo(30, now) } },
-    select: { id: true, financeurNom: true, numeroDossierExterne: true, envoyeAt: true },
+    select: {
+      id: true,
+      financeurNom: true,
+      numeroDossierExterne: true,
+      envoyeAt: true,
+      ...SELECT_DOSSIER_LIBELLE,
+    },
   });
   for (const d of sansReponse) {
     if (!d.envoyeAt) continue;
@@ -823,7 +903,7 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       code: "dossier_financement_sans_reponse",
       niveau: "important",
       titre: "Dossier de financement envoyé sans réponse depuis +30 jours",
-      message: `Le dossier ${d.numeroDossierExterne ?? d.id.slice(0, 8)} (${d.financeurNom ?? "financeur non nommé"}) est parti le ${d.envoyeAt.toLocaleDateString("fr-FR")} sans accord ni refus : relancer le financeur.`,
+      message: `Le dossier ${libelleDossier(d)} (${d.financeurNom ?? "financeur non nommé"}) est parti le ${d.envoyeAt.toLocaleDateString("fr-FR")} sans accord ni refus : relancer le financeur.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });
@@ -836,7 +916,13 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       echeanceFinanceurAt: { not: null, lte: now },
       paiementRecuAt: null,
     },
-    select: { id: true, financeurNom: true, numeroDossierExterne: true, echeanceFinanceurAt: true },
+    select: {
+      id: true,
+      financeurNom: true,
+      numeroDossierExterne: true,
+      echeanceFinanceurAt: true,
+      ...SELECT_DOSSIER_LIBELLE,
+    },
   });
   for (const d of enRetard) {
     if (!d.echeanceFinanceurAt) continue;
@@ -844,7 +930,7 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       code: "financeur_paiement_en_retard",
       niveau: "critique",
       titre: "Paiement du financeur en retard (échéance dépassée)",
-      message: `Le paiement du dossier ${d.numeroDossierExterne ?? d.id.slice(0, 8)} (${d.financeurNom ?? "financeur non nommé"}) était attendu le ${d.echeanceFinanceurAt.toLocaleDateString("fr-FR")} et n'est pas reçu : relancer le financeur.`,
+      message: `Le paiement du dossier ${libelleDossier(d)} (${d.financeurNom ?? "financeur non nommé"}) était attendu le ${d.echeanceFinanceurAt.toLocaleDateString("fr-FR")} et n'est pas reçu : relancer le financeur.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });

@@ -235,9 +235,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── IA / système ──────────────────────────────────────────────────────────
   // Émise par le worker engine (qualiopi-formation-engine-worker) sur échec
   // définitif de génération IA (tentatives BullMQ épuisées).
+  // 🔴 Audit du 2026-08-01 — titre aligné sur celui réellement écrit par le
+  // worker (métier, sans jargon « dead letter queue ») : cette entrée n'est que
+  // documentaire (le titre effectif est fixé à la création), mais une
+  // divergence induirait en erreur quiconque lit ce catalogue comme référence.
   job_ia_echoue: {
     niveau: "important",
-    titre: "Job IA en échec (dead letter queue)",
+    titre: "Génération IA d'une formation en échec",
     resolutionAuto: false,
   },
 
