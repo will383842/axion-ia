@@ -497,16 +497,26 @@ export function AdminSidebarNav({
 
   const searchActive = search.trim().length > 0;
 
-  // Tonalité de badge à remonter sur un onglet principal fermé (danger > warn).
-  const groupBadgeTone = (g: AdminNavGroup): BadgeTone | null => {
-    let warn: BadgeTone | null = null;
-    for (const it of items) {
-      if (it.group !== g) continue;
+  // Somme des compteurs d'une liste d'items — la « bulle » d'un en-tête REPLIÉ.
+  //
+  // Demande Will 2026-08-01 : « lorsqu'un onglet n'est pas déployé, on puisse
+  // voir aussi le nombre de nouvelles choses ». Un en-tête fermé ne doit pas
+  // CACHER le travail en attente : le total remonte, comme une boîte mail dont
+  // le dossier replié affiche son nombre de non-lus. Remplace l'ancien point
+  // de 7 px (qui disait « il y a quelque chose » sans dire combien).
+  // Tonalité : danger dès qu'UN item est danger, warn sinon.
+  const badgeRollup = (
+    list: ReadonlyArray<AdminNavItem>,
+  ): { count: number; tone: BadgeTone } | null => {
+    let count = 0;
+    let tone: BadgeTone = "warn";
+    for (const it of list) {
       const b = badgeFor(it.href);
-      if (b?.tone === "danger") return "danger";
-      if (b?.tone === "warn") warn = "warn";
+      if (!b) continue;
+      count += b.count;
+      if (b.tone === "danger") tone = "danger";
     }
-    return warn;
+    return count > 0 ? { count, tone } : null;
   };
 
   const initials = initialsFromEmail(userEmail ?? undefined);
@@ -813,7 +823,9 @@ export function AdminSidebarNav({
             // haut) mais reste librement repliable — d'où PAS d'override ici.
             const groupClosed = !collapsed && !searchActive && collapsedGroups.has(g);
             const containsActive = activeGroup === g;
-            const closedTone = groupClosed ? groupBadgeTone(g) : null;
+            // Bulle-somme du groupe FERMÉ (Will 2026-08-01) : l'ancien point de
+            // 7 px disait « il y a quelque chose » sans dire COMBIEN.
+            const closedBadge = groupClosed ? badgeRollup(groupItems) : null;
             return (
               <div
                 key={g}
@@ -850,18 +862,20 @@ export function AdminSidebarNav({
                     />
                     <span className="truncate">{ADMIN_NAV_GROUP_LABELS[g]}</span>
                     <span className="ml-auto flex shrink-0 items-center gap-[var(--space-admin-2)]">
-                      {/* Pastille d'alerte si onglet fermé contenant un badge */}
-                      {closedTone ? (
+                      {/* Bulle-somme si onglet fermé contenant des badges */}
+                      {closedBadge ? (
                         <span
-                          aria-hidden="true"
-                          className="h-[7px] w-[7px] rounded-full"
+                          className="rounded-full px-[6px] py-[1px] text-[10px] font-bold text-white tabular-nums"
                           style={{
                             backgroundColor:
-                              closedTone === "danger"
+                              closedBadge.tone === "danger"
                                 ? "var(--color-admin-rail-badge-danger)"
                                 : "var(--color-admin-rail-badge-warn)",
                           }}
-                        />
+                          aria-label={`${closedBadge.count} éléments à traiter dans cet onglet`}
+                        >
+                          {closedBadge.count > 99 ? "99+" : closedBadge.count}
+                        </span>
                       ) : null}
                       <ChevronRight
                         size={15}
@@ -886,7 +900,15 @@ export function AdminSidebarNav({
                       {(poleOrder ?? []).map((pole) => {
                         const poleItems = groupItems.filter((it) => it.subGroup === pole);
                         if (poleItems.length === 0) return null;
-                        const poleClosed = collapsedPoles.has(pole) && activePole !== pole;
+                        // 🔴 Bug signalé par Will (2026-08-01) : « certains
+                        // onglets, une fois déployés, ne se referment plus ».
+                        // Cause : `&& activePole !== pole` forçait ouvert le
+                        // pôle de la page courante — le clic de fermeture était
+                        // ENREGISTRÉ dans collapsedPoles mais ignoré au rendu.
+                        // L'auto-ouverture à la navigation est déjà assurée par
+                        // l'effet sur [activePole] plus haut : cette condition
+                        // était une ceinture redondante qui cassait le toggle.
+                        const poleClosed = collapsedPoles.has(pole);
                         return (
                           <div key={pole}>
                             <button
@@ -902,15 +924,36 @@ export function AdminSidebarNav({
                               )}
                             >
                               <span className="truncate">{poleLabels?.[pole] ?? pole}</span>
-                              <ChevronRight
-                                size={14}
-                                aria-hidden="true"
-                                className={cn(
-                                  "ml-auto shrink-0 text-[color:var(--color-admin-rail-fg-muted)]",
-                                  "transition-transform duration-[var(--duration-admin-fast)]",
-                                  !poleClosed && "rotate-90",
-                                )}
-                              />
+                              <span className="ml-auto flex shrink-0 items-center gap-[var(--space-admin-2)]">
+                                {/* Bulle-somme sur pôle REPLIÉ (Will 2026-08-01) :
+                                    fermé, il ne doit pas cacher son en-attente. */}
+                                {(() => {
+                                  const b = poleClosed ? badgeRollup(poleItems) : null;
+                                  return b ? (
+                                    <span
+                                      className="rounded-full px-[6px] py-[1px] text-[10px] font-bold text-white tabular-nums"
+                                      style={{
+                                        backgroundColor:
+                                          b.tone === "danger"
+                                            ? "var(--color-admin-rail-badge-danger)"
+                                            : "var(--color-admin-rail-badge-warn)",
+                                      }}
+                                      aria-label={`${b.count} éléments à traiter dans cette section`}
+                                    >
+                                      {b.count > 99 ? "99+" : b.count}
+                                    </span>
+                                  ) : null;
+                                })()}
+                                <ChevronRight
+                                  size={14}
+                                  aria-hidden="true"
+                                  className={cn(
+                                    "shrink-0 text-[color:var(--color-admin-rail-fg-muted)]",
+                                    "transition-transform duration-[var(--duration-admin-fast)]",
+                                    !poleClosed && "rotate-90",
+                                  )}
+                                />
+                              </span>
                             </button>
                             {!poleClosed ? (
                               <ul className="mt-[2px] flex flex-col gap-[2px]">
