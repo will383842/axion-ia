@@ -33,7 +33,22 @@ export function AdminFilterTabs({
           {label}
         </p>
       ) : null}
-      <div className="flex flex-wrap gap-[var(--space-admin-2)]">
+      {/* Refonte UI 2026-08-01 (couche 2) — passage de pastilles bordées
+          indépendantes à un sélecteur segmenté : un seul conteneur creusé, et
+          l'onglet actif est une tuile blanche posée dessus. Les pastilles
+          isolées lisaient comme une rangée de boutons, sans montrer qu'il
+          s'agit d'un choix unique et exclusif. La forme segmentée le dit
+          d'elle-même — et c'est la convention des consoles depuis 2024.
+          Le conteneur défile horizontalement plutôt que de passer à la ligne :
+          une liste de canaux qui se réorganise à chaque filtre est
+          désorientante. */}
+      <div
+        className={cn(
+          "inline-flex max-w-full items-center gap-[var(--space-admin-1)] overflow-x-auto",
+          "rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)]",
+          "bg-[color:var(--color-admin-surface-sunken)] p-[var(--space-admin-2)]",
+        )}
+      >
         {options.map((opt) => {
           const active = opt.value === current;
           return (
@@ -42,25 +57,26 @@ export function AdminFilterTabs({
               href={opt.href}
               {...(active ? { "aria-current": "page" } : {})}
               className={cn(
-                "inline-flex items-center gap-[var(--space-admin-2)]",
-                "rounded-[var(--radius-admin-md)] border",
+                "inline-flex shrink-0 items-center gap-[var(--space-admin-3)]",
+                "rounded-[var(--radius-admin-md)]",
                 "px-[var(--space-admin-5)] py-[var(--space-admin-3)]",
-                "text-[length:var(--text-admin-sm)] font-medium",
+                "text-[length:var(--text-admin-sm)] font-medium whitespace-nowrap",
                 "min-h-[var(--target-admin-min-desktop)]",
-                "transition-colors",
+                "transition-[background-color,color,box-shadow] duration-[var(--duration-admin-fast)]",
+                "focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none",
                 active
-                  ? "border-[color:var(--color-admin-info)] bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]"
-                  : "border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] hover:text-[color:var(--color-admin-fg)]",
+                  ? "bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg)] shadow-[var(--shadow-admin-1)]"
+                  : "text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-paper-alt)] hover:text-[color:var(--color-admin-fg)]",
               )}
             >
               {opt.label}
               {typeof opt.count === "number" ? (
                 <span
                   className={cn(
-                    "inline-flex items-center justify-center rounded-[var(--radius-admin-sm)]",
-                    "px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] font-semibold",
+                    "inline-flex min-w-[18px] items-center justify-center rounded-[var(--radius-admin-pill)]",
+                    "px-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tabular-nums",
                     active
-                      ? "bg-[color:var(--color-admin-info)] text-white"
+                      ? "bg-[color:var(--color-admin-accent)] text-[color:var(--color-admin-accent-fg)]"
                       : "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-neutral)]",
                   )}
                 >

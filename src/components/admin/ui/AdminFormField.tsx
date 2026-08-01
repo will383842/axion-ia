@@ -76,16 +76,18 @@ export function AdminFormField({
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
   const hasError = Boolean(error);
 
+  // Refonte UI 2026-08-01 (couche 2) — le rendu du champ vient désormais de la
+  // couche de normalisation de `admin.css` (bordure, rayon, hauteur, marges,
+  // anneau de focus terracotta), commune à TOUS les champs de la console, y
+  // compris les centaines qui ne passent pas par ce composant. Ce fichier
+  // redéclarait sa propre mise en forme, avec un focus BLEU et des marges
+  // internes différentes : deux champs voisins, l'un via ce composant et
+  // l'autre écrit à la main, n'avaient ni la même hauteur ni la même couleur
+  // de focus. Ne subsiste ici que ce qui est propre à l'état d'erreur.
   const inputClass = cn(
-    "w-full rounded-[var(--radius-admin-md)] border bg-[color:var(--color-admin-paper)]",
-    "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
-    "text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]",
-    "border-[color:var(--color-admin-border)]",
-    "focus:border-[color:var(--color-admin-info)] focus:outline-none",
-    "focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-info)] focus-visible:ring-offset-2",
-    "disabled:cursor-not-allowed disabled:opacity-60",
+    "w-full",
     hasError &&
-      "border-[color:var(--color-admin-destructive)] focus:border-[color:var(--color-admin-destructive)]",
+      "border-[color:var(--color-admin-destructive)] focus-visible:border-[color:var(--color-admin-destructive)]",
   );
 
   return (

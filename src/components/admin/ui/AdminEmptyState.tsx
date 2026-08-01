@@ -26,11 +26,17 @@ interface AdminEmptyStateProps {
   className?: string;
 }
 
+// Refonte UI 2026-08-01 (couche 2) — un état vide se lisait « boîte blanche
+// avec un texte gras au milieu » : rien n'indiquait s'il fallait attendre,
+// changer de filtre ou créer un élément. Bordure adoucie en pointillés (le
+// conteneur est une réserve, pas une carte de contenu), fond très légèrement
+// creusé, respiration accrue, et l'icône reçoit enfin un traitement — pastille
+// ronde teintée, comme dans les consoles de référence.
 const VARIANT_CLASS: Record<NonNullable<AdminEmptyStateProps["variant"]>, string> = {
-  card: "border border-[color:var(--color-admin-border)] rounded-[var(--radius-admin-md)] p-[var(--space-admin-8)]",
-  inline: "p-[var(--space-admin-6)]",
+  card: "border border-dashed border-[color:var(--color-admin-border-strong)] rounded-[var(--radius-admin-xl)] bg-[color:var(--color-admin-surface-sunken)] px-[var(--space-admin-7)] py-[var(--space-admin-9)]",
+  inline: "p-[var(--space-admin-7)]",
   "not-found":
-    "border border-[color:var(--color-admin-border)] rounded-[var(--radius-admin-md)] p-[var(--space-admin-9)] my-[var(--space-admin-8)]",
+    "border border-dashed border-[color:var(--color-admin-border-strong)] rounded-[var(--radius-admin-xl)] bg-[color:var(--color-admin-surface-sunken)] px-[var(--space-admin-7)] py-[var(--space-admin-9)] my-[var(--space-admin-8)]",
 };
 
 export function AdminEmptyState({
@@ -48,14 +54,20 @@ export function AdminEmptyState({
       aria-live="polite"
       className={cn(
         "admin-empty-state",
-        "flex flex-col items-center gap-[var(--space-admin-5)] text-center",
-        "bg-[color:var(--color-admin-paper)]",
+        "flex flex-col items-center gap-[var(--space-admin-4)] text-center",
         VARIANT_CLASS[variant],
         className,
       )}
     >
       {icon ? (
-        <div className="text-[color:var(--color-admin-fg-muted)]" aria-hidden="true">
+        <div
+          aria-hidden="true"
+          className={cn(
+            "mb-[var(--space-admin-2)] flex h-12 w-12 items-center justify-center rounded-full",
+            "bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg-muted)]",
+            "border border-[color:var(--color-admin-border)]",
+          )}
+        >
           {icon}
         </div>
       ) : null}

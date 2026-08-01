@@ -108,8 +108,16 @@ export function AdminTable<T>({
                   style={col.width ? { width: col.width } : undefined}
                   className={cn(
                     "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
-                    "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
+                    "text-[length:var(--text-admin-xs)] font-semibold tracking-wide whitespace-nowrap uppercase",
                     "text-[color:var(--color-admin-fg-muted)]",
+                    // Refonte UI 2026-08-01 (couche 2) — fond creusé sur la
+                    // ligne d'en-tête : sans lui, l'en-tête et la première
+                    // ligne de données étaient deux bandes blanches séparées
+                    // par un simple filet, et le regard ne trouvait pas où
+                    // commençaient les données. Aligné sur `.admin-table`,
+                    // pour que les tableaux « legacy » et ceux issus de ce
+                    // composant se ressemblent sur une même page.
+                    "bg-[color:var(--color-admin-surface-sunken)]",
                     "border-b border-[color:var(--color-admin-border)]",
                     col.align ? ALIGN_CLASS[col.align] : "text-left",
                     col.hiddenBelow ? HIDDEN_CLASS[col.hiddenBelow] : "",
@@ -120,7 +128,14 @@ export function AdminTable<T>({
               );
             })}
             {rowAction ? (
-              <th scope="col" className="px-[var(--space-admin-5)] py-[var(--space-admin-4)]">
+              <th
+                scope="col"
+                className={cn(
+                  "px-[var(--space-admin-5)] py-[var(--space-admin-4)]",
+                  "bg-[color:var(--color-admin-surface-sunken)]",
+                  "border-b border-[color:var(--color-admin-border)]",
+                )}
+              >
                 <span className="sr-only">Actions</span>
               </th>
             ) : null}
