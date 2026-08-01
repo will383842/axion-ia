@@ -16,7 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { evaluerConformite } from "@/server/qualiopi/conformite/conformite-service";
 import { renderRegistrePdfBuffer, REGISTRE_TYPES } from "@/server/qualiopi/registres/registres-pdf";
-import { getObjectBufferR2, isR2Configured } from "@/lib/r2-storage";
+import { getObjectBufferR2, isR2Configured, documentPdfKey } from "@/lib/r2-storage";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -429,8 +429,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   for (const doc of allDocuments) {
     // [P1] clé alignée sur l'écriture (documents-service.ts utilise l'année LOCALE
     //   au moment de la génération) — évite d'omettre des PDF à la bascule d'année.
-    const year = doc.createdAt.getFullYear();
-    const r2Key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
+    const r2Key = documentPdfKey(doc);
     const buffer = await getObjectBufferR2(r2Key);
 
     if (buffer !== null) {

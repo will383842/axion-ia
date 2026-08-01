@@ -128,13 +128,61 @@ describe("🔴 signature du formateur mandaté", () => {
     expect(mockSigner).not.toHaveBeenCalled();
   });
 
-  it("refuse une lettre qui n'est rattachée à aucune session", async () => {
-    // `DocumentGenere` n'a aucune clé vers `Trainer` : sans `sessionId`, plus
-    // rien ne relie la pièce à un formateur. Signer serait deviner.
+  it("refuse une lettre sans session NI ancre — plus rien ne la relie à un formateur", async () => {
+    // Signer serait deviner. (Une lettre-CADRE, elle, porte l'ancre `trainerId`
+    // — cas couvert plus bas.)
     mockPrisma.documentGenere.findUnique.mockResolvedValue({
       type: "lettre_mission",
       numero: "AXI-LM-2026-0003",
       sessionId: null,
+      trainerId: null,
+    });
+    const res = await signerLettreMissionFormateurAction(ENTREE);
+    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  // ── Lettres-CADRE (2026-08-01) : le mandat est l'ancre `trainerId` ──
+
+  it("🔴 admet le formateur ANCRÉ sur une lettre-cadre, sans aucune session", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "lettre_mission",
+      numero: "AXI-LM-2026-0009",
+      sessionId: null,
+      trainerId: TRAINER,
+    });
+    const res = await signerLettreMissionFormateurAction(ENTREE);
+    expect(res).toMatchObject({ ok: true });
+    // Le détour par la session n'a même pas lieu : l'ancre suffit.
+    expect(mockPrisma.trainingSession.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("🔴 refuse un formateur qui n'est PAS l'ancre d'une lettre-cadre", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "lettre_mission",
+      numero: "AXI-LM-2026-0009",
+      sessionId: null,
+      trainerId: AUTRE_TRAINER,
+    });
+    const res = await signerLettreMissionFormateurAction(ENTREE);
+    expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("🔴 l'ancre PRIME sur la session : une pièce ancrée sur un autre refuse, même si la session résout vers moi", async () => {
+    // Réaffectation du formateur principal APRÈS émission de la lettre : la
+    // pièce imprime et scelle le nom de l'ancien. Le nouveau principal ne doit
+    // pas pouvoir signer un mandat qui nomme quelqu'un d'autre — il faut
+    // régénérer la lettre.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "lettre_mission",
+      numero: "AXI-LM-2026-0003",
+      sessionId: SESSION,
+      trainerId: AUTRE_TRAINER,
+    });
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      formateurPrincipalId: TRAINER,
+      coFormateurs: [],
     });
     const res = await signerLettreMissionFormateurAction(ENTREE);
     expect(res).toMatchObject({ ok: false, raison: "non_mandataire" });

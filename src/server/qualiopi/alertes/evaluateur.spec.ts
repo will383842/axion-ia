@@ -36,6 +36,15 @@ vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
   listBaremesEnVigueur: vi.fn(),
 }));
 
+// Vigilance URSSAF — on mocke les LECTURES (pièces + cumul annuel) ; les
+// fonctions d'évaluation (seuil, sélection, péremption) restent RÉELLES : ce
+// sont les mêmes que la carte conformité, et c'est précisément ce que la règle
+// promet de ne pas réimplémenter.
+vi.mock("@/server/qualiopi/trainers/documents", () => ({
+  listTrainerDocuments: vi.fn(),
+  cumulAnnuelFormateurCents: vi.fn(),
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
 // ─────────────────────────────────────────────────────────────────────────────
@@ -43,6 +52,10 @@ vi.mock("@/server/qualiopi/financements/bareme-opco", () => ({
 import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
+import {
+  cumulAnnuelFormateurCents,
+  listTrainerDocuments,
+} from "@/server/qualiopi/trainers/documents";
 import { evaluerAlertes } from "./evaluateur";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,10 +79,14 @@ const mp = prisma as unknown as {
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
 const mockListBaremes = listBaremesEnVigueur as ReturnType<typeof vi.fn>;
+const mockListTrainerDocs = listTrainerDocuments as ReturnType<typeof vi.fn>;
+const mockCumulAnnuel = cumulAnnuelFormateurCents as ReturnType<typeof vi.fn>;
 
 /** Configure tous les mocks prisma pour retourner des résultats vides (aucune alerte). */
 function setupEmptyMocks() {
   mockListBaremes.mockResolvedValue([]); // aucun barème OPCO → pas d'alerte de péremption
+  mockListTrainerDocs.mockResolvedValue([]); // aucune pièce formateur
+  mockCumulAnnuel.mockResolvedValue(0); // sous le seuil de vigilance
   mp.reclamation.findMany.mockResolvedValue([]);
   mp.enrollment.findMany.mockResolvedValue([]);
   mp.trainingSession.findMany.mockResolvedValue([]);
@@ -938,6 +955,101 @@ describe("R12 — vérification Qualiopi d'un sous-traitant", () => {
     });
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "sous_traitant_qualiopi_expire");
+    expect(a?.niveau).toBe("critique");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle vigilance_urssaf (2026-08-01)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — vigilance_urssaf", () => {
+  const JOUR = 24 * 60 * 60 * 1000;
+
+  /** Un sous-traitant actif, vérifié récemment (pour taire la règle NDA voisine). */
+  function armerSousTraitant() {
+    mp.trainer.findMany.mockImplementation((args: { where?: { statut?: string } }) => {
+      if (args?.where?.statut === "sous_traitant") {
+        return Promise.resolve([
+          {
+            id: "tr-010",
+            nom: "Blanc",
+            prenom: "Marie",
+            sousTraitantVerifieAt: new Date(Date.now() - 2 * JOUR),
+          },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+  }
+
+  /** Une attestation de vigilance émise il y a `jours` jours, validée. */
+  function attestation(jours: number) {
+    return {
+      type: "attestation_vigilance_urssaf",
+      statutValidation: "valide",
+      dateEmission: new Date(Date.now() - jours * JOUR),
+      dateExpiration: null,
+    };
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+    armerSousTraitant();
+  });
+
+  it("sous le seuil de 5 000 € : aucune obligation, aucune alerte — même sans attestation", async () => {
+    mockCumulAnnuel.mockResolvedValue(4000_00);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code.startsWith("vigilance_urssaf"))).toHaveLength(0);
+  });
+
+  it("🔴 seuil atteint SANS attestation → critique (responsabilité solidaire)", async () => {
+    mockCumulAnnuel.mockResolvedValue(6000_00);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "vigilance_urssaf_absente");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+    expect(a?.message).toContain("Marie Blanc");
+    expect(a?.cibleId).toBe("tr-010");
+  });
+
+  it("attestation de plus de 6 mois → périmée, critique", async () => {
+    mockCumulAnnuel.mockResolvedValue(6000_00);
+    mockListTrainerDocs.mockResolvedValue([attestation(200)]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "vigilance_urssaf_perimee");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("critique");
+  });
+
+  it("attestation qui atteint 6 mois sous 30 jours → préavis, important", async () => {
+    mockCumulAnnuel.mockResolvedValue(6000_00);
+    // Émise il y a ~5 mois et 15 jours → expire dans ~15 jours.
+    mockListTrainerDocs.mockResolvedValue([attestation(168)]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "vigilance_urssaf_expire_j30");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toMatch(/dans \d+ jours/);
+  });
+
+  it("attestation fraîche (1 mois) → aucune alerte", async () => {
+    mockCumulAnnuel.mockResolvedValue(6000_00);
+    mockListTrainerDocs.mockResolvedValue([attestation(30)]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.filter((a) => a.code.startsWith("vigilance_urssaf"))).toHaveLength(0);
+  });
+
+  it("🔴 une attestation REJETÉE ne compte pas — même fraîche", async () => {
+    // `estValide` exige statutValidation = valide : une pièce refusée par
+    // l'admin ne protège de rien, la règle doit crier quand même.
+    mockCumulAnnuel.mockResolvedValue(6000_00);
+    mockListTrainerDocs.mockResolvedValue([{ ...attestation(30), statutValidation: "rejete" }]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "vigilance_urssaf_absente");
+    expect(a).toBeDefined();
     expect(a?.niveau).toBe("critique");
   });
 });

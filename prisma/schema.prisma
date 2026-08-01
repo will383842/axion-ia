@@ -6052,6 +6052,8 @@ model Trainer {
   emargementContresignatures EmargementContresignature[]
   /// Signatures AFEST 1-to-1 recueillies sur son poste (méthode A).
   signaturesSeanceRecueillies CoachingSeanceSignature[] @relation("SeanceSignatureRecueillie")
+  /// Pièces générées qui le MANDATENT (lettres de mission, dont lettres-cadre).
+  documentsGeneres            DocumentGenere[]          @relation("DocumentGenereTrainer")
 
   @@index([statut])
   @@index([actif])
@@ -6524,6 +6526,13 @@ model DocumentGenere {
   /// Null pour les documents de formation collective (inchangé).
   coachingSessionId   String?          @map("coaching_session_id") @db.Uuid
   coachingSession     CoachingSession? @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  /// 🔴 Formateur MANDATÉ par la pièce (lettre de mission). Ajouté 2026-08-01 :
+  /// la lettre-cadre couvre PLUSIEURS sessions — aucune session unique ne peut
+  /// plus désigner le mandataire, il faut donc l'ancrer ici. FK réelle et jamais
+  /// `metadata` : l'identité d'un signataire se résout depuis les rattachements
+  /// (doctrine du canal maison, cf. refs-circuits.spec.ts).
+  trainerId           String?          @map("trainer_id") @db.Uuid
+  trainer             Trainer?         @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
   /// URL signée S3/R2 (expiration courte). Regénérée à la demande.
   pdfUrl              String?          @map("pdf_url") @db.Text
   hashSha256          String           @map("hash_sha256") @db.VarChar(64)
@@ -6556,6 +6565,7 @@ model DocumentGenere {
   @@index([traineeId, type])
   @@index([coachingSessionId])
   @@index([sousTraitantId])
+  @@index([trainerId, type])
   @@index([suppressionPrevueAt])
   @@map("documents_generes")
 }

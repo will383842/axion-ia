@@ -54,7 +54,10 @@ import {
   type SignatureApposeeVue,
 } from "@/components/admin/qualiopi/PieceSignaturePanel";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { emettreLienSignatureAction } from "@/server/actions/qualiopi/piece-lien-signature";
+import {
+  envoyerLienSignatureParEmailAction,
+  emettreLienSignatureAction,
+} from "@/server/actions/qualiopi/piece-lien-signature";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -699,6 +702,7 @@ export default async function SessionHubPage({ params }: PageProps) {
                   signatures={signaturesParPiece.get(d.id) ?? []}
                   emettreAction={emettreLienSignatureAction}
                   contresignerAction={contresignerPieceAction}
+                  envoyerParEmailAction={envoyerLienSignatureParEmailAction}
                 />
               );
             })}
@@ -749,9 +753,21 @@ export default async function SessionHubPage({ params }: PageProps) {
         */}
         {etatLettreConsole !== null && (
           <div className="mt-[var(--space-admin-6)]">
+            {/* Une lettre-CADRE couvrant cette session s'affiche et se
+                contresigne ici comme une lettre de session — en le disant. */}
+            {etatLettreConsole.estCadre && (
+              <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette session
+                parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
+              </p>
+            )}
             <SignatureDocument
               documentGenereId={etatLettreConsole.documentGenereId}
-              titrePiece="Lettre de mission formateur"
+              titrePiece={
+                etatLettreConsole.estCadre
+                  ? "Lettre de mission-cadre"
+                  : "Lettre de mission formateur"
+              }
               numero={etatLettreConsole.numero}
               parties={etatLettreConsole.parties}
               peutAgir={etatLettreConsole.peutAgir}

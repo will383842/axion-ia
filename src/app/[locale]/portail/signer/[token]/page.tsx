@@ -20,7 +20,7 @@
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getSignedUrlR2 } from "@/lib/r2-storage";
+import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
@@ -94,7 +94,10 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // écrite ici divergerait un jour de celle du service, en silence.
   const piece = await prisma.documentGenere.findUnique({
     where: { id: verif.documentGenereId },
-    select: { numero: true, type: true, pdfUrl: true },
+    // `createdAt` : indispensable à la clé R2 (`documents/<année>/…`). Sans lui
+    // on ne peut pas re-signer, et c'est faute de l'avoir sélectionné qu'on
+    // passait `pdfUrl` — une URL — là où une clé était attendue.
+    select: { numero: true, type: true, pdfUrl: true, createdAt: true },
   });
   if (piece === null) notFound();
 
@@ -154,10 +157,19 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent
   // pour lire avant de signer, et un lien public ne doit pas laisser fuiter une
   // pièce contractuelle durablement.
+  //
+  // 🔴 2026-08-01 — l'intention ci-dessus était juste, l'argument était faux :
+  // on passait `piece.pdfUrl` à `getSignedUrlR2(key, …)`, donc une URL en guise
+  // de CLÉ R2. La pré-signature étant un calcul hors-ligne, rien ne levait — le
+  // `try/catch` ne se déclenchait jamais — et le lien affiché renvoyait
+  // `NoSuchKey`. Le signataire ne pouvait PAS lire la pièce, alors que la
+  // mention qu'il accepte affirme qu'il a « pu en prendre connaissance dans son
+  // intégralité avant de signer ». `signedDocumentPdfUrl` prend le document,
+  // plus une chaîne : la confusion n'est plus exprimable.
   let pdfUrl: string | null = null;
   if (piece.pdfUrl != null && piece.pdfUrl !== "") {
     try {
-      pdfUrl = await getSignedUrlR2(piece.pdfUrl, 15 * 60);
+      pdfUrl = await signedDocumentPdfUrl(piece, 15 * 60);
     } catch {
       // Un lien de lecture indisponible ne doit pas empêcher de signer.
       pdfUrl = null;

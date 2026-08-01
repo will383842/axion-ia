@@ -159,7 +159,7 @@ export async function signerLettreMissionFormateurAction(input: {
   // et la partie « formateur » est acceptable sur d'autres circuits.
   const piece = await prisma.documentGenere.findUnique({
     where: { id: donnees.documentGenereId },
-    select: { type: true, sessionId: true },
+    select: { type: true, sessionId: true, trainerId: true },
   });
   if (piece === null || piece.type !== "lettre_mission") {
     return {
@@ -169,10 +169,17 @@ export async function signerLettreMissionFormateurAction(input: {
     };
   }
 
-  if (
-    piece.sessionId === null ||
-    !(await estMandataireDeLaLettre(piece.sessionId, formateur.trainerId))
-  ) {
+  // 🔴 L'ancre directe `trainerId` PRIME quand elle existe (pièces émises
+  // depuis le 2026-08-01, lettres-CADRE comprises — qui n'ont AUCUNE session) :
+  // c'est le rattachement que le générateur a posé en imprimant le nom. Le
+  // détour par la session ne subsiste que pour les lettres legacy sans ancre.
+  const estMandataire =
+    piece.trainerId != null
+      ? piece.trainerId === formateur.trainerId
+      : piece.sessionId != null &&
+        (await estMandataireDeLaLettre(piece.sessionId, formateur.trainerId));
+
+  if (!estMandataire) {
     Sentry.captureException(
       new Error("Signature de lettre de mission tentée hors mandat du formateur"),
       {
@@ -184,7 +191,7 @@ export async function signerLettreMissionFormateurAction(input: {
       ok: false,
       raison: "non_mandataire",
       message:
-        "Cette lettre de mission ne vous est pas adressée : elle nomme le formateur principal de la session, et lui seul peut la signer.",
+        "Cette lettre de mission ne vous est pas adressée : elle nomme un formateur précis, et lui seul peut la signer.",
     };
   }
 

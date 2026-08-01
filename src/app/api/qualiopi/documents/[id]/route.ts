@@ -19,7 +19,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { isR2Configured, existsInR2, getSignedUrlR2 } from "@/lib/r2-storage";
+import { isR2Configured, existsInR2, getSignedUrlR2, documentPdfKey } from "@/lib/r2-storage";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +48,7 @@ export async function GET(
 
   // Re-signature R2 à la demande (clé identique à generateDocument).
   if (isR2Configured()) {
-    const key = `documents/${doc.createdAt.getFullYear()}/${doc.type}/${doc.numero}.pdf`;
+    const key = documentPdfKey(doc);
     try {
       if (await existsInR2(key).catch(() => false)) {
         const signed = await getSignedUrlR2(key, 900);

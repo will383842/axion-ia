@@ -32,13 +32,19 @@ vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: vi.fn((v: string | null) => (v === null ? null : `decrypted:${v}`)),
 }));
 
+// `signedDocumentPdfUrl` a remplacé l'assemblage manuel `isR2Configured()` +
+// clé + `getSignedUrlR2()` : la clé n'est plus recopiée ici, elle a une source
+// unique (`documentPdfKey`) testée dans `src/lib/r2-document-key.spec.ts`. Ce
+// qui reste à vérifier ici, et qui compte, c'est que le portail sert bien une
+// URL FRAÎCHE et jamais la valeur figée en base.
 vi.mock("@/lib/r2-storage", () => ({
   isR2Configured: vi.fn().mockReturnValue(false),
   getSignedUrlR2: vi.fn().mockResolvedValue("https://r2.example.com/signed-fresh.pdf"),
+  signedDocumentPdfUrl: vi.fn().mockResolvedValue(null),
 }));
 
 import { prisma } from "@/lib/prisma";
-import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
+import { isR2Configured, getSignedUrlR2, signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import {
   creerAcces,
@@ -61,6 +67,7 @@ const mockPrisma = prisma as unknown as {
 
 const mockIsR2Configured = isR2Configured as ReturnType<typeof vi.fn>;
 const mockGetSignedUrlR2 = getSignedUrlR2 as ReturnType<typeof vi.fn>;
+const mockSignedDocumentPdfUrl = signedDocumentPdfUrl as ReturnType<typeof vi.fn>;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // creerAcces
@@ -329,22 +336,20 @@ describe("getEspaceStagiaire", () => {
   // ── S1 : URL signée régénérée (24 h) ──────────────────────────────────────
 
   it("S1 : régénère une URL signée fraîche (24 h) si R2 configuré", async () => {
-    mockIsR2Configured.mockReturnValue(true);
-    mockGetSignedUrlR2.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
+    mockSignedDocumentPdfUrl.mockResolvedValue("https://r2.example.com/signed-fresh.pdf");
     mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
 
     const espace = await getEspaceStagiaire("trainee-s1");
 
-    expect(mockGetSignedUrlR2).toHaveBeenCalledOnce();
-    expect(mockGetSignedUrlR2).toHaveBeenCalledWith(
-      "documents/2026/attestation/AXI-ATT-2026-001.pdf",
-      86400,
-    );
+    expect(mockSignedDocumentPdfUrl).toHaveBeenCalledOnce();
     expect(espace.attestations[0]!.pdfUrl).toBe("https://r2.example.com/signed-fresh.pdf");
   });
 
-  it("S1 : construit la clé R2 à partir de createdAt.getFullYear(), type et numero", async () => {
-    mockIsR2Configured.mockReturnValue(true);
+  // Le document est passé ENTIER : c'est lui qui porte les trois champs dont la
+  // clé est faite. Les recopier ici reviendrait à réintroduire la huitième
+  // version maison de la clé — celle dont la divergence a cassé la lecture
+  // avant signature. La clé elle-même est vérifiée sur `documentPdfKey`.
+  it("S1 : passe au signeur le type, le numéro et la date de la pièce", async () => {
     mockPrisma.trainee.findUnique.mockResolvedValue({
       ...fakeTrainee,
       enrollments: [
@@ -363,25 +368,28 @@ describe("getEspaceStagiaire", () => {
 
     await getEspaceStagiaire("trainee-s1b");
 
-    expect(mockGetSignedUrlR2).toHaveBeenCalledWith(
-      "documents/2025/attestation_partielle/AXI-ATT-2025-042.pdf",
+    expect(mockSignedDocumentPdfUrl).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "attestation_partielle",
+        numero: "AXI-ATT-2025-042",
+        createdAt: new Date("2025-11-15T09:00:00Z"),
+      }),
       86400,
     );
   });
 
   it("S1 : fallback vers pdfUrl DB si R2 non configuré", async () => {
-    mockIsR2Configured.mockReturnValue(false);
+    // `signedDocumentPdfUrl` renvoie null quand R2 n'est pas configuré.
+    mockSignedDocumentPdfUrl.mockResolvedValue(null);
     mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
 
     const espace = await getEspaceStagiaire("trainee-s1c");
 
-    expect(mockGetSignedUrlR2).not.toHaveBeenCalled();
     expect(espace.attestations[0]!.pdfUrl).toBe("https://example.com/att.pdf");
   });
 
-  it("S1 : fallback fail-soft vers pdfUrl DB si getSignedUrlR2 lève", async () => {
-    mockIsR2Configured.mockReturnValue(true);
-    mockGetSignedUrlR2.mockRejectedValue(new Error("R2 network error"));
+  it("S1 : fallback fail-soft vers pdfUrl DB si la signature lève", async () => {
+    mockSignedDocumentPdfUrl.mockRejectedValue(new Error("R2 network error"));
     mockPrisma.trainee.findUnique.mockResolvedValue(fakeTrainee);
 
     const espace = await getEspaceStagiaire("trainee-s1d");
@@ -391,7 +399,7 @@ describe("getEspaceStagiaire", () => {
   });
 
   it("S1 : retourne pdfUrl=null si pdfUrl DB null et R2 non configuré", async () => {
-    mockIsR2Configured.mockReturnValue(false);
+    mockSignedDocumentPdfUrl.mockResolvedValue(null);
     mockPrisma.trainee.findUnique.mockResolvedValue({
       ...fakeTrainee,
       enrollments: [

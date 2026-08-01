@@ -757,9 +757,11 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
                 {DOC_LABELS[d.type] ?? d.type}{" "}
                 <span className="text-fg-muted font-mono text-xs">{d.numero}</span>
               </span>
+              {/* `pdfUrl` = témoin d'upload R2, pas cible : l'URL stockée est
+                  pré-signée 900 s et périmée. Cf. `/api/qualiopi/documents/[id]`. */}
               {d.pdfUrl ? (
                 <a
-                  href={d.pdfUrl}
+                  href={`/api/qualiopi/documents/${d.id}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-terracotta text-xs hover:underline"

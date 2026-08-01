@@ -6,6 +6,15 @@ import { SITE_URL } from "@/lib/seo";
 import { buildRssXml, listPublicEntriesForFeed } from "@/server/exporters/knowledge-rss";
 
 export const runtime = "nodejs";
+// Audit indexation GSC 2026-08-01 — sans `force-dynamic`, cette route (aucune
+// API dynamique utilisée) était PRÉ-RENDUE au build sous stub.invalid (DB
+// factice → 0 entrée, cf. short-circuit de `listPublicEntriesForFeed`) puis
+// BAKÉE VIDE dans l'image et servie telle quelle en prod — même mécanisme que
+// les sitemaps presse/blog corrigés par les PR 450/451. Lecture DB au runtime ;
+// la charge est absorbée par le Cache-Control CDN ci-dessous. Si le flux reste
+// à 0 item APRÈS ce fix, c'est un état de données (aucune entrée KB publique),
+// plus un bug de rendu.
+export const dynamic = "force-dynamic";
 
 interface RouteContext {
   params: Promise<{ locale: string }>;

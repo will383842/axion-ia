@@ -19,7 +19,7 @@
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
-import { isR2Configured, getSignedUrlR2 } from "@/lib/r2-storage";
+import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import type {
@@ -331,11 +331,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
         // les liens expirés (pdfUrl stockée en DB expire après 900 s).
         let pdfUrl: string | null = doc.pdfUrl ?? null;
         try {
-          if (isR2Configured()) {
-            const year = doc.createdAt.getFullYear();
-            const key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
-            pdfUrl = await getSignedUrlR2(key, 86400);
-          }
+          pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
         } catch {
           // Fail-soft : on garde pdfUrl DB (peut être expirée mais vaut mieux
           // qu'une erreur bloquante).

@@ -121,6 +121,7 @@ import {
 import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
 import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
+import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
 type TemplateMap = {
@@ -334,6 +335,7 @@ const TEMPLATES: TemplateMap = {
   "quote-expired": { subject: quoteExpiredSubject, component: QuoteExpiredEmail },
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
 };
 
