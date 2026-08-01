@@ -20,7 +20,10 @@ export function SiteRouteRow({ route }: Props) {
     <div className="flex items-center gap-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-4 py-3 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]">
       {/* Indentation profondeur */}
       {route.depth > 1 && (
-        <span className="shrink-0 text-[color:var(--color-admin-fg-disabled)]" style={{ paddingLeft: (route.depth - 1) * 16 }}>
+        <span
+          className="shrink-0 text-[color:var(--color-admin-fg-disabled)]"
+          style={{ paddingLeft: (route.depth - 1) * 16 }}
+        >
           └
         </span>
       )}
@@ -34,7 +37,9 @@ export function SiteRouteRow({ route }: Props) {
           {displayPath}
         </Link>
         {route.metaTitle && (
-          <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">{route.metaTitle}</p>
+          <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">
+            {route.metaTitle}
+          </p>
         )}
       </div>
 

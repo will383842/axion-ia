@@ -76,8 +76,10 @@ function statusColor(status: string): string {
 }
 
 function qualityBadgeClass(score: number): string {
-  if (score >= 75) return "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]";
-  if (score >= 50) return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
+  if (score >= 75)
+    return "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]";
+  if (score >= 50)
+    return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
   return "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]";
 }
 

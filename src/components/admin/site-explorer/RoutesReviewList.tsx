@@ -172,7 +172,9 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               type="button"
               onClick={bulkCopy}
               className={`rounded border px-1.5 py-0.5 text-xs hover:bg-[color:var(--color-admin-paper)] ${
-                bulkCopied ? "border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success)]" : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
+                bulkCopied
+                  ? "border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success)]"
+                  : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
               }`}
             >
               {bulkCopied ? "✓ Copiées" : "📋 Copier les URLs"}
@@ -190,7 +192,9 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
           <div
             key={route.id}
             className={`flex items-center gap-3 rounded-lg border bg-[color:var(--color-admin-paper)] px-3 py-2.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)] ${
-              checked ? "border-[color:var(--color-admin-info)] bg-[color:var(--color-admin-info-soft)]/40" : "border-[color:var(--color-admin-border)]"
+              checked
+                ? "border-[color:var(--color-admin-info)] bg-[color:var(--color-admin-info-soft)]/40"
+                : "border-[color:var(--color-admin-border)]"
             } ${route.removedAt ? "opacity-60" : ""}`}
           >
             <input
@@ -236,7 +240,9 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                 {displayPath}
               </Link>
               {route.metaTitle && (
-                <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">{route.metaTitle}</p>
+                <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">
+                  {route.metaTitle}
+                </p>
               )}
             </div>
 
@@ -372,7 +378,9 @@ function CopyUrlButton({ url, disabled }: { url: string; disabled?: boolean }) {
       title={disabled ? "URL template (non copiable)" : `Copier ${url}`}
       aria-label={`Copier l'URL ${url}`}
       className={`rounded p-1 ${
-        copied ? "text-[color:var(--color-admin-success)]" : "text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
+        copied
+          ? "text-[color:var(--color-admin-success)]"
+          : "text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
       } disabled:cursor-not-allowed disabled:opacity-30`}
     >
       {copied ? "✓" : "📋"}

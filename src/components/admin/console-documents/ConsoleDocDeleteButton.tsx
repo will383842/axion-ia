@@ -40,7 +40,9 @@ export function ConsoleDocDeleteButton({
       >
         {pending ? "Suppression…" : "Supprimer"}
       </button>
-      {error ? <span className="text-xs text-[color:var(--color-admin-destructive-fg)]">{error}</span> : null}
+      {error ? (
+        <span className="text-xs text-[color:var(--color-admin-destructive-fg)]">{error}</span>
+      ) : null}
     </span>
   );
 }

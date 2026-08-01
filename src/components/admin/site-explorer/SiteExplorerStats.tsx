@@ -67,8 +67,12 @@ export function SiteExplorerStats({ stats }: Props) {
               key={cat}
               className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-2.5 py-1 text-xs text-[color:var(--color-admin-fg-muted)]"
             >
-              <span className="font-medium text-[color:var(--color-admin-fg)]">{CATEGORY_LABELS[cat] ?? cat}</span>
-              <span className="text-[color:var(--color-admin-fg-disabled)]">{count.toLocaleString("fr-FR")}</span>
+              <span className="font-medium text-[color:var(--color-admin-fg)]">
+                {CATEGORY_LABELS[cat] ?? cat}
+              </span>
+              <span className="text-[color:var(--color-admin-fg-disabled)]">
+                {count.toLocaleString("fr-FR")}
+              </span>
             </span>
           ))}
         </div>
@@ -94,13 +98,18 @@ function StatCard({
 }) {
   const colorMap = {
     blue: "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
-    green: "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
-    purple: "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
+    green:
+      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
+    purple:
+      "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
     gray: "bg-[color:var(--color-admin-surface-sunken)] border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-muted)]",
     red: "bg-[color:var(--color-admin-destructive-soft)] border-[color:var(--color-admin-destructive)] text-[color:var(--color-admin-destructive-fg)]",
-    emerald: "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
-    amber: "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
-    orange: "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
+    emerald:
+      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
+    amber:
+      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
+    orange:
+      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
   };
 
   return (

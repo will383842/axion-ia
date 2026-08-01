@@ -29,11 +29,7 @@ interface Props {
 function ConfirmButton() {
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="admin-button-danger"
-    >
+    <button type="submit" disabled={pending} className="admin-button-danger">
       {pending ? "Suppression…" : "Supprimer définitivement (RGPD art. 17)"}
     </button>
   );

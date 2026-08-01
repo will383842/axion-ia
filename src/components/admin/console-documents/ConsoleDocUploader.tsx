@@ -105,7 +105,9 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
         </label>
       ) : null}
 
-      {error ? <p className="text-sm text-[color:var(--color-admin-destructive-fg)]">{error}</p> : null}
+      {error ? (
+        <p className="text-sm text-[color:var(--color-admin-destructive-fg)]">{error}</p>
+      ) : null}
 
       <div className="flex items-center gap-2">
         <button

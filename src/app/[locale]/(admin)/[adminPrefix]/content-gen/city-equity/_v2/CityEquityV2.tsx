@@ -35,8 +35,10 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
 };
 
 function cellTone(count: number): string {
-  if (count === 0) return "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)] font-semibold";
-  if (count === 1) return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
+  if (count === 0)
+    return "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)] font-semibold";
+  if (count === 1)
+    return "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]";
   return "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]";
 }
 
