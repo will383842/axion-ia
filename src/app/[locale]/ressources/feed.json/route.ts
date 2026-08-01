@@ -7,6 +7,10 @@ import { SITE_URL } from "@/lib/seo";
 import { buildJsonFeed, listPublicEntriesForFeed } from "@/server/exporters/knowledge-rss";
 
 export const runtime = "nodejs";
+// Même fix que le feed.xml voisin (audit indexation GSC 2026-08-01) : sans
+// `force-dynamic`, route bakée VIDE au build stub.invalid et servie telle
+// quelle en prod. Lecture DB au runtime, charge absorbée par le CDN.
+export const dynamic = "force-dynamic";
 
 interface RouteContext {
   params: Promise<{ locale: string }>;
