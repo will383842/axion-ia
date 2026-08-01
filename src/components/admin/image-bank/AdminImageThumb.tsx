@@ -30,10 +30,15 @@ export function AdminImageThumb({
   large,
   priority,
 }: AdminImageThumbProps): React.ReactElement {
+  // join(" ") plutôt qu'un template literal : le tri de classes du formatter
+  // supprime un espace de tête à l'intérieur d'une chaîne conditionnelle, ce
+  // qui collait les deux classes en une seule classe inexistante.
   if (!src) {
     return (
       <div
-        className={`admin-image-placeholder${large ? "admin-image-placeholder-large" : ""}`}
+        className={["admin-image-placeholder", large ? "admin-image-placeholder-large" : ""]
+          .filter(Boolean)
+          .join(" ")}
         aria-hidden="true"
       />
     );
@@ -41,7 +46,9 @@ export function AdminImageThumb({
 
   return (
     <div
-      className={`admin-image-thumb${large ? "admin-image-thumb-large" : ""}`}
+      className={["admin-image-thumb", large ? "admin-image-thumb-large" : ""]
+        .filter(Boolean)
+        .join(" ")}
       style={lqip ? { backgroundImage: `url(${lqip})` } : undefined}
     >
       <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} decoding="async" />
