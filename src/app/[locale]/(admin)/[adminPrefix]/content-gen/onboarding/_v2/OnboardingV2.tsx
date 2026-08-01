@@ -2,8 +2,8 @@
 //
 // Onboarding V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
-import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { ArrowRight } from "lucide-react";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminButton } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import {
   readContentGenConfig,
@@ -45,9 +45,14 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             {providersConfigured < 4 ? (
               <>
                 {" · "}
-                <Link href={`${base}/settings/providers`} className="admin-link">
-                  Configurer →
-                </Link>
+                <AdminButton
+                  href={`${base}/settings/providers`}
+                  variant="ghost"
+                  size="sm"
+                  iconAfter={ArrowRight}
+                >
+                  Configurer
+                </AdminButton>
               </>
             ) : null}
           </li>
@@ -64,9 +69,14 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             ) : (
               <>
                 {" · "}
-                <Link href={`${base}/author/manon`} className="admin-link">
-                  Éditer →
-                </Link>
+                <AdminButton
+                  href={`${base}/author/manon`}
+                  variant="ghost"
+                  size="sm"
+                  iconAfter={ArrowRight}
+                >
+                  Éditer
+                </AdminButton>
               </>
             )}
           </li>
@@ -76,23 +86,38 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             {distribProfiles < 1 ? (
               <>
                 {" · "}
-                <Link href={`${base}/settings/coverage-distribution`} className="admin-link">
-                  Créer un profil →
-                </Link>
+                <AdminButton
+                  href={`${base}/settings/coverage-distribution`}
+                  variant="ghost"
+                  size="sm"
+                  iconAfter={ArrowRight}
+                >
+                  Créer un profil
+                </AdminButton>
               </>
             ) : null}
           </li>
           <li>
             <strong>Étape 4 — Première campagne test</strong> ·{" "}
-            <Link href={`${base}/campaigns/new`} className="admin-link">
-              Lancer une campagne →
-            </Link>
+            <AdminButton
+              href={`${base}/campaigns/new`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Lancer une campagne
+            </AdminButton>
           </li>
           <li>
             <strong>Étape 5 — Vérifier le kill switch</strong> ·{" "}
-            <Link href={`${base}/settings/kill-switch`} className="admin-link">
-              Tester →
-            </Link>
+            <AdminButton
+              href={`${base}/settings/kill-switch`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Tester
+            </AdminButton>
           </li>
         </ul>
       </AdminCard>

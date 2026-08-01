@@ -21,13 +21,14 @@
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 
@@ -142,8 +143,6 @@ export default async function ATraiterPage({ params }: PageProps) {
     "inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[color:var(--color-admin-error)] px-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold text-white";
   const ligne =
     "flex flex-wrap items-center justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0";
-  const lien =
-    "text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] hover:underline";
 
   return (
     <AdminPageShell>
@@ -195,9 +194,9 @@ export default async function ATraiterPage({ params }: PageProps) {
                       ({consigne} — {attente})
                     </span>
                   </span>
-                  <Link href={cible} className={lien}>
-                    Ouvrir →
-                  </Link>
+                  <AdminButton href={cible} variant="ghost" size="sm" iconAfter={ArrowRight}>
+                    Ouvrir
+                  </AdminButton>
                 </li>
               );
             })}
@@ -214,9 +213,14 @@ export default async function ATraiterPage({ params }: PageProps) {
           <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
           </p>
-          <Link href={`${base}/qualiopi/emails`} className={lien}>
-            Ouvrir la corbeille de validation →
-          </Link>
+          <AdminButton
+            href={`${base}/qualiopi/emails`}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            Ouvrir la corbeille de validation
+          </AdminButton>
         </div>
       )}
 
@@ -240,9 +244,14 @@ export default async function ATraiterPage({ params }: PageProps) {
             ))}
           </ul>
           <p className="mt-[var(--space-admin-2)]">
-            <Link href={`${base}/qualiopi/alertes`} className={lien}>
-              Gérer les alertes (marquer lu / résoudre) →
-            </Link>
+            <AdminButton
+              href={`${base}/qualiopi/alertes`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Gérer les alertes (marquer lu / résoudre)
+            </AdminButton>
           </p>
         </div>
       )}

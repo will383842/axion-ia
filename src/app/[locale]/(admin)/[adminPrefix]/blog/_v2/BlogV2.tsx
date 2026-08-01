@@ -3,6 +3,7 @@
 // Blog V2 (liste) — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -10,6 +11,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
@@ -148,9 +150,14 @@ export function BlogV2({
           getRowId={(a) => a.id}
           caption="Liste des articles de blog"
           rowAction={(a) => (
-            <Link href={`/fr/${adminPrefix}/blog/${a.id}`} className="admin-link">
-              Éditer →
-            </Link>
+            <AdminButton
+              href={`/fr/${adminPrefix}/blog/${a.id}`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Éditer
+            </AdminButton>
           )}
         />
       )}

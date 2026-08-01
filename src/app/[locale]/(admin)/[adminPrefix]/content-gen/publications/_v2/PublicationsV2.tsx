@@ -12,6 +12,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
@@ -79,15 +80,6 @@ export async function PublicationsV2({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const base = `/fr/${adminPrefix}/content-gen/publications`;
-
-  function pageUrl(p: number): string {
-    const params = new URLSearchParams();
-    if (sp.status) params.set("status", sp.status);
-    if (sp.tier) params.set("tier", sp.tier);
-    if (p > 1) params.set("page", String(p));
-    const qs = params.toString();
-    return qs ? `${base}?${qs}` : base;
-  }
 
   type ArticleRow = (typeof recent)[number];
 
@@ -237,25 +229,12 @@ export async function PublicationsV2({
         )}
 
         {/* Pagination P0-9 */}
-        {totalPages > 1 && (
-          <div className="mt-[var(--space-admin-5)] flex items-center justify-between">
-            <p className="admin-meta">
-              Page {page} / {totalPages} · {total} articles
-            </p>
-            <div className="flex gap-[var(--space-admin-3)]">
-              {page > 1 && (
-                <Link href={pageUrl(page - 1)} className="admin-button-ghost">
-                  ← Précédent
-                </Link>
-              )}
-              {page < totalPages && (
-                <Link href={pageUrl(page + 1)} className="admin-button-ghost">
-                  Suivant →
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          baseHref={base}
+          preservedParams={{ status: sp.status, tier: sp.tier }}
+        />
       </AdminCard>
     </AdminPageShell>
   );

@@ -13,7 +13,8 @@ import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
-import { Hash, FileText, Send, CheckCircle2 } from "lucide-react";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { Hash, FileText, Send, CheckCircle2, ArrowRight } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
 
@@ -198,12 +199,14 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                       </span>
                     </td>
                     <td className={cellCls}>
-                      <Link
+                      <AdminButton
                         href={`${devisBase}/${devis.id}`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        variant="ghost"
+                        size="sm"
+                        iconAfter={ArrowRight}
                       >
-                        Ouvrir →
-                      </Link>
+                        Ouvrir
+                      </AdminButton>
                     </td>
                   </tr>
                 );

@@ -378,7 +378,7 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
         rowAction={(row) => (
           <Link
             href={`${base}/communiques/${row.id}`}
-            className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
+            className="admin-link text-[length:var(--text-admin-sm)] font-medium"
           >
             Éditer
           </Link>

@@ -1,6 +1,6 @@
 // Conversations chatbot — liste read-only avec lien détail (T-19). FR-only.
 
-import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -8,6 +8,8 @@ import {
   AdminTable,
   AdminEmptyState,
   AdminBadge,
+  AdminButton,
+  AdminPagination,
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import type { ConversationRow } from "@/features/admin-chatbot/actions";
@@ -62,41 +64,14 @@ export function ConversationsV2({
           rows={items}
           getRowId={(r) => r.id}
           rowAction={(r) => (
-            <Link
-              href={`${base}/${r.id}`}
-              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-info)] hover:underline"
-            >
-              Voir →
-            </Link>
+            <AdminButton href={`${base}/${r.id}`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+              Voir
+            </AdminButton>
           )}
           emptyState={<AdminEmptyState icon="💬" title="Aucune conversation" />}
         />
 
-        {totalPages > 1 ? (
-          <div className="mt-[var(--space-admin-4)] flex items-center justify-between text-[length:var(--text-admin-sm)]">
-            <span className="text-[color:var(--color-admin-fg-muted)]">
-              Page {page} / {totalPages}
-            </span>
-            <div className="flex gap-[var(--space-admin-2)]">
-              {page > 1 ? (
-                <Link
-                  href={`${base}?page=${page - 1}`}
-                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-3 py-1 hover:bg-[color:var(--color-admin-surface-hover)]"
-                >
-                  ← Précédent
-                </Link>
-              ) : null}
-              {page < totalPages ? (
-                <Link
-                  href={`${base}?page=${page + 1}`}
-                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-3 py-1 hover:bg-[color:var(--color-admin-surface-hover)]"
-                >
-                  Suivant →
-                </Link>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
+        <AdminPagination page={page} totalPages={totalPages} baseHref={base} />
       </AdminCard>
     </AdminPageShell>
   );

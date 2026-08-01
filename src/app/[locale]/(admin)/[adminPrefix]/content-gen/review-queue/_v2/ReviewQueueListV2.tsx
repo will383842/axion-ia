@@ -13,6 +13,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import {
@@ -49,7 +50,6 @@ export async function ReviewQueueListV2({
   const page = Math.max(1, Number(sp["page"] ?? "1") || 1);
   const { rows, total, totalPages } = await listReviewPaginated(status, page);
   const base = `/fr/${adminPrefix}/content-gen/review-queue`;
-  const pageHref = (p: number) => `${base}?status=${status}&page=${p}`;
 
   async function approve(formData: FormData) {
     "use server";
@@ -172,31 +172,12 @@ export async function ReviewQueueListV2({
         />
       )}
 
-      {totalPages > 1 ? (
-        <nav className="admin-pagination" aria-label="Pagination review queue">
-          {page > 1 ? (
-            <Link href={pageHref(page - 1)} className="admin-button-ghost" rel="prev">
-              ← Précédent
-            </Link>
-          ) : (
-            <span className="admin-button-ghost admin-button-disabled" aria-disabled="true">
-              ← Précédent
-            </span>
-          )}
-          <span className="admin-meta" aria-live="polite">
-            Page {page}/{totalPages}
-          </span>
-          {page < totalPages ? (
-            <Link href={pageHref(page + 1)} className="admin-button-ghost" rel="next">
-              Suivant →
-            </Link>
-          ) : (
-            <span className="admin-button-ghost admin-button-disabled" aria-disabled="true">
-              Suivant →
-            </span>
-          )}
-        </nav>
-      ) : null}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={base}
+        preservedParams={{ status }}
+      />
     </AdminPageShell>
   );
 }

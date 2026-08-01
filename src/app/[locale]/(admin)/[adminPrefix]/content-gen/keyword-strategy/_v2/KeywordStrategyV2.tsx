@@ -9,7 +9,7 @@
  * AdminPageShell + AdminPageHeader + AdminCard (pattern V2 standard).
  */
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminPagination } from "@/components/admin/ui";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordSeed } from "@/content/keywords/types";
 
@@ -107,17 +107,6 @@ export async function KeywordStrategyV2({
   }
 
   const basePath = `/fr/${adminPrefix}/content-gen/keyword-strategy`;
-
-  function filterUrl(overrides: Record<string, string>) {
-    const params = new URLSearchParams({
-      ...(vertical ? { vertical } : {}),
-      ...(intent ? { intent } : {}),
-      ...(query ? { q: query } : {}),
-      page: "1",
-      ...overrides,
-    });
-    return `${basePath}?${params.toString()}`;
-  }
 
   return (
     <AdminPageShell>
@@ -313,37 +302,16 @@ export async function KeywordStrategyV2({
       </AdminCard>
 
       {/* Pagination via liens GET */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          {safePage > 1 ? (
-            <a
-              href={filterUrl({ page: String(safePage - 1) })}
-              className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm"
-            >
-              ← Précédent
-            </a>
-          ) : (
-            <span className="pointer-events-none rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm opacity-50">
-              ← Précédent
-            </span>
-          )}
-          <span className="text-sm text-[color:var(--color-admin-fg-muted)]">
-            Page {safePage} / {totalPages}
-          </span>
-          {safePage < totalPages ? (
-            <a
-              href={filterUrl({ page: String(safePage + 1) })}
-              className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm"
-            >
-              Suivant →
-            </a>
-          ) : (
-            <span className="pointer-events-none rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm opacity-50">
-              Suivant →
-            </span>
-          )}
-        </div>
-      )}
+      <AdminPagination
+        page={safePage}
+        totalPages={totalPages}
+        baseHref={basePath}
+        preservedParams={{
+          ...(vertical ? { vertical } : {}),
+          ...(intent ? { intent } : {}),
+          ...(query ? { q: query } : {}),
+        }}
+      />
     </AdminPageShell>
   );
 }

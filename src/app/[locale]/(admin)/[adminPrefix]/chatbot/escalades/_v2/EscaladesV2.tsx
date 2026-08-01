@@ -8,6 +8,7 @@ import {
   AdminTable,
   AdminEmptyState,
   AdminBadge,
+  AdminPagination,
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import type { EscalationRow } from "@/features/admin-chatbot/actions";
@@ -103,31 +104,12 @@ export function EscaladesV2({
           emptyState={<AdminEmptyState icon="✅" title="Aucune escalade dans ce filtre" />}
         />
 
-        {totalPages > 1 ? (
-          <div className="mt-[var(--space-admin-4)] flex items-center justify-between text-[length:var(--text-admin-sm)]">
-            <span className="text-[color:var(--color-admin-fg-muted)]">
-              Page {page} / {totalPages}
-            </span>
-            <div className="flex gap-[var(--space-admin-2)]">
-              {page > 1 ? (
-                <Link
-                  href={`${base}?statut=${currentStatut}&page=${page - 1}`}
-                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-3 py-1 hover:bg-[color:var(--color-admin-surface-hover)]"
-                >
-                  ← Précédent
-                </Link>
-              ) : null}
-              {page < totalPages ? (
-                <Link
-                  href={`${base}?statut=${currentStatut}&page=${page + 1}`}
-                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-3 py-1 hover:bg-[color:var(--color-admin-surface-hover)]"
-                >
-                  Suivant →
-                </Link>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          baseHref={base}
+          preservedParams={{ statut: currentStatut }}
+        />
       </AdminCard>
     </AdminPageShell>
   );

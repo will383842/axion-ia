@@ -23,10 +23,7 @@ export function ConversationDetailV2({
         title="Conversation"
         description={`Session ${convo.sessionUuid.slice(0, 8)}… · ${convo.statut} · ${frDate(convo.createdAt)}`}
         actions={
-          <Link
-            href={base}
-            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-info)] hover:underline"
-          >
+          <Link href={base} className="admin-link text-[length:var(--text-admin-sm)]">
             ← Retour
           </Link>
         }

@@ -8,6 +8,8 @@
 // A-12 SP-X3 — bandeau orange/rouge cost cap 80%/100%.
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { prisma } from "@/lib/prisma";
 
 const ANOMALY_ALERT_KEYS = [
@@ -121,9 +123,9 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
           {costCapAt100
             ? " Workers en pause. Réactivation via reset cap ou 1er du mois."
             : " Le plafond sera atteint prochainement."}{" "}
-          <Link href={`${base}/costs`} className="underline">
-            Voir coûts →
-          </Link>
+          <AdminButton href={`${base}/costs`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+            Voir coûts
+          </AdminButton>
         </div>
       ) : null}
 
@@ -139,9 +141,9 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
         >
           <strong>⚠️ Anomalies détectées ({alertCount}) :</strong> {alertLabels.join(" · ")}
           {" · "}
-          <Link href={`${base}/monitoring`} className="underline">
-            Voir monitoring →
-          </Link>
+          <AdminButton href={`${base}/monitoring`} variant="ghost" size="sm" iconAfter={ArrowRight}>
+            Voir monitoring
+          </AdminButton>
         </div>
       )}
       {children}

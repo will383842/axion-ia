@@ -8,13 +8,14 @@
 // Server Component pur. Les cellules de tableau sont des React.ReactNode
 // pré-rendus par le consumer (pas de generics complexes).
 
-import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
   AdminTable,
   AdminPagination,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 
@@ -98,12 +99,9 @@ export function AdminListScaffold({
                   ›
                 </span>
               ) : (
-                <Link
-                  href={r.detailHref}
-                  className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-                >
-                  Détail →
-                </Link>
+                <AdminButton href={r.detailHref} variant="ghost" size="sm" iconAfter={ArrowRight}>
+                  Détail
+                </AdminButton>
               )
             ) : null
           }

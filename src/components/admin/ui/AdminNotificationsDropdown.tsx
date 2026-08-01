@@ -168,10 +168,7 @@ export function AdminNotificationsDropdown({
         >
           <Link
             href={allHref}
-            className={cn(
-              "text-[length:var(--text-admin-sm)] font-medium",
-              "text-[color:var(--color-admin-info)] hover:underline",
-            )}
+            className="admin-link text-[length:var(--text-admin-sm)] font-medium"
           >
             Voir toutes →
           </Link>

@@ -3,6 +3,7 @@
 // badge statut → <AdminBadge>.
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -10,6 +11,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
@@ -141,9 +143,14 @@ export function ApplicationsV2({
           getRowId={(a) => a.id}
           caption="Liste des candidatures emploi"
           rowAction={(a) => (
-            <Link href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`} className="admin-link">
-              Détail →
-            </Link>
+            <AdminButton
+              href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
+              variant="ghost"
+              size="sm"
+              iconAfter={ArrowRight}
+            >
+              Détail
+            </AdminButton>
           )}
         />
       )}
