@@ -16,7 +16,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import { KB_TYPES, getKbTypeMeta } from "@/content/knowledge/types";
 import { KB_DOMAINS, getDomainLabel } from "@/content/knowledge/domains";
 import { KB_AUDIENCES, getAudienceLabel } from "@/content/knowledge/audiences";

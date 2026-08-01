@@ -8,7 +8,7 @@ import {
 } from "@/features/admin-help/actions";
 import { HelpEditV2 } from "./_v2/HelpEditV2";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 

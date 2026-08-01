@@ -33,7 +33,7 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 

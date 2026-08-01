@@ -16,7 +16,7 @@ import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { SubmissionRowActions } from "./SubmissionRowActions";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
   in_progress: "En cours",

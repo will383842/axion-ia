@@ -18,7 +18,7 @@ import { isCalendlyApiConfigured } from "@/server/calendly/api";
 // Dates affichées en FR (audit UX : ISO brut illisible pour Will). Seuls les
 // usages AFFICHÉS sont concernés — la `key` React et les valeurs passées en
 // `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
-import { formatDateFr } from "@/server/content-gen/shared/format-date-fr";
+import { formatDateFr } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
