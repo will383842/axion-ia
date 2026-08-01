@@ -42,6 +42,9 @@ import { prisma } from "@/lib/prisma";
 import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
+// Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
+// cf. `editorialFor()` plus bas et `scripts/gen-content-freshness.mjs`.
+import { CONTENT_FRESHNESS } from "@/generated/content-freshness";
 // Fix sitemap 2026-07-06 — `buildPresseSitemap` lit désormais la DB (communiqués
 // publiés en console admin), la MÊME source que la page `/presse/[slug]`. Avant :
 // lecture des fixtures `PRESS_RELEASES` (3 slugs figés) alors que le fallback
@@ -470,6 +473,51 @@ const EDITORIAL_BASELINE = new Date("2026-06-08T00:00:00.000Z");
 const VILLES_EDITORIAL = new Date("2026-05-26T00:00:00.000Z");
 
 /**
+ * Fraîcheur RÉELLE par famille — audit indexation GSC 2026-07-31.
+ *
+ * Les deux constantes ci-dessus devaient être « bumpées à la main lors d'une
+ * refonte ». Personne ne l'a jamais fait, et elles mentaient DANS LES DEUX SENS
+ * (mesuré le 2026-07-31) :
+ *   - SOUS-estimation : 125 commits avaient touché le contenu villes depuis le
+ *     2026-05-26 (dernier : 2026-07-28) → Google ne re-crawlait pas des pages
+ *     réellement modifiées ;
+ *   - SUR-estimation : `cas-concrets` n'avait pas bougé depuis le 2026-05-24,
+ *     soit AVANT la baseline du 2026-06-08 qu'il déclarait → date-gaming
+ *     involontaire sur une famille inchangée.
+ *
+ * `CONTENT_FRESHNESS` porte la date du dernier commit git ayant touché les
+ * sources de CHAQUE famille (généré en CI par `scripts/gen-content-freshness.mjs`
+ * avant `docker build`, le `.git` étant hors du contexte Docker).
+ *
+ * Ce n'est PAS un retour au `BUILD_TIME` : une date de build avance à chaque
+ * deploy sans changement de contenu (le date-gaming que l'audit fraîcheur du
+ * 2026-06-08 avait justement supprimé). Ici une famille inchangée GARDE une date
+ * ancienne — c'est le comportement voulu.
+ *
+ * Fail-soft total : famille absente du manifeste (git indisponible, chemin sans
+ * historique) → retour à la constante figée, comportement d'avant.
+ */
+function editorialFor(family: string, fallback: Date = EDITORIAL_BASELINE): Date {
+  const iso = CONTENT_FRESHNESS[family];
+  if (!iso) return fallback;
+  const parsed = new Date(iso);
+  return Number.isNaN(parsed.getTime()) ? fallback : parsed;
+}
+
+/**
+ * `<lastmod>` d'un sub-sitemap généré, par ID. Exporté pour que
+ * `app/sitemap-index.xml/route.ts` lise LA MÊME source — auparavant l'index
+ * dupliquait `EDITORIAL_BASELINE` en dur avec un commentaire « garder en sync
+ * manuellement » (fragilité relevée par l'audit).
+ */
+export function editorialLastmodForSitemapId(id: string): Date {
+  if (id === "implantations" || id.startsWith("villes-") || id.startsWith("services-villes-")) {
+    return editorialFor("villes", VILLES_EDITORIAL);
+  }
+  return editorialFor(id);
+}
+
+/**
  * Filtre les entries EN si locale EN désactivé (env EN_LOCALE_ENABLED!=true).
  * Élimine les URLs /en/* du sitemap pour éviter que Googlebot crawle des 301s.
  * Nettoie aussi les `alternates.languages.en` qui pointeraient vers 301.
@@ -500,54 +548,75 @@ export default async function sitemap(props: {
   // Static IDs
   switch (id) {
     case "pages":
-      return filterEnIfDisabled(buildPagesSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildPagesSitemap(editorialFor("pages")));
     case "blog":
-      return filterEnIfDisabled(await buildBlogSitemap(EDITORIAL_BASELINE));
+      // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
+      // date ne sert que de défaut pour les entrées sans date propre.
+      return filterEnIfDisabled(await buildBlogSitemap(editorialFor("blog")));
     case "faq":
-      return filterEnIfDisabled(await buildFaqSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(await buildFaqSitemap(editorialFor("faq")));
     case "help":
-      return filterEnIfDisabled(buildHelpSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildHelpSitemap(editorialFor("help")));
     case "cas-concrets":
-      return filterEnIfDisabled(buildCasConcretsSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildCasConcretsSitemap(editorialFor("cas-concrets")));
     case "comparaisons":
-      return filterEnIfDisabled(buildComparaisonsSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildComparaisonsSitemap(editorialFor("comparaisons")));
     case "guides":
-      return filterEnIfDisabled(buildGuidesHubSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildGuidesHubSitemap(editorialFor("guides")));
     case "glossaire":
-      return filterEnIfDisabled(buildGlossarySitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildGlossarySitemap(editorialFor("glossaire")));
     case "presse":
-      return filterEnIfDisabled(await buildPresseSitemap(EDITORIAL_BASELINE));
+      // `publishedAt` réel par communiqué côté builder ; défaut ici.
+      return filterEnIfDisabled(await buildPresseSitemap(editorialFor("presse")));
     case "implementation":
-      return filterEnIfDisabled(buildImplementationSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildImplementationSitemap(editorialFor("implementation")));
     case "implantations":
-      return filterEnIfDisabled(buildImplantationsHubSitemap(VILLES_EDITORIAL));
+      return filterEnIfDisabled(
+        buildImplantationsHubSitemap(editorialFor("villes", VILLES_EDITORIAL)),
+      );
     case "services-villes-audit":
-      return filterEnIfDisabled(buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "audit"));
+      return filterEnIfDisabled(
+        buildServicesVillesSitemap(editorialFor("villes", VILLES_EDITORIAL), dripNow, "audit"),
+      );
     case "services-villes-interventions":
       return filterEnIfDisabled(
-        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "interventions"),
+        buildServicesVillesSitemap(
+          editorialFor("villes", VILLES_EDITORIAL),
+          dripNow,
+          "interventions",
+        ),
       );
     case "services-villes-implementation":
       return filterEnIfDisabled(
-        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "implementation"),
+        buildServicesVillesSitemap(
+          editorialFor("villes", VILLES_EDITORIAL),
+          dripNow,
+          "implementation",
+        ),
       );
     // Sprint S+2 City Domination — 4e verticale un-a-un sitemap dédié.
     case "services-villes-un-a-un":
-      return filterEnIfDisabled(buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "un-a-un"));
+      return filterEnIfDisabled(
+        buildServicesVillesSitemap(editorialFor("villes", VILLES_EDITORIAL), dripNow, "un-a-un"),
+      );
     // 2026-06-04 — 5e verticale sites-web-augmentes sitemap dédié.
     case "services-villes-sites-web-augmentes":
       return filterEnIfDisabled(
-        buildServicesVillesSitemap(VILLES_EDITORIAL, dripNow, "sites-web-augmentes"),
+        buildServicesVillesSitemap(
+          editorialFor("villes", VILLES_EDITORIAL),
+          dripNow,
+          "sites-web-augmentes",
+        ),
       );
     // Sprint S+4-B City Domination 2026-05-18 — pages détail outils stack-ia.
     case "stack-ia-tools":
-      return filterEnIfDisabled(buildStackIaToolsSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildStackIaToolsSitemap(editorialFor("stack-ia-tools")));
     // Phase 3 SEO secteurs (2026-06-21).
     case "secteurs":
-      return filterEnIfDisabled(buildSecteursSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildSecteursSitemap(editorialFor("secteurs")));
     // Catalogue Formations V2 (Qualiopi, déploiement phasé) — GATÉ par flag.
     case "formations":
-      return filterEnIfDisabled(buildFormationsSitemap(EDITORIAL_BASELINE));
+      return filterEnIfDisabled(buildFormationsSitemap(editorialFor("formations")));
   }
 
   // Dynamic IDs : `villes-<regionSlug>` ou `villes-<regionSlug>-<chunkIdx>`.
@@ -561,12 +630,14 @@ export default async function sitemap(props: {
         buildVillesByRegionSitemap(
           trailMatch[1]!,
           parseInt(trailMatch[2]!, 10),
-          VILLES_EDITORIAL,
+          editorialFor("villes", VILLES_EDITORIAL),
           dripNow,
         ),
       );
     }
-    return filterEnIfDisabled(buildVillesByRegionSitemap(rest, 1, VILLES_EDITORIAL, dripNow));
+    return filterEnIfDisabled(
+      buildVillesByRegionSitemap(rest, 1, editorialFor("villes", VILLES_EDITORIAL), dripNow),
+    );
   }
 
   // KB DB-aware : déplacé vers le Route Handler runtime

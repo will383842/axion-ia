@@ -26,7 +26,11 @@
 //     `xmlns:news`). Cf. `app/sitemap-news.xml/route.ts` + audit
 //     Sitemap+IndexNow 2026-05-15 AGENT 4 §4.1.3 P0-3.
 
-import sitemap, { generateSitemaps, buildExcludeSlugsByType } from "../sitemap";
+import sitemap, {
+  generateSitemaps,
+  buildExcludeSlugsByType,
+  editorialLastmodForSitemapId,
+} from "../sitemap";
 import { SITE_URL } from "@/lib/seo";
 import { prisma } from "@/lib/prisma";
 import { listKnowledgeSitemapEntries } from "@/server/exporters/knowledge-sitemap";
@@ -147,11 +151,13 @@ const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
  * conservent leur `MAX(updatedAt)` réel (signal honnête, gold-standard intact).
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
-// ⚠️ Garder en sync avec `EDITORIAL_BASELINE` dans `src/app/sitemap.ts`.
-const EDITORIAL_BASELINE_ISO = "2026-06-08T00:00:00.000Z";
-
+// Duplication SUPPRIMÉE (audit indexation 2026-07-31) — ce fichier codait en dur
+// `EDITORIAL_BASELINE_ISO = "2026-06-08..."` avec un commentaire « garder en sync
+// manuellement » avec `sitemap.ts`. On importe désormais `editorialLastmodForSitemapId`
+// depuis `sitemap.ts` : une seule source, et elle porte la fraîcheur RÉELLE par
+// famille (dernier commit git des sources, cf. `scripts/gen-content-freshness.mjs`).
 function getFallbackLastmod(): string {
-  return EDITORIAL_BASELINE_ISO;
+  return editorialLastmodForSitemapId("pages").toISOString();
 }
 
 async function getDifferentiatedLastmod(): Promise<{
@@ -206,10 +212,13 @@ function lastmodForGeneratedId(
 ): string {
   if (id === "blog") return lastmods.blog;
   if (id.startsWith("knowledge-")) return lastmods.knowledge;
-  // pages / faq / help / cas-concrets / villes-* / interventions / services-villes-*
-  // → date éditoriale figée (audit fraîcheur 2026-06-08) : ces routes pSEO/statiques
-  // ne changent pas à chaque deploy, donc leur lastmod ne doit pas bouger non plus.
-  return lastmods.fallback;
+  // pages / faq / help / cas-concrets / villes-* / services-villes-* → fraîcheur
+  // RÉELLE de la famille (dernier commit git de ses sources), résolue par
+  // `editorialLastmodForSitemapId` dans `sitemap.ts` — source unique partagée avec
+  // les sub-sitemaps eux-mêmes, donc index et routes ne peuvent plus diverger.
+  // Une famille inchangée garde sa date ancienne (pas de date-gaming) ; une famille
+  // modifiée voit sa date avancer (le signal manquait depuis le 2026-06-08).
+  return editorialLastmodForSitemapId(id).toISOString();
 }
 
 export async function GET(): Promise<Response> {
