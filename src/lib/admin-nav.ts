@@ -15,12 +15,14 @@
 //   minimiser la friction de migration côté layout (PR 1 = pas de bascule
 //   visuelle, simple extraction).
 //
-// Icons :
-//   Les icônes sont actuellement des emojis (anti-pattern audit A1 #2).
-//   La PR 5 (sidebar v2) remplacera ces emojis par des composants
-//   `lucide-react` typés (`icon: LucideIcon`). En PR 1, on garde les
-//   emojis pour ne pas casser le rendu V1 et permettre une migration
-//   incrémentale.
+// Icons (refonte visuelle console 2026-08 — chantier icônes) :
+//   Le champ `icon` porte le NOM D'EXPORT lucide-react exact (ex. "Gauge"),
+//   résolu en composant par `navIcon()` (src/lib/admin-nav-icons.ts). Il RESTE
+//   un `string` — pas un composant — parce que le layout admin (Server
+//   Component) passe `items` en prop au client `<AdminSidebarNav>` : une
+//   référence de composant ne franchit pas la frontière de sérialisation RSC.
+//   Le test structurel admin-nav-icons.test.ts garantit que chaque nom résout
+//   dans le registre NAV_ICONS (aucun repli silencieux).
 
 // Refonte « Boîte de réception » 2026-07-29 : le groupe `rendez-vous` est
 // SUPPRIMÉ. Ses 3 items lisaient la même table `calendly_events` et le clic sur
@@ -110,8 +112,10 @@ export interface AdminNavItem {
   href: string;
   label: string;
   /**
-   * Icon string (emoji V1) ou identifiant d'icône `lucide-react` (V2 PR 5).
-   * Format string pour rester compatible avec `<AdminSidebarNav>` actuel.
+   * Nom d'export `lucide-react` exact (ex. "Gauge"), résolu en composant par
+   * `navIcon()` (src/lib/admin-nav-icons.ts). Format string (et pas
+   * `LucideIcon`) : le layout serveur passe `items` en prop à un composant
+   * client — un composant en prop casserait la sérialisation RSC.
    */
   icon: string;
   group: AdminNavGroup;
@@ -318,7 +322,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   vide → header masqué auto (poleItems.length === 0). Le pôle « agenda »
     //   ne garde que le Tableau de bord → relabellisé « Vue d'ensemble ».
     //   Réversible : retirer `parent`. (Suppression dure code/schéma = séparé.)
-    { href: `${base}`, label: "Tableau de bord", icon: "📊", group: "main", subGroup: "agenda" },
+    {
+      href: `${base}`,
+      label: "Tableau de bord",
+      icon: "LayoutDashboard",
+      group: "main",
+      subGroup: "agenda",
+    },
     // Planning unifié des prestations (formations collectives + coaching 1-to-1).
     // Distinct du « Calendrier » booking ci-dessous, qui est un vestige masqué.
     // Le hub d'abord : c'est la page qui dit ce qui ne va pas. Les autres vues
@@ -327,42 +337,42 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/planning/hub`,
       label: "Hub de pilotage",
-      icon: "🚨",
+      icon: "Radar",
       group: "main",
       subGroup: "agenda",
     },
     {
       href: `${base}/planning`,
       label: "Planning",
-      icon: "🗓️",
+      icon: "CalendarDays",
       group: "main",
       subGroup: "agenda",
     },
     {
       href: `${base}/planning/timeline`,
       label: "Timeline ressources",
-      icon: "📊",
+      icon: "ChartGantt",
       group: "main",
       subGroup: "agenda",
     },
     {
       href: `${base}/planning/charge`,
       label: "Charge formateurs",
-      icon: "📈",
+      icon: "ChartColumnBig",
       group: "main",
       subGroup: "agenda",
     },
     {
       href: `${base}/planning/pipeline`,
       label: "Pipeline commercial",
-      icon: "🔻",
+      icon: "Funnel",
       group: "main",
       subGroup: "agenda",
     },
     {
       href: `${base}/planning/previsionnel`,
       label: "Prévisionnel",
-      icon: "💶",
+      icon: "TrendingUp",
       group: "main",
       subGroup: "agenda",
     },
@@ -394,26 +404,26 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/contacts`,
       label: "Tout",
-      icon: "📥",
+      icon: "Inbox",
       group: "contacts",
     },
     {
       href: `${base}/contacts/appels`,
       label: "Appels réservés",
-      icon: "📞",
+      icon: "PhoneCall",
       group: "contacts",
     },
     {
       href: `${base}/contacts/messages`,
       label: "Messages",
-      icon: "✉️",
+      icon: "Mail",
       group: "contacts",
     },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
       label: "Candidatures",
-      icon: "📨",
+      icon: "UserPlus",
       group: "contacts",
     },
     // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
@@ -423,7 +433,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/podcast`,
       label: "Demandes de podcast",
-      icon: "🎙️",
+      icon: "Mic",
       group: "contacts",
     },
     // ▸ Vues filtrées de « Messages » — hors sidebar (cf. bloc ci-dessus),
@@ -431,40 +441,45 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/contacts/clients`,
       label: "Messages · Clients",
-      icon: "💼",
+      icon: "Briefcase",
       group: "contacts",
       parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/presse`,
       label: "Messages · Presse",
-      icon: "📰",
+      icon: "Newspaper",
       group: "contacts",
       parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/partenariats`,
       label: "Messages · Partenariats",
-      icon: "🤝",
+      icon: "Handshake",
       group: "contacts",
       parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/investisseurs`,
       label: "Messages · Investisseurs",
-      icon: "📈",
+      icon: "TrendingUp",
       group: "contacts",
       parent: `${base}/contacts/messages`,
     },
     {
       href: `${base}/contacts/commercial`,
       label: "Messages · Recrutement",
-      icon: "🧑‍💼",
+      icon: "UserSearch",
       group: "contacts",
       parent: `${base}/contacts/messages`,
     },
     // ── contenu ──────────────────────────────────────────────────────────
-    { href: `${base}/connaissances`, label: "Connaissances", icon: "📚", group: "content" },
+    {
+      href: `${base}/connaissances`,
+      label: "Connaissances",
+      icon: "BookOpenText",
+      group: "content",
+    },
     // ── Génération de contenu (refonte UX 2026-06-16 — DECISION-IA.md §1-§3) ──
     //   Taxonomie « tâche » en 6 pôles (subGroup) ordonnés par fréquence,
     //   toggle Simple/Avancé (tier). Libellés FR clairs (§3 renommage).
@@ -476,7 +491,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/campaigns/new`,
       label: "Nouvelle campagne",
-      icon: "➕",
+      icon: "CirclePlus",
       group: "content_gen",
       subGroup: "lancer",
       tier: "simple",
@@ -484,7 +499,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/coverage/presets`,
       label: "Campagnes pré-réglées",
-      icon: "✨",
+      icon: "WandSparkles",
       group: "content_gen",
       subGroup: "lancer",
       tier: "simple",
@@ -492,7 +507,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/orchestrator/adhoc`,
       label: "Générer une seule page",
-      icon: "⚡",
+      icon: "Zap",
       group: "content_gen",
       subGroup: "lancer",
       tier: "advanced",
@@ -503,7 +518,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       // séparément du blog, sur /actualites.
       href: `${base}/content-gen/news`,
       label: "Actualités (news RSS)",
-      icon: "📰",
+      icon: "Rss",
       group: "content_gen",
       subGroup: "lancer",
       tier: "simple",
@@ -515,7 +530,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       // filtre `it.parent == null`).
       href: `${base}/content-gen/onboarding`,
       label: "Premiers pas",
-      icon: "🚀",
+      icon: "Rocket",
       group: "content_gen",
       subGroup: "lancer",
       tier: "simple",
@@ -525,7 +540,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen`,
       label: "Tableau de bord",
-      icon: "📊",
+      icon: "LayoutDashboard",
       group: "content_gen",
       subGroup: "suivre",
       tier: "simple",
@@ -533,7 +548,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/coverage`,
       label: "Campagnes",
-      icon: "🗂️",
+      icon: "FolderKanban",
       group: "content_gen",
       subGroup: "suivre",
       tier: "simple",
@@ -541,7 +556,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/jobs`,
       label: "Générations en cours",
-      icon: "⚙️",
+      icon: "Workflow",
       group: "content_gen",
       subGroup: "suivre",
       tier: "simple",
@@ -549,7 +564,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/observatoire`,
       label: "Observatoire IA 2026",
-      icon: "📊",
+      icon: "Telescope",
       group: "content_gen",
       subGroup: "suivre",
       tier: "advanced",
@@ -566,7 +581,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/review-queue`,
       label: "À valider",
-      icon: "✅",
+      icon: "CircleCheck",
       group: "content_gen",
       subGroup: "publier",
       tier: "simple",
@@ -574,7 +589,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/publications`,
       label: "Contenus publiés",
-      icon: "📰",
+      icon: "Send",
       group: "content_gen",
       subGroup: "publier",
       tier: "simple",
@@ -582,7 +597,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/publications-status`,
       label: "Suivi des publications (kanban)",
-      icon: "📋",
+      icon: "SquareKanban",
       group: "content_gen",
       subGroup: "publier",
       tier: "advanced",
@@ -590,7 +605,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/hero-images`,
       label: "Photos hero Unsplash",
-      icon: "🖼️",
+      icon: "Image",
       group: "content_gen",
       subGroup: "publier",
       tier: "simple",
@@ -598,7 +613,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/citations-backfill`,
       label: "Backfill citations (Sources)",
-      icon: "🔗",
+      icon: "Quote",
       group: "content_gen",
       subGroup: "publier",
       tier: "advanced",
@@ -612,7 +627,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/coverage-map`,
       label: "Couverture des villes",
-      icon: "🗺️",
+      icon: "Map",
       group: "content_gen",
       subGroup: "villes",
       tier: "simple",
@@ -620,7 +635,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/cities-order`,
       label: "File de génération (prochaine vague)",
-      icon: "🔢",
+      icon: "ListOrdered",
       group: "content_gen",
       subGroup: "villes",
       tier: "simple",
@@ -630,7 +645,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       // matière première vérifiable des 39 villes pilote), pas la production.
       href: `${base}/content-gen/city-coverage`,
       label: "Matière première villes (39 pilotes)",
-      icon: "📐",
+      icon: "Ruler",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
@@ -638,7 +653,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/cities-coverage`,
       label: "Couverture — par palier de population",
-      icon: "🏙️",
+      icon: "Building2",
       group: "content_gen",
       subGroup: "villes",
       tier: "simple",
@@ -647,7 +662,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/city-equity`,
       label: "Couverture — par type de contenu",
-      icon: "⚖️",
+      icon: "Scale",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
@@ -656,7 +671,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/geo`,
       label: "Couverture — production par région",
-      icon: "🌍",
+      icon: "Globe",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
@@ -665,7 +680,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/geo/coverage-table`,
       label: "Couverture — croisé ville × secteur",
-      icon: "📊",
+      icon: "Table",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
@@ -675,7 +690,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/quality`,
       label: "Qualité du contenu",
-      icon: "📈",
+      icon: "ChartLine",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -683,7 +698,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/costs`,
       label: "Coûts",
-      icon: "💰",
+      icon: "Coins",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -691,7 +706,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/similarity-monitor`,
       label: "Détection de doublons",
-      icon: "🔁",
+      icon: "Copy",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -704,7 +719,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/brand-voice-drift`,
       label: "Dérive du ton éditorial",
-      icon: "🎙️",
+      icon: "AudioLines",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -712,7 +727,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/embeddings`,
       label: "Suivi des vecteurs de similarité",
-      icon: "🧮",
+      icon: "Network",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -720,7 +735,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/external-links`,
       label: "Liens externes",
-      icon: "🔗",
+      icon: "ExternalLink",
       group: "content_gen",
       subGroup: "qualite",
       tier: "advanced",
@@ -732,7 +747,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/settings`,
       label: "Réglages génération",
-      icon: "⚙️",
+      icon: "Settings2",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
@@ -740,7 +755,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/rss`,
       label: "Sources RSS (actualités)",
-      icon: "📡",
+      icon: "Antenna",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
@@ -748,7 +763,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/templates`,
       label: "Instructions IA (prompts)",
-      icon: "📋",
+      icon: "ClipboardList",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
@@ -756,7 +771,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/keyword-tracking`,
       label: "Suivi des positions",
-      icon: "🎯",
+      icon: "Target",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
@@ -767,7 +782,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/landing-variants`,
       label: "Variantes de landing",
-      icon: "🧪",
+      icon: "FlaskConical",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
@@ -775,18 +790,23 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/content-gen/author/manon`,
       label: "Profil de l'auteur (Manon)",
-      icon: "✍️",
+      icon: "UserPen",
       group: "content_gen",
       subGroup: "reglages",
       tier: "advanced",
     },
-    { href: `${base}/blog`, label: "Blog", icon: "📝", group: "content" },
-    { href: `${base}/categories`, label: "Catégories", icon: "🏷️", group: "content" },
-    { href: `${base}/case-studies`, label: "Cas concrets", icon: "🏆", group: "content" },
-    { href: `${base}/avis`, label: "Avis clients", icon: "⭐", group: "content" },
-    { href: `${base}/offres-emploi`, label: "Offres d'emploi", icon: "💼", group: "content" },
-    { href: `${base}/faq`, label: "FAQ", icon: "❓", group: "content" },
-    { href: `${base}/help`, label: "Centre d'aide", icon: "❔", group: "content" },
+    { href: `${base}/blog`, label: "Blog", icon: "PenLine", group: "content" },
+    { href: `${base}/categories`, label: "Catégories", icon: "Tag", group: "content" },
+    { href: `${base}/case-studies`, label: "Cas concrets", icon: "Trophy", group: "content" },
+    { href: `${base}/avis`, label: "Avis clients", icon: "Star", group: "content" },
+    {
+      href: `${base}/offres-emploi`,
+      label: "Offres d'emploi",
+      icon: "Briefcase",
+      group: "content",
+    },
+    { href: `${base}/faq`, label: "FAQ", icon: "HelpCircle", group: "content" },
+    { href: `${base}/help`, label: "Centre d'aide", icon: "LifeBuoy", group: "content" },
     // ── Formation / Qualiopi (back-office OF) ──────────────────────────────
     //   Réorganisé en 5 pôles (refonte UX 2026-07-08) : les ~24 onglets étaient
     //   en liste plate = écrasant. `subGroup` pilote l'accordéon par pôle
@@ -800,7 +820,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/a-traiter`,
       label: "À traiter",
-      icon: "🔴",
+      icon: "CircleAlert",
       group: "qualiopi",
       subGroup: "a_traiter",
     },
@@ -811,7 +831,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/dossiers`,
       label: "Dossiers (pipeline)",
-      icon: "📁",
+      icon: "Folders",
       group: "qualiopi",
       subGroup: "dossiers",
     },
@@ -820,35 +840,35 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/formations`,
       label: "Formations",
-      icon: "📘",
+      icon: "BookOpen",
       group: "qualiopi",
       subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/formation-engine`,
       label: "Formation Engine",
-      icon: "⚙️",
+      icon: "Cpu",
       group: "qualiopi",
       subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/formation-engine/validations`,
       label: "Validations IA",
-      icon: "✅",
+      icon: "BadgeCheck",
       group: "qualiopi",
       subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/sessions`,
       label: "Sessions",
-      icon: "📅",
+      icon: "CalendarRange",
       group: "qualiopi",
       subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/formateurs`,
       label: "Formateurs",
-      icon: "👨‍🏫",
+      icon: "Presentation",
       group: "qualiopi",
       subGroup: "intervenants",
     },
@@ -864,14 +884,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/coaching/formateurs`,
       label: "Accès & connexions formateurs",
-      icon: "🧑‍🏫",
+      icon: "LogIn",
       group: "qualiopi",
       subGroup: "intervenants",
     },
     {
       href: `${base}/qualiopi/remuneration`,
       label: "Rémunération formateurs",
-      icon: "💶",
+      icon: "Banknote",
       group: "qualiopi",
       subGroup: "intervenants",
     },
@@ -880,20 +900,20 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/cockpit-financier`,
       label: "Cockpit financier",
-      icon: "📈",
+      icon: "ChartNoAxesCombined",
       group: "finances",
     },
     {
       href: `${base}/qualiopi/audits`,
       label: "Audits IA",
-      icon: "🔍",
+      icon: "FileSearch",
       group: "qualiopi",
       subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/stagiaires`,
       label: "Stagiaires",
-      icon: "🧑‍🎓",
+      icon: "BookUser",
       group: "qualiopi",
       subGroup: "dossiers",
     },
@@ -901,7 +921,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/offres`,
       label: "Offres",
-      icon: "🏷️",
+      icon: "BadgePercent",
       group: "qualiopi",
       subGroup: "catalogue",
     },
@@ -910,21 +930,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/entrees`,
       label: "Entrées récentes",
-      icon: "📥",
+      icon: "Inbox",
       group: "qualiopi",
       subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/clients`,
       label: "Clients (CRM)",
-      icon: "🏢",
+      icon: "Building2",
       group: "qualiopi",
       subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/devis`,
       label: "Devis",
-      icon: "📄",
+      icon: "FileText",
       group: "qualiopi",
       subGroup: "dossiers",
     },
@@ -932,19 +952,19 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/facturation`,
       label: "Facturation (Hub)",
-      icon: "🧾",
+      icon: "Receipt",
       group: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/new`,
       label: "Facture directe",
-      icon: "➕",
+      icon: "FilePlus",
       group: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/plans`,
       label: "Plans récurrents",
-      icon: "🔁",
+      icon: "Repeat",
       group: "finances",
     },
     {
@@ -953,14 +973,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       // session (OPCO sans accord, CPF sans vérif EDOF) + export compta CSV legacy.
       href: `${base}/qualiopi/financements`,
       label: "Alertes financement (sessions)",
-      icon: "🚨",
+      icon: "Siren",
       group: "finances",
     },
     // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
     {
       href: `${base}/qualiopi/baremes-opco`,
       label: "Barèmes OPCO",
-      icon: "📐",
+      icon: "Calculator",
       group: "qualiopi",
       subGroup: "catalogue",
     },
@@ -971,28 +991,28 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/indicateurs`,
       label: "Indicateurs / BPF",
-      icon: "📊",
+      icon: "BarChart3",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/pilotage`,
       label: "Pilotage",
-      icon: "📈",
+      icon: "Compass",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/appreciations`,
       label: "Appréciations",
-      icon: "⭐",
+      icon: "Star",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/reclamations`,
       label: "Réclamations",
-      icon: "📬",
+      icon: "MailWarning",
       group: "qualiopi",
       subGroup: "conformite",
     },
@@ -1001,7 +1021,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       // (vue tableau par défaut) — d'où le label composite.
       href: `${base}/qualiopi/mode-auditeur`,
       label: "Conformité & mode auditeur",
-      icon: "🔍",
+      icon: "ShieldCheck",
       group: "qualiopi",
       subGroup: "conformite",
     },
@@ -1009,42 +1029,42 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/veille`,
       label: "Veille",
-      icon: "🔎",
+      icon: "Eye",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/partenariats`,
       label: "Partenariats",
-      icon: "🤝",
+      icon: "Handshake",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/sous-traitants`,
       label: "Sous-traitants",
-      icon: "🏭",
+      icon: "Factory",
       group: "qualiopi",
       subGroup: "intervenants",
     },
     {
       href: `${base}/qualiopi/moyens`,
       label: "Moyens pédagogiques",
-      icon: "🧰",
+      icon: "Projector",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/incidents`,
       label: "Incidents",
-      icon: "🚨",
+      icon: "AlertTriangle",
       group: "qualiopi",
       subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/revue-direction`,
       label: "Revue de direction",
-      icon: "📋",
+      icon: "ClipboardCheck",
       group: "qualiopi",
       subGroup: "conformite",
     },
@@ -1052,21 +1072,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/config`,
       label: "Configuration",
-      icon: "⚙️",
+      icon: "Settings",
       group: "qualiopi",
       subGroup: "reglages_suivi",
     },
     {
       href: `${base}/qualiopi/rgpd`,
       label: "Demandes RGPD",
-      icon: "🔐",
+      icon: "Lock",
       group: "qualiopi",
       subGroup: "reglages_suivi",
     },
     {
       href: `${base}/qualiopi/alertes`,
       label: "Alertes",
-      icon: "🔔",
+      icon: "Bell",
       group: "qualiopi",
       subGroup: "reglages_suivi",
     },
@@ -1076,7 +1096,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/qualiopi/emails`,
       label: "Emails à valider",
-      icon: "✉️",
+      icon: "MailCheck",
       group: "qualiopi",
       subGroup: "reglages_suivi",
     },
@@ -1089,42 +1109,42 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/documents-interventions/formations`,
       label: "Formations",
-      icon: "📘",
+      icon: "BookOpen",
       group: "documents-interventions",
       subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/un-a-un`,
       label: "1-to-1",
-      icon: "👤",
+      icon: "User",
       group: "documents-interventions",
       subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/audit`,
       label: "Audit",
-      icon: "🔍",
+      icon: "FileSearch",
       group: "documents-interventions",
       subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/implementations`,
       label: "Implémentations",
-      icon: "⚙️",
+      icon: "Hammer",
       group: "documents-interventions",
       subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/sites-web`,
       label: "Sites web",
-      icon: "🌐",
+      icon: "Globe",
       group: "documents-interventions",
       subGroup: "activite",
     },
     {
       href: `${base}/documents-interventions/autres`,
       label: "Autres",
-      icon: "📎",
+      icon: "Paperclip",
       group: "documents-interventions",
       subGroup: "activite",
     },
@@ -1132,14 +1152,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/documents-interventions/destinataires`,
       label: "Annuaire équipe",
-      icon: "✉️",
+      icon: "Contact",
       group: "documents-interventions",
       subGroup: "outils",
     },
     {
       href: `${base}/documents-interventions/import`,
       label: "Importer un kit",
-      icon: "📦",
+      icon: "Package",
       group: "documents-interventions",
       subGroup: "outils",
     },
@@ -1147,13 +1167,13 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/coaching`,
       label: "Tableau de bord",
-      icon: "📈",
+      icon: "LayoutDashboard",
       group: "coaching-1to1",
     },
     {
       href: `${base}/coaching/seances`,
       label: "Séances 1-to-1",
-      icon: "🗂️",
+      icon: "CalendarCheck",
       group: "coaching-1to1",
     },
     // ── banque d'images — 3 pôles (refonte UX 2026-07-08) ─────────────────
@@ -1161,21 +1181,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank`,
       label: "Vue d'ensemble",
-      icon: "🖼️",
+      icon: "Images",
       group: "image-bank",
       subGroup: "bibliotheque",
     },
     {
       href: `${base}/image-bank/library`,
       label: "Bibliothèque",
-      icon: "📚",
+      icon: "FolderOpen",
       group: "image-bank",
       subGroup: "bibliotheque",
     },
     {
       href: `${base}/image-bank/upload`,
       label: "Téléverser",
-      icon: "⬆️",
+      icon: "Upload",
       group: "image-bank",
       subGroup: "bibliotheque",
     },
@@ -1193,7 +1213,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank/bulk-import`,
       label: "Import CSV en masse",
-      icon: "📦",
+      icon: "PackagePlus",
       group: "image-bank",
       subGroup: "bibliotheque",
       parent: `${base}/image-bank`,
@@ -1202,7 +1222,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank/categories`,
       label: "Catégories",
-      icon: "🏷️",
+      icon: "Tag",
       group: "image-bank",
       subGroup: "organisation",
       parent: `${base}/image-bank`,
@@ -1210,7 +1230,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank/tags`,
       label: "Étiquettes",
-      icon: "🔖",
+      icon: "Tags",
       group: "image-bank",
       subGroup: "organisation",
       parent: `${base}/image-bank`,
@@ -1218,14 +1238,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank/quality`,
       label: "File de qualité",
-      icon: "🔍",
+      icon: "ScanSearch",
       group: "image-bank",
       subGroup: "organisation",
     },
     {
       href: `${base}/image-bank/analytics`,
       label: "Statistiques",
-      icon: "📊",
+      icon: "BarChart3",
       group: "image-bank",
       subGroup: "organisation",
       parent: `${base}/image-bank`,
@@ -1234,49 +1254,79 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     {
       href: `${base}/image-bank/usage-logs`,
       label: "Journaux d'utilisation (RGPD)",
-      icon: "🛡️",
+      icon: "Shield",
       group: "image-bank",
       subGroup: "admin",
     },
     {
       href: `${base}/image-bank/settings`,
       label: "Réglages",
-      icon: "⚙️",
+      icon: "Settings",
       group: "image-bank",
       subGroup: "admin",
       parent: `${base}/image-bank`,
     },
     // ── salle de presse (communiqués + kit média de marque) ──────────────
-    { href: `${base}/presse`, label: "Vue d'ensemble", icon: "📰", group: "presse" },
-    { href: `${base}/presse/communiques`, label: "Communiqués", icon: "🗞️", group: "presse" },
-    { href: `${base}/presse/kit-media`, label: "Kit média", icon: "🎨", group: "presse" },
-    { href: `${base}/presse/couverture`, label: "Couverture médias", icon: "📡", group: "presse" },
+    { href: `${base}/presse`, label: "Vue d'ensemble", icon: "Newspaper", group: "presse" },
+    { href: `${base}/presse/communiques`, label: "Communiqués", icon: "FileText", group: "presse" },
+    { href: `${base}/presse/kit-media`, label: "Kit média", icon: "Palette", group: "presse" },
+    {
+      href: `${base}/presse/couverture`,
+      label: "Couverture médias",
+      icon: "RadioTower",
+      group: "presse",
+    },
     // ── chatbot (console conversationnelle) ──────────────────────────────
-    { href: `${base}/chatbot`, label: "Tableau de bord", icon: "🤖", group: "chatbot" },
-    { href: `${base}/chatbot/escalades`, label: "Escalades", icon: "🆘", group: "chatbot" },
+    {
+      href: `${base}/chatbot`,
+      label: "Tableau de bord",
+      icon: "LayoutDashboard",
+      group: "chatbot",
+    },
+    {
+      href: `${base}/chatbot/escalades`,
+      label: "Escalades",
+      icon: "OctagonAlert",
+      group: "chatbot",
+    },
     {
       href: `${base}/chatbot/conversations`,
       label: "Conversations",
-      icon: "💬",
+      icon: "MessagesSquare",
       group: "chatbot",
     },
-    { href: `${base}/chatbot/prompt`, label: "Prompt versionné", icon: "📝", group: "chatbot" },
-    { href: `${base}/chatbot/reglages`, label: "Réglages", icon: "⚙️", group: "chatbot" },
+    {
+      href: `${base}/chatbot/prompt`,
+      label: "Prompt versionné",
+      icon: "FileCode",
+      group: "chatbot",
+    },
+    { href: `${base}/chatbot/reglages`, label: "Réglages", icon: "Settings", group: "chatbot" },
     // ── engagement ───────────────────────────────────────────────────────
-    { href: `${base}/newsletter`, label: "Newsletter", icon: "📧", group: "engagement" },
+    { href: `${base}/newsletter`, label: "Newsletter", icon: "Mail", group: "engagement" },
     // ── ops & monitoring ─────────────────────────────────────────────────
-    { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "📊", group: "ops" },
-    { href: `${base}/web-vitals`, label: "Web Vitals", icon: "📈", group: "ops" },
-    { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "🗺️", group: "ops" },
-    { href: `${base}/infra`, label: "Infra & outils", icon: "🔧", group: "ops" },
-    { href: `${base}/infra/backups`, label: "Sauvegardes & DR", icon: "💾", group: "ops" },
-    { href: `${base}/alerts`, label: "Alertes ops", icon: "🚨", group: "ops" },
-    { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "🔳", group: "ops" },
+    { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "BarChart3", group: "ops" },
+    { href: `${base}/web-vitals`, label: "Web Vitals", icon: "Activity", group: "ops" },
+    { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
+    { href: `${base}/infra`, label: "Infra & outils", icon: "Wrench", group: "ops" },
+    {
+      href: `${base}/infra/backups`,
+      label: "Sauvegardes & DR",
+      icon: "DatabaseBackup",
+      group: "ops",
+    },
+    { href: `${base}/alerts`, label: "Alertes ops", icon: "AlertTriangle", group: "ops" },
+    { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────
-    { href: `${base}/users`, label: "Utilisateurs", icon: "👥", group: "system" },
-    { href: `${base}/activity-logs`, label: "Journaux d'activité", icon: "📜", group: "system" },
-    { href: `${base}/settings`, label: "Paramètres", icon: "⚙️", group: "system" },
-    { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "🔐", group: "system" },
+    { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
+    {
+      href: `${base}/activity-logs`,
+      label: "Journaux d'activité",
+      icon: "ScrollText",
+      group: "system",
+    },
+    { href: `${base}/settings`, label: "Paramètres", icon: "Settings", group: "system" },
+    { href: `${base}/2fa/setup`, label: "2FA — sécurité", icon: "KeyRound", group: "system" },
   ];
 }
 
