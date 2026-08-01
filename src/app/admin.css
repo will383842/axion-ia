@@ -1227,7 +1227,8 @@
   color: var(--color-error);
 }
 .admin-status-not-configured,
-.admin-status-unknown {
+.admin-status-unknown,
+.admin-status-not-checked {
   color: var(--color-fg-muted);
 }
 .admin-severity-critical {

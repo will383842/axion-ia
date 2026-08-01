@@ -10,11 +10,13 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { OffreRowActions } from "@/components/admin/qualiopi/OffreRowActions";
+import { SeedReferenceDataButton } from "@/components/admin/qualiopi/SeedReferenceDataButton";
 import {
   ARCHIVE_FILTER_PARAM,
   applyArchiveFilter,
@@ -24,6 +26,7 @@ import {
   toggleOffreActifAction,
   verifyAllOffresCoherenceAction,
 } from "@/server/actions/qualiopi/offres";
+import { getQualiopiReferenceDataStatus } from "@/server/qualiopi/seed/reference-data";
 import { FileText } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -72,6 +75,12 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
 
   const offres = applyArchiveFilter(vue, offresActives, offresInactives);
 
+  // État vide : Will (non technicien) ne peut pas lancer une commande terminal.
+  // On lui propose directement le même bouton que /qualiopi/config plutôt que
+  // d'afficher `pnpm qualiopi:seed`.
+  const referenceStatus =
+    offresActives.length === 0 ? await getQualiopiReferenceDataStatus(prisma) : null;
+
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
     "px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-left text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)]";
@@ -97,15 +106,18 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
       </div>
 
       {offres.length === 0 ? (
-        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          {offresActives.length === 0 ? (
-            <>
-              Aucune offre. Lancez <code>pnpm qualiopi:seed</code> pour initialiser le référentiel.
-            </>
-          ) : (
-            <>Aucune offre dans cette vue.</>
-          )}
-        </p>
+        offresActives.length === 0 && referenceStatus ? (
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-5)]">
+            <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+              Aucune offre. Initialisez le référentiel ci-dessous.
+            </p>
+            <SeedReferenceDataButton initial={referenceStatus} />
+          </div>
+        ) : (
+          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
+            Aucune offre dans cette vue.
+          </p>
+        )
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

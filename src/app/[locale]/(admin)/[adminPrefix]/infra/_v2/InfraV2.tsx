@@ -5,7 +5,9 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 
-type Status = "ok" | "degraded" | "down" | "not-configured" | "unknown";
+// "not-checked" : aucun contrôle live n'est fait pour cette card (assumé, pas
+// un échec) — distinct de "unknown" (check tenté, résultat indisponible).
+type Status = "ok" | "degraded" | "down" | "not-configured" | "unknown" | "not-checked";
 
 interface Card {
   name: string;
@@ -28,6 +30,7 @@ function statusPill(status: Status) {
     down: "● DOWN",
     "not-configured": "○ Non configuré",
     unknown: "? Inconnu",
+    "not-checked": "○ Non vérifié automatiquement",
   };
   return <span className={`admin-status-pill admin-status-${status}`}>{labels[status]}</span>;
 }
@@ -58,7 +61,7 @@ export function InfraV2({ adminPrefix, cards }: Props): React.ReactElement {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Infrastructure & outils"
-        description="Centralise les liens vers chaque outil tiers + statut live (best-effort). Pas d'action write depuis ici — chaque card pointe vers la console externe correspondante."
+        description="Centralise les liens vers chaque outil tiers + statut live quand un contrôle existe (best-effort) ; quelques cards sont marquées « Non vérifié automatiquement » faute de contrôle possible. Pas d'action write depuis ici — chaque card pointe vers la console externe correspondante."
         actions={
           <Link href={`/fr/${adminPrefix}`} className="admin-link">
             ← Retour au tableau de bord

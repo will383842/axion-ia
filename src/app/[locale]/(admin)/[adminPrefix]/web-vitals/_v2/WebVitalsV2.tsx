@@ -48,6 +48,25 @@ function fmtValue(metric: string, v: number): string {
   return `${Math.round(v)} ms`;
 }
 
+/**
+ * Libellés humains des métriques Web Vitals — un non-technicien (Will) ne
+ * doit jamais voir "LCP"/"INP"/"CLS" bruts sans traduction (audit UX admin).
+ * Le code technique reste entre parenthèses pour qui veut le retrouver dans
+ * PageSpeed Insights / Search Console.
+ */
+const METRIC_LABELS: Record<string, string> = {
+  LCP: "Affichage du contenu principal (LCP)",
+  INP: "Réactivité (INP)",
+  CLS: "Stabilité visuelle (CLS)",
+  FCP: "Premier affichage (FCP)",
+  TTFB: "Réponse serveur (TTFB)",
+  TBT: "Blocage total (TBT)",
+};
+
+function metricLabel(metric: string): string {
+  return METRIC_LABELS[metric] ?? metric;
+}
+
 function classifyRating(metric: string, value: number): "good" | "needs_improvement" | "poor" {
   const seuils: Record<string, { good: number; poor: number }> = {
     LCP: { good: 2500, poor: 4000 },
@@ -89,7 +108,7 @@ function budgetPill(breach: boolean) {
     <span
       className={`admin-status-pill ${breach ? "admin-severity-critical" : "admin-severity-info"}`}
     >
-      {breach ? "● Hors budget" : "● Budget OK"}
+      {breach ? "● Objectif dépassé" : "● Objectif atteint"}
     </span>
   );
 }
@@ -123,23 +142,23 @@ export function WebVitalsV2({
     {
       key: "metric",
       header: "Métrique",
-      cell: (row) => <strong>{row.metric}</strong>,
+      cell: (row) => <strong>{metricLabel(row.metric)}</strong>,
     },
     {
       key: "p75",
-      header: "p75",
+      header: "Temps mesuré",
       cell: (row) => (
         <span className={row.breach ? "font-bold" : ""}>{fmtValue(row.metric, row.p75)}</span>
       ),
     },
     {
       key: "budget",
-      header: "Budget",
+      header: "Objectif",
       cell: (row) => fmtValue(row.metric, row.budget),
     },
     {
       key: "count",
-      header: "n",
+      header: "Mesures",
       cell: (row) => row.count,
     },
     {
@@ -149,16 +168,34 @@ export function WebVitalsV2({
     },
     {
       key: "rating",
-      header: "Rating CrUX",
+      header: "Repère Google (CrUX)",
       cell: (row) => ratingPill(classifyRating(row.metric, row.p75)),
     },
   ];
 
+  // Verdict en langage clair, en tête de page (même esprit que /qualiopi/a-traiter) :
+  // Will doit comprendre d'un coup d'œil si le site est rapide, sans lire de tableau.
+  // Réutilise breachCount / aggregatesLength / routeCount déjà calculés côté page.tsx
+  // (aucune nouvelle métrique inventée) — "mesure(s)" = une ligne (route × métrique),
+  // volontairement pas "page(s)" pour rester fidèle à la granularité réellement mesurée.
+  const noData = aggregatesLength === 0;
+  const isGood = !noData && breachCount === 0;
+  const verdictTone = noData
+    ? "text-[color:var(--color-admin-fg-muted)]"
+    : isGood
+      ? "text-[color:var(--color-admin-success)]"
+      : "text-[color:var(--color-admin-warning)]";
+  const verdictText = noData
+    ? `ℹ️ Pas encore assez de données pour juger la vitesse du site (minimum ${MIN_SAMPLES} mesures par page). Revenez dans 24 à 48h après la mise en production.`
+    : isGood
+      ? `✅ Votre site est rapide — les ${aggregatesLength} mesure(s) suivies (sur ${routeCount} page(s)) respectent l'objectif de vitesse.`
+      : `⚠️ ${breachCount} mesure(s) sur ${aggregatesLength} (sur ${routeCount} page(s) suivies) dépassent l'objectif de vitesse — voir le détail par page ci-dessous.`;
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Web Vitals — RUM 24h"
-        description={`Mesures réelles (Real User Monitoring) consolidées sur la fenêtre ${WINDOW_HOURS}h. p75 calculé par (route × métrique) — minimum ${MIN_SAMPLES} samples requis pour fiabilité. Budget AGENTS.md = cible interne plus stricte que Google « good » (CrUX).`}
+        title="Vitesse du site"
+        description="Suivi en continu de la vitesse ressentie par vos visiteurs, mesurée sur les dernières 24 heures."
         actions={
           <Link href={`/fr/${adminPrefix}`} className="admin-link">
             ← Retour au tableau de bord
@@ -166,18 +203,24 @@ export function WebVitalsV2({
         }
       />
 
+      <AdminCard className="mb-[var(--space-admin-6)]">
+        <p className={`text-[length:var(--text-admin-lg)] font-semibold ${verdictTone}`}>
+          {verdictText}
+        </p>
+      </AdminCard>
+
       <section
         aria-label="KPIs RUM"
         className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4"
       >
         <AdminStatCard
-          label="Samples 24h"
+          label="Mesures collectées (24h)"
           value={totalSamples.toLocaleString("fr-FR")}
           icon={BarChart3}
         />
-        <AdminStatCard label="Routes mesurées" value={routeCount} icon={LinkIcon} />
+        <AdminStatCard label="Pages suivies" value={routeCount} icon={LinkIcon} />
         <AdminStatCard
-          label="Lignes hors budget"
+          label="Mesures hors objectif"
           value={breachCount}
           tone={breachCount > 0 ? "destructive" : "default"}
           icon={AlertTriangle}
@@ -232,12 +275,10 @@ export function WebVitalsV2({
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">
-          Détail (route × métrique) — top {Math.min(TABLE_CAP, aggregatesLength)}
-        </h2>
+        <h2 className="admin-h2">Détail par page — top {Math.min(TABLE_CAP, aggregatesLength)}</h2>
         {display.length === 0 ? (
           <AdminEmptyState
-            title={`Aucune ligne fiable dans la fenêtre ${WINDOW_HOURS}h (chaque combinaison requiert ≥ ${MIN_SAMPLES} samples). C'est normal en faible trafic — patientez 24-48h après mise en production pour des données stables.`}
+            title={`Pas encore de mesure fiable sur les dernières ${WINDOW_HOURS}h (il faut au moins ${MIN_SAMPLES} visites par page pour être fiable). C'est normal en faible trafic — patientez 24-48h après mise en production pour des données stables.`}
           />
         ) : (
           <div className="mt-[var(--space-admin-3)]">
@@ -265,12 +306,13 @@ export function WebVitalsV2({
         <h2 className="admin-h2">Lecture rapide</h2>
         <ul className="admin-meta-block">
           <li>
-            <strong>Hors budget</strong> = p75 dépasse la cible interne AGENTS.md (plus stricte que
-            Google CrUX « good »). Alerte Telegram déjà envoyée — voir <code>/alerts</code>.
+            <strong>Objectif dépassé</strong> = la vitesse mesurée dépasse la cible interne
+            AGENTS.md (plus stricte que le seuil « bon » standard de Google). Une alerte Telegram a
+            déjà été envoyée — voir <code>/alerts</code>.
           </li>
           <li>
-            <strong>Rating CrUX</strong> = classification Google standard pour comparaison externe
-            (Search Console, PSI). Indicatif user-side.
+            <strong>Repère Google (CrUX)</strong> = classification Google standard pour comparaison
+            externe (Search Console, PageSpeed Insights). Indicatif, calculé côté visiteur.
           </li>
           <li>
             <strong>PSI ↗</strong> = lance un audit Lighthouse labo direct sur cette route. Utile
