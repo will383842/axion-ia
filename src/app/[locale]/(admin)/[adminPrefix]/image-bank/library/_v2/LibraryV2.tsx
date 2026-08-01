@@ -10,6 +10,7 @@ import {
   AdminEmptyState,
   AdminFilterTabs,
 } from "@/components/admin/ui";
+import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
 
 interface ImageRow {
   id: string;
@@ -17,6 +18,8 @@ interface ImageRow {
   module: string | null;
   seoScore: number | null;
   publishedAt: Date | null;
+  thumbSrc: string | null;
+  lqipDataUri: string | null;
   translations: ReadonlyArray<{ title: string }>;
 }
 
@@ -70,7 +73,11 @@ export function LibraryV2({ base, status, images }: Props): React.ReactElement {
               return (
                 <li key={img.id}>
                   <Link href={`${base}/library/${img.id}`} className="admin-card admin-card-inline">
-                    <div className="admin-image-placeholder" />
+                    <AdminImageThumb
+                      src={img.thumbSrc}
+                      lqip={img.lqipDataUri}
+                      alt={tr?.title ?? img.slug}
+                    />
                     <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                     <p className="admin-meta-small">
                       {img.module ?? "—"} · score {img.seoScore ?? 0} ·{" "}

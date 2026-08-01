@@ -2289,6 +2289,32 @@
   aspect-ratio: 3 / 2;
 }
 
+/* Vraie miniature (image-bank) — remplace le carré gris quand thumbnailPath/
+   filePath est disponible (correctif P0 audit UX 2026-08 : aucune vignette
+   nulle part dans la console). Mêmes dimensions que .admin-image-placeholder
+   (aspect-ratio réservé → 0 CLS) ; le LQIP (si présent) sert de fond flou
+   pendant le chargement lazy de l'image réelle. */
+.admin-image-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-admin-lg);
+  background-color: var(--color-admin-surface-sunken);
+  background-size: cover;
+  background-position: center;
+}
+.admin-image-thumb-large {
+  aspect-ratio: 3 / 2;
+}
+.admin-image-thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Aperçu d'un brouillon de connaissance (connaissances/[id]/apercu). */
 .admin-preview {
   display: flex;

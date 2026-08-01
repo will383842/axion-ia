@@ -1,46 +1,53 @@
-// Image bank — RGPD usage logs (art. 17 droit à l'effacement)
+// Image bank — RGPD "Demandes d'effacement" (art. 17 droit à l'effacement)
 //
 // Permet à un admin de rechercher les traces (ImageUsageLog + ImageDownloadLog)
-// associées à un ipHash et de les supprimer définitivement (audit trail
+// associées à une adresse IP et de les supprimer définitivement (audit trail
 // conservé via ActivityLog).
 //
 // Doctrine Axion-IA :
 //   - Server Component avec auth role check + redirect login
 //   - dynamic = "force-dynamic" + robots: { index: false }
-//   - Recherche par ?ipHash=… (SHA-256 hex 64 chars)
-//   - Action de suppression déléguée à forgetIpHashAction Server Action
+//
+// Correctif P0 audit UX 2026-08 : la recherche exigeait un ipHash SHA-256 (64
+// hex) qu'un dirigeant non-technicien ne peut jamais produire. On recherche
+// désormais par `?ip=…` (adresse IP en clair) et on calcule le hash CÔTÉ
+// SERVEUR via `hashImageBankIp` (même fonction que celle qui peuple
+// `ImageUsageLog.ipHash`/`ImageDownloadLog.ipHash`, cf. `telecharger/route.ts`)
+// — le hash reste un détail d'implémentation, jamais montré ni saisi par Will.
 
 import type { Metadata } from "next";
+import { isIP } from "node:net";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
 import { UsageLogsV2 } from "./_v2/UsageLogsV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Usage logs (RGPD) | Axion-IA Admin",
+  title: "Image bank — Demandes d'effacement (RGPD) | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ ipHash?: string }>;
+  searchParams: Promise<{ ip?: string }>;
 }
 
-const IP_HASH_RE = /^[a-f0-9]{64}$/i;
 const RESULTS_LIMIT = 100;
 
 export default async function UsageLogsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { ipHash: rawIpHash } = await searchParams;
+  const { ip: rawIp } = await searchParams;
 
   const session = await auth();
   if (!session?.user || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const ipHash = rawIpHash && IP_HASH_RE.test(rawIpHash) ? rawIpHash : undefined;
+  const ip = rawIp && isIP(rawIp) !== 0 ? rawIp : undefined;
+  const ipHash = ip ? hashImageBankIp(ip) : undefined;
 
   const [usageRows, downloadRows] = ipHash
     ? await Promise.all([
@@ -75,7 +82,7 @@ export default async function UsageLogsPage({ params, searchParams }: PageProps)
 
   return (
     <UsageLogsV2
-      {...(ipHash ? { ipHash } : { ipHash: undefined })}
+      {...(ip ? { ip } : { ip: undefined })}
       resultsLimit={RESULTS_LIMIT}
       usageLogs={usageLogs}
       downloadLogs={downloadLogs}

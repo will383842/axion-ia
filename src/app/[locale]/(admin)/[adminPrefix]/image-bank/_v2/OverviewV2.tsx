@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { CheckCircle2, Gauge, Hourglass, Image as ImageIcon } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
+import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
 
 interface ImageRow {
   id: string;
@@ -13,6 +14,8 @@ interface ImageRow {
   seoScore: number | null;
   embedCount: number;
   downloadCount: number;
+  thumbSrc: string | null;
+  lqipDataUri: string | null;
   translations: ReadonlyArray<{ title: string }>;
 }
 
@@ -103,7 +106,11 @@ export function OverviewV2({
                   href={`${base}/library/${img.id}`}
                   className="admin-card admin-card-inline"
                 >
-                  <div className="admin-image-placeholder" />
+                  <AdminImageThumb
+                    src={img.thumbSrc}
+                    lqip={img.lqipDataUri}
+                    alt={tr?.title ?? img.slug}
+                  />
                   <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                   <p className="admin-meta-small">
                     {img.module ?? "—"} · score {img.seoScore ?? "?"}
@@ -129,7 +136,11 @@ export function OverviewV2({
                   href={`${base}/library/${img.id}`}
                   className="admin-card admin-card-inline"
                 >
-                  <div className="admin-image-placeholder" />
+                  <AdminImageThumb
+                    src={img.thumbSrc}
+                    lqip={img.lqipDataUri}
+                    alt={tr?.title ?? img.slug}
+                  />
                   <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                   <p className="admin-meta-small">
                     {img.embedCount} intégrations · {img.downloadCount} téléchargements

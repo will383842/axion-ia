@@ -12,7 +12,6 @@
  * Query param `?format=jpeg` → conversion WebP → JPEG via Sharp.
  */
 
-import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 
@@ -20,10 +19,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
-import { env } from "@/env";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { imageWatermarkService } from "@/server/image-bank/services/image-watermark.service";
+import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
 
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_SEC = 60;
@@ -31,11 +30,6 @@ const RATE_LIMIT_KEY_PREFIX = "image-bank:download:ip:";
 
 const ALLOWED_VARIANTS = ["sm", "md", "lg", "xl", "original"] as const;
 type VariantKey = (typeof ALLOWED_VARIANTS)[number];
-
-function hashIp(ip: string): string {
-  const salt = env.IP_HASH_SALT ?? "";
-  return createHash("sha256").update(`${salt}:${ip}`).digest("hex");
-}
 
 export async function GET(
   request: NextRequest,
@@ -54,7 +48,7 @@ export async function GET(
 
   const reqHeaders = await headers();
   const ip = reqHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const ipHash = hashIp(ip);
+  const ipHash = hashImageBankIp(ip);
 
   const rate = await checkRateLimit(`${RATE_LIMIT_KEY_PREFIX}${ipHash}`, {
     limit: RATE_LIMIT_MAX,

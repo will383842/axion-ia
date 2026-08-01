@@ -9,6 +9,8 @@ import {
   AdminCard,
   AdminBreadcrumbs,
 } from "@/components/admin/ui";
+import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
+import { ImageReviewActions } from "@/components/admin/image-bank/ImageReviewActions";
 
 interface Translation {
   id: number;
@@ -40,7 +42,10 @@ interface Props {
     subModule: string | null;
     seoScore: number | null;
     requiresHumanReview: boolean;
+    requiresHumanTaxonomy: boolean;
     publishedAt: Date | null;
+    thumbSrc: string | null;
+    lqipDataUri: string | null;
     translations: ReadonlyArray<Translation>;
     tags: ReadonlyArray<TagWithSlug>;
   };
@@ -75,7 +80,13 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
 
       <section className="grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
         <AdminCard>
-          <div className="admin-image-placeholder admin-image-placeholder-large" />
+          <AdminImageThumb
+            src={image.thumbSrc}
+            lqip={image.lqipDataUri}
+            alt={titleDisplay}
+            large
+            priority
+          />
           <dl className="mt-[var(--space-admin-5)] flex flex-col gap-[var(--space-admin-3)]">
             <Row label="ID" value={image.id} />
             <Row label="Slug" value={image.slug} />
@@ -121,13 +132,23 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
             </ul>
           </AdminCard>
 
-          {image.requiresHumanReview && (
+          {(image.requiresHumanReview || image.requiresHumanTaxonomy) && (
             <AdminCard className="border-l-4 border-l-[color:var(--color-admin-warning)]">
-              <p className="admin-meta-block">
-                ⚠ Cette image est marquée pour relecture humaine (validateurs automatiques échoués).
+              <h2 className="admin-h2">En attente de validation humaine</h2>
+              <p className="admin-meta-block mb-[var(--space-admin-4)]">
+                {image.requiresHumanReview && image.requiresHumanTaxonomy
+                  ? "Les validateurs automatiques ont échoué et la taxonomie est incertaine."
+                  : image.requiresHumanReview
+                    ? "Les validateurs automatiques ont échoué sur cette image."
+                    : "La taxonomie détectée automatiquement est incertaine."}
               </p>
-              <Link href={`${base}/quality`} className="admin-link">
-                Voir la file Qualité →
+              {/* Correctif P0 audit UX 2026-08 — cette carte renvoyait vers la file
+                  « Qualité » sans jamais offrir de sortie : aucun bouton pour valider
+                  ou corriger. Voir ImageReviewActions (Server Actions
+                  validateImageAction / correctImageModuleAction). */}
+              <ImageReviewActions imageId={image.id} module={image.module} />
+              <Link href={`${base}/quality`} className="admin-link mt-[var(--space-admin-4)] block">
+                ← Retour à la file Qualité
               </Link>
             </AdminCard>
           )}
