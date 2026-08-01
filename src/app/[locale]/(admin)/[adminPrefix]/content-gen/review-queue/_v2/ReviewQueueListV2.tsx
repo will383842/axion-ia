@@ -66,6 +66,18 @@ export async function ReviewQueueListV2({
   type ReviewRow = (typeof rows)[number];
   const columns: ReadonlyArray<AdminTableColumn<ReviewRow>> = [
     { key: "date", header: "Date", cell: (r) => r.createdAt.toISOString().slice(0, 16) },
+    // Audit UX 2026-08-01 (Défaut 1, P0) — sans titre, impossible de savoir ce
+    // qu'on approuve/rejette sans ouvrir chaque ligne. Le titre porte le lien
+    // de détail (même page que le bouton « Détail » de `rowAction` ci-dessous).
+    {
+      key: "title",
+      header: "Titre",
+      cell: (r) => (
+        <Link href={`${base}/${r.id}`} className="admin-link">
+          {r.jobTitle ?? "Titre indisponible"}
+        </Link>
+      ),
+    },
     {
       key: "type",
       header: "Type",
