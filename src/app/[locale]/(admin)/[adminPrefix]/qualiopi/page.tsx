@@ -19,7 +19,11 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { Eye, ShieldCheck, Languages } from "lucide-react";
+import { Eye, ShieldCheck, Languages, ReceiptText, Check } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+// Registre partagé avec la barre latérale : une destination = une forme, que
+// l'on passe par la navigation ou par cette grille de modules.
+import { adminNavIcon } from "@/components/admin/ui/admin-nav-icons";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AdminBreadcrumbs } from "@/components/admin/ui/AdminBreadcrumbs";
@@ -146,7 +150,8 @@ async function loadCounts(): Promise<{
 
 interface ModuleNavItem {
   href: string;
-  icon: string;
+  /** Composant lucide — cf. `admin-nav-icons.ts`, registre partagé avec la barre latérale. */
+  icon: LucideIcon;
   label: string;
   count?: number;
   /** Accent de couleur si alerte ou attention requise. */
@@ -189,27 +194,27 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/offres`,
-          icon: "🏷️",
+          icon: adminNavIcon("Offres"),
           label: "Offres",
           count: counts.offres,
           tone: "neutral",
         },
         {
           href: `${base}/formations`,
-          icon: "📘",
+          icon: adminNavIcon("Formations"),
           label: "Formations",
           count: counts.formations,
           tone: "neutral",
         },
         {
           href: `${base}/formation-engine`,
-          icon: "⚙️",
+          icon: adminNavIcon("Formation Engine"),
           label: "Formation Engine",
           tone: "neutral",
         },
         {
           href: `${base}/formation-engine/validations`,
-          icon: "✅",
+          icon: adminNavIcon("Validations IA"),
           label: "Validations IA",
           tone: "neutral",
         },
@@ -220,21 +225,21 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/sessions`,
-          icon: "📅",
+          icon: adminNavIcon("Sessions"),
           label: "Sessions",
           count: counts.sessions,
           tone: "neutral",
         },
         {
           href: `${base}/formateurs`,
-          icon: "🎓",
+          icon: adminNavIcon("Formateurs"),
           label: "Formateurs",
           count: counts.trainers,
           tone: "neutral",
         },
         {
           href: `${base}/stagiaires`,
-          icon: "👤",
+          icon: adminNavIcon("Stagiaires"),
           label: "Stagiaires",
           count: counts.trainees,
           tone: "neutral",
@@ -246,21 +251,21 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/clients`,
-          icon: "🏢",
+          icon: adminNavIcon("Clients (CRM)"),
           label: "Clients (CRM)",
           count: counts.clients,
           tone: "neutral",
         },
         {
           href: `${base}/devis`,
-          icon: "📄",
+          icon: adminNavIcon("Devis"),
           label: "Devis",
           count: counts.devis,
           tone: "neutral",
         },
         {
           href: `${base}/financements`,
-          icon: "💳",
+          icon: ReceiptText,
           label: "Financements / Facturation",
           count: counts.factures,
           tone: "neutral",
@@ -272,19 +277,19 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/indicateurs`,
-          icon: "📊",
+          icon: adminNavIcon("Indicateurs / BPF"),
           label: "Indicateurs / BPF",
           tone: "neutral",
         },
         {
           href: `${base}/conformite`,
-          icon: "✅",
+          icon: adminNavIcon("Conformité"),
           label: "Conformité",
           tone: "neutral",
         },
         {
           href: `${base}/pilotage`,
-          icon: "📊",
+          icon: adminNavIcon("Pilotage"),
           label: "Pilotage",
           tone: "neutral",
         },
@@ -295,42 +300,42 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/reclamations`,
-          icon: "📬",
+          icon: adminNavIcon("Réclamations"),
           label: "Réclamations",
           count: counts.reclamationsOuvertes,
           tone: counts.reclamationsOuvertes > 0 ? "warning" : "neutral",
         },
         {
           href: `${base}/veille`,
-          icon: "🔎",
+          icon: adminNavIcon("Veille"),
           label: "Veille",
           count: counts.veilles,
           tone: "neutral",
         },
         {
           href: `${base}/partenariats`,
-          icon: "🤝",
+          icon: adminNavIcon("Partenariats"),
           label: "Partenariats",
           count: counts.partenariats,
           tone: "neutral",
         },
         {
           href: `${base}/sous-traitants`,
-          icon: "🏭",
+          icon: adminNavIcon("Sous-traitants"),
           label: "Sous-traitants",
           count: counts.sousTraitants,
           tone: "neutral",
         },
         {
           href: `${base}/revue-direction`,
-          icon: "📋",
+          icon: adminNavIcon("Revue de direction"),
           label: "Revue de direction",
           count: counts.revuesDirection,
           tone: "neutral",
         },
         {
           href: `${base}/appreciations`,
-          icon: "⭐",
+          icon: adminNavIcon("Appréciations"),
           label: "Appréciations",
           count: counts.appreciations,
           tone: "neutral",
@@ -342,14 +347,14 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
       items: [
         {
           href: `${base}/alertes`,
-          icon: "🔔",
+          icon: adminNavIcon("Alertes"),
           label: "Alertes",
           count: counts.alertesNonLues,
           tone: counts.alertesNonLues > 0 ? "error" : "neutral",
         },
         {
           href: `${base}/mode-auditeur`,
-          icon: "🔍",
+          icon: adminNavIcon("Mode auditeur"),
           label: "Mode auditeur",
           tone: "neutral",
         },
@@ -439,12 +444,11 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
                       href={item.href}
                       className="flex items-center gap-[var(--space-admin-3)] no-underline"
                     >
-                      <span
+                      <item.icon
+                        size={22}
                         aria-hidden="true"
-                        className="text-[length:var(--text-admin-xl)] leading-none"
-                      >
-                        {item.icon}
-                      </span>
+                        className="shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                      />
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
                           {item.label}
@@ -482,7 +486,14 @@ export default async function QualiopiOverviewPage({ params }: PageProps) {
             >
               <span className={labelCls}>{row.label}</span>
               {row.filled ? (
-                <span className={valueCls}>✓ renseigné</span>
+                <span className={`${valueCls} inline-flex items-center gap-[var(--space-admin-2)]`}>
+                  <Check
+                    size={15}
+                    aria-hidden="true"
+                    className="shrink-0 text-[color:var(--color-admin-success)]"
+                  />
+                  renseigné
+                </span>
               ) : (
                 <span className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-warning)]">
                   À renseigner
