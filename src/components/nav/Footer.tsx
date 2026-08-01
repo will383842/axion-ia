@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from "next-intl/server";
+import { LogIn } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTopRegionsByPib } from "@/content/regions";
 import { SERVICES, serviceOfficial } from "@/content/services";
@@ -217,7 +218,10 @@ export async function Footer() {
         </div>
 
         {/* Bottom strip */}
-        <div className="border-border-on-mocha text-mocha-fg/55 mt-12 flex flex-col gap-3 border-t pt-5 text-xs lg:flex-row lg:items-center lg:justify-between">
+        {/* Trois zones depuis le 2026-08-01 (identité · liens utilitaires ·
+            accès formateur). `lg:gap-6` : avec un troisième bloc, le `gap-3`
+            d'origine laissait les groupes se toucher en 1280 px. */}
+        <div className="border-border-on-mocha text-mocha-fg/55 mt-12 flex flex-col gap-3 border-t pt-5 text-xs lg:flex-row lg:items-center lg:justify-between lg:gap-6">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
             <span className="text-mocha-fg/80 font-medium">{`© ${year} ${BRAND.legalName}`}</span>
             <Dot />
@@ -241,25 +245,47 @@ export async function Footer() {
             <a href="/sitemap.xml" className={linkCn}>
               {t("footer.siteMap")}
             </a>
-            {/*
-              Espace formateur — ajouté 2026-07-28.
+          </div>
 
-              Il n'existait AUCUN chemin de retour : le lien magique reçu par
-              e-mail vaut 15 minutes et sert une seule fois, et l'adresse
-              n'était écrite nulle part sur le site. Un formateur qui revenait
-              la semaine suivante devait rappeler Will pour qu'il lui renvoie un
-              lien. Une seule ligne de footer suffit à supprimer ce détour.
+          {/*
+            Espace formateur — ajouté 2026-07-28, REMONTÉ EN CTA le 2026-08-01.
 
-              `rel="nofollow"` : la cible est `noindex`, et ce footer est rendu
-              sur ~17 600 routes — sans cet attribut on créerait autant de liens
-              vers une page que les moteurs ne doivent pas explorer.
+            Il n'existait AUCUN chemin de retour : le lien magique reçu par
+            e-mail vaut 15 minutes et sert une seule fois, et l'adresse n'était
+            écrite nulle part sur le site. Un formateur qui revenait la semaine
+            suivante devait rappeler Will pour qu'il lui renvoie un lien.
 
-              `prefetch={false}` : inutile de précharger un espace réservé que la
-              quasi-totalité des visiteurs n'ouvrira jamais. (Une balise `<a>`
-              aurait eu le même effet, mais `@next/next/no-html-link-for-pages`
-              l'interdit à juste titre sur une route interne.)
-            */}
-            <Dot />
+            🔴 La ligne de footer posée le 28/07 ne suffisait PAS. Constaté par
+            Will le 01/08 : « je ne trouve pas ça dans le footer ». Vérifié en
+            prod — le lien EXISTAIT, mais en 12 px, DERNIER des 52 liens du pied
+            de page, noyé entre « Corrections » et « Plan du site ». Un lien qui
+            existe mais que personne ne voit ne règle rien : à 200 formateurs,
+            chacun d'eux rappelle quand même.
+
+            D'où ce traitement distinct — question adressée au formateur +
+            bouton bordé, dans sa propre zone de la barre du bas. Convention web
+            habituelle pour une porte de connexion interne : trouvable d'un coup
+            d'œil par qui la cherche, sans venir concurrencer « Réserver un
+            appel » pour les 99 % de visiteurs qui sont des prospects.
+
+            `rel="nofollow"` : la cible est `noindex`, et ce footer est rendu sur
+            ~17 600 routes — sans cet attribut on créerait autant de liens vers
+            une page que les moteurs ne doivent pas explorer.
+
+            `prefetch={false}` : inutile de précharger un espace réservé que la
+            quasi-totalité des visiteurs n'ouvrira jamais. (Une balise `<a>`
+            aurait eu le même effet, mais `@next/next/no-html-link-for-pages`
+            l'interdit à juste titre sur une route interne.)
+
+            La cible reste `/espace-formateur` et NON la page de connexion : le
+            garde y redirige déjà si la session manque, si bien qu'un formateur
+            déjà connecté atterrit sur son tableau de bord au lieu d'un
+            formulaire qu'il n'a pas à remplir.
+          */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <span className="text-mocha-fg/70">
+              {isFr ? "Vous êtes formateur ?" : "Are you a trainer?"}
+            </span>
             {/*
               `as never` : l'espace formateur n'est pas déclaré dans les
               `pathnames` de next-intl (outil interne, hors routage localisé).
@@ -269,9 +295,10 @@ export async function Footer() {
               href={"/espace-formateur" as never}
               prefetch={false}
               rel="nofollow"
-              className={linkCn}
+              className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              {isFr ? "Espace formateur" : "Trainer area"}
+              <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
+              {isFr ? "Accéder à mon espace" : "Access my area"}
             </Link>
           </div>
         </div>
