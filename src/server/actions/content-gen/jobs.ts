@@ -22,6 +22,9 @@ import type {
 import { logActivity } from "@/server/content-gen/shared/activity-log";
 // Fix 2026-07-17 — anti-zombie : politique de ré-enfilage (module pur, testable).
 import { resolveReenqueueAction } from "@/server/content-gen/queue/reenqueue-policy";
+// Audit UX 2026-08-01 — colonne « Titre » sur la liste des jobs (repli sûr
+// tant que le job n'a pas fini de générer, cf. docblock `extractJobTitle`).
+import { extractJobTitle } from "@/server/content-gen/shared/admin-labels";
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -170,6 +173,9 @@ export interface JobRow {
   readonly contentType: ContentType;
   readonly status: ContentGenJobStatus;
   readonly priority: number;
+  /** Titre du contenu généré (extrait de `outputJsonRaw.title`) — `null` tant
+   * que le job n'a pas terminé sa génération (audit UX 2026-08-01, § Défaut 1). */
+  readonly title: string | null;
   readonly anchorVilleSlug: string | null;
   readonly anchorRegionSlug: string | null;
   readonly templateId: string | null;
@@ -235,6 +241,7 @@ export async function listJobs(filters: JobsListFilters = {}): Promise<JobsListR
       contentType: r.contentType,
       status: r.status,
       priority: r.priority,
+      title: extractJobTitle(r.outputJsonRaw),
       anchorVilleSlug: r.anchorVilleSlug,
       anchorRegionSlug: r.anchorRegionSlug,
       templateId: r.templateId,

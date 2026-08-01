@@ -29,14 +29,17 @@ export default async function AuthorManonPage({ params }: PageProps) {
   }
 
   if (!author) {
+    // Audit UX 2026-08-01 (Défaut 3, P0) — même correctif que l'étape 2 de
+    // l'onboarding : aucun bouton console ne crée ce profil (cette page ne
+    // peut qu'éditer une ligne AuthorProfile existante), donc pas de commande
+    // terminal affichée à Will.
     return (
       <section>
         <div className="admin-card">
           <h1 className="admin-h1-large">Profil Manon — introuvable</h1>
           <p>
-            Le row <code>slug=&quot;manon&quot;</code> n&apos;existe pas dans{" "}
-            <code>AuthorProfile</code>. Lance le seed Sprint 1 Day 1 (commit <code>d174f83</code>) :{" "}
-            <code>pnpm tsx prisma/seeds/content-gen/author-manon.ts</code>.
+            Le profil auteur Manon n&apos;a pas encore été créé. Contactez l&apos;équipe technique
+            pour cette étape.
           </p>
         </div>
       </section>

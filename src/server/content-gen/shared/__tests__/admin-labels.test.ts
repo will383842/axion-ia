@@ -26,6 +26,7 @@ import {
   contentTypeLabelFr,
   articleStatusLabelFr,
   articlePublicationBadge,
+  extractJobTitle,
 } from "../admin-labels";
 
 // Un libellé « propre » : non vide, différent du slug, sans underscore (artefact
@@ -106,5 +107,19 @@ describe("admin-labels — spot-checks métier", () => {
     expect(articlePublicationBadge("draft").tone).toBe("warning");
     expect(articlePublicationBadge("archived").tone).toBe("neutral");
     expect(articlePublicationBadge("published").label).toContain("En ligne");
+  });
+
+  // Audit UX 2026-08-01 — colonne « Titre » des listes jobs/review-queue.
+  it("extractJobTitle : lit le titre depuis outputJsonRaw, repli sûr sinon", () => {
+    expect(extractJobTitle({ title: "10 signes qu'il faut auditer son IA" })).toBe(
+      "10 signes qu'il faut auditer son IA",
+    );
+    expect(extractJobTitle(null)).toBeNull();
+    expect(extractJobTitle(undefined)).toBeNull();
+    expect(extractJobTitle("pas un objet")).toBeNull();
+    expect(extractJobTitle({})).toBeNull();
+    expect(extractJobTitle({ title: "" })).toBeNull();
+    expect(extractJobTitle({ title: "   " })).toBeNull();
+    expect(extractJobTitle({ title: 42 })).toBeNull();
   });
 });

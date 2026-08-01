@@ -17,6 +17,9 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+// Audit UX 2026-08-01 — colonne « Titre » sur la file de relecture (même
+// source que la liste des jobs, cf. docblock `extractJobTitle`).
+import { extractJobTitle } from "@/server/content-gen/shared/admin-labels";
 import { requireAdmin } from "./_auth";
 import { ReviewAlreadyTransitionedError } from "./review-errors";
 
@@ -78,6 +81,8 @@ export interface ReviewRow {
   readonly jobAnchorVille: string | null;
   readonly jobQualityScore: number | null;
   readonly jobSeoScore: number | null;
+  /** Titre du contenu (extrait de `job.outputJsonRaw.title`) — audit UX 2026-08-01. */
+  readonly jobTitle: string | null;
 }
 
 /**
@@ -132,6 +137,7 @@ export async function listReviewPaginated(
       jobAnchorVille: r.job.anchorVilleSlug,
       jobQualityScore: r.job.qualityScore,
       jobSeoScore: r.job.seoScore,
+      jobTitle: extractJobTitle(r.job.outputJsonRaw),
     })),
   };
 }
@@ -159,6 +165,7 @@ export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<R
     jobAnchorVille: r.job.anchorVilleSlug,
     jobQualityScore: r.job.qualityScore,
     jobSeoScore: r.job.seoScore,
+    jobTitle: extractJobTitle(r.job.outputJsonRaw),
   }));
 }
 

@@ -54,9 +54,13 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
           <li>
             {manon ? "✅" : "⏳"} <strong>Étape 2 — Profil auteur Manon</strong>
             {!manon ? (
-              <>
-                {" · "}Seed via <code>pnpm tsx prisma/seeds/content-gen/author-manon.ts</code>
-              </>
+              // Audit UX 2026-08-01 (Défaut 3, P0) — cette étape crée la ligne
+              // AuthorProfile en base ; aucun bouton console ne le fait (la
+              // page /author/manon ne peut qu'ÉDITER une ligne existante, pas
+              // en créer une). Une commande `pnpm` était inatteignable pour
+              // Will (pas d'accès serveur) : on renvoie vers l'équipe technique
+              // plutôt que d'afficher une commande terminal.
+              <>{" · "}Contactez l&apos;équipe technique pour cette étape.</>
             ) : (
               <>
                 {" · "}

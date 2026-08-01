@@ -138,3 +138,19 @@ export function articlePublicationBadge(status: string): PublicationBadge {
       return { label: articleStatusLabelFr(status), tone: "neutral" };
   }
 }
+
+// ─── Titre du contenu associé à un job (audit UX — listes sans titre) ────────
+/**
+ * Extrait le titre généré depuis `ContentGenJob.outputJsonRaw` (JSON libre
+ * persisté par le worker de génération — `content-gen-worker.ts` construit
+ * `persistedOutput = { ...output, … }` où `output.title` est le titre de
+ * l'article/page produit). Tant qu'un job n'a pas terminé sa génération
+ * (`queued`, `running`…), `outputJsonRaw` vaut encore `null` : on renvoie
+ * `null` plutôt qu'une chaîne vide, à charge de l'UI d'afficher un repli
+ * explicite (« Génération en cours… ») au lieu d'une case blanche muette.
+ */
+export function extractJobTitle(outputJsonRaw: unknown): string | null {
+  if (outputJsonRaw === null || typeof outputJsonRaw !== "object") return null;
+  const title = (outputJsonRaw as Record<string, unknown>)["title"];
+  return typeof title === "string" && title.trim().length > 0 ? title : null;
+}

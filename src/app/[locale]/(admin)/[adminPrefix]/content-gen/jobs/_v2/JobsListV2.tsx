@@ -114,9 +114,20 @@ export async function JobsListV2({
     {
       key: "date",
       header: "Date",
+      cell: (r) => r.createdAt.toISOString().slice(0, 16),
+    },
+    // Audit UX 2026-08-01 (Défaut 1, P0) — sans titre, impossible de savoir ce
+    // qu'on suit sans ouvrir chaque ligne. Le titre porte désormais le lien de
+    // détail (le champ Date, lui, redevient du texte simple ci-dessus).
+    {
+      key: "title",
+      header: "Titre",
       cell: (r) => (
         <Link href={`${base}/${r.id}`} className="admin-link">
-          {r.createdAt.toISOString().slice(0, 16)}
+          {r.title ??
+            (r.status === "failed" || r.status === "cancelled"
+              ? "Sans titre (génération interrompue)"
+              : "Génération en cours…")}
         </Link>
       ),
     },
@@ -170,7 +181,10 @@ export async function JobsListV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Jobs content-gen"
+        // Audit UX 2026-08-01 — aligné sur le libellé sidebar (admin-nav.ts,
+        // route /content-gen/jobs) : « Jobs content-gen » était un intitulé
+        // technique divergent de ce que Will lit dans le menu.
+        title="Générations en cours"
         description={`${result.total} job${result.total > 1 ? "s" : ""} · page ${result.page}/${result.totalPages}`}
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-2)]">

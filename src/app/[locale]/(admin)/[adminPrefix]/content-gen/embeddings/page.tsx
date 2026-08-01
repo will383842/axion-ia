@@ -126,13 +126,15 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Embeddings Backfill Monitor"
-        description="Surveillance du backfill d'embeddings OpenAI (text-embedding-3-large, 1536 dims) — couche 4 dédup sémantique pipeline B.7."
+        // Audit UX 2026-08-01 (Défaut 2, P0) — libellé aligné sur la sidebar
+        // (admin-nav.ts, route /content-gen/embeddings) ; description et badge
+        // en langage métier (plus de nom de variable d'env ni de jargon
+        // technique « backfill / dims / pipeline B.7 » affiché à Will).
+        title="Suivi des vecteurs de similarité"
+        description={`Chaque article publié reçoit une empreinte qui permet de détecter les doublons. ${stats.countWith.toLocaleString("fr-FR")} article${stats.countWith > 1 ? "s" : ""} traité${stats.countWith > 1 ? "s" : ""} sur ${stats.totalPublished.toLocaleString("fr-FR")}.`}
         meta={
           <AdminBadge tone={stats.embeddingsEnabled ? "success" : "warning"}>
-            {stats.embeddingsEnabled
-              ? "OPENAI_EMBEDDINGS_ENABLED=true"
-              : "OPENAI_EMBEDDINGS_ENABLED=false (désactivé)"}
+            {stats.embeddingsEnabled ? "Analyse activée" : "Analyse désactivée"}
           </AdminBadge>
         }
       />
