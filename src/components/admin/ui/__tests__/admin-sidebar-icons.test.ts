@@ -41,6 +41,7 @@ import { buildAdminNav } from "@/lib/admin-nav";
 
 const ROOT = resolve(__dirname, "../../../../..");
 const REGISTRY = join(ROOT, "src/components/admin/ui/admin-nav-icons.ts");
+const LUCIDE_TYPES = join(ROOT, "node_modules/lucide-react/dist/lucide-react.d.ts");
 
 /** Clés de `ADMIN_NAV_ICONS` telles qu'écrites dans le source du composant. */
 function readIconMapKeys(): string[] {
@@ -115,6 +116,39 @@ describe("icônes de la barre latérale de la console", () => {
       duplicated,
       `Clé(s) déclarée(s) plusieurs fois dans ADMIN_NAV_ICONS — seule la dernière ` +
         `s'applique, la première est silencieusement perdue :\n  - ${duplicated.join("\n  - ")}`,
+    ).toEqual([]);
+  });
+
+  it("n'emploie que des noms d'icônes CANONIQUES", () => {
+    // lucide expose ses anciens noms comme alias dépréciés — `TriangleAlert as
+    // AlertTriangle`, `ChartColumn as BarChart3`, `CircleQuestionMark as
+    // HelpCircle`. Ils compilent et rendent le bon dessin, donc rien ne les
+    // signale ; mais ils disparaîtront à une majeure de lucide, et surtout ils
+    // permettent au MÊME dessin d'apparaître sous deux noms dans le même
+    // fichier — ce qui rend le registre illisible et trompe la détection de
+    // collision ci-dessous, qui compare des NOMS.
+    //
+    // Un nom canonique est déclaré par un `declare const` dans les types de
+    // lucide ; un alias n'existe que dans la clause `export { … as … }`.
+    const types = readFileSync(LUCIDE_TYPES, "utf8");
+    const canoniques = new Set(
+      [...types.matchAll(/declare const ([A-Z][A-Za-z0-9]*)\b/g)].map((m) => m[1]),
+    );
+
+    const source = readFileSync(REGISTRY, "utf8");
+    const imports = source.match(/import \{[\s\S]*?\} from "lucide-react";/)?.[0] ?? "";
+    // « X as Y » : c'est X, le nom importé, qui doit être canonique.
+    const importes = [...imports.matchAll(/^ {2}([A-Z][A-Za-z0-9]*)(?: as [A-Za-z]+)?,$/gm)].map(
+      (m) => m[1],
+    );
+
+    const deprecies = importes.filter((n) => !canoniques.has(n));
+
+    expect(
+      deprecies,
+      `Nom(s) d'icône déprécié(s) dans le registre : ${deprecies.join(", ")}.\n` +
+        "Remplacez-les par le nom canonique (celui que lucide déclare) — la clause " +
+        "`export { Canonique as Ancien }` de lucide-react.d.ts donne la correspondance.",
     ).toEqual([]);
   });
 
