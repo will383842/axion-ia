@@ -38,6 +38,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import {
   lireDossiersPipeline,
   COLONNES_PIPELINE,
@@ -147,45 +148,61 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
     ? lignesArchivees.length
     : COLONNES_PIPELINE.reduce((n, c) => n + pipeline[c.id].filter(correspondFiltres).length, 0);
 
-  // Mêmes classes que la page « À traiter » — 100 % tokens admin, aucun hex.
+  // Refonte UI 2026-08-01 (couche 4) — mêmes classes que « À traiter », qui a
+  // été reprise juste avant : cartes au rayon 16 alignées sur `AdminCard`,
+  // lignes transformées en TUILES cliquables (avant, rien ne signalait qu'une
+  // ligne l'était), et filtres passés en sélecteur segmenté comme
+  // `AdminFilterTabs` — les pilules indépendantes lisaient comme des boutons
+  // et ne montraient pas qu'il s'agit d'un choix unique.
   const carte =
-    "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
+    "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-card)] shadow-[var(--shadow-admin-1)]";
   const titreCarte =
-    "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+    "mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]";
+  const sousTitreCarte =
+    "mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
   const pastille =
-    "inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[color:var(--color-admin-error)] px-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold text-white";
-  const ligne =
-    "flex flex-wrap items-center justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0";
-  const lien =
-    "text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] hover:underline";
+    "inline-flex min-w-[1.5rem] items-center justify-center rounded-[var(--radius-admin-pill)] bg-[color:var(--color-admin-destructive)] px-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-bold tabular-nums text-white";
+  const tuile =
+    "flex flex-wrap items-center justify-between gap-[var(--space-admin-4)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper-alt)] p-[var(--space-admin-5)] transition-colors hover:border-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface-hover)]";
+  const listeTuiles = "flex flex-col gap-[var(--space-admin-3)]";
   const badge =
-    "inline-flex items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
-  // Liens-filtres : même pilule dans les deux états, seule la surface change —
-  // l'actif est plein (accent), l'inactif est bordé. Aucun hex, que des tokens.
+    "inline-flex items-center rounded-[var(--radius-admin-pill)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]";
+  // Sélecteur segmenté : un conteneur creusé, l'option active posée dessus en
+  // tuile blanche. Même forme que `AdminFilterTabs`, pour que les filtres se
+  // ressemblent d'une page à l'autre.
+  const segment =
+    "inline-flex max-w-full items-center gap-[var(--space-admin-1)] overflow-x-auto rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] p-[var(--space-admin-2)]";
   const filtreInactif =
-    "inline-flex items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] hover:underline";
+    "inline-flex shrink-0 items-center rounded-[var(--radius-admin-md)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium whitespace-nowrap text-[color:var(--color-admin-fg-soft)] transition-colors hover:bg-[color:var(--color-admin-paper-alt)] hover:text-[color:var(--color-admin-fg)]";
   const filtreActif =
-    "inline-flex items-center rounded-full border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-semibold text-white";
+    "inline-flex shrink-0 items-center rounded-[var(--radius-admin-md)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold whitespace-nowrap text-[color:var(--color-admin-fg)] shadow-[var(--shadow-admin-1)]";
   const groupeFiltres =
-    "flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
+    "flex flex-wrap items-center gap-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
 
   /** Une ligne d'affaire — identique en vue pipeline et en vue archives. */
   const rendreLigne = (l: LigneDossier) => {
     const dates = plage(l.dateDebut, l.dateFin);
     return (
-      <li key={l.cle} className={ligne}>
-        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          <span className={badge}>{ACTIVITE_LABELS[l.activite]}</span>{" "}
-          <span className={badge}>{libellerPerimetre(l.qualiopi)}</span> <strong>{l.client}</strong>{" "}
-          — {l.intitule}
-          {l.reference ? ` · ${l.reference}` : ""}
-          {dates ? ` · ${dates}` : ""}
-          <span className="block text-[color:var(--color-admin-fg-muted)]">
-            {l.prochaineAction}
+      <li key={l.cle}>
+        <Link href={`${base}${l.cheminFiche}`} className={tuile}>
+          <span className="min-w-0">
+            <span className="mb-[var(--space-admin-3)] flex flex-wrap gap-[var(--space-admin-2)]">
+              <span className={badge}>{ACTIVITE_LABELS[l.activite]}</span>
+              <span className={badge}>{libellerPerimetre(l.qualiopi)}</span>
+            </span>
+            <span className="block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+              <strong>{l.client}</strong> — {l.intitule}
+            </span>
+            <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {[l.reference, dates].filter(Boolean).join(" · ")}
+            </span>
+            {/* La prochaine action est la raison d'être de la ligne : elle
+                passe en accent au lieu de se fondre dans le gris. */}
+            <span className="mt-[var(--space-admin-2)] block text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)]">
+              → {l.prochaineAction}
+            </span>
           </span>
-        </span>
-        <Link href={`${base}${l.cheminFiche}`} className={lien}>
-          Ouvrir →
+          <span className="admin-button-ghost shrink-0">Ouvrir →</span>
         </Link>
       </li>
     );
@@ -200,14 +217,14 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
 
       {modeArchives && (
         <div className={carte}>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+          <h2 className={titreCarte}>
             🗄️ Archives — dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours
-          </p>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          </h2>
+          <p className={sousTitreCarte}>
             Ces dossiers sont terminés et payés : ils sortent du pipeline du quotidien mais restent
             consultables ici (rien n&apos;est supprimé).
           </p>
-          <Link href={urlAvec({ archives: false })} className={lien}>
+          <Link href={urlAvec({ archives: false })} className="admin-button-secondary">
             ← Retour au pipeline
           </Link>
         </div>
@@ -215,58 +232,91 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
 
       {/* Rangée de filtres — de simples liens : le filtre vit dans l'URL,
           rendu 100 % serveur, zéro JS client. */}
-      <div className="mb-[var(--space-admin-6)] flex flex-col gap-[var(--space-admin-2)]">
+      <div className="mb-[var(--space-admin-6)] flex flex-col gap-[var(--space-admin-4)]">
         <div className={groupeFiltres}>
           <span>Activité :</span>
-          <Link
-            href={urlAvec({ activite: null })}
-            className={filtreActivite === null ? filtreActif : filtreInactif}
-          >
-            Toutes
-          </Link>
-          {ACTIVITES_FILTRABLES.map((a) => (
+          <span className={segment}>
             <Link
-              key={a}
-              href={urlAvec({ activite: a })}
-              className={filtreActivite === a ? filtreActif : filtreInactif}
+              href={urlAvec({ activite: null })}
+              className={filtreActivite === null ? filtreActif : filtreInactif}
             >
-              {ACTIVITE_LABELS[a]}
+              Toutes
             </Link>
-          ))}
+            {ACTIVITES_FILTRABLES.map((a) => (
+              <Link
+                key={a}
+                href={urlAvec({ activite: a })}
+                className={filtreActivite === a ? filtreActif : filtreInactif}
+              >
+                {ACTIVITE_LABELS[a]}
+              </Link>
+            ))}
+          </span>
         </div>
         <div className={groupeFiltres}>
           <span>Périmètre :</span>
-          <Link
-            href={urlAvec({ perimetre: null })}
-            className={filtrePerimetre === null ? filtreActif : filtreInactif}
-          >
-            Tout
-          </Link>
-          <Link
-            href={urlAvec({ perimetre: "qualiopi" })}
-            className={filtrePerimetre === "qualiopi" ? filtreActif : filtreInactif}
-          >
-            {PERIMETRE_LABELS.qualiopi}
-          </Link>
-          <Link
-            href={urlAvec({ perimetre: "hors" })}
-            className={filtrePerimetre === "hors" ? filtreActif : filtreInactif}
-          >
-            {PERIMETRE_LABELS.hors}
-          </Link>
+          <span className={segment}>
+            <Link
+              href={urlAvec({ perimetre: null })}
+              className={filtrePerimetre === null ? filtreActif : filtreInactif}
+            >
+              Tout
+            </Link>
+            <Link
+              href={urlAvec({ perimetre: "qualiopi" })}
+              className={filtrePerimetre === "qualiopi" ? filtreActif : filtreInactif}
+            >
+              {PERIMETRE_LABELS.qualiopi}
+            </Link>
+            <Link
+              href={urlAvec({ perimetre: "hors" })}
+              className={filtrePerimetre === "hors" ? filtreActif : filtreInactif}
+            >
+              {PERIMETRE_LABELS.hors}
+            </Link>
+          </span>
         </div>
+        {/* Combien d'affaires la vue courante montre — sans ce repère, il faut
+            additionner les compteurs de chaque colonne pour le savoir. */}
+        {totalAffaires > 0 ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            <strong className="text-[color:var(--color-admin-fg)] tabular-nums">
+              {totalAffaires}
+            </strong>{" "}
+            affaire{totalAffaires > 1 ? "s" : ""}
+            {filtreActivite || filtrePerimetre ? " avec ces filtres" : ""}
+          </p>
+        ) : null}
       </div>
 
       {totalAffaires === 0 && (
-        <div className={carte}>
-          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
-            {modeArchives
-              ? "🗄️ Aucun dossier archivé ne correspond à ces filtres."
+        <AdminEmptyState
+          icon={<span className="text-[22px]">{modeArchives ? "🗄️" : "✨"}</span>}
+          title={
+            modeArchives
+              ? "Aucun dossier archivé ne correspond à ces filtres"
               : filtreActivite || filtrePerimetre
-                ? "✨ Aucune affaire ne correspond à ces filtres."
-                : "✨ Aucune affaire dans le pipeline — pas de devis en attente, pas de session vivante, rien à solder."}
-          </p>
-        </div>
+                ? "Aucune affaire ne correspond à ces filtres"
+                : "Aucune affaire dans le pipeline"
+          }
+          description={
+            modeArchives || filtreActivite || filtrePerimetre
+              ? "Élargissez les filtres pour voir davantage de dossiers."
+              : "Pas de devis en attente, pas de session vivante, rien à solder."
+          }
+          {...(filtreActivite || filtrePerimetre
+            ? {
+                primaryAction: (
+                  <Link
+                    href={urlAvec({ activite: null, perimetre: null })}
+                    className="admin-button-secondary"
+                  >
+                    🧹 Retirer les filtres
+                  </Link>
+                ),
+              }
+            : {})}
+        />
       )}
 
       {modeArchives ? (
@@ -275,7 +325,7 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
             <h2 className={titreCarte}>
               🗄️ Dossiers archivés <span className={pastille}>{lignesArchivees.length}</span>
             </h2>
-            <ul>{lignesArchivees.map(rendreLigne)}</ul>
+            <ul className={listeTuiles}>{lignesArchivees.map(rendreLigne)}</ul>
           </div>
         )
       ) : (
@@ -290,21 +340,16 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
                 <h2 className={titreCarte}>
                   {colonne.label} <span className={pastille}>{lignes.length}</span>
                 </h2>
-                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-                  {colonne.description}
-                </p>
-                <ul>{lignes.map(rendreLigne)}</ul>
+                <p className={sousTitreCarte}>{colonne.description}</p>
+                <ul className={listeTuiles}>{lignes.map(rendreLigne)}</ul>
               </div>
             );
           })}
           {/* Lien discret vers les archives — en bas : c'est une vue de
               consultation, pas une étape du pipeline. */}
-          <p className="text-[length:var(--text-admin-sm)]">
-            <Link
-              href={urlAvec({ archives: true })}
-              className="text-[color:var(--color-admin-fg-muted)] hover:underline"
-            >
-              Voir les archives (dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours) →
+          <p>
+            <Link href={urlAvec({ archives: true })} className="admin-button-ghost">
+              🗄️ Voir les archives (soldés de plus de {FENETRE_SOLDES_JOURS} jours)
             </Link>
           </p>
         </>
