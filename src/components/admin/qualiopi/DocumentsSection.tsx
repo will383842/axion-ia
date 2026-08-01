@@ -36,6 +36,8 @@ import {
   genererSatisfactionAction,
   genererKitOpcoAction,
   genererLettreMissionAction,
+  genererLettreMissionCadreAction,
+  listerSessionsLettreCadreAction,
   genererConvocationAction,
   genererGrilleEvaluationAction,
   genererCertificatRealisationAction,
@@ -171,6 +173,275 @@ function SessionDocButton({
         >
           {error}
         </p>
+      )}
+      {success && (
+        <p
+          role="status"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]"
+        >
+          {success}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-composant : lettre de mission (session seule OU lettre-cadre)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Décision Will 2026-08-01 : « les deux, au choix au moment de générer ».
+ *
+ * - « Cette session seule » : le bouton historique, inchangé.
+ * - « Lettre-cadre » : UNE lettre couvrant les formations cochées d'une
+ *   période — une seule signature du sous-traitant. À 200 formateurs, une
+ *   signature par session ne tient pas.
+ *
+ * Le formulaire cadre se déplie sous le bouton : dates → « Chercher » liste les
+ * formations du formateur principal sur la période (revalidées côté serveur,
+ * la liste cliente n'est jamais crue) → cases cochées → génération.
+ */
+/** Prestation candidate telle que renvoyée par l'action de liste. */
+interface PrestationCandidate {
+  id: string;
+  numero: string;
+  titre: string;
+  du: string;
+  au: string;
+}
+
+/** Un groupe de cases à cocher (formations, coachings ou audits). */
+function GroupePrestations({
+  titre,
+  prefixe,
+  items,
+  cochees,
+  setCochees,
+}: {
+  titre: string;
+  prefixe: string;
+  items: PrestationCandidate[];
+  cochees: Set<string>;
+  setCochees: React.Dispatch<React.SetStateAction<Set<string>>>;
+}): React.ReactElement | null {
+  if (items.length === 0) return null;
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-1)]">
+      <p className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg)]">
+        {titre}
+      </p>
+      <ul className="flex flex-col gap-[var(--space-admin-1)]">
+        {items.map((p) => {
+          const cle = `${prefixe}:${p.id}`;
+          return (
+            <li key={p.id}>
+              <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
+                <input
+                  type="checkbox"
+                  checked={cochees.has(cle)}
+                  onChange={(e) => {
+                    setCochees((prev) => {
+                      const next = new Set(prev);
+                      if (e.target.checked) next.add(cle);
+                      else next.delete(cle);
+                      return next;
+                    });
+                  }}
+                />
+                <span>
+                  {p.titre}
+                  {p.numero ? ` · ${p.numero}` : ""} · du {p.du} au {p.au}
+                </span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function LettreMissionButtons({
+  sessionId,
+  onDone,
+}: {
+  sessionId: string;
+  onDone: (numero: string) => void;
+}): React.ReactElement {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [ouvert, setOuvert] = useState(false);
+  const [dateDebut, setDateDebut] = useState("");
+  const [dateFin, setDateFin] = useState("");
+  const [formateur, setFormateur] = useState<string | null>(null);
+  // Trois familles de prestations, cochables indépendamment : formations
+  // collectives, coachings AFEST 1-to-1, audits (Will 2026-08-01).
+  const [candidates, setCandidates] = useState<{
+    sessions: PrestationCandidate[];
+    coachings: PrestationCandidate[];
+    audits: PrestationCandidate[];
+  } | null>(null);
+  const [cochees, setCochees] = useState<Set<string>>(new Set());
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  function chercher() {
+    setError(null);
+    setSuccess(null);
+    startTransition(async () => {
+      const res = await listerSessionsLettreCadreAction({ sessionId, dateDebut, dateFin });
+      if ("error" in res) {
+        setError(res.error);
+        setCandidates(null);
+        return;
+      }
+      setFormateur(res.data.formateur);
+      setCandidates({
+        sessions: res.data.sessions,
+        coachings: res.data.coachings,
+        audits: res.data.audits,
+      });
+      // Toutes cochées par défaut : le cas nominal est « tout ce que ce
+      // formateur anime sur la période », décocher est l'exception.
+      setCochees(
+        new Set([
+          ...res.data.sessions.map((s) => `s:${s.id}`),
+          ...res.data.coachings.map((c) => `c:${c.id}`),
+          ...res.data.audits.map((a) => `a:${a.id}`),
+        ]),
+      );
+    });
+  }
+
+  function generer() {
+    setError(null);
+    setSuccess(null);
+    startTransition(async () => {
+      const ids = [...cochees];
+      const res = await genererLettreMissionCadreAction({
+        sessionId,
+        dateDebut,
+        dateFin,
+        sessionIds: ids.filter((k) => k.startsWith("s:")).map((k) => k.slice(2)),
+        coachingIds: ids.filter((k) => k.startsWith("c:")).map((k) => k.slice(2)),
+        auditIds: ids.filter((k) => k.startsWith("a:")).map((k) => k.slice(2)),
+      });
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      setSuccess(`Lettre-cadre — n° ${res.data.numero} générée.`);
+      onDone(res.data.numero);
+      setOuvert(false);
+      setCandidates(null);
+      router.refresh();
+    });
+  }
+
+  const total =
+    candidates === null
+      ? 0
+      : candidates.sessions.length + candidates.coachings.length + candidates.audits.length;
+
+  return (
+    <div className="flex flex-col gap-[var(--space-admin-1)]">
+      <SessionDocButton
+        label="Lettre de mission formateur (cette session)"
+        action={genererLettreMissionAction}
+        sessionId={sessionId}
+        onDone={onDone}
+      />
+      <button
+        type="button"
+        onClick={() => setOuvert((o) => !o)}
+        className="admin-button"
+        aria-expanded={ouvert}
+      >
+        {ouvert ? "Fermer la lettre-cadre" : "Lettre-cadre (plusieurs sessions)…"}
+      </button>
+      {ouvert && (
+        <div className="flex flex-col gap-[var(--space-admin-2)] rounded border border-[color:var(--color-admin-border)] p-[var(--space-admin-2)]">
+          <div className="flex flex-wrap items-end gap-[var(--space-admin-2)]">
+            <label className="flex flex-col text-[length:var(--text-admin-xs)]">
+              Du
+              <input
+                type="date"
+                value={dateDebut}
+                onChange={(e) => setDateDebut(e.target.value)}
+                className="admin-input"
+              />
+            </label>
+            <label className="flex flex-col text-[length:var(--text-admin-xs)]">
+              Au
+              <input
+                type="date"
+                value={dateFin}
+                onChange={(e) => setDateFin(e.target.value)}
+                className="admin-input"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={chercher}
+              disabled={isPending || dateDebut === "" || dateFin === ""}
+              className="admin-button"
+            >
+              {isPending ? "Recherche…" : "Chercher les prestations"}
+            </button>
+          </div>
+          {candidates !== null && total === 0 && (
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Aucune prestation de ce formateur sur cette période.
+            </p>
+          )}
+          {candidates !== null && total > 0 && (
+            <>
+              <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                Prestations de {formateur} sur la période — décochez celles à exclure :
+              </p>
+              <GroupePrestations
+                titre="Formations collectives"
+                prefixe="s"
+                items={candidates.sessions}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
+              <GroupePrestations
+                titre="Coachings 1-to-1 / AFEST"
+                prefixe="c"
+                items={candidates.coachings}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
+              <GroupePrestations
+                titre="Audits"
+                prefixe="a"
+                items={candidates.audits}
+                cochees={cochees}
+                setCochees={setCochees}
+              />
+              <button
+                type="button"
+                onClick={generer}
+                disabled={isPending || cochees.size === 0}
+                className="admin-button"
+              >
+                {isPending
+                  ? "Génération…"
+                  : `Générer la lettre-cadre (${cochees.size} prestation${cochees.size > 1 ? "s" : ""})`}
+              </button>
+            </>
+          )}
+          {error && (
+            <p
+              role="alert"
+              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+            >
+              {error}
+            </p>
+          )}
+        </div>
       )}
       {success && (
         <p
@@ -489,12 +760,7 @@ export function DocumentsSection({
             sessionId={sessionId}
             onDone={handleDone}
           />
-          <SessionDocButton
-            label="Lettre de mission formateur"
-            action={genererLettreMissionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-          />
+          <LettreMissionButtons sessionId={sessionId} onDone={handleDone} />
         </div>
       </div>
 

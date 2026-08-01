@@ -120,6 +120,12 @@ export interface GenerateDocumentInput {
     clientId?: string;
     /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
     coachingSessionId?: string;
+    /**
+     * Formateur MANDATÉ par la pièce (lettre de mission). Indispensable à la
+     * lettre-cadre, où `sessionId` est absent : sans lui, ni l'espace formateur
+     * ni l'action de signature ne sauraient à qui la pièce appartient.
+     */
+    trainerId?: string;
   };
   /**
    * Métadonnées de PRODUCTION à figer sur la pièce.
@@ -199,6 +205,16 @@ async function estUneRegenerationDe(input: GenerateDocumentInput): Promise<boole
   // première — un devis/facture qu'un client rejette. Une vraie réédition passe par
   // `estCopie: true` explicite.
   if (input.type === "facture" || input.type === "avoir" || input.type === "devis") return false;
+
+  // Une lettre de mission-CADRE (sessionId absent, trainerId seul) est un
+  // ORIGINAL à chaque émission : deux lettres-cadre du même formateur couvrent
+  // des périodes différentes, jamais la même prestation. La soumettre à
+  // l'heuristique marquerait « COPIE » toute lettre-cadre après la première.
+  // ⚠️ `trainerId` ne participe pas non plus à l'identité de régénération des
+  // lettres DE SESSION (comparaison exacte ci-dessous) : les lettres legacy ont
+  // `trainer_id` NULL en base, et l'y inclure ferait passer toute réémission
+  // post-migration pour un premier original.
+  if (input.type === "lettre_mission" && input.refs?.sessionId == null) return false;
 
   const refs = input.refs;
   const identifiants = [
@@ -490,6 +506,7 @@ export async function generateDocument(
           ...(input.refs?.coachingSessionId != null
             ? { coachingSessionId: input.refs.coachingSessionId }
             : {}),
+          ...(input.refs?.trainerId != null ? { trainerId: input.refs.trainerId } : {}),
           ...(input.fichierOriginalPath != null
             ? { fichierOriginalPath: input.fichierOriginalPath }
             : {}),

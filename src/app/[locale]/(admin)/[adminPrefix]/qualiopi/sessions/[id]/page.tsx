@@ -753,9 +753,21 @@ export default async function SessionHubPage({ params }: PageProps) {
         */}
         {etatLettreConsole !== null && (
           <div className="mt-[var(--space-admin-6)]">
+            {/* Une lettre-CADRE couvrant cette session s'affiche et se
+                contresigne ici comme une lettre de session — en le disant. */}
+            {etatLettreConsole.estCadre && (
+              <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                Lettre-cadre {etatLettreConsole.periodeLisible ?? ""} — elle couvre cette session
+                parmi d&apos;autres ; une seule signature du formateur vaut pour toutes.
+              </p>
+            )}
             <SignatureDocument
               documentGenereId={etatLettreConsole.documentGenereId}
-              titrePiece="Lettre de mission formateur"
+              titrePiece={
+                etatLettreConsole.estCadre
+                  ? "Lettre de mission-cadre"
+                  : "Lettre de mission formateur"
+              }
               numero={etatLettreConsole.numero}
               parties={etatLettreConsole.parties}
               peutAgir={etatLettreConsole.peutAgir}
