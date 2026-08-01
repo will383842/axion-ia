@@ -41,6 +41,16 @@ interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
 }
 
+/**
+ * Nombre de jours entiers écoulés depuis une date (arrondi au jour inférieur).
+ * Utilisé pour afficher « en attente depuis X jours » sur les signatures — la
+ * seule donnée déjà en base (`updatedAt`) qui dit depuis quand ça traîne,
+ * jusqu'ici sélectionnée mais jamais affichée à l'écran.
+ */
+function joursDepuis(date: Date, maintenant = new Date()): number {
+  return Math.max(0, Math.floor((maintenant.getTime() - date.getTime()) / (24 * 60 * 60 * 1000)));
+}
+
 /** Libellé humain d'un type de pièce signable (sous-ensemble courant). */
 const TYPE_LABELS: Record<string, string> = {
   convention: "Convention",
@@ -93,17 +103,34 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertes] = await Promise.all([
+  const [compteurs, signatures, alertesBrutes] = await Promise.all([
     compterQualiopiNav(),
     lireSignaturesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
   ]);
 
+  // 🔴 Audit du 2026-08-01 (défaut P1) — `signature_en_attente` et
+  // `signature_contreseing_du` sont les MÊMES pièces que celles déjà listées
+  // dans le bloc « Signatures » ci-dessous, avec plus de détail (type, contexte
+  // session, lien direct). Les laisser dans le bloc Alertes fait apparaître la
+  // même pièce deux fois sur cette page. On les filtre UNIQUEMENT ici : elles
+  // continuent d'exister côté évaluateur/DB pour la pastille de la sidebar et
+  // pour /qualiopi/alertes, qui doivent rester exhaustives.
+  const alertes = alertesBrutes.filter(
+    (a) => a.code !== "signature_en_attente" && a.code !== "signature_contreseing_du",
+  );
+
   const critiques = alertes.filter((a) => a.niveau === "critique");
   const importantes = alertes.filter((a) => a.niveau === "important");
+  // 🔴 Audit du 2026-08-01 (défaut P1) — `compteurs.total` (compterQualiopiNav)
+  // compte TOUTES les alertes non lues, y compris niveau « info », qu'aucun des
+  // 3 blocs de cette page n'affiche. Une seule alerte « info » en attente
+  // rendait `rienAFaire` faux SANS qu'aucun bloc n'ait de contenu à montrer :
+  // écran vide, sans le message rassurant. `rienAFaire` doit refléter
+  // exactement ce qui est rendu à l'écran, pas le total de la pastille.
   const rienAFaire =
-    compteurs.total === 0 &&
     signatures.length === 0 &&
+    compteurs.emails === 0 &&
     critiques.length === 0 &&
     importantes.length === 0;
 
@@ -150,6 +177,8 @@ export default async function ATraiterPage({ params }: PageProps) {
                 s.statutSignature === "partielle"
                   ? "une signature est posée — il manque la contrepartie"
                   : "aucune signature — relancer le signataire";
+              const jours = joursDepuis(s.updatedAt);
+              const attente = `en attente depuis ${jours} jour${jours > 1 ? "s" : ""}`;
               const cible = s.sessionId
                 ? `${base}/qualiopi/sessions/${s.sessionId}`
                 : s.trainerId
@@ -162,7 +191,9 @@ export default async function ATraiterPage({ params }: PageProps) {
                       {label} {s.numero}
                     </strong>
                     {contexte ? ` — ${contexte}` : ""}{" "}
-                    <span className="text-[color:var(--color-admin-fg-muted)]">({consigne})</span>
+                    <span className="text-[color:var(--color-admin-fg-muted)]">
+                      ({consigne} — {attente})
+                    </span>
                   </span>
                   <Link href={cible} className={lien}>
                     Ouvrir →
