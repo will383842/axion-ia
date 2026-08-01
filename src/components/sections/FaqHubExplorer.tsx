@@ -63,6 +63,23 @@ function highlight(text: string, query: string): ReactNode {
   );
 }
 
+/**
+ * Compteur d'une puce de filtre — la classe dépend de l'état, parce que le fond
+ * change.
+ *
+ * 🔴 Constaté par le job « A11y axe-core WCAG 2.2 AA vs prod » du 2026-08-01
+ * (et des deux nuits précédentes) : le compteur portait `text-fg-muted` en dur,
+ * y compris sur la puce active dont le fond passe en terracotta. Résultat
+ * mesuré : le brun 5a4f44 sur le terracotta b23f16, soit **1,37:1** pour un
+ * minimum AA de 4,5:1 sur
+ * du 15 px. Le chiffre n'était pas « discret », il était invisible.
+ *
+ * Le blanc à 90 % sur terracotta donne 5,0:1 : conforme, tout en restant en
+ * retrait du libellé qui, lui, est en blanc plein.
+ */
+const countOnCls = "text-white/90 tabular-nums";
+const countOffCls = "text-fg-muted tabular-nums";
+
 export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
   const [query, setQuery] = useState("");
   const [activeCat, setActiveCat] = useState<string | null>(null);
@@ -137,6 +154,8 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
 
           {/* Filtres par thème */}
           <div className="mt-3 flex flex-wrap gap-2">
+            {/* Le compteur suit l'état de sa puce : sur fond terracotta il doit
+                virer au blanc, sinon il tombe sous le seuil AA (cf. plus bas). */}
             <button
               type="button"
               onClick={() => setActiveCat(null)}
@@ -149,7 +168,9 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
               }
             >
               {isFr ? "Tout" : "All"}{" "}
-              <span className="text-fg-muted tabular-nums">{items.length}</span>
+              {/* Compteur : voir countOnCls / countOffCls — sur la puce active le
+                  fond passe en terracotta, le brun d'origine y tombait à 1,37:1. */}
+              <span className={activeCat === null ? countOnCls : countOffCls}>{items.length}</span>
             </button>
             {categories.map((c) => {
               const n = countByCat.get(c.slug) ?? 0;
@@ -168,7 +189,7 @@ export function FaqHubExplorer({ items, categories, locale, isFr }: Props) {
                       : "border-border bg-bg text-fg-soft hover:border-terracotta/60")
                   }
                 >
-                  {c.label} <span className="text-fg-muted tabular-nums">{n}</span>
+                  {c.label} <span className={on ? countOnCls : countOffCls}>{n}</span>
                 </button>
               );
             })}

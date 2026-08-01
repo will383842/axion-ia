@@ -108,7 +108,12 @@ export function ImplementationWhyChooseUs({ isFr }: ImplementationWhyChooseUsPro
                 </span>
                 <span
                   aria-hidden="true"
-                  className="text-terracotta/40 text-3xl font-medium tabular-nums"
+                  // 🔴 `/40` donnait le rose e0b2a2 sur blanc, soit 1,89:1 — sous le seuil
+                  // AA de 3:1 applicable au texte large (32 px). `aria-hidden` masque
+                  // le numéro aux lecteurs d'écran mais ne le retire pas de l'écran :
+                  // le contraste reste dû à tous ceux qui le voient. `/70` mesure
+                  // 3,30:1 et garde l'effet estompé.
+                  className="text-terracotta/70 text-3xl font-medium tabular-nums"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {String(idx + 1).padStart(2, "0")}
