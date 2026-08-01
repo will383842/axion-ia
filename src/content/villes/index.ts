@@ -256,9 +256,12 @@ export function isPremiumVille(v: Ville): boolean {
 // (via `isVilleIndexable`) et hors sitemap — sans recréer de doorway HCU 2024.
 //
 // NB : `getIndexableVilles()` (= villes avec copy, 2157) reste la base structurelle
-// stable du sitemap + de la whitelist Edge `seo-noindex-routes.ts`. La décision
-// d'indexation effective (robots des pages + contenu du sitemap) passe, elle, par
-// `isVilleIndexable` ⟶ `RANKED_INDEXABLE` (sous-ensemble unique + drip).
+// stable du sitemap (chunks). La décision d'indexation effective (robots des
+// pages + contenu du sitemap) passe, elle, par `isVilleIndexable` ⟶
+// `RANKED_INDEXABLE`. Depuis l'audit indexation 2026-07-31, la whitelist Edge
+// `seo-noindex-routes.ts` (X-Robots-Tag) suit AUSSI `isVilleIndexable`, via le
+// fichier généré `src/generated/indexable-villes.ts` (régénérer avec
+// `pnpm tsx scripts/gen-indexable-villes.ts` après modification des données).
 //
 // P0 2026-07-03 (décision Will) — CAP INDEXATION T1/T2 + CURÉES. Concentration
 // du budget de crawl sur les villes à valeur pendant que l'infra d'indexation

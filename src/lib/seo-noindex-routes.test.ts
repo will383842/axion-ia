@@ -10,14 +10,36 @@
  */
 import { describe, it, expect } from "vitest";
 
-import { getIndexableVilles } from "@/content/villes";
+import { getIndexableVilles, isVilleIndexable } from "@/content/villes";
 import { getIndexableRegions } from "@/content/regions";
 import { __INTERNAL, isNoindexStubRoute } from "./seo-noindex-routes";
 
 describe("seo-noindex-routes — sync vs content datas", () => {
-  it("INDEXABLE_VILLE_SLUGS = villes avec copy", () => {
-    const fromData = new Set(getIndexableVilles().map((v) => v.slug));
+  it("INDEXABLE_VILLE_SLUGS = le CAP d'indexation (isVilleIndexable), pas « a un copy »", () => {
+    // Audit indexation GSC 2026-07-31 — la whitelist Edge dérive désormais du
+    // MÊME ensemble que le `<meta robots>` des pages (`isVilleIndexable`,
+    // déterministe depuis le 2026-06-14) : header et meta ne peuvent plus se
+    // contredire. Si ce test échoue : les données villes ont changé sans
+    // régénération → `pnpm tsx scripts/gen-indexable-villes.ts`.
+    const fromData = new Set(
+      getIndexableVilles()
+        .map((v) => v.slug)
+        .filter((slug) => isVilleIndexable(slug)),
+    );
     expect([...__INTERNAL.INDEXABLE_VILLE_SLUGS].sort()).toEqual([...fromData].sort());
+  });
+
+  it("GARDE-FOU CRITIQUE : aucune ville indexable ne reçoit le header noindex", () => {
+    // Un faux positif (X-Robots-Tag noindex sur une page `index:true`) ferait
+    // désindexer une page voulue en index — c'est LE risque interdit de ce
+    // fichier (cf. son en-tête « Faux positifs CRITIQUE »).
+    for (const v of getIndexableVilles()) {
+      if (!isVilleIndexable(v.slug)) continue;
+      expect(
+        isNoindexStubRoute(`/fr/implantations/${v.region}/${v.slug}`),
+        `ville indexable ${v.slug} recevrait X-Robots-Tag noindex`,
+      ).toBe(false);
+    }
   });
 
   it("INDEXABLE_REGION_SLUGS = régions non noindex", () => {
@@ -40,15 +62,15 @@ describe("seo-noindex-routes — sync vs content datas", () => {
 });
 
 describe("isNoindexStubRoute — logique", () => {
-  it("hub ville : plus de stub Edge depuis le sprint T4 (toutes les villes ont copy)", () => {
-    // Depuis le sprint T4 (2026-05-27), les 2157 villes ont toutes un `copy`
-    // → aucun hub ville n'est plus un stub Edge (whitelist = toutes les villes).
-    // Le noindex des villes pas encore dans la cohorte (drip indexation
-    // Will 2026-05-28, +50/jour) est désormais porté par le `<meta robots
-    // noindex,follow>` de la page (generateMetadata + isVilleIndexable), PAS par
-    // le X-Robots-Tag Edge (qui resterait sur la sémantique "stub = sans copy").
-    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/lestrem")).toBe(false);
-    expect(isNoindexStubRoute("/en/locations/hauts-de-france/lestrem")).toBe(false);
+  it("hub ville CAPPÉE : reçoit le X-Robots-Tag (aligné sur le cap 2026-07-03)", () => {
+    // Sémantique CHANGÉE par l'audit indexation GSC 2026-07-31 : la whitelist
+    // suit désormais le cap `isVilleIndexable` (~480 villes premium/curées),
+    // plus « a un copy » (~2 157). Lestrem (T4, non premium) est `noindex` au
+    // niveau `<meta>` depuis le cap du 2026-07-03 — le header Edge doublonne
+    // ENFIN ce signal, ce qui économise le rendu HTML côté Googlebot (c'était
+    // tout l'objet du X-Robots-Tag, jamais effectif sur les villes cappées).
+    expect(isNoindexStubRoute("/fr/implantations/hauts-de-france/lestrem")).toBe(true);
+    expect(isNoindexStubRoute("/en/locations/hauts-de-france/lestrem")).toBe(true);
   });
 
   it("retourne false pour ville pilote (Paris)", () => {
