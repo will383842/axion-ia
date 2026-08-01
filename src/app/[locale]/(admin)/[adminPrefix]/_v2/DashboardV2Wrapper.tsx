@@ -13,6 +13,7 @@
 import { signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { compterQualiopiNav, COMPTEURS_VIDES } from "@/server/admin/qualiopi-nav-counts";
 import { DashboardV2 } from "./DashboardV2";
 
 function fmtDate(d: Date | null | undefined): string {
@@ -54,22 +55,27 @@ export async function DashboardV2Wrapper({
   email,
   role,
 }: DashboardV2WrapperProps): Promise<React.ReactElement> {
-  const [totalSubmissions, totalArticles, totalSubscribers, activityRows] = await Promise.all([
-    prisma.submission.count(),
-    prisma.article.count({ where: { status: "published" } }),
-    prisma.newsletterSubscriber.count({ where: { status: "confirmed" } }),
-    prisma.activityLog.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 8,
-      select: {
-        id: true,
-        action: true,
-        targetType: true,
-        createdAt: true,
-        adminUser: { select: { email: true } },
-      },
-    }),
-  ]);
+  const [totalSubmissions, totalArticles, totalSubscribers, activityRows, aTraiter] =
+    await Promise.all([
+      prisma.submission.count(),
+      prisma.article.count({ where: { status: "published" } }),
+      prisma.newsletterSubscriber.count({ where: { status: "confirmed" } }),
+      prisma.activityLog.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 8,
+        select: {
+          id: true,
+          action: true,
+          targetType: true,
+          createdAt: true,
+          adminUser: { select: { email: true } },
+        },
+      }),
+      // Refonte UI 2026-08-01 (couche 4) — même source que la pastille de la
+      // navigation, pour qu'un compteur ne puisse jamais contredire l'autre.
+      // Fail-soft : une base indisponible ne doit pas faire tomber l'accueil.
+      compterQualiopiNav().catch(() => COMPTEURS_VIDES),
+    ]);
 
   return (
     <DashboardV2
@@ -82,10 +88,13 @@ export async function DashboardV2Wrapper({
         totalArticles,
         totalSubscribers,
       }}
+      aTraiter={aTraiter}
       activityRows={activityRows.map((a) => ({
         id: a.id,
-        primary: a.action,
-        secondary: `${a.targetType ? `· ${a.targetType} ` : ""}· ${a.adminUser?.email ?? "system"} · ${fmtRelative(a.createdAt)}`,
+        // La clé brute est transmise telle quelle : c'est `decrireAction`, côté
+        // rendu, qui la traduit. Le wrapper ne fait que lire la base.
+        action: a.action,
+        secondary: `${a.adminUser?.email ?? "système"} · ${fmtRelative(a.createdAt)}`,
       }))}
     />
   );
