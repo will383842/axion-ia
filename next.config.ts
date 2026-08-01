@@ -222,6 +222,21 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // Pagination blog déplacée de `?page=N` vers `/blog/page/N` (audit
+      // indexation GSC 2026-07-31, P1 « BYPASS /fr/blog ») : `searchParams`
+      // rendait le hub dynamique → non cacheable CDN. 301 des anciennes URLs
+      // `?page=N` (N ≥ 2) pour préserver l'index Google — la capture nommée
+      // `num` CONSOMME le query param (sinon Next le repasserait à la
+      // destination). Pas de règle pour `?page=1` : un query non consommé
+      // serait ré-appendu → boucle de 301 ; la route `/blog` ignore désormais
+      // toute query et sert la page 1 avec sa canonique `/blog`, Google
+      // consolide seul.
+      {
+        source: "/:locale(fr|en)/blog",
+        has: [{ type: "query", key: "page", value: "(?<num>[2-9]\\d*)" }],
+        destination: "/:locale/blog/page/:num",
+        permanent: true,
+      },
       // Suppression page /reserver (Will 2026-06-26) — le calendrier de booking
       // est retiré ; toute prise de contact passe désormais par /appel
       // (réservation d'un appel) ou /contact. 301 vers /appel pour préserver les
