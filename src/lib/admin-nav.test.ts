@@ -70,7 +70,10 @@ describe("buildAdminNav SSOT", () => {
     // Candidatures, Demandes de podcast) + 5 vues filtrées de Submission
     // conservées hors sidebar (`parent`) pour ⌘K et les favoris. Les 3 anciennes
     // routes RDV deviennent de simples redirections et sortent de la nav. = 143.
-    expect(items.length).toBe(143);
+    // +1 (2026-08-01, refonte console phase 1) : « 🔴 À traiter » — la porte
+    // d'entrée de la console Qualiopi (signatures en attente, e-mails à valider,
+    // relances, alertes), pôle a_traiter en tête du groupe. = 144.
+    expect(items.length).toBe(144);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

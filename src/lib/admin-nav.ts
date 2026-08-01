@@ -54,25 +54,40 @@ export type AdminNavGroup =
 export type ContentGenPole = "lancer" | "suivre" | "publier" | "villes" | "qualite" | "reglages";
 
 /**
- * Pôle (sous-groupe niveau 1) du groupe `qualiopi` — refonte UX 2026-07-08.
+ * Pôle (sous-groupe niveau 1) du groupe `qualiopi` — refonte console PHASE 1,
+ * 2026-08-01 (remplace la taxonomie 2026-07-08).
  *
- * Le back-office Qualiopi comptait ~24 onglets en liste plate → écrasant et
- * illisible. On les regroupe en 5 pôles orientés usage, ordonnés selon le flux
- * métier réel : Formations & séances (production quotidienne) > Commercial
- * (vente) > Conformité & audit (preuves Qualiopi) > Registres & veille (obligs
- * périodiques) > Administration (setup/RGPD, rare). Même mécanisme d'accordéon
- * que les pôles content_gen (cf. `<AdminSidebarNav>`).
+ * 🔴 Pourquoi la refonte. Verdict de Will sur l'ancienne organisation :
+ * « tout est très mal organisé, on s'y perd… le bazar complet ». Le diagnostic
+ * partagé : les 5 pôles précédents rangeaient encore par NATURE de donnée
+ * (Formations & séances / Commercial / Registres…), c'est-à-dire par table.
+ * Un dossier client vivait dans 6 onglets sans lien, et rien ne disait par
+ * quoi commencer.
+ *
+ * La taxonomie 2026-08-01 range par TRAVAIL, dans l'ordre de la journée :
+ *   1. a_traiter      — « qu'est-ce que je dois faire maintenant ? » (page
+ *                       dédiée + pastilles, cf. qualiopi-nav-counts.ts)
+ *   2. dossiers       — les affaires en cours (clients, devis, sessions,
+ *                       stagiaires, coaching, audits)
+ *   3. catalogue      — ce qu'on vend (offres, formations, engine, barèmes)
+ *   4. intervenants   — les humains qui animent (formateurs, sous-traitants)
+ *   5. conformite     — TOUTES les preuves Qualiopi au même endroit
+ *                       (indicateurs, registres, veille, revue, auditeur)
+ *   6. finances       — l'argent (hub facturation, plans, cockpit)
+ *   7. reglages_suivi — setup, RGPD, alertes, corbeille e-mails
  *
  * NB : clés volontairement DISTINCTES des `ContentGenPole` (pas de collision
- * « reglages ») pour que l'état plié/déplié d'un pôle ne fuite pas d'un groupe
- * à l'autre (Set<string> partagé côté sidebar).
+ * « reglages » → `reglages_suivi`) pour que l'état plié/déplié d'un pôle ne
+ * fuite pas d'un groupe à l'autre (Set<string> partagé côté sidebar).
  */
 export type QualiopiPole =
-  | "formations"
-  | "commercial"
+  | "a_traiter"
+  | "dossiers"
+  | "catalogue"
+  | "intervenants"
   | "conformite"
-  | "registres"
-  | "administration";
+  | "finances"
+  | "reglages_suivi";
 
 /**
  * Pôle (sous-groupe niveau 1) du groupe `documents-interventions` — refonte UX
@@ -170,26 +185,32 @@ export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
 ];
 
 /**
- * Libellés FR clairs des 5 pôles du groupe `qualiopi` (refonte UX 2026-07-08).
+ * Libellés FR des 7 pôles `qualiopi` (refonte console phase 1, 2026-08-01).
+ * Les émojis sont voulus par Will (« n'hésite pas à mettre des émojis ») :
+ * ils rendent chaque famille reconnaissable d'un coup d'œil.
  */
 export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
-  formations: "Formations & séances",
-  commercial: "Commercial",
-  conformite: "Conformité & audit",
-  registres: "Registres & veille",
-  administration: "Administration",
+  a_traiter: "🔴 À traiter",
+  dossiers: "📁 Dossiers & clients",
+  catalogue: "📚 Catalogue & vente",
+  intervenants: "👥 Intervenants",
+  conformite: "✅ Conformité Qualiopi",
+  finances: "💰 Finances",
+  reglages_suivi: "⚙️ Réglages & suivi",
 };
 
 /**
- * Ordre d'affichage des pôles `qualiopi` : du plus chaud (production
- * quotidienne) au plus froid (setup/RGPD, rare).
+ * Ordre d'affichage des pôles `qualiopi` : l'ordre de la JOURNÉE — ce que je
+ * dois faire, puis mes affaires, puis le référentiel, puis le reste.
  */
 export const QUALIOPI_POLE_ORDER: ReadonlyArray<QualiopiPole> = [
-  "formations",
-  "commercial",
+  "a_traiter",
+  "dossiers",
+  "catalogue",
+  "intervenants",
   "conformite",
-  "registres",
-  "administration",
+  "finances",
+  "reglages_suivi",
 ];
 
 /**
@@ -815,48 +836,59 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     //   (cf. QUALIOPI_POLE_ORDER + `<AdminSidebarNav>`). L'ordre des items suit
     //   l'ordre d'affichage voulu DANS chaque pôle (rendu = ordre source).
     //
-    // ▸ FORMATIONS & SÉANCES (production quotidienne)
+    // ▸ 🔴 À TRAITER — la porte d'entrée de la console (refonte phase 1).
+    // Une seule page qui répond à « par quoi je commence ? » : signatures
+    // reçues, e-mails à valider, relances dues, alertes du matin. La pastille
+    // vient de `compterQualiopiNav()` (SSOT partagé avec la page elle-même).
+    {
+      href: `${base}/qualiopi/a-traiter`,
+      label: "À traiter",
+      icon: "🔴",
+      group: "qualiopi",
+      subGroup: "a_traiter",
+    },
+    // ▸ 📁 DOSSIERS & CLIENTS (les affaires en cours)
     {
       href: `${base}/qualiopi`,
       label: "Vue d'ensemble",
       icon: "🎓",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/formations`,
       label: "Formations",
       icon: "📘",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/formation-engine`,
       label: "Formation Engine",
       icon: "⚙️",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/formation-engine/validations`,
       label: "Validations IA",
       icon: "✅",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "catalogue",
     },
     {
       href: `${base}/qualiopi/sessions`,
       label: "Sessions",
       icon: "📅",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/formateurs`,
       label: "Formateurs",
       icon: "👨‍🏫",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "intervenants",
     },
     // 🔴 Déplacé depuis « Coaching 1-to-1 » le 2026-07-28.
     //
@@ -872,14 +904,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Accès & connexions formateurs",
       icon: "🧑‍🏫",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "intervenants",
     },
     {
       href: `${base}/qualiopi/remuneration`,
       label: "Rémunération formateurs",
       icon: "💶",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "intervenants",
     },
     // Cockpit financier (Lot 6.3) — marge par session/formation, heures & coût par
     // formateur, consolidation mensuelle (lecture au-dessus des lignes de rémunération).
@@ -888,29 +920,29 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Cockpit financier",
       icon: "📈",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "finances",
     },
     {
       href: `${base}/qualiopi/audits`,
       label: "Audits IA",
       icon: "🔍",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/stagiaires`,
       label: "Stagiaires",
       icon: "🧑‍🎓",
       group: "qualiopi",
-      subGroup: "formations",
+      subGroup: "dossiers",
     },
-    // ▸ COMMERCIAL (vente)
+    // (Refonte 2026-08-01 : le rangement par pôle vit dans subGroup — l'ordre
     {
       href: `${base}/qualiopi/offres`,
       label: "Offres",
       icon: "🏷️",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "catalogue",
     },
     // Lot 3 (pont appel/contact → CRM) : appels Calendly + messages contact
     // fusionnés, conversion 1 clic en client CRM puis devis pré-rempli.
@@ -919,21 +951,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Entrées récentes",
       icon: "📥",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/clients`,
       label: "Clients (CRM)",
       icon: "🏢",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "dossiers",
     },
     {
       href: `${base}/qualiopi/devis`,
       label: "Devis",
       icon: "📄",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "dossiers",
     },
     // Hub facturation unifié 5 activités (page gatée par FACTURATION_HUB_ENABLED).
     {
@@ -941,21 +973,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Facturation (Hub)",
       icon: "🧾",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/new`,
       label: "Facture directe",
       icon: "➕",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "finances",
     },
     {
       href: `${base}/qualiopi/facturation/plans`,
       label: "Plans récurrents",
       icon: "🔁",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "finances",
     },
     {
       // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
@@ -965,7 +997,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Alertes financement (sessions)",
       icon: "🚨",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "finances",
     },
     // Référentiel OPCO centralisé et versionné (Lot 5) — plafonds de prise en charge.
     {
@@ -973,9 +1005,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Barèmes OPCO",
       icon: "📐",
       group: "qualiopi",
-      subGroup: "commercial",
+      subGroup: "catalogue",
     },
-    // ▸ CONFORMITÉ & AUDIT (preuves Qualiopi)
+    // du fichier ne préjuge plus du pôle. Repères historiques supprimés.)
     {
       href: `${base}/qualiopi/conformite`,
       label: "Conformité",
@@ -1024,42 +1056,42 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Veille",
       icon: "🔎",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/partenariats`,
       label: "Partenariats",
       icon: "🤝",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/sous-traitants`,
       label: "Sous-traitants",
       icon: "🏭",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "intervenants",
     },
     {
       href: `${base}/qualiopi/moyens`,
       label: "Moyens pédagogiques",
       icon: "🧰",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/incidents`,
       label: "Incidents",
       icon: "🚨",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "conformite",
     },
     {
       href: `${base}/qualiopi/revue-direction`,
       label: "Revue de direction",
       icon: "📋",
       group: "qualiopi",
-      subGroup: "registres",
+      subGroup: "conformite",
     },
     // ▸ ADMINISTRATION (setup / RGPD — rare)
     {
@@ -1067,21 +1099,21 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Configuration",
       icon: "⚙️",
       group: "qualiopi",
-      subGroup: "administration",
+      subGroup: "reglages_suivi",
     },
     {
       href: `${base}/qualiopi/rgpd`,
       label: "Demandes RGPD",
       icon: "🔐",
       group: "qualiopi",
-      subGroup: "administration",
+      subGroup: "reglages_suivi",
     },
     {
       href: `${base}/qualiopi/alertes`,
       label: "Alertes",
       icon: "🔔",
       group: "qualiopi",
-      subGroup: "administration",
+      subGroup: "reglages_suivi",
     },
     // F60 — corbeille de validation : les emails commerciaux attendent une
     // relecture avant de partir. Placée près des Alertes : ce sont les deux
@@ -1091,7 +1123,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Emails à valider",
       icon: "✉️",
       group: "qualiopi",
-      subGroup: "administration",
+      subGroup: "reglages_suivi",
     },
     // ── Documents (hub à 2 niveaux : Activités + Autres) ─────────────────
     //   Activités : Formations / 1-to-1 / Audit (kits pédagogiques Qualiopi,

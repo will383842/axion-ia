@@ -24,6 +24,9 @@ vi.mock("@/lib/prisma", () => ({
     veille: { findFirst: vi.fn() },
     revueDirection: { findUnique: vi.fn(), findFirst: vi.fn() },
     rgpdDemande: { findMany: vi.fn() },
+    // Refonte console phase 1 (2026-08-01) : devis dormants + signatures qui traînent.
+    devis: { findMany: vi.fn() },
+    documentGenere: { findMany: vi.fn() },
   },
 }));
 
@@ -75,6 +78,8 @@ const mp = prisma as unknown as {
     findFirst: ReturnType<typeof vi.fn>;
   };
   rgpdDemande: { findMany: ReturnType<typeof vi.fn> };
+  devis: { findMany: ReturnType<typeof vi.fn> };
+  documentGenere: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -97,6 +102,8 @@ function setupEmptyMocks() {
   mp.revueDirection.findUnique.mockResolvedValue({ statut: "valide" }); // BPF déposé
   mp.revueDirection.findFirst.mockResolvedValue({ id: "revue-001" }); // revue récente (cadence OK)
   mp.rgpdDemande.findMany.mockResolvedValue([]);
+  mp.devis.findMany.mockResolvedValue([]);
+  mp.documentGenere.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -1051,5 +1058,99 @@ describe("evaluerAlertes — vigilance_urssaf", () => {
     const a = alertes.find((x) => x.code === "vigilance_urssaf_absente");
     expect(a).toBeDefined();
     expect(a?.niveau).toBe("critique");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règles devis_sans_reponse + signatures_en_attente (refonte phase 1)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — devis_sans_reponse", () => {
+  const JOUR = 24 * 60 * 60 * 1000;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 un devis envoyé depuis +7 jours sans réponse → relance, important", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "d1",
+        numero: "AXI-DEV-2026-012",
+        sentAt: new Date(Date.now() - 9 * JOUR),
+        client: { raisonSociale: "ACME SAS" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "devis_sans_reponse");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("AXI-DEV-2026-012");
+    expect(a?.message).toContain("ACME SAS");
+    expect(a?.cibleId).toBe("d1");
+  });
+
+  it("le filtre SQL ne vise que les devis `envoye` de +7 jours", async () => {
+    await evaluerAlertes();
+    const arg = mp.devis.findMany.mock.calls[0]?.[0] as {
+      where: { statut: string; sentAt: Record<string, unknown> };
+    };
+    expect(arg.where.statut).toBe("envoye");
+    expect(arg.where.sentAt["not"]).toBeNull();
+  });
+});
+
+describe("evaluerAlertes — signatures_en_attente", () => {
+  const JOUR = 24 * 60 * 60 * 1000;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 pièce signée d'UN SEUL côté depuis +7 jours → contreseing dû", async () => {
+    // Le cas INVEST SUN : le client signe, puis la pièce attend le contreseing
+    // de l'organisme — invisible sans ouvrir la fiche session.
+    mp.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "p1",
+        type: "convention",
+        numero: "AXI-DOC-2026-009",
+        statutSignature: "partielle",
+        updatedAt: new Date(Date.now() - 8 * JOUR),
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "signature_contreseing_du");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("AXI-DOC-2026-009");
+    expect(a?.message).toContain("contresigner");
+  });
+
+  it("lien émis jamais signé depuis +7 jours → relancer le signataire", async () => {
+    mp.documentGenere.findMany.mockResolvedValue([
+      {
+        id: "p2",
+        type: "lettre_mission",
+        numero: "AXI-LM-2026-004",
+        statutSignature: "en_attente",
+        updatedAt: new Date(Date.now() - 10 * JOUR),
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "signature_en_attente");
+    expect(a).toBeDefined();
+    expect(a?.message).toContain("relancer");
+  });
+
+  it("le filtre SQL exclut les pièces récemment actives (moins de 7 jours)", async () => {
+    await evaluerAlertes();
+    const arg = mp.documentGenere.findMany.mock.calls[0]?.[0] as {
+      where: { statutSignature: { in: string[] }; updatedAt: Record<string, unknown> };
+    };
+    expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
+    expect(arg.where.updatedAt["lte"]).toBeInstanceOf(Date);
   });
 });

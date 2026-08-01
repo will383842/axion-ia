@@ -737,6 +737,78 @@ async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
  * facture (accord reçu, échéance passée) — c'est précisément le cas que la
  * facturation ne voit pas.
  */
+/**
+ * Devis envoyé sans réponse — refonte console phase 1 (2026-08-01).
+ *
+ * 🔴 Trou trouvé en vérifiant le plan « À traiter » avec Will : un devis
+ * `envoye` pouvait dormir ÉTERNELLEMENT — aucune règle ne le surveillait,
+ * contrairement aux dossiers OPCO (+30 j) et aux factures. Le client qui ne
+ * répond pas est pourtant la relance commerciale la plus banale qui soit.
+ *
+ * 7 jours : le délai de relance commerciale usuel, plus court que les 30 j
+ * d'un dossier OPCO (une administration répond en semaines, un client en jours).
+ */
+async function regleDevisSansReponse(now: Date): Promise<AlerteCandidate[]> {
+  const devisDormants = await prisma.devis.findMany({
+    where: { statut: "envoye", sentAt: { not: null, lte: daysAgo(7, now) } },
+    select: {
+      id: true,
+      numero: true,
+      sentAt: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  const alertes: AlerteCandidate[] = [];
+  for (const d of devisDormants) {
+    if (!d.sentAt) continue;
+    alertes.push({
+      code: "devis_sans_reponse",
+      niveau: "important",
+      titre: "Devis envoyé sans réponse depuis +7 jours",
+      message: `Le devis ${d.numero} (${d.client.raisonSociale}) est parti le ${d.sentAt.toLocaleDateString("fr-FR")} sans acceptation ni refus : relancer le client.`,
+      cibleType: "Devis",
+      cibleId: d.id,
+    });
+  }
+  return alertes;
+}
+
+/**
+ * Signature qui traîne sur une pièce émise — refonte console phase 1
+ * (2026-08-01), le second trou trouvé avec le devis dormant.
+ *
+ * Un lien de signature émis mais jamais signé (`en_attente`), ou une pièce
+ * signée d'un seul côté (`partielle`), n'alertait personne : il fallait ouvrir
+ * la bonne fiche pour s'en apercevoir. Or une convention non signée à J-2 de
+ * la formation est exactement ce qu'un contrôle relève.
+ *
+ * ⚠️ `updatedAt` comme horloge : la colonne bouge à chaque événement de
+ * signature (statut dérivé recalculé). 7 jours SANS mouvement = ça traîne.
+ */
+async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
+  const pieces = await prisma.documentGenere.findMany({
+    where: {
+      statutSignature: { in: ["en_attente", "partielle"] },
+      updatedAt: { lte: daysAgo(7, now) },
+    },
+    select: { id: true, type: true, numero: true, statutSignature: true, updatedAt: true },
+  });
+  return pieces.map((p) => ({
+    code: p.statutSignature === "partielle" ? "signature_contreseing_du" : "signature_en_attente",
+    niveau: "important" as const,
+    titre:
+      p.statutSignature === "partielle"
+        ? "Pièce signée d'un seul côté depuis +7 jours"
+        : "Lien de signature sans signature depuis +7 jours",
+    message:
+      p.statutSignature === "partielle"
+        ? `La pièce ${p.numero} (${p.type}) porte une signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} mais il manque la contrepartie : contresigner ou relancer l'autre partie.`
+        : `La pièce ${p.numero} (${p.type}) attend sa première signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} : relancer le signataire ou réémettre le lien.`,
+    cibleType: "DocumentGenere",
+    cibleId: p.id,
+  }));
+}
+
 async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
   const alertes: AlerteCandidate[] = [];
 
@@ -1045,6 +1117,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
+  { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
+  { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
   { nom: "bareme_opco_perime", fn: regleBaremeOpcoPerime },
