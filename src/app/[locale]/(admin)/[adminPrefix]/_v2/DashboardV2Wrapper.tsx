@@ -14,28 +14,14 @@ import { signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { compterQualiopiNav, COMPTEURS_VIDES } from "@/server/admin/qualiopi-nav-counts";
+import { depuisMaintenant } from "@/lib/admin/relative-time";
 import { DashboardV2 } from "./DashboardV2";
 
-function fmtDate(d: Date | null | undefined): string {
-  if (!d) return "—";
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(d);
-}
-function fmtRelative(d: Date | null | undefined): string {
-  if (!d) return "—";
-  const diffMs = Date.now() - d.getTime();
-  const diffMin = Math.round(diffMs / 60000);
-  if (diffMin < 1) return "à l'instant";
-  if (diffMin < 60) return `il y a ${diffMin} min`;
-  const diffH = Math.round(diffMin / 60);
-  if (diffH < 24) return `il y a ${diffH} h`;
-  const diffD = Math.round(diffH / 24);
-  if (diffD < 30) return `il y a ${diffD} j`;
-  return fmtDate(d);
-}
+// Refonte UI 2026-08-01 (couche 4) — la mise en forme de l'ancienneté vivait
+// ici, en privé. « À traiter » en a eu besoin aussi : deux formulations
+// différentes pour la même durée, sur deux pages voisines, se remarquent. Une
+// seule implémentation partagée, et elle est testée (elle arrondissait
+// 30 secondes en « il y a 1 min »).
 
 interface DashboardV2WrapperProps {
   adminPrefix: string;
@@ -94,7 +80,7 @@ export async function DashboardV2Wrapper({
         // La clé brute est transmise telle quelle : c'est `decrireAction`, côté
         // rendu, qui la traduit. Le wrapper ne fait que lire la base.
         action: a.action,
-        secondary: `${a.adminUser?.email ?? "système"} · ${fmtRelative(a.createdAt)}`,
+        secondary: `${a.adminUser?.email ?? "système"} · ${depuisMaintenant(a.createdAt)}`,
       }))}
     />
   );

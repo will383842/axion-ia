@@ -28,8 +28,33 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { depuisMaintenant, joursEcoules } from "@/lib/admin/relative-time";
+
+/**
+ * Pastille de résumé en tête de page. Rendue seulement si le compteur est
+ * non nul : une rangée de zéros n'apprend rien et dilue ce qui compte.
+ */
+function Resume({
+  emoji,
+  n,
+  libelle,
+}: {
+  emoji: string;
+  n: number;
+  libelle: string;
+}): React.ReactElement | null {
+  if (n === 0) return null;
+  return (
+    <span className="inline-flex items-center gap-[var(--space-admin-3)] rounded-[var(--radius-admin-pill)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+      <span aria-hidden="true">{emoji}</span>
+      <strong className="tabular-nums">{n}</strong>
+      <span className="text-[color:var(--color-admin-fg-soft)]">{libelle}</span>
+    </span>
+  );
+}
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -107,16 +132,24 @@ export default async function ATraiterPage({ params }: PageProps) {
     critiques.length === 0 &&
     importantes.length === 0;
 
+  // Refonte UI 2026-08-01 (couche 4) — la page listait tout à plat, en lignes
+  // séparées d'un filet, avec un lien texte « Ouvrir → » à droite. Rien
+  // n'indiquait DEPUIS QUAND une pièce attendait, alors que c'est ce qui
+  // distingue une signature posée ce matin d'une qui traîne depuis trois
+  // semaines. Les cartes s'alignent maintenant sur `AdminCard` (rayon 16),
+  // chaque ligne devient une TUILE cliquable, et l'ancienneté est affichée.
   const carte =
-    "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]";
+    "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-xl)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-card)] shadow-[var(--shadow-admin-1)]";
   const titreCarte =
-    "mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+    "mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]";
+  const sousTitreCarte =
+    "mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
   const pastille =
-    "inline-flex min-w-[1.5rem] items-center justify-center rounded-full bg-[color:var(--color-admin-error)] px-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-bold text-white";
-  const ligne =
-    "flex flex-wrap items-center justify-between gap-[var(--space-admin-2)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-2)] last:border-b-0";
-  const lien =
-    "text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] hover:underline";
+    "inline-flex min-w-[1.5rem] items-center justify-center rounded-[var(--radius-admin-pill)] bg-[color:var(--color-admin-destructive)] px-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-bold tabular-nums text-white";
+  const tuile =
+    "flex flex-wrap items-center justify-between gap-[var(--space-admin-4)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper-alt)] p-[var(--space-admin-5)] transition-colors hover:border-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface-hover)]";
+  const listeTuiles = "flex flex-col gap-[var(--space-admin-3)]";
+  const meta = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 
   return (
     <AdminPageShell>
@@ -125,12 +158,20 @@ export default async function ATraiterPage({ params }: PageProps) {
         description="Tout ce qui attend une action, au même endroit — signatures, e-mails, relances, alertes. Quand cette page est vide, tout est à jour."
       />
 
-      {rienAFaire && (
-        <div className={carte}>
-          <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
-            ✨ Rien à traiter — tout est à jour. Les pastilles rouges de la navigation vous
-            ramèneront ici dès que quelque chose attendra.
-          </p>
+      {rienAFaire ? (
+        <AdminEmptyState
+          icon={<span className="text-[22px]">✨</span>}
+          title="Rien à traiter — tout est à jour"
+          description="Les pastilles rouges de la navigation vous ramèneront ici dès que quelque chose attendra une action."
+        />
+      ) : (
+        // Résumé en tête : combien, et de quelle nature. Avant, il fallait
+        // faire défiler la page pour savoir ce qui attendait.
+        <div className="mb-[var(--space-admin-7)] flex flex-wrap items-center gap-[var(--space-admin-3)]">
+          <Resume emoji="✍️" n={signatures.length} libelle="signature(s)" />
+          <Resume emoji="✉️" n={compteurs.emails} libelle="e-mail(s) à valider" />
+          <Resume emoji="🔴" n={critiques.length} libelle="alerte(s) critique(s)" />
+          <Resume emoji="🟠" n={importantes.length} libelle="alerte(s) importante(s)" />
         </div>
       )}
 
@@ -140,32 +181,53 @@ export default async function ATraiterPage({ params }: PageProps) {
           <h2 className={titreCarte}>
             ✍️ Signatures en attente <span className={pastille}>{signatures.length}</span>
           </h2>
-          <ul>
+          <p className={sousTitreCarte}>
+            Une pièce reste bloquée tant qu’il manque une signature — la vôtre ou celle du client.
+          </p>
+          <ul className={listeTuiles}>
             {signatures.map((s) => {
               const label = TYPE_LABELS[s.type] ?? s.type;
               const contexte = s.session ? `${s.session.titreSession} · ${s.session.numero}` : null;
               // partielle = une partie a signé → c'est (souvent) TON contreseing
               // qui manque. en_attente = personne n'a signé → relancer.
-              const consigne =
-                s.statutSignature === "partielle"
-                  ? "une signature est posée — il manque la contrepartie"
-                  : "aucune signature — relancer le signataire";
+              const aContresigner = s.statutSignature === "partielle";
+              const consigne = aContresigner
+                ? "une signature est posée — il manque la contrepartie"
+                : "aucune signature — relancer le signataire";
               const cible = s.sessionId
                 ? `${base}/qualiopi/sessions/${s.sessionId}`
                 : s.trainerId
                   ? `${base}/qualiopi/formateurs/${s.trainerId}`
                   : `${base}/qualiopi/sessions`;
+              const jours = joursEcoules(s.updatedAt);
               return (
-                <li key={s.id} className={ligne}>
-                  <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                    <strong>
-                      {label} {s.numero}
-                    </strong>
-                    {contexte ? ` — ${contexte}` : ""}{" "}
-                    <span className="text-[color:var(--color-admin-fg-muted)]">({consigne})</span>
-                  </span>
-                  <Link href={cible} className={lien}>
-                    Ouvrir →
+                <li key={s.id}>
+                  <Link href={cible} className={tuile}>
+                    <span className="flex min-w-0 items-start gap-[var(--space-admin-4)]">
+                      <span aria-hidden="true" className="shrink-0 leading-[1.4]">
+                        {aContresigner ? "🖊️" : "⏳"}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                          <strong>
+                            {label} {s.numero}
+                          </strong>
+                          {contexte ? ` — ${contexte}` : ""}
+                        </span>
+                        <span className={`block ${meta}`}>
+                          {consigne} · {depuisMaintenant(s.updatedAt)}
+                          {/* Au-delà de deux semaines, l'attente n'est plus
+                              ordinaire : on le dit au lieu de laisser le
+                              lecteur faire le calcul. */}
+                          {jours >= 14 ? (
+                            <strong className="ml-[var(--space-admin-2)] text-[color:var(--color-admin-destructive)]">
+                              ⚠️ {jours} jours d’attente
+                            </strong>
+                          ) : null}
+                        </span>
+                      </span>
+                    </span>
+                    <span className="admin-button-ghost shrink-0">Ouvrir →</span>
                   </Link>
                 </li>
               );
@@ -180,11 +242,11 @@ export default async function ATraiterPage({ params }: PageProps) {
           <h2 className={titreCarte}>
             ✉️ E-mails à valider <span className={pastille}>{compteurs.emails}</span>
           </h2>
-          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          <p className={sousTitreCarte}>
             Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
           </p>
-          <Link href={`${base}/qualiopi/emails`} className={lien}>
-            Ouvrir la corbeille de validation →
+          <Link href={`${base}/qualiopi/emails`} className="admin-button">
+            📬 Ouvrir la corbeille de validation
           </Link>
         </div>
       )}
@@ -196,21 +258,49 @@ export default async function ATraiterPage({ params }: PageProps) {
             🚨 Alertes &amp; relances{" "}
             <span className={pastille}>{critiques.length + importantes.length}</span>
           </h2>
-          <ul>
-            {[...critiques, ...importantes].map((a) => (
-              <li key={a.id} className={ligne}>
-                <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  {a.niveau === "critique" ? "🔴" : "🟠"} <strong>{a.titre}</strong>
-                  <span className="block text-[color:var(--color-admin-fg-muted)]">
-                    {a.message}
+          <p className={sousTitreCarte}>
+            Détectées chaque matin par l’évaluateur automatique. Les critiques d’abord.
+          </p>
+          <ul className={listeTuiles}>
+            {[...critiques, ...importantes].map((a) => {
+              const critique = a.niveau === "critique";
+              return (
+                <li
+                  key={a.id}
+                  className={`${tuile} items-start border-l-4 ${
+                    critique
+                      ? "border-l-[color:var(--color-admin-destructive)]"
+                      : "border-l-[color:var(--color-admin-warning)]"
+                  }`}
+                >
+                  <span className="flex min-w-0 items-start gap-[var(--space-admin-4)]">
+                    <span aria-hidden="true" className="shrink-0 leading-[1.4]">
+                      {critique ? "🔴" : "🟠"}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+                        {a.titre}
+                      </span>
+                      {/* Certaines alertes reportent une réponse d'API brute
+                          (le message d'échec d'un job IA fait plusieurs
+                          centaines de caractères de JSON). Sans limite, une
+                          seule alerte remplissait l'écran et enterrait les
+                          autres. Le texte complet reste dans l'infobulle. */}
+                      <span
+                        title={a.message}
+                        className="mt-[var(--space-admin-2)] line-clamp-2 block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+                      >
+                        {a.message}
+                      </span>
+                    </span>
                   </span>
-                </span>
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
-          <p className="mt-[var(--space-admin-2)]">
-            <Link href={`${base}/qualiopi/alertes`} className={lien}>
-              Gérer les alertes (marquer lu / résoudre) →
+          <p className="mt-[var(--space-admin-6)]">
+            <Link href={`${base}/qualiopi/alertes`} className="admin-button-secondary">
+              🔧 Gérer les alertes (marquer lu / résoudre)
             </Link>
           </p>
         </div>
