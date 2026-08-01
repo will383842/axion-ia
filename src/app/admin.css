@@ -1028,6 +1028,23 @@
   cursor: not-allowed;
 }
 
+/* Bouton pleine largeur — formulaires verticaux étroits (connexion, 2FA).
+ *
+ * ⚠️ PIÈGE DE CASCADE : l'utilitaire Tailwind `w-full` NE PEUT PAS servir ici.
+ * Les classes `.admin-*` de ce fichier sont volontairement HORS COUCHE (choix
+ * documenté en tête de section), et une règle hors couche l'emporte sur toute
+ * règle en couche — donc sur `utilities`, où vit `w-full`. Un
+ * `className="admin-button w-full"` rend donc un bouton de largeur
+ * automatique : la classe est là, elle ne fait rien, et rien ne le signale.
+ * (Vérifié au navigateur : `getComputedStyle(...).width === "auto"`.)
+ *
+ * D'où ce modificateur, défini dans le même fichier et donc au même niveau de
+ * cascade. Un test interdit la combinaison `.admin-button` + `w-full`. */
+.admin-button-block {
+  width: 100%;
+  align-self: stretch;
+}
+
 /* État désactivé porté par un `<span>` (pas de pseudo-classe `:disabled`
    possible) — 🔴 référencée 2 fois, jamais définie. */
 .admin-button-disabled {

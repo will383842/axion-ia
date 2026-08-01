@@ -103,6 +103,39 @@ const HOOK_ONLY_CLASSES = new Set([
   "admin-field-email-hint",
 ]);
 
+/**
+ * Combinaisons `.admin-*` + utilitaire Tailwind INERTE déjà présentes dans le
+ * code au moment de la refonte UI 2026-08-01. Chacune est un défaut silencieux
+ * réel : `admin-input w-20` laisse le champ en pleine largeur,
+ * `admin-button-ghost text-red-600` laisse le bouton de suppression noir.
+ *
+ * Elles ne sont PAS corrigées ici : la vraie réparation est de faire passer
+ * les classes `.admin-*` dans `@layer components`, où les utilitaires Tailwind
+ * reprennent le dessus naturellement — changement de cascade qui touche toute
+ * la console et mérite sa propre PR (couche 2 de la refonte), avec revue
+ * visuelle. En attendant, cette liste sert de cliquet : elle ne doit que
+ * diminuer.
+ */
+const INERT_UTILITIES_BASELINE: readonly string[] = [
+  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button w-full",
+  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost text-red-600",
+  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost w-full",
+  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost w-full text-red-600",
+  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-input w-full",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input px-2 py-1",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input px-3 py-2",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input w-20 px-2 py-1",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input w-24 px-2 py-1",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-coverage/_v2/CitiesCoverageV2.tsx :: admin-input w-20",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-order/_v3/CitiesOrderV3.tsx :: admin-input px-3 py-2",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage-map/_v2/CoverageMapV2.tsx :: admin-input px-3 py-2",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage/presets/_v2/CampaignPresetsV2.tsx :: admin-button-cta text-center",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/charge/page.tsx :: admin-input w-40",
+  "src/app/[locale]/(admin)/[adminPrefix]/planning/previsionnel/page.tsx :: admin-input w-40",
+  "src/components/admin/contacts/RetryFailedReplyButton.tsx :: admin-button-ghost text-sm",
+  "src/components/admin/qualiopi/TrainerManageForm.tsx :: admin-button w-auto",
+];
+
 function walk(dir: string): string[] {
   const out: string[] = [];
   let entries: string[];
@@ -191,5 +224,52 @@ describe("système de design de la console admin", () => {
       .map(([cls, where]) => `.${cls} → ${where.length} usage(s), ex. ${where[0]}`)
       .sort();
     expect(report).toEqual([]);
+  });
+
+  // Les classes `.admin-*` de admin.css sont volontairement HORS COUCHE CSS.
+  // Une règle hors couche l'emporte sur toute règle en couche, donc sur
+  // `utilities` où vivent les classes Tailwind — quelle que soit la
+  // spécificité. Un `className="admin-button w-full"` produit donc un bouton
+  // de largeur automatique : la classe est présente, elle ne fait rien, et
+  // rien ne le signale. Le remède est un modificateur défini dans admin.css
+  // (`.admin-button-block`), au même niveau de cascade.
+  it("ne combine pas une classe `.admin-*` avec un utilitaire Tailwind qu'elle neutralise", () => {
+    // Pour chaque famille de classes, les propriétés qu'elle fixe et les
+    // préfixes d'utilitaires Tailwind qui deviendraient donc inertes.
+    const CONFLICTS: Array<{ base: RegExp; utilities: RegExp }> = [
+      // `.admin-button*` fixe largeur, marges internes, typographie, rayon, fond.
+      {
+        base: /^admin-button(-secondary|-ghost|-danger|-cta)?$/,
+        utilities: /^(w|min-w|max-w|px|py|p|text|font|rounded|bg)-/,
+      },
+      // `.admin-input` fixe largeur, hauteur, marges internes, rayon, fond, bordure.
+      {
+        base: /^admin-input$/,
+        utilities: /^(w|h|px|py|p|rounded|bg|border)-/,
+      },
+    ];
+
+    const offenders = new Set<string>();
+
+    for (const file of files) {
+      const src = readFileSync(file, "utf8");
+      for (const m of src.matchAll(/"([^"\n]*)"/g)) {
+        const words = (m[1] as string).split(/\s+/).filter(Boolean);
+        for (const rule of CONFLICTS) {
+          const base = words.find((w) => rule.base.test(w));
+          if (!base) continue;
+          const dead = words.filter((w) => rule.utilities.test(w) && !w.includes("["));
+          if (dead.length === 0) continue;
+          const rel = file.slice(ROOT.length + 1).replace(/\\/g, "/");
+          offenders.add(`${rel} :: ${base} ${dead.join(" ")}`);
+        }
+      }
+    }
+
+    // Cliquet : la liste ne doit que DIMINUER. Si ce test échoue avec une
+    // entrée en plus, c'est qu'une nouvelle combinaison inerte a été
+    // introduite — utiliser un modificateur défini dans admin.css. Si une
+    // entrée disparaît, retirer la ligne correspondante ci-dessous.
+    expect([...offenders].sort()).toEqual(INERT_UTILITIES_BASELINE);
   });
 });
