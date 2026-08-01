@@ -274,7 +274,7 @@ export default async function ATraiterPage({ params }: PageProps) {
                         </span>
                       </span>
                     </span>
-                    <span className="admin-button-ghost inline-flex shrink-0 items-center gap-[var(--space-admin-1)]">
+                    <span className="admin-button-ghost shrink-0">
                       Ouvrir
                       <ChevronRight size={15} aria-hidden="true" />
                     </span>

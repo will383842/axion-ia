@@ -216,7 +216,7 @@ export function DashboardV2({
           <form action={logoutAction}>
             <button
               type="submit"
-              className="admin-button-ghost inline-flex items-center gap-[var(--space-admin-2)]"
+              className="admin-button-ghost"
             >
               <LogOut size={15} aria-hidden="true" />
               Déconnexion
@@ -269,7 +269,7 @@ export function DashboardV2({
             </div>
             <Link
               href={`${base}/qualiopi/a-traiter`}
-              className="admin-button inline-flex shrink-0 items-center gap-[var(--space-admin-2)]"
+              className="admin-button shrink-0"
             >
               Ouvrir la liste
               <ChevronRight size={15} aria-hidden="true" />
@@ -335,7 +335,7 @@ export function DashboardV2({
           <p className="mt-[var(--space-admin-6)]">
             <Link
               href={`${base}/activity-logs`}
-              className="admin-button-ghost inline-flex items-center gap-[var(--space-admin-2)]"
+              className="admin-button-ghost"
             >
               Voir tout le journal
               <ChevronRight size={15} aria-hidden="true" />
