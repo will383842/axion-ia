@@ -90,7 +90,10 @@ export type EmailJobName =
   | "ressources-magic-link"
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
   | "devis-envoi"
-  | "facture-envoi";
+  | "facture-envoi"
+  // Convention de formation — envoi MANUEL du lien de signature au client.
+  // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
+  | "convention-envoi";
 
 export interface EmailJobData {
   template: EmailJobName;

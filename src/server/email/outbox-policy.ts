@@ -36,6 +36,7 @@
 export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   "qualiopi-relance-impayee",
   "devis-envoi",
+  "convention-envoi",
   "facture-envoi",
   "contract-sent",
   "contract-reminder",

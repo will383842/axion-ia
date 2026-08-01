@@ -62,6 +62,21 @@ export interface PieceSignaturePanelProps {
   }) => Promise<
     { ok: true; signatureId: string; statutSignature: string } | { ok: false; message: string }
   >;
+  /**
+   * Émet le lien ET l'envoie au signataire, à l'adresse de sa fiche.
+   *
+   * 🔴 Sans ce chemin, l'admin copiait l'URL brute et la collait à la main dans
+   * sa messagerie, à chaque pièce. Le lien n'est PAS retourné ici : il part par
+   * e-mail, l'écran n'a donc aucune raison de l'afficher — et une URL qu'on ne
+   * montre pas est une URL qu'on ne risque pas de coller au mauvais endroit.
+   */
+  envoyerParEmailAction: (input: {
+    documentGenereId: string;
+    partie: PartieSignataire;
+  }) => Promise<
+    | { data: { destinataire: string; garePourValidation: boolean; reemission: boolean } }
+    | { error: string }
+  >;
 }
 
 export function PieceSignaturePanel({
@@ -72,6 +87,7 @@ export function PieceSignaturePanel({
   signatures,
   emettreAction,
   contresignerAction,
+  envoyerParEmailAction,
 }: PieceSignaturePanelProps): React.ReactElement {
   const router = useRouter();
   const [enCours, startTransition] = useTransition();
@@ -79,6 +95,11 @@ export function PieceSignaturePanel({
   const [lien, setLien] = useState<{ partie: string; url: string; reemission: boolean } | null>(
     null,
   );
+  const [envoi, setEnvoi] = useState<{
+    destinataire: string;
+    garePourValidation: boolean;
+    reemission: boolean;
+  } | null>(null);
   const [contresigneOuvert, setContresigneOuvert] = useState(false);
   const [trace, setTrace] = useState<string | null>(null);
   const [modeAccessible, setModeAccessible] = useState(false);
@@ -92,6 +113,17 @@ export function PieceSignaturePanel({
       const res = await emettreAction({ documentGenereId, partie });
       if ("error" in res) setErreur(res.error);
       else setLien({ partie, url: res.data.url, reemission: res.data.reemission });
+    });
+  }
+
+  function envoyer(partie: PartieSignataire) {
+    setErreur(null);
+    setLien(null);
+    setEnvoi(null);
+    startTransition(async () => {
+      const res = await envoyerParEmailAction({ documentGenereId, partie });
+      if ("error" in res) setErreur(res.error);
+      else setEnvoi(res.data);
     });
   }
 
@@ -160,15 +192,30 @@ export function PieceSignaturePanel({
                 Signer pour l&apos;organisme
               </button>
             ) : (
-              <button
-                key={p}
-                type="button"
-                onClick={() => emettre(p)}
-                disabled={enCours}
-                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] disabled:opacity-40"
-              >
-                {`Lien de signature — ${p}`}
-              </button>
+              // Deux voies pour la même émission. « Envoyer » est le chemin
+              // normal — l'adresse vient de la fiche, le lien part sous un
+              // bouton, l'URL n'est jamais montrée. « Copier le lien » reste
+              // pour les cas où l'e-mail ne convient pas (client qui préfère
+              // WhatsApp, adresse en cours de correction, remise en main
+              // propre) : le retirer supprimerait un recours réel.
+              <span key={p} className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                <button
+                  type="button"
+                  onClick={() => envoyer(p)}
+                  disabled={enCours}
+                  className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-paper)] disabled:opacity-40"
+                >
+                  {enCours ? "Envoi…" : `Envoyer à ${p === "client" ? "le client" : p}`}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => emettre(p)}
+                  disabled={enCours}
+                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] disabled:opacity-40"
+                >
+                  Copier le lien
+                </button>
+              </span>
             ),
           )}
         {parties.every((p) => signees.has(p)) && (
@@ -195,6 +242,23 @@ export function PieceSignaturePanel({
           <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             La pièce d&apos;origine, scellée, reste inchangée.
           </span>
+        </p>
+      )}
+
+      {/* Envoi par e-mail — on confirme À QUI, jamais le lien lui-même */}
+      {envoi !== null && (
+        <p
+          role="status"
+          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+        >
+          {envoi.garePourValidation
+            ? `Préparé pour ${envoi.destinataire} — à relire et approuver dans « Emails à valider » avant départ.`
+            : `Envoyé à ${envoi.destinataire}.`}
+          {envoi.reemission && (
+            <span className="block text-[color:var(--color-admin-fg-muted)]">
+              ⚠️ Ce lien remplace le précédent, qui ne fonctionne plus.
+            </span>
+          )}
         </p>
       )}
 
