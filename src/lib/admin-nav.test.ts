@@ -73,7 +73,10 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-08-01, refonte console phase 1) : « 🔴 À traiter » — la porte
     // d'entrée de la console Qualiopi (signatures en attente, e-mails à valider,
     // relances, alertes), pôle a_traiter en tête du groupe. = 144.
-    expect(items.length).toBe(144);
+    // +1 (2026-08-01, refonte console phase 2) : « 📁 Dossiers (pipeline) » — la
+    // vue « où en est chaque affaire ? », une ligne par dossier à statut dérivé,
+    // pôle dossiers juste après À traiter. = 145.
+    expect(items.length).toBe(145);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
