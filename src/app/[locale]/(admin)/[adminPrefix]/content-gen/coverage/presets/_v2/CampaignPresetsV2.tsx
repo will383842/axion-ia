@@ -99,7 +99,7 @@ export async function CampaignPresetsV2({ adminPrefix }: Props): Promise<React.R
               )}
               <Link
                 href={`${base}/campaigns/new?preset=${p.slug}`}
-                className="admin-button-cta block text-center"
+                className="admin-button-cta"
               >
                 Utiliser ce preset
               </Link>

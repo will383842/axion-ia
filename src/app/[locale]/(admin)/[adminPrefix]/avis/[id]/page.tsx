@@ -108,7 +108,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 rows={4}
                 maxLength={3000}
                 defaultValue={r.replyBody ?? ""}
-                className="admin-input w-full"
+                className="admin-input"
                 placeholder="Merci pour votre retour…"
               />
               <button type="submit" className="admin-button">
@@ -140,7 +140,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 <p className="admin-meta-small mt-1">Type : {r.photoKind ?? "—"}</p>
                 <form action={removePhotoForm} className="mt-2">
                   <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="admin-button-ghost text-red-600">
+                  <button type="submit" className="admin-button-ghost admin-button-ghost-danger">
                     Retirer la photo
                   </button>
                 </form>
@@ -154,7 +154,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
             <form
               action={uploadPhotoForm}
               encType="multipart/form-data"
-              className="border-admin-border space-y-2 border-t pt-3"
+              className="space-y-2 border-t border-[color:var(--color-admin-border)] pt-3"
             >
               <input type="hidden" name="id" value={r.id} />
               <label htmlFor="photo" className="admin-meta-small block">
@@ -166,17 +166,17 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
                 required
-                className="admin-input w-full"
+                className="admin-input"
               />
               <select
                 name="photoKind"
                 defaultValue={r.photoKind ?? "portrait"}
-                className="admin-input w-full"
+                className="admin-input"
               >
                 <option value="portrait">Portrait</option>
                 <option value="logo">Logo d’entreprise</option>
               </select>
-              <button type="submit" className="admin-button w-full">
+              <button type="submit" className="admin-button admin-button-block">
                 {photoSrc ? "Remplacer la photo" : "Envoyer la photo"}
               </button>
             </form>
@@ -188,14 +188,14 @@ export default async function AvisDetailPage({ params }: PageProps) {
               {r.status !== "published" ? (
                 <form action={publishForm}>
                   <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="admin-button w-full">
+                  <button type="submit" className="admin-button admin-button-block">
                     ✅ Publier
                   </button>
                 </form>
               ) : (
                 <form action={hideForm}>
                   <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="admin-button-ghost w-full">
+                  <button type="submit" className="admin-button-ghost admin-button-block">
                     🙈 Masquer
                   </button>
                 </form>
@@ -204,7 +204,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
               <form action={verifyForm}>
                 <input type="hidden" name="id" value={r.id} />
                 <input type="hidden" name="verified" value={(!r.isVerified).toString()} />
-                <button type="submit" className="admin-button-ghost w-full">
+                <button type="submit" className="admin-button-ghost admin-button-block">
                   {r.isVerified ? "Retirer « Vérifié »" : "Marquer « Vérifié »"}
                 </button>
               </form>
@@ -212,7 +212,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
               <form action={featureForm}>
                 <input type="hidden" name="id" value={r.id} />
                 <input type="hidden" name="featured" value={(!r.featured).toString()} />
-                <button type="submit" className="admin-button-ghost w-full">
+                <button type="submit" className="admin-button-ghost admin-button-block">
                   {r.featured ? "Retirer « Mis en avant »" : "Mettre en avant"}
                 </button>
               </form>
@@ -221,19 +221,25 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 <input type="hidden" name="id" value={r.id} />
                 <input
                   name="notes"
-                  className="admin-input w-full"
+                  className="admin-input"
                   placeholder="Motif du rejet (optionnel)"
                   defaultValue={r.moderationNotes ?? ""}
                 />
-                <button type="submit" className="admin-button-ghost w-full">
+                <button type="submit" className="admin-button-ghost admin-button-block">
                   ⛔ Rejeter
                 </button>
               </form>
 
               {isSuperAdmin ? (
-                <form action={deleteForm} className="border-admin-border mt-2 border-t pt-2">
+                <form
+                  action={deleteForm}
+                  className="mt-2 border-t border-[color:var(--color-admin-border)] pt-2"
+                >
                   <input type="hidden" name="id" value={r.id} />
-                  <button type="submit" className="admin-button-ghost w-full text-red-600">
+                  <button
+                    type="submit"
+                    className="admin-button-ghost admin-button-block admin-button-ghost-danger"
+                  >
                     🗑 Supprimer définitivement
                   </button>
                 </form>

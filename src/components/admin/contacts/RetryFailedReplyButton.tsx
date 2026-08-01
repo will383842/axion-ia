@@ -18,7 +18,7 @@ export function RetryFailedReplyButton({ replyId }: Props): React.ReactElement {
       <button
         type="button"
         disabled={isPending || done}
-        className="admin-button-ghost text-sm"
+        className="admin-button-ghost"
         onClick={() => {
           startTransition(async () => {
             const r = await retryFailedReplyAction(replyId);

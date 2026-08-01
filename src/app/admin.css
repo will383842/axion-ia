@@ -846,6 +846,17 @@
   color: var(--color-admin-fg-disabled);
   cursor: not-allowed;
 }
+/* Largeurs de champ — remplacent les `w-20` / `w-24` / `w-40` posés sur
+   `.admin-input`, qui étaient INERTES (cf. `.admin-button-block`) : ces champs
+   destinés à un nombre court s'étalaient sur toute la largeur disponible.
+   Définis ici, donc au même niveau de cascade que `.admin-input`. */
+.admin-input-w-sm {
+  width: 6rem;
+}
+.admin-input-w-md {
+  width: 10rem;
+}
+
 /* Liste déroulante stylée — classe RÉFÉRENCÉE par 9 champs et jamais définie
    avant cette refonte (les selects concernés tombaient sur le rendu système). */
 .admin-select {
@@ -993,6 +1004,19 @@
 .admin-button-ghost:focus-visible {
   outline: none;
   box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+}
+/* Variante destructive du bouton discret — action irréversible proposée dans
+   une liste d'actions (retirer une photo, supprimer définitivement un avis).
+   Remplace les `text-red-600` qui traînaient : d'une part ce rouge Tailwind
+   brut est hors charte, d'autre part il était INERTE (cf. `.admin-button-block`
+   plus bas) — les boutons de suppression s'affichaient donc en noir. */
+.admin-button-ghost-danger {
+  color: var(--color-admin-destructive);
+  border-color: color-mix(in srgb, var(--color-admin-destructive) 35%, transparent);
+}
+.admin-button-ghost-danger:hover:not(:disabled, [aria-disabled="true"]) {
+  background-color: var(--color-admin-destructive-soft);
+  color: var(--color-admin-destructive-fg);
 }
 
 /* Destructive — 🔴 également référencée 7 fois et jamais définie. */

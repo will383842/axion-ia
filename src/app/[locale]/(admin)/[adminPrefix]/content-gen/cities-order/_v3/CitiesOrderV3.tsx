@@ -248,7 +248,7 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
             placeholder="Rechercher slug…"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2 text-[length:var(--text-admin-sm)]"
+            className="admin-input text-[length:var(--text-admin-sm)]"
             aria-label="Recherche slug ville"
           />
           <select

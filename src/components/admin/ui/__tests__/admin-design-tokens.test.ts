@@ -104,37 +104,19 @@ const HOOK_ONLY_CLASSES = new Set([
 ]);
 
 /**
- * Combinaisons `.admin-*` + utilitaire Tailwind INERTE déjà présentes dans le
- * code au moment de la refonte UI 2026-08-01. Chacune est un défaut silencieux
- * réel : `admin-input w-20` laisse le champ en pleine largeur,
- * `admin-button-ghost text-red-600` laisse le bouton de suppression noir.
+ * Combinaisons `.admin-*` + utilitaire Tailwind INERTE encore tolérées.
  *
- * Elles ne sont PAS corrigées ici : la vraie réparation est de faire passer
- * les classes `.admin-*` dans `@layer components`, où les utilitaires Tailwind
- * reprennent le dessus naturellement — changement de cascade qui touche toute
- * la console et mérite sa propre PR (couche 2 de la refonte), avec revue
- * visuelle. En attendant, cette liste sert de cliquet : elle ne doit que
- * diminuer.
+ * Il y en avait 17 au moment de la refonte UI 2026-08-01, chacune un défaut
+ * silencieux réel : `admin-input w-20` laissait le champ en pleine largeur au
+ * lieu de 6 rem, `admin-button-ghost text-red-600` laissait le bouton de
+ * suppression en noir. Toutes ont été remplacées par des modificateurs définis
+ * dans admin.css (`.admin-button-block`, `.admin-button-ghost-danger`,
+ * `.admin-input-w-sm`, `.admin-input-w-md`), au même niveau de cascade.
+ *
+ * La liste est vide et doit le rester : elle n'existe plus que pour rendre
+ * l'échec explicite si quelqu'un réintroduit le motif.
  */
-const INERT_UTILITIES_BASELINE: readonly string[] = [
-  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button w-full",
-  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost text-red-600",
-  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost w-full",
-  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-button-ghost w-full text-red-600",
-  "src/app/[locale]/(admin)/[adminPrefix]/avis/[id]/page.tsx :: admin-input w-full",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input px-2 py-1",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input px-3 py-2",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input w-20 px-2 py-1",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input w-24 px-2 py-1",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-coverage/_v2/CitiesCoverageV2.tsx :: admin-input w-20",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-order/_v3/CitiesOrderV3.tsx :: admin-input px-3 py-2",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage-map/_v2/CoverageMapV2.tsx :: admin-input px-3 py-2",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage/presets/_v2/CampaignPresetsV2.tsx :: admin-button-cta text-center",
-  "src/app/[locale]/(admin)/[adminPrefix]/planning/charge/page.tsx :: admin-input w-40",
-  "src/app/[locale]/(admin)/[adminPrefix]/planning/previsionnel/page.tsx :: admin-input w-40",
-  "src/components/admin/contacts/RetryFailedReplyButton.tsx :: admin-button-ghost text-sm",
-  "src/components/admin/qualiopi/TrainerManageForm.tsx :: admin-button w-auto",
-];
+const INERT_UTILITIES_BASELINE: readonly string[] = [];
 
 function walk(dir: string): string[] {
   const out: string[] = [];

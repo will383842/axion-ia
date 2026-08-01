@@ -147,7 +147,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
             {...(statut === props.statut && !isPending
               ? { title: "Choisissez un autre statut pour activer ce bouton" }
               : {})}
-            className="admin-button w-auto"
+            className="admin-button"
             onClick={() =>
               run(
                 () => updateTrainerAction({ id: props.trainerId, statut }),
