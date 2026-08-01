@@ -269,7 +269,7 @@ export async function CitiesCoverageV2({
               name="dept"
               defaultValue={deptCode ?? ""}
               placeholder="75, 69..."
-              className="admin-input w-20"
+              className="admin-input admin-input-w-sm"
             />
           </div>
           <div>

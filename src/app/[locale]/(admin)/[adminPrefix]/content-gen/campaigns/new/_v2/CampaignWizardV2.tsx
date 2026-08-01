@@ -80,7 +80,7 @@ function WeightEditor({
               else next[o.value] = n;
               onChange(next);
             }}
-            className="admin-input w-20 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1 text-right"
+            className="admin-input admin-input-w-sm text-right"
             aria-label={`${ariaLabel} — ${o.labelFr}`}
           />
         </label>
@@ -674,7 +674,7 @@ export function CampaignWizardV2({
                       update("customVilleSlugs", slugs);
                     }}
                     placeholder="paris, lyon, marseille, ..."
-                    className="admin-input mt-2 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                    className="admin-input mt-2"
                     aria-label="Identifiants villes sélectionnées"
                   />
                   <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
@@ -712,7 +712,7 @@ export function CampaignWizardV2({
                       onChange={(e) =>
                         update("villeSurroundingRadiusKm", parseInt(e.target.value, 10) || 50)
                       }
-                      className="admin-input w-24 rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1"
+                      className="admin-input admin-input-w-sm"
                       aria-label="Rayon en km"
                     />
                   </label>
@@ -774,7 +774,7 @@ export function CampaignWizardV2({
                     <select
                       value={state.audienceOrg}
                       onChange={(e) => update("audienceOrg", e.target.value)}
-                      className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-2 py-1"
+                      className="admin-input"
                       aria-label="Type d'organisation"
                     >
                       {WIZARD_ORG_TYPES.map((o) => (
@@ -813,7 +813,7 @@ export function CampaignWizardV2({
                 type="text"
                 value={state.name}
                 onChange={(e) => update("name", e.target.value)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                className="admin-input"
                 placeholder="ex: Campagne Audits Q3 2026"
                 aria-label="Nom de la campagne"
               />
@@ -828,7 +828,7 @@ export function CampaignWizardV2({
                 max={1000}
                 value={state.dailyArticles}
                 onChange={(e) => update("dailyArticles", parseInt(e.target.value, 10) || 1)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                className="admin-input"
                 aria-label="Contenus par jour"
               />
             </label>
@@ -840,7 +840,7 @@ export function CampaignWizardV2({
                 type="date"
                 value={state.startDate}
                 onChange={(e) => update("startDate", e.target.value)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                className="admin-input"
                 aria-label="Date de début"
               />
             </label>
@@ -852,7 +852,7 @@ export function CampaignWizardV2({
                 type="date"
                 value={state.endDate}
                 onChange={(e) => update("endDate", e.target.value)}
-                className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                className="admin-input"
                 aria-label="Date de fin"
               />
             </label>
@@ -906,7 +906,7 @@ export function CampaignWizardV2({
                   max={200}
                   value={state.targetPerCity}
                   onChange={(e) => update("targetPerCity", parseInt(e.target.value, 10) || 1)}
-                  className="admin-input rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-1)] px-3 py-2"
+                  className="admin-input"
                   aria-label="Cible de contenus par ville"
                 />
                 <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">

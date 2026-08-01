@@ -154,7 +154,7 @@ export default async function PlanningPrevisionnelPage({
             min={1}
             max={24}
             defaultValue={nbMois}
-            className="admin-input w-40"
+            className="admin-input admin-input-w-md"
             aria-label="Nombre de mois affichés"
           />
         </label>

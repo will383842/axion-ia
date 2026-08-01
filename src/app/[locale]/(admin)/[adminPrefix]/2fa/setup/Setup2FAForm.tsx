@@ -36,7 +36,10 @@ export function Setup2FAForm() {
           {state.error}
         </p>
       ) : null}
-      <button type="submit" disabled={pending} className="admin-button">
+      {/* Cf. LoginForm : `.admin-button` s'ajuste à son contenu depuis la
+          refonte UI 2026-08-01, la pleine largeur est ici voulue. Modificateur
+          maison et non `w-full`, inopérant face aux classes hors couche. */}
+      <button type="submit" disabled={pending} className="admin-button admin-button-block">
         {pending ? "Vérification..." : "Activer 2FA"}
       </button>
     </form>

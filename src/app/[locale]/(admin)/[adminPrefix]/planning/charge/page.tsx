@@ -173,7 +173,7 @@ export default async function PlanningChargePage({
             min={1}
             max={31}
             defaultValue={capacite}
-            className="admin-input w-40"
+            className="admin-input admin-input-w-md"
             aria-label="Capacité en jours ouvrables par formateur"
           />
         </label>
