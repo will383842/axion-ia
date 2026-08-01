@@ -222,6 +222,17 @@ const nextConfig: NextConfig = {
   // expose l'URL legacy au sitemap auto + au crawler.
   async redirects() {
     return [
+      // Taxonomies blog SUPPRIMÉES (tag/secteur/service/taille/auteur) — leurs
+      // routes n'existent plus, toute URL résiduelle connue de Google servait un
+      // 404 sec (vérifié en prod le 2026-08-01, audit indexation GSC). 301 de
+      // consolidation vers le hub /blog : convertit le budget de crawl gaspillé
+      // en signal permanent. `:rest*` couvre aussi les hubs nus (/blog/tag).
+      // La taxonomie VIVANTE (/blog/categorie) n'est PAS dans le motif.
+      {
+        source: "/:locale(fr|en)/blog/:taxo(tag|secteur|service|taille|auteur)/:rest*",
+        destination: "/:locale/blog",
+        permanent: true,
+      },
       // Pagination blog déplacée de `?page=N` vers `/blog/page/N` (audit
       // indexation GSC 2026-07-31, P1 « BYPASS /fr/blog ») : `searchParams`
       // rendait le hub dynamique → non cacheable CDN. 301 des anciennes URLs
