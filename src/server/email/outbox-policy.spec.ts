@@ -124,6 +124,9 @@ describe("Cohérence avec les noms de jobs réels", () => {
     "qualiopi-relance-impayee",
     "devis-envoi",
     "facture-envoi",
+    // Lien de signature d'une convention adressé au client (2026-08-01) :
+    // pièce contractuelle → même traitement que devis et contrat.
+    "convention-envoi",
     "contract-sent",
     "contract-reminder",
   ];

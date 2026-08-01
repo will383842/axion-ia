@@ -54,7 +54,10 @@ import {
   type SignatureApposeeVue,
 } from "@/components/admin/qualiopi/PieceSignaturePanel";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { emettreLienSignatureAction } from "@/server/actions/qualiopi/piece-lien-signature";
+import {
+  envoyerLienSignatureParEmailAction,
+  emettreLienSignatureAction,
+} from "@/server/actions/qualiopi/piece-lien-signature";
 import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -699,6 +702,7 @@ export default async function SessionHubPage({ params }: PageProps) {
                   signatures={signaturesParPiece.get(d.id) ?? []}
                   emettreAction={emettreLienSignatureAction}
                   contresignerAction={contresignerPieceAction}
+                  envoyerParEmailAction={envoyerLienSignatureParEmailAction}
                 />
               );
             })}

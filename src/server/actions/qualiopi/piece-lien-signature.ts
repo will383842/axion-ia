@@ -54,6 +54,7 @@ import {
   revoquerTokensDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import { enqueueEmail } from "@/server/queue/queues";
 import { requireAdminWrite, logQualiopiActivity } from "./_guards";
 
 type Resultat<T> = { data: T } | { error: string };
@@ -407,4 +408,124 @@ export async function revoquerLiensSignatureAction(input: {
   });
 
   return { data: { revoques } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Envoi du lien de signature PAR E-MAIL
+// ─────────────────────────────────────────────────────────────────────────────
+
+const envoiSchema = entreeSchema.extend({
+  /** Mot libre de l'admin, inséré tel quel avant le corps standard. */
+  messagePersonnalise: z.string().trim().max(2000).optional(),
+});
+
+/**
+ * Émet le lien de signature ET l'envoie au signataire par e-mail.
+ *
+ * 🔴 Pourquoi cette action existe (2026-08-01). Le devis avait son envoi
+ * (`devis-envoi`, lien de signature en CTA) et la facture le sien — la
+ * CONVENTION, non. L'admin devait donc, à CHAQUE convention, cliquer « Lien de
+ * signature », copier une URL de 400 caractères et la coller à la main dans sa
+ * messagerie. Outre le geste répété (ingérable au-delà de quelques sessions),
+ * le client recevait une URL nue : illisible, et indistinguable d'un lien
+ * d'hameçonnage. Ici l'adresse vient de la FICHE, le lien est porté par un
+ * bouton, et l'URL n'est jamais montrée.
+ *
+ * ⚠️ Réutilise `emettreLienSignatureAction` plutôt que de recopier ses gardes
+ * (rôle, SPÉCIMEN, empreinte manquante, partie hors circuit, partie déjà
+ * signataire). Dupliquer des contrôles de sécurité, c'est garantir qu'ils
+ * divergeront. Conséquence assumée : comme toute émission, celle-ci RÉVOQUE le
+ * lien précédent — l'écran le dit.
+ *
+ * ⚠️ Si l'enfilement échoue APRÈS création du jeton, on le dit franchement : le
+ * lien existe mais n'est pas parti. Réessayer en émettra un nouveau (et
+ * invalidera celui-ci), ce qui est sans conséquence puisque personne ne l'a reçu.
+ */
+export async function envoyerLienSignatureParEmailAction(
+  input: z.input<typeof envoiSchema>,
+): Promise<Resultat<{ destinataire: string; garePourValidation: boolean; reemission: boolean }>> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    return { error: "Indisponible pendant le build" };
+  }
+  const parsed = envoiSchema.safeParse(input);
+  if (!parsed.success) return { error: "Entrée invalide." };
+  const { documentGenereId, partie, messagePersonnalise } = parsed.data;
+
+  // Contexte de la pièce AVANT émission : si l'adresse manque, autant refuser
+  // sans avoir révoqué le lien précédent pour rien.
+  const piece = await prisma.documentGenere.findUnique({
+    where: { id: documentGenereId },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      clientId: true,
+      traineeId: true,
+      sousTraitantId: true,
+      sessionId: true,
+      session: { select: { titreSession: true } },
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  if (piece === null) return { error: "Pièce introuvable." };
+
+  const resolution = await resoudreIdentite(partie, piece);
+  if (!resolution.ok) return { error: resolution.motif };
+
+  const emis = await emettreLienSignatureAction({ documentGenereId, partie });
+  if ("error" in emis) return emis;
+
+  const session = await requireAdminWrite();
+  let garePourValidation = false;
+  try {
+    const res = await enqueueEmail(
+      "convention-envoi",
+      resolution.identite.email,
+      "fr",
+      {
+        signataireNom: resolution.identite.nom,
+        clientNom: piece.client?.raisonSociale ?? "",
+        numero: piece.numero,
+        titreFormation: piece.session?.titreSession ?? "",
+        signatureUrl: emis.data.url,
+        ...(messagePersonnalise ? { messagePersonnalise } : {}),
+      },
+      {
+        sujet: `Convention à signer — ${piece.numero}`,
+        entityType: "DocumentGenere",
+        entityId: documentGenereId,
+        ...(piece.clientId ? { clientId: piece.clientId } : {}),
+      },
+    );
+    garePourValidation = res.garePourValidation === true;
+  } catch (err) {
+    Sentry.captureException(err, { tags: { action: "envoyerLienSignatureParEmailAction" } });
+    return {
+      error:
+        "Le lien a bien été émis, mais l'e-mail n'a pas pu être mis en file. Réessayez : un nouveau lien sera émis (celui-ci n'a été reçu par personne).",
+    };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.piece.lien_signature.envoye",
+    targetType: "DocumentGenere",
+    targetId: documentGenereId,
+    // 🔴 Le LIEN n'est JAMAIS journalisé : il vaut signature. Seul le
+    // destinataire l'est, pour prouver À QUI la pièce a été adressée.
+    changes: {
+      numero: piece.numero,
+      partie,
+      destinataire: resolution.identite.email,
+      garePourValidation,
+    },
+    session,
+  });
+
+  return {
+    data: {
+      destinataire: resolution.identite.email,
+      garePourValidation,
+      reemission: emis.data.reemission,
+    },
+  };
 }
