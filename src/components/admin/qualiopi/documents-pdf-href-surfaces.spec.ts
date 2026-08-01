@@ -89,14 +89,11 @@ const HREF_PDFURL_LEGITIMES: ReadonlyArray<{ file: string; why: string }> = [
   },
   {
     file: "app/[locale]/portail/mon-espace/page.tsx",
-    // 🔴 DÉFAUT OUVERT, pas une exception légitime. Ce sont bien des
-    // DocumentGenere, et leurs liens expirent donc au bout de 900 s comme les
-    // autres : un stagiaire qui revient chercher son attestation deux jours
-    // après reçoit ExpiredRequest. Non corrigé ici parce que la route
-    // `/api/qualiopi/documents/[id]` exige une session admin — le portail a
-    // besoin d'une route équivalente portée par le jeton du stagiaire, ce qui
-    // est une décision d'exposition, pas un changement de lien.
-    why: "DÉFAUT CONNU — DocumentGenere servi au stagiaire ; attend une route de téléchargement portée par jeton (pas d'auth admin dans le portail)",
+    // ⚠️ Classé « défaut connu » lors du premier jet de ce test, sur la seule
+    // foi du JSX. C'était faux : `getEspaceStagiaire()` re-signe 24 h à chaque
+    // lecture avant de passer la valeur. Le nom d'une variable ne dit pas d'où
+    // vient son contenu — remonter à la source avant de conclure.
+    why: "reçoit une URL re-signée 24 h à chaque lecture par getEspaceStagiaire() — jamais la valeur stockée",
   },
 ];
 
