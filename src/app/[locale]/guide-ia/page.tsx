@@ -226,13 +226,20 @@ export default async function AiGuidePage({ params }: Props) {
         title={isFr ? "Lectures complémentaires" : "Further reading"}
       >
         <Container className="max-w-3xl">
+          {/* 🔴 Ces liens portaient `hover:underline` seul : rien ne les distinguait
+              du texte environnant tant qu'on ne les survolait pas — et au survol,
+              c'est déjà qu'on les a trouvés. Or la couleur ne suffit pas : mesuré
+              1,27:1 entre le bleu primary et le brun du texte, pour un minimum de 3:1
+              (WCAG 1.4.1, règle axe `link-in-text-block`). Un daltonien deutan ne
+              voyait aucune différence, et le survol n'existe pas au doigt.
+              Soulignement permanent : la distinction ne repose plus sur la couleur. */}
           <ul className="text-fg-soft space-y-3 text-base leading-relaxed">
             <li>
               <a
                 href="https://artificialintelligenceact.eu/"
                 target="_blank"
                 rel="noopener noreferrer external"
-                className="text-primary hover:underline"
+                className="text-primary underline underline-offset-2"
               >
                 EU AI Act — Texte officiel
               </a>
@@ -246,7 +253,7 @@ export default async function AiGuidePage({ params }: Props) {
                 href="https://www.insee.fr/fr/statistiques/8244185"
                 target="_blank"
                 rel="noopener noreferrer external"
-                className="text-primary hover:underline"
+                className="text-primary underline underline-offset-2"
               >
                 INSEE — Tissu entrepreneurial français
               </a>
@@ -260,7 +267,7 @@ export default async function AiGuidePage({ params }: Props) {
                 href="https://www.economie.gouv.fr/intelligence-artificielle"
                 target="_blank"
                 rel="noopener noreferrer external"
-                className="text-primary hover:underline"
+                className="text-primary underline underline-offset-2"
               >
                 Ministère de l&apos;Économie — Plan France IA
               </a>
@@ -274,7 +281,7 @@ export default async function AiGuidePage({ params }: Props) {
                 href="https://docs.anthropic.com/"
                 target="_blank"
                 rel="noopener noreferrer external"
-                className="text-primary hover:underline"
+                className="text-primary underline underline-offset-2"
               >
                 Anthropic — Documentation Claude
               </a>
