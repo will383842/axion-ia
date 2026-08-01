@@ -1,19 +1,16 @@
-// Refonte admin mai 2026 — PR 6 — Wrapper Dashboard V2 (fetch + render).
+// Wrapper du tableau de bord de pilotage (fetch + render).
 //
-// Nettoyage 2026-07-09 (audit vestiges booking) :
-//   Ce wrapper lançait 17 requêtes en parallèle à chaque ouverture de l'accueil
-//   admin, dont 13 sur les tables de l'ancien flux de réservation payante
-//   (bookingOption ×2, booking ×5, payment ×3, invoice ×1). Ce flux est éteint
-//   (Calendly a remplacé le créneau public, Stripe est neutralisé) : ces
-//   requêtes renvoyaient invariablement 0 / [] et alimentaient des blocs vides.
-//   Restent les 4 requêtes réellement utiles. Les helpers de dates et
-//   `fmtEur` / `customerName` / `interventionTypeLabel`, devenus sans usage,
-//   ont été retirés avec elles.
+// Refonte console phase 3 (audit UX 2026-08-01) : l'accueil admin devient un
+// tableau de bord de PILOTAGE. Toute l'assemblée de données vit dans
+// `getPilotageDashboard` (stub-safe ADR 0026, requêtes en Promise.all) ; ce
+// wrapper n'ajoute que le journal d'activité récent et l'action de déconnexion.
 
 import { signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getPilotageDashboard, type PeriodePilotage } from "@/server/admin/pilotage-dashboard";
 import { DashboardV2 } from "./DashboardV2";
+import { libelleAction } from "./pilotage/format";
 
 function fmtDate(d: Date | null | undefined): string {
   if (!d) return "—";
@@ -40,6 +37,7 @@ interface DashboardV2WrapperProps {
   adminPrefix: string;
   email: string | null;
   role: string;
+  periode: PeriodePilotage;
 }
 
 async function logoutAction(): Promise<void> {
@@ -49,16 +47,18 @@ async function logoutAction(): Promise<void> {
   redirect(`/fr/${prefix}/login`);
 }
 
-export async function DashboardV2Wrapper({
-  adminPrefix,
-  email,
-  role,
-}: DashboardV2WrapperProps): Promise<React.ReactElement> {
-  const [totalSubmissions, totalArticles, totalSubscribers, activityRows] = await Promise.all([
-    prisma.submission.count(),
-    prisma.article.count({ where: { status: "published" } }),
-    prisma.newsletterSubscriber.count({ where: { status: "confirmed" } }),
-    prisma.activityLog.findMany({
+/** Journal d'activité récent — stub-safe (build sans DB → liste vide). */
+async function lireActiviteRecente(): Promise<
+  {
+    id: string;
+    action: string;
+    targetType: string | null;
+    createdAt: Date;
+    adminEmail: string | null;
+  }[]
+> {
+  try {
+    const rows = await prisma.activityLog.findMany({
       orderBy: { createdAt: "desc" },
       take: 8,
       select: {
@@ -68,7 +68,28 @@ export async function DashboardV2Wrapper({
         createdAt: true,
         adminUser: { select: { email: true } },
       },
-    }),
+    });
+    return rows.map((a) => ({
+      id: a.id,
+      action: a.action,
+      targetType: a.targetType,
+      createdAt: a.createdAt,
+      adminEmail: a.adminUser?.email ?? null,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function DashboardV2Wrapper({
+  adminPrefix,
+  email,
+  role,
+  periode,
+}: DashboardV2WrapperProps): Promise<React.ReactElement> {
+  const [dashboard, activityRows] = await Promise.all([
+    getPilotageDashboard(periode, adminPrefix),
+    lireActiviteRecente(),
   ]);
 
   return (
@@ -77,15 +98,11 @@ export async function DashboardV2Wrapper({
       email={email}
       role={role}
       logoutAction={logoutAction}
-      kpis={{
-        totalSubmissions,
-        totalArticles,
-        totalSubscribers,
-      }}
+      dashboard={dashboard}
       activityRows={activityRows.map((a) => ({
         id: a.id,
-        primary: a.action,
-        secondary: `${a.targetType ? `· ${a.targetType} ` : ""}· ${a.adminUser?.email ?? "system"} · ${fmtRelative(a.createdAt)}`,
+        primary: libelleAction(a.action),
+        secondary: `${a.targetType ? `· ${a.targetType} ` : ""}· ${a.adminEmail ?? "system"} · ${fmtRelative(a.createdAt)}`,
       }))}
     />
   );
