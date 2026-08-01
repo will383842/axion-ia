@@ -560,7 +560,7 @@ export function AdminSidebarNav({
           "lg:hidden",
         )}
       >
-        {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+        {mobileOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
       </button>
 
       {/* Overlay mobile (backdrop) */}
@@ -644,7 +644,7 @@ export function AdminSidebarNav({
                 "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
               )}
             >
-              <PanelLeftClose size={16} />
+              <PanelLeftClose size={16} aria-hidden="true" />
             </button>
           ) : null}
         </div>
@@ -694,7 +694,7 @@ export function AdminSidebarNav({
                 "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
               )}
             >
-              <PanelLeft size={16} />
+              <PanelLeft size={16} aria-hidden="true" />
             </button>
           )}
         </div>
@@ -970,7 +970,7 @@ export function AdminSidebarNav({
                       "min-h-[var(--target-admin-min-desktop)] min-w-[var(--target-admin-min-desktop)]",
                     )}
                   >
-                    <LogOut size={16} />
+                    <LogOut size={16} aria-hidden="true" />
                   </button>
                 </form>
               ) : null}
