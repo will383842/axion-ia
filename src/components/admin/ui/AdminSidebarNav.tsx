@@ -23,40 +23,11 @@ import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  LayoutDashboard,
-  CalendarDays,
-  ClipboardList,
-  FileText,
-  Receipt,
-  Wallet,
-  CalendarClock,
-  Hourglass,
   Inbox,
-  PhoneCall,
-  UserPlus,
-  Mic,
-  BookOpenText,
-  PenLine,
-  Tag,
-  Trophy,
-  HelpCircle,
-  LifeBuoy,
   Images,
   FolderOpen,
-  Upload,
-  PackagePlus,
   ScanSearch,
-  BarChart3,
-  Tags,
-  Shield,
-  Settings,
-  Mail,
   Activity,
-  Wrench,
-  AlertTriangle,
-  Users,
-  ScrollText,
-  KeyRound,
   ChevronRight,
   Menu,
   X,
@@ -71,112 +42,6 @@ import {
   Megaphone,
   Gauge,
   Cog,
-  // Refonte UI 2026-08-01 (couche 4) — 99 libellés de navigation sur 136 n'avaient
-  // AUCUNE icône dédiée et retombaient tous sur `FolderOpen` : « Sessions »,
-  // « Stagiaires », « Audits IA », « Clients (CRM) », « Devis »… étaient
-  // visuellement IDENTIQUES, soit 100 des 145 entrées de la barre latérale.
-  // Une icône qui ne distingue rien ne sert à rien.
-  //
-  // Le repli emoji porté par la SSOT est volontairement écarté : `admin-nav.ts`
-  // le documente lui-même comme l'anti-pattern #2 de l'audit A1, à remplacer par
-  // des composants lucide typés. C'est ce que fait ce mapping.
-  //
-  // `Link` et `Image` sont aliasés : le premier entre en collision avec l'import
-  // `next/link` du fichier, le second avec le constructeur DOM global.
-  CalendarRange,
-  Waypoints,
-  UsersRound,
-  TrendingUp,
-  ChartLine,
-  Contact,
-  Share2,
-  PiggyBank,
-  UserSearch,
-  CirclePlus,
-  LayoutTemplate,
-  FilePlusCorner,
-  Rss,
-  Rocket,
-  Loader,
-  Telescope,
-  CheckCheck,
-  FileCheck,
-  Columns3,
-  Image as ImageIcon,
-  Quote,
-  MapPin,
-  MapPinned,
-  ListOrdered,
-  Scale,
-  Microscope,
-  Globe,
-  Grid3x3,
-  BadgeCheck,
-  CircleDollarSign,
-  CopyCheck,
-  WavesHorizontal,
-  Network,
-  ExternalLink,
-  Library,
-  SlidersHorizontal,
-  Radio,
-  Terminal,
-  MoveUpRight,
-  GitFork,
-  CircleUser,
-  Star,
-  Briefcase,
-  ListChecks,
-  FolderKanban,
-  Cpu,
-  ShieldCheck,
-  CalendarCheck,
-  Presentation,
-  KeySquare,
-  Banknote,
-  ChartPie,
-  SearchCheck,
-  UserCheck,
-  Package,
-  History,
-  Building2,
-  ReceiptText,
-  FilePlus,
-  RefreshCw,
-  BellRing,
-  Table2,
-  ClipboardCheck,
-  FileChartColumn,
-  Compass,
-  Smile,
-  Frown,
-  Eye,
-  Radar,
-  Handshake,
-  Truck,
-  MonitorPlay,
-  Siren,
-  NotebookPen,
-  FileLock,
-  Bell,
-  MailCheck,
-  Target,
-  FileSearch,
-  Blocks,
-  AppWindow,
-  Boxes,
-  BookUser,
-  FolderUp,
-  UserRound,
-  Send,
-  FolderArchive,
-  Tv,
-  PhoneForwarded,
-  MessagesSquare,
-  FileCode,
-  Link as LinkIcon,
-  DatabaseBackup,
-  QrCode,
   type LucideIcon,
 } from "lucide-react";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
@@ -188,179 +53,13 @@ import {
   findActiveNavHref,
 } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
+// Registre partagé barre latérale ↔ hubs — cf. admin-nav-icons.ts.
+import { adminNavIcon, ADMIN_NAV_FALLBACK_ICON } from "./admin-nav-icons";
 
 // Toutes les clés de pôles, tous groupes confondus (content_gen + qualiopi).
 // Les clés sont disjointes entre groupes → un seul Set<string> pilote l'état
 // plié/déplié sans collision. Sert à initialiser « tous les pôles fermés ».
 const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).flat();
-
-// Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
-const ICON_MAP: Record<string, LucideIcon> = {
-  "Tableau de bord": LayoutDashboard,
-  // Boîte de réception (refonte 2026-07-29) — les anciens libellés « Contacts »
-  // n'avaient aucune entrée ici et retombaient tous sur l'icône dossier
-  // générique : cinq lignes visuellement identiques. Un canal = une icône.
-  Tout: Inbox,
-  "Appels réservés": PhoneCall,
-  Messages: Mail,
-  Candidatures: UserPlus,
-  "Demandes de podcast": Mic,
-  Calendrier: CalendarDays,
-  Réservations: ClipboardList,
-  Devis: FileText,
-  Factures: Receipt,
-  Paiements: Wallet,
-  Échéanciers: CalendarClock,
-  "Options 48h": Hourglass,
-  Connaissances: BookOpenText,
-  Blog: PenLine,
-  Catégories: Tag,
-  "Cas concrets": Trophy,
-  FAQ: HelpCircle,
-  "Centre d'aide": LifeBuoy,
-  "Vue d'ensemble": Images,
-  Bibliothèque: FolderOpen,
-  Téléverser: Upload,
-  "Import CSV en masse": PackagePlus,
-  "File de qualité": ScanSearch,
-  Statistiques: BarChart3,
-  Étiquettes: Tags,
-  "Journaux d'utilisation (RGPD)": Shield,
-  Réglages: Settings,
-  Newsletter: Mail,
-  "Statistiques & SEO": BarChart3,
-  "Web Vitals": Activity,
-  "Infra & outils": Wrench,
-  "Alertes ops": AlertTriangle,
-  Utilisateurs: Users,
-  "Journaux d'activité": ScrollText,
-  Paramètres: Settings,
-  "2FA — sécurité": KeyRound,
-
-  // ——— Couche 4, 2026-08-01 : les 99 libellés qui retombaient sur FolderOpen ———
-  // Rangés dans l'ordre des groupes de `admin-nav.ts` pour que l'ajout d'une
-  // entrée de navigation se pose ici au même endroit que dans la SSOT.
-
-  // Pilotage (groupe `main`)
-  "Hub de pilotage": Gauge,
-  Planning: CalendarRange,
-  "Timeline ressources": Waypoints,
-  "Charge formateurs": UsersRound,
-  "Pipeline commercial": TrendingUp,
-  Prévisionnel: ChartLine,
-
-  // Boîte de réception (groupe `contacts`) — un destinataire = une icône, même
-  // logique que les canaux d'entrée traités plus haut.
-  "Messages · Clients": Contact,
-  "Messages · Presse": Newspaper,
-  "Messages · Partenariats": Share2,
-  "Messages · Investisseurs": PiggyBank,
-  "Messages · Recrutement": UserSearch,
-
-  // Génération de contenus (groupe `content_gen`)
-  "Nouvelle campagne": CirclePlus,
-  "Campagnes pré-réglées": LayoutTemplate,
-  "Générer une seule page": FilePlusCorner,
-  "Actualités (news RSS)": Rss,
-  "Premiers pas": Rocket,
-  Campagnes: Megaphone,
-  "Générations en cours": Loader,
-  "Observatoire IA 2026": Telescope,
-  "À valider": CheckCheck,
-  "Contenus publiés": FileCheck,
-  "Suivi des publications (kanban)": Columns3,
-  "Photos hero Unsplash": ImageIcon,
-  "Backfill citations (Sources)": Quote,
-  "Couverture des villes": MapPin,
-  "Carte de couverture": MapPinned,
-  "Ordre de génération des villes": ListOrdered,
-  "Équité entre villes": Scale,
-  "Qualité des données (pilote)": Microscope,
-  "Cockpit géo": Globe,
-  "Tableau croisé ville × secteur": Grid3x3,
-  "Qualité du contenu": BadgeCheck,
-  Coûts: CircleDollarSign,
-  "Détection de doublons": CopyCheck,
-  "Dérive du ton éditorial": WavesHorizontal,
-  "Suivi des vecteurs de similarité": Network,
-  "Liens externes": ExternalLink,
-  "Base de connaissances (consultation)": Library,
-  "Réglages génération": SlidersHorizontal,
-  "Sources RSS (actualités)": Radio,
-  "Instructions IA (prompts)": Terminal,
-  "Suivi des positions": MoveUpRight,
-  "Variantes de landing": GitFork,
-  "Profil de l'auteur (Manon)": CircleUser,
-
-  // Contenus éditoriaux (groupe `content`)
-  "Avis clients": Star,
-  "Offres d'emploi": Briefcase,
-
-  // Qualiopi / formation (groupe `qualiopi`)
-  "À traiter": ListChecks,
-  "Dossiers (pipeline)": FolderKanban,
-  Formations: GraduationCap,
-  "Formation Engine": Cpu,
-  "Validations IA": ShieldCheck,
-  Sessions: CalendarCheck,
-  Formateurs: Presentation,
-  "Accès & connexions formateurs": KeySquare,
-  "Rémunération formateurs": Banknote,
-  "Cockpit financier": ChartPie,
-  "Audits IA": SearchCheck,
-  Stagiaires: UserCheck,
-  Offres: Package,
-  "Entrées récentes": History,
-  "Clients (CRM)": Building2,
-  "Facturation (Hub)": ReceiptText,
-  "Facture directe": FilePlus,
-  "Plans récurrents": RefreshCw,
-  "Alertes financement (sessions)": BellRing,
-  "Barèmes OPCO": Table2,
-  Conformité: ClipboardCheck,
-  "Indicateurs / BPF": FileChartColumn,
-  Pilotage: Compass,
-  Appréciations: Smile,
-  Réclamations: Frown,
-  "Mode auditeur": Eye,
-  Veille: Radar,
-  Partenariats: Handshake,
-  "Sous-traitants": Truck,
-  "Moyens pédagogiques": MonitorPlay,
-  Incidents: Siren,
-  "Revue de direction": NotebookPen,
-  Configuration: Cog,
-  "Demandes RGPD": FileLock,
-  Alertes: Bell,
-  "Emails à valider": MailCheck,
-
-  // Documents & interventions (groupe `documents-interventions`)
-  "1-to-1": Target,
-  Audit: FileSearch,
-  Implémentations: Blocks,
-  "Sites web": AppWindow,
-  Autres: Boxes,
-  "Annuaire équipe": BookUser,
-  "Importer un kit": FolderUp,
-
-  // Coaching (groupe `coaching-1to1`)
-  "Séances 1-to-1": UserRound,
-
-  // Presse (groupe `presse`)
-  Communiqués: Send,
-  "Kit média": FolderArchive,
-  "Couverture médias": Tv,
-
-  // Chatbot (groupe `chatbot`)
-  Escalades: PhoneForwarded,
-  Conversations: MessagesSquare,
-  "Prompt versionné": FileCode,
-
-  // Exploitation (groupe `ops`)
-  "Toutes les URLs": LinkIcon,
-  "Sauvegardes & DR": DatabaseBackup,
-  "QR codes & liens": QrCode,
-};
 
 // Icône d'« onglet principal » par groupe (niveau 1 de la hiérarchie).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
@@ -748,7 +447,7 @@ export function AdminSidebarNav({
   // Rendu d'un onglet (niveaux 2 & 3) — factorisé pour servir au rendu à plat
   // (groupes standard) ET sous les pôles content_gen.
   const renderItem = (item: AdminNavItem): React.ReactElement => {
-    const Icon = ICON_MAP[item.label] ?? FolderOpen;
+    const Icon = adminNavIcon(item.label);
     const active = item.href === activeHref;
     const badge = badgeFor(item.href);
     const level = collapsed ? 0 : itemLevel(item.href);
@@ -1041,7 +740,7 @@ export function AdminSidebarNav({
             const poleOrder = GROUP_POLE_ORDER[g];
             const poleLabels = GROUP_POLE_LABELS[g];
             const renderAsPoles = poleOrder != null && !collapsed && !searchActive;
-            const GroupIcon = GROUP_ICON_MAP[g] ?? FolderOpen;
+            const GroupIcon = GROUP_ICON_MAP[g] ?? ADMIN_NAV_FALLBACK_ICON;
             // Accordéon : fermé par défaut. N'agit qu'en mode étendu et hors
             // recherche. Le groupe actif est auto-ouvert par effet (cf. plus
             // haut) mais reste librement repliable — d'où PAS d'override ici.

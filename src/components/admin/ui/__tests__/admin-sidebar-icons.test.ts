@@ -1,15 +1,16 @@
-// Garde-fou des icônes de la barre latérale — refonte UI 2026-08-01 (couche 4).
+// Garde-fou des icônes de navigation de la console — refonte UI 2026-08-01
+// (couche 4).
 //
 // POURQUOI CE TEST EXISTE
 // -----------------------
-// `ICON_MAP` (AdminSidebarNav) est indexé par le LIBELLÉ de l'entrée de
-// navigation, pas par sa route. Un libellé qui change dans la SSOT
+// `ADMIN_NAV_ICONS` (`admin-nav-icons.ts`) est indexé par le LIBELLÉ de l'entrée
+// de navigation, pas par sa route. Un libellé qui change dans la SSOT
 // (`src/lib/admin-nav.ts`) ne casse donc rien bruyamment : l'entrée retombe
 // sur `FolderOpen`, l'icône dossier générique, et personne ne le voit passer
 // en revue de diff.
 //
 // C'est exactement ainsi que la barre latérale s'est dégradée : au 2026-08-01,
-// `ICON_MAP` couvrait 41 libellés pour 136, soit **100 des 145 entrées rendues
+// `ADMIN_NAV_ICONS` couvrait 41 libellés pour 136, soit **100 des 145 entrées rendues
 // avec la même icône**. « Sessions », « Stagiaires », « Audits IA »,
 // « Clients (CRM) » et « Devis » étaient visuellement identiques — une icône
 // qui ne distingue rien ne sert à rien. L'audit a aussi trouvé 4 clés MORTES
@@ -22,15 +23,16 @@
 // QUE FAIRE SI CE TEST ÉCHOUE
 // ---------------------------
 // - « libellé sans icône » → vous avez ajouté ou renommé une entrée de
-//   navigation : ajoutez sa ligne dans `ICON_MAP`, dans le bloc de son groupe.
+//   navigation : ajoutez sa ligne dans `ADMIN_NAV_ICONS`, dans le bloc de son groupe.
 //   Choisissez une icône qui la distingue de ses voisines, jamais un doublon
 //   d'une entrée du même groupe.
 // - « clé morte » → vous avez renommé/supprimé une entrée : mettez à jour ou
-//   retirez la ligne correspondante de `ICON_MAP`.
+//   retirez la ligne correspondante de `ADMIN_NAV_ICONS`.
 //
-// Le test lit le SOURCE du composant plutôt que de l'importer : `AdminSidebarNav`
-// est un composant `"use client"` qui dépend de `next/navigation`, et `ICON_MAP`
-// n'est pas exporté. Même approche que le garde-fou des jetons de design voisin.
+// Le test lit le SOURCE du registre plutôt que d'importer l'objet : c'est le
+// seul moyen de voir une clé DÉCLARÉE DEUX FOIS, qu'un `Record` littéral écrase
+// silencieusement à l'évaluation. Même approche que le garde-fou des jetons de
+// design voisin.
 
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
@@ -38,15 +40,15 @@ import { join, resolve } from "node:path";
 import { buildAdminNav } from "@/lib/admin-nav";
 
 const ROOT = resolve(__dirname, "../../../../..");
-const SIDEBAR = join(ROOT, "src/components/admin/ui/AdminSidebarNav.tsx");
+const REGISTRY = join(ROOT, "src/components/admin/ui/admin-nav-icons.ts");
 
-/** Clés de `ICON_MAP` telles qu'écrites dans le source du composant. */
+/** Clés de `ADMIN_NAV_ICONS` telles qu'écrites dans le source du composant. */
 function readIconMapKeys(): string[] {
-  const source = readFileSync(SIDEBAR, "utf8");
-  const block = source.match(/const ICON_MAP[\s\S]*?\n};/);
+  const source = readFileSync(REGISTRY, "utf8");
+  const block = source.match(/const ADMIN_NAV_ICONS[\s\S]*?\n};/);
   if (!block) {
     throw new Error(
-      "ICON_MAP introuvable dans AdminSidebarNav.tsx — la déclaration a été " +
+      "ADMIN_NAV_ICONS introuvable dans admin-nav-icons.ts — la déclaration a été " +
         "renommée ou reformatée : mettez à jour ce garde-fou.",
     );
   }
@@ -58,11 +60,11 @@ function readIconMapKeys(): string[] {
   });
 }
 
-/** Association libellé → nom du composant lucide, telle qu'écrite dans `ICON_MAP`. */
+/** Association libellé → nom du composant lucide, telle qu'écrite dans `ADMIN_NAV_ICONS`. */
 function readIconMapPairs(): Map<string, string> {
-  const source = readFileSync(SIDEBAR, "utf8");
-  const block = source.match(/const ICON_MAP[\s\S]*?\n};/);
-  if (!block) throw new Error("ICON_MAP introuvable dans AdminSidebarNav.tsx");
+  const source = readFileSync(REGISTRY, "utf8");
+  const block = source.match(/const ADMIN_NAV_ICONS[\s\S]*?\n};/);
+  if (!block) throw new Error("ADMIN_NAV_ICONS introuvable dans admin-nav-icons.ts");
 
   const pairs = new Map<string, string>();
   const rows = block[0].matchAll(/^ {2}(?:"([^"]+)"|([\p{L}\p{N}_-]+)):\s*([A-Z][A-Za-z0-9]*)/gmu);
@@ -86,18 +88,18 @@ describe("icônes de la barre latérale de la console", () => {
 
     expect(
       uncovered,
-      `${uncovered.length} libellé(s) de navigation n'ont aucune icône dans ICON_MAP ` +
+      `${uncovered.length} libellé(s) de navigation n'ont aucune icône dans ADMIN_NAV_ICONS ` +
         `et retomberaient sur l'icône dossier générique :\n  - ${uncovered.join("\n  - ")}`,
     ).toEqual([]);
   });
 
-  it("ne conserve aucune clé morte dans ICON_MAP", () => {
+  it("ne conserve aucune clé morte dans ADMIN_NAV_ICONS", () => {
     const labels = new Set(readNavLabels());
     const dead = readIconMapKeys().filter((key) => !labels.has(key));
 
     expect(
       dead,
-      `${dead.length} clé(s) de ICON_MAP ne correspondent à aucune entrée de navigation ` +
+      `${dead.length} clé(s) de ADMIN_NAV_ICONS ne correspondent à aucune entrée de navigation ` +
         `(entrée renommée ou supprimée sans nettoyage) :\n  - ${dead.join("\n  - ")}`,
     ).toEqual([]);
   });
@@ -111,7 +113,7 @@ describe("icônes de la barre latérale de la console", () => {
 
     expect(
       duplicated,
-      `Clé(s) déclarée(s) plusieurs fois dans ICON_MAP — seule la dernière ` +
+      `Clé(s) déclarée(s) plusieurs fois dans ADMIN_NAV_ICONS — seule la dernière ` +
         `s'applique, la première est silencieusement perdue :\n  - ${duplicated.join("\n  - ")}`,
     ).toEqual([]);
   });
