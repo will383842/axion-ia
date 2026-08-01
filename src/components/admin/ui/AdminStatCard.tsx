@@ -80,12 +80,20 @@ export function AdminStatCard({
         className,
       )}
     >
+      {/* Refonte UI 2026-08-01 (couche 2) — le libellé était en capitales
+          espacées de 12 px, la valeur reléguée en dessous avec une grande
+          pastille ronde en vis-à-vis : beaucoup de place occupée pour un seul
+          nombre, et le regard partait sur l'icône plutôt que sur le chiffre.
+          Désormais le libellé est en casse normale et discret, la valeur porte
+          un interlettrage resserré (les grands nombres respirent mal sinon),
+          et l'icône devient un carré arrondi plus petit — un repère, pas le
+          sujet de la carte. */}
       <div className="flex items-start justify-between gap-[var(--space-admin-3)]">
         <span
           className={cn(
-            "flex items-center gap-[var(--space-admin-2)]",
-            "text-[length:var(--text-admin-xs)] font-semibold tracking-wide uppercase",
-            "text-[color:var(--color-admin-fg-muted)]",
+            "flex items-center gap-[var(--space-admin-3)]",
+            "text-[length:var(--text-admin-sm)] font-medium",
+            "text-[color:var(--color-admin-fg-soft)]",
           )}
         >
           {TONE_DOT[tone] ? (
@@ -100,18 +108,18 @@ export function AdminStatCard({
           <span
             aria-hidden="true"
             className={cn(
-              "flex h-9 w-9 shrink-0 items-center justify-center rounded-full",
+              "flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]",
               TONE_PASTILLE[tone],
             )}
           >
-            <Icon size={18} />
+            <Icon size={15} />
           </span>
         ) : null}
       </div>
       <div className="flex items-baseline gap-[var(--space-admin-3)]">
         <span
           className={cn(
-            "text-[length:var(--text-admin-2xl)] font-semibold tabular-nums",
+            "text-[length:var(--text-admin-2xl)] font-semibold tracking-[-0.02em] tabular-nums",
             "text-[color:var(--color-admin-fg)]",
           )}
         >

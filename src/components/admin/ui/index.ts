@@ -55,6 +55,11 @@ export { AdminConfirmDialog } from "./AdminConfirmDialog";
 export { AdminStatCard } from "./AdminStatCard";
 export { AdminPagination } from "./AdminPagination";
 export { AdminSubmitButton } from "./AdminSubmitButton";
+// Refonte UI 2026-08-01 (couche 2) — bouton unifié. Compose les mêmes classes
+// `.admin-*` que les 566 usages écrits à la main : les deux écritures rendent
+// à l'identique, la migration des pages peut être progressive.
+export { AdminButton } from "./AdminButton";
+export type { AdminButtonProps } from "./AdminButton";
 export { AdminKeyboardHint } from "./AdminKeyboardHint";
 export { AdminFilterChip } from "./AdminFilterChip";
 export { AdminAutosaveIndicator } from "./AdminAutosaveIndicator";

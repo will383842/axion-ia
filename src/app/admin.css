@@ -1052,6 +1052,15 @@
   cursor: not-allowed;
 }
 
+/* Gabarit compact — actions de ligne dans une liste ou un tableau, où la
+   hauteur standard de 36 px casse le rythme vertical des lignes. S'applique à
+   toutes les variantes (primaire, secondaire, discret, destructif). */
+.admin-button-sm {
+  min-height: var(--control-admin-h-sm);
+  padding-inline: var(--space-admin-5);
+  font-size: var(--text-admin-sm);
+}
+
 /* Bouton pleine largeur — formulaires verticaux étroits (connexion, 2FA).
  *
  * ⚠️ PIÈGE DE CASCADE : l'utilitaire Tailwind `w-full` NE PEUT PAS servir ici.
