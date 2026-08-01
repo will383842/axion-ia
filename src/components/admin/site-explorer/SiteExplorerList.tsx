@@ -18,7 +18,7 @@ export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
 
   if (routes.length === 0) {
     return (
-      <div className="rounded-lg border border-gray-200 py-12 text-center text-gray-500">
+      <div className="rounded-lg border border-[color:var(--color-admin-border)] py-12 text-center text-[color:var(--color-admin-fg-muted)]">
         <p>Aucune route trouvée.</p>
         <p className="mt-1 text-xs">Lancez un scan pour cataloguer les URLs publiques.</p>
       </div>
@@ -27,7 +27,7 @@ export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-sm text-gray-500">
+      <div className="flex items-center justify-between text-sm text-[color:var(--color-admin-fg-muted)]">
         <span>
           {total.toLocaleString("fr-FR")} URL{total > 1 ? "s" : ""} publique{total > 1 ? "s" : ""}
         </span>
@@ -46,18 +46,18 @@ export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
           {page > 1 && (
             <a
               href={`${baseUrl}?page=${page - 1}`}
-              className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
             >
               ← Précédente
             </a>
           )}
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-[color:var(--color-admin-fg-muted)]">
             {page} / {totalPages}
           </span>
           {page < totalPages && (
             <a
               href={`${baseUrl}?page=${page + 1}`}
-              className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
             >
               Suivante →
             </a>

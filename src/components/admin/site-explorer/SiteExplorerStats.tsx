@@ -65,16 +65,20 @@ export function SiteExplorerStats({ stats }: Props) {
           {categories.map(([cat, count]) => (
             <span
               key={cat}
-              className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-600"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-2.5 py-1 text-xs text-[color:var(--color-admin-fg-muted)]"
             >
-              <span className="font-medium text-gray-800">{CATEGORY_LABELS[cat] ?? cat}</span>
-              <span className="text-gray-400">{count.toLocaleString("fr-FR")}</span>
+              <span className="font-medium text-[color:var(--color-admin-fg)]">
+                {CATEGORY_LABELS[cat] ?? cat}
+              </span>
+              <span className="text-[color:var(--color-admin-fg-disabled)]">
+                {count.toLocaleString("fr-FR")}
+              </span>
             </span>
           ))}
         </div>
       )}
 
-      <div className="text-xs text-gray-500">
+      <div className="text-xs text-[color:var(--color-admin-fg-muted)]">
         Dernière inspection HTTP : {formatDate(stats.lastScanAt)}
       </div>
     </div>
@@ -93,14 +97,19 @@ function StatCard({
   total?: number;
 }) {
   const colorMap = {
-    blue: "bg-blue-50 border-blue-200 text-blue-700",
-    green: "bg-green-50 border-green-200 text-green-700",
-    purple: "bg-purple-50 border-purple-200 text-purple-700",
-    gray: "bg-gray-50 border-gray-200 text-gray-600",
-    red: "bg-red-50 border-red-200 text-red-700",
-    emerald: "bg-emerald-50 border-emerald-200 text-emerald-700",
-    amber: "bg-amber-50 border-amber-200 text-amber-700",
-    orange: "bg-orange-50 border-orange-200 text-orange-700",
+    blue: "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
+    green:
+      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
+    purple:
+      "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
+    gray: "bg-[color:var(--color-admin-surface-sunken)] border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-muted)]",
+    red: "bg-[color:var(--color-admin-destructive-soft)] border-[color:var(--color-admin-destructive)] text-[color:var(--color-admin-destructive-fg)]",
+    emerald:
+      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
+    amber:
+      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
+    orange:
+      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
   };
 
   return (

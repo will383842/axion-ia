@@ -38,7 +38,7 @@ export async function ConsoleDocBucket({
       </div>
 
       {docs.length === 0 ? (
-        <div className="border-border text-fg-muted rounded-lg border border-dashed bg-white p-8 text-center text-sm">
+        <div className="border-border text-fg-muted rounded-lg border border-dashed bg-[color:var(--color-admin-paper)] p-8 text-center text-sm">
           Aucun document pour le moment. Cliquez sur «&nbsp;Ajouter un document&nbsp;» pour en
           déposer un.
         </div>
@@ -49,7 +49,7 @@ export async function ConsoleDocBucket({
             return (
               <li
                 key={doc.id}
-                className="border-border flex items-center justify-between gap-4 rounded-lg border bg-white p-4"
+                className="border-border flex items-center justify-between gap-4 rounded-lg border bg-[color:var(--color-admin-paper)] p-4"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -57,7 +57,7 @@ export async function ConsoleDocBucket({
                     {doc.sensitive ? (
                       <span
                         title="Document sensible — accès durci"
-                        className="rounded bg-red-50 px-1.5 py-0.5 text-[11px] font-medium text-red-700"
+                        className="rounded bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-[11px] font-medium text-[color:var(--color-admin-destructive-fg)]"
                       >
                         🔒 sensible
                       </span>

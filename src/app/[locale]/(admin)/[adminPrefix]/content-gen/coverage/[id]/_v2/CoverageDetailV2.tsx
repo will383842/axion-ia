@@ -334,28 +334,28 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
           <h2 className="admin-h2">Planification</h2>
           <div className="flex flex-wrap gap-2 pt-2">
             {campaign.startDate && campaign.status === "scheduled" && (
-              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-800">
+              <span className="rounded-full bg-[color:var(--color-admin-info-soft)] px-2 py-0.5 text-xs text-[color:var(--color-admin-info)]">
                 Programmée le {new Date(campaign.startDate).toLocaleString("fr-FR")}
               </span>
             )}
             {campaign.endDate && (
-              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-800">
+              <span className="rounded-full bg-[color:var(--color-admin-warning-soft)] px-2 py-0.5 text-xs text-[color:var(--color-admin-warning-fg)]">
                 Auto-stop le {new Date(campaign.endDate).toLocaleString("fr-FR")}
               </span>
             )}
             {campaign.recurringSchedule && (
-              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-800">
+              <span className="rounded-full bg-[color:var(--color-admin-info-soft)] px-2 py-0.5 text-xs text-[color:var(--color-admin-info)]">
                 Récurrente : {campaign.recurringSchedule}
               </span>
             )}
             {campaign.cityProcessingMode === "sequential" && (
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-800">
+              <span className="rounded-full bg-[color:var(--color-admin-neutral-soft)] px-2 py-0.5 text-xs text-[color:var(--color-admin-fg)]">
                 Séquentiel — ville {(campaign.currentCityIndex ?? 0) + 1} /{" "}
                 {campaign.anchorVilleSlugs.length}
               </span>
             )}
             {campaign.completedReason && (
-              <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-800">
+              <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-2 py-0.5 text-xs text-[color:var(--color-admin-destructive-fg)]">
                 Raison arrêt : {campaign.completedReason}
               </span>
             )}

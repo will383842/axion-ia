@@ -55,7 +55,7 @@ const INTENT_LABELS: Record<string, string> = {
 function ProgressBar({ value, max, color }: { value: number; max: number; color: string }) {
   const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0;
   return (
-    <div className="h-2 w-full rounded bg-gray-100">
+    <div className="h-2 w-full rounded bg-[color:var(--color-admin-neutral-soft)]">
       <div className={`h-2 rounded ${color}`} style={{ width: `${pct}%` }} />
     </div>
   );
@@ -72,10 +72,10 @@ function MetricCard({
   sub?: string;
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-gray-900">{value}</p>
-      {sub && <p className="text-xs text-gray-400">{sub}</p>}
+    <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4 shadow-sm">
+      <p className="text-sm text-[color:var(--color-admin-fg-muted)]">{label}</p>
+      <p className="mt-1 text-2xl font-bold text-[color:var(--color-admin-fg)]">{value}</p>
+      {sub && <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">{sub}</p>}
     </div>
   );
 }
@@ -147,8 +147,10 @@ export function KeywordStrategyView({ searchParams }: Props) {
     <div className="space-y-6 p-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Stratégie Keywords</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-2xl font-bold text-[color:var(--color-admin-fg)]">
+          Stratégie Keywords
+        </h1>
+        <p className="mt-1 text-sm text-[color:var(--color-admin-fg-muted)]">
           {seeds.length.toLocaleString()} keywords · 5 verticales · 12 intents
         </p>
       </div>
@@ -174,8 +176,10 @@ export function KeywordStrategyView({ searchParams }: Props) {
       </div>
 
       {/* Distribution par verticale */}
-      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-        <h2 className="mb-3 font-semibold text-gray-700">Distribution par verticale</h2>
+      <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4 shadow-sm">
+        <h2 className="mb-3 font-semibold text-[color:var(--color-admin-fg-soft)]">
+          Distribution par verticale
+        </h2>
         <div className="space-y-3">
           {allVerticals.map((v) => {
             const count = byVertical[v] ?? 0;
@@ -184,10 +188,10 @@ export function KeywordStrategyView({ searchParams }: Props) {
             return (
               <div key={v}>
                 <div className="mb-1 flex items-center justify-between text-sm">
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-[color:var(--color-admin-fg-soft)]">
                     {status} {VERTICAL_LABELS[v]}
                   </span>
-                  <span className="text-gray-500">
+                  <span className="text-[color:var(--color-admin-fg-muted)]">
                     {count.toLocaleString()} ({pct}%)
                   </span>
                 </div>
@@ -195,7 +199,11 @@ export function KeywordStrategyView({ searchParams }: Props) {
                   value={count}
                   max={seeds.length / 5}
                   color={
-                    count >= 250 ? "bg-green-500" : count >= 150 ? "bg-yellow-400" : "bg-red-400"
+                    count >= 250
+                      ? "bg-[color:var(--color-admin-success)]"
+                      : count >= 150
+                        ? "bg-[color:var(--color-admin-warning)]"
+                        : "bg-[color:var(--color-admin-destructive)]"
                   }
                 />
               </div>
@@ -205,16 +213,27 @@ export function KeywordStrategyView({ searchParams }: Props) {
       </div>
 
       {/* Distribution par intent */}
-      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-        <h2 className="mb-3 font-semibold text-gray-700">Distribution par intent</h2>
+      <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4 shadow-sm">
+        <h2 className="mb-3 font-semibold text-[color:var(--color-admin-fg-soft)]">
+          Distribution par intent
+        </h2>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {Object.entries(byIntent)
             .sort(([, a], [, b]) => b - a)
             .map(([intentKey, count]) => (
-              <div key={intentKey} className="rounded bg-gray-50 p-2 text-center">
-                <p className="text-xs text-gray-500">{INTENT_LABELS[intentKey] ?? intentKey}</p>
-                <p className="font-bold text-gray-900">{count.toLocaleString()}</p>
-                <p className="text-xs text-gray-400">{Math.round((count / seeds.length) * 100)}%</p>
+              <div
+                key={intentKey}
+                className="rounded bg-[color:var(--color-admin-surface-sunken)] p-2 text-center"
+              >
+                <p className="text-xs text-[color:var(--color-admin-fg-muted)]">
+                  {INTENT_LABELS[intentKey] ?? intentKey}
+                </p>
+                <p className="font-bold text-[color:var(--color-admin-fg)]">
+                  {count.toLocaleString()}
+                </p>
+                <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">
+                  {Math.round((count / seeds.length) * 100)}%
+                </p>
               </div>
             ))}
         </div>
@@ -228,7 +247,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setVertical(e.target.value);
             setPage(1);
           }}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-[color:var(--color-admin-ring)] focus:outline-none"
         >
           <option value="">Toutes les verticales</option>
           {allVerticals.map((v) => (
@@ -244,7 +263,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setIntent(e.target.value);
             setPage(1);
           }}
-          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-[color:var(--color-admin-ring)] focus:outline-none"
         >
           <option value="">Tous les intents</option>
           {allIntents.map((i) => (
@@ -262,56 +281,71 @@ export function KeywordStrategyView({ searchParams }: Props) {
             setQuery(e.target.value);
             setPage(1);
           }}
-          className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="flex-1 rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm focus:ring-2 focus:ring-[color:var(--color-admin-ring)] focus:outline-none"
         />
 
-        <span className="flex items-center text-sm text-gray-500">
+        <span className="flex items-center text-sm text-[color:var(--color-admin-fg-muted)]">
           {filtered.length.toLocaleString()} résultats
         </span>
       </div>
 
       {/* Table keywords */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
+      <div className="overflow-x-auto rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] shadow-sm">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-[color:var(--color-admin-surface-sunken)]">
             <tr>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Keyword</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Verticale</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">Intent</th>
-              <th className="px-4 py-3 text-left font-medium text-gray-600">URL cible</th>
-              <th className="px-4 py-3 text-center font-medium text-gray-600">Prio</th>
+              <th className="px-4 py-3 text-left font-medium text-[color:var(--color-admin-fg-muted)]">
+                Keyword
+              </th>
+              <th className="px-4 py-3 text-left font-medium text-[color:var(--color-admin-fg-muted)]">
+                Verticale
+              </th>
+              <th className="px-4 py-3 text-left font-medium text-[color:var(--color-admin-fg-muted)]">
+                Intent
+              </th>
+              <th className="px-4 py-3 text-left font-medium text-[color:var(--color-admin-fg-muted)]">
+                URL cible
+              </th>
+              <th className="px-4 py-3 text-center font-medium text-[color:var(--color-admin-fg-muted)]">
+                Prio
+              </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[color:var(--color-admin-border)]">
             {paginated.map((s: KeywordSeed, i) => {
               const v = MODULE_TO_VERTICAL[s.module] ?? "transversal";
               const intentColor =
                 s.intent === "voice_search"
-                  ? "bg-purple-100 text-purple-700"
+                  ? "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]"
                   : s.intent === "ai_overview"
-                    ? "bg-blue-100 text-blue-700"
+                    ? "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]"
                     : s.intent === "featured_snippet"
-                      ? "bg-yellow-100 text-yellow-700"
+                      ? "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]"
                       : s.intent === "transactionnel"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-600";
+                        ? "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]"
+                        : "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-fg-muted)]";
               return (
-                <tr key={`${s.keyword}-${i}`} className="hover:bg-gray-50">
-                  <td className="max-w-xs truncate px-4 py-2 font-medium text-gray-900">
+                <tr
+                  key={`${s.keyword}-${i}`}
+                  className="hover:bg-[color:var(--color-admin-surface-sunken)]"
+                >
+                  <td className="max-w-xs truncate px-4 py-2 font-medium text-[color:var(--color-admin-fg)]">
                     {s.keyword}
                   </td>
-                  <td className="px-4 py-2 text-gray-500">{VERTICAL_LABELS[v] ?? v}</td>
+                  <td className="px-4 py-2 text-[color:var(--color-admin-fg-muted)]">
+                    {VERTICAL_LABELS[v] ?? v}
+                  </td>
                   <td className="px-4 py-2">
                     <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${intentColor}`}>
                       {INTENT_LABELS[s.intent] ?? s.intent}
                     </span>
                   </td>
-                  <td className="max-w-xs truncate px-4 py-2 text-xs text-gray-400">
+                  <td className="max-w-xs truncate px-4 py-2 text-xs text-[color:var(--color-admin-fg-disabled)]">
                     {s.urlCible}
                   </td>
                   <td className="px-4 py-2 text-center">
                     <span
-                      className={`font-bold ${s.priorite === 1 ? "text-red-600" : s.priorite === 2 ? "text-yellow-600" : "text-gray-400"}`}
+                      className={`font-bold ${s.priorite === 1 ? "text-[color:var(--color-admin-destructive)]" : s.priorite === 2 ? "text-[color:var(--color-admin-warning)]" : "text-[color:var(--color-admin-fg-disabled)]"}`}
                     >
                       P{s.priorite}
                     </span>
@@ -329,17 +363,17 @@ export function KeywordStrategyView({ searchParams }: Props) {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             ← Précédent
           </button>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-[color:var(--color-admin-fg-muted)]">
             Page {page} / {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             Suivant →
           </button>

@@ -74,8 +74,8 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Toutes les URLs</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-[color:var(--color-admin-fg)]">Toutes les URLs</h1>
+          <p className="mt-1 text-sm text-[color:var(--color-admin-fg-muted)]">
             Catalogue vivant des URLs publiques — indexabilité live, feu de revue &amp; GSC (admin
             &amp; API exclus)
           </p>
@@ -84,7 +84,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
           {stats.anomaliesHigh > 0 && (
             <a
               href={anomaliesUrl}
-              className="flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-100"
+              className="flex items-center gap-1.5 rounded-lg bg-[color:var(--color-admin-destructive-soft)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-destructive-fg)] hover:bg-[color:var(--color-admin-destructive-soft)]"
             >
               ⚠️ {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
             </a>
@@ -93,7 +93,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
           <ScanAllButton adminPrefix={adminPrefix} />
           <a
             href={anomaliesUrl}
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50"
+            className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
           >
             Voir anomalies ({stats.anomaliesTotal})
           </a>
@@ -104,7 +104,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
       <SiteExplorerStats stats={stats} />
 
       {/* Note exclusions */}
-      <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-xs text-gray-500">
+      <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] px-4 py-2 text-xs text-[color:var(--color-admin-fg-muted)]">
         ❌ Routes admin <code>/[adminPrefix]/*</code> : non cataloguées — ❌ Routes API{" "}
         <code>/api/*</code> : non cataloguées — ❌ Server Actions : non cataloguées
       </div>
@@ -131,7 +131,7 @@ function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
     <form action={handleScanAll}>
       <button
         type="submit"
-        className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
         title="Relance l'inspection HTTP (statut, méta, mots) des URLs cataloguées"
       >
         🔄 Inspecter (HTTP)
@@ -151,7 +151,7 @@ function DiscoverButton() {
     <form action={handleDiscover}>
       <button
         type="submit"
-        className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        className="admin-button"
         title="Ré-énumère toutes les URLs et recalcule l'indexabilité live (auto chaque nuit)"
       >
         🔎 Découvrir les URLs

@@ -77,17 +77,21 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center gap-3">
-        <a href={backUrl} className="text-sm text-blue-600 hover:underline">
+        <a href={backUrl} className="text-sm text-[color:var(--color-admin-info)] hover:underline">
           ← Site Explorer
         </a>
-        <span className="text-gray-300">/</span>
-        <code className="text-sm text-gray-700">{displayPath}</code>
+        <span className="text-[color:var(--color-admin-fg-disabled)]">/</span>
+        <code className="text-sm text-[color:var(--color-admin-fg-soft)]">{displayPath}</code>
       </div>
 
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="font-mono text-xl font-bold text-gray-900">{displayPath}</h1>
-          {route.metaTitle && <p className="mt-1 text-gray-600">{route.metaTitle}</p>}
+          <h1 className="font-mono text-xl font-bold text-[color:var(--color-admin-fg)]">
+            {displayPath}
+          </h1>
+          {route.metaTitle && (
+            <p className="mt-1 text-[color:var(--color-admin-fg-muted)]">{route.metaTitle}</p>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <SiteRouteStatusBadge status={route.status} httpStatus={route.httpStatus} />
@@ -96,16 +100,13 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               href={`${SITE_URL}${displayPath}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
             >
               🌐 Voir la page
             </a>
           )}
           {route.editable && route.editorRoute && (
-            <a
-              href={route.editorRoute}
-              className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
-            >
+            <a href={route.editorRoute} className="admin-button">
               ✏️ Éditer
             </a>
           )}
@@ -114,7 +115,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               href={`${GITHUB_REPO}/${route.filePath}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
               title="Page statique — voir le code source"
             >
               📁 Code source
@@ -124,7 +125,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             <form action={handleReInspect}>
               <button
                 type="submit"
-                className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+                className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
               >
                 🔄 Re-inspecter
               </button>
@@ -135,8 +136,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Métadonnées */}
-        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
-          <h2 className="font-semibold text-gray-900">Métadonnées SEO</h2>
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+          <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métadonnées SEO</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Type" value={route.type} />
             <Row label="Section" value={route.section ?? "—"} />
@@ -149,8 +150,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Métriques contenu */}
-        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
-          <h2 className="font-semibold text-gray-900">Métriques contenu</h2>
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+          <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métriques contenu</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Mots" value={route.wordCount?.toLocaleString("fr-FR") ?? "—"} />
             <Row label="JSON-LD" value={route.jsonLdCount?.toString() ?? "—"} />
@@ -178,8 +179,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Indexabilité & GSC */}
-        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
-          <h2 className="font-semibold text-gray-900">Indexabilité &amp; GSC</h2>
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+          <h2 className="font-semibold text-[color:var(--color-admin-fg)]">
+            Indexabilité &amp; GSC
+          </h2>
           <dl className="space-y-2 text-sm">
             <Row
               label="Indexable (live)"
@@ -224,7 +227,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
           <form action={handleToggleGsc}>
             <button
               type="submit"
-              className="rounded border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50"
+              className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-sunken)]"
             >
               {route.gscIndexationRequested
                 ? "Décocher « indexation GSC demandée »"
@@ -234,8 +237,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Revue manuelle : feu tricolore + notes */}
-        <section className="space-y-3 rounded-lg border border-gray-200 p-4">
-          <h2 className="font-semibold text-gray-900">Revue (feu &amp; notes)</h2>
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+          <h2 className="font-semibold text-[color:var(--color-admin-fg)]">
+            Revue (feu &amp; notes)
+          </h2>
           <form action={handleSetQuality} className="flex flex-wrap gap-2">
             {QUALITY_BTNS.map((b) => (
               <button
@@ -243,10 +248,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                 type="submit"
                 name="quality"
                 value={b.value}
-                className={`rounded border px-2.5 py-1.5 text-sm hover:bg-gray-50 ${
+                className={`rounded border px-2.5 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)] ${
                   route.qualityStatus === b.value
-                    ? "border-gray-800 font-semibold"
-                    : "border-gray-300 text-gray-600"
+                    ? "border-[color:var(--color-admin-accent)] font-semibold text-[color:var(--color-admin-accent)]"
+                    : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
                 }`}
               >
                 {b.emoji} {b.label}
@@ -254,7 +259,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             ))}
           </form>
           {route.reviewedAt && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">
               Dernière revue : {new Date(route.reviewedAt).toLocaleString("fr-FR")}
             </p>
           )}
@@ -264,12 +269,9 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               defaultValue={route.adminNotes ?? ""}
               rows={3}
               placeholder="Notes internes sur cette URL…"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
             />
-            <button
-              type="submit"
-              className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
-            >
+            <button type="submit" className="admin-button">
               Enregistrer la note
             </button>
           </form>
@@ -277,8 +279,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
         {/* Lighthouse */}
         {(route.lighthousePerf !== null || route.lighthouseSeo !== null) && (
-          <section className="space-y-3 rounded-lg border border-gray-200 p-4">
-            <h2 className="font-semibold text-gray-900">Lighthouse</h2>
+          <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+            <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Lighthouse</h2>
             <div className="flex gap-4">
               {[
                 { label: "Perf", score: route.lighthousePerf },
@@ -292,21 +294,23 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                       <div
                         className={`text-2xl font-bold ${
                           (score ?? 0) >= 90
-                            ? "text-green-600"
+                            ? "text-[color:var(--color-admin-success)]"
                             : (score ?? 0) >= 70
-                              ? "text-orange-500"
-                              : "text-red-600"
+                              ? "text-[color:var(--color-admin-warning)]"
+                              : "text-[color:var(--color-admin-destructive)]"
                         }`}
                       >
                         {score}
                       </div>
-                      <div className="text-xs text-gray-500">{label}</div>
+                      <div className="text-xs text-[color:var(--color-admin-fg-muted)]">
+                        {label}
+                      </div>
                     </div>
                   ),
               )}
             </div>
             {route.lighthouseRunAt && (
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">
                 Audit: {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
               </p>
             )}
@@ -315,8 +319,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
         {/* Anomalies */}
         {route.anomalies.length > 0 && (
-          <section className="space-y-3 rounded-lg border border-red-200 bg-red-50 p-4">
-            <h2 className="font-semibold text-red-800">⚠️ Anomalies ({route.anomalies.length})</h2>
+          <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-4">
+            <h2 className="font-semibold text-[color:var(--color-admin-destructive-fg)]">
+              ⚠️ Anomalies ({route.anomalies.length})
+            </h2>
             <ul className="space-y-2">
               {route.anomalies.map((a) => (
                 <li key={a.id} className="flex items-start justify-between gap-3">
@@ -324,15 +330,17 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                     <span
                       className={`mr-1.5 inline-flex rounded px-1.5 py-0.5 text-xs font-medium ${
                         a.severity === "high"
-                          ? "bg-red-100 text-red-700"
+                          ? "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]"
                           : a.severity === "medium"
-                            ? "bg-orange-100 text-orange-700"
-                            : "bg-yellow-100 text-yellow-700"
+                            ? "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]"
+                            : "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]"
                       }`}
                     >
                       {a.severity}
                     </span>
-                    <span className="text-sm text-red-800">{a.description}</span>
+                    <span className="text-sm text-[color:var(--color-admin-destructive-fg)]">
+                      {a.description}
+                    </span>
                   </div>
                   <ResolveButton anomalyId={a.id} routeId={id} />
                 </li>
@@ -350,8 +358,12 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div className="flex gap-2">
-      <dt className="w-32 shrink-0 text-gray-500">{label}</dt>
-      <dd className={`break-all text-gray-900 ${mono ? "font-mono text-xs" : ""}`}>{value}</dd>
+      <dt className="w-32 shrink-0 text-[color:var(--color-admin-fg-muted)]">{label}</dt>
+      <dd
+        className={`break-all text-[color:var(--color-admin-fg)] ${mono ? "font-mono text-xs" : ""}`}
+      >
+        {value}
+      </dd>
     </div>
   );
 }
@@ -367,7 +379,7 @@ function ResolveButton({ anomalyId, routeId }: { anomalyId: string; routeId: str
     <form action={handleResolve}>
       <button
         type="submit"
-        className="shrink-0 rounded border border-red-300 px-2 py-0.5 text-xs text-red-600 hover:bg-red-100"
+        className="shrink-0 rounded border border-[color:var(--color-admin-destructive)] px-2 py-0.5 text-xs text-[color:var(--color-admin-destructive)] hover:bg-[color:var(--color-admin-destructive-soft)]"
       >
         Résoudre
       </button>
