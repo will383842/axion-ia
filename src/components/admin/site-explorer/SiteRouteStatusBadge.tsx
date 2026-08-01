@@ -9,16 +9,47 @@ interface Props {
 
 export function SiteRouteStatusBadge({ status, httpStatus }: Props) {
   const config: Record<SiteRouteStatus, { label: string; className: string }> = {
-    live: { label: "En ligne", className: "bg-green-100 text-green-700" },
-    draft: { label: "Brouillon", className: "bg-yellow-100 text-yellow-700" },
-    preview: { label: "Aperçu", className: "bg-blue-100 text-blue-700" },
-    not_found: { label: "404", className: "bg-red-100 text-red-700" },
-    redirect: { label: "301", className: "bg-orange-100 text-orange-700" },
-    error: { label: "Erreur", className: "bg-red-100 text-red-700" },
-    unknown: { label: "?", className: "bg-gray-100 text-gray-600" },
+    live: {
+      label: "En ligne",
+      className:
+        "bg-[color:var(--color-admin-success-soft)] text-[color:var(--color-admin-success-fg)]",
+    },
+    draft: {
+      label: "Brouillon",
+      className:
+        "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+    },
+    preview: {
+      label: "Aperçu",
+      className: "bg-[color:var(--color-admin-info-soft)] text-[color:var(--color-admin-info)]",
+    },
+    not_found: {
+      label: "404",
+      className:
+        "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
+    },
+    redirect: {
+      label: "301",
+      className:
+        "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]",
+    },
+    error: {
+      label: "Erreur",
+      className:
+        "bg-[color:var(--color-admin-destructive-soft)] text-[color:var(--color-admin-destructive-fg)]",
+    },
+    unknown: {
+      label: "?",
+      className:
+        "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-fg-muted)]",
+    },
   };
 
-  const entry = config[status] ?? { label: "?", className: "bg-gray-100 text-gray-600" };
+  const entry = config[status] ?? {
+    label: "?",
+    className:
+      "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-fg-muted)]",
+  };
   const { label, className } = entry;
   const display = httpStatus && status !== "unknown" ? `${httpStatus}` : label;
 
