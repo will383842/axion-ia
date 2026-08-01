@@ -76,6 +76,9 @@ export async function listCategoriesAction(input: Partial<ListCategoriesInput> =
         status: true,
         displayOrder: true,
         parentId: true,
+        // Audit UX : la liste affichait `parentId.slice(0, 8)…` (UUID brut) dans
+        // la colonne « Parent ». On résout le nom de la catégorie parente ici.
+        parent: { select: { nameFr: true } },
         updatedAt: true,
       },
     }),

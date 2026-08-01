@@ -197,10 +197,10 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
                     <span className="font-mono text-[length:var(--text-admin-xs)]">{f.numero}</span>
                   </td>
                   <td className={cellCls}>
+                    {/* Le numéro métier (AXI-FORM-2026-XXX) est déjà affiché dans la
+                        colonne « Numéro » — un fragment d'UUID technique en plus
+                        n'apportait rien (audit UX), il est retiré plutôt que traduit. */}
                     <div className="font-medium">{f.titre}</div>
-                    <div className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {f.id.slice(0, 8)}&hellip;
-                    </div>
                   </td>
                   <td className={cellCls}>
                     <span className={statutColor(f.statutGeneration)}>

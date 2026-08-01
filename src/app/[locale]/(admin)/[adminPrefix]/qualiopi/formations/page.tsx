@@ -129,7 +129,7 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
               <tr>
                 <th className={headCls}>Numéro</th>
                 <th className={headCls}>Titre</th>
-                <th className={headCls}>Offre (tierId)</th>
+                <th className={headCls}>Offre</th>
                 <th className={headCls}>Durée (h)</th>
                 <th className={headCls}>Statut génération</th>
                 <th className={headCls}>Statut</th>
@@ -156,11 +156,15 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
                     </div>
                   </td>
 
-                  {/* Offre (tierId via offreSiteId — relation non chargée en liste) */}
+                  {/* Offre — code lisible (AXI-OFF-NNN) résolu via la relation
+                      offreSite, plutôt que l'UUID offreSiteId brut. */}
                   <td className={cellCls}>
                     <span className="font-mono text-[length:var(--text-admin-xs)]">
-                      {f.offreSiteId}
+                      {f.offreSite.code}
                     </span>
+                    <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {f.offreSite.titreFr}
+                    </div>
                   </td>
 
                   {/* Durée */}

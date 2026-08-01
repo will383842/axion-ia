@@ -15,6 +15,10 @@ import { AdminPageHeader } from "@/components/admin/ui";
 import { CalendlyEventEditor } from "@/components/admin/contacts/CalendlyEventEditor";
 import { EnrichCalendlyEventButton } from "@/components/admin/contacts/EnrichCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+// Dates affichées en FR (audit UX : ISO brut illisible pour Will). Seuls les
+// usages AFFICHÉS sont concernés — la `key` React et les valeurs passées en
+// `initial` à CalendlyEventEditor restent en ISO (attendu par le formulaire).
+import { formatDateFr } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +51,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
     <>
       <AdminPageHeader
         title={`Appel réservé · ${event.eventTypeName}`}
-        description={`Capturé le ${event.capturedAt.toISOString().slice(0, 16)} · source ${event.source}`}
+        description={`Capturé le ${formatDateFr(event.capturedAt)} · source ${event.source}`}
         breadcrumbs={
           <Link href={backHref} className="admin-link admin-back">
             ← Appels réservés
@@ -124,7 +128,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
             <dt className="admin-dt">Enrichi depuis Calendly</dt>
             <dd className="admin-dd">
               {event.enrichedAt ? (
-                event.enrichedAt.toISOString().slice(0, 16).replace("T", " ")
+                formatDateFr(event.enrichedAt)
               ) : (
                 <span className="text-[color:var(--color-admin-fg-muted)]">jamais</span>
               )}
@@ -202,9 +206,9 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
               </>
             )}
             <dt className="admin-dt">Capturé</dt>
-            <dd className="admin-dd">{event.capturedAt.toISOString()}</dd>
+            <dd className="admin-dd">{formatDateFr(event.capturedAt)}</dd>
             <dt className="admin-dt">Mis à jour</dt>
-            <dd className="admin-dd">{event.updatedAt.toISOString()}</dd>
+            <dd className="admin-dd">{formatDateFr(event.updatedAt)}</dd>
           </dl>
         </div>
 

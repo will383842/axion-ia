@@ -40,6 +40,8 @@ interface CategoryRow {
   nameFr: string;
   module: string | null;
   parentId: string | null;
+  /** Nom de la catégorie parente, résolu par jointure — `null` si racine. */
+  parent: { nameFr: string } | null;
   status: string;
   displayOrder: number;
 }
@@ -73,8 +75,9 @@ export function CategoriesV2({
     {
       key: "parent",
       header: "Parent",
-      cell: (c) =>
-        c.parentId ? <code className="admin-meta-small">{c.parentId.slice(0, 8)}…</code> : "—",
+      // Nom de la catégorie parente (audit UX : un UUID tronqué n'était pas
+      // exploitable pour Will) — « — » pour une catégorie racine.
+      cell: (c) => c.parent?.nameFr ?? "—",
     },
     {
       key: "status",

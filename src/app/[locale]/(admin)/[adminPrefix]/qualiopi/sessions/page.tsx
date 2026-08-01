@@ -139,7 +139,7 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
                   <td className={cellCls}>
                     <div className="font-medium">{s.titreSession ?? "—"}</div>
                     <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      Formation : {s.formationId.slice(0, 8)}…
+                      Formation : {s.formationNumero} — {s.formationTitre}
                     </div>
                   </td>
 

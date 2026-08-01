@@ -4,6 +4,8 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getCaseStudyDetailAction } from "@/features/admin-case-studies/actions";
 import { CaseStudyEditV2 } from "./_v2/CaseStudyEditV2";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +63,7 @@ export default async function EditCaseStudyPage({ params }: PageProps) {
       adminPrefix={adminPrefix}
       initial={initialPayload}
       title={fr?.title ?? "(sans titre)"}
-      updatedAtIso={cs.updatedAt.toISOString().slice(0, 10)}
+      updatedAtIso={formatDateFrShort(cs.updatedAt)}
     />
   );
 }

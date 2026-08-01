@@ -1,8 +1,13 @@
 /**
- * Content Generator — Format date FR (Fix P2-5 audit opérationnel 2026-05-14).
+ * Format date FR — helper transverse de la console admin.
  *
- * Helper unifié pour afficher les timestamps admin en français Europe/Paris
- * au lieu de `.toISOString()` partout (UTC, peu lisible).
+ * Créé le 2026-05-14 (Fix P2-5 audit opérationnel), déplacé de la zone
+ * génération de contenu vers src/lib le 2026-08-01 : consommé par toute la
+ * console (audit UX — dates ISO brutes partout), il ne pouvait plus vivre
+ * derrière la frontière d'isolation (§ 4.1bis).
+ *
+ * Affiche les timestamps admin en français Europe/Paris au lieu de
+ * `.toISOString()` (UTC, peu lisible).
  */
 
 const FORMATTER_FR = new Intl.DateTimeFormat("fr-FR", {

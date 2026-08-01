@@ -32,6 +32,8 @@ import {
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -187,7 +189,7 @@ export default async function AppelsPage({
 
         {selectedDate && (
           <div className="mt-[var(--space-admin-6)]">
-            <h2 className="admin-h2">Appels du {selectedDate}</h2>
+            <h2 className="admin-h2">Appels du {formatDateFrShort(selectedDate)}</h2>
             {dayRdv.length === 0 ? (
               <p className="text-[color:var(--color-admin-fg-muted)]">Aucun appel ce jour.</p>
             ) : (
@@ -242,7 +244,7 @@ export default async function AppelsPage({
       header: "Date / heure",
       cell: (r) => (
         <span>
-          {r.dayKey}
+          {formatDateFrShort(r.dayKey)}
           {r.timeConfirmed && r.startTime ? (
             ` · ${timeInParis(r.startTime)}`
           ) : (
