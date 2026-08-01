@@ -12,42 +12,79 @@
 // retomberait sur l'affichage brut — exactement le problème qu'on corrige.
 //
 // Les clés suivent toutes la forme `domaine.objet.verbe` (ou `domaine.verbe`).
-// On décode donc la STRUCTURE : un emoji + un nom lisible par domaine, un verbe
-// conjugué au participe passé, et l'objet rendu tel quel en toutes lettres.
-// Une clé inconnue reste ainsi lisible sans qu'on ait à la déclarer.
+// On décode donc la STRUCTURE : une famille d'icône + un nom lisible par
+// domaine, un verbe conjugué au participe passé, et l'objet rendu tel quel en
+// toutes lettres. Une clé inconnue reste ainsi lisible sans qu'on ait à la
+// déclarer.
 
-/** Emoji + nom du domaine, dérivés du premier segment de la clé. */
-const DOMAINES: ReadonlyArray<readonly [prefixe: string, emoji: string, nom: string]> = [
-  ["qualiopi.coaching", "🤝", "Coaching"],
-  ["qualiopi.emargement", "✍️", "Émargement"],
-  ["qualiopi.document", "📄", "Document"],
-  ["qualiopi.piece", "📄", "Pièce"],
-  ["qualiopi.devis", "📝", "Devis"],
-  ["qualiopi.client", "🏢", "Client"],
-  ["qualiopi.alerte", "🔔", "Alerte"],
-  ["qualiopi.alertes", "🔔", "Alertes"],
-  ["qualiopi.bpf", "📊", "Bilan pédagogique"],
-  ["qualiopi.bareme_opco", "🏛️", "Barème OPCO"],
-  ["qualiopi.audit_mission", "🔍", "Mission d'audit"],
-  ["qualiopi.compensation_rule", "💶", "Rémunération formateur"],
-  ["qualiopi.appreciations", "⭐", "Appréciation"],
-  ["qualiopi.attestation", "🎖️", "Attestation"],
-  ["qualiopi.compta", "📊", "Comptabilité"],
-  ["qualiopi.crm", "🏢", "CRM"],
-  ["qualiopi.config", "⚙️", "Réglage Qualiopi"],
-  ["qualiopi.acompte", "💶", "Acompte"],
-  ["qualiopi", "🎓", "Formation"],
-  ["facturation", "💰", "Facturation"],
-  ["email.outbox", "📧", "File d'e-mails"],
-  ["email.reglage", "⚙️", "Réglage e-mail"],
-  ["email", "📧", "E-mail"],
-  ["kb", "📚", "Connaissances"],
-  ["gdpr", "🔒", "RGPD"],
-  ["newsletter", "📬", "Newsletter"],
-  ["admin.articles", "📰", "Articles"],
-  ["brand_voice_drift", "🎨", "Voix de marque"],
-  ["asset", "🖼️", "Média"],
-  ["setting", "⚙️", "Réglage"],
+/**
+ * Famille d'icône d'une ligne de journal — refonte UI 2026-08-01 (couche 4).
+ *
+ * C'est une CLÉ, pas un pictogramme. Ce module est du code de bibliothèque : il
+ * est testé sans DOM et ne doit pas dépendre de React. Il nomme donc la famille,
+ * et le composant qui affiche le journal choisit la forme (`DashboardV2`,
+ * `ICONE_ACTIVITE`).
+ *
+ * Auparavant la table portait les emojis eux-mêmes — c'est ce qui les rendait
+ * impossibles à remplacer sans toucher au module et à ses tests.
+ */
+export type ActivityIconKey =
+  | "coaching"
+  | "signature"
+  | "document"
+  | "devis"
+  | "organisation"
+  | "alerte"
+  | "rapport"
+  | "financeur"
+  | "audit"
+  | "remuneration"
+  | "appreciation"
+  | "attestation"
+  | "reglage"
+  | "formation"
+  | "facturation"
+  | "email"
+  | "connaissances"
+  | "rgpd"
+  | "newsletter"
+  | "article"
+  | "marque"
+  | "media"
+  | "inconnu";
+
+/** Famille d'icône + nom du domaine, dérivés du premier segment de la clé. */
+const DOMAINES: ReadonlyArray<readonly [prefixe: string, icone: ActivityIconKey, nom: string]> = [
+  ["qualiopi.coaching", "coaching", "Coaching"],
+  ["qualiopi.emargement", "signature", "Émargement"],
+  ["qualiopi.document", "document", "Document"],
+  ["qualiopi.piece", "document", "Pièce"],
+  ["qualiopi.devis", "devis", "Devis"],
+  ["qualiopi.client", "organisation", "Client"],
+  ["qualiopi.alerte", "alerte", "Alerte"],
+  ["qualiopi.alertes", "alerte", "Alertes"],
+  ["qualiopi.bpf", "rapport", "Bilan pédagogique"],
+  ["qualiopi.bareme_opco", "financeur", "Barème OPCO"],
+  ["qualiopi.audit_mission", "audit", "Mission d'audit"],
+  ["qualiopi.compensation_rule", "remuneration", "Rémunération formateur"],
+  ["qualiopi.appreciations", "appreciation", "Appréciation"],
+  ["qualiopi.attestation", "attestation", "Attestation"],
+  ["qualiopi.compta", "rapport", "Comptabilité"],
+  ["qualiopi.crm", "organisation", "CRM"],
+  ["qualiopi.config", "reglage", "Réglage Qualiopi"],
+  ["qualiopi.acompte", "remuneration", "Acompte"],
+  ["qualiopi", "formation", "Formation"],
+  ["facturation", "facturation", "Facturation"],
+  ["email.outbox", "email", "File d'e-mails"],
+  ["email.reglage", "reglage", "Réglage e-mail"],
+  ["email", "email", "E-mail"],
+  ["kb", "connaissances", "Connaissances"],
+  ["gdpr", "rgpd", "RGPD"],
+  ["newsletter", "newsletter", "Newsletter"],
+  ["admin.articles", "article", "Articles"],
+  ["brand_voice_drift", "marque", "Voix de marque"],
+  ["asset", "media", "Média"],
+  ["setting", "reglage", "Réglage"],
 ] as const;
 
 /** Verbe final → participe passé français. */
@@ -207,7 +244,7 @@ function estPluriel(nom: string): boolean {
 
 export interface ActionDecrite {
   /** Repère visuel du domaine. */
-  emoji: string;
+  icone: ActivityIconKey;
   /** Ce qui a été fait, en toutes lettres. */
   texte: string;
 }
@@ -255,16 +292,16 @@ function humaniser(segment: string): string {
 /**
  * Traduit une clé du journal en une phrase lisible.
  *
- * `qualiopi.document.convention.genere` → 📄 « Document convention généré »
- * `facturation.relance.envoyer`         → 💰 « Relance envoyée »
- * `un.verbe.inconnu`                    → 📌 « un verbe inconnu » (jamais la clé brute)
+ * `qualiopi.document.convention.genere` → `document` + « Document convention généré »
+ * `facturation.relance.envoyer`         → `facturation` + « Relance envoyée »
+ * `un.verbe.inconnu`                    → `inconnu` + « un verbe inconnu » (jamais la clé brute)
  */
 export function decrireAction(action: string): ActionDecrite {
   const cle = action.trim();
-  if (cle === "") return { emoji: "📌", texte: "Action inconnue" };
+  if (cle === "") return { icone: "inconnu", texte: "Action inconnue" };
 
   const domaine = DOMAINES.find(([prefixe]) => cle === prefixe || cle.startsWith(`${prefixe}.`));
-  const emoji = domaine?.[1] ?? "📌";
+  const icone = domaine?.[1] ?? "inconnu";
 
   // Segments restants une fois le domaine retiré.
   const reste = domaine ? cle.slice(domaine[0].length).replace(/^\./, "") : cle;
@@ -273,7 +310,7 @@ export function decrireAction(action: string): ActionDecrite {
   if (segments.length === 0) {
     // La clé EST le domaine (ex. « setting.updated » traité plus haut, ou
     // « noop »). On se contente du nom du domaine.
-    return { emoji, texte: domaine?.[2] ?? humaniser(cle) };
+    return { icone, texte: domaine?.[2] ?? humaniser(cle) };
   }
 
   const dernier = segments[segments.length - 1] as string;
@@ -283,7 +320,7 @@ export function decrireAction(action: string): ActionDecrite {
   // sert alors de sujet pour que la phrase reste complète.
   if (!verbe) {
     const objet = segments.map(humaniser).join(" ");
-    return { emoji, texte: capitaliser(domaine ? `${domaine[2]} ${objet}` : objet) };
+    return { icone, texte: capitaliser(domaine ? `${domaine[2]} ${objet}` : objet) };
   }
 
   const objet = segments.slice(0, -1).map(humaniser).join(" ");
@@ -293,7 +330,7 @@ export function decrireAction(action: string): ActionDecrite {
     const sujet = domaine?.[2] ?? "";
     const noyauSujet = (sujet.split(" ").pop() ?? "").trim();
     const p = accorder(verbe, OBJETS_FEMININS.has(sansAccent(noyauSujet)), estPluriel(noyauSujet));
-    return { emoji, texte: capitaliser(`${sujet} ${p}`.trim()) };
+    return { icone, texte: capitaliser(`${sujet} ${p}`.trim()) };
   }
 
   // Avec un objet, on NE répète PAS le nom du domaine : l'emoji le porte déjà,
@@ -303,7 +340,7 @@ export function decrireAction(action: string): ActionDecrite {
   const mots = objet.split(" ");
   const noyau = mots[mots.length - 1] as string;
   const p = accorder(verbe, OBJETS_FEMININS.has(sansAccent(noyau)), estPluriel(noyau));
-  return { emoji, texte: capitaliser(`${objet} ${p}`) };
+  return { icone, texte: capitaliser(`${objet} ${p}`) };
 }
 
 function capitaliser(s: string): string {

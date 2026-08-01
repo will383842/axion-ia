@@ -4,16 +4,16 @@ import { decrireAction } from "../activity-labels";
 describe("decrireAction", () => {
   it("traduit une clé domaine.objet.verbe en phrase française", () => {
     expect(decrireAction("qualiopi.client.update")).toEqual({
-      emoji: "🏢",
+      icone: "organisation",
       texte: "Client modifié",
     });
   });
 
-  // L'emoji porte déjà le domaine : le répéter donne « Facturation relance
+  // L'icône porte déjà le domaine : le répéter donne « Facturation relance
   // envoyée », plus lourd que « Relance envoyée ».
   it("ne répète pas le nom du domaine quand un objet est présent", () => {
     expect(decrireAction("facturation.relance.envoyer")).toEqual({
-      emoji: "💰",
+      icone: "facturation",
       texte: "Relance envoyée",
     });
   });
@@ -35,8 +35,8 @@ describe("decrireAction", () => {
 
   it("choisit le domaine le plus spécifique quand plusieurs préfixes matchent", () => {
     // `qualiopi.document.*` doit l'emporter sur `qualiopi.*`.
-    expect(decrireAction("qualiopi.document.convention.genere").emoji).toBe("📄");
-    expect(decrireAction("qualiopi.sessions.create").emoji).toBe("🎓");
+    expect(decrireAction("qualiopi.document.convention.genere").icone).toBe("document");
+    expect(decrireAction("qualiopi.sessions.create").icone).toBe("formation");
   });
 
   it("gère les objets composés de plusieurs segments", () => {
@@ -72,7 +72,7 @@ describe("decrireAction", () => {
     for (const cle of ["", "   ", "noop", "created", "a.b.c.d.e"]) {
       const r = decrireAction(cle);
       expect(r.texte.length).toBeGreaterThan(0);
-      expect(r.emoji.length).toBeGreaterThan(0);
+      expect(r.icone.length).toBeGreaterThan(0);
     }
   });
 });

@@ -24,6 +24,77 @@ import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
 import { decrireAction } from "@/lib/admin/activity-labels";
+import type { ActivityIconKey } from "@/lib/admin/activity-labels";
+import {
+  FolderKanban,
+  Inbox,
+  Server,
+  Bell,
+  ShieldCheck,
+  Globe,
+  LogOut,
+  CircleCheck,
+  CircleAlert,
+  PenLine,
+  Mail,
+  ChevronRight,
+  History,
+  Zap,
+  Newspaper,
+  Send,
+  Handshake,
+  Signature,
+  FileText,
+  Building2,
+  ChartColumn,
+  Landmark,
+  SearchCheck,
+  Banknote,
+  Star,
+  Award,
+  Settings,
+  GraduationCap,
+  CircleDollarSign,
+  Library,
+  Lock,
+  Palette,
+  Image as ImageIcon,
+  Pin,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+/**
+ * Forme donnée à chaque famille d'action du journal.
+ *
+ * `activity-labels.ts` nomme la famille (`document`, `facturation`…) sans jamais
+ * la dessiner : c'est du code de bibliothèque, testé sans DOM. La correspondance
+ * vers un composant se fait donc ici, au seul endroit qui rend le journal.
+ */
+const ICONE_ACTIVITE: Record<ActivityIconKey, LucideIcon> = {
+  coaching: Handshake,
+  signature: Signature,
+  document: FileText,
+  devis: PenLine,
+  organisation: Building2,
+  alerte: Bell,
+  rapport: ChartColumn,
+  financeur: Landmark,
+  audit: SearchCheck,
+  remuneration: Banknote,
+  appreciation: Star,
+  attestation: Award,
+  reglage: Settings,
+  formation: GraduationCap,
+  facturation: CircleDollarSign,
+  email: Mail,
+  connaissances: Library,
+  rgpd: Lock,
+  newsletter: Send,
+  article: Newspaper,
+  marque: Palette,
+  media: ImageIcon,
+  inconnu: Pin,
+};
 
 interface DashboardV2Props {
   adminPrefix: string;
@@ -47,43 +118,43 @@ interface DashboardV2Props {
 
 /** Raccourci vers un outil, avec son repère visuel. */
 const RACCOURCIS: ReadonlyArray<{
-  emoji: string;
+  icone: LucideIcon;
   titre: string;
   description: string;
   chemin: string;
 }> = [
   {
-    emoji: "📁",
+    icone: FolderKanban,
     titre: "Dossiers",
     description: "Où en est chaque affaire, du devis au solde encaissé",
     chemin: "/qualiopi/dossiers",
   },
   {
-    emoji: "📨",
+    icone: Inbox,
     titre: "Boîte de réception",
     description: "Appels réservés, messages, candidatures, podcasts",
     chemin: "/contacts",
   },
   {
-    emoji: "🖥️",
+    icone: Server,
     titre: "Infrastructure",
     description: "14 outils, statut en direct, liens directs",
     chemin: "/infra",
   },
   {
-    emoji: "🔔",
+    icone: Bell,
     titre: "Alertes",
     description: "Sentry · UptimeRobot · Coolify, agrégées",
     chemin: "/alerts",
   },
   {
-    emoji: "🔐",
+    icone: ShieldCheck,
     titre: "Double authentification",
     description: "Activer la 2FA sur votre compte",
     chemin: "/2fa/setup",
   },
   {
-    emoji: "🌐",
+    icone: Globe,
     titre: "Toutes les URLs",
     description: "Catalogue vivant des pages publiques et leur indexabilité",
     chemin: "/site-explorer",
@@ -91,11 +162,11 @@ const RACCOURCIS: ReadonlyArray<{
 ];
 
 function Compteur({
-  emoji,
+  icon: Icon,
   n,
   libelle,
 }: {
-  emoji: string;
+  icon: LucideIcon;
   n: number;
   libelle: string;
 }): React.ReactElement | null {
@@ -110,7 +181,11 @@ function Compteur({
         "border border-[color:var(--color-admin-border)]",
       )}
     >
-      <span aria-hidden="true">{emoji}</span>
+      <Icon
+        size={15}
+        aria-hidden="true"
+        className="shrink-0 text-[color:var(--color-admin-fg-muted)]"
+      />
       <strong className="tabular-nums">{n}</strong>
       {libelle}
     </span>
@@ -132,15 +207,19 @@ export function DashboardV2({
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="👋 Tableau de bord"
+        title="Tableau de bord"
         description={`Connecté en tant que ${email ?? "—"} · ${role}`}
         actions={
           // Le rail porte aussi un bouton de déconnexion, mais UNIQUEMENT quand
           // il est déployé : replié, il n'en affiche aucun et le menu
           // utilisateur n'en propose pas non plus. On garde donc celui-ci.
           <form action={logoutAction}>
-            <button type="submit" className="admin-button-ghost">
-              🚪 Déconnexion
+            <button
+              type="submit"
+              className="admin-button-ghost inline-flex items-center gap-[var(--space-admin-2)]"
+            >
+              <LogOut size={15} aria-hidden="true" />
+              Déconnexion
             </button>
           </form>
         }
@@ -158,28 +237,42 @@ export function DashboardV2({
       >
         {rienAFaire ? (
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-success-fg)]">
-            <span aria-hidden="true">✅</span> <strong>Rien n’attend d’action.</strong> Tout est à
-            jour — signatures, e-mails et alertes sont traités.
+            <CircleCheck
+              size={16}
+              aria-hidden="true"
+              className="mr-[var(--space-admin-2)] inline-block align-[-2px]"
+            />
+            <strong>Rien n’attend d’action.</strong> Tout est à jour — signatures, e-mails et
+            alertes sont traités.
           </p>
         ) : (
           <div className="flex flex-wrap items-center justify-between gap-[var(--space-admin-6)]">
             <div className="min-w-0">
               <h2 className="text-[length:var(--text-admin-xl)] font-bold tracking-tight text-[color:var(--color-admin-fg)]">
-                <span aria-hidden="true">🔴</span> {aTraiter.total} chose
+                <CircleAlert
+                  size={20}
+                  aria-hidden="true"
+                  className="mr-[var(--space-admin-2)] inline-block align-[-3px] text-[color:var(--color-admin-destructive)]"
+                />
+                {aTraiter.total} chose
                 {aTraiter.total > 1 ? "s" : ""} à traiter
               </h2>
               <div className="mt-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-3)]">
                 <Compteur
-                  emoji="✍️"
+                  icon={PenLine}
                   n={aTraiter.signatures}
                   libelle="signature(s) à contresigner"
                 />
-                <Compteur emoji="📧" n={aTraiter.emails} libelle="e-mail(s) à valider" />
-                <Compteur emoji="🔔" n={aTraiter.alertes} libelle="alerte(s) non lue(s)" />
+                <Compteur icon={Mail} n={aTraiter.emails} libelle="e-mail(s) à valider" />
+                <Compteur icon={Bell} n={aTraiter.alertes} libelle="alerte(s) non lue(s)" />
               </div>
             </div>
-            <Link href={`${base}/qualiopi/a-traiter`} className="admin-button shrink-0">
-              Ouvrir la liste →
+            <Link
+              href={`${base}/qualiopi/a-traiter`}
+              className="admin-button inline-flex shrink-0 items-center gap-[var(--space-admin-2)]"
+            >
+              Ouvrir la liste
+              <ChevronRight size={15} aria-hidden="true" />
             </Link>
           </div>
         )}
@@ -191,17 +284,13 @@ export function DashboardV2({
         className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3"
       >
         <AdminStatCard
-          label="📥 Soumissions totales"
+          label="Soumissions totales"
           value={kpis.totalSubmissions}
           href={`${base}/submissions`}
         />
+        <AdminStatCard label="Articles publiés" value={kpis.totalArticles} href={`${base}/blog`} />
         <AdminStatCard
-          label="📰 Articles publiés"
-          value={kpis.totalArticles}
-          href={`${base}/blog`}
-        />
-        <AdminStatCard
-          label="📬 Abonnés newsletter"
+          label="Abonnés newsletter"
           value={kpis.totalSubscribers}
           href={`${base}/newsletter`}
         />
@@ -210,8 +299,9 @@ export function DashboardV2({
       <div className="grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
         {/* ————— Journal ————— */}
         <AdminCard>
-          <h2 className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-            🕒 Activité récente
+          <h2 className="mb-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            <History size={18} aria-hidden="true" className="shrink-0" />
+            Activité récente
           </h2>
           {activityRows.length === 0 ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
@@ -220,12 +310,15 @@ export function DashboardV2({
           ) : (
             <ul className="flex flex-col gap-[var(--space-admin-4)]">
               {activityRows.map((a) => {
-                const { emoji, texte } = decrireAction(a.action);
+                const { icone, texte } = decrireAction(a.action);
+                const IconeAction = ICONE_ACTIVITE[icone];
                 return (
                   <li key={a.id} className="flex items-start gap-[var(--space-admin-4)]">
-                    <span aria-hidden="true" className="shrink-0 leading-[1.4]">
-                      {emoji}
-                    </span>
+                    <IconeAction
+                      size={16}
+                      aria-hidden="true"
+                      className="mt-[2px] shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                    />
                     <span className="min-w-0 text-[length:var(--text-admin-sm)]">
                       <strong className="font-medium text-[color:var(--color-admin-fg)]">
                         {texte}
@@ -240,16 +333,21 @@ export function DashboardV2({
             </ul>
           )}
           <p className="mt-[var(--space-admin-6)]">
-            <Link href={`${base}/activity-logs`} className="admin-button-ghost">
-              Voir tout le journal →
+            <Link
+              href={`${base}/activity-logs`}
+              className="admin-button-ghost inline-flex items-center gap-[var(--space-admin-2)]"
+            >
+              Voir tout le journal
+              <ChevronRight size={15} aria-hidden="true" />
             </Link>
           </p>
         </AdminCard>
 
         {/* ————— Raccourcis ————— */}
         <AdminCard>
-          <h2 className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-            ⚡ Raccourcis
+          <h2 className="mb-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            <Zap size={18} aria-hidden="true" className="shrink-0" />
+            Raccourcis
           </h2>
           <ul className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2">
             {RACCOURCIS.map((r) => (
@@ -264,9 +362,11 @@ export function DashboardV2({
                     "focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none",
                   )}
                 >
-                  <span aria-hidden="true" className="shrink-0 text-[length:var(--text-admin-lg)]">
-                    {r.emoji}
-                  </span>
+                  <r.icone
+                    size={20}
+                    aria-hidden="true"
+                    className="mt-[2px] shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                  />
                   <span className="min-w-0">
                     <span className="block text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
                       {r.titre}
