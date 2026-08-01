@@ -24,6 +24,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { estDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import type {
   AuditMissionStatut,
   CoachingSessionStatut,
@@ -250,6 +251,33 @@ export function deriverStatutDossier(
 }
 
 /**
+ * Le dossier est-il ARCHIVÉ ? — c'est-à-dire soldé (réalisé ET payé/clos)
+ * depuis PLUS de `FENETRE_SOLDES_JOURS` jours (refonte console phase 3).
+ *
+ * PURE, même contrat que `deriverStatutDossier` (dont elle est le complément
+ * exact pour les soldés) : elle nomme la SEULE raison pour laquelle la
+ * dérivation renvoie null alors que l'affaire est terminée proprement. Les
+ * autres null (devis refusé, session annulée…) ne sont PAS des archives — une
+ * affaire annulée n'a jamais été soldée, elle n'a rien à faire dans une vue
+ * « dossiers soldés ».
+ *
+ * 🔴 Un dossier resté « À solder » (impayé) n'est JAMAIS archivé, quel que
+ * soit son âge : l'archivage ne doit pas devenir la porte de sortie discrète
+ * des créances qu'on a oublié d'encaisser.
+ */
+export function estDossierArchive(dossier: DossierSource, maintenant: Date): boolean {
+  // Un devis ne se « solde » pas : accepté il continue via sa session,
+  // refusé/expiré il est terminé sans avoir été une prestation.
+  if (dossier.source === "devis") return false;
+  if (dossier.statut !== "realisee") return false;
+  const resteASolder =
+    dossier.source === "session"
+      ? dossier.factureImpayee || dossier.financementNonSolde
+      : dossier.factureImpayee;
+  return !resteASolder && !estDansFenetreSoldes(dossier.updatedAt, maintenant);
+}
+
+/**
  * Prochaine action HUMAINE d'une ligne, selon sa colonne. C'est ce qui
  * distingue un pipeline d'une liste : chaque ligne dit quoi faire ensuite.
  */
@@ -287,6 +315,20 @@ export interface LigneDossier {
   cle: string;
   colonne: ColonnePipeline;
   activite: ActiviteDossier;
+  /**
+   * L'affaire relève-t-elle du périmètre Qualiopi ? Dérivé via LE SSOT
+   * (`src/server/qualiopi/perimetre.ts`), jamais recalculé ailleurs — pour un
+   * devis à partir de son activité de facturation RÉELLE (pas du badge, qui
+   * agrège implementation/site_web sous « Formation »), pour une prestation à
+   * partir de sa nature (session = formation, coaching = un_a_un, audit).
+   */
+  qualiopi: boolean;
+  /**
+   * Ligne d'ARCHIVE : soldée depuis plus de `FENETRE_SOLDES_JOURS` jours.
+   * Toujours false en lecture normale (ces lignes n'y existent pas) ; en mode
+   * `avecArchives`, distingue les soldés récents (vue normale) des archivés.
+   */
+  archive: boolean;
   /** Raison sociale du client, ou « — » si l'affaire n'est pas rattachée. */
   client: string;
   intitule: string;
@@ -473,6 +515,18 @@ function pipelineVide(): DossiersPipeline {
 }
 
 /**
+ * Options de lecture du pipeline (refonte console phase 3).
+ *
+ * `avecArchives` : inclut AUSSI les dossiers soldés au-delà de la fenêtre des
+ * 30 jours, rangés en colonne « Soldés » avec `archive: true`. Le DÉFAUT reste
+ * strictement le comportement de la phase 2 (archives exclues) — les appelants
+ * existants et leurs tests ne voient aucune différence.
+ */
+export interface OptionsLectureDossiers {
+  avecArchives?: boolean;
+}
+
+/**
  * Lit les quatre sources en parallèle, dérive la colonne de chaque affaire et
  * groupe. `maintenant` est injectable pour les tests ; en production, l'appel
  * sans argument prend l'instant courant (UTC — la fenêtre des 30 jours se
@@ -480,7 +534,25 @@ function pipelineVide(): DossiersPipeline {
  */
 export async function lireDossiersPipeline(
   maintenant: Date = new Date(),
+  options: OptionsLectureDossiers = {},
 ): Promise<DossiersPipeline> {
+  const avecArchives = options.avecArchives === true;
+  /**
+   * Colonne + drapeau d'archive d'une affaire. La dérivation de la phase 2
+   * reste LA règle ; le mode archives ne fait que repêcher le null « soldé
+   * trop vieux » (et LUI SEUL — `estDossierArchive` ignore les annulés,
+   * refusés et impayés).
+   */
+  const resoudre = (
+    dossier: DossierSource,
+  ): { colonne: ColonnePipeline; archive: boolean } | null => {
+    const colonne = deriverStatutDossier(dossier, maintenant);
+    if (colonne) return { colonne, archive: false };
+    if (avecArchives && estDossierArchive(dossier, maintenant)) {
+      return { colonne: "soldes", archive: true };
+    }
+    return null;
+  };
   const [devis, sessions, coachings, audits] = await Promise.all([
     lireDevisEnvoyes(),
     lireSessionsVivantes(),
@@ -492,13 +564,18 @@ export async function lireDossiersPipeline(
   const ajouter = (ligne: LigneDossier) => pipeline[ligne.colonne].push(ligne);
 
   for (const d of devis) {
-    const colonne = deriverStatutDossier({ source: "devis", statut: d.statut }, maintenant);
-    if (!colonne) continue;
+    const resolu = resoudre({ source: "devis", statut: d.statut });
+    if (!resolu) continue;
+    const { colonne, archive } = resolu;
     const activite = activiteDevis(d.activite);
     ajouter({
       cle: `devis:${d.id}`,
       colonne,
       activite,
+      // Sur l'activité RÉELLE du devis (nullable → hors périmètre), pas sur le
+      // badge : un devis site_web badgé « Formation » reste hors Qualiopi.
+      qualiopi: estDansPerimetreQualiopi(d.activite),
+      archive,
       client: d.client.raisonSociale,
       intitule: `Devis ${d.numero}`,
       reference: d.numero,
@@ -512,47 +589,48 @@ export async function lireDossiersPipeline(
   }
 
   for (const s of sessions) {
-    const colonne = deriverStatutDossier(
-      {
-        source: "session",
-        statut: s.statut,
-        signatureEnAttente: s.documents.length > 0,
-        factureImpayee: s.facturesFormation.length > 0,
-        financementNonSolde: s.dossiersFinancement.length > 0,
-        updatedAt: s.updatedAt,
-      },
-      maintenant,
-    );
-    if (!colonne) continue;
+    const resolu = resoudre({
+      source: "session",
+      statut: s.statut,
+      signatureEnAttente: s.documents.length > 0,
+      factureImpayee: s.facturesFormation.length > 0,
+      financementNonSolde: s.dossiersFinancement.length > 0,
+      updatedAt: s.updatedAt,
+    });
+    if (!resolu) continue;
     ajouter({
       cle: `session:${s.id}`,
-      colonne,
+      colonne: resolu.colonne,
       activite: "formation",
+      // Une session de formation collective est par nature « formation ».
+      qualiopi: estDansPerimetreQualiopi("formation"),
+      archive: resolu.archive,
       client: s.client?.raisonSociale ?? "—",
       intitule: s.titreSession,
       reference: s.numero,
       dateDebut: s.dateDebut,
       dateFin: s.dateFin,
-      prochaineAction: libellerProchaineAction(colonne, "formation"),
+      prochaineAction: libellerProchaineAction(resolu.colonne, "formation"),
       cheminFiche: `/qualiopi/sessions/${s.id}`,
     });
   }
 
   for (const c of coachings) {
-    const colonne = deriverStatutDossier(
-      {
-        source: "coaching",
-        statut: c.statut,
-        factureImpayee: (c.coachingContract?.factures.length ?? 0) > 0,
-        updatedAt: c.updatedAt,
-      },
-      maintenant,
-    );
-    if (!colonne) continue;
+    const resolu = resoudre({
+      source: "coaching",
+      statut: c.statut,
+      factureImpayee: (c.coachingContract?.factures.length ?? 0) > 0,
+      updatedAt: c.updatedAt,
+    });
+    if (!resolu) continue;
     ajouter({
       cle: `coaching:${c.id}`,
-      colonne,
+      colonne: resolu.colonne,
       activite: "coaching",
+      // Coaching 1-to-1 = « un_a_un » dans la taxonomie de facturation (AFEST
+      // comprise) : couvert par le certificat, dixit le SSOT.
+      qualiopi: estDansPerimetreQualiopi("un_a_un"),
+      archive: resolu.archive,
       // Le « client » d'un coaching : le client du contrat s'il existe, sinon
       // l'entreprise du bénéficiaire, sinon le bénéficiaire lui-même (ad hoc).
       client:
@@ -566,32 +644,32 @@ export async function lireDossiersPipeline(
       reference: null,
       dateDebut: c.dateSeance,
       dateFin: c.dateSeanceFin,
-      prochaineAction: libellerProchaineAction(colonne, "coaching"),
+      prochaineAction: libellerProchaineAction(resolu.colonne, "coaching"),
       cheminFiche: `/coaching/seances/${c.id}`,
     });
   }
 
   for (const a of audits) {
-    const colonne = deriverStatutDossier(
-      {
-        source: "audit",
-        statut: a.statut,
-        factureImpayee: a.facturesFormation.length > 0,
-        updatedAt: a.updatedAt,
-      },
-      maintenant,
-    );
-    if (!colonne) continue;
+    const resolu = resoudre({
+      source: "audit",
+      statut: a.statut,
+      factureImpayee: a.facturesFormation.length > 0,
+      updatedAt: a.updatedAt,
+    });
+    if (!resolu) continue;
     ajouter({
       cle: `audit:${a.id}`,
-      colonne,
+      colonne: resolu.colonne,
       activite: "audit",
+      // Un audit est une prestation de CONSEIL : hors périmètre, dixit le SSOT.
+      qualiopi: estDansPerimetreQualiopi("audit"),
+      archive: resolu.archive,
       client: a.client?.raisonSociale ?? "—",
       intitule: a.titre,
       reference: a.numero,
       dateDebut: a.dateDebut,
       dateFin: a.dateFin,
-      prochaineAction: libellerProchaineAction(colonne, "audit"),
+      prochaineAction: libellerProchaineAction(resolu.colonne, "audit"),
       cheminFiche: `/qualiopi/audits/${a.id}`,
     });
   }

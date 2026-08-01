@@ -15,6 +15,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
   deriverStatutDossier,
+  estDossierArchive,
   lireDossiersPipeline,
   libellerProchaineAction,
   COLONNES_PIPELINE,
@@ -420,5 +421,302 @@ describe("lireDossiersPipeline", () => {
     expect(pipeline.en_cours).toHaveLength(1);
     expect(pipeline.en_cours[0]?.activite).toBe("audit");
     expect(pipeline.en_cours[0]?.cheminFiche).toBe("/qualiopi/audits/a1");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 3 — estDossierArchive (le complément exact du null « soldé trop vieux »)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("estDossierArchive", () => {
+  it("session réalisée, payée, au-delà de la fenêtre → archivée", () => {
+    expect(
+      estDossierArchive({ ...sessionBase, statut: "realisee", updatedAt: VIEUX }, MAINTENANT),
+    ).toBe(true);
+  });
+
+  it("session réalisée, payée, RÉCENTE → pas archivée (elle vit en « Soldés »)", () => {
+    expect(estDossierArchive({ ...sessionBase, statut: "realisee" }, MAINTENANT)).toBe(false);
+  });
+
+  // 🔴 LE garde-fou de la phase 3 : l'archivage ne doit jamais devenir la
+  // porte de sortie discrète d'une créance oubliée.
+  it("session réalisée mais IMPAYÉE, même très vieille → JAMAIS archivée", () => {
+    expect(
+      estDossierArchive(
+        { ...sessionBase, statut: "realisee", factureImpayee: true, updatedAt: VIEUX },
+        MAINTENANT,
+      ),
+    ).toBe(false);
+  });
+
+  it("session au financement non clos, même très vieille → JAMAIS archivée", () => {
+    expect(
+      estDossierArchive(
+        { ...sessionBase, statut: "realisee", financementNonSolde: true, updatedAt: VIEUX },
+        MAINTENANT,
+      ),
+    ).toBe(false);
+  });
+
+  it("session annulée, même vieille → pas une archive (jamais soldée)", () => {
+    expect(
+      estDossierArchive({ ...sessionBase, statut: "annulee", updatedAt: VIEUX }, MAINTENANT),
+    ).toBe(false);
+  });
+
+  it("un devis n'est jamais archivé (il ne se « solde » pas)", () => {
+    expect(estDossierArchive({ source: "devis", statut: "refuse" }, MAINTENANT)).toBe(false);
+    expect(estDossierArchive({ source: "devis", statut: "expire" }, MAINTENANT)).toBe(false);
+  });
+
+  it("coaching et audit réalisés, payés, vieux → archivés aussi", () => {
+    expect(
+      estDossierArchive(
+        { source: "coaching", statut: "realisee", factureImpayee: false, updatedAt: VIEUX },
+        MAINTENANT,
+      ),
+    ).toBe(true);
+    expect(
+      estDossierArchive(
+        { source: "audit", statut: "realisee", factureImpayee: false, updatedAt: VIEUX },
+        MAINTENANT,
+      ),
+    ).toBe(true);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 3 — badge Qualiopi + mode archives dans lireDossiersPipeline
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => {
+  beforeEach(() => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.coachingSession.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.auditMission.findMany).mockResolvedValue([]);
+  });
+
+  it("devis : le badge suit l'activité RÉELLE — formation ✅, audit ❌, null ❌ (jamais Qualiopi par accident)", async () => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([
+      {
+        id: "d-form",
+        numero: "AXI-DEV-2026-010",
+        activite: "formation",
+        statut: "envoye",
+        sentAt: RECENT,
+        dateValidite: null,
+        client: { raisonSociale: "INVEST SUN" },
+      } as never,
+      {
+        id: "d-audit",
+        numero: "AXI-DEV-2026-011",
+        activite: "audit",
+        statut: "envoye",
+        sentAt: RECENT,
+        dateValidite: null,
+        client: { raisonSociale: "ACURIA" },
+      } as never,
+      // `Devis.activite` est nullable : sans activité déclarée, on n'affiche
+      // JAMAIS « Qualiopi » — c'est un engagement d'audit, pas une décoration.
+      {
+        id: "d-null",
+        numero: "AXI-DEV-2026-012",
+        activite: null,
+        statut: "envoye",
+        sentAt: RECENT,
+        dateValidite: null,
+        client: { raisonSociale: "INVEST SUN" },
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const parCle = new Map(pipeline.devis_attente.map((l) => [l.cle, l.qualiopi]));
+    expect(parCle.get("devis:d-form")).toBe(true);
+    expect(parCle.get("devis:d-audit")).toBe(false);
+    expect(parCle.get("devis:d-null")).toBe(false);
+  });
+
+  it("devis site_web : badge d'activité « Formation » (agrégat) mais périmètre HORS Qualiopi", async () => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([
+      {
+        id: "d-web",
+        numero: "AXI-DEV-2026-013",
+        activite: "site_web",
+        statut: "envoye",
+        sentAt: RECENT,
+        dateValidite: null,
+        client: { raisonSociale: "INVEST SUN" },
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    expect(pipeline.devis_attente[0]?.activite).toBe("formation");
+    expect(pipeline.devis_attente[0]?.qualiopi).toBe(false);
+  });
+
+  it("session → ✅ Qualiopi · coaching (un_a_un / AFEST) → ✅ · mission d'audit → ❌", async () => {
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([
+      {
+        id: "s1",
+        numero: "AXI-SESS-2026-010",
+        titreSession: "Automatiser avec l'IA",
+        statut: "planifiee",
+        dateDebut: null,
+        dateFin: null,
+        updatedAt: RECENT,
+        client: { raisonSociale: "INVEST SUN" },
+        documents: [],
+        facturesFormation: [],
+        dossiersFinancement: [],
+      } as never,
+    ]);
+    vi.mocked(prisma.coachingSession.findMany).mockResolvedValue([
+      {
+        id: "c1",
+        interventionSlug: "dirigeant-vision-strategique",
+        statut: "planifiee",
+        dateSeance: null,
+        dateSeanceFin: null,
+        updatedAt: RECENT,
+        beneficiaireNom: "Simone Blanc",
+        beneficiaireEntreprise: null,
+        coachingContract: null,
+      } as never,
+    ]);
+    vi.mocked(prisma.auditMission.findMany).mockResolvedValue([
+      {
+        id: "a1",
+        numero: "AXI-AUD-2026-010",
+        titre: "Audit IA process",
+        statut: "planifiee",
+        dateDebut: null,
+        dateFin: null,
+        updatedAt: RECENT,
+        client: { raisonSociale: "ACURIA" },
+        facturesFormation: [],
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const parCle = new Map(pipeline.a_preparer.map((l) => [l.cle, l.qualiopi]));
+    expect(parCle.get("session:s1")).toBe(true);
+    expect(parCle.get("coaching:c1")).toBe(true);
+    expect(parCle.get("audit:a1")).toBe(false);
+  });
+
+  it("en lecture normale, toutes les lignes portent archive: false", async () => {
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([
+      {
+        id: "s1",
+        numero: "AXI-SESS-2026-011",
+        titreSession: "Prompt engineering",
+        statut: "realisee",
+        dateDebut: null,
+        dateFin: null,
+        updatedAt: RECENT,
+        client: null,
+        documents: [],
+        facturesFormation: [],
+        dossiersFinancement: [],
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    expect(pipeline.soldes).toHaveLength(1);
+    expect(pipeline.soldes[0]?.archive).toBe(false);
+  });
+});
+
+describe("lireDossiersPipeline — mode archives (phase 3)", () => {
+  /** Session soldée depuis 45 jours — LE cas que la vue normale exclut. */
+  const sessionSoldeeVieille = {
+    id: "s-arch",
+    numero: "AXI-SESS-2026-020",
+    titreSession: "Session archivée",
+    statut: "realisee",
+    dateDebut: new Date("2026-06-15T08:00:00Z"),
+    dateFin: new Date("2026-06-16T16:00:00Z"),
+    updatedAt: VIEUX,
+    client: { raisonSociale: "INVEST SUN" },
+    documents: [],
+    facturesFormation: [],
+    dossiersFinancement: [],
+  } as never;
+
+  beforeEach(() => {
+    vi.mocked(prisma.devis.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([sessionSoldeeVieille]);
+    vi.mocked(prisma.coachingSession.findMany).mockResolvedValue([]);
+    vi.mocked(prisma.auditMission.findMany).mockResolvedValue([]);
+  });
+
+  it("un soldé de 45 j est ABSENT de la lecture normale (comportement phase 2 intact)", async () => {
+    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
+  });
+
+  it("le même soldé de 45 j apparaît en mode avecArchives — colonne « Soldés », archive: true", async () => {
+    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    expect(pipeline.soldes).toHaveLength(1);
+    expect(pipeline.soldes[0]?.cle).toBe("session:s-arch");
+    expect(pipeline.soldes[0]?.archive).toBe(true);
+    // Archivée mais toujours une formation : le badge Qualiopi reste dérivé.
+    expect(pipeline.soldes[0]?.qualiopi).toBe(true);
+  });
+
+  it("avecArchives ne repêche PAS une créance : réalisée impayée de 45 j reste « À solder », archive: false", async () => {
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([
+      {
+        id: "s-due",
+        numero: "AXI-SESS-2026-021",
+        titreSession: "Créance oubliée",
+        statut: "realisee",
+        dateDebut: null,
+        dateFin: null,
+        updatedAt: VIEUX,
+        client: { raisonSociale: "INVEST SUN" },
+        documents: [],
+        facturesFormation: [{ id: "f1" }],
+        dossiersFinancement: [],
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    expect(pipeline.a_solder).toHaveLength(1);
+    expect(pipeline.a_solder[0]?.archive).toBe(false);
+    expect(pipeline.soldes).toHaveLength(0);
+  });
+
+  it("avecArchives ne repêche pas non plus une session annulée vieille (null ≠ archive)", async () => {
+    vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([
+      {
+        id: "s-ann",
+        numero: "AXI-SESS-2026-022",
+        titreSession: "Annulée",
+        statut: "annulee",
+        dateDebut: null,
+        dateFin: null,
+        updatedAt: VIEUX,
+        client: null,
+        documents: [],
+        facturesFormation: [],
+        dossiersFinancement: [],
+      } as never,
+    ]);
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
+  });
+
+  it("stub-safe aussi en mode archives : les 4 sources en échec → pipeline vide, pas de throw", async () => {
+    vi.mocked(prisma.devis.findMany).mockRejectedValue(new Error("stub.invalid"));
+    vi.mocked(prisma.trainingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
+    vi.mocked(prisma.coachingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
+    vi.mocked(prisma.auditMission.findMany).mockRejectedValue(new Error("stub.invalid"));
+
+    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 });

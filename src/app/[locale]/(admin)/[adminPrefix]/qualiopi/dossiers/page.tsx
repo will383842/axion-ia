@@ -1,5 +1,5 @@
 /**
- * Admin — Qualiopi · 📁 Dossiers (pipeline) — refonte console phase 2, 2026-08-01.
+ * Admin — Qualiopi · 📁 Dossiers (pipeline) — refonte console phases 2 et 3.
  *
  * Répond à la deuxième question du plan (« À traiter » répond à la première) :
  * « où en est chaque affaire ? ». Avant cette page, un client vivait dans six
@@ -9,6 +9,18 @@
  * UNE ligne par affaire, rangée dans une colonne de pipeline qui suit le cycle
  * de vie : 📥 Devis en attente → ✍️ Signature en attente → 📅 À préparer →
  * ▶️ En cours → 🧾 À solder → ✅ Soldés (30 derniers jours, pour ne pas noyer).
+ *
+ * Phase 3 (2026-08-01) — trois ajouts, zéro changement du comportement de base :
+ * - Badge « ✅ Qualiopi » / « ⚙️ Hors périmètre » sur chaque ligne. Verdict de
+ *   Will : « pas de distinction claire entre ce qui doit faire partie de
+ *   Qualiopi ou pas » — la table de vérité vit dans UN SSOT
+ *   (`src/server/qualiopi/perimetre.ts`), la ligne porte le booléen dérivé.
+ * - Filtres par searchParams (`?activite=…`, `?perimetre=…`) : de simples
+ *   LIENS rendus côté serveur — pas un octet de JS client, le filtre est dans
+ *   l'URL donc partageable et revenable (bouton retour du navigateur).
+ * - Archives (`?archives=1`) : les dossiers soldés au-delà de la fenêtre de
+ *   30 jours, que la vue normale exclut volontairement. Ils restent
+ *   consultables sans polluer le pipeline du quotidien.
  *
  * 🔴 Zéro logique propre : le statut est DÉRIVÉ par `lireDossiersPipeline()`
  * (cf. `src/server/admin/dossiers-pipeline.ts`, fonction pure + spec). Cette
@@ -30,7 +42,11 @@ import {
   lireDossiersPipeline,
   COLONNES_PIPELINE,
   ACTIVITE_LABELS,
+  FENETRE_SOLDES_JOURS,
+  type ActiviteDossier,
+  type LigneDossier,
 } from "@/server/admin/dossiers-pipeline";
+import { libellerPerimetre, PERIMETRE_LABELS } from "@/server/qualiopi/perimetre";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -40,7 +56,14 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ activite?: string; perimetre?: string; archives?: string }>;
 }
+
+/** Valeurs admises de `?activite=` — alignées sur les badges de la vue. */
+const ACTIVITES_FILTRABLES = ["formation", "coaching", "audit"] as const;
+
+/** Valeurs admises de `?perimetre=`. */
+type FiltrePerimetre = "qualiopi" | "hors";
 
 /** Dates courtes FR — la machine est en UTC, une date de session s'affiche
  *  pareil à ±2 h près, pas besoin de fuseau explicite. */
@@ -58,7 +81,7 @@ function plage(dateDebut: Date | null, dateFin: Date | null): string | null {
   return null;
 }
 
-export default async function DossiersPage({ params }: PageProps) {
+export default async function DossiersPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
@@ -68,8 +91,61 @@ export default async function DossiersPage({ params }: PageProps) {
   }
 
   const base = `/${locale}/${adminPrefix}`;
-  const pipeline = await lireDossiersPipeline();
-  const totalAffaires = COLONNES_PIPELINE.reduce((n, c) => n + pipeline[c.id].length, 0);
+  const cheminPage = `${base}/qualiopi/dossiers`;
+
+  // ── Lecture des filtres — une valeur inconnue est IGNORÉE (pas d'erreur) :
+  // une URL trafiquée ou périmée retombe sur la vue complète, jamais sur un 500.
+  const sp = await searchParams;
+  const filtreActivite: ActiviteDossier | null = (
+    ACTIVITES_FILTRABLES as readonly string[]
+  ).includes(sp.activite ?? "")
+    ? (sp.activite as ActiviteDossier)
+    : null;
+  const filtrePerimetre: FiltrePerimetre | null =
+    sp.perimetre === "qualiopi" || sp.perimetre === "hors" ? sp.perimetre : null;
+  const modeArchives = sp.archives === "1";
+
+  // Le mode archives est le SEUL cas où l'on demande les soldés hors fenêtre —
+  // la lecture par défaut reste strictement celle de la phase 2.
+  const pipeline = modeArchives
+    ? await lireDossiersPipeline(new Date(), { avecArchives: true })
+    : await lireDossiersPipeline();
+
+  /** La ligne passe-t-elle les filtres actifs (et le bon mode de vue) ? */
+  const correspondFiltres = (l: LigneDossier): boolean =>
+    (!filtreActivite || l.activite === filtreActivite) &&
+    (!filtrePerimetre || l.qualiopi === (filtrePerimetre === "qualiopi")) &&
+    // En vue normale, ne montrer QUE le pipeline vivant ; en archives, QUE les
+    // archivés (les soldés récents restent dans la vue normale, pas ici).
+    l.archive === modeArchives;
+
+  /**
+   * URL de la page avec les filtres voulus. `null` efface un filtre, absent le
+   * conserve — chaque lien-filtre ne touche donc qu'à SA dimension et les
+   * combinaisons (activité × périmètre × archives) marchent toutes seules.
+   */
+  const urlAvec = (patch: {
+    activite?: ActiviteDossier | null;
+    perimetre?: FiltrePerimetre | null;
+    archives?: boolean;
+  }): string => {
+    const activite = patch.activite !== undefined ? patch.activite : filtreActivite;
+    const perimetre = patch.perimetre !== undefined ? patch.perimetre : filtrePerimetre;
+    const archives = patch.archives !== undefined ? patch.archives : modeArchives;
+    const query = new URLSearchParams();
+    if (activite) query.set("activite", activite);
+    if (perimetre) query.set("perimetre", perimetre);
+    if (archives) query.set("archives", "1");
+    const qs = query.toString();
+    return qs ? `${cheminPage}?${qs}` : cheminPage;
+  };
+
+  const lignesArchivees = modeArchives
+    ? COLONNES_PIPELINE.flatMap((c) => pipeline[c.id]).filter(correspondFiltres)
+    : [];
+  const totalAffaires = modeArchives
+    ? lignesArchivees.length
+    : COLONNES_PIPELINE.reduce((n, c) => n + pipeline[c.id].filter(correspondFiltres).length, 0);
 
   // Mêmes classes que la page « À traiter » — 100 % tokens admin, aucun hex.
   const carte =
@@ -84,6 +160,36 @@ export default async function DossiersPage({ params }: PageProps) {
     "text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-accent)] hover:underline";
   const badge =
     "inline-flex items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
+  // Liens-filtres : même pilule dans les deux états, seule la surface change —
+  // l'actif est plein (accent), l'inactif est bordé. Aucun hex, que des tokens.
+  const filtreInactif =
+    "inline-flex items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] hover:underline";
+  const filtreActif =
+    "inline-flex items-center rounded-full border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-semibold text-white";
+  const groupeFiltres =
+    "flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]";
+
+  /** Une ligne d'affaire — identique en vue pipeline et en vue archives. */
+  const rendreLigne = (l: LigneDossier) => {
+    const dates = plage(l.dateDebut, l.dateFin);
+    return (
+      <li key={l.cle} className={ligne}>
+        <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+          <span className={badge}>{ACTIVITE_LABELS[l.activite]}</span>{" "}
+          <span className={badge}>{libellerPerimetre(l.qualiopi)}</span> <strong>{l.client}</strong>{" "}
+          — {l.intitule}
+          {l.reference ? ` · ${l.reference}` : ""}
+          {dates ? ` · ${dates}` : ""}
+          <span className="block text-[color:var(--color-admin-fg-muted)]">
+            {l.prochaineAction}
+          </span>
+        </span>
+        <Link href={`${base}${l.cheminFiche}`} className={lien}>
+          Ouvrir →
+        </Link>
+      </li>
+    );
+  };
 
   return (
     <AdminPageShell>
@@ -92,52 +198,117 @@ export default async function DossiersPage({ params }: PageProps) {
         description="Où en est chaque affaire ? Une ligne par dossier client, groupée par étape du pipeline — du devis envoyé au solde encaissé. Le statut est dérivé des données existantes : rien à tenir à jour."
       />
 
+      {modeArchives && (
+        <div className={carte}>
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            🗄️ Archives — dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours
+          </p>
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Ces dossiers sont terminés et payés : ils sortent du pipeline du quotidien mais restent
+            consultables ici (rien n&apos;est supprimé).
+          </p>
+          <Link href={urlAvec({ archives: false })} className={lien}>
+            ← Retour au pipeline
+          </Link>
+        </div>
+      )}
+
+      {/* Rangée de filtres — de simples liens : le filtre vit dans l'URL,
+          rendu 100 % serveur, zéro JS client. */}
+      <div className="mb-[var(--space-admin-6)] flex flex-col gap-[var(--space-admin-2)]">
+        <div className={groupeFiltres}>
+          <span>Activité :</span>
+          <Link
+            href={urlAvec({ activite: null })}
+            className={filtreActivite === null ? filtreActif : filtreInactif}
+          >
+            Toutes
+          </Link>
+          {ACTIVITES_FILTRABLES.map((a) => (
+            <Link
+              key={a}
+              href={urlAvec({ activite: a })}
+              className={filtreActivite === a ? filtreActif : filtreInactif}
+            >
+              {ACTIVITE_LABELS[a]}
+            </Link>
+          ))}
+        </div>
+        <div className={groupeFiltres}>
+          <span>Périmètre :</span>
+          <Link
+            href={urlAvec({ perimetre: null })}
+            className={filtrePerimetre === null ? filtreActif : filtreInactif}
+          >
+            Tout
+          </Link>
+          <Link
+            href={urlAvec({ perimetre: "qualiopi" })}
+            className={filtrePerimetre === "qualiopi" ? filtreActif : filtreInactif}
+          >
+            {PERIMETRE_LABELS.qualiopi}
+          </Link>
+          <Link
+            href={urlAvec({ perimetre: "hors" })}
+            className={filtrePerimetre === "hors" ? filtreActif : filtreInactif}
+          >
+            {PERIMETRE_LABELS.hors}
+          </Link>
+        </div>
+      </div>
+
       {totalAffaires === 0 && (
         <div className={carte}>
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
-            ✨ Aucune affaire dans le pipeline — pas de devis en attente, pas de session vivante,
-            rien à solder.
+            {modeArchives
+              ? "🗄️ Aucun dossier archivé ne correspond à ces filtres."
+              : filtreActivite || filtrePerimetre
+                ? "✨ Aucune affaire ne correspond à ces filtres."
+                : "✨ Aucune affaire dans le pipeline — pas de devis en attente, pas de session vivante, rien à solder."}
           </p>
         </div>
       )}
 
-      {COLONNES_PIPELINE.map((colonne) => {
-        const lignes = pipeline[colonne.id];
-        // Les colonnes vides sont masquées : afficher six cadres dont quatre
-        // vides redonnerait exactement le bruit que la refonte veut supprimer.
-        if (lignes.length === 0) return null;
-        return (
-          <div key={colonne.id} className={carte}>
+      {modeArchives ? (
+        lignesArchivees.length > 0 && (
+          <div className={carte}>
             <h2 className={titreCarte}>
-              {colonne.label} <span className={pastille}>{lignes.length}</span>
+              🗄️ Dossiers archivés <span className={pastille}>{lignesArchivees.length}</span>
             </h2>
-            <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              {colonne.description}
-            </p>
-            <ul>
-              {lignes.map((l) => {
-                const dates = plage(l.dateDebut, l.dateFin);
-                return (
-                  <li key={l.cle} className={ligne}>
-                    <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                      <span className={badge}>{ACTIVITE_LABELS[l.activite]}</span>{" "}
-                      <strong>{l.client}</strong> — {l.intitule}
-                      {l.reference ? ` · ${l.reference}` : ""}
-                      {dates ? ` · ${dates}` : ""}
-                      <span className="block text-[color:var(--color-admin-fg-muted)]">
-                        {l.prochaineAction}
-                      </span>
-                    </span>
-                    <Link href={`${base}${l.cheminFiche}`} className={lien}>
-                      Ouvrir →
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <ul>{lignesArchivees.map(rendreLigne)}</ul>
           </div>
-        );
-      })}
+        )
+      ) : (
+        <>
+          {COLONNES_PIPELINE.map((colonne) => {
+            const lignes = pipeline[colonne.id].filter(correspondFiltres);
+            // Les colonnes vides sont masquées : afficher six cadres dont quatre
+            // vides redonnerait exactement le bruit que la refonte veut supprimer.
+            if (lignes.length === 0) return null;
+            return (
+              <div key={colonne.id} className={carte}>
+                <h2 className={titreCarte}>
+                  {colonne.label} <span className={pastille}>{lignes.length}</span>
+                </h2>
+                <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                  {colonne.description}
+                </p>
+                <ul>{lignes.map(rendreLigne)}</ul>
+              </div>
+            );
+          })}
+          {/* Lien discret vers les archives — en bas : c'est une vue de
+              consultation, pas une étape du pipeline. */}
+          <p className="text-[length:var(--text-admin-sm)]">
+            <Link
+              href={urlAvec({ archives: true })}
+              className="text-[color:var(--color-admin-fg-muted)] hover:underline"
+            >
+              Voir les archives (dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours) →
+            </Link>
+          </p>
+        </>
+      )}
     </AdminPageShell>
   );
 }
