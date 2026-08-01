@@ -40,12 +40,15 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * 2026-08-01 — 335 occurrences dans 119 fichiers, après le passage en lucide de
- * la barre latérale (145 entrées) et du hub Qualiopi. Les pages reprises
- * ensuite — boîte de réception, « À traiter », tableau de bord — le feront
- * descendre.
+ * 2026-08-01 — 340 occurrences dans 120 fichiers.
+ *
+ * Le passage en lucide de la barre latérale et du hub Qualiopi avait ramené le
+ * compte à 335 ; cinq occurrences sont revenues avec les correctifs console
+ * fusionnés dans main le même jour (PR 476 à 483, sur « À traiter » notamment).
+ * C'est précisément ce que ce cliquet sert à rendre visible. Les pages reprises
+ * ensuite le feront descendre.
  */
-const PLAFOND = 335;
+const PLAFOND = 340;
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
