@@ -11,10 +11,19 @@
 // duplique aucune règle métier ici.
 
 import Link from "next/link";
+import {
+  PhoneCall,
+  Mail,
+  UserPlus,
+  Mic,
+  TriangleAlert,
+  ChevronRight,
+  CircleDot,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
 import {
-  INBOX_CHANNEL_ICONS,
   INBOX_CHANNEL_LABELS,
   INBOX_CHANNEL_ORDER,
   type InboxChannel,
@@ -32,6 +41,22 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 25;
+
+/**
+ * Icône de canal — refonte UI 2026-08-01 (couche 4).
+ *
+ * Remplace les emojis (📞 ✉️ 📨 🎙️) que portait `INBOX_CHANNEL_ICONS` : ils
+ * rendaient différemment selon le système et la police, et le module `types.ts`
+ * les déclarait lui-même comme provisoires. Les mêmes composants lucide que
+ * la barre latérale sont réutilisés pour chaque canal — un canal se reconnaît
+ * ainsi à la même forme dans la navigation et dans la liste.
+ */
+const CHANNEL_ICON: Record<InboxChannel, LucideIcon> = {
+  appel: PhoneCall,
+  message: Mail,
+  candidature: UserPlus,
+  podcast: Mic,
+};
 
 function formatDate(d: Date): string {
   return new Intl.DateTimeFormat("fr-FR", {
@@ -87,7 +112,10 @@ export default async function InboxPage({
     },
     ...INBOX_CHANNEL_ORDER.map((c) => ({
       value: c,
-      label: `${INBOX_CHANNEL_ICONS[c]} ${INBOX_CHANNEL_LABELS[c]}`,
+      // Libellé nu : le sélecteur segmenté porte déjà un compteur, et un
+      // pictogramme y répéterait le mot sans rien ajouter. L'icône sert dans
+      // la liste, où elle se lit d'un coup d'œil ligne après ligne.
+      label: INBOX_CHANNEL_LABELS[c],
       href: keep({ canal: c, ...(onlyAction ? { action: "1" } : {}) }),
       count: result.countsByChannel[c],
     })),
@@ -106,23 +134,32 @@ export default async function InboxPage({
     {
       key: "channel",
       header: "Canal",
-      cell: (r) => (
-        <span className="whitespace-nowrap">
-          {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
-              fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
-          {r.unread ? (
-            <span
-              className="mr-1 inline-block h-2 w-2 rounded-full bg-[color:var(--color-admin-info)] align-middle"
-              title="Non lu"
-              aria-label="Non lu"
+      cell: (r) => {
+        const ChannelIcon = CHANNEL_ICON[r.channel];
+        return (
+          <span className="flex items-center gap-[var(--space-admin-2)] whitespace-nowrap">
+            {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
+                fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
+            {r.unread ? (
+              <span
+                className="inline-block h-2 w-2 shrink-0 rounded-full bg-[color:var(--color-admin-info)]"
+                title="Non lu"
+                aria-label="Non lu"
+              />
+            ) : null}
+            <ChannelIcon
+              size={16}
+              aria-hidden="true"
+              className="shrink-0 text-[color:var(--color-admin-fg-muted)]"
             />
-          ) : null}
-          <span aria-hidden="true">{INBOX_CHANNEL_ICONS[r.channel]}</span>{" "}
-          <span className={`text-[length:var(--text-admin-sm)] ${r.unread ? "font-semibold" : ""}`}>
-            {INBOX_CHANNEL_LABELS[r.channel]}
+            <span
+              className={`text-[length:var(--text-admin-sm)] ${r.unread ? "font-semibold" : ""}`}
+            >
+              {INBOX_CHANNEL_LABELS[r.channel]}
+            </span>
           </span>
-        </span>
-      ),
+        );
+      },
     },
     {
       key: "received",
@@ -161,11 +198,13 @@ export default async function InboxPage({
       key: "status",
       header: "Statut",
       cell: (r) => (
-        <span className="whitespace-nowrap">
+        <span className="flex items-center gap-[var(--space-admin-2)] whitespace-nowrap">
           {r.needsAction ? (
-            <span className="mr-1" title="En attente d'une action de votre part" aria-hidden="true">
-              🔴
-            </span>
+            <CircleDot
+              size={14}
+              className="shrink-0 text-[color:var(--color-admin-danger)]"
+              aria-label="En attente d'une action de votre part"
+            />
           ) : null}
           {r.statusLabel}
         </span>
@@ -195,26 +234,39 @@ export default async function InboxPage({
           ce qui a permis à un `pageSize` invalide de vivre un déploiement entier
           derrière un paisible « Message 0 ». Il ne peut plus passer inaperçu. */}
       {result.failedChannels.length > 0 ? (
-        <div className="mb-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-danger-border)] bg-[color:var(--color-admin-danger-bg)] p-4 text-sm">
-          <p className="font-semibold">
-            ⚠️ {result.failedChannels.length === 1 ? "Un canal n'a" : "Des canaux n'ont"} pas pu
-            être chargé
-            {result.failedChannels.length === 1 ? "" : "s"} :{" "}
-            {result.failedChannels.map((c) => INBOX_CHANNEL_LABELS[c]).join(", ")}.
-          </p>
-          <p className="mt-2">
-            Les compteurs ci-dessus sont donc incomplets. Ouvrez le canal concerné directement pour
-            voir ses données, et signalez l&apos;incident — le détail est dans les journaux serveur.
-          </p>
+        <div className="mb-[var(--space-admin-3)] flex gap-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-danger-border)] bg-[color:var(--color-admin-danger-bg)] p-4 text-[length:var(--text-admin-sm)]">
+          <TriangleAlert
+            size={18}
+            aria-hidden="true"
+            className="mt-[2px] shrink-0 text-[color:var(--color-admin-danger)]"
+          />
+          <div>
+            <p className="font-semibold">
+              {result.failedChannels.length === 1 ? "Un canal n'a" : "Des canaux n'ont"} pas pu être
+              chargé
+              {result.failedChannels.length === 1 ? "" : "s"} :{" "}
+              {result.failedChannels.map((c) => INBOX_CHANNEL_LABELS[c]).join(", ")}.
+            </p>
+            <p className="mt-[var(--space-admin-2)]">
+              Les compteurs ci-dessus sont donc incomplets. Ouvrez le canal concerné directement
+              pour voir ses données, et signalez l&apos;incident — le détail est dans les journaux
+              serveur.
+            </p>
+          </div>
         </div>
       ) : null}
 
       {/* Une troncature silencieuse ferait passer une liste partielle pour
           exhaustive : on l'affiche. */}
       {result.truncated ? (
-        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          ⚠️ Vue limitée aux entrées les plus récentes de chaque canal. Ouvrez le canal concerné
-          pour voir l&apos;historique complet.
+        <p className="mb-[var(--space-admin-3)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          <TriangleAlert
+            size={15}
+            aria-hidden="true"
+            className="shrink-0 text-[color:var(--color-admin-warning)]"
+          />
+          Vue limitée aux entrées les plus récentes de chaque canal. Ouvrez le canal concerné pour
+          voir l&apos;historique complet.
         </p>
       ) : null}
 
@@ -239,12 +291,14 @@ export default async function InboxPage({
           getRowId={(r) => r.key}
           rowHref={(r) => r.detailHref}
           rowAction={() => (
-            <span
+            // Le chevron était le caractère « › », dont la graisse et la taille
+            // dépendent de la police : il s'affichait plus fin que tout le reste
+            // de la console.
+            <ChevronRight
+              size={16}
               aria-hidden="true"
-              className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-muted)]"
-            >
-              ›
-            </span>
+              className="text-[color:var(--color-admin-fg-muted)]"
+            />
           )}
         />
       )}
