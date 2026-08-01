@@ -21,6 +21,7 @@ import {
   AdminStatCard,
 } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
+import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import type {
   CoverageMapCityRow,
   CoverageMapData,
@@ -66,7 +67,7 @@ function statusTone(
 
 // ─── Composant principal ────────────────────────────────────────────────────
 
-export function CoverageMapV2({ initialData }: Props): React.ReactElement {
+export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactElement {
   // Filtres
   const [filterTier, setFilterTier] = useState<string>("");
   const [filterPipeline, setFilterPipeline] = useState<PipelineFilter>("all");
@@ -122,9 +123,10 @@ export function CoverageMapV2({ initialData }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Carte couverture France"
+        title="Couverture des villes"
         description={`Vue d'ensemble couverture éditoriale / landings / RSS sur ${initialData.nationalStats.totalCities} villes. Cliquez un département pour filtrer.`}
       />
+      <VillesTabsNav adminPrefix={adminPrefix} current="carte" />
 
       {/* KPI nationaux (4 cards) */}
       <div className="mb-[var(--space-admin-6,16px)] grid grid-cols-2 gap-[var(--space-admin-4,8px)] sm:grid-cols-4">

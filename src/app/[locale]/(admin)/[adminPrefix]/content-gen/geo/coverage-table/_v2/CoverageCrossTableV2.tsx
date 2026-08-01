@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import { getJobsVilleSectorDetail } from "@/server/actions/content-gen/geo";
 
 interface Props {
@@ -115,6 +116,7 @@ export async function CoverageCrossTableV2({
           </div>
         }
       />
+      <VillesTabsNav adminPrefix={adminPrefix} current="secteurs" />
 
       {/* Filtres URL */}
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">

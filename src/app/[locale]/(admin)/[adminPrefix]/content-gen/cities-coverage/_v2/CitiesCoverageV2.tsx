@@ -12,6 +12,7 @@ import {
   AdminTable,
   AdminEmptyState,
 } from "@/components/admin/ui";
+import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { MapPin, CheckCircle2, Hourglass, TrendingUp } from "lucide-react";
 import {
@@ -181,6 +182,7 @@ export async function CitiesCoverageV2({
           </form>
         }
       />
+      <VillesTabsNav adminPrefix={adminPrefix} current="paliers" />
 
       {/* Progress global */}
       <div className="mb-[var(--space-admin-5)] flex flex-wrap gap-[var(--space-admin-4)]">
