@@ -655,9 +655,22 @@ export function DocumentsSection({
                       })}
                     </td>
                     <td className="py-[var(--space-admin-2)]">
+                      {/* 🔴 2026-08-01 — le lien pointait sur `doc.pdfUrl`, c'est-à-dire
+                          l'URL R2 pré-signée `X-Amz-Expires=900` calculée UNE FOIS à la
+                          génération et figée en base. Quinze minutes plus tard, tout
+                          document du registre répondait
+                          `<Error><Code>ExpiredRequest</Code></Error>` — donc en pratique
+                          TOUS, puisqu'on revient les chercher des jours après. Un registre
+                          documentaire dont aucune pièce ne se télécharge n'est pas un
+                          registre.
+                          `/api/qualiopi/documents/[id]` re-signe à la demande et existait
+                          déjà pour exactement ça ; seul `GenererFactureButton` l'utilisait.
+                          `pdfUrl` reste testé, mais comme témoin que l'upload R2 a bien eu
+                          lieu (`storeAndSignPdf` renvoie null si R2 n'est pas configuré) —
+                          plus jamais comme cible du lien. */}
                       {doc.pdfUrl !== null && doc.pdfUrl !== undefined && doc.pdfUrl !== "" ? (
                         <a
-                          href={doc.pdfUrl}
+                          href={`/api/qualiopi/documents/${doc.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"

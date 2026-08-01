@@ -270,8 +270,14 @@ export default async function PlanningDetailPage({
               {e.justificatifs.map((d) => (
                 <li key={d.id}>
                   {DOC_TYPE_LABELS[d.type] ?? d.type} · {d.numero}{" "}
+                  {/* `pdfUrl` = témoin d'upload R2, pas cible : l'URL stockée est
+                      pré-signée 900 s et périmée. Cf. `/api/qualiopi/documents/[id]`. */}
                   {d.pdfUrl !== null ? (
-                    <a href={d.pdfUrl} target="_blank" rel="noreferrer noopener">
+                    <a
+                      href={`/api/qualiopi/documents/${d.id}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       PDF ↗
                     </a>
                   ) : null}
