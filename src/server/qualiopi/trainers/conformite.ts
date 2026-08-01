@@ -162,8 +162,12 @@ export function estPerime(doc: DocumentConformite, now: Date): boolean {
  *
  * Une pièce sans date d'émission passe en dernier : on ne peut rien prouver de
  * sa fraîcheur, elle ne doit donc jamais primer sur une pièce datée.
+ *
+ * Exportée depuis le 2026-08-01 : le moteur d'alertes (règle vigilance URSSAF)
+ * doit retrouver LA MÊME pièce que cette évaluation — deux sélections
+ * divergeraient un jour sur le même dossier.
  */
-function trouverValide(
+export function trouverValide(
   documents: DocumentConformite[],
   type: TrainerDocumentTypeValue,
   now: Date,

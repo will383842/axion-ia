@@ -12,6 +12,17 @@ import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  CONFORMITE_DEFAUTS,
+  addMonths,
+  trouverValide,
+  vigilancePerimee,
+  vigilanceRequise,
+} from "@/server/qualiopi/trainers/conformite";
+import {
+  cumulAnnuelFormateurCents,
+  listTrainerDocuments,
+} from "@/server/qualiopi/trainers/documents";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -770,6 +781,85 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
   return alertes;
 }
 
+/**
+ * Vigilance URSSAF des sous-traitants (art. L.8222-1) — demandé par Will le
+ * 2026-08-01.
+ *
+ * L'attestation vaut 6 mois et devient obligatoire dès 5 000 € de cumul
+ * annuel ; sans elle, l'OF est SOLIDAIREMENT responsable des cotisations
+ * impayées du prestataire. La fiche formateur la signalait déjà en rouge —
+ * mais il fallait OUVRIR la fiche pour le voir. Ici, elle remonte chaque matin.
+ *
+ * 🔴 Zéro logique dupliquée : seuil (`vigilanceRequise`), sélection de la
+ * pièce (`trouverValide`) et péremption (`vigilancePerimee`) sont LES MÊMES
+ * fonctions que la carte conformité de la fiche. La règle NDA voisine a montré
+ * ce que coûte une réimplémentation locale : un faux positif à 100 % resté
+ * critique pendant des semaines (cf. regleSousTraitantsQualiopi, 2026-07-26).
+ */
+async function regleVigilanceUrssaf(now: Date): Promise<AlerteCandidate[]> {
+  const alertes: AlerteCandidate[] = [];
+
+  const trainersST = await prisma.trainer.findMany({
+    where: { actif: true, statut: "sous_traitant" },
+    select: { id: true, nom: true, prenom: true },
+  });
+  if (trainersST.length === 0) return alertes;
+
+  const annee = now.getFullYear();
+  for (const t of trainersST) {
+    const [documents, montantRetenuCents] = await Promise.all([
+      listTrainerDocuments(t.id),
+      cumulAnnuelFormateurCents(t.id, annee),
+    ]);
+
+    // Sous le seuil : aucune obligation, aucune alerte — un formateur à 800 €
+    // de cumul n'a pas à fournir d'attestation.
+    if (!vigilanceRequise("sous_traitant", montantRetenuCents, CONFORMITE_DEFAUTS)) continue;
+
+    const nomComplet = `${t.prenom} ${t.nom}`.trim();
+    const doc = trouverValide(documents, "attestation_vigilance_urssaf", now);
+
+    if (vigilancePerimee(doc, now, CONFORMITE_DEFAUTS)) {
+      alertes.push({
+        code: doc === null ? "vigilance_urssaf_absente" : "vigilance_urssaf_perimee",
+        niveau: "critique",
+        titre:
+          doc === null
+            ? "Attestation de vigilance URSSAF absente (responsabilité solidaire)"
+            : "Attestation de vigilance URSSAF périmée (responsabilité solidaire)",
+        message:
+          doc === null
+            ? `Le sous-traitant ${nomComplet} a dépassé le seuil de ${CONFORMITE_DEFAUTS.seuilVigilanceCents / 100} € de cumul annuel sans attestation de vigilance URSSAF valide (art. L.8222-1) : la demander et la verser à sa fiche.`
+            : `L'attestation de vigilance URSSAF de ${nomComplet} a plus de ${CONFORMITE_DEFAUTS.vigilanceValiditeMois} mois : en demander une nouvelle (art. L.8222-1, renouvellement semestriel).`,
+        cibleType: "Trainer",
+        cibleId: t.id,
+      });
+      continue;
+    }
+
+    // Préavis : l'attestation est valide mais atteint ses 6 mois sous 30 jours.
+    if (doc !== null && doc.dateEmission !== null) {
+      const expireLe = addMonths(doc.dateEmission, CONFORMITE_DEFAUTS.vigilanceValiditeMois);
+      if (expireLe <= daysFromNow(30, now)) {
+        const joursRestants = Math.max(
+          0,
+          Math.ceil((expireLe.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)),
+        );
+        alertes.push({
+          code: "vigilance_urssaf_expire_j30",
+          niveau: "important",
+          titre: "Attestation de vigilance URSSAF à renouveler sous 30 jours",
+          message: `L'attestation de vigilance URSSAF de ${nomComplet} atteint ses ${CONFORMITE_DEFAUTS.vigilanceValiditeMois} mois le ${expireLe.toLocaleDateString("fr-FR")} (dans ${joursRestants} jours) : demander le renouvellement dès maintenant.`,
+          cibleType: "Trainer",
+          cibleId: t.id,
+        });
+      }
+    }
+  }
+
+  return alertes;
+}
+
 /** R16 — Demandes RGPD non traitées > 30 jours. */
 async function regleRgpdSuppression(now: Date): Promise<AlerteCandidate[]> {
   const threshold = daysAgo(30, now);
@@ -949,6 +1039,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emails_en_attente_validation", fn: regleEmailsEnAttente },
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
+  { nom: "vigilance_urssaf", fn: regleVigilanceUrssaf },
   { nom: "opco", fn: regleOpco },
   { nom: "convention_tripartite", fn: regleConventionTripartite },
   { nom: "convention_formation", fn: regleConventionFormation },
