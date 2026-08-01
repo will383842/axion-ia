@@ -848,6 +848,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "a_traiter",
     },
     // ▸ 📁 DOSSIERS & CLIENTS (les affaires en cours)
+    // Vue pipeline (refonte phase 2) : une ligne par affaire, statut DÉRIVÉ
+    // (cf. src/server/admin/dossiers-pipeline.ts) — répond à « où en est
+    // chaque affaire ? » sans ouvrir six onglets.
+    {
+      href: `${base}/qualiopi/dossiers`,
+      label: "Dossiers (pipeline)",
+      icon: "📁",
+      group: "qualiopi",
+      subGroup: "dossiers",
+    },
     {
       href: `${base}/qualiopi`,
       label: "Vue d'ensemble",
