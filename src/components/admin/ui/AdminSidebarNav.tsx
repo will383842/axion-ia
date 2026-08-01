@@ -198,6 +198,14 @@ interface AdminSidebarNavProps {
    * zéro, contrairement à un compteur de volume qu'on finit par ignorer.
    */
   inboxCounts?: { appel: number; message: number; candidature: number; podcast: number };
+  /**
+   * Compteurs « à traiter » de la console Qualiopi (refonte phase 1,
+   * 2026-08-01) — signatures en attente, e-mails à valider, alertes non lues.
+   * Même philosophie que `inboxCounts` : le badge compte ce qu'il RESTE À
+   * FAIRE, il descend à zéro. Source : `compterQualiopiNav()` (SSOT partagé
+   * avec la page « À traiter » — deux calculs divergeraient un jour).
+   */
+  qualiopiCounts?: { signatures: number; emails: number; alertes: number; total: number };
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -215,6 +223,7 @@ export function AdminSidebarNav({
   siteExplorerAnomaliesHighCount = 0,
   unreadContactsCount = 0,
   inboxCounts,
+  qualiopiCounts,
   userEmail,
   accountHref,
   logoutAction,
@@ -456,6 +465,22 @@ export function AdminSidebarNav({
     }
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
       return { count: unreadContactsCount, tone: "danger", label: "contacts sans réponse" };
+    }
+    // ── Console Qualiopi (refonte phase 1, 2026-08-01) ───────────────────
+    // Égalité EXACTE (même précaution que la boîte de réception) : sans elle,
+    // « À traiter » capterait /qualiopi/a-traiter/* et « Alertes » capterait
+    // les sous-routes.
+    if (qualiopiCounts) {
+      const base = accountHref ?? "";
+      if (href === `${base}/qualiopi/a-traiter` && qualiopiCounts.total > 0) {
+        return { count: qualiopiCounts.total, tone: "danger", label: "actions en attente" };
+      }
+      if (href === `${base}/qualiopi/emails` && qualiopiCounts.emails > 0) {
+        return { count: qualiopiCounts.emails, tone: "danger", label: "e-mails à valider" };
+      }
+      if (href === `${base}/qualiopi/alertes` && qualiopiCounts.alertes > 0) {
+        return { count: qualiopiCounts.alertes, tone: "warn", label: "alertes non lues" };
+      }
     }
     return null;
   };

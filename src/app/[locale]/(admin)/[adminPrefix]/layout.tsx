@@ -72,6 +72,11 @@ import {
   EMPTY_INBOX_COUNTS,
   type InboxActionCounts,
 } from "@/features/admin-inbox/counters";
+import {
+  compterQualiopiNav,
+  COMPTEURS_VIDES,
+  type QualiopiNavCounts,
+} from "@/server/admin/qualiopi-nav-counts";
 
 import "@/app/admin.css";
 import "@/app/print.css";
@@ -162,6 +167,9 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   let unreadContactsCount = 0;
   // Badges « à traiter » de la boîte de réception (2026-07-29).
   let inboxCounts: InboxActionCounts = EMPTY_INBOX_COUNTS;
+  // Pastilles console Qualiopi (refonte phase 1, 2026-08-01) : signatures en
+  // attente + e-mails à valider + alertes non lues. Fail-soft interne → 0.
+  let qualiopiCounts: QualiopiNavCounts = COMPTEURS_VIDES;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -172,26 +180,34 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       "cost_cap_80_active",
     ] as const;
 
-    const [failedCount, anomalyRows, siteExplorerHighCount, unreadCount, inboxActionCounts] =
-      await Promise.all([
-        getFailedJobsCount().catch(() => 0),
-        prisma.contentGenConfig
-          .findMany({
-            where: { key: { in: [...ANOMALY_KEYS] } },
-            select: { key: true, value: true, updatedAt: true },
-          })
-          .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
-        prisma.siteRouteAnomaly
-          .count({ where: { severity: "high", resolvedAt: null } })
-          .catch(() => 0),
-        getUnreadContactsCount(),
-        getInboxActionCounts(),
-      ]);
+    const [
+      failedCount,
+      anomalyRows,
+      siteExplorerHighCount,
+      unreadCount,
+      inboxActionCounts,
+      qualiopiNavCounts,
+    ] = await Promise.all([
+      getFailedJobsCount().catch(() => 0),
+      prisma.contentGenConfig
+        .findMany({
+          where: { key: { in: [...ANOMALY_KEYS] } },
+          select: { key: true, value: true, updatedAt: true },
+        })
+        .catch(() => [] as Array<{ key: string; value: unknown; updatedAt: Date }>),
+      prisma.siteRouteAnomaly
+        .count({ where: { severity: "high", resolvedAt: null } })
+        .catch(() => 0),
+      getUnreadContactsCount(),
+      getInboxActionCounts(),
+      compterQualiopiNav().catch(() => COMPTEURS_VIDES),
+    ]);
 
     failedJobsCount = failedCount;
     siteExplorerAnomaliesHighCount = siteExplorerHighCount;
     unreadContactsCount = unreadCount;
     inboxCounts = inboxActionCounts;
+    qualiopiCounts = qualiopiNavCounts;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -320,6 +336,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             siteExplorerAnomaliesHighCount={siteExplorerAnomaliesHighCount}
             unreadContactsCount={unreadContactsCount}
             inboxCounts={inboxCounts}
+            qualiopiCounts={qualiopiCounts}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}
