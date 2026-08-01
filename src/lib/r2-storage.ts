@@ -196,6 +196,55 @@ export function invoicePdfKey(invoiceNumber: string, issuedAt: Date): string {
 }
 
 /**
+ * Construit la clé canonique du PDF d'un `DocumentGenere` :
+ *   `documents/<année>/<type>/<numéro>.pdf`
+ *
+ * 🔴 Pourquoi une fonction, pour un gabarit d'une ligne.
+ *
+ * Cette clé était recopiée à la main dans SEPT fichiers. `getSignedUrlR2(key)`
+ * prend une `string`, `pdfUrl` EST une string — et `portail/signer/[token]`
+ * appelait donc `getSignedUrlR2(piece.pdfUrl, 900)`, c'est-à-dire signait un
+ * objet dont la clé était l'URL pré-signée elle-même. Le typecheck passait, la
+ * pré-signature est un calcul hors-ligne qui ne lève jamais (le `try/catch`
+ * autour ne se déclenchait pas), l'URL produite était bien formée — et
+ * renvoyait `NoSuchKey` au clic. Le signataire ne pouvait pas lire la pièce
+ * avant de signer, alors que la mention qu'il accepte affirme le contraire.
+ *
+ * En prenant le DOCUMENT et non une chaîne, cette signature rend l'erreur
+ * inexprimable : on ne peut plus passer une URL là où une clé est attendue.
+ *
+ * ⚠️ `getFullYear()` (local), PAS `getUTCFullYear()` comme `invoicePdfKey` :
+ * l'écriture (`documents-service.ts`) partitionne sur l'année LOCALE. Lire en
+ * UTC désignerait un autre dossier pour toute pièce émise le 31 décembre au
+ * soir. La règle est de lire exactement comme on a écrit.
+ */
+export function documentPdfKey(doc: { type: string; numero: string; createdAt: Date }): string {
+  return `documents/${doc.createdAt.getFullYear()}/${doc.type}/${doc.numero}.pdf`;
+}
+
+/**
+ * URL de lecture fraîche pour le PDF d'un `DocumentGenere`.
+ *
+ * `DocumentGenere.pdfUrl` n'est pas une adresse : c'est une URL pré-signée
+ * `X-Amz-Expires=900` figée en base à la génération, donc morte quinze minutes
+ * plus tard. Toute surface qui affiche un lien de lecture doit re-signer ICI,
+ * au rendu, plutôt que servir la valeur stockée.
+ *
+ * Fail-soft : `null` si R2 n'est pas configuré. L'appelant décide s'il retombe
+ * sur `pdfUrl` (mieux que rien pour une pièce récente) ou s'il masque le lien.
+ *
+ * @param ttlSeconds — durée de vie. Court pour une pièce contractuelle exposée
+ *   publiquement (lecture avant signature), plus long pour un espace authentifié.
+ */
+export async function signedDocumentPdfUrl(
+  doc: { type: string; numero: string; createdAt: Date },
+  ttlSeconds: number,
+): Promise<string | null> {
+  if (!isR2Configured()) return null;
+  return getSignedUrlR2(documentPdfKey(doc), ttlSeconds);
+}
+
+/**
  * Télécharge un objet R2 et retourne son contenu sous forme de Buffer.
  *
  * Fail-soft : retourne `null` si R2 n'est pas configuré, si l'objet est

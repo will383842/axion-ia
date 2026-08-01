@@ -21,6 +21,7 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import { documentPdfKey } from "@/lib/r2-storage";
 
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -197,13 +198,16 @@ export async function envoyerFactureEmailAction(
 
   const doc = await prisma.documentGenere.findUnique({
     where: { id: facture.documentId },
-    select: { type: true, numero: true, hashSha256: true },
+    select: { type: true, numero: true, hashSha256: true, createdAt: true },
   });
   if (doc === null) return { error: "Document PDF introuvable." };
-  // Clé R2 stable (cf. documents-service/storeAndSignPdf) :
-  // documents/{year}/{type}/{numero}.pdf — l'année vient du numéro AXI-XXX-YYYY-NNN.
-  const year = doc.numero.split("-")[2] ?? String(new Date().getFullYear());
-  const r2Key = `documents/${year}/${doc.type}/${doc.numero}.pdf`;
+  // Clé R2 stable (cf. documents-service/storeAndSignPdf).
+  // 🔴 L'année était lue dans le NUMÉRO (`AXI-XXX-YYYY-NNN`) — troisième variante
+  // maison de la même clé, et la seule qui ne consultait pas `createdAt`, sur
+  // lequel l'écriture partitionne réellement. Une pièce renumérotée ou reprise
+  // aurait pointé sur un dossier inexistant, et la facture serait partie sans sa
+  // pièce jointe.
+  const r2Key = documentPdfKey(doc);
 
   const to = input.to ?? facture.client?.contactEmail ?? null;
   if (to === null) {

@@ -28,7 +28,7 @@
 import { createHash } from "node:crypto";
 import JSZip from "jszip";
 import { prisma } from "@/lib/prisma";
-import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
+import { isR2Configured, getObjectBufferR2, documentPdfKey } from "@/lib/r2-storage";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import {
   maillonDepuisLigne,
@@ -262,7 +262,7 @@ export async function genererDossierSessionZip(
   for (const doc of session.documents) {
     // Clé alignée sur l'écriture (`documents-service.ts` utilise l'année locale
     // au moment de la génération).
-    const cle = `documents/${doc.createdAt.getFullYear()}/${doc.type}/${doc.numero}.pdf`;
+    const cle = documentPdfKey(doc);
     const buffer = r2Ok ? await getObjectBufferR2(cle) : null;
     if (buffer === null) {
       index.push(`  [ABSENT] ${doc.type}/${doc.numero}.pdf`);

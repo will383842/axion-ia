@@ -28,7 +28,11 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("@/lib/r2-storage", () => ({
+// `documentPdfKey` reste RÉEL : c'est la clé sur laquelle porte l'assertion des
+// tests d'inclusion des PDF. La remplacer par un double la recopierait ici, et
+// on ne testerait plus que la copie.
+vi.mock("@/lib/r2-storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/r2-storage")>()),
   getObjectBufferR2: vi.fn(),
   isR2Configured: vi.fn(() => true),
 }));

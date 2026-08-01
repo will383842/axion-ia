@@ -17,7 +17,10 @@ vi.mock("@/lib/prisma", () => ({
   prisma: { trainingSession: { findUnique: vi.fn() } },
 }));
 
-vi.mock("@/lib/r2-storage", () => ({
+// `documentPdfKey` reste RÉEL — cf. audit-dossier.spec.ts : la clé est ce que
+// ces tests vérifient, la doubler reviendrait à tester la copie.
+vi.mock("@/lib/r2-storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/r2-storage")>()),
   isR2Configured: vi.fn(),
   getObjectBufferR2: vi.fn(),
 }));
