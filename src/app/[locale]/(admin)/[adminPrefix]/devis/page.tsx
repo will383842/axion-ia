@@ -1,24 +1,25 @@
-// Liste devis admin (Sprint A — UI admin devis).
+// Module Booking (mort) — redirection vers le module réel équivalent.
 //
-// Tableau paginé 25/page. Filtres : status (draft/sent/accepted/declined/expired).
-// Lien détail [id] pour actions admin.
+// Audit UX console du 2026-08-01 (phase 2) : l'ancien module Booking (site
+// public éteint, tables orphelines) portait les mêmes noms que les vrais
+// modules Qualiopi/Finances avec d'autres données — accessible par ⌘K sans
+// bannière. Redirect 308 ; le garde auth() est conservé (les tests E2E
+// assertent le renvoi /login sans session). Les Server Actions et modèles
+// Prisma restent en place (suppression dure = lot séparé).
 
-import { redirect } from "next/navigation";
+import { permanentRedirect, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { DevisV2 } from "./_v2/DevisV2";
 
 export const dynamic = "force-dynamic";
 
 interface PageProps {
-  params: Promise<{ adminPrefix: string }>;
-  searchParams: Promise<Record<string, string | undefined>>;
+  params: Promise<{ locale: string; adminPrefix: string }>;
 }
 
-export default async function DevisListPage({ params, searchParams }: PageProps) {
+export default async function LegacyBookingRedirect({ params }: PageProps): Promise<never> {
   const { adminPrefix } = await params;
-  const sp = await searchParams;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  return <DevisV2 adminPrefix={adminPrefix} searchParams={sp} />;
+  permanentRedirect(`/fr/${adminPrefix}/qualiopi/devis`);
 }

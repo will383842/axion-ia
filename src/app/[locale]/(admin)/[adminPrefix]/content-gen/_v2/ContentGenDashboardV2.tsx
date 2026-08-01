@@ -373,7 +373,9 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/keyword-tracking`}>🔑 Suivi des mots-clés</Link>
             </li>
             <li>
-              <Link href={`${base}/kb-readonly`}>
+              {/* Dédup 2026-08-01 (phase 2) : pointe la vraie page Connaissances,
+                  filtrée sur le périmètre qu'affichait kb-readonly. */}
+              <Link href={`/fr/${adminPrefix}/connaissances?status=published`}>
                 📚 KB (lecture seule)
                 {kpis.kbHealth.chunks > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">

@@ -12,6 +12,7 @@ import {
   AdminTable,
   AdminEmptyState,
 } from "@/components/admin/ui";
+import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { GeoEventsBanner } from "@/components/admin/content-gen/GeoEventsBanner";
 import { getGlobalGeoStats, listRegionGeoStats } from "@/server/actions/content-gen/geo";
@@ -57,6 +58,7 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
           </div>
         }
       />
+      <VillesTabsNav adminPrefix={adminPrefix} current="regions" />
 
       <GeoEventsBanner />
 

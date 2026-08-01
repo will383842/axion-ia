@@ -76,7 +76,17 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-08-01, refonte console phase 2) : « 📁 Dossiers (pipeline) » — la
     // vue « où en est chaque affaire ? », une ligne par dossier à statut dérivé,
     // pôle dossiers juste après À traiter. = 145.
-    expect(items.length).toBe(145);
+    // −10 (2026-08-01, audit UX phase 2 — structure) :
+    //   −1 « Vue d'ensemble » (/qualiopi) : doublon du pipeline, route → 308.
+    //   −1 « Conformité » (/qualiopi/conformite) : fusionnée dans « Conformité
+    //      & mode auditeur » (même matrice sous deux entrées), route → 308.
+    //   −7 module Booking mort (Calendrier, Réservations, Options 48h, Devis,
+    //      Factures, Paiements, Échéanciers) : même masqués par `parent`, ils
+    //      polluaient ⌘K sous les mêmes noms que les vrais modules — routes →
+    //      308 vers planning/dossiers/devis Qualiopi/hub facturation/plans.
+    //   −1 « Base de connaissances (consultation) » (kb-readonly) : doublon de
+    //      « Connaissances », route → 308. = 135.
+    expect(items.length).toBe(135);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -306,5 +316,58 @@ describe("findActiveNavHref — résolution sidebar (anti-rebascule)", () => {
     const active = findActiveNavHref(items, `${base}/presse/communiques/nouveau`);
     expect(active).toBe(`${base}/presse/communiques`);
     expect(active).not.toBe(`${base}/presse`);
+  });
+});
+
+// ─── Audit UX phase 2 (2026-08-01) — verrous de non-régression ──────────────
+describe("phase 2 structure — verrous", () => {
+  const items = buildAdminNav("p");
+  const base = "/fr/p";
+  const hrefs = new Set(items.map((it) => it.href));
+
+  it("les 7 routes booking mortes ne sont plus dans la nav (ni sidebar ni ⌘K)", () => {
+    for (const dead of [
+      "/calendrier",
+      "/reservations",
+      "/options",
+      "/devis",
+      "/factures",
+      "/paiements",
+      "/echeanciers",
+    ]) {
+      expect(hrefs.has(`${base}${dead}`), `${dead} devrait avoir disparu`).toBe(false);
+    }
+  });
+
+  it("les doublons fusionnés (Vue d'ensemble, Conformité, kb-readonly) sont sortis de la nav", () => {
+    expect(hrefs.has(`${base}/qualiopi`)).toBe(false);
+    expect(hrefs.has(`${base}/qualiopi/conformite`)).toBe(false);
+    expect(hrefs.has(`${base}/content-gen/kb-readonly`)).toBe(false);
+    // Les cibles canoniques, elles, existent toujours.
+    expect(hrefs.has(`${base}/qualiopi/dossiers`)).toBe(true);
+    expect(hrefs.has(`${base}/qualiopi/mode-auditeur`)).toBe(true);
+    expect(hrefs.has(`${base}/connaissances`)).toBe(true);
+  });
+
+  it("pôle villes : 3 entrées visibles, 4 absorbées rattachées à la couverture", () => {
+    const villes = items.filter((it) => it.group === "content_gen" && it.subGroup === "villes");
+    const visibles = villes.filter((it) => it.parent == null).map((it) => it.href);
+    expect(visibles).toEqual([
+      `${base}/content-gen/coverage-map`,
+      `${base}/content-gen/cities-order`,
+      `${base}/content-gen/city-coverage`,
+    ]);
+    const absorbees = villes.filter((it) => it.parent != null);
+    expect(absorbees.map((it) => it.href).sort()).toEqual(
+      [
+        `${base}/content-gen/cities-coverage`,
+        `${base}/content-gen/city-equity`,
+        `${base}/content-gen/geo`,
+        `${base}/content-gen/geo/coverage-table`,
+      ].sort(),
+    );
+    for (const it of absorbees) {
+      expect(it.parent).toBe(`${base}/content-gen/coverage-map`);
+    }
   });
 });

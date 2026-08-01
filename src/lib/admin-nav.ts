@@ -100,7 +100,7 @@ export type DocumentsPole = "activite" | "outils";
  * Pôle du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08.
  * Découpe les 10 onglets quotidiens en 3 blocs métier. Clés distinctes.
  */
-export type MainPole = "agenda" | "facturation";
+export type MainPole = "agenda";
 
 /**
  * Pôle du groupe `image-bank` — refonte UX 2026-07-08. 3 blocs. Clés distinctes.
@@ -226,14 +226,12 @@ export const DOCUMENTS_POLE_ORDER: ReadonlyArray<DocumentsPole> = ["activite", "
 
 /** Pôles du groupe `main` (« Activité quotidienne ») — refonte UX 2026-07-08. */
 export const MAIN_POLE_LABELS: Record<MainPole, string> = {
-  // « agenda » ne contient plus que le Tableau de bord (Calendrier/Réservations/
-  // Options 48h masqués — vestiges booking, cf. buildAdminNav). Relabellisé.
-  // « facturation » est entièrement masqué (pôle vide → header auto-caché).
+  // Pôle « facturation » supprimé le 2026-08-01 (phase 2) : ses 4 items booking
+  // morts ont été retirés de la nav (routes → redirect 308 vers Qualiopi).
   agenda: "Vue d'ensemble",
-  facturation: "Facturation",
 };
 
-export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda", "facturation"];
+export const MAIN_POLE_ORDER: ReadonlyArray<MainPole> = ["agenda"];
 
 /** Pôles du groupe `image-bank` — refonte UX 2026-07-08. */
 export const IMAGE_BANK_POLE_LABELS: Record<ImageBankPole, string> = {
@@ -364,63 +362,12 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "main",
       subGroup: "agenda",
     },
-    {
-      href: `${base}/calendrier`,
-      label: "Calendrier",
-      icon: "📅",
-      group: "main",
-      subGroup: "agenda",
-      parent: `${base}`,
-    },
-    {
-      href: `${base}/reservations`,
-      label: "Réservations",
-      icon: "📋",
-      group: "main",
-      subGroup: "agenda",
-      parent: `${base}`,
-    },
-    {
-      href: `${base}/options`,
-      label: "Options 48h",
-      icon: "⏳",
-      group: "main",
-      subGroup: "agenda",
-      parent: `${base}`,
-    },
-    // ▸ FACTURATION (vestige — masqué, cf. bloc ci-dessus)
-    {
-      href: `${base}/devis`,
-      label: "Devis",
-      icon: "📄",
-      group: "main",
-      subGroup: "facturation",
-      parent: `${base}`,
-    },
-    {
-      href: `${base}/factures`,
-      label: "Factures",
-      icon: "🧾",
-      group: "main",
-      subGroup: "facturation",
-      parent: `${base}`,
-    },
-    {
-      href: `${base}/paiements`,
-      label: "Paiements",
-      icon: "💶",
-      group: "main",
-      subGroup: "facturation",
-      parent: `${base}`,
-    },
-    {
-      href: `${base}/echeanciers`,
-      label: "Échéanciers",
-      icon: "📅",
-      group: "main",
-      subGroup: "facturation",
-      parent: `${base}`,
-    },
+    // Les 7 items Booking (Calendrier/Réservations/Options 48h + Devis/
+    // Factures/Paiements/Échéanciers) ont été RETIRÉS le 2026-08-01 (audit UX,
+    // phase 2) : même masqués par `parent`, ils restaient dans la palette ⌘K
+    // sous les mêmes noms que les vrais modules Qualiopi/Finances. Les routes
+    // redirigent désormais en 308 vers les équivalents réels (planning,
+    // pipeline, devis Qualiopi, hub facturation, plans récurrents).
     // ── Boîte de réception — TOUT ce qui entre du monde extérieur ──────────
     //
     //    Refonte 2026-07-29. Avant : 11 entrées de sidebar (8 « Contacts » +
@@ -653,17 +600,14 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       tier: "advanced",
     },
     // ▸ VILLES (occasionnel)
-    {
-      href: `${base}/content-gen/cities-coverage`,
-      label: "Couverture des villes",
-      icon: "🏙️",
-      group: "content_gen",
-      subGroup: "villes",
-      tier: "simple",
-    },
+    // Refonte phase 2 (2026-08-01, audit UX) : 7 entrées → 3 visibles. Quatre
+    // pages répondaient à « où en est la production par ville ? » sur le même
+    // groupBy de ContentGenJob (axes différents) ; elles restent accessibles
+    // via le bandeau d'onglets de « Couverture des villes » (VillesTabsNav)
+    // et par ⌘K (masquées par `parent`, motif boîte de réception).
     {
       href: `${base}/content-gen/coverage-map`,
-      label: "Carte de couverture",
+      label: "Couverture des villes",
       icon: "🗺️",
       group: "content_gen",
       subGroup: "villes",
@@ -671,43 +615,57 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     {
       href: `${base}/content-gen/cities-order`,
-      label: "Ordre de génération des villes",
+      label: "File de génération (prochaine vague)",
       icon: "🔢",
       group: "content_gen",
       subGroup: "villes",
       tier: "simple",
     },
     {
-      href: `${base}/content-gen/city-equity`,
-      label: "Équité entre villes",
-      icon: "⚖️",
-      group: "content_gen",
-      subGroup: "villes",
-      tier: "advanced",
-    },
-    {
+      // Quasi-homonyme de cities-coverage (pluriel) : mesure l'ENTRÉE (la
+      // matière première vérifiable des 39 villes pilote), pas la production.
       href: `${base}/content-gen/city-coverage`,
-      label: "Qualité des données (pilote)",
+      label: "Matière première villes (39 pilotes)",
       icon: "📐",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
     },
     {
+      href: `${base}/content-gen/cities-coverage`,
+      label: "Couverture — par palier de population",
+      icon: "🏙️",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "simple",
+      parent: `${base}/content-gen/coverage-map`,
+    },
+    {
+      href: `${base}/content-gen/city-equity`,
+      label: "Couverture — par type de contenu",
+      icon: "⚖️",
+      group: "content_gen",
+      subGroup: "villes",
+      tier: "advanced",
+      parent: `${base}/content-gen/coverage-map`,
+    },
+    {
       href: `${base}/content-gen/geo`,
-      label: "Cockpit géo",
+      label: "Couverture — production par région",
       icon: "🌍",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
+      parent: `${base}/content-gen/coverage-map`,
     },
     {
       href: `${base}/content-gen/geo/coverage-table`,
-      label: "Tableau croisé ville × secteur",
+      label: "Couverture — croisé ville × secteur",
       icon: "📊",
       group: "content_gen",
       subGroup: "villes",
       tier: "advanced",
+      parent: `${base}/content-gen/coverage-map`,
     },
     // ▾ QUALITÉ & COÛTS (occasionnel — pôle entièrement avancé)
     {
@@ -763,14 +721,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "qualite",
       tier: "advanced",
     },
-    {
-      href: `${base}/content-gen/kb-readonly`,
-      label: "Base de connaissances (consultation)",
-      icon: "📚",
-      group: "content_gen",
-      subGroup: "qualite",
-      tier: "advanced",
-    },
+    // « Base de connaissances (consultation) » retirée le 2026-08-01 (audit UX,
+    // phase 2) : doublon de « Connaissances » (Contenu) — la route redirige en
+    // 308 vers /connaissances?status=published.
     // ▾ RÉGLAGES (rare / setup — pôle entièrement avancé)
     {
       href: `${base}/content-gen/settings`,
@@ -858,13 +811,8 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "qualiopi",
       subGroup: "dossiers",
     },
-    {
-      href: `${base}/qualiopi`,
-      label: "Vue d'ensemble",
-      icon: "🎓",
-      group: "qualiopi",
-      subGroup: "dossiers",
-    },
+    // « Vue d'ensemble » (/qualiopi) retirée le 2026-08-01 (audit UX, P0 n°3,
+    // phase 2) : doublon direct du pipeline — la route redirige en 308.
     {
       href: `${base}/qualiopi/formations`,
       label: "Formations",
@@ -1018,13 +966,9 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "catalogue",
     },
     // du fichier ne préjuge plus du pôle. Repères historiques supprimés.)
-    {
-      href: `${base}/qualiopi/conformite`,
-      label: "Conformité",
-      icon: "✅",
-      group: "qualiopi",
-      subGroup: "conformite",
-    },
+    // « Conformité » (/qualiopi/conformite) fusionnée le 2026-08-01 (phase 2)
+    // dans « Conformité & mode auditeur » ci-dessous — même matrice de 32
+    // indicateurs sous deux entrées. La route redirige en 308.
     {
       href: `${base}/qualiopi/indicateurs`,
       label: "Indicateurs / BPF",
@@ -1054,8 +998,10 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       subGroup: "conformite",
     },
     {
+      // Fusion phase 2 (2026-08-01) : porte aussi l'ancienne « Conformité »
+      // (vue tableau par défaut) — d'où le label composite.
       href: `${base}/qualiopi/mode-auditeur`,
-      label: "Mode auditeur",
+      label: "Conformité & mode auditeur",
       icon: "🔍",
       group: "qualiopi",
       subGroup: "conformite",

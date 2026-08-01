@@ -8,6 +8,7 @@ import {
   AdminStatCard,
   AdminBadge,
 } from "@/components/admin/ui";
+import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import {
   getCityContentEquityMatrix,
   getContentTypeEquitySummary,
@@ -88,7 +89,7 @@ interface Props {
   tier?: number;
 }
 
-export async function CityEquityV2({ adminPrefix: _adminPrefix, campaignId, tier }: Props) {
+export async function CityEquityV2({ adminPrefix, campaignId, tier }: Props) {
   const [matrix, typeSummary] = await Promise.all([
     getCityContentEquityMatrix({
       ...(campaignId !== undefined ? { campaignId } : {}),
@@ -124,6 +125,7 @@ export async function CityEquityV2({ adminPrefix: _adminPrefix, campaignId, tier
         title="Équité contenu — Villes"
         description="Matrice ville × type de contenu. Rouge = 0 contenu généré pour ce type."
       />
+      <VillesTabsNav adminPrefix={adminPrefix} current="types" />
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-2 gap-[var(--space-admin-4)] sm:grid-cols-4">

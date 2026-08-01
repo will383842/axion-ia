@@ -1,11 +1,15 @@
 /**
- * Admin — Qualiopi · Mode auditeur (T12).
+ * Admin — Qualiopi · Conformité & mode auditeur (fusion phase 2, 2026-08-01).
  *
- * Server Component : lit `genererManifesteAudit()` côté serveur.
- * Affiche par indicateur la liste des preuves disponibles (types de documents,
- * comptes) et l'état de couverture.
- * Bouton export manifeste (JSON + MD) via `ExportManifesteButton` (client).
- * Force-dynamic + noindex.
+ * Page canonique de la matrice des 32 indicateurs RNQ V9. Fusionne l'ancienne
+ * « Conformité » (tableaux denses + stat cards) et le « Mode auditeur »
+ * (manifeste, documents, exports) qui affichaient la même évaluation sous
+ * deux entrées de nav (`genererManifesteAudit()` wrappe `evaluerConformite()`).
+ *
+ * Deux vues via searchParam `?vue=` (0 KB JS, page force-dynamic) :
+ *   - `tableau` (défaut) — balayage rapide pour le pilotage quotidien ;
+ *   - `manifeste` — cartes + comptes de documents, pour l'auditrice.
+ * /qualiopi/conformite redirige ici en 308.
  */
 
 import type { Metadata } from "next";
@@ -15,62 +19,27 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ExportManifesteButton } from "@/components/admin/qualiopi/ExportManifesteButton";
 import {
-  genererManifesteAudit,
-  type IndicateurManifeste,
-} from "@/server/qualiopi/conformite/audit-dossier";
+  MatriceIndicateurs,
+  type MatriceVue,
+} from "@/components/admin/qualiopi/MatriceIndicateurs";
+import { genererManifesteAudit } from "@/server/qualiopi/conformite/audit-dossier";
+import { Gauge, CheckCircle2, Hourglass } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Qualiopi — Mode auditeur | Axion-IA Admin",
+  title: "Qualiopi — Conformité & mode auditeur | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<{ vue?: string }>;
 }
 
-/** Libellé du critère pour le regroupement visuel. */
-function libelleCritere(c: number): string {
-  const labels: Record<number, string> = {
-    1: "C1 — Conditions d'information du public",
-    2: "C2 — Identification et analyse des besoins des bénéficiaires",
-    3: "C3 — Adaptation aux bénéficiaires",
-    4: "C4 — Adéquation des moyens pédagogiques, techniques et d'encadrement",
-    5: "C5 — Qualification et développement des compétences du personnel",
-    6: "C6 — Inscription et veille des sous-traitants et formateurs occasionnels",
-    7: "C7 — Recueil des appréciations et mise en œuvre de l'amélioration continue",
-  };
-  return labels[c] ?? `Critère ${c}`;
-}
-
-/**
- * Badge d'état coloré basé sur le statut de l'indicateur.
- */
-function EtatBadge({ statut }: { statut: IndicateurManifeste["statut"] }): React.ReactElement {
-  if (statut === "couvert") {
-    return (
-      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-success-subtle,color-mix(in_srgb,var(--color-admin-success)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-success)]">
-        Couvert
-      </span>
-    );
-  }
-  if (statut === "a_completer") {
-    return (
-      <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-warning-subtle,color-mix(in_srgb,var(--color-admin-warning)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-warning)]">
-        À compléter
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center rounded-full bg-[color:var(--color-admin-surface-subtle,color-mix(in_srgb,var(--color-admin-fg)_8%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]">
-      Non applicable
-    </span>
-  );
-}
-
-export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
+export default async function QualiopiModeAuditeurPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
@@ -78,27 +47,28 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
+  const sp = await searchParams;
+  const vue: MatriceVue = sp.vue === "manifeste" ? "manifeste" : "tableau";
+  const self = `/${locale}/${adminPrefix}/qualiopi/mode-auditeur`;
+
   const manifeste = await genererManifesteAudit();
   const indicateurs = manifeste.json.indicateurs;
-
-  // Regroupement par critère
-  const critereIds = [1, 2, 3, 4, 5, 6, 7] as const;
-  const parCritere = new Map<number, IndicateurManifeste[]>();
-  for (const ind of indicateurs) {
-    const groupe = parCritere.get(ind.critere) ?? [];
-    groupe.push(ind);
-    parCritere.set(ind.critere, groupe);
-  }
 
   const nbCouverts = manifeste.json.meta.nbCouverts;
   const nbApplicables = manifeste.json.meta.nbApplicables;
   const scorePct = manifeste.json.meta.scorePct;
+  const toneBilan = scorePct >= 80 ? "success" : scorePct >= 60 ? "warning" : "destructive";
+
+  const ongletBase =
+    "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
+  const ongletActif = `${ongletBase} bg-[color:var(--color-admin-surface)] font-semibold text-[color:var(--color-admin-fg)]`;
+  const ongletInactif = `${ongletBase} text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg)]`;
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Mode auditeur Qualiopi"
-        description="Vue auditeur : manifeste des preuves disponibles par indicateur du Référentiel National Qualité (RNQ V9). Exportable au format JSON et Markdown pour transmission à l'organisme certificateur."
+        title="Conformité & mode auditeur"
+        description={`État de couverture des 32 indicateurs du Référentiel National Qualité (${manifeste.json.meta.version}). Vue tableau pour le pilotage, vue manifeste (preuves + documents) pour l'auditrice — exports JSON, Markdown et dossier ZIP.`}
         actions={<ExportManifesteButton />}
       />
 
@@ -109,178 +79,59 @@ export default async function QualiopiModeAuditeurPage({ params }: PageProps) {
         une page qu'on ne trouve pas ne sert à personne le jour du contrôle.
       */}
       <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
-        <Link
-          href={`/${locale}/${adminPrefix}/qualiopi/mode-auditeur/signatures`}
-          className="underline"
-        >
+        <Link href={`${self}/signatures`} className="underline">
           Registre des signatures — qui a signé quoi, et si la preuve tient
         </Link>
       </p>
 
-      {/* ── Résumé global ─────────────────────────────────────────────── */}
-      <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
-        <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          <span className="font-semibold text-[color:var(--color-admin-fg)]">{nbCouverts}</span>
-          {" indicateur(s) couvert(s) sur "}
-          <span className="font-semibold text-[color:var(--color-admin-fg)]">{nbApplicables}</span>
-          {" applicable(s) — "}
-          <span className="font-semibold text-[color:var(--color-admin-fg)]">
-            {scorePct}
-            {" %"}
-          </span>
-          {" de conformité · Référentiel "}
-          <span className="font-mono text-[length:var(--text-admin-xs)]">
-            {manifeste.json.meta.version}
-          </span>
-        </p>
+      {/* ── Score global (repris de l'ancienne page Conformité) ──────────── */}
+      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
+        <AdminStatCard
+          label="Score de conformité"
+          value={`${scorePct} %`}
+          meta={`${nbCouverts} indicateur(s) couvert(s) sur ${nbApplicables} applicable(s)`}
+          tone={toneBilan}
+          icon={Gauge}
+        />
+        <AdminStatCard
+          label="Indicateurs couverts"
+          value={nbCouverts}
+          tone="success"
+          icon={CheckCircle2}
+        />
+        <AdminStatCard
+          label="À compléter"
+          value={nbApplicables - nbCouverts}
+          tone={nbApplicables - nbCouverts > 0 ? "warning" : "success"}
+          icon={Hourglass}
+        />
       </div>
 
-      {/* ── Manifeste par critère ─────────────────────────────────────── */}
-      {indicateurs.length === 0 ? (
-        <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-8)] text-center">
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Aucune donnée disponible. Les indicateurs seront affichés une fois les services de
-            conformité déployés.
-          </p>
-        </div>
-      ) : (
-        critereIds.map((critereId) => {
-          const lignes = parCritere.get(critereId);
-          if (!lignes || lignes.length === 0) return null;
+      {/* ── Commutateur de vue (liens serveur, aucun JS) ─────────────────── */}
+      <nav
+        aria-label="Vue de la matrice"
+        className="mb-[var(--space-admin-6)] flex gap-[var(--space-admin-2)]"
+      >
+        <Link
+          href={self}
+          className={vue === "tableau" ? ongletActif : ongletInactif}
+          aria-current={vue === "tableau" ? "page" : undefined}
+        >
+          Vue tableau
+        </Link>
+        <Link
+          href={`${self}?vue=manifeste`}
+          className={vue === "manifeste" ? ongletActif : ongletInactif}
+          aria-current={vue === "manifeste" ? "page" : undefined}
+        >
+          Vue manifeste (preuves & documents)
+        </Link>
+      </nav>
 
-          return (
-            <section
-              key={critereId}
-              className="mb-[var(--space-admin-8)]"
-              aria-labelledby={`critere-auditeur-${critereId}-titre`}
-            >
-              <h2
-                id={`critere-auditeur-${critereId}-titre`}
-                className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]"
-              >
-                {libelleCritere(critereId)}
-              </h2>
-
-              <div className="space-y-[var(--space-admin-3)]">
-                {lignes.map((ind) => (
-                  <div
-                    key={ind.numero}
-                    className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
-                  >
-                    {/* En-tête indicateur */}
-                    <div className="mb-[var(--space-admin-3)] flex flex-wrap items-start justify-between gap-[var(--space-admin-3)]">
-                      <div className="flex items-start gap-[var(--space-admin-3)]">
-                        <span className="shrink-0 text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)]">
-                          Ind. {ind.numero}
-                          {ind.super && (
-                            <span
-                              title="NC majeure en audit"
-                              className="ml-1 text-[color:var(--color-admin-destructive)]"
-                              aria-label="Indicateur critique (NC majeure)"
-                            >
-                              ★
-                            </span>
-                          )}
-                        </span>
-                        <p className="text-[length:var(--text-admin-sm)] leading-snug text-[color:var(--color-admin-fg)]">
-                          {ind.libelle}
-                        </p>
-                      </div>
-                      <div className="shrink-0">
-                        <EtatBadge statut={ind.statut} />
-                      </div>
-                    </div>
-
-                    {/* 🔴 Constat F15, audit de certification 2026-07-26.
-                        Ce bloc s'intitulait « Preuves » et décorait CHAQUE ligne
-                        d'un ✓ vert, sans distinction. Or la liste mélange des
-                        preuves réelles et des CONSTATS D'ABSENCE produits par le
-                        même code : « 0 réclamation enregistrée et traitée »,
-                        « Procédure de réclamations : non attestée publiée »,
-                        « Responsable qualité : non renseigné » s'affichaient
-                        donc comme des éléments favorables, cochés en vert, sur
-                        l'écran et dans le manifeste remis au certificateur.
-                        Présenter un manque comme une preuve est le pire défaut
-                        possible sur cet écran-là : l'auditrice le lit pour
-                        vérifier, pas pour être rassurée.
-                        La donnée `preuves: string[]` ne porte aucune polarité —
-                        le typage ternaire (probant / neutre / lacune) est le
-                        correctif de fond. En attendant, on cesse d'AFFIRMER ce
-                        qu'on ne sait pas : titre neutre, puce neutre. Le statut
-                        de couverture, lui, reste affiché par son badge. */}
-                    {ind.preuves.length > 0 && (
-                      <div className="mb-[var(--space-admin-3)]">
-                        <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                          Éléments constatés
-                        </p>
-                        <ul className="space-y-[var(--space-admin-1)]">
-                          {ind.preuves.map((preuve) => (
-                            <li
-                              key={preuve}
-                              className="flex items-center gap-[var(--space-admin-2)]"
-                            >
-                              <span
-                                className="shrink-0 text-xs text-[color:var(--color-admin-fg-muted)]"
-                                aria-hidden="true"
-                              >
-                                •
-                              </span>
-                              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
-                                {preuve}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Documents Prisma */}
-                    {ind.documents.length > 0 && (
-                      <div>
-                        <p className="mb-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-                          Documents
-                        </p>
-                        <ul className="space-y-[var(--space-admin-2)]">
-                          {ind.documents.map((doc, i) => (
-                            <li
-                              key={`${doc.type}-${i}`}
-                              className="flex items-center gap-[var(--space-admin-3)] rounded bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]"
-                            >
-                              <span
-                                className="shrink-0 text-xs text-[color:var(--color-admin-success)]"
-                                aria-hidden="true"
-                              >
-                                ✓
-                              </span>
-                              <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
-                                {doc.type}
-                              </span>
-                              <span className="ml-auto shrink-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                                {doc.count} doc(s)
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {ind.preuves.length === 0 && ind.documents.length === 0 && (
-                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] italic">
-                        {ind.statut === "non_applicable"
-                          ? "Non applicable au périmètre de l'OF."
-                          : "Aucune preuve enregistrée pour cet indicateur."}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
-          );
-        })
-      )}
+      <MatriceIndicateurs indicateurs={indicateurs} vue={vue} />
 
       {/* ── Markdown brut (aperçu) ────────────────────────────────────── */}
-      {manifeste.markdown.length > 0 && (
+      {vue === "manifeste" && manifeste.markdown.length > 0 && (
         <details className="mt-[var(--space-admin-8)]">
           <summary className="cursor-pointer text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-soft)] transition-colors hover:text-[color:var(--color-admin-fg)]">
             Aperçu Markdown du manifeste

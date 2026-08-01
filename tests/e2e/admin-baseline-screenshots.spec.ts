@@ -24,10 +24,13 @@ const ADMIN_PREFIX = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
 
 const BASELINE_PAGES: Array<{ slug: string; path: string; note: string }> = [
   { slug: "dashboard", path: "/", note: "Dashboard racine admin" },
-  { slug: "calendrier", path: "/calendrier", note: "Calendrier réservations" },
-  { slug: "reservations", path: "/reservations", note: "Liste réservations" },
-  { slug: "devis", path: "/devis", note: "Liste devis" },
-  { slug: "factures", path: "/factures", note: "Liste factures" },
+  // Module Booking retiré le 2026-08-01 (audit UX phase 2) : calendrier /
+  // reservations / devis / factures redirigent en 308 vers les modules réels —
+  // les baselines pointent désormais sur les cibles.
+  { slug: "planning", path: "/planning", note: "Planning unifié des prestations" },
+  { slug: "qualiopi-dossiers", path: "/qualiopi/dossiers", note: "Pipeline dossiers" },
+  { slug: "qualiopi-devis", path: "/qualiopi/devis", note: "Devis Qualiopi" },
+  { slug: "qualiopi-facturation", path: "/qualiopi/facturation", note: "Hub facturation" },
   { slug: "content-gen-home", path: "/content-gen", note: "Content-gen home" },
   { slug: "content-gen-coverage", path: "/content-gen/coverage", note: "Coverage campagnes" },
   { slug: "content-gen-jobs", path: "/content-gen/jobs", note: "Jobs queue + log stream" },
