@@ -7,6 +7,8 @@ import {
   listHelpCategoriesAction,
 } from "@/features/admin-help/actions";
 import { HelpEditV2 } from "./_v2/HelpEditV2";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +60,7 @@ export default async function EditHelpPage({ params }: PageProps) {
       categories={categories}
       initial={initialPayload}
       title={fr?.title ?? "(sans titre)"}
-      updatedAtIso={ha.updatedAt.toISOString().slice(0, 10)}
+      updatedAtIso={formatDateFrShort(ha.updatedAt)}
     />
   );
 }

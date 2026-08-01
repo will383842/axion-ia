@@ -7,6 +7,12 @@ import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
 
 export const dynamic = "force-dynamic";
 
+// Filtre forcé : seules les demandes presse / média. Passe par `forcedTypes`
+// (comme /contacts/clients), PAS par un `unifiedType` écrasé dans `sp` — sinon
+// le sélecteur « Catégorie » de l'écran choisit une valeur que la query ignore
+// (audit UX : filtre affiché mais inopérant).
+const PRESSE_TYPES = ["presse"] as const;
+
 interface PageProps {
   params: Promise<{ adminPrefix: string }>;
   searchParams: Promise<Record<string, string | undefined>>;
@@ -15,12 +21,12 @@ interface PageProps {
 export default async function ContactsPressePage({ params, searchParams }: PageProps) {
   const { adminPrefix } = await params;
   const sp = await searchParams;
-  // Filtre forcé : seules les demandes presse / média.
   return (
     <SubmissionsV2
       adminPrefix={adminPrefix}
-      searchParams={{ ...sp, unifiedType: "presse" }}
+      searchParams={sp}
       basePath="contacts/presse"
+      forcedTypes={PRESSE_TYPES}
     />
   );
 }

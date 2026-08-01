@@ -9,6 +9,8 @@ import {
   listAllTagsAction,
 } from "@/features/admin-blog/actions";
 import { BlogEditV2 } from "./_v2/BlogEditV2";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -72,7 +74,7 @@ export default async function EditBlogPage({ params }: PageProps) {
       initial={initialPayload}
       title={fr?.title ?? "(sans titre)"}
       viewsCount={article.viewsCount}
-      updatedAtIso={article.updatedAt.toISOString().slice(0, 10)}
+      updatedAtIso={formatDateFrShort(article.updatedAt)}
     />
   );
 }

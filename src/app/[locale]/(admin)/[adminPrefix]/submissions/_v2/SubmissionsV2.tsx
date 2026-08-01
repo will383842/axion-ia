@@ -15,6 +15,8 @@ import {
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { SubmissionRowActions } from "./SubmissionRowActions";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouveau",
   in_progress: "En cours",
@@ -131,7 +133,7 @@ export async function SubmissionsV2({
       id: s.id,
       detailHref: `${detailBase}/${s.id}`,
       cells: [
-        s.submittedAt.toISOString().slice(0, 10),
+        formatDateFrShort(s.submittedAt),
         resolveSubmissionLabel(s.type, s.unifiedType),
         <span
           key="reply"

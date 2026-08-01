@@ -10,6 +10,8 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import { getApplicationDetailAction } from "@/features/admin-job-applications/actions";
 import { getJobOfferDetailAction } from "@/features/admin-job-offers/actions";
 import { ApplicationStatusForm } from "./ApplicationStatusForm";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +52,7 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
     <AdminPageShell>
       <AdminPageHeader
         title={`${a.civility ? `${a.civility} ` : ""}${a.firstName} ${a.lastName}`}
-        description={`Candidature · ${a.offerTitleSnap} · ${a.submittedAt.toISOString().slice(0, 10)}`}
+        description={`Candidature · ${a.offerTitleSnap} · ${formatDateFrShort(a.submittedAt)}`}
         actions={
           <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">
             ← Liste

@@ -12,6 +12,8 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Brouillon",
@@ -58,7 +60,7 @@ export function CaseStudiesV2({
     {
       key: "publishedAt",
       header: "Date publi",
-      cell: (c) => (c.publishedAt ? c.publishedAt.toISOString().slice(0, 10) : "—"),
+      cell: (c) => formatDateFrShort(c.publishedAt),
     },
     {
       key: "title",

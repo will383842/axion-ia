@@ -13,6 +13,8 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
+// Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
+import { formatDateFrShort } from "@/server/content-gen/shared/format-date-fr";
 
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouvelle",
@@ -51,7 +53,7 @@ export function ApplicationsV2({
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
   const columns: ReadonlyArray<AdminTableColumn<JobApplicationListItem>> = [
-    { key: "date", header: "Date", cell: (a) => a.submittedAt.toISOString().slice(0, 10) },
+    { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },
     {
       key: "candidate",
       header: "Candidat",

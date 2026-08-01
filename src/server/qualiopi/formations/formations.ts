@@ -27,10 +27,14 @@ export interface ListFormationsOpts {
 }
 
 /**
- * Toutes les formations (admin), triées par date de création desc.
+ * Toutes les formations (admin), avec l'offre rattachée résolue.
+ *
+ * Audit UX : la liste affichait `offreSiteId` en UUID brut dans la colonne
+ * « Offre ». On inclut `offreSite` (même pattern que `getPublicFormationBySlug`
+ * ci-dessous) pour afficher son code (AXI-OFF-NNN) plutôt que l'UUID.
  * Stub-safe → [] au build.
  */
-export async function listFormations(opts?: ListFormationsOpts): Promise<Formation[]> {
+export async function listFormations(opts?: ListFormationsOpts): Promise<FormationWithOffreSite[]> {
   try {
     const rows = await prisma.formation.findMany({
       where: {
@@ -39,9 +43,10 @@ export async function listFormations(opts?: ListFormationsOpts): Promise<Formati
           ? { statutGeneration: opts.statutGeneration }
           : {}),
       },
+      include: { offreSite: true },
       orderBy: { createdAt: "desc" },
     });
-    return rows;
+    return rows as FormationWithOffreSite[];
   } catch {
     return [];
   }

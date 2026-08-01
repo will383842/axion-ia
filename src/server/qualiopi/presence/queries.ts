@@ -159,6 +159,9 @@ export interface SessionListRow {
   numero: string;
   titreSession: string | null;
   formationId: string;
+  /** Numéro métier de la formation (AXI-FORM-2026-XXX) — affiché à la place de l'UUID. */
+  formationNumero: string;
+  formationTitre: string;
   dateDebut: Date;
   dateFin: Date;
   modalite: string;
@@ -177,6 +180,9 @@ export async function listSessionsForAdmin(): Promise<SessionListRow[]> {
           select: { tauxPresencePct: true, statut: true },
           where: { statut: { notIn: ["abandon", "exclu"] } },
         },
+        // Audit UX : la liste affichait `formationId.slice(0, 8)…` (UUID brut).
+        // On résout numéro + titre de la formation pour un affichage lisible.
+        formation: { select: { numero: true, titre: true } },
       },
     });
 
@@ -194,6 +200,8 @@ export async function listSessionsForAdmin(): Promise<SessionListRow[]> {
         numero: s.numero,
         titreSession: s.titreSession,
         formationId: s.formationId,
+        formationNumero: s.formation.numero,
+        formationTitre: s.formation.titre,
         dateDebut: s.dateDebut,
         dateFin: s.dateFin,
         modalite: s.modalite,
