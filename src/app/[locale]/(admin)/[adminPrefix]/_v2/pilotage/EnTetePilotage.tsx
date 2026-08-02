@@ -10,7 +10,15 @@
 // 1024 et ~1500 px de fenêtre, cinq tuiles en `grid-cols-2` laissaient une
 // orpheline sur sa ligne face à un vide (vu en production le 2026-08-02).
 
-import { FolderOpen, Receipt, AlertTriangle, TrendingUp, PiggyBank, Target } from "lucide-react";
+import {
+  FolderOpen,
+  Receipt,
+  AlertTriangle,
+  TrendingUp,
+  PiggyBank,
+  Target,
+  Banknote,
+} from "lucide-react";
 import { AdminStatCard, AdminFilterTabs } from "@/components/admin/ui";
 import {
   PERIODES_PILOTAGE,
@@ -85,7 +93,7 @@ export function EnTetePilotage({
       <div
         className={[
           "grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-3",
-          avecObjectif ? "" : "min-[1500px]:grid-cols-5",
+          avecObjectif ? "min-[1500px]:grid-cols-4" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -121,6 +129,13 @@ export function EnTetePilotage({
           meta="Formations + audits réalisés + contrats coaching signés · vs N-1"
           trend={caTendance}
           trendLabels={labelsCa}
+        />
+        <AdminStatCard
+          label="Encaissé (période)"
+          value={fmtEurosCents(tuiles.encaissePeriodeCents)}
+          icon={Banknote}
+          href={`${base}/qualiopi/facturation`}
+          meta="Paiements reçus, toutes activités (vérité bancaire)"
         />
         <AdminStatCard
           label="Marge du mois en cours"

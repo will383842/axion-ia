@@ -60,9 +60,10 @@ import type { PlanningEventType } from "@/features/admin-planning/types";
 // Période
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type PeriodePilotage = "semaine" | "mois" | "annee";
+export type PeriodePilotage = "jour" | "semaine" | "mois" | "annee";
 
 export const PERIODES_PILOTAGE: ReadonlyArray<{ id: PeriodePilotage; label: string }> = [
+  { id: "jour", label: "Jour" },
   { id: "semaine", label: "Semaine" },
   { id: "mois", label: "Mois" },
   { id: "annee", label: "Année" },
@@ -70,7 +71,7 @@ export const PERIODES_PILOTAGE: ReadonlyArray<{ id: PeriodePilotage; label: stri
 
 /** Querystring `?periode=` → période, défaut « mois » (jamais d'erreur). */
 export function parsePeriode(v: string | undefined): PeriodePilotage {
-  return v === "semaine" || v === "annee" ? v : "mois";
+  return v === "jour" || v === "semaine" || v === "annee" ? v : "mois";
 }
 
 /** `Date` UTC à minuit d'une clé jour « YYYY-MM-DD » (arithmétique calendaire). */
@@ -134,6 +135,9 @@ export interface TuilesPilotage {
   caDelta: string | null;
   /** Marge du mois EN COURS (consolidation mensuelle), en centimes. */
   margeMoisCents: number;
+  /** Encaissements réellement reçus sur la période (`Payment` succeeded
+   *  rattachés à une facture, `paidAt` dans la plage) — toutes activités. */
+  encaissePeriodeCents: number;
   /**
    * CA réalisé par mois de l'année en cours (index 0 = janvier), en centimes —
    * la tendance des tuiles. Coût de requête NUL : la consolidation mensuelle
@@ -393,6 +397,24 @@ async function caMensuelComplementsAnnee(annee: number): Promise<number[]> {
     // stub/DB indisponible → compléments nuls, la courbe retombe sur les sessions.
   }
   return buckets;
+}
+
+/** Encaissements de la plage (centimes) : `Payment` succeeded rattachés à une
+ *  facture, datés `paidAt` — la vérité bancaire, toutes activités confondues. */
+async function encaissePlage(plage: Plage): Promise<number> {
+  try {
+    const agg = await prisma.payment.aggregate({
+      _sum: { amountCents: true },
+      where: {
+        status: "succeeded",
+        factureFormationId: { not: null },
+        paidAt: { gte: plage.gte, lt: plage.lt },
+      },
+    });
+    return agg._sum.amountCents ?? 0;
+  } catch {
+    return 0;
+  }
 }
 
 /** Ordre d'affichage des activités de facturation (ordre de l'enum Prisma). */
@@ -852,12 +874,23 @@ async function calendrierAnnee(
 
 const JOURS_FMT = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "UTC" });
 
+const JOURS_LONG_FMT = new Intl.DateTimeFormat("fr-FR", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  timeZone: "UTC",
+});
+
 function labelPeriode(
   periode: PeriodePilotage,
   annee: number,
   mois: number,
   joursSemaine: string[],
+  todayKey: string,
 ): string {
+  if (periode === "jour") {
+    return `Aujourd'hui — ${JOURS_LONG_FMT.format(cleVersDateUtc(todayKey))}`;
+  }
   if (periode === "semaine") {
     const premier = joursSemaine[0];
     const dernier = joursSemaine[joursSemaine.length - 1];
@@ -898,7 +931,15 @@ export async function getPilotageDashboard(
   // Plage de la période choisie + même période N-1 (pour le delta de CA).
   let plage: Plage;
   let plageN1: Plage;
-  if (periode === "semaine") {
+  if (periode === "jour") {
+    plage = { gte: minuitParisUtc(todayKey), lt: minuitParisUtc(decalerCle(todayKey, 1)) };
+    // −364 jours : le même jour de semaine l'an dernier (un an calendaire
+    // comparerait un mardi à un dimanche).
+    plageN1 = {
+      gte: minuitParisUtc(decalerCle(todayKey, -364)),
+      lt: minuitParisUtc(decalerCle(todayKey, -364 + 1)),
+    };
+  } else if (periode === "semaine") {
     plage = { gte: minuitParisUtc(lundiKey), lt: minuitParisUtc(decalerCle(lundiKey, 7)) };
     // −364 jours = 52 semaines : la semaine comparable de l'an dernier, alignée
     // lundi → dimanche (un décalage d'un an calendaire casserait l'alignement).
@@ -937,8 +978,10 @@ export async function getPilotageDashboard(
   // Consolidation mensuelle : sert la tuile marge ET la vue année.
   const consolidationPromise = getConsolidationMensuelle(annee);
 
+  // Vue jour : la grille de la semaine COURANTE donne le contexte du jour
+  // (une grille d'un seul jour n'aurait rien à dire de plus que les tuiles).
   const calendrierPromise: Promise<CalendrierPilotage> =
-    periode === "semaine"
+    periode === "semaine" || periode === "jour"
       ? calendrierSemaine(joursSemaine)
       : periode === "annee"
         ? consolidationPromise.then((c) => calendrierAnnee(annee, c.mois))
@@ -954,6 +997,7 @@ export async function getPilotageDashboard(
     caCoachingPeriodeN1,
     caAnneeSessions,
     caAnneeCoaching,
+    encaissePeriode,
     parActiviteFacturation,
     cibleAnnuelleCents,
     complementsMensuels,
@@ -982,6 +1026,7 @@ export async function getPilotageDashboard(
     caCoachingPlage(plageN1),
     caRealisePlage(plageAnnee),
     caCoachingPlage(plageAnnee),
+    encaissePlage(plage),
     caParActivitePlage(plageAnnee),
     lireCibleAnnuelleCents(),
     caMensuelComplementsAnnee(annee),
@@ -1071,7 +1116,7 @@ export async function getPilotageDashboard(
 
   return {
     periode,
-    periodeLabel: labelPeriode(periode, annee, moisCourant, joursSemaine),
+    periodeLabel: labelPeriode(periode, annee, moisCourant, joursSemaine, todayKey),
     tuiles: {
       dossiersActifs: affichagePlafonne(nbActifs),
       aSolder: affichagePlafonne(pipeline.a_solder.length),
@@ -1079,6 +1124,7 @@ export async function getPilotageDashboard(
       caRealiseCents: caToutesActivites,
       caDelta: formatDelta(caToutesActivites, caToutesActivitesN1),
       margeMoisCents: margeMois,
+      encaissePeriodeCents: encaissePeriode,
       // Sessions (consolidation) + audits réalisés + coaching signé, mois par
       // mois — même périmètre que le chiffre de la tuile.
       caParMoisCents: Array.from(
