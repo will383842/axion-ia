@@ -23,42 +23,12 @@ import { useEffect, useState, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  LayoutDashboard,
-  CalendarDays,
-  ClipboardList,
-  FileText,
-  Receipt,
   Wallet,
-  CalendarClock,
-  Hourglass,
   Inbox,
-  PhoneCall,
-  UserPlus,
-  Mic,
-  BookOpenText,
-  BrainCircuit,
-  PenLine,
-  Tag,
-  Trophy,
-  HelpCircle,
-  LifeBuoy,
   Images,
   FolderOpen,
-  Upload,
-  PackagePlus,
   ScanSearch,
-  BarChart3,
-  Tags,
-  Bookmark,
-  Shield,
-  Settings,
-  Mail,
   Activity,
-  Wrench,
-  AlertTriangle,
-  Users,
-  ScrollText,
-  KeyRound,
   ChevronRight,
   Menu,
   X,
@@ -75,6 +45,7 @@ import {
   Cog,
   type LucideIcon,
 } from "lucide-react";
+import { navIcon } from "@/lib/admin-nav-icons";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
 import {
   ADMIN_NAV_GROUP_LABELS,
@@ -90,55 +61,10 @@ import { cn } from "@/lib/utils";
 // plié/déplié sans collision. Sert à initialiser « tous les pôles fermés ».
 const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).flat();
 
-// Mapping label nav → icône lucide. Fallback FolderOpen si non mappé.
-const ICON_MAP: Record<string, LucideIcon> = {
-  "Tableau de bord": LayoutDashboard,
-  // Boîte de réception (refonte 2026-07-29) — les anciens libellés « Contacts »
-  // n'avaient aucune entrée ici et retombaient tous sur l'icône dossier
-  // générique : cinq lignes visuellement identiques. Un canal = une icône.
-  Tout: Inbox,
-  "Appels réservés": PhoneCall,
-  Messages: Mail,
-  Candidatures: UserPlus,
-  "Demandes de podcast": Mic,
-  Calendrier: CalendarDays,
-  Réservations: ClipboardList,
-  Devis: FileText,
-  Factures: Receipt,
-  Paiements: Wallet,
-  Échéanciers: CalendarClock,
-  "Options 48h": Hourglass,
-  Soumissions: Inbox,
-  "Contacts & messages": Inbox,
-  Connaissances: BookOpenText,
-  "Générateur contenus": BrainCircuit,
-  Blog: PenLine,
-  Catégories: Tag,
-  "Cas concrets": Trophy,
-  FAQ: HelpCircle,
-  "Centre d'aide": LifeBuoy,
-  "Vue d'ensemble": Images,
-  Bibliothèque: FolderOpen,
-  Téléverser: Upload,
-  "Import CSV en masse": PackagePlus,
-  "File de qualité": ScanSearch,
-  Statistiques: BarChart3,
-  Étiquettes: Tags,
-  "Journaux d'utilisation (RGPD)": Shield,
-  Réglages: Settings,
-  Newsletter: Mail,
-  "Statistiques & SEO": BarChart3,
-  "Web Vitals": Activity,
-  "Infra & outils": Wrench,
-  "Alertes ops": AlertTriangle,
-  Utilisateurs: Users,
-  "Journaux d'activité": ScrollText,
-  Paramètres: Settings,
-  "2FA — sécurité": KeyRound,
-  Bookmark: Bookmark, // fallback compat
-};
-
 // Icône d'« onglet principal » par groupe (niveau 1 de la hiérarchie).
+// Les icônes d'ITEM, elles, viennent du SSOT (`item.icon` = nom d'export
+// lucide) résolu par `navIcon()` — l'ancien ICON_MAP par label est supprimé
+// (refonte visuelle console 2026-08, chantier icônes).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   main: Activity,
   // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
@@ -525,7 +451,7 @@ export function AdminSidebarNav({
   // Rendu d'un onglet (niveaux 2 & 3) — factorisé pour servir au rendu à plat
   // (groupes standard) ET sous les pôles content_gen.
   const renderItem = (item: AdminNavItem): React.ReactElement => {
-    const Icon = ICON_MAP[item.label] ?? FolderOpen;
+    const Icon = navIcon(item.icon);
     const active = item.href === activeHref;
     const badge = badgeFor(item.href);
     const level = collapsed ? 0 : itemLevel(item.href);

@@ -33,6 +33,7 @@ import {
   type AdminNavItem,
   type AdminNavGroup,
 } from "@/lib/admin-nav";
+import { navIcon } from "@/lib/admin-nav-icons";
 
 interface PaletteItem extends AdminNavItem {
   /** Libellé du groupe affiché dans le heading cmdk (groupe ou pôle). */
@@ -141,19 +142,24 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
           <Command.Empty className="admin-cmdk-empty">Aucun résultat.</Command.Empty>
           {groups.map((group) => (
             <Command.Group key={group.label} heading={group.label} className="admin-cmdk-group">
-              {group.items.map((item) => (
-                <Command.Item
-                  key={item.href}
-                  value={`${group.label} ${item.label}`}
-                  onSelect={() => select(item.href)}
-                  className="admin-cmdk-item"
-                >
-                  <span aria-hidden="true" className="admin-cmdk-icon">
-                    {item.icon}
-                  </span>
-                  <span>{item.label}</span>
-                </Command.Item>
-              ))}
+              {group.items.map((item) => {
+                // `item.icon` = nom d'export lucide (SSOT) — résolu en
+                // composant côté client (refonte visuelle console 2026-08).
+                // `.admin-cmdk-icon` (width 20 + flex-shrink 0) s'applique au
+                // svg directement ; l'item flex align-center centre le glyphe.
+                const Icon = navIcon(item.icon);
+                return (
+                  <Command.Item
+                    key={item.href}
+                    value={`${group.label} ${item.label}`}
+                    onSelect={() => select(item.href)}
+                    className="admin-cmdk-item"
+                  >
+                    <Icon size={16} aria-hidden="true" className="admin-cmdk-icon" />
+                    <span>{item.label}</span>
+                  </Command.Item>
+                );
+              })}
             </Command.Group>
           ))}
         </Command.List>
