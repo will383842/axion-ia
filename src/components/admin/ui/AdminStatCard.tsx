@@ -6,6 +6,7 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Sparkline } from "./charts";
 
 type StatTone = "default" | "success" | "warning" | "destructive" | "info";
 
@@ -21,6 +22,14 @@ interface AdminStatCardProps {
   icon?: LucideIcon;
   /** Si fournie, la card devient cliquable (lien vers détail). */
   href?: string;
+  /**
+   * Série de tendance (le plus ancien d'abord, ≥ 2 points) — rendue en
+   * micro-courbe SVG serveur sous la valeur. Décorative : la valeur et le
+   * delta textuels portent l'information.
+   */
+  trend?: ReadonlyArray<number>;
+  /** Libellés alignés sur `trend`, pour l'infobulle native. */
+  trendLabels?: ReadonlyArray<string>;
   className?: string;
 }
 
@@ -67,6 +76,8 @@ export function AdminStatCard({
   tone = "default",
   icon: Icon,
   href,
+  trend,
+  trendLabels,
   className,
 }: AdminStatCardProps): React.ReactElement {
   const content = (
@@ -117,9 +128,12 @@ export function AdminStatCard({
         ) : null}
       </div>
       <div className="flex items-baseline gap-[var(--space-admin-3)]">
+        {/* Chiffres PROPORTIONNELS à cette taille : `tabular-nums` donne à
+            chaque chiffre la largeur d'un zéro et desserre « 121 » en corps
+            display. Le tabulaire reste réservé aux colonnes qui s'alignent. */}
         <span
           className={cn(
-            "text-[length:var(--text-admin-2xl)] font-semibold tracking-[-0.02em] tabular-nums",
+            "text-[length:var(--text-admin-2xl)] font-semibold tracking-[-0.02em]",
             "text-[color:var(--color-admin-fg)]",
           )}
         >
@@ -145,6 +159,13 @@ export function AdminStatCard({
         >
           {meta}
         </span>
+      ) : null}
+      {trend && trend.length >= 2 ? (
+        <Sparkline
+          points={trend}
+          {...(trendLabels ? { labels: trendLabels } : {})}
+          className="mt-[var(--space-admin-2)]"
+        />
       ) : null}
     </div>
   );

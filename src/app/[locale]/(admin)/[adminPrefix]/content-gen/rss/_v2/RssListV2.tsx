@@ -112,10 +112,7 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
               </Link>
               <form action={doRemove}>
                 <input type="hidden" name="id" value={s.id} />
-                <button
-                  type="submit"
-                  className="admin-button-ghost text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-destructive)]"
-                >
+                <button type="submit" className="admin-button-ghost admin-button-ghost-danger">
                   Retirer
                 </button>
               </form>

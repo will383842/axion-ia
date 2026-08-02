@@ -10,8 +10,38 @@
 // `scripts/check-anti-hex.sh` y verrait une couleur hex codée en dur.
 
 import Link from "next/link";
+import {
+  Server,
+  Bell,
+  ShieldCheck,
+  ChevronRight,
+  Handshake,
+  Signature,
+  FileText,
+  PenLine,
+  Building2,
+  ChartColumn,
+  Landmark,
+  SearchCheck,
+  Banknote,
+  Star,
+  Award,
+  Settings,
+  GraduationCap,
+  CircleDollarSign,
+  Mail,
+  Library,
+  Lock,
+  Send,
+  Newspaper,
+  Palette,
+  Image as ImageIcon,
+  Pin,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import type { PilotageDashboard } from "@/server/admin/pilotage-dashboard";
+import type { ActivityIconKey } from "@/lib/admin/activity-labels";
 import { EnTetePilotage } from "./pilotage/EnTetePilotage";
 import { AlertesCritiques } from "./pilotage/AlertesCritiques";
 import { CalendrierPrevisionnel } from "./pilotage/CalendrierPrevisionnel";
@@ -21,18 +51,82 @@ import { FinancierSection } from "./pilotage/FinancierSection";
 import { PipelineSection } from "./pilotage/PipelineSection";
 import { libelleRole } from "./pilotage/format";
 
+/**
+ * Forme donnée à chaque famille d'action du journal.
+ *
+ * `activity-labels.ts` nomme la famille (`document`, `facturation`…) sans
+ * jamais la dessiner — c'est du code de bibliothèque, testé sans DOM. La
+ * correspondance vers lucide se fait ici, au seul endroit qui rend le journal.
+ * Le type union force l'exhaustivité : une famille sans forme ne compile pas.
+ */
+const ICONE_ACTIVITE: Record<ActivityIconKey, LucideIcon> = {
+  coaching: Handshake,
+  signature: Signature,
+  document: FileText,
+  devis: PenLine,
+  organisation: Building2,
+  alerte: Bell,
+  rapport: ChartColumn,
+  financeur: Landmark,
+  audit: SearchCheck,
+  remuneration: Banknote,
+  appreciation: Star,
+  attestation: Award,
+  reglage: Settings,
+  formation: GraduationCap,
+  facturation: CircleDollarSign,
+  email: Mail,
+  connaissances: Library,
+  rgpd: Lock,
+  newsletter: Send,
+  article: Newspaper,
+  marque: Palette,
+  media: ImageIcon,
+  inconnu: Pin,
+};
+
+/** Raccourcis d'exploitation — libellé métier, jamais un chemin d'URL. */
+const RACCOURCIS: ReadonlyArray<{
+  icone: LucideIcon;
+  titre: string;
+  description: string;
+  chemin: string;
+}> = [
+  {
+    icone: Server,
+    titre: "Infrastructure",
+    description: "14 outils, statut en direct, liens directs",
+    chemin: "/infra",
+  },
+  {
+    icone: Bell,
+    titre: "Alertes ops",
+    description: "Sentry · UptimeRobot · Coolify, agrégées",
+    chemin: "/alerts",
+  },
+  {
+    icone: ShieldCheck,
+    titre: "Double authentification",
+    description: "Activer la 2FA sur votre compte",
+    chemin: "/2fa/setup",
+  },
+];
+
 interface DashboardV2Props {
   adminPrefix: string;
-  email: string | null;
   role: string;
   logoutAction: () => Promise<void> | void;
   dashboard: PilotageDashboard;
-  activityRows: ReadonlyArray<{ id: string; primary: string; secondary: string }>;
+  activityRows: ReadonlyArray<{
+    id: string;
+    icone: ActivityIconKey;
+    primary: string;
+    secondary: string;
+  }>;
 }
 
 export function DashboardV2({
   adminPrefix,
-  email,
   role,
   logoutAction,
   dashboard,
@@ -41,9 +135,13 @@ export function DashboardV2({
   const base = `/fr/${adminPrefix}`;
   return (
     <AdminPageShell>
+      {/* La description disait « Connecté en tant que <email> · <rôle> » — une
+          information que le pied de la barre latérale porte déjà, à la place la
+          plus chère de la page. La description dit maintenant à quoi sert la
+          page ; l'identité reste dans la barre latérale. */}
       <AdminPageHeader
-        title="Tableau de bord de pilotage"
-        description={`Connecté en tant que ${email ?? "—"} · ${libelleRole(role)}`}
+        title="Tableau de bord"
+        description={`Ce qui attend, ce qui rentre, ce qui bloque — ${libelleRole(role).toLowerCase()}.`}
         actions={
           <form action={logoutAction}>
             <button type="submit" className="admin-button-ghost">
@@ -83,78 +181,84 @@ export function DashboardV2({
       {/* 7 — Pipeline commercial. */}
       <PipelineSection adminPrefix={adminPrefix} pipeline={dashboard.pipeline} />
 
-      {/* Activité récente — volontairement en bas de page. */}
-      <AdminCard className="mb-[var(--space-admin-6)]">
-        <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-          Activité récente
-        </h2>
-        {activityRows.length === 0 ? (
-          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-            Aucune activité enregistrée.
+      {/* Journal + raccourcis, côte à côte en bas de page : deux blocs froids
+          qui n'ont pas à occuper chacun toute la largeur. */}
+      <div className="grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
+        <AdminCard>
+          <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            Activité récente
+          </h2>
+          {activityRows.length === 0 ? (
+            <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Aucune activité enregistrée.
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-[var(--space-admin-4)]">
+              {activityRows.map((a) => {
+                const IconeAction = ICONE_ACTIVITE[a.icone];
+                return (
+                  <li key={a.id} className="flex items-start gap-[var(--space-admin-4)]">
+                    <IconeAction
+                      size={16}
+                      aria-hidden="true"
+                      className="mt-[2px] shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                    />
+                    <span className="min-w-0 text-[length:var(--text-admin-sm)]">
+                      <strong className="font-medium text-[color:var(--color-admin-fg)]">
+                        {a.primary}
+                      </strong>
+                      <span className="ml-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
+                        {a.secondary}
+                      </span>
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          <p className="mt-[var(--space-admin-5)]">
+            <Link href={`${base}/activity-logs`} className="admin-button-ghost">
+              Voir tout le journal
+              <ChevronRight size={15} aria-hidden="true" />
+            </Link>
           </p>
-        ) : (
+        </AdminCard>
+
+        <AdminCard>
+          <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+            Exploitation
+          </h2>
           <ul className="flex flex-col gap-[var(--space-admin-3)]">
-            {activityRows.map((a) => (
-              <li
-                key={a.id}
-                className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
-              >
-                <strong className="text-[color:var(--color-admin-fg)]">{a.primary}</strong>
-                <span className="ml-[var(--space-admin-2)]">{a.secondary}</span>
+            {RACCOURCIS.map((r) => (
+              <li key={r.chemin}>
+                <Link
+                  href={`${base}${r.chemin}`}
+                  className="flex items-start gap-[var(--space-admin-4)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper-alt)] p-[var(--space-admin-5)] transition-colors hover:border-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface-hover)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-info)] focus-visible:outline-none"
+                >
+                  <r.icone
+                    size={20}
+                    aria-hidden="true"
+                    className="mt-[2px] shrink-0 text-[color:var(--color-admin-fg-muted)]"
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
+                      {r.titre}
+                    </span>
+                    <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {r.description}
+                    </span>
+                  </span>
+                  <ChevronRight
+                    size={16}
+                    aria-hidden="true"
+                    className="ml-auto shrink-0 self-center text-[color:var(--color-admin-fg-muted)]"
+                  />
+                </Link>
               </li>
             ))}
           </ul>
-        )}
-        <p className="mt-[var(--space-admin-5)]">
-          <Link
-            href={`${base}/activity-logs`}
-            className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-          >
-            Voir tout le journal →
-          </Link>
-        </p>
-      </AdminCard>
-
-      <AdminCard>
-        <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
-          Ops · Monitoring
-        </h2>
-        <ul className="flex flex-col gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
-          <li>
-            <Link
-              href={`${base}/infra`}
-              className="font-medium text-[color:var(--color-admin-info)] hover:underline"
-            >
-              /infra
-            </Link>{" "}
-            <span className="text-[color:var(--color-admin-fg-soft)]">
-              — Console infra (14 outils, statut live, liens directs)
-            </span>
-          </li>
-          <li>
-            <Link
-              href={`${base}/alerts`}
-              className="font-medium text-[color:var(--color-admin-info)] hover:underline"
-            >
-              /alerts
-            </Link>{" "}
-            <span className="text-[color:var(--color-admin-fg-soft)]">
-              — Alertes agrégées (Sentry · UptimeRobot · Coolify)
-            </span>
-          </li>
-          <li>
-            <Link
-              href={`${base}/2fa/setup`}
-              className="font-medium text-[color:var(--color-admin-info)] hover:underline"
-            >
-              /2fa/setup
-            </Link>{" "}
-            <span className="text-[color:var(--color-admin-fg-soft)]">
-              — Activer la 2FA sur votre compte
-            </span>
-          </li>
-        </ul>
-      </AdminCard>
+        </AdminCard>
+      </div>
     </AdminPageShell>
   );
 }

@@ -22,7 +22,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCheck, CircleAlert, Mail, Signature, TriangleAlert } from "lucide-react";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -155,24 +155,30 @@ export default async function ATraiterPage({ params }: PageProps) {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="🔴 À traiter"
+        title="À traiter"
         description="Tout ce qui attend une action, au même endroit — signatures, e-mails, relances, alertes. Quand cette page est vide, tout est à jour."
       />
 
       {rienAFaire && (
         <div className={carte}>
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
-            ✨ Rien à traiter — tout est à jour. Les pastilles rouges de la navigation vous
-            ramèneront ici dès que quelque chose attendra.
+            <CheckCheck
+              size={16}
+              aria-hidden="true"
+              className="mr-[var(--space-admin-2)] inline-block align-[-3px]"
+            />
+            Rien à traiter — tout est à jour. Les pastilles rouges de la navigation vous ramèneront
+            ici dès que quelque chose attendra.
           </p>
         </div>
       )}
 
-      {/* ✍️ Signatures */}
+      {/* Signatures */}
       {signatures.length > 0 && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            ✍️ Signatures en attente <span className={pastille}>{signatures.length}</span>
+            <Signature size={18} aria-hidden="true" className="shrink-0" />
+            Signatures en attente <span className={pastille}>{signatures.length}</span>
           </h2>
           <ul>
             {signatures.map((s) => {
@@ -227,11 +233,12 @@ export default async function ATraiterPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* ✉️ E-mails à valider */}
+      {/* E-mails à valider */}
       {compteurs.emails > 0 && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            ✉️ E-mails à valider <span className={pastille}>{compteurs.emails}</span>
+            <Mail size={18} aria-hidden="true" className="shrink-0" />
+            E-mails à valider <span className={pastille}>{compteurs.emails}</span>
           </h2>
           <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Des e-mails (devis, conventions, relances…) attendent votre relecture avant de partir.
@@ -247,18 +254,36 @@ export default async function ATraiterPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* 🚨 Alertes & relances */}
+      {/* Alertes & relances */}
       {(critiques.length > 0 || importantes.length > 0) && (
         <div className={carte}>
           <h2 className={titreCarte}>
-            🚨 Alertes &amp; relances{" "}
+            <TriangleAlert size={18} aria-hidden="true" className="shrink-0" />
+            Alertes &amp; relances{" "}
             <span className={pastille}>{critiques.length + importantes.length}</span>
           </h2>
           <ul>
             {[...critiques, ...importantes].map((a) => (
               <li key={a.id} className={ligne}>
                 <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  {a.niveau === "critique" ? "🔴" : "🟠"} <strong>{a.titre}</strong>
+                  {/* Le niveau se lisait 🔴 contre 🟠 : deux ronds que SEULE la
+                      couleur distinguait — illisible en vision des couleurs
+                      déficiente, sur l'information la plus urgente de la page.
+                      Deux SILHOUETTES différentes le disent sans la couleur. */}
+                  {a.niveau === "critique" ? (
+                    <CircleAlert
+                      size={15}
+                      aria-label="Critique"
+                      className="mr-[var(--space-admin-2)] inline-block shrink-0 align-[-2px] text-[color:var(--color-admin-destructive)]"
+                    />
+                  ) : (
+                    <TriangleAlert
+                      size={15}
+                      aria-label="Important"
+                      className="mr-[var(--space-admin-2)] inline-block shrink-0 align-[-2px] text-[color:var(--color-admin-warning)]"
+                    />
+                  )}
+                  <strong>{a.titre}</strong>
                   <span className="block text-[color:var(--color-admin-fg-muted)]">
                     {a.message}
                   </span>
