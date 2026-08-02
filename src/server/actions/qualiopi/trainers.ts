@@ -41,6 +41,39 @@ const regionField = z
     message: "Région inconnue",
   });
 
+/**
+ * Régions d'intervention MULTIPLES. `region` (mono-valeur) reste écrit en
+ * parallèle avec la première du tableau : le calendrier et les filtres
+ * existants la lisent, et une migration d'écrans ne doit pas casser une lecture
+ * qui marchait.
+ */
+const regionsField = z
+  .array(z.string().max(60))
+  .max(13)
+  .optional()
+  .refine((v) => v === undefined || v.every((s) => REGION_SLUGS.has(s)), {
+    message: "Région inconnue",
+  });
+
+/**
+ * Domaine de compétence AVEC son niveau de maîtrise et la date à laquelle il a
+ * été vérifié.
+ *
+ * 🔴 C'est la preuve que l'indicateur 21 réclame — « le prestataire détermine,
+ * mobilise et ÉVALUE les compétences des intervenants ». La structure existait
+ * en base et le PDF l'affichait déjà, mais AUCUN écran ne permettait de la
+ * remplir : toute fiche formateur imprimait « — » en niveau et « Non vérifié »
+ * en date, sur chaque ligne. Un auditeur lit ça comme une non-conformité, et il
+ * a raison : rien ne prouvait la moindre évaluation.
+ */
+const NIVEAUX_MAITRISE = ["a_developper", "maitrise", "expert"] as const;
+const domaineCompetenceSchema = z.object({
+  domaine: z.string().min(1).max(120),
+  niveauMaitrise: z.enum(NIVEAUX_MAITRISE).or(z.literal("")).optional(),
+  /** ISO ou "" — la date à laquelle la maîtrise a été constatée. */
+  verifiedAt: z.string().max(40).optional(),
+});
+
 const createTrainerSchema = z.object({
   nom: z.string().min(1).max(200),
   prenom: z.string().min(1).max(200),
@@ -48,6 +81,9 @@ const createTrainerSchema = z.object({
   telephone: z.string().max(40).optional(),
   statut: z.enum(TRAINER_STATUTS),
   region: regionField,
+  regionsIntervention: regionsField,
+  interventionFranceEntiere: z.boolean().optional(),
+  adresseProfessionnelle: z.string().max(500).optional(),
   cvUrl: z.string().url().optional(),
   domainesCompetences: z.array(z.unknown()).optional(),
   formationsHabilitees: z.array(z.string().uuid()).optional(),
@@ -64,6 +100,9 @@ const updateTrainerSchema = z.object({
   telephone: z.string().max(40).optional(),
   statut: z.enum(TRAINER_STATUTS).optional(),
   region: regionField,
+  regionsIntervention: regionsField,
+  interventionFranceEntiere: z.boolean().optional(),
+  adresseProfessionnelle: z.string().max(500).optional(),
   cvUrl: z.string().url().optional(),
   domainesCompetences: z.array(z.unknown()).optional(),
   dateEmbauche: z.coerce.date().optional(),
@@ -107,6 +146,22 @@ export async function createTrainerAction(
         email: v.email,
         statut: v.statut,
         ...(v.region !== undefined ? { region: v.region === "" ? null : v.region } : {}),
+        // `region` (mono) reste alimentée par la PREMIÈRE région retenue :
+        // le calendrier et les filtres la lisent encore.
+        ...(v.regionsIntervention !== undefined
+          ? {
+              regionsIntervention: v.regionsIntervention,
+              ...(v.region === undefined && v.regionsIntervention[0] !== undefined
+                ? { region: v.regionsIntervention[0] }
+                : {}),
+            }
+          : {}),
+        ...(v.interventionFranceEntiere !== undefined
+          ? { interventionFranceEntiere: v.interventionFranceEntiere }
+          : {}),
+        ...(v.adresseProfessionnelle !== undefined
+          ? { adresseProfessionnelle: v.adresseProfessionnelle }
+          : {}),
         ...(v.telephone !== undefined ? { telephone: v.telephone } : {}),
         ...(v.cvUrl !== undefined ? { cvUrl: v.cvUrl, cvUploadedAt: new Date() } : {}),
         ...(v.domainesCompetences !== undefined
@@ -161,6 +216,23 @@ export async function updateTrainerAction(
         ...(fields.statut !== undefined ? { statut: fields.statut } : {}),
         ...(fields.region !== undefined
           ? { region: fields.region === "" ? null : fields.region }
+          : {}),
+        // `region` (mono) suit la PREMIÈRE région retenue : le calendrier et les
+        // filtres existants la lisent encore, une saisie multi ne doit pas les
+        // laisser sur une valeur périmée.
+        ...(fields.regionsIntervention !== undefined
+          ? {
+              regionsIntervention: fields.regionsIntervention,
+              ...(fields.region === undefined
+                ? { region: fields.regionsIntervention[0] ?? null }
+                : {}),
+            }
+          : {}),
+        ...(fields.interventionFranceEntiere !== undefined
+          ? { interventionFranceEntiere: fields.interventionFranceEntiere }
+          : {}),
+        ...(fields.adresseProfessionnelle !== undefined
+          ? { adresseProfessionnelle: fields.adresseProfessionnelle }
           : {}),
         ...(fields.cvUrl !== undefined ? { cvUrl: fields.cvUrl, cvUploadedAt: new Date() } : {}),
         ...(fields.domainesCompetences !== undefined
@@ -300,6 +372,111 @@ export async function verifyTrainerSousTraitantAction(
   });
 
   return { data: { id } };
+}
+
+/**
+ * Remplace les domaines de compétences AVEC leur niveau de maîtrise et la date
+ * à laquelle chacun a été vérifié.
+ *
+ * 🔴 C'est la preuve de l'indicateur 21 — « déterminer, mobiliser et ÉVALUER
+ * les compétences ». La structure `{domaine, niveauMaitrise, verifiedAt}`
+ * existait en base, la fiche formateur l'affichait déjà, et AUCUN écran ne
+ * permettait de la remplir : chaque fiche sortait avec « — » en niveau et
+ * « Non vérifié » en date, sur toutes ses lignes. Ce n'était pas un défaut
+ * d'affichage, c'était une absence de preuve.
+ *
+ * ⚠️ Remplacement intégral, pas fusion : l'écran envoie la liste complète, et
+ * une fusion rendrait impossible la SUPPRESSION d'un domaine — un formateur qui
+ * cesse d'intervenir sur un sujet doit pouvoir le retirer.
+ */
+export async function setTrainerCompetencesAction(input: {
+  id: string;
+  domaines: Array<{ domaine: string; niveauMaitrise?: string; verifiedAt?: string }>;
+}): Promise<ActionResult<{ id: string; nbDomaines: number }>> {
+  const session = await requireAdminWrite();
+  const parsed = z
+    .object({ id: z.string().uuid(), domaines: z.array(domaineCompetenceSchema).max(50) })
+    .safeParse(input);
+  if (!parsed.success) return { error: "Données invalides (domaine, niveau ou date)" };
+  const { id, domaines } = parsed.data;
+
+  // Normalisation : on stocke toujours les trois clés, même vides. Un objet à
+  // géométrie variable obligerait chaque lecteur à re-tester l'existence des
+  // champs — c'est ce que `parseDomainesCompetences` compense aujourd'hui.
+  const payload = domaines.map((d) => ({
+    domaine: d.domaine.trim(),
+    niveauMaitrise: d.niveauMaitrise ?? "",
+    verifiedAt: d.verifiedAt ?? "",
+  }));
+
+  try {
+    await prisma.trainer.update({
+      where: { id },
+      data: { domainesCompetences: payload as never },
+    });
+  } catch {
+    return { error: "Formateur introuvable ou mise à jour impossible." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.competences.set",
+    targetType: "Trainer",
+    targetId: id,
+    changes: {
+      nbDomaines: payload.length,
+      // Traçabilité de l'ÉVALUATION : combien de domaines sont réellement
+      // vérifiés, c'est la question que pose l'indicateur 21.
+      nbVerifies: payload.filter((d) => d.verifiedAt !== "").length,
+    },
+    session,
+  });
+
+  return { data: { id, nbDomaines: payload.length } };
+}
+
+/**
+ * Habilite (ou retire l'habilitation) AFEST d'un formateur — D.6313-3-1 §2.
+ *
+ * 🔴 `afestHabiliteAt` était LU à trois endroits, dont un garde-fou qui refuse
+ * la création d'un parcours AFEST quand il est nul, et n'était ÉCRIT nulle
+ * part : l'habilitation était donc impossible à accorder, et le garde-fou
+ * infranchissable. Un champ qu'on lit sans jamais pouvoir l'écrire n'est pas
+ * une règle, c'est un cul-de-sac.
+ */
+export async function setTrainerAfestHabiliteAction(input: {
+  id: string;
+  habilite: boolean;
+  /** Date de l'habilitation (ISO). Absente = aujourd'hui. Ignorée si retrait. */
+  dateHabilitation?: string;
+}): Promise<ActionResult<{ id: string; habiliteAt: string | null }>> {
+  const session = await requireAdminWrite();
+  const parsed = z
+    .object({
+      id: z.string().uuid(),
+      habilite: z.boolean(),
+      dateHabilitation: z.coerce.date().optional(),
+    })
+    .safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id, habilite, dateHabilitation } = parsed.data;
+
+  const afestHabiliteAt = habilite ? (dateHabilitation ?? new Date()) : null;
+
+  try {
+    await prisma.trainer.update({ where: { id }, data: { afestHabiliteAt } });
+  } catch {
+    return { error: "Formateur introuvable ou mise à jour impossible." };
+  }
+
+  await logQualiopiActivity({
+    action: habilite ? "qualiopi.trainer.afest.habilite" : "qualiopi.trainer.afest.retire",
+    targetType: "Trainer",
+    targetId: id,
+    changes: { habilite, dateHabilitation: afestHabiliteAt?.toISOString() ?? null },
+    session,
+  });
+
+  return { data: { id, habiliteAt: afestHabiliteAt?.toISOString() ?? null } };
 }
 
 /** Active / désactive un formateur (un inactif ne peut plus être assigné). */
