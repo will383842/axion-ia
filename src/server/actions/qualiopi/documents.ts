@@ -2645,6 +2645,111 @@ export async function genererInventaireMoyensAction(): Promise<
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 15 bis. Autorisation de captation (art. 9 C. civ. + RGPD)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Autorisation d'image et de voix d'UN stagiaire, pour UNE action.
+ *
+ * 🔴 Pièce SÉPARÉE des contrats à dessein. Un consentement doit être LIBRE :
+ * enfoui dans la convention, le refus serait indissociable du refus de la
+ * formation, et la CNIL écarte les consentements qui conditionnent l'accès à un
+ * service. La pièce dit d'ailleurs noir sur blanc que refuser n'a aucune
+ * conséquence — c'est cette phrase qui la rend valable.
+ *
+ * ⚠️ Les finalités sont ÉNUMÉRÉES, jamais génériques : « toute utilisation par
+ * l'organisme » n'est pas un consentement spécifique, c'est un blanc-seing, et
+ * il est nul. Les valeurs par défaut couvrent les usages réels de l'organisme ;
+ * l'appelant peut les restreindre, jamais les remplacer par un mot creux.
+ */
+export async function genererAutorisationCaptationAction(input: {
+  enrollmentId: string;
+  finalites?: string[];
+  supports?: string[];
+  dureeAnnees?: number;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = z
+    .object({
+      enrollmentId: z.string().uuid(),
+      finalites: z.array(z.string().min(3).max(200)).max(10).optional(),
+      supports: z.array(z.string().min(3).max(200)).max(10).optional(),
+      dureeAnnees: z.number().int().min(1).max(10).optional(),
+    })
+    .safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { enrollmentId, finalites, supports, dureeAnnees } = parsed.data;
+
+  const enrollment = await prisma.enrollment.findUnique({
+    where: { id: enrollmentId },
+    select: {
+      id: true,
+      trainee: { select: { id: true, nom: true, prenom: true, entreprise: true } },
+      session: {
+        select: {
+          id: true,
+          titreSession: true,
+          dateDebut: true,
+          ...LIEU_DOCUMENT_SELECT,
+        },
+      },
+    },
+  });
+  if (!enrollment) return { error: "Inscription introuvable" };
+
+  const { trainee, session } = enrollment;
+  const identite = await getOrganismeIdentite();
+
+  const doc = await generateDocument({
+    type: "autorisation_captation",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(AutorisationCaptationPdf, {
+        data: {
+          numero,
+          personne: {
+            nomPrenom: `${trainee.prenom} ${trainee.nom}`,
+            qualite: "Stagiaire",
+            ...(trainee.entreprise ? { entreprise: trainee.entreprise } : {}),
+          },
+          intitule: session.titreSession,
+          dateAction: formatDate(session.dateDebut),
+          lieu: resolveLieuDocument(session, identite),
+          dateEdition: formatDateFr(new Date()),
+          finalites: finalites ?? [
+            "Illustrer les supports de formation et les comptes rendus pédagogiques de l'organisme",
+            "Améliorer la qualité des prestations par l'analyse interne des séances",
+            "Présenter l'activité de l'organisme sur son site internet et ses supports de communication",
+          ],
+          supports: supports ?? [
+            "Supports pédagogiques et documents internes de l'organisme",
+            "Site internet de l'organisme",
+            "Comptes de l'organisme sur les réseaux sociaux professionnels",
+          ],
+          dureeAnnees: dureeAnnees ?? 3,
+        },
+        identite,
+      }),
+    // `traineeId` fait partie de l'IDENTITÉ de la pièce : un consentement est
+    // individuel. Sans lui, la détection de régénération marquerait « copie »
+    // les autorisations des stagiaires suivants d'une même session.
+    refs: { sessionId: session.id, traineeId: trainee.id },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.autorisation_captation.genere",
+    targetType: "Enrollment",
+    targetId: enrollmentId,
+    changes: { documentId: doc.id, numero: doc.numero, traineeId: trainee.id },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 16. Contrat de sous-traitance (indicateur 27 — L.6316-3)
 // ─────────────────────────────────────────────────────────────────────────────
 

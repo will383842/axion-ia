@@ -6507,6 +6507,12 @@ enum DocumentType {
   /// actions ») et preuve du déroulé pour les indicateurs 9 et 12. Le programme
   /// dit CE QUI est enseigné ; cette pièce dit QUAND, OÙ et COMMENT.
   organisation_action
+  /// Autorisation de captation et d'utilisation de l'image et de la voix
+  /// (art. 9 C. civ. + RGPD). Pièce SÉPARÉE des contrats à dessein : un
+  /// consentement enfoui dans la convention ou la lettre de mission ne serait
+  /// pas LIBRE, puisque le refus y serait indissociable du refus de la
+  /// prestation. Vaut pour les stagiaires comme pour les intervenants.
+  autorisation_captation
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,

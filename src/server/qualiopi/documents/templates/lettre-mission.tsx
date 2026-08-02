@@ -283,10 +283,97 @@ export function LettreMissionPdf({
           </Text>
         </DocSection>
 
-        {/* 7. Signatures */}
+        {/*
+          Sections 7 à 10 — 2026-08-02.
+
+          🔴 CHOIX ASSUMÉ : PAS de clause de non-concurrence, une clause de
+          NON-SOLLICITATION. Interdire à un sous-traitant de travailler ailleurs
+          est l'un des indices que retiennent les Prud'hommes et l'URSSAF pour
+          REQUALIFIER la prestation en contrat de travail — avec rappel de
+          cotisations sur toute la durée. Combinée aux référentiels imposés et
+          aux comptes rendus déjà exigés en section 5, elle rendrait la
+          requalification franchement plaidable.
+
+          La non-sollicitation protège ce qu'on veut réellement protéger — que
+          le formateur ne démarche pas les clients rencontrés ici — sans
+          restreindre sa liberté de travailler. Elle est proportionnée, donc
+          opposable ; une non-concurrence trop large est annulée par le juge, et
+          n'aurait donc rien protégé du tout.
+
+          La section 9 (indépendance) est l'exacte contrepartie : elle documente
+          l'ABSENCE de subordination. C'est elle qui protège contre la
+          requalification, là où une non-concurrence l'aurait nourrie.
+        */}
+
+        {/* 7. Propriété intellectuelle */}
+        <DocSection title="7. Propriété intellectuelle">
+          <Text style={pdfStyles.paragraph}>
+            Les référentiels, supports et méthodes transmis par l&apos;organisme demeurent sa
+            propriété exclusive ; le formateur les utilise pour les seuls besoins de la mission et
+            les restitue ou les détruit à son terme.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Les supports, exercices et contenus que le formateur crée spécifiquement dans le cadre
+            de la mission sont cédés à l&apos;organisme à titre exclusif, pour toute la durée légale
+            de protection et pour le monde entier, pour les droits de reproduction,
+            représentation, adaptation et traduction, sur tout support. Cette cession est comprise
+            dans la rémunération prévue en section 4. Le formateur conserve la propriété des
+            supports qu&apos;il avait développés avant la mission et qu&apos;il apporte, et concède
+            à l&apos;organisme le droit de les utiliser pour les prestations concernées.
+          </Text>
+        </DocSection>
+
+        {/* 8. Non-sollicitation */}
+        <DocSection title="8. Non-sollicitation">
+          <Text style={pdfStyles.paragraph}>
+            Pendant la mission et durant dix-huit (18) mois après son terme, le formateur
+            s&apos;engage à ne pas solliciter directement, pour des prestations de même nature, les
+            clients de l&apos;organisme auprès desquels il est intervenu à ce titre, ni à démarcher
+            les intervenants ou salariés de l&apos;organisme en vue de les recruter.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            Cette clause n&apos;interdit pas au formateur d&apos;exercer librement son activité,
+            y compris auprès de clients qu&apos;il aurait acquis par ses propres moyens : elle ne
+            vise que la sollicitation de la clientèle rencontrée à l&apos;occasion de la présente
+            mission.
+          </Text>
+        </DocSection>
+
+        {/* 9. Indépendance */}
+        <DocSection title="9. Indépendance des parties">
+          <Text style={pdfStyles.paragraph}>
+            Le formateur exerce en toute indépendance. Il organise librement son travail, conserve
+            la maîtrise de ses méthodes d&apos;animation dans le respect du programme convenu, et
+            n&apos;est soumis à aucun lien de subordination envers l&apos;organisme. Il demeure
+            libre d&apos;exercer pour d&apos;autres donneurs d&apos;ordre.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Le formateur déclare être régulièrement immatriculé, à jour de ses obligations sociales
+            et fiscales, et détenir une assurance de responsabilité civile professionnelle couvrant
+            son activité de formation. Il en justifie sur simple demande, et informe
+            l&apos;organisme sans délai de toute cessation de garantie.
+          </Text>
+        </DocSection>
+
+        {/* 10. Durée et résiliation */}
+        <DocSection title="10. Durée et résiliation">
+          <Text style={pdfStyles.paragraph}>
+            La présente lettre prend effet à sa signature et s&apos;achève à la réalisation des
+            prestations confiées{data.periode ? " ou au terme de la période indiquée" : ""}. Chaque
+            partie peut y mettre fin par écrit moyennant un préavis de trente (30) jours, sans
+            indemnité, les prestations déjà engagées étant menées à leur terme.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            En cas de manquement grave — notamment atteinte à la confidentialité, absence non
+            justifiée ou défaut d&apos;assurance — la résiliation peut intervenir sans préavis,
+            après mise en demeure restée sans effet pendant huit (8) jours.
+          </Text>
+        </DocSection>
+
+        {/* 11. Signatures */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title="7. Signatures">
+        <DocSection title="11. Signatures">
           <SignatureZone
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateMission}`}
             parties={[

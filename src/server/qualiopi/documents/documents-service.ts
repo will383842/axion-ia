@@ -89,6 +89,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   programme: "document",
   // Organisation de l'action : calendrier, durée, rythme, lieu (art. R.6351-5).
   organisation_action: "document",
+  // Consentement image et voix (art. 9 C. civ. + RGPD).
+  autorisation_captation: "document",
 };
 
 export interface GenerateDocumentInput {
