@@ -80,8 +80,14 @@ export function ManualCalendlyEventButton(): React.ReactElement {
         <form onSubmit={onSubmit} className="admin-form mt-4 space-y-3">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="admin-field">
-              <label className="admin-label">Type d&apos;événement (nom)</label>
+              <label
+                htmlFor="manualcalendlyeventbutton-type-devenement-nom"
+                className="admin-label"
+              >
+                Type d&apos;événement (nom)
+              </label>
               <input
+                id="manualcalendlyeventbutton-type-devenement-nom"
                 className="admin-input"
                 value={state.eventTypeName}
                 onChange={(e) => setState({ ...state, eventTypeName: e.target.value })}
@@ -91,8 +97,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Slug du type</label>
+              <label htmlFor="manualcalendlyeventbutton-slug-du-type" className="admin-label">
+                Slug du type
+              </label>
               <input
+                id="manualcalendlyeventbutton-slug-du-type"
                 className="admin-input"
                 value={state.eventTypeSlug}
                 onChange={(e) => setState({ ...state, eventTypeSlug: e.target.value })}
@@ -102,8 +111,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Nom invité</label>
+              <label htmlFor="manualcalendlyeventbutton-nom-invite" className="admin-label">
+                Nom invité
+              </label>
               <input
+                id="manualcalendlyeventbutton-nom-invite"
                 className="admin-input"
                 value={state.inviteeName}
                 onChange={(e) => setState({ ...state, inviteeName: e.target.value })}
@@ -112,8 +124,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Email invité</label>
+              <label htmlFor="manualcalendlyeventbutton-email-invite" className="admin-label">
+                Email invité
+              </label>
               <input
+                id="manualcalendlyeventbutton-email-invite"
                 type="email"
                 className="admin-input"
                 value={state.inviteeEmail}
@@ -123,8 +138,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Téléphone</label>
+              <label htmlFor="manualcalendlyeventbutton-telephone" className="admin-label">
+                Téléphone
+              </label>
               <input
+                id="manualcalendlyeventbutton-telephone"
                 className="admin-input"
                 value={state.inviteePhone}
                 onChange={(e) => setState({ ...state, inviteePhone: e.target.value })}
@@ -133,8 +151,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Lieu / URL</label>
+              <label htmlFor="manualcalendlyeventbutton-lieu-url" className="admin-label">
+                Lieu / URL
+              </label>
               <input
+                id="manualcalendlyeventbutton-lieu-url"
                 className="admin-input"
                 value={state.location}
                 onChange={(e) => setState({ ...state, location: e.target.value })}
@@ -143,8 +164,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Début</label>
+              <label htmlFor="manualcalendlyeventbutton-debut" className="admin-label">
+                Début
+              </label>
               <input
+                id="manualcalendlyeventbutton-debut"
                 type="datetime-local"
                 className="admin-input"
                 value={state.startTime}
@@ -153,8 +177,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field">
-              <label className="admin-label">Fin</label>
+              <label htmlFor="manualcalendlyeventbutton-fin" className="admin-label">
+                Fin
+              </label>
               <input
+                id="manualcalendlyeventbutton-fin"
                 type="datetime-local"
                 className="admin-input"
                 value={state.endTime}
@@ -163,8 +190,11 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               />
             </div>
             <div className="admin-field sm:col-span-2">
-              <label className="admin-label">Notes</label>
+              <label htmlFor="manualcalendlyeventbutton-notes" className="admin-label">
+                Notes
+              </label>
               <textarea
+                id="manualcalendlyeventbutton-notes"
                 className="admin-input admin-textarea"
                 rows={3}
                 value={state.notes}

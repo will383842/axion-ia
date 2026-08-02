@@ -76,8 +76,11 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Nom */}
         <div className={fieldCls}>
-          <label className={labelCls}>Nom du partenaire</label>
+          <label htmlFor="partenariatform-nom-du-partenaire" className={labelCls}>
+            Nom du partenaire
+          </label>
           <input
+            id="partenariatform-nom-du-partenaire"
             type="text"
             value={nom}
             onChange={(e) => setNom(e.target.value)}
@@ -91,8 +94,11 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
 
         {/* Type */}
         <div className={fieldCls}>
-          <label className={labelCls}>Type de partenariat</label>
+          <label htmlFor="partenariatform-type-de-partenariat" className={labelCls}>
+            Type de partenariat
+          </label>
           <select
+            id="partenariatform-type-de-partenariat"
             value={type}
             onChange={(e) => setType(e.target.value)}
             disabled={isPending}
@@ -110,8 +116,11 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
 
         {/* Date début */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de début</label>
+          <label htmlFor="partenariatform-date-de-debut" className={labelCls}>
+            Date de début
+          </label>
           <input
+            id="partenariatform-date-de-debut"
             type="date"
             value={dateDebut}
             onChange={(e) => setDateDebut(e.target.value)}
@@ -123,8 +132,11 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
 
         {/* Date fin */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de fin (facultatif)</label>
+          <label htmlFor="partenariatform-date-de-fin-facultatif" className={labelCls}>
+            Date de fin (facultatif)
+          </label>
           <input
+            id="partenariatform-date-de-fin-facultatif"
             type="date"
             value={dateFin}
             onChange={(e) => setDateFin(e.target.value)}
@@ -136,8 +148,11 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
 
       {/* Objet */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Objet du partenariat</label>
+        <label htmlFor="partenariatform-objet-du-partenariat" className={labelCls}>
+          Objet du partenariat
+        </label>
         <textarea
+          id="partenariatform-objet-du-partenariat"
           value={objet}
           onChange={(e) => setObjet(e.target.value)}
           disabled={isPending}

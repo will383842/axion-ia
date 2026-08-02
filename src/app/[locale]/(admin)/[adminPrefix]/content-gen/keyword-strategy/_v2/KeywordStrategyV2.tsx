@@ -178,6 +178,7 @@ export async function KeywordStrategyV2({
       {/* Filtres GET form (zéro JS) */}
       <form method="GET" action={basePath} className="flex flex-wrap gap-3">
         <select
+          aria-label="Filtrer par verticale"
           name="vertical"
           defaultValue={vertical}
           className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm"
@@ -191,6 +192,7 @@ export async function KeywordStrategyV2({
         </select>
 
         <select
+          aria-label="Filtrer par intention de recherche"
           name="intent"
           defaultValue={intent}
           className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm"
@@ -204,6 +206,7 @@ export async function KeywordStrategyV2({
         </select>
 
         <input
+          aria-label="Rechercher un keyword..."
           type="text"
           name="q"
           defaultValue={query}

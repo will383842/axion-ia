@@ -93,8 +93,11 @@ export function PartenariatRowActions({
       className="flex w-full max-w-md flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
     >
       <div>
-        <label className={labelCls}>Nom</label>
+        <label htmlFor="partenariatrowactions-nom" className={labelCls}>
+          Nom
+        </label>
         <input
+          id="partenariatrowactions-nom"
           type="text"
           value={nom}
           onChange={(e) => setNom(e.target.value)}
@@ -105,8 +108,11 @@ export function PartenariatRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Type</label>
+        <label htmlFor="partenariatrowactions-type" className={labelCls}>
+          Type
+        </label>
         <select
+          id="partenariatrowactions-type"
           value={type}
           onChange={(e) => setType(e.target.value)}
           disabled={isPending}
@@ -121,8 +127,11 @@ export function PartenariatRowActions({
         </select>
       </div>
       <div>
-        <label className={labelCls}>Objet</label>
+        <label htmlFor="partenariatrowactions-objet" className={labelCls}>
+          Objet
+        </label>
         <textarea
+          id="partenariatrowactions-objet"
           value={objet}
           onChange={(e) => setObjet(e.target.value)}
           disabled={isPending}
@@ -133,8 +142,11 @@ export function PartenariatRowActions({
       </div>
       <div className="grid grid-cols-2 gap-[var(--space-admin-3)]">
         <div>
-          <label className={labelCls}>Début</label>
+          <label htmlFor="partenariatrowactions-debut" className={labelCls}>
+            Début
+          </label>
           <input
+            id="partenariatrowactions-debut"
             type="date"
             value={dateDebut}
             onChange={(e) => setDateDebut(e.target.value)}
@@ -144,8 +156,11 @@ export function PartenariatRowActions({
           />
         </div>
         <div>
-          <label className={labelCls}>Fin (facultatif)</label>
+          <label htmlFor="partenariatrowactions-fin-facultatif" className={labelCls}>
+            Fin (facultatif)
+          </label>
           <input
+            id="partenariatrowactions-fin-facultatif"
             type="date"
             value={dateFin}
             onChange={(e) => setDateFin(e.target.value)}

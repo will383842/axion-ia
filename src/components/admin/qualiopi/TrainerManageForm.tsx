@@ -259,6 +259,7 @@ export function TrainerManageForm(props: TrainerManageFormProps): React.ReactEle
           </p>
           <div className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
             <input
+              aria-label="N° NDA du sous-traitant"
               value={nda}
               onChange={(e) => setNda(e.target.value)}
               disabled={isPending}

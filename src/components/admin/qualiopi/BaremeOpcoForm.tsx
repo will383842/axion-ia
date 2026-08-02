@@ -115,8 +115,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3">
         {/* OPCO */}
         <div className={fieldCls}>
-          <label className={labelCls}>OPCO</label>
+          <label htmlFor="baremeopcoform-opco" className={labelCls}>
+            OPCO
+          </label>
           <select
+            id="baremeopcoform-opco"
             value={opco}
             onChange={(e) => setOpco(e.target.value)}
             disabled={isPending}
@@ -132,8 +135,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
 
         {/* Date d'effet */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date d&apos;effet</label>
+          <label htmlFor="baremeopcoform-date-deffet" className={labelCls}>
+            Date d&apos;effet
+          </label>
           <input
+            id="baremeopcoform-date-deffet"
             type="date"
             value={dateEffet}
             onChange={(e) => setDateEffet(e.target.value)}
@@ -145,8 +151,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
 
         {/* Date de relevé */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de relevé (portail)</label>
+          <label htmlFor="baremeopcoform-date-de-releve-portail" className={labelCls}>
+            Date de relevé (portail)
+          </label>
           <input
+            id="baremeopcoform-date-de-releve-portail"
             type="date"
             value={releveLe}
             onChange={(e) => setReleveLe(e.target.value)}
@@ -158,8 +167,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
 
       {/* Périmètre */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Périmètre (branche / IDCC / dispositif — facultatif)</label>
+        <label htmlFor="baremeopcoform-perimetre-branche-idcc-dispositi" className={labelCls}>
+          Périmètre (branche / IDCC / dispositif — facultatif)
+        </label>
         <input
+          id="baremeopcoform-perimetre-branche-idcc-dispositi"
           type="text"
           value={perimetre}
           onChange={(e) => setPerimetre(e.target.value)}
@@ -173,8 +185,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
       {/* Plafonds (euros) */}
       <div className="mt-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3">
         <div className={fieldCls}>
-          <label className={labelCls}>Intra (€/h/participant)</label>
+          <label htmlFor="baremeopcoform-intra-h-participant" className={labelCls}>
+            Intra (€/h/participant)
+          </label>
           <input
+            id="baremeopcoform-intra-h-participant"
             type="number"
             step="0.01"
             min="0"
@@ -186,8 +201,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
           />
         </div>
         <div className={fieldCls}>
-          <label className={labelCls}>Inter présentiel (€/h)</label>
+          <label htmlFor="baremeopcoform-inter-presentiel-h" className={labelCls}>
+            Inter présentiel (€/h)
+          </label>
           <input
+            id="baremeopcoform-inter-presentiel-h"
             type="number"
             step="0.01"
             min="0"
@@ -199,8 +217,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
           />
         </div>
         <div className={fieldCls}>
-          <label className={labelCls}>Inter distanciel (€/h)</label>
+          <label htmlFor="baremeopcoform-inter-distanciel-h" className={labelCls}>
+            Inter distanciel (€/h)
+          </label>
           <input
+            id="baremeopcoform-inter-distanciel-h"
             type="number"
             step="0.01"
             min="0"
@@ -212,8 +233,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
           />
         </div>
         <div className={fieldCls}>
-          <label className={labelCls}>Plafond / formation (€)</label>
+          <label htmlFor="baremeopcoform-plafond-formation" className={labelCls}>
+            Plafond / formation (€)
+          </label>
           <input
+            id="baremeopcoform-plafond-formation"
             type="number"
             step="0.01"
             min="0"
@@ -225,8 +249,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
           />
         </div>
         <div className={fieldCls}>
-          <label className={labelCls}>Plafond annuel / salarié (€)</label>
+          <label htmlFor="baremeopcoform-plafond-annuel-salarie" className={labelCls}>
+            Plafond annuel / salarié (€)
+          </label>
           <input
+            id="baremeopcoform-plafond-annuel-salarie"
             type="number"
             step="0.01"
             min="0"
@@ -238,8 +265,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
           />
         </div>
         <div className={fieldCls}>
-          <label className={labelCls}>URL source (portail OPCO)</label>
+          <label htmlFor="baremeopcoform-url-source-portail-opco" className={labelCls}>
+            URL source (portail OPCO)
+          </label>
           <input
+            id="baremeopcoform-url-source-portail-opco"
             type="url"
             value={sourceUrl}
             onChange={(e) => setSourceUrl(e.target.value)}
@@ -252,8 +282,11 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
 
       {/* Note */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Note (facultatif)</label>
+        <label htmlFor="baremeopcoform-note-facultatif" className={labelCls}>
+          Note (facultatif)
+        </label>
         <textarea
+          id="baremeopcoform-note-facultatif"
           value={note}
           onChange={(e) => setNote(e.target.value)}
           disabled={isPending}

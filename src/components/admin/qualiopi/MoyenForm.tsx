@@ -82,8 +82,11 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Catégorie */}
         <div className={fieldCls}>
-          <label className={labelCls}>Catégorie</label>
+          <label htmlFor="moyenform-categorie" className={labelCls}>
+            Catégorie
+          </label>
           <select
+            id="moyenform-categorie"
             value={categorie}
             onChange={(e) => setCategorie(e.target.value as MoyenCategorie)}
             disabled={isPending}
@@ -99,8 +102,11 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
 
         {/* Date de vérification */}
         <div className={fieldCls}>
-          <label className={labelCls}>Vérifié le (facultatif)</label>
+          <label htmlFor="moyenform-verifie-le-facultatif" className={labelCls}>
+            Vérifié le (facultatif)
+          </label>
           <input
+            id="moyenform-verifie-le-facultatif"
             type="date"
             value={dateVerification}
             onChange={(e) => setDateVerification(e.target.value)}
@@ -112,8 +118,11 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
 
       {/* Libellé */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Libellé</label>
+        <label htmlFor="moyenform-libelle" className={labelCls}>
+          Libellé
+        </label>
         <input
+          id="moyenform-libelle"
           type="text"
           value={libelle}
           onChange={(e) => setLibelle(e.target.value)}
@@ -127,8 +136,11 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
 
       {/* Description */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Description (facultatif)</label>
+        <label htmlFor="moyenform-description-facultatif" className={labelCls}>
+          Description (facultatif)
+        </label>
         <textarea
+          id="moyenform-description-facultatif"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={isPending}
@@ -140,8 +152,11 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
 
       {/* Localisation */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Localisation (facultatif)</label>
+        <label htmlFor="moyenform-localisation-facultatif" className={labelCls}>
+          Localisation (facultatif)
+        </label>
         <input
+          id="moyenform-localisation-facultatif"
           type="text"
           value={localisation}
           onChange={(e) => setLocalisation(e.target.value)}

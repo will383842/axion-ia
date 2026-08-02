@@ -104,6 +104,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
             <form action={replyForm} className="space-y-3">
               <input type="hidden" name="id" value={r.id} />
               <textarea
+                aria-label="Merci pour votre retour"
                 name="replyBody"
                 rows={4}
                 maxLength={3000}
@@ -169,6 +170,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 className="admin-input"
               />
               <select
+                aria-label="Type de photo"
                 name="photoKind"
                 defaultValue={r.photoKind ?? "portrait"}
                 className="admin-input"
@@ -220,6 +222,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
               <form action={rejectForm} className="mt-2 space-y-2">
                 <input type="hidden" name="id" value={r.id} />
                 <input
+                  aria-label="Motif du rejet (optionnel)"
                   name="notes"
                   className="admin-input"
                   placeholder="Motif du rejet (optionnel)"
