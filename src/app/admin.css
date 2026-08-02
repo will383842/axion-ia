@@ -85,6 +85,9 @@
     /* Piste des jauges de données : le MÊME ton éclairci — jamais un gris
        étranger, l'état se lit sur toute la longueur de la barre (spec meter). */
     --color-admin-accent-track: color-mix(in srgb, var(--color-admin-terracotta) 14%, transparent);
+    /* Texte d'action sur fond teinté accent : un cran plus profond que la
+       terracotta pour garder AA sur la teinte (vague « tonal » 2026-08-02). */
+    --color-admin-accent-strong: #9e3a12;
     --color-admin-accent-fg: #ffffff;
 
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
@@ -1081,12 +1084,15 @@
   gap: var(--space-admin-3);
   min-height: var(--control-admin-h-sm);
   padding: 0 var(--space-admin-5);
-  border: 1px solid var(--color-admin-border);
+  border: 1px solid color-mix(in srgb, var(--color-admin-accent) 22%, transparent);
   border-radius: var(--radius-admin-md);
-  background-color: var(--color-admin-paper);
+  /* Vague « tonal » 2026-08-02 (retour Will : « plein de boutons sans
+     couleur de fond, ça fait fade ») : le fantôme porte un fond teinté —
+     le bouton se voit AVANT le survol. */
+  background-color: var(--color-admin-accent-track);
   /* Passe « pep's » 2026-08-02 : le fantôme parlait gris — une action se
      lisait comme du texte mort. Voix accent (4,90:1 sur blanc, AA). */
-  color: var(--color-admin-accent);
+  color: var(--color-admin-accent-strong);
   cursor: pointer;
   font-size: var(--text-admin-sm);
   font-weight: 600;
@@ -1098,9 +1104,9 @@
     color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
-  background-color: var(--color-admin-accent-track);
-  border-color: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
-  color: var(--color-admin-accent);
+  background-color: color-mix(in srgb, var(--color-admin-terracotta) 22%, transparent);
+  border-color: color-mix(in srgb, var(--color-admin-accent) 55%, transparent);
+  color: var(--color-admin-accent-strong);
 }
 .admin-button-ghost:focus-visible {
   outline: none;
@@ -2232,10 +2238,10 @@
   gap: var(--space-admin-3);
   min-height: var(--control-admin-h-sm);
   padding: 6px var(--space-admin-5);
-  border: 1px solid var(--color-admin-border);
+  border: 1px solid color-mix(in srgb, var(--color-admin-accent) 22%, transparent);
   border-radius: var(--radius-admin-md);
-  background-color: var(--color-admin-paper);
-  color: var(--color-admin-accent);
+  background-color: var(--color-admin-accent-track);
+  color: var(--color-admin-accent-strong);
   font-size: var(--text-admin-sm);
   font-weight: 600;
   text-decoration: none;

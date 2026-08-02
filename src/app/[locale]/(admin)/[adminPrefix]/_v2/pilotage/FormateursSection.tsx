@@ -29,10 +29,7 @@ export function FormateursSection({ adminPrefix, formateurs }: Props): React.Rea
         <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Formateurs
         </h2>
-        <Link
-          href={`${base}/qualiopi/formateurs`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/qualiopi/formateurs`} className="admin-button-ghost">
           Gérer les formateurs →
         </Link>
       </div>
@@ -116,10 +113,7 @@ export function FormateursSection({ adminPrefix, formateurs }: Props): React.Rea
               <ul className="flex flex-wrap gap-x-[var(--space-admin-5)] gap-y-[var(--space-admin-1)]">
                 {s.items.map((item) => (
                   <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-                    >
+                    <Link href={item.href} className="admin-button-ghost">
                       {item.label}
                     </Link>
                   </li>

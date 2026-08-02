@@ -173,10 +173,7 @@ export function CalendrierPrevisionnel({
         <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Calendrier &amp; prévisionnel
         </h2>
-        <Link
-          href={`${base}/planning`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/planning`} className="admin-button-ghost">
           Ouvrir le planning →
         </Link>
       </div>

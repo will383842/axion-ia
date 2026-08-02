@@ -53,10 +53,7 @@ export function FinancierSection({ adminPrefix, financier, objectif }: Props): R
         <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Financier — année {financier.annee}
         </h2>
-        <Link
-          href={`${base}/qualiopi/cockpit-financier`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/qualiopi/cockpit-financier`} className="admin-button-ghost">
           Cockpit financier →
         </Link>
       </div>
@@ -205,10 +202,7 @@ export function FinancierSection({ adminPrefix, financier, objectif }: Props): R
                   <AdminBadge tone={d.motif === "paiement_retard" ? "destructive" : "warning"}>
                     {d.motif === "paiement_retard" ? "Paiement en retard" : "Sans réponse +30 j"}
                   </AdminBadge>
-                  <Link
-                    href={`${base}/qualiopi/financements`}
-                    className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-                  >
+                  <Link href={`${base}/qualiopi/financements`} className="admin-button-ghost">
                     {d.libelle}
                   </Link>
                   <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
@@ -235,10 +229,7 @@ export function FinancierSection({ adminPrefix, financier, objectif }: Props): R
               <ul className="flex flex-col gap-[var(--space-admin-2)]">
                 {financier.devisSansReponse.map((d) => (
                   <li key={d.id} className="text-[length:var(--text-admin-sm)]">
-                    <Link
-                      href={`${base}/qualiopi/devis/${d.id}`}
-                      className="font-medium text-[color:var(--color-admin-info)] hover:underline"
-                    >
+                    <Link href={`${base}/qualiopi/devis/${d.id}`} className="admin-button-ghost">
                       {d.numero}
                     </Link>{" "}
                     <span className="text-[color:var(--color-admin-fg-soft)]">
