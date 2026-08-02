@@ -51,6 +51,7 @@ const LIBELLES_FICHIER: Record<DocumentType, string> = {
   cv_formateur: "Fiche formateur",
   programme: "Programme de l'action",
   organisation_action: "Organisation de l'action",
+  liste_formateurs: "Liste des formateurs",
 };
 
 /**

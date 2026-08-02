@@ -74,11 +74,13 @@ import { libelleRemuneration } from "@/server/qualiopi/remuneration/libelle";
 import { ReglementInterieurPdf } from "@/server/qualiopi/documents/templates/reglement-interieur";
 import { LivretAccueilPdf } from "@/server/qualiopi/documents/templates/livret-accueil";
 import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inventaire-moyens";
+import { ListeFormateursPdf } from "@/server/qualiopi/documents/templates/liste-formateurs";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
+import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 
@@ -2638,6 +2640,106 @@ export async function genererInventaireMoyensAction(): Promise<
     targetType: "DocumentGenere",
     targetId: doc.id,
     changes: { documentId: doc.id, numero: doc.numero, nbMoyens: moyens.length },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 15 bis. Liste des formateurs et qualifications (R.6351-5, indicateur 21)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * La LISTE des intervenants — à ne pas confondre avec `cv_formateur`, qui est
+ * une FICHE par personne. Le formulaire de déclaration d'activité et
+ * l'indicateur 21 réclament une liste : qui intervient, à quel titre, en lien
+ * avec quelles prestations, sous quel lien contractuel.
+ *
+ * 🔴 Seuls les intervenants ACTIFS sont listés. Un formateur désactivé
+ * n'intervient plus ; le faire figurer sur une pièce qui décrit l'effectif
+ * courant serait une déclaration inexacte, dans le sens le plus embarrassant —
+ * annoncer des moyens humains dont on ne dispose pas.
+ */
+export async function genererListeFormateursAction(): Promise<
+  ActionResult<{ documentId: string; numero: string }>
+> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const trainers = await listTrainers({ actifOnly: true });
+  if (trainers.length === 0) {
+    return {
+      error:
+        "Aucun intervenant actif enregistré — une liste vide ne prouverait aucun moyen humain. Renseignez au moins un formateur avant de générer la liste.",
+    };
+  }
+
+  // Intitulés des formations habilitées, résolus en UNE requête pour tous les
+  // intervenants : un `findMany` par formateur ferait N+1 sur une page admin.
+  const tousIds = [...new Set(trainers.flatMap((t) => t.formationIdsHabilites))];
+  const formations =
+    tousIds.length > 0
+      ? await prisma.formation.findMany({
+          where: { id: { in: tousIds } },
+          select: { id: true, titre: true },
+        })
+      : [];
+  const titreParId = new Map(formations.map((f) => [f.id, f.titre]));
+
+  // Un CV SOURCE validé, jamais `Trainer.cvUrl` : ce dernier pointe vers la
+  // FICHE produite par l'organisme, qui ne prouve rien sur les compétences —
+  // c'est le raisonnement déjà tenu par `genererCvFormateurAction`.
+  const cvParTrainer = new Map<string, number>();
+  const cvs = await prisma.trainerDocument.groupBy({
+    by: ["trainerId"],
+    where: { type: "cv", statutValidation: "valide" },
+    _count: { _all: true },
+  });
+  for (const c of cvs) cvParTrainer.set(c.trainerId, c._count._all);
+
+  const identite = await getOrganismeIdentite();
+
+  const doc = await generateDocument({
+    type: "liste_formateurs",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(ListeFormateursPdf, {
+        data: {
+          numero,
+          dateEdition: formatDateFr(new Date()),
+          formateurs: trainers.map((t) => {
+            const domaines = Array.isArray(t.domainesCompetences)
+              ? (t.domainesCompetences as unknown[]).filter(
+                  (d): d is string => typeof d === "string",
+                )
+              : [];
+            return {
+              nomPrenom: `${t.prenom} ${t.nom}`,
+              statut: t.statut,
+              domaines,
+              nbHabilitations: t.nbHabilitations,
+              // Trois suffisent à montrer le LIEN avec les prestations : la
+              // liste exhaustive de 57 intitulés noierait la pièce.
+              exemplesHabilitations: t.formationIdsHabilites
+                .map((id) => titreParId.get(id))
+                .filter((titre): titre is string => typeof titre === "string")
+                .slice(0, 3),
+              cvAuDossier: (cvParTrainer.get(t.id) ?? 0) > 0,
+              ...(t.sousTraitantNda ? { sousTraitantNda: t.sousTraitantNda } : {}),
+              depuis: t.dateEmbauche ? formatDate(t.dateEmbauche) : "",
+            };
+          }),
+        },
+        identite,
+      }),
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.liste_formateurs.genere",
+    targetType: "DocumentGenere",
+    targetId: doc.id,
+    changes: { documentId: doc.id, numero: doc.numero, nbFormateurs: trainers.length },
     session: adminSession,
   });
 

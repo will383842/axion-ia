@@ -12,6 +12,7 @@ import { AlertTriangle, Handshake, Hash, Users } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
+import { GenererListeFormateursButton } from "@/components/admin/qualiopi/GenererListeFormateursButton";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
@@ -61,6 +62,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
       <AdminPageHeader
         title="Formateurs"
         description="Salariés, dirigeant-formateur et sous-traitants, habilitations par formation, vérification data.gouv.fr (off.6/19)."
+        actions={<GenererListeFormateursButton />}
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
