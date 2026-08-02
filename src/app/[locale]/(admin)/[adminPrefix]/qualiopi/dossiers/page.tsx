@@ -34,7 +34,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Archive, ArrowLeft, ArrowRight } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -199,14 +199,19 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="📁 Dossiers"
+        title="Dossiers"
         description="Où en est chaque affaire ? Une ligne par dossier client, groupée par étape du pipeline — du devis envoyé au solde encaissé. Le statut est dérivé des données existantes : rien à tenir à jour."
       />
 
       {modeArchives && (
         <div className={carte}>
           <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            🗄️ Archives — dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours
+            <Archive
+              size={16}
+              aria-hidden="true"
+              className="mr-[var(--space-admin-2)] inline-block align-[-3px]"
+            />
+            Archives — dossiers soldés de plus de {FENETRE_SOLDES_JOURS} jours
           </p>
           <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Ces dossiers sont terminés et payés : ils sortent du pipeline du quotidien mais restent
@@ -271,10 +276,10 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
         <div className={carte}>
           <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)]">
             {modeArchives
-              ? "🗄️ Aucun dossier archivé ne correspond à ces filtres."
+              ? "Aucun dossier archivé ne correspond à ces filtres."
               : filtreActivite || filtrePerimetre
-                ? "✨ Aucune affaire ne correspond à ces filtres."
-                : "✨ Aucune affaire dans le pipeline — pas de devis en attente, pas de session vivante, rien à solder."}
+                ? "Aucune affaire ne correspond à ces filtres."
+                : "Aucune affaire dans le pipeline — pas de devis en attente, pas de session vivante, rien à solder."}
           </p>
         </div>
       )}
@@ -283,7 +288,8 @@ export default async function DossiersPage({ params, searchParams }: PageProps) 
         lignesArchivees.length > 0 && (
           <div className={carte}>
             <h2 className={titreCarte}>
-              🗄️ Dossiers archivés <span className={pastille}>{lignesArchivees.length}</span>
+              <Archive size={18} aria-hidden="true" className="shrink-0" />
+              Dossiers archivés <span className={pastille}>{lignesArchivees.length}</span>
             </h2>
             <ul>{lignesArchivees.map(rendreLigne)}</ul>
           </div>

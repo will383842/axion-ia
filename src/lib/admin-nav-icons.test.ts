@@ -35,4 +35,39 @@ describe("registre d'icônes nav admin (NAV_ICONS)", () => {
     expect(navIcon("LayoutDashboard")).toBe(NAV_ICONS["LayoutDashboard"]);
     expect(navIcon("NomLucideInexistant")).toBe(FolderOpen);
   });
+
+  // Les deux verrous ci-dessus garantissent que chaque entrée A une icône, pas
+  // qu'elle en a une DISTINCTE de ses voisines. Or c'est ce qui rend une liste
+  // lisible : dans une même liste dépliée, deux libellés partageant un dessin
+  // sont aussi indiscernables que les 105 FolderOpen d'avant cette refonte —
+  // à ceci près que rien ne le signale, puisque chaque icône résout.
+  //
+  // Partager un dessin entre groupes ÉLOIGNÉS reste légitime (`Building2` sert
+  // pour « Clients (CRM) » et pour une vue de couverture) : on ne les voit
+  // jamais côte à côte. La contrainte ne porte donc que sur un même groupe.
+  //
+  // Au 2026-08-02 le registre est propre : ce test vaut pour l'avenir.
+  it("n'attribue pas la même icône à deux entrées d'un même groupe", () => {
+    const vues = new Map<string, Map<string, string>>();
+    const collisions: string[] = [];
+
+    for (const item of items) {
+      const groupe = vues.get(item.group) ?? new Map<string, string>();
+      const precedent = groupe.get(item.icon);
+      if (precedent && precedent !== item.label) {
+        collisions.push(
+          `groupe « ${item.group} » : « ${precedent} » et « ${item.label} » portent tous deux ${item.icon}`,
+        );
+      } else {
+        groupe.set(item.icon, item.label);
+      }
+      vues.set(item.group, groupe);
+    }
+
+    expect(
+      collisions,
+      `Icône partagée par deux entrées du même groupe — elles seront indiscernables ` +
+        `dans la liste :\n  - ${collisions.join("\n  - ")}`,
+    ).toEqual([]);
+  });
 });

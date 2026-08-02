@@ -192,10 +192,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
             required
             pattern="DELETE"
           />
-          <button
-            type="submit"
-            className="admin-button bg-[color:var(--color-admin-destructive)] text-[color:var(--color-admin-paper)]"
-          >
+          <button type="submit" className="admin-button-danger">
             🗑️ Supprimer définitivement
           </button>
         </form>

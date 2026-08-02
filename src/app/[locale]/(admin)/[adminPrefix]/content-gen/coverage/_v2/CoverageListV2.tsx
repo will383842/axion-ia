@@ -317,7 +317,7 @@ export async function CoverageListV2({
                         confirmMessage={`Supprimer DÉFINITIVEMENT la campagne « ${r.name} » ? Cette action est irréversible (la campagne ne pourra plus être réactivée). Ses jobs et articles publiés sont conservés.`}
                         title="Supprimer définitivement"
                         ariaLabel="Supprimer définitivement cette campagne"
-                        className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                        className="admin-button-ghost admin-button-ghost-danger"
                       >
                         <Trash2 size={16} />
                       </ConfirmSubmitButton>
@@ -375,7 +375,7 @@ export async function CoverageListV2({
                         confirmMessage={`Supprimer DÉFINITIVEMENT la campagne « ${r.name} » ? Cette action est irréversible (la campagne ne pourra plus être réactivée). Ses jobs et articles publiés sont conservés. Pour la masquer temporairement, préférez « Archiver ».`}
                         title="Supprimer définitivement"
                         ariaLabel="Supprimer définitivement cette campagne"
-                        className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                        className="admin-button-ghost admin-button-ghost-danger"
                       >
                         <Trash2 size={16} />
                       </ConfirmSubmitButton>

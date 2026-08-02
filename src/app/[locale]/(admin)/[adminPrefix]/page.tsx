@@ -40,12 +40,5 @@ export default async function AdminDashboardPage({ params, searchParams }: PageP
   const role = (session.user as { role?: string }).role ?? "—";
   const sp = await searchParams;
   const periode = parsePeriode(sp["periode"]);
-  return (
-    <DashboardV2Wrapper
-      adminPrefix={adminPrefix}
-      email={session.user.email ?? null}
-      role={role}
-      periode={periode}
-    />
-  );
+  return <DashboardV2Wrapper adminPrefix={adminPrefix} role={role} periode={periode} />;
 }

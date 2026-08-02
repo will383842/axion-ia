@@ -185,7 +185,7 @@ export async function JobsListV2({
             <form action={deleteFailed}>
               <button
                 type="submit"
-                className="admin-button-ghost text-[color:var(--color-admin-destructive)]"
+                className="admin-button-ghost admin-button-ghost-danger"
                 title="Supprime définitivement les jobs en échec/bloqués (tentatives ratées, sans contenu publié)"
               >
                 Supprimer les jobs en échec
