@@ -2222,17 +2222,34 @@
   flex-direction: column;
   gap: 8px;
 }
+/* Loi UX 2026-08-02 (Will) : toute ACTION est un bouton encadré visible —
+   jamais un texte cliquable discret. Ces listes rendaient des blocs sans
+   bordure sur un jeton du SITE PUBLIC (--color-bg). Alignées sur le rendu
+   du bouton fantôme de la charte, voix accent comprise. */
 .admin-quick-actions > li > a {
-  display: block;
-  padding: 8px 12px;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-admin-3);
+  min-height: var(--control-admin-h-sm);
+  padding: 6px var(--space-admin-5);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-accent);
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
   text-decoration: none;
-  color: inherit;
-  background-color: var(--color-bg);
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-admin-fast) var(--easing-admin),
+    border-color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-quick-actions > li > a:hover {
-  background-color: var(--color-paper);
+  background-color: var(--color-admin-accent-track);
+  border-color: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
+}
+.admin-quick-actions > li > a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
 }
 .admin-dashboard-actions {
   display: flex;
