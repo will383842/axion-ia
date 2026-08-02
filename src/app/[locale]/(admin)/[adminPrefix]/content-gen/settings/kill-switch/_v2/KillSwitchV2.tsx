@@ -40,9 +40,7 @@ export function KillSwitchV2({ state }: Props): React.ReactElement {
           ? { className: "border-l-4 border-l-[color:var(--color-admin-destructive)]" }
           : {})}
       >
-        <h2 className="admin-h2">
-          {state.active ? "🛑 Kill switch ACTIF" : "✅ Kill switch INACTIF"}
-        </h2>
+        <h2 className="admin-h2">{state.active ? "Kill switch ACTIF" : "Kill switch INACTIF"}</h2>
         {state.active ? (
           <>
             <p className="admin-meta-block">
@@ -75,7 +73,7 @@ export function KillSwitchV2({ state }: Props): React.ReactElement {
               />
             </div>
             <button type="submit" className="admin-button-danger">
-              🛑 Activer le kill switch
+              Activer le kill switch
             </button>
           </form>
         )}

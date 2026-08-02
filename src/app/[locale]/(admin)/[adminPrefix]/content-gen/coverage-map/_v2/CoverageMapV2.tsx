@@ -278,13 +278,13 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
           <span className="col-span-3">Ville</span>
           <span className="col-span-1 text-right">Pop.</span>
           <span className="col-span-1 text-right" title="Éditorial">
-            📝 Éd.
+            Éd.
           </span>
           <span className="col-span-1 text-right" title="Landings">
-            🏢 Land.
+            Land.
           </span>
           <span className="col-span-1 text-right" title="RSS">
-            📡 RSS
+            RSS
           </span>
           <span className="col-span-2 text-right">% global</span>
           <span className="col-span-2">Statut</span>

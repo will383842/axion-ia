@@ -44,7 +44,7 @@ export function SeedInitialV2(): React.ReactElement {
         </p>
 
         <button type="button" className="admin-button-cta" onClick={handleSeed} disabled={loading}>
-          {loading ? "⏳ Initialisation en cours…" : "🚀 Lancer l'initialisation"}
+          {loading ? "Initialisation en cours…" : "Lancer l'initialisation"}
         </button>
 
         {result && (
@@ -62,7 +62,7 @@ export function SeedInitialV2(): React.ReactElement {
             {result.ok ? (
               <>
                 <p>
-                  <strong>✅ Initialisation réussie</strong>
+                  <strong>Initialisation réussie</strong>
                 </p>
                 <p className="admin-meta">
                   KB facts insérés/mis à jour : <strong>{result.kbFacts}</strong>
@@ -75,7 +75,7 @@ export function SeedInitialV2(): React.ReactElement {
             ) : (
               <>
                 <p>
-                  <strong>❌ Erreur</strong>
+                  <strong>Erreur</strong>
                 </p>
                 <p className="admin-meta">{result.error}</p>
               </>

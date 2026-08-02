@@ -115,7 +115,7 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
                     [{t.languageCode}] {t.title}
                   </p>
                   <p className="admin-meta">{t.alt}</p>
-                  <p className="admin-meta-small">{t.isPublished ? "✓ Publié" : "Brouillon"}</p>
+                  <p className="admin-meta-small">{t.isPublished ? "Publié" : "Brouillon"}</p>
                 </li>
               ))}
             </ul>

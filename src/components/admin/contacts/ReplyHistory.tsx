@@ -11,13 +11,16 @@ interface Props {
   submissionId: string;
 }
 
-const STATUS_LABEL: Record<string, { icon: string; label: string; tone: string }> = {
-  pending: { icon: "🟡", label: "En cours d'envoi", tone: "warning" },
-  sent: { icon: "🟢", label: "Envoyé", tone: "success" },
-  delivered: { icon: "✅", label: "Délivré", tone: "success" },
-  bounced: { icon: "⚠️", label: "Rejeté", tone: "warning" },
-  complained: { icon: "🚨", label: "Marqué comme spam", tone: "danger" },
-  failed: { icon: "🔴", label: "Échec d'envoi", tone: "danger" },
+// Le ton de la pastille porte déjà l'état (succès vert, alerte ambre, danger
+// rouge) : l'emoji qui le doublait n'ajoutait rien et son dessin variait
+// d'un poste à l'autre. Retiré le 2026-08-02.
+const STATUS_LABEL: Record<string, { label: string; tone: string }> = {
+  pending: { label: "En cours d'envoi", tone: "warning" },
+  sent: { label: "Envoyé", tone: "success" },
+  delivered: { label: "Délivré", tone: "success" },
+  bounced: { label: "Rejeté", tone: "warning" },
+  complained: { label: "Marqué comme spam", tone: "danger" },
+  failed: { label: "Échec d'envoi", tone: "danger" },
 };
 
 function formatDateTime(d: Date): string {
@@ -74,7 +77,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="text-sm font-semibold">
-                    📨 Réponse envoyée par {r.repliedByName} · {formatDateTime(r.repliedAt)}
+                    Réponse envoyée par {r.repliedByName} · {formatDateTime(r.repliedAt)}
                   </p>
                   <p className="mt-1 text-sm text-[color:var(--color-admin-fg-muted)]">
                     Sujet : {r.subject}
@@ -83,7 +86,6 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium admin-badge-${status?.tone ?? "default"}`}
                 >
-                  <span aria-hidden="true">{status?.icon ?? "🟡"}</span>
                   {status?.label ?? r.deliveryStatus}
                   {r.retryCount > 0 ? ` · tentative ${r.retryCount}` : ""}
                 </span>

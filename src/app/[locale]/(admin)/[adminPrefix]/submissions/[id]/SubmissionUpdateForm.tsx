@@ -77,7 +77,7 @@ export function SubmissionUpdateForm({
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Mise à jour enregistrée.
+          Mise à jour enregistrée.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

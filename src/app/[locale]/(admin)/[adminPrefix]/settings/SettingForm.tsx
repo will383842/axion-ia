@@ -105,7 +105,7 @@ export function SettingForm({ initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Paramètre enregistré.
+          Paramètre enregistré.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

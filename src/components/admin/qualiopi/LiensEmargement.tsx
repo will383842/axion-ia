@@ -116,7 +116,7 @@ export function LiensEmargement({
       <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
         Liens de signature
       </h2>
-      {/* 🔴 UI 2026-07-27 — l'émission ne vérifie NI les journées NI les
+      {/* UI 2026-07-27 — l'émission ne vérifie NI les journées NI les
           créneaux : les liens partaient, et le stagiaire tombait sur « Aucune
           demi-journée à signer ». Un lien envoyé ne se reprend pas ; on avertit
           donc avant, sans bloquer — envoyer les liens en avance reste un usage

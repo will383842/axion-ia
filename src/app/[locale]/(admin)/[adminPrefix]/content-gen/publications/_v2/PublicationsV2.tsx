@@ -157,7 +157,7 @@ export async function PublicationsV2({
             className="admin-button-ghost"
             title="Export CSV avec filtres actifs"
           >
-            📥 Export CSV
+            Export CSV
           </a>
         }
       />

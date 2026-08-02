@@ -124,7 +124,7 @@ export async function SubmissionsV2({
       label: "Archivés",
       href: `${base}?includeArchived=true&status=archived`,
     },
-    { value: "trash", label: "🗑️ Corbeille", href: `${base}?deleted=true` },
+    { value: "trash", label: "Corbeille", href: `${base}?deleted=true` },
   ];
 
   const rows = result.items.map((s) => {

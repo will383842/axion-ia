@@ -127,7 +127,7 @@ function VueTableau({ lignes }: { lignes: IndicateurManifeste[] }): React.ReactE
               <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-center">
                 <StatutBadge statut={ind.statut} />
               </td>
-              {/* 🔴 Constat F15 (2026-07-26) : `preuves` mélange preuves réelles
+              {/* Constat F15 (2026-07-26) : `preuves` mélange preuves réelles
                   et constats d'absence, sans polarité — titre et puces neutres,
                   jamais de ✓ décoratif. Le statut est dit par sa colonne. */}
               <td className="px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[color:var(--color-admin-fg-muted)]">
@@ -183,7 +183,7 @@ function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.Reac
             </div>
           </div>
 
-          {/* 🔴 Constat F15 (2026-07-26) : titre neutre, puce neutre — voir
+          {/* Constat F15 (2026-07-26) : titre neutre, puce neutre — voir
               VueTableau ci-dessus, même règle. */}
           {ind.preuves.length > 0 && (
             <div className="mb-[var(--space-admin-3)]">
@@ -219,12 +219,6 @@ function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.Reac
                     key={`${doc.type}-${i}`}
                     className="flex items-center gap-[var(--space-admin-3)] rounded bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]"
                   >
-                    <span
-                      className="shrink-0 text-xs text-[color:var(--color-admin-success)]"
-                      aria-hidden="true"
-                    >
-                      ✓
-                    </span>
                     <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
                       {doc.type}
                     </span>

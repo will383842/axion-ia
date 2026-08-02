@@ -211,7 +211,7 @@ function LignePiece({
                     </span>
                   ) : null}
                   {/*
-                    🔴 La révocation est la SEULE correction possible sur un
+                    La révocation est la SEULE correction possible sur un
                     registre append-only. Sans cette surface, une signature
                     posée par erreur était définitive, et l'index unique partiel
                     `WHERE revoked_at IS NULL` — celui qui autorise à re-signer —
@@ -320,7 +320,7 @@ export default async function RegistreSignaturesPage({
         </p>
       ) : null}
 
-      {/* 🔴 Un registre tronqué en silence est PIRE qu'un registre absent : il a
+      {/* Un registre tronqué en silence est PIRE qu'un registre absent : il a
           l'air exhaustif. On le dit avant tout le reste. */}
       {registre.tronque ? (
         <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">

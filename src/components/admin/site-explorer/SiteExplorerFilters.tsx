@@ -127,9 +127,9 @@ export function SiteExplorerFilters() {
         className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
       >
         <option value="">Feu : tout</option>
-        <option value="green">🟢 Parfaite</option>
-        <option value="orange">🟠 À retoucher</option>
-        <option value="red">🔴 Cassée</option>
+        <option value="green">Parfaite</option>
+        <option value="orange">À retoucher</option>
+        <option value="red">Cassée</option>
         <option value="unset">⚪ Non revue</option>
       </select>
 

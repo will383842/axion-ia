@@ -82,7 +82,7 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
         </form>
 
         {urlState.status === "error" && (
-          <p style={{ color: "crimson", marginTop: "1rem" }}>❌ {urlState.message}</p>
+          <p style={{ color: "crimson", marginTop: "1rem" }}>{urlState.message}</p>
         )}
 
         {urlState.status === "ok" && urlState.result && (
@@ -153,7 +153,7 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
         </form>
 
         {sitemapState.status === "error" && (
-          <p style={{ color: "crimson", marginTop: "1rem" }}>❌ {sitemapState.message}</p>
+          <p style={{ color: "crimson", marginTop: "1rem" }}>{sitemapState.message}</p>
         )}
 
         {sitemapState.status === "ok" && sitemapState.result && (

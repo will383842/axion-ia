@@ -193,7 +193,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
             pattern="DELETE"
           />
           <button type="submit" className="admin-button-danger">
-            🗑️ Supprimer définitivement
+            Supprimer définitivement
           </button>
         </form>
       </AdminCard>

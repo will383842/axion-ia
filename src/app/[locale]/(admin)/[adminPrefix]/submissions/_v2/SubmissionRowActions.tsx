@@ -126,7 +126,7 @@ export function SubmissionRowActions({
               className="admin-button-ghost admin-button-ghost-danger"
               title="Supprimer définitivement (RGPD, irréversible)"
             >
-              🗑️ Supprimer définitivement
+              Supprimer définitivement
             </button>
           )}
         </div>
@@ -153,7 +153,7 @@ export function SubmissionRowActions({
         className="admin-button-ghost text-[length:var(--text-admin-sm)]"
         title={archived ? "Sortir de l'archive" : "Archiver (réduit le bruit de l'inbox)"}
       >
-        {archived ? "↩︎ Désarchiver" : "🗄️ Archiver"}
+        {archived ? "↩︎ Désarchiver" : "Archiver"}
       </button>
 
       <details className="relative">
@@ -175,7 +175,7 @@ export function SubmissionRowActions({
             className={MENU_ITEM_CLASS}
             role="menuitem"
           >
-            {needsAttention ? "✅ Marquer comme lu" : "📩 Marquer non lu"}
+            {needsAttention ? "Marquer comme lu" : "📩 Marquer non lu"}
           </button>
           {status !== "processed" ? (
             <button
@@ -196,7 +196,7 @@ export function SubmissionRowActions({
             role="menuitem"
             title="Déplacer vers la corbeille (récupérable)"
           >
-            🗑️ Supprimer
+            Supprimer
           </button>
         </div>
       </details>

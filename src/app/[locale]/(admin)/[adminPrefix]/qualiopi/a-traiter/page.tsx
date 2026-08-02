@@ -312,7 +312,7 @@ export default async function ATraiterPage({ params }: PageProps) {
             {[...critiques, ...importantes].map((a) => (
               <li key={a.id} className={ligne}>
                 <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-                  {/* Le niveau se lisait 🔴 contre 🟠 : deux ronds que SEULE la
+                  {/* Le niveau se lisait contre 🟠 : deux ronds que SEULE la
                       couleur distinguait — illisible en vision des couleurs
                       déficiente, sur l'information la plus urgente de la page.
                       Deux SILHOUETTES différentes le disent sans la couleur. */}

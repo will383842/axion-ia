@@ -188,7 +188,7 @@ export function WebVitalsV2({
   const verdictText = noData
     ? `ℹ️ Pas encore assez de données pour juger la vitesse du site (minimum ${MIN_SAMPLES} mesures par page). Revenez dans 24 à 48h après la mise en production.`
     : isGood
-      ? `✅ Votre site est rapide — les ${aggregatesLength} mesure(s) suivies (sur ${routeCount} page(s)) respectent l'objectif de vitesse.`
+      ? `Votre site est rapide — les ${aggregatesLength} mesure(s) suivies (sur ${routeCount} page(s)) respectent l'objectif de vitesse.`
       : `⚠️ ${breachCount} mesure(s) sur ${aggregatesLength} (sur ${routeCount} page(s) suivies) dépassent l'objectif de vitesse — voir le détail par page ci-dessous.`;
 
   return (
@@ -258,7 +258,7 @@ export function WebVitalsV2({
                 : "BULLMQ_DISABLED — worker non disponible (probablement env dev)"
             }
           >
-            ⚙️ Forcer un recompute
+            Forcer un recompute
           </button>
         </form>
         <p className="admin-meta-small mt-[var(--space-admin-3)]">

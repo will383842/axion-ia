@@ -167,7 +167,7 @@ export function PieceSignaturePanel({
                   ? " — confirmation nominative, sans tracé"
                   : ""}
               </span>
-              {/* 🔴 Empreinte ENTIÈRE : une empreinte tronquée ne se vérifie pas. */}
+              {/* Empreinte ENTIÈRE : une empreinte tronquée ne se vérifie pas. */}
               <code className="block text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
                 {s.empreinte}
               </code>
@@ -225,7 +225,7 @@ export function PieceSignaturePanel({
         )}
       </div>
 
-      {/* 🔴 L'exemplaire signé — sans lui, la preuve n'existait QU'en base : le
+      {/* L'exemplaire signé — sans lui, la preuve n'existait QU'en base : le
           document remis au signataire et vu par l'auditeur continuait d'afficher
           des cadres vides, alors que la signature était enregistrée et chaînée.
 

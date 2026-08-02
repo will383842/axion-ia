@@ -40,10 +40,12 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * 2026-08-02 — 249 occurrences, après la sortie du hub de génération de contenus (28 emojis,
- * lot 1 page par page). Était 278 après « À traiter »/« Dossiers » (PR 490).
+ * 2026-08-02 — 94 occurrences dans 53 fichiers, après la passe globale (les
+ * marques de statut posées en tête de libellé, les spans décoratifs et les
+ * glyphes cités dans les commentaires JSX). Était 248 avant cette passe, 340
+ * au plus haut.
  */
-const PLAFOND = 249;
+const PLAFOND = 94;
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 

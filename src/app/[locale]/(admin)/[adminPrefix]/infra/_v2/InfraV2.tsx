@@ -74,7 +74,7 @@ export function InfraV2({ adminPrefix, cards }: Props): React.ReactElement {
         className="admin-card admin-infra-card mb-[var(--space-admin-5)] block"
       >
         <div className="admin-infra-card-head">
-          <strong>💾 Sauvegardes & DR</strong>
+          <strong>Sauvegardes & DR</strong>
           <span className="admin-status-pill admin-status-ok">● Suivi interne</span>
         </div>
         <p className="admin-meta-block">

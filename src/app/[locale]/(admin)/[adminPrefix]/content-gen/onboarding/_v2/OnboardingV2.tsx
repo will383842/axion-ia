@@ -129,7 +129,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
               Une fois les 5 étapes complétées, marquez l&apos;onboarding comme terminé.
             </p>
             <button type="submit" className="admin-button">
-              ✅ Marquer l&apos;onboarding comme terminé
+              Marquer l&apos;onboarding comme terminé
             </button>
           </form>
         </AdminCard>
@@ -142,7 +142,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
           }
         >
           <p className="admin-meta-block">
-            ✅ Onboarding marqué comme terminé. Vous pouvez revenir ici à tout moment via le menu.
+            Onboarding marqué comme terminé. Vous pouvez revenir ici à tout moment via le menu.
           </p>
         </AdminCard>
       )}

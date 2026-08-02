@@ -177,7 +177,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                   : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
               }`}
             >
-              {bulkCopied ? "✓ Copiées" : "📋 Copier les URLs"}
+              {bulkCopied ? "Copiées" : "Copier les URLs"}
             </button>
           </div>
         )}

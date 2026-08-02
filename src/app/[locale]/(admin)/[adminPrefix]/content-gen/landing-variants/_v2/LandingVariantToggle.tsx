@@ -25,7 +25,7 @@ export function LandingVariantToggle({
   if (locked) {
     return (
       <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        ✅ Toujours actif
+        Toujours actif
       </span>
     );
   }
@@ -48,7 +48,7 @@ export function LandingVariantToggle({
         aria-pressed={active}
         className="admin-button-ghost"
       >
-        {pending ? "…" : active ? "✅ Actif — désactiver" : "🚫 Inactif — activer"}
+        {pending ? "…" : active ? "Actif — désactiver" : "Inactif — activer"}
       </button>
       {error ? (
         <span

@@ -1026,7 +1026,7 @@ export function DocumentsSection({
                   >
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] text-[color:var(--color-admin-fg)]">
                       {DOC_LABELS[doc.type] ?? doc.type}
-                      {/* 🔴 UI 2026-07-27 — un SPÉCIMEN était indiscernable d'une
+                      {/* UI 2026-07-27 — un SPÉCIMEN était indiscernable d'une
                           pièce valable : même numéro, même date, même lien. On ne
                           s'en apercevait qu'en ouvrant le PDF, voire jamais si on
                           l'envoyait au client sans le rouvrir. */}
@@ -1054,7 +1054,7 @@ export function DocumentsSection({
                       })}
                     </td>
                     <td className="py-[var(--space-admin-2)]">
-                      {/* 🔴 2026-08-01 — le lien pointait sur `doc.pdfUrl`, c'est-à-dire
+                      {/* 2026-08-01 — le lien pointait sur `doc.pdfUrl`, c'est-à-dire
                           l'URL R2 pré-signée `X-Amz-Expires=900` calculée UNE FOIS à la
                           génération et figée en base. Quinze minutes plus tard, tout
                           document du registre répondait

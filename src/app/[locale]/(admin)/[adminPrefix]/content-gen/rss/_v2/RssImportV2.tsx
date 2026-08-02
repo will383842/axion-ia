@@ -57,7 +57,7 @@ export function RssImportV2({ defaultJson, action }: Props): React.ReactElement 
         </form>
 
         {state.status === "error" && (
-          <p style={{ color: "crimson", marginTop: "1rem" }}>❌ {state.message}</p>
+          <p style={{ color: "crimson", marginTop: "1rem" }}>{state.message}</p>
         )}
 
         {state.status === "ok" && state.result && (

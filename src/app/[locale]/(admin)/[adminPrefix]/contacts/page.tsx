@@ -11,10 +11,11 @@
 // duplique aucune règle métier ici.
 
 import Link from "next/link";
+import { PhoneCall, Mail, UserPlus, Mic, CircleDot } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
 import {
-  INBOX_CHANNEL_ICONS,
   INBOX_CHANNEL_LABELS,
   INBOX_CHANNEL_ORDER,
   type InboxChannel,
@@ -28,6 +29,22 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+
+/**
+ * Pictogramme et teinte d'identité par canal — refonte 2026-08-02.
+ *
+ * Remplace les emojis que portait `INBOX_CHANNEL_ICONS` : leur dessin dépend du
+ * système et de la police du poste, ingérable dans un tableau dense où ils se
+ * répètent ligne après ligne. Les composants sont ceux que la barre latérale
+ * donne déjà à ces destinations, et chaque canal porte une teinte de la palette
+ * d'identité — l'œil trie les lignes sans lire.
+ */
+const CANAL: Record<InboxChannel, { icone: LucideIcon; teinte: string }> = {
+  appel: { icone: PhoneCall, teinte: "bleu" },
+  message: { icone: Mail, teinte: "teal" },
+  candidature: { icone: UserPlus, teinte: "violet" },
+  podcast: { icone: Mic, teinte: "magenta" },
+};
 
 export const dynamic = "force-dynamic";
 
@@ -87,7 +104,7 @@ export default async function InboxPage({
     },
     ...INBOX_CHANNEL_ORDER.map((c) => ({
       value: c,
-      label: `${INBOX_CHANNEL_ICONS[c]} ${INBOX_CHANNEL_LABELS[c]}`,
+      label: INBOX_CHANNEL_LABELS[c],
       href: keep({ canal: c, ...(onlyAction ? { action: "1" } : {}) }),
       count: result.countsByChannel[c],
     })),
@@ -106,23 +123,37 @@ export default async function InboxPage({
     {
       key: "channel",
       header: "Canal",
-      cell: (r) => (
-        <span className="whitespace-nowrap">
-          {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
-              fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
-          {r.unread ? (
+      cell: (r) => {
+        const { icone: IconeCanal, teinte } = CANAL[r.channel];
+        return (
+          <span className="flex items-center gap-[var(--space-admin-3)] whitespace-nowrap">
+            {/* Pastille « non lu » — s'efface d'elle-même à l'ouverture de la
+                fiche. Doublée du gras : la couleur seule ne suffit pas (WCAG). */}
+            {r.unread ? (
+              <span
+                className="inline-block h-2 w-2 shrink-0 rounded-full bg-[color:var(--color-admin-info)]"
+                title="Non lu"
+                aria-label="Non lu"
+              />
+            ) : null}
             <span
-              className="mr-1 inline-block h-2 w-2 rounded-full bg-[color:var(--color-admin-info)] align-middle"
-              title="Non lu"
-              aria-label="Non lu"
-            />
-          ) : null}
-          <span aria-hidden="true">{INBOX_CHANNEL_ICONS[r.channel]}</span>{" "}
-          <span className={`text-[length:var(--text-admin-sm)] ${r.unread ? "font-semibold" : ""}`}>
-            {INBOX_CHANNEL_LABELS[r.channel]}
+              aria-hidden="true"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+              style={{
+                background: `var(--color-admin-id-${teinte}-soft)`,
+                color: `var(--color-admin-id-${teinte})`,
+              }}
+            >
+              <IconeCanal size={14} />
+            </span>
+            <span
+              className={`text-[length:var(--text-admin-sm)] ${r.unread ? "font-semibold" : ""}`}
+            >
+              {INBOX_CHANNEL_LABELS[r.channel]}
+            </span>
           </span>
-        </span>
-      ),
+        );
+      },
     },
     {
       key: "received",
@@ -162,10 +193,15 @@ export default async function InboxPage({
       header: "Statut",
       cell: (r) => (
         <span className="whitespace-nowrap">
+          {/* La pastille rouge était en `aria-hidden` : l'information « ça attend une action
+              de votre part » n'existait qu'en COULEUR, et pour les seuls
+              voyants. Une icône porteuse d'un nom accessible la rend audible. */}
           {r.needsAction ? (
-            <span className="mr-1" title="En attente d'une action de votre part" aria-hidden="true">
-              🔴
-            </span>
+            <CircleDot
+              size={14}
+              className="shrink-0 text-[color:var(--color-admin-destructive)]"
+              aria-label="En attente d'une action de votre part"
+            />
           ) : null}
           {r.statusLabel}
         </span>

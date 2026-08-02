@@ -128,7 +128,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
               {stats.analysis.basedOnTotal} réponses
               {stats.analysis.basedOnTotal !== stats.totalResponses
                 ? ` ⚠️ (effectif actuel : ${stats.totalResponses} — régénération conseillée)`
-                : " ✓ à jour"}
+                : " à jour"}
               .
             </p>
             <blockquote className="text-fg-soft mt-[var(--space-admin-3)] border-l-2 pl-3 text-sm italic">

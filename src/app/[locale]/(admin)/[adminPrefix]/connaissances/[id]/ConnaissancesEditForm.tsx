@@ -266,7 +266,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         {metaState?.ok ? (
           <p className="admin-success" role="status">
-            ✓ Sauvegardé
+            Sauvegardé
           </p>
         ) : null}
         {metaState?.error && metaState.error !== "validation" ? (
@@ -317,7 +317,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         {bodyState && "ok" in bodyState && bodyState.ok ? (
           <p className="admin-success" role="status">
-            ✓ Sauvegardé{" "}
+            Sauvegardé{" "}
             {bodyState.savedAt ? new Date(bodyState.savedAt).toLocaleTimeString("fr-FR") : ""}
           </p>
         ) : null}
@@ -340,7 +340,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </button>
         {delState && "ok" in delState && delState.ok ? (
           <p className="admin-success" role="status">
-            ✓ Supprimée.{" "}
+            Supprimée.{" "}
             <a href={`/fr/${adminPrefix}/connaissances`} className="admin-link">
               Retour liste
             </a>

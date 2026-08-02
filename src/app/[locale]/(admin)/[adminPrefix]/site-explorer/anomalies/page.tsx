@@ -69,13 +69,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
                 : "border-[color:var(--color-admin-border-strong)] hover:bg-[color:var(--color-admin-surface-sunken)]"
             }`}
           >
-            {sev === ""
-              ? "Toutes"
-              : sev === "high"
-                ? "🔴 High"
-                : sev === "medium"
-                  ? "🟠 Medium"
-                  : "🟡 Low"}
+            {sev === "" ? "Toutes" : sev === "high" ? "High" : sev === "medium" ? "Medium" : "Low"}
           </a>
         ))}
         <a
@@ -86,7 +80,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
               : "border-[color:var(--color-admin-border-strong)] hover:bg-[color:var(--color-admin-surface-sunken)]"
           }`}
         >
-          ✅ Résolues
+          Résolues
         </a>
       </div>
 

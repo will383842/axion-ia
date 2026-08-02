@@ -152,7 +152,7 @@ export async function ReviewQueueListV2({
                       pendingLabel="✅ …"
                       ariaLabel={`Approuver la review ${r.id}`}
                     >
-                      ✅ Approuver
+                      Approuver
                     </SubmitButton>
                   </form>{" "}
                   <form action={reject} className="inline">
@@ -163,7 +163,7 @@ export async function ReviewQueueListV2({
                       pendingLabel="❌ …"
                       ariaLabel={`Rejeter la review ${r.id}`}
                     >
-                      ❌ Rejeter
+                      Rejeter
                     </SubmitButton>
                   </form>
                 </>

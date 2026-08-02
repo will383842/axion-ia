@@ -233,7 +233,7 @@ export function BlogForm({ authors, categories, tags, initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ {state.created ? "Article créé" : "Article mis à jour"}.
+          {state.created ? "Article créé" : "Article mis à jour"}.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

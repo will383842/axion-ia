@@ -94,7 +94,7 @@ export function UserActions({
         </div>
         {uState.ok ? (
           <p role="status" className="admin-alert admin-alert-success">
-            ✓ Mise à jour enregistrée.
+            Mise à jour enregistrée.
           </p>
         ) : uState.error ? (
           <p role="alert" className="admin-alert admin-alert-error">
@@ -143,7 +143,7 @@ export function UserActions({
           )}
           {resetState.ok && (
             <p role="status" className="admin-alert admin-alert-success">
-              ✓ 2FA réinitialisée. Le user devra refaire le setup au prochain login.
+              2FA réinitialisée. Le user devra refaire le setup au prochain login.
             </p>
           )}
           {!resetState.ok && resetState.error && (
@@ -209,7 +209,7 @@ export function UserActions({
           )}
           {pwdState.ok && (
             <p role="status" className="admin-alert admin-alert-success">
-              ✓ Mot de passe réinitialisé. Communiquez-le de manière sécurisée.
+              Mot de passe réinitialisé. Communiquez-le de manière sécurisée.
             </p>
           )}
           {!pwdState.ok && pwdState.error && (

@@ -105,7 +105,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
 
       {/* Note exclusions */}
       <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] px-4 py-2 text-xs text-[color:var(--color-admin-fg-muted)]">
-        ❌ Routes admin <code>/[adminPrefix]/*</code> : non cataloguées — ❌ Routes API{" "}
+        Routes admin <code>/[adminPrefix]/*</code> : non cataloguées — ❌ Routes API{" "}
         <code>/api/*</code> : non cataloguées — ❌ Server Actions : non cataloguées
       </div>
 
@@ -134,7 +134,7 @@ function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
         className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
         title="Relance l'inspection HTTP (statut, méta, mots) des URLs cataloguées"
       >
-        🔄 Inspecter (HTTP)
+        Inspecter (HTTP)
       </button>
     </form>
   );
@@ -154,7 +154,7 @@ function DiscoverButton() {
         className="admin-button"
         title="Ré-énumère toutes les URLs et recalcule l'indexabilité live (auto chaque nuit)"
       >
-        🔎 Découvrir les URLs
+        Découvrir les URLs
       </button>
     </form>
   );

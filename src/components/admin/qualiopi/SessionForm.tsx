@@ -362,7 +362,7 @@ export function SessionForm({
             </select>
           </div>
 
-          {/* 🔴 F8 — rattachement du devis.
+          {/* F8 — rattachement du devis.
             La colonne `devis_id` existait et l'action savait l'écrire, mais
             aucun écran ne permettait de choisir le devis : le lien était
             inatteignable. Et depuis F7, « Transformer en convention » EXIGE une

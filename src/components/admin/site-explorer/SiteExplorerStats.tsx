@@ -42,9 +42,9 @@ export function SiteExplorerStats({ stats }: Props) {
         <StatCard label="GSC demandés" value={stats.gscRequestedCount} color="blue" />
         <StatCard label="Clics GSC (28j)" value={stats.gscClicksTotal} color="purple" />
         <StatCard label="Impressions GSC" value={stats.gscImpressionsTotal} color="purple" />
-        <StatCard label="🟢 Parfaites" value={stats.byQuality.green ?? 0} color="green" />
-        <StatCard label="🟠 À retoucher" value={stats.byQuality.orange ?? 0} color="orange" />
-        <StatCard label="🔴 Cassées" value={stats.byQuality.red ?? 0} color="red" />
+        <StatCard label="Parfaites" value={stats.byQuality.green ?? 0} color="green" />
+        <StatCard label="À retoucher" value={stats.byQuality.orange ?? 0} color="orange" />
+        <StatCard label="Cassées" value={stats.byQuality.red ?? 0} color="red" />
         <StatCard label="⚪ Non revues" value={stats.byQuality.unset ?? 0} color="gray" />
         {stats.anomaliesHigh > 0 && (
           <StatCard

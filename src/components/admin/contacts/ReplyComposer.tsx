@@ -231,7 +231,7 @@ export function ReplyComposer({
   if (!open) {
     return (
       <button type="button" onClick={() => setOpen(true)} className="admin-button">
-        ✉️ Répondre
+        Répondre
       </button>
     );
   }
@@ -350,7 +350,7 @@ export function ReplyComposer({
           )}
           {state.phase === "sent" && (
             <p role="status" aria-live="polite" className="admin-alert admin-alert-success">
-              ✓ Réponse envoyée à {contactName}.
+              Réponse envoyée à {contactName}.
             </p>
           )}
           {state.phase === "failed" && (

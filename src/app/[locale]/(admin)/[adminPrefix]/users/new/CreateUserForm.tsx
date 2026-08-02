@@ -74,8 +74,8 @@ export function CreateUserForm() {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Utilisateur créé. Communiquez le mot de passe initial de manière sécurisée. Le user
-          devra activer 2FA au premier login si rôle super_admin/admin.
+          Utilisateur créé. Communiquez le mot de passe initial de manière sécurisée. Le user devra
+          activer 2FA au premier login si rôle super_admin/admin.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

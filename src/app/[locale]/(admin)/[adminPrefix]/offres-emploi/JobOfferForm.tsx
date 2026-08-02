@@ -642,7 +642,7 @@ export function JobOfferForm({ initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ {state.created ? "Offre créée" : "Offre mise à jour"}.
+          {state.created ? "Offre créée" : "Offre mise à jour"}.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

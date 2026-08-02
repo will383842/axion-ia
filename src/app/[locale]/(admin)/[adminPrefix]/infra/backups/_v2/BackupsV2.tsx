@@ -115,7 +115,7 @@ export function BackupsV2({
           <div className="admin-infra-card-head">
             <strong>
               {banners.missedBackup
-                ? "🔴 Attention sauvegardes"
+                ? "Attention sauvegardes"
                 : "⚠️ Tests de restauration à rafraîchir"}
             </strong>
             <span
@@ -220,7 +220,7 @@ export function BackupsV2({
       {activeComponent && (
         <p className="admin-meta-block mb-[var(--space-admin-4)]">
           <Link href={baseHref} className="admin-link">
-            ✕ Retirer le filtre composant
+            Retirer le filtre composant
           </Link>
         </p>
       )}

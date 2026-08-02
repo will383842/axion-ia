@@ -511,7 +511,7 @@ export default async function SessionHubPage({ params }: PageProps) {
                 currency: "EUR",
               })}
             </p>
-            {/* 🔴 Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
+            {/* Vérification E2E 2026-07-26 — cet écran affirmait « Exonéré TVA »
                 en dur, juste sous un Montant HT que le PDF facture à 20 %. La
                 mention suit désormais `qualiopi.regime_tva` et disparaît en
                 régime assujetti, comme sur les documents. */}
@@ -634,15 +634,12 @@ export default async function SessionHubPage({ params }: PageProps) {
         <h2 className={sectionHeadCls}>Sous-pages</h2>
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3">
           <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
-            <span aria-hidden="true">📋</span>
             <span>Émargement</span>
           </Link>
           <Link href={`${sessionBase}/evaluations`} className={subLinkCls}>
-            <span aria-hidden="true">📊</span>
             <span>Évaluations</span>
           </Link>
           <Link href={`${sessionBase}/financement`} className={subLinkCls}>
-            <span aria-hidden="true">💶</span>
             <span>Financement</span>
           </Link>
         </div>
@@ -690,7 +687,7 @@ export default async function SessionHubPage({ params }: PageProps) {
           documentsExistants={documentsSerialized}
         />
 
-        {/* 🔴 Signature des pièces CONTRACTUELLES.
+        {/* Signature des pièces CONTRACTUELLES.
 
             Sans ce bloc, `emettreLienSignatureAction` et `contresignerPieceAction`
             n'étaient appelables par personne : les cinq circuits seraient restés

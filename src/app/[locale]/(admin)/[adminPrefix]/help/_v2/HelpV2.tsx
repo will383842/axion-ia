@@ -69,7 +69,7 @@ export function HelpV2({
       cell: (a) => <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>,
     },
     { key: "category", header: "Catégorie", cell: (a) => a.category?.nameFr ?? "—" },
-    { key: "type", header: "Type", cell: (a) => (a.isTutorial ? "📘 Tutoriel" : "Article") },
+    { key: "type", header: "Type", cell: (a) => (a.isTutorial ? "Tutoriel" : "Article") },
     {
       key: "status",
       header: "Statut",

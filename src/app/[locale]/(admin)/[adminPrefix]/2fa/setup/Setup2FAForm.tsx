@@ -29,7 +29,7 @@ export function Setup2FAForm() {
       </div>
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ 2FA activée avec succès. Vous serez requis(e) à chaque login.
+          2FA activée avec succès. Vous serez requis(e) à chaque login.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

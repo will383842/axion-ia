@@ -94,7 +94,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           <button type="submit" disabled={submitPending} className="admin-button">
             {submitPending ? "Envoi…" : "Soumettre en revue"}
           </button>
-          {submitState?.ok ? <p className="admin-success">✓ Soumise en revue</p> : null}
+          {submitState?.ok ? <p className="admin-success">Soumise en revue</p> : null}
           {submitState?.error && submitState.error !== "validation" ? (
             <p className="admin-error">
               Erreur : {submitState.error} ({submitState.reason ?? ""})
@@ -121,7 +121,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
             <button type="submit" disabled={approvePending} className="admin-button">
               {approvePending ? "Validation…" : "Approuver"}
             </button>
-            {approveState?.ok ? <p className="admin-success">✓ Approuvée</p> : null}
+            {approveState?.ok ? <p className="admin-success">Approuvée</p> : null}
             {approveState?.error === "transition_refused" &&
             approveState.reason === "must_differ_from_author" ? (
               <p className="admin-error">Vous ne pouvez pas approuver votre propre contenu</p>
@@ -147,7 +147,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
             <button type="submit" disabled={rejectPending} className="admin-button-ghost">
               {rejectPending ? "Rejet…" : "Rejeter vers brouillon"}
             </button>
-            {rejectState?.ok ? <p className="admin-success">✓ Rejetée, retour brouillon</p> : null}
+            {rejectState?.ok ? <p className="admin-success">Rejetée, retour brouillon</p> : null}
           </form>
         </>
       ) : null}
@@ -160,7 +160,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
             <button type="submit" disabled={pubPending} className="admin-button">
               {pubPending ? "Publication…" : "Publier maintenant"}
             </button>
-            {pubState?.ok ? <p className="admin-success">✓ Publiée</p> : null}
+            {pubState?.ok ? <p className="admin-success">Publiée</p> : null}
           </form>
           <form action={schedAction} className="admin-workflow-action">
             <input type="hidden" name="entryId" value={entryId} />
@@ -177,7 +177,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
             <button type="submit" disabled={schedPending} className="admin-button-ghost">
               {schedPending ? "Planification…" : "Programmer"}
             </button>
-            {schedState?.ok ? <p className="admin-success">✓ Programmée</p> : null}
+            {schedState?.ok ? <p className="admin-success">Programmée</p> : null}
             {schedState?.error === "validation" ? (
               <p className="admin-error">Date invalide (doit être dans le futur)</p>
             ) : null}
@@ -192,7 +192,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           <button type="submit" disabled={unpubPending} className="admin-button-ghost">
             {unpubPending ? "Dépublication…" : "Dépublier (archive)"}
           </button>
-          {unpubState?.ok ? <p className="admin-success">✓ Dépubliée</p> : null}
+          {unpubState?.ok ? <p className="admin-success">Dépubliée</p> : null}
         </form>
       ) : null}
 
@@ -207,7 +207,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
                 ? "Republier"
                 : "Restaurer en brouillon"}
           </button>
-          {restState?.ok ? <p className="admin-success">✓ Restaurée</p> : null}
+          {restState?.ok ? <p className="admin-success">Restaurée</p> : null}
         </form>
       ) : null}
 
@@ -218,7 +218,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           <button type="submit" disabled={archPending} className="admin-button-danger">
             {archPending ? "Archivage…" : "Force archive (OWNER)"}
           </button>
-          {archState?.ok ? <p className="admin-success">✓ Archivée</p> : null}
+          {archState?.ok ? <p className="admin-success">Archivée</p> : null}
           {archState?.error === "transition_refused" ? (
             <p className="admin-error">Transition refusée : {archState.reason}</p>
           ) : null}

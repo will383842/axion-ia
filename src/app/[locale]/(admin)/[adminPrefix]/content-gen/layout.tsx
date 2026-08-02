@@ -115,8 +115,8 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
           }
         >
           <strong>
-            {costCapAt100 ? "🛑 Plafond mensuel atteint" : "⚠️ Coût mensuel"} (
-            {costCapVal.pct ?? "?"}%)
+            {costCapAt100 ? "Plafond mensuel atteint" : "⚠️ Coût mensuel"} ({costCapVal.pct ?? "?"}
+            %)
           </strong>{" "}
           Provider {costCapVal.provider ?? "?"} : ${costCapVal.spent_usd?.toFixed(2) ?? "?"} / $
           {costCapVal.cap_usd?.toFixed(2) ?? "?"}.

@@ -84,7 +84,7 @@ export default async function UserDetailPage({ params }: PageProps) {
           <h2 className="admin-h2">Sécurité</h2>
           <dl className="admin-dl">
             <dt className="admin-dt">2FA TOTP</dt>
-            <dd className="admin-dd">{user.twoFactorEnabled ? "✓ Activée" : "✗ Non activée"}</dd>
+            <dd className="admin-dd">{user.twoFactorEnabled ? "Activée" : "Non activée"}</dd>
             <dt className="admin-dt">Dernier login</dt>
             <dd className="admin-dd">
               {user.lastLoginAt ? formatDateFr(user.lastLoginAt) : "Jamais connecté"}

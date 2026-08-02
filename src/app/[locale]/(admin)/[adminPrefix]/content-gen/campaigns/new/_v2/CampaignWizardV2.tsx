@@ -478,14 +478,14 @@ export function CampaignWizardV2({
               onClick={() => router.push(`${base}/coverage/presets`)}
               className="rounded border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-2)]"
             >
-              ✨ Voir les modèles prêts à l&apos;emploi
+              Voir les modèles prêts à l&apos;emploi
             </button>
             <button
               type="button"
               onClick={() => router.push(`${base}/orchestrator/adhoc`)}
               className="rounded border border-[color:var(--color-admin-border)] px-3 py-1.5 text-[length:var(--text-admin-sm)] hover:bg-[color:var(--color-admin-surface-2)]"
             >
-              ⚡ Générer une seule page maintenant
+              Générer une seule page maintenant
             </button>
           </div>
 
@@ -1055,7 +1055,7 @@ export function CampaignWizardV2({
               disabled={state.submitting}
               className="admin-button-cta"
             >
-              {state.submitting ? "Lancement…" : "🚀 Lancer la campagne"}
+              {state.submitting ? "Lancement…" : "Lancer la campagne"}
             </button>
           </div>
         </AdminCard>

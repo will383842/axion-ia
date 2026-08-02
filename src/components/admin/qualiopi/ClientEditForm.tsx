@@ -256,7 +256,7 @@ export function ClientEditForm({
             disabled={isPending}
             className={inputCls}
           />
-          {/* 🔴 Dit AVANT l'erreur, pas après : sans adresse, l'envoi du devis
+          {/* Dit AVANT l'erreur, pas après : sans adresse, l'envoi du devis
               marche mais part sans lien de signature, et l'admin ne l'apprend
               que dans une note de retour. */}
           <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
