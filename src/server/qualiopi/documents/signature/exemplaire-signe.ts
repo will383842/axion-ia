@@ -57,6 +57,7 @@ import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/c
 import { ProtocoleAfestPdf } from "@/server/qualiopi/documents/templates/protocole-afest";
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
+import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 
 /**
  * Type de pièce → composant de rendu.
@@ -202,7 +203,15 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
 
   const piece = await prisma.documentGenere.findUnique({
     where: { id: documentGenereId },
-    select: { numero: true, type: true, metadata: true },
+    select: {
+      numero: true,
+      type: true,
+      metadata: true,
+      // Contexte du nom de fichier : « AXI-DOC-2026-009-signe.pdf » ne disait ni
+      // le type de pièce ni le client — illisible dans un dossier de déclaration.
+      client: { select: { raisonSociale: true } },
+      session: { select: { titreSession: true } },
+    },
   });
   if (piece === null) {
     return { ok: false, raison: "introuvable", message: MESSAGES.introuvable };
@@ -252,5 +261,14 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
     }),
   );
 
-  return { ok: true, buffer: rendu.buffer, nomFichier: `${piece.numero}-signe.pdf` };
+  return {
+    ok: true,
+    buffer: rendu.buffer,
+    nomFichier: nomFichierDocument({
+      type: piece.type,
+      numero: piece.numero,
+      contexte: piece.client?.raisonSociale ?? piece.session?.titreSession ?? null,
+      suffixe: "signee",
+    }),
+  };
 }
