@@ -79,6 +79,9 @@
        Contraste vérifié : #c24a1b sur blanc = 4,90:1, au-dessus du seuil AA de
        4,5:1 pour du texte normal. */
     --color-admin-accent: var(--color-admin-terracotta);
+    /* Piste des jauges de données : le MÊME ton éclairci — jamais un gris
+       étranger, l'état se lit sur toute la longueur de la barre (spec meter). */
+    --color-admin-accent-track: color-mix(in srgb, var(--color-admin-terracotta) 14%, transparent);
     --color-admin-accent-fg: #ffffff;
 
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
