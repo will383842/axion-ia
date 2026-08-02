@@ -133,7 +133,7 @@ interface SessionDocButtonProps {
   onDone: (numero: string) => void;
   /**
    * Date FR de la dernière génération de ce type de pièce pour la session.
-   * Présente → le bouton passe en ghost « ✓ … — régénérer » : le primary reste
+   * Présente → le bouton passe en ghost « … — régénérer » : le primary reste
    * réservé aux pièces encore à produire (finitions console 2026-08-02).
    */
   dejaGenereLe?: string | undefined;
@@ -183,7 +183,7 @@ function SessionDocButton({
         {isPending
           ? "Génération…"
           : dejaGenereLe
-            ? `✓ ${label} · génération du ${dejaGenereLe} — régénérer`
+            ? `${label} · génération du ${dejaGenereLe} — régénérer`
             : label}
       </button>
       {error && (
@@ -555,7 +555,7 @@ function ConventionDocButton({
         {isPending
           ? "Génération…"
           : dejaGenereLe
-            ? `✓ Convention de formation · génération du ${dejaGenereLe} — régénérer`
+            ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
             : "Convention de formation"}
       </button>
       <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
@@ -674,7 +674,7 @@ function EnrollmentDocButton({
         {isPending
           ? "Génération…"
           : dejaGenereLe
-            ? `✓ ${label} · génération du ${dejaGenereLe} — régénérer`
+            ? `${label} · génération du ${dejaGenereLe} — régénérer`
             : label}
       </button>
       {error && (
@@ -744,7 +744,7 @@ export function DocumentsSection({
   //
   // Le mur de CTA mettait toutes les pièces au même niveau : impossible de
   // voir d'un coup d'œil ce qui restait à produire. Une pièce déjà générée
-  // passe son bouton en ghost « ✓ … — régénérer » ; le primary reste réservé
+  // passe son bouton en ghost « … — régénérer » ; le primary reste réservé
   // aux pièces manquantes. `documentsExistants` arrive trié createdAt DESC
   // (page session) : la première occurrence d'un type est la plus récente.
   //
