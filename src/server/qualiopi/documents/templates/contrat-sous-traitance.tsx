@@ -282,10 +282,85 @@ export function ContratSousTraitancePdf({
           </Text>
         </DocSection>
 
-        {/* 10. Signatures */}
+        {/*
+          10 — RGPD article 28. OBLIGATION LÉGALE, pas une précaution.
+
+          🔴 Le sous-traitant qui traite des données de stagiaires POUR LE COMPTE
+          de l'organisme en est le sous-traitant au sens du RGPD, et l'article
+          28-3 impose un contrat portant des mentions ÉNUMÉRÉES. Leur absence est
+          sanctionnable — et c'est l'organisme, responsable de traitement, qui
+          répond. La section 6 n'en couvrait que trois.
+        */}
+        <DocSection title="10. Traitement des données à caractère personnel">
+          <Text style={pdfStyles.paragraph}>
+            Pour l&apos;exécution des missions confiées, le sous-traitant traite pour le compte de
+            l&apos;organisme, responsable de traitement, les données d&apos;identité, de présence et
+            d&apos;évaluation des stagiaires, pour la seule durée des missions et aux seules fins de
+            les réaliser. Il agit sur instruction documentée de l&apos;organisme.
+          </Text>
+          <BulletList
+            items={[
+              "Ne traiter ces données que pour les besoins des missions, jamais pour son compte propre.",
+              "Garantir que les personnes autorisées à y accéder sont soumises à une obligation de confidentialité.",
+              "Mettre en œuvre des mesures techniques et organisationnelles appropriées de sécurité.",
+              "Ne recourir à aucun autre sous-traitant sans autorisation écrite préalable de l'organisme.",
+              "Assister l'organisme pour répondre aux demandes d'exercice des droits des personnes concernées.",
+              "Notifier à l'organisme toute violation de données sans délai après en avoir pris connaissance.",
+              "Mettre à disposition les éléments nécessaires pour démontrer le respect de ces obligations et permettre les audits.",
+              "Supprimer ou restituer l'ensemble des données au terme du contrat, sans en conserver de copie.",
+            ]}
+          />
+        </DocSection>
+
+        {/* 11. Responsabilité et force majeure */}
+        <DocSection title="11. Responsabilité et force majeure">
+          <Text style={pdfStyles.paragraph}>
+            Chaque partie répond des dommages directs causés à l&apos;autre par un manquement à ses
+            obligations. La responsabilité de chacune est limitée au montant hors taxes des
+            prestations facturées au titre du présent contrat, à l&apos;exclusion des dommages
+            indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
+            d&apos;affaires. Cette limitation ne joue pas en cas de faute lourde ou dolosive, ni
+            d&apos;atteinte aux personnes.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Aucune partie n&apos;est responsable d&apos;un manquement résultant d&apos;un cas de
+            force majeure au sens de l&apos;article 1218 du Code civil. La partie empêchée en
+            informe l&apos;autre sans délai ; la prestation est reportée à une date convenue, ou le
+            contrat résilié sans indemnité si l&apos;empêchement se prolonge au-delà de trente (30)
+            jours.
+          </Text>
+        </DocSection>
+
+        {/* 12. Exécution personnelle */}
+        <DocSection title="12. Exécution personnelle des missions">
+          <Text style={pdfStyles.paragraph}>
+            Les missions sont confiées en considération des compétences propres du sous-traitant. Il
+            ne peut se faire remplacer ni sous-traiter tout ou partie de l&apos;animation sans
+            l&apos;accord écrit préalable de l&apos;organisme. Tout intervenant substitué sans cet
+            accord engage sa seule responsabilité et constitue un manquement grave.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            L&apos;organisme doit pouvoir justifier des compétences de CHAQUE intervenant
+            (indicateur 21) et de la conformité de chaque sous-traitant (indicateur 27) : un
+            remplaçant non validé rompt cette traçabilité.
+          </Text>
+        </DocSection>
+
+        {/* 13. Droit applicable */}
+        <DocSection title="13. Droit applicable et différends">
+          <Text style={pdfStyles.paragraph}>
+            Le présent contrat est régi par le droit français. En cas de différend relatif à sa
+            formation, son exécution ou son interprétation, les parties s&apos;efforceront de
+            trouver une solution amiable. À défaut d&apos;accord dans un délai de trente (30) jours
+            à compter de la première notification écrite, le litige sera porté devant le tribunal
+            compétent du ressort du siège de l&apos;organisme.
+          </Text>
+        </DocSection>
+
+        {/* 14. Signatures */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title="10. Signatures">
+        <DocSection title="14. Signatures">
           <SignatureZone
             intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateContrat}`}
