@@ -113,10 +113,44 @@ const HOOK_ONLY_CLASSES = new Set([
  * dans admin.css (`.admin-button-block`, `.admin-button-ghost-danger`,
  * `.admin-input-w-sm`, `.admin-input-w-md`), au même niveau de cascade.
  *
- * La liste est vide et doit le rester : elle n'existe plus que pour rendre
- * l'échec explicite si quelqu'un réintroduit le motif.
+ * La liste était alors vide — mais le contrôle EXCLUAIT les valeurs arbitraires
+ * (`text-[color:var(--…)]`, `w-[70px]`), qui vivent pourtant dans la même couche
+ * `utilities` et sont donc tout aussi inertes. Le 2026-08-01, la levée de cette
+ * exclusion a révélé 25 combinaisons bien réelles, dont :
+ *   - quatre boutons de suppression rendus en NOIR au lieu de rouge ;
+ *   - le kill-switch de la génération de contenus et un bouton de suppression de
+ *     publication rendus en terracotta ORDINAIRE — une action destructive
+ *     indiscernable d'une action banale.
+ * Ces sept-là sont corrigés (`.admin-button-danger`, `.admin-button-ghost-danger`).
+ *
+ * Les 22 restantes sont surtout des tailles de police et des largeurs de champ :
+ * moins graves, mais tout aussi mortes. CLIQUET — cette liste ne doit que
+ * DIMINUER. Corriger une entrée, c'est retirer sa ligne ci-dessous.
  */
-const INERT_UTILITIES_BASELINE: readonly string[] = [];
+const INERT_UTILITIES_BASELINE: readonly string[] = [
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/_v2/ContentGenDashboardV2.tsx :: admin-input w-[120px]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/author/manon/_v2/AuthorManonV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input text-right",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-order/_v3/CitiesOrderV3.tsx :: admin-input text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage-map/_v2/CoverageMapV2.tsx :: admin-input text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage/[id]/_v2/CoverageDetailV2.tsx :: admin-input w-[70px]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/layout.tsx :: admin-button-cta text-[length:var(--text-admin-xs)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications-status/_v2/PublicationsStatusV2.tsx :: admin-input w-[60px]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/[id]/edit/_v2/PublicationEditV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/_v2/PublicationsV2.tsx :: admin-button text-[length:var(--text-admin-xs)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/_v2/PublicationsV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/rss/_v2/RssListV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/audience-mix/_v2/AudienceMixV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/coverage-distribution/_v2/CoverageDistributionV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/llms-txt/_v2/LlmsTxtV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
+  "src/app/[locale]/(admin)/[adminPrefix]/qualiopi/devis/page.tsx :: admin-button inline-block",
+  "src/app/[locale]/(admin)/[adminPrefix]/submissions/_v2/SubmissionRowActions.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
+  "src/components/admin/contacts/CalendlyEventEditor.tsx :: admin-input font-mono text-xs",
+  "src/components/admin/contacts/ReplyComposer.tsx :: admin-input font-mono text-sm",
+  "src/components/admin/contacts/ReplyComposer.tsx :: admin-input text-sm",
+  "src/components/admin/qualiopi/LiensEmargement.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
+  "src/components/admin/qualiopi/SessionJoursEditor.tsx :: admin-button-ghost text-[length:var(--text-admin-sm)]",
+];
 
 function walk(dir: string): string[] {
   const out: string[] = [];
@@ -219,15 +253,21 @@ describe("système de design de la console admin", () => {
     // Pour chaque famille de classes, les propriétés qu'elle fixe et les
     // préfixes d'utilitaires Tailwind qui deviendraient donc inertes.
     const CONFLICTS: Array<{ base: RegExp; utilities: RegExp }> = [
-      // `.admin-button*` fixe largeur, marges internes, typographie, rayon, fond.
+      // `.admin-button*` fixe largeur, marges internes, typographie, rayon, fond,
+      // ET la mise en page interne (`display: inline-flex`, `align-items`,
+      // `justify-content`, `gap`) — ajoutée le 2026-08-01 après qu'un
+      // `admin-button-ghost … gap-[var(--space-admin-2)]` posé le même jour se
+      // soit révélé inerte : la classe impose déjà `gap: var(--space-admin-4)`.
       {
         base: /^admin-button(-secondary|-ghost|-danger|-cta)?$/,
-        utilities: /^(w|min-w|max-w|px|py|p|text|font|rounded|bg)-/,
+        utilities:
+          /^(w|min-w|max-w|px|py|p|text|font|rounded|bg|items|justify|gap)-|^(inline-flex|flex|inline-block|block|grid)$/,
       },
-      // `.admin-input` fixe largeur, hauteur, marges internes, rayon, fond, bordure.
+      // `.admin-input` fixe largeur, hauteur, marges internes, rayon, fond,
+      // bordure et typographie.
       {
         base: /^admin-input$/,
-        utilities: /^(w|h|px|py|p|rounded|bg|border)-/,
+        utilities: /^(w|h|px|py|p|rounded|bg|border|text|font)-/,
       },
     ];
 
@@ -240,7 +280,13 @@ describe("système de design de la console admin", () => {
         for (const rule of CONFLICTS) {
           const base = words.find((w) => rule.base.test(w));
           if (!base) continue;
-          const dead = words.filter((w) => rule.utilities.test(w) && !w.includes("["));
+          // Les valeurs ARBITRAIRES (`text-[color:var(--…)]`, `w-[70px]`) étaient
+          // exclues ici. C'était le trou principal : elles vivent dans la même
+          // couche `utilities` et sont donc tout aussi inertes. L'exclusion
+          // masquait 22 combinaisons réelles, dont des boutons de suppression
+          // rendus en noir et un kill-switch rendu en terracotta ordinaire.
+          // Seuls les modificateurs d'admin.css sont légitimes à côté d'une base.
+          const dead = words.filter((w) => rule.utilities.test(w) && !w.startsWith("admin-"));
           if (dead.length === 0) continue;
           const rel = file.slice(ROOT.length + 1).replace(/\\/g, "/");
           offenders.add(`${rel} :: ${base} ${dead.join(" ")}`);

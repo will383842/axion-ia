@@ -74,10 +74,7 @@ export function KillSwitchV2({ state }: Props): React.ReactElement {
                 placeholder="Ex. incident provider — pause d'urgence"
               />
             </div>
-            <button
-              type="submit"
-              className="admin-button bg-[color:var(--color-admin-destructive)] text-[color:var(--color-admin-paper)]"
-            >
+            <button type="submit" className="admin-button-danger">
               🛑 Activer le kill switch
             </button>
           </form>
