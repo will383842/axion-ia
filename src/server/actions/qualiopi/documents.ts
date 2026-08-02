@@ -36,6 +36,7 @@ import { generateDocument } from "@/server/qualiopi/documents/documents-service"
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
 import { ProgrammeFormationPdf } from "@/server/qualiopi/documents/templates/programme-formation";
+import { OrganisationActionPdf } from "@/server/qualiopi/documents/templates/organisation-action";
 import { lireModulesProgramme } from "@/server/qualiopi/documents/programme-modules";
 import {
   LIEU_DOCUMENT_SELECT,
@@ -2484,6 +2485,121 @@ export async function genererProgrammeAction(input: {
       source: formationDoc.source,
       nbModules: modules.length,
     },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 13 bis. Organisation de l'action (art. R.6351-5, indicateurs 9 et 12)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Le PROGRAMME dit ce qui est enseigné ; cette pièce dit QUAND, OÙ et COMMENT.
+ * Le calendrier vient de `session_jours` — les mêmes horaires que l'émargement,
+ * pour que deux pièces d'un même dossier ne se contredisent jamais.
+ */
+export async function genererOrganisationActionAction(input: {
+  sessionId: string;
+}): Promise<ActionResult<{ documentId: string; numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const parsed = sessionIdSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { sessionId } = parsed.data;
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      modalite: true,
+      dateDebut: true,
+      dateFin: true,
+      dureeReelleHeures: true,
+      nbParticipantsPrevus: true,
+      ...LIEU_DOCUMENT_SELECT,
+      formation: { select: { dureeHeures: true } },
+      formateurPrincipal: { select: { prenom: true, nom: true } },
+      jours: {
+        orderBy: { date: "asc" },
+        select: {
+          date: true,
+          heureDebut: true,
+          heureFin: true,
+          horairesConfirmes: true,
+          trainer: { select: { prenom: true, nom: true } },
+        },
+      },
+    },
+  });
+  if (!session) return { error: "Session introuvable" };
+
+  const identite = await getOrganismeIdentite();
+
+  const formateurPrincipal = session.formateurPrincipal
+    ? `${session.formateurPrincipal.prenom} ${session.formateurPrincipal.nom}`
+    : "";
+
+  const jours = session.jours.map((j) => ({
+    date: formatDate(j.date),
+    heureDebut: j.heureDebut,
+    heureFin: j.heureFin,
+    horairesConfirmes: j.horairesConfirmes,
+    formateur: j.trainer ? `${j.trainer.prenom} ${j.trainer.nom}` : "",
+  }));
+
+  // Rythme lisible, calculé depuis le calendrier réel — jamais saisi à la main.
+  // « Consécutives » = aucun trou calendaire ; un week-end au milieu suffit à
+  // basculer sur « réparties », ce qui est exactement l'information attendue.
+  const nbJours = session.jours.length;
+  let rythme: string;
+  if (nbJours === 0) {
+    rythme = `Du ${formatDate(session.dateDebut)} au ${formatDate(session.dateFin)} (calendrier détaillé non arrêté).`;
+  } else if (nbJours === 1) {
+    rythme = `1 journée, le ${jours[0]!.date} (${jours[0]!.heureDebut} – ${jours[0]!.heureFin}).`;
+  } else {
+    const premier = session.jours[0]!.date.getTime();
+    const dernier = session.jours[nbJours - 1]!.date.getTime();
+    const etendueJours = Math.round((dernier - premier) / 86_400_000) + 1;
+    const repartition = etendueJours === nbJours ? "consécutives" : "réparties";
+    rythme = `${nbJours} journées ${repartition}, du ${jours[0]!.date} au ${jours[nbJours - 1]!.date}.`;
+  }
+
+  const doc = await generateDocument({
+    type: "organisation_action",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(OrganisationActionPdf, {
+        data: {
+          numero,
+          intitule: session.titreSession,
+          numeroSession: session.numero,
+          dateEdition: formatDateFr(new Date()),
+          dureeHeures: session.dureeReelleHeures ?? session.formation.dureeHeures,
+          modalite: modaliteLabel(session.modalite),
+          lieu: resolveLieuDocument(session, identite),
+          effectifPrevu: session.nbParticipantsPrevus,
+          jours,
+          rythme,
+          formateurPrincipal,
+          ...(identite.referentHandicapEmail
+            ? { referentHandicapEmail: identite.referentHandicapEmail }
+            : {}),
+        },
+        identite,
+      }),
+    refs: { sessionId },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.organisation_action.genere",
+    targetType: "TrainingSession",
+    targetId: sessionId,
+    changes: { documentId: doc.id, numero: doc.numero, nbJours },
     session: adminSession,
   });
 

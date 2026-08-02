@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import {
   genererConventionAction,
   genererProgrammeAction,
+  genererOrganisationActionAction,
   genererConventionTripartiteAction,
   genererContratFormationAction,
   genererEmargementAction,
@@ -117,6 +118,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   lettre_mission: "Lettre de mission formateur",
   reglement_interieur: "Règlement intérieur (L.6352-3)",
   livret_accueil: "Livret d'accueil stagiaire",
+  organisation_action: "Organisation de l'action (R.6351-5)",
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
   inventaire_moyens: "Inventaire des moyens pédagogiques",
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
@@ -735,6 +737,15 @@ export function DocumentsSection({
           <SessionDocButton
             label="Programme de l'action"
             action={genererProgrammeAction}
+            sessionId={sessionId}
+            onDone={handleDone}
+          />
+          {/* Avec le programme, les deux pièces descriptives de l'art. R.6351-5 :
+              le programme dit CE QUI est enseigné, celle-ci dit QUAND, OÙ et
+              COMMENT (calendrier session_jours, rythme, lieu, encadrement). */}
+          <SessionDocButton
+            label="Organisation de l'action"
+            action={genererOrganisationActionAction}
             sessionId={sessionId}
             onDone={handleDone}
           />
