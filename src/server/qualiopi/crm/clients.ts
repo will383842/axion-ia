@@ -106,3 +106,162 @@ export async function getClientByNumero(numero: string): Promise<Client | null> 
     return null;
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Vue 360° — un client, toutes ses affaires (fiche clients/[id])
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Include de la fiche 360°. UNE requête `findUnique` : chaque relation est
+ * plafonnée à 10 lignes (la fiche affiche « les 10 derniers », les listes
+ * dédiées font le reste), SAUF `facturesFormation`.
+ *
+ * ⚠️ `facturesFormation` est volontairement SANS `take` : l'encours dû se
+ * calcule sur TOUTES les factures ouvertes du client. Un `take: 10` rendrait le
+ * chiffre silencieusement faux dès la 11ᵉ facture — un montant tronqué est
+ * pire qu'un montant absent. La volumétrie par client (dizaines de factures au
+ * plus) rend le sur-coût négligeable ; l'affichage, lui, se limite aux 10
+ * premières côté page.
+ */
+const CLIENT_360_INCLUDE = {
+  sessions: {
+    orderBy: { dateDebut: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      dateFin: true,
+      statut: true,
+    },
+  },
+  coachingContracts: {
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      numero: true,
+      interventionSlug: true,
+      montantHtCents: true,
+      dateSigneeAt: true,
+      createdAt: true,
+    },
+  },
+  auditMissions: {
+    orderBy: { dateDebut: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      numero: true,
+      titre: true,
+      dateDebut: true,
+      dateFin: true,
+      statut: true,
+    },
+  },
+  devis: {
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      numero: true,
+      statut: true,
+      montantTotalHtCents: true,
+      createdAt: true,
+    },
+  },
+  facturesFormation: {
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      numero: true,
+      statut: true,
+      avoirDeId: true,
+      montantHtCents: true,
+      montantTtcCents: true,
+      emiseAt: true,
+      echeanceAt: true,
+      createdAt: true,
+      payments: { select: { amountCents: true, status: true } },
+      avoirs: { select: { montantHtCents: true, montantTtcCents: true, statut: true } },
+    },
+  },
+  documents: {
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    select: { id: true, type: true, numero: true, createdAt: true },
+  },
+  dossiersFinancement: {
+    orderBy: { createdAt: "desc" },
+    take: 10,
+    select: {
+      id: true,
+      type: true,
+      statut: true,
+      financeurNom: true,
+      echeanceFinanceurAt: true,
+      createdAt: true,
+    },
+  },
+  // Seuls les e-mails encore À VALIDER intéressent la fiche : un compteur qui
+  // mélangerait l'historique envoyé dirait « 47 » sans rien signifier.
+  _count: { select: { emailsEnAttente: { where: { statut: "a_valider" } } } },
+} satisfies Prisma.ClientInclude;
+
+/** Payload exact de `getClient360` — dérivé de l'include, pas dupliqué à la main. */
+export type Client360 = Prisma.ClientGetPayload<{ include: typeof CLIENT_360_INCLUDE }>;
+
+/** Ligne de facture minimale pour le calcul d'encours (sous-ensemble de Client360). */
+export interface FactureEncoursInput {
+  statut: string;
+  avoirDeId: string | null;
+  montantHtCents: number;
+  montantTtcCents: number | null;
+  payments: { amountCents: number; status: string }[];
+  avoirs: { montantHtCents: number; montantTtcCents: number | null; statut: string }[];
+}
+
+/** Statuts d'une facture « ouverte » : émise mais pas soldée ni annulée. */
+const STATUTS_FACTURE_OUVERTE: ReadonlySet<string> = new Set([
+  "emise",
+  "partiellement_payee",
+  "en_retard",
+]);
+
+/**
+ * Reste dû net d'UNE facture — même formule que la fiche facture
+ * (`facturation/[id]/page.tsx`) : TTC (repli HT) + avoirs non annulés (montants
+ * NÉGATIFS en base) − encaissements `succeeded`.
+ */
+export function resteDuNetCents(f: FactureEncoursInput): number {
+  const ttc = f.montantTtcCents ?? f.montantHtCents;
+  const avoirsTtc = f.avoirs
+    .filter((a) => a.statut !== "annulee")
+    .reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
+  const encaisse = f.payments
+    .filter((p) => p.status === "succeeded")
+    .reduce((acc, p) => acc + p.amountCents, 0);
+  return ttc + avoirsTtc - encaisse;
+}
+
+/**
+ * Encours dû d'un client : somme des restes dus nets de ses factures OUVERTES
+ * (`emise`, `partiellement_payee`, `en_retard`). Les avoirs (`avoirDeId` non
+ * null) sont exclus du périmètre : ils entrent déjà, en négatif, dans le reste
+ * dû de la facture qu'ils corrigent — les compter à part les déduirait deux fois.
+ */
+export function calculerEncoursDuCents(factures: FactureEncoursInput[]): number {
+  return factures
+    .filter((f) => f.avoirDeId === null && STATUTS_FACTURE_OUVERTE.has(f.statut))
+    .reduce((acc, f) => acc + resteDuNetCents(f), 0);
+}
+
+/** Fiche 360° d'un client (une seule requête, include plafonné). Stub-safe → null. */
+export async function getClient360(id: string): Promise<Client360 | null> {
+  try {
+    return await prisma.client.findUnique({ where: { id }, include: CLIENT_360_INCLUDE });
+  } catch {
+    return null;
+  }
+}
