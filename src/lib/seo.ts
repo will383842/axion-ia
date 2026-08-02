@@ -806,19 +806,33 @@ interface OrganizationJsonLdInput {
  * fait entre le JSON-LD et SIRENE (audit Knowledge Panel 2026-07-06). Il était
  * absent jusqu'au 02/08/2026.
  *
- * `COMPANY_ADDRESS` reste un override d'urgence (transfert de siège avant
- * redeploy) mais la valeur registre est le défaut : au SSG les env `COMPANY_*`
- * ne sont pas injectées (pas de build-args), donc c'est ce défaut qui est rendu.
+ * 🔴 AUCUN override par `COMPANY_ADDRESS` ici — c'était la cause d'une entité
+ * à DEUX adresses en production, constatée le 02/08/2026 :
  *
- * 🔴 FONCTION, pas constante de module : `env.*` est une env var SERVEUR, et
- * `@t3-oss/env-core` throw dès qu'on y accède depuis un bundle client. Une
- * constante top-level serait évaluée à l'import de `seo.ts` — donc aussi dans
- * les composants clients qui n'en importent qu'un helper de metadata.
+ *   - pages figées au build (`/a-propos`, `/contact`) : les env `COMPANY_*` ne
+ *     sont pas des build-args du workflow GH Actions, donc absentes au SSG →
+ *     le défaut du code était rendu ;
+ *   - pages rendues au runtime (`/presse`) : `COMPANY_ADDRESS` était présente
+ *     et valait « 11 Avenue Paul Verlaine, 38100 Grenoble », sans le complément.
+ *
+ * Résultat : le même nœud `#organization` déclarait deux `streetAddress`
+ * différentes selon la page — pire pour le rapprochement d'entité que
+ * l'omission d'origine. Une adresse de siège n'a pas à être configurable :
+ * elle est publique, figée au Kbis, et ne change que lors d'un transfert de
+ * siège — qui passera de toute façon par une modification de code. La rendre
+ * env-dépendante garantissait la re-divergence.
+ *
+ * `COMPANY_ADDRESS` continue de servir le pied de page des emails
+ * (`src/lib/email/templates/_layout.tsx`) — cette PR n'y touche pas.
+ *
+ * FONCTION plutôt que constante de module, par cohérence avec le reste du
+ * fichier : `seo.ts` est importé par des composants clients, et une constante
+ * top-level y serait évaluée à l'import.
  */
 function buildSiegePostalAddress() {
   return {
     "@type": "PostalAddress",
-    streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53",
+    streetAddress: "11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53",
     addressLocality: "Grenoble",
     postalCode: "38100",
     addressRegion: "Auvergne-Rhône-Alpes",
