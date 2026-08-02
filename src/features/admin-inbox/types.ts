@@ -56,12 +56,11 @@ export const INBOX_CHANNEL_LABELS: Record<InboxChannel, string> = {
   podcast: "Podcast",
 };
 
-export const INBOX_CHANNEL_ICONS: Record<InboxChannel, string> = {
-  appel: "📞",
-  message: "✉️",
-  candidature: "📨",
-  podcast: "🎙️",
-};
+// `INBOX_CHANNEL_ICONS` (emojis) retiré le 2026-08-02 : le rendu d un emoji
+// dépend du système et de la police du poste, ingérable dans un tableau dense.
+// Le pictogramme d un canal est désormais un composant lucide déclaré dans la
+// vue qui le rend (`contacts/page.tsx`, table `CANAL`) — un module de types
+// partagé n a pas à dépendre de React.
 
 export const INBOX_CHANNEL_ORDER: ReadonlyArray<InboxChannel> = [
   "appel",
