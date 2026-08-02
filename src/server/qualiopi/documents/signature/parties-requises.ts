@@ -189,6 +189,15 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
   // personnelle ne doit pas être exposée à l'entreprise — le canal maison le
   // rend plus facile à tenir que le flux fournisseur, qui exposait un
   // destinataire à chaque partie.
+  // 🔴 UNE SEULE partie, et c'est voulu : un consentement est UNILATÉRAL.
+  // L'organisme ne "co-signe" pas une autorisation d'image, il la reçoit.
+  // Lui faire apposer une signature laisserait croire à un accord négocié, donc
+  // à une contrepartie — exactement ce qui rend un consentement non libre.
+  autorisation_captation: {
+    parties: ["beneficiaire"],
+    canal: "maison",
+    libelle: "autorisation de captation",
+  },
   protocole_afest: {
     parties: ["axionia", "client", "beneficiaire"],
     canal: "maison",

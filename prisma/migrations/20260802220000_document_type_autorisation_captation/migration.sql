@@ -1,0 +1,23 @@
+-- L'AUTORISATION DE CAPTATION devient une pièce.
+--
+-- ## Pourquoi une pièce séparée, et pas une clause des contrats
+--
+-- Le consentement à l'image relève de l'article 9 du Code civil et du RGPD : il
+-- doit être LIBRE, spécifique, éclairé et univoque (art. 4-11), et RÉVOCABLE à
+-- tout moment (art. 7-3).
+--
+-- Enfoui dans une convention ou une lettre de mission — c'est-à-dire dans un
+-- document qu'on signe pour être formé ou pour être payé — il n'est pas
+-- « libre » : le refus y serait indissociable du refus de la prestation. La
+-- CNIL écarte les consentements qui conditionnent l'accès à un service.
+--
+-- D'où une pièce autonome, refusable sans rien perdre — et qui le DIT, parce
+-- que c'est cette phrase qui la rend valable.
+--
+-- ⚠️ Elle vaut pour les STAGIAIRES autant que pour les intervenants : filmer une
+-- session, c'est filmer les participants. C'est l'oubli le plus courant.
+--
+-- Postgres ALTER TYPE ADD VALUE — non transactionnel mais sûr (ajout d'une
+-- valeur d'enum, jamais de retrait). `IF NOT EXISTS` rend la migration
+-- ré-exécutable : l'entrypoint rejoue `migrate deploy` à chaque démarrage.
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'autorisation_captation';

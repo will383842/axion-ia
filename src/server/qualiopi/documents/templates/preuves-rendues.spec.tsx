@@ -36,6 +36,7 @@ import { ConventionTripartitePdf } from "./convention-tripartite";
 import { ContratFormationPdf } from "./contrat-formation";
 import { ContratSousTraitancePdf } from "./contrat-sous-traitance";
 import { ProtocoleAfestPdf } from "./protocole-afest";
+import { AutorisationCaptationPdf } from "./autorisation-captation";
 import { ReleveConnexionPdf } from "./releve-connexion";
 import { LettreMissionPdf } from "./lettre-mission";
 
@@ -251,6 +252,25 @@ const CAS: ReadonlyArray<{
       dureePrevueHeures: 14,
       dateDebut: "01/06/2026",
       dateFin: "02/06/2026",
+    },
+  },
+  {
+    // Consentement d'image : la preuve rendue est celle de la personne
+    // concernée, seule signataire. L'organisme ne co-signe pas un consentement.
+    type: "autorisation_captation",
+    Composant: AutorisationCaptationPdf as unknown as ComposantTest,
+    partie: "beneficiaire",
+    identiteEnProp: true,
+    data: {
+      numero: "AXI-DOC-2026-060",
+      personne: { nomPrenom: "Simone Blanc", qualite: "Stagiaire" },
+      intitule: "IA pour l'immobilier",
+      dateAction: "31/07/2026",
+      lieu: "Saint-Étienne",
+      dateEdition: "02/08/2026",
+      finalites: ["Illustrer les supports de formation"],
+      supports: ["Site internet de l'organisme"],
+      dureeAnnees: 3,
     },
   },
 ];

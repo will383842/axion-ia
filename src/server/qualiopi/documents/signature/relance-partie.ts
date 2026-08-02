@@ -68,6 +68,13 @@ export function partieARelancer(
   const circuit = circuitPour(documentType);
   if (circuit === null) return null;
 
+  // 🔴 Un CONSENTEMENT ne se relance pas. Relancer quelqu'un pour qu'il autorise
+  // l'usage de son image, c'est exercer une pression — et un consentement obtenu
+  // sous pression n'est pas « libre » au sens de l'article 4-11 du RGPD, donc pas
+  // valable. La pièce est proposée une fois ; le silence vaut refus, et le refus
+  // est sans conséquence (c'est écrit sur la pièce elle-même).
+  if (documentType === "autorisation_captation") return null;
+
   // Prochaine partie DANS L'ORDRE du circuit — l'ordre est contractuel
   // (l'organisme conclut en dernier), pas décoratif.
   const signees = new Set(partiesSignees);

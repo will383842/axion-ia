@@ -219,10 +219,148 @@ export function ContratSousTraitancePdf({
           </Text>
         </DocSection>
 
-        {/* 7. Signatures */}
+        {/*
+          Sections 7 à 9 — 2026-08-02. Mêmes clauses que la lettre de mission, et
+          pour les mêmes raisons.
+
+          🔴 PAS de non-concurrence : imposer à un prestataire de ne pas
+          travailler ailleurs est un indice de subordination retenu pour
+          REQUALIFIER une sous-traitance en contrat de travail. On protège la
+          clientèle par la NON-SOLLICITATION, proportionnée donc opposable — une
+          non-concurrence trop large est annulée, et n'aurait rien protégé.
+
+          La clause d'indépendance (§9) documente l'absence de subordination :
+          c'est elle qui protège contre la requalification.
+        */}
+
+        {/* 7. Propriété intellectuelle */}
+        <DocSection title="7. Propriété intellectuelle">
+          <Text style={pdfStyles.paragraph}>
+            Les référentiels, supports et méthodes transmis par l&apos;organisme demeurent sa
+            propriété exclusive ; le sous-traitant les utilise pour les seuls besoins des
+            prestations confiées et les restitue ou les détruit au terme du contrat.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Les supports et contenus créés spécifiquement dans le cadre des prestations sont cédés à
+            l&apos;organisme à titre exclusif, pour toute la durée légale de protection et pour le
+            monde entier, pour les droits de reproduction, représentation, adaptation et traduction,
+            sur tout support. Cette cession est comprise dans la rémunération prévue en section 4.
+            Le sous-traitant conserve la propriété de ses supports antérieurs et concède à
+            l&apos;organisme le droit de les utiliser pour les prestations concernées.
+          </Text>
+        </DocSection>
+
+        {/* 8. Non-sollicitation */}
+        <DocSection title="8. Non-sollicitation">
+          <Text style={pdfStyles.paragraph}>
+            Pendant le contrat et durant dix-huit (18) mois après son terme, le sous-traitant
+            s&apos;engage à ne pas solliciter directement, pour des prestations de même nature, les
+            clients de l&apos;organisme auprès desquels il est intervenu à ce titre, ni à démarcher
+            ses intervenants ou salariés en vue de les recruter.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            Cette clause ne restreint pas la liberté d&apos;exercice du sous-traitant : elle ne vise
+            que la clientèle rencontrée à l&apos;occasion des prestations confiées.
+          </Text>
+        </DocSection>
+
+        {/* 9. Indépendance, assurance et résiliation */}
+        <DocSection title="9. Indépendance, assurance et résiliation">
+          <Text style={pdfStyles.paragraph}>
+            Le sous-traitant exerce en toute indépendance, organise librement son travail et
+            n&apos;est soumis à aucun lien de subordination envers l&apos;organisme. Il déclare être
+            régulièrement immatriculé, à jour de ses obligations sociales et fiscales, et détenir
+            une assurance de responsabilité civile professionnelle couvrant son activité de
+            formation. Il en justifie sur demande et signale sans délai toute cessation de garantie.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Chaque partie peut résilier le contrat par écrit moyennant un préavis de trente (30)
+            jours, les prestations déjà engagées étant menées à leur terme. En cas de manquement
+            grave — atteinte à la confidentialité, défaut d&apos;assurance, perte de la conformité
+            exigée en section 5 — la résiliation peut intervenir sans préavis, après mise en demeure
+            restée sans effet pendant huit (8) jours.
+          </Text>
+        </DocSection>
+
+        {/*
+          10 — RGPD article 28. OBLIGATION LÉGALE, pas une précaution.
+
+          🔴 Le sous-traitant qui traite des données de stagiaires POUR LE COMPTE
+          de l'organisme en est le sous-traitant au sens du RGPD, et l'article
+          28-3 impose un contrat portant des mentions ÉNUMÉRÉES. Leur absence est
+          sanctionnable — et c'est l'organisme, responsable de traitement, qui
+          répond. La section 6 n'en couvrait que trois.
+        */}
+        <DocSection title="10. Traitement des données à caractère personnel">
+          <Text style={pdfStyles.paragraph}>
+            Pour l&apos;exécution des missions confiées, le sous-traitant traite pour le compte de
+            l&apos;organisme, responsable de traitement, les données d&apos;identité, de présence et
+            d&apos;évaluation des stagiaires, pour la seule durée des missions et aux seules fins de
+            les réaliser. Il agit sur instruction documentée de l&apos;organisme.
+          </Text>
+          <BulletList
+            items={[
+              "Ne traiter ces données que pour les besoins des missions, jamais pour son compte propre.",
+              "Garantir que les personnes autorisées à y accéder sont soumises à une obligation de confidentialité.",
+              "Mettre en œuvre des mesures techniques et organisationnelles appropriées de sécurité.",
+              "Ne recourir à aucun autre sous-traitant sans autorisation écrite préalable de l'organisme.",
+              "Assister l'organisme pour répondre aux demandes d'exercice des droits des personnes concernées.",
+              "Notifier à l'organisme toute violation de données sans délai après en avoir pris connaissance.",
+              "Mettre à disposition les éléments nécessaires pour démontrer le respect de ces obligations et permettre les audits.",
+              "Supprimer ou restituer l'ensemble des données au terme du contrat, sans en conserver de copie.",
+            ]}
+          />
+        </DocSection>
+
+        {/* 11. Responsabilité et force majeure */}
+        <DocSection title="11. Responsabilité et force majeure">
+          <Text style={pdfStyles.paragraph}>
+            Chaque partie répond des dommages directs causés à l&apos;autre par un manquement à ses
+            obligations. La responsabilité de chacune est limitée au montant hors taxes des
+            prestations facturées au titre du présent contrat, à l&apos;exclusion des dommages
+            indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
+            d&apos;affaires. Cette limitation ne joue pas en cas de faute lourde ou dolosive, ni
+            d&apos;atteinte aux personnes.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Aucune partie n&apos;est responsable d&apos;un manquement résultant d&apos;un cas de
+            force majeure au sens de l&apos;article 1218 du Code civil. La partie empêchée en
+            informe l&apos;autre sans délai ; la prestation est reportée à une date convenue, ou le
+            contrat résilié sans indemnité si l&apos;empêchement se prolonge au-delà de trente (30)
+            jours.
+          </Text>
+        </DocSection>
+
+        {/* 12. Exécution personnelle */}
+        <DocSection title="12. Exécution personnelle des missions">
+          <Text style={pdfStyles.paragraph}>
+            Les missions sont confiées en considération des compétences propres du sous-traitant. Il
+            ne peut se faire remplacer ni sous-traiter tout ou partie de l&apos;animation sans
+            l&apos;accord écrit préalable de l&apos;organisme. Tout intervenant substitué sans cet
+            accord engage sa seule responsabilité et constitue un manquement grave.
+          </Text>
+          <Text style={pdfStyles.legalNote}>
+            L&apos;organisme doit pouvoir justifier des compétences de CHAQUE intervenant
+            (indicateur 21) et de la conformité de chaque sous-traitant (indicateur 27) : un
+            remplaçant non validé rompt cette traçabilité.
+          </Text>
+        </DocSection>
+
+        {/* 13. Droit applicable */}
+        <DocSection title="13. Droit applicable et différends">
+          <Text style={pdfStyles.paragraph}>
+            Le présent contrat est régi par le droit français. En cas de différend relatif à sa
+            formation, son exécution ou son interprétation, les parties s&apos;efforceront de
+            trouver une solution amiable. À défaut d&apos;accord dans un délai de trente (30) jours
+            à compter de la première notification écrite, le litige sera porté devant le tribunal
+            compétent du ressort du siège de l&apos;organisme.
+          </Text>
+        </DocSection>
+
+        {/* 14. Signatures */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title="7. Signatures">
+        <DocSection title="14. Signatures">
           <SignatureZone
             intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateContrat}`}

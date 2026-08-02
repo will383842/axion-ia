@@ -36,9 +36,13 @@ describe("matrice des circuits", () => {
     expect(partiesRequisesPour("__proto__")).toBeNull();
   });
 
-  it("couvre les dix circuits du plan", () => {
+  it("couvre les circuits du plan, ni plus ni moins", () => {
+    // Liste EXHAUSTIVE et volontairement fastidieuse : ajouter un circuit sans
+    // toucher ce test est impossible, et c'est le but — un circuit declare sans
+    // site de generation est inatteignable (cf. refs-circuits.spec.ts).
     expect([...TYPES_SIGNABLES].sort()).toStrictEqual(
       [
+        "autorisation_captation",
         "releve_connexion",
         "lettre_mission",
         "devis",
