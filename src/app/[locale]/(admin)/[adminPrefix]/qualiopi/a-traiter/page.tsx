@@ -261,7 +261,14 @@ export default async function ATraiterPage({ params }: PageProps) {
                     />
                   )}
                   <strong>{a.titre}</strong>
-                  <span className="block text-[color:var(--color-admin-fg-muted)]">
+                  {/* Certaines alertes recopient une réponse d'API brute — un
+                      échec de job IA fait des centaines de caractères de JSON
+                      (vu en production le 2026-08-02). Deux lignes ici ; le
+                      texte complet vit dans l'infobulle et sur la page Alertes. */}
+                  <span
+                    title={a.message}
+                    className="line-clamp-2 block text-[color:var(--color-admin-fg-muted)]"
+                  >
                     {a.message}
                   </span>
                 </span>

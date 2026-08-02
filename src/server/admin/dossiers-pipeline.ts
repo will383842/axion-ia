@@ -68,32 +68,32 @@ export const COLONNES_PIPELINE: ReadonlyArray<{
 }> = [
   {
     id: "devis_attente",
-    label: "📥 Devis en attente",
+    label: "Devis en attente",
     description: "Devis envoyés au client, sans réponse — à relancer ou à statuer.",
   },
   {
     id: "signature_attente",
-    label: "✍️ Signature en attente",
+    label: "Signature en attente",
     description: "Session planifiée dont une pièce attend une signature ou un contreseing.",
   },
   {
     id: "a_preparer",
-    label: "📅 À préparer",
+    label: "À préparer",
     description: "Prestations planifiées, pièces signées — préparer le jour J.",
   },
   {
     id: "en_cours",
-    label: "▶️ En cours",
+    label: "En cours",
     description: "Prestations en cours de réalisation — suivre les émargements.",
   },
   {
     id: "a_solder",
-    label: "🧾 À solder",
+    label: "À solder",
     description: "Réalisées mais PAS payées : facture impayée ou financement non clos.",
   },
   {
     id: "soldes",
-    label: "✅ Soldés",
+    label: "Soldés",
     description: `Réalisées et payées — ${FENETRE_SOLDES_JOURS} derniers jours seulement.`,
   },
 ];
@@ -106,9 +106,9 @@ export const COLONNES_PIPELINE: ReadonlyArray<{
 export type ActiviteDossier = "formation" | "coaching" | "audit";
 
 export const ACTIVITE_LABELS: Record<ActiviteDossier, string> = {
-  formation: "🎓 Formation",
-  coaching: "🤝 Coaching",
-  audit: "🔍 Audit",
+  formation: "Formation",
+  coaching: "Coaching",
+  audit: "Audit",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
