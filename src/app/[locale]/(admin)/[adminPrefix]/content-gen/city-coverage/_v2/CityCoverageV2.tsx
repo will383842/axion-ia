@@ -8,7 +8,16 @@
 // AdminStatCard + AdminCard + AdminBadge.
 
 import Link from "next/link";
-import { MapPin, CheckCircle2, Gauge, ShieldCheck } from "lucide-react";
+import {
+  MapPin,
+  CheckCircle2,
+  Gauge,
+  ShieldCheck,
+  AlertTriangle,
+  XCircle,
+  Link2,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -27,11 +36,25 @@ interface Props {
   adminPrefix: string;
 }
 
-function statusEmoji(status: CriterionStatus): string {
-  if (status === "green") return "🟢";
-  if (status === "yellow") return "🟡";
-  return "🔴";
-}
+/**
+ * Statut d'un critère — FORME d'abord, couleur ensuite.
+ *
+ * Les trois pastilles rondes qui servaient ici ne différaient QUE par leur
+ * teinte : en vision des couleurs déficiente, les trois états étaient
+ * strictement identiques. Elles étaient de surcroît `aria-hidden`, si bien
+ * que le statut n'existait pas du tout pour un lecteur d'écran.
+ *
+ * Trois dessins distincts (coche, triangle, croix) + un nom accessible : le
+ * statut se lit à l'œil, au clavier et à la synthèse vocale.
+ */
+const STATUT_CRITERE: Record<
+  CriterionStatus,
+  { Icone: LucideIcon; libelle: string; couleur: string }
+> = {
+  green: { Icone: CheckCircle2, libelle: "Conforme", couleur: "var(--color-admin-success)" },
+  yellow: { Icone: AlertTriangle, libelle: "À surveiller", couleur: "var(--color-admin-warning)" },
+  red: { Icone: XCircle, libelle: "Non conforme", couleur: "var(--color-admin-destructive)" },
+};
 
 function dimensionTone(scorePct: number): "success" | "warning" | "destructive" {
   if (scorePct >= 100) return "success";
@@ -51,18 +74,26 @@ function CityDimensionCell({ dim }: { dim: CityDimension }): React.ReactElement 
       <ul className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
         {dim.criteria.map((c) => (
           <li key={c.id} className="flex items-start gap-[var(--space-admin-2)]">
-            <span aria-hidden="true">{statusEmoji(c.status)}</span>
+            {(() => {
+              const { Icone, libelle, couleur } = STATUT_CRITERE[c.status];
+              return (
+                <Icone
+                  size={14}
+                  aria-label={libelle}
+                  className="mt-[2px] shrink-0"
+                  style={{ color: couleur }}
+                />
+              );
+            })()}
             <span className="min-w-0">
               <span className="block">
                 {c.label}
                 {c.sourced ? (
-                  <span
+                  <Link2
+                    size={12}
                     aria-label="Donnée sourcée vérifiable"
-                    title="Donnée sourcée vérifiable"
-                    className="ml-[var(--space-admin-2)]"
-                  >
-                    🔗
-                  </span>
+                    className="ml-[var(--space-admin-2)] inline align-[-1px] text-[color:var(--color-admin-fg-muted)]"
+                  />
                 ) : null}
               </span>
               {c.detail ? (

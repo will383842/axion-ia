@@ -2,6 +2,8 @@
 
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
+import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import {
   getSiteRouteDetail,
@@ -67,11 +69,15 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
     redirect(adminPath("fr", `site-explorer/${id}`));
   }
 
-  const QUALITY_BTNS: Array<{ value: SiteRouteQuality; emoji: string; label: string }> = [
-    { value: "green", emoji: "🟢", label: "Parfaite" },
-    { value: "orange", emoji: "🟠", label: "À retoucher" },
-    { value: "red", emoji: "🔴", label: "Cassée" },
-    { value: "unset", emoji: "⚪", label: "Non revue" },
+  // Les quatre verdicts étaient quatre pastilles RONDES ne différant que par
+  // la teinte : en vision des couleurs déficiente, choisir « Parfaite » plutôt
+  // que « Cassée » relevait de la lecture du libellé seul. Quatre dessins
+  // distincts rendent le verdict lisible avant même le texte.
+  const QUALITY_BTNS: Array<{ value: SiteRouteQuality; Icone: LucideIcon; label: string }> = [
+    { value: "green", Icone: CheckCircle2, label: "Parfaite" },
+    { value: "orange", Icone: AlertTriangle, label: "À retoucher" },
+    { value: "red", Icone: XCircle, label: "Cassée" },
+    { value: "unset", Icone: Circle, label: "Non revue" },
   ];
 
   return (
@@ -250,7 +256,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                     : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
                 }`}
               >
-                {b.emoji} {b.label}
+                <b.Icone size={14} aria-hidden="true" className="inline shrink-0 align-[-2px]" />{" "}
+                {b.label}
               </button>
             ))}
           </form>

@@ -21,11 +21,13 @@
 //
 // QUE FAIRE SI CE TEST ÉCHOUE
 // ---------------------------
-// - « le compte a AUGMENTÉ » → vous venez d'ajouter un emoji dans une vue admin.
-//   Utilisez un composant `lucide-react` : c'est la convention de la console, et
-//   `NAV_ICONS` (src/lib/admin-nav-icons.ts) montre le motif.
-// - « le compte a BAISSÉ » → parfait, c'est le sens du chantier : descendez la
-//   constante ci-dessous à la valeur mesurée, en datant la ligne.
+// Il n'échoue QUE si le compte remonte : vous venez d'ajouter un emoji dans une
+// vue admin. Utilisez un composant `lucide-react` — c'est la convention de la
+// console, et `NAV_ICONS` (src/lib/admin-nav-icons.ts) montre le motif.
+//
+// Si le compte a BAISSÉ, rien ne casse (cf. la note sur l'égalité stricte plus
+// bas) : descendez simplement la constante à la valeur mesurée, en datant la
+// ligne, pour verrouiller le terrain gagné.
 //
 // Les lignes de COMMENTAIRE sont exclues du décompte : elles ne sont pas rendues,
 // et un commentaire qui cite l'emoji qu'il vient de remplacer est légitime.
@@ -45,7 +47,9 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
  * glyphes cités dans les commentaires JSX). Était 248 avant cette passe, 340
  * au plus haut.
  */
-const PLAFOND = 94;
+// 2026-08-02 : 94 → 81 (statuts couleur-seule convertis en icônes lucide sur
+// city-coverage, submissions, backups et site-explorer).
+const PLAFOND = 81;
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
@@ -86,14 +90,23 @@ describe("cliquet anti-emoji de la console", () => {
       .map((f) => `${String(f.n).padStart(3)} × ${f.fichier}`)
       .join("\n  ");
 
+    // ⚠️ CE TEST EXIGEAIT L'ÉGALITÉ STRICTE (`toBe`), et ça a cassé `main`.
+    //
+    // Deux PR qui retirent chacune des emojis passent au vert SÉPARÉMENT — le
+    // gate mesure chaque branche contre le plafond du moment. Une fois les
+    // deux fusionnées, le compte tombe SOUS le plafond et `main` devient
+    // rouge, alors qu'aucune des deux n'a rien cassé : elles ont toutes deux
+    // fait exactement ce que le chantier demande. Il a fallu un correctif à
+    // chaud (2026-08-01) pour rouvrir la voie.
+    //
+    // Un cliquet n'a pas besoin de l'égalité : il a besoin d'un PLAFOND. On
+    // interdit la remontée, on laisse la descente libre. Le plafond se baisse
+    // quand quelqu'un y pense — et s'il traîne, personne n'est bloqué.
     expect(
       total,
-      total > PLAFOND
-        ? `Le nombre d'emojis rendus dans la console est passé de ${PLAFOND} à ${total}.\n` +
-            "La convention est un composant lucide-react.\n" +
-            `Fichiers les plus chargés :\n  ${pires}`
-        : `Le compte est descendu à ${total} (plafond ${PLAFOND}) — descendez PLAFOND ` +
-            "à cette valeur, en datant la ligne.",
-    ).toBe(PLAFOND);
+      `Le nombre d'emojis rendus dans la console est passé de ${PLAFOND} à ${total}.\n` +
+        "La convention est un composant lucide-react.\n" +
+        `Fichiers les plus chargés :\n  ${pires}`,
+    ).toBeLessThanOrEqual(PLAFOND);
   });
 });

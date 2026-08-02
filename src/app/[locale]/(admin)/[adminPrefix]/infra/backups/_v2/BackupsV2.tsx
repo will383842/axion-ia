@@ -3,7 +3,7 @@
 // FR-only, Server Component pur (aucun JS client).
 
 import Link from "next/link";
-import { CheckCircle2, AlertTriangle, XCircle, Database } from "lucide-react";
+import { CheckCircle2, AlertTriangle, XCircle, Database, Minus } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -34,8 +34,15 @@ interface Props {
   activeComponent: BackupComponentValue | null;
 }
 
-function toneIcon(tone: BackupOverviewRow["tone"]): string {
-  return tone === "success" ? "✅" : tone === "warning" ? "⚠️" : tone === "neutral" ? "➖" : "🔴";
+// Le fichier importait DÉJÀ les icônes lucide pour ses autres blocs, mais
+// l'état d'une sauvegarde passait encore par quatre emojis dont deux ne
+// diffèrent que par la couleur. On rend l'état par la forme.
+function ToneIcon({ tone }: { tone: BackupOverviewRow["tone"] }): React.ReactElement {
+  const props = { size: 14, "aria-hidden": true, className: "inline shrink-0 align-[-2px]" };
+  if (tone === "success") return <CheckCircle2 {...props} />;
+  if (tone === "warning") return <AlertTriangle {...props} />;
+  if (tone === "neutral") return <Minus {...props} />;
+  return <XCircle {...props} />;
 }
 
 function statusPill(status: BackupHistoryItem["status"]) {
@@ -113,10 +120,11 @@ export function BackupsV2({
       {(banners.missedBackup || banners.staleDrill) && (
         <AdminCard className="admin-infra-card mb-[var(--space-admin-5)]">
           <div className="admin-infra-card-head">
-            <strong>
+            <strong className="inline-flex items-center gap-[var(--space-admin-2)]">
+              <AlertTriangle size={15} aria-hidden="true" className="shrink-0" />
               {banners.missedBackup
                 ? "Attention sauvegardes"
-                : "⚠️ Tests de restauration à rafraîchir"}
+                : "Tests de restauration à rafraîchir"}
             </strong>
             <span
               className={`admin-status-pill admin-severity-${
@@ -174,7 +182,7 @@ export function BackupsV2({
           <div key={o.component} className="admin-card admin-infra-card">
             <div className="admin-infra-card-head">
               <strong>
-                {toneIcon(o.tone)} {o.label}
+                <ToneIcon tone={o.tone} /> {o.label}
               </strong>
               {o.acceptedGap ? (
                 <span className="admin-status-pill admin-severity-info">Non suivi (assumé)</span>
