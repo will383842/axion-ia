@@ -6507,6 +6507,13 @@ enum DocumentType {
   /// actions ») et preuve du déroulé pour les indicateurs 9 et 12. Le programme
   /// dit CE QUI est enseigné ; cette pièce dit QUAND, OÙ et COMMENT.
   organisation_action
+  /// Liste des formateurs et de leurs qualifications : titres et qualités, lien
+  /// avec la prestation réalisée, nature du lien contractuel. Exigée à l'appui
+  /// de la déclaration d'activité (art. R.6351-5) et par l'indicateur 21.
+  /// Distincte de `cv_formateur`, qui est une FICHE par intervenant : une fiche
+  /// n'est pas une liste, et c'est une liste que réclament le formulaire et
+  /// l'auditeur.
+  liste_formateurs
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
