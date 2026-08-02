@@ -133,11 +133,30 @@ export async function uploadToR2(
 export async function getSignedUrlR2(
   key: string,
   expiresInSeconds: number = 90 * 24 * 3600,
+  options?: {
+    /**
+     * Force `Content-Disposition: attachment; filename="…"` dans la réponse R2.
+     * Sans lui, un PDF s'ouvre dans l'onglet sur une URL signée illisible, et le
+     * fichier enregistré s'appelle comme la clé de stockage (le numéro interne).
+     * ⚠️ ASCII uniquement — le nom part tel quel dans un en-tête HTTP.
+     */
+    downloadFilename?: string;
+  },
 ): Promise<string> {
   const client = getClient();
-  return getSignedUrl(client, new GetObjectCommand({ Bucket: getBucketName(), Key: key }), {
-    expiresIn: expiresInSeconds,
-  });
+  return getSignedUrl(
+    client,
+    new GetObjectCommand({
+      Bucket: getBucketName(),
+      Key: key,
+      ...(options?.downloadFilename
+        ? {
+            ResponseContentDisposition: `attachment; filename="${options.downloadFilename.replace(/["\\]/g, "")}"`,
+          }
+        : {}),
+    }),
+    { expiresIn: expiresInSeconds },
+  );
 }
 
 /**
