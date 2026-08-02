@@ -50,8 +50,8 @@ import {
   CLIENT_FACTURABLE_SELECT,
 } from "@/server/qualiopi/financements/destinataire-facture";
 import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
-import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import type {
@@ -758,8 +758,6 @@ export async function genererFacturePdfAction(input: {
       emiseAt: true,
       echeanceAt: true,
       sessionId: true,
-      // Dates RÉELLES de la prestation — cf. periodePrestation plus bas.
-      session: { select: { dateDebut: true, dateFin: true } },
     },
   });
   if (!facture) return { error: "Facture introuvable" };
@@ -804,21 +802,23 @@ export async function genererFacturePdfAction(input: {
   // omet alors le bloc, ce qui est correct. On n'invente aucun IBAN.
   const rib = await resolveRibFacture();
 
-  // 🔴 Date de réalisation de la prestation — mention obligatoire dès qu'elle
-  // diffère de la date d'émission (art. 242 nonies A CGI). Faute d'être
-  // transmise, le gabarit retombait sur la date d'émission : la première facture
-  // réelle a déclaré une prestation exécutée le 01/08 pour une formation tenue
-  // le 31/07. On lit les dates de la SESSION, seule source de la date d'exécution.
-  const periodePrestation = periodePrestationSession(
-    facture.session?.dateDebut,
-    facture.session?.dateFin,
-  );
+  // Date de RÉALISATION de la prestation (art. 242 nonies A ann. II CGI) —
+  // `sessionId` était DÉJÀ sélectionné ici sans jamais être lu, cf.
+  // `periode-prestation.ts` pour ce que ce silence produisait sur la pièce.
+  const sessionFacture =
+    facture.sessionId !== null && facture.sessionId !== undefined
+      ? await prisma.trainingSession.findUnique({
+          where: { id: facture.sessionId },
+          select: { dateDebut: true, dateFin: true },
+        })
+      : null;
+  const periodePrestation = periodePrestationSession(sessionFacture);
 
   const factureData: FactureData = {
     numero: facture.numero,
     dateEmission: formatDate(facture.emiseAt),
     dateEcheance: formatDate(echeance),
-    ...(periodePrestation !== null ? { periodePrestation } : {}),
+    ...(periodePrestation !== undefined ? { periodePrestation } : {}),
     identite,
     regimeTva,
     tauxTvaStandardPercent,

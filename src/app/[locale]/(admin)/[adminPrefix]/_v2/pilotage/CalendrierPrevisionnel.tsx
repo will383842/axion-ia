@@ -7,6 +7,7 @@
 // Plus le bandeau « Prévisionnel bloqué » : sessions à ≤ 7 jours sans formateur.
 
 import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import { AdminCard, AdminBadge } from "@/components/admin/ui";
 // Import DIRECT (pas via le barrel) — contrat d'usage de la grille calendrier.
 import { MonthGridCalendar } from "@/components/admin/ui/MonthGridCalendar";
@@ -170,13 +171,20 @@ export function CalendrierPrevisionnel({
   return (
     <AdminCard className="mb-[var(--space-admin-6)]">
       <div className="mb-[var(--space-admin-4)] flex items-center justify-between gap-[var(--space-admin-4)]">
-        <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        <h2 className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+            style={{
+              background: "var(--color-admin-id-bleu-soft)",
+              color: "var(--color-admin-id-bleu)",
+            }}
+          >
+            <CalendarDays size={16} />
+          </span>
           Calendrier &amp; prévisionnel
         </h2>
-        <Link
-          href={`${base}/planning`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/planning`} className="admin-button-ghost">
           Ouvrir le planning →
         </Link>
       </div>

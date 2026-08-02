@@ -30,7 +30,7 @@ import {
   AdminEmptyState,
   AdminButton,
 } from "@/components/admin/ui";
-import { ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { ManualCalendlyEventButton } from "@/components/admin/contacts/ManualCalendlyEventButton";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
@@ -171,21 +171,25 @@ export default async function AppelsPage({
         </p>
 
         <div className="mt-[var(--space-admin-3)] mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
-          <Link
+          <AdminButton
             href={`${base}?vue=calendrier&year=${prev.y}&month=${prev.m}`}
-            className="admin-button-ghost"
+            variant="ghost"
+            size="sm"
+            icon={ArrowLeft}
           >
-            ← {MONTHS[prev.m - 1]}
-          </Link>
-          <Link href={`${base}?vue=calendrier`} className="admin-button-ghost">
+            {MONTHS[prev.m - 1]}
+          </AdminButton>
+          <AdminButton href={`${base}?vue=calendrier`} variant="ghost" size="sm">
             Aujourd&apos;hui
-          </Link>
-          <Link
+          </AdminButton>
+          <AdminButton
             href={`${base}?vue=calendrier&year=${next.y}&month=${next.m}`}
-            className="admin-button-ghost"
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
           >
-            {MONTHS[next.m - 1]} →
-          </Link>
+            {MONTHS[next.m - 1]}
+          </AdminButton>
         </div>
 
         <MonthGridCalendar year={year} month={month} days={days} todayKey={dayKeyInParis(now)} />

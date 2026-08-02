@@ -260,6 +260,11 @@ export default async function SessionHubPage({ params }: PageProps) {
         numero: true,
         pdfUrl: true,
         createdAt: true,
+        // Finitions 2026-08-02 : permet à DocumentsSection de savoir quel
+        // stagiaire une pièce individuelle (convocation, certificat…) couvre —
+        // le bouton « déjà généré » ne doit s'allumer que pour LE stagiaire
+        // sélectionné, pas dès qu'une convocation existe pour n'importe qui.
+        traineeId: true,
         // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
         // l'OF est incomplète (documents-service). L'écran ne le lisait pas.
         metadata: true,
@@ -351,6 +356,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       numero: d.numero,
       pdfUrl: d.pdfUrl,
       createdAt: d.createdAt.toISOString(),
+      traineeId: d.traineeId,
       estSpecimen: meta?.specimen === true,
       champsManquants: meta?.champsManquants ?? [],
       // `signaturesParPiece` ne contient que les signatures non révoquées : le
@@ -362,6 +368,7 @@ export default async function SessionHubPage({ params }: PageProps) {
 
   const enrollmentsLight = enrollmentsRaw.map((e) => ({
     id: e.id,
+    traineeId: e.trainee.id,
     nomStagiaire: `${e.trainee.prenom} ${e.trainee.nom}`,
   }));
 

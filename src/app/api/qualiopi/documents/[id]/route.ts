@@ -20,6 +20,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, existsInR2, getSignedUrlR2, documentPdfKey } from "@/lib/r2-storage";
+import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
 
 export const dynamic = "force-dynamic";
 
@@ -40,18 +41,40 @@ export async function GET(
 
   const doc = await prisma.documentGenere.findUnique({
     where: { id },
-    select: { id: true, type: true, numero: true, pdfUrl: true, createdAt: true },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      pdfUrl: true,
+      createdAt: true,
+      estCopie: true,
+      // Contexte du NOM DE FICHIER téléchargé : « AXI-DOC-2026-012.pdf » ne dit
+      // rien à qui range la pièce dans un dossier ; la raison sociale du client
+      // (ou à défaut l'intitulé de session) dit tout.
+      client: { select: { raisonSociale: true } },
+      session: { select: { titreSession: true } },
+    },
   });
   if (!doc) {
     return NextResponse.json({ error: "document_not_found" }, { status: 404 });
   }
+
+  const nomFichier = nomFichierDocument({
+    type: doc.type,
+    numero: doc.numero,
+    contexte: doc.client?.raisonSociale ?? doc.session?.titreSession ?? null,
+    ...(doc.estCopie ? { suffixe: "COPIE" } : {}),
+  });
 
   // Re-signature R2 à la demande (clé identique à generateDocument).
   if (isR2Configured()) {
     const key = documentPdfKey(doc);
     try {
       if (await existsInR2(key).catch(() => false)) {
-        const signed = await getSignedUrlR2(key, 900);
+        // `downloadFilename` force l'attachement : sans lui le PDF s'ouvrait
+        // dans l'onglet sur l'URL R2 signée, et « Enregistrer » proposait le
+        // numéro interne en guise de nom.
+        const signed = await getSignedUrlR2(key, 900, { downloadFilename: nomFichier });
         return NextResponse.redirect(signed, 302);
       }
     } catch (err) {

@@ -10,6 +10,7 @@
  */
 
 import { z } from "zod";
+import { BRAND } from "@/lib/brand";
 import { REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 
 /** Définition typée d'une clé : schéma Zod + défaut + description. */
@@ -141,12 +142,18 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str(),
     description: "Chemin du fichier logo officiel Qualiopi (kit certificateur).",
   },
-  siret: { ...str(), description: "SIRET Axion-IA SAS." },
-  raison_sociale: { ...str("Axion-IA SAS"), description: "Raison sociale (SAS France)." },
+  siret: { ...str(), description: `SIRET ${BRAND.legalName}.` },
+  raison_sociale: {
+    ...str(BRAND.legalName),
+    // Dénomination immatriculée, pas la marque : le Kbis porte « AXION IA »
+    // sans trait d'union. Ce défaut alimente TOUTES les pièces Qualiopi
+    // (convention, facture, attestation, BPF) quand la clé DB est vide.
+    description: "Raison sociale exacte au RCS (SAS française) — sans trait d'union.",
+  },
   adresse_siege: {
     ...str(),
     description:
-      "Adresse du siège social (domiciliation — 11 Avenue Paul Verlaine, 38100 Grenoble ; RCS Grenoble).",
+      "Adresse du siège social, telle qu'immatriculée (domiciliation — 11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble ; RCS Grenoble). Recopier le complément de domiciliation : il fait partie de l'adresse légale.",
   },
   adresse_exercice: {
     ...str(),

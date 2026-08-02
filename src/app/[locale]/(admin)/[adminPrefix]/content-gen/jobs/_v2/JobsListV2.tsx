@@ -19,6 +19,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed, deleteFailedJobs } from "@/server/actions/content-gen/jobs";
+import { formatDateFr } from "@/lib/format-date-fr";
 import { listTemplates } from "@/server/actions/content-gen/templates";
 import {
   JOB_STATUS_LABELS_FR,
@@ -102,7 +103,7 @@ export async function JobsListV2({
     {
       key: "date",
       header: "Date",
-      cell: (r) => r.createdAt.toISOString().slice(0, 16),
+      cell: (r) => formatDateFr(r.createdAt),
     },
     // Audit UX 2026-08-01 (Défaut 1, P0) — sans titre, impossible de savoir ce
     // qu'on suit sans ouvrir chaque ligne. Le titre porte désormais le lien de

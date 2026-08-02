@@ -50,6 +50,19 @@ export interface ConventionData {
   // Conditions financières
   prixHt: number;
   acomptePercent?: number;
+  /**
+   * Moyens pédagogiques et techniques mobilisés — MENTION EXIGÉE par l'article
+   * L.6353-1 du Code du travail, absente jusqu'ici de la convention. Repli sur
+   * une formule décrivant le dispositif réel de la plateforme.
+   */
+  moyensPedagogiques?: string;
+  /**
+   * Modalités de suivi de l'exécution et d'appréciation des résultats — même
+   * exigence, même article. Repli sur le dispositif réel.
+   */
+  modalitesEvaluation?: string;
+  /** Sanction de la formation (L.6353-1). Repli : attestation de fin de formation. */
+  sanction?: string;
   // Dates convention
   dateConvention: string;
   /**
@@ -216,6 +229,37 @@ export function ConventionPdf({
           <FieldRow label="Modalité" value={data.modalite} />
           <FieldRow label="Lieu" value={data.lieu} />
           <FieldRow label="Effectif prévu" value={`${data.effectif} stagiaire(s)`} />
+          {/*
+            🔴 Trois mentions EXIGÉES par l'article L.6353-1 et absentes de la
+            convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,
+            modalités de suivi de l'exécution et d'appréciation des résultats,
+            sanction de la formation. Leur absence rend la convention
+            incomplète au regard du texte qu'elle invoque en tête de page — et
+            c'est exactement ce qu'un instructeur DREETS lit en premier.
+
+            Les replis décrivent le dispositif RÉEL de la plateforme
+            (émargement par demi-journée, positionnement, évaluation des acquis,
+            attestation) : les inventer par session les ferait diverger de ce que
+            le système produit effectivement.
+          */}
+          <FieldRow
+            label="Moyens pédagogiques et techniques"
+            value={
+              data.moyensPedagogiques ||
+              "Apports méthodologiques, démonstrations et mises en situation ; supports pédagogiques remis à chaque participant ; poste de travail et outils numériques nécessaires à la mise en pratique."
+            }
+          />
+          <FieldRow
+            label="Suivi de l'exécution et évaluation"
+            value={
+              data.modalitesEvaluation ||
+              "Feuille d'émargement signée par demi-journée en présentiel, relevé de connexion horodaté en distanciel. Questionnaire de positionnement en amont, évaluation des acquis au regard des objectifs en fin d'action, recueil de la satisfaction des participants."
+            }
+          />
+          <FieldRow
+            label="Sanction de la formation"
+            value={data.sanction || "Attestation de fin de formation (article L.6353-1)."}
+          />
         </DocSection>
 
         {/* 3. Conditions financières */}
@@ -257,7 +301,20 @@ export function ConventionPdf({
           */}
           {identite.mentionTvaRegime ? (
             <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
-          ) : null}
+          ) : (
+            /* En régime assujetti, aucune mention n'était portée : le client
+               découvrait la TVA sur la facture. On dit que les prix sont HT. */
+            <Text style={pdfStyles.legalNote}>
+              Prix exprimés hors taxes. La taxe sur la valeur ajoutée au taux en vigueur au jour de
+              la facturation s&apos;y ajoute.
+            </Text>
+          )}
+          <Text style={pdfStyles.legalNote}>
+            Règlement à trente (30) jours à compter de la date d&apos;émission de la facture. Tout
+            retard de paiement entraîne de plein droit des pénalités au taux directeur de la Banque
+            centrale européenne majoré de 10 points, ainsi qu&apos;une indemnité forfaitaire de
+            recouvrement de 40 € (articles L.441-10 et D.441-5 du Code de commerce).
+          </Text>
         </DocSection>
 
         {/* 4. Conditions d'annulation */}
@@ -286,8 +343,109 @@ export function ConventionPdf({
           </Text>
         </DocSection>
 
-        {/* 5. Annexes */}
-        <DocSection title="5. Documents annexés">
+        {/*
+          Sections 5 à 9 — 2026-08-02.
+
+          La convention couvrait l'objet, le prix et l'annulation, et rien
+          d'autre : aucune clause de propriété intellectuelle sur les supports,
+          aucune confidentialité, aucune limitation de responsabilité, aucun
+          droit applicable, et pas un mot sur les données personnelles alors
+          qu'elle en fait traiter à chaque session (identité des stagiaires,
+          émargements, évaluations).
+
+          Autrement dit, en cas de litige — support recopié et rediffusé,
+          résultat commercial déçu, incident de traitement — l'organisme
+          n'opposait aucun texte, et le RGPD était muet sur une pièce qui est
+          pourtant le support du traitement.
+        */}
+
+        {/* 5. Obligations des parties */}
+        <DocSection title="5. Obligations des parties">
+          <Text style={pdfStyles.paragraph}>
+            L&apos;organisme s&apos;engage à réaliser l&apos;action conformément au programme
+            annexé, à mettre à disposition les moyens décrits ci-dessus, à remettre au client les
+            documents attestant de la réalisation (feuille d&apos;émargement, attestation) et à
+            respecter la confidentialité des informations dont il a connaissance.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Le client s&apos;engage à assurer la présence des participants inscrits, à informer
+            l&apos;organisme de toute contrainte d&apos;accessibilité au plus tôt afin que les
+            adaptations nécessaires soient étudiées, et — lorsque la formation se déroule sur site —
+            à mettre à disposition un local et les équipements convenus, conformes aux règles
+            d&apos;hygiène et de sécurité qui lui incombent.
+          </Text>
+        </DocSection>
+
+        {/* 6. Données personnelles */}
+        <DocSection title="6. Données à caractère personnel">
+          <Text style={pdfStyles.paragraph}>
+            Chaque partie agit en qualité de responsable de traitement pour les données qu&apos;elle
+            collecte. L&apos;organisme traite les données d&apos;identité, d&apos;émargement et
+            d&apos;évaluation des participants aux seules fins d&apos;exécuter la présente
+            convention et de satisfaire à ses obligations légales, notamment la conservation des
+            pièces justificatives pendant cinq (5) ans.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Les personnes concernées disposent des droits d&apos;accès, de rectification,
+            d&apos;effacement, de limitation et d&apos;opposition prévus par le Règlement (UE)
+            2016/679, exerçables auprès de {identite.dpoEmail || identite.email || "l'organisme"}.
+            Elles peuvent introduire une réclamation auprès de la CNIL. Aucune donnée n&apos;est
+            cédée à des tiers à des fins commerciales.
+          </Text>
+        </DocSection>
+
+        {/* 7. Propriété intellectuelle et confidentialité */}
+        <DocSection title="7. Propriété intellectuelle et confidentialité">
+          <Text style={pdfStyles.paragraph}>
+            Les supports pédagogiques, méthodes et contenus demeurent la propriété exclusive de
+            l&apos;organisme. Ils sont remis aux participants pour leur usage professionnel
+            personnel ; toute reproduction, diffusion à des tiers, revente ou utilisation à des fins
+            de formation par le client est soumise à l&apos;accord écrit préalable de
+            l&apos;organisme.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Chaque partie s&apos;engage à ne pas divulguer les informations confidentielles portées
+            à sa connaissance à l&apos;occasion de l&apos;action, pendant sa durée et les deux (2)
+            années qui suivent son terme.
+          </Text>
+        </DocSection>
+
+        {/* 8. Responsabilité et force majeure */}
+        <DocSection title="8. Responsabilité et force majeure">
+          <Text style={pdfStyles.paragraph}>
+            L&apos;organisme est tenu d&apos;une obligation de moyens quant à l&apos;atteinte des
+            objectifs pédagogiques, dont la réalisation dépend de l&apos;implication des
+            participants. Sa responsabilité éventuelle est limitée au montant hors taxes
+            effectivement réglé au titre de la présente convention, à l&apos;exclusion des dommages
+            indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
+            d&apos;affaires.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Aucune des parties ne peut être tenue responsable d&apos;un manquement résultant
+            d&apos;un cas de force majeure au sens de l&apos;article 1218 du Code civil. La partie
+            empêchée en informe l&apos;autre sans délai ; l&apos;action est alors reportée à une
+            date convenue entre les parties.
+          </Text>
+        </DocSection>
+
+        {/* 9. Différends */}
+        <DocSection title="9. Droit applicable et différends">
+          <Text style={pdfStyles.paragraph}>
+            La présente convention est régie par le droit français. En cas de différend relatif à sa
+            formation, son exécution ou son interprétation, les parties s&apos;efforceront de
+            trouver une solution amiable. À défaut d&apos;accord dans un délai de trente (30) jours
+            à compter de la première notification écrite, le litige sera porté devant le tribunal
+            compétent du ressort du siège de l&apos;organisme.
+          </Text>
+          <Text style={pdfStyles.paragraph}>
+            Toute réclamation relative au déroulement de l&apos;action peut être adressée à{" "}
+            {identite.email || "l'organisme"} ; elle est enregistrée, traitée et fait l&apos;objet
+            d&apos;une réponse motivée.
+          </Text>
+        </DocSection>
+
+        {/* 10. Annexes */}
+        <DocSection title="10. Documents annexés">
           <View style={local.annexeList}>
             <Text style={local.annexeItem}>– Programme détaillé de la formation</Text>
             <Text style={local.annexeItem}>– Règlement intérieur des stagiaires</Text>
@@ -295,11 +453,11 @@ export function ConventionPdf({
           </View>
         </DocSection>
 
-        {/* 6. Signatures */}
+        {/* 11. Signatures */}
         {/* « Fait à » = ville du siège : la pièce est établie par l'OF, pas sur le
             lieu de formation. Un blanc ici sortait « Fait à ______ » sur une pièce
             signée électroniquement, que personne ne complète jamais à la main. */}
-        <DocSection title="6. Signatures">
+        <DocSection title="11. Signatures">
           <SignatureZone
             intro="La présente convention est établie en deux exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}

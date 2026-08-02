@@ -21,7 +21,8 @@ import { planningTimeLabel } from "@/features/admin-planning/labels";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { MonthGridCalendar, type MonthGridDay } from "@/components/admin/ui/MonthGridCalendar";
 import { dayKeyInParis } from "@/lib/calendar-grid";
-import { AdminPageHeader } from "@/components/admin/ui";
+import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -165,21 +166,25 @@ export default async function PlanningPage({
       />
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
-        <Link
+        <AdminButton
           href={`${base}?${withFilters(`year=${prev.y}&month=${prev.m}`)}`}
-          className="admin-button-ghost"
+          variant="ghost"
+          size="sm"
+          icon={ArrowLeft}
         >
-          ← {MONTHS[prev.m - 1]}
-        </Link>
-        <Link href={base} className="admin-button-ghost">
+          {MONTHS[prev.m - 1]}
+        </AdminButton>
+        <AdminButton href={base} variant="ghost" size="sm">
           Aujourd&apos;hui
-        </Link>
-        <Link
+        </AdminButton>
+        <AdminButton
           href={`${base}?${withFilters(`year=${next.y}&month=${next.m}`)}`}
-          className="admin-button-ghost"
+          variant="ghost"
+          size="sm"
+          iconAfter={ArrowRight}
         >
-          {MONTHS[next.m - 1]} →
-        </Link>
+          {MONTHS[next.m - 1]}
+        </AdminButton>
       </div>
 
       {/* Filtres — formulaire GET natif, zéro JS client. */}

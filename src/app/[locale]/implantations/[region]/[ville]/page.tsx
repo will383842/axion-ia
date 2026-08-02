@@ -22,6 +22,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, MapPin, Building2 } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
+import { BRAND } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
@@ -405,8 +406,8 @@ export default async function VilleHubPage({ params }: Props) {
     parentOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
+      name: BRAND.name,
+      legalName: BRAND.legalName,
       url: SITE_URL,
     },
     areaServed: { "@type": "City", name: ville.nameFr },

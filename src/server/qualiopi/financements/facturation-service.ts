@@ -204,7 +204,6 @@ export async function genererFactureFormation(
   );
 
   const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
-  const periodePrestation = periodePrestationSession(session.dateDebut, session.dateFin);
 
   // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
@@ -232,14 +231,16 @@ export async function genererFactureFormation(
     );
 
     // Construction FactureData (React.createElement, pas de JSX en .ts)
+    // Date d'exécution réelle, lue sur la session — sans elle le gabarit
+    // retombe sur la date d'émission et la facture contredit la convention
+    // (cf. `periode-prestation.ts`).
+    const periodePrestation = periodePrestationSession(session);
+
     const factureData: FactureData = {
       numero,
       dateEmission: formatDate(now),
       dateEcheance: formatDate(echeance),
-      // Date de RÉALISATION de la prestation (art. 242 nonies A CGI) : les dates
-      // de la session, jamais la date d'émission — elles diffèrent dès que la
-      // facture part après la formation, c'est-à-dire presque toujours.
-      ...(periodePrestation !== null ? { periodePrestation } : {}),
+      ...(periodePrestation !== undefined ? { periodePrestation } : {}),
       identite,
       regimeTva,
       tauxTvaStandardPercent: tauxStandard,

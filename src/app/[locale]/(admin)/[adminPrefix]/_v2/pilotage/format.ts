@@ -65,42 +65,6 @@ export function libelleRole(role: string): string {
   return LABELS[role] ?? role;
 }
 
-/**
- * Actions du journal d'activité : slug technique → libellé FR. Dictionnaire
- * volontairement PETIT (les actions les plus vues), avec un repli en deux
- * temps : verbe final traduit si connu, sinon le slug brut (jamais d'erreur).
- */
-const ACTION_LABELS: Record<string, string> = {
-  "review.publish": "Publication après relecture",
-  "review.approve": "Relecture approuvée",
-  "review.reject": "Relecture rejetée",
-  "kb.updated": "Base de connaissances mise à jour",
-  "submission.purged": "Demande purgée (RGPD)",
-  "qualiopi.formation.publish": "Formation publiée",
-  "qualiopi.remuneration.run": "Run de rémunération lancé",
-  "qualiopi.signature.revocation": "Lien de signature révoqué",
-  "qualiopi.crm.convertir_entree": "Entrée CRM convertie",
-};
-
-const VERBES_ACTION: Record<string, string> = {
-  create: "Création",
-  created: "Création",
-  update: "Modification",
-  updated: "Modification",
-  delete: "Suppression",
-  publish: "Publication",
-  validate: "Validation",
-  generate: "Génération",
-  send: "Envoi",
-  login: "Connexion",
-  logout: "Déconnexion",
-};
-
-export function libelleAction(action: string): string {
-  const exact = ACTION_LABELS[action];
-  if (exact) return exact;
-  const dernier = action.split(".").pop() ?? action;
-  const verbe = VERBES_ACTION[dernier];
-  if (verbe) return `${verbe} · ${action}`;
-  return action;
-}
+// Traduction des actions du journal : SSOT `decrireAction` de
+// `@/lib/admin/activity-labels` (décodage structurel domaine.objet.verbe) —
+// l'ancien dictionnaire local a été retiré à la fusion du 2026-08-02.

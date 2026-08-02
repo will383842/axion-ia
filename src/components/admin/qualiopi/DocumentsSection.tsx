@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import {
   genererConventionAction,
   genererProgrammeAction,
+  genererOrganisationActionAction,
   genererConventionTripartiteAction,
   genererContratFormationAction,
   genererEmargementAction,
@@ -48,6 +49,7 @@ import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations"
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { DocumentType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -57,6 +59,8 @@ import type { DocumentType } from "../../../../prisma/generated/client";
 /** Stagiaire minimal pour le sélecteur (un enrollment = 1 stagiaire dans la session). */
 export interface EnrollmentInfo {
   id: string;
+  /** Permet de relier les pièces individuelles (DocumentGenere.traineeId). */
+  traineeId?: string;
   nomStagiaire: string;
 }
 
@@ -67,6 +71,8 @@ export interface DocumentGenereInfo {
   numero: string;
   pdfUrl: string | null;
   createdAt: string;
+  /** Stagiaire couvert par une pièce individuelle — null pour les pièces de session. */
+  traineeId?: string | null;
   /**
    * Le PDF porte un filigrane SPÉCIMEN : l'identité de l'OF était incomplète au
    * moment de la génération. La pièce n'est PAS opposable.
@@ -117,6 +123,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   lettre_mission: "Lettre de mission formateur",
   reglement_interieur: "Règlement intérieur (L.6352-3)",
   livret_accueil: "Livret d'accueil stagiaire",
+  organisation_action: "Organisation de l'action (R.6351-5)",
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
   inventaire_moyens: "Inventaire des moyens pédagogiques",
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
@@ -133,6 +140,12 @@ interface SessionDocButtonProps {
   }) => Promise<{ data: { documentId: string; numero: string } } | { error: string }>;
   sessionId: string;
   onDone: (numero: string) => void;
+  /**
+   * Date FR de la dernière génération de ce type de pièce pour la session.
+   * Présente → le bouton passe en ghost « … — régénérer » : le primary reste
+   * réservé aux pièces encore à produire (finitions console 2026-08-02).
+   */
+  dejaGenereLe?: string | undefined;
 }
 
 function SessionDocButton({
@@ -140,6 +153,7 @@ function SessionDocButton({
   action,
   sessionId,
   onDone,
+  dejaGenereLe,
 }: SessionDocButtonProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -168,10 +182,18 @@ function SessionDocButton({
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="admin-button"
-        aria-label={`Générer : ${label}`}
+        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
+        aria-label={
+          dejaGenereLe
+            ? `Régénérer : ${label} (dernière génération le ${dejaGenereLe})`
+            : `Générer : ${label}`
+        }
       >
-        {isPending ? "Génération…" : label}
+        {isPending
+          ? "Génération…"
+          : dejaGenereLe
+            ? `${label} · génération du ${dejaGenereLe} — régénérer`
+            : label}
       </button>
       {error && (
         <p
@@ -272,9 +294,12 @@ function GroupePrestations({
 function LettreMissionButtons({
   sessionId,
   onDone,
+  dejaGenereLe,
 }: {
   sessionId: string;
   onDone: (numero: string) => void;
+  /** Cf. SessionDocButton — transmis au bouton « cette session ». */
+  dejaGenereLe?: string | undefined;
 }): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -358,6 +383,7 @@ function LettreMissionButtons({
         action={genererLettreMissionAction}
         sessionId={sessionId}
         onDone={onDone}
+        dejaGenereLe={dejaGenereLe}
       />
       <button
         type="button"
@@ -479,9 +505,12 @@ function LettreMissionButtons({
 function ConventionDocButton({
   sessionId,
   onDone,
+  dejaGenereLe,
 }: {
   sessionId: string;
   onDone: (numero: string) => void;
+  /** Cf. SessionDocButton. */
+  dejaGenereLe?: string | undefined;
 }): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -525,10 +554,18 @@ function ConventionDocButton({
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="admin-button"
-        aria-label="Générer : Convention de formation"
+        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
+        aria-label={
+          dejaGenereLe
+            ? `Régénérer : Convention de formation (dernière génération le ${dejaGenereLe})`
+            : "Générer : Convention de formation"
+        }
       >
-        {isPending ? "Génération…" : "Convention de formation"}
+        {isPending
+          ? "Génération…"
+          : dejaGenereLe
+            ? `Convention de formation · génération du ${dejaGenereLe} — régénérer`
+            : "Convention de formation"}
       </button>
       <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         <span>Acompte (%)</span>
@@ -584,6 +621,8 @@ interface EnrollmentDocButtonProps {
   >;
   enrollmentId: string;
   onDone: (msg: string) => void;
+  /** Cf. SessionDocButton — dernière génération pour LE stagiaire sélectionné. */
+  dejaGenereLe?: string | undefined;
 }
 
 function EnrollmentDocButton({
@@ -591,6 +630,7 @@ function EnrollmentDocButton({
   action,
   enrollmentId,
   onDone,
+  dejaGenereLe,
 }: EnrollmentDocButtonProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -633,10 +673,18 @@ function EnrollmentDocButton({
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="admin-button"
-        aria-label={`Générer : ${label}`}
+        className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
+        aria-label={
+          dejaGenereLe
+            ? `Régénérer : ${label} (dernière génération le ${dejaGenereLe})`
+            : `Générer : ${label}`
+        }
       >
-        {isPending ? "Génération…" : label}
+        {isPending
+          ? "Génération…"
+          : dejaGenereLe
+            ? `${label} · génération du ${dejaGenereLe} — régénérer`
+            : label}
       </button>
       {error && (
         <p
@@ -701,6 +749,39 @@ export function DocumentsSection({
 
   const hasEnrollments = enrollments.length > 0;
 
+  // ── Hiérarchie « déjà généré » (finitions console 2026-08-02) ────────────
+  //
+  // Le mur de CTA mettait toutes les pièces au même niveau : impossible de
+  // voir d'un coup d'œil ce qui restait à produire. Une pièce déjà générée
+  // passe son bouton en ghost « … — régénérer » ; le primary reste réservé
+  // aux pièces manquantes. `documentsExistants` arrive trié createdAt DESC
+  // (page session) : la première occurrence d'un type est la plus récente.
+  //
+  // Deux index séparés : pièces de session (traineeId null) par type, pièces
+  // individuelles par `type:traineeId` — une convocation générée pour Alice ne
+  // doit pas éteindre le bouton quand Bob est sélectionné.
+  const dernierSessionParType = new Map<DocumentType, string>();
+  const dernierStagiaireParType = new Map<string, string>();
+  for (const doc of documentsExistants) {
+    const dateFr = formatDateFrShort(doc.createdAt);
+    if (doc.traineeId) {
+      const cle = `${doc.type}:${doc.traineeId}`;
+      if (!dernierStagiaireParType.has(cle)) dernierStagiaireParType.set(cle, dateFr);
+    } else if (!dernierSessionParType.has(doc.type)) {
+      dernierSessionParType.set(doc.type, dateFr);
+    }
+  }
+  const selectedTraineeId = enrollments.find((e) => e.id === selectedEnrollmentId)?.traineeId;
+  /** Date de dernière génération d'une pièce individuelle pour le stagiaire sélectionné. */
+  function genereStagiaireLe(...types: ReadonlyArray<DocumentType>): string | undefined {
+    if (!selectedTraineeId) return undefined;
+    for (const t of types) {
+      const dateFr = dernierStagiaireParType.get(`${t}:${selectedTraineeId}`);
+      if (dateFr !== undefined) return dateFr;
+    }
+    return undefined;
+  }
+
   // ── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -725,7 +806,11 @@ export function DocumentsSection({
           </p>
         )}
         <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
-          <ConventionDocButton sessionId={sessionId} onDone={handleDone} />
+          <ConventionDocButton
+            sessionId={sessionId}
+            onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("convention")}
+          />
           {/*
             Placé juste après la convention, et pas en fin de grille : c'est son
             annexe pédagogique, la convention la référence nommément en section
@@ -737,50 +822,71 @@ export function DocumentsSection({
             action={genererProgrammeAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("programme")}
+          />
+          {/* Avec le programme, les deux pièces descriptives de l'art. R.6351-5 :
+              le programme dit CE QUI est enseigné, celle-ci dit QUAND, OÙ et
+              COMMENT (calendrier session_jours, rythme, lieu, encadrement). */}
+          <SessionDocButton
+            label="Organisation de l'action"
+            action={genererOrganisationActionAction}
+            sessionId={sessionId}
+            onDone={handleDone}
           />
           <SessionDocButton
             label="Convention tripartite (OPCO)"
             action={genererConventionTripartiteAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
           />
           <SessionDocButton
             label="Feuille d'émargement"
             action={genererEmargementAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("emargement")}
           />
           <SessionDocButton
             label="Règlement intérieur"
             action={genererReglementInterieurAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("reglement_interieur")}
           />
           <SessionDocButton
             label="Livret d'accueil"
             action={genererLivretAccueilAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("livret_accueil")}
           />
           <SessionDocButton
             label="Questionnaire de positionnement"
             action={genererPositionnementAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("positionnement")}
           />
           <SessionDocButton
             label="Questionnaire de satisfaction"
             action={genererSatisfactionAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("satisfaction")}
           />
           <SessionDocButton
             label="Kit OPCO"
             action={genererKitOpcoAction}
             sessionId={sessionId}
             onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("kit_opco")}
           />
-          <LettreMissionButtons sessionId={sessionId} onDone={handleDone} />
+          <LettreMissionButtons
+            sessionId={sessionId}
+            onDone={handleDone}
+            dejaGenereLe={dernierSessionParType.get("lettre_mission")}
+          />
         </div>
       </div>
 
@@ -821,42 +927,49 @@ export function DocumentsSection({
                   action={genererConvocationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("convocation")}
                 />
                 <EnrollmentDocButton
                   label="Grille d'évaluation"
                   action={genererGrilleEvaluationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("grille_evaluation")}
                 />
                 <EnrollmentDocButton
                   label="Certificat de réalisation (R.6313-3)"
                   action={genererCertificatRealisationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("certificat_realisation")}
                 />
                 <EnrollmentDocButton
                   label="Kit CPF / EDOF"
                   action={genererKitCpfAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("kit_cpf")}
                 />
                 <EnrollmentDocButton
                   label="Kit France Travail"
                   action={genererKitFranceTravailAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("kit_france_travail")}
                 />
                 <EnrollmentDocButton
                   label="Attestation de réalisation"
                   action={genererAttestationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("attestation", "attestation_partielle")}
                 />
                 <EnrollmentDocButton
                   label="Contrat de formation (particulier, L.6353-3)"
                   action={genererContratFormationAction}
                   enrollmentId={selectedEnrollmentId}
                   onDone={handleDone}
+                  dejaGenereLe={genereStagiaireLe("contrat")}
                 />
                 {/* Export d'état (pas un document officiel numéroté) : fiche
                     d'adaptation individuelle (A16/A9), téléchargée en PDF. */}

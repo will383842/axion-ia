@@ -249,7 +249,7 @@ export function AttestationPartiellePdf({
           <View style={pdfStyles.signatureZone}>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>
-                {`Fait à ${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
+                {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
               <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
             </View>

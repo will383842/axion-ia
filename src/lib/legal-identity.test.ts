@@ -22,7 +22,9 @@ beforeEach(() => {
 
 describe("LEGAL_IDENTITY_DEFAULTS", () => {
   it("SAS française, directeur Williams Jullin, placeholders null", () => {
-    expect(LEGAL_IDENTITY_DEFAULTS.legalName).toContain("Axion-IA");
+    // Dénomination immatriculée au RCS Grenoble (Kbis du 30/07/2026) :
+    // « AXION IA », SANS trait d'union — le tiret est celui de la marque.
+    expect(LEGAL_IDENTITY_DEFAULTS.legalName).toBe("AXION IA SAS");
     expect(LEGAL_IDENTITY_DEFAULTS.legalForm).toContain("SAS");
     expect(LEGAL_IDENTITY_DEFAULTS.directorName).toBe("Williams Jullin");
     expect(LEGAL_IDENTITY_DEFAULTS.directorTitle).toBe("Président");

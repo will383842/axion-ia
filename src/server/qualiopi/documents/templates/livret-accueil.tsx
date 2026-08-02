@@ -120,8 +120,15 @@ export function LivretAccueilPdf({
             value={identite.adresseExercice || identite.adresseSiege || "—"}
           />
           <FieldRow label="Site internet" value={identite.site || "—"} />
+          {/* 2026-08-02 — la phrase « certifié Qualiopi » était imprimée en dur
+              alors que l'organisme ne l'est pas encore : fausse revendication de
+              certification sur une pièce remise au stagiaire (et versée aux
+              dossiers officiels). La mention ne sort que si le numéro Qualiopi
+              est réellement configuré. */}
           <Text style={[local.bodyText, { marginTop: 6 }]}>
-            Notre organisme est certifié Qualiopi, gage de qualité de nos processus de formation.
+            {identite.qualiopi
+              ? "Notre organisme est certifié Qualiopi, gage de qualité de nos processus de formation. "
+              : "Notre organisme applique une démarche qualité alignée sur le référentiel national qualité (Qualiopi). "}
             Nous dispensons des formations professionnelles dans les domaines de l'intelligence
             artificielle, du numérique et des technologies émergentes.
           </Text>

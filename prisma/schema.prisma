@@ -6501,6 +6501,12 @@ enum DocumentType {
   /// décrire l'action telle qu'elle a été vendue, même si le catalogue évolue
   /// ensuite.
   programme
+  /// Organisation de l'action de formation : calendrier réel (`session_jours`),
+  /// durée et rythme, modalité, lieu, encadrement. Pièce descriptive attendue à
+  /// l'appui de la déclaration d'activité (art. R.6351-5, « organisation des
+  /// actions ») et preuve du déroulé pour les indicateurs 9 et 12. Le programme
+  /// dit CE QUI est enseigné ; cette pièce dit QUAND, OÙ et COMMENT.
+  organisation_action
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,

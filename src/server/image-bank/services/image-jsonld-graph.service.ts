@@ -18,6 +18,7 @@
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 import { buildImageObjectJsonLd } from "./image-seo.service";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { BRAND } from "@/lib/brand";
 
 const SITE_NAME = "Axion-IA";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -68,7 +69,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     "@type": "Organization",
     "@id": ORG_ID,
     name: SITE_NAME,
-    legalName: "Axion-IA SAS",
+    legalName: BRAND.legalName,
     url: SITE_URL,
     logo: {
       "@type": "ImageObject",

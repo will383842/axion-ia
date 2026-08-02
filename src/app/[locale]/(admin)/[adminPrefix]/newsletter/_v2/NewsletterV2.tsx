@@ -14,6 +14,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { SubscriberRowActions } from "./SubscriberRowActions";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CheckCircle2, Hourglass, MailX } from "lucide-react";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -72,7 +73,7 @@ export function NewsletterV2({
     {
       key: "createdAt",
       header: "Date inscription",
-      cell: (s) => s.createdAt.toISOString().slice(0, 10),
+      cell: (s) => formatDateFrShort(s.createdAt),
     },
     { key: "email", header: "Email", cell: (s) => s.email },
     { key: "locale", header: "Locale", cell: (s) => s.locale.toUpperCase() },
@@ -89,12 +90,12 @@ export function NewsletterV2({
     {
       key: "confirmedAt",
       header: "Confirmé le",
-      cell: (s) => (s.confirmedAt ? s.confirmedAt.toISOString().slice(0, 10) : "—"),
+      cell: (s) => formatDateFrShort(s.confirmedAt),
     },
     {
       key: "unsubscribedAt",
       header: "Désabonné le",
-      cell: (s) => (s.unsubscribedAt ? s.unsubscribedAt.toISOString().slice(0, 10) : "—"),
+      cell: (s) => formatDateFrShort(s.unsubscribedAt),
     },
     {
       key: "actions",

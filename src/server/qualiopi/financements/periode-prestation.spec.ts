@@ -1,41 +1,55 @@
 /**
- * Date de réalisation de la prestation (art. 242 nonies A CGI).
+ * Tests — date de réalisation de la prestation portée par la facture.
  *
- * 🔴 Aucun émetteur ne la transmettait : le gabarit retombait sur son défaut, la
- * date d'émission. `AXI-FACT-2026-001` déclarait ainsi une prestation exécutée
- * le 01/08/2026 pour une formation tenue le 31/07/2026.
+ * L'enjeu n'est pas cosmétique : une facture qui affirme une date d'exécution
+ * différente de la convention et de l'émargement du même dossier est ce qu'un
+ * contrôle relève en premier (art. 242 nonies A ann. II CGI).
  */
+
 import { describe, it, expect } from "vitest";
 import { periodePrestationSession } from "./periode-prestation";
 
 describe("periodePrestationSession", () => {
-  it("rend une date simple pour une session d'un seul jour", () => {
+  it("session d'un jour : la date seule, jamais « du X au X »", () => {
     expect(
-      periodePrestationSession(new Date("2026-07-31T09:00:00Z"), new Date("2026-07-31T17:00:00Z")),
+      periodePrestationSession({
+        dateDebut: new Date("2026-07-31T09:00:00Z"),
+        dateFin: new Date("2026-07-31T17:00:00Z"),
+      }),
     ).toBe("31/07/2026");
   });
 
-  it("rend une période pour une session étalée", () => {
+  it("session sur plusieurs jours : la période complète", () => {
     expect(
-      periodePrestationSession(new Date("2026-07-31T09:00:00Z"), new Date("2026-08-02T17:00:00Z")),
+      periodePrestationSession({
+        dateDebut: new Date("2026-07-31T09:00:00Z"),
+        dateFin: new Date("2026-08-02T17:00:00Z"),
+      }),
     ).toBe("du 31/07/2026 au 02/08/2026");
   });
 
-  it("ne rend pas la date du jour quand la session est inconnue", () => {
-    // Le repli silencieux sur « aujourd'hui » est exactement le défaut d'origine :
-    // il produit une mention légale FAUSSE au lieu d'une mention absente.
-    expect(periodePrestationSession(null, null)).toBeNull();
-    expect(periodePrestationSession(undefined, undefined)).toBeNull();
+  it("facture libre (aucune session) : undefined, on n'invente pas une date", () => {
+    expect(periodePrestationSession(null)).toBeUndefined();
+    expect(periodePrestationSession(undefined)).toBeUndefined();
   });
 
-  it("tolère une date de fin absente ou invalide sans mentir sur le début", () => {
-    expect(periodePrestationSession(new Date("2026-07-31T09:00:00Z"), null)).toBe("31/07/2026");
-    expect(periodePrestationSession(new Date("2026-07-31T09:00:00Z"), "pas-une-date")).toBe(
-      "31/07/2026",
-    );
+  it("dates absentes ou invalides : omission, JAMAIS d'exception", () => {
+    // Une mention accessoire ne doit pas pouvoir faire échouer l'émission de la
+    // facture : `select` restreint, date invalide venue d'un import…
+    expect(periodePrestationSession({})).toBeUndefined();
+    expect(periodePrestationSession({ dateDebut: null, dateFin: null })).toBeUndefined();
+    expect(
+      periodePrestationSession({ dateDebut: new Date("nawak"), dateFin: new Date("nawak") }),
+    ).toBeUndefined();
   });
 
-  it("rend null sur une date de début illisible plutôt qu'« Invalid Date »", () => {
-    expect(periodePrestationSession("pas-une-date", null)).toBeNull();
+  it("la date vient de la SESSION, jamais de l'horloge d'émission", () => {
+    // Le défaut d'origine : facture émise le 01/08 pour une journée tenue le
+    // 31/07 → « Date de réalisation : 01/08 ». La session fait foi.
+    const session = {
+      dateDebut: new Date("2026-07-31T09:00:00Z"),
+      dateFin: new Date("2026-07-31T17:00:00Z"),
+    };
+    expect(periodePrestationSession(session)).not.toContain("01/08");
   });
 });

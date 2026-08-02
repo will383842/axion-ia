@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { getSettingAction } from "@/features/admin-settings/actions";
 import { SettingForm } from "../SettingForm";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export default async function EditSettingPage({ params }: PageProps) {
     <AdminPageShell width="narrow">
       <AdminPageHeader
         title={`Éditer : ${setting.key}`}
-        description={`Mise à jour : ${setting.updatedAt.toISOString().slice(0, 10)}`}
+        description={`Mise à jour : ${formatDateFrShort(setting.updatedAt)}`}
         breadcrumbs={
           <a href={`/fr/${adminPrefix}/settings`} className="admin-link admin-back">
             ← Paramètres

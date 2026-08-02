@@ -10,7 +10,7 @@
 // s'affiche « 200+ », jamais un compte faussement exact.
 
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, TrendingUp } from "lucide-react";
 import { AdminCard } from "@/components/admin/ui";
 import { BarreRepartition } from "@/components/admin/ui/charts";
 import type { PipelineBloc } from "@/server/admin/pilotage-dashboard";
@@ -28,7 +28,17 @@ export function PipelineSection({ adminPrefix, pipeline }: Props): React.ReactEl
   return (
     <AdminCard className="mb-[var(--space-admin-6)]">
       <div className="mb-[var(--space-admin-5)] flex items-center justify-between gap-[var(--space-admin-4)]">
-        <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        <h2 className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+            style={{
+              background: "var(--color-admin-id-terracotta-soft)",
+              color: "var(--color-admin-id-terracotta)",
+            }}
+          >
+            <TrendingUp size={16} />
+          </span>
           Pipeline commercial
         </h2>
         <Link href={`${base}/qualiopi/dossiers`} className="admin-button-ghost">

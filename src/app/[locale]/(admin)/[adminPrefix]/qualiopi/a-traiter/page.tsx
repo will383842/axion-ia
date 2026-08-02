@@ -29,8 +29,10 @@ import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSignatureButton";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-partie";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -86,6 +88,12 @@ async function lireSignaturesEnAttente() {
         sessionId: true,
         trainerId: true,
         session: { select: { titreSession: true, numero: true } },
+        // Parties DÉJÀ signataires (signatures non révoquées) : c'est ce qui
+        // permet à `partieARelancer` de viser la PROCHAINE partie du circuit
+        // sur une pièce `partielle` — et de ne proposer AUCUN bouton quand la
+        // partie manquante est l'organisme (c'est un contreseing, pas un
+        // e-mail à envoyer).
+        signatures: { where: { revokedAt: null }, select: { partie: true } },
       },
     });
   } catch {
@@ -189,6 +197,16 @@ export default async function ATraiterPage({ params }: PageProps) {
                 : s.trainerId
                   ? `${base}/qualiopi/formateurs/${s.trainerId}`
                   : `${base}/qualiopi/sessions`;
+              // Partie à relancer, décidée ICI (côté serveur) par le module pur
+              // adossé au SSOT des circuits. `null` = pas de bouton : soit la
+              // prochaine signature est celle de l'organisme (contreseing de
+              // Will), soit la partie signe authentifiée (formateur) et un lien
+              // public serait refusé par l'action.
+              const partieRelance = partieARelancer(
+                s.type,
+                s.statutSignature,
+                s.signatures.map((sig) => sig.partie),
+              );
               return (
                 <li key={s.id} className={ligne}>
                   <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
@@ -200,9 +218,14 @@ export default async function ATraiterPage({ params }: PageProps) {
                       ({consigne} — {attente})
                     </span>
                   </span>
-                  <AdminButton href={cible} variant="ghost" size="sm" iconAfter={ArrowRight}>
-                    Ouvrir
-                  </AdminButton>
+                  <span className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                    {partieRelance !== null && (
+                      <RelancerSignatureButton documentGenereId={s.id} partie={partieRelance} />
+                    )}
+                    <AdminButton href={cible} variant="ghost" size="sm" iconAfter={ArrowRight}>
+                      Ouvrir
+                    </AdminButton>
+                  </span>
                 </li>
               );
             })}
