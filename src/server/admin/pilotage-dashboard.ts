@@ -134,6 +134,14 @@ export interface TuilesPilotage {
   caDelta: string | null;
   /** Marge du mois EN COURS (consolidation mensuelle), en centimes. */
   margeMoisCents: number;
+  /**
+   * CA réalisé par mois de l'année en cours (index 0 = janvier), en centimes —
+   * la tendance des tuiles. Coût de requête NUL : la consolidation mensuelle
+   * est déjà chargée pour la tuile de marge, quelle que soit la période.
+   */
+  caParMoisCents: number[];
+  /** Marge par mois de l'année en cours (index 0 = janvier), en centimes. */
+  margeParMoisCents: number[];
 }
 
 export interface AlerteCritiqueLigne {
@@ -347,6 +355,44 @@ async function caCoachingPlage(plage: Plage): Promise<number> {
   } catch {
     return 0;
   }
+}
+
+/**
+ * Compléments mensuels du CA « toutes activités » pour la micro-courbe de la
+ * tuile : la consolidation (`getConsolidationMensuelle`) ne couvre que les
+ * SESSIONS réalisées — on y additionne, mois par mois (Europe/Paris via
+ * `moisDe`), les audits réalisés (`dateDebut`) et les contrats coaching
+ * signés (`dateSigneeAt`). Sans ça, la courbe contredirait le chiffre de la
+ * tuile qui, lui, couvre les trois périmètres.
+ */
+async function caMensuelComplementsAnnee(annee: number): Promise<number[]> {
+  const buckets = Array.from({ length: 12 }, () => 0);
+  const ajouter = (d: Date, montant: number): void => {
+    const cle = moisDe(d);
+    if (!cle.startsWith(`${annee}-`)) return;
+    const idx = Number(cle.slice(5, 7)) - 1;
+    if (idx >= 0 && idx < 12) buckets[idx] = (buckets[idx] ?? 0) + montant;
+  };
+  try {
+    const plage = derivePlage(annee, { type: "annee" });
+    const [audits, contrats] = await Promise.all([
+      prisma.auditMission.findMany({
+        where: { statut: "realisee", dateDebut: { gte: plage.gte, lt: plage.lt } },
+        select: { dateDebut: true, montantHtCents: true },
+        take: MAX_LIGNES_FINANCES,
+      }),
+      prisma.coachingContract.findMany({
+        where: { dateSigneeAt: { gte: plage.gte, lt: plage.lt } },
+        select: { dateSigneeAt: true, montantHtCents: true },
+        take: MAX_LIGNES_FINANCES,
+      }),
+    ]);
+    for (const a of audits) ajouter(a.dateDebut, a.montantHtCents);
+    for (const c of contrats) if (c.dateSigneeAt) ajouter(c.dateSigneeAt, c.montantHtCents);
+  } catch {
+    // stub/DB indisponible → compléments nuls, la courbe retombe sur les sessions.
+  }
+  return buckets;
 }
 
 /** Ordre d'affichage des activités de facturation (ordre de l'enum Prisma). */
@@ -910,6 +956,7 @@ export async function getPilotageDashboard(
     caAnneeCoaching,
     parActiviteFacturation,
     cibleAnnuelleCents,
+    complementsMensuels,
     calendrier,
     bloquees,
     comptesF,
@@ -937,6 +984,7 @@ export async function getPilotageDashboard(
     caCoachingPlage(plageAnnee),
     caParActivitePlage(plageAnnee),
     lireCibleAnnuelleCents(),
+    caMensuelComplementsAnnee(annee),
     calendrierPromise,
     sessionsBloquees(maintenant),
     comptesFormations(plage),
@@ -1031,6 +1079,18 @@ export async function getPilotageDashboard(
       caRealiseCents: caToutesActivites,
       caDelta: formatDelta(caToutesActivites, caToutesActivitesN1),
       margeMoisCents: margeMois,
+      // Sessions (consolidation) + audits réalisés + coaching signé, mois par
+      // mois — même périmètre que le chiffre de la tuile.
+      caParMoisCents: Array.from(
+        { length: 12 },
+        (_, i) =>
+          (consolidation.mois.find((m) => m.mois === i + 1)?.caHtCents ?? 0) +
+          (complementsMensuels[i] ?? 0),
+      ),
+      margeParMoisCents: Array.from(
+        { length: 12 },
+        (_, i) => consolidation.mois.find((m) => m.mois === i + 1)?.margeCents ?? 0,
+      ),
     },
     alertesCritiques: alertes.map((a) => ({
       id: a.id,

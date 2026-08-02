@@ -71,12 +71,12 @@ export function FormateursSection({ adminPrefix, formateurs }: Props): React.Rea
                 {t.trainerNom}
               </span>
               <div
-                className="h-[10px] flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-surface-hover)]"
+                className="h-[10px] flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-accent-track)]"
                 role="img"
                 aria-label={`${t.heuresAnimees} heures animées`}
               >
                 <div
-                  className="h-full rounded-full bg-[color:var(--color-admin-info)]"
+                  className="h-full rounded-full bg-[color:var(--color-admin-accent)]"
                   style={{ width: `${largeurPct(t.heuresAnimees, maxHeures)}%` }}
                 />
               </div>

@@ -33,21 +33,32 @@ export function AlertesCritiques({ adminPrefix, alertes }: Props): React.ReactEl
           Aucune alerte critique — rien ne bloque.
         </p>
       ) : (
-        <ul className="flex flex-col gap-[var(--space-admin-4)]">
+        <ul className="flex flex-col">
           {alertes.map((a) => (
-            <li key={a.id} className="flex flex-col gap-[var(--space-admin-1)]">
-              <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+            <li
+              key={a.id}
+              className="flex flex-col gap-[var(--space-admin-1)] border-b border-[color:var(--color-admin-border)] py-[var(--space-admin-4)] first:pt-0 last:border-b-0 last:pb-0"
+            >
+              <div className="flex flex-wrap items-baseline gap-[var(--space-admin-3)]">
                 <AdminBadge tone="destructive" dot>
                   Critique
                 </AdminBadge>
                 <strong className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
                   {a.titre}
                 </strong>
-                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                <span className="ml-auto shrink-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                   {fmtDate(a.createdAt)}
                 </span>
               </div>
-              <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+              {/* Certaines alertes recopient une réponse d'API brute — un
+                  échec de job IA fait des centaines de caractères de JSON.
+                  Sans limite, une seule alerte remplissait l'écran et
+                  enterrait les autres. Deux lignes ici ; le texte complet vit
+                  dans l'infobulle et sur la page Alertes. */}
+              <p
+                title={a.message}
+                className="line-clamp-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+              >
                 {a.message}
               </p>
             </li>

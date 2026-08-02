@@ -136,12 +136,12 @@ function VueAnnee({ cal }: { cal: CalendrierAnnee }): React.ReactElement {
             {MOIS_COURTS[m.mois - 1]}
           </span>
           <div
-            className="h-[10px] flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-surface-hover)]"
+            className="h-[10px] flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-accent-track)]"
             role="img"
             aria-label={`${m.nbPrestations} prestation(s) démarrant en ${MOIS_COURTS[m.mois - 1]}`}
           >
             <div
-              className="h-full rounded-full bg-[color:var(--color-admin-info)]"
+              className="h-full rounded-full bg-[color:var(--color-admin-accent)]"
               style={{ width: `${largeurPct(m.nbPrestations, max)}%` }}
             />
           </div>

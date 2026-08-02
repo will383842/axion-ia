@@ -10,7 +10,11 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getPilotageDashboard, type PeriodePilotage } from "@/server/admin/pilotage-dashboard";
 import { DashboardV2 } from "./DashboardV2";
-import { libelleAction } from "./pilotage/format";
+// Refonte 2026-08-02 : `libelleAction` retombait sur la CLÉ BRUTE pour toute
+// action hors de sa table (« auth.2fa.setup_started » affiché tel quel en
+// production). `decrireAction` décode la STRUCTURE domaine.objet.verbe — une
+// clé inconnue reste une phrase française, jamais un identifiant technique.
+import { decrireAction } from "@/lib/admin/activity-labels";
 
 function fmtDate(d: Date | null | undefined): string {
   if (!d) return "—";
@@ -35,7 +39,6 @@ function fmtRelative(d: Date | null | undefined): string {
 
 interface DashboardV2WrapperProps {
   adminPrefix: string;
-  email: string | null;
   role: string;
   periode: PeriodePilotage;
 }
@@ -83,7 +86,6 @@ async function lireActiviteRecente(): Promise<
 
 export async function DashboardV2Wrapper({
   adminPrefix,
-  email,
   role,
   periode,
 }: DashboardV2WrapperProps): Promise<React.ReactElement> {
@@ -95,15 +97,18 @@ export async function DashboardV2Wrapper({
   return (
     <DashboardV2
       adminPrefix={adminPrefix}
-      email={email}
       role={role}
       logoutAction={logoutAction}
       dashboard={dashboard}
-      activityRows={activityRows.map((a) => ({
-        id: a.id,
-        primary: libelleAction(a.action),
-        secondary: `${a.targetType ? `· ${a.targetType} ` : ""}· ${a.adminEmail ?? "system"} · ${fmtRelative(a.createdAt)}`,
-      }))}
+      activityRows={activityRows.map((a) => {
+        const { icone, texte } = decrireAction(a.action);
+        return {
+          id: a.id,
+          icone,
+          primary: texte,
+          secondary: `${a.adminEmail ?? "system"} · ${fmtRelative(a.createdAt)}`,
+        };
+      })}
     />
   );
 }
