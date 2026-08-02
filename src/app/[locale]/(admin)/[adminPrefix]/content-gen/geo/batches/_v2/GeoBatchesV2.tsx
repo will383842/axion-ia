@@ -14,6 +14,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 interface Props {
   adminPrefix: string;
@@ -41,7 +42,7 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
   const base = `/fr/${adminPrefix}/content-gen/geo/batches`;
 
   const columns: ReadonlyArray<AdminTableColumn<BatchRow>> = [
-    { key: "date", header: "Date", cell: (b) => b.createdAt.toISOString().slice(0, 10) },
+    { key: "date", header: "Date", cell: (b) => formatDateFrShort(b.createdAt) },
     {
       key: "name",
       header: "Nom",

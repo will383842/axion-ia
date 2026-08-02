@@ -29,6 +29,7 @@ import {
   type CampaignListView,
 } from "@/server/actions/content-gen/coverage-status-groups";
 import { ConfirmSubmitButton } from "./ConfirmSubmitButton";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import {
   SERVICE_SECTOR_LABELS,
   SERVICE_SECTORS,
@@ -187,7 +188,7 @@ export async function CoverageListV2({
     {
       key: "createdAt",
       header: "Créée",
-      cell: (r) => r.createdAt.toISOString().slice(0, 10),
+      cell: (r) => formatDateFrShort(r.createdAt),
     },
   ];
 

@@ -19,7 +19,8 @@ import {
   type NiveauSignal,
   type Signal,
 } from "@/features/admin-planning/hub";
-import { AdminPageHeader, AdminBadge, AdminCard } from "@/components/admin/ui";
+import { AdminPageHeader, AdminBadge, AdminCard, AdminButton } from "@/components/admin/ui";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -119,12 +120,22 @@ export default async function PlanningHubPage({
       />
 
       <nav className="mb-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-3)]">
-        <Link href={`${base}?year=${prev.y}&month=${prev.m}`} className="admin-link">
-          ← {MONTHS[prev.m - 1]}
-        </Link>
-        <Link href={`${base}?year=${next.y}&month=${next.m}`} className="admin-link">
-          {MONTHS[next.m - 1]} →
-        </Link>
+        <AdminButton
+          href={`${base}?year=${prev.y}&month=${prev.m}`}
+          variant="ghost"
+          size="sm"
+          icon={ArrowLeft}
+        >
+          {MONTHS[prev.m - 1]}
+        </AdminButton>
+        <AdminButton
+          href={`${base}?year=${next.y}&month=${next.m}`}
+          variant="ghost"
+          size="sm"
+          iconAfter={ArrowRight}
+        >
+          {MONTHS[next.m - 1]}
+        </AdminButton>
         <Link href={`/fr/${adminPrefix}/planning`} className="admin-link">
           Calendrier
         </Link>

@@ -17,7 +17,8 @@ import {
   type ChargeFormateur,
   type NiveauCharge,
 } from "@/features/admin-planning/charge";
-import { AdminPageHeader, AdminBadge } from "@/components/admin/ui";
+import { AdminPageHeader, AdminBadge, AdminButton } from "@/components/admin/ui";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -140,21 +141,25 @@ export default async function PlanningChargePage({
       />
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
-        <Link
+        <AdminButton
           href={`${base}?year=${prev.y}&month=${prev.m}${capaciteQs}`}
-          className="admin-button-ghost"
+          variant="ghost"
+          size="sm"
+          icon={ArrowLeft}
         >
-          ← {MONTHS[prev.m - 1]}
-        </Link>
-        <Link href={base} className="admin-button-ghost">
+          {MONTHS[prev.m - 1]}
+        </AdminButton>
+        <AdminButton href={base} variant="ghost" size="sm">
           Ce mois-ci
-        </Link>
-        <Link
+        </AdminButton>
+        <AdminButton
           href={`${base}?year=${next.y}&month=${next.m}${capaciteQs}`}
-          className="admin-button-ghost"
+          variant="ghost"
+          size="sm"
+          iconAfter={ArrowRight}
         >
-          {MONTHS[next.m - 1]} →
-        </Link>
+          {MONTHS[next.m - 1]}
+        </AdminButton>
       </div>
 
       {/* Réglage de la capacité cible — formulaire GET natif, zéro JS client. */}

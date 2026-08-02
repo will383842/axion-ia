@@ -11,6 +11,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 interface Props {
   adminPrefix: string;
@@ -25,7 +26,7 @@ export async function GeoHistoryV2({ adminPrefix }: Props): Promise<React.ReactE
   type Campaign = (typeof recentCampaigns)[number];
 
   const columns: ReadonlyArray<AdminTableColumn<Campaign>> = [
-    { key: "date", header: "Date", cell: (c) => c.createdAt.toISOString().slice(0, 10) },
+    { key: "date", header: "Date", cell: (c) => formatDateFrShort(c.createdAt) },
     {
       key: "name",
       header: "Nom",

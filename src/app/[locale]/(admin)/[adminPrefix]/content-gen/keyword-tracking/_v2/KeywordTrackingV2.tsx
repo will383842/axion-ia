@@ -15,6 +15,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 function PositionTrend({ delta }: { delta: number | null }) {
   if (delta === null || delta === 0)
@@ -128,7 +129,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
       header: "Sync",
       cell: (r) => (
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          {r.syncedAt.toISOString().slice(0, 10)}
+          {formatDateFrShort(r.syncedAt)}
         </span>
       ),
     },

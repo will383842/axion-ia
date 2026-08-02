@@ -17,6 +17,7 @@ import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
 import { ReplyHistory } from "@/components/admin/contacts/ReplyHistory";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 interface Props {
   adminPrefix: string;
@@ -66,7 +67,7 @@ export async function SubmissionDetailContent({
     <AdminPageShell>
       <AdminPageHeader
         title={`${typeLabel} · ${titreSociete}`}
-        description={`Reçue le ${submission.submittedAt.toISOString().slice(0, 10)} · locale ${submission.locale.toUpperCase()}`}
+        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · locale ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
             {backLabel}
@@ -178,7 +179,7 @@ export async function SubmissionDetailContent({
               <tbody>
                 {submission.bookings.map((b) => (
                   <tr key={b.id}>
-                    <td>{b.bookingDate.toISOString().slice(0, 10)}</td>
+                    <td>{formatDateFrShort(b.bookingDate)}</td>
                     <td>{interventionTypeLabel(b.interventionType)}</td>
                     <td>{b.participantsCount}</td>
                     <td>

@@ -11,6 +11,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import { getQualityImprovementAttemptsDistribution } from "@/server/actions/content-gen/dashboard";
 
 interface DailyScore {
@@ -200,7 +201,13 @@ export async function QualityV2(): Promise<React.ReactElement> {
   };
 
   const columns: ReadonlyArray<AdminTableColumn<DailyScore>> = [
-    { key: "day", header: "Jour", cell: (d) => <span className="tabular-nums">{d.day}</span> },
+    {
+      key: "day",
+      header: "Jour",
+      // `day` reste une clé ISO (tri lexicographique + rowId) — seul l'AFFICHAGE
+      // passe en format FR.
+      cell: (d) => <span className="tabular-nums">{formatDateFrShort(d.day)}</span>,
+    },
     { key: "count", header: "Articles", cell: (d) => d.count },
     { key: "seo", header: "SEO", cell: (d) => d.avgSeo || "—" },
     { key: "quality", header: "Qualité", cell: (d) => d.avgQuality || "—" },

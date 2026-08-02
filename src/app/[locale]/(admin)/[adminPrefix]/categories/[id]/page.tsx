@@ -7,6 +7,7 @@ import {
   listPotentialParentsAction,
 } from "@/features/admin-categories/actions";
 import { CategoriesEditV2 } from "./_v2/CategoriesEditV2";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,7 @@ export default async function EditCategoryPage({ params }: PageProps) {
       parents={parents}
       initial={initialPayload}
       title={cat.nameFr}
-      updatedAtIso={cat.updatedAt.toISOString().slice(0, 10)}
+      updatedAtIso={formatDateFrShort(cat.updatedAt)}
     />
   );
 }

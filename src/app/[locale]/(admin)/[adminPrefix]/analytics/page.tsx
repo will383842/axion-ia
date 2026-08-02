@@ -87,8 +87,15 @@ async function pingIndexNowAction(): Promise<PingResult> {
       urlsPinged: res.ok ? urlList.length : 0,
     };
   } catch (err) {
-    const cause = err instanceof Error ? err.message : String(err);
-    return { ok: false, status: 0, message: `Erreur réseau : ${cause}`, urlsPinged: 0 };
+    // Détail technique dans les logs serveur — l'écran affiche un message
+    // métier fixe, jamais err.message brut.
+    console.error("[analytics] ping IndexNow en échec :", err);
+    return {
+      ok: false,
+      status: 0,
+      message: "Erreur réseau — le ping IndexNow n'a pas abouti. Détail dans les logs serveur.",
+      urlsPinged: 0,
+    };
   }
 }
 

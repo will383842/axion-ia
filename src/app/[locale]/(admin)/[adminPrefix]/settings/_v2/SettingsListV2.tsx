@@ -13,6 +13,7 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 interface SettingRow {
   key: string;
@@ -48,7 +49,7 @@ export function SettingsListV2({ adminPrefix, settings }: Props): React.ReactEle
     {
       key: "updatedAt",
       header: "Mise à jour",
-      cell: (s) => s.updatedAt.toISOString().slice(0, 10),
+      cell: (s) => formatDateFrShort(s.updatedAt),
     },
   ];
 

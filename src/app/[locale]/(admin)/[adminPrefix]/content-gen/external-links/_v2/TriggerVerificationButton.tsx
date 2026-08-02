@@ -19,7 +19,9 @@ export function TriggerVerificationButton() {
           setFeedback(`Job enqueued : ${result.jobId}`);
         }
       } catch (err) {
-        setFeedback(`Exception : ${err instanceof Error ? err.message : String(err)}`);
+        // Détail technique en console — l'écran affiche un message métier fixe.
+        console.error("[external-links] vérification manuelle en échec :", err);
+        setFeedback("Échec du lancement de la vérification. Réessayez — détail en console.");
       }
     });
   }
