@@ -34,7 +34,22 @@
  * bloquer une convocation, soit de laisser partir une relance non relue.
  */
 export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
-  "qualiopi-relance-impayee",
+  // 🔴 2026-08-02 — `qualiopi-relance-impayee` a été RETIRÉ de cette liste, et
+  // ce n'est pas un relâchement du contrôle : c'est un DÉPLACEMENT du contrôle.
+  //
+  // La validation d'une relance a désormais lieu EN AMONT, dans la boîte de
+  // dialogue du hub facturation : l'admin y voit le reste dû net, l'échéance, le
+  // palier, la fraîcheur de son pointage bancaire, et doit cocher « j'ai vérifié
+  // mon relevé : ce règlement n'a pas été reçu » avant que le bouton d'envoi ne
+  // s'active. C'est une double validation, plus stricte que la relecture en
+  // corbeille — laquelle ne montrait ni le solde réel ni l'état du pointage.
+  //
+  // Le garer une seconde fois après cette confirmation avait un effet pervers
+  // mesuré : l'e-mail ne partait jamais, la relance était pourtant marquée
+  // `envoyee`, et l'impayé vieillissait derrière un statut rassurant.
+  //
+  // ⚠️ NE PAS remettre ce template ici sans supprimer la confirmation en amont :
+  // deux garages successifs sur un même envoi, c'est un envoi qui n'a pas lieu.
   "devis-envoi",
   "convention-envoi",
   "facture-envoi",

@@ -81,6 +81,7 @@ export default async function ModifierClientPage({ params }: PageProps) {
           contactTelephone: client.contactTelephone ?? "",
           contactFonction: client.contactFonction ?? "",
         }}
+        initialFlags={{ penalitesRetardActives: client.penalitesRetardActives }}
       />
     </AdminPageShell>
   );

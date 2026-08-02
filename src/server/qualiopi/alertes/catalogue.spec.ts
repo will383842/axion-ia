@@ -45,8 +45,14 @@ const CODES_ATTENDUS: string[] = [
   "convention_tripartite_manquante",
   "convention_formation_manquante",
   "bareme_opco_perime",
+  // Conservé au catalogue bien qu'il ne soit PLUS émis (le palier J30 est couvert
+  // par une relance proposée) : sans son entrée, les alertes déjà en base ne
+  // s'auto-résoudraient jamais. Cf. `catalogue.ts`.
   "facture_impayee_j30",
   "facture_impayee_j60",
+  // Recouvrement 2026-08-02 — filet de sécurité + suivi des relances envoyées.
+  "facture_sans_echeance",
+  "relance_sans_effet",
   // Suivi des dossiers de financement (2026-07-31) — `echeanceFinanceurAt`
   // existait au schéma sans aucun consommateur : financeur en retard ou dossier
   // envoyé sans réponse ne déclenchaient rien.

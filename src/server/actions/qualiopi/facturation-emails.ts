@@ -22,6 +22,7 @@ import {
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
 import { documentPdfKey } from "@/lib/r2-storage";
+import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
 
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -186,7 +187,13 @@ export async function envoyerFactureEmailAction(
 
   const facture = await prisma.factureFormation.findUnique({
     where: { id: input.factureId },
-    include: { client: { select: { raisonSociale: true, contactEmail: true } } },
+    include: {
+      client: { select: { raisonSociale: true, contactEmail: true } },
+      // Nécessaires au RESTE DÛ NET (voir plus bas) : sans eux, l'e-mail
+      // réclamerait le TTC total d'une facture déjà partiellement réglée.
+      payments: { select: { amountCents: true, status: true } },
+      avoirs: { select: { montantHtCents: true, montantTtcCents: true, statut: true } },
+    },
   });
   if (!facture) return { error: "Facture introuvable." };
   if (facture.statut === "brouillon") {
@@ -215,7 +222,32 @@ export async function envoyerFactureEmailAction(
   }
 
   const estAvoir = facture.avoirDeId !== null;
-  const montantDu = facture.montantTtcCents ?? facture.montantHtCents;
+
+  // ── Montant réclamé = RESTE DÛ NET, jamais le TTC total ───────────────────
+  //
+  // 🔴 L'e-mail annonçait le TTC total de la facture. Un client ayant versé son
+  // acompte — le cas NORMAL en formation, le mode `acompte_solde` étant le
+  // défaut — recevait donc une relance au montant plein, acompte compris. Il en
+  // conclut qu'on a perdu son virement ; au mieux il rappelle, au pire il paie
+  // deux fois. Même défaut sur une facture partiellement avoirée.
+  //
+  // La formule vient de `resteDuNetCents` (SSOT de l'encours client, déjà
+  // utilisée par la fiche 360°, la fiche facture et la balance âgée) : TTC
+  // (repli HT) + avoirs non annulés (négatifs en base) − encaissements
+  // `succeeded`. NE PAS la réécrire ici : c'est exactement ainsi que deux
+  // montants divergent d'un écran à l'autre.
+  //
+  // Un AVOIR garde son montant propre : il ne se « reste-dû » pas, il crédite.
+  const montantDu = estAvoir
+    ? (facture.montantTtcCents ?? facture.montantHtCents)
+    : resteDuNetCents({
+        statut: facture.statut,
+        avoirDeId: facture.avoirDeId,
+        montantHtCents: facture.montantHtCents,
+        montantTtcCents: facture.montantTtcCents,
+        payments: facture.payments,
+        avoirs: facture.avoirs,
+      });
   const { enqueued, garePourValidation = false } = await enqueueEmail(
     "facture-envoi",
     to,

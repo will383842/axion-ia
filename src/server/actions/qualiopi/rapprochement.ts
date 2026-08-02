@@ -18,6 +18,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite } from "@/server/actions/qualiopi/_guards";
+import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import {
   parseFinomStatement,
   suggererRapprochements,
@@ -86,7 +87,7 @@ export async function analyserReleveAction(
     // d'encaissement), hors avoirs. Reste dû NET : même formule que le hub.
     const facturesOuvertes = await prisma.factureFormation.findMany({
       where: {
-        statut: { in: ["emise", "partiellement_payee", "en_retard"] },
+        statut: { in: [...STATUTS_FACTURE_OUVERTE] },
         avoirDeId: null,
       },
       select: {

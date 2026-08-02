@@ -38,7 +38,17 @@ import {
   encaissementAutorise,
   dateEngagementParticulier,
 } from "@/server/qualiopi/financements/acompte";
+import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
+import { calculerPenalitesRetard } from "@/server/qualiopi/financements/penalites";
+import { libellePalier, tonPalier } from "@/server/qualiopi/financements/relance-paliers";
+import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
+import { enqueueEmail } from "@/server/queue/queues";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
+
+/** Formatage monétaire des centimes (relance : montants lus par le client). */
+const eur = (cents: number): string =>
+  new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
+const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
 
 const ActiviteSchema = z.enum(["formation", "un_a_un", "audit", "implementation", "site_web"]);
 
@@ -646,7 +656,20 @@ export async function importerFacturesHistoriqueAction(
           lignes: [] as never,
           statut: f.statut,
           emiseAt: f.dateEmission,
-          ...(f.statut === "payee" ? { paidAt: f.dateEmission } : {}),
+          // Échéance posée dès l'import quand la facture est ENCORE DUE. Sans
+          // elle, une créance reprise d'historique n'a de mois de rattachement
+          // nulle part : elle disparaît des « encaissements attendus » et des
+          // « impayés » du prévisionnel, et la balance âgée la range en « à
+          // échoir » à vie. Le format d'import ne porte pas de délai par ligne →
+          // défaut 30 j (le repli de `calculerEcheanceFacture`).
+          //
+          // ⚠️ Ces lignes restent HORS du circuit de relance : le cron filtre sur
+          // `estImportee: false`, volontairement (on ne relance pas au nom d'un
+          // système tiers sur des données reprises). L'échéance sert ici au
+          // PILOTAGE, pas au recouvrement automatique.
+          ...(f.statut === "payee"
+            ? { paidAt: f.dateEmission }
+            : { echeanceAt: calculerEcheanceFacture(f.dateEmission, null) }),
         },
       });
       importees++;
@@ -728,27 +751,69 @@ const EnvoyerRelanceSchema = z.object({
   relanceId: z.string().uuid(),
   to: z.string().email().optional(),
   messagePersonnalise: z.string().max(4000).optional(),
+  /**
+   * 🔴 SECONDE VALIDATION, exigée côté SERVEUR et pas seulement à l'écran.
+   *
+   * L'admin atteste avoir pointé son relevé bancaire avant de relancer. Une case
+   * à cocher qui ne vivrait que dans le composant serait contournable par un
+   * appel direct à la Server Action — et la garde qui protège de la relance la
+   * plus coûteuse (celle adressée à un client qui a DÉJÀ payé) doit tenir là où
+   * la décision est exécutée, pas là où elle est affichée.
+   */
+  confirmationReleveBancaire: z.literal(true),
 });
 
 /**
- * Envoie la relance d'une facture CRM (email manuel avec PDF joint) puis
- * marque la proposition `envoyee`. Les relances de factures BOOKING et de
- * devis booking se traitent depuis leurs écrans dédiés (ignorer/reporter ici).
+ * Envoie la relance d'une facture CRM au client, puis marque la proposition
+ * `envoyee`. Les relances de factures BOOKING et de devis booking se traitent
+ * depuis leurs écrans dédiés (ignorer/reporter ici).
+ *
+ * ## Envoi DIRECT après double validation
+ *
+ * L'e-mail part maintenant droit au client, sans passer par la corbeille de
+ * validation. Ce n'est pas un relâchement : la validation a lieu EN AMONT, dans
+ * la boîte de dialogue du hub (reste dû net, échéance, palier, fraîcheur du
+ * pointage bancaire, case à cocher obligatoire). Le double garage précédent
+ * produisait le pire des deux mondes — l'e-mail restait en corbeille, et la
+ * relance était quand même marquée « envoyée ».
+ *
+ * ⚠️ Un réglage d'automatisation PAR CLIENT peut toujours forcer la relecture en
+ * corbeille (`resoudreModeEnvoi`). Ce cas reste géré, et la relance reste alors
+ * `a_traiter` : voir plus bas. On ne court-circuite donc PAS la politique —
+ * on change seulement son défaut.
+ *
+ * ## Ce qui n'est envoyé sous AUCUN prétexte
+ *
+ *  - une relance sur une créance éteinte (reste dû net ≤ 0) : c'est exactement
+ *    la relance injustifiée que la double validation existe pour éviter, et un
+ *    contrôle humain seul ne suffit pas à la garantir ;
+ *  - la note interne du hub comme corps de message (« Facture X — solde de N €
+ *    TTC échu le … — relance J30. ») : c'est du jargon, il partait tel quel.
+ *
+ * AUCUN cron n'appelle cette action : l'envoi reste déclenché par un humain
+ * (`relances-manuelles-garde-fou.spec.ts` le verrouille côté workers).
  */
 export async function envoyerRelanceAction(
   rawInput: unknown,
-): Promise<{ data: { to: string } } | { error: string }> {
+): Promise<
+  { data: { to: string; garePourValidation: boolean; palier: string } } | { error: string }
+> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
   const session = await requireAdminWrite();
   const parsed = EnvoyerRelanceSchema.safeParse(rawInput);
-  if (!parsed.success) return { error: "Entrée invalide." };
+  if (!parsed.success) {
+    return {
+      error:
+        "Entrée invalide : confirmez avoir vérifié votre relevé bancaire avant d'envoyer la relance.",
+    };
+  }
   const input = parsed.data;
 
   const relance = await prisma.relanceProposee.findUnique({
     where: { id: input.relanceId },
-    select: { id: true, statut: true, factureFormationId: true, suggestion: true },
+    select: { id: true, statut: true, palier: true, factureFormationId: true },
   });
   if (!relance) return { error: "Relance introuvable." };
   if (relance.statut !== "a_traiter" && relance.statut !== "reportee") {
@@ -761,17 +826,133 @@ export async function envoyerRelanceAction(
     };
   }
 
-  const { envoyerFactureEmailAction } =
-    await import("@/server/actions/qualiopi/facturation-emails");
-  const envoi = await envoyerFactureEmailAction({
-    factureId: relance.factureFormationId,
-    ...(input.to !== undefined ? { to: input.to } : {}),
-    messagePersonnalise:
-      input.messagePersonnalise ??
-      relance.suggestion ??
-      "Sauf erreur de notre part, cette facture reste en attente de règlement.",
+  const facture = await prisma.factureFormation.findUnique({
+    where: { id: relance.factureFormationId },
+    select: {
+      id: true,
+      numero: true,
+      statut: true,
+      avoirDeId: true,
+      montantHtCents: true,
+      montantTtcCents: true,
+      echeanceAt: true,
+      destinataireNom: true,
+      clientId: true,
+      client: {
+        select: {
+          raisonSociale: true,
+          contactEmail: true,
+          contactNom: true,
+          penalitesRetardActives: true,
+        },
+      },
+      payments: { select: { amountCents: true, status: true } },
+      avoirs: { select: { montantHtCents: true, montantTtcCents: true, statut: true } },
+    },
   });
-  if ("error" in envoi) return { error: envoi.error };
+  if (facture === null) return { error: "Facture introuvable." };
+
+  const to = input.to ?? facture.client?.contactEmail ?? null;
+  if (to === null) {
+    return { error: "Aucun destinataire : renseigner un email (ou l'email de contact du client)." };
+  }
+
+  // ── Créance éteinte : on ne relance pas, on le DIT ────────────────────────
+  // Le garde-fou le plus important de cette action. Un encaissement saisi entre
+  // la proposition et le clic (ou un avoir) éteint la créance ; relancer alors
+  // est précisément la faute que le propriétaire craint le plus.
+  const resteDuCents = resteDuNetCents({
+    statut: facture.statut,
+    avoirDeId: facture.avoirDeId,
+    montantHtCents: facture.montantHtCents,
+    montantTtcCents: facture.montantTtcCents,
+    payments: facture.payments,
+    avoirs: facture.avoirs,
+  });
+  if (resteDuCents <= 0) {
+    return {
+      error: `La facture ${facture.numero} est soldée (reste dû nul) : aucune relance à envoyer. Marquez cette proposition « ignorée ».`,
+    };
+  }
+
+  const now = new Date();
+  const joursRetard =
+    facture.echeanceAt !== null
+      ? Math.max(0, Math.floor((now.getTime() - facture.echeanceAt.getTime()) / 86_400_000))
+      : 0;
+  const aDejaVerse = facture.payments.some((p) => p.status === "succeeded" && p.amountCents > 0);
+
+  // ── Pénalités : chiffrées UNIQUEMENT si le client est explicitement coché ──
+  // Décision produit du propriétaire : jamais par défaut. Les MENTIONS légales
+  // restent imprimées sur toute facture dans tous les cas — elles n'ont rien à
+  // voir avec ce drapeau (cf. `penalites.ts`).
+  let penalitesLabel: string | undefined;
+  if (facture.client?.penalitesRetardActives === true) {
+    const p = calculerPenalitesRetard({
+      resteDuCents,
+      echeanceAt: facture.echeanceAt,
+      now,
+    });
+    if (p.totalCents > 0) {
+      penalitesLabel =
+        "Conformément aux conditions figurant sur la facture (articles L.441-10 et D.441-5 du code de commerce), ce retard fait courir des pénalités : " +
+        `${eur(p.interetsCents)} d'intérêts à ce jour, auxquels s'ajoute l'indemnité forfaitaire de recouvrement de ${eur(p.indemniteForfaitaireCents)}, ` +
+        `soit ${eur(p.totalCents)} au total.`;
+    }
+  }
+
+  const { enqueued, garePourValidation = false } = await enqueueEmail(
+    "qualiopi-relance-impayee",
+    to,
+    "fr",
+    {
+      destinataireNom:
+        facture.client?.contactNom ?? facture.client?.raisonSociale ?? facture.destinataireNom,
+      numeroFacture: facture.numero,
+      // RESTE DÛ NET — jamais le TTC total : un client ayant versé son acompte
+      // recevait sinon une relance au montant plein.
+      montantDu: `${eur(resteDuCents)} TTC`,
+      dateEcheance: facture.echeanceAt !== null ? dateFr(facture.echeanceAt) : "non renseignée",
+      joursRetard,
+      ton: tonPalier(relance.palier),
+      soldePartiel: aDejaVerse,
+      ...(penalitesLabel !== undefined ? { penalitesLabel } : {}),
+      ...(input.messagePersonnalise !== undefined
+        ? { messagePersonnalise: input.messagePersonnalise }
+        : {}),
+    },
+    {
+      ...(facture.clientId !== null ? { clientId: facture.clientId } : {}),
+      sujet: `Relance ${libellePalier(relance.palier)} — facture ${facture.numero}`,
+    },
+  );
+
+  if (!enqueued && !garePourValidation) {
+    return { error: "File d'envoi indisponible — la relance reste à traiter, réessayer." };
+  }
+
+  // ── « Envoyée » ne se dit que d'un e-mail RÉELLEMENT parti ────────────────
+  //
+  // 🔴 Ce bloc ne testait que l'absence d'erreur. Or celle-ci couvre DEUX issues
+  // distinctes : l'e-mail est entré dans la file, ou il a été GARÉ en corbeille
+  // et n'ira nulle part sans approbation. Dans le second cas la relance basculait
+  // quand même en `envoyee` : la proposition disparaissait de l'écran, le
+  // compteur affichait un travail fait, et le client n'avait rien reçu.
+  //
+  // DÉCISION : `envoyee` seulement si l'envoi est effectif. Sur un e-mail garé
+  // — cas résiduel d'un réglage d'automatisation par client —, la relance RESTE
+  // `a_traiter` et l'interface dit où l'e-mail attend. C'est le seul état
+  // honnête : elle n'est pas traitée, elle est suspendue à une validation.
+  if (garePourValidation) {
+    await logQualiopiActivity({
+      action: "facturation.relance.gare_validation",
+      targetType: "RelanceProposee",
+      targetId: relance.id,
+      changes: { to, numero: facture.numero, palier: relance.palier, envoyee: false },
+      session,
+    });
+    return { data: { to, garePourValidation: true, palier: relance.palier } };
+  }
 
   await prisma.relanceProposee.updateMany({
     where: { id: relance.id, statut: { in: ["a_traiter", "reportee"] } },
@@ -781,10 +962,16 @@ export async function envoyerRelanceAction(
     action: "facturation.relance.envoyer",
     targetType: "RelanceProposee",
     targetId: relance.id,
-    changes: { to: envoi.data.to },
+    changes: {
+      to,
+      numero: facture.numero,
+      palier: relance.palier,
+      resteDuCents,
+      penalitesAppliquees: penalitesLabel !== undefined,
+    },
     session,
   });
-  return { data: { to: envoi.data.to } };
+  return { data: { to, garePourValidation: false, palier: relance.palier } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -1,0 +1,30 @@
+-- Pénalités de retard : APPLICATION opt-in, par client.
+--
+-- ## Ce que cette migration ouvre
+--
+-- Le circuit de recouvrement n'avait aucun moyen de dire « pour CE client, on
+-- applique les pénalités de retard ». Le choix était donc binaire et implicite :
+-- ne jamais les appliquer (état de fait), ou les appliquer à tout le monde le
+-- jour où quelqu'un brancherait le calcul.
+--
+-- Exigence explicite du propriétaire : le second cas est commercialement
+-- destructeur. D'où un drapeau à FALSE par défaut, que l'on coche client par
+-- client — la possibilité existe, elle ne s'exerce jamais toute seule.
+--
+-- ## ⚠️ Ce que cette migration ne change PAS
+--
+-- Les MENTIONS légales de pénalités et l'indemnité forfaitaire de 40 € restent
+-- imprimées en pied de TOUTE facture entre professionnels, sans condition
+-- (art. L.441-9, L.441-10 et D.441-5 du code de commerce). Ce drapeau gouverne
+-- l'APPLICATION des frais — le montant chiffré dans une relance et sur la fiche
+-- client —, jamais l'affichage de la mention. Conditionner celle-ci à ce champ
+-- produirait une facture non conforme.
+--
+-- `DEFAULT false` + `NOT NULL` : aucune ligne existante n'est modifiée dans son
+-- comportement, et il n'existe pas de troisième état (« non renseigné ») qui
+-- laisserait un doute sur ce qui s'applique à un client donné.
+--
+-- `IF NOT EXISTS` : l'entrypoint rejoue `prisma migrate deploy` à chaque
+-- démarrage de conteneur, la migration doit rester ré-exécutable.
+ALTER TABLE "clients"
+  ADD COLUMN IF NOT EXISTS "penalites_retard_actives" BOOLEAN NOT NULL DEFAULT false;

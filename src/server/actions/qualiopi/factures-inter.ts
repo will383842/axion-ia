@@ -31,6 +31,7 @@ import {
   destinataireFacture,
   checkFactureParInscription,
 } from "@/server/qualiopi/financements/inter-entreprises";
+import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -68,7 +69,16 @@ export async function genererFactureParInscriptionAction(
       ftDispositif: true,
       montantHtCents: true,
       trainee: { select: { nom: true, prenom: true } },
-      client: { select: { raisonSociale: true, siret: true, adresse: true, opcoIdentifie: true } },
+      client: {
+        select: {
+          raisonSociale: true,
+          siret: true,
+          adresse: true,
+          opcoIdentifie: true,
+          // Conditions de paiement du payeur (F61) — sert à poser l'échéance.
+          delaiPaiementJours: true,
+        },
+      },
       session: {
         select: {
           id: true,
@@ -82,7 +92,13 @@ export async function genererFactureParInscriptionAction(
           opcoSubrogation: true,
           titreSession: true,
           client: {
-            select: { raisonSociale: true, siret: true, adresse: true, opcoIdentifie: true },
+            select: {
+              raisonSociale: true,
+              siret: true,
+              adresse: true,
+              opcoIdentifie: true,
+              delaiPaiementJours: true,
+            },
           },
         },
       },
@@ -183,6 +199,31 @@ export async function genererFactureParInscriptionAction(
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
   const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
+  // ── Émission explicite + échéance ────────────────────────────────────────
+  //
+  // 🔴 Ce chemin n'écrivait NI `statut`, NI `emiseAt`, NI `echeanceAt`. La ligne
+  // retombait donc sur le défaut du schéma — `brouillon` — tout en ayant déjà
+  // consommé un NUMÉRO LÉGAL de la série `AXI-FACT-YYYY-NNN`, en bloquant toute
+  // réémission (« cette inscription est déjà facturée ») et en annonçant à
+  // l'admin « Facture X générée ». Une facture émise de fait, parquée dans un
+  // statut de brouillon : invisible de la balance âgée, du prévisionnel, du cron
+  // de retard et donc de toute relance.
+  //
+  // Pourquoi émettre ICI plutôt que de laisser le brouillon à
+  // `emettreFactureBrouillon` : ce dernier RÉALLOUE un numéro à l'émission. Un
+  // vrai brouillon porte pour cela un provisoire `BROUILLON-<uuid>` (cf.
+  // plan-recurrent.ts) ; celui-ci porte un numéro de série définitif. Le faire
+  // passer par l'émission générique le renumérerait et laisserait un TROU dans
+  // la séquence — exactement la rupture de continuité que le CGI 242 nonies A
+  // interdit. On aligne donc l'état de la ligne sur ce que le reste du code et
+  // l'interface affirment déjà : elle est émise.
+  //
+  // L'échéance suit le délai du PAYEUR (celui dont l'identité est imprimée sur
+  // la facture), avec repli sur les 30 j par défaut. Sans elle, la facture reste
+  // hors du circuit de recouvrement quel que soit son statut.
+  const emiseAt = new Date();
+  const echeanceAt = calculerEcheanceFacture(emiseAt, payeur?.delaiPaiementJours ?? null);
+
   let created: { id: string; numero: string };
   try {
     created = await withNumberRetry(async () => {
@@ -206,6 +247,9 @@ export async function genererFactureParInscriptionAction(
           ...(resolved.numeroDossierOpco !== null
             ? { numeroDossierOpco: resolved.numeroDossierOpco }
             : {}),
+          statut: "emise",
+          emiseAt,
+          echeanceAt,
         },
         select: { id: true, numero: true },
       });

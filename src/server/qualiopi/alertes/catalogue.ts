@@ -204,6 +204,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── Facturation ───────────────────────────────────────────────────────────
+  /**
+   * 🔴 PLUS ÉMIS depuis 2026-08-02 — conservé DÉLIBÉRÉMENT, ne pas supprimer.
+   *
+   * Le palier J30 est déjà couvert par une `RelanceProposee` actionnable dans le
+   * hub facturation. Faire tomber les deux pour le même fait créait deux signaux
+   * concurrents, avec deux cycles de vie : l'admin envoyait la relance, la
+   * proposition passait `envoyee`, et l'alerte restait ouverte à côté sans plus
+   * rien vouloir dire. Division du travail retenue (cf. `evaluateur.ts`) :
+   * J1/J15/J30 = relance proposée (action) ; J60 = alerte critique (escalade).
+   *
+   * Pourquoi garder l'entrée : `synchroniserAlertes` ne résout automatiquement
+   * que les codes PRÉSENTS dans ce catalogue avec `resolutionAuto: true`. La
+   * retirer figerait à vie les alertes `facture_impayee_j30` déjà en base — y
+   * compris sur des factures depuis longtemps réglées.
+   */
   facture_impayee_j30: {
     niveau: "important",
     titre: "Facture impayée depuis +30 jours",
@@ -212,6 +227,40 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   facture_impayee_j60: {
     niveau: "critique",
     titre: "Facture impayée depuis +60 jours",
+    resolutionAuto: true,
+  },
+  /**
+   * Filet de sécurité du circuit de recouvrement.
+   *
+   * Une facture émise sans `echeanceAt` n'est relançable par RIEN : le cron de
+   * retard compare `echeanceAt < now`, et aucune comparaison SQL n'est vraie
+   * pour NULL. La créance vieillit sans jamais apparaître nulle part.
+   *
+   * Le cron répare désormais ces lignes tout seul (cf. `handleFacturesRetard`),
+   * mais cette alerte reste utile : elle couvre la fenêtre entre la création et
+   * le passage quotidien, et surtout elle DÉNONCE un chemin de création
+   * défaillant — si elle revient, c'est qu'un émetteur a de nouveau oublié la
+   * colonne. `resolutionAuto` : elle disparaît d'elle-même dès l'échéance posée.
+   */
+  facture_sans_echeance: {
+    niveau: "important",
+    titre: "Facture émise sans date d'échéance",
+    resolutionAuto: true,
+  },
+  /**
+   * Relance envoyée, restée sans effet.
+   *
+   * Demande explicite du propriétaire : « des alertes pour me dire les relances
+   * passées ». Envoyer une relance n'est pas un résultat — c'est le résultat qui
+   * compte. Une relance partie il y a plus de quinze jours sans le moindre
+   * encaissement depuis signale que le palier suivant est dû, ou qu'une décision
+   * l'est (échéancier, mise en demeure, recouvrement).
+   *
+   * `resolutionAuto` : disparaît d'elle-même dès que la facture est soldée.
+   */
+  relance_sans_effet: {
+    niveau: "important",
+    titre: "Relance envoyée sans effet depuis +15 jours",
     resolutionAuto: true,
   },
 

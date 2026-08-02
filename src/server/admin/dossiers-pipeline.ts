@@ -25,6 +25,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { estDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
+import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
 import type {
   AuditMissionStatut,
   CoachingSessionStatut,
@@ -348,8 +349,10 @@ export interface LigneDossier {
 export type DossiersPipeline = Record<ColonnePipeline, LigneDossier[]>;
 
 /** Statuts de facture qui signifient « de l'argent est attendu ». `brouillon`
- *  n'est pas encore une créance ; `annulee` n'en sera jamais une. */
-const STATUTS_FACTURE_IMPAYEE = ["emise", "partiellement_payee", "en_retard"] as const;
+ *  n'est pas encore une créance ; `annulee` n'en sera jamais une.
+ *  Alias local du SSOT `STATUTS_FACTURE_OUVERTE` — même définition, un seul
+ *  endroit où la faire évoluer. */
+const STATUTS_FACTURE_IMPAYEE = STATUTS_FACTURE_OUVERTE;
 
 /** Statuts de dossier de financement considérés SOLDÉS. Tout le reste (y
  *  compris `refuse` : un refus se solde en clôturant le dossier) retient

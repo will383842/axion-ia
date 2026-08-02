@@ -55,19 +55,36 @@ export interface ClientEditValues {
   contactFonction: string;
 }
 
+/**
+ * Réglages booléens du client, tenus à part des champs texte.
+ *
+ * Les champs texte se comparent au `trim()` pour décider quoi transmettre ; un
+ * booléen n'a pas de trim. Les mélanger obligerait à encoder « true »/« false »
+ * en chaînes, et un jour quelqu'un lirait `"false"` comme une valeur vraie.
+ */
+export interface ClientEditFlags {
+  /** Applique-t-on les pénalités de retard à ce client ? Faux par défaut. */
+  penalitesRetardActives: boolean;
+}
+
 export interface ClientEditFormProps {
   clientId: string;
   /** `true` pour un particulier : les champs entreprise sont masqués. */
   estParticulier: boolean;
   initial: ClientEditValues;
+  /** Réglages booléens (pénalités de retard). Défaut : tout à faux. */
+  initialFlags?: ClientEditFlags;
   /** Où revenir après enregistrement. */
   retourHref: string;
 }
+
+const FLAGS_PAR_DEFAUT: ClientEditFlags = { penalitesRetardActives: false };
 
 export function ClientEditForm({
   clientId,
   estParticulier,
   initial,
+  initialFlags = FLAGS_PAR_DEFAUT,
   retourHref,
 }: ClientEditFormProps): React.ReactElement {
   const router = useRouter();
@@ -76,9 +93,15 @@ export function ClientEditForm({
   const [ok, setOk] = useState(false);
 
   const [v, setV] = useState<ClientEditValues>(initial);
+  const [flags, setFlags] = useState<ClientEditFlags>(initialFlags);
 
   function set<K extends keyof ClientEditValues>(cle: K, valeur: string) {
     setV((p) => ({ ...p, [cle]: valeur }));
+    setOk(false);
+  }
+
+  function setFlag<K extends keyof ClientEditFlags>(cle: K, valeur: boolean) {
+    setFlags((p) => ({ ...p, [cle]: valeur }));
     setOk(false);
   }
 
@@ -90,9 +113,13 @@ export function ClientEditForm({
   const siretCheck = siretSaisi === "" ? null : checkSiretFormat(siretSaisi);
   const siretErreur = siretCheck !== null && !siretCheck.ok ? siretCheck.message : null;
 
-  const modifie = (Object.keys(initial) as Array<keyof ClientEditValues>).some(
-    (k) => v[k].trim() !== initial[k].trim(),
-  );
+  const modifie =
+    (Object.keys(initial) as Array<keyof ClientEditValues>).some(
+      (k) => v[k].trim() !== initial[k].trim(),
+    ) ||
+    (Object.keys(initialFlags) as Array<keyof ClientEditFlags>).some(
+      (k) => flags[k] !== initialFlags[k],
+    );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -124,6 +151,11 @@ export function ClientEditForm({
           ? { siret: siretSaisi === "" ? null : siretSaisi }
           : {}),
         ...(!estParticulier && change("nafCode") ? { nafCode: v.nafCode.trim() } : {}),
+        // Même règle différentielle que les champs texte : transmis seulement
+        // si l'utilisateur y a touché.
+        ...(flags.penalitesRetardActives !== initialFlags.penalitesRetardActives
+          ? { penalitesRetardActives: flags.penalitesRetardActives }
+          : {}),
       });
       if ("error" in result) {
         setError(result.error);
@@ -278,6 +310,41 @@ export function ClientEditForm({
           />
         </div>
       </div>
+
+      {/* ── Recouvrement ────────────────────────────────────────────────────
+          Séparé de l'identité et du contact : ce n'est pas une coordonnée,
+          c'est une décision commerciale, et elle mérite d'être vue comme telle
+          au moment où on la prend. */}
+      <fieldset className="mt-[var(--space-admin-5)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4)]">
+        <legend className="sr-only">Recouvrement</legend>
+        <p className={labelCls}>Recouvrement</p>
+        <label
+          htmlFor="edit-penalites-retard"
+          className="flex items-start gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
+        >
+          <input
+            id="edit-penalites-retard"
+            type="checkbox"
+            checked={flags.penalitesRetardActives}
+            onChange={(e) => setFlag("penalitesRetardActives", e.target.checked)}
+            disabled={isPending}
+            aria-describedby="edit-penalites-retard-aide"
+            className="mt-[var(--space-admin-1)]"
+          />
+          <span>
+            Appliquer les pénalités de retard à ce client
+            <span
+              id="edit-penalites-retard-aide"
+              className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-normal text-[color:var(--color-admin-fg-muted)]"
+            >
+              Désactivé par défaut. N&apos;activez ceci que pour un client précis : les pénalités
+              chiffrées apparaîtront alors dans le texte des relances qui lui sont adressées. Les
+              mentions légales de pénalités restent imprimées sur toutes les factures dans tous les
+              cas, que cette case soit cochée ou non.
+            </span>
+          </span>
+        </label>
+      </fieldset>
 
       {error !== null && (
         <p

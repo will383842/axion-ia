@@ -27,6 +27,8 @@ vi.mock("@/lib/prisma", () => ({
     // Refonte console phase 1 (2026-08-01) : devis dormants + signatures qui traînent.
     devis: { findMany: vi.fn() },
     documentGenere: { findMany: vi.fn() },
+    // Recouvrement 2026-08-02 : relances envoyées restées sans effet.
+    relanceProposee: { findMany: vi.fn() },
   },
 }));
 
@@ -60,6 +62,7 @@ import {
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
 import { evaluerAlertes } from "./evaluateur";
+import { ALERTE_CATALOGUE } from "./catalogue";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers typed
@@ -80,6 +83,7 @@ const mp = prisma as unknown as {
   rgpdDemande: { findMany: ReturnType<typeof vi.fn> };
   devis: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { findMany: ReturnType<typeof vi.fn> };
+  relanceProposee: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -104,6 +108,7 @@ function setupEmptyMocks() {
   mp.rgpdDemande.findMany.mockResolvedValue([]);
   mp.devis.findMany.mockResolvedValue([]);
   mp.documentGenere.findMany.mockResolvedValue([]);
+  mp.relanceProposee.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -625,22 +630,41 @@ describe("evaluerAlertes — factures impayées", () => {
     setupEmptyMocks();
   });
 
-  it("crée facture_impayee_j30 pour une facture impayée >30j", async () => {
-    mp.factureFormation.findMany.mockResolvedValue([
-      {
-        id: "fac-001",
-        numero: "AXI-FAC-2026-001",
-        echeanceAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000),
-      },
-    ]);
+  /** Récupère l'argument du `findMany` de la règle des impayés (par son select). */
+  function whereDesImpayes(): Record<string, unknown> | null {
+    for (const call of mp.factureFormation.findMany.mock.calls) {
+      const arg = call[0] as {
+        where?: Record<string, unknown>;
+        select?: Record<string, unknown>;
+      };
+      // La règle des impayés est la seule à sélectionner `statut` avec un
+      // `echeanceAt` NON nul dans son filtre.
+      const w = arg.where as { echeanceAt?: unknown } | undefined;
+      const ech = w?.echeanceAt as { not?: unknown } | undefined;
+      if (arg.select?.["statut"] === true && ech?.not === null) {
+        return arg.where ?? null;
+      }
+    }
+    return null;
+  }
 
-    const alertes = await evaluerAlertes();
-    const fac = alertes.filter((x) => x.code.startsWith("facture_impayee"));
-    expect(fac.length).toBeGreaterThanOrEqual(1);
-    const f30 = fac.find((x) => x.code === "facture_impayee_j30");
-    expect(f30).toBeDefined();
-    expect(f30?.cibleType).toBe("FactureFormation");
-    expect(f30?.cibleId).toBe("fac-001");
+  // 🔴 LE test qui manquait. L'ancien spec mockait `findMany` sans jamais
+  // regarder le `where` : il passait au vert sur du CODE MORT. Le filtre
+  // omettait `en_retard`, alors que le cron de 06:30 UTC y bascule toute facture
+  // échue AVANT que le cron d'alertes de 07:00 UTC ne s'exécute. La requête ne
+  // pouvait donc plus ramener une seule ligne — et le test ne le voyait pas.
+  it("le WHERE inclut « en_retard » (sans quoi la règle est du code mort)", async () => {
+    mp.factureFormation.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+
+    const where = whereDesImpayes();
+    expect(where, "aucun findMany reconnaissable pour la règle des impayés").not.toBeNull();
+    const statut = where?.["statut"] as { in?: string[] } | undefined;
+    expect(statut?.in).toContain("en_retard");
+    expect(statut?.in).toContain("emise");
+    expect(statut?.in).toContain("partiellement_payee");
+    // Un avoir n'est pas une créance.
+    expect(where?.["avoirDeId"]).toBeNull();
   });
 
   it("crée facture_impayee_j60 pour une facture impayée >60j", async () => {
@@ -648,6 +672,7 @@ describe("evaluerAlertes — factures impayées", () => {
       {
         id: "fac-002",
         numero: "AXI-FAC-2026-002",
+        statut: "en_retard",
         echeanceAt: new Date(Date.now() - 65 * 24 * 60 * 60 * 1000),
       },
     ]);
@@ -656,6 +681,201 @@ describe("evaluerAlertes — factures impayées", () => {
     const f60 = alertes.find((x) => x.code === "facture_impayee_j60");
     expect(f60).toBeDefined();
     expect(f60?.niveau).toBe("critique");
+    expect(f60?.cibleType).toBe("FactureFormation");
+    expect(f60?.cibleId).toBe("fac-002");
+  });
+
+  // 🔴 Anti-doublon, arbitrage 2026-08-02 : le palier J30 est déjà couvert par
+  // une `RelanceProposee` ACTIONNABLE dans le hub facturation. Faire tomber les
+  // deux pour le même fait créait deux signaux concurrents, avec deux cycles de
+  // vie — l'admin envoyait la relance, la proposition passait `envoyee`, et
+  // l'alerte restait ouverte à côté sans plus rien signifier.
+  it("n'émet PLUS facture_impayee_j30 : ce palier est couvert par une relance proposée", async () => {
+    mp.factureFormation.findMany.mockResolvedValue([
+      {
+        id: "fac-001",
+        numero: "AXI-FAC-2026-001",
+        statut: "en_retard",
+        echeanceAt: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000),
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "facture_impayee_j30")).toBeUndefined();
+    // …et rien ne tombe non plus à J35 : seule l'escalade J60 alerte.
+    expect(alertes.find((x) => x.code === "facture_impayee_j60")).toBeUndefined();
+  });
+
+  it("le code facture_impayee_j30 reste au CATALOGUE (résolution auto des alertes en base)", () => {
+    // Le retirer figerait à vie les alertes déjà créées : `synchroniserAlertes`
+    // ne résout que les codes présents avec `resolutionAuto: true`.
+    expect(ALERTE_CATALOGUE["facture_impayee_j30"]).toBeDefined();
+    expect(ALERTE_CATALOGUE["facture_impayee_j30"]?.resolutionAuto).toBe(true);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle facture SANS ÉCHÉANCE (filet de sécurité du recouvrement)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — facture émise sans échéance", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("alerte sur une facture ouverte dont l'échéance est nulle", async () => {
+    mp.factureFormation.findMany.mockResolvedValue([
+      {
+        id: "fac-sans-echeance",
+        numero: "AXI-FACT-2026-001",
+        statut: "emise",
+        emiseAt: new Date("2026-08-01T09:00:00Z"),
+        echeanceAt: null,
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "facture_sans_echeance");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("FactureFormation");
+    expect(a?.cibleId).toBe("fac-sans-echeance");
+    // Le message doit DIRE la conséquence, pas seulement constater le manque.
+    expect(a?.message).toContain("AXI-FACT-2026-001");
+    expect(a?.message).toContain("INVISIBLE");
+  });
+
+  it("n'alerte PAS quand l'échéance est renseignée", async () => {
+    mp.factureFormation.findMany.mockResolvedValue([
+      {
+        id: "fac-ok",
+        numero: "AXI-FACT-2026-002",
+        statut: "en_retard",
+        emiseAt: new Date("2026-06-01T09:00:00Z"),
+        echeanceAt: new Date("2026-07-01T09:00:00Z"),
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "facture_sans_echeance")).toBeUndefined();
+  });
+
+  it("le code est au catalogue, en résolution automatique", () => {
+    expect(ALERTE_CATALOGUE["facture_sans_echeance"]).toBeDefined();
+    expect(ALERTE_CATALOGUE["facture_sans_echeance"]?.resolutionAuto).toBe(true);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle RELANCE SANS EFFET (« des alertes pour les relances passées »)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — relance envoyée sans effet", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  const ilYA = (jours: number) => new Date(Date.now() - jours * 24 * 60 * 60 * 1000);
+
+  it("alerte quand une relance envoyée il y a +15 j n'a produit aucun encaissement", async () => {
+    mp.relanceProposee.findMany.mockResolvedValue([
+      {
+        palier: "j30",
+        traiteeAt: ilYA(20),
+        factureFormationId: "fac-010",
+        factureFormation: { id: "fac-010", numero: "AXI-FACT-2026-010", payments: [] },
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "relance_sans_effet");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("FactureFormation");
+    expect(a?.cibleId).toBe("fac-010");
+    expect(a?.message).toContain("AXI-FACT-2026-010");
+  });
+
+  // 🔴 Un versement partiel arrivé APRÈS la relance prouve qu'elle a porté,
+  // même si le solde reste dû. Alerter alors ignorerait la réponse du client.
+  it("n'alerte PAS si un encaissement est arrivé depuis l'envoi", async () => {
+    mp.relanceProposee.findMany.mockResolvedValue([
+      {
+        palier: "j30",
+        traiteeAt: ilYA(20),
+        factureFormationId: "fac-011",
+        factureFormation: {
+          id: "fac-011",
+          numero: "AXI-FACT-2026-011",
+          payments: [{ paidAt: ilYA(5) }],
+        },
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "relance_sans_effet")).toBeUndefined();
+  });
+
+  it("un encaissement ANTÉRIEUR à la relance ne compte pas comme une réponse", async () => {
+    mp.relanceProposee.findMany.mockResolvedValue([
+      {
+        palier: "j15",
+        traiteeAt: ilYA(20),
+        factureFormationId: "fac-012",
+        factureFormation: {
+          id: "fac-012",
+          numero: "AXI-FACT-2026-012",
+          payments: [{ paidAt: ilYA(40) }],
+        },
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "relance_sans_effet")).toBeDefined();
+  });
+
+  it("une seule alerte par FACTURE, même si plusieurs paliers sont restés sans effet", async () => {
+    mp.relanceProposee.findMany.mockResolvedValue([
+      {
+        palier: "j30",
+        traiteeAt: ilYA(18),
+        factureFormationId: "fac-013",
+        factureFormation: { id: "fac-013", numero: "AXI-FACT-2026-013", payments: [] },
+      },
+      {
+        palier: "j15",
+        traiteeAt: ilYA(40),
+        factureFormationId: "fac-013",
+        factureFormation: { id: "fac-013", numero: "AXI-FACT-2026-013", payments: [] },
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    const relanceAlertes = alertes.filter((x) => x.code === "relance_sans_effet");
+    expect(relanceAlertes).toHaveLength(1);
+    // La PLUS RÉCENTE est retenue (le findMany est trié `traiteeAt` desc).
+    expect(relanceAlertes[0]?.message).toContain("J+30");
+  });
+
+  it("n'alerte pas sur une relance envoyée il y a moins de 15 jours", async () => {
+    mp.relanceProposee.findMany.mockResolvedValue([
+      {
+        palier: "j1",
+        traiteeAt: ilYA(3),
+        factureFormationId: "fac-014",
+        factureFormation: { id: "fac-014", numero: "AXI-FACT-2026-014", payments: [] },
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "relance_sans_effet")).toBeUndefined();
+  });
+
+  it("le code est au catalogue, en résolution automatique", () => {
+    expect(ALERTE_CATALOGUE["relance_sans_effet"]).toBeDefined();
+    expect(ALERTE_CATALOGUE["relance_sans_effet"]?.resolutionAuto).toBe(true);
   });
 });
 

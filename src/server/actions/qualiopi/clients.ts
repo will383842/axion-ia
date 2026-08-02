@@ -121,6 +121,18 @@ const updateClientSchema = z.object({
   contexteIa: z.string().optional(),
   notes: z.string().optional(),
   besoinsIdentifies: z.unknown().optional(),
+  /**
+   * Applique-t-on les pénalités de retard (art. L.441-10) à ce client ?
+   *
+   * 🔴 `false` par défaut au schéma, et ce défaut est une décision produit :
+   * facturer des pénalités à tout le monde est commercialement destructeur. On
+   * coche client par client.
+   *
+   * ⚠️ Gouverne l'APPLICATION des frais (montant chiffré dans une relance et sur
+   * la fiche client), JAMAIS la MENTION légale — obligatoire sur toute facture
+   * entre professionnels et imprimée sans condition. Cf. `financements/penalites.ts`.
+   */
+  penalitesRetardActives: z.boolean().optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -300,6 +312,9 @@ export async function updateClientAction(
       ...(fields.notes !== undefined ? { notes: fields.notes } : {}),
       ...(fields.besoinsIdentifies !== undefined
         ? { besoinsIdentifies: fields.besoinsIdentifies as never }
+        : {}),
+      ...(fields.penalitesRetardActives !== undefined
+        ? { penalitesRetardActives: fields.penalitesRetardActives }
         : {}),
     },
   });

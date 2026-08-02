@@ -32,6 +32,16 @@ export interface QualiopiNavCounts {
   emails: number;
   /** Alertes système actives non lues (évaluateur quotidien 07:00). */
   alertes: number;
+  /**
+   * Relances de recouvrement en attente d'un clic (hub facturation).
+   *
+   * 🔴 Manquait entièrement. Les relances proposées n'existaient QUE dans le hub
+   * facturation : ni pastille, ni ligne dans « À traiter ». Un impayé ne se
+   * signalait donc nulle part tant qu'on n'ouvrait pas l'écran — soit
+   * exactement le « on ne sait pas où regarder » que ces compteurs corrigent,
+   * sur le sujet où l'oubli coûte le plus cher.
+   */
+  relances: number;
   /** Somme — la pastille de « À traiter » et du pôle. */
   total: number;
 }
@@ -40,16 +50,18 @@ export const COMPTEURS_VIDES: QualiopiNavCounts = {
   signatures: 0,
   emails: 0,
   alertes: 0,
+  relances: 0,
   total: 0,
 };
 
 /**
- * Calcule les trois compteurs en parallèle. Chacun est indépendamment
+ * Calcule les quatre compteurs en parallèle. Chacun est indépendamment
  * fail-soft : une table indisponible ne doit jamais priver la sidebar des
- * deux autres chiffres — ni, surtout, faire tomber le layout admin entier.
+ * autres chiffres — ni, surtout, faire tomber le layout admin entier.
  */
 export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
-  const [signatures, emails, alertes] = await Promise.all([
+  const now = new Date();
+  const [signatures, emails, alertes, relances] = await Promise.all([
     prisma.documentGenere
       .count({ where: { statutSignature: { in: ["partielle", "en_attente"] } } })
       .catch(() => 0),
@@ -57,6 +69,23 @@ export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
     // `countNonLues` du service — le MÊME compteur que la page Alertes, pas
     // une réécriture du where (ils divergeraient).
     countNonLues().catch(() => 0),
+    // Même définition d'« à traiter » que le hub facturation : jamais traitées,
+    // PLUS les reportées dont l'échéance de report est passée (une relance
+    // reportée doit REVENIR, jamais disparaître). Deux définitions donneraient
+    // un jour deux chiffres — et un badge qui ment n'est plus jamais regardé.
+    prisma.relanceProposee
+      .count({
+        where: {
+          OR: [{ statut: "a_traiter" }, { statut: "reportee", reporteeJusqua: { lte: now } }],
+        },
+      })
+      .catch(() => 0),
   ]);
-  return { signatures, emails, alertes, total: signatures + emails + alertes };
+  return {
+    signatures,
+    emails,
+    alertes,
+    relances,
+    total: signatures + emails + alertes + relances,
+  };
 }
