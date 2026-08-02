@@ -55,6 +55,12 @@ export type ActivityIconKey =
 
 /** Famille d'icône + nom du domaine, dérivés du premier segment de la clé. */
 const DOMAINES: ReadonlyArray<readonly [prefixe: string, icone: ActivityIconKey, nom: string]> = [
+  // Clés vues en production le 2026-08-02 sans entrée dédiée : le repli
+  // humanisant donnait « Auth 2fa setup started » — lisible mais anglais.
+  ["auth.2fa", "reglage", "Double authentification"],
+  ["auth", "reglage", "Connexion"],
+  ["submission", "document", "Soumission"],
+  ["qualiopi.facture.pdf", "facturation", "Document PDF"],
   ["qualiopi.coaching", "coaching", "Coaching"],
   ["qualiopi.emargement", "signature", "Émargement"],
   ["qualiopi.document", "document", "Document"],
@@ -93,6 +99,8 @@ const VERBES: Readonly<Record<string, string>> = {
   creer: "créé",
   created: "créé",
   new: "créé",
+  setup_started: "configuré",
+  exported: "exporté",
   update: "modifié",
   updated: "modifié",
   updater: "modifié",
@@ -156,6 +164,8 @@ const VERBES: Readonly<Record<string, string>> = {
  */
 const OBJETS_FEMININS: ReadonlySet<string> = new Set([
   "relance",
+  "authentification",
+  "soumission",
   "facture",
   "convention",
   "piece",

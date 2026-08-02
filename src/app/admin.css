@@ -24,7 +24,10 @@
      minuscule, espacement nul (rendu "HTML brut"). */
   :where(.admin-layout, .admin-v2, .admin-layout-v2) {
     /* ----- Surfaces ----- */
-    --color-admin-bg: #f7f5f0; /* canvas admin légèrement plus froid que public */
+    /* Passe « pep's » 2026-08-02 (retour Will : « manque de contraste sur
+       toutes les pages ») : canvas approfondi d'un cran — les cartes blanches
+       et leurs ombres se détachent enfin au lieu de se fondre. */
+    --color-admin-bg: #f1ede3;
     --color-admin-paper: #ffffff; /* surface cards/tables */
     --color-admin-paper-alt: #faf8f3; /* alt rows tables, équivalent --color-bg public */
     --color-admin-surface-hover: #f0e9da; /* hover rows = --color-sand public */
@@ -431,6 +434,91 @@
     padding-right: var(--control-admin-px);
     padding-block: 6px;
     background-image: none;
+  }
+
+  /* ----- Filet de sécurité : boutons jamais stylés -----
+   *
+   * Le reset Tailwind (preflight) rend un <button> SANS classe totalement
+   * invisible : fond transparent, aucune bordure — il se lit comme du texte
+   * posé là. L'audit du 2026-08-02 en compte 223 dans la console, écrits à la
+   * main au fil des mois. C'est le « manque d'encadrement de certains
+   * boutons » constaté en production.
+   *
+   * Ce filet donne à ces boutons NÉGLIGÉS le rendu du bouton secondaire de la
+   * charte. Étant en couche `base`, il perd contre toute classe utilitaire :
+   * un bouton que sa page a réellement stylé garde son rendu. Exclusions :
+   *   - `admin-button*`   : déjà pris en charge par les classes hors couche ;
+   *   - `bg-*`            : la page a posé un fond → choix de design assumé ;
+   *   - `absolute`/`fixed`: boutons-calques (surfaces cliquables invisibles)
+   *     qu'un fond et une bordure rendraient soudain visibles par-dessus le
+   *     contenu.
+   */
+  :where(.admin-layout-v2, .admin-layout)
+    button:not(
+      [class*="admin-button"],
+      [class*="bg-"],
+      [class*="absolute"],
+      [class*="fixed"],
+      [class*="unstyled"]
+    ) {
+    min-height: var(--control-admin-h-sm);
+    padding: 0 var(--space-admin-5);
+    border: 1px solid var(--color-admin-border-strong);
+    border-radius: var(--radius-admin-md);
+    background-color: var(--color-admin-paper);
+    color: var(--color-admin-fg);
+    font-size: var(--text-admin-sm);
+    font-weight: 500;
+    line-height: var(--lh-admin-tight);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-admin-fast) var(--easing-admin),
+      border-color var(--duration-admin-fast) var(--easing-admin);
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    button:not(
+      [class*="admin-button"],
+      [class*="bg-"],
+      [class*="absolute"],
+      [class*="fixed"],
+      [class*="unstyled"]
+    )
+    :is(svg) {
+    vertical-align: middle;
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    button:not(
+      [class*="admin-button"],
+      [class*="bg-"],
+      [class*="absolute"],
+      [class*="fixed"],
+      [class*="unstyled"]
+    ):hover:not(:disabled, [aria-disabled="true"]) {
+    background-color: var(--color-admin-surface-hover);
+    border-color: var(--color-admin-fg-disabled);
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    button:not(
+      [class*="admin-button"],
+      [class*="bg-"],
+      [class*="absolute"],
+      [class*="fixed"],
+      [class*="unstyled"]
+    ):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
+  }
+  :where(.admin-layout-v2, .admin-layout)
+    button:not(
+      [class*="admin-button"],
+      [class*="bg-"],
+      [class*="absolute"],
+      [class*="fixed"],
+      [class*="unstyled"]
+    ):disabled {
+    background-color: var(--color-admin-surface-sunken);
+    color: var(--color-admin-fg-disabled);
+    cursor: not-allowed;
   }
 
   /* ----- Cases à cocher et boutons radio ----- */
@@ -906,6 +994,13 @@
  * 13 sites d'appel restent valides, sans divergence possible.
  * =============================================================*/
 .admin-button {
+  box-shadow: var(--shadow-admin-1);
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, white 14%, transparent),
+    transparent 55%
+  );
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -989,10 +1084,12 @@
   border: 1px solid var(--color-admin-border);
   border-radius: var(--radius-admin-md);
   background-color: var(--color-admin-paper);
-  color: var(--color-admin-fg-soft);
+  /* Passe « pep's » 2026-08-02 : le fantôme parlait gris — une action se
+     lisait comme du texte mort. Voix accent (4,90:1 sur blanc, AA). */
+  color: var(--color-admin-accent);
   cursor: pointer;
   font-size: var(--text-admin-sm);
-  font-weight: 500;
+  font-weight: 600;
   line-height: var(--lh-admin-tight);
   text-decoration: none;
   white-space: nowrap;
@@ -1001,8 +1098,9 @@
     color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
-  background-color: var(--color-admin-surface-hover);
-  color: var(--color-admin-fg);
+  background-color: var(--color-admin-accent-track);
+  border-color: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
+  color: var(--color-admin-accent);
 }
 .admin-button-ghost:focus-visible {
   outline: none;
@@ -1024,6 +1122,8 @@
 
 /* Destructive — 🔴 également référencée 7 fois et jamais définie. */
 .admin-button-danger {
+  box-shadow: var(--shadow-admin-1);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1062,6 +1162,14 @@
   min-height: var(--control-admin-h-sm);
   padding-inline: var(--space-admin-5);
   font-size: var(--text-admin-sm);
+}
+
+/* Micro-interaction : l'action ENFONCE — retour tactile discret, sans
+   translation de mise en page (transform ne participe pas au flux). */
+.admin-button:active:not(:disabled),
+.admin-button-secondary:active:not(:disabled),
+.admin-button-danger:active:not(:disabled) {
+  transform: translateY(0.5px) scale(0.995);
 }
 
 /* Bouton pleine largeur — formulaires verticaux étroits (connexion, 2FA).
