@@ -6,6 +6,7 @@
 // GSC. Appelle les server actions et rafraîchit via router.refresh().
 
 import Link from "next/link";
+import { Globe, Pencil, Check, Copy } from "lucide-react";
 import { useState, useTransition, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
@@ -322,7 +323,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                   className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
                   aria-label={`Voir ${displayPath}`}
                 >
-                  🌐
+                  <Globe size={14} aria-hidden="true" />
                 </a>
               )}
               {route.editable && route.editorRoute && (
@@ -332,7 +333,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
                   className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-info-soft)] hover:text-[color:var(--color-admin-info)]"
                   aria-label={`Éditer ${displayPath}`}
                 >
-                  ✏️
+                  <Pencil size={14} aria-hidden="true" />
                 </a>
               )}
             </div>
@@ -383,7 +384,7 @@ function CopyUrlButton({ url, disabled }: { url: string; disabled?: boolean }) {
           : "text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
       } disabled:cursor-not-allowed disabled:opacity-30`}
     >
-      {copied ? "✓" : "📋"}
+      {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
     </button>
   );
 }

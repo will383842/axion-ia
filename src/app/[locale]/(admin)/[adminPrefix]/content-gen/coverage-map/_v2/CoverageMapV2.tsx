@@ -11,7 +11,7 @@
 import { useDeferredValue, useMemo, useRef, useState } from "react";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { CheckCircle2, Gauge, MapPin, TrendingUp } from "lucide-react";
+import { CheckCircle2, Gauge, MapPin, TrendingUp, Pin } from "lucide-react";
 
 import {
   AdminBadge,
@@ -375,7 +375,9 @@ function CityRowRender({ city, style }: CityRowRenderProps): React.ReactElement 
     >
       <span className="col-span-1 text-[color:var(--color-admin-fg-soft)]">#{city.rank}</span>
       <span className="col-span-3 flex items-center gap-1 truncate font-medium text-[color:var(--color-admin-fg)]">
-        {city.pinned ? "📌" : ""}
+        {city.pinned ? (
+          <Pin size={12} aria-label="Ville épinglée" className="inline align-[-1px]" />
+        ) : null}
         {city.villeSlug}
       </span>
       <span className="col-span-1 text-right text-[color:var(--color-admin-fg-soft)]">

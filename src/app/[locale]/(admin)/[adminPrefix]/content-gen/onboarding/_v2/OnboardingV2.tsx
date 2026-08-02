@@ -2,7 +2,7 @@
 //
 // Onboarding V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminButton } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import {
@@ -13,6 +13,26 @@ import { requireAdmin } from "@/server/actions/content-gen/_auth";
 
 interface Props {
   adminPrefix: string;
+}
+
+/**
+ * État d'une étape d'onboarding.
+ *
+ * Les trois étapes affichaient ✅ ou ⏳, deux glyphes dont le rendu dépend de
+ * la police du poste et qui n'annonçaient rien à la synthèse vocale. Coche et
+ * horloge, avec un nom accessible explicite (« Étape terminée » / « Étape à
+ * faire »), portent la même information à l'œil comme à l'oreille.
+ */
+function EtapeIcone({ faite }: { faite: boolean }): React.ReactElement {
+  const Icone = faite ? CheckCircle2 : Clock;
+  return (
+    <Icone
+      size={15}
+      aria-label={faite ? "Étape terminée" : "Étape à faire"}
+      className="inline shrink-0 align-[-2px]"
+      style={{ color: faite ? "var(--color-admin-success)" : "var(--color-admin-fg-muted)" }}
+    />
+  );
 }
 
 export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactElement> {
@@ -40,8 +60,8 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
         <h2 className="admin-h2">Statut</h2>
         <ul className="admin-meta-block">
           <li>
-            {providersConfigured >= 4 ? "✅" : "⏳"} <strong>Étape 1 — Providers IA</strong> ·{" "}
-            {providersConfigured}/4 minimum
+            <EtapeIcone faite={providersConfigured >= 4} /> <strong>Étape 1 — Providers IA</strong>{" "}
+            · {providersConfigured}/4 minimum
             {providersConfigured < 4 ? (
               <>
                 {" · "}
@@ -57,7 +77,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             ) : null}
           </li>
           <li>
-            {manon ? "✅" : "⏳"} <strong>Étape 2 — Profil auteur Manon</strong>
+            <EtapeIcone faite={manon !== null} /> <strong>Étape 2 — Profil auteur Manon</strong>
             {!manon ? (
               // Audit UX 2026-08-01 (Défaut 3, P0) — cette étape crée la ligne
               // AuthorProfile en base ; aucun bouton console ne le fait (la
@@ -81,7 +101,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             )}
           </li>
           <li>
-            {distribProfiles >= 1 ? "✅" : "⏳"}{" "}
+            <EtapeIcone faite={distribProfiles >= 1} />{" "}
             <strong>Étape 3 — Profil distribution par défaut</strong>
             {distribProfiles < 1 ? (
               <>

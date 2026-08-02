@@ -105,8 +105,8 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
 
       {/* Note exclusions */}
       <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] px-4 py-2 text-xs text-[color:var(--color-admin-fg-muted)]">
-        Routes admin <code>/[adminPrefix]/*</code> : non cataloguées — ❌ Routes API{" "}
-        <code>/api/*</code> : non cataloguées — ❌ Server Actions : non cataloguées
+        Routes admin <code>/[adminPrefix]/*</code> : non cataloguées · Routes API{" "}
+        <code>/api/*</code> : non cataloguées · Server Actions : non cataloguées
       </div>
 
       {/* Filtres */}

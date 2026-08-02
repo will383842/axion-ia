@@ -6,7 +6,12 @@
 // SP-04 P1 — liens contextuels template parent + review-queue associée.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminEtatBooleen,
+} from "@/components/admin/ui";
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
@@ -166,7 +171,14 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           </li>
           <li>
             <strong>Doctrine OK :</strong>{" "}
-            {job.doctrineCheckPassed === null ? "—" : job.doctrineCheckPassed ? "✅" : "❌"}
+            {job.doctrineCheckPassed === null ? (
+              "—"
+            ) : (
+              <AdminEtatBooleen
+                actif={job.doctrineCheckPassed}
+                libelles={{ vrai: "Contrôle doctrine réussi", faux: "Contrôle doctrine échoué" }}
+              />
+            )}
           </li>
           <li>
             <strong>Tokens :</strong> in {job.tokensInput ?? 0} / out {job.tokensOutput ?? 0}

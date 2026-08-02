@@ -149,7 +149,7 @@ export async function ReviewQueueListV2({
                     <input type="hidden" name="id" value={r.id} />
                     <SubmitButton
                       variant="ghost"
-                      pendingLabel="✅ …"
+                      pendingLabel="Approbation…"
                       ariaLabel={`Approuver la review ${r.id}`}
                     >
                       Approuver
@@ -160,7 +160,7 @@ export async function ReviewQueueListV2({
                     <input type="hidden" name="notes" value="Rejet rapide via liste" />
                     <SubmitButton
                       variant="ghost"
-                      pendingLabel="❌ …"
+                      pendingLabel="Rejet…"
                       ariaLabel={`Rejeter la review ${r.id}`}
                     >
                       Rejeter

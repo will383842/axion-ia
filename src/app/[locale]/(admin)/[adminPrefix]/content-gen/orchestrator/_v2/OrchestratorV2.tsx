@@ -122,9 +122,11 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
       <AdminCard>
         <h2 className="admin-h2">Pipelines actifs</h2>
         <ul className="admin-meta-block">
-          <li>Pipeline 1 — Landing villes directes (✅ Sprint 1+2)</li>
-          <li>Pipeline 2 — Actualités RSS (⏳ Sprint 4)</li>
-          <li>Pipeline 3 — Campagnes de couverture (✅ Sprint 3 squelette + worker Sprint 4)</li>
+          <li>Pipeline 1 — Landing villes directes (livré — Sprint 1+2)</li>
+          <li>Pipeline 2 — Actualités RSS (à venir — Sprint 4)</li>
+          <li>
+            Pipeline 3 — Campagnes de couverture (livré — Sprint 3 squelette + worker Sprint 4)
+          </li>
         </ul>
       </AdminCard>
     </AdminPageShell>

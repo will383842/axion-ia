@@ -11,6 +11,7 @@
  */
 
 import { useState, useTransition } from "react";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -310,7 +311,7 @@ export function EvaluationForm({
                         aria-label={`Supprimer la compétence ${index + 1}`}
                         className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)] hover:opacity-75"
                       >
-                        ✕
+                        <X size={14} aria-hidden="true" />
                       </button>
                     )}
                   </td>

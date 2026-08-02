@@ -7,7 +7,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, CheckCircle2, AlertTriangle } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminButton } from "@/components/admin/ui";
 import { updatePolicies, type ContentPolicies } from "@/server/actions/content-gen/policies";
 
@@ -17,6 +17,25 @@ interface Props {
   publishedNewsCount: number;
   adminPrefix: string;
   saved?: boolean;
+}
+
+/**
+ * Présence de sources RSS actives.
+ *
+ * Le ✅ et le ⚠️ qui servaient ici se ressemblent à petite taille et ne
+ * disaient rien à la synthèse vocale. Coche ou triangle, avec un nom
+ * accessible, et la couleur ne fait plus que renforcer la forme.
+ */
+function EtatSources({ actives }: { actives: boolean }): React.ReactElement {
+  const Icone = actives ? CheckCircle2 : AlertTriangle;
+  return (
+    <Icone
+      size={15}
+      aria-label={actives ? "Des sources RSS sont actives" : "Aucune source RSS active"}
+      className="inline shrink-0 align-[-2px]"
+      style={{ color: actives ? "var(--color-admin-success)" : "var(--color-admin-warning)" }}
+    />
+  );
 }
 
 export function NewsControlV2({
@@ -63,7 +82,7 @@ export function NewsControlV2({
         <h2 className="admin-h2">État</h2>
         <ul className="admin-meta-block">
           <li>
-            {rssSourceCount > 0 ? "✅" : "⚠️"} <strong>Sources RSS actives :</strong>{" "}
+            <EtatSources actives={rssSourceCount > 0} /> <strong>Sources RSS actives :</strong>{" "}
             {rssSourceCount}
             {rssSourceCount === 0 ? (
               <>

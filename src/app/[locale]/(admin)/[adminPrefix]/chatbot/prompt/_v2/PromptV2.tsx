@@ -10,6 +10,7 @@ import {
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import type { PromptVersionSummary } from "@/server/chatbot/generation/prompt-version";
+import { AlertTriangle, FileText } from "lucide-react";
 import { PromptActivateButton } from "./PromptActivateButton";
 import { PromptCreateForm } from "./PromptCreateForm";
 
@@ -33,7 +34,7 @@ export function PromptV2({
         <AdminPageHeader title="Prompt versionné" />
         <AdminCard>
           <AdminEmptyState
-            icon="⚠️"
+            icon={<AlertTriangle size={28} aria-hidden="true" />}
             title="Tenant chatbot introuvable"
             description="Le tenant par défaut « axion-ia » n'est pas seedé."
           />
@@ -84,7 +85,7 @@ export function PromptV2({
           }
           emptyState={
             <AdminEmptyState
-              icon="📝"
+              icon={<FileText size={28} aria-hidden="true" />}
               title="Aucune version publiée"
               description="Le chatbot utilise les règles système codées par défaut. Créez une version pour les surcharger."
             />

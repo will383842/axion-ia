@@ -5,6 +5,7 @@
 // SP-04 P0-13 — section Historique de décision (4 champs DB reviewedBy/reviewNotes/reviewedAt/promotedToTier1At).
 
 import { auth } from "@/auth";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import {
@@ -160,7 +161,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
                   title="Bon article"
                   disabled={feedbackAlreadyExists}
                 >
-                  👍 Bon
+                  <ThumbsUp size={14} aria-hidden="true" /> Bon
                 </button>
               </form>
               <form action={submitFeedback}>
@@ -172,7 +173,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
                   title="À améliorer"
                   disabled={feedbackAlreadyExists}
                 >
-                  👎 À améliorer
+                  <ThumbsDown size={14} aria-hidden="true" /> À améliorer
                 </button>
               </form>
             </div>

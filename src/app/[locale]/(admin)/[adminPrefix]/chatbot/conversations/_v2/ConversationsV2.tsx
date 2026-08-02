@@ -1,6 +1,6 @@
 // Conversations chatbot — liste read-only avec lien détail (T-19). FR-only.
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, MessagesSquare } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -68,7 +68,12 @@ export function ConversationsV2({
               Voir
             </AdminButton>
           )}
-          emptyState={<AdminEmptyState icon="💬" title="Aucune conversation" />}
+          emptyState={
+            <AdminEmptyState
+              icon={<MessagesSquare size={28} aria-hidden="true" />}
+              title="Aucune conversation"
+            />
+          }
         />
 
         <AdminPagination page={page} totalPages={totalPages} baseHref={base} />

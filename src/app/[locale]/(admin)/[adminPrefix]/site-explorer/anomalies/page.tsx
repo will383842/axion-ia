@@ -91,7 +91,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
       {anomalies.length === 0 ? (
         <div className="rounded-lg border border-[color:var(--color-admin-success)] bg-[color:var(--color-admin-success-soft)] py-8 text-center">
           <p className="font-medium text-[color:var(--color-admin-success-fg)]">
-            🎉 Aucune anomalie active
+            Aucune anomalie active
           </p>
         </div>
       ) : (

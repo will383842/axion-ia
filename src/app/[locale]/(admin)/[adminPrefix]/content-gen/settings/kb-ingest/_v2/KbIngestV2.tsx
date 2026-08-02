@@ -8,6 +8,7 @@
 // (accepted / rejected / rejectReason) via useActionState au lieu de le jeter.
 
 import { useActionState } from "react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import type {
   IngestSitemapResult,
@@ -89,7 +90,8 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
           <div style={{ marginTop: "1rem" }}>
             {urlState.result.accepted ? (
               <p>
-                ✅ <strong>Acceptée</strong>
+                <CheckCircle2 size={14} aria-hidden="true" className="inline align-[-2px]" />{" "}
+                <strong>Acceptée</strong>
                 {urlState.result.title ? <> — {urlState.result.title}</> : null}
                 {typeof urlState.result.wordCount === "number" ? (
                   <> · {urlState.result.wordCount} mots</>
@@ -97,8 +99,8 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
               </p>
             ) : (
               <p style={{ color: "crimson" }}>
-                ❌ <strong>Rejetée</strong> —{" "}
-                {urlState.result.rejectReason ?? urlState.result.status}
+                <XCircle size={14} aria-hidden="true" className="inline align-[-2px]" />{" "}
+                <strong>Rejetée</strong> — {urlState.result.rejectReason ?? urlState.result.status}
               </p>
             )}
           </div>
@@ -159,7 +161,8 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
         {sitemapState.status === "ok" && sitemapState.result && (
           <div style={{ marginTop: "1rem" }}>
             <p>
-              ✅ <strong>{sitemapState.result.accepted}</strong> acceptée(s) ·{" "}
+              <CheckCircle2 size={14} aria-hidden="true" className="inline align-[-2px]" />{" "}
+              <strong>{sitemapState.result.accepted}</strong> acceptée(s) ·{" "}
               <strong>{sitemapState.result.rejected}</strong> rejetée(s) ·{" "}
               <strong>{sitemapState.result.processed}</strong> traitée(s) sur{" "}
               <strong>{sitemapState.result.totalUrls}</strong> URL(s) du sitemap

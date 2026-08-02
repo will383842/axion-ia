@@ -246,7 +246,7 @@ export async function CityCoverageV2({ adminPrefix }: Props): Promise<React.Reac
           <li>
             <strong>Contrat zéro invention</strong> : chaque entrée data doit avoir un champ{" "}
             <code>source</code> (URL INSEE, competitivite.gouv.fr, CCI locale, Wikipédia, site
-            officiel pôle). Sans source → champ vide. Le badge 🔗 indique sourcé.
+            officiel pôle). Sans source → champ vide. L'icône de lien indique une donnée sourcée.
           </li>
           <li>
             <strong>Fond avant forme</strong> : on remplit la matière (data + KB sectorielles)

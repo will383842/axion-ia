@@ -69,7 +69,7 @@ function coverageBar(covered: number, total: number): React.ReactElement {
 }
 
 function cityStateIcon(city: CityRow): string {
-  if (city.isCovered && city.articlesCount > 0) return "✅";
+  if (city.isCovered && city.articlesCount > 0) return "Couverte";
   if (city.articlesCount > 0) return "⏳";
   return "⏸️";
 }

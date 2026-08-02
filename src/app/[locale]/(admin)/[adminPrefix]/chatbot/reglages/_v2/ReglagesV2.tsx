@@ -8,6 +8,7 @@ import {
   AdminBadge,
 } from "@/components/admin/ui";
 import type { ChatbotSettingsView } from "@/features/admin-chatbot/actions";
+import { AlertTriangle } from "lucide-react";
 import { ReglagesForm } from "./ReglagesForm";
 
 function Row({ label, value }: { label: string; value: React.ReactNode }): React.ReactElement {
@@ -28,7 +29,7 @@ export function ReglagesV2({ data }: { data: ChatbotSettingsView | null }): Reac
         <AdminPageHeader title="Réglages" />
         <AdminCard>
           <AdminEmptyState
-            icon="⚠️"
+            icon={<AlertTriangle size={28} aria-hidden="true" />}
             title="Tenant chatbot introuvable"
             description="Le tenant par défaut « axion-ia » n'est pas seedé."
           />

@@ -11,6 +11,7 @@
  */
 
 import { useState, useTransition } from "react";
+import { CheckCircle2, AlertTriangle } from "lucide-react";
 import { reseedReferenceDataAction } from "@/server/actions/qualiopi/seed";
 
 interface ReferenceStatus {
@@ -18,6 +19,19 @@ interface ReferenceStatus {
   configKeysSet: number;
   configKeysTotal: number;
   grilleActiveCle: string | null;
+}
+
+/** Présence d'un élément de référentiel — forme distincte, nom accessible. */
+function EtatSeed({ ok }: { ok: boolean }): React.ReactElement {
+  const Icone = ok ? CheckCircle2 : AlertTriangle;
+  return (
+    <Icone
+      size={15}
+      aria-label={ok ? "Présent" : "Manquant"}
+      className="inline shrink-0 align-[-2px]"
+      style={{ color: ok ? "var(--color-admin-success)" : "var(--color-admin-warning)" }}
+    />
+  );
 }
 
 export function SeedReferenceDataButton({
@@ -62,7 +76,7 @@ export function SeedReferenceDataButton({
             Offres
           </dt>
           <dd className="text-[length:var(--text-admin-sm)]">
-            {offresOk ? "✅" : "⚠️"} {status.offresCount} offre(s)
+            <EtatSeed ok={offresOk} /> {status.offresCount} offre(s)
           </dd>
         </div>
         <div>
@@ -78,7 +92,7 @@ export function SeedReferenceDataButton({
             Grille qualité active
           </dt>
           <dd className="text-[length:var(--text-admin-sm)]">
-            {grilleOk ? `✅ ${status.grilleActiveCle}` : "⚠️ aucune"}
+            {grilleOk ? status.grilleActiveCle : "aucune"}
           </dd>
         </div>
       </dl>

@@ -10,6 +10,7 @@
  */
 
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminPagination } from "@/components/admin/ui";
+import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordSeed } from "@/content/keywords/types";
 
@@ -137,12 +138,24 @@ export async function KeywordStrategyV2({
           {Object.keys(VERTICAL_LABELS).map((v) => {
             const count = byVertical[v] ?? 0;
             const pct = seeds.length > 0 ? Math.round((count / seeds.length) * 100) : 0;
-            const status = count >= 250 ? "✅" : count >= 150 ? "⚠️" : "🔴";
+            const StatutIcone =
+              count >= 250 ? CheckCircle2 : count >= 150 ? AlertTriangle : XCircle;
+            const statutLibelle =
+              count >= 250
+                ? "Couverture suffisante"
+                : count >= 150
+                  ? "Couverture juste"
+                  : "Couverture insuffisante";
             return (
               <div key={v}>
                 <div className="mb-1 flex items-center justify-between text-sm">
                   <span className="font-medium">
-                    {status} {VERTICAL_LABELS[v]}
+                    <StatutIcone
+                      size={14}
+                      aria-label={statutLibelle}
+                      className="inline shrink-0 align-[-2px]"
+                    />{" "}
+                    {VERTICAL_LABELS[v]}
                   </span>
                   <span className="text-[color:var(--color-admin-fg-muted)]">
                     {count.toLocaleString("fr-FR")} ({pct}%)

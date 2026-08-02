@@ -2,6 +2,7 @@
 // use-client: useEditor hook Tiptap + state pour bind html/json/text avec hidden inputs form.
 
 import { EditorContent, useEditor } from "@tiptap/react";
+import { Quote } from "lucide-react";
 import StarterKit from "@tiptap/starter-kit";
 import { useState } from "react";
 
@@ -124,7 +125,7 @@ export function TiptapEditor({ name, initialHtml = "", placeholder }: Props) {
             className={editor.isActive("blockquote") ? "tiptap-btn-active" : ""}
             aria-label="Citation"
           >
-            ❝
+            <Quote size={15} aria-hidden="true" />
           </button>
           <button
             type="button"

@@ -69,7 +69,7 @@ export function KitImporter(): React.ReactElement {
         setFile(null);
         if (inputRef.current) inputRef.current.value = "";
         setMessage(
-          "Import lancé ✓ — les documents se rangent en arrière-plan. Le récap apparaît ci-dessous dans quelques secondes.",
+          "Import lancé — les documents se rangent en arrière-plan. Le récap apparaît ci-dessous dans quelques secondes.",
         );
         refreshSoon();
       } catch {

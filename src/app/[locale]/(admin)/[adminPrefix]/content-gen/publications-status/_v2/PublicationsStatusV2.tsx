@@ -3,6 +3,7 @@
 // Publications-status kanban V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
+import { RefreshCw } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -121,7 +122,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
           </form>
           <form action={doRetryFailed}>
             <button type="submit" className="admin-button-ghost">
-              🔁 Relancer tous les échecs
+              <RefreshCw size={14} aria-hidden="true" /> Relancer tous les échecs
             </button>
           </form>
         </div>

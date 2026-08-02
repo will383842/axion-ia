@@ -15,6 +15,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminEtatBooleen,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import {
@@ -57,12 +58,23 @@ export async function RssListV2({ adminPrefix }: Props): Promise<React.ReactElem
     },
     { key: "tags", header: "Tags", cell: (s) => s.tags.join(", ") },
     { key: "poll", header: "Poll (min)", cell: (s) => s.pollIntervalMin },
-    { key: "autoPublish", header: "Auto-pub", cell: (s) => (s.autoPublish ? "✅" : "—") },
+    {
+      key: "autoPublish",
+      header: "Auto-pub",
+      cell: (s) => (
+        <AdminEtatBooleen
+          actif={s.autoPublish}
+          libelles={{ vrai: "Publication automatique", faux: "Publication manuelle" }}
+        />
+      ),
+    },
     {
       key: "enabled",
       header: "Actif",
       cell: (s) => (
-        <AdminBadge tone={s.enabled ? "success" : "neutral"}>{s.enabled ? "✅" : "🚫"}</AdminBadge>
+        <AdminBadge tone={s.enabled ? "success" : "neutral"}>
+          {s.enabled ? "Activée" : "Désactivée"}
+        </AdminBadge>
       ),
     },
   ];

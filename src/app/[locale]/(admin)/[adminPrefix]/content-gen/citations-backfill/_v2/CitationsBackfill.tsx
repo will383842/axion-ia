@@ -72,7 +72,7 @@ export function CitationsBackfill() {
         setDone(true);
         setStatus({
           kind: "info",
-          message: `Terminé ✅ — ${nextCumul.processed} article(s) scanné(s) sur ${nextCumul.batches} lot(s), ${nextCumul.updated} avec sources, ${nextCumul.citations} citation(s) écrite(s) au total.`,
+          message: `Terminé — ${nextCumul.processed} article(s) scanné(s) sur ${nextCumul.batches} lot(s), ${nextCumul.updated} avec sources, ${nextCumul.citations} citation(s) écrite(s) au total.`,
         });
       } else {
         setStatus({

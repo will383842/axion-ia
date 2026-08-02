@@ -11,6 +11,7 @@ import {
   AdminCard,
   AdminTable,
   AdminEmptyState,
+  AdminEtatBooleen,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import {
@@ -56,7 +57,13 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
     { key: "pattern", header: "Pattern", cell: (r) => <code>{r.pattern}</code> },
     { key: "severity", header: "Sévérité", cell: (r) => r.severity },
     { key: "reason", header: "Raison", cell: (r) => r.reason ?? "—" },
-    { key: "isActive", header: "Actif", cell: (r) => (r.isActive ? "✅" : "🚫") },
+    {
+      key: "isActive",
+      header: "Actif",
+      cell: (r) => (
+        <AdminEtatBooleen actif={r.isActive} libelles={{ vrai: "Actif", faux: "Inactif" }} />
+      ),
+    },
   ];
 
   return (
