@@ -9,6 +9,8 @@
 import { describe, it, expect } from "vitest";
 import {
   resoudreConditions,
+  calculerEcheanceFacture,
+  DELAI_PAIEMENT_DEFAUT_JOURS,
   DELAI_PAIEMENT_MAX_JOURS,
   type DefautsGlobaux,
 } from "./conditions-client";
@@ -197,5 +199,67 @@ describe("Entrées non numériques", () => {
     expect(r.origine.delai).toBe("client");
     expect(r.origine.acompte).toBe("client");
     expect(r.avertissements).toEqual([]);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// calculerEcheanceFacture — l'échéance sans laquelle rien n'est jamais relancé
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("calculerEcheanceFacture", () => {
+  const emise = new Date("2026-08-02T10:30:00Z");
+
+  it("ajoute le délai du client à la date d'émission", () => {
+    expect(calculerEcheanceFacture(emise, 45).toISOString()).toBe("2026-09-16T10:30:00.000Z");
+  });
+
+  it("retombe sur 30 jours quand le client n'a pas de délai propre (null)", () => {
+    expect(calculerEcheanceFacture(emise, null).toISOString()).toBe(
+      calculerEcheanceFacture(emise, DELAI_PAIEMENT_DEFAUT_JOURS).toISOString(),
+    );
+  });
+
+  it("retombe sur 30 jours sur undefined (champ absent, pas « zéro »)", () => {
+    expect(calculerEcheanceFacture(emise, undefined).toISOString()).toBe(
+      calculerEcheanceFacture(emise, 30).toISOString(),
+    );
+  });
+
+  it("plafonne à 60 jours (art. L441-10 — au-delà la clause est illicite)", () => {
+    expect(calculerEcheanceFacture(emise, 365).toISOString()).toBe(
+      calculerEcheanceFacture(emise, DELAI_PAIEMENT_MAX_JOURS).toISOString(),
+    );
+  });
+
+  it("plancher à 1 jour : une échéance le jour même serait échue dès son écriture", () => {
+    const j1 = calculerEcheanceFacture(emise, 1).getTime();
+    expect(calculerEcheanceFacture(emise, 0).getTime()).toBe(j1);
+    expect(calculerEcheanceFacture(emise, -10).getTime()).toBe(j1);
+  });
+
+  it("ne rend JAMAIS une date invalide sur une entrée non numérique", () => {
+    for (const v of [NaN, Infinity, -Infinity]) {
+      const d = calculerEcheanceFacture(emise, v);
+      expect(Number.isNaN(d.getTime())).toBe(false);
+      expect(d.toISOString()).toBe(calculerEcheanceFacture(emise, 30).toISOString());
+    }
+  });
+
+  it("tronque un délai fractionnaire au lieu de produire une heure décalée", () => {
+    expect(calculerEcheanceFacture(emise, 30.9).toISOString()).toBe(
+      calculerEcheanceFacture(emise, 30).toISOString(),
+    );
+  });
+
+  it("ne MUTE pas la date d'émission reçue (souvent réutilisée comme emiseAt)", () => {
+    const source = new Date("2026-08-02T10:30:00Z");
+    calculerEcheanceFacture(source, 30);
+    expect(source.toISOString()).toBe("2026-08-02T10:30:00.000Z");
+  });
+
+  it("l'échéance est TOUJOURS strictement postérieure à l'émission", () => {
+    for (const v of [null, undefined, 0, -5, 1, 30, 60, 999, NaN]) {
+      expect(calculerEcheanceFacture(emise, v).getTime()).toBeGreaterThan(emise.getTime());
+    }
   });
 });

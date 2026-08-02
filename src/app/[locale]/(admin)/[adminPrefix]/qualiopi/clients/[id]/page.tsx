@@ -302,6 +302,19 @@ export default async function FicheClient360Page({ params }: PageProps) {
             <p className={infoLabelCls}>Adresse</p>
             <p className={infoValueCls}>{adresse ?? "—"}</p>
           </div>
+          {/* Pénalités de retard : APPLICATION opt-in, désactivée par défaut.
+              Affiché sur la fiche parce que c'est une décision commerciale qu'on
+              doit pouvoir constater sans ouvrir le formulaire d'édition.
+              ⚠️ Ne dit RIEN des mentions légales, imprimées sans condition sur
+              toute facture (art. L.441-9 / L.441-10 / D.441-5). */}
+          <div className="col-span-2 sm:col-span-4">
+            <p className={infoLabelCls}>Pénalités de retard</p>
+            <p className={infoValueCls}>
+              {client.penalitesRetardActives
+                ? "Appliquées à ce client (chiffrées dans les relances)"
+                : "Non appliquées (mentions légales imprimées sur les factures dans tous les cas)"}
+            </p>
+          </div>
         </div>
       </section>
 

@@ -168,6 +168,44 @@ describe("agregerParMois — encaissements attendus", () => {
     const lignes = agregerParMois([], [fact("s1", "emise", 99_000, null)], NOW);
     expect(lignes).toHaveLength(0);
   });
+
+  // 🔴 Le défaut central : le cron de 06:30 bascule en `en_retard` toute facture
+  // échue, et le calcul ne regardait QUE `emise`. Les deux colonnes de
+  // trésorerie affichaient donc ≈ 0 en permanence.
+  it("une facture EN RETARD compte en encaissement attendu (même argent dû)", () => {
+    const lignes = agregerParMois(
+      [],
+      [fact("s1", "en_retard", 80_000, "2026-06-30T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-06")?.encaissementsAttendusCents).toBe(80_000);
+  });
+
+  it("une facture PARTIELLEMENT PAYÉE compte en encaissement attendu (solde dû)", () => {
+    const lignes = agregerParMois(
+      [],
+      [fact("s1", "partiellement_payee", 60_000, "2026-08-31T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-08")?.encaissementsAttendusCents).toBe(60_000);
+  });
+
+  it("les trois statuts ouverts s'additionnent sur le même mois d'échéance", () => {
+    const lignes = agregerParMois(
+      [],
+      [
+        fact("s1", "emise", 10_000, "2026-09-15T00:00:00Z"),
+        fact("s2", "partiellement_payee", 20_000, "2026-09-20T00:00:00Z"),
+        fact("s3", "en_retard", 30_000, "2026-09-25T00:00:00Z"),
+        // Exclus : ni dus, ni attendus.
+        fact("s4", "payee", 40_000, "2026-09-10T00:00:00Z"),
+        fact("s5", "brouillon", 50_000, "2026-09-11T00:00:00Z"),
+        fact("s6", "annulee", 60_000, "2026-09-12T00:00:00Z"),
+      ],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-09")?.encaissementsAttendusCents).toBe(60_000);
+  });
 });
 
 describe("agregerParMois — reste à facturer", () => {
@@ -209,6 +247,29 @@ describe("agregerParMois — reste à facturer", () => {
     expect(ligne(lignes, "2026-06")?.resteAFacturerCents).toBe(70_000);
   });
 
+  // 🔴 Anti-DOUBLE COMPTAGE : une session facturée et impayée est facturée. La
+  // recompter en « reste à facturer » la ferait peser deux fois (à facturer ET
+  // impayée) et inviterait à réémettre une facture qui existe déjà.
+  it("session réalisée facturée EN RETARD → 0 reste à facturer (déjà facturée)", () => {
+    const lignes = agregerParMois(
+      [sess("s1", "2026-06-10T08:00:00Z", "realisee", 70_000)],
+      [fact("s1", "en_retard", 70_000, "2026-06-30T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-06")?.resteAFacturerCents).toBe(0);
+    // …et elle pèse bien, une seule fois, du côté impayé.
+    expect(ligne(lignes, "2026-06")?.impayesCents).toBe(70_000);
+  });
+
+  it("session réalisée facturée PARTIELLEMENT PAYÉE → 0 reste à facturer", () => {
+    const lignes = agregerParMois(
+      [sess("s1", "2026-06-10T08:00:00Z", "realisee", 70_000)],
+      [fact("s1", "partiellement_payee", 70_000, "2026-07-31T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-06")?.resteAFacturerCents).toBe(0);
+  });
+
   it("une session PLANIFIÉE (non réalisée) n'entre jamais en reste à facturer", () => {
     const lignes = agregerParMois(
       [sess("s1", "2026-08-10T08:00:00Z", "planifiee", 70_000)],
@@ -247,6 +308,24 @@ describe("agregerParMois — impayés", () => {
   it("facture PAYÉE échue ne compte jamais en impayé", () => {
     const lignes = agregerParMois([], [fact("s1", "payee", 45_000, "2026-01-01T00:00:00Z")], NOW);
     expect(ligne(lignes, "2026-01")).toBeUndefined();
+  });
+
+  it("une facture EN RETARD échue compte en impayé (cas nominal après le cron)", () => {
+    const lignes = agregerParMois(
+      [],
+      [fact("s1", "en_retard", 45_000, "2026-05-01T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-05")?.impayesCents).toBe(45_000);
+  });
+
+  it("une facture PARTIELLEMENT PAYÉE échue compte en impayé (reste à charge)", () => {
+    const lignes = agregerParMois(
+      [],
+      [fact("s1", "partiellement_payee", 25_000, "2026-05-01T00:00:00Z")],
+      NOW,
+    );
+    expect(ligne(lignes, "2026-05")?.impayesCents).toBe(25_000);
   });
 });
 

@@ -19,9 +19,20 @@ import {
 
 describe("modeParDefaut", () => {
   it("soumet les emails commerciaux à validation", () => {
-    expect(modeParDefaut("qualiopi-relance-impayee")).toBe("validation");
     expect(modeParDefaut("devis-envoi")).toBe("validation");
     expect(modeParDefaut("facture-envoi")).toBe("validation");
+    expect(modeParDefaut("convention-envoi")).toBe("validation");
+  });
+
+  // 🔴 2026-08-02 — la relance d'impayé est le SEUL email commercial qui part
+  // sans passer par la corbeille, et c'est délibéré : sa validation a lieu en
+  // amont, dans la boîte de dialogue du hub (reste dû net + fraîcheur du
+  // pointage bancaire + case à cocher obligatoire). Deux garages successifs sur
+  // le même envoi produisaient un e-mail qui ne partait jamais, sur une relance
+  // pourtant marquée « envoyée ».
+  it("laisse partir la relance d'impayé : sa validation est faite en amont", () => {
+    expect(modeParDefaut("qualiopi-relance-impayee")).toBe("auto");
+    expect(EMAILS_A_VALIDER_PAR_DEFAUT).not.toContain("qualiopi-relance-impayee");
   });
 
   // 🔴 Le cas qui compte le plus. Retenir une convocation expose un stagiaire à
@@ -56,8 +67,10 @@ describe("resoudreModeEnvoi — précédence", () => {
   });
 
   it("sans aucune règle, retombe sur le défaut par nature", () => {
-    expect(resoudreModeEnvoi("qualiopi-relance-impayee", [])).toBe("validation");
+    expect(resoudreModeEnvoi("devis-envoi", [])).toBe("validation");
     expect(resoudreModeEnvoi("qualiopi-convocation", [])).toBe("auto");
+    // Validée en amont dans la boîte de dialogue du hub, pas en corbeille.
+    expect(resoudreModeEnvoi("qualiopi-relance-impayee", [])).toBe("auto");
   });
 
   it("une règle globale « tous templates » couvre ce que le défaut ne dit pas", () => {
@@ -85,8 +98,18 @@ describe("resoudreModeEnvoi — précédence", () => {
   });
 
   it("permet de RÉACTIVER l'automatique sur un email commercial, par client", () => {
-    // Un client de confiance avec qui Will ne veut plus relire chaque relance.
-    expect(resoudreModeEnvoi("qualiopi-relance-impayee", [client(null, "auto")])).toBe("auto");
+    // Un client de confiance avec qui Will ne veut plus relire chaque devis.
+    expect(resoudreModeEnvoi("devis-envoi", [client(null, "auto")])).toBe("auto");
+  });
+
+  // Le réglage par client reste OPÉRANT sur la relance : un client sensible peut
+  // repasser en relecture en corbeille malgré le défaut « auto ».
+  it("permet de SOUMETTRE une relance à validation pour un client sensible", () => {
+    expect(
+      resoudreModeEnvoi("qualiopi-relance-impayee", [
+        client("qualiopi-relance-impayee", "validation"),
+      ]),
+    ).toBe("validation");
   });
 
   it("permet de SOUMETTRE une convocation à validation, si Will le décide", () => {

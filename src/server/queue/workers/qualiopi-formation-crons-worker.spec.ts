@@ -29,6 +29,15 @@ vi.mock("@/lib/prisma", () => ({
     alerteSysteme: {
       findMany: vi.fn(),
     },
+    // Recouvrement 2026-08-02 — réparation des échéances manquantes.
+    factureFormation: {
+      findMany: vi.fn(),
+      updateMany: vi.fn(),
+    },
+    relanceProposee: {
+      findFirst: vi.fn(),
+      create: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));
@@ -78,6 +87,14 @@ const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
   alerteSysteme: { findMany: ReturnType<typeof vi.fn> };
+  factureFormation: {
+    findMany: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
+  };
+  relanceProposee: {
+    findFirst: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+  };
   $transaction: ReturnType<typeof vi.fn>;
 };
 
@@ -362,5 +379,213 @@ describe("handleAlertes (via formationCronsHandler)", () => {
     ).resolves.toBeUndefined();
 
     expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(3);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests handleFacturesRetard — réparation des échéances manquantes
+//
+// 🔴 Le trou structurel du recouvrement : le `where` filtrait sur
+// `echeanceAt < now`, or aucune comparaison SQL n'est vraie pour NULL. Une
+// facture émise sans échéance n'était donc JAMAIS candidate — ni retard, ni
+// relance, ni alerte. La boucle refermait le trou d'un `continue`.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleFacturesRetard — échéances manquantes (via formationCronsHandler)", () => {
+  const JOUR_MS = 24 * 60 * 60 * 1000;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockPrisma.factureFormation.findMany.mockResolvedValue([]);
+    mockPrisma.factureFormation.updateMany.mockResolvedValue({ count: 1 });
+    mockPrisma.relanceProposee.findFirst.mockResolvedValue(null);
+    mockPrisma.relanceProposee.create.mockResolvedValue({ id: "relance-1" });
+  });
+
+  /** Facture ouverte type, sans échéance, émise il y a `joursEmission` jours. */
+  const factureSansEcheance = (joursEmission: number, delaiClient: number | null = null) => ({
+    id: "fac-1",
+    numero: "AXI-FACT-2026-001",
+    statut: "emise",
+    echeanceAt: null,
+    emiseAt: new Date(Date.now() - joursEmission * JOUR_MS),
+    createdAt: new Date(Date.now() - joursEmission * JOUR_MS),
+    montantTtcCents: 66_000,
+    montantHtCents: 55_000,
+    client: { delaiPaiementJours: delaiClient },
+    payments: [],
+    avoirs: [],
+  });
+
+  const lancer = () =>
+    formationCronsHandler({
+      type: "formation-crons.factures-retard",
+      tick: "2026-08-02T06:30:00Z",
+    });
+
+  it("sélectionne AUSSI les factures à échéance NULLE (le trou d'origine)", async () => {
+    await lancer();
+
+    const args = mockPrisma.factureFormation.findMany.mock.calls[0]![0] as {
+      where: { OR?: Array<Record<string, unknown>>; statut?: { in?: string[] } };
+    };
+    const clausesNull = (args.where.OR ?? []).filter((c) => c["echeanceAt"] === null);
+    expect(clausesNull.length).toBeGreaterThan(0);
+    // …et le filtre de statut part bien du SSOT des statuts ouverts.
+    expect(args.where.statut?.in).toEqual(
+      expect.arrayContaining(["emise", "partiellement_payee", "en_retard"]),
+    );
+  });
+
+  it("RÉPARE l'échéance manquante : emiseAt + délai du client", async () => {
+    // Émise il y a 10 jours, client à 45 jours → échéance dans 35 jours (future).
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(10, 45)]);
+
+    await lancer();
+
+    const updates = mockPrisma.factureFormation.updateMany.mock.calls;
+    expect(updates.length).toBe(1);
+    const arg = updates[0]![0] as {
+      where: { id: string; echeanceAt: null };
+      data: { echeanceAt: Date };
+    };
+    expect(arg.where.id).toBe("fac-1");
+    // Écriture conditionnée à la nullité : idempotent, sans course.
+    expect(arg.where.echeanceAt).toBeNull();
+
+    const attendu = Date.now() + 35 * JOUR_MS;
+    expect(Math.abs(arg.data.echeanceAt.getTime() - attendu)).toBeLessThan(5 * 60 * 1000);
+  });
+
+  it("retombe sur 30 jours quand le client n'a pas de délai propre", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(10, null)]);
+
+    await lancer();
+
+    const arg = mockPrisma.factureFormation.updateMany.mock.calls[0]![0] as {
+      data: { echeanceAt: Date };
+    };
+    const attendu = Date.now() + 20 * JOUR_MS; // émise il y a 10 j + 30 j
+    expect(Math.abs(arg.data.echeanceAt.getTime() - attendu)).toBeLessThan(5 * 60 * 1000);
+  });
+
+  it("échéance reconstituée encore FUTURE → aucune relance, aucun passage en retard", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(10, 45)]);
+
+    await lancer();
+
+    // Un seul updateMany : celui de l'échéance (pas de bascule `en_retard`).
+    expect(mockPrisma.factureFormation.updateMany).toHaveBeenCalledTimes(1);
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+
+  // 🔴 Garde-fou anti-effet-de-bord. Une facture mal datée (reprise, import
+  // approximatif) produirait sinon d'emblée une relance J30 ou J45 sur une
+  // créance dont l'ancienneté vient d'être DEVINÉE. Le palier tombera au run du
+  // lendemain, ce qui laisse une journée pour corriger la date à la main.
+  it("échéance reconstituée déjà échue de +60 j → échéance POSÉE mais AUCUNE relance", async () => {
+    // Émise il y a 200 jours, défaut 30 j → échue depuis 170 jours.
+    mockPrisma.factureFormation.findMany.mockResolvedValue([factureSansEcheance(200, null)]);
+
+    await lancer();
+
+    // L'échéance est bien persistée…
+    const posee = mockPrisma.factureFormation.updateMany.mock.calls.find((c) => {
+      const arg = c[0] as { data: Record<string, unknown> };
+      return "echeanceAt" in arg.data;
+    });
+    expect(posee).toBeDefined();
+    // …le passage en `en_retard` est appliqué (constat d'état, pas une sollicitation)…
+    const marquee = mockPrisma.factureFormation.updateMany.mock.calls.find((c) => {
+      const arg = c[0] as { data: Record<string, unknown> };
+      return arg.data["statut"] === "en_retard";
+    });
+    expect(marquee).toBeDefined();
+    // …mais AUCUNE relance n'est proposée à ce passage.
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+
+  it("ne répare RIEN sur une créance éteinte (avoir total ou trop-perçu)", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      { ...factureSansEcheance(10, null), payments: [{ amountCents: 66_000 }] },
+    ]);
+
+    await lancer();
+
+    expect(mockPrisma.factureFormation.updateMany).not.toHaveBeenCalled();
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+
+  it("une facture qui a DÉJÀ une échéance échue suit le circuit normal (relance proposée)", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      {
+        ...factureSansEcheance(60, null),
+        echeanceAt: new Date(Date.now() - 30 * JOUR_MS),
+      },
+    ]);
+
+    await lancer();
+
+    // Aucune réparation (l'échéance existait), mais bascule + relance J30.
+    const reparation = mockPrisma.factureFormation.updateMany.mock.calls.find((c) => {
+      const arg = c[0] as { data: Record<string, unknown> };
+      return "echeanceAt" in arg.data;
+    });
+    expect(reparation).toBeUndefined();
+    expect(mockPrisma.relanceProposee.create).toHaveBeenCalledTimes(1);
+    const create = mockPrisma.relanceProposee.create.mock.calls[0]![0] as {
+      data: { palier: string; type: string };
+    };
+    expect(create.data.palier).toBe("j30");
+    expect(create.data.type).toBe("facture_retard");
+  });
+
+  // 🔴 L'échelle s'arrêtait à j30 : au-delà, plus AUCUNE relance n'était
+  // proposée — la créance la plus ancienne était la seule à ne plus remonter.
+  it("propose une MISE EN DEMEURE (j45) au-delà de 45 jours de retard", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      {
+        ...factureSansEcheance(80, null),
+        echeanceAt: new Date(Date.now() - 50 * JOUR_MS),
+      },
+    ]);
+
+    await lancer();
+
+    const create = mockPrisma.relanceProposee.create.mock.calls[0]![0] as {
+      data: { palier: string };
+    };
+    expect(create.data.palier).toBe("j45");
+  });
+
+  it("propose le palier j60 (avant contentieux) au-delà de 60 jours de retard", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      {
+        ...factureSansEcheance(120, null),
+        echeanceAt: new Date(Date.now() - 90 * JOUR_MS),
+      },
+    ]);
+
+    await lancer();
+
+    const create = mockPrisma.relanceProposee.create.mock.calls[0]![0] as {
+      data: { palier: string };
+    };
+    expect(create.data.palier).toBe("j60");
+  });
+
+  it("idempotent : une relance déjà proposée sur ce palier n'est pas recréée", async () => {
+    mockPrisma.factureFormation.findMany.mockResolvedValue([
+      {
+        ...factureSansEcheance(60, null),
+        echeanceAt: new Date(Date.now() - 30 * JOUR_MS),
+      },
+    ]);
+    mockPrisma.relanceProposee.findFirst.mockResolvedValue({ id: "deja-la" });
+
+    await lancer();
+
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
   });
 });

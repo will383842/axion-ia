@@ -16,7 +16,6 @@ import { prisma } from "@/lib/prisma";
 import {
   agregerParMois,
   type FacturePrevisionnel,
-  type FactureStatutPrev,
   type LignePrevisionnel,
   type SessionPrevisionnel,
   type SessionStatutPrev,
@@ -89,9 +88,15 @@ export async function getPrevisionnel(
       statut: s.statut as SessionStatutPrev,
       montantHtCents: s.montantHtCents,
     }));
+    // 🔴 Plus de `as FactureStatutPrev` sur le statut de facture : le type miroir
+    // couvre désormais les six valeurs de l'enum Prisma, l'affectation est donc
+    // vérifiée par le compilateur. C'est le cast qui avait laissé passer le
+    // défaut — `partiellement_payee` et `en_retard` entraient à l'exécution dans
+    // un type qui ne les déclarait pas, et le calcul les jetait en silence.
+    // Ne PAS le réintroduire : il rendrait de nouveau l'erreur invisible.
     const facturesPrev: FacturePrevisionnel[] = factures.map((f) => ({
       sessionId: f.sessionId,
-      statut: f.statut as FactureStatutPrev,
+      statut: f.statut,
       montantHtCents: f.montantHtCents,
       echeanceAt: f.echeanceAt,
     }));

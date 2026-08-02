@@ -7,6 +7,7 @@
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../../prisma/generated/client";
 import type { Client, ClientStatut } from "@/server/qualiopi/crm/types";
+import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 export interface ListClientsOpts {
   /** Filtre par statut. */
@@ -222,13 +223,6 @@ export interface FactureEncoursInput {
   avoirs: { montantHtCents: number; montantTtcCents: number | null; statut: string }[];
 }
 
-/** Statuts d'une facture « ouverte » : émise mais pas soldée ni annulée. */
-const STATUTS_FACTURE_OUVERTE: ReadonlySet<string> = new Set([
-  "emise",
-  "partiellement_payee",
-  "en_retard",
-]);
-
 /**
  * Reste dû net d'UNE facture — même formule que la fiche facture
  * (`facturation/[id]/page.tsx`) : TTC (repli HT) + avoirs non annulés (montants
@@ -253,7 +247,7 @@ export function resteDuNetCents(f: FactureEncoursInput): number {
  */
 export function calculerEncoursDuCents(factures: FactureEncoursInput[]): number {
   return factures
-    .filter((f) => f.avoirDeId === null && STATUTS_FACTURE_OUVERTE.has(f.statut))
+    .filter((f) => f.avoirDeId === null && estFactureOuverte(f.statut))
     .reduce((acc, f) => acc + resteDuNetCents(f), 0);
 }
 

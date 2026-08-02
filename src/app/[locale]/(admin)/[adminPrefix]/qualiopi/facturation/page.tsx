@@ -27,11 +27,19 @@ import {
 import { isRegimeTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { AdminFilterTabs } from "@/components/admin/ui";
 import { RelancesATraiter } from "@/components/admin/qualiopi/RelancesATraiter";
-import type { RelanceItem } from "@/components/admin/qualiopi/RelancesATraiter";
+import type { RelanceItem, PointageBancaire } from "@/components/admin/qualiopi/RelancesATraiter";
+import {
+  getDetailsRelances,
+  getFraicheurPointageBancaire,
+} from "@/server/qualiopi/financements/relance-contexte";
 import { DossiersFinancementPanel } from "@/components/admin/qualiopi/DossiersFinancementPanel";
 import { EncaisserRapideButton } from "@/components/admin/qualiopi/EncaisserRapideButton";
 import type { DossierItem } from "@/components/admin/qualiopi/DossiersFinancementPanel";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import {
+  STATUTS_FACTURE_OUVERTE,
+  estFactureOuverte,
+} from "@/server/qualiopi/financements/statuts-facture";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import type { AdminListScaffoldRow } from "../../_v2/AdminListScaffold";
 import type {
@@ -169,6 +177,10 @@ export default async function FacturationHubPage({
       }),
       prisma.factureFormation.count({ where }),
       prisma.factureFormation.aggregate({
+        // ⚠️ VOLONTAIREMENT différent du SSOT `STATUTS_FACTURE_OUVERTE` : ce KPI
+        // est le CA ÉMIS, qui inclut `payee`. Une facture réglée reste du chiffre
+        // d'affaires émis ; elle n'est simplement plus une créance. Ne pas
+        // « harmoniser » ce filtre — il répond à une autre question.
         where: { statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] } },
         _sum: { montantTtcCents: true },
       }),
@@ -181,7 +193,7 @@ export default async function FacturationHubPage({
       // avoir ou trop-perçu ne pèse plus rien). Volume TPE, calcul serveur.
       prisma.factureFormation.findMany({
         where: {
-          statut: { in: ["emise", "partiellement_payee", "en_retard"] },
+          statut: { in: [...STATUTS_FACTURE_OUVERTE] },
           avoirDeId: null,
         },
         select: {
@@ -292,14 +304,59 @@ export default async function FacturationHubPage({
     raisonSociale: c.raisonSociale,
   }));
 
-  const relanceItems: RelanceItem[] = relances.map((r) => ({
-    id: r.id,
-    palier: r.palier,
-    suggestion: r.suggestion,
-    libelle:
-      r.factureFormation?.numero ?? r.invoice?.number ?? r.quote?.number ?? "Document inconnu",
-    envoiDirect: r.factureFormationId !== null,
-  }));
+  // Contexte de DÉCISION des relances (reste dû net, échéance, palier,
+  // historique) + fraîcheur du pointage bancaire. Deux lectures seulement, hors
+  // du `Promise.all` ci-dessus car la première dépend des ids de relances.
+  // Toutes deux stub-safe : un échec rend une Map vide / un avertissement, et
+  // l'écran reste affichable.
+  const [details, pointageBancaire] = await Promise.all([
+    getDetailsRelances(
+      relances.map((r) => r.id),
+      now,
+    ),
+    getFraicheurPointageBancaire(now),
+  ]);
+
+  const relanceItems: RelanceItem[] = relances.map((r) => {
+    const d = details.get(r.id);
+    return {
+      id: r.id,
+      palier: r.palier,
+      suggestion: r.suggestion,
+      libelle:
+        r.factureFormation?.numero ?? r.invoice?.number ?? r.quote?.number ?? "Document inconnu",
+      envoiDirect: r.factureFormationId !== null,
+      // Le formatage (euros, dates) est fait ICI, côté serveur : le composant
+      // client n'embarque ni `Intl.NumberFormat` ni logique de montant.
+      ...(d !== undefined
+        ? {
+            detail: {
+              factureNumero: d.factureNumero,
+              clientNom: d.clientNom,
+              resteDuLabel: `${fmtEur(d.resteDuCents)} TTC`,
+              echeanceLabel: d.echeanceAt !== null ? fmtDate(d.echeanceAt) : null,
+              joursRetard: d.joursRetard,
+              palierLibelle: d.palierLibelle,
+              destinataire: d.destinataire,
+              penalitesActives: d.penalitesActives,
+              historique: d.historique.map((h) => ({
+                palierLibelle: h.palierLibelle,
+                envoyeeAtIso: h.envoyeeAt !== null ? h.envoyeeAt.toISOString() : null,
+              })),
+            },
+          }
+        : {}),
+    };
+  });
+
+  const pointage: PointageBancaire = {
+    dernierEncaissementLabel:
+      pointageBancaire.dernierEncaissementAt !== null
+        ? fmtDate(pointageBancaire.dernierEncaissementAt)
+        : null,
+    joursDepuis: pointageBancaire.joursDepuis,
+    avertissement: pointageBancaire.avertissement,
+  };
 
   const rows: AdminListScaffoldRow[] = factures.map((f) => {
     // Reste dû NET de la ligne — même formule que la balance âgée plus haut.
@@ -308,10 +365,7 @@ export default async function FacturationHubPage({
     const resteDuCents = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
     // « Encaisser » : factures OUVERTES seulement (pas les brouillons ni les
     // avoirs), et uniquement si le rôle peut écrire — les actions throw sinon.
-    const encaissable =
-      peutEcrire &&
-      f.avoirDeId === null &&
-      (f.statut === "emise" || f.statut === "partiellement_payee" || f.statut === "en_retard");
+    const encaissable = peutEcrire && f.avoirDeId === null && estFactureOuverte(f.statut);
     return {
       id: f.id,
       detailHref: `${base}/${f.id}`,
@@ -423,7 +477,12 @@ export default async function FacturationHubPage({
                 })),
               ]}
             />
-            <RelancesATraiter relances={relanceItems} canWrite={peutEcrire} />
+            <RelancesATraiter
+              relances={relanceItems}
+              canWrite={peutEcrire}
+              pointage={pointage}
+              baseHref={base}
+            />
             <DossiersFinancementPanel
               dossiers={dossierItems}
               clients={clientOptions}

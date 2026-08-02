@@ -22,6 +22,7 @@ import {
   CANAL_LABELS,
 } from "@/server/qualiopi/financements/e-invoicing/canal";
 import { isRegimeTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
+import { getHistoriqueRelancesFacture } from "@/server/qualiopi/financements/relance-contexte";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
@@ -176,6 +177,9 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
     },
   });
   if (!facture) notFound();
+
+  // Historique des relances RÉELLEMENT envoyées (stub-safe → []).
+  const relances = await getHistoriqueRelancesFacture(facture.id);
 
   const encaisse = facture.payments
     .filter((p) => p.status === "succeeded")
@@ -389,6 +393,34 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
                     {p.notes}
                   </span>
                 ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      {/* ── Relances envoyées ───────────────────────────────────────────────
+          L'historique n'était visible NULLE PART. Une fois envoyée, une
+          relance disparaissait de l'écran « à traiter » sans laisser de trace
+          sur la facture : impossible de savoir si le client avait déjà été
+          sollicité, ni à quel palier — donc impossible de doser le suivant. */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Relances envoyées</h2>
+        {relances.length === 0 ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Aucune relance envoyée à ce jour.
+          </p>
+        ) : (
+          <ul className="space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+            {relances.map((r, i) => (
+              <li
+                key={`${r.palier}-${i}`}
+                className="flex flex-wrap items-center gap-[var(--space-admin-3)]"
+              >
+                <span className="font-medium">{r.palierLibelle}</span>
+                <span className="text-[color:var(--color-admin-fg-muted)]">
+                  envoyée le {fmtDate(r.envoyeeAt)}
+                </span>
               </li>
             ))}
           </ul>

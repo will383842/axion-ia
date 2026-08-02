@@ -23,12 +23,29 @@
 // Paris appartient bien au mois parisien, pas au mois UTC de la veille.
 
 import { dayKeyInParis } from "@/lib/calendar-grid";
+import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
 
 /** Statuts miroir de `TrainingSessionStatut` (on ne dépend pas des types Prisma). */
 export type SessionStatutPrev = "planifiee" | "en_cours" | "realisee" | "annulee" | "reportee";
 
-/** Statuts miroir de `FactureFormationStatut`. */
-export type FactureStatutPrev = "brouillon" | "emise" | "payee" | "annulee";
+/**
+ * Statuts miroir de `FactureFormationStatut`.
+ *
+ * 🔴 Le type ne listait que `brouillon | emise | payee | annulee`. Les deux
+ * statuts manquants — `partiellement_payee` et `en_retard` — sont précisément
+ * ceux d'une créance en cours de recouvrement. Le cast de `queries.ts` les
+ * faisait entrer quand même à l'exécution, où ils tombaient dans le `continue`
+ * du filtre : les colonnes « Encaissements attendus » et « Impayés » affichaient
+ * donc ≈ 0 en permanence, le cron de 06:30 basculant en `en_retard` toute
+ * facture échue. Un prévisionnel de trésorerie aveugle aux impayés.
+ */
+export type FactureStatutPrev =
+  | "brouillon"
+  | "emise"
+  | "partiellement_payee"
+  | "en_retard"
+  | "payee"
+  | "annulee";
 
 /**
  * Vue minimale d'une session nécessaire au prévisionnel. Type MIROIR volontaire :
@@ -108,13 +125,26 @@ export function ligneVide(mois: string): LignePrevisionnel {
  *    `dateDebut`. Les `annulee`/`reportee` comptent 0 (elles ne génèreront pas de
  *    CA en l'état — une reportée reviendra sous une nouvelle date/session).
  *  - **CA réalisé** : sessions `realisee`, mois de `dateDebut`.
- *  - **Encaissements attendus** : factures `emise` (donc non encore payées),
- *    rangées au mois de `echeanceAt`. Une facture émise SANS `echeanceAt` n'est
- *    rattachable à aucun mois → ignorée ici (et donc aussi hors impayés).
+ *  - **Encaissements attendus** : factures OUVERTES au sens du SSOT
+ *    `STATUTS_FACTURE_OUVERTE` — `emise`, `partiellement_payee` ET `en_retard`,
+ *    c'est-à-dire toute facture émise non soldée —, rangées au mois de
+ *    `echeanceAt`. `en_retard` n'est PAS une catégorie à part : c'est le même
+ *    argent dû, avec une étiquette d'ancienneté posée par le cron quotidien.
+ *    L'omettre vidait la colonne au lendemain de chaque échéance. Une facture
+ *    émise SANS `echeanceAt` n'est rattachable à aucun mois → ignorée ici (et
+ *    donc aussi hors impayés) ; le cron de retard reconstitue ces échéances.
+ *    ⚠️ Le montant retenu reste le HT FACTURÉ, pas le reste dû : sur une facture
+ *    `partiellement_payee`, l'acompte encaissé est donc encore compté en
+ *    attendu. C'est une approximation connue (le prévisionnel ne lit pas les
+ *    `Payment`), conservée telle quelle — la corriger suppose de faire entrer
+ *    les encaissements dans ce module, ce qui est un chantier distinct.
  *  - **Reste à facturer** : sessions `realisee` du mois n'ayant AUCUNE facture
- *    `emise` ni `payee`. Une facture `brouillon`/`annulee` ne « facture » pas :
- *    la session reste à facturer. Rattaché au mois de la session.
- *  - **Impayés** : sous-ensemble des factures `emise` dont `echeanceAt` est
+ *    ouverte ni `payee`. Une facture `brouillon`/`annulee` ne « facture » pas :
+ *    la session reste à facturer. Rattaché au mois de la session. Une facture
+ *    `en_retard`/`partiellement_payee` compte, elle, comme FACTURÉE : sans quoi
+ *    la même session serait comptée deux fois — en reste à facturer ET en
+ *    impayé — alors qu'elle est facturée et simplement non réglée.
+ *  - **Impayés** : sous-ensemble des factures ouvertes dont `echeanceAt` est
  *    strictement antérieure à `now`. Même mois de rattachement que l'encaissement
  *    attendu correspondant (l'impayé est donc COMPTÉ AUSSI dans les encaissements
  *    attendus — c'est une colonne d'alerte, pas une catégorie disjointe).
@@ -138,11 +168,17 @@ export function agregerParMois(
   };
 
   // Ensemble des sessions considérées comme « déjà facturées » : au moins une
-  // facture émise OU payée. Sert au calcul du reste à facturer. Les factures
-  // brouillon/annulée n'entrent pas ici (elles ne facturent rien réellement).
+  // facture OUVERTE (émise, partiellement payée, en retard) ou PAYÉE. Sert au
+  // calcul du reste à facturer. Les factures brouillon/annulée n'entrent pas ici
+  // (elles ne facturent rien réellement).
+  //
+  // 🔴 `partiellement_payee` et `en_retard` manquaient : une session facturée et
+  // impayée retombait en « reste à facturer » — soit un DOUBLE COMPTAGE (la même
+  // session pesait à la fois en travail à facturer et en impayé), et une
+  // invitation à réémettre une facture qui existe déjà.
   const sessionsFacturees = new Set<string>();
   for (const f of factures) {
-    if (f.sessionId !== null && (f.statut === "emise" || f.statut === "payee")) {
+    if (f.sessionId !== null && (estFactureOuverte(f.statut) || f.statut === "payee")) {
       sessionsFacturees.add(f.sessionId);
     }
   }
@@ -163,9 +199,10 @@ export function agregerParMois(
   }
 
   for (const f of factures) {
-    // « Non payées » = statut `emise`. brouillon/payee/annulee sont exclus des
-    // encaissements attendus (payee = déjà encaissé ; brouillon/annulee = pas dû).
-    if (f.statut !== "emise") continue;
+    // « Émise et non soldée » = les trois statuts OUVERTS (SSOT). brouillon,
+    // payee et annulee sont exclus des encaissements attendus (payee = déjà
+    // encaissé ; brouillon/annulee = rien n'est dû).
+    if (!estFactureOuverte(f.statut)) continue;
     // Sans échéance, impossible de placer la facture sur la frise → ni attendu ni
     // impayé (on ne peut juger de son antériorité). Choix documenté.
     if (f.echeanceAt === null) continue;

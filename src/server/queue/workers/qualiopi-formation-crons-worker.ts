@@ -32,6 +32,9 @@ import {
   type SessionCronSnapshot,
 } from "@/server/qualiopi/formations/crons";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
+import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
+import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
+import { palierPourJours, libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
@@ -633,21 +636,50 @@ async function handleConvocationJ5(): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Marque `en_retard` les factures CRM émises ou partiellement payées dont
- * l'échéance est dépassée. AUCUN email : la détection alimente l'écran Hub et
- * (Phase 4) les relances PROPOSÉES — l'envoi reste un clic admin. Les délais
- * différenciés entreprise/financeur sont déjà encodés dans `echeanceAt` au
- * moment de l'émission (delai_paiement_jours vs delai_paiement_financeur_jours).
- * Idempotent (updateMany conditionné au statut).
+ * Marque `en_retard` les factures CRM ouvertes dont l'échéance est dépassée, et
+ * RÉPARE au passage celles qui n'ont pas d'échéance du tout.
+ *
+ * AUCUN email : la détection alimente l'écran Hub et (Phase 4) les relances
+ * PROPOSÉES — l'envoi reste un clic admin. Les délais différenciés
+ * entreprise/financeur sont encodés dans `echeanceAt` au moment de l'émission
+ * (delai_paiement_jours vs delai_paiement_financeur_jours). Idempotent
+ * (updateMany conditionné au statut, une proposition par facture+palier).
+ *
+ * ── 🔴 Réparation automatique de l'échéance manquante ─────────────────────────
+ *
+ * Le filtre `echeanceAt: { lt: now }` n'a JAMAIS ramené les lignes à échéance
+ * nulle (aucune comparaison SQL n'est vraie pour NULL), et la boucle refermait
+ * le trou d'un `if (f.echeanceAt === null) continue;`. Une facture émise sans
+ * échéance était donc structurellement INVISIBLE du recouvrement : jamais
+ * `en_retard`, jamais relancée, jamais alertée — et le défaut se rouvre à chaque
+ * chemin de création qui oublie la colonne.
+ *
+ * Un script de rattrapage manuel ne suffit pas : il faudrait le relancer après
+ * chaque oubli. La réparation est donc faite ICI, à chaque passage quotidien :
+ * échéance = `emiseAt` (repli `createdAt`) + délai du client (repli 30 j), via
+ * la même fonction pure que les émetteurs (`calculerEcheanceFacture`).
+ *
+ * Garde-fous, tous délibérés :
+ *  - hors avoirs (`avoirDeId`) et hors reprises d'historique (`estImportee`) —
+ *    on ne fabrique pas de date sur des données venues d'un système tiers ;
+ *  - `emiseAt ?? createdAt` : sans aucune date d'origine connue on ne répare
+ *    PAS (inventer un point de départ inventerait une ancienneté de créance) ;
+ *  - si l'échéance reconstituée est déjà échue de plus de 60 jours, on la
+ *    PERSISTE mais on ne crée AUCUNE relance au même passage. Une facture mal
+ *    datée (reprise, import approximatif) produirait sinon d'emblée une relance
+ *    J30 sur une créance dont l'ancienneté vient d'être devinée. Le palier
+ *    tombera au run du lendemain, ce qui laisse une journée pour corriger la
+ *    date à la main. Le passage en `en_retard`, lui, est appliqué : c'est un
+ *    constat d'état, pas une sollicitation du client.
  */
 async function handleFacturesRetard(): Promise<void> {
   const now = new Date();
-  // Factures échues encore ouvertes — hors avoirs, brouillons (echeanceAt null)
-  // et reprises d'historique.
+  // Factures ouvertes échues OU sans échéance — hors avoirs et reprises
+  // d'historique. Les brouillons sont exclus par le filtre de statut.
   const candidates = await prisma.factureFormation.findMany({
     where: {
-      statut: { in: ["emise", "partiellement_payee", "en_retard"] },
-      echeanceAt: { lt: now },
+      statut: { in: [...STATUTS_FACTURE_OUVERTE] },
+      OR: [{ echeanceAt: { lt: now } }, { echeanceAt: null }],
       avoirDeId: null,
       estImportee: false,
     },
@@ -656,8 +688,12 @@ async function handleFacturesRetard(): Promise<void> {
       numero: true,
       statut: true,
       echeanceAt: true,
+      emiseAt: true,
+      createdAt: true,
       montantTtcCents: true,
       montantHtCents: true,
+      // Délai de paiement propre au client (F61) — base de la réparation.
+      client: { select: { delaiPaiementJours: true } },
       payments: { where: { status: "succeeded" }, select: { amountCents: true } },
       avoirs: {
         where: { statut: { not: "annulee" } },
@@ -668,8 +704,8 @@ async function handleFacturesRetard(): Promise<void> {
 
   let marquees = 0;
   let proposees = 0;
+  let echeancesReparees = 0;
   for (const f of candidates) {
-    if (f.echeanceAt === null) continue;
     // Reste dû NET (revue M3/M4) : TTC + avoirs (négatifs) − encaissements.
     // Créance éteinte (avoir total, trop-perçu) → ni retard, ni relance.
     const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
@@ -677,17 +713,55 @@ async function handleFacturesRetard(): Promise<void> {
     const netDuCents = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
     if (netDuCents <= 0) continue;
 
+    // ── Réparation de l'échéance manquante ────────────────────────────────
+    let echeance = f.echeanceAt;
+    let reparee = false;
+    if (echeance === null) {
+      const origine = f.emiseAt ?? f.createdAt;
+      // Aucune date d'origine exploitable → on ne devine rien, on passe.
+      if (origine === null) continue;
+      echeance = calculerEcheanceFacture(origine, f.client?.delaiPaiementJours ?? null);
+      await prisma.factureFormation.updateMany({
+        // `echeanceAt: null` dans le `where` : idempotent et sans course — si un
+        // autre chemin a posé l'échéance entre-temps, on n'écrase pas la sienne.
+        where: { id: f.id, echeanceAt: null },
+        data: { echeanceAt: echeance },
+      });
+      echeancesReparees++;
+      reparee = true;
+      console.log(
+        `[formation-crons] factures-retard: échéance reconstituée pour ${f.numero} → ${echeance.toISOString().slice(0, 10)} (émission ${origine.toISOString().slice(0, 10)} + délai client)`,
+      );
+    }
+
+    // Une échéance future (facture sans échéance mais pas encore due) n'est ni
+    // en retard ni relançable : la réparation seule suffit pour ce passage.
+    if (echeance.getTime() >= now.getTime()) continue;
+
     if (f.statut !== "en_retard") {
       await prisma.factureFormation.updateMany({
+        // Filtre volontairement PLUS ÉTROIT que le SSOT : on ne repasse pas en
+        // `en_retard` une ligne qui y est déjà (idempotence de l'écriture).
         where: { id: f.id, statut: { in: ["emise", "partiellement_payee"] } },
         data: { statut: "en_retard" },
       });
       marquees++;
     }
 
+    const jours = Math.floor((now.getTime() - echeance.getTime()) / 86_400_000);
+
+    // Échéance tout juste reconstituée ET déjà très ancienne : on laisse passer
+    // un jour avant de proposer une relance (cf. en-tête).
+    if (reparee && jours > 60) continue;
+
     // Une proposition par facture+palier (idempotent) — montant = SOLDE net.
-    const jours = Math.floor((now.getTime() - f.echeanceAt.getTime()) / 86_400_000);
-    const palier = jours >= 30 ? "j30" : jours >= 15 ? "j15" : "j1";
+    //
+    // 🔴 L'échelle s'arrêtait à `j30` : au-delà de trente jours, plus AUCUNE
+    // relance n'était proposée. La créance la plus ancienne — donc la plus en
+    // danger — était la seule à ne plus jamais remonter à l'écran. L'échelle
+    // complète (J1 → J60, mise en demeure incluse) vit dans `relance-paliers.ts`.
+    const palier = palierPourJours(jours);
+    if (palier === null) continue;
     const deja = await prisma.relanceProposee.findFirst({
       where: { factureFormationId: f.id, palier },
       select: { id: true },
@@ -698,14 +772,18 @@ async function handleFacturesRetard(): Promise<void> {
         type: "facture_retard",
         palier,
         factureFormationId: f.id,
-        suggestion: `Facture ${f.numero} — solde de ${(netDuCents / 100).toFixed(2)} € TTC échu le ${f.echeanceAt.toLocaleDateString("fr-FR")} — relance ${palier.toUpperCase()}.`,
+        // ⚠️ Note INTERNE, affichée à l'admin dans le hub. Elle n'est PLUS le
+        // corps de l'e-mail envoyé au client (ce jargon partait tel quel) : la
+        // rédaction vit dans le gabarit `qualiopi-relance-impayee`, choisie par
+        // le ton du palier.
+        suggestion: `Facture ${f.numero} — solde de ${(netDuCents / 100).toFixed(2)} € TTC échu le ${echeance.toLocaleDateString("fr-FR")} — ${libellePalier(palier)}.`,
       },
     });
     proposees++;
   }
 
   console.log(
-    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s) — AUCUN email client (manuel)`,
+    `[formation-crons] factures-retard: ${marquees} passée(s) en retard, ${proposees} relance(s) proposée(s), ${echeancesReparees} échéance(s) manquante(s) reconstituée(s) — AUCUN email client (manuel)`,
   );
 }
 

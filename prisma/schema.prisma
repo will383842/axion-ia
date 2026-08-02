@@ -5317,6 +5317,19 @@ model Client {
   /// Taux appliqué au RESTE À CHARGE, pas au montant total.
   tauxAcomptePct      Int?                   @map("taux_acompte_pct")
   modeFacturation     ModeFacturationClient? @map("mode_facturation")
+  /// Applique-t-on les pénalités de retard (art. L.441-10) à CE client ?
+  ///
+  /// `false` par DÉFAUT, et ce défaut est une décision produit explicite :
+  /// facturer des pénalités à tout le monde est commercialement destructeur.
+  /// On coche client par client, quand on le décide.
+  ///
+  /// Ce drapeau gouverne l'APPLICATION des frais (calcul affiché sur la fiche
+  /// client et texte de la relance), JAMAIS leur MENTION : les mentions de
+  /// pénalités et d'indemnité forfaitaire de 40 € sont OBLIGATOIRES en pied de
+  /// toute facture entre professionnels (art. L.441-9 / L.441-10 / D.441-5) et
+  /// restent imprimées sans condition. Ne pas conditionner leur affichage à ce
+  /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
+  penalitesRetardActives Boolean @default(false) @map("penalites_retard_actives")
 
   emailsEnAttente EmailOutbox[]
   reglesEmail     EmailAutomationSetting[]

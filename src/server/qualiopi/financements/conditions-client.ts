@@ -24,6 +24,46 @@ export const DELAI_PAIEMENT_MAX_JOURS = 60;
  */
 export const DELAI_PAIEMENT_DEFAUT_JOURS = 30;
 
+/**
+ * Échéance de paiement d'une facture ÉMISE.
+ *
+ * 🔴 Pourquoi une fonction, et pourquoi ici. Une facture sans `echeanceAt` est
+ * INVISIBLE de tout le circuit de recouvrement : le cron de retard filtre sur
+ * `echeanceAt < now` (une colonne nulle ne satisfait aucune comparaison SQL),
+ * donc aucun statut `en_retard`, aucune `RelanceProposee`, aucune alerte, et un
+ * prévisionnel de trésorerie qui ignore la ligne. Elle est en outre une mention
+ * obligatoire (art. L.441-9 C. com.). Le calcul était réécrit à l'identique chez
+ * cinq émetteurs — la sixième porte d'entrée l'a simplement oublié.
+ *
+ * Bornage : `delaiJours` est ramené dans [1, DELAI_PAIEMENT_MAX_JOURS].
+ *   - plancher 1 : une échéance le jour même de l'émission est déjà échue à
+ *     l'instant où elle est écrite, ce qui déclencherait une relance immédiate
+ *     sur une facture que le client vient de recevoir ;
+ *   - plafond 60 : art. L.441-10 C. com., une clause au-delà est illicite entre
+ *     professionnels.
+ *   - non fini (NaN, Infinity) → défaut 30 j, jamais une Invalid Date propagée
+ *     en base.
+ *
+ * PURE : ne lit ni l'horloge ni la base. `emiseAt` n'est jamais muté (le
+ * `Date` reçu est souvent réutilisé par l'appelant pour `emiseAt` lui-même).
+ *
+ * @param emiseAt    Date d'émission de la facture (point de départ du délai).
+ * @param delaiJours Délai propre au client, ou `null`/`undefined` → défaut 30 j.
+ */
+export function calculerEcheanceFacture(
+  emiseAt: Date,
+  delaiJours: number | null | undefined,
+): Date {
+  const brut = delaiJours ?? DELAI_PAIEMENT_DEFAUT_JOURS;
+  const jours = Number.isFinite(brut)
+    ? Math.min(DELAI_PAIEMENT_MAX_JOURS, Math.max(1, Math.trunc(brut)))
+    : DELAI_PAIEMENT_DEFAUT_JOURS;
+
+  const echeance = new Date(emiseAt.getTime());
+  echeance.setDate(echeance.getDate() + jours);
+  return echeance;
+}
+
 export type ModeFacturation = "acompte_solde" | "solde_unique";
 
 /** Réglages portés par le client. `null` = suivre le défaut global. */

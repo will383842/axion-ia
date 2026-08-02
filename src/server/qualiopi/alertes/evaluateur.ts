@@ -12,6 +12,8 @@ import { compterEnAttente } from "@/server/email/outbox-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listBaremesEnVigueur } from "@/server/qualiopi/financements/bareme-opco";
 import { estBaremePerime, opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
+import { libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import {
   CONFORMITE_DEFAUTS,
   addMonths,
@@ -709,47 +711,190 @@ async function regleConventionTripartite(now: Date): Promise<AlerteCandidate[]> 
   }));
 }
 
-/** R15 — Factures impayées J+30 et J+60. */
+/**
+ * R15 — Factures impayées : ESCALADE J+60 uniquement.
+ *
+ * 🔴 Audit certification 2026-07-26 (F59). La règle ne regardait que le statut
+ * `emise`. Or une facture partiellement réglée reste due pour son solde — et
+ * c'est précisément le cas du RESTE À CHARGE : l'OPCO verse sa part, la facture
+ * bascule en `partiellement_payee`, et si l'entreprise ne règle jamais la
+ * sienne, aucune alerte ne tombait. Le trou portait exactement sur le scénario
+ * de financement mixte, le plus fréquent en formation professionnelle.
+ *
+ * 🔴 2026-08-02 — la règle était en réalité du CODE MORT, et le correctif F59
+ * n'avait rien pu changer à cela. Le filtre omettait `en_retard`, alors que le
+ * cron de 06:30 UTC (`handleFacturesRetard`) a déjà basculé dans ce statut TOUTE
+ * facture échue avant que le cron d'alertes de 07:00 UTC ne s'exécute. Le `where`
+ * ne pouvait donc plus ramener une seule ligne : une facture échue depuis 30 ou
+ * 60 jours est, par construction, `en_retard`. Le filtre part désormais du SSOT
+ * `STATUTS_FACTURE_OUVERTE`, qui inclut les trois statuts ouverts.
+ *
+ * ── Division du travail entre relances et alertes (anti-doublon) ─────────────
+ *
+ *   J1 / J15 / J30 → `RelanceProposee` : une ACTION à faire, dans le hub
+ *                    facturation, avec son bouton « Envoyer la relance ».
+ *   J60            → alerte critique : une ESCALADE, parce qu'aucun palier de
+ *                    relance n'existe au-delà de J30 — plus personne ne
+ *                    proposerait rien, et la créance vieillirait en silence.
+ *
+ * L'émission de `facture_impayee_j30` est donc SUPPRIMÉE : elle doublait la
+ * relance J30 déjà proposée pour le même fait. Deux signaux concurrents sur un
+ * même impayé, c'est deux cycles de vie à tenir — l'admin envoie la relance, la
+ * proposition passe `envoyee`, et l'alerte reste ouverte à côté sans plus rien
+ * signifier. Le code `facture_impayee_j30` reste au CATALOGUE (et lui seul
+ * permet aux alertes déjà en base de s'auto-résoudre) : voir `catalogue.ts`.
+ */
 async function regleFacturesImpayees(now: Date): Promise<AlerteCandidate[]> {
-  const j30 = daysAgo(30, now);
   const j60 = daysAgo(60, now);
   const alertes: AlerteCandidate[] = [];
 
-  // 🔴 Audit certification 2026-07-26 (F59). La règle ne regardait que le statut
-  // `emise`. Or une facture partiellement réglée reste due pour son solde — et
-  // c'est précisément le cas du RESTE À CHARGE : l'OPCO verse sa part, la facture
-  // bascule en `partiellement_payee`, et si l'entreprise ne règle jamais la
-  // sienne, AUCUNE alerte ne tombe. Jamais. Le trou portait exactement sur le
-  // scénario de financement mixte, le plus fréquent en formation professionnelle.
   const factures = await prisma.factureFormation.findMany({
     where: {
-      statut: { in: ["emise", "partiellement_payee"] },
-      echeanceAt: { not: null, lte: j30 },
+      statut: { in: [...STATUTS_FACTURE_OUVERTE] },
+      echeanceAt: { not: null, lte: j60 },
+      // Un avoir n'est pas une créance : il crédite le client.
+      avoirDeId: null,
     },
     select: { id: true, numero: true, echeanceAt: true, statut: true },
   });
 
   for (const f of factures) {
     if (!f.echeanceAt) continue;
-    if (f.echeanceAt <= j60) {
-      alertes.push({
-        code: "facture_impayee_j60",
-        niveau: "critique",
-        titre: "Facture impayée depuis +60 jours",
-        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
+    // Garde applicative doublant le `where` : le filtre SQL est l'autorité, mais
+    // la règle ne doit jamais dépendre de lui seul pour rester juste.
+    if (f.echeanceAt > j60) continue;
+    alertes.push({
+      code: "facture_impayee_j60",
+      niveau: "critique",
+      titre: "Facture impayée depuis +60 jours",
+      message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 60 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}). Aucun palier de relance automatique n'existe au-delà de 30 jours : cette créance demande une décision (mise en demeure, échéancier, provision).`,
+      cibleType: "FactureFormation",
+      cibleId: f.id,
+    });
+  }
+
+  return alertes;
+}
+
+/**
+ * R15 bis — Facture émise SANS date d'échéance (filet de sécurité).
+ *
+ * 🔴 Le trou structurel du recouvrement. `handleFacturesRetard` sélectionne les
+ * factures sur `echeanceAt < now` ; aucune comparaison SQL n'étant vraie pour
+ * NULL, une facture sans échéance n'était jamais candidate — donc jamais
+ * `en_retard`, jamais relancée, jamais alertée, et absente du prévisionnel de
+ * trésorerie faute de mois de rattachement. La créance vieillissait sans laisser
+ * la moindre trace à l'écran.
+ *
+ * Le cron répare désormais ces lignes de lui-même. Cette règle reste néanmoins
+ * nécessaire pour deux raisons :
+ *   1. elle couvre la fenêtre entre la création de la facture et le passage
+ *      quotidien du cron ;
+ *   2. elle DÉNONCE un chemin de création défaillant — si l'alerte revient, un
+ *      émetteur a de nouveau omis la colonne, et la réparation automatique
+ *      masquerait le défaut sans elle.
+ *
+ * Une alerte PAR FACTURE (et non un compteur global) : la résolution auto suit
+ * la cible, et l'admin doit pouvoir ouvrir la pièce concernée.
+ */
+async function regleFactureSansEcheance(): Promise<AlerteCandidate[]> {
+  const factures = await prisma.factureFormation.findMany({
+    where: {
+      statut: { in: [...STATUTS_FACTURE_OUVERTE] },
+      echeanceAt: null,
+      // Un avoir ne porte pas d'échéance de paiement : il crédite, il ne réclame
+      // rien. L'y attendre produirait une alerte permanente et insoluble.
+      avoirDeId: null,
+    },
+    select: { id: true, numero: true, emiseAt: true, echeanceAt: true },
+  });
+
+  return (
+    factures
+      // Garde applicative doublant le `where` : le filtre SQL est l'autorité, mais
+      // une règle qui n'en dépend QUE de lui n'est vérifiable par aucun test.
+      .filter((f) => f.echeanceAt === null)
+      .map((f) => ({
+        code: "facture_sans_echeance",
+        niveau: "important" as AlerteNiveau,
+        titre: "Facture émise sans date d'échéance",
+        message: `La facture ${f.numero}${f.emiseAt !== null ? ` (émise le ${f.emiseAt.toLocaleDateString("fr-FR")})` : ""} n'a pas de date d'échéance : elle est INVISIBLE du circuit de relance tant que celle-ci manque — jamais marquée en retard, jamais proposée à la relance, absente du prévisionnel de trésorerie. Renseignez l'échéance sur la fiche facture (le passage quotidien du cron la reconstitue sinon à partir de la date d'émission et du délai du client).`,
         cibleType: "FactureFormation",
         cibleId: f.id,
-      });
-    } else {
-      alertes.push({
-        code: "facture_impayee_j30",
-        niveau: "important",
-        titre: "Facture impayée depuis +30 jours",
-        message: `${f.statut === "partiellement_payee" ? `Le solde de la facture ${f.numero} est impayé` : `La facture ${f.numero} est impayée`} depuis plus de 30 jours (échéance : ${f.echeanceAt.toLocaleDateString("fr-FR")}).`,
-        cibleType: "FactureFormation",
-        cibleId: f.id,
-      });
-    }
+      }))
+  );
+}
+
+/**
+ * R15 ter — Relance ENVOYÉE restée sans effet depuis plus de 15 jours.
+ *
+ * Demande explicite du propriétaire : « des alertes pour me dire les relances
+ * passées ». Envoyer une relance n'est pas un résultat. Sans ce signal, une
+ * relance partie devient une case cochée : la proposition disparaît de l'écran
+ * « à traiter », et plus rien ne rappelle qu'elle n'a rien produit — jusqu'au
+ * palier suivant, qui ne vient que si le cron le propose.
+ *
+ * Condition retenue : relance `envoyee` il y a plus de 15 jours, facture
+ * toujours ouverte, et AUCUN encaissement enregistré depuis l'envoi. Quinze
+ * jours = le délai au bout duquel un client de bonne foi a payé ou répondu.
+ *
+ * ⚠️ « Aucun encaissement depuis l'envoi » et non « facture non soldée » : un
+ * versement partiel arrivé après la relance prouve qu'elle a porté, même si le
+ * solde reste dû. Alerter alors reviendrait à ignorer la réponse du client.
+ *
+ * Une seule alerte par FACTURE (cible = la facture, pas la relance) : deux
+ * paliers restés sans effet sur la même créance sont un seul problème.
+ */
+async function regleRelanceSansEffet(now: Date): Promise<AlerteCandidate[]> {
+  const j15 = daysAgo(15, now);
+
+  const relances = await prisma.relanceProposee.findMany({
+    where: {
+      statut: "envoyee",
+      traiteeAt: { not: null, lte: j15 },
+      factureFormationId: { not: null },
+      factureFormation: { statut: { in: [...STATUTS_FACTURE_OUVERTE] }, avoirDeId: null },
+    },
+    orderBy: { traiteeAt: "desc" },
+    select: {
+      palier: true,
+      traiteeAt: true,
+      factureFormationId: true,
+      factureFormation: {
+        select: {
+          id: true,
+          numero: true,
+          payments: { where: { status: "succeeded" }, select: { paidAt: true } },
+        },
+      },
+    },
+  });
+
+  const vues = new Set<string>();
+  const alertes: AlerteCandidate[] = [];
+  for (const r of relances) {
+    const f = r.factureFormation;
+    if (f === null || r.traiteeAt === null) continue;
+    // Garde applicative doublant le `where` (les mocks de test ignorent le SQL).
+    if (r.traiteeAt > j15) continue;
+    // Une seule alerte par facture — `orderBy traiteeAt desc` garantit qu'on
+    // retient la relance la PLUS RÉCENTE, celle dont l'absence d'effet compte.
+    if (vues.has(f.id)) continue;
+
+    const encaissementDepuis = f.payments.some(
+      (p) => p.paidAt !== null && p.paidAt >= (r.traiteeAt as Date),
+    );
+    if (encaissementDepuis) continue;
+
+    vues.add(f.id);
+    alertes.push({
+      code: "relance_sans_effet",
+      niveau: "important",
+      titre: "Relance envoyée sans effet depuis +15 jours",
+      message: `La relance « ${libellePalier(r.palier)} » de la facture ${f.numero}, envoyée le ${r.traiteeAt.toLocaleDateString("fr-FR")}, n'a donné lieu à aucun encaissement depuis. Passez au palier suivant depuis le hub facturation, ou tranchez (échéancier, mise en demeure, recouvrement).`,
+      cibleType: "FactureFormation",
+      cibleId: f.id,
+    });
   }
 
   return alertes;
@@ -1243,6 +1388,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "convention_tripartite", fn: regleConventionTripartite },
   { nom: "convention_formation", fn: regleConventionFormation },
   { nom: "factures_impayees", fn: regleFacturesImpayees },
+  { nom: "facture_sans_echeance", fn: regleFactureSansEcheance },
+  { nom: "relance_sans_effet", fn: regleRelanceSansEffet },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },

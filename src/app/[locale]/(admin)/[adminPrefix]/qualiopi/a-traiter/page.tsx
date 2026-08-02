@@ -22,7 +22,15 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { ArrowRight, CheckCheck, CircleAlert, Mail, Signature, TriangleAlert } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCheck,
+  CircleAlert,
+  Euro,
+  Mail,
+  Signature,
+  TriangleAlert,
+} from "lucide-react";
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
@@ -186,6 +194,7 @@ export default async function ATraiterPage({ params }: PageProps) {
   const rienAFaire =
     signatures.length === 0 &&
     compteurs.emails === 0 &&
+    compteurs.relances === 0 &&
     critiques.length === 0 &&
     importantes.length === 0;
 
@@ -296,6 +305,33 @@ export default async function ATraiterPage({ params }: PageProps) {
             iconAfter={ArrowRight}
           >
             Ouvrir la corbeille de validation
+          </AdminButton>
+        </div>
+      )}
+
+      {/* Relances de recouvrement.
+          Bloc absent jusqu'ici : les relances proposées n'existaient QUE dans
+          le hub facturation. Un impayé ne se signalait donc nulle part tant
+          qu'on n'ouvrait pas cet écran — sur le sujet où l'oubli coûte le plus
+          cher. L'envoi reste un clic (et une double validation) dans le hub :
+          ce bloc y renvoie, il ne relance rien lui-même. */}
+      {compteurs.relances > 0 && (
+        <div className={carte}>
+          <h2 className={titreCarte}>
+            <Euro size={18} aria-hidden="true" className="shrink-0" />
+            Relances à envoyer <span className={pastille}>{compteurs.relances}</span>
+          </h2>
+          <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Des factures échues attendent une relance. Rien ne part sans votre clic : le hub vous
+            demandera de confirmer avoir pointé votre relevé bancaire.
+          </p>
+          <AdminButton
+            href={`${base}/qualiopi/facturation`}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            Ouvrir le hub facturation
           </AdminButton>
         </div>
       )}

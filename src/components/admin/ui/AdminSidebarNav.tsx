@@ -132,7 +132,13 @@ interface AdminSidebarNavProps {
    * FAIRE, il descend à zéro. Source : `compterQualiopiNav()` (SSOT partagé
    * avec la page « À traiter » — deux calculs divergeraient un jour).
    */
-  qualiopiCounts?: { signatures: number; emails: number; alertes: number; total: number };
+  qualiopiCounts?: {
+    signatures: number;
+    emails: number;
+    alertes: number;
+    relances: number;
+    total: number;
+  };
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -407,6 +413,11 @@ export function AdminSidebarNav({
       }
       if (href === `${base}/qualiopi/alertes` && qualiopiCounts.alertes > 0) {
         return { count: qualiopiCounts.alertes, tone: "warn", label: "alertes non lues" };
+      }
+      // Recouvrement : une facture échue attend un clic. Ton « danger » comme
+      // les e-mails à valider — c'est de la trésorerie qui ne rentre pas.
+      if (href === `${base}/qualiopi/facturation` && qualiopiCounts.relances > 0) {
+        return { count: qualiopiCounts.relances, tone: "danger", label: "relances à envoyer" };
       }
     }
     return null;
