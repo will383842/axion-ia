@@ -87,6 +87,8 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   cv_formateur: "document",
   // Programme de l'action, annexe de la convention (art. R.6351-5).
   programme: "document",
+  // Organisation de l'action : calendrier, durée, rythme, lieu (art. R.6351-5).
+  organisation_action: "document",
 };
 
 export interface GenerateDocumentInput {

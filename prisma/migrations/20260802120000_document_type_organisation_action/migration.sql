@@ -1,0 +1,22 @@
+-- L'ORGANISATION de l'action de formation devient une pièce.
+--
+-- ## Ce que cette migration ferme
+--
+-- Le formulaire de déclaration d'activité (art. R.6351-5 C. trav.) attend une
+-- pièce décrivant « l'organisation des actions de formation » : calendrier,
+-- durée, rythme, modalités (présentiel/distanciel/hybride) et lieux. Le dossier
+-- Qualiopi attend la même preuve pour les indicateurs 9 (information du public)
+-- et 12 (suivi de l'exécution).
+--
+-- Toutes les DONNÉES existaient déjà : `session_jours` porte le calendrier réel
+-- (horaires par jour, CHECK SQL sur le format), la session porte durée,
+-- modalité, lieu et effectif. Mais aucune valeur de `DocumentType` ne permettait
+-- d'en faire une pièce numérotée et hashée : le `programme` dit CE QUI est
+-- enseigné, rien ne disait QUAND, OÙ et COMMENT. On joignait la convention en
+-- guise d'organisation — une pièce qui n'est pas faite pour ça.
+--
+-- Postgres ALTER TYPE ADD VALUE — non transactionnel mais sûr (ajout d'une
+-- valeur d'enum, jamais de retrait). `IF NOT EXISTS` rend la migration
+-- ré-exécutable, ce qui compte : l'entrypoint rejoue `migrate deploy` à chaque
+-- démarrage de conteneur.
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'organisation_action';
