@@ -334,6 +334,63 @@ describe("evaluerAlertes — session_sans_formateur", () => {
     const alertes = await evaluerAlertes();
     expect(alertes.find((x) => x.code === "session_sans_formateur")).toBeUndefined();
   });
+
+  // 🔴 La borne basse de 365 jours est VOULUE (une non-conformité réelle ne doit
+  // pas disparaître en silence), mais le titre et le verbe restaient au futur :
+  // « Session à J-7 … démarre le 08/07/2026 » sur une session commencée depuis
+  // 25 jours. Une alerte qui annonce au futur un fait accompli se lit comme un
+  // bug du système, et on cesse de la lire.
+  it("parle au PASSÉ quand la session a déjà démarré", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-001",
+              numero: "SES-2026-001",
+              titreSession: "Découverte de l'IA générative",
+              dateDebut: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000),
+              client: null,
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_formateur");
+    expect(a?.titre).toBe("Session démarrée sans formateur principal");
+    expect(a?.message).toContain("a démarré le");
+    expect(a?.message).not.toContain("démarre le 0");
+    // Sans client rattaché, on le DIT : c'est souvent l'anomalie elle-même.
+    expect(a?.message).toContain("aucun client rattaché");
+  });
+
+  // 🔴 Les alertes ne nommaient que le numéro de session. Il fallait ouvrir la
+  // fiche pour savoir de QUI il s'agit — impraticable dès quelques sessions.
+  it("nomme le client dans le message", async () => {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ where }: { where?: { formateurPrincipalId?: unknown } }) => {
+        if (where && "formateurPrincipalId" in where && where.formateurPrincipalId === null) {
+          return Promise.resolve([
+            {
+              id: "ses-003",
+              numero: "SES-2026-003",
+              titreSession: "IA pour l'immobilier",
+              dateDebut: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+              client: { raisonSociale: "INVEST SUN" },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "session_sans_formateur");
+    expect(a?.message).toContain("INVEST SUN");
+  });
 });
 
 /**

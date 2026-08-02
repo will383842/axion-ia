@@ -140,9 +140,18 @@ export async function listAlertes(options?: ListAlertesOptions): Promise<AlerteS
 // countNonLues
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Alertes non lues ET encore ACTIVES.
+ *
+ * 🔴 `resolue: false` manquait. Le compteur additionnait donc les alertes déjà
+ * résolues mais jamais marquées lues — et résoudre une alerte ne la marque pas
+ * lue. La pastille affichait 17 là où la page listait 5 alertes actives, et
+ * l'écart ne pouvait que croître : une pastille qu'on ne peut pas faire
+ * redescendre cesse d'être un signal.
+ */
 export async function countNonLues(): Promise<number> {
   if (isStub()) return 0;
-  return prisma.alerteSysteme.count({ where: { lu: false } });
+  return prisma.alerteSysteme.count({ where: { lu: false, resolue: false } });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

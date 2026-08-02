@@ -320,6 +320,16 @@ describe("countNonLues", () => {
     const result = await countNonLues();
     expect(result).toBe(5);
   });
+
+  // 🔴 `resolue: false` manquait. La pastille additionnait les alertes RÉSOLUES
+  // mais non lues — et résoudre une alerte ne la marque pas lue. Constaté en
+  // production : pastille à 17, page à 5 alertes actives, écart irrattrapable.
+  it("ne compte QUE les alertes encore actives", async () => {
+    await countNonLues();
+    expect(mp.alerteSysteme.count).toHaveBeenCalledWith({
+      where: { lu: false, resolue: false },
+    });
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
