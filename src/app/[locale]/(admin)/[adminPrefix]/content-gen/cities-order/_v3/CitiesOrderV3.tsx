@@ -179,10 +179,10 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
         await reorderCities({ slugs: newRows.map((r) => r.villeSlug) });
         toast.success("Ordre des villes mis à jour");
       } catch (err) {
-        // Revert
+        // Revert — détail technique en console, message métier fixe à l'écran.
         setRows(previousRows);
-        const msg = err instanceof Error ? err.message : "Erreur réordonnancement";
-        toast.error(`Échec du reorder : ${msg}`);
+        console.error("[cities-order] réordonnancement en échec :", err);
+        toast.error("Échec du réordonnancement — l'ordre précédent est rétabli.");
       } finally {
         setIsReordering(false);
       }
@@ -205,9 +205,14 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
         await pinCity({ slug, pinned: nextPinned });
         toast.success(nextPinned ? `${slug} épinglé` : `${slug} désépinglé`);
       } catch (err) {
+        // Détail technique en console, message métier fixe à l'écran.
         setRows(previousRows);
-        const msg = err instanceof Error ? err.message : "Erreur pin";
-        toast.error(`Échec du pin : ${msg}`);
+        console.error("[cities-order] épinglage en échec :", err);
+        toast.error(
+          nextPinned
+            ? "Échec de l'épinglage — la ville reste à sa place."
+            : "Échec du désépinglage — la ville reste épinglée.",
+        );
       } finally {
         setPinningSlug(null);
       }

@@ -11,6 +11,16 @@ import {
   AdminEmptyState,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { formatDateFrShort } from "@/lib/format-date-fr";
+
+// Heure seule (Europe/Paris) — la colonne Date affiche jour et heure sur deux
+// lignes ; `formatDateFr` colle les deux sur une seule.
+const HEURE_FR = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
 
 interface LogRow {
   id: string;
@@ -61,8 +71,8 @@ export function ActivityLogsV2({
       header: "Date",
       cell: (l) => (
         <>
-          <div>{l.createdAt.toISOString().slice(0, 10)}</div>
-          <div className="admin-meta-small">{l.createdAt.toISOString().slice(11, 19)}</div>
+          <div>{formatDateFrShort(l.createdAt)}</div>
+          <div className="admin-meta-small">{HEURE_FR.format(l.createdAt)}</div>
         </>
       ),
     },

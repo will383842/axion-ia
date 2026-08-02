@@ -21,6 +21,7 @@ import {
   deleteCampaignPermanently,
 } from "@/server/actions/content-gen/coverage";
 import { ConfirmSubmitButton } from "../../_v2/ConfirmSubmitButton";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -125,7 +126,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
     <AdminPageShell>
       <AdminPageHeader
         title={campaign.name}
-        description={`${campaign.scope} · cible ${campaign.totalTargetCount} · statut ${STATUS_LABELS_FR[campaign.status] ?? campaign.status} · créée ${campaign.createdAt.toISOString().slice(0, 10)}`}
+        description={`${campaign.scope} · cible ${campaign.totalTargetCount} · statut ${STATUS_LABELS_FR[campaign.status] ?? campaign.status} · créée ${formatDateFrShort(campaign.createdAt)}`}
         actions={
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
             {campaign.status === "draft" ? (

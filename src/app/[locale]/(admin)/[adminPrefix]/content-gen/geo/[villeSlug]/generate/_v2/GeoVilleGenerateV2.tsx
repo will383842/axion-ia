@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFr } from "@/lib/format-date-fr";
 
 interface Props {
   adminPrefix: string;
@@ -65,7 +66,7 @@ export async function GeoVilleGenerateV2({
                         href={`/fr/${adminPrefix}/content-gen/jobs/${j.id}`}
                         className="admin-link"
                       >
-                        {j.createdAt.toISOString().slice(0, 16)}
+                        {formatDateFr(j.createdAt)}
                       </Link>
                     </td>
                     <td>{j.contentType}</td>

@@ -16,6 +16,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFr } from "@/lib/format-date-fr";
 import { resolveArticleRoute } from "@/server/content-gen/blog/resolve-article-route";
 import {
   archiveArticle,
@@ -87,7 +88,7 @@ export async function PublicationsV2({
     {
       key: "publishedAt",
       header: "Publié le",
-      cell: (a) => a.publishedAt?.toISOString().slice(0, 16) ?? "—",
+      cell: (a) => formatDateFr(a.publishedAt),
     },
     {
       key: "title",

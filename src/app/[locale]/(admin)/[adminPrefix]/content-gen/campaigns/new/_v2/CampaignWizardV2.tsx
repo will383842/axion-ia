@@ -377,8 +377,10 @@ export function CampaignWizardV2({
       // M8 — redirection vers le détail de la campagne créée.
       router.push(`${base}/coverage/${result.campaignId}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erreur création campagne";
-      toast.error(`Échec : ${msg}`);
+      // Détail technique en console — le toast porte un message métier fixe,
+      // jamais err.message brut.
+      console.error("[campaign-wizard] création de campagne en échec :", err);
+      toast.error("Échec de la création de la campagne. Réessayez — détail en console.");
       update("submitting", false);
     }
   }

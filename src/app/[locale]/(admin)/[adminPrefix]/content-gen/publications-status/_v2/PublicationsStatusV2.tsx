@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 import { bulkApproveReviews, bulkRejectReviews } from "@/server/actions/content-gen/review";
 import { retryAllFailed } from "@/server/actions/content-gen/jobs";
 import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
@@ -180,7 +181,7 @@ function KanbanColumn({
             <br />
             <span className="admin-meta">
               {r.qualityScore != null ? `score ${r.qualityScore}` : "—"} ·{" "}
-              {r.createdAt.toISOString().slice(5, 10)}
+              {formatDateFrShort(r.createdAt)}
             </span>
           </li>
         ))}

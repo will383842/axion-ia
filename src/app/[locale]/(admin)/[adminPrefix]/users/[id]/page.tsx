@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { getAdminUserDetailAction } from "@/features/admin-users/actions";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { UserActions } from "./UserActions";
+import { formatDateFr, formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,7 @@ export default async function UserDetailPage({ params }: PageProps) {
     <AdminPageShell>
       <AdminPageHeader
         title={user.name}
-        description={`${user.email} · créé le ${user.createdAt.toISOString().slice(0, 10)}${isSelf ? " · (c'est vous)" : ""}`}
+        description={`${user.email} · créé le ${formatDateFrShort(user.createdAt)}${isSelf ? " · (c'est vous)" : ""}`}
         breadcrumbs={
           <a href={`/fr/${adminPrefix}/users`} className="admin-link admin-back">
             ← Utilisateurs
@@ -86,7 +87,7 @@ export default async function UserDetailPage({ params }: PageProps) {
             <dd className="admin-dd">{user.twoFactorEnabled ? "✓ Activée" : "✗ Non activée"}</dd>
             <dt className="admin-dt">Dernier login</dt>
             <dd className="admin-dd">
-              {user.lastLoginAt ? user.lastLoginAt.toISOString() : "Jamais connecté"}
+              {user.lastLoginAt ? formatDateFr(user.lastLoginAt) : "Jamais connecté"}
             </dd>
             {user.lastLoginIp && (
               <>
@@ -95,7 +96,7 @@ export default async function UserDetailPage({ params }: PageProps) {
               </>
             )}
             <dt className="admin-dt">Mise à jour</dt>
-            <dd className="admin-dd">{user.updatedAt.toISOString().slice(0, 10)}</dd>
+            <dd className="admin-dd">{formatDateFrShort(user.updatedAt)}</dd>
           </dl>
         </div>
         {canManage && !isSelf && (

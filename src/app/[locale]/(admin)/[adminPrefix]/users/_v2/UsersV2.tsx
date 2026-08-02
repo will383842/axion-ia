@@ -17,6 +17,7 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 const ROLE_LABELS: Record<string, string> = {
   super_admin: "Super Admin",
@@ -95,7 +96,7 @@ export function UsersV2({
     {
       key: "lastLogin",
       header: "Dernier login",
-      cell: (u) => (u.lastLoginAt ? u.lastLoginAt.toISOString().slice(0, 10) : "—"),
+      cell: (u) => formatDateFrShort(u.lastLoginAt),
     },
   ];
 

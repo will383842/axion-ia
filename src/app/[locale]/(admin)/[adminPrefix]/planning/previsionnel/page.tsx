@@ -11,7 +11,8 @@
 import Link from "next/link";
 import { getPrevisionnel } from "@/server/qualiopi/previsionnel/queries";
 import { ligneVide, totaux, type LignePrevisionnel } from "@/server/qualiopi/previsionnel/calcul";
-import { AdminPageHeader } from "@/components/admin/ui";
+import { AdminPageHeader, AdminButton } from "@/components/admin/ui";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -128,15 +129,25 @@ export default async function PlanningPrevisionnelPage({
       />
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-2">
-        <Link href={`${base}?year=${prev}${nbMoisQs}`} className="admin-button-ghost">
-          ← {prev}
-        </Link>
-        <Link href={base} className="admin-button-ghost">
+        <AdminButton
+          href={`${base}?year=${prev}${nbMoisQs}`}
+          variant="ghost"
+          size="sm"
+          icon={ArrowLeft}
+        >
+          {prev}
+        </AdminButton>
+        <AdminButton href={base} variant="ghost" size="sm">
           Cette année
-        </Link>
-        <Link href={`${base}?year=${next}${nbMoisQs}`} className="admin-button-ghost">
-          {next} →
-        </Link>
+        </AdminButton>
+        <AdminButton
+          href={`${base}?year=${next}${nbMoisQs}`}
+          variant="ghost"
+          size="sm"
+          iconAfter={ArrowRight}
+        >
+          {next}
+        </AdminButton>
       </div>
 
       {/* Réglage de l'horizon — formulaire GET natif, zéro JS client. */}

@@ -12,6 +12,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed } from "@/server/actions/content-gen/jobs";
+import { formatDateFr } from "@/lib/format-date-fr";
 
 interface Props {
   adminPrefix: string;
@@ -78,7 +79,7 @@ function JobMini({ rows, adminPrefix }: { rows: ReadonlyArray<JobRow>; adminPref
   const columns: ReadonlyArray<AdminTableColumn<JobRow>> = [
     { key: "type", header: "Type", cell: (r) => r.contentType },
     { key: "ville", header: "Ville", cell: (r) => r.anchorVilleSlug ?? "—" },
-    { key: "date", header: "Date", cell: (r) => r.createdAt.toISOString().slice(0, 16) },
+    { key: "date", header: "Date", cell: (r) => formatDateFr(r.createdAt) },
     {
       key: "error",
       header: "Erreur",

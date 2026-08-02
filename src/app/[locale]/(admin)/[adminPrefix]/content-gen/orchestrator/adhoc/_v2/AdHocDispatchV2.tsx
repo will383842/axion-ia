@@ -60,8 +60,11 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
       setLastJobId(result.jobId);
       toast.success(`Job dispatché — ID : ${result.jobId}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Erreur inconnue";
-      toast.error(`Erreur dispatch : ${msg}`);
+      // Détail technique en console — le toast porte un message métier fixe.
+      console.error("[adhoc-dispatch] dispatch du job en échec :", err);
+      toast.error(
+        "Échec du lancement du job. Vérifiez les champs et réessayez — détail en console.",
+      );
     } finally {
       setLoading(false);
     }

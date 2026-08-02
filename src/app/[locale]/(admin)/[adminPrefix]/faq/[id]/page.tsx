@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getFAQDetailAction, archiveFAQAction } from "@/features/admin-faq/actions";
 import { FaqEditV2 } from "./_v2/FaqEditV2";
+import { formatDateFrShort } from "@/lib/format-date-fr";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export default async function EditFAQPage({ params }: PageProps) {
       initial={initialPayload}
       viewCount={faq.viewCount}
       helpfulCount={faq.helpfulCount}
-      updatedAtIso={faq.updatedAt.toISOString().slice(0, 10)}
+      updatedAtIso={formatDateFrShort(faq.updatedAt)}
       status={faq.status}
       faqId={faq.id}
     />

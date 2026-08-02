@@ -10,6 +10,16 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
+import { formatDateFr } from "@/lib/format-date-fr";
+
+// Heure seule (Europe/Paris) avec secondes — la table des logs horodate des
+// étapes d'un même job, la date complète serait répétée sur chaque ligne.
+const HEURE_LOG_FR = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
 
 interface JobLog {
   id: string;
@@ -79,7 +89,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={`Job ${job.id.slice(0, 12)}…`}
-        description={`${job.contentType} · ${job.status} · créé ${job.createdAt.toISOString().slice(0, 16)}`}
+        description={`${job.contentType} · ${job.status} · créé ${formatDateFr(job.createdAt)}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             {job.status === "failed" || job.status === "cancelled" ? (
@@ -247,7 +257,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
               <tbody>
                 {job.logs.map((l) => (
                   <tr key={l.id}>
-                    <td>{l.timestamp.toISOString().slice(11, 19)}</td>
+                    <td>{HEURE_LOG_FR.format(l.timestamp)}</td>
                     <td>{l.level}</td>
                     <td>
                       <code>{l.step}</code>
