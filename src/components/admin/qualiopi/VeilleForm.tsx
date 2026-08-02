@@ -87,8 +87,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Type */}
         <div className={fieldCls}>
-          <label className={labelCls}>Type de veille</label>
+          <label htmlFor="veilleform-type-de-veille" className={labelCls}>
+            Type de veille
+          </label>
           <select
+            id="veilleform-type-de-veille"
             value={type}
             onChange={(e) => setType(e.target.value as VeilleType)}
             disabled={isPending}
@@ -104,8 +107,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
         {/* Date */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de veille</label>
+          <label htmlFor="veilleform-date-de-veille" className={labelCls}>
+            Date de veille
+          </label>
           <input
+            id="veilleform-date-de-veille"
             type="date"
             value={dateVeille}
             onChange={(e) => setDateVeille(e.target.value)}
@@ -118,8 +124,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
       {/* Source */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Source (publication, organisme…)</label>
+        <label htmlFor="veilleform-source-publication-organisme" className={labelCls}>
+          Source (publication, organisme…)
+        </label>
         <input
+          id="veilleform-source-publication-organisme"
           type="text"
           value={source}
           onChange={(e) => setSource(e.target.value)}
@@ -133,8 +142,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
       {/* Titre */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Titre</label>
+        <label htmlFor="veilleform-titre" className={labelCls}>
+          Titre
+        </label>
         <input
+          id="veilleform-titre"
           type="text"
           value={titre}
           onChange={(e) => setTitre(e.target.value)}
@@ -148,8 +160,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
       {/* Contenu */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Contenu / synthèse</label>
+        <label htmlFor="veilleform-contenu-synthese" className={labelCls}>
+          Contenu / synthèse
+        </label>
         <textarea
+          id="veilleform-contenu-synthese"
           value={contenu}
           onChange={(e) => setContenu(e.target.value)}
           disabled={isPending}
@@ -161,8 +176,11 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
 
       {/* Impact */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Impact estimé (facultatif)</label>
+        <label htmlFor="veilleform-impact-estime-facultatif" className={labelCls}>
+          Impact estimé (facultatif)
+        </label>
         <textarea
+          id="veilleform-impact-estime-facultatif"
           value={impact}
           onChange={(e) => setImpact(e.target.value)}
           disabled={isPending}
@@ -178,6 +196,7 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
           Action décidée suite à la veille (preuve d&apos;exploitation)
         </label>
         <textarea
+          aria-label="Mesure prise ou planifiée en réponse à cette veille"
           value={actionDecidee}
           onChange={(e) => setActionDecidee(e.target.value)}
           disabled={isPending}

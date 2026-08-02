@@ -109,8 +109,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-4">
         {/* Type */}
         <div className={fieldCls}>
-          <label className={labelCls}>Type</label>
+          <label htmlFor="incidentform-type" className={labelCls}>
+            Type
+          </label>
           <select
+            id="incidentform-type"
             value={type}
             onChange={(e) => setType(e.target.value as IncidentType)}
             disabled={isPending}
@@ -126,8 +129,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
         {/* Gravité */}
         <div className={fieldCls}>
-          <label className={labelCls}>Gravité</label>
+          <label htmlFor="incidentform-gravite" className={labelCls}>
+            Gravité
+          </label>
           <select
+            id="incidentform-gravite"
             value={gravite}
             onChange={(e) => setGravite(e.target.value as IncidentGravite)}
             disabled={isPending}
@@ -143,8 +149,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
         {/* Statut */}
         <div className={fieldCls}>
-          <label className={labelCls}>Statut</label>
+          <label htmlFor="incidentform-statut" className={labelCls}>
+            Statut
+          </label>
           <select
+            id="incidentform-statut"
             value={statut}
             onChange={(e) => setStatut(e.target.value as IncidentStatut)}
             disabled={isPending}
@@ -160,8 +169,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
         {/* Date de l'incident */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de l&apos;incident</label>
+          <label htmlFor="incidentform-date-de-lincident" className={labelCls}>
+            Date de l&apos;incident
+          </label>
           <input
+            id="incidentform-date-de-lincident"
             type="date"
             value={dateIncident}
             onChange={(e) => setDateIncident(e.target.value)}
@@ -174,8 +186,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
       {/* Titre */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Titre</label>
+        <label htmlFor="incidentform-titre" className={labelCls}>
+          Titre
+        </label>
         <input
+          id="incidentform-titre"
           type="text"
           value={titre}
           onChange={(e) => setTitre(e.target.value)}
@@ -189,8 +204,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
       {/* Session liée */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Session liée (facultatif)</label>
+        <label htmlFor="incidentform-session-liee-facultatif" className={labelCls}>
+          Session liée (facultatif)
+        </label>
         <select
+          id="incidentform-session-liee-facultatif"
           value={sessionId}
           onChange={(e) => setSessionId(e.target.value)}
           disabled={isPending}
@@ -207,8 +225,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
       {/* Description */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Description (facultatif)</label>
+        <label htmlFor="incidentform-description-facultatif" className={labelCls}>
+          Description (facultatif)
+        </label>
         <textarea
+          id="incidentform-description-facultatif"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={isPending}
@@ -220,8 +241,11 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
 
       {/* Action corrective */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Action corrective (facultatif — alimente M9)</label>
+        <label htmlFor="incidentform-action-corrective-facultatif-ali" className={labelCls}>
+          Action corrective (facultatif — alimente M9)
+        </label>
         <textarea
+          id="incidentform-action-corrective-facultatif-ali"
           value={actionCorrective}
           onChange={(e) => setActionCorrective(e.target.value)}
           disabled={isPending}

@@ -185,6 +185,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
         </p>
         <form action={destroy} className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
           <input
+            aria-label="Taper DELETE pour confirmer"
             type="text"
             name="confirmation"
             placeholder="Taper DELETE pour confirmer"

@@ -160,8 +160,11 @@ export function VeilleRowActions({
       className="flex w-full max-w-md flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
     >
       <div>
-        <label className={labelCls}>Type</label>
+        <label htmlFor="veillerowactions-type" className={labelCls}>
+          Type
+        </label>
         <select
+          id="veillerowactions-type"
           value={type}
           onChange={(e) => setType(e.target.value as VeilleType)}
           disabled={isPending}
@@ -175,8 +178,11 @@ export function VeilleRowActions({
         </select>
       </div>
       <div>
-        <label className={labelCls}>Date de veille</label>
+        <label htmlFor="veillerowactions-date-de-veille" className={labelCls}>
+          Date de veille
+        </label>
         <input
+          id="veillerowactions-date-de-veille"
           type="date"
           value={dateVeille}
           onChange={(e) => setDateVeille(e.target.value)}
@@ -186,8 +192,11 @@ export function VeilleRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Source</label>
+        <label htmlFor="veillerowactions-source" className={labelCls}>
+          Source
+        </label>
         <input
+          id="veillerowactions-source"
           type="text"
           value={source}
           onChange={(e) => setSource(e.target.value)}
@@ -198,8 +207,11 @@ export function VeilleRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Titre</label>
+        <label htmlFor="veillerowactions-titre" className={labelCls}>
+          Titre
+        </label>
         <input
+          id="veillerowactions-titre"
           type="text"
           value={titre}
           onChange={(e) => setTitre(e.target.value)}
@@ -210,8 +222,11 @@ export function VeilleRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Contenu</label>
+        <label htmlFor="veillerowactions-contenu" className={labelCls}>
+          Contenu
+        </label>
         <textarea
+          id="veillerowactions-contenu"
           value={contenu}
           onChange={(e) => setContenu(e.target.value)}
           disabled={isPending}
@@ -221,8 +236,11 @@ export function VeilleRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Impact</label>
+        <label htmlFor="veillerowactions-impact" className={labelCls}>
+          Impact
+        </label>
         <textarea
+          id="veillerowactions-impact"
           value={impact}
           onChange={(e) => setImpact(e.target.value)}
           disabled={isPending}
@@ -231,8 +249,11 @@ export function VeilleRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Action décidée</label>
+        <label htmlFor="veillerowactions-action-decidee" className={labelCls}>
+          Action décidée
+        </label>
         <textarea
+          id="veillerowactions-action-decidee"
           value={actionDecidee}
           onChange={(e) => setActionDecidee(e.target.value)}
           disabled={isPending}

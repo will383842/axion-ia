@@ -95,8 +95,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Nom */}
         <div className={fieldCls}>
-          <label className={labelCls}>Nom de l&apos;organisme</label>
+          <label htmlFor="soustraitantform-nom-de-lorganisme" className={labelCls}>
+            Nom de l&apos;organisme
+          </label>
           <input
+            id="soustraitantform-nom-de-lorganisme"
             type="text"
             value={nom}
             onChange={(e) => setNom(e.target.value)}
@@ -110,9 +113,12 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
 
         {/* SIRET */}
         <div className={fieldCls}>
-          <label className={labelCls}>SIRET (facultatif)</label>
+          <label htmlFor="soustraitantform-siret-facultatif" className={labelCls}>
+            SIRET (facultatif)
+          </label>
           {/* 17 : forme espacée d'un Kbis tolérée, normalisée à 14 côté serveur. */}
           <input
+            id="soustraitantform-siret-facultatif"
             type="text"
             value={siret}
             onChange={(e) => setSiret(e.target.value)}
@@ -126,8 +132,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
 
         {/* NDA */}
         <div className={fieldCls}>
-          <label className={labelCls}>NDA (facultatif)</label>
+          <label htmlFor="soustraitantform-nda-facultatif" className={labelCls}>
+            NDA (facultatif)
+          </label>
           <input
+            id="soustraitantform-nda-facultatif"
             type="text"
             value={nda}
             onChange={(e) => setNda(e.target.value)}
@@ -145,8 +154,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
             Le contrat reste signable sur papier, mais l'écran doit le dire ici,
             là où l'admin peut agir. */}
         <div className={fieldCls}>
-          <label className={labelCls}>Nom du contact signataire (facultatif)</label>
+          <label htmlFor="soustraitantform-nom-du-contact-signataire-facult" className={labelCls}>
+            Nom du contact signataire (facultatif)
+          </label>
           <input
+            id="soustraitantform-nom-du-contact-signataire-facult"
             type="text"
             value={contactNom}
             onChange={(e) => setContactNom(e.target.value)}
@@ -158,8 +170,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
         </div>
 
         <div className={fieldCls}>
-          <label className={labelCls}>E-mail du contact signataire</label>
+          <label htmlFor="soustraitantform-e-mail-du-contact-signataire" className={labelCls}>
+            E-mail du contact signataire
+          </label>
           <input
+            id="soustraitantform-e-mail-du-contact-signataire"
             type="email"
             value={contactEmail}
             onChange={(e) => setContactEmail(e.target.value)}
@@ -175,8 +190,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
         </div>
 
         <div className={fieldCls}>
-          <label className={labelCls}>Fonction du contact (facultatif)</label>
+          <label htmlFor="soustraitantform-fonction-du-contact-facultatif" className={labelCls}>
+            Fonction du contact (facultatif)
+          </label>
           <input
+            id="soustraitantform-fonction-du-contact-facultatif"
             type="text"
             value={contactFonction}
             onChange={(e) => setContactFonction(e.target.value)}
@@ -193,8 +211,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
 
         {/* Date signature contrat */}
         <div className={fieldCls}>
-          <label className={labelCls}>Contrat signé le (facultatif)</label>
+          <label htmlFor="soustraitantform-contrat-signe-le-facultatif" className={labelCls}>
+            Contrat signé le (facultatif)
+          </label>
           <input
+            id="soustraitantform-contrat-signe-le-facultatif"
             type="date"
             value={contratSigneAt}
             onChange={(e) => setContratSigneAt(e.target.value)}
@@ -206,8 +227,11 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
 
       {/* Objet prestation */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Objet de la prestation sous-traitée</label>
+        <label htmlFor="soustraitantform-objet-de-la-prestation-sous-trai" className={labelCls}>
+          Objet de la prestation sous-traitée
+        </label>
         <textarea
+          id="soustraitantform-objet-de-la-prestation-sous-trai"
           value={objetPrestation}
           onChange={(e) => setObjetPrestation(e.target.value)}
           disabled={isPending}

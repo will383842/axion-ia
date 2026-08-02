@@ -108,8 +108,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Source */}
         <div className={fieldCls}>
-          <label className={labelCls}>Origine</label>
+          <label htmlFor="reclamationform-origine" className={labelCls}>
+            Origine
+          </label>
           <select
+            id="reclamationform-origine"
             value={source}
             onChange={(e) => setSource(e.target.value as ReclamationSource)}
             disabled={isPending}
@@ -125,8 +128,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
         {/* Date réception */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de réception</label>
+          <label htmlFor="reclamationform-date-de-reception" className={labelCls}>
+            Date de réception
+          </label>
           <input
+            id="reclamationform-date-de-reception"
             type="date"
             value={dateReception}
             onChange={(e) => setDateReception(e.target.value)}
@@ -138,8 +144,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
         {/* Réclamant nom */}
         <div className={fieldCls}>
-          <label className={labelCls}>Nom du réclamant</label>
+          <label htmlFor="reclamationform-nom-du-reclamant" className={labelCls}>
+            Nom du réclamant
+          </label>
           <input
+            id="reclamationform-nom-du-reclamant"
             type="text"
             value={reclamantNom}
             onChange={(e) => setReclamantNom(e.target.value)}
@@ -153,8 +162,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
         {/* Réclamant email */}
         <div className={fieldCls}>
-          <label className={labelCls}>Email (facultatif)</label>
+          <label htmlFor="reclamationform-email-facultatif" className={labelCls}>
+            Email (facultatif)
+          </label>
           <input
+            id="reclamationform-email-facultatif"
             type="email"
             value={reclamantEmail}
             onChange={(e) => setReclamantEmail(e.target.value)}
@@ -167,8 +179,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
         {/* Gravité */}
         <div className={fieldCls}>
-          <label className={labelCls}>Gravité (facultatif)</label>
+          <label htmlFor="reclamationform-gravite-facultatif" className={labelCls}>
+            Gravité (facultatif)
+          </label>
           <select
+            id="reclamationform-gravite-facultatif"
             value={gravite}
             onChange={(e) => setGravite(e.target.value)}
             disabled={isPending}
@@ -184,8 +199,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
       {/* Objet */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Objet de la réclamation</label>
+        <label htmlFor="reclamationform-objet-de-la-reclamation" className={labelCls}>
+          Objet de la réclamation
+        </label>
         <input
+          id="reclamationform-objet-de-la-reclamation"
           type="text"
           value={objet}
           onChange={(e) => setObjet(e.target.value)}
@@ -199,8 +217,11 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
 
       {/* Description */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Description détaillée</label>
+        <label htmlFor="reclamationform-description-detaillee" className={labelCls}>
+          Description détaillée
+        </label>
         <textarea
+          id="reclamationform-description-detaillee"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           disabled={isPending}
@@ -306,8 +327,11 @@ export function ReclamationReponseForm({
 
       {/* Statut */}
       <div className={`mb-[var(--space-admin-3)] ${fieldCls}`}>
-        <label className={labelCls}>Statut</label>
+        <label htmlFor="reclamationform-statut" className={labelCls}>
+          Statut
+        </label>
         <select
+          id="reclamationform-statut"
           value={nouveauStatut}
           onChange={(e) => setNouveauStatut(e.target.value as ReclamationStatut)}
           disabled={isPending}
@@ -323,8 +347,11 @@ export function ReclamationReponseForm({
 
       {/* Réponse */}
       <div className={`mb-[var(--space-admin-3)] ${fieldCls}`}>
-        <label className={labelCls}>Réponse apportée</label>
+        <label htmlFor="reclamationform-reponse-apportee" className={labelCls}>
+          Réponse apportée
+        </label>
         <textarea
+          id="reclamationform-reponse-apportee"
           value={reponse}
           onChange={(e) => setReponse(e.target.value)}
           disabled={isPending}
@@ -336,8 +363,11 @@ export function ReclamationReponseForm({
 
       {/* Actions correctives */}
       <div className={`mb-[var(--space-admin-3)] ${fieldCls}`}>
-        <label className={labelCls}>Actions correctives (facultatif)</label>
+        <label htmlFor="reclamationform-actions-correctives-facultatif" className={labelCls}>
+          Actions correctives (facultatif)
+        </label>
         <textarea
+          id="reclamationform-actions-correctives-facultatif"
           value={actionsCorrectives}
           onChange={(e) => setActionsCorrectives(e.target.value)}
           disabled={isPending}
