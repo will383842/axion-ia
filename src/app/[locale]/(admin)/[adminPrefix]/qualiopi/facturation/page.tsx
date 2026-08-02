@@ -29,6 +29,7 @@ import { AdminFilterTabs } from "@/components/admin/ui";
 import { RelancesATraiter } from "@/components/admin/qualiopi/RelancesATraiter";
 import type { RelanceItem } from "@/components/admin/qualiopi/RelancesATraiter";
 import { DossiersFinancementPanel } from "@/components/admin/qualiopi/DossiersFinancementPanel";
+import { EncaisserRapideButton } from "@/components/admin/qualiopi/EncaisserRapideButton";
 import type { DossierItem } from "@/components/admin/qualiopi/DossiersFinancementPanel";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
@@ -155,6 +156,15 @@ export default async function FacturationHubPage({
           regimeTva: true,
           destinataire: true,
           client: { select: { estPublic: true, type: true, adressePaysCode: true } },
+          // Action rapide « Encaisser » : le reste dû NET se calcule par ligne
+          // avec la MÊME formule que la balance âgée ci-dessous (TTC ?? HT
+          // + avoirs négatifs − encaissements succeeded). Volume PAGE_SIZE=25,
+          // extension a minima du select existant.
+          payments: { where: { status: "succeeded" }, select: { amountCents: true } },
+          avoirs: {
+            where: { statut: { not: "annulee" } },
+            select: { montantTtcCents: true, montantHtCents: true },
+          },
         },
       }),
       prisma.factureFormation.count({ where }),
@@ -291,43 +301,61 @@ export default async function FacturationHubPage({
     envoiDirect: r.factureFormationId !== null,
   }));
 
-  const rows: AdminListScaffoldRow[] = factures.map((f) => ({
-    id: f.id,
-    detailHref: `${base}/${f.id}`,
-    cells: [
-      <span key="num" className="font-mono text-[length:var(--text-admin-xs)]">
-        {f.numero}
-        {f.avoirDeId !== null ? " (avoir)" : ""}
-      </span>,
-      f.activite !== null ? ACTIVITE_LABELS[f.activite] : "—",
-      <span key="client">
-        {f.destinataireNom}
-        {f.client?.estPublic === true ? (
-          <span
-            className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
-            title="Client secteur public — dépôt Chorus Pro obligatoire"
-          >
-            Chorus Pro
-          </span>
-        ) : null}
-      </span>,
-      f.refClient ?? "—",
-      fmtEur(f.montantTtcCents ?? f.montantHtCents),
-      STATUT_LABELS[f.statut],
-      // Canal réglementaire (réforme 2026/2027) : PA / Chorus / e-reporting / hors champ.
-      CANAL_LABELS[
-        classifierCanalReglementaire({
-          activite: f.activite,
-          regimeTva: isRegimeTva(f.regimeTva) ? f.regimeTva : REGIME_TVA_DEFAUT,
-          clientEstPublic: f.client?.estPublic === true,
-          clientPaysCode: f.client?.adressePaysCode ?? null,
-          clientEstParticulier: f.client?.type === "particulier" || f.destinataire === "stagiaire",
-        })
+  const rows: AdminListScaffoldRow[] = factures.map((f) => {
+    // Reste dû NET de la ligne — même formule que la balance âgée plus haut.
+    const encaisse = f.payments.reduce((acc, p) => acc + p.amountCents, 0);
+    const avoirsTtc = f.avoirs.reduce((acc, a) => acc + (a.montantTtcCents ?? a.montantHtCents), 0);
+    const resteDuCents = (f.montantTtcCents ?? f.montantHtCents) + avoirsTtc - encaisse;
+    // « Encaisser » : factures OUVERTES seulement (pas les brouillons ni les
+    // avoirs), et uniquement si le rôle peut écrire — les actions throw sinon.
+    const encaissable =
+      peutEcrire &&
+      f.avoirDeId === null &&
+      (f.statut === "emise" || f.statut === "partiellement_payee" || f.statut === "en_retard");
+    return {
+      id: f.id,
+      detailHref: `${base}/${f.id}`,
+      cells: [
+        <span key="num" className="font-mono text-[length:var(--text-admin-xs)]">
+          {f.numero}
+          {f.avoirDeId !== null ? " (avoir)" : ""}
+        </span>,
+        f.activite !== null ? ACTIVITE_LABELS[f.activite] : "—",
+        <span key="client">
+          {f.destinataireNom}
+          {f.client?.estPublic === true ? (
+            <span
+              className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              title="Client secteur public — dépôt Chorus Pro obligatoire"
+            >
+              Chorus Pro
+            </span>
+          ) : null}
+        </span>,
+        f.refClient ?? "—",
+        fmtEur(f.montantTtcCents ?? f.montantHtCents),
+        STATUT_LABELS[f.statut],
+        // Canal réglementaire (réforme 2026/2027) : PA / Chorus / e-reporting / hors champ.
+        CANAL_LABELS[
+          classifierCanalReglementaire({
+            activite: f.activite,
+            regimeTva: isRegimeTva(f.regimeTva) ? f.regimeTva : REGIME_TVA_DEFAUT,
+            clientEstPublic: f.client?.estPublic === true,
+            clientPaysCode: f.client?.adressePaysCode ?? null,
+            clientEstParticulier:
+              f.client?.type === "particulier" || f.destinataire === "stagiaire",
+          })
+        ],
+        fmtDate(f.emiseAt),
+        fmtDate(f.echeanceAt),
+        encaissable ? (
+          <EncaisserRapideButton key="encaisser" factureId={f.id} resteDuCents={resteDuCents} />
+        ) : (
+          "—"
+        ),
       ],
-      fmtDate(f.emiseAt),
-      fmtDate(f.echeanceAt),
-    ],
-  }));
+    };
+  });
 
   return (
     <>
@@ -413,6 +441,7 @@ export default async function FacturationHubPage({
           "Canal 2026",
           "Émise",
           "Échéance",
+          "Encaissement",
         ]}
         rows={rows}
         emptyTitle="Aucune facture"
