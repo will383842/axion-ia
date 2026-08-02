@@ -26,6 +26,9 @@ export interface TrainerFormProps {
     telephone: string | null;
     statut: Statut;
     region: string | null;
+    regionsIntervention?: string[];
+    interventionFranceEntiere?: boolean;
+    adresseProfessionnelle?: string | null;
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
   };
@@ -48,6 +51,13 @@ export function TrainerForm({
   const [telephone, setTelephone] = useState(initial?.telephone ?? "");
   const [statut, setStatut] = useState<Statut>(initial?.statut ?? "salarie");
   const [region, setRegion] = useState(initial?.region ?? "");
+  // Multi-régions + « France entière ». `region` (mono) reste envoyée par
+  // l'action, alimentée par la première du tableau : le calendrier la lit.
+  const [regions, setRegions] = useState<string[]>(
+    initial?.regionsIntervention ?? (initial?.region ? [initial.region] : []),
+  );
+  const [franceEntiere, setFranceEntiere] = useState(initial?.interventionFranceEntiere ?? false);
+  const [adressePro, setAdressePro] = useState(initial?.adresseProfessionnelle ?? "");
   const [tarifEuros, setTarifEuros] = useState(
     initial?.tarifJourneeHtCents != null ? String(initial.tarifJourneeHtCents / 100) : "",
   );
@@ -68,6 +78,9 @@ export function TrainerForm({
           email,
           statut,
           region,
+          regionsIntervention: franceEntiere ? [] : regions,
+          interventionFranceEntiere: franceEntiere,
+          ...(adressePro ? { adresseProfessionnelle: adressePro } : {}),
           ...(telephone ? { telephone } : {}),
           ...(tarifCents !== undefined && !Number.isNaN(tarifCents)
             ? { tarifJourneeHtCents: tarifCents }
@@ -89,6 +102,9 @@ export function TrainerForm({
           // commentaire du champ). L'envoyer réverterait la valeur choisie dans
           // TrainerManageForm, dont ce composant ignore la mise à jour.
           region,
+          regionsIntervention: franceEntiere ? [] : regions,
+          interventionFranceEntiere: franceEntiere,
+          adresseProfessionnelle: adressePro,
           ...(telephone ? { telephone } : {}),
           ...(tarifCents !== undefined && !Number.isNaN(tarifCents)
             ? { tarifJourneeHtCents: tarifCents }
@@ -197,24 +213,78 @@ export function TrainerForm({
             </select>
           </div>
         )}
-        <div className={fieldCls}>
-          <label className={labelCls} htmlFor="t-region">
-            Région d&apos;intervention
+        {/*
+          🔴 Régions d'intervention MULTIPLES (2026-08-02). Le champ était un
+          sélecteur mono-valeur : un formateur qui se déplace dans trois régions
+          ne pouvait en déclarer qu'une, et la donnée devenait fausse au moment
+          précis où elle servait. « France entière » évite d'énumérer treize
+          cases pour dire une chose simple — et le dit explicitement sur les
+          pièces, au lieu d'une liste qu'un lecteur devrait recompter.
+
+          `region` (mono) reste envoyée par l'action, alimentée par la première
+          région retenue : le calendrier et les filtres existants la lisent.
+        */}
+        <div className={`${fieldCls} sm:col-span-2`}>
+          <span className={labelCls}>Régions d&apos;intervention</span>
+          <label className="mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            <input
+              type="checkbox"
+              checked={franceEntiere}
+              onChange={(e) => {
+                setFranceEntiere(e.target.checked);
+                if (e.target.checked) {
+                  setRegions([]);
+                  setRegion("");
+                }
+              }}
+              disabled={isPending}
+            />
+            <span>France entière</span>
           </label>
-          <select
-            id="t-region"
-            value={region}
-            onChange={(e) => setRegion(e.target.value)}
+          {!franceEntiere && (
+            <div className="grid grid-cols-1 gap-[var(--space-admin-1)] sm:grid-cols-3">
+              {REGIONS.map((r) => (
+                <label
+                  key={r.slug}
+                  className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+                >
+                  <input
+                    type="checkbox"
+                    checked={regions.includes(r.slug)}
+                    onChange={(e) => {
+                      const suivantes = e.target.checked
+                        ? [...regions, r.slug]
+                        : regions.filter((s) => s !== r.slug);
+                      setRegions(suivantes);
+                      setRegion(suivantes[0] ?? "");
+                    }}
+                    disabled={isPending}
+                  />
+                  <span>{r.nameFr}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+        {/*
+          Adresse PROFESSIONNELLE — le champ n'existait pas en base, si bien que
+          la lettre de mission, qui doit identifier les deux parties, imprimait
+          un tiret figé. Jamais le domicile personnel (minimisation RGPD) :
+          c'est l'adresse d'exercice qui identifie une partie au contrat.
+        */}
+        <div className={`${fieldCls} sm:col-span-2`}>
+          <label className={labelCls} htmlFor="t-adresse-pro">
+            Adresse professionnelle
+          </label>
+          <input
+            id="t-adresse-pro"
+            type="text"
+            value={adressePro}
+            onChange={(e) => setAdressePro(e.target.value)}
             disabled={isPending}
+            placeholder="Adresse d'exercice — jamais le domicile personnel"
             className={inputCls}
-          >
-            <option value="">— Non renseignée —</option>
-            {REGIONS.map((r) => (
-              <option key={r.slug} value={r.slug}>
-                {r.nameFr}
-              </option>
-            ))}
-          </select>
+          />
         </div>
         <div className={fieldCls}>
           <label className={labelCls} htmlFor="t-tarif">

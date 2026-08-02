@@ -1563,6 +1563,7 @@ export async function genererLettreMissionAction(input: {
     statut: string;
     tarifJourneeHtCents: number | null;
     sousTraitantNda: string | null;
+    adresseProfessionnelle: string | null;
   } | null = null;
 
   if (principalTrainerId) {
@@ -1576,6 +1577,7 @@ export async function genererLettreMissionAction(input: {
         statut: true,
         tarifJourneeHtCents: true,
         sousTraitantNda: true,
+        adresseProfessionnelle: true,
       },
     });
   }
@@ -1663,6 +1665,10 @@ export async function genererLettreMissionAction(input: {
             ...(trainer?.telephone !== null && trainer?.telephone !== undefined
               ? { telephone: trainer.telephone }
               : {}),
+            // Adresse PROFESSIONNELLE — la ligne était systématiquement absente
+            // faute de champ en base, sur une pièce qui doit identifier les
+            // deux parties.
+            ...(trainer?.adresseProfessionnelle ? { adresse: trainer.adresseProfessionnelle } : {}),
             specialite: "Formation Intelligence Artificielle",
             // Sans lui, le gabarit qualifie TOUT intervenant de « mandataire
             // sous-traitant » — faux pour le dirigeant qui anime lui-même.
@@ -1974,6 +1980,7 @@ export async function genererLettreMissionCadreAction(input: {
       statut: true,
       tarifJourneeHtCents: true,
       sousTraitantNda: true,
+      adresseProfessionnelle: true,
     },
   });
   if (!trainer) return { error: "Formateur introuvable" };
@@ -2152,6 +2159,7 @@ export async function genererLettreMissionCadreAction(input: {
             nomPrenom,
             email: trainer.email,
             ...(trainer.telephone !== null ? { telephone: trainer.telephone } : {}),
+            ...(trainer.adresseProfessionnelle ? { adresse: trainer.adresseProfessionnelle } : {}),
             specialite: "Formation Intelligence Artificielle",
             // Sans lui, le gabarit qualifie TOUT intervenant de « mandataire
             // sous-traitant » — faux pour le dirigeant qui anime lui-même.
@@ -2772,6 +2780,7 @@ export async function verserFicheFormateurAction(input: {
       dateEmbauche: true,
       afestHabiliteAt: true,
       sousTraitantNda: true,
+      adresseProfessionnelle: true,
       sousTraitantVerifieAt: true,
     },
   });

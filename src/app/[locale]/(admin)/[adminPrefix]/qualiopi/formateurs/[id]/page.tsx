@@ -18,6 +18,8 @@ import {
 import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
+import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
+import { TrainerAfestPanel } from "@/components/admin/qualiopi/TrainerAfestPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
 import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
 import {
@@ -116,6 +118,36 @@ export default async function FicheFormateurPage({ params }: PageProps) {
     lireLettresMissionConsoleDuFormateur(trainer.id, role),
   ]);
   const { sessionsCount, interventionsCount } = await getTrainerActivityCounts(trainer.id);
+
+  // Domaines de compétences au format d'ÉDITION (input date = `YYYY-MM-DD`).
+  // Le stockage historique accepte aussi des chaînes nues (« IA générative »)
+  // sans niveau ni date : on les normalise ici plutôt que de perdre la donnée.
+  const domainesInitiaux = (
+    Array.isArray(trainer.domainesCompetences) ? trainer.domainesCompetences : []
+  ).flatMap((entree) => {
+    if (typeof entree === "string" && entree.trim() !== "") {
+      return [{ domaine: entree.trim(), niveauMaitrise: "", verifiedAt: "" }];
+    }
+    if (typeof entree !== "object" || entree === null) return [];
+    const o = entree as Record<string, unknown>;
+    const domaine = typeof o["domaine"] === "string" ? o["domaine"].trim() : "";
+    if (domaine === "") return [];
+    const brut = typeof o["verifiedAt"] === "string" ? o["verifiedAt"] : "";
+    // `slice(0, 10)` couvre l'ISO complet comme la date seule ; une valeur
+    // illisible devient "" plutôt que de casser l'input date.
+    const iso = brut !== "" && !Number.isNaN(Date.parse(brut)) ? brut.slice(0, 10) : "";
+    return [
+      {
+        domaine,
+        niveauMaitrise: typeof o["niveauMaitrise"] === "string" ? o["niveauMaitrise"] : "",
+        verifiedAt: iso,
+      },
+    ];
+  });
+
+  const afestHabiliteAtInitial = trainer.afestHabiliteAt
+    ? trainer.afestHabiliteAt.toISOString().slice(0, 10)
+    : "";
 
   // Actions de développement des compétences (ind. 22).
   const devActionsRaw = await prisma.trainerDevelopmentAction.findMany({
@@ -225,6 +257,19 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         </div>
       )}
 
+      {/*
+        Compétences ÉVALUÉES et habilitation AFEST (2026-08-02).
+
+        Ces deux surfaces ferment des non-conformités, pas des manques de
+        confort : la structure `{domaine, niveauMaitrise, verifiedAt}` et le
+        champ `afestHabiliteAt` étaient LUS par les PDF et les garde-fous, et
+        ÉCRITS par aucun écran. La fiche formateur sortait donc « — / Non
+        vérifié » sur chaque compétence et « Non habilité » en AFEST, sans
+        qu'aucune manipulation ne puisse y changer quoi que ce soit.
+      */}
+      <TrainerCompetencesPanel trainerId={trainer.id} domainesInitiaux={domainesInitiaux} />
+      <TrainerAfestPanel trainerId={trainer.id} habiliteAtInitial={afestHabiliteAtInitial} />
+
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
       <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />
 
@@ -305,6 +350,9 @@ export default async function FicheFormateurPage({ params }: PageProps) {
             telephone: trainer.telephone,
             statut: trainer.statut,
             region: trainer.region,
+            regionsIntervention: trainer.regionsIntervention,
+            interventionFranceEntiere: trainer.interventionFranceEntiere,
+            adresseProfessionnelle: trainer.adresseProfessionnelle,
             tarifJourneeHtCents: trainer.tarifJourneeHtCents,
             sousTraitantNda: trainer.sousTraitantNda,
           }}
