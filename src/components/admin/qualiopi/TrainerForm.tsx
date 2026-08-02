@@ -214,7 +214,7 @@ export function TrainerForm({
           </div>
         )}
         {/*
-          🔴 Régions d'intervention MULTIPLES (2026-08-02). Le champ était un
+          Régions d'intervention MULTIPLES (2026-08-02). Le champ était un
           sélecteur mono-valeur : un formateur qui se déplace dans trois régions
           ne pouvait en déclarer qu'une, et la donnée devenait fausse au moment
           précis où elle servait. « France entière » évite d'énumérer treize
