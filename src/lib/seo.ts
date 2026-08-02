@@ -795,6 +795,58 @@ interface OrganizationJsonLdInput {
   };
 }
 
+/**
+ * Adresse du siège social, recopiée du Kbis (RCS Grenoble, à jour au 30/07/2026)
+ * et de l'avis de situation SIRENE du 02/08/2026, qui concordent :
+ *
+ *   11 Avenue Paul Verlaine — ELITE BUREAUX - boîte 53 — 38100 Grenoble
+ *
+ * 🔴 Le complément « ELITE BUREAUX - boîte 53 » fait partie de l'adresse
+ * immatriculée : l'omettre casse le rapprochement exact-match NAP que Google
+ * fait entre le JSON-LD et SIRENE (audit Knowledge Panel 2026-07-06). Il était
+ * absent jusqu'au 02/08/2026.
+ *
+ * `COMPANY_ADDRESS` reste un override d'urgence (transfert de siège avant
+ * redeploy) mais la valeur registre est le défaut : au SSG les env `COMPANY_*`
+ * ne sont pas injectées (pas de build-args), donc c'est ce défaut qui est rendu.
+ *
+ * 🔴 FONCTION, pas constante de module : `env.*` est une env var SERVEUR, et
+ * `@t3-oss/env-core` throw dès qu'on y accède depuis un bundle client. Une
+ * constante top-level serait évaluée à l'import de `seo.ts` — donc aussi dans
+ * les composants clients qui n'en importent qu'un helper de metadata.
+ */
+function buildSiegePostalAddress() {
+  return {
+    "@type": "PostalAddress",
+    streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53",
+    addressLocality: "Grenoble",
+    postalCode: "38100",
+    addressRegion: "Auvergne-Rhône-Alpes",
+    addressCountry: "FR",
+  } as const;
+}
+
+/**
+ * Étiquette le `PropertyValue.propertyID` de l'identifiant légal d'après la
+ * FORME de la valeur, au lieu de la supposer.
+ *
+ * Historique : le champ était étiqueté en dur « immatriculation RCS » alors que
+ * `COMPANY_REGISTRATION_NUMBER` porte un SIRET (14 chiffres) — le pied de page
+ * des emails, lui, l'étiquette « SIRET ». Une même env var, deux libellés
+ * contradictoires, dont un faux côté données structurées.
+ *
+ * Aucun numéro n'est codé en dur ici (gate CI `check-anti-siren.sh`) : seul le
+ * nombre de chiffres est observé. 9 ⇒ SIREN, 14 ⇒ SIRET, sinon on retombe sur
+ * le libellé générique (cas « RCS Grenoble 108 018 631 »).
+ */
+function describeRegistrationNumber(value: string): string {
+  const digits = value.replace(/\D/g, "").length;
+  const hasLetters = /[A-Za-z]/.test(value);
+  if (!hasLetters && digits === 14) return "SIRET";
+  if (!hasLetters && digits === 9) return "SIREN";
+  return "immatriculation RCS";
+}
+
 // Layout-level Organization JSON-LD — single source of truth for AEO/GEO 2026
 // (Claude.ai / Perplexity / SGE / Bing Copilot citations).
 //
@@ -822,9 +874,9 @@ export function buildOrganizationJsonLd({
     "@context": "https://schema.org",
     "@id": `${SITE_URL}/#organization`,
     "@type": "Organization",
-    name: "Axion-IA",
-    legalName: "Axion-IA SAS",
-    alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
+    name: BRAND.name,
+    legalName: BRAND.legalName,
+    alternateName: [...BRAND.alternateName],
     url: SITE_URL,
     // Logo carré dédié (Knowledge Panel Google) — cf. `BRAND_LOGO`. Émis en
     // ImageObject `#logo` partagé (audit Knowledge Panel 2026-07-06).
@@ -856,8 +908,8 @@ export function buildOrganizationJsonLd({
       url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
     },
     foundingDate: "2026",
-    // Siège social réel (2026-07-03) : SAS AXION-IA, 11 Avenue Paul Verlaine,
-    // 38100 Grenoble (domiciliation), RCS Grenoble — Auvergne-Rhône-Alpes.
+    // Siège social, vérifié sur pièces le 02/08/2026 (Kbis au 30/07/2026,
+    // n° de gestion 2026B01964 + avis de situation SIRENE du 02/08/2026).
     // L'ancrage entité DOIT refléter le RCS (sinon incohérence NAP ↔ registre
     // = risque E-E-A-T). La visibilité Paris / Île-de-France / toute la France
     // reste portée par `areaServed` + les pages pSEO villes/régions (zone
@@ -865,14 +917,7 @@ export function buildOrganizationJsonLd({
     // (ancrage Paris), caduque depuis l'immatriculation à Grenoble.
     foundingLocation: {
       "@type": "Place",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine",
-        postalCode: "38100",
-        addressCountry: "FR",
-        addressRegion: "Auvergne-Rhône-Alpes",
-        addressLocality: "Grenoble",
-      },
+      address: buildSiegePostalAddress(),
     },
     // Fondateur — E-E-A-T : un humain nommé identifiable derrière l'entité
     // (Williams Jullin, LinkedIn réel). Renforce la confiance Google + la
@@ -900,24 +945,14 @@ export function buildOrganizationJsonLd({
       ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
     // Adresse postale complète du siège (audit A-14 + audit Knowledge Panel
-    // 2026-07-06). L'adresse RCS Grenoble est publique et connue, donc émise
-    // PAR DÉFAUT en dur (ancrage NAP fort pour le Knowledge Panel) ; `COMPANY_ADDRESS`
-    // ne sert plus que d'override optionnel de la rue. Les identifiants légaux
-    // (vatID / RCS / SIREN) restent, eux, env-gatés tant que le Kbis n'est pas émis.
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: env.COMPANY_ADDRESS ?? "11 Avenue Paul Verlaine",
-      addressLocality: "Grenoble",
-      postalCode: "38100",
-      addressRegion: "Auvergne-Rhône-Alpes",
-      addressCountry: "FR",
-    },
+    // 2026-07-06), désormais alignée au caractère près sur le Kbis / SIRENE.
+    address: buildSiegePostalAddress(),
     ...(vatID ? { vatID } : {}),
     ...(registrationNumber
       ? {
           identifier: {
             "@type": "PropertyValue",
-            propertyID: "immatriculation RCS",
+            propertyID: describeRegistrationNumber(registrationNumber),
             value: registrationNumber,
           },
         }
@@ -1047,8 +1082,8 @@ export function buildPersonJsonLd({
     sameAs,
     worksFor: {
       "@type": "Organization",
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
+      name: BRAND.name,
+      legalName: BRAND.legalName,
       url: SITE_URL,
     },
     knowsAbout: [
@@ -1901,9 +1936,9 @@ export function buildDatasetJsonLd({
     inLanguage: locale,
     creator: {
       "@type": "Organization",
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
-      alternateName: ["AxionIA", "Axion IA", "axion-ia.com"],
+      name: BRAND.name,
+      legalName: BRAND.legalName,
+      alternateName: [...BRAND.alternateName],
       url: SITE_URL,
     },
     ...(keywords && keywords.length ? { keywords: keywords.join(", ") } : {}),

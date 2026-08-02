@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
+import { BRAND } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
@@ -260,8 +261,8 @@ export default async function PressePage({ params, searchParams }: Props) {
               publisher: {
                 "@type": "Organization",
                 "@id": `${SITE_URL}/#organization`,
-                name: "Axion-IA",
-                legalName: "Axion-IA SAS",
+                name: BRAND.name,
+                legalName: BRAND.legalName,
                 url: SITE_URL,
                 logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph-image` },
               },

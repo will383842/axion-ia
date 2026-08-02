@@ -12,8 +12,18 @@ import { env } from "@/env";
 export const BRAND = {
   /** Nom canonique customer-facing (logo, header, JSON-LD `name`, OG, titles). */
   name: "Axion-IA",
-  /** Raison sociale juridique pour mentions légales (SAS française — SIREN/SIRET communiqués sur demande). */
-  legalName: "Axion-IA SAS",
+  /**
+   * Raison sociale juridique EXACTE, telle qu'immatriculée au RCS Grenoble le
+   * 30/07/2026 : dénomination « AXION IA », **sans trait d'union**, forme SAS.
+   * Kbis + avis de situation SIRENE concordent — décision Will 30/07/2026 :
+   * « AXION IA SAS » sur les pièces légales, la marque commerciale (`name`)
+   * garde son tiret.
+   *
+   * 🔴 NE PAS réaligner sur `name` : ce champ alimente le `legalName` JSON-LD,
+   * qui est le champ que Google rapproche des registres (SIRENE / INPI) pour
+   * fusionner l'entité. Un tiret ici ne matche AUCUN registre.
+   */
+  legalName: "AXION IA SAS",
   /** Noms alternatifs Knowledge Graph / Wikidata — disambiguation vs axionai.fr. */
   alternateName: ["AxionIA", "Axion IA", "axion-ia.com"] as const,
   /** Tagline courte FR — sous-titre, JSON-LD `description`, OG. */

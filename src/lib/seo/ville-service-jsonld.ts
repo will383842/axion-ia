@@ -26,6 +26,7 @@
  */
 
 import type { Locale } from "@/i18n/routing";
+import { BRAND } from "@/lib/brand";
 import {
   buildServiceJsonLd,
   buildBreadcrumbJsonLd,
@@ -202,8 +203,8 @@ export function buildVilleServiceJsonLdGraph(
     parentOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
-      name: "Axion-IA",
-      legalName: "Axion-IA SAS",
+      name: BRAND.name,
+      legalName: BRAND.legalName,
       url: SITE_URL,
     },
     areaServed: { "@type": "City", name: ville.nameFr },
