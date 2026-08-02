@@ -1752,6 +1752,9 @@ export async function genererLettreMissionAction(input: {
               ? { telephone: trainer.telephone }
               : {}),
             specialite: "Formation Intelligence Artificielle",
+            // Sans lui, le gabarit qualifie TOUT intervenant de « mandataire
+            // sous-traitant » — faux pour le dirigeant qui anime lui-même.
+            ...(trainer?.statut ? { statut: trainer.statut } : {}),
             ...(trainer?.sousTraitantNda !== null && trainer?.sousTraitantNda !== undefined
               ? { siretOuSirenOuNaf: trainer.sousTraitantNda }
               : {}),
@@ -2238,6 +2241,9 @@ export async function genererLettreMissionCadreAction(input: {
             email: trainer.email,
             ...(trainer.telephone !== null ? { telephone: trainer.telephone } : {}),
             specialite: "Formation Intelligence Artificielle",
+            // Sans lui, le gabarit qualifie TOUT intervenant de « mandataire
+            // sous-traitant » — faux pour le dirigeant qui anime lui-même.
+            ...(trainer?.statut ? { statut: trainer.statut } : {}),
             ...(trainer.sousTraitantNda !== null
               ? { siretOuSirenOuNaf: trainer.sousTraitantNda }
               : {}),

@@ -59,6 +59,17 @@ export interface LettreMissionData {
     email: string;
     telephone?: string;
     specialite: string;
+    /**
+     * Statut réel de l'intervenant (`Trainer.statut`).
+     *
+     * 🔴 Le gabarit qualifiait TOUT intervenant de « mandataire sous-traitant ».
+     * Pour le DIRIGEANT qui anime lui-même, c'est juridiquement absurde — on ne
+     * se sous-traite pas à soi-même — et contre-productif : c'est la pièce qui
+     * documente le lien contractuel des intervenants dans le dossier de
+     * déclaration d'activité, où elle doit dire la vérité du lien.
+     * Absent = « sous_traitant », comportement historique inchangé.
+     */
+    statut?: string;
   };
   // Mission
   objetMission: string;
@@ -131,7 +142,11 @@ export function LettreMissionPdf({
           <FieldRow label="Adresse" value={identite.adresseSiege} required />
 
           <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
-            Formateur (mandataire sous-traitant)
+            {data.formateur.statut === "dirigeant"
+              ? "Formateur (dirigeant de l'organisme)"
+              : data.formateur.statut === "salarie"
+                ? "Formateur (salarié de l'organisme)"
+                : "Formateur (mandataire sous-traitant)"}
           </Text>
           <FieldRow label="Nom / Prénom" value={data.formateur.nomPrenom} />
           {data.formateur.siretOuSirenOuNaf ? (
@@ -213,14 +228,36 @@ export function LettreMissionPdf({
                 value={r.libelle}
               />
             ))
-          ) : (
+          ) : /*
+              🔴 Un tarif à 0 ne s'imprime PAS. « Tarif journalier HT : 0,00 €
+              / jour » se lit comme une erreur de génération sur une pièce
+              contractuelle, et c'est ce que portait la lettre du
+              dirigeant-formateur, qui n'est pas rémunéré à la journée. Même
+              raisonnement que l'acompte à 0 de la convention : on écrit ce qui
+              est convenu, jamais un montant nul.
+            */
+          data.tarifJourHt > 0 ? (
             <FieldRow label="Tarif journalier HT" value={formatEur(data.tarifJourHt) + " / jour"} />
+          ) : data.formateur.statut === "dirigeant" ? (
+            <Text style={pdfStyles.paragraph}>
+              Mission assurée par le dirigeant de l&apos;organisme au titre de son mandat social :
+              aucune rémunération distincte n&apos;est due à ce titre.
+            </Text>
+          ) : (
+            <Text style={pdfStyles.paragraph}>
+              Rémunération définie d&apos;un commun accord avant chaque session et confirmée par
+              écrit.
+            </Text>
           )}
-          <Text style={pdfStyles.legalNote}>
-            La facturation s'effectue sur présentation de facture conforme par le formateur, après
-            chaque session réalisée. Le tarif est exprimé hors taxes (TVA selon régime applicable au
-            formateur).
-          </Text>
+          {/* La mention de facturation n'a de sens que pour un intervenant qui
+              FACTURE : un dirigeant sous mandat social n'émet aucune facture. */}
+          {data.formateur.statut !== "dirigeant" && data.formateur.statut !== "salarie" ? (
+            <Text style={pdfStyles.legalNote}>
+              La facturation s&apos;effectue sur présentation de facture conforme par le formateur,
+              après chaque session réalisée. Le tarif est exprimé hors taxes (TVA selon régime
+              applicable au formateur).
+            </Text>
+          ) : null}
         </DocSection>
 
         {/* 5. Obligations */}
