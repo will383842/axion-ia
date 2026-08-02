@@ -353,6 +353,10 @@ export default async function SessionHubPage({ params }: PageProps) {
       createdAt: d.createdAt.toISOString(),
       estSpecimen: meta?.specimen === true,
       champsManquants: meta?.champsManquants ?? [],
+      // `signaturesParPiece` ne contient que les signatures non révoquées : le
+      // registre propose l'exemplaire signé dès qu'une preuve existe, au lieu de
+      // le cacher dans le seul panneau de signature.
+      aSignatures: (signaturesParPiece.get(d.id) ?? []).length > 0,
     };
   });
 

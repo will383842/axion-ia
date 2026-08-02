@@ -247,9 +247,11 @@ export function LettreMissionPdf({
         </DocSection>
 
         {/* 7. Signatures */}
+        {/* « Fait à » = ville du siège — même raisonnement que la convention : un
+            blanc sur une pièce signée électroniquement reste vide pour toujours. */}
         <DocSection title="7. Signatures">
           <SignatureZone
-            faitLe={`_________________________, le ${data.dateMission}`}
+            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateMission}`}
             parties={[
               {
                 titre: "Pour l'organisme de formation",

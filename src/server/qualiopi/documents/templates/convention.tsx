@@ -296,10 +296,13 @@ export function ConventionPdf({
         </DocSection>
 
         {/* 6. Signatures */}
+        {/* « Fait à » = ville du siège : la pièce est établie par l'OF, pas sur le
+            lieu de formation. Un blanc ici sortait « Fait à ______ » sur une pièce
+            signée électroniquement, que personne ne complète jamais à la main. */}
         <DocSection title="6. Signatures">
           <SignatureZone
             intro="La présente convention est établie en deux exemplaires originaux, un pour chaque partie."
-            faitLe={`_________________________, le ${data.dateConvention}`}
+            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}
             parties={[
               {
                 titre: "Pour l'organisme de formation",

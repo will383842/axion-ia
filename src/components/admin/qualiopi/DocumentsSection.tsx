@@ -74,6 +74,13 @@ export interface DocumentGenereInfo {
   estSpecimen?: boolean;
   /** Champs d'identité manquants — dit quoi renseigner pour régénérer. */
   champsManquants?: string[];
+  /**
+   * La pièce porte au moins une signature électronique non révoquée. La preuve
+   * vit dans `document_signatures`, pas dans le PDF scellé du registre : sans ce
+   * flag, l'exemplaire signé n'était téléchargeable que depuis le panneau de
+   * signature, et le registre laissait croire que la pièce n'était pas signée.
+   */
+  aSignatures?: boolean;
 }
 
 export interface DocumentsSectionProps {
@@ -704,6 +711,19 @@ export function DocumentsSection({
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           Documents communs à toute la session (convention, émargement, livret…).
         </p>
+        {/* 2026-08-02 — ces boutons GÉNÈRENT, ils ne téléchargent pas. Faute de
+            le dire, on cliquait « Convention de formation » pour récupérer la
+            convention existante et on obtenait une pièce neuve, filigranée COPIE,
+            datée du jour — puis on la joignait à un dossier officiel en croyant
+            tenir l'original. L'avertissement n'apparaît que s'il y a déjà des
+            pièces : sur une session vierge, il n'y a rien à confondre. */}
+        {documentsExistants.length > 0 && (
+          <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            Ces boutons créent une <strong>nouvelle</strong> pièce : regénérer un type déjà présent
+            produit une COPIE filigranée, jamais l&apos;original. Pour retrouver une pièce déjà
+            émise, utilisez la liste « Documents générés » ci-dessous.
+          </p>
+        )}
         <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
           <ConventionDocButton sessionId={sessionId} onDone={handleDone} />
           {/*
@@ -935,15 +955,35 @@ export function DocumentsSection({
                           lieu (`storeAndSignPdf` renvoie null si R2 n'est pas configuré) —
                           plus jamais comme cible du lien. */}
                       {doc.pdfUrl !== null && doc.pdfUrl !== undefined && doc.pdfUrl !== "" ? (
-                        <a
-                          href={`/api/qualiopi/documents/${doc.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
-                          aria-label={`Télécharger ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
-                        >
-                          Télécharger
-                        </a>
+                        <span className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+                          <a
+                            href={`/api/qualiopi/documents/${doc.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+                            aria-label={`Télécharger ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
+                          >
+                            Télécharger
+                          </a>
+                          {/* 2026-08-02 — le registre sert l'ORIGINAL SCELLÉ, cadres de
+                              signature vides : c'est voulu (l'empreinte signée ne doit
+                              jamais bouger), mais l'exemplaire portant les signatures
+                              n'était accessible que depuis le panneau de signature plus
+                              bas. On cherchait « la convention signée » ici, on tombait
+                              sur des cadres vides, et on la joignait telle quelle à un
+                              dossier officiel. */}
+                          {doc.aSignatures === true && (
+                            <a
+                              href={`/api/qualiopi/pieces/${doc.id}/exemplaire-signe`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+                              aria-label={`Télécharger l'exemplaire signé de ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
+                            >
+                              Exemplaire signé
+                            </a>
+                          )}
+                        </span>
                       ) : (
                         <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                       )}
