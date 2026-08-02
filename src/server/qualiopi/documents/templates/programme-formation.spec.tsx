@@ -97,6 +97,18 @@ describe("ProgrammeFormationPdf — contenu", () => {
     expect(text).toContain("Ce que l'IA sait faire");
   });
 
+  it("ne double pas le préfixe quand le titre stocké porte déjà « Module N — »", () => {
+    // Constaté sur AXI-DOC-2026-002 : « Module 1 — Module 1 — L'IA dans le
+    // métier immobilier » — le contenu généré préfixe déjà ses titres.
+    const t = rendre({
+      modules: [
+        { titre: "Module 1 — L'IA dans le métier immobilier", dureeMin: null, sequences: [] },
+      ],
+    });
+    expect(t).toContain("Module 1 — L'IA dans le métier immobilier");
+    expect(t).not.toContain("Module 1 — Module 1");
+  });
+
   it("affiche les durées connues et tait celles qui manquent", () => {
     expect(text).toContain("2 h");
     expect(text).toContain("(45 min)");

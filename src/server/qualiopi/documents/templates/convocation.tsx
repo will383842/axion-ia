@@ -165,10 +165,15 @@ export function ConvocationPdf({
           </Text>
         </DocSection>
 
-        {/* Mention légale */}
-        <View style={{ marginTop: 8 }}>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.declarationActivite}</Text>
-        </View>
+        {/* Mention légale — UNIQUEMENT si le NDA existe. Avant l'enregistrement,
+            cette ligne affirmait « déclaration enregistrée auprès du préfet »
+            alors que l'en-tête de la même page disait « non encore enregistrée » :
+            deux mentions contradictoires, dont une fausse. L'en-tête suffit. */}
+        {identite.nda ? (
+          <View style={{ marginTop: 8 }}>
+            <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.declarationActivite}</Text>
+          </View>
+        ) : null}
       </QualiopiPage>
     </Document>
   );

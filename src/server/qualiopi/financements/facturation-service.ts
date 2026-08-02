@@ -35,6 +35,7 @@ import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions, type ModeFacturation } from "./conditions-client";
+import { periodePrestationSession } from "./periode-prestation";
 
 /** Garde de type : la colonne est un enum Prisma, la config une chaîne libre. */
 function estModeFacturation(v: unknown): v is ModeFacturation {
@@ -243,10 +244,16 @@ export async function genererFactureFormation(
     );
 
     // Construction FactureData (React.createElement, pas de JSX en .ts)
+    // Date d'exécution réelle, lue sur la session — sans elle le gabarit
+    // retombe sur la date d'émission et la facture contredit la convention
+    // (cf. `periode-prestation.ts`).
+    const periodePrestation = periodePrestationSession(session);
+
     const factureData: FactureData = {
       numero,
       dateEmission: formatDate(now),
       dateEcheance: formatDate(echeance),
+      ...(periodePrestation !== undefined ? { periodePrestation } : {}),
       identite,
       regimeTva,
       tauxTvaStandardPercent: tauxStandard,
