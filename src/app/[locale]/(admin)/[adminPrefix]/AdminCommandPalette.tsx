@@ -22,8 +22,19 @@
 //     conserver la taxonomie en 6 pôles (CONTENT_GEN_POLE_LABELS).
 
 import { Command } from "cmdk";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  BookOpen,
+  CalendarDays,
+  ClipboardCheck,
+  FileText,
+  GraduationCap,
+  Handshake,
+  ReceiptText,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import {
   buildAdminNav,
   ADMIN_NAV_GROUP_LABELS,
@@ -34,6 +45,19 @@ import {
   type AdminNavGroup,
 } from "@/lib/admin-nav";
 import { navIcon } from "@/lib/admin-nav-icons";
+import { rechercheGlobaleAction, type GroupeResultats } from "@/server/actions/admin-recherche";
+
+/** Icône lucide par type de résultat « Données » (clés = GroupeResultats.type). */
+const DATA_TYPE_ICONS: Record<string, LucideIcon> = {
+  clients: Users,
+  sessions: CalendarDays,
+  factures: ReceiptText,
+  devis: FileText,
+  stagiaires: GraduationCap,
+  formations: BookOpen,
+  coaching: Handshake,
+  audits: ClipboardCheck,
+};
 
 interface PaletteItem extends AdminNavItem {
   /** Libellé du groupe affiché dans le heading cmdk (groupe ou pôle). */
@@ -63,6 +87,13 @@ function headingFor(group: AdminNavGroup, subGroup?: AdminNavItem["subGroup"]): 
 
 export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
   const [open, setOpen] = useState(false);
+  // Recherche « Données » (2026-08) : saisie contrôlée + résultats serveur.
+  const [search, setSearch] = useState("");
+  const [resultats, setResultats] = useState<GroupeResultats[]>([]);
+  const [recherchePending, setRecherchePending] = useState(false);
+  // Identifiant de requête croissant : seule la DERNIÈRE réponse en vol est
+  // appliquée (les réponses obsolètes — frappe rapide — sont ignorées).
+  const requeteId = useRef(0);
   const router = useRouter();
 
   // Items dérivés du SSOT — mémoïsés (recalcul uniquement si adminPrefix change).
@@ -92,6 +123,40 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
+
+  // Recherche de données debouncée (300 ms) — budget INP : aucun appel sous
+  // 2 caractères, jamais de spinner bloquant, réponses obsolètes ignorées.
+  // Aucun setState synchrone dans le corps de l'effet (react-hooks/
+  // set-state-in-effect) : tout passe par le timeout ; sous 2 caractères on se
+  // contente d'invalider les réponses en vol, le rendu étant dérivé de
+  // `search` (les résultats périmés ne sont simplement plus affichés).
+  useEffect(() => {
+    const q = search.trim();
+    requeteId.current += 1; // invalide toute réponse encore en vol
+    if (q.length < 2) return;
+    const id = requeteId.current;
+    const timer = window.setTimeout(() => {
+      if (id !== requeteId.current) return;
+      setRecherchePending(true);
+      rechercheGlobaleAction(q, adminPrefix)
+        .then((r) => {
+          if (id !== requeteId.current) return;
+          setResultats("data" in r ? [...r.data] : []);
+          setRecherchePending(false);
+        })
+        .catch(() => {
+          if (id !== requeteId.current) return;
+          setResultats([]);
+          setRecherchePending(false);
+        });
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [search, adminPrefix]);
+
+  // Dérivés de rendu : la recherche de données n'est VISIBLE qu'à partir de
+  // 2 caractères — l'état conservé en-deçà est ignoré, pas réinitialisé.
+  const rechercheActive = search.trim().length >= 2;
+  const donnees = rechercheActive ? resultats : [];
 
   // Group items par heading (groupe / pôle), en respectant l'ordre du SSOT.
   const groups = useMemo(() => {
@@ -130,16 +195,61 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
       </button>
       <Command.Dialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(v) => {
+          setOpen(v);
+          if (!v) setSearch("");
+        }}
         label="Palette de commandes admin"
         className="admin-cmdk-dialog"
       >
         <Command.Input
+          value={search}
+          onValueChange={setSearch}
           placeholder="Tapez pour filtrer — Cmd+K pour fermer…"
           className="admin-cmdk-input"
         />
         <Command.List className="admin-cmdk-list">
-          <Command.Empty className="admin-cmdk-empty">Aucun résultat.</Command.Empty>
+          {/* L'état vide cmdk ne compte que les items filtrés (nav) : on le
+              masque quand des résultats Données (forceMount) sont affichés. */}
+          {donnees.length === 0 && (
+            <Command.Empty className="admin-cmdk-empty">Aucun résultat.</Command.Empty>
+          )}
+          {rechercheActive && recherchePending && (
+            <div className="admin-cmdk-empty" role="status">
+              Recherche…
+            </div>
+          )}
+          {/* Groupes « Données » — AVANT la navigation. `forceMount` : ces
+              items viennent du serveur, déjà filtrés par la requête ; le
+              filtre client cmdk ne doit pas les re-filtrer (leurs valeurs ne
+              contiennent pas forcément le texte tapé). */}
+          {donnees.map((groupe) =>
+            groupe.items.length === 0 ? null : (
+              <Command.Group
+                key={`donnees-${groupe.type}`}
+                heading={groupe.label}
+                className="admin-cmdk-group"
+                forceMount
+              >
+                {groupe.items.map((item) => {
+                  const Icon = DATA_TYPE_ICONS[groupe.type] ?? FileText;
+                  return (
+                    <Command.Item
+                      key={`${groupe.type}-${item.id}`}
+                      value={`donnees ${groupe.type} ${item.id}`}
+                      forceMount
+                      onSelect={() => select(item.href)}
+                      className="admin-cmdk-item"
+                    >
+                      <Icon size={16} aria-hidden="true" className="admin-cmdk-icon" />
+                      <span>{item.titre}</span>
+                      {item.sous ? <span className="admin-cmdk-hint">{item.sous}</span> : null}
+                    </Command.Item>
+                  );
+                })}
+              </Command.Group>
+            ),
+          )}
           {groups.map((group) => (
             <Command.Group key={group.label} heading={group.label} className="admin-cmdk-group">
               {group.items.map((item) => {
