@@ -967,6 +967,15 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "Repeat",
       group: "finances",
     },
+    // Rapprochement bancaire v1 (import de l'export CSV Finom, suggestions
+    // contre les factures ouvertes, sans persistance du relevé). Même gate
+    // FACTURATION_HUB_ENABLED que le Hub — c'est la PAGE qui gate.
+    {
+      href: `${base}/qualiopi/facturation/rapprochement`,
+      label: "Rapprochement bancaire",
+      icon: "Landmark",
+      group: "finances",
+    },
     {
       // Renommé (2026-07-14) : la facturation est pilotée par « Facturation (Hub) ».
       // Cet écran conserve sa valeur propre = alertes de financement au niveau

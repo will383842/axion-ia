@@ -86,7 +86,9 @@ describe("buildAdminNav SSOT", () => {
     //      308 vers planning/dossiers/devis Qualiopi/hub facturation/plans.
     //   −1 « Base de connaissances (consultation) » (kb-readonly) : doublon de
     //      « Connaissances », route → 308. = 135.
-    expect(items.length).toBe(135);
+    // +1 (2026-08-02) : Rapprochement bancaire (import relevé Finom, groupe
+    // finances) = 136.
+    expect(items.length).toBe(136);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
