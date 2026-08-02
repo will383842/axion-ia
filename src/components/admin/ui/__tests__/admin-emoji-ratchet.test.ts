@@ -40,7 +40,7 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * 2026-08-02 — 250 occurrences, après la sortie du hub content-gen (28 emojis,
+ * 2026-08-02 — 249 occurrences, après la sortie du hub de génération de contenus (28 emojis,
  * lot 1 page par page). Était 278 après « À traiter »/« Dossiers » (PR 490).
  */
 const PLAFOND = 249;
