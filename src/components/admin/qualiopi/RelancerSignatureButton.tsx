@@ -58,8 +58,8 @@ export function RelancerSignatureButton({
       return {
         statut: "succes",
         message: res.data.garePourValidation
-          ? "✓ Garé pour validation (corbeille e-mails)"
-          : `✓ Envoyé à ${res.data.destinataire}`,
+          ? "Garé pour validation (corbeille e-mails)"
+          : `Envoyé à ${res.data.destinataire}`,
         lienRemplace: res.data.reemission,
       };
     },

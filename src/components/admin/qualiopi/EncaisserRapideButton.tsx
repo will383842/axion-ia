@@ -97,8 +97,8 @@ export function EncaisserRapideButton({
       }
       setSucces(
         res.data.statut === "payee"
-          ? "✓ Encaissé — facture soldée"
-          : `✓ Encaissé — reste dû ${eur(res.data.resteACents)}`,
+          ? "Encaissé — facture soldée"
+          : `Encaissé — reste dû ${eur(res.data.resteACents)}`,
       );
       setOuvert(false);
       router.refresh();
