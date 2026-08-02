@@ -169,15 +169,15 @@ export function OrganisationActionPdf({
           />
           <Text style={pdfStyles.paragraph}>
             Les stagiaires reçoivent une convocation précisant dates, horaires et lieu, ainsi
-            qu&apos;un livret d&apos;accueil. Toute difficulté d&apos;organisation peut être signalée
-            au contact ci-dessus ; les réclamations sont tracées et suivies.
+            qu&apos;un livret d&apos;accueil. Toute difficulté d&apos;organisation peut être
+            signalée au contact ci-dessus ; les réclamations sont tracées et suivies.
           </Text>
         </DocSection>
 
         <Text style={pdfStyles.legalNote}>
-          Pièce établie au titre de l&apos;organisation des actions de formation
-          (art. R.6351-5 du Code du travail). Le contenu pédagogique de l&apos;action figure au
-          programme, annexé à la convention de formation.
+          Pièce établie au titre de l&apos;organisation des actions de formation (art. R.6351-5 du
+          Code du travail). Le contenu pédagogique de l&apos;action figure au programme, annexé à la
+          convention de formation.
         </Text>
       </QualiopiPage>
     </Document>
