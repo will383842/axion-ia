@@ -185,10 +185,14 @@ export function ProgrammeFormationPdf({
           {data.modules.length > 0 ? (
             data.modules.map((m, i) => {
               const duree = formaterDuree(m.dureeMin);
+              // Les titres stockés portent souvent déjà « Module N — » (contenu
+              // généré) : préfixer sans vérifier imprimait « Module 1 — Module
+              // 1 — L'IA… » sur la pièce (constaté sur AXI-DOC-2026-002).
+              const titreSeul = m.titre.replace(/^module\s*\d+\s*[—–-]\s*/i, "");
               return (
                 <View key={`${i}-${m.titre}`} style={local.moduleBloc} wrap={false}>
                   <Text style={local.moduleTitre}>
-                    Module {i + 1} — {m.titre}
+                    Module {i + 1} — {titreSeul}
                   </Text>
                   {duree !== null ? <Text style={local.moduleDuree}>Durée : {duree}</Text> : null}
                   {m.sequences.map((s, j) => {

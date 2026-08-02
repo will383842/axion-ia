@@ -208,7 +208,7 @@ export function ProtocoleAfestPdf({ data }: { data: ProtocoleAfestData }): React
         {/* Signatures 3 parties */}
         <DocSection title="Signatures">
           <SignatureZone
-            faitLe={`${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
+            faitLe={`${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
             parties={[
               { titre: "L'organisme", signature: data.signatures?.axionia ?? null },
               { titre: "L'entreprise", signature: data.signatures?.client ?? null },

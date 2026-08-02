@@ -46,6 +46,7 @@ import {
 } from "@/server/qualiopi/legal/tva";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import type {
@@ -748,10 +749,23 @@ export async function genererFacturePdfAction(input: {
   // omet alors le bloc, ce qui est correct. On n'invente aucun IBAN.
   const rib = await resolveRibFacture();
 
+  // Date de RÉALISATION de la prestation (art. 242 nonies A ann. II CGI) —
+  // `sessionId` était DÉJÀ sélectionné ici sans jamais être lu, cf.
+  // `periode-prestation.ts` pour ce que ce silence produisait sur la pièce.
+  const sessionFacture =
+    facture.sessionId !== null && facture.sessionId !== undefined
+      ? await prisma.trainingSession.findUnique({
+          where: { id: facture.sessionId },
+          select: { dateDebut: true, dateFin: true },
+        })
+      : null;
+  const periodePrestation = periodePrestationSession(sessionFacture);
+
   const factureData: FactureData = {
     numero: facture.numero,
     dateEmission: formatDate(facture.emiseAt),
     dateEcheance: formatDate(echeance),
+    ...(periodePrestation !== undefined ? { periodePrestation } : {}),
     identite,
     regimeTva,
     tauxTvaStandardPercent,

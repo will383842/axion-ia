@@ -11,6 +11,7 @@
 import { describe, it, expect } from "vitest";
 import React from "react";
 import { ConvocationPdf, type ConvocationData } from "./convocation";
+import { LivretAccueilPdf, type LivretAccueilData } from "./livret-accueil";
 import { PositionnementPdf, type PositionnementData } from "./positionnement";
 import { GrilleEvaluationPdf, type GrilleEvaluationData } from "./grille-evaluation";
 import { SatisfactionPdf, type SatisfactionData } from "./satisfaction";
@@ -88,6 +89,47 @@ describe("ConvocationPdf — contenu", () => {
   it("conserve les mentions référent handicap + déclaration d'activité", () => {
     expect(text).toContain(LEGAL_MENTIONS.referentHandicap);
     expect(text).toContain(LEGAL_MENTIONS.declarationActivite);
+  });
+
+  it("avant le NDA : ne prétend JAMAIS que la déclaration est enregistrée", () => {
+    // L'en-tête dit « non encore enregistrée » ; imprimer en pied de page
+    // « enregistrée auprès du préfet » était contradictoire et faux.
+    const t = collectPdfTextNormalized(
+      React.createElement(ConvocationPdf, { data, identite: { ...IDENTITE, nda: "" } }),
+    );
+    expect(t).not.toContain(LEGAL_MENTIONS.declarationActivite);
+  });
+});
+
+describe("LivretAccueilPdf — véracité des mentions qualité", () => {
+  const data: LivretAccueilData = {
+    numero: "LA-2026-001",
+    estCopie: false,
+    contactPedagogique: {
+      nomPrenom: "Sophie Lambert",
+      email: "sophie@axion-ia.fr",
+      telephone: "+33 1 00 00 00 01",
+    },
+    contactAdministratif: { nomPrenom: "Marc Leblanc", email: "admin@axion-ia.fr" },
+    dateVersion: "01/01/2026",
+  };
+
+  it("certifié Qualiopi UNIQUEMENT si le numéro est configuré", () => {
+    const certifie = collectPdfTextNormalized(
+      React.createElement(LivretAccueilPdf, { data, identite: IDENTITE }),
+    );
+    expect(certifie).toContain("certifié Qualiopi");
+  });
+
+  it("sans certification : jamais de fausse revendication", () => {
+    // Constaté sur AXI-DOC-2026-006 : « Notre organisme est certifié Qualiopi »
+    // imprimé en dur alors que l'organisme ne l'est pas — fausse revendication
+    // de certification sur une pièce remise au stagiaire.
+    const nonCertifie = collectPdfTextNormalized(
+      React.createElement(LivretAccueilPdf, { data, identite: { ...IDENTITE, qualiopi: "" } }),
+    );
+    expect(nonCertifie).not.toContain("certifié Qualiopi");
+    expect(nonCertifie).toContain("référentiel national qualité");
   });
 });
 

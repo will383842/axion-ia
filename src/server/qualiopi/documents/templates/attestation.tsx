@@ -235,7 +235,9 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
           <View style={pdfStyles.signatureZone}>
             <View style={pdfStyles.signatureBox}>
               <Text style={pdfStyles.paragraph}>
-                {`Fait à ${identite.adresseSiege || "—"}, le ${data.dateEmission}`}
+                {/* Ville du siège, pas l'adresse complète : « Fait à ELITE
+                    BUREAUX - boîte 53, 11 Avenue… » n'est pas un lieu d'acte. */}
+                {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
               </Text>
               <Text style={pdfStyles.paragraph}>{`Le représentant légal : ${dirigeantOuRS}`}</Text>
             </View>
