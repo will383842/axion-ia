@@ -92,7 +92,22 @@ export function resolveAdminThumbSrc(
   image: { id: string; thumbnailPath?: string | null; filePath?: string | null },
   baseUrl: string = process.env.IMAGE_BANK_CDN_URL ?? "",
 ): string | null {
-  const path = image.thumbnailPath || image.filePath;
+  // 🔴 Vérifié en production le 2026-08-02 : pour les images SEEDÉES sous
+  // `public/images/…`, la base référence un `thumbnailPath` en `-thumb.webp`
+  // que le disque ne porte PAS — le fichier n'a jamais été généré. Résultat :
+  // 404 sur les 288 vignettes de la console, alors que l'image principale
+  // répond 200 au même dossier. On préfère donc `filePath` pour cette famille.
+  //
+  // La famille UUID (upload admin) garde la priorité à `thumbnailPath` : son
+  // variant Sharp existe bel et bien, et sert précisément à ne pas charger
+  // l'original dans une liste.
+  const estSeedee = (p: string): boolean =>
+    !p.startsWith("/image-bank") && !p.includes("/var/data/") && !p.startsWith("//");
+  const candidat = image.thumbnailPath ?? null;
+  const path =
+    candidat !== null && estSeedee(candidat)
+      ? (image.filePath ?? candidat)
+      : (candidat ?? image.filePath);
   if (!path) return null;
   if (path.startsWith("/image-bank")) return `${baseUrl}${path}`;
   // Upload admin en PROD : `publicUrlFromLocalPath` a stocké le chemin DISQUE
