@@ -4,6 +4,7 @@
 // sur la période choisie, taux de réalisation, et tendance 12 mois glissants en
 // barres CSS pures (prestations réalisées par mois).
 
+import { Activity } from "lucide-react";
 import { AdminCard } from "@/components/admin/ui";
 import { BarresMensuelles } from "@/components/admin/ui/charts";
 import type { ActiviteBloc } from "@/server/admin/pilotage-dashboard";
@@ -63,7 +64,17 @@ function BlocActivite({ bloc }: { bloc: ActiviteBloc }): React.ReactElement {
 export function ActiviteSection({ activites, periodeLabel }: Props): React.ReactElement {
   return (
     <AdminCard className="mb-[var(--space-admin-6)]">
-      <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+      <h2 className="mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        <span
+          aria-hidden="true"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+          style={{
+            background: "var(--color-admin-id-teal-soft)",
+            color: "var(--color-admin-id-teal)",
+          }}
+        >
+          <Activity size={16} />
+        </span>
         Activité
       </h2>
       <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">

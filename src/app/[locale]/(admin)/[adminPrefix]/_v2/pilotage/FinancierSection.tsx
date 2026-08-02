@@ -5,6 +5,7 @@
 // par formation, dossiers de financement en retard, devis sans réponse.
 
 import Link from "next/link";
+import { Wallet } from "lucide-react";
 import { AdminCard, AdminBadge } from "@/components/admin/ui";
 import type { FinancierBloc, ObjectifBloc } from "@/server/admin/pilotage-dashboard";
 import { fmtDate, fmtEurosCents } from "./format";
@@ -50,7 +51,17 @@ export function FinancierSection({ adminPrefix, financier, objectif }: Props): R
   return (
     <AdminCard className="mb-[var(--space-admin-6)]">
       <div className="mb-[var(--space-admin-4)] flex items-center justify-between gap-[var(--space-admin-4)]">
-        <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        <h2 className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+            style={{
+              background: "var(--color-admin-id-or-soft)",
+              color: "var(--color-admin-id-or)",
+            }}
+          >
+            <Wallet size={16} />
+          </span>
           Financier — année {financier.annee}
         </h2>
         <Link href={`${base}/qualiopi/cockpit-financier`} className="admin-button-ghost">

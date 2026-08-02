@@ -88,6 +88,32 @@
     /* Texte d'action sur fond teinté accent : un cran plus profond que la
        terracotta pour garder AA sur la teinte (vague « tonal » 2026-08-02). */
     --color-admin-accent-strong: #9e3a12;
+
+    /* =====================================================================
+     * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
+     * Réponse au retour « toujours du blanc et du terracotta » : la couleur
+     * SIGNIFIE — financier = or, planning = bleu, formateurs = violet… — la
+     * même famille porte la même teinte sur toutes les pages. Palette
+     * validée par le validateur dataviz (daltonisme, chroma, contraste) :
+     * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
+     * Les STATUTS (succès/alerte/danger) restent une palette réservée.
+     * ===================================================================== */
+    --color-admin-id-terracotta: var(--color-admin-terracotta);
+    --color-admin-id-teal: #0a9587;
+    --color-admin-id-violet: #7a4fd0;
+    --color-admin-id-or: #9c7a0c;
+    --color-admin-id-bleu: #1a4dd9;
+    --color-admin-id-magenta: #bb2d6d;
+    --color-admin-id-terracotta-soft: color-mix(
+      in srgb,
+      var(--color-admin-terracotta) 12%,
+      transparent
+    );
+    --color-admin-id-teal-soft: color-mix(in srgb, #0a9587 12%, transparent);
+    --color-admin-id-violet-soft: color-mix(in srgb, #7a4fd0 12%, transparent);
+    --color-admin-id-or-soft: color-mix(in srgb, #9c7a0c 14%, transparent);
+    --color-admin-id-bleu-soft: color-mix(in srgb, #1a4dd9 10%, transparent);
+    --color-admin-id-magenta-soft: color-mix(in srgb, #bb2d6d 10%, transparent);
     --color-admin-accent-fg: #ffffff;
 
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
