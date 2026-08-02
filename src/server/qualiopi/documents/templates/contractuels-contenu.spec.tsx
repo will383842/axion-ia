@@ -131,13 +131,29 @@ describe("ConventionPdf — contenu", () => {
     expect(t).not.toContain("Acompte à la signature");
   });
   it("signale un SIRET OF manquant au lieu de le masquer", () => {
+    expect(
+      collectPdfTextNormalized(
+        React.createElement(ConventionPdf, {
+          data: CONVENTION,
+          identite: { ...IDENTITE, siret: "" },
+        }),
+      ),
+    ).toContain("Non renseigné");
+  });
+  it("« Fait à » porte la ville du siège quand elle est configurée", () => {
+    // La pièce est signée électroniquement : personne ne complète jamais le
+    // blanc à la main. Sans ville configurée, on garde le blanc plutôt que
+    // d'inventer un lieu.
     const t = collectPdfTextNormalized(
       React.createElement(ConventionPdf, {
         data: CONVENTION,
-        identite: { ...IDENTITE, siret: "" },
+        identite: { ...IDENTITE, rcsVille: "Grenoble" },
       }),
     );
-    expect(t).toContain("Non renseigné");
+    expect(t).toContain("Fait à Grenoble, le 01/06/2026");
+  });
+  it("« Fait à » retombe sur le blanc quand la ville du siège est absente", () => {
+    expect(text).toContain("Fait à _________________________, le 01/06/2026");
   });
 });
 
@@ -155,6 +171,15 @@ describe("ContratFormationPdf — contenu", () => {
     expect(text).toContain("Marie Durand");
     expect(text).toContain("12345678901234");
   });
+  it("« Fait à » porte la ville du siège quand elle est configurée", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ContratFormationPdf, {
+        data: CONTRAT,
+        identite: { ...IDENTITE, rcsVille: "Grenoble" },
+      }),
+    );
+    expect(t).toContain("Fait à Grenoble, le 01/06/2026");
+  });
 });
 
 describe("ConventionTripartitePdf — contenu", () => {
@@ -170,6 +195,15 @@ describe("ConventionTripartitePdf — contenu", () => {
   it("affiche l'OPCO et la ventilation financière", () => {
     expect(text).toContain("OPCO Atlas");
     expect(text).toContain("ATLAS-123");
+  });
+  it("« Fait à » porte la ville du siège quand elle est configurée", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionTripartitePdf, {
+        data: TRIPARTITE,
+        identite: { ...IDENTITE, rcsVille: "Grenoble" },
+      }),
+    );
+    expect(t).toContain("Fait à Grenoble, le 01/06/2026");
   });
 });
 

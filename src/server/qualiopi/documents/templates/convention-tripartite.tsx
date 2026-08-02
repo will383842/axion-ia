@@ -278,9 +278,11 @@ export function ConventionTripartitePdf({
         </DocSection>
 
         {/* 6. Signatures — 3 parties */}
+        {/* « Fait à » = ville du siège — même raisonnement que la convention : un
+            blanc sur une pièce signée électroniquement reste vide pour toujours. */}
         <DocSection title="6. Signatures">
           <SignatureZone
-            faitLe={`_________________________, le ${data.dateConvention}`}
+            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}
             parties={[
               {
                 titre: "Pour l'organisme de formation",

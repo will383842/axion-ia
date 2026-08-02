@@ -220,10 +220,12 @@ export function ContratSousTraitancePdf({
         </DocSection>
 
         {/* 7. Signatures */}
+        {/* « Fait à » = ville du siège — même raisonnement que la convention : un
+            blanc sur une pièce signée électroniquement reste vide pour toujours. */}
         <DocSection title="7. Signatures">
           <SignatureZone
             intro="Le présent contrat est établi en deux exemplaires originaux, un pour chaque partie."
-            faitLe={`_________________________, le ${data.dateContrat}`}
+            faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateContrat}`}
             parties={[
               {
                 titre: "Pour l'organisme de formation",
