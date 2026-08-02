@@ -125,6 +125,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   livret_accueil: "Livret d'accueil stagiaire",
   organisation_action: "Organisation de l'action (R.6351-5)",
   autorisation_captation: "Autorisation de captation (image et voix)",
+  liste_formateurs: "Liste des formateurs (R.6351-5, ind. 21)",
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
   inventaire_moyens: "Inventaire des moyens pédagogiques",
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",

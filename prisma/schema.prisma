@@ -1782,23 +1782,23 @@ model AdminUser {
   createdAt         DateTime    @default(now()) @map("created_at")
   updatedAt         DateTime    @updatedAt @map("updated_at")
 
-  activityLogs          ActivityLog[]
+  activityLogs                    ActivityLog[]
   // Boîte de réception — accusés de lecture par admin (2026-07-29).
-  inboxReads            AdminInboxRead[]
+  inboxReads                      AdminInboxRead[]
   // Sprint X.1 — relations inverses booking V1
-  bookingsCancelled     Booking[]             @relation("BookingCancelledBy")
-  paymentsRecorded      Payment[]             @relation("PaymentRecordedBy")
-  refunds               Refund[]
-  cadrageMeetingsHeld   CadrageMeeting[]      @relation("CadrageHeldBy")
-  bookingTransitions    BookingTransition[]   @relation("BookingTransitionActor")
-  formationTransitions  FormationTransition[] @relation("FormationTransitionActor")
-  pricingConfigsUpdated PricingConfig[]
-  siteSettingsUpdated   SiteSetting[]
+  bookingsCancelled               Booking[]                @relation("BookingCancelledBy")
+  paymentsRecorded                Payment[]                @relation("PaymentRecordedBy")
+  refunds                         Refund[]
+  cadrageMeetingsHeld             CadrageMeeting[]         @relation("CadrageHeldBy")
+  bookingTransitions              BookingTransition[]      @relation("BookingTransitionActor")
+  formationTransitions            FormationTransition[]    @relation("FormationTransitionActor")
+  pricingConfigsUpdated           PricingConfig[]
+  siteSettingsUpdated             SiteSetting[]
   // Sprint Notif Infra 2026-05-26 — reply system admin
-  submissionReplies     SubmissionReply[]
+  submissionReplies               SubmissionReply[]
   // Preuve de signature au grain document — provenance et révocation.
-  documentSignaturesRecueillies DocumentSignature[] @relation("DocumentSignatureRecueillie")
-  documentSignaturesRevoquees   DocumentSignature[] @relation("DocumentSignatureRevoquee")
+  documentSignaturesRecueillies   DocumentSignature[]      @relation("DocumentSignatureRecueillie")
+  documentSignaturesRevoquees     DocumentSignature[]      @relation("DocumentSignatureRevoquee")
   documentSignatureTokensRevoques DocumentSignatureToken[] @relation("DocumentSignatureTokenRevoque")
 
   @@index([role])
@@ -6023,37 +6023,37 @@ model Trainer {
   bookingsAnimes  Booking[]         @relation("BookingFormateur")
 
   // Espace formateur passwordless + coaching 1-to-1 (2026-06-13).
-  lastFormateurLoginAt       DateTime?                   @map("last_formateur_login_at")
+  lastFormateurLoginAt        DateTime?                   @map("last_formateur_login_at")
   /// Habilitation formateur/accompagnateur AFEST (D.6313-3-1 §2). Date de
   /// l'habilitation tracée. Null = non habilité. L'enforcement (obligatoire ou
   /// non) est piloté par le flag SiteSetting `qualiopi.afest_formateur_habilitation_requise`.
-  afestHabiliteAt            DateTime?                   @map("afest_habilite_at")
-  magicLinks                 FormateurMagicLink[]
-  coachingSessions           CoachingSession[]
+  afestHabiliteAt             DateTime?                   @map("afest_habilite_at")
+  magicLinks                  FormateurMagicLink[]
+  coachingSessions            CoachingSession[]
   /// Affectations normalisées aux sessions (principal + co-animateurs).
-  sessionFormateurs          SessionFormateur[]
+  sessionFormateurs           SessionFormateur[]
   /// Journées qu'il anime par EXCEPTION (désistement en cours de session, co-animation).
-  sessionJours               SessionJour[]
+  sessionJours                SessionJour[]
   /// Signatures qu'il a recueillies sur son poste (stagiaire sans téléphone).
-  signaturesRecueillies      EmargementSignature[]       @relation("SignatureRecueillie")
+  signaturesRecueillies       EmargementSignature[]       @relation("SignatureRecueillie")
   /// Pièces justificatives reçues (contrat, vigilance URSSAF, NDA, RC pro…).
-  documents                  TrainerDocument[]
+  documents                   TrainerDocument[]
   /// Régime de TVA de SES honoraires (indépendant). Renseigné par un humain,
   /// justificatif à l'appui : la machine calcule, elle ne devine pas le régime.
-  regimeTvaHonoraires        TvaRegimeHonoraires?        @map("regime_tva_honoraires")
-  compensationRules          TrainerCompensationRule[]
-  feeLines                   TrainerFeeLine[]
-  statements                 TrainerStatement[]
-  habilitations              TrainerHabilitation[]
-  indisponibilites           TrainerAvailability[]
-  auditMissions              AuditMission[]              @relation("AuditMissionFormateur")
-  developmentActions         TrainerDevelopmentAction[]
+  regimeTvaHonoraires         TvaRegimeHonoraires?        @map("regime_tva_honoraires")
+  compensationRules           TrainerCompensationRule[]
+  feeLines                    TrainerFeeLine[]
+  statements                  TrainerStatement[]
+  habilitations               TrainerHabilitation[]
+  indisponibilites            TrainerAvailability[]
+  auditMissions               AuditMission[]              @relation("AuditMissionFormateur")
+  developmentActions          TrainerDevelopmentAction[]
   /// Contresignatures d'émargement apposées par ce formateur (T13).
-  emargementContresignatures EmargementContresignature[]
+  emargementContresignatures  EmargementContresignature[]
   /// Signatures AFEST 1-to-1 recueillies sur son poste (méthode A).
-  signaturesSeanceRecueillies CoachingSeanceSignature[] @relation("SeanceSignatureRecueillie")
+  signaturesSeanceRecueillies CoachingSeanceSignature[]   @relation("SeanceSignatureRecueillie")
   /// Pièces générées qui le MANDATENT (lettres de mission, dont lettres-cadre).
-  documentsGeneres            DocumentGenere[]          @relation("DocumentGenereTrainer")
+  documentsGeneres            DocumentGenere[]            @relation("DocumentGenereTrainer")
 
   @@index([statut])
   @@index([actif])
@@ -6513,65 +6513,72 @@ enum DocumentType {
   /// pas LIBRE, puisque le refus y serait indissociable du refus de la
   /// prestation. Vaut pour les stagiaires comme pour les intervenants.
   autorisation_captation
+  /// Liste des formateurs et de leurs qualifications : titres et qualités, lien
+  /// avec la prestation réalisée, nature du lien contractuel. Exigée à l'appui
+  /// de la déclaration d'activité (art. R.6351-5) et par l'indicateur 21.
+  /// Distincte de `cv_formateur`, qui est une FICHE par intervenant : une fiche
+  /// n'est pas une liste, et c'est une liste que réclament le formulaire et
+  /// l'auditeur.
+  liste_formateurs
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
 /// signed URL S3, QR de vérification (attestation/certificat), conservation 5 ans.
 model DocumentGenere {
-  id                  String           @id @default(uuid()) @db.Uuid
+  id                  String                  @id @default(uuid()) @db.Uuid
   type                DocumentType
-  numero              String           @unique @db.VarChar(40)
-  formationId         String?          @map("formation_id") @db.Uuid
-  formation           Formation?       @relation(fields: [formationId], references: [id], onDelete: SetNull)
-  sessionId           String?          @map("session_id") @db.Uuid
-  session             TrainingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
-  traineeId           String?          @map("trainee_id") @db.Uuid
-  trainee             Trainee?         @relation(fields: [traineeId], references: [id], onDelete: SetNull)
-  clientId            String?          @map("client_id") @db.Uuid
-  client              Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  numero              String                  @unique @db.VarChar(40)
+  formationId         String?                 @map("formation_id") @db.Uuid
+  formation           Formation?              @relation(fields: [formationId], references: [id], onDelete: SetNull)
+  sessionId           String?                 @map("session_id") @db.Uuid
+  session             TrainingSession?        @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  traineeId           String?                 @map("trainee_id") @db.Uuid
+  trainee             Trainee?                @relation(fields: [traineeId], references: [id], onDelete: SetNull)
+  clientId            String?                 @map("client_id") @db.Uuid
+  client              Client?                 @relation(fields: [clientId], references: [id], onDelete: SetNull)
   /// 🔴 Sous-traitant partie au contrat. `genererContratSousTraitanceAction` ne
   /// passait AUCUN `refs` : la pièce n'était reliée au sous-traitant par rien, et
   /// il était donc impossible de savoir à qui adresser le lien de signature.
-  sousTraitantId      String?          @map("sous_traitant_id") @db.Uuid
-  sousTraitant        SousTraitant?    @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  sousTraitantId      String?                 @map("sous_traitant_id") @db.Uuid
+  sousTraitant        SousTraitant?           @relation(fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Coaching 1-to-1 AFEST (C1) : rattache un document généré à son parcours.
   /// Null pour les documents de formation collective (inchangé).
-  coachingSessionId   String?          @map("coaching_session_id") @db.Uuid
-  coachingSession     CoachingSession? @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
+  coachingSessionId   String?                 @map("coaching_session_id") @db.Uuid
+  coachingSession     CoachingSession?        @relation("CoachingDocuments", fields: [coachingSessionId], references: [id], onDelete: SetNull)
   /// 🔴 Formateur MANDATÉ par la pièce (lettre de mission). Ajouté 2026-08-01 :
   /// la lettre-cadre couvre PLUSIEURS sessions — aucune session unique ne peut
   /// plus désigner le mandataire, il faut donc l'ancrer ici. FK réelle et jamais
   /// `metadata` : l'identité d'un signataire se résout depuis les rattachements
   /// (doctrine du canal maison, cf. refs-circuits.spec.ts).
-  trainerId           String?          @map("trainer_id") @db.Uuid
-  trainer             Trainer?         @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
+  trainerId           String?                 @map("trainer_id") @db.Uuid
+  trainer             Trainer?                @relation("DocumentGenereTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
   /// URL signée S3/R2 (expiration courte). Regénérée à la demande.
-  pdfUrl              String?          @map("pdf_url") @db.Text
-  hashSha256          String           @map("hash_sha256") @db.VarChar(64)
-  sizeBytes           Int              @default(0) @map("size_bytes")
+  pdfUrl              String?                 @map("pdf_url") @db.Text
+  hashSha256          String                  @map("hash_sha256") @db.VarChar(64)
+  sizeBytes           Int                     @default(0) @map("size_bytes")
   /// Filigrane COPIE si true.
-  estCopie            Boolean          @default(false) @map("est_copie")
+  estCopie            Boolean                 @default(false) @map("est_copie")
   /// Token QR de vérification publique (timingSafeEqual), attestation/certificat.
-  qrToken             String?          @unique @map("qr_token") @db.VarChar(64)
-  qrTokenCreatedAt    DateTime?        @map("qr_token_created_at")
-  envoyeAt            DateTime?        @map("envoye_at")
+  qrToken             String?                 @unique @map("qr_token") @db.VarChar(64)
+  qrTokenCreatedAt    DateTime?               @map("qr_token_created_at")
+  envoyeAt            DateTime?               @map("envoye_at")
   /// = createdAt + 5 ans (rétention légale).
-  suppressionPrevueAt DateTime         @map("suppression_prevue_at")
+  suppressionPrevueAt DateTime                @map("suppression_prevue_at")
   /// Pointe vers le fichier source ORIGINAL archivé (ex. CSV Zoom/Teams pour un
   /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
-  fichierOriginalPath String?          @map("fichier_original_path") @db.Text
-  metadata            Json             @default("{}")
+  fichierOriginalPath String?                 @map("fichier_original_path") @db.Text
+  metadata            Json                    @default("{}")
   /// Statut DÉRIVÉ des lignes `DocumentSignature`. Cache de lecture : la source
   /// de vérité reste la table de signatures, jamais cette colonne.
   /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
   statutSignature     DocumentStatutSignature @default(non_requise) @map("statut_signature")
-  createdAt           DateTime         @default(now()) @map("created_at")
-  updatedAt           DateTime         @updatedAt @map("updated_at")
+  createdAt           DateTime                @default(now()) @map("created_at")
+  updatedAt           DateTime                @updatedAt @map("updated_at")
 
-  enrollmentsAttestation Enrollment[] @relation("EnrollmentAttestation")
+  enrollmentsAttestation Enrollment[]             @relation("EnrollmentAttestation")
   signatures             DocumentSignature[]
   signatureTokens        DocumentSignatureToken[]
-  devisPortes            Devis[]      @relation("DevisPieceSignable")
+  devisPortes            Devis[]                  @relation("DevisPieceSignable")
 
   @@index([type, sessionId])
   @@index([traineeId, type])
@@ -6599,82 +6606,82 @@ model DocumentGenere {
 /// transformerait un oubli d'insertion en valeur silencieuse et le `selfHash`
 /// cesserait de correspondre.
 model DocumentSignature {
-  id                   String                   @id @default(uuid()) @db.Uuid
-  documentGenereId     String                   @map("document_genere_id") @db.Uuid
+  id               String         @id @default(uuid()) @db.Uuid
+  documentGenereId String         @map("document_genere_id") @db.Uuid
   /// RESTRICT : une preuve légale ne disparaît jamais en cascade. Conséquence
   /// assumée — une pièce portant une signature non révoquée n'est plus supprimable.
-  documentGenere       DocumentGenere           @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
+  documentGenere   DocumentGenere @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
 
   provider             SignatureProvider
   /// Identifiant de submission côté fournisseur. NULL en canal maison — un CHECK
   /// l'impose, pour qu'une ligne `interne` ne laisse pas croire à un certificat
   /// opposable qui n'existe pas.
-  providerSubmissionId String?                  @map("provider_submission_id") @db.VarChar(120)
+  providerSubmissionId String?           @map("provider_submission_id") @db.VarChar(120)
 
-  partie               DocumentPartieSignataire
+  partie DocumentPartieSignataire
 
   /// Identité FIGÉE : le contact peut être renommé, réaffecté ou anonymisé
   /// ensuite ; la preuve, elle, ne bouge plus.
-  signataireNom        String                   @map("signataire_nom") @db.VarChar(200)
-  signataireEmail      String?                  @map("signataire_email") @db.VarChar(320)
-  signataireQualite    String?                  @map("signataire_qualite") @db.VarChar(200)
+  signataireNom     String  @map("signataire_nom") @db.VarChar(200)
+  signataireEmail   String? @map("signataire_email") @db.VarChar(320)
+  signataireQualite String? @map("signataire_qualite") @db.VarChar(200)
 
   /// Modalité de RECUEIL. HACHÉE : sans elle, un `UPDATE methode = 'trace'`
   /// transformerait après coup une confirmation accessible en tracé manuscrit —
   /// falsification de la NATURE de la preuve, indétectable.
   /// ⚠️ PAS de `@default` : colonne hachée.
-  methode              DocumentSignatureMethode
+  methode         DocumentSignatureMethode
   /// Clé R2 de l'image rasterisée. NULL pour `confirmation_accessible` et APRÈS
   /// purge RGPD. HORS tuple : elle doit rester effaçable.
-  signatureKey         String?                  @map("signature_key") @db.Text
+  signatureKey    String?                  @map("signature_key") @db.Text
   /// SHA-256 de l'IMAGE elle-même — pas de sa clé. Seul moyen de détecter la
   /// substitution d'un objet de stockage sans toucher à la base. HACHÉ, et il
   /// SURVIT à la purge de l'image.
-  signatureSha256      String?                  @map("signature_sha256") @db.Char(64)
-  mimeType             String?                  @map("mime_type") @db.VarChar(60)
-  sizeBytes            Int?                     @map("size_bytes")
+  signatureSha256 String?                  @map("signature_sha256") @db.Char(64)
+  mimeType        String?                  @map("mime_type") @db.VarChar(60)
+  sizeBytes       Int?                     @map("size_bytes")
   /// Purge effective de l'IMAGE. La ligne de preuve, elle, survit.
-  imagePurgeeAt        DateTime?                @map("image_purgee_at")
+  imagePurgeeAt   DateTime?                @map("image_purgee_at")
 
   /// 🔴 Empreinte du PDF EXACT qui a été signé — ce qui distingue « une
   /// signature existe » de « cette signature porte sur CETTE pièce ». Sans elle,
   /// régénérer le PDF après coup produirait un document que plus rien ne relie
   /// à l'acte de signature.
-  documentHashSha256   String                   @map("document_hash_sha256") @db.Char(64)
+  documentHashSha256 String @map("document_hash_sha256") @db.Char(64)
 
-  prevHash             String?                  @map("prev_hash") @db.Char(64)
-  selfHash             String                   @map("self_hash") @db.Char(64)
-  hashVersion          Int                      @map("hash_version")
+  prevHash    String? @map("prev_hash") @db.Char(64)
+  selfHash    String  @map("self_hash") @db.Char(64)
+  hashVersion Int     @map("hash_version")
 
-  mentionVersion       String                   @map("mention_version") @db.VarChar(20)
-  consentementVersion  String                   @map("consentement_version") @db.VarChar(20)
+  mentionVersion      String @map("mention_version") @db.VarChar(20)
+  consentementVersion String @map("consentement_version") @db.VarChar(20)
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
-  signeAt              DateTime                 @map("signe_at")
-  createdAt            DateTime                 @default(now()) @map("created_at")
+  signeAt   DateTime @map("signe_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   /// Hors du tuple haché, donc effaçables sur demande RGPD sans casser la preuve.
-  ipHash               String?                  @map("ip_hash") @db.VarChar(64)
-  userAgentSha256      String?                  @map("user_agent_sha256") @db.Char(64)
+  ipHash          String? @map("ip_hash") @db.VarChar(64)
+  userAgentSha256 String? @map("user_agent_sha256") @db.Char(64)
 
   /// 🔴 Qui, dans l'organisme, a versé cette preuve au dossier. Renseignée sur
   /// les canaux où l'organisme ATTESTE l'identité du signataire (reversement
   /// d'une pièce papier). NULL quand la personne a signé depuis son propre
   /// accès, ou quand un tiers a certifié la signature. Sans elle, un reversement
   /// papier serait ANONYME. HORS tuple : provenance, pas contenu.
-  recueilliParAdminId  String?                  @map("recueilli_par_admin_id") @db.Uuid
-  recueilliPar         AdminUser?               @relation("DocumentSignatureRecueillie", fields: [recueilliParAdminId], references: [id], onDelete: Restrict)
+  recueilliParAdminId String?    @map("recueilli_par_admin_id") @db.Uuid
+  recueilliPar        AdminUser? @relation("DocumentSignatureRecueillie", fields: [recueilliParAdminId], references: [id], onDelete: Restrict)
 
-  revokedAt            DateTime?                @map("revoked_at")
-  revokedMotif         String?                  @map("revoked_motif") @db.VarChar(500)
+  revokedAt    DateTime?  @map("revoked_at")
+  revokedMotif String?    @map("revoked_motif") @db.VarChar(500)
   /// Une révocation non imputée est une preuve retirée par personne.
-  revokedById          String?                  @map("revoked_by_id") @db.Uuid
-  revokedBy            AdminUser?               @relation("DocumentSignatureRevoquee", fields: [revokedById], references: [id], onDelete: Restrict)
+  revokedById  String?    @map("revoked_by_id") @db.Uuid
+  revokedBy    AdminUser? @relation("DocumentSignatureRevoquee", fields: [revokedById], references: [id], onDelete: Restrict)
 
   /// Alignée sur `DocumentGenere.suppressionPrevueAt`. La ligne de preuve
   /// SURVIT à la purge de l'exemplaire, comme côté émargement.
-  suppressionPrevueAt  DateTime                 @map("suppression_prevue_at")
+  suppressionPrevueAt DateTime @map("suppression_prevue_at")
 
   /// ⚠️ Les index UNIQUES sont PARTIELS (`WHERE revoked_at IS NULL`) et
   /// l'anti-fork porte `NULLS NOT DISTINCT` : ils sont créés en SQL brut dans la
@@ -6697,35 +6704,35 @@ model DocumentSignature {
 /// que le formulaire déclare. C'est ce qui rend ce canal conforme à la doctrine
 /// du socle malgré un signataire non authentifié.
 model DocumentSignatureToken {
-  id                      String                   @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-  documentGenereId        String                   @map("document_genere_id") @db.Uuid
-  documentGenere          DocumentGenere           @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
+  documentGenereId String         @map("document_genere_id") @db.Uuid
+  documentGenere   DocumentGenere @relation(fields: [documentGenereId], references: [id], onDelete: Restrict)
 
   /// 🔴 Partie au titre de laquelle ce lien permet de signer. Garde
   /// d'AUTORISATION, pas une étiquette : sans elle, un lien émis pour le client
   /// permettrait d'écrire une ligne `axionia`.
-  partie                  DocumentPartieSignataire
+  partie DocumentPartieSignataire
 
   /// SHA-256 du jeton, jamais le clair.
-  tokenHash               String                   @unique @map("token_hash") @db.Char(64)
+  tokenHash String @unique @map("token_hash") @db.Char(64)
 
-  signataireNom           String                   @map("signataire_nom") @db.VarChar(200)
-  signataireEmail         String?                  @map("signataire_email") @db.VarChar(320)
-  signataireQualite       String?                  @map("signataire_qualite") @db.VarChar(200)
-  destinataireEmailSha256 String?                  @map("destinataire_email_sha256") @db.Char(64)
+  signataireNom           String  @map("signataire_nom") @db.VarChar(200)
+  signataireEmail         String? @map("signataire_email") @db.VarChar(320)
+  signataireQualite       String? @map("signataire_qualite") @db.VarChar(200)
+  destinataireEmailSha256 String? @map("destinataire_email_sha256") @db.Char(64)
 
-  expiresAt               DateTime                 @map("expires_at")
+  expiresAt DateTime  @map("expires_at")
   /// Premier usage, à titre de trace. Le jeton n'est PAS consommé à l'ouverture.
-  usedAt                  DateTime?                @map("used_at")
+  usedAt    DateTime? @map("used_at")
 
-  revokedAt               DateTime?                @map("revoked_at")
-  revokedMotif            String?                  @map("revoked_motif") @db.VarChar(500)
-  revokedById             String?                  @map("revoked_by_id") @db.Uuid
-  revokedBy               AdminUser?               @relation("DocumentSignatureTokenRevoque", fields: [revokedById], references: [id], onDelete: SetNull)
+  revokedAt    DateTime?  @map("revoked_at")
+  revokedMotif String?    @map("revoked_motif") @db.VarChar(500)
+  revokedById  String?    @map("revoked_by_id") @db.Uuid
+  revokedBy    AdminUser? @relation("DocumentSignatureTokenRevoque", fields: [revokedById], references: [id], onDelete: SetNull)
 
-  createdIpHash           String?                  @map("created_ip_hash") @db.Char(64)
-  createdAt               DateTime                 @default(now()) @map("created_at")
+  createdIpHash String?  @map("created_ip_hash") @db.Char(64)
+  createdAt     DateTime @default(now()) @map("created_at")
 
   /// ⚠️ L'index unique `document_signature_token_actif` est PARTIEL
   /// (`WHERE revoked_at IS NULL`) : créé en SQL brut, Prisma ne sait pas
@@ -7080,32 +7087,32 @@ enum DossierPayeurType {
 /// `TrainingSession`/`Enrollment` restent la source des validations Qualiopi ;
 /// ce modèle est la vue de PILOTAGE (qui paie, combien, où en est l'accord).
 model DossierFinancement {
-  id                   String                   @id @default(uuid()) @db.Uuid
-  type                 DossierFinancementType
-  statut               DossierFinancementStatut @default(a_monter)
+  id                       String                   @id @default(uuid()) @db.Uuid
+  type                     DossierFinancementType
+  statut                   DossierFinancementStatut @default(a_monter)
   /// Nom du financeur principal (ex. « OPCO Atlas », « France Travail »).
-  financeurNom         String?                  @map("financeur_nom") @db.VarChar(120)
+  financeurNom             String?                  @map("financeur_nom") @db.VarChar(120)
   /// Personne physique qui signe pour le financeur SUR CE DOSSIER.
   /// 🔴 Grain volontairement le DOSSIER et non l'OPCO : le gestionnaire change
   /// d'un dossier à l'autre. Créer une table `Financeur` ferait une TROISIÈME
   /// représentation (avec `financeurNom` et `Client.opcoIdentifie`), donc trois
   /// sources à tenir synchronisées et une divergence silencieuse possible.
-  financeurContactNom      String?              @map("financeur_contact_nom") @db.VarChar(200)
-  financeurContactEmail    String?              @map("financeur_contact_email") @db.VarChar(320)
-  financeurContactFonction String?              @map("financeur_contact_fonction") @db.VarChar(200)
+  financeurContactNom      String?                  @map("financeur_contact_nom") @db.VarChar(200)
+  financeurContactEmail    String?                  @map("financeur_contact_email") @db.VarChar(320)
+  financeurContactFonction String?                  @map("financeur_contact_fonction") @db.VarChar(200)
   /// N° du dossier chez le financeur (référence externe).
-  numeroDossierExterne String?                  @map("numero_dossier_externe") @db.VarChar(80)
-  subrogation          Boolean                  @default(false)
-  montantDemandeCents  Int?                     @map("montant_demande_cents")
-  montantAccordeCents  Int?                     @map("montant_accorde_cents")
+  numeroDossierExterne     String?                  @map("numero_dossier_externe") @db.VarChar(80)
+  subrogation              Boolean                  @default(false)
+  montantDemandeCents      Int?                     @map("montant_demande_cents")
+  montantAccordeCents      Int?                     @map("montant_accorde_cents")
   /// Date de paiement attendue du financeur (les OPCO paient à 30-60 j).
-  echeanceFinanceurAt  DateTime?                @map("echeance_financeur_at")
-  envoyeAt             DateTime?                @map("envoye_at")
-  accordAt             DateTime?                @map("accord_at")
-  refuseAt             DateTime?                @map("refuse_at")
-  paiementRecuAt       DateTime?                @map("paiement_recu_at")
-  closAt               DateTime?                @map("clos_at")
-  notes                String?                  @db.Text
+  echeanceFinanceurAt      DateTime?                @map("echeance_financeur_at")
+  envoyeAt                 DateTime?                @map("envoye_at")
+  accordAt                 DateTime?                @map("accord_at")
+  refuseAt                 DateTime?                @map("refuse_at")
+  paiementRecuAt           DateTime?                @map("paiement_recu_at")
+  closAt                   DateTime?                @map("clos_at")
+  notes                    String?                  @db.Text
 
   clientId           String?           @map("client_id") @db.Uuid
   client             Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
@@ -7375,7 +7382,7 @@ model SousTraitant {
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
 
-  documentsGeneres  DocumentGenere[]
+  documentsGeneres DocumentGenere[]
 
   @@index([actif])
   @@map("sous_traitants_of")
@@ -8053,42 +8060,42 @@ enum EmargementMethode {
 /// Un écart de 40 h visible et assumé se défend ; le même écart muet non — cf.
 /// CAA Nantes 20/04/2021, qui sanctionne les signatures aux dates impossibles.
 model EmargementToken {
-  id            String             @id @default(uuid()) @db.Uuid
-  contexteType  EmargementContexte @map("contexte_type")
+  id                      String                  @id @default(uuid()) @db.Uuid
+  contexteType            EmargementContexte      @map("contexte_type")
   /// Contexte collectif : l'inscription visée.
-  enrollmentId  String?            @map("enrollment_id") @db.Uuid
-  enrollment    Enrollment?        @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  enrollmentId            String?                 @map("enrollment_id") @db.Uuid
+  enrollment              Enrollment?             @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
   /// Contexte AFEST 1-to-1.
-  coachingId    String?            @map("coaching_id") @db.Uuid
-  coaching      CoachingSession?   @relation(fields: [coachingId], references: [id], onDelete: Restrict)
+  coachingId              String?                 @map("coaching_id") @db.Uuid
+  coaching                CoachingSession?        @relation(fields: [coachingId], references: [id], onDelete: Restrict)
   /// SHA-256 hex du token. Le clair ne vit que dans l'URL remise au stagiaire.
-  tokenHash     String             @unique @map("token_hash") @db.VarChar(64)
-  expiresAt     DateTime           @map("expires_at")
+  tokenHash               String                  @unique @map("token_hash") @db.VarChar(64)
+  expiresAt               DateTime                @map("expires_at")
   /// Premier usage. Le jeton reste valide ensuite : un stagiaire signe plusieurs
   /// demi-journées avec le même lien.
-  usedAt        DateTime?          @map("used_at")
+  usedAt                  DateTime?               @map("used_at")
   /// Révocation : session annulée ou reportée, erreur de destinataire, demande
   /// RGPD. Un token révoqué ne signe plus, mais la ligne reste — c'est une trace.
-  revokedAt     DateTime?          @map("revoked_at")
-  revokedById   String?            @map("revoked_by_id") @db.Uuid
-  revokedMotif  String?            @map("revoked_motif") @db.Text
+  revokedAt               DateTime?               @map("revoked_at")
+  revokedById             String?                 @map("revoked_by_id") @db.Uuid
+  revokedMotif            String?                 @map("revoked_motif") @db.Text
   /// IP de création, HASHÉE (jamais en clair — cf. `security/ip-hash.ts`).
-  createdIpHash String?            @map("created_ip_hash") @db.VarChar(64)
+  createdIpHash           String?                 @map("created_ip_hash") @db.VarChar(64)
   /// Rôle du destinataire en contexte AFEST 1-to-1. NOT NULL dans ce contexte,
   /// NULL ailleurs (CHECK `ck_emargement_token_coaching_role`). Sans lui, la
   /// garde d'autorisation « porteur ↔ rôle » n'aurait aucune source fiable et
   /// un lien tuteur pourrait écrire une signature de bénéficiaire.
-  coachingRole  CoachingSignataireRole? @map("coaching_role")
+  coachingRole            CoachingSignataireRole? @map("coaching_role")
   /// 🔴 SHA-256 de l'adresse à laquelle le lien a été ENVOYÉ. `verifyMagicToken`
   /// ne lie PAS le porteur à un destinataire (il ne contrôle que `scope` +
   /// `resourceId`, et se contente d'un « @ » dans l'e-mail du payload) : sans
   /// cette colonne, un lien transféré signe au nom du destinataire initial.
   /// Hashée, jamais en clair : la ligne survit cinq ans.
-  destinataireEmailSha256 String?    @map("destinataire_email_sha256") @db.VarChar(64)
-  createdAt     DateTime           @default(now()) @map("created_at")
+  destinataireEmailSha256 String?                 @map("destinataire_email_sha256") @db.VarChar(64)
+  createdAt               DateTime                @default(now()) @map("created_at")
 
-  signatures        EmargementSignature[]
-  seanceSignatures  CoachingSeanceSignature[]
+  signatures       EmargementSignature[]
+  seanceSignatures CoachingSeanceSignature[]
 
   @@index([enrollmentId])
   @@index([coachingId])
@@ -8693,19 +8700,19 @@ model PlanOptimisation {
 
 /// Compte-rendu de séance — N par séance/parcours.
 model CompteRenduSeance {
-  id                   String          @id @default(uuid()) @db.Uuid
-  coachingSessionId    String          @map("coaching_session_id") @db.Uuid
-  coachingSession      CoachingSession @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
-  dateSeance           DateTime        @map("date_seance")
-  dureeMinutes         Int?            @map("duree_minutes")
-  objectifs            String?         @db.Text
+  id                   String               @id @default(uuid()) @db.Uuid
+  coachingSessionId    String               @map("coaching_session_id") @db.Uuid
+  coachingSession      CoachingSession      @relation(fields: [coachingSessionId], references: [id], onDelete: Cascade)
+  dateSeance           DateTime             @map("date_seance")
+  dureeMinutes         Int?                 @map("duree_minutes")
+  objectifs            String?              @db.Text
   /// [{ cas, usageIa, resultat, autonomie }].
-  misesEnSituation     Json            @default("[]") @map("mises_en_situation")
+  misesEnSituation     Json                 @default("[]") @map("mises_en_situation")
   /// [{ situation, apprentissage }] (phases réflexives AFEST).
-  phasesReflexives     Json            @default("[]") @map("phases_reflexives")
-  planRemis            Boolean         @default(false) @map("plan_remis")
-  suite                String?         @db.VarChar(120)
-  notesConfidentielles String?         @map("notes_confidentielles") @db.Text
+  phasesReflexives     Json                 @default("[]") @map("phases_reflexives")
+  planRemis            Boolean              @default(false) @map("plan_remis")
+  suite                String?              @db.VarChar(120)
+  notesConfidentielles String?              @map("notes_confidentielles") @db.Text
   /// Statut de la séance.
   ///
   /// 🔴 Sans lui, une absence LÉGITIME (séance reportée, annulée, arrêt de
@@ -8722,13 +8729,13 @@ model CompteRenduSeance {
   // conservées (additif, pas de DROP) mais RÉTROGRADÉES en cache d'affichage,
   // écrit uniquement par `signerSeanceAfest` dans la MÊME transaction que la
   // ligne de signature. La source de vérité est la ligne, jamais ce cache.
-  beneficiairePresent  Boolean         @default(false) @map("beneficiaire_present")
-  beneficiaireSigneAt  DateTime?       @map("beneficiaire_signe_at")
-  formateurSigneAt     DateTime?       @map("formateur_signe_at")
-  tuteurSigneAt        DateTime?       @map("tuteur_signe_at")
+  beneficiairePresent  Boolean              @default(false) @map("beneficiaire_present")
+  beneficiaireSigneAt  DateTime?            @map("beneficiaire_signe_at")
+  formateurSigneAt     DateTime?            @map("formateur_signe_at")
+  tuteurSigneAt        DateTime?            @map("tuteur_signe_at")
   /// Cache dérivé : horodatage de la signature de présence du BÉNÉFICIAIRE.
-  presenceSigneeAt     DateTime?       @map("presence_signee_at")
-  createdAt            DateTime        @default(now()) @map("created_at")
+  presenceSigneeAt     DateTime?            @map("presence_signee_at")
+  createdAt            DateTime             @default(now()) @map("created_at")
 
   signatures CoachingSeanceSignature[]
 
@@ -8813,15 +8820,15 @@ enum CoachingRegimePreuve {
 /// indépendants ». L'indépendance n'est défendable que par le canal B
 /// (appareil et adresse distincts, avec binding e-mail réel).
 model CoachingSeanceSignature {
-  id                   String                   @id @default(uuid()) @db.Uuid
+  id                  String                 @id @default(uuid()) @db.Uuid
   /// Grain réel de la preuve : UNE séance.
-  compteRenduSeanceId  String                   @map("compte_rendu_seance_id") @db.Uuid
+  compteRenduSeanceId String                 @map("compte_rendu_seance_id") @db.Uuid
   /// Portée de la CHAÎNE, dénormalisée. Cohérence garantie par la FK COMPOSITE
   /// ci-dessous — sans elle, un `coachingId` erroné réattribuerait
   /// silencieusement la chaîne d'un parcours à un autre.
-  coachingId           String                   @map("coaching_id") @db.Uuid
-  compteRendu          CompteRenduSeance        @relation(fields: [compteRenduSeanceId, coachingId], references: [id, coachingSessionId], onDelete: Restrict, map: "css_cr_coaching_coherent_fkey")
-  role                 CoachingSignataireRole
+  coachingId          String                 @map("coaching_id") @db.Uuid
+  compteRendu         CompteRenduSeance      @relation(fields: [compteRenduSeanceId, coachingId], references: [id, coachingSessionId], onDelete: Restrict, map: "css_cr_coaching_coherent_fkey")
+  role                CoachingSignataireRole
 
   // ── SNAPSHOT — ce qui a été signé, figé au moment de la signature ──
   //
@@ -8835,67 +8842,67 @@ model CoachingSeanceSignature {
   /// REFUSE toute date non alignée : une séance du 10 juin à 23h30 Paris
   /// (donc le 10 en UTC-jour-civil-Paris mais le 10 à 21h30 UTC) doit être
   /// relue à l'identique, faute de quoi l'empreinte est définitivement fausse.
-  seanceDate           DateTime                 @map("seance_date") @db.Date
+  seanceDate        DateTime @map("seance_date") @db.Date
   /// ⚠️ Affichage seulement — VOLONTAIREMENT hors du tuple haché : redondante
   /// avec (heureDebut, heureFin), une contradiction figée entre les deux serait
   /// indétectable. La référence collective ne hache jamais la durée non plus.
-  dureeMinutes         Int                      @map("duree_minutes")
+  dureeMinutes      Int      @map("duree_minutes")
   /// Horaires RÉELS `HH:MM` dérivés de `dateSeance` + `dureeMinutes` en heure de
   /// Paris. NOT NULL : sans horaires, la feuille est insuffisamment probante
   /// (CAA Nantes 20/04/2021). ⚠️ JAMAIS dérivés de `CoachingSession.dateSeanceFin`,
   /// qui est le parent AGRÉGEANT N séances — les horaires y seraient faux et
   /// identiques pour toutes.
-  heureDebut           String                   @map("heure_debut") @db.VarChar(5)
-  heureFin             String                   @map("heure_fin") @db.VarChar(5)
-  formationIntitule    String                   @map("formation_intitule") @db.VarChar(300)
+  heureDebut        String   @map("heure_debut") @db.VarChar(5)
+  heureFin          String   @map("heure_fin") @db.VarChar(5)
+  formationIntitule String   @map("formation_intitule") @db.VarChar(300)
   /// ⚠️ PAS de `@default` : colonne hachée, cf. `EmargementSignature`.
-  modulesSnapshot      Json                     @map("modules_snapshot")
-  formateurNom         String                   @map("formateur_nom") @db.VarChar(200)
+  modulesSnapshot   Json     @map("modules_snapshot")
+  formateurNom      String   @map("formateur_nom") @db.VarChar(200)
 
   /// Identité du signataire FIGÉE : un UUID n'identifie personne devant un juge.
-  signataireNom        String                   @map("signataire_nom") @db.VarChar(200)
+  signataireNom   String  @map("signataire_nom") @db.VarChar(200)
   /// Nullable : le tuteur entreprise est un tiers externe, sans compte.
-  signataireEmail      String?                  @map("signataire_email") @db.VarChar(255)
+  signataireEmail String? @map("signataire_email") @db.VarChar(255)
 
   /// Méthode A — le signataire signe sur le poste du formateur, qui porte alors
   /// l'identification, comme une feuille papier qu'il fait circuler.
-  recueilliParTrainerId String?                 @map("recueilli_par_trainer_id") @db.Uuid
-  recueilliPar          Trainer?                @relation("SeanceSignatureRecueillie", fields: [recueilliParTrainerId], references: [id], onDelete: Restrict)
+  recueilliParTrainerId String?                  @map("recueilli_par_trainer_id") @db.Uuid
+  recueilliPar          Trainer?                 @relation("SeanceSignatureRecueillie", fields: [recueilliParTrainerId], references: [id], onDelete: Restrict)
   /// Méthode B — lien propre, à distance (binding e-mail réel obligatoire).
-  tokenId              String?                  @map("token_id") @db.Uuid
-  token                EmargementToken?         @relation(fields: [tokenId], references: [id], onDelete: Restrict)
-  methode              CoachingSignatureMethode
+  tokenId               String?                  @map("token_id") @db.Uuid
+  token                 EmargementToken?         @relation(fields: [tokenId], references: [id], onDelete: Restrict)
+  methode               CoachingSignatureMethode
 
-  signatureKey         String?                  @map("signature_key") @db.Text
+  signatureKey    String? @map("signature_key") @db.Text
   /// SHA-256 de l'IMAGE — et non de sa clé R2 : un objet de stockage est
   /// remplaçable sans que la base bouge.
-  signatureSha256      String?                  @map("signature_sha256") @db.VarChar(64)
-  mimeType             String?                  @map("mime_type") @db.VarChar(60)
-  sizeBytes            Int?                     @map("size_bytes")
+  signatureSha256 String? @map("signature_sha256") @db.VarChar(64)
+  mimeType        String? @map("mime_type") @db.VarChar(60)
+  sizeBytes       Int?    @map("size_bytes")
 
-  signeAt              DateTime                 @map("signe_at")
+  signeAt   DateTime @map("signe_at")
   /// ⚠️ DISTINCT de `signeAt` : l'écart révèle une insertion tardive. C'est
   /// aussi `createdAt` qui ORDONNE la chaîne — jamais `signeAt`, figé avant
   /// l'écriture de l'image sur R2.
-  createdAt            DateTime                 @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   /// NON scellés (hors tuple) : effaçables au titre de l'art. 17 RGPD sans
   /// invalider une seule empreinte. Doctrine « seule l'IMAGE se détruit ».
-  ipHash               String?                  @map("ip_hash") @db.VarChar(64)
-  userAgentSha256      String?                  @map("user_agent_sha256") @db.VarChar(64)
+  ipHash          String? @map("ip_hash") @db.VarChar(64)
+  userAgentSha256 String? @map("user_agent_sha256") @db.VarChar(64)
 
-  prevHash             String?                  @map("prev_hash") @db.VarChar(64)
-  selfHash             String                   @map("self_hash") @db.VarChar(64)
+  prevHash       String? @map("prev_hash") @db.VarChar(64)
+  selfHash       String  @map("self_hash") @db.VarChar(64)
   /// Version DU TUPLE AFEST (`HASH_VERSION_SEANCE`), indépendante du collectif.
-  hashVersion          Int                      @default(1) @map("hash_version")
+  hashVersion    Int     @default(1) @map("hash_version")
   /// Version du texte présenté au signataire (`MENTION_VERSION_AFEST`), SCELLÉE.
-  mentionVersion       String                   @map("mention_version") @db.VarChar(20)
+  mentionVersion String  @map("mention_version") @db.VarChar(20)
 
-  suppressionPrevueAt  DateTime?                @map("suppression_prevue_at")
-  imagePurgeeAt        DateTime?                @map("image_purgee_at")
-  revokedAt            DateTime?                @map("revoked_at")
-  revokedById          String?                  @map("revoked_by_id") @db.Uuid
-  revokedMotif         String?                  @map("revoked_motif") @db.Text
+  suppressionPrevueAt DateTime? @map("suppression_prevue_at")
+  imagePurgeeAt       DateTime? @map("image_purgee_at")
+  revokedAt           DateTime? @map("revoked_at")
+  revokedById         String?   @map("revoked_by_id") @db.Uuid
+  revokedMotif        String?   @map("revoked_motif") @db.Text
 
   /// ⚠️ `createdAt`, jamais `signeAt` : tout vérificateur doit trier À L'IDENTIQUE.
   @@index([coachingId, role, createdAt])

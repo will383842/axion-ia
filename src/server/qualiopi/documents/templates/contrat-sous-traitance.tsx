@@ -241,12 +241,12 @@ export function ContratSousTraitancePdf({
             prestations confiées et les restitue ou les détruit au terme du contrat.
           </Text>
           <Text style={pdfStyles.paragraph}>
-            Les supports et contenus créés spécifiquement dans le cadre des prestations sont cédés
-            à l&apos;organisme à titre exclusif, pour toute la durée légale de protection et pour
-            le monde entier, pour les droits de reproduction, représentation, adaptation et
-            traduction, sur tout support. Cette cession est comprise dans la rémunération prévue en
-            section 4. Le sous-traitant conserve la propriété de ses supports antérieurs et concède
-            à l&apos;organisme le droit de les utiliser pour les prestations concernées.
+            Les supports et contenus créés spécifiquement dans le cadre des prestations sont cédés à
+            l&apos;organisme à titre exclusif, pour toute la durée légale de protection et pour le
+            monde entier, pour les droits de reproduction, représentation, adaptation et traduction,
+            sur tout support. Cette cession est comprise dans la rémunération prévue en section 4.
+            Le sous-traitant conserve la propriété de ses supports antérieurs et concède à
+            l&apos;organisme le droit de les utiliser pour les prestations concernées.
           </Text>
         </DocSection>
 
@@ -259,8 +259,8 @@ export function ContratSousTraitancePdf({
             ses intervenants ou salariés en vue de les recruter.
           </Text>
           <Text style={pdfStyles.legalNote}>
-            Cette clause ne restreint pas la liberté d&apos;exercice du sous-traitant : elle ne
-            vise que la clientèle rencontrée à l&apos;occasion des prestations confiées.
+            Cette clause ne restreint pas la liberté d&apos;exercice du sous-traitant : elle ne vise
+            que la clientèle rencontrée à l&apos;occasion des prestations confiées.
           </Text>
         </DocSection>
 
@@ -268,17 +268,17 @@ export function ContratSousTraitancePdf({
         <DocSection title="9. Indépendance, assurance et résiliation">
           <Text style={pdfStyles.paragraph}>
             Le sous-traitant exerce en toute indépendance, organise librement son travail et
-            n&apos;est soumis à aucun lien de subordination envers l&apos;organisme. Il déclare
-            être régulièrement immatriculé, à jour de ses obligations sociales et fiscales, et
-            détenir une assurance de responsabilité civile professionnelle couvrant son activité de
+            n&apos;est soumis à aucun lien de subordination envers l&apos;organisme. Il déclare être
+            régulièrement immatriculé, à jour de ses obligations sociales et fiscales, et détenir
+            une assurance de responsabilité civile professionnelle couvrant son activité de
             formation. Il en justifie sur demande et signale sans délai toute cessation de garantie.
           </Text>
           <Text style={pdfStyles.paragraph}>
             Chaque partie peut résilier le contrat par écrit moyennant un préavis de trente (30)
             jours, les prestations déjà engagées étant menées à leur terme. En cas de manquement
             grave — atteinte à la confidentialité, défaut d&apos;assurance, perte de la conformité
-            exigée en section 5 — la résiliation peut intervenir sans préavis, après mise en
-            demeure restée sans effet pendant huit (8) jours.
+            exigée en section 5 — la résiliation peut intervenir sans préavis, après mise en demeure
+            restée sans effet pendant huit (8) jours.
           </Text>
         </DocSection>
 

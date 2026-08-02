@@ -1,0 +1,23 @@
+-- La LISTE DES FORMATEURS devient une pièce.
+--
+-- ## Ce que cette migration ferme
+--
+-- La déclaration d'activité exige « la liste des personnes qui interviendront,
+-- précisant leurs titres et qualités et le lien avec la prestation réalisée »
+-- (art. R.6351-5 C. trav.), ainsi que la nature de leur lien contractuel avec
+-- l'organisme. Le référentiel national qualité demande la même preuve à
+-- l'indicateur 21.
+--
+-- Le dépôt ne produisait qu'une FICHE PAR FORMATEUR (`cv_formateur`). Une fiche
+-- n'est pas une liste : avec un seul intervenant la différence est théorique,
+-- avec trois elle ne l'est plus — et c'est une liste que réclament le formulaire
+-- de déclaration et l'auditeur.
+--
+-- Les données existaient toutes (`trainers`, `trainer_habilitations`,
+-- `trainer_documents`) ; seul le contenant manquait.
+--
+-- Postgres ALTER TYPE ADD VALUE — non transactionnel mais sûr (ajout d'une
+-- valeur d'enum, jamais de retrait). `IF NOT EXISTS` rend la migration
+-- ré-exécutable, ce qui compte : l'entrypoint rejoue `migrate deploy` à chaque
+-- démarrage de conteneur.
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'liste_formateurs';

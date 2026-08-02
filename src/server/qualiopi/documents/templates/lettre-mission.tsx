@@ -315,11 +315,11 @@ export function LettreMissionPdf({
           <Text style={pdfStyles.paragraph}>
             Les supports, exercices et contenus que le formateur crée spécifiquement dans le cadre
             de la mission sont cédés à l&apos;organisme à titre exclusif, pour toute la durée légale
-            de protection et pour le monde entier, pour les droits de reproduction,
-            représentation, adaptation et traduction, sur tout support. Cette cession est comprise
-            dans la rémunération prévue en section 4. Le formateur conserve la propriété des
-            supports qu&apos;il avait développés avant la mission et qu&apos;il apporte, et concède
-            à l&apos;organisme le droit de les utiliser pour les prestations concernées.
+            de protection et pour le monde entier, pour les droits de reproduction, représentation,
+            adaptation et traduction, sur tout support. Cette cession est comprise dans la
+            rémunération prévue en section 4. Le formateur conserve la propriété des supports
+            qu&apos;il avait développés avant la mission et qu&apos;il apporte, et concède à
+            l&apos;organisme le droit de les utiliser pour les prestations concernées.
           </Text>
         </DocSection>
 
@@ -332,9 +332,9 @@ export function LettreMissionPdf({
             les intervenants ou salariés de l&apos;organisme en vue de les recruter.
           </Text>
           <Text style={pdfStyles.legalNote}>
-            Cette clause n&apos;interdit pas au formateur d&apos;exercer librement son activité,
-            y compris auprès de clients qu&apos;il aurait acquis par ses propres moyens : elle ne
-            vise que la sollicitation de la clientèle rencontrée à l&apos;occasion de la présente
+            Cette clause n&apos;interdit pas au formateur d&apos;exercer librement son activité, y
+            compris auprès de clients qu&apos;il aurait acquis par ses propres moyens : elle ne vise
+            que la sollicitation de la clientèle rencontrée à l&apos;occasion de la présente
             mission.
           </Text>
         </DocSection>

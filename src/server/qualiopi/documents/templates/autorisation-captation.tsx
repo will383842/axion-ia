@@ -100,9 +100,9 @@ export function AutorisationCaptationPdf({
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         <Text style={pdfStyles.legalNote}>
-          Autorisation recueillie au titre de l&apos;article 9 du Code civil (droit à
-          l&apos;image) et du Règlement (UE) 2016/679. Elle est facultative, spécifique et
-          révocable à tout moment.
+          Autorisation recueillie au titre de l&apos;article 9 du Code civil (droit à l&apos;image)
+          et du Règlement (UE) 2016/679. Elle est facultative, spécifique et révocable à tout
+          moment.
         </Text>
 
         {/* 1. Personne concernée */}
@@ -158,14 +158,14 @@ export function AutorisationCaptationPdf({
           </Text>
           <Text style={pdfStyles.paragraph}>
             Vous pouvez retirer votre consentement à tout moment, sans avoir à vous justifier, par
-            simple demande adressée à {contact}. Le retrait vaut pour l&apos;avenir : les
-            captations concernées cessent d&apos;être diffusées dans un délai raisonnable, sans
-            remettre en cause les utilisations déjà réalisées.
+            simple demande adressée à {contact}. Le retrait vaut pour l&apos;avenir : les captations
+            concernées cessent d&apos;être diffusées dans un délai raisonnable, sans remettre en
+            cause les utilisations déjà réalisées.
           </Text>
           <Text style={pdfStyles.paragraph}>
-            Vous disposez également des droits d&apos;accès, de rectification, d&apos;effacement,
-            de limitation et d&apos;opposition prévus par le RGPD, exerçables auprès de {contact},
-            et du droit d&apos;introduire une réclamation auprès de la CNIL.
+            Vous disposez également des droits d&apos;accès, de rectification, d&apos;effacement, de
+            limitation et d&apos;opposition prévus par le RGPD, exerçables auprès de {contact}, et
+            du droit d&apos;introduire une réclamation auprès de la CNIL.
           </Text>
         </DocSection>
 

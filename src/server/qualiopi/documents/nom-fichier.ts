@@ -52,6 +52,7 @@ const LIBELLES_FICHIER: Record<DocumentType, string> = {
   programme: "Programme de l'action",
   organisation_action: "Organisation de l'action",
   autorisation_captation: "Autorisation de captation",
+  liste_formateurs: "Liste des formateurs",
 };
 
 /**

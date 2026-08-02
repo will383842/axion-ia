@@ -27,6 +27,10 @@ describe("partieARelancer — statut en_attente (personne n'a signé)", () => {
     // `resoudreIdentite` refuse d'émettre un lien public pour lui.
     lettre_mission: null,
     releve_connexion: null,
+    // Consentement d'image : le stagiaire signe, et personne ne le RELANCE.
+    // Relancer quelqu'un pour qu'il consente, c'est exercer une pression — or un
+    // consentement obtenu sous pression n'est pas libre, donc pas valable.
+    autorisation_captation: null,
   };
 
   it("couvre exactement les types signables du SSOT", () => {
