@@ -157,6 +157,7 @@ export function DashboardV2({
         periode={dashboard.periode}
         periodeLabel={dashboard.periodeLabel}
         tuiles={dashboard.tuiles}
+        objectif={dashboard.objectif}
       />
 
       {/* 2 — Alertes critiques (toujours visible, même vide). */}
@@ -176,7 +177,11 @@ export function DashboardV2({
       <FormateursSection adminPrefix={adminPrefix} formateurs={dashboard.formateurs} />
 
       {/* 6 — Financier. */}
-      <FinancierSection adminPrefix={adminPrefix} financier={dashboard.financier} />
+      <FinancierSection
+        adminPrefix={adminPrefix}
+        financier={dashboard.financier}
+        objectif={dashboard.objectif}
+      />
 
       {/* 7 — Pipeline commercial. */}
       <PipelineSection adminPrefix={adminPrefix} pipeline={dashboard.pipeline} />

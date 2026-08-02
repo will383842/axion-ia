@@ -10,10 +10,11 @@
 // 1024 et ~1500 px de fenêtre, cinq tuiles en `grid-cols-2` laissaient une
 // orpheline sur sa ligne face à un vide (vu en production le 2026-08-02).
 
-import { FolderOpen, Receipt, AlertTriangle, TrendingUp, PiggyBank } from "lucide-react";
+import { FolderOpen, Receipt, AlertTriangle, TrendingUp, PiggyBank, Target } from "lucide-react";
 import { AdminStatCard, AdminFilterTabs } from "@/components/admin/ui";
 import {
   PERIODES_PILOTAGE,
+  type ObjectifBloc,
   type PeriodePilotage,
   type TuilesPilotage,
 } from "@/server/admin/pilotage-dashboard";
@@ -39,6 +40,7 @@ interface Props {
   periode: PeriodePilotage;
   periodeLabel: string;
   tuiles: TuilesPilotage;
+  objectif: ObjectifBloc;
 }
 
 export function EnTetePilotage({
@@ -46,8 +48,12 @@ export function EnTetePilotage({
   periode,
   periodeLabel,
   tuiles,
+  objectif,
 }: Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
+  // 6ᵉ tuile « Objectif annuel » seulement si une cible est définie —
+  // aucune tuile vide sinon (la grille reste alors sur 5 colonnes).
+  const avecObjectif = objectif.cibleAnnuelleCents !== null;
 
   // La tendance s'arrête au mois courant : les mois à venir valent zéro par
   // construction et dessineraient une fausse chute en fin de courbe.
@@ -73,7 +79,17 @@ export function EnTetePilotage({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-5)] min-[1500px]:grid-cols-5 sm:grid-cols-2 lg:grid-cols-3">
+      {/* 5 tuiles : palier 1500px de la refonte 2026 conservé ; avec la 6ᵉ
+          tuile Objectif, on reste sur 3 colonnes (2 rangées de 3, pas
+          d'orpheline). */}
+      <div
+        className={[
+          "grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-3",
+          avecObjectif ? "" : "min-[1500px]:grid-cols-5",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <AdminStatCard
           label="Dossiers actifs"
           value={tuiles.dossiersActifs}
@@ -102,7 +118,7 @@ export function EnTetePilotage({
           value={fmtEurosCents(tuiles.caRealiseCents)}
           icon={TrendingUp}
           {...(tuiles.caDelta !== null ? { delta: tuiles.caDelta } : {})}
-          meta="Formations + audits · vs même période N-1"
+          meta="Formations + audits réalisés + contrats coaching signés · vs N-1"
           trend={caTendance}
           trendLabels={labelsCa}
         />
@@ -116,6 +132,15 @@ export function EnTetePilotage({
           trend={margeTendance}
           trendLabels={labelsMarge}
         />
+        {avecObjectif && objectif.cibleAnnuelleCents !== null ? (
+          <AdminStatCard
+            label="Objectif annuel"
+            value={objectif.pctAtteint !== null ? `${objectif.pctAtteint} %` : "—"}
+            icon={Target}
+            tone={objectif.pctAtteint !== null && objectif.pctAtteint >= 100 ? "success" : "info"}
+            meta={`de la cible · réalisé ${fmtEurosCents(objectif.realiseAnnuelCents)} / cible ${fmtEurosCents(objectif.cibleAnnuelleCents)}`}
+          />
+        ) : null}
       </div>
     </section>
   );

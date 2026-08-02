@@ -6,12 +6,13 @@
 
 import Link from "next/link";
 import { AdminCard, AdminBadge } from "@/components/admin/ui";
-import type { FinancierBloc } from "@/server/admin/pilotage-dashboard";
+import type { FinancierBloc, ObjectifBloc } from "@/server/admin/pilotage-dashboard";
 import { fmtDate, fmtEurosCents } from "./format";
 
 interface Props {
   adminPrefix: string;
   financier: FinancierBloc;
+  objectif: ObjectifBloc;
 }
 
 function LigneMarge({
@@ -43,7 +44,7 @@ function LigneMarge({
   );
 }
 
-export function FinancierSection({ adminPrefix, financier }: Props): React.ReactElement {
+export function FinancierSection({ adminPrefix, financier, objectif }: Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
   const t = financier.totauxAnnee;
   return (
@@ -84,9 +85,60 @@ export function FinancierSection({ adminPrefix, financier }: Props): React.React
           </div>
         ))}
       </dl>
-      <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        CA coaching non inclus (porté par les contrats) — limite assumée de cette vue.
-      </p>
+      {objectif.cibleAnnuelleCents === null ? (
+        <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Définir une cible : Système → Settings, clé pilotage.ca_cible_annuel_euros (nombre en
+          euros).
+        </p>
+      ) : null}
+
+      <div className="mb-[var(--space-admin-6)]">
+        <h3 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold">
+          CA par activité (année)
+        </h3>
+        {financier.parActivite.length === 0 ? (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Ventilation indisponible (aucune donnée de facturation lue).
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-[length:var(--text-admin-sm)]">
+              <thead>
+                <tr className="text-left text-[color:var(--color-admin-fg-muted)]">
+                  <th className="pr-[var(--space-admin-4)] pb-[var(--space-admin-2)] font-medium">
+                    Activité
+                  </th>
+                  <th className="pr-[var(--space-admin-4)] pb-[var(--space-admin-2)] text-right font-medium">
+                    Émis TTC
+                  </th>
+                  <th className="pb-[var(--space-admin-2)] text-right font-medium">Encaissé</th>
+                </tr>
+              </thead>
+              <tbody>
+                {financier.parActivite.map((l) => (
+                  <tr
+                    key={l.activite ?? "non-renseignee"}
+                    className="border-t border-[color:var(--color-admin-border)]"
+                  >
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] font-medium">
+                      {l.label}
+                    </td>
+                    <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] text-right tabular-nums">
+                      {fmtEurosCents(l.emisTtcCents)}
+                    </td>
+                    <td className="py-[var(--space-admin-2)] text-right tabular-nums">
+                      {fmtEurosCents(l.encaisseCents)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+          Ventilation par les factures — source hub Facturation.
+        </p>
+      </div>
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
         <div>
