@@ -91,6 +91,24 @@ describe("identité légale — le JSON-LD doit matcher le registre", () => {
     expect(org.foundingLocation.address.streetAddress).toBe(org.address.streetAddress);
   });
 
+  it("3a-bis. l'adresse du siège ne dépend d'AUCUNE env var", () => {
+    // Constaté en prod le 02/08/2026 : `COMPANY_ADDRESS` était absente au SSG
+    // (pas un build-arg) mais présente au runtime, avec une valeur SANS le
+    // complément de domiciliation. Le même nœud `#organization` déclarait donc
+    // deux `streetAddress` différentes selon que la page était figée au build
+    // ou rendue à la volée. Une adresse de siège est publique et figée au Kbis :
+    // la rendre configurable garantit qu'elle re-divergera.
+    const source = readFileSync(path.join(SRC, "lib", "seo.ts"), "utf8");
+    const builder = source.slice(
+      source.indexOf("function buildSiegePostalAddress"),
+      source.indexOf("function describeRegistrationNumber"),
+    );
+
+    expect(builder, "le builder d'adresse doit être présent").not.toBe("");
+    expect(builder).not.toContain("COMPANY_ADDRESS");
+    expect(builder).not.toContain("env.");
+  });
+
   it("3b. l'identifiant légal est étiqueté d'après sa forme, pas supposé", () => {
     // Le champ était étiqueté « immatriculation RCS » en dur alors que l'env
     // var porte un SIRET — le pied de page des emails, lui, disait « SIRET ».
