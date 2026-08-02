@@ -230,7 +230,7 @@ export default async function PlanningPage({
           ))}
         </select>
 
-        <button type="submit" className="admin-button">
+        <button type="submit" className="admin-button-secondary">
           Filtrer
         </button>
         {filterQs !== "" && (

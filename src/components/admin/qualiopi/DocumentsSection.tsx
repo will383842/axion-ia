@@ -1075,7 +1075,7 @@ export function DocumentsSection({
                             href={`/api/qualiopi/documents/${doc.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+                            className="admin-button-ghost"
                             aria-label={`Télécharger ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
                           >
                             Télécharger

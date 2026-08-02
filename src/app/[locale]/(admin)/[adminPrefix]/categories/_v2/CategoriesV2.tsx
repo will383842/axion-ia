@@ -159,7 +159,7 @@ export function CategoriesV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/categories`} className="admin-button-ghost">

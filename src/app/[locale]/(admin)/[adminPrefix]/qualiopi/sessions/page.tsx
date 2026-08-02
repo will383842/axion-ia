@@ -202,28 +202,32 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
 
                   {/* Actions */}
                   <td className={cellCls}>
-                    <div className="flex flex-col gap-[var(--space-admin-1)]">
+                    {/* Quatre verbes soulignés empilés : c'est la cellule que
+                        Will a pointée en production. On encadre les quatre —
+                        n'en encadrer qu'un rendrait les trois autres muets —
+                        et on les pose côte à côte, à la ligne si besoin. */}
+                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}`}
-                        className="text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        className="admin-button-secondary"
                       >
                         Ouvrir
                       </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/emargement`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        className="admin-button-ghost"
                       >
                         Émargement
                       </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/evaluations`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        className="admin-button-ghost"
                       >
                         Évaluations
                       </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                        className="admin-button-ghost"
                       >
                         Financement
                       </Link>

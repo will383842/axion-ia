@@ -122,7 +122,7 @@ export async function ReviewQueueListV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Filtrer
             </button>
           </div>

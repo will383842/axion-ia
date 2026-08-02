@@ -239,7 +239,7 @@ export function ActivityLogsV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/activity-logs`} className="admin-button-ghost">

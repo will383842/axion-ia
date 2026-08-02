@@ -359,7 +359,7 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
               ))}
             </select>
           </label>
-          <button type="submit" className="admin-button">
+          <button type="submit" className="admin-button-secondary">
             Filtrer
           </button>
           {filtersActive || sortKey !== "manual" ? (

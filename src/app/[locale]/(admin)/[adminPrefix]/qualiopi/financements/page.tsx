@@ -390,7 +390,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                       {f.session ? (
                         <Link
                           href={`/${locale}/${adminPrefix}/qualiopi/sessions/${f.session.id}/financement`}
-                          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                          className="admin-button-ghost"
                         >
                           Voir session
                         </Link>

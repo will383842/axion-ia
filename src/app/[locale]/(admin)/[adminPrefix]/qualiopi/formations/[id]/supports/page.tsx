@@ -237,7 +237,7 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
                         href={support.pdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                        className="admin-button-ghost"
                       >
                         Télécharger
                       </a>

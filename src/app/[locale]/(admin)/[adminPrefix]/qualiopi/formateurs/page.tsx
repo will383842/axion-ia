@@ -138,10 +138,7 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <Link
-                      href={`${base}/${t.id}`}
-                      className="text-[color:var(--color-admin-accent)] underline"
-                    >
+                    <Link href={`${base}/${t.id}`} className="admin-button-ghost">
                       Gérer
                     </Link>
                   </td>

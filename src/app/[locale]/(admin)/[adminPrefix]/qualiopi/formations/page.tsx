@@ -213,22 +213,25 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
 
                   {/* Actions */}
                   <td className={cellCls}>
-                    <div className="flex flex-col gap-[var(--space-admin-1)]">
+                    {/* Même forme que Sessions : trois destinations empilées en
+                        texte souligné. On encadre les trois, « Éditer » en tête
+                        car c'est le geste attendu depuis une liste. */}
+                    <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}`}
-                        className="text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                        className="admin-button-secondary"
                       >
                         Éditer
                       </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/supports`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                        className="admin-button-ghost"
                       >
                         Supports
                       </Link>
                       <Link
                         href={`/${locale}/${adminPrefix}/qualiopi/formations/${f.id}/certification`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                        className="admin-button-ghost"
                       >
                         Certification
                       </Link>

@@ -144,7 +144,7 @@ export function HelpV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/help`} className="admin-button-ghost">

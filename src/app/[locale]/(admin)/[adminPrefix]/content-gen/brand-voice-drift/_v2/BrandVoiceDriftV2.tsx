@@ -152,7 +152,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
                     <td className="px-3 py-2">
                       <Link
                         href={`${base}/publications?articleId=${drift.articleId}`}
-                        className="admin-link text-xs"
+                        className="admin-button-ghost"
                       >
                         Voir l&apos;article
                       </Link>

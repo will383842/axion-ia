@@ -110,7 +110,7 @@ export default async function QualiopiAuditsPage({ params }: PageProps) {
                   </td>
                   <td>{a.acompteRecu ? "reçu" : "—"}</td>
                   <td>
-                    <Link href={`${base}/${a.id}`} className="admin-link">
+                    <Link href={`${base}/${a.id}`} className="admin-button-ghost">
                       Ouvrir
                     </Link>
                   </td>

@@ -182,7 +182,7 @@ export default async function PlanningChargePage({
             aria-label="Capacité en jours ouvrables par formateur"
           />
         </label>
-        <button type="submit" className="admin-button">
+        <button type="submit" className="admin-button-secondary">
           Appliquer
         </button>
         {capacite !== capaciteDefaut && (

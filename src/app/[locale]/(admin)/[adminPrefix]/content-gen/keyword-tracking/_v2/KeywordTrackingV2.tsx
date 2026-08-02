@@ -191,7 +191,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Filtrer
             </button>
           </div>

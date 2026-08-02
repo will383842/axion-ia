@@ -168,7 +168,7 @@ export function JobOffersV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/offres-emploi`} className="admin-button-ghost">

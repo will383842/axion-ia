@@ -294,7 +294,7 @@ export async function JobsListV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Filtrer
             </button>
             <Link href={base} className="admin-button-ghost">
