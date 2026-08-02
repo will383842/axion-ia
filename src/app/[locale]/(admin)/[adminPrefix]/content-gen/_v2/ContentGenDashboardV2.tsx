@@ -14,16 +14,20 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import {
-  FileText,
-  ListChecks,
-  CheckCircle2,
   AlertTriangle,
-  Hourglass,
-  Wallet,
-  Gauge,
-  ShieldCheck,
-  Database,
   ArrowRight,
+  ChartColumn,
+  CheckCircle2,
+  Database,
+  FileText,
+  Gauge,
+  Hourglass,
+  ListChecks,
+  Rocket,
+  ShieldCheck,
+  Target,
+  Wallet,
+  Wrench,
 } from "lucide-react";
 import { getDashboardKpis, getSectorBreakdownToday } from "@/server/actions/content-gen/dashboard";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
@@ -86,7 +90,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         title="Générateur de contenus"
         description={
           kpis.killSwitchActive
-            ? "🛑 Kill switch ACTIF — toutes générations stoppées · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
+            ? "Kill switch ACTIF — toutes générations stoppées · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
             : "Console pilotage Will · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
         }
         actions={
@@ -133,7 +137,14 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
 
       {zeroCampaigns && (
         <AdminCard className="mb-[var(--space-admin-6)] border-2 border-[color:var(--color-admin-terracotta)]">
-          <h2 className="admin-h2">🚀 Démarrer la génération de contenus</h2>
+          <h2 className="admin-h2 flex items-center gap-[var(--space-admin-3)]">
+            <Rocket
+              size={17}
+              aria-hidden="true"
+              className="shrink-0 text-[color:var(--color-admin-accent)]"
+            />
+            Démarrer la génération de contenus
+          </h2>
           <p className="admin-meta-block">
             Aucune campagne active. Créez votre première campagne depuis un preset ou en mode libre.
           </p>
@@ -235,10 +246,10 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
           <p className="admin-meta mt-[var(--space-admin-2)]">
             {cityProgress.pct}%{" "}
             {cityProgress.pct < 33
-              ? "🔴 démarrage"
+              ? "démarrage"
               : cityProgress.pct < 66
-                ? "🟡 en progression"
-                : "🟢 bonne couverture"}
+                ? "en progression"
+                : "bonne couverture"}
             {" · "}
             <AdminButton
               href={`${base}/city-coverage`}
@@ -286,7 +297,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="landing_ville"
             targetSearchIntent="local"
-            label="🏙️ Générer landing ville"
+            label="Générer landing ville"
             inputs={[
               { name: "anchorVilleSlug", placeholder: "ville-slug (ex. lyon)", required: true },
             ]}
@@ -295,14 +306,14 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="blog_from_title"
             targetSearchIntent="informational"
-            label="📝 Générer article (depuis titre)"
+            label="Générer article (depuis titre)"
             inputs={[{ name: "title", placeholder: "Titre article", required: true }]}
           />
           <QuickGenForm
             action={quickGen}
             contentType="blog_from_keywords"
             targetSearchIntent="informational"
-            label="🔑 Générer article (depuis mot-clé)"
+            label="Générer article (depuis mot-clé)"
             inputs={[{ name: "primaryKeyword", placeholder: "Mot-clé principal", required: true }]}
           />
           <QuickGenForm
@@ -322,7 +333,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="guide_pilier"
             targetSearchIntent="informational"
-            label="📚 Générer guide pilier"
+            label="Générer guide pilier"
             inputs={[
               {
                 name: "title",
@@ -335,7 +346,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="faq_standalone"
             targetSearchIntent="informational"
-            label="❓ Générer FAQ standalone"
+            label="Générer FAQ standalone"
             inputs={[{ name: "title", placeholder: "Thématique FAQ", required: true }]}
           />
         </div>
@@ -344,11 +355,18 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
       {/* P0-5 Sprint P5 — 4 sections sémantiques / P5.x — badges compteurs */}
       <div className="grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
         <AdminCard>
-          <h2 className="admin-h2">🎯 Pilotage</h2>
+          <h2 className="admin-h2 flex items-center gap-[var(--space-admin-3)]">
+            <Target
+              size={17}
+              aria-hidden="true"
+              className="shrink-0 text-[color:var(--color-admin-accent)]"
+            />
+            Pilotage
+          </h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
               <Link href={`${base}/coverage`}>
-                📦 Campagnes
+                Campagnes
                 {orchestrator.activeCampaigns.length > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {orchestrator.activeCampaigns.length} actives
@@ -357,11 +375,11 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               </Link>
             </li>
             <li>
-              <Link href={`${base}/costs`}>💸 Coûts &amp; budget</Link>
+              <Link href={`${base}/costs`}>Coûts &amp; budget</Link>
             </li>
             <li>
               <Link href={`${base}/quality`}>
-                📊 Qualité
+                Qualité
                 {kpis.pendingReview > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.pendingReview} en revue
@@ -370,25 +388,32 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               </Link>
             </li>
             <li>
-              <Link href={`${base}/geo`}>🗺️ Cockpit géo</Link>
+              <Link href={`${base}/geo`}>Cockpit géo</Link>
             </li>
           </ul>
         </AdminCard>
 
         <AdminCard>
-          <h2 className="admin-h2">🛠️ Sources</h2>
+          <h2 className="admin-h2 flex items-center gap-[var(--space-admin-3)]">
+            <Wrench
+              size={17}
+              aria-hidden="true"
+              className="shrink-0 text-[color:var(--color-admin-accent)]"
+            />
+            Sources
+          </h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
-              <Link href={`${base}/rss`}>📡 Sources RSS</Link>
+              <Link href={`${base}/rss`}>Sources RSS</Link>
             </li>
             <li>
-              <Link href={`${base}/keyword-tracking`}>🔑 Suivi des mots-clés</Link>
+              <Link href={`${base}/keyword-tracking`}>Suivi des mots-clés</Link>
             </li>
             <li>
               {/* Dédup 2026-08-01 (phase 2) : pointe la vraie page Connaissances,
                   filtrée sur le périmètre qu'affichait kb-readonly. */}
               <Link href={`/fr/${adminPrefix}/connaissances?status=published`}>
-                📚 KB (lecture seule)
+                KB (lecture seule)
                 {kpis.kbHealth.chunks > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.kbHealth.chunks}
@@ -397,20 +422,27 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               </Link>
             </li>
             <li>
-              <Link href={`${base}/coverage/presets`}>📋 Presets campagnes</Link>
+              <Link href={`${base}/coverage/presets`}>Presets campagnes</Link>
             </li>
             <li>
-              <Link href={`${base}/templates`}>📝 Templates prompts</Link>
+              <Link href={`${base}/templates`}>Templates prompts</Link>
             </li>
           </ul>
         </AdminCard>
 
         <AdminCard>
-          <h2 className="admin-h2">📊 Suivi</h2>
+          <h2 className="admin-h2 flex items-center gap-[var(--space-admin-3)]">
+            <ChartColumn
+              size={17}
+              aria-hidden="true"
+              className="shrink-0 text-[color:var(--color-admin-accent)]"
+            />
+            Suivi
+          </h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
               <Link href={`${base}/jobs`}>
-                🛠️ Tâches &amp; journaux
+                Tâches &amp; journaux
                 {kpis.activeQueue.running + kpis.activeQueue.waiting > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.activeQueue.running + kpis.activeQueue.waiting} actifs
@@ -420,7 +452,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             </li>
             <li>
               <Link href={`${base}/review-queue`}>
-                👀 File de revue
+                File de revue
                 {kpis.pendingReview > 0 && (
                   <span className="admin-badge ml-[var(--space-admin-2)]">
                     {kpis.pendingReview}
@@ -430,17 +462,17 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             </li>
             <li>
               <Link href={`${base}/city-coverage`}>
-                🏙️ Villes couvertes
+                Villes couvertes
                 <span className="admin-badge ml-[var(--space-admin-2)]">
                   {cityProgress.publishedVilles}/{cityProgress.targetVilles}
                 </span>
               </Link>
             </li>
             <li>
-              <Link href={`${base}/geo/coverage-table`}>🔢 Tableau croisé</Link>
+              <Link href={`${base}/geo/coverage-table`}>Tableau croisé</Link>
             </li>
             <li>
-              <Link href={`${base}/similarity-monitor`}>🧬 Anti-doublon</Link>
+              <Link href={`${base}/similarity-monitor`}>Anti-doublon</Link>
             </li>
           </ul>
         </AdminCard>
@@ -458,7 +490,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/settings/quality-loop`}>Boucle qualité</Link>
             </li>
             <li>
-              <Link href={`${base}/settings/kill-switch`}>🛑 Kill switch</Link>
+              <Link href={`${base}/settings/kill-switch`}>Kill switch</Link>
             </li>
             <li>
               <Link href={`${base}/settings`}>Tous les réglages →</Link>

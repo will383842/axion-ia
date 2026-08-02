@@ -21,10 +21,7 @@ export function AlertesCritiques({ adminPrefix, alertes }: Props): React.ReactEl
         <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
           Alertes critiques
         </h2>
-        <Link
-          href={`${base}/qualiopi/alertes`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/qualiopi/alertes`} className="admin-button-ghost">
           Gérer →
         </Link>
       </div>

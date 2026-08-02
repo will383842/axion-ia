@@ -19,7 +19,13 @@ import {
   type NiveauSignal,
   type Signal,
 } from "@/features/admin-planning/hub";
-import { AdminPageHeader, AdminBadge, AdminCard, AdminButton } from "@/components/admin/ui";
+import {
+  AdminPageHeader,
+  AdminBadge,
+  AdminCard,
+  AdminButton,
+  AdminFilterTabs,
+} from "@/components/admin/ui";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -99,7 +105,6 @@ export default async function PlanningHubPage({
 
   const signaux = await getHubSignaux(year, month, adminPrefix, now);
   const critiques = aDesSignauxCritiques(signaux);
-  const nbActions = signaux.reduce((t, s) => t + s.items.length, 0);
 
   const base = `/fr/${adminPrefix}/planning/hub`;
   const prev = month === 1 ? { y: year - 1, m: 12 } : { y: year, m: month - 1 };
@@ -107,9 +112,12 @@ export default async function PlanningHubPage({
 
   return (
     <>
+      {/* Retour Will 2026-08-02 : « je ne comprends pas à quoi sert cette
+          page ». La description dit maintenant le SERVICE rendu, pas le
+          contenu ; les compteurs restent visibles dans les sections. */}
       <AdminPageHeader
         title="Hub de pilotage"
-        description={`${MONTHS[month - 1]} ${year} · ${signaux.length} signal(aux), ${nbActions} action(s)`}
+        description={`Où dois-je intervenir ce mois-ci ? Le hub rassemble ce qui cloche dans le planning — conflits, surcharges, indisponibilités, prestations sans formateur — et l'action à mener pour chacun. ${MONTHS[month - 1]} ${year}.`}
         meta={
           critiques ? (
             <AdminBadge tone="destructive" dot pulse>
@@ -119,32 +127,38 @@ export default async function PlanningHubPage({
         }
       />
 
-      <nav className="mb-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-3)]">
-        <AdminButton
-          href={`${base}?year=${prev.y}&month=${prev.m}`}
-          variant="ghost"
-          size="sm"
-          icon={ArrowLeft}
-        >
-          {MONTHS[prev.m - 1]}
-        </AdminButton>
-        <AdminButton
-          href={`${base}?year=${next.y}&month=${next.m}`}
-          variant="ghost"
-          size="sm"
-          iconAfter={ArrowRight}
-        >
-          {MONTHS[next.m - 1]}
-        </AdminButton>
-        <Link href={`/fr/${adminPrefix}/planning`} className="admin-link">
-          Calendrier
-        </Link>
-        <Link href={`/fr/${adminPrefix}/planning/timeline`} className="admin-link">
-          Timeline
-        </Link>
-        <Link href={`/fr/${adminPrefix}/planning/pipeline`} className="admin-link">
-          Pipeline
-        </Link>
+      {/* Vues du planning en sélecteur segmenté + mois en AdminButton — loi
+          UX 2026-08-02 : une action est un bouton encadré, jamais un lien
+          texte discret. Fusion avec le chantier parallèle : leurs boutons de
+          mois (icônes fléchées), notre sélecteur de vues. */}
+      <nav className="mb-[var(--space-admin-5)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
+        <AdminFilterTabs
+          options={[
+            { value: "hub", label: "Hub", href: base },
+            { value: "calendrier", label: "Calendrier", href: `/fr/${adminPrefix}/planning` },
+            { value: "timeline", label: "Timeline", href: `/fr/${adminPrefix}/planning/timeline` },
+            { value: "pipeline", label: "Pipeline", href: `/fr/${adminPrefix}/planning/pipeline` },
+          ]}
+          current="hub"
+        />
+        <span className="flex items-center gap-[var(--space-admin-2)]">
+          <AdminButton
+            href={`${base}?year=${prev.y}&month=${prev.m}`}
+            variant="ghost"
+            size="sm"
+            icon={ArrowLeft}
+          >
+            {MONTHS[prev.m - 1]}
+          </AdminButton>
+          <AdminButton
+            href={`${base}?year=${next.y}&month=${next.m}`}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            {MONTHS[next.m - 1]}
+          </AdminButton>
+        </span>
       </nav>
 
       {signaux.length === 0 ? (

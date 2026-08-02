@@ -85,6 +85,35 @@
     /* Piste des jauges de données : le MÊME ton éclairci — jamais un gris
        étranger, l'état se lit sur toute la longueur de la barre (spec meter). */
     --color-admin-accent-track: color-mix(in srgb, var(--color-admin-terracotta) 14%, transparent);
+    /* Texte d'action sur fond teinté accent : un cran plus profond que la
+       terracotta pour garder AA sur la teinte (vague « tonal » 2026-08-02). */
+    --color-admin-accent-strong: #9e3a12;
+
+    /* =====================================================================
+     * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
+     * Réponse au retour « toujours du blanc et du terracotta » : la couleur
+     * SIGNIFIE — financier = or, planning = bleu, formateurs = violet… — la
+     * même famille porte la même teinte sur toutes les pages. Palette
+     * validée par le validateur dataviz (daltonisme, chroma, contraste) :
+     * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
+     * Les STATUTS (succès/alerte/danger) restent une palette réservée.
+     * ===================================================================== */
+    --color-admin-id-terracotta: var(--color-admin-terracotta);
+    --color-admin-id-teal: #0a9587;
+    --color-admin-id-violet: #7a4fd0;
+    --color-admin-id-or: #9c7a0c;
+    --color-admin-id-bleu: #1a4dd9;
+    --color-admin-id-magenta: #bb2d6d;
+    --color-admin-id-terracotta-soft: color-mix(
+      in srgb,
+      var(--color-admin-terracotta) 12%,
+      transparent
+    );
+    --color-admin-id-teal-soft: color-mix(in srgb, #0a9587 12%, transparent);
+    --color-admin-id-violet-soft: color-mix(in srgb, #7a4fd0 12%, transparent);
+    --color-admin-id-or-soft: color-mix(in srgb, #9c7a0c 14%, transparent);
+    --color-admin-id-bleu-soft: color-mix(in srgb, #1a4dd9 10%, transparent);
+    --color-admin-id-magenta-soft: color-mix(in srgb, #bb2d6d 10%, transparent);
     --color-admin-accent-fg: #ffffff;
 
     --color-admin-info: #1a4dd9; /* = --color-primary public, CTA primaire admin */
@@ -1081,12 +1110,15 @@
   gap: var(--space-admin-3);
   min-height: var(--control-admin-h-sm);
   padding: 0 var(--space-admin-5);
-  border: 1px solid var(--color-admin-border);
+  border: 1px solid color-mix(in srgb, var(--color-admin-accent) 22%, transparent);
   border-radius: var(--radius-admin-md);
-  background-color: var(--color-admin-paper);
+  /* Vague « tonal » 2026-08-02 (retour Will : « plein de boutons sans
+     couleur de fond, ça fait fade ») : le fantôme porte un fond teinté —
+     le bouton se voit AVANT le survol. */
+  background-color: var(--color-admin-accent-track);
   /* Passe « pep's » 2026-08-02 : le fantôme parlait gris — une action se
      lisait comme du texte mort. Voix accent (4,90:1 sur blanc, AA). */
-  color: var(--color-admin-accent);
+  color: var(--color-admin-accent-strong);
   cursor: pointer;
   font-size: var(--text-admin-sm);
   font-weight: 600;
@@ -1098,9 +1130,9 @@
     color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-button-ghost:hover:not(:disabled, [aria-disabled="true"]) {
-  background-color: var(--color-admin-accent-track);
-  border-color: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
-  color: var(--color-admin-accent);
+  background-color: color-mix(in srgb, var(--color-admin-terracotta) 22%, transparent);
+  border-color: color-mix(in srgb, var(--color-admin-accent) 55%, transparent);
+  color: var(--color-admin-accent-strong);
 }
 .admin-button-ghost:focus-visible {
   outline: none;
@@ -2222,17 +2254,34 @@
   flex-direction: column;
   gap: 8px;
 }
+/* Loi UX 2026-08-02 (Will) : toute ACTION est un bouton encadré visible —
+   jamais un texte cliquable discret. Ces listes rendaient des blocs sans
+   bordure sur un jeton du SITE PUBLIC (--color-bg). Alignées sur le rendu
+   du bouton fantôme de la charte, voix accent comprise. */
 .admin-quick-actions > li > a {
-  display: block;
-  padding: 8px 12px;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-admin-3);
+  min-height: var(--control-admin-h-sm);
+  padding: 6px var(--space-admin-5);
+  border: 1px solid color-mix(in srgb, var(--color-admin-accent) 22%, transparent);
+  border-radius: var(--radius-admin-md);
+  background-color: var(--color-admin-accent-track);
+  color: var(--color-admin-accent-strong);
+  font-size: var(--text-admin-sm);
+  font-weight: 600;
   text-decoration: none;
-  color: inherit;
-  background-color: var(--color-bg);
-  transition: background-color 120ms ease;
+  transition:
+    background-color var(--duration-admin-fast) var(--easing-admin),
+    border-color var(--duration-admin-fast) var(--easing-admin);
 }
 .admin-quick-actions > li > a:hover {
-  background-color: var(--color-paper);
+  background-color: var(--color-admin-accent-track);
+  border-color: color-mix(in srgb, var(--color-admin-accent) 45%, transparent);
+}
+.admin-quick-actions > li > a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-admin-width) var(--color-admin-ring);
 }
 .admin-dashboard-actions {
   display: flex;

@@ -5,6 +5,7 @@
 // (mois courant) limités aux codes formateur.
 
 import Link from "next/link";
+import { Users } from "lucide-react";
 import { AdminCard, AdminBadge } from "@/components/admin/ui";
 import type { FormateursBloc } from "@/server/admin/pilotage-dashboard";
 import { fmtEurosCents, largeurPct } from "./format";
@@ -26,13 +27,20 @@ export function FormateursSection({ adminPrefix, formateurs }: Props): React.Rea
   return (
     <AdminCard className="mb-[var(--space-admin-6)]">
       <div className="mb-[var(--space-admin-4)] flex items-center justify-between gap-[var(--space-admin-4)]">
-        <h2 className="text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+        <h2 className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
+          <span
+            aria-hidden="true"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[var(--radius-admin-md)]"
+            style={{
+              background: "var(--color-admin-id-violet-soft)",
+              color: "var(--color-admin-id-violet)",
+            }}
+          >
+            <Users size={16} />
+          </span>
           Formateurs
         </h2>
-        <Link
-          href={`${base}/qualiopi/formateurs`}
-          className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-        >
+        <Link href={`${base}/qualiopi/formateurs`} className="admin-button-ghost">
           Gérer les formateurs →
         </Link>
       </div>
@@ -116,10 +124,7 @@ export function FormateursSection({ adminPrefix, formateurs }: Props): React.Rea
               <ul className="flex flex-wrap gap-x-[var(--space-admin-5)] gap-y-[var(--space-admin-1)]">
                 {s.items.map((item) => (
                   <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-info)] hover:underline"
-                    >
+                    <Link href={item.href} className="admin-button-ghost">
                       {item.label}
                     </Link>
                   </li>
