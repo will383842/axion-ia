@@ -139,6 +139,41 @@ export function DashboardV2({
           information que le pied de la barre latérale porte déjà, à la place la
           plus chère de la page. La description dit maintenant à quoi sert la
           page ; l'identité reste dans la barre latérale. */}
+      {/*
+          ⚠️ NE PAS DÉPLACER NI SUPPRIMER CE BOUTON SANS LE REMPLACER.
+
+          
+
+          Se déconnecter n'a rien à faire dans l'emplacement de l'action
+
+          principale d'une page — je suis venu le retirer. Vérifié en
+
+          production d'abord : c'est le SEUL mécanisme de déconnexion de
+
+          toute la console. Le pied de la barre latérale affiche l'identité
+
+          et une icône qui en a l'apparence, mais ne déconnecte pas.
+
+          
+
+          La raison est dans le layout admin : `AdminUserMenu` n'expose
+
+          délibérément pas de lien de déconnexion, parce qu'un GET sur
+
+          `/api/auth/signout` renvoie 405 — Auth.js v5 attend un POST. D'où ce
+
+          formulaire, qui est la seule forme correcte.
+
+          
+
+          Le déplacer vers la barre latérale demande d'y porter un vrai
+
+          formulaire POST : c'est un chantier d'authentification, pas une
+
+          retouche de mise en page. En attendant, il reste ici, en fantôme —
+
+          présent et encadré, mais sans le poids d'un aplat.
+      */}
       <AdminPageHeader
         title="Tableau de bord"
         description={`Ce qui attend, ce qui rentre, ce qui bloque — ${libelleRole(role).toLowerCase()}.`}
