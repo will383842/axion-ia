@@ -262,12 +262,16 @@ export function FactureFormationActions({
             Marquer payé
           </button>
         )}
+        {/* Sur une facture ouverte, « Marquer payé » et « Envoyer par email »
+            s'affichaient tous deux en aplat terracotta : deux gestes de même
+            poids visuel, aucun ne ressort. Encaisser est ce qui clôt la
+            facture — envoyer reste une relance, donc secondaire. */}
         {peutEnvoyer && (
           <button
             type="button"
             onClick={() => togglePanel("email")}
             disabled={isPending}
-            className="admin-button"
+            className="admin-button-secondary"
             aria-expanded={panel === "email"}
           >
             Envoyer par email
