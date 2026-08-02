@@ -33,6 +33,7 @@ import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSig
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-partie";
+import type { DocumentType } from "../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -101,6 +102,48 @@ async function lireSignaturesEnAttente() {
   }
 }
 
+/**
+ * Retire les pièces REMPLACÉES : une pièce non signée dont une autre du même
+ * type, sur la même session, est intégralement signée.
+ *
+ * 🔴 Sans ce filtre, « À traiter » réclamait une signature sur une obligation
+ * DÉJÀ satisfaite. Constaté sur INVEST SUN : la convention `-009` était signée
+ * des deux côtés, et la liste réclamait toujours `-003` (la première, remplacée)
+ * et `-011` (une copie née d'un clic sur « Convention » pour la télécharger).
+ *
+ * Le coût n'est pas cosmétique : ces lignes ne partent JAMAIS d'elles-mêmes, et
+ * chaque régénération en ajoute une définitivement. Une liste de tâches qui ne
+ * peut plus se vider cesse d'être lue.
+ *
+ * ⚠️ Une pièce SANS session (lettre de mission, devis) n'est jamais masquée :
+ * rien ne permettrait d'affirmer qu'elle est remplacée.
+ */
+async function retirerPiecesRemplacees<T extends { sessionId: string | null; type: DocumentType }>(
+  pieces: T[],
+): Promise<T[]> {
+  const sessionIds = [
+    ...new Set(pieces.map((p) => p.sessionId).filter((v): v is string => v !== null)),
+  ];
+  if (sessionIds.length === 0) return pieces;
+
+  try {
+    const signees = await prisma.documentGenere.findMany({
+      where: {
+        sessionId: { in: sessionIds },
+        statutSignature: "signee",
+        type: { in: [...new Set(pieces.map((p) => p.type))] },
+      },
+      select: { sessionId: true, type: true },
+    });
+    const couvert = new Set(signees.map((s) => `${s.sessionId}::${s.type}`));
+    return pieces.filter((p) => p.sessionId === null || !couvert.has(`${p.sessionId}::${p.type}`));
+  } catch {
+    // Sur échec de lecture on n'ose PAS masquer : mieux vaut une ligne en trop
+    // qu'une signature réellement due qui disparaît de l'écran.
+    return pieces;
+  }
+}
+
 export default async function ATraiterPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
@@ -112,11 +155,14 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertesBrutes] = await Promise.all([
+  const [compteurs, signaturesBrutes, alertesBrutes] = await Promise.all([
     compterQualiopiNav(),
     lireSignaturesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
   ]);
+
+  // Les pièces déjà remplacées par une version signée ne sont pas des tâches.
+  const signatures = await retirerPiecesRemplacees(signaturesBrutes);
 
   // 🔴 Audit du 2026-08-01 (défaut P1) — `signature_en_attente` et
   // `signature_contreseing_du` sont les MÊMES pièces que celles déjà listées

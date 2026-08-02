@@ -178,6 +178,8 @@ async function regleSessionBloqueeEnCours(now: Date): Promise<AlerteCandidate[]>
     select: {
       id: true,
       numero: true,
+      titreSession: true,
+      client: { select: { raisonSociale: true } },
       _count: { select: { enrollments: true } },
     },
     take: 50,
@@ -190,12 +192,32 @@ async function regleSessionBloqueeEnCours(now: Date): Promise<AlerteCandidate[]>
       niveau: "critique" as AlerteNiveau,
       titre: "Session non clôturée faute d'émargement",
       message:
-        `La session ${s.numero} est terminée depuis plus de 72 h mais reste « en cours » : ` +
+        `La session ${designerSession(s)} est terminée depuis plus de 72 h mais reste « en cours » : ` +
         `aucun de ses ${s._count.enrollments} inscrit(s) ne porte de trace de présence. ` +
         `Tant qu'elle n'est pas clôturée, elle n'alimente ni le BPF, ni les attestations, ni les indicateurs.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     }));
+}
+
+/**
+ * Désignation d'une session dans un message d'alerte : son numéro ET son client.
+ *
+ * 🔴 Les alertes ne nommaient que le numéro (« la session AXI-SESS-2026-001 »).
+ * Il fallait ouvrir la fiche pour savoir de QUI il s'agit — sur trois sessions
+ * c'est pénible, sur trente c'est inutilisable, et le lecteur ne peut pas
+ * arbitrer l'urgence sans connaître le client. Quand aucun client n'est
+ * rattaché, on le DIT : c'est souvent l'anomalie elle-même.
+ */
+function designerSession(s: {
+  numero: string;
+  titreSession?: string | null;
+  client?: { raisonSociale: string } | null;
+}): string {
+  const qui = s.client?.raisonSociale ?? "aucun client rattaché";
+  return s.titreSession != null && s.titreSession !== ""
+    ? `${s.numero} « ${s.titreSession} » (${qui})`
+    : `${s.numero} (${qui})`;
 }
 
 /** R03bis — Session sans formateur : démarre sous 7 jours, aucun formateur principal assigné. */
@@ -211,16 +233,35 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
       dateDebut: { lte: horizon, gte: daysAgo(365, now) },
       formateurPrincipalId: null,
     },
-    select: { id: true, numero: true, titreSession: true, dateDebut: true },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      client: { select: { raisonSociale: true } },
+    },
   });
-  return sessions.map((s) => ({
-    code: "session_sans_formateur",
-    niveau: "important" as AlerteNiveau,
-    titre: "Session à J-7 sans formateur principal",
-    message: `La session ${s.numero} « ${s.titreSession} » démarre le ${s.dateDebut.toLocaleDateString("fr-FR")} sans formateur principal assigné (habilitation requise avant animation).`,
-    cibleType: "TrainingSession",
-    cibleId: s.id,
-  }));
+  return sessions.map((s) => {
+    // 🔴 Le titre et le verbe étaient figés au FUTUR (« à J-7 », « démarre le »)
+    // alors que la borne basse de 365 jours — volontaire, pour qu'une vraie
+    // non-conformité ne disparaisse pas en silence — fait remonter des sessions
+    // commencées depuis des semaines. Une alerte qui annonce au futur un fait
+    // passé se lit comme une erreur du système, et on cesse de la lire.
+    const passee = s.dateDebut.getTime() < now.getTime();
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    return {
+      code: "session_sans_formateur",
+      niveau: "important" as AlerteNiveau,
+      titre: passee
+        ? "Session démarrée sans formateur principal"
+        : "Session à J-7 sans formateur principal",
+      message: passee
+        ? `La session ${designerSession(s)} a démarré le ${date} sans formateur principal assigné. L'habilitation est requise AVANT animation : l'obligation n'est plus imminente, elle est dépassée.`
+        : `La session ${designerSession(s)} démarre le ${date} sans formateur principal assigné (habilitation requise avant animation).`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    };
+  });
 }
 
 /** R04 — Satisfaction manquante : session realisee > 7 jours + questionnaire non rempli. */
