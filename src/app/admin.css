@@ -97,6 +97,26 @@
      * validée par le validateur dataviz (daltonisme, chroma, contraste) :
      * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
      * Les STATUTS (succès/alerte/danger) restent une palette réservée.
+     *
+     * ⚠️ CONTRAT D'EMPLOI — LA TEINTE NE PORTE JAMAIS L'INFORMATION SEULE.
+     *
+     * La validation ci-dessus vaut sur la liste ADJACENTE. Sous comparaison
+     * TOUTES PAIRES elle échoue, et c'est attendu : six teintes mutuellement
+     * distinguables à luminosité constante n'existent pas. Mesuré au
+     * validateur, le pire couple est bleu ↔ violet — ΔE 2,2 en protanopie, et
+     * 12,5 même en VISION NORMALE, sous le plancher de 15. Deux personnes sur
+     * trois ne les sépareraient pas côte à côte.
+     *
+     * Ces teintes sont donc un renfort DÉCORATIF, jamais le porteur. Là où
+     * elles cohabitent — la boîte de réception, quatre canaux dans la même
+     * colonne — chaque ligne porte DÉJÀ une icône de forme distincte ET son
+     * libellé en toutes lettres ; la couleur ne fait qu'aider l'œil à trier
+     * plus vite.
+     *
+     * Si vous introduisez une vue où deux de ces teintes seraient la SEULE
+     * distinction entre deux choses, ce n'est pas la palette qu'il faut
+     * retoucher : ajoutez une forme et un mot, ou réduisez le nombre de
+     * catégories affichées ensemble.
      * ===================================================================== */
     --color-admin-id-terracotta: var(--color-admin-terracotta);
     --color-admin-id-teal: #0a9587;
