@@ -35,6 +35,7 @@ import {
   buildFormationSnapshot,
 } from "@/server/qualiopi/formations/formation-snapshot";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
+import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -455,6 +456,19 @@ export async function transitionSessionAction(input: {
   const trigger = v.trigger ?? `admin.transition.${toStatus}`;
   const triggeredBy: TransitionTriggeredBy = (v.triggeredBy as TransitionTriggeredBy) ?? "admin";
 
+  // 🔴 `dureeReelleHeures` n'avait aucun écrivain sur les sessions COLLECTIVES —
+  // seule la clôture AFEST 1-to-1 la renseignait. Elle restait donc nulle à vie :
+  // fiche session « — h », certificat de réalisation sans durée, et ventilation
+  // horaire OPCO refusée pour « durée réelle non renseignée » alors que les
+  // horaires étaient déclarés depuis le début dans `session_jours`.
+  //
+  // On la fige à la CLÔTURE, comme le fait le 1-to-1, et seulement si personne ne
+  // l'a saisie à la main. Sans journée déclarée on laisse `null` : la durée
+  // prévue au catalogue n'est pas une constatation, et l'écrire ici la ferait
+  // passer pour telle.
+  const dureeReelleAEcrire =
+    toStatus === "realisee" ? await resoudreDureeReelleACloture(v.id) : null;
+
   // Appliquer transition + écrire FormationTransition dans une tx
   try {
     await prisma.$transaction(async (tx) => {
@@ -471,7 +485,10 @@ export async function transitionSessionAction(input: {
 
       await tx.trainingSession.update({
         where: { id: v.id },
-        data: { statut: toStatus },
+        data: {
+          statut: toStatus,
+          ...(dureeReelleAEcrire !== null ? { dureeReelleHeures: dureeReelleAEcrire } : {}),
+        },
       });
     });
   } catch (err) {

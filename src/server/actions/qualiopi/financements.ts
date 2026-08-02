@@ -45,6 +45,11 @@ import {
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
+import {
+  resoudreDestinataireFacture,
+  CLIENT_FACTURABLE_SELECT,
+} from "@/server/qualiopi/financements/destinataire-facture";
+import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
@@ -371,7 +376,16 @@ export async function genererFactureFormationAction(input: {
       priseEnChargeUnite: true,
       priseEnChargePlafondFormationCents: true,
       priseEnChargePlafondAnnuelCents: true,
-      client: { select: { raisonSociale: true } },
+      dateDebut: true,
+      dateFin: true,
+      clientId: true,
+      client: {
+        select: {
+          ...CLIENT_FACTURABLE_SELECT,
+          // Conditions de règlement propres au client (F61) — priment sur la config.
+          delaiPaiementJours: true,
+        },
+      },
     },
   });
   if (!trainingSession) return { error: "Session introuvable" };
@@ -468,6 +482,33 @@ export async function genererFactureFormationAction(input: {
     ? "opco"
     : destinataire;
 
+  // 🔴 Identité de l'ACHETEUR — nom + SIRET + adresse (art. L.441-9 C. com.,
+  // 242 nonies A CGI). Ce chemin enregistrait `trainingSession.titreSession`
+  // comme destinataire : la première facture réelle est partie au nom de
+  // « IA pour l'immobilier — INVEST SUN (Saint-Étienne) », sans SIRET ni adresse.
+  // Le client était pourtant déjà chargé, et jamais lu. Cf. destinataire-facture.ts.
+  const acheteur = resoudreDestinataireFacture(destinataireEffectif, trainingSession.client);
+
+  // ── Échéance de paiement ─────────────────────────────────────────────────
+  // Jamais posée jusqu'ici : la colonne `echeanceAt` restait nulle, le hub
+  // affichait « — » et le PDF retombait sur émission + 30 j. Or l'échéance est
+  // une mention obligatoire, et le délai est réglable par client (F61) —
+  // sauf subrogation, où c'est le financeur qui paie, avec son délai propre.
+  const [delaiClientGlobal, delaiFinanceur] = await Promise.all([
+    getQualiopiConfig("delai_paiement_jours"),
+    getQualiopiConfig("delai_paiement_financeur_jours"),
+  ]);
+  const delaiRetenu = trainingSession.opcoSubrogation
+    ? delaiFinanceur
+    : (trainingSession.client?.delaiPaiementJours ?? delaiClientGlobal);
+  const delaiJours =
+    typeof delaiRetenu === "number" && Number.isFinite(delaiRetenu) && delaiRetenu > 0
+      ? delaiRetenu
+      : DELAI_PAIEMENT_DEFAUT_JOURS;
+  const emiseAt = new Date();
+  const echeanceAt = new Date(emiseAt);
+  echeanceAt.setDate(echeanceAt.getDate() + delaiJours);
+
   // ── Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC ─────────────
   // Qualiopi n'a aucun effet sur la TVA : le régime est lu depuis la config et
   // figé sur la facture (snapshot). Défaut « assujetti » (20 %).
@@ -509,8 +550,17 @@ export async function genererFactureFormationAction(input: {
       data: {
         numero,
         sessionId,
+        // Classe la facture dans le hub (filtre « Formation ») — laissée nulle,
+        // la ligne échappait à toute ventilation par activité.
+        activite: "formation",
+        // Rattache la facture au client CRM : sans ce lien, le hub et les
+        // relances retombent sur le libellé figé au lieu de la fiche client.
+        ...(trainingSession.clientId != null ? { clientId: trainingSession.clientId } : {}),
         destinataire: destinataireEffectif,
-        destinataireNom: trainingSession.titreSession,
+        destinataireNom: acheteur.nom,
+        destinataireSiret: acheteur.siret,
+        destinataireAdresse: acheteur.adresse,
+        destinataireTvaIntracom: acheteur.tvaIntracom,
         montantHtCents: totalHtCents,
         tvaExoneree: totaux.totalTvaCents === 0,
         regimeTva,
@@ -522,7 +572,8 @@ export async function genererFactureFormationAction(input: {
           ? (trainingSession.numeroDossierOpco ?? null)
           : null,
         statut: "emise",
-        emiseAt: new Date(),
+        emiseAt,
+        echeanceAt,
       },
       select: { id: true, numero: true, documentId: true },
     });
@@ -697,6 +748,8 @@ export async function genererFacturePdfAction(input: {
       destinataireNom: true,
       destinataireSiret: true,
       destinataireAdresse: true,
+      destinataireTvaIntracom: true,
+      refClient: true,
       montantHtCents: true,
       lignes: true,
       regimeTva: true,
@@ -769,6 +822,9 @@ export async function genererFacturePdfAction(input: {
     identite,
     regimeTva,
     tauxTvaStandardPercent,
+    ...(facture.refClient !== null && facture.refClient !== ""
+      ? { refClient: facture.refClient }
+      : {}),
     client: {
       raisonSociale: facture.destinataireNom,
       ...(facture.destinataireSiret !== null && facture.destinataireSiret !== undefined
@@ -776,6 +832,9 @@ export async function genererFacturePdfAction(input: {
         : {}),
       ...(facture.destinataireAdresse !== null && facture.destinataireAdresse !== undefined
         ? { adresse: facture.destinataireAdresse }
+        : {}),
+      ...(facture.destinataireTvaIntracom !== null && facture.destinataireTvaIntracom !== undefined
+        ? { numeroTvaIntracom: facture.destinataireTvaIntracom }
         : {}),
     },
     lignes,

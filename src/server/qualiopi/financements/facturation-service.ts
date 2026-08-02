@@ -17,7 +17,8 @@ import React from "react";
 import { prisma } from "@/lib/prisma";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
 import { computeVentilationDossier, computeForfait } from "./opco-calcul";
-import { opcoLabel } from "./opco-referentiel";
+import { resoudreDestinataireFacture } from "./destinataire-facture";
+import { periodePrestationSession } from "./periode-prestation";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
@@ -35,7 +36,6 @@ import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions, type ModeFacturation } from "./conditions-client";
-import { periodePrestationSession } from "./periode-prestation";
 
 /** Garde de type : la colonne est un enum Prisma, la config une chaîne libre. */
 function estModeFacturation(v: unknown): v is ModeFacturation {
@@ -138,31 +138,18 @@ export async function genererFactureFormation(
     ? "opco"
     : input.destinataire;
 
-  // Nom / SIRET / adresse du destinataire
-  let destinataireNom = "À compléter";
-  let destinataireSiret: string | undefined;
-  let destinataireAdresse: string | undefined;
-
-  // [P1] Facturer le BON tiers selon le destinataire réel — ne plus retomber sur
+  // [P1] Facturer le BON tiers selon le destinataire réel — ne pas retomber sur
   //   la raison sociale de l'entreprise cliente pour l'OPCO / France Travail / le
   //   stagiaire. SIRET/adresse de l'OPCO = donnée d'un référentiel OPCO (à saisir),
-  //   jamais inventés ici.
-  if (destinataireReel === "opco") {
-    const opcoId = session.client?.opcoIdentifie ?? null;
-    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas »).
-    destinataireNom = opcoId ? opcoLabel(opcoId) : "OPCO (à préciser)";
-  } else if (destinataireReel === "france_travail") {
-    destinataireNom = "France Travail";
-  } else if (destinataireReel === "stagiaire") {
-    // Reste à charge facturé au bénéficiaire individuel — l'identité précise dépend
-    //   de l'inscription ; placeholder explicite plutôt que l'entreprise cliente.
-    destinataireNom = "Bénéficiaire (reste à charge)";
-  } else if (session.client) {
-    // entreprise
-    destinataireNom = session.client.raisonSociale ?? "Client";
-    destinataireSiret = session.client.siret ?? undefined;
-    destinataireAdresse = session.client.adresse ?? undefined;
-  }
+  //   jamais inventés.
+  //
+  // Règles déportées dans `destinataire-facture.ts` : ce bloc existait ici en
+  // version correcte pendant que l'action `financements` en portait une version
+  // fautive. Un seul résolveur, plus de divergence possible.
+  const acheteur = resoudreDestinataireFacture(destinataireReel, session.client);
+  const destinataireNom = acheteur.nom;
+  const destinataireSiret = acheteur.siret ?? undefined;
+  const destinataireAdresse = acheteur.adresse ?? undefined;
 
   // ── Numéro séquentiel + retry P2002 ─────────────────────────────────────
   const annee = new Date().getFullYear();

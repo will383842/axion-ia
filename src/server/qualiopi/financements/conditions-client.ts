@@ -17,6 +17,13 @@
 /** Plafond légal du délai de paiement entre professionnels (art. L441-10 C. com.). */
 export const DELAI_PAIEMENT_MAX_JOURS = 60;
 
+/**
+ * Délai retenu quand ni le client ni la configuration ne fixent de valeur
+ * utilisable. Le repli était écrit en dur, à l'identique, chez chaque émetteur
+ * de facture — donc silencieusement divergeable.
+ */
+export const DELAI_PAIEMENT_DEFAUT_JOURS = 30;
+
 export type ModeFacturation = "acompte_solde" | "solde_unique";
 
 /** Réglages portés par le client. `null` = suivre le défaut global. */
