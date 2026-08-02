@@ -155,6 +155,49 @@ describe("ConventionPdf — contenu", () => {
   it("« Fait à » retombe sur le blanc quand la ville du siège est absente", () => {
     expect(text).toContain("Fait à _________________________, le 01/06/2026");
   });
+
+  // ── Mentions EXIGÉES par L.6353-1, absentes jusqu'au 2026-08-02 ──────────
+  it("porte les moyens pédagogiques, le suivi de l'exécution et la sanction", () => {
+    expect(text).toContain("Moyens pédagogiques et techniques");
+    expect(text).toContain("Suivi de l'exécution et évaluation");
+    expect(text).toContain("Sanction de la formation");
+    // Le repli décrit le dispositif RÉEL de la plateforme.
+    expect(text).toContain("émargement");
+    expect(text).toContain("Attestation de fin de formation");
+  });
+
+  it("les mentions L.6353-1 fournies priment sur les replis", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: { ...CONVENTION, sanction: "Certificat de réalisation." },
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toContain("Certificat de réalisation.");
+  });
+
+  // ── Clauses de protection de l'organisme ────────────────────────────────
+  it("porte les clauses qui protègent l'organisme (PI, confidentialité, responsabilité)", () => {
+    expect(text).toContain("propriété exclusive de l'organisme");
+    expect(text).toContain("obligation de moyens");
+    expect(text).toContain("limitée au montant hors taxes");
+    expect(text).toContain("force majeure");
+    expect(text).toContain("droit français");
+  });
+
+  it("porte la clause RGPD avec un contact d'exercice des droits", () => {
+    expect(text).toContain("2016/679");
+    expect(text).toContain("cinq (5) ans");
+    expect(text).toContain("CNIL");
+    // L'adresse d'exercice des droits ne doit jamais être un trou.
+    expect(text).toContain("contact@axion-ia.fr");
+  });
+
+  it("annonce que les prix sont HT et le délai de règlement", () => {
+    expect(text).toContain("hors taxes");
+    expect(text).toContain("trente (30) jours");
+    expect(text).toContain("L.441-10");
+  });
 });
 
 describe("ContratFormationPdf — contenu", () => {
