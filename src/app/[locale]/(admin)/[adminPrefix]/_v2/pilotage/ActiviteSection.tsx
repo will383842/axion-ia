@@ -5,6 +5,7 @@
 // barres CSS pures (prestations réalisées par mois).
 
 import { AdminCard } from "@/components/admin/ui";
+import { BarresMensuelles } from "@/components/admin/ui/charts";
 import type { ActiviteBloc } from "@/server/admin/pilotage-dashboard";
 import { labelMoisCle } from "./format";
 
@@ -14,7 +15,6 @@ interface Props {
 }
 
 function BlocActivite({ bloc }: { bloc: ActiviteBloc }): React.ReactElement {
-  const maxTendance = Math.max(1, ...bloc.tendance.map((t) => t.n));
   return (
     <div className="flex flex-col gap-[var(--space-admin-4)]">
       <div className="flex items-baseline justify-between gap-[var(--space-admin-3)]">
@@ -45,30 +45,16 @@ function BlocActivite({ bloc }: { bloc: ActiviteBloc }): React.ReactElement {
         <p className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           Réalisées par mois (12 derniers mois)
         </p>
-        <div
-          className="flex h-[56px] items-end gap-[3px]"
-          role="img"
-          aria-label={`Tendance 12 mois — ${bloc.label.toLowerCase()} réalisées par mois`}
-        >
-          {bloc.tendance.map((t) => (
-            <div
-              key={t.mois}
-              className="flex flex-1 flex-col items-center gap-[2px]"
-              title={`${labelMoisCle(t.mois)} : ${t.n}`}
-            >
-              <div
-                className="w-full rounded-t-[2px] bg-[color:var(--color-admin-info)]"
-                style={{
-                  height: `${Math.max(t.n > 0 ? 8 : 2, Math.round((t.n / maxTendance) * 44))}px`,
-                }}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="mt-[2px] flex justify-between text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          <span>{labelMoisCle(bloc.tendance[0]?.mois ?? "")}</span>
-          <span>{labelMoisCle(bloc.tendance[bloc.tendance.length - 1]?.mois ?? "")}</span>
-        </div>
+        {/* Forme « emphase » : le mois courant (dernier de la fenêtre) porte
+            l'accent, le passé est en teinte discrète — le regard va au présent. */}
+        <BarresMensuelles
+          barres={bloc.tendance.map((t, i) => ({
+            label: labelMoisCle(t.mois).slice(0, 1),
+            value: t.n,
+            title: `${labelMoisCle(t.mois)} : ${t.n}`,
+            courant: i === bloc.tendance.length - 1,
+          }))}
+        />
       </div>
     </div>
   );

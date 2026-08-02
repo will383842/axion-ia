@@ -129,6 +129,14 @@ export interface TuilesPilotage {
   caDelta: string | null;
   /** Marge du mois EN COURS (consolidation mensuelle), en centimes. */
   margeMoisCents: number;
+  /**
+   * CA réalisé par mois de l'année en cours (index 0 = janvier), en centimes —
+   * la tendance des tuiles. Coût de requête NUL : la consolidation mensuelle
+   * est déjà chargée pour la tuile de marge, quelle que soit la période.
+   */
+  caParMoisCents: number[];
+  /** Marge par mois de l'année en cours (index 0 = janvier), en centimes. */
+  margeParMoisCents: number[];
 }
 
 export interface AlerteCritiqueLigne {
@@ -865,6 +873,14 @@ export async function getPilotageDashboard(
       caRealiseCents: caPeriode,
       caDelta: formatDelta(caPeriode, caPeriodeN1),
       margeMoisCents: margeMois,
+      caParMoisCents: Array.from(
+        { length: 12 },
+        (_, i) => consolidation.mois.find((m) => m.mois === i + 1)?.caHtCents ?? 0,
+      ),
+      margeParMoisCents: Array.from(
+        { length: 12 },
+        (_, i) => consolidation.mois.find((m) => m.mois === i + 1)?.margeCents ?? 0,
+      ),
     },
     alertesCritiques: alertes.map((a) => ({
       id: a.id,
