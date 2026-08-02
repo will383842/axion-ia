@@ -197,7 +197,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
         </Link>
       </div>
 
-      <div className="admin-card mb-[var(--space-admin-5)] p-[var(--space-admin-4)]">
+      <div className="admin-card mb-[var(--space-admin-5)]">
         <p className="admin-meta">Activité (calculée automatiquement)</p>
         <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
           <strong>{sessionsCount}</strong> session{sessionsCount > 1 ? "s" : ""} Qualiopi animée
@@ -209,7 +209,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       </div>
 
       {conformite !== null && (
-        <div className="admin-card mb-[var(--space-admin-5)] p-[var(--space-admin-4)]">
+        <div className="admin-card mb-[var(--space-admin-5)]">
           <p className="admin-meta">Conformité documentaire</p>
 
           {conformite.manquements.length === 0 ? (

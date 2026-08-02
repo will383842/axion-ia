@@ -126,7 +126,8 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               min={1}
               max={25}
               defaultValue={10}
-              className="admin-input w-[120px]"
+              className="admin-input"
+              style={{ width: 120 }}
             />
           </label>
           <AdminButton type="submit" iconAfter={ArrowRight}>

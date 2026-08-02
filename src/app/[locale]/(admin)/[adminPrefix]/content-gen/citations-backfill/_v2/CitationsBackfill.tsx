@@ -100,7 +100,7 @@ export function CitationsBackfill() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="admin-card p-4">
+      <div className="admin-card">
         <p className="admin-meta">
           Ce bouton rejoue la détection des sources sur l’historique : pour chaque article, seuls
           les liens présents dans le catalogue vérifié sont écrits comme citations (les liens
@@ -150,14 +150,14 @@ export function CitationsBackfill() {
       ) : null}
 
       {preview && preview.sample.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Aperçu des premiers articles (simulation) :</p>
           <ResultList items={preview.sample} />
         </div>
       ) : null}
 
       {lastRun && lastRun.items.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Dernier lot traité :</p>
           <ResultList items={lastRun.items} />
           {lastRun.hallucinatedCount > 0 ? (

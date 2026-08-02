@@ -2635,3 +2635,71 @@
   line-height: var(--lh-admin-body);
   color: var(--color-admin-fg-muted);
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Boîtes de dialogue natives et enveloppe d'état vide — 2026-08-02.
+
+   Ces quatre classes étaient ÉCRITES dans les composants mais définies NULLE
+   PART. Écrire une classe inexistante ne produit aucune erreur : ni tsc, ni
+   ESLint, ni le build ne s'en aperçoivent — le style manque, simplement.
+
+   Conséquence réelle : `<dialog className="admin-confirm-modal">` s'affichait
+   avec le style PAR DÉFAUT du navigateur — bordure fine, aucun rembourrage,
+   aucune ombre, largeur collée au contenu. C'est la surface la plus visible de
+   la console (on y confirme les suppressions) et c'était la moins soignée.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-confirm-modal,
+.admin-conflict-modal,
+.admin-session-expiry-modal {
+  width: min(30rem, calc(100vw - var(--space-admin-7)));
+  padding: var(--space-admin-7);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-xl);
+  background-color: var(--color-admin-paper);
+  color: var(--color-admin-fg);
+  box-shadow: var(--shadow-admin-3);
+}
+
+/* Le voile : sans lui, la page reste pleinement lisible derrière la boîte et
+   rien ne dit qu'une décision est attendue. */
+.admin-confirm-modal::backdrop,
+.admin-conflict-modal::backdrop,
+.admin-session-expiry-modal::backdrop {
+  background-color: rgb(0 0 0 / 0.32);
+}
+
+.admin-confirm-modal > h2,
+.admin-conflict-modal > h2,
+.admin-session-expiry-modal > h2 {
+  margin: 0 0 var(--space-admin-3);
+  font-size: var(--text-admin-lg);
+  font-weight: 600;
+  line-height: var(--lh-admin-tight);
+}
+
+.admin-confirm-modal > p,
+.admin-conflict-modal > p,
+.admin-session-expiry-modal > p {
+  margin: 0;
+  font-size: var(--text-admin-sm);
+  line-height: var(--lh-admin-body);
+  color: var(--color-admin-fg-soft);
+}
+
+/* La boîte de conflit propose deux issues opposées (garder / écraser) : ses
+   actions ont besoin d'air, pas d'être collées au texte. */
+.admin-confirm-modal form,
+.admin-conflict-modal form,
+.admin-session-expiry-modal form {
+  margin-top: var(--space-admin-6);
+}
+
+/* Enveloppe d'état vide d'un tableau : l'illustration et le message flottaient
+   en haut à gauche, sans marge, comme un rendu inachevé. */
+.admin-table-empty-wrapper {
+  padding: var(--space-admin-8) var(--space-admin-6);
+  border: 1px solid var(--color-admin-border);
+  border-radius: var(--radius-admin-xl);
+  background-color: var(--color-admin-paper);
+}

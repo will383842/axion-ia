@@ -61,7 +61,7 @@ export function HeroImagesBackfill() {
 
   return (
     <div className="flex flex-col gap-5">
-      <label className="admin-card flex items-start gap-3 p-4">
+      <label className="admin-card flex items-start gap-3">
         <input
           type="checkbox"
           checked={replaceBank}
@@ -112,14 +112,14 @@ export function HeroImagesBackfill() {
       ) : null}
 
       {preview && preview.sample.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Aperçu des photos qui seraient posées :</p>
           <ResultList items={preview.sample} />
         </div>
       ) : null}
 
       {lastRun && lastRun.items.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Dernier lot traité :</p>
           <ResultList items={lastRun.items} />
         </div>

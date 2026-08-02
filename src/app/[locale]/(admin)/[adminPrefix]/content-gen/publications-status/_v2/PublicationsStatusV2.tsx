@@ -97,7 +97,8 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               defaultValue={75}
               min={0}
               max={100}
-              className="admin-input w-[60px]"
+              className="admin-input"
+              style={{ width: 60 }}
             />
             <button type="submit" className="admin-button">
               Approuver en masse (score ≥ min)
@@ -114,7 +115,8 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               defaultValue={50}
               min={0}
               max={100}
-              className="admin-input w-[60px]"
+              className="admin-input"
+              style={{ width: 60 }}
             />
             <button type="submit" className="admin-button-ghost">
               Rejeter en masse (score ≤ max)

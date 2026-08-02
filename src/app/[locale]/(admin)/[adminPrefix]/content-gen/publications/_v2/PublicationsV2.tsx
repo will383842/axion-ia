@@ -297,7 +297,11 @@ function ActionsCell({
       ) : null}
       {status === "archived" ? (
         <form action={doUnarchive}>
-          <button type="submit" className="admin-button text-[length:var(--text-admin-xs)]">
+          {/* L'auteur voulait un bouton compact, mais `text-[length:…]` était
+              INERTE : `.admin-button` vit hors couche et bat les utilitaires.
+              `admin-button-sm` est le modificateur prévu pour ça — lui est
+              dans la même couche, donc il s'applique réellement. */}
+          <button type="submit" className="admin-button admin-button-sm">
             Restaurer
           </button>
         </form>

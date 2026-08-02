@@ -107,10 +107,7 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
             <h2 className="admin-h2">Traductions ({image.translations.length})</h2>
             <ul className="admin-meta-block flex flex-col gap-[var(--space-admin-3)]">
               {image.translations.map((t) => (
-                <li
-                  key={t.id}
-                  className="admin-card admin-card-inline border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]"
-                >
+                <li key={t.id} className="admin-card admin-card-inline">
                   <p className="admin-meta-strong">
                     [{t.languageCode}] {t.title}
                   </p>
