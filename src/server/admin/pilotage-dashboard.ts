@@ -17,7 +17,9 @@
  *    Les deux périmètres ne s'additionnent JAMAIS.
  */
 
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import type { ActiviteFacturation } from "../../../prisma/generated/client";
 import {
   lireDossiersPipeline,
   COLONNES_PIPELINE,
@@ -26,6 +28,7 @@ import {
   type ActiviteDossier,
   type ColonnePipeline,
 } from "@/server/admin/dossiers-pipeline";
+import { ACTIVITE_LABELS as ACTIVITE_FACTURATION_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import {
   getConsolidationMensuelle,
@@ -123,7 +126,9 @@ export interface TuilesPilotage {
   aSolder: string;
   /** Alertes non résolues de niveau critique. */
   alertesCritiques: number;
-  /** CA réalisé (formations + audits `realisee`) de la période, en centimes. */
+  /** CA réalisé de la période, en centimes : formations + audits réalisés
+   *  (`realisee`) + contrats coaching SIGNÉS dans la période (`dateSigneeAt`,
+   *  même règle que le BPF — le coaching n'a pas de montant par séance). */
   caRealiseCents: number;
   /** Delta vs même période N-1, préformaté (« +12 % » / « −8 % »), ou null si N-1 = 0. */
   caDelta: string | null;
@@ -238,15 +243,38 @@ export interface DevisSansReponse {
   sentAt: Date | null;
 }
 
+/** Ligne de ventilation du CA par activité de facturation (année en cours). */
+export interface CaParActiviteLigne {
+  /** null = factures historiques sans activité renseignée. */
+  activite: ActiviteFacturation | null;
+  label: string;
+  /** Factures émises (TTC, avoirs négatifs inclus — ils rectifient le CA). */
+  emisTtcCents: number;
+  /** Encaissements `Payment` succeeded rattachés à une facture. */
+  encaisseCents: number;
+}
+
 export interface FinancierBloc {
   annee: number;
   /** Totaux prévisionnels janvier → décembre de l'année en cours. */
   totauxAnnee: TotauxPrevisionnel;
+  /** Ventilation émis/encaissé par activité de facturation (année en cours). */
+  parActivite: CaParActiviteLigne[];
   topFormations: MargeFormation[];
   flopFormations: MargeFormation[];
   dossiersEnRetard: DossierFinancementRetard[];
   nbDevisSansReponse: number;
   devisSansReponse: DevisSansReponse[];
+}
+
+/** Objectif de CA annuel (cible posée à la main dans `Setting`, en euros). */
+export interface ObjectifBloc {
+  /** null = aucune cible définie (ou valeur invalide) — ne rien afficher. */
+  cibleAnnuelleCents: number | null;
+  /** CA réalisé de l'année : formations + audits réalisés + coaching signé. */
+  realiseAnnuelCents: number;
+  /** Pourcentage d'atteinte arrondi, ou null si aucune cible. */
+  pctAtteint: number | null;
 }
 
 export interface ColonnePipelineCompte {
@@ -274,6 +302,7 @@ export interface PilotageDashboard {
   activites: ActiviteBloc[];
   formateurs: FormateursBloc;
   financier: FinancierBloc;
+  objectif: ObjectifBloc;
   pipeline: PipelineBloc;
 }
 
@@ -282,7 +311,8 @@ export interface PilotageDashboard {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** CA réalisé (centimes) : formations + audits `realisee` démarrant dans la plage.
- *  Le coaching n'a PAS de montant par séance (porté par le contrat) : exclu. */
+ *  Le coaching n'a PAS de montant par séance (porté par le contrat) : il est
+ *  compté à part par `caCoachingPlage` et ADDITIONNÉ par l'assemblage. */
 async function caRealisePlage(plage: Plage): Promise<number> {
   try {
     const [formations, audits] = await Promise.all([
@@ -298,6 +328,113 @@ async function caRealisePlage(plage: Plage): Promise<number> {
     return (formations._sum.montantHtCents ?? 0) + (audits._sum.montantHtCents ?? 0);
   } catch {
     return 0;
+  }
+}
+
+/** Plafond de lecture des réductions JS facturation/coaching (jamais toute la table). */
+const MAX_LIGNES_FINANCES = 5000;
+
+/** CA coaching (centimes) : contrats 1-to-1 SIGNÉS dans la plage. La date qui
+ *  fait foi est `dateSigneeAt` — même règle que le BPF (`aggregateCoaching`). */
+async function caCoachingPlage(plage: Plage): Promise<number> {
+  try {
+    const rows = await prisma.coachingContract.findMany({
+      where: { dateSigneeAt: { gte: plage.gte, lt: plage.lt } },
+      select: { montantHtCents: true },
+      take: MAX_LIGNES_FINANCES,
+    });
+    return rows.reduce((acc, r) => acc + r.montantHtCents, 0);
+  } catch {
+    return 0;
+  }
+}
+
+/** Ordre d'affichage des activités de facturation (ordre de l'enum Prisma). */
+const ORDRE_ACTIVITES_FACTURATION: ReadonlyArray<ActiviteFacturation> = [
+  "formation",
+  "un_a_un",
+  "audit",
+  "implementation",
+  "site_web",
+];
+
+/**
+ * Ventilation émis TTC / encaissé par activité de facturation sur la plage
+ * (année en cours). Réduction JS et non `groupBy _sum` : `montantTtcCents` est
+ * null sur les anciennes factures → repli `?? montantHtCents` ligne à ligne
+ * (un `_sum` raterait ces lignes). Les avoirs (montants négatifs) restent
+ * inclus : ils rectifient le CA émis. Encaissé = `Payment` succeeded rattachés
+ * à une `FactureFormation`, ventilés par l'activité de la facture.
+ */
+async function caParActivitePlage(plage: Plage): Promise<CaParActiviteLigne[]> {
+  try {
+    const [factures, paiements] = await Promise.all([
+      prisma.factureFormation.findMany({
+        where: {
+          statut: { in: ["emise", "partiellement_payee", "en_retard", "payee"] },
+          emiseAt: { gte: plage.gte, lt: plage.lt },
+        },
+        select: { activite: true, montantTtcCents: true, montantHtCents: true },
+        take: MAX_LIGNES_FINANCES,
+      }),
+      prisma.payment.findMany({
+        where: {
+          status: "succeeded",
+          factureFormationId: { not: null },
+          paidAt: { gte: plage.gte, lt: plage.lt },
+        },
+        select: { amountCents: true, factureFormation: { select: { activite: true } } },
+        take: MAX_LIGNES_FINANCES,
+      }),
+    ]);
+    const emis = new Map<ActiviteFacturation | null, number>();
+    for (const f of factures) {
+      const ttc = f.montantTtcCents ?? f.montantHtCents;
+      emis.set(f.activite, (emis.get(f.activite) ?? 0) + ttc);
+    }
+    const encaisse = new Map<ActiviteFacturation | null, number>();
+    for (const p of paiements) {
+      const a = p.factureFormation?.activite ?? null;
+      encaisse.set(a, (encaisse.get(a) ?? 0) + p.amountCents);
+    }
+    const lignes: CaParActiviteLigne[] = ORDRE_ACTIVITES_FACTURATION.map((a) => ({
+      activite: a,
+      label: ACTIVITE_FACTURATION_LABELS[a],
+      emisTtcCents: emis.get(a) ?? 0,
+      encaisseCents: encaisse.get(a) ?? 0,
+    }));
+    // Factures historiques sans activité : une ligne seulement si non-zéro.
+    const emisSans = emis.get(null) ?? 0;
+    const encaisseSans = encaisse.get(null) ?? 0;
+    if (emisSans !== 0 || encaisseSans !== 0) {
+      lignes.push({
+        activite: null,
+        label: "Non renseignée",
+        emisTtcCents: emisSans,
+        encaisseCents: encaisseSans,
+      });
+    }
+    return lignes;
+  } catch {
+    return [];
+  }
+}
+
+/** Clé `Setting` de la cible de CA annuelle (nombre en EUROS entiers). */
+const CLE_CIBLE_ANNUELLE = "pilotage.ca_cible_annuel_euros";
+
+const cibleAnnuelleSchema = z.number().int().positive();
+
+/** Cible annuelle en CENTIMES depuis `Setting`, ou null (absente, invalide,
+ *  ou stub build — `findUnique` du Proxy stub retourne null). */
+async function lireCibleAnnuelleCents(): Promise<number | null> {
+  try {
+    const row = await prisma.setting.findUnique({ where: { key: CLE_CIBLE_ANNUELLE } });
+    if (!row) return null;
+    const parsed = cibleAnnuelleSchema.safeParse(row.value);
+    return parsed.success ? parsed.data * 100 : null;
+  } catch {
+    return null;
   }
 }
 
@@ -748,6 +885,9 @@ export async function getPilotageDashboard(
     lt: derivePlage(annee, { type: "mois", mois: moisCourant }).lt,
   };
 
+  // Année civile en cours (Europe/Paris) : ventilation facturation + objectif.
+  const plageAnnee = derivePlage(annee, { type: "annee" });
+
   // Consolidation mensuelle : sert la tuile marge ET la vue année.
   const consolidationPromise = getConsolidationMensuelle(annee);
 
@@ -764,6 +904,12 @@ export async function getPilotageDashboard(
     consolidation,
     caPeriode,
     caPeriodeN1,
+    caCoachingPeriode,
+    caCoachingPeriodeN1,
+    caAnneeSessions,
+    caAnneeCoaching,
+    parActiviteFacturation,
+    cibleAnnuelleCents,
     calendrier,
     bloquees,
     comptesF,
@@ -785,6 +931,12 @@ export async function getPilotageDashboard(
     consolidationPromise,
     caRealisePlage(plage),
     caRealisePlage(plageN1),
+    caCoachingPlage(plage),
+    caCoachingPlage(plageN1),
+    caRealisePlage(plageAnnee),
+    caCoachingPlage(plageAnnee),
+    caParActivitePlage(plageAnnee),
+    lireCibleAnnuelleCents(),
     calendrierPromise,
     sessionsBloquees(maintenant),
     comptesFormations(plage),
@@ -802,10 +954,24 @@ export async function getPilotageDashboard(
     devisSansReponseDepuis30j(maintenant),
   ]);
 
-  // Tuiles.
+  // Tuiles. CA de la période = sessions/audits réalisés + coaching signé —
+  // même addition sur N-1 pour que le delta compare des périmètres identiques.
   const nbActifs =
     pipeline.a_preparer.length + pipeline.en_cours.length + pipeline.signature_attente.length;
   const margeMois = consolidation.mois.find((m) => m.mois === moisCourant)?.margeCents ?? 0;
+  const caToutesActivites = caPeriode + caCoachingPeriode;
+  const caToutesActivitesN1 = caPeriodeN1 + caCoachingPeriodeN1;
+
+  // Objectif annuel : réalisé = même règle que la tuile, sur l'année civile.
+  const realiseAnnuelCents = caAnneeSessions + caAnneeCoaching;
+  const objectif: ObjectifBloc = {
+    cibleAnnuelleCents,
+    realiseAnnuelCents,
+    pctAtteint:
+      cibleAnnuelleCents !== null && cibleAnnuelleCents > 0
+        ? Math.round((realiseAnnuelCents / cibleAnnuelleCents) * 100)
+        : null,
+  };
 
   // Prévisionnel : `getPrevisionnel` ne renvoie que les mois non vides →
   // compléter la fenêtre janvier → décembre avant les totaux.
@@ -862,8 +1028,8 @@ export async function getPilotageDashboard(
       dossiersActifs: affichagePlafonne(nbActifs),
       aSolder: affichagePlafonne(pipeline.a_solder.length),
       alertesCritiques: alertes.length,
-      caRealiseCents: caPeriode,
-      caDelta: formatDelta(caPeriode, caPeriodeN1),
+      caRealiseCents: caToutesActivites,
+      caDelta: formatDelta(caToutesActivites, caToutesActivitesN1),
       margeMoisCents: margeMois,
     },
     alertesCritiques: alertes.map((a) => ({
@@ -888,12 +1054,14 @@ export async function getPilotageDashboard(
     financier: {
       annee,
       totauxAnnee: totaux(lignesCompletes),
+      parActivite: parActiviteFacturation,
       topFormations,
       flopFormations,
       dossiersEnRetard: dossiersRetard,
       nbDevisSansReponse: devisSansRep.nb,
       devisSansReponse: devisSansRep.lignes,
     },
+    objectif,
     pipeline: {
       colonnes: COLONNES_PIPELINE.map((c) => ({
         id: c.id,

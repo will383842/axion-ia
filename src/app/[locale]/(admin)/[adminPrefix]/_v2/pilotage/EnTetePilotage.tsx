@@ -4,10 +4,11 @@
 // `?periode=`) rendus comme des onglets — zéro JS client, zéro graphique ici.
 
 import Link from "next/link";
-import { FolderOpen, Receipt, AlertTriangle, TrendingUp, PiggyBank } from "lucide-react";
+import { FolderOpen, Receipt, AlertTriangle, TrendingUp, PiggyBank, Target } from "lucide-react";
 import { AdminStatCard } from "@/components/admin/ui";
 import {
   PERIODES_PILOTAGE,
+  type ObjectifBloc,
   type PeriodePilotage,
   type TuilesPilotage,
 } from "@/server/admin/pilotage-dashboard";
@@ -18,6 +19,7 @@ interface Props {
   periode: PeriodePilotage;
   periodeLabel: string;
   tuiles: TuilesPilotage;
+  objectif: ObjectifBloc;
 }
 
 export function EnTetePilotage({
@@ -25,8 +27,12 @@ export function EnTetePilotage({
   periode,
   periodeLabel,
   tuiles,
+  objectif,
 }: Props): React.ReactElement {
   const base = `/fr/${adminPrefix}`;
+  // 6ᵉ tuile « Objectif annuel » seulement si une cible est définie —
+  // aucune tuile vide sinon (la grille reste alors sur 5 colonnes).
+  const avecObjectif = objectif.cibleAnnuelleCents !== null;
   return (
     <section aria-label="Pilotage" className="mb-[var(--space-admin-7)]">
       <div className="mb-[var(--space-admin-5)] flex flex-wrap items-center gap-2">
@@ -45,7 +51,12 @@ export function EnTetePilotage({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 xl:grid-cols-5">
+      <div
+        className={[
+          "grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2",
+          avecObjectif ? "xl:grid-cols-3" : "xl:grid-cols-5",
+        ].join(" ")}
+      >
         <AdminStatCard
           label="Dossiers actifs"
           value={tuiles.dossiersActifs}
@@ -74,7 +85,7 @@ export function EnTetePilotage({
           value={fmtEurosCents(tuiles.caRealiseCents)}
           icon={TrendingUp}
           {...(tuiles.caDelta !== null ? { delta: tuiles.caDelta } : {})}
-          meta="Formations + audits · vs même période N-1"
+          meta="Formations + audits réalisés + contrats coaching signés · vs N-1"
         />
         <AdminStatCard
           label="Marge du mois en cours"
@@ -84,6 +95,15 @@ export function EnTetePilotage({
           href={`${base}/qualiopi/cockpit-financier`}
           meta="Sessions réalisées uniquement"
         />
+        {avecObjectif && objectif.cibleAnnuelleCents !== null ? (
+          <AdminStatCard
+            label="Objectif annuel"
+            value={objectif.pctAtteint !== null ? `${objectif.pctAtteint} %` : "—"}
+            icon={Target}
+            tone={objectif.pctAtteint !== null && objectif.pctAtteint >= 100 ? "success" : "info"}
+            meta={`de la cible · réalisé ${fmtEurosCents(objectif.realiseAnnuelCents)} / cible ${fmtEurosCents(objectif.cibleAnnuelleCents)}`}
+          />
+        ) : null}
       </div>
     </section>
   );
