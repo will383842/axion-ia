@@ -188,7 +188,7 @@ export function TraineeForm({
       </div>
 
       {/* Handicap (PII chiffré) */}
-      <div className="mt-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+      <div className="mt-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
         <label className={checkCls}>
           <input
             type="checkbox"

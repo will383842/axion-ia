@@ -369,7 +369,7 @@ export function DevisForm({
           {lignes.map((ligne, idx) => (
             <div
               key={idx}
-              className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)] sm:grid-cols-12"
+              className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:grid-cols-12"
             >
               {/* Désignation */}
               <div className="sm:col-span-5">

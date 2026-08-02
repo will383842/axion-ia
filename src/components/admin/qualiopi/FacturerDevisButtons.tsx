@@ -52,7 +52,7 @@ export function FacturerDevisButtons({
   const restant = totalDevisHtCents - dejaFactureHtCents;
 
   return (
-    <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+    <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
         Facturation
       </p>
@@ -71,7 +71,7 @@ export function FacturerDevisButtons({
             max={90}
             value={acomptePercent}
             onChange={(e) => setAcomptePercent(Number.parseInt(e.target.value, 10) || 30)}
-            className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] py-[var(--space-admin-1)]"
+            className="w-16 rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] py-[var(--space-admin-1)]"
           />
           %
         </label>

@@ -235,7 +235,7 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
             type="submit"
             disabled={row.idx === 0}
             aria-label="Monter"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronUp className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -247,7 +247,7 @@ export default async function PressReleasesListPage({ params, searchParams }: Pa
             type="submit"
             disabled={row.idx === rows.length - 1}
             aria-label="Descendre"
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] disabled:cursor-not-allowed disabled:opacity-40"
+            className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] text-[color:var(--color-admin-fg-soft)] hover:bg-[color:var(--color-admin-surface-hover)] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronDown className="h-4 w-4" aria-hidden="true" />
           </button>

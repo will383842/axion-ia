@@ -73,7 +73,7 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
           Aucun stagiaire enregistré. Créez le premier avec « Nouveau stagiaire ».
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>

@@ -211,7 +211,7 @@ export function PieceSignaturePanel({
                   type="button"
                   onClick={() => emettre(p)}
                   disabled={enCours}
-                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] disabled:opacity-40"
+                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] disabled:opacity-40"
                 >
                   Copier le lien
                 </button>
@@ -264,7 +264,7 @@ export function PieceSignaturePanel({
 
       {/* Lien émis — affiché UNE fois, non cliquable */}
       {lien !== null && (
-        <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]">
+        <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]">
           <p className={labelCls}>{`Lien pour ${lien.partie} — à transmettre`}</p>
           <input
             aria-label="Lien de signature (lecture seule)"

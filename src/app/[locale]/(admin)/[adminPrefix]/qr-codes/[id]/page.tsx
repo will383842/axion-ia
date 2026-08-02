@@ -59,7 +59,7 @@ export default async function EditQrCodePage({ params }: PageProps) {
           }}
         />
 
-        <aside className="flex flex-col items-center gap-4 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-6)]">
+        <aside className="flex flex-col items-center gap-4 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-6)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/qr/${link.slug}/svg`}

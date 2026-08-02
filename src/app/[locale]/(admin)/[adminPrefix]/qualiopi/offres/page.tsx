@@ -107,7 +107,7 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
 
       {offres.length === 0 ? (
         offresActives.length === 0 && referenceStatus ? (
-          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-5)]">
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
             <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
               Aucune offre. Initialisez le référentiel ci-dessous.
             </p>
@@ -119,7 +119,7 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
           </p>
         )
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>

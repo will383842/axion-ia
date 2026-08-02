@@ -44,7 +44,7 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="border-terracotta text-terracotta hover:bg-terracotta inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition hover:text-white"
+        className="border-terracotta text-terracotta hover:bg-terracotta inline-flex items-center gap-2 rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm font-medium transition hover:text-white"
       >
         + Ajouter un document
       </button>
@@ -66,7 +66,7 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
           name="title"
           required
           maxLength={200}
-          className="border-border focus:border-terracotta w-full rounded-md border px-3 py-2 text-sm outline-none"
+          className="border-border focus:border-terracotta w-full rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm outline-none"
           placeholder="Ex. Plaquette de présentation 2026"
         />
       </div>
@@ -79,7 +79,7 @@ export function ConsoleDocUploader({ section, allowSensitive = false }: Props): 
           id="cd-desc"
           name="description"
           maxLength={2000}
-          className="border-border focus:border-terracotta w-full rounded-md border px-3 py-2 text-sm outline-none"
+          className="border-border focus:border-terracotta w-full rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm outline-none"
         />
       </div>
 

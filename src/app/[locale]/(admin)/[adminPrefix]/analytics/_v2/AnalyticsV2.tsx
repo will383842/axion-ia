@@ -71,7 +71,7 @@ export function AnalyticsV2({
               src={plausibleShared}
               loading="lazy"
               title="Plausible Analytics dashboard"
-              className="mt-[var(--space-admin-3)] h-[1200px] w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]"
+              className="mt-[var(--space-admin-3)] h-[1200px] w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]"
             />
           </>
         ) : (

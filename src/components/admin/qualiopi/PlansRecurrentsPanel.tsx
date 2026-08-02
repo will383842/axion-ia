@@ -388,7 +388,7 @@ export function PlansRecurrentsPanel({
             {lignes.map((ligne, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)] sm:grid-cols-12"
+                className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)] sm:grid-cols-12"
               >
                 <div className="sm:col-span-6">
                   <label className={labelCls} htmlFor={`plan-ligne-${idx}-designation`}>
@@ -497,7 +497,7 @@ export function PlansRecurrentsPanel({
           {plans.map((p) => (
             <li
               key={p.id}
-              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]"
+              className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
             >
               <div className="flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
                 <span className="font-semibold">{p.clientRaisonSociale}</span>
@@ -508,7 +508,7 @@ export function PlansRecurrentsPanel({
                   {p.nbMaxFactures !== null ? ` · max ${p.nbMaxFactures}` : ""}
                   {` · ${p.nbFacturesGenerees} générée(s)`}
                 </span>
-                <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
+                <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
                   {STATUT_LABELS[p.statut] ?? p.statut}
                 </span>
               </div>

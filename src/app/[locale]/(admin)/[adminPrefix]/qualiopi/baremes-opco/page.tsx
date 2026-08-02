@@ -115,7 +115,7 @@ export default async function QualiopiBaremesOpcoPage({ params }: PageProps) {
           l&apos;absence de barème, l&apos;estimation OPCO utilise les plafonds Atlas par défaut.
         </p>
       ) : (
-        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -178,7 +178,7 @@ export default async function QualiopiBaremesOpcoPage({ params }: PageProps) {
           Aucune version enregistrée.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>

@@ -184,7 +184,7 @@ export function LiensEmargement({
             {liens.map((l) => (
               <li
                 key={l.enrollmentId}
-                className="flex flex-wrap items-center gap-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
+                className="flex flex-wrap items-center gap-[var(--space-admin-4)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]"
               >
                 {/* Bouton et non `<img onClick>` : agrandir le QR pour le projeter
                     doit être atteignable au clavier. */}

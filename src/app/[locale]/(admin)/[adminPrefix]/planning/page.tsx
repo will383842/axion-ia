@@ -268,7 +268,7 @@ export default async function PlanningPage({
                 <li key={e.key}>
                   <Link
                     href={planningDetailHref(adminPrefix, e)}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+                    className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
                   >
                     <span>
                       <span className="font-semibold">{planningTimeLabel(e)}</span> — {e.titre}

@@ -94,7 +94,7 @@ export function BpfDepenseForm({ annee, depenses }: BpfDepenseFormProps): React.
 
       {/* Liste des dépenses existantes */}
       {depenses.length > 0 ? (
-        <div className="mb-[var(--space-admin-5)] overflow-hidden rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-5)] overflow-hidden rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full text-[length:var(--text-admin-sm)]">
             <thead>
               <tr className="border-b border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)]">

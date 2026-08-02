@@ -732,7 +732,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
                       "Présence actée.",
                     )
                   }
-                  className="border-border rounded-md border px-2 py-0.5 text-xs disabled:opacity-50"
+                  className="border-border rounded-md border bg-[color:var(--color-admin-paper)] px-2 py-0.5 text-xs disabled:opacity-50"
                 >
                   Acter la présence
                 </button>

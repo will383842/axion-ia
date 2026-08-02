@@ -33,7 +33,7 @@ export function ImportTrainersButton(): React.ReactElement {
         type="button"
         onClick={run}
         disabled={pending}
-        className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+        className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-xs font-medium disabled:opacity-50"
       >
         {pending ? "Import en cours…" : "Importer les formateurs (fiches Qualiopi)"}
       </button>

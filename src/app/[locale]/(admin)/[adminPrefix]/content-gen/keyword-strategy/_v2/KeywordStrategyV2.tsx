@@ -224,7 +224,7 @@ export async function KeywordStrategyV2({
         {(vertical || intent || query) && (
           <a
             href={basePath}
-            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-4 py-1.5 text-sm text-[color:var(--color-admin-fg-muted)]"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-4 py-1.5 text-sm text-[color:var(--color-admin-fg-muted)]"
           >
             Réinitialiser
           </a>

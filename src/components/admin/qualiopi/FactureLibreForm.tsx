@@ -232,7 +232,7 @@ export function FactureLibreForm({ clients, basePath }: FactureLibreFormProps): 
           {lignes.map((ligne, idx) => (
             <div
               key={idx}
-              className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)] sm:grid-cols-12"
+              className="grid grid-cols-1 gap-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] sm:grid-cols-12"
             >
               <div className="sm:col-span-6">
                 <label className={labelCls} htmlFor={`fl-ligne-${idx}-designation`}>

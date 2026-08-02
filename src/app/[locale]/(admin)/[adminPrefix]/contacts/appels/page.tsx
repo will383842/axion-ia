@@ -205,7 +205,7 @@ export default async function AppelsPage({
                   <li key={r.key}>
                     <Link
                       href={r.detailHref}
-                      className="flex items-center justify-between rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
+                      className="flex items-center justify-between rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-3 hover:bg-[color:var(--color-admin-surface-hover)]"
                     >
                       <span>
                         <span className="font-semibold">

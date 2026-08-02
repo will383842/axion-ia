@@ -379,7 +379,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             ← Précédent
           </button>
@@ -389,7 +389,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             Suivant →
           </button>
