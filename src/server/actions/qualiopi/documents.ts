@@ -55,8 +55,7 @@ import { ConventionPdf } from "@/server/qualiopi/documents/templates/convention"
 import { ConventionTripartitePdf } from "@/server/qualiopi/documents/templates/convention-tripartite";
 import { ContratFormationPdf } from "@/server/qualiopi/documents/templates/contrat-formation";
 import { ConvocationPdf } from "@/server/qualiopi/documents/templates/convocation";
-import { EmargementPdf } from "@/server/qualiopi/documents/templates/emargement";
-import { construireFeuillePdf, LIBELLE_DEMI } from "@/server/qualiopi/emargement/feuille-pdf";
+import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
 import { PositionnementPdf } from "@/server/qualiopi/documents/templates/positionnement";
 import { GrilleEvaluationPdf } from "@/server/qualiopi/documents/templates/grille-evaluation";
 import { SatisfactionPdf } from "@/server/qualiopi/documents/templates/satisfaction";
@@ -788,109 +787,22 @@ export async function genererEmargementAction(input: {
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId } = parsed.data;
 
-  const session = await prisma.trainingSession.findUnique({
-    where: { id: sessionId },
-    select: {
-      id: true,
-      titreSession: true,
-      dateDebut: true,
-      modalite: true,
-      ...LIEU_DOCUMENT_SELECT,
-      enrollments: {
-        where: { statut: { notIn: ["exclu", "abandon"] } },
-        select: {
-          trainee: { select: { nom: true, prenom: true, entreprise: true } },
-        },
-      },
-    },
-  });
-  if (!session) return { error: "Session introuvable" };
-
-  const identite = await getOrganismeIdentite();
-  // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est désormais porté
-  // JOURNÉE PAR JOURNÉE par `construireFeuillePdf` (désistement, co-animation).
-  // Un nom unique en tête de feuille contredirait le tableau qui suit, et
-  // CAA Nantes 20/04/2021 sanctionne précisément les feuilles dont le formateur
-  // annoncé ne correspond pas à celui qui a animé.
-
-  const participants = session.enrollments.map((e) => ({
-    nom: `${e.trainee.prenom} ${e.trainee.nom}`.trim(),
-    ...(e.trainee.entreprise !== null && e.trainee.entreprise !== undefined
-      ? { entreprise: e.trainee.entreprise }
-      : {}),
-  }));
-
-  // 🔴 Les données viennent désormais de `session_jours` : horaires RÉELS,
-  // multi-jours, modules, formateur par journée, écart de signature et ancrage
-  // de chaîne. Le « 09h00–17h00 » codé en dur produisait une pièce fausse dès
-  // qu'une session durait plus d'un jour.
-  const feuille = await construireFeuillePdf(sessionId);
-  if (feuille === null || feuille.journees.length === 0) {
-    return {
-      error:
-        "Les journées de cette session ne sont pas déclarées. Renseignez-les avec leurs horaires réels : une feuille d'émargement sans horaires exacts est insuffisamment probante.",
-    };
-  }
-
-  const journees = feuille.journees.map((j) => ({
-    dateLisible: j.dateLisible,
-    horaires: j.horaires,
-    formateurNom: j.formateurNom,
-    modules: j.modules,
-    entetes: j.demiJournees.map((dj) => LIBELLE_DEMI[dj]),
-    lignes: j.lignes.map((l) => ({
-      nom: l.stagiaireNom,
-      entreprise: l.entreprise ?? "",
-      cases: l.cases.map((c) =>
-        c.signeAHeure === null
-          ? ""
-          : [
-              `Signé ${c.signeAHeure}`,
-              // Mitigation obligatoire de D13 : un écart de 40 h visible et
-              // assumé se défend, le même écart muet ne se défend pas.
-              c.ecart === null ? "" : `(${c.ecart})`,
-              c.surPosteFormateur ? "— poste formateur" : "",
-            ]
-              .filter(Boolean)
-              .join(" "),
-      ),
-      // Empreinte tronquée : de quoi recouper le registre sans rendre la
-      // feuille illisible.
-      ancrage:
-        l.empreinteTete === null ? "—" : `${l.nbSignatures} · ${l.empreinteTete.slice(0, 10)}`,
-    })),
-    // Une ligne par demi-journée contresignée : « Matin — Williams Jullin,
-    // signé 12h05 ». Le nom du formateur figuré est celui qui a CONTRESIGNÉ.
-    contresignatures: j.contresignatures.map(
-      (c) => `${LIBELLE_DEMI[c.demiJournee]} — ${c.formateurNom}, signé ${c.signeAHeure}`,
-    ),
-    // 🔴 H2 — demi-journées de CE jour SANS contresignature formateur. Une
-    // journée où seule la matinée est contresignée (co-animation « chacun la
-    // sienne ») était rendue comme complète : le trou de l'après-midi (signature
-    // formateur exigée, CAA Nantes 20/04/2021) était invisible à l'auditeur.
-    contresignaturesManquantes: j.demiJournees
-      // Le grain « journee » (créneau hérité d'un import, M4) n'est jamais
-      // contresigné — la contresignature se fait par demi-journée. Ne pas le
-      // compter comme « manquant », sinon faux « feuille incomplète » (L-C).
-      .filter((dj) => dj !== "journee" && !j.contresignatures.some((c) => c.demiJournee === dj))
-      .map((dj) => LIBELLE_DEMI[dj]),
-  }));
+  // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est porté JOURNÉE PAR
+  // JOURNÉE par `construireFeuillePdf` (désistement, co-animation). Un nom
+  // unique en tête de feuille contredirait le tableau qui suit, et CAA Nantes
+  // 20/04/2021 sanctionne précisément les feuilles dont le formateur annoncé ne
+  // correspond pas à celui qui a animé.
+  //
+  // Le contenu de la feuille est construit par `construireTirageEmargement`,
+  // partagé avec le TIRAGE à la demande (`/api/qualiopi/sessions/[id]/
+  // emargement`). Les deux voies doivent rendre exactement la même feuille :
+  // celle du registre est figée à l'émission, le tirage la rejoue à jour.
+  const tirage = await construireTirageEmargement(sessionId);
+  if (!tirage.ok) return { error: tirage.message };
 
   const doc = await generateDocument({
     type: "emargement",
-    buildElement: (numero) =>
-      React.createElement(EmargementPdf, {
-        data: {
-          numero,
-          intituleFormation: feuille.intituleFormation,
-          numeroSession: feuille.numeroSession,
-          lieu: resolveLieuDocument(session, identite),
-          nda: identite.nda,
-          journees,
-          totalSignatures: feuille.totalSignatures,
-        },
-        identite,
-      }),
+    buildElement: (numero) => tirage.element(numero),
     refs: { sessionId },
   });
 
@@ -898,7 +810,7 @@ export async function genererEmargementAction(input: {
     action: "qualiopi.document.emargement.genere",
     targetType: "TrainingSession",
     targetId: sessionId,
-    changes: { documentId: doc.id, numero: doc.numero, nbParticipants: participants.length },
+    changes: { documentId: doc.id, numero: doc.numero, nbParticipants: tirage.nbParticipants },
     session: adminSession,
   });
 

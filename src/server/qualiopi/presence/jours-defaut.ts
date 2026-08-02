@@ -75,6 +75,43 @@ export function horairesProposes(heures: number): { heureDebut: string; heureFin
 }
 
 /**
+ * Heures de formation EFFECTIVES d'une journée, déduites de ses horaires réels.
+ *
+ * Inverse exact de `horairesProposes` : on retranche la pause méridienne dès que
+ * l'amplitude dépasse celle d'une demi-journée majorée de la pause. En dessous,
+ * il n'y a pas de pause à retrancher — 09:00–13:00 fait bien 4 h de formation.
+ *
+ * 🔴 Utilité : `dureeReelleHeures` n'avait AUCUN écrivain côté sessions
+ * collectives (seule la clôture AFEST 1-to-1 l'écrivait). Elle restait donc nulle
+ * indéfiniment — la fiche session affichait « — h », le certificat de réalisation
+ * sortait sans durée, et toute ventilation horaire OPCO était refusée faute de
+ * durée. Les horaires, eux, étaient déjà déclarés dans `session_jours`.
+ */
+export function heuresEffectivesJournee(heureDebut: string, heureFin: string): number {
+  const amplitude = minutesDe(heureFin) - minutesDe(heureDebut);
+  if (!Number.isFinite(amplitude) || amplitude <= 0) return 0;
+  const seuilAvecPause = SEUIL_DEMI_JOURNEE_HEURES * 60 + PAUSE_MERIDIENNE_MIN;
+  const pause = amplitude > seuilAvecPause ? PAUSE_MERIDIENNE_MIN : 0;
+  return Number(((amplitude - pause) / 60).toFixed(2));
+}
+
+/**
+ * Durée totale de formation d'une session, somme de ses journées réellement
+ * animées. `null` quand aucune journée n'est déclarée : on ne substitue PAS la
+ * durée prévue au catalogue, qui n'est pas une constatation.
+ */
+export function heuresReellesDepuisJournees(
+  jours: ReadonlyArray<{ heureDebut: string; heureFin: string }>,
+): number | null {
+  if (jours.length === 0) return null;
+  const total = jours.reduce(
+    (acc, j) => acc + heuresEffectivesJournee(j.heureDebut, j.heureFin),
+    0,
+  );
+  return total > 0 ? Number(total.toFixed(2)) : null;
+}
+
+/**
  * Répartit une durée totale en journées de formation.
  *
  * 14 h → deux journées de 7 h. 10 h → une journée de 7 h et une demi-journée de

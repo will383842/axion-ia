@@ -214,6 +214,28 @@ export default async function EmargementPage({ params }: PageProps) {
         <DossierSessionButton sessionId={id} />
       </section>
 
+      {/* Section : tirage à jour de la feuille d'émargement.
+          🔴 La feuille du registre est figée à son émission — tirée AVANT la
+          session, comme l'usage le veut, elle porte « Signatures enregistrées au
+          tirage : 0 » à vie. Ce lien la rejoue avec les signatures réellement
+          recueillies, sans créer de pièce ni renuméroter. */}
+      <section className="mb-[var(--space-admin-8)]">
+        <h2 className={sectionHeadCls}>Feuille d&apos;émargement à jour</h2>
+        <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+          Réimpression de la feuille avec les signatures recueillies à cet instant. La pièce du
+          registre, elle, reste figée à sa date d&apos;émission : si vous l&apos;avez générée avant
+          la session, elle affiche une feuille vierge. C&apos;est ce tirage-ci qu&apos;il faut
+          joindre à une preuve de présence — il ne crée aucun document et ne renumérote rien.
+        </p>
+        <a
+          className="admin-button-secondary inline-flex"
+          href={`/api/qualiopi/sessions/${id}/emargement`}
+          rel="noopener"
+        >
+          Télécharger la feuille à jour (PDF)
+        </a>
+      </section>
+
       {/* Section : Grille émargement */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Feuille d&apos;émargement présentiel</h2>

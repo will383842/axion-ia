@@ -40,6 +40,7 @@ import { randomUUID } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { Prisma } from "../../../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
+import { resolveLegalIdentity } from "@/lib/legal-identity";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { storeSignatureImage, supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
@@ -403,9 +404,26 @@ async function resoudreIdentite(
   if (porteur.type === "organisme_authentifie") {
     const a = await habiliter(porteur.adminId);
     if (a === null) return { ok: false, raison: "identite_non_resolvable" };
+
+    // 🔴 Ce qui doit figurer au bas d'une convention, c'est la personne qui
+    // ENGAGE la société et sa QUALITÉ — pas le libellé du compte qui a cliqué.
+    // Le contreseing de la première convention réelle portait « Will (Super
+    // Admin) », sans qualité, face à un client correctement identifié
+    // (« Simone Blanc — Associée avec pouvoir d'engager la société ») : un rôle
+    // applicatif tenait lieu de qualité sociale, dans le cadre « Nom, qualité ».
+    //
+    // Le compte reste tracé par `recueilliParAdminId` : on sait toujours QUI a
+    // apposé la signature, tout en imprimant AU NOM DE QUI elle l'est.
+    const legal = await resolveLegalIdentity();
+    const nom = nettoyer(legal.representantNom) ?? a.nom;
     return {
       ok: true,
-      identite: { nom: a.nom, email: a.email, qualite: null, recueilliParAdminId: null },
+      identite: {
+        nom,
+        email: a.email,
+        qualite: nettoyer(legal.representantQualite),
+        recueilliParAdminId: porteur.adminId,
+      },
     };
   }
 

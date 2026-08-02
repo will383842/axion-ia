@@ -135,6 +135,8 @@ describe("buildLegalIdentitySections", () => {
     contactPhone: "+33 4 00 00 00 00",
     directorName: "Williams Jullin",
     directorTitle: "Président",
+    representantNom: "Williams Jullin",
+    representantQualite: "Président",
     dpoContact: "contact@axion-ia.com",
     addressStreet: "12 rue de l'IA",
     addressPostalCode: "38000",

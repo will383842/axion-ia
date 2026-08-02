@@ -50,6 +50,22 @@ export interface LegalIdentity {
   /** Qualité du directeur de la publication (ex. « Président »). */
   directorTitle: string;
   /**
+   * Personne physique qui ENGAGE la société sur une pièce contractuelle
+   * (convention, lettre de mission), et sa qualité.
+   *
+   * 🔴 Distinct du directeur de la publication, même si la même personne occupe
+   * les deux rôles aujourd'hui : l'un est une mention LCEN due sur le site,
+   * l'autre est la partie qui contracte. Les confondre marcherait tant qu'une
+   * seule personne dirige, et produirait une signature apposée par la mauvaise
+   * qualité le jour où ce n'est plus le cas — donc en repli seulement.
+   *
+   * Sans eux, le contreseing portait le libellé du COMPTE d'administration
+   * (« Will (Super Admin) ») là où le cadre demande « Nom, qualité » : un rôle
+   * applicatif tenait lieu de qualité sociale.
+   */
+  representantNom: string;
+  representantQualite: string;
+  /**
    * Contact du responsable de la protection des données (RGPD art. 13/14, 37-39).
    * Adresse à laquelle une personne exerce ses droits (accès, effacement,
    * opposition). Toujours renseigné (défaut = contact public). Une PME n'a pas
@@ -108,6 +124,8 @@ export const LEGAL_IDENTITY_DEFAULTS: LegalIdentity = {
   contactPhone: null,
   directorName: "Williams Jullin",
   directorTitle: "Président",
+  representantNom: "Williams Jullin",
+  representantQualite: "Président",
   dpoContact: "contact@axion-ia.com",
   addressStreet: null,
   addressPostalCode: null,
@@ -166,6 +184,10 @@ export async function resolveLegalIdentity(): Promise<LegalIdentity> {
     contactPhone: pick("contactPhone", "phone"),
     directorName: pick("directorName") ?? LEGAL_IDENTITY_DEFAULTS.directorName,
     directorTitle: pick("directorTitle") ?? LEGAL_IDENTITY_DEFAULTS.directorTitle,
+    representantNom:
+      pick("representantNom", "directorName") ?? LEGAL_IDENTITY_DEFAULTS.representantNom,
+    representantQualite:
+      pick("representantQualite", "directorTitle") ?? LEGAL_IDENTITY_DEFAULTS.representantQualite,
     dpoContact:
       pick("dpoContact", "dpoEmail", "privacyContact") ?? LEGAL_IDENTITY_DEFAULTS.dpoContact,
     addressStreet: pick("addressStreet"),

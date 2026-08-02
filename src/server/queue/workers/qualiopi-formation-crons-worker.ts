@@ -26,6 +26,7 @@ import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { assertSessionTransition } from "@/server/qualiopi/formations/state-machine";
+import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
 import {
   decideSessionTransitions,
   type SessionCronSnapshot,
@@ -85,6 +86,11 @@ async function applyTransitionInTx(
     from: TrainingSessionStatut;
     to: TrainingSessionStatut;
     trigger: string;
+    /**
+     * Durée réelle à figer, résolue AVANT la transaction (cf.
+     * `resoudreDureeReelleACloture`). `null` = ne rien écrire.
+     */
+    dureeReelleHeures?: number | null;
   },
 ): Promise<void> {
   await writeSessionTransition(tx, {
@@ -96,7 +102,14 @@ async function applyTransitionInTx(
   });
   await tx.trainingSession.update({
     where: { id: input.sessionId },
-    data: { statut: input.to },
+    data: {
+      statut: input.to,
+      // Même règle que la clôture MANUELLE (`sessions.ts`) : la durée réelle se
+      // fige au passage en « réalisée ». Écrite d'un seul côté, elle manquerait
+      // à toutes les sessions clôturées par le cron J+24 h — c'est-à-dire la
+      // majorité.
+      ...(input.dureeReelleHeures != null ? { dureeReelleHeures: input.dureeReelleHeures } : {}),
+    },
   });
 }
 
@@ -256,12 +269,15 @@ async function handleClotureAuto(): Promise<void> {
         }
       }
 
+      const dureeReelleHeures = await resoudreDureeReelleACloture(decision.sessionId);
+
       await prisma.$transaction(async (tx) => {
         await applyTransitionInTx(tx, {
           sessionId: decision.sessionId,
           from: decision.from,
           to: decision.to,
           trigger: "cron.cloture_auto_j24h",
+          dureeReelleHeures,
         });
       });
       applied++;
