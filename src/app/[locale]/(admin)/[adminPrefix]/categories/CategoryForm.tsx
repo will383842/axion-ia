@@ -314,7 +314,7 @@ export function CategoryForm({ parents, initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ {state.created ? "Catégorie créée" : "Catégorie mise à jour"}.
+          {state.created ? "Catégorie créée" : "Catégorie mise à jour"}.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

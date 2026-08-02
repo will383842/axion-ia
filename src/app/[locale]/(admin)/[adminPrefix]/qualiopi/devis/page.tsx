@@ -170,7 +170,7 @@ export default async function QualiopiDevisPage({ params }: PageProps) {
                         </span>
                       ) : devis.statut === "refuse" || devis.statut === "expire" ? (
                         <span className="text-[color:var(--color-admin-fg-muted)]">
-                          ✕ {STATUT_LABELS[devis.statut] ?? devis.statut}
+                          {STATUT_LABELS[devis.statut] ?? devis.statut}
                         </span>
                       ) : devis.statut === "envoye" ? (
                         <span className="text-[color:var(--color-admin-warning)]">

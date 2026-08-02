@@ -140,7 +140,7 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
 
         {/* ── Contact SIGNATAIRE ──
 
-            🔴 Sans adresse, aucun lien de signature n'est émissible pour le
+            Sans adresse, aucun lien de signature n'est émissible pour le
             contrat de sous-traitance — que l'indicateur 27 du RNQ exige signé.
             Le contrat reste signable sur papier, mais l'écran doit le dire ici,
             là où l'admin peut agir. */}

@@ -196,7 +196,7 @@ export function FAQForm({ initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ {state.created ? "Question créée" : "Question mise à jour"}.
+          {state.created ? "Question créée" : "Question mise à jour"}.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

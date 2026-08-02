@@ -182,7 +182,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
 
           {conformite.manquements.length === 0 ? (
             <p className="text-[length:var(--text-admin-sm)]">
-              ✅ Dossier complet — aucun manquement.
+              Dossier complet — aucun manquement.
             </p>
           ) : (
             <>
@@ -193,7 +193,7 @@ export default async function FicheFormateurPage({ params }: PageProps) {
                     {bloquants.length > 1 ? "s" : ""} — ce formateur ne devrait pas être affecté.
                   </strong>
                 ) : (
-                  <strong>✅ Aucun manquement bloquant.</strong>
+                  <strong>Aucun manquement bloquant.</strong>
                 )}
               </p>
 

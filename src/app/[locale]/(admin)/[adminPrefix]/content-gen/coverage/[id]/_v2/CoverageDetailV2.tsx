@@ -131,7 +131,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
           <div className="flex flex-wrap gap-[var(--space-admin-3)]">
             {campaign.status === "draft" ? (
               <form action={launch}>
-                <button type="submit" className="admin-button">▶️ Lancer</button>
+                <button type="submit" className="admin-button">Lancer</button>
               </form>
             ) : null}
             {campaign.status === "running" ? (
@@ -141,7 +141,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
             ) : null}
             {campaign.status === "paused" ? (
               <form action={resume}>
-                <button type="submit" className="admin-button">▶️ Reprendre</button>
+                <button type="submit" className="admin-button">Reprendre</button>
               </form>
             ) : null}
             {(campaign.status === "running" || campaign.status === "paused") && (
@@ -193,7 +193,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   className="admin-button-ghost"
                   title="Masquer de la liste par défaut — réversible"
                 >
-                  🗄️ Archiver
+                  Archiver
                 </button>
               </form>
             )}
@@ -203,7 +203,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                 title="Supprimer définitivement cette campagne"
                 className="admin-button-ghost admin-button-ghost-danger"
               >
-                🗑️ Supprimer
+                Supprimer
               </ConfirmSubmitButton>
             </form>
           </div>

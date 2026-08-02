@@ -98,7 +98,7 @@ export default async function AppelsPage({
       current={vue}
       options={[
         { value: "liste", label: "Liste", href: base },
-        { value: "calendrier", label: "🗓️ Calendrier", href: `${base}?vue=calendrier` },
+        { value: "calendrier", label: "Calendrier", href: `${base}?vue=calendrier` },
       ]}
     />
   );
@@ -110,7 +110,7 @@ export default async function AppelsPage({
     <div className="mt-[var(--space-admin-4)] rounded-lg border border-[color:var(--color-admin-warning-border)] bg-[color:var(--color-admin-warning-bg)] p-4 text-sm">
       {apiConfigured ? (
         <>
-          <p className="font-semibold">✅ Enrichissement Calendly actif.</p>
+          <p className="font-semibold">Enrichissement Calendly actif.</p>
           <p className="mt-2">
             Le nom, l&apos;email et l&apos;horaire sont récupérés automatiquement auprès de Calendly
             juste après la réservation. Si une ligne reste incomplète, ouvrez-la et utilisez

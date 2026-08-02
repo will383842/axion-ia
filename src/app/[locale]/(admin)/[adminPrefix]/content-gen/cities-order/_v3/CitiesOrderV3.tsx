@@ -425,7 +425,7 @@ function SortableRow({ row, isPinning, onTogglePin, style }: SortableRowProps): 
         aria-label={row.pinned ? `Désépingler ${row.villeSlug}` : `Épingler ${row.villeSlug}`}
         aria-pressed={row.pinned}
       >
-        {row.pinned ? "📌 Épinglée" : "Épingler"}
+        {row.pinned ? "Épinglée" : "Épingler"}
       </button>
     </div>
   );

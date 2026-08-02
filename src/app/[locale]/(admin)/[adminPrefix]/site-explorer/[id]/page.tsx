@@ -102,12 +102,12 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               rel="noopener noreferrer"
               className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
             >
-              🌐 Voir la page
+              Voir la page
             </a>
           )}
           {route.editable && route.editorRoute && (
             <a href={route.editorRoute} className="admin-button">
-              ✏️ Éditer
+              Éditer
             </a>
           )}
           {!route.editable && route.filePath && (
@@ -118,7 +118,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
               title="Page statique — voir le code source"
             >
-              📁 Code source
+              Code source
             </a>
           )}
           {isResolvable && (
@@ -127,7 +127,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                 type="submit"
                 className="rounded border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm hover:bg-[color:var(--color-admin-surface-sunken)]"
               >
-                🔄 Re-inspecter
+                Re-inspecter
               </button>
             </form>
           )}
@@ -160,11 +160,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             <Row
               label="AiDisclaimer"
               value={
-                route.hasAiDisclaimer === null
-                  ? "?"
-                  : route.hasAiDisclaimer
-                    ? "✅ Présent"
-                    : "❌ Absent"
+                route.hasAiDisclaimer === null ? "?" : route.hasAiDisclaimer ? "Présent" : "Absent"
               }
             />
             <Row
@@ -190,8 +186,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                 route.isIndexable === null
                   ? "— (non calculé)"
                   : route.isIndexable
-                    ? "✅ Indexable"
-                    : `🚫 Noindex — ${route.noindexReason ?? ""}`
+                    ? "Indexable"
+                    : `Noindex — ${route.noindexReason ?? ""}`
               }
             />
             <Row label="Catégorie" value={route.category ?? "—"} />
@@ -200,7 +196,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               label="Indexation GSC"
               value={
                 route.gscIndexationRequested
-                  ? `✅ Demandée${route.gscIndexationRequestedAt ? ` le ${new Date(route.gscIndexationRequestedAt).toLocaleDateString("fr-FR")}` : ""}`
+                  ? `Demandée${route.gscIndexationRequestedAt ? ` le ${new Date(route.gscIndexationRequestedAt).toLocaleDateString("fr-FR")}` : ""}`
                   : "Non demandée"
               }
             />

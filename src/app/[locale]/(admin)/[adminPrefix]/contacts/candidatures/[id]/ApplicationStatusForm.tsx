@@ -105,7 +105,7 @@ export function ApplicationStatusForm({
           {state.ok ? (
             <span role="status" className="admin-meta-small">
               {" "}
-              ✓ Mis à jour
+              Mis à jour
             </span>
           ) : state.error ? (
             <span role="alert" className="admin-meta-small">

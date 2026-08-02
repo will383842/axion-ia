@@ -207,7 +207,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
       )}
       {done && (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Modifications enregistrées.
+          Modifications enregistrées.
         </p>
       )}
 

@@ -221,7 +221,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             <input id="approve-notes" name="notes" className="admin-input" />
           </div>
           <button type="submit" className="admin-button">
-            ✅ Approuver (en ligne, non indexé)
+            Approuver (en ligne, non indexé)
           </button>
         </form>
 
@@ -231,7 +231,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             pourra apparaître dans les résultats de recherche une fois publié.
           </p>
           <button type="submit" className="admin-button">
-            🚀 Approuver + rendre visible sur Google
+            Approuver + rendre visible sur Google
           </button>
         </form>
 
@@ -252,7 +252,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             />
           </div>
           <button type="submit" className="admin-button-ghost">
-            ✏️ Demander des modifications
+            Demander des modifications
           </button>
         </form>
 
@@ -271,7 +271,7 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             />
           </div>
           <button type="submit" className="admin-button-ghost">
-            ❌ Rejeter
+            Rejeter
           </button>
         </form>
       </AdminCard>

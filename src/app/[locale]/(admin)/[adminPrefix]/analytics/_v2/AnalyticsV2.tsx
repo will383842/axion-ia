@@ -185,7 +185,7 @@ export function AnalyticsV2({
                 : "INDEXNOW_KEY absente — configurer côté Coolify env vars"
             }
           >
-            🔔 Notifier les moteurs maintenant
+            Notifier les moteurs maintenant
           </button>
         </form>
         <p className="admin-meta-small mt-[var(--space-admin-3)]">

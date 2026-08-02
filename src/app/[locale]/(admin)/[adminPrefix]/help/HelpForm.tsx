@@ -109,7 +109,7 @@ export function HelpForm({ categories, initial }: Props) {
               defaultChecked={initial?.isTutorial ?? false}
               disabled={pending}
             />
-            <span>📘 Tutoriel (balisage HowTo)</span>
+            <span>Tutoriel (balisage HowTo)</span>
           </label>
         </div>
       </div>
@@ -140,7 +140,7 @@ export function HelpForm({ categories, initial }: Props) {
 
       {state.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ {state.created ? "Article créé" : "Article mis à jour"}.
+          {state.created ? "Article créé" : "Article mis à jour"}.
         </p>
       ) : state.error ? (
         <p role="alert" className="admin-alert admin-alert-error">

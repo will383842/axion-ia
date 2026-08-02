@@ -27,7 +27,7 @@ export function ImageReviewActions({ imageId, module }: Props): React.ReactEleme
     <div className="flex flex-col gap-[var(--space-admin-4)]">
       {vState.ok ? (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Image validée — retirée de la file « Qualité ».
+          Image validée — retirée de la file « Qualité ».
         </p>
       ) : (
         <form action={vAction}>
@@ -38,7 +38,7 @@ export function ImageReviewActions({ imageId, module }: Props): React.ReactEleme
             </p>
           )}
           <button type="submit" disabled={busy} className="admin-button admin-button-validate">
-            {vPending ? "Validation…" : "✓ Valider"}
+            {vPending ? "Validation…" : "Valider"}
           </button>
         </form>
       )}
@@ -69,7 +69,7 @@ export function ImageReviewActions({ imageId, module }: Props): React.ReactEleme
       </form>
       {cState.ok && (
         <p role="status" className="admin-alert admin-alert-success">
-          ✓ Classement mis à jour.
+          Classement mis à jour.
         </p>
       )}
       {!cState.ok && cState.error && (

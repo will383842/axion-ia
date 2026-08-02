@@ -59,7 +59,7 @@ export async function ConsoleDocBucket({
                         title="Document sensible — accès durci"
                         className="rounded bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-[11px] font-medium text-[color:var(--color-admin-destructive-fg)]"
                       >
-                        🔒 sensible
+                        sensible
                       </span>
                     ) : null}
                   </div>

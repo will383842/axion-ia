@@ -65,7 +65,7 @@ export function AvisListV2({
             <span>
               {r.authorFirstName} {r.authorLastInitial}
             </span>
-            {r.isVerified ? <AdminBadge tone="success">✓ Vérifié</AdminBadge> : null}
+            {r.isVerified ? <AdminBadge tone="success">Vérifié</AdminBadge> : null}
             {r.featured ? <AdminBadge tone="neutral">★ Mis en avant</AdminBadge> : null}
           </div>
           <div className="admin-meta-small">

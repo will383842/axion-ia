@@ -73,7 +73,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
             className="admin-button-ghost"
             title="Export CSV de tous les jobs (10K max)"
           >
-            📥 Export CSV jobs
+            Export CSV jobs
           </a>
         }
       />
@@ -99,7 +99,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input w-[60px]"
             />
             <button type="submit" className="admin-button">
-              ✅ Approuver en masse (score ≥ min)
+              Approuver en masse (score ≥ min)
             </button>
           </form>
           <form action={doBulkReject} className="flex items-center gap-[var(--space-admin-2)]">
@@ -116,7 +116,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               className="admin-input w-[60px]"
             />
             <button type="submit" className="admin-button-ghost">
-              ❌ Rejeter en masse (score ≤ max)
+              Rejeter en masse (score ≤ max)
             </button>
           </form>
           <form action={doRetryFailed}>

@@ -55,7 +55,7 @@ export function NewsControlV2({
 
       {saved ? (
         <div role="status" className="admin-alert admin-alert-success mb-[var(--space-admin-4)]">
-          ✅ Réglages enregistrés.
+          Réglages enregistrés.
         </div>
       ) : null}
 

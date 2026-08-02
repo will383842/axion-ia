@@ -478,7 +478,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
         </AdminCard>
 
         <AdminCard>
-          <h2 className="admin-h2">⚙️ Réglages</h2>
+          <h2 className="admin-h2">Réglages</h2>
           <ul className="admin-quick-actions mt-[var(--space-admin-3)]">
             <li>
               <Link href={`${base}/settings/providers`}>Fournisseurs IA</Link>

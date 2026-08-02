@@ -312,7 +312,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         <h2 className={sectionHeadCls}>Mention TVA</h2>
         <p className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {/*
-            🔴 F25 — un devis sans mention n'est pas un devis sans régime : c'est
+            F25 — un devis sans mention n'est pas un devis sans régime : c'est
             le régime « assujetti », qui n'appelle aucune mention d'exonération.
             Laisser l'encart vide se lirait comme une donnée manquante, et
             pousserait à « corriger » en ajoutant une exonération non détenue.
@@ -349,7 +349,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                   >
                     <td className={cellCls}>
                       {ligne.designation}
-                      {/* 🔴 Le garde porte sur les DEUX formes, pas seulement le texte
+                      {/* Le garde porte sur les DEUX formes, pas seulement le texte
                           affiché : le laisser sur `offreTierId` seul ferait DISPARAÎTRE
                           la référence d'offre pour tout le catalogue V2 dès que les
                           nouvelles lignes cessent de renseigner ce champ. */}
@@ -421,7 +421,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                     ? " — confirmation nominative, sans tracé manuscrit"
                     : ""}
                 </p>
-                {/* 🔴 L'empreinte EN ENTIER : une empreinte tronquée ne se
+                {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
                     vérifie pas, et une preuve invérifiable n'en est pas une. */}
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
                   <code>{s.selfHash}</code>
@@ -431,7 +431,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           </ul>
         )}
 
-        {/* 🔴 L'organisme CONCLUT — il contresigne ce que le client a accepté.
+        {/* L'organisme CONCLUT — il contresigne ce que le client a accepté.
             Le bouton n'apparaît donc qu'une fois le client signataire : c'est la
             même règle que celle que l'action refuse côté serveur, et l'écran ne
             doit pas proposer ce que le serveur refusera. */}
@@ -450,7 +450,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           </p>
         )}
 
-        {/* 🔴 L'exemplaire signé — sans lui, la preuve n'existait QU'en base.
+        {/* L'exemplaire signé — sans lui, la preuve n'existait QU'en base.
             Le PDF remis au client et vu par l'auditeur continuait d'afficher des
             cadres vides, alors que la signature était enregistrée et chaînée.
 

@@ -46,10 +46,10 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
     const result = await forgetIpAction(formData);
     if (result.success) {
       setFeedback(
-        `✅ Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
+        `Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
       );
     } else {
-      setFeedback(`❌ Erreur : ${result.error}`);
+      setFeedback(`Erreur : ${result.error}`);
     }
   }
 

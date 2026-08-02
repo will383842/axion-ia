@@ -69,7 +69,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
               <AdminBadge tone={r.status === "published" ? "success" : "warning"}>
                 {STATUS_LABELS[r.status] ?? r.status}
               </AdminBadge>
-              {r.isVerified ? <AdminBadge tone="success">✓ Vérifié</AdminBadge> : null}
+              {r.isVerified ? <AdminBadge tone="success">Vérifié</AdminBadge> : null}
               {r.featured ? <AdminBadge tone="info">★ Mis en avant</AdminBadge> : null}
               <span className="admin-meta-small">Note : {r.rating}/5</span>
             </div>
@@ -189,14 +189,14 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 <form action={publishForm}>
                   <input type="hidden" name="id" value={r.id} />
                   <button type="submit" className="admin-button admin-button-block">
-                    ✅ Publier
+                    Publier
                   </button>
                 </form>
               ) : (
                 <form action={hideForm}>
                   <input type="hidden" name="id" value={r.id} />
                   <button type="submit" className="admin-button-ghost admin-button-block">
-                    🙈 Masquer
+                    Masquer
                   </button>
                 </form>
               )}
@@ -240,7 +240,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                     type="submit"
                     className="admin-button-ghost admin-button-block admin-button-ghost-danger"
                   >
-                    🗑 Supprimer définitivement
+                    Supprimer définitivement
                   </button>
                 </form>
               ) : null}

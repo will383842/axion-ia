@@ -11,7 +11,7 @@ export function ArchiveButton({ id }: { id: string }) {
   const [confirm, setConfirm] = useState(false);
 
   if (state.ok) {
-    return <span className="admin-alert admin-alert-success">✓ Archivée.</span>;
+    return <span className="admin-alert admin-alert-success">Archivée.</span>;
   }
   if (!confirm) {
     return (
