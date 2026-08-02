@@ -40,10 +40,11 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * 2026-08-02 — 292 occurrences dans 108 fichiers, après le chantier icônes de
- * navigation (PR 489) et la refonte visuelle (PR 488).
+ * 2026-08-02 — 278 occurrences dans 107 fichiers, après la sortie des emojis de
+ * « À traiter » et « Dossiers » (PR 490). Était 292 après le chantier icônes de
+ * navigation (PR 489).
  */
-const PLAFOND = 292;
+const PLAFOND = 278;
 
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
