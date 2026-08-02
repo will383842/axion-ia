@@ -261,6 +261,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
           )}
           <form action={handleSetNotes} className="space-y-2">
             <textarea
+              aria-label="Notes internes sur cette URL"
               name="notes"
               defaultValue={route.adminNotes ?? ""}
               rows={3}

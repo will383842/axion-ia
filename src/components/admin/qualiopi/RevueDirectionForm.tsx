@@ -72,8 +72,11 @@ export function RevueDirectionForm({ creerAction }: RevueDirectionFormProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
         {/* Année */}
         <div className={fieldCls}>
-          <label className={labelCls}>Année</label>
+          <label htmlFor="revuedirectionform-annee" className={labelCls}>
+            Année
+          </label>
           <input
+            id="revuedirectionform-annee"
             type="number"
             value={annee}
             onChange={(e) => setAnnee(Number(e.target.value))}
@@ -87,8 +90,11 @@ export function RevueDirectionForm({ creerAction }: RevueDirectionFormProps) {
 
         {/* Date revue */}
         <div className={fieldCls}>
-          <label className={labelCls}>Date de la revue</label>
+          <label htmlFor="revuedirectionform-date-de-la-revue" className={labelCls}>
+            Date de la revue
+          </label>
           <input
+            id="revuedirectionform-date-de-la-revue"
             type="date"
             value={dateRevue}
             onChange={(e) => setDateRevue(e.target.value)}
@@ -101,8 +107,11 @@ export function RevueDirectionForm({ creerAction }: RevueDirectionFormProps) {
 
       {/* Participants */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label className={labelCls}>Participants (un par ligne, facultatif)</label>
+        <label htmlFor="revuedirectionform-participants-un-par-ligne-facult" className={labelCls}>
+          Participants (un par ligne, facultatif)
+        </label>
         <textarea
+          id="revuedirectionform-participants-un-par-ligne-facult"
           value={participantsRaw}
           onChange={(e) => setParticipantsRaw(e.target.value)}
           disabled={isPending}

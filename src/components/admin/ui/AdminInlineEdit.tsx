@@ -103,8 +103,11 @@ export function AdminInlineEdit({
         className,
       )}
     >
-      {label ? <span className="sr-only">{label}</span> : null}
+      {/* Le libellé n'existait que comme TEXTE voisin en `sr-only` : lu par un
+          lecteur d'écran comme une phrase isolée, il ne nommait pas le champ
+          pour autant. Porté par `aria-label`, il devient le nom du contrôle. */}
       <input
+        {...(label ? { "aria-label": label } : {})}
         ref={inputRef}
         value={draft}
         onChange={(e) => setDraft(e.target.value)}

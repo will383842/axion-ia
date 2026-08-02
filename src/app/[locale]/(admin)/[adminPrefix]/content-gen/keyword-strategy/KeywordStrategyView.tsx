@@ -242,6 +242,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
       {/* Filtres */}
       <div className="flex flex-wrap gap-3">
         <select
+          aria-label="Filtrer par verticale"
           value={vertical}
           onChange={(e) => {
             setVertical(e.target.value);
@@ -258,6 +259,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
         </select>
 
         <select
+          aria-label="Filtrer par intention de recherche"
           value={intent}
           onChange={(e) => {
             setIntent(e.target.value);
@@ -274,6 +276,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
         </select>
 
         <input
+          aria-label="Rechercher un keyword..."
           type="text"
           placeholder="Rechercher un keyword..."
           value={query}

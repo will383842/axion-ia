@@ -146,8 +146,11 @@ export function IncidentRowActions({
         >
           <div className="flex flex-col gap-[var(--space-admin-3)]">
             <div>
-              <label className={labelCls}>Type</label>
+              <label htmlFor="incidentrowactions-type" className={labelCls}>
+                Type
+              </label>
               <select
+                id="incidentrowactions-type"
                 value={type}
                 onChange={(e) => setType(e.target.value as IncidentType)}
                 disabled={isPending}
@@ -161,8 +164,11 @@ export function IncidentRowActions({
               </select>
             </div>
             <div>
-              <label className={labelCls}>Gravité</label>
+              <label htmlFor="incidentrowactions-gravite" className={labelCls}>
+                Gravité
+              </label>
               <select
+                id="incidentrowactions-gravite"
                 value={gravite}
                 onChange={(e) => setGravite(e.target.value as IncidentGravite)}
                 disabled={isPending}
@@ -176,8 +182,14 @@ export function IncidentRowActions({
               </select>
             </div>
             <div>
-              <label className={labelCls}>Statut (résolu = date de résolution posée)</label>
+              <label
+                htmlFor="incidentrowactions-statut-resolu-date-de-resolution"
+                className={labelCls}
+              >
+                Statut (résolu = date de résolution posée)
+              </label>
               <select
+                id="incidentrowactions-statut-resolu-date-de-resolution"
                 value={statut}
                 onChange={(e) => setStatut(e.target.value as IncidentStatut)}
                 disabled={isPending}
@@ -191,8 +203,11 @@ export function IncidentRowActions({
               </select>
             </div>
             <div>
-              <label className={labelCls}>Titre</label>
+              <label htmlFor="incidentrowactions-titre" className={labelCls}>
+                Titre
+              </label>
               <input
+                id="incidentrowactions-titre"
                 type="text"
                 value={titre}
                 onChange={(e) => setTitre(e.target.value)}
@@ -203,8 +218,11 @@ export function IncidentRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Date de l&apos;incident</label>
+              <label htmlFor="incidentrowactions-date-de-lincident" className={labelCls}>
+                Date de l&apos;incident
+              </label>
               <input
+                id="incidentrowactions-date-de-lincident"
                 type="date"
                 value={dateIncident}
                 onChange={(e) => setDateIncident(e.target.value)}
@@ -214,8 +232,11 @@ export function IncidentRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Description</label>
+              <label htmlFor="incidentrowactions-description" className={labelCls}>
+                Description
+              </label>
               <textarea
+                id="incidentrowactions-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isPending}
@@ -224,8 +245,14 @@ export function IncidentRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Action corrective (alimente M9)</label>
+              <label
+                htmlFor="incidentrowactions-action-corrective-alimente-m9"
+                className={labelCls}
+              >
+                Action corrective (alimente M9)
+              </label>
               <textarea
+                id="incidentrowactions-action-corrective-alimente-m9"
                 value={actionCorrective}
                 onChange={(e) => setActionCorrective(e.target.value)}
                 disabled={isPending}

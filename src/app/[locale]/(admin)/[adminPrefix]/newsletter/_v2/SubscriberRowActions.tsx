@@ -73,6 +73,7 @@ export function SubscriberRowActions({
           >
             <input type="hidden" name="id" value={id} />
             <input
+              aria-label="Motif RGPD (obligatoire)"
               name="reason"
               required
               minLength={3}

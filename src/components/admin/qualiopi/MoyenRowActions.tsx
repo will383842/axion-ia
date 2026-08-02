@@ -128,8 +128,11 @@ export function MoyenRowActions({
         >
           <div className="flex flex-col gap-[var(--space-admin-3)]">
             <div>
-              <label className={labelCls}>Catégorie</label>
+              <label htmlFor="moyenrowactions-categorie" className={labelCls}>
+                Catégorie
+              </label>
               <select
+                id="moyenrowactions-categorie"
                 value={categorie}
                 onChange={(e) => setCategorie(e.target.value as MoyenCategorie)}
                 disabled={isPending}
@@ -143,8 +146,11 @@ export function MoyenRowActions({
               </select>
             </div>
             <div>
-              <label className={labelCls}>Libellé</label>
+              <label htmlFor="moyenrowactions-libelle" className={labelCls}>
+                Libellé
+              </label>
               <input
+                id="moyenrowactions-libelle"
                 type="text"
                 value={libelle}
                 onChange={(e) => setLibelle(e.target.value)}
@@ -155,8 +161,11 @@ export function MoyenRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Description</label>
+              <label htmlFor="moyenrowactions-description" className={labelCls}>
+                Description
+              </label>
               <textarea
+                id="moyenrowactions-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isPending}
@@ -165,8 +174,11 @@ export function MoyenRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Localisation</label>
+              <label htmlFor="moyenrowactions-localisation" className={labelCls}>
+                Localisation
+              </label>
               <input
+                id="moyenrowactions-localisation"
                 type="text"
                 value={localisation}
                 onChange={(e) => setLocalisation(e.target.value)}
@@ -176,8 +188,11 @@ export function MoyenRowActions({
               />
             </div>
             <div>
-              <label className={labelCls}>Vérifié le (vide = non vérifié)</label>
+              <label htmlFor="moyenrowactions-verifie-le-vide-non-verifie" className={labelCls}>
+                Vérifié le (vide = non vérifié)
+              </label>
               <input
+                id="moyenrowactions-verifie-le-vide-non-verifie"
                 type="date"
                 value={dateVerification}
                 onChange={(e) => setDateVerification(e.target.value)}

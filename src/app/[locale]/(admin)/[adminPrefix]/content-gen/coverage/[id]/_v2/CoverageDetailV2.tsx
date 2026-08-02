@@ -146,7 +146,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
             ) : null}
             {(campaign.status === "running" || campaign.status === "paused") && (
               <form action={addSlots} className="flex items-center gap-[var(--space-admin-2)]">
-                <input
+                <input aria-label="Nombre de villes à ajouter"
                   type="number"
                   name="delta"
                   defaultValue={50}

@@ -134,6 +134,7 @@ function EnrollmentRow({
         />
         {financementType === "opco" && (
           <input
+            aria-label="N° dossier OPCO"
             value={numeroDossierOpco}
             onChange={(e) => setNumeroDossierOpco(e.target.value)}
             disabled={isPending}

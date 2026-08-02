@@ -267,6 +267,7 @@ export function PieceSignaturePanel({
         <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]">
           <p className={labelCls}>{`Lien pour ${lien.partie} — à transmettre`}</p>
           <input
+            aria-label="Lien de signature (lecture seule)"
             readOnly
             value={lien.url}
             onFocus={(e) => e.currentTarget.select()}

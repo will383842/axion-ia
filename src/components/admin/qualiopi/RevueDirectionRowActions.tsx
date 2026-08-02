@@ -79,8 +79,11 @@ export function RevueDirectionRowActions({
       className="flex w-full max-w-sm flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]"
     >
       <div>
-        <label className={labelCls}>Date de la revue</label>
+        <label htmlFor="revuedirectionrowactions-date-de-la-revue" className={labelCls}>
+          Date de la revue
+        </label>
         <input
+          id="revuedirectionrowactions-date-de-la-revue"
           type="date"
           value={dateRevue}
           onChange={(e) => setDateRevue(e.target.value)}
@@ -90,8 +93,11 @@ export function RevueDirectionRowActions({
         />
       </div>
       <div>
-        <label className={labelCls}>Statut</label>
+        <label htmlFor="revuedirectionrowactions-statut" className={labelCls}>
+          Statut
+        </label>
         <select
+          id="revuedirectionrowactions-statut"
           value={statut}
           onChange={(e) => setStatut(e.target.value)}
           disabled={isPending}

@@ -255,8 +255,11 @@ export async function CitiesCoverageV2({
       <AdminCard className="mb-[var(--space-admin-4)]" variant="compact">
         <form method="GET" className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
           <div>
-            <label className="admin-label">Recherche</label>
+            <label htmlFor="citiescoveragev2-recherche" className="admin-label">
+              Recherche
+            </label>
             <input
+              id="citiescoveragev2-recherche"
               type="text"
               name="search"
               defaultValue={search ?? ""}
@@ -265,8 +268,11 @@ export async function CitiesCoverageV2({
             />
           </div>
           <div>
-            <label className="admin-label">Département</label>
+            <label htmlFor="citiescoveragev2-departement" className="admin-label">
+              Département
+            </label>
             <input
+              id="citiescoveragev2-departement"
               type="text"
               name="dept"
               defaultValue={deptCode ?? ""}
@@ -275,8 +281,11 @@ export async function CitiesCoverageV2({
             />
           </div>
           <div>
-            <label className="admin-label">État</label>
+            <label htmlFor="citiescoveragev2-etat" className="admin-label">
+              État
+            </label>
             <select
+              id="citiescoveragev2-etat"
               name="covered"
               className="admin-select"
               defaultValue={isCovered === true ? "oui" : isCovered === false ? "non" : ""}

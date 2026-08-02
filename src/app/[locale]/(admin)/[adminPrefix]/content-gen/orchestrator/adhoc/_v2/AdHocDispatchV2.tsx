@@ -81,8 +81,11 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
-          <label className="text-sm font-medium">Type de contenu</label>
+          <label htmlFor="adhocdispatchv2-type-de-contenu" className="text-sm font-medium">
+            Type de contenu
+          </label>
           <select
+            id="adhocdispatchv2-type-de-contenu"
             value={contentType}
             onChange={(e) => setContentType(e.target.value)}
             className="w-full rounded border px-3 py-2 text-sm"
@@ -97,8 +100,14 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Titre / mot-clé imposé (optionnel)</label>
+          <label
+            htmlFor="adhocdispatchv2-titre-mot-cle-impose-optionnel"
+            className="text-sm font-medium"
+          >
+            Titre / mot-clé imposé (optionnel)
+          </label>
           <input
+            id="adhocdispatchv2-titre-mot-cle-impose-optionnel"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -113,8 +122,11 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Ville (slug, optionnel)</label>
+          <label htmlFor="adhocdispatchv2-ville-slug-optionnel" className="text-sm font-medium">
+            Ville (slug, optionnel)
+          </label>
           <input
+            id="adhocdispatchv2-ville-slug-optionnel"
             type="text"
             value={anchorVilleSlug}
             onChange={(e) => setAnchorVilleSlug(e.target.value)}
@@ -125,8 +137,11 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Intention de recherche</label>
+          <label htmlFor="adhocdispatchv2-intention-de-recherche" className="text-sm font-medium">
+            Intention de recherche
+          </label>
           <select
+            id="adhocdispatchv2-intention-de-recherche"
             value={searchIntent}
             onChange={(e) => setSearchIntent(e.target.value)}
             className="w-full rounded border px-3 py-2 text-sm"
@@ -140,8 +155,11 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">ID de campagne (optionnel)</label>
+          <label htmlFor="adhocdispatchv2-id-de-campagne-optionnel" className="text-sm font-medium">
+            ID de campagne (optionnel)
+          </label>
           <input
+            id="adhocdispatchv2-id-de-campagne-optionnel"
             type="text"
             value={campaignId}
             onChange={(e) => setCampaignId(e.target.value)}

@@ -529,6 +529,7 @@ function QuickGenForm({
       <strong className="text-[length:var(--text-admin-sm)]">{label}</strong>
       {inputs.map((i) => (
         <input
+          aria-label={i.placeholder}
           key={i.name}
           type="text"
           name={i.name}
