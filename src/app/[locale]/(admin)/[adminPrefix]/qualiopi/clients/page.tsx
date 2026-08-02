@@ -175,15 +175,22 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     </span>
                   </td>
                   <td className={cellCls}>
-                    {/* 🔴 Le nom devient le lien d'ÉDITION. Sans point d'entrée,
-                        la page `[id]/edit` reproduirait exactement le défaut
-                        qu'elle corrige : du code de mise à jour que rien
-                        n'appelle. */}
+                    {/* Le nom ouvre la fiche 360° (vue d'ensemble : sessions,
+                        devis, factures, encours). L'édition garde son accès
+                        PROPRE juste à côté — la retirer referait de
+                        `[id]/edit` du code que rien n'appelle. */}
                     <Link
-                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}/edit`}
+                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
                       className="font-medium text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
                     >
                       {client.raisonSociale}
+                    </Link>{" "}
+                    <Link
+                      href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}/edit`}
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
+                      aria-label={`Modifier ${client.raisonSociale}`}
+                    >
+                      Éditer
                     </Link>
                     {client.contactEmail ? (
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
