@@ -40,6 +40,12 @@ const CODES_ATTENDUS: string[] = [
   "cv_formateur_perime",
   "sous_traitant_qualiopi_expire_j60",
   "sous_traitant_qualiopi_expire",
+  // Vigilance sous-traitance — art. 4 et 8 de la procédure signée. [2026-08-03]
+  "sous_traitant_contrat_cadre_manquant",
+  "sous_traitant_rc_pro_absente",
+  "sous_traitant_rc_pro_expiree",
+  "sous_traitant_rc_pro_expire_j60",
+  "sous_traitant_verification_annuelle_due",
   "opco_sans_accord",
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",

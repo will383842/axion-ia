@@ -172,6 +172,45 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
     resolutionAuto: false,
   },
+  // ── Vigilance sous-traitance (art. 4 et 8 de la procédure) [2026-08-03] ────
+  //
+  // 🔴 Le contrat-cadre est le SEUL de ces trois manques qui bloque l'indicateur
+  // 27 : sans lui, l'intervenant n'est pas compté comme conforme, quelles que
+  // soient ses autres pièces. D'où le niveau critique.
+  sous_traitant_contrat_cadre_manquant: {
+    niveau: "critique",
+    titre: "Sous-traitant sans contrat-cadre signé",
+    resolutionAuto: true,
+  },
+  // ⚠️ ABSENCE de RC pro = « important », pas « critique ». Décision Will du
+  // 2026-08-03 : la RC pro n'est PAS exigée à l'entrée, pour ne pas réduire le
+  // vivier d'intervenants. Une alerte critique permanente sur un état
+  // délibérément accepté apprendrait à ignorer les alertes critiques — et ce
+  // sont celles-là qui doivent faire réagir. Cf. PROCEDURE § 4.2.
+  sous_traitant_rc_pro_absente: {
+    niveau: "important",
+    titre: "Sous-traitant sans attestation RC pro",
+    resolutionAuto: true,
+  },
+  // 🔴 EXPIRATION, en revanche, est critique : l'attestation existait, elle a
+  // été acceptée, et elle est tombée. C'est une régression de vigilance, pas un
+  // état accepté.
+  sous_traitant_rc_pro_expiree: {
+    niveau: "critique",
+    titre: "Attestation RC pro sous-traitant expirée",
+    resolutionAuto: true,
+  },
+  sous_traitant_rc_pro_expire_j60: {
+    niveau: "important",
+    titre: "Attestation RC pro sous-traitant expire dans 60 jours",
+    resolutionAuto: true,
+  },
+  // Art. 8 : les pièces se revérifient annuellement. Rappel 30 jours avant.
+  sous_traitant_verification_annuelle_due: {
+    niveau: "important",
+    titre: "Vérification annuelle d'un sous-traitant à effectuer",
+    resolutionAuto: true,
+  },
 
   // ── OPCO / financement ────────────────────────────────────────────────────
   opco_sans_accord: {

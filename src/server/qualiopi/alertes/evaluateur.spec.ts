@@ -19,6 +19,8 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { findMany: vi.fn() },
     trainingSession: { findMany: vi.fn() },
     trainer: { findMany: vi.fn() },
+    // Vigilance sous-traitance : la règle couvre les DEUX natures. [2026-08-03]
+    sousTraitant: { findMany: vi.fn() },
     factureFormation: { findMany: vi.fn() },
     dossierFinancement: { findMany: vi.fn() },
     veille: { findFirst: vi.fn() },
@@ -73,6 +75,7 @@ const mp = prisma as unknown as {
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
+  sousTraitant: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   dossierFinancement: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
@@ -1429,5 +1432,77 @@ describe("evaluerAlertes — signatures_en_attente", () => {
     };
     expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
     expect(arg.where.updatedAt["lte"]).toBeInstanceOf(Date);
+  });
+});
+
+// ── Vigilance sous-traitance (R12 bis) ────────────────────────────────────
+//
+// Ces tests portent sur le NIVEAU des alertes, pas seulement sur leur
+// existence : c'est le niveau qui décide si Will réagit ou pas, et l'arbitrage
+// RC pro absente ≠ RC pro expirée est une décision métier (procédure § 4.2)
+// qu'une régression silencieuse effacerait.
+describe("vigilance sous-traitance", () => {
+  const CONFORME = {
+    id: "st-1",
+    nom: "Organisme X",
+    contratSigneAt: new Date("2026-01-10"),
+    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProAttestationUrl: "https://r2/rc.pdf",
+    prochaineVerifAt: new Date("2027-01-10"),
+  };
+
+  beforeEach(() => {
+    mp.sousTraitant.findMany.mockResolvedValue([]);
+    mp.trainer.findMany.mockResolvedValue([]);
+  });
+
+  it("ne lève RIEN pour un sous-traitant à jour", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([CONFORME]);
+    const a = await evaluerAlertes();
+    expect(a.filter((x) => x.code.startsWith("sous_traitant_rc_pro"))).toHaveLength(0);
+    expect(a.filter((x) => x.code === "sous_traitant_contrat_cadre_manquant")).toHaveLength(0);
+  });
+
+  it("contrat-cadre manquant = CRITIQUE — il bloque l'indicateur 27", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([{ ...CONFORME, contratSigneAt: null }]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_contrat_cadre_manquant");
+    expect(alerte?.niveau).toBe("critique");
+  });
+
+  it("RC pro ABSENTE = important, jamais critique (état délibérément accepté)", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([
+      { ...CONFORME, rcProAttestationUrl: null, rcProEcheanceAt: null },
+    ]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_rc_pro_absente");
+    expect(alerte?.niveau).toBe("important");
+    expect(alerte?.niveau).not.toBe("critique");
+  });
+
+  it("RC pro EXPIRÉE = critique — elle existait et elle est tombée", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([
+      { ...CONFORME, rcProEcheanceAt: new Date("2026-07-01") },
+    ]);
+    const a = await evaluerAlertes();
+    expect(a.find((x) => x.code === "sous_traitant_rc_pro_expiree")?.niveau).toBe("critique");
+  });
+
+  it("couvre AUSSI le formateur indépendant, pas seulement l'organisme", async () => {
+    mp.trainer.findMany.mockResolvedValue([
+      {
+        id: "tr-1",
+        nom: "Dupont",
+        prenom: "Marie",
+        sousTraitantContratSigneAt: null,
+        rcProEcheanceAt: null,
+        rcProAttestationUrl: null,
+        sousTraitantProchaineVerifAt: null,
+      },
+    ]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_contrat_cadre_manquant");
+    expect(alerte?.cibleType).toBe("Trainer");
+    expect(alerte?.message).toContain("Marie Dupont");
   });
 });
