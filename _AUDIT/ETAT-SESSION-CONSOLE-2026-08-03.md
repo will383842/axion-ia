@@ -13,7 +13,9 @@
 | **PR #527** `fix/console-lot2` | ✅ **fusionnée** (squash `241e2cca`, 33 commits), **déployée et vérifiée en production** (conteneurs sur `241e2cca`, gate Lighthouse passé) |
 | **PR #533** `fix/console-lot3` | ⏳ **ouverte**, 3 commits, gates en cours |
 | Revue du **code** | ✅ terminée — ~250 constats de 6 audits, tous traités |
-| Revue **à l'écran** | ⏳ ~50 vues sur 204 parcourues ; **~150 restent** |
+| Revue **à l'écran** | ✅ **terminée — 205 routes statiques sur 205** (2026-08-04) |
+| Routes **dynamiques** (57) | ✅ couvertes par analyse statique — le balayage écran ne peut pas les ouvrir sans donnée réelle |
+| Vérifications de bout en bout | ✅ deux passes complètes — voir §8 |
 | Kill switch content-gen | 🔴 **armé**, à raison — voir §5 |
 
 ### Branche de travail
@@ -195,3 +197,73 @@ d'activité ; un `UPDATE` SQL le contournerait), puis surveiller la première va
 - Conteneur web : `mqbmlz1bcwsdwi3t9fxsllqt-*` · worker : `oqj5ugdxvdsc4lyp4acr6wqd-*`
 - Build ≈ 25 min, déploiement ≈ 2 à 35 min, Gate C ≈ 35 min.
   **Fusionner EN LOT** : chaque fusion relance un build complet.
+
+---
+
+## 8. Fin de la revue (2026-08-04)
+
+### Le balayage à l'écran est terminé
+
+**205 routes statiques sur 205.** Méthode : depuis un onglet authentifié,
+`fetch(route, {credentials:"same-origin"})` puis extraction du texte de la
+charge RSC. Les pages admin étant lentes en concurrence, le balayage tourne
+**détaché** dans la page (`window.__go`) et on relève le résultat ensuite — un
+`await` direct dépasse le délai de 45 s du canal CDP.
+
+🔴 **Le balayage ne couvre PAS les 57 routes dynamiques** (`[id]`, `[slug]`) :
+il faut une donnée réelle pour les ouvrir. Elles ont été couvertes par analyse
+statique du code — et c'est là qu'ont été trouvés les statuts rendus bruts
+(planning, offre d'emploi, conversations du chatbot).
+
+### Le défaut le plus grave n'était pas un défaut d'affichage
+
+`/content-gen/settings/search-intent-distribution` affichait
+« Somme actuelle : NaN % ». La cause : l'alias `commercial` ↔
+`commercial_investigation` était **documenté mais jamais appliqué**.
+La configuration de production stocke `commercial_investigation` ; l'orchestrateur
+lit `intentDist.commercial`. **La part commerciale du mix d'intentions valait
+donc zéro à la génération** — le « NaN » n'était que la face visible du trou.
+
+Corollaire réparé au passage : `readContentGenConfig` renvoyait la ligne
+stockée sous un transtypage non vérifié, donc **les valeurs par défaut ne
+servaient QUE si la ligne était absente**, jamais si elle était mal formée.
+47 appels partagent cette lecture.
+
+> 🔴 **Leçon** : un « NaN » à l'écran n'est pas forcément un bug d'affichage.
+> Remonter jusqu'à la donnée.
+
+### Deux vérifications de bout en bout
+
+| Contrôle | Résultat |
+|---|---|
+| `typecheck` | ✅ |
+| `lint` | ✅ 0 erreur (36 avertissements préexistants) |
+| `prettier --end-of-line auto` sur les fichiers modifiés | ✅ |
+| `i18n` · `anti-siren` · `anti-hex` · `use-client` · `zod` · `contrast` · `radius` | ✅ |
+| `admin-nav:routes-check` · `content-gen:isolation-check` | ✅ |
+| Liens internes littéraux | ✅ aucun cassé (2 faux positifs vérifiés) |
+| Noms accessibles des champs | ✅ aucun manquant (44 faux positifs écartés) |
+| `catch {}` silencieux | ✅ aucun |
+| Cliquet anti-emoji | ✅ tient |
+| Suite de tests | 20 931 ✅ · **2 ❌** — voir ci-dessous |
+
+🔴 **Les 2 échecs sont un artefact LOCAL, pas une régression.**
+`src/app/api/calendly/client-event/__tests__/route.test.ts` ne bouchonne pas
+`enrichCalendlyEvent` : sur ma machine le cas passant met 9,8 s (chemin réseau)
+et entraîne le second. Fichier et route **identiques à `origin/main`**, aucune
+de leurs dépendances dans le diff, et **les quatre gates de la PR passent** —
+la CI exécute ce test.
+
+### Ce qui a été relevé sans être corrigé
+
+**Les tables de libellés sont massivement dupliquées** : `published: "Publié"`
+dans 11 fichiers, `draft: "Brouillon"` dans 10, `en_cours: "En cours"` dans 10.
+Chaque copie est aujourd'hui JUSTE — le risque est la dérive, pas une faute
+présente. Les seules consolidées sont celles qui avaient DÉJÀ divergé et causé
+un défaut (statut de facture, statut d'offre, statut de conversation, intention
+de recherche). Consolider les quarante autres est un chantier distinct, avec un
+vrai risque de régression pour un gain théorique.
+
+`image-bank:isolation-check` et `qualiopi:isolation-check` sont rouges — ils ne
+sont **pas** dans la CI (seul `content-gen:isolation-check` l'est). Rouges
+chroniques, sans lien avec ce travail.
