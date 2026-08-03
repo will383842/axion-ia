@@ -43,7 +43,7 @@ const TEMPLATES_REGLABLES: readonly string[] = [
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Qualiopi — Emails à valider | Axion-IA Admin",
+  title: "Qualiopi — E-mails à valider | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -139,7 +139,7 @@ export default async function EmailsAValiderPage({
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Emails à valider"
+        title="E-mails à valider"
         description="Les emails commerciaux attendent votre relecture avant de partir. La chaîne Qualiopi — convocation, rappel, questionnaires, attestation — part automatiquement et n'apparaît pas ici."
       />
 

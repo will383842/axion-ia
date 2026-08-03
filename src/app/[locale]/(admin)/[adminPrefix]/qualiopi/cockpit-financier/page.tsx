@@ -149,7 +149,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Cockpit financier formateurs"
-        description={`Marge (CA HT − coût formateur), heures animées et coût par session, formation et formateur — ${libellePeriode}. Sessions réalisées. Le coût formateur provient des lignes de rémunération (pilier C) : lancez le run mensuel de rémunération pour qu'il soit constaté.`}
+        description={`Marge (CA HT − coût formateur), heures animées et coût par session, formation et formateur — ${libellePeriode}. Sessions réalisées. Le coût formateur provient des lignes de rémunération : lancez le calcul mensuel des rémunérations pour qu'il soit constaté.`}
         actions={
           <CsvExportButton
             label="Exporter la marge (CSV)"
@@ -232,8 +232,13 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
       {nbSansCout > 0 && (
         <p className="mb-[var(--space-admin-6)] flex items-center gap-2 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
           <AlertTriangle className="h-4 w-4" aria-hidden />
-          {nbSansCout} session(s) réalisée(s) sans coût formateur calculé — la marge affichée est
-          surévaluée pour celles-ci. Lancez le run mensuel de rémunération pour les constater.
+          {/* « 1 session(s) réalisée(s) » : deux pluriels entre parenthèses dans
+              l'avertissement qui dit que le chiffre affiché juste au-dessus est
+              FAUX. Et « le run mensuel » — un anglicisme pour nommer l'action
+              corrective attendue de l'utilisateur. */}
+          {nbSansCout} session{nbSansCout > 1 ? "s" : ""} réalisée{nbSansCout > 1 ? "s" : ""} sans
+          coût formateur calculé — la marge affichée est donc surévaluée. Lancez le calcul mensuel
+          des rémunérations pour la corriger.
         </p>
       )}
 

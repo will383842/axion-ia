@@ -1117,7 +1117,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // écrans qu'on ouvre en début de journée.
     {
       href: `${base}/qualiopi/emails`,
-      label: "Emails à valider",
+      label: "E-mails à valider",
       icon: "MailCheck",
       group: "qualiopi",
       subGroup: "reglages_suivi",

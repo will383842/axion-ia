@@ -252,7 +252,7 @@ export function PieceSignaturePanel({
           className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
           {envoi.garePourValidation
-            ? `Préparé pour ${envoi.destinataire} — à relire et approuver dans « Emails à valider » avant départ.`
+            ? `Préparé pour ${envoi.destinataire} — à relire et approuver dans « E-mails à valider » avant départ.`
             : `Envoyé à ${envoi.destinataire}.`}
           {envoi.reemission && (
             <span className="block text-[color:var(--color-admin-fg-muted)]">
