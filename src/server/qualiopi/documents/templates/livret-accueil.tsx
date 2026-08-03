@@ -209,11 +209,29 @@ export function LivretAccueilPdf({
             troubles visuels ou auditifs, difficultés d'apprentissage…), notre référent handicap est
             à votre disposition pour étudier les aménagements nécessaires.
           </Text>
-          <FieldRow label="Référent handicap" value={identite.raisonSociale || "Axion-IA SAS"} />
+          {/*
+            🔴 Audit pré-visite 2026-08-03. Cette ligne affichait la RAISON SOCIALE
+            (« AXION IA SAS ») en guise de référent handicap, et l'unique contact
+            était l'e-mail général de l'organisme. Le stagiaire lisait donc
+            « Référent handicap : AXION IA SAS — contact@axion-ia.com » : une
+            société et une adresse générique, qui n'identifient personne.
+
+            L'indicateur 26 demande un référent IDENTIFIÉ et joignable, et
+            l'article L.6352-3 impose sa désignation — une désignation nomme une
+            personne. Le nom et le téléphone sont en configuration depuis toujours
+            (`referent_handicap_nom`, `referent_handicap_telephone`).
+
+            `fiche-adaptation.tsx` faisait déjà correctement les trois lignes ;
+            c'est ce modèle qu'on applique ici.
+          */}
           <FieldRow
-            label="Contact"
-            value={identite.referentHandicapEmail || identite.email || "—"}
+            label="Référent handicap"
+            value={identite.referentHandicapNom || identite.raisonSociale || "Axion-IA SAS"}
           />
+          <FieldRow label="Email" value={identite.referentHandicapEmail || identite.email || "—"} />
+          {identite.referentHandicapTelephone ? (
+            <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
+          ) : null}
           <Text style={[local.bodyText, { marginTop: 6, fontWeight: "bold" }]}>
             Nos partenaires et relais spécialisés
           </Text>
