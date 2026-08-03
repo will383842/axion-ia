@@ -89,7 +89,7 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Offres (référentiel)"
-        description="Catalogue des offres rattachables au Formation Engine. Le prix est dérivé de pricing.ts (source unique) — il n'est jamais saisi ici."
+        description="Catalogue des offres rattachables au Formation Engine. Le prix vient de la grille tarifaire du site — il ne se saisit jamais ici — il n'est jamais saisi ici."
         actions={<OffreRowActions mode="verify" verifyAction={verifyAllOffresCoherenceAction} />}
       />
 
@@ -128,7 +128,7 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
                 <th className={headCls}>Gamme</th>
                 <th className={headCls}>Format</th>
                 <th className={headCls}>Durée (h)</th>
-                <th className={headCls}>Prix (pricing.ts)</th>
+                <th className={headCls}>Prix (grille tarifaire)</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Action</th>
               </tr>

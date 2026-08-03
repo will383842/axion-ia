@@ -33,6 +33,13 @@ interface PageProps {
 const fmt = (d: Date | null) =>
   d ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium", timeStyle: "short" }).format(d) : "—";
 
+// La fiche affichait « Origine : form » — la valeur de colonne, pas son sens.
+const LIBELLE_ORIGINE: Record<string, string> = {
+  form: "Formulaire du site",
+  qr: "QR code d'un flyer",
+  manual: "Saisie manuelle",
+};
+
 export default async function PodcastRequestDetailPage({ params }: PageProps) {
   const { locale, adminPrefix, id } = await params;
   const session = await auth();
@@ -57,8 +64,8 @@ export default async function PodcastRequestDetailPage({ params }: PageProps) {
     ["Lieu du tournage", `${request.city} (${request.postalCode})`],
     ["Reçue le", fmt(request.createdAt)],
     ["Prise en charge le", fmt(request.handledAt)],
-    ["Origine", request.source],
-    ["Langue du formulaire", request.locale],
+    ["Origine", LIBELLE_ORIGINE[request.source] ?? request.source],
+    ["Langue du formulaire", request.locale === "fr" ? "Français" : "Anglais"],
   ];
 
   return (

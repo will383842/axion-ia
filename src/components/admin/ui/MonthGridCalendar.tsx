@@ -34,11 +34,34 @@ interface Props {
   days: ReadonlyArray<MonthGridDay>;
   /** « YYYY-MM-DD » du jour courant (mise en avant accent). */
   todayKey?: string;
+  /**
+   * Ce que compte la pastille, AU SINGULIER.
+   *
+   * 🔴 La pastille n'affichait qu'un chiffre nu — « 3 » — sans unité ni
+   * infobulle, et son nom accessible disait « 3 rendez-vous le 2026-08-03 » :
+   * un mot que la page voisine n'emploie nulle part (elle dit « prestations »)
+   * et une date en ISO. Le calendrier ne peut pas savoir ce qu'il compte ;
+   * l'appelant, si.
+   */
+  unitLabel?: string;
+}
+
+/** « 2026-08-03 » → « 3 août 2026 ». */
+function libelleJour(cle: string): string {
+  const d = new Date(`${cle}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return cle;
+  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(d);
 }
 
 const WEEKDAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 
-export function MonthGridCalendar({ year, month, days, todayKey }: Props): React.ReactElement {
+export function MonthGridCalendar({
+  year,
+  month,
+  days,
+  todayKey,
+  unitLabel = "élément",
+}: Props): React.ReactElement {
   const byKey = new Map(days.map((d) => [d.dayKey, d]));
   const cells = buildMonthGrid(year, month);
 
@@ -94,7 +117,10 @@ export function MonthGridCalendar({ year, month, days, todayKey }: Props): React
                 {dayNum}
               </span>
               {hasRdv && (
-                <span className="mt-auto inline-flex items-center self-start rounded-full bg-[color:var(--color-admin-id-bleu)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-white">
+                <span
+                  className="mt-auto inline-flex items-center self-start rounded-full bg-[color:var(--color-admin-id-bleu)] px-2 py-0.5 text-[length:var(--text-admin-xs)] font-semibold text-white"
+                  title={`${info?.count} ${unitLabel}${(info?.count ?? 0) > 1 ? "s" : ""}`}
+                >
                   {info?.count}
                 </span>
               )}
@@ -106,7 +132,7 @@ export function MonthGridCalendar({ year, month, days, todayKey }: Props): React
               key={key}
               href={info.href}
               className="block rounded-[var(--radius-admin-md)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] focus-visible:outline-none"
-              aria-label={`${info.count} rendez-vous le ${key}`}
+              aria-label={`${info.count} ${unitLabel}${info.count > 1 ? "s" : ""} le ${libelleJour(key)}`}
             >
               {inner}
             </Link>

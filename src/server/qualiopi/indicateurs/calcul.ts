@@ -131,14 +131,23 @@ export function computeTauxCompletion(
  *
  * Formule : AVG(dateDebut - createdAt) en jours entiers (arrondi à 1 décimale).
  * Si paires est vide : jours = 0.
+ *
+ * 🔴 CET INDICATEUR ÉTAIT LE SEUL SANS SEUIL DE PLAUSIBILITÉ. Vu à l'écran le
+ * 2026-08-03 : les trois taux portaient « en cours de constitution » sous les
+ * cinq observations, tandis que le délai d'accès affichait sa moyenne comme un
+ * fait — y compris quand elle reposait sur UNE session. Or c'est celui des
+ * quatre qu'un audit Qualiopi lit le plus directement (ind. 5), et une moyenne
+ * d'un seul point n'est pas une moyenne. Le même `SEUIL_FIABILITE` s'applique
+ * donc désormais aux quatre.
  */
 export function computeDelaiAccesMoyen(paires: Array<{ dateDebut: Date; createdAt: Date }>): {
   jours: number;
   nb: number;
+  fiable: boolean;
 } {
   const nb = paires.length;
   if (nb === 0) {
-    return { jours: 0, nb: 0 };
+    return { jours: 0, nb: 0, fiable: false };
   }
 
   const MS_PAR_JOUR = 1000 * 60 * 60 * 24;
@@ -150,5 +159,5 @@ export function computeDelaiAccesMoyen(paires: Array<{ dateDebut: Date; createdA
 
   const jours = Math.round((sommejours / nb) * 10) / 10;
 
-  return { jours, nb };
+  return { jours, nb, fiable: nb >= SEUIL_FIABILITE };
 }

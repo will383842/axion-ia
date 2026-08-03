@@ -22,10 +22,9 @@ export default async function settingsPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="settings"
-      description="Section settings (image-bank V1)."
+      title="Réglages"
+      description="Paramètres de la banque d images."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

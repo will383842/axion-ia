@@ -34,6 +34,13 @@ interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
 }
 
+// Le sous-titre affichait « source widget » : la valeur de colonne.
+const LIBELLE_SOURCE: Record<string, string> = {
+  widget: "réservé depuis le site",
+  manual: "saisi manuellement",
+  api: "importé depuis Calendly",
+};
+
 export default async function AppelDetailPage({ params }: PageProps): Promise<React.ReactElement> {
   const { adminPrefix, id } = await params;
   const event = await prisma.calendlyEvent.findUnique({ where: { id } });
@@ -52,7 +59,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
     <>
       <AdminPageHeader
         title={`Appel réservé · ${event.eventTypeName}`}
-        description={`Capturé le ${formatDateFr(event.capturedAt)} · source ${event.source}`}
+        description={`Capturé le ${formatDateFr(event.capturedAt)} · ${LIBELLE_SOURCE[event.source] ?? event.source}`}
         breadcrumbs={
           <Link href={backHref} className="admin-link admin-back">
             ← Appels réservés
@@ -119,7 +126,7 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
         <div className="admin-card">
           <h2 className="admin-h2">Métadonnées</h2>
           <dl className="admin-dl">
-            <dt className="admin-dt">Slug du type</dt>
+            <dt className="admin-dt">Identifiant du type de rendez-vous</dt>
             <dd className="admin-dd">
               <code className="text-xs">{event.eventTypeSlug}</code>
             </dd>
@@ -215,8 +222,17 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
         </div>
 
         <div className="admin-card admin-card-wide">
-          <h2 className="admin-h2">Données Calendly brutes</h2>
-          <pre className="admin-json text-xs">{JSON.stringify(event.rawPayload, null, 2)}</pre>
+          {/* La charge utile brute de Calendly est légitimement technique — elle
+              sert à comprendre un cas litigieux. Elle n'a pas à s'imposer en
+              pleine page pour autant. */}
+          <details>
+            <summary className="admin-h2 cursor-pointer select-none">
+              Données Calendly brutes
+            </summary>
+            <pre className="admin-json mt-[var(--space-admin-3)] text-xs">
+              {JSON.stringify(event.rawPayload, null, 2)}
+            </pre>
+          </details>
         </div>
       </div>
     </>

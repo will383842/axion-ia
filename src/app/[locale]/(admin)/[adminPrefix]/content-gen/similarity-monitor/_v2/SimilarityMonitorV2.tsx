@@ -7,29 +7,24 @@ import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/u
 export function SimilarityMonitorV2(): React.ReactElement {
   return (
     <AdminPageShell>
+      {/* 🔴 CETTE PAGE MONTRAIT SON PLAN DE DÉVELOPPEMENT à qui l'ouvrait :
+          « § 25.5 couche C v1.7 », « arrivent Sprint 4 », le nom d'une table
+          Prisma, un chemin de fichier source, et des backticks Markdown rendus
+          littéralement. Trois cartes pour dire qu'il n'y a rien à voir. Elle
+          reste dans la navigation — la protection anti-doublon EXISTE en amont
+          de la génération —, mais elle dit ce qu'elle fait, pas comment elle
+          sera écrite. */}
       <AdminPageHeader
-        title="Anti-doublon (similarity monitor)"
-        description="§ 25.5 couche C v1.7. Worker cron quotidien + table SimilarityPair arrivent Sprint 4."
+        title="Détection de doublons"
+        description="Deux protections agissent déjà AVANT la génération : aucune page identique n’est relancée, et un contenu trop proche d’un existant est refusé."
       />
 
-      <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Statut V1</h2>
-        <ul className="admin-meta-block">
-          <li>Couche A — Idempotency key sur ContentGenJob (livré — Sprint 1)</li>
-          <li>Couche B — Dedup-guard pré-IA (livré — Sprint 1 `quality/dedup-guard.ts`)</li>
-          <li>
-            Couche C — Surveillance similarité cosine + Jaccard post-publi (à venir — Sprint 4 cron{" "}
-            <code>04:30</code> + table <code>SimilarityPair</code>)
-          </li>
-        </ul>
-      </AdminCard>
-
       <AdminCard>
-        <h2 className="admin-h2">Top paires les plus similaires (Sprint 4)</h2>
+        <h2 className="admin-h2">Surveillance des contenus publiés</h2>
         <p className="admin-meta-block">
-          Une fois Sprint 4 livré, ce tableau listera les 100 paires (cosine, Jaccard) les plus
-          similaires avec bulk actions « archiver le moins performant » / « fusionner avec 301 » / «
-          ignorer la paire ».
+          La comparaison des contenus DÉJÀ publiés entre eux n’est pas encore active. Quand elle le
+          sera, les paires les plus proches apparaîtront ici, avec de quoi archiver, fusionner ou
+          ignorer chaque paire.
         </p>
       </AdminCard>
     </AdminPageShell>

@@ -247,3 +247,47 @@ export function moduleToSurfaceCategory(module: Module): SurfaceCategory {
   if (module === "ville") return "villes-regions";
   return "interventions-formations";
 }
+
+/**
+ * 🔴 LES ÉCRANS DE LA BANQUE D'IMAGES AFFICHAIENT L'IDENTIFIANT TECHNIQUE.
+ * La vignette de la bibliothèque disait « un-a-un · score 72 · publié », la
+ * vue d'ensemble et la fiche détail la même chose — alors que `MODULE_LABELS_FR`
+ * existe juste au-dessus et dit « Accompagnement 1-to-1 ». Le champ était
+ * nullable, ce qui interdisait l'indexation directe : c'est probablement
+ * pourquoi personne n'avait branché la table.
+ *
+ * Une valeur inconnue est CITÉE, jamais remplacée par un tiret : un module
+ * ajouté au schéma sans être nommé ici doit se voir, pas disparaître.
+ */
+export function libelleModule(module: string | null | undefined): string {
+  if (module === null || module === undefined || module === "") return "—";
+  return (MODULE_LABELS_FR as Record<string, string>)[module] ?? `« ${module} »`;
+}
+
+/** Origine d'une image. Valeurs relevées dans le code d'import et d'ingestion. */
+const SOURCE_TYPE_LABELS_FR: Record<string, string> = {
+  photo: "Photographie",
+  illustration: "Illustration",
+  ai_generated: "Générée par IA",
+  logo: "Logo",
+  local: "Fichier local",
+};
+
+export function libelleTypeSource(type: string | null | undefined): string {
+  if (type === null || type === undefined || type === "") return "—";
+  return SOURCE_TYPE_LABELS_FR[type] ?? `« ${type} »`;
+}
+
+/** Licences employées. La valeur par défaut du schéma est `cc-by-4.0`. */
+const LICENCE_LABELS_FR: Record<string, string> = {
+  "cc-by-4.0": "Creative Commons BY 4.0",
+  "cc-by-sa-4.0": "Creative Commons BY-SA 4.0",
+  "cc0-1.0": "Creative Commons Zéro (domaine public)",
+  proprietary: "Propriété d'Axion-IA",
+  "all-rights-reserved": "Tous droits réservés",
+};
+
+export function libelleLicence(licence: string | null | undefined): string {
+  if (licence === null || licence === undefined || licence === "") return "—";
+  return LICENCE_LABELS_FR[licence] ?? licence;
+}

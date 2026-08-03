@@ -108,6 +108,13 @@ function PastillesEvent({ e }: { e: PlanningEvent }) {
   );
 }
 
+/** Clé de jour ISO (« 2026-08-03 ») → « 3 août 2026 ». */
+function dateLongue(cle: string): string {
+  const d = new Date(`${cle}T12:00:00`);
+  if (Number.isNaN(d.getTime())) return cle;
+  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(d);
+}
+
 export default async function PlanningPage({
   params,
   searchParams,
@@ -255,11 +262,19 @@ export default async function PlanningPage({
         </div>
       )}
 
-      <MonthGridCalendar year={year} month={month} days={days} todayKey={dayKeyInParis(now)} />
+      <MonthGridCalendar
+        year={year}
+        month={month}
+        days={days}
+        todayKey={dayKeyInParis(now)}
+        unitLabel="prestation"
+      />
 
       {selectedDate !== null && (
         <div className="mt-[var(--space-admin-6)]">
-          <h2 className="admin-h2">Prestations du {selectedDate}</h2>
+          {/* 🔴 `selectedDate` est une clé de jour ISO (`dayKeyInParis`, format
+              en-CA) : le titre affichait « Prestations du 2026-08-03 ». */}
+          <h2 className="admin-h2">Prestations du {dateLongue(selectedDate)}</h2>
           {dayEvents.length === 0 ? (
             <p className="text-[color:var(--color-admin-fg-muted)]">Aucune prestation ce jour.</p>
           ) : (
@@ -275,7 +290,9 @@ export default async function PlanningPage({
                       <span className="text-[color:var(--color-admin-fg-muted)]">
                         {" "}
                         · {PLANNING_TYPE_LABELS[e.type]}
-                        {e.formateurNom !== null ? ` · ${e.formateurNom}` : " · formateur ?"}
+                        {e.formateurNom !== null
+                          ? ` · ${e.formateurNom}`
+                          : " · formateur à assigner"}
                         {e.clientNom !== null ? ` · ${e.clientNom}` : ""}
                         {e.lieu !== null ? ` · ${e.lieu}` : ""}
                       </span>

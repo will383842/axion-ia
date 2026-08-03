@@ -21,6 +21,15 @@ interface Props {
 }
 
 // Track 2 : tonalité du badge dérivée du statut de batch.
+// La colonne « Statut » affichait running / completed / cancelled bruts.
+const STATUT_LOT_LABELS: Record<string, string> = {
+  pending: "En attente",
+  running: "En cours",
+  completed: "Terminé",
+  cancelled: "Annulé",
+  failed: "En échec",
+};
+
 const STATUS_TONE: Record<string, "success" | "warning" | "destructive" | "neutral"> = {
   done: "success",
   completed: "success",
@@ -57,15 +66,25 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
     {
       key: "status",
       header: "Statut",
-      cell: (b) => <AdminBadge tone={STATUS_TONE[b.status] ?? "neutral"}>{b.status}</AdminBadge>,
+      cell: (b) => (
+        <AdminBadge tone={STATUS_TONE[b.status] ?? "neutral"}>
+          {STATUT_LOT_LABELS[b.status] ?? b.status}
+        </AdminBadge>
+      ),
     },
   ];
 
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Batches géographiques"
-        description={`${batches.length} batch${batches.length > 1 ? "es" : ""} (scope région/dépt/multi)`}
+        title="Lots géographiques"
+        // Le compteur est plafonné par la requête (take: 50) : au-delà, il
+        // annoncerait « 50 » quel que soit le nombre réel de lots.
+        description={
+          batches.length === 50
+            ? "Les 50 lots les plus récents — par région, département ou zone multiple"
+            : `${batches.length} lot${batches.length > 1 ? "s" : ""} — par région, département ou zone multiple`
+        }
         actions={
           <Link href={`${base}/new`} className="admin-button">
             + Nouveau batch

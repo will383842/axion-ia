@@ -91,7 +91,7 @@ export default async function QrCodesListPage({ params, searchParams }: PageProp
       key: "status",
       header: "Statut",
       align: "center",
-      cell: (r) => (r.active ? "Actif" : "⏸️ Off"),
+      cell: (r) => (r.active ? "Actif" : "Désactivé"),
     },
   ];
 

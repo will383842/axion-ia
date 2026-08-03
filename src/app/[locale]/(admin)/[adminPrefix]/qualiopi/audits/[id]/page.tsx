@@ -15,6 +15,7 @@ import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { AuditManagePanel } from "@/components/admin/qualiopi/AuditManagePanel";
 import { getAuditMission } from "@/server/qualiopi/audits/audit-missions-queries";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
+import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -91,7 +92,7 @@ export default async function AuditDetailPage({ params }: PageProps) {
           </div>
           <div>
             <dt className="admin-muted">OPCO</dt>
-            <dd>{audit.opcoStatut}</dd>
+            <dd>{libellerStatutOpco(audit.opcoStatut)}</dd>
           </div>
           <div>
             <dt className="admin-muted">Ville</dt>

@@ -11,11 +11,21 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { SubscriberRowActions } from "./SubscriberRowActions";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CheckCircle2, Hourglass, MailX } from "lucide-react";
+
+const SOURCE_LABELS: Record<string, string> = {
+  footer: "Pied de page",
+  "blog-cta": "Encart en fin d'article",
+  "exit-intent": "Fenêtre de sortie",
+  homepage: "Page d'accueil",
+  ressources: "Page Ressources",
+  manual: "Ajout manuel",
+};
 
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
@@ -76,7 +86,7 @@ export function NewsletterV2({
       cell: (s) => formatDateFrShort(s.createdAt),
     },
     { key: "email", header: "Email", cell: (s) => s.email },
-    { key: "locale", header: "Locale", cell: (s) => s.locale.toUpperCase() },
+    { key: "locale", header: "Langue", cell: (s) => s.locale.toUpperCase() },
     {
       key: "status",
       header: "Statut",
@@ -86,7 +96,13 @@ export function NewsletterV2({
         </AdminBadge>
       ),
     },
-    { key: "source", header: "Source", cell: (s) => s.source ?? "—" },
+    {
+      key: "source",
+      header: "Source",
+      // La colonne affichait l'identifiant interne posé par le formulaire
+      // d'inscription : « footer », « blog-cta », « exit-intent ».
+      cell: (s) => (s.source === null ? "—" : (SOURCE_LABELS[s.source] ?? s.source)),
+    },
     {
       key: "confirmedAt",
       header: "Confirmé le",
@@ -242,6 +258,26 @@ export function NewsletterV2({
           caption="Liste des abonnés newsletter"
         />
       )}
+
+      {/* 🔴 LA PAGINATION ÉTAIT CALCULÉE MAIS JAMAIS RENDUE (audit du code,
+          2026-08-03). Le composant recevait `page` et `totalPages`, les
+          affichait dans le sous-titre — « page 1/12 » — et n'offrait AUCUN
+          moyen d'aller à la page 2. Onze pages d'abonnés n'étaient atteignables
+          qu'en éditant l'URL à la main. Les filtres sont préservés dans les
+          liens, sinon changer de page réinitialiserait la recherche en cours. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/newsletter`}
+        preservedParams={{
+          status: sp["status"],
+          locale: sp["locale"],
+          source: sp["source"],
+          search: sp["search"],
+          dateFrom: sp["dateFrom"],
+          dateTo: sp["dateTo"],
+        }}
+      />
     </AdminPageShell>
   );
 }

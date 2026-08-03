@@ -44,7 +44,7 @@ export function BatchGenerationButton({
       } else {
         setSucces(
           result.data.enfilees > 0
-            ? `${result.data.enfilees} formation(s) enfilée(s) pour génération.`
+            ? `${result.data.enfilees} formation${result.data.enfilees > 1 ? "s" : ""} enfilée${result.data.enfilees > 1 ? "s" : ""} pour génération.`
             : "Aucune formation relançable à enfiler.",
         );
         setConfirming(false);

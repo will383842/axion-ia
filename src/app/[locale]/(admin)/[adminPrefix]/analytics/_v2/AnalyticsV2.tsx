@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { IndexNowPingButton, type PingResult } from "./IndexNowPingButton";
 
 type Status = "ok" | "not-configured";
 
@@ -23,7 +24,9 @@ interface Props {
   plausibleApi: string;
   verifications: ReadonlyArray<VerificationCard>;
   indexNowConfigured: boolean;
-  pingAction: () => Promise<void>;
+  pingAction: () => Promise<PingResult>;
+  /** Chemins réellement notifiés — dérivés de la liste envoyée. */
+  pagesNotifiees: ReadonlyArray<string>;
 }
 
 function statusPill(status: Status, label?: string) {
@@ -39,6 +42,7 @@ export function AnalyticsV2({
   verifications,
   indexNowConfigured,
   pingAction,
+  pagesNotifiees,
 }: Props): React.ReactElement {
   return (
     <AdminPageShell>
@@ -77,7 +81,7 @@ export function AnalyticsV2({
         ) : (
           <>
             <p className="admin-meta-block">
-              {statusPill("not-configured")} Embed dashboard non configuré.
+              {statusPill("not-configured")} Tableau de bord intégré non configuré.
             </p>
             <p className="admin-meta-block">
               <strong>Comment activer ?</strong> Ouvrir{" "}
@@ -164,7 +168,7 @@ export function AnalyticsV2({
         </p>
         <p className="admin-meta-block">
           {indexNowConfigured ? statusPill("ok", "● Clé configurée") : statusPill("not-configured")}{" "}
-          · Endpoint forwarder : <code>POST /api/indexnow</code> · Clé exposée :{" "}
+          · Adresse de transmission : <code>POST /api/indexnow</code> · Clé exposée :{" "}
           <a
             href="/api/indexnow/key"
             target="_blank"
@@ -174,50 +178,58 @@ export function AnalyticsV2({
             /api/indexnow/key ↗
           </a>
         </p>
-        <form action={pingAction}>
-          <button
-            type="submit"
-            className="admin-button"
-            disabled={!indexNowConfigured}
-            title={
-              indexNowConfigured
-                ? "Notifier les 10 pages stratégiques aux moteurs IndexNow"
-                : "INDEXNOW_KEY absente — configurer côté Coolify env vars"
-            }
-          >
-            Notifier les moteurs maintenant
-          </button>
-        </form>
+        <IndexNowPingButton
+          action={pingAction}
+          disabled={!indexNowConfigured}
+          titre={
+            indexNowConfigured
+              ? `Prévenir les moteurs que ces ${pagesNotifiees.length} pages ont changé`
+              : "La clé de notification n'est pas configurée sur le serveur"
+          }
+        />
+        {/* 🔴 CETTE LISTE ÉTAIT FAUSSE. Elle annonçait « /reserver, /book »
+            alors que les URLs réellement envoyées sont `/fr/appel` et
+            `/en/book-a-call`. Écrite à la main, elle a cessé de suivre le code
+            le jour où les routes ont été renommées. Elle est désormais DÉRIVÉE
+            de la liste effectivement notifiée : elle ne peut plus mentir. */}
         <p className="admin-meta-small mt-[var(--space-admin-3)]">
-          Pages notifiées : homepage FR+EN, /interventions FR+EN, /reserver, /book, méthodologie,
-          comparer, stack-ia, centre-aide.
+          Pages notifiées ({pagesNotifiees.length}) : {pagesNotifiees.join(" · ")}
         </p>
       </AdminCard>
 
+      {/* 🔴 CETTE CARTE ÉTAIT DE LA DOCUMENTATION DÉVELOPPEUR : un bloc de
+          code TypeScript, un nom de module et un chemin d'import, sur un écran
+          d'administration. Elle est repliée — l'information reste, elle ne
+          s'impose plus à qui vient lire des chiffres. */}
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Events Plausible custom</h2>
-        <p className="admin-meta-block">
-          Pour mesurer les conversions (clic CTA, soumission booking, téléchargement
-          mentions/sous-processeurs, etc.), utilise le helper côté client :
-        </p>
-        <pre className="admin-meta-block overflow-x-auto">
-          <code>{`import { trackEvent } from "@/components/analytics/Plausible";
+        <details>
+          <summary className="admin-h2 cursor-pointer select-none">
+            Mesurer une conversion (pour l’équipe technique)
+          </summary>
+          <p className="admin-meta-block">
+            Les conversions (clic sur un bouton d’appel à l’action, envoi d’un formulaire,
+            téléchargement) se déclarent côté site avec le raccourci suivant :
+          </p>
+          <pre className="admin-meta-block overflow-x-auto">
+            <code>{`import { trackEvent } from "@/components/analytics/Plausible";
 
 trackEvent("Booking Submitted", {
   props: { intervention: "audit", tier: "approfondie", ville: "Paris" },
 });`}</code>
-        </pre>
-        <p className="admin-meta-block">
-          Les events apparaissent dans Plausible → onglet <em>Goals</em>. Aucun bandeau cookies
-          requis (Plausible CNIL-exempté : pas de PII, pas de fingerprint).
-        </p>
+          </pre>
+          <p className="admin-meta-block">
+            Elles apparaissent ensuite dans Plausible, onglet <em>Goals</em>. Aucun bandeau cookies
+            n’est requis : Plausible ne pose ni identifiant ni empreinte.
+          </p>
+        </details>
       </AdminCard>
 
       <AdminCard>
         <h2 className="admin-h2">Pour suivre quoi, où ?</h2>
         <ul className="admin-meta-block">
           <li>
-            <strong>Trafic, sources, pages, pays, devices</strong> → Plausible (section ci-dessus).
+            <strong>Trafic, sources, pages, pays, appareils</strong> → Plausible (section
+            ci-dessus).
           </li>
           <li>
             <strong>Mots-clés Google + couverture indexation</strong> → Google Search Console.

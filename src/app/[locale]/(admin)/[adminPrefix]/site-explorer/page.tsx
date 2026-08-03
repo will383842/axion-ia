@@ -22,6 +22,7 @@ import type {
   SiteRouteStatus,
   SiteRouteQuality,
 } from "../../../../../../prisma/generated/client";
+import { TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +87,12 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
               href={anomaliesUrl}
               className="flex items-center gap-1.5 rounded-lg bg-[color:var(--color-admin-destructive-soft)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-destructive-fg)] hover:bg-[color:var(--color-admin-destructive-soft)]"
             >
-              ⚠️ {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
             </a>
           )}
           <DiscoverButton />
@@ -99,6 +105,18 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
           </a>
         </div>
       </div>
+
+      {sp.erreur ? (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {sp.erreur}
+        </p>
+      ) : sp.lance ? (
+        <p role="status" className="admin-alert admin-alert-success">
+          {sp.lance === "inspection"
+            ? "Inspection lancée — les résultats arriveront dans quelques minutes."
+            : "Découverte lancée — le catalogue sera à jour dans quelques minutes."}
+        </p>
+      ) : null}
 
       {/* Stats */}
       <SiteExplorerStats stats={stats} />
@@ -120,11 +138,23 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
   );
 }
 
-// Bouton trigger inspection HTTP — Server Action directement dans la page
+/**
+ * 🔴 CES DEUX BOUTONS NE DISAIENT RIEN. Les actions renvoient
+ * `{ success, error }` — « Queue BullMQ non disponible », par exemple — et la
+ * page jetait le résultat. Comme le travail est asynchrone, rien ne change à
+ * l'écran non plus : un clic réussi et un clic échoué produisaient exactement
+ * la même chose, c'est-à-dire rien. On repart donc avec le verdict dans l'URL,
+ * lu en tête de page.
+ */
 function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
   async function handleScanAll() {
     "use server";
-    await triggerScanAll();
+    const r = await triggerScanAll();
+    redirect(
+      r.success
+        ? `${adminPath("fr", "site-explorer")}?lance=inspection`
+        : `${adminPath("fr", "site-explorer")}?erreur=${encodeURIComponent(r.error ?? "L'inspection n'a pas pu être lancée.")}`,
+    );
   }
 
   return (
@@ -144,7 +174,12 @@ function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
 function DiscoverButton() {
   async function handleDiscover() {
     "use server";
-    await triggerDiscovery();
+    const r = await triggerDiscovery();
+    redirect(
+      r.success
+        ? `${adminPath("fr", "site-explorer")}?lance=decouverte`
+        : `${adminPath("fr", "site-explorer")}?erreur=${encodeURIComponent(r.error ?? "La découverte n'a pas pu être lancée.")}`,
+    );
   }
 
   return (

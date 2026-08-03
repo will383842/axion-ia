@@ -23,6 +23,7 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { BatchGenerationButton } from "@/components/admin/qualiopi/BatchGenerationButton";
 import { enqueueBatchGenerationAction } from "@/server/actions/qualiopi/engine";
 import { prisma } from "@/lib/prisma";
+import { ETAPE_GENERATION_LABELS } from "@/server/qualiopi/formation-engine/labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -30,18 +31,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-/** Libellés humains pour les statuts de génération. */
-const GENERATION_LABELS: Record<string, string> = {
-  intention: "Intention",
-  structure_generee: "Structure générée",
-  contenu_evalue: "Contenu évalué",
-  structure_validee: "Structure validée",
-  contenu_genere: "Contenu généré",
-  contenu_valide: "Contenu validé",
-  assemble: "Assemblé",
-  publie: "Publié",
-  archive: "Archivé",
-};
+const GENERATION_LABELS = ETAPE_GENERATION_LABELS;
 
 /** Couleur admin selon l'étape */
 function statutColor(statut: string): string {
@@ -73,6 +63,7 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
     coutCumuleUsd: number;
     nbValidationsEnAttente: number;
   }> = [];
+  let lectureEchouee = false;
 
   try {
     const rows = await prisma.formation.findMany({
@@ -103,7 +94,14 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
       nbValidationsEnAttente: f.fileValidations.length,
     }));
   } catch {
-    // Stub-aware : dégradé silencieux au build
+    // Stub-aware : dégradé silencieux au build.
+    //
+    // 🔴 MAIS PAS SILENCIEUX À L'ÉCRAN. Ce `catch` avale aussi bien la panne de
+    // lecture en production que le stub de build : dans les deux cas la page
+    // affichait « Aucune formation. Créez une formation depuis le catalogue » —
+    // un incident présenté comme un catalogue vide, et une invitation à
+    // recréer ce qui existe déjà.
+    lectureEchouee = true;
   }
 
   const enCours = formations.filter(
@@ -111,6 +109,10 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
   ).length;
   const validationsEnAttente = formations.reduce((acc, f) => acc + f.nbValidationsEnAttente, 0);
   const coutTotal = formations.reduce((acc, f) => acc + f.coutCumuleUsd, 0);
+
+  // Les trois tuiles ne portent que sur les lignes chargées (take: 100) : on le
+  // dit, plutôt que de laisser croire à un total.
+  const plafondAtteint = formations.length === 100;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -144,6 +146,12 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
         />
       </div>
 
+      {plafondAtteint ? (
+        <p className="admin-meta-small mb-[var(--space-admin-5)]">
+          Ces trois chiffres portent sur les 100 formations les plus récemment modifiées.
+        </p>
+      ) : null}
+
       {/* Génération en lot — lance le catalogue relançable (ex. les 17) en un clic */}
       <div className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-4)]">
         <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]">
@@ -171,7 +179,12 @@ export default async function FormationEngineDashboardPage({ params }: PageProps
         </div>
       )}
 
-      {formations.length === 0 ? (
+      {lectureEchouee ? (
+        <p role="alert" className="admin-alert admin-alert-error">
+          Les formations n&apos;ont pas pu être chargées. Ce n&apos;est pas un catalogue vide :
+          réessayez dans un instant, et prévenez l&apos;équipe technique si cela persiste.
+        </p>
+      ) : formations.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
           Aucune formation. Créez une formation depuis le catalogue, puis lancez la génération.
         </p>

@@ -6,7 +6,7 @@
 // GSC. Appelle les server actions et rafraîchit via router.refresh().
 
 import Link from "next/link";
-import { Globe, Pencil, Check, Copy } from "lucide-react";
+import { Check, Copy, Globe, Pencil, TriangleAlert } from "lucide-react";
 import { useState, useTransition, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
@@ -127,7 +127,9 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
         <label className="flex cursor-pointer items-center gap-2">
           <input type="checkbox" checked={allSelected} onChange={toggleAll} className="rounded" />
           <span className="text-[color:var(--color-admin-fg-muted)]">
-            {selected.size > 0 ? `${selected.size} sélectionnée(s)` : "Tout sélectionner"}
+            {selected.size > 0
+              ? `${selected.size} sélectionnée${selected.size > 1 ? "s" : ""}`
+              : "Tout sélectionner"}
           </span>
         </label>
         {selected.size > 0 && (
@@ -237,11 +239,15 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               <Link
                 href={adminPath("fr", `site-explorer/${route.id}`)}
                 className="admin-link block truncate font-mono text-xs"
+                title={displayPath}
               >
                 {displayPath}
               </Link>
               {route.metaTitle && (
-                <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">
+                <p
+                  className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]"
+                  title={route.metaTitle ?? ""}
+                >
                   {route.metaTitle}
                 </p>
               )}
@@ -291,7 +297,12 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
 
               {anomalyCount > 0 && (
                 <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-destructive-fg)]">
-                  ⚠️ {anomalyCount}
+                  <TriangleAlert
+                    size={14}
+                    aria-hidden="true"
+                    className="inline-block shrink-0 align-[-0.125em]"
+                  />{" "}
+                  {anomalyCount}
                 </span>
               )}
             </div>

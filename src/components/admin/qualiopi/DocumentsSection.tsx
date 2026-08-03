@@ -51,6 +51,7 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { DocumentType } from "../../../../prisma/generated/client";
+import { TriangleAlert } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -661,7 +662,15 @@ function EnrollmentDocButton({
       } else {
         // attestation : resultat = complete | partielle | aucune
         const r = result.data as { resultat: string; documentId: string | null };
-        msg = `Attestation : ${r.resultat}${r.documentId ? ` (doc ${r.documentId.slice(0, 8)})` : ""}.`;
+        // Le résultat sortait en enum, suivi de huit caractères d'UUID nu :
+        // « Attestation : partielle (doc 3f2a91bc). » Ni l'un ni l'autre ne
+        // dit ce qui a été produit ni pourquoi.
+        const RESULTAT_ATTESTATION: Record<string, string> = {
+          complete: "Attestation complète générée.",
+          partielle: "Attestation partielle générée — présence insuffisante.",
+          aucune: "Aucune attestation : les conditions ne sont pas remplies.",
+        };
+        msg = RESULTAT_ATTESTATION[r.resultat] ?? `Attestation : « ${r.resultat} ».`;
       }
       setSuccess(msg);
       onDone(msg);
@@ -709,7 +718,12 @@ function EnrollmentDocButton({
           role="status"
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
         >
-          ⚠️ {warning}
+          <TriangleAlert
+            size={14}
+            aria-hidden="true"
+            className="inline-block shrink-0 align-[-0.125em]"
+          />{" "}
+          {warning}
         </p>
       )}
     </div>

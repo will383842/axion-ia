@@ -137,7 +137,7 @@ export default async function PressOverviewPage({ params }: PageProps) {
               Voir le kit média
             </Link>
             <Link href={`${base}/kit-media/upload`} className="admin-button-secondary">
-              + Uploader
+              + Ajouter un fichier
             </Link>
           </div>
         </AdminCard>

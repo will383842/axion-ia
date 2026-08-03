@@ -9,6 +9,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { setQualiopiConfigAction } from "@/server/actions/qualiopi/config";
+import { TriangleAlert } from "lucide-react";
 
 export interface ConfigField {
   key: string;
@@ -66,7 +67,9 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
       if (errors.length > 0) {
         setError(errors.join(" | "));
       } else {
-        setSuccessMsg(`${changed.length} paramètre(s) enregistré(s).`);
+        setSuccessMsg(
+          `${changed.length} paramètre${changed.length > 1 ? "s" : ""} enregistré${changed.length > 1 ? "s" : ""}.`,
+        );
         router.refresh();
       }
     });
@@ -100,7 +103,12 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
               {f.key}
               {f.isFallback && (
                 <span className="ml-[var(--space-admin-1)] text-[color:var(--color-admin-warning-fg)]">
-                  ⚠ libellé non traduit — à ajouter dans labels.ts
+                  <TriangleAlert
+                    size={14}
+                    aria-hidden="true"
+                    className="inline-block shrink-0 align-[-0.125em]"
+                  />{" "}
+                  libellé non défini pour ce paramètre
                 </span>
               )}
             </span>

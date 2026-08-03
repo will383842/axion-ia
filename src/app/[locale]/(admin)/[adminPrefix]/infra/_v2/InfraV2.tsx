@@ -25,9 +25,9 @@ interface Props {
 
 function statusPill(status: Status) {
   const labels: Record<Status, string> = {
-    ok: "● UP",
+    ok: "● En ligne",
     degraded: "● Dégradé",
-    down: "● DOWN",
+    down: "● Hors service",
     "not-configured": "○ Non configuré",
     unknown: "? Inconnu",
     "not-checked": "○ Non vérifié automatiquement",

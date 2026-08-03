@@ -249,11 +249,13 @@ export function JobOfferForm({ initial }: Props) {
             className="admin-input"
             disabled={pending}
           >
-            <option value="FULL_TIME">FULL_TIME</option>
-            <option value="PART_TIME">PART_TIME</option>
-            <option value="CONTRACTOR">CONTRACTOR</option>
-            <option value="INTERN">INTERN</option>
-            <option value="TEMPORARY">TEMPORARY</option>
+            {/* Les VALEURS sont imposées par schema.org (Google Jobs les lit
+                telles quelles) ; seuls les libellés se traduisent. */}
+            <option value="FULL_TIME">Temps plein</option>
+            <option value="PART_TIME">Temps partiel</option>
+            <option value="CONTRACTOR">Prestataire / freelance</option>
+            <option value="INTERN">Stage / alternance</option>
+            <option value="TEMPORARY">CDD / intérim</option>
           </select>
         </div>
         <div className="admin-field">

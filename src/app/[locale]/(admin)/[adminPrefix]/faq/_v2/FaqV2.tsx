@@ -15,6 +15,7 @@ import {
   AdminBadge,
   AdminEmptyState,
   AdminButton,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 
@@ -76,7 +77,7 @@ export function FaqV2({
     { key: "question", header: "Question (FR)", cell: (f) => f.questionFr },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (f) => <code className="admin-meta-small">{f.slug}</code>,
       hiddenBelow: "md",
     },
@@ -188,6 +189,22 @@ export function FaqV2({
           )}
         />
       )}
+
+      {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
+          nulle part à l'écran : au-delà de la première, les lignes
+          n'étaient atteignables qu'en éditant l'URL. Les filtres en cours
+          sont reportés dans les liens — sinon changer de page les
+          effacerait, et on repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/faq`}
+        preservedParams={{
+          status: sp["status"],
+          search: sp["search"],
+          category: sp["category"],
+        }}
+      />
     </AdminPageShell>
   );
 }

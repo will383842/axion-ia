@@ -67,7 +67,7 @@ export function EscaladesV2({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Escalades"
-        description={`Questions sans réponse remontées par le chatbot — ${total} ${currentStatut === "ouverte" ? "ouverte(s)" : "au total"}.`}
+        description={`Questions sans réponse remontées par le chatbot — ${total} ${currentStatut === "ouverte" ? `ouverte${total > 1 ? "s" : ""}` : "au total"}.`}
       />
 
       <AdminCard className="mb-[var(--space-admin-4)]">

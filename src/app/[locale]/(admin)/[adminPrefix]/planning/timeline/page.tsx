@@ -89,7 +89,8 @@ function LigneTimeline({
           </Link>
         )}
         <span className="admin-muted ml-[var(--space-admin-2)] tabular-nums">
-          {ligne.joursOccupes} j · {ligne.nbPrestations} prest.
+          {ligne.joursOccupes} j · {ligne.nbPrestations} prestation
+          {ligne.nbPrestations > 1 ? "s" : ""}
         </span>
       </th>
 
@@ -154,9 +155,11 @@ export default async function PlanningTimelinePage({
   return (
     <>
       <AdminPageHeader
-        title="Timeline ressources"
-        description={`${MONTHS[month - 1]} ${year} · ${lignes.length} ligne(s)${
-          nonStaffees > 0 ? ` · ${nonStaffees} prestation(s) sans formateur` : ""
+        title="Occupation des formateurs"
+        description={`${MONTHS[month - 1]} ${year} · ${lignes.length} formateur${lignes.length > 1 ? "s" : ""}${
+          nonStaffees > 0
+            ? ` · ${nonStaffees} prestation${nonStaffees > 1 ? "s" : ""} sans formateur`
+            : ""
         }`}
       />
 

@@ -92,11 +92,11 @@ export function ImportCatalogFormationsButton(): React.ReactElement {
         >
           <p className="text-[color:var(--color-admin-success)]">
             {report.created > 0
-              ? `${report.created} formation(s) créée(s).`
+              ? `${report.created} formation${report.created > 1 ? "s" : ""} créée${report.created > 1 ? "s" : ""}.`
               : "Catalogue déjà à jour."}{" "}
             {report.synced > 0 && (
               <span className="text-[color:var(--color-admin-success)]">
-                {report.synced} synchronisée(s) depuis le catalogue.{" "}
+                {report.synced} synchronisée{report.synced > 1 ? "s" : ""} depuis le catalogue.{" "}
               </span>
             )}
             {report.skippedExistantes > 0 && (
@@ -115,8 +115,8 @@ export function ImportCatalogFormationsButton(): React.ReactElement {
           {driftItems.length > 0 && (
             <div className="text-[color:var(--color-admin-warning)]">
               <p className="font-[var(--font-weight-admin-semibold)]">
-                {driftItems.length} formation(s) en écart catalogue — édition admin préservée, à
-                revoir :
+                {driftItems.length} formation{driftItems.length > 1 ? "s" : ""} en écart catalogue —
+                édition admin préservée, à revoir :
               </p>
               <ul className="mt-[var(--space-admin-1)] list-disc pl-[var(--space-admin-4)] text-left text-[color:var(--color-admin-fg-muted)]">
                 {driftItems.map((item) => (

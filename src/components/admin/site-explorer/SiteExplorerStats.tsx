@@ -45,7 +45,10 @@ export function SiteExplorerStats({ stats }: Props) {
         <StatCard label="Parfaites" value={stats.byQuality.green ?? 0} color="green" />
         <StatCard label="À retoucher" value={stats.byQuality.orange ?? 0} color="orange" />
         <StatCard label="Cassées" value={stats.byQuality.red ?? 0} color="red" />
-        <StatCard label="⚪ Non revues" value={stats.byQuality.unset ?? 0} color="gray" />
+        {/* « ⚪ » collé au libellé : un emoji en guise de puce, dont le rendu
+            dépend de la police du poste. Le ton neutre de la tuile dit déjà
+            « pas encore jugé ». */}
+        <StatCard label="Non revues" value={stats.byQuality.unset ?? 0} color="gray" />
         {stats.anomaliesHigh > 0 && (
           <StatCard
             label="Anomalies élevées"
@@ -96,31 +99,50 @@ function StatCard({
   color: "blue" | "green" | "purple" | "gray" | "red" | "emerald" | "amber" | "orange";
   total?: number;
 }) {
-  const colorMap = {
-    blue: "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
-    green:
-      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
-    purple:
-      "bg-[color:var(--color-admin-info-soft)] border-[color:var(--color-admin-info)] text-[color:var(--color-admin-info)]",
-    gray: "bg-[color:var(--color-admin-surface-sunken)] border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg-muted)]",
-    red: "bg-[color:var(--color-admin-destructive-soft)] border-[color:var(--color-admin-destructive)] text-[color:var(--color-admin-destructive-fg)]",
-    emerald:
-      "bg-[color:var(--color-admin-success-soft)] border-[color:var(--color-admin-success)] text-[color:var(--color-admin-success-fg)]",
-    amber:
-      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
-    orange:
-      "bg-[color:var(--color-admin-warning-soft)] border-[color:var(--color-admin-warning)] text-[color:var(--color-admin-warning-fg)]",
+  /**
+   * 🔴 CE QUE J'AVAIS MAL DIAGNOSTIQUÉ À L'ÉCRAN. En voyant cette page je l'ai
+   * décrite comme « la seule en palette bleu/vert/rouge vifs, hors charte ».
+   * Les couleurs viennent en réalité des jetons `--color-admin-*`, comme
+   * partout ailleurs. Le vrai défaut est la DENSITÉ : douze tuiles dont chacune
+   * porte un fond teinté PLEIN et une bordure colorée, là où le reste de la
+   * console utilise `AdminStatCard` — fond papier neutre, couleur réservée à
+   * une pastille d'icône. Douze aplats côte à côte, ça crie ; c'est ce que
+   * l'œil lit comme « hors charte ».
+   *
+   * Second défaut, mesurable celui-là : HUIT noms de couleur pour CINQ tons
+   * réels. `blue` et `purple` pointent sur le même jeton, `green` et `emerald`
+   * aussi, `amber` et `orange` de même. Trois alias morts qui donnent
+   * l'illusion d'un code couleur plus fin qu'il ne l'est.
+   *
+   * On garde la sémantique (succès / avertissement / danger / neutre) et on
+   * abandonne les aplats : le fond redevient papier, la couleur ne porte plus
+   * que le chiffre.
+   */
+  const TON: Record<string, string> = {
+    blue: "text-[color:var(--color-admin-info)]",
+    purple: "text-[color:var(--color-admin-info)]",
+    green: "text-[color:var(--color-admin-success-fg)]",
+    emerald: "text-[color:var(--color-admin-success-fg)]",
+    amber: "text-[color:var(--color-admin-warning-fg)]",
+    orange: "text-[color:var(--color-admin-warning-fg)]",
+    red: "text-[color:var(--color-admin-destructive-fg)]",
+    gray: "text-[color:var(--color-admin-fg-muted)]",
   };
 
   return (
-    <div className={`rounded-lg border p-3 ${colorMap[color]}`}>
-      <div className="text-2xl font-bold">
+    <div className="rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] shadow-[var(--shadow-admin-1)]">
+      <div className={`text-2xl font-bold tabular-nums ${TON[color] ?? ""}`}>
         {value.toLocaleString("fr-FR")}
         {total !== undefined && (
-          <span className="text-sm font-normal"> / {total.toLocaleString("fr-FR")}</span>
+          <span className="text-sm font-normal text-[color:var(--color-admin-fg-muted)]">
+            {" "}
+            / {total.toLocaleString("fr-FR")}
+          </span>
         )}
       </div>
-      <div className="mt-1 text-xs font-medium">{label}</div>
+      <div className="mt-1 text-xs font-medium text-[color:var(--color-admin-fg-muted)]">
+        {label}
+      </div>
     </div>
   );
 }

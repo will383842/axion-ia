@@ -83,7 +83,7 @@ describe("CampaignWizardV2 — CONTENT-GEN-UX 2026 (4 étapes)", () => {
     expect(screen.getByLabelText("Contenus par jour")).toBeTruthy();
   });
 
-  it("4 — étape 3 affiche l'estimation coût/durée en direct (M7)", async () => {
+  it("4 — étape 3 affiche l'estimation coût/horizon en direct (M7)", async () => {
     const user = userEvent.setup();
     render(<CampaignWizardV2 adminPrefix="admin" />);
 
@@ -93,7 +93,10 @@ describe("CampaignWizardV2 — CONTENT-GEN-UX 2026 (4 étapes)", () => {
 
     expect(screen.getByText("Estimation en direct")).toBeTruthy();
     expect(screen.getByText("Coût estimé")).toBeTruthy();
-    expect(screen.getByText("Durée estimée")).toBeTruthy();
+    // 🔴 La tuile s'appelait « Durée estimée » et affichait une CONSTANTE :
+    // le volume vaut « par jour × 30 », la durée le redivisait par « par jour »,
+    // donc 30 quoi qu'on saisisse. Elle nomme désormais ce qu'elle est.
+    expect(screen.getByText("Horizon")).toBeTruthy();
   });
 
   it("5 — étape 4 « Enregistrer en brouillon » → createCampaignFromWizard + redirection", async () => {

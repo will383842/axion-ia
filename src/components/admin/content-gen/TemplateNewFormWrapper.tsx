@@ -6,6 +6,7 @@
 import { useState, useTransition } from "react";
 import { AdminFormError } from "@/components/admin/ui/AdminFormError";
 import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
+import { CONTENT_TYPE_LABEL_FR, EXPANSION_MODE_LABEL_FR } from "./template-labels";
 
 const CONTENT_TYPES: ReadonlyArray<ContentType> = [
   "landing_ville",
@@ -30,29 +31,8 @@ const EXPANSION_MODES: ReadonlyArray<ExpansionMode> = [
   "from_csv",
 ];
 
-// Libellés FR pour l'affichage des options (valeurs d'enum inchangées en interne).
-const CONTENT_TYPE_LABEL_FR: Record<string, string> = {
-  landing_ville: "Page ville",
-  blog_article: "Article de blog",
-  blog_from_title: "Blog depuis un titre",
-  blog_from_keywords: "Blog depuis des mots-clés",
-  blog_from_rss: "Blog depuis un flux RSS",
-  comparison: "Comparatif",
-  guide_pilier: "Guide pilier",
-  qa_derived: "Question-réponse dérivée",
-  faq_standalone: "FAQ autonome",
-};
-
-const EXPANSION_MODE_LABEL_FR: Record<string, string> = {
-  manual: "Manuel",
-  all_villes: "Toutes les villes",
-  all_regions: "Toutes les régions",
-  custom_villes: "Villes personnalisées",
-  from_keywords: "Depuis des mots-clés",
-  from_questions: "Depuis des questions",
-  from_rss_items: "Depuis des éléments RSS",
-  from_csv: "Depuis un CSV",
-};
+// Les libellés vivent désormais dans template-labels.ts : le formulaire
+// d'ÉDITION affichait les enums bruts faute de les partager.
 
 interface InitialValues {
   readonly id?: string;

@@ -64,7 +64,12 @@ export async function ConsoleDocBucket({
                     ) : null}
                   </div>
                   {doc.description ? (
-                    <p className="text-fg-muted mt-0.5 truncate text-xs">{doc.description}</p>
+                    <p
+                      className="text-fg-muted mt-0.5 truncate text-xs"
+                      title={doc.description ?? ""}
+                    >
+                      {doc.description}
+                    </p>
                   ) : null}
                   <p className="text-fg-muted mt-0.5 font-mono text-[11px]">
                     {doc.fileName} · {formatBytes(doc.sizeBytes)}

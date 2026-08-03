@@ -69,14 +69,16 @@ export function DossierSessionButton({ sessionId }: { sessionId: string }): Reac
       const anomaliesIntegrite = nbChainesAnormales + nbChainesContresignAnormales;
       if (anomaliesIntegrite > 0) {
         window.alert(
-          `${anomaliesIntegrite} chaîne(s) de signatures/contresignatures présentent une ANOMALIE D'INTÉGRITÉ.\n\n` +
+          `${anomaliesIntegrite} chaîne${anomaliesIntegrite > 1 ? "s" : ""} de signatures/contresignatures présentent une ANOMALIE D'INTÉGRITÉ.\n\n` +
             `Ouvrez « verification-integrite.json » dans le ZIP AVANT de remettre ce dossier à ` +
             `un auditeur : une empreinte qui ne concorde pas signifie qu'une signature a été ` +
             `modifiée après avoir été apposée.`,
         );
       } else if (incomplet) {
         const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
-        window.alert(`⚠️ Dossier INCOMPLET. Lisez « index.txt » avant de le remettre.${details}`);
+        window.alert(
+          `Attention : dossier INCOMPLET. Lisez « index.txt » avant de le remettre.${details}`,
+        );
       }
     });
   }

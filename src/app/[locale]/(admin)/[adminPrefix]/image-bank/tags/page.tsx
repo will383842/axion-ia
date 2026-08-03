@@ -22,10 +22,9 @@ export default async function tagsPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="tags"
-      description="Section tags (image-bank V1)."
+      title="Étiquettes"
+      description="Mots-clés associés aux images."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

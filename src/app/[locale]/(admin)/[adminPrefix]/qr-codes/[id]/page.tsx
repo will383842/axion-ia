@@ -81,7 +81,7 @@ export default async function EditQrCodePage({ params }: PageProps) {
               Scans : <b className="text-[color:var(--color-admin-fg)]">{link.scanCount}</b>
             </div>
             <div>Dernier scan : {lastScan}</div>
-            <div>Statut : {link.active ? "actif" : "⏸️ désactivé"}</div>
+            <div>Statut : {link.active ? "actif" : "désactivé"}</div>
           </div>
 
           <form action={toggleQrLinkAction}>

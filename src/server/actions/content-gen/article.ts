@@ -56,7 +56,10 @@ const UpdateArticleInputSchema = z
     metaDescription: z.string().max(160).optional(),
   })
   .strict();
-const DeleteArticleConfirmationSchema = z.literal("DELETE");
+// 🔴 La suppression exigeait de taper le mot ANGLAIS « DELETE » dans une
+// console française. On accepte « SUPPRIMER » ; « DELETE » reste toléré pour
+// ne casser aucun appel existant.
+const DeleteArticleConfirmationSchema = z.enum(["SUPPRIMER", "DELETE"]);
 
 function adminBase(): string {
   return `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen`;
@@ -422,7 +425,9 @@ export async function deleteArticle(articleId: string, confirmation: string): Pr
   ArticleIdSchema.parse(articleId);
   DeleteArticleConfirmationSchema.parse(confirmation);
   // Anti-clic accidentel : impose une chaîne de confirmation côté UI.
-  if (confirmation !== "DELETE") throw new Error("confirmation_required");
+  if (confirmation !== "SUPPRIMER" && confirmation !== "DELETE") {
+    throw new Error("confirmation_required");
+  }
 
   try {
     const article = await prisma.article.findUnique({

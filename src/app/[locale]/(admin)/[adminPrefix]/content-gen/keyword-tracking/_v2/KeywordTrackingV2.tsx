@@ -39,6 +39,12 @@ interface Props {
   searchParams: { source?: string; posMin?: string; posMax?: string };
 }
 
+const SOURCE_LABELS: Record<string, string> = {
+  gsc: "Google Search Console",
+  serpapi: "SerpAPI",
+  manual: "Saisie manuelle",
+};
+
 export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<React.ReactElement> {
   const sourceFilter =
     sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;
@@ -112,11 +118,13 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
     {
       key: "source",
       header: "Source",
-      cell: (r) => <AdminBadge tone="neutral">{r.source}</AdminBadge>,
+      // La cellule affichait `gsc` / `serpapi` / `manual` alors que le menu
+      // de filtre, juste au-dessus, donne déjà les libellés.
+      cell: (r) => <AdminBadge tone="neutral">{SOURCE_LABELS[r.source] ?? r.source}</AdminBadge>,
     },
     {
       key: "flag",
-      header: "Flag",
+      header: "Signal",
       cell: (r) => (
         <>
           {r.gap ? <AdminBadge tone="warning">opportunity</AdminBadge> : null}{" "}
@@ -138,7 +146,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Keyword tracking"
+        title="Suivi des positions"
         description={`${rows.length} mot${rows.length > 1 ? "s" : ""}-clé${rows.length > 1 ? "s" : ""} suivi${rows.length > 1 ? "s" : ""} · Source GSC + SerpAPI (sync hebdo cron Sprint 12.5 → activé quand credentials fournis).`}
       />
 
@@ -199,7 +207,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
       </AdminCard>
 
       {enrichedRows.length === 0 ? (
-        <AdminEmptyState title="Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation Sprint 10.5/12.5." />
+        <AdminEmptyState title="Aucun mot-clé suivi pour l'instant. La synchronisation avec Google Search Console n'est pas encore activée." />
       ) : (
         <AdminTable
           columns={columns}

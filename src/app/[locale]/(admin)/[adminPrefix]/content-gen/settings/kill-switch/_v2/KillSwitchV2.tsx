@@ -4,6 +4,7 @@
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { activateKillSwitch, deactivateKillSwitch } from "@/server/actions/content-gen/kill-switch";
+import { formatDateFr } from "@/lib/format-date-fr";
 
 interface KillSwitchState {
   active: boolean;
@@ -32,7 +33,7 @@ export function KillSwitchV2({ state }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Kill switch"
-        description="Stop immédiat de toutes les générations content-gen. Les workers rejetent les jobs au pick tant que l'interrupteur est actif."
+        description="Stop immédiat de toutes les générations content-gen. Tant que l'interrupteur est actif, aucune génération de contenu n'est lancée."
       />
 
       <AdminCard
@@ -44,7 +45,7 @@ export function KillSwitchV2({ state }: Props): React.ReactElement {
         {state.active ? (
           <>
             <p className="admin-meta-block">
-              <strong>Activé le :</strong> {state.activatedAt}
+              <strong>Activé le :</strong> {formatDateFr(state.activatedAt)}
             </p>
             <p className="admin-meta-block">
               <strong>Raison :</strong> {state.reason ?? "—"}

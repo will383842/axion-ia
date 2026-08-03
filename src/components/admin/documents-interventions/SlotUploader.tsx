@@ -44,6 +44,20 @@ const MIME: Record<string, string> = {
   pdf: "application/pdf",
 };
 
+// L'historique affichait l'enum Prisma sans accent (« publie ») et une date
+// ISO, alors que toute la console est en français.
+const STATUT_DOC: Record<string, string> = {
+  brouillon: "Brouillon",
+  publie: "Publiée",
+  archive: "Archivée",
+};
+
+function dateFrCourte(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("fr-FR");
+}
+
 function extOf(name: string): string {
   return name.includes(".") ? name.split(".").pop()!.toLowerCase() : "bin";
 }
@@ -213,8 +227,8 @@ export function SlotUploader({
           <ul className="mt-1 space-y-1">
             {history.map((h) => (
               <li key={h.version} className="text-fg-muted text-xs">
-                v{h.version} · {h.statut}
-                {h.publishedAt ? ` · ${h.publishedAt.slice(0, 10)}` : ""}
+                v{h.version} · {STATUT_DOC[h.statut] ?? h.statut}
+                {h.publishedAt ? ` · ${dateFrCourte(h.publishedAt)}` : ""}
                 {h.changeNote ? ` — ${h.changeNote}` : ""}
               </li>
             ))}

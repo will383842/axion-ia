@@ -19,6 +19,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { libelleEtapeGeneration } from "@/server/qualiopi/formation-engine/labels";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types (calqués sur les signatures des server actions engine)
@@ -78,7 +79,7 @@ export function ValidationActions({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSucces(`Approuvé — statut : ${result.data.statutGeneration}.`);
+        setSucces(`Approuvé — statut : ${libelleEtapeGeneration(result.data.statutGeneration)}.`);
         router.refresh();
       }
     });
@@ -95,7 +96,9 @@ export function ValidationActions({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSucces(`Rejeté — retour en correction (statut : ${result.data.statutGeneration}).`);
+        setSucces(
+          `Rejeté — retour en correction (statut : ${libelleEtapeGeneration(result.data.statutGeneration)}).`,
+        );
         setModeRejet(false);
         setConsigne("");
         router.refresh();

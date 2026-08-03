@@ -52,7 +52,7 @@ export function NewSessionForm(): React.ReactElement {
   }
 
   return (
-    <div className="border-border bg-cream space-y-3 rounded-lg border p-4">
+    <div className="border-border bg-sand space-y-3 rounded-lg border p-4">
       <h2 className="text-mocha text-sm font-semibold">Nouvelle séance</h2>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="text-mocha text-xs font-medium">

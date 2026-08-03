@@ -115,7 +115,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
             </div>
             <div className="admin-field">
               <label htmlFor="metaTitle" className="admin-label">
-                Meta title (≤ 70)
+                Titre pour Google (70 caractères maximum)
               </label>
               <input
                 id="metaTitle"
@@ -129,7 +129,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
 
           <div className="admin-field">
             <label htmlFor="excerpt" className="admin-label">
-              Excerpt (résumé carte / liste)
+              Résumé (affiché dans les listes)
             </label>
             <textarea
               id="excerpt"
@@ -156,7 +156,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
 
           <div className="admin-field">
             <label htmlFor="body" className="admin-label">
-              Body HTML (DOMPurify côté serveur)
+              Contenu de l&apos;article (HTML)
             </label>
             <textarea
               id="body"
@@ -180,19 +180,20 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
       <AdminCard className="border-l-4 border-l-[color:var(--color-admin-destructive)]">
         <h2 className="admin-h2">Suppression définitive</h2>
         <p className="admin-meta-block">
-          Cette opération supprime l&apos;article et sa traduction de la base. La row{" "}
-          <code>ContentGenJob</code> reste pour l&apos;audit trail (RGPD article 30). Les FAQ
-          enfantes voient leur <code>parentArticleId</code> mis à null (préservées).
+          L&apos;article et sa traduction sont supprimés définitivement. L&apos;historique de
+          génération est conservé, comme l&apos;exige le registre des traitements (RGPD, article
+          30). Les questions-réponses rattachées à cet article sont préservées : elles perdent
+          simplement leur rattachement.
         </p>
         <form action={destroy} className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
           <input
-            aria-label="Taper DELETE pour confirmer"
+            aria-label="Taper SUPPRIMER pour confirmer"
             type="text"
             name="confirmation"
-            placeholder="Taper DELETE pour confirmer"
+            placeholder="Taper SUPPRIMER pour confirmer"
             className="admin-input max-w-[280px] flex-1"
             required
-            pattern="DELETE"
+            pattern="SUPPRIMER"
           />
           <button type="submit" className="admin-button-danger">
             Supprimer définitivement

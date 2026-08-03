@@ -20,6 +20,15 @@ describe("planningDetailHref", () => {
       "/fr/adm-x/planning/coaching/c1",
     );
   });
+
+  // 🔴 Un audit menait à une 404 : la route `/planning/[type]/[id]` n'accepte
+  // que `formation` et `coaching`, alors que le calendrier, la timeline, le hub
+  // et le prévisionnel affichent tous des audits. Ils ont leur propre fiche.
+  it("envoie un audit vers sa fiche Qualiopi, pas vers une route qui ne l'accepte pas", () => {
+    expect(planningDetailHref("adm-x", { type: "audit", id: "a1" })).toBe(
+      "/fr/adm-x/qualiopi/audits/a1",
+    );
+  });
 });
 
 describe("libellés", () => {

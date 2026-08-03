@@ -28,6 +28,12 @@
 // `maintenant` est un paramètre, jamais un `new Date()` caché — un pipeline dont
 // les âges dépendent de l'heure du test ne se teste pas.
 
+// `statuts-facture.ts` est lui-même un module PUR (un `import type` de l'enum,
+// effacé à la compilation) : l'importer ne coûte pas la pureté de celui-ci, et
+// évite de redéclarer une quatrième fois la liste des factures ouvertes — ce
+// qui est précisément la faute que ce fichier avait commise.
+import { estFactureOuverte } from "@/server/qualiopi/financements/statuts-facture";
+
 /** Miroir des enums Prisma consommés. Types locaux : ce module reste pur. */
 export type SubmissionStatusValue =
   | "new"
@@ -202,7 +208,15 @@ export function construirePipeline(entrees: PipelineEntrees, maintenant: Date): 
   );
   const aFacturer = sessionsRealisees.filter((s) => !sessionsFacturees.has(s.id));
 
-  const facturesEmises = entrees.factures.filter((f) => f.statut === "emise");
+  // 🔴 QUATRIÈME OCCURRENCE DU MÊME BUG, et la note de `statuts-facture.ts` en
+  // décrivait déjà trois. Cet étage ne retenait que `emise` : au lendemain de
+  // chaque échéance, le cron de 06:30 UTC bascule la facture en `en_retard` et
+  // elle DISPARAISSAIT de l'entonnoir. Elle n'était pourtant nulle part
+  // ailleurs : ni dans « Encaissé » (elle n'est pas payée), ni en amont (elle
+  // compte comme facturée). De l'argent en retard devenu invisible — sur la
+  // page qui existe précisément pour montrer les fuites, et d'autant plus
+  // invisible qu'il était en retard depuis plus longtemps.
+  const facturesEmises = entrees.factures.filter((f) => estFactureOuverte(f.statut));
   const facturesPayees = entrees.factures.filter((f) => f.statut === "payee");
 
   // Deux formes de montant coexistent : `Devis.montantTotalHtCents` et

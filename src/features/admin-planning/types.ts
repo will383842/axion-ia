@@ -75,10 +75,24 @@ export interface PlanningFilters {
 }
 
 /** Lien vers la fiche 360° de l'événement (entreprise, contact, financement…). */
+/**
+ * Lien vers la fiche d'une prestation du planning.
+ *
+ * 🔴 CLIQUER UN AUDIT MENAIT À UNE PAGE 404. Le calendrier, la timeline, le hub
+ * et le calendrier prévisionnel affichent bien les audits (`queries.ts` en
+ * produit avec `type: "audit"`), mais la route `/planning/[type]/[id]` n'accepte
+ * que `formation` et `coaching` : tout audit tombait sur `notFound()`. Une
+ * prestation visible et facturée n'avait aucune fiche atteignable.
+ *
+ * L'audit a déjà sa fiche complète, `/qualiopi/audits/[id]`, qui lit la même
+ * table `AuditMission` — c'est là qu'on envoie, plutôt que de dupliquer une
+ * fiche 360° de plus dans le planning.
+ */
 export function planningDetailHref(
   adminPrefix: string,
   e: Pick<PlanningEvent, "type" | "id">,
 ): string {
+  if (e.type === "audit") return `/fr/${adminPrefix}/qualiopi/audits/${e.id}`;
   return `/fr/${adminPrefix}/planning/${e.type}/${e.id}`;
 }
 

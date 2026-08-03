@@ -117,7 +117,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`cap-${row.id}`} className="admin-label">
-              Cap mensuel USD
+              Plafond de dépense mensuel (USD)
             </label>
             <input
               id={`cap-${row.id}`}
@@ -132,7 +132,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`rpm-${row.id}`} className="admin-label">
-              Rate-limit RPM
+              Limite d&apos;appels par minute
             </label>
             <input
               id={`rpm-${row.id}`}
@@ -162,11 +162,15 @@ export function ProviderFormClient({
           </button>
         </div>
 
-        <details className="mt-[var(--space-admin-4)]">
-          <summary>Réinitialiser la dépense mensuelle (fin de cycle)</summary>
-        </details>
+        {/* 🔴 UN <details> SANS AUCUN ENFANT : on cliquait, le triangle
+            s'ouvrait sur du vide. Le vrai bouton vit dans le formulaire
+            suivant, hors de ce repli. Le titre servait donc d'intitulé à une
+            section inexistante — on le rend au bouton qu'il annonçait. */}
       </form>
-      <form onSubmit={handleReset} className="mt-[var(--space-admin-3)]">
+      <form onSubmit={handleReset} className="mt-[var(--space-admin-4)]">
+        <p className="admin-meta-small mb-[var(--space-admin-2)]">
+          Réinitialiser la dépense mensuelle (fin de cycle)
+        </p>
         <input type="hidden" name="id" value={row.id} />
         {resetError && (
           <div className="mb-[var(--space-admin-3)]">

@@ -14,6 +14,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { updatePartenariatAction } from "@/server/actions/qualiopi/partenariats";
+import { PARTENARIAT_TYPES, PARTENARIAT_TYPE_LABELS } from "@/server/qualiopi/partenariats/labels";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -119,11 +120,11 @@ export function PartenariatRowActions({
           required
           className={inputCls}
         >
-          <option value="sous_traitance">Sous-traitance</option>
-          <option value="co_traitance">Co-traitance</option>
-          <option value="reseau_handicap">Réseau handicap</option>
-          <option value="orientation">Orientation / prescription</option>
-          <option value="autre">Autre</option>
+          {PARTENARIAT_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {PARTENARIAT_TYPE_LABELS[t]}
+            </option>
+          ))}
         </select>
       </div>
       <div>

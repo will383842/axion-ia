@@ -99,7 +99,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
 
               <details className="mt-3">
                 <summary className="cursor-pointer text-sm text-[color:var(--color-admin-fg-muted)]">
-                  ▼ Voir le contenu
+                  Voir le contenu
                 </summary>
                 <div className="mt-2 rounded bg-[color:var(--color-admin-bg-subtle)] p-3 text-sm whitespace-pre-wrap">
                   {r.bodyText}

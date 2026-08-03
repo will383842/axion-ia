@@ -154,7 +154,9 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                   <td className={cellCls}>{renderNote(a.note)}</td>
                   <td className={cellCls}>
                     {a.commentaire ? (
-                      <span className="line-clamp-2 max-w-xs">{a.commentaire}</span>
+                      <span className="line-clamp-2 max-w-xs" title={a.commentaire ?? ""}>
+                        {a.commentaire}
+                      </span>
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                     )}

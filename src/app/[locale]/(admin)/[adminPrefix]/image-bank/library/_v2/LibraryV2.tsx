@@ -11,6 +11,7 @@ import {
   AdminFilterTabs,
 } from "@/components/admin/ui";
 import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
+import { libelleModule } from "@/server/image-bank/taxonomy";
 
 interface ImageRow {
   id: string;
@@ -80,7 +81,7 @@ export function LibraryV2({ base, status, images }: Props): React.ReactElement {
                     />
                     <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                     <p className="admin-meta-small">
-                      {img.module ?? "—"} · score {img.seoScore ?? 0} ·{" "}
+                      {libelleModule(img.module)} · score {img.seoScore ?? 0} ·{" "}
                       {img.publishedAt ? "publié" : "brouillon"}
                     </p>
                   </Link>

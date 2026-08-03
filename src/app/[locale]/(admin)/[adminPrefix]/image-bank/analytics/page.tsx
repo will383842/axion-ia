@@ -22,10 +22,9 @@ export default async function analyticsPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="analytics"
-      description="Section analytics (image-bank V1)."
+      title="Statistiques"
+      description="Fréquentation et usage des images de la banque."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

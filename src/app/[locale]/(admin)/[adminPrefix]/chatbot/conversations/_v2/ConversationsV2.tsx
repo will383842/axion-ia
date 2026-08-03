@@ -56,7 +56,10 @@ export function ConversationsV2({
 
   return (
     <AdminPageShell width="wide">
-      <AdminPageHeader title="Conversations" description={`${total} conversation(s) au total.`} />
+      <AdminPageHeader
+        title="Conversations"
+        description={`${total} conversation${total > 1 ? "s" : ""} au total.`}
+      />
 
       <AdminCard>
         <AdminTable

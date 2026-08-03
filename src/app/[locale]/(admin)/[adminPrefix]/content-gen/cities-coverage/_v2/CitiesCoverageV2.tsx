@@ -11,6 +11,7 @@ import {
   AdminBadge,
   AdminTable,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import type { AdminTableColumn } from "@/components/admin/ui";
@@ -30,6 +31,7 @@ import {
   syncCitiesUniverse,
   type CityRow,
 } from "@/server/actions/content-gen/cities-coverage";
+import { PALIER_LABELS } from "@/server/content-gen/cities/population-tiers";
 
 interface Props {
   adminPrefix: string;
@@ -46,17 +48,11 @@ function formatPop(n: number): string {
   return String(n);
 }
 
+// Les bornes viennent de la SSOT : elles étaient justes ici et fausses sur
+// deux autres écrans, ce qui est la pire des deux situations — on ne sait
+// plus laquelle croire.
 function tierLabel(tier: number): string {
-  switch (tier) {
-    case 1:
-      return "≥ 100 k hab";
-    case 2:
-      return "20-100 k hab";
-    case 3:
-      return "10-20 k hab";
-    default:
-      return "5-10 k hab";
-  }
+  return PALIER_LABELS[tier] ?? `T${tier}`;
 }
 
 function coverageBar(covered: number, total: number): React.ReactElement {
@@ -332,7 +328,7 @@ export async function CitiesCoverageV2({
 
       {/* Info résultats */}
       <p className="admin-meta-block mb-[var(--space-admin-3)]">
-        {total} ville{total !== 1 ? "s" : ""} — page {page}/{totalPages}
+        {total} ville{total !== 1 ? "s" : ""} — page {page}/{Math.max(1, totalPages)}
       </p>
 
       {/* Table villes */}
@@ -348,28 +344,20 @@ export async function CitiesCoverageV2({
           />
         )}
 
-        {/* Pagination — P1 fix: conserver tous les filtres actifs (covered inclus) */}
-        {totalPages > 1 && (
-          <div className="mt-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-2)]">
-            {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => i + 1).map((p) => {
-              const coveredParam =
-                isCovered === true ? "&covered=oui" : isCovered === false ? "&covered=non" : "";
-              const href = `?page=${p}${deptCode ? `&dept=${encodeURIComponent(deptCode)}` : ""}${search ? `&search=${encodeURIComponent(search)}` : ""}${coveredParam}`;
-              return (
-                <a
-                  key={p}
-                  href={href}
-                  className={`admin-button ${p === page ? "admin-button-active" : ""}`}
-                >
-                  {p}
-                </a>
-              );
-            })}
-            {totalPages > 10 && (
-              <span className="admin-meta-block">… {totalPages} pages au total</span>
-            )}
-          </div>
-        )}
+        {/* 🔴 LA PAGINATION S'ARRÊTAIT À DIX LIENS et se contentait ensuite
+            d'annoncer « … 42 pages au total » : les pages 11 et suivantes
+            n'étaient atteignables qu'en éditant l'URL. ,
+            employé partout ailleurs, ne borne pas la navigation. */}
+        <AdminPagination
+          page={page}
+          totalPages={totalPages}
+          baseHref=""
+          preservedParams={{
+            dept: deptCode ?? undefined,
+            search: search === "" ? undefined : search,
+            covered: isCovered === true ? "oui" : isCovered === false ? "non" : undefined,
+          }}
+        />
       </AdminCard>
     </AdminPageShell>
   );

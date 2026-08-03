@@ -11,6 +11,7 @@ import {
 } from "@/components/admin/ui";
 import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
 import { ImageReviewActions } from "@/components/admin/image-bank/ImageReviewActions";
+import { libelleModule, libelleTypeSource, libelleLicence } from "@/server/image-bank/taxonomy";
 
 interface Translation {
   id: number;
@@ -75,7 +76,7 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
 
       <AdminPageHeader
         title={titleDisplay}
-        description={`${image.module ?? "—"} / ${image.subModule ?? "—"} · score ${image.seoScore ?? 0}/100`}
+        description={`${libelleModule(image.module)} / ${image.subModule ?? "—"} · score ${image.seoScore ?? 0}/100`}
       />
 
       <section className="grid grid-cols-1 gap-[var(--space-admin-6)] lg:grid-cols-2">
@@ -91,13 +92,20 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
             <Row label="ID" value={image.id} />
             <Row label="Slug" value={image.slug} />
             <Row label="Format" value={`${image.fileFormat} · ${image.width}×${image.height}`} />
-            <Row label="Licence" value={image.licenseType} />
+            <Row label="Licence" value={libelleLicence(image.licenseType)} />
             <Row label="Droits d'auteur" value={image.copyrightHolder} />
-            <Row label="Type de source" value={image.sourceType} />
+            <Row label="Origine de l'image" value={libelleTypeSource(image.sourceType)} />
             {image.aiModel ? <Row label="Modèle IA" value={image.aiModel} /> : null}
             <Row
               label="Publié"
-              value={image.publishedAt ? image.publishedAt.toISOString() : "Non publié"}
+              value={
+                image.publishedAt === null
+                  ? "Non publié"
+                  : image.publishedAt.toLocaleString("fr-FR", {
+                      dateStyle: "long",
+                      timeStyle: "short",
+                    })
+              }
             />
           </dl>
         </AdminCard>
@@ -109,7 +117,13 @@ export function ImageDetailV2({ base, image, titleDisplay }: Props): React.React
               {image.translations.map((t) => (
                 <li key={t.id} className="admin-card admin-card-inline">
                   <p className="admin-meta-strong">
-                    [{t.languageCode}] {t.title}
+                    {t.languageCode === "fr"
+                      ? "Français"
+                      : t.languageCode === "en"
+                        ? "Anglais"
+                        : t.languageCode.toUpperCase()}
+                    {" — "}
+                    {t.title}
                   </p>
                   <p className="admin-meta">{t.alt}</p>
                   <p className="admin-meta-small">{t.isPublished ? "Publié" : "Brouillon"}</p>

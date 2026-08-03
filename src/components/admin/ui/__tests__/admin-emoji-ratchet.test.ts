@@ -67,21 +67,17 @@ const FICHIERS_SSOT_CONSOLE = [
  * Plafond courant, à ne jamais remonter.
  *
  * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → 45 → 40 → 38 →
- * **44** (2026-08-03). Les remontées ne sont JAMAIS des ajouts d'emoji : ce
- * sont des élargissements de la mesure. 38 → 44 vient de la plage
+ * 44 → **1** (2026-08-03). Les remontées ne sont JAMAIS des ajouts d'emoji :
+ * ce sont des élargissements de la mesure. 38 → 44 venait de la plage
  * `U+2300`–`U+23FF` enfin couverte.
  *
- * 🔴 LE PLAFOND REMONTE, ET AUCUN EMOJI N'A ÉTÉ AJOUTÉ. C'est la MESURE qui
- * était fausse : la plage de caractères sautait `U+2600`–`U+26FF` (cf. la note
- * sur `EMOJI`), et le scan ignorait les libellés vivant hors des deux dossiers
- * admin (cf. `FICHIERS_SSOT_CONSOLE`). Le « 1 » du 2026-08-02 en cachait 51.
- * On repart de ce qui est réellement rendu — 45 après le retrait des 8 les
- * plus exposés (barre latérale ×6, badge de périmètre ×2) et du « ⚠ » du
- * bandeau des indicateurs.
- *
- * Reste à reprendre, par ordre de visibilité : les « ⚠ » des bandeaux
- * d'avertissement (≈ 25 occurrences, une par écran), les « ★ » des notes
- * d'avis et de la matrice d'indicateurs, les « ⛔ » des états bloqués.
+ * Le « 1 » d'aujourd'hui n'est PAS celui du 2026-08-02 : celui-là en cachait
+ * 51. Les 43 restants ont été repris un par un — 21 en JSX remplacés par un
+ * composant lucide, 14 vivant dans des chaînes (`window.alert`, prop `hint`,
+ * `label`, `cell`) où aucun composant ne peut se glisser et où le mot
+ * « Attention : » dit la même chose sans dépendre de la police du poste. Le
+ * « ⌘K » de la palette est parti avec eux : il annonçait sous Windows le seul
+ * raccourci qui n'y existe pas.
  *
  * UNE OCCURRENCE EST VOLONTAIRE — ne la « corrigez » pas. Le champ
  * « Avantages » d'une offre d'emploi accepte un JSON dont la clé `icon` porte
@@ -89,7 +85,7 @@ const FICHIERS_SSOT_CONSOLE = [
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
  * attendu et produirait des saisies invalides.
  */
-const PLAFOND = 44;
+const PLAFOND = 1;
 
 /**
  * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les

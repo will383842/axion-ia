@@ -12,6 +12,7 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import { AdminImageThumb } from "@/components/admin/image-bank/AdminImageThumb";
+import { libelleModule } from "@/server/image-bank/taxonomy";
 
 interface ImageRow {
   id: string;
@@ -119,7 +120,7 @@ export function OverviewV2({
                   />
                   <p className="admin-meta-strong">{tr?.title ?? img.slug}</p>
                   <p className="admin-meta-small">
-                    {img.module ?? "—"} · score {img.seoScore ?? "?"}
+                    {libelleModule(img.module)} · score {img.seoScore ?? "?"}
                   </p>
                 </Link>
               );

@@ -338,7 +338,7 @@ export function QuestionnairesSection({
         setGenererError(result.error);
       } else {
         setGenererSuccess(
-          `${result.data.crees} questionnaire(s) créé(s) sur ${result.data.total} attendu(s).`,
+          `${result.data.crees} questionnaire${result.data.crees > 1 ? "s" : ""} créé${result.data.crees > 1 ? "s" : ""} sur ${result.data.total} attendu${result.data.total > 1 ? "s" : ""}.`,
         );
         router.refresh();
       }

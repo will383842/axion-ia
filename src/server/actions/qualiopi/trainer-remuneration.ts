@@ -126,7 +126,25 @@ const transitionSchema = z.object({
     .optional()
     .transform((v) => (v === undefined || v === "" ? undefined : new Date(v)))
     .refine((d) => d === undefined || !Number.isNaN(d.getTime()), { message: "Date invalide" }),
-  montantFactureTtcCents: z.coerce.number().int().nonnegative().optional(),
+  /**
+   * 🔴 LE FORMULAIRE DEMANDAIT DES CENTIMES À UN COMPTABLE. Le champ était
+   * libellé « Montant TTC (centimes) » et pré-rempli à 120000 : saisir 1200,
+   * le montant lu sur la facture, enregistrait douze euros. Le garde-fou de
+   * conformité aurait rattrapé l'écart — mais après avoir accusé la facture
+   * d'être fausse.
+   *
+   * On accepte donc des EUROS, ce que porte la facture, et on convertit ici.
+   * L'arrondi est explicite parce qu'un montant à deux décimales multiplié
+   * par 100 en
+   * virgule flottante ne tombe pas toujours sur un entier (12,10 → 1209,999…),
+   * et qu'un centime perdu sur une comparaison d'égalité stricte ferait
+   * refuser une facture pourtant conforme.
+   */
+  montantFactureTtcEuros: z.coerce
+    .number()
+    .nonnegative()
+    .optional()
+    .transform((v) => (v === undefined ? undefined : Math.round(v * 100))),
   factureUrl: z.string().url().max(2000).optional().or(z.literal("")),
   // Renseignés au passage en `paye`.
   moyenPaiement: z.string().max(30).optional(),
@@ -169,14 +187,14 @@ export async function transitionStatementAction(
       return { error: "Le numéro de la facture reçue est requis." };
     }
     if (v.dateFacture === undefined) return { error: "La date de la facture est requise." };
-    if (v.montantFactureTtcCents === undefined) {
+    if (v.montantFactureTtcEuros === undefined) {
       return { error: "Le montant TTC de la facture est requis." };
     }
   }
 
   if (v.to === "paye") {
     // Le montant peut avoir été saisi maintenant, ou l'avoir été en `facture_recue`.
-    const factureTtc = v.montantFactureTtcCents ?? releve.montantFactureTtcCents;
+    const factureTtc = v.montantFactureTtcEuros ?? releve.montantFactureTtcCents;
     if (factureTtc === null || factureTtc === undefined) {
       return { error: "Aucun montant de facture : impossible de payer." };
     }
@@ -201,8 +219,8 @@ export async function transitionStatementAction(
           ...(v.to === "valide" ? { validatedById: session.userId } : {}),
           ...(v.numeroFacture !== undefined ? { numeroFacture: v.numeroFacture } : {}),
           ...(v.dateFacture !== undefined ? { dateFacture: v.dateFacture } : {}),
-          ...(v.montantFactureTtcCents !== undefined
-            ? { montantFactureTtcCents: v.montantFactureTtcCents }
+          ...(v.montantFactureTtcEuros !== undefined
+            ? { montantFactureTtcCents: v.montantFactureTtcEuros }
             : {}),
           ...(v.factureUrl !== undefined && v.factureUrl !== ""
             ? { factureUrl: v.factureUrl }
@@ -492,7 +510,7 @@ export async function transitionStatementFormAction(formData: FormData): Promise
     to: to as StatementStatut,
     numeroFacture: champ(formData, "numeroFacture"),
     dateFacture: champ(formData, "dateFacture"),
-    montantFactureTtcCents: champNombre(formData, "montantFactureTtcCents"),
+    montantFactureTtcEuros: champNombre(formData, "montantFactureTtcEuros"),
     factureUrl: champ(formData, "factureUrl"),
     moyenPaiement: champ(formData, "moyenPaiement"),
     referenceVirement: champ(formData, "referenceVirement"),

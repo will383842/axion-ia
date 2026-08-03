@@ -38,6 +38,26 @@ function ConfirmButton() {
   );
 }
 
+/**
+ * 🔴 LE REGISTRE RGPD PARLAIT MACHINE. Chaque trace se lisait
+ * « 2026-08-01T09:14:22.481Z — view — image 3f2a91c0… » : horodatage ISO en
+ * UTC et code d'action anglais, sur l'écran qu'on ouvre pour répondre à une
+ * demande d'effacement. Rien n'y est technique du point de vue de la personne
+ * concernée.
+ */
+const LIBELLE_ACTION: Record<string, string> = {
+  view: "Consultation",
+  download: "Téléchargement",
+  embed: "Intégration sur un site",
+  share: "Partage",
+};
+
+function dateFr(d: Date | string): string {
+  const date = typeof d === "string" ? new Date(d) : d;
+  if (Number.isNaN(date.getTime())) return String(d);
+  return date.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+}
+
 export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) {
   // 🔴 BUG CORRIGÉ 2026-08-02 — la tonalité du message se décidait en
   // RENIFLANT le texte : `feedback.startsWith("✅")`. Or l'emoji avait déjà été
@@ -58,7 +78,7 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
     if (result.success) {
       setFeedback({
         ton: "succes",
-        texte: `Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
+        texte: `Effacement effectué — ${result.deleted.usageLogs} entrée${result.deleted.usageLogs > 1 ? "s" : ""} d'usage + ${result.deleted.downloadLogs} téléchargement${result.deleted.downloadLogs > 1 ? "s" : ""} supprimés. Recharge la page pour vérifier.`,
       });
     } else {
       setFeedback({ ton: "erreur", texte: `Erreur : ${result.error}` });
@@ -88,8 +108,9 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
             Résultats pour l&apos;IP <code className="font-mono text-sm">{initialIp}</code>
           </h2>
           <p className="admin-meta-small">
-            {totalLogs} trace(s) trouvée(s) ({usageLogs.length} consultation(s) +{" "}
-            {downloadLogs.length} téléchargement(s)).
+            {totalLogs} trace{totalLogs > 1 ? "s" : ""} trouvée{totalLogs > 1 ? "s" : ""} (
+            {usageLogs.length} consultation{usageLogs.length > 1 ? "s" : ""} + {downloadLogs.length}{" "}
+            téléchargement{downloadLogs.length > 1 ? "s" : ""}).
           </p>
 
           {usageLogs.length > 0 && (
@@ -98,7 +119,8 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
               <ul className="mt-2 space-y-1 font-mono text-xs">
                 {usageLogs.map((r) => (
                   <li key={r.id} className="admin-meta-small">
-                    {r.createdAt} — {r.action} — image {r.imageId.slice(0, 8)}…
+                    {dateFr(r.createdAt)} — {LIBELLE_ACTION[r.action] ?? r.action} — image{" "}
+                    <span title={r.imageId}>{r.imageId.slice(0, 8)}…</span>
                   </li>
                 ))}
               </ul>
@@ -111,7 +133,8 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
               <ul className="mt-2 space-y-1 font-mono text-xs">
                 {downloadLogs.map((r) => (
                   <li key={r.id} className="admin-meta-small">
-                    {r.downloadedAt} — variante {r.variant} — image {r.imageId.slice(0, 8)}…
+                    {dateFr(r.downloadedAt)} — variante {r.variant} — image{" "}
+                    <span title={r.imageId}>{r.imageId.slice(0, 8)}…</span>
                   </li>
                 ))}
               </ul>

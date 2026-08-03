@@ -125,7 +125,15 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total incidents" value={incidents.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total incidents"
+          value={incidents.length}
+          {...(incidents.length === 500 ? { meta: "500 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Ouverts / en cours"
           value={ouverts}
@@ -199,7 +207,10 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                   <td className={cellCls}>
                     <span className="font-medium">{i.titre}</span>
                     {i.description ? (
-                      <span className="mt-1 line-clamp-2 block max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      <span
+                        className="mt-1 line-clamp-2 block max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                        title={i.description ?? ""}
+                      >
                         {i.description}
                       </span>
                     ) : null}
@@ -213,7 +224,10 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {i.actionCorrective.trim() ? (
-                      <span className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)]">
+                      <span
+                        className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)]"
+                        title={i.actionCorrective ?? ""}
+                      >
                         {i.actionCorrective}
                       </span>
                     ) : (

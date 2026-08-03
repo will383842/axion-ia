@@ -22,6 +22,7 @@ import { PartenariatRowActions } from "@/components/admin/qualiopi/PartenariatRo
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { Hash, CheckCircle2, Handshake } from "lucide-react";
+import { libellerTypePartenariat } from "@/server/qualiopi/partenariats/labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -67,7 +68,15 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total" value={partenariats.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total"
+          value={partenariats.length}
+          {...(partenariats.length === 100 ? { meta: "100 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Actifs"
           value={actifs}
@@ -116,10 +125,19 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
                     <div className="font-medium">{p.nom}</div>
                   </td>
                   <td className={cellCls}>
-                    <span className="text-[length:var(--text-admin-xs)] font-medium">{p.type}</span>
+                    {/* 🔴 Affichait la valeur brute — « reseau_handicap »,
+                        « co_traitance » — alors que les deux formulaires de la
+                        même page traduisent ces valeurs dans leurs `<option>`.
+                        La table vit désormais dans un module partagé. */}
+                    <span className="text-[length:var(--text-admin-xs)] font-medium">
+                      {libellerTypePartenariat(p.type)}
+                    </span>
                   </td>
                   <td className={cellCls}>
-                    <div className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <div
+                      className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                      title={p.objet ?? ""}
+                    >
                       {p.objet}
                     </div>
                   </td>
@@ -158,7 +176,8 @@ export default async function QualiopiPartenariatsPage({ params }: PageProps) {
           </table>
           {inactifs > 0 && (
             <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              {inactifs} partenariat(s) inactif(s) inclus dans la liste.
+              {inactifs} partenariat{inactifs > 1 ? "s" : ""} inactif{inactifs > 1 ? "s" : ""}{" "}
+              inclus dans la liste.
             </p>
           )}
         </div>

@@ -124,7 +124,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {clients.length === 0
             ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
-            : `${clients.length} résultat(s) pour « ${recherche} ».`}
+            : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
         </p>
       ) : null}
 

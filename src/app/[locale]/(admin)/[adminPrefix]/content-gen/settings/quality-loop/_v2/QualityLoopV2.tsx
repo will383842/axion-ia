@@ -35,7 +35,7 @@ export function QualityLoopV2({ cfg }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Boucle qualité"
-        description="Re-prompt automatique des contenus tier-2 sous-score. § 27 master prompt v1.7."
+        description="Relance automatique de la rédaction quand le score qualité est insuffisant."
       />
 
       <AdminCard>

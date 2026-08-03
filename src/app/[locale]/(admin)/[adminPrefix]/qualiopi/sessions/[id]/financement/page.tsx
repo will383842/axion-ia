@@ -26,6 +26,7 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { prisma } from "@/lib/prisma";
 import { getFinancementValidations } from "@/server/qualiopi/financements/validation-service";
 import type { FactureFormationDestinataire } from "../../../../../../../../../prisma/generated/client";
+import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -48,14 +49,6 @@ const FINANCEMENT_LABELS: Record<string, string> = {
   cpf: "CPF / EDOF",
   france_travail: "France Travail",
   mixte: "Mixte",
-};
-
-const OPCO_STATUT_LABELS: Record<string, string> = {
-  non_demande: "Non demandé",
-  demande_en_cours: "Demande en cours",
-  accord_recu: "Accord reçu",
-  refuse: "Refusé",
-  paiement_recu: "Paiement reçu",
 };
 
 const FT_DISPOSITIF_LABELS: Record<string, string> = {

@@ -45,6 +45,21 @@ const TRANSITION_LABELS: Record<TrainingSessionStatut, string> = {
   reportee: "Reporter",
 };
 
+/**
+ * 🔴 LES VERBES SERVAIENT AUSSI DE NOMS D'ÉTAT. `TRANSITION_LABELS` porte des
+ * ACTIONS (« Démarrer », « Marquer réalisée ») ; le message de confirmation les
+ * réemployait comme statuts, d'où « Session passée au statut « Démarrer » ».
+ * Un verbe à l'infinitif n'est pas un état, et l'aria-label, lui, lisait la
+ * valeur d'enum brute (« Passer la session au statut en_cours »).
+ */
+const STATUT_LABELS: Record<TrainingSessionStatut, string> = {
+  planifiee: "Planifiée",
+  en_cours: "En cours",
+  realisee: "Réalisée",
+  annulee: "Annulée",
+  reportee: "Reportée",
+};
+
 const TRANSITION_TONES: Record<TrainingSessionStatut, string> = {
   planifiee: "admin-button-secondary",
   en_cours: "admin-button",
@@ -87,7 +102,7 @@ export function SessionLifecycleButtons({
         setError(result.error);
         return;
       }
-      setSuccessMsg(`Session passée au statut « ${TRANSITION_LABELS[toStatus]} » avec succès.`);
+      setSuccessMsg(`Session passée au statut « ${STATUT_LABELS[toStatus]} ».`);
       router.refresh();
     });
   }
@@ -146,7 +161,7 @@ export function SessionLifecycleButtons({
                 disabled={isPending}
                 onClick={() => handleTransition(toStatus)}
                 className={TRANSITION_TONES[toStatus] ?? "admin-button"}
-                aria-label={`Passer la session au statut ${toStatus}`}
+                aria-label={`Passer la session au statut « ${STATUT_LABELS[toStatus]} »`}
               >
                 {isPending ? "…" : TRANSITION_LABELS[toStatus]}
               </button>

@@ -28,7 +28,7 @@ vi.mock("@/server/qualiopi/indicateurs/service", () => ({
     tauxSatisfaction: { tauxPct: 90, nb: 20, fiable: true, libelle: "90 %" },
     tauxReussite: { tauxPct: 85, nb: 20, fiable: true, libelle: "85 %" },
     tauxCompletion: { tauxPct: 95, nb: 20, fiable: true, libelle: "95 %" },
-    delaiAccesMoyen: { jours: 12, nb: 20 },
+    delaiAccesMoyen: { jours: 12, nb: 20, fiable: true },
     methodes: {
       satisfaction: "Calculé sur...",
       reussite: "Calculé sur...",
@@ -66,7 +66,7 @@ const INDICATEURS_FIXTURE = {
   tauxSatisfaction: { tauxPct: 90, nb: 20, fiable: true, libelle: "90 %" },
   tauxReussite: { tauxPct: 85, nb: 20, fiable: true, libelle: "85 %" },
   tauxCompletion: { tauxPct: 95, nb: 20, fiable: true, libelle: "95 %" },
-  delaiAccesMoyen: { jours: 12, nb: 20 },
+  delaiAccesMoyen: { jours: 12, nb: 20, fiable: true },
   methodes: {
     satisfaction: "Calculé sur...",
     reussite: "Calculé sur...",

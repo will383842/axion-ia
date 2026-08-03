@@ -31,6 +31,7 @@ import { periodeDeRattachement } from "@/server/qualiopi/remuneration/run";
 import {
   euros,
   libelleAnomalie,
+  libellePrestation,
   LIBELLE_STATUT_RELEVE,
   MOIS_FR,
   TON_STATUT_RELEVE,
@@ -139,15 +140,15 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
           {/* Simuler d'abord : un run réel écrit des honoraires dus. */}
           <button type="submit" name="dryRun" value="1" className="admin-button-ghost">
             <Calculator size={16} aria-hidden />
-            Simuler le run
+            Simuler le calcul
           </button>
           <button type="submit" className="admin-button">
-            Exécuter le run
+            Lancer le calcul
           </button>
         </form>
 
         <p className="admin-muted mt-[var(--space-admin-2)]">
-          Le run n&apos;écrase jamais un relevé validé, facturé ou payé : ces formateurs sont
+          Le calcul n&apos;écrase jamais un relevé validé, facturé ou payé : ces formateurs sont
           sautés. Relancer un mois recalculable est sans effet de bord.
         </p>
       </AdminCard>
@@ -191,7 +192,7 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                 </AdminBadge>
                 <span>{a.trainerNom}</span>
                 <span className="admin-muted">
-                  {a.prestationType} — {euros(a.montantHtCents)} HT
+                  {libellePrestation(a.prestationType)} — {euros(a.montantHtCents)} HT
                 </span>
               </li>
             ))}

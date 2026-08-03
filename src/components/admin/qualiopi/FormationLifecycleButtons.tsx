@@ -226,7 +226,7 @@ function IndicateursForm({ formationId, onDone }: IndicateursFormProps): React.R
 
       <div className="flex items-center gap-[var(--space-admin-3)]">
         <button type="submit" disabled={isPending} className="admin-button">
-          {isPending ? "Publication…" : "Publier l&apos;indicateur"}
+          {isPending ? "Publication…" : "Publier l’indicateur"}
         </button>
       </div>
     </form>

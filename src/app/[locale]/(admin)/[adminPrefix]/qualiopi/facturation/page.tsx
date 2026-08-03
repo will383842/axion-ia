@@ -415,7 +415,7 @@ export default async function FacturationHubPage({
     <>
       <AdminListScaffold
         title="Facturation (Hub)"
-        itemLabel="facture(s)"
+        itemLabel="facture"
         total={total}
         page={page}
         totalPages={totalPages}

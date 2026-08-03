@@ -240,7 +240,7 @@ export function BackupsV2({
         emptyState={
           <AdminEmptyState
             title="Aucune sauvegarde enregistrée"
-            description="Les scripts backup-*.sh n'ont pas encore remonté de statut (vérifier BACKUP_INGEST_SECRET + BACKUP_REPORT_URL côté cron VPS)."
+            description="Aucune sauvegarde n'a encore été remontée. Si cela persiste au-delà de 24 h, prévenez l'équipe technique."
           />
         }
       />

@@ -22,10 +22,9 @@ export default async function bulkimportPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="bulk import"
-      description="Section bulk import (image-bank V1)."
+      title="Import CSV en masse"
+      description="Téléversement groupé d images à partir d un fichier CSV."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

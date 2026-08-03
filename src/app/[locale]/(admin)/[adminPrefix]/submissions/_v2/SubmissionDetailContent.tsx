@@ -11,7 +11,7 @@
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getSubmissionDetailAction } from "@/features/admin-submissions/actions";
-import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
+import { AdminPageShell, AdminPageHeader, AdminStatusBadge } from "@/components/admin/ui";
 import { interventionTypeLabel } from "@/lib/intervention-label";
 import { SubmissionUpdateForm } from "../[id]/SubmissionUpdateForm";
 import { ReplyComposer } from "@/components/admin/contacts/ReplyComposer";
@@ -67,7 +67,7 @@ export async function SubmissionDetailContent({
     <AdminPageShell>
       <AdminPageHeader
         title={`${typeLabel} · ${titreSociete}`}
-        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · locale ${submission.locale.toUpperCase()}`}
+        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · langue ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
             {backLabel}
@@ -188,7 +188,10 @@ export async function SubmissionDetailContent({
                         : "sur devis"}
                     </td>
                     <td>
-                      <span className={`admin-badge admin-badge-${b.status}`}>{b.status}</span>
+                      {/* Le statut sortait en anglais (« confirmed », « pending »)
+                          dans une classe `admin-badge-${status}` qui n'existe
+                          nulle part : ni traduit, ni teinté. */}
+                      <AdminStatusBadge type="booking" status={b.status} />
                     </td>
                   </tr>
                 ))}

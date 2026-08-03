@@ -102,3 +102,32 @@ export const LIBELLE_NATURE: Record<FeeLineNature, string> = {
   analytique: "Analytique (coût salarié)",
   honoraire_du: "Honoraires dus",
 };
+
+/**
+ * 🔴 CE FICHIER EXISTE POUR ÇA, et trois valeurs lui manquaient.
+ *
+ * La colonne « Prestation » affichait `formation_collective` et `coaching_1to1`,
+ * le sous-titre du relevé « août 2026 · régime assujetti_20 », et le bandeau de
+ * confirmation « Relevé passé en « facture_recue » » — alors que
+ * `LIBELLE_STATUT_RELEVE` juste au-dessus le traduit depuis toujours. Des
+ * valeurs machine sur les écrans où l'on décide de ce qu'on doit à quelqu'un.
+ */
+export const LIBELLE_PRESTATION: Record<string, string> = {
+  formation_collective: "Formation collective",
+  coaching_1to1: "Coaching 1-to-1",
+  audit: "Audit",
+};
+
+export function libellePrestation(type: string): string {
+  return LIBELLE_PRESTATION[type] ?? `« ${type} »`;
+}
+
+export const LIBELLE_REGIME_TVA: Record<string, string> = {
+  assujetti_20: "assujetti à la TVA (20 %)",
+  franchise_293b: "franchise en base (art. 293 B)",
+  exonere_formation: "exonéré — formation professionnelle",
+};
+
+export function libelleRegimeTva(regime: string): string {
+  return LIBELLE_REGIME_TVA[regime] ?? `« ${regime} »`;
+}

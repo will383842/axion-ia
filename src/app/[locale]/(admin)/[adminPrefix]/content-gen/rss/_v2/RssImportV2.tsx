@@ -63,9 +63,10 @@ export function RssImportV2({ defaultJson, action }: Props): React.ReactElement 
         {state.status === "ok" && state.result && (
           <div style={{ marginTop: "1rem" }}>
             <p>
-              <strong>{state.result.created}</strong> créé(s) ·{" "}
-              <strong>{state.result.skipped}</strong> déjà présent(s) ·{" "}
-              <strong>{state.result.errors.length}</strong> erreur(s)
+              <strong>{state.result.created}</strong> créé{state.result.created > 1 ? "s" : ""} ·{" "}
+              <strong>{state.result.skipped}</strong> déjà présent
+              {state.result.skipped > 1 ? "s" : ""} · <strong>{state.result.errors.length}</strong>{" "}
+              erreur{state.result.errors.length > 1 ? "s" : ""}
             </p>
             {state.result.createdNames.length > 0 && (
               <details open>

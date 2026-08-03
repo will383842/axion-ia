@@ -40,7 +40,7 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Policies content-gen"
+        title="Règles de publication"
         description="Skip-existing · plagiat seuils · retention tier-3 · RSS auto-publish."
       />
 

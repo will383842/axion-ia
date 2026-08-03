@@ -118,6 +118,7 @@ function VueMois({
       year={cal.year}
       month={cal.month}
       todayKey={cal.todayKey}
+      unitLabel="prestation"
       days={cal.days.map((d) => ({
         dayKey: d.dayKey,
         count: d.count,
@@ -139,7 +140,7 @@ function VueAnnee({ cal }: { cal: CalendrierAnnee }): React.ReactElement {
           <div
             className="h-[10px] flex-1 overflow-hidden rounded-full bg-[color:var(--color-admin-accent-track)]"
             role="img"
-            aria-label={`${m.nbPrestations} prestation(s) démarrant en ${MOIS_COURTS[m.mois - 1]}`}
+            aria-label={`${m.nbPrestations} prestation${m.nbPrestations > 1 ? "s" : ""} démarrant en ${MOIS_COURTS[m.mois - 1]}`}
           >
             <div
               className="h-full rounded-full bg-[color:var(--color-admin-accent)]"
@@ -196,7 +197,8 @@ export function CalendrierPrevisionnel({
               Prévisionnel bloqué
             </AdminBadge>
             <span className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-destructive-fg)]">
-              {previsionnelBloque.length} session(s) à moins de 7 jours sans formateur
+              {previsionnelBloque.length} session{previsionnelBloque.length > 1 ? "s" : ""} à moins
+              de 7 jours sans formateur
             </span>
           </p>
           <ul className="flex flex-col gap-[var(--space-admin-1)]">

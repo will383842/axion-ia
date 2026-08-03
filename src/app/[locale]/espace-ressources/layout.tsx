@@ -22,7 +22,7 @@ export default async function EspaceRessourcesLayout({
   const session = await getRecipientSession();
   return (
     <div className="bg-bg min-h-screen">
-      <header className="border-border bg-cream border-b">
+      <header className="border-border bg-sand border-b">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <Link href={RESSOURCES_BASE_PATH} className="text-mocha font-serif text-lg font-semibold">
             Espace ressources

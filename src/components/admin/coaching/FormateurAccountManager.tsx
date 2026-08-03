@@ -28,7 +28,7 @@ export function FormateurAccountManager({
 }): React.ReactElement {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [msg, setMsg] = useState<string | null>(null);
+  const [msg, setMsg] = useState<{ ok: boolean; texte: string } | null>(null);
 
   function toggle(id: string, actif: boolean) {
     setMsg(null);
@@ -38,11 +38,21 @@ export function FormateurAccountManager({
     });
   }
 
+  /**
+   * 🔴 L'ÉCHEC ÉTAIT PEINT EN VERT. Succès et erreur atterrissaient dans le même
+   * `msg`, rendu avec `text-success` : « Compte désactivé : réactivez-le
+   * d'abord. » s'affichait exactement comme « Lien de connexion envoyé. » — un
+   * lien jamais parti, annoncé comme parti.
+   */
   function sendLink(id: string) {
     setMsg(null);
     startTransition(async () => {
       const res = await sendFormateurLinkAction({ trainerId: id });
-      setMsg(res.ok ? "Lien de connexion envoyé." : (res.error ?? "Erreur."));
+      setMsg(
+        res.ok
+          ? { ok: true, texte: "Lien de connexion envoyé." }
+          : { ok: false, texte: res.error ?? "L'envoi a échoué." },
+      );
     });
   }
 
@@ -54,7 +64,18 @@ export function FormateurAccountManager({
 
   return (
     <div>
-      {msg ? <p className="text-success mb-3 text-sm">{msg}</p> : null}
+      {msg ? (
+        <p
+          role={msg.ok ? "status" : "alert"}
+          className={
+            msg.ok
+              ? "mb-3 text-sm text-[color:var(--color-admin-success-fg)]"
+              : "mb-3 text-sm text-[color:var(--color-admin-destructive-fg)]"
+          }
+        >
+          {msg.texte}
+        </p>
+      ) : null}
       <table className="w-full text-sm">
         <thead>
           <tr className="border-border text-fg-muted border-b text-left text-xs">
@@ -65,7 +86,9 @@ export function FormateurAccountManager({
             <th className="text-right">Formations</th>
             <th>Dernière connexion</th>
             <th>Compte</th>
-            <th></th>
+            <th>
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody>

@@ -43,6 +43,20 @@ const DEFAULT_MIX = `{
   "PME:collectivite": 5
 }`;
 
+/**
+ * 🔴 LA CELLULE AFFICHAIT UN `JSON.stringify` SUR UNE LIGNE : accolades,
+ * guillemets et clés d'enum, dans un tableau. Une répartition en
+ * pourcentages se lit en clair ; la forme brute reste en infobulle.
+ */
+function resumerRepartition(valeur: unknown): string {
+  if (valeur === null || typeof valeur !== "object") return "—";
+  const entrees = Object.entries(valeur as Record<string, unknown>)
+    .filter(([, v]) => typeof v === "number")
+    .sort((a, b) => (b[1] as number) - (a[1] as number));
+  if (entrees.length === 0) return "—";
+  return entrees.map(([k, v]) => `${k} ${v} %`).join(" · ");
+}
+
 export function AudienceMixV2({ rows }: Props): React.ReactElement {
   async function upsert(formData: FormData) {
     "use server";
@@ -76,7 +90,9 @@ export function AudienceMixV2({ rows }: Props): React.ReactElement {
       key: "mix",
       header: "Mix",
       cell: (r) => (
-        <code className="text-[length:var(--text-admin-xs)]">{JSON.stringify(r.mix)}</code>
+        <span className="admin-meta-small" title={JSON.stringify(r.mix)}>
+          {resumerRepartition(r.mix)}
+        </span>
       ),
     },
   ];
