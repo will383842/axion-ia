@@ -343,10 +343,27 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
     unite: "%",
   };
 
+  /**
+   * 🔴 CONSTAT À L'ÉCRAN (revue visuelle 2026-08-03). M3, M5 et M6 posaient
+   * dans `libelle` le TEXTE DE LA VALEUR (« 100 % », « En cours de
+   * constitution ») au lieu du NOM de la métrique — alors que les onze autres
+   * y mettent bien leur nom, et que la page rend `libelle` comme intitulé de
+   * la tuile (`label={pilotage.mN.libelle}`).
+   *
+   * Résultat : trois tuiles sur quatorze s'affichaient « En cours de
+   * constitution / — », sans dire DE QUOI. Un tableau de bord de pilotage
+   * Qualiopi où l'on ne peut pas nommer la moitié des indicateurs vides.
+   *
+   * Le nom reste dans `libelle`, l'état passe dans `detail` — le champ prévu
+   * pour ça, déjà employé par M7 et M11.
+   */
+  const metriqueTaux = (nom: string, r: { tauxPct: number; fiable: boolean }): MetriqueValeur =>
+    r.fiable
+      ? { valeur: r.tauxPct, libelle: nom, unite: "%" }
+      : { valeur: "—", libelle: nom, detail: "En cours de constitution" };
+
   // ── M3 — Taux de complétion ────────────────────────────────────────────────
-  const m3: MetriqueValeur = taux.completion.fiable
-    ? { valeur: taux.completion.tauxPct, libelle: taux.completion.libelle, unite: "%" }
-    : { valeur: "—", libelle: taux.completion.libelle };
+  const m3: MetriqueValeur = metriqueTaux("Taux de complétion", taux.completion);
 
   // ── M4 — Taux d'abandon ────────────────────────────────────────────────────
   const m4Val =
@@ -358,14 +375,10 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   };
 
   // ── M5 — Taux d'atteinte des objectifs (réussite) ─────────────────────────
-  const m5: MetriqueValeur = taux.reussite.fiable
-    ? { valeur: taux.reussite.tauxPct, libelle: taux.reussite.libelle, unite: "%" }
-    : { valeur: "—", libelle: taux.reussite.libelle };
+  const m5: MetriqueValeur = metriqueTaux("Taux d'atteinte des objectifs", taux.reussite);
 
   // ── M6 — Satisfaction globale ──────────────────────────────────────────────
-  const m6: MetriqueValeur = taux.satisfaction.fiable
-    ? { valeur: taux.satisfaction.tauxPct, libelle: taux.satisfaction.libelle, unite: "%" }
-    : { valeur: "—", libelle: taux.satisfaction.libelle };
+  const m6: MetriqueValeur = metriqueTaux("Satisfaction globale", taux.satisfaction);
 
   // ── M7 — Incidents (LOT 4 : registre réel + proxy conservé en détail) ─────
   const m7: MetriqueValeur = {
