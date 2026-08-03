@@ -60,7 +60,7 @@ export function UserActions({
           {isSuperAdmin && (
             <div className="admin-field">
               <label htmlFor="role" className="admin-label">
-                Rôle (super_admin only)
+                Rôle (modifiable par un Super Admin uniquement)
               </label>
               <select
                 id="role"
@@ -109,9 +109,10 @@ export function UserActions({
       {/* Reset 2FA cross-user (super_admin only) */}
       {isSuperAdmin && twoFactorEnabled && (
         <div className="admin-card admin-card-inline">
-          <h3 className="admin-h2">Reset 2FA</h3>
+          <h3 className="admin-h2">Réinitialiser la double authentification</h3>
           <p className="admin-meta">
-            Le user devra refaire le setup 2FA au prochain login. Action loguée.
+            Cette personne devra reconfigurer sa double authentification à sa prochaine connexion.
+            L&apos;opération est enregistrée dans le journal.
           </p>
           {!confirm2FA ? (
             <button
@@ -119,7 +120,7 @@ export function UserActions({
               className="admin-button-ghost"
               onClick={() => setConfirm2FA(true)}
             >
-              Reset 2FA…
+              Réinitialiser…
             </button>
           ) : (
             <form action={resetAction} className="admin-filters-actions">
@@ -129,7 +130,7 @@ export function UserActions({
                 className="admin-button admin-button-refuse"
                 disabled={resetPending}
               >
-                {resetPending ? "Reset..." : "Confirmer reset 2FA"}
+                {resetPending ? "Réinitialisation…" : "Confirmer la réinitialisation"}
               </button>
               <button
                 type="button"
@@ -143,7 +144,8 @@ export function UserActions({
           )}
           {resetState.ok && (
             <p role="status" className="admin-alert admin-alert-success">
-              2FA réinitialisée. Le user devra refaire le setup au prochain login.
+              Double authentification réinitialisée. Cette personne devra la reconfigurer à sa
+              prochaine connexion.
             </p>
           )}
           {!resetState.ok && resetState.error && (
@@ -157,10 +159,10 @@ export function UserActions({
       {/* Reset password cross-user (super_admin only) */}
       {isSuperAdmin && (
         <div className="admin-card admin-card-inline">
-          <h3 className="admin-h2">Reset mot de passe</h3>
+          <h3 className="admin-h2">Réinitialiser le mot de passe</h3>
           <p className="admin-meta">
-            Définit un nouveau mot de passe que vous communiquez de manière sécurisée. Action
-            loguée.
+            Définit un nouveau mot de passe, que vous communiquerez de manière sécurisée.
+            L&apos;opération est enregistrée dans le journal.
           </p>
           {!confirmPwd ? (
             <button
@@ -168,14 +170,14 @@ export function UserActions({
               className="admin-button-ghost"
               onClick={() => setConfirmPwd(true)}
             >
-              Reset mot de passe…
+              Réinitialiser…
             </button>
           ) : (
             <form action={pwdAction} className="admin-form">
               <input type="hidden" name="id" value={userId} />
               <div className="admin-field">
                 <label htmlFor="newPassword" className="admin-label">
-                  Nouveau mot de passe (min 12 chars)
+                  Nouveau mot de passe (12 caractères minimum)
                 </label>
                 <input
                   id="newPassword"
@@ -194,7 +196,7 @@ export function UserActions({
                   className="admin-button admin-button-refuse"
                   disabled={pwdPending}
                 >
-                  {pwdPending ? "Reset..." : "Confirmer reset"}
+                  {pwdPending ? "Réinitialisation…" : "Confirmer la réinitialisation"}
                 </button>
                 <button
                   type="button"
