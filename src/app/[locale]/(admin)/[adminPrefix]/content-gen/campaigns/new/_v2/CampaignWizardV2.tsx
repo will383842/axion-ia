@@ -255,9 +255,18 @@ function estimateTotals(dailyArticles: number): {
   return { totalArticles, costUsd, durationDays };
 }
 
+// 🔴 « ~0.0 $ » POUR UNE ESTIMATION DE TROIS CENTIMES : `toFixed(1)` écrase
+// tout ce qui est sous cinq centimes. L'écran annonçait donc « gratuit » à qui
+// s'apprêtait à lancer une campagne. Et le séparateur restait le point anglais.
 function formatCost(usd: number): string {
-  if (usd >= 100) return `~${Math.round(usd)} $`;
-  return `~${usd.toFixed(1)} $`;
+  const fr = (n: number, decimales: number) =>
+    n.toLocaleString("fr-FR", {
+      minimumFractionDigits: decimales,
+      maximumFractionDigits: decimales,
+    });
+  if (usd >= 100) return `~${fr(Math.round(usd), 0)} $`;
+  if (usd >= 1) return `~${fr(usd, 2)} $`;
+  return `~${fr(usd, 3)} $`;
 }
 
 function formatDuration(days: number): string {

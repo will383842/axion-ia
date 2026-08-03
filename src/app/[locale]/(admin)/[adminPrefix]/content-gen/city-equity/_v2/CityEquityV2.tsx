@@ -15,12 +15,14 @@ import {
   type CityEquityRow,
 } from "@/server/actions/content-gen/city-equity";
 import { MapPin, AlertTriangle, BarChart3, FileText } from "lucide-react";
+import { PALIER_LABELS } from "@/server/content-gen/cities/population-tiers";
 
+// Quatrième copie des mêmes bornes ; elle était juste, deux autres non.
 const TIER_LABELS: Record<number, string> = {
-  1: "Tier 1 ≥100k",
-  2: "Tier 2 20-100k",
-  3: "Tier 3 10-20k",
-  4: "Tier 4 5-10k",
+  1: `Tier 1 ${PALIER_LABELS[1]}`,
+  2: `Tier 2 ${PALIER_LABELS[2]}`,
+  3: `Tier 3 ${PALIER_LABELS[3]}`,
+  4: `Tier 4 ${PALIER_LABELS[4]}`,
 };
 
 const CONTENT_TYPE_LABELS: Record<string, string> = {

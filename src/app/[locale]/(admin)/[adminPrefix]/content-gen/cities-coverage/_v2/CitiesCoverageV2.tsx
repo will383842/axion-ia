@@ -30,6 +30,7 @@ import {
   syncCitiesUniverse,
   type CityRow,
 } from "@/server/actions/content-gen/cities-coverage";
+import { PALIER_LABELS } from "@/server/content-gen/cities/population-tiers";
 
 interface Props {
   adminPrefix: string;
@@ -46,17 +47,11 @@ function formatPop(n: number): string {
   return String(n);
 }
 
+// Les bornes viennent de la SSOT : elles étaient justes ici et fausses sur
+// deux autres écrans, ce qui est la pire des deux situations — on ne sait
+// plus laquelle croire.
 function tierLabel(tier: number): string {
-  switch (tier) {
-    case 1:
-      return "≥ 100 k hab";
-    case 2:
-      return "20-100 k hab";
-    case 3:
-      return "10-20 k hab";
-    default:
-      return "5-10 k hab";
-  }
+  return PALIER_LABELS[tier] ?? `T${tier}`;
 }
 
 function coverageBar(covered: number, total: number): React.ReactElement {
@@ -332,7 +327,7 @@ export async function CitiesCoverageV2({
 
       {/* Info résultats */}
       <p className="admin-meta-block mb-[var(--space-admin-3)]">
-        {total} ville{total !== 1 ? "s" : ""} — page {page}/{totalPages}
+        {total} ville{total !== 1 ? "s" : ""} — page {page}/{Math.max(1, totalPages)}
       </p>
 
       {/* Table villes */}

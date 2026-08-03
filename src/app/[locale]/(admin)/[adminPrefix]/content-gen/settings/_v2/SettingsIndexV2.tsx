@@ -65,7 +65,11 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
   {
     href: "seed-initial",
     label: "Init KB + Presets",
-    description: "Charge les 130 facts KB et les 6 presets de campagne en base (1 clic)",
+    // 🔴 CES DEUX ÉCRANS ANNONÇAIENT DES CHIFFRES DIFFÉRENTS pour le même bouton :
+    // « 130 facts et 6 presets » ici, « 290 facts et 8 presets » sur la page.
+    // Aucun des deux n'était calculé — le seed retourne le vrai compte APRÈS
+    // exécution, et c'est le seul chiffre qu'on puisse écrire sans mentir.
+    description: "Charge les informations de référence et les modèles de campagne (1 clic)",
   },
   {
     href: "kb-ingest",

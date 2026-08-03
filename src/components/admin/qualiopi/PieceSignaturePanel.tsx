@@ -32,6 +32,7 @@ import { SignaturePad } from "@/components/portail/SignaturePad";
 // cloisonnement, donc ce n'est pas une fuite.
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { TriangleAlert } from "lucide-react";
+import { nomPartie, complementPartie } from "@/server/qualiopi/documents/signature/parties-labels";
 
 export interface SignatureApposeeVue {
   id: string;
@@ -157,7 +158,7 @@ export function PieceSignaturePanel({
         <ul className="mt-[var(--space-admin-3)] space-y-[var(--space-admin-2)]">
           {signatures.map((s) => (
             <li key={s.id} className="text-[length:var(--text-admin-sm)]">
-              <span className={labelCls}>{s.partie}</span>
+              <span className={labelCls}>{nomPartie(s.partie)}</span>
               <span className="block">
                 {s.signataireNom}
                 {s.signataireQualite !== null ? ` — ${s.signataireQualite}` : ""}
@@ -206,7 +207,7 @@ export function PieceSignaturePanel({
                   disabled={enCours}
                   className="rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-accent)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-paper)] disabled:opacity-40"
                 >
-                  {enCours ? "Envoi…" : `Envoyer à ${p === "client" ? "le client" : p}`}
+                  {enCours ? "Envoi…" : `Envoyer ${complementPartie(p)}`}
                 </button>
                 <button
                   type="button"
@@ -271,7 +272,7 @@ export function PieceSignaturePanel({
       {/* Lien émis — affiché UNE fois, non cliquable */}
       {lien !== null && (
         <div className="mt-[var(--space-admin-3)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]">
-          <p className={labelCls}>{`Lien pour ${lien.partie} — à transmettre`}</p>
+          <p className={labelCls}>{`Lien ${complementPartie(lien.partie)} — à transmettre`}</p>
           <input
             aria-label="Lien de signature (lecture seule)"
             readOnly

@@ -27,6 +27,7 @@ import type {
   CoverageMapData,
   CoverageMapDeptRow,
 } from "@/server/actions/content-gen/coverage-map";
+import { palierLabel } from "@/server/content-gen/cities/population-tiers";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -173,10 +174,17 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
             aria-label="Filtre tier"
           >
             <option value="">Tous tiers</option>
-            <option value="T1">T1 (&gt; 500k)</option>
-            <option value="T2">T2 (100-500k)</option>
-            <option value="T3">T3 (20-100k)</option>
-            <option value="T4">T4 (&lt; 20k)</option>
+            {/* 🔴 Ces quatre bornes étaient FAUSSES et se contredisaient
+                d'un écran à l'autre : « T1 (> 500k) » ici, « ≥ 100 k »
+                deux pages plus loin. C'est ce second chiffre qui est le
+                bon (cf. populationTier). Filtrer T1 ramenait donc
+                Grenoble, et l'écran passait pour cassé alors qu'il
+                disait vrai — seule son étiquette mentait. */}
+            {[1, 2, 3, 4].map((t) => (
+              <option key={t} value={`T${t}`}>
+                {palierLabel(t)}
+              </option>
+            ))}
           </select>
           <select
             value={filterPipeline}

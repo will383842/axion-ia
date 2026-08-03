@@ -43,7 +43,7 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Cockpit géographique"
-        description={`13 régions métropole · ${totalPublished} contenu${totalPublished > 1 ? "s" : ""} publié${totalPublished > 1 ? "s" : ""} · vélocité 7 j : ${global.velocity7dJobs}`}
+        description={`${regions.length} région${regions.length > 1 ? "s" : ""} · ${totalPublished} contenu${totalPublished > 1 ? "s" : ""} publié${totalPublished > 1 ? "s" : ""} · vélocité 7 j : ${global.velocity7dJobs}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             <Link href={`${base}/batches/new`} className="admin-button">
