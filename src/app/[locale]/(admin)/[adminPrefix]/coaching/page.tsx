@@ -6,7 +6,7 @@
 // ni `AdminStatCard`, ni `AdminTable`. Elle était écrite avec les jetons du
 // SITE PUBLIC — `bg-cream`, `text-mocha`, `border-sand`, `text-terracotta`.
 //
-// Conséquence à l'écran : `bg-cream` sur le canvas admin (#f1ede3) donne un
+// Conséquence à l'écran : `bg-cream` posé sur le canvas admin donne un
 // fond quasi identique au fond de page, et la bordure `border-border` du site
 // public n'existe pas dans la charte admin. Les tuiles ne s'encadraient donc
 // pas, et le reste de la page était du texte nu posé sur le fond — le
