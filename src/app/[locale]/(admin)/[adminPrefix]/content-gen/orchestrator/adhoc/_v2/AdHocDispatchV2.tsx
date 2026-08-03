@@ -38,7 +38,7 @@ interface Props {
   adminPrefix: string;
 }
 
-export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
+export function AdHocDispatchV2({ adminPrefix }: Props) {
   const [contentType, setContentType] = useState<string>("blog_article");
   const [title, setTitle] = useState("");
   const [anchorVilleSlug, setAnchorVilleSlug] = useState("");
@@ -59,7 +59,7 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         ...(campaignId ? { campaignId } : {}),
       });
       setLastJobId(result.jobId);
-      toast.success(`Génération lancée — référence ${result.jobId}`);
+      toast.success("Génération lancée. Suivez-la depuis la carte ci-dessous.");
     } catch (err) {
       // Détail technique en console — le toast porte un message métier fixe.
       console.error("[adhoc-dispatch] dispatch du job en échec :", err);
@@ -174,8 +174,12 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
 
       {lastJobId && (
         <AdminCard className="mt-[var(--space-admin-5)]">
+          {/* 🔴 L'identifiant brut était TOUT ce que la page rendait après un
+              lancement : ni lien, ni état, rien à en faire. */}
           <span className="font-medium">Dernière génération lancée :</span>{" "}
-          <code className="admin-meta-small">{lastJobId}</code>
+          <a href={`/fr/${adminPrefix}/content-gen/jobs/${lastJobId}`} className="admin-link">
+            Suivre cette génération
+          </a>
         </AdminCard>
       )}
     </AdminPageShell>

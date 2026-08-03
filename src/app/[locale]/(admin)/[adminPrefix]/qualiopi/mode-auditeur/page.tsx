@@ -84,12 +84,18 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         </Link>
       </p>
 
-      {/* ── Score global (repris de l'ancienne page Conformité) ──────────── */}
+      {/* ── Score global (repris de l'ancienne page Conformité) ────────────
+          🔴 Cette tuile s'appelait « Score de conformité » et affichait « 100 % »
+          comme un fait. Or elle mesure une COUVERTURE DOCUMENTAIRE : un
+          indicateur est « couvert » parce que des pièces existent, pas parce
+          qu'un volume de preuves a été jugé suffisant. Sur l'écran destiné à
+          l'auditrice, « 100 % de conformité » se lisait comme un verdict
+          d'audit — il n'en est pas un. */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
         <AdminStatCard
-          label="Score de conformité"
+          label="Couverture documentaire"
           value={`${scorePct} %`}
-          meta={`${nbCouverts} indicateur${nbCouverts > 1 ? "s" : ""} couvert${nbCouverts > 1 ? "s" : ""} sur ${nbApplicables} applicable${nbApplicables > 1 ? "s" : ""}`}
+          meta={`${nbCouverts} indicateur${nbCouverts > 1 ? "s" : ""} couvert${nbCouverts > 1 ? "s" : ""} sur ${nbApplicables} applicable${nbApplicables > 1 ? "s" : ""} · ne préjuge pas du volume de preuves par indicateur`}
           tone={toneBilan}
           icon={Gauge}
         />

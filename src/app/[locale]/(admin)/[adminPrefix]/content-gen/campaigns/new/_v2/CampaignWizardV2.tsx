@@ -243,16 +243,18 @@ const QUICK_TYPES: QuickType[] = [
 const EST_COST_PER_ARTICLE_USD = 0.03;
 const EST_MINUTES_PER_ARTICLE = 1.5;
 
-function estimateTotals(dailyArticles: number): {
-  totalArticles: number;
-  costUsd: number;
-  durationDays: number;
-} {
-  const totalArticles = Math.max(0, Math.round(dailyArticles * 30));
+/** Horizon sur lequel l'estimation est faite : un mois de production. */
+const JOURS_ESTIMATION = 30;
+
+function estimateTotals(dailyArticles: number): { totalArticles: number; costUsd: number } {
+  // 🔴 « DURÉE ESTIMÉE » ÉTAIT UNE CONSTANTE DÉGUISÉE EN CALCUL. Le volume est
+  // posé à « nombre par jour × 30 », puis la durée le redivisait par ce même
+  // nombre par jour : le résultat valait 30 quoi qu'on saisisse. L'écran
+  // affichait donc « ~30 jours » comme une estimation, alors que c'est la
+  // définition même du volume — un mois de production. On nomme la chose.
+  const totalArticles = Math.max(0, Math.round(dailyArticles * JOURS_ESTIMATION));
   const costUsd = totalArticles * EST_COST_PER_ARTICLE_USD;
-  // Durée = nb de jours pour écouler le volume au rythme dailyArticles/jour.
-  const durationDays = dailyArticles > 0 ? Math.ceil(totalArticles / dailyArticles) : 0;
-  return { totalArticles, costUsd, durationDays };
+  return { totalArticles, costUsd };
 }
 
 // 🔴 « ~0.0 $ » POUR UNE ESTIMATION DE TROIS CENTIMES : `toFixed(1)` écrase
@@ -968,8 +970,8 @@ export function CampaignWizardV2({
                 <dd className="font-semibold">{formatCost(est.costUsd)}</dd>
               </div>
               <div>
-                <dt className="text-[color:var(--color-admin-fg-soft)]">Durée estimée</dt>
-                <dd className="font-semibold">{formatDuration(est.durationDays)}</dd>
+                <dt className="text-[color:var(--color-admin-fg-soft)]">Horizon</dt>
+                <dd className="font-semibold">{formatDuration(JOURS_ESTIMATION)}</dd>
               </div>
             </dl>
             <p className="mt-[var(--space-admin-2,4px)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
@@ -1019,11 +1021,11 @@ export function CampaignWizardV2({
               <dd className="font-semibold">{formatCost(est.costUsd)}</dd>
             </div>
             <div>
-              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Durée estimée</dt>
+              <dt className="font-medium text-[color:var(--color-admin-fg-soft)]">Horizon</dt>
               <dd className="font-semibold">
                 {state.durationMode === "unlimited"
                   ? "Sans limite (arrêt manuel)"
-                  : formatDuration(est.durationDays)}
+                  : formatDuration(JOURS_ESTIMATION)}
               </dd>
             </div>
             <div>
