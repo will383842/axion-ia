@@ -532,7 +532,17 @@ export async function listAnomalies(filters: {
     description: string;
     detectedAt: Date;
     resolvedAt: Date | null;
-    siteRoute: { pathPattern: string; pathRendered: string | null; section: string | null };
+    // 🔴 `id` manquait, et la page des anomalies bâtissait donc un lien
+    // `site-explorer/${cond ? "" : ""}` — les DEUX branches vides. Le lien
+    // portait le chemin de la route en libellé et ramenait toujours à la
+    // liste. Sans l'identifiant ici, aucune correction n'était possible côté
+    // page : le lien ne pouvait pas mener où il prétendait.
+    siteRoute: {
+      id: string;
+      pathPattern: string;
+      pathRendered: string | null;
+      section: string | null;
+    };
   }>;
   total: number;
 }> {
@@ -555,7 +565,7 @@ export async function listAnomalies(filters: {
       where,
       include: {
         siteRoute: {
-          select: { pathPattern: true, pathRendered: true, section: true },
+          select: { id: true, pathPattern: true, pathRendered: true, section: true },
         },
       },
       orderBy: [{ severity: "asc" }, { detectedAt: "desc" }],

@@ -113,11 +113,13 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
                   </span>
                 </div>
                 <p className="text-sm text-[color:var(--color-admin-fg)]">{a.description}</p>
+                {/* 🔴 Ce lien portait `site-explorer/${cond ? "" : ""}` — les
+                    DEUX branches du ternaire vides. Il affichait le chemin de
+                    la route concernée et ramenait invariablement à la liste
+                    complète. `listAnomalies` ne sélectionnait même pas
+                    l'identifiant de la route ; il l'expose désormais. */}
                 <a
-                  href={adminPath(
-                    "fr",
-                    `site-explorer/${(a as { siteRoute?: { pathPattern: string } }).siteRoute ? "" : ""}`,
-                  )}
+                  href={adminPath("fr", `site-explorer/${a.siteRoute.id}`)}
                   className="admin-link font-mono text-xs"
                 >
                   {a.siteRoute.pathRendered ?? a.siteRoute.pathPattern}

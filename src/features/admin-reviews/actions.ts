@@ -87,9 +87,15 @@ export type AdminReview = Prisma.CustomerReviewGetPayload<{ select: typeof ADMIN
 // ============================================================
 
 const listSchema = z.object({
-  status: z
-    .enum(["pending", "published", "hidden", "rejected", "archived", "all"])
-    .default("pending"),
+  // 🔴 Le défaut était `pending` — le compartiment normalement VIDE. Lu en
+  // production le 2026-08-03 : la page s'ouvrait sur « En attente (0) · Aucun
+  // avis pour ce filtre » alors que « Publié » en comptait 77. Une liste qui
+  // s'ouvre sur du vide se lit comme une liste cassée.
+  //
+  // `all` ouvre sur ce qui existe ; les onglets restent là pour trier. Le
+  // défaut est posé aux DEUX endroits (ici et dans la vue) — c'est en n'en
+  // changeant qu'un seul qu'on croit avoir corrigé.
+  status: z.enum(["pending", "published", "hidden", "rejected", "archived", "all"]).default("all"),
   search: z.string().optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(50),

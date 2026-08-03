@@ -54,7 +54,9 @@ export function AvisListV2({
   counts,
 }: Props): React.ReactElement {
   const base = `/fr/${adminPrefix}/avis`;
-  const activeStatus = sp["status"] ?? "pending";
+  // Défaut aligné sur le schéma serveur (`actions.ts`) : `all`, et non
+  // `pending` qui ouvrait la page sur le compartiment vide.
+  const activeStatus = sp["status"] ?? "all";
 
   const columns: ReadonlyArray<AdminTableColumn<AdminReview>> = [
     {
