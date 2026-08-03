@@ -5,6 +5,7 @@
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
 import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
+import { libelleModele, libelleTypeContenu } from "@/components/admin/content-gen/template-labels";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { upsertTemplate } from "@/server/actions/content-gen/templates";
 import type {
@@ -91,8 +92,13 @@ export function TemplatesEditV2({ template }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={template.name}
-        description={`${template.slug} · v${template.version} · ${template.contentType}${template.variant ? ` · variant ${template.variant}` : ""} · Gen ${template.generatedItems} / Pub ${template.publishedItems} / Fail ${template.failedItems}`}
+        title={libelleModele(template.slug, template.name)}
+        /* 🔴 Cette ligne, sous le titre de la page, disait :
+           « blog-from-rss-v1 · v1 · blog_from_rss · Gen 12 / Pub 3 / Fail 2 ».
+           Le type de contenu en valeur d'enum brute, « variant » en anglais,
+           et trois compteurs abrégés dont « Fail » — le plus important des
+           trois — était le moins lisible. */
+        description={`${template.slug} · v${template.version} · ${libelleTypeContenu(template.contentType)}${template.variant ? ` · variante ${template.variant}` : ""} · ${template.generatedItems} généré${template.generatedItems > 1 ? "s" : ""} · ${template.publishedItems} publié${template.publishedItems > 1 ? "s" : ""} · ${template.failedItems} en échec`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

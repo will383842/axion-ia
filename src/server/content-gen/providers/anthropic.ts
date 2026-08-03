@@ -150,8 +150,11 @@ export function mapAnthropicError(err: unknown): ProviderError {
     if (status === 400 && /content[_-]filter|policy/i.test(err.message)) {
       return new ProviderError(`Anthropic content filter`, "content_filter", "anthropic", false);
     }
+    // Même piège que côté OpenAI : ici seulement, `status` peut manquer.
     return new ProviderError(
-      `Anthropic API ${status}: ${err.message}`,
+      status === undefined
+        ? `Erreur Anthropic (sans code HTTP) : ${err.message}`
+        : `Erreur Anthropic ${status} : ${err.message}`,
       "unknown",
       "anthropic",
       false,

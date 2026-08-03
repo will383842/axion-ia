@@ -460,7 +460,7 @@ export function SessionForm({
             required
           />
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            TVA appliquée selon le régime configuré (Paramètres → Qualiopi → Régime de TVA).
+            TVA appliquée selon le régime configuré (Qualiopi → Configuration → Régime de TVA).
           </p>
         </div>
       </div>

@@ -175,3 +175,30 @@ export function extractJobTitle(outputJsonRaw: unknown): string | null {
   const title = (outputJsonRaw as Record<string, unknown>)["title"];
   return typeof title === "string" && title.trim().length > 0 ? title : null;
 }
+
+// ─── Intention de recherche (enum Prisma `SearchIntent`) ────────────────────
+/**
+ * 🔴 Le même enum se lisait de TROIS façons dans la console : en français sur
+ * le formulaire de test d'un modèle et sur la répartition ad hoc, en anglais
+ * sur la stratégie de mots-clés (« AI Overview », « Featured Snippet »), et en
+ * valeur brute sur le détail d'un job (« Intention : commercial_investigation »).
+ * Trois écrans, trois vocabulaires pour la même colonne.
+ *
+ * Les libellés retenus sont ceux du formulaire de test : ce sont les seuls qui
+ * nomment la fonctionnalité Google ET disent ce qu'elle est.
+ */
+export const SEARCH_INTENT_LABELS_FR: Record<string, string> = {
+  informational: "Informationnelle",
+  commercial_investigation: "Comparaison / avant-achat",
+  transactional: "Transactionnelle",
+  navigational: "Navigationnelle",
+  local: "Locale (ville)",
+  voice_search: "Recherche vocale",
+  ai_overview: "Aperçu IA (Google AI Overview)",
+  featured_snippet: "Extrait optimisé (position 0)",
+};
+
+/** Une intention inconnue est CITÉE, jamais maquillée en libellé inventé. */
+export function searchIntentLabelFr(valeur: string): string {
+  return SEARCH_INTENT_LABELS_FR[valeur] ?? `« ${valeur} »`;
+}

@@ -44,9 +44,9 @@ const INTENT_LABELS: Record<string, string> = {
   local: "Local/Géo",
   partenaire: "Partenaire",
   sectoriel: "Sectoriel",
-  voice_search: "Voice Search",
-  ai_overview: "AI Overview",
-  featured_snippet: "Featured Snippet",
+  voice_search: "Recherche vocale",
+  ai_overview: "Aperçu IA",
+  featured_snippet: "Extrait optimisé",
   commercial_investigation: "Investigation Commerciale",
 };
 
@@ -120,9 +120,9 @@ export async function KeywordStrategyV2({
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {[
           { label: "Total keywords", value: seeds.length },
-          { label: "Voice Search", value: byIntent["voice_search"] ?? 0 },
-          { label: "AI Overview", value: byIntent["ai_overview"] ?? 0 },
-          { label: "Featured Snippet", value: byIntent["featured_snippet"] ?? 0 },
+          { label: "Recherche vocale", value: byIntent["voice_search"] ?? 0 },
+          { label: "Aperçu IA", value: byIntent["ai_overview"] ?? 0 },
+          { label: "Extrait optimisé", value: byIntent["featured_snippet"] ?? 0 },
         ].map(({ label, value }) => (
           <AdminCard key={label}>
             <p className="text-sm text-[color:var(--color-admin-fg-muted)]">{label}</p>

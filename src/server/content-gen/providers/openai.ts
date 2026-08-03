@@ -103,8 +103,15 @@ export function mapOpenAiError(err: unknown): ProviderError {
     if (err.code === "content_filter" || /content[_-]filter/i.test(err.message)) {
       return new ProviderError(`OpenAI content filter`, "content_filter", "openai", false);
     }
+    // 🔴 Cette branche est celle où `status` peut manquer : toutes les autres
+    // sont gardées par un test sur sa valeur. Interpolé tel quel, il produisait
+    // « OpenAI API error undefined: Connection error. » — le message que la
+    // console affiche encore sur les jobs échoués, et qui ne dit rien à qui le
+    // lit. Sans statut, on n'en invente pas : on n'écrit que ce qu'on sait.
     return new ProviderError(
-      `OpenAI API error ${status}: ${err.message}`,
+      status === undefined
+        ? `Erreur OpenAI (sans code HTTP) : ${err.message}`
+        : `Erreur OpenAI ${status} : ${err.message}`,
       "unknown",
       "openai",
       false,

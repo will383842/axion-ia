@@ -21,6 +21,7 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed, deleteFailedJobs } from "@/server/actions/content-gen/jobs";
 import { formatDateFr } from "@/lib/format-date-fr";
 import { listTemplates } from "@/server/actions/content-gen/templates";
+import { libelleModele } from "@/components/admin/content-gen/template-labels";
 import {
   JOB_STATUS_LABELS_FR,
   JOB_STATUS_TONE,
@@ -236,7 +237,7 @@ export async function JobsListV2({
             </div>
             <div className="admin-field">
               <label htmlFor="templateId" className="admin-label">
-                Template
+                Modèle
               </label>
               <select
                 id="templateId"
@@ -247,7 +248,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {t.name} (v{t.version})
+                    {libelleModele(t.slug, t.name)} (v{t.version})
                   </option>
                 ))}
               </select>

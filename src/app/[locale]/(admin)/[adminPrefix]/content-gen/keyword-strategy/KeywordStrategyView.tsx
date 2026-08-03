@@ -46,9 +46,9 @@ const INTENT_LABELS: Record<string, string> = {
   local: "Local/Géo",
   partenaire: "Partenaire",
   sectoriel: "Sectoriel",
-  voice_search: "Voice Search",
-  ai_overview: "AI Overview",
-  featured_snippet: "Featured Snippet",
+  voice_search: "Recherche vocale",
+  ai_overview: "Aperçu IA",
+  featured_snippet: "Extrait optimisé",
   commercial_investigation: "Investigation Commerciale",
 };
 
@@ -165,12 +165,12 @@ export function KeywordStrategyView({ searchParams }: Props) {
           sub="Questions naturelles"
         />
         <MetricCard
-          label="AI Overview"
+          label="Aperçu IA"
           value={(byIntent["ai_overview"] ?? 0).toLocaleString()}
           sub="Sources IA génératives"
         />
         <MetricCard
-          label="Featured Snippet"
+          label="Extrait optimisé"
           value={(byIntent["featured_snippet"] ?? 0).toLocaleString()}
           sub="Position 0 Google"
         />

@@ -78,8 +78,10 @@ export default async function SeancesPage(): Promise<React.ReactElement> {
                   {s.beneficiaireEntreprise ? ` (${s.beneficiaireEntreprise})` : ""}
                 </p>
                 <p className="text-fg-muted mt-1 text-xs">
-                  {s._count.optimisations} optimisation(s) · {s._count.comptesRendus} compte(s)
-                  rendu(s) · {s._count.journaux} entrée(s) de journal
+                  {s._count.optimisations} optimisation{s._count.optimisations > 1 ? "s" : ""} ·{" "}
+                  {s._count.comptesRendus} compte{s._count.comptesRendus > 1 ? "s" : ""} rendu
+                  {s._count.comptesRendus > 1 ? "s" : ""} · {s._count.journaux} entrée
+                  {s._count.journaux > 1 ? "s" : ""} de journal
                 </p>
               </Link>
             </li>

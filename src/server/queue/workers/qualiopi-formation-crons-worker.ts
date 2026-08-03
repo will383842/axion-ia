@@ -886,7 +886,7 @@ async function handlePlansRecurrents(): Promise<void> {
   const { generes, clos } = await genererBrouillonsPlansEchus(new Date());
   if (generes > 0) {
     await sendTelegramFacturation(
-      `🧾 ${generes} brouillon(s) de facture récurrente à valider dans le Hub facturation`,
+      `🧾 ${generes} brouillon${generes > 1 ? "s" : ""} de facture récurrente à valider dans le Hub facturation`,
     );
   }
   console.log(
