@@ -163,9 +163,11 @@ export function ProgrammeFormationPdf({
             label="Accessibilité"
             value={
               data.accessibleHandicap
-                ? `Action accessible aux personnes en situation de handicap. Contact référent : ${
-                    data.referentHandicapEmail || identite.email || "—"
-                  }`
+                ? // Le référent se NOMME : « Contact référent : contact@axion-ia.com »
+                  // n'identifiait personne (ind. 26, art. L.6352-3).
+                  `Action accessible aux personnes en situation de handicap. Référent handicap : ${
+                    identite.referentHandicapNom ? `${identite.referentHandicapNom} — ` : ""
+                  }${data.referentHandicapEmail || identite.email || "—"}`
                 : "Nous contacter pour étudier les adaptations possibles."
             }
           />

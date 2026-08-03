@@ -163,8 +163,16 @@ export function OrganisationActionPdf({
             required
           />
           <FieldRow label="Coordination pédagogique" value={identite.email || "—"} />
+          {/* Le nom d'abord : un e-mail générique ne désigne personne (ind. 26,
+              art. L.6352-3). Cf. le même correctif sur convocation et livret. */}
           <FieldRow
             label="Référent handicap"
+            value={
+              identite.referentHandicapNom || data.referentHandicapEmail || identite.email || "—"
+            }
+          />
+          <FieldRow
+            label="Contact référent"
             value={data.referentHandicapEmail || identite.email || "—"}
           />
           <Text style={pdfStyles.paragraph}>

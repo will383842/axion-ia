@@ -26,6 +26,22 @@ export interface OrganismeIdentite {
   site: string;
   /** Contact du référent handicap (sections handicap uniquement). Optionnel. */
   referentHandicapEmail?: string;
+  /**
+   * Nom et téléphone du référent handicap.
+   *
+   * 🔴 Audit pré-visite 2026-08-03. La convocation n'affichait que l'email, et
+   * cet email est le contact GÉNÉRAL de l'OF (`contact@axion-ia.com`). Le
+   * stagiaire lisait donc « Référent handicap : contact@axion-ia.com » —
+   * une adresse générique, qui n'identifie personne.
+   *
+   * L'indicateur 26 demande un référent **identifié et joignable**, et
+   * l'article L.6352-3 impose sa désignation. Le nom et le téléphone étaient
+   * pourtant en configuration (`referent_handicap_nom`,
+   * `referent_handicap_telephone`) et déjà lus par `conformite-service.ts` —
+   * seule la couche document les laissait tomber.
+   */
+  referentHandicapNom?: string;
+  referentHandicapTelephone?: string;
   /** Contact DPO / RGPD (exercice des droits). Fallback = email général. Optionnel. */
   dpoEmail?: string;
   /**
@@ -92,6 +108,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     telephone,
     site,
     referentHandicapEmail,
+    referentHandicapNom,
+    referentHandicapTelephone,
     dpoEmail,
   ] = await Promise.all([
     getQualiopiConfig("raison_sociale"),
@@ -105,6 +123,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     getQualiopiConfig("telephone_organisme"),
     getQualiopiConfig("site_url"),
     getQualiopiConfig("referent_handicap_email"),
+    getQualiopiConfig("referent_handicap_nom"),
+    getQualiopiConfig("referent_handicap_telephone"),
     getQualiopiConfig("dpo_contact_email"),
   ]);
 
@@ -137,6 +157,8 @@ export async function getOrganismeIdentite(): Promise<OrganismeIdentite> {
     telephone: telephone || "",
     site: site || "",
     referentHandicapEmail: referentHandicapEmail || "",
+    referentHandicapNom: referentHandicapNom || "",
+    referentHandicapTelephone: referentHandicapTelephone || "",
     // DPO non renseigné → on retombe sur le contact général de l'OF (jamais le handicap).
     dpoEmail: dpoEmail || emailOrganisme,
     mentionTvaRegime,
