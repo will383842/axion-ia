@@ -9,6 +9,7 @@ import {
   AdminCard,
   AdminTable,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -340,6 +341,25 @@ export function ActivityLogsV2({
           caption="Journal d'audit"
         />
       )}
+
+      {/* 🔴 L'en-tête annonçait « page 1 / N » — et rien ne permettait
+          d'atteindre la page 2. Le journal d'audit est la vue où l'on remonte
+          le temps : n'en donner que la première page revient à n'en donner
+          aucune. Les six filtres sont reportés dans les liens, sinon changer
+          de page repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/activity-logs`}
+        preservedParams={{
+          adminUserId: sp["adminUserId"],
+          action: sp["action"],
+          targetType: sp["targetType"],
+          search: sp["search"],
+          dateFrom: sp["dateFrom"],
+          dateTo: sp["dateTo"],
+        }}
+      />
     </AdminPageShell>
   );
 }

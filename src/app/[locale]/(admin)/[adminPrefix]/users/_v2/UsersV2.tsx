@@ -16,6 +16,7 @@ import {
   AdminEmptyState,
   AdminButton,
   AdminEtatBooleen,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -230,6 +231,21 @@ export function UsersV2({
           )}
         />
       )}
+
+      {/* 🔴 L'en-tête annonçait « page 1 / N » sans offrir la page 2 — dixième
+          liste de la console dans ce cas. Les trois filtres sont reportés dans
+          les liens : sans eux, changer de page repartirait d'une autre liste
+          que celle qu'on est en train de lire. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/users`}
+        preservedParams={{
+          role: sp["role"],
+          status: sp["status"],
+          search: sp["search"],
+        }}
+      />
     </AdminPageShell>
   );
 }
