@@ -20,7 +20,13 @@ export const COACHING_INTERVENTIONS: ReadonlyArray<{ slug: string; label: string
 ];
 
 export function coachingInterventionLabel(slug: string): string {
-  return COACHING_INTERVENTIONS.find((i) => i.slug === slug)?.label ?? `« ${slug} »`;
+  // 🔴 NE PAS « CITER » LE REPLI ICI. Cette fonction alimente aussi
+  // `buildCoachingSnapshot` → `snap.intitule`, l'intitulé FIGÉ que portent les
+  // documents AFEST. Encadrer un slug inconnu de guillemets écrirait
+  // « slug-inconnu » dans le titre d'une pièce légale — une convention
+  // d'affichage n'a rien à faire dans une donnée persistée. Le vrai défaut
+  // était l'absence des deux variantes retirées, ajoutées ci-dessus.
+  return COACHING_INTERVENTIONS.find((i) => i.slug === slug)?.label ?? slug;
 }
 
 /** Types d'optimisation (enum Prisma `OptimisationType`). */
