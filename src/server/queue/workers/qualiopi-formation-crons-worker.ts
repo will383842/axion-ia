@@ -464,16 +464,43 @@ async function handleSatisfactionJ1(): Promise<void> {
     return;
   }
 
+  // 🔴 RATTRAPAGE (2026-08-03) — la fenêtre de 24 h laissait tomber définitivement
+  //
+  // L'ancienne sélection était `dateFin ∈ [now-36h, now-12h]` ET `statut = realisee`.
+  // Les DEUX conditions devaient être vraies le même matin, au passage de 08:00 UTC.
+  // Une session clôturée avec un jour de retard sortait de la fenêtre et **ne
+  // recevait jamais son questionnaire** : pas de seconde chance, pas d'alerte.
+  //
+  // Constaté sur le premier dossier réel (INVEST SUN, session du 31/07) :
+  //   01/08 08:00 → dans la fenêtre, session pas encore `realisee` → sauté
+  //   02/08 08:00 → session `realisee`, fenêtre dépassée           → sauté
+  // Résultat : 0 appréciation recueillie, indicateurs 8 et 30 vides sur la seule
+  // action réalisée de l'organisme.
+  //
+  // On sélectionne désormais sur **l'absence d'envoi**, pas sur une tranche de
+  // temps : tout inscrit d'une session réalisée depuis au moins 12 h dont le
+  // questionnaire de satisfaction à chaud n'a pas encore été envoyé. Le critère
+  // devient l'état réel du dossier, pas l'heure à laquelle le cron passe.
+  //
+  // Le `envoyeAt: null` rend l'opération idempotente : une fois parti, l'email ne
+  // repart pas au scan suivant. Le plancher de 12 h évite d'écrire au stagiaire
+  // le soir même de la formation.
+  //
+  // Borne de 90 jours : au-delà, relancer sur une session ancienne n'a plus de
+  // sens et exhumerait des dossiers clos à la première mise en service.
   const now = new Date();
-  const windowStart = new Date(now.getTime() - 36 * 60 * 60 * 1000);
-  const windowEnd = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+  const planchier = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+  const plafond = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
 
   const enrollments = await prisma.enrollment.findMany({
     where: {
       statut: { in: ["planifiee", "presente"] },
       session: {
         statut: "realisee",
-        dateFin: { gte: windowStart, lte: windowEnd },
+        dateFin: { gte: plafond, lte: planchier },
+      },
+      questionnaires: {
+        some: { type: "satisfaction_chaud", envoyeAt: null, reponduAt: null },
       },
     },
     select: { id: true },
@@ -485,6 +512,12 @@ async function handleSatisfactionJ1(): Promise<void> {
   for (const enrollment of enrollments) {
     try {
       await envoyerSatisfactionJ1(enrollment.id);
+      // Marque l'envoi : c'est ce qui rend le rattrapage idempotent, et ce qui
+      // permet à la console de distinguer « jamais envoyé » de « sans réponse ».
+      await prisma.questionnaire.updateMany({
+        where: { enrollmentId: enrollment.id, type: "satisfaction_chaud", envoyeAt: null },
+        data: { envoyeAt: new Date() },
+      });
       ok++;
     } catch (err) {
       ko++;
@@ -496,7 +529,8 @@ async function handleSatisfactionJ1(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] satisfaction-j1: ${ok} emails enqueués, ${ko} erreurs (${enrollments.length} candidats scannés)`,
+    `[formation-crons] satisfaction-j1: ${ok} emails enqueués, ${ko} erreurs ` +
+      `(${enrollments.length} candidats en attente d'envoi — rattrapage sans fenêtre)`,
   );
 }
 
@@ -513,16 +547,29 @@ async function handleSuiviJ30(): Promise<void> {
     return;
   }
 
+  // 🔴 RATTRAPAGE (2026-08-03) — même défaut que `satisfaction-j1`, même remède.
+  //
+  // La fenêtre `dateFin ∈ [J-30±12h]` ne laissait qu'une seule chance : un cron
+  // qui ne passe pas ce matin-là, ou une session clôturée tardivement, et le
+  // suivi à froid ne partait jamais. C'est la SECONDE des deux sources
+  // d'appréciation qu'exige l'indicateur 30 — la perdre coûte l'indicateur.
+  //
+  // On sélectionne sur l'absence d'envoi, avec un plancher de 30 jours (le suivi
+  // à froid n'a de sens qu'après un délai de mise en pratique) et un plafond de
+  // 180 jours (au-delà, on n'exhume pas un dossier clos).
   const now = new Date();
-  const windowStart = new Date(now.getTime() - (30 * 24 + 12) * 60 * 60 * 1000);
-  const windowEnd = new Date(now.getTime() - (30 * 24 - 12) * 60 * 60 * 1000);
+  const planchier = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const plafond = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
 
   const enrollments = await prisma.enrollment.findMany({
     where: {
       statut: { in: ["planifiee", "presente"] },
       session: {
         statut: "realisee",
-        dateFin: { gte: windowStart, lte: windowEnd },
+        dateFin: { gte: plafond, lte: planchier },
+      },
+      questionnaires: {
+        some: { type: "satisfaction_froid", envoyeAt: null, reponduAt: null },
       },
     },
     select: { id: true },
@@ -534,6 +581,10 @@ async function handleSuiviJ30(): Promise<void> {
   for (const enrollment of enrollments) {
     try {
       await envoyerSuiviJ30(enrollment.id);
+      await prisma.questionnaire.updateMany({
+        where: { enrollmentId: enrollment.id, type: "satisfaction_froid", envoyeAt: null },
+        data: { envoyeAt: new Date() },
+      });
       ok++;
     } catch (err) {
       ko++;
