@@ -589,3 +589,65 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
     expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// attestations-auto — garde « pas d'attestation sans évaluation finale »
+//
+// 🔴 Régression de production 2026-08-03 (AXI-ATT-2026-003) : le cron émettait
+// une attestation pour tout inscrit d'une session `realisee`, évaluation ou non.
+// La pièce certifiait « en a satisfait les exigences » ET affichait « Évaluation
+// des acquis non réalisée ». Indicateur 11, non graduable.
+//
+// Ce test porte sur le `where` de la requête, pas sur le nombre d'appels : le
+// défaut n'était pas une boucle fautive, c'était un filtre absent. Compter les
+// appels aurait laissé passer la régression — la liste renvoyée par le mock est
+// ce que le test décide, pas ce que la requête sélectionne.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("formation-crons.attestations-auto — garde évaluation finale", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
+    mockPrisma.enrollment.count.mockResolvedValue(0);
+  });
+
+  it("ne sélectionne que les inscrits ayant une évaluation de type `finale`", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.evaluations).toEqual({ some: { type: "finale" } });
+    expect(where?.attestationGenereeAt).toBeNull();
+    expect(where?.session).toEqual({ statut: "realisee" });
+  });
+
+  it("compte séparément les inscrits en attente d'évaluation, au lieu de les taire", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.count.mock.calls[0]?.[0]?.where;
+    expect(where?.evaluations).toEqual({ none: { type: "finale" } });
+  });
+
+  it("génère l'attestation des inscrits que la requête a retenus", async () => {
+    const { genererAttestationPourEnrollment } = await import(
+      "@/server/qualiopi/evaluations/attestation-service"
+    );
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-evalue-1", session: { id: "s1" } },
+      { id: "enroll-evalue-2", session: { id: "s1" } },
+    ]);
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledTimes(2);
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1");
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2");
+  });
+});

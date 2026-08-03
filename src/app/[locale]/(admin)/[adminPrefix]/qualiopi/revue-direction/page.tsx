@@ -192,7 +192,15 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     </td>
                     <td className={cellCls}>
                       <RevueDirectionRowActions
-                        revue={{ id: r.id, dateRevue: r.dateRevue, statut: r.statut }}
+                        revue={{
+                          id: r.id,
+                          dateRevue: r.dateRevue,
+                          statut: r.statut,
+                          decisions: Array.isArray(r.decisions) ? (r.decisions as unknown[]) : [],
+                          planActions: Array.isArray(r.planActions)
+                            ? (r.planActions as unknown[])
+                            : [],
+                        }}
                         updateAction={updateRevueDirectionAction}
                       />
                     </td>
