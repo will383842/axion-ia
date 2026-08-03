@@ -104,7 +104,15 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total incidents" value={incidents.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total incidents"
+          value={incidents.length}
+          {...(incidents.length === 500 ? { meta: "500 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Ouverts / en cours"
           value={ouverts}

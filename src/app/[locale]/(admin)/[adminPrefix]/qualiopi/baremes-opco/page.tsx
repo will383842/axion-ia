@@ -99,7 +99,15 @@ export default async function QualiopiBaremesOpcoPage({ params }: PageProps) {
           tone={nbPerimes > 0 ? "warning" : "success"}
           icon={nbPerimes > 0 ? AlertTriangle : CheckCircle2}
         />
-        <AdminStatCard label="Versions archivées" value={historique.length} icon={Layers} />
+        {/* 🔴 « Versions archivées » comptait `historique.length` — un findMany
+            SANS FILTRE : il incluait donc les barèmes EN VIGUEUR, affichés dans
+            la tuile voisine. Le même barème était compté deux fois, une fois
+            comme actif et une fois comme archivé. */}
+        <AdminStatCard
+          label="Versions archivées"
+          value={historique.filter((b) => b.effectiveTo !== null).length}
+          icon={Layers}
+        />
       </div>
 
       {/* Formulaire relevé */}

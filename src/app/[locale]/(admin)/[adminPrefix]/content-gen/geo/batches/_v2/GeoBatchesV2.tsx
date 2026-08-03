@@ -78,7 +78,13 @@ export async function GeoBatchesV2({ adminPrefix }: Props): Promise<React.ReactE
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Lots géographiques"
-        description={`${batches.length} lot${batches.length > 1 ? "s" : ""} — par région, département ou zone multiple`}
+        // Le compteur est plafonné par la requête (take: 50) : au-delà, il
+        // annoncerait « 50 » quel que soit le nombre réel de lots.
+        description={
+          batches.length === 50
+            ? "Les 50 lots les plus récents — par région, département ou zone multiple"
+            : `${batches.length} lot${batches.length > 1 ? "s" : ""} — par région, département ou zone multiple`
+        }
         actions={
           <Link href={`${base}/new`} className="admin-button">
             + Nouveau batch

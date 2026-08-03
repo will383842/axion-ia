@@ -71,7 +71,15 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={sousTraitants.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total"
+          value={sousTraitants.length}
+          {...(sousTraitants.length === 100 ? { meta: "100 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Actifs"
           value={actifs}

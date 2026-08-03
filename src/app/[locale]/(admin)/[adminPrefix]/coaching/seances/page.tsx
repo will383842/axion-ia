@@ -76,7 +76,15 @@ export default async function CoachingSeancesPage({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Séances 1-to-1"
-        description="Toutes les séances d'accompagnement individuel, tous formateurs confondus."
+        // 🔴 « TOUTES les séances » : la requête est plafonnée à 500. Au-delà,
+        // la liste tronquait en silence, pendant que la tuile « Séances » du
+        // tableau de bord — elle, non plafonnée — affichait le vrai total. Deux
+        // chiffres contradictoires à un clic l'un de l'autre.
+        description={
+          sessions.length === 500
+            ? "Les 500 séances les plus récentes, tous formateurs confondus."
+            : "Toutes les séances d'accompagnement individuel, tous formateurs confondus."
+        }
       />
 
       <AdminCard>
