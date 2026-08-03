@@ -3,16 +3,17 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { dispatchAdHocJob } from "@/server/actions/content-gen/adhoc";
 
 // NB : `landing_ville` est VOLONTAIREMENT absent — généré par script CLI
 // uniquement (hors REGISTRY content-gen, cf. generators/index.ts). Le proposer
 // ici créait un job voué à échouer « No generator registered ».
 const CONTENT_TYPES = [
-  { value: "blog_article", label: "Blog article" },
-  { value: "blog_from_rss", label: "Blog depuis RSS" },
-  { value: "blog_from_keywords", label: "Blog depuis mots-clés" },
-  { value: "blog_from_title", label: "Blog depuis titre" },
+  { value: "blog_article", label: "Article de blog" },
+  { value: "blog_from_rss", label: "Article depuis un flux RSS" },
+  { value: "blog_from_keywords", label: "Article depuis des mots-clés" },
+  { value: "blog_from_title", label: "Article depuis un titre" },
   { value: "comparison", label: "Comparatif" },
   { value: "guide_pilier", label: "Guide pilier" },
   { value: "qa_derived", label: "Q/R dérivé" },
@@ -58,37 +59,37 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         ...(campaignId ? { campaignId } : {}),
       });
       setLastJobId(result.jobId);
-      toast.success(`Job dispatché — ID : ${result.jobId}`);
+      toast.success(`Génération lancée — référence ${result.jobId}`);
     } catch (err) {
       // Détail technique en console — le toast porte un message métier fixe.
       console.error("[adhoc-dispatch] dispatch du job en échec :", err);
-      toast.error(
-        "Échec du lancement du job. Vérifiez les champs et réessayez — détail en console.",
-      );
+      toast.error("Le lancement a échoué. Vérifiez les champs et réessayez.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-6 p-6">
-      <div>
-        <h1 className="text-xl font-semibold">Lancement ad-hoc</h1>
-        <p className="text-muted-foreground text-sm">
-          Dispatch un job de génération immédiat, hors cycle orchestrateur.
-        </p>
-      </div>
+    // 🔴 Seule page du module sans AUCUNE primitive admin : des `div` et un
+    // `h1` nus, et des jetons absents de la charte admin (`bg-primary`,
+    // `text-muted-foreground`, `bg-muted/40`). Elle ne ressemblait à aucun
+    // autre écran de la console.
+    <AdminPageShell width="narrow">
+      <AdminPageHeader
+        title="Générer une page à la demande"
+        description="Lance une génération immédiate, sans attendre le cycle automatique."
+      />
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1">
-          <label htmlFor="adhocdispatchv2-type-de-contenu" className="text-sm font-medium">
+          <label htmlFor="adhocdispatchv2-type-de-contenu" className="admin-label">
             Type de contenu
           </label>
           <select
             id="adhocdispatchv2-type-de-contenu"
             value={contentType}
             onChange={(e) => setContentType(e.target.value)}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="admin-input"
             required
           >
             {CONTENT_TYPES.map((t) => (
@@ -100,11 +101,8 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label
-            htmlFor="adhocdispatchv2-titre-mot-cle-impose-optionnel"
-            className="text-sm font-medium"
-          >
-            Titre / mot-clé imposé (optionnel)
+          <label htmlFor="adhocdispatchv2-titre-mot-cle-impose-optionnel" className="admin-label">
+            Titre ou mot-clé imposé (facultatif)
           </label>
           <input
             id="adhocdispatchv2-titre-mot-cle-impose-optionnel"
@@ -112,18 +110,18 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="ex: Automatiser sa facturation avec l'IA en cabinet comptable"
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="admin-input"
             maxLength={140}
           />
-          <p className="text-muted-foreground text-xs">
-            Si renseigné, ce titre est imposé au générateur (sujet exact). Laissé vide, le worker
-            pioche automatiquement un mot-clé dans le pool de seeds.
+          <p className="admin-meta-small">
+            Si renseigné, ce titre est imposé tel quel comme sujet. Laissé vide, un mot-clé est
+            choisi automatiquement dans la réserve.
           </p>
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="adhocdispatchv2-ville-slug-optionnel" className="text-sm font-medium">
-            Ville (slug, optionnel)
+          <label htmlFor="adhocdispatchv2-ville-slug-optionnel" className="admin-label">
+            Ville (facultatif)
           </label>
           <input
             id="adhocdispatchv2-ville-slug-optionnel"
@@ -131,20 +129,20 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
             value={anchorVilleSlug}
             onChange={(e) => setAnchorVilleSlug(e.target.value)}
             placeholder="ex: paris, lyon-3e"
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="admin-input"
             maxLength={100}
           />
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="adhocdispatchv2-intention-de-recherche" className="text-sm font-medium">
+          <label htmlFor="adhocdispatchv2-intention-de-recherche" className="admin-label">
             Intention de recherche
           </label>
           <select
             id="adhocdispatchv2-intention-de-recherche"
             value={searchIntent}
             onChange={(e) => setSearchIntent(e.target.value)}
-            className="w-full rounded border px-3 py-2 text-sm"
+            className="admin-input"
           >
             {SEARCH_INTENTS.map((i) => (
               <option key={i.value} value={i.value}>
@@ -155,35 +153,31 @@ export function AdHocDispatchV2({ adminPrefix: _adminPrefix }: Props) {
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="adhocdispatchv2-id-de-campagne-optionnel" className="text-sm font-medium">
-            ID de campagne (optionnel)
+          <label htmlFor="adhocdispatchv2-id-de-campagne-optionnel" className="admin-label">
+            Rattacher à une campagne (facultatif)
           </label>
           <input
             id="adhocdispatchv2-id-de-campagne-optionnel"
             type="text"
             value={campaignId}
             onChange={(e) => setCampaignId(e.target.value)}
-            placeholder="cuid de la campagne à rattacher"
-            className="w-full rounded border px-3 py-2 font-mono text-sm"
+            placeholder="Identifiant de la campagne"
+            className="admin-input"
             maxLength={30}
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-primary text-primary-fg hover:bg-primary-hover rounded px-4 py-2 text-sm font-medium disabled:opacity-50"
-        >
-          {loading ? "Envoi…" : "Dispatcher le job"}
+        <button type="submit" disabled={loading} className="admin-button">
+          {loading ? "Lancement…" : "Lancer la génération"}
         </button>
       </form>
 
       {lastJobId && (
-        <div className="bg-muted/40 rounded border p-3 text-sm">
-          <span className="font-medium">Dernier job dispatché :</span>{" "}
-          <code className="font-mono text-xs">{lastJobId}</code>
-        </div>
+        <AdminCard className="mt-[var(--space-admin-5)]">
+          <span className="font-medium">Dernière génération lancée :</span>{" "}
+          <code className="admin-meta-small">{lastJobId}</code>
+        </AdminCard>
       )}
-    </div>
+    </AdminPageShell>
   );
 }
