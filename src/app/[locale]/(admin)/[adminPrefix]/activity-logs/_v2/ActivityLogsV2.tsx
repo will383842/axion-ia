@@ -56,6 +56,36 @@ interface Props {
   stats: ReadonlyArray<StatRow>;
 }
 
+/**
+ * 🔴 LA COLONNE « TYPE CIBLE » ET SON FILTRE PARLAIENT SQL. On y lisait
+ * `case_study`, `help_article`, `booking_option`, `newsletter_subscriber` —
+ * des noms de tables, dans les deux endroits à la fois. Le reste de l'écran
+ * traduit pourtant soigneusement les actions (`decrireAction`).
+ *
+ * Une clé inconnue est CITÉE : un nouveau type d'objet apparaîtra tel quel
+ * plutôt que de disparaître derrière un tiret.
+ */
+const TYPE_CIBLE_LABELS: Record<string, string> = {
+  article: "Article de blog",
+  case_study: "Cas concret",
+  help_article: "Article d'aide",
+  testimonial: "Avis client",
+  faq: "Question fréquente",
+  category: "Catégorie",
+  booking_option: "Option de réservation",
+  calendar_slot: "Créneau de calendrier",
+  submission: "Message reçu",
+  newsletter_subscriber: "Abonné à la lettre d'information",
+  setting: "Réglage",
+  admin_user: "Compte administrateur",
+};
+
+const TYPES_CIBLE_ORDRE = Object.keys(TYPE_CIBLE_LABELS);
+
+function libelleTypeCible(type: string): string {
+  return TYPE_CIBLE_LABELS[type] ?? `« ${type} »`;
+}
+
 export function ActivityLogsV2({
   adminPrefix,
   searchParams: sp,
@@ -105,7 +135,11 @@ export function ActivityLogsV2({
         </span>
       ),
     },
-    { key: "targetType", header: "Type cible", cell: (l) => l.targetType ?? "—" },
+    {
+      key: "targetType",
+      header: "Type cible",
+      cell: (l) => (l.targetType === null ? "—" : libelleTypeCible(l.targetType)),
+    },
     {
       key: "targetId",
       header: "ID cible",
@@ -197,18 +231,11 @@ export function ActivityLogsV2({
                 className="admin-input"
               >
                 <option value="">Tous</option>
-                <option value="article">article</option>
-                <option value="case_study">case_study</option>
-                <option value="help_article">help_article</option>
-                <option value="testimonial">testimonial</option>
-                <option value="faq">faq</option>
-                <option value="category">category</option>
-                <option value="booking_option">booking_option</option>
-                <option value="calendar_slot">calendar_slot</option>
-                <option value="submission">submission</option>
-                <option value="newsletter_subscriber">newsletter_subscriber</option>
-                <option value="setting">setting</option>
-                <option value="admin_user">admin_user</option>
+                {TYPES_CIBLE_ORDRE.map((t) => (
+                  <option key={t} value={t}>
+                    {TYPE_CIBLE_LABELS[t]}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="admin-field">

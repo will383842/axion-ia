@@ -134,7 +134,9 @@ async function fetchCoolifyAlerts(): Promise<{
     const alerts: Alert[] = failed.slice(0, 5).map((d) => ({
       source: "coolify",
       severity: d.status === "failed" ? "critical" : "info",
-      title: `Déploiement ${d.status}`,
+      // Le statut sortait brut : « Déploiement failed », « Déploiement
+      // cancelled-by-user ».
+      title: d.status === "failed" ? "Déploiement en échec" : "Déploiement annulé",
       detail: `commit ${(d.commit ?? "?").slice(0, 8)} · ${new Date(d.created_at).toLocaleString("fr-FR")}`,
       url: d.deployment_uuid ? `${url}/deployment/${d.deployment_uuid}` : url,
       createdAt: d.created_at,
@@ -188,7 +190,7 @@ async function fetchSentryAlerts(): Promise<{
             ? "warning"
             : "info",
       title: issue.title,
-      detail: `${issue.culprit ?? ""} · ${issue.count} occurrences · last ${new Date(issue.lastSeen).toLocaleString("fr-FR")}`,
+      detail: `${issue.culprit ?? ""} · ${issue.count} occurrences · dernière le ${new Date(issue.lastSeen).toLocaleString("fr-FR")}`,
       url: issue.permalink,
       createdAt: issue.lastSeen,
     }));

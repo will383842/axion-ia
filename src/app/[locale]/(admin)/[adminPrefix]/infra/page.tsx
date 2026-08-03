@@ -61,7 +61,7 @@ async function checkCoolify(): Promise<{ status: Status; detail: string | null }
       detail: containerStatus,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -83,10 +83,10 @@ async function checkUptimeRobot(): Promise<{ status: Status; detail: string | nu
     const total = monitors.length;
     return {
       status: total === 0 ? "unknown" : up === total ? "ok" : "degraded",
-      detail: `${up}/${total} monitors UP`,
+      detail: `${up}/${total} sonde${total > 1 ? "s" : ""} en ligne`,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -108,7 +108,7 @@ async function checkCloudflare(): Promise<{ status: Status; detail: string | nul
       detail: `${data.result?.name} · ${zoneStatus}`,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -128,7 +128,7 @@ async function checkPlausible(): Promise<{ status: Status; detail: string | null
       detail: `HTTP ${res.status}`,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -167,7 +167,7 @@ async function checkHetznerBackups(): Promise<{ status: Status; detail: string |
       detail: `${backups.length} backups Hetzner natifs · dernier il y a ${ageHours}h`,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -202,7 +202,7 @@ async function checkHetznerServer(): Promise<{ status: Status; detail: string | 
       detail: `ID ${serverId} · ${serverStatus}${ip ? ` · ${ip}` : ""}`,
     };
   } catch {
-    return { status: "unknown", detail: "API unreachable" };
+    return { status: "unknown", detail: "Service injoignable" };
   }
 }
 
@@ -471,7 +471,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: `${process.env["COOLIFY_URL"] ?? "http://178.105.55.15:8000"}/project/wfm03z4asw5yf5mro2fk6gp9`,
       status: process.env["DATABASE_URL"] ? "ok" : "not-configured",
       detail: process.env["DATABASE_URL"] ? "DATABASE_URL configuré" : "DATABASE_URL manquant",
-      paid: "0 € (managed by Coolify sur VPS)",
+      paid: "0 € (hébergé par Coolify sur le serveur)",
     },
     {
       name: "Redis",
@@ -479,7 +479,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: `${process.env["COOLIFY_URL"] ?? "http://178.105.55.15:8000"}/project/wfm03z4asw5yf5mro2fk6gp9`,
       status: process.env["REDIS_URL"] ? "ok" : "not-configured",
       detail: process.env["REDIS_URL"] ? "REDIS_URL configuré" : "REDIS_URL manquant",
-      paid: "0 € (managed by Coolify sur VPS)",
+      paid: "0 € (hébergé par Coolify sur le serveur)",
     },
   ];
 

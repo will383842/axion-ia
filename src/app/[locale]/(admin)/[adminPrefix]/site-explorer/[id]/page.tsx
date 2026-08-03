@@ -16,6 +16,7 @@ import {
 import type { SiteRouteQuality } from "../../../../../../../prisma/generated/client";
 import { SiteRouteStatusBadge } from "@/components/admin/site-explorer/SiteRouteStatusBadge";
 import { adminPath } from "@/lib/admin-path";
+import { libelleGravite, libelleTypeRoute } from "@/server/site-explorer/anomalies-labels";
 
 export const dynamic = "force-dynamic";
 
@@ -145,13 +146,13 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métadonnées SEO</h2>
           <dl className="space-y-2 text-sm">
-            <Row label="Type" value={route.type} />
+            <Row label="Type" value={libelleTypeRoute(route.type)} />
             <Row label="Section" value={route.section ?? "—"} />
-            <Row label="metaTitle" value={route.metaTitle ?? "—"} mono />
-            <Row label="metaDescription" value={route.metaDescription ?? "—"} />
-            <Row label="H1" value={route.h1 ?? "—"} />
-            <Row label="Source" value={route.sourceDbTable ?? "static"} />
-            {route.sourceDbId && <Row label="Source DB ID" value={route.sourceDbId} mono />}
+            <Row label="Titre SEO" value={route.metaTitle ?? "—"} />
+            <Row label="Description SEO" value={route.metaDescription ?? "—"} />
+            <Row label="Titre principal de la page" value={route.h1 ?? "—"} />
+            <Row label="Origine du contenu" value={route.sourceDbTable ?? "Page statique"} />
+            {route.sourceDbId && <Row label="Identifiant en base" value={route.sourceDbId} mono />}
           </dl>
         </section>
 
@@ -287,10 +288,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Lighthouse</h2>
             <div className="flex gap-4">
               {[
-                { label: "Perf", score: route.lighthousePerf },
-                { label: "SEO", score: route.lighthouseSeo },
-                { label: "A11y", score: route.lighthouseA11y },
-                { label: "BP", score: route.lighthouseBP },
+                { label: "Performance", score: route.lighthousePerf },
+                { label: "Référencement", score: route.lighthouseSeo },
+                { label: "Accessibilité", score: route.lighthouseA11y },
+                { label: "Bonnes pratiques", score: route.lighthouseBP },
               ].map(
                 ({ label, score }) =>
                   score !== null && (
@@ -315,7 +316,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             </div>
             {route.lighthouseRunAt && (
               <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">
-                Audit: {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
+                Audit du {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
               </p>
             )}
           </section>
@@ -345,7 +346,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                             : "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]"
                       }`}
                     >
-                      {a.severity}
+                      {libelleGravite(a.severity)}
                     </span>
                     <span className="text-sm text-[color:var(--color-admin-destructive-fg)]">
                       {a.description}

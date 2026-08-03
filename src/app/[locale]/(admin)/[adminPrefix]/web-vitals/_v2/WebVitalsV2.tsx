@@ -86,10 +86,12 @@ function classifyRating(metric: string, value: number): "good" | "needs_improvem
 
 // Track 2 : pill CrUX → <AdminBadge> (success=good, warning=needs-improvement,
 // destructive=poor). Labels inchangés.
+// 🔴 La colonne « Repère Google » restait en anglais : « Good », « Needs
+// improvement », « Poor » — les trois seuls mots que cet écran demande de lire.
 const RATING_LABELS: Record<"good" | "needs_improvement" | "poor", string> = {
-  good: "● Good",
-  needs_improvement: "● Needs improvement",
-  poor: "● Poor",
+  good: "● Bon",
+  needs_improvement: "● À améliorer",
+  poor: "● Mauvais",
 };
 const RATING_TONE: Record<
   "good" | "needs_improvement" | "poor",
@@ -233,7 +235,7 @@ export function WebVitalsV2({
         />
         <AdminStatCard
           label="Source"
-          value={isLive ? "Live (DB)" : "Snapshot worker"}
+          value={isLive ? "Calcul en direct" : "Mesure nocturne"}
           meta={computedAt ? new Date(computedAt).toLocaleString("fr-FR") : "—"}
           icon={Database}
         />
