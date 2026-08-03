@@ -6,6 +6,8 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+
+import { CoquilleFormateur } from "../../_coquille";
 import { requireFormateur } from "@/server/formateur/guard";
 import { getSessionForFormateur } from "@/server/formateur/queries";
 import { SeanceEditor } from "@/components/espace-formateur/SeanceEditor";
@@ -104,42 +106,44 @@ export default async function SeancePage({
   };
 
   return (
-    <div className="space-y-5">
-      <div>
-        <Link href={FORMATEUR_BASE_PATH} className="text-terracotta text-xs hover:underline">
-          ← Mes séances
-        </Link>
-        <h1 className="text-mocha mt-1 font-serif text-2xl font-semibold">
-          {coachingInterventionLabel(s.interventionSlug)}
-        </h1>
-        <p className="text-fg-muted text-sm">
-          {s.beneficiaireNom ?? "Bénéficiaire non renseigné"}
-          {s.beneficiaireEntreprise ? ` · ${s.beneficiaireEntreprise}` : ""}
-        </p>
-      </div>
-      <SeanceEditor session={data} />
+    <CoquilleFormateur section="accompagnements">
+      <div className="space-y-5">
+        <div>
+          <Link href={FORMATEUR_BASE_PATH} className="text-terracotta text-xs hover:underline">
+            ← Mes séances
+          </Link>
+          <h1 className="text-mocha mt-1 font-serif text-2xl font-semibold">
+            {coachingInterventionLabel(s.interventionSlug)}
+          </h1>
+          <p className="text-fg-muted text-sm">
+            {s.beneficiaireNom ?? "Bénéficiaire non renseigné"}
+            {s.beneficiaireEntreprise ? ` · ${s.beneficiaireEntreprise}` : ""}
+          </p>
+        </div>
+        <SeanceEditor session={data} />
 
-      {/*
+        {/*
         Émargement AFEST — placé APRÈS l'éditeur, et c'est l'ordre du geste réel :
         la durée réelle de la séance se saisit dans le compte-rendu, et sans elle
         les horaires sont indéterminables — donc la séance non signable.
       */}
-      {etatSignatures !== null && (
-        <section className="space-y-3">
-          <h2 className="text-espresso font-serif text-xl">Émargement des séances</h2>
-          <p className="text-mocha text-sm">
-            Chaque séance porte trois signatures : celle du bénéficiaire, la vôtre, et la
-            co-attestation du tuteur en entreprise. Elles sont horodatées et scellées par une
-            empreinte chaînée à la précédente.
-          </p>
-          <EmargementAfest
-            coachingSessionId={etatSignatures.coachingSessionId}
-            seances={etatSignatures.seances}
-            plafondProbant={etatSignatures.plafondProbant}
-            signerAction={signerSeanceAfestFormateurAction}
-          />
-        </section>
-      )}
-    </div>
+        {etatSignatures !== null && (
+          <section className="space-y-3">
+            <h2 className="text-espresso font-serif text-xl">Émargement des séances</h2>
+            <p className="text-mocha text-sm">
+              Chaque séance porte trois signatures : celle du bénéficiaire, la vôtre, et la
+              co-attestation du tuteur en entreprise. Elles sont horodatées et scellées par une
+              empreinte chaînée à la précédente.
+            </p>
+            <EmargementAfest
+              coachingSessionId={etatSignatures.coachingSessionId}
+              seances={etatSignatures.seances}
+              plafondProbant={etatSignatures.plafondProbant}
+              signerAction={signerSeanceAfestFormateurAction}
+            />
+          </section>
+        )}
+      </div>
+    </CoquilleFormateur>
   );
 }
