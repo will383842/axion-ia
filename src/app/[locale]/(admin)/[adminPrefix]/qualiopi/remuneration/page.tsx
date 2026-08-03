@@ -31,6 +31,7 @@ import { periodeDeRattachement } from "@/server/qualiopi/remuneration/run";
 import {
   euros,
   libelleAnomalie,
+  libellePrestation,
   LIBELLE_STATUT_RELEVE,
   MOIS_FR,
   TON_STATUT_RELEVE,
@@ -191,7 +192,7 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                 </AdminBadge>
                 <span>{a.trainerNom}</span>
                 <span className="admin-muted">
-                  {a.prestationType} — {euros(a.montantHtCents)} HT
+                  {libellePrestation(a.prestationType)} — {euros(a.montantHtCents)} HT
                 </span>
               </li>
             ))}

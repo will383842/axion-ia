@@ -7,6 +7,11 @@ import { AdminPageShell, AdminPageHeader, AdminCard, AdminStatCard } from "@/com
 import { listExternalLinks } from "@/server/actions/content-gen/external-links";
 import { TriggerVerificationButton } from "./TriggerVerificationButton";
 import { Link as LinkIcon, CheckCircle2, AlertTriangle, ShieldAlert } from "lucide-react";
+import {
+  EXTERNAL_LINK_CATEGORY_LABELS,
+  EXTERNAL_LINK_SCOPE_LABELS,
+  EXTERNAL_LINK_STATUS_LABELS,
+} from "@/data/external-links/types";
 
 interface Props {
   adminPrefix: string;
@@ -69,7 +74,7 @@ export async function ExternalLinksV2({
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="External Links Database"
+        title="Catalogue de liens externes"
         description={`Catalogue d'autorité ~2400 liens (${result.stats.healthyForSelection} actuellement éligibles à selectExternalLinks()). Worker mensuel + tracking rotation équitable.`}
         actions={
           <div className="flex gap-2">
@@ -209,26 +214,27 @@ export async function ExternalLinksV2({
               className="admin-input ml-2"
             >
               <option value="">— toutes —</option>
-              <option value="gov_fr">gov_fr</option>
-              <option value="gov_eu">gov_eu</option>
-              <option value="academic">academic</option>
-              <option value="research_industry">research_industry</option>
-              <option value="official_doc">official_doc</option>
-              <option value="press_top">press_top</option>
-              <option value="mairie">mairie</option>
-              <option value="opco">opco</option>
-              <option value="international">international</option>
+              {/* 🔴 Deux catégories manquaient à ce menu — « industry_assoc » et
+                  « cci » — donc INFILTRABLES alors qu'elles existent en base.
+                  La liste est maintenant dérivée du type. */}
+              {Object.entries(EXTERNAL_LINK_CATEGORY_LABELS).map(([v, l]) => (
+                <option key={v} value={v}>
+                  {l}
+                </option>
+              ))}
             </select>
           </label>
           <label className="text-sm">
-            Status
+            État
             <select name="status" defaultValue={filters.status ?? ""} className="admin-input ml-2">
               <option value="">— tous —</option>
-              <option value="active">active</option>
-              <option value="redirect_acceptable">redirect_acceptable</option>
-              <option value="404">404</option>
-              <option value="deprecated">deprecated</option>
-              <option value="pending_verify">pending_verify</option>
+              {/* « redirect_problem » manquait : un lien cassé par une
+                  redirection ne pouvait pas être filtré. */}
+              {Object.entries(EXTERNAL_LINK_STATUS_LABELS).map(([v, l]) => (
+                <option key={v} value={v}>
+                  {l}
+                </option>
+              ))}
             </select>
           </label>
           <label className="text-sm">
@@ -250,24 +256,24 @@ export async function ExternalLinksV2({
           <table className="admin-table w-full text-sm">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Identifiant</th>
                 <th>Organisation</th>
-                <th>Title</th>
-                <th>Authority</th>
-                <th>Scope</th>
-                <th>Status</th>
-                <th>Flags</th>
-                <th>Usage</th>
+                <th>Titre</th>
+                <th>Autorité</th>
+                <th>Portée</th>
+                <th>État</th>
+                <th>Signalements</th>
+                <th>Citations</th>
               </tr>
             </thead>
             <tbody>
               {result.rows.map((l) => {
                 const flags: string[] = [];
-                if (l.paywall) flags.push("paywall");
-                if (!l.indexable) flags.push("non-indexable");
-                if (!l.isHttps) flags.push("HTTP");
+                if (l.paywall) flags.push("payant");
+                if (!l.indexable) flags.push("non indexable");
+                if (!l.isHttps) flags.push("non sécurisé (HTTP)");
                 if (l.isCompetitor) flags.push("CONCURRENT");
-                if (l.hasSchemaOrg) flags.push("schema.org");
+                if (l.hasSchemaOrg) flags.push("données structurées");
                 return (
                   <tr key={l.id}>
                     <td>
@@ -280,7 +286,7 @@ export async function ExternalLinksV2({
                       </a>
                     </td>
                     <td>{l.authority}/5</td>
-                    <td>{l.scope}</td>
+                    <td>{EXTERNAL_LINK_SCOPE_LABELS[l.scope]}</td>
                     <td>
                       <span
                         style={{
@@ -290,7 +296,7 @@ export async function ExternalLinksV2({
                               : "var(--color-admin-warning)",
                         }}
                       >
-                        {l.status}
+                        {EXTERNAL_LINK_STATUS_LABELS[l.status]}
                       </span>
                     </td>
                     <td>{flags.join(", ") || "—"}</td>
@@ -305,7 +311,8 @@ export async function ExternalLinksV2({
         {/* Pagination */}
         <div className="mt-[var(--space-admin-4)] flex items-center justify-between text-sm">
           <span>
-            Affichage {result.rows.length} sur {result.total}
+            {result.rows.length} lien{result.rows.length > 1 ? "s" : ""} affiché
+            {result.rows.length > 1 ? "s" : ""} sur {result.total}
           </span>
           <div className="flex gap-2">
             {(filters.offset ?? 0) > 0 && (

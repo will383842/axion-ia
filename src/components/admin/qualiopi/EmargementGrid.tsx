@@ -102,6 +102,13 @@ function creneauKey(enrollmentId: string, date: string, dj: DemiJourneeLabel): s
 // Composant
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** « 2026-06-10 » → « 10/06 ». La date complète reste en infobulle. */
+function jourMois(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return new Intl.DateTimeFormat("fr-FR", { day: "2-digit", month: "2-digit" }).format(d);
+}
+
 export function EmargementGrid({
   sessionId,
   enrollments,
@@ -288,7 +295,10 @@ export function EmargementGrid({
               <th className={thCls}>Stagiaire</th>
               {colonnes.map((col) => (
                 <th key={`${col.date}|${col.demiJournee}`} className={thCls}>
-                  <div>{col.date}</div>
+                  {/* 🔴 En-tête de colonne en ISO brut : « 2026-06-10 ». Sur une
+                      feuille d'émargement, que l'auditrice recoupe avec des
+                      pièces papier françaises. */}
+                  <div title={col.date}>{jourMois(col.date)}</div>
                   <div className="font-normal tracking-normal normal-case">
                     {DJ_LABELS[col.demiJournee]}
                   </div>

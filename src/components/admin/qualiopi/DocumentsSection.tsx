@@ -662,7 +662,15 @@ function EnrollmentDocButton({
       } else {
         // attestation : resultat = complete | partielle | aucune
         const r = result.data as { resultat: string; documentId: string | null };
-        msg = `Attestation : ${r.resultat}${r.documentId ? ` (doc ${r.documentId.slice(0, 8)})` : ""}.`;
+        // Le résultat sortait en enum, suivi de huit caractères d'UUID nu :
+        // « Attestation : partielle (doc 3f2a91bc). » Ni l'un ni l'autre ne
+        // dit ce qui a été produit ni pourquoi.
+        const RESULTAT_ATTESTATION: Record<string, string> = {
+          complete: "Attestation complète générée.",
+          partielle: "Attestation partielle générée — présence insuffisante.",
+          aucune: "Aucune attestation : les conditions ne sont pas remplies.",
+        };
+        msg = RESULTAT_ATTESTATION[r.resultat] ?? `Attestation : « ${r.resultat} ».`;
       }
       setSuccess(msg);
       onDone(msg);

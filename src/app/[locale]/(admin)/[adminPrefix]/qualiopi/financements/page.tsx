@@ -20,6 +20,7 @@ import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ExportComptaButton } from "@/components/admin/qualiopi/ExportComptaButton";
 import { prisma } from "@/lib/prisma";
 import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
+import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -96,6 +97,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
       emiseAt: true,
       subrogation: true,
       numeroDossierOpco: true,
+      activite: true,
       session: {
         select: {
           id: true,
@@ -316,7 +318,13 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                     {/* Session */}
                     <td className={cellCls}>
                       <div className="font-medium">
-                        {f.session?.titreSession ?? "Coaching 1-to-1"}
+                        {/* 🔴 TOUTE FACTURE SANS SESSION ÉTAIT ÉTIQUETÉE
+                            « Coaching 1-to-1 ». Le Hub facture désormais aussi
+                            l'audit, l'implémentation et le site web : une
+                            facture d'audit s'affichait donc comme un coaching,
+                            sur l'écran des financements. */}
+                        {f.session?.titreSession ??
+                          (f.activite !== null ? ACTIVITE_LABELS[f.activite] : "Facture libre")}
                       </div>
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {f.session?.numero ?? ""}

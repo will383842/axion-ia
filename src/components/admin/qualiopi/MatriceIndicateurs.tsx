@@ -55,6 +55,31 @@ function StatutBadge({ statut }: { statut: IndicateurManifeste["statut"] }): Rea
   );
 }
 
+/**
+ * 🔴 LA VUE MANIFESTE — celle que consulte l'auditrice — listait ses pièces
+ * en monospace et en valeurs brutes : `livret_accueil`, `reglement_interieur`,
+ * `certificat_realisation`.
+ */
+const TYPE_DOCUMENT_LABELS: Record<string, string> = {
+  livret_accueil: "Livret d'accueil",
+  reglement_interieur: "Règlement intérieur",
+  convention_formation: "Convention de formation",
+  convention_tripartite: "Convention tripartite",
+  contrat_formation: "Contrat de formation",
+  programme_formation: "Programme de formation",
+  certificat_realisation: "Certificat de réalisation",
+  attestation_assiduite: "Attestation d'assiduité",
+  attestation_fin_formation: "Attestation de fin de formation",
+  feuille_emargement: "Feuille d'émargement",
+  protocole_afest: "Protocole AFEST",
+  devis: "Devis",
+  facture: "Facture",
+};
+
+function libelleTypeDocument(type: string): string {
+  return TYPE_DOCUMENT_LABELS[type] ?? `« ${type} »`;
+}
+
 /** Étoile « NC majeure » commune aux deux vues. */
 function SuperStar(): React.ReactElement {
   return (
@@ -225,11 +250,14 @@ function VueManifeste({ lignes }: { lignes: IndicateurManifeste[] }): React.Reac
                     key={`${doc.type}-${i}`}
                     className="flex items-center gap-[var(--space-admin-3)] rounded bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)]"
                   >
-                    <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]">
-                      {doc.type}
+                    <span
+                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg)]"
+                      title={doc.type}
+                    >
+                      {libelleTypeDocument(doc.type)}
                     </span>
                     <span className="ml-auto shrink-0 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      {doc.count} doc(s)
+                      {doc.count} pièce{doc.count > 1 ? "s" : ""}
                     </span>
                   </li>
                 ))}
@@ -296,7 +324,9 @@ export function MatriceIndicateurs({ indicateurs, vue }: Props): React.ReactElem
           />{" "}
           = Indicateur super (NC majeure si non couvert en audit)
         </span>
-        <span>Score = indicateurs couverts / indicateurs applicables (hors non_applicable)</span>
+        <span>
+          Score = indicateurs couverts / indicateurs applicables (hors « Non applicable »)
+        </span>
       </footer>
     </>
   );

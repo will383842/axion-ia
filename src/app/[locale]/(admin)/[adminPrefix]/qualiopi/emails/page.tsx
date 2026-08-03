@@ -28,6 +28,7 @@ import {
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
+  libelleTemplateEmail,
 } from "@/server/email/outbox-policy";
 
 /**
@@ -183,8 +184,8 @@ export default async function EmailsAValiderPage({
         <div className={carte}>
           <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Par défaut, ces natures d&apos;email passent par la validation :{" "}
-            <span className="font-mono text-[length:var(--text-admin-xs)]">
-              {EMAILS_A_VALIDER_PAR_DEFAUT.join(", ")}
+            <span>
+              {EMAILS_A_VALIDER_PAR_DEFAUT.map((t) => libelleTemplateEmail(t)).join(", ")}
             </span>
             . Une règle plus précise l&apos;emporte sur une règle plus générale — un réglage par
             client prime sur le réglage global.

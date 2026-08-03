@@ -186,13 +186,13 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
         </p>
         <form action={destroy} className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
           <input
-            aria-label="Taper DELETE pour confirmer"
+            aria-label="Taper SUPPRIMER pour confirmer"
             type="text"
             name="confirmation"
-            placeholder="Taper DELETE pour confirmer"
+            placeholder="Taper SUPPRIMER pour confirmer"
             className="admin-input max-w-[280px] flex-1"
             required
-            pattern="DELETE"
+            pattern="SUPPRIMER"
           />
           <button type="submit" className="admin-button-danger">
             Supprimer définitivement

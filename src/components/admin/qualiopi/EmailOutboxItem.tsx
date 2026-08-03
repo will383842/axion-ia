@@ -18,6 +18,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { libelleTemplateEmail } from "@/server/email/outbox-policy";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -114,13 +115,14 @@ export function EmailOutboxItem({
               </span>
             ) : null}
           </p>
-          <p className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {template} · en attente depuis le {creeLe}
+          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+            {libelleTemplateEmail(template)} · en attente depuis le {creeLe}
           </p>
         </div>
         {nbPiecesJointes > 0 && (
           <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {nbPiecesJointes} pièce(s) jointe(s) — non modifiables
+            {nbPiecesJointes} pièce{nbPiecesJointes > 1 ? "s" : ""} jointe
+            {nbPiecesJointes > 1 ? "s" : ""} — non modifiable{nbPiecesJointes > 1 ? "s" : ""}
           </span>
         )}
       </header>

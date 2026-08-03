@@ -81,7 +81,9 @@ export default async function QualiopiBaremesOpcoPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Barèmes OPCO"
-        description="Référentiel centralisé et versionné des plafonds de prise en charge OPCO. Sert de pré-remplissage et d'estimation quand aucun barème n'est saisi sur le dossier — le barème dossier reste prioritaire. Les valeurs sont relevées sur les portails OPCO (jamais inventées) ; un relevé de plus de 12 mois lève une alerte."
+        // Le seuil est réglable (bareme_opco_validite_mois) : écrit en dur,
+        // la description annonçait 12 mois même quand la console disait 6.
+        description={`Référentiel centralisé et versionné des plafonds de prise en charge OPCO. Sert de pré-remplissage et d'estimation quand aucun barème n'est saisi sur le dossier — le barème dossier reste prioritaire. Les valeurs sont relevées sur les portails OPCO (jamais inventées) ; un relevé de plus de ${moisValidite} mois lève une alerte.`}
       />
 
       {/* KPIs */}

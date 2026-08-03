@@ -102,11 +102,21 @@ describe("admin-labels — spot-checks métier", () => {
     expect(articleStatusLabelFr("inconnu")).toBe("inconnu");
   });
 
-  it("articlePublicationBadge : badges métier limpides", () => {
-    expect(articlePublicationBadge("published")).toEqual({ label: "🟢 En ligne", tone: "success" });
+  // 🔴 CE TEST VERROUILLAIT UN EMOJI. Il exigeait littéralement « 🟢 En ligne »,
+  // et c'est ce qui a fait rougir `main` quand les trois libellés ont été
+  // dé-emojifiés — alors que la charte de la console impose lucide-react depuis
+  // le 2026-08-02. Le contrat utile n'est pas le pictogramme : c'est que le
+  // libellé dise l'état en clair, et que la tonalité porte la couleur.
+  it("articlePublicationBadge : badges métier limpides, sans pictogramme", () => {
+    expect(articlePublicationBadge("published")).toEqual({ label: "En ligne", tone: "success" });
     expect(articlePublicationBadge("draft").tone).toBe("warning");
     expect(articlePublicationBadge("archived").tone).toBe("neutral");
-    expect(articlePublicationBadge("published").label).toContain("En ligne");
+    for (const statut of ["published", "draft", "archived"]) {
+      expect(
+        /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u.test(articlePublicationBadge(statut).label),
+        `emoji dans le badge « ${statut} » — la charte impose une icône lucide`,
+      ).toBe(false);
+    }
   });
 
   // Audit UX 2026-08-01 — colonne « Titre » des listes jobs/review-queue.

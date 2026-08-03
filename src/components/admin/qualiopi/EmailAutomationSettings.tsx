@@ -21,6 +21,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { libelleTemplateEmail } from "@/server/email/outbox-policy";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -75,7 +76,8 @@ export function EmailAutomationSettings({
     }
     if (mode === "auto") {
       const cible = scope === "global" ? "TOUS les clients" : "ce client";
-      const nature = template === "" ? "toutes les natures d'email" : template;
+      const nature =
+        template === "" ? "toutes les natures d'email" : libelleTemplateEmail(template);
       const ok = window.confirm(
         `Passer ${nature} en envoi AUTOMATIQUE pour ${cible} ?\n\nCes emails partiront sans passer par votre relecture. Un email envoyé ne se rappelle pas.`,
       );
@@ -126,8 +128,8 @@ export function EmailAutomationSettings({
               <span className="font-medium text-[color:var(--color-admin-fg)]">
                 {r.scope === "global" ? "Tous les clients" : (r.clientNom ?? "—")}
               </span>
-              <span className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {r.template ?? "toutes natures d'email"}
+              <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                {r.template === null ? "toutes natures d'email" : libelleTemplateEmail(r.template)}
               </span>
               <span
                 className={
@@ -202,7 +204,7 @@ export function EmailAutomationSettings({
             <option value="">Toutes</option>
             {templates.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {libelleTemplateEmail(t)}
               </option>
             ))}
           </select>

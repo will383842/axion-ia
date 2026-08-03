@@ -168,7 +168,7 @@ export function SetFinancementForm({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSuccessMsg("Accord OPCO validé (statut → accord_recu).");
+        setSuccessMsg("Accord OPCO validé — statut : Accord reçu.");
         setSelectedOpcoStatut("accord_recu");
         router.refresh();
       }
