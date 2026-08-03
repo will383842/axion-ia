@@ -27,7 +27,12 @@ interface Tuile {
 }
 
 export function IndicateursResultatsPublic({ result, isFr }: Props): React.ReactElement {
-  const delaiFiable = result.delaiAccesMoyen.nb > 0;
+  // Le délai d'accès se contentait de `nb > 0` : une « moyenne » calculée sur
+  // UNE session s'affichait publiquement comme un résultat établi, alors que
+  // les trois taux voisins exigent cinq observations avant de sortir de
+  // « En cours de constitution ». Sur une page que lisent les auditeurs et les
+  // financeurs, la même règle vaut pour les quatre.
+  const delaiFiable = result.delaiAccesMoyen.fiable;
   const tuiles: Tuile[] = [
     {
       labelFr: "Satisfaction des bénéficiaires",

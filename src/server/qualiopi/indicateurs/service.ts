@@ -33,6 +33,8 @@ export interface IndicateurDetail {
 export interface DelaiAccesDetail {
   jours: number;
   nb: number;
+  /** Même seuil de plausibilité que les trois taux (cf. `SEUIL_FIABILITE`). */
+  fiable: boolean;
 }
 
 export interface MethodesCalcul {
@@ -234,7 +236,7 @@ function buildEmptyResult(annee: number): IndicateursResult {
     tauxSatisfaction: vide,
     tauxReussite: vide,
     tauxCompletion: vide,
-    delaiAccesMoyen: { jours: 0, nb: 0 },
+    delaiAccesMoyen: { jours: 0, nb: 0, fiable: false },
     methodes: {
       satisfaction: "",
       reussite: "",

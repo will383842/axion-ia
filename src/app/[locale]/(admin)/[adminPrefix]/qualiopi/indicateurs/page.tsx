@@ -11,7 +11,6 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { TriangleAlert } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -105,14 +104,32 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
   const sectionTitleCls =
     "mb-[var(--space-admin-5)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]";
 
-  const methodeCls =
-    "mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] leading-relaxed";
+  /**
+   * 🔴 MISE EN PAGE CASSÉE, vue à l'écran le 2026-08-03. Chaque indicateur était
+   * fait de TROIS blocs empilés et non reliés : la carte, puis un ruban ambre
+   * pleine largeur posé SOUS elle — donc débordant de la carte qu'il qualifiait —
+   * puis un paragraphe de méthode hors carte. Les paragraphes, de longueurs très
+   * inégales, désalignaient la grille : les quatre cartes ne finissaient jamais à
+   * la même hauteur.
+   *
+   * Les trois deviennent un seul élément : l'état « en cours de constitution »
+   * entre dans la ligne de contexte de la carte, et la méthode passe dans un
+   * repli. La grille redevient régulière et l'explication reste accessible.
+   *
+   * Au passage, « N évaluation(s) » s'accorde enfin.
+   */
+  const mention = (nb: number, nom: string, fiable: boolean): string => {
+    const base = `${nb} ${nom}${nb > 1 ? "s" : ""}`;
+    return fiable ? base : `${base} · en cours de constitution`;
+  };
 
-  const badgeEnCours = (
-    <span className="inline-flex items-center gap-1 rounded bg-[color:var(--color-admin-warning-subtle,color-mix(in_srgb,var(--color-admin-warning)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]">
-      <TriangleAlert size={12} aria-hidden="true" className="shrink-0" />
-      en cours de constitution
-    </span>
+  const repli = (methode: string) => (
+    <details className="mt-[var(--space-admin-2)]">
+      <summary className="admin-meta-small cursor-pointer select-none">
+        Comment est-il calculé ?
+      </summary>
+      <p className="admin-meta-small mt-[var(--space-admin-1)] leading-relaxed">{methode}</p>
+    </details>
   );
 
   return (
@@ -171,7 +188,11 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
                 ? `${indicateurs.tauxSatisfaction.tauxPct} %`
                 : "—"
             }
-            meta={`${indicateurs.tauxSatisfaction.nb} évaluation(s)`}
+            meta={mention(
+              indicateurs.tauxSatisfaction.nb,
+              "évaluation",
+              indicateurs.tauxSatisfaction.fiable,
+            )}
             tone={
               !indicateurs.tauxSatisfaction.fiable
                 ? "warning"
@@ -183,8 +204,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             }
             icon={Gauge}
           />
-          {!indicateurs.tauxSatisfaction.fiable && badgeEnCours}
-          <p className={methodeCls}>{indicateurs.methodes.satisfaction}</p>
+          {repli(indicateurs.methodes.satisfaction)}
         </div>
 
         {/* Taux de réussite */}
@@ -192,7 +212,11 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           <AdminStatCard
             label="Taux de réussite"
             value={indicateurs.tauxReussite.nb > 0 ? `${indicateurs.tauxReussite.tauxPct} %` : "—"}
-            meta={`${indicateurs.tauxReussite.nb} évaluation(s) finale(s)`}
+            meta={mention(
+              indicateurs.tauxReussite.nb,
+              "évaluation finale",
+              indicateurs.tauxReussite.fiable,
+            )}
             tone={
               !indicateurs.tauxReussite.fiable
                 ? "warning"
@@ -204,8 +228,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             }
             icon={CheckCircle2}
           />
-          {!indicateurs.tauxReussite.fiable && badgeEnCours}
-          <p className={methodeCls}>{indicateurs.methodes.reussite}</p>
+          {repli(indicateurs.methodes.reussite)}
         </div>
 
         {/* Taux de complétion (présence) */}
@@ -215,7 +238,11 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             value={
               indicateurs.tauxCompletion.nb > 0 ? `${indicateurs.tauxCompletion.tauxPct} %` : "—"
             }
-            meta={`${indicateurs.tauxCompletion.nb} inscription(s) évaluée(s)`}
+            meta={mention(
+              indicateurs.tauxCompletion.nb,
+              "inscription évaluée",
+              indicateurs.tauxCompletion.fiable,
+            )}
             tone={
               !indicateurs.tauxCompletion.fiable
                 ? "warning"
@@ -227,8 +254,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
             }
             icon={UserCheck}
           />
-          {!indicateurs.tauxCompletion.fiable && badgeEnCours}
-          <p className={methodeCls}>{indicateurs.methodes.completion}</p>
+          {repli(indicateurs.methodes.completion)}
         </div>
 
         {/* Délai d'accès moyen */}
@@ -240,11 +266,15 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
                 ? `${Math.round(indicateurs.delaiAccesMoyen.jours)} j`
                 : "—"
             }
-            meta={`${indicateurs.delaiAccesMoyen.nb} session(s) réalisée(s)`}
-            tone="info"
+            meta={mention(
+              indicateurs.delaiAccesMoyen.nb,
+              "session réalisée",
+              indicateurs.delaiAccesMoyen.fiable,
+            )}
+            tone={indicateurs.delaiAccesMoyen.fiable ? "info" : "warning"}
             icon={Clock}
           />
-          <p className={methodeCls}>{indicateurs.methodes.delaiAcces}</p>
+          {repli(indicateurs.methodes.delaiAcces)}
         </div>
       </div>
 
