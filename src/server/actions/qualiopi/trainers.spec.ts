@@ -78,6 +78,7 @@ import {
   verifyTrainerSousTraitantAction,
   setTrainerActifAction,
   assignTrainerToSessionAction,
+  updateTrainerSousTraitancePiecesAction,
 } from "./trainers";
 
 const FORMATION_ID = "11111111-1111-1111-1111-111111111111";
@@ -423,5 +424,95 @@ describe("setTrainerHabilitationsAction — ids de formations disparues", () => 
     });
     expect(r).toEqual({ data: { id: TRAINER_ID } });
     expect(mockHabilitationCreateMany).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// updateTrainerSousTraitancePiecesAction — art. 4 et 8 de la procédure
+//
+// 🔴 Ces colonnes existaient depuis la migration du 2026-08-03 SANS aucun
+// écrivain : les alertes les lisaient, la carte de conformité les comptait, et
+// un sous-traitant serait resté « contrat-cadre manquant » (critique) à vie.
+// Les tests fixent la sémantique des trois états d'un champ, là où se joue la
+// perte de données : `undefined` laisse en l'état, `null` retire, une valeur
+// enregistre.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("updateTrainerSousTraitancePiecesAction", () => {
+  beforeEach(() => {
+    mockUpdate.mockReset();
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+  });
+
+  it("n'écrit QUE les champs fournis", async () => {
+    await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      rcProAttestationUrl: "https://r2/rc.pdf",
+    });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data["rcProAttestationUrl"]).toBe("https://r2/rc.pdf");
+    // Sans quoi enregistrer la RC pro effacerait la date du contrat-cadre —
+    // et ferait retomber le formateur en non-conformité de l'indicateur 27.
+    expect("sousTraitantContratSigneAt" in data).toBe(false);
+    expect("sousTraitantScreenshotUrl" in data).toBe(false);
+  });
+
+  it("date la capture data.gouv au moment de son dépôt", async () => {
+    await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      sousTraitantScreenshotUrl: "https://r2/capture.png",
+    });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    // Une capture sans date ne dirait pas QUAND la vérification a eu lieu —
+    // c'est précisément ce que l'auditeur regarde.
+    expect(data["sousTraitantScreenshotDate"]).toBeInstanceOf(Date);
+  });
+
+  it("efface la date quand la capture est retirée", async () => {
+    await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      sousTraitantScreenshotUrl: null,
+    });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    // Une date sans capture affirmerait qu'une preuve absente a été produite.
+    expect(data["sousTraitantScreenshotDate"]).toBeNull();
+  });
+
+  it("enregistre le contrat-cadre, pièce BLOQUANTE de l'indicateur 27", async () => {
+    const signe = new Date("2026-08-03T00:00:00.000Z");
+    await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      sousTraitantContratSigneAt: signe,
+    });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data["sousTraitantContratSigneAt"]).toStrictEqual(signe);
+  });
+
+  it("accepte une RC pro absente — elle n'est PAS obligatoire (décision Will)", async () => {
+    const result = await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      sousTraitantContratSigneAt: new Date("2026-08-03T00:00:00.000Z"),
+      rcProAttestationUrl: null,
+      rcProEcheanceAt: null,
+    });
+
+    // 🔴 Rien ne doit exiger la RC pro : la rendre obligatoire réduirait le
+    // vivier de formateurs sans nécessité réglementaire (procédure § 4.2).
+    expect("data" in result).toBe(true);
+    expect(mockUpdate).toHaveBeenCalledOnce();
+  });
+
+  it("refuse une URL malformée plutôt que de l'enregistrer", async () => {
+    const result = await updateTrainerSousTraitancePiecesAction({
+      id: TRAINER_ID,
+      rcProAttestationUrl: "pas-une-url",
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });

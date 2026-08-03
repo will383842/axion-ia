@@ -19,6 +19,8 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: { findMany: vi.fn() },
     trainingSession: { findMany: vi.fn() },
     trainer: { findMany: vi.fn() },
+    // Vigilance sous-traitance : la règle couvre les DEUX natures. [2026-08-03]
+    sousTraitant: { findMany: vi.fn() },
     factureFormation: { findMany: vi.fn() },
     dossierFinancement: { findMany: vi.fn() },
     veille: { findFirst: vi.fn() },
@@ -29,6 +31,8 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { findMany: vi.fn() },
     // Recouvrement 2026-08-02 : relances envoyées restées sans effet.
     relanceProposee: { findMany: vi.fn() },
+    // Art. 8 sous-traitance : incidents répétés d'un intervenant. [2026-08-03]
+    incident: { groupBy: vi.fn() },
   },
 }));
 
@@ -73,6 +77,8 @@ const mp = prisma as unknown as {
   enrollment: { findMany: ReturnType<typeof vi.fn> };
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
+  sousTraitant: { findMany: ReturnType<typeof vi.fn> };
+  incident: { groupBy: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   dossierFinancement: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
@@ -109,6 +115,12 @@ function setupEmptyMocks() {
   mp.devis.findMany.mockResolvedValue([]);
   mp.documentGenere.findMany.mockResolvedValue([]);
   mp.relanceProposee.findMany.mockResolvedValue([]);
+  // 🔴 [2026-08-03] Ces deux-là manquaient : `regleVigilanceSousTraitance` lisait
+  // un mock non configuré, levait, et le fail-soft par règle avalait l'exception.
+  // La règle était donc INERTE dans tous les tests hors de son propre bloc — une
+  // régression y serait passée inaperçue.
+  mp.sousTraitant.findMany.mockResolvedValue([]);
+  mp.incident.groupBy.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -1429,5 +1441,146 @@ describe("evaluerAlertes — signatures_en_attente", () => {
     };
     expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
     expect(arg.where.updatedAt["lte"]).toBeInstanceOf(Date);
+  });
+});
+
+// ── Vigilance sous-traitance (R12 bis) ────────────────────────────────────
+//
+// Ces tests portent sur le NIVEAU des alertes, pas seulement sur leur
+// existence : c'est le niveau qui décide si Will réagit ou pas, et l'arbitrage
+// RC pro absente ≠ RC pro expirée est une décision métier (procédure § 4.2)
+// qu'une régression silencieuse effacerait.
+describe("vigilance sous-traitance", () => {
+  const CONFORME = {
+    id: "st-1",
+    nom: "Organisme X",
+    contratSigneAt: new Date("2026-01-10"),
+    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProAttestationUrl: "https://r2/rc.pdf",
+    prochaineVerifAt: new Date("2027-01-10"),
+  };
+
+  beforeEach(() => {
+    mp.sousTraitant.findMany.mockResolvedValue([]);
+    mp.trainer.findMany.mockResolvedValue([]);
+  });
+
+  it("ne lève RIEN pour un sous-traitant à jour", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([CONFORME]);
+    const a = await evaluerAlertes();
+    expect(a.filter((x) => x.code.startsWith("sous_traitant_rc_pro"))).toHaveLength(0);
+    expect(a.filter((x) => x.code === "sous_traitant_contrat_cadre_manquant")).toHaveLength(0);
+  });
+
+  it("contrat-cadre manquant = CRITIQUE — il bloque l'indicateur 27", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([{ ...CONFORME, contratSigneAt: null }]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_contrat_cadre_manquant");
+    expect(alerte?.niveau).toBe("critique");
+  });
+
+  it("RC pro ABSENTE = important, jamais critique (état délibérément accepté)", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([
+      { ...CONFORME, rcProAttestationUrl: null, rcProEcheanceAt: null },
+    ]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_rc_pro_absente");
+    expect(alerte?.niveau).toBe("important");
+    expect(alerte?.niveau).not.toBe("critique");
+  });
+
+  it("RC pro EXPIRÉE = critique — elle existait et elle est tombée", async () => {
+    mp.sousTraitant.findMany.mockResolvedValue([
+      { ...CONFORME, rcProEcheanceAt: new Date("2026-07-01") },
+    ]);
+    const a = await evaluerAlertes();
+    expect(a.find((x) => x.code === "sous_traitant_rc_pro_expiree")?.niveau).toBe("critique");
+  });
+
+  it("couvre AUSSI le formateur indépendant, pas seulement l'organisme", async () => {
+    mp.trainer.findMany.mockResolvedValue([
+      {
+        id: "tr-1",
+        nom: "Dupont",
+        prenom: "Marie",
+        sousTraitantContratSigneAt: null,
+        rcProEcheanceAt: null,
+        rcProAttestationUrl: null,
+        sousTraitantProchaineVerifAt: null,
+      },
+    ]);
+    const a = await evaluerAlertes();
+    const alerte = a.find((x) => x.code === "sous_traitant_contrat_cadre_manquant");
+    expect(alerte?.cibleType).toBe("Trainer");
+    expect(alerte?.message).toContain("Marie Dupont");
+  });
+
+  // ── Art. 8 : incidents répétés ──────────────────────────────────────────
+  //
+  // Le point sensible n'est pas que l'alerte existe, c'est qu'elle reste
+  // NON BLOQUANTE. Un futur « durcissons un peu » qui la passerait en critique
+  // la transformerait en interdiction d'affecter, contre la décision de Will.
+  describe("incidents répétés (art. 8)", () => {
+    const FORMATEUR_ACTIF = {
+      id: "tr-1",
+      nom: "Dupont",
+      prenom: "Marie",
+      sousTraitantContratSigneAt: new Date("2026-01-10"),
+      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProAttestationUrl: "https://r2/rc.pdf",
+      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+    };
+
+    it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-1", sousTraitantId: null, _count: { _all: 1 } },
+      ]);
+      const a = await evaluerAlertes();
+      expect(a.filter((x) => x.code === "sous_traitant_incidents_repetes")).toHaveLength(0);
+    });
+
+    it("deux incidents bloquants = IMPORTANT, jamais critique (l'alerte informe, elle n'interdit pas)", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-1", sousTraitantId: null, _count: { _all: 2 } },
+      ]);
+      const a = await evaluerAlertes();
+      const alerte = a.find((x) => x.code === "sous_traitant_incidents_repetes");
+      expect(alerte?.niveau).toBe("important");
+      expect(alerte?.niveau).not.toBe("critique");
+      expect(alerte?.cibleType).toBe("Trainer");
+      expect(alerte?.message).toContain("Marie Dupont");
+    });
+
+    it("n'alerte pas sur un intervenant devenu inactif — on ne peut plus l'affecter", async () => {
+      mp.trainer.findMany.mockResolvedValue([]); // aucun formateur actif
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-parti", sousTraitantId: null, _count: { _all: 5 } },
+      ]);
+      const a = await evaluerAlertes();
+      expect(a.filter((x) => x.code === "sous_traitant_incidents_repetes")).toHaveLength(0);
+    });
+
+    it("vise l'ORGANISME quand c'est lui qui est mis en cause", async () => {
+      mp.sousTraitant.findMany.mockResolvedValue([CONFORME]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: null, sousTraitantId: "st-1", _count: { _all: 3 } },
+      ]);
+      const a = await evaluerAlertes();
+      const alerte = a.find((x) => x.code === "sous_traitant_incidents_repetes");
+      expect(alerte?.cibleType).toBe("SousTraitant");
+      expect(alerte?.cibleId).toBe("st-1");
+    });
+
+    it("ne compte QUE les faits qui font tomber une session", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([]);
+      await evaluerAlertes();
+      const arg = mp.incident.groupBy.mock.calls[0]?.[0] as {
+        where: { faitIntervenant: { in: string[] } };
+      };
+      expect(arg.where.faitIntervenant.in).toStrictEqual(["annulation_tardive", "desistement"]);
+    });
   });
 });

@@ -29,13 +29,17 @@ import {
 import {
   addTrainerDevelopmentActionAction,
   deleteTrainerDevelopmentActionAction,
+  updateTrainerSousTraitancePiecesAction,
 } from "@/server/actions/qualiopi/trainers";
+import { TrainerSousTraitancePanel } from "@/components/admin/qualiopi/TrainerSousTraitancePanel";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import {
   listReglesFormateur,
   listFormationOptions,
 } from "@/server/qualiopi/remuneration/rules-queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
+import { fiabiliteFormateur } from "@/server/qualiopi/trainers/fiabilite-service";
+import { listIncidents } from "@/server/qualiopi/registres/incidents-service";
 import { genererCvFormateurAction } from "@/server/actions/qualiopi/exports-pdf";
 import { lireLettresMissionConsoleDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
@@ -171,6 +175,16 @@ export default async function FicheFormateurPage({ params }: PageProps) {
   const bloquants = conformite?.manquements.filter((m) => m.gravite === "bloquant") ?? [];
   const alertes = conformite?.manquements.filter((m) => m.gravite === "alerte") ?? [];
 
+  // Fiabilité (art. 7 et 8 de la procédure de sous-traitance). Chargée pour les
+  // seuls sous-traitants : un formateur salarié ne se « reconduit » pas, la
+  // notion n'a pas de sens pour lui et le bloc se lirait comme un reproche.
+  const fiabilite =
+    trainer.statut === "sous_traitant" ? await fiabiliteFormateur(trainer.id) : null;
+  const incidents =
+    trainer.statut === "sous_traitant"
+      ? await listIncidents({ trainerId: trainer.id, take: 20 })
+      : [];
+
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
@@ -254,6 +268,76 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               (approché sur les tarifs figés des affectations).
             </p>
           )}
+        </div>
+      )}
+
+      {/*
+        Saisie des pièces de sous-traitance (art. 4 et 8) — 2026-08-03.
+
+        Placé AVANT le bloc fiabilité : on renseigne le dossier d'un intervenant
+        avant de regarder son historique. Rendu pour les seuls sous-traitants —
+        un formateur salarié n'a ni contrat-cadre ni vérification annuelle.
+      */}
+      {trainer.statut === "sous_traitant" && (
+        <TrainerSousTraitancePanel
+          trainerId={trainer.id}
+          action={updateTrainerSousTraitancePiecesAction}
+          contratSigneAt={trainer.sousTraitantContratSigneAt}
+          screenshotUrl={trainer.sousTraitantScreenshotUrl}
+          screenshotDate={trainer.sousTraitantScreenshotDate}
+          prochaineVerifAt={trainer.sousTraitantProchaineVerifAt}
+          rcProAttestationUrl={trainer.rcProAttestationUrl}
+          rcProEcheanceAt={trainer.rcProEcheanceAt}
+        />
+      )}
+
+      {/*
+        Fiabilité — articles 7 et 8 de la procédure de sous-traitance (2026-08-03).
+
+        Ce bloc DIT des faits, il ne note pas une personne : le niveau est dérivé
+        des incidents consignés, jamais saisi à la main. Il n'interdit rien —
+        décision de Will, cohérente avec la RC pro non bloquante : un formateur
+        qui a fait tomber deux sessions peut rester le bon choix pour une mission
+        donnée, et l'arbitrage lui revient.
+      */}
+      {fiabilite !== null && (
+        <div className="admin-card mb-[var(--space-admin-5)]">
+          <p className="admin-meta">Fiabilité (24 derniers mois)</p>
+
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+            {fiabilite.resume}
+            {fiabilite.tauxIncidentsBloquants !== null && fiabilite.incidentsBloquants > 0 && (
+              <> Soit {fiabilite.tauxIncidentsBloquants} % des missions.</>
+            )}
+          </p>
+
+          {fiabilite.niveauVigilance !== "aucune" && (
+            <p className="mt-2 text-[length:var(--text-admin-sm)]">
+              <strong>
+                {fiabilite.niveauVigilance === "vigilance_forte"
+                  ? "Vigilance forte"
+                  : "À surveiller"}
+              </strong>{" "}
+              — à prendre en compte lors de la reconduction (article 8). Cette mention
+              n&apos;empêche pas de l&apos;affecter.
+            </p>
+          )}
+
+          {incidents.length > 0 && (
+            <ul className="mt-3 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              {incidents.map((i) => (
+                <li key={i.id}>
+                  {i.dateIncident.toLocaleDateString("fr-FR")} — {i.titre}
+                  {i.session !== null && <> (session {i.session.numero})</>}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          <p className="admin-meta mt-3">
+            Les incidents se consignent depuis le registre des incidents, en désignant
+            l&apos;intervenant mis en cause.
+          </p>
         </div>
       )}
 

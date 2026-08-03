@@ -5997,6 +5997,7 @@ model TrainingSession {
   // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
   /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
   /// dateFin >= from`). `dateFin` n'avait AUCUN index.
+
   @@index([dateDebut, dateFin])
   /// Calendrier filtré par statut / financement (prévisionnel).
   @@index([statut, dateDebut])
@@ -6049,6 +6050,30 @@ model Trainer {
   /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
   sousTraitantNda           String?       @map("sous_traitant_nda") @db.VarChar(20)
   sousTraitantVerifieAt     DateTime?     @map("sous_traitant_verifie_at")
+  /// Capture datée de la vérification data.gouv.fr — la PREUVE, pas seulement sa
+  /// date. Miroir de `SousTraitant.screenshotUrl` : les deux natures de
+  /// sous-traitant doivent porter les mêmes pièces. [2026-08-03]
+  sousTraitantScreenshotUrl String?       @map("sous_traitant_screenshot_url") @db.Text
+  sousTraitantScreenshotDate DateTime?    @map("sous_traitant_screenshot_date")
+  /// Signature du CONTRAT-CADRE de sous-traitance.
+  ///
+  /// 🔴 Sans ce champ, un formateur indépendant ne pouvait PAS être compté par
+  /// l'indicateur 27, qui exige « NDA + vérification + contrat signé ». Seuls les
+  /// organismes (`SousTraitant.contratSigneAt`) l'étaient : Axion pouvait
+  /// référencer dix freelances conformes et rester à zéro. [2026-08-03]
+  sousTraitantContratSigneAt DateTime?    @map("sous_traitant_contrat_signe_at")
+  /// Échéance de la vérification annuelle des pièces (art. 8 de la procédure de
+  /// sous-traitance). Rappel 30 jours avant. [2026-08-03]
+  sousTraitantProchaineVerifAt DateTime?  @map("sous_traitant_prochaine_verif_at")
+  /// Attestation de responsabilité civile professionnelle.
+  ///
+  /// ⚠️ NON BLOQUANTE — décision Will du 2026-08-03. Aucun texte ne l'impose à un
+  /// formateur indépendant, et en faire une condition de sélection réduirait le
+  /// vivier sans nécessité. Demandée, archivée avec son échéance, son absence lève
+  /// une ALERTE — elle n'entre PAS dans le critère de conformité de l'indicateur
+  /// 27. Cf. `PROCEDURE-SOUS-TRAITANCE.md` § 4.2.
+  rcProAttestationUrl       String?       @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt           DateTime?     @map("rc_pro_echeance_at")
   actif                     Boolean       @default(true)
   createdAt                 DateTime      @default(now()) @map("created_at")
   updatedAt                 DateTime      @updatedAt @map("updated_at")
@@ -6089,9 +6114,15 @@ model Trainer {
   /// Pièces générées qui le MANDATENT (lettres de mission, dont lettres-cadre).
   documentsGeneres            DocumentGenere[]            @relation("DocumentGenereTrainer")
 
+  /// Incidents où ce formateur est mis en cause (art. 7 sous-traitance).
+  incidents                 Incident[]                  @relation("IncidentIntervenant")
+
   @@index([statut])
   @@index([actif])
   @@index([region])
+  /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
+  @@index([rcProEcheanceAt])
+  @@index([sousTraitantProchaineVerifAt])
   @@map("trainers")
 }
 
@@ -7412,13 +7443,26 @@ model SousTraitant {
   screenshotUrl     String?   @map("screenshot_url") @db.Text
   screenshotDate    DateTime? @map("screenshot_date")
   contratSigneAt    DateTime? @map("contrat_signe_at")
+  /// Échéance de la vérification annuelle des pièces (art. 8). [2026-08-03]
+  prochaineVerifAt  DateTime? @map("prochaine_verif_at")
+  /// RC pro — NON BLOQUANTE, cf. `Trainer.rcProAttestationUrl`. [2026-08-03]
+  rcProAttestationUrl String? @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt   DateTime? @map("rc_pro_echeance_at")
+  /// CV de l'intervenant désigné par l'organisme (art. 4.1 point 3). [2026-08-03]
+  cvUrl             String?   @map("cv_url") @db.Text
+  cvUploadedAt      DateTime? @map("cv_uploaded_at")
   actif             Boolean   @default(true)
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
 
   documentsGeneres DocumentGenere[]
+  /// Incidents où cet organisme est mis en cause (art. 7 sous-traitance).
+  incidents        Incident[]       @relation("IncidentIntervenant")
 
   @@index([actif])
+  /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
+  @@index([rcProEcheanceAt])
+  @@index([prochaineVerifAt])
   @@map("sous_traitants_of")
 }
 
@@ -7471,10 +7515,36 @@ enum IncidentStatut {
   resolu
 }
 
+/// Fait reproché à un intervenant externe (art. 7 de la procédure de
+/// sous-traitance, 2026-08-03). Les libellés décrivent des FAITS observables,
+/// jamais un jugement : « annulation tardive » se constate, « peu sérieux » non.
+enum IncidentFaitIntervenant {
+  annulation_tardive
+  desistement
+  retard
+  preuve_manquante
+  qualite_insuffisante
+  autre
+}
+
 /// Registre des incidents (LOT 4 — pilotage réel). Remplace les proxys M7
 /// (sessions annulées/reportées) et M9 (réclamations seules) : les incidents
 /// déclarés + leurs actions correctives deviennent la source première des
 /// métriques de pilotage. `sessionId` optionnel (incident hors session possible).
+///
+/// 🔴 Étendu le 2026-08-03 pour porter les incidents imputables à un INTERVENANT
+/// EXTERNE (art. 7 : consigner « toute difficulté » ; art. 8 : en tenir compte à
+/// la reconduction). Rien ne les portait — un formateur pouvait annuler trois
+/// fois à la veille d'une session sans qu'aucune trace ne subsiste.
+///
+/// Volontairement le MÊME registre, pas une table à part : un formateur qui fait
+/// tomber une session est un incident de pilotage au même titre qu'un autre. Une
+/// seconde table l'aurait rendu invisible aux métriques M7/M9 et à la revue de
+/// direction, et aurait donné deux registres « incidents » à l'auditeur.
+///
+/// Les trois champs sont nullables ensemble : un incident ordinaire (panne de
+/// salle) ne vise aucun intervenant. Quand il en vise un, `trainerId` XOR
+/// `sousTraitantId` — Prisma n'exprime pas le XOR, la contrainte est en base.
 model Incident {
   id               String           @id @default(uuid()) @db.Uuid
   type             IncidentType
@@ -7491,10 +7561,21 @@ model Incident {
   createdAt        DateTime         @default(now()) @map("created_at")
   updatedAt        DateTime         @updatedAt @map("updated_at")
 
+  /// Intervenant externe mis en cause, s'il y en a un. Personne physique…
+  trainerId      String?  @map("trainer_id") @db.Uuid
+  trainer        Trainer? @relation("IncidentIntervenant", fields: [trainerId], references: [id], onDelete: SetNull)
+  /// …ou organisme sous-traitant.
+  sousTraitantId String?       @map("sous_traitant_id") @db.Uuid
+  sousTraitant   SousTraitant? @relation("IncidentIntervenant", fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  /// Le fait constaté. Renseigné dès qu'un intervenant est mis en cause.
+  faitIntervenant IncidentFaitIntervenant? @map("fait_intervenant")
+
   @@index([statut])
   @@index([type])
   @@index([dateIncident])
   @@index([sessionId])
+  @@index([trainerId])
+  @@index([sousTraitantId])
   @@map("incidents")
 }
 

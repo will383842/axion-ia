@@ -624,6 +624,179 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
   return alertes;
 }
 
+/**
+ * R12 bis — Vigilance sous-traitance : contrat-cadre, RC pro, vérification annuelle.
+ *
+ * Couvre les DEUX natures d'intervenant externe — l'organisme (`SousTraitant`)
+ * et la personne physique (`Trainer` avec `statut: "sous_traitant"`). La règle
+ * R12 ne surveillait que la seconde ; le moteur de conformité ne comptait que la
+ * première. Chacune avait donc son angle mort. [2026-08-03]
+ *
+ * ⚠️ Les seuils suivent la procédure de sous-traitance signée le 03/08 :
+ *   - contrat-cadre → CRITIQUE : sans lui l'intervenant n'est pas compté conforme
+ *     (off.27), quelles que soient ses autres pièces ;
+ *   - RC pro absente → IMPORTANT, jamais critique : elle n'est pas exigée à
+ *     l'entrée (§ 4.2), et un critique permanent sur un état accepté
+ *     apprendrait à ignorer les critiques ;
+ *   - RC pro expirée → CRITIQUE : elle existait, elle est tombée ;
+ *   - vérification annuelle → rappel 30 jours avant l'échéance (art. 8).
+ */
+async function regleVigilanceSousTraitance(now: Date): Promise<AlerteCandidate[]> {
+  const alertes: AlerteCandidate[] = [];
+  const dans60j = daysFromNow(60, now);
+  const dans30j = daysFromNow(30, now);
+
+  const [organismes, formateurs] = await Promise.all([
+    prisma.sousTraitant.findMany({
+      where: { actif: true },
+      select: {
+        id: true,
+        nom: true,
+        contratSigneAt: true,
+        rcProEcheanceAt: true,
+        rcProAttestationUrl: true,
+        prochaineVerifAt: true,
+      },
+    }),
+    prisma.trainer.findMany({
+      where: { actif: true, statut: "sous_traitant" },
+      select: {
+        id: true,
+        nom: true,
+        prenom: true,
+        sousTraitantContratSigneAt: true,
+        rcProEcheanceAt: true,
+        rcProAttestationUrl: true,
+        sousTraitantProchaineVerifAt: true,
+      },
+    }),
+  ]);
+
+  /** Les deux natures traitées par le même code : une divergence de règle entre
+   *  elles serait invisible et se paierait en audit. */
+  const cibles = [
+    ...organismes.map((o) => ({
+      cibleType: "SousTraitant" as const,
+      cibleId: o.id,
+      libelle: o.nom,
+      contratSigneAt: o.contratSigneAt,
+      rcProEcheanceAt: o.rcProEcheanceAt,
+      rcProAttestationUrl: o.rcProAttestationUrl,
+      prochaineVerifAt: o.prochaineVerifAt,
+    })),
+    ...formateurs.map((t) => ({
+      cibleType: "Trainer" as const,
+      cibleId: t.id,
+      libelle: `${t.prenom} ${t.nom}`.trim(),
+      contratSigneAt: t.sousTraitantContratSigneAt,
+      rcProEcheanceAt: t.rcProEcheanceAt,
+      rcProAttestationUrl: t.rcProAttestationUrl,
+      prochaineVerifAt: t.sousTraitantProchaineVerifAt,
+    })),
+  ];
+
+  for (const c of cibles) {
+    if (c.contratSigneAt === null) {
+      alertes.push({
+        code: "sous_traitant_contrat_cadre_manquant",
+        niveau: "critique",
+        titre: "Sous-traitant sans contrat-cadre signé",
+        message: `${c.libelle} est référencé comme sous-traitant sans contrat-cadre signé : il n'est pas compté comme conforme (indicateur 27) et ne devrait pas se voir confier de mission.`,
+        cibleType: c.cibleType,
+        cibleId: c.cibleId,
+      });
+    }
+
+    // `?.` volontaire : le fail-soft par règle avale les exceptions, donc une
+    // valeur absente ferait taire TOUTE la vigilance sous-traitance sans bruit.
+    if (!c.rcProAttestationUrl?.trim()) {
+      alertes.push({
+        code: "sous_traitant_rc_pro_absente",
+        niveau: "important",
+        titre: "Sous-traitant sans attestation RC pro",
+        message: `${c.libelle} n'a pas fourni d'attestation de responsabilité civile professionnelle. Elle n'est pas exigée à l'entrée, mais AXION IA reste responsable devant le client de la bonne exécution des actions sous-traitées.`,
+        cibleType: c.cibleType,
+        cibleId: c.cibleId,
+      });
+    } else if (c.rcProEcheanceAt !== null && c.rcProEcheanceAt <= now) {
+      alertes.push({
+        code: "sous_traitant_rc_pro_expiree",
+        niveau: "critique",
+        titre: "Attestation RC pro sous-traitant expirée",
+        message: `L'attestation RC pro de ${c.libelle} a expiré le ${c.rcProEcheanceAt.toLocaleDateString("fr-FR")}. Elle avait été fournie et acceptée : demander le renouvellement avant toute nouvelle mission.`,
+        cibleType: c.cibleType,
+        cibleId: c.cibleId,
+      });
+    } else if (c.rcProEcheanceAt !== null && c.rcProEcheanceAt <= dans60j) {
+      alertes.push({
+        code: "sous_traitant_rc_pro_expire_j60",
+        niveau: "important",
+        titre: "Attestation RC pro sous-traitant expire dans 60 jours",
+        message: `L'attestation RC pro de ${c.libelle} expire le ${c.rcProEcheanceAt.toLocaleDateString("fr-FR")}.`,
+        cibleType: c.cibleType,
+        cibleId: c.cibleId,
+      });
+    }
+
+    if (c.prochaineVerifAt !== null && c.prochaineVerifAt <= dans30j) {
+      alertes.push({
+        code: "sous_traitant_verification_annuelle_due",
+        niveau: "important",
+        titre: "Vérification annuelle d'un sous-traitant à effectuer",
+        message: `Les pièces de ${c.libelle} (NDA, assurance, CV) sont à revérifier avant le ${c.prochaineVerifAt.toLocaleDateString("fr-FR")} — article 8 de la procédure de sous-traitance.`,
+        cibleType: c.cibleType,
+        cibleId: c.cibleId,
+      });
+    }
+  }
+
+  // ── Article 8 : tenir compte des incidents à la reconduction ───────────────
+  //
+  // Sans ce bloc, le registre d'incidents existerait sans que rien ne le lise —
+  // Will ne verrait un formateur défaillant qu'en ouvrant sa fiche, c'est-à-dire
+  // au moment où il vient précisément de décider de l'affecter.
+  //
+  // 🔴 Niveau « important », JAMAIS « critique » : cette alerte INFORME, elle
+  // n'interdit pas. Un formateur qui a fait tomber deux sessions peut rester le
+  // bon choix pour une mission donnée, et l'arbitrage revient à Will (même
+  // logique que la RC pro non bloquante).
+  const faitsBloquants = await prisma.incident.groupBy({
+    by: ["trainerId", "sousTraitantId"],
+    where: {
+      dateIncident: { gte: daysFromNow(-730, now) },
+      faitIntervenant: { in: ["annulation_tardive", "desistement"] },
+      OR: [{ trainerId: { not: null } }, { sousTraitantId: { not: null } }],
+    },
+    _count: { _all: true },
+  });
+
+  const libelleParCible = new Map(cibles.map((c) => [`${c.cibleType}:${c.cibleId}`, c.libelle]));
+
+  for (const groupe of faitsBloquants) {
+    if (groupe._count._all < 2) continue;
+
+    const cibleType = groupe.trainerId !== null ? ("Trainer" as const) : ("SousTraitant" as const);
+    const cibleId = groupe.trainerId ?? groupe.sousTraitantId;
+    if (cibleId === null) continue;
+
+    // Un intervenant devenu inactif n'est plus dans `cibles` : ne pas alerter sur
+    // quelqu'un qu'on ne peut plus affecter de toute façon.
+    const libelle = libelleParCible.get(`${cibleType}:${cibleId}`);
+    if (libelle === undefined) continue;
+
+    alertes.push({
+      code: "sous_traitant_incidents_repetes",
+      niveau: "important",
+      titre: "Intervenant externe : incidents répétés",
+      message: `${libelle} a fait tomber ${groupe._count._all} sessions en 24 mois (annulation tardive ou désistement). À prendre en compte lors de la reconduction — article 8 de la procédure de sous-traitance.`,
+      cibleType,
+      cibleId,
+    });
+  }
+
+  return alertes;
+}
+
 /** R13 — OPCO sans accord J-7 + OPCO formation démarrée sans accord. */
 async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
   const j7 = daysFromNow(7, now);
@@ -1383,6 +1556,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emails_en_attente_validation", fn: regleEmailsEnAttente },
   { nom: "cv_formateur_perime", fn: regleCvFormateurPerime },
   { nom: "sous_traitants_qualiopi", fn: regleSousTraitantsQualiopi },
+  { nom: "vigilance_sous_traitance", fn: regleVigilanceSousTraitance },
   { nom: "vigilance_urssaf", fn: regleVigilanceUrssaf },
   { nom: "opco", fn: regleOpco },
   { nom: "convention_tripartite", fn: regleConventionTripartite },

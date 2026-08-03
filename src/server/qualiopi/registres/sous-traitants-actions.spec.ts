@@ -24,6 +24,12 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
+// Les pièces (art. 4 et 8) s'écrivent directement, sans passer par le service :
+// ce sont des colonnes de suivi, pas une opération métier du registre.
+vi.mock("@/lib/prisma", () => ({
+  prisma: { sousTraitant: { update: vi.fn() } },
+}));
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Imports
 // ─────────────────────────────────────────────────────────────────────────────
@@ -37,7 +43,9 @@ import { logQualiopiActivity, requireAdminWrite } from "@/server/actions/qualiop
 import {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
+  updateSousTraitantPiecesAction,
 } from "@/server/actions/qualiopi/sous-traitants";
+import { prisma } from "@/lib/prisma";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
@@ -195,5 +203,85 @@ describe("verifierSousTraitantOfAction", () => {
     expect("data" in result).toBe(true);
     if (!("data" in result)) return;
     expect(result.data.verifieDataGouvAt).toStrictEqual(DATE_VERIF);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// updateSousTraitantPiecesAction — art. 4 et 8 de la procédure de sous-traitance
+//
+// Ces tests portent sur la SÉMANTIQUE des trois états d'un champ, parce que
+// c'est là que se joue la perte de données : `undefined` laisse en l'état,
+// `null` retire la pièce, une valeur l'enregistre. Confondre les deux premiers
+// ferait qu'enregistrer la RC pro effacerait le CV.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("updateSousTraitantPiecesAction", () => {
+  const mockUpdate = (prisma as unknown as { sousTraitant: { update: ReturnType<typeof vi.fn> } })
+    .sousTraitant.update;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockRequireAdminWrite.mockResolvedValue({ userId: "admin-uuid" });
+    mockGetSousTraitant.mockResolvedValue({ id: ST_UUID, nom: "Organisme X" });
+    mockUpdate.mockResolvedValue({ id: ST_UUID });
+  });
+
+  it("n'écrit QUE les champs fournis — les autres restent intacts", async () => {
+    await updateSousTraitantPiecesAction({ id: ST_UUID, rcProAttestationUrl: "https://r2/rc.pdf" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data["rcProAttestationUrl"]).toBe("https://r2/rc.pdf");
+    // 🔴 Le cœur du test : le CV et l'échéance ne doivent PAS apparaître dans
+    // le `data`, sinon Prisma les écraserait à `undefined`/`null`.
+    expect("cvUrl" in data).toBe(false);
+    expect("prochaineVerifAt" in data).toBe(false);
+  });
+
+  it("null retire explicitement une pièce", async () => {
+    await updateSousTraitantPiecesAction({ id: ST_UUID, rcProAttestationUrl: null });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    expect(data["rcProAttestationUrl"]).toBeNull();
+  });
+
+  it("date le CV au moment du dépôt — l'art. 4 exige un CV de moins de 24 mois", async () => {
+    await updateSousTraitantPiecesAction({ id: ST_UUID, cvUrl: "https://r2/cv.pdf" });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    // Une URL sans date ne permettrait pas de vérifier l'ancienneté exigée.
+    expect(data["cvUploadedAt"]).toBeInstanceOf(Date);
+  });
+
+  it("efface la date de dépôt quand le CV est retiré", async () => {
+    await updateSousTraitantPiecesAction({ id: ST_UUID, cvUrl: null });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    // Une date de dépôt sans CV affirmerait qu'une pièce absente a été fournie.
+    expect(data["cvUploadedAt"]).toBeNull();
+  });
+
+  it("refuse une URL malformée plutôt que de l'enregistrer", async () => {
+    const result = await updateSousTraitantPiecesAction({
+      id: ST_UUID,
+      rcProAttestationUrl: "pas-une-url",
+    });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un sous-traitant inexistant", async () => {
+    mockGetSousTraitant.mockResolvedValue(null);
+    const result = await updateSousTraitantPiecesAction({ id: ST_UUID, cvUrl: null });
+
+    expect("error" in result).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("logge l'écriture des pièces", async () => {
+    await updateSousTraitantPiecesAction({ id: ST_UUID, cvUrl: "https://r2/cv.pdf" });
+
+    const logCall = mockLogActivity.mock.calls[0]?.[0] as { action: string };
+    expect(logCall.action).toBe("qualiopi.sous_traitant.pieces");
   });
 });

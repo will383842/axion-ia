@@ -33,6 +33,51 @@ const INCIDENT_TYPES = ["pedagogique", "administratif", "technique", "autre"] as
 const INCIDENT_GRAVITES = ["mineur", "majeur", "critique"] as const;
 const INCIDENT_STATUTS = ["ouvert", "en_cours", "resolu"] as const;
 
+/**
+ * Faits reprochables à un intervenant externe (art. 7 de la procédure de
+ * sous-traitance). Des FAITS observables, jamais un jugement.
+ */
+const INCIDENT_FAITS_INTERVENANT = [
+  "annulation_tardive",
+  "desistement",
+  "retard",
+  "preuve_manquante",
+  "qualite_insuffisante",
+  "autre",
+] as const;
+
+const miseEnCauseFields = {
+  trainerId: z.string().uuid().nullable().optional(),
+  sousTraitantId: z.string().uuid().nullable().optional(),
+  faitIntervenant: z.enum(INCIDENT_FAITS_INTERVENANT).nullable().optional(),
+};
+
+interface EtatMiseEnCause {
+  trainerId?: string | null | undefined;
+  sousTraitantId?: string | null | undefined;
+  faitIntervenant?: string | null | undefined;
+}
+
+/**
+ * Une mise en cause doit être complète et univoque.
+ *
+ * Vérifié ici plutôt que laissé à la contrainte Postgres : le message doit dire
+ * à Will ce qui manque. Un incident qui désigne un formateur sans dire ce qui lui
+ * est reproché serait une accusation sans motif — inopposable à sa reconduction
+ * (art. 8), donc inutile au registre.
+ *
+ * Retourne le message d'erreur, ou `null` si l'état est cohérent.
+ */
+function verifierCoherenceMiseEnCause(v: EtatMiseEnCause): string | null {
+  if (v.trainerId && v.sousTraitantId) {
+    return "Un incident met en cause un formateur OU un organisme, pas les deux";
+  }
+  if ((v.trainerId || v.sousTraitantId) && !v.faitIntervenant) {
+    return "Précisez le fait reproché à l'intervenant";
+  }
+  return null;
+}
+
 const creerIncidentSchema = z.object({
   type: z.enum(INCIDENT_TYPES),
   gravite: z.enum(INCIDENT_GRAVITES),
@@ -42,6 +87,7 @@ const creerIncidentSchema = z.object({
   dateIncident: z.coerce.date(),
   actionCorrective: z.string().max(10000).optional(),
   statut: z.enum(INCIDENT_STATUTS).optional(),
+  ...miseEnCauseFields,
 });
 
 const updateIncidentSchema = z.object({
@@ -54,6 +100,7 @@ const updateIncidentSchema = z.object({
   dateIncident: z.coerce.date().optional(),
   actionCorrective: z.string().max(10000).optional(),
   statut: z.enum(INCIDENT_STATUTS).optional(),
+  ...miseEnCauseFields,
 });
 
 const supprimerIncidentSchema = z.object({ id: z.string().uuid() });
@@ -72,11 +119,17 @@ export async function creerIncidentAction(input: {
   dateIncident: Date;
   actionCorrective?: string;
   statut?: (typeof INCIDENT_STATUTS)[number];
+  trainerId?: string | null;
+  sousTraitantId?: string | null;
+  faitIntervenant?: (typeof INCIDENT_FAITS_INTERVENANT)[number] | null;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = creerIncidentSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
+
+  const incoherence = verifierCoherenceMiseEnCause(v);
+  if (incoherence !== null) return { error: incoherence };
 
   let incident: { id: string };
   try {
@@ -89,6 +142,9 @@ export async function creerIncidentAction(input: {
       ...(v.sessionId !== undefined ? { sessionId: v.sessionId } : {}),
       ...(v.actionCorrective !== undefined ? { actionCorrective: v.actionCorrective } : {}),
       ...(v.statut !== undefined ? { statut: v.statut } : {}),
+      ...(v.trainerId !== undefined ? { trainerId: v.trainerId } : {}),
+      ...(v.sousTraitantId !== undefined ? { sousTraitantId: v.sousTraitantId } : {}),
+      ...(v.faitIntervenant !== undefined ? { faitIntervenant: v.faitIntervenant } : {}),
     });
   } catch {
     return { error: "Erreur lors de l'enregistrement de l'incident" };
@@ -116,6 +172,9 @@ export async function updateIncidentAction(input: {
   dateIncident?: Date;
   actionCorrective?: string;
   statut?: (typeof INCIDENT_STATUTS)[number];
+  trainerId?: string | null;
+  sousTraitantId?: string | null;
+  faitIntervenant?: (typeof INCIDENT_FAITS_INTERVENANT)[number] | null;
 }): Promise<ActionResult<{ id: string }>> {
   const session = await requireAdminWrite();
   const parsed = updateIncidentSchema.safeParse(input);
@@ -125,8 +184,23 @@ export async function updateIncidentAction(input: {
   const existe = await getIncident(id);
   if (existe === null) return { error: "Incident introuvable" };
 
+  // Cohérence évaluée sur l'état FUSIONNÉ, pas sur les seuls champs envoyés :
+  // corriger le titre d'un incident déjà rattaché à un formateur n'a pas à
+  // renvoyer le fait reproché pour être accepté.
+  const incoherence = verifierCoherenceMiseEnCause({
+    trainerId: fields.trainerId !== undefined ? fields.trainerId : existe.trainerId,
+    sousTraitantId:
+      fields.sousTraitantId !== undefined ? fields.sousTraitantId : existe.sousTraitantId,
+    faitIntervenant:
+      fields.faitIntervenant !== undefined ? fields.faitIntervenant : existe.faitIntervenant,
+  });
+  if (incoherence !== null) return { error: incoherence };
+
   try {
     await updateIncident(id, {
+      ...(fields.trainerId !== undefined ? { trainerId: fields.trainerId } : {}),
+      ...(fields.sousTraitantId !== undefined ? { sousTraitantId: fields.sousTraitantId } : {}),
+      ...(fields.faitIntervenant !== undefined ? { faitIntervenant: fields.faitIntervenant } : {}),
       ...(fields.type !== undefined ? { type: fields.type } : {}),
       ...(fields.gravite !== undefined ? { gravite: fields.gravite } : {}),
       ...(fields.titre !== undefined ? { titre: fields.titre } : {}),
