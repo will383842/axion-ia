@@ -253,6 +253,44 @@ valeur réellement mesurée. Reste à reprendre : ≈ 25 « ⚠ » de bandeaux, 
 - 🟠 Grille de 5 tuiles en 3 + 2, avec un vide à droite de la seconde rangée.
 - 🟡 Badges « OUVERTE » alignés à droite hors colonne (pas d'en-tête).
 
+### /qualiopi/a-traiter ✅
+- 🔴 **La pastille disait 2, la page disait « Rien à traiter — tout est à
+  jour »**, et `/qualiopi/alertes` confirmait 0 alerte active. Le compteur de
+  la pastille faisait un `count` brut là où la page retire les pièces
+  remplacées (convention `-003` et `-011` d'INVEST SUN, doublées par `-009`
+  signée). ✅ filtre remonté dans un module partagé + test d'égalité.
+
+### /avis
+- 🟠 Le filtre par défaut est « En attente (0) » : la page d'atterrissage
+  montre systématiquement du vide alors que « Publié » en compte 77.
+- 🟠 « Rechercher » + « Réinitialiser » : deux boutons pour un seul champ.
+
+### /blog
+- 🟠 Colonne AUTEUR à « — » sur les 173 articles ; colonne VUES à 0 partout.
+  Deux colonnes qui n'apportent rien en l'état.
+- 🟠 La colonne SLUG (chasse fixe) occupe un cinquième de la largeur.
+
+### /qualiopi/formations
+- 🟠 **Trois colonnes de statut côte à côte** (STATUT GÉNÉRATION « Publié »,
+  STATUT « Actif », VALIDÉE « Non ») sans qu'on sache laquelle fait foi.
+- 🟠 La colonne OFFRE répète mot pour mot le titre de la formation, sur les
+  22 lignes.
+- 🟠 66 boutons d'action à l'écran (3 × 22 lignes).
+- 🟡 « offres_site » (nom de table) et « Formation Engine » dans le sous-titre.
+
+### /web-vitals ✅
+- 🔴 Le bloc « Budgets référence (AGENTS.md) » recopiait la **documentation
+  développeur** à l'écran : chemin d'un fichier d'audit, nom d'un module de
+  helpers, numéro de runbook, nom d'un tag Telegram. ✅ remplacé par les
+  seuils en langage clair.
+- 🔴 « 1 mesure(s) sur 16 (sur 4 page(s) suivies) » — deux pluriels entre
+  parenthèses dans la première ligne de la page. ✅ accordé.
+- 🟠 « Forcer un recompute », « Snapshot worker », « 1 breaches notifiées ».
+  ✅ les deux premiers et le troisième reformulés.
+- 🟠 La page annonce « les dernières 24 heures » alors que la source affichée
+  date du 24/07 — dix jours. **Non corrigé** : soit la mesure ne tourne plus,
+  soit le libellé ment. À trancher avec les logs du worker.
+
 ---
 
 ## Reste à parcourir
