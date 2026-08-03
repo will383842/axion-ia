@@ -707,7 +707,9 @@ async function regleVigilanceSousTraitance(now: Date): Promise<AlerteCandidate[]
       });
     }
 
-    if (c.rcProAttestationUrl === null || c.rcProAttestationUrl.trim() === "") {
+    // `?.` volontaire : le fail-soft par règle avale les exceptions, donc une
+    // valeur absente ferait taire TOUTE la vigilance sous-traitance sans bruit.
+    if (!c.rcProAttestationUrl?.trim()) {
       alertes.push({
         code: "sous_traitant_rc_pro_absente",
         niveau: "important",
@@ -746,6 +748,50 @@ async function regleVigilanceSousTraitance(now: Date): Promise<AlerteCandidate[]
         cibleId: c.cibleId,
       });
     }
+  }
+
+  // ── Article 8 : tenir compte des incidents à la reconduction ───────────────
+  //
+  // Sans ce bloc, le registre d'incidents existerait sans que rien ne le lise —
+  // Will ne verrait un formateur défaillant qu'en ouvrant sa fiche, c'est-à-dire
+  // au moment où il vient précisément de décider de l'affecter.
+  //
+  // 🔴 Niveau « important », JAMAIS « critique » : cette alerte INFORME, elle
+  // n'interdit pas. Un formateur qui a fait tomber deux sessions peut rester le
+  // bon choix pour une mission donnée, et l'arbitrage revient à Will (même
+  // logique que la RC pro non bloquante).
+  const faitsBloquants = await prisma.incident.groupBy({
+    by: ["trainerId", "sousTraitantId"],
+    where: {
+      dateIncident: { gte: daysFromNow(-730, now) },
+      faitIntervenant: { in: ["annulation_tardive", "desistement"] },
+      OR: [{ trainerId: { not: null } }, { sousTraitantId: { not: null } }],
+    },
+    _count: { _all: true },
+  });
+
+  const libelleParCible = new Map(cibles.map((c) => [`${c.cibleType}:${c.cibleId}`, c.libelle]));
+
+  for (const groupe of faitsBloquants) {
+    if (groupe._count._all < 2) continue;
+
+    const cibleType = groupe.trainerId !== null ? ("Trainer" as const) : ("SousTraitant" as const);
+    const cibleId = groupe.trainerId ?? groupe.sousTraitantId;
+    if (cibleId === null) continue;
+
+    // Un intervenant devenu inactif n'est plus dans `cibles` : ne pas alerter sur
+    // quelqu'un qu'on ne peut plus affecter de toute façon.
+    const libelle = libelleParCible.get(`${cibleType}:${cibleId}`);
+    if (libelle === undefined) continue;
+
+    alertes.push({
+      code: "sous_traitant_incidents_repetes",
+      niveau: "important",
+      titre: "Intervenant externe : incidents répétés",
+      message: `${libelle} a fait tomber ${groupe._count._all} sessions en 24 mois (annulation tardive ou désistement). À prendre en compte lors de la reconduction — article 8 de la procédure de sous-traitance.`,
+      cibleType,
+      cibleId,
+    });
   }
 
   return alertes;

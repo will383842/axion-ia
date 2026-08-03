@@ -5997,6 +5997,7 @@ model TrainingSession {
   // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
   /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
   /// dateFin >= from`). `dateFin` n'avait AUCUN index.
+
   @@index([dateDebut, dateFin])
   /// Calendrier filtré par statut / financement (prévisionnel).
   @@index([statut, dateDebut])
@@ -6112,6 +6113,9 @@ model Trainer {
   signaturesSeanceRecueillies CoachingSeanceSignature[]   @relation("SeanceSignatureRecueillie")
   /// Pièces générées qui le MANDATENT (lettres de mission, dont lettres-cadre).
   documentsGeneres            DocumentGenere[]            @relation("DocumentGenereTrainer")
+
+  /// Incidents où ce formateur est mis en cause (art. 7 sous-traitance).
+  incidents                 Incident[]                  @relation("IncidentIntervenant")
 
   @@index([statut])
   @@index([actif])
@@ -7452,6 +7456,8 @@ model SousTraitant {
   updatedAt         DateTime  @updatedAt @map("updated_at")
 
   documentsGeneres DocumentGenere[]
+  /// Incidents où cet organisme est mis en cause (art. 7 sous-traitance).
+  incidents        Incident[]       @relation("IncidentIntervenant")
 
   @@index([actif])
   /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
@@ -7509,10 +7515,36 @@ enum IncidentStatut {
   resolu
 }
 
+/// Fait reproché à un intervenant externe (art. 7 de la procédure de
+/// sous-traitance, 2026-08-03). Les libellés décrivent des FAITS observables,
+/// jamais un jugement : « annulation tardive » se constate, « peu sérieux » non.
+enum IncidentFaitIntervenant {
+  annulation_tardive
+  desistement
+  retard
+  preuve_manquante
+  qualite_insuffisante
+  autre
+}
+
 /// Registre des incidents (LOT 4 — pilotage réel). Remplace les proxys M7
 /// (sessions annulées/reportées) et M9 (réclamations seules) : les incidents
 /// déclarés + leurs actions correctives deviennent la source première des
 /// métriques de pilotage. `sessionId` optionnel (incident hors session possible).
+///
+/// 🔴 Étendu le 2026-08-03 pour porter les incidents imputables à un INTERVENANT
+/// EXTERNE (art. 7 : consigner « toute difficulté » ; art. 8 : en tenir compte à
+/// la reconduction). Rien ne les portait — un formateur pouvait annuler trois
+/// fois à la veille d'une session sans qu'aucune trace ne subsiste.
+///
+/// Volontairement le MÊME registre, pas une table à part : un formateur qui fait
+/// tomber une session est un incident de pilotage au même titre qu'un autre. Une
+/// seconde table l'aurait rendu invisible aux métriques M7/M9 et à la revue de
+/// direction, et aurait donné deux registres « incidents » à l'auditeur.
+///
+/// Les trois champs sont nullables ensemble : un incident ordinaire (panne de
+/// salle) ne vise aucun intervenant. Quand il en vise un, `trainerId` XOR
+/// `sousTraitantId` — Prisma n'exprime pas le XOR, la contrainte est en base.
 model Incident {
   id               String           @id @default(uuid()) @db.Uuid
   type             IncidentType
@@ -7529,10 +7561,21 @@ model Incident {
   createdAt        DateTime         @default(now()) @map("created_at")
   updatedAt        DateTime         @updatedAt @map("updated_at")
 
+  /// Intervenant externe mis en cause, s'il y en a un. Personne physique…
+  trainerId      String?  @map("trainer_id") @db.Uuid
+  trainer        Trainer? @relation("IncidentIntervenant", fields: [trainerId], references: [id], onDelete: SetNull)
+  /// …ou organisme sous-traitant.
+  sousTraitantId String?       @map("sous_traitant_id") @db.Uuid
+  sousTraitant   SousTraitant? @relation("IncidentIntervenant", fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  /// Le fait constaté. Renseigné dès qu'un intervenant est mis en cause.
+  faitIntervenant IncidentFaitIntervenant? @map("fait_intervenant")
+
   @@index([statut])
   @@index([type])
   @@index([dateIncident])
   @@index([sessionId])
+  @@index([trainerId])
+  @@index([sousTraitantId])
   @@map("incidents")
 }
 

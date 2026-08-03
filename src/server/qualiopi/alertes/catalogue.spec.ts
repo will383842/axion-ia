@@ -46,6 +46,7 @@ const CODES_ATTENDUS: string[] = [
   "sous_traitant_rc_pro_expiree",
   "sous_traitant_rc_pro_expire_j60",
   "sous_traitant_verification_annuelle_due",
+  "sous_traitant_incidents_repetes",
   "opco_sans_accord",
   "opco_formation_demarree_sans_accord",
   "convention_tripartite_manquante",

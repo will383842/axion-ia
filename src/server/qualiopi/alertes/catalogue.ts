@@ -211,6 +211,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Vérification annuelle d'un sous-traitant à effectuer",
     resolutionAuto: true,
   },
+  // Art. 8 : les incidents pèsent à la reconduction. « important » et non
+  // « critique » — l'alerte informe, elle n'interdit pas d'affecter.
+  sous_traitant_incidents_repetes: {
+    niveau: "important",
+    titre: "Intervenant externe : incidents répétés",
+    resolutionAuto: true,
+  },
 
   // ── OPCO / financement ────────────────────────────────────────────────────
   opco_sans_accord: {

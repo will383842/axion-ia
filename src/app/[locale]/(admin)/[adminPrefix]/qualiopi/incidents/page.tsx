@@ -64,7 +64,7 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const [incidents, sessionsRecentes] = await Promise.all([
+  const [incidents, sessionsRecentes, formateursSousTraitants, organismes] = await Promise.all([
     listIncidents({ take: 500 }),
     // Sessions récentes proposées pour rattacher un incident (12 mois glissants).
     prisma.trainingSession.findMany({
@@ -77,7 +77,28 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
       orderBy: { dateDebut: "desc" },
       take: 100,
     }),
+    // Intervenants externes actifs, pour la mise en cause (art. 7). Les deux
+    // natures sont chargées séparément puis fusionnées en une seule liste :
+    // Will se demande « qui ? », pas « personne physique ou organisme ? ».
+    prisma.trainer.findMany({
+      where: { actif: true, statut: "sous_traitant" },
+      select: { id: true, nom: true, prenom: true },
+      orderBy: [{ nom: "asc" }, { prenom: "asc" }],
+    }),
+    prisma.sousTraitant.findMany({
+      where: { actif: true },
+      select: { id: true, nom: true },
+      orderBy: { nom: "asc" },
+    }),
   ]);
+
+  const intervenants = [
+    ...formateursSousTraitants.map((t) => ({
+      valeur: `Trainer:${t.id}`,
+      libelle: `${t.prenom} ${t.nom}`.trim(),
+    })),
+    ...organismes.map((o) => ({ valeur: `SousTraitant:${o.id}`, libelle: o.nom })),
+  ];
 
   const ouverts = incidents.filter((i) => i.statut !== "resolu").length;
   const critiques = incidents.filter((i) => i.gravite === "critique").length;
@@ -127,7 +148,11 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
 
       {/* Formulaire déclaration */}
       <div className="mb-[var(--space-admin-8)]">
-        <IncidentForm creerAction={creerIncidentAction} sessions={sessionsRecentes} />
+        <IncidentForm
+          creerAction={creerIncidentAction}
+          sessions={sessionsRecentes}
+          intervenants={intervenants}
+        />
       </div>
 
       {/* Liste */}

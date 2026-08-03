@@ -31,6 +31,8 @@ vi.mock("@/lib/prisma", () => ({
     documentGenere: { findMany: vi.fn() },
     // Recouvrement 2026-08-02 : relances envoyées restées sans effet.
     relanceProposee: { findMany: vi.fn() },
+    // Art. 8 sous-traitance : incidents répétés d'un intervenant. [2026-08-03]
+    incident: { groupBy: vi.fn() },
   },
 }));
 
@@ -76,6 +78,7 @@ const mp = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   trainer: { findMany: ReturnType<typeof vi.fn> };
   sousTraitant: { findMany: ReturnType<typeof vi.fn> };
+  incident: { groupBy: ReturnType<typeof vi.fn> };
   factureFormation: { findMany: ReturnType<typeof vi.fn> };
   dossierFinancement: { findMany: ReturnType<typeof vi.fn> };
   veille: { findFirst: ReturnType<typeof vi.fn> };
@@ -112,6 +115,12 @@ function setupEmptyMocks() {
   mp.devis.findMany.mockResolvedValue([]);
   mp.documentGenere.findMany.mockResolvedValue([]);
   mp.relanceProposee.findMany.mockResolvedValue([]);
+  // 🔴 [2026-08-03] Ces deux-là manquaient : `regleVigilanceSousTraitance` lisait
+  // un mock non configuré, levait, et le fail-soft par règle avalait l'exception.
+  // La règle était donc INERTE dans tous les tests hors de son propre bloc — une
+  // régression y serait passée inaperçue.
+  mp.sousTraitant.findMany.mockResolvedValue([]);
+  mp.incident.groupBy.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -1504,5 +1513,74 @@ describe("vigilance sous-traitance", () => {
     const alerte = a.find((x) => x.code === "sous_traitant_contrat_cadre_manquant");
     expect(alerte?.cibleType).toBe("Trainer");
     expect(alerte?.message).toContain("Marie Dupont");
+  });
+
+  // ── Art. 8 : incidents répétés ──────────────────────────────────────────
+  //
+  // Le point sensible n'est pas que l'alerte existe, c'est qu'elle reste
+  // NON BLOQUANTE. Un futur « durcissons un peu » qui la passerait en critique
+  // la transformerait en interdiction d'affecter, contre la décision de Will.
+  describe("incidents répétés (art. 8)", () => {
+    const FORMATEUR_ACTIF = {
+      id: "tr-1",
+      nom: "Dupont",
+      prenom: "Marie",
+      sousTraitantContratSigneAt: new Date("2026-01-10"),
+      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProAttestationUrl: "https://r2/rc.pdf",
+      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+    };
+
+    it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-1", sousTraitantId: null, _count: { _all: 1 } },
+      ]);
+      const a = await evaluerAlertes();
+      expect(a.filter((x) => x.code === "sous_traitant_incidents_repetes")).toHaveLength(0);
+    });
+
+    it("deux incidents bloquants = IMPORTANT, jamais critique (l'alerte informe, elle n'interdit pas)", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-1", sousTraitantId: null, _count: { _all: 2 } },
+      ]);
+      const a = await evaluerAlertes();
+      const alerte = a.find((x) => x.code === "sous_traitant_incidents_repetes");
+      expect(alerte?.niveau).toBe("important");
+      expect(alerte?.niveau).not.toBe("critique");
+      expect(alerte?.cibleType).toBe("Trainer");
+      expect(alerte?.message).toContain("Marie Dupont");
+    });
+
+    it("n'alerte pas sur un intervenant devenu inactif — on ne peut plus l'affecter", async () => {
+      mp.trainer.findMany.mockResolvedValue([]); // aucun formateur actif
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: "tr-parti", sousTraitantId: null, _count: { _all: 5 } },
+      ]);
+      const a = await evaluerAlertes();
+      expect(a.filter((x) => x.code === "sous_traitant_incidents_repetes")).toHaveLength(0);
+    });
+
+    it("vise l'ORGANISME quand c'est lui qui est mis en cause", async () => {
+      mp.sousTraitant.findMany.mockResolvedValue([CONFORME]);
+      mp.incident.groupBy.mockResolvedValue([
+        { trainerId: null, sousTraitantId: "st-1", _count: { _all: 3 } },
+      ]);
+      const a = await evaluerAlertes();
+      const alerte = a.find((x) => x.code === "sous_traitant_incidents_repetes");
+      expect(alerte?.cibleType).toBe("SousTraitant");
+      expect(alerte?.cibleId).toBe("st-1");
+    });
+
+    it("ne compte QUE les faits qui font tomber une session", async () => {
+      mp.trainer.findMany.mockResolvedValue([FORMATEUR_ACTIF]);
+      mp.incident.groupBy.mockResolvedValue([]);
+      await evaluerAlertes();
+      const arg = mp.incident.groupBy.mock.calls[0]?.[0] as {
+        where: { faitIntervenant: { in: string[] } };
+      };
+      expect(arg.where.faitIntervenant.in).toStrictEqual(["annulation_tardive", "desistement"]);
+    });
   });
 });
