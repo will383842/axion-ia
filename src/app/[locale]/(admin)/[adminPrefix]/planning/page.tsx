@@ -262,7 +262,13 @@ export default async function PlanningPage({
         </div>
       )}
 
-      <MonthGridCalendar year={year} month={month} days={days} todayKey={dayKeyInParis(now)} />
+      <MonthGridCalendar
+        year={year}
+        month={month}
+        days={days}
+        todayKey={dayKeyInParis(now)}
+        unitLabel="prestation"
+      />
 
       {selectedDate !== null && (
         <div className="mt-[var(--space-admin-6)]">

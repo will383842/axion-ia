@@ -192,7 +192,13 @@ export default async function AppelsPage({
           </AdminButton>
         </div>
 
-        <MonthGridCalendar year={year} month={month} days={days} todayKey={dayKeyInParis(now)} />
+        <MonthGridCalendar
+          year={year}
+          month={month}
+          days={days}
+          todayKey={dayKeyInParis(now)}
+          unitLabel="appel réservé"
+        />
 
         {selectedDate && (
           <div className="mt-[var(--space-admin-6)]">

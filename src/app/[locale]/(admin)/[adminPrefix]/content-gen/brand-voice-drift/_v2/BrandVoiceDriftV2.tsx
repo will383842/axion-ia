@@ -106,7 +106,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             <table className="admin-table w-full text-sm">
               <thead>
                 <tr>
-                  <th className="px-3 py-2 text-left">Article ID</th>
+                  <th className="px-3 py-2 text-left">Article</th>
                   <th className="px-3 py-2 text-left">Similarité</th>
                   <th className="px-3 py-2 text-left">Niveau</th>
                   <th className="px-3 py-2 text-left">Détecté le</th>
@@ -117,7 +117,9 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
                 {stats.recentDrifts.map((drift) => (
                   <tr key={drift.id} className="border-t border-[color:var(--color-admin-border)]">
                     <td className="px-3 py-2">
-                      <code className="text-xs">{drift.articleId.slice(0, 12)}…</code>
+                      <code className="text-xs" title={drift.articleId}>
+                        {drift.articleId.slice(0, 12)}…
+                      </code>
                     </td>
                     <td className="px-3 py-2">
                       <span

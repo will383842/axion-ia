@@ -118,6 +118,7 @@ function VueMois({
       year={cal.year}
       month={cal.month}
       todayKey={cal.todayKey}
+      unitLabel="prestation"
       days={cal.days.map((d) => ({
         dayKey: d.dayKey,
         count: d.count,
