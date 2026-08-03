@@ -80,7 +80,15 @@ export function AdminListScaffold({
       {filters ? <div className="mb-[var(--space-admin-6)]">{filters}</div> : null}
       {rows.length === 0 ? (
         <AdminEmptyState
-          title={emptyTitle ?? `Aucun ${itemLabel.replace(/\(.*\)/, "").trim()} pour ce filtre`}
+          // 🔴 Accord : ce repli composait « Aucun » + le nom de l'élément.
+          // `itemLabel` est fourni par chaque page et vaut aussi bien
+          // « facture(s) » que « soumission(s) » : la moitié des listes de la
+          // console affichaient donc une faute — « Aucun soumission pour ce
+          // filtre », lu en production le 2026-08-03 sur la boîte de réception.
+          // Passer un genre en propriété aurait laissé la faute partout où
+          // l'appelant l'oublie. Le repli ne s'accorde plus avec rien ; une
+          // page qui veut nommer son élément a déjà `emptyTitle`.
+          title={emptyTitle ?? "Aucun résultat pour ce filtre"}
           {...(emptyDescription ? { description: emptyDescription } : {})}
         />
       ) : (

@@ -11,6 +11,7 @@
 
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { TriangleAlert } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -109,7 +110,8 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
 
   const badgeEnCours = (
     <span className="inline-flex items-center gap-1 rounded bg-[color:var(--color-admin-warning-subtle,color-mix(in_srgb,var(--color-admin-warning)_15%,transparent))] px-[var(--space-admin-2)] py-0.5 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]">
-      ⚠ en cours de constitution
+      <TriangleAlert size={12} aria-hidden="true" className="shrink-0" />
+      en cours de constitution
     </span>
   );
 

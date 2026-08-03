@@ -39,22 +39,62 @@ const ROOT = resolve(__dirname, "../../../../..");
 const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/components/admin")];
 
 /**
+ * Modules HORS des deux dossiers admin dont les chaînes sont pourtant RENDUES
+ * dans la console — donc soumis à la même règle.
+ *
+ * 🔴 Le trou a coûté deux jours : `QUALIOPI_POLE_LABELS` (`src/lib`) affichait
+ * six emojis dans la barre latérale, c'est-à-dire sur CHAQUE page de la
+ * console, pendant que ce test annonçait « 1 occurrence ». `PERIMETRE_LABELS`
+ * (`src/server`) en affichait deux de plus sur la page Dossiers.
+ *
+ * La liste est nominative et pas un dossier entier, à dessein : `src/lib` et
+ * `src/server` contiennent aussi des gabarits d'e-mail et de PDF, où un
+ * pictogramme relève d'une autre décision que celle-ci.
+ */
+const FICHIERS_SSOT_CONSOLE = [
+  join(ROOT, "src/lib/admin-nav.ts"),
+  join(ROOT, "src/server/qualiopi/perimetre.ts"),
+  join(ROOT, "src/server/content-gen/shared/admin-labels.ts"),
+];
+
+/**
  * Plafond courant, à ne jamais remonter.
  *
- * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02, passe complète).
- * Sont passés en composants lucide : les statuts qui ne se distinguaient que
- * par la couleur, les cellules booléennes des tableaux, les icônes d'état vide
- * et les glyphes servant de bouton.
+ * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → **45**
+ * (2026-08-03).
  *
- * LA DERNIÈRE OCCURRENCE EST VOLONTAIRE — ne la « corrigez » pas. Le champ
+ * 🔴 LE PLAFOND REMONTE, ET AUCUN EMOJI N'A ÉTÉ AJOUTÉ. C'est la MESURE qui
+ * était fausse : la plage de caractères sautait `U+2600`–`U+26FF` (cf. la note
+ * sur `EMOJI`), et le scan ignorait les libellés vivant hors des deux dossiers
+ * admin (cf. `FICHIERS_SSOT_CONSOLE`). Le « 1 » du 2026-08-02 en cachait 51.
+ * On repart de ce qui est réellement rendu — 45 après le retrait des 8 les
+ * plus exposés (barre latérale ×6, badge de périmètre ×2) et du « ⚠ » du
+ * bandeau des indicateurs.
+ *
+ * Reste à reprendre, par ordre de visibilité : les « ⚠ » des bandeaux
+ * d'avertissement (≈ 25 occurrences, une par écran), les « ★ » des notes
+ * d'avis et de la matrice d'indicateurs, les « ⛔ » des états bloqués.
+ *
+ * UNE OCCURRENCE EST VOLONTAIRE — ne la « corrigez » pas. Le champ
  * « Avantages » d'une offre d'emploi accepte un JSON dont la clé `icon` porte
  * réellement un emoji côté site public ; le formulaire en montre un EXEMPLE à
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
  * attendu et produirait des saisies invalides.
  */
-const PLAFOND = 1;
+const PLAFOND = 45;
 
-const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
+/**
+ * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les
+ * pictogrammes les plus employés de la console : « ⚠ » (U+26A0), « ⚙ »
+ * (U+2699), « ⛔ » (U+26D4), « ⚪ » (U+26AA), « ★ » (U+2605), « ⚖ » (U+2696),
+ * « ♻ » (U+267B).
+ *
+ * Conséquence mesurée le 2026-08-03 : le compteur affichait 1 alors que les
+ * deux dossiers scannés en contenaient 43. La trajectoire « 340 → 248 → 94 →
+ * 1 » ne mesurait donc pas ce qu'elle croyait mesurer sur sa dernière marche.
+ * On élargit la plage ; le plafond repart de la valeur réellement constatée.
+ */
+const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
 /**
  * Retire les lignes de commentaire — un emoji cité en commentaire n'est pas
@@ -105,13 +145,12 @@ describe("cliquet anti-emoji de la console", () => {
     const parFichier: Array<{ fichier: string; n: number }> = [];
     let total = 0;
 
-    for (const dir of SCAN_DIRS) {
-      for (const fichier of fichiersTsx(dir)) {
-        const trouves = codeSeul(readFileSync(fichier, "utf8")).match(EMOJI);
-        if (!trouves) continue;
-        total += trouves.length;
-        parFichier.push({ fichier: fichier.slice(ROOT.length + 1), n: trouves.length });
-      }
+    const aScanner = [...SCAN_DIRS.flatMap((dir) => fichiersTsx(dir)), ...FICHIERS_SSOT_CONSOLE];
+    for (const fichier of aScanner) {
+      const trouves = codeSeul(readFileSync(fichier, "utf8")).match(EMOJI);
+      if (!trouves) continue;
+      total += trouves.length;
+      parFichier.push({ fichier: fichier.slice(ROOT.length + 1), n: trouves.length });
     }
 
     const pires = parFichier

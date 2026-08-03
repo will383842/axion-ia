@@ -126,10 +126,15 @@ export function UsersV2({
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <p className="admin-meta">
+          {/* Le renvoi « (CLAUDE.md §15) » qui fermait cette phrase a été retiré
+              le 2026-08-03 : c'est le nom d'un fichier de consignes du dépôt,
+              affiché à l'écran d'un utilisateur qui n'y a pas accès et n'a
+              aucune raison de savoir qu'il existe. La règle qu'il citait est
+              déjà énoncée juste avant. */}
           4 rôles : <strong>super_admin</strong> (gère tout, seul à pouvoir créer/changer rôle/
           reset 2FA cross-user) · <strong>admin</strong> (gère contenus + suspend) ·{" "}
           <strong>editor</strong> (édite contenus) · <strong>reader</strong> (lecture seule). 2FA
-          TOTP obligatoire pour super_admin et admin (CLAUDE.md §15).
+          TOTP obligatoire pour super_admin et admin.
         </p>
       </AdminCard>
 
