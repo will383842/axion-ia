@@ -16,6 +16,7 @@ import {
 } from "@/server/actions/content-gen/city-equity";
 import { MapPin, AlertTriangle, BarChart3, FileText } from "lucide-react";
 import { PALIER_LABELS } from "@/server/content-gen/cities/population-tiers";
+import { CONTENT_TYPE_LABELS_FR } from "@/server/content-gen/shared/admin-labels";
 
 // Quatrième copie des mêmes bornes ; elle était juste, deux autres non.
 const TIER_LABELS: Record<number, string> = {
@@ -25,17 +26,11 @@ const TIER_LABELS: Record<number, string> = {
   4: `Tier 4 ${PALIER_LABELS[4]}`,
 };
 
-const CONTENT_TYPE_LABELS: Record<string, string> = {
-  landing_ville: "Landing ville",
-  blog_article: "Blog article",
-  blog_from_rss: "Blog RSS",
-  blog_from_keywords: "Blog mots-clés",
-  blog_from_title: "Blog titre",
-  comparison: "Comparatif",
-  guide_pilier: "Guide pilier",
-  qa_derived: "Q/A dérivé",
-  faq_standalone: "FAQ",
-};
+// 🔴 CETTE TABLE NE COUVRAIT QUE NEUF TYPES sur les vingt que produit
+// l'assistant de campagne : `pain_point_solution`, `faq_geo`,
+// `long_tail_keyword`, `calculator_roi`… sortaient bruts dans la colonne
+// « Type ». La table exhaustive existe et est testée.
+const CONTENT_TYPE_LABELS: Record<string, string> = CONTENT_TYPE_LABELS_FR;
 
 function cellTone(count: number): string {
   if (count === 0)

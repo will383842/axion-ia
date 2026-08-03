@@ -105,8 +105,8 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
       <AdminCard>
         <h2 className="admin-h2">Carte interactive</h2>
         <p className="admin-meta-block">
-          La carte React `react-simple-maps` + SSE temps réel arrive Sprint 4 (composant lourd, ~50
-          KB gz). V1 = table ci-dessus.
+          Une carte de France cliquable viendra compléter le tableau ci-dessus. Elle n’est pas
+          encore disponible.
         </p>
       </AdminCard>
     </AdminPageShell>

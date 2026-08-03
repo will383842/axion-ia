@@ -84,6 +84,15 @@ const eurosFromCents = (c: number | null | undefined): string =>
 const centsFromEuros = (v: string): number | undefined =>
   v.trim() === "" ? undefined : Math.round(Number(v) * 100);
 
+// 🔴 « Attestation : complete » — la valeur d'enum. Et `aucune` (attestation
+// émise SANS acquis) se lisait presque comme `null` (pas encore émise), deux
+// situations pourtant opposées en audit.
+const LIBELLE_ATTESTATION: Record<string, string> = {
+  complete: "complète",
+  partielle: "partielle — présence insuffisante",
+  aucune: "aucune — conditions non remplies",
+};
+
 export function AfestPanel(props: AfestPanelProps): React.ReactElement {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
@@ -170,6 +179,20 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
     <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <h2 className="text-mocha mb-2 text-sm font-semibold">AFEST · documents légaux</h2>
 
+      {/* 🔴 CE BANDEAU ÉTAIT RENDU TOUT EN BAS, après les deux cents lignes de
+          boutons de génération. Cliquer « Générer le protocole AFEST »
+          n'affichait donc aucun retour dans le champ de vision : le seul
+          signal immédiat était le bouton qui se grisait. */}
+      {message ? (
+        <p
+          role={message.kind === "ok" ? "status" : "alert"}
+          aria-live="polite"
+          className={`mb-3 text-xs ${message.kind === "ok" ? "text-success" : "text-terracotta"}`}
+        >
+          {message.text}
+        </p>
+      ) : null}
+
       <div className="mb-3 grid grid-cols-2 gap-2 text-sm">
         <p>
           <span className="text-fg-muted">Heures réalisées (total des séances) : </span>
@@ -181,7 +204,9 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
         </p>
         <p>
           <span className="text-fg-muted">Attestation : </span>
-          {props.attestationResultat ?? "non émise"}
+          {props.attestationResultat === null || props.attestationResultat === undefined
+            ? "non émise"
+            : (LIBELLE_ATTESTATION[props.attestationResultat] ?? props.attestationResultat)}
         </p>
       </div>
 
@@ -749,12 +774,6 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
             </div>
           ))}
         </div>
-      ) : null}
-
-      {message ? (
-        <p className={`mb-2 text-xs ${message.kind === "ok" ? "text-success" : "text-terracotta"}`}>
-          {message.text}
-        </p>
       ) : null}
 
       {/* Documents émis */}
