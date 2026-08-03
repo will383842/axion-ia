@@ -172,7 +172,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="linkedSubmissionId" className="admin-label">
-            ID soumission liée (UUID, optionnel)
+            Message du site rattaché (facultatif)
           </label>
           <input
             id="linkedSubmissionId"

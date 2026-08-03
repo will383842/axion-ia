@@ -261,7 +261,7 @@ export function ReplyComposer({
         <form onSubmit={onSubmit} className="admin-form mt-4 space-y-4">
           <div className="admin-field">
             <label htmlFor="reply-template" className="admin-label">
-              Template
+              Modèle de réponse
             </label>
             <select
               id="reply-template"

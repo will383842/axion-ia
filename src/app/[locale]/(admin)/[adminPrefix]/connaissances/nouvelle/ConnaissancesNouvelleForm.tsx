@@ -124,7 +124,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-field">
         <label className="admin-label" htmlFor="slug">
-          Slug racine (cross-langue, identifiant stable)
+          Identifiant commun aux deux langues
         </label>
         <input
           id="slug"
@@ -167,7 +167,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-field">
         <label className="admin-label" htmlFor="excerpt_fr">
-          Extrait (FR, 500 chars max)
+          Extrait (FR — 500 caractères maximum)
         </label>
         <textarea
           id="excerpt_fr"

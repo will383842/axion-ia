@@ -77,7 +77,7 @@ export function FaqV2({
     { key: "question", header: "Question (FR)", cell: (f) => f.questionFr },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (f) => <code className="admin-meta-small">{f.slug}</code>,
       hiddenBelow: "md",
     },

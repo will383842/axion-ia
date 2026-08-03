@@ -136,7 +136,7 @@ function EnrollmentRow({
           value={montant}
           onChange={(e) => setMontant(e.target.value)}
           disabled={isPending}
-          placeholder="Prix siège € HT"
+          placeholder="Ex. 1 200"
           className={`${inputCls} w-32`}
           aria-label="Prix du siège HT"
         />

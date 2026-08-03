@@ -55,7 +55,12 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
 
   const columns: ReadonlyArray<AdminTableColumn<PhraseRow>> = [
     { key: "pattern", header: "Expression", cell: (r) => <code>{r.pattern}</code> },
-    { key: "severity", header: "Sévérité", cell: (r) => r.severity },
+    {
+      key: "severity",
+      header: "Sévérité",
+      // La colonne affichait `warn` / `block`, les valeurs du formulaire.
+      cell: (r) => (r.severity === "block" ? "Bloquer la publication" : "Avertir"),
+    },
     { key: "reason", header: "Raison", cell: (r) => r.reason ?? "—" },
     {
       key: "isActive",

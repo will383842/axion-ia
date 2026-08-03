@@ -39,7 +39,10 @@ export function SiteRouteRow({ route }: Props) {
           {displayPath}
         </Link>
         {route.metaTitle && (
-          <p className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]">
+          <p
+            className="mt-0.5 truncate text-xs text-[color:var(--color-admin-fg-muted)]"
+            title={route.metaTitle ?? ""}
+          >
             {route.metaTitle}
           </p>
         )}

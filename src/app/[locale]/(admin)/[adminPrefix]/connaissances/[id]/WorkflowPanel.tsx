@@ -108,7 +108,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           <form action={approveActionForm} className="admin-workflow-action">
             <input type="hidden" name="entryId" value={entryId} />
             <label className="admin-label" htmlFor="reviewerNote-input">
-              Note reviewer (optionnel)
+              Note du relecteur (facultative)
             </label>
             <textarea
               id="reviewerNote-input"

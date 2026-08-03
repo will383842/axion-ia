@@ -74,7 +74,7 @@ export function ConnaissancesV2({
     },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (e) => <code className="admin-meta-small">{e.slug}</code>,
     },
     { key: "domain", header: "Domaine", cell: (e) => getDomainLabel(e.domain as never, "fr") },

@@ -334,7 +334,8 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         <h2 className="admin-h2">Zone danger</h2>
         <input type="hidden" name="entryId" value={entry.id} />
         <p className="admin-meta">
-          Suppression douce (soft-delete). Récupération possible via cron retention sous 30 j.
+          L&apos;entrée part à la corbeille : elle reste récupérable pendant 30 jours, puis est effacée
+          définitivement.
         </p>
         <button type="submit" disabled={delPending} className="admin-button-danger">
           {delPending ? "Suppression..." : "Supprimer l'entrée"}

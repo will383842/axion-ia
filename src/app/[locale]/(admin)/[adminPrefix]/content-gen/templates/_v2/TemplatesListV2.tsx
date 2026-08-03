@@ -16,6 +16,7 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { listTemplates, toggleTemplate } from "@/server/actions/content-gen/templates";
 import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
 import type { ContentType } from "../../../../../../../../prisma/generated/client";
+import { Info } from "lucide-react";
 
 const CONTENT_TYPES: ReadonlyArray<ContentType> = [
   "landing_ville",
@@ -100,11 +101,16 @@ export async function TemplatesListV2({
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <p className="text-[length:var(--text-admin-sm)]">
-          ℹ️ Un template <strong>actif</strong> remplace, à la génération, le prompt système (+
-          température / max tokens) codé en dur — la voix de marque reste toujours ré-appliquée.
-          Câblé pour :{" "}
-          <strong>blog_article, blog_from_keywords, blog_from_title, blog_from_rss</strong>. Les
-          autres types utilisent encore le prompt code (fallback).
+          <Info size={14} aria-hidden="true" className="inline-block align-[-0.125em]" /> Un modèle{" "}
+          <strong>actif</strong> remplace, à la génération, l&apos;invite système (ainsi que la
+          température et le nombre maximal de jetons) définie dans le code — la voix de marque,
+          elle, reste toujours appliquée. Disponible pour :{" "}
+          <strong>
+            {["blog_article", "blog_from_keywords", "blog_from_title", "blog_from_rss"]
+              .map((t) => contentTypeLabelFr(t))
+              .join(", ")}
+          </strong>
+          . Les autres types emploient encore l&apos;invite définie dans le code.
         </p>
       </AdminCard>
 

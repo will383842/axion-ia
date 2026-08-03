@@ -67,7 +67,7 @@ export function BlogV2({
     { key: "title", header: "Titre (FR)", cell: (a) => a.translations[0]?.title ?? "(sans titre)" },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (a) => <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>,
     },
     { key: "category", header: "Catégorie", cell: (a) => a.category?.nameFr ?? "—" },

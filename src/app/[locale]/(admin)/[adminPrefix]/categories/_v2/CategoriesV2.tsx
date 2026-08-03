@@ -71,7 +71,7 @@ export function CategoriesV2({
     { key: "name", header: "Nom (FR)", cell: (c) => c.nameFr },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (c) => <code className="admin-meta-small">{c.slug}</code>,
     },
     { key: "module", header: "Module", cell: (c) => (c.module ? MODULE_LABELS[c.module] : "Blog") },

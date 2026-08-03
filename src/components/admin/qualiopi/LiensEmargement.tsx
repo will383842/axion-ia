@@ -223,6 +223,7 @@ export function LiensEmargement({
                       masque sur le conteneur entier. */}
                   <p
                     data-clarity-mask="true"
+                    title={l.url}
                     className="mt-1 truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
                   >
                     {l.url}

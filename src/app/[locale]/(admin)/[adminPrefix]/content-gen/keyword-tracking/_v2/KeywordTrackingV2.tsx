@@ -39,6 +39,12 @@ interface Props {
   searchParams: { source?: string; posMin?: string; posMax?: string };
 }
 
+const SOURCE_LABELS: Record<string, string> = {
+  gsc: "Google Search Console",
+  serpapi: "SerpAPI",
+  manual: "Saisie manuelle",
+};
+
 export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<React.ReactElement> {
   const sourceFilter =
     sp.source && ["gsc", "serpapi", "manual"].includes(sp.source) ? sp.source : null;
@@ -112,7 +118,9 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
     {
       key: "source",
       header: "Source",
-      cell: (r) => <AdminBadge tone="neutral">{r.source}</AdminBadge>,
+      // La cellule affichait `gsc` / `serpapi` / `manual` alors que le menu
+      // de filtre, juste au-dessus, donne déjà les libellés.
+      cell: (r) => <AdminBadge tone="neutral">{SOURCE_LABELS[r.source] ?? r.source}</AdminBadge>,
     },
     {
       key: "flag",
