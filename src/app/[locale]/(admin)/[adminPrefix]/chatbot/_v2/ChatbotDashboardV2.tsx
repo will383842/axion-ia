@@ -74,8 +74,15 @@ export function ChatbotDashboardV2({
           icon={Database}
         />
         <AdminStatCard
-          label="Coût LLM estimé"
-          value={`$${stats.costUsd.toFixed(2)}`}
+          label="Coût IA estimé"
+          // « $0.00 » : symbole en tête et point décimal, soit la convention
+          // anglaise, dans une console française. Le montant EST bien en
+          // dollars (les fournisseurs de modèles facturent en USD) : on ne le
+          // convertit pas, on l'écrit à la française — « 0,00 $US ».
+          value={new Intl.NumberFormat("fr-FR", {
+            style: "currency",
+            currency: "USD",
+          }).format(stats.costUsd)}
           icon={Coins}
         />
       </div>

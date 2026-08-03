@@ -75,7 +75,9 @@ describe("garde-fou carte-lien", () => {
           const classes = m[1] ?? "";
           if (POSE_DISPLAY.test(classes)) continue;
           const ligne = source.slice(0, m.index).split("\n").length;
-          fautifs.push(`${fichier.slice(ROOT.length + 1)}:${ligne} — <${balise} class="${classes}">`);
+          fautifs.push(
+            `${fichier.slice(ROOT.length + 1)}:${ligne} — <${balise} class="${classes}">`,
+          );
         }
       }
     }

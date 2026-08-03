@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma";
 import type { ServiceSector } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { getKillSwitch } from "./kill-switch";
+import { SERVICE_SECTOR_LABELS } from "@/server/content-gen/shared/editorial-mix-rules";
 
 export interface DashboardKpis {
   readonly jobsRun7d: number;
@@ -185,13 +186,11 @@ export async function getSectorBreakdownToday(): Promise<SectorBreakdownResult> 
     "un_a_un",
     "sites_web_augmentes",
   ];
-  const sectorLabels: Record<ServiceSector, string> = {
-    interventions_formations: "Interventions & Formations",
-    audits: "Audits",
-    implementations: "Implementations",
-    un_a_un: "Coaching 1-to-1",
-    sites_web_augmentes: "Sites web augmentes",
-  };
+  // 🔴 Cette table redéclarait les cinq mêmes secteurs que
+  // `SERVICE_SECTOR_LABELS` (editorial-mix-rules) et avait dérivé : deux
+  // libellés sans accent, et « Coaching 1-to-1 » ici contre « Accompagnement
+  // 1-to-1 » là-bas pour le même service. On consomme le SSOT.
+  const sectorLabels = SERVICE_SECTOR_LABELS;
 
   // Pour chaque secteur, on compte les jobs via campaign.serviceSector.
   // Pour landing_ville et blog_from_rss, on compte directement contentType.
