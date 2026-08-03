@@ -77,6 +77,7 @@ import { InventaireMoyensPdf } from "@/server/qualiopi/documents/templates/inven
 import { ListeFormateursPdf } from "@/server/qualiopi/documents/templates/liste-formateurs";
 import { AutorisationCaptationPdf } from "@/server/qualiopi/documents/templates/autorisation-captation";
 import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/contrat-sous-traitance";
+import { ProcedureSousTraitancePdf } from "@/server/qualiopi/documents/templates/procedure-sous-traitance";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import { coachingInterventionLabel } from "@/server/formateur/coaching-options";
 import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
@@ -3159,6 +3160,87 @@ export async function verserFicheFormateurAction(input: {
       nbCompetences: data.domainesCompetences.length,
       nbHabilitations: titresHabilitations.length,
     },
+    session: adminSession,
+  });
+
+  return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Procédure de sous-traitance (indicateur 27)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Version de la procédure. À INCRÉMENTER dès qu'un article du gabarit change,
+ * sans quoi deux tirages portant le même numéro de version diraient des choses
+ * différentes — et c'est exactement ce qu'un auditeur relève.
+ */
+const PROCEDURE_SOUS_TRAITANCE_VERSION = "1.0";
+
+/**
+ * Génère la procédure écrite des dispositions en matière de sous-traitance et de
+ * co-traitance (indicateur 27).
+ *
+ * 🔴 Cette pièce vivait HORS application, dans un fichier Markdown relu à la
+ * main : la première chose que l'auditeur demande sur l'indicateur 27 n'était ni
+ * numérotée, ni horodatée, ni versée au registre des documents. Toutes les
+ * autres pièces Qualiopi se génèrent d'un bouton ; celle-ci exigeait d'ouvrir un
+ * fichier, de l'imprimer et de le signer.
+ *
+ * Le texte est figé dans le gabarit : une procédure qualité n'est pas un
+ * formulaire, ses articles engagent l'organisme et doivent être identiques d'une
+ * édition à l'autre. Seuls varient l'identité, la version, la date et le
+ * signataire.
+ *
+ * Aucun `refs` : la procédure ne se rattache à AUCUN sous-traitant — elle vaut
+ * avant le premier recours, c'est tout son intérêt au regard de l'indicateur.
+ */
+export async function genererProcedureSousTraitanceAction(): Promise<
+  ActionResult<{ documentId: string; numero: string }>
+> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
+
+  const identite = await getOrganismeIdentite();
+
+  // Le signataire vient de la configuration, jamais d'une saisie libre : une
+  // procédure approuvée par « l'organisme » sans personne physique identifiée
+  // n'engage personne, et c'est un défaut déjà relevé sur les attestations.
+  const [dirigeantNom, dirigeantFonction] = await Promise.all([
+    getQualiopiConfig("dirigeant_nom").catch(() => ""),
+    getQualiopiConfig("dirigeant_fonction").catch(() => ""),
+  ]);
+
+  const signataireNom =
+    typeof dirigeantNom === "string" && dirigeantNom.trim() !== ""
+      ? dirigeantNom.trim()
+      : identite.raisonSociale;
+  const signataireQualite =
+    typeof dirigeantFonction === "string" && dirigeantFonction.trim() !== ""
+      ? dirigeantFonction.trim()
+      : "Nom, qualité, signature et cachet";
+
+  const doc = await generateDocument({
+    type: "procedure_sous_traitance",
+    identite,
+    buildElement: (numero) =>
+      React.createElement(ProcedureSousTraitancePdf, {
+        data: {
+          numero,
+          version: PROCEDURE_SOUS_TRAITANCE_VERSION,
+          applicableLe: formatDateFr(new Date()),
+          signataireNom,
+          signataireQualite,
+        },
+        identite,
+      }),
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.procedure_sous_traitance.genere",
+    targetType: "DocumentGenere",
+    targetId: doc.id,
+    changes: { numero: doc.numero, version: PROCEDURE_SOUS_TRAITANCE_VERSION },
     session: adminSession,
   });
 

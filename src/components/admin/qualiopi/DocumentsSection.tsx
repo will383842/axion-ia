@@ -130,6 +130,7 @@ const DOC_LABELS: Record<DocumentType, string> = {
   protocole_afest: "Protocole individuel AFEST (D.6313-3-1)",
   inventaire_moyens: "Inventaire des moyens pédagogiques",
   contrat_sous_traitance: "Contrat de sous-traitance (indicateur 27)",
+  procedure_sous_traitance: "Procédure de sous-traitance (indicateur 27)",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
