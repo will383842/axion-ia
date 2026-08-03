@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { AdminEmptyState } from "./AdminEmptyState";
 
 export interface AdminTableColumn<T> {
   /** Identifiant unique de la colonne (utilisé pour aria-sort + sort URL). */
@@ -73,8 +74,21 @@ export function AdminTable<T>({
   caption,
   className,
 }: AdminTableProps<T>): React.ReactElement {
-  if (rows.length === 0 && emptyState) {
-    return <div className="admin-table-empty-wrapper">{emptyState}</div>;
+  // 🔴 CONSTAT MESURÉ (audit du code, 2026-08-03) : `emptyState` est une prop
+  // OPTIONNELLE, et **51 des 61 usages de ce composant ne la passent pas**.
+  // Sans elle, une liste vide rendait l'en-tête de colonnes AU-DESSUS DE RIEN :
+  // ni message, ni explication, ni indication qu'un filtre est peut-être en
+  // cause. Une trentaine d'écrans de la console dans ce cas.
+  //
+  // Une primitive partagée ne doit pas dépendre de la discipline de chaque
+  // page pour produire un écran correct : le repli devient le défaut, et
+  // `emptyState` ne sert plus qu'à dire MIEUX que le repli.
+  if (rows.length === 0) {
+    return (
+      <div className="admin-table-empty-wrapper">
+        {emptyState ?? <AdminEmptyState title="Aucun résultat" variant="card" />}
+      </div>
+    );
   }
   return (
     <div

@@ -11,9 +11,10 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { BarChart3, Link as LinkIcon, AlertTriangle, Database } from "lucide-react";
+import { BarChart3, Link as LinkIcon, AlertTriangle, Database, ExternalLink } from "lucide-react";
 
 const WINDOW_HOURS = 24;
 const MIN_SAMPLES = 5;
@@ -300,15 +301,20 @@ export function WebVitalsV2({
               rows={display}
               getRowId={(row) => `${row.url}-${row.metric}`}
               caption="Détail Web Vitals par route et métrique"
+              // 🔴 L'action de ligne était le seul caractère « ↗ » : aucun
+              // libellé, aucun nom accessible, et son sens n'était donné qu'à
+              // vingt lignes de là. Un lecteur d'écran annonçait « lien ».
               rowAction={(row) => (
-                <a
+                <AdminButton
                   href={psiUrl(row.url)}
+                  variant="ghost"
+                  size="sm"
+                  iconAfter={ExternalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="admin-link"
                 >
-                  ↗
-                </a>
+                  Analyser
+                </AdminButton>
               )}
             />
           </div>
@@ -317,24 +323,31 @@ export function WebVitalsV2({
 
       <AdminCard>
         <h2 className="admin-h2">Lecture rapide</h2>
+        {/* 🔴 MA PROPRE CORRECTION ÉTAIT INCOMPLÈTE (relevée par un audit du
+            code le 2026-08-03). J'ai retiré la documentation interne de la
+            carte « Objectifs de vitesse » plus haut, et laissé la même chose
+            ici, douze lignes sous le commentaire qui la dénonce : renvoi à
+            « AGENTS.md », et un point « Stack RUM » listant un fichier source,
+            une route d'API interne, une API navigateur, un modèle Prisma, un
+            « Worker » et des « helpers SSOT ». Retirer un défaut d'un endroit
+            ne le retire pas de l'écran. */}
         <ul className="admin-meta-block">
           <li>
-            <strong>Objectif dépassé</strong> = la vitesse mesurée dépasse la cible interne
-            AGENTS.md (plus stricte que le seuil « bon » standard de Google). Une alerte Telegram a
-            déjà été envoyée — voir <code>/alerts</code>.
+            <strong>Objectif dépassé</strong> = la vitesse mesurée dépasse notre cible interne, plus
+            stricte que le seuil « bon » de Google. Une notification a déjà été envoyée — voir{" "}
+            <Link href={`/fr/${adminPrefix}/alerts`} className="admin-link">
+              les alertes
+            </Link>
+            .
           </li>
           <li>
             <strong>Repère Google (CrUX)</strong> = classification Google standard pour comparaison
             externe (Search Console, PageSpeed Insights). Indicatif, calculé côté visiteur.
           </li>
           <li>
-            <strong>PSI ↗</strong> = lance un audit Lighthouse labo direct sur cette route. Utile
-            quand le RUM agrège différents devices/réseaux et que tu veux voir une mesure contrôlée.
-          </li>
-          <li>
-            <strong>Stack RUM</strong> : <code>WebVitals.tsx</code> (next/web-vitals) →{" "}
-            <code>/api/vitals</code> (sendBeacon) → <code>WebVitalSample</code> Prisma. Worker
-            agrège p75 nuitamment + alerte Telegram via helpers SSOT.
+            <strong>Analyser</strong> = lance une mesure ponctuelle et contrôlée sur cette page,
+            utile quand la moyenne des visiteurs réels mélange des appareils et des réseaux très
+            différents.
           </li>
         </ul>
       </AdminCard>

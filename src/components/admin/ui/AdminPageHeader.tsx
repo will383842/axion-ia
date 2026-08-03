@@ -40,7 +40,14 @@ export function AdminPageHeader({
       {breadcrumbs ? <div className="mb-[var(--space-admin-4,8px)]">{breadcrumbs}</div> : null}
       <div className="flex items-start justify-between gap-[var(--space-admin-6,16px)]">
         <div className="min-w-0">
+          {/* 🔴 `truncate` coupe le titre aux points de suspension sans aucun
+              recours : sur un écran étroit — et le viewport réel de Will est
+              sous 1024 px — le nom de la fiche ouverte devenait illisible ET
+              irrécupérable. C'est la primitive la plus réutilisée de la console
+              (145 imports). `title` rend le texte complet accessible au survol
+              et aux technologies d'assistance ; le titre reste sur une ligne. */}
           <h1
+            title={title}
             className={cn(
               "text-[length:var(--text-admin-xl,22px)] font-bold tracking-tight",
               "leading-[var(--lh-admin-tight,1.4)]",

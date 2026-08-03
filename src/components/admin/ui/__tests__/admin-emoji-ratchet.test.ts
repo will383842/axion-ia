@@ -66,8 +66,10 @@ const FICHIERS_SSOT_CONSOLE = [
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → **45** puis
- * **40** (2026-08-03).
+ * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → 45 → 40 → 38 →
+ * **44** (2026-08-03). Les remontées ne sont JAMAIS des ajouts d'emoji : ce
+ * sont des élargissements de la mesure. 38 → 44 vient de la plage
+ * `U+2300`–`U+23FF` enfin couverte.
  *
  * 🔴 LE PLAFOND REMONTE, ET AUCUN EMOJI N'A ÉTÉ AJOUTÉ. C'est la MESURE qui
  * était fausse : la plage de caractères sautait `U+2600`–`U+26FF` (cf. la note
@@ -87,7 +89,7 @@ const FICHIERS_SSOT_CONSOLE = [
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
  * attendu et produirait des saisies invalides.
  */
-const PLAFOND = 38;
+const PLAFOND = 44;
 
 /**
  * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les
@@ -99,8 +101,18 @@ const PLAFOND = 38;
  * deux dossiers scannés en contenaient 43. La trajectoire « 340 → 248 → 94 →
  * 1 » ne mesurait donc pas ce qu'elle croyait mesurer sur sa dernière marche.
  * On élargit la plage ; le plafond repart de la valeur réellement constatée.
+ *
+ * 🔴 SECOND TROU, TROUVÉ LE MÊME JOUR par un audit du code : la plage sautait
+ * AUSSI `U+2300`–`U+23FF` (Divers technique), qui contient « ⏳ » (U+23F3) et
+ * « ⏸️ » (U+23F8) — tous deux rendus dans la colonne « État » de la couverture
+ * des villes et sur les boutons de pause d'une campagne. Vérifié caractère par
+ * caractère avant élargissement.
+ *
+ * Leçon : ce cliquet s'est trompé DEUX fois sur son propre périmètre. Devant
+ * un compteur qui annonce un beau chiffre, mesurer avant de le croire.
  */
-const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
+const EMOJI =
+  /[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
 /**
  * Retire les lignes de commentaire — un emoji cité en commentaire n'est pas
