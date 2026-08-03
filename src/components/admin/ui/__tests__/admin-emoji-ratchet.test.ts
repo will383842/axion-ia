@@ -50,11 +50,17 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
  * La liste est nominative et pas un dossier entier, à dessein : `src/lib` et
  * `src/server` contiennent aussi des gabarits d'e-mail et de PDF, où un
  * pictogramme relève d'une autre décision que celle-ci.
+ *
+ * ⚠️ ELLE NE PEUT PAS TOUT COUVRIR. Le garde-fou d'isolation du dépôt
+ * (`pnpm isolation-check`, § 4.1bis) interdit à un fichier hors zone dédiée de
+ * seulement NOMMER le domaine de la génération éditoriale. Les libellés de ce
+ * domaine portent encore 3 emojis rendus dans la console : ils échappent donc
+ * à ce cliquet-ci et doivent recevoir le leur, à l'intérieur de leur propre
+ * zone. Noté pour que le trou soit connu plutôt que redécouvert.
  */
 const FICHIERS_SSOT_CONSOLE = [
   join(ROOT, "src/lib/admin-nav.ts"),
   join(ROOT, "src/server/qualiopi/perimetre.ts"),
-  join(ROOT, "src/server/content-gen/shared/admin-labels.ts"),
 ];
 
 /**
@@ -81,7 +87,7 @@ const FICHIERS_SSOT_CONSOLE = [
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
  * attendu et produirait des saisies invalides.
  */
-const PLAFOND = 40;
+const PLAFOND = 38;
 
 /**
  * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les
