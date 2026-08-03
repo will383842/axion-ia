@@ -98,15 +98,27 @@ function p75(values: number[]): number {
 }
 
 async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
-  // Audit 2026-05-15 P1-8 — kill-switch check (monitoring read-only mais
-  // Telegram alerts peuvent saturer pendant maintenance, on respecte la pause).
+  /**
+   * 🔴 CONSTAT EN PRODUCTION, 2026-08-03. Le snapshot `web_vitals_p75` n'avait
+   * plus bougé depuis le **24/07 02:30**, alors que les mesures continuaient
+   * d'arriver (79 122 échantillons, le dernier de la minute). La page
+   * « Vitesse du site » servait donc un instantané de dix jours.
+   *
+   * Cause : ce tick s'arrêtait ENTIÈREMENT sur le kill switch de la génération
+   * de contenu, activé le 24/07 à 21 h 12. L'intention d'origine (audit
+   * 2026-05-15 P1-8) était bonne — éviter que les alertes Telegram saturent
+   * pendant une maintenance — mais elle emportait aussi la MESURE, qui n'a
+   * rien à voir avec la génération : elle ne coûte aucun appel de modèle, elle
+   * lit des lignes déjà en base.
+   *
+   * On sépare donc les deux. La mesure tourne toujours ; seul l'ENVOI des
+   * alertes respecte la pause. Un arrêt d'urgence de la production de contenu
+   * ne doit pas rendre aveugle la surveillance du site en ligne.
+   */
   const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
     active: false,
   });
-  if (killSwitch.active) {
-    console.log("[content-web-vitals-monitor] kill switch active, skip tick");
-    return;
-  }
+  const alertesEnPause = killSwitch.active;
 
   const since = new Date(Date.now() - WINDOW_HOURS * 3600_000);
 
@@ -174,6 +186,14 @@ async function processJob(_job: Job<WebVitalsMonitorTick>): Promise<void> {
   );
 
   if (breaches.length === 0) return;
+
+  // Le snapshot est écrit — c'est ici, et seulement ici, que la pause s'applique.
+  if (alertesEnPause) {
+    console.log(
+      `[content-web-vitals-monitor] kill switch actif — snapshot écrit, ${breaches.length} alerte(s) NON envoyée(s)`,
+    );
+    return;
+  }
 
   // Tri par dépassement relatif (p75/budget) — top breaches en premier.
   const ranked = [...breaches].sort((a, b) => b.p75 / b.budget - a.p75 / a.budget);

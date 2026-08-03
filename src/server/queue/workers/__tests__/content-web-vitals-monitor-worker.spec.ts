@@ -108,12 +108,53 @@ describe("content-web-vitals-monitor-worker — E2E P3-32 (audit 2026-05-15)", (
     expect(alertBulkMock).not.toHaveBeenCalled();
   });
 
-  it("kill-switch actif → skip total (0 prisma read, 0 alerte, 0 snapshot)", async () => {
+  /**
+   * 🔴 CE TEST A CHANGÉ DE CONTRAT le 2026-08-03, et c'est voulu.
+   *
+   * Il verrouillait « kill-switch actif → skip TOTAL : 0 lecture, 0 snapshot,
+   * 0 alerte ». Conséquence mesurée en production : le kill switch de la
+   * génération de contenu a été activé le 24/07 à 21 h 12, et le snapshot
+   * `web_vitals_p75` a cessé d'être écrit — dix jours durant, la page
+   * « Vitesse du site » a servi un instantané périmé pendant que 79 122
+   * mesures continuaient d'arriver.
+   *
+   * L'intention d'origine (audit 2026-05-15 P1-8) visait les ALERTES Telegram,
+   * pas la mesure. La mesure ne coûte aucun appel de modèle : elle lit des
+   * lignes déjà en base. Un arrêt d'urgence de la production de contenu ne
+   * doit pas rendre aveugle la surveillance du site en ligne.
+   *
+   * Nouveau contrat : le snapshot est TOUJOURS écrit, seules les alertes sont
+   * mises en pause.
+   */
+  it("kill-switch actif → snapshot écrit quand même, mais AUCUNE alerte envoyée", async () => {
     readConfigMock.mockResolvedValue({ active: true });
+    // 5 samples LCP au-dessus du budget → il y aurait normalement une alerte.
+    findManyMock.mockResolvedValue([
+      { url: "/fr", metric: "LCP", value: 5000 },
+      { url: "/fr", metric: "LCP", value: 5100 },
+      { url: "/fr", metric: "LCP", value: 5200 },
+      { url: "/fr", metric: "LCP", value: 5300 },
+      { url: "/fr", metric: "LCP", value: 5400 },
+    ]);
+
     await runMonitorTickForTest();
-    expect(findManyMock).not.toHaveBeenCalled();
-    expect(upsertMock).not.toHaveBeenCalled();
+
+    // La mesure a bien eu lieu et le snapshot est écrit.
+    expect(findManyMock).toHaveBeenCalled();
+    expect(upsertMock).toHaveBeenCalledTimes(1);
+    const arg = upsertMock.mock.calls[0]?.[0] as {
+      where: { key: string };
+      create: { value: { total_samples: number; breaches: unknown[] } };
+    };
+    expect(arg.where.key).toBe("web_vitals_p75");
+    expect(arg.create.value.total_samples).toBe(5);
+    expect(arg.create.value.breaches).toHaveLength(1);
+
+    // Mais rien n'est parti sur Telegram : c'est ça, la pause.
     expect(alertLcpMock).not.toHaveBeenCalled();
+    expect(alertInpMock).not.toHaveBeenCalled();
+    expect(alertClsMock).not.toHaveBeenCalled();
+    expect(alertBulkMock).not.toHaveBeenCalled();
   });
 
   it("samples < MIN_SAMPLES ignorés (pas d'aggregate, pas d'alerte)", async () => {

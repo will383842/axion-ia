@@ -28,7 +28,16 @@ const SOURCE_OPTIONS: Array<{ value: AppreciationSource; label: string }> = [
   { value: "formateur", label: "Formateur" },
 ];
 
+interface OptionRattachement {
+  id: string;
+  libelle: string;
+}
+
 interface AppreciationFormProps {
+  /** Listes de rattachement — remplacent la saisie d UUID a la main. */
+  stagiaires: ReadonlyArray<OptionRattachement>;
+  inscriptions: ReadonlyArray<OptionRattachement>;
+  clients: ReadonlyArray<OptionRattachement>;
   creerAction: (input: {
     source: AppreciationSource;
     enrollmentId?: string;
@@ -40,7 +49,12 @@ interface AppreciationFormProps {
   }) => Promise<ActionResult<{ id: string }>>;
 }
 
-export function AppreciationForm({ creerAction }: AppreciationFormProps): React.ReactElement {
+export function AppreciationForm({
+  creerAction,
+  stagiaires,
+  inscriptions,
+  clients,
+}: AppreciationFormProps): React.ReactElement {
   const [source, setSource] = useState<AppreciationSource>("stagiaire");
   const [note, setNote] = useState<string>("");
   const [commentaire, setCommentaire] = useState("");
@@ -163,52 +177,75 @@ export function AppreciationForm({ creerAction }: AppreciationFormProps): React.
             />
           </div>
 
-          {/* Trainee ID */}
+          {/* 🔴 Ces trois champs demandaient de COLLER un UUID à la main, avec
+              « xxxxxxxx-xxxx-… » en exemple. Personne ne connaît l'UUID d'un
+              stagiaire : ils restaient vides, et l'appréciation ne se
+              rattachait à rien. Ce sont désormais des listes ; l'identifiant
+              reste la valeur transmise, il a juste cessé d'être saisi. */}
           <div>
             <label className={labelCls} htmlFor="app-trainee-id">
-              ID stagiaire (UUID, facultatif)
+              Stagiaire concerné (facultatif)
             </label>
-            <input
+            <select
               id="app-trainee-id"
-              type="text"
               value={traineeId}
               onChange={(e) => setTraineeId(e.target.value)}
-              disabled={isPending}
-              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              disabled={isPending || stagiaires.length === 0}
               className={inputCls}
-            />
+            >
+              <option value="">
+                {stagiaires.length === 0 ? "— aucun stagiaire enregistré —" : "— aucun —"}
+              </option>
+              {stagiaires.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.libelle}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Enrollment ID */}
           <div>
             <label className={labelCls} htmlFor="app-enrollment-id">
-              ID inscription (UUID, facultatif)
+              Inscription concernée (facultatif)
             </label>
-            <input
+            <select
               id="app-enrollment-id"
-              type="text"
               value={enrollmentId}
               onChange={(e) => setEnrollmentId(e.target.value)}
-              disabled={isPending}
-              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              disabled={isPending || inscriptions.length === 0}
               className={inputCls}
-            />
+            >
+              <option value="">
+                {inscriptions.length === 0 ? "— aucune inscription —" : "— aucune —"}
+              </option>
+              {inscriptions.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.libelle}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Client ID */}
           <div>
             <label className={labelCls} htmlFor="app-client-id">
-              ID client (UUID, facultatif)
+              Client concerné (facultatif)
             </label>
-            <input
+            <select
               id="app-client-id"
-              type="text"
               value={clientId}
               onChange={(e) => setClientId(e.target.value)}
-              disabled={isPending}
-              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              disabled={isPending || clients.length === 0}
               className={inputCls}
-            />
+            >
+              <option value="">
+                {clients.length === 0 ? "— aucun client enregistré —" : "— aucun —"}
+              </option>
+              {clients.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.libelle}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 

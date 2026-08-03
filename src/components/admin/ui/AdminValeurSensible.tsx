@@ -1,4 +1,5 @@
 "use client";
+// use-client: bascule masqué/révélé au clic — état local `useState`, aucun appel DB.
 
 // Valeur de réglage dont les coordonnées bancaires (et autres secrets) sont
 // masquées jusqu'à ce qu'on les demande. Voir `src/lib/admin/masquer-secrets.ts`
