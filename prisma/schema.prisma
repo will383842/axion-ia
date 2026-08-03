@@ -6554,6 +6554,16 @@ enum DocumentType {
   /// n'est pas une liste, et c'est une liste que réclament le formulaire et
   /// l'auditeur.
   liste_formateurs
+  /// Procédure écrite des dispositions en matière de sous-traitance et de
+  /// co-traitance (indicateur 27). C'est la pièce que l'auditeur demande EN
+  /// PREMIER sur cet indicateur : les registres prouvent qu'on l'applique, la
+  /// procédure prouve qu'on l'a définie.
+  ///
+  /// Distincte de `contrat_sous_traitance`, qui engage UN intervenant : celle-ci
+  /// est la règle de l'organisme, valable avant même le premier recours. Elle
+  /// était rédigée hors application (fichier Markdown relu à la main), donc
+  /// ni numérotée, ni horodatée, ni versée au registre des documents.
+  procedure_sous_traitance
 }
 
 /// Document officiel généré (PDF react-pdf). Numéro immuable, hash SHA-256,
