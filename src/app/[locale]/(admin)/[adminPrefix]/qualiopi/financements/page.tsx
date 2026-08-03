@@ -19,6 +19,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ExportComptaButton } from "@/components/admin/qualiopi/ExportComptaButton";
 import { prisma } from "@/lib/prisma";
+import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -207,7 +208,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                     <span className="text-[color:var(--color-admin-fg)]">{s.titreSession}</span>
                     <span className="text-[color:var(--color-admin-warning)]">
                       {FINANCEMENT_LABELS[s.financementType ?? ""] ?? s.financementType} —{" "}
-                      {s.opcoStatut}
+                      {libellerStatutOpco(s.opcoStatut)}
                     </span>
                     <Link
                       href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}

@@ -19,6 +19,7 @@ import {
 import { planningTimeLabel } from "@/features/admin-planning/labels";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
+import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
 
 export const dynamic = "force-dynamic";
 
@@ -37,14 +38,6 @@ const FINANCEMENT_LABELS: Record<string, string> = {
   cpf: "CPF",
   france_travail: "France Travail",
   mixte: "Mixte",
-};
-
-const OPCO_STATUT_LABELS: Record<string, string> = {
-  non_demande: "Non demandé",
-  demande_en_cours: "Demande en cours",
-  accord_recu: "Accord reçu",
-  refuse: "Refusé",
-  paiement_recu: "Paiement reçu",
 };
 
 const DOC_TYPE_LABELS: Record<string, string> = {
