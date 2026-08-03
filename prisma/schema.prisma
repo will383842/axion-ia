@@ -6049,6 +6049,30 @@ model Trainer {
   /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
   sousTraitantNda           String?       @map("sous_traitant_nda") @db.VarChar(20)
   sousTraitantVerifieAt     DateTime?     @map("sous_traitant_verifie_at")
+  /// Capture datée de la vérification data.gouv.fr — la PREUVE, pas seulement sa
+  /// date. Miroir de `SousTraitant.screenshotUrl` : les deux natures de
+  /// sous-traitant doivent porter les mêmes pièces. [2026-08-03]
+  sousTraitantScreenshotUrl String?       @map("sous_traitant_screenshot_url") @db.Text
+  sousTraitantScreenshotDate DateTime?    @map("sous_traitant_screenshot_date")
+  /// Signature du CONTRAT-CADRE de sous-traitance.
+  ///
+  /// 🔴 Sans ce champ, un formateur indépendant ne pouvait PAS être compté par
+  /// l'indicateur 27, qui exige « NDA + vérification + contrat signé ». Seuls les
+  /// organismes (`SousTraitant.contratSigneAt`) l'étaient : Axion pouvait
+  /// référencer dix freelances conformes et rester à zéro. [2026-08-03]
+  sousTraitantContratSigneAt DateTime?    @map("sous_traitant_contrat_signe_at")
+  /// Échéance de la vérification annuelle des pièces (art. 8 de la procédure de
+  /// sous-traitance). Rappel 30 jours avant. [2026-08-03]
+  sousTraitantProchaineVerifAt DateTime?  @map("sous_traitant_prochaine_verif_at")
+  /// Attestation de responsabilité civile professionnelle.
+  ///
+  /// ⚠️ NON BLOQUANTE — décision Will du 2026-08-03. Aucun texte ne l'impose à un
+  /// formateur indépendant, et en faire une condition de sélection réduirait le
+  /// vivier sans nécessité. Demandée, archivée avec son échéance, son absence lève
+  /// une ALERTE — elle n'entre PAS dans le critère de conformité de l'indicateur
+  /// 27. Cf. `PROCEDURE-SOUS-TRAITANCE.md` § 4.2.
+  rcProAttestationUrl       String?       @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt           DateTime?     @map("rc_pro_echeance_at")
   actif                     Boolean       @default(true)
   createdAt                 DateTime      @default(now()) @map("created_at")
   updatedAt                 DateTime      @updatedAt @map("updated_at")
@@ -6092,6 +6116,9 @@ model Trainer {
   @@index([statut])
   @@index([actif])
   @@index([region])
+  /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
+  @@index([rcProEcheanceAt])
+  @@index([sousTraitantProchaineVerifAt])
   @@map("trainers")
 }
 
@@ -7412,6 +7439,14 @@ model SousTraitant {
   screenshotUrl     String?   @map("screenshot_url") @db.Text
   screenshotDate    DateTime? @map("screenshot_date")
   contratSigneAt    DateTime? @map("contrat_signe_at")
+  /// Échéance de la vérification annuelle des pièces (art. 8). [2026-08-03]
+  prochaineVerifAt  DateTime? @map("prochaine_verif_at")
+  /// RC pro — NON BLOQUANTE, cf. `Trainer.rcProAttestationUrl`. [2026-08-03]
+  rcProAttestationUrl String? @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt   DateTime? @map("rc_pro_echeance_at")
+  /// CV de l'intervenant désigné par l'organisme (art. 4.1 point 3). [2026-08-03]
+  cvUrl             String?   @map("cv_url") @db.Text
+  cvUploadedAt      DateTime? @map("cv_uploaded_at")
   actif             Boolean   @default(true)
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
@@ -7419,6 +7454,9 @@ model SousTraitant {
   documentsGeneres DocumentGenere[]
 
   @@index([actif])
+  /// Les alertes balaient par ÉCHÉANCE, jamais par identité. [2026-08-03]
+  @@index([rcProEcheanceAt])
+  @@index([prochaineVerifAt])
   @@map("sous_traitants_of")
 }
 

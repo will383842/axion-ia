@@ -684,6 +684,39 @@ describe("evaluerConformite", () => {
     expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("couvert");
   });
 
+  // ── off.27 : le FORMATEUR INDÉPENDANT compte aussi ────────────────────────
+  //
+  // 🔴 Régression trouvée le 2026-08-03. Axion a deux natures de sous-traitant :
+  // un ORGANISME (`sousTraitant`) et une PERSONNE PHYSIQUE indépendante
+  // (`trainer` avec `statut: "sous_traitant"`). Seule la première était comptée.
+  //
+  // Or le modèle économique d'Axion repose sur des formateurs freelances : ils
+  // animent, facturent Axion, et Axion facture le client. Axion pouvait donc
+  // référencer dix intervenants parfaitement conformes et voir l'indicateur 27
+  // rester à zéro.
+  //
+  // ⚠️ La RC pro n'entre PAS dans le critère (décision Will du 2026-08-03) : elle
+  // est demandée et suivie par alerte, jamais bloquante. L'inclure ici aurait
+  // gelé l'indicateur sur une pièce volontairement non exigée.
+  it("off.27 couvert par un FORMATEUR INDÉPENDANT conforme, sans aucun organisme", async () => {
+    mockP.sousTraitant.count.mockResolvedValue(0); // aucun organisme sous-traitant
+    mockP.trainer.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["sousTraitantContratSigneAt"] !== undefined ? 1 : 0),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("couvert");
+  });
+
+  it("off.27 NON couvert par un formateur sous-traitant sans contrat-cadre signé", async () => {
+    mockP.sousTraitant.count.mockResolvedValue(0);
+    // Référencé (total > 0) mais aucun ne satisfait NDA + vérif + contrat.
+    mockP.trainer.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["sousTraitantContratSigneAt"] !== undefined ? 0 : 2),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
+  });
+
   it("off.22 [P1] a_completer si CV présents mais AUCUNE action de développement récente", async () => {
     // Des formateurs avec CV (off.21) mais aucune trace de développement (off.22 distinct).
     mockP.trainer.count.mockResolvedValue(2);

@@ -125,6 +125,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     referentHandicapEmail,
     procedureReclamationsPubliee,
     nbDevActionsRecentes,
+    nbFormateursSousTraitants,
+    nbFormateursSousTraitantsConformes,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -323,6 +325,32 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // off.22 : actions de développement des compétences formateur RÉCENTES (< 24 mois) —
     //   entretien pro / formation suivie / veille. Preuve distincte du CV (off.21).
     prisma.trainerDevelopmentAction.count({ where: { dateAction: { gte: seuil24Mois } } }),
+    // ── off.27 : les formateurs INDÉPENDANTS sont des sous-traitants eux aussi ──
+    //
+    // 🔴 Ajoutés EN FIN de liste, à dessein. Plusieurs specs mockent
+    // `prisma.trainer.count` par POSITION (`mockResolvedValueOnce` en cascade) et
+    // documentent l'ordre attendu. Insérer au milieu décale la séquence et fait
+    // rougir des tests qui n'ont rien à voir — constaté en le faisant.
+    //
+    // `SousTraitant` = un ORGANISME (autre OF) ; `Trainer` avec
+    // `statut: "sous_traitant"` = une PERSONNE PHYSIQUE indépendante. Seule la
+    // première était comptée, alors que le modèle économique d'Axion repose sur
+    // des freelances qui facturent l'OF. Axion pouvait donc référencer dix
+    // intervenants conformes et voir l'indicateur 27 rester à zéro. Le critère 6
+    // du RNQ vise « sous-traitants ET formateurs occasionnels ». [2026-08-03]
+    prisma.trainer.count({ where: { actif: true, statut: "sous_traitant" } }),
+    // ⚠️ La RC pro n'entre PAS dans le critère (décision Will du 2026-08-03) :
+    // demandée et suivie par alerte, jamais bloquante. L'inclure gèlerait
+    // l'indicateur sur une pièce volontairement non exigée. Cf. § 4.2.
+    prisma.trainer.count({
+      where: {
+        actif: true,
+        statut: "sous_traitant",
+        sousTraitantNda: { not: null },
+        sousTraitantVerifieAt: { not: null },
+        sousTraitantContratSigneAt: { not: null },
+      },
+    }),
   ]);
 
   // ── Données AFEST 1-to-1 (coaching) — automatisation de off.28 UNIQUEMENT ────
@@ -692,15 +720,24 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //   (sans NDA/vérif/contrat) ne prouve pas les dispositions de sous-traitance.
   //   NB : si l'OF ne sous-traite pas, off.27 reste applicable et exige une PROCÉDURE
   //   documentée (voie non couverte par ce flag — action Will hors-code).
+  //
+  // 🔴 2026-08-03 — Les DEUX natures de sous-traitant comptent désormais.
+  //   `SousTraitant` = un ORGANISME (autre OF). `Trainer` avec
+  //   `statut: "sous_traitant"` = une PERSONNE PHYSIQUE indépendante.
+  //   Seule la première était comptée : Axion, dont le modèle repose sur des
+  //   formateurs freelances, pouvait en référencer dix conformes et rester à zéro.
+  //   Le critère 6 du RNQ vise « sous-traitants ET formateurs occasionnels ».
+  const totalSousTraitants = nbSousTraitants + nbFormateursSousTraitants;
+  const totalSousTraitantsConformes = nbSousTraitantsConformes + nbFormateursSousTraitantsConformes;
   set(
     27,
     [
-      `${nbSousTraitantsConformes} sous-traitant(s) conforme(s) : NDA + vérif data.gouv + contrat signé`,
-      nbSousTraitants > 0
-        ? `${nbSousTraitants} sous-traitant(s) référencé(s) au total`
+      `${totalSousTraitantsConformes} sous-traitant(s) conforme(s) : NDA + vérif data.gouv + contrat signé`,
+      totalSousTraitants > 0
+        ? `${totalSousTraitants} référencé(s) au total — ${nbSousTraitants} organisme(s), ${nbFormateursSousTraitants} formateur(s) indépendant(s)`
         : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
     ],
-    nbSousTraitantsConformes > 0,
+    totalSousTraitantsConformes > 0,
   );
   // off.28 (AFEST) : AUTOMATISÉ — parcours AFEST 1-to-1 conforme = analyse de
   //   l'activité + alternance mises en situation ↔ phases réflexives + évaluation
