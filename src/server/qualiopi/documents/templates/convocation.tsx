@@ -150,8 +150,22 @@ export function ConvocationPdf({
             Si vous êtes en situation de handicap et nécessitez un aménagement, contactez notre
             référent handicap au plus tôt avant la session :
           </Text>
+          {/*
+            Nom d'abord, puis les deux canaux. L'ancienne version n'affichait que
+            l'email — et c'est le contact GÉNÉRAL de l'OF : le stagiaire lisait
+            « Référent handicap : contact@axion-ia.com », une adresse générique
+            qui n'identifie personne. L'indicateur 26 demande un référent
+            IDENTIFIÉ et joignable ; L.6352-3 impose sa désignation.
+            Le nom et le téléphone étaient en configuration depuis toujours.
+          */}
+          {identite.referentHandicapNom ? (
+            <FieldRow label="Référent handicap" value={identite.referentHandicapNom} />
+          ) : null}
           {identite.referentHandicapEmail ? (
-            <FieldRow label="Référent handicap" value={identite.referentHandicapEmail} />
+            <FieldRow label="Email" value={identite.referentHandicapEmail} />
+          ) : null}
+          {identite.referentHandicapTelephone ? (
+            <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
           ) : null}
           <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
         </DocSection>
