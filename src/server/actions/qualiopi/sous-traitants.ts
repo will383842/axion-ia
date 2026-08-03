@@ -11,6 +11,7 @@
 "use server";
 
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -50,6 +51,24 @@ const creerSousTraitantSchema = z.object({
 const verifierSousTraitantOfSchema = z.object({
   id: z.string().uuid(),
   verifieDataGouvAt: z.coerce.date().optional(),
+});
+
+/**
+ * Pièces de sous-traitance d'un ORGANISME (art. 4 et 8, 2026-08-03).
+ *
+ * Mêmes pièces que pour un formateur indépendant : la procédure ne distingue
+ * pas les deux natures, et une divergence de règle entre elles serait invisible
+ * jusqu'à ce qu'un auditeur la relève.
+ *
+ * `.nullable()` partout : `null` retire une pièce, `undefined` la laisse en
+ * l'état — sans cette distinction, enregistrer la RC pro effacerait le CV.
+ */
+const sousTraitantPiecesSchema = z.object({
+  id: z.string().uuid(),
+  prochaineVerifAt: z.coerce.date().nullable().optional(),
+  rcProAttestationUrl: z.string().url().max(2000).nullable().optional(),
+  rcProEcheanceAt: z.coerce.date().nullable().optional(),
+  cvUrl: z.string().url().max(2000).nullable().optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,4 +155,62 @@ export async function verifierSousTraitantOfAction(input: {
   });
 
   return { data: { id, verifieDataGouvAt: dateVerif } };
+}
+
+/**
+ * Enregistre les pièces de sous-traitance d'un ORGANISME — art. 4 et 8.
+ *
+ * 🔴 Pendant exact de `updateTrainerSousTraitancePiecesAction` : les colonnes
+ * posées par la migration du 2026-08-03 sur `sous_traitants_of` n'avaient elles
+ * non plus aucun écrivain. Traiter une seule des deux natures aurait laissé la
+ * moitié du vivier sans moyen de compléter son dossier.
+ */
+export async function updateSousTraitantPiecesAction(input: {
+  id: string;
+  prochaineVerifAt?: Date | null;
+  rcProAttestationUrl?: string | null;
+  rcProEcheanceAt?: Date | null;
+  cvUrl?: string | null;
+}): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = sousTraitantPiecesSchema.safeParse(input);
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
+  const { id, ...v } = parsed.data;
+
+  const existe = await getSousTraitant(id);
+  if (existe === null) return { error: "Sous-traitant introuvable" };
+
+  try {
+    await prisma.sousTraitant.update({
+      where: { id },
+      data: {
+        ...(v.prochaineVerifAt !== undefined ? { prochaineVerifAt: v.prochaineVerifAt } : {}),
+        ...(v.rcProAttestationUrl !== undefined
+          ? { rcProAttestationUrl: v.rcProAttestationUrl }
+          : {}),
+        ...(v.rcProEcheanceAt !== undefined ? { rcProEcheanceAt: v.rcProEcheanceAt } : {}),
+        ...(v.cvUrl !== undefined
+          ? {
+              cvUrl: v.cvUrl,
+              // Le CV et sa date de dépôt sont une seule preuve : l'article 4
+              // exige un CV de MOINS DE 24 MOIS, ce qu'une URL sans date ne
+              // permet pas de vérifier.
+              cvUploadedAt: v.cvUrl === null ? null : new Date(),
+            }
+          : {}),
+      },
+    });
+  } catch {
+    return { error: "Erreur lors de l'enregistrement des pièces du sous-traitant." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.sous_traitant.pieces",
+    targetType: "SousTraitant",
+    targetId: id,
+    changes: v,
+    session,
+  });
+
+  return { data: { id } };
 }

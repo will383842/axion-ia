@@ -17,12 +17,14 @@ import { listSousTraitants } from "@/server/qualiopi/registres/sous-traitants-se
 import {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
+  updateSousTraitantPiecesAction,
 } from "@/server/actions/qualiopi/sous-traitants";
 import {
   SousTraitantForm,
   SousTraitantVerifButton,
   SousTraitantContratButton,
 } from "@/components/admin/qualiopi/SousTraitantForm";
+import { SousTraitantPiecesEditor } from "@/components/admin/qualiopi/SousTraitantPiecesEditor";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
 import { genererContratSousTraitanceAction } from "@/server/actions/qualiopi/documents";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
@@ -183,6 +185,19 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                         <SousTraitantContratButton
                           sousTraitantId={s.id}
                           genererAction={genererContratSousTraitanceAction}
+                        />
+                        {/*
+                          Pièces art. 4 et 8 — repliées : elles se saisissent une
+                          fois par an, les déplier noierait les colonnes lues à
+                          chaque visite.
+                        */}
+                        <SousTraitantPiecesEditor
+                          sousTraitantId={s.id}
+                          action={updateSousTraitantPiecesAction}
+                          prochaineVerifAt={s.prochaineVerifAt}
+                          rcProAttestationUrl={s.rcProAttestationUrl}
+                          rcProEcheanceAt={s.rcProEcheanceAt}
+                          cvUrl={s.cvUrl}
                         />
                       </div>
                     )}

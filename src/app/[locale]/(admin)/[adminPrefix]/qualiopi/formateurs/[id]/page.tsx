@@ -29,7 +29,9 @@ import {
 import {
   addTrainerDevelopmentActionAction,
   deleteTrainerDevelopmentActionAction,
+  updateTrainerSousTraitancePiecesAction,
 } from "@/server/actions/qualiopi/trainers";
+import { TrainerSousTraitancePanel } from "@/components/admin/qualiopi/TrainerSousTraitancePanel";
 import { listIndisposFormateur } from "@/server/qualiopi/trainers/availability-queries";
 import {
   listReglesFormateur,
@@ -267,6 +269,26 @@ export default async function FicheFormateurPage({ params }: PageProps) {
             </p>
           )}
         </div>
+      )}
+
+      {/*
+        Saisie des pièces de sous-traitance (art. 4 et 8) — 2026-08-03.
+
+        Placé AVANT le bloc fiabilité : on renseigne le dossier d'un intervenant
+        avant de regarder son historique. Rendu pour les seuls sous-traitants —
+        un formateur salarié n'a ni contrat-cadre ni vérification annuelle.
+      */}
+      {trainer.statut === "sous_traitant" && (
+        <TrainerSousTraitancePanel
+          trainerId={trainer.id}
+          action={updateTrainerSousTraitancePiecesAction}
+          contratSigneAt={trainer.sousTraitantContratSigneAt}
+          screenshotUrl={trainer.sousTraitantScreenshotUrl}
+          screenshotDate={trainer.sousTraitantScreenshotDate}
+          prochaineVerifAt={trainer.sousTraitantProchaineVerifAt}
+          rcProAttestationUrl={trainer.rcProAttestationUrl}
+          rcProEcheanceAt={trainer.rcProEcheanceAt}
+        />
       )}
 
       {/*
