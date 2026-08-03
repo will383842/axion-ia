@@ -88,7 +88,7 @@ export function AlertsV2({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Alertes ops"
-        description="Vue agrégée des alertes (Sentry · UptimeRobot · Coolify). Email Sentry reste actif pour notif push — cette page = consultation pull à toi de venir."
+        description="Toutes les alertes au même endroit (Sentry, UptimeRobot, Coolify). Les e-mails Sentry continuent d'arriver ; cette page les rassemble, à consulter quand vous le souhaitez."
         actions={
           <Link href={`/fr/${adminPrefix}`} className="admin-link">
             ← Retour au tableau de bord
