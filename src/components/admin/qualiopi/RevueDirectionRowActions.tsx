@@ -1,5 +1,5 @@
 "use client";
-// use-client: édition inline d'une revue de direction (date + statut) via useTransition + Server Action.
+// use-client: édition inline d'une revue de direction (date, statut, décisions, plan d'actions) via useTransition + Server Action.
 
 /**
  * RevueDirectionRowActions — Édition d'une revue de direction (T19).
@@ -73,7 +73,11 @@ function versTexte(liste: readonly unknown[]): string {
  * quand le libellé n'a pas bougé — c'est ce qui préserve `source` et `ajouteAt`
  * des constats reportés automatiquement.
  */
-function versListe(texte: string, origine: readonly unknown[], cle: "decision" | "action"): unknown[] {
+function versListe(
+  texte: string,
+  origine: readonly unknown[],
+  cle: "decision" | "action",
+): unknown[] {
   const restants = origine.filter((x) => libelleEntree(x).trim().length > 0);
   return texte
     .split("\n")
@@ -179,8 +183,8 @@ export function RevueDirectionRowActions({
         </select>
         {statut !== "validee" && (
           <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-            Seule une revue « Validée » couvre l&apos;indicateur 32 — l&apos;export des
-            registres marque les autres comme non couvrantes.
+            Seule une revue « Validée » couvre l&apos;indicateur 32 — l&apos;export des registres
+            marque les autres comme non couvrantes.
           </p>
         )}
       </div>
@@ -212,8 +216,8 @@ export function RevueDirectionRowActions({
           className={inputCls}
         />
         <p className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Les constats reportés depuis un autre écran gardent leur source et leur date tant que
-          leur libellé n&apos;est pas modifié.
+          Les constats reportés depuis un autre écran gardent leur source et leur date tant que leur
+          libellé n&apos;est pas modifié.
         </p>
       </div>
       {error && (

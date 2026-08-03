@@ -633,9 +633,8 @@ describe("formation-crons.attestations-auto — garde évaluation finale", () =>
   });
 
   it("génère l'attestation des inscrits que la requête a retenus", async () => {
-    const { genererAttestationPourEnrollment } = await import(
-      "@/server/qualiopi/evaluations/attestation-service"
-    );
+    const { genererAttestationPourEnrollment } =
+      await import("@/server/qualiopi/evaluations/attestation-service");
     mockPrisma.enrollment.findMany.mockResolvedValue([
       { id: "enroll-evalue-1", session: { id: "s1" } },
       { id: "enroll-evalue-2", session: { id: "s1" } },
