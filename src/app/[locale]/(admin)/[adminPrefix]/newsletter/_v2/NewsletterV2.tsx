@@ -18,6 +18,15 @@ import { SubscriberRowActions } from "./SubscriberRowActions";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { CheckCircle2, Hourglass, MailX } from "lucide-react";
 
+const SOURCE_LABELS: Record<string, string> = {
+  footer: "Pied de page",
+  "blog-cta": "Encart en fin d'article",
+  "exit-intent": "Fenêtre de sortie",
+  homepage: "Page d'accueil",
+  ressources: "Page Ressources",
+  manual: "Ajout manuel",
+};
+
 const STATUS_LABELS: Record<string, string> = {
   pending: "En attente",
   confirmed: "Confirmé",
@@ -87,7 +96,13 @@ export function NewsletterV2({
         </AdminBadge>
       ),
     },
-    { key: "source", header: "Source", cell: (s) => s.source ?? "—" },
+    {
+      key: "source",
+      header: "Source",
+      // La colonne affichait l'identifiant interne posé par le formulaire
+      // d'inscription : « footer », « blog-cta », « exit-intent ».
+      cell: (s) => (s.source === null ? "—" : (SOURCE_LABELS[s.source] ?? s.source)),
+    },
     {
       key: "confirmedAt",
       header: "Confirmé le",

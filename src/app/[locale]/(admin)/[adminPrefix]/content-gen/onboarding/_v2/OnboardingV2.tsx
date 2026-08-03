@@ -164,8 +164,14 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
               : "border-l-4 border-l-[color:var(--color-admin-warning)]"
           }
         >
+          {/* 🔴 LES DEUX ÉTATS RENDAIENT EXACTEMENT LE MÊME TEXTE : « terminé,
+              tout est en place » et « terminé, mais des étapes manquent » ne se
+              distinguaient que par la COULEUR du liseré gauche. */}
           <p className="admin-meta-block">
-            Onboarding marqué comme terminé. Vous pouvez revenir ici à tout moment via le menu.
+            {allOk
+              ? "Mise en route terminée : les fournisseurs, le profil auteur et le profil de distribution sont en place."
+              : "Mise en route marquée comme terminée, mais certaines étapes ne sont pas remplies — fournisseurs, profil auteur ou profil de distribution."}{" "}
+            Vous pouvez revenir ici à tout moment par le menu.
           </p>
         </AdminCard>
       )}

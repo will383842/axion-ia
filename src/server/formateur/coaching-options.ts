@@ -10,10 +10,17 @@ export const COACHING_INTERVENTIONS: ReadonlyArray<{ slug: string; label: string
   { slug: "dirigeant-vision-strategique", label: "Dirigeant · Vision stratégique" },
   { slug: "coaching-decouverte", label: "Collaborateur · Optimisation du poste" },
   { slug: "un-a-un-recurrent", label: "Suivi régulier 1-to-1" },
+  // 🔴 CES DEUX VARIANTES ONT ÉTÉ RETIRÉES DE LA VENTE le 2026-07-17, mais des
+  // séances les portent toujours en base : sans libellé ici, le repli affichait
+  // le SLUG BRUT — dans le titre de la fiche séance, dans la colonne
+  // « Prestation » et dans « Gain de temps par métier ». Retirer une offre ne
+  // supprime pas l'historique qui la référence.
+  { slug: "dirigeant-vision-strategique-2j", label: "Dirigeant · Vision stratégique (2 j)" },
+  { slug: "coaching-optimisation-2j", label: "Collaborateur · Optimisation du poste (2 j)" },
 ];
 
 export function coachingInterventionLabel(slug: string): string {
-  return COACHING_INTERVENTIONS.find((i) => i.slug === slug)?.label ?? slug;
+  return COACHING_INTERVENTIONS.find((i) => i.slug === slug)?.label ?? `« ${slug} »`;
 }
 
 /** Types d'optimisation (enum Prisma `OptimisationType`). */
