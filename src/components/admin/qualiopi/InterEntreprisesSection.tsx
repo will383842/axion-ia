@@ -129,17 +129,23 @@ function EnrollmentRow({
             </option>
           ))}
         </select>
-        <input
-          type="number"
-          min={0}
-          step="0.01"
-          value={montant}
-          onChange={(e) => setMontant(e.target.value)}
-          disabled={isPending}
-          placeholder="Ex. 1 200"
-          className={`${inputCls} w-32`}
-          aria-label="Prix du siège HT"
-        />
+        {/* 🔴 Ce champ n'avait qu'un placeholder — « Prix siège € HT » — qui
+            disparaît dès la première frappe. L'utilisateur ne savait alors plus
+            si le montant saisi était HT ou TTC. L'aria-label servait le lecteur
+            d'écran, pas l'œil. */}
+        <label className="flex flex-col gap-[var(--space-admin-1)]">
+          <span className="admin-meta-small">Prix du siège (€ HT)</span>
+          <input
+            type="number"
+            min={0}
+            step="0.01"
+            value={montant}
+            onChange={(e) => setMontant(e.target.value)}
+            disabled={isPending}
+            placeholder="Ex. 1 200"
+            className={`${inputCls} w-32`}
+          />
+        </label>
         {financementType === "opco" && (
           <input
             aria-label="N° dossier OPCO"

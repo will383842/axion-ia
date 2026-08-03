@@ -180,9 +180,10 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
       <AdminCard className="border-l-4 border-l-[color:var(--color-admin-destructive)]">
         <h2 className="admin-h2">Suppression définitive</h2>
         <p className="admin-meta-block">
-          Cette opération supprime l&apos;article et sa traduction de la base. La row{" "}
-          <code>ContentGenJob</code> reste pour l&apos;audit trail (RGPD article 30). Les FAQ
-          enfantes voient leur <code>parentArticleId</code> mis à null (préservées).
+          L&apos;article et sa traduction sont supprimés définitivement. L&apos;historique de
+          génération est conservé, comme l&apos;exige le registre des traitements (RGPD, article
+          30). Les questions-réponses rattachées à cet article sont préservées : elles perdent
+          simplement leur rattachement.
         </p>
         <form action={destroy} className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
           <input
