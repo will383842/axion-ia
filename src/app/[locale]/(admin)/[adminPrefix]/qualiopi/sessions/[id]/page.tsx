@@ -33,6 +33,7 @@ import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/sign
 import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireEtatSignatureLettreMissionConsole } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
 import { QuestionnairesSection } from "@/components/admin/qualiopi/QuestionnairesSection";
+import { envoyerQuestionnaireAction } from "@/server/actions/qualiopi/questionnaires";
 import {
   enrollTraineeAction,
   setEnrollmentStatutAction,
@@ -247,7 +248,16 @@ export default async function SessionHubPage({ params }: PageProps) {
           },
         },
         questionnaires: {
-          select: { id: true, token: true, type: true, reponduAt: true, noteGlobale: true },
+          select: {
+            id: true,
+            token: true,
+            type: true,
+            reponduAt: true,
+            // « jamais envoyé » ≠ « envoyé, sans réponse » : la colonne existait
+            // et n'était lue nulle part, l'écran ne pouvait pas les distinguer.
+            envoyeAt: true,
+            noteGlobale: true,
+          },
         },
       },
     }),
@@ -390,6 +400,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       traineeNom: `${e.trainee.prenom} ${e.trainee.nom}`,
       type: q.type,
       reponduAt: q.reponduAt ? q.reponduAt.toISOString() : null,
+      envoyeAt: q.envoyeAt ? q.envoyeAt.toISOString() : null,
       noteGlobale: q.noteGlobale,
     })),
   );
@@ -806,6 +817,7 @@ export default async function SessionHubPage({ params }: PageProps) {
           questionnaires={questionnairesSerialized}
           genererAction={genererQuestionnairesSessionAction}
           saisirReponsesAction={saisirReponsesQuestionnaireAction}
+          envoyerAction={envoyerQuestionnaireAction}
         />
       </section>
     </AdminPageShell>
