@@ -14,7 +14,15 @@ import {
 } from "@/components/admin/ui";
 import { VillesTabsNav } from "@/components/admin/content-gen/VillesTabsNav";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { MapPin, CheckCircle2, Hourglass, TrendingUp } from "lucide-react";
+import {
+  MapPin,
+  CheckCircle2,
+  Hourglass,
+  TrendingUp,
+  CircleCheck,
+  CirclePause,
+  type LucideIcon,
+} from "lucide-react";
 import {
   getCitiesStats,
   getLandingIndexabilityByTier,
@@ -68,10 +76,25 @@ function coverageBar(covered: number, total: number): React.ReactElement {
   );
 }
 
-function cityStateIcon(city: CityRow): string {
-  if (city.isCovered && city.articlesCount > 0) return "Couverte";
-  if (city.articlesCount > 0) return "⏳";
-  return "⏸️";
+/**
+ * 🔴 CETTE FONCTION RENDAIT UN LIBELLÉ EN GUISE D'ICÔNE.
+ *
+ * Elle retournait « Couverte » dans un cas et des emojis (⏳, ⏸️) dans les
+ * deux autres. La cellule concaténait ensuite son propre libellé — d'où
+ * « **Couverte Couverte** » à l'écran sur chaque ville couverte, et deux
+ * emojis sur les autres.
+ *
+ * Les deux emojis échappaient en outre au cliquet anti-emoji : U+23F3 et
+ * U+23F8 tombent dans `U+2300`–`U+23FF`, plage que sa regex ne couvrait pas
+ * (corrigée le même jour).
+ *
+ * L'état est désormais dit UNE fois, par le libellé de la cellule ; la couleur
+ * du badge porte le reste.
+ */
+function cityStateIcon(city: CityRow): LucideIcon {
+  if (city.isCovered && city.articlesCount > 0) return CircleCheck;
+  if (city.articlesCount > 0) return Hourglass;
+  return CirclePause;
 }
 
 function cityStateTone(city: CityRow): "success" | "warning" | "neutral" {
@@ -151,12 +174,15 @@ export async function CitiesCoverageV2({
     {
       key: "etat",
       header: "État",
-      cell: (city) => (
-        <AdminBadge tone={cityStateTone(city)}>
-          {cityStateIcon(city)}{" "}
-          {city.isCovered ? "Couverte" : city.articlesCount > 0 ? "En cours" : "À faire"}
-        </AdminBadge>
-      ),
+      cell: (city) => {
+        const Icone = cityStateIcon(city);
+        return (
+          <AdminBadge tone={cityStateTone(city)}>
+            <Icone size={12} aria-hidden="true" className="shrink-0" />
+            {city.isCovered ? "Couverte" : city.articlesCount > 0 ? "En cours" : "À faire"}
+          </AdminBadge>
+        );
+      },
     },
     {
       key: "articles",

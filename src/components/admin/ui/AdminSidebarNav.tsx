@@ -43,6 +43,10 @@ import {
   Megaphone,
   Gauge,
   Cog,
+  CircleAlert,
+  BookOpen,
+  Users,
+  BadgeCheck,
   type LucideIcon,
 } from "lucide-react";
 import { navIcon } from "@/lib/admin-nav-icons";
@@ -82,6 +86,31 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   engagement: Megaphone,
   ops: Gauge,
   system: Cog,
+};
+
+/**
+ * Icône de PÔLE (niveau 2) — uniquement là où une famille métier gagne à être
+ * reconnaissable d'un coup d'œil.
+ *
+ * 🔴 Ces six pôles portaient leur pictogramme DANS leur libellé, sous forme
+ * d'emoji, depuis `src/lib/admin-nav.ts` (cf. le commentaire là-bas). Deux
+ * raisons de le remonter ici plutôt que de simplement le supprimer : un module
+ * de `lib` ne doit pas porter de pictogramme, et la barre latérale perdrait
+ * l'aide au repérage que Will avait demandée. On garde donc l'intention, on
+ * change le moyen — un composant lucide, aligné sur la grille, dont la graisse
+ * ne dépend pas de la police du poste.
+ *
+ * Les pôles des autres groupes (content_gen, documents, image-bank) n'ont
+ * jamais eu de pictogramme et n'en prennent pas : ce sont des sous-rubriques
+ * d'un même métier, l'en-tête de groupe porte déjà l'icône qui les distingue.
+ */
+const POLE_ICON_MAP: Record<string, LucideIcon> = {
+  a_traiter: CircleAlert,
+  dossiers: FolderOpen,
+  catalogue: BookOpen,
+  intervenants: Users,
+  conformite: BadgeCheck,
+  reglages_suivi: Cog,
 };
 
 const COLLAPSE_LS_KEY = "admin-sidebar-collapsed";
@@ -861,6 +890,16 @@ export function AdminSidebarNav({
                                 "transition-colors hover:bg-[color:var(--color-admin-rail-hover)] hover:text-[color:var(--color-admin-rail-fg)]",
                               )}
                             >
+                              {(() => {
+                                const PoleIcon = POLE_ICON_MAP[pole];
+                                return PoleIcon ? (
+                                  <PoleIcon
+                                    size={13}
+                                    aria-hidden="true"
+                                    className="shrink-0 opacity-80"
+                                  />
+                                ) : null;
+                              })()}
                               <span className="truncate">{poleLabels?.[pole] ?? pole}</span>
                               <span className="ml-auto flex shrink-0 items-center gap-[var(--space-admin-2)]">
                                 {/* Bulle-somme sur pôle REPLIÉ (Will 2026-08-01) :

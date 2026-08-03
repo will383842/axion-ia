@@ -11,6 +11,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 import type {
   creerReclamationAction,
   repondreReclamationAction,
@@ -97,161 +98,162 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-6)]"
-    >
-      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        Nouvelle réclamation
-      </h3>
+    // Replié par défaut (décision Will, 2026-08-03) : le registre s'ouvre sur
+    // ce qui est ENREGISTRÉ, pas sur un formulaire vide. Cf. AdminBlocRepliable.
+    <AdminBlocRepliable titre="+ Nouvelle réclamation">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Source */}
+          <div className={fieldCls}>
+            <label htmlFor="reclamationform-origine" className={labelCls}>
+              Origine
+            </label>
+            <select
+              id="reclamationform-origine"
+              value={source}
+              onChange={(e) => setSource(e.target.value as ReclamationSource)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {(Object.keys(SOURCE_LABELS) as ReclamationSource[]).map((s) => (
+                <option key={s} value={s}>
+                  {SOURCE_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-        {/* Source */}
-        <div className={fieldCls}>
-          <label htmlFor="reclamationform-origine" className={labelCls}>
-            Origine
-          </label>
-          <select
-            id="reclamationform-origine"
-            value={source}
-            onChange={(e) => setSource(e.target.value as ReclamationSource)}
-            disabled={isPending}
-            className={inputCls}
-          >
-            {(Object.keys(SOURCE_LABELS) as ReclamationSource[]).map((s) => (
-              <option key={s} value={s}>
-                {SOURCE_LABELS[s]}
-              </option>
-            ))}
-          </select>
+          {/* Date réception */}
+          <div className={fieldCls}>
+            <label htmlFor="reclamationform-date-de-reception" className={labelCls}>
+              Date de réception
+            </label>
+            <input
+              id="reclamationform-date-de-reception"
+              type="date"
+              value={dateReception}
+              onChange={(e) => setDateReception(e.target.value)}
+              disabled={isPending}
+              required
+              className={inputCls}
+            />
+          </div>
+
+          {/* Réclamant nom */}
+          <div className={fieldCls}>
+            <label htmlFor="reclamationform-nom-du-reclamant" className={labelCls}>
+              Nom du réclamant
+            </label>
+            <input
+              id="reclamationform-nom-du-reclamant"
+              type="text"
+              value={reclamantNom}
+              onChange={(e) => setReclamantNom(e.target.value)}
+              disabled={isPending}
+              required
+              maxLength={200}
+              placeholder="Nom Prénom"
+              className={inputCls}
+            />
+          </div>
+
+          {/* Réclamant email */}
+          <div className={fieldCls}>
+            <label htmlFor="reclamationform-email-facultatif" className={labelCls}>
+              Email (facultatif)
+            </label>
+            <input
+              id="reclamationform-email-facultatif"
+              type="email"
+              value={reclamantEmail}
+              onChange={(e) => setReclamantEmail(e.target.value)}
+              disabled={isPending}
+              maxLength={255}
+              placeholder="contact@exemple.fr"
+              className={inputCls}
+            />
+          </div>
+
+          {/* Gravité */}
+          <div className={fieldCls}>
+            <label htmlFor="reclamationform-gravite-facultatif" className={labelCls}>
+              Gravité (facultatif)
+            </label>
+            <select
+              id="reclamationform-gravite-facultatif"
+              value={gravite}
+              onChange={(e) => setGravite(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              <option value="">— Non précisée —</option>
+              <option value="mineure">Mineure</option>
+              <option value="majeure">Majeure</option>
+              <option value="critique">Critique</option>
+            </select>
+          </div>
         </div>
 
-        {/* Date réception */}
-        <div className={fieldCls}>
-          <label htmlFor="reclamationform-date-de-reception" className={labelCls}>
-            Date de réception
+        {/* Objet */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="reclamationform-objet-de-la-reclamation" className={labelCls}>
+            Objet de la réclamation
           </label>
           <input
-            id="reclamationform-date-de-reception"
-            type="date"
-            value={dateReception}
-            onChange={(e) => setDateReception(e.target.value)}
-            disabled={isPending}
-            required
-            className={inputCls}
-          />
-        </div>
-
-        {/* Réclamant nom */}
-        <div className={fieldCls}>
-          <label htmlFor="reclamationform-nom-du-reclamant" className={labelCls}>
-            Nom du réclamant
-          </label>
-          <input
-            id="reclamationform-nom-du-reclamant"
+            id="reclamationform-objet-de-la-reclamation"
             type="text"
-            value={reclamantNom}
-            onChange={(e) => setReclamantNom(e.target.value)}
+            value={objet}
+            onChange={(e) => setObjet(e.target.value)}
             disabled={isPending}
             required
-            maxLength={200}
-            placeholder="Nom Prénom"
+            maxLength={300}
+            placeholder="Résumé en une phrase"
             className={inputCls}
           />
         </div>
 
-        {/* Réclamant email */}
-        <div className={fieldCls}>
-          <label htmlFor="reclamationform-email-facultatif" className={labelCls}>
-            Email (facultatif)
+        {/* Description */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="reclamationform-description-detaillee" className={labelCls}>
+            Description détaillée
           </label>
-          <input
-            id="reclamationform-email-facultatif"
-            type="email"
-            value={reclamantEmail}
-            onChange={(e) => setReclamantEmail(e.target.value)}
+          <textarea
+            id="reclamationform-description-detaillee"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             disabled={isPending}
-            maxLength={255}
-            placeholder="contact@exemple.fr"
+            required
+            rows={4}
             className={inputCls}
           />
         </div>
 
-        {/* Gravité */}
-        <div className={fieldCls}>
-          <label htmlFor="reclamationform-gravite-facultatif" className={labelCls}>
-            Gravité (facultatif)
-          </label>
-          <select
-            id="reclamationform-gravite-facultatif"
-            value={gravite}
-            onChange={(e) => setGravite(e.target.value)}
-            disabled={isPending}
-            className={inputCls}
+        {error && (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
           >
-            <option value="">— Non précisée —</option>
-            <option value="mineure">Mineure</option>
-            <option value="majeure">Majeure</option>
-            <option value="critique">Critique</option>
-          </select>
-        </div>
-      </div>
+            Erreur : {error}
+          </p>
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
+          </p>
+        )}
 
-      {/* Objet */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="reclamationform-objet-de-la-reclamation" className={labelCls}>
-          Objet de la réclamation
-        </label>
-        <input
-          id="reclamationform-objet-de-la-reclamation"
-          type="text"
-          value={objet}
-          onChange={(e) => setObjet(e.target.value)}
+        <button
+          type="submit"
           disabled={isPending}
-          required
-          maxLength={300}
-          placeholder="Résumé en une phrase"
-          className={inputCls}
-        />
-      </div>
-
-      {/* Description */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="reclamationform-description-detaillee" className={labelCls}>
-          Description détaillée
-        </label>
-        <textarea
-          id="reclamationform-description-detaillee"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          disabled={isPending}
-          required
-          rows={4}
-          className={inputCls}
-        />
-      </div>
-
-      {error && (
-        <p
-          role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="admin-button mt-[var(--space-admin-4)]"
         >
-          Erreur : {error}
-        </p>
-      )}
-      {successMsg && (
-        <p
-          role="status"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          {successMsg}
-        </p>
-      )}
-
-      <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer la réclamation"}
-      </button>
-    </form>
+          {isPending ? "Enregistrement..." : "Enregistrer la réclamation"}
+        </button>
+      </form>
+    </AdminBlocRepliable>
   );
 }
 

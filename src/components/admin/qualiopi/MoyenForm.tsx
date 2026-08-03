@@ -11,6 +11,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { creerMoyenAction } from "@/server/actions/qualiopi/moyens";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 type MoyenCategorie = "salle" | "materiel" | "plateforme" | "humain";
 
@@ -71,122 +72,124 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-6)]"
-    >
-      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        Nouveau moyen pédagogique
-      </h3>
+    // Replié par défaut (décision Will, 2026-08-03) : le registre s'ouvre sur
+    // ce qui est ENREGISTRÉ, pas sur un formulaire vide. Cinquième registre
+    // concerné — le motif est systématique dans la console Qualiopi.
+    <AdminBlocRepliable titre="+ Nouveau moyen pédagogique">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Catégorie */}
+          <div className={fieldCls}>
+            <label htmlFor="moyenform-categorie" className={labelCls}>
+              Catégorie
+            </label>
+            <select
+              id="moyenform-categorie"
+              value={categorie}
+              onChange={(e) => setCategorie(e.target.value as MoyenCategorie)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {(Object.keys(CATEGORIE_LABELS) as MoyenCategorie[]).map((c) => (
+                <option key={c} value={c}>
+                  {CATEGORIE_LABELS[c]}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-        {/* Catégorie */}
-        <div className={fieldCls}>
-          <label htmlFor="moyenform-categorie" className={labelCls}>
-            Catégorie
-          </label>
-          <select
-            id="moyenform-categorie"
-            value={categorie}
-            onChange={(e) => setCategorie(e.target.value as MoyenCategorie)}
-            disabled={isPending}
-            className={inputCls}
-          >
-            {(Object.keys(CATEGORIE_LABELS) as MoyenCategorie[]).map((c) => (
-              <option key={c} value={c}>
-                {CATEGORIE_LABELS[c]}
-              </option>
-            ))}
-          </select>
+          {/* Date de vérification */}
+          <div className={fieldCls}>
+            <label htmlFor="moyenform-verifie-le-facultatif" className={labelCls}>
+              Vérifié le (facultatif)
+            </label>
+            <input
+              id="moyenform-verifie-le-facultatif"
+              type="date"
+              value={dateVerification}
+              onChange={(e) => setDateVerification(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            />
+          </div>
         </div>
 
-        {/* Date de vérification */}
-        <div className={fieldCls}>
-          <label htmlFor="moyenform-verifie-le-facultatif" className={labelCls}>
-            Vérifié le (facultatif)
+        {/* Libellé */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="moyenform-libelle" className={labelCls}>
+            Libellé
           </label>
           <input
-            id="moyenform-verifie-le-facultatif"
-            type="date"
-            value={dateVerification}
-            onChange={(e) => setDateVerification(e.target.value)}
+            id="moyenform-libelle"
+            type="text"
+            value={libelle}
+            onChange={(e) => setLibelle(e.target.value)}
             disabled={isPending}
+            required
+            maxLength={300}
+            placeholder="Ex. : Salle de formation Grenoble — 12 places"
             className={inputCls}
           />
         </div>
-      </div>
 
-      {/* Libellé */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="moyenform-libelle" className={labelCls}>
-          Libellé
-        </label>
-        <input
-          id="moyenform-libelle"
-          type="text"
-          value={libelle}
-          onChange={(e) => setLibelle(e.target.value)}
+        {/* Description */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="moyenform-description-facultatif" className={labelCls}>
+            Description (facultatif)
+          </label>
+          <textarea
+            id="moyenform-description-facultatif"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            disabled={isPending}
+            rows={2}
+            placeholder="Capacité, équipement, licences, rôle…"
+            className={inputCls}
+          />
+        </div>
+
+        {/* Localisation */}
+        <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
+          <label htmlFor="moyenform-localisation-facultatif" className={labelCls}>
+            Localisation (facultatif)
+          </label>
+          <input
+            id="moyenform-localisation-facultatif"
+            type="text"
+            value={localisation}
+            onChange={(e) => setLocalisation(e.target.value)}
+            disabled={isPending}
+            maxLength={250}
+            placeholder="Adresse, URL de la plateforme, site client…"
+            className={inputCls}
+          />
+        </div>
+
+        {error && (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          >
+            Erreur : {error}
+          </p>
+        )}
+        {successMsg && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            {successMsg}
+          </p>
+        )}
+
+        <button
+          type="submit"
           disabled={isPending}
-          required
-          maxLength={300}
-          placeholder="Ex. : Salle de formation Grenoble — 12 places"
-          className={inputCls}
-        />
-      </div>
-
-      {/* Description */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="moyenform-description-facultatif" className={labelCls}>
-          Description (facultatif)
-        </label>
-        <textarea
-          id="moyenform-description-facultatif"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          disabled={isPending}
-          rows={2}
-          placeholder="Capacité, équipement, licences, rôle…"
-          className={inputCls}
-        />
-      </div>
-
-      {/* Localisation */}
-      <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
-        <label htmlFor="moyenform-localisation-facultatif" className={labelCls}>
-          Localisation (facultatif)
-        </label>
-        <input
-          id="moyenform-localisation-facultatif"
-          type="text"
-          value={localisation}
-          onChange={(e) => setLocalisation(e.target.value)}
-          disabled={isPending}
-          maxLength={250}
-          placeholder="Adresse, URL de la plateforme, site client…"
-          className={inputCls}
-        />
-      </div>
-
-      {error && (
-        <p
-          role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+          className="admin-button mt-[var(--space-admin-4)]"
         >
-          Erreur : {error}
-        </p>
-      )}
-      {successMsg && (
-        <p
-          role="status"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          {successMsg}
-        </p>
-      )}
-
-      <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer le moyen"}
-      </button>
-    </form>
+          {isPending ? "Enregistrement..." : "Enregistrer le moyen"}
+        </button>
+      </form>
+    </AdminBlocRepliable>
   );
 }

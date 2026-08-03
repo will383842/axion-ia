@@ -168,9 +168,25 @@ const STATUS_LABELS_FR: Record<string, string> = {
   reader: "Lecteur",
 };
 
+/**
+ * 🔴 LE REPLI FUYAIT DE L'ANGLAIS BRUT (audit du code, 2026-08-03).
+ *
+ * `status.replace(/_/g, " ")` rendait tout statut absent de la table tel quel,
+ * espacé : « generating text », « quarantined factcheck », « running qa »,
+ * « quality improving », « bounced », « delivered » — tous présents dans les
+ * énumérations Prisma, aucun dans la table. Silencieusement, sans erreur ni
+ * test, sur les 48 écrans qui importent ce composant.
+ *
+ * On ne peut pas traduire ce qu'on ne connaît pas, mais on peut cesser de
+ * faire passer un identifiant machine pour une phrase : le repli conserve la
+ * valeur exacte (elle sert au diagnostic) et la présente comme ce qu'elle est,
+ * un code — jamais comme du français.
+ */
 function defaultLabel(status: string): string {
   const s = status.toLowerCase();
-  return STATUS_LABELS_FR[s] ?? status.replace(/_/g, " ");
+  const connu = STATUS_LABELS_FR[s];
+  if (connu !== undefined) return connu;
+  return `« ${status} »`;
 }
 
 export function AdminStatusBadge({

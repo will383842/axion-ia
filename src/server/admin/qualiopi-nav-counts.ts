@@ -24,6 +24,7 @@
 import { prisma } from "@/lib/prisma";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { countNonLues } from "@/server/qualiopi/alertes/alertes-service";
+import { compterPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 
 export interface QualiopiNavCounts {
   /** Pièces dont une signature manque (partielle) ou n'a pas commencé (en_attente). */
@@ -62,9 +63,14 @@ export const COMPTEURS_VIDES: QualiopiNavCounts = {
 export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
   const now = new Date();
   const [signatures, emails, alertes, relances] = await Promise.all([
-    prisma.documentGenere
-      .count({ where: { statutSignature: { in: ["partielle", "en_attente"] } } })
-      .catch(() => 0),
+    // 🔴 C'ÉTAIT UN `prisma.count` BRUT, ET IL MENTAIT. La page « À traiter »
+    // retire les pièces REMPLACÉES (une convention non signée alors qu'une
+    // autre, du même type et sur la même session, l'est intégralement) ; ce
+    // compteur, non. Résultat lu en production le 2026-08-03 : la pastille
+    // annonçait 2 pendant que la page affichait « Rien à traiter — tout est à
+    // jour ». Le filtre vit maintenant dans un module partagé, et les DEUX
+    // appelants passent par lui — c'est la promesse écrite en tête de fichier.
+    compterPiecesEnAttente().catch(() => 0),
     compterEnAttente().catch(() => 0),
     // `countNonLues` du service — le MÊME compteur que la page Alertes, pas
     // une réécriture du where (ils divergeraient).

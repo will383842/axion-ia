@@ -11,9 +11,10 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { BarChart3, Link as LinkIcon, AlertTriangle, Database } from "lucide-react";
+import { BarChart3, Link as LinkIcon, AlertTriangle, Database, ExternalLink } from "lucide-react";
 
 const WINDOW_HOURS = 24;
 const MIN_SAMPLES = 5;
@@ -185,11 +186,16 @@ export function WebVitalsV2({
     : isGood
       ? "text-[color:var(--color-admin-success)]"
       : "text-[color:var(--color-admin-warning)]";
+  // 🔴 Les trois verdicts empilaient jusqu'à DEUX « (s) » dans la même phrase
+  // — « 1 mesure(s) sur 16 (sur 4 page(s) suivies) ». C'est la première ligne
+  // de la page, en gros et en couleur. On accorde pour de bon, et l'emoji
+  // laisse la place à l'icône déjà posée par le bandeau.
+  const s = (n: number): string => (n > 1 ? "s" : "");
   const verdictText = noData
-    ? `ℹ️ Pas encore assez de données pour juger la vitesse du site (minimum ${MIN_SAMPLES} mesures par page). Revenez dans 24 à 48h après la mise en production.`
+    ? `Pas encore assez de données pour juger la vitesse du site (il en faut au moins ${MIN_SAMPLES} par page). Revenez dans 24 à 48 h après la mise en production.`
     : isGood
-      ? `Votre site est rapide — les ${aggregatesLength} mesure(s) suivies (sur ${routeCount} page(s)) respectent l'objectif de vitesse.`
-      : `⚠️ ${breachCount} mesure(s) sur ${aggregatesLength} (sur ${routeCount} page(s) suivies) dépassent l'objectif de vitesse — voir le détail par page ci-dessous.`;
+      ? `Votre site est rapide — les ${aggregatesLength} mesure${s(aggregatesLength)} suivie${s(aggregatesLength)}, sur ${routeCount} page${s(routeCount)}, respectent l'objectif de vitesse.`
+      : `${breachCount} mesure${s(breachCount)} sur ${aggregatesLength}, réparties sur ${routeCount} page${s(routeCount)} suivie${s(routeCount)}, dépasse${breachCount > 1 ? "nt" : ""} l'objectif de vitesse — voir le détail par page ci-dessous.`;
 
   return (
     <AdminPageShell width="wide">
@@ -233,15 +239,20 @@ export function WebVitalsV2({
         />
       </section>
 
+      {/* 🔴 Ce bloc recopiait un extrait de la documentation développeur du
+          dépôt, à l'écran : chemin d'un fichier d'audit, nom d'un module de
+          helpers, numéro de runbook, nom d'un tag Telegram. Même défaut que le
+          renvoi « (CLAUDE.md §15) » de la page Utilisateurs — un lecteur de
+          cette console n'a accès à aucun de ces fichiers.
+          Ce qui reste est ce qui se lit : les seuils, et pourquoi ils sont plus
+          sévères que ceux de Google. */}
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Budgets référence (AGENTS.md)</h2>
+        <h2 className="admin-h2">Objectifs de vitesse</h2>
         <p className="admin-meta-block">
-          Cible interne stricte (Web Vitals 2026 — voir{" "}
-          <code>_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md</code>) : LCP ≤ 1 800 ms · INP ≤ 100 ms ·
-          CLS = 0 (epsilon 0,01) · FCP ≤ 1 000 ms · TTFB ≤ 600 ms · TBT ≤ 150 ms. Google « good »
-          plus laxiste (LCP 2 500 / INP 200 / CLS 0,1) — Axion-IA vise la perfection. Alerte
-          Telegram tag <code>MONITORING</code> émise via helpers SSOT{" "}
-          <code>content-gen-alerts.ts</code> par breach (runbook <code>R30</code>).
+          Seuils visés : affichage du contenu principal ≤ 1 800 ms · réaction au clic ≤ 100 ms ·
+          aucun décalage de mise en page · premier affichage ≤ 1 000 ms · réponse du serveur ≤ 600
+          ms. Ils sont volontairement plus sévères que le seuil « bon » de Google (2 500 ms / 200 ms
+          / 0,1). Chaque dépassement déclenche une notification.
         </p>
       </AdminCard>
 
@@ -254,22 +265,25 @@ export function WebVitalsV2({
             disabled={!recomputeEnabled}
             title={
               recomputeEnabled
-                ? "Enqueue un tick worker pour recalculer immédiatement (sinon cron nightly 02:30 UTC)"
-                : "BULLMQ_DISABLED — worker non disponible (probablement env dev)"
+                ? "Relance le calcul tout de suite, sans attendre la mesure automatique de 02 h 30"
+                : "Le calcul à la demande est indisponible sur cet environnement"
             }
           >
-            Forcer un recompute
+            Recalculer maintenant
           </button>
         </form>
         <p className="admin-meta-small mt-[var(--space-admin-3)]">
-          Le cron nightly écrit le snapshot toutes les nuits 02:30 UTC. Bouton utile pour vérifier
-          immédiatement après un patch perf.
+          La mesure est recalculée automatiquement chaque nuit à 02 h 30. Ce bouton sert à vérifier
+          tout de suite l&apos;effet d&apos;une optimisation.
         </p>
         {lastAlertSentAt && (
           <p className="admin-meta-block mt-[var(--space-admin-3)]">
-            <strong>Dernière alerte Telegram :</strong>{" "}
-            {new Date(lastAlertSentAt).toLocaleString("fr-FR")} ({lastAlertBreachCount ?? 0}{" "}
-            breaches notifiées)
+            {/* « (3 breaches notifiées) » — un mot anglais, accordé au féminin. */}
+            <strong>Dernière notification :</strong>{" "}
+            {new Date(lastAlertSentAt).toLocaleString("fr-FR")} — {lastAlertBreachCount ?? 0}{" "}
+            dépassement
+            {(lastAlertBreachCount ?? 0) > 1 ? "s" : ""} signalé
+            {(lastAlertBreachCount ?? 0) > 1 ? "s" : ""}
           </p>
         )}
       </AdminCard>
@@ -287,15 +301,20 @@ export function WebVitalsV2({
               rows={display}
               getRowId={(row) => `${row.url}-${row.metric}`}
               caption="Détail Web Vitals par route et métrique"
+              // 🔴 L'action de ligne était le seul caractère « ↗ » : aucun
+              // libellé, aucun nom accessible, et son sens n'était donné qu'à
+              // vingt lignes de là. Un lecteur d'écran annonçait « lien ».
               rowAction={(row) => (
-                <a
+                <AdminButton
                   href={psiUrl(row.url)}
+                  variant="ghost"
+                  size="sm"
+                  iconAfter={ExternalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="admin-link"
                 >
-                  ↗
-                </a>
+                  Analyser
+                </AdminButton>
               )}
             />
           </div>
@@ -304,24 +323,31 @@ export function WebVitalsV2({
 
       <AdminCard>
         <h2 className="admin-h2">Lecture rapide</h2>
+        {/* 🔴 MA PROPRE CORRECTION ÉTAIT INCOMPLÈTE (relevée par un audit du
+            code le 2026-08-03). J'ai retiré la documentation interne de la
+            carte « Objectifs de vitesse » plus haut, et laissé la même chose
+            ici, douze lignes sous le commentaire qui la dénonce : renvoi à
+            « AGENTS.md », et un point « Stack RUM » listant un fichier source,
+            une route d'API interne, une API navigateur, un modèle Prisma, un
+            « Worker » et des « helpers SSOT ». Retirer un défaut d'un endroit
+            ne le retire pas de l'écran. */}
         <ul className="admin-meta-block">
           <li>
-            <strong>Objectif dépassé</strong> = la vitesse mesurée dépasse la cible interne
-            AGENTS.md (plus stricte que le seuil « bon » standard de Google). Une alerte Telegram a
-            déjà été envoyée — voir <code>/alerts</code>.
+            <strong>Objectif dépassé</strong> = la vitesse mesurée dépasse notre cible interne, plus
+            stricte que le seuil « bon » de Google. Une notification a déjà été envoyée — voir{" "}
+            <Link href={`/fr/${adminPrefix}/alerts`} className="admin-link">
+              les alertes
+            </Link>
+            .
           </li>
           <li>
             <strong>Repère Google (CrUX)</strong> = classification Google standard pour comparaison
             externe (Search Console, PageSpeed Insights). Indicatif, calculé côté visiteur.
           </li>
           <li>
-            <strong>PSI ↗</strong> = lance un audit Lighthouse labo direct sur cette route. Utile
-            quand le RUM agrège différents devices/réseaux et que tu veux voir une mesure contrôlée.
-          </li>
-          <li>
-            <strong>Stack RUM</strong> : <code>WebVitals.tsx</code> (next/web-vitals) →{" "}
-            <code>/api/vitals</code> (sendBeacon) → <code>WebVitalSample</code> Prisma. Worker
-            agrège p75 nuitamment + alerte Telegram via helpers SSOT.
+            <strong>Analyser</strong> = lance une mesure ponctuelle et contrôlée sur cette page,
+            utile quand la moyenne des visiteurs réels mélange des appareils et des réseaux très
+            différents.
           </li>
         </ul>
       </AdminCard>

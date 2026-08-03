@@ -8,9 +8,19 @@
 // A-12 SP-X3 — bandeau orange/rouge cost cap 80%/100%.
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TriangleAlert } from "lucide-react";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { prisma } from "@/lib/prisma";
+
+/**
+ * Les plafonds de coût sont libellés en dollars par les fournisseurs de
+ * modèles. On ne convertit pas — on écrit à la française (« 12,30 $US »)
+ * au lieu du « $12.30 » qui traînait dans ce bandeau.
+ */
+function formatUsd(montant: number | undefined): string {
+  if (montant == null) return "—";
+  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(montant);
+}
 
 const ANOMALY_ALERT_KEYS = [
   "alert_quality_drop",
@@ -68,11 +78,14 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
     <>
       <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-6)] py-[var(--space-admin-2)]">
         <nav
-          aria-label="Fil d'ariane Content Generator"
+          aria-label="Fil d'ariane du générateur de contenus"
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
         >
+          {/* Le fil d'ariane disait « Content Generator » pendant que le titre
+              de la page, 80 px plus bas, dit « Générateur de contenus ». Deux
+              noms pour le même module, dans le même écran. */}
           <Link href={base} className="hover:text-[color:var(--color-admin-fg)]">
-            Content Generator
+            Générateur de contenus
           </Link>
           {alertCount > 0 && (
             <span
@@ -114,12 +127,17 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
                 }
           }
         >
-          <strong>
-            {costCapAt100 ? "Plafond mensuel atteint" : "⚠️ Coût mensuel"} ({costCapVal.pct ?? "?"}
+          <strong className="inline-flex items-center gap-1">
+            <TriangleAlert size={13} aria-hidden="true" className="shrink-0" />
+            {costCapAt100 ? "Plafond mensuel atteint" : "Coût mensuel"} ({costCapVal.pct ?? "?"}
             %)
           </strong>{" "}
-          Provider {costCapVal.provider ?? "?"} : ${costCapVal.spent_usd?.toFixed(2) ?? "?"} / $
-          {costCapVal.cap_usd?.toFixed(2) ?? "?"}.
+          {/* « Provider … : $12.30 / $50.00 » — un mot anglais et deux montants
+              à l'anglaise dans un bandeau français. Les fournisseurs facturent
+              bien en dollars : on garde la devise, on écrit les nombres à la
+              française. */}
+          Fournisseur {costCapVal.provider ?? "?"} : {formatUsd(costCapVal.spent_usd)} sur{" "}
+          {formatUsd(costCapVal.cap_usd)}.
           {costCapAt100
             ? " Workers en pause. Réactivation via reset cap ou 1er du mois."
             : " Le plafond sera atteint prochainement."}{" "}
@@ -139,7 +157,11 @@ export default async function ContentGenLayout({ children, params }: ContentGenL
             color: "var(--color-admin-destructive-fg)",
           }}
         >
-          <strong>⚠️ Anomalies détectées ({alertCount}) :</strong> {alertLabels.join(" · ")}
+          <strong className="inline-flex items-center gap-1">
+            <TriangleAlert size={13} aria-hidden="true" className="shrink-0" />
+            Anomalies détectées ({alertCount}) :
+          </strong>{" "}
+          {alertLabels.join(" · ")}
           {" · "}
           <AdminButton href={`${base}/monitoring`} variant="ghost" size="sm" iconAfter={ArrowRight}>
             Voir monitoring

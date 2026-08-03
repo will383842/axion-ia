@@ -33,7 +33,6 @@ import {
 } from "lucide-react";
 
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -41,7 +40,7 @@ import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSig
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-partie";
-import type { DocumentType } from "../../../../../../../prisma/generated/client";
+import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -75,83 +74,6 @@ const TYPE_LABELS: Record<string, string> = {
   protocole_afest: "Protocole AFEST",
 };
 
-/**
- * Pièces dont une signature attend. Stub-safe → [].
- *
- * `partielle` d'abord (quelqu'un a DÉJÀ signé — souvent le client : c'est le
- * contreseing de l'organisme qui bloque la pièce, donc TOI), puis `en_attente`
- * (le lien est émis, personne n'a signé — c'est le client qu'on relance).
- */
-async function lireSignaturesEnAttente() {
-  try {
-    return await prisma.documentGenere.findMany({
-      where: { statutSignature: { in: ["partielle", "en_attente"] } },
-      orderBy: [{ statutSignature: "desc" }, { updatedAt: "asc" }],
-      take: 30,
-      select: {
-        id: true,
-        type: true,
-        numero: true,
-        statutSignature: true,
-        updatedAt: true,
-        sessionId: true,
-        trainerId: true,
-        session: { select: { titreSession: true, numero: true } },
-        // Parties DÉJÀ signataires (signatures non révoquées) : c'est ce qui
-        // permet à `partieARelancer` de viser la PROCHAINE partie du circuit
-        // sur une pièce `partielle` — et de ne proposer AUCUN bouton quand la
-        // partie manquante est l'organisme (c'est un contreseing, pas un
-        // e-mail à envoyer).
-        signatures: { where: { revokedAt: null }, select: { partie: true } },
-      },
-    });
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Retire les pièces REMPLACÉES : une pièce non signée dont une autre du même
- * type, sur la même session, est intégralement signée.
- *
- * 🔴 Sans ce filtre, « À traiter » réclamait une signature sur une obligation
- * DÉJÀ satisfaite. Constaté sur INVEST SUN : la convention `-009` était signée
- * des deux côtés, et la liste réclamait toujours `-003` (la première, remplacée)
- * et `-011` (une copie née d'un clic sur « Convention » pour la télécharger).
- *
- * Le coût n'est pas cosmétique : ces lignes ne partent JAMAIS d'elles-mêmes, et
- * chaque régénération en ajoute une définitivement. Une liste de tâches qui ne
- * peut plus se vider cesse d'être lue.
- *
- * ⚠️ Une pièce SANS session (lettre de mission, devis) n'est jamais masquée :
- * rien ne permettrait d'affirmer qu'elle est remplacée.
- */
-async function retirerPiecesRemplacees<T extends { sessionId: string | null; type: DocumentType }>(
-  pieces: T[],
-): Promise<T[]> {
-  const sessionIds = [
-    ...new Set(pieces.map((p) => p.sessionId).filter((v): v is string => v !== null)),
-  ];
-  if (sessionIds.length === 0) return pieces;
-
-  try {
-    const signees = await prisma.documentGenere.findMany({
-      where: {
-        sessionId: { in: sessionIds },
-        statutSignature: "signee",
-        type: { in: [...new Set(pieces.map((p) => p.type))] },
-      },
-      select: { sessionId: true, type: true },
-    });
-    const couvert = new Set(signees.map((s) => `${s.sessionId}::${s.type}`));
-    return pieces.filter((p) => p.sessionId === null || !couvert.has(`${p.sessionId}::${p.type}`));
-  } catch {
-    // Sur échec de lecture on n'ose PAS masquer : mieux vaut une ligne en trop
-    // qu'une signature réellement due qui disparaît de l'écran.
-    return pieces;
-  }
-}
-
 export default async function ATraiterPage({ params }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
@@ -163,14 +85,15 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signaturesBrutes, alertesBrutes] = await Promise.all([
+  const [compteurs, signatures, alertesBrutes] = await Promise.all([
     compterQualiopiNav(),
-    lireSignaturesEnAttente(),
+    listerPiecesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
   ]);
 
-  // Les pièces déjà remplacées par une version signée ne sont pas des tâches.
-  const signatures = await retirerPiecesRemplacees(signaturesBrutes);
+  // Les pièces déjà remplacées par une version signée ne sont pas des tâches :
+  // le filtre est appliqué DANS `listerPiecesEnAttente`, avec le compteur de la
+  // pastille, pour que les deux ne puissent plus diverger (cf. le module).
 
   // 🔴 Audit du 2026-08-01 (défaut P1) — `signature_en_attente` et
   // `signature_contreseing_du` sont les MÊMES pièces que celles déjà listées

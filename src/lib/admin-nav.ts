@@ -194,17 +194,30 @@ export const CONTENT_GEN_POLE_ORDER: ReadonlyArray<ContentGenPole> = [
 ];
 
 /**
- * Libellés FR des 7 pôles `qualiopi` (refonte console phase 1, 2026-08-01).
- * Les émojis sont voulus par Will (« n'hésite pas à mettre des émojis ») :
- * ils rendent chaque famille reconnaissable d'un coup d'œil.
+ * Libellés FR des pôles `qualiopi` (refonte console phase 1, 2026-08-01).
+ *
+ * 🔴 Ces six libellés ont porté un emoji jusqu'au 2026-08-03 — une phase
+ * antérieure du chantier les avait ajoutés sur un « n'hésite pas à mettre des
+ * émojis », AVANT que Will ne tranche l'inverse le 2026-08-01 : la console
+ * passe aux icônes `lucide-react`, jamais à l'emoji. Le commentaire justifiant
+ * les emojis a survécu à la décision qui les annulait.
+ *
+ * Ils ont tenu deux jours de plus parce que le cliquet anti-emoji ne scanne
+ * que `src/app/[locale]/(admin)` et `src/components/admin` : un libellé qui
+ * vit dans `src/lib` s'affiche sur TOUTES les pages de la console sans qu'un
+ * seul test le voie. Le cliquet couvre désormais ce fichier nommément.
+ *
+ * Un module de `lib` ne porte pas de pictogramme (même raison qu'il y a pour
+ * `activity-labels.ts`) : l'icône du pôle est décidée dans le composant, par
+ * `POLE_ICON_MAP` (`AdminSidebarNav.tsx`).
  */
 export const QUALIOPI_POLE_LABELS: Record<QualiopiPole, string> = {
-  a_traiter: "🔴 À traiter",
-  dossiers: "📁 Dossiers & clients",
-  catalogue: "📚 Catalogue & vente",
-  intervenants: "👥 Intervenants",
-  conformite: "✅ Conformité Qualiopi",
-  reglages_suivi: "⚙️ Réglages & suivi",
+  a_traiter: "À traiter",
+  dossiers: "Dossiers & clients",
+  catalogue: "Catalogue & vente",
+  intervenants: "Intervenants",
+  conformite: "Conformité Qualiopi",
+  reglages_suivi: "Réglages & suivi",
 };
 
 /**
@@ -1104,7 +1117,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // écrans qu'on ouvre en début de journée.
     {
       href: `${base}/qualiopi/emails`,
-      label: "Emails à valider",
+      label: "E-mails à valider",
       icon: "MailCheck",
       group: "qualiopi",
       subGroup: "reglages_suivi",

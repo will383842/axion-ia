@@ -12,6 +12,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { decrireAction } from "@/lib/admin/activity-labels";
 
 // Heure seule (Europe/Paris) — la colonne Date affiche jour et heure sur deux
 // lignes ; `formatDateFr` colle les deux sur une seule.
@@ -92,7 +93,17 @@ export function ActivityLogsV2({
     {
       key: "action",
       header: "Action",
-      cell: (l) => <code className="admin-meta-small">{l.action}</code>,
+      // 🔴 La colonne affichait la CLÉ BRUTE (« qualiopi.document.generate »).
+      // `decrireAction` traduit ces clés en phrases depuis le 2026-08-02 et
+      // sert déjà le journal du tableau de bord — le journal COMPLET, lui,
+      // était resté en codes techniques, alors que c'est l'écran qu'on ouvre
+      // pour comprendre ce qui s'est passé. La clé reste en infobulle pour qui
+      // la cherche, et le « Top 20 » au-dessus est traduit de la même façon.
+      cell: (l) => (
+        <span className="admin-meta-small" title={l.action}>
+          {decrireAction(l.action).texte}
+        </span>
+      ),
     },
     { key: "targetType", header: "Type cible", cell: (l) => l.targetType ?? "—" },
     {
@@ -132,8 +143,8 @@ export function ActivityLogsV2({
             <p className="admin-meta-small">Aucune action enregistrée.</p>
           ) : (
             stats.map((s) => (
-              <span key={s.action} className="admin-tag-checkbox">
-                <code>{s.action}</code>
+              <span key={s.action} className="admin-tag-checkbox" title={s.action}>
+                {decrireAction(s.action).texte}
                 <strong>{s.count}</strong>
               </span>
             ))

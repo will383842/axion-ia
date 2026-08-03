@@ -340,6 +340,22 @@ async function checkAnomalies(): Promise<void> {
     prisma.coverageCampaign.count({ where: { status: "running" } }).catch(() => 0),
     prisma.contentGenJob.count({ where: { createdAt: { gte: fourHoursAgo } } }).catch(() => 0),
   ]);
+  /**
+   * Le texte affiché dans le bandeau rouge de `/content-gen`. Il disait
+   * « Pipeline bloque : 1 campagne(s) running, 0 job cree depuis 4h » —
+   * deux accents manquants, deux mots anglais et un pluriel entre
+   * parenthèses, à l'endroit précis où l'on annonce à l'exploitant que sa
+   * chaîne de production est à l'arrêt.
+   *
+   * ⚠️ Le texte d'une alerte est FIGÉ à sa création : cette correction ne
+   * change QUE les alertes émises à partir de maintenant. Celle qui est
+   * affichée aujourd'hui gardera son ancien libellé jusqu'à sa résolution.
+   */
+  const messagePipelineBloque = (campagnes: number): string =>
+    campagnes > 1
+      ? `Chaîne de production à l'arrêt : ${campagnes} campagnes en cours, aucune génération lancée depuis 4 h.`
+      : `Chaîne de production à l'arrêt : 1 campagne en cours, aucune génération lancée depuis 4 h.`;
+
   if (runningCampaigns > 0 && recentJobs === 0) {
     await prisma.contentGenConfig
       .upsert({
@@ -350,7 +366,7 @@ async function checkAnomalies(): Promise<void> {
             active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
-            message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
+            message: messagePipelineBloque(runningCampaigns),
           },
           updatedBy: "content-monitoring-worker",
         },
@@ -359,7 +375,7 @@ async function checkAnomalies(): Promise<void> {
             active: true,
             runningCampaigns,
             detectedAt: new Date().toISOString(),
-            message: `Pipeline bloque : ${runningCampaigns} campagne(s) running, 0 job cree depuis 4h`,
+            message: messagePipelineBloque(runningCampaigns),
           },
           updatedBy: "content-monitoring-worker",
         },
