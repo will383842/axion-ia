@@ -920,10 +920,55 @@ export async function genererGrilleEvaluationAction(input: {
   // Objectifs depuis le snapshot légal (WS5), repli LIVE si legacy.
   const formationDoc = readFormationForDocs(session.formationSnapshot, session.formation);
   const rawObjectifs = parseObjectifs(formationDoc.objectifsPedagogiques);
-  const competences =
+  const grilleVierge =
     rawObjectifs.length > 0
       ? rawObjectifs.map((libelle) => ({ libelle }))
       : [{ libelle: session.titreSession }];
+
+  // 🔴 Audit pré-visite 2026-08-03. La grille ne lisait JAMAIS l'évaluation
+  // enregistrée : elle rendait toujours le formulaire vierge, même quand une
+  // évaluation finale existait en base.
+  //
+  // Sur le premier dossier réel, la grille affichait « Score total : — / 15 »
+  // pendant que l'attestation du même dossier portait « Réussite — score 100 % ».
+  // Régénérer ne changeait rien, puisque la source n'était pas consultée.
+  //
+  // Deux pièces du même dossier qui se contredisent sur l'atteinte des
+  // objectifs, c'est exactement ce qu'un contrôle relève — et l'indicateur 11
+  // n'est pas graduable.
+  //
+  // La forme stockée dans `evaluationAcquis.competences` est déjà celle
+  // qu'attend le gabarit (`{ libelle, note, observations }`) : on la reprend
+  // telle quelle, sans re-mapper, pour qu'écran et PDF ne puissent pas diverger.
+  const evaluationFinale = await prisma.evaluationAcquis.findFirst({
+    where: { enrollmentId, type: "finale" },
+    orderBy: { dateEvaluation: "desc" },
+    select: { competences: true, recommandations: true },
+  });
+
+  const competencesEvaluees = Array.isArray(evaluationFinale?.competences)
+    ? (evaluationFinale.competences as unknown[]).flatMap((c) => {
+        if (c === null || typeof c !== "object") return [];
+        const o = c as Record<string, unknown>;
+        const libelle = typeof o["libelle"] === "string" ? o["libelle"] : null;
+        if (libelle === null || libelle.trim() === "") return [];
+        const note = o["note"];
+        const observations = o["observations"];
+        return [
+          {
+            libelle,
+            ...(note === 1 || note === 2 || note === 3 ? { note } : {}),
+            ...(typeof observations === "string" && observations.trim() !== ""
+              ? { observations }
+              : {}),
+          },
+        ];
+      })
+    : [];
+
+  // Repli sur la grille vierge : une évaluation absente ou illisible doit
+  // produire un formulaire imprimable, jamais faire échouer la génération.
+  const competences = competencesEvaluees.length > 0 ? competencesEvaluees : grilleVierge;
 
   const doc = await generateDocument({
     type: "grille_evaluation",
@@ -937,6 +982,10 @@ export async function genererGrilleEvaluationAction(input: {
           nomFormateur: formateurNom,
           nomStagiaire: `${trainee.prenom} ${trainee.nom}`.trim(),
           competences,
+          ...(typeof evaluationFinale?.recommandations === "string" &&
+          evaluationFinale.recommandations.trim() !== ""
+            ? { recommandations: evaluationFinale.recommandations }
+            : {}),
         },
         identite,
       }),

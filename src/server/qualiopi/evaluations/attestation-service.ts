@@ -319,6 +319,29 @@ export async function genererAttestationPourEnrollment(
   // 6. Génère le document (numérotation + R2 + DB).
   //    buildElement reçoit le numéro alloué → l'en-tête PDF affiche le vrai N°.
   const docType = resultat === "complete" ? "attestation" : "attestation_partielle";
+  // 🔴 Une régénération FORCÉE n'est pas un duplicata, c'est une rectification.
+  //
+  // Constaté sur le premier dossier réel : `AXI-ATT-2026-003` portait
+  // « Évaluation des acquis non réalisée » ; l'évaluation a été enregistrée
+  // ensuite, l'attestation régénérée — et la version JUSTE est sortie filigranée
+  // « COPIE ». L'organisme devait alors choisir entre présenter un original faux
+  // ou une copie exacte.
+  //
+  // On dit ce qu'on fait : la nouvelle pièce déclare rectifier la précédente, et
+  // sort sans filigrane. La traçabilité vit au registre, où l'auditeur recoupe.
+  // Test de VÉRACITÉ, pas d'égalité stricte à `null` : la pièce précédente peut
+  // avoir été purgée, et une lecture qui ne trouve rien ne doit pas faire échouer
+  // la régénération — on émet alors sans mention de rectification.
+  const numeroPrecedent =
+    opts?.force === true && enrollment.attestationDocumentId !== null
+      ? (
+          await prisma.documentGenere.findUnique({
+            where: { id: enrollment.attestationDocumentId },
+            select: { numero: true },
+          })
+        )?.numero
+      : undefined;
+
   const generated = await generateDocument({
     type: docType,
     buildElement: (numero) => {
@@ -364,6 +387,15 @@ export async function genererAttestationPourEnrollment(
     },
     refs: { sessionId: session.id, traineeId: trainee.id },
     qrToken: token,
+    ...(numeroPrecedent !== undefined && numeroPrecedent !== null
+      ? {
+          rectifie: {
+            numero: numeroPrecedent,
+            motif:
+              "Attestation régénérée après mise à jour de l'évaluation des acquis : cette version remplace la précédente.",
+          },
+        }
+      : {}),
   });
 
   // 7. Update Enrollment

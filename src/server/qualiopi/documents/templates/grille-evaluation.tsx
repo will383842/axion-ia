@@ -117,8 +117,22 @@ function noteToText(note?: 1 | 2 | 3): string {
   return `${note} — ${NOTE_LABELS[note]}`;
 }
 
+/**
+ * Niveau global, ou `"—"` quand **aucune** compétence n'est notée.
+ *
+ * 🔴 Audit pré-visite 2026-08-03. Sans ce garde, une grille VIERGE cochait
+ * « Non acquis » : zéro note donne un total de 0, donc 0 %, donc `pct < 50`.
+ *
+ * Constaté sur le premier dossier réel. La grille `AXI-DOC-2026-019` affichait
+ * « Score total : — / 15 » — donc explicitement aucune note — **et** la case
+ * « Non acquis » cochée, pendant que l'attestation du même dossier portait
+ * « Réussite — score 100 % ». Deux pièces du même dossier qui se contredisent,
+ * c'est ce qu'un contrôle relève en premier.
+ *
+ * Un formulaire non rempli ne dit rien du niveau atteint. Il ne coche donc rien.
+ */
 function computeNiveauGlobal(scores: number[], max: number): string {
-  if (max === 0) return "—";
+  if (max === 0 || scores.length === 0) return "—";
   const total = scores.reduce((a, b) => a + b, 0);
   const pct = (total / max) * 100;
   if (pct < 50) return "Non acquis";

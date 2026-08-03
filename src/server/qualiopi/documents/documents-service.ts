@@ -160,6 +160,31 @@ export interface GenerateDocumentInput {
    * prestation — ce qu'un contrôle relève immédiatement.
    */
   estCopie?: boolean;
+  /**
+   * Numéro de la pièce que celle-ci **rectifie**, et motif de la rectification.
+   *
+   * 🔴 Audit pré-visite 2026-08-03. Régénérer une pièce parce que la DONNÉE a
+   * changé produisait un filigrane « COPIE ». C'est faux : ce n'est pas un
+   * duplicata, c'est une version corrigée qui remplace la précédente.
+   *
+   * Constaté sur le premier dossier réel. L'attestation `AXI-ATT-2026-003`
+   * portait « Évaluation des acquis non réalisée » ; l'évaluation a ensuite été
+   * enregistrée et l'attestation régénérée en `AXI-ATT-2026-004` — laquelle est
+   * sortie filigranée « COPIE ». L'organisme se retrouvait à devoir présenter
+   * soit un original faux, soit une copie juste.
+   *
+   * Le filigrane « COPIE » garde tout son sens pour un duplicata : il empêche
+   * deux originaux concurrents de circuler. Une rectification, elle, ne
+   * concurrence pas l'original — elle le remplace. Elle sort donc **sans
+   * filigrane**, et la traçabilité vit au registre : la nouvelle pièce dit ce
+   * qu'elle rectifie, l'ancienne dit par quoi elle est remplacée. C'est
+   * exactement ce qu'un auditeur recoupe, et c'est le même principe que l'avoir
+   * en facturation.
+   *
+   * ⚠️ Le marquage SPÉCIMEN reste prioritaire : une identité incomplète déclasse
+   * la pièce, rectification ou non.
+   */
+  rectifie?: { numero: string; motif: string };
   qrToken?: string | null;
   /**
    * Clé R2 du fichier source original (ex. CSV relevé de connexion archivé).
@@ -376,7 +401,11 @@ export async function generateDocument(
     // nouveau numéro séquentiel : sans filigrane, deux pièces d'apparence
     // officielle circuleraient pour la même prestation, avec des numéros
     // différents. C'est exactement ce qu'un contrôleur remarque.
-    const estUneRegeneration = input.estCopie ?? (await estUneRegenerationDe(input));
+    // Une rectification n'est pas un duplicata : elle remplace l'original au
+    // lieu de circuler à côté. `estCopie` explicite reste prioritaire — un
+    // appelant qui demande le filigrane l'obtient.
+    const estUneRegeneration =
+      input.estCopie ?? (input.rectifie !== undefined ? false : await estUneRegenerationDe(input));
 
     // 1b. Rendu PDF — le numéro alloué est injecté via buildElement si fourni.
     let elementToRender: React.ReactElement;
@@ -490,13 +519,28 @@ export async function generateDocument(
           // DERNIER : un appelant ne doit pas pouvoir effacer, même par
           // inadvertance, le marquage qui dit que la pièce n'a pas de valeur
           // juridique.
-          ...(specimen !== null || input.metadata !== undefined || renderData !== null
+          ...(specimen !== null ||
+          input.metadata !== undefined ||
+          renderData !== null ||
+          input.rectifie !== undefined
             ? {
                 metadata: {
                   ...(input.metadata ?? {}),
                   // Sous une clé DÉDIÉE : `metadata` porte déjà `specimen` et
                   // `champsManquants`, que rien ne doit écraser.
                   ...(renderData !== null ? { renderData } : {}),
+                  // La pièce dit ce qu'elle rectifie. Sans cette trace, deux
+                  // numéros du même type coexistent au registre sans que rien
+                  // n'indique lequel fait foi.
+                  ...(input.rectifie !== undefined
+                    ? {
+                        rectifie: {
+                          numero: input.rectifie.numero,
+                          motif: input.rectifie.motif,
+                          at: now.toISOString(),
+                        },
+                      }
+                    : {}),
                   ...(specimen ? { specimen: true, champsManquants: specimen.manquants } : {}),
                 },
               }
