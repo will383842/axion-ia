@@ -22,10 +22,9 @@ export default async function licensingPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="licensing"
-      description="Section licensing (image-bank V1)."
+      title="Licences"
+      description="Droits d usage et attribution des images."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

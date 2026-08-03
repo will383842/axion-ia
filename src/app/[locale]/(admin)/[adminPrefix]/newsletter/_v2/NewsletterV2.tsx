@@ -11,6 +11,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { SubscriberRowActions } from "./SubscriberRowActions";
@@ -242,6 +243,26 @@ export function NewsletterV2({
           caption="Liste des abonnés newsletter"
         />
       )}
+
+      {/* 🔴 LA PAGINATION ÉTAIT CALCULÉE MAIS JAMAIS RENDUE (audit du code,
+          2026-08-03). Le composant recevait `page` et `totalPages`, les
+          affichait dans le sous-titre — « page 1/12 » — et n'offrait AUCUN
+          moyen d'aller à la page 2. Onze pages d'abonnés n'étaient atteignables
+          qu'en éditant l'URL à la main. Les filtres sont préservés dans les
+          liens, sinon changer de page réinitialiserait la recherche en cours. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/newsletter`}
+        preservedParams={{
+          status: sp["status"],
+          locale: sp["locale"],
+          source: sp["source"],
+          search: sp["search"],
+          dateFrom: sp["dateFrom"],
+          dateTo: sp["dateTo"],
+        }}
+      />
     </AdminPageShell>
   );
 }

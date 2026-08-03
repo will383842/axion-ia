@@ -22,10 +22,9 @@ export default async function seoauditPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="seo audit"
-      description="Section seo audit (image-bank V1)."
+      title="Audit SEO des images"
+      description="Contrôle des textes alternatifs, légendes et poids des fichiers."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

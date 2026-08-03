@@ -14,6 +14,7 @@ import {
   AdminBadge,
   AdminEmptyState,
   AdminButton,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
@@ -198,6 +199,21 @@ export function JobOffersV2({
           )}
         />
       )}
+
+      {/* 🔴 Même défaut que la newsletter : `page` et `totalPages` reçus,
+          affichés dans le sous-titre (« page 1/3 »), et aucun contrôle rendu.
+          Les offres au-delà de la cinquantième étaient inatteignables sans
+          éditer l'URL. Les filtres sont préservés dans les liens. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/offres-emploi`}
+        preservedParams={{
+          category: sp["category"],
+          status: sp["status"],
+          search: sp["search"],
+        }}
+      />
     </AdminPageShell>
   );
 }

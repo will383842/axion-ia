@@ -22,10 +22,9 @@ export default async function taxonomyPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="taxonomy"
-      description="Section taxonomy (image-bank V1)."
+      title="Taxonomie"
+      description="Organisation hiérarchique des catégories et étiquettes."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }
