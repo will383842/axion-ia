@@ -222,8 +222,17 @@ export default async function AppelDetailPage({ params }: PageProps): Promise<Re
         </div>
 
         <div className="admin-card admin-card-wide">
-          <h2 className="admin-h2">Données Calendly brutes</h2>
-          <pre className="admin-json text-xs">{JSON.stringify(event.rawPayload, null, 2)}</pre>
+          {/* La charge utile brute de Calendly est légitimement technique — elle
+              sert à comprendre un cas litigieux. Elle n'a pas à s'imposer en
+              pleine page pour autant. */}
+          <details>
+            <summary className="admin-h2 cursor-pointer select-none">
+              Données Calendly brutes
+            </summary>
+            <pre className="admin-json mt-[var(--space-admin-3)] text-xs">
+              {JSON.stringify(event.rawPayload, null, 2)}
+            </pre>
+          </details>
         </div>
       </div>
     </>

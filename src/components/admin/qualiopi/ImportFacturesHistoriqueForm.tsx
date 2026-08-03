@@ -322,7 +322,7 @@ export function ImportFacturesHistoriqueForm(): React.ReactElement {
             <span className="font-semibold text-[color:var(--color-admin-success)]">
               {rapport.importees}
             </span>{" "}
-            importée(s) ·{" "}
+            importée{rapport.importees > 1 ? "s" : ""} ·{" "}
             <span className="text-[color:var(--color-admin-fg-muted)]">
               {rapport.ignorees} ignorée{rapport.ignorees > 1 ? "s" : ""} (doublons)
             </span>
