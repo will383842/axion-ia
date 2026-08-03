@@ -291,10 +291,53 @@ valeur réellement mesurée. Reste à reprendre : ≈ 25 « ⚠ » de bandeaux, 
   date du 24/07 — dix jours. **Non corrigé** : soit la mesure ne tourne plus,
   soit le libellé ment. À trancher avec les logs du worker.
 
+### /qualiopi/pilotage ✅
+- 🔴 Trois tuiles sur quatorze affichaient « En cours de constitution / — » sans
+  dire de quelle métrique il s'agissait. ✅ `libelle` reprend le nom, l'état
+  passe dans `detail` — exports CSV/PDF corrigés du même coup.
+- 🟠 33 boutons de filtre (année / période / type d'action) avant le premier
+  chiffre.
+
+### /qualiopi/emails ✅
+- 🔴 Donnée de test en production dans « Traités récemment ». ✅ supprimée en
+  base le 2026-08-03 (`DELETE 1`, table désormais vide).
+- 🟠 Les natures d'e-mail s'affichent en identifiants techniques, dont deux en
+  anglais (`contract-sent`, `contract-reminder`) et trois en français.
+- ✅ « Emails » → « E-mails », aligné sur le reste de la console.
+
+### /qualiopi/offres
+- 🟠 « Le prix est dérivé de **pricing.ts** » et l'en-tête « PRIX (PRICING.TS) » :
+  un nom de fichier source affiché deux fois à l'écran.
+- 🟡 Pastilles de gamme en identifiants sans accent (`seminaire`, `generale`).
+
+### /qualiopi/appreciations ✅
+- 🔴 Trois champs demandaient de **coller un UUID à la main**. ✅ remplacés par
+  des listes déroulantes lisibles.
+- ✅ Formulaire replié derrière un bouton.
+
+### /activity-logs ✅
+- 🔴 Colonne Action et bloc « Top 20 » en **codes techniques** alors que
+  `decrireAction` existe et sert déjà le tableau de bord. ✅ traduits.
+- 🟠 Colonne « IP » contenant un hash, pas une adresse — colonne mal nommée.
+- 🟠 Colonne « Changements » : JSON brut à défilement interne.
+
+### /qualiopi/rgpd
+- 🟠 « soft-delete », « export JSON » : jargon d'implémentation en sous-titre.
+- 🟡 Deux tuiles sur trois portent une pastille colorée, la troisième non.
+
+### /qualiopi/revue-direction — ⚠️ NE PAS TOUCHER
+- 🔴 **Trois états pour un seul objet** : la tuile dit « Revue 2026 : Créée »,
+  la ligne dit « Archivée », et « Validées : 0 ».
+- 🔴 « 0 décision » / « 0 action » en orange, sans dire que c'est une
+  non-conformité majeure (indicateur 32) ni comment la lever.
+- ⚠️ **La PR #524 d'un autre chantier traite déjà cette page** (« la revue de
+  direction devient remplissable »). Rien n'a été modifié ici pour éviter le
+  conflit — à revérifier après sa fusion.
+
 ---
 
 ## Reste à parcourir
 
-186 vues sur 204 (routes statiques). Prochains lots par ordre d'usage :
+170 vues sur 204 (routes statiques). Prochains lots par ordre d'usage :
 content-gen (58 vues restantes), image-bank (12), qualiopi (30),
 contacts (11), presse (6).
