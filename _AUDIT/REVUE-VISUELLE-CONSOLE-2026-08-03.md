@@ -179,10 +179,84 @@ valeur réellement mesurée. Reste à reprendre : ≈ 25 « ⚠ » de bandeaux, 
   variés). C'est la capture d'écran qui ne composite pas les images en
   `loading="lazy"` — pas un défaut d'interface.
 
+### /content-gen
+- 🔴 **Deux en-têtes empilés** : une barre « Content Generator · 1 alerte ·
+  + Nouvelle campagne », puis 80 px plus bas le vrai titre « Générateur de
+  contenus » avec un **second bouton « + Nouvelle campagne » identique**. La
+  même action primaire est offerte deux fois à l'écran.
+- 🔴 Le produit s'appelle « Content Generator » dans la barre et « Générateur
+  de contenus » dans le titre.
+- 🔴 « Kill switch ACTIF — toutes générations stoppées » est noyé dans la ligne
+  de description grise, à égalité avec « auteur Manon ». Un arrêt total de
+  production doit être un bandeau, pas un fragment de sous-titre.
+- 🟠 Bandeau d'anomalie : « Pipeline bloque : 1 campagne(s) running, 0 job cree
+  depuis 4h » — **accents manquants** (bloque, cree), anglicismes (running,
+  job), « campagne(s) ».
+- 🟠 Le bouton « Kill switch » ne dit pas s'il active ou désactive.
+- 🟡 « Sites web augmentes » (sans accent) dans les tuiles.
+- 🟡 « KB seedée », « drip-window », « cap quotidien », « tier-1 » : jargon
+  dense dans un texte destiné à l'opérateur.
+
+### /qualiopi/conformite
+- 🟠 « ★ » devant certains numéros d'indicateurs, sans légende nulle part.
+- 🟠 Trois nombres (32 indicateurs / 23 applicables / 9 couverts) sans que rien
+  n'explique le passage de 32 à 23.
+- 🟠 Colonne « Éléments constatés » : puces de phrases techniques dans une
+  cellule → hauteurs de lignes très inégales.
+- 🟠 « Registre des signatures — qui a signé quoi » : lien souligné nu, isolé
+  entre le sous-titre et les tuiles.
+- 🟡 Le score « 39 % » n'est pas coloré selon sa gravité.
+- 🟡 « Exporter le manifeste (JSON + MD) » : jargon dans un libellé de bouton.
+
+### /coaching
+- 🔴 **Aucun encadrement sur toute la page** : les 4 tuiles du haut n'ont ni
+  fond ni bordure, tout le reste est du texte nu posé sur le canvas. C'est
+  exactement le reproche « manque d'encadrement / trop textuel ».
+- 🔴 « Statut des séances » : titre de section suivi de **rien** — pas même un
+  état vide.
+- 🔴 « Gain de temps par métier » : les en-têtes de colonnes (Prestation /
+  Séances / Gain h/sem) s'affichent avec « Aucune donnée » posé en dehors du
+  tableau → tableau fantôme.
+- 🟠 Pas d'`AdminPageHeader` : ni sous-titre, ni bouton — « Voir les séances »
+  est un lien texte.
+- 🟡 « 0.0 » (point décimal anglais) au lieu de « 0,0 ».
+
+### /presse/communiques
+- 🟠 Le `<select>` « Ordre manuel » est trop étroit : le libellé passe sous le
+  chevron.
+- 🟠 Quatre contrôles de filtre de hauteurs et largeurs différentes sur une
+  même ligne, non alignés.
+- 🟠 Flèches ↑/↓ de réordonnancement : deux petits boutons gris sans infobulle,
+  expliqués dans une note 40 px plus bas.
+- 🟠 « Éditer » : lien nu sans en-tête de colonne (**3ᵉ page avec ce défaut**).
+- 🟡 Deux styles de badge sur la même ligne (« JALON » gris, « ● PUBLIÉ » vert).
+
+### /documents-interventions
+- 🔴 **Trois barres de navigation empilées avant le titre** (« Documents de
+  prestation / Boîte à documents », puis « Formations / 1-to-1 / Audit », puis
+  « Annuaire équipe / Importer un kit » en liens soulignés). Le titre arrive en
+  quatrième position, à 190 px du haut — et ces entrées sont déjà toutes dans
+  la barre latérale.
+- 🟠 Chaque carte affiche le **slug technique** (`ia-pour-bien-commencer`) en
+  chasse fixe, aussi présent que le nom lisible.
+- 🟠 Les cartes n'ont aucune action visible ni indice qu'elles sont cliquables.
+- 🟡 La première carte occupe une ligne seule, les suivantes sont sur deux
+  colonnes : grille irrégulière.
+
+### /chatbot
+- 🔴 **« $0.00 »** — devise dollar et point décimal anglais dans une console
+  française. Doit être « 0,00 € ».
+- 🟠 Tuile « Escalades ouvertes 4 » sous-titrée « 4 au total » : redondant et
+  déroutant.
+- 🟠 « Lancer l'ingestion » : bouton sans indication de ce qu'il déclenche ni
+  confirmation.
+- 🟠 Grille de 5 tuiles en 3 + 2, avec un vide à droite de la seconde rangée.
+- 🟡 Badges « OUVERTE » alignés à droite hors colonne (pas d'en-tête).
+
 ---
 
 ## Reste à parcourir
 
-192 vues sur 204 (routes statiques). Prochains lots par ordre d'usage :
-content-gen (59 vues), image-bank (13), presse (7), coaching (3),
-documents-interventions (6), chatbot (5), contacts (11).
+186 vues sur 204 (routes statiques). Prochains lots par ordre d'usage :
+content-gen (58 vues restantes), image-bank (12), qualiopi (30),
+contacts (11), presse (6).
