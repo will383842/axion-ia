@@ -231,7 +231,7 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
           <AdminEmptyState
             icon={<Euro size={24} />}
             title="Aucun relevé sur cette période"
-            description="Lancez le run, ou vérifiez qu'un formateur indépendant a bien un barème et un régime de TVA renseignés."
+            description="Lancez le calcul, ou vérifiez qu'un formateur indépendant a bien un barème et un régime de TVA renseignés."
           />
         ) : (
           <table className="admin-table mt-[var(--space-admin-3)]">

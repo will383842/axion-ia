@@ -353,7 +353,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://dash.cloudflare.com/?to=/:account/r2",
       status: r2.status,
       detail: r2.detail,
-      paid: "0 € (Free tier 10 GB stockage + 1M requests/mois)",
+      paid: "0 € (offre gratuite : 10 Go de stockage, 1 M de requêtes/mois)",
     },
     {
       name: "Cloudflare",
@@ -361,7 +361,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://dash.cloudflare.com",
       status: cloudflare.status,
       detail: cloudflare.detail,
-      paid: "0 € (Free plan)",
+      paid: "0 € (offre gratuite)",
     },
     {
       name: "Coolify",
@@ -382,7 +382,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       status: "not-checked",
       detail:
         "main = production · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
-      paid: "0 € (Free private repo)",
+      paid: "0 € (dépôt privé gratuit)",
     },
     {
       // Même raison que GitHub repo ci-dessus : l'API Actions runs d'un repo
@@ -393,7 +393,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       status: "not-checked",
       detail:
         "Workflow deploy-coolify.yml · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
-      paid: "0 € (2000 min/mois free)",
+      paid: "0 € (2 000 min/mois incluses)",
     },
     {
       name: "UptimeRobot",
@@ -401,7 +401,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://uptimerobot.com/dashboard",
       status: uptimeRobot.status,
       detail: uptimeRobot.detail,
-      paid: "0 € (Free plan, 50 monitors)",
+      paid: "0 € (offre gratuite, 50 sondes)",
     },
     {
       name: "Sentry",
@@ -409,7 +409,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://sentry.io/organizations/axion-ia-prod/projects/",
       status: sentry.status,
       detail: sentry.detail,
-      paid: "0 € (Free 5k errors/mois)",
+      paid: "0 € (5 000 erreurs/mois incluses)",
     },
     {
       name: "Plausible",
