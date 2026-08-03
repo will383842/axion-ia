@@ -62,7 +62,7 @@ export function CaseStudiesV2({
   const columns: ReadonlyArray<AdminTableColumn<CaseStudyRow>> = [
     {
       key: "publishedAt",
-      header: "Date publi",
+      header: "Publié le",
       cell: (c) => formatDateFrShort(c.publishedAt),
     },
     {

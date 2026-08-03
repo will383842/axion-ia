@@ -16,6 +16,7 @@ import {
   getConfidentialityLabel,
 } from "@/content/knowledge/confidentialities";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
+import { messageErreurKb } from "@/server/knowledge/erreurs-labels";
 
 interface Props {
   readonly adminPrefix: string;
@@ -233,7 +234,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       {state?.error && state.error !== "validation" ? (
         <p className="admin-error" role="alert">
-          Erreur : {state.error}
+          {messageErreurKb(state.error)}
         </p>
       ) : null}
       {state?.error === "validation" && state.fieldErrors ? (

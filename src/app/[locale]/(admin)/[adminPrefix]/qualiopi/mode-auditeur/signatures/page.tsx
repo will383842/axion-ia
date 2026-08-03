@@ -36,6 +36,7 @@ import {
 } from "@/server/qualiopi/documents/signature/registre-verification";
 import { revoquerSignatureAction } from "@/server/actions/qualiopi/signature-revocation";
 import { nomPartie } from "@/server/qualiopi/documents/signature/parties-labels";
+import { LIBELLE_ANOMALIE_CHAINE } from "@/server/qualiopi/emargement/chaine-labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -80,14 +81,9 @@ const LIBELLE_ANOMALIE: Readonly<Record<string, string>> = {
   partie_hors_circuit: "Une partie a signé alors que le circuit de cette pièce ne l'attend pas.",
 };
 
-const LIBELLE_CHAINE: Readonly<Record<string, string>> = {
-  premier_maillon_chaine: "Chaînage : premier maillon incohérent.",
-  rupture_chainage: "Chaînage rompu : une ligne semble avoir été retirée après coup.",
-  empreinte_invalide: "Empreinte invalide : le contenu scellé ne correspond plus.",
-  version_inconnue: "Version de tuple inconnue : l'empreinte n'est plus recalculable.",
-  tuple_irrecalculable: "Tuple irrecalculable : il manque des données pour vérifier.",
-  maillon_illisible: "Maillon illisible.",
-};
+// Les six libellés vivent dans chaine-labels.ts : le registre AFEST les
+// affichait bruts faute de les partager.
+const LIBELLE_CHAINE = LIBELLE_ANOMALIE_CHAINE;
 
 /**
  * 🔴 LE REGISTRE QUE LIT L'AUDITRICE DÉCRIVAIT SES SIGNATAIRES EN VALEURS

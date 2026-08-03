@@ -92,7 +92,7 @@ export function ConnaissancesV2({
         </AdminBadge>
       ),
     },
-    { key: "updatedAt", header: "Maj", cell: (e) => formatDateFrShort(e.updatedAt) },
+    { key: "updatedAt", header: "Modifiée le", cell: (e) => formatDateFrShort(e.updatedAt) },
   ];
 
   return (

@@ -77,7 +77,7 @@ export function NewsletterV2({
       cell: (s) => formatDateFrShort(s.createdAt),
     },
     { key: "email", header: "Email", cell: (s) => s.email },
-    { key: "locale", header: "Locale", cell: (s) => s.locale.toUpperCase() },
+    { key: "locale", header: "Langue", cell: (s) => s.locale.toUpperCase() },
     {
       key: "status",
       header: "Statut",

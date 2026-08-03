@@ -67,7 +67,7 @@ export async function SubmissionDetailContent({
     <AdminPageShell>
       <AdminPageHeader
         title={`${typeLabel} · ${titreSociete}`}
-        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · locale ${submission.locale.toUpperCase()}`}
+        description={`Reçue le ${formatDateFrShort(submission.submittedAt)} · langue ${submission.locale.toUpperCase()}`}
         breadcrumbs={
           <a href={backHref} className="admin-link admin-back">
             {backLabel}

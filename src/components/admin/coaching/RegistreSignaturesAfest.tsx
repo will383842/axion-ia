@@ -24,6 +24,7 @@
 
 import { revoquerSignatureSeanceAfestAction } from "@/server/actions/qualiopi/signature-revocation";
 import type { RegistreSeancesAfest } from "@/server/qualiopi/coaching-afest/signature/registre-seances";
+import { libelleAnomalieChaine } from "@/server/qualiopi/emargement/chaine-labels";
 
 const horodatageParis = new Intl.DateTimeFormat("fr-FR", {
   dateStyle: "short",
@@ -101,7 +102,9 @@ export function RegistreSignaturesAfest({
               </span>
             ) : (
               <span className="text-terracotta">
-                {`chaîne altérée : ${c.resultat.anomalies.map((a) => a.type).join(", ")}`}
+                {`chaîne altérée : ${c.resultat.anomalies
+                  .map((a) => libelleAnomalieChaine(a.type))
+                  .join(", ")}`}
               </span>
             )}
           </li>

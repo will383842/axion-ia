@@ -29,6 +29,7 @@ import type {
   KbStatus,
   KbType,
 } from "../../../../../../../prisma/generated/client";
+import { messageErreurKb } from "@/server/knowledge/erreurs-labels";
 
 export interface EntrySnapshot {
   readonly id: string;
@@ -271,7 +272,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {metaState?.error && metaState.error !== "validation" ? (
           <p className="admin-error" role="alert">
-            Erreur : {metaState.error}
+            {messageErreurKb(metaState.error)}
           </p>
         ) : null}
       </form>
@@ -323,7 +324,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {bodyState && "error" in bodyState && bodyState.error ? (
           <p className="admin-error" role="alert">
-            Erreur : {String(bodyState.error)}
+            {messageErreurKb(String(bodyState.error))}
           </p>
         ) : null}
       </form>
@@ -348,7 +349,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {delState && "error" in delState && delState.error ? (
           <p className="admin-error" role="alert">
-            Erreur : {String(delState.error)}
+            {messageErreurKb(String(delState.error))}
           </p>
         ) : null}
       </form>

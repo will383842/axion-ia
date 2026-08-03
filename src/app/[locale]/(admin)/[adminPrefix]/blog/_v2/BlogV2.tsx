@@ -61,7 +61,7 @@ export function BlogV2({
   const columns: ReadonlyArray<AdminTableColumn<ArticleRow>> = [
     {
       key: "publishedAt",
-      header: "Date publi",
+      header: "Publié le",
       cell: (a) => formatDateFrShort(a.publishedAt),
     },
     { key: "title", header: "Titre (FR)", cell: (a) => a.translations[0]?.title ?? "(sans titre)" },

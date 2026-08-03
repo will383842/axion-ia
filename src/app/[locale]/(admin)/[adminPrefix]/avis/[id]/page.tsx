@@ -114,8 +114,15 @@ export default async function AvisDetailPage({ params, searchParams }: PageProps
             </p>
             <form action={replyForm} className="space-y-3">
               <input type="hidden" name="id" value={r.id} />
+              {/* 🔴 L'unique nom accessible du champ était le TEXTE DU
+                  PLACEHOLDER : un lecteur d'écran annonçait « Merci pour votre
+                  retour » comme intitulé, c'est-à-dire l'exemple à la place de
+                  la question. */}
+              <label htmlFor="replyBody" className="admin-label">
+                Votre réponse publique
+              </label>
               <textarea
-                aria-label="Merci pour votre retour"
+                id="replyBody"
                 name="replyBody"
                 rows={4}
                 maxLength={3000}

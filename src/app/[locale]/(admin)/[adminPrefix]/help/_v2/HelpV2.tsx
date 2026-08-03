@@ -60,7 +60,7 @@ export function HelpV2({
   const columns: ReadonlyArray<AdminTableColumn<HelpRow>> = [
     {
       key: "publishedAt",
-      header: "Date publi",
+      header: "Publié le",
       cell: (a) => formatDateFrShort(a.publishedAt),
     },
     { key: "title", header: "Titre (FR)", cell: (a) => a.translations[0]?.title ?? "(sans titre)" },
@@ -126,7 +126,7 @@ export function HelpV2({
                 className="admin-input"
               >
                 <option value="all">Tous</option>
-                <option value="yes">Tutoriel (HowTo)</option>
+                <option value="yes">Tutoriel pas à pas</option>
                 <option value="no">Article standard</option>
               </select>
             </div>
