@@ -265,7 +265,19 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         <DocSection title="Client">
           <FieldRow label="Raison sociale" value={data.client.raisonSociale} required />
           {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
-          {data.client.adresse ? <FieldRow label="Adresse" value={data.client.adresse} /> : null}
+          {/*
+            `required` et non conditionnel : l'article L.441-9 C. com. impose « le nom
+            des parties ainsi que leur adresse ». Rendue en conditionnel, la ligne
+            disparaissait quand la donnée manquait — et la facture sortait non
+            conforme sans que rien ne le signale. Constaté sur AXI-FACT-2026-001 :
+            `destinataire_adresse` vide en base, aucune adresse au PDF, aucun
+            avertissement. `required` affiche « Non renseigné », ce qui rend le
+            manque visible à la relecture au lieu de le masquer.
+
+            Le SIRET de l'acheteur reste conditionnel : L.441-9 n'exige que le nom et
+            l'adresse. On l'affiche quand on l'a, sans le réclamer.
+          */}
+          <FieldRow label="Adresse" value={data.client.adresse ?? ""} required />
           {data.client.numeroTvaIntracom ? (
             <FieldRow label="N° TVA intracommunautaire" value={data.client.numeroTvaIntracom} />
           ) : null}

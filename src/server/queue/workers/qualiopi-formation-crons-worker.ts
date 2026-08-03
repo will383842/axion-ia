@@ -339,14 +339,44 @@ async function handleAttestationsAuto(): Promise<void> {
     return;
   }
 
-  // Trouve tous les enrollments éligibles : session realisee, pas encore d'attestation
+  // Trouve tous les enrollments éligibles : session realisee, pas encore d'attestation.
+  //
+  // 🔴 GARDE (2026-08-03) — `evaluations: { some: { type: "finale" } }`
+  //
+  // Sans cette condition, ce cron émettait une attestation de fin de formation
+  // pour TOUT inscrit d'une session `realisee`, évaluation des acquis ou non.
+  // Constaté en production sur le premier dossier réel (AXI-ATT-2026-003) : le
+  // document certifiait que la stagiaire « en a satisfait les exigences » et
+  // affichait, deux lignes plus bas, « Compétences acquises : Évaluation des
+  // acquis non réalisée ». Une attestation qui se contredit elle-même.
+  //
+  // La chronologie rendait le défaut systématique, pas accidentel :
+  //   J+1 08:00 UTC  cloture-auto        → session `realisee`
+  //   J+1 09:00 UTC  attestations-auto   → attestation émise
+  //   J+2 07:00 UTC  alerte R05          → « évaluation manquante » : 22 h trop tard
+  // L'organisme était donc prévenu APRÈS avoir délivré la pièce.
+  //
+  // L'attestation vaut preuve de l'indicateur 11 (atteinte des objectifs, non
+  // graduable). L'émettre sans évaluation ne fait pas gagner un indicateur : ça
+  // fabrique une pièce qui documente le manquement. On ne génère plus, et on
+  // laisse l'alerte R05 faire son travail.
+  // `satisfies` plutôt que `as const` : `as const` fige le tableau de `in` en
+  // `readonly`, que Prisma refuse.
+  const where = {
+    session: { statut: "realisee" },
+    statut: { in: ["planifiee", "presente"] },
+    attestationGenereeAt: null,
+  } satisfies Prisma.EnrollmentWhereInput;
+
   const enrollments = await prisma.enrollment.findMany({
-    where: {
-      session: { statut: "realisee" },
-      statut: { in: ["planifiee", "presente"] },
-      attestationGenereeAt: null,
-    },
+    where: { ...where, evaluations: { some: { type: "finale" } } },
     select: { id: true, session: { select: { id: true } } },
+  });
+
+  // Comptés séparément pour que le log dise « 3 en attente d'évaluation » plutôt
+  // que de rester silencieux sur ce qu'il a délibérément sauté.
+  const enAttenteEvaluation = await prisma.enrollment.count({
+    where: { ...where, evaluations: { none: { type: "finale" } } },
   });
 
   let ok = 0;
@@ -366,7 +396,8 @@ async function handleAttestationsAuto(): Promise<void> {
   }
 
   console.log(
-    `[formation-crons] attestations-auto: ${ok} générées, ${ko} erreurs (${enrollments.length} candidats scannés)`,
+    `[formation-crons] attestations-auto: ${ok} générées, ${ko} erreurs ` +
+      `(${enrollments.length} candidats scannés, ${enAttenteEvaluation} en attente d'évaluation finale)`,
   );
 }
 

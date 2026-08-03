@@ -23,8 +23,10 @@ import {
 } from "@/server/qualiopi/financements/e-invoicing/canal";
 import { isRegimeTva, REGIME_TVA_DEFAUT } from "@/server/qualiopi/legal/tva";
 import { getHistoriqueRelancesFacture } from "@/server/qualiopi/financements/relance-contexte";
+import { genererFacturePdfAction } from "@/server/actions/qualiopi/financements";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { RegenererFacturePdfButton } from "@/components/admin/qualiopi/RegenererFacturePdfButton";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
 
 export const dynamic = "force-dynamic";
@@ -236,7 +238,7 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
       {/* Gaté peutEcrire : la route /api/qualiopi/documents n'autorise que
           admin/super_admin — on n'affiche pas un lien qui renverrait 403. */}
       {peutEcrire && facture.documentId !== null && (
-        <div className="mb-[var(--space-admin-6)]">
+        <div className="mb-[var(--space-admin-6)] flex flex-wrap items-start gap-[var(--space-admin-4)]">
           <a
             href={`/api/qualiopi/documents/${facture.documentId}`}
             target="_blank"
@@ -245,6 +247,14 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
           >
             Télécharger le PDF
           </a>
+          {/* « Télécharger » sert le document STOCKÉ : une correction de données
+              (destinataire, adresse client, date d'exécution) reste invisible au
+              PDF tant qu'il n'est pas refabriqué. Sans ce bouton, aucune facture
+              déjà émise ne pouvait être remise en conformité. */}
+          <RegenererFacturePdfButton
+            factureId={facture.id}
+            regenererAction={genererFacturePdfAction}
+          />
         </div>
       )}
 
