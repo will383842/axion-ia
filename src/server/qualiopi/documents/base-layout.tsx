@@ -1069,7 +1069,17 @@ export function BulletList({ items, variant = "default" }: BulletListProps): Rea
   return (
     <View>
       {items.map((item, i) => (
-        <View key={i} style={bulletLocal.row}>
+        // 🔴 `wrap={false}` — constaté le 2026-08-03 sur AXI-DOC-2026-007
+        // (lettre de mission réelle). Sans lui, @react-pdf coupe la rangée au
+        // saut de page : la PUCE reste seule en bas de la page précédente et son
+        // texte repart en haut de la suivante SANS marqueur, désaligné des
+        // autres items. Sur une pièce contractuelle, une obligation qui
+        // s'ouvre sans puce se lit comme la suite du paragraphe d'avant.
+        //
+        // Le risque inverse — un item plus haut qu'une page, donc tronqué — ne
+        // se pose pas ici : ce sont des phrases, et les 11 gabarits qui
+        // utilisent ce composant n'en portent aucune qui approche une page.
+        <View key={i} style={bulletLocal.row} wrap={false}>
           <Text style={[bulletLocal.glyph, { color }]}>{glyph}</Text>
           <Text style={bulletLocal.text}>{item}</Text>
         </View>
