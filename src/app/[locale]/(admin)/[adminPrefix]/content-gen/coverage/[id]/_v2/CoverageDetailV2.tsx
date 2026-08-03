@@ -23,6 +23,12 @@ import {
 import { ConfirmSubmitButton } from "../../_v2/ConfirmSubmitButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { Pause, RotateCcw } from "lucide-react";
+import {
+  WIZARD_COMPANY_SIZES,
+  WIZARD_ORG_TYPES,
+  WIZARD_SEARCH_INTENTS,
+} from "@/server/actions/content-gen/campaign-wizard-constants";
+import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -73,6 +79,53 @@ interface CampaignData {
 interface Props {
   campaign: CampaignData;
   adminPrefix?: string;
+}
+
+/**
+ * Une répartition en pourcentages, lisible.
+ *
+ * 🔴 Les trois cartes rendaient un `JSON.stringify(…, null, 2)` dans un
+ * `<pre>` : `{ "blog_article": 18, "guide_pilier": 12 }`. Accolades,
+ * guillemets et clés d'enum pour ce qui tient en une liste.
+ */
+function Repartition({
+  valeurs,
+  libelle,
+}: {
+  valeurs: unknown;
+  libelle: (cle: string) => string;
+}): React.ReactElement {
+  if (valeurs === null || typeof valeurs !== "object") {
+    return <p className="admin-meta-small">Aucune répartition définie.</p>;
+  }
+  const entrees = Object.entries(valeurs as Record<string, unknown>).filter(
+    ([, v]) => typeof v === "number",
+  ) as Array<[string, number]>;
+  if (entrees.length === 0) {
+    return <p className="admin-meta-small">Aucune répartition définie.</p>;
+  }
+  entrees.sort((a, b) => b[1] - a[1]);
+  return (
+    <ul className="admin-inline-list">
+      {entrees.map(([cle, part]) => (
+        <li key={cle} title={cle}>
+          {libelle(cle)} — {part} %
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Clé d'audience « TAILLE:ORGANISATION » → « PME · Association ». */
+function libelleAudience(cle: string): string {
+  const [taille = cle, org] = cle.split(":");
+  const t = WIZARD_COMPANY_SIZES.find((x) => x.value === taille)?.labelFr ?? taille;
+  const o = WIZARD_ORG_TYPES.find((x) => x.value === org)?.labelFr;
+  return o === undefined ? t : `${t} · ${o}`;
+}
+
+function libelleIntention(cle: string): string {
+  return WIZARD_SEARCH_INTENTS.find((x) => x.value === cle)?.labelFr ?? `« ${cle} »`;
 }
 
 export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactElement {
@@ -155,7 +208,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   max={1000}
                   className="admin-input" style={{ width: 70 }}
                 />
-                <button type="submit" className="admin-button-ghost">+ slots</button>
+                <button type="submit" className="admin-button-ghost">+ Ajouter des villes</button>
               </form>
             )}
             {campaign.status !== "completed" && campaign.status !== "cancelled" ? (
@@ -166,7 +219,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                     className="admin-button-ghost"
                     title="Cancel les jobs queued/running uniquement — préserve les contenus déjà générés en review"
                   >
-                    Annuler (running only)
+                    Annuler les générations en cours
                   </button>
                 </form>
                 <form action={cancelAll}>
@@ -175,7 +228,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                     className="admin-button-ghost admin-button-ghost-danger"
                     title="Cancel TOUS les jobs non publiés — incluant needs_review/approved"
                   >
-                    Annuler (all)
+                    Tout annuler
                   </button>
                 </form>
               </>
@@ -258,25 +311,19 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Distribution types contenu</h2>
-        <pre className="whitespace-pre-wrap text-[length:var(--text-admin-sm)]">
-          {JSON.stringify(campaign.typeDistribution, null, 2)}
-        </pre>
+        <h2 className="admin-h2">Répartition par type de contenu</h2>
+        <Repartition valeurs={campaign.typeDistribution} libelle={contentTypeLabelFr} />
       </AdminCard>
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Mix audiences</h2>
-        <pre className="whitespace-pre-wrap text-[length:var(--text-admin-sm)]">
-          {JSON.stringify(campaign.audienceMix, null, 2)}
-        </pre>
+        <h2 className="admin-h2">Répartition par audience</h2>
+        <Repartition valeurs={campaign.audienceMix} libelle={libelleAudience} />
       </AdminCard>
 
       {campaign.searchIntentMix ? (
         <AdminCard className="mb-[var(--space-admin-5)]">
-          <h2 className="admin-h2">Mix intentions</h2>
-          <pre className="whitespace-pre-wrap text-[length:var(--text-admin-sm)]">
-            {JSON.stringify(campaign.searchIntentMix, null, 2)}
-          </pre>
+          <h2 className="admin-h2">Répartition par intention de recherche</h2>
+          <Repartition valeurs={campaign.searchIntentMix} libelle={libelleIntention} />
         </AdminCard>
       ) : null}
 

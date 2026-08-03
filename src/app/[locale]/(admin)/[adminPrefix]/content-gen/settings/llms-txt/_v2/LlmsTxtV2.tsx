@@ -40,7 +40,7 @@ export function LlmsTxtV2({ content }: Props): React.ReactElement {
           </div>
           <div className="admin-filters-actions">
             <button type="submit" className="admin-button">
-              Enregistrer + revalidate /llms.txt
+              Enregistrer et mettre le fichier en ligne
             </button>
           </div>
         </form>

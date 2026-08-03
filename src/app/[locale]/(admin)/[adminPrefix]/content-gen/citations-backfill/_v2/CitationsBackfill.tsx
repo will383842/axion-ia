@@ -45,7 +45,7 @@ export function CitationsBackfill() {
         message:
           res.totalArticles === 0
             ? "Aucun article FR à scanner."
-            : `${res.totalArticles} article(s) FR à scanner. Sur les ${res.sample.length} premiers, ${res.sampleWithCitations} obtiendrai(en)t des sources. Lance le rattrapage par lot de ${res.batchLimit}.`,
+            : `${res.totalArticles} article${res.totalArticles > 1 ? "s" : ""} FR à scanner. Sur les ${res.sample.length} premiers, ${res.sampleWithCitations} obtiendrai(en)t des sources. Lance le rattrapage par lot de ${res.batchLimit}.`,
       });
     });
   }
@@ -73,12 +73,12 @@ export function CitationsBackfill() {
         setDone(true);
         setStatus({
           kind: "info",
-          message: `Terminé — ${nextCumul.processed} article(s) scanné(s) sur ${nextCumul.batches} lot(s), ${nextCumul.updated} avec sources, ${nextCumul.citations} citation(s) écrite(s) au total.`,
+          message: `Terminé — ${nextCumul.processed} article${nextCumul.processed > 1 ? "s" : ""} scanné${nextCumul.processed > 1 ? "s" : ""} sur ${nextCumul.batches} lot${nextCumul.batches > 1 ? "s" : ""}, ${nextCumul.updated} avec sources, ${nextCumul.citations} citation${nextCumul.citations > 1 ? "s" : ""} écrite${nextCumul.citations > 1 ? "s" : ""} au total.`,
         });
       } else {
         setStatus({
           kind: "info",
-          message: `Lot ${nextCumul.batches} : ${res.processed} scanné(s), ${res.updated} avec sources, ${res.citations} citation(s) écrite(s). Il reste ${res.remaining} article(s) → recliquez « Continuer ».`,
+          message: `Lot ${nextCumul.batches} : ${res.processed} scanné${res.processed > 1 ? "s" : ""}, ${res.updated} avec sources, ${res.citations} citation${res.citations > 1 ? "s" : ""} écrite${res.citations > 1 ? "s" : ""}. Il reste ${res.remaining} article${res.remaining > 1 ? "s" : ""} → recliquez « Continuer ».`,
         });
       }
     });
@@ -168,8 +168,9 @@ export function CitationsBackfill() {
                 aria-hidden="true"
                 className="inline-block shrink-0 align-[-0.125em]"
               />{" "}
-              {lastRun.hallucinatedCount} URL(s) hors-catalogue détectée(s) dans ce lot — ignorées
-              (non persistées).
+              {lastRun.hallucinatedCount} URL{lastRun.hallucinatedCount > 1 ? "s" : ""}{" "}
+              hors-catalogue détectée{lastRun.hallucinatedCount > 1 ? "s" : ""} dans ce lot —
+              ignorées (non persistées).
             </p>
           ) : null}
         </div>
@@ -186,7 +187,7 @@ function ResultList({ items }: { items: { slug: string; action: string; citation
           <code>{it.slug}</code>
           {" — "}
           {it.action === "persisted"
-            ? `${it.citations ?? 0} source(s)`
+            ? `${it.citations ?? 0} source${(it.citations ?? 0) > 1 ? "s" : ""}`
             : it.action === "already"
               ? "déjà fait"
               : "aucune source"}

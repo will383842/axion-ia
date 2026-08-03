@@ -67,7 +67,9 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
       if (errors.length > 0) {
         setError(errors.join(" | "));
       } else {
-        setSuccessMsg(`${changed.length} paramètre(s) enregistré(s).`);
+        setSuccessMsg(
+          `${changed.length} paramètre${changed.length > 1 ? "s" : ""} enregistré${changed.length > 1 ? "s" : ""}.`,
+        );
         router.refresh();
       }
     });

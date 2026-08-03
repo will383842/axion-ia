@@ -155,8 +155,10 @@ export default async function PlanningTimelinePage({
     <>
       <AdminPageHeader
         title="Timeline ressources"
-        description={`${MONTHS[month - 1]} ${year} · ${lignes.length} ligne(s)${
-          nonStaffees > 0 ? ` · ${nonStaffees} prestation(s) sans formateur` : ""
+        description={`${MONTHS[month - 1]} ${year} · ${lignes.length} ligne${lignes.length > 1 ? "s" : ""}${
+          nonStaffees > 0
+            ? ` · ${nonStaffees} prestation${nonStaffees > 1 ? "s" : ""} sans formateur`
+            : ""
         }`}
       />
 

@@ -26,7 +26,7 @@ export async function CostsV2(): Promise<React.ReactElement> {
     { key: "tokensOut", header: "Jetons sortie", cell: (p) => p.tokensOutput.toLocaleString() },
     {
       key: "cap",
-      header: "Cap mensuel",
+      header: "Plafond mensuel",
       cell: (p) => {
         const config = stats.providers.find((c) => c.provider === p.provider);
         const cap = config?.monthlyCapUsd ?? 0;

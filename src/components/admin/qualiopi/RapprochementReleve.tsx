@@ -183,7 +183,9 @@ export function RapprochementReleve(): React.ReactElement {
             {resultat.suggestions.length === 0 ? (
               <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                 Aucun crédit du relevé ne correspond à une facture ouverte (
-                {resultat.nbFacturesOuvertes} facture(s) ouverte(s) considérée(s)).
+                {resultat.nbFacturesOuvertes} facture{resultat.nbFacturesOuvertes > 1 ? "s" : ""}{" "}
+                ouverte{resultat.nbFacturesOuvertes > 1 ? "s" : ""} considérée
+                {resultat.nbFacturesOuvertes > 1 ? "s" : ""}).
               </p>
             ) : (
               <table className="admin-table">

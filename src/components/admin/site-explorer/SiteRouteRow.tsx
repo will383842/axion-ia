@@ -34,6 +34,7 @@ export function SiteRouteRow({ route }: Props) {
         <Link
           href={adminPath("fr", `site-explorer/${route.id}`)}
           className="admin-link block truncate font-mono text-xs"
+          title={displayPath}
         >
           {displayPath}
         </Link>

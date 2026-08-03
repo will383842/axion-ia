@@ -107,9 +107,10 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
                     {r.statut === "termine" ? (
                       <>
                         {" "}
-                        · <strong className="text-success">{s.created ?? 0}</strong> créé(s) ·{" "}
-                        <strong>{s.updated ?? 0}</strong> mis à jour ·{" "}
-                        <strong>{s.unchanged ?? 0}</strong> inchangé(s)
+                        · <strong className="text-success">{s.created ?? 0}</strong> créé
+                        {(s.created ?? 0) > 1 ? "s" : ""} · <strong>{s.updated ?? 0}</strong> mis à
+                        jour · <strong>{s.unchanged ?? 0}</strong> inchangé
+                        {(s.unchanged ?? 0) > 1 ? "s" : ""}
                       </>
                     ) : null}
                   </div>

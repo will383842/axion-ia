@@ -58,7 +58,7 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
     if (result.success) {
       setFeedback({
         ton: "succes",
-        texte: `Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
+        texte: `Effacement effectué — ${result.deleted.usageLogs} entrée${result.deleted.usageLogs > 1 ? "s" : ""} d'usage + ${result.deleted.downloadLogs} téléchargement${result.deleted.downloadLogs > 1 ? "s" : ""} supprimés. Recharge la page pour vérifier.`,
       });
     } else {
       setFeedback({ ton: "erreur", texte: `Erreur : ${result.error}` });
@@ -88,8 +88,9 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
             Résultats pour l&apos;IP <code className="font-mono text-sm">{initialIp}</code>
           </h2>
           <p className="admin-meta-small">
-            {totalLogs} trace(s) trouvée(s) ({usageLogs.length} consultation(s) +{" "}
-            {downloadLogs.length} téléchargement(s)).
+            {totalLogs} trace{totalLogs > 1 ? "s" : ""} trouvée{totalLogs > 1 ? "s" : ""} (
+            {usageLogs.length} consultation{usageLogs.length > 1 ? "s" : ""} + {downloadLogs.length}{" "}
+            téléchargement{downloadLogs.length > 1 ? "s" : ""}).
           </p>
 
           {usageLogs.length > 0 && (

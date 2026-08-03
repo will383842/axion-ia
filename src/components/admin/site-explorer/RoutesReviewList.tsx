@@ -127,7 +127,9 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
         <label className="flex cursor-pointer items-center gap-2">
           <input type="checkbox" checked={allSelected} onChange={toggleAll} className="rounded" />
           <span className="text-[color:var(--color-admin-fg-muted)]">
-            {selected.size > 0 ? `${selected.size} sélectionnée(s)` : "Tout sélectionner"}
+            {selected.size > 0
+              ? `${selected.size} sélectionnée${selected.size > 1 ? "s" : ""}`
+              : "Tout sélectionner"}
           </span>
         </label>
         {selected.size > 0 && (
@@ -237,6 +239,7 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
               <Link
                 href={adminPath("fr", `site-explorer/${route.id}`)}
                 className="admin-link block truncate font-mono text-xs"
+                title={displayPath}
               >
                 {displayPath}
               </Link>

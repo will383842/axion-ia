@@ -101,7 +101,7 @@ export async function CampaignPresetsV2({ adminPrefix }: Props): Promise<React.R
                 href={`${base}/campaigns/new?preset=${p.slug}`}
                 className="admin-button-cta"
               >
-                Utiliser ce preset
+                Utiliser ce préréglage
               </Link>
             </AdminCard>
           );

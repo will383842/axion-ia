@@ -35,7 +35,7 @@ function LigneMarge({
         {titre}
       </span>
       <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums">
-        {nbSessions} session(s) · CA {fmtEurosCents(caHtCents)}
+        {nbSessions} session{nbSessions > 1 ? "s" : ""} · CA {fmtEurosCents(caHtCents)}
       </span>
       <AdminBadge tone={margeCents < 0 ? "destructive" : "success"}>
         {fmtEurosCents(margeCents)}

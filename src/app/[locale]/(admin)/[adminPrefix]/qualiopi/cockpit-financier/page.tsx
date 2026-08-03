@@ -273,7 +273,10 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
                 >
                   <td className={cellCls}>
                     <span className="font-medium">{s.numero}</span>
-                    <span className="mt-1 block max-w-xs truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <span
+                      className="mt-1 block max-w-xs truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                      title={s.titre}
+                    >
                       {s.titre}
                     </span>
                   </td>

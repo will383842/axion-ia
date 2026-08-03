@@ -419,7 +419,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
       </h2>
       <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         Questionnaires de satisfaction répondus (à chaud + à froid) sur les sessions de l&apos;année
-        : {synthese.global.nbReponses} réponse(s)
+        : {synthese.global.nbReponses} réponse{synthese.global.nbReponses > 1 ? "s" : ""}
         {synthese.global.noteMoyenne !== null
           ? ` · note moyenne globale ${synthese.global.noteMoyenne}/5`
           : ""}

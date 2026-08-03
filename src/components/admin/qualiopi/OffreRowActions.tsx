@@ -67,7 +67,7 @@ export function OffreRowActions(props: OffreRowActionsProps): React.ReactElement
         setSuccessMsg(
           incoherentes.length === 0
             ? `${checked} offre${checked !== 1 ? "s" : ""} vérifiée${checked !== 1 ? "s" : ""} — toutes cohérentes.`
-            : `${incoherentes.length} offre(s) incohérente(s) sur ${checked} : ${incoherentes
+            : `${incoherentes.length} offre${incoherentes.length > 1 ? "s" : ""} incohérente${incoherentes.length > 1 ? "s" : ""} sur ${checked} : ${incoherentes
                 .map((o) => o.code)
                 .join(", ")}.`,
         );

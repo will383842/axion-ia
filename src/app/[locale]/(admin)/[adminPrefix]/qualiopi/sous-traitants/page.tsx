@@ -144,7 +144,10 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <div className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <div
+                      className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                      title={s.objetPrestation ?? ""}
+                    >
                       {s.objetPrestation}
                     </div>
                   </td>

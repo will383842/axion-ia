@@ -116,7 +116,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
     },
     {
       key: "flag",
-      header: "Flag",
+      header: "Signal",
       cell: (r) => (
         <>
           {r.gap ? <AdminBadge tone="warning">opportunity</AdminBadge> : null}{" "}
@@ -138,7 +138,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Keyword tracking"
+        title="Suivi des positions"
         description={`${rows.length} mot${rows.length > 1 ? "s" : ""}-clé${rows.length > 1 ? "s" : ""} suivi${rows.length > 1 ? "s" : ""} · Source GSC + SerpAPI (sync hebdo cron Sprint 12.5 → activé quand credentials fournis).`}
       />
 

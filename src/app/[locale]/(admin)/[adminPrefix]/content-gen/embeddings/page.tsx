@@ -142,14 +142,14 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
       {/* KPI tiles */}
       <div className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
         <AdminStatCard
-          label="Articles avec embedding"
+          label="Articles analysés"
           value={stats.countWith.toLocaleString("fr-FR")}
           meta={`sur ${stats.totalPublished.toLocaleString("fr-FR")} publiés`}
           tone={coverageTone}
           icon={CheckCircle2}
         />
         <AdminStatCard
-          label="Articles sans embedding"
+          label="Articles en attente d'analyse"
           value={stats.countWithout.toLocaleString("fr-FR")}
           meta="à traiter"
           tone={

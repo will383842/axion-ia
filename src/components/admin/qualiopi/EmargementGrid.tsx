@@ -249,7 +249,9 @@ export function EmargementGrid({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSuccessMsg(`${result.data.updated} ligne(s) mise(s) à jour.`);
+        setSuccessMsg(
+          `${result.data.updated} ligne${result.data.updated > 1 ? "s" : ""} mise${result.data.updated > 1 ? "s" : ""} à jour.`,
+        );
         // Les modifications sont persistées : elles cessent d'être « locales ».
         // Sans ce reset, elles resteraient prioritaires sur toute donnée serveur
         // ultérieure et la grille ne se resynchroniserait plus jamais.

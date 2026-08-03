@@ -247,7 +247,7 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   } else if (dedicated.length === 0) {
     routing = `1 seul canal : ${missing.join(", ")} → TELEGRAM_CHAT_ID`;
   } else {
-    routing = `${dedicated.join(", ")} dédié(s) · ${missing.join(", ")} → canal par défaut`;
+    routing = `${dedicated.join(", ")} dédié${dedicated.length > 1 ? "s" : ""} · ${missing.join(", ")} → canal par défaut`;
   }
 
   try {

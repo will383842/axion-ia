@@ -162,10 +162,14 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
           <div style={{ marginTop: "1rem" }}>
             <p>
               <CheckCircle2 size={14} aria-hidden="true" className="inline align-[-2px]" />{" "}
-              <strong>{sitemapState.result.accepted}</strong> acceptée(s) ·{" "}
-              <strong>{sitemapState.result.rejected}</strong> rejetée(s) ·{" "}
-              <strong>{sitemapState.result.processed}</strong> traitée(s) sur{" "}
-              <strong>{sitemapState.result.totalUrls}</strong> URL(s) du sitemap
+              <strong>{sitemapState.result.accepted}</strong> acceptée
+              {sitemapState.result.accepted > 1 ? "s" : ""} ·{" "}
+              <strong>{sitemapState.result.rejected}</strong> rejetée
+              {sitemapState.result.rejected > 1 ? "s" : ""} ·{" "}
+              <strong>{sitemapState.result.processed}</strong> traitée
+              {sitemapState.result.processed > 1 ? "s" : ""} sur{" "}
+              <strong>{sitemapState.result.totalUrls}</strong> URL
+              {sitemapState.result.totalUrls > 1 ? "s" : ""} du sitemap
             </p>
             {sitemapState.result.errors.length > 0 && (
               <details open>

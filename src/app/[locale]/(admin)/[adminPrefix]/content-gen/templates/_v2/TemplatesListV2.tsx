@@ -14,6 +14,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listTemplates, toggleTemplate } from "@/server/actions/content-gen/templates";
+import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
 import type { ContentType } from "../../../../../../../../prisma/generated/client";
 
 const CONTENT_TYPES: ReadonlyArray<ContentType> = [
@@ -56,7 +57,7 @@ export async function TemplatesListV2({
   }
 
   const columns: ReadonlyArray<AdminTableColumn<TemplateRow>> = [
-    { key: "type", header: "Type", cell: (r) => r.contentType },
+    { key: "type", header: "Type", cell: (r) => contentTypeLabelFr(r.contentType) },
     {
       key: "slug",
       header: "Identifiant",
@@ -123,7 +124,7 @@ export async function TemplatesListV2({
                 <option value="">Tous</option>
                 {CONTENT_TYPES.map((t) => (
                   <option key={t} value={t}>
-                    {t}
+                    {contentTypeLabelFr(t)}
                   </option>
                 ))}
               </select>

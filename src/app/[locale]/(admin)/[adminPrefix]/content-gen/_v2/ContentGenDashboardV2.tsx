@@ -204,7 +204,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
                 value={`${c.publishedToday} / ${c.generatedToday}`}
                 meta={
                   c.failedToday > 0
-                    ? `publiés / générés · ${c.failedToday} échec(s)${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
+                    ? `publiés / générés · ${c.failedToday} échec${c.failedToday > 1 ? "s" : ""}${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                     : `publiés / générés${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                 }
                 tone={c.failedToday > 0 ? "warning" : "default"}

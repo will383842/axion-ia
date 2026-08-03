@@ -697,7 +697,9 @@ export function CampaignWizardV2({
                     aria-label="Identifiants villes sélectionnées"
                   />
                   <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                    {state.customVilleSlugs.length} ville(s) sélectionnée(s)
+                    {state.customVilleSlugs.length} ville
+                    {state.customVilleSlugs.length > 1 ? "s" : ""} sélectionnée
+                    {state.customVilleSlugs.length > 1 ? "s" : ""}
                   </span>
                 </>
               ) : null}
@@ -1040,7 +1042,7 @@ export function CampaignWizardV2({
               </dt>
               <dd className="font-semibold">
                 {Object.keys(state.targetSecteurWeights).length > 0
-                  ? `${Object.keys(state.targetSecteurWeights).length} ciblé(s)`
+                  ? `${Object.keys(state.targetSecteurWeights).length} ciblé${Object.keys(state.targetSecteurWeights).length > 1 ? "s" : ""}`
                   : "Non ciblé"}
               </dd>
             </div>

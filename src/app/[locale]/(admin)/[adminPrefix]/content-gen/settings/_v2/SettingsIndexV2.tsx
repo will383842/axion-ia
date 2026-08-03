@@ -9,12 +9,12 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
   {
     href: "providers",
     label: "Providers IA",
-    description: "Toggles, modèles, cost caps, rate-limits",
+    description: "Activation, modèles, plafonds de dépense, limites d'appels",
   },
   {
     href: "batches",
     label: "Batches & workers",
-    description: "Daily batch size, concurrency, retry policy",
+    description: "Taille des lots quotidiens, parallélisme, nouvelles tentatives",
   },
   {
     href: "policies",
@@ -61,7 +61,11 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
     label: "Q/R post-process",
     description: "Auto-create pages, seuil mots, CTR promotion",
   },
-  { href: "kill-switch", label: "Kill switch", description: "Stop all generations en 1 clic" },
+  {
+    href: "kill-switch",
+    label: "Kill switch",
+    description: "Arrêter toutes les générations en un clic",
+  },
   {
     href: "seed-initial",
     label: "Init KB + Presets",

@@ -81,7 +81,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
               icon={AlertTriangle}
             />
             <AdminStatCard
-              label="Articles needs_review (< 0.70)"
+              label="Articles à revoir (score < 0,70)"
               value={String(stats.articlesNeedsReview)}
               meta="dérive sévère 30j"
               tone={stats.articlesNeedsReview > 0 ? "destructive" : "default"}

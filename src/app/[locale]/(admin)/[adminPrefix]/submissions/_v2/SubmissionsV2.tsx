@@ -209,7 +209,7 @@ export async function SubmissionsV2({
       </div>
       <AdminListScaffold
         title=""
-        itemLabel="soumission(s)"
+        itemLabel="soumission"
         total={result.total}
         page={result.page}
         totalPages={result.totalPages}

@@ -54,7 +54,7 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
   }
 
   const columns: ReadonlyArray<AdminTableColumn<PhraseRow>> = [
-    { key: "pattern", header: "Pattern", cell: (r) => <code>{r.pattern}</code> },
+    { key: "pattern", header: "Expression", cell: (r) => <code>{r.pattern}</code> },
     { key: "severity", header: "Sévérité", cell: (r) => r.severity },
     { key: "reason", header: "Raison", cell: (r) => r.reason ?? "—" },
     {
@@ -79,7 +79,7 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="pattern" className="admin-label">
-                Pattern (texte ou regex)
+                Expression (texte ou expression régulière)
               </label>
               <input
                 id="pattern"
@@ -102,8 +102,8 @@ export function BannedPhrasesV2({ rows }: Props): React.ReactElement {
                 Sévérité
               </label>
               <select id="severity" name="severity" className="admin-input" defaultValue="warn">
-                <option value="warn">warn (log seulement)</option>
-                <option value="block">block (rejet doctrine-check)</option>
+                <option value="warn">Avertir (journalisé seulement)</option>
+                <option value="block">Bloquer la publication</option>
               </select>
             </div>
           </div>

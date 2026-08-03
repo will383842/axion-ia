@@ -89,7 +89,7 @@ export default async function QualiopiModeAuditeurPage({ params, searchParams }:
         <AdminStatCard
           label="Score de conformité"
           value={`${scorePct} %`}
-          meta={`${nbCouverts} indicateur(s) couvert(s) sur ${nbApplicables} applicable(s)`}
+          meta={`${nbCouverts} indicateur${nbCouverts > 1 ? "s" : ""} couvert${nbCouverts > 1 ? "s" : ""} sur ${nbApplicables} applicable${nbApplicables > 1 ? "s" : ""}`}
           tone={toneBilan}
           icon={Gauge}
         />

@@ -102,8 +102,10 @@ export function GenererCreneauxButton({
           role="status"
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
-          {result.created} créneau(x) créé(s)
-          {result.reconcilies > 0 && `, ${result.reconcilies} durée(s) corrigée(s)`}.
+          {result.created} créneau(x) créé{result.created > 1 ? "s" : ""}
+          {result.reconcilies > 0 &&
+            `, ${result.reconcilies} durée${result.reconcilies > 1 ? "s" : ""} corrigée${result.reconcilies > 1 ? "s" : ""}`}
+          .
           {result.horsPlan > 0 && (
             <>
               {" "}

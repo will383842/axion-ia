@@ -53,6 +53,19 @@ export const JOB_STATUS_LABELS_FR: Record<ContentGenJobStatus, string> = {
   quarantined_factcheck: "Bloqué (vérification des faits)",
 };
 
+/**
+ * Libellé d'un statut de génération lu depuis une colonne texte.
+ *
+ * La table est typée sur l'enum — c'est ce qui garantit son exhaustivité —
+ * mais les appelants lisent souvent un `string` (statut venant d'une requête
+ * élargie, d'un type miroir, d'une version antérieure du moteur). Un `as` de
+ * confort au point d'appel annulerait la garde ; cette fonction l'assume une
+ * fois, et CITE ce qu'elle ne connaît pas.
+ */
+export function jobStatusLabelFr(statut: string): string {
+  return (JOB_STATUS_LABELS_FR as Record<string, string>)[statut] ?? `« ${statut} »`;
+}
+
 export const JOB_STATUS_TONE: Record<ContentGenJobStatus, AdminTone> = {
   queued: "warning",
   running: "warning",

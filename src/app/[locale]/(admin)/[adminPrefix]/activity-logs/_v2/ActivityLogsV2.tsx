@@ -86,6 +86,54 @@ function libelleTypeCible(type: string): string {
   return TYPE_CIBLE_LABELS[type] ?? `« ${type} »`;
 }
 
+/**
+ * 🔴 LA COLONNE « CHANGEMENTS » DÉVERSAIT UN JSON INDENTÉ dans la cellule :
+ * accolades, guillemets et noms de colonnes SQL. Ce qu'on veut lire, c'est
+ * « quel champ est passé de quoi à quoi ». Le JSON complet reste accessible
+ * derrière un repli, pour les cas où la forme brute est la seule fidèle.
+ */
+function Changements({ valeur }: { valeur: unknown }): React.ReactElement {
+  if (valeur === null || valeur === undefined) return <span className="admin-meta-small">—</span>;
+  if (typeof valeur !== "object") {
+    return <span className="admin-meta-small">{String(valeur)}</span>;
+  }
+  const entrees = Object.entries(valeur as Record<string, unknown>);
+  if (entrees.length === 0) return <span className="admin-meta-small">—</span>;
+
+  /** `{ from, to }` est la forme que posent les actions admin. */
+  const ligne = ([champ, v]: [string, unknown]): string => {
+    if (v !== null && typeof v === "object" && "from" in v && "to" in v) {
+      const o = v as { from: unknown; to: unknown };
+      return `${champ} : ${afficher(o.from)} → ${afficher(o.to)}`;
+    }
+    return `${champ} : ${afficher(v)}`;
+  };
+
+  return (
+    <details>
+      <summary className="admin-meta-small cursor-pointer select-none">
+        {entrees.length} champ{entrees.length > 1 ? "s" : ""} modifié
+        {entrees.length > 1 ? "s" : ""}
+      </summary>
+      <ul className="admin-inline-list">
+        {entrees.map((e) => (
+          <li key={e[0]} className="admin-meta-small">
+            {ligne(e)}
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
+/** Une valeur de journal, rendue lisible sans jamais mentir sur le vide. */
+function afficher(v: unknown): string {
+  if (v === null || v === undefined) return "(vide)";
+  if (typeof v === "boolean") return v ? "oui" : "non";
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
+}
+
 export function ActivityLogsV2({
   adminPrefix,
   searchParams: sp,
@@ -154,12 +202,7 @@ export function ActivityLogsV2({
     {
       key: "changes",
       header: "Changements",
-      cell: (l) =>
-        l.changes ? (
-          <pre className="admin-json admin-json-cell">{JSON.stringify(l.changes, null, 2)}</pre>
-        ) : (
-          "—"
-        ),
+      cell: (l) => <Changements valeur={l.changes} />,
     },
   ];
 

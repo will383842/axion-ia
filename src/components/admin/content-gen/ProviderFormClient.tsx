@@ -117,7 +117,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`cap-${row.id}`} className="admin-label">
-              Cap mensuel USD
+              Plafond de dépense mensuel (USD)
             </label>
             <input
               id={`cap-${row.id}`}
@@ -132,7 +132,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`rpm-${row.id}`} className="admin-label">
-              Rate-limit RPM
+              Limite d&apos;appels par minute
             </label>
             <input
               id={`rpm-${row.id}`}

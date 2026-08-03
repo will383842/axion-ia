@@ -34,7 +34,7 @@ export function HeroImagesBackfill() {
         message:
           res.remaining === 0
             ? "Aucun article à rattraper : tout est déjà en Unsplash."
-            : `${res.remaining} article(s) à rattraper. Aperçu ci-dessous (10 max).`,
+            : `${res.remaining} article${res.remaining > 1 ? "s" : ""} à rattraper. Aperçu ci-dessous (10 max).`,
       });
     });
   }
@@ -53,8 +53,8 @@ export function HeroImagesBackfill() {
         kind: "info",
         message:
           res.remaining > 0
-            ? `${res.updated} illustré(s), ${res.skipped} ignoré(s). Il reste ${res.remaining} article(s) → recliquez « Lancer » pour continuer.`
-            : `Terminé — ${res.updated} illustré(s), ${res.skipped} ignoré(s). Plus aucun article à rattraper.`,
+            ? `${res.updated} illustré${res.updated > 1 ? "s" : ""}, ${res.skipped} ignoré${res.skipped > 1 ? "s" : ""}. Il reste ${res.remaining} article${res.remaining > 1 ? "s" : ""} → recliquez « Lancer » pour continuer.`
+            : `Terminé — ${res.updated} illustré${res.updated > 1 ? "s" : ""}, ${res.skipped} ignoré${res.skipped > 1 ? "s" : ""}. Plus aucun article à rattraper.`,
       });
     });
   }

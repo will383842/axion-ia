@@ -54,7 +54,7 @@ export function FecExportButton({
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      setMessage(`FEC ${annee} exporté (${nbFactures} facture(s)).`);
+      setMessage(`FEC ${annee} exporté (${nbFactures} facture${nbFactures > 1 ? "s" : ""}).`);
     });
   }
 

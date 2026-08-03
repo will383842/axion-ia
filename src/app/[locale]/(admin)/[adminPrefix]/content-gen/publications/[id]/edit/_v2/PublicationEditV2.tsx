@@ -115,7 +115,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
             </div>
             <div className="admin-field">
               <label htmlFor="metaTitle" className="admin-label">
-                Meta title (≤ 70)
+                Titre pour Google (70 caractères maximum)
               </label>
               <input
                 id="metaTitle"
@@ -129,7 +129,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
 
           <div className="admin-field">
             <label htmlFor="excerpt" className="admin-label">
-              Excerpt (résumé carte / liste)
+              Résumé (affiché dans les listes)
             </label>
             <textarea
               id="excerpt"
@@ -156,7 +156,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
 
           <div className="admin-field">
             <label htmlFor="body" className="admin-label">
-              Body HTML (DOMPurify côté serveur)
+              Contenu de l&apos;article (HTML)
             </label>
             <textarea
               id="body"

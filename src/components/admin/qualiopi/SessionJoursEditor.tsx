@@ -149,7 +149,7 @@ export function SessionJoursEditor({
       setSucces(
         r.data.nbJours === 0
           ? "Aucune journée déclarée : la session retombe sur sa plage de dates."
-          : `${r.data.nbJours} journée(s) enregistrée(s).`,
+          : `${r.data.nbJours} journée${r.data.nbJours > 1 ? "s" : ""} enregistrée${r.data.nbJours > 1 ? "s" : ""}.`,
       );
       router.refresh();
     });

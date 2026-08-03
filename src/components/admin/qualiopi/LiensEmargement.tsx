@@ -95,7 +95,9 @@ export function LiensEmargement({
         return;
       }
       setLiens(null);
-      setMessage(`${r.data.revoques} lien(s) révoqué(s). Les anciens liens ne signent plus.`);
+      setMessage(
+        `${r.data.revoques} lien${r.data.revoques > 1 ? "s" : ""} révoqué${r.data.revoques > 1 ? "s" : ""}. Les anciens liens ne signent plus.`,
+      );
       router.refresh();
     });
   }

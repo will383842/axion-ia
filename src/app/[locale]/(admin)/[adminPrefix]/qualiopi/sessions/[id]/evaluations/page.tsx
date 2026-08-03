@@ -131,7 +131,7 @@ export default async function EvaluationsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={`Évaluations des acquis — ${session.titreSession ?? session.numero}`}
-        description={`Session ${session.numero} · Formation : ${session.formation?.titre ?? "—"} · ${session.enrollments.length} stagiaire(s)`}
+        description={`Session ${session.numero} · Formation : ${session.formation?.titre ?? "—"} · ${session.enrollments.length} stagiaire${session.enrollments.length > 1 ? "s" : ""}`}
       />
 
       {/* Lien retour vers l'émargement */}

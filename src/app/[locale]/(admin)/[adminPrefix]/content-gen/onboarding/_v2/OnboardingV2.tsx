@@ -60,8 +60,8 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
         <h2 className="admin-h2">Statut</h2>
         <ul className="admin-meta-block">
           <li>
-            <EtapeIcone faite={providersConfigured >= 4} /> <strong>Étape 1 — Providers IA</strong>{" "}
-            · {providersConfigured}/4 minimum
+            <EtapeIcone faite={providersConfigured >= 4} />{" "}
+            <strong>Étape 1 — Fournisseurs de modèles IA</strong> · {providersConfigured}/4 minimum
             {providersConfigured < 4 ? (
               <>
                 {" · "}
@@ -129,7 +129,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             </AdminButton>
           </li>
           <li>
-            <strong>Étape 5 — Vérifier le kill switch</strong> ·{" "}
+            <strong>Étape 5 — Vérifier l&apos;arrêt d&apos;urgence</strong> ·{" "}
             <AdminButton
               href={`${base}/settings/kill-switch`}
               variant="ghost"

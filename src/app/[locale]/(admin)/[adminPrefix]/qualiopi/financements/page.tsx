@@ -198,7 +198,8 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
           {sessionsOpcoSansAccord.length > 0 && (
             <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-error)]">
-                OPCO — Accord non reçu ({sessionsOpcoSansAccord.length} session(s))
+                OPCO — Accord non reçu ({sessionsOpcoSansAccord.length} session
+                {sessionsOpcoSansAccord.length > 1 ? "s" : ""})
               </p>
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 Ces sessions ont un financement OPCO déclaré mais l&apos;accord écrit n&apos;est pas
@@ -233,7 +234,8 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
           {sessionsCpfSansEdof.length > 0 && (
             <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-error)]">
-                CPF — Vérification EDOF manquante ({sessionsCpfSansEdof.length} session(s))
+                CPF — Vérification EDOF manquante ({sessionsCpfSansEdof.length} session
+                {sessionsCpfSansEdof.length > 1 ? "s" : ""})
               </p>
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 Ces sessions déclarent un financement CPF sans vérification EDOF horodatée. La
