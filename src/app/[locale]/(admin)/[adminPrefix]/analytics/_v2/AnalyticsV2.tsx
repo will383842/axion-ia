@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { IndexNowPingButton, type PingResult } from "./IndexNowPingButton";
 
 type Status = "ok" | "not-configured";
 
@@ -23,7 +24,9 @@ interface Props {
   plausibleApi: string;
   verifications: ReadonlyArray<VerificationCard>;
   indexNowConfigured: boolean;
-  pingAction: () => Promise<void>;
+  pingAction: () => Promise<PingResult>;
+  /** Chemins réellement notifiés — dérivés de la liste envoyée. */
+  pagesNotifiees: ReadonlyArray<string>;
 }
 
 function statusPill(status: Status, label?: string) {
@@ -39,6 +42,7 @@ export function AnalyticsV2({
   verifications,
   indexNowConfigured,
   pingAction,
+  pagesNotifiees,
 }: Props): React.ReactElement {
   return (
     <AdminPageShell>
@@ -174,23 +178,22 @@ export function AnalyticsV2({
             /api/indexnow/key ↗
           </a>
         </p>
-        <form action={pingAction}>
-          <button
-            type="submit"
-            className="admin-button"
-            disabled={!indexNowConfigured}
-            title={
-              indexNowConfigured
-                ? "Notifier les 10 pages stratégiques aux moteurs IndexNow"
-                : "INDEXNOW_KEY absente — configurer côté Coolify env vars"
-            }
-          >
-            Notifier les moteurs maintenant
-          </button>
-        </form>
+        <IndexNowPingButton
+          action={pingAction}
+          disabled={!indexNowConfigured}
+          titre={
+            indexNowConfigured
+              ? `Prévenir les moteurs que ces ${pagesNotifiees.length} pages ont changé`
+              : "La clé de notification n'est pas configurée sur le serveur"
+          }
+        />
+        {/* 🔴 CETTE LISTE ÉTAIT FAUSSE. Elle annonçait « /reserver, /book »
+            alors que les URLs réellement envoyées sont `/fr/appel` et
+            `/en/book-a-call`. Écrite à la main, elle a cessé de suivre le code
+            le jour où les routes ont été renommées. Elle est désormais DÉRIVÉE
+            de la liste effectivement notifiée : elle ne peut plus mentir. */}
         <p className="admin-meta-small mt-[var(--space-admin-3)]">
-          Pages notifiées : homepage FR+EN, /interventions FR+EN, /reserver, /book, méthodologie,
-          comparer, stack-ia, centre-aide.
+          Pages notifiées ({pagesNotifiees.length}) : {pagesNotifiees.join(" · ")}
         </p>
       </AdminCard>
 

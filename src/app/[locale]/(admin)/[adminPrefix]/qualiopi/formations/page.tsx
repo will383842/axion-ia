@@ -9,7 +9,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, GraduationCap, Hourglass } from "lucide-react";
+import { CheckCircle2, GraduationCap, Hourglass, Archive } from "lucide-react";
 
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -85,7 +85,10 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Formations"
-        description="Catalogue des formations issues du Formation Engine. Chaque formation est rattachée à une offre du référentiel offres_site."
+        // « Formation Engine » est un nom de module interne et « offres_site »
+        // un nom de table : ni l'un ni l'autre ne dit quoi que ce soit au
+        // lecteur de cette console.
+        description="Catalogue des formations générées par l'atelier de contenu. Chaque formation est rattachée à une offre du référentiel commercial."
         actions={
           <div className="flex flex-wrap items-start justify-end gap-[var(--space-admin-3)]">
             <ImportCatalogFormationsButton />
@@ -99,11 +102,17 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
         }
       />
 
-      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-3">
-        <AdminStatCard label="Total" value={actives.length} icon={GraduationCap} />
+      {/* 🔴 « Total » et « Actives » affichaient TOUTES DEUX `actives.length` :
+          deux tuiles côte à côte qui ne pouvaient mathématiquement jamais
+          différer. `toutes` contient les archivées EN PLUS des actives — c'est
+          lui le total. La tuile « Archivées » remplace le doublon : c'est
+          l'information qui manquait pour que la soustraction se lise. */}
+      <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
+        <AdminStatCard label="Total" value={toutes.length} icon={GraduationCap} />
         <AdminStatCard label="Actives" value={actives.length} tone="success" icon={CheckCircle2} />
+        <AdminStatCard label="Archivées" value={archivees.length} icon={Archive} />
         <AdminStatCard
-          label="Brouillons / en cours"
+          label="Contenu en cours de rédaction"
           value={brouillons}
           tone={brouillons > 0 ? "warning" : "default"}
           icon={Hourglass}
