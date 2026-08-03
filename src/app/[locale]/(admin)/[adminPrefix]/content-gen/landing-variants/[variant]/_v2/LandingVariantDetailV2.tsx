@@ -41,7 +41,7 @@ export async function LandingVariantDetailV2({
       />
 
       <AdminCard variant="compact">
-        <h2 className="admin-h2">Templates ciblant ce variant</h2>
+        <h2 className="admin-h2">Instructions IA ciblant cette variante</h2>
         <div className="admin-table-wrapper">
           <table className="admin-table">
             <thead>

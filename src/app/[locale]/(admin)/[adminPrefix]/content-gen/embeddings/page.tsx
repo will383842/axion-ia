@@ -324,7 +324,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
               aria-disabled="true"
               className="inline-flex cursor-not-allowed items-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)] opacity-50"
             >
-              Déclencher maintenant (bientôt disponible)
+              Déclenchement impossible depuis cet écran
             </button>
           </div>
         </AdminCard>

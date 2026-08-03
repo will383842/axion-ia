@@ -21,7 +21,7 @@ import type { AdminTableColumn } from "@/components/admin/ui";
 import { listJobs, retryAllFailed, deleteFailedJobs } from "@/server/actions/content-gen/jobs";
 import { formatDateFr } from "@/lib/format-date-fr";
 import { listTemplates } from "@/server/actions/content-gen/templates";
-import { libelleModele } from "@/components/admin/content-gen/template-labels";
+import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
 import {
   JOB_STATUS_LABELS_FR,
   JOB_STATUS_TONE,
@@ -237,7 +237,7 @@ export async function JobsListV2({
             </div>
             <div className="admin-field">
               <label htmlFor="templateId" className="admin-label">
-                Modèle
+                Instruction IA
               </label>
               <select
                 id="templateId"
@@ -248,7 +248,7 @@ export async function JobsListV2({
                 <option value="">Tous</option>
                 {templates.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {libelleModele(t.slug, t.name)} (v{t.version})
+                    {libelleInstructionIA(t.slug, t.name)} (v{t.version})
                   </option>
                 ))}
               </select>
@@ -307,7 +307,7 @@ export async function JobsListV2({
 
       <AdminCard variant="compact">
         {result.rows.length === 0 ? (
-          <AdminEmptyState title="Aucun job — lancez une génération depuis le dashboard." />
+          <AdminEmptyState title="Aucune génération — lancez-en une depuis le tableau de bord." />
         ) : (
           <AdminTable
             columns={columns}

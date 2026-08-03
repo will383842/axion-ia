@@ -62,7 +62,7 @@ export function TemplatesNewV2({ adminPrefix }: Props): React.ReactElement {
 
   return (
     <AdminPageShell>
-      <AdminPageHeader title="Nouveau template" />
+      <AdminPageHeader title="Nouvelle instruction IA" />
       <AdminCard>
         <TemplateNewFormWrapper action={create} />
       </AdminCard>

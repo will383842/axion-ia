@@ -16,7 +16,7 @@ import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
 import { formatDateFr } from "@/lib/format-date-fr";
-import { libelleModele } from "@/components/admin/content-gen/template-labels";
+import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
 import {
   contentTypeLabelFr,
   jobStatusLabelFr,
@@ -203,12 +203,13 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <ul className="admin-inline-list">
             {job.template ? (
               <li>
-                <strong>Modèle :</strong>{" "}
+                <strong>Instruction IA :</strong>{" "}
                 <Link
                   href={`/fr/${adminPrefix}/content-gen/templates/${job.template.id}`}
                   className="admin-link"
                 >
-                  {libelleModele(job.template.slug, job.template.name)} (v{job.template.version})
+                  {libelleInstructionIA(job.template.slug, job.template.name)} (v
+                  {job.template.version})
                 </Link>
               </li>
             ) : null}

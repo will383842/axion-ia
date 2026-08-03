@@ -147,7 +147,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Suivi des positions"
-        description={`${rows.length} mot${rows.length > 1 ? "s" : ""}-clé${rows.length > 1 ? "s" : ""} suivi${rows.length > 1 ? "s" : ""} · Source GSC + SerpAPI (sync hebdo cron Sprint 12.5 → activé quand credentials fournis).`}
+        description={`${rows.length} mot${rows.length > 1 ? "s" : ""}-clé${rows.length > 1 ? "s" : ""} suivi${rows.length > 1 ? "s" : ""} · Relevé hebdomadaire (lundi 4 h) depuis Google Search Console et SerpAPI — inactif tant que les accès ne sont pas fournis.`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

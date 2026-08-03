@@ -75,9 +75,12 @@ export const TEMPLATE_NAME_BY_SLUG_FR: Record<string, string> = {
 };
 
 /**
- * Nom d'un modèle. Un slug hors des neuf livrés retombe sur le nom saisi :
- * c'est celui que l'utilisateur a écrit lui-même, on ne le réinvente pas.
+ * Nom d'une instruction IA — le mot de la barre de navigation
+ * (« Instructions IA (prompts) »), que les pages disaient « template ».
+ *
+ * Un slug hors des neuf livrés retombe sur le nom saisi : c'est celui que
+ * l'utilisateur a écrit lui-même, on ne le réinvente pas.
  */
-export function libelleModele(slug: string, nomEnBase: string): string {
+export function libelleInstructionIA(slug: string, nomEnBase: string): string {
   return TEMPLATE_NAME_BY_SLUG_FR[slug] ?? nomEnBase;
 }

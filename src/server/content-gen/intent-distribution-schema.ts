@@ -99,7 +99,43 @@ export function validateIntentDistribution(
       );
       continue;
     }
-    cleaned[key] = parsed.data;
+    // 🔴 L'ALIAS ÉTAIT DOCUMENTÉ MAIS JAMAIS APPLIQUÉ.
+    //
+    // Ce module déclare `commercial` comme alias simplifié de
+    // `commercial_investigation` et dit qu'il est « résolu dans
+    // l'orchestrateur ». Il ne l'était pas : l'orchestrateur lit
+    // `intentDist.commercial` et rien d'autre. La config de production, elle,
+    // stocke `commercial_investigation` — la clé passait la validation, puis
+    // était perdue à la lecture. Résultat mesuré en production le 2026-08-03 :
+    // la part commerciale (0,25 sur 1) valait **zéro** dans le mix d'intentions
+    // appliqué aux campagnes sans mix propre. Et sur l'écran de réglage, la
+    // même clé manquante affichait « Somme actuelle : NaN % ».
+    //
+    // On replie donc ici, une fois pour toutes : les deux consommateurs
+    // reçoivent le même vocabulaire. Si les deux clés coexistent, on additionne
+    // — ce sont deux écritures de la même part, pas deux parts distinctes.
+    const canonique = key === "commercial_investigation" ? "commercial" : key;
+    cleaned[canonique] = (cleaned[canonique] ?? 0) + parsed.data;
   }
   return cleaned;
+}
+
+/**
+ * Ramène des pondérations à des pourcentages de somme 100.
+ *
+ * Les pondérations sont RELATIVES en aval (l'orchestrateur les passe à un
+ * tirage pondéré, `weightedEnumRecord` accepte 0–1000) : la production les
+ * stocke en fractions de somme 1, tandis que l'écran de réglage les présente
+ * — et les valide — en pourcentages de somme 100. Les deux disent la même
+ * chose ; seul l'affichage a besoin d'une échelle fixe.
+ *
+ * Une somme nulle renvoie `{}` : sans poids, il n'y a pas de répartition à
+ * montrer, et diviser par zéro produirait le `NaN` qu'on vient de corriger.
+ */
+export function toPourcentages(poids: IntentDistribution): IntentDistribution {
+  const total = Object.values(poids).reduce((s, v) => s + v, 0);
+  if (total <= 0) return {};
+  const out: IntentDistribution = {};
+  for (const [k, v] of Object.entries(poids)) out[k] = Math.round((v / total) * 1000) / 10;
+  return out;
 }
