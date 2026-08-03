@@ -34,7 +34,15 @@ async function ingestUrlAction(_prev: UrlIngestState, formData: FormData): Promi
     const result = await ingestKbFromUrl(url);
     return { status: "ok", result };
   } catch (err) {
-    return { status: "error", message: err instanceof Error ? err.message : String(err) };
+    // 🔴 `err.message` REMONTAIT TEL QUEL À L'ÉCRAN : un message de `fetch`, une
+    // erreur Zod, une trace de parseur. Ni actionnable, ni compréhensible, et
+    // révélateur de l'implémentation. Le détail part en console pour
+    // l'équipe technique ; l'écran dit quoi faire.
+    console.error("[kb-ingest] échec de l'ingestion", err);
+    return {
+      status: "error",
+      message: "L'adresse n'a pas pu être lue. Vérifiez l'URL, puis réessayez.",
+    };
   }
 }
 
@@ -49,7 +57,15 @@ async function ingestSitemapAction(
     const result = await ingestKbFromSitemap(sitemapUrl, limit);
     return { status: "ok", result };
   } catch (err) {
-    return { status: "error", message: err instanceof Error ? err.message : String(err) };
+    // 🔴 `err.message` REMONTAIT TEL QUEL À L'ÉCRAN : un message de `fetch`, une
+    // erreur Zod, une trace de parseur. Ni actionnable, ni compréhensible, et
+    // révélateur de l'implémentation. Le détail part en console pour
+    // l'équipe technique ; l'écran dit quoi faire.
+    console.error("[kb-ingest] échec de l'ingestion", err);
+    return {
+      status: "error",
+      message: "L'adresse n'a pas pu être lue. Vérifiez l'URL, puis réessayez.",
+    };
   }
 }
 

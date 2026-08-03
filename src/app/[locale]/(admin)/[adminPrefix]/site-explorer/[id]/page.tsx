@@ -30,10 +30,15 @@ const GITHUB_REPO = "https://github.com/will383842/axion-ia/blob/main";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+  /** Verdict posé par le bouton de ré-inspection : « erreur » ou « lance ». */
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function SiteRouteDetailPage({ params }: PageProps) {
+export default async function SiteRouteDetailPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
+  const erreur = Array.isArray(sp["erreur"]) ? sp["erreur"][0] : sp["erreur"];
+  const lance = sp["lance"] !== undefined;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -44,10 +49,23 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
   const displayPath = route.pathRendered ?? route.pathPattern;
   const isResolvable = !displayPath.includes("[");
 
+  /**
+   * 🔴 LE BOUTON NE DISAIT RIEN. L'action renvoie un succès ou une erreur
+   * — « Route non trouvée ou non publique », par exemple — et la page jetait le
+   * résultat avant de recharger à l'identique. Le travail étant asynchrone,
+   * réussite et échec produisaient le même écran : aucun.
+   */
   async function handleReInspect() {
     "use server";
-    await triggerInspection(id);
-    redirect(adminPath("fr", `site-explorer/${id}`));
+    const r = await triggerInspection(id);
+    redirect(
+      r.success
+        ? adminPath("fr", `site-explorer/${id}?lance=1`)
+        : adminPath(
+            "fr",
+            `site-explorer/${id}?erreur=${encodeURIComponent(r.error ?? "L'inspection n'a pas pu être lancée.")}`,
+          ),
+    );
   }
 
   async function handleSetQuality(formData: FormData) {
@@ -90,6 +108,16 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         <span className="text-[color:var(--color-admin-fg-disabled)]">/</span>
         <code className="text-sm text-[color:var(--color-admin-fg-soft)]">{displayPath}</code>
       </div>
+
+      {erreur ? (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {erreur}
+        </p>
+      ) : lance ? (
+        <p role="status" className="admin-alert admin-alert-success">
+          Inspection lancée — les résultats arriveront dans quelques minutes.
+        </p>
+      ) : null}
 
       <div className="flex items-start justify-between">
         <div>
