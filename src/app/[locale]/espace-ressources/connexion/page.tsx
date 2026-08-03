@@ -33,7 +33,7 @@ export default async function ConnexionPage({
         </p>
       ) : null}
 
-      <div className="border-border bg-cream rounded-lg border p-5">
+      <div className="border-border bg-sand rounded-lg border p-5">
         <RessourcesLoginForm />
       </div>
     </div>

@@ -205,7 +205,7 @@ export default async function GuidePiliersPage({ params }: Props) {
           cible du skip-link sont portés par <main id="main"> du layout :
           NE PAS ajouter role="main"/id ici (doublerait le landmark). */}
       <article>
-        <Section className="bg-cream">
+        <Section className="bg-sand">
           {/* Layout 2 colonnes (parité /blog) : rail Sommaire sticky à gauche +
               colonne de lecture à droite. Mobile-first : une seule colonne sous lg
               (le <details> Sommaire de ArticleTOC s'empile en haut). */}

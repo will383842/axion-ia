@@ -205,7 +205,7 @@ export default async function GuidesHubPage({ params }: Props) {
             // lien /blog (les premiers guides apparaîtront aussi côté /blog via
             // templateVariant=guide-pilier). ISR 1h → publication review-queue
             // → approve fait apparaître automatiquement sans redéploiement.
-            <div className="border-border bg-cream/30 mx-auto max-w-2xl rounded-lg border border-dashed p-10 text-center">
+            <div className="border-border bg-sand/30 mx-auto max-w-2xl rounded-lg border border-dashed p-10 text-center">
               <Sparkles
                 aria-hidden="true"
                 className="text-terracotta mx-auto h-6 w-6"
