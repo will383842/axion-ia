@@ -11,6 +11,7 @@
  */
 
 import type { ContentType, ExpansionMode } from "../../../../prisma/generated/client";
+import { libelleTypeContenu, libelleModeExpansion } from "./template-labels";
 
 interface TemplateFormProps {
   readonly initial?: {
@@ -60,6 +61,28 @@ const EXPANSION_MODES: ReadonlyArray<ExpansionMode> = [
 ];
 
 export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) {
+  /**
+   * 🔴 ÉDITER UN MODÈLE « PAGE VILLE » LUI CHANGEAIT SON TYPE, EN SILENCE.
+   *
+   * `landing_ville` est volontairement absent de `CONTENT_TYPES` (cf. la note
+   * plus haut : aucun générateur ne le sert). Mais des modèles de ce type
+   * EXISTENT en base, et la page `/landing-variants/[variant]` renvoie ici pour
+   * les modifier. Le `<select>` ne trouvait alors aucune option correspondant à
+   * `defaultValue` : le navigateur retombe sur la première, `blog_article`.
+   * Corriger une faute de frappe dans l'invite suffisait donc à réécrire le
+   * type du modèle — sans avertissement, sans trace, et sans que personne
+   * touche à ce champ.
+   *
+   * Le type courant est désormais toujours proposé, même hors liste, et signalé
+   * comme non générable. On ne peut pas le CHOISIR par erreur (les autres
+   * options restent offertes), mais on ne peut plus le PERDRE par inadvertance.
+   */
+  const typeCourant = initial?.contentType;
+  const typesProposes: ReadonlyArray<ContentType> =
+    typeCourant && !CONTENT_TYPES.includes(typeCourant)
+      ? [typeCourant, ...CONTENT_TYPES]
+      : CONTENT_TYPES;
+
   return (
     <form action={action} className="admin-card">
       {initial?.id ? <input type="hidden" name="id" value={initial.id} /> : null}
@@ -81,7 +104,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
         </div>
         <div className="admin-field">
           <label htmlFor="contentType" className="admin-label">
-            ContentType
+            Type de contenu
           </label>
           <select
             id="contentType"
@@ -90,16 +113,17 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
             className="admin-input"
             required
           >
-            {CONTENT_TYPES.map((t) => (
+            {typesProposes.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {libelleTypeContenu(t)}
+                {CONTENT_TYPES.includes(t) ? "" : " — aucun générateur disponible"}
               </option>
             ))}
           </select>
         </div>
         <div className="admin-field">
           <label htmlFor="variant" className="admin-label">
-            Variant
+            Variante
           </label>
           <input
             id="variant"
@@ -137,7 +161,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
 
       <div className="admin-field">
         <label htmlFor="systemPrompt" className="admin-label">
-          System prompt (min 30 caractères)
+          Invite système (30 caractères minimum)
         </label>
         <textarea
           id="systemPrompt"
@@ -153,7 +177,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
 
       <div className="admin-field">
         <label htmlFor="userPromptTemplate" className="admin-label">
-          User prompt template (mustache <code>{"{{var}}"}</code>)
+          Modèle d&apos;invite utilisateur — les variables s&apos;écrivent <code>{"{{nom}}"}</code>
         </label>
         <textarea
           id="userPromptTemplate"
@@ -169,7 +193,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
 
       <div className="admin-field">
         <label htmlFor="outputSchemaZod" className="admin-label">
-          Zod schema (TS source sérialisé)
+          Schéma de sortie attendu (source Zod)
         </label>
         <textarea
           id="outputSchemaZod"
@@ -198,7 +222,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
       <div className="admin-filters-grid">
         <div className="admin-field">
           <label htmlFor="expansionMode" className="admin-label">
-            Expansion mode
+            Mode d&apos;expansion
           </label>
           <select
             id="expansionMode"
@@ -209,14 +233,14 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
           >
             {EXPANSION_MODES.map((m) => (
               <option key={m} value={m}>
-                {m}
+                {libelleModeExpansion(m)}
               </option>
             ))}
           </select>
         </div>
         <div className="admin-field">
           <label htmlFor="defaultModel" className="admin-label">
-            Default model override
+            Modèle par défaut (surcharge)
           </label>
           <input
             id="defaultModel"
@@ -228,7 +252,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
         </div>
         <div className="admin-field">
           <label htmlFor="defaultTemperature" className="admin-label">
-            Temperature
+            Température
           </label>
           <input
             id="defaultTemperature"
@@ -243,7 +267,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
         </div>
         <div className="admin-field">
           <label htmlFor="defaultMaxTokens" className="admin-label">
-            Max tokens
+            Jetons maximum
           </label>
           <input
             id="defaultMaxTokens"
@@ -260,7 +284,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
       <div className="admin-field">
         <label className="admin-label">
           <input type="checkbox" name="isActive" defaultChecked={initial?.isActive ?? true} />{" "}
-          Template actif (utilisable par les generators)
+          Modèle actif (utilisable par les générateurs)
         </label>
       </div>
 
@@ -268,7 +292,7 @@ export function TemplateForm({ initial, action, errorSlot }: TemplateFormProps) 
 
       <div className="admin-filters-actions">
         <button type="submit" className="admin-button">
-          {initial?.id ? "Enregistrer" : "Créer le template"}
+          {initial?.id ? "Enregistrer" : "Créer le modèle"}
         </button>
       </div>
     </form>

@@ -12,6 +12,7 @@ import {
   AdminPageShell,
   AdminPageHeader,
   AdminStatusBadge,
+  AdminBadge,
   AdminFilterTabs,
 } from "@/components/admin/ui";
 import { AdminListScaffold } from "../../_v2/AdminListScaffold";
@@ -37,8 +38,17 @@ const STATUS_LABELS: Record<string, string> = {
 // `aria-hidden` : deux états rigoureusement identiques en vision des couleurs
 // déficiente. Des dessins lucide distincts (coche, croix, triangle, archive)
 // portent l'état par la FORME ; le libellé texte reste à côté.
-function replyBadge(s: SubmissionListItem): { label: string; tone: string; Icone: LucideIcon } {
-  if (s.archivedAt) return { label: "Archivé", tone: "muted", Icone: Archive };
+//
+// 🔴 LES TONS ÉTAIENT DES CLASSES QUI N'EXISTENT PAS. La pastille était peinte
+// par `admin-badge-${tone}` avec `muted` / `success` / `danger` — or `admin.css`
+// ne définit que `.admin-badge-warning`. Trois états sur quatre s'affichaient
+// donc en texte nu, sans fond ni couleur : seul « Échec envoi » était teinté,
+// c'est-à-dire que le seul état visuellement distinct était l'exception.
+// Les tons deviennent ceux d'`AdminBadge`, qui les définit pour de bon.
+type TonBadge = "neutral" | "success" | "warning" | "destructive";
+
+function replyBadge(s: SubmissionListItem): { label: string; tone: TonBadge; Icone: LucideIcon } {
+  if (s.archivedAt) return { label: "Archivé", tone: "neutral", Icone: Archive };
   if (s.lastReplyStatus === "failed" || s.lastReplyStatus === "bounced") {
     return { label: "Échec envoi", tone: "warning", Icone: AlertTriangle };
   }
@@ -49,7 +59,7 @@ function replyBadge(s: SubmissionListItem): { label: string; tone: string; Icone
       Icone: CheckCircle2,
     };
   }
-  return { label: "Sans réponse", tone: "danger", Icone: XCircle };
+  return { label: "Sans réponse", tone: "destructive", Icone: XCircle };
 }
 
 interface Props {
@@ -90,6 +100,12 @@ export async function SubmissionsV2({
     status: searchParams["status"] as never,
     locale: searchParams["locale"] as never,
     search: searchParams["search"],
+    // 🔴 LE FILTRE « STATUT RÉPONSE » ÉTAIT INERTE. Il poussait bien
+    // `?replyStatus=unanswered` dans l'URL, et le serveur sait le traiter —
+    // mais la valeur n'était jamais transmise ici, donc l'action retombait
+    // sur son défaut `all`. Cliquer « Appliquer » ne changeait rien : la liste
+    // était identique avant et après, sans que rien ne le dise.
+    replyStatus: searchParams["replyStatus"] as never,
     dateFrom: searchParams["dateFrom"],
     dateTo: searchParams["dateTo"],
     page: searchParams["page"] ? parseInt(searchParams["page"], 10) : 1,
@@ -141,14 +157,10 @@ export async function SubmissionsV2({
       cells: [
         formatDateFrShort(s.submittedAt),
         resolveSubmissionLabel(s.type, s.unifiedType),
-        <span
-          key="reply"
-          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium admin-badge-${r.tone}`}
-          title={r.label}
-        >
+        <AdminBadge key="reply" tone={r.tone} className="gap-1">
           <r.Icone size={12} aria-hidden="true" className="shrink-0" />
           {r.label}
-        </span>,
+        </AdminBadge>,
         <AdminStatusBadge
           key="status"
           type="image-asset"
@@ -221,6 +233,7 @@ export async function SubmissionsV2({
           status: searchParams["status"],
           locale: searchParams["locale"],
           search: searchParams["search"],
+          replyStatus: searchParams["replyStatus"],
           dateFrom: searchParams["dateFrom"],
           dateTo: searchParams["dateTo"],
           // Préserve les onglets Archivés / Corbeille au-delà de la page 1.

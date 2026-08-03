@@ -84,7 +84,7 @@ export function KitImporter(): React.ReactElement {
   const busy = pending || phase !== "idle";
 
   return (
-    <div className="border-border bg-cream space-y-3 rounded-lg border p-4">
+    <div className="space-y-3 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <label htmlFor="kit-famille" className="text-mocha block text-sm font-medium">
         Type de kit
       </label>

@@ -167,7 +167,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
   const labelCls = "text-fg-muted text-xs";
 
   return (
-    <section className="border-border bg-cream rounded-lg border p-4">
+    <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <h2 className="text-mocha mb-2 text-sm font-semibold">AFEST · documents légaux</h2>
 
       <div className="mb-3 grid grid-cols-2 gap-2 text-sm">
@@ -265,7 +265,15 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
               >
                 <option value="direct">Direct (entreprise / particulier)</option>
                 <option value="opco">OPCO</option>
-                {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
+                {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
+                    dossiers l'ont en base : pour eux le <select> ne trouvait
+                    AUCUNE option correspondante et s'affichait VIDE. Un simple
+                    « Enregistrer » réécrivait alors le dispositif en silence.
+                    L'option reste donc listée, non sélectionnable : on ne peut
+                    plus la choisir, on ne peut plus la perdre. */}
+                <option value="cpf" disabled>
+                  CPF (dispositif retiré)
+                </option>
                 <option value="france_travail">France Travail</option>
                 <option value="mixte">Mixte</option>
               </select>

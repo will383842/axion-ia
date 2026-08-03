@@ -32,12 +32,16 @@ const STATUS_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
+  /** `?erreur=…` posé par les adaptateurs de modération quand l'action échoue. */
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const DATE_FMT = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" });
 
-export default async function AvisDetailPage({ params }: PageProps) {
+export default async function AvisDetailPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
+  const erreur = Array.isArray(sp["erreur"]) ? sp["erreur"][0] : sp["erreur"];
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const role = (session.user as { role?: string }).role;
@@ -61,6 +65,12 @@ export default async function AvisDetailPage({ params }: PageProps) {
           </Link>
         }
       />
+
+      {erreur ? (
+        <p role="alert" className="admin-alert admin-alert-error mb-[var(--space-admin-4)]">
+          {erreur}
+        </p>
+      ) : null}
 
       <div className="grid gap-[var(--space-admin-5)] lg:grid-cols-[1.6fr_1fr]">
         {/* Colonne principale : contenu de l’avis */}

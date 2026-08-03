@@ -79,7 +79,10 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
             {runs.map((r) => {
               const s = (r.summary ?? {}) as Summary;
               return (
-                <li key={r.id} className="border-border bg-cream rounded-lg border p-3 text-sm">
+                <li
+                  key={r.id}
+                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)] text-sm"
+                >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-mocha font-medium">
                       {r.fileName ?? "kit.zip"}

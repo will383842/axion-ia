@@ -11,6 +11,7 @@ import {
   AdminEmptyState,
   AdminFilterTabs,
   AdminButton,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { AdminReview } from "@/features/admin-reviews/actions";
@@ -129,6 +130,15 @@ export function AvisListV2({
         description={`${total} avis · page ${page}/${totalPages}`}
       />
 
+      {/* Les boutons de modération rendaient `void` : un échec ne produisait
+          rien à l'écran, exactement comme un succès. L'erreur revient
+          maintenant dans l'URL (cf. `actions-form.ts`). */}
+      {sp["erreur"] ? (
+        <p role="alert" className="admin-alert admin-alert-error mb-[var(--space-admin-4)]">
+          {sp["erreur"]}
+        </p>
+      ) : null}
+
       {/* 🔴 Ces six filtres étaient rendus en `admin-button` / `-ghost` : une
           rangée de boutons pleins et teintés, avec le poids visuel d'actions,
           pour ce qui est un choix unique et exclusif. C'est précisément le
@@ -214,6 +224,21 @@ export function AvisListV2({
           )}
         />
       )}
+
+      {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
+          nulle part à l'écran : au-delà de la première, les lignes
+          n'étaient atteignables qu'en éditant l'URL. Les filtres en cours
+          sont reportés dans les liens — sinon changer de page les
+          effacerait, et on repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/avis`}
+        preservedParams={{
+          status: sp["status"],
+          search: sp["search"],
+        }}
+      />
     </AdminPageShell>
   );
 }

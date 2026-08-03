@@ -31,9 +31,15 @@ export const metadata: Metadata = {
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
 
+// 🔴 QUATRE STATUTS SUR SIX. Une facture `partiellement_payee` ou `en_retard`
+// — les deux que le cron de 06:30 UTC pose sur les impayés — s'affichait « ○
+// partiellement_payee » dans la colonne Statut. La table complète existe
+// pourtant, à l'identique, dans facturation/page.tsx.
 const STATUT_FACTURE_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
   emise: "Émise",
+  partiellement_payee: "Partiellement payée",
+  en_retard: "En retard",
   payee: "Payée",
   annulee: "Annulée",
 };

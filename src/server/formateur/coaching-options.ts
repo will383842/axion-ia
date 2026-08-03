@@ -30,9 +30,14 @@ export function optimisationTypeLabel(value: string): string {
 }
 
 /** Statuts de séance (enum Prisma `CoachingSessionStatut`). */
+// 🔴 TROIS STATUTS SUR QUATRE : `reportee` existe à l'enum Prisma mais manquait
+// ici. Une séance reportée s'affichait « reportee », sans accent ni majuscule,
+// dans les trois écrans coaching. Le libellé correct existait déjà dans
+// admin-planning/types.ts.
 export const SESSION_STATUTS: ReadonlyArray<{ value: string; label: string }> = [
   { value: "planifiee", label: "Planifiée" },
   { value: "realisee", label: "Réalisée" },
+  { value: "reportee", label: "Reportée" },
   { value: "annulee", label: "Annulée" },
 ];
 

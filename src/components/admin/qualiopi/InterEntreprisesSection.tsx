@@ -103,7 +103,15 @@ function EnrollmentRow({
           <option value="">— Financement —</option>
           <option value="direct">Direct (employeur)</option>
           <option value="opco">OPCO</option>
-          {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
+          {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
+              dossiers l'ont en base : pour eux le <select> ne trouvait
+              AUCUNE option correspondante et s'affichait VIDE. Un simple
+              « Enregistrer » réécrivait alors le dispositif en silence.
+              L'option reste donc listée, non sélectionnable : on ne peut
+              plus la choisir, on ne peut plus la perdre. */}
+          <option value="cpf" disabled>
+            CPF (dispositif retiré)
+          </option>
           <option value="france_travail">France Travail</option>
           <option value="mixte">Mixte</option>
         </select>
