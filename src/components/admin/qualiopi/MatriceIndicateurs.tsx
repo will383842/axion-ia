@@ -14,6 +14,7 @@
  */
 
 import type { IndicateurManifeste } from "@/server/qualiopi/conformite/audit-dossier";
+import { Star } from "lucide-react";
 
 export type MatriceVue = "tableau" | "manifeste";
 
@@ -62,7 +63,12 @@ function SuperStar(): React.ReactElement {
       className="ml-1 text-[color:var(--color-admin-destructive)]"
       aria-label="Indicateur critique (NC majeure)"
     >
-      ★
+      <Star
+        size={12}
+        aria-hidden="true"
+        fill="currentColor"
+        className="inline-block align-[-0.1em]"
+      />
     </span>
   );
 }
@@ -282,8 +288,13 @@ export function MatriceIndicateurs({ indicateurs, vue }: Props): React.ReactElem
 
       <footer className="mt-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-5)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
         <span>
-          <span className="text-[color:var(--color-admin-destructive)]">★</span> = Indicateur super
-          (NC majeure si non couvert en audit)
+          <Star
+            size={12}
+            aria-hidden="true"
+            fill="currentColor"
+            className="inline-block align-[-0.1em] text-[color:var(--color-admin-destructive)]"
+          />{" "}
+          = Indicateur super (NC majeure si non couvert en audit)
         </span>
         <span>Score = indicateurs couverts / indicateurs applicables (hors non_applicable)</span>
       </footer>

@@ -125,15 +125,23 @@ export interface PublicationBadge {
 /**
  * Traduit un statut d'article en badge métier limpide « En ligne / Brouillon /
  * Archivé ». Pour la question la plus fréquente : « est-ce publié ou pas ? »
+ *
+ * 🔴 CES TROIS LIBELLÉS PORTAIENT UN EMOJI, et le cliquet anti-emoji de la
+ * console ne pouvait pas les voir : il ne scanne que `src/app/[locale]/(admin)`
+ * et `src/components/admin`, et le garde-fou d'isolation du dépôt lui interdit
+ * de seulement NOMMER ce domaine-ci pour l'ajouter à sa liste nominative. Le
+ * trou était documenté dans ce cliquet ; le voici refermé côté source. La
+ * tonalité du badge porte déjà la couleur, le mot porte déjà le sens : le
+ * pictogramme ne faisait que dépendre de la police du poste.
  */
 export function articlePublicationBadge(status: string): PublicationBadge {
   switch (status) {
     case "published":
-      return { label: "🟢 En ligne", tone: "success" };
+      return { label: "En ligne", tone: "success" };
     case "archived":
-      return { label: "🗄️ Archivé", tone: "neutral" };
+      return { label: "Archivé", tone: "neutral" };
     case "draft":
-      return { label: "📝 Brouillon", tone: "warning" };
+      return { label: "Brouillon", tone: "warning" };
     default:
       return { label: articleStatusLabelFr(status), tone: "neutral" };
   }

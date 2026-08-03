@@ -8,6 +8,7 @@ import {
   type CitationsBackfillPreview,
   type CitationsBackfillRunResult,
 } from "@/server/actions/content-gen/citations-backfill";
+import { TriangleAlert } from "lucide-react";
 
 type Status = { kind: "error"; message: string } | { kind: "info"; message: string } | null;
 
@@ -162,7 +163,12 @@ export function CitationsBackfill() {
           <ResultList items={lastRun.items} />
           {lastRun.hallucinatedCount > 0 ? (
             <p className="admin-meta mt-2">
-              ⚠ {lastRun.hallucinatedCount} URL(s) hors-catalogue détectée(s) dans ce lot — ignorées
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              {lastRun.hallucinatedCount} URL(s) hors-catalogue détectée(s) dans ce lot — ignorées
               (non persistées).
             </p>
           ) : null}

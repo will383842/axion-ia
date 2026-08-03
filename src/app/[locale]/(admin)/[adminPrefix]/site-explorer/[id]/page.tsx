@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
-import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Circle, TriangleAlert, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import {
@@ -325,7 +325,12 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         {route.anomalies.length > 0 && (
           <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-4">
             <h2 className="font-semibold text-[color:var(--color-admin-destructive-fg)]">
-              ⚠️ Anomalies ({route.anomalies.length})
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              Anomalies ({route.anomalies.length})
             </h2>
             <ul className="space-y-2">
               {route.anomalies.map((a) => (

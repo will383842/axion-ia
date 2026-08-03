@@ -1,7 +1,7 @@
 // Row d'une route dans le Site Explorer — Sprint Site Explorer Admin 2026-05-22.
 
 import Link from "next/link";
-import { Globe, Pencil } from "lucide-react";
+import { Globe, Pencil, TriangleAlert } from "lucide-react";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
 import type { SiteRouteListItem } from "@/server/actions/site-explorer/site-routes";
 import { adminPath } from "@/lib/admin-path";
@@ -62,7 +62,12 @@ export function SiteRouteRow({ route }: Props) {
 
         {anomalyCount > 0 && (
           <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-destructive-fg)]">
-            ⚠️ {anomalyCount}
+            <TriangleAlert
+              size={14}
+              aria-hidden="true"
+              className="inline-block shrink-0 align-[-0.125em]"
+            />{" "}
+            {anomalyCount}
           </span>
         )}
       </div>

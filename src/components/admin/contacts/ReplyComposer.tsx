@@ -345,7 +345,7 @@ export function ReplyComposer({
             <p role="status" aria-live="polite" className="admin-alert admin-alert-info">
               {state.background
                 ? "Réponse enregistrée. L'envoi se poursuit en arrière-plan — voir l'historique ci-dessous."
-                : "Réponse enregistrée, envoi en cours… ⏳"}
+                : "Réponse enregistrée, envoi en cours…"}
             </p>
           )}
           {state.phase === "sent" && (

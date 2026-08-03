@@ -31,6 +31,7 @@ import { SignaturePad } from "@/components/portail/SignaturePad";
 // dans le bundle client. `components/admin/qualiopi/` est une zone autorisée du
 // cloisonnement, donc ce n'est pas une fuite.
 import type { PartieSignataire } from "@/server/qualiopi/documents/signature/document-signature-hash";
+import { TriangleAlert } from "lucide-react";
 
 export interface SignatureApposeeVue {
   id: string;
@@ -256,7 +257,12 @@ export function PieceSignaturePanel({
             : `Envoyé à ${envoi.destinataire}.`}
           {envoi.reemission && (
             <span className="block text-[color:var(--color-admin-fg-muted)]">
-              ⚠️ Ce lien remplace le précédent, qui ne fonctionne plus.
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              Ce lien remplace le précédent, qui ne fonctionne plus.
             </span>
           )}
         </p>
@@ -275,7 +281,7 @@ export function PieceSignaturePanel({
           />
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             {lien.reemission
-              ? "⚠️ Ce lien REMPLACE le précédent, qui ne fonctionne plus. Il n'est affiché qu'une fois."
+              ? "Attention : ce lien REMPLACE le précédent, qui ne fonctionne plus. Il n'est affiché qu'une fois."
               : "Il n'est affiché qu'une fois : seule son empreinte est conservée."}
           </p>
         </div>

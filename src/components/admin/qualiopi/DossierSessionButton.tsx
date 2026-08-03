@@ -76,7 +76,9 @@ export function DossierSessionButton({ sessionId }: { sessionId: string }): Reac
         );
       } else if (incomplet) {
         const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
-        window.alert(`⚠️ Dossier INCOMPLET. Lisez « index.txt » avant de le remettre.${details}`);
+        window.alert(
+          `Attention : dossier INCOMPLET. Lisez « index.txt » avant de le remettre.${details}`,
+        );
       }
     });
   }

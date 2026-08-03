@@ -22,6 +22,7 @@ import {
 } from "@/server/actions/content-gen/coverage";
 import { ConfirmSubmitButton } from "../../_v2/ConfirmSubmitButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { Pause, RotateCcw } from "lucide-react";
 
 const STATUS_LABELS_FR: Record<string, string> = {
   draft: "Brouillon",
@@ -136,7 +137,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
             ) : null}
             {campaign.status === "running" ? (
               <form action={pause}>
-                <button type="submit" className="admin-button-ghost">⏸️ Pause</button>
+                <button type="submit" className="admin-button-ghost"><Pause size={14} aria-hidden="true" className="inline-block shrink-0 align-[-0.125em]" /> Pause</button>
               </form>
             ) : null}
             {campaign.status === "paused" ? (
@@ -183,7 +184,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
             {campaign.archivedAt ? (
               <form action={unarchive}>
                 <button type="submit" className="admin-button-ghost">
-                  ♻️ Réactiver (désarchiver)
+                  <RotateCcw size={14} aria-hidden="true" className="inline-block shrink-0 align-[-0.125em]" /> Réactiver (désarchiver)
                 </button>
               </form>
             ) : (

@@ -4,6 +4,7 @@
 import { useActionState, useState } from "react";
 import { upsertSettingAction, type UpsertSettingState } from "@/features/admin-settings/actions";
 import { contientUnSecret } from "@/lib/admin/masquer-secrets";
+import { TriangleAlert } from "lucide-react";
 
 const init: UpsertSettingState = { ok: false, error: "" };
 
@@ -127,7 +128,12 @@ export function SettingForm({ initial }: Props) {
           </button>
           {parseError && (
             <span className="admin-meta-small" role="alert">
-              ⚠ JSON invalide : {parseError}
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              JSON invalide : {parseError}
             </span>
           )}
         </div>

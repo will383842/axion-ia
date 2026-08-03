@@ -42,6 +42,7 @@ import { contresignerLettreMissionAction } from "@/server/actions/qualiopi/lettr
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { VerserFicheFormateurButton } from "@/components/admin/qualiopi/VerserFicheFormateurButton";
+import { Ban, TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -221,7 +222,12 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               <p className="text-[length:var(--text-admin-sm)]">
                 {bloquants.length > 0 ? (
                   <strong>
-                    ⛔ {bloquants.length} manquement{bloquants.length > 1 ? "s" : ""} bloquant
+                    <Ban
+                      size={14}
+                      aria-hidden="true"
+                      className="inline-block shrink-0 align-[-0.125em]"
+                    />{" "}
+                    {bloquants.length} manquement{bloquants.length > 1 ? "s" : ""} bloquant
                     {bloquants.length > 1 ? "s" : ""} — ce formateur ne devrait pas être affecté.
                   </strong>
                 ) : (
@@ -232,7 +238,14 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               {bloquants.length > 0 && (
                 <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)]">
                   {bloquants.map((m) => (
-                    <li key={m.code}>⛔ {m.message}</li>
+                    <li key={m.code}>
+                      <Ban
+                        size={14}
+                        aria-hidden="true"
+                        className="inline-block shrink-0 align-[-0.125em]"
+                      />{" "}
+                      {m.message}
+                    </li>
                   ))}
                 </ul>
               )}
@@ -240,7 +253,14 @@ export default async function FicheFormateurPage({ params }: PageProps) {
               {alertes.length > 0 && (
                 <ul className="mt-2 space-y-1 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
                   {alertes.map((m) => (
-                    <li key={m.code}>⚠ {m.message}</li>
+                    <li key={m.code}>
+                      <TriangleAlert
+                        size={14}
+                        aria-hidden="true"
+                        className="inline-block shrink-0 align-[-0.125em]"
+                      />{" "}
+                      {m.message}
+                    </li>
                   ))}
                 </ul>
               )}

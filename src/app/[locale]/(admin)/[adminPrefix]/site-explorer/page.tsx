@@ -22,6 +22,7 @@ import type {
   SiteRouteStatus,
   SiteRouteQuality,
 } from "../../../../../../prisma/generated/client";
+import { TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +87,12 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
               href={anomaliesUrl}
               className="flex items-center gap-1.5 rounded-lg bg-[color:var(--color-admin-destructive-soft)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-destructive-fg)] hover:bg-[color:var(--color-admin-destructive-soft)]"
             >
-              ⚠️ {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              {stats.anomaliesHigh} anomalie{stats.anomaliesHigh > 1 ? "s" : ""} high
             </a>
           )}
           <DiscoverButton />

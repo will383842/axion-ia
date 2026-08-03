@@ -75,8 +75,8 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
                   </Link>
                   <p className="admin-meta-small">
                     Score {img.seoScore ?? 0}/100
-                    {img.requiresHumanReview ? " · ⚠ Validateurs" : null}
-                    {img.requiresHumanTaxonomy ? " · ⚠ Taxonomie" : null}
+                    {img.requiresHumanReview ? " · validation humaine requise" : null}
+                    {img.requiresHumanTaxonomy ? " · taxonomie à revoir" : null}
                   </p>
                 </li>
               );

@@ -346,7 +346,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="comparison"
             targetSearchIntent="commercial_investigation"
-            label="⚖️ Générer comparatif"
+            label="Générer un comparatif"
             inputs={[
               {
                 name: "title",

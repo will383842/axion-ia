@@ -6,7 +6,7 @@
 // GSC. Appelle les server actions et rafraîchit via router.refresh().
 
 import Link from "next/link";
-import { Globe, Pencil, Check, Copy } from "lucide-react";
+import { Check, Copy, Globe, Pencil, TriangleAlert } from "lucide-react";
 import { useState, useTransition, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
@@ -291,7 +291,12 @@ export function RoutesReviewList({ routes }: { routes: SiteRouteListItem[] }) {
 
               {anomalyCount > 0 && (
                 <span className="rounded-full bg-[color:var(--color-admin-destructive-soft)] px-1.5 py-0.5 text-xs font-medium text-[color:var(--color-admin-destructive-fg)]">
-                  ⚠️ {anomalyCount}
+                  <TriangleAlert
+                    size={14}
+                    aria-hidden="true"
+                    className="inline-block shrink-0 align-[-0.125em]"
+                  />{" "}
+                  {anomalyCount}
                 </span>
               )}
             </div>

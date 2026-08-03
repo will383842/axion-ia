@@ -20,6 +20,7 @@ import { planningTimeLabel } from "@/features/admin-planning/labels";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { AdminCard, AdminPageHeader } from "@/components/admin/ui";
 import { OPCO_STATUT_LABELS } from "@/server/qualiopi/financements/labels";
+import { TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -127,8 +128,13 @@ export default async function PlanningDetailPage({
           className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-paper)] p-3"
         >
           <strong>
-            ⚠ Conflit de planning — {e.formateur?.nomComplet} est déjà mobilisé sur{" "}
-            {conflits.length} autre{conflits.length > 1 ? "s" : ""} prestation
+            <TriangleAlert
+              size={14}
+              aria-hidden="true"
+              className="inline-block shrink-0 align-[-0.125em]"
+            />{" "}
+            Conflit de planning — {e.formateur?.nomComplet} est déjà mobilisé sur {conflits.length}{" "}
+            autre{conflits.length > 1 ? "s" : ""} prestation
             {conflits.length > 1 ? "s" : ""} qui chevauche ce créneau.
           </strong>
           <ul className="mt-2 space-y-1">

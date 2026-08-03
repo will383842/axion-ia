@@ -49,7 +49,7 @@ export function QrLinkForm({ action, submitLabel, defaults }: QrLinkFormProps) {
         required
         defaultValue={defaults?.slug ?? ""}
         placeholder="interview-entreprise-x"
-        hint="Minuscules, chiffres et tirets. ⚠️ Ne le changez plus une fois le catalogue imprimé (le QR pointe dessus)."
+        hint="Minuscules, chiffres et tirets. Attention : ne le changez plus une fois le catalogue imprimé — le QR pointe dessus."
       />
 
       <AdminFormField

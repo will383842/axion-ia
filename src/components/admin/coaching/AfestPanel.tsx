@@ -153,7 +153,8 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
     startTransition(async () => {
       const res = await action();
       // ok+error = avertissement non bloquant (pré-requis dispositif).
-      if (res.ok && res.error) setMessage({ kind: "err", text: `${okText} ⚠️ ${res.error}` });
+      if (res.ok && res.error)
+        setMessage({ kind: "err", text: `${okText} Attention : ${res.error}` });
       else if (res.ok) setMessage({ kind: "ok", text: okText });
       else setMessage({ kind: "err", text: res.error ?? "Erreur" });
     });

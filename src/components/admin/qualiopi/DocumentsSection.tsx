@@ -51,6 +51,7 @@ import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFacture
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { DocumentType } from "../../../../prisma/generated/client";
+import { TriangleAlert } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types props
@@ -709,7 +710,12 @@ function EnrollmentDocButton({
           role="status"
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
         >
-          ⚠️ {warning}
+          <TriangleAlert
+            size={14}
+            aria-hidden="true"
+            className="inline-block shrink-0 align-[-0.125em]"
+          />{" "}
+          {warning}
         </p>
       )}
     </div>

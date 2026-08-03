@@ -18,6 +18,7 @@ import {
   uploadPhotoForm,
   removePhotoForm,
 } from "../actions-form";
+import { Ban } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
     <AdminPageShell width="full">
       <AdminPageHeader
         title={`Avis de ${author}`}
-        description={`${r.rating}/5 ★ · déposé le ${DATE_FMT.format(r.createdAt)}`}
+        description={`Note ${r.rating} sur 5 · déposé le ${DATE_FMT.format(r.createdAt)}`}
         actions={
           <Link href={base} className="admin-button-ghost">
             ← Retour
@@ -70,7 +71,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 {STATUS_LABELS[r.status] ?? r.status}
               </AdminBadge>
               {r.isVerified ? <AdminBadge tone="success">Vérifié</AdminBadge> : null}
-              {r.featured ? <AdminBadge tone="info">★ Mis en avant</AdminBadge> : null}
+              {r.featured ? <AdminBadge tone="info">Mis en avant</AdminBadge> : null}
               <span className="admin-meta-small">Note : {r.rating}/5</span>
             </div>
             {r.title ? <h2 className="mb-2 text-lg font-semibold">{r.title}</h2> : null}
@@ -229,7 +230,12 @@ export default async function AvisDetailPage({ params }: PageProps) {
                   defaultValue={r.moderationNotes ?? ""}
                 />
                 <button type="submit" className="admin-button-ghost admin-button-block">
-                  ⛔ Rejeter
+                  <Ban
+                    size={14}
+                    aria-hidden="true"
+                    className="inline-block shrink-0 align-[-0.125em]"
+                  />{" "}
+                  Rejeter
                 </button>
               </form>
 

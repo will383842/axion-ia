@@ -4,6 +4,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { KitImporter } from "@/components/admin/documents-interventions/KitImporter";
+import { TriangleAlert } from "lucide-react";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" });
 
@@ -112,7 +113,12 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
                   {r.error ? <p className="text-error mt-1 text-xs">{r.error}</p> : null}
                   {s.unmappedFolders && s.unmappedFolders.length > 0 ? (
                     <p className="text-fg-muted mt-1 text-xs">
-                      ⚠️ Dossiers non reconnus (ignorés) : {s.unmappedFolders.join(", ")}
+                      <TriangleAlert
+                        size={14}
+                        aria-hidden="true"
+                        className="inline-block shrink-0 align-[-0.125em]"
+                      />{" "}
+                      Dossiers non reconnus (ignorés) : {s.unmappedFolders.join(", ")}
                     </p>
                   ) : null}
                   {s.errors && s.errors.length > 0 ? (
