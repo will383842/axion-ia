@@ -152,7 +152,7 @@ export async function CoverageCrossTableV2({
             </select>
           </div>
           <input type="hidden" name="page" value="1" />
-          <button type="submit" className="admin-button">
+          <button type="submit" className="admin-button-secondary">
             Filtrer
           </button>
           {(filterStatus || filterVille) && (

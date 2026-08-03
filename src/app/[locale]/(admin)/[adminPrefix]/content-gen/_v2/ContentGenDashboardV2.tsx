@@ -126,7 +126,8 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               min={1}
               max={25}
               defaultValue={10}
-              className="admin-input w-[120px]"
+              className="admin-input"
+              style={{ width: 120 }}
             />
           </label>
           <AdminButton type="submit" iconAfter={ArrowRight}>
@@ -522,7 +523,7 @@ function QuickGenForm({
   return (
     <form
       action={action}
-      className="flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]"
+      className="flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]"
     >
       <input type="hidden" name="contentType" value={contentType} />
       <input type="hidden" name="targetSearchIntent" value={targetSearchIntent} />

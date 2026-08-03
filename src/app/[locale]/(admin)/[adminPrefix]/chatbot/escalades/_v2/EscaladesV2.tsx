@@ -1,6 +1,7 @@
 // Escalades chatbot — liste filtrable + résolution (REQ-034). FR-only.
 
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -101,7 +102,12 @@ export function EscaladesV2({
               </span>
             )
           }
-          emptyState={<AdminEmptyState icon="✅" title="Aucune escalade dans ce filtre" />}
+          emptyState={
+            <AdminEmptyState
+              icon={<CheckCircle2 size={28} aria-hidden="true" />}
+              title="Aucune escalade dans ce filtre"
+            />
+          }
         />
 
         <AdminPagination

@@ -80,7 +80,7 @@ export default async function PodcastRequestDetailPage({ params }: PageProps) {
 
       <div className="grid gap-8 md:grid-cols-[1fr_320px]">
         <section className="space-y-[var(--space-admin-6)]">
-          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-6)]">
+          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-6)]">
             <h2 className="mb-[var(--space-admin-4)] font-semibold">
               Activité de l&apos;entreprise
             </h2>
@@ -111,7 +111,7 @@ export default async function PodcastRequestDetailPage({ params }: PageProps) {
         </section>
 
         <aside className="space-y-[var(--space-admin-6)]">
-          <dl className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
+          <dl className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-6)] text-[length:var(--text-admin-sm)]">
             {facts.map(([label, value]) => (
               <div key={label} className="mb-[var(--space-admin-3)] last:mb-0">
                 <dt className="text-[color:var(--color-admin-fg-muted)]">{label}</dt>

@@ -175,7 +175,7 @@ export function SubmissionRowActions({
             className={MENU_ITEM_CLASS}
             role="menuitem"
           >
-            {needsAttention ? "Marquer comme lu" : "📩 Marquer non lu"}
+            {needsAttention ? "Marquer comme lu" : "Marquer non lu"}
           </button>
           {status !== "processed" ? (
             <button
@@ -185,7 +185,7 @@ export function SubmissionRowActions({
               className={MENU_ITEM_CLASS}
               role="menuitem"
             >
-              ✔︎ Marquer traité
+              Marquer traité
             </button>
           ) : null}
           <button

@@ -15,10 +15,10 @@ export function SimilarityMonitorV2(): React.ReactElement {
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Statut V1</h2>
         <ul className="admin-meta-block">
-          <li>Couche A — Idempotency key sur ContentGenJob (✅ Sprint 1)</li>
-          <li>Couche B — Dedup-guard pré-IA (✅ Sprint 1 `quality/dedup-guard.ts`)</li>
+          <li>Couche A — Idempotency key sur ContentGenJob (livré — Sprint 1)</li>
+          <li>Couche B — Dedup-guard pré-IA (livré — Sprint 1 `quality/dedup-guard.ts`)</li>
           <li>
-            Couche C — Surveillance similarité cosine + Jaccard post-publi (⏳ Sprint 4 cron{" "}
+            Couche C — Surveillance similarité cosine + Jaccard post-publi (à venir — Sprint 4 cron{" "}
             <code>04:30</code> + table <code>SimilarityPair</code>)
           </li>
         </ul>

@@ -106,7 +106,7 @@ export async function SubmissionDetailContent({
             </p>
             {(ville || sourceUrl) && (
               <p className="mt-[var(--space-admin-4)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                {ville ? <>📍 {ville}</> : null}
+                {ville ? <>{ville}</> : null}
                 {ville && sourceUrl ? " · " : null}
                 {sourceUrl ? <>reçu via {sourceUrl}</> : null}
               </p>

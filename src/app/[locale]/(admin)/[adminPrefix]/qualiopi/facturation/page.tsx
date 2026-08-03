@@ -379,7 +379,7 @@ export default async function FacturationHubPage({
           {f.destinataireNom}
           {f.client?.estPublic === true ? (
             <span
-              className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               title="Client secteur public — dépôt Chorus Pro obligatoire"
             >
               Chorus Pro
@@ -425,7 +425,7 @@ export default async function FacturationHubPage({
               {kpis.map((k) => (
                 <div
                   key={k.label}
-                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-3)]"
+                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)]"
                 >
                   <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                     {k.label}
@@ -441,15 +441,21 @@ export default async function FacturationHubPage({
                   >
                     + Nouveau devis
                   </Link>
-                  <Link href={`${base}/new`} className="admin-button">
+                  <Link href={`${base}/new`} className="admin-button-secondary">
                     + Facture directe
                   </Link>
                 </>
               )}
-              <Link href={`${base}/plans`} className="admin-button">
+              {/* « Plans récurrents » et « FEC / Import » sont de la NAVIGATION
+                  déguisée en action : ils portaient le même aplat terracotta
+                  que « + Nouveau devis », si bien que quatre boutons pleins se
+                  disputaient l'entête. Le devis ouvre le cycle de facturation,
+                  il reste seul en primaire ; les autres restent encadrés donc
+                  parfaitement visibles, mais cessent de crier. */}
+              <Link href={`${base}/plans`} className="admin-button-secondary">
                 Plans récurrents
               </Link>
-              <Link href={`${base}/comptabilite`} className="admin-button">
+              <Link href={`${base}/comptabilite`} className="admin-button-secondary">
                 FEC / Import
               </Link>
             </div>

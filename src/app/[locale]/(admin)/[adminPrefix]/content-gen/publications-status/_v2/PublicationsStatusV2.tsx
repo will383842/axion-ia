@@ -3,6 +3,7 @@
 // Publications-status kanban V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
+import { RefreshCw } from "lucide-react";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -96,7 +97,8 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               defaultValue={75}
               min={0}
               max={100}
-              className="admin-input w-[60px]"
+              className="admin-input"
+              style={{ width: 60 }}
             />
             <button type="submit" className="admin-button">
               Approuver en masse (score ≥ min)
@@ -113,7 +115,8 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
               defaultValue={50}
               min={0}
               max={100}
-              className="admin-input w-[60px]"
+              className="admin-input"
+              style={{ width: 60 }}
             />
             <button type="submit" className="admin-button-ghost">
               Rejeter en masse (score ≤ max)
@@ -121,7 +124,7 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
           </form>
           <form action={doRetryFailed}>
             <button type="submit" className="admin-button-ghost">
-              🔁 Relancer tous les échecs
+              <RefreshCw size={14} aria-hidden="true" /> Relancer tous les échecs
             </button>
           </form>
         </div>

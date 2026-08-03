@@ -131,7 +131,7 @@ export default async function PlanningDetailPage({
       {conflits.length > 0 && (
         <div
           role="alert"
-          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] p-3"
+          className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-warning)] bg-[color:var(--color-admin-paper)] p-3"
         >
           <strong>
             ⚠ Conflit de planning — {e.formateur?.nomComplet} est déjà mobilisé sur{" "}

@@ -104,9 +104,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
             defaultValue={recherche}
             placeholder="Rechercher : raison sociale, SIRET, SIREN, n° de fiche, contact…"
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
-            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
           />
-          <button type="submit" className="admin-button">
+          <button type="submit" className="admin-button-secondary">
             Rechercher
           </button>
           {recherche !== "" ? (
@@ -147,7 +147,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           Aucun client enregistré. Créez votre premier client depuis l&apos;action CRM.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -187,7 +187,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     </Link>{" "}
                     <Link
                       href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}/edit`}
-                      className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
+                      className="admin-button-ghost"
                       aria-label={`Modifier ${client.raisonSociale}`}
                     >
                       Éditer

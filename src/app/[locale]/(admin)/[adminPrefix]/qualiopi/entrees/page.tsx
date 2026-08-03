@@ -79,7 +79,7 @@ export default async function QualiopiEntreesPage({ params }: PageProps) {
           apparaîtront ici.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -155,7 +155,7 @@ export default async function QualiopiEntreesPage({ params }: PageProps) {
                       <div className="flex flex-col gap-[var(--space-admin-1)]">
                         <Link
                           href={`${base}/qualiopi/clients`}
-                          className="inline-flex w-fit items-center rounded-full border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)] hover:bg-[color:var(--color-admin-bg)]"
+                          className="inline-flex w-fit items-center rounded-full border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)] hover:bg-[color:var(--color-admin-bg)]"
                           title={entree.clientExistant.raisonSociale}
                         >
                           Client {entree.clientExistant.numero}

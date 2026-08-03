@@ -47,6 +47,7 @@ export { AdminEmptyState } from "./AdminEmptyState";
 export { AdminLoadingState } from "./AdminLoadingState";
 export { AdminErrorState } from "./AdminErrorState";
 export { AdminBadge, AdminStatusBadge } from "./AdminBadge";
+export { AdminEtatBooleen } from "./AdminEtatBooleen";
 export { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 export type { AdminBreadcrumbItem } from "./AdminBreadcrumbs";
 export { AdminTabs } from "./AdminTabs";

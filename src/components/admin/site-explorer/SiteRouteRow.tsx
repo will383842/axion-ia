@@ -1,6 +1,7 @@
 // Row d'une route dans le Site Explorer — Sprint Site Explorer Admin 2026-05-22.
 
 import Link from "next/link";
+import { Globe, Pencil } from "lucide-react";
 import { SiteRouteStatusBadge } from "./SiteRouteStatusBadge";
 import type { SiteRouteListItem } from "@/server/actions/site-explorer/site-routes";
 import { adminPath } from "@/lib/admin-path";
@@ -77,7 +78,7 @@ export function SiteRouteRow({ route }: Props) {
             className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-neutral-soft)] hover:text-[color:var(--color-admin-fg-muted)]"
             aria-label={`Voir ${displayPath}`}
           >
-            🌐
+            <Globe size={14} aria-hidden="true" />
           </a>
         )}
 
@@ -88,7 +89,7 @@ export function SiteRouteRow({ route }: Props) {
             className="rounded p-1 text-[color:var(--color-admin-fg-disabled)] hover:bg-[color:var(--color-admin-info-soft)] hover:text-[color:var(--color-admin-info)]"
             aria-label={`Éditer ${displayPath}`}
           >
-            ✏️
+            <Pencil size={14} aria-hidden="true" />
           </a>
         )}
       </div>

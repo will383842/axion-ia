@@ -108,7 +108,7 @@ export function VeilleRowActions({
             type="button"
             onClick={() => setOpen(true)}
             disabled={isPending}
-            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80 disabled:opacity-50"
+            className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)] transition-opacity hover:opacity-80 disabled:opacity-50"
           >
             Modifier
           </button>
@@ -118,7 +118,7 @@ export function VeilleRowActions({
                 type="button"
                 onClick={handleDelete}
                 disabled={isPending}
-                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-error)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-error)] transition-opacity hover:opacity-80 disabled:opacity-50"
+                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-error)] transition-opacity hover:opacity-80 disabled:opacity-50"
               >
                 {isPending ? "Suppression…" : "Confirmer"}
               </button>
@@ -136,7 +136,7 @@ export function VeilleRowActions({
               type="button"
               onClick={() => setConfirming(true)}
               disabled={isPending}
-              className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-error)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-error)] transition-opacity hover:opacity-80 disabled:opacity-50"
+              className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-error)] transition-opacity hover:opacity-80 disabled:opacity-50"
             >
               Supprimer
             </button>

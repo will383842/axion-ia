@@ -3,6 +3,7 @@
 // filtres par statut en liens GET, zéro JS client.
 
 import { redirect } from "next/navigation";
+import { Mic } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
@@ -142,7 +143,7 @@ export default async function PodcastRequestsListPage({ params, searchParams }: 
 
       {rows.length === 0 ? (
         <AdminEmptyState
-          icon="🎙️"
+          icon={<Mic size={28} aria-hidden="true" />}
           title="Aucune demande pour l'instant"
           description="Les demandes déposées sur /podcast (ou via le QR du flyer) apparaîtront ici."
         />

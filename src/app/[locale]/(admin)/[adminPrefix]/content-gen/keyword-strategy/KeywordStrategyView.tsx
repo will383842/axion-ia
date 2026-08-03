@@ -13,6 +13,7 @@
  */
 
 import { useMemo, useState } from "react";
+import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react";
 import { ALL_KEYWORD_SEEDS } from "@/content/keywords/master";
 import type { KeywordSeed } from "@/content/keywords/types";
 
@@ -184,12 +185,24 @@ export function KeywordStrategyView({ searchParams }: Props) {
           {allVerticals.map((v) => {
             const count = byVertical[v] ?? 0;
             const pct = Math.round((count / seeds.length) * 100);
-            const status = count >= 250 ? "✅" : count >= 150 ? "⚠️" : "🔴";
+            const StatutIcone =
+              count >= 250 ? CheckCircle2 : count >= 150 ? AlertTriangle : XCircle;
+            const statutLibelle =
+              count >= 250
+                ? "Couverture suffisante"
+                : count >= 150
+                  ? "Couverture juste"
+                  : "Couverture insuffisante";
             return (
               <div key={v}>
                 <div className="mb-1 flex items-center justify-between text-sm">
                   <span className="font-medium text-[color:var(--color-admin-fg-soft)]">
-                    {status} {VERTICAL_LABELS[v]}
+                    <StatutIcone
+                      size={14}
+                      aria-label={statutLibelle}
+                      className="inline shrink-0 align-[-2px]"
+                    />{" "}
+                    {VERTICAL_LABELS[v]}
                   </span>
                   <span className="text-[color:var(--color-admin-fg-muted)]">
                     {count.toLocaleString()} ({pct}%)
@@ -366,7 +379,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             ← Précédent
           </button>
@@ -376,7 +389,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="rounded-md border border-[color:var(--color-admin-border-strong)] px-3 py-1.5 text-sm disabled:opacity-50"
+            className="rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm disabled:opacity-50"
           >
             Suivant →
           </button>

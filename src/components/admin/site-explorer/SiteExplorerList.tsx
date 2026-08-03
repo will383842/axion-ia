@@ -18,7 +18,7 @@ export function SiteExplorerList({ routes, total, page, pageSize }: Props) {
 
   if (routes.length === 0) {
     return (
-      <div className="rounded-lg border border-[color:var(--color-admin-border)] py-12 text-center text-[color:var(--color-admin-fg-muted)]">
+      <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] py-12 text-center text-[color:var(--color-admin-fg-muted)]">
         <p>Aucune route trouvée.</p>
         <p className="mt-1 text-xs">Lancez un scan pour cataloguer les URLs publiques.</p>
       </div>

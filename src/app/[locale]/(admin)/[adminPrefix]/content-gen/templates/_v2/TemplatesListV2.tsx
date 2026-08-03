@@ -10,6 +10,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminEtatBooleen,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { listTemplates, toggleTemplate } from "@/server/actions/content-gen/templates";
@@ -78,7 +79,7 @@ export async function TemplatesListV2({
       header: "Actif",
       cell: (r) => (
         <AdminBadge tone={r.isActive ? "success" : "neutral"}>
-          {r.isActive ? "✅" : "🚫"}
+          <AdminEtatBooleen actif={r.isActive} libelles={{ vrai: "Actif", faux: "Inactif" }} />
         </AdminBadge>
       ),
     },
@@ -144,7 +145,7 @@ export async function TemplatesListV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Filtrer
             </button>
             <Link href={base} className="admin-button-ghost">

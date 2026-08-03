@@ -2,7 +2,12 @@
 //
 // Coverage distribution V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminEtatBooleen,
+} from "@/components/admin/ui";
 import {
   deleteDistributionProfile,
   upsertDistributionProfile,
@@ -144,7 +149,12 @@ export function CoverageDistributionV2({ rows }: Props): React.ReactElement {
                       <code>{r.slug}</code>
                     </td>
                     <td>{r.name}</td>
-                    <td>{r.isDefault ? "✅" : "—"}</td>
+                    <td>
+                      <AdminEtatBooleen
+                        actif={r.isDefault}
+                        libelles={{ vrai: "Profil par défaut", faux: "Profil secondaire" }}
+                      />
+                    </td>
                     <td>
                       <code className="text-[length:var(--text-admin-xs)]">
                         {JSON.stringify(r.distribution)}

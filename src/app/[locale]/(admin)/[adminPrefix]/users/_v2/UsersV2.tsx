@@ -15,6 +15,7 @@ import {
   AdminBadge,
   AdminEmptyState,
   AdminButton,
+  AdminEtatBooleen,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -92,7 +93,16 @@ export function UsersV2({
         </AdminBadge>
       ),
     },
-    { key: "twoFactor", header: "2FA", cell: (u) => (u.twoFactorEnabled ? "✓" : "✗") },
+    {
+      key: "twoFactor",
+      header: "2FA",
+      cell: (u) => (
+        <AdminEtatBooleen
+          actif={u.twoFactorEnabled}
+          libelles={{ vrai: "2FA activée", faux: "2FA désactivée" }}
+        />
+      ),
+    },
     {
       key: "lastLogin",
       header: "Dernier login",
@@ -177,7 +187,7 @@ export function UsersV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/users`} className="admin-button-ghost">

@@ -241,7 +241,7 @@ export async function ExternalLinksV2({
               className="ml-2"
             />
           </label>
-          <button type="submit" className="admin-button">
+          <button type="submit" className="admin-button-secondary">
             Filtrer
           </button>
         </form>

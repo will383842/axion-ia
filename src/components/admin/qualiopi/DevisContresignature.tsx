@@ -101,7 +101,7 @@ export function DevisContresignature({
           />
         </>
       ) : (
-        <div className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+        <div className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
           <p className="text-[length:var(--text-admin-sm)]">
             Contresignature sans tracé manuscrit. Elle sera mentionnée comme telle sur le document.
           </p>

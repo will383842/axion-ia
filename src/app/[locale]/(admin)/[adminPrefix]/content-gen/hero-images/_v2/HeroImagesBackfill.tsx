@@ -33,7 +33,7 @@ export function HeroImagesBackfill() {
         kind: "info",
         message:
           res.remaining === 0
-            ? "Aucun article à rattraper : tout est déjà en Unsplash. ✅"
+            ? "Aucun article à rattraper : tout est déjà en Unsplash."
             : `${res.remaining} article(s) à rattraper. Aperçu ci-dessous (10 max).`,
       });
     });
@@ -54,14 +54,14 @@ export function HeroImagesBackfill() {
         message:
           res.remaining > 0
             ? `${res.updated} illustré(s), ${res.skipped} ignoré(s). Il reste ${res.remaining} article(s) → recliquez « Lancer » pour continuer.`
-            : `Terminé ✅ ${res.updated} illustré(s), ${res.skipped} ignoré(s). Plus aucun article à rattraper.`,
+            : `Terminé — ${res.updated} illustré(s), ${res.skipped} ignoré(s). Plus aucun article à rattraper.`,
       });
     });
   }
 
   return (
     <div className="flex flex-col gap-5">
-      <label className="admin-card flex items-start gap-3 p-4">
+      <label className="admin-card flex items-start gap-3">
         <input
           type="checkbox"
           checked={replaceBank}
@@ -112,14 +112,14 @@ export function HeroImagesBackfill() {
       ) : null}
 
       {preview && preview.sample.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Aperçu des photos qui seraient posées :</p>
           <ResultList items={preview.sample} />
         </div>
       ) : null}
 
       {lastRun && lastRun.items.length > 0 ? (
-        <div className="admin-card p-4">
+        <div className="admin-card">
           <p className="admin-meta mb-2">Dernier lot traité :</p>
           <ResultList items={lastRun.items} />
         </div>
@@ -141,7 +141,7 @@ function ResultList({
             {it.action === "new" ? "nouveau" : it.action === "replace" ? "remplacé" : "ignoré"}
           </AdminBadge>
           <code>{it.slug}</code>
-          {it.photographer ? <small className="admin-meta">📷 {it.photographer}</small> : null}
+          {it.photographer ? <small className="admin-meta">Photo : {it.photographer}</small> : null}
           {it.reason ? <small className="admin-meta">({it.reason})</small> : null}
         </li>
       ))}

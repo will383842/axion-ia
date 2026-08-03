@@ -246,7 +246,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
           Aucune session réalisée sur cette période.
         </p>
       ) : (
-        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -309,7 +309,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
           Aucune donnée.
         </p>
       ) : (
-        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -355,7 +355,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
           Aucune affectation de formateur sur cette période.
         </p>
       ) : (
-        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
@@ -394,7 +394,7 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
       <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold text-[color:var(--color-admin-fg)]">
         Consolidation mensuelle {annee}
       </h2>
-      <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+      <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
         <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
           <thead className="border-b border-[color:var(--color-admin-border)]">
             <tr>

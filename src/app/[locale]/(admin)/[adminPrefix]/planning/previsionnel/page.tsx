@@ -169,7 +169,7 @@ export default async function PlanningPrevisionnelPage({
             aria-label="Nombre de mois affichés"
           />
         </label>
-        <button type="submit" className="admin-button">
+        <button type="submit" className="admin-button-secondary">
           Appliquer
         </button>
         {nbMois !== 12 && (

@@ -17,6 +17,8 @@
 // composant client-side pur, pas de SSR possible.
 
 import { useState } from "react";
+import { Building2, PenLine, BookOpen, HelpCircle, Scale, Check } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
@@ -182,7 +184,9 @@ interface QuickType {
   id: string;
   fr: string;
   desc: string;
-  emoji: string;
+  /** Repère visuel du type de campagne — un dessin lucide, jamais un emoji :
+   *  la chasse et le dessin d'un emoji dépendent de la police du poste. */
+  Icone: LucideIcon;
   weights: Record<WizardContentType, number>;
 }
 
@@ -200,35 +204,35 @@ const QUICK_TYPES: QuickType[] = [
     id: "contenu_local",
     fr: "Contenu local",
     desc: "Problème/solution, cas d'usage et FAQ ancrés ville",
-    emoji: "🏙️",
+    Icone: Building2,
     weights: focusedWeights({ pain_point_solution: 40, case_study_local: 30, faq_geo: 30 }),
   },
   {
     id: "blog",
     fr: "Articles de blog",
     desc: "Articles éditoriaux & actualités",
-    emoji: "📝",
+    Icone: PenLine,
     weights: focusedWeights({ blog_article: 60, blog_from_title: 20, blog_from_keywords: 20 }),
   },
   {
     id: "guides",
     fr: "Guides piliers",
     desc: "Contenus de fond, forte autorité",
-    emoji: "📘",
+    Icone: BookOpen,
     weights: focusedWeights({ guide_pilier: 100 }),
   },
   {
     id: "qr_faq",
     fr: "Q-R / FAQ",
     desc: "Questions-réponses & FAQ géo",
-    emoji: "❓",
+    Icone: HelpCircle,
     weights: focusedWeights({ qa_derived: 40, faq_standalone: 30, faq_geo: 30 }),
   },
   {
     id: "equilibre",
     fr: "Mix équilibré",
     desc: "Répartition recommandée des 21 types",
-    emoji: "⚖️",
+    Icone: Scale,
     weights: { ...DEFAULT_WEIGHTS_BALANCED },
   },
 ];
@@ -415,7 +419,7 @@ export function CampaignWizardV2({
               )}
               aria-current={state.step === n ? "step" : undefined}
             >
-              {state.step > n ? "✓" : n}
+              {state.step > n ? <Check size={14} aria-label="Étape terminée" /> : n}
             </span>
             <span className="hidden text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)] sm:inline">
               {STEP_LABELS[n - 1]}
@@ -458,7 +462,11 @@ export function CampaignWizardV2({
                       : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
                   )}
                 >
-                  <span className="text-[length:var(--text-admin-lg)]">{qt.emoji}</span>
+                  <qt.Icone
+                    size={20}
+                    aria-hidden="true"
+                    className="text-[color:var(--color-admin-accent-strong)]"
+                  />
                   <span className="font-semibold text-[color:var(--color-admin-fg)]">{qt.fr}</span>
                   <span className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
                     {qt.desc}

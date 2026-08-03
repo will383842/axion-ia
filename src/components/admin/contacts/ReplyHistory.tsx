@@ -72,7 +72,7 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
           return (
             <li
               key={r.id}
-              className="rounded-lg border border-[color:var(--color-admin-border-default)] p-4"
+              className="rounded-lg border border-[color:var(--color-admin-border-default)] bg-[color:var(--color-admin-paper)] p-4"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>

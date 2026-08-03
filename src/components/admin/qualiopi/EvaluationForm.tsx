@@ -11,6 +11,7 @@
  */
 
 import { useState, useTransition } from "react";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -234,7 +235,7 @@ export function EvaluationForm({
       {/* Grille de compétences */}
       <div>
         <p className={labelCls}>Grille de compétences</p>
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)]">
               <tr>
@@ -310,7 +311,7 @@ export function EvaluationForm({
                         aria-label={`Supprimer la compétence ${index + 1}`}
                         className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)] hover:opacity-75"
                       >
-                        ✕
+                        <X size={14} aria-hidden="true" />
                       </button>
                     )}
                   </td>

@@ -3,7 +3,12 @@
 // Landing variant detail V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import {
+  AdminPageShell,
+  AdminPageHeader,
+  AdminCard,
+  AdminEtatBooleen,
+} from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 
 interface Props {
@@ -61,7 +66,12 @@ export async function LandingVariantDetailV2({
                       <code>{t.slug}</code>
                     </td>
                     <td>v{t.version}</td>
-                    <td>{t.isActive ? "✅" : "🚫"}</td>
+                    <td>
+                      <AdminEtatBooleen
+                        actif={t.isActive}
+                        libelles={{ vrai: "Variante active", faux: "Variante inactive" }}
+                      />
+                    </td>
                     <td>
                       <Link
                         href={`/fr/${adminPrefix}/content-gen/templates/${t.id}`}

@@ -22,7 +22,7 @@ interface PageProps {
 
 const VISIBILITE_LABEL: Record<DocVisibilite, string> = {
   stagiaire: "Stagiaire",
-  formateur: "Formateur 🔒",
+  formateur: "Formateur (accès restreint)",
   commercial: "Commercial",
   interne: "Interne",
 };

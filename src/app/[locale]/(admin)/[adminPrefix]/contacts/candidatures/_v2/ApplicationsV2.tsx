@@ -12,6 +12,7 @@ import {
   AdminBadge,
   AdminEmptyState,
   AdminButton,
+  AdminEtatBooleen,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
@@ -68,7 +69,13 @@ export function ApplicationsV2({
     },
     { key: "email", header: "Email", cell: (a) => a.contactEmail },
     { key: "offer", header: "Offre", cell: (a) => a.offerTitleSnap },
-    { key: "cv", header: "CV", cell: (a) => (a.hasCv ? "📎" : "—") },
+    {
+      key: "cv",
+      header: "CV",
+      cell: (a) => (
+        <AdminEtatBooleen actif={a.hasCv} libelles={{ vrai: "CV joint", faux: "Sans CV" }} />
+      ),
+    },
     {
       key: "status",
       header: "Statut",
@@ -124,7 +131,7 @@ export function ApplicationsV2({
             </div>
           </div>
           <div className="admin-filters-actions">
-            <button type="submit" className="admin-button">
+            <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
             <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">

@@ -12,6 +12,7 @@
 //   {error && <AdminFormError message={error} onDismiss={() => setError(null)} />}
 
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
 
 interface AdminFormErrorProps {
   /** Message d'erreur à afficher. */
@@ -48,7 +49,7 @@ export function AdminFormError({
           aria-label="Fermer le message d'erreur"
           className="shrink-0 opacity-70 hover:opacity-100"
         >
-          ✕
+          <X size={14} aria-hidden="true" />
         </button>
       ) : null}
     </div>

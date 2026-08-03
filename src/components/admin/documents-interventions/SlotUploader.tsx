@@ -159,7 +159,7 @@ export function SlotUploader({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border px-3 py-1.5 text-xs font-medium"
+          className="border-terracotta text-terracotta hover:bg-terracotta-soft rounded-md border bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-xs font-medium"
         >
           {open ? "Annuler" : current ? "Nouvelle version" : "Déposer"}
         </button>

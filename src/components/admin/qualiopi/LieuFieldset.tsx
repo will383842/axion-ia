@@ -46,7 +46,7 @@ export function LieuFieldset({
   const estDistanciel = value.lieuType === "distanciel";
 
   return (
-    <fieldset className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+    <fieldset className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <legend className="px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
         Lieu de déroulement
       </legend>

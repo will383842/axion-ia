@@ -13,7 +13,14 @@ import {
 } from "@/components/admin/ui";
 import type { ChatbotDashboardStats, EscalationRow } from "@/features/admin-chatbot/actions";
 import { IngestionButton } from "./IngestionButton";
-import { MessagesSquare, MessageCircle, AlertTriangle, Database, Coins } from "lucide-react";
+import {
+  MessagesSquare,
+  MessageCircle,
+  AlertTriangle,
+  Database,
+  Coins,
+  CheckCircle2,
+} from "lucide-react";
 
 function frDate(d: Date): string {
   return new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
@@ -92,7 +99,7 @@ export function ChatbotDashboardV2({
           rowAction={() => <AdminBadge tone="warning">ouverte</AdminBadge>}
           emptyState={
             <AdminEmptyState
-              icon="✅"
+              icon={<CheckCircle2 size={28} aria-hidden="true" />}
               title="Aucune escalade ouverte"
               description="Toutes les questions sans réponse ont été traitées."
             />

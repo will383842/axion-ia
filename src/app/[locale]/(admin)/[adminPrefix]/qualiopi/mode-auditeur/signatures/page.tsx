@@ -323,7 +323,7 @@ export default async function RegistreSignaturesPage({
       {/* Un registre tronqué en silence est PIRE qu'un registre absent : il a
           l'air exhaustif. On le dit avant tout le reste. */}
       {registre.tronque ? (
-        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
+        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
           Ce registre est PARTIEL : la limite de lignes a été atteinte. Ne le présentez pas comme un
           inventaire complet — restreignez-le à une session pour obtenir une vue exhaustive.
         </p>
@@ -333,7 +333,7 @@ export default async function RegistreSignaturesPage({
           nature : un circuit désignerait un type de pièce qui n'existe pas, et
           ses pièces n'apparaîtraient jamais dans ce registre. */}
       {registre.typesSignablesInconnusDuSchema.length > 0 ? (
-        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
+        <p className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-danger)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]">
           {`Incohérence de configuration : ${registre.typesSignablesInconnusDuSchema.join(", ")} — un circuit de signature désigne un type de pièce absent du schéma. Les pièces concernées n'apparaissent pas ici.`}
         </p>
       ) : null}
@@ -362,13 +362,13 @@ export default async function RegistreSignaturesPage({
       </p>
 
       {registre.pieces.length === 0 ? (
-        <p className="rounded-[var(--radius-admin-md)] border border-dashed border-[color:var(--color-admin-border)] p-[var(--space-admin-6)] text-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        <p className="rounded-[var(--radius-admin-md)] border border-dashed border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-6)] text-center text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
           {seulementAnomalies
             ? "Aucune anomalie relevée."
             : "Aucune pièce signable n'a encore été émise."}
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-[color:var(--color-admin-border)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] uppercase">

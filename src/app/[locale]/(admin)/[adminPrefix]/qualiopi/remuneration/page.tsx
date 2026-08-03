@@ -267,7 +267,7 @@ export default async function QualiopiRemunerationPage({ params, searchParams }:
                   <td className="text-right tabular-nums">{euros(r.tvaCents)}</td>
                   <td className="text-right tabular-nums">{euros(r.totalTtcCents)}</td>
                   <td>
-                    <Link href={`${base}/${r.id}`} className="admin-link">
+                    <Link href={`${base}/${r.id}`} className="admin-button-ghost">
                       Ouvrir
                     </Link>
                   </td>

@@ -90,7 +90,7 @@ function EnrollmentRow({
   }
 
   return (
-    <div className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]">
+    <div className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)]">
       <div className="mb-[var(--space-admin-2)] font-medium">{row.traineeNom}</div>
       <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
         <select

@@ -3,6 +3,8 @@
 // avec badges Sans réponse / Répondu (N) / Échec / Archivé.
 
 import Link from "next/link";
+import { Archive, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { SubmissionListItem } from "@/features/admin-submissions/actions";
 import { listSubmissionsAction } from "@/features/admin-submissions/actions";
 import { SubmissionFilters } from "../SubmissionFilters";
@@ -31,19 +33,23 @@ const STATUS_LABELS: Record<string, string> = {
  *  - "failed"      : dernière reply en deliveryStatus failed/bounced
  *  - "archived"    : Submission archivée (archivedAt non null)
  */
-function replyBadge(s: SubmissionListItem): { label: string; tone: string; emoji: string } {
-  if (s.archivedAt) return { label: "Archivé", tone: "muted", emoji: "🗄️" };
+// Les pastilles 🟢 / 🔴 ne se distinguaient que par la teinte, et étaient
+// `aria-hidden` : deux états rigoureusement identiques en vision des couleurs
+// déficiente. Des dessins lucide distincts (coche, croix, triangle, archive)
+// portent l'état par la FORME ; le libellé texte reste à côté.
+function replyBadge(s: SubmissionListItem): { label: string; tone: string; Icone: LucideIcon } {
+  if (s.archivedAt) return { label: "Archivé", tone: "muted", Icone: Archive };
   if (s.lastReplyStatus === "failed" || s.lastReplyStatus === "bounced") {
-    return { label: "Échec envoi", tone: "warning", emoji: "⚠️" };
+    return { label: "Échec envoi", tone: "warning", Icone: AlertTriangle };
   }
   if (s.replyCount > 0) {
     return {
       label: `Répondu (${s.replyCount})`,
       tone: "success",
-      emoji: "🟢",
+      Icone: CheckCircle2,
     };
   }
-  return { label: "Sans réponse", tone: "danger", emoji: "🔴" };
+  return { label: "Sans réponse", tone: "danger", Icone: XCircle };
 }
 
 interface Props {
@@ -140,7 +146,7 @@ export async function SubmissionsV2({
           className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[length:var(--text-admin-xs)] font-medium admin-badge-${r.tone}`}
           title={r.label}
         >
-          <span aria-hidden="true">{r.emoji}</span>
+          <r.Icone size={12} aria-hidden="true" className="shrink-0" />
           {r.label}
         </span>,
         <AdminStatusBadge

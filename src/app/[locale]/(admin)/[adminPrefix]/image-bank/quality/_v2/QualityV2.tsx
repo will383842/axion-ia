@@ -69,10 +69,7 @@ export function QualityV2({ base, images }: Props): React.ReactElement {
             {images.map((img) => {
               const tr = img.translations[0];
               return (
-                <li
-                  key={img.id}
-                  className="admin-card admin-card-inline border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]"
-                >
+                <li key={img.id} className="admin-card admin-card-inline">
                   <Link href={`${base}/library/${img.id}`} className="admin-link admin-meta-strong">
                     {tr?.title ?? img.slug}
                   </Link>

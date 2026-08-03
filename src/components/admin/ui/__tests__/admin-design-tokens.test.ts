@@ -65,6 +65,23 @@ const NON_CSS_ADMIN_STRINGS = new Set([
  * Classes purement « crochets » : posées pour être ciblées par un test, un
  * sélecteur d'impression ou un futur style, sans déclaration propre. Elles
  * accompagnent TOUJOURS des classes utilitaires qui portent le rendu réel.
+ *
+ * ⚠️ CETTE LISTE EST UNE DETTE, PAS UN CONFORT — 2026-08-02.
+ *
+ * Quatre entrées y figuraient à tort : `admin-confirm-modal`,
+ * `admin-conflict-modal`, `admin-session-expiry-modal` et
+ * `admin-table-empty-wrapper`. Elles n'accompagnaient AUCUNE utilitaire : elles
+ * étaient la SEULE classe de leur élément. Les exempter revenait à écrire
+ * « cet élément n'a pas besoin de style » là où il fallait lire « on ne l'a
+ * pas encore stylé ».
+ *
+ * Résultat concret : les trois boîtes de dialogue de la console — celles où
+ * l'on confirme une suppression — s'affichaient avec le style PAR DÉFAUT du
+ * navigateur, sans rembourrage, sans ombre et sans voile. Le test était vert.
+ *
+ * Avant d'ajouter une entrée ici, vérifiez qu'une utilitaire porte bien le
+ * rendu sur le MÊME élément. Sinon ce n'est pas un crochet, c'est un style
+ * manquant.
  */
 const HOOK_ONLY_CLASSES = new Set([
   "admin-layout-v2",
@@ -89,17 +106,13 @@ const HOOK_ONLY_CLASSES = new Set([
   "admin-topbar",
   "admin-inline-edit-view",
   "admin-inline-edit-edit",
-  "admin-confirm-modal",
   "admin-confirm-title",
   "admin-confirm-desc",
   "admin-confirm-type-input",
-  "admin-conflict-modal",
   "admin-conflict-title",
   "admin-conflict-desc",
-  "admin-session-expiry-modal",
   "admin-session-expiry-title",
   "admin-session-expiry-desc",
-  "admin-table-empty-wrapper",
   "admin-field-email-hint",
 ]);
 
@@ -128,16 +141,12 @@ const HOOK_ONLY_CLASSES = new Set([
  * DIMINUER. Corriger une entrée, c'est retirer sa ligne ci-dessous.
  */
 const INERT_UTILITIES_BASELINE: readonly string[] = [
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/_v2/ContentGenDashboardV2.tsx :: admin-input w-[120px]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/author/manon/_v2/AuthorManonV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/campaigns/new/_v2/CampaignWizardV2.tsx :: admin-input text-right",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/cities-order/_v3/CitiesOrderV3.tsx :: admin-input text-[length:var(--text-admin-sm)]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage-map/_v2/CoverageMapV2.tsx :: admin-input text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/coverage/[id]/_v2/CoverageDetailV2.tsx :: admin-input w-[70px]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/layout.tsx :: admin-button-cta text-[length:var(--text-admin-xs)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications-status/_v2/PublicationsStatusV2.tsx :: admin-input w-[60px]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/[id]/edit/_v2/PublicationEditV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
-  "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/_v2/PublicationsV2.tsx :: admin-button text-[length:var(--text-admin-xs)]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/publications/_v2/PublicationsV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/rss/_v2/RssListV2.tsx :: admin-button-ghost text-[length:var(--text-admin-xs)]",
   "src/app/[locale]/(admin)/[adminPrefix]/content-gen/settings/audience-mix/_v2/AudienceMixV2.tsx :: admin-input font-mono text-[length:var(--text-admin-sm)]",
@@ -294,11 +303,25 @@ describe("système de design de la console admin", () => {
       }
     }
 
-    // Cliquet : la liste ne doit que DIMINUER. Si ce test échoue avec une
-    // entrée en plus, c'est qu'une nouvelle combinaison inerte a été
-    // introduite — utiliser un modificateur défini dans admin.css. Si une
-    // entrée disparaît, retirer la ligne correspondante ci-dessous.
-    expect([...offenders].sort()).toEqual(INERT_UTILITIES_BASELINE);
+    // ⚠️ L'ÉGALITÉ STRICTE ÉTAIT UN PIÈGE — corrigée le 2026-08-02.
+    //
+    // `toEqual(BASELINE)` échoue AUSSI quand la liste rétrécit. Deux personnes
+    // qui corrigent chacune une combinaison inerte passent au vert séparément,
+    // et rendent `main` rouge une fois fusionnées — pour avoir fait exactement
+    // ce que le cliquet demande. Le même piège existait sur le cliquet
+    // anti-emoji et avait déjà coûté un correctif à chaud.
+    //
+    // Ce qu'un cliquet doit interdire, c'est la RÉGRESSION, pas le progrès. On
+    // n'exige donc plus que la liste soit identique : on exige qu'aucune
+    // combinaison NOUVELLE n'apparaisse. Baisser la ligne de base reste utile
+    // pour verrouiller le terrain gagné, mais l'oublier ne bloque personne.
+    const nouvelles = [...offenders].sort().filter((o) => !INERT_UTILITIES_BASELINE.includes(o));
+    expect(
+      nouvelles,
+      "Nouvelle(s) combinaison(s) `.admin-*` + utilitaire Tailwind INERTE.\n" +
+        "L'utilitaire ne peint rien : `.admin-*` vit hors couche et bat `utilities`.\n" +
+        "Remède : un modificateur défini dans admin.css, au même niveau de cascade.",
+    ).toEqual([]);
   });
 
   // La console a sa propre palette (ivoire, mocha, terracotta) exposée par des

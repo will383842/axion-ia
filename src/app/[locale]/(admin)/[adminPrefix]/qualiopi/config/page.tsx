@@ -81,7 +81,7 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
         <code>OF_PUBLIC_DISCLOSURE_ENABLED=true</code>). Le n° Qualiopi reste vide jusqu&apos;à
         obtention de la certification.
       </p>
-      <section className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-5)]">
+      <section className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
         <h2 className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-lg)] font-[var(--font-weight-admin-semibold)]">
           Données de référence
         </h2>

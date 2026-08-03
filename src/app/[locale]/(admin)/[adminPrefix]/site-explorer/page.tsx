@@ -93,7 +93,7 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
           <ScanAllButton adminPrefix={adminPrefix} />
           <a
             href={anomaliesUrl}
-            className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
+            className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
           >
             Voir anomalies ({stats.anomaliesTotal})
           </a>
@@ -105,8 +105,8 @@ export default async function SiteExplorerPage({ params, searchParams }: PagePro
 
       {/* Note exclusions */}
       <div className="rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] px-4 py-2 text-xs text-[color:var(--color-admin-fg-muted)]">
-        Routes admin <code>/[adminPrefix]/*</code> : non cataloguées — ❌ Routes API{" "}
-        <code>/api/*</code> : non cataloguées — ❌ Server Actions : non cataloguées
+        Routes admin <code>/[adminPrefix]/*</code> : non cataloguées · Routes API{" "}
+        <code>/api/*</code> : non cataloguées · Server Actions : non cataloguées
       </div>
 
       {/* Filtres */}
@@ -131,7 +131,7 @@ function ScanAllButton({ adminPrefix: _adminPrefix }: { adminPrefix: string }) {
     <form action={handleScanAll}>
       <button
         type="submit"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm font-medium text-[color:var(--color-admin-fg-muted)] hover:bg-[color:var(--color-admin-surface-sunken)]"
         title="Relance l'inspection HTTP (statut, méta, mots) des URLs cataloguées"
       >
         Inspecter (HTTP)

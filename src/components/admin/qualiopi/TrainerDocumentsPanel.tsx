@@ -162,7 +162,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
   }
 
   return (
-    <div className="admin-card mb-[var(--space-admin-5)] p-[var(--space-admin-4)]">
+    <div className="admin-card mb-[var(--space-admin-5)]">
       <h2 className="admin-h2">Pièces justificatives</h2>
       <p className="admin-meta mb-[var(--space-admin-4)]">
         Une pièce ne compte pour la conformité qu&apos;une fois <strong>validée</strong>. Le rejet

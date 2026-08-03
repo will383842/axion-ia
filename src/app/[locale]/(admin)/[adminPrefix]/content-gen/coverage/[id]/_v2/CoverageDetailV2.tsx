@@ -152,7 +152,7 @@ export function CoverageDetailV2({ campaign, adminPrefix }: Props): React.ReactE
                   defaultValue={50}
                   min={1}
                   max={1000}
-                  className="admin-input w-[70px]"
+                  className="admin-input" style={{ width: 70 }}
                 />
                 <button type="submit" className="admin-button-ghost">+ slots</button>
               </form>

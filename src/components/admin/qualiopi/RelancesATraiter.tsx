@@ -178,7 +178,7 @@ export function RelancesATraiter({
     baseHref !== undefined ? `${baseHref}/${LIEN_RAPPROCHEMENT}` : LIEN_RAPPROCHEMENT;
 
   return (
-    <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+    <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
         Relances à traiter ({relances.length}) — rien ne part sans votre clic
       </p>
@@ -230,7 +230,7 @@ export function RelancesATraiter({
             key={r.id}
             className="flex flex-wrap items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]"
           >
-            <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] uppercase">
+            <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] uppercase">
               {r.detail?.palierLibelle ?? r.palier}
             </span>
             <span className="flex-1">{r.suggestion ?? r.libelle}</span>

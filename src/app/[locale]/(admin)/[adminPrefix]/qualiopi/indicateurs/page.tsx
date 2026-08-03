@@ -402,7 +402,7 @@ export default async function QualiopiIndicateursPage({ params, searchParams }: 
           Aucun questionnaire répondu sur les sessions de {anneeFinale}.
         </p>
       ) : (
-        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+        <div className="mb-[var(--space-admin-8)] overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>

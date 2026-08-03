@@ -42,7 +42,10 @@ export function GenererListeFormateursButton(): React.ReactElement {
         type="button"
         onClick={handleGenerer}
         disabled={isPending}
-        className="admin-button"
+        // La page porte DÉJÀ son action principale : « + Nouveau formateur ».
+        // Deux aplats terracotta côte à côte annulent la hiérarchie — générer
+        // un PDF est un utilitaire, pas le geste principal de la vue.
+        className="admin-button-secondary"
         aria-label="Générer la liste des formateurs et qualifications (PDF officiel)"
       >
         {isPending ? "Génération…" : "Générer la liste des formateurs (PDF)"}

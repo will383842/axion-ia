@@ -333,7 +333,7 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
             Aucune ligne détaillée (facture importée ou historique).
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)]">
+          <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
             <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
               <thead className="border-b border-[color:var(--color-admin-border)]">
                 <tr>

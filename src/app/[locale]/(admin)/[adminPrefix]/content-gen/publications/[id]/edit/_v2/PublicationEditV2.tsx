@@ -4,6 +4,7 @@
 // Server Actions save + destroy préservées (updateArticle + deleteArticle).
 
 import Link from "next/link";
+import { Eye } from "lucide-react";
 import { redirect } from "next/navigation";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { deleteArticle, updateArticle } from "@/server/actions/content-gen/article";
@@ -73,7 +74,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
               rel="noopener noreferrer"
               className="admin-button-ghost"
             >
-              👁️ Voir la page publique
+              <Eye size={14} aria-hidden="true" /> Voir la page publique
             </a>
             <Link href={`${base}/publications`} className="admin-button-ghost">
               ← Retour publications

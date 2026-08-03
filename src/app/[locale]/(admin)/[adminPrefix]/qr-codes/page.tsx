@@ -1,5 +1,6 @@
 // Admin — liste des QR codes dynamiques.
 import { redirect } from "next/navigation";
+import { QrCode } from "lucide-react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo";
@@ -137,7 +138,7 @@ export default async function QrCodesListPage({ params, searchParams }: PageProp
 
       {rows.length === 0 ? (
         <AdminEmptyState
-          icon="🔳"
+          icon={<QrCode size={28} aria-hidden="true" />}
           title="Aucun QR pour l'instant"
           description="Créez un QR : donnez-lui un slug stable (imprimé) et une destination (modifiable plus tard)."
           primaryAction={

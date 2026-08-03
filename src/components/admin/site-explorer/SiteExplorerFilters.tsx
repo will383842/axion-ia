@@ -31,7 +31,7 @@ export function SiteExplorerFilters() {
         value={sp.get("type") ?? ""}
         onChange={(e) => update("type", e.target.value)}
         aria-label="Filtrer par type"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Tous les types</option>
         <option value="static">Statique</option>
@@ -44,7 +44,7 @@ export function SiteExplorerFilters() {
         value={sp.get("status") ?? ""}
         onChange={(e) => update("status", e.target.value)}
         aria-label="Filtrer par statut"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Tous les statuts</option>
         <option value="live">En ligne (200)</option>
@@ -59,7 +59,7 @@ export function SiteExplorerFilters() {
         value={sp.get("category") ?? ""}
         onChange={(e) => update("category", e.target.value)}
         aria-label="Filtrer par catégorie"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Toutes les catégories</option>
         <option value="commercial">Commercial &amp; offres</option>
@@ -77,7 +77,7 @@ export function SiteExplorerFilters() {
         value={sp.get("section") ?? ""}
         onChange={(e) => update("section", e.target.value)}
         aria-label="Filtrer par section"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Toutes les sections</option>
         {[
@@ -113,7 +113,7 @@ export function SiteExplorerFilters() {
         value={sp.get("indexable") ?? ""}
         onChange={(e) => update("indexable", e.target.value)}
         aria-label="Filtrer par indexabilité"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Indexable : tout</option>
         <option value="true">Indexable</option>
@@ -124,7 +124,7 @@ export function SiteExplorerFilters() {
         value={sp.get("quality") ?? ""}
         onChange={(e) => update("quality", e.target.value)}
         aria-label="Filtrer par feu tricolore"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Feu : tout</option>
         <option value="green">Parfaite</option>
@@ -137,7 +137,7 @@ export function SiteExplorerFilters() {
         value={sp.get("sort") ?? ""}
         onChange={(e) => update("sort", e.target.value)}
         aria-label="Trier"
-        className="rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
       >
         <option value="">Tri : par défaut</option>
         <option value="indexable_first">Indexables d&apos;abord</option>
@@ -182,7 +182,7 @@ export function SiteExplorerFilters() {
         onKeyDown={(e) => {
           if (e.key === "Enter") update("search", (e.target as HTMLInputElement).value);
         }}
-        className="w-56 rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+        className="w-56 rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
         aria-label="Recherche"
       />
     </div>

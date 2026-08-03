@@ -2,6 +2,8 @@
 
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
+import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import {
   getSiteRouteDetail,
@@ -67,11 +69,15 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
     redirect(adminPath("fr", `site-explorer/${id}`));
   }
 
-  const QUALITY_BTNS: Array<{ value: SiteRouteQuality; emoji: string; label: string }> = [
-    { value: "green", emoji: "🟢", label: "Parfaite" },
-    { value: "orange", emoji: "🟠", label: "À retoucher" },
-    { value: "red", emoji: "🔴", label: "Cassée" },
-    { value: "unset", emoji: "⚪", label: "Non revue" },
+  // Les quatre verdicts étaient quatre pastilles RONDES ne différant que par
+  // la teinte : en vision des couleurs déficiente, choisir « Parfaite » plutôt
+  // que « Cassée » relevait de la lecture du libellé seul. Quatre dessins
+  // distincts rendent le verdict lisible avant même le texte.
+  const QUALITY_BTNS: Array<{ value: SiteRouteQuality; Icone: LucideIcon; label: string }> = [
+    { value: "green", Icone: CheckCircle2, label: "Parfaite" },
+    { value: "orange", Icone: AlertTriangle, label: "À retoucher" },
+    { value: "red", Icone: XCircle, label: "Cassée" },
+    { value: "unset", Icone: Circle, label: "Non revue" },
   ];
 
   return (
@@ -136,7 +142,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
       <div className="grid gap-6 md:grid-cols-2">
         {/* Métadonnées */}
-        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métadonnées SEO</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Type" value={route.type} />
@@ -150,7 +156,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Métriques contenu */}
-        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métriques contenu</h2>
           <dl className="space-y-2 text-sm">
             <Row label="Mots" value={route.wordCount?.toLocaleString("fr-FR") ?? "—"} />
@@ -175,7 +181,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Indexabilité & GSC */}
-        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">
             Indexabilité &amp; GSC
           </h2>
@@ -233,7 +239,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         </section>
 
         {/* Revue manuelle : feu tricolore + notes */}
-        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+        <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">
             Revue (feu &amp; notes)
           </h2>
@@ -250,7 +256,8 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                     : "border-[color:var(--color-admin-border-strong)] text-[color:var(--color-admin-fg-muted)]"
                 }`}
               >
-                {b.emoji} {b.label}
+                <b.Icone size={14} aria-hidden="true" className="inline shrink-0 align-[-2px]" />{" "}
+                {b.label}
               </button>
             ))}
           </form>
@@ -266,7 +273,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
               defaultValue={route.adminNotes ?? ""}
               rows={3}
               placeholder="Notes internes sur cette URL…"
-              className="w-full rounded-lg border border-[color:var(--color-admin-border-strong)] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-2 text-sm"
             />
             <button type="submit" className="admin-button">
               Enregistrer la note
@@ -276,7 +283,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
 
         {/* Lighthouse */}
         {(route.lighthousePerf !== null || route.lighthouseSeo !== null) && (
-          <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] p-4">
+          <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
             <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Lighthouse</h2>
             <div className="flex gap-4">
               {[

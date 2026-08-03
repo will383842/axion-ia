@@ -39,17 +39,29 @@ function ConfirmButton() {
 }
 
 export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) {
-  const [feedback, setFeedback] = useState<string | null>(null);
+  // 🔴 BUG CORRIGÉ 2026-08-02 — la tonalité du message se décidait en
+  // RENIFLANT le texte : `feedback.startsWith("✅")`. Or l'emoji avait déjà été
+  // retiré du message de succès, si bien que la branche « succès » n'était
+  // plus jamais prise : un effacement RGPD RÉUSSI s'affichait en rouge, avec
+  // `role="alert"`, et se faisait annoncer comme une erreur à la synthèse
+  // vocale. Le résultat de l'action portait pourtant déjà l'information.
+  //
+  // Leçon générale : ne jamais dériver un état d'affichage d'une sous-chaîne
+  // d'un texte destiné à l'humain — ce texte change, le test reste.
+  const [feedback, setFeedback] = useState<{ ton: "succes" | "erreur"; texte: string } | null>(
+    null,
+  );
   const totalLogs = usageLogs.length + downloadLogs.length;
 
   async function handleSubmit(formData: FormData): Promise<void> {
     const result = await forgetIpAction(formData);
     if (result.success) {
-      setFeedback(
-        `Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
-      );
+      setFeedback({
+        ton: "succes",
+        texte: `Effacement effectué — ${result.deleted.usageLogs} entrée(s) d'usage + ${result.deleted.downloadLogs} téléchargement(s) supprimés. Recharge la page pour vérifier.`,
+      });
     } else {
-      setFeedback(`Erreur : ${result.error}`);
+      setFeedback({ ton: "erreur", texte: `Erreur : ${result.error}` });
     }
   }
 
@@ -129,10 +141,12 @@ export function ForgetIpHashForm({ initialIp, usageLogs, downloadLogs }: Props) 
 
           {feedback && (
             <p
-              role={feedback.startsWith("✅") ? "status" : "alert"}
-              className={`admin-alert ${feedback.startsWith("✅") ? "admin-alert-success" : "admin-alert-error"}`}
+              role={feedback.ton === "succes" ? "status" : "alert"}
+              className={`admin-alert ${
+                feedback.ton === "succes" ? "admin-alert-success" : "admin-alert-error"
+              }`}
             >
-              {feedback}
+              {feedback.texte}
             </p>
           )}
         </section>
