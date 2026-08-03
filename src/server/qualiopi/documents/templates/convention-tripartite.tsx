@@ -217,12 +217,18 @@ export function ConventionTripartitePdf({
             </View>
           </View>
           <FieldRow label="Public visé" value={data.publicVise} />
-          <FieldRow label="Durée" value={`${data.dureeHeures} heure(s)`} />
+          <FieldRow
+            label="Durée"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
           <FieldRow label="Modalité" value={data.modalite} />
           <FieldRow label="Lieu" value={data.lieu} />
-          <FieldRow label="Effectif prévu" value={`${data.effectif} stagiaire(s)`} />
+          <FieldRow
+            label="Effectif prévu"
+            value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
+          />
         </DocSection>
 
         {/* 3. Conditions financières */}

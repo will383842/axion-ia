@@ -327,7 +327,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   const nbTerminees = nbSessionsRealisees;
   const nbOuvertes = nbSessionsPlanifiees;
   const m1: MetriqueValeur = {
-    valeur: `${nbTerminees} terminée(s) / ${nbOuvertes} au total`,
+    valeur: `${nbTerminees} terminée${nbTerminees > 1 ? "s" : ""} / ${nbOuvertes} au total`,
     libelle: "Prestations ouvertes / terminées",
   };
 
@@ -384,12 +384,12 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   const m7: MetriqueValeur = {
     valeur: nbIncidentsReels,
     libelle: "Incidents déclarés (registre)",
-    detail: `Complément : ${nbSessionsAnnuleesReportees} session(s) annulée(s)/reportée(s) sur la période`,
+    detail: `Complément : ${nbSessionsAnnuleesReportees} session${nbSessionsAnnuleesReportees > 1 ? "s" : ""} annulée${nbSessionsAnnuleesReportees > 1 ? "s" : ""}/reportée${nbSessionsAnnuleesReportees > 1 ? "s" : ""} sur la période`,
   };
 
   // ── M8 — Réclamations + délai ─────────────────────────────────────────────
   const m8: MetriqueValeur = {
-    valeur: `${nbReclamations} reçue(s) · ${nbReclamationsEnRetard} en retard · ${nbReclamationsResolues} résolue(s)`,
+    valeur: `${nbReclamations} reçue${nbReclamations > 1 ? "s" : ""} · ${nbReclamationsEnRetard} en retard · ${nbReclamationsResolues} résolue${nbReclamationsResolues > 1 ? "s" : ""}`,
     libelle: "Réclamations reçues + délai de traitement",
   };
 
@@ -398,7 +398,7 @@ export async function getPilotage(input: number | PilotageOptions): Promise<Pilo
   const m9: MetriqueValeur = {
     valeur: nbActionsCorrectives,
     libelle: "Actions correctives engagées",
-    detail: `${nbIncidentsAvecAction} incident(s) avec action corrective · ${nbReclamationsAvecAction} réclamation(s) avec actions correctives`,
+    detail: `${nbIncidentsAvecAction} incident${nbIncidentsAvecAction > 1 ? "s" : ""} avec action corrective · ${nbReclamationsAvecAction} réclamation${nbReclamationsAvecAction > 1 ? "s" : ""} avec actions correctives`,
   };
 
   // ── M10 — Mise à jour documentaire ────────────────────────────────────────

@@ -148,8 +148,8 @@ describe("fiabiliteFormateur — le résumé", () => {
   it("nomme les faits qui ont fait tomber une session", async () => {
     donner(5, 3, 2);
     const r = (await fiabiliteFormateur("tr-1")).resume;
-    expect(r).toContain("5 mission(s)");
-    expect(r).toContain("3 incident(s)");
+    expect(r).toContain("5 missions");
+    expect(r).toContain("3 incidents");
     expect(r).toContain("2 ayant fait tomber une session");
   });
 

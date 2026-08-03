@@ -265,7 +265,7 @@ describe("getPilotage", () => {
 
     expect(result.m7_incidents.valeur).toBe(4);
     expect(result.m7_incidents.libelle).toContain("registre");
-    expect(result.m7_incidents.detail).toContain("annulée(s)/reportée(s)");
+    expect(result.m7_incidents.detail).toContain("annulées/reportées");
   });
 
   it("M9 = incidents avec action corrective + réclamations avec actions correctives (sommés)", async () => {
@@ -274,8 +274,8 @@ describe("getPilotage", () => {
     const result = await getPilotage(2026);
 
     expect(result.m9_actions_correctives.valeur).toBe(3 + 2);
-    expect(result.m9_actions_correctives.detail).toContain("3 incident(s)");
-    expect(result.m9_actions_correctives.detail).toContain("2 réclamation(s)");
+    expect(result.m9_actions_correctives.detail).toContain("3 incidents");
+    expect(result.m9_actions_correctives.detail).toContain("2 réclamations");
   });
 
   it("M11 : requête trainer avec critère cvUrl + preuve datée (OR internes/sous-traitant)", async () => {

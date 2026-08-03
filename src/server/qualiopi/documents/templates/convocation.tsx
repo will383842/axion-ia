@@ -82,7 +82,10 @@ export function ConvocationPdf({
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
           <FieldRow label="Horaires" value={`${data.horaires} (heure de Paris)`} />
-          <FieldRow label="Durée totale" value={`${data.dureeHeures} heure(s)`} />
+          <FieldRow
+            label="Durée totale"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Modalité" value={data.modalite} />
           {data.modalite !== "distanciel" && data.lieu ? (
             <FieldRow label="Lieu" value={data.lieu} />

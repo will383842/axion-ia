@@ -326,7 +326,7 @@ export async function purgerImagesSignatures(traineeId: string, now: Date): Prom
   // `imagePurgeeAt: null`.
   if (echecs > 0) {
     throw new Error(
-      `Effacement RGPD incomplet : ${echecs} image(s) de signature n'ont pas pu être supprimées. La demande reste ouverte, relancez-la.`,
+      `Effacement RGPD incomplet : ${echecs} image${echecs > 1 ? "s" : ""} de signature n'ont pas pu être supprimées. La demande reste ouverte, relancez-la.`,
     );
   }
 }

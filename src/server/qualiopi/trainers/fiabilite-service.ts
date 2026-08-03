@@ -65,13 +65,13 @@ function formulerResume(f: Omit<FiabiliteIntervenant, "resume">): string {
     return "Aucune mission réalisée à ce jour — pas d'historique.";
   }
   if (f.incidentsTotal === 0) {
-    return `${f.missionsRealisees} mission(s) réalisée(s), aucun incident consigné.`;
+    return `${f.missionsRealisees} mission${f.missionsRealisees > 1 ? "s" : ""} réalisée${f.missionsRealisees > 1 ? "s" : ""}, aucun incident consigné.`;
   }
   const bloquants =
     f.incidentsBloquants > 0
       ? ` dont ${f.incidentsBloquants} ayant fait tomber une session (annulation tardive ou désistement)`
       : "";
-  return `${f.missionsRealisees} mission(s) réalisée(s), ${f.incidentsTotal} incident(s) consigné(s)${bloquants}.`;
+  return `${f.missionsRealisees} mission${f.missionsRealisees > 1 ? "s" : ""} réalisée${f.missionsRealisees > 1 ? "s" : ""}, ${f.incidentsTotal} incident${f.incidentsTotal > 1 ? "s" : ""} consigné${f.incidentsTotal > 1 ? "s" : ""}${bloquants}.`;
 }
 
 /**

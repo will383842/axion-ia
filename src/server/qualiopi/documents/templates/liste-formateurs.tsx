@@ -126,12 +126,12 @@ export function ListeFormateursPdf({
           <FieldRow label="Date d'édition" value={data.dateEdition} />
           <FieldRow
             label="Intervenants internes"
-            value={`${nbInternes} (dirigeant(s) et salarié(s))`}
+            value={`${nbInternes} (dirigeants et salariés)`}
           />
           <FieldRow label="Intervenants externes" value={`${nbExternes} (sous-traitance)`} />
           <FieldRow
             label="Total"
-            value={`${data.formateurs.length} personne(s) dispensant des heures de formation`}
+            value={`${data.formateurs.length} personne${data.formateurs.length > 1 ? "s" : ""} dispensant des heures de formation`}
             required
           />
         </DocSection>
@@ -154,7 +154,7 @@ export function ListeFormateursPdf({
                     ? [
                         f.domaines.length > 0 ? f.domaines.join(", ") : null,
                         f.nbHabilitations > 0
-                          ? `${f.nbHabilitations} formation(s) habilitée(s)`
+                          ? `${f.nbHabilitations} formation${f.nbHabilitations > 1 ? "s" : ""} habilitée${f.nbHabilitations > 1 ? "s" : ""}`
                           : null,
                       ]
                         .filter(Boolean)

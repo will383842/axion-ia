@@ -206,12 +206,26 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
           : "NDA DREETS : non renseigné — off.1 ne peut pas être couvert sans numéro de déclaration d'activité",
       ],
     ],
-    [23, nbVeilleLegale > 0 ? [`${nbVeilleLegale} entrée(s) de veille légale/réglementaire`] : []],
-    [24, nbVeilleMetiers > 0 ? [`${nbVeilleMetiers} entrée(s) de veille emplois/métiers`] : []],
+    [
+      23,
+      nbVeilleLegale > 0
+        ? [
+            `${nbVeilleLegale} entrée${nbVeilleLegale > 1 ? "s" : ""} de veille légale/réglementaire`,
+          ]
+        : [],
+    ],
+    [
+      24,
+      nbVeilleMetiers > 0
+        ? [`${nbVeilleMetiers} entrée${nbVeilleMetiers > 1 ? "s" : ""} de veille emplois/métiers`]
+        : [],
+    ],
     [
       25,
       nbVeillePedagogique > 0
-        ? [`${nbVeillePedagogique} entrée(s) de veille pédagogique/technologique`]
+        ? [
+            `${nbVeillePedagogique} entrée${nbVeillePedagogique > 1 ? "s" : ""} de veille pédagogique/technologique`,
+          ]
         : [],
     ],
     [
@@ -225,7 +239,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
     [
       30,
       [
-        `${nbAppreciations} appréciation(s) multi-parties (stagiaire/entreprise/financeur/formateur)`,
+        `${nbAppreciations} appréciation${nbAppreciations > 1 ? "s" : ""} multi-parties (stagiaire/entreprise/financeur/formateur)`,
       ],
     ],
     [
@@ -244,7 +258,7 @@ export async function genererManifesteAudit(): Promise<ManifesteAuditResult> {
       21,
       trainersAvecCV.length > 0
         ? [
-            `${trainersAvecCV.length} formateur(s) avec CV téléversé`,
+            `${trainersAvecCV.length} formateur${trainersAvecCV.length > 1 ? "s" : ""} avec CV téléversé`,
             ...trainersAvecCV.map((t) => `- ${t.prenom ?? ""} ${t.nom} (CV : ${t.cvUrl ?? "—"})`),
           ]
         : ["Aucun formateur avec CV téléversé"],
@@ -403,10 +417,12 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     (p) => p.dateExpiration !== null && p.dateExpiration.getTime() < Date.now(),
   ).length;
   if (sansFichier > 0) {
-    indexLines.push(`  ⚠️ ${sansFichier} pièce(s) sans fichier joint — référence sans preuve.`);
+    indexLines.push(
+      `  ⚠️ ${sansFichier} pièce${sansFichier > 1 ? "s" : ""} sans fichier joint — référence sans preuve.`,
+    );
   }
   if (expirees > 0) {
-    indexLines.push(`  ⚠️ ${expirees} pièce(s) EXPIRÉE(S).`);
+    indexLines.push(`  ⚠️ ${expirees} pièce${expirees > 1 ? "s" : ""} EXPIRÉE(S).`);
   }
 
   // [P1] Alerte NON silencieuse : si R2 n'est pas configuré, AUCUN PDF de preuve
@@ -419,7 +435,9 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
     );
   }
 
-  indexLines.push(`Manifeste : ${allDocuments.length} document(s) en base.`);
+  indexLines.push(
+    `Manifeste : ${allDocuments.length} document${allDocuments.length > 1 ? "s" : ""} en base.`,
+  );
   indexLines.push("");
 
   let nbInclus = 0;
@@ -448,7 +466,7 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   //   de preuve n'a pu être joint → le dossier stagiaire est vide (R2 / clés).
   if (allDocuments.length > 0 && nbDocsInclus === 0) {
     avertissements.push(
-      `⚠️ ${allDocuments.length} document(s) en base mais AUCUN PDF de preuve joint — vérifiez le stockage R2 (les preuves stagiaires convention→attestation sont absentes du dossier).`,
+      `⚠️ ${allDocuments.length} document${allDocuments.length > 1 ? "s" : ""} en base mais AUCUN PDF de preuve joint — vérifiez le stockage R2 (les preuves stagiaires convention→attestation sont absentes du dossier).`,
     );
   }
 
@@ -567,7 +585,7 @@ function buildMarkdown(payload: ManifesteAuditPayload): string {
           lignes.push("");
           lignes.push("**Documents :**");
           for (const d of ind.documents) {
-            lignes.push(`- \`${d.type}\` : ${d.count} document(s)`);
+            lignes.push(`- \`${d.type}\` : ${d.count} document${d.count > 1 ? "s" : ""}`);
           }
         }
 
