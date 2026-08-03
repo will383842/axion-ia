@@ -31,21 +31,28 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
 
   return (
     <AdminPageShell>
+      {/* 🔴 Cette page était rédigée en jargon de développement de bout en
+          bout : nom de variable d'environnement, nom de la plateforme
+          d'hébergement, référence de phase interne (« PH3 »), nom de fichier
+          source, et des en-têtes de tableau qui étaient les noms de champs du
+          code (`contentType`, `benefitMin`, `qualityThreshold`). Rien de tout
+          cela n'est actionnable depuis la console. */}
       <AdminPageHeader
-        title="Benefit-gate & profils qualité"
-        description="Active le gate « bénéfice concret » (commercial uniquement) et son juge LLM cost-tracké (PH3). N'a d'effet que si l'env QUALITY_PROFILES_ENABLED=true est aussi posée (Coolify web+worker)."
+        title="Contrôle du bénéfice concret"
+        description="Refuse de publier un contenu commercial qui ne promet aucun bénéfice mesurable au lecteur. Un second contrôle, plus fin, peut être confié à un modèle IA — il est facturé à l'usage."
       />
 
       <AdminCard>
         <form action={save} className="flex flex-col gap-4">
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" name="enabled" defaultChecked={config.enabled} />
-            Activer le benefit-gate (profil commercial — checks regex chiffres/avant-après)
+            Activer le contrôle (contenus commerciaux : présence de chiffres, de comparaisons
+            avant/après)
           </label>
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" name="llmJudge" defaultChecked={config.llmJudge} />
-            Activer le juge LLM (PH3, via provider-router cost-tracké ; requiert
-            targetSecteur+vertical sur le job)
+            Confier un second contrôle à un modèle IA (facturé à l&apos;usage ; ne s&apos;applique
+            qu&apos;aux contenus ciblant un secteur)
           </label>
           <label className="flex items-center gap-2 text-sm">
             Score minimal de blocage (0-100)
@@ -69,13 +76,13 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
 
       <AdminCard>
         <h2 className="mb-2 text-sm font-semibold">
-          Profils qualité par type de contenu (SSOT code — quality-profile-table.ts)
+          Niveau d&apos;exigence appliqué à chaque type de contenu
         </h2>
         <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="text-left text-[color:var(--color-admin-fg-muted)]">
-              <th className="py-1">contentType</th>
-              <th className="py-1">profil</th>
+              <th className="py-1">Type de contenu</th>
+              <th className="py-1">Niveau d&apos;exigence</th>
             </tr>
           </thead>
           <tbody>
@@ -92,13 +99,13 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
       </AdminCard>
 
       <AdminCard>
-        <h2 className="mb-2 text-sm font-semibold">Seuils par profil (defaults SSOT)</h2>
+        <h2 className="mb-2 text-sm font-semibold">Seuils appliqués par niveau d&apos;exigence</h2>
         <table className="w-full border-collapse text-xs">
           <thead>
             <tr className="text-left text-[color:var(--color-admin-fg-muted)]">
-              <th className="py-1">profil</th>
-              <th className="py-1">benefitMin</th>
-              <th className="py-1">qualityThreshold</th>
+              <th className="py-1">Niveau d&apos;exigence</th>
+              <th className="py-1">Bénéfice minimal exigé</th>
+              <th className="py-1">Mode de seuil qualité</th>
               <th className="py-1">mutation tier ville</th>
             </tr>
           </thead>
@@ -110,7 +117,9 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
                   <td className="py-1">{p}</td>
                   <td className="py-1">{g.benefitMin === null ? "—" : g.benefitMin}</td>
                   <td className="py-1">{g.qualityThresholdMode}</td>
-                  <td className="py-1">{g.mayMutateVilleTier ? "oui" : "non (log-only)"}</td>
+                  <td className="py-1">
+                    {g.mayMutateVilleTier ? "oui" : "non (journalisé seulement)"}
+                  </td>
                 </tr>
               );
             })}

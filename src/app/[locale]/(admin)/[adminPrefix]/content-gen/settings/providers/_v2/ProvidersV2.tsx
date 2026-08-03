@@ -47,15 +47,23 @@ export function ProvidersV2({ rows }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Providers IA"
-        description={`${rows.length} provider${rows.length > 1 ? "s" : ""} configuré${rows.length > 1 ? "s" : ""} · Cost cap mensuel + reset 1er du mois.`}
+        title="Fournisseurs de modèles IA"
+        description={`${rows.length} fournisseur${rows.length > 1 ? "s" : ""} configuré${rows.length > 1 ? "s" : ""} · plafond de dépense mensuel, remis à zéro le 1er du mois.`}
       />
 
+      {/* 🔴 CET ÉTAT VIDE AFFICHAIT UNE COMMANDE DE TERMINAL, UN NOM DE TABLE
+          ET UN IDENTIFIANT DE COMMIT : « Lance `pnpm content-gen:seed` pour
+          seeder ProviderConfig (Sprint 1 Day 1 commit d174f83) ». Le lecteur de
+          cette console n'a pas d'accès au serveur : on lui donnait une consigne
+          qu'il ne peut pas suivre, dans un vocabulaire qui n'est pas le sien.
+          Un état vide dit ce qui manque et à qui s'adresser — pas comment on
+          le réparerait depuis une machine de développement. */}
       {rows.length === 0 ? (
         <AdminCard>
           <p className="admin-meta-block">
-            Aucun provider configuré. Lance <code>pnpm content-gen:seed</code> pour seeder
-            ProviderConfig (Sprint 1 Day 1 commit <code>d174f83</code>).
+            Aucun fournisseur de modèles n&apos;est configuré : la génération de contenu ne peut pas
+            démarrer tant qu&apos;il n&apos;y en a pas au moins un. Cette initialisation se fait
+            côté serveur — signalez-le à votre équipe technique.
           </p>
         </AdminCard>
       ) : (
