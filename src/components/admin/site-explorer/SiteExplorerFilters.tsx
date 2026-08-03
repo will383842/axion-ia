@@ -130,7 +130,10 @@ export function SiteExplorerFilters() {
         <option value="green">Parfaite</option>
         <option value="orange">À retoucher</option>
         <option value="red">Cassée</option>
-        <option value="unset">⚪ Non revue</option>
+        {/* L'emoji était le SEUL des quatre options à en porter un, et il vit
+            dans un `<option>` — non stylable, rendu par le système. Les trois
+            autres se passent de puce ; celle-ci aussi. */}
+        <option value="unset">Non revue</option>
       </select>
 
       <select
