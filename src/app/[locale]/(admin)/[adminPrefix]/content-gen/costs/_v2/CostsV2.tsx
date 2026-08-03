@@ -22,8 +22,16 @@ export async function CostsV2(): Promise<React.ReactElement> {
   const columns: ReadonlyArray<AdminTableColumn<ProviderRow>> = [
     { key: "provider", header: "Fournisseur", cell: (p) => p.provider },
     { key: "cost", header: "Coût", cell: (p) => `$${p.costUsd.toFixed(2)}` },
-    { key: "tokensIn", header: "Jetons entrée", cell: (p) => p.tokensInput.toLocaleString() },
-    { key: "tokensOut", header: "Jetons sortie", cell: (p) => p.tokensOutput.toLocaleString() },
+    {
+      key: "tokensIn",
+      header: "Jetons entrée",
+      cell: (p) => p.tokensInput.toLocaleString("fr-FR"),
+    },
+    {
+      key: "tokensOut",
+      header: "Jetons sortie",
+      cell: (p) => p.tokensOutput.toLocaleString("fr-FR"),
+    },
     {
       key: "cap",
       header: "Plafond mensuel",

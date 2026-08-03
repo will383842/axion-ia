@@ -248,7 +248,9 @@ export function EvaluationForm({
                 <th className={thCls} style={{ width: "35%" }}>
                   Observations
                 </th>
-                <th className={thCls} style={{ width: "5%" }}></th>
+                <th className={thCls} style={{ width: "5%" }}>
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>

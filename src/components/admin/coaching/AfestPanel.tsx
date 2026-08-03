@@ -172,7 +172,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
 
       <div className="mb-3 grid grid-cols-2 gap-2 text-sm">
         <p>
-          <span className="text-fg-muted">Heures réalisées (Σ séances) : </span>
+          <span className="text-fg-muted">Heures réalisées (total des séances) : </span>
           <span className="text-mocha font-medium">{props.heuresReelles} h</span>
         </p>
         <p>

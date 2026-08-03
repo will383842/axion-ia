@@ -115,7 +115,7 @@ export default async function PlanningDetailPage({
 
       <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-2">
         <Link href={retourHref} className="admin-button-ghost">
-          ← Retour au planning
+          Retour au planning
         </Link>
         <Link href={ficheCompleteHref} className="admin-button">
           Fiche complète →

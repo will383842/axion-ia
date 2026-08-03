@@ -278,9 +278,16 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
         <h2 className="mb-[var(--space-admin-4,8px)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
           Villes ({visibleCities.length}) — 3 compteurs distincts
         </h2>
+        {/* 🔴 Si aucun filtre ne matchait, la barre d'en-têtes restait SEULE
+            au-dessus du vide : huit colonnes annoncées, rien en dessous, et
+            rien pour dire que c'est le filtre qui exclut tout. */}
+        {visibleCities.length === 0 ? (
+          <p className="admin-meta-block">Aucune ville ne correspond aux filtres.</p>
+        ) : null}
         <div
           className="grid grid-cols-12 gap-2 border-b border-[color:var(--color-admin-border)] pb-2 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-soft)]"
           role="row"
+          hidden={visibleCities.length === 0}
         >
           <span className="col-span-1">Rang</span>
           <span className="col-span-3">Ville</span>

@@ -9,6 +9,16 @@ import {
   QUALITY_PROFILES,
 } from "@/server/content-gen/profiles/quality-profile-table";
 
+import { contentTypeLabelFr } from "@/server/content-gen/shared/admin-labels";
+
+// Les quatre niveaux d'exigence, en clair : la colonne les affichait bruts.
+const PROFIL_LABELS: Record<string, string> = {
+  commercial: "Commercial",
+  informational_aeo: "Informationnel (réponse directe)",
+  local: "Local",
+  news: "Actualité",
+};
+
 interface Config {
   enabled: boolean;
   llmJudge: boolean;
@@ -90,8 +100,16 @@ export function BenefitGateV2({ config }: Props): React.ReactElement {
               .sort(([, a], [, b]) => a.localeCompare(b))
               .map(([type, profile]) => (
                 <tr key={type} className="border-t border-[color:var(--color-admin-border)]">
-                  <td className="py-1 font-mono">{type}</td>
-                  <td className="py-1">{profile}</td>
+                  {/* 🔴 Les deux colonnes affichaient les valeurs brutes —
+                      `pain_point_solution`, `informational_aeo` — en monospace,
+                      alors qu'un commentaire de ce fichier affirmait le
+                      contraire. */}
+                  <td className="py-1" title={type}>
+                    {contentTypeLabelFr(type)}
+                  </td>
+                  <td className="py-1" title={profile}>
+                    {PROFIL_LABELS[profile] ?? profile}
+                  </td>
                 </tr>
               ))}
           </tbody>

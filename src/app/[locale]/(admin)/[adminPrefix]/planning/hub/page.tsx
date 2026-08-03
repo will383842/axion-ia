@@ -136,8 +136,24 @@ export default async function PlanningHubPage({
           options={[
             { value: "hub", label: "Hub", href: base },
             { value: "calendrier", label: "Calendrier", href: `/fr/${adminPrefix}/planning` },
-            { value: "timeline", label: "Timeline", href: `/fr/${adminPrefix}/planning/timeline` },
-            { value: "pipeline", label: "Pipeline", href: `/fr/${adminPrefix}/planning/pipeline` },
+            {
+              value: "timeline",
+              label: "Occupation",
+              href: `/fr/${adminPrefix}/planning/timeline`,
+            },
+            {
+              value: "pipeline",
+              label: "Entonnoir commercial",
+              href: `/fr/${adminPrefix}/planning/pipeline`,
+            },
+            // Ces deux vues n'étaient atteignables depuis le hub que par un lien
+            // texte discret en bas de page.
+            { value: "charge", label: "Charge", href: `/fr/${adminPrefix}/planning/charge` },
+            {
+              value: "previsionnel",
+              label: "Prévisionnel",
+              href: `/fr/${adminPrefix}/planning/previsionnel`,
+            },
           ]}
           current="hub"
         />

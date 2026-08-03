@@ -155,7 +155,9 @@ export function RecipientManager({ recipients }: { recipients: Recipient[] }): R
               <th>Rôle</th>
               <th>Périmètre</th>
               <th>Actif</th>
-              <th></th>
+              <th>
+                <span className="sr-only">Actions</span>
+              </th>
             </tr>
           </thead>
           <tbody>

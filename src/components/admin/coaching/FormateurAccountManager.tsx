@@ -86,7 +86,9 @@ export function FormateurAccountManager({
             <th className="text-right">Formations</th>
             <th>Dernière connexion</th>
             <th>Compte</th>
-            <th></th>
+            <th>
+              <span className="sr-only">Actions</span>
+            </th>
           </tr>
         </thead>
         <tbody>

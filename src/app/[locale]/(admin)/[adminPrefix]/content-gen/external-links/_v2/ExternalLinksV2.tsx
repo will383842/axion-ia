@@ -252,7 +252,17 @@ export async function ExternalLinksV2({
           </button>
         </form>
 
-        <div className="mt-[var(--space-admin-4)] overflow-x-auto">
+        {/* Le tableau était rendu sans condition : les huit en-têtes
+            s'affichaient au-dessus de rien quand aucun lien ne correspondait. */}
+        {result.rows.length === 0 ? (
+          <p className="admin-meta-block mt-[var(--space-admin-4)]">
+            Aucun lien ne correspond aux filtres.
+          </p>
+        ) : null}
+        <div
+          className="mt-[var(--space-admin-4)] overflow-x-auto"
+          hidden={result.rows.length === 0}
+        >
           <table className="admin-table w-full text-sm">
             <thead>
               <tr>

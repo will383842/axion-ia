@@ -375,7 +375,7 @@ export function ReplyComposer({
                     onClick={() => onRetry(state.replyId as string)}
                     className="admin-button"
                   >
-                    ↻ Réessayer
+                    Réessayer
                   </button>
                 ) : (
                   <button type="submit" className="admin-button">

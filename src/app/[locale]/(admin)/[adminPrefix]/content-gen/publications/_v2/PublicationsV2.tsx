@@ -97,8 +97,14 @@ export async function PublicationsV2({
         const t = a.translations[0];
         return t ? (
           <>
-            <Link href={`${base}/${a.id}/edit`} className="admin-link">
-              {t.title.slice(0, 70)}
+            {/* 🔴 `slice(0, 70)` coupait le titre SANS points de suspension et
+                sans infobulle : rien n'indiquait qu'il était incomplet. */}
+            <Link
+              href={`${base}/${a.id}/edit`}
+              className="admin-link block max-w-md truncate"
+              title={t.title}
+            >
+              {t.title}
             </Link>
             <br />
             <code className="text-[length:var(--text-admin-xs)]">{t.slug}</code>

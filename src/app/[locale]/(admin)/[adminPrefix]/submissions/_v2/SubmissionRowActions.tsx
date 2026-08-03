@@ -34,6 +34,7 @@ import {
   updateSubmissionAction,
   eraseSubmissionAction,
 } from "@/features/admin-submissions/actions";
+import { MoreHorizontal, Undo2 } from "lucide-react";
 
 interface Props {
   id: string;
@@ -106,7 +107,8 @@ export function SubmissionRowActions({
             className="admin-button-ghost text-[length:var(--text-admin-sm)]"
             title="Restaurer le message (le sort de la corbeille)"
           >
-            ↩︎ Restaurer
+            <Undo2 size={14} aria-hidden="true" className="inline-block align-[-0.125em]" />{" "}
+            Restaurer
           </button>
           {confirmErase ? (
             <button
@@ -153,7 +155,14 @@ export function SubmissionRowActions({
         className="admin-button-ghost text-[length:var(--text-admin-sm)]"
         title={archived ? "Sortir de l'archive" : "Archiver (réduit le bruit de l'inbox)"}
       >
-        {archived ? "↩︎ Désarchiver" : "Archiver"}
+        {archived ? (
+          <>
+            <Undo2 size={14} aria-hidden="true" className="inline-block align-[-0.125em]" />{" "}
+            Désarchiver
+          </>
+        ) : (
+          "Archiver"
+        )}
       </button>
 
       <details className="relative">
@@ -162,7 +171,7 @@ export function SubmissionRowActions({
           aria-label="Plus d'actions"
           title="Plus d'actions"
         >
-          ⋯
+          <MoreHorizontal size={16} aria-hidden="true" />
         </summary>
         <div
           className="absolute right-0 z-10 mt-[var(--space-admin-2)] min-w-[12rem] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-2)] shadow-lg"
