@@ -60,8 +60,8 @@ const FICHIERS_SSOT_CONSOLE = [
 /**
  * Plafond courant, à ne jamais remonter.
  *
- * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → **45**
- * (2026-08-03).
+ * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → **45** puis
+ * **40** (2026-08-03).
  *
  * 🔴 LE PLAFOND REMONTE, ET AUCUN EMOJI N'A ÉTÉ AJOUTÉ. C'est la MESURE qui
  * était fausse : la plage de caractères sautait `U+2600`–`U+26FF` (cf. la note
@@ -81,7 +81,7 @@ const FICHIERS_SSOT_CONSOLE = [
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
  * attendu et produirait des saisies invalides.
  */
-const PLAFOND = 45;
+const PLAFOND = 40;
 
 /**
  * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les

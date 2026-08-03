@@ -1,7 +1,7 @@
 // Avis clients V2 — liste + modération (AdminPageShell + AdminTable + actions inline).
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -9,6 +9,7 @@ import {
   AdminTable,
   AdminBadge,
   AdminEmptyState,
+  AdminFilterTabs,
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
@@ -66,7 +67,12 @@ export function AvisListV2({
               {r.authorFirstName} {r.authorLastInitial}
             </span>
             {r.isVerified ? <AdminBadge tone="success">Vérifié</AdminBadge> : null}
-            {r.featured ? <AdminBadge tone="neutral">★ Mis en avant</AdminBadge> : null}
+            {r.featured ? (
+              <AdminBadge tone="neutral">
+                <Star size={12} aria-hidden="true" className="mr-1 inline-block align-[-1px]" />
+                Mis en avant
+              </AdminBadge>
+            ) : null}
           </div>
           <div className="admin-meta-small">
             {r.companyName ?? "—"}
@@ -76,7 +82,18 @@ export function AvisListV2({
         </>
       ),
     },
-    { key: "rating", header: "Note", cell: (r) => `${r.rating}/5 ★` },
+    {
+      key: "rating",
+      header: "Note",
+      // Le « ★ » collé au chiffre était un caractère de texte : sa graisse et sa
+      // chasse dependaient de la police du poste, et il ne s alignait sur rien.
+      cell: (r) => (
+        <span className="inline-flex items-center gap-1 tabular-nums">
+          {r.rating}/5
+          <Star size={13} aria-hidden="true" className="shrink-0" />
+        </span>
+      ),
+    },
     {
       key: "service",
       header: "Service",
@@ -110,24 +127,24 @@ export function AvisListV2({
         description={`${total} avis · page ${page}/${totalPages}`}
       />
 
-      {/* Onglets statut avec compteurs */}
-      <div className="mb-[var(--space-admin-4)] flex flex-wrap gap-2">
-        {STATUS_TABS.map((s) => {
-          const label = s === "all" ? "Tous" : STATUS_LABELS[s];
-          const count = s === "all" ? undefined : (counts[s] ?? 0);
-          const isActive = activeStatus === s;
-          return (
-            <Link
-              key={s}
-              href={`${base}?status=${s}`}
-              className={isActive ? "admin-button" : "admin-button-ghost"}
-            >
-              {label}
-              {count !== undefined ? ` (${count})` : ""}
-            </Link>
-          );
-        })}
-      </div>
+      {/* 🔴 Ces six filtres étaient rendus en `admin-button` / `-ghost` : une
+          rangée de boutons pleins et teintés, avec le poids visuel d'actions,
+          pour ce qui est un choix unique et exclusif. C'est précisément le
+          motif que la passe « filtres rétrogradés » du 2026-08-02 a corrigé
+          ailleurs (facturation, dossiers, planning) — cette page avait été
+          oubliée, vérifié à l'écran après déploiement. `AdminFilterTabs` rend
+          un sélecteur segmenté, et affiche le compteur en pastille au lieu de
+          « (77) » collé au libellé. */}
+      <AdminFilterTabs
+        className="mb-[var(--space-admin-4)]"
+        current={activeStatus}
+        options={STATUS_TABS.map((s) => ({
+          value: s,
+          label: s === "all" ? "Tous" : (STATUS_LABELS[s] ?? s),
+          href: `${base}?status=${s}`,
+          ...(s === "all" ? {} : { count: counts[s] ?? 0 }),
+        }))}
+      />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
