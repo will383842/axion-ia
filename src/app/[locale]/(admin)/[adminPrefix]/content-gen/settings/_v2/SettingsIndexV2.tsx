@@ -92,7 +92,7 @@ export function SettingsIndexV2({ adminPrefix }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Réglages content-gen"
-        description="30 réglages éditables admin · 0 hardcoded. Doctrine § 12.5 master prompt."
+        description="Tous les réglages sont modifiables ici et enregistrés en base."
       />
       <AdminCard>
         <ul className="admin-quick-actions">

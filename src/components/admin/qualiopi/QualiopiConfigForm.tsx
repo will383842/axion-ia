@@ -108,7 +108,7 @@ export function QualiopiConfigForm({ fields }: QualiopiConfigFormProps): React.R
                     aria-hidden="true"
                     className="inline-block shrink-0 align-[-0.125em]"
                   />{" "}
-                  libellé non traduit — à ajouter dans labels.ts
+                  libellé non défini pour ce paramètre
                 </span>
               )}
             </span>

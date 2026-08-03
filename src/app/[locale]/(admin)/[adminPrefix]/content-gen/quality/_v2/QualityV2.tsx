@@ -220,7 +220,7 @@ export async function QualityV2(): Promise<React.ReactElement> {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Tableau de bord qualité"
-        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. Barres CSS — pas de bibliothèque graphique.`}
+        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. `}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

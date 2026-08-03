@@ -75,7 +75,7 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Configuration Qualiopi"
-        description="Valeurs légales & métier (NDA, SIRET, n° Qualiopi, référent handicap, barèmes OPCO, RAC CPF, seuils). Stockées dans SiteSetting cat. qualiopi ; injectées dans les PDF/pages. Laisser vide = non renseigné."
+        description="Valeurs légales & métier (NDA, SIRET, n° Qualiopi, référent handicap, barèmes OPCO, RAC CPF, seuils). Enregistrées dans les réglages du site ; injectées dans les PDF/pages. Laisser vide = non renseigné."
       />
       <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
         <TriangleAlert

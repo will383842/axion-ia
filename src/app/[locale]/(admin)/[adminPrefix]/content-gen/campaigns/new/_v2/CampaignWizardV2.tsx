@@ -607,7 +607,7 @@ export function CampaignWizardV2({
                     </strong>
                   </span>
                   {state.mixMode === "percentage" && !mixValid ? (
-                    <AdminBadge tone="destructive">Somme doit = 100</AdminBadge>
+                    <AdminBadge tone="destructive">La somme doit faire 100 %</AdminBadge>
                   ) : null}
                 </div>
               </div>
@@ -1097,7 +1097,7 @@ export function CampaignWizardV2({
               if (state.step === 1 && !canGoStep2) {
                 toast.error(
                   state.mixMode === "percentage" && !mixValid
-                    ? `Répartition fine : la somme doit = 100 (actuel : ${weightsSum})`
+                    ? `Répartition fine : la somme doit faire 100 % (actuel : ${weightsSum})`
                     : "Choisissez un type de contenu",
                 );
                 return;

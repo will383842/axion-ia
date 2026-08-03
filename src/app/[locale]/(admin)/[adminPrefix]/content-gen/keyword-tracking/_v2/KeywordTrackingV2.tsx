@@ -199,7 +199,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
       </AdminCard>
 
       {enrichedRows.length === 0 ? (
-        <AdminEmptyState title="Aucun mot-clé tracké. Le worker sync GSC/SerpAPI tournera dès activation Sprint 10.5/12.5." />
+        <AdminEmptyState title="Aucun mot-clé suivi pour l'instant. La synchronisation avec Google Search Console n'est pas encore activée." />
       ) : (
         <AdminTable
           columns={columns}

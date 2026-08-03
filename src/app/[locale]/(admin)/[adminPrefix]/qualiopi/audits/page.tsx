@@ -108,7 +108,7 @@ export default async function QualiopiAuditsPage({ params }: PageProps) {
                   <td>
                     <AdminBadge tone="neutral">{STATUT_LABEL[a.statut] ?? a.statut}</AdminBadge>
                   </td>
-                  <td>{a.acompteRecu ? "reçu" : "—"}</td>
+                  <td>{a.acompteRecu ? "Reçu" : "Non reçu"}</td>
                   <td>
                     <Link href={`${base}/${a.id}`} className="admin-button-ghost">
                       Ouvrir

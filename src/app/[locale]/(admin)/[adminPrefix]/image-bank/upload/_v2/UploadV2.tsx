@@ -13,8 +13,8 @@ export function UploadV2({ locale }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Upload image"
-        description="Glisser-déposer une image (PNG, JPEG, WebP, AVIF, HEIC) ≤ 5 MB pour upload synchrone. Au-delà, pipeline async via worker."
+        title="Téléverser une image"
+        description="Glisser-déposer une image (PNG, JPEG, WebP, AVIF, HEIC) Jusqu'à 5 Mo : traitement immédiat. Au-delà, le traitement se fait en arrière-plan et prend quelques minutes."
       />
       <AdminCard>
         <ImageUploadDropzone

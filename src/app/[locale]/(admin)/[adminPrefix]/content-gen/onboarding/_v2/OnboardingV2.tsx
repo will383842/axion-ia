@@ -54,7 +54,10 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
 
   return (
     <AdminPageShell>
-      <AdminPageHeader title="Onboarding content-gen" description="5 étapes — § 12.1ter v1.9." />
+      <AdminPageHeader
+        title="Onboarding content-gen"
+        description="Cinq étapes pour mettre la génération en route."
+      />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Statut</h2>

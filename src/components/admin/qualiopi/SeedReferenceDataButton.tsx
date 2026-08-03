@@ -60,7 +60,7 @@ export function SeedReferenceDataButton({
       setMessage(
         ran
           ? "Référentiel synchronisé (idempotent : aucune valeur saisie écrasée)."
-          : "Seed déjà en cours sur une autre instance — état rafraîchi.",
+          : "Initialisation déjà en cours ailleurs — l'affichage a été actualisé.",
       );
     });
   }

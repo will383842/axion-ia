@@ -187,12 +187,11 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-5)] lg:grid-cols-2">
         <AdminCard>
           <h2 className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Dernier run (cron 03:00 UTC)
+            Dernier passage (chaque nuit à 3 h UTC)
           </h2>
           {stats.lastRun === null ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Aucun run enregistré — le worker n&apos;a pas encore tourné ou la table
-              ContentGenConfig est vide.
+              Aucun passage enregistré pour l&apos;instant.
             </p>
           ) : stats.lastRun.skippedReason ? (
             <div className="flex flex-col gap-[var(--space-admin-3)]">

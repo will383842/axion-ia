@@ -276,7 +276,7 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
       {/* Tableau villes virtualisé */}
       <AdminCard>
         <h2 className="mb-[var(--space-admin-4,8px)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Villes ({visibleCities.length}) — 3 compteurs distincts D13
+          Villes ({visibleCities.length}) — 3 compteurs distincts
         </h2>
         <div
           className="grid grid-cols-12 gap-2 border-b border-[color:var(--color-admin-border)] pb-2 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-soft)]"

@@ -437,9 +437,10 @@ export default async function QualiopiCockpitFinancierPage({ params, searchParam
       </div>
 
       <p className="mt-[var(--space-admin-6)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-        Marge = CA HT (TrainingSession) − coût formateur (lignes de rémunération, salarié analytique
-        + indépendant honoraires). Total heures période : {totalHeures} h. « * » = coût non encore
-        calculé (run mensuel à lancer).
+        Marge = chiffre d&apos;affaires HT des sessions réalisées − coût formateur (lignes de
+        rémunération, salarié analytique + indépendant honoraires). Total heures période :{" "}
+        {totalHeures} h. « * » = coût non encore calculé (calcul mensuel des rémunérations à
+        lancer).
       </p>
     </AdminPageShell>
   );
