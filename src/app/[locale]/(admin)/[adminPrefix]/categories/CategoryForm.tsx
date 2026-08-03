@@ -215,7 +215,7 @@ export function CategoryForm({ parents, initial }: Props) {
             name="colorAccent"
             type="text"
             pattern="#[0-9a-fA-F]{6}"
-            title="Une couleur hexadécimale à six caractères, par exemple #1A2B3C."
+            title="Un dièse suivi de six caractères hexadécimaux, au format #RRGGBB."
             placeholder="#RRGGBB" // hex-ok: placeholder texte d'aide
             defaultValue={initial?.colorAccent ?? ""}
             className="admin-input"

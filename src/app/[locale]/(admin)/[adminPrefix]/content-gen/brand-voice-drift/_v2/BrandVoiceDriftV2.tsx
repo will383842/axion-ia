@@ -170,15 +170,16 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
           <h3 className="admin-h3 mb-[var(--space-admin-3)]">Seuils de détection</h3>
           <ul className="admin-meta-block text-sm">
             <li>
-              <strong>Ressemblance inférieure à 0,70</strong> — l'article part en relecture et la
-              décision est tracée.
+              <strong>Ressemblance inférieure à 0,70</strong> — l&apos;article part en relecture et
+              la décision est tracée.
             </li>
             <li>
               <strong>Entre 0,70 et 0,80</strong> — un écart est signalé et tracé, sans changer le
-              statut de l'article.
+              statut de l&apos;article.
             </li>
             <li>
-              <strong>similarity ≥ 0.80</strong> → OK, dans la tonalité brand voice
+              <strong>Ressemblance supérieure ou égale à 0,80</strong> — l&apos;article est conforme
+              à la voix de la marque, rien n&apos;est signalé.
             </li>
           </ul>
         </div>

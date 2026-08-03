@@ -53,3 +53,33 @@ const OUVERTS: ReadonlySet<string> = new Set(STATUTS_FACTURE_OUVERTE);
 export function estFactureOuverte(statut: string): boolean {
   return OUVERTS.has(statut);
 }
+
+/**
+ * Libellés français des statuts de facture.
+ *
+ * 🔴 Ces libellés existaient déjà — trois fois, en local, dans autant d'écrans
+ * (`qualiopi/clients/[id]`, `qualiopi/devis`, et la table de badges de la liste
+ * des factures). Une quatrième vue, le détail d'un événement du planning,
+ * n'avait pas la sienne et rendait la valeur brute : « partiellement_payee »
+ * s'écrivait tel quel à côté d'un montant en euros.
+ *
+ * Le module qui décide ce qu'est une facture ouverte est le bon endroit pour
+ * dire comment elle se nomme : c'est déjà lui qui casse à la compilation si
+ * l'enum change.
+ */
+export const LIBELLE_STATUT_FACTURE: Record<FactureFormationStatut, string> = {
+  brouillon: "Brouillon",
+  emise: "Émise",
+  partiellement_payee: "Partiellement payée",
+  en_retard: "En retard",
+  payee: "Payée",
+  annulee: "Annulée",
+};
+
+/**
+ * Libellé d'un statut de facture. Une valeur hors enum est CITÉE plutôt que
+ * maquillée : elle signale une donnée qui a dérivé du schéma.
+ */
+export function libelleStatutFacture(statut: string): string {
+  return LIBELLE_STATUT_FACTURE[statut as FactureFormationStatut] ?? `« ${statut} »`;
+}
