@@ -131,9 +131,35 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
                 <th className={headCls}>Titre</th>
                 <th className={headCls}>Offre</th>
                 <th className={headCls}>Durée (h)</th>
-                <th className={headCls}>Statut génération</th>
+                {/* 🔴 Trois colonnes de statut se suivaient — « Statut
+                    génération » (Publié), « Statut » (Actif), « Validée »
+                    (Non) — sans qu'aucun libellé ne dise laquelle fait foi.
+                    Question de Will le 2026-08-03 ; vérifié dans le code :
+
+                    · `statut` est LA colonne opérationnelle. C'est sur elle
+                      que cette page filtre les formations vivantes, et l'import
+                      catalogue y pose `actif` (compter `publie` renvoyait 0
+                      alors que 22 formations tournent — cf. plus haut). Elle
+                      passe donc en tête et garde le nom court « Statut ».
+
+                    · `statutGeneration` décrit l'avancement du CONTENU dans le
+                      Formation Engine (intention → … → publié), pas la vente.
+                      Renommée « Contenu » pour qu'on cesse de la confondre.
+
+                    · ⚠️ `validatedAt` N'EST PAS DÉCORATIF et ne doit pas être
+                      masqué : c'est la validation humaine exigée par l'AI Act
+                      art. 50, et `publishFormationAction` la vérifie comme
+                      PRÉRÉQUIS BLOQUANT de publication. « Non » sur les 22
+                      formations est une information de conformité. Renommée
+                      « Validation humaine », avec l'exigence en infobulle. */}
                 <th className={headCls}>Statut</th>
-                <th className={headCls}>Validée</th>
+                <th className={headCls}>Contenu</th>
+                <th
+                  className={headCls}
+                  title="Validation humaine obligatoire avant publication (AI Act art. 50)"
+                >
+                  Validation humaine
+                </th>
                 <th className={headCls}>Actions</th>
               </tr>
             </thead>
@@ -170,12 +196,34 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
                   {/* Durée */}
                   <td className={cellCls}>{f.dureeHeures}</td>
 
-                  {/* Statut génération */}
+                  {/* Statut — la colonne qui fait foi, désormais en tête.
+                      `actif` tombait dans la branche « autre » et sortait donc
+                      en ORANGE d'avertissement : les 22 formations en service
+                      s'affichaient comme si quelque chose clochait. C'est
+                      l'état normal d'une formation vivante — il passe au vert,
+                      comme `publie`. */}
+                  <td className={cellCls}>
+                    {f.statut === "publie" ? (
+                      <span className="font-medium text-[color:var(--color-admin-success)]">
+                        ● {STATUT_LABELS[f.statut]}
+                      </span>
+                    ) : f.statut === "archive" ? (
+                      <span className="text-[color:var(--color-admin-fg-muted)]">
+                        ○ {STATUT_LABELS[f.statut]}
+                      </span>
+                    ) : (
+                      <span className="font-medium text-[color:var(--color-admin-success)]">
+                        ● {STATUT_LABELS[f.statut] ?? f.statut}
+                      </span>
+                    )}
+                  </td>
+
+                  {/* Contenu (avancement Formation Engine) — secondaire. */}
                   <td className={cellCls}>
                     <span
                       className={
                         f.statutGeneration === "publie"
-                          ? "text-[color:var(--color-admin-success)]"
+                          ? "text-[color:var(--color-admin-fg-muted)]"
                           : f.statutGeneration === "archive"
                             ? "text-[color:var(--color-admin-fg-muted)]"
                             : "text-[color:var(--color-admin-warning)]"
@@ -185,24 +233,7 @@ export default async function QualiopiFormationsPage({ params, searchParams }: P
                     </span>
                   </td>
 
-                  {/* Statut formation */}
-                  <td className={cellCls}>
-                    {f.statut === "publie" ? (
-                      <span className="text-[color:var(--color-admin-success)]">
-                        ● {STATUT_LABELS[f.statut]}
-                      </span>
-                    ) : f.statut === "archive" ? (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        ○ {STATUT_LABELS[f.statut]}
-                      </span>
-                    ) : (
-                      <span className="text-[color:var(--color-admin-warning)]">
-                        ◑ {STATUT_LABELS[f.statut] ?? f.statut}
-                      </span>
-                    )}
-                  </td>
-
-                  {/* Validée */}
+                  {/* Validation humaine */}
                   <td className={cellCls}>
                     {f.validatedAt != null ? (
                       <span className="text-[color:var(--color-admin-success)]">Oui</span>

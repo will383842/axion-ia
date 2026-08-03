@@ -15,6 +15,7 @@
  */
 
 import { useState, useTransition } from "react";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -103,158 +104,155 @@ export function AppreciationForm({ creerAction }: AppreciationFormProps): React.
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
-    >
-      <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        Nouvelle appréciation
-      </h3>
+    // Replié par défaut (décision Will, 2026-08-03) : le registre s'ouvre sur
+    // ce qui est ENREGISTRÉ, pas sur un formulaire vide. Cf. AdminBlocRepliable.
+    <AdminBlocRepliable titre="+ Nouvelle appréciation">
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          {/* Source */}
+          <div>
+            <label className={labelCls} htmlFor="app-source">
+              Source *
+            </label>
+            <select
+              id="app-source"
+              value={source}
+              onChange={(e) => setSource(e.target.value as AppreciationSource)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              {SOURCE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-        {/* Source */}
-        <div>
-          <label className={labelCls} htmlFor="app-source">
-            Source *
+          {/* Date */}
+          <div>
+            <label className={labelCls} htmlFor="app-date">
+              Date *
+            </label>
+            <input
+              id="app-date"
+              type="date"
+              value={dateAppreciation}
+              onChange={(e) => setDateAppreciation(e.target.value)}
+              disabled={isPending}
+              required
+              className={inputCls}
+            />
+          </div>
+
+          {/* Note */}
+          <div>
+            <label className={labelCls} htmlFor="app-note">
+              Note /5 (facultatif)
+            </label>
+            <input
+              id="app-note"
+              type="number"
+              min={1}
+              max={5}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              disabled={isPending}
+              placeholder="1 à 5"
+              className={inputCls}
+            />
+          </div>
+
+          {/* Trainee ID */}
+          <div>
+            <label className={labelCls} htmlFor="app-trainee-id">
+              ID stagiaire (UUID, facultatif)
+            </label>
+            <input
+              id="app-trainee-id"
+              type="text"
+              value={traineeId}
+              onChange={(e) => setTraineeId(e.target.value)}
+              disabled={isPending}
+              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              className={inputCls}
+            />
+          </div>
+
+          {/* Enrollment ID */}
+          <div>
+            <label className={labelCls} htmlFor="app-enrollment-id">
+              ID inscription (UUID, facultatif)
+            </label>
+            <input
+              id="app-enrollment-id"
+              type="text"
+              value={enrollmentId}
+              onChange={(e) => setEnrollmentId(e.target.value)}
+              disabled={isPending}
+              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              className={inputCls}
+            />
+          </div>
+
+          {/* Client ID */}
+          <div>
+            <label className={labelCls} htmlFor="app-client-id">
+              ID client (UUID, facultatif)
+            </label>
+            <input
+              id="app-client-id"
+              type="text"
+              value={clientId}
+              onChange={(e) => setClientId(e.target.value)}
+              disabled={isPending}
+              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+              className={inputCls}
+            />
+          </div>
+        </div>
+
+        {/* Commentaire (pleine largeur) */}
+        <div className="mt-[var(--space-admin-4)]">
+          <label className={labelCls} htmlFor="app-commentaire">
+            Commentaire (facultatif)
           </label>
-          <select
-            id="app-source"
-            value={source}
-            onChange={(e) => setSource(e.target.value as AppreciationSource)}
+          <textarea
+            id="app-commentaire"
+            value={commentaire}
+            onChange={(e) => setCommentaire(e.target.value)}
             disabled={isPending}
+            rows={3}
+            maxLength={5000}
             className={inputCls}
+            placeholder="Retour libre..."
+          />
+        </div>
+
+        {error && (
+          <p
+            role="alert"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
           >
-            {SOURCE_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+            {error}
+          </p>
+        )}
+
+        {successId && (
+          <p
+            role="status"
+            className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          >
+            Appréciation enregistrée.
+          </p>
+        )}
+
+        <div className="mt-[var(--space-admin-4)]">
+          <button type="submit" disabled={isPending} className="admin-button">
+            {isPending ? "Enregistrement..." : "Enregistrer"}
+          </button>
         </div>
-
-        {/* Date */}
-        <div>
-          <label className={labelCls} htmlFor="app-date">
-            Date *
-          </label>
-          <input
-            id="app-date"
-            type="date"
-            value={dateAppreciation}
-            onChange={(e) => setDateAppreciation(e.target.value)}
-            disabled={isPending}
-            required
-            className={inputCls}
-          />
-        </div>
-
-        {/* Note */}
-        <div>
-          <label className={labelCls} htmlFor="app-note">
-            Note /5 (facultatif)
-          </label>
-          <input
-            id="app-note"
-            type="number"
-            min={1}
-            max={5}
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            disabled={isPending}
-            placeholder="1 à 5"
-            className={inputCls}
-          />
-        </div>
-
-        {/* Trainee ID */}
-        <div>
-          <label className={labelCls} htmlFor="app-trainee-id">
-            ID stagiaire (UUID, facultatif)
-          </label>
-          <input
-            id="app-trainee-id"
-            type="text"
-            value={traineeId}
-            onChange={(e) => setTraineeId(e.target.value)}
-            disabled={isPending}
-            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            className={inputCls}
-          />
-        </div>
-
-        {/* Enrollment ID */}
-        <div>
-          <label className={labelCls} htmlFor="app-enrollment-id">
-            ID inscription (UUID, facultatif)
-          </label>
-          <input
-            id="app-enrollment-id"
-            type="text"
-            value={enrollmentId}
-            onChange={(e) => setEnrollmentId(e.target.value)}
-            disabled={isPending}
-            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            className={inputCls}
-          />
-        </div>
-
-        {/* Client ID */}
-        <div>
-          <label className={labelCls} htmlFor="app-client-id">
-            ID client (UUID, facultatif)
-          </label>
-          <input
-            id="app-client-id"
-            type="text"
-            value={clientId}
-            onChange={(e) => setClientId(e.target.value)}
-            disabled={isPending}
-            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-            className={inputCls}
-          />
-        </div>
-      </div>
-
-      {/* Commentaire (pleine largeur) */}
-      <div className="mt-[var(--space-admin-4)]">
-        <label className={labelCls} htmlFor="app-commentaire">
-          Commentaire (facultatif)
-        </label>
-        <textarea
-          id="app-commentaire"
-          value={commentaire}
-          onChange={(e) => setCommentaire(e.target.value)}
-          disabled={isPending}
-          rows={3}
-          maxLength={5000}
-          className={inputCls}
-          placeholder="Retour libre..."
-        />
-      </div>
-
-      {error && (
-        <p
-          role="alert"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
-        >
-          {error}
-        </p>
-      )}
-
-      {successId && (
-        <p
-          role="status"
-          className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
-        >
-          Appréciation enregistrée.
-        </p>
-      )}
-
-      <div className="mt-[var(--space-admin-4)]">
-        <button type="submit" disabled={isPending} className="admin-button">
-          {isPending ? "Enregistrement..." : "Enregistrer"}
-        </button>
-      </div>
-    </form>
+      </form>
+    </AdminBlocRepliable>
   );
 }

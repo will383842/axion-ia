@@ -13,7 +13,9 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { AdminValeurSensible } from "@/components/admin/ui/AdminValeurSensible";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { masquerSecrets, contientUnSecret } from "@/lib/admin/masquer-secrets";
 
 interface SettingRow {
   key: string;
@@ -37,8 +39,15 @@ export function SettingsListV2({ adminPrefix, settings }: Props): React.ReactEle
     {
       key: "value",
       header: "Valeur (JSON)",
+      // 🔴 `legal_overrides` affichait IBAN et BIC EN CLAIR dans la liste. Une
+      // coordonnée bancaire ne s'affiche pas d'elle-même : elle s'affiche
+      // quand on la demande. Le masquage est calculé ici, côté serveur.
       cell: (s) => (
-        <pre className="admin-json admin-json-cell">{JSON.stringify(s.value, null, 2)}</pre>
+        <AdminValeurSensible
+          masque={JSON.stringify(masquerSecrets(s.value), null, 2)}
+          complet={JSON.stringify(s.value, null, 2)}
+          masquable={contientUnSecret(s.value)}
+        />
       ),
     },
     {
