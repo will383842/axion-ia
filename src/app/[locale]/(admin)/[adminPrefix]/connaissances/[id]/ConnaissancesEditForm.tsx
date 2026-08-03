@@ -219,6 +219,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
             defaultValue={entry.slug}
             required
             pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            title="Minuscules, chiffres et tirets uniquement — sans espace ni accent, et pas de tiret en début ou en fin."
           />
         </div>
         <div className="admin-field">
@@ -262,7 +263,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         <div className="admin-form-actions">
           <button type="submit" disabled={metaPending} className="admin-button">
-            {metaPending ? "Enregistrement..." : "Enregistrer métadonnées"}
+            {metaPending ? "Enregistrement…" : "Enregistrer métadonnées"}
           </button>
         </div>
         {metaState?.ok ? (
@@ -313,7 +314,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         <div className="admin-form-actions">
           <button type="submit" disabled={bodyPending} className="admin-button">
-            {bodyPending ? "Enregistrement..." : "Enregistrer brouillon"}
+            {bodyPending ? "Enregistrement…" : "Enregistrer brouillon"}
           </button>
         </div>
         {bodyState && "ok" in bodyState && bodyState.ok ? (
@@ -338,7 +339,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
           effacée définitivement.
         </p>
         <button type="submit" disabled={delPending} className="admin-button-danger">
-          {delPending ? "Suppression..." : "Supprimer l'entrée"}
+          {delPending ? "Suppression…" : "Supprimer l'entrée"}
         </button>
         {delState && "ok" in delState && delState.ok ? (
           <p className="admin-success" role="status">

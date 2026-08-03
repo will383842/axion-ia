@@ -47,10 +47,10 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             <Link href={`${base}/batches/new`} className="admin-button">
-              + Nouveau batch
+              + Nouveau lot
             </Link>
             <Link href={`${base}/batches`} className="admin-button-ghost">
-              Batches
+              Lots
             </Link>
             <Link href={`${base}/history`} className="admin-button-ghost">
               Historique

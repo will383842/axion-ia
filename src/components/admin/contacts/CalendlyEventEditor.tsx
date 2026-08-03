@@ -212,7 +212,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
       )}
 
       <button type="submit" className="admin-button" disabled={isPending}>
-        {isPending ? "Enregistrement..." : "Enregistrer"}
+        {isPending ? "Enregistrement…" : "Enregistrer"}
       </button>
     </form>
   );

@@ -176,7 +176,7 @@ export function ImportReleveForm({
 
         {/* Bouton submit */}
         <button type="submit" disabled={isPending || !file} className="admin-button">
-          {isPending ? "Import en cours..." : "Importer le relevé"}
+          {isPending ? "Import en cours…" : "Importer le relevé"}
         </button>
       </form>
 

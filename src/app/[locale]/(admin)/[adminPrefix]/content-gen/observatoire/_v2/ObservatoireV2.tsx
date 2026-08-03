@@ -82,8 +82,8 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Générer un article d’analyse</h2>
         <p className="admin-help">
-          Crée un article « barometer_insight » ancré sur les chiffres RÉELS du snapshot
-          (review-queue). Refusé si aucun échantillon réel.
+          Crée une analyse de l&apos;Observatoire, adossée aux chiffres RÉELS du dernier relevé, et
+          l&apos;envoie en relecture. Refusée si aucun échantillon réel n&apos;existe.
         </p>
         <form action={generateBarometerArticleForm} className="mt-[var(--space-admin-4)]">
           <button type="submit" className="admin-button-cta">

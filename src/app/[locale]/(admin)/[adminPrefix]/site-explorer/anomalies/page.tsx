@@ -11,7 +11,7 @@ import { libelleGravite, libelleAnomalie } from "@/server/site-explorer/anomalie
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Anomalies SEO — Site Explorer Admin",
+  title: "Explorateur du site — anomalies SEO | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

@@ -158,7 +158,7 @@ export function KeywordStrategyView({ searchParams }: Props) {
 
       {/* Métriques globales */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <MetricCard label="Total keywords" value={seeds.length.toLocaleString()} />
+        <MetricCard label="Total mots-clés" value={seeds.length.toLocaleString()} />
         <MetricCard
           label="Voice search"
           value={(byIntent["voice_search"] ?? 0).toLocaleString()}
@@ -289,9 +289,9 @@ export function KeywordStrategyView({ searchParams }: Props) {
         </select>
 
         <input
-          aria-label="Rechercher un keyword..."
+          aria-label="Rechercher un mot-clé…"
           type="text"
-          placeholder="Rechercher un keyword..."
+          placeholder="Rechercher un mot-clé…"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);

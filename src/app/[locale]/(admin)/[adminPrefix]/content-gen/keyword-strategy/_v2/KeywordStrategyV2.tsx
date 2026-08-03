@@ -206,11 +206,11 @@ export async function KeywordStrategyV2({
         </select>
 
         <input
-          aria-label="Rechercher un keyword..."
+          aria-label="Rechercher un mot-clé…"
           type="text"
           name="q"
           defaultValue={query}
-          placeholder="Rechercher un keyword..."
+          placeholder="Rechercher un mot-clé…"
           className="flex-1 rounded-md border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-3 py-1.5 text-sm shadow-sm"
         />
 

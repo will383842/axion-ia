@@ -21,7 +21,7 @@ import { libelleGravite, libelleTypeRoute } from "@/server/site-explorer/anomali
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Détail URL — Site Explorer Admin",
+  title: "Explorateur du site — détail d'une adresse | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

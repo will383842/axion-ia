@@ -117,6 +117,7 @@ export function JobOfferForm({ initial }: Props) {
             type="text"
             required
             pattern="[a-z0-9-]+"
+            title="Minuscules, chiffres et tirets uniquement — sans espace ni accent."
             value={slug}
             onChange={(e) => {
               setSlug(e.target.value);

@@ -69,7 +69,7 @@ export function GenererPortailAccesButton({
   return (
     <div>
       <button type="button" onClick={handleGenerer} disabled={isPending} className="admin-button">
-        {isPending ? "Génération..." : "Générer un accès portail"}
+        {isPending ? "Génération…" : "Générer un accès portail"}
       </button>
 
       {error && (

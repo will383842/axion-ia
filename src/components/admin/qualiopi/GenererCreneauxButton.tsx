@@ -69,7 +69,7 @@ export function GenererCreneauxButton({
           className="admin-button"
         >
           {isPending
-            ? "Génération..."
+            ? "Génération…"
             : hasCreneaux
               ? "Régénérer les créneaux"
               : "Générer les créneaux"}

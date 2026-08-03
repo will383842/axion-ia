@@ -219,7 +219,7 @@ export function ManualCalendlyEventButton(): React.ReactElement {
               Annuler
             </button>
             <button type="submit" className="admin-button" disabled={isPending}>
-              {isPending ? "Création..." : "Créer"}
+              {isPending ? "Création…" : "Créer"}
             </button>
           </div>
         </form>

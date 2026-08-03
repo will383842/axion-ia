@@ -83,7 +83,7 @@ export async function KeywordTrackingV2({ searchParams: sp }: Props): Promise<Re
   }));
 
   const columns: ReadonlyArray<AdminTableColumn<KeywordRow>> = [
-    { key: "keyword", header: "Keyword", cell: (r) => r.keyword },
+    { key: "keyword", header: "Mot-clé", cell: (r) => r.keyword },
     {
       key: "url",
       header: "URL",

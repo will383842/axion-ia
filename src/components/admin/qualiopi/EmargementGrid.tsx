@@ -399,7 +399,7 @@ export function EmargementGrid({
       )}
 
       <button type="submit" disabled={isPending} className="admin-button">
-        {isPending ? "Enregistrement..." : "Enregistrer l'émargement"}
+        {isPending ? "Enregistrement…" : "Enregistrer l'émargement"}
       </button>
     </form>
   );

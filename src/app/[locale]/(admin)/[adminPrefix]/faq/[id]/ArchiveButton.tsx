@@ -24,7 +24,7 @@ export function ArchiveButton({ id }: { id: string }) {
     <form action={formAction} className="admin-filters-actions">
       <input type="hidden" name="id" value={id} />
       <button type="submit" className="admin-button admin-button-refuse" disabled={pending}>
-        {pending ? "Archivage..." : "Confirmer archivage"}
+        {pending ? "Archivage…" : "Confirmer archivage"}
       </button>
       <button
         type="button"

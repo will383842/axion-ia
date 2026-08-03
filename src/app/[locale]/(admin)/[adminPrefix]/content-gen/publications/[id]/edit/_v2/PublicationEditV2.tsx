@@ -194,6 +194,7 @@ export function PublicationEditV2({ adminPrefix, article }: Props): React.ReactE
             className="admin-input max-w-[280px] flex-1"
             required
             pattern="SUPPRIMER"
+            title="Saisir SUPPRIMER en majuscules pour confirmer."
           />
           <button type="submit" className="admin-button-danger">
             Supprimer définitivement

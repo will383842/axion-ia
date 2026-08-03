@@ -368,7 +368,7 @@ export function IncidentForm({ creerAction, sessions, intervenants = [] }: Incid
       )}
 
       <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer l'incident"}
+        {isPending ? "Enregistrement…" : "Enregistrer l'incident"}
       </button>
     </form>
   );

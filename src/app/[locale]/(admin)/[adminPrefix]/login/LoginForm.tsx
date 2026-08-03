@@ -72,6 +72,7 @@ export function LoginForm() {
             autoComplete="one-time-code"
             inputMode="numeric"
             pattern="\d{6}"
+            title="Six chiffres, sans espace."
             maxLength={6}
             className="admin-input admin-input-totp"
             disabled={pending}
@@ -89,7 +90,7 @@ export function LoginForm() {
           hors couche CSS et l'emportent sur les utilitaires Tailwind, un
           `w-full` serait donc silencieusement sans effet ici. */}
       <button type="submit" className="admin-button admin-button-block" disabled={pending}>
-        {pending ? "Connexion..." : show2FA ? "Vérifier le code 2FA" : "Continuer"}
+        {pending ? "Connexion…" : show2FA ? "Vérifier le code 2FA" : "Continuer"}
       </button>
     </form>
   );

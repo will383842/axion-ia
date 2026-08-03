@@ -6,7 +6,7 @@ import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — seo audit | Axion-IA Admin",
+  title: "Banque d'images — audit SEO | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

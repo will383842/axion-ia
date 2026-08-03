@@ -57,6 +57,7 @@ export function CategoryForm({ parents, initial }: Props) {
             type="text"
             required
             pattern="[a-z0-9-]+"
+            title="Minuscules, chiffres et tirets uniquement — sans espace ni accent."
             defaultValue={initial?.slug ?? ""}
             className="admin-input"
             disabled={pending}
@@ -214,6 +215,7 @@ export function CategoryForm({ parents, initial }: Props) {
             name="colorAccent"
             type="text"
             pattern="#[0-9a-fA-F]{6}"
+            title="Une couleur hexadécimale à six caractères, par exemple #1A2B3C."
             placeholder="#RRGGBB" // hex-ok: placeholder texte d'aide
             defaultValue={initial?.colorAccent ?? ""}
             className="admin-input"
@@ -323,7 +325,7 @@ export function CategoryForm({ parents, initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement..." : initial?.id ? "Mettre à jour" : "Créer"}
+        {pending ? "Enregistrement…" : initial?.id ? "Mettre à jour" : "Créer"}
       </button>
     </form>
   );

@@ -10,7 +10,7 @@ import { UploadV2 } from "./_v2/UploadV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Upload | Axion-IA Admin",
+  title: "Banque d'images — ajouter une image | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

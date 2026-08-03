@@ -11,7 +11,7 @@ import { QualityV2 } from "./_v2/QualityV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Quality | Axion-IA Admin",
+  title: "Banque d'images — qualité | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
