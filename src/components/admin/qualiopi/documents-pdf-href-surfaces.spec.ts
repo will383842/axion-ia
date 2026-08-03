@@ -88,7 +88,10 @@ const HREF_PDFURL_LEGITIMES: ReadonlyArray<{ file: string; why: string }> = [
     why: "document d'intervention, URL signée ~14 j envoyée par e-mail (aucune session pour résoudre une route applicative) ; l'e-mail porte en plus `portalUrl`, lui permanent",
   },
   {
-    file: "app/[locale]/portail/mon-espace/page.tsx",
+    // Déplacé le 2026-08-03 : l'espace stagiaire, jusque-là une page unique où
+    // tout s'empilait, est découpé en sections. Les téléchargements vivent
+    // désormais dans « Mes documents ». La justification, elle, est inchangée.
+    file: "app/[locale]/portail/mon-espace/documents/page.tsx",
     // ⚠️ Classé « défaut connu » lors du premier jet de ce test, sur la seule
     // foi du JSX. C'était faux : `getEspaceStagiaire()` re-signe 24 h à chaque
     // lecture avant de passer la valeur. Le nom d'une variable ne dit pas d'où

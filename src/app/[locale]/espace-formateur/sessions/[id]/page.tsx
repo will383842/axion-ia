@@ -13,6 +13,8 @@
 
 import { notFound } from "next/navigation";
 import Link from "next/link";
+
+import { CoquilleFormateur } from "../../_coquille";
 import { requireFormateur } from "@/server/formateur/guard";
 import { lireFeuilleGroupe } from "@/server/qualiopi/emargement/feuille-groupe";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
@@ -70,210 +72,216 @@ export default async function Page({
     .join(" ");
 
   return (
-    <div className="space-y-6">
-      <div>
-        <Link href={FORMATEUR_SESSIONS_PATH} className="text-terracotta text-xs hover:underline">
-          ← Mes formations
-        </Link>
-        <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="text-mocha font-serif text-2xl font-semibold">{session.titreSession}</h1>
-          <span className="text-fg-muted text-sm">{session.numero}</span>
-        </div>
-        <p className="text-fg-muted mt-1 text-sm">
-          {libelle(STATUT_SESSION_LABELS, session.statut)}
-        </p>
-      </div>
-
-      {/* En-tête récapitulatif */}
-      <dl className="border-border grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">
+    <CoquilleFormateur section="formations">
+      <div className="space-y-6">
         <div>
-          <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Dates</dt>
-          <dd className="text-mocha mt-1 text-sm">
-            Du {dateFmt.format(session.dateDebut)}
-            <br />
-            au {dateFmt.format(session.dateFin)}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Modalité</dt>
-          <dd className="text-mocha mt-1 text-sm">{libelle(MODALITE_LABELS, session.modalite)}</dd>
-        </div>
-        {lieu ? (
-          <div>
-            <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Lieu</dt>
-            <dd className="text-mocha mt-1 text-sm">{lieu}</dd>
+          <Link href={FORMATEUR_SESSIONS_PATH} className="text-terracotta text-xs hover:underline">
+            ← Mes formations
+          </Link>
+          <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h1 className="text-mocha font-serif text-2xl font-semibold">{session.titreSession}</h1>
+            <span className="text-fg-muted text-sm">{session.numero}</span>
           </div>
-        ) : null}
-        {session.dureeReelleHeures !== null ? (
+          <p className="text-fg-muted mt-1 text-sm">
+            {libelle(STATUT_SESSION_LABELS, session.statut)}
+          </p>
+        </div>
+
+        {/* En-tête récapitulatif */}
+        <dl className="border-border grid grid-cols-1 gap-4 rounded-lg border p-4 sm:grid-cols-2">
+          <div>
+            <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Dates</dt>
+            <dd className="text-mocha mt-1 text-sm">
+              Du {dateFmt.format(session.dateDebut)}
+              <br />
+              au {dateFmt.format(session.dateFin)}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Modalité</dt>
+            <dd className="text-mocha mt-1 text-sm">
+              {libelle(MODALITE_LABELS, session.modalite)}
+            </dd>
+          </div>
+          {lieu ? (
+            <div>
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Lieu</dt>
+              <dd className="text-mocha mt-1 text-sm">{lieu}</dd>
+            </div>
+          ) : null}
+          {session.dureeReelleHeures !== null ? (
+            <div>
+              <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
+                Durée réelle
+              </dt>
+              <dd className="text-mocha mt-1 text-sm">{session.dureeReelleHeures} h</dd>
+            </div>
+          ) : null}
           <div>
             <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">
-              Durée réelle
+              Votre rôle
             </dt>
-            <dd className="text-mocha mt-1 text-sm">{session.dureeReelleHeures} h</dd>
+            <dd className="mt-1">
+              <span className="bg-sand text-mocha inline-block rounded-full px-3 py-1 text-xs font-medium">
+                {libelle(ROLE_FORMATEUR_LABELS, session.role)}
+              </span>
+            </dd>
           </div>
-        ) : null}
-        <div>
-          <dt className="text-fg-muted text-xs font-medium tracking-wide uppercase">Votre rôle</dt>
-          <dd className="mt-1">
-            <span className="bg-sand text-mocha inline-block rounded-full px-3 py-1 text-xs font-medium">
-              {libelle(ROLE_FORMATEUR_LABELS, session.role)}
-            </span>
-          </dd>
+        </dl>
+
+        {/* Bandeau de rôle / droit de clôture */}
+        <div className="border-border bg-sand rounded-lg border p-4 text-sm">
+          <p className="text-mocha">
+            Vous consultez cette formation en tant que{" "}
+            <strong>{libelle(ROLE_FORMATEUR_LABELS, session.role).toLowerCase()}</strong>.
+          </p>
+          {session.peutCloturerEmargement === false ? (
+            <p className="text-fg-muted mt-2">
+              {"Seul le formateur principal peut clôturer l'émargement de cette session."}
+            </p>
+          ) : null}
         </div>
-      </dl>
 
-      {/* Bandeau de rôle / droit de clôture */}
-      <div className="border-border bg-sand rounded-lg border p-4 text-sm">
-        <p className="text-mocha">
-          Vous consultez cette formation en tant que{" "}
-          <strong>{libelle(ROLE_FORMATEUR_LABELS, session.role).toLowerCase()}</strong>.
-        </p>
-        {session.peutCloturerEmargement === false ? (
-          <p className="text-fg-muted mt-2">
-            {"Seul le formateur principal peut clôturer l'émargement de cette session."}
-          </p>
-        ) : null}
-      </div>
+        {/* Inscrits */}
+        <section className="space-y-3">
+          <h2 className="text-mocha font-serif text-lg font-semibold">
+            Participants ({session.inscrits.length})
+          </h2>
 
-      {/* Inscrits */}
-      <section className="space-y-3">
-        <h2 className="text-mocha font-serif text-lg font-semibold">
-          Participants ({session.inscrits.length})
-        </h2>
-
-        {session.inscrits.length === 0 ? (
-          <p className="border-border text-fg-muted rounded-lg border border-dashed p-6 text-center text-sm">
-            Aucun participant inscrit à cette session pour le moment.
-          </p>
-        ) : (
-          <>
-            {/* Tableau desktop */}
-            <div className="border-border hidden overflow-x-auto rounded-lg border sm:block">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-border text-fg-muted border-b text-xs tracking-wide uppercase">
-                    <th className="px-4 py-3 font-medium">Participant</th>
-                    <th className="px-4 py-3 font-medium">Entreprise</th>
-                    <th className="px-4 py-3 font-medium">Fonction</th>
-                    <th className="px-4 py-3 font-medium">Présence</th>
-                    <th className="px-4 py-3 font-medium">Statut</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {session.inscrits.map((p) => (
-                    <tr key={p.id} className="border-border border-b last:border-b-0">
-                      <td className="text-mocha px-4 py-3">
-                        {p.prenom} {p.nom}
-                        {p.situationHandicap ? (
-                          <span className="text-fg-muted mt-0.5 block text-xs">
-                            situation de handicap signalée
-                          </span>
-                        ) : null}
-                      </td>
-                      <td className="text-mocha px-4 py-3">{p.entreprise ?? "—"}</td>
-                      <td className="text-mocha px-4 py-3">{p.fonction ?? "—"}</td>
-                      <td className="text-mocha px-4 py-3">
-                        {p.tauxPresencePct !== null ? `${p.tauxPresencePct} %` : "—"}
-                      </td>
-                      <td className="text-mocha px-4 py-3">
-                        {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
-                      </td>
+          {session.inscrits.length === 0 ? (
+            <p className="border-border text-fg-muted rounded-lg border border-dashed p-6 text-center text-sm">
+              Aucun participant inscrit à cette session pour le moment.
+            </p>
+          ) : (
+            <>
+              {/* Tableau desktop */}
+              <div className="border-border hidden overflow-x-auto rounded-lg border sm:block">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-border text-fg-muted border-b text-xs tracking-wide uppercase">
+                      <th className="px-4 py-3 font-medium">Participant</th>
+                      <th className="px-4 py-3 font-medium">Entreprise</th>
+                      <th className="px-4 py-3 font-medium">Fonction</th>
+                      <th className="px-4 py-3 font-medium">Présence</th>
+                      <th className="px-4 py-3 font-medium">Statut</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {session.inscrits.map((p) => (
+                      <tr key={p.id} className="border-border border-b last:border-b-0">
+                        <td className="text-mocha px-4 py-3">
+                          {p.prenom} {p.nom}
+                          {p.situationHandicap ? (
+                            <span className="text-fg-muted mt-0.5 block text-xs">
+                              situation de handicap signalée
+                            </span>
+                          ) : null}
+                        </td>
+                        <td className="text-mocha px-4 py-3">{p.entreprise ?? "—"}</td>
+                        <td className="text-mocha px-4 py-3">{p.fonction ?? "—"}</td>
+                        <td className="text-mocha px-4 py-3">
+                          {p.tauxPresencePct !== null ? `${p.tauxPresencePct} %` : "—"}
+                        </td>
+                        <td className="text-mocha px-4 py-3">
+                          {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-            {/* Cartes mobile */}
-            <ul className="space-y-3 sm:hidden">
-              {session.inscrits.map((p) => (
-                <li key={p.id} className="border-border rounded-lg border p-4 text-sm">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-mocha font-medium">
-                      {p.prenom} {p.nom}
-                    </span>
-                    <span className="text-fg-muted text-xs">
-                      {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
-                    </span>
-                  </div>
-                  {p.situationHandicap ? (
-                    <p className="text-fg-muted mt-1 text-xs">situation de handicap signalée</p>
-                  ) : null}
-                  <dl className="text-fg-muted mt-2 space-y-1 text-xs">
-                    <div className="flex gap-2">
-                      <dt className="min-w-20">Entreprise</dt>
-                      <dd className="text-mocha">{p.entreprise ?? "—"}</dd>
+              {/* Cartes mobile */}
+              <ul className="space-y-3 sm:hidden">
+                {session.inscrits.map((p) => (
+                  <li key={p.id} className="border-border rounded-lg border p-4 text-sm">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-mocha font-medium">
+                        {p.prenom} {p.nom}
+                      </span>
+                      <span className="text-fg-muted text-xs">
+                        {libelle(STATUT_INSCRIPTION_LABELS, p.statut)}
+                      </span>
                     </div>
-                    <div className="flex gap-2">
-                      <dt className="min-w-20">Fonction</dt>
-                      <dd className="text-mocha">{p.fonction ?? "—"}</dd>
-                    </div>
-                    <div className="flex gap-2">
-                      <dt className="min-w-20">Présence</dt>
-                      <dd className="text-mocha">
-                        {p.tauxPresencePct !== null ? `${p.tauxPresencePct} %` : "—"}
-                      </dd>
-                    </div>
-                  </dl>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </section>
+                    {p.situationHandicap ? (
+                      <p className="text-fg-muted mt-1 text-xs">situation de handicap signalée</p>
+                    ) : null}
+                    <dl className="text-fg-muted mt-2 space-y-1 text-xs">
+                      <div className="flex gap-2">
+                        <dt className="min-w-20">Entreprise</dt>
+                        <dd className="text-mocha">{p.entreprise ?? "—"}</dd>
+                      </div>
+                      <div className="flex gap-2">
+                        <dt className="min-w-20">Fonction</dt>
+                        <dd className="text-mocha">{p.fonction ?? "—"}</dd>
+                      </div>
+                      <div className="flex gap-2">
+                        <dt className="min-w-20">Présence</dt>
+                        <dd className="text-mocha">
+                          {p.tauxPresencePct !== null ? `${p.tauxPresencePct} %` : "—"}
+                        </dd>
+                      </div>
+                    </dl>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
 
-      {/* Émargement du groupe — pour un stagiaire sans téléphone, ou quand le
+        {/* Émargement du groupe — pour un stagiaire sans téléphone, ou quand le
           réseau du site client ne permet pas d'ouvrir un lien. Le QR reste
           préférable quand il marche : les stagiaires signent alors en parallèle
           sur leur propre appareil, et l'identification ne repose pas sur le
           formateur. */}
-      <section className="space-y-3">
-        <h2 className="text-espresso font-serif text-xl">Émargement</h2>
-        <p className="text-mocha text-sm">
-          Faites signer un stagiaire qui n&apos;a pas pu utiliser son lien personnel. Vous attestez
-          alors de son identité : votre nom sera enregistré avec la signature. Puis contresignez
-          chaque demi-journée : c&apos;est la signature du formateur, exigée en plus de celle des
-          stagiaires pour que la feuille soit probante.
-        </p>
-        {demiJournees === null ? (
-          <p className="text-mocha text-sm">Feuille d&apos;émargement indisponible.</p>
-        ) : (
-          <EmargementGroupe
-            sessionId={id}
-            demiJournees={demiJournees}
-            signerAction={signerPourStagiaireAction}
-            contresignerAction={contresignerDemiJourneeAction}
-          />
-        )}
-      </section>
+        <section className="space-y-3">
+          <h2 className="text-espresso font-serif text-xl">Émargement</h2>
+          <p className="text-mocha text-sm">
+            Faites signer un stagiaire qui n&apos;a pas pu utiliser son lien personnel. Vous
+            attestez alors de son identité : votre nom sera enregistré avec la signature. Puis
+            contresignez chaque demi-journée : c&apos;est la signature du formateur, exigée en plus
+            de celle des stagiaires pour que la feuille soit probante.
+          </p>
+          {demiJournees === null ? (
+            <p className="text-mocha text-sm">Feuille d&apos;émargement indisponible.</p>
+          ) : (
+            <EmargementGroupe
+              sessionId={id}
+              demiJournees={demiJournees}
+              signerAction={signerPourStagiaireAction}
+              contresignerAction={contresignerDemiJourneeAction}
+            />
+          )}
+        </section>
 
-      {/*
+        {/*
         Relevé de connexion FOAD — la pièce du distanciel.
         ⚠️ Rendu SEULEMENT si un relevé a été généré : une session présentielle
         n'en a pas, et afficher un bloc vide laisserait croire à une pièce
         manquante. `null` est le cas NORMAL, pas une erreur.
       */}
-      {etatReleve !== null && (
-        <section className="space-y-3">
-          <h2 className="text-espresso font-serif text-xl">Relevé de connexion</h2>
-          <p className="text-mocha text-sm">
-            Le relevé atteste la réalité du distanciel. Il porte deux signatures internes : la vôtre
-            et le visa du responsable pédagogique.
-          </p>
-          <SignatureDocument
-            documentGenereId={etatReleve.documentGenereId}
-            titrePiece="Relevé de connexion"
-            numero={etatReleve.numero}
-            parties={etatReleve.parties}
-            peutAgir={etatReleve.peutAgir}
-            mentions={etatReleve.mentions}
-            plafondProbant={etatReleve.plafondProbant}
-            libelleBouton="Signer le relevé"
-            labelSignature="Signature du formateur"
-            signerAction={signerReleveFormateurAction}
-          />
-        </section>
-      )}
-    </div>
+        {etatReleve !== null && (
+          <section className="space-y-3">
+            <h2 className="text-espresso font-serif text-xl">Relevé de connexion</h2>
+            <p className="text-mocha text-sm">
+              Le relevé atteste la réalité du distanciel. Il porte deux signatures internes : la
+              vôtre et le visa du responsable pédagogique.
+            </p>
+            <SignatureDocument
+              documentGenereId={etatReleve.documentGenereId}
+              titrePiece="Relevé de connexion"
+              numero={etatReleve.numero}
+              parties={etatReleve.parties}
+              peutAgir={etatReleve.peutAgir}
+              mentions={etatReleve.mentions}
+              plafondProbant={etatReleve.plafondProbant}
+              libelleBouton="Signer le relevé"
+              labelSignature="Signature du formateur"
+              signerAction={signerReleveFormateurAction}
+            />
+          </section>
+        )}
+      </div>
+    </CoquilleFormateur>
   );
 }
