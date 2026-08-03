@@ -71,6 +71,15 @@ export interface QuestionnaireResume {
 }
 
 /** Espace stagiaire complet retourné par getEspaceStagiaire. */
+/** Pièce d'information mise à disposition du stagiaire sur son espace. */
+export interface PieceRemise {
+  type: string;
+  numero: string;
+  /** URL re-signée à CHAQUE lecture — jamais la valeur stockée (expire en 900 s). */
+  pdfUrl: string | null;
+  remiseLe: Date;
+}
+
 export interface EspaceStagiaire {
   trainee: {
     prenom: string;
@@ -79,6 +88,23 @@ export interface EspaceStagiaire {
   formations: FormationResume[];
   attestations: AttestationResume[];
   questionnaires: QuestionnaireResume[];
+  /**
+   * Pièces d'information remises au stagiaire : programme, règlement intérieur,
+   * livret d'accueil, convocation.
+   *
+   * 🔴 Audit pré-visite 2026-08-03. La convocation annonce noir sur blanc :
+   * « Les documents suivants vous sont transmis avec cette convocation :
+   * programme, règlement intérieur, livret d'accueil, questionnaire de
+   * positionnement ». Or l'e-mail n'envoie aucune pièce jointe — il envoie un
+   * lien vers ce portail — et le portail n'exposait que les attestations et les
+   * questionnaires. **Le programme et le livret d'accueil n'étaient délivrés
+   * nulle part.**
+   *
+   * L'organisme annonçait donc transmettre des pièces qu'il ne transmettait pas.
+   * C'est l'indicateur 9 (information sur les conditions de déroulement), et
+   * c'est ce qu'un auditeur vérifie en demandant au stagiaire ce qu'il a reçu.
+   */
+  pieces: PieceRemise[];
   /** Situation handicap (champ clair après décryptage, null si non renseigné). */
   situationHandicap: {
     declaree: boolean;
@@ -268,6 +294,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       formations: [],
       attestations: [],
       questionnaires: [],
+      pieces: [],
       situationHandicap: { declaree: false, details: null },
     };
   }
@@ -300,10 +327,30 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
           },
           session: {
             select: {
+              id: true,
               titreSession: true,
               dateDebut: true,
               dateFin: true,
               formation: { select: { objectifsPedagogiques: true } },
+              // Pièces d'information de la session. On ne remonte QUE les types
+              // destinés au stagiaire : ni convention, ni facture, ni lettre de
+              // mission — ce sont des pièces contractuelles ou internes.
+              documents: {
+                where: {
+                  type: {
+                    in: ["programme", "reglement_interieur", "livret_accueil", "convocation"],
+                  },
+                },
+                select: {
+                  id: true,
+                  type: true,
+                  numero: true,
+                  pdfUrl: true,
+                  qrToken: true,
+                  createdAt: true,
+                },
+                orderBy: { createdAt: "desc" },
+              },
             },
           },
         },
@@ -359,6 +406,35 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     }));
   });
 
+  // Une seule pièce par TYPE, la plus récente : les régénérations créent des
+  // doublons (le dossier INVEST SUN en portait deux de chaque), et présenter au
+  // stagiaire deux règlements intérieurs de dates différentes est pire que n'en
+  // présenter aucun.
+  const parType = new Map<
+    string,
+    (typeof trainee.enrollments)[number]["session"]["documents"][number]
+  >();
+  for (const e of trainee.enrollments) {
+    for (const d of e.session?.documents ?? []) {
+      if (!parType.has(d.type)) parType.set(d.type, d);
+    }
+  }
+
+  const pieces: PieceRemise[] = await Promise.all(
+    [...parType.values()].map(async (doc) => {
+      // Même règle que les attestations : URL re-signée 24 h à CHAQUE lecture.
+      // La `pdfUrl` stockée expire en 900 s — la servir telle quelle donnerait
+      // un lien mort au stagiaire.
+      let pdfUrl: string | null = doc.pdfUrl ?? null;
+      try {
+        pdfUrl = (await signedDocumentPdfUrl(doc, 86400)) ?? pdfUrl;
+      } catch {
+        // Fail-soft : mieux vaut un lien peut-être expiré qu'un espace en erreur.
+      }
+      return { type: doc.type, numero: doc.numero, pdfUrl, remiseLe: doc.createdAt };
+    }),
+  );
+
   const detailsChiffre = trainee.handicapDetailsChiffre ?? null;
   const details = detailsChiffre !== null ? decryptPii(detailsChiffre) : null;
 
@@ -367,6 +443,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
     formations,
     attestations,
     questionnaires,
+    pieces,
     situationHandicap: {
       declaree: trainee.situationHandicap,
       details,

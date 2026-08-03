@@ -50,6 +50,14 @@ const DOC_TYPE_LABELS: Record<string, string> = {
   certificat_realisation: "Certificat de réalisation",
 };
 
+/** Pièces d'information remises au stagiaire (jamais les pièces contractuelles). */
+const PIECE_LABELS: Record<string, string> = {
+  programme: "Programme de la formation",
+  reglement_interieur: "Règlement intérieur",
+  livret_accueil: "Livret d'accueil",
+  convocation: "Convocation",
+};
+
 const ENROLLMENT_STATUT_LABELS: Record<string, string> = {
   planifiee: "Inscrit",
   presente: "En cours",
@@ -201,6 +209,52 @@ export default async function PortailMonEspacePage({ params }: PageProps) {
             </Link>
           </p>
         </Section>
+
+        {/*
+          Pièces d'information de la formation.
+
+          🔴 Audit pré-visite 2026-08-03. La convocation annonce transmettre le
+          programme, le règlement intérieur, le livret d'accueil et le
+          questionnaire de positionnement. L'e-mail n'envoie aucune pièce jointe :
+          il renvoie ici. Or cette page n'exposait que les attestations et les
+          questionnaires — le programme et le livret d'accueil n'étaient délivrés
+          NULLE PART. L'organisme annonçait donc transmettre des pièces qu'il ne
+          transmettait pas (indicateur 9).
+        */}
+        {espace.pieces.length > 0 && (
+          <Section titre="Documents de ma formation">
+            <ul className="space-y-3">
+              {espace.pieces.map((p) => (
+                <li
+                  key={p.numero}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white p-4"
+                >
+                  <div>
+                    <p className="font-medium text-gray-900">{PIECE_LABELS[p.type] ?? p.type}</p>
+                    <p className="text-sm text-gray-600">
+                      {p.numero} · remis le{" "}
+                      {new Intl.DateTimeFormat("fr-FR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      }).format(p.remiseLe)}
+                    </p>
+                  </div>
+                  {p.pdfUrl !== null && (
+                    <a
+                      href={p.pdfUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline hover:no-underline"
+                    >
+                      Télécharger le PDF
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
 
         {/* Questionnaires : positionnement (avant) et satisfaction (à chaud / à froid) */}
         {questionnairesNonRepondus.length > 0 && (
