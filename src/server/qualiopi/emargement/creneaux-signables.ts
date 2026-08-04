@@ -42,8 +42,7 @@ export interface CreneauCandidat {
 export type MotifNonSignable = "pas_encore_commence" | "deja_signe";
 
 export type EtatCreneau =
-  | { id: string; signable: true }
-  | { id: string; signable: false; motif: MotifNonSignable };
+  { id: string; signable: true } | { id: string; signable: false; motif: MotifNonSignable };
 
 /**
  * Vrai si la demi-journée a commencé, à l'instant donné, en heure de Paris.

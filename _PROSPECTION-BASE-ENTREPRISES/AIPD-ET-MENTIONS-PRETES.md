@@ -33,18 +33,18 @@ collecte de données ouvertes officielles + coordonnées publiques des entrepris
   **11. Nécessité & proportionnalité** : minimisation (uniquement données pro utiles au B2B), sources
   publiques, pas de données sensibles, pas de décision automatisée.
   **12. Analyse des risques & mesures** :
-  | Risque | Mesure en place |
-  |---|---|
-  | Personne non informée (collecte indirecte) | Mention d'information publique (Partie 3) + exemption art. 14.5.b |
-  | Collecte déloyale / mauvaise entité | Liste blanche de sources + confirmation d'appartenance du domaine au SIREN |
-  | Données périmées | Delta Sirene quotidien + fenêtre de fraîcheur + purge |
-  | Personne non-diffusible / opposée | Exclusion systématique (`statutDiffusion`, opposition RNE) |
-  | Refus de prospection (opt-out) | Registre d'opposition multi-clé, filtré à la collecte, à l'enrichissement ET à l'export |
-  | Accès indu | RBAC + journal d'accès |
-  **13. Profilage** : `leadScore` = simple aide au tri, **aucune décision automatisée à effet juridique**
-  (hors art. 22).
-  **14. Risque résiduel** : **faible** (données pro publiques, minimisation, opt-out effectif, sécurité).
-  **15. Avis / validation** : `[À COMPLÉTER : nom + date — relecture DPO/juriste recommandée]`.
+  | Risque                                                                                                  | Mesure en place                                                                         |
+  | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+  | Personne non informée (collecte indirecte)                                                              | Mention d'information publique (Partie 3) + exemption art. 14.5.b                       |
+  | Collecte déloyale / mauvaise entité                                                                     | Liste blanche de sources + confirmation d'appartenance du domaine au SIREN              |
+  | Données périmées                                                                                        | Delta Sirene quotidien + fenêtre de fraîcheur + purge                                   |
+  | Personne non-diffusible / opposée                                                                       | Exclusion systématique (`statutDiffusion`, opposition RNE)                              |
+  | Refus de prospection (opt-out)                                                                          | Registre d'opposition multi-clé, filtré à la collecte, à l'enrichissement ET à l'export |
+  | Accès indu                                                                                              | RBAC + journal d'accès                                                                  |
+  | **13. Profilage** : `leadScore` = simple aide au tri, **aucune décision automatisée à effet juridique** |
+  | (hors art. 22).                                                                                         |
+  | **14. Risque résiduel** : **faible** (données pro publiques, minimisation, opt-out effectif, sécurité). |
+  | **15. Avis / validation** : `[À COMPLÉTER : nom + date — relecture DPO/juriste recommandée]`.           |
 
 ---
 

@@ -20,10 +20,7 @@
  */
 
 export type TrainerAvailabilityTypeValue =
-  | "conge"
-  | "maladie"
-  | "formation_interne"
-  | "indisponible";
+  "conge" | "maladie" | "formation_interne" | "indisponible";
 
 /** Miroir des libellés, pour l'affichage. */
 export const LIBELLE_INDISPO: Record<TrainerAvailabilityTypeValue, string> = {

@@ -151,8 +151,7 @@ const upsertSchema = z.object({
   status: z.enum(["draft", "published", "archived"]).default("draft"),
 });
 export type UpsertFAQState =
-  | { ok: true; id: string; created: boolean }
-  | { ok: false; error: string };
+  { ok: true; id: string; created: boolean } | { ok: false; error: string };
 
 export async function upsertFAQAction(
   _prev: UpsertFAQState,

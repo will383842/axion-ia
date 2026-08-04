@@ -57,13 +57,7 @@ export type BlogCompanySize = "tpe" | "pme" | "eti" | "grande-entreprise";
 export type BlogServiceType = "audit" | "interventions" | "implementation";
 
 export type BlogFormat =
-  | "article"
-  | "comparatif"
-  | "guide"
-  | "cas-pratique"
-  | "interview"
-  | "veille"
-  | "tribune";
+  "article" | "comparatif" | "guide" | "cas-pratique" | "interview" | "veille" | "tribune";
 
 // === Pyramide indexation (3 tiers anti-doorway HCU 2024) ===
 

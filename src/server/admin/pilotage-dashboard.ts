@@ -697,22 +697,18 @@ async function dossiersFinancementEnRetard(maintenant: Date): Promise<DossierFin
     const libelle = (d: { financeurNom: string | null; numeroDossierExterne: string | null }) =>
       d.numeroDossierExterne ?? d.financeurNom ?? "Dossier sans référence";
     return [
-      ...paiementRetard.map(
-        (d): DossierFinancementRetard => ({
-          id: d.id,
-          libelle: libelle(d),
-          motif: "paiement_retard",
-          date: d.echeanceFinanceurAt,
-        }),
-      ),
-      ...sansReponse.map(
-        (d): DossierFinancementRetard => ({
-          id: d.id,
-          libelle: libelle(d),
-          motif: "sans_reponse",
-          date: d.envoyeAt,
-        }),
-      ),
+      ...paiementRetard.map((d): DossierFinancementRetard => ({
+        id: d.id,
+        libelle: libelle(d),
+        motif: "paiement_retard",
+        date: d.echeanceFinanceurAt,
+      })),
+      ...sansReponse.map((d): DossierFinancementRetard => ({
+        id: d.id,
+        libelle: libelle(d),
+        motif: "sans_reponse",
+        date: d.envoyeAt,
+      })),
     ];
   } catch {
     return [];

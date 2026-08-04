@@ -78,7 +78,7 @@ en dernier repli fenêtrage déterministe sur SIREN/dateCreation).
 
 - **Plafond de 10 000 résultats/critère** : impose un découpage très fin et un risque permanent de
   **troncature silencieuse** à 10 000 (perte d'exhaustivité non détectée).
-- **~7 req/s** : balayer ~10 M d'unités = des **semaines** de crawl (~×100 plus lent que le Stock).
+- **~7 req/s** : balayer ~~10 M d'unités = des **semaines** de crawl (~~×100 plus lent que le Stock).
 - **Fragilité** : un crawl multi-semaines est exposé aux 429, aux changements de schéma API, aux
   coupures — reprise complexe, débit imprévisible.
 - **Charge inutile** sur une API publique gratuite (loyauté/écocitoyenneté d'usage).

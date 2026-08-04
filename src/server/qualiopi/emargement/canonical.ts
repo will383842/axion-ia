@@ -24,12 +24,7 @@
 
 /** Valeur admise dans un tuple canonique. */
 export type CanonicalValue =
-  | string
-  | number
-  | boolean
-  | null
-  | CanonicalValue[]
-  | { [k: string]: CanonicalValue };
+  string | number | boolean | null | CanonicalValue[] | { [k: string]: CanonicalValue };
 
 /** Levée quand une valeur ne peut pas être canonicalisée de façon déterministe. */
 export class CanonicalisationError extends Error {

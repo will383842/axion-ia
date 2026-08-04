@@ -162,8 +162,7 @@ const upsertSchema = z.object({
   en: translationSchema,
 });
 export type UpsertCaseStudyState =
-  | { ok: true; id: string; created: boolean }
-  | { ok: false; error: string };
+  { ok: true; id: string; created: boolean } | { ok: false; error: string };
 
 export async function upsertCaseStudyAction(
   _prev: UpsertCaseStudyState,

@@ -40,12 +40,7 @@ export type SessionStatutPrev = "planifiee" | "en_cours" | "realisee" | "annulee
  * facture échue. Un prévisionnel de trésorerie aveugle aux impayés.
  */
 export type FactureStatutPrev =
-  | "brouillon"
-  | "emise"
-  | "partiellement_payee"
-  | "en_retard"
-  | "payee"
-  | "annulee";
+  "brouillon" | "emise" | "partiellement_payee" | "en_retard" | "payee" | "annulee";
 
 /**
  * Vue minimale d'une session nécessaire au prévisionnel. Type MIROIR volontaire :

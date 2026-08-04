@@ -15,12 +15,7 @@
  */
 
 export type KbBackendTarget =
-  | "article"
-  | "case_study"
-  | "faq"
-  | "help_article"
-  | "glossary_term"
-  | "guide";
+  "article" | "case_study" | "faq" | "help_article" | "glossary_term" | "guide";
 
 function readEnvFlag(name: string): boolean {
   const v = process.env[name];

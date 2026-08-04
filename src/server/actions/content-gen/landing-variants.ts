@@ -24,8 +24,7 @@ const schema = z.object({
 });
 
 export type ToggleLandingVariantState =
-  | { ok: true; active: string[] }
-  | { ok: false; error: string };
+  { ok: true; active: string[] } | { ok: false; error: string };
 
 export async function setLandingVariantActiveAction(
   slug: string,

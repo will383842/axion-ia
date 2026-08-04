@@ -242,8 +242,7 @@ type PieceLue = {
 };
 
 type Lecteur =
-  | { pourPartie: "formateur"; trainerId: string }
-  | { pourPartie: "axionia"; role: string };
+  { pourPartie: "formateur"; trainerId: string } | { pourPartie: "axionia"; role: string };
 
 /**
  * Le formateur voit les lettres de mission qui LE nomment.

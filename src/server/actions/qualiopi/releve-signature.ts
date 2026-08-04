@@ -59,11 +59,7 @@ import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 const PARTIES_RELEVE: readonly PartieSignataire[] = partiesRequisesPour("releve_connexion") ?? [];
 
 export type RefusReleve =
-  | RefusSignatureDocument
-  | "non_membre"
-  | "requete_invalide"
-  | "role_insuffisant"
-  | "stockage";
+  RefusSignatureDocument | "non_membre" | "requete_invalide" | "role_insuffisant" | "stockage";
 
 export type ResultatSignatureReleve =
   | { ok: true; signatureId: string; statutSignature: "partielle" | "signee" }

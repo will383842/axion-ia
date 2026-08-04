@@ -24,13 +24,7 @@ import {
 } from "@/server/actions/qualiopi/facturation-hub";
 
 type DossierStatut =
-  | "a_monter"
-  | "envoye"
-  | "accord_recu"
-  | "refuse"
-  | "facture"
-  | "paiement_recu"
-  | "clos";
+  "a_monter" | "envoye" | "accord_recu" | "refuse" | "facture" | "paiement_recu" | "clos";
 type DossierType = "opco" | "france_travail" | "cpf" | "mixte";
 
 export interface DossierItem {

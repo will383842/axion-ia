@@ -26,12 +26,7 @@ import {
 import { envoyerFactureEmailAction } from "@/server/actions/qualiopi/facturation-emails";
 
 type FactureStatut =
-  | "brouillon"
-  | "emise"
-  | "partiellement_payee"
-  | "en_retard"
-  | "payee"
-  | "annulee";
+  "brouillon" | "emise" | "partiellement_payee" | "en_retard" | "payee" | "annulee";
 
 export interface FactureFormationActionsProps {
   factureId: string;

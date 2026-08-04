@@ -224,8 +224,7 @@ export async function buildPageMetadata(
       : `${meta.nameEn} in ${ville.nameFr} — available on quote`;
 
   const serviceCopy = getVilleServiceCopy(ville, service) as
-    | { fr: { hero: string }; en: { hero: string } }
-    | undefined;
+    { fr: { hero: string }; en: { hero: string } } | undefined;
   const description = serviceCopy
     ? isFr
       ? serviceCopy.fr.hero.slice(0, 157) + (serviceCopy.fr.hero.length > 157 ? "…" : "")
@@ -394,8 +393,7 @@ export async function renderVilleServicePage({
   // Type cast via VilleServicesLong["audit"] (signature identique pour les
   // 4 verticales : { fr: VilleServiceCopyLocale; en: VilleServiceCopyLocale })
   const serviceCopy = getVilleServiceCopy(ville, service) as
-    | NonNullable<NonNullable<typeof ville.copy>["services"]>["audit"]
-    | undefined;
+    NonNullable<NonNullable<typeof ville.copy>["services"]>["audit"] | undefined;
   if (!serviceCopy) notFound();
   const localeCopy = serviceCopy[loc];
   const nearbyVilles = getNearbyVilles(ville.geo, 6, {

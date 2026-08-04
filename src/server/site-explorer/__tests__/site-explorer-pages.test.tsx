@@ -9,13 +9,7 @@ import { describe, it, expect } from "vitest";
 
 type SiteRouteType = "static" | "dynamic_db" | "dynamic_template" | "dynamic_filesystem";
 type SiteRouteStatus =
-  | "live"
-  | "draft"
-  | "not_found"
-  | "redirect"
-  | "error"
-  | "unknown"
-  | "preview";
+  "live" | "draft" | "not_found" | "redirect" | "error" | "unknown" | "preview";
 
 interface RouteListItem {
   id: string;

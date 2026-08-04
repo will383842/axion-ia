@@ -645,11 +645,7 @@ export async function setCertificationCoachingAction(
 // ─── Kits financeurs + certificat 1-to-1 (réutilisent les templates) ──────────
 
 type CoachingKit =
-  | "kit_opco"
-  | "kit_cpf"
-  | "kit_france_travail"
-  | "convention_tripartite"
-  | "certificat";
+  "kit_opco" | "kit_cpf" | "kit_france_travail" | "convention_tripartite" | "certificat";
 
 const KIT_GENERATORS: Record<
   CoachingKit,

@@ -29,12 +29,7 @@ import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-e
 // ─────────────────────────────────────────────────────────────────────────────
 
 type DevisStatut =
-  | "brouillon"
-  | "envoye"
-  | "accepte"
-  | "refuse"
-  | "expire"
-  | "transforme_convention";
+  "brouillon" | "envoye" | "accepte" | "refuse" | "expire" | "transforme_convention";
 
 export interface DevisLifecycleButtonsProps {
   devisId: string;

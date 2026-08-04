@@ -345,11 +345,7 @@ export interface CatalogImportOptions {
 }
 
 export type CatalogImportStatus =
-  | "created"
-  | "unchanged"
-  | "synced"
-  | "drifted"
-  | "skipped_offre_absente";
+  "created" | "unchanged" | "synced" | "drifted" | "skipped_offre_absente";
 
 export interface CatalogImportItemResult {
   slug: string;

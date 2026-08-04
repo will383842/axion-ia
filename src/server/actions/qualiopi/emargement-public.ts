@@ -58,8 +58,7 @@ const LIMITE_PAR_IP = { limit: 600, windowSec: 60 } as const;
 export type RefusPublic = RefusSignature | "lien_invalide" | "trop_de_tentatives" | "stockage";
 
 export type ResultatSignaturePublique =
-  | { ok: true; signatureId: string }
-  | { ok: false; raison: RefusPublic; message: string };
+  { ok: true; signatureId: string } | { ok: false; raison: RefusPublic; message: string };
 
 function sha256Hex(v: string): string {
   return createHash("sha256").update(v).digest("hex");

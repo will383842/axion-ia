@@ -8,11 +8,7 @@
  */
 
 export type Verticale =
-  | "audits"
-  | "interventions_formations"
-  | "implementations"
-  | "un_a_un"
-  | "sites_web_augmentes";
+  "audits" | "interventions_formations" | "implementations" | "un_a_un" | "sites_web_augmentes";
 
 export type Secteur =
   | "comptabilite_finance"

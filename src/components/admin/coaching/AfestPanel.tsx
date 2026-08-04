@@ -142,10 +142,7 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
           ...(conventionDate ? { conventionTripartiteSigneeAt: conventionDate } : {}),
           ...(priseCents !== undefined ? { priseEnChargeMontantCents: priseCents } : {}),
           priseEnChargeUnite: priseUnite as
-            | "euro_heure"
-            | "euro_jour"
-            | "euro_formation"
-            | "euro_an_salarie",
+            "euro_heure" | "euro_jour" | "euro_formation" | "euro_an_salarie",
           ...(edofDate ? { edofVerifieAt: edofDate } : {}),
           ...(resteCents !== undefined ? { resteAChargeCents: resteCents } : {}),
           ftDispositif: ftDispositif as "aif" | "poei" | "csp",

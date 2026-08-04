@@ -13,10 +13,7 @@ import type { InterventionSlug } from "./interventions";
 /** Sous-ensemble des slugs interventions qui sont des formations collectives
  *  rendues par ProductPageTemplate (cf. interventions.ts). */
 export type FormationDetailSlug =
-  | "essentielle"
-  | "approfondie"
-  | "gagner-du-temps"
-  | "intervention-claude";
+  "essentielle" | "approfondie" | "gagner-du-temps" | "intervention-claude";
 
 const FORMATION_DETAIL_SLUGS: ReadonlyArray<FormationDetailSlug> = [
   "essentielle",

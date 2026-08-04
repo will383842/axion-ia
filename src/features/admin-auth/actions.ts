@@ -133,8 +133,7 @@ export async function signOutAction(): Promise<void> {
 // ============================================================
 
 export type Setup2FAStartState =
-  | { ok: true; secret: string; otpauthUrl: string }
-  | { ok: false; error: string };
+  { ok: true; secret: string; otpauthUrl: string } | { ok: false; error: string };
 
 export async function setup2FAStartAction(): Promise<Setup2FAStartState> {
   const session = await auth();

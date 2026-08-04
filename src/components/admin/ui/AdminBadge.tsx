@@ -66,14 +66,7 @@ export function AdminBadge({
 // ─── AdminStatusBadge ────────────────────────────────────────────────────
 
 type StatusType =
-  | "booking"
-  | "invoice"
-  | "quote"
-  | "job"
-  | "publication"
-  | "user-role"
-  | "image-asset"
-  | "review";
+  "booking" | "invoice" | "quote" | "job" | "publication" | "user-role" | "image-asset" | "review";
 
 interface AdminStatusBadgeProps {
   status: string;

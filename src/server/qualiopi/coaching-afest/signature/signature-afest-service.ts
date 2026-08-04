@@ -624,13 +624,10 @@ export async function signerSeanceAfest(
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type RefusRevocationSeance =
-  | "signature_introuvable"
-  | "deja_revoquee"
-  | "revocation_maillon_interne_interdite";
+  "signature_introuvable" | "deja_revoquee" | "revocation_maillon_interne_interdite";
 
 export type ResultatRevocationSeance =
-  | { ok: true }
-  | { ok: false; raison: RefusRevocationSeance; message: string };
+  { ok: true } | { ok: false; raison: RefusRevocationSeance; message: string };
 
 /**
  * Révoque une signature de séance.

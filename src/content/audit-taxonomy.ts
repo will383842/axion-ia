@@ -23,10 +23,7 @@ import { AUDIT_TIERS, formatTierPrice, getTierById } from "./pricing";
 
 /** 4 tiers audit canoniques — déjà définis dans pricing.ts. */
 export type AuditTier =
-  | "audit-flash"
-  | "audit-cible"
-  | "audit-strategique-pme"
-  | "audit-strategique-eti";
+  "audit-flash" | "audit-cible" | "audit-strategique-pme" | "audit-strategique-eti";
 
 /** Segment de l'axe « Par taille » — aligné INSEE (cf. pricing.ts audienceSizes). */
 export type AuditSizeSegment = "tpe" | "pme" | "eti" | "grande-entreprise";

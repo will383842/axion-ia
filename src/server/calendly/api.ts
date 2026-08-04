@@ -72,12 +72,7 @@ export type CalendlyFetchResult =
        * `bad_uri`        : URI absente ou hors du domaine api.calendly.com.
        */
       reason:
-        | "not_configured"
-        | "forbidden"
-        | "not_found"
-        | "http_error"
-        | "network_error"
-        | "bad_uri";
+        "not_configured" | "forbidden" | "not_found" | "http_error" | "network_error" | "bad_uri";
       status?: number;
     };
 

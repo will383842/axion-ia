@@ -14,10 +14,7 @@ import { useRouter } from "next/navigation";
 type ActionResult<T> = { data: T } | { error: string };
 
 export type TrainerDevelopmentActionType =
-  | "entretien_professionnel"
-  | "formation_suivie"
-  | "veille"
-  | "autre";
+  "entretien_professionnel" | "formation_suivie" | "veille" | "autre";
 
 export interface TrainerDevelopmentActionSerialized {
   id: string;

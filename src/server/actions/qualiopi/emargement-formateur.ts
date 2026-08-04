@@ -40,14 +40,10 @@ import { z } from "zod";
 export type RefusFormateur = RefusSignature | "non_membre" | "stockage";
 
 export type ResultatSignatureFormateur =
-  | { ok: true; signatureId: string }
-  | { ok: false; raison: RefusFormateur; message: string };
+  { ok: true; signatureId: string } | { ok: false; raison: RefusFormateur; message: string };
 
 export type RefusContresignatureFormateur =
-  | RefusContresignature
-  | "non_membre"
-  | "stockage"
-  | "requete_invalide";
+  RefusContresignature | "non_membre" | "stockage" | "requete_invalide";
 
 export type ResultatContresignatureFormateur =
   | { ok: true; contresignatureId: string }

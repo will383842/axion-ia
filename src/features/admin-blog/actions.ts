@@ -182,8 +182,7 @@ const upsertSchema = z.object({
   tagIds: z.array(z.string().uuid()).default([]),
 });
 export type UpsertArticleState =
-  | { ok: true; id: string; created: boolean }
-  | { ok: false; error: string };
+  { ok: true; id: string; created: boolean } | { ok: false; error: string };
 
 export async function upsertArticleAction(
   _prev: UpsertArticleState,

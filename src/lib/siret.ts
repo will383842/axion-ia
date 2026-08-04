@@ -94,8 +94,7 @@ const REPDIGIT = /^(\d)\1{13}$/;
 export type SiretCheckCode = "non_numerique" | "longueur" | "placeholder" | "cle";
 
 export type SiretCheck =
-  | { ok: true; value: string }
-  | { ok: false; code: SiretCheckCode; message: string };
+  { ok: true; value: string } | { ok: false; code: SiretCheckCode; message: string };
 
 /**
  * Contrôle format + clé d'un SIRET NON VIDE. Le message est destiné à un

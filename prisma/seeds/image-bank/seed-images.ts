@@ -14,14 +14,7 @@ import { PrismaClient } from "../../generated/client";
 const prisma = new PrismaClient();
 
 type ImageType =
-  | "banniere"
-  | "carre"
-  | "affiche"
-  | "infographie"
-  | "editorial"
-  | "photo"
-  | "dataviz"
-  | "logo";
+  "banniere" | "carre" | "affiche" | "infographie" | "editorial" | "photo" | "dataviz" | "logo";
 
 const DIMENSIONS: Record<
   ImageType,
