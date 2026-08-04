@@ -232,11 +232,13 @@
      vérifié à 1280 « avec 6 onglets », et qu'un 7ᵉ est arrivé depuis (méga-menu
      Ressources, 2026-07-03 — dont le commentaire disait déjà « à surveiller »).
 
-     Largeurs de rangée MESURÉES (recherche dichotomique sur la page réelle) :
+     Largeurs de rangée MESURÉES (recherche dichotomique sur la page réelle,
+     relevées sur l'accueil ET sur /tarifs — l'onglet actif est en gras, ce qui
+     élargit la rangée de ~8 px selon la page ; on retient la pire) :
        · nav gap-8, sans « Nous écrire »  → 1397 px
        · nav gap-8, avec « Nous écrire »  → 1547 px
-       · nav gap-12, avec « Nous écrire » → 1643 px
-     Chaque seuil ci-dessous garde ~25 px de marge au-dessus, barre de
+       · nav gap-12, avec « Nous écrire » → 1651 px
+     Les seuils ci-dessous gardent 26 à 36 px de marge au-dessus, barre de
      défilement verticale (17 px) comprise.
 
      ⚠️ Ces seuils sont un BUDGET, pas un goût. Ajouter un onglet ou rallonger

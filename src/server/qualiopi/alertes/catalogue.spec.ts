@@ -16,6 +16,11 @@ import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 const CODES_ATTENDUS: string[] = [
   "referent_handicap_absent",
+  // Ajouté 2026-08-04 : la déclaration d'un besoin d'adaptation depuis le
+  // portail n'atteignait la console par AUCUN chemin (Telegram seul). Seule
+  // entrée du catalogue née d'un GESTE et non du balayage quotidien — d'où son
+  // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
+  "besoin_adaptation_declare",
   "responsable_qualite_absent",
   "emails_en_attente_validation",
   "emargement_manquant",

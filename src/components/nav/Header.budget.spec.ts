@@ -78,9 +78,12 @@ describe("budget d'espace du header", () => {
     const navair = lire("navair");
 
     // Largeurs de rangée mesurées + 17 px de barre de défilement verticale.
+    // Valeurs relevées sur DEUX pages (accueil et /tarifs) ; on garde la pire
+    // des deux — l'onglet actif est en gras, ce qui élargit la rangée de ~8 px
+    // selon la page consultée.
     expect(nav).toBeGreaterThanOrEqual(1397 + 17);
     expect(navcta).toBeGreaterThanOrEqual(1547 + 17);
-    expect(navair).toBeGreaterThanOrEqual(1643 + 17);
+    expect(navair).toBeGreaterThanOrEqual(1651 + 17);
     // Un seuil qui doublerait l'autre ferait apparaître les deux états en même
     // temps — donc le débordement qu'on vient de retirer.
     expect(nav).toBeLessThan(navcta);
