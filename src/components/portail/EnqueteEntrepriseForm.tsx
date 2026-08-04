@@ -1,4 +1,5 @@
 "use client";
+// use-client: formulaire à état local (note, champs, soumission) + appel Server Action.
 
 /**
  * Formulaire public de l'enquête ENTREPRISE (page /portail/enquete/[token]).

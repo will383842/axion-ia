@@ -1,4 +1,5 @@
 "use client";
+// use-client: état local (envoi, fait, erreur) + appel Server Action + router.refresh.
 
 /**
  * Bouton « Relancer » du bloc « Retours en attente » (page À traiter).
