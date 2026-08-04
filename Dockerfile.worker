@@ -67,6 +67,23 @@ COPY --from=builder --chown=worker:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=worker:nodejs /app/package.json ./
 COPY --from=builder --chown=worker:nodejs /app/tsconfig.json ./
 
+# 🔴 POLICES DE MARQUE — le worker GÉNÈRE DES PDF, il lui faut les .ttf.
+#
+# Constaté en production le 04/08/2026. `registerQualiopiPdfFonts()` résout les
+# polices depuis `process.cwd()/public/fonts` ; ce répertoire n'était copié
+# NULLE PART dans l'image du worker. La fonction ne throw jamais — elle
+# retombe en silence sur Geist. Résultat sur un livret régénéré depuis le
+# worker : typographie hors charte, et surtout des caractères PERDUS au rendu
+# (« Rédiger » imprimé « diger », « Appliquer » imprimé « pliquer »).
+#
+# Ce n'est pas théorique : le cron `qualiopi-formation-crons-worker` appelle
+# `genererAttestationPourEnrollment`. Toute attestation émise automatiquement
+# sortait donc dégradée — sur une pièce remise au stagiaire et opposable.
+#
+# ⚠️ `public/fonts` et non `public` entier : le worker ne sert aucun asset HTTP,
+# et copier tout `public` alourdirait l'image de tous les visuels du site.
+COPY --from=builder --chown=worker:nodejs /app/public/fonts ./public/fonts
+
 USER worker
 
 # Tini = init process pour graceful SIGTERM (Coolify SIGKILL @ 30s,
