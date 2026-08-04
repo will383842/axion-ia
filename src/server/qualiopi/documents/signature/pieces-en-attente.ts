@@ -36,8 +36,15 @@ import type { DocumentType, DocumentStatutSignature } from "../../../../../prism
  * Une FONCTION et pas une constante : Prisma attend un tableau mutable pour
  * `in`, et un objet figé (`as const`) est refusé à la compilation.
  */
-function enAttente(): { statutSignature: { in: DocumentStatutSignature[] } } {
-  return { statutSignature: { in: ["partielle", "en_attente"] } };
+function enAttente(): {
+  statutSignature: { in: DocumentStatutSignature[] };
+  annuleeAt: null;
+} {
+  // 🔴 `annuleeAt: null` — une pièce ANNULÉE ne réclame plus de signature.
+  // Sans ce filtre, annuler une pièce erronée la laissait dans « À traiter »
+  // et dans la pastille, à réclamer indéfiniment la signature d'un document
+  // qu'on vient précisément de déclarer sans valeur.
+  return { statutSignature: { in: ["partielle", "en_attente"] }, annuleeAt: null };
 }
 
 /**

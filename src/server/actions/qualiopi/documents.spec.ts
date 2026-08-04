@@ -31,6 +31,11 @@ const mockAuditFindMany = vi.fn();
 
 const mockSignatureCount = vi.fn();
 
+// Annulation d'une pièce au registre (ind. — audit pré-visite 2026-08-04).
+const mockDocumentFindUnique = vi.fn();
+const mockDocumentUpdate = vi.fn();
+const mockAdminUserFindUnique = vi.fn();
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: {
@@ -70,6 +75,13 @@ vi.mock("@/lib/prisma", () => ({
     // decrivent un dossier sain, et c'est le cas nominal.
     emargementSignature: {
       count: (...args: unknown[]) => mockSignatureCount(...args),
+    },
+    documentGenere: {
+      findUnique: (...args: unknown[]) => mockDocumentFindUnique(...args),
+      update: (...args: unknown[]) => mockDocumentUpdate(...args),
+    },
+    adminUser: {
+      findUnique: (...args: unknown[]) => mockAdminUserFindUnique(...args),
     },
   },
 }));
@@ -120,6 +132,7 @@ import {
   genererLettreMissionCadreAction,
   genererLivretAccueilAction,
   genererContratFormationAction,
+  annulerDocumentAction,
 } from "./documents";
 // Importé pour lire les appels au journal d'audit : la trace de conformité est
 // le livrable du changement « avertir sans bloquer », elle doit être vérifiée.
@@ -1483,5 +1496,82 @@ describe("contrat particulier — médiation absente : on avertit, on ne bloque 
     const r = await genererContratFormationAction({ enrollmentId: ENROLLMENT_ID });
     if ("error" in r) throw new Error("le contrat ne devrait pas être refusé");
     expect(r.data.avertissement).toBeDefined();
+  });
+});
+
+describe("🔴 annulerDocumentAction — la pièce reste, elle cesse de faire foi", () => {
+  const DOC_A_ANNULER = "d1234567-89ab-cdef-0123-456789abcdef";
+  const MOTIF = "Qualifie le dirigeant de mandataire sous-traitant de sa propre société.";
+
+  beforeEach(() => {
+    mockDocumentFindUnique.mockResolvedValue({
+      id: DOC_A_ANNULER,
+      numero: "AXI-DOC-2026-007",
+      annuleeAt: null,
+    });
+    mockDocumentUpdate.mockResolvedValue({});
+    mockAdminUserFindUnique.mockResolvedValue({ name: "Williams Jullin" });
+  });
+
+  it("annule en écrivant motif, date et auteur NOMMÉ", async () => {
+    const res = await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: MOTIF });
+
+    expect(res).toEqual({ data: { numero: "AXI-DOC-2026-007" } });
+    const appel = mockDocumentUpdate.mock.calls[0]![0] as {
+      where: { id: string };
+      data: { annuleeAt: Date; annuleeMotif: string; annuleePar: string };
+    };
+    expect(appel.where).toEqual({ id: DOC_A_ANNULER });
+    expect(appel.data.annuleeMotif).toBe(MOTIF);
+    // « annulée par 4f3a-… » ne dit rien à un auditeur : l'auteur est nommé.
+    expect(appel.data.annuleePar).toBe("Williams Jullin");
+    expect(appel.data.annuleeAt).toBeInstanceOf(Date);
+  });
+
+  it("🔴 ne SUPPRIME rien — aucun delete n'est câblé", async () => {
+    // Le numéro appartient à une série continue (CGI, art. 242 nonies A
+    // ann. II) et la pièce peut porter une signature réelle : `AXI-DOC-2026-007`
+    // est `statut_signature = signee`. Supprimer laisserait un trou dans la
+    // série ET effacerait la preuve d'un acte qui a eu lieu.
+    await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: MOTIF });
+    expect(mockDocumentUpdate).toHaveBeenCalledTimes(1);
+    expect(
+      (mockDocumentUpdate.mock.calls[0]![0] as { data: Record<string, unknown> }).data,
+    ).not.toHaveProperty("deletedAt");
+  });
+
+  it("🔴 REFUSE un motif trop court — une annulation sans raison ne vaut rien", async () => {
+    const res = await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: "erreur" });
+    expect(res).toMatchObject({ error: expect.stringContaining("Motif obligatoire") });
+    expect(mockDocumentUpdate).not.toHaveBeenCalled();
+  });
+
+  it("🔴 REFUSE de réannuler — la date et le motif d'origine ne s'écrasent pas", async () => {
+    mockDocumentFindUnique.mockResolvedValue({
+      id: DOC_A_ANNULER,
+      numero: "AXI-DOC-2026-007",
+      annuleeAt: new Date("2026-08-04T09:00:00Z"),
+    });
+    const res = await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: MOTIF });
+    expect(res).toMatchObject({ error: expect.stringContaining("déjà annulée") });
+    expect(mockDocumentUpdate).not.toHaveBeenCalled();
+  });
+
+  it("pièce introuvable → erreur, pas d'écriture", async () => {
+    mockDocumentFindUnique.mockResolvedValue(null);
+    const res = await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: MOTIF });
+    expect(res).toMatchObject({ error: "Pièce introuvable" });
+    expect(mockDocumentUpdate).not.toHaveBeenCalled();
+  });
+
+  it("trace l'annulation au journal d'activité", async () => {
+    await annulerDocumentAction({ documentId: DOC_A_ANNULER, motif: MOTIF });
+    expect(logQualiopiActivity).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "qualiopi.document.annulee",
+        targetType: "DocumentGenere",
+        targetId: DOC_A_ANNULER,
+      }),
+    );
   });
 });

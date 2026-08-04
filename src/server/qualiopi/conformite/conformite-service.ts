@@ -145,7 +145,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
     prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
-    prisma.documentGenere.count(),
+    // Les pièces ANNULÉES ne comptent pas : une pièce déclarée sans valeur ne
+    // peut pas servir de preuve à un indicateur.
+    prisma.documentGenere.count({ where: { annuleeAt: null } }),
     // R5 (audit) : off.32 n'est couvert QUE par une revue de direction VALIDÉE
     // ET de l'ANNÉE COURANTE. L'amélioration continue est une exigence annuelle :
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
@@ -200,11 +202,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.supportFormation.count(),
     // off.9 : documents d'accueil/information (convocation, livret, règlement) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["convocation", "livret_accueil", "reglement_interieur"] } },
+      where: {
+        type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
+        annuleeAt: null,
+      },
     }),
     // off.12 : preuves de suivi/présence (émargement, relevé de connexion) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["emargement", "releve_connexion"] } },
+      where: { type: { in: ["emargement", "releve_connexion"] }, annuleeAt: null },
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),

@@ -276,8 +276,16 @@ export default async function SessionHubPage({ params }: PageProps) {
         // sélectionné, pas dès qu'une convocation existe pour n'importe qui.
         traineeId: true,
         // Porte `{ specimen: true, champsManquants: [...] }` quand l'identité de
-        // l'OF est incomplète (documents-service). L'écran ne le lisait pas.
+        // l'OF est incomplète (documents-service), et `{ rectifie: {...} }`
+        // quand la pièce en remplace une autre.
         metadata: true,
+        // Sort de la pièce : annulée au registre, et/ou remplacée par une
+        // rectification. Sans ces trois colonnes, une pièce morte était
+        // indiscernable d'une pièce valable — même ligne, même lien.
+        annuleeAt: true,
+        annuleeMotif: true,
+        annuleePar: true,
+        remplaceeParNumero: true,
       },
     }),
     prisma.trainee.findMany({
@@ -359,7 +367,11 @@ export default async function SessionHubPage({ params }: PageProps) {
   // opposable. On ne s'en apercevait qu'en ouvrant le PDF, voire jamais si on
   // l'envoyait au client sans le rouvrir.
   const documentsSerialized = documentsRaw.map((d) => {
-    const meta = d.metadata as { specimen?: boolean; champsManquants?: string[] } | null;
+    const meta = d.metadata as {
+      specimen?: boolean;
+      champsManquants?: string[];
+      rectifie?: { numero?: string; motif?: string };
+    } | null;
     return {
       id: d.id,
       type: d.type,
@@ -369,6 +381,12 @@ export default async function SessionHubPage({ params }: PageProps) {
       traineeId: d.traineeId,
       estSpecimen: meta?.specimen === true,
       champsManquants: meta?.champsManquants ?? [],
+      annuleeAt: d.annuleeAt ? d.annuleeAt.toISOString() : null,
+      annuleeMotif: d.annuleeMotif,
+      annuleePar: d.annuleePar,
+      remplaceeParNumero: d.remplaceeParNumero,
+      rectifieNumero: meta?.rectifie?.numero ?? null,
+      rectifieMotif: meta?.rectifie?.motif ?? null,
       // `signaturesParPiece` ne contient que les signatures non révoquées : le
       // registre propose l'exemplaire signé dès qu'une preuve existe, au lieu de
       // le cacher dans le seul panneau de signature.

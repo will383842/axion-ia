@@ -21,6 +21,10 @@ vi.mock("@/lib/prisma", () => ({
       count: vi.fn(),
       // `findMany` est le chemin d'ALLOCATION depuis V20 (borne haute).
       findMany: vi.fn(),
+      // Résolution de la pièce RECTIFIÉE (motif seul) et contre-trace.
+      findFirst: vi.fn(),
+      findUnique: vi.fn(),
+      update: vi.fn(),
       create: vi.fn(),
     },
     activityLog: {
@@ -47,6 +51,9 @@ const mockPrisma = prisma as unknown as {
   documentGenere: {
     count: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
+    findFirst: ReturnType<typeof vi.fn>;
+    findUnique: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
   };
   activityLog: { create: ReturnType<typeof vi.fn> };
@@ -67,6 +74,25 @@ const IDENTITE_VIDE = {
   site: "",
 };
 
+/**
+ * Identité SUFFISANTE pour qu'une pièce ne soit pas déclassée en spécimen.
+ *
+ * Les tests de rectification portent sur le filigrane COPIE et la contre-trace :
+ * un déclassement SPÉCIMEN parasiterait le sujet sans rien y ajouter.
+ */
+const IDENTITE_COMPLETE = {
+  ...IDENTITE_VIDE,
+  raisonSociale: "Axion-IA SAS",
+  nda: "84691234567",
+  qualiopi: "Certifié Qualiopi",
+  siret: "12345678901234",
+  adresseSiege: "1 rue de la Paix, 75001 Paris",
+  adresseExercice: "1 rue de la Paix, 75001 Paris",
+  email: "contact@axion-ia.com",
+  telephone: "0743331201",
+  site: "https://axion-ia.com",
+};
+
 const buildElement = () => React.createElement(React.Fragment);
 
 let savedDbUrl: string | undefined;
@@ -85,6 +111,11 @@ beforeEach(() => {
   mockPrisma.documentGenere.count.mockResolvedValue(0);
   // Série documentaire vide → première allocation = …-001.
   mockPrisma.documentGenere.findMany.mockResolvedValue([]);
+  // Par défaut aucune pièce antérieure : une rectification sans précédent est
+  // un premier original, pas une erreur.
+  mockPrisma.documentGenere.findFirst.mockResolvedValue(null);
+  mockPrisma.documentGenere.findUnique.mockResolvedValue(null);
+  mockPrisma.documentGenere.update.mockResolvedValue({});
   mockPrisma.documentGenere.create.mockResolvedValue({
     id: "doc-1",
     numero: "AXI-FACT-2026-001",
@@ -370,5 +401,209 @@ describe("generateDocument — détection de régénération", () => {
 
     const rendu = mockRender.mock.calls[0]![0] as { props: { data: { estCopie?: boolean } } };
     expect(rendu.props.data.estCopie).toBeUndefined();
+  });
+});
+
+describe("🔴 RECTIFICATION générique — une régénération motivée n'est pas un duplicata", () => {
+  /** `estCopie` réellement écrit en base. */
+  function estCopiePersiste(): unknown {
+    return (mockPrisma.documentGenere.create.mock.calls[0]![0] as { data: { estCopie: unknown } })
+      .data.estCopie;
+  }
+
+  /** `metadata.rectifie` réellement écrit en base. */
+  function rectifiePersiste(): { numero?: string; motif?: string } | undefined {
+    const data = mockPrisma.documentGenere.create.mock.calls[0]![0] as {
+      data: { metadata?: { rectifie?: { numero?: string; motif?: string } } };
+    };
+    return data.data.metadata?.rectifie;
+  }
+
+  beforeEach(() => {
+    mockGetIdentite.mockResolvedValue(IDENTITE_COMPLETE);
+  });
+
+  it("le motif seul suffit : le numéro de la pièce remplacée est résolu ici", async () => {
+    // 🔴 C'est TOUT le sujet. `rectifie` était générique depuis le 03/08 et un
+    // seul appelant sur vingt-quatre le passait, parce qu'il exige un numéro
+    // que l'appelant n'a pas sous la main. Les vingt-trois actions de la
+    // console régénéraient donc en « COPIE ».
+    // ⚠️ `count` à 1, et c'est ESSENTIEL : sans une pièce antérieure détectée,
+    // l'heuristique du filigrane rendrait `false` toute seule et l'assertion
+    // ci-dessous resterait verte même si la rectification ne servait à rien.
+    // Première version de ce test : `count` à 0 — il passait encore après
+    // réintroduction du défaut. Un test qui ne discrimine pas ne garde rien.
+    mockPrisma.documentGenere.count.mockResolvedValue(1);
+    mockPrisma.documentGenere.findFirst.mockResolvedValue({
+      id: "doc-018",
+      numero: "AXI-DOC-2026-018",
+    });
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+      rectificationMotif: "Rendu illisible des pièces constitutives — mise en page corrigée.",
+    });
+
+    expect(estCopiePersiste()).toBe(false);
+    expect(rectifiePersiste()).toMatchObject({
+      numero: "AXI-DOC-2026-018",
+      motif: "Rendu illisible des pièces constitutives — mise en page corrigée.",
+    });
+  });
+
+  it("🔴 la pièce REMPLACÉE reçoit sa contre-trace", async () => {
+    // Le commentaire du service affirmait depuis le 03/08 que « l'ancienne dit
+    // par quoi elle est remplacée ». Ce n'était écrit NULLE PART : l'auditeur
+    // qui ouvrait la pièce périmée n'avait aucun moyen d'apprendre qu'elle ne
+    // faisait plus foi.
+    mockPrisma.documentGenere.findFirst.mockResolvedValue({
+      id: "doc-018",
+      numero: "AXI-DOC-2026-018",
+    });
+    mockPrisma.documentGenere.create.mockResolvedValue({
+      id: "doc-026",
+      numero: "AXI-DOC-2026-026",
+      pdfUrl: "https://r2/signed.pdf",
+      hashSha256: "a".repeat(64),
+    });
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+      rectificationMotif: "Rendu illisible des pièces constitutives — mise en page corrigée.",
+    });
+
+    expect(mockPrisma.documentGenere.update).toHaveBeenCalledWith({
+      where: { id: "doc-018" },
+      data: { remplaceeParNumero: "AXI-DOC-2026-026" },
+    });
+  });
+
+  it("🔴 rectifie la pièce la PLUS RÉCENTE, pas la première", async () => {
+    // Le kit OPCO en est le cas d'école : `018` original cassé, `024` copie
+    // corrigée, puis la rectification. Déclarer rectifier `018` laisserait
+    // `024` vivante au registre sans que rien ne dise qu'elle est morte —
+    // c'est-à-dire les deux pièces concurrentes que tout ceci évite.
+    mockPrisma.documentGenere.findFirst.mockResolvedValue({
+      id: "doc-024",
+      numero: "AXI-DOC-2026-024",
+    });
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+      rectificationMotif: "Rendu illisible des pièces constitutives — mise en page corrigée.",
+    });
+
+    const appel = mockPrisma.documentGenere.findFirst.mock.calls[0]![0] as {
+      where: Record<string, unknown>;
+      orderBy: unknown;
+    };
+    expect(appel.orderBy).toEqual([{ createdAt: "desc" }, { id: "desc" }]);
+    // Et jamais une pièce déjà annulée : la chaîne de remplacement doit
+    // désigner la dernière qui faisait foi.
+    expect(appel.where["annuleeAt"]).toBeNull();
+  });
+
+  it("sans pièce antérieure, c'est un premier original — pas un échec", async () => {
+    mockPrisma.documentGenere.count.mockResolvedValue(0);
+    mockPrisma.documentGenere.findFirst.mockResolvedValue(null);
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+      rectificationMotif: "Motif parfaitement valable mais sans pièce à remplacer.",
+    });
+
+    expect(estCopiePersiste()).toBe(false);
+    expect(rectifiePersiste()).toBeUndefined();
+    expect(mockPrisma.documentGenere.update).not.toHaveBeenCalled();
+  });
+
+  it("SANS motif, une régénération reste une COPIE", async () => {
+    // Le filigrane garde tout son sens pour un vrai duplicata : c'est le motif
+    // qui distingue les deux gestes, et lui seul.
+    mockPrisma.documentGenere.count.mockResolvedValue(1);
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+    });
+
+    expect(estCopiePersiste()).toBe(true);
+    expect(rectifiePersiste()).toBeUndefined();
+    expect(mockPrisma.documentGenere.findFirst).not.toHaveBeenCalled();
+  });
+
+  it("🔴 une pièce ANNULÉE ne fait pas filigraner son remplacement", async () => {
+    // Une pièce annulée ne circule plus : marquer « COPIE » le tirage valable
+    // ferait porter au bon document la marque d'un duplicata dont l'original a
+    // précisément cessé de faire foi.
+    mockPrisma.documentGenere.count.mockResolvedValue(0);
+
+    await generateDocument({
+      type: "kit_opco",
+      buildElement,
+      refs: { sessionId: "ses-1" },
+    });
+
+    const appel = mockPrisma.documentGenere.count.mock.calls.find(
+      (c) => (c[0] as { where: Record<string, unknown> }).where["type"] === "kit_opco",
+    );
+    expect((appel![0] as { where: Record<string, unknown> }).where["annuleeAt"]).toBeNull();
+    expect(estCopiePersiste()).toBe(false);
+  });
+
+  it("🔴 l'appelant EXPLICITE reçoit aussi la contre-trace", async () => {
+    // `attestation-service` connaît le numéro qu'il remplace mais pas son id.
+    // Sans cette résolution, la contre-trace n'aurait jamais couvert le seul
+    // circuit qui rectifiait déjà.
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      id: "att-004",
+      numero: "AXI-ATT-2026-004",
+    });
+    mockPrisma.documentGenere.create.mockResolvedValue({
+      id: "att-005",
+      numero: "AXI-ATT-2026-005",
+      pdfUrl: "https://r2/signed.pdf",
+      hashSha256: "a".repeat(64),
+    });
+
+    await generateDocument({
+      type: "attestation",
+      buildElement,
+      refs: { sessionId: "ses-1", traineeId: "sta-1" },
+      rectifie: { numero: "AXI-ATT-2026-004", motif: "Évaluation des acquis enregistrée depuis." },
+    });
+
+    expect(mockPrisma.documentGenere.update).toHaveBeenCalledWith({
+      where: { id: "att-004" },
+      data: { remplaceeParNumero: "AXI-ATT-2026-005" },
+    });
+  });
+
+  it("une contre-trace en échec ne fait PAS échouer la génération", async () => {
+    // La pièce neuve EXISTE : un numéro est consommé et un PDF est en ligne.
+    // Échouer laisserait l'appelant croire que rien n'a été produit.
+    mockPrisma.documentGenere.findFirst.mockResolvedValue({
+      id: "doc-018",
+      numero: "AXI-DOC-2026-018",
+    });
+    mockPrisma.documentGenere.update.mockRejectedValue(new Error("colonne absente"));
+
+    await expect(
+      generateDocument({
+        type: "kit_opco",
+        buildElement,
+        refs: { sessionId: "ses-1" },
+        rectificationMotif: "Rendu illisible des pièces constitutives — corrigé.",
+      }),
+    ).resolves.toMatchObject({ numero: expect.any(String) });
   });
 });
