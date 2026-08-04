@@ -170,8 +170,12 @@ function ToutEstAJour({ aProchaine }: { aProchaine: boolean }) {
           ? "Rien à remplir pour l’instant. Nous vous préviendrons par courriel dès qu’un questionnaire vous attendra."
           : "Rien à remplir pour l’instant. Vos documents restent accessibles à tout moment."}
       </p>
+      {/* `shrink-0` : sans lui, l'icône est un élément flex compressible. Dès
+          que la phrase passe à la ligne — c'est-à-dire sur tout téléphone —
+          elle était écrasée de 14 à 11,6 px de large et devenait un glyphe
+          déformé. Mesuré à 390 px le 2026-08-04. */}
       <p className="text-fg-muted mt-6 flex items-center justify-center gap-2 text-xs">
-        <Sparkles className="size-3.5" aria-hidden="true" />
+        <Sparkles className="size-3.5 shrink-0" aria-hidden="true" />
         Vos documents sont conservés dans « Mes documents »
       </p>
     </div>

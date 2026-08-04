@@ -51,8 +51,8 @@ export function HandicapDeclarationForm({
 
   if (declaree) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 px-4 py-3">
-        <p className="text-sm text-green-800">
+      <div className="border-sage/30 bg-sage-soft rounded-lg border px-4 py-3">
+        <p className="text-sage text-sm">
           Votre situation a bien été prise en compte. L&apos;équipe pédagogique adaptera les
           conditions si nécessaire.
         </p>
@@ -61,8 +61,11 @@ export function HandicapDeclarationForm({
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4">
-      <p className="text-sm text-gray-700">
+    // `bg-bg` (ivoire) et non `bg-paper` : la section qui contient ce bloc est
+    // DÉJÀ en `bg-paper`, donc un fond blanc dessinait une carte invisible dans
+    // une carte. L'ivoire le fait lire comme un encart en creux.
+    <div className="border-border bg-bg rounded-lg border p-4">
+      <p className="text-fg-soft text-sm">
         Si vous avez une situation nécessitant des aménagements particuliers (handicap, trouble
         d&apos;apprentissage, etc.), vous pouvez nous en informer.
       </p>
@@ -71,14 +74,14 @@ export function HandicapDeclarationForm({
         <button
           type="button"
           onClick={() => setShowForm(true)}
-          className="mt-3 text-sm text-blue-600 underline hover:no-underline"
+          className="text-primary focus-visible:ring-primary mt-3 rounded-sm text-sm underline hover:no-underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           Déclarer une situation particulière
         </button>
       ) : (
         <form onSubmit={handleSubmit} className="mt-4 space-y-3">
           <div>
-            <label htmlFor="handicap-besoin" className="mb-1 block text-sm text-gray-700">
+            <label htmlFor="handicap-besoin" className="text-fg-soft mb-1 block text-sm">
               Décrivez votre besoin ou les aménagements souhaités
             </label>
             <textarea
@@ -89,16 +92,19 @@ export function HandicapDeclarationForm({
               rows={4}
               maxLength={2000}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:outline-none"
+              className="border-border bg-paper text-fg placeholder:text-fg-muted focus-visible:border-border-strong focus-visible:ring-primary w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none"
               placeholder="Ex. : difficultés de lecture, aménagement du temps, accès mobilité réduite..."
             />
-            <p className="mt-1 text-xs text-gray-400">
+            {/* `text-fg-muted` et non un gris clair : cette ligne porte la
+                promesse de confidentialité. Illisible, elle ne rassure
+                personne — c'est le seul endroit où le chiffrement est dit. */}
+            <p className="text-fg-muted mt-1 text-xs">
               Ces informations sont strictement confidentielles et chiffrées.
             </p>
           </div>
 
           {error && (
-            <p role="alert" className="text-sm text-red-600">
+            <p role="alert" className="text-error text-sm">
               {error}
             </p>
           )}
@@ -107,7 +113,7 @@ export function HandicapDeclarationForm({
             <button
               type="submit"
               disabled={isPending || !besoin.trim()}
-              className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+              className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-primary rounded-md px-4 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:opacity-50"
             >
               {isPending ? "Envoi..." : "Transmettre"}
             </button>
@@ -115,7 +121,7 @@ export function HandicapDeclarationForm({
               type="button"
               onClick={() => setShowForm(false)}
               disabled={isPending}
-              className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+              className="border-border text-fg-soft hover:bg-sand focus-visible:ring-primary rounded-md border px-4 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               Annuler
             </button>

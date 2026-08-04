@@ -220,6 +220,46 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1280px;
+
+  /* ----- Seuils PROPRES au header public -----
+     🔴 Mesuré en production le 2026-08-04 : le header débordait
+     horizontalement de 1280 px à ~1658 px — donc sur la quasi-totalité des
+     portables, avec barre de défilement horizontale sur CHAQUE page. La nav
+     desktop se montrait à `xl` (1280) alors qu'elle réclame 1397 px, et
+     `2xl:gap-12` (1536) en réclamait 1643.
+
+     La cause n'est pas un réglage trop serré : c'est que le budget avait été
+     vérifié à 1280 « avec 6 onglets », et qu'un 7ᵉ est arrivé depuis (méga-menu
+     Ressources, 2026-07-03 — dont le commentaire disait déjà « à surveiller »).
+
+     Largeurs de rangée MESURÉES (recherche dichotomique sur la page réelle) :
+       · nav gap-8, sans « Nous écrire »  → 1397 px
+       · nav gap-8, avec « Nous écrire »  → 1547 px
+       · nav gap-12, avec « Nous écrire » → 1643 px
+     Chaque seuil ci-dessous garde ~25 px de marge au-dessus, barre de
+     défilement verticale (17 px) comprise.
+
+     ⚠️ Ces seuils sont un BUDGET, pas un goût. Ajouter un onglet ou rallonger
+     un libellé les invalide — `Header.budget.spec.ts` rougit dans ce cas. */
+  --breakpoint-nav: 1440px; /* tiroir → nav horizontale */
+  --breakpoint-navcta: 1600px; /* « Nous écrire » rentre à côté de la nav */
+  --breakpoint-navair: 1700px; /* onglets aérés (gap-12) */
+
+  /* ----- Hauteur du header public collant -----
+     🔴 Vérification en production du 2026-08-04 : la barre latérale des espaces
+     connectés était en `h-screen` + `sticky top-0`, alors qu'elle est rendue
+     SOUS ce header collant. Elle mesurait donc 81 px de plus que la place
+     disponible : l'identité et « Se déconnecter » commençaient sous le pli, et
+     il fallait faire défiler pour se déconnecter.
+
+     Une seule source de vérité, et le header la RELIT (`h-[var(--header-h)]`)
+     plutôt que de porter un `h-20` en double : sans ça, changer la hauteur du
+     header remettrait la barre latérale hors écran EN SILENCE.
+
+     `--header-total-h` ajoute le filet `border-b` d'un pixel — c'est cette
+     valeur-là qui décale réellement le contenu qui suit. */
+  --header-h: 5rem;
+  --header-total-h: calc(var(--header-h) + 1px);
 }
 
 /* =============================================================

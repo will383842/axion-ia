@@ -134,7 +134,11 @@ export async function Header() {
           contenu — c'est le rendu « header pleine page » voulu (≠ alignement
           strict header=contenu de l'ancienne Option A). Footer suit la même
           logique (`Footer.tsx`). */}
-      <div className="relative mx-auto flex h-20 w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
+      {/* `h-[var(--header-h)]` (= 5rem, l'ancien `h-20`) et non plus une
+          hauteur littérale : la barre latérale des espaces connectés se cale
+          dessus (`EspaceShell`). Deux valeurs séparées divergeraient un jour,
+          et la barre repasserait sous le pli sans que rien ne le signale. */}
+      <div className="relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
         {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
             Layout colonne → libère l'espace horizontal pour la nav (vs ancien
             layout row qui occupait ~200px de plus). Visibilité de la tagline :
@@ -160,15 +164,16 @@ export async function Header() {
           </Link>
           {/* Tagline B2B sous le logo — signal d'audience cible (TPE/PME/ETI).
               Serif italique pour cohérence éditoriale avec le « IA » du logo.
-              Visibilité — 2026-06-03 (audit responsive C) : affichée en mode
-              drawer (lg 992–1280, large) ET en très grand écran (2xl ≥1536),
-              mais MASQUÉE dans la bande 1280–1400 où la nav desktop + le CTA
-              primaire apparaissent et l'espace est serré. Réapparaît dès 1400 px
-              (= au cap 1366 atteint, largeur intérieure constante ≈1238 px où
-              tout tient), avec le dual-CTA. Évite tout rognage du header. */}
+              Visibilité — simplifiée le 2026-08-04 : `lg:block`, sans trou.
+              Elle portait un `xl:hidden` + `min-[1400px]:block` destinés à
+              libérer de la place dans la bande 1280–1400 ; ce raccommodage ne
+              servait plus à rien, puisque la nav desktop ne se montre désormais
+              qu'à partir de 1440 px, seuil au-dessus duquel la mesure inclut
+              déjà cette tagline. Trois variantes concurrentes sur un même
+              élément se lisent mal — et se contredisaient à l'usage. */}
           <span
             aria-hidden="true"
-            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic min-[1400px]:block lg:block xl:hidden"
+            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {taglineB2B}
@@ -176,23 +181,31 @@ export async function Header() {
         </div>
 
         {/* Nav principale clusterisée à GAUCHE (collée au logo) — pattern 2026.
-            Breakpoint — 2026-06-03 (audit responsive C) : la nav desktop
-            apparaît à `xl` (1280) et non plus `lg` (992). < 1280 = drawer mobile
-            (cf. trigger `xl:hidden`).
-            Espacement — 2026-06-08 (Will : « onglets trop serrés ») : depuis le
-            passage du header en pleine page (`max-w-[1920px]`, cf. wrapper), la
-            largeur intérieure n'est plus bornée à ~1238 px → on peut aérer.
-            gap-8 (32 px) dès xl, gap-12 (48 px) à 2xl (≥1536). Budget vérifié à
-            1280 (drawer→nav) : logo + 6 items single-line + CTA primaire tiennent
-            dans l'intérieur (~1152 px) avec gap-8 ; « Nous écrire » + tagline
-            n'apparaissent qu'à ≥1400 où l'espace le permet. */}
+
+            Breakpoint — 2026-08-04, après mesure en production : la nav desktop
+            apparaît à `nav` (1440) et non plus à `xl` (1280). En dessous =
+            drawer (cf. trigger `nav:hidden`).
+
+            🔴 Pourquoi ce déplacement : la nav réclame 1397 px de rangée, elle
+            se montrait dès 1280. Le header débordait donc horizontalement — une
+            barre de défilement sur CHAQUE page — de 1280 jusqu'à ~1658 px, soit
+            la quasi-totalité des portables. Le budget d'origine était juste
+            quand il a été posé (« 6 items single-line ») ; un 7ᵉ onglet est
+            arrivé depuis (méga-menu Ressources) sans que le budget soit refait.
+
+            Espacement — l'intention de 2026-06-08 (Will : « onglets trop
+            serrés ») est CONSERVÉE : gap-8 par défaut, gap-12 quand il y a la
+            place. Seul le seuil du gap-12 change, de 1536 à `navair` (1700),
+            parce que cette variante réclame 1643 px.
+
+            Les trois seuils et leurs largeurs mesurées vivent dans globals.css. */}
         <nav
           aria-label={t("nav.primaryLabel")}
-          // `xl:ml-4 2xl:ml-6` (Will 2026-06-08) : un peu plus d'air entre le
-          // logo et le 1er onglet (« Formations IA ») UNIQUEMENT — s'ajoute au
-          // gap-8 du flex parent (→ ~48/56 px logo↔nav) sans toucher
-          // l'espacement entre onglets ni la position du dual-CTA (ml-auto).
-          className="hidden items-center gap-8 xl:ml-4 xl:flex 2xl:ml-6 2xl:gap-12"
+          // `nav:ml-4 navair:ml-6` (intention de Will, 2026-06-08) : un peu plus
+          // d'air entre le logo et le 1er onglet (« Formations IA ») UNIQUEMENT
+          // — s'ajoute au gap-8 du flex parent (→ ~48/56 px logo↔nav) sans
+          // toucher l'espacement entre onglets ni la position du dual-CTA.
+          className="navair:ml-6 navair:gap-12 nav:ml-4 nav:flex hidden items-center gap-8"
         >
           {navItems.map((item) =>
             item.href === "/formations" ? (
@@ -219,24 +232,27 @@ export async function Header() {
           {/* Méga-menu « Ressources » (audit maillage 2026-07-03) — expose les
               hubs stratégiques (secteurs, guides, glossaire, cas concrets, stack
               IA, implantations, observatoire, ROI) dans la nav desktop, jusqu'ici
-              accessibles seulement via footer/drawer. Monté à `xl` (validé Will
-              2026-07-03), en parité avec l'apparition de la nav desktop. À
-              surveiller sur la bande 1280–1400 (budget d'espace header tendu). */}
-          <div className="hidden xl:block">
+              accessibles seulement via footer/drawer. En parité avec
+              l'apparition de la nav desktop (seuil `nav`).
+
+              🔴 C'est CET onglet qui a fait déborder le header : ajouté en
+              7ᵉ position sans refaire le budget d'espace, calculé pour 6. Son
+              commentaire d'origine disait « à surveiller sur la bande
+              1280–1400 » — la surveillance n'a pas eu lieu, le débordement a
+              duré un mois. D'où le garde-fou de `Header.budget.spec.ts`. */}
+          <div className="nav:block hidden">
             <HeaderResourcesMenu isFr={isFr} />
           </div>
         </nav>
 
         {/* Bloc dual-CTA à DROITE — ml-auto pour pousser à l'extrême droite,
             gap-3 entre les 2 CTAs pour les lire comme un groupe distinct.
-            Breakpoint — 2026-06-03 (audit responsive C) : le bloc est visible à
-            `xl` (1280), aligné sur l'apparition de la nav desktop. Le CTA
-            primaire « Réserver un appel » est TOUJOURS présent (conversion). Le
-            CTA secondaire « Nous écrire » n'apparaît qu'à partir de 1400 px (cf.
-            son `min-[1400px]:inline-flex` ci-dessous) : entre 1280 et 1400 px
-            l'espace est trop serré pour le dual-CTA dans le cap 1366. En drawer
-            (< xl) les deux CTA sont rendus dans le menu mobile. */}
-        <div className="ml-auto hidden shrink-0 items-center gap-3 xl:flex">
+            Le bloc est visible au seuil `nav`, aligné sur l'apparition de la nav
+            desktop. Le CTA primaire « Réserver un appel » est TOUJOURS présent
+            (conversion). Le CTA secondaire « Nous écrire » attend `navcta`
+            (1600) : il coûte 150 px, qui ne rentrent qu'à partir de là. En
+            drawer (< `nav`) les deux CTA sont rendus dans le menu mobile. */}
+        <div className="nav:flex ml-auto hidden shrink-0 items-center gap-3">
           {/* Recherche site — lien-icône vers /recherche (2026-06-21). Server
               Component, zéro JS, zéro CLS : la page /recherche porte le champ.
               Permet au visiteur de chercher ville / mot / métier / besoin. */}
@@ -254,20 +270,19 @@ export async function Header() {
               logo, lisible sur fond terracotta du header. Engagement plus doux
               que l'appel (asynchrone) — hiérarchie préservée car le CTA primary
               porte le bleu + glow shadow (signal d'action fort).
-              Visibilité — 2026-06-03 (audit responsive C) : `hidden` par défaut,
-              révélé à `min-[1400px]:inline-flex`. Le label nav court
-              « Intégration IA » (vs ex-« Intégration d'agents IA sur-mesure »)
-              libère assez de place pour que le dual-CTA tienne dans le cap 1366
-              dès que la largeur intérieure du header est pleine (~1238 px, à
-              partir de 1400 px de viewport). En dessous de 1400 px (1280–1399)
-              seul le CTA primaire est affiché ; « Nous écrire » reste dans le
-              drawer mobile (< xl). */}
+              Visibilité — `hidden` par défaut, révélé à `navcta:inline-flex`
+              (1600 px). Mesuré le 2026-08-04 : la rangée réclame 1397 px sans
+              ce CTA et 1547 px avec — il coûte 150 px à lui seul. Le seuil de
+              1400 px qu'il portait avant était donc trop bas de 165 px, et il
+              débordait le header partout entre 1400 et ~1562. En dessous, seul
+              le CTA primaire est affiché ; « Nous écrire » reste joignable dans
+              le drawer. */}
           <Link
             href={ROUTES.contact}
             aria-label={t("cta.contactAria")}
             data-cta="header-secondary"
             data-cta-tracking="cta_header_contact_click"
-            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta hidden h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none min-[1400px]:inline-flex"
+            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta navcta:inline-flex hidden h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             <Mail className="h-4 w-4" aria-hidden="true" />
             <span>{isFr ? "Nous écrire" : "Email us"}</span>
@@ -288,11 +303,12 @@ export async function Header() {
           </Link>
         </div>
 
-        {/* Mobile drawer trigger — affiché jusqu'à `xl` (1280) inclus.
-            2026-06-03 (audit responsive C) : ex-`lg:hidden`. La nav desktop
-            n'apparaissant qu'à xl, le drawer couvre désormais aussi la plage
-            tablette/petit-laptop 992–1280 (où le header desktop débordait). */}
-        <div className="ml-auto xl:hidden">
+        {/* Déclencheur du drawer — affiché sous le seuil `nav` (1440).
+            Il couvre donc aussi la plage 1280–1440, où la nav horizontale
+            s'affichait jusqu'au 2026-08-04 en débordant du viewport. Le drawer
+            y rend la MÊME navigation, en entier : c'est un repli, pas une
+            amputation. */}
+        <div className="nav:hidden ml-auto">
           <MobileNav>
             <nav aria-label={t("nav.primaryLabel")} className="flex flex-col text-base">
               {/* Recherche site (mobile) — champ factice cliquable vers /recherche,
