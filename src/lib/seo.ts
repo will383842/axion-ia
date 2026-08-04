@@ -2,30 +2,23 @@ import type { Metadata } from "next";
 import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
-// Cycle d'import autorisé : `service-coverage.ts` réimporte SITE_URL d'ici, mais
-// SITE_URL est une const tier-0 résolue au top-level. Les fonctions sont
-// appelées au runtime quand les 2 modules sont déjà évalués. ESM-safe.
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FOUNDER, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
 
-// SITE_URL — résolu via env validé (`src/env.ts`).
+// SITE_URL vit désormais dans `@/lib/site-url`, un module tier-0 sans autre
+// dépendance que `@/env`. Ce fichier fait 2 249 lignes et tire tout le graphe
+// SEO : y laisser la constante obligeait chaque appelant — jusqu'au formateur
+// de notifications de chaque worker — à charger l'ensemble (30 s mesurés le
+// 2026-08-04). Voir l'en-tête de `site-url.ts`.
 //
-// Fallback safety net en prod : si `NEXT_PUBLIC_SITE_URL` n'est pas défini
-// au build (env Coolify manquant), `env.NEXT_PUBLIC_SITE_URL` fallback sur
-// `http://localhost:3000` ce qui casse `metadataBase` (og:image avec hôte
-// localhost dans les SSG). Pour le canonique de prod, on force le bon
-// domaine quand l'env var est manifestement le default localhost et qu'on
-// est en build de prod (NODE_ENV=production).
-//
-// La source de vérité reste l'env var — c'est juste un filet de sécurité.
-const RAW_SITE_URL = env.NEXT_PUBLIC_SITE_URL;
-export const SITE_URL =
-  process.env.NODE_ENV === "production" && RAW_SITE_URL.startsWith("http://localhost")
-    ? "https://axion-ia.com"
-    : RAW_SITE_URL;
+// Importé pour l'usage interne de ce fichier, puis réexporté pour que les
+// ~228 fichiers qui l'attendent depuis `@/lib/seo` continuent de fonctionner
+// sans changement.
+import { SITE_URL } from "@/lib/site-url";
+export { SITE_URL };
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
 // `Organization.logo` pour le Knowledge Panel Google + carte éditeur (publisher).

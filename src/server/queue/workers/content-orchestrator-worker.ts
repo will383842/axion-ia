@@ -20,7 +20,7 @@ import { Queue, Worker, type Job } from "bullmq";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
-import { validateIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
+import { resolveIntentDistribution } from "@/server/content-gen/intent-distribution-schema";
 import {
   computeAntiBurstSchedule,
   msSinceStartOfDay,
@@ -645,24 +645,27 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
   // dépourvues de mix propre (leur mix per-campagne reste prioritaire).
   // Lecture directe de la config (clé `search_intent_distribution`) — PAS via
   // policies.ts (use-server → tire next-auth, casse le worker). Même clé/défauts.
-  const rawIntentDist = await readContentGenConfig<unknown>("search_intent_distribution", {
-    informational: 50,
-    commercial: 25,
-    local: 15,
-    transactional: 5,
-    navigational: 5,
-  });
-  // Robustesse intent (P1) — valide les clés contre l'ensemble connu (enum
-  // SearchIntent + alias FR/simplifiés). FAIL-OPEN : une clé inconnue/typo
-  // (ex. "commercia") est warn + ignorée, jamais throw — l'orchestration
-  // continue avec les clés valides. Préserve le comportement nominal.
+  // ⚠️ Défaut `{}` volontaire. Une répartition se lit d'un bloc : passer des
+  // défauts ici les ferait fusionner clé par clé avec la configuration stockée,
+  // qui est en fractions (somme 1) là où ces défauts sont en pourcentages
+  // (somme 100). Le mélange donnerait `commercial: 25` face à des voisins à
+  // 0,1 — soit une part commerciale écrasant tout. Les défauts s'appliquent
+  // en bloc dans `resolveIntentDistribution`, et seulement si rien
+  // d'exploitable n'est stocké.
+  const rawIntentDist = await readContentGenConfig<unknown>("search_intent_distribution", {});
+  // Robustesse intent (P1) — `resolve` valide les clés contre l'ensemble connu
+  // (enum SearchIntent + alias FR/simplifiés) puis replie sur les défauts EN
+  // BLOC. FAIL-OPEN : une clé inconnue/typo (ex. "commercia") est warn +
+  // ignorée, jamais throw — l'orchestration continue avec les clés valides.
+  // Les poids sont RELATIFS ici (tirage pondéré) : l'échelle n'a pas
+  // d'importance, seule leur cohérence entre eux en a.
   const intentDist: {
     informational?: number;
     commercial?: number;
     local?: number;
     transactional?: number;
     navigational?: number;
-  } = validateIntentDistribution(rawIntentDist);
+  } = resolveIntentDistribution(rawIntentDist);
   const globalIntentMix: Partial<Record<SearchIntent, number>> = {
     informational: intentDist.informational ?? 0,
     commercial_investigation: intentDist.commercial ?? 0,

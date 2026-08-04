@@ -7,7 +7,7 @@
 import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site-url";
 
 const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   info: "🟢",

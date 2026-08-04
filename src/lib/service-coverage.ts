@@ -12,7 +12,7 @@
 
 import { getIndexableRegions } from "@/content/regions";
 import { getIndexableVilles } from "@/content/villes";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/i18n/routing";
 
 /** Liste areasServed standard pour les 3 services canoniques. */
