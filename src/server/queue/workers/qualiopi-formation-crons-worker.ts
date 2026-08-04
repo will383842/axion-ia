@@ -45,6 +45,8 @@ import {
   envoyerRappelJ7,
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
+  envoyerRelanceQuestionnaire,
+  envoyerEnqueteEntreprise,
   notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
@@ -61,6 +63,10 @@ export type FormationCronJobType =
   | "formation-crons.rappel-j7"
   | "formation-crons.satisfaction-j1"
   | "formation-crons.suivi-j30"
+  // Relances questionnaires sans réponse (J+3 puis J+10, plafond 2) — 2026-08-04
+  | "formation-crons.relance-questionnaires"
+  // Enquête satisfaction ENTREPRISE au contact client (J+30) — indicateur 30
+  | "formation-crons.enquete-entreprise-j30"
   // T15 AGENT A — moteur d'alertes système (daily 07:00)
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
@@ -904,6 +910,145 @@ async function sendTelegramFacturation(body: string): Promise<void> {
   }
 }
 
+/**
+ * Daily 08:30 UTC — relance les questionnaires ENVOYÉS restés sans réponse.
+ *
+ * 🔴 Constaté sur le premier dossier réel : les questionnaires partaient
+ * (satisfaction-j1, suivi-j30), puis PLUS RIEN. Aucune relance, et l'indicateur
+ * 30 restait à « 0 appréciation » pendant que tout le monde croyait le
+ * processus complet. La trace des relances (`relanceCount`,
+ * `derniereRelanceAt`) est aussi la PREUVE, devant l'auditeur, que le recueil
+ * est réellement organisé — une non-réponse d'un tiers n'est pas une faute de
+ * l'organisme, l'absence de tentative tracée, si.
+ *
+ * Calendrier : 1ʳᵉ relance à J+3 après l'envoi, 2ᵉ à J+7 après la 1ʳᵉ
+ * (≈ J+10). PLAFOND À 2 : au-delà, on n'insiste plus par email — la relance
+ * téléphonique manuelle prend le relais, depuis le bloc « Retours en attente »
+ * de la console.
+ *
+ * Même doctrine que satisfaction-j1 : la sélection porte sur l'ÉTAT du dossier
+ * (envoyé, sans réponse, relance due), jamais sur une fenêtre horaire — un cron
+ * raté un matin se rattrape le lendemain. Borne à 90 jours : au-delà, relancer
+ * exhume des dossiers clos.
+ */
+async function handleRelanceQuestionnaires(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] relance-questionnaires: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const j3 = new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+  const j7 = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const plafond90j = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+  const questionnaires = await prisma.questionnaire.findMany({
+    where: {
+      reponduAt: null,
+      envoyeAt: { not: null, gte: plafond90j },
+      OR: [
+        // 1ʳᵉ relance : envoyé depuis ≥ 3 jours, jamais relancé.
+        { relanceCount: 0, envoyeAt: { lte: j3 } },
+        // 2ᵉ relance : 1ʳᵉ relance depuis ≥ 7 jours. Le plafond de 2 est
+        // STRUCTUREL : aucune branche ne matche relanceCount ≥ 2.
+        { relanceCount: 1, derniereRelanceAt: { lte: j7 } },
+      ],
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+  for (const q of questionnaires) {
+    try {
+      await envoyerRelanceQuestionnaire(q.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] relance-questionnaires: erreur questionnaire ${q.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] relance-questionnaires: ${ok} relances enqueuées, ${ko} erreurs (${questionnaires.length} dues)`,
+  );
+}
+
+/**
+ * Daily 08:15 UTC — enquête ENTREPRISE aux contacts clients (J+30).
+ *
+ * 🔴 L'indicateur 30 exige des appréciations d'AU MOINS DEUX sources. Le retour
+ * stagiaire est automatisé depuis toujours ; celui de l'ENTREPRISE cliente
+ * n'avait aucun canal — il se tapait à la main dans la console. Le contact
+ * client reçoit une page publique à jeton ; sa réponse est versée
+ * automatiquement en appréciation « entreprise ».
+ *
+ * Même doctrine anti-fenêtre que satisfaction-j1 : sélection sur l'ÉTAT
+ * (session réalisée depuis ≥ 30 jours, enquête jamais envoyée), pas sur
+ * l'heure de passage. Borne à 90 jours.
+ */
+async function handleEnqueteEntrepriseJ30(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] enquete-entreprise-j30: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const j30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const plafond90j = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: "realisee",
+      dateFin: { gte: plafond90j, lte: j30 },
+      client: { contactEmail: { not: null } },
+      // Jamais envoyée : aucune enquête entreprise expédiée sur cette session.
+      // (Le questionnaire est ancré sur une inscription de la session.)
+      NOT: {
+        enrollments: {
+          some: {
+            questionnaires: {
+              some: { type: "satisfaction_entreprise", envoyeAt: { not: null } },
+            },
+          },
+        },
+      },
+    },
+    select: { id: true },
+  });
+
+  let ok = 0;
+  let ko = 0;
+  for (const session of sessions) {
+    try {
+      await envoyerEnqueteEntreprise(session.id);
+      // Marque l'envoi — même contrat d'idempotence que satisfaction-j1.
+      await prisma.questionnaire.updateMany({
+        where: {
+          type: "satisfaction_entreprise",
+          envoyeAt: null,
+          enrollment: { sessionId: session.id },
+        },
+        data: { envoyeAt: new Date() },
+      });
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] enquete-entreprise-j30: erreur session ${session.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] enquete-entreprise-j30: ${ok} enquêtes enqueuées, ${ko} erreurs (${sessions.length} candidates)`,
+  );
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -911,6 +1056,8 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.rappel-j7": handleRappelJ7,
   "formation-crons.satisfaction-j1": handleSatisfactionJ1,
   "formation-crons.suivi-j30": handleSuiviJ30,
+  "formation-crons.relance-questionnaires": handleRelanceQuestionnaires,
+  "formation-crons.enquete-entreprise-j30": handleEnqueteEntrepriseJ30,
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.factures-retard": handleFacturesRetard,

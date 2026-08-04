@@ -66,6 +66,14 @@ import {
   qualiopiSatisfactionJ1Subject,
 } from "./qualiopi-satisfaction-j1";
 import { QualiopiSuiviJ30Email, qualiopiSuiviJ30Subject } from "./qualiopi-suivi-j30";
+import {
+  QualiopiQuestionnaireRelanceEmail,
+  qualiopiQuestionnaireRelanceSubject,
+} from "./qualiopi-questionnaire-relance";
+import {
+  QualiopiEnqueteEntrepriseEmail,
+  qualiopiEnqueteEntrepriseSubject,
+} from "./qualiopi-enquete-entreprise";
 import { QualiopiPortailAccesEmail, qualiopiPortailAccesSubject } from "./qualiopi-portail-acces";
 import {
   QualiopiAttestationDisponibleEmail,
@@ -260,6 +268,14 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-suivi-j30": {
     subject: qualiopiSuiviJ30Subject,
     component: QualiopiSuiviJ30Email,
+  },
+  "qualiopi-questionnaire-relance": {
+    subject: qualiopiQuestionnaireRelanceSubject,
+    component: QualiopiQuestionnaireRelanceEmail,
+  },
+  "qualiopi-enquete-entreprise": {
+    subject: qualiopiEnqueteEntrepriseSubject,
+    component: QualiopiEnqueteEntrepriseEmail,
   },
   "qualiopi-attestation-disponible": {
     subject: qualiopiAttestationDisponibleSubject,

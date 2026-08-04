@@ -28,6 +28,7 @@ import {
   CircleAlert,
   Euro,
   Mail,
+  MessageSquareReply,
   Signature,
   TriangleAlert,
 } from "lucide-react";
@@ -37,10 +38,12 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { RelancerSignatureButton } from "@/components/admin/qualiopi/RelancerSignatureButton";
+import { RelancerQuestionnaireButton } from "@/components/admin/qualiopi/RelancerQuestionnaireButton";
 import { compterQualiopiNav } from "@/server/admin/qualiopi-nav-counts";
 import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-partie";
 import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
+import { listerRetoursEnAttente } from "@/server/qualiopi/satisfaction/retours-en-attente";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -85,10 +88,11 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertesBrutes] = await Promise.all([
+  const [compteurs, signatures, alertesBrutes, retours] = await Promise.all([
     compterQualiopiNav(),
     listerPiecesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
+    listerRetoursEnAttente(),
   ]);
 
   // Les pièces déjà remplacées par une version signée ne sont pas des tâches :
@@ -115,6 +119,7 @@ export default async function ATraiterPage({ params }: PageProps) {
   // écran vide, sans le message rassurant. `rienAFaire` doit refléter
   // exactement ce qui est rendu à l'écran, pas le total de la pastille.
   const rienAFaire =
+    retours.length === 0 &&
     signatures.length === 0 &&
     compteurs.emails === 0 &&
     compteurs.relances === 0 &&
@@ -148,6 +153,70 @@ export default async function ATraiterPage({ params }: PageProps) {
             Rien à traiter — tout est à jour. Les pastilles rouges de la navigation vous ramèneront
             ici dès que quelque chose attendra.
           </p>
+        </div>
+      )}
+
+      {/* Retours en attente — questionnaires envoyés restés sans réponse.
+          🔴 Constaté sur le premier dossier réel : les questionnaires partaient
+          (crons J+1/J+30), puis PLUS RIEN — aucun écran ne montrait qui n'avait
+          pas répondu, personne ne relançait. Le cron relance à J+3 puis J+10
+          (plafond 2) ; au-delà, la ligne reste ICI, marquée « à reprendre au
+          téléphone » — la relance téléphonique est un acte humain. Le compteur
+          de relances est la PREUVE, devant l'auditeur, que le recueil est
+          organisé : une non-réponse d'un tiers n'est pas une faute, l'absence
+          de tentative tracée, si. */}
+      {retours.length > 0 && (
+        <div className={carte}>
+          <h2 className={titreCarte}>
+            <MessageSquareReply size={18} aria-hidden="true" className="shrink-0" />
+            Retours en attente <span className={pastille}>{retours.length}</span>
+          </h2>
+          <ul>
+            {retours.map((r) => {
+              const TYPE_QUESTIONNAIRE: Record<string, string> = {
+                positionnement: "Positionnement",
+                satisfaction_chaud: "Satisfaction à chaud",
+                satisfaction_froid: "Satisfaction à froid",
+                satisfaction_entreprise: "Enquête entreprise",
+              };
+              const jours = joursDepuis(r.envoyeAt);
+              const relances =
+                r.relanceCount === 0
+                  ? "jamais relancé"
+                  : `${r.relanceCount} relance${r.relanceCount > 1 ? "s" : ""}${
+                      r.derniereRelanceAt
+                        ? ` (dernière le ${r.derniereRelanceAt.toLocaleDateString("fr-FR")})`
+                        : ""
+                    }`;
+              return (
+                <li key={r.questionnaireId} className={ligne}>
+                  <div className="min-w-0">
+                    <p className="text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]">
+                      {TYPE_QUESTIONNAIRE[r.type] ?? r.type} — {r.destinataire}
+                      {r.estEntreprise && (
+                        <span className="ml-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          (contact client)
+                        </span>
+                      )}
+                    </p>
+                    <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {r.sessionTitre} · {r.sessionNumero} — envoyé il y a {jours} jour
+                      {jours > 1 ? "s" : ""} · {relances}
+                      {r.relancesEpuisees && (
+                        <span className="ml-[var(--space-admin-1)] font-semibold text-[color:var(--color-admin-warning)]">
+                          — relances email épuisées, à reprendre au téléphone
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <RelancerQuestionnaireButton
+                    questionnaireId={r.questionnaireId}
+                    destinataire={r.destinataire}
+                  />
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
 

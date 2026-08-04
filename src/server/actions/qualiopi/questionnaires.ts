@@ -46,6 +46,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import {
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
+  envoyerRelanceQuestionnaire,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { demanderAccesParEmail } from "@/server/qualiopi/portail/portail-service";
 
@@ -137,4 +138,60 @@ export async function envoyerQuestionnaireAction(input: {
   revalidatePath(`/fr/[adminPrefix]/qualiopi/sessions/${questionnaire.enrollment.session.id}`);
 
   return { data: { questionnaireId, envoyeAt: envoyeAt.toISOString() } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// relancerQuestionnaireAction
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Relance MANUELLE d'un questionnaire envoyé resté sans réponse — le bouton du
+ * bloc « Retours en attente » de la page À traiter.
+ *
+ * Délègue tout à `envoyerRelanceQuestionnaire` : même email, même trace
+ * (`relanceCount`, `derniereRelanceAt`) que la relance automatique du cron.
+ * Deux chemins qui écriraient la trace différemment finiraient par dire deux
+ * choses différentes à l'auditeur.
+ *
+ * ⚠️ Contrairement au cron (plafonné à 2), la relance manuelle N'EST PAS
+ * plafonnée : c'est un humain qui décide, en connaissance du compteur affiché.
+ */
+export async function relancerQuestionnaireAction(input: {
+  questionnaireId: string;
+}): Promise<ActionResult<{ questionnaireId: string }>> {
+  const session = await requireAdminWrite();
+
+  const parsed = envoyerQuestionnaireSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { questionnaireId } = parsed.data;
+
+  const questionnaire = await prisma.questionnaire.findUnique({
+    where: { id: questionnaireId },
+    select: { id: true, type: true, envoyeAt: true, reponduAt: true },
+  });
+  if (!questionnaire) return { error: "Questionnaire introuvable" };
+  if (questionnaire.envoyeAt === null) {
+    return { error: "Ce questionnaire n'a jamais été envoyé — utilisez « Envoyer »." };
+  }
+  if (questionnaire.reponduAt !== null) {
+    return { error: "Ce questionnaire a déjà été rempli — inutile de relancer." };
+  }
+
+  try {
+    await envoyerRelanceQuestionnaire(questionnaireId);
+  } catch {
+    return { error: "La relance a échoué. Réessayez dans quelques instants." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.questionnaire.relancer",
+    targetType: "Questionnaire",
+    targetId: questionnaireId,
+    changes: { type: questionnaire.type, manuel: true },
+    session,
+  });
+
+  revalidatePath(`/fr/[adminPrefix]/qualiopi/a-traiter`);
+
+  return { data: { questionnaireId } };
 }

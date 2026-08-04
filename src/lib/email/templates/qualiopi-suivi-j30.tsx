@@ -41,6 +41,7 @@ export function QualiopiSuiviJ30Email({
       title="Suivi post-formation — 30 jours déjà"
       cta={{ label: "Accéder à mon espace", href: ctaHref }}
       locale={locale}
+      trust
     >
       <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>

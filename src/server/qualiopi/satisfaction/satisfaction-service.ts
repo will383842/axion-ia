@@ -239,6 +239,37 @@ async function verserAuxRegistres(input: {
     return;
   }
 
+  // 🔴 Réponse du CONTACT CLIENT (page publique /enquete/[token]) : c'est la
+  // 2ᵉ source distincte que l'indicateur 30 exige. Le répondant se nomme dans
+  // le formulaire — son identité et sa fonction sont conservées au verbatim.
+  if (input.type === "satisfaction_entreprise" && input.noteGlobale !== undefined) {
+    const repondant =
+      typeof input.reponses["repondantNom"] === "string" &&
+      (input.reponses["repondantNom"] as string).trim() !== ""
+        ? (input.reponses["repondantNom"] as string).trim()
+        : null;
+    const fonction =
+      typeof input.reponses["repondantFonction"] === "string" &&
+      (input.reponses["repondantFonction"] as string).trim() !== ""
+        ? ` (${(input.reponses["repondantFonction"] as string).trim()})`
+        : "";
+    const verbatimEntreprise =
+      typeof input.reponses["commentaire"] === "string" &&
+      (input.reponses["commentaire"] as string).trim() !== ""
+        ? ` Verbatim : « ${(input.reponses["commentaire"] as string).trim()} »`
+        : "";
+
+    await creerAppreciation({
+      source: "entreprise",
+      enrollmentId: input.enrollmentId,
+      ...(input.clientId !== null ? { clientId: input.clientId } : {}),
+      note: input.noteGlobale,
+      commentaire: `Enquête entreprise — note ${input.noteGlobale}/5${repondant ? `, répondue par ${repondant}${fonction}` : ""}.${verbatimEntreprise}`,
+      dateAppreciation: new Date(),
+    });
+    return;
+  }
+
   if (
     (input.type === "satisfaction_chaud" || input.type === "satisfaction_froid") &&
     input.noteGlobale !== undefined

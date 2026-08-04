@@ -32,6 +32,10 @@ type ActionResult<T> = { data: T } | { error: string };
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Types STAGIAIRE — un questionnaire par inscription. L'enquête ENTREPRISE
+// n'en fait PAS partie : elle est UNE par session (ancrée sur la première
+// inscription par le cron enquete-entreprise-j30 / envoyerEnqueteEntreprise) —
+// la générer ici en créerait une par stagiaire.
 const QUESTIONNAIRE_TYPES = ["positionnement", "satisfaction_chaud", "satisfaction_froid"] as const;
 
 const genererQuestionnairesSessionSchema = z.object({

@@ -55,11 +55,16 @@ describe("ConventionEnvoiEmail", () => {
   });
 
   // Signature institutionnelle, pas le nom d'une personne : ces e-mails partent
-  // au nom de l'organisme, et un client répond à une équipe.
-  it("signe « L'équipe Axion-IA », jamais un nom propre", async () => {
+  // au nom de l'organisme, et un client répond à une équipe. Le footer social
+  // commun (« et Williams, son fondateur » — demande Will 2026-08-04) est
+  // hors-signature : on borne donc le contrôle au CORPS, avant le footer.
+  it("signe « L'équipe Axion-IA », jamais un nom propre dans le corps", async () => {
     const h = await html(PAYLOAD);
     expect(h).toContain("L&#x27;équipe Axion-IA");
-    expect(h).not.toContain("Williams");
+    const marqueurFooter = h.indexOf("Suivez l&#x27;aventure Axion-IA");
+    expect(marqueurFooter).toBeGreaterThan(-1);
+    const corps = h.slice(0, marqueurFooter);
+    expect(corps).not.toContain("Williams");
   });
 
   it("insère le message libre de l'admin quand il existe", async () => {
