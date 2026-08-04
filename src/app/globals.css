@@ -19,6 +19,18 @@
   --color-mocha: #2a2520; /* brun-aubergine — sections premium (PAS du noir) */
   --color-mocha-soft: #3d362f; /* mocha plus doux — gradients */
   --color-mocha-fg: #f7f3ea; /* texte sur mocha — ivoire */
+  /* Texte SECONDAIRE sur mocha (libellés inactifs, sous-titres des espaces
+     connectés). 6,64:1 sur --color-mocha — au-delà du seuil AA 4,5. Ne pas
+     l'obtenir par opacité sur --color-mocha-fg : une opacité ne se calcule pas,
+     donc elle ne se vérifie pas, et le gate de contraste ne la voit pas. */
+  --color-mocha-fg-muted: #b5aa9c;
+  /* Terracotta ÉCLAIRCI pour surface sombre — accent des espaces connectés.
+     🔴 Le terracotta de marque (#b23f16) donne 2,61:1 sur --color-mocha : très
+     en dessous d'AA. Il est calibré pour servir de FOND sous du texte ivoire
+     (5,24:1), pas de texte sur fond sombre. Même teinte (15,8°), même
+     saturation, luminosité portée à 65 % → 5,82:1 sur --color-mocha et 4,56:1
+     sur --color-mocha-soft. Mesuré, pas estimé. */
+  --color-terracotta-on-mocha: #eb8560;
 
   /* ----- Foreground (texte) ----- */
   --color-fg: #1a1815; /* anthracite-brun — texte principal (PAS du noir) */

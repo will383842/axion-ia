@@ -18,10 +18,11 @@
  * c'est de ces réponses que dépendent les preuves d'évaluation de l'organisme.
  */
 
-import { CircleCheckBig, Sparkles } from "lucide-react";
+import { CalendarDays, CircleCheckBig, ClipboardList, Sparkles } from "lucide-react";
 // Espace privé : chemins absolus, hors `pathnames` publics.
 import Link from "next/link";
 
+import { CarteEspace } from "@/components/espace/CarteEspace";
 import { PositionnementPortailForm } from "@/components/portail/PositionnementPortailForm";
 import { SatisfactionPortailForm } from "@/components/portail/SatisfactionPortailForm";
 import { soumettreSatisfactionPortailAction } from "@/server/actions/qualiopi/portail";
@@ -79,41 +80,35 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                 </h2>
 
                 {aFaire.map((q) => (
-                  <article
+                  <CarteEspace
                     key={q.token}
-                    className="border-border bg-paper overflow-hidden rounded-xl border"
+                    ton="action"
+                    icone={ClipboardList}
+                    titre={TITRES_QUESTIONNAIRE[q.type] ?? "Questionnaire"}
+                    description={
+                      AIDES_QUESTIONNAIRE[q.type] ?? "Merci de prendre un instant pour répondre."
+                    }
+                    meta={q.sessionTitre}
                   >
-                    <div className="border-border bg-sand/50 border-b px-5 py-4 sm:px-6">
-                      <h3 className="text-mocha font-serif text-lg font-semibold">
-                        {TITRES_QUESTIONNAIRE[q.type] ?? "Questionnaire"}
-                      </h3>
-                      <p className="text-fg-soft mt-1 text-sm">
-                        {AIDES_QUESTIONNAIRE[q.type] ??
-                          "Merci de prendre un instant pour répondre."}
-                      </p>
-                      <p className="text-fg-muted mt-2 text-xs">{q.sessionTitre}</p>
-                    </div>
-                    <div className="px-5 py-5 sm:px-6">
-                      {/*
-                        Aiguillage sur le TYPE. Une version antérieure rendait le
-                        formulaire de satisfaction pour les trois : le bénéficiaire
-                        devait noter sa satisfaction avant même la formation, et
-                        aucune analyse du besoin n'était collectée.
-                      */}
-                      {q.type === "positionnement" ? (
-                        <PositionnementPortailForm
-                          questionnaireToken={q.token}
-                          objectifs={q.objectifs}
-                          soumettreAction={soumettreSatisfactionPortailAction}
-                        />
-                      ) : (
-                        <SatisfactionPortailForm
-                          questionnaireToken={q.token}
-                          soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
-                        />
-                      )}
-                    </div>
-                  </article>
+                    {/*
+                      Aiguillage sur le TYPE. Une version antérieure rendait le
+                      formulaire de satisfaction pour les trois : le bénéficiaire
+                      devait noter sa satisfaction avant même la formation, et
+                      aucune analyse du besoin n'était collectée.
+                    */}
+                    {q.type === "positionnement" ? (
+                      <PositionnementPortailForm
+                        questionnaireToken={q.token}
+                        objectifs={q.objectifs}
+                        soumettreAction={soumettreSatisfactionPortailAction}
+                      />
+                    ) : (
+                      <SatisfactionPortailForm
+                        questionnaireToken={q.token}
+                        soumettreSatisfactionAction={soumettreSatisfactionPortailAction}
+                      />
+                    )}
+                  </CarteEspace>
                 ))}
               </section>
             )}
@@ -124,17 +119,35 @@ export default async function MonEspaceAccueilPage({ params }: PageProps) {
                 <h2 className="text-fg-muted mb-3 text-xs font-semibold tracking-wide uppercase">
                   Votre formation
                 </h2>
+                {/*
+                  `hover:-translate-y-0.5` : le soulèvement au survol est la
+                  signature éditoriale du site (cf. `globals.css`). Une
+                  translation ne déclenche pas de recalcul de mise en page, donc
+                  elle ne coûte rien au CLS.
+                */}
                 <Link
                   href={`/${locale}/portail/mon-espace/formations`}
-                  className="border-border bg-paper hover:border-terracotta group block rounded-xl border p-5 transition-colors"
+                  className="bg-paper shadow-card hover:shadow-elevated group block rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5"
                 >
-                  <p className="text-mocha font-serif text-base font-semibold">{prochaine.titre}</p>
-                  <p className="text-fg-muted mt-1 text-sm">
-                    {formatPlage(prochaine.dateDebut, prochaine.dateFin)}
-                  </p>
-                  <p className="text-terracotta mt-3 text-sm group-hover:underline">
-                    Voir le détail
-                  </p>
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="bg-sand text-mocha flex size-9 shrink-0 items-center justify-center rounded-lg"
+                    >
+                      <CalendarDays className="size-4.5" strokeWidth={1.9} />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-mocha font-serif text-base font-semibold">
+                        {prochaine.titre}
+                      </p>
+                      <p className="text-fg-muted mt-1 text-sm">
+                        {formatPlage(prochaine.dateDebut, prochaine.dateFin)}
+                      </p>
+                      <p className="text-terracotta mt-3 text-sm font-medium group-hover:underline">
+                        Voir le détail →
+                      </p>
+                    </div>
+                  </div>
                 </Link>
               </section>
             ) : null}

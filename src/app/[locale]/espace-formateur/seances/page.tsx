@@ -47,7 +47,7 @@ export default async function SeancesPage(): Promise<React.ReactElement> {
       </header>
 
       {sessions.length === 0 ? (
-        <div className="border-border bg-paper rounded-xl border p-8 text-center">
+        <div className="bg-paper shadow-card rounded-xl p-8 text-center">
           <p className="text-mocha font-serif text-base font-semibold">Aucun accompagnement</p>
           <p className="text-fg-soft mx-auto mt-2 max-w-sm text-sm leading-relaxed">
             Si vous n&apos;animez que des formations de groupe, c&apos;est normal : tout se passe
@@ -60,7 +60,7 @@ export default async function SeancesPage(): Promise<React.ReactElement> {
             <li key={s.id}>
               <Link
                 href={`${FORMATEUR_BASE_PATH}/seances/${s.id}`}
-                className="border-border bg-paper hover:border-terracotta block rounded-xl border p-5 transition-colors"
+                className="bg-paper shadow-card hover:shadow-elevated block rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <span className="text-mocha font-serif text-base font-semibold">

@@ -81,6 +81,11 @@ function initiales(nom: string): string {
     .join("");
 }
 
+/**
+ * Pastille de comptage. Le terracotta de MARQUE ici, pas la variante claire :
+ * c'est un FOND sous du texte ivoire (5,24:1), l'usage pour lequel il est
+ * calibré. Cf. `--color-terracotta-on-mocha` dans `globals.css`.
+ */
 function Pastille({ nombre }: { nombre: number }) {
   return (
     <span
@@ -105,13 +110,15 @@ export function EspaceShell({
     <div className="bg-bg min-h-screen lg:flex">
       {/* ── Barre latérale (écran large) ────────────────────────────────── */}
       <aside
-        className="border-border bg-paper hidden shrink-0 border-r lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-68 lg:flex-col"
+        className="bg-mocha hidden shrink-0 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-68 lg:flex-col"
         aria-label={`Navigation — ${titreEspace}`}
       >
-        <div className="border-border border-b px-6 py-6">
-          <p className="text-mocha font-serif text-lg leading-tight font-semibold">{titreEspace}</p>
+        <div className="border-border-on-mocha border-b px-6 py-6">
+          <p className="text-mocha-fg font-serif text-lg leading-tight font-semibold">
+            {titreEspace}
+          </p>
           {sousTitreEspace ? (
-            <p className="text-fg-muted mt-1 text-sm leading-snug">{sousTitreEspace}</p>
+            <p className="text-mocha-fg-muted mt-1 text-sm leading-snug">{sousTitreEspace}</p>
           ) : null}
         </div>
 
@@ -135,18 +142,35 @@ export function EspaceShell({
               const Icone = item.icone;
               return (
                 <li key={item.cle}>
+                  {/*
+                    L'état actif se dit TROIS fois — fond plus clair, filet
+                    d'accent à gauche, icône colorée — et jamais par la couleur
+                    seule. Un daltonien, un écran mal calibré ou un mode
+                    contraste élevé en gardent au moins un.
+
+                    Le filet est un `<span>` positionné, pas une `border-left` :
+                    une bordure décalerait le texte de 3 px entre l'état actif et
+                    l'état inactif, ce qui ferait « sauter » le libellé à chaque
+                    changement de page.
+                  */}
                   <Link
                     href={item.href}
                     aria-current={actif ? "page" : undefined}
                     className={[
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                      "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
                       actif
-                        ? "bg-sand text-mocha font-semibold"
-                        : "text-fg-soft hover:bg-sand/60 hover:text-mocha",
+                        ? "bg-mocha-soft text-mocha-fg font-semibold"
+                        : "text-mocha-fg-muted hover:bg-mocha-soft/60 hover:text-mocha-fg",
                     ].join(" ")}
                   >
+                    {actif ? (
+                      <span
+                        aria-hidden="true"
+                        className="bg-terracotta-on-mocha absolute top-1/2 left-0 h-5 w-1 -translate-y-1/2 rounded-r-full"
+                      />
+                    ) : null}
                     <Icone
-                      className={actif ? "text-terracotta size-5" : "size-5"}
+                      className={actif ? "text-terracotta-on-mocha size-5" : "size-5"}
                       strokeWidth={actif ? 2.2 : 1.8}
                       aria-hidden="true"
                     />
@@ -160,21 +184,23 @@ export function EspaceShell({
         </nav>
 
         {utilisateur || actionSortie ? (
-          <div className="border-border border-t px-4 py-4">
+          <div className="border-border-on-mocha border-t px-4 py-4">
             {utilisateur ? (
               <div className="mb-3 flex items-center gap-3">
+                {/* Texte mocha sur accent clair : 5,82:1. L'inverse — accent
+                    clair sur mocha — ne passerait pas en petit texte gras. */}
                 <span
                   aria-hidden="true"
-                  className="bg-sand-deep text-mocha flex size-9 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold"
+                  className="bg-terracotta-on-mocha text-mocha flex size-9 shrink-0 items-center justify-center rounded-full font-serif text-sm font-semibold"
                 >
                   {initiales(utilisateur.nom)}
                 </span>
                 <span className="min-w-0">
-                  <span className="text-mocha block truncate text-sm font-medium">
+                  <span className="text-mocha-fg block truncate text-sm font-medium">
                     {utilisateur.nom}
                   </span>
                   {utilisateur.detail ? (
-                    <span className="text-fg-muted block truncate text-xs">
+                    <span className="text-mocha-fg-muted block truncate text-xs">
                       {utilisateur.detail}
                     </span>
                   ) : null}
@@ -189,12 +215,12 @@ export function EspaceShell({
       {/* ── Zone de contenu ─────────────────────────────────────────────── */}
       <div className="min-w-0 flex-1">
         {/* En-tête mobile : l'espace se nomme, l'utilisateur se reconnaît. */}
-        <header className="border-border bg-paper flex items-center justify-between border-b px-4 py-3 lg:hidden">
-          <p className="text-mocha font-serif text-base font-semibold">{titreEspace}</p>
+        <header className="bg-mocha flex items-center justify-between px-4 py-3 lg:hidden">
+          <p className="text-mocha-fg font-serif text-base font-semibold">{titreEspace}</p>
           {utilisateur ? (
             <span
               aria-hidden="true"
-              className="bg-sand-deep text-mocha flex size-8 items-center justify-center rounded-full font-serif text-xs font-semibold"
+              className="bg-terracotta-on-mocha text-mocha flex size-8 items-center justify-center rounded-full font-serif text-xs font-semibold"
             >
               {initiales(utilisateur.nom)}
             </span>
@@ -212,8 +238,14 @@ export function EspaceShell({
       </div>
 
       {/* ── Barre d'onglets (mobile) ────────────────────────────────────── */}
+      {/*
+        `pb-[env(safe-area-inset-bottom)]` : sur iPhone, la barre d'accueil
+        recouvre le bas de l'écran. Sans cette réserve, la dernière rangée
+        d'icônes passe dessous et devient difficile à toucher — précisément sur
+        les appareils depuis lesquels ce portail est le plus consulté.
+      */}
       <nav
-        className="border-border bg-paper fixed inset-x-0 bottom-0 z-40 flex border-t lg:hidden"
+        className="bg-mocha fixed inset-x-0 bottom-0 z-40 flex pb-[env(safe-area-inset-bottom)] lg:hidden"
         aria-label={`Navigation — ${titreEspace}`}
       >
         {navigation.map((item) => {
@@ -226,9 +258,17 @@ export function EspaceShell({
               aria-current={actif ? "page" : undefined}
               className={[
                 "relative flex flex-1 flex-col items-center gap-1 px-1 py-2.5 text-center text-xs",
-                actif ? "text-terracotta font-semibold" : "text-fg-muted",
+                actif ? "text-terracotta-on-mocha font-semibold" : "text-mocha-fg-muted",
               ].join(" ")}
             >
+              {/* Filet supérieur : le repère d'onglet actif des applications
+                  natives. Redondant avec la couleur, donc lisible sans elle. */}
+              {actif ? (
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta-on-mocha absolute inset-x-4 top-0 h-0.5 rounded-b-full"
+                />
+              ) : null}
               <span className="relative">
                 <Icone className="size-5" strokeWidth={actif ? 2.2 : 1.8} aria-hidden="true" />
                 {item.enAttente ? (

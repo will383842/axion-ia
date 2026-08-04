@@ -73,6 +73,8 @@ const palette = {
   fgSoft: "#524b41",
   fgMuted: "#5a4f44", // resynchronisé 2026-07-26 (X5) — globals.css porte #5a4f44
   mochaFg: "#f7f3ea",
+  mochaFgMuted: "#b5aa9c", // texte secondaire sur mocha (espaces connectés)
+  mochaSoft: "#3d362f",
   // Accents
   primary: "#1a4dd9",
   primaryFg: "#ffffff",
@@ -80,6 +82,9 @@ const palette = {
   terracotta: "#b23f16", // resynchronisé 2026-07-26 (X5) — assombri pour AA le 26/07
   terracottaSoft: "#f5e3d8",
   terracottaDeep: "#8c3010",
+  // Terracotta éclairci pour surface SOMBRE (barre latérale des espaces
+  // connectés). Le terracotta de marque n'y donne que 2,61:1.
+  terracottaOnMocha: "#eb8560",
   sage: "#5e6c54",
   // Compat v1 (legacy bg-accent-* tokens still emitted by Badge etc.)
   accentOrange: "#ff6b00",
@@ -127,6 +132,41 @@ const pairs: Pair[] = [
     label: "mocha-fg/60 on mocha (legal cols header)",
   },
   { fg: palette.terracottaSoft, bg: palette.mocha, label: "terracotta-soft on mocha" },
+  // ── Espaces connectés : barre latérale SOMBRE (2026-08-04) ──────────────
+  // Ces paires existent parce que le terracotta de MARQUE ne donne que 2,61:1
+  // sur mocha — il est calibré comme fond sous texte ivoire, pas comme texte
+  // sur fond sombre. Sans ces lignes, rien ne surveillerait les couleurs de la
+  // latérale : le gate serait passé par vacuité.
+  {
+    fg: palette.mochaFgMuted,
+    bg: palette.mocha,
+    label: "mocha-fg-muted on mocha (nav inactive)",
+  },
+  {
+    fg: palette.mochaFgMuted,
+    bg: palette.mochaSoft,
+    label: "mocha-fg-muted on mocha-soft (nav survolée)",
+  },
+  {
+    fg: palette.terracottaOnMocha,
+    bg: palette.mocha,
+    label: "terracotta-on-mocha on mocha (accent latérale)",
+  },
+  {
+    fg: palette.terracottaOnMocha,
+    bg: palette.mochaSoft,
+    label: "terracotta-on-mocha on mocha-soft (icône active)",
+  },
+  {
+    fg: palette.mocha,
+    bg: palette.terracottaOnMocha,
+    label: "mocha on terracotta-on-mocha (initiales avatar)",
+  },
+  {
+    fg: palette.mochaFg,
+    bg: palette.mochaSoft,
+    label: "mocha-fg on mocha-soft (nav active)",
+  },
   // CTA buttons
   { fg: palette.primaryFg, bg: palette.primary, label: "primaryFg on primary (CTA)" },
   {
@@ -184,12 +224,15 @@ const MIRROR_TO_CSS: Record<keyof typeof palette, string> = {
   fgSoft: "fg-soft",
   fgMuted: "fg-muted",
   mochaFg: "mocha-fg",
+  mochaFgMuted: "mocha-fg-muted",
+  mochaSoft: "mocha-soft",
   primary: "primary",
   primaryFg: "primary-fg",
   primarySoft: "primary-soft",
   terracotta: "terracotta",
   terracottaSoft: "terracotta-soft",
   terracottaDeep: "terracotta-deep",
+  terracottaOnMocha: "terracotta-on-mocha",
   sage: "sage",
   accentOrange: "accent-orange",
   accentPurple: "accent-purple",
