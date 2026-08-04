@@ -228,6 +228,53 @@ describe("genererAttestationPourEnrollment", () => {
     expect(result.documentId).toBe("doc-uuid-1");
   });
 
+  // 🔴 Le motif de rectification est SAISI, jamais inventé. [2026-08-04]
+  //
+  // La formule générique « après mise à jour de l'évaluation des acquis »
+  // s'imprimait quelle que soit la vraie raison. L'auditeur lit ce texte au
+  // registre : il doit dire ce qui s'est passé, pas ce que le logiciel suppose.
+  it("le motif SAISI remplace la formule générique", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        attestationGenereeAt: new Date("2026-06-10"),
+        attestationResultat: "complete",
+        attestationDocumentId: "old-doc-id",
+      }),
+    );
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({ numero: "AXI-ATT-2026-004" });
+
+    await genererAttestationPourEnrollment("enroll-1", {
+      force: true,
+      rectificationMotif: "Nom du bénéficiaire corrigé après vérification de sa pièce d'identité.",
+    });
+
+    const passe = mockGenDoc.mock.calls[0]![0] as {
+      rectifie?: { numero: string; motif: string };
+    };
+    expect(passe.rectifie).toEqual({
+      numero: "AXI-ATT-2026-004",
+      motif: "Nom du bénéficiaire corrigé après vérification de sa pièce d'identité.",
+    });
+  });
+
+  it("sans motif saisi, la formule d'origine est conservée", async () => {
+    // Le pendant du précédent : sans lui, le test ci-dessus passerait même si le
+    // motif ecrasait tout, y compris quand aucun n'est fourni.
+    mockPrisma.enrollment.findUnique.mockResolvedValue(
+      makeEnrollment({
+        attestationGenereeAt: new Date("2026-06-10"),
+        attestationResultat: "complete",
+        attestationDocumentId: "old-doc-id",
+      }),
+    );
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({ numero: "AXI-ATT-2026-004" });
+
+    await genererAttestationPourEnrollment("enroll-1", { force: true });
+
+    const passe = mockGenDoc.mock.calls[0]![0] as { rectifie?: { motif: string } };
+    expect(passe.rectifie?.motif).toContain("mise à jour de l'évaluation des acquis");
+  });
+
   // ── Résultat aucune ─────────────────────────────────────────────────────────
 
   it("retourne { resultat: 'aucune', documentId: null } si classifierPresence='aucune'", async () => {

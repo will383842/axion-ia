@@ -41,6 +41,18 @@ const createEvaluationAcquisSchema = z.object({
 const genererAttestationSchema = z.object({
   enrollmentId: z.string().uuid(),
   force: z.boolean().optional(),
+  /**
+   * 🔴 Motif d'une RECTIFICATION, saisi dans la console. [2026-08-04]
+   *
+   * Le bouton « régénérer » de l'attestation ne passait NI `force` NI motif :
+   * la pièce ressortait donc filigranée COPIE. C'est très exactement ce qui a
+   * produit `AXI-ATT-2026-004`, la version JUSTE marquée comme un duplicata,
+   * pendant que la version FAUSSE gardait le rang d'original.
+   *
+   * Le motif vaut désormais intention de rectifier : il implique `force`.
+   * Sans lui, rien ne change — une régénération non motivée reste une copie.
+   */
+  rectificationMotif: z.string().trim().min(10).max(500).optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -122,6 +134,7 @@ export async function createEvaluationAcquisAction(input: {
 export async function genererAttestationAction(input: {
   enrollmentId: string;
   force?: boolean;
+  rectificationMotif?: string;
 }): Promise<
   ActionResult<{ resultat: "complete" | "partielle" | "aucune"; documentId: string | null }>
 > {
@@ -133,8 +146,13 @@ export async function genererAttestationAction(input: {
   let resultat: "complete" | "partielle" | "aucune";
   let documentId: string | null;
   try {
+    // Un motif SAISI vaut intention de rectifier : il force la régénération.
+    // Sans cette implication, l'humain aurait dû cocher une case en plus du
+    // motif — et l'oublier aurait suffi à refabriquer une COPIE.
+    const forcer = v.force === true || v.rectificationMotif !== undefined;
     const res = await genererAttestationPourEnrollment(v.enrollmentId, {
-      ...(v.force !== undefined ? { force: v.force } : {}),
+      ...(forcer ? { force: true } : {}),
+      ...(v.rectificationMotif !== undefined ? { rectificationMotif: v.rectificationMotif } : {}),
     });
     resultat = res.resultat;
     documentId = res.documentId;
