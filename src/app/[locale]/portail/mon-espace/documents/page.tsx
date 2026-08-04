@@ -63,7 +63,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
             </header>
 
             {rien ? (
-              <div className="border-border bg-paper rounded-xl border p-8 text-center">
+              <div className="bg-paper shadow-card rounded-xl p-8 text-center">
                 <p className="text-mocha font-serif text-base font-semibold">
                   Aucun document disponible
                 </p>
@@ -83,7 +83,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
                   {espace.attestations.map((a) => (
                     <li
                       key={a.numero}
-                      className="border-border bg-paper flex flex-wrap items-center justify-between gap-4 rounded-xl border p-5"
+                      className="bg-paper shadow-card flex flex-wrap items-center justify-between gap-4 rounded-xl p-5"
                     >
                       <div className="min-w-0">
                         <p className="text-mocha font-serif text-base font-semibold">
@@ -134,7 +134,7 @@ export default async function MesDocumentsPage({ params }: PageProps) {
                   {espace.pieces.map((p) => (
                     <li
                       key={p.numero}
-                      className="border-border bg-paper flex flex-wrap items-center justify-between gap-4 rounded-xl border p-5"
+                      className="bg-paper shadow-card flex flex-wrap items-center justify-between gap-4 rounded-xl p-5"
                     >
                       <div className="min-w-0">
                         <p className="text-mocha font-serif text-base font-semibold">

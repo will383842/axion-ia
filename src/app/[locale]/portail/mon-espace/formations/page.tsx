@@ -66,7 +66,7 @@ export default async function MesFormationsPage({ params }: PageProps) {
                 return (
                   <li
                     key={`${f.titre}-${i}`}
-                    className="border-border bg-paper rounded-xl border p-5 sm:p-6"
+                    className="bg-paper shadow-card rounded-xl p-5 sm:p-6"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <h2 className="text-mocha font-serif text-lg leading-snug font-semibold">
@@ -97,7 +97,7 @@ export default async function MesFormationsPage({ params }: PageProps) {
 
 function EtatVide() {
   return (
-    <div className="border-border bg-paper rounded-xl border p-8 text-center">
+    <div className="bg-paper shadow-card rounded-xl p-8 text-center">
       <p className="text-mocha font-serif text-base font-semibold">Aucune formation enregistrée</p>
       <p className="text-fg-soft mx-auto mt-2 max-w-sm text-sm leading-relaxed">
         Dès que votre inscription sera enregistrée, votre formation apparaîtra ici avec ses dates.

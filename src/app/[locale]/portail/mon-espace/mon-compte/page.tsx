@@ -43,7 +43,7 @@ export default async function MonComptePage({ params }: PageProps) {
             </p>
           </header>
 
-          <section className="border-border bg-paper mb-6 rounded-xl border p-5 sm:p-6">
+          <section className="bg-paper shadow-card mb-6 rounded-xl p-5 sm:p-6">
             <div className="mb-4 flex items-start gap-3">
               <span
                 aria-hidden="true"
@@ -67,7 +67,7 @@ export default async function MonComptePage({ params }: PageProps) {
             />
           </section>
 
-          <section className="border-border bg-paper rounded-xl border p-5 sm:p-6">
+          <section className="bg-paper shadow-card rounded-xl p-5 sm:p-6">
             <div className="mb-4 flex items-start gap-3">
               <span
                 aria-hidden="true"

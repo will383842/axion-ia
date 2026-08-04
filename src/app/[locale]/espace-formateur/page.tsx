@@ -119,7 +119,7 @@ function CarteActivite({ href, titre, detail }: { href: string; titre: string; d
   return (
     <Link
       href={href}
-      className="border-border bg-paper hover:border-terracotta group block rounded-xl border p-5 transition-colors"
+      className="bg-paper shadow-card hover:shadow-elevated group block rounded-xl p-5 transition-all duration-200 hover:-translate-y-0.5"
     >
       <p className="text-mocha font-serif text-base font-semibold">{titre}</p>
       <p className="text-fg-soft mt-2 text-sm leading-relaxed">{detail}</p>
@@ -130,7 +130,7 @@ function CarteActivite({ href, titre, detail }: { href: string; titre: string; d
 
 function RienASigner() {
   return (
-    <div className="border-border bg-paper rounded-xl border p-8 text-center">
+    <div className="bg-paper shadow-card rounded-xl p-8 text-center">
       <span className="bg-sage-soft text-sage mx-auto mb-4 flex size-12 items-center justify-center rounded-full">
         <CircleCheckBig className="size-6" strokeWidth={1.8} aria-hidden="true" />
       </span>

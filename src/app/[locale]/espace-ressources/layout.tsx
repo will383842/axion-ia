@@ -38,14 +38,24 @@ export default async function EspaceRessourcesLayout({
 
   return (
     <div className="bg-bg min-h-screen">
-      <header className="border-border bg-paper border-b">
+      {/*
+        En-tête SOMBRE comme la barre latérale des deux autres espaces
+        (2026-08-04). Cet espace n'a qu'une section, donc pas de navigation à
+        montrer et pas d'`EspaceShell` — mais un en-tête clair face à deux
+        espaces désormais sombres aurait donné trois interfaces au lieu d'une.
+        La cohérence prime ici sur la mutualisation du composant.
+      */}
+      <header className="bg-mocha">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link href={RESSOURCES_BASE_PATH} className="text-mocha font-serif text-lg font-semibold">
+          <Link
+            href={RESSOURCES_BASE_PATH}
+            className="text-mocha-fg font-serif text-lg font-semibold"
+          >
             Espace ressources
           </Link>
           {session ? (
             <div className="flex items-center gap-3">
-              <span className="text-fg-muted hidden text-sm sm:inline">
+              <span className="text-mocha-fg-muted hidden text-sm sm:inline">
                 {session.nom ?? session.email}
               </span>
               <RessourcesLogoutButton />
