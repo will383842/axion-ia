@@ -51,6 +51,7 @@ export function QuoteSignedEmail({
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/contact` }}
       locale={locale}
+      trust
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.body(p.quoteNumber)}</Text>

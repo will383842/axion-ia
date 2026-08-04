@@ -43,6 +43,10 @@ export function QualiopiAttestationDisponibleEmail({
       title={`Votre ${p.typeDocument ?? "attestation"} est disponible`}
       cta={{ label: "Télécharger mon document", href: ctaHref }}
       locale={locale}
+      /* Attestation en main = pic de bonne volonté : preuve Qualiopi + avis +
+         parrainage. Le CTA principal (télécharger) reste seul en haut. */
+      trust
+      snowball="both"
     >
       <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
       <Text style={emailStyles.paragraphStyle}>

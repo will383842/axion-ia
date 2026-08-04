@@ -74,3 +74,29 @@ describe("Sprint X.13 — render templates", () => {
     }
   }
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Footer social commun (demande Will 2026-08-04) — les 4 liens doivent être
+// présents dans TOUT email rendu via le layout. Garde : retirer la rangée
+// sociale du footer de `_layout.tsx` fait rougir ce test.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("footer social — présent dans chaque email", () => {
+  const LIENS_SOCIAUX = [
+    "https://www.linkedin.com/company/axion-ia-france/",
+    "https://www.linkedin.com/in/williamsjullin/",
+    "https://www.facebook.com/profile.php?id=61591668644032",
+    "https://www.facebook.com/profile.php?id=61586489122989",
+  ];
+
+  it("payment-receipt (fr) porte les 4 liens sociaux du footer", async () => {
+    const r = await renderEmailTemplate(
+      "payment-receipt" as never,
+      "fr",
+      PAYLOADS["payment-receipt"]!,
+    );
+    for (const lien of LIENS_SOCIAUX) {
+      expect(r.html).toContain(lien);
+    }
+  });
+});

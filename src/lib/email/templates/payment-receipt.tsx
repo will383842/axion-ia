@@ -70,6 +70,7 @@ export function PaymentReceiptEmail({
       title={t.title}
       cta={{ label: t.cta, href: `${baseUrl}/${locale}/mes-donnees/booking/${p.bookingId}` }}
       locale={locale}
+      snowball="review"
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>
       <Text style={emailStyles.paragraphStyle}>

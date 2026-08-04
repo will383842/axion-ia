@@ -75,6 +75,7 @@ export function ContractSignedEmail({
       title={t.title}
       cta={{ label: t.cta, href: contactUrl }}
       locale={locale}
+      trust
     >
       <Text style={emailStyles.paragraphStyle}>{greeting}</Text>
       <Text style={emailStyles.paragraphStyle}>{t.thanks(interventionType)}</Text>

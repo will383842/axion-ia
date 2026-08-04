@@ -48,7 +48,7 @@ export function RelancerQuestionnaireButton({
         className="admin-button-ghost"
         aria-label={`Relancer ${destinataire}`}
       >
-        {isPending ? "Envoi…" : etat === "fait" ? "Relancé ✓" : "Relancer"}
+        {isPending ? "Envoi en cours" : etat === "fait" ? "Relancé" : "Relancer"}
       </button>
       {etat === "erreur" && message !== null && (
         <span

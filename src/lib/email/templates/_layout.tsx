@@ -44,8 +44,19 @@ const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
 const QUALIOPI_LOCKUP = `${BASE_URL}/email/axion-qualiopi-lockup.png`;
-const LINKEDIN_URL = process.env.COMPANY_LINKEDIN || "";
 const CONTACT_EMAIL = process.env.ADMIN_REPLY_FROM || "contact@axion-ia.com";
+
+// Réseaux sociaux — footer de TOUS les emails (demande Will 2026-08-04).
+// URLs publiques stables, en dur avec override env pour la page entreprise.
+// Liens TEXTE et non icônes-images : bulletproof (pas de blocage d'images),
+// accessible, et le libellé porte le nom — une icône muette ne dit pas QUI.
+const SOCIALS = {
+  linkedinCompany:
+    process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
+  facebookCompany: "https://www.facebook.com/profile.php?id=61591668644032",
+  linkedinWilliams: "https://www.linkedin.com/in/williamsjullin/",
+  facebookWilliams: "https://www.facebook.com/profile.php?id=61586489122989",
+} as const;
 const REVIEW_URL = `${BASE_URL}/fr/avis`;
 const LINKEDIN_SHARE = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(BASE_URL)}`;
 
@@ -167,6 +178,19 @@ const footerStyle: React.CSSProperties = {
   margin: 0,
   textAlign: "center",
 };
+// Rangée réseaux sociaux du footer — un cran au-dessus du légal, même retenue.
+const socialRowStyle: React.CSSProperties = {
+  fontSize: "13px",
+  color: C.muted,
+  lineHeight: 1.6,
+  margin: "0 0 10px 0",
+  textAlign: "center",
+};
+const socialLinkStyle: React.CSSProperties = {
+  color: C.orangeDeep,
+  fontWeight: 700,
+  textDecoration: "none",
+};
 // Blocs « boule de neige » (parrainage / demande d'avis) — opt-in, post-prestation.
 const snowballCard: React.CSSProperties = {
   backgroundColor: C.bgEmail,
@@ -239,7 +263,8 @@ const TXT = {
     siret: "SIRET",
     vat: "TVA",
     contact: "Contact :",
-    follow: "LinkedIn",
+    followBrand: "Suivez l'aventure Axion-IA",
+    followFounder: "et Williams, son fondateur",
     rights: "Tous droits réservés.",
     unsubscribe: "Se désabonner",
   },
@@ -258,7 +283,8 @@ const TXT = {
     siret: "Reg. no.",
     vat: "VAT",
     contact: "Contact:",
-    follow: "LinkedIn",
+    followBrand: "Follow the Axion-IA journey",
+    followFounder: "and Williams, its founder",
     rights: "All rights reserved.",
     unsubscribe: "Unsubscribe",
   },
@@ -379,6 +405,25 @@ export function EmailLayout({
 
           {/* Footer social + légal */}
           <Section style={{ padding: "26px 12px 0 12px" }}>
+            <Text style={socialRowStyle} className="ax-muted">
+              {t.followBrand} —{" "}
+              <Link href={SOCIALS.linkedinCompany} style={socialLinkStyle}>
+                LinkedIn
+              </Link>
+              {" · "}
+              <Link href={SOCIALS.facebookCompany} style={socialLinkStyle}>
+                Facebook
+              </Link>
+              {" — "}
+              {t.followFounder} :{" "}
+              <Link href={SOCIALS.linkedinWilliams} style={socialLinkStyle}>
+                LinkedIn
+              </Link>
+              {" · "}
+              <Link href={SOCIALS.facebookWilliams} style={socialLinkStyle}>
+                Facebook
+              </Link>
+            </Text>
             <Text style={footerStyle} className="ax-muted">
               {orgLine}
               {idLine ? (
@@ -395,14 +440,6 @@ export function EmailLayout({
               >
                 {CONTACT_EMAIL}
               </Link>
-              {LINKEDIN_URL ? (
-                <>
-                  {"  ·  "}
-                  <Link href={LINKEDIN_URL} style={{ color: C.orangeDeep, fontWeight: 600 }}>
-                    {t.follow}
-                  </Link>
-                </>
-              ) : null}
               <br />© {new Date().getFullYear()} {COMPANY.name} — {t.rights}
               {unsubscribeHref && (
                 <>
