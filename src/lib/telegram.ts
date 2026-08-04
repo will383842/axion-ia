@@ -45,7 +45,14 @@ export type TelegramTag =
   | "SECURITY"
   | "STRIPE_EVENT"
   | "STRIPE_WEBHOOK_SIGNATURE_FAIL"
-  | "QUOTE_REQUEST_RECEIVED";
+  | "QUOTE_REQUEST_RECEIVED"
+  /**
+   * Un bénéficiaire déclare un besoin d'adaptation depuis son espace.
+   *
+   * ⚠️ Le message ne porte JAMAIS le détail : c'est une donnée de santé. Il
+   * nomme la personne et renvoie à sa fiche, où la lecture est tracée.
+   */
+  | "ADAPTATION_DECLAREE";
 
 export interface TelegramMessage {
   tag: TelegramTag;
@@ -143,6 +150,10 @@ function mapTagToCategory(tag: TelegramTag): {
       return { category: "MONITORING_ALERT", severity: "warn" };
     case "QUOTE_REQUEST_RECEIVED":
       return { category: "MONITORING_ALERT", severity: "info" };
+    // `warn` et non `info` : un besoin d'adaptation a une échéance — la
+    // session. Noyé dans le flux informatif, il serait découvert trop tard.
+    case "ADAPTATION_DECLAREE":
+      return { category: "MONITORING_ALERT", severity: "warn" };
     case "DEPLOY":
       return { category: "MONITORING_ALERT", severity: "info" };
     case "INCIDENT":
