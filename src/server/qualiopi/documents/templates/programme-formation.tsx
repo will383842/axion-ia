@@ -28,6 +28,7 @@ import {
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formaterDuree, type ModuleProgramme } from "@/server/qualiopi/documents/programme-modules";
 import { brandColor, QUALIOPI_PDF_TYPE } from "@/server/qualiopi/brand/brand-tokens";
+import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 // ============================================================
 // Types
@@ -190,7 +191,7 @@ export function ProgrammeFormationPdf({
               // Les titres stockés portent souvent déjà « Module N — » (contenu
               // généré) : préfixer sans vérifier imprimait « Module 1 — Module
               // 1 — L'IA… » sur la pièce (constaté sur AXI-DOC-2026-002).
-              const titreSeul = m.titre.replace(/^module\s*\d+\s*[—–-]\s*/i, "");
+              const titreSeul = titreModuleSansPrefixe(m.titre);
               return (
                 <View key={`${i}-${m.titre}`} style={local.moduleBloc} wrap={false}>
                   <Text style={local.moduleTitre}>

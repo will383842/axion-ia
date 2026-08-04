@@ -23,6 +23,7 @@ import {
 } from "../engine/modalite-pedagogie";
 import type { SupportType } from "../../../../prisma/generated/client";
 import type { SupportContenu, SectionContenu, BlocContenu } from "./types";
+import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -290,7 +291,7 @@ function guideAnimation(c: ContenuDetaille): SectionContenu[] {
       }
       blocs.push(...adaptationNotes(seq, modalite));
     }
-    sections.push({ titre: `Module : ${mod.titre}`, blocs });
+    sections.push({ titre: titreModuleSansPrefixe(mod.titre), blocs });
   }
 
   sections.push({
