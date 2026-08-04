@@ -206,6 +206,16 @@ export interface RapportPieceSignature {
   empreinteTete: string | null;
   /** Vrai seulement si la chaîne est valide ET qu'aucune anomalie de pièce n'est relevée. */
   preuveIntacte: boolean;
+  /**
+   * Date d'ANNULATION de la pièce, `null` si elle fait toujours foi.
+   *
+   * ⚠️ N'affecte PAS `preuveIntacte` : la chaîne de signature d'une pièce
+   * annulée reste intacte, et le prétendre rompue serait faux. Ce sont deux
+   * questions distinctes — « la preuve tient-elle ? » et « la pièce vaut-elle
+   * encore ? » — et le registre doit répondre aux deux séparément.
+   */
+  annuleeAt: string | null;
+  annuleeMotif: string | null;
 }
 
 /* ─────────────────────── Types signables réellement en base ────────────────── */
@@ -385,6 +395,11 @@ export function construireRapportPiece(piece: PieceAVerifier): RapportPieceSigna
     anomaliesPiece,
     empreinteTete: derniere?.selfHash ?? null,
     preuveIntacte: chaine.valide && anomaliesPiece.length === 0,
+    // Le vérificateur de preuve ne connaît pas le sort de gestion de la pièce :
+    // `reposerSort` le pose après coup, au seul point qui tient encore la ligne
+    // Prisma. Par défaut, une pièce fait foi.
+    annuleeAt: null,
+    annuleeMotif: null,
   };
 }
 
@@ -462,6 +477,14 @@ const SELECTION_PIECE = {
   hashSha256: true,
   statutSignature: true,
   createdAt: true,
+  // 🔴 Une pièce ANNULÉE n'est PAS retirée de ce registre — et c'est voulu.
+  // La signature a réellement eu lieu ; l'effacer masquerait qu'on a signé puis
+  // annulé, c'est-à-dire très exactement ce qu'un auditeur veut pouvoir voir.
+  // Elle doit en revanche être DITE : sans ces deux colonnes, `AXI-DOC-2026-007`
+  // continuerait de se présenter comme une pièce signée valable, preuve intacte
+  // à l'appui, alors qu'on l'a précisément déclarée sans valeur.
+  annuleeAt: true,
+  annuleeMotif: true,
   signatures: {
     // La chaîne ne voit que les maillons VIVANTS : une signature révoquée est
     // retirée du chaînage par le service, qui rechaîne la suite. L'inclure ici
@@ -501,6 +524,8 @@ interface PiecePrisma {
   hashSha256: string;
   statutSignature: DocumentStatutSignature;
   createdAt: Date;
+  annuleeAt: Date | null;
+  annuleeMotif: string | null;
   signatures: LignePrismaSignature[];
 }
 
@@ -530,6 +555,22 @@ function versPieceAVerifier(piece: PiecePrisma): PieceAVerifier {
  * tardive : les confondre effacerait la seule trace d'une signature antidatée. On
  * le repose ici, où on l'a lu.
  */
+/**
+ * Reporte le SORT de la pièce sur son rapport.
+ *
+ * Posé ici, au même point que `reposerCreatedAt`, parce que c'est le seul
+ * endroit qui tient encore la ligne Prisma complète. `PieceAVerifier` reste
+ * concentré sur la chaîne cryptographique : l'annulation est une décision de
+ * gestion, elle n'a rien à faire dans le vérificateur de preuve.
+ */
+function reposerSort(rapport: RapportPieceSignature, piece: PiecePrisma): RapportPieceSignature {
+  return {
+    ...rapport,
+    annuleeAt: piece.annuleeAt === null ? null : piece.annuleeAt.toISOString(),
+    annuleeMotif: piece.annuleeMotif,
+  };
+}
+
 function reposerCreatedAt(
   rapport: RapportPieceSignature,
   lignes: readonly LignePrismaSignature[],
@@ -590,7 +631,10 @@ export async function rapportSignatureDocument(
   });
   if (piece === null) return null;
 
-  return reposerCreatedAt(construireRapportPiece(versPieceAVerifier(piece)), piece.signatures);
+  return reposerSort(
+    reposerCreatedAt(construireRapportPiece(versPieceAVerifier(piece)), piece.signatures),
+    piece,
+  );
 }
 
 /* ─────────────────────────────── Le registre ───────────────────────────────── */
@@ -685,7 +729,7 @@ export async function listerRegistreSignatures(
   });
 
   const pieces = lignes.map((p) =>
-    reposerCreatedAt(construireRapportPiece(versPieceAVerifier(p)), p.signatures),
+    reposerSort(reposerCreatedAt(construireRapportPiece(versPieceAVerifier(p)), p.signatures), p),
   );
 
   const retenues =
