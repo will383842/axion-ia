@@ -1,4 +1,9 @@
 "use client";
+// use-client: la révélation est un GESTE, pas un rendu. Il faut un état local
+// (affiché / masqué), une transition pendant l'aller-retour serveur, et la
+// possibilité d'oublier la valeur en la masquant. Un composant serveur devrait
+// mettre le besoin dans le HTML de chaque consultation de fiche — exactement ce
+// qu'on refuse pour une donnée de santé.
 
 /**
  * Révélation à la demande du besoin d'adaptation déclaré par un bénéficiaire.
