@@ -37,8 +37,7 @@ import {
 export type RaisonRefus = "absente" | "expiree" | "introuvable";
 
 export type ResultatEspace =
-  | { etat: "ok"; espace: EspaceStagiaire }
-  | { etat: "refus"; raison: RaisonRefus };
+  { etat: "ok"; espace: EspaceStagiaire } | { etat: "refus"; raison: RaisonRefus };
 
 export const chargerEspaceStagiaire = cache(async (): Promise<ResultatEspace> => {
   // Défense en profondeur : `src/proxy.ts` redirige déjà (307) quand le cookie
