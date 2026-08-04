@@ -18,6 +18,9 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn(),
       findMany: vi.fn(),
     },
+    evaluationAcquis: {
+      count: vi.fn(),
+    },
   },
 }));
 
@@ -27,8 +30,18 @@ vi.mock("@/server/qualiopi/documents/qr", () => ({
     .mockReturnValue("tok-abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"),
 }));
 
+// Versement aux registres (off.8 / off.30) — cf. `verserAuxRegistres`.
+vi.mock("@/server/qualiopi/evaluations/evaluations-service", () => ({
+  createEvaluation: vi.fn().mockResolvedValue({ id: "eval-1" }),
+}));
+vi.mock("@/server/qualiopi/portail/appreciation-service", () => ({
+  creerAppreciation: vi.fn().mockResolvedValue({ id: "appr-1" }),
+}));
+
 import { prisma } from "@/lib/prisma";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
+import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
+import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
 import {
   creerQuestionnaire,
   soumettreReponses,
@@ -42,7 +55,10 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
   };
+  evaluationAcquis: { count: ReturnType<typeof vi.fn> };
 };
+const mockCreateEvaluation = createEvaluation as ReturnType<typeof vi.fn>;
+const mockCreerAppreciation = creerAppreciation as ReturnType<typeof vi.fn>;
 
 const mockMakeQrToken = makeQrToken as ReturnType<typeof vi.fn>;
 
@@ -270,5 +286,141 @@ describe("listQuestionnairesSession", () => {
     } finally {
       process.env["DATABASE_URL"] = original;
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Versement aux registres (off.8 / off.30)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Constaté sur le premier dossier réel : `soumettreReponses` écrivait le
+// questionnaire ET RIEN D'AUTRE. Les trois questionnaires de la stagiaire
+// étaient répondus, et les indicateurs affichaient « 0 évaluation initiale »
+// et « 0 appréciation ». Il a fallu transcrire à la main. Ces tests
+// verrouillent le pont — vérifiés par réintroduction du défaut.
+
+describe("soumettreReponses — versement aux registres", () => {
+  const ENROLLMENT = {
+    id: "enroll-1",
+    traineeId: "trainee-1",
+    session: { clientId: "client-1" },
+  };
+
+  function questionnaire(type: string, reponduAt: Date | null = null) {
+    return { id: "q-1", type, reponduAt, enrollment: ENROLLMENT };
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.questionnaire.update.mockResolvedValue({ id: "q-1" });
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
+    mockCreateEvaluation.mockResolvedValue({ id: "eval-1" });
+    mockCreerAppreciation.mockResolvedValue({ id: "appr-1" });
+  });
+
+  it("positionnement → une évaluation INITIALE transcrite depuis niveauParObjectif", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
+
+    await soumettreReponses({
+      token: "tok-p",
+      reponses: {
+        secteur: "immobilier",
+        niveauParObjectif: { "Rédiger des annonces": 3, "Estimer un bien": 2 },
+      },
+    });
+
+    expect(mockCreateEvaluation).toHaveBeenCalledOnce();
+    const passe = mockCreateEvaluation.mock.calls[0]![0] as {
+      type: string;
+      enrollmentId: string;
+      competences: Array<{ libelle: string; note: number }>;
+      recommandations?: string;
+    };
+    expect(passe.type).toBe("initiale");
+    expect(passe.enrollmentId).toBe("enroll-1");
+    expect(passe.competences).toEqual([
+      { libelle: "Rédiger des annonces", note: 3 },
+      { libelle: "Estimer un bien", note: 2 },
+    ]);
+    // La provenance est ÉCRITE : un niveau déclaré ne doit pas passer pour mesuré.
+    expect(passe.recommandations).toContain("auto-évaluation déclarée");
+  });
+
+  it("🔴 la saisie humaine PRIME : pas de doublon si une initiale existe déjà", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
+    mockPrisma.evaluationAcquis.count.mockResolvedValue(1);
+
+    await soumettreReponses({
+      token: "tok-p",
+      reponses: { niveauParObjectif: { A: 3 } },
+    });
+
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
+  });
+
+  it("les niveaux HORS barème (1..3) sont écartés, pas transcrits de travers", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
+
+    await soumettreReponses({
+      token: "tok-p",
+      reponses: { niveauParObjectif: { A: 3, B: 7, C: "oui", D: 1 } },
+    });
+
+    const passe = mockCreateEvaluation.mock.calls[0]![0] as {
+      competences: Array<{ libelle: string }>;
+    };
+    expect(passe.competences.map((c) => c.libelle)).toEqual(["A", "D"]);
+  });
+
+  it("satisfaction notée → une appréciation STAGIAIRE avec le verbatim", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("satisfaction_froid"));
+
+    await soumettreReponses({
+      token: "tok-s",
+      reponses: { commentaire: "Formation de très grande valeur" },
+      noteGlobale: 5,
+    });
+
+    expect(mockCreerAppreciation).toHaveBeenCalledOnce();
+    const passe = mockCreerAppreciation.mock.calls[0]![0] as {
+      source: string;
+      note?: number;
+      commentaire?: string;
+      enrollmentId?: string;
+      clientId?: string;
+    };
+    expect(passe.source).toBe("stagiaire");
+    expect(passe.note).toBe(5);
+    expect(passe.enrollmentId).toBe("enroll-1");
+    expect(passe.clientId).toBe("client-1");
+    expect(passe.commentaire).toContain("Formation de très grande valeur");
+  });
+
+  it("🔴 une RE-soumission ne verse RIEN — le registre ne se remplit qu'une fois", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("satisfaction_chaud", new Date("2026-08-04T08:00:00Z")),
+    );
+
+    await soumettreReponses({ token: "tok-s", reponses: {}, noteGlobale: 4 });
+
+    expect(mockCreerAppreciation).not.toHaveBeenCalled();
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un versement en échec ne fait PAS échouer la soumission de la stagiaire", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("satisfaction_chaud"));
+    mockCreerAppreciation.mockRejectedValue(new Error("registre indisponible"));
+
+    await expect(
+      soumettreReponses({ token: "tok-s", reponses: {}, noteGlobale: 5 }),
+    ).resolves.toEqual({ id: "q-1" });
+  });
+
+  it("un positionnement SANS niveauParObjectif ne crée rien", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
+
+    await soumettreReponses({ token: "tok-p", reponses: { secteur: "immobilier" } });
+
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
   });
 });
