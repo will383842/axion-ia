@@ -40,7 +40,9 @@ import {
 } from "@/server/qualiopi/portail/cookie";
 import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
-import { encryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii } from "@/lib/pii-crypto";
+import { sendTelegram } from "@/lib/telegram";
+import { requireSuperAdmin } from "@/server/actions/content-gen/_auth";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -227,15 +229,101 @@ export async function declarerHandicapAction(input: {
 
   const handicapDetailsChiffre = encryptPii(parsed.data.besoin);
 
-  await prisma.trainee.update({
+  const trainee = await prisma.trainee.update({
     where: { id: authResult.traineeId },
     data: {
       situationHandicap: true,
       handicapDetailsChiffre,
     },
+    select: { id: true, prenom: true, nom: true },
   });
 
+  // 🔴 PERSONNE N'ÉTAIT PRÉVENU (corrigé le 2026-08-04).
+  //
+  // Cette action écrivait en base et s'arrêtait là : aucune alerte, aucun
+  // courriel, aucune pastille « à traiter ». L'écran promet pourtant « nous en
+  // tiendrons compte avant la formation ». Un besoin déclaré la veille d'une
+  // session pouvait donc n'être découvert par personne — et l'indicateur 26
+  // Qualiopi porte précisément sur l'accueil des publics en situation de
+  // handicap.
+  //
+  // ⚠️ Le message ne contient PAS le besoin : c'est une donnée de santé. Il
+  // nomme la personne et renvoie à sa fiche, où la lecture est tracée.
+  // Envoi en « fire-and-forget » : une panne Telegram ne doit jamais faire
+  // échouer la déclaration du bénéficiaire, qui est le geste important.
+  void sendTelegram({
+    tag: "ADAPTATION_DECLAREE",
+    body:
+      `♿ ${trainee.prenom} ${trainee.nom} a déclaré un besoin d'adaptation.\n` +
+      `Le détail est chiffré : le lire depuis sa fiche stagiaire dans la console.`,
+  }).catch(() => {});
+
   return { data: { ok: true } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADMIN — lireBesoinAdaptationAction
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Révèle le besoin d'adaptation déclaré par un bénéficiaire.
+ *
+ * ## 🔴 Pourquoi cette action a dû être créée
+ *
+ * Le besoin était chiffré en base et **lisible NULLE PART dans la console**. La
+ * fiche stagiaire n'exposait que deux booléens — « situation déclarée » et « un
+ * détail existe » — et le formulaire affichait « lecture réservée au référent
+ * handicap » alors qu'aucun écran ne la permettait. Le déchiffrement n'existait
+ * que pour le bénéficiaire lui-même et pour l'export RGPD.
+ *
+ * Autrement dit : quelqu'un pouvait écrire « j'ai besoin d'une salle accessible
+ * en fauteuil » et personne, côté organisme, ne pouvait le lire — alors que
+ * l'écran promet « nous en tiendrons compte avant la formation ».
+ *
+ * ## Pourquoi super-admin et pas admin
+ *
+ * C'est une donnée de SANTÉ (RGPD art. 9). Le principe est le moindre accès :
+ * on ne l'ouvre pas à tout compte administrateur. `requireSuperAdmin` est le
+ * garde le plus restrictif dont dispose ce dépôt.
+ *
+ * ## Pourquoi une action « à la demande » et non un affichage direct
+ *
+ * Rendre le besoin dans la page l'exposerait à toute personne qui passe devant
+ * l'écran, et le ferait entrer dans le HTML de chaque consultation de fiche.
+ * Ici, il faut un geste délibéré — et **ce geste est journalisé**, ce qui rend
+ * l'accès auditable. Une donnée de santé lue sans trace n'est pas conforme.
+ */
+export async function lireBesoinAdaptationAction(input: {
+  traineeId: string;
+}): Promise<ActionResult<{ besoin: string | null }>> {
+  const parsed = z.object({ traineeId: z.string().uuid() }).safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+
+  let session;
+  try {
+    session = await requireSuperAdmin();
+  } catch {
+    return { error: "Réservé au super-administrateur" };
+  }
+
+  const trainee = await prisma.trainee.findUnique({
+    where: { id: parsed.data.traineeId },
+    select: { handicapDetailsChiffre: true },
+  });
+  if (!trainee) return { error: "Stagiaire introuvable" };
+
+  // Journalisation AVANT de rendre la valeur : si l'écriture du journal échoue,
+  // on ne veut pas avoir déjà divulgué la donnée sans trace.
+  await logQualiopiActivity({
+    action: "qualiopi.trainee.besoin_adaptation.lu",
+    targetType: "Trainee",
+    targetId: parsed.data.traineeId,
+    // Jamais le contenu dans le journal — on trace l'ACCÈS, pas la donnée.
+    changes: { lu: true },
+    session,
+  });
+
+  return { data: { besoin: decryptPii(trainee.handicapDetailsChiffre) } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

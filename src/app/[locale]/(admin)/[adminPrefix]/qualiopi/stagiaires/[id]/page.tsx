@@ -11,6 +11,8 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { BesoinAdaptationReveal } from "@/components/admin/qualiopi/BesoinAdaptationReveal";
+import { lireBesoinAdaptationAction } from "@/server/actions/qualiopi/portail";
 import { TraineeForm } from "@/components/admin/qualiopi/TraineeForm";
 import { getTrainee } from "@/server/qualiopi/trainees/trainees";
 
@@ -63,6 +65,25 @@ export default async function FicheStagiairePage({ params }: PageProps) {
           handicapDetailsPresent: trainee.handicapDetailsChiffre != null,
         }}
       />
+
+      {/*
+        🔴 Le besoin déclaré n'était lisible NULLE PART (corrigé le 2026-08-04).
+        La fiche n'exposait que deux booléens, et le formulaire annonçait une
+        « lecture réservée au référent handicap » qu'aucun écran ne permettait.
+        Le bloc n'apparaît que s'il y a quelque chose à lire — proposer de
+        révéler un vide serait une fausse piste.
+      */}
+      {trainee.handicapDetailsChiffre != null ? (
+        <section className="mt-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+          <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+            Besoin d’adaptation déclaré
+          </h2>
+          <p className="mt-[var(--space-admin-1)] mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Donnée de santé (RGPD art. 9) — lecture réservée au super-administrateur et journalisée.
+          </p>
+          <BesoinAdaptationReveal traineeId={trainee.id} lireAction={lireBesoinAdaptationAction} />
+        </section>
+      ) : null}
     </AdminPageShell>
   );
 }
