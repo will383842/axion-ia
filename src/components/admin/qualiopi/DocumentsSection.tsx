@@ -44,6 +44,7 @@ import {
   genererCertificatRealisationAction,
   genererKitCpfAction,
   genererKitFranceTravailAction,
+  annulerDocumentAction,
 } from "@/server/actions/qualiopi/documents";
 import { genererAttestationAction } from "@/server/actions/qualiopi/evaluations";
 import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-pdf";
@@ -88,6 +89,24 @@ export interface DocumentGenereInfo {
    * signature, et le registre laissait croire que la pièce n'était pas signée.
    */
   aSignatures?: boolean;
+  /**
+   * La pièce a été ANNULÉE au registre : elle existe toujours, elle ne fait
+   * plus foi. Un numéro ne se supprime pas d'une série continue, et une pièce
+   * signée encore moins — elle s'annule, avec son motif.
+   */
+  annuleeAt?: string | null;
+  annuleeMotif?: string | null;
+  annuleePar?: string | null;
+  /**
+   * Numéro de la pièce qui REMPLACE celle-ci. Sans ce contre-lien, l'auditeur
+   * qui ouvre la pièce périmée n'a aucun moyen d'apprendre qu'elle est morte :
+   * il faudrait déjà connaître la nouvelle, donc avoir la réponse avant la
+   * question.
+   */
+  remplaceeParNumero?: string | null;
+  /** Numéro de la pièce que celle-ci rectifie, lu depuis `metadata.rectifie`. */
+  rectifieNumero?: string | null;
+  rectifieMotif?: string | null;
 }
 
 export interface DocumentsSectionProps {
@@ -137,10 +156,195 @@ const DOC_LABELS: Record<DocumentType, string> = {
 // Sous-composant : bouton générique session-level
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Motif de RECTIFICATION — demandé à toute régénération
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Aligné sur le schéma Zod des actions ET sur la contrainte CHECK en base. */
+const MOTIF_RECTIFICATION_MIN = 10;
+
+/**
+ * Régénérer une pièce, c'est en corriger une autre : on demande pourquoi.
+ *
+ * 🔴 Audit pré-visite 2026-08-04. Sans motif, une régénération sortait
+ * filigranée « COPIE » — y compris quand on la refaisait précisément parce que
+ * l'original était faux. Restait à choisir devant l'auditeur entre un original
+ * illisible et une copie exacte. Avec motif, la pièce neuve sort en ORIGINAL et
+ * déclare au registre ce qu'elle remplace et pourquoi.
+ *
+ * ⚠️ Champ INLINE, jamais `window.prompt` : une boîte de dialogue native bloque
+ * la page (et l'automatisation du navigateur avec), et son texte n'est ni
+ * traduisible ni accessible.
+ */
+function useMotifRectification(dejaGenereLe: string | undefined): {
+  /** La pièce existe déjà → une régénération doit être motivée. */
+  requis: boolean;
+  ouvert: boolean;
+  motif: string;
+  valide: boolean;
+  ouvrir: () => void;
+  fermer: () => void;
+  /** Argument à fusionner dans l'entrée de l'action. */
+  argument: { rectificationMotif?: string };
+  champ: (labelPiece: string) => React.ReactElement | null;
+} {
+  const [ouvert, setOuvert] = useState(false);
+  const [motif, setMotif] = useState("");
+  const requis = dejaGenereLe !== undefined && dejaGenereLe !== "";
+  const valide = motif.trim().length >= MOTIF_RECTIFICATION_MIN;
+
+  return {
+    requis,
+    ouvert,
+    motif,
+    valide,
+    ouvrir: () => setOuvert(true),
+    fermer: () => {
+      setOuvert(false);
+      setMotif("");
+    },
+    argument: requis && valide ? { rectificationMotif: motif.trim() } : {},
+    champ: (labelPiece: string) =>
+      !ouvert ? null : (
+        <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+          <span className="text-[color:var(--color-admin-fg-muted)]">
+            Pourquoi refaire cette pièce ? Le motif est porté au registre et lu par l’auditeur.
+          </span>
+          <textarea
+            value={motif}
+            onChange={(e) => setMotif(e.target.value)}
+            rows={2}
+            required
+            minLength={MOTIF_RECTIFICATION_MIN}
+            placeholder="Rendu illisible sur les lignes de pièces constitutives — mise en page corrigée."
+            aria-label={`Motif de rectification de ${labelPiece}`}
+            className="admin-input"
+          />
+          {!valide && motif.trim().length > 0 && (
+            <span className="text-[color:var(--color-admin-fg-muted)]">
+              {MOTIF_RECTIFICATION_MIN} caractères minimum.
+            </span>
+          )}
+        </label>
+      ),
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Annulation d'une pièce au registre
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Annule une pièce : elle reste au registre, elle cesse de faire foi.
+ *
+ * 🔴 Ce bouton ne SUPPRIME rien, et c'est le point. Un numéro est alloué dans
+ * une série continue (CGI, art. 242 nonies A ann. II) : le retirer laisse un
+ * trou, et un trou dans une série documentaire est ce qu'un contrôle relève.
+ * La pièce peut en outre porter une signature réelle — `AXI-DOC-2026-007`, qui
+ * motive cette fonctionnalité, est signée. Une contradiction laissée en place
+ * est un constat ; la même, annulée et motivée, montre un processus qui se
+ * corrige.
+ *
+ * ⚠️ Pas de `window.confirm` : une boîte native bloque la page entière. La
+ * confirmation, c'est la saisie du motif — qui est de toute façon obligatoire.
+ */
+function AnnulerDocumentButton({
+  documentId,
+  numero,
+  libelle,
+}: {
+  documentId: string;
+  numero: string;
+  libelle: string;
+}): React.ReactElement {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [ouvert, setOuvert] = useState(false);
+  const [motif, setMotif] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const valide = motif.trim().length >= MOTIF_RECTIFICATION_MIN;
+
+  function handleAnnuler() {
+    setError(null);
+    startTransition(async () => {
+      const result = await annulerDocumentAction({ documentId, motif: motif.trim() });
+      if ("error" in result) {
+        setError(result.error);
+        return;
+      }
+      setOuvert(false);
+      setMotif("");
+      router.refresh();
+    });
+  }
+
+  if (!ouvert) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOuvert(true)}
+        className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline underline-offset-2 hover:opacity-80"
+        aria-label={`Annuler au registre : ${libelle} n° ${numero}`}
+      >
+        Annuler cette pièce
+      </button>
+    );
+  }
+
+  return (
+    <div className="mt-[var(--space-admin-2)] flex flex-col gap-[var(--space-admin-1)]">
+      <label className="flex flex-col gap-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+        <span className="text-[color:var(--color-admin-fg-muted)]">
+          Motif de l’annulation de {numero} — porté au registre et lu par l’auditeur.
+        </span>
+        <textarea
+          value={motif}
+          onChange={(e) => setMotif(e.target.value)}
+          rows={2}
+          required
+          minLength={MOTIF_RECTIFICATION_MIN}
+          aria-label={`Motif d'annulation de ${libelle} n° ${numero}`}
+          className="admin-input"
+        />
+      </label>
+      <span className="flex flex-wrap gap-[var(--space-admin-2)]">
+        <button
+          type="button"
+          onClick={handleAnnuler}
+          disabled={isPending || !valide}
+          className="admin-button-danger"
+        >
+          {isPending ? "Annulation…" : "Confirmer l’annulation"}
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setOuvert(false);
+            setMotif("");
+            setError(null);
+          }}
+          className="admin-button-ghost"
+        >
+          Renoncer
+        </button>
+      </span>
+      {error && (
+        <p
+          role="alert"
+          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]"
+        >
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 interface SessionDocButtonProps {
   label: string;
   action: (input: {
     sessionId: string;
+    rectificationMotif?: string;
   }) => Promise<{ data: { documentId: string; numero: string } } | { error: string }>;
   sessionId: string;
   onDone: (numero: string) => void;
@@ -163,18 +367,26 @@ function SessionDocButton({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const rect = useMotifRectification(dejaGenereLe);
 
   function handleClick() {
+    // Première frappe sur une pièce DÉJÀ produite : on ouvre le motif au lieu
+    // de régénérer. Sans cette étape, la pièce ressortait filigranée « COPIE ».
+    if (rect.requis && !rect.ouvert) {
+      rect.ouvrir();
+      return;
+    }
     setError(null);
     setSuccess(null);
     startTransition(async () => {
-      const result = await action({ sessionId });
+      const result = await action({ sessionId, ...rect.argument });
       if ("error" in result) {
         setError(result.error);
       } else {
         const msg = `${label} — n° ${result.data.numero} généré.`;
         setSuccess(msg);
         onDone(result.data.numero);
+        rect.fermer();
         router.refresh();
       }
     });
@@ -185,7 +397,7 @@ function SessionDocButton({
       <button
         type="button"
         onClick={handleClick}
-        disabled={isPending}
+        disabled={isPending || (rect.ouvert && !rect.valide)}
         className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
         aria-label={
           dejaGenereLe
@@ -195,10 +407,18 @@ function SessionDocButton({
       >
         {isPending
           ? "Génération…"
-          : dejaGenereLe
-            ? `${label} · génération du ${dejaGenereLe} — régénérer`
-            : label}
+          : rect.ouvert
+            ? `Rectifier : ${label}`
+            : dejaGenereLe
+              ? `${label} · génération du ${dejaGenereLe} — régénérer`
+              : label}
       </button>
+      {rect.champ(label)}
+      {rect.ouvert && (
+        <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
+          Annuler
+        </button>
+      )}
       {error && (
         <p
           role="alert"
@@ -614,7 +834,7 @@ function ConventionDocButton({
 
 interface EnrollmentDocButtonProps {
   label: string;
-  action: (input: { enrollmentId: string }) => Promise<
+  action: (input: { enrollmentId: string; rectificationMotif?: string }) => Promise<
     // `avertissement` : le document EST produit, mais il lui manque une mention
     // que le logiciel ne peut pas fabriquer seul (cf. médiation de la
     // consommation sur le contrat individuel). Distinct d'une erreur — le
@@ -641,13 +861,19 @@ function EnrollmentDocButton({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
+  const rect = useMotifRectification(dejaGenereLe);
 
   function handleClick() {
+    // Cf. SessionDocButton : régénérer, c'est rectifier — donc dire pourquoi.
+    if (rect.requis && !rect.ouvert) {
+      rect.ouvrir();
+      return;
+    }
     setError(null);
     setSuccess(null);
     setWarning(null);
     startTransition(async () => {
-      const result = await action({ enrollmentId });
+      const result = await action({ enrollmentId, ...rect.argument });
       if ("error" in result) {
         setError(result.error);
         return;
@@ -675,6 +901,7 @@ function EnrollmentDocButton({
       }
       setSuccess(msg);
       onDone(msg);
+      rect.fermer();
       router.refresh();
     });
   }
@@ -684,7 +911,7 @@ function EnrollmentDocButton({
       <button
         type="button"
         onClick={handleClick}
-        disabled={isPending}
+        disabled={isPending || (rect.ouvert && !rect.valide)}
         className={dejaGenereLe ? "admin-button-ghost" : "admin-button"}
         aria-label={
           dejaGenereLe
@@ -694,10 +921,18 @@ function EnrollmentDocButton({
       >
         {isPending
           ? "Génération…"
-          : dejaGenereLe
-            ? `${label} · génération du ${dejaGenereLe} — régénérer`
-            : label}
+          : rect.ouvert
+            ? `Rectifier : ${label}`
+            : dejaGenereLe
+              ? `${label} · génération du ${dejaGenereLe} — régénérer`
+              : label}
       </button>
+      {rect.champ(label)}
+      {rect.ouvert && (
+        <button type="button" onClick={rect.fermer} className="admin-button-ghost self-start">
+          Annuler
+        </button>
+      )}
       {error && (
         <p
           role="alert"
@@ -780,6 +1015,11 @@ export function DocumentsSection({
   const dernierSessionParType = new Map<DocumentType, string>();
   const dernierStagiaireParType = new Map<string, string>();
   for (const doc of documentsExistants) {
+    // Une pièce ANNULÉE ne compte pas comme « déjà générée ». Sinon le bouton
+    // resterait en « régénérer » et réclamerait un motif de rectification pour
+    // une pièce dont il n'existe plus de version valable à rectifier : la
+    // suivante est un premier original, pas une correction.
+    if (doc.annuleeAt != null) continue;
     const dateFr = formatDateFrShort(doc.createdAt);
     if (doc.traineeId) {
       const cle = `${doc.type}:${doc.traineeId}`;
@@ -1059,6 +1299,35 @@ export function DocumentsSection({
                           Spécimen
                         </span>
                       )}
+                      {/* 2026-08-04 — une pièce annulée restait indiscernable
+                          d'une pièce valable au registre : même ligne, même
+                          lien, rien ne disait qu'elle ne fait plus foi. Le
+                          motif est affiché ICI et pas en infobulle : c'est
+                          exactement ce que l'auditeur vient lire. */}
+                      {typeof doc.annuleeAt === "string" && (
+                        <>
+                          <span className="ml-[var(--space-admin-2)] rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-destructive-soft)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-destructive-fg)] uppercase">
+                            Annulée
+                          </span>
+                          <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            {`Annulée le ${new Date(doc.annuleeAt).toLocaleDateString("fr-FR")}`}
+                            {doc.annuleePar ? ` par ${doc.annuleePar}` : ""}
+                            {doc.annuleeMotif ? ` — ${doc.annuleeMotif}` : ""}
+                          </span>
+                        </>
+                      )}
+                      {typeof doc.remplaceeParNumero === "string" &&
+                        doc.remplaceeParNumero !== "" && (
+                          <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            Remplacée par {doc.remplaceeParNumero}
+                          </span>
+                        )}
+                      {typeof doc.rectifieNumero === "string" && doc.rectifieNumero !== "" && (
+                        <span className="mt-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          Rectifie {doc.rectifieNumero}
+                          {doc.rectifieMotif ? ` — ${doc.rectifieMotif}` : ""}
+                        </span>
+                      )}
                     </td>
                     <td className="py-[var(--space-admin-2)] pr-[var(--space-admin-4)] font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                       {doc.numero}
@@ -1116,6 +1385,13 @@ export function DocumentsSection({
                         </span>
                       ) : (
                         <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
+                      )}
+                      {doc.annuleeAt == null && (
+                        <AnnulerDocumentButton
+                          documentId={doc.id}
+                          numero={doc.numero}
+                          libelle={DOC_LABELS[doc.type] ?? doc.type}
+                        />
                       )}
                     </td>
                   </tr>

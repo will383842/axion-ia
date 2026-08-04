@@ -28,6 +28,7 @@ import type {
   SectionContenu,
   BlocContenu,
 } from "./types";
+import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 // ============================================================
 // Titre du support
@@ -67,7 +68,10 @@ function sequencesTitles(mod: ModuleProgramme): string[] {
 
 function moduleResume(mod: ModuleProgramme): string {
   const duree = mod.dureeMin ? ` (${formatDuree(mod.dureeMin)})` : "";
-  return `Module ${mod.moduleId} : ${mod.titre}${duree}`;
+  // `moduleId` est un identifiant technique (« mod-1 »), pas un numero : il
+  // n'a rien a faire sur une piece remise au stagiaire. Et le titre porte deja
+  // « Module N — ». Les deux ensemble donnaient « Module mod-1 : Module 1 — … ».
+  return `${titreModuleSansPrefixe(mod.titre)}${duree}`;
 }
 
 // ============================================================
@@ -344,7 +348,7 @@ function buildGuideAnimation(f: FormationInput): SupportContenu {
       blocs.push({ type: "liste", items: f.methodesPedagogiques });
     }
 
-    sections.push({ titre: `Module : ${mod.titre}`, blocs });
+    sections.push({ titre: titreModuleSansPrefixe(mod.titre), blocs });
   }
 
   sections.push({

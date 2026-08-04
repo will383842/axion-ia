@@ -62,7 +62,19 @@ export interface AttestationResult {
  */
 export async function genererAttestationPourEnrollment(
   enrollmentId: string,
-  opts?: { force?: boolean },
+  opts?: {
+    force?: boolean;
+    /**
+     * Motif de la rectification, SAISI par l'humain qui régénère.
+     *
+     * 🔴 Sans lui, la pièce déclarait rectifier la précédente avec une phrase
+     * générique — « après mise à jour de l'évaluation des acquis » — même quand
+     * la vraie raison était tout autre. Un motif que le logiciel invente n'est
+     * pas un motif : l'auditeur lit ce texte au registre, et il doit dire ce qui
+     * s'est réellement passé. Absent → repli sur la formule d'origine.
+     */
+    rectificationMotif?: string;
+  },
 ): Promise<AttestationResult> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { resultat: "aucune", documentId: null };
@@ -392,7 +404,9 @@ export async function genererAttestationPourEnrollment(
           rectifie: {
             numero: numeroPrecedent,
             motif:
-              "Attestation régénérée après mise à jour de l'évaluation des acquis : cette version remplace la précédente.",
+              opts?.rectificationMotif !== undefined && opts.rectificationMotif.trim() !== ""
+                ? opts.rectificationMotif.trim()
+                : "Attestation régénérée après mise à jour de l'évaluation des acquis : cette version remplace la précédente.",
           },
         }
       : {}),

@@ -78,14 +78,20 @@ export function FormateurAccountManager({
       ) : null}
       <table className="w-full text-sm">
         <thead>
+          {/* 🔴 `pr-3` sur chaque cellule — la table n'avait QUE de l'espacement
+              vertical (`py-1.5`). Vu en production le 04/08 : l'en-tête lisait
+              « FormationsDernière connexion » et la ligne « 101/08/2026 ». Le
+              défaut ne sautait aux yeux que sur ces deux colonnes-là, parce
+              qu'un nombre aligné à droite y touche une date alignée à gauche —
+              mais toutes les colonnes étaient collées. */}
           <tr className="border-border text-fg-muted border-b text-left text-xs">
-            <th className="py-1.5">Formateur</th>
-            <th>E-mail</th>
-            <th>Région</th>
-            <th className="text-right">Séances 1-to-1</th>
-            <th className="text-right">Formations</th>
-            <th>Dernière connexion</th>
-            <th>Compte</th>
+            <th className="py-1.5 pr-3">Formateur</th>
+            <th className="pr-3">E-mail</th>
+            <th className="pr-3">Région</th>
+            <th className="pr-3 text-right">Séances 1-to-1</th>
+            <th className="pr-3 text-right">Formations</th>
+            <th className="pr-3">Dernière connexion</th>
+            <th className="pr-3">Compte</th>
             <th>
               <span className="sr-only">Actions</span>
             </th>
@@ -94,19 +100,19 @@ export function FormateurAccountManager({
         <tbody>
           {formateurs.map((f) => (
             <tr key={f.id} className="border-sand border-b">
-              <td className="py-1.5">
+              <td className="py-1.5 pr-3">
                 {f.prenom} {f.nom}
               </td>
-              <td>{f.email}</td>
-              <td>{f.region ?? "—"}</td>
-              <td className="text-right">{f.sessionsCount}</td>
-              <td className="text-right">{f.formationsCount}</td>
-              <td className="text-fg-muted text-xs">
+              <td className="pr-3">{f.email}</td>
+              <td className="pr-3">{f.region ?? "—"}</td>
+              <td className="pr-3 text-right">{f.sessionsCount}</td>
+              <td className="pr-3 text-right">{f.formationsCount}</td>
+              <td className="text-fg-muted pr-3 text-xs">
                 {f.lastFormateurLoginAt
                   ? new Date(f.lastFormateurLoginAt).toLocaleDateString("fr-FR")
                   : "jamais"}
               </td>
-              <td>
+              <td className="pr-3">
                 <button
                   type="button"
                   disabled={pending}

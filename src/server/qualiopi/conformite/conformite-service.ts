@@ -127,6 +127,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbDevActionsRecentes,
     nbFormateursSousTraitants,
     nbFormateursSousTraitantsConformes,
+    nbProceduresSousTraitance,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
@@ -145,7 +146,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.trainer.count({ where: { actif: true, cvUrl: { not: null } } }),
     prisma.trainee.count({ where: { situationHandicap: true } }),
     prisma.enrollment.count({ where: { adaptationsRealisees: { not: null } } }),
-    prisma.documentGenere.count(),
+    // Les pièces ANNULÉES ne comptent pas : une pièce déclarée sans valeur ne
+    // peut pas servir de preuve à un indicateur.
+    prisma.documentGenere.count({ where: { annuleeAt: null } }),
     // R5 (audit) : off.32 n'est couvert QUE par une revue de direction VALIDÉE
     // ET de l'ANNÉE COURANTE. L'amélioration continue est une exigence annuelle :
     // sans le filtre `annee`, une revue validée en 2024 couvrait l'indicateur
@@ -200,11 +203,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.supportFormation.count(),
     // off.9 : documents d'accueil/information (convocation, livret, règlement) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["convocation", "livret_accueil", "reglement_interieur"] } },
+      where: {
+        type: { in: ["convocation", "livret_accueil", "reglement_interieur"] },
+        annuleeAt: null,
+      },
     }),
     // off.12 : preuves de suivi/présence (émargement, relevé de connexion) — pas tous types confondus
     prisma.documentGenere.count({
-      where: { type: { in: ["emargement", "releve_connexion"] } },
+      where: { type: { in: ["emargement", "releve_connexion"] }, annuleeAt: null },
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
@@ -350,6 +356,22 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
         sousTraitantVerifieAt: { not: null },
         sousTraitantContratSigneAt: { not: null },
       },
+    }),
+    // 🔴 off.27 — la PROCÉDURE écrite, seconde voie de couverture. [2026-08-04]
+    //
+    // Le commentaire de la règle disait lui-même : « si l'OF ne sous-traite pas,
+    // off.27 reste applicable et exige une PROCÉDURE documentée (voie NON
+    // COUVERTE par ce flag — action Will hors-code) ». Elle l'est désormais : la
+    // PR 531 a fait de cette procédure une pièce GÉNÉRÉE, précisément pour
+    // l'indicateur 27 — et personne n'a rebranché la règle dessus. Générée en
+    // production le 04/08 (`AXI-DOC-2026-026`), elle laissait l'indicateur
+    // afficher « exige alors une procédure » alors que la procédure existait.
+    //
+    // ⚠️ Ajouté EN FIN de liste, comme les deux précédents : des specs mockent
+    // ces compteurs par POSITION.
+    // ⚠️ `annuleeAt: null` — une procédure annulée ne couvre rien.
+    prisma.documentGenere.count({
+      where: { type: "procedure_sous_traitance", annuleeAt: null },
     }),
   ]);
 
@@ -732,8 +754,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // off.27 : [P1] la couverture exige la VIGILANCE réelle par sous-traitant actif —
   //   NDA renseigné + vérification data.gouv datée + contrat signé. Une ligne coquille
   //   (sans NDA/vérif/contrat) ne prouve pas les dispositions de sous-traitance.
-  //   NB : si l'OF ne sous-traite pas, off.27 reste applicable et exige une PROCÉDURE
-  //   documentée (voie non couverte par ce flag — action Will hors-code).
+  //
+  // 🔴 2026-08-04 — DEUX voies de couverture, et la seconde manquait.
+  //   Le RNQ demande les DISPOSITIONS de sous-traitance. Un OF qui sous-traite
+  //   les prouve par la vigilance exercée sur chaque intervenant ; un OF qui ne
+  //   sous-traite pas encore les prouve par sa PROCÉDURE ÉCRITE — c'est même le
+  //   seul moyen dont il dispose, et c'est ce que l'auditeur demande en premier.
+  //   Ce commentaire disait « voie non couverte par ce flag — action Will
+  //   hors-code », alors que la PR 531 avait fait de cette procédure une pièce
+  //   générée POUR cet indicateur. Le code existait, personne ne l'appelait ici.
   //
   // 🔴 2026-08-03 — Les DEUX natures de sous-traitant comptent désormais.
   //   `SousTraitant` = un ORGANISME (autre OF). `Trainer` avec
@@ -749,9 +778,14 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
       totalSousTraitants > 0
         ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
-        : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
+        : nbProceduresSousTraitance > 0
+          ? "Aucun sous-traitant référencé — dispositions prouvées par la procédure écrite versée au registre"
+          : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
+      nbProceduresSousTraitance > 0
+        ? `${nbProceduresSousTraitance} procédure${nbProceduresSousTraitance > 1 ? "s" : ""} « dispositions sous-traitance » au registre`
+        : "Aucune procédure « dispositions sous-traitance » générée",
     ],
-    totalSousTraitantsConformes > 0,
+    totalSousTraitantsConformes > 0 || nbProceduresSousTraitance > 0,
   );
   // off.28 (AFEST) : AUTOMATISÉ — parcours AFEST 1-to-1 conforme = analyse de
   //   l'activité + alternance mises en situation ↔ phases réflexives + évaluation

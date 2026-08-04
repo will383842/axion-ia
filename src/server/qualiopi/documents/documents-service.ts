@@ -16,7 +16,7 @@
 
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import type { DocumentType } from "../../../../prisma/generated/client";
+import type { DocumentType, Prisma } from "../../../../prisma/generated/client";
 import { renderPdfToBuffer, storeAndSignPdf } from "@/server/qualiopi/documents/render";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { DOCUMENT_REGISTER_TYPES } from "@/server/qualiopi/numbering/formats";
@@ -186,6 +186,30 @@ export interface GenerateDocumentInput {
    * la pièce, rectification ou non.
    */
   rectifie?: { numero: string; motif: string };
+  /**
+   * Motif d'une rectification dont le NUMÉRO de la pièce remplacée est à
+   * résoudre ici, depuis le type et les références.
+   *
+   * 🔴 Audit pré-visite 2026-08-04. Le mécanisme `rectifie` ci-dessus était
+   * générique depuis le 03/08 — et **un seul appelant sur vingt-quatre le
+   * passait** (`attestation-service`). Les vingt-trois actions de la console
+   * régénéraient donc en « COPIE », et l'organisme se retrouvait à devoir
+   * présenter à l'auditeur soit un original au rendu cassé (kit OPCO
+   * `AXI-DOC-2026-018`, cinq lignes imprimées l'une par-dessus l'autre), soit
+   * une copie exacte. Motif dominant de ce dépôt : le code existe, il est
+   * testé, et personne ne l'appelle au bon endroit.
+   *
+   * La raison pour laquelle ils ne le passaient pas est mécanique : `rectifie`
+   * exige le numéro de la pièce précédente, que l'appelant n'a pas sous la main
+   * — il faudrait rejouer la requête « même type, mêmes refs » que le service
+   * fait DÉJÀ pour décider du filigrane. Vingt-trois copies de cette requête
+   * n'auraient pas été écrites, donc le mécanisme serait resté lettre morte.
+   * L'appelant fournit désormais la seule chose qu'il sait : POURQUOI.
+   *
+   * ⚠️ Si aucune pièce précédente n'existe, la génération est un premier
+   * original et sort sans mention — ne pas faire échouer sur une absence.
+   */
+  rectificationMotif?: string;
   qrToken?: string | null;
   /**
    * Clé R2 du fichier source original (ex. CSV relevé de connexion archivé).
@@ -228,6 +252,67 @@ export interface GenerateDocumentResult {
  * deuxième facture de l'histoire. Mieux vaut ne pas savoir que se tromper : un
  * appelant qui veut le filigrane passe `estCopie: true`.
  */
+/**
+ * Le filtre « c'est la MÊME pièce », ou `null` si la question n'a pas de sens
+ * pour ce type / ces références.
+ *
+ * Extrait de `estUneRegenerationDe` le 04/08 pour être partagé avec la
+ * résolution de rectification : les deux doivent désigner exactement le même
+ * ensemble de pièces, faute de quoi une génération pourrait se croire
+ * rectification d'une pièce que l'heuristique du filigrane, elle, ne voit pas.
+ * Deux copies de ce filtre auraient divergé au premier type ajouté.
+ */
+function filtreMemePiece(input: GenerateDocumentInput): Prisma.DocumentGenereWhereInput | null {
+  // 🔴 #8 — Les FACTURES, AVOIRS et DEVIS sont MULTIPLES par session/client.
+  // Cf. le commentaire détaillé dans `estUneRegenerationDe`.
+  if (input.type === "facture" || input.type === "avoir" || input.type === "devis") return null;
+  if (input.type === "lettre_mission" && input.refs?.sessionId == null) return null;
+
+  const refs = input.refs;
+  const identifiants = [
+    refs?.formationId,
+    refs?.sessionId,
+    refs?.traineeId,
+    refs?.clientId,
+    refs?.coachingSessionId,
+  ];
+  if (identifiants.every((v) => v == null)) return null;
+
+  return {
+    type: input.type,
+    formationId: refs?.formationId ?? null,
+    sessionId: refs?.sessionId ?? null,
+    traineeId: refs?.traineeId ?? null,
+    clientId: refs?.clientId ?? null,
+    coachingSessionId: refs?.coachingSessionId ?? null,
+  };
+}
+
+/**
+ * La pièce que cette génération RECTIFIE : la plus récente du même type et des
+ * mêmes références, annulées exclues.
+ *
+ * ⚠️ La plus RÉCENTE, pas la première. Le kit OPCO en est l'illustration : trois
+ * tirages existent (`018` original au rendu cassé, `024` copie corrigée, puis la
+ * rectification). Déclarer rectifier `018` laisserait `024` vivante au registre
+ * sans que rien ne dise qu'elle est morte — soit exactement les deux pièces
+ * concurrentes que tout ce mécanisme existe pour empêcher.
+ *
+ * ⚠️ Les pièces DÉJÀ annulées sont exclues : rectifier une pièce annulée n'a pas
+ * de sens, et la chaîne de remplacement doit désigner la dernière qui faisait foi.
+ */
+async function piecePrecedenteDe(
+  input: GenerateDocumentInput,
+): Promise<{ id: string; numero: string } | null> {
+  const filtre = filtreMemePiece(input);
+  if (filtre === null) return null;
+  return prisma.documentGenere.findFirst({
+    where: { ...filtre, annuleeAt: null },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    select: { id: true, numero: true },
+  });
+}
+
 async function estUneRegenerationDe(input: GenerateDocumentInput): Promise<boolean> {
   // 🔴 #8 — Les FACTURES, AVOIRS et DEVIS sont MULTIPLES par session/client (facture
   // OPCO + reste-à-charge stagiaire, une facture par participant inter-entreprises,
@@ -248,26 +333,14 @@ async function estUneRegenerationDe(input: GenerateDocumentInput): Promise<boole
   // post-migration pour un premier original.
   if (input.type === "lettre_mission" && input.refs?.sessionId == null) return false;
 
-  const refs = input.refs;
-  const identifiants = [
-    refs?.formationId,
-    refs?.sessionId,
-    refs?.traineeId,
-    refs?.clientId,
-    refs?.coachingSessionId,
-  ];
-  if (identifiants.every((v) => v == null)) return false;
+  // Le filtre est partagé avec `piecePrecedenteDe` — cf. `filtreMemePiece`.
+  const filtre = filtreMemePiece(input);
+  if (filtre === null) return false;
 
-  const count = await prisma.documentGenere.count({
-    where: {
-      type: input.type,
-      formationId: refs?.formationId ?? null,
-      sessionId: refs?.sessionId ?? null,
-      traineeId: refs?.traineeId ?? null,
-      clientId: refs?.clientId ?? null,
-      coachingSessionId: refs?.coachingSessionId ?? null,
-    },
-  });
+  // ⚠️ Les pièces ANNULÉES ne comptent pas. Une pièce annulée ne circule plus :
+  // filigraner « COPIE » son remplacement ferait porter au tirage valable la
+  // marque d'un duplicata dont l'original a précisément cessé de faire foi.
+  const count = await prisma.documentGenere.count({ where: { ...filtre, annuleeAt: null } });
   return count > 0;
 }
 
@@ -369,6 +442,30 @@ export async function generateDocument(
   // l'oubli devient une erreur de type au build.
   const numberingType = DOC_TYPE_TO_NUMBERING[input.type];
 
+  // Résolution de la rectification, UNE fois et hors de la boucle de reprise :
+  // une collision P2002 réalloue un numéro, elle ne change pas quelle pièce est
+  // remplacée. `rectifie` explicite (attestation-service, qui connaît déjà le
+  // numéro qu'il remplace) reste prioritaire sur la résolution automatique.
+  //
+  // ⚠️ La pièce précédente est résolue DANS LES DEUX CAS — motif seul, ou
+  // `rectifie` explicite. L'appelant explicite connaît le numéro mais pas l'id,
+  // et sans cette lecture la contre-trace ci-dessous n'aurait jamais couvert
+  // l'attestation, c'est-à-dire le seul circuit qui rectifiait déjà.
+  const piecePrecedente =
+    input.rectifie !== undefined
+      ? await prisma.documentGenere.findUnique({
+          where: { numero: input.rectifie.numero },
+          select: { id: true, numero: true },
+        })
+      : input.rectificationMotif !== undefined
+        ? await piecePrecedenteDe(input)
+        : null;
+  const rectifieResolu: { numero: string; motif: string } | undefined =
+    input.rectifie ??
+    (piecePrecedente !== null && input.rectificationMotif !== undefined
+      ? { numero: piecePrecedente.numero, motif: input.rectificationMotif }
+      : undefined);
+
   let created: { id: string; numero: string; pdfUrl: string | null; hashSha256: string } | null =
     null;
   let attempt = 0;
@@ -406,7 +503,7 @@ export async function generateDocument(
     // lieu de circuler à côté. `estCopie` explicite reste prioritaire — un
     // appelant qui demande le filigrane l'obtient.
     const estUneRegeneration =
-      input.estCopie ?? (input.rectifie !== undefined ? false : await estUneRegenerationDe(input));
+      input.estCopie ?? (rectifieResolu !== undefined ? false : await estUneRegenerationDe(input));
 
     // 1b. Rendu PDF — le numéro alloué est injecté via buildElement si fourni.
     let elementToRender: React.ReactElement;
@@ -523,7 +620,7 @@ export async function generateDocument(
           ...(specimen !== null ||
           input.metadata !== undefined ||
           renderData !== null ||
-          input.rectifie !== undefined
+          rectifieResolu !== undefined
             ? {
                 metadata: {
                   ...(input.metadata ?? {}),
@@ -533,11 +630,11 @@ export async function generateDocument(
                   // La pièce dit ce qu'elle rectifie. Sans cette trace, deux
                   // numéros du même type coexistent au registre sans que rien
                   // n'indique lequel fait foi.
-                  ...(input.rectifie !== undefined
+                  ...(rectifieResolu !== undefined
                     ? {
                         rectifie: {
-                          numero: input.rectifie.numero,
-                          motif: input.rectifie.motif,
+                          numero: rectifieResolu.numero,
+                          motif: rectifieResolu.motif,
                           at: now.toISOString(),
                         },
                       }
@@ -587,6 +684,33 @@ export async function generateDocument(
     throw new Error(
       `[generateDocument] Impossible d'allouer un numéro unique après ${MAX_ATTEMPTS} tentatives (type=${input.type}, year=${year})`,
     );
+  }
+
+  // 4bis. CONTRE-TRACE sur la pièce remplacée.
+  //
+  // 🔴 Le commentaire de `rectifie` affirmait depuis le 03/08 que « la nouvelle
+  // pièce dit ce qu'elle rectifie, l'ancienne dit par quoi elle est remplacée ».
+  // La seconde moitié n'était écrite NULLE PART. Conséquence concrète :
+  // l'auditeur qui ouvre la pièce périmée n'avait aucun moyen d'apprendre
+  // qu'elle ne faisait plus foi — il fallait déjà connaître la nouvelle pour le
+  // savoir, c'est-à-dire avoir la réponse avant de poser la question.
+  //
+  // ⚠️ Fail-soft, et volontairement : la pièce neuve EXISTE déjà et est valable.
+  // Faire échouer la génération sur l'écriture d'une trace laisserait
+  // l'appelant croire que rien n'a été produit, alors qu'un numéro est consommé
+  // et un PDF est en ligne. L'incohérence resterait, aggravée.
+  if (rectifieResolu !== undefined && piecePrecedente !== null) {
+    try {
+      await prisma.documentGenere.update({
+        where: { id: piecePrecedente.id },
+        data: { remplaceeParNumero: created.numero },
+      });
+    } catch (err) {
+      console.error(
+        `[generateDocument] contre-trace de remplacement non écrite sur ${piecePrecedente.numero}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
   }
 
   // 5. Audit (best-effort — logQualiopiActivity est fail-silent).

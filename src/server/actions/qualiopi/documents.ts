@@ -170,7 +170,30 @@ const parseObjectifs = normaliserObjectifsPedagogiques;
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
 
-const sessionIdSchema = z.object({ sessionId: z.string().uuid() });
+/**
+ * Motif d'une RECTIFICATION, commun à toutes les actions de génération.
+ *
+ * 🔴 Audit pré-visite 2026-08-04. Régénérer une pièce depuis la console la
+ * marquait « COPIE » — y compris quand on la refaisait justement parce que
+ * l'original était FAUX. Le kit OPCO en est le cas d'école : `AXI-DOC-2026-018`
+ * imprimait cinq lignes l'une par-dessus l'autre, `AXI-DOC-2026-024` corrigeait
+ * le rendu et sortait filigranée. Restait à choisir, devant l'auditeur, entre
+ * un original illisible et une copie exacte.
+ *
+ * Le motif est ce qui distingue les deux gestes, et il n'y a que l'humain
+ * devant l'écran pour le connaître. Il est donc SAISI, jamais deviné : une
+ * régénération sans raison écrite reste un duplicata et garde son filigrane.
+ *
+ * ⚠️ Longueur minimale alignée sur la contrainte `CHECK` en base (10) : les deux
+ * couches disent la même chose, faute de quoi un motif accepté ici ferait
+ * échouer l'écriture.
+ */
+const rectificationMotifSchema = z.string().trim().min(10).max(500).optional();
+
+const sessionIdSchema = z.object({
+  sessionId: z.string().uuid(),
+  rectificationMotif: rectificationMotifSchema,
+});
 
 /**
  * Entrée de la convention bipartite — seul document de session paramétrable.
@@ -185,8 +208,12 @@ const sessionIdSchema = z.object({ sessionId: z.string().uuid() });
 const genererConventionSchema = z.object({
   sessionId: z.string().uuid(),
   acomptePercent: z.number().int().min(0).max(100).optional(),
+  rectificationMotif: rectificationMotifSchema,
 });
-const enrollmentIdSchema = z.object({ enrollmentId: z.string().uuid() });
+const enrollmentIdSchema = z.object({
+  enrollmentId: z.string().uuid(),
+  rectificationMotif: rectificationMotifSchema,
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. Convention de formation (L.6353-1)
@@ -199,13 +226,14 @@ const enrollmentIdSchema = z.object({ enrollmentId: z.string().uuid() });
 export async function genererConventionAction(input: {
   sessionId: string;
   acomptePercent?: number;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = genererConventionSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId, acomptePercent } = parsed.data;
+  const { sessionId, acomptePercent, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -255,6 +283,8 @@ export async function genererConventionAction(input: {
 
   const doc = await generateDocument({
     type: "convention",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(ConventionPdf, {
         data: {
@@ -311,13 +341,14 @@ export async function genererConventionAction(input: {
  */
 export async function genererConventionTripartiteAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -377,6 +408,8 @@ export async function genererConventionTripartiteAction(input: {
 
   const doc = await generateDocument({
     type: "convention_tripartite",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(ConventionTripartitePdf, {
         data: {
@@ -439,6 +472,7 @@ export async function genererConventionTripartiteAction(input: {
  */
 export async function genererContratFormationAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<
   ActionResult<{ documentId: string; numero: string; avertissement?: string | undefined }>
 > {
@@ -494,7 +528,7 @@ export async function genererContratFormationAction(input: {
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -583,6 +617,8 @@ export async function genererContratFormationAction(input: {
 
   const doc = await generateDocument({
     type: "contrat",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(ContratFormationPdf, {
         data: {
@@ -664,13 +700,14 @@ export async function genererContratFormationAction(input: {
  */
 export async function genererConvocationAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -725,6 +762,8 @@ export async function genererConvocationAction(input: {
 
   const doc = await generateDocument({
     type: "convocation",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(ConvocationPdf, {
         data: {
@@ -784,13 +823,14 @@ export async function genererConvocationAction(input: {
  */
 export async function genererEmargementAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   // ⚠️ Pas de `resolveFormateurNom` ici : le formateur est porté JOURNÉE PAR
   // JOURNÉE par `construireFeuillePdf` (désistement, co-animation). Un nom
@@ -807,6 +847,8 @@ export async function genererEmargementAction(input: {
 
   const doc = await generateDocument({
     type: "emargement",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) => tirage.element(numero),
     refs: { sessionId },
   });
@@ -832,13 +874,14 @@ export async function genererEmargementAction(input: {
  */
 export async function genererPositionnementAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -850,6 +893,8 @@ export async function genererPositionnementAction(input: {
 
   const doc = await generateDocument({
     type: "positionnement",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(PositionnementPdf, {
         data: {
@@ -883,13 +928,14 @@ export async function genererPositionnementAction(input: {
  */
 export async function genererGrilleEvaluationAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -973,6 +1019,8 @@ export async function genererGrilleEvaluationAction(input: {
 
   const doc = await generateDocument({
     type: "grille_evaluation",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(GrilleEvaluationPdf, {
         data: {
@@ -1016,13 +1064,14 @@ export async function genererGrilleEvaluationAction(input: {
  */
 export async function genererSatisfactionAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -1034,6 +1083,8 @@ export async function genererSatisfactionAction(input: {
 
   const doc = await generateDocument({
     type: "satisfaction",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(SatisfactionPdf, {
         data: {
@@ -1070,13 +1121,14 @@ export async function genererSatisfactionAction(input: {
  */
 export async function genererCertificatRealisationAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -1198,6 +1250,8 @@ export async function genererCertificatRealisationAction(input: {
 
   const doc = await generateDocument({
     type: "certificat_realisation",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(CertificatRealisationPdf, {
         data: {
@@ -1267,13 +1321,14 @@ export async function genererCertificatRealisationAction(input: {
  */
 export async function genererKitOpcoAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -1339,6 +1394,8 @@ export async function genererKitOpcoAction(input: {
 
   const doc = await generateDocument({
     type: "kit_opco",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(KitOpcoPdf, {
         data: {
@@ -1378,13 +1435,14 @@ export async function genererKitOpcoAction(input: {
  */
 export async function genererKitCpfAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -1423,6 +1481,8 @@ export async function genererKitCpfAction(input: {
 
   const doc = await generateDocument({
     type: "kit_cpf",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(KitCpfPdf, {
         data: {
@@ -1469,13 +1529,14 @@ export async function genererKitCpfAction(input: {
  */
 export async function genererKitFranceTravailAction(input: {
   enrollmentId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { enrollmentId } = parsed.data;
+  const { enrollmentId, rectificationMotif } = parsed.data;
 
   const enrollment = await prisma.enrollment.findUnique({
     where: { id: enrollmentId },
@@ -1519,6 +1580,8 @@ export async function genererKitFranceTravailAction(input: {
 
   const doc = await generateDocument({
     type: "kit_france_travail",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(KitFranceTravailPdf, {
         data: {
@@ -1570,13 +1633,14 @@ export async function genererKitFranceTravailAction(input: {
  */
 export async function genererLettreMissionAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -1708,6 +1772,8 @@ export async function genererLettreMissionAction(input: {
 
   const doc = await generateDocument({
     type: "lettre_mission",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(LettreMissionPdf, {
         data: {
@@ -2275,13 +2341,14 @@ export async function genererLettreMissionCadreAction(input: {
  */
 export async function genererReglementInterieurAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -2294,6 +2361,8 @@ export async function genererReglementInterieurAction(input: {
 
   const doc = await generateDocument({
     type: "reglement_interieur",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(ReglementInterieurPdf, {
         data: {
@@ -2361,13 +2430,14 @@ function sanctionLabel(certificationType: string | null): string {
  */
 export async function genererProgrammeAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -2417,6 +2487,8 @@ export async function genererProgrammeAction(input: {
 
   const doc = await generateDocument({
     type: "programme",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     identite,
     buildElement: (numero) =>
       React.createElement(ProgrammeFormationPdf, {
@@ -2481,13 +2553,14 @@ export async function genererProgrammeAction(input: {
  */
 export async function genererOrganisationActionAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -2550,6 +2623,8 @@ export async function genererOrganisationActionAction(input: {
 
   const doc = await generateDocument({
     type: "organisation_action",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     identite,
     buildElement: (numero) =>
       React.createElement(OrganisationActionPdf, {
@@ -2596,13 +2671,14 @@ export async function genererOrganisationActionAction(input: {
  */
 export async function genererLivretAccueilAction(input: {
   sessionId: string;
+  rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
   const adminSession = await requireAdminWrite();
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
-  const { sessionId } = parsed.data;
+  const { sessionId, rectificationMotif } = parsed.data;
 
   const session = await prisma.trainingSession.findUnique({
     where: { id: sessionId },
@@ -2621,6 +2697,8 @@ export async function genererLivretAccueilAction(input: {
 
   const doc = await generateDocument({
     type: "livret_accueil",
+    // Régénération motivée = RECTIFICATION, pas duplicata (cf. `rectificationMotif`).
+    ...(rectificationMotif !== undefined ? { rectificationMotif } : {}),
     buildElement: (numero) =>
       React.createElement(LivretAccueilPdf, {
         data: {
@@ -3245,4 +3323,99 @@ export async function genererProcedureSousTraitanceAction(): Promise<
   });
 
   return { data: { documentId: doc.id, numero: doc.numero } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 24. Annulation d'une pièce au registre
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Longueur minimale du motif — alignée sur la contrainte `CHECK` de la
+ * migration. Une seule règle, écrite deux fois parce qu'aucune des deux couches
+ * ne peut faire confiance à l'autre ; qu'elles disent la MÊME chose est ce qui
+ * évite qu'un motif accepté par le formulaire fasse planter l'écriture.
+ */
+const MOTIF_ANNULATION_MIN = 10;
+
+const annulerDocumentSchema = z.object({
+  documentId: z.string().uuid(),
+  motif: z.string().trim().min(MOTIF_ANNULATION_MIN).max(500),
+});
+
+/**
+ * Annule une pièce au registre : elle reste, elle cesse de faire foi.
+ *
+ * ## Pourquoi une annulation et pas une suppression
+ *
+ * Trois raisons, et aucune n'est théorique.
+ *
+ * **Le numéro est alloué dans une série continue** (CGI, art. 242 nonies A
+ * ann. II). Supprimer la ligne laisse un trou, et un trou dans une série
+ * documentaire est précisément ce qu'un contrôle relève — la purge de test du
+ * 02/08 en a déjà laissé deux (`AXI-DOC` commence à 002, `AXI-ATT` à 003).
+ *
+ * **La pièce peut porter une signature réelle.** `AXI-DOC-2026-007`, celle qui
+ * motive cette action, est `statut_signature = signee`. Supprimer la pièce
+ * effacerait la preuve d'un acte qui a bel et bien eu lieu.
+ *
+ * **Une annulation motivée est une démonstration de maîtrise.** Une
+ * contradiction interne laissée en place est un constat ; la même contradiction
+ * annulée, datée et motivée montre au contraire un processus qui se corrige.
+ * C'est pour ça que le motif est OBLIGATOIRE, ici comme en base.
+ *
+ * ⚠️ N'annule PAS les signatures portées par la pièce. Elles restent au registre
+ * des signatures : la personne a signé, ce fait ne se réécrit pas. C'est la
+ * VALEUR de la pièce qui tombe, pas l'historique.
+ */
+export async function annulerDocumentAction(input: {
+  documentId: string;
+  motif: string;
+}): Promise<ActionResult<{ numero: string }>> {
+  const adminSession = await requireAdminWrite();
+  if (isStub()) return { error: "Annulation désactivée en mode build (stub)" };
+
+  const parsed = annulerDocumentSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      error: `Motif obligatoire (${MOTIF_ANNULATION_MIN} caractères minimum) — il est lu par l'auditeur.`,
+    };
+  }
+  const { documentId, motif } = parsed.data;
+
+  const doc = await prisma.documentGenere.findUnique({
+    where: { id: documentId },
+    select: { id: true, numero: true, annuleeAt: true },
+  });
+  if (doc === null) return { error: "Pièce introuvable" };
+  // Refus explicite plutôt que ré-écriture silencieuse : réannuler écraserait
+  // la date et le motif d'origine, c'est-à-dire la trace même qu'on cherche à
+  // produire.
+  if (doc.annuleeAt !== null) return { error: `La pièce ${doc.numero} est déjà annulée.` };
+
+  // L'auteur est nommé, jamais réduit à un identifiant : « annulée par
+  // 4f3a-… » ne dit rien à un auditeur. Repli sur le rôle si le compte n'a pas
+  // de nom — mieux vaut « Administrateur » qu'un UUID.
+  const auteur = await prisma.adminUser.findUnique({
+    where: { id: adminSession.userId },
+    select: { name: true },
+  });
+  const annuleePar =
+    typeof auteur?.name === "string" && auteur.name.trim() !== ""
+      ? auteur.name.trim()
+      : adminSession.role;
+
+  await prisma.documentGenere.update({
+    where: { id: documentId },
+    data: { annuleeAt: new Date(), annuleeMotif: motif, annuleePar },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.document.annulee",
+    targetType: "DocumentGenere",
+    targetId: documentId,
+    changes: { numero: doc.numero, motif, annuleePar },
+    session: adminSession,
+  });
+
+  return { data: { numero: doc.numero } };
 }

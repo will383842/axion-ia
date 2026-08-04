@@ -359,7 +359,14 @@ export async function genererDossierAuditZip(): Promise<DossierAuditZipResult> {
   // Récupération de tous les DocumentGenere (id + type + numero + createdAt)
   // pour reconstruire les clés R2. On limite aux types qui ont des preuves
   // documentaires pour éviter de requêter des milliers de lignes inutiles.
+  // ⚠️ Les pièces ANNULÉES sont EXCLUES du dossier. Ce ZIP est le dossier de
+  // PREUVES remis au certificateur : une pièce déclarée sans valeur n'en est
+  // pas une, et l'y glisser sans marquage reviendrait à présenter comme preuve
+  // un document qu'on a soi-même annulé. La trace de l'annulation, elle, reste
+  // entière au registre (motif, date, auteur) et dans le journal d'activité —
+  // c'est là que l'auditeur la recoupe s'il la demande.
   const allDocuments = await prisma.documentGenere.findMany({
+    where: { annuleeAt: null },
     select: { id: true, type: true, numero: true, createdAt: true },
     orderBy: { createdAt: "asc" },
   });

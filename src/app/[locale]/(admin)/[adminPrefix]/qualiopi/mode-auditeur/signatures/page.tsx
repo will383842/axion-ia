@@ -198,6 +198,23 @@ function LignePiece({
         <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {LIBELLE_TYPE_PIECE[piece.type] ?? piece.type}
         </span>
+        {/* 🔴 Une pièce annulée RESTE au registre : la signature a eu lieu, et
+            l'effacer masquerait qu'on a signé puis annulé — exactement ce qu'un
+            auditeur veut voir. Mais elle doit le DIRE : sans ce marquage, elle
+            se présente comme une pièce signée valable, « preuve intacte » à
+            l'appui, alors qu'on l'a déclarée sans valeur. La preuve, elle, EST
+            intacte : les deux questions sont distinctes. */}
+        {piece.annuleeAt !== null ? (
+          <>
+            <span className="mt-[var(--space-admin-1)] inline-block rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-destructive-soft)] px-[var(--space-admin-2)] py-[2px] text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-destructive-fg)] uppercase">
+              Annulée
+            </span>
+            <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {`Annulée le ${new Date(piece.annuleeAt).toLocaleDateString("fr-FR")}`}
+              {piece.annuleeMotif ? ` — ${piece.annuleeMotif}` : ""}
+            </span>
+          </>
+        ) : null}
       </td>
       <td className="p-[var(--space-admin-3)] text-[length:var(--text-admin-xs)]">
         {/* Recalculé d'abord : c'est lui qui dit la vérité. */}

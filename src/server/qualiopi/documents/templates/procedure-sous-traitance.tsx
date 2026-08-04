@@ -85,11 +85,16 @@ export function ProcedureSousTraitancePdf({
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
         <DocSection title="Objet et référence">
+          {/* 🔴 Phrase construite en UNE chaîne, pas en `{organisme} en matière…`.
+              Vu sur la pièce réelle `AXI-DOC-2026-026` (04/08) : le PDF de
+              production imprimait « AXION IA SASen matière ». Un `<Text>` dont
+              les enfants alternent expression et littéral produit des « runs »
+              distincts, et @react-pdf en rogne la frontière avec les polices
+              réelles — le même gabarit rendu avec les polices de repli des
+              tests sortait, lui, parfaitement espacé. Le gabarit ne peut donc
+              pas se fier au rendu local. Une seule chaîne, pas de frontière. */}
           <Text style={pdfStyles.paragraph}>
-            La présente procédure définit les dispositions de {organisme} en matière de
-            sous-traitance et de co-traitance des actions de formation. Elle répond à
-            l&apos;indicateur 27 du Référentiel National Qualité et à l&apos;article L.6316-3 du
-            Code du travail.
+            {`La présente procédure définit les dispositions de ${organisme} en matière de sous-traitance et de co-traitance des actions de formation. Elle répond à l'indicateur 27 du Référentiel National Qualité et à l'article L.6316-3 du Code du travail.`}
           </Text>
           <Text style={pdfStyles.paragraph}>
             Version {data.version} — applicable à compter du {data.applicableLe}.
@@ -98,8 +103,7 @@ export function ProcedureSousTraitancePdf({
 
         <DocSection title="1. Situation de l'organisme et perspective">
           <Text style={pdfStyles.paragraph}>
-            À la date de rédaction, l&apos;intégralité des actions de formation de {organisme} est
-            conçue et animée par son dirigeant-formateur.
+            {`À la date de rédaction, l'intégralité des actions de formation de ${organisme} est conçue et animée par son dirigeant-formateur.`}
           </Text>
           <Text style={pdfStyles.paragraph}>
             Le recours à des formateurs indépendants est prévu dans le développement de
@@ -116,12 +120,7 @@ export function ProcedureSousTraitancePdf({
 
         <DocSection title="2. Champ d'application">
           <Text style={pdfStyles.paragraph}>
-            Est considéré comme sous-traitant ou formateur occasionnel tout organisme ou intervenant
-            indépendant à qui {organisme} confie tout ou partie de la conception ou de
-            l&apos;animation d&apos;une action de formation, en conservant la responsabilité
-            contractuelle vis-à-vis du client. La qualification retenue au contrat — sous-traitance,
-            prestation de formation, vacation — est sans effet sur l&apos;application de la présente
-            procédure.
+            {`Est considéré comme sous-traitant ou formateur occasionnel tout organisme ou intervenant indépendant à qui ${organisme} confie tout ou partie de la conception ou de l'animation d'une action de formation, en conservant la responsabilité contractuelle vis-à-vis du client. La qualification retenue au contrat — sous-traitance, prestation de formation, vacation — est sans effet sur l'application de la présente procédure.`}
           </Text>
           <Text style={pdfStyles.paragraph}>
             Est considéré comme co-traitant tout organisme intervenant conjointement, chacun étant
@@ -175,8 +174,7 @@ export function ProcedureSousTraitancePdf({
             conviennent également à une mission.
           </Text>
           <Text style={pdfStyles.paragraph}>
-            {organisme} demeure, en toute hypothèse, responsable devant le bénéficiaire et le client
-            de la bonne exécution des actions sous-traitées (article 3).
+            {`${organisme} demeure, en toute hypothèse, responsable devant le bénéficiaire et le client de la bonne exécution des actions sous-traitées (article 3).`}
           </Text>
         </DocSection>
 

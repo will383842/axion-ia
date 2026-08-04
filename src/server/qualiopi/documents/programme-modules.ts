@@ -173,3 +173,24 @@ export function formaterDuree(minutes: number | null): string | null {
   if (m === 0) return `${h} h`;
   return `${h} h ${String(m).padStart(2, "0")}`;
 }
+
+/**
+ * Retire le préfixe « Module N — » que les titres portent DÉJÀ.
+ *
+ * 🔴 Les titres de modules issus de la génération de contenu commencent presque
+ * tous par « Module 1 — », « Module 2 — »… Toute pièce qui préfixe à son tour
+ * imprime le libellé deux fois.
+ *
+ * Constaté sur `AXI-DOC-2026-002` (« Module 1 — Module 1 — L'IA… »), corrigé
+ * dans `programme-formation.tsx`, et **retrouvé intact le 04/08 dans les
+ * supports pédagogiques** — « Module mod-1 : Module 1 — L'IA dans le métier
+ * immobilier » sur les 167 supports générés. Le correctif vivait en copie
+ * privée dans un seul gabarit ; la deuxième famille de pièces ne pouvait pas en
+ * bénéficier. Il est ici pour que la troisième n'ait pas à le réécrire.
+ *
+ * ⚠️ Tolère les trois tirets (—, –, -) et l'absence d'espace : les titres
+ * générés ne sont pas normalisés.
+ */
+export function titreModuleSansPrefixe(titre: string): string {
+  return titre.replace(/^module\s*\d+\s*[—–-]\s*/i, "").trim();
+}

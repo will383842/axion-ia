@@ -6643,6 +6643,24 @@ model DocumentGenere {
   /// relevé de connexion). Obligation CDC : archiver l'original, pas que le PDF.
   fichierOriginalPath String?                 @map("fichier_original_path") @db.Text
   metadata            Json                    @default("{}")
+  /// 🔴 ANNULATION au registre — la pièce reste, elle cesse de faire foi.
+  ///
+  /// Une pièce erronée ne se SUPPRIME pas : son numéro est alloué dans une série
+  /// continue (CGI, art. 242 nonies A ann. II), et elle peut porter une
+  /// signature réelle. Elle s'annule, avec un motif écrit que l'auditeur lit.
+  /// `annuleeMotif` est rendu obligatoire par une contrainte CHECK dès que
+  /// `annuleeAt` est posé : une annulation sans raison ne vaut pas mieux que la
+  /// contradiction qu'elle lève.
+  annuleeAt           DateTime?               @map("annulee_at")
+  annuleeMotif        String?                 @map("annulee_motif") @db.Text
+  /// Identité humaine de l'auteur de l'annulation, telle qu'affichée au registre.
+  annuleePar          String?                 @map("annulee_par") @db.Text
+  /// Numéro de la pièce qui REMPLACE celle-ci (contre-trace de la rectification).
+  ///
+  /// La nouvelle pièce porte `metadata.rectifie` ; sans cette colonne, la pièce
+  /// périmée ne disait rien de son sort et il fallait déjà connaître la nouvelle
+  /// pour apprendre que l'ancienne était morte. Chaque pièce dit son sort.
+  remplaceeParNumero  String?                 @map("remplacee_par_numero") @db.VarChar(40)
   /// Statut DÉRIVÉ des lignes `DocumentSignature`. Cache de lecture : la source
   /// de vérité reste la table de signatures, jamais cette colonne.
   /// `non_requise` par défaut → aucune pièce existante ne change de comportement.
@@ -6661,6 +6679,7 @@ model DocumentGenere {
   @@index([sousTraitantId])
   @@index([trainerId, type])
   @@index([suppressionPrevueAt])
+  @@index([annuleeAt])
   @@map("documents_generes")
 }
 

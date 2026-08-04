@@ -398,6 +398,8 @@ describe("verifierChaineDocument", () => {
       hashSha256: PDF,
       statutSignature: "signee",
       createdAt: new Date("2026-06-01T00:00:00.000Z"),
+      annuleeAt: null,
+      annuleeMotif: null,
       signatures: chaine(["client", "axionia"]),
     });
 
@@ -419,6 +421,8 @@ describe("verifierChaineDocument", () => {
       hashSha256: PDF,
       statutSignature: "signee",
       createdAt: new Date(),
+      annuleeAt: null,
+      annuleeMotif: null,
       signatures: chaine(["client", "axionia"]),
     });
 
@@ -449,6 +453,8 @@ describe("verifierChaineDocument", () => {
       hashSha256: PDF,
       statutSignature: "signee",
       createdAt: new Date(),
+      annuleeAt: null,
+      annuleeMotif: null,
       signatures: lignes,
     });
 
@@ -477,6 +483,8 @@ describe("rapportSignatureDocument", () => {
       hashSha256: PDF,
       statutSignature: "partielle",
       createdAt: new Date(),
+      annuleeAt: null,
+      annuleeMotif: null,
       signatures: lignes.map((l) => ({ ...l, createdAt: tardif })),
     });
 
@@ -496,10 +504,50 @@ describe("listerRegistreSignatures", () => {
       hashSha256: PDF,
       statutSignature: "signee",
       createdAt: new Date("2026-06-10T00:00:00.000Z"),
+      // ⚠️ Le SORT de la pièce, indispensable au fixture : `over` n'est pas
+      // typé, donc rien ne rappellerait une colonne oubliée à la compilation.
+      // Par défaut, une pièce fait foi.
+      annuleeAt: null,
+      annuleeMotif: null,
       signatures: chaine(["client", "axionia"]).map((l) => ({ ...l, createdAt: l.signeAt })),
       ...over,
     };
   }
+
+  // 🔴 Une pièce ANNULÉE reste au registre, et le DIT. [2026-08-04]
+  //
+  // La retirer masquerait qu'on a signé puis annulé — exactement ce qu'un
+  // auditeur veut pouvoir voir. Mais sans marquage, `AXI-DOC-2026-007` se
+  // présenterait comme une pièce signée valable, « preuve intacte » à l'appui,
+  // alors qu'on l'a déclarée sans valeur.
+  it("une pièce annulée reste listée, avec sa date et son motif", async () => {
+    mockPrisma.documentGenere.findMany.mockResolvedValue([
+      pieceDb({
+        annuleeAt: new Date("2026-08-04T09:00:00.000Z"),
+        annuleeMotif: "Qualifie le dirigeant de mandataire sous-traitant de sa propre société.",
+      }),
+    ]);
+
+    const reg = await listerRegistreSignatures();
+
+    expect(reg.nbPieces).toBe(1);
+    const p = reg.pieces[0]!;
+    expect(p.annuleeAt).toBe("2026-08-04T09:00:00.000Z");
+    expect(p.annuleeMotif).toContain("mandataire sous-traitant");
+    // 🔴 La PREUVE reste intacte : la chaîne de signature d'une pièce annulée
+    // n'est pas rompue, et le prétendre serait faux. « La preuve tient-elle ? »
+    // et « la pièce vaut-elle encore ? » sont deux questions distinctes.
+    expect(p.preuveIntacte).toBe(true);
+  });
+
+  it("une pièce NON annulée ne porte aucune trace d'annulation", async () => {
+    // Le pendant : sans lui, le test précédent passerait même si le registre
+    // marquait tout le monde comme annulé.
+    mockPrisma.documentGenere.findMany.mockResolvedValue([pieceDb()]);
+    const reg = await listerRegistreSignatures();
+    expect(reg.pieces[0]!.annuleeAt).toBeNull();
+    expect(reg.pieces[0]!.annuleeMotif).toBeNull();
+  });
 
   it("compte séparément le statut RECALCULÉ et le statut CACHE", async () => {
     mockPrisma.documentGenere.findMany.mockResolvedValue([
