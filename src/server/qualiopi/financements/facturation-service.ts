@@ -8,7 +8,14 @@
  * Stub-aware : si DATABASE_URL contient "stub.invalid", retourne un résultat
  * minimal sans toucher la DB ni R2.
  *
- * TVA exonérée 261-4-4° CGI par défaut (tvaExoneree=true).
+ * 🔴 TVA : le régime par défaut est **assujetti**, jamais exonéré.
+ * Cet en-tête affirmait le contraire — « TVA exonérée 261-4-4° CGI par défaut
+ * (tvaExoneree=true) » — alors que `REGIME_TVA_DEFAUT` vaut `"assujetti"`
+ * depuis, précisément pour « ne jamais omettre par erreur une TVA due ».
+ * Commentaire périmé corrigé le 2026-08-04 : sur ce sujet, une note qui dit
+ * l'inverse du code est une invitation à « rétablir » l'exonération.
+ * L'exonération reste un choix explicite par dossier, jamais un défaut.
+ *
  * Subrogation OPCO : destinataire forcé = "opco", mention exacte,
  * numeroDossierOpco BLOQUANT si absent.
  */
@@ -21,7 +28,10 @@ import { resoudreDestinataireFacture } from "./destinataire-facture";
 import { periodePrestationSession } from "./periode-prestation";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
-import { assertOrganismeComplet } from "@/server/qualiopi/documents/conformite";
+import {
+  assertOrganismeComplet,
+  assertAcheteurComplet,
+} from "@/server/qualiopi/documents/conformite";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { readFormationForDocs } from "@/server/qualiopi/formations/formation-snapshot";
 import {
@@ -161,6 +171,17 @@ export async function genererFactureFormation(
   // bloquer DUR (sinon l'erreur serait avalée et un enregistrement non conforme
   // serait créé sans PDF).
   assertOrganismeComplet(identite, "facture");
+
+  // Symétrie ACHETEUR (2026-08-04). Le garde-fou ci-dessus ne protégeait que
+  // NOTRE identité, alors que l'art. L.441-9 exige « le nom des parties ainsi
+  // que LEUR adresse ». Une fiche client sans adresse produisait une facture
+  // portant « Non renseigné » en rouge : visible, mais émise quand même.
+  //
+  // Ne s'applique qu'au destinataire `entreprise` : pour OPCO / France Travail /
+  // bénéficiaire, `resoudreDestinataireFacture` renvoie volontairement une
+  // adresse nulle (référentiel externe, « jamais inventés ») — bloquer là
+  // couperait les circuits de financement.
+  assertAcheteurComplet(acheteur, destinataireReel);
 
   // Échéance : délai configurable (SiteSetting) — financeur (subrogation OPCO)
   // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).

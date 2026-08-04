@@ -115,8 +115,113 @@ const CHAMPS_OBLIGATOIRES: Partial<Record<DocumentType, ChampIdentite[]>> = {
 };
 
 /** Un champ est « renseigné » s'il est une chaîne non vide après trim. */
-function estRenseigne(valeur: string | undefined): boolean {
+function estRenseigne(valeur: string | null | undefined): boolean {
   return typeof valeur === "string" && valeur.trim().length > 0;
+}
+
+// ────────────────────────────────────────────────────────────────────
+// Symétrie ACHETEUR — art. L.441-9 C. com.
+// ────────────────────────────────────────────────────────────────────
+
+/**
+ * 🔴 LE CONTRÔLE N'EXISTAIT QUE D'UN CÔTÉ.
+ *
+ * Tout ce qui précède protège l'organisme contre SA propre identité incomplète.
+ * Rien ne contrôlait l'ACHETEUR — alors que l'art. L.441-9 C. com. impose « le
+ * nom des parties ainsi que **leur** adresse » : les deux, pas seulement le
+ * vendeur.
+ *
+ * Le gabarit de facture rend l'adresse acheteur en `required`, donc une adresse
+ * absente s'imprime « Non renseigné » en rouge (`facture.tsx:280`). C'est mieux
+ * que la disparition silencieuse d'avant, mais ça reste une facture non
+ * conforme — simplement une qui l'avoue. Ici on l'empêche de naître.
+ *
+ * ⚠️ ET CE CONTRÔLE NE VAUT QUE POUR LE DESTINATAIRE « entreprise ».
+ *
+ * `resoudreDestinataireFacture` renvoie délibérément `adresse: null` pour
+ * `opco`, `france_travail` et `stagiaire` : leur identité relève d'un
+ * référentiel externe et n'est « jamais inventée ». Appliquer la garde à ces
+ * destinataires bloquerait toute facturation OPCO et France Travail — ce sont
+ * précisément les circuits de financement. D'où le paramètre explicite plutôt
+ * qu'un contrôle aveugle sur la présence du champ.
+ */
+export interface AcheteurFacture {
+  readonly nom: string | null | undefined;
+  readonly adresse: string | null | undefined;
+  readonly adresseRue?: string | null;
+  readonly adresseCodePostal?: string | null;
+  readonly adresseVille?: string | null;
+  readonly adressePaysCode?: string | null;
+}
+
+/** Libellés humains des champs acheteur. */
+const LABELS_ACHETEUR = {
+  nom: "nom ou raison sociale du client",
+  adresse: "adresse du client",
+} as const;
+
+/**
+ * Champs acheteur MANQUANTS pour une facture. Vide = conforme. Ne lève jamais.
+ *
+ * Destinée à alimenter un état d'aptitude côté écran (« cette fiche client ne
+ * permet pas encore de facturer ») autant que la garde bloquante ci-dessous —
+ * un seul calcul, donc l'écran et le refus ne peuvent pas diverger.
+ */
+export function champsAcheteurManquants(acheteur: AcheteurFacture): string[] {
+  const manquants: string[] = [];
+  if (!estRenseigne(acheteur.nom)) manquants.push(LABELS_ACHETEUR.nom);
+  // Adresse libre OU structurée : l'une des deux suffit à satisfaire L.441-9.
+  const aUneAdresse =
+    estRenseigne(acheteur.adresse) ||
+    (estRenseigne(acheteur.adresseRue) && estRenseigne(acheteur.adresseVille));
+  if (!aUneAdresse) manquants.push(LABELS_ACHETEUR.adresse);
+  return manquants;
+}
+
+/**
+ * `true` si l'adresse acheteur est STRUCTURÉE (rue + code postal + ville).
+ *
+ * NON BLOQUANT à dessein, et ce choix est daté. La facturation électronique
+ * (réception 1ᵉʳ septembre 2026, émission 1ᵉʳ septembre 2027) rendra le bloc
+ * `BG-8` d'EN 16931 obligatoire : une adresse en texte libre passera ce
+ * contrôle-ci et sera **rejetée par la plateforme**. Mais l'exiger aujourd'hui
+ * bloquerait toute facturation — au 2026-08-04, aucun client de production ne
+ * porte l'adresse structurée. On signale, on ne bloque pas encore.
+ */
+export function adresseAcheteurStructuree(acheteur: AcheteurFacture): boolean {
+  return (
+    estRenseigne(acheteur.adresseRue) &&
+    estRenseigne(acheteur.adresseCodePostal) &&
+    estRenseigne(acheteur.adresseVille)
+  );
+}
+
+/** Erreur de conformité : identité de l'acheteur incomplète pour une facture. */
+export class AcheteurIncompletError extends Error {
+  constructor(public readonly manquants: string[]) {
+    super(
+      `[conformité] Émission de la facture refusée : identité du client incomplète ` +
+        `(champ(s) manquant(s) : ${manquants.join(", ")}). ` +
+        `L'art. L.441-9 C. com. impose le nom des parties ET leur adresse. ` +
+        `Compléter la fiche client avant d'émettre.`,
+    );
+    this.name = "AcheteurIncompletError";
+  }
+}
+
+/**
+ * Lève `AcheteurIncompletError` si l'acheteur est incomplet. No-op pour les
+ * destinataires dont l'identité ne vient pas de la fiche client (OPCO, France
+ * Travail, bénéficiaire) — cf. l'avertissement en tête de section.
+ *
+ * À appeler AVANT toute création de `FactureFormation`, et hors d'un
+ * `try/catch` fail-soft : sinon un enregistrement non conforme serait créé
+ * pendant que l'erreur serait avalée.
+ */
+export function assertAcheteurComplet(acheteur: AcheteurFacture, destinataire: string): void {
+  if (destinataire !== "entreprise") return;
+  const manquants = champsAcheteurManquants(acheteur);
+  if (manquants.length > 0) throw new AcheteurIncompletError(manquants);
 }
 
 /**
