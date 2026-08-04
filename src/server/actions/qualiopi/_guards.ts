@@ -21,10 +21,17 @@ import {
   requireAdminWrite,
   requireAdminPublish,
   requireAdminDelete,
+  requireSuperAdmin,
   type AdminSession,
 } from "@/server/actions/knowledge/_guards";
 
-export { requireAdminRead, requireAdminWrite, requireAdminPublish, requireAdminDelete };
+export {
+  requireAdminRead,
+  requireAdminWrite,
+  requireAdminPublish,
+  requireAdminDelete,
+  requireSuperAdmin,
+};
 // NB : PAS de `export type { AdminSession }` ici. Turbopack (Next 16.2) traite à
 // tort un `export type { … }` (re-export specifier) dans un module "use server"
 // comme un Server Action runtime → `registerServerReference(AdminSession, …)` →

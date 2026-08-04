@@ -24,7 +24,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireSuperAdmin,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   creerAcces,
   verifierToken,
@@ -42,7 +46,6 @@ import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
-import { requireSuperAdmin } from "@/server/actions/content-gen/_auth";
 
 type ActionResult<T> = { data: T } | { error: string };
 

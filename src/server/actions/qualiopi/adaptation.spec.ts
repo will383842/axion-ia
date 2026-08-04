@@ -42,10 +42,8 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/lib/telegram", () => ({ sendTelegram: (a: unknown) => sendTelegram(a) }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(),
-  logQualiopiActivity: (a: unknown) => logActivity(a),
-}));
-vi.mock("@/server/actions/content-gen/_auth", () => ({
   requireSuperAdmin: () => requireSuperAdmin(),
+  logQualiopiActivity: (a: unknown) => logActivity(a),
 }));
 vi.mock("@/server/qualiopi/portail/cookie", () => ({
   getPortailToken: () => getPortailToken(),
