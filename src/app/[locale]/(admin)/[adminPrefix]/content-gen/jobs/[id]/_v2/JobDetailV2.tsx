@@ -16,7 +16,12 @@ import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
 import { formatDateFr } from "@/lib/format-date-fr";
-import { contentTypeLabelFr, jobStatusLabelFr } from "@/server/content-gen/shared/admin-labels";
+import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
+import {
+  contentTypeLabelFr,
+  jobStatusLabelFr,
+  searchIntentLabelFr,
+} from "@/server/content-gen/shared/admin-labels";
 
 // Heure seule (Europe/Paris) avec secondes — la table des logs horodate des
 // étapes d'un même job, la date complète serait répétée sur chaque ligne.
@@ -64,7 +69,7 @@ interface JobData {
   // Liens contextuels SP-04 P1
   templateId?: string | null;
   campaignId?: string | null;
-  template?: { id: string; name: string; version: number } | null;
+  template?: { id: string; slug: string; name: string; version: number } | null;
   reviewQueue?: { id: string; status: string } | null;
 }
 
@@ -149,7 +154,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <li>Région : {job.anchorRegionSlug ?? "—"}</li>
           <li>Taille : {job.targetAudienceSize ?? "—"}</li>
           <li>Organisation : {job.targetAudienceOrganisation ?? "—"}</li>
-          <li>Intention : {job.targetSearchIntent}</li>
+          <li>Intention : {searchIntentLabelFr(job.targetSearchIntent)}</li>
         </ul>
       </AdminCard>
 
@@ -198,12 +203,13 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <ul className="admin-inline-list">
             {job.template ? (
               <li>
-                <strong>Template :</strong>{" "}
+                <strong>Instruction IA :</strong>{" "}
                 <Link
                   href={`/fr/${adminPrefix}/content-gen/templates/${job.template.id}`}
                   className="admin-link"
                 >
-                  {job.template.name} (v{job.template.version})
+                  {libelleInstructionIA(job.template.slug, job.template.name)} (v
+                  {job.template.version})
                 </Link>
               </li>
             ) : null}

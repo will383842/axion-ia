@@ -694,7 +694,7 @@ export function CampaignWizardV2({
                         .filter((s) => s.length > 0);
                       update("customVilleSlugs", slugs);
                     }}
-                    placeholder="paris, lyon, marseille, ..."
+                    placeholder="paris, lyon, marseille, …"
                     className="admin-input mt-2"
                     aria-label="Identifiants villes sélectionnées"
                   />

@@ -262,7 +262,7 @@ export function AppreciationForm({
             rows={3}
             maxLength={5000}
             className={inputCls}
-            placeholder="Retour libre..."
+            placeholder="Retour libre…"
           />
         </div>
 
@@ -286,7 +286,7 @@ export function AppreciationForm({
 
         <div className="mt-[var(--space-admin-4)]">
           <button type="submit" disabled={isPending} className="admin-button">
-            {isPending ? "Enregistrement..." : "Enregistrer"}
+            {isPending ? "Enregistrement…" : "Enregistrer"}
           </button>
         </div>
       </form>

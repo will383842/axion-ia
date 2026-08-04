@@ -314,7 +314,7 @@ export function BaremeOpcoForm({ creerAction, opcoOptions }: BaremeOpcoFormProps
       )}
 
       <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer cette version"}
+        {isPending ? "Enregistrement…" : "Enregistrer cette version"}
       </button>
     </form>
   );

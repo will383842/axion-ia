@@ -213,24 +213,24 @@ export async function genererDossierSessionZip(
   );
   if (nbChainesAnormales > 0) {
     avertissements.push(
-      `⚠️ ${nbChainesAnormales} chaîne(s) de signatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
+      `⚠️ ${nbChainesAnormales} chaîne${nbChainesAnormales > 1 ? "s" : ""} de signatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
     );
   }
   if (nbChainesContresignAnormales > 0) {
     avertissements.push(
-      `⚠️ ${nbChainesContresignAnormales} chaîne(s) de contresignatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
+      `⚠️ ${nbChainesContresignAnormales} chaîne${nbChainesContresignAnormales > 1 ? "s" : ""} de contresignatures présentent une anomalie d'intégrité. Voir verification-integrite.json AVANT de produire ce dossier.`,
     );
   }
   if (nbImagesAlterees > 0) {
     avertissements.push(
-      `⚠️ ${nbImagesAlterees} image(s) de signature ne correspondent plus à leur condensat scellé (substitution ou absence sur R2). Voir « imagesAlterees » dans verification-integrite.json.`,
+      `⚠️ ${nbImagesAlterees} image${nbImagesAlterees > 1 ? "s" : ""} de signature ne correspondent plus à leur condensat scellé (substitution ou absence sur R2). Voir « imagesAlterees » dans verification-integrite.json.`,
     );
   }
   if (nbEffaces > 0) {
     // Informationnel, PAS un avertissement : le dossier est COMPLET justement
     // parce qu'il inclut ces preuves conservées. On le dit à l'auditeur.
     index.push(
-      `Dont ${nbEffaces} inscription(s) sous droit à l'effacement RGPD — signatures conservées et vérifiées (art. 17 §3 b).`,
+      `Dont ${nbEffaces} inscription${nbEffaces > 1 ? "s" : ""} sous droit à l'effacement RGPD — signatures conservées et vérifiées (art. 17 §3 b).`,
     );
   }
 
@@ -246,7 +246,7 @@ export async function genererDossierSessionZip(
   } else {
     zip.file("feuille-emargement.json", JSON.stringify(feuille, null, 2));
     index.push(
-      `Feuille d'émargement : ${feuille.journees.length} journée(s), ${feuille.totalSignatures} signature(s).`,
+      `Feuille d'émargement : ${feuille.journees.length} journée${feuille.journees.length > 1 ? "s" : ""}, ${feuille.totalSignatures} signature${feuille.totalSignatures > 1 ? "s" : ""}.`,
     );
   }
 
@@ -275,7 +275,7 @@ export async function genererDossierSessionZip(
 
   if (session.documents.length > 0 && joints === 0) {
     avertissements.push(
-      `⚠️ ${session.documents.length} document(s) en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
+      `⚠️ ${session.documents.length} document${session.documents.length > 1 ? "s" : ""} en base mais AUCUN PDF joint — vérifiez le stockage R2.`,
     );
   }
 

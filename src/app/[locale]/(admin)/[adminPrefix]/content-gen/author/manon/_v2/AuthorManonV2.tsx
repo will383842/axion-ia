@@ -196,7 +196,8 @@ export function AuthorManonV2({ author }: Props): React.ReactElement {
           </li>
         </ul>
         <p className="admin-meta">
-          V1 : photos servies depuis <code>/auteurs/</code>. Upload UI prévu V1.5.
+          Les photos sont servies depuis <code>/auteurs/</code>. Leur remplacement depuis la console
+          n&apos;est pas encore disponible.
         </p>
       </AdminCard>
     </AdminPageShell>

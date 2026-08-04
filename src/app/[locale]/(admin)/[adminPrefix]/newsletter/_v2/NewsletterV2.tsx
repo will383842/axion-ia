@@ -172,8 +172,11 @@ export function NewsletterV2({
               </select>
             </div>
             <div className="admin-field">
+              {/* L'en-tête de colonne avait été traduit, pas le libellé du
+                  filtre : la même donnée s'appelait « Langue » dans le tableau
+                  et « Locale » juste au-dessus. */}
               <label htmlFor="locale" className="admin-label">
-                Locale
+                Langue
               </label>
               <select
                 id="locale"

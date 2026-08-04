@@ -195,7 +195,7 @@ async function regleSessionBloqueeEnCours(now: Date): Promise<AlerteCandidate[]>
       titre: "Session non clôturée faute d'émargement",
       message:
         `La session ${designerSession(s)} est terminée depuis plus de 72 h mais reste « en cours » : ` +
-        `aucun de ses ${s._count.enrollments} inscrit(s) ne porte de trace de présence. ` +
+        `aucun de ses ${s._count.enrollments} inscrit${s._count.enrollments > 1 ? "s" : ""} ne porte de trace de présence. ` +
         `Tant qu'elle n'est pas clôturée, elle n'alimente ni le BPF, ni les attestations, ni les indicateurs.`,
       cibleType: "TrainingSession",
       cibleId: s.id,

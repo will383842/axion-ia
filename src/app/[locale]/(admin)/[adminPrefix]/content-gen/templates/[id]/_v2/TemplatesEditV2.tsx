@@ -5,6 +5,10 @@
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { TemplateForm } from "@/components/admin/content-gen/TemplateForm";
 import { SubmitButton } from "@/components/admin/content-gen/SubmitButton";
+import {
+  libelleInstructionIA,
+  libelleTypeContenu,
+} from "@/components/admin/content-gen/template-labels";
 import { enqueueDirectGen } from "@/server/actions/content-gen/enqueue";
 import { upsertTemplate } from "@/server/actions/content-gen/templates";
 import type {
@@ -91,12 +95,17 @@ export function TemplatesEditV2({ template }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title={template.name}
-        description={`${template.slug} · v${template.version} · ${template.contentType}${template.variant ? ` · variant ${template.variant}` : ""} · Gen ${template.generatedItems} / Pub ${template.publishedItems} / Fail ${template.failedItems}`}
+        title={libelleInstructionIA(template.slug, template.name)}
+        /* 🔴 Cette ligne, sous le titre de la page, disait :
+           « blog-from-rss-v1 · v1 · blog_from_rss · Gen 12 / Pub 3 / Fail 2 ».
+           Le type de contenu en valeur d'enum brute, « variant » en anglais,
+           et trois compteurs abrégés dont « Fail » — le plus important des
+           trois — était le moins lisible. */
+        description={`${template.slug} · v${template.version} · ${libelleTypeContenu(template.contentType)}${template.variant ? ` · variante ${template.variant}` : ""} · ${template.generatedItems} généré${template.generatedItems > 1 ? "s" : ""} · ${template.publishedItems} publié${template.publishedItems > 1 ? "s" : ""} · ${template.failedItems} en échec`}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
-        <h2 className="admin-h2">Tester avec ce template</h2>
+        <h2 className="admin-h2">Tester avec cette instruction</h2>
         <p className="admin-meta-block">
           Lance 1 job de génération qui réutilise ce template. Anti-doublon 60 s.
         </p>
@@ -140,9 +149,9 @@ export function TemplatesEditV2({ template }: Props): React.ReactElement {
             <SubmitButton
               variant="primary"
               pendingLabel="Mise en file…"
-              ariaLabel="Lancer un test de ce template"
+              ariaLabel="Lancer un test de cette instruction IA"
             >
-              Tester avec ce template
+              Tester avec cette instruction
             </SubmitButton>
           </div>
         </form>

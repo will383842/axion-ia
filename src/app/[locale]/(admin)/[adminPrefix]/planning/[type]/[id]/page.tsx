@@ -7,6 +7,7 @@
 // RSC pur, 0 JS client.
 
 import Link from "next/link";
+import { libelleStatutFacture } from "@/server/qualiopi/financements/statuts-facture";
 import { notFound } from "next/navigation";
 import { getPlanningEventDetail } from "@/features/admin-planning/detail";
 import { getTrainerConflicts } from "@/features/admin-planning/queries";
@@ -293,7 +294,7 @@ export default async function PlanningDetailPage({
               {e.factures.map((f) => (
                 <li key={f.id}>
                   {f.numero} · {money(f.montantHtCents)} HT · {f.destinataire} ·{" "}
-                  <strong>{f.statut}</strong>
+                  <strong>{libelleStatutFacture(f.statut)}</strong>
                   {f.emiseAt !== null ? ` · émise le ${dayKeyInParis(f.emiseAt)}` : ""}
                 </li>
               ))}

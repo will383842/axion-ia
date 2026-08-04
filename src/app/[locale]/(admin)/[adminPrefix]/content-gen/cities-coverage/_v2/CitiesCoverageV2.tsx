@@ -285,7 +285,7 @@ export async function CitiesCoverageV2({
               type="text"
               name="search"
               defaultValue={search ?? ""}
-              placeholder="Nom de ville..."
+              placeholder="Nom de ville…"
               className="admin-input"
             />
           </div>
@@ -298,7 +298,7 @@ export async function CitiesCoverageV2({
               type="text"
               name="dept"
               defaultValue={deptCode ?? ""}
-              placeholder="75, 69..."
+              placeholder="75, 69…"
               className="admin-input admin-input-w-sm"
             />
           </div>

@@ -82,8 +82,8 @@ export async function CostsV2(): Promise<React.ReactElement> {
       <AdminCard>
         <h2 className="admin-h2">Projection fin de mois</h2>
         <p className="admin-meta-block">
-          La projection nécessite ≥ 7 jours d&apos;historique mensuel. Le calcul devient utile une
-          fois le premier mois en prod terminé (Sprint 5+).
+          La projection demande au moins sept jours d&apos;historique sur le mois en cours. Tant
+          qu&apos;ils ne sont pas écoulés, le chiffre affiché n&apos;a pas de valeur.
         </p>
       </AdminCard>
     </AdminPageShell>

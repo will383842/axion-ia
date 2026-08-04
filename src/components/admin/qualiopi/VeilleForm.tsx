@@ -225,7 +225,7 @@ export function VeilleForm({ creerAction }: VeilleFormProps) {
           disabled={isPending}
           className="admin-button mt-[var(--space-admin-4)]"
         >
-          {isPending ? "Enregistrement..." : "Enregistrer la veille"}
+          {isPending ? "Enregistrement…" : "Enregistrer la veille"}
         </button>
       </form>
     </AdminBlocRepliable>

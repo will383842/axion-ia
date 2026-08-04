@@ -451,7 +451,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/coverage/presets`}>Presets campagnes</Link>
             </li>
             <li>
-              <Link href={`${base}/templates`}>Templates prompts</Link>
+              <Link href={`${base}/templates`}>Instructions IA</Link>
             </li>
           </ul>
         </AdminCard>
@@ -510,7 +510,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/settings/providers`}>Fournisseurs IA</Link>
             </li>
             <li>
-              <Link href={`${base}/settings/batches`}>Batches &amp; workers</Link>
+              <Link href={`${base}/settings/batches`}>Lots et files de traitement</Link>
             </li>
             <li>
               <Link href={`${base}/settings/quality-loop`}>Boucle qualité</Link>

@@ -30,7 +30,7 @@ export function RetryFailedReplyButton({ replyId }: Props): React.ReactElement {
           });
         }}
       >
-        {done ? "Renvoyée" : isPending ? "Renvoi en cours..." : "Réessayer l'envoi"}
+        {done ? "Renvoyée" : isPending ? "Renvoi en cours…" : "Réessayer l'envoi"}
       </button>
       {error && <p className="mt-1 text-xs text-[color:var(--color-admin-danger-fg)]">{error}</p>}
     </div>

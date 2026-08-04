@@ -163,3 +163,18 @@ export const CAREER_VERTICALS: ReadonlyArray<{
     en: "AI websites & SaaS",
   },
 ];
+
+/**
+ * Libellés français du statut d'une offre d'emploi.
+ *
+ * 🔴 La liste des offres affichait « Brouillon / Publié / Archivé » depuis une
+ * table locale à son composant ; la page de détail de la MÊME offre rendait la
+ * valeur brute — « Statut : draft ». Deux écrans reliés par un clic, deux
+ * langues. La table remonte donc là où vivent déjà les libellés des catégories
+ * de carrière.
+ */
+export const LIBELLE_STATUT_OFFRE: Record<string, string> = {
+  draft: "Brouillon",
+  published: "Publié",
+  archived: "Archivé",
+};

@@ -27,7 +27,7 @@ import { TriangleAlert } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Toutes les URLs — Admin Axion-IA",
+  title: "Explorateur du site — toutes les adresses | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

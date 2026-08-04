@@ -200,7 +200,7 @@ export function PartenariatForm({ creerAction }: PartenariatFormProps) {
       )}
 
       <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer le partenariat"}
+        {isPending ? "Enregistrement…" : "Enregistrer le partenariat"}
       </button>
     </form>
   );

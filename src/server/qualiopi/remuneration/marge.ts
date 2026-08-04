@@ -407,7 +407,9 @@ export function margeSessionsToCsv(
   const pied = [
     csvEsc("Période"),
     csvEsc(periodeLabel(annee, periode)),
-    csvEsc(`${rows.length} session(s) réalisée(s)`),
+    csvEsc(
+      `${rows.length} session${rows.length > 1 ? "s" : ""} réalisée${rows.length > 1 ? "s" : ""}`,
+    ),
   ].join(";");
 
   return [header, ...lignes, "", pied].join("\n") + "\n";

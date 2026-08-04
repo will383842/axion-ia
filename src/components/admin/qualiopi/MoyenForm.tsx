@@ -187,7 +187,7 @@ export function MoyenForm({ creerAction }: MoyenFormProps) {
           disabled={isPending}
           className="admin-button mt-[var(--space-admin-4)]"
         >
-          {isPending ? "Enregistrement..." : "Enregistrer le moyen"}
+          {isPending ? "Enregistrement…" : "Enregistrer le moyen"}
         </button>
       </form>
     </AdminBlocRepliable>

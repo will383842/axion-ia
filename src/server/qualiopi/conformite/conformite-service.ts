@@ -455,15 +455,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // off.1 : couvert seulement si formations/fiches présentes ET NDA DREETS renseigné
   //         + mention des formations certifiantes si présentes (RS/RNCP)
   const off1Preuves: string[] = [
-    `${nbFormations} formation(s) créée(s)`,
-    `${nbDocuments} document(s) généré(s)`,
+    `${nbFormations} formation${nbFormations > 1 ? "s" : ""} créée${nbFormations > 1 ? "s" : ""}`,
+    `${nbDocuments} document${nbDocuments > 1 ? "s" : ""} généré${nbDocuments > 1 ? "s" : ""}`,
     ndaNumero.trim().length > 0
       ? `NDA DREETS : ${ndaNumero}`
       : "NDA DREETS : non renseigné (requis pour couverture off.1)",
   ];
   if (nbFormationsCertifiantes > 0) {
     off1Preuves.push(
-      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP renseigné`,
+      `${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} certifiante${nbFormationsCertifiantes > 1 ? "s" : ""} avec code RS/RNCP renseigné`,
     );
   }
   set(1, off1Preuves, nbFormations > 0 && ndaNumero.trim().length > 0);
@@ -475,8 +475,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     2,
     [
-      `${nbFormationsResultatsPublies} formation(s) avec indicateurs de résultats publiés`,
-      `${nbEvaluationsFinales} évaluation(s) finale(s) (taux de réussite mesurable)`,
+      `${nbFormationsResultatsPublies} formation${nbFormationsResultatsPublies > 1 ? "s" : ""} avec indicateurs de résultats publiés`,
+      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""} (taux de réussite mesurable)`,
       nbFormationsResultatsPublies === 0
         ? "Aucun indicateur de résultat publié — off.2 exige la diffusion (canal public à alimenter)"
         : "Indicateurs de résultats diffusés",
@@ -489,8 +489,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     3,
     [
-      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
-      `${nbEvaluationsFinales} évaluation(s) finale(s) (taux d'obtention)`,
+      `${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} certifiante${nbFormationsCertifiantes > 1 ? "s" : ""} avec code RS/RNCP`,
+      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""} (taux d'obtention)`,
     ],
     nbFormationsCertifiantes > 0 && nbEvaluationsFinales > 0,
   );
@@ -502,8 +502,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     4,
     [
-      `${nbFormations} formation(s)`,
-      `${nbPositionnementsBesoin} analyse(s) du besoin (questionnaire de positionnement répondu)`,
+      `${nbFormations} formation${nbFormations > 1 ? "s" : ""}`,
+      `${nbPositionnementsBesoin} analyse${nbPositionnementsBesoin > 1 ? "s" : ""} du besoin (questionnaire de positionnement répondu)`,
     ],
     nbFormations > 0 && nbPositionnementsBesoin > 0,
   );
@@ -512,7 +512,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     5,
     [
-      `${nbFormationsAvecStructure} formation(s) avec objectifs pédagogiques définis (structure générée)`,
+      `${nbFormationsAvecStructure} formation${nbFormationsAvecStructure > 1 ? "s" : ""} avec objectifs pédagogiques définis (structure générée)`,
     ],
     nbFormationsAvecStructure > 0,
   );
@@ -520,7 +520,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //         a été réellement produit (signal distinct de off.5).
   set(
     6,
-    [`${nbFormationsAvecContenu} formation(s) avec contenu et modalités réellement produits`],
+    [
+      `${nbFormationsAvecContenu} formation${nbFormationsAvecContenu > 1 ? "s" : ""} avec contenu et modalités réellement produits`,
+    ],
     nbFormationsAvecContenu > 0,
   );
   // off.7 : adéquation contenus / exigences certification — [P1] exige désormais que
@@ -529,7 +531,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     7,
     [
-      `${nbFormationsCertifiantesAvecBlocs} formation(s) certifiante(s) avec code RS/RNCP ET blocs de compétences renseignés`,
+      `${nbFormationsCertifiantesAvecBlocs} formation${nbFormationsCertifiantesAvecBlocs > 1 ? "s" : ""} certifiante${nbFormationsCertifiantesAvecBlocs > 1 ? "s" : ""} avec code RS/RNCP ET blocs de compétences renseignés`,
       nbFormationsCertifiantesAvecBlocs > 0
         ? "Adéquation aux blocs de compétences du référentiel vérifiable"
         : `Aucune formation certifiante avec blocs renseignés (${nbFormationsCertifiantes} avec code RS/RNCP seul)`,
@@ -538,7 +540,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   set(
     8,
-    [`${nbEvaluationsInitiales} évaluation(s) initiale(s) de positionnement`],
+    [
+      `${nbEvaluationsInitiales} évaluation${nbEvaluationsInitiales > 1 ? "s" : ""} initiale${nbEvaluationsInitiales > 1 ? "s" : ""} de positionnement`,
+    ],
     nbEvaluationsInitiales > 0,
   );
 
@@ -548,26 +552,34 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     9,
     [
-      `${nbDocsAccueil} document(s) d'accueil/information (convocation, livret, règlement)`,
-      `${nbSessionsRealisees} session(s) réalisées`,
+      `${nbDocsAccueil} document${nbDocsAccueil > 1 ? "s" : ""} d'accueil/information (convocation, livret, règlement)`,
+      `${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisées`,
     ],
     nbDocsAccueil > 0 && nbSessionsRealisees > 0,
   );
   set(
     10,
-    [`${nbEnrollmentsAdaptations} adaptation(s) réalisées renseignées`],
+    [
+      `${nbEnrollmentsAdaptations} adaptation${nbEnrollmentsAdaptations > 1 ? "s" : ""} réalisées renseignées`,
+    ],
     nbEnrollmentsAdaptations > 0,
   );
-  set(11, [`${nbEvaluationsFinales} évaluation(s) finale(s)`], nbEvaluationsFinales > 0);
+  set(
+    11,
+    [
+      `${nbEvaluationsFinales} évaluation${nbEvaluationsFinales > 1 ? "s" : ""} finale${nbEvaluationsFinales > 1 ? "s" : ""}`,
+    ],
+    nbEvaluationsFinales > 0,
+  );
   // off.12 : suivi de l'assiduité — [P1] rattaché au sous-système de présence RÉEL
   //          (Enrollment.emargementSigneAt : émargement présentiel signé / relevé
   //          distanciel rapproché), et non plus au seul comptage de PDF générés.
   set(
     12,
     [
-      `${nbSessionsRealisees} session(s) réalisée(s)`,
-      `${nbEnrollmentsEmarges} inscription(s) avec émargement réellement signé (présentiel/distanciel)`,
-      `${nbDocsPresence} preuve(s) documentaire(s) de présence générée(s)`,
+      `${nbSessionsRealisees} session${nbSessionsRealisees > 1 ? "s" : ""} réalisée${nbSessionsRealisees > 1 ? "s" : ""}`,
+      `${nbEnrollmentsEmarges} inscription${nbEnrollmentsEmarges > 1 ? "s" : ""} avec émargement réellement signé (présentiel/distanciel)`,
+      `${nbDocsPresence} preuve${nbDocsPresence > 1 ? "s" : ""} documentaire${nbDocsPresence > 1 ? "s" : ""} de présence générée${nbDocsPresence > 1 ? "s" : ""}`,
     ],
     nbSessionsRealisees > 0 && nbEnrollmentsEmarges > 0,
   );
@@ -585,7 +597,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     16,
     [
-      `${nbFormationsCertifiantes} formation(s) certifiante(s) avec code RS/RNCP`,
+      `${nbFormationsCertifiantes} formation${nbFormationsCertifiantes > 1 ? "s" : ""} certifiante${nbFormationsCertifiantes > 1 ? "s" : ""} avec code RS/RNCP`,
       nbFormationsCertifiantes > 0
         ? "Présentation à la certification possible (RS/RNCP identifiée)"
         : "Aucune formation certifiante avec code RS/RNCP",
@@ -601,8 +613,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     17,
     [
-      `${nbTrainers} formateur(s) actif(s)`,
-      `${nbMoyensTechniquesVerifies} moyen(s) technique(s) actif(s) vérifié(s) (salle/matériel/plateforme)`,
+      `${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} actif${nbTrainers > 1 ? "s" : ""}`,
+      `${nbMoyensTechniquesVerifies} moyen${nbMoyensTechniquesVerifies > 1 ? "s" : ""} technique${nbMoyensTechniquesVerifies > 1 ? "s" : ""} actif${nbMoyensTechniquesVerifies > 1 ? "s" : ""} vérifié${nbMoyensTechniquesVerifies > 1 ? "s" : ""} (salle/matériel/plateforme)`,
     ],
     nbTrainers > 0 && nbMoyensTechniquesVerifies > 0,
   );
@@ -612,9 +624,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     18,
     [
-      `${nbTrainers} formateur(s) coordonnés`,
+      `${nbTrainers} formateur${nbTrainers > 1 ? "s" : ""} coordonnés`,
       categoriesUtilisees.length > 0
-        ? `${categoriesUtilisees.length} catégorie(s) de moyens utilisée(s) (${categoriesUtilisees.join(", ")})`
+        ? `${categoriesUtilisees.length} catégorie${categoriesUtilisees.length > 1 ? "s" : ""} de moyens utilisée${categoriesUtilisees.length > 1 ? "s" : ""} (${categoriesUtilisees.join(", ")})`
         : "Aucun moyen pédagogique actif dans l'inventaire",
       categoriesSansVerification.length > 0
         ? `Catégorie(s) sans moyen vérifié : ${categoriesSansVerification.join(", ")}`
@@ -636,8 +648,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     19,
     [
-      `${nbFormationsActivesAvecSupport}/${nbFormationsActives} formation(s) active(s) dotée(s) d'au moins une ressource finalisée (${tauxCouvertureSupports} %)`,
-      `${nbSupportsGeneres} support(s) finalisé(s) (généré + PDF disponible) sur ${nbSupports} au total`,
+      `${nbFormationsActivesAvecSupport}/${nbFormationsActives} formation${nbFormationsActives > 1 ? "s" : ""} active${nbFormationsActives > 1 ? "s" : ""} dotée${nbFormationsActives > 1 ? "s" : ""} d'au moins une ressource finalisée (${tauxCouvertureSupports} %)`,
+      `${nbSupportsGeneres} support${nbSupportsGeneres > 1 ? "s" : ""} finalisé${nbSupportsGeneres > 1 ? "s" : ""} (généré + PDF disponible) sur ${nbSupports} au total`,
       nbFormationsActives > 0 && nbFormationsActivesAvecSupport < nbFormationsActives
         ? `${nbFormationsActives - nbFormationsActivesAvecSupport} formation(s) active(s) SANS aucune ressource — off.19 exige la mise à disposition pour chaque prestation`
         : `Toutes les formations actives disposent d'une ressource`,
@@ -646,7 +658,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   set(
     20,
-    [`${nbTraineesHandicap} stagiaire(s) en situation de handicap suivi(s)`],
+    [
+      `${nbTraineesHandicap} stagiaire${nbTraineesHandicap > 1 ? "s" : ""} en situation de handicap suivi${nbTraineesHandicap > 1 ? "s" : ""}`,
+    ],
     nbTraineesHandicap > 0 || nbEnrollmentsAdaptations > 0,
   );
 
@@ -657,8 +671,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     21,
     [
-      `${nbTrainersAvecCVRecent} formateur(s) actif(s) avec CV téléversé et à jour (< 24 mois)`,
-      `${nbTrainersAvecCV} formateur(s) avec CV téléversé (toutes dates) / ${nbTrainers} actif(s)`,
+      `${nbTrainersAvecCVRecent} formateur${nbTrainersAvecCVRecent > 1 ? "s" : ""} actif${nbTrainersAvecCVRecent > 1 ? "s" : ""} avec CV téléversé et à jour (< 24 mois)`,
+      `${nbTrainersAvecCV} formateur${nbTrainersAvecCV > 1 ? "s" : ""} avec CV téléversé (toutes dates) / ${nbTrainers} actif${nbTrainers > 1 ? "s" : ""}`,
     ],
     nbTrainersAvecCVRecent > 0,
   );
@@ -669,8 +683,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     22,
     [
-      `${nbDevActionsRecentes} action(s) de développement des compétences tracée(s) (< 24 mois : entretien pro / formation / veille)`,
-      `${nbTrainersAvecCV} formateur(s) avec CV/qualification tracée`,
+      `${nbDevActionsRecentes} action${nbDevActionsRecentes > 1 ? "s" : ""} de développement des compétences tracée${nbDevActionsRecentes > 1 ? "s" : ""} (< 24 mois : entretien pro / formation / veille)`,
+      `${nbTrainersAvecCV} formateur${nbTrainersAvecCV > 1 ? "s" : ""} avec CV/qualification tracée`,
     ],
     nbDevActionsRecentes > 0,
   );
@@ -682,21 +696,21 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     23,
     [
-      `${nbVeilleLegaleExploitee} entrée(s) de veille légale/réglementaire exploitée(s) (< 12 mois, avec décision) sur ${nbVeilleLegale} au total`,
+      `${nbVeilleLegaleExploitee} entrée${nbVeilleLegaleExploitee > 1 ? "s" : ""} de veille légale/réglementaire exploitée${nbVeilleLegaleExploitee > 1 ? "s" : ""} (< 12 mois, avec décision) sur ${nbVeilleLegale} au total`,
     ],
     nbVeilleLegaleExploitee > 0,
   );
   set(
     24,
     [
-      `${nbVeilleMetiersExploitee} entrée(s) de veille emplois/métiers exploitée(s) (< 12 mois, avec décision) sur ${nbVeilleMetiers} au total`,
+      `${nbVeilleMetiersExploitee} entrée${nbVeilleMetiersExploitee > 1 ? "s" : ""} de veille emplois/métiers exploitée${nbVeilleMetiersExploitee > 1 ? "s" : ""} (< 12 mois, avec décision) sur ${nbVeilleMetiers} au total`,
     ],
     nbVeilleMetiersExploitee > 0,
   );
   set(
     25,
     [
-      `${nbVeillePedagogiqueExploitee} entrée(s) de veille pédagogique/technologique exploitée(s) (< 12 mois, avec décision) sur ${nbVeillePedagogique} au total`,
+      `${nbVeillePedagogiqueExploitee} entrée${nbVeillePedagogiqueExploitee > 1 ? "s" : ""} de veille pédagogique/technologique exploitée${nbVeillePedagogiqueExploitee > 1 ? "s" : ""} (< 12 mois, avec décision) sur ${nbVeillePedagogique} au total`,
     ],
     nbVeillePedagogiqueExploitee > 0,
   );
@@ -707,8 +721,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     26,
     [
-      `${nbPartenariatsHandicap} partenariat(s) réseau handicap (Agefiph/Cap emploi/RHF) sur ${nbPartenariats} au total`,
-      `${nbTraineesHandicap} stagiaire(s) handicap suivi(s)`,
+      `${nbPartenariatsHandicap} partenariat${nbPartenariatsHandicap > 1 ? "s" : ""} réseau handicap (Agefiph/Cap emploi/RHF) sur ${nbPartenariats} au total`,
+      `${nbTraineesHandicap} stagiaire${nbTraineesHandicap > 1 ? "s" : ""} handicap suivi${nbTraineesHandicap > 1 ? "s" : ""}`,
       referentHandicapEmailRenseigne
         ? `Référent handicap : ${referentHandicapNom} (${referentHandicapEmail})`
         : "Référent handicap : email non renseigné (désignation à formaliser)",
@@ -732,9 +746,9 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     27,
     [
-      `${totalSousTraitantsConformes} sous-traitant(s) conforme(s) : NDA + vérif data.gouv + contrat signé`,
+      `${totalSousTraitantsConformes} sous-traitant${totalSousTraitantsConformes > 1 ? "s" : ""} conforme${totalSousTraitantsConformes > 1 ? "s" : ""} : NDA + vérif data.gouv + contrat signé`,
       totalSousTraitants > 0
-        ? `${totalSousTraitants} référencé(s) au total — ${nbSousTraitants} organisme(s), ${nbFormateursSousTraitants} formateur(s) indépendant(s)`
+        ? `${totalSousTraitants} référencé${totalSousTraitants > 1 ? "s" : ""} au total — ${nbSousTraitants} organisme${nbSousTraitants > 1 ? "s" : ""}, ${nbFormateursSousTraitants} formateur${nbFormateursSousTraitants > 1 ? "s" : ""} indépendant${nbFormateursSousTraitants > 1 ? "s" : ""}`
         : "Aucun sous-traitant référencé — off.27 exige alors une procédure « dispositions sous-traitance »",
     ],
     totalSousTraitantsConformes > 0,
@@ -746,7 +760,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     28,
     coachingAfestConforme > 0
       ? [
-          `${coachingAfestConforme} parcours AFEST conforme(s) (analyse, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2)`,
+          `${coachingAfestConforme} parcours AFEST conforme${coachingAfestConforme > 1 ? "s" : ""} (analyse, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2)`,
         ]
       : appAfestApplicable
         ? ["Aucun parcours AFEST 1-to-1 conforme tracé — à compléter."]
@@ -773,8 +787,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   set(
     30,
     [
-      `${nbAppreciations} appréciation(s) recueillie(s)`,
-      `${nbAppreciationSourcesDistinctes} source(s) distincte(s) parmi stagiaire/entreprise/financeur/formateur (≥ 2 requis)`,
+      `${nbAppreciations} appréciation${nbAppreciations > 1 ? "s" : ""} recueillie${nbAppreciations > 1 ? "s" : ""}`,
+      `${nbAppreciationSourcesDistinctes} source${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} distincte${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} parmi stagiaire/entreprise/financeur/formateur (≥ 2 requis)`,
     ],
     nbAppreciationSourcesDistinctes >= 2,
   );
@@ -793,13 +807,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       responsableQualiteNom.trim().length > 0
         ? `Process réclamations piloté par : ${responsableQualiteNom}`
         : "Responsable qualité (propriétaire du process réclamations) : non renseigné",
-      `${nbReclamations} réclamation(s) enregistrée(s) et traitée(s)`,
+      `${nbReclamations} réclamation${nbReclamations > 1 ? "s" : ""} enregistrée${nbReclamations > 1 ? "s" : ""} et traitée${nbReclamations > 1 ? "s" : ""}`,
     ],
     procedureReclamationsOk && responsableQualiteNom.trim().length > 0,
   );
   set(
     32,
-    [`${nbRevues} revue(s) de direction`, `${nbReclamations} réclamation(s) + plan d'actions`],
+    [
+      `${nbRevues} revue${nbRevues > 1 ? "s" : ""} de direction`,
+      `${nbReclamations} réclamation${nbReclamations > 1 ? "s" : ""} + plan d'actions`,
+    ],
     nbRevues > 0,
   );
 

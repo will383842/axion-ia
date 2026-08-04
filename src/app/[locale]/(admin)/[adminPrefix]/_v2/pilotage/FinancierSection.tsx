@@ -95,8 +95,17 @@ export function FinancierSection({ adminPrefix, financier, objectif }: Props): R
       </dl>
       {objectif.cibleAnnuelleCents === null ? (
         <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          Définir une cible : Système → Settings, clé pilotage.ca_cible_annuel_euros (nombre en
-          euros).
+          {/* 🔴 Cette phrase renvoyait vers « Système → Settings ». L'entrée de
+              menu s'appelle « Paramètres » depuis la refonte de la navigation :
+              l'instruction désignait un libellé qui n'existe plus. Et comme
+              elle ne s'affiche QUE tant que la cible n'est pas posée, c'est la
+              seule consigne que voit celui qui cherche justement où la poser.
+              Passée en lien : on ne demande plus de retrouver un chemin. */}
+          Définir une cible :{" "}
+          <Link href={`/fr/${adminPrefix}/settings/new`} className="admin-link">
+            Système → Paramètres → Nouvelle clé
+          </Link>
+          , clé <code>pilotage.ca_cible_annuel_euros</code> (un nombre, en euros).
         </p>
       ) : null}
 

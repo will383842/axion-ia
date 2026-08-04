@@ -56,9 +56,18 @@ async function checkCoolify(): Promise<{ status: Status; detail: string | null }
     const data = (await res.json()) as { status?: string; last_online_at?: string };
     const containerStatus = data.status ?? "?";
     const isHealthy = containerStatus.includes("running:healthy");
+    // 🔴 Le détail affichait la chaîne brute de Coolify — « running:healthy »
+    // s'écrivait tel quel sur un écran par ailleurs entièrement en français.
+    // On dit l'état, et on garde la valeur d'origine entre parenthèses : elle
+    // sert quand il faut la recopier dans un ticket.
+    const enMarche = containerStatus.startsWith("running");
     return {
       status: isHealthy ? "ok" : "degraded",
-      detail: containerStatus,
+      detail: isHealthy
+        ? `En marche, sonde de santé au vert (${containerStatus})`
+        : enMarche
+          ? `En marche, sonde de santé non confirmée (${containerStatus})`
+          : `À l'arrêt (${containerStatus})`,
     };
   } catch {
     return { status: "unknown", detail: "Service injoignable" };
@@ -197,9 +206,12 @@ async function checkHetznerServer(): Promise<{ status: Status; detail: string | 
     };
     const serverStatus = data.server?.status ?? "?";
     const ip = data.server?.public_net?.ipv4?.ip;
+    // Même correctif que pour le conteneur : « running » venait de l'API
+    // Hetzner et s'affichait sans traduction au milieu d'une ligne française.
+    const enMarche = serverStatus === "running";
     return {
-      status: serverStatus === "running" ? "ok" : "degraded",
-      detail: `ID ${serverId} · ${serverStatus}${ip ? ` · ${ip}` : ""}`,
+      status: enMarche ? "ok" : "degraded",
+      detail: `ID ${serverId} · ${enMarche ? "en marche" : `état « ${serverStatus} »`}${ip ? ` · ${ip}` : ""}`,
     };
   } catch {
     return { status: "unknown", detail: "Service injoignable" };
@@ -353,7 +365,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://dash.cloudflare.com/?to=/:account/r2",
       status: r2.status,
       detail: r2.detail,
-      paid: "0 € (Free tier 10 GB stockage + 1M requests/mois)",
+      paid: "0 € (offre gratuite : 10 Go de stockage, 1 M de requêtes/mois)",
     },
     {
       name: "Cloudflare",
@@ -361,7 +373,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://dash.cloudflare.com",
       status: cloudflare.status,
       detail: cloudflare.detail,
-      paid: "0 € (Free plan)",
+      paid: "0 € (offre gratuite)",
     },
     {
       name: "Coolify",
@@ -382,7 +394,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       status: "not-checked",
       detail:
         "main = production · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
-      paid: "0 € (Free private repo)",
+      paid: "0 € (dépôt privé gratuit)",
     },
     {
       // Même raison que GitHub repo ci-dessus : l'API Actions runs d'un repo
@@ -393,7 +405,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       status: "not-checked",
       detail:
         "Workflow deploy-coolify.yml · non vérifié automatiquement (repo privé, nécessiterait un token dédié)",
-      paid: "0 € (2000 min/mois free)",
+      paid: "0 € (2 000 min/mois incluses)",
     },
     {
       name: "UptimeRobot",
@@ -401,7 +413,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://uptimerobot.com/dashboard",
       status: uptimeRobot.status,
       detail: uptimeRobot.detail,
-      paid: "0 € (Free plan, 50 monitors)",
+      paid: "0 € (offre gratuite, 50 sondes)",
     },
     {
       name: "Sentry",
@@ -409,7 +421,7 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://sentry.io/organizations/axion-ia-prod/projects/",
       status: sentry.status,
       detail: sentry.detail,
-      paid: "0 € (Free 5k errors/mois)",
+      paid: "0 € (5 000 erreurs/mois incluses)",
     },
     {
       name: "Plausible",

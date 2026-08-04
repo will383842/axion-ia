@@ -250,7 +250,7 @@ export function ReclamationForm({ creerAction }: ReclamationFormProps) {
           disabled={isPending}
           className="admin-button mt-[var(--space-admin-4)]"
         >
-          {isPending ? "Enregistrement..." : "Enregistrer la réclamation"}
+          {isPending ? "Enregistrement…" : "Enregistrer la réclamation"}
         </button>
       </form>
     </AdminBlocRepliable>
@@ -397,7 +397,7 @@ export function ReclamationReponseForm({
       )}
 
       <button type="submit" disabled={isPending} className="admin-button">
-        {isPending ? "Enregistrement..." : "Mettre à jour"}
+        {isPending ? "Enregistrement…" : "Mettre à jour"}
       </button>
     </form>
   );

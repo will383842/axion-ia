@@ -223,12 +223,18 @@ export function ConventionPdf({
             </View>
           </View>
           <FieldRow label="Public visé" value={data.publicVise} />
-          <FieldRow label="Durée" value={`${data.dureeHeures} heure(s)`} />
+          <FieldRow
+            label="Durée"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
           <FieldRow label="Modalité" value={data.modalite} />
           <FieldRow label="Lieu" value={data.lieu} />
-          <FieldRow label="Effectif prévu" value={`${data.effectif} stagiaire(s)`} />
+          <FieldRow
+            label="Effectif prévu"
+            value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
+          />
           {/*
             🔴 Trois mentions EXIGÉES par l'article L.6353-1 et absentes de la
             convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,

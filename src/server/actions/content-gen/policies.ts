@@ -18,6 +18,10 @@ import type { ContentType } from "../../../../prisma/generated/client";
 import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 import { CONTENT_TYPES_ALL } from "./policies-constants";
+import {
+  validateIntentDistribution,
+  toPourcentages,
+} from "../../content-gen/intent-distribution-schema";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
 // Schemas structurels — règles métier (somme=100, target_must_be_higher) restent
@@ -409,10 +413,27 @@ const INTENT_DEFAULTS: SearchIntentDistribution = {
 };
 
 export async function getSearchIntentDistribution(): Promise<SearchIntentDistribution> {
-  return readContentGenConfig<SearchIntentDistribution>(
-    "search_intent_distribution",
-    INTENT_DEFAULTS,
-  );
+  // 🔴 `readContentGenConfig` fait un `as unknown as T` NON VÉRIFIÉ : les
+  // valeurs par défaut ne servent que si la LIGNE EST ABSENTE, jamais si elle
+  // est mal formée. Or celle de production porte `commercial_investigation` et
+  // des fractions de somme 1, là où cet écran attend `commercial` et des
+  // pourcentages de somme 100 — d'où « Somme actuelle : NaN % » et un champ
+  // vide, constatés le 2026-08-03. On passe donc par le validateur partagé,
+  // qui replie l'alias, puis on ramène à l'échelle de l'écran.
+  const brut = await readContentGenConfig<unknown>("search_intent_distribution", INTENT_DEFAULTS);
+  const pct = toPourcentages(validateIntentDistribution(brut));
+  const lu = (cle: keyof SearchIntentDistribution): number => pct[cle] ?? 0;
+  const somme = Object.values(pct).reduce((s, v) => s + v, 0);
+  // Aucune clé exploitable : on montre les valeurs par défaut plutôt qu'une
+  // grille de zéros, qui laisserait croire qu'aucune intention n'est générée.
+  if (somme <= 0) return INTENT_DEFAULTS;
+  return {
+    informational: lu("informational"),
+    commercial: lu("commercial"),
+    local: lu("local"),
+    transactional: lu("transactional"),
+    navigational: lu("navigational"),
+  };
 }
 
 export async function updateSearchIntentDistribution(

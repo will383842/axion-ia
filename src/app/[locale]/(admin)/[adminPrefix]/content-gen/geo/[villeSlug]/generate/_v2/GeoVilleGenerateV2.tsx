@@ -3,6 +3,7 @@
 // Geo ville generate V2 — AdminPageShell + AdminPageHeader + AdminCard.
 
 import Link from "next/link";
+import { contentTypeLabelFr, JOB_STATUS_LABELS_FR } from "@/server/content-gen/shared/admin-labels";
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
 import { prisma } from "@/lib/prisma";
 import { formatDateFr } from "@/lib/format-date-fr";
@@ -69,8 +70,8 @@ export async function GeoVilleGenerateV2({
                         {formatDateFr(j.createdAt)}
                       </Link>
                     </td>
-                    <td>{j.contentType}</td>
-                    <td>{j.status}</td>
+                    <td>{contentTypeLabelFr(j.contentType)}</td>
+                    <td>{JOB_STATUS_LABELS_FR[j.status] ?? j.status}</td>
                     <td>{j.qualityScore ?? "—"}</td>
                   </tr>
                 ))}

@@ -41,7 +41,7 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Règles de publication"
-        description="Skip-existing · plagiat seuils · retention tier-3 · RSS auto-publish."
+        description="Publication automatique, seuils de score, plafonds des flux RSS, seuils de plagiat et durée de conservation des contenus de troisième niveau."
       />
 
       <AdminCard>

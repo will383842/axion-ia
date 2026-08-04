@@ -227,7 +227,7 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
     <AdminPageShell>
       <AdminPageHeader
         title="Ordre des villes"
-        description={`File globale partagée par toutes les campagnes en mode global_queue (${initialTotal} villes). Drag-and-drop pour réordonner, épinglez les villes prioritaires en tête.`}
+        description={`File globale partagée par toutes les campagnes en mode « file globale » (${initialTotal} villes). Drag-and-drop pour réordonner, épinglez les villes prioritaires en tête.`}
       />
 
       <div className="mb-[var(--space-admin-6,16px)] grid grid-cols-2 gap-[var(--space-admin-4,8px)] sm:grid-cols-4">

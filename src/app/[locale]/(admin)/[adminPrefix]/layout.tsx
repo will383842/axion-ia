@@ -87,7 +87,28 @@ export const dynamic = "force-dynamic";
 // Le robots.txt ne suffit pas (il bloque /admin/ générique mais pas
 // /[adminPrefix]/ dynamique). Cette propagation via layout couvre les
 // 109 pages enfants en une seule déclaration.
+/**
+ * 🔴 171 PAGES DE LA CONSOLE S'ANNONÇAIENT COMME LE SITE MARKETING.
+ *
+ * Vérifié dans le navigateur en production, avec les deux contrôles :
+ *   - /alerts (sans metadata propre) → onglet « Axion-IA — Cabinet IA
+ *     opérationnel », alors que la page titre « Alertes ops » ;
+ *   - /qualiopi/stagiaires (avec metadata) → onglet correct.
+ *
+ * Ce layout ne déclarait que « robots ». Sans « title », la résolution
+ * remontait jusqu'au titre par défaut de la locale — celui du site public.
+ * Sur 262 pages d'administration, 171 n'ont pas de titre propre : leur
+ * onglet, leur favori et leur historique portaient le nom d'un autre site.
+ *
+ * Un défaut posé ici suffit : les 91 pages qui déclarent leur titre le gardent,
+ * les 171 autres héritent d'un nom d'administration. Le gabarit du site public
+ * (« … · Axion-IA ») est neutralisé pour la console : un écran interne n'a pas
+ * à se présenter sous la marque commerciale.
+ *
+ * Ça ne se voit pas en lisant une page : il faut ouvrir un onglet.
+ */
 export const metadata: Metadata = {
+  title: { default: "Console admin | Axion-IA", template: "%s" },
   robots: { index: false, follow: false },
 };
 

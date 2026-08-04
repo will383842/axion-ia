@@ -45,7 +45,9 @@ function buildAnalyseActivite(
   }
   const parts: string[] = [];
   if (Array.isArray(carto.taches) && carto.taches.length > 0) {
-    parts.push(`${carto.taches.length} tâche(s) cartographiée(s)`);
+    parts.push(
+      `${carto.taches.length} tâche${carto.taches.length > 1 ? "s" : ""} cartographiée${carto.taches.length > 1 ? "s" : ""}`,
+    );
   }
   if (carto.chronophages) parts.push(`Chronophages : ${carto.chronophages}`);
   if (carto.irritants) parts.push(`Irritants : ${carto.irritants}`);

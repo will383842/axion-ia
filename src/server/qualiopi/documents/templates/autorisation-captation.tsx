@@ -135,7 +135,7 @@ export function AutorisationCaptationPdf({
           <BulletList items={data.supports} />
           <FieldRow
             label="Durée d'utilisation"
-            value={`${data.dureeAnnees} an(s) à compter de la signature`}
+            value={`${data.dureeAnnees} an${data.dureeAnnees > 1 ? "s" : ""} à compter de la signature`}
           />
         </DocSection>
 

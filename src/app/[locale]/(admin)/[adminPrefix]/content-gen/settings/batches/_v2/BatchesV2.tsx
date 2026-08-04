@@ -41,7 +41,7 @@ export function BatchesV2({ cfg, health }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Batches & workers"
+        title="Lots et files de traitement"
         description="Concurrence des workers · retries · cibles/jour par type · anti-burst. Consommé par l'orchestrateur (tick 15 min)."
       />
 

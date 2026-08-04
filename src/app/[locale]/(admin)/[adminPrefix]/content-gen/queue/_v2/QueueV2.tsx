@@ -33,8 +33,8 @@ export async function QueueV2({ adminPrefix }: Props): Promise<React.ReactElemen
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Queue BullMQ"
-        description="Inspection rapide. La vraie vue Redis arrivera Sprint 6."
+        title="File d'attente BullMQ"
+        description="Aperçu des files de traitement. Le détail complet côté Redis n'est pas exposé ici."
         actions={
           <form action={retryAll}>
             <button type="submit" className="admin-button">

@@ -12,7 +12,7 @@ import { LibraryV2 } from "./_v2/LibraryV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Library | Axion-IA Admin",
+  title: "Banque d'images — bibliothèque | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

@@ -170,15 +170,16 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
           <h3 className="admin-h3 mb-[var(--space-admin-3)]">Seuils de détection</h3>
           <ul className="admin-meta-block text-sm">
             <li>
-              <strong>similarity &lt; 0.70</strong> → Article mis en <code>needs_review</code> +
-              audit log SOC2
+              <strong>Ressemblance inférieure à 0,70</strong> — l&apos;article part en relecture et
+              la décision est tracée.
             </li>
             <li>
-              <strong>0.70 ≤ similarity &lt; 0.80</strong> → Drift warning loggé (audit log SOC2,
-              pas de changement de statut)
+              <strong>Entre 0,70 et 0,80</strong> — un écart est signalé et tracé, sans changer le
+              statut de l&apos;article.
             </li>
             <li>
-              <strong>similarity ≥ 0.80</strong> → OK, dans la tonalité brand voice
+              <strong>Ressemblance supérieure ou égale à 0,80</strong> — l&apos;article est conforme
+              à la voix de la marque, rien n&apos;est signalé.
             </li>
           </ul>
         </div>

@@ -90,7 +90,7 @@ export async function TemplatesListV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Templates de prompts"
+        title="Instructions IA (prompts)"
         description={`${rows.length} template${rows.length > 1 ? "s" : ""}`}
         actions={
           <Link href={`${base}/new`} className="admin-button">
@@ -163,7 +163,7 @@ export async function TemplatesListV2({
       </AdminCard>
 
       {rows.length === 0 ? (
-        <AdminEmptyState title="Aucun template — créez-en un." />
+        <AdminEmptyState title="Aucune instruction IA — créez-en une." />
       ) : (
         <AdminTable
           columns={columns}

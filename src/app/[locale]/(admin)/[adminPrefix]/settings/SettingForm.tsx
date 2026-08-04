@@ -42,7 +42,7 @@ export function SettingForm({ initial }: Props) {
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor="key" className="admin-label">
-            Clé (key)
+            Clé
           </label>
           <input
             id="key"
@@ -50,6 +50,7 @@ export function SettingForm({ initial }: Props) {
             type="text"
             required
             pattern="[a-zA-Z0-9._\-]+"
+            title="Lettres, chiffres, points, tirets et tirets bas — sans espace ni accent."
             defaultValue={initial?.key ?? ""}
             readOnly={!!initial}
             className="admin-input"
@@ -150,7 +151,7 @@ export function SettingForm({ initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement..." : "Enregistrer"}
+        {pending ? "Enregistrement…" : "Enregistrer"}
       </button>
     </form>
   );

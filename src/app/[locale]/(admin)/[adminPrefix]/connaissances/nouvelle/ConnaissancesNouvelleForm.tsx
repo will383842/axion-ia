@@ -134,6 +134,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
           className="admin-input"
           placeholder="mon-entree-kb"
           pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          title="Minuscules, chiffres et tirets uniquement — sans espace ni accent, et pas de tiret en début ou en fin."
         />
       </div>
 
@@ -225,7 +226,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-form-actions">
         <button type="submit" disabled={pending} className="admin-button">
-          {pending ? "Création..." : "Créer le brouillon"}
+          {pending ? "Création…" : "Créer le brouillon"}
         </button>
         <a href={`/fr/${adminPrefix}/connaissances`} className="admin-button-ghost">
           Annuler

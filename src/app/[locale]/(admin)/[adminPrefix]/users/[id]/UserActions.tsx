@@ -102,7 +102,7 @@ export function UserActions({
           </p>
         ) : null}
         <button type="submit" disabled={uPending} className="admin-button">
-          {uPending ? "Enregistrement..." : "Mettre à jour"}
+          {uPending ? "Enregistrement…" : "Mettre à jour"}
         </button>
       </form>
 

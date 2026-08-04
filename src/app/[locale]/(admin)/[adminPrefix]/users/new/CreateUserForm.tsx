@@ -84,7 +84,7 @@ export function CreateUserForm() {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Création..." : "Créer l'utilisateur"}
+        {pending ? "Création…" : "Créer l'utilisateur"}
       </button>
     </form>
   );

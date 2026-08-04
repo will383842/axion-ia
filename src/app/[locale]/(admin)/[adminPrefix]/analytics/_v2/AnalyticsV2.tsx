@@ -74,7 +74,7 @@ export function AnalyticsV2({
             <iframe
               src={plausibleShared}
               loading="lazy"
-              title="Plausible Analytics dashboard"
+              title="Tableau de bord Plausible Analytics"
               className="mt-[var(--space-admin-3)] h-[1200px] w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]"
             />
           </>

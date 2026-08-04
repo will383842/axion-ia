@@ -125,7 +125,7 @@ export function ProgrammeFormationPdf({
   data,
   identite,
 }: ProgrammeFormationProps): React.ReactElement {
-  const dureeContractuelle = `${data.dureeHeures} heure(s)`;
+  const dureeContractuelle = `${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`;
 
   return (
     <Document>
