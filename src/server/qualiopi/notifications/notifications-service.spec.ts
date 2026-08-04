@@ -32,6 +32,14 @@ vi.mock("@/lib/prisma", () => ({
     emargementToken: {
       findFirst: vi.fn(),
     },
+    // Relances 2026-08-04 — lecture + trace (relanceCount/derniereRelanceAt).
+    questionnaire: {
+      findUnique: vi.fn(),
+      update: vi.fn(),
+      // envoyerAttestationDisponible compte les questionnaires en attente
+      // pour ajouter (ou non) le paragraphe de rappel — 0 par défaut.
+      count: vi.fn().mockResolvedValue(0),
+    },
   },
 }));
 
@@ -76,6 +84,8 @@ import {
   envoyerSatisfactionJ1,
   envoyerSuiviJ30,
   envoyerAttestationDisponible,
+  envoyerRelanceQuestionnaire,
+  envoyerEnqueteEntreprise,
   notifierAlerteInterne,
 } from "./notifications-service";
 
@@ -92,6 +102,11 @@ const mockPrisma = prisma as unknown as {
   };
   portailAcces: { findFirst: ReturnType<typeof vi.fn> };
   emargementToken: { findFirst: ReturnType<typeof vi.fn> };
+  questionnaire: {
+    findUnique: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    count: ReturnType<typeof vi.fn>;
+  };
 };
 const mockEnqueueEmail = enqueueEmail as ReturnType<typeof vi.fn>;
 const mockCreerAcces = creerAcces as ReturnType<typeof vi.fn>;
@@ -559,5 +574,189 @@ describe("notifierAlerteInterne", () => {
     };
     expect(resetArgs.where).toMatchObject({ id: ALERTE_ID });
     expect(resetArgs.data).toMatchObject({ notifiedAt: null });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// envoyerRelanceQuestionnaire + envoyerEnqueteEntreprise (2026-08-04)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const QUESTIONNAIRE_ID = "quest-uuid-relance-1";
+
+function fakeQuestionnaire(overrides: Record<string, unknown> = {}) {
+  return {
+    id: QUESTIONNAIRE_ID,
+    type: "satisfaction_chaud",
+    token: "c".repeat(48),
+    envoyeAt: new Date("2026-08-01T08:00:00Z"),
+    reponduAt: null,
+    relanceCount: 0,
+    enrollment: {
+      trainee: { id: TRAINEE_ID, email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
+      session: {
+        numero: "AXI-SESS-2026-001",
+        titreSession: "Formation IA",
+        dateFin: new Date("2026-07-31T17:00:00Z"),
+        client: {
+          contactNom: "Simone Blanc",
+          contactEmail: "simone@investsun.example",
+          raisonSociale: "SCI INVEST SUN",
+        },
+      },
+    },
+    ...overrides,
+  };
+}
+
+describe("envoyerRelanceQuestionnaire", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+    // Portail : un accès vivant existe déjà.
+    mockPrisma.portailAcces.findFirst.mockResolvedValue({
+      token: "b".repeat(64),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+    mockPrisma.questionnaire.update.mockResolvedValue({});
+  });
+
+  it("stagiaire → email de relance + trace incrémentée DANS LE MÊME GESTE", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(fakeQuestionnaire());
+
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+
+    expect(mockEnqueueEmail).toHaveBeenCalledOnce();
+    const [template, to, , payload, opts] = mockEnqueueEmail.mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+      { jobId: string },
+    ];
+    expect(template).toBe("qualiopi-questionnaire-relance");
+    expect(to).toBe("jean@example.com");
+    expect(payload["libelleQuestionnaire"]).toBe("questionnaire de satisfaction");
+    // Idempotence par NUMÉRO de relance : la relance 1 ne part qu'une fois,
+    // la relance 2 garde un jobId distinct.
+    expect(opts.jobId).toBe(`qualiopi-questionnaire-relance-${QUESTIONNAIRE_ID}-1`);
+
+    expect(mockPrisma.questionnaire.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: QUESTIONNAIRE_ID },
+        data: expect.objectContaining({ relanceCount: 1, derniereRelanceAt: expect.any(Date) }),
+      }),
+    );
+  });
+
+  it("entreprise → email au CONTACT CLIENT avec le lien de l'enquête publique", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      fakeQuestionnaire({ type: "satisfaction_entreprise", relanceCount: 1 }),
+    );
+
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+
+    const [template, to, , payload, opts] = mockEnqueueEmail.mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+      { jobId: string },
+    ];
+    expect(template).toBe("qualiopi-enquete-entreprise");
+    expect(to).toBe("simone@investsun.example");
+    expect(String(payload["lienEnquete"])).toContain(`/fr/portail/enquete/${"c".repeat(48)}`);
+    expect(opts.jobId).toBe(`qualiopi-enquete-entreprise-relance-${QUESTIONNAIRE_ID}-2`);
+    expect(mockPrisma.questionnaire.update).toHaveBeenCalledWith(
+      expect.objectContaining({ data: expect.objectContaining({ relanceCount: 2 }) }),
+    );
+  });
+
+  it("déjà répondu → AUCUN email, AUCUNE trace", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      fakeQuestionnaire({ reponduAt: new Date("2026-08-02T10:00:00Z") }),
+    );
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+    expect(mockPrisma.questionnaire.update).not.toHaveBeenCalled();
+  });
+
+  it("jamais envoyé → AUCUN email (une relance suppose un envoi initial)", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(fakeQuestionnaire({ envoyeAt: null }));
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("entreprise SANS email de contact → sort sans toucher la trace", async () => {
+    // 🔴 Le compteur ne compte que de VRAIS envois : incrémenter ici ferait
+    // croire à l'auditeur qu'on a relancé quelqu'un qu'on ne peut pas joindre.
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      fakeQuestionnaire({
+        type: "satisfaction_entreprise",
+        enrollment: {
+          trainee: { id: TRAINEE_ID, email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
+          session: {
+            numero: "AXI-SESS-2026-001",
+            titreSession: "Formation IA",
+            dateFin: new Date("2026-07-31T17:00:00Z"),
+            client: { contactNom: "X", contactEmail: null, raisonSociale: "SCI X" },
+          },
+        },
+      }),
+    );
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
+    expect(mockPrisma.questionnaire.update).not.toHaveBeenCalled();
+  });
+});
+
+describe("envoyerEnqueteEntreprise", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockEnqueueEmail.mockResolvedValue({ enqueued: true });
+    mockCreerQuestionnaire.mockResolvedValue({ id: "quest-uuid-e1", token: "d".repeat(48) });
+  });
+
+  it("crée (upsert) le questionnaire entreprise et écrit au contact client", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      id: SESSION_ID,
+      numero: "AXI-SESS-2026-001",
+      titreSession: "Formation IA",
+      dateFin: new Date("2026-07-01T17:00:00Z"),
+      client: {
+        contactNom: "Simone Blanc",
+        contactEmail: "simone@investsun.example",
+        raisonSociale: "SCI INVEST SUN",
+      },
+      enrollments: [{ id: ENROLLMENT_ID }],
+    });
+
+    await envoyerEnqueteEntreprise(SESSION_ID);
+
+    expect(mockCreerQuestionnaire).toHaveBeenCalledWith({
+      enrollmentId: ENROLLMENT_ID,
+      type: "satisfaction_entreprise",
+    });
+    const [template, to, , payload] = mockEnqueueEmail.mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+    ];
+    expect(template).toBe("qualiopi-enquete-entreprise");
+    expect(to).toBe("simone@investsun.example");
+    expect(String(payload["lienEnquete"])).toContain(`/fr/portail/enquete/${"d".repeat(48)}`);
+  });
+
+  it("sans inscription active → THROW (le cron doit journaliser, pas croire l'envoi fait)", async () => {
+    mockPrisma.trainingSession.findUnique.mockResolvedValue({
+      id: SESSION_ID,
+      numero: "AXI-SESS-2026-001",
+      titreSession: "Formation IA",
+      dateFin: new Date("2026-07-01T17:00:00Z"),
+      client: { contactNom: "X", contactEmail: "x@y.example", raisonSociale: "SCI X" },
+      enrollments: [],
+    });
+    await expect(envoyerEnqueteEntreprise(SESSION_ID)).rejects.toThrow(/inscription active/);
+    expect(mockEnqueueEmail).not.toHaveBeenCalled();
   });
 });

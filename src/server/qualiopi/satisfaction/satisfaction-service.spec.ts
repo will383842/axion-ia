@@ -416,6 +416,44 @@ describe("soumettreReponses — versement aux registres", () => {
     ).resolves.toEqual({ id: "q-1" });
   });
 
+  it("enquête ENTREPRISE notée → une appréciation source « entreprise » au client", async () => {
+    // 🔴 La 2ᵉ source distincte que l'indicateur 30 exige. Le répondant se
+    // nomme dans le formulaire public — identité et fonction au verbatim.
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("satisfaction_entreprise"));
+
+    await soumettreReponses({
+      token: "tok-e",
+      reponses: {
+        commentaire: "Effets concrets sur notre organisation",
+        repondantNom: "Jean Dupont",
+        repondantFonction: "Gérant",
+      },
+      noteGlobale: 4,
+    });
+
+    expect(mockCreerAppreciation).toHaveBeenCalledOnce();
+    const passe = mockCreerAppreciation.mock.calls[0]![0] as {
+      source: string;
+      note?: number;
+      clientId?: string;
+      commentaire?: string;
+    };
+    expect(passe.source).toBe("entreprise");
+    expect(passe.note).toBe(4);
+    expect(passe.clientId).toBe("client-1");
+    expect(passe.commentaire).toContain("Jean Dupont");
+    expect(passe.commentaire).toContain("Gérant");
+    expect(passe.commentaire).toContain("Effets concrets sur notre organisation");
+    // Et surtout PAS une évaluation : une enquête entreprise ne mesure pas des acquis.
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
+  });
+
+  it("enquête ENTREPRISE sans note ne verse rien", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("satisfaction_entreprise"));
+    await soumettreReponses({ token: "tok-e", reponses: { commentaire: "sans note" } });
+    expect(mockCreerAppreciation).not.toHaveBeenCalled();
+  });
+
   it("un positionnement SANS niveauParObjectif ne crée rien", async () => {
     mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
 

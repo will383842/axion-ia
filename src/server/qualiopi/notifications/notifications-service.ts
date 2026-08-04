@@ -400,6 +400,18 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
         ? "attestation de formation partielle"
         : "certificat de réalisation";
 
+  // 🔴 Le moment de l'attestation est celui où le stagiaire est le PLUS enclin
+  // à répondre : on glisse un rappel du questionnaire resté sans réponse DANS
+  // cet email. ⚠️ L'attestation, elle, part QUOI QU'IL ARRIVE — c'est un droit
+  // du stagiaire (L.6353-1) : la conditionner à la réponse serait une faute.
+  const questionnairesEnAttente = await prisma.questionnaire.count({
+    where: {
+      enrollmentId,
+      reponduAt: null,
+      type: { in: ["satisfaction_chaud", "satisfaction_froid", "positionnement"] },
+    },
+  });
+
   await enqueueEmail(
     "qualiopi-attestation-disponible",
     trainee.email,
@@ -410,8 +422,190 @@ export async function envoyerAttestationDisponible(enrollmentId: string): Promis
       typeDocument,
       lienPortail,
       numeroSession: session.numero,
+      questionnaireEnAttente: questionnairesEnAttente > 0,
     },
     { jobId: `qualiopi-attestation-disponible-${enrollmentId}` },
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// envoyerRelanceQuestionnaire
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Libellés humains des questionnaires — pour le corps des relances. */
+const LIBELLE_QUESTIONNAIRE: Record<string, string> = {
+  positionnement: "questionnaire de positionnement",
+  satisfaction_chaud: "questionnaire de satisfaction",
+  satisfaction_froid: "questionnaire de suivi à 30 jours",
+  satisfaction_entreprise: "enquête de satisfaction entreprise",
+};
+
+/**
+ * Relance un questionnaire ENVOYÉ resté sans réponse.
+ *
+ * 🔴 Constaté sur le premier dossier réel : les questionnaires partaient, puis
+ * plus rien. La relance est la moitié MANQUANTE du recueil — et sa trace
+ * (`relanceCount`, `derniereRelanceAt`) est la preuve, devant l'auditeur, que
+ * le processus existe. Une non-réponse d'un tiers n'est pas une faute de
+ * l'organisme ; l'absence de tentative tracée, si.
+ *
+ * - Types stagiaire → email au stagiaire, lien portail.
+ * - `satisfaction_entreprise` → email au CONTACT CLIENT, lien enquête publique.
+ *
+ * Ne décide PAS du calendrier : l'appelant (cron J+3/J+10, ou bouton console)
+ * choisit quand. Incrémente la trace ici, dans le même geste que l'envoi.
+ * Idempotence : le jobId inclut le numéro de relance — la relance N ne part
+ * qu'une fois, la relance N+1 reste possible.
+ */
+export async function envoyerRelanceQuestionnaire(questionnaireId: string): Promise<void> {
+  if (isStub()) return;
+
+  const q = await prisma.questionnaire.findUnique({
+    where: { id: questionnaireId },
+    select: {
+      id: true,
+      type: true,
+      token: true,
+      envoyeAt: true,
+      reponduAt: true,
+      relanceCount: true,
+      enrollment: {
+        select: {
+          trainee: { select: { id: true, email: true, nom: true, prenom: true } },
+          session: {
+            select: {
+              numero: true,
+              titreSession: true,
+              dateFin: true,
+              client: { select: { contactNom: true, contactEmail: true, raisonSociale: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // Jamais de relance sur un questionnaire non envoyé ou déjà répondu.
+  if (!q || q.envoyeAt === null || q.reponduAt !== null) return;
+
+  const { trainee, session } = q.enrollment;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const numeroRelance = q.relanceCount + 1;
+  const libelle = LIBELLE_QUESTIONNAIRE[q.type] ?? "questionnaire";
+
+  if (q.type === "satisfaction_entreprise") {
+    const client = session.client;
+    // Sans email de contact, la relance n'a pas de destinataire — on sort SANS
+    // toucher la trace : le compteur ne compte que de VRAIS envois.
+    if (!client?.contactEmail) return;
+    await enqueueEmail(
+      "qualiopi-enquete-entreprise",
+      client.contactEmail,
+      "fr",
+      {
+        contactNom: client.contactNom ?? client.raisonSociale,
+        raisonSociale: client.raisonSociale,
+        titreFormation: session.titreSession,
+        dateFinFormation: fmtDate(session.dateFin),
+        lienEnquete: `${baseUrl}/fr/portail/enquete/${q.token}`,
+        numeroSession: session.numero,
+      },
+      { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
+    );
+  } else {
+    const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
+    await enqueueEmail(
+      "qualiopi-questionnaire-relance",
+      trainee.email,
+      "fr",
+      {
+        stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`,
+        titreFormation: session.titreSession,
+        libelleQuestionnaire: libelle,
+        lienQuestionnaire,
+        numeroSession: session.numero,
+      },
+      { jobId: `qualiopi-questionnaire-relance-${q.id}-${numeroRelance}` },
+    );
+  }
+
+  await prisma.questionnaire.update({
+    where: { id: q.id },
+    data: { relanceCount: numeroRelance, derniereRelanceAt: new Date() },
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// envoyerEnqueteEntreprise
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Envoie l'enquête ENTREPRISE au contact client d'une session réalisée.
+ *
+ * 🔴 L'indicateur 30 exige ≥ 2 sources distinctes. Le retour stagiaire est
+ * automatisé ; celui de l'entreprise n'avait AUCUN canal — il se tapait à la
+ * main dans la console. Le contact client reçoit une page publique à jeton ;
+ * sa réponse est versée automatiquement en appréciation « entreprise ».
+ *
+ * Le questionnaire est ancré sur la PREMIÈRE inscription active de la session
+ * (le schéma ancre tout questionnaire sur une inscription) — mais le
+ * destinataire est le CONTACT CLIENT, jamais le stagiaire.
+ *
+ * Idempotent : `creerQuestionnaire` est un upsert, et le jobId est stable.
+ * L'appelant marque `envoyeAt` après succès (même contrat que satisfaction-j1).
+ */
+export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void> {
+  if (isStub()) return;
+
+  const session = await prisma.trainingSession.findUnique({
+    where: { id: sessionId },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateFin: true,
+      client: { select: { contactNom: true, contactEmail: true, raisonSociale: true } },
+      enrollments: {
+        where: { statut: { in: ["planifiee", "presente"] } },
+        orderBy: { createdAt: "asc" },
+        take: 1,
+        select: { id: true },
+      },
+    },
+  });
+
+  if (!session) return;
+  const enrollment = session.enrollments[0];
+  const client = session.client;
+  // Pas de contact email ou pas d'inscrit : rien à envoyer — throw pour que
+  // l'appelant (cron fail-soft) le journalise au lieu de croire l'envoi fait.
+  if (!enrollment || !client?.contactEmail) {
+    throw new Error(
+      `enquête entreprise: session ${sessionId} sans ${!enrollment ? "inscription active" : "email de contact client"}`,
+    );
+  }
+
+  const { token } = await creerQuestionnaire({
+    enrollmentId: enrollment.id,
+    type: "satisfaction_entreprise",
+  });
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const dk = dateKey(session.dateFin);
+
+  await enqueueEmail(
+    "qualiopi-enquete-entreprise",
+    client.contactEmail,
+    "fr",
+    {
+      contactNom: client.contactNom ?? client.raisonSociale,
+      raisonSociale: client.raisonSociale,
+      titreFormation: session.titreSession,
+      dateFinFormation: fmtDate(session.dateFin),
+      lienEnquete: `${baseUrl}/fr/portail/enquete/${token}`,
+      numeroSession: session.numero,
+    },
+    { jobId: `qualiopi-enquete-entreprise-${sessionId}-${dk}` },
   );
 }
 

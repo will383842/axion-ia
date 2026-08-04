@@ -27,7 +27,9 @@ vi.mock("@/lib/prisma", () => ({
       count: vi.fn(),
     },
     // Rattrapage questionnaires 2026-08-03 — marquage `envoyeAt` après envoi.
+    // Relances 2026-08-04 — sélection des questionnaires dus (findMany).
     questionnaire: {
+      findMany: vi.fn(),
       updateMany: vi.fn(),
     },
     alerteSysteme: {
@@ -51,6 +53,8 @@ vi.mock("@/server/qualiopi/notifications/notifications-service", () => ({
   envoyerRappelJ7: vi.fn(),
   envoyerSatisfactionJ1: vi.fn(),
   envoyerSuiviJ30: vi.fn(),
+  envoyerRelanceQuestionnaire: vi.fn(),
+  envoyerEnqueteEntreprise: vi.fn(),
   notifierAlerteInterne: vi.fn(),
 }));
 
@@ -81,6 +85,8 @@ vi.mock("@/server/qualiopi/formations/transition-helper", () => ({
 import { prisma } from "@/lib/prisma";
 import {
   envoyerConvocation,
+  envoyerRelanceQuestionnaire,
+  envoyerEnqueteEntreprise,
   notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
@@ -90,7 +96,7 @@ import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
-  questionnaire: { updateMany: ReturnType<typeof vi.fn> };
+  questionnaire: { findMany: ReturnType<typeof vi.fn>; updateMany: ReturnType<typeof vi.fn> };
   alerteSysteme: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: {
     findMany: ReturnType<typeof vi.fn>;
@@ -104,6 +110,8 @@ const mockPrisma = prisma as unknown as {
 };
 
 const mockEnvoyerConvocation = envoyerConvocation as ReturnType<typeof vi.fn>;
+const mockEnvoyerRelance = envoyerRelanceQuestionnaire as ReturnType<typeof vi.fn>;
+const mockEnvoyerEnquete = envoyerEnqueteEntreprise as ReturnType<typeof vi.fn>;
 const mockNotifierAlerteInterne = notifierAlerteInterne as ReturnType<typeof vi.fn>;
 const mockSynchroniserAlertes = synchroniserAlertes as ReturnType<typeof vi.fn>;
 const mockDecide = decideSessionTransitions as ReturnType<typeof vi.fn>;
@@ -716,5 +724,131 @@ describe("questionnaires — rattrapage sans fenêtre glissante", () => {
         }),
       }),
     );
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Relances questionnaires + enquête entreprise (2026-08-04)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("formation-crons.relance-questionnaires", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("relance chaque questionnaire dû, une erreur n'arrête pas les suivants", async () => {
+    mockPrisma.questionnaire.findMany.mockResolvedValue([
+      { id: "q-1" },
+      { id: "q-2" },
+      { id: "q-3" },
+    ]);
+    // q-2 échoue (ex. stagiaire sans email) — q-3 doit quand même partir.
+    mockEnvoyerRelance
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("email manquant"))
+      .mockResolvedValueOnce(undefined);
+
+    await expect(
+      formationCronsHandler({
+        type: "formation-crons.relance-questionnaires",
+        tick: "2026-08-04T08:30:00Z",
+      }),
+    ).resolves.toBeUndefined();
+
+    expect(mockEnvoyerRelance).toHaveBeenCalledTimes(3);
+    expect(mockEnvoyerRelance).toHaveBeenNthCalledWith(3, "q-3");
+  });
+
+  it("le plafond de 2 relances est STRUCTUREL dans la sélection", async () => {
+    // 🔴 Vérifié par réintroduction : si quelqu'un ajoute une branche
+    // `relanceCount: 2` (ou remplace le OR par un simple envoyeAt ≤ J-3),
+    // ce test rougit — c'est la seule garde contre le harcèlement par email.
+    mockPrisma.questionnaire.findMany.mockResolvedValue([]);
+
+    await formationCronsHandler({
+      type: "formation-crons.relance-questionnaires",
+      tick: "2026-08-04T08:30:00Z",
+    });
+
+    const where = (
+      mockPrisma.questionnaire.findMany.mock.calls[0]![0] as {
+        where: {
+          reponduAt: null;
+          envoyeAt: { not: null; gte: Date };
+          OR: Array<{ relanceCount: number }>;
+        };
+      }
+    ).where;
+
+    // Sans réponse uniquement, et jamais au-delà de 90 jours.
+    expect(where.reponduAt).toBeNull();
+    expect(where.envoyeAt.gte).toBeInstanceOf(Date);
+    // Exactement deux branches : relanceCount 0 (J+3) et 1 (J+7 après la 1ʳᵉ).
+    expect(where.OR.map((b) => b.relanceCount).sort()).toEqual([0, 1]);
+  });
+});
+
+describe("formation-crons.enquete-entreprise-j30", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("envoie l'enquête aux sessions réalisées ≥ J+30 puis marque envoyeAt", async () => {
+    mockPrisma.trainingSession.findMany.mockResolvedValue([{ id: "sess-1" }]);
+    mockEnvoyerEnquete.mockResolvedValue(undefined);
+    mockPrisma.questionnaire.updateMany.mockResolvedValue({ count: 1 });
+
+    await formationCronsHandler({
+      type: "formation-crons.enquete-entreprise-j30",
+      tick: "2026-08-04T08:15:00Z",
+    });
+
+    expect(mockEnvoyerEnquete).toHaveBeenCalledTimes(1);
+    expect(mockEnvoyerEnquete).toHaveBeenCalledWith("sess-1");
+    // Le marquage envoyeAt ne cible QUE l'enquête entreprise de cette session.
+    expect(mockPrisma.questionnaire.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          type: "satisfaction_entreprise",
+          envoyeAt: null,
+          enrollment: { sessionId: "sess-1" },
+        }),
+        data: { envoyeAt: expect.any(Date) },
+      }),
+    );
+
+    // Idempotence : la sélection exclut les sessions déjà enquêtées.
+    const where = (
+      mockPrisma.trainingSession.findMany.mock.calls[0]![0] as {
+        where: { statut: string; NOT: unknown };
+      }
+    ).where;
+    expect(where.statut).toBe("realisee");
+    expect(where.NOT).toEqual({
+      enrollments: {
+        some: {
+          questionnaires: {
+            some: { type: "satisfaction_entreprise", envoyeAt: { not: null } },
+          },
+        },
+      },
+    });
+  });
+
+  it("échec d'envoi → envoyeAt N'EST PAS marqué (la session reste candidate)", async () => {
+    // 🔴 Marquer avant d'avoir envoyé transformerait tout échec transitoire en
+    // enquête définitivement perdue — le contraire exact du bug satisfaction-j1
+    // (fenêtre ratée = questionnaire perdu à vie) qu'on vient de payer.
+    mockPrisma.trainingSession.findMany.mockResolvedValue([{ id: "sess-ko" }]);
+    mockEnvoyerEnquete.mockRejectedValue(new Error("contact client sans email"));
+
+    await expect(
+      formationCronsHandler({
+        type: "formation-crons.enquete-entreprise-j30",
+        tick: "2026-08-04T08:15:00Z",
+      }),
+    ).resolves.toBeUndefined();
+
+    expect(mockPrisma.questionnaire.updateMany).not.toHaveBeenCalled();
   });
 });

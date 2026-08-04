@@ -78,6 +78,9 @@ export type EmailJobName =
   | "qualiopi-rappel-j7"
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
+  // Relance de questionnaire sans réponse (J+3 / J+10) + enquête ENTREPRISE.
+  | "qualiopi-questionnaire-relance"
+  | "qualiopi-enquete-entreprise"
   | "qualiopi-attestation-disponible"
   | "qualiopi-relance-impayee"
   | "qualiopi-portail-acces"

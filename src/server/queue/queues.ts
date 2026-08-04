@@ -1288,6 +1288,21 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 8 * * *",
         jobId: "formation-crons-suivi-j30-cron",
       },
+      // Enquête ENTREPRISE J+30 (off.30, 2ᵉ source) — 08:15, après les envois
+      // stagiaires de 08:00 pour ne pas mélanger les files.
+      {
+        type: "formation-crons.enquete-entreprise-j30",
+        pattern: "15 8 * * *",
+        jobId: "formation-crons-enquete-entreprise-j30-cron",
+      },
+      // Relances J+3/J+10 des questionnaires sans réponse — 08:30, APRÈS les
+      // envois du jour : un questionnaire envoyé à 08:00 ne doit pas être
+      // « relancé » dans la même passe.
+      {
+        type: "formation-crons.relance-questionnaires",
+        pattern: "30 8 * * *",
+        jobId: "formation-crons-relance-questionnaires-cron",
+      },
       // T15 AGENT A — moteur d'alertes système (daily 07:00 UTC, avant les autres jobs)
       {
         type: "formation-crons.alertes",

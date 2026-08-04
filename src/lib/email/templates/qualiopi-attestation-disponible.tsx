@@ -12,6 +12,8 @@ interface Payload {
   typeDocument: string; // "attestation" | "attestation partielle" | "certificat de réalisation"
   lienPortail?: string;
   numeroSession: string;
+  /** Vrai si un questionnaire du stagiaire attend encore sa réponse. */
+  questionnaireEnAttente?: boolean;
 }
 
 export const qualiopiAttestationDisponibleSubject = (
@@ -50,6 +52,15 @@ export function QualiopiAttestationDisponibleEmail({
       <Text style={emailStyles.paragraphStyle}>
         Ce document officiel atteste de votre participation. Conservez-le précieusement.
       </Text>
+      {/* 🔴 Le moment de l'attestation est celui où le stagiaire est le plus
+          enclin à répondre — on glisse le rappel ICI. ⚠️ L'attestation part
+          quoi qu'il arrive : c'est un droit (L.6353-1), jamais un levier. */}
+      {p.questionnaireEnAttente === true && (
+        <Text style={emailStyles.paragraphStyle}>
+          Au passage : un questionnaire vous attend encore dans votre espace. Deux minutes
+          suffisent, et votre retour nous aide réellement à améliorer nos formations.
+        </Text>
+      )}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
         Référence session : {p.numeroSession}
       </Text>

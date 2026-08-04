@@ -17,7 +17,13 @@ import { useRouter } from "next/navigation";
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-type QuestionnaireType = "positionnement" | "satisfaction_chaud" | "satisfaction_froid";
+// Types que la GÉNÉRATION par session accepte — un questionnaire par stagiaire.
+type QuestionnaireTypeStagiaire = "positionnement" | "satisfaction_chaud" | "satisfaction_froid";
+
+// Types que la LISTE affiche : les trois stagiaire + l'enquête entreprise
+// (une par session, créée par le cron enquete-entreprise-j30 — jamais générée
+// ici, sinon on en créerait une par stagiaire).
+type QuestionnaireType = QuestionnaireTypeStagiaire | "satisfaction_entreprise";
 
 /** Données sérialisées par le Server Component parent (dates en ISO string). */
 export interface QuestionnaireRow {
@@ -48,7 +54,7 @@ export interface QuestionnairesSectionProps {
   questionnaires: QuestionnaireRow[];
   genererAction: (input: {
     sessionId: string;
-    types?: QuestionnaireType[];
+    types?: QuestionnaireTypeStagiaire[];
   }) => Promise<ActionResult<{ crees: number; total: number }>>;
   saisirReponsesAction: (input: {
     token: string;
@@ -77,6 +83,8 @@ const TYPE_LABELS: Record<QuestionnaireType, string> = {
   positionnement: "Positionnement",
   satisfaction_chaud: "Satisfaction à chaud",
   satisfaction_froid: "Satisfaction à froid",
+  // Répondu par le CONTACT CLIENT via la page publique /enquete/[token].
+  satisfaction_entreprise: "Enquête entreprise",
 };
 
 function formatDateFR(iso: string): string {

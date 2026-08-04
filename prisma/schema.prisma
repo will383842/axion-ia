@@ -6990,6 +6990,9 @@ enum QuestionnaireType {
   positionnement
   satisfaction_chaud
   satisfaction_froid
+  /// Enquête envoyée au CONTACT CLIENT (pas au stagiaire) — répondue par page
+  /// publique à jeton, versée en appréciation source « entreprise » (off.30).
+  satisfaction_entreprise
 }
 
 /// Questionnaire d'un stagiaire (1 par inscription × type). Rempli via portail
@@ -7007,6 +7010,11 @@ model Questionnaire {
   noteGlobale  Int?              @map("note_globale")
   envoyeAt     DateTime?         @map("envoye_at")
   reponduAt    DateTime?         @map("repondu_at")
+  /// 🔴 TRACE des relances — c'est la PREUVE, pas un confort. Devant l'auditeur,
+  /// une non-réponse d'un tiers n'est pas une faute de l'organisme ; l'absence
+  /// de tentative tracée, si. Plafonné à 2 par le cron (J+3 puis J+10).
+  relanceCount Int               @default(0) @map("relance_count")
+  derniereRelanceAt DateTime?    @map("derniere_relance_at")
   createdAt    DateTime          @default(now()) @map("created_at")
   updatedAt    DateTime          @updatedAt @map("updated_at")
 
