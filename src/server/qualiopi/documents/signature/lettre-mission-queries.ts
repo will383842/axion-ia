@@ -284,6 +284,12 @@ export async function lireLettresMissionDuFormateur(
   const pieces = await prisma.documentGenere.findMany({
     where: {
       type: "lettre_mission",
+      // 🔴 Une lettre ANNULÉE ne s'affiche plus au formateur ni au registre.
+      // Sans ce filtre, `AXI-DOC-2026-007` — qui qualifie le dirigeant de
+      // « mandataire sous-traitant » de sa propre société et qu'on annule
+      // précisément pour ça — continuerait de s'afficher dans l'espace
+      // formateur comme la lettre en vigueur, signatures à l'appui.
+      annuleeAt: null,
       OR: [
         // Lettres-CADRE : ancrées directement sur le formateur, sans session.
         { trainerId: filtre, sessionId: null },
@@ -368,6 +374,12 @@ export async function lireLettresMissionConsoleDuFormateur(
   const pieces = await prisma.documentGenere.findMany({
     where: {
       type: "lettre_mission",
+      // 🔴 Une lettre ANNULÉE ne s'affiche plus au formateur ni au registre.
+      // Sans ce filtre, `AXI-DOC-2026-007` — qui qualifie le dirigeant de
+      // « mandataire sous-traitant » de sa propre société et qu'on annule
+      // précisément pour ça — continuerait de s'afficher dans l'espace
+      // formateur comme la lettre en vigueur, signatures à l'appui.
+      annuleeAt: null,
       OR: [
         { trainerId: filtre },
         {
@@ -435,6 +447,12 @@ export async function lireEtatSignatureLettreMissionConsole(
   const piece = await prisma.documentGenere.findFirst({
     where: {
       type: "lettre_mission",
+      // 🔴 Une lettre ANNULÉE ne s'affiche plus au formateur ni au registre.
+      // Sans ce filtre, `AXI-DOC-2026-007` — qui qualifie le dirigeant de
+      // « mandataire sous-traitant » de sa propre société et qu'on annule
+      // précisément pour ça — continuerait de s'afficher dans l'espace
+      // formateur comme la lettre en vigueur, signatures à l'appui.
+      annuleeAt: null,
       OR: [
         { sessionId },
         // Une lettre-CADRE couvrant cette session doit apparaître ICI aussi :
