@@ -38,7 +38,13 @@ export function QuitterPortailButton({
       type="button"
       onClick={handleQuitter}
       disabled={isPending}
-      className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+      // 🔴 Ce bouton était un bouton BLANC bordé de gris, posé dans la coquille
+      // sombre des espaces (pied de barre latérale et en-tête mobile, tous deux
+      // `bg-mocha`) : une pastille claire au milieu du mocha, qui attirait l'œil
+      // plus que n'importe quel élément de navigation alors qu'il ne sert qu'à
+      // partir. Aligné sur son jumeau formateur — même geste, même apparence,
+      // et le `terracotta-on-mocha` calibré pour ce fond (5,82:1).
+      className="text-terracotta-on-mocha focus-visible:ring-terracotta-on-mocha rounded-sm text-sm hover:underline focus-visible:ring-2 focus-visible:outline-none disabled:opacity-50"
     >
       {isPending ? "..." : "Se déconnecter"}
     </button>

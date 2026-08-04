@@ -66,7 +66,15 @@ export interface EspaceShellProps {
   sectionActive: string;
   /** Identité affichée en pied de barre latérale. */
   utilisateur?: { nom: string; detail?: string };
-  /** Bouton de sortie (composant client fourni par l'appelant). */
+  /**
+   * Bouton de sortie (composant client fourni par l'appelant).
+   *
+   * 🔴 Rendu DEUX fois — pied de barre latérale sur écran large, en-tête sur
+   * mobile — et ce n'est pas un oubli de factorisation. La barre latérale est
+   * `hidden` sous `lg` : n'en garder qu'une instance, celle du pied, retirait
+   * purement et simplement la déconnexion à tout téléphone. Cf. le commentaire
+   * de l'en-tête mobile plus bas.
+   */
   actionSortie?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -225,17 +233,36 @@ export function EspaceShell({
 
       {/* ── Zone de contenu ─────────────────────────────────────────────── */}
       <div className="min-w-0 flex-1">
-        {/* En-tête mobile : l'espace se nomme, l'utilisateur se reconnaît. */}
-        <header className="bg-mocha flex items-center justify-between px-4 py-3 lg:hidden">
-          <p className="text-mocha-fg font-serif text-base font-semibold">{titreEspace}</p>
-          {utilisateur ? (
-            <span
-              aria-hidden="true"
-              className="bg-terracotta-on-mocha text-mocha flex size-8 items-center justify-center rounded-full font-serif text-xs font-semibold"
-            >
-              {initiales(utilisateur.nom)}
-            </span>
-          ) : null}
+        {/*
+          En-tête mobile : l'espace se nomme, l'utilisateur se reconnaît — et il
+          peut SORTIR.
+
+          🔴 La déconnexion n'existait nulle part sur téléphone (vérification en
+          production du 2026-08-04). Elle ne vivait que dans le pied de la barre
+          latérale, qui est `hidden` sous `lg` : un stagiaire ou un formateur sur
+          mobile — c'est-à-dire l'usage courant de ces espaces, consultés en
+          salle de formation — n'avait AUCUN moyen de fermer sa session. Sur un
+          téléphone partagé ou prêté, c'est un problème de confidentialité, pas
+          un détail d'ergonomie.
+
+          Le geste est ici plutôt que dans la barre d'onglets du bas : celle-ci
+          porte la navigation, et se déconnecter n'est pas une destination. L'y
+          glisser en ferait un cinquième onglet, atteignable au pouce par
+          mégarde.
+        */}
+        <header className="bg-mocha flex items-center justify-between gap-3 px-4 py-3 lg:hidden">
+          <p className="text-mocha-fg truncate font-serif text-base font-semibold">{titreEspace}</p>
+          <div className="flex shrink-0 items-center gap-3">
+            {utilisateur ? (
+              <span
+                aria-hidden="true"
+                className="bg-terracotta-on-mocha text-mocha flex size-8 items-center justify-center rounded-full font-serif text-xs font-semibold"
+              >
+                {initiales(utilisateur.nom)}
+              </span>
+            ) : null}
+            {actionSortie}
+          </div>
         </header>
 
         {/*
