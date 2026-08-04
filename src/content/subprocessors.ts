@@ -128,7 +128,26 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     dpaStatus: "auto_signable_dashboard",
     transferFramework: "scc",
     category: "payments",
-    activationStatus: "active",
+    // 🔴 « active » ÉTAIT FAUX, dans un document juridique PUBLIÉ (2026-08-04).
+    //
+    // Cette page déclare aux personnes concernées qui traite leurs données.
+    // Stripe y figurait comme sous-traitant ACTIF « traitement des paiements,
+    // Radar anti-fraude, remboursements » — alors qu'il ne traite rien :
+    //   · `STRIPE_ENABLED` n'est pas posé en production → `isStripeConfigured()`
+    //     renvoie false, aucun paiement ni remboursement n'est émis ;
+    //   · le flux qu'il servait a été remplacé par Calendly ;
+    //   · 0 ligne dans `payments`, `bookings` et `stripe_webhook_events`.
+    // Aucune donnée personnelle ne lui a jamais été transmise.
+    //
+    // Sur-déclarer un sous-traitant n'expose personne, mais c'est une
+    // affirmation fausse dans une notice publique : elle égare une personne qui
+    // exerce ses droits et un auditeur qui vérifie le registre. Le statut
+    // `pending_activation` dit exactement la situation — son propre libellé
+    // affiché est « intégration codée ; activation conditionnée à la signature
+    // du DPA et à l'ajout de la clé API ».
+    //
+    // ⚠️ À repasser à « active » en même temps que `STRIPE_ENABLED=true`.
+    activationStatus: "pending_activation",
     documentationUrl: "https://stripe.com/legal/dpa",
   },
   {
