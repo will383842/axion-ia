@@ -89,6 +89,11 @@ function setupEmpty() {
   mockP.trainerDevelopmentAction.count.mockResolvedValue(0);
   mockP.trainee.count.mockResolvedValue(0);
   mockP.enrollment.count.mockResolvedValue(0);
+  // ⚠️ Compteur de documents NEUTRE par défaut. Les tests qui le règlent
+  // (off.9, off.12…) ne visent PAS la procédure de sous-traitance : sans ce
+  // découplage, régler `documentGenere.count` pour l'un de ces indicateurs
+  // couvrirait off.27 en silence, et l'assertion "a_completer" cesserait de
+  // vouloir dire quelque chose. Cf. `nbProceduresSousTraitance`.
   mockP.documentGenere.count.mockResolvedValue(0);
   mockP.revueDirection.count.mockResolvedValue(0);
   mockP.supportFormation.count.mockResolvedValue(0);
@@ -712,6 +717,53 @@ describe("evaluerConformite", () => {
     // Référencé (total > 0) mais aucun ne satisfait NDA + vérif + contrat.
     mockP.trainer.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
       Promise.resolve(args?.where?.["sousTraitantContratSigneAt"] !== undefined ? 0 : 2),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
+  });
+
+  // ── off.27 : la PROCÉDURE ÉCRITE, seconde voie de couverture ───────────────
+  //
+  // 🔴 Trouvé le 2026-08-04, en production. La règle disait dans son propre
+  // commentaire « voie NON COUVERTE par ce flag — action Will hors-code », alors
+  // que la PR 531 avait fait de cette procédure une pièce GÉNÉRÉE, précisément
+  // pour l'indicateur 27. Générée en prod (`AXI-DOC-2026-026`), l'écran
+  // continuait d'afficher « off.27 exige alors une procédure ».
+  //
+  // C'est la seule voie dont dispose un OF qui ne sous-traite pas ENCORE — et
+  // c'est exactement le cas d'Axion à la première certification.
+  it("off.27 couvert par la PROCÉDURE écrite, sans aucun sous-traitant référencé", async () => {
+    mockP.sousTraitant.count.mockResolvedValue(0);
+    mockP.trainer.count.mockResolvedValue(0);
+    mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(args?.where?.["type"] === "procedure_sous_traitance" ? 1 : 0),
+    );
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("couvert");
+  });
+
+  it("off.27 reste à compléter SANS procédure ni sous-traitant", async () => {
+    // Le pendant du précédent : sans lui, le test ci-dessus passerait même si la
+    // couverture était devenue inconditionnelle.
+    mockP.sousTraitant.count.mockResolvedValue(0);
+    mockP.trainer.count.mockResolvedValue(0);
+    mockP.documentGenere.count.mockResolvedValue(0);
+    const result = await evaluerConformite();
+    expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
+  });
+
+  it("🔴 une procédure ANNULÉE ne couvre pas off.27", async () => {
+    // La requête filtre `annuleeAt: null`. Ce test verrouille le filtre : sans
+    // lui, annuler la procédure laisserait l'indicateur vert sur une pièce que
+    // l'organisme a lui-même déclarée sans valeur.
+    mockP.sousTraitant.count.mockResolvedValue(0);
+    mockP.trainer.count.mockResolvedValue(0);
+    mockP.documentGenere.count.mockImplementation((args?: { where?: Record<string, unknown> }) =>
+      Promise.resolve(
+        args?.where?.["type"] === "procedure_sous_traitance" && args?.where?.["annuleeAt"] === null
+          ? 0
+          : 3,
+      ),
     );
     const result = await evaluerConformite();
     expect(result.indicateurs.find((i) => i.numero === 27)?.statut).toBe("a_completer");
