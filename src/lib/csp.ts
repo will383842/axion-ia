@@ -129,16 +129,31 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
         "https://assets.calendly.com",
       ].join(" ");
 
+  // 🔴 ORIGINES STRIPE — CONDITIONNÉES À L'ACTIVATION (2026-08-04).
+  //
+  // Elles étaient autorisées en dur « pour Stripe.js (publishable key client) »
+  // et « si on bascule un jour à Stripe Elements ». Or Stripe est éteint :
+  // `STRIPE_ENABLED` n'est pas posé en production, `isStripeConfigured()`
+  // renvoie false, et **aucun code client ne charge Stripe.js** — pas une seule
+  // occurrence de `@stripe/stripe-js` ou `loadStripe` dans le dépôt. La clé
+  // publiable n'est même pas définie en prod.
+  //
+  // Une CSP qui autorise des origines inutilisées élargit la surface sans
+  // contrepartie : c'est la définition d'une permission à retirer. On les gate
+  // sur le même drapeau que le reste, pour qu'elles se rétablissent d'elles-mêmes
+  // le jour où le paiement en ligne est réactivé — plutôt que de les retirer et
+  // de laisser un iframe blanc à qui rallumera Stripe sans penser à la CSP.
+  const stripeActif = process.env["STRIPE_ENABLED"] === "true";
+  const stripeConnect = stripeActif ? " https://api.stripe.com" : "";
+  const stripeFrame = stripeActif ? " https://checkout.stripe.com" : "";
+
   return [
     "default-src 'self'",
     scriptSrc,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    // Sprint X.2 — `https://api.stripe.com` requis pour Stripe.js (publishable
-    // key client) + côté serveur indirect via Checkout redirect. `https://checkout.stripe.com`
-    // frame-src pour 3DS challenges si on bascule un jour à Stripe Elements (V1.5+).
-    "connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io https://api.stripe.com https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com",
+    `connect-src 'self' https://challenges.cloudflare.com https://plausible.axion-ia.com https://api.telegram.org https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io${stripeConnect} https://www.clarity.ms https://*.clarity.ms https://calendly.com https://*.calendly.com https://*.r2.cloudflarestorage.com`,
     // `*.r2.cloudflarestorage.com` : upload présigné direct navigateur→R2
     // (import de kit + uploads admin documents-interventions). Sans ça, la CSP
     // bloque le PUT du fichier vers le stockage (fix 2026-06-13).
@@ -148,7 +163,7 @@ export function buildCspHeader({ nonce, strict, embed = false }: BuildCspOptions
     // sur /appel — le widget Calendly charge des iframes enfants sur des
     // sous-domaines (event.calendly.com, calendar.calendly.com) qui doivent
     // être whitelistés sinon l'iframe reste blanche (fix 2026-05-27).
-    "frame-src 'self' https://challenges.cloudflare.com https://checkout.stripe.com https://plausible.axion-ia.com https://calendly.com https://*.calendly.com",
+    `frame-src 'self' https://challenges.cloudflare.com${stripeFrame} https://plausible.axion-ia.com https://calendly.com https://*.calendly.com`,
     // Route d'embed widget → framable partout. Sinon `'none'` (anti-clickjacking).
     embed ? "frame-ancestors *" : "frame-ancestors 'none'",
     "form-action 'self'",

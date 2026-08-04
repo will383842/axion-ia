@@ -29,7 +29,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { getStripe, getWebhookSecret } from "@/lib/stripe";
+import { getStripe, getWebhookSecret, isStripeConfigured } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { applyTransition, StateMachineError } from "@/features/booking/state-machine";
@@ -49,6 +49,28 @@ const KNOWN_EVENTS = new Set<Stripe.Event["type"]>([
 ]);
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  // -- 0. L'INTERRUPTEUR NE COUPAIT QUE LE SORTANT (2026-08-04) ---------
+  //
+  // 🔴 `isStripeConfigured()` gardait la création de session Checkout
+  // (`features/payment/actions.ts`) et les remboursements
+  // (`features/booking/refund-actions.ts`) — mais PAS cette route. Stripe était
+  // donc « éteint » dans un seul sens : rien ne partait, tout pouvait entrer.
+  //
+  // Ce qui suit n'est pas anodin : la route écrit dans `stripeWebhookEvent` PUIS
+  // appelle `dispatchStripeEvent`, qui mute l'état des réservations et des
+  // paiements. Un événement correctement signé aurait donc modifié des données
+  // persistées d'une intégration réputée hors service.
+  //
+  // Constaté en production le 2026-08-04 : `STRIPE_ENABLED` absent, aucun code
+  // client ne charge Stripe.js, et 0 ligne dans `stripe_webhook_events`,
+  // `payments`, `bookings`. Rien n'est jamais entré — mais rien ne l'empêchait.
+  //
+  // 404 plutôt que 403 : une route de paiement désactivée n'a pas à confirmer
+  // son existence. Et on refuse AVANT de lire le corps, donc sans rien traiter.
+  if (!isStripeConfigured()) {
+    return NextResponse.json({ error: "not_found" }, { status: 404 });
+  }
+
   // -- 1. Raw body (REQUIRED pour signature constructEvent) -------------
   let rawBody: string;
   try {
