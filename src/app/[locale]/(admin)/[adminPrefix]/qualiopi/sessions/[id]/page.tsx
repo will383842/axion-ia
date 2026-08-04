@@ -305,7 +305,16 @@ export default async function SessionHubPage({ params }: PageProps) {
   // ⚠️ Filtré par le SSOT : `circuitPour` rend `null` pour une convocation, une
   // attestation ou une facture — ce sont des pièces ÉMISES, pas des engagements
   // négociés. Leur proposer un lien de signature n'aurait aucun sens.
-  const piecesSignables = documentsRaw.filter((d) => circuitPour(d.type) !== null);
+  // 🔴 `annuleeAt === null` — une pièce ANNULÉE ne se signe plus. [2026-08-04]
+  //
+  // Constaté en production : après annulation de la convention
+  // `AXI-DOC-2026-003`, le panneau continuait d'afficher « Envoyer au client »
+  // et « Signer pour l'organisme ». On pouvait donc faire signer à la cliente
+  // une pièce que l'organisme venait de déclarer sans valeur — et le panneau ne
+  // disait même pas qu'elle était annulée.
+  const piecesSignables = documentsRaw.filter(
+    (d) => circuitPour(d.type) !== null && d.annuleeAt === null,
+  );
   const signaturesParPiece = new Map<string, SignatureApposeeVue[]>();
   if (piecesSignables.length > 0) {
     const lignes = await prisma.documentSignature.findMany({
