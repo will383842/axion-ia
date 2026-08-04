@@ -71,6 +71,37 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   "qualiopi-alerte-interne",
 ] as const;
 
+/**
+ * 🔴 CES IDENTIFIANTS S'AFFICHAIENT TELS QUELS, à trois endroits : le menu
+ * « Nature d'email » des réglages, la liste des règles enregistrées, et la
+ * phrase d'explication de la page — en monospace, comme pour assumer. Deux
+ * d'entre eux sont même en anglais (`contract-sent`, `contract-reminder`).
+ *
+ * Les libellés vivent ici, avec les listes qu'ils décrivent : un template
+ * ajouté plus haut sans libellé se verra à l'écran entre guillemets plutôt
+ * que de passer pour un nom de code assumé.
+ */
+export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
+  "devis-envoi": "Envoi d'un devis",
+  "convention-envoi": "Envoi d'une convention",
+  "facture-envoi": "Envoi d'une facture",
+  "contract-sent": "Envoi d'un contrat à signer",
+  "contract-reminder": "Relance de signature d'un contrat",
+  "qualiopi-convocation": "Convocation à une session",
+  "qualiopi-rappel-j7": "Rappel à J-7",
+  "qualiopi-satisfaction-j1": "Questionnaire de satisfaction (J+1)",
+  "qualiopi-suivi-j30": "Suivi à J+30",
+  "qualiopi-attestation-disponible": "Attestation disponible",
+  "qualiopi-portail-acces": "Accès au portail",
+  "qualiopi-alerte-interne": "Alerte interne",
+  "qualiopi-relance-impayee": "Relance d'impayé",
+};
+
+export function libelleTemplateEmail(template: string | null): string {
+  if (template === null || template === "") return "Sans nature";
+  return LIBELLE_TEMPLATE_EMAIL[template] ?? `« ${template} »`;
+}
+
 export type ModeEnvoi = "auto" | "validation";
 
 /** Règle telle que lue en base, réduite à ce qui sert à la résolution. */

@@ -76,7 +76,7 @@ describe("getIndicateurs", () => {
       tauxSatisfaction: expect.objectContaining({ tauxPct: 0, nb: 0, fiable: false }),
       tauxReussite: expect.objectContaining({ tauxPct: 0, nb: 0, fiable: false }),
       tauxCompletion: expect.objectContaining({ tauxPct: 0, nb: 0, fiable: false }),
-      delaiAccesMoyen: expect.objectContaining({ jours: 0, nb: 0 }),
+      delaiAccesMoyen: expect.objectContaining({ jours: 0, nb: 0, fiable: false }),
       methodes: expect.objectContaining({
         satisfaction: expect.any(String),
         reussite: expect.any(String),
@@ -134,7 +134,7 @@ describe("getIndicateurs", () => {
       tauxSatisfaction: { tauxPct: 75, nb: 10, fiable: true, libelle: "75 %" },
       tauxReussite: { tauxPct: 80, nb: 10, fiable: true, libelle: "80 %" },
       tauxCompletion: { tauxPct: 90, nb: 10, fiable: true, libelle: "90 %" },
-      delaiAccesMoyen: { jours: 14, nb: 10 },
+      delaiAccesMoyen: { jours: 14, nb: 10, fiable: true },
       methodes: { satisfaction: "...", reussite: "...", completion: "...", delaiAcces: "..." },
       calculeAt: new Date("2026-06-06T10:00:00.000Z").toISOString(),
     };

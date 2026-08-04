@@ -68,7 +68,7 @@ describe("ProgrammeFormationPdf — mentions de l'action", () => {
 
   it("porte l'intitulé, la durée contractuelle et la modalité", () => {
     expect(text).toContain("IA pour bien commencer");
-    expect(text).toContain("4 heure(s)");
+    expect(text).toContain("4 heures");
     expect(text).toContain("Présentiel");
   });
 
@@ -122,7 +122,7 @@ describe("ProgrammeFormationPdf — contenu", () => {
     const t = rendre({ modules: [] });
     expect(t).toContain("n'est pas structuré");
     expect(t).toContain("IA pour bien commencer");
-    expect(t).toContain("4 heure(s)");
+    expect(t).toContain("4 heures");
   });
 });
 

@@ -102,13 +102,16 @@ export function ApplicationStatusForm({
           <button type="submit" disabled={pending} className="admin-button">
             {pending ? "Enregistrement…" : "Enregistrer"}
           </button>
+          {/* 🔴 Succès et erreur portaient la MÊME classe : un échec
+              d'enregistrement ressemblait trait pour trait à une réussite —
+              même petit texte gris, au même endroit. */}
           {state.ok ? (
-            <span role="status" className="admin-meta-small">
+            <span role="status" className="admin-alert admin-alert-success">
               {" "}
               Mis à jour
             </span>
           ) : state.error ? (
-            <span role="alert" className="admin-meta-small">
+            <span role="alert" className="admin-alert admin-alert-error">
               {" "}
               {state.error}
             </span>

@@ -49,12 +49,11 @@ export interface OrderUpsertRow {
 }
 
 /** Tiers alignés sur `getPopulationTier` (seed-cities) + schéma City. */
-export function populationTier(pop: number): number {
-  if (pop >= 100_000) return 1;
-  if (pop >= 20_000) return 2;
-  if (pop >= 10_000) return 3;
-  return 4;
-}
+// Les seuils vivent avec leurs libellés dans population-tiers.ts (module pur,
+// importable côté client) : deux écrans annonçaient des bornes fausses parce
+// qu'ils les recopiaient de mémoire.
+import { populationTier } from "./population-tiers";
+export { populationTier };
 
 /** Entrée minimale attendue depuis `VILLES` (sous-ensemble de `Ville`). */
 export interface VilleLike {

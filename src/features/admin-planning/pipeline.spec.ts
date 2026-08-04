@@ -217,12 +217,31 @@ describe("étage « réalisé, à facturer » — dérivé, invisible ailleurs",
 });
 
 describe("étages de facturation", () => {
-  it("« émises impayées » = statut `emise` seulement", () => {
+  it("« émises impayées » exclut les payées", () => {
     const e = etage(
       { factures: [facture({ statut: "emise" }), facture({ statut: "payee" })] },
       "facture_emise",
     );
     expect(e?.nb).toBe(1);
+  });
+
+  // 🔴 Ce contrat était `statut === "emise"` SEUL. Le cron de 06:30 UTC bascule
+  // une facture échue en `en_retard` : elle quittait alors l'entonnoir sans
+  // entrer nulle part ailleurs — ni « encaissé », ni un étage amont. L'argent le
+  // plus en retard était le plus invisible, sur la page des fuites.
+  it("une facture en retard reste dans les impayées — c'est le même argent dû", () => {
+    const e = etage({ factures: [facture({ statut: "en_retard" })] }, "facture_emise");
+    expect(e?.nb).toBe(1);
+  });
+
+  it("une facture partiellement payée aussi", () => {
+    const e = etage({ factures: [facture({ statut: "partiellement_payee" })] }, "facture_emise");
+    expect(e?.nb).toBe(1);
+  });
+
+  it("une facture annulée n'est due par personne", () => {
+    const e = etage({ factures: [facture({ statut: "annulee" })] }, "facture_emise");
+    expect(e?.nb).toBe(0);
   });
 
   it("l'âge d'une impayée part de sa date d'émission", () => {

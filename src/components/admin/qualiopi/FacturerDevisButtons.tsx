@@ -43,7 +43,7 @@ export function FacturerDevisButtons({
         return;
       }
       setMessage(
-        `Facture ${res.data.numero} émise.${res.data.chorusProRequis ? " ⚠️ Client secteur public : dépôt Chorus Pro OBLIGATOIRE." : ""}`,
+        `Facture ${res.data.numero} émise.${res.data.chorusProRequis ? " Attention : client secteur public : dépôt Chorus Pro OBLIGATOIRE." : ""}`,
       );
       router.refresh();
     });

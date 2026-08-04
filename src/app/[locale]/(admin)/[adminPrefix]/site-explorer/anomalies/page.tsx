@@ -5,11 +5,13 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listAnomalies, resolveAnomaly } from "@/server/actions/site-explorer/site-routes";
 import { adminPath } from "@/lib/admin-path";
+import { AdminPagination } from "@/components/admin/ui";
+import { libelleGravite, libelleAnomalie } from "@/server/site-explorer/anomalies-labels";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Anomalies SEO — Site Explorer Admin",
+  title: "Explorateur du site — anomalies SEO | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -37,6 +39,8 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
   };
 
   const { anomalies, total } = await listAnomalies(filters);
+  const page = filters.page;
+  const totalPages = Math.max(1, Math.ceil(total / filters.pageSize));
   const backUrl = adminPath("fr", "site-explorer");
 
   const severityBadge = (severity: string) => {
@@ -69,7 +73,7 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
                 : "border-[color:var(--color-admin-border-strong)] hover:bg-[color:var(--color-admin-surface-sunken)]"
             }`}
           >
-            {sev === "" ? "Toutes" : sev === "high" ? "High" : sev === "medium" ? "Medium" : "Low"}
+            {sev === "" ? "Toutes" : libelleGravite(sev)}
           </a>
         ))}
         <a
@@ -85,7 +89,8 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
       </div>
 
       <div className="text-sm text-[color:var(--color-admin-fg-muted)]">
-        {total.toLocaleString("fr-FR")} anomalie{total > 1 ? "s" : ""}
+        {total.toLocaleString("fr-FR")} anomalie{total > 1 ? "s" : ""} · page {page}/
+        {Math.max(1, Math.ceil(total / 50))}
       </div>
 
       {anomalies.length === 0 ? (
@@ -106,18 +111,20 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
                   <span
                     className={`rounded px-1.5 py-0.5 text-xs font-medium ${severityBadge(a.severity)}`}
                   >
-                    {a.severity}
+                    {libelleGravite(a.severity)}
                   </span>
-                  <span className="font-mono text-xs text-[color:var(--color-admin-fg-muted)]">
-                    {a.type}
+                  <span className="text-xs text-[color:var(--color-admin-fg-muted)]" title={a.type}>
+                    {libelleAnomalie(a.type)}
                   </span>
                 </div>
                 <p className="text-sm text-[color:var(--color-admin-fg)]">{a.description}</p>
+                {/* 🔴 Ce lien portait `site-explorer/${cond ? "" : ""}` — les
+                    DEUX branches du ternaire vides. Il affichait le chemin de
+                    la route concernée et ramenait invariablement à la liste
+                    complète. `listAnomalies` ne sélectionnait même pas
+                    l'identifiant de la route ; il l'expose désormais. */}
                 <a
-                  href={adminPath(
-                    "fr",
-                    `site-explorer/${(a as { siteRoute?: { pathPattern: string } }).siteRoute ? "" : ""}`,
-                  )}
+                  href={adminPath("fr", `site-explorer/${a.siteRoute.id}`)}
                   className="admin-link font-mono text-xs"
                 >
                   {a.siteRoute.pathRendered ?? a.siteRoute.pathPattern}
@@ -133,6 +140,17 @@ export default async function SiteExplorerAnomaliesPage({ params, searchParams }
           ))}
         </div>
       )}
+
+      {/* 🔴 « 312 anomalies » puis cinquante lignes, et rien pour aller plus
+          loin : la requête pagine (pageSize 50) mais la page ne rendait aucun
+          contrôle. Les anomalies au-delà de la cinquantième n'étaient
+          atteignables qu'en tapant ?page=2 dans la barre d'adresse. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={adminPath("fr", "site-explorer/anomalies")}
+        preservedParams={{ severity: sp.severity, resolved: sp.resolved, type: sp.type }}
+      />
     </div>
   );
 }

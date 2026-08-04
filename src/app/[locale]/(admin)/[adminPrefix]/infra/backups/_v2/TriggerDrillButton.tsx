@@ -25,7 +25,7 @@ export function TriggerDrillButton(): React.ReactElement {
   return (
     <span className="inline-flex items-center gap-[var(--space-admin-3)]">
       <button type="button" onClick={onClick} disabled={pending} className="admin-link">
-        {pending ? "Déclenchement…" : "↻ Lancer un drill maintenant"}
+        {pending ? "Déclenchement…" : "Lancer un test de restauration"}
       </button>
       {msg && (
         <span className={`admin-meta admin-severity-${msg.ok ? "info" : "warning"}`}>

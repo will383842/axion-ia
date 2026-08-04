@@ -22,11 +22,19 @@ export async function CostsV2(): Promise<React.ReactElement> {
   const columns: ReadonlyArray<AdminTableColumn<ProviderRow>> = [
     { key: "provider", header: "Fournisseur", cell: (p) => p.provider },
     { key: "cost", header: "Coût", cell: (p) => `$${p.costUsd.toFixed(2)}` },
-    { key: "tokensIn", header: "Jetons entrée", cell: (p) => p.tokensInput.toLocaleString() },
-    { key: "tokensOut", header: "Jetons sortie", cell: (p) => p.tokensOutput.toLocaleString() },
+    {
+      key: "tokensIn",
+      header: "Jetons entrée",
+      cell: (p) => p.tokensInput.toLocaleString("fr-FR"),
+    },
+    {
+      key: "tokensOut",
+      header: "Jetons sortie",
+      cell: (p) => p.tokensOutput.toLocaleString("fr-FR"),
+    },
     {
       key: "cap",
-      header: "Cap mensuel",
+      header: "Plafond mensuel",
       cell: (p) => {
         const config = stats.providers.find((c) => c.provider === p.provider);
         const cap = config?.monthlyCapUsd ?? 0;
@@ -74,8 +82,8 @@ export async function CostsV2(): Promise<React.ReactElement> {
       <AdminCard>
         <h2 className="admin-h2">Projection fin de mois</h2>
         <p className="admin-meta-block">
-          La projection nécessite ≥ 7 jours d&apos;historique mensuel. Le calcul devient utile une
-          fois le premier mois en prod terminé (Sprint 5+).
+          La projection demande au moins sept jours d&apos;historique sur le mois en cours. Tant
+          qu&apos;ils ne sont pas écoulés, le chiffre affiché n&apos;a pas de valeur.
         </p>
       </AdminCard>
     </AdminPageShell>

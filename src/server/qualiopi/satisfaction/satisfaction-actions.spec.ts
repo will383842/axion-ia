@@ -100,7 +100,7 @@ const INDICATEURS_FIXTURE = {
   tauxSatisfaction: { tauxPct: 80, nb: 10, fiable: true, libelle: "80 %" },
   tauxReussite: { tauxPct: 90, nb: 20, fiable: true, libelle: "90 %" },
   tauxCompletion: { tauxPct: 95, nb: 20, fiable: true, libelle: "95 %" },
-  delaiAccesMoyen: { jours: 14, nb: 20 },
+  delaiAccesMoyen: { jours: 14, nb: 20, fiable: true },
   methodes: {
     satisfaction: "méthode satisfaction",
     reussite: "méthode réussite",

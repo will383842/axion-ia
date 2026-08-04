@@ -45,10 +45,22 @@ const styles = StyleSheet.create({
     borderColor: brandColor("sage"),
     color: brandColor("sage"),
   },
+  /** Conteneur des deux lignes. C'est LUI qui prend la largeur restante. */
+  pieceLabelBlock: { flex: 1 },
   pieceLabel: {
     fontSize: 10,
+    // 🔴 PAS de `flex: 1` ici (retiré le 2026-08-03, vérifié sur
+    // AXI-DOC-2026-018). Le parent est un conteneur en COLONNE : `flex: 1` sur
+    // le label lui faisait réclamer toute la hauteur disponible, et la note
+    // légale se rendait PAR-DESSUS. Les cinq lignes de « Pièces constitutives »
+    // partaient illisibles à l'OPCO — « Convention de formation » et
+    // « L.6353-1 / L.6353-2 » imprimés l'un sur l'autre.
+    //
+    // Le style venait de `kit-cpf.tsx`, où il est inoffensif : ce gabarit-là ne
+    // rend qu'UNE ligne par pièce. `kit-france-travail.tsx`, qui a la même
+    // structure à deux lignes que ce fichier, met bien le `flex` sur le
+    // conteneur — c'est le modèle repris ici.
     color: brandColor("fg"),
-    flex: 1,
   },
   pieceNote: {
     fontSize: 8,
@@ -175,9 +187,11 @@ export function KitOpcoPdf({ data }: { data: KitOpcoData }): React.ReactElement 
                 ne le signale. On dessine la case en geometrie plutot que de
                 dependre d'un glyphe : une bordure s'imprime toujours. */}
               <View style={styles.pieceCheck} />
-              <View style={{ flex: 1 }}>
+              <View style={styles.pieceLabelBlock}>
                 <Text style={styles.pieceLabel}>{piece.label}</Text>
-                <Text style={styles.pieceNote}>{piece.note}</Text>
+                {/* Note omise si vide : un `<Text>` vide ajoute une ligne
+                    fantôme qui déséquilibre la hauteur des rangées. */}
+                {piece.note ? <Text style={styles.pieceNote}>{piece.note}</Text> : null}
               </View>
             </View>
           ))}

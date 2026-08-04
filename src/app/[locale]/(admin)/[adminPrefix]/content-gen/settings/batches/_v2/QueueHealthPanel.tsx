@@ -65,16 +65,16 @@ export function QueueHealthPanel({ health }: Props): React.ReactElement {
                 File
               </th>
               <th className="py-[var(--space-admin-2,4px)] pr-[var(--space-admin-4,8px)] text-right font-medium tabular-nums">
-                Waiting
+                En attente
               </th>
               <th className="py-[var(--space-admin-2,4px)] pr-[var(--space-admin-4,8px)] text-right font-medium tabular-nums">
-                Active
+                En cours
               </th>
               <th className="py-[var(--space-admin-2,4px)] pr-[var(--space-admin-4,8px)] text-right font-medium tabular-nums">
-                Delayed
+                Différés
               </th>
               <th className="py-[var(--space-admin-2,4px)] text-right font-medium tabular-nums">
-                Failed
+                En échec
               </th>
             </tr>
           </thead>

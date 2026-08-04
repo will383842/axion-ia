@@ -29,7 +29,7 @@ function Block({
   children: React.ReactNode;
 }): React.ReactElement {
   return (
-    <section className="border-border bg-cream rounded-lg border p-4">
+    <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <h2 className="text-mocha mb-2 text-sm font-semibold">{title}</h2>
       {children}
     </section>

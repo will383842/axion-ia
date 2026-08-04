@@ -147,7 +147,9 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     <td className={cellCls}>{r.dateRevue.toLocaleDateString("fr-FR")}</td>
                     <td className={cellCls}>
                       {participants > 0 ? (
-                        <span>{participants} participant(s)</span>
+                        <span>
+                          {participants} participant{participants > 1 ? "s" : ""}
+                        </span>
                       ) : (
                         <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                       )}
@@ -155,7 +157,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     <td className={cellCls}>
                       {decisions > 0 ? (
                         <span className="text-[color:var(--color-admin-success)]">
-                          {decisions} décision(s)
+                          {decisions} décision{decisions > 1 ? "s" : ""}
                         </span>
                       ) : (
                         <span className="text-[color:var(--color-admin-warning)]">0 décision</span>
@@ -164,7 +166,7 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     <td className={cellCls}>
                       {planActions > 0 ? (
                         <span className="text-[color:var(--color-admin-success)]">
-                          {planActions} action(s)
+                          {planActions} action{planActions > 1 ? "s" : ""}
                         </span>
                       ) : (
                         <span className="text-[color:var(--color-admin-warning)]">0 action</span>
@@ -192,7 +194,15 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
                     </td>
                     <td className={cellCls}>
                       <RevueDirectionRowActions
-                        revue={{ id: r.id, dateRevue: r.dateRevue, statut: r.statut }}
+                        revue={{
+                          id: r.id,
+                          dateRevue: r.dateRevue,
+                          statut: r.statut,
+                          decisions: Array.isArray(r.decisions) ? (r.decisions as unknown[]) : [],
+                          planActions: Array.isArray(r.planActions)
+                            ? (r.planActions as unknown[])
+                            : [],
+                        }}
                         updateAction={updateRevueDirectionAction}
                       />
                     </td>
@@ -203,7 +213,8 @@ export default async function QualiopiRevueDirectionPage({ params }: PageProps) 
           </table>
           {brouillons > 0 && (
             <p className="border-t border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-              {brouillons} revue(s) en brouillon — à valider pour couvrir l&apos;indicateur 32.
+              {brouillons} revue{brouillons > 1 ? "s" : ""} en brouillon — à valider pour couvrir
+              l&apos;indicateur 32.
             </p>
           )}
         </div>

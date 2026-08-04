@@ -240,9 +240,28 @@ describe("transitionStatementAction — gel et dégel des lignes", () => {
       to: "facture_recue",
       numeroFacture: "F-1",
       dateFacture: "2026-07-01",
-      montantFactureTtcCents: 108_000,
+      // Le champ prend désormais des EUROS — c'est ce que porte la facture.
+      montantFactureTtcEuros: 1_080,
     });
     expect(tx.trainerFeeLine.updateMany).not.toHaveBeenCalled();
+  });
+
+  // 🔴 Le formulaire demandait des centimes et pré-remplissait « 120000 » :
+  // saisir 1200, le montant lu sur la facture, enregistrait douze euros.
+  it("convertit les euros saisis en centimes avant d'écrire", async () => {
+    mockStatementFindUnique.mockResolvedValue(releve({ statut: "valide" }));
+    await transitionStatementAction({
+      id: ID,
+      to: "facture_recue",
+      numeroFacture: "F-2",
+      dateFacture: "2026-07-01",
+      montantFactureTtcEuros: 1_080.5,
+    });
+    expect(tx.trainerStatement.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ montantFactureTtcCents: 108_050 }),
+      }),
+    );
   });
 
   it("le statut n'est jamais écrit sans passer par la matrice", async () => {

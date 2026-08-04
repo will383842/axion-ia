@@ -18,6 +18,11 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
+    // Régénération FORCÉE = rectification : on lit le numéro de l'attestation
+    // remplacée pour que la nouvelle pièce déclare ce qu'elle rectifie.
+    documentGenere: {
+      findUnique: vi.fn(),
+    },
     trainer: {
       findUnique: vi.fn(),
     },
@@ -90,6 +95,7 @@ const mockPrisma = prisma as unknown as {
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
   };
+  documentGenere: { findUnique: ReturnType<typeof vi.fn> };
   trainer: {
     findUnique: ReturnType<typeof vi.fn>;
   };

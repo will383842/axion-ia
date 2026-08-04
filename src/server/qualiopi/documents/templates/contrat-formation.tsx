@@ -268,7 +268,10 @@ export function ContratFormationPdf({
             </View>
           </View>
           <FieldRow label="Niveau de connaissances préalables" value={niveauPrealable} />
-          <FieldRow label="Durée" value={`${data.dureeHeures} heure(s)`} />
+          <FieldRow
+            label="Durée"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
           <FieldRow label="Modalité de déroulement" value={data.modalite} />

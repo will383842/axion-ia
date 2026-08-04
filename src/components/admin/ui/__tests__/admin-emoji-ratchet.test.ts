@@ -39,14 +39,47 @@ const ROOT = resolve(__dirname, "../../../../..");
 const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/components/admin")];
 
 /**
+ * Modules HORS des deux dossiers admin dont les chaînes sont pourtant RENDUES
+ * dans la console — donc soumis à la même règle.
+ *
+ * 🔴 Le trou a coûté deux jours : `QUALIOPI_POLE_LABELS` (`src/lib`) affichait
+ * six emojis dans la barre latérale, c'est-à-dire sur CHAQUE page de la
+ * console, pendant que ce test annonçait « 1 occurrence ». `PERIMETRE_LABELS`
+ * (`src/server`) en affichait deux de plus sur la page Dossiers.
+ *
+ * La liste est nominative et pas un dossier entier, à dessein : `src/lib` et
+ * `src/server` contiennent aussi des gabarits d'e-mail et de PDF, où un
+ * pictogramme relève d'une autre décision que celle-ci.
+ *
+ * ⚠️ ELLE NE PEUT PAS TOUT COUVRIR. Le garde-fou d'isolation du dépôt
+ * (`pnpm isolation-check`, § 4.1bis) interdit à un fichier hors zone dédiée de
+ * seulement NOMMER le domaine de la génération éditoriale. Les libellés de ce
+ * domaine portent encore 3 emojis rendus dans la console : ils échappent donc
+ * à ce cliquet-ci et doivent recevoir le leur, à l'intérieur de leur propre
+ * zone. Noté pour que le trou soit connu plutôt que redécouvert.
+ */
+const FICHIERS_SSOT_CONSOLE = [
+  join(ROOT, "src/lib/admin-nav.ts"),
+  join(ROOT, "src/server/qualiopi/perimetre.ts"),
+];
+
+/**
  * Plafond courant, à ne jamais remonter.
  *
- * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02, passe complète).
- * Sont passés en composants lucide : les statuts qui ne se distinguaient que
- * par la couleur, les cellules booléennes des tableaux, les icônes d'état vide
- * et les glyphes servant de bouton.
+ * Trajectoire : 340 au plus haut → 248 → 94 → 1 (2026-08-02) → 45 → 40 → 38 →
+ * 44 → **1** (2026-08-03). Les remontées ne sont JAMAIS des ajouts d'emoji :
+ * ce sont des élargissements de la mesure. 38 → 44 venait de la plage
+ * `U+2300`–`U+23FF` enfin couverte.
  *
- * LA DERNIÈRE OCCURRENCE EST VOLONTAIRE — ne la « corrigez » pas. Le champ
+ * Le « 1 » d'aujourd'hui n'est PAS celui du 2026-08-02 : celui-là en cachait
+ * 51. Les 43 restants ont été repris un par un — 21 en JSX remplacés par un
+ * composant lucide, 14 vivant dans des chaînes (`window.alert`, prop `hint`,
+ * `label`, `cell`) où aucun composant ne peut se glisser et où le mot
+ * « Attention : » dit la même chose sans dépendre de la police du poste. Le
+ * « ⌘K » de la palette est parti avec eux : il annonçait sous Windows le seul
+ * raccourci qui n'y existe pas.
+ *
+ * UNE OCCURRENCE EST VOLONTAIRE — ne la « corrigez » pas. Le champ
  * « Avantages » d'une offre d'emploi accepte un JSON dont la clé `icon` porte
  * réellement un emoji côté site public ; le formulaire en montre un EXEMPLE à
  * l'administrateur. Retirer l'emoji de cet exemple mentirait sur le format
@@ -54,7 +87,28 @@ const SCAN_DIRS = [join(ROOT, "src/app/[locale]/(admin)"), join(ROOT, "src/compo
  */
 const PLAFOND = 1;
 
-const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2700}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
+/**
+ * 🔴 CETTE PLAGE SAUTAIT `U+2600`–`U+26FF`, et c'est le bloc qui contient les
+ * pictogrammes les plus employés de la console : « ⚠ » (U+26A0), « ⚙ »
+ * (U+2699), « ⛔ » (U+26D4), « ⚪ » (U+26AA), « ★ » (U+2605), « ⚖ » (U+2696),
+ * « ♻ » (U+267B).
+ *
+ * Conséquence mesurée le 2026-08-03 : le compteur affichait 1 alors que les
+ * deux dossiers scannés en contenaient 43. La trajectoire « 340 → 248 → 94 →
+ * 1 » ne mesurait donc pas ce qu'elle croyait mesurer sur sa dernière marche.
+ * On élargit la plage ; le plafond repart de la valeur réellement constatée.
+ *
+ * 🔴 SECOND TROU, TROUVÉ LE MÊME JOUR par un audit du code : la plage sautait
+ * AUSSI `U+2300`–`U+23FF` (Divers technique), qui contient « ⏳ » (U+23F3) et
+ * « ⏸️ » (U+23F8) — tous deux rendus dans la colonne « État » de la couverture
+ * des villes et sur les boutons de pause d'une campagne. Vérifié caractère par
+ * caractère avant élargissement.
+ *
+ * Leçon : ce cliquet s'est trompé DEUX fois sur son propre périmètre. Devant
+ * un compteur qui annonce un beau chiffre, mesurer avant de le croire.
+ */
+const EMOJI =
+  /[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{1F000}-\u{1F2FF}]/gu;
 
 /**
  * Retire les lignes de commentaire — un emoji cité en commentaire n'est pas
@@ -105,13 +159,12 @@ describe("cliquet anti-emoji de la console", () => {
     const parFichier: Array<{ fichier: string; n: number }> = [];
     let total = 0;
 
-    for (const dir of SCAN_DIRS) {
-      for (const fichier of fichiersTsx(dir)) {
-        const trouves = codeSeul(readFileSync(fichier, "utf8")).match(EMOJI);
-        if (!trouves) continue;
-        total += trouves.length;
-        parFichier.push({ fichier: fichier.slice(ROOT.length + 1), n: trouves.length });
-      }
+    const aScanner = [...SCAN_DIRS.flatMap((dir) => fichiersTsx(dir)), ...FICHIERS_SSOT_CONSOLE];
+    for (const fichier of aScanner) {
+      const trouves = codeSeul(readFileSync(fichier, "utf8")).match(EMOJI);
+      if (!trouves) continue;
+      total += trouves.length;
+      parFichier.push({ fichier: fichier.slice(ROOT.length + 1), n: trouves.length });
     }
 
     const pires = parFichier

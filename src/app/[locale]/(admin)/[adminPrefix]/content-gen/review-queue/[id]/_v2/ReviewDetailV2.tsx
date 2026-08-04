@@ -126,7 +126,9 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
             className="h-[600px] w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]"
           />
         ) : (
-          <p className="admin-meta">Output non disponible (job pas encore complété).</p>
+          <p className="admin-meta">
+            Le contenu n&apos;est pas encore généré — revenez dans quelques minutes.
+          </p>
         )}
       </AdminCard>
 
@@ -141,14 +143,14 @@ export async function ReviewDetailV2({ review }: Props): Promise<React.ReactElem
 
       {articleId && (
         <AdminCard className="mb-[var(--space-admin-5)]">
-          <h2 className="admin-h2">Feedback éditorial</h2>
+          <h2 className="admin-h2">Avis éditorial</h2>
           <p className="admin-meta-block">
             Donnez un retour rapide sur la qualité globale de cet article pour améliorer les futures
             générations.
           </p>
           {feedbackAlreadyExists ? (
             <p className="admin-meta-block text-[color:var(--color-admin-success)]">
-              Feedback déjà enregistré pour cet article.
+              Votre avis a bien été enregistré pour cet article.
             </p>
           ) : (
             <div className="flex gap-[var(--space-admin-4)]">

@@ -95,7 +95,7 @@ export function ExportManifesteButton(): React.ReactElement {
       if (incomplet) {
         const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
         window.alert(
-          `⚠️ Dossier d'audit INCOMPLET — ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve(s) jointe(s).` +
+          `Attention : dossier d'audit INCOMPLET — ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve${nbPreuvesAttendues > 1 ? "s" : ""} jointe${nbPreuvesAttendues > 1 ? "s" : ""}.` +
             ` Vérifiez le fichier AVERTISSEMENTS.txt dans le ZIP avant de le remettre à l'auditeur.` +
             details,
         );

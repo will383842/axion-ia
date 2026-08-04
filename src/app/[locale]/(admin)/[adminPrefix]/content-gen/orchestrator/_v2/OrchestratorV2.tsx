@@ -120,13 +120,17 @@ export async function OrchestratorV2({ adminPrefix }: Props): Promise<React.Reac
       </AdminCard>
 
       <AdminCard>
-        <h2 className="admin-h2">Pipelines actifs</h2>
+        {/* 🔴 Cette liste s'intitulait « Pipelines actifs » et annonçait la
+            chaîne RSS « à venir — Sprint 4 ». Elle tourne en production toutes
+            les heures (`content-rss-fetch-cron`, `0 * * * *`) : la page disait
+            indisponible ce qui fonctionnait. Les trois autres mentions étaient
+            des numéros de sprint — un repère de développement, qui ne dit pas
+            à qui lit la page ce qu'il peut lancer aujourd'hui. */}
+        <h2 className="admin-h2">Chaînes de génération</h2>
         <ul className="admin-meta-block">
-          <li>Pipeline 1 — Landing villes directes (livré — Sprint 1+2)</li>
-          <li>Pipeline 2 — Actualités RSS (à venir — Sprint 4)</li>
-          <li>
-            Pipeline 3 — Campagnes de couverture (livré — Sprint 3 squelette + worker Sprint 4)
-          </li>
+          <li>Pages ville, générées directement — active</li>
+          <li>Actualités issues des flux RSS — active, relevé toutes les heures</li>
+          <li>Campagnes de couverture — active</li>
         </ul>
       </AdminCard>
     </AdminPageShell>

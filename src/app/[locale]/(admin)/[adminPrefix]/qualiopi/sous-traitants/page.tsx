@@ -17,14 +17,20 @@ import { listSousTraitants } from "@/server/qualiopi/registres/sous-traitants-se
 import {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
+  updateSousTraitantPiecesAction,
 } from "@/server/actions/qualiopi/sous-traitants";
 import {
   SousTraitantForm,
   SousTraitantVerifButton,
   SousTraitantContratButton,
+  ProcedureSousTraitanceButton,
 } from "@/components/admin/qualiopi/SousTraitantForm";
+import { SousTraitantPiecesEditor } from "@/components/admin/qualiopi/SousTraitantPiecesEditor";
 import { genererRegistrePdfAction } from "@/server/actions/qualiopi/exports-pdf";
-import { genererContratSousTraitanceAction } from "@/server/actions/qualiopi/documents";
+import {
+  genererContratSousTraitanceAction,
+  genererProcedureSousTraitanceAction,
+} from "@/server/actions/qualiopi/documents";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 
 export const dynamic = "force-dynamic";
@@ -61,17 +67,35 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
         title="Sous-traitants"
         description="Registre des sous-traitants OF (off.27 — indicateur 27). Prestataires auxquels l'OF délègue tout ou partie d'une formation. Consultation data.gouv.fr à attester par l’administrateur (le système ne vérifie pas automatiquement)."
         actions={
-          <PdfExportButton
-            label="Exporter le registre (PDF)"
-            input={{ type: "sous_traitants" as const }}
-            action={genererRegistrePdfAction}
-          />
+          <div className="flex flex-wrap items-start gap-[var(--space-admin-3)]">
+            {/*
+              La PROCÉDURE avant le registre : l'indicateur 27 attend une règle
+              écrite ET la preuve qu'on l'applique. Le registre porte la seconde,
+              cette pièce la première — et c'est elle que l'auditeur demande
+              d'abord. Elle ne dépend d'aucun sous-traitant : elle vaut avant le
+              premier recours.
+            */}
+            <ProcedureSousTraitanceButton genererAction={genererProcedureSousTraitanceAction} />
+            <PdfExportButton
+              label="Exporter le registre (PDF)"
+              input={{ type: "sous_traitants" as const }}
+              action={genererRegistrePdfAction}
+            />
+          </div>
         }
       />
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total" value={sousTraitants.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total"
+          value={sousTraitants.length}
+          {...(sousTraitants.length === 100 ? { meta: "100 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Actifs"
           value={actifs}
@@ -144,7 +168,10 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                     )}
                   </td>
                   <td className={cellCls}>
-                    <div className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <div
+                      className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                      title={s.objetPrestation ?? ""}
+                    >
                       {s.objetPrestation}
                     </div>
                   </td>
@@ -183,6 +210,19 @@ export default async function QualiopiSousTraitantsPage({ params }: PageProps) {
                         <SousTraitantContratButton
                           sousTraitantId={s.id}
                           genererAction={genererContratSousTraitanceAction}
+                        />
+                        {/*
+                          Pièces art. 4 et 8 — repliées : elles se saisissent une
+                          fois par an, les déplier noierait les colonnes lues à
+                          chaque visite.
+                        */}
+                        <SousTraitantPiecesEditor
+                          sousTraitantId={s.id}
+                          action={updateSousTraitantPiecesAction}
+                          prochaineVerifAt={s.prochaineVerifAt}
+                          rcProAttestationUrl={s.rcProAttestationUrl}
+                          rcProEcheanceAt={s.rcProEcheanceAt}
+                          cvUrl={s.cvUrl}
                         />
                       </div>
                     )}

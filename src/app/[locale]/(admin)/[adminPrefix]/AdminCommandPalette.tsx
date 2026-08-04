@@ -22,7 +22,7 @@
 //     conserver la taxonomie en 6 pôles (CONTENT_GEN_POLE_LABELS).
 
 import { Command } from "cmdk";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen,
@@ -182,16 +182,35 @@ export function AdminCommandPalette({ adminPrefix }: { adminPrefix: string }) {
     router.push(href);
   }
 
+  /**
+   * 🔴 LE BOUTON ANNONÇAIT « ⌘K » À TOUT LE MONDE, y compris sous Windows — où
+   * cette touche n'existe pas. La console s'utilise depuis un poste Windows :
+   * le seul raccourci affiché était donc le seul qui ne marche pas ici, alors
+   * que le gestionnaire de touches accepte bien `ctrlKey` (l. 115).
+   *
+   * Le serveur ignore la plateforme du visiteur : trancher au rendu produirait
+   * une différence d'hydratation. `useSyncExternalStore` sert exactement à ça —
+   * un instantané serveur (« Ctrl K », le bon défaut ici) et un instantané
+   * client lu après montage. Un `useEffect` qui appellerait `setState` ferait
+   * le même travail en deux rendus, ce que `react-hooks/set-state-in-effect`
+   * refuse à juste titre.
+   */
+  const raccourci = useSyncExternalStore(
+    () => () => {},
+    () => (/Mac|iPhone|iPad/i.test(navigator.userAgent) ? "Cmd K" : "Ctrl K"),
+    () => "Ctrl K",
+  );
+
   return (
     <>
       <button
         type="button"
         className="admin-cmdk-trigger"
         onClick={() => setOpen(true)}
-        aria-label="Ouvrir la palette de commandes (Ctrl+K)"
-        title="Ctrl+K / Cmd+K"
+        aria-label={`Ouvrir la palette de commandes (${raccourci})`}
+        title={`Ouvrir la palette de commandes — ${raccourci}`}
       >
-        <span aria-hidden="true">⌘K</span>
+        <span aria-hidden="true">{raccourci}</span>
       </button>
       <Command.Dialog
         open={open}

@@ -21,6 +21,7 @@ import {
   statsAppreciations,
 } from "@/server/actions/qualiopi/appreciations";
 import { AppreciationForm } from "@/components/admin/qualiopi/AppreciationForm";
+import { listerOptionsAppreciation } from "@/server/qualiopi/appreciations/options";
 import { Hash, Gauge, UserCheck, Users, GraduationCap } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -48,9 +49,11 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const [appreciations, stats] = await Promise.all([
+  const [appreciations, stats, options] = await Promise.all([
     listAppreciations({ limit: 100 }),
     statsAppreciations(),
+    // Listes de rattachement — remplacent la saisie d'UUID à la main.
+    listerOptionsAppreciation(),
   ]);
 
   const cellCls =
@@ -115,7 +118,12 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
 
       {/* Formulaire création */}
       <div className="mb-[var(--space-admin-8)]">
-        <AppreciationForm creerAction={creerAppreciationAction} />
+        <AppreciationForm
+          creerAction={creerAppreciationAction}
+          stagiaires={options.stagiaires}
+          inscriptions={options.inscriptions}
+          clients={options.clients}
+        />
       </div>
 
       {/* Liste */}
@@ -146,7 +154,9 @@ export default async function QualiopiAppreciationsPage({ params }: PageProps) {
                   <td className={cellCls}>{renderNote(a.note)}</td>
                   <td className={cellCls}>
                     {a.commentaire ? (
-                      <span className="line-clamp-2 max-w-xs">{a.commentaire}</span>
+                      <span className="line-clamp-2 max-w-xs" title={a.commentaire ?? ""}>
+                        {a.commentaire}
+                      </span>
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                     )}

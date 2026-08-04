@@ -67,7 +67,16 @@ export async function GET(
   }
   const role = (session.user as { role?: string }).role;
   if (role !== "super_admin" && role !== "admin") {
-    return NextResponse.json({ error: "forbidden" }, { status: 403 });
+    // 🔴 UN JSON ANGLAIS EN PIÈCE JOINTE. Le bouton « Exporter l'agenda (.ics) »
+    // est visible pour toute session admin — le layout ne filtre aucun rôle —
+    // mais cette route exige super_admin ou admin. Un compte éditeur ou lecteur
+    // téléchargeait donc un fichier contenant {"error":"forbidden"}, qu'il
+    // aurait ensuite tenté d'importer dans son agenda. On répond en français,
+    // en texte, et on dit quoi faire.
+    return new NextResponse(
+      "Export réservé aux administrateurs. Demandez à un administrateur de vous transmettre le flux.",
+      { status: 403, headers: { "Content-Type": "text/plain; charset=utf-8" } },
+    );
   }
 
   // ── Paramètres ────────────────────────────────────────────────────────────

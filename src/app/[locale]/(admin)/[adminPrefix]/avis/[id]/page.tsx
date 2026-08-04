@@ -18,6 +18,7 @@ import {
   uploadPhotoForm,
   removePhotoForm,
 } from "../actions-form";
+import { Ban } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -31,12 +32,16 @@ const STATUS_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ adminPrefix: string; id: string }>;
+  /** `?erreur=…` posé par les adaptateurs de modération quand l'action échoue. */
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const DATE_FMT = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long", timeStyle: "short" });
 
-export default async function AvisDetailPage({ params }: PageProps) {
+export default async function AvisDetailPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
+  const erreur = Array.isArray(sp["erreur"]) ? sp["erreur"][0] : sp["erreur"];
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
   const role = (session.user as { role?: string }).role;
@@ -53,13 +58,19 @@ export default async function AvisDetailPage({ params }: PageProps) {
     <AdminPageShell width="full">
       <AdminPageHeader
         title={`Avis de ${author}`}
-        description={`${r.rating}/5 ★ · déposé le ${DATE_FMT.format(r.createdAt)}`}
+        description={`Note ${r.rating} sur 5 · déposé le ${DATE_FMT.format(r.createdAt)}`}
         actions={
           <Link href={base} className="admin-button-ghost">
             ← Retour
           </Link>
         }
       />
+
+      {erreur ? (
+        <p role="alert" className="admin-alert admin-alert-error mb-[var(--space-admin-4)]">
+          {erreur}
+        </p>
+      ) : null}
 
       <div className="grid gap-[var(--space-admin-5)] lg:grid-cols-[1.6fr_1fr]">
         {/* Colonne principale : contenu de l’avis */}
@@ -70,7 +81,7 @@ export default async function AvisDetailPage({ params }: PageProps) {
                 {STATUS_LABELS[r.status] ?? r.status}
               </AdminBadge>
               {r.isVerified ? <AdminBadge tone="success">Vérifié</AdminBadge> : null}
-              {r.featured ? <AdminBadge tone="info">★ Mis en avant</AdminBadge> : null}
+              {r.featured ? <AdminBadge tone="info">Mis en avant</AdminBadge> : null}
               <span className="admin-meta-small">Note : {r.rating}/5</span>
             </div>
             {r.title ? <h2 className="mb-2 text-lg font-semibold">{r.title}</h2> : null}
@@ -103,8 +114,15 @@ export default async function AvisDetailPage({ params }: PageProps) {
             </p>
             <form action={replyForm} className="space-y-3">
               <input type="hidden" name="id" value={r.id} />
+              {/* 🔴 L'unique nom accessible du champ était le TEXTE DU
+                  PLACEHOLDER : un lecteur d'écran annonçait « Merci pour votre
+                  retour » comme intitulé, c'est-à-dire l'exemple à la place de
+                  la question. */}
+              <label htmlFor="replyBody" className="admin-label">
+                Votre réponse publique
+              </label>
               <textarea
-                aria-label="Merci pour votre retour"
+                id="replyBody"
                 name="replyBody"
                 rows={4}
                 maxLength={3000}
@@ -229,7 +247,12 @@ export default async function AvisDetailPage({ params }: PageProps) {
                   defaultValue={r.moderationNotes ?? ""}
                 />
                 <button type="submit" className="admin-button-ghost admin-button-block">
-                  ⛔ Rejeter
+                  <Ban
+                    size={14}
+                    aria-hidden="true"
+                    className="inline-block shrink-0 align-[-0.125em]"
+                  />{" "}
+                  Rejeter
                 </button>
               </form>
 

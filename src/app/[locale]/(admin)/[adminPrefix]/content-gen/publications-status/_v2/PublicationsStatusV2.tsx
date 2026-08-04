@@ -45,6 +45,23 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
     }),
   ]);
 
+  /**
+   * 🔴 LES CINQ COMPTEURS AFFICHAIENT LE PLAFOND DES REQUÊTES, PAS LE TOTAL.
+   * Chaque colonne lit `take: 30` puis titrait « Publié (en ligne) · 30 » :
+   * avec cinq mille articles publiés, la colonne annonçait trente. Et comme
+   * elle n'en montre que douze (`slice(0, 12)`), aucun des deux nombres
+   * affichés ne disait quoi que ce soit de vrai sur le volume réel.
+   *
+   * On compte donc en base, et on dit à côté ce que la colonne montre.
+   */
+  const [nbDraft, nbReview, nbApproved, nbPublished, nbRejected] = await Promise.all([
+    prisma.contentGenJob.count({ where: { status: { in: ["queued", "running"] } } }),
+    prisma.contentGenJob.count({ where: { status: "needs_review" } }),
+    prisma.reviewQueue.count({ where: { status: "approved", promotedToTier1At: null } }),
+    prisma.contentGenJob.count({ where: { status: "published" } }),
+    prisma.contentGenJob.count({ where: { status: "failed" } }),
+  ]);
+
   const base = `/fr/${adminPrefix}/content-gen`;
 
   async function doBulkApprove(formData: FormData) {
@@ -131,23 +148,16 @@ export async function PublicationsStatusV2({ adminPrefix }: Props): Promise<Reac
       </AdminCard>
 
       <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <KanbanColumn title="Brouillon (en génération)" total={nbDraft} rows={draft} base={base} />
+        <KanbanColumn title="En relecture" total={nbReview} rows={review} base={base} />
         <KanbanColumn
-          title={`Brouillon (en génération) · ${draft.length}`}
-          rows={draft}
-          base={base}
-        />
-        <KanbanColumn title={`En relecture · ${review.length}`} rows={review} base={base} />
-        <KanbanColumn
-          title={`Approuvé (à publier) · ${approved.length}`}
+          title="Approuvé (à publier)"
+          total={nbApproved}
           rows={approved.map((a) => a.job)}
           base={base}
         />
-        <KanbanColumn
-          title={`Publié (en ligne) · ${published.length}`}
-          rows={published}
-          base={base}
-        />
-        <KanbanColumn title={`Refusé (échec) · ${rejected.length}`} rows={rejected} base={base} />
+        <KanbanColumn title="Publié (en ligne)" total={nbPublished} rows={published} base={base} />
+        <KanbanColumn title="Refusé (échec)" total={nbRejected} rows={rejected} base={base} />
       </div>
     </AdminPageShell>
   );
@@ -157,8 +167,11 @@ function KanbanColumn({
   title,
   rows,
   base,
+  total,
 }: {
   title: string;
+  /** Nombre réel en base — la liste, elle, est plafonnée. */
+  total: number;
   rows: ReadonlyArray<{
     id: string;
     contentType: string;
@@ -170,7 +183,14 @@ function KanbanColumn({
 }) {
   return (
     <AdminCard variant="compact" className="min-h-[200px]">
-      <h2 className="admin-h2 text-[length:var(--text-admin-sm)]">{title}</h2>
+      <h2 className="admin-h2 text-[length:var(--text-admin-sm)]">
+        {title} · {total}
+      </h2>
+      {total > rows.slice(0, 12).length ? (
+        <p className="admin-meta-small">
+          {rows.slice(0, 12).length} affichée{rows.slice(0, 12).length > 1 ? "s" : ""} sur {total}
+        </p>
+      ) : null}
       <ul className="list-none p-0 text-[length:var(--text-admin-xs)]">
         {rows.slice(0, 12).map((r) => (
           <li

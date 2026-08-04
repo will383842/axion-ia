@@ -11,7 +11,7 @@ import { ImageDetailV2 } from "./_v2/ImageDetailV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image detail | Axion-IA Admin",
+  title: "Banque d'images — détail d'une image | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

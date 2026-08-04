@@ -3,6 +3,8 @@
 
 import { useActionState, useState } from "react";
 import { upsertSettingAction, type UpsertSettingState } from "@/features/admin-settings/actions";
+import { contientUnSecret } from "@/lib/admin/masquer-secrets";
+import { TriangleAlert } from "lucide-react";
 
 const init: UpsertSettingState = { ok: false, error: "" };
 
@@ -20,6 +22,10 @@ export function SettingForm({ initial }: Props) {
     initial ? JSON.stringify(initial.value, null, 2) : "{}",
   );
   const [parseError, setParseError] = useState<string | null>(null);
+  // Vrai tant que l'utilisateur n'a pas demandé à voir une valeur sensible.
+  const [secretMasque, setSecretMasque] = useState<boolean>(() =>
+    initial ? contientUnSecret(initial.value) : false,
+  );
 
   function tryFormat() {
     try {
@@ -36,7 +42,7 @@ export function SettingForm({ initial }: Props) {
       <div className="admin-form-row">
         <div className="admin-field">
           <label htmlFor="key" className="admin-label">
-            Clé (key)
+            Clé
           </label>
           <input
             id="key"
@@ -44,6 +50,7 @@ export function SettingForm({ initial }: Props) {
             type="text"
             required
             pattern="[a-zA-Z0-9._\-]+"
+            title="Lettres, chiffres, points, tirets et tirets bas — sans espace ni accent."
             defaultValue={initial?.key ?? ""}
             readOnly={!!initial}
             className="admin-input"
@@ -72,6 +79,30 @@ export function SettingForm({ initial }: Props) {
         <label htmlFor="valueJson" className="admin-label">
           Valeur (JSON)
         </label>
+        {/* 🔴 LE MASQUAGE POSÉ SUR LA LISTE NE TENAIT QU'UN ÉCRAN (relevé par
+            l'audit du code, 2026-08-03). `legal_overrides` s'affichait masqué
+            dans le tableau, puis EN CLAIR dès le clic sur « Éditer » : IBAN et
+            BIC d'emblée à l'écran, sans le geste de révélation qu'impose la
+            liste. Une garantie qui saute au premier clic n'en est pas une.
+
+            Ici la valeur doit rester ÉDITABLE — on ne peut donc pas la
+            remplacer par des points. On la floute jusqu'à ce qu'on la demande :
+            le champ garde sa valeur réelle, la modification reste possible, et
+            rien de sensible n'est lisible tant qu'on ne l'a pas décidé. */}
+        {secretMasque ? (
+          <div className="mb-[var(--space-admin-2)] flex items-center gap-[var(--space-admin-3)]">
+            <span className="admin-meta-small">
+              Cette valeur contient une donnée sensible (coordonnées bancaires, clé ou jeton).
+            </span>
+            <button
+              type="button"
+              className="admin-button-ghost"
+              onClick={() => setSecretMasque(false)}
+            >
+              Afficher pour modifier
+            </button>
+          </div>
+        ) : null}
         <textarea
           id="valueJson"
           name="valueJson"
@@ -83,7 +114,8 @@ export function SettingForm({ initial }: Props) {
             setParseError(null);
           }}
           className="admin-input admin-textarea admin-mono"
-          disabled={pending}
+          style={secretMasque ? { filter: "blur(5px)" } : undefined}
+          disabled={pending || secretMasque}
           placeholder='{"key": "value"}'
         />
         <div className="admin-filters-actions" style={{ marginTop: "8px" }}>
@@ -97,7 +129,12 @@ export function SettingForm({ initial }: Props) {
           </button>
           {parseError && (
             <span className="admin-meta-small" role="alert">
-              ⚠ JSON invalide : {parseError}
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              JSON invalide : {parseError}
             </span>
           )}
         </div>
@@ -114,7 +151,7 @@ export function SettingForm({ initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement..." : "Enregistrer"}
+        {pending ? "Enregistrement…" : "Enregistrer"}
       </button>
     </form>
   );

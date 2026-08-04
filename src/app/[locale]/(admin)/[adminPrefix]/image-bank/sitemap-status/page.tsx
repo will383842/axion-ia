@@ -6,7 +6,7 @@ import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — sitemap status | Axion-IA Admin",
+  title: "Banque d'images — état du sitemap | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -22,10 +22,9 @@ export default async function sitemapstatusPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="sitemap status"
-      description="Section sitemap status (image-bank V1)."
+      title="État du sitemap images"
+      description="Suivi de la déclaration des images aux moteurs de recherche."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

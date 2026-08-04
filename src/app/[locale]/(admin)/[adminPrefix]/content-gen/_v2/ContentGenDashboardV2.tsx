@@ -88,22 +88,47 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
     <AdminPageShell>
       <AdminPageHeader
         title="Générateur de contenus"
-        description={
-          kpis.killSwitchActive
-            ? "Kill switch ACTIF — toutes générations stoppées · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
-            : "Console pilotage Will · doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
-        }
+        description="Doctrine Axion-IA ≥ 95 % · FR uniquement · auteur Manon"
         actions={
-          <div className="flex gap-[var(--space-admin-3)]">
-            <Link href={`${base}/campaigns/new`} className="admin-button-cta">
-              + Nouvelle campagne
-            </Link>
-            <Link href={`${base}/settings/kill-switch`} className="admin-button-ghost">
-              Kill switch
-            </Link>
-          </div>
+          // 🔴 « + Nouvelle campagne » figurait ICI **et** dans la barre
+          // collante du layout, à 80 px d'écart : la même action primaire
+          // proposée deux fois sur le même écran. Celle du layout est
+          // présente sur TOUTES les sous-pages du module — c'est elle qui
+          // reste. Ne pas la remettre ici.
+          <Link href={`${base}/settings/kill-switch`} className="admin-button-ghost">
+            {kpis.killSwitchActive ? "Réactiver les générations" : "Arrêt d'urgence"}
+          </Link>
         }
       />
+
+      {/* 🔴 « Kill switch ACTIF — toutes générations stoppées » était noyé dans
+          la ligne de description grise, à égalité typographique avec « auteur
+          Manon ». C'est l'information la plus grave de l'écran : plus rien ne
+          se produit. Elle prend le bandeau qu'elle mérite. */}
+      {kpis.killSwitchActive ? (
+        <div
+          role="alert"
+          className="mb-[var(--space-admin-6)] flex items-center gap-[var(--space-admin-3)] rounded-[var(--radius-admin-lg)] border px-[var(--space-admin-5)] py-[var(--space-admin-4)]"
+          style={{
+            backgroundColor: "var(--color-admin-destructive-soft)",
+            borderColor: "var(--color-admin-destructive)",
+            color: "var(--color-admin-destructive-fg)",
+          }}
+        >
+          <AlertTriangle size={18} aria-hidden="true" className="shrink-0" />
+          <span className="text-[length:var(--text-admin-base)] font-semibold">
+            Arrêt d&apos;urgence actif — plus aucune génération ne part.
+          </span>
+          <AdminButton
+            href={`${base}/settings/kill-switch`}
+            variant="ghost"
+            size="sm"
+            iconAfter={ArrowRight}
+          >
+            Réactiver
+          </AdminButton>
+        </div>
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-6)]">
         <h2 className="admin-h2">Régénération en place — refonte templates</h2>
@@ -179,7 +204,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
                 value={`${c.publishedToday} / ${c.generatedToday}`}
                 meta={
                   c.failedToday > 0
-                    ? `publiés / générés · ${c.failedToday} échec(s)${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
+                    ? `publiés / générés · ${c.failedToday} échec${c.failedToday > 1 ? "s" : ""}${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                     : `publiés / générés${c.campaignsActive > 0 ? ` · ${c.campaignsActive} camp. live` : ""}`
                 }
                 tone={c.failedToday > 0 ? "warning" : "default"}
@@ -321,7 +346,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
             action={quickGen}
             contentType="comparison"
             targetSearchIntent="commercial_investigation"
-            label="⚖️ Générer comparatif"
+            label="Générer un comparatif"
             inputs={[
               {
                 name: "title",
@@ -426,7 +451,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/coverage/presets`}>Presets campagnes</Link>
             </li>
             <li>
-              <Link href={`${base}/templates`}>Templates prompts</Link>
+              <Link href={`${base}/templates`}>Instructions IA</Link>
             </li>
           </ul>
         </AdminCard>
@@ -485,7 +510,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/settings/providers`}>Fournisseurs IA</Link>
             </li>
             <li>
-              <Link href={`${base}/settings/batches`}>Batches &amp; workers</Link>
+              <Link href={`${base}/settings/batches`}>Lots et files de traitement</Link>
             </li>
             <li>
               <Link href={`${base}/settings/quality-loop`}>Boucle qualité</Link>
@@ -494,7 +519,7 @@ export async function ContentGenDashboardV2({ adminPrefix }: Props): Promise<Rea
               <Link href={`${base}/settings/kill-switch`}>Kill switch</Link>
             </li>
             <li>
-              <Link href={`${base}/settings`}>Tous les réglages →</Link>
+              <Link href={`${base}/settings`}>Tous les réglages</Link>
             </li>
           </ul>
         </AdminCard>

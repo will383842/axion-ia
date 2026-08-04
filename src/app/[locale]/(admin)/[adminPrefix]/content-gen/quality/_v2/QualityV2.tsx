@@ -134,16 +134,16 @@ async function QualityAttemptsDistributionBlock(): Promise<React.ReactElement> {
 
   return (
     <AdminCard className="mt-[var(--space-admin-5)]">
-      <h2 className="admin-h2">Distribution boucle qualité (LLM-judge → improver)</h2>
+      <h2 className="admin-h2">Nombre de passages d&apos;amélioration avant décision</h2>
       <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-text-muted)]">
-        Nombre d&apos;itérations LLM-judge nécessaires avant statut terminal <code>published</code>{" "}
-        ou <code>needs_review</code>. {total} job
+        Nombre de relectures automatiques avant qu&apos;un contenu soit publié ou envoyé en
+        relecture humaine. {total} contenu
         {total > 1 ? "s" : ""} agrégé{total > 1 ? "s" : ""}.
       </p>
       <div className="mt-[var(--space-admin-4)] flex flex-col gap-[var(--space-admin-3)]">
         {total === 0 ? (
           <div className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-text-muted)]">
-            Aucun job en statut <code>published</code> / <code>needs_review</code> à agréger.
+            Aucun contenu publié ou en attente de relecture pour l&apos;instant.
           </div>
         ) : (
           display.map((d) => {
@@ -220,7 +220,7 @@ export async function QualityV2(): Promise<React.ReactElement> {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Tableau de bord qualité"
-        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. Barres CSS — pas de bibliothèque graphique.`}
+        description={`Scores moyens des articles publiés sur les ${WINDOW_DAYS} derniers jours. ${totalArticles} article${totalArticles > 1 ? "s" : ""} agrégé${totalArticles > 1 ? "s" : ""}. `}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">

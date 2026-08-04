@@ -35,7 +35,7 @@ export function SearchIntentDistributionV2({ cfg }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Distribution intentions de recherche"
-        description={`5 intentions reconnues (§ 26.1). Somme actuelle : ${sum} % (doit être 100).`}
+        description={`5 intentions reconnues. Somme actuelle : ${sum} % (doit être 100).`}
       />
 
       <AdminCard>

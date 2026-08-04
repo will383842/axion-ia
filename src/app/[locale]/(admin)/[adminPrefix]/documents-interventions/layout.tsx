@@ -12,7 +12,6 @@
 // implémentations, sites web, et documents transverses (plaquette, pièces admin…).
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import { headers } from "next/headers";
 import { AdminPageShell } from "@/components/admin/ui";
 import { AdminTabs, type AdminTabItem } from "@/components/admin/AdminTabs";
@@ -80,7 +79,20 @@ export default async function DocumentsLayout({
 
   return (
     <AdminPageShell width="wide">
-      <div className="mb-[var(--space-admin-4)]">
+      {/* 🔴 TROIS BARRES DE NAVIGATION S'EMPILAIENT AVANT LE TITRE de la page
+          (audit du code, 2026-08-03) : les onglets de premier niveau, ceux de
+          second niveau, puis une rangée de liens soulignés. Le `<h1>` de
+          l'écran n'arrivait qu'en quatrième position, à près de 200 px du haut.
+          Et les huit entrées ainsi répétées sont DÉJÀ toutes présentes dans la
+          barre latérale — c'était donc une triple duplication.
+
+          Les deux niveaux d'onglets sont conservés : ils portent le choix
+          courant, ce que la barre latérale ne montre pas. La troisième rangée
+          disparaît — « Annuaire équipe » et « Importer un kit » sont deux
+          entrées de la barre latérale (cf. admin-nav.ts), pas des sous-onglets
+          de cet écran ; elles s'y présentaient en plus dans les jetons du site
+          public (`hover:text-mocha`), invisibles sur le fond admin. */}
+      <div className="mb-[var(--space-admin-3)]">
         <AdminTabs tabs={topTabs} activeTabId={topActive} ariaLabel="Documents" />
       </div>
 
@@ -90,16 +102,6 @@ export default async function DocumentsLayout({
           activeTabId={subActive}
           ariaLabel={isBoite ? "Boîte à documents" : "Documents de prestation"}
         />
-        {!isBoite ? (
-          <div className="text-fg-muted mt-2 flex flex-wrap gap-4 text-xs">
-            <Link href={`${base}/destinataires`} className="hover:text-mocha underline">
-              Annuaire équipe
-            </Link>
-            <Link href={`${base}/import`} className="hover:text-mocha underline">
-              Importer un kit
-            </Link>
-          </div>
-        ) : null}
       </div>
 
       <div id={panelId} role="tabpanel">

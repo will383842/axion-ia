@@ -43,14 +43,14 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Cockpit géographique"
-        description={`13 régions métropole · ${totalPublished} contenu${totalPublished > 1 ? "s" : ""} publié${totalPublished > 1 ? "s" : ""} · vélocité 7 j : ${global.velocity7dJobs}`}
+        description={`${regions.length} région${regions.length > 1 ? "s" : ""} · ${totalPublished} contenu${totalPublished > 1 ? "s" : ""} publié${totalPublished > 1 ? "s" : ""} · vélocité 7 j : ${global.velocity7dJobs}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             <Link href={`${base}/batches/new`} className="admin-button">
-              + Nouveau batch
+              + Nouveau lot
             </Link>
             <Link href={`${base}/batches`} className="admin-button-ghost">
-              Batches
+              Lots
             </Link>
             <Link href={`${base}/history`} className="admin-button-ghost">
               Historique
@@ -105,8 +105,8 @@ export async function GeoCockpitV2({ adminPrefix }: Props): Promise<React.ReactE
       <AdminCard>
         <h2 className="admin-h2">Carte interactive</h2>
         <p className="admin-meta-block">
-          La carte React `react-simple-maps` + SSE temps réel arrive Sprint 4 (composant lourd, ~50
-          KB gz). V1 = table ci-dessus.
+          Une carte de France cliquable viendra compléter le tableau ci-dessus. Elle n’est pas
+          encore disponible.
         </p>
       </AdminCard>
     </AdminPageShell>

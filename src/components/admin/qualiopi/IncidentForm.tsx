@@ -35,6 +35,28 @@ const STATUT_LABELS: Record<IncidentStatut, string> = {
   resolu: "Résolu",
 };
 
+type IncidentFait =
+  | "annulation_tardive"
+  | "desistement"
+  | "retard"
+  | "preuve_manquante"
+  | "qualite_insuffisante"
+  | "autre";
+
+/**
+ * Faits reprochables à un intervenant externe (art. 7 de la procédure de
+ * sous-traitance). Des FAITS observables, jamais un jugement de valeur : c'est
+ * ce qui rend le registre opposable lors de la reconduction (art. 8).
+ */
+const FAIT_LABELS: Record<IncidentFait, string> = {
+  annulation_tardive: "Annulation tardive",
+  desistement: "Désistement",
+  retard: "Retard",
+  preuve_manquante: "Preuve non transmise",
+  qualite_insuffisante: "Qualité insuffisante",
+  autre: "Autre",
+};
+
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
 const labelCls =
@@ -45,9 +67,15 @@ export interface IncidentFormProps {
   creerAction: typeof creerIncidentAction;
   /** Sessions récentes proposées pour le rattachement (facultatif). */
   sessions: Array<{ id: string; numero: string; titreSession: string }>;
+  /**
+   * Intervenants externes qu'un incident peut mettre en cause (art. 7).
+   * Les deux natures dans une seule liste : c'est une seule question posée à
+   * Will (« qui ? »), pas deux champs dont un reste toujours vide.
+   */
+  intervenants?: Array<{ valeur: string; libelle: string }>;
 }
 
-export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
+export function IncidentForm({ creerAction, sessions, intervenants = [] }: IncidentFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +89,10 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
   const [sessionId, setSessionId] = useState("");
   const [dateIncident, setDateIncident] = useState(() => new Date().toISOString().slice(0, 10));
   const [actionCorrective, setActionCorrective] = useState("");
+  // Encodé « Trainer:<id> » ou « SousTraitant:<id> » pour tenir les deux natures
+  // dans un seul <select>. Chaîne vide = incident ne visant personne.
+  const [intervenant, setIntervenant] = useState("");
+  const [faitIntervenant, setFaitIntervenant] = useState<IncidentFait>("annulation_tardive");
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -82,6 +114,17 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
         ...(description.trim() ? { description } : {}),
         ...(sessionId ? { sessionId } : {}),
         ...(actionCorrective.trim() ? { actionCorrective } : {}),
+        // Les deux champs voyagent ensemble : désigner quelqu'un sans dire ce
+        // qu'on lui reproche serait une accusation sans motif, que l'article 8
+        // ne permettrait pas de lui opposer.
+        ...(intervenant
+          ? {
+              ...(intervenant.startsWith("Trainer:")
+                ? { trainerId: intervenant.slice("Trainer:".length) }
+                : { sousTraitantId: intervenant.slice("SousTraitant:".length) }),
+              faitIntervenant,
+            }
+          : {}),
       });
 
       if ("error" in result) {
@@ -92,6 +135,7 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
         setDescription("");
         setSessionId("");
         setActionCorrective("");
+        setIntervenant("");
         router.refresh();
       }
     });
@@ -223,6 +267,57 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
         </select>
       </div>
 
+      {/*
+        Mise en cause d'un intervenant externe — art. 7 de la procédure de
+        sous-traitance. Rendu SEULEMENT s'il existe des intervenants : sans
+        sous-traitant référencé, un champ vide se lirait comme une donnée
+        manquante alors qu'il n'y a rien à saisir.
+      */}
+      {intervenants.length > 0 && (
+        <div className="mt-[var(--space-admin-4)] grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+          <div className={fieldCls}>
+            <label htmlFor="incidentform-intervenant" className={labelCls}>
+              Intervenant externe mis en cause (facultatif)
+            </label>
+            <select
+              id="incidentform-intervenant"
+              value={intervenant}
+              onChange={(e) => setIntervenant(e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              <option value="">— Aucun —</option>
+              {intervenants.map((i) => (
+                <option key={i.valeur} value={i.valeur}>
+                  {i.libelle}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {intervenant !== "" && (
+            <div className={fieldCls}>
+              <label htmlFor="incidentform-fait-intervenant" className={labelCls}>
+                Fait reproché
+              </label>
+              <select
+                id="incidentform-fait-intervenant"
+                value={faitIntervenant}
+                onChange={(e) => setFaitIntervenant(e.target.value as IncidentFait)}
+                disabled={isPending}
+                className={inputCls}
+              >
+                {(Object.keys(FAIT_LABELS) as IncidentFait[]).map((f) => (
+                  <option key={f} value={f}>
+                    {FAIT_LABELS[f]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Description */}
       <div className={`mt-[var(--space-admin-4)] ${fieldCls}`}>
         <label htmlFor="incidentform-description-facultatif" className={labelCls}>
@@ -273,7 +368,7 @@ export function IncidentForm({ creerAction, sessions }: IncidentFormProps) {
       )}
 
       <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer l'incident"}
+        {isPending ? "Enregistrement…" : "Enregistrer l'incident"}
       </button>
     </form>
   );

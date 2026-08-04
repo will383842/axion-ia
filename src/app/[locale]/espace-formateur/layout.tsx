@@ -1,48 +1,33 @@
 /**
- * Espace formateur — layout (noindex, FR uniquement, 2026-06-13).
+ * Espace formateur — métadonnées et `noindex`.
  *
- * Outil interne : jamais indexé. La barre supérieure affiche le nom du
- * formateur + déconnexion quand une session est active (lecture seule du
- * cookie, autorisée en Server Component).
+ * ## Ce que ce layout ne fait plus
+ *
+ * Il portait une barre supérieure et une barre d'onglets (`FormateurNav`), un
+ * composant CLIENT qui résolvait la section active avec `usePathname()`. La
+ * navigation coûtait donc du JavaScript sur chaque page de l'espace, pour une
+ * information que le serveur connaît déjà.
+ *
+ * 🔴 Un layout ne peut PAS connaître le chemin courant côté serveur — c'est
+ * précisément pourquoi l'ancienne barre était cliente. La coquille (barre
+ * latérale + barre du bas) est donc composée par CHAQUE page, qui déclare sa
+ * propre section. Voir `_coquille.tsx`.
+ *
+ * ⚠️ La page de connexion n'a ni session ni navigation : elle rend son propre
+ * cadre et ne passe volontairement pas par la coquille.
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
-import { getFormateurSession } from "@/server/formateur/guard";
-import { FormateurLogoutButton } from "@/components/espace-formateur/FormateurLogoutButton";
-import { FormateurNav } from "@/components/espace-formateur/FormateurNav";
-import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 
 export const metadata: Metadata = {
   title: "Espace formateur — Axion-IA",
   robots: { index: false, follow: false },
 };
 
-export default async function EspaceFormateurLayout({
+export default function EspaceFormateurLayout({
   children,
 }: {
   children: React.ReactNode;
-}): Promise<React.ReactElement> {
-  const session = await getFormateurSession();
-  return (
-    <div className="bg-bg min-h-screen">
-      <header className="border-border bg-sand border-b">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
-          <Link href={FORMATEUR_BASE_PATH} className="text-mocha font-serif text-lg font-semibold">
-            Espace formateur
-          </Link>
-          {session ? (
-            <div className="flex items-center gap-3 text-xs">
-              <span className="text-fg-muted">
-                {session.prenom} {session.nom}
-              </span>
-              <FormateurLogoutButton />
-            </div>
-          ) : null}
-        </div>
-        <FormateurNav />
-      </header>
-      <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
-    </div>
-  );
+}): React.ReactElement {
+  return <>{children}</>;
 }

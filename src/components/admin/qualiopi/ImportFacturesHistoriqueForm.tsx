@@ -309,7 +309,7 @@ export function ImportFacturesHistoriqueForm(): React.ReactElement {
             ))}
             {parseErrors.length > 20 && (
               <li className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                … et {parseErrors.length - 20} autre(s).
+                … et {parseErrors.length - 20} autre{parseErrors.length - 20 > 1 ? "s" : ""}.
               </li>
             )}
           </ul>
@@ -322,9 +322,9 @@ export function ImportFacturesHistoriqueForm(): React.ReactElement {
             <span className="font-semibold text-[color:var(--color-admin-success)]">
               {rapport.importees}
             </span>{" "}
-            importée(s) ·{" "}
+            importée{rapport.importees > 1 ? "s" : ""} ·{" "}
             <span className="text-[color:var(--color-admin-fg-muted)]">
-              {rapport.ignorees} ignorée(s) (doublons)
+              {rapport.ignorees} ignorée{rapport.ignorees > 1 ? "s" : ""} (doublons)
             </span>
           </p>
         </div>

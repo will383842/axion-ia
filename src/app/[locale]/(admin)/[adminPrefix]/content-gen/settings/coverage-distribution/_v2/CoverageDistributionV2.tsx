@@ -35,6 +35,20 @@ const DEFAULT_PROFILE = `{
   "faq_standalone": 5
 }`;
 
+/**
+ * 🔴 LA CELLULE AFFICHAIT UN `JSON.stringify` SUR UNE LIGNE : accolades,
+ * guillemets et clés d'enum, dans un tableau. Une répartition en
+ * pourcentages se lit en clair ; la forme brute reste en infobulle.
+ */
+function resumerRepartition(valeur: unknown): string {
+  if (valeur === null || typeof valeur !== "object") return "—";
+  const entrees = Object.entries(valeur as Record<string, unknown>)
+    .filter(([, v]) => typeof v === "number")
+    .sort((a, b) => (b[1] as number) - (a[1] as number));
+  if (entrees.length === 0) return "—";
+  return entrees.map(([k, v]) => `${k} ${v} %`).join(" · ");
+}
+
 export function CoverageDistributionV2({ rows }: Props): React.ReactElement {
   async function upsert(formData: FormData) {
     "use server";
@@ -139,7 +153,7 @@ export function CoverageDistributionV2({ rows }: Props): React.ReactElement {
               {rows.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="admin-table-empty">
-                    Aucun profil — seedez ou créez-en un ci-dessus.
+                    Aucun profil pour l&apos;instant — créez-en un dans le formulaire ci-dessus.
                   </td>
                 </tr>
               ) : (
@@ -156,9 +170,9 @@ export function CoverageDistributionV2({ rows }: Props): React.ReactElement {
                       />
                     </td>
                     <td>
-                      <code className="text-[length:var(--text-admin-xs)]">
-                        {JSON.stringify(r.distribution)}
-                      </code>
+                      <span className="admin-meta-small" title={JSON.stringify(r.distribution)}>
+                        {resumerRepartition(r.distribution)}
+                      </span>
                     </td>
                     <td>
                       <form action={remove} className="inline">

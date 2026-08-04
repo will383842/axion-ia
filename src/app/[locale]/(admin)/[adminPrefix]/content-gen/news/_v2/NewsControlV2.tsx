@@ -182,7 +182,7 @@ export function NewsControlV2({
             size="sm"
             iconAfter={ArrowRight}
           >
-            Policies content-gen
+            Règles de publication
           </AdminButton>
         </p>
       </AdminCard>

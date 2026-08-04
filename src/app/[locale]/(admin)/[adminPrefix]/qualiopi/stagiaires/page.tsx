@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { Hash, Accessibility, ShieldCheck } from "lucide-react";
@@ -48,7 +49,7 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Stagiaires"
-        description="PII protégées — le détail handicap est chiffré (AES-256-GCM) et n'est jamais affiché ici."
+        description="Les données personnelles sont protégées : la nature du handicap est chiffrée en base et n'apparaît jamais sur cet écran."
       />
 
       <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
@@ -81,8 +82,10 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
                 <th className={headCls}>Email</th>
                 <th className={headCls}>Entreprise</th>
                 <th className={headCls}>Handicap</th>
-                <th className={headCls}>Consent.</th>
-                <th className={headCls}></th>
+                <th className={headCls}>Consentement</th>
+                {/* En-tête vide sur la colonne d'actions : le tableau annonçait
+                    six colonnes et n'en nommait que cinq. */}
+                <th className={headCls}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -106,16 +109,31 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {t.situationHandicap ? (
-                      <span className="text-[color:var(--color-admin-warning)]">● oui</span>
+                      <AdminBadge tone="warning" dot>
+                        Oui
+                      </AdminBadge>
                     ) : (
-                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">non</em>
+                      <span className="text-[color:var(--color-admin-fg-muted)]">Non</span>
                     )}
                   </td>
+                  {/* 🔴 CETTE COLONNE NE PORTAIT QUE « ● » ou « ○ » — aucun
+                      texte, aucune infobulle, aucun nom accessible. Vérifié
+                      dans le DOM en production : la cellule ne contenait
+                      littéralement que le caractère. L'information était portée
+                      par la COULEUR SEULE : illisible en vision des couleurs
+                      déficiente, muette pour un lecteur d'écran, et ambiguë
+                      même à l'œil — un rond vert ne dit pas si le consentement
+                      est donné ou attendu. Sur une donnée qui engage
+                      juridiquement, c'est le pire endroit pour deviner. */}
                   <td className={cellCls}>
                     {t.consentementFormation ? (
-                      <span className="text-[color:var(--color-admin-success)]">●</span>
+                      <AdminBadge tone="success" dot>
+                        Donné
+                      </AdminBadge>
                     ) : (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">○</span>
+                      <AdminBadge tone="neutral" dot>
+                        Non recueilli
+                      </AdminBadge>
                     )}
                   </td>
                   <td className={cellCls}>

@@ -45,6 +45,7 @@ import {
 } from "@/components/admin/ui";
 import { cn } from "@/lib/utils";
 import { pinCity, reorderCities } from "@/server/actions/content-gen/cities-order";
+import { palierLabel } from "@/server/content-gen/cities/population-tiers";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -226,7 +227,7 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
     <AdminPageShell>
       <AdminPageHeader
         title="Ordre des villes"
-        description={`File globale partagée par toutes les campagnes en mode global_queue (${initialTotal} villes). Drag-and-drop pour réordonner, épinglez les villes prioritaires en tête.`}
+        description={`File globale partagée par toutes les campagnes en mode « file globale » (${initialTotal} villes). Drag-and-drop pour réordonner, épinglez les villes prioritaires en tête.`}
       />
 
       <div className="mb-[var(--space-admin-6,16px)] grid grid-cols-2 gap-[var(--space-admin-4,8px)] sm:grid-cols-4">
@@ -289,10 +290,17 @@ export function CitiesOrderV3({ initialRows, initialTotal }: Props): React.React
             aria-label="Filtre tier"
           >
             <option value="">Tous les tiers</option>
-            <option value="T1">T1 (&gt; 500k)</option>
-            <option value="T2">T2 (100-500k)</option>
-            <option value="T3">T3 (20-100k)</option>
-            <option value="T4">T4 (&lt; 20k)</option>
+            {/* 🔴 Ces quatre bornes étaient FAUSSES et se contredisaient
+                d'un écran à l'autre : « T1 (> 500k) » ici, « ≥ 100 k »
+                deux pages plus loin. C'est ce second chiffre qui est le
+                bon (cf. populationTier). Filtrer T1 ramenait donc
+                Grenoble, et l'écran passait pour cassé alors qu'il
+                disait vrai — seule son étiquette mentait. */}
+            {[1, 2, 3, 4].map((t) => (
+              <option key={t} value={`T${t}`}>
+                {palierLabel(t)}
+              </option>
+            ))}
           </select>
           <select
             value={filterPinned}

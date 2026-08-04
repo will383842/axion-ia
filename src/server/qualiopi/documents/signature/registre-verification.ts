@@ -317,7 +317,7 @@ export function construireRapportPiece(piece: PieceAVerifier): RapportPieceSigna
     anomaliesPiece.push({
       type: "parties_sur_versions_differentes",
       signatureId: null,
-      detail: `${versionsSignees.size} empreintes de PDF distinctes parmi ${piece.signatures.length} signature(s) — les parties n'ont pas signé le même document`,
+      detail: `${versionsSignees.size} empreintes de PDF distinctes parmi ${piece.signatures.length} signature${piece.signatures.length > 1 ? "s" : ""} — les parties n'ont pas signé le même document`,
     });
   }
 
@@ -436,7 +436,7 @@ function ajouterDivergenceCache(
     anomalies.push({
       type: "statut_cache_divergent",
       signatureId: null,
-      detail: `le cache annonce « ${cache} », les ${piece.signatures.length} signature(s) vivante(s) disent « ${statutRecalcule} »`,
+      detail: `le cache annonce « ${cache} », les ${piece.signatures.length} signature${piece.signatures.length > 1 ? "s" : ""} vivante${piece.signatures.length > 1 ? "s" : ""} disent « ${statutRecalcule} »`,
     });
   }
 }

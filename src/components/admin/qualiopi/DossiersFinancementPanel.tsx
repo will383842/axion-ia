@@ -343,7 +343,7 @@ export function DossiersFinancementPanel({
                   <span className="text-[color:var(--color-admin-fg-muted)]">
                     {d.clientRaisonSociale ?? "—"}
                     {d.numeroDossierExterne ? ` · n° ${d.numeroDossierExterne}` : ""}
-                    {` · ${d.nbPayeurs} payeur(s)`}
+                    {` · ${d.nbPayeurs} payeur${d.nbPayeurs > 1 ? "s" : ""}`}
                   </span>
                   <span>
                     {d.montantAccordeCents !== null

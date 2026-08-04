@@ -53,6 +53,19 @@ export const JOB_STATUS_LABELS_FR: Record<ContentGenJobStatus, string> = {
   quarantined_factcheck: "Bloqué (vérification des faits)",
 };
 
+/**
+ * Libellé d'un statut de génération lu depuis une colonne texte.
+ *
+ * La table est typée sur l'enum — c'est ce qui garantit son exhaustivité —
+ * mais les appelants lisent souvent un `string` (statut venant d'une requête
+ * élargie, d'un type miroir, d'une version antérieure du moteur). Un `as` de
+ * confort au point d'appel annulerait la garde ; cette fonction l'assume une
+ * fois, et CITE ce qu'elle ne connaît pas.
+ */
+export function jobStatusLabelFr(statut: string): string {
+  return (JOB_STATUS_LABELS_FR as Record<string, string>)[statut] ?? `« ${statut} »`;
+}
+
 export const JOB_STATUS_TONE: Record<ContentGenJobStatus, AdminTone> = {
   queued: "warning",
   running: "warning",
@@ -125,15 +138,23 @@ export interface PublicationBadge {
 /**
  * Traduit un statut d'article en badge métier limpide « En ligne / Brouillon /
  * Archivé ». Pour la question la plus fréquente : « est-ce publié ou pas ? »
+ *
+ * 🔴 CES TROIS LIBELLÉS PORTAIENT UN EMOJI, et le cliquet anti-emoji de la
+ * console ne pouvait pas les voir : il ne scanne que `src/app/[locale]/(admin)`
+ * et `src/components/admin`, et le garde-fou d'isolation du dépôt lui interdit
+ * de seulement NOMMER ce domaine-ci pour l'ajouter à sa liste nominative. Le
+ * trou était documenté dans ce cliquet ; le voici refermé côté source. La
+ * tonalité du badge porte déjà la couleur, le mot porte déjà le sens : le
+ * pictogramme ne faisait que dépendre de la police du poste.
  */
 export function articlePublicationBadge(status: string): PublicationBadge {
   switch (status) {
     case "published":
-      return { label: "🟢 En ligne", tone: "success" };
+      return { label: "En ligne", tone: "success" };
     case "archived":
-      return { label: "🗄️ Archivé", tone: "neutral" };
+      return { label: "Archivé", tone: "neutral" };
     case "draft":
-      return { label: "📝 Brouillon", tone: "warning" };
+      return { label: "Brouillon", tone: "warning" };
     default:
       return { label: articleStatusLabelFr(status), tone: "neutral" };
   }
@@ -153,4 +174,31 @@ export function extractJobTitle(outputJsonRaw: unknown): string | null {
   if (outputJsonRaw === null || typeof outputJsonRaw !== "object") return null;
   const title = (outputJsonRaw as Record<string, unknown>)["title"];
   return typeof title === "string" && title.trim().length > 0 ? title : null;
+}
+
+// ─── Intention de recherche (enum Prisma `SearchIntent`) ────────────────────
+/**
+ * 🔴 Le même enum se lisait de TROIS façons dans la console : en français sur
+ * le formulaire de test d'un modèle et sur la répartition ad hoc, en anglais
+ * sur la stratégie de mots-clés (« AI Overview », « Featured Snippet »), et en
+ * valeur brute sur le détail d'un job (« Intention : commercial_investigation »).
+ * Trois écrans, trois vocabulaires pour la même colonne.
+ *
+ * Les libellés retenus sont ceux du formulaire de test : ce sont les seuls qui
+ * nomment la fonctionnalité Google ET disent ce qu'elle est.
+ */
+export const SEARCH_INTENT_LABELS_FR: Record<string, string> = {
+  informational: "Informationnelle",
+  commercial_investigation: "Comparaison / avant-achat",
+  transactional: "Transactionnelle",
+  navigational: "Navigationnelle",
+  local: "Locale (ville)",
+  voice_search: "Recherche vocale",
+  ai_overview: "Aperçu IA (Google AI Overview)",
+  featured_snippet: "Extrait optimisé (position 0)",
+};
+
+/** Une intention inconnue est CITÉE, jamais maquillée en libellé inventé. */
+export function searchIntentLabelFr(valeur: string): string {
+  return SEARCH_INTENT_LABELS_FR[valeur] ?? `« ${valeur} »`;
 }

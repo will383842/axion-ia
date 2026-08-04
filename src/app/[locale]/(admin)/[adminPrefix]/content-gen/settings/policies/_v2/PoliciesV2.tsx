@@ -40,8 +40,8 @@ export function PoliciesV2({ cfg }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Policies content-gen"
-        description="Skip-existing · plagiat seuils · retention tier-3 · RSS auto-publish."
+        title="Règles de publication"
+        description="Publication automatique, seuils de score, plafonds des flux RSS, seuils de plagiat et durée de conservation des contenus de troisième niveau."
       />
 
       <AdminCard>

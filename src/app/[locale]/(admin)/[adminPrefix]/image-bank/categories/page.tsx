@@ -6,7 +6,7 @@ import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — categories | Axion-IA Admin",
+  title: "Banque d'images — catégories | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -22,10 +22,9 @@ export default async function categoriesPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="categories"
-      description="Section categories (image-bank V1)."
+      title="Catégories"
+      description="Classement thématique des images de la banque."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

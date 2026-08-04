@@ -35,6 +35,8 @@ import {
   type RapportPieceSignature,
 } from "@/server/qualiopi/documents/signature/registre-verification";
 import { revoquerSignatureAction } from "@/server/actions/qualiopi/signature-revocation";
+import { nomPartie } from "@/server/qualiopi/documents/signature/parties-labels";
+import { LIBELLE_ANOMALIE_CHAINE } from "@/server/qualiopi/emargement/chaine-labels";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -79,13 +81,42 @@ const LIBELLE_ANOMALIE: Readonly<Record<string, string>> = {
   partie_hors_circuit: "Une partie a signé alors que le circuit de cette pièce ne l'attend pas.",
 };
 
-const LIBELLE_CHAINE: Readonly<Record<string, string>> = {
-  premier_maillon_chaine: "Chaînage : premier maillon incohérent.",
-  rupture_chainage: "Chaînage rompu : une ligne semble avoir été retirée après coup.",
-  empreinte_invalide: "Empreinte invalide : le contenu scellé ne correspond plus.",
-  version_inconnue: "Version de tuple inconnue : l'empreinte n'est plus recalculable.",
-  tuple_irrecalculable: "Tuple irrecalculable : il manque des données pour vérifier.",
-  maillon_illisible: "Maillon illisible.",
+// Les six libellés vivent dans chaine-labels.ts : le registre AFEST les
+// affichait bruts faute de les partager.
+const LIBELLE_CHAINE = LIBELLE_ANOMALIE_CHAINE;
+
+/**
+ * 🔴 LE REGISTRE QUE LIT L'AUDITRICE DÉCRIVAIT SES SIGNATAIRES EN VALEURS
+ * D'ENUM. Chaque ligne se lisait « sous_traitant · 03/08/2026 14:12 ·
+ * confirmation_accessible · interne » — trois codes machine côte à côte, sur
+ * la page dont dépend la preuve. Le fichier traduisait pourtant méticuleusement
+ * les statuts, les anomalies et le chaînage juste au-dessus : ces trois-là
+ * avaient simplement été oubliés.
+ */
+const LIBELLE_METHODE: Readonly<Record<string, string>> = {
+  trace: "Signature tracée",
+  papier_scanne: "Papier signé puis numérisé",
+  confirmation_accessible: "Confirmation accessible",
+};
+
+const LIBELLE_PROVIDER: Readonly<Record<string, string>> = {
+  docuseal: "DocuSeal",
+  manual_upload: "Dépôt manuel",
+  physical_signed: "Signature physique",
+  interne: "Signature interne",
+};
+
+const LIBELLE_TYPE_PIECE: Readonly<Record<string, string>> = {
+  convention_formation: "Convention de formation",
+  convention_tripartite: "Convention tripartite",
+  contrat_formation: "Contrat de formation",
+  attestation_assiduite: "Attestation d'assiduité",
+  attestation_fin_formation: "Attestation de fin de formation",
+  certificat_realisation: "Certificat de réalisation",
+  feuille_emargement: "Feuille d'émargement",
+  protocole_afest: "Protocole AFEST",
+  lettre_mission: "Lettre de mission",
+  devis: "Devis",
 };
 
 /**
@@ -165,7 +196,7 @@ function LignePiece({
       <td className="p-[var(--space-admin-3)]">
         <span className="font-mono text-[length:var(--text-admin-xs)]">{piece.numero}</span>
         <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          {piece.type}
+          {LIBELLE_TYPE_PIECE[piece.type] ?? piece.type}
         </span>
       </td>
       <td className="p-[var(--space-admin-3)] text-[length:var(--text-admin-xs)]">
@@ -198,7 +229,7 @@ function LignePiece({
                   <span className="font-medium">{s.signataireNom}</span>
                   {s.signataireQualite !== null ? ` (${s.signataireQualite})` : ""}
                   <span className="block text-[color:var(--color-admin-fg-muted)]">
-                    {`${s.partie} · ${horodatageParis.format(s.signeAt)} · ${s.methode} · ${s.provider}`}
+                    {`${nomPartie(s.partie)} · ${horodatageParis.format(s.signeAt)} · ${LIBELLE_METHODE[s.methode] ?? s.methode} · ${LIBELLE_PROVIDER[s.provider] ?? s.provider}`}
                   </span>
                   {insertionTardive ? (
                     <span className="block text-[color:var(--color-admin-danger)]">
@@ -248,7 +279,7 @@ function LignePiece({
         )}
         {piece.partiesManquantes.length > 0 ? (
           <span className="block text-[color:var(--color-admin-fg-muted)]">
-            {`Manque : ${piece.partiesManquantes.join(", ")}`}
+            {`Manque : ${piece.partiesManquantes.map((p) => nomPartie(p)).join(", ")}`}
           </span>
         ) : null}
       </td>

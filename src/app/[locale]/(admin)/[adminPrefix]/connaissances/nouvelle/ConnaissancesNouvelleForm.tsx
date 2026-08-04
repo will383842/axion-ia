@@ -16,6 +16,7 @@ import {
   getConfidentialityLabel,
 } from "@/content/knowledge/confidentialities";
 import { TiptapEditor } from "@/components/admin/TiptapEditor";
+import { messageErreurKb } from "@/server/knowledge/erreurs-labels";
 
 interface Props {
   readonly adminPrefix: string;
@@ -123,7 +124,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-field">
         <label className="admin-label" htmlFor="slug">
-          Slug racine (cross-langue, identifiant stable)
+          Identifiant commun aux deux langues
         </label>
         <input
           id="slug"
@@ -133,6 +134,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
           className="admin-input"
           placeholder="mon-entree-kb"
           pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          title="Minuscules, chiffres et tirets uniquement — sans espace ni accent, et pas de tiret en début ou en fin."
         />
       </div>
 
@@ -166,7 +168,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-field">
         <label className="admin-label" htmlFor="excerpt_fr">
-          Extrait (FR, 500 chars max)
+          Extrait (FR — 500 caractères maximum)
         </label>
         <textarea
           id="excerpt_fr"
@@ -224,7 +226,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       <div className="admin-form-actions">
         <button type="submit" disabled={pending} className="admin-button">
-          {pending ? "Création..." : "Créer le brouillon"}
+          {pending ? "Création…" : "Créer le brouillon"}
         </button>
         <a href={`/fr/${adminPrefix}/connaissances`} className="admin-button-ghost">
           Annuler
@@ -233,7 +235,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       {state?.error && state.error !== "validation" ? (
         <p className="admin-error" role="alert">
-          Erreur : {state.error}
+          {messageErreurKb(state.error)}
         </p>
       ) : null}
       {state?.error === "validation" && state.fieldErrors ? (

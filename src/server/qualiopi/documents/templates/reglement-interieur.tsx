@@ -8,7 +8,7 @@
  */
 
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, Text, StyleSheet } from "@react-pdf/renderer";
 import {
   QualiopiPage,
   DocSection,
@@ -40,28 +40,10 @@ const local = StyleSheet.create({
     lineHeight: 1.5,
     marginBottom: 4,
   },
-  signatureLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
   signatureLu: {
     fontSize: 8,
     fontStyle: "italic",
     marginBottom: 12,
-    color: pdfStyles.legalNote.color,
-  },
-  signatureInfoRow: {
-    flexDirection: "row" as const,
-    marginBottom: 6,
-    gap: 8,
-  },
-  signatureInfoField: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderBottomColor: pdfStyles.fieldRow.borderBottomColor,
-    paddingBottom: 4,
-    fontSize: 9,
     color: pdfStyles.legalNote.color,
   },
 });
@@ -277,22 +259,38 @@ export function ReglementInterieurPdf({
           </Text>
         </DocSection>
 
-        {/* Zone signature stagiaire */}
-        <DocSection title="Engagement du stagiaire">
+        {/*
+          ── Modalité de remise, et NON un cadre de signature manuscrite ────────
+          🔴 Audit pré-visite 2026-08-03. Ce document portait un bloc « Engagement
+          du stagiaire » avec « Nom et prénom : ____ », « Date : ____ » et un
+          cadre « Signature du stagiaire — Lu et approuvé ».
+
+          Or **aucun circuit de signature ne collecte le règlement intérieur** :
+          `circuitPour("reglement_interieur")` rend `null` (cf.
+          `signature/parties-requises.ts`). Le document invitait donc à une
+          signature manuscrite que personne ne recueillait — et sur le premier
+          dossier réel de l'organisme, le cadre est resté vide.
+
+          Un cadre de signature vide sur une pièce du dossier d'audit est pire
+          que pas de cadre : il donne à voir une obligation non tenue.
+
+          Le droit n'exige pas la signature. L'article L.6352-3 et les articles
+          R.6352-1 et suivants imposent que le règlement soit **porté à la
+          connaissance** du stagiaire. C'est la REMISE qui se prouve, et elle
+          l'est : la pièce est mise à disposition sur l'espace personnel du
+          stagiaire, dont la convocation donne le lien.
+        */}
+        <DocSection title="Portée et remise du règlement">
           <Text style={local.signatureLu}>
-            Je soussigné(e), stagiaire, atteste avoir pris connaissance du présent règlement
-            intérieur et m'engage à le respecter.
+            Le présent règlement intérieur est porté à la connaissance de chaque stagiaire avant son
+            entrée en formation, conformément aux articles L.6352-3 et R.6352-1 du Code du travail.
+            Il est mis à disposition sur l&apos;espace personnel du stagiaire, dont l&apos;adresse
+            figure sur sa convocation, et reste consultable pendant toute la durée de la formation.
           </Text>
-          <View style={local.signatureInfoRow}>
-            <Text style={local.signatureInfoField}>
-              Nom et prénom : ________________________________
-            </Text>
-            <Text style={local.signatureInfoField}>Date : ________________</Text>
-          </View>
-          <View style={pdfStyles.signatureBox}>
-            <Text style={local.signatureLabel}>Signature du stagiaire</Text>
-            <Text style={local.signatureLu}>Lu et approuvé</Text>
-          </View>
+          <Text style={local.signatureLu}>
+            L&apos;inscription à une action de formation d&apos;AXION IA SAS vaut acceptation du
+            présent règlement.
+          </Text>
         </DocSection>
       </QualiopiPage>
     </Document>

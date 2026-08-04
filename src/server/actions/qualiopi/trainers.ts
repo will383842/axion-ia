@@ -120,6 +120,20 @@ const verifySousTraitantSchema = z.object({
   sousTraitantNda: z.string().min(1).max(20),
 });
 
+/**
+ * Pièces de sous-traitance (art. 4 et 8). Tous les champs sont `.nullable()` :
+ * `null` retire une pièce, `undefined` la laisse intacte. Sans cette distinction,
+ * enregistrer la RC pro effacerait la date du contrat-cadre.
+ */
+const sousTraitancePiecesSchema = z.object({
+  id: z.string().uuid(),
+  sousTraitantContratSigneAt: z.coerce.date().nullable().optional(),
+  sousTraitantScreenshotUrl: z.string().url().max(2000).nullable().optional(),
+  sousTraitantProchaineVerifAt: z.coerce.date().nullable().optional(),
+  rcProAttestationUrl: z.string().url().max(2000).nullable().optional(),
+  rcProEcheanceAt: z.coerce.date().nullable().optional(),
+});
+
 const setActifSchema = z.object({
   id: z.string().uuid(),
   actif: z.boolean(),
@@ -368,6 +382,69 @@ export async function verifyTrainerSousTraitantAction(
     targetType: "Trainer",
     targetId: id,
     changes: { sousTraitantNda },
+    session,
+  });
+
+  return { data: { id } };
+}
+
+/**
+ * Enregistre les pièces de sous-traitance d'un formateur indépendant — art. 4
+ * et 8 de la procédure de sous-traitance (2026-08-03).
+ *
+ * 🔴 Sans cette action, les six colonnes posées par la migration du 2026-08-03
+ * n'auraient AUCUN écrivain : les alertes les liraient, la carte de conformité
+ * les compterait, et un sous-traitant afficherait « contrat-cadre manquant »
+ * en critique à vie sans qu'aucune manipulation puisse y changer quoi que ce
+ * soit. C'est le défaut « code complet sans appelant » relevé six fois dans
+ * l'audit du 2026-08-03.
+ *
+ * Tous les champs sont optionnels et écrits par spread conditionnel : Will
+ * enregistre les pièces au fil de leur arrivée, sans effacer les précédentes.
+ * `null` efface explicitement (pièce retirée), `undefined` laisse en l'état.
+ */
+export async function updateTrainerSousTraitancePiecesAction(
+  input: z.infer<typeof sousTraitancePiecesSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = sousTraitancePiecesSchema.safeParse(input);
+  if (!parsed.success) return { error: "Données invalides" };
+  const { id, ...v } = parsed.data;
+
+  try {
+    await prisma.trainer.update({
+      where: { id },
+      data: {
+        ...(v.sousTraitantContratSigneAt !== undefined
+          ? { sousTraitantContratSigneAt: v.sousTraitantContratSigneAt }
+          : {}),
+        ...(v.sousTraitantScreenshotUrl !== undefined
+          ? {
+              sousTraitantScreenshotUrl: v.sousTraitantScreenshotUrl,
+              // La capture et sa date sont une seule preuve : une URL sans date
+              // ne dirait pas QUAND la vérification a eu lieu, ce qui est
+              // précisément ce que l'auditeur regarde.
+              sousTraitantScreenshotDate: v.sousTraitantScreenshotUrl === null ? null : new Date(),
+            }
+          : {}),
+        ...(v.sousTraitantProchaineVerifAt !== undefined
+          ? { sousTraitantProchaineVerifAt: v.sousTraitantProchaineVerifAt }
+          : {}),
+        ...(v.rcProAttestationUrl !== undefined
+          ? { rcProAttestationUrl: v.rcProAttestationUrl }
+          : {}),
+        ...(v.rcProEcheanceAt !== undefined ? { rcProEcheanceAt: v.rcProEcheanceAt } : {}),
+      },
+    });
+  } catch {
+    return { error: "Erreur lors de l'enregistrement des pièces de sous-traitance." };
+  }
+
+  await logQualiopiActivity({
+    action: "qualiopi.trainer.sous_traitance_pieces",
+    targetType: "Trainer",
+    targetId: id,
+    changes: v,
     session,
   });
 

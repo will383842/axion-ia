@@ -29,6 +29,14 @@ export interface QuestionnaireRow {
   type: QuestionnaireType;
   /** ISO string ou null si non répondu. */
   reponduAt: string | null;
+  /**
+   * ISO string ou null si le lien n'a JAMAIS été envoyé au stagiaire.
+   *
+   * 🔴 Distinction vitale devant un auditeur : « envoyé, sans réponse » et
+   * « jamais envoyé » ne se plaident pas pareil. La colonne existait en base et
+   * n'était écrite par personne — l'écran ne pouvait donc pas les distinguer.
+   */
+  envoyeAt: string | null;
   /** 1-5 ou null. */
   noteGlobale: number | null;
 }
@@ -47,6 +55,18 @@ export interface QuestionnairesSectionProps {
     reponses: Record<string, unknown>;
     noteGlobale?: number;
   }) => Promise<ActionResult<{ id: string }>>;
+  /**
+   * Envoi MANUEL du lien au stagiaire.
+   *
+   * Les crons `satisfaction-j1` et `suivi-j30` sélectionnent sur une fenêtre
+   * glissante de 24 h ET exigent que la session soit déjà `realisee` ce
+   * matin-là. Une session clôturée avec un jour de retard sortait de la fenêtre
+   * et perdait DÉFINITIVEMENT ses questionnaires : aucun rattrapage, aucune
+   * alerte, aucun bouton. Constaté sur le dossier INVEST SUN.
+   */
+  envoyerAction: (input: {
+    questionnaireId: string;
+  }) => Promise<ActionResult<{ questionnaireId: string; envoyeAt: string }>>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -279,6 +299,7 @@ export function QuestionnairesSection({
   questionnaires,
   genererAction,
   saisirReponsesAction,
+  envoyerAction,
 }: QuestionnairesSectionProps): React.ReactElement {
   const router = useRouter();
   const [isPendingGenerer, startGenererTransition] = useTransition();
@@ -287,6 +308,25 @@ export function QuestionnairesSection({
 
   // Id du questionnaire dont le formulaire de saisie est ouvert (null = aucun)
   const [saisieOuverteId, setSaisieOuverteId] = useState<string | null>(null);
+
+  // Envoi manuel : id en cours d'envoi, et message par questionnaire.
+  const [envoiEnCoursId, setEnvoiEnCoursId] = useState<string | null>(null);
+  const [envoiMessage, setEnvoiMessage] = useState<Record<string, string>>({});
+  const [, startEnvoiTransition] = useTransition();
+
+  function handleEnvoyer(questionnaireId: string) {
+    setEnvoiEnCoursId(questionnaireId);
+    setEnvoiMessage((m) => ({ ...m, [questionnaireId]: "" }));
+    startEnvoiTransition(async () => {
+      const result = await envoyerAction({ questionnaireId });
+      setEnvoiEnCoursId(null);
+      setEnvoiMessage((m) => ({
+        ...m,
+        [questionnaireId]: "error" in result ? result.error : "Lien envoyé au stagiaire.",
+      }));
+      if (!("error" in result)) router.refresh();
+    });
+  }
 
   function handleGenerer() {
     setGenererError(null);
@@ -298,7 +338,7 @@ export function QuestionnairesSection({
         setGenererError(result.error);
       } else {
         setGenererSuccess(
-          `${result.data.crees} questionnaire(s) créé(s) sur ${result.data.total} attendu(s).`,
+          `${result.data.crees} questionnaire${result.data.crees > 1 ? "s" : ""} créé${result.data.crees > 1 ? "s" : ""} sur ${result.data.total} attendu${result.data.total > 1 ? "s" : ""}.`,
         );
         router.refresh();
       }
@@ -420,13 +460,41 @@ export function QuestionnairesSection({
                     {/* Actions */}
                     <td className={tdCls}>
                       {!isRepandu && !isFormOpen && (
-                        <button
-                          type="button"
-                          onClick={() => setSaisieOuverteId(q.id)}
-                          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                        >
-                          Saisir les réponses
-                        </button>
+                        <div className="flex flex-col items-start gap-[var(--space-admin-1)]">
+                          {/*
+                            « Envoyer » AVANT « Saisir » : recueillir la réponse du
+                            stagiaire est la seule chose qui vaut preuve. Saisir à sa
+                            place documente l'organisme, pas l'appréciation du
+                            bénéficiaire — un auditeur fait la différence.
+                          */}
+                          <button
+                            type="button"
+                            onClick={() => handleEnvoyer(q.id)}
+                            disabled={envoiEnCoursId === q.id}
+                            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline disabled:opacity-60"
+                          >
+                            {envoiEnCoursId === q.id
+                              ? "Envoi…"
+                              : q.envoyeAt !== null
+                                ? "Renvoyer le lien"
+                                : "Envoyer au stagiaire"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setSaisieOuverteId(q.id)}
+                            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] underline-offset-2 hover:underline"
+                          >
+                            Saisir les réponses
+                          </button>
+                          {envoiMessage[q.id] !== undefined && envoiMessage[q.id] !== "" && (
+                            <span
+                              role="status"
+                              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                            >
+                              {envoiMessage[q.id]}
+                            </span>
+                          )}
+                        </div>
                       )}
                       {isRepandu && (
                         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">

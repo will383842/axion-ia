@@ -6,6 +6,7 @@
 
 import type { Metadata } from "next";
 
+import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
 import { listFormateurs } from "@/server/coaching-admin/queries";
 import { FormateurAccountManager } from "@/components/admin/coaching/FormateurAccountManager";
 
@@ -33,15 +34,16 @@ export default async function CoachingFormateursPage(): Promise<React.ReactEleme
     formationsCount: f._count.sessionsAnimees,
   }));
 
+  // 🔴 Cette page restait sur les jetons du SITE PUBLIC (`text-mocha`,
+  // `text-fg-muted`) avec un `<h1>` nu, sans aucune primitive admin — même
+  // défaut que `coaching/seances`, et que `coaching/page.tsx` avant sa refonte.
   return (
-    <div className="space-y-4">
-      <h1 className="text-mocha text-xl font-semibold">Accès &amp; connexions formateurs</h1>
-      <p className="text-fg-muted text-sm">
-        Les formateurs se connectent à leur espace <strong>sans mot de passe</strong> (lien magique
-        par e-mail). Désactiver un compte coupe l&apos;accès immédiatement. Vous pouvez aussi leur
-        envoyer un lien de connexion directement.
-      </p>
+    <AdminPageShell width="wide">
+      <AdminPageHeader
+        title="Accès & connexions formateurs"
+        description="Les formateurs se connectent à leur espace sans mot de passe, par un lien envoyé sur leur e-mail. Désactiver un compte coupe l'accès immédiatement ; vous pouvez aussi envoyer un lien de connexion à la demande."
+      />
       <FormateurAccountManager formateurs={formateurs} />
-    </div>
+    </AdminPageShell>
   );
 }

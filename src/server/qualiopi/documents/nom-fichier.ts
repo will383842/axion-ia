@@ -48,6 +48,7 @@ const LIBELLES_FICHIER: Record<DocumentType, string> = {
   protocole_afest: "Protocole AFEST",
   inventaire_moyens: "Inventaire des moyens",
   contrat_sous_traitance: "Contrat de sous-traitance",
+  procedure_sous_traitance: "Procedure de sous-traitance",
   cv_formateur: "Fiche formateur",
   programme: "Programme de l'action",
   organisation_action: "Organisation de l'action",

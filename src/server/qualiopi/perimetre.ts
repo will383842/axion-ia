@@ -79,10 +79,20 @@ export function estDansPerimetreQualiopi(activite: string | null | undefined): b
   return false;
 }
 
-/** Les deux faces du badge — consommées telles quelles par les vues. */
+/**
+ * Les deux faces du badge — consommées telles quelles par les vues.
+ *
+ * 🔴 Ces libellés ont porté « ✅ » et « ⚙️ » jusqu'au 2026-08-03. Ils
+ * s'affichaient sur chaque ligne ET sur les deux filtres de la page Dossiers,
+ * en contradiction avec la convention lucide de la console, sans qu'aucun test
+ * ne s'en aperçoive : le cliquet anti-emoji ne scanne pas `src/server`.
+ *
+ * Le badge porte déjà sa couleur et sa bordure : il se distingue sans glyphe.
+ * Le cliquet couvre désormais ce fichier nommément.
+ */
 export const PERIMETRE_LABELS = {
-  qualiopi: "✅ Qualiopi",
-  hors: "⚙️ Hors périmètre",
+  qualiopi: "Qualiopi",
+  hors: "Hors périmètre",
 } as const;
 
 /** Libellé du badge d'une ligne, à partir du booléen dérivé. */

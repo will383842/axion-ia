@@ -82,7 +82,10 @@ export function ConvocationPdf({
           <FieldRow label="Date de début" value={data.dateDebut} />
           <FieldRow label="Date de fin" value={data.dateFin} />
           <FieldRow label="Horaires" value={`${data.horaires} (heure de Paris)`} />
-          <FieldRow label="Durée totale" value={`${data.dureeHeures} heure(s)`} />
+          <FieldRow
+            label="Durée totale"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Modalité" value={data.modalite} />
           {data.modalite !== "distanciel" && data.lieu ? (
             <FieldRow label="Lieu" value={data.lieu} />
@@ -150,8 +153,22 @@ export function ConvocationPdf({
             Si vous êtes en situation de handicap et nécessitez un aménagement, contactez notre
             référent handicap au plus tôt avant la session :
           </Text>
+          {/*
+            Nom d'abord, puis les deux canaux. L'ancienne version n'affichait que
+            l'email — et c'est le contact GÉNÉRAL de l'OF : le stagiaire lisait
+            « Référent handicap : contact@axion-ia.com », une adresse générique
+            qui n'identifie personne. L'indicateur 26 demande un référent
+            IDENTIFIÉ et joignable ; L.6352-3 impose sa désignation.
+            Le nom et le téléphone étaient en configuration depuis toujours.
+          */}
+          {identite.referentHandicapNom ? (
+            <FieldRow label="Référent handicap" value={identite.referentHandicapNom} />
+          ) : null}
           {identite.referentHandicapEmail ? (
-            <FieldRow label="Référent handicap" value={identite.referentHandicapEmail} />
+            <FieldRow label="Email" value={identite.referentHandicapEmail} />
+          ) : null}
+          {identite.referentHandicapTelephone ? (
+            <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
           ) : null}
           <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
         </DocSection>

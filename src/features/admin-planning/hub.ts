@@ -136,7 +136,7 @@ function signalNonStaffees(
   return {
     code: "session_non_staffee",
     niveau: imminente ? "critique" : "attention",
-    titre: `${orphelines.length} prestation(s) sans formateur`,
+    titre: `${orphelines.length} prestation${orphelines.length > 1 ? "s" : ""} sans formateur`,
     explication: imminente
       ? `Au moins une démarre sous ${JOURS_AVANT_CRITIQUE} jours et personne ne l'anime.`
       : "Aucune n'est imminente, mais elles doivent être staffées.",
@@ -192,7 +192,7 @@ function signalConflits(
   return {
     code: "conflit_formateur",
     niveau: "critique",
-    titre: `${items.length} conflit(s) de formateur`,
+    titre: `${items.length} conflit${items.length > 1 ? "s" : ""} de formateur`,
     explication: "Un formateur est affecté à deux prestations qui se chevauchent.",
     items,
   };
@@ -230,7 +230,7 @@ function signalIndisponibles(
     if (chevauchements.length === 0) continue;
 
     items.push({
-      label: `${e.formateurNom ?? "Formateur"} : « ${e.titre} » tombe sur ${chevauchements.length} jour(s) d'indisponibilité`,
+      label: `${e.formateurNom ?? "Formateur"} : « ${e.titre} » tombe sur ${chevauchements.length} jour${chevauchements.length > 1 ? "s" : ""} d'indisponibilité`,
       href: planningDetailHref(adminPrefix, e),
     });
   }
@@ -239,7 +239,7 @@ function signalIndisponibles(
   return {
     code: "formateur_indisponible",
     niveau: "critique",
-    titre: `${items.length} prestation(s) sur une indisponibilité`,
+    titre: `${items.length} prestation${items.length > 1 ? "s" : ""} sur une indisponibilité`,
     explication: "Le formateur affecté est en congés, malade ou en formation interne à ces dates.",
     items,
   };
@@ -268,13 +268,13 @@ function signalNonConformes(
   return {
     code: "formateur_non_conforme",
     niveau: "critique",
-    titre: `${fautifs.length} formateur(s) non conforme(s) affecté(s)`,
+    titre: `${fautifs.length} formateur${fautifs.length > 1 ? "s" : ""} non conforme${fautifs.length > 1 ? "s" : ""} affecté${fautifs.length > 1 ? "s" : ""}`,
     explication:
       "Pièces bloquantes manquantes alors qu'une prestation est planifiée. Envoyer ce formateur expose l'organisme.",
     items: [...fautifs]
       .sort((a, b) => b.nbBloquants - a.nbBloquants || a.nom.localeCompare(b.nom, "fr"))
       .map((c) => ({
-        label: `${c.nom} — ${c.nbBloquants} pièce(s) bloquante(s)`,
+        label: `${c.nom} — ${c.nbBloquants} pièce${c.nbBloquants > 1 ? "s" : ""} bloquante${c.nbBloquants > 1 ? "s" : ""}`,
         href: `/fr/${adminPrefix}/qualiopi/formateurs/${c.trainerId}`,
       })),
   };
@@ -288,7 +288,7 @@ function signalSurcharge(charges: readonly ChargeFormateur[], adminPrefix: strin
   return {
     code: "surcharge_formateur",
     niveau: "attention",
-    titre: `${surcharges.length} formateur(s) en surcharge`,
+    titre: `${surcharges.length} formateur${surcharges.length > 1 ? "s" : ""} en surcharge`,
     explication: "Quasi saturés sur le mois : arbitrer (report, renfort, sous-traitance).",
     items: surcharges.map((c) => ({
       label: `${c.nom} — ${c.tauxPct} % (${c.joursMobilises}/${c.capaciteJours} j)`,
@@ -304,7 +304,7 @@ function signalReleves(releves: readonly ReleveEnAttente[], adminPrefix: string)
   return {
     code: "releve_a_valider",
     niveau: "attention",
-    titre: `${releves.length} relevé(s) d'honoraires à traiter`,
+    titre: `${releves.length} relevé${releves.length > 1 ? "s" : ""} d'honoraires à traiter`,
     explication: `${euros(totalTtc)} TTC attendent une relecture avant facturation.`,
     items: releves.map((r) => ({
       label: `${r.trainerNom} — ${euros(r.totalTtcCents)} TTC`,
@@ -322,7 +322,7 @@ function signalAnomalies(
   return {
     code: "anomalie_remuneration",
     niveau: "attention",
-    titre: `${anomalies.length} anomalie(s) de rémunération`,
+    titre: `${anomalies.length} anomalie${anomalies.length > 1 ? "s" : ""} de rémunération`,
     explication: "Le moteur a refusé de deviner un montant. Une ligne à 0 € s'y cache peut-être.",
     items: anomalies.map((a) => ({
       label: `${a.trainerNom} — ${a.motif}`,

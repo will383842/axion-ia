@@ -16,6 +16,7 @@ import { archiveAction } from "@/server/actions/knowledge/archive";
 import { restoreAction } from "@/server/actions/knowledge/restore";
 import { getStatusLabel, getPipelineStageLabel } from "@/content/knowledge/statuses";
 import type { KbStatus, KbPipelineStage } from "../../../../../../../prisma/generated/client";
+import { messageErreurKb } from "@/server/knowledge/erreurs-labels";
 
 interface Props {
   readonly entryId: string;
@@ -96,9 +97,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           </button>
           {submitState?.ok ? <p className="admin-success">Soumise en revue</p> : null}
           {submitState?.error && submitState.error !== "validation" ? (
-            <p className="admin-error">
-              Erreur : {submitState.error} ({submitState.reason ?? ""})
-            </p>
+            <p className="admin-error">{messageErreurKb(submitState.error, submitState.reason)}</p>
           ) : null}
         </form>
       ) : null}
@@ -109,7 +108,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
           <form action={approveActionForm} className="admin-workflow-action">
             <input type="hidden" name="entryId" value={entryId} />
             <label className="admin-label" htmlFor="reviewerNote-input">
-              Note reviewer (optionnel)
+              Note du relecteur (facultative)
             </label>
             <textarea
               id="reviewerNote-input"
@@ -129,7 +128,7 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
             {approveState?.error &&
             approveState.error !== "validation" &&
             approveState.error !== "transition_refused" ? (
-              <p className="admin-error">Erreur : {approveState.error}</p>
+              <p className="admin-error">{messageErreurKb(approveState.error)}</p>
             ) : null}
           </form>
           <form action={rejectActionForm} className="admin-workflow-action">
@@ -216,8 +215,9 @@ export function WorkflowPanel({ entryId, status, pipelineStage, userRole }: Prop
         <form action={archAction} className="admin-workflow-action admin-workflow-danger">
           <input type="hidden" name="entryId" value={entryId} />
           <button type="submit" disabled={archPending} className="admin-button-danger">
-            {archPending ? "Archivage…" : "Force archive (OWNER)"}
+            {archPending ? "Archivage…" : "Archiver de force"}
           </button>
+          <p className="admin-meta-small">Réservé au propriétaire du contenu.</p>
           {archState?.ok ? <p className="admin-success">Archivée</p> : null}
           {archState?.error === "transition_refused" ? (
             <p className="admin-error">Transition refusée : {archState.reason}</p>

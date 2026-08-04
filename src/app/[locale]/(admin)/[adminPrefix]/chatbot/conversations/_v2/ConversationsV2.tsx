@@ -1,6 +1,7 @@
 // Conversations chatbot — liste read-only avec lien détail (T-19). FR-only.
 
 import { ArrowRight, MessagesSquare } from "lucide-react";
+import { libelleStatutConversation } from "@/features/admin-chatbot/statut-labels";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -43,7 +44,7 @@ export function ConversationsV2({
         </span>
       ),
     },
-    { key: "statut", header: "Statut", cell: (r) => r.statut },
+    { key: "statut", header: "Statut", cell: (r) => libelleStatutConversation(r.statut) },
     { key: "messages", header: "Messages", cell: (r) => r.messageCount, align: "right" },
     {
       key: "lead",
@@ -56,7 +57,10 @@ export function ConversationsV2({
 
   return (
     <AdminPageShell width="wide">
-      <AdminPageHeader title="Conversations" description={`${total} conversation(s) au total.`} />
+      <AdminPageHeader
+        title="Conversations"
+        description={`${total} conversation${total > 1 ? "s" : ""} au total.`}
+      />
 
       <AdminCard>
         <AdminTable

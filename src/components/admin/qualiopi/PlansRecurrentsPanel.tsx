@@ -506,7 +506,7 @@ export function PlansRecurrentsPanel({
                   tous les {p.periodiciteMois} mois · prochaine {fmtDate(p.prochaineGenerationAt)}
                   {p.finAt ? ` · fin ${fmtDate(p.finAt)}` : ""}
                   {p.nbMaxFactures !== null ? ` · max ${p.nbMaxFactures}` : ""}
-                  {` · ${p.nbFacturesGenerees} générée(s)`}
+                  {` · ${p.nbFacturesGenerees} générée${p.nbFacturesGenerees > 1 ? "s" : ""}`}
                 </span>
                 <span className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]">
                   {STATUT_LABELS[p.statut] ?? p.statut}

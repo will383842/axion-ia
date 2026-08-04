@@ -19,15 +19,32 @@ import type {
   IncidentType,
   IncidentGravite,
   IncidentStatut,
+  IncidentFaitIntervenant,
 } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type { IncidentType, IncidentGravite, IncidentStatut };
+export type { IncidentType, IncidentGravite, IncidentStatut, IncidentFaitIntervenant };
 
-export interface CreerIncidentInput {
+/**
+ * Mise en cause d'un intervenant externe (art. 7 de la procédure de
+ * sous-traitance, 2026-08-03).
+ *
+ * Les trois champs voyagent ENSEMBLE : un incident vise un intervenant et dit
+ * quel fait lui est reproché, ou ne vise personne. Les séparer aurait permis
+ * d'écrire une mise en cause sans fait, donc une accusation sans motif — que
+ * l'article 8 interdit d'opposer à un formateur lors de sa reconduction.
+ */
+export interface MiseEnCauseIntervenant {
+  /** Personne physique OU organisme — jamais les deux (contrainte en base). */
+  trainerId?: string | null;
+  sousTraitantId?: string | null;
+  faitIntervenant?: IncidentFaitIntervenant | null;
+}
+
+export interface CreerIncidentInput extends MiseEnCauseIntervenant {
   type: IncidentType;
   gravite: IncidentGravite;
   titre: string;
@@ -38,7 +55,7 @@ export interface CreerIncidentInput {
   statut?: IncidentStatut;
 }
 
-export interface UpdateIncidentInput {
+export interface UpdateIncidentInput extends MiseEnCauseIntervenant {
   type?: IncidentType;
   gravite?: IncidentGravite;
   titre?: string;
@@ -53,8 +70,40 @@ export interface UpdateIncidentInput {
 export interface ListIncidentsOptions {
   statut?: IncidentStatut;
   type?: IncidentType;
+  /** Restreint aux incidents mettant en cause ce formateur. */
+  trainerId?: string;
+  /** Restreint aux incidents mettant en cause cet organisme sous-traitant. */
+  sousTraitantId?: string;
   skip?: number;
   take?: number;
+}
+
+/**
+ * Refuse une mise en cause incohérente AVANT d'écrire.
+ *
+ * La base porte déjà la contrainte « jamais deux cibles », mais elle rejetterait
+ * avec une erreur Postgres illisible. Ici le message dit ce qui ne va pas.
+ */
+function verifierMiseEnCause(input: MiseEnCauseIntervenant): void {
+  if (input.trainerId && input.sousTraitantId) {
+    throw new Error(
+      "incidents-service: un incident met en cause un formateur OU un organisme, pas les deux",
+    );
+  }
+  if ((input.trainerId || input.sousTraitantId) && input.faitIntervenant === null) {
+    throw new Error(
+      "incidents-service: mettre en cause un intervenant exige de préciser le fait reproché",
+    );
+  }
+}
+
+/** Champs de mise en cause, en spread conditionnel (exactOptionalPropertyTypes). */
+function dataMiseEnCause(input: MiseEnCauseIntervenant) {
+  return {
+    ...(input.trainerId !== undefined ? { trainerId: input.trainerId } : {}),
+    ...(input.sousTraitantId !== undefined ? { sousTraitantId: input.sousTraitantId } : {}),
+    ...(input.faitIntervenant !== undefined ? { faitIntervenant: input.faitIntervenant } : {}),
+  };
 }
 
 export type IncidentWithSession = Incident & {
@@ -70,6 +119,7 @@ export async function creerIncident(input: CreerIncidentInput): Promise<Incident
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("incidents-service: mutations interdites en mode stub.invalid");
   }
+  verifierMiseEnCause(input);
   const statut = input.statut ?? "ouvert";
   return prisma.incident.create({
     data: {
@@ -82,6 +132,7 @@ export async function creerIncident(input: CreerIncidentInput): Promise<Incident
       ...(input.sessionId !== undefined ? { sessionId: input.sessionId } : {}),
       ...(input.actionCorrective !== undefined ? { actionCorrective: input.actionCorrective } : {}),
       ...(statut === "resolu" ? { resoluAt: new Date() } : {}),
+      ...dataMiseEnCause(input),
     },
   });
 }
@@ -99,9 +150,11 @@ export async function updateIncident(id: string, input: UpdateIncidentInput): Pr
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     throw new Error("incidents-service: mutations interdites en mode stub.invalid");
   }
+  verifierMiseEnCause(input);
   return prisma.incident.update({
     where: { id },
     data: {
+      ...dataMiseEnCause(input),
       ...(input.type !== undefined ? { type: input.type } : {}),
       ...(input.gravite !== undefined ? { gravite: input.gravite } : {}),
       ...(input.titre !== undefined ? { titre: input.titre } : {}),
@@ -158,6 +211,8 @@ export async function listIncidents(
     where: {
       ...(options.statut !== undefined ? { statut: options.statut } : {}),
       ...(options.type !== undefined ? { type: options.type } : {}),
+      ...(options.trainerId !== undefined ? { trainerId: options.trainerId } : {}),
+      ...(options.sousTraitantId !== undefined ? { sousTraitantId: options.sousTraitantId } : {}),
     },
     include: {
       session: { select: { id: true, numero: true, titreSession: true } },

@@ -132,7 +132,10 @@ export default async function QualiopiMoyensPage({ params }: PageProps) {
                         </td>
                         <td className={cellCls}>
                           {m.description ? (
-                            <span className="line-clamp-2 max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            <span
+                              className="line-clamp-2 max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                              title={m.description ?? ""}
+                            >
                               {m.description}
                             </span>
                           ) : (

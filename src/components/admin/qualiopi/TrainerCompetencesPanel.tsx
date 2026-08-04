@@ -79,7 +79,7 @@ export function TrainerCompetencesPanel({
         setLignes(utiles);
         const verifies = utiles.filter((l) => l.verifiedAt !== "").length;
         setSuccess(
-          `${res.data.nbDomaines} domaine(s) enregistré(s), dont ${verifies} évalué(s) et daté(s).`,
+          `${res.data.nbDomaines} domaine${res.data.nbDomaines > 1 ? "s" : ""} enregistré${res.data.nbDomaines > 1 ? "s" : ""}, dont ${verifies} évalué${verifies > 1 ? "s" : ""} et daté${verifies > 1 ? "s" : ""}.`,
         );
         router.refresh();
       }
@@ -186,8 +186,8 @@ export function TrainerCompetencesPanel({
       {/* On DIT ce qui manquera sur la fiche, avant qu'un auditeur ne le lise. */}
       {nonEvalues > 0 && (
         <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          {nonEvalues} domaine(s) sans date de vérification : ils sortiront « Non vérifié » sur la
-          fiche formateur.
+          {nonEvalues} domaine{nonEvalues > 1 ? "s" : ""} sans date de vérification : ils sortiront
+          « Non vérifié » sur la fiche formateur.
         </p>
       )}
       {error && (

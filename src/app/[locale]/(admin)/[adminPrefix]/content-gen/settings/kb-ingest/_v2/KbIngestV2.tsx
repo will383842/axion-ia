@@ -56,9 +56,9 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
         <form action={urlFormAction}>
           <h2 className="admin-h2">Ingérer une URL</h2>
           <p className="admin-meta-block">
-            Récupère l&apos;URL, extrait <code>main / article</code>, retire nav/footer/script, et
-            insère dans la base de connaissances comme <code>type=article</code>, tags{" "}
-            <code>external + &lt;domain&gt;</code>. Rejet automatique si la page fait &lt; 100 mots.
+            Le texte principal de la page est extrait — menus, pied de page et scripts sont ignorés
+            — puis ajouté à la base de connaissances, marqué comme source externe. Une page de moins
+            de 100 mots est refusée.
           </p>
 
           <div className="admin-field">
@@ -162,10 +162,14 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
           <div style={{ marginTop: "1rem" }}>
             <p>
               <CheckCircle2 size={14} aria-hidden="true" className="inline align-[-2px]" />{" "}
-              <strong>{sitemapState.result.accepted}</strong> acceptée(s) ·{" "}
-              <strong>{sitemapState.result.rejected}</strong> rejetée(s) ·{" "}
-              <strong>{sitemapState.result.processed}</strong> traitée(s) sur{" "}
-              <strong>{sitemapState.result.totalUrls}</strong> URL(s) du sitemap
+              <strong>{sitemapState.result.accepted}</strong> acceptée
+              {sitemapState.result.accepted > 1 ? "s" : ""} ·{" "}
+              <strong>{sitemapState.result.rejected}</strong> rejetée
+              {sitemapState.result.rejected > 1 ? "s" : ""} ·{" "}
+              <strong>{sitemapState.result.processed}</strong> traitée
+              {sitemapState.result.processed > 1 ? "s" : ""} sur{" "}
+              <strong>{sitemapState.result.totalUrls}</strong> URL
+              {sitemapState.result.totalUrls > 1 ? "s" : ""} du sitemap
             </p>
             {sitemapState.result.errors.length > 0 && (
               <details open>
@@ -189,17 +193,17 @@ export function KbIngestV2({ urlAction, sitemapAction }: Props): React.ReactElem
         <h2 className="admin-h2">Notes</h2>
         <ul className="admin-meta-block">
           <li>
-            L&apos;ingestion tourne en <strong>premier plan</strong> (action serveur). Pour des lots
-            &gt; 50, lancez plusieurs appels successifs avec différentes limites.
+            L&apos;ajout se fait pendant que vous attendez : au-delà d&apos;une cinquantaine de
+            pages, procédez en plusieurs fois.
           </li>
           <li>
-            Les entrées créées sortent en <code>tier-2-noindex-follow</code> par défaut
-            (anti-doorway HCU). Promouvez-les en tier-1 manuellement via la file de validation après
-            contrôle.
+            Les entrées créées ne sont pas indexées par Google par défaut. Après contrôle, vous
+            pouvez les rendre indexables depuis la file de validation.
           </li>
           <li>
-            <strong>Ne pas</strong> ingérer du contenu sous copyright sans autorisation.
-            L&apos;ingestion stocke le texte brut — usage interne uniquement (génération RAG).
+            <strong>Ne pas</strong> ingérer du contenu sous copyright sans autorisation. Le texte
+            est stocké tel quel, pour un usage interne : il sert de matière à la rédaction, il
+            n&apos;est jamais republié tel quel.
           </li>
         </ul>
       </AdminCard>

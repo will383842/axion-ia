@@ -9,9 +9,11 @@ import {
   AdminCard,
   AdminTable,
   AdminEmptyState,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { decrireAction } from "@/lib/admin/activity-labels";
 
 // Heure seule (Europe/Paris) — la colonne Date affiche jour et heure sur deux
 // lignes ; `formatDateFr` colle les deux sur une seule.
@@ -55,6 +57,84 @@ interface Props {
   stats: ReadonlyArray<StatRow>;
 }
 
+/**
+ * 🔴 LA COLONNE « TYPE CIBLE » ET SON FILTRE PARLAIENT SQL. On y lisait
+ * `case_study`, `help_article`, `booking_option`, `newsletter_subscriber` —
+ * des noms de tables, dans les deux endroits à la fois. Le reste de l'écran
+ * traduit pourtant soigneusement les actions (`decrireAction`).
+ *
+ * Une clé inconnue est CITÉE : un nouveau type d'objet apparaîtra tel quel
+ * plutôt que de disparaître derrière un tiret.
+ */
+const TYPE_CIBLE_LABELS: Record<string, string> = {
+  article: "Article de blog",
+  case_study: "Cas concret",
+  help_article: "Article d'aide",
+  testimonial: "Avis client",
+  faq: "Question fréquente",
+  category: "Catégorie",
+  booking_option: "Option de réservation",
+  calendar_slot: "Créneau de calendrier",
+  submission: "Message reçu",
+  newsletter_subscriber: "Abonné à la lettre d'information",
+  setting: "Réglage",
+  admin_user: "Compte administrateur",
+};
+
+const TYPES_CIBLE_ORDRE = Object.keys(TYPE_CIBLE_LABELS);
+
+function libelleTypeCible(type: string): string {
+  return TYPE_CIBLE_LABELS[type] ?? `« ${type} »`;
+}
+
+/**
+ * 🔴 LA COLONNE « CHANGEMENTS » DÉVERSAIT UN JSON INDENTÉ dans la cellule :
+ * accolades, guillemets et noms de colonnes SQL. Ce qu'on veut lire, c'est
+ * « quel champ est passé de quoi à quoi ». Le JSON complet reste accessible
+ * derrière un repli, pour les cas où la forme brute est la seule fidèle.
+ */
+function Changements({ valeur }: { valeur: unknown }): React.ReactElement {
+  if (valeur === null || valeur === undefined) return <span className="admin-meta-small">—</span>;
+  if (typeof valeur !== "object") {
+    return <span className="admin-meta-small">{String(valeur)}</span>;
+  }
+  const entrees = Object.entries(valeur as Record<string, unknown>);
+  if (entrees.length === 0) return <span className="admin-meta-small">—</span>;
+
+  /** `{ from, to }` est la forme que posent les actions admin. */
+  const ligne = ([champ, v]: [string, unknown]): string => {
+    if (v !== null && typeof v === "object" && "from" in v && "to" in v) {
+      const o = v as { from: unknown; to: unknown };
+      return `${champ} : ${afficher(o.from)} → ${afficher(o.to)}`;
+    }
+    return `${champ} : ${afficher(v)}`;
+  };
+
+  return (
+    <details>
+      <summary className="admin-meta-small cursor-pointer select-none">
+        {entrees.length} champ{entrees.length > 1 ? "s" : ""} modifié
+        {entrees.length > 1 ? "s" : ""}
+      </summary>
+      <ul className="admin-inline-list">
+        {entrees.map((e) => (
+          <li key={e[0]} className="admin-meta-small">
+            {ligne(e)}
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
+
+/** Une valeur de journal, rendue lisible sans jamais mentir sur le vide. */
+function afficher(v: unknown): string {
+  if (v === null || v === undefined) return "(vide)";
+  if (typeof v === "boolean") return v ? "oui" : "non";
+  if (typeof v === "object") return JSON.stringify(v);
+  return String(v);
+}
+
 export function ActivityLogsV2({
   adminPrefix,
   searchParams: sp,
@@ -92,9 +172,23 @@ export function ActivityLogsV2({
     {
       key: "action",
       header: "Action",
-      cell: (l) => <code className="admin-meta-small">{l.action}</code>,
+      // 🔴 La colonne affichait la CLÉ BRUTE (« qualiopi.document.generate »).
+      // `decrireAction` traduit ces clés en phrases depuis le 2026-08-02 et
+      // sert déjà le journal du tableau de bord — le journal COMPLET, lui,
+      // était resté en codes techniques, alors que c'est l'écran qu'on ouvre
+      // pour comprendre ce qui s'est passé. La clé reste en infobulle pour qui
+      // la cherche, et le « Top 20 » au-dessus est traduit de la même façon.
+      cell: (l) => (
+        <span className="admin-meta-small" title={l.action}>
+          {decrireAction(l.action).texte}
+        </span>
+      ),
     },
-    { key: "targetType", header: "Type cible", cell: (l) => l.targetType ?? "—" },
+    {
+      key: "targetType",
+      header: "Type cible",
+      cell: (l) => (l.targetType === null ? "—" : libelleTypeCible(l.targetType)),
+    },
     {
       key: "targetId",
       header: "ID cible",
@@ -109,12 +203,7 @@ export function ActivityLogsV2({
     {
       key: "changes",
       header: "Changements",
-      cell: (l) =>
-        l.changes ? (
-          <pre className="admin-json admin-json-cell">{JSON.stringify(l.changes, null, 2)}</pre>
-        ) : (
-          "—"
-        ),
+      cell: (l) => <Changements valeur={l.changes} />,
     },
   ];
 
@@ -132,8 +221,8 @@ export function ActivityLogsV2({
             <p className="admin-meta-small">Aucune action enregistrée.</p>
           ) : (
             stats.map((s) => (
-              <span key={s.action} className="admin-tag-checkbox">
-                <code>{s.action}</code>
+              <span key={s.action} className="admin-tag-checkbox" title={s.action}>
+                {decrireAction(s.action).texte}
                 <strong>{s.count}</strong>
               </span>
             ))
@@ -186,18 +275,11 @@ export function ActivityLogsV2({
                 className="admin-input"
               >
                 <option value="">Tous</option>
-                <option value="article">article</option>
-                <option value="case_study">case_study</option>
-                <option value="help_article">help_article</option>
-                <option value="testimonial">testimonial</option>
-                <option value="faq">faq</option>
-                <option value="category">category</option>
-                <option value="booking_option">booking_option</option>
-                <option value="calendar_slot">calendar_slot</option>
-                <option value="submission">submission</option>
-                <option value="newsletter_subscriber">newsletter_subscriber</option>
-                <option value="setting">setting</option>
-                <option value="admin_user">admin_user</option>
+                {TYPES_CIBLE_ORDRE.map((t) => (
+                  <option key={t} value={t}>
+                    {TYPE_CIBLE_LABELS[t]}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="admin-field">
@@ -259,6 +341,25 @@ export function ActivityLogsV2({
           caption="Journal d'audit"
         />
       )}
+
+      {/* 🔴 L'en-tête annonçait « page 1 / N » — et rien ne permettait
+          d'atteindre la page 2. Le journal d'audit est la vue où l'on remonte
+          le temps : n'en donner que la première page revient à n'en donner
+          aucune. Les six filtres sont reportés dans les liens, sinon changer
+          de page repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/activity-logs`}
+        preservedParams={{
+          adminUserId: sp["adminUserId"],
+          action: sp["action"],
+          targetType: sp["targetType"],
+          search: sp["search"],
+          dateFrom: sp["dateFrom"],
+          dateTo: sp["dateTo"],
+        }}
+      />
     </AdminPageShell>
   );
 }

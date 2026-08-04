@@ -5,32 +5,46 @@
 // sitemap-status, tags, taxonomy). Migre AdminStubPage vers primitives
 // admin/ui (AdminPageShell + AdminPageHeader + AdminCard).
 
-import Link from "next/link";
-import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
+import { ArrowLeft } from "lucide-react";
+import { AdminPageShell, AdminPageHeader, AdminCard, AdminButton } from "@/components/admin/ui";
 
 interface Props {
   title: string;
   description: string;
   back: string;
-  sprint?: string;
 }
 
-export function AdminStubPageV2({ title, description, back, sprint }: Props): React.ReactElement {
+/**
+ * 🔴 CE COMPOSANT SERT NEUF PAGES, ET CHACUNE MONTRAIT SON DÉFAUT NEUF FOIS
+ * (audit du code, 2026-08-03) :
+ *
+ * - les neuf appelants passaient le SEGMENT DE ROUTE ANGLAIS EN MINUSCULES
+ *   comme titre de page — « analytics », « bulk import », « seo audit »,
+ *   « taxonomy »… Les titres sont désormais en français et alignés sur les
+ *   libellés de la barre latérale ;
+ * - le lien de retour disait « ← Retour image-bank overview » : une flèche en
+ *   caractère, un nom de dossier du dépôt et un anglicisme, en trois mots ;
+ * - l'encart annonçait « Cette section est prévue Sprint 2.x » et « l'ancre
+ *   route et la nav admin sont déjà câblées ». Un numéro de sprint interne et
+ *   du vocabulaire de développement, pour dire à l'utilisateur une seule chose
+ *   utile : cet écran n'existe pas encore.
+ */
+export function AdminStubPageV2({ title, description, back }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
         title={title}
         description={description}
         actions={
-          <Link href={back} className="admin-link">
-            ← Retour image-bank overview
-          </Link>
+          <AdminButton href={back} variant="ghost" icon={ArrowLeft}>
+            Retour à la banque d&apos;images
+          </AdminButton>
         }
       />
       <AdminCard className="border-l-4 border-l-[color:var(--color-admin-warning)]">
         <p className="admin-meta-block">
-          Cette section est prévue {sprint ?? "Sprint 2.x"}. L&apos;ancre route et la nav admin sont
-          déjà câblées.
+          Cet écran n&apos;est pas encore disponible. L&apos;entrée de menu existe déjà pour que
+          vous sachiez ce qui est prévu, mais il n&apos;y a rien à y faire pour l&apos;instant.
         </p>
       </AdminCard>
     </AdminPageShell>

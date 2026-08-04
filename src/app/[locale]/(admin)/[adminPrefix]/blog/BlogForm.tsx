@@ -242,7 +242,7 @@ export function BlogForm({ authors, categories, tags, initial }: Props) {
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement..." : initial?.id ? "Mettre à jour" : "Créer"}
+        {pending ? "Enregistrement…" : initial?.id ? "Mettre à jour" : "Créer"}
       </button>
     </form>
   );
@@ -291,6 +291,7 @@ function TranslationFields({
             type="text"
             required
             pattern="[a-z0-9-]+"
+            title="Minuscules, chiffres et tirets uniquement — sans espace ni accent."
             defaultValue={initial?.slug ?? ""}
             className="admin-input"
             disabled={disabled}

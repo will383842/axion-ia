@@ -9,12 +9,12 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
   {
     href: "providers",
     label: "Providers IA",
-    description: "Toggles, modèles, cost caps, rate-limits",
+    description: "Activation, modèles, plafonds de dépense, limites d'appels",
   },
   {
     href: "batches",
     label: "Batches & workers",
-    description: "Daily batch size, concurrency, retry policy",
+    description: "Taille des lots quotidiens, parallélisme, nouvelles tentatives",
   },
   {
     href: "policies",
@@ -61,11 +61,19 @@ const SECTIONS: ReadonlyArray<{ href: string; label: string; description: string
     label: "Q/R post-process",
     description: "Auto-create pages, seuil mots, CTR promotion",
   },
-  { href: "kill-switch", label: "Kill switch", description: "Stop all generations en 1 clic" },
+  {
+    href: "kill-switch",
+    label: "Kill switch",
+    description: "Arrêter toutes les générations en un clic",
+  },
   {
     href: "seed-initial",
     label: "Init KB + Presets",
-    description: "Charge les 130 facts KB et les 6 presets de campagne en base (1 clic)",
+    // 🔴 CES DEUX ÉCRANS ANNONÇAIENT DES CHIFFRES DIFFÉRENTS pour le même bouton :
+    // « 130 facts et 6 presets » ici, « 290 facts et 8 presets » sur la page.
+    // Aucun des deux n'était calculé — le seed retourne le vrai compte APRÈS
+    // exécution, et c'est le seul chiffre qu'on puisse écrire sans mentir.
+    description: "Charge les informations de référence et les modèles de campagne (1 clic)",
   },
   {
     href: "kb-ingest",
@@ -84,7 +92,7 @@ export function SettingsIndexV2({ adminPrefix }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Réglages content-gen"
-        description="30 réglages éditables admin · 0 hardcoded. Doctrine § 12.5 master prompt."
+        description="Tous les réglages sont modifiables ici et enregistrés en base."
       />
       <AdminCard>
         <ul className="admin-quick-actions">

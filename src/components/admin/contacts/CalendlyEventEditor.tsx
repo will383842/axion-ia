@@ -172,7 +172,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
         </div>
         <div className="admin-field sm:col-span-2">
           <label htmlFor="linkedSubmissionId" className="admin-label">
-            ID soumission liée (UUID, optionnel)
+            Message du site rattaché (facultatif)
           </label>
           <input
             id="linkedSubmissionId"
@@ -212,7 +212,7 @@ export function CalendlyEventEditor({ id, initial }: Props): React.ReactElement 
       )}
 
       <button type="submit" className="admin-button" disabled={isPending}>
-        {isPending ? "Enregistrement..." : "Enregistrer"}
+        {isPending ? "Enregistrement…" : "Enregistrer"}
       </button>
     </form>
   );

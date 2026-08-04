@@ -6,7 +6,17 @@
  *   C) Organisation/logistique (3), D) Résultats/apports (2),
  *   Recommandation (Oui/Non/NSP), E) Commentaires libres (3).
  * Note globale /10. Nom optionnel (confidentiel).
- * Indicateur Qualiopi n°31.
+ * Indicateur Qualiopi n°30 — « Recueil des appréciations des parties prenantes ».
+ *
+ * 🔴 Audit pré-visite 2026-08-03. Ce gabarit citait l'indicateur **31** — trois
+ * fois, dont deux visibles par le bénéficiaire. Or dans le registre du dépôt
+ * lui-même (`indicateurs-registre.ts`), 30 est le recueil des appréciations et
+ * **31 le traitement des réclamations**. Le questionnaire de satisfaction se
+ * réclamait donc de l'indicateur des réclamations.
+ *
+ * Ce n'est pas une coquille anodine sur une pièce d'audit : citer le mauvais
+ * indicateur donne à penser que l'organisme lit mal son référentiel, ce qui
+ * coûte plus cher que l'erreur elle-même.
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -182,7 +192,7 @@ export function SatisfactionPdf({
       >
         {/* Mention indicateur + intro */}
         <LegalCallout variant="info">
-          Indicateur Qualiopi n°31 — Recueil de la satisfaction des bénéficiaires. Questionnaire
+          Indicateur Qualiopi n°30 — Recueil de la satisfaction des bénéficiaires. Questionnaire
           anonyme (nom facultatif).
         </LegalCallout>
 
@@ -290,7 +300,7 @@ export function SatisfactionPdf({
         </DocSection>
 
         <LegalCallout variant="legal">
-          Données traitées conformément au RGPD — Indicateur 31. Résultats agrégés pour amélioration
+          Données traitées conformément au RGPD — Indicateur 30. Résultats agrégés pour amélioration
           continue. Droit d'accès : {identite.dpoEmail || identite.email || "contact@formation"}.
         </LegalCallout>
       </QualiopiPage>

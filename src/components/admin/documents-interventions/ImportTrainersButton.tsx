@@ -22,7 +22,9 @@ export function ImportTrainersButton(): React.ReactElement {
         setMsg(res.error ?? "Erreur lors de l'import.");
         return;
       }
-      setMsg(`${res.imported ?? 0} formateur(s) importé(s) · ${res.skipped ?? 0} déjà présent(s).`);
+      setMsg(
+        `${res.imported ?? 0} formateur${(res.imported ?? 0) > 1 ? "s" : ""} importé${(res.imported ?? 0) > 1 ? "s" : ""} · ${res.skipped ?? 0} déjà présent${(res.skipped ?? 0) > 1 ? "s" : ""}.`,
+      );
       router.refresh();
     });
   }

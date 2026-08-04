@@ -2049,6 +2049,31 @@
 .admin-card-inline {
   padding: 16px;
 }
+/*
+ * 🔴 CONSTAT MESURÉ (revue visuelle 2026-08-03, bibliothèque d'images).
+ *
+ * `.admin-card` pose padding + fond + bordure + ombre mais ne pose JAMAIS
+ * `display`. Sur un `<div>` ou un `<li>` c'est sans conséquence. Sur un
+ * `<a>` / `<Link>`, la carte reste `display: inline` : le `padding: 16px`
+ * n'entre plus dans la mise en page, la hauteur de la boîte s'effondre et
+ * le FOND DE LA CARTE se peint par-dessus le début de la ligne suivante.
+ *
+ * Rendu réel avant ce correctif, sur les vignettes de `/image-bank/library`
+ * (60 cartes) : la ligne de métadonnées « ville · score 90 · publié »
+ * s'affichait « le · score 90 · publié », ses premiers caractères recouverts.
+ *
+ * On corrige au plus près : seuls les ANCRES sont visées. Poser `display`
+ * sur `.admin-card` tout court écraserait les `flex` / `grid` posés en
+ * utilitaire sur les cartes `<div>` — admin.css n'est pas dans une couche,
+ * il gagne donc contre Tailwind (cf. le piège `admin-button w-full` inerte).
+ *
+ * `.admin-infra-card` (infra, alertes) posait déjà `display: block` de son
+ * côté : le défaut avait été rencontré puis rustiné localement, sans être
+ * nommé. `admin-card-anchor-display.test.ts` verrouille les deux sens.
+ */
+a.admin-card-inline {
+  display: block;
+}
 
 /* Sprint E — drag-drop calendar reschedule (D60) */
 .admin-reschedule-grid {

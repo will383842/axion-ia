@@ -143,3 +143,48 @@ export function isCompetitorDomain(hostname: string): boolean {
   if (COMPETITOR_EXCEPTIONS.some((ex) => host.includes(ex))) return false;
   return COMPETITOR_DOMAINS.some((dom) => host === dom || host.endsWith(`.${dom}`));
 }
+
+/**
+ * Libellés français des trois enums ci-dessus.
+ *
+ * 🔴 L'ÉCRAN DU CATALOGUE ÉTAIT EN ANGLAIS ET EN VALEURS BRUTES. Titre
+ * « External Links Database », en-têtes « ID / Title / Authority / Scope /
+ * Status / Flags / Usage », et les menus de filtre listaient `gov_fr`,
+ * `research_industry`, `pending_verify` tels quels. La colonne « Status »
+ * réaffichait ensuite la même valeur brute.
+ *
+ * Les tables sont posées ICI, à côté des types qu'elles décrivent, pour qu'une
+ * catégorie ajoutée sans libellé casse la compilation plutôt que de fuir à
+ * l'écran. Deux valeurs manquaient d'ailleurs au filtre — `industry_assoc` et
+ * `cci` pour les catégories, `redirect_problem` pour les statuts : elles
+ * étaient donc INFILTRABLES, alors qu'elles existent en base.
+ */
+export const EXTERNAL_LINK_CATEGORY_LABELS: Record<ExternalLinkCategory, string> = {
+  gov_fr: "Administration française",
+  gov_eu: "Institutions européennes",
+  academic: "Universitaire",
+  research_industry: "Recherche et cabinets d'études",
+  press_top: "Presse de référence",
+  industry_assoc: "Fédération ou observatoire sectoriel",
+  official_doc: "Norme ou document officiel",
+  mairie: "Mairie",
+  cci: "Chambre de commerce",
+  opco: "OPCO",
+  international: "Organisation internationale",
+};
+
+export const EXTERNAL_LINK_SCOPE_LABELS: Record<ExternalLinkScope, string> = {
+  national: "National",
+  regional: "Régional",
+  local: "Local",
+  international: "International",
+};
+
+export const EXTERNAL_LINK_STATUS_LABELS: Record<ExternalLinkStatus, string> = {
+  active: "Actif",
+  redirect_acceptable: "Redirection acceptable",
+  redirect_problem: "Redirection problématique",
+  "404": "Introuvable (404)",
+  deprecated: "Obsolète",
+  pending_verify: "À vérifier",
+};

@@ -35,7 +35,7 @@ export function TriggerVerificationButton() {
         disabled={pending}
         aria-busy={pending}
       >
-        {pending ? "Enqueue..." : "Lancer vérification HEAD"}
+        {pending ? "Lancement…" : "Lancer vérification HEAD"}
       </button>
       {feedback && <small className="admin-meta">{feedback}</small>}
     </div>

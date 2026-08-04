@@ -63,7 +63,7 @@ describe("ListeFormateursPdf — les 4 réponses exigées par R.6351-5", () => {
 
   it("LIEN AVEC LES PRESTATIONS : compétences et habilitations", () => {
     expect(text).toContain("IA générative");
-    expect(text).toContain("57 formation(s) habilitée(s)");
+    expect(text).toContain("57 formations habilitées");
     expect(text).toContain("IA pour l'immobilier");
   });
 
@@ -95,9 +95,9 @@ describe("ListeFormateursPdf — effectif", () => {
         },
       ],
     });
-    expect(t).toContain("1 (dirigeant(s) et salarié(s))");
+    expect(t).toContain("1 (dirigeants et salariés)");
     expect(t).toContain("1 (sous-traitance)");
-    expect(t).toContain("2 personne(s) dispensant des heures de formation");
+    expect(t).toContain("2 personnes dispensant des heures de formation");
   });
 
   it("sous-traitant : le NDA figure au lien contractuel (indicateur 27)", () => {

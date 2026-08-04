@@ -61,7 +61,7 @@ export function DocumentDownloadList({ documents }: { documents: Doc[] }): React
             {g.docs.map((d) => (
               <li
                 key={d.documentId}
-                className="border-border bg-cream flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3"
+                className="border-border bg-sand flex flex-wrap items-center justify-between gap-2 rounded-lg border p-3"
               >
                 <div>
                   <span className="text-mocha text-sm font-medium">{d.titre}</span>

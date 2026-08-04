@@ -41,6 +41,28 @@ interface PingResult {
   urlsPinged: number;
 }
 
+/**
+ * Chemins re-notifiés manuellement aux moteurs (page d'accueil, hubs, prise de
+ * rendez-vous). Le ping des articles de blog est déjà automatique à la
+ * publication.
+ *
+ * 🔴 Cette liste était en dur DEUX FOIS : ici, et dans un paragraphe de la vue
+ * qui annonçait « /reserver, /book » — deux routes qui n'existent plus. La vue
+ * la reçoit désormais en prop et ne peut plus diverger.
+ */
+const CHEMINS_NOTIFIES = [
+  "/fr",
+  "/en",
+  "/fr/interventions",
+  "/en/interventions",
+  "/fr/appel",
+  "/en/book-a-call",
+  "/fr/methodologie",
+  "/fr/comparer",
+  "/fr/stack-ia",
+  "/fr/centre-aide",
+] as const;
+
 async function pingIndexNowAction(): Promise<PingResult> {
   "use server";
   const session = await auth();
@@ -56,20 +78,7 @@ async function pingIndexNowAction(): Promise<PingResult> {
     };
   }
 
-  // Top URLs stratégiques à re-notifier manuellement (homepage + hubs + booking).
-  // Le ping blog est déjà automatique sur publication (cf. admin-blog/actions.ts).
-  const urlList = [
-    `${SITE_URL}/fr`,
-    `${SITE_URL}/en`,
-    `${SITE_URL}/fr/interventions`,
-    `${SITE_URL}/en/interventions`,
-    `${SITE_URL}/fr/appel`,
-    `${SITE_URL}/en/book-a-call`,
-    `${SITE_URL}/fr/methodologie`,
-    `${SITE_URL}/fr/comparer`,
-    `${SITE_URL}/fr/stack-ia`,
-    `${SITE_URL}/fr/centre-aide`,
-  ];
+  const urlList = CHEMINS_NOTIFIES.map((p) => `${SITE_URL}${p}`);
 
   try {
     const res = await fetch(`${SITE_URL}/api/indexnow`, {
@@ -142,10 +151,8 @@ export default async function AdminAnalyticsPage({ params }: PageProps) {
       plausibleApi={plausibleApi}
       verifications={verificationsV2}
       indexNowConfigured={Boolean(env.INDEXNOW_KEY)}
-      pingAction={async () => {
-        "use server";
-        await pingIndexNowAction();
-      }}
+      pingAction={pingIndexNowAction}
+      pagesNotifiees={CHEMINS_NOTIFIES}
     />
   );
 }

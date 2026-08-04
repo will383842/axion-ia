@@ -62,9 +62,9 @@ describe("OrganisationActionPdf — contenu", () => {
   it("porte l'identification complète de l'action", () => {
     expect(text).toContain("IA appliquée — Acme (Lyon)");
     expect(text).toContain("AXI-SESS-2026-042");
-    expect(text).toContain("14 heure(s)");
+    expect(text).toContain("14 heures");
     expect(text).toContain("Sur site — 10 avenue du Client, 69001 Lyon");
-    expect(text).toContain("5 stagiaire(s)");
+    expect(text).toContain("5 stagiaires");
   });
 
   it("rend le calendrier réel : dates, horaires, formateur du jour", () => {

@@ -33,6 +33,8 @@ import {
   MOIS_FR,
   TON_STATUT_LIGNE,
   TON_STATUT_RELEVE,
+  libelleRegimeTva,
+  libellePrestation,
 } from "../_labels";
 
 export const dynamic = "force-dynamic";
@@ -73,7 +75,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
     <AdminPageShell>
       <AdminPageHeader
         title={`Relevé — ${releve.trainerNom}`}
-        description={`${MOIS_FR[releve.periodeMonth - 1]} ${releve.periodeYear} · régime ${releve.tvaRegime}`}
+        description={`${MOIS_FR[releve.periodeMonth - 1]} ${releve.periodeYear} · régime ${libelleRegimeTva(releve.tvaRegime)}`}
         meta={
           <AdminBadge tone={TON_STATUT_RELEVE[releve.statut]} dot>
             {LIBELLE_STATUT_RELEVE[releve.statut]}
@@ -168,15 +170,16 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
                   <input id="dateFacture" name="dateFacture" type="date" className="admin-input" />
                 </div>
                 <div className="admin-field">
-                  <label className="admin-label" htmlFor="montantFactureTtcCents">
-                    Montant TTC (centimes)
+                  <label className="admin-label" htmlFor="montantFactureTtcEuros">
+                    Montant TTC (€)
                   </label>
                   <input
-                    id="montantFactureTtcCents"
-                    name="montantFactureTtcCents"
+                    id="montantFactureTtcEuros"
+                    name="montantFactureTtcEuros"
                     type="number"
                     min={0}
-                    defaultValue={releve.totalTtcCents}
+                    step="0.01"
+                    defaultValue={(releve.totalTtcCents / 100).toFixed(2)}
                     className="admin-input"
                   />
                 </div>
@@ -254,7 +257,7 @@ export default async function ReleveDetailPage({ params, searchParams }: PagePro
             {releve.lignes.map((l) => (
               <tr key={l.id}>
                 <td>
-                  {l.prestationType}
+                  {libellePrestation(l.prestationType)}
                   {l.motif !== null && (
                     <>
                       {" "}

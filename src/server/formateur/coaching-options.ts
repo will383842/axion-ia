@@ -10,9 +10,22 @@ export const COACHING_INTERVENTIONS: ReadonlyArray<{ slug: string; label: string
   { slug: "dirigeant-vision-strategique", label: "Dirigeant · Vision stratégique" },
   { slug: "coaching-decouverte", label: "Collaborateur · Optimisation du poste" },
   { slug: "un-a-un-recurrent", label: "Suivi régulier 1-to-1" },
+  // 🔴 CES DEUX VARIANTES ONT ÉTÉ RETIRÉES DE LA VENTE le 2026-07-17, mais des
+  // séances les portent toujours en base : sans libellé ici, le repli affichait
+  // le SLUG BRUT — dans le titre de la fiche séance, dans la colonne
+  // « Prestation » et dans « Gain de temps par métier ». Retirer une offre ne
+  // supprime pas l'historique qui la référence.
+  { slug: "dirigeant-vision-strategique-2j", label: "Dirigeant · Vision stratégique (2 j)" },
+  { slug: "coaching-optimisation-2j", label: "Collaborateur · Optimisation du poste (2 j)" },
 ];
 
 export function coachingInterventionLabel(slug: string): string {
+  // 🔴 NE PAS « CITER » LE REPLI ICI. Cette fonction alimente aussi
+  // `buildCoachingSnapshot` → `snap.intitule`, l'intitulé FIGÉ que portent les
+  // documents AFEST. Encadrer un slug inconnu de guillemets écrirait
+  // « slug-inconnu » dans le titre d'une pièce légale — une convention
+  // d'affichage n'a rien à faire dans une donnée persistée. Le vrai défaut
+  // était l'absence des deux variantes retirées, ajoutées ci-dessus.
   return COACHING_INTERVENTIONS.find((i) => i.slug === slug)?.label ?? slug;
 }
 
@@ -30,9 +43,14 @@ export function optimisationTypeLabel(value: string): string {
 }
 
 /** Statuts de séance (enum Prisma `CoachingSessionStatut`). */
+// 🔴 TROIS STATUTS SUR QUATRE : `reportee` existe à l'enum Prisma mais manquait
+// ici. Une séance reportée s'affichait « reportee », sans accent ni majuscule,
+// dans les trois écrans coaching. Le libellé correct existait déjà dans
+// admin-planning/types.ts.
 export const SESSION_STATUTS: ReadonlyArray<{ value: string; label: string }> = [
   { value: "planifiee", label: "Planifiée" },
   { value: "realisee", label: "Réalisée" },
+  { value: "reportee", label: "Reportée" },
   { value: "annulee", label: "Annulée" },
 ];
 

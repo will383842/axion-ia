@@ -51,7 +51,11 @@ export function SiteRouteStatusBadge({ status, httpStatus }: Props) {
       "bg-[color:var(--color-admin-neutral-soft)] text-[color:var(--color-admin-fg-muted)]",
   };
   const { label, className } = entry;
-  const display = httpStatus && status !== "unknown" ? `${httpStatus}` : label;
+  // 🔴 DÈS QU'UN CODE HTTP EXISTAIT, IL REMPLAÇAIT LE LIBELLÉ : la pastille
+  // n'affichait plus que « 200 » ou « 301 », et le sens (« En ligne »,
+  // « Redirigée ») ne tenait plus qu'à la couleur. Un statut inconnu se
+  // réduisait à « ? ». On garde les deux.
+  const display = httpStatus && status !== "unknown" ? `${label} · ${httpStatus}` : label;
 
   return (
     <span

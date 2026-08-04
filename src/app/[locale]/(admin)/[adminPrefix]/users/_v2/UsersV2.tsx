@@ -16,6 +16,7 @@ import {
   AdminEmptyState,
   AdminButton,
   AdminEtatBooleen,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -105,7 +106,7 @@ export function UsersV2({
     },
     {
       key: "lastLogin",
-      header: "Dernier login",
+      header: "Dernière connexion",
       cell: (u) => formatDateFrShort(u.lastLoginAt),
     },
   ];
@@ -126,10 +127,23 @@ export function UsersV2({
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <p className="admin-meta">
-          4 rôles : <strong>super_admin</strong> (gère tout, seul à pouvoir créer/changer rôle/
-          reset 2FA cross-user) · <strong>admin</strong> (gère contenus + suspend) ·{" "}
-          <strong>editor</strong> (édite contenus) · <strong>reader</strong> (lecture seule). 2FA
-          TOTP obligatoire pour super_admin et admin (CLAUDE.md §15).
+          {/* Le renvoi « (CLAUDE.md §15) » qui fermait cette phrase a été retiré
+              le 2026-08-03 : c'est le nom d'un fichier de consignes du dépôt,
+              affiché à l'écran d'un utilisateur qui n'y a pas accès et n'a
+              aucune raison de savoir qu'il existe. La règle qu'il citait est
+              déjà énoncée juste avant. */}
+          {/* 🔴 Les quatre rôles étaient nommés en `snake_case` — `super_admin`,
+              `editor`, `reader` — alors que le tableau juste en dessous les
+              affiche « Super Admin », « Éditeur », « Lecteur ». Deux vocabulaires
+              pour la même notion sur le même écran, et celui du haut est celui
+              de la base de données. On emploie partout les noms affichés.
+              « reset 2FA cross-user » devient une phrase française. */}
+          Quatre rôles : <strong>{ROLE_LABELS["super_admin"]}</strong> (gère tout ; seul à pouvoir
+          créer un compte, changer un rôle, ou réinitialiser la double authentification d&apos;un
+          autre utilisateur) · <strong>{ROLE_LABELS["admin"]}</strong> (gère les contenus et peut
+          suspendre un compte) · <strong>{ROLE_LABELS["editor"]}</strong> (édite les contenus) ·{" "}
+          <strong>{ROLE_LABELS["reader"]}</strong> (lecture seule). La double authentification est
+          obligatoire pour les deux premiers.
         </p>
       </AdminCard>
 
@@ -217,6 +231,21 @@ export function UsersV2({
           )}
         />
       )}
+
+      {/* 🔴 L'en-tête annonçait « page 1 / N » sans offrir la page 2 — dixième
+          liste de la console dans ce cas. Les trois filtres sont reportés dans
+          les liens : sans eux, changer de page repartirait d'une autre liste
+          que celle qu'on est en train de lire. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/users`}
+        preservedParams={{
+          role: sp["role"],
+          status: sp["status"],
+          search: sp["search"],
+        }}
+      />
     </AdminPageShell>
   );
 }

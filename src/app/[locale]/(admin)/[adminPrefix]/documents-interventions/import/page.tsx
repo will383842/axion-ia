@@ -4,6 +4,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { KitImporter } from "@/components/admin/documents-interventions/KitImporter";
+import { TriangleAlert } from "lucide-react";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" });
 
@@ -78,7 +79,10 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
             {runs.map((r) => {
               const s = (r.summary ?? {}) as Summary;
               return (
-                <li key={r.id} className="border-border bg-cream rounded-lg border p-3 text-sm">
+                <li
+                  key={r.id}
+                  className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-3)] text-sm"
+                >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-mocha font-medium">
                       {r.fileName ?? "kit.zip"}
@@ -103,16 +107,22 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
                     {r.statut === "termine" ? (
                       <>
                         {" "}
-                        · <strong className="text-success">{s.created ?? 0}</strong> créé(s) ·{" "}
-                        <strong>{s.updated ?? 0}</strong> mis à jour ·{" "}
-                        <strong>{s.unchanged ?? 0}</strong> inchangé(s)
+                        · <strong className="text-success">{s.created ?? 0}</strong> créé
+                        {(s.created ?? 0) > 1 ? "s" : ""} · <strong>{s.updated ?? 0}</strong> mis à
+                        jour · <strong>{s.unchanged ?? 0}</strong> inchangé
+                        {(s.unchanged ?? 0) > 1 ? "s" : ""}
                       </>
                     ) : null}
                   </div>
                   {r.error ? <p className="text-error mt-1 text-xs">{r.error}</p> : null}
                   {s.unmappedFolders && s.unmappedFolders.length > 0 ? (
                     <p className="text-fg-muted mt-1 text-xs">
-                      ⚠️ Dossiers non reconnus (ignorés) : {s.unmappedFolders.join(", ")}
+                      <TriangleAlert
+                        size={14}
+                        aria-hidden="true"
+                        className="inline-block shrink-0 align-[-0.125em]"
+                      />{" "}
+                      Dossiers non reconnus (ignorés) : {s.unmappedFolders.join(", ")}
                     </p>
                   ) : null}
                   {s.errors && s.errors.length > 0 ? (

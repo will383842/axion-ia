@@ -81,7 +81,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
               icon={AlertTriangle}
             />
             <AdminStatCard
-              label="Articles needs_review (< 0.70)"
+              label="Articles à revoir (score < 0,70)"
               value={String(stats.articlesNeedsReview)}
               meta="dérive sévère 30j"
               tone={stats.articlesNeedsReview > 0 ? "destructive" : "default"}
@@ -106,7 +106,7 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
             <table className="admin-table w-full text-sm">
               <thead>
                 <tr>
-                  <th className="px-3 py-2 text-left">Article ID</th>
+                  <th className="px-3 py-2 text-left">Article</th>
                   <th className="px-3 py-2 text-left">Similarité</th>
                   <th className="px-3 py-2 text-left">Niveau</th>
                   <th className="px-3 py-2 text-left">Détecté le</th>
@@ -117,7 +117,9 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
                 {stats.recentDrifts.map((drift) => (
                   <tr key={drift.id} className="border-t border-[color:var(--color-admin-border)]">
                     <td className="px-3 py-2">
-                      <code className="text-xs">{drift.articleId.slice(0, 12)}…</code>
+                      <code className="text-xs" title={drift.articleId}>
+                        {drift.articleId.slice(0, 12)}…
+                      </code>
                     </td>
                     <td className="px-3 py-2">
                       <span
@@ -168,15 +170,16 @@ export async function BrandVoiceDriftV2({ adminPrefix }: Props): Promise<React.R
           <h3 className="admin-h3 mb-[var(--space-admin-3)]">Seuils de détection</h3>
           <ul className="admin-meta-block text-sm">
             <li>
-              <strong>similarity &lt; 0.70</strong> → Article mis en <code>needs_review</code> +
-              audit log SOC2
+              <strong>Ressemblance inférieure à 0,70</strong> — l&apos;article part en relecture et
+              la décision est tracée.
             </li>
             <li>
-              <strong>0.70 ≤ similarity &lt; 0.80</strong> → Drift warning loggé (audit log SOC2,
-              pas de changement de statut)
+              <strong>Entre 0,70 et 0,80</strong> — un écart est signalé et tracé, sans changer le
+              statut de l&apos;article.
             </li>
             <li>
-              <strong>similarity ≥ 0.80</strong> → OK, dans la tonalité brand voice
+              <strong>Ressemblance supérieure ou égale à 0,80</strong> — l&apos;article est conforme
+              à la voix de la marque, rien n&apos;est signalé.
             </li>
           </ul>
         </div>

@@ -16,6 +16,12 @@ import { JobLogStream } from "@/components/admin/content-gen/JobLogStream";
 import { JobsLiveStream } from "@/components/admin/content-gen/JobsLiveStream";
 import { cancelJob, retryJob } from "@/server/actions/content-gen/jobs";
 import { formatDateFr } from "@/lib/format-date-fr";
+import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
+import {
+  contentTypeLabelFr,
+  jobStatusLabelFr,
+  searchIntentLabelFr,
+} from "@/server/content-gen/shared/admin-labels";
 
 // Heure seule (Europe/Paris) avec secondes — la table des logs horodate des
 // étapes d'un même job, la date complète serait répétée sur chaque ligne.
@@ -63,7 +69,7 @@ interface JobData {
   // Liens contextuels SP-04 P1
   templateId?: string | null;
   campaignId?: string | null;
-  template?: { id: string; name: string; version: number } | null;
+  template?: { id: string; slug: string; name: string; version: number } | null;
   reviewQueue?: { id: string; status: string } | null;
 }
 
@@ -94,7 +100,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={`Job ${job.id.slice(0, 12)}…`}
-        description={`${job.contentType} · ${job.status} · créé ${formatDateFr(job.createdAt)}`}
+        description={`${contentTypeLabelFr(job.contentType)} · ${jobStatusLabelFr(job.status)} · créé ${formatDateFr(job.createdAt)}`}
         actions={
           <div className="flex gap-[var(--space-admin-3)]">
             {job.status === "failed" || job.status === "cancelled" ? (
@@ -119,7 +125,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
         <h2 className="admin-h2">Chronologie</h2>
         <ul className="admin-inline-list">
           <li>
-            <strong>Statut :</strong> {job.status}
+            <strong>Statut :</strong> {jobStatusLabelFr(job.status)}
           </li>
           <li>
             <strong>Priorité :</strong> {job.priority}
@@ -128,10 +134,10 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             <strong>Tentatives :</strong> {job.retryCount}
           </li>
           <li>
-            <strong>Démarré :</strong> {job.startedAt?.toISOString() ?? "—"}
+            <strong>Démarré :</strong> {formatDateFr(job.startedAt)}
           </li>
           <li>
-            <strong>Terminé :</strong> {job.completedAt?.toISOString() ?? "—"}
+            <strong>Terminé :</strong> {formatDateFr(job.completedAt)}
           </li>
           <li>
             <strong>Durée :</strong>{" "}
@@ -148,7 +154,7 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <li>Région : {job.anchorRegionSlug ?? "—"}</li>
           <li>Taille : {job.targetAudienceSize ?? "—"}</li>
           <li>Organisation : {job.targetAudienceOrganisation ?? "—"}</li>
-          <li>Intention : {job.targetSearchIntent}</li>
+          <li>Intention : {searchIntentLabelFr(job.targetSearchIntent)}</li>
         </ul>
       </AdminCard>
 
@@ -181,7 +187,8 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
             )}
           </li>
           <li>
-            <strong>Tokens :</strong> in {job.tokensInput ?? 0} / out {job.tokensOutput ?? 0}
+            <strong>Jetons :</strong> {job.tokensInput ?? 0} en entrée, {job.tokensOutput ?? 0} en
+            sortie
           </li>
           <li>
             <strong>Coût :</strong> {job.costUsd ? `$${Number(job.costUsd).toFixed(4)}` : "—"}
@@ -196,12 +203,13 @@ export function JobDetailV2({ job, adminPrefix }: Props): React.ReactElement {
           <ul className="admin-inline-list">
             {job.template ? (
               <li>
-                <strong>Template :</strong>{" "}
+                <strong>Instruction IA :</strong>{" "}
                 <Link
                   href={`/fr/${adminPrefix}/content-gen/templates/${job.template.id}`}
                   className="admin-link"
                 >
-                  {job.template.name} (v{job.template.version})
+                  {libelleInstructionIA(job.template.slug, job.template.name)} (v
+                  {job.template.version})
                 </Link>
               </li>
             ) : null}

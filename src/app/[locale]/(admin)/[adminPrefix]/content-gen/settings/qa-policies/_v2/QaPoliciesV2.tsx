@@ -29,7 +29,7 @@ export function QaPoliciesV2({ cfg }: Props): React.ReactElement {
     <AdminPageShell>
       <AdminPageHeader
         title="Q/R post-process"
-        description="Auto-extraction Q/R + pages indexables. § 29 master prompt v1.7."
+        description="Extraction automatique des questions-réponses et création des pages correspondantes."
       />
 
       <AdminCard>
@@ -37,7 +37,7 @@ export function QaPoliciesV2({ cfg }: Props): React.ReactElement {
           <div className="admin-field">
             <label className="admin-label">
               <input type="checkbox" name="autoCreatePages" defaultChecked={cfg.autoCreatePages} />{" "}
-              Auto-create pages Q/R indexables après chaque génération
+              Créer automatiquement les pages Questions/Réponses indexables après chaque génération
             </label>
           </div>
           <div className="admin-filters-grid">

@@ -124,7 +124,7 @@ export function RecipientManager({ recipients }: { recipients: Recipient[] }): R
           </select>
         </label>
         <label className="text-mocha text-xs font-medium">
-          Prestation (slug, optionnel)
+          Prestation concernée (facultatif)
           <input
             type="text"
             value={slug}
@@ -155,7 +155,9 @@ export function RecipientManager({ recipients }: { recipients: Recipient[] }): R
               <th>Rôle</th>
               <th>Périmètre</th>
               <th>Actif</th>
-              <th></th>
+              <th>
+                <span className="sr-only">Actions</span>
+              </th>
             </tr>
           </thead>
           <tbody>

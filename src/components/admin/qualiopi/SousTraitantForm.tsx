@@ -15,7 +15,10 @@ import type {
   creerSousTraitantAction,
   verifierSousTraitantOfAction,
 } from "@/server/actions/qualiopi/sous-traitants";
-import type { genererContratSousTraitanceAction } from "@/server/actions/qualiopi/documents";
+import type {
+  genererContratSousTraitanceAction,
+  genererProcedureSousTraitanceAction,
+} from "@/server/actions/qualiopi/documents";
 
 const inputCls =
   "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-admin-accent)]";
@@ -278,7 +281,7 @@ export function SousTraitantForm({ creerAction }: SousTraitantFormProps) {
       )}
 
       <button type="submit" disabled={isPending} className="admin-button mt-[var(--space-admin-4)]">
-        {isPending ? "Enregistrement..." : "Enregistrer le sous-traitant"}
+        {isPending ? "Enregistrement…" : "Enregistrer le sous-traitant"}
       </button>
     </form>
   );
@@ -390,6 +393,67 @@ export function SousTraitantContratButton({
         className="admin-button-secondary"
       >
         {isPending ? "Génération…" : "Générer le contrat de sous-traitance"}
+      </button>
+      {error && (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">
+          {error}
+        </span>
+      )}
+      {successMsg && (
+        <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-success)]">
+          {successMsg}
+        </span>
+      )}
+    </span>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Génération de la PROCÉDURE de sous-traitance (indicateur 27)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface ProcedureSousTraitanceButtonProps {
+  genererAction: typeof genererProcedureSousTraitanceAction;
+}
+
+/**
+ * 🔴 Ce bouton n'attend AUCUN sous-traitant, et c'est tout son intérêt.
+ *
+ * L'indicateur 27 exige une règle écrite AVANT le premier recours : un organisme
+ * qui n'a encore aucun sous-traitant doit pouvoir produire ses dispositions. Le
+ * rattacher à une ligne du registre l'aurait rendu inaccessible tant que le
+ * registre est vide — c'est-à-dire exactement au moment où on en a besoin.
+ */
+export function ProcedureSousTraitanceButton({ genererAction }: ProcedureSousTraitanceButtonProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+
+  function handleGenerer() {
+    setError(null);
+    setSuccessMsg(null);
+
+    startTransition(async () => {
+      const result = await genererAction();
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setSuccessMsg(`Procédure n° ${result.data.numero} générée et versée au registre.`);
+        router.refresh();
+      }
+    });
+  }
+
+  return (
+    <span className="inline-flex flex-col gap-1">
+      <button
+        type="button"
+        onClick={handleGenerer}
+        disabled={isPending}
+        className="admin-button-secondary"
+      >
+        {isPending ? "Génération…" : "Générer la procédure de sous-traitance"}
       </button>
       {error && (
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)]">

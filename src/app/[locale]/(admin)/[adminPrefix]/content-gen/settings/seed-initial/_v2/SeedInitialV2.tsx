@@ -21,26 +21,29 @@ export function SeedInitialV2(): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Initialisation KB + Presets"
-        description="Charge les 290 facts KB sectoriels et les 8 presets de campagne en base. Idempotent — sans danger si lancé plusieurs fois."
+        title="Initialisation de la base de connaissances"
+        description="Charge les informations vérifiées sur les services et les modèles de campagne. Sans danger si lancé plusieurs fois : les entrées existantes sont mises à jour, rien n'est dupliqué."
       />
 
       <AdminCard>
         <p className="admin-meta-block">Ce bouton exécute deux seeds en base de données :</p>
         <ul className="admin-meta-block" style={{ paddingLeft: "1.25rem", listStyle: "disc" }}>
           <li>
-            <strong>KB sectorielle</strong> — 290 facts vérifiés sur tes 5 services (Audits,
-            Interventions/Formations, Un-à-un, Implémentations, Web IA). Le robot s&apos;en sert
-            pour écrire des articles précis sur ton offre.
+            <strong>Base de connaissances</strong> — des informations vérifiées sur vos cinq
+            services (audits, interventions et formations, un-à-un, implémentations, sites web
+            augmentés). Le générateur s&apos;en sert pour écrire des articles précis sur votre
+            offre.
           </li>
           <li>
-            <strong>8 presets de campagne</strong> — couvrant les 5 services × toutes tailles
-            d&apos;entreprise (TPE/PME/ETI/GE). Disponibles dans le wizard de nouvelle campagne.
+            <strong>Modèles de campagne</strong> — couvrant les cinq services et toutes les tailles
+            d&apos;entreprise (TPE, PME, ETI, grande entreprise). Ils apparaissent dans
+            l&apos;assistant de nouvelle campagne.
           </li>
         </ul>
         <p className="admin-meta-block">
-          <strong>Idempotent</strong> : tu peux cliquer plusieurs fois sans risque — les entrées
-          existantes sont mises à jour, rien n&apos;est dupliqué.
+          Vous pouvez cliquer plusieurs fois sans risque : les entrées existantes sont mises à jour,
+          rien n&apos;est dupliqué. Le nombre réellement chargé s&apos;affiche ci-dessous après
+          exécution.
         </p>
 
         <button type="button" className="admin-button-cta" onClick={handleSeed} disabled={loading}>

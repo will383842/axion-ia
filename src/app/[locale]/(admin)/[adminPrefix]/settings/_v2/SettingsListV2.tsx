@@ -13,7 +13,9 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
+import { AdminValeurSensible } from "@/components/admin/ui/AdminValeurSensible";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import { masquerSecrets, contientUnSecret } from "@/lib/admin/masquer-secrets";
 
 interface SettingRow {
   key: string;
@@ -37,8 +39,15 @@ export function SettingsListV2({ adminPrefix, settings }: Props): React.ReactEle
     {
       key: "value",
       header: "Valeur (JSON)",
+      // 🔴 `legal_overrides` affichait IBAN et BIC EN CLAIR dans la liste. Une
+      // coordonnée bancaire ne s'affiche pas d'elle-même : elle s'affiche
+      // quand on la demande. Le masquage est calculé ici, côté serveur.
       cell: (s) => (
-        <pre className="admin-json admin-json-cell">{JSON.stringify(s.value, null, 2)}</pre>
+        <AdminValeurSensible
+          masque={JSON.stringify(masquerSecrets(s.value), null, 2)}
+          complet={JSON.stringify(s.value, null, 2)}
+          masquable={contientUnSecret(s.value)}
+        />
       ),
     },
     {
@@ -66,10 +75,16 @@ export function SettingsListV2({ adminPrefix, settings }: Props): React.ReactEle
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
+        {/* 🔴 Ce paragraphe portait « Settings centralisés », « ROI simulator »,
+            « CTA central » et DEUX rôles en valeur brute — « modification par
+            super_admin/admin », « suppression par super_admin ». Vu à l'écran en
+            production : c'est le texte d'accueil de la page des réglages, donc
+            la première phrase qu'on y lit. */}
         <p className="admin-meta">
-          Settings centralisés (pricing dynamique 3 modules, ROI simulator, CTA central, mode
-          maintenance). Format JSON par clé. Modification par super_admin/admin uniquement,
-          suppression par super_admin uniquement.
+          Réglages centralisés : tarifs des trois modules, simulateur de retour sur investissement,
+          bandeau d&apos;appel à l&apos;action, mode maintenance. Une clé, une valeur au format
+          JSON. La modification est réservée aux administrateurs, la suppression aux super
+          administrateurs.
         </p>
       </AdminCard>
 

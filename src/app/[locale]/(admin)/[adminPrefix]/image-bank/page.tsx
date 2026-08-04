@@ -13,7 +13,7 @@ import { OverviewV2 } from "./_v2/OverviewV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Overview | Axion-IA Admin",
+  title: "Banque d'images — vue d'ensemble | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

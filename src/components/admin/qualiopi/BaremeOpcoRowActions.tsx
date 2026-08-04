@@ -44,7 +44,7 @@ export function BaremeOpcoRowActions({ id, supprimerAction }: BaremeOpcoRowActio
         disabled={isPending}
         className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-error)] underline-offset-2 hover:underline disabled:opacity-50"
       >
-        {isPending ? "Suppression..." : "Supprimer"}
+        {isPending ? "Suppression…" : "Supprimer"}
       </button>
       {error && (
         <span

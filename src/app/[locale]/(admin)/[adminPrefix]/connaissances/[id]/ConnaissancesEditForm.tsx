@@ -29,6 +29,7 @@ import type {
   KbStatus,
   KbType,
 } from "../../../../../../../prisma/generated/client";
+import { messageErreurKb } from "@/server/knowledge/erreurs-labels";
 
 export interface EntrySnapshot {
   readonly id: string;
@@ -218,6 +219,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
             defaultValue={entry.slug}
             required
             pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
+            title="Minuscules, chiffres et tirets uniquement — sans espace ni accent, et pas de tiret en début ou en fin."
           />
         </div>
         <div className="admin-field">
@@ -261,7 +263,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         <div className="admin-form-actions">
           <button type="submit" disabled={metaPending} className="admin-button">
-            {metaPending ? "Enregistrement..." : "Enregistrer métadonnées"}
+            {metaPending ? "Enregistrement…" : "Enregistrer métadonnées"}
           </button>
         </div>
         {metaState?.ok ? (
@@ -271,7 +273,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {metaState?.error && metaState.error !== "validation" ? (
           <p className="admin-error" role="alert">
-            Erreur : {metaState.error}
+            {messageErreurKb(metaState.error)}
           </p>
         ) : null}
       </form>
@@ -312,7 +314,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         </div>
         <div className="admin-form-actions">
           <button type="submit" disabled={bodyPending} className="admin-button">
-            {bodyPending ? "Enregistrement..." : "Enregistrer brouillon"}
+            {bodyPending ? "Enregistrement…" : "Enregistrer brouillon"}
           </button>
         </div>
         {bodyState && "ok" in bodyState && bodyState.ok ? (
@@ -323,7 +325,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {bodyState && "error" in bodyState && bodyState.error ? (
           <p className="admin-error" role="alert">
-            Erreur : {String(bodyState.error)}
+            {messageErreurKb(String(bodyState.error))}
           </p>
         ) : null}
       </form>
@@ -333,10 +335,11 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         <h2 className="admin-h2">Zone danger</h2>
         <input type="hidden" name="entryId" value={entry.id} />
         <p className="admin-meta">
-          Suppression douce (soft-delete). Récupération possible via cron retention sous 30 j.
+          L&apos;entrée part à la corbeille : elle reste récupérable pendant 30 jours, puis est
+          effacée définitivement.
         </p>
         <button type="submit" disabled={delPending} className="admin-button-danger">
-          {delPending ? "Suppression..." : "Supprimer l'entrée"}
+          {delPending ? "Suppression…" : "Supprimer l'entrée"}
         </button>
         {delState && "ok" in delState && delState.ok ? (
           <p className="admin-success" role="status">
@@ -348,7 +351,7 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {delState && "error" in delState && delState.error ? (
           <p className="admin-error" role="alert">
-            Erreur : {String(delState.error)}
+            {messageErreurKb(String(delState.error))}
           </p>
         ) : null}
       </form>

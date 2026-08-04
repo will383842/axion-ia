@@ -126,7 +126,7 @@ export default async function PressMediaListPage({ params }: PageProps) {
         description={`${rows.length} asset${rows.length > 1 ? "s" : ""} (logos, chartes, brand book — brouillons inclus)`}
         actions={
           <Link href={`${base}/kit-media/upload`} className="admin-button">
-            + Uploader
+            + Ajouter un fichier
           </Link>
         }
       />
@@ -146,7 +146,7 @@ export default async function PressMediaListPage({ params }: PageProps) {
         )}
         emptyState={
           <AdminEmptyState
-            title="Aucun asset"
+            title="Aucun fichier"
             description="Uploadez le premier fichier de marque (logo, charte, brand book…)."
             primaryAction={
               <Link href={`${base}/kit-media/upload`} className="admin-button">

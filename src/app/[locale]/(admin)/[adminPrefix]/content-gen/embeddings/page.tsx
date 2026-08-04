@@ -142,14 +142,14 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
       {/* KPI tiles */}
       <div className="mb-[var(--space-admin-7)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-2 lg:grid-cols-4">
         <AdminStatCard
-          label="Articles avec embedding"
+          label="Articles analysés"
           value={stats.countWith.toLocaleString("fr-FR")}
           meta={`sur ${stats.totalPublished.toLocaleString("fr-FR")} publiés`}
           tone={coverageTone}
           icon={CheckCircle2}
         />
         <AdminStatCard
-          label="Articles sans embedding"
+          label="Articles en attente d'analyse"
           value={stats.countWithout.toLocaleString("fr-FR")}
           meta="à traiter"
           tone={
@@ -187,12 +187,11 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
       <div className="grid grid-cols-1 gap-[var(--space-admin-5)] lg:grid-cols-2">
         <AdminCard>
           <h2 className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Dernier run (cron 03:00 UTC)
+            Dernier passage (chaque nuit à 3 h UTC)
           </h2>
           {stats.lastRun === null ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-              Aucun run enregistré — le worker n&apos;a pas encore tourné ou la table
-              ContentGenConfig est vide.
+              Aucun passage enregistré pour l&apos;instant.
             </p>
           ) : stats.lastRun.skippedReason ? (
             <div className="flex flex-col gap-[var(--space-admin-3)]">
@@ -325,7 +324,7 @@ export default async function EmbeddingsMonitorPage({ params }: PageProps) {
               aria-disabled="true"
               className="inline-flex cursor-not-allowed items-center rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-5)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg-muted)] opacity-50"
             >
-              Déclencher maintenant (bientôt disponible)
+              Déclenchement impossible depuis cet écran
             </button>
           </div>
         </AdminCard>

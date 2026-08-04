@@ -8,6 +8,7 @@ import {
   regenerateBarometerAnalysisForm,
   generateBarometerArticleForm,
 } from "@/server/actions/observatoire/admin";
+import { TriangleAlert } from "lucide-react";
 
 const INSIGHT_LABELS: Record<string, string> = {
   competitors_use_ai: "Pensent que leurs concurrents utilisent l'IA",
@@ -55,8 +56,13 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
           </table>
         </div>
         <p className="admin-help mt-[var(--space-admin-4)]">
-          ⚠️ Les réponses « démo » (seed) sont une fixture de développement. En production, ne
-          publier les chiffres qu’à partir d’un échantillon RÉEL.
+          <TriangleAlert
+            size={14}
+            aria-hidden="true"
+            className="inline-block shrink-0 align-[-0.125em]"
+          />{" "}
+          Les réponses « démo » (seed) sont une fixture de développement. En production, ne publier
+          les chiffres qu’à partir d’un échantillon RÉEL.
         </p>
       </AdminCard>
 
@@ -76,8 +82,8 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
       <AdminCard variant="compact" className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Générer un article d’analyse</h2>
         <p className="admin-help">
-          Crée un article « barometer_insight » ancré sur les chiffres RÉELS du snapshot
-          (review-queue). Refusé si aucun échantillon réel.
+          Crée une analyse de l&apos;Observatoire, adossée aux chiffres RÉELS du dernier relevé, et
+          l&apos;envoie en relecture. Refusée si aucun échantillon réel n&apos;existe.
         </p>
         <form action={generateBarometerArticleForm} className="mt-[var(--space-admin-4)]">
           <button type="submit" className="admin-button-cta">
@@ -127,7 +133,7 @@ export async function ObservatoireV2(): Promise<React.ReactElement> {
               Générée le {new Date(stats.analysis.generatedAt).toLocaleString("fr-FR")} · ancrée sur{" "}
               {stats.analysis.basedOnTotal} réponses
               {stats.analysis.basedOnTotal !== stats.totalResponses
-                ? ` ⚠️ (effectif actuel : ${stats.totalResponses} — régénération conseillée)`
+                ? ` · effectif actuel : ${stats.totalResponses} — régénération conseillée`
                 : " à jour"}
               .
             </p>

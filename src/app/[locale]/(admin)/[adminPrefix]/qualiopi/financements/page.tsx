@@ -19,6 +19,8 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ExportComptaButton } from "@/components/admin/qualiopi/ExportComptaButton";
 import { prisma } from "@/lib/prisma";
+import { libellerStatutOpco } from "@/server/qualiopi/financements/labels";
+import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -30,9 +32,15 @@ export const metadata: Metadata = {
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
 
+// 🔴 QUATRE STATUTS SUR SIX. Une facture `partiellement_payee` ou `en_retard`
+// — les deux que le cron de 06:30 UTC pose sur les impayés — s'affichait « ○
+// partiellement_payee » dans la colonne Statut. La table complète existe
+// pourtant, à l'identique, dans facturation/page.tsx.
 const STATUT_FACTURE_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
   emise: "Émise",
+  partiellement_payee: "Partiellement payée",
+  en_retard: "En retard",
   payee: "Payée",
   annulee: "Annulée",
 };
@@ -89,6 +97,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
       emiseAt: true,
       subrogation: true,
       numeroDossierOpco: true,
+      activite: true,
       session: {
         select: {
           id: true,
@@ -189,7 +198,8 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
           {sessionsOpcoSansAccord.length > 0 && (
             <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-error)]">
-                OPCO — Accord non reçu ({sessionsOpcoSansAccord.length} session(s))
+                OPCO — Accord non reçu ({sessionsOpcoSansAccord.length} session
+                {sessionsOpcoSansAccord.length > 1 ? "s" : ""})
               </p>
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 Ces sessions ont un financement OPCO déclaré mais l&apos;accord écrit n&apos;est pas
@@ -207,7 +217,7 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                     <span className="text-[color:var(--color-admin-fg)]">{s.titreSession}</span>
                     <span className="text-[color:var(--color-admin-warning)]">
                       {FINANCEMENT_LABELS[s.financementType ?? ""] ?? s.financementType} —{" "}
-                      {s.opcoStatut}
+                      {libellerStatutOpco(s.opcoStatut)}
                     </span>
                     <Link
                       href={`/${locale}/${adminPrefix}/qualiopi/sessions/${s.id}/financement`}
@@ -224,7 +234,8 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
           {sessionsCpfSansEdof.length > 0 && (
             <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-error)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-error)]">
-                CPF — Vérification EDOF manquante ({sessionsCpfSansEdof.length} session(s))
+                CPF — Vérification EDOF manquante ({sessionsCpfSansEdof.length} session
+                {sessionsCpfSansEdof.length > 1 ? "s" : ""})
               </p>
               <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                 Ces sessions déclarent un financement CPF sans vérification EDOF horodatée. La
@@ -309,7 +320,13 @@ export default async function QualiopiFinancementsPage({ params }: PageProps) {
                     {/* Session */}
                     <td className={cellCls}>
                       <div className="font-medium">
-                        {f.session?.titreSession ?? "Coaching 1-to-1"}
+                        {/* 🔴 TOUTE FACTURE SANS SESSION ÉTAIT ÉTIQUETÉE
+                            « Coaching 1-to-1 ». Le Hub facture désormais aussi
+                            l'audit, l'implémentation et le site web : une
+                            facture d'audit s'affichait donc comme un coaching,
+                            sur l'écran des financements. */}
+                        {f.session?.titreSession ??
+                          (f.activite !== null ? ACTIVITE_LABELS[f.activite] : "Facture libre")}
                       </div>
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {f.session?.numero ?? ""}

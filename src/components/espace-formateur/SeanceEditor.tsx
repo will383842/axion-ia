@@ -430,7 +430,7 @@ function OptimisationsTab({
           {session.optimisations.map((o) => (
             <li
               key={o.id}
-              className="border-border bg-cream flex flex-wrap items-center justify-between gap-2 rounded border p-3"
+              className="border-border bg-sand flex flex-wrap items-center justify-between gap-2 rounded border p-3"
             >
               <div>
                 <span className="text-mocha text-sm font-medium">{o.titre}</span>
@@ -701,7 +701,7 @@ function ComptesRendusTab({
       {session.comptesRendus.length > 0 ? (
         <ul className="space-y-2">
           {session.comptesRendus.map((c) => (
-            <li key={c.id} className="border-border bg-cream rounded border p-3 text-sm">
+            <li key={c.id} className="border-border bg-sand rounded border p-3 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-mocha font-medium">{c.dateSeance}</span>
                 <button
@@ -857,7 +857,7 @@ function JournalTab({
       {session.journaux.length > 0 ? (
         <ul className="space-y-2">
           {session.journaux.map((j) => (
-            <li key={j.id} className="border-border bg-cream rounded border p-3 text-sm">
+            <li key={j.id} className="border-border bg-sand rounded border p-3 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-mocha font-medium">{j.periode ?? "Entrée"}</span>
                 <button

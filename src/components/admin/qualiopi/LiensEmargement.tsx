@@ -95,7 +95,9 @@ export function LiensEmargement({
         return;
       }
       setLiens(null);
-      setMessage(`${r.data.revoques} lien(s) révoqué(s). Les anciens liens ne signent plus.`);
+      setMessage(
+        `${r.data.revoques} lien${r.data.revoques > 1 ? "s" : ""} révoqué${r.data.revoques > 1 ? "s" : ""}. Les anciens liens ne signent plus.`,
+      );
       router.refresh();
     });
   }
@@ -221,6 +223,7 @@ export function LiensEmargement({
                       masque sur le conteneur entier. */}
                   <p
                     data-clarity-mask="true"
+                    title={l.url}
                     className="mt-1 truncate text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
                   >
                     {l.url}

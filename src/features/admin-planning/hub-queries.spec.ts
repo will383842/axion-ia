@@ -155,7 +155,7 @@ describe("getHubSignaux", () => {
 
     const signaux = await getHubSignaux(2026, 6, "adm", MAINTENANT);
     const s = signaux.find((x) => x.code === "formateur_non_conforme");
-    expect(s?.items[0]?.label).toContain("2 pièce(s) bloquante(s)");
+    expect(s?.items[0]?.label).toContain("2 pièces bloquantes");
   });
 
   it("ne retient que les relevés `brouillon` et `a_valider`", async () => {
@@ -203,7 +203,7 @@ describe("getHubSignaux", () => {
     const signaux = await getHubSignaux(2026, 6, "adm", MAINTENANT);
     const s = signaux.find((x) => x.code === "session_non_staffee");
     expect(s?.items).toHaveLength(1);
-    expect(s?.titre).toBe("1 prestation(s) sans formateur");
+    expect(s?.titre).toBe("1 prestation sans formateur");
   });
 
   it("un mois totalement sain ne produit aucun signal", async () => {

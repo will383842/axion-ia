@@ -1143,7 +1143,7 @@ async function stepGenerateContent(
       titre: "Génération IA d'une formation en échec",
       message:
         `La génération du contenu détaillé de « ${formation.titre} » n'a produit ` +
-        `aucun module exploitable (${modules.length} module(s) en entrée). Relancer la génération.`,
+        `aucun module exploitable (${modules.length} module${modules.length > 1 ? "s" : ""} en entrée). Relancer la génération.`,
       cibleType: "Formation",
       cibleId: formation.id,
     }).catch(() => {});

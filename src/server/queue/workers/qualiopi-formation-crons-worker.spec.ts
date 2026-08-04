@@ -26,6 +26,10 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(),
       count: vi.fn(),
     },
+    // Rattrapage questionnaires 2026-08-03 — marquage `envoyeAt` après envoi.
+    questionnaire: {
+      updateMany: vi.fn(),
+    },
     alerteSysteme: {
       findMany: vi.fn(),
     },
@@ -86,6 +90,7 @@ import { formationCronsHandler } from "./qualiopi-formation-crons-worker";
 const mockPrisma = prisma as unknown as {
   trainingSession: { findMany: ReturnType<typeof vi.fn> };
   enrollment: { findMany: ReturnType<typeof vi.fn>; count: ReturnType<typeof vi.fn> };
+  questionnaire: { updateMany: ReturnType<typeof vi.fn> };
   alerteSysteme: { findMany: ReturnType<typeof vi.fn> };
   factureFormation: {
     findMany: ReturnType<typeof vi.fn>;
@@ -587,5 +592,129 @@ describe("handleFacturesRetard — échéances manquantes (via formationCronsHan
     await lancer();
 
     expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// attestations-auto — garde « pas d'attestation sans évaluation finale »
+//
+// 🔴 Régression de production 2026-08-03 (AXI-ATT-2026-003) : le cron émettait
+// une attestation pour tout inscrit d'une session `realisee`, évaluation ou non.
+// La pièce certifiait « en a satisfait les exigences » ET affichait « Évaluation
+// des acquis non réalisée ». Indicateur 11, non graduable.
+//
+// Ce test porte sur le `where` de la requête, pas sur le nombre d'appels : le
+// défaut n'était pas une boucle fautive, c'était un filtre absent. Compter les
+// appels aurait laissé passer la régression — la liste renvoyée par le mock est
+// ce que le test décide, pas ce que la requête sélectionne.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("formation-crons.attestations-auto — garde évaluation finale", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
+    mockPrisma.enrollment.count.mockResolvedValue(0);
+  });
+
+  it("ne sélectionne que les inscrits ayant une évaluation de type `finale`", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.evaluations).toEqual({ some: { type: "finale" } });
+    expect(where?.attestationGenereeAt).toBeNull();
+    expect(where?.session).toEqual({ statut: "realisee" });
+  });
+
+  it("compte séparément les inscrits en attente d'évaluation, au lieu de les taire", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.count.mock.calls[0]?.[0]?.where;
+    expect(where?.evaluations).toEqual({ none: { type: "finale" } });
+  });
+
+  it("génère l'attestation des inscrits que la requête a retenus", async () => {
+    const { genererAttestationPourEnrollment } =
+      await import("@/server/qualiopi/evaluations/attestation-service");
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-evalue-1", session: { id: "s1" } },
+      { id: "enroll-evalue-2", session: { id: "s1" } },
+    ]);
+
+    await formationCronsHandler({
+      type: "formation-crons.attestations-auto",
+      tick: "2026-08-03T09:00:00Z",
+    });
+
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledTimes(2);
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-1");
+    expect(genererAttestationPourEnrollment).toHaveBeenCalledWith("enroll-evalue-2");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// satisfaction-j1 / suivi-j30 — rattrapage sans fenêtre
+//
+// 🔴 Régression de production 2026-08-03. Les deux crons sélectionnaient sur une
+// fenêtre glissante de 24 h ET exigeaient `statut = realisee` au même passage.
+// Une session clôturée avec un jour de retard sortait de la fenêtre et ne
+// recevait JAMAIS son questionnaire. Sur le premier dossier réel : 0 appréciation
+// recueillie, indicateurs 8 et 30 vides.
+//
+// Le test porte sur le `where` — le défaut n'était pas la boucle d'envoi mais le
+// critère de sélection. Compter les appels aurait laissé repasser la régression.
+// ─────────────────────────────────────────────────────────────────────────────
+describe("questionnaires — rattrapage sans fenêtre glissante", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
+  });
+
+  it("satisfaction-j1 sélectionne sur l'ABSENCE d'envoi, pas sur une tranche horaire", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.satisfaction-j1",
+      tick: "2026-08-03T08:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.questionnaires).toEqual({
+      some: { type: "satisfaction_chaud", envoyeAt: null, reponduAt: null },
+    });
+    expect(where?.session?.statut).toBe("realisee");
+  });
+
+  it("suivi-j30 applique le même rattrapage sur la seconde source d'appréciation", async () => {
+    await formationCronsHandler({
+      type: "formation-crons.suivi-j30",
+      tick: "2026-08-03T08:00:00Z",
+    });
+
+    const where = mockPrisma.enrollment.findMany.mock.calls[0]?.[0]?.where;
+    expect(where?.questionnaires).toEqual({
+      some: { type: "satisfaction_froid", envoyeAt: null, reponduAt: null },
+    });
+  });
+
+  it("marque `envoyeAt` après envoi — sans quoi le rattrapage renverrait en boucle", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([{ id: "enroll-1" }]);
+
+    await formationCronsHandler({
+      type: "formation-crons.satisfaction-j1",
+      tick: "2026-08-03T08:00:00Z",
+    });
+
+    expect(mockPrisma.questionnaire.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          enrollmentId: "enroll-1",
+          type: "satisfaction_chaud",
+          envoyeAt: null,
+        }),
+      }),
+    );
   });
 });

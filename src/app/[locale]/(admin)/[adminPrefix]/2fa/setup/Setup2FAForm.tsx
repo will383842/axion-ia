@@ -22,6 +22,7 @@ export function Setup2FAForm() {
           autoComplete="one-time-code"
           inputMode="numeric"
           pattern="\d{6}"
+          title="Six chiffres, sans espace."
           maxLength={6}
           className="admin-input admin-input-totp-large"
           disabled={pending}
@@ -40,7 +41,7 @@ export function Setup2FAForm() {
           refonte UI 2026-08-01, la pleine largeur est ici voulue. Modificateur
           maison et non `w-full`, inopérant face aux classes hors couche. */}
       <button type="submit" disabled={pending} className="admin-button admin-button-block">
-        {pending ? "Vérification..." : "Activer 2FA"}
+        {pending ? "Vérification…" : "Activer 2FA"}
       </button>
     </form>
   );

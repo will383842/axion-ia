@@ -103,7 +103,15 @@ function EnrollmentRow({
           <option value="">— Financement —</option>
           <option value="direct">Direct (employeur)</option>
           <option value="opco">OPCO</option>
-          {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
+          {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
+              dossiers l'ont en base : pour eux le <select> ne trouvait
+              AUCUNE option correspondante et s'affichait VIDE. Un simple
+              « Enregistrer » réécrivait alors le dispositif en silence.
+              L'option reste donc listée, non sélectionnable : on ne peut
+              plus la choisir, on ne peut plus la perdre. */}
+          <option value="cpf" disabled>
+            CPF (dispositif retiré)
+          </option>
           <option value="france_travail">France Travail</option>
           <option value="mixte">Mixte</option>
         </select>
@@ -121,17 +129,23 @@ function EnrollmentRow({
             </option>
           ))}
         </select>
-        <input
-          type="number"
-          min={0}
-          step="0.01"
-          value={montant}
-          onChange={(e) => setMontant(e.target.value)}
-          disabled={isPending}
-          placeholder="Prix siège € HT"
-          className={`${inputCls} w-32`}
-          aria-label="Prix du siège HT"
-        />
+        {/* 🔴 Ce champ n'avait qu'un placeholder — « Prix siège € HT » — qui
+            disparaît dès la première frappe. L'utilisateur ne savait alors plus
+            si le montant saisi était HT ou TTC. L'aria-label servait le lecteur
+            d'écran, pas l'œil. */}
+        <label className="flex flex-col gap-[var(--space-admin-1)]">
+          <span className="admin-meta-small">Prix du siège (€ HT)</span>
+          <input
+            type="number"
+            min={0}
+            step="0.01"
+            value={montant}
+            onChange={(e) => setMontant(e.target.value)}
+            disabled={isPending}
+            placeholder="Ex. 1 200"
+            className={`${inputCls} w-32`}
+          />
+        </label>
         {financementType === "opco" && (
           <input
             aria-label="N° dossier OPCO"

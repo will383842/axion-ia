@@ -64,7 +64,7 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const [incidents, sessionsRecentes] = await Promise.all([
+  const [incidents, sessionsRecentes, formateursSousTraitants, organismes] = await Promise.all([
     listIncidents({ take: 500 }),
     // Sessions récentes proposées pour rattacher un incident (12 mois glissants).
     prisma.trainingSession.findMany({
@@ -77,7 +77,28 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
       orderBy: { dateDebut: "desc" },
       take: 100,
     }),
+    // Intervenants externes actifs, pour la mise en cause (art. 7). Les deux
+    // natures sont chargées séparément puis fusionnées en une seule liste :
+    // Will se demande « qui ? », pas « personne physique ou organisme ? ».
+    prisma.trainer.findMany({
+      where: { actif: true, statut: "sous_traitant" },
+      select: { id: true, nom: true, prenom: true },
+      orderBy: [{ nom: "asc" }, { prenom: "asc" }],
+    }),
+    prisma.sousTraitant.findMany({
+      where: { actif: true },
+      select: { id: true, nom: true },
+      orderBy: { nom: "asc" },
+    }),
   ]);
+
+  const intervenants = [
+    ...formateursSousTraitants.map((t) => ({
+      valeur: `Trainer:${t.id}`,
+      libelle: `${t.prenom} ${t.nom}`.trim(),
+    })),
+    ...organismes.map((o) => ({ valeur: `SousTraitant:${o.id}`, libelle: o.nom })),
+  ];
 
   const ouverts = incidents.filter((i) => i.statut !== "resolu").length;
   const critiques = incidents.filter((i) => i.gravite === "critique").length;
@@ -104,7 +125,15 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
 
       {/* KPIs */}
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total incidents" value={incidents.length} icon={Hash} />
+        {/* 🔴 Cette tuile comptait les lignes CHARGÉES, pas celles en base : la
+            requête est plafonnée. Au-delà du plafond, elle annonçait le plafond
+            comme s'il s'agissait du total. */}
+        <AdminStatCard
+          label="Total incidents"
+          value={incidents.length}
+          {...(incidents.length === 500 ? { meta: "500 plus récents affichés" } : {})}
+          icon={Hash}
+        />
         <AdminStatCard
           label="Ouverts / en cours"
           value={ouverts}
@@ -127,7 +156,11 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
 
       {/* Formulaire déclaration */}
       <div className="mb-[var(--space-admin-8)]">
-        <IncidentForm creerAction={creerIncidentAction} sessions={sessionsRecentes} />
+        <IncidentForm
+          creerAction={creerIncidentAction}
+          sessions={sessionsRecentes}
+          intervenants={intervenants}
+        />
       </div>
 
       {/* Liste */}
@@ -174,7 +207,10 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                   <td className={cellCls}>
                     <span className="font-medium">{i.titre}</span>
                     {i.description ? (
-                      <span className="mt-1 line-clamp-2 block max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      <span
+                        className="mt-1 line-clamp-2 block max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                        title={i.description ?? ""}
+                      >
                         {i.description}
                       </span>
                     ) : null}
@@ -188,7 +224,10 @@ export default async function QualiopiIncidentsPage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     {i.actionCorrective.trim() ? (
-                      <span className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)]">
+                      <span
+                        className="line-clamp-2 max-w-xs text-[length:var(--text-admin-xs)]"
+                        title={i.actionCorrective ?? ""}
+                      >
                         {i.actionCorrective}
                       </span>
                     ) : (

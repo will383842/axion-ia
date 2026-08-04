@@ -69,7 +69,10 @@ function resumeJsonListe(raw: unknown): string {
     }
     return "";
   });
-  return items.filter((s) => s.trim().length > 0).join(" ; ") || `${raw.length} entrée(s)`;
+  return (
+    items.filter((s) => s.trim().length > 0).join(" ; ") ||
+    `${raw.length} entrée${raw.length > 1 ? "s" : ""}`
+  );
 }
 
 const MENTION_EXPORT =

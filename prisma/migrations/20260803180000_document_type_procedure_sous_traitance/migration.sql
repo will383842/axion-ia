@@ -1,0 +1,26 @@
+-- La PROCÉDURE DE SOUS-TRAITANCE devient une pièce générée par l'application.
+--
+-- ## Le défaut corrigé
+--
+-- L'indicateur 27 attend deux choses distinctes : une RÈGLE écrite, et la PREUVE
+-- qu'on l'applique. Le registre des sous-traitants portait la seconde ; la
+-- première vivait dans un fichier Markdown relu à la main, hors application.
+--
+-- Conséquence : la pièce que l'auditeur demande en premier sur cet indicateur
+-- n'était ni numérotée, ni horodatée, ni versée au registre des documents, ni
+-- reliée à quoi que ce soit. Pour la produire, il fallait ouvrir un fichier,
+-- l'imprimer et le signer — alors que TOUTES les autres pièces Qualiopi se
+-- génèrent d'un bouton.
+--
+-- ## Distincte du contrat de sous-traitance
+--
+-- `contrat_sous_traitance` engage UN intervenant nommé. La procédure est la
+-- règle de l'organisme, valable AVANT le premier recours — c'est elle qui
+-- conditionne la sélection, et non l'inverse. Les confondre reviendrait à dire
+-- qu'un organisme sans sous-traitant n'a pas de dispositions à produire, ce que
+-- l'indicateur 27 ne permet pas de soutenir.
+--
+-- Postgres ALTER TYPE ADD VALUE — non transactionnel mais sûr (ajout d'une
+-- valeur d'enum, jamais de retrait). `IF NOT EXISTS` rend la migration
+-- ré-exécutable : l'entrypoint rejoue `migrate deploy` à chaque démarrage.
+ALTER TYPE "DocumentType" ADD VALUE IF NOT EXISTS 'procedure_sous_traitance';

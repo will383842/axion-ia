@@ -197,7 +197,23 @@ describe("computeTauxCompletion", () => {
 describe("computeDelaiAccesMoyen", () => {
   it("retourne 0 jours et nb=0 si tableau vide", () => {
     const result = computeDelaiAccesMoyen([]);
-    expect(result).toEqual({ jours: 0, nb: 0 });
+    expect(result).toEqual({ jours: 0, nb: 0, fiable: false });
+  });
+
+  // Le délai d'accès était le seul des quatre indicateurs à ne porter aucun
+  // seuil de plausibilité : il affichait une « moyenne » d'une seule session
+  // comme un fait établi. Il suit désormais la même règle que les trois taux.
+  it("marque fiable=false sous cinq sessions", () => {
+    const base = new Date("2026-06-10T00:00:00.000Z");
+    const j1 = new Date("2026-06-11T00:00:00.000Z");
+    expect(computeDelaiAccesMoyen([{ dateDebut: j1, createdAt: base }]).fiable).toBe(false);
+  });
+
+  it("marque fiable=true à partir de cinq sessions", () => {
+    const base = new Date("2026-06-10T00:00:00.000Z");
+    const j1 = new Date("2026-06-11T00:00:00.000Z");
+    const paires = Array.from({ length: 5 }, () => ({ dateDebut: j1, createdAt: base }));
+    expect(computeDelaiAccesMoyen(paires).fiable).toBe(true);
   });
 
   it("calcule 1 jour pour une paire avec 1 jour d'écart", () => {

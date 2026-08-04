@@ -29,6 +29,7 @@ import {
 } from "@/server/qualiopi/config/labels";
 import { getQualiopiReferenceDataStatus } from "@/server/qualiopi/seed/reference-data";
 import { prisma } from "@/lib/prisma";
+import { TriangleAlert } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -74,10 +75,15 @@ export default async function QualiopiConfigPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Configuration Qualiopi"
-        description="Valeurs légales & métier (NDA, SIRET, n° Qualiopi, référent handicap, barèmes OPCO, RAC CPF, seuils). Stockées dans SiteSetting cat. qualiopi ; injectées dans les PDF/pages. Laisser vide = non renseigné."
+        description="Valeurs légales & métier (NDA, SIRET, n° Qualiopi, référent handicap, barèmes OPCO, RAC CPF, seuils). Enregistrées dans les réglages du site ; injectées dans les PDF/pages. Laisser vide = non renseigné."
       />
       <p className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-        ⚠️ Renseigner ces valeurs AVANT d&apos;activer la Phase B publique (
+        <TriangleAlert
+          size={14}
+          aria-hidden="true"
+          className="inline-block shrink-0 align-[-0.125em]"
+        />{" "}
+        Renseigner ces valeurs AVANT d&apos;activer la Phase B publique (
         <code>OF_PUBLIC_DISCLOSURE_ENABLED=true</code>). Le n° Qualiopi reste vide jusqu&apos;à
         obtention de la certification.
       </p>

@@ -12,6 +12,7 @@ import {
   AdminBadge,
   AdminEmptyState,
   AdminButton,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
@@ -59,13 +60,13 @@ export function HelpV2({
   const columns: ReadonlyArray<AdminTableColumn<HelpRow>> = [
     {
       key: "publishedAt",
-      header: "Date publi",
+      header: "Publié le",
       cell: (a) => formatDateFrShort(a.publishedAt),
     },
     { key: "title", header: "Titre (FR)", cell: (a) => a.translations[0]?.title ?? "(sans titre)" },
     {
       key: "slug",
-      header: "Slug",
+      header: "Adresse (URL)",
       cell: (a) => <code className="admin-meta-small">{a.translations[0]?.slug ?? "—"}</code>,
     },
     { key: "category", header: "Catégorie", cell: (a) => a.category?.nameFr ?? "—" },
@@ -125,7 +126,7 @@ export function HelpV2({
                 className="admin-input"
               >
                 <option value="all">Tous</option>
-                <option value="yes">Tutoriel (HowTo)</option>
+                <option value="yes">Tutoriel pas à pas</option>
                 <option value="no">Article standard</option>
               </select>
             </div>
@@ -174,6 +175,22 @@ export function HelpV2({
           )}
         />
       )}
+
+      {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
+          nulle part à l'écran : au-delà de la première, les lignes
+          n'étaient atteignables qu'en éditant l'URL. Les filtres en cours
+          sont reportés dans les liens — sinon changer de page les
+          effacerait, et on repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/help`}
+        preservedParams={{
+          status: sp["status"],
+          search: sp["search"],
+          isTutorial: sp["isTutorial"],
+        }}
+      />
     </AdminPageShell>
   );
 }

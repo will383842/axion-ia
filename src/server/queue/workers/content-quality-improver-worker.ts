@@ -323,7 +323,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       jobId: contentGenJobId,
       level: "error",
       step: "quality_loop_hard_reject",
-      message: `LLM-judge HARD REJECT — ${p0Issues.length} P0 issue(s) critiques. Escalade manuelle requise. Score: ${judge.globalScore.toFixed(1)}/10`,
+      message: `Juge qualité — rejet ferme : ${p0Issues.length} problème${p0Issues.length > 1 ? "s" : ""} critique${p0Issues.length > 1 ? "s" : ""} (P0). Reprise manuelle requise. Note : ${judge.globalScore.toFixed(1)}/10`,
     });
     // 2026-07-20 : rétrogradé INCIDENT → MONITORING. Le rejet qualité d'UN
     // article est opérationnel (filtrage normal du content-gen), pas une panne

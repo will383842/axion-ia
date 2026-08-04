@@ -22,6 +22,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 const mockSessionFindUnique = vi.fn();
 const mockSessionFindMany = vi.fn();
 const mockEnrollmentFindUnique = vi.fn();
+const mockEvaluationFindFirst = vi.fn();
 const mockTrainerFindUnique = vi.fn();
 const mockSessionJourFindMany = vi.fn();
 const mockCompensationRuleFindMany = vi.fn();
@@ -50,6 +51,11 @@ vi.mock("@/lib/prisma", () => ({
     },
     enrollment: {
       findUnique: (...args: unknown[]) => mockEnrollmentFindUnique(...args),
+    },
+    // La grille d'évaluation lit l'évaluation finale ENREGISTRÉE plutôt que de
+    // rendre un formulaire vierge qui contredirait l'attestation.
+    evaluationAcquis: {
+      findFirst: (...args: unknown[]) => mockEvaluationFindFirst(...args),
     },
     trainer: {
       findUnique: (...args: unknown[]) => mockTrainerFindUnique(...args),

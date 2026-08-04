@@ -13,26 +13,28 @@ export function UploadV2({ locale }: Props): React.ReactElement {
   return (
     <AdminPageShell>
       <AdminPageHeader
-        title="Upload image"
-        description="Glisser-déposer une image (PNG, JPEG, WebP, AVIF, HEIC) ≤ 5 MB pour upload synchrone. Au-delà, pipeline async via worker."
+        title="Téléverser une image"
+        description="Glisser-déposer une image (PNG, JPEG, WebP, AVIF, HEIC) Jusqu'à 5 Mo : traitement immédiat. Au-delà, le traitement se fait en arrière-plan et prend quelques minutes."
       />
       <AdminCard>
         <ImageUploadDropzone
           labels={
             locale === "fr"
               ? {
-                  dropzoneTitle: "Glisser-déposer ou cliquer pour uploader",
-                  dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · max 5 MB sync",
-                  submit: "Uploader",
-                  submitting: "Upload en cours…",
-                  titleField: "Titre (slug auto-généré)",
-                  altField: "Alt text FR (optionnel — Claude Vision le génère automatiquement)",
-                  captionField: "Légende (optionnel)",
-                  descriptionField: "Description (optionnel)",
-                  sourceFolderField: "Dossier source (service automatiquement détecté)",
-                  targetCityField: "Ville (ex: Lyon)",
-                  successMessage:
-                    "Image uploadée avec succès — enrichissement Claude Vision en cours",
+                  // 🔴 Les libellés FRANÇAIS de ce formulaire étaient truffés
+                  // d'anglais : « uploader », « Upload en cours », « slug »,
+                  // « Alt text », « max 5 MB sync ». Vu en production.
+                  dropzoneTitle: "Glisser-déposer un fichier, ou cliquer pour le choisir",
+                  dropzoneSubtitle: "PNG, JPEG, WebP, AVIF, HEIC · jusqu'à 5 Mo",
+                  submit: "Ajouter l'image",
+                  submitting: "Ajout en cours…",
+                  titleField: "Titre (l'adresse est déduite automatiquement)",
+                  altField: "Texte alternatif FR (facultatif — généré automatiquement sinon)",
+                  captionField: "Légende (facultatif)",
+                  descriptionField: "Description (facultatif)",
+                  sourceFolderField: "Dossier source (le service est détecté automatiquement)",
+                  targetCityField: "Ville (ex. Lyon)",
+                  successMessage: "Image ajoutée — la description automatique est en cours",
                   errorPrefix: "Erreur",
                 }
               : {

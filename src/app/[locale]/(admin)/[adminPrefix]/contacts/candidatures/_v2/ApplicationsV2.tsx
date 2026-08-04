@@ -13,6 +13,7 @@ import {
   AdminEmptyState,
   AdminButton,
   AdminEtatBooleen,
+  AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
@@ -161,6 +162,22 @@ export function ApplicationsV2({
           )}
         />
       )}
+
+      {/* 🔴 Le sous-titre annonçait « page 1/N » et la page N n'existait
+          nulle part à l'écran : au-delà de la première, les lignes
+          n'étaient atteignables qu'en éditant l'URL. Les filtres en cours
+          sont reportés dans les liens — sinon changer de page les
+          effacerait, et on repartirait d'une autre liste. */}
+      <AdminPagination
+        page={page}
+        totalPages={totalPages}
+        baseHref={`/fr/${adminPrefix}/contacts/candidatures`}
+        preservedParams={{
+          status: sp["status"],
+          offerId: sp["offerId"],
+          attention: sp["attention"],
+        }}
+      />
     </AdminPageShell>
   );
 }

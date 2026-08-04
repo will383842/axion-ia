@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import type { ConversationDetail } from "@/features/admin-chatbot/actions";
+import { libelleStatutConversation } from "@/features/admin-chatbot/statut-labels";
 
 function frDate(d: Date): string {
   return new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "medium" });
@@ -21,7 +22,7 @@ export function ConversationDetailV2({
     <AdminPageShell width="full">
       <AdminPageHeader
         title="Conversation"
-        description={`Session ${convo.sessionUuid.slice(0, 8)}… · ${convo.statut} · ${frDate(convo.createdAt)}`}
+        description={`Session ${convo.sessionUuid.slice(0, 8)}… · ${libelleStatutConversation(convo.statut)} · ${frDate(convo.createdAt)}`}
         actions={
           <Link href={base} className="admin-link text-[length:var(--text-admin-sm)]">
             ← Retour

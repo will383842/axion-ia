@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false, googleBot: { index: false, follow: false } },
-  title: "Aperçu (brouillon) · Axion-IA",
+  title: "Base de connaissances — aperçu du brouillon | Axion-IA Admin",
 };
 
 interface PageProps {

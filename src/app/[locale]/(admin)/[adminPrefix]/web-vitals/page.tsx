@@ -93,6 +93,18 @@ function p75(values: number[]): number {
   return sorted[idx] ?? 0;
 }
 
+/**
+ * Un instantané qui a dépassé sa propre fenêtre de mesure ne décrit plus « les
+ * dernières 24 heures ». Fonction séparée du composant : `Date.now()` est
+ * interdit dans le corps d'un composant (règle de pureté React).
+ */
+function estEncoreDansLaFenetre(computedAt: string | undefined): boolean {
+  if (!computedAt) return false;
+  const date = new Date(computedAt);
+  if (Number.isNaN(date.getTime())) return false;
+  return Date.now() - date.getTime() <= WINDOW_HOURS * 3600_000;
+}
+
 async function computeLive(): Promise<{
   aggregates: AggregateRow[];
   totalSamples: number;
@@ -143,13 +155,32 @@ export default async function AdminWebVitalsPage({ params }: PageProps) {
     redirect(`/fr/${adminPrefix}/login`);
   }
 
-  // 1. Lit le snapshot worker. Fallback live si vide / inexistant.
+  // 1. Lit le snapshot worker. Fallback live s'il est vide OU PÉRIMÉ.
+  //
+  // 🔴 CONSTAT EN PRODUCTION (revue visuelle 2026-08-03). La page annonçait
+  // « mesurée sur les dernières 24 heures » en servant un instantané daté du
+  // 24/07 — dix jours. Le repli sur le calcul direct ne se déclenchait que si
+  // le snapshot était VIDE : un snapshot vieux mais non vide était servi tel
+  // quel, sans que rien à l'écran ne le signale.
+  //
+  // Le calcul nocturne écrit à 02 h 30 ; un instantané qui a dépassé sa propre
+  // fenêtre de mesure ne décrit plus « les dernières 24 heures », il décrit un
+  // passé que personne n'a demandé. On recalcule alors en direct — la page
+  // reste juste même si le calcul nocturne ne tourne plus, au lieu de mentir en
+  // silence.
+  //
+  // ⚠️ Ce correctif rend l'AFFICHAGE honnête ; il ne répare pas le calcul
+  // nocturne. Si `isLive` est vrai en permanence sur cette page, c'est que le
+  // worker BullMQ `content-web-vitals-monitor-cron` (`30 2 * * *`) ne tourne
+  // plus — à vérifier côté conteneur worker.
   const snapshot = await readContentGenConfig<SnapshotShape>("web_vitals_p75", {});
+  const snapshotFrais = estEncoreDansLaFenetre(snapshot.computed_at);
+
   let aggregates: AggregateRow[] = [];
   let totalSamples = 0;
   let computedAt = "";
   let isLive = false;
-  if (snapshot.aggregates && snapshot.aggregates.length > 0) {
+  if (snapshot.aggregates && snapshot.aggregates.length > 0 && snapshotFrais) {
     aggregates = snapshot.aggregates;
     totalSamples = snapshot.total_samples ?? 0;
     computedAt = snapshot.computed_at ?? "";

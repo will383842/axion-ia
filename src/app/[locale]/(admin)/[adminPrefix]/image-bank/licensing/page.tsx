@@ -6,7 +6,7 @@ import { AdminStubPageV2 } from "@/components/admin/image-bank/AdminStubPageV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — licensing | Axion-IA Admin",
+  title: "Banque d'images — licences | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -22,10 +22,9 @@ export default async function licensingPage({ params }: PageProps) {
   }
   return (
     <AdminStubPageV2
-      title="licensing"
-      description="Section licensing (image-bank V1)."
+      title="Licences"
+      description="Droits d usage et attribution des images."
       back={`/${locale}/${adminPrefix}/image-bank`}
-      sprint="Sprint 2.x"
     />
   );
 }

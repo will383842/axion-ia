@@ -84,6 +84,15 @@ const eurosFromCents = (c: number | null | undefined): string =>
 const centsFromEuros = (v: string): number | undefined =>
   v.trim() === "" ? undefined : Math.round(Number(v) * 100);
 
+// 🔴 « Attestation : complete » — la valeur d'enum. Et `aucune` (attestation
+// émise SANS acquis) se lisait presque comme `null` (pas encore émise), deux
+// situations pourtant opposées en audit.
+const LIBELLE_ATTESTATION: Record<string, string> = {
+  complete: "complète",
+  partielle: "partielle — présence insuffisante",
+  aucune: "aucune — conditions non remplies",
+};
+
 export function AfestPanel(props: AfestPanelProps): React.ReactElement {
   const [pending, startTransition] = useTransition();
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
@@ -150,7 +159,8 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
     startTransition(async () => {
       const res = await action();
       // ok+error = avertissement non bloquant (pré-requis dispositif).
-      if (res.ok && res.error) setMessage({ kind: "err", text: `${okText} ⚠️ ${res.error}` });
+      if (res.ok && res.error)
+        setMessage({ kind: "err", text: `${okText} Attention : ${res.error}` });
       else if (res.ok) setMessage({ kind: "ok", text: okText });
       else setMessage({ kind: "err", text: res.error ?? "Erreur" });
     });
@@ -163,12 +173,26 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
   const labelCls = "text-fg-muted text-xs";
 
   return (
-    <section className="border-border bg-cream rounded-lg border p-4">
+    <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
       <h2 className="text-mocha mb-2 text-sm font-semibold">AFEST · documents légaux</h2>
+
+      {/* 🔴 CE BANDEAU ÉTAIT RENDU TOUT EN BAS, après les deux cents lignes de
+          boutons de génération. Cliquer « Générer le protocole AFEST »
+          n'affichait donc aucun retour dans le champ de vision : le seul
+          signal immédiat était le bouton qui se grisait. */}
+      {message ? (
+        <p
+          role={message.kind === "ok" ? "status" : "alert"}
+          aria-live="polite"
+          className={`mb-3 text-xs ${message.kind === "ok" ? "text-success" : "text-terracotta"}`}
+        >
+          {message.text}
+        </p>
+      ) : null}
 
       <div className="mb-3 grid grid-cols-2 gap-2 text-sm">
         <p>
-          <span className="text-fg-muted">Heures réalisées (Σ séances) : </span>
+          <span className="text-fg-muted">Heures réalisées (total des séances) : </span>
           <span className="text-mocha font-medium">{props.heuresReelles} h</span>
         </p>
         <p>
@@ -177,7 +201,9 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
         </p>
         <p>
           <span className="text-fg-muted">Attestation : </span>
-          {props.attestationResultat ?? "non émise"}
+          {props.attestationResultat === null || props.attestationResultat === undefined
+            ? "non émise"
+            : (LIBELLE_ATTESTATION[props.attestationResultat] ?? props.attestationResultat)}
         </p>
       </div>
 
@@ -261,7 +287,15 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
               >
                 <option value="direct">Direct (entreprise / particulier)</option>
                 <option value="opco">OPCO</option>
-                {/* CPF retiré (2026-07-04) — Axion-IA non habilité CPF. */}
+                {/* 🔴 CPF a été retiré de la vente le 2026-07-04, mais des
+                    dossiers l'ont en base : pour eux le <select> ne trouvait
+                    AUCUNE option correspondante et s'affichait VIDE. Un simple
+                    « Enregistrer » réécrivait alors le dispositif en silence.
+                    L'option reste donc listée, non sélectionnable : on ne peut
+                    plus la choisir, on ne peut plus la perdre. */}
+                <option value="cpf" disabled>
+                  CPF (dispositif retiré)
+                </option>
                 <option value="france_travail">France Travail</option>
                 <option value="mixte">Mixte</option>
               </select>
@@ -737,12 +771,6 @@ export function AfestPanel(props: AfestPanelProps): React.ReactElement {
             </div>
           ))}
         </div>
-      ) : null}
-
-      {message ? (
-        <p className={`mb-2 text-xs ${message.kind === "ok" ? "text-success" : "text-terracotta"}`}>
-          {message.text}
-        </p>
       ) : null}
 
       {/* Documents émis */}

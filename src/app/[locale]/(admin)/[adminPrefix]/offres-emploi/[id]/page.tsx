@@ -1,6 +1,7 @@
 // Édition d'une offre d'emploi (admin) + actions lifecycle + lien preview public.
 
 import Link from "next/link";
+import { LIBELLE_STATUT_OFFRE } from "@/content/careers/categories";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader } from "@/components/admin/ui";
@@ -70,7 +71,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title={`Éditer : ${o.titleFr}`}
-        description={`Statut : ${o.status}${o.filledAt ? " · pourvu" : ""}`}
+        description={`Statut : ${LIBELLE_STATUT_OFFRE[o.status] ?? `« ${o.status} »`}${o.filledAt ? " · pourvu" : ""}`}
         actions={
           <div className="admin-actions-row">
             <Link

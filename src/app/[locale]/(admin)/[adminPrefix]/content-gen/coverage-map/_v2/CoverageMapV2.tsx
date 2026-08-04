@@ -27,6 +27,7 @@ import type {
   CoverageMapData,
   CoverageMapDeptRow,
 } from "@/server/actions/content-gen/coverage-map";
+import { palierLabel } from "@/server/content-gen/cities/population-tiers";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -173,10 +174,17 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
             aria-label="Filtre tier"
           >
             <option value="">Tous tiers</option>
-            <option value="T1">T1 (&gt; 500k)</option>
-            <option value="T2">T2 (100-500k)</option>
-            <option value="T3">T3 (20-100k)</option>
-            <option value="T4">T4 (&lt; 20k)</option>
+            {/* 🔴 Ces quatre bornes étaient FAUSSES et se contredisaient
+                d'un écran à l'autre : « T1 (> 500k) » ici, « ≥ 100 k »
+                deux pages plus loin. C'est ce second chiffre qui est le
+                bon (cf. populationTier). Filtrer T1 ramenait donc
+                Grenoble, et l'écran passait pour cassé alors qu'il
+                disait vrai — seule son étiquette mentait. */}
+            {[1, 2, 3, 4].map((t) => (
+              <option key={t} value={`T${t}`}>
+                {palierLabel(t)}
+              </option>
+            ))}
           </select>
           <select
             value={filterPipeline}
@@ -268,11 +276,18 @@ export function CoverageMapV2({ adminPrefix, initialData }: Props): React.ReactE
       {/* Tableau villes virtualisé */}
       <AdminCard>
         <h2 className="mb-[var(--space-admin-4,8px)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-          Villes ({visibleCities.length}) — 3 compteurs distincts D13
+          Villes ({visibleCities.length}) — 3 compteurs distincts
         </h2>
+        {/* 🔴 Si aucun filtre ne matchait, la barre d'en-têtes restait SEULE
+            au-dessus du vide : huit colonnes annoncées, rien en dessous, et
+            rien pour dire que c'est le filtre qui exclut tout. */}
+        {visibleCities.length === 0 ? (
+          <p className="admin-meta-block">Aucune ville ne correspond aux filtres.</p>
+        ) : null}
         <div
           className="grid grid-cols-12 gap-2 border-b border-[color:var(--color-admin-border)] pb-2 text-[length:var(--text-admin-xs)] font-semibold text-[color:var(--color-admin-fg-soft)]"
           role="row"
+          hidden={visibleCities.length === 0}
         >
           <span className="col-span-1">Rang</span>
           <span className="col-span-3">Ville</span>

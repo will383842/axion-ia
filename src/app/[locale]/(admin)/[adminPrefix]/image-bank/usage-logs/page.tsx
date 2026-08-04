@@ -26,7 +26,7 @@ import { UsageLogsV2 } from "./_v2/UsageLogsV2";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Image bank — Demandes d'effacement (RGPD) | Axion-IA Admin",
+  title: "Banque d'images — demandes d'effacement (RGPD) | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 

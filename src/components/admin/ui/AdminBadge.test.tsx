@@ -21,9 +21,23 @@ describe("AdminStatusBadge", () => {
     expect(screen.getByText("En cours")).toBeDefined();
   });
 
-  it("falls back to space-separated status for unknown enum values", () => {
+  /**
+   * 🔴 CONTRAT CHANGÉ le 2026-08-03, volontairement.
+   *
+   * Ce test verrouillait un repli qui transformait `generating_text` en
+   * « generating text » : de l'anglais brut, espacé, présenté comme du
+   * français. Six statuts au moins étaient dans ce cas (`quarantined_factcheck`,
+   * `running_qa`, `quality_improving`, `bounced`, `delivered`…), tous présents
+   * dans les énumérations Prisma, aucun dans la table de libellés — sur les
+   * 48 écrans qui importent ce composant, sans erreur ni alerte.
+   *
+   * On ne peut pas traduire ce qu'on ne connaît pas. On peut cesser de faire
+   * passer un identifiant machine pour une phrase : la valeur exacte est
+   * conservée (elle sert au diagnostic) et présentée comme un code cité.
+   */
+  it("cite le statut inconnu au lieu de le maquiller en français", () => {
     render(<AdminStatusBadge status="some_unknown_state" type="job" />);
-    expect(screen.getByText("some unknown state")).toBeDefined();
+    expect(screen.getByText("« some_unknown_state »")).toBeDefined();
   });
 
   it("uses label override when provided", () => {

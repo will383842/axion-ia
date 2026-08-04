@@ -86,7 +86,7 @@ export function SubmissionUpdateForm({
       ) : null}
 
       <button type="submit" disabled={pending} className="admin-button">
-        {pending ? "Enregistrement..." : "Enregistrer"}
+        {pending ? "Enregistrement…" : "Enregistrer"}
       </button>
     </form>
   );

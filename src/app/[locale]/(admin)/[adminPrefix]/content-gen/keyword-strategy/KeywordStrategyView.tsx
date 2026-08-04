@@ -46,9 +46,9 @@ const INTENT_LABELS: Record<string, string> = {
   local: "Local/Géo",
   partenaire: "Partenaire",
   sectoriel: "Sectoriel",
-  voice_search: "Voice Search",
-  ai_overview: "AI Overview",
-  featured_snippet: "Featured Snippet",
+  voice_search: "Recherche vocale",
+  ai_overview: "Aperçu IA",
+  featured_snippet: "Extrait optimisé",
   commercial_investigation: "Investigation Commerciale",
 };
 
@@ -158,19 +158,19 @@ export function KeywordStrategyView({ searchParams }: Props) {
 
       {/* Métriques globales */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <MetricCard label="Total keywords" value={seeds.length.toLocaleString()} />
+        <MetricCard label="Total mots-clés" value={seeds.length.toLocaleString()} />
         <MetricCard
           label="Voice search"
           value={(byIntent["voice_search"] ?? 0).toLocaleString()}
           sub="Questions naturelles"
         />
         <MetricCard
-          label="AI Overview"
+          label="Aperçu IA"
           value={(byIntent["ai_overview"] ?? 0).toLocaleString()}
           sub="Sources IA génératives"
         />
         <MetricCard
-          label="Featured Snippet"
+          label="Extrait optimisé"
           value={(byIntent["featured_snippet"] ?? 0).toLocaleString()}
           sub="Position 0 Google"
         />
@@ -289,9 +289,9 @@ export function KeywordStrategyView({ searchParams }: Props) {
         </select>
 
         <input
-          aria-label="Rechercher un keyword..."
+          aria-label="Rechercher un mot-clé…"
           type="text"
-          placeholder="Rechercher un keyword..."
+          placeholder="Rechercher un mot-clé…"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);

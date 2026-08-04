@@ -60,7 +60,7 @@ export function SeedReferenceDataButton({
       setMessage(
         ran
           ? "Référentiel synchronisé (idempotent : aucune valeur saisie écrasée)."
-          : "Seed déjà en cours sur une autre instance — état rafraîchi.",
+          : "Initialisation déjà en cours ailleurs — l'affichage a été actualisé.",
       );
     });
   }
@@ -76,7 +76,7 @@ export function SeedReferenceDataButton({
             Offres
           </dt>
           <dd className="text-[length:var(--text-admin-sm)]">
-            <EtatSeed ok={offresOk} /> {status.offresCount} offre(s)
+            <EtatSeed ok={offresOk} /> {status.offresCount} offre{status.offresCount > 1 ? "s" : ""}
           </dd>
         </div>
         <div>
@@ -84,7 +84,8 @@ export function SeedReferenceDataButton({
             Configuration
           </dt>
           <dd className="text-[length:var(--text-admin-sm)]">
-            {status.configKeysSet}/{status.configKeysTotal} clé(s)
+            {status.configKeysSet}/{status.configKeysTotal} clé
+            {status.configKeysTotal > 1 ? "s" : ""}
           </dd>
         </div>
         <div>

@@ -2,7 +2,7 @@
 
 import type { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
-import { CheckCircle2, AlertTriangle, XCircle, Circle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Circle, TriangleAlert, XCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import {
@@ -16,11 +16,12 @@ import {
 import type { SiteRouteQuality } from "../../../../../../../prisma/generated/client";
 import { SiteRouteStatusBadge } from "@/components/admin/site-explorer/SiteRouteStatusBadge";
 import { adminPath } from "@/lib/admin-path";
+import { libelleGravite, libelleTypeRoute } from "@/server/site-explorer/anomalies-labels";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Détail URL — Site Explorer Admin",
+  title: "Explorateur du site — détail d'une adresse | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -29,10 +30,15 @@ const GITHUB_REPO = "https://github.com/will383842/axion-ia/blob/main";
 
 interface PageProps {
   params: Promise<{ locale: string; adminPrefix: string; id: string }>;
+  /** Verdict posé par le bouton de ré-inspection : « erreur » ou « lance ». */
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function SiteRouteDetailPage({ params }: PageProps) {
+export default async function SiteRouteDetailPage({ params, searchParams }: PageProps) {
   const { adminPrefix, id } = await params;
+  const sp = await searchParams;
+  const erreur = Array.isArray(sp["erreur"]) ? sp["erreur"][0] : sp["erreur"];
+  const lance = sp["lance"] !== undefined;
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
@@ -43,10 +49,23 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
   const displayPath = route.pathRendered ?? route.pathPattern;
   const isResolvable = !displayPath.includes("[");
 
+  /**
+   * 🔴 LE BOUTON NE DISAIT RIEN. L'action renvoie un succès ou une erreur
+   * — « Route non trouvée ou non publique », par exemple — et la page jetait le
+   * résultat avant de recharger à l'identique. Le travail étant asynchrone,
+   * réussite et échec produisaient le même écran : aucun.
+   */
   async function handleReInspect() {
     "use server";
-    await triggerInspection(id);
-    redirect(adminPath("fr", `site-explorer/${id}`));
+    const r = await triggerInspection(id);
+    redirect(
+      r.success
+        ? adminPath("fr", `site-explorer/${id}?lance=1`)
+        : adminPath(
+            "fr",
+            `site-explorer/${id}?erreur=${encodeURIComponent(r.error ?? "L'inspection n'a pas pu être lancée.")}`,
+          ),
+    );
   }
 
   async function handleSetQuality(formData: FormData) {
@@ -89,6 +108,16 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         <span className="text-[color:var(--color-admin-fg-disabled)]">/</span>
         <code className="text-sm text-[color:var(--color-admin-fg-soft)]">{displayPath}</code>
       </div>
+
+      {erreur ? (
+        <p role="alert" className="admin-alert admin-alert-error">
+          {erreur}
+        </p>
+      ) : lance ? (
+        <p role="status" className="admin-alert admin-alert-success">
+          Inspection lancée — les résultats arriveront dans quelques minutes.
+        </p>
+      ) : null}
 
       <div className="flex items-start justify-between">
         <div>
@@ -145,13 +174,13 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-4">
           <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Métadonnées SEO</h2>
           <dl className="space-y-2 text-sm">
-            <Row label="Type" value={route.type} />
+            <Row label="Type" value={libelleTypeRoute(route.type)} />
             <Row label="Section" value={route.section ?? "—"} />
-            <Row label="metaTitle" value={route.metaTitle ?? "—"} mono />
-            <Row label="metaDescription" value={route.metaDescription ?? "—"} />
-            <Row label="H1" value={route.h1 ?? "—"} />
-            <Row label="Source" value={route.sourceDbTable ?? "static"} />
-            {route.sourceDbId && <Row label="Source DB ID" value={route.sourceDbId} mono />}
+            <Row label="Titre SEO" value={route.metaTitle ?? "—"} />
+            <Row label="Description SEO" value={route.metaDescription ?? "—"} />
+            <Row label="Titre principal de la page" value={route.h1 ?? "—"} />
+            <Row label="Origine du contenu" value={route.sourceDbTable ?? "Page statique"} />
+            {route.sourceDbId && <Row label="Identifiant en base" value={route.sourceDbId} mono />}
           </dl>
         </section>
 
@@ -287,10 +316,10 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             <h2 className="font-semibold text-[color:var(--color-admin-fg)]">Lighthouse</h2>
             <div className="flex gap-4">
               {[
-                { label: "Perf", score: route.lighthousePerf },
-                { label: "SEO", score: route.lighthouseSeo },
-                { label: "A11y", score: route.lighthouseA11y },
-                { label: "BP", score: route.lighthouseBP },
+                { label: "Performance", score: route.lighthousePerf },
+                { label: "Référencement", score: route.lighthouseSeo },
+                { label: "Accessibilité", score: route.lighthouseA11y },
+                { label: "Bonnes pratiques", score: route.lighthouseBP },
               ].map(
                 ({ label, score }) =>
                   score !== null && (
@@ -315,7 +344,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
             </div>
             {route.lighthouseRunAt && (
               <p className="text-xs text-[color:var(--color-admin-fg-disabled)]">
-                Audit: {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
+                Audit du {new Date(route.lighthouseRunAt).toLocaleString("fr-FR")}
               </p>
             )}
           </section>
@@ -325,7 +354,12 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
         {route.anomalies.length > 0 && (
           <section className="space-y-3 rounded-lg border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-4">
             <h2 className="font-semibold text-[color:var(--color-admin-destructive-fg)]">
-              ⚠️ Anomalies ({route.anomalies.length})
+              <TriangleAlert
+                size={14}
+                aria-hidden="true"
+                className="inline-block shrink-0 align-[-0.125em]"
+              />{" "}
+              Anomalies ({route.anomalies.length})
             </h2>
             <ul className="space-y-2">
               {route.anomalies.map((a) => (
@@ -340,7 +374,7 @@ export default async function SiteRouteDetailPage({ params }: PageProps) {
                             : "bg-[color:var(--color-admin-warning-soft)] text-[color:var(--color-admin-warning-fg)]"
                       }`}
                     >
-                      {a.severity}
+                      {libelleGravite(a.severity)}
                     </span>
                     <span className="text-sm text-[color:var(--color-admin-destructive-fg)]">
                       {a.description}

@@ -98,7 +98,9 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
                 <th className={headCls}>Habilitations</th>
                 <th className={headCls}>Vérifié</th>
                 <th className={headCls}>Actif</th>
-                <th className={headCls}></th>
+                <th className={headCls}>
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>

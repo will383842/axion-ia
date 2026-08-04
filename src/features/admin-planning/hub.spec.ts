@@ -270,7 +270,7 @@ describe("formateur indisponible", () => {
     const s = hub({ events: [prestation], indispos: indispos("t1", ["2026-06-20"]) });
     expect(s[0]?.code).toBe("formateur_indisponible");
     expect(s[0]?.niveau).toBe("critique");
-    expect(s[0]?.items[0]?.label).toContain("1 jour(s)");
+    expect(s[0]?.items[0]?.label).toContain("1 jour");
   });
 
   it("aucun chevauchement → aucun signal", () => {
@@ -313,6 +313,6 @@ describe("formateur indisponible", () => {
       events: [multi],
       indispos: indispos("t1", ["2026-06-21", "2026-06-22"]),
     });
-    expect(s[0]?.items[0]?.label).toContain("2 jour(s)");
+    expect(s[0]?.items[0]?.label).toContain("2 jours");
   });
 });

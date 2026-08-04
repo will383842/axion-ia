@@ -176,7 +176,7 @@ export function ImportReleveForm({
 
         {/* Bouton submit */}
         <button type="submit" disabled={isPending || !file} className="admin-button">
-          {isPending ? "Import en cours..." : "Importer le relevé"}
+          {isPending ? "Import en cours…" : "Importer le relevé"}
         </button>
       </form>
 
@@ -191,7 +191,7 @@ export function ImportReleveForm({
               <span className="font-semibold text-[color:var(--color-admin-success)]">
                 {rapport.nbMatched}
               </span>{" "}
-              <span className="text-[color:var(--color-admin-fg-muted)]">rapproché(s)</span>
+              <span className="text-[color:var(--color-admin-fg-muted)]">rapprochés</span>
             </div>
             <div>
               <span
@@ -203,7 +203,7 @@ export function ImportReleveForm({
               >
                 {rapport.nbUnmatched}
               </span>{" "}
-              <span className="text-[color:var(--color-admin-fg-muted)]">non rapproché(s)</span>
+              <span className="text-[color:var(--color-admin-fg-muted)]">non rapprochés</span>
             </div>
           </div>
 

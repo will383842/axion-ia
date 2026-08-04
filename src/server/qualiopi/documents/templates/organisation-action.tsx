@@ -102,10 +102,17 @@ export function OrganisationActionPdf({
         <DocSection title="1. Identification de l'action">
           <FieldRow label="Intitulé" value={data.intitule} required />
           <FieldRow label="Session" value={data.numeroSession} />
-          <FieldRow label="Durée totale" value={`${data.dureeHeures} heure(s)`} required />
+          <FieldRow
+            label="Durée totale"
+            value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
+            required
+          />
           <FieldRow label="Modalité" value={data.modalite} required />
           <FieldRow label="Lieu de déroulement" value={data.lieu} required />
-          <FieldRow label="Effectif prévu" value={`${data.effectifPrevu} stagiaire(s)`} />
+          <FieldRow
+            label="Effectif prévu"
+            value={`${data.effectifPrevu} stagiaire${data.effectifPrevu > 1 ? "s" : ""}`}
+          />
           <FieldRow label="Date d'édition" value={data.dateEdition} />
         </DocSection>
 
@@ -163,8 +170,16 @@ export function OrganisationActionPdf({
             required
           />
           <FieldRow label="Coordination pédagogique" value={identite.email || "—"} />
+          {/* Le nom d'abord : un e-mail générique ne désigne personne (ind. 26,
+              art. L.6352-3). Cf. le même correctif sur convocation et livret. */}
           <FieldRow
             label="Référent handicap"
+            value={
+              identite.referentHandicapNom || data.referentHandicapEmail || identite.email || "—"
+            }
+          />
+          <FieldRow
+            label="Contact référent"
             value={data.referentHandicapEmail || identite.email || "—"}
           />
           <Text style={pdfStyles.paragraph}>

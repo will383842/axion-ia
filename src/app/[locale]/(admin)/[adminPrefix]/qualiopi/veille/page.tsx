@@ -128,7 +128,10 @@ export default async function QualiopiVeillePage({ params }: PageProps) {
                   </td>
                   <td className={cellCls}>
                     <div className="font-medium">{v.titre}</div>
-                    <div className="line-clamp-2 max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    <div
+                      className="line-clamp-2 max-w-sm text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+                      title={v.contenu}
+                    >
                       {v.contenu}
                     </div>
                   </td>

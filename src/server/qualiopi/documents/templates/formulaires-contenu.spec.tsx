@@ -59,8 +59,15 @@ describe("SatisfactionPdf — contenu", () => {
   const text = collectPdfTextNormalized(
     React.createElement(SatisfactionPdf, { data, identite: IDENTITE }),
   );
-  it("conserve la mention indicateur n°31 + RGPD", () => {
-    expect(text).toContain("31");
+  // 🔴 L'assertion était `toContain("31")` — et le pied de page porte le
+  // téléphone « +33743331201 », qui contient « 31 ». Le test passait donc sans
+  // rien vérifier, et n'a pas vu que le questionnaire citait l'indicateur 31
+  // (traitement des réclamations) au lieu du 30 (recueil des appréciations).
+  // On asserte désormais la mention ENTIÈRE, et l'absence de l'ancienne.
+  it("cite l'indicateur 30 — recueil des appréciations — et pas le 31", () => {
+    expect(text).toContain("Indicateur Qualiopi n°30");
+    expect(text).toContain("Indicateur 30");
+    expect(text).not.toContain("Indicateur Qualiopi n°31");
     expect(text).toContain("RGPD");
   });
 });

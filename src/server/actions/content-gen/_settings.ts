@@ -29,11 +29,40 @@ import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
  * d'exposition publique reste théorique : la valeur retournée n'est
  * exploitable que si le client connaît la clé exacte.
  */
+/** Un objet JSON simple — ni tableau, ni null, ni scalaire. */
+function estObjetSimple(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+
+/**
+ * 🔴 LES VALEURS PAR DÉFAUT NE SERVAIENT QUE SI LA LIGNE ÉTAIT ABSENTE.
+ *
+ * Dès qu'une ligne existait, elle était renvoyée telle quelle sous un
+ * transtypage non vérifié : une clé manquante dans le JSON stocké devenait
+ * `undefined` chez l'appelant, sans erreur ni trace. Constaté en production le
+ * 2026-08-03 sur `search_intent_distribution` : la clé attendue s'appelait
+ * `commercial`, la ligne portait `commercial_investigation`, et l'écran de
+ * réglage affichait « Somme actuelle : NaN % ». Quarante-sept appels partagent
+ * cette lecture, dont une trentaine attendent une forme d'objet précise.
+ *
+ * On fusionne donc le stocké PAR-DESSUS les valeurs par défaut quand les deux
+ * sont des objets simples : une clé absente retrouve sa valeur par défaut au
+ * lieu de disparaître. Le transtypage reste — on ne valide pas les types ici,
+ * chaque appelant connaît sa forme — mais la classe entière des « champ
+ * manquant → undefined → NaN » disparaît.
+ *
+ * Fusion de SURFACE, à dessein : une fusion profonde recomposerait des objets
+ * imbriqués que l'appelant a pu vouloir remplacer en bloc.
+ */
 export async function readContentGenConfig<T>(key: string, defaultValue: T): Promise<T> {
   try {
     const row = await prisma.contentGenConfig.findUnique({ where: { key } });
     if (!row) return defaultValue;
-    return row.value as unknown as T;
+    const stocke = row.value as unknown;
+    if (estObjetSimple(defaultValue) && estObjetSimple(stocke)) {
+      return { ...defaultValue, ...stocke } as T;
+    }
+    return stocke as T;
   } catch {
     return defaultValue;
   }

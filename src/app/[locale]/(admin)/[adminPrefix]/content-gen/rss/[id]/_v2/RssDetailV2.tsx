@@ -184,7 +184,9 @@ export function RssDetailV2({ adminPrefix, source }: Props): React.ReactElement 
 
       <AdminCard>
         <h2 className="admin-h2">Items récents</h2>
-        <p className="admin-meta-block">Pipeline 2 RSS (table RssItem) arrive Sprint 4.</p>
+        <p className="admin-meta-block">
+          Les articles collectés depuis cette source apparaîtront ici.
+        </p>
       </AdminCard>
     </AdminPageShell>
   );

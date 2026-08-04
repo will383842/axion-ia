@@ -11,7 +11,7 @@
 // duplique aucune règle métier ici.
 
 import Link from "next/link";
-import { PhoneCall, Mail, UserPlus, Mic, CircleDot } from "lucide-react";
+import { CircleDot, Mail, Mic, PhoneCall, TriangleAlert, UserPlus } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { auth } from "@/auth";
 import { listInbox } from "@/features/admin-inbox/queries";
@@ -233,8 +233,13 @@ export default async function InboxPage({
       {result.failedChannels.length > 0 ? (
         <div className="mb-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-danger-border)] bg-[color:var(--color-admin-danger-bg)] p-4 text-sm">
           <p className="font-semibold">
-            ⚠️ {result.failedChannels.length === 1 ? "Un canal n'a" : "Des canaux n'ont"} pas pu
-            être chargé
+            <TriangleAlert
+              size={14}
+              aria-hidden="true"
+              className="inline-block shrink-0 align-[-0.125em]"
+            />{" "}
+            {result.failedChannels.length === 1 ? "Un canal n'a" : "Des canaux n'ont"} pas pu être
+            chargé
             {result.failedChannels.length === 1 ? "" : "s"} :{" "}
             {result.failedChannels.map((c) => INBOX_CHANNEL_LABELS[c]).join(", ")}.
           </p>
@@ -249,8 +254,13 @@ export default async function InboxPage({
           exhaustive : on l'affiche. */}
       {result.truncated ? (
         <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          ⚠️ Vue limitée aux entrées les plus récentes de chaque canal. Ouvrez le canal concerné
-          pour voir l&apos;historique complet.
+          <TriangleAlert
+            size={14}
+            aria-hidden="true"
+            className="inline-block shrink-0 align-[-0.125em]"
+          />{" "}
+          Vue limitée aux entrées les plus récentes de chaque canal. Ouvrez le canal concerné pour
+          voir l&apos;historique complet.
         </p>
       ) : null}
 

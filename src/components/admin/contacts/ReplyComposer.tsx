@@ -261,7 +261,7 @@ export function ReplyComposer({
         <form onSubmit={onSubmit} className="admin-form mt-4 space-y-4">
           <div className="admin-field">
             <label htmlFor="reply-template" className="admin-label">
-              Template
+              Modèle de réponse
             </label>
             <select
               id="reply-template"
@@ -345,7 +345,7 @@ export function ReplyComposer({
             <p role="status" aria-live="polite" className="admin-alert admin-alert-info">
               {state.background
                 ? "Réponse enregistrée. L'envoi se poursuit en arrière-plan — voir l'historique ci-dessous."
-                : "Réponse enregistrée, envoi en cours… ⏳"}
+                : "Réponse enregistrée, envoi en cours…"}
             </p>
           )}
           {state.phase === "sent" && (
@@ -375,7 +375,7 @@ export function ReplyComposer({
                     onClick={() => onRetry(state.replyId as string)}
                     className="admin-button"
                   >
-                    ↻ Réessayer
+                    Réessayer
                   </button>
                 ) : (
                   <button type="submit" className="admin-button">

@@ -54,14 +54,17 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
 
   return (
     <AdminPageShell>
-      <AdminPageHeader title="Onboarding content-gen" description="5 étapes — § 12.1ter v1.9." />
+      <AdminPageHeader
+        title="Onboarding content-gen"
+        description="Cinq étapes pour mettre la génération en route."
+      />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <h2 className="admin-h2">Statut</h2>
         <ul className="admin-meta-block">
           <li>
-            <EtapeIcone faite={providersConfigured >= 4} /> <strong>Étape 1 — Providers IA</strong>{" "}
-            · {providersConfigured}/4 minimum
+            <EtapeIcone faite={providersConfigured >= 4} />{" "}
+            <strong>Étape 1 — Fournisseurs de modèles IA</strong> · {providersConfigured}/4 minimum
             {providersConfigured < 4 ? (
               <>
                 {" · "}
@@ -129,7 +132,7 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
             </AdminButton>
           </li>
           <li>
-            <strong>Étape 5 — Vérifier le kill switch</strong> ·{" "}
+            <strong>Étape 5 — Vérifier l&apos;arrêt d&apos;urgence</strong> ·{" "}
             <AdminButton
               href={`${base}/settings/kill-switch`}
               variant="ghost"
@@ -161,8 +164,14 @@ export async function OnboardingV2({ adminPrefix }: Props): Promise<React.ReactE
               : "border-l-4 border-l-[color:var(--color-admin-warning)]"
           }
         >
+          {/* 🔴 LES DEUX ÉTATS RENDAIENT EXACTEMENT LE MÊME TEXTE : « terminé,
+              tout est en place » et « terminé, mais des étapes manquent » ne se
+              distinguaient que par la COULEUR du liseré gauche. */}
           <p className="admin-meta-block">
-            Onboarding marqué comme terminé. Vous pouvez revenir ici à tout moment via le menu.
+            {allOk
+              ? "Mise en route terminée : les fournisseurs, le profil auteur et le profil de distribution sont en place."
+              : "Mise en route marquée comme terminée, mais certaines étapes ne sont pas remplies — fournisseurs, profil auteur ou profil de distribution."}{" "}
+            Vous pouvez revenir ici à tout moment par le menu.
           </p>
         </AdminCard>
       )}

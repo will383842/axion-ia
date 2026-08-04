@@ -106,11 +106,11 @@ export default async function PressMediaUploadPage({ params, searchParams }: Pag
                 className="w-full rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] py-[var(--space-admin-4)] text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg)] focus:border-[color:var(--color-admin-info)] focus:outline-none"
               />
               <small className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                PNG, SVG, PDF, ZIP… selon le type d&apos;asset.
+                PNG, SVG, PDF, ZIP… selon le type de fichier.
               </small>
             </div>
             <AdminFormField
-              label="Type d'asset"
+              label="Type de fichier"
               name="kind"
               type="select"
               required

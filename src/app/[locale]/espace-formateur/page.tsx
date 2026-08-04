@@ -1,93 +1,76 @@
 /**
- * Espace formateur — tableau de bord (2026-06-13).
+ * Espace formateur — accueil : ce que le formateur a à faire.
  *
- * Trois blocs, dans cet ordre : lettres de mission à signer · formations
- * COLLECTIVES · séances individuelles 1-to-1. L'ordre a été inversé le
- * 2026-08-01 — le collectif est le cas majoritaire, il passe donc devant.
+ * ## Ce qui change
  *
- * Porte aussi les LETTRES DE MISSION à signer. Le plan unifié situe cet écran
- * ici et non sur la page d'une session, pour une raison de séquence : la lettre
- * de mission est le contrat qui CONFIE la session, elle se signe donc avant que
- * cette session ne fasse partie du quotidien du formateur. La chercher session
- * par session serait le meilleur moyen qu'elle ne soit jamais signée — c'est
- * exactement ce qui s'est passé jusqu'ici, où les deux cadres au stylo du modèle
- * restaient vides faute d'écran.
+ * Cette page était le tableau de bord du COACHING : son titre annonçait « Mes
+ * séances 1-to-1 », et la liste des formations de groupe — le cas majoritaire —
+ * tenait dans une carte coincée au-dessus. Les lettres de mission à signer, elles,
+ * se noyaient au milieu.
+ *
+ * Elle s'ouvre désormais sur les **signatures en attente**, et sur rien d'autre.
+ * Les deux activités (collectif, individuel) ont chacune leur destination dans
+ * la barre latérale.
+ *
+ * La lettre de mission est le contrat qui CONFIE la session : elle se signe donc
+ * AVANT que cette session n'entre dans le quotidien du formateur. La chercher
+ * session par session serait le meilleur moyen qu'elle ne soit jamais signée —
+ * c'est exactement ce qui s'est passé jusqu'ici.
  */
 
+import { CircleCheckBig } from "lucide-react";
 import Link from "next/link";
+
 import { requireFormateur } from "@/server/formateur/guard";
-import { listMySessions } from "@/server/formateur/queries";
-import { NewSessionForm } from "@/components/espace-formateur/NewSessionForm";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { signerLettreMissionFormateurAction } from "@/server/actions/qualiopi/lettre-mission-signature";
 import { lireLettresMissionDuFormateur } from "@/server/qualiopi/documents/signature/lettre-mission-queries";
-import { coachingInterventionLabel, sessionStatutLabel } from "@/server/formateur/coaching-options";
+import { FORMATEUR_BASE_PATH } from "@/server/formateur/routes";
 import { FORMATEUR_SESSIONS_PATH } from "@/server/formateur/collectif-labels";
 
-const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
+import { CoquilleFormateur } from "./_coquille";
 
-const STATUT_CLASS: Record<string, string> = {
-  planifiee: "bg-sand text-fg-muted",
-  realisee: "bg-sage-soft text-success",
-  annulee: "bg-error/10 text-error",
-};
+export const dynamic = "force-dynamic";
 
-export default async function DashboardPage(): Promise<React.ReactElement> {
+export default async function EspaceFormateurAccueilPage(): Promise<React.ReactElement> {
   const { trainerId } = await requireFormateur();
-  const sessions = await listMySessions(trainerId);
-  // Lu APRÈS la garde d'authentification, comme tout le reste de cette page :
-  // la lecture ne connaît que `trainerId`, elle n'a aucun moyen de vérifier
-  // elle-même que l'appelant est bien ce formateur-là.
-  const lettresMission = await lireLettresMissionDuFormateur(trainerId);
+
+  // Lu APRÈS la garde d'authentification : la lecture ne connaît que
+  // `trainerId`, elle n'a aucun moyen de vérifier elle-même que l'appelant est
+  // bien ce formateur-là.
+  const lettres = await lireLettresMissionDuFormateur(trainerId);
+
+  // 🔴 On compte celles où le formateur peut AGIR, pas toutes les lettres :
+  // les lettres déjà signées restent affichées (c'est sa preuve), mais elles
+  // n'ont rien à réclamer et ne doivent pas gonfler la pastille.
+  const aSigner = lettres.filter((l) => l.peutAgir).length;
 
   return (
-    <div className="space-y-8">
-      {/*
-        Titre de page — ajouté le 2026-08-01.
-
-        🔴 Deux défauts corrigés d'un coup, signalés par Will : « Mes séances
-        1-to-1 je ne comprends pas du tout ».
-
-        1. Le `h1` de la page était « Mes séances 1-to-1 » — le nom du service de
-           COACHING INDIVIDUEL. Un formateur qui n'anime que des formations de
-           groupe ouvrait donc son tableau de bord sur le titre d'un produit qui
-           ne le concerne pas, tandis que ses formations collectives tenaient
-           dans une carte posée AU-DESSUS de ce titre.
-        2. Ce `h1` arrivait APRÈS le `h2` des lettres de mission. L'ordre des
-           titres était donc inversé pour un lecteur d'écran.
-
-        La page s'appelle désormais par ce qu'elle est, et chaque bloc devient
-        une section de même rang : à signer · collectif · individuel.
-      */}
-      <header className="space-y-1">
-        <h1 className="text-mocha font-serif text-2xl font-semibold">Mon espace formateur</h1>
-        <p className="text-fg-muted text-sm">
-          Vos formations, vos séances d&apos;accompagnement individuel et les documents que vous
-          avez à signer.
+    <CoquilleFormateur section="accueil" aSigner={aSigner}>
+      <header className="mb-8">
+        <h1 className="text-mocha font-serif text-2xl font-semibold sm:text-3xl">À faire</h1>
+        <p className="text-fg-soft mt-2 text-sm">
+          {aSigner === 0
+            ? "Aucun document ne vous attend."
+            : aSigner === 1
+              ? "Un document attend votre signature."
+              : `${aSigner} documents attendent votre signature.`}
         </p>
       </header>
 
-      {/*
-        Lettres de mission — EN TÊTE de page, avant les séances.
-
-        ⚠️ Rendu seulement s'il y en a : une liste vide se lirait comme une pièce
-        manquante alors que le cas normal, pour un formateur salarié permanent,
-        est qu'aucune lettre ne le nomme.
-
-        🔴 Les lettres déjà signées RESTENT affichées. Elles portent le nom du
-        signataire, l'horodatage en heure de Paris et l'empreinte : c'est le seul
-        endroit où le formateur peut constater ce qu'il a signé. Les masquer une
-        fois signées lui retirerait sa preuve.
-      */}
-      {lettresMission.length > 0 && (
-        <section className="space-y-3">
-          <h2 className="text-espresso font-serif text-xl">Lettres de mission</h2>
-          <p className="text-mocha text-sm">
+      {lettres.length === 0 ? (
+        <RienASigner />
+      ) : (
+        <section className="space-y-4">
+          <h2 className="text-fg-muted text-xs font-semibold tracking-wide uppercase">
+            Lettres de mission
+          </h2>
+          <p className="text-fg-soft text-sm leading-relaxed">
             La lettre de mission fixe le périmètre de votre intervention, votre rémunération et vos
             engagements de confidentialité. Elle porte deux signatures : la vôtre et celle de
-            l&apos;organisme de formation.
+            l&apos;organisme.
           </p>
-          {lettresMission.map((lettre) => (
+          {lettres.map((lettre) => (
             <div key={lettre.documentGenereId} className="space-y-1">
               <p className="text-fg-muted text-xs">
                 {/* Une lettre-CADRE ne se rattache pas à une session : elle
@@ -115,78 +98,47 @@ export default async function DashboardPage(): Promise<React.ReactElement> {
         </section>
       )}
 
-      {/*
-        Collectif AVANT individuel — c'est le cas majoritaire, et c'était
-        l'inverse jusqu'au 2026-08-01 (une carte coincée entre deux titres).
-      */}
-      <section className="space-y-3">
-        <h2 className="text-espresso font-serif text-xl">Mes formations collectives</h2>
-        <p className="text-mocha text-sm">
-          Les formations de groupe auxquelles vous êtes affecté : le détail des journées et les
-          feuilles d&apos;émargement à contresigner.
-        </p>
-        <Link
+      {/* Les deux activités, nommées pour ce qu'elles sont. */}
+      <section className="mt-10 grid gap-4 sm:grid-cols-2">
+        <CarteActivite
           href={FORMATEUR_SESSIONS_PATH}
-          className="border-border hover:border-terracotta block rounded-lg border p-4 transition-colors"
-        >
-          <span className="text-mocha font-serif font-semibold">
-            Voir mes formations collectives
-          </span>
-        </Link>
+          titre="Mes formations"
+          detail="Les formations de groupe auxquelles vous êtes affecté : journées et feuilles d’émargement."
+        />
+        <CarteActivite
+          href={`${FORMATEUR_BASE_PATH}/seances`}
+          titre="Accompagnements individuels"
+          detail="Le suivi une personne à la fois, séance après séance. Sans rapport avec les formations de groupe."
+        />
       </section>
+    </CoquilleFormateur>
+  );
+}
 
-      <section className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-espresso font-serif text-xl">Mes séances 1-to-1</h2>
-          <NewSessionForm />
-        </div>
-        {/*
-          Cette phrase existe parce que le libellé seul n'a parlé à personne :
-          « 1-to-1 » est le nom commercial du service de coaching individuel, il
-          ne dit pas de quoi il s'agit à qui ouvre la page.
-        */}
-        <p className="text-mocha text-sm">
-          L&apos;accompagnement individuel (Coaching IA 1-to-1) : une personne, un parcours suivi
-          séance après séance. Sans rapport avec les formations de groupe ci-dessus.
-        </p>
-        {sessions.length === 0 ? (
-          <p className="text-fg-muted text-sm">
-            Aucune séance d&apos;accompagnement individuel. Si vous n&apos;animez que des formations
-            de groupe, c&apos;est normal : tout se passe dans la section ci-dessus.
-          </p>
-        ) : (
-          <ul className="space-y-2">
-            {sessions.map((s) => (
-              <li key={s.id}>
-                <Link
-                  href={`/fr/espace-formateur/seances/${s.id}`}
-                  className="border-border bg-sand hover:border-terracotta block rounded-lg border p-4 transition-colors"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-mocha font-medium">
-                      {coachingInterventionLabel(s.interventionSlug)}
-                    </span>
-                    <span
-                      className={`rounded px-2 py-0.5 text-xs ${STATUT_CLASS[s.statut] ?? "bg-sand"}`}
-                    >
-                      {sessionStatutLabel(s.statut)}
-                    </span>
-                  </div>
-                  <div className="text-fg-muted mt-1 text-sm">
-                    {dateFmt.format(s.dateSeance)}
-                    {s.beneficiaireNom ? ` · ${s.beneficiaireNom}` : ""}
-                    {s.beneficiaireEntreprise ? ` (${s.beneficiaireEntreprise})` : ""}
-                  </div>
-                  <div className="text-fg-muted mt-1 text-xs">
-                    {s._count.optimisations} optimisation(s) · {s._count.comptesRendus} CR ·{" "}
-                    {s._count.journaux} entrée(s) de journal
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+function CarteActivite({ href, titre, detail }: { href: string; titre: string; detail: string }) {
+  return (
+    <Link
+      href={href}
+      className="border-border bg-paper hover:border-terracotta group block rounded-xl border p-5 transition-colors"
+    >
+      <p className="text-mocha font-serif text-base font-semibold">{titre}</p>
+      <p className="text-fg-soft mt-2 text-sm leading-relaxed">{detail}</p>
+      <p className="text-terracotta mt-3 text-sm group-hover:underline">Ouvrir</p>
+    </Link>
+  );
+}
+
+function RienASigner() {
+  return (
+    <div className="border-border bg-paper rounded-xl border p-8 text-center">
+      <span className="bg-sage-soft text-sage mx-auto mb-4 flex size-12 items-center justify-center rounded-full">
+        <CircleCheckBig className="size-6" strokeWidth={1.8} aria-hidden="true" />
+      </span>
+      <p className="text-mocha font-serif text-lg font-semibold">Rien à signer</p>
+      <p className="text-fg-soft mx-auto mt-2 max-w-sm text-sm leading-relaxed">
+        Aucune lettre de mission ne vous attend. C’est le cas normal si vous êtes salarié permanent
+        : les lettres ne nomment que les intervenants missionnés.
+      </p>
     </div>
   );
 }

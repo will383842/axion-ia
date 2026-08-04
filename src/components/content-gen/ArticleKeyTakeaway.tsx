@@ -25,7 +25,7 @@ export function ArticleKeyTakeaway({ text, locale }: ArticleKeyTakeawayProps) {
       <Container className="max-w-3xl">
         <aside
           data-aeo="key-point"
-          className="border-terracotta/40 bg-cream rounded-lg border-l-4 px-5 py-4"
+          className="border-terracotta/40 bg-sand rounded-lg border-l-4 px-5 py-4"
         >
           <p className="text-terracotta-deep text-sm font-semibold tracking-wide uppercase">
             💡 {isFr ? "Point clé" : "Key takeaway"}
