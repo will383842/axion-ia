@@ -115,11 +115,14 @@ export function registerQualiopiPdfFonts(): void {
         ],
       });
     } else {
-      if (process.env.NODE_ENV !== "production") {
-        console.warn(
-          `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.serif} introuvable dans public/fonts/ — fallback Geist`,
-        );
-      }
+      // 🔴 Bruyant EN PRODUCTION AUSSI. Ce garde-fou était tu là où il
+      // comptait : le worker n'embarquait pas `public/fonts`, retombait sur
+      // Geist, et sortait des attestations hors charte avec des caractères
+      // PERDUS — sans une ligne de journal. Le silence a fait passer
+      // quatre mois de PDF dégradés pour un fonctionnement normal.
+      console.warn(
+        `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.serif} introuvable dans public/fonts/ — fallback Geist. Les PDF sortiront HORS CHARTE.`,
+      );
       // Enregistre le nom de famille sous un TTF fallback pour éviter
       // "Font family not registered" lors des tests / builds sans assets.
       const fb = resolveFallbackFont();
@@ -164,11 +167,14 @@ export function registerQualiopiPdfFonts(): void {
         ],
       });
     } else {
-      if (process.env.NODE_ENV !== "production") {
-        console.warn(
-          `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.sans} introuvable dans public/fonts/ — fallback Geist`,
-        );
-      }
+      // 🔴 Bruyant EN PRODUCTION AUSSI. Ce garde-fou était tu là où il
+      // comptait : le worker n'embarquait pas `public/fonts`, retombait sur
+      // Geist, et sortait des attestations hors charte avec des caractères
+      // PERDUS — sans une ligne de journal. Le silence a fait passer
+      // quatre mois de PDF dégradés pour un fonctionnement normal.
+      console.warn(
+        `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.sans} introuvable dans public/fonts/ — fallback Geist. Les PDF sortiront HORS CHARTE.`,
+      );
       const fb = resolveFallbackFont();
       if (fb) {
         try {
@@ -208,11 +214,14 @@ export function registerQualiopiPdfFonts(): void {
         ],
       });
     } else {
-      if (process.env.NODE_ENV !== "production") {
-        console.warn(
-          `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.mono} introuvable dans public/fonts/ — fallback Geist`,
-        );
-      }
+      // 🔴 Bruyant EN PRODUCTION AUSSI. Ce garde-fou était tu là où il
+      // comptait : le worker n'embarquait pas `public/fonts`, retombait sur
+      // Geist, et sortait des attestations hors charte avec des caractères
+      // PERDUS — sans une ligne de journal. Le silence a fait passer
+      // quatre mois de PDF dégradés pour un fonctionnement normal.
+      console.warn(
+        `[qualiopi-pdf-fonts] ${QUALIOPI_BRAND_FONTS.mono} introuvable dans public/fonts/ — fallback Geist. Les PDF sortiront HORS CHARTE.`,
+      );
       const fb = resolveFallbackFont();
       if (fb) {
         try {
