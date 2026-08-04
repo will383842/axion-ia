@@ -129,7 +129,41 @@ describe("EspaceShell — identité et sortie", () => {
     expect(screen.getByText("Simone Blanc")).toBeTruthy();
     // 🔴 Retirer la sortie enfermerait l'utilisateur dans l'espace : c'est le
     // même défaut que « Déconnexion » disparue du tableau de bord admin.
-    expect(screen.getByRole("button", { name: "Quitter" })).toBeTruthy();
+    expect(screen.getAllByRole("button", { name: "Quitter" }).length).toBeGreaterThan(0);
+  });
+
+  it("🔴 offre la sortie sur téléphone AUSSI, pas seulement sur grand écran", () => {
+    /*
+     * Le défaut, trouvé en production le 2026-08-04 : la déconnexion ne vivait
+     * que dans le pied de la barre latérale, qui porte `hidden … lg:flex`. Sur
+     * téléphone — l'usage courant de ces espaces — il n'existait AUCUN moyen de
+     * fermer sa session.
+     *
+     * ⚠️ Pourquoi la version précédente de ce fichier ne pouvait pas le voir :
+     * elle faisait `getByRole("button")`, qui trouvait bien UN bouton… celui de
+     * la barre latérale. jsdom n'applique aucune media query : `hidden lg:flex`
+     * n'est qu'une chaîne de classes, l'élément est présent dans le DOM quelle
+     * que soit la largeur. Un test qui se contente de « le bouton existe »
+     * restera donc vert alors que le bouton est invisible pour la moitié des
+     * utilisateurs.
+     *
+     * La garde doit donc être STRUCTURELLE : vérifier que la sortie est bien
+     * dans les DEUX conteneurs, celui réservé au grand écran et celui réservé
+     * au mobile, repérés par les classes qui décident de leur visibilité.
+     */
+    const { container } = rendre();
+
+    const lateraleGrandEcran = container.querySelector("aside.hidden");
+    const enteteMobile = container.querySelector("header.lg\\:hidden");
+    expect(lateraleGrandEcran).toBeTruthy();
+    expect(enteteMobile).toBeTruthy();
+
+    expect(
+      within(lateraleGrandEcran as HTMLElement).getByRole("button", { name: "Quitter" }),
+    ).toBeTruthy();
+    expect(
+      within(enteteMobile as HTMLElement).getByRole("button", { name: "Quitter" }),
+    ).toBeTruthy();
   });
 
   it("rend le contenu de la page", () => {
