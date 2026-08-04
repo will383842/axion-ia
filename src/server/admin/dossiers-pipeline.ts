@@ -39,12 +39,7 @@ import type {
 
 /** Identifiants des colonnes, dans l'ordre du cycle de vie d'une affaire. */
 export type ColonnePipeline =
-  | "devis_attente"
-  | "signature_attente"
-  | "a_preparer"
-  | "en_cours"
-  | "a_solder"
-  | "soldes";
+  "devis_attente" | "signature_attente" | "a_preparer" | "en_cours" | "a_solder" | "soldes";
 
 /**
  * Fenêtre d'affichage des dossiers soldés : au-delà, la ligne sort de la vue

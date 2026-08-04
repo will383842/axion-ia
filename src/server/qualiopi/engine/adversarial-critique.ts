@@ -13,11 +13,7 @@ import { anthropicProvider } from "@/server/content-gen/providers/anthropic";
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type AngleAdversarial =
-  | "engagement"
-  | "transferabilite"
-  | "memorisation"
-  | "adequation_public"
-  | "realisme_exercices";
+  "engagement" | "transferabilite" | "memorisation" | "adequation_public" | "realisme_exercices";
 
 export interface AngleResult {
   score: number;

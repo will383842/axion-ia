@@ -142,8 +142,7 @@ const upsertSchema = z.object({
   pageContentEn: z.string().optional(),
 });
 export type UpsertCategoryState =
-  | { ok: true; id: string; created: boolean }
-  | { ok: false; error: string };
+  { ok: true; id: string; created: boolean } | { ok: false; error: string };
 
 export async function upsertCategoryAction(
   _prev: UpsertCategoryState,

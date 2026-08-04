@@ -111,8 +111,7 @@ export async function recomputeBarometerSnapshotForm(_formData: FormData): Promi
 }
 
 export type RegenerateAnalysisState =
-  | { ok: true; regenerated: boolean }
-  | { ok: false; error: string };
+  { ok: true; regenerated: boolean } | { ok: false; error: string };
 
 /** (Re)génère la synthèse LLM (force) + revalide les pages publiques. */
 export async function regenerateBarometerAnalysis(): Promise<RegenerateAnalysisState> {

@@ -84,12 +84,7 @@ export function planningDetailHref(
 
 /** Statuts de devis Prisma pertinents pour l'étape commerciale d'une prestation. */
 export type DevisStatutValue =
-  | "brouillon"
-  | "envoye"
-  | "accepte"
-  | "refuse"
-  | "expire"
-  | "transforme_convention";
+  "brouillon" | "envoye" | "accepte" | "refuse" | "expire" | "transforme_convention";
 
 /**
  * Déduit l'étape commerciale affichée sur le calendrier à partir du statut du

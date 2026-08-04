@@ -76,15 +76,13 @@ export async function bingWmtGetCrawlStats(
     }
     const data = (await res.json()) as { d?: Array<Record<string, unknown>> };
     const rows = data.d ?? [];
-    return rows.slice(0, daysWindow).map(
-      (r): BingWmtCrawlStats => ({
-        date: typeof r.Date === "string" ? r.Date : "",
-        pagesCrawled: typeof r.CrawledPages === "number" ? r.CrawledPages : 0,
-        pagesDiscovered: typeof r.DiscoveredPages === "number" ? r.DiscoveredPages : 0,
-        crawlErrors: typeof r.CrawlErrors === "number" ? r.CrawlErrors : 0,
-        inIndex: typeof r.InIndex === "number" ? r.InIndex : 0,
-      }),
-    );
+    return rows.slice(0, daysWindow).map((r): BingWmtCrawlStats => ({
+      date: typeof r.Date === "string" ? r.Date : "",
+      pagesCrawled: typeof r.CrawledPages === "number" ? r.CrawledPages : 0,
+      pagesDiscovered: typeof r.DiscoveredPages === "number" ? r.DiscoveredPages : 0,
+      crawlErrors: typeof r.CrawlErrors === "number" ? r.CrawlErrors : 0,
+      inIndex: typeof r.InIndex === "number" ? r.InIndex : 0,
+    }));
   } catch (err) {
     console.error("[bing-wmt-client] GetCrawlStats error:", err);
     return null;

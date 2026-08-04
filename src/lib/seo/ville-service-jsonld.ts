@@ -39,11 +39,7 @@ import {
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type VilleServiceKey =
-  | "audit"
-  | "interventions"
-  | "implementation"
-  | "un-a-un"
-  | "sites-web-augmentes";
+  "audit" | "interventions" | "implementation" | "un-a-un" | "sites-web-augmentes";
 
 /** ISO 8601 duration par service (utilisé dans HowTo totalTime). */
 const SERVICE_DURATION: Record<VilleServiceKey, string> = {

@@ -65,8 +65,7 @@ export type MotifNonSignable =
   | "deja_signe";
 
 export type EtatSeance =
-  | { id: string; signable: true }
-  | { id: string; signable: false; motif: MotifNonSignable };
+  { id: string; signable: true } | { id: string; signable: false; motif: MotifNonSignable };
 
 /** Horaires réels d'une séance, prêts à être scellés. */
 export interface HorairesSeance {

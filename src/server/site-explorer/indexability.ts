@@ -20,9 +20,7 @@ import { isGlossaryTermIndexable, GLOSSARY_MIN_INDEX_WORDS } from "@/content/glo
 
 /** Tier d'indexation d'un article (miroir de l'enum Prisma `IndexationTier`). */
 export type ArticleIndexationTier =
-  | "tier_1_indexable"
-  | "tier_2_noindex_follow"
-  | "tier_3_noindex_nofollow";
+  "tier_1_indexable" | "tier_2_noindex_follow" | "tier_3_noindex_nofollow";
 
 export interface IndexabilityInput {
   /** URL FR rendue, AVEC préfixe locale (ex. `/fr/audit/par-ville/lyon`). */

@@ -342,8 +342,7 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
       ? output.keyTakeaway.trim()
       : null;
   const expertQuoteRaw = output.expertQuote as
-    | { name?: unknown; title?: unknown; text?: unknown }
-    | undefined;
+    { name?: unknown; title?: unknown; text?: unknown } | undefined;
   const expertQuote =
     expertQuoteRaw &&
     typeof expertQuoteRaw.name === "string" &&

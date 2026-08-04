@@ -19,8 +19,7 @@ const PublishSchema = z.object({
 });
 
 export type PublishActionResult =
-  | { success: true; publishedAt: string }
-  | { success: false; error: string; seoScore?: number };
+  { success: true; publishedAt: string } | { success: false; error: string; seoScore?: number };
 
 export async function publishTranslationAction(
   input: z.input<typeof PublishSchema>,

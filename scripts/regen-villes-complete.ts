@@ -119,11 +119,7 @@ function selectVilles(args: RunArgs): Ville[] {
 interface VilleResult {
   villeSlug: string;
   status:
-    | "skipped_already_approved"
-    | "skipped_dry_run"
-    | "success"
-    | "failed_quality"
-    | "failed_error";
+    "skipped_already_approved" | "skipped_dry_run" | "success" | "failed_quality" | "failed_error";
   ecoGenerated: boolean;
   qualityScore?: number;
   totalCostUsd: number;

@@ -25,8 +25,7 @@ const llmBreaker = new CircuitBreaker({
 // usage, et l'output-guard garantit le zéro-hallucination quel que soit le modèle).
 // Le tier "haiku" (faqSimple) → gpt-4o-mini (le moins cher) ; "sonnet" → gpt-4o.
 const GENERATION_PROVIDER = (process.env.CHATBOT_LLM_PROVIDER ?? "openai") as
-  | "openai"
-  | "anthropic";
+  "openai" | "anthropic";
 
 const MODEL_BY_TIER: Record<"openai" | "anthropic", Record<LlmTier, string>> = {
   openai: {

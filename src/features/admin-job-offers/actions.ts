@@ -244,8 +244,7 @@ const upsertSchema = z.object({
 });
 
 export type UpsertJobOfferState =
-  | { ok: true; id: string; created: boolean }
-  | { ok: false; error: string };
+  { ok: true; id: string; created: boolean } | { ok: false; error: string };
 
 /** Parse un JSON optionnel ; retourne undefined si vide/invalide (champ optionnel). */
 function parseJsonField(raw: string | undefined): Prisma.InputJsonValue | undefined {

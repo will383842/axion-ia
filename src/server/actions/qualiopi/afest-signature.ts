@@ -50,10 +50,7 @@ import {
 import { SignatureStockageError } from "@/server/qualiopi/emargement/storage";
 
 export type RefusSeanceAfestFormateur =
-  | RefusSignatureAfest
-  | "non_membre"
-  | "requete_invalide"
-  | "stockage";
+  RefusSignatureAfest | "non_membre" | "requete_invalide" | "stockage";
 
 export type ResultatSignatureSeanceAfest =
   | { ok: true; signatureId: string }

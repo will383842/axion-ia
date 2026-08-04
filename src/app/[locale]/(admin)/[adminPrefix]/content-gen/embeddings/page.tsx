@@ -66,15 +66,15 @@ function formatDate(iso: string): string {
 async function fetchEmbeddingsStats() {
   const [withEmbedding, withoutEmbedding, lastRunConfig, costConfig] = await Promise.all([
     prisma
-      .$queryRawUnsafe<
-        Array<{ count: string }>
-      >(`SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NOT NULL`)
+      .$queryRawUnsafe<Array<{ count: string }>>(
+        `SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NOT NULL`,
+      )
       .catch(() => [{ count: "0" }]),
 
     prisma
-      .$queryRawUnsafe<
-        Array<{ count: string }>
-      >(`SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NULL`)
+      .$queryRawUnsafe<Array<{ count: string }>>(
+        `SELECT COUNT(*)::text AS count FROM articles WHERE status = 'published' AND embedding IS NULL`,
+      )
       .catch(() => [{ count: "0" }]),
 
     prisma.contentGenConfig.findUnique({ where: { key: "embeddings_last_run" } }).catch(() => null),

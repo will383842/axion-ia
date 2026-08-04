@@ -182,11 +182,7 @@ export function SessionForm({
           ...(financementType
             ? {
                 financementType: financementType as
-                  | "direct"
-                  | "opco"
-                  | "cpf"
-                  | "france_travail"
-                  | "mixte",
+                  "direct" | "opco" | "cpf" | "france_travail" | "mixte",
               }
             : {}),
           ...lieuPayload(lieu),
@@ -223,11 +219,7 @@ export function SessionForm({
           ...(financementType
             ? {
                 financementType: financementType as
-                  | "direct"
-                  | "opco"
-                  | "cpf"
-                  | "france_travail"
-                  | "mixte",
+                  "direct" | "opco" | "cpf" | "france_travail" | "mixte",
               }
             : {}),
           ...lieuPayload(lieu),

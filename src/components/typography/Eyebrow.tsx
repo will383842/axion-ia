@@ -2,14 +2,7 @@ import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef } from "react";
 
 type EyebrowVariant =
-  | "default"
-  | "primary"
-  | "purple"
-  | "orange"
-  | "green"
-  | "pink"
-  | "yellow"
-  | "red";
+  "default" | "primary" | "purple" | "orange" | "green" | "pink" | "yellow" | "red";
 
 interface EyebrowProps extends Omit<ComponentPropsWithoutRef<"p">, "title"> {
   variant?: EyebrowVariant;

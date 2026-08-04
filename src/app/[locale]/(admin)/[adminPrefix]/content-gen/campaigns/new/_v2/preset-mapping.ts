@@ -10,11 +10,7 @@ import {
 } from "@/server/actions/content-gen/campaign-wizard-constants";
 
 export type ServiceSector =
-  | "interventions_formations"
-  | "audits"
-  | "implementations"
-  | "un_a_un"
-  | "sites_web_augmentes";
+  "interventions_formations" | "audits" | "implementations" | "un_a_un" | "sites_web_augmentes";
 
 /**
  * Config telle que stockée dans `CampaignTemplate.config` (Json) et dans la

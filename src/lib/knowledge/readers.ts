@@ -52,9 +52,7 @@ export interface PublicEntryFacade {
    * le loader hardcodait tier-2 → un article promu tier-1 restait noindex).
    */
   readonly indexationTier?:
-    | "tier_1_indexable"
-    | "tier_2_noindex_follow"
-    | "tier_3_noindex_nofollow";
+    "tier_1_indexable" | "tier_2_noindex_follow" | "tier_3_noindex_nofollow";
   /**
    * VIS-03 — Réponse directe (featured snippet / snippet 0) générée par le
    * content-gen. Optionnel : null si non générée.
@@ -173,9 +171,7 @@ export async function listGlossaryTermSlugs(): Promise<readonly string[]> {
 
 /** Tier d'indexation (miroir enum Prisma `IndexationTier`). */
 export type FaqIndexationTier =
-  | "tier_1_indexable"
-  | "tier_2_noindex_follow"
-  | "tier_3_noindex_nofollow";
+  "tier_1_indexable" | "tier_2_noindex_follow" | "tier_3_noindex_nofollow";
 
 export interface FaqItem {
   readonly id: string;

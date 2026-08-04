@@ -111,8 +111,7 @@ export interface FactureLieeResume {
 }
 
 export type PlanFacturationDevis =
-  | { ok: true; lignes: LigneFacture[]; estAcompte: boolean }
-  | { ok: false; erreur: string };
+  { ok: true; lignes: LigneFacture[]; estAcompte: boolean } | { ok: false; erreur: string };
 
 /**
  * Décide des LIGNES de la prochaine facture d'un devis (règle fiscale : la
