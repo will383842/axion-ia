@@ -46,6 +46,8 @@ import { creerDemandeRgpd } from "@/server/qualiopi/portail/rgpd-service";
 import { soumettreReponses } from "@/server/qualiopi/satisfaction/satisfaction-service";
 import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { sendTelegram } from "@/lib/telegram";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
+import { construireAlerteBesoinAdaptation } from "@/server/qualiopi/alertes/besoin-adaptation";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -250,10 +252,37 @@ export async function declarerHandicapAction(input: {
   // Qualiopi porte précisément sur l'accueil des publics en situation de
   // handicap.
   //
-  // ⚠️ Le message ne contient PAS le besoin : c'est une donnée de santé. Il
-  // nomme la personne et renvoie à sa fiche, où la lecture est tracée.
-  // Envoi en « fire-and-forget » : une panne Telegram ne doit jamais faire
-  // échouer la déclaration du bénéficiaire, qui est le geste important.
+  // ⚠️ Aucun de ces deux messages ne contient le besoin : c'est une donnée de
+  // santé. Ils nomment la personne et renvoient à sa fiche, où la lecture est
+  // réservée au super-administrateur et journalisée.
+
+  // 1. L'ALERTE CONSOLE — le canal qui compte.
+  //
+  // 🔴 Vérification en production du 2026-08-04 : la première correction ne
+  // posait QUE le message Telegram ci-dessous. `alertes_systeme` restait vide,
+  // donc /qualiopi/a-traiter — la première page ouverte le matin — n'en savait
+  // rien. Une alerte qui vit dans un seul canal, hors de l'outil de travail,
+  // n'est pas une alerte : c'est un pari sur l'attention de quelqu'un.
+  //
+  // `creerOuDedup` dédoublonne sur (code, cibleId) tant que l'alerte est
+  // ouverte : re-déclarer ne fabrique donc pas une seconde ligne. Et comme le
+  // message ne porte que l'identité — jamais le besoin —, il ne peut pas se
+  // périmer entre-temps (le texte d'une alerte est figé à sa création).
+  //
+  // Fire-and-forget comme le reste : la déclaration du bénéficiaire est le
+  // geste important, une panne d'alerte ne doit pas la faire échouer.
+  const alerte = construireAlerteBesoinAdaptation(trainee);
+  void creerOuDedup({
+    code: "besoin_adaptation_declare",
+    niveau: "important",
+    titre: alerte.titre,
+    message: alerte.message,
+    cibleType: "Trainee",
+    cibleId: trainee.id,
+  }).catch(() => {});
+
+  // 2. Le message Telegram — utile pour être prévenu hors console, mais il ne
+  // remplace pas l'alerte : Will peut ne pas le lire, et rien ne l'y ramène.
   void sendTelegram({
     tag: "ADAPTATION_DECLAREE",
     body:

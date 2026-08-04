@@ -13,18 +13,28 @@
  * fauteuil » : personne n'était prévenu, et personne ne pouvait le lire. L'écran
  * promet pourtant « nous en tiendrons compte avant la formation ».
  *
+ * ## 🔴 Ce que ces cas NE verrouillaient pas (vérification prod du 2026-08-04)
+ *
+ * Le cas « déclenche une alerte » n'observait que `sendTelegram`. Or Telegram
+ * n'est PAS la console : mesuré en production, `alertes_systeme` restait vide
+ * et /qualiopi/a-traiter — la première page ouverte le matin — ne montrait
+ * rien. Le test passait au vert sur un défaut intact. Il observe désormais le
+ * canal qui compte.
+ *
  * ## Ce que ces cas verrouillent
  *
- * 1. une déclaration DÉCLENCHE une alerte ;
- * 2. l'alerte ne contient JAMAIS le besoin (donnée de santé) ;
- * 3. la lecture est refusée à un admin ordinaire ;
- * 4. la lecture est journalisée AVANT d'être rendue.
+ * 1. une déclaration crée une ALERTE CONSOLE (pas seulement un Telegram) ;
+ * 2. ni l'alerte ni le Telegram ne contiennent le besoin (donnée de santé) ;
+ * 3. l'alerte cible la fiche du bénéficiaire, pour être actionnable ;
+ * 4. la lecture est refusée à un admin ordinaire ;
+ * 5. la lecture est journalisée AVANT d'être rendue.
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const traineeUpdate = vi.fn();
 const traineeFindUnique = vi.fn();
 const sendTelegram = vi.fn(async (_msg: unknown) => true);
+const creerOuDedup = vi.fn(async (_input: unknown) => null);
 const logActivity = vi.fn(async (_input: unknown) => undefined);
 const requireSuperAdmin = vi.fn();
 const verifierToken = vi.fn();
@@ -40,6 +50,9 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 vi.mock("@/lib/telegram", () => ({ sendTelegram: (a: unknown) => sendTelegram(a) }));
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuDedup: (a: unknown) => creerOuDedup(a),
+}));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(),
   requireSuperAdmin: () => requireSuperAdmin(),
@@ -82,24 +95,43 @@ beforeEach(() => {
 });
 
 describe("déclaration — quelqu'un est enfin prévenu", () => {
-  it("déclenche une alerte", async () => {
+  it("🔴 crée une alerte DANS LA CONSOLE, pas seulement un message Telegram", async () => {
+    // Le défaut trouvé en production : seul Telegram partait, `alertes_systeme`
+    // restait vide, donc /qualiopi/a-traiter ne montrait rien.
     const r = await declarerHandicapAction({ besoin: "Salle accessible en fauteuil" });
     expect("data" in r).toBe(true);
+    expect(creerOuDedup).toHaveBeenCalledOnce();
     expect(sendTelegram).toHaveBeenCalledOnce();
   });
 
-  it("🔴 l'alerte ne contient JAMAIS le besoin — c'est une donnée de santé", async () => {
+  it("l'alerte est actionnable : code du catalogue, niveau visible, fiche ciblée", async () => {
     await declarerHandicapAction({ besoin: "Salle accessible en fauteuil" });
-    const msg = JSON.stringify(sendTelegram.mock.calls[0]?.[0] ?? {});
-    expect(msg).not.toContain("fauteuil");
-    // …mais elle nomme la personne et dit où regarder, sinon elle est inutile.
-    expect(msg).toContain("Simone");
-    expect(msg).toContain("chiffré");
+    const alerte = creerOuDedup.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(alerte["code"]).toBe("besoin_adaptation_declare");
+    // `info` serait filtré de /qualiopi/a-traiter, qui n'affiche que
+    // critique + important : l'alerte n'y apparaîtrait jamais.
+    expect(alerte["niveau"]).toBe("important");
+    expect(alerte["cibleType"]).toBe("Trainee");
+    expect(alerte["cibleId"]).toBe(UUID);
+  });
+
+  it("🔴 AUCUN des deux canaux ne contient le besoin — c'est une donnée de santé", async () => {
+    await declarerHandicapAction({ besoin: "Salle accessible en fauteuil" });
+    for (const emis of [
+      JSON.stringify(creerOuDedup.mock.calls[0]?.[0] ?? {}),
+      JSON.stringify(sendTelegram.mock.calls[0]?.[0] ?? {}),
+    ]) {
+      expect(emis).not.toContain("fauteuil");
+      // …mais chacun nomme la personne et dit où regarder, sinon il est inutile.
+      expect(emis).toContain("Simone");
+      expect(emis).toContain("chiffré");
+    }
   });
 
   it("une panne d'alerte ne fait pas échouer la déclaration", async () => {
     // Le geste du bénéficiaire prime : sa déclaration doit être enregistrée
-    // même si le canal d'alerte est indisponible.
+    // même si les canaux d'alerte sont indisponibles — les deux, pas un seul.
+    creerOuDedup.mockRejectedValueOnce(new Error("db down"));
     sendTelegram.mockRejectedValueOnce(new Error("telegram down"));
     const r = await declarerHandicapAction({ besoin: "Besoin X" });
     expect("data" in r).toBe(true);

@@ -109,8 +109,19 @@ export function EspaceShell({
   return (
     <div className="bg-bg min-h-screen lg:flex">
       {/* ── Barre latérale (écran large) ────────────────────────────────── */}
+      {/*
+        🔴 Hauteur : `--header-total-h`, PAS `h-screen` (vérification en
+        production du 2026-08-04).
+
+        Ces espaces sont rendus sous le header public, qui est COLLANT. Une
+        barre en `h-screen` collée à `top-0` mesurait donc une hauteur d'écran
+        entière à partir de 81 px plus bas : elle dépassait d'autant, et son
+        pied — l'identité et « Se déconnecter » — commençait sous le pli. Sur
+        une page courte (« Vous êtes à jour »), il fallait faire défiler pour
+        trouver de quoi se déconnecter, sur le seul écran où c'est attendu.
+      */}
       <aside
-        className="bg-mocha hidden shrink-0 lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-68 lg:flex-col"
+        className="bg-mocha hidden shrink-0 lg:sticky lg:top-[var(--header-total-h)] lg:flex lg:h-[calc(100vh-var(--header-total-h))] lg:w-68 lg:flex-col"
         aria-label={`Navigation — ${titreEspace}`}
       >
         <div className="border-border-on-mocha border-b px-6 py-6">

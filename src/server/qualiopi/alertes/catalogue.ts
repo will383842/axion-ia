@@ -28,6 +28,33 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Référent handicap absent",
     resolutionAuto: true,
   },
+  /**
+   * Un bénéficiaire a déclaré un besoin d'adaptation depuis son portail.
+   *
+   * 🔴 Vérification en production du 2026-08-04 : la déclaration n'atteignait
+   * la console PAR AUCUN CHEMIN. `declarerHandicapAction` chiffrait le besoin,
+   * envoyait un message Telegram, et c'est tout — `alertes_systeme` restait
+   * vide, donc RIEN sur /qualiopi/a-traiter, la première page ouverte le matin.
+   * Un seul canal, hors de l'outil de travail : un besoin déclaré la veille
+   * d'une session pouvait n'être vu par personne. L'écran promet pourtant
+   * « nous en tiendrons compte avant la formation », et l'indicateur 26 porte
+   * précisément sur l'accueil des publics en situation de handicap.
+   *
+   * `important` et non `critique` : le dossier n'est pas en faute, il y a un
+   * geste à poser avant la session. Réserver `critique` aux manquements rend
+   * les alertes critiques crédibles — c'est à celles-là qu'on doit sursauter.
+   *
+   * ⚠️ `resolutionAuto: false`, et c'est STRUCTUREL : l'évaluateur quotidien
+   * n'émet jamais ce code (l'alerte naît du geste du bénéficiaire, pas d'un
+   * balayage). Le passer à `true` ferait résoudre l'alerte par le premier
+   * `synchroniserAlertes` venu, avant même que quiconque l'ait lue. Elle se
+   * résout à la main, quand l'adaptation a été prise en compte.
+   */
+  besoin_adaptation_declare: {
+    niveau: "important",
+    titre: "Besoin d'adaptation déclaré par un bénéficiaire",
+    resolutionAuto: false,
+  },
 
   // ── Pilotage qualité ────────────────────────────────────────────────────────
   responsable_qualite_absent: {
