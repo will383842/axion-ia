@@ -53,6 +53,15 @@ function estObjetSimple(v: unknown): v is Record<string, unknown> {
  *
  * Fusion de SURFACE, à dessein : une fusion profonde recomposerait des objets
  * imbriqués que l'appelant a pu vouloir remplacer en bloc.
+ *
+ * ⚠️ **NE PAS passer de valeurs par défaut pour une RÉPARTITION.** Quand les
+ * clés forment un ensemble cohérent — des poids qui se lisent les uns par
+ * rapport aux autres — une fusion partielle produit un hybride absurde. Vécu le
+ * 2026-08-04 sur `search_intent_distribution` : la configuration stockée est en
+ * fractions (somme 1), les défauts en pourcentages (somme 100) ; la fusion a
+ * injecté `commercial: 25` au milieu de voisins à 0,1, et l'écran affichait
+ * **97,1 %** pour la part commerciale. Pour ces configs, passer `{}` et
+ * appliquer ses propres défauts si le résultat est vide.
  */
 export async function readContentGenConfig<T>(key: string, defaultValue: T): Promise<T> {
   try {

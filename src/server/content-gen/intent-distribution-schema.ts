@@ -121,6 +121,55 @@ export function validateIntentDistribution(
 }
 
 /**
+ * Répartition par défaut, EN POURCENTAGES (somme 100).
+ *
+ * 🔴 SOURCE UNIQUE — ne pas en recopier une variante ailleurs. Ces valeurs
+ * vivaient en double (écran de réglage + orchestrateur). C'est précisément ce
+ * doublon qui a laissé les deux échelles diverger sans que rien ne le signale.
+ */
+export const INTENT_DISTRIBUTION_DEFAULTS: IntentDistribution = {
+  informational: 50,
+  commercial: 25,
+  local: 15,
+  transactional: 5,
+  navigational: 5,
+};
+
+/**
+ * Lit une répartition stockée et applique les défauts EN BLOC si rien
+ * d'exploitable n'en sort. **C'est le seul point d'entrée légitime** pour les
+ * deux consommateurs (écran via `policies.ts`, génération via l'orchestrateur).
+ *
+ * 🔴 POURQUOI « EN BLOC » ET JAMAIS CLÉ PAR CLÉ.
+ *
+ * Une répartition ne se lit pas champ par champ : ses poids n'ont de sens que
+ * les uns par rapport aux autres. Compléter les clés manquantes avec des
+ * défauts revient à mélanger deux échelles. Vécu en production le 2026-08-04 :
+ * la ligne stockée est en fractions (somme 1), les défauts en pourcentages
+ * (somme 100) ; la fusion a injecté `commercial: 25` au milieu de voisins à
+ * 0,1 et l'écran affichait **97,1 %** pour la part commerciale — pire que le
+ * zéro qu'on venait de corriger.
+ *
+ * Corollaire, valable pour tout appelant : lire cette clé avec
+ * `readContentGenConfig(..., {})`. Passer des défauts à cette lecture les
+ * ferait fusionner clé par clé et rouvrirait exactement ce piège.
+ */
+export function resolveIntentDistribution(
+  raw: unknown,
+  logWarn?: (msg: string) => void,
+): IntentDistribution {
+  const valide = logWarn
+    ? validateIntentDistribution(raw, logWarn)
+    : validateIntentDistribution(raw);
+  const somme = Object.values(valide).reduce((s, v) => s + v, 0);
+  // Somme nulle = aucune clé exploitable. On rend les défauts entiers plutôt
+  // qu'une grille de zéros, qui laisserait croire qu'aucune intention n'est
+  // générée.
+  if (somme <= 0) return { ...INTENT_DISTRIBUTION_DEFAULTS };
+  return valide;
+}
+
+/**
  * Ramène des pondérations à des pourcentages de somme 100.
  *
  * Les pondérations sont RELATIVES en aval (l'orchestrateur les passe à un

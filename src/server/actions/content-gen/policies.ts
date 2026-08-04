@@ -19,7 +19,7 @@ import { requireAdmin } from "./_auth";
 import { readContentGenConfig, writeContentGenConfig } from "./_settings";
 import { CONTENT_TYPES_ALL } from "./policies-constants";
 import {
-  validateIntentDistribution,
+  resolveIntentDistribution,
   toPourcentages,
 } from "../../content-gen/intent-distribution-schema";
 
@@ -404,14 +404,6 @@ export interface SearchIntentDistribution {
   readonly navigational: number;
 }
 
-const INTENT_DEFAULTS: SearchIntentDistribution = {
-  informational: 50,
-  commercial: 25,
-  local: 15,
-  transactional: 5,
-  navigational: 5,
-};
-
 export async function getSearchIntentDistribution(): Promise<SearchIntentDistribution> {
   // 🔴 `readContentGenConfig` fait un `as unknown as T` NON VÉRIFIÉ : les
   // valeurs par défaut ne servent que si la LIGNE EST ABSENTE, jamais si elle
@@ -420,13 +412,17 @@ export async function getSearchIntentDistribution(): Promise<SearchIntentDistrib
   // pourcentages de somme 100 — d'où « Somme actuelle : NaN % » et un champ
   // vide, constatés le 2026-08-03. On passe donc par le validateur partagé,
   // qui replie l'alias, puis on ramène à l'échelle de l'écran.
-  const brut = await readContentGenConfig<unknown>("search_intent_distribution", INTENT_DEFAULTS);
-  const pct = toPourcentages(validateIntentDistribution(brut));
+  // ⚠️ Défaut `{}` OBLIGATOIRE — surtout pas la répartition par défaut. Une
+  // répartition se lit d'un bloc : fusionner des défauts en pourcentages avec
+  // une configuration stockée en fractions donne un hybride absurde (vérifié
+  // en production le 2026-08-04 : la part commerciale s'affichait à 97,1 %).
+  // Les défauts s'appliquent EN BLOC dans `resolveIntentDistribution`, et
+  // seulement si rien d'exploitable n'est stocké.
+  const brut = await readContentGenConfig<unknown>("search_intent_distribution", {});
+  // `resolve` garantit une somme non nulle : `toPourcentages` ne peut plus
+  // renvoyer `{}`, donc plus de « Somme actuelle : NaN % ».
+  const pct = toPourcentages(resolveIntentDistribution(brut));
   const lu = (cle: keyof SearchIntentDistribution): number => pct[cle] ?? 0;
-  const somme = Object.values(pct).reduce((s, v) => s + v, 0);
-  // Aucune clé exploitable : on montre les valeurs par défaut plutôt qu'une
-  // grille de zéros, qui laisserait croire qu'aucune intention n'est générée.
-  if (somme <= 0) return INTENT_DEFAULTS;
   return {
     informational: lu("informational"),
     commercial: lu("commercial"),
