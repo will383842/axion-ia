@@ -39,7 +39,7 @@ export interface FormationVersionEntry {
   /** Auteur (userId admin) du changement. */
   by: string;
   /** Nature du changement. */
-  action: "update" | "certification";
+  action: "update" | "certification" | "reset_generation";
   /** Champs modifiés (clés). */
   fields: string[];
   /** True si le changement a invalidé une validation humaine existante. */

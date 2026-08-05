@@ -638,6 +638,100 @@ export async function archiveFormationAction(id: string): Promise<ActionResult<{
   return { data: { id: idParsed.data } };
 }
 
+/**
+ * Renvoie une formation publiée (ou assemblée) au point de départ du moteur
+ * (`statutGeneration → intention`) pour la faire repasser par l'étape contenu.
+ *
+ * 🔴 Sans cette action, `publie` est un CUL-DE-SAC : non relançable par
+ * `startGenerationAction` (statuts relançables : intention / structure_generee /
+ * contenu_evalue), no-op côté worker, et « éditer pour dépublier » mène à
+ * `assemble` — pas relançable non plus. Le contournement par duplication est un
+ * piège : slug `-copie` sans kit documentaire, et archivage automatique par le
+ * cleanup du seed. C'est le déblocage requis par le pilote qualité (Phase 3 du
+ * plan parcours vente).
+ *
+ * Gardes :
+ *   - `requireAdminPublish` (on retire une formation du référentiel actif) ;
+ *   - REFUS si session en cours/réalisée (contenu figé, même règle que WS4) ;
+ *   - avertissement explicite : pendant tout le cycle moteur, la formation
+ *     SORT du sélecteur de sessions et de la page publique (fenêtre de
+ *     non-planifiabilité) jusqu'à revalidation + republication.
+ *
+ * Trace : versionHistorique (action "reset_generation") + ActivityLog.
+ */
+export async function resetGenerationStatusAction(
+  id: string,
+): Promise<ActionResult<{ id: string; avertissement: string }>> {
+  const session = await requireAdminPublish();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: {
+      id: true,
+      slug: true,
+      statut: true,
+      statutGeneration: true,
+      versionProgramme: true,
+      versionHistorique: true,
+    },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+  if (formation.statut === "archive" || formation.statutGeneration === "archive") {
+    return { error: "Formation archivée : dupliquez-la plutôt que de relancer le moteur." };
+  }
+  if (!["publie", "assemble", "contenu_valide", "contenu_genere"].includes(formation.statutGeneration)) {
+    return {
+      error: `Statut "${formation.statutGeneration}" déjà relançable ou en cours de cycle : utilisez directement « Lancer la génération ».`,
+    };
+  }
+  if ((await countLockingSessions(prisma, idParsed.data)) > 0) {
+    return { error: LOCKED_BY_SESSION_ERROR };
+  }
+
+  const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
+  const entry: FormationVersionEntry = {
+    version: nextVersion,
+    at: new Date().toISOString(),
+    by: session.userId,
+    action: "reset_generation",
+    fields: ["statutGeneration"],
+    revalidationRequired: true,
+  };
+
+  await prisma.formation.update({
+    where: { id: idParsed.data },
+    data: {
+      statutGeneration: "intention",
+      validatedBy: null,
+      validatedAt: null,
+      versionProgramme: nextVersion,
+      versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+    },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.reset_generation",
+    targetType: "Formation",
+    targetId: idParsed.data,
+    changes: { from: formation.statutGeneration, to: "intention", version: nextVersion },
+    session,
+  });
+
+  revalidateFormationPages({ slug: formation.slug });
+
+  return {
+    data: {
+      id: idParsed.data,
+      avertissement:
+        "La formation est repartie en « Intention » : elle n'apparaît plus dans le sélecteur " +
+        "de sessions ni sur la page publique tant qu'elle n'a pas été régénérée, revalidée et " +
+        "republiée. Lancez la génération, puis validez le contenu proposé.",
+    },
+  };
+}
+
 /** Construit un slug libre dérivé de `base` (`-copie`, `-copie-2`, …). */
 async function allocateCopySlug(base: string): Promise<string> {
   for (let i = 1; i <= 50; i++) {

@@ -5333,6 +5333,7 @@ model Client {
 
   emailsEnAttente EmailOutbox[]
   reglesEmail     EmailAutomationSetting[]
+  venteBrouillons VenteBrouillon[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5402,11 +5403,53 @@ model Devis {
   facturesFormation   FactureFormation[]
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
+  venteBrouillons     VenteBrouillon[]
 
   @@index([clientId])
   @@index([statut])
   @@index([documentGenereId])
   @@map("devis")
+}
+
+/// Brouillon du parcours guidé « Nouvelle vente » (wizard admin, plan 2026-08-05).
+///
+/// Une session TrainingSession ne PEUT PAS être brouillon (5 colonnes NOT NULL,
+/// numéro consommé, SessionJour + transition écrits à la création) — ce modèle
+/// porte donc l'état du wizard entre deux visites, et RIEN d'autre.
+///
+/// Payload MINIMISÉ (RGPD) : dès qu'une entité réelle existe (client, devis,
+/// session), le brouillon ne garde que sa référence — les champs libres saisis
+/// avant création (contact, email…) ne vivent dans `payload` QUE tant que le
+/// Client n'est pas créé. Purge : cron `retention-purge` (03:00) sur
+/// `retentionUntil` — posé à la création (90 j par défaut), le brouillon
+/// CONVERTI est supprimé dès la création du devis. Jamais de purge des pièces
+/// émises (Devis, factures, DocumentGenere : obligation comptable).
+model VenteBrouillon {
+  id      String @id @default(uuid()) @db.Uuid
+  /// Étape courante du wizard (1 client · 2 formation · 3 session · 4 checklist).
+  etape   Int    @default(1)
+  /// Données du wizard non encore matérialisées en entités réelles.
+  payload Json   @default("{}")
+
+  clientId  String?          @map("client_id") @db.Uuid
+  client    Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId   String?          @map("devis_id") @db.Uuid
+  devis     Devis?           @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  sessionId String?          @map("session_id") @db.Uuid
+  session   TrainingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  /// Admin propriétaire du brouillon (uuid AdminUser, sans FK — lecture seule).
+  createdByAdminId String? @map("created_by_admin_id") @db.Uuid
+
+  /// Purge RGPD : date au-delà de laquelle le cron retention-purge supprime.
+  retentionUntil DateTime? @map("retention_until")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([retentionUntil])
+  @@index([createdByAdminId, updatedAt])
+  @@map("vente_brouillons")
 }
 
 // ============================================================
@@ -5985,6 +6028,7 @@ model TrainingSession {
   emargementContresignatures EmargementContresignature[]
   /// Journées RÉELLEMENT animées (décision D14). Vide = repli sur `dateDebut..dateFin`.
   jours                      SessionJour[]
+  venteBrouillons            VenteBrouillon[]
 
   @@index([formationId])
   @@index([clientId])

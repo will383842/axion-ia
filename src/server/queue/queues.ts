@@ -1329,6 +1329,14 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 5 * * *",
         jobId: "formation-crons-plans-recurrents-cron",
       },
+      // Parcours vente — expiration des devis à dateValidite (statut seul,
+      // aucun email), daily 06:45 UTC : APRÈS factures-retard (06:30) et AVANT
+      // le moteur d'alertes (07:00) pour que devis_expire voie l'état à jour.
+      {
+        type: "formation-crons.devis-expiration",
+        pattern: "45 6 * * *",
+        jobId: "formation-crons-devis-expiration-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {

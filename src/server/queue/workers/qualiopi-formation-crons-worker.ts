@@ -76,7 +76,9 @@ export type FormationCronJobType =
   | "formation-crons.factures-retard"
   // Hub facturation Phase 5 — génération des BROUILLONS des plans récurrents
   // (émission + envoi = clics admin, jamais automatiques).
-  | "formation-crons.plans-recurrents";
+  | "formation-crons.plans-recurrents"
+  // Parcours vente — expiration des devis à dateValidite (SPEC_PART5 §D.10).
+  | "formation-crons.devis-expiration";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -1049,6 +1051,38 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Parcours vente — expiration des devis (SPEC_PART5 §D.10)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 06:45 UTC — passe `envoye → expire` les devis dont `dateValidite` est
+ * dépassée.
+ *
+ * 🔴 Avant ce cron, AUCUN chemin ne posait jamais ce statut à l'échéance : seul
+ * `reviseDevisAction` l'écrivait (en expirant l'ancienne version d'un devis
+ * révisé). Un devis mort depuis des mois restait « envoyé » pour toujours —
+ * le tableau de bord mentait, et `createSessionAction` refusait le devis sans
+ * que rien n'explique pourquoi.
+ *
+ * Statut seul, AUCUN email (même politique que factures-retard). Les alertes
+ * `devis_expire_j7` / `devis_expire` (évaluateur, 07:00) s'appuient sur l'état
+ * posé ici — d'où l'horaire AVANT le job alertes.
+ */
+async function handleDevisExpiration(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] devis-expiration: stub DB, skip");
+    return;
+  }
+
+  const res = await prisma.devis.updateMany({
+    where: { statut: "envoye", dateValidite: { lt: new Date() } },
+    data: { statut: "expire" },
+  });
+
+  console.log(`[formation-crons] devis-expiration: ${res.count} devis passé(s) envoye→expire`);
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -1062,6 +1096,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
+  "formation-crons.devis-expiration": handleDevisExpiration,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

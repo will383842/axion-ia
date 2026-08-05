@@ -1655,3 +1655,73 @@ describe("evaluerAlertes — offres_site_non_verifiees", () => {
     expect(alertes.find((a) => a.code === "offres_site_non_verifiees")).toBeUndefined();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règles devis_expire_j7 / devis_expire (SPEC_PART5 §D.10) [2026-08-05]
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — échéance des devis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  // Le mock `devis.findMany` sert les TROIS règles devis (sans_reponse,
+  // expire_j7, expire) : chaque ligne mockée porte donc tous les champs lus
+  // par chacune, et on filtre par code.
+  const dansCinqJours = () => new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+  const ilYaDixJours = () => new Date(Date.now() - 10 * 24 * 60 * 60 * 1000);
+
+  it("devis_expire_j7 : devis envoyé dont l'échéance tombe sous 7 jours", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "dev-1",
+        numero: "AXI-DEV-2026-042",
+        sentAt: ilYaDixJours(),
+        dateValidite: dansCinqJours(),
+        client: { raisonSociale: "INVEST SUN" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "devis_expire_j7");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("important");
+    expect(alerte?.cibleType).toBe("Devis");
+    expect(alerte?.cibleId).toBe("dev-1");
+    expect(alerte?.message).toContain("AXI-DEV-2026-042");
+    expect(alerte?.message).toContain("INVEST SUN");
+  });
+
+  it("devis_expire : devis expiré sans révision → info avec consigne", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "dev-2",
+        numero: "AXI-DEV-2026-041",
+        sentAt: ilYaDixJours(),
+        dateValidite: ilYaDixJours(),
+        client: { raisonSociale: "INVEST SUN" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "devis_expire");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("info");
+    expect(alerte?.message).toContain("nouveau devis");
+  });
+
+  it("les WHERE émis portent bien l'échéance et l'absence de révision (garde)", async () => {
+    // La garde ne vaut que si elle rougit : on vérifie les requêtes réellement
+    // émises. Trois règles appellent devis.findMany — on identifie les deux
+    // nouvelles par la présence de `dateValidite` dans leur where.
+    mp.devis.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+    const wheres = mp.devis.findMany.mock.calls.map(
+      (c) => (c[0] as { where: Record<string, unknown> }).where,
+    );
+    const avecEcheance = wheres.filter((w) => w["dateValidite"] !== undefined);
+    expect(avecEcheance).toHaveLength(2);
+    const surExpire = wheres.find((w) => w["statut"] === "expire");
+    expect(surExpire).toBeDefined();
+    expect(surExpire?.["revisions"]).toEqual({ none: {} });
+  });
+});

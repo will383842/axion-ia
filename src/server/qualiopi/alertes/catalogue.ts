@@ -63,6 +63,47 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Cycle commercial : devis & signatures ─────────────────────────────────
+  /**
+   * 🔴 Bug latent corrigé le 2026-08-05 : ces trois premiers codes étaient émis
+   * par l'évaluateur depuis la refonte du 2026-08-01 mais ABSENTS du catalogue.
+   * Or `synchroniserAlertes` ne résout automatiquement QUE les codes du
+   * catalogue à `resolutionAuto: true` — un devis accepté ou une pièce signée
+   * laissaient donc leur alerte OUVERTE pour toujours (résolution manuelle
+   * seulement, sans que rien ne le signale).
+   */
+  devis_sans_reponse: {
+    niveau: "important",
+    titre: "Devis envoyé sans réponse depuis +7 jours",
+    resolutionAuto: true,
+  },
+  signature_en_attente: {
+    niveau: "important",
+    titre: "Lien de signature sans signature depuis +7 jours",
+    resolutionAuto: true,
+  },
+  signature_contreseing_du: {
+    niveau: "important",
+    titre: "Pièce signée d'un seul côté depuis +7 jours",
+    resolutionAuto: true,
+  },
+  /**
+   * SPEC_PART5 §D.10 — échéance de validité des devis. Le statut `expire` est
+   * posé par le cron `formation-crons.devis-expiration` (06:45), les alertes
+   * sont levées par l'évaluateur (07:00). `devis_expire_j7` = dernière fenêtre
+   * de relance ; `devis_expire` = piste à clôturer ou re-deviser.
+   */
+  devis_expire_j7: {
+    niveau: "important",
+    titre: "Devis expire dans moins de 7 jours",
+    resolutionAuto: true,
+  },
+  devis_expire: {
+    niveau: "info",
+    titre: "Devis expiré sans suite",
+    resolutionAuto: true,
+  },
+
   // ── Référentiel des offres ────────────────────────────────────────────────
   /**
    * SPEC_PART5 §A.2 : une offre active dont la cohérence avec la page du site

@@ -1133,6 +1133,70 @@ async function regleDevisSansReponse(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
+ * R-DEV-EXP-J7 — Devis qui expire dans les 7 jours (SPEC_PART5 §D.10).
+ *
+ * Complémentaire de `devis_sans_reponse` (dormant depuis J+7 après ENVOI) :
+ * ici l'horloge est l'ÉCHÉANCE (`dateValidite`, J+30 par défaut). Un devis
+ * envoyé il y a 25 jours n'est plus « dormant », il est en train de mourir —
+ * c'est la dernière fenêtre utile pour relancer.
+ */
+async function regleDevisExpireJ7(now: Date): Promise<AlerteCandidate[]> {
+  const devisEnFin = await prisma.devis.findMany({
+    where: {
+      statut: "envoye",
+      dateValidite: { gte: now, lte: daysFromNow(7, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return devisEnFin.map((d) => ({
+    code: "devis_expire_j7",
+    niveau: "important" as AlerteNiveau,
+    titre: "Devis expire dans moins de 7 jours",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) expire le ${d.dateValidite.toLocaleDateString("fr-FR")} : dernière fenêtre pour relancer le client avant l'échéance.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
+ * R-DEV-EXP — Devis expiré sans suite (SPEC_PART5 §D.10).
+ *
+ * Le statut `expire` est posé par le cron `formation-crons.devis-expiration`
+ * (06:45, avant ce moteur à 07:00). Un devis expiré qui a déjà une révision
+ * (`revisions`) a une suite — pas d'alerte. Borne basse 90 jours : au-delà,
+ * c'est de l'histoire, pas une action à mener (même logique que la borne de
+ * `session_sans_formateur`).
+ */
+async function regleDevisExpire(now: Date): Promise<AlerteCandidate[]> {
+  const devisExpires = await prisma.devis.findMany({
+    where: {
+      statut: "expire",
+      dateValidite: { gte: daysAgo(90, now), lt: now },
+      revisions: { none: {} },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return devisExpires.map((d) => ({
+    code: "devis_expire",
+    niveau: "info" as AlerteNiveau,
+    titre: "Devis expiré sans suite",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) a expiré le ${d.dateValidite.toLocaleDateString("fr-FR")} sans acceptation ni révision : créer un nouveau devis ou clôturer la piste.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
  * Signature qui traîne sur une pièce émise — refonte console phase 1
  * (2026-08-01), le second trou trouvé avec le devis dormant.
  *
@@ -1601,6 +1665,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "relance_sans_effet", fn: regleRelanceSansEffet },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
+  { nom: "devis_expire_j7", fn: regleDevisExpireJ7 },
+  { nom: "devis_expire", fn: regleDevisExpire },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },

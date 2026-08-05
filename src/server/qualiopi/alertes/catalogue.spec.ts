@@ -25,6 +25,14 @@ const CODES_ATTENDUS: string[] = [
   // SPEC_PART5 §A.2, écrite le 2026-08-05 : la colonne `derniereVerifCoherenceAt`
   // existait depuis T1 sans qu'aucune règle ne surveille son ancienneté.
   "offres_site_non_verifiees",
+  // Cycle commercial (2026-08-05). Les 3 premiers réparent un bug latent :
+  // émis par l'évaluateur depuis le 2026-08-01 mais hors catalogue → jamais
+  // auto-résolus. Les 2 derniers = SPEC_PART5 §D.10 (échéance de validité).
+  "devis_sans_reponse",
+  "signature_en_attente",
+  "signature_contreseing_du",
+  "devis_expire_j7",
+  "devis_expire",
   "emails_en_attente_validation",
   "emargement_manquant",
   "session_sans_formateur",
