@@ -225,6 +225,7 @@ export default async function FacturationHubPage({
           factureFormation: { select: { numero: true } },
           invoice: { select: { number: true } },
           quote: { select: { number: true } },
+          devis: { select: { numero: true } },
         },
       }),
       prisma.dossierFinancement.findMany({
@@ -324,7 +325,11 @@ export default async function FacturationHubPage({
       palier: r.palier,
       suggestion: r.suggestion,
       libelle:
-        r.factureFormation?.numero ?? r.invoice?.number ?? r.quote?.number ?? "Document inconnu",
+        r.factureFormation?.numero ??
+        r.invoice?.number ??
+        r.quote?.number ??
+        r.devis?.numero ??
+        "Document inconnu",
       envoiDirect: r.factureFormationId !== null,
       // Le formatage (euros, dates) est fait ICI, côté serveur : le composant
       // client n'embarque ni `Intl.NumberFormat` ni logique de montant.

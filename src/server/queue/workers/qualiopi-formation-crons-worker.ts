@@ -1068,19 +1068,60 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
  * Statut seul, AUCUN email (même politique que factures-retard). Les alertes
  * `devis_expire_j7` / `devis_expire` (évaluateur, 07:00) s'appuient sur l'état
  * posé ici — d'où l'horaire AVANT le job alertes.
+ *
+ * ## Relance J+3 (même passage)
+ *
+ * Un devis `envoye` sans réponse depuis 3 jours fait l'objet d'une PROPOSITION
+ * de relance dans le hub facturation (envoi = clic admin, jamais automatique) —
+ * la mécanique exacte de `quote-pending-reminder` côté booking, appliquée aux
+ * devis CRM. Distincte de l'alerte `devis_sans_reponse` (J+7, évaluateur) :
+ * la RelanceProposee est une ACTION proposée, l'alerte une ESCALADE de
+ * pilotage (cf. `relance-paliers.ts`). L'expiration est posée AVANT la
+ * sélection : un devis échu ce matin ne reçoit pas de relance de courtoisie.
  */
 async function handleDevisExpiration(): Promise<void> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     console.log("[formation-crons] devis-expiration: stub DB, skip");
     return;
   }
+  const now = new Date();
 
   const res = await prisma.devis.updateMany({
-    where: { statut: "envoye", dateValidite: { lt: new Date() } },
+    where: { statut: "envoye", dateValidite: { lt: now } },
     data: { statut: "expire" },
   });
 
-  console.log(`[formation-crons] devis-expiration: ${res.count} devis passé(s) envoye→expire`);
+  const dormants = await prisma.devis.findMany({
+    where: { statut: "envoye", sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) } },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  let proposees = 0;
+  for (const d of dormants) {
+    // Une proposition par devis (palier unique j3) — idempotent entre passages.
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { devisId: d.id, palier: "j3" },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+    await prisma.relanceProposee.create({
+      data: {
+        type: "devis_sans_reponse",
+        palier: "j3",
+        devisId: d.id,
+        suggestion: `Devis ${d.numero} (${d.client.raisonSociale}) envoyé sans réponse depuis 3 jours — valable jusqu'au ${d.dateValidite.toLocaleDateString("fr-FR")} — relance de courtoisie.`,
+      },
+    });
+    proposees++;
+  }
+
+  console.log(
+    `[formation-crons] devis-expiration: ${res.count} devis passé(s) envoye→expire, ${proposees} relance(s) J+3 proposée(s) (${dormants.length} sans réponse) — AUCUN email client (manuel)`,
+  );
 }
 
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
