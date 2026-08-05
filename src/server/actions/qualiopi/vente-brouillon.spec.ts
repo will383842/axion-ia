@@ -17,6 +17,8 @@ const mockFindUnique = vi.fn();
 const mockFindMany = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
+const mockDevisFindUnique = vi.fn();
+const mockSessionFindUnique = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -28,10 +30,11 @@ vi.mock("@/lib/prisma", () => ({
       delete: (...a: unknown[]) => mockDelete(...a),
     },
     // Vérification d'existence des références avant écriture (un uuid
-    // inexistant levait une P2003 brute au lieu d'un ActionResult).
+    // inexistant levait une P2003 brute au lieu d'un ActionResult) — et de
+    // COHÉRENCE devis/session ↔ client (mocks configurables par test).
     client: { findUnique: () => Promise.resolve({ id: "ok" }) },
-    devis: { findUnique: () => Promise.resolve({ id: "ok" }) },
-    trainingSession: { findUnique: () => Promise.resolve({ id: "ok" }) },
+    devis: { findUnique: (...a: unknown[]) => mockDevisFindUnique(...a) },
+    trainingSession: { findUnique: (...a: unknown[]) => mockSessionFindUnique(...a) },
   },
 }));
 
@@ -71,6 +74,8 @@ beforeEach(() => {
   });
   mockUpdate.mockResolvedValue({ id: ID });
   mockDelete.mockResolvedValue({ id: ID });
+  mockDevisFindUnique.mockResolvedValue({ id: "ok", clientId: CLIENT_ID });
+  mockSessionFindUnique.mockResolvedValue({ id: "ok", clientId: CLIENT_ID });
 });
 
 afterEach(() => {
@@ -202,6 +207,74 @@ describe("updateVenteBrouillonAction — minimisation RGPD", () => {
 
     expect("error" in r).toBe(true);
     expect(mockUpdate).not.toHaveBeenCalled();
+  });
+});
+
+describe("updateVenteBrouillonAction — cohérence des références", () => {
+  const AUTRE_CLIENT = "550e8400-e29b-41d4-a716-446655440033";
+  const DEVIS_ID = "550e8400-e29b-41d4-a716-446655440044";
+  const SESSION_ID = "550e8400-e29b-41d4-a716-446655440055";
+
+  it("refuse un devis appartenant à un autre client que celui du brouillon", async () => {
+    mockDevisFindUnique.mockResolvedValue({ id: DEVIS_ID, clientId: AUTRE_CLIENT });
+
+    const r = await updateVenteBrouillonAction({ id: ID, clientId: CLIENT_ID, devisId: DEVIS_ID });
+
+    expect("error" in r && r.error).toContain("autre client");
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("refuse un devis étranger même quand le clientId vient de la BASE (pas de l'appel)", async () => {
+    mockFindUnique.mockResolvedValue({
+      createdByAdminId: "admin-1",
+      clientId: CLIENT_ID,
+      payload: {},
+    });
+    mockDevisFindUnique.mockResolvedValue({ id: DEVIS_ID, clientId: AUTRE_CLIENT });
+
+    const r = await updateVenteBrouillonAction({ id: ID, devisId: DEVIS_ID });
+
+    expect("error" in r).toBe(true);
+    expect(mockUpdate).not.toHaveBeenCalled();
+  });
+
+  it("accepte le devis du bon client", async () => {
+    const r = await updateVenteBrouillonAction({ id: ID, clientId: CLIENT_ID, devisId: DEVIS_ID });
+    expect("data" in r).toBe(true);
+  });
+
+  it("refuse une session d'un autre client, accepte une session sans client (legacy)", async () => {
+    mockSessionFindUnique.mockResolvedValue({ id: SESSION_ID, clientId: AUTRE_CLIENT });
+    const rEtrangere = await updateVenteBrouillonAction({
+      id: ID,
+      clientId: CLIENT_ID,
+      sessionId: SESSION_ID,
+    });
+    expect("error" in rEtrangere && rEtrangere.error).toContain("autre client");
+
+    mockSessionFindUnique.mockResolvedValue({ id: SESSION_ID, clientId: null });
+    const rLegacy = await updateVenteBrouillonAction({
+      id: ID,
+      clientId: CLIENT_ID,
+      sessionId: SESSION_ID,
+    });
+    expect("data" in rLegacy).toBe(true);
+  });
+
+  it("sans client (ni appel ni base), un devis passe — la cohérence se rejoue quand le client arrive", async () => {
+    const r = await updateVenteBrouillonAction({ id: ID, devisId: DEVIS_ID });
+    expect("data" in r).toBe(true);
+  });
+});
+
+describe("updateVenteBrouillonAction — rétention glissante", () => {
+  it("chaque mise à jour repousse retentionUntil (la purge court après la DERNIÈRE activité)", async () => {
+    await updateVenteBrouillonAction({ id: ID, etape: 2 });
+
+    const data = mockUpdate.mock.calls[0]?.[0]?.data as Record<string, unknown>;
+    const ecart = (data.retentionUntil as Date).getTime() - Date.now();
+    expect(ecart).toBeGreaterThan(89 * JOUR_MS);
+    expect(ecart).toBeLessThan(91 * JOUR_MS);
   });
 });
 

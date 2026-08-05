@@ -112,6 +112,16 @@ describe("createCoachingParcoursAction", () => {
     expect("error" in res).toBe(true);
   });
 
+  it("devisId SANS clientId : le client est DÉRIVÉ du devis (garde non contournable)", async () => {
+    const res = await createCoachingParcoursAction(baseInput({ devisId: DEVIS_ID }));
+    if (!("data" in res)) throw new Error(`attendu data, reçu ${JSON.stringify(res)}`);
+    const data = mp.coachingSession.create.mock.calls[0]![0].data;
+    // Sans dérivation, la séance porterait un devis sans son client — et la
+    // garde d'appartenance était contournable en omettant clientId.
+    expect(data.clientId).toBe(CLIENT_ID);
+    expect(data.devisId).toBe(DEVIS_ID);
+  });
+
   it("REFUSE une séance dont la fin précède le début", async () => {
     const res = await createCoachingParcoursAction(
       baseInput({

@@ -78,6 +78,7 @@ export async function createCoachingParcoursAction(
   // Même garde que createSessionAction : un devis rattaché doit appartenir au
   // même client et être accepté (ou transformé) — pas de parcours sur un devis
   // encore brouillon/refusé.
+  let clientIdEffectif = v.clientId;
   if (v.devisId) {
     const devis = await prisma.devis.findUnique({
       where: { id: v.devisId },
@@ -90,6 +91,10 @@ export async function createCoachingParcoursAction(
     if (devis.statut !== "accepte" && devis.statut !== "transforme_convention") {
       return { error: "Le devis rattaché doit être accepté avant de planifier le parcours" };
     }
+    // clientId omis : DÉRIVÉ du devis — sinon la garde d'appartenance était
+    // contournable en n'envoyant que le devisId, et le parcours portait un
+    // devis sans son client.
+    clientIdEffectif = v.clientId ?? devis.clientId;
   }
 
   for (const s of v.seances) {
@@ -117,7 +122,7 @@ export async function createCoachingParcoursAction(
             ...(v.beneficiaireEntreprise
               ? { beneficiaireEntreprise: v.beneficiaireEntreprise }
               : {}),
-            ...(v.clientId ? { clientId: v.clientId } : {}),
+            ...(clientIdEffectif ? { clientId: clientIdEffectif } : {}),
             ...(v.devisId ? { devisId: v.devisId } : {}),
             ...(v.estAfest !== undefined ? { estAfest: v.estAfest } : {}),
           },
@@ -143,7 +148,7 @@ export async function createCoachingParcoursAction(
       trainerId: v.trainerId,
       interventionSlug: v.interventionSlug,
       nbSeances: ids.length,
-      clientId: v.clientId ?? null,
+      clientId: clientIdEffectif ?? null,
       devisId: v.devisId ?? null,
       estAfest: v.estAfest ?? false,
     },

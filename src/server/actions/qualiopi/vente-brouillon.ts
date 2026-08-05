@@ -224,24 +224,34 @@ export async function updateVenteBrouillonAction(
   }
 
   // Références : vérifier l'EXISTENCE avant d'écrire — un uuid inexistant
-  // levait une P2003 brute (exception) au lieu d'un ActionResult.
+  // levait une P2003 brute (exception) au lieu d'un ActionResult — ET la
+  // COHÉRENCE : un devis/une session d'un AUTRE client produirait une
+  // checklist mensongère à la reprise du brouillon.
+  const clientEffectif = v.clientId ?? existant.clientId;
   if (v.clientId !== undefined) {
     const c = await prisma.client.findUnique({ where: { id: v.clientId }, select: { id: true } });
     if (!c) return { error: "Client introuvable" };
   }
   if (v.devisId !== undefined) {
-    const d = await prisma.devis.findUnique({ where: { id: v.devisId }, select: { id: true } });
+    const d = await prisma.devis.findUnique({
+      where: { id: v.devisId },
+      select: { id: true, clientId: true },
+    });
     if (!d) return { error: "Devis introuvable" };
+    if (clientEffectif != null && d.clientId !== clientEffectif) {
+      return { error: "Le devis rattaché appartient à un autre client" };
+    }
   }
   if (v.sessionId !== undefined) {
     const s = await prisma.trainingSession.findUnique({
       where: { id: v.sessionId },
-      select: { id: true },
+      select: { id: true, clientId: true },
     });
     if (!s) return { error: "Session introuvable" };
+    if (clientEffectif != null && s.clientId !== null && s.clientId !== clientEffectif) {
+      return { error: "La session rattachée appartient à un autre client" };
+    }
   }
-
-  const clientEffectif = v.clientId ?? existant.clientId;
 
   // Payload à écrire : celui fourni, sinon l'existant SI la minimisation
   // l'exige (clientId posé + contacts libres encore présents).
@@ -253,6 +263,12 @@ export async function updateVenteBrouillonAction(
     }
   }
 
+  // La rétention court après la DERNIÈRE ACTIVITÉ, pas après la création :
+  // figée à la création, un brouillon encore actif (devis envoyé attendant
+  // longtemps sa signature) aurait été purgé à J+90 en pleine vie.
+  const retentionUntil = new Date();
+  retentionUntil.setDate(retentionUntil.getDate() + lireJoursRetention());
+
   await prisma.venteBrouillon.update({
     where: { id: v.id },
     data: {
@@ -261,6 +277,7 @@ export async function updateVenteBrouillonAction(
       ...(v.clientId !== undefined ? { clientId: v.clientId } : {}),
       ...(v.devisId !== undefined ? { devisId: v.devisId } : {}),
       ...(v.sessionId !== undefined ? { sessionId: v.sessionId } : {}),
+      retentionUntil,
     },
   });
 
