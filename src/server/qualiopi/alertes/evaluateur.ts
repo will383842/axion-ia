@@ -25,6 +25,7 @@ import {
   cumulAnnuelFormateurCents,
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
+import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -264,6 +265,86 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
       cibleId: s.id,
     };
   });
+}
+
+/**
+ * R03quater — Diaporama de salle non déposé pour une session imminente.
+ *
+ * Le slot `diaporama` du kit documentaire est LE .pptx projeté en salle — le
+ * fil conducteur de la séance. Une session qui démarre sous 7 jours sans
+ * diaporama déposé dans la bibliothèque, c'est un formateur qui réclamera le
+ * fichier la veille (ou improvisera).
+ *
+ * ⚠️ La jointure Formation ↔ kit n'existe QUE par convention
+ * (`Formation.slug === interventionSlug`) : elle est résolue STRICTEMENT par
+ * `resolveInterventionSlugForFormation`, jamais devinée. Si le slug n'est pas
+ * résolvable (formation sur-mesure ou dupliquée `slug-copie`), PAS d'alerte :
+ * ces formations n'ont pas de kit dans la bibliothèque, le formateur dépose
+ * son support où il veut — alerter exigerait un dépôt à un emplacement qui
+ * n'existe pas, et une alerte insoluble apprend à ignorer les alertes.
+ *
+ * « Déposé » = une version COURANTE publiée (`currentVersionId` non nul) : une
+ * ligne de slot sans version est un emplacement vide, pas un dépôt.
+ */
+async function regleDiaporamaManquant(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      // Mêmes bornes que R03bis : horizon J-7, borne basse 365 jours (sans
+      // elle, le premier passage remonterait tout l'historique d'un coup).
+      dateDebut: { lte: daysFromNow(7, now), gte: daysAgo(365, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      statut: true,
+      dateDebut: true,
+      client: { select: { raisonSociale: true } },
+      formation: { select: { slug: true } },
+    },
+  });
+
+  // Garde applicative doublant le `where` (les mocks de test ignorent le SQL),
+  // puis résolution du slug kit — fail-visible : pas de kit, pas d'alerte.
+  const candidates = sessions.flatMap((s) => {
+    if (s.formation == null) return [];
+    if (s.statut !== "planifiee" && s.statut !== "en_cours") return [];
+    if (s.dateDebut > daysFromNow(7, now) || s.dateDebut < daysAgo(365, now)) return [];
+    const slug = resolveInterventionSlugForFormation(s.formation);
+    if (slug === null) return [];
+    return [{ session: s, slug }];
+  });
+  if (candidates.length === 0) return [];
+
+  const deposes = await prisma.interventionDocument.findMany({
+    where: {
+      interventionSlug: { in: [...new Set(candidates.map((c) => c.slug))] },
+      slot: "diaporama",
+      currentVersionId: { not: null },
+    },
+    select: { interventionSlug: true },
+  });
+  const slugsDeposes = new Set(deposes.map((d) => d.interventionSlug));
+
+  return candidates
+    .filter((c) => !slugsDeposes.has(c.slug))
+    .map(({ session: s, slug }) => {
+      // Même règle de langue que R03bis : une session déjà démarrée se dit au
+      // passé — une alerte qui annonce au futur un fait accompli cesse d'être lue.
+      const passee = s.dateDebut.getTime() < now.getTime();
+      const date = s.dateDebut.toLocaleDateString("fr-FR");
+      return {
+        code: "diaporama_manquant_session",
+        niveau: "important" as AlerteNiveau,
+        titre: "Diaporama non déposé pour une session imminente",
+        message: passee
+          ? `La session ${designerSession(s)} a démarré le ${date} sans diaporama de salle déposé : déposer le .pptx dans Documents interventions → Formations → ${slug} (slot « Diaporama formateur »).`
+          : `La session ${designerSession(s)} démarre le ${date} et le diaporama de salle (.pptx) n'est pas déposé : le déposer dans Documents interventions → Formations → ${slug} (slot « Diaporama formateur »).`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      };
+    });
 }
 
 /** R04 — Satisfaction manquante : session realisee > 7 jours + questionnaire non rempli. */
@@ -1645,6 +1726,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
+  { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },

@@ -152,6 +152,22 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Animation (kit documentaire) ──────────────────────────────────────────
+  /**
+   * Le diaporama de salle (slot `diaporama` du kit, le .pptx projeté) n'est pas
+   * déposé dans la bibliothèque alors qu'une session démarre sous 7 jours.
+   * Jointure PAR CONVENTION `Formation.slug === interventionSlug`, résolue
+   * strictement (vente/kit-formation.ts) : une formation sur-mesure ou
+   * dupliquée n'a pas de kit → PAS d'alerte (le formateur dépose son support où
+   * il veut ; une alerte insoluble apprendrait à ignorer les alertes).
+   * `resolutionAuto` : disparaît d'elle-même dès le .pptx déposé.
+   */
+  diaporama_manquant_session: {
+    niveau: "important",
+    titre: "Diaporama non déposé pour une session imminente",
+    resolutionAuto: true,
+  },
+
   // ── Satisfaction ──────────────────────────────────────────────────────────
   satisfaction_manquante: {
     niveau: "important",

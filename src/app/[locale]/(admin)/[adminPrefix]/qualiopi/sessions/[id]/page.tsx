@@ -27,6 +27,7 @@ import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntrep
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
+import { DossierSessionButton } from "@/components/admin/qualiopi/DossierSessionButton";
 import { SignatureDocument } from "@/components/espace-formateur/SignatureDocument";
 import { viserReleveResponsablePedagogiqueAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleveConsole } from "@/server/qualiopi/documents/signature/releve-queries";
@@ -670,7 +671,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Sous-pages</h2>
-        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
           <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
             <span>Émargement</span>
           </Link>
@@ -679,6 +680,15 @@ export default async function SessionHubPage({ params }: PageProps) {
           </Link>
           <Link href={`${sessionBase}/financement`} className={subLinkCls}>
             <span>Financement</span>
+          </Link>
+          {/* Le nécessaire de séance vit au niveau de la FORMATION (kit projeté
+              + supports générés) : on y mène depuis la session, là où on
+              prépare l'animation. */}
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/formations/${trainingSession.formation.id}/animer`}
+            className={subLinkCls}
+          >
+            <span>Tout pour animer (formation)</span>
           </Link>
         </div>
       </section>
@@ -719,6 +729,22 @@ export default async function SessionHubPage({ params }: PageProps) {
        */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Documents</h2>
+
+        {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
+            n'était monté QUE sur la sous-page émargement, alors que « le dossier
+            de cette session » est la demande d'auditeur type ; il doit être
+            atteignable depuis la page principale de la session. Mêmes props que
+            sur emargement/page.tsx. */}
+        <div className="mb-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Un ZIP rangé sous le numéro de cette session : ses documents, sa feuille
+            d&apos;émargement, et la vérification d&apos;intégrité de chaque chaîne de signatures.
+            C&apos;est ce que vous remettez à un auditeur qui demande « le dossier de cette session
+            ».
+          </p>
+          <DossierSessionButton sessionId={id} />
+        </div>
+
         <DocumentsSection
           sessionId={id}
           enrollments={enrollmentsLight}

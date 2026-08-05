@@ -35,19 +35,37 @@ import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-mo
 // ============================================================
 
 /**
+ * Libellés FR des 7 types de supports — SSOT (convergence du 2026-08-05).
+ *
+ * Trois tables divergeaient : ici (« Diaporama formateur »), TYPE_LABELS_RAW de
+ * supports/page.tsx (« Diapositives formateur ») et typeLabelFr du template PDF
+ * (« SLIDES FORMATEUR »). Le même objet portait trois noms — et « Diaporama
+ * formateur » entrait en collision avec le slot `diaporama` du kit documentaire
+ * (le .pptx UPLOADÉ projeté en salle, un objet DIFFÉRENT du PDF généré). D'où
+ * « Livret de projection » : ce que le formateur a sous les yeux, pas ce qu'il
+ * projette. La page supports importe cette table ; le badge PDF la reprend en
+ * MAJUSCULES (parité verrouillée par support-labels.spec.ts).
+ *
+ * ⚠️ `SupportFormation.titre` est PERSISTÉ en base et estampillé dans les PDF
+ * R2 : les supports générés AVANT la convergence gardent l'ancien libellé
+ * jusqu'à régénération (bouton existant, version++). On ne migre PAS les
+ * données.
+ */
+export const SUPPORT_TYPE_LABELS: Record<SupportType, string> = {
+  slides_formateur: "Livret de projection (formateur)",
+  slides_stagiaire: "Support de cours (stagiaire)",
+  livret_stagiaire: "Livret stagiaire",
+  memo: "Mémo récapitulatif",
+  guide_animation: "Guide d'animation",
+  exercices: "Cahier d'exercices",
+  grille_eval: "Grille d'évaluation",
+};
+
+/**
  * Génère le titre du document support selon son type.
  */
 export function titreSupport(type: SupportType, formationTitre: string): string {
-  const labels: Record<SupportType, string> = {
-    slides_formateur: "Diaporama formateur",
-    slides_stagiaire: "Support de cours",
-    livret_stagiaire: "Livret stagiaire",
-    memo: "Mémo récapitulatif",
-    guide_animation: "Guide d'animation",
-    exercices: "Cahier d'exercices",
-    grille_eval: "Grille d'évaluation",
-  };
-  return `${labels[type]} — ${formationTitre}`;
+  return `${SUPPORT_TYPE_LABELS[type]} — ${formationTitre}`;
 }
 
 // ============================================================

@@ -35,6 +35,8 @@ vi.mock("@/lib/prisma", () => ({
     incident: { groupBy: vi.fn() },
     // Fraîcheur du référentiel des offres (SPEC_PART5 §A.2). [2026-08-05]
     offreSite: { findMany: vi.fn() },
+    // Diaporama du kit non déposé pour une session imminente. [2026-08-05]
+    interventionDocument: { findMany: vi.fn() },
   },
 }));
 
@@ -69,6 +71,9 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { evaluerAlertes } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
+// Catalogue des kits (module pur, non mocké) : fournit un slug RÉEL aux tests
+// de diaporama_manquant_session.
+import { getInterventionsByFamille } from "@/content/intervention-documents-catalog";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers typed
@@ -93,6 +98,7 @@ const mp = prisma as unknown as {
   documentGenere: { findMany: ReturnType<typeof vi.fn> };
   relanceProposee: { findMany: ReturnType<typeof vi.fn> };
   offreSite: { findMany: ReturnType<typeof vi.fn> };
+  interventionDocument: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -128,6 +134,8 @@ function setupEmptyMocks() {
   // offres_site_non_verifiees lirait un mock non configuré, lèverait, et le
   // fail-soft par règle l'avalerait — règle INERTE dans tous les autres blocs.
   mp.offreSite.findMany.mockResolvedValue([]);
+  // Idem pour diaporama_manquant_session (lecture du kit documentaire).
+  mp.interventionDocument.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -414,6 +422,130 @@ describe("evaluerAlertes — session_sans_formateur", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "session_sans_formateur");
     expect(a?.message).toContain("INVEST SUN");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle diaporama_manquant_session
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * R03quater — le slot `diaporama` du kit (LE .pptx projeté) n'est pas déposé
+ * pour une session imminente. Jointure PAR CONVENTION Formation.slug ===
+ * interventionSlug, résolue strictement — jamais devinée : les tests couvrent
+ * le slug non résolvable (sur-mesure/dupliquée → silence VOULU).
+ *
+ * Discriminant du mock : cette règle est la SEULE à sélectionner `formation`
+ * dans trainingSession.findMany — c'est sur le `select` qu'on la reconnaît.
+ */
+describe("evaluerAlertes — diaporama_manquant_session", () => {
+  // Slug RÉEL du catalogue (la règle résout contre la famille formation) :
+  // un slug inventé ferait passer le test « slug non résolvable » par vacuité.
+  const KIT_SLUG = getInterventionsByFamille("formation")[0]!.slug;
+
+  function mockSessionAvecFormation(slug: string, dateDebut: Date) {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ select }: { select?: { formation?: unknown } }) => {
+        if (select && "formation" in select) {
+          return Promise.resolve([
+            {
+              id: "ses-200",
+              numero: "SES-2026-200",
+              titreSession: "IA Express — Entreprise Exemple",
+              statut: "planifiee",
+              dateDebut,
+              client: { raisonSociale: "INVEST SUN" },
+              formation: { slug },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève l'alerte quand le slot diaporama n'est pas déposé (session à J-3)", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "diaporama_manquant_session");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-200");
+    expect(a?.message).toContain("SES-2026-200");
+    // Le message dit OÙ déposer : le slug du kit dans Documents interventions.
+    expect(a?.message).toContain(KIT_SLUG);
+    expect(a?.message).toContain("Documents interventions");
+  });
+
+  it("PAS d'alerte quand le diaporama est déposé (version courante publiée)", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([{ interventionSlug: KIT_SLUG }]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
+  });
+
+  it("PAS d'alerte pour un slug non résolvable (sur-mesure/dupliquée) — et le kit n'est même pas lu", async () => {
+    mockSessionAvecFormation("ia-express-copie", new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
+    // Early-exit vérifié : sans candidat résolvable, aucune lecture du kit.
+    expect(mp.interventionDocument.findMany).not.toHaveBeenCalled();
+  });
+
+  it("parle au PASSÉ quand la session a déjà démarré", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() - 5 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "diaporama_manquant_session");
+    expect(a?.message).toContain("a démarré le");
+  });
+
+  it("émet un WHERE borné (statuts actifs, fenêtre J-7 / -365 j) et cible le slot diaporama déposé", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    await evaluerAlertes();
+
+    // La requête sessions de CETTE règle (la seule à sélectionner `formation`).
+    const call = mp.trainingSession.findMany.mock.calls.find(
+      (c: Array<{ select?: { formation?: unknown } }>) => c[0]?.select?.formation !== undefined,
+    ) as
+      | [
+          {
+            where: {
+              statut: { in: string[] };
+              dateDebut: { lte: Date; gte: Date };
+            };
+          },
+        ]
+      | undefined;
+    expect(call).toBeDefined();
+    expect(call![0].where.statut).toEqual({ in: ["planifiee", "en_cours"] });
+    expect(call![0].where.dateDebut.lte).toBeInstanceOf(Date);
+    expect(call![0].where.dateDebut.gte).toBeInstanceOf(Date);
+    // Borne basse ~365 j : garde anti-salve du premier passage.
+    const fenetreJours =
+      (call![0].where.dateDebut.lte.getTime() - call![0].where.dateDebut.gte.getTime()) /
+      (24 * 60 * 60 * 1000);
+    expect(Math.round(fenetreJours)).toBe(372);
+
+    // La lecture du kit ne compte que les dépôts RÉELS du bon slot.
+    const docCall = mp.interventionDocument.findMany.mock.calls[0] as [
+      { where: { slot: string; currentVersionId: { not: null } } },
+    ];
+    expect(docCall[0].where.slot).toBe("diaporama");
+    expect(docCall[0].where.currentVersionId).toEqual({ not: null });
   });
 });
 

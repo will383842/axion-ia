@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
+import { SUPPORT_TYPE_LABELS } from "@/server/qualiopi/supports/support-builder";
 import { GenererSupportButton } from "@/components/admin/qualiopi/GenererSupportButton";
 import { GenererTousSupportsButton } from "@/components/admin/qualiopi/GenererTousSupportsButton";
 import {
@@ -39,15 +40,12 @@ export const metadata: Metadata = {
 // Libellés
 // ─────────────────────────────────────────────────────────────────────────────
 
-const TYPE_LABELS_RAW: Record<SupportType, string> = {
-  slides_formateur: "Diapositives formateur",
-  slides_stagiaire: "Diapositives stagiaire",
-  livret_stagiaire: "Livret stagiaire",
-  memo: "Mémo",
-  guide_animation: "Guide d'animation",
-  exercices: "Exercices",
-  grille_eval: "Grille d'évaluation",
-};
+// Libellés = SSOT SUPPORT_TYPE_LABELS (support-builder.ts) : mêmes mots à
+// l'écran, dans le titre persisté et sur le badge PDF. Avant le 2026-08-05,
+// trois tables divergeaient (« Diapositives » ici, « Diaporama » au titre,
+// « SLIDES » au PDF). Les supports générés avant gardent l'ancien titre
+// jusqu'à régénération (version++).
+const TYPE_LABELS_RAW: Record<SupportType, string> = SUPPORT_TYPE_LABELS;
 
 const STATUT_LABELS: Record<SupportStatut, string> = {
   brouillon: "Brouillon",

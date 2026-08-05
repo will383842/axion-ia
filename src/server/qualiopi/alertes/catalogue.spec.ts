@@ -40,6 +40,10 @@ const CODES_ATTENDUS: string[] = [
   // bloquée en `en_cours` sans qu'aucune alerte ne se lève (R03 exige `realisee`,
   // que la clôture auto refuse justement de poser sans émargement).
   "session_bloquee_en_cours",
+  // Phase « Tout pour animer » (2026-08-05) : le slot `diaporama` du kit (LE
+  // .pptx projeté) n'est pas déposé pour une session qui démarre sous 7 jours.
+  // Jamais levée pour une formation sans kit résolvable (sur-mesure, dupliquée).
+  "diaporama_manquant_session",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",
