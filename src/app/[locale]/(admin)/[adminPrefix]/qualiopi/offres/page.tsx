@@ -16,6 +16,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { OffreRowActions } from "@/components/admin/qualiopi/OffreRowActions";
+import { cheminPublicOffre } from "@/server/qualiopi/offres/famille-prestation";
 import { SeedReferenceDataButton } from "@/components/admin/qualiopi/SeedReferenceDataButton";
 import {
   ARCHIVE_FILTER_PARAM,
@@ -143,8 +144,16 @@ export default async function QualiopiOffresPage({ params, searchParams }: PageP
                   </td>
                   <td className={cellCls}>
                     <div className="font-medium">{offre.titreFr}</div>
+                    {/* 🔴 Cette ligne composait `/formations/<slug>` pour TOUTES
+                        les offres. Testé en prod le 2026-08-05 :
+                        `/fr/formations/dirigeants`, `/membre-equipe`,
+                        `/vision-ia-strategique` et `/sur-demande` répondent
+                        404 — les prestations individuelles n'ont pas de fiche,
+                        elles vivent sur `/un-a-un`, et « Sur demande » n'a pas
+                        de page. Un chemin faux dans la console fait douter de
+                        la donnée : on n'affiche que ce qui existe. */}
                     <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                      /formations/{offre.slug}
+                      {cheminPublicOffre(offre.formatPedagogique, offre.slug) ?? "—"}
                     </div>
                   </td>
                   <td className={cellCls}>

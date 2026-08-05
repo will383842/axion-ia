@@ -58,7 +58,14 @@ export function AdminBadge({
           )}
         />
       ) : null}
-      {children}
+      {/* 🔴 Vu en production le 2026-08-05 : « Client AXI-CLI-004créé ». Ce
+          conteneur est un flex : chaque nœud de texte devient un flex item
+          anonyme, et les espaces à ses BORDS sont supprimés. Tout badge
+          écrivant `Texte {valeur} suite` perdait donc ses deux espaces — le
+          numéro se collait au mot suivant. Un seul enfant enveloppé = un seul
+          item, espaces internes préservés ; le `gap` continue de séparer le
+          point de statut du libellé. */}
+      <span>{children}</span>
     </span>
   );
 }

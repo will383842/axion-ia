@@ -75,7 +75,22 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
     redirect(`/${locale}/${adminPrefix}/qualiopi/formations`);
   }
 
-  const kitSlug = resolveInterventionSlugForFormation(formation);
+  // Le kit RÉELLEMENT déposé fait foi, pas seulement le catalogue courant :
+  // les slugs ont changé à la refonte de l'offre, les dépôts non (cf.
+  // `kit-formation.ts`). Stub-safe : au build, aucun dépôt trouvé → on
+  // retombe sur la résolution catalogue seule.
+  let slugsDeposes: ReadonlySet<string> = new Set<string>();
+  try {
+    const dejaDepose = await prisma.interventionDocument.findFirst({
+      where: { interventionSlug: formation.slug, currentVersionId: { not: null } },
+      select: { interventionSlug: true },
+    });
+    if (dejaDepose !== null) slugsDeposes = new Set([dejaDepose.interventionSlug]);
+  } catch {
+    // stub-safe : stub Proxy → null au build
+  }
+
+  const kitSlug = resolveInterventionSlugForFormation(formation, slugsDeposes);
   const kitHref =
     kitSlug !== null
       ? `/${locale}/${adminPrefix}/documents-interventions/formations/${kitSlug}`

@@ -305,27 +305,35 @@ async function regleDiaporamaManquant(now: Date): Promise<AlerteCandidate[]> {
     },
   });
 
+  // Dépôts réels des slugs candidats, en UNE lecture : elle sert deux fois —
+  // à reconnaître qu'un kit existe (même si son slug n'est plus au catalogue,
+  // cf. `kit-formation.ts`) et à savoir si le diaporama y est.
+  const slugsSessions = [
+    ...new Set(sessions.map((s) => s.formation?.slug).filter((s): s is string => Boolean(s))),
+  ];
+  const docs =
+    slugsSessions.length > 0
+      ? await prisma.interventionDocument.findMany({
+          where: { interventionSlug: { in: slugsSessions }, currentVersionId: { not: null } },
+          select: { interventionSlug: true, slot: true },
+        })
+      : [];
+  const slugsAvecKit = new Set(docs.map((d) => d.interventionSlug));
+  const slugsDeposes = new Set(
+    docs.filter((d) => d.slot === "diaporama").map((d) => d.interventionSlug),
+  );
+
   // Garde applicative doublant le `where` (les mocks de test ignorent le SQL),
   // puis résolution du slug kit — fail-visible : pas de kit, pas d'alerte.
   const candidates = sessions.flatMap((s) => {
     if (s.formation == null) return [];
     if (s.statut !== "planifiee" && s.statut !== "en_cours") return [];
     if (s.dateDebut > daysFromNow(7, now) || s.dateDebut < daysAgo(365, now)) return [];
-    const slug = resolveInterventionSlugForFormation(s.formation);
+    const slug = resolveInterventionSlugForFormation(s.formation, slugsAvecKit);
     if (slug === null) return [];
     return [{ session: s, slug }];
   });
   if (candidates.length === 0) return [];
-
-  const deposes = await prisma.interventionDocument.findMany({
-    where: {
-      interventionSlug: { in: [...new Set(candidates.map((c) => c.slug))] },
-      slot: "diaporama",
-      currentVersionId: { not: null },
-    },
-    select: { interventionSlug: true },
-  });
-  const slugsDeposes = new Set(deposes.map((d) => d.interventionSlug));
 
   return candidates
     .filter((c) => !slugsDeposes.has(c.slug))

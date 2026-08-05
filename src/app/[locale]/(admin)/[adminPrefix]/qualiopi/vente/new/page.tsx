@@ -10,14 +10,13 @@
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
+import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 
 export const dynamic = "force-dynamic";
@@ -95,6 +94,10 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
     noteDevisFr: o.noteDevisFr,
     tarifNonReverifie:
       o.offre.derniereVerifCoherenceAt === null || o.offre.derniereVerifCoherenceAt < seuilVerif,
+    // Une formation collective et un accompagnement individuel ne se vendent
+    // pas pareil : le wizard doit bifurquer, pas proposer un sélecteur de
+    // formation qui restera vide (cf. `famille-prestation.ts`).
+    estUnAUn: estOffreUnAUn(o.offre.formatPedagogique),
   }));
 
   // ── Pré-sélection client (?clientId=) — boutons « Nouvelle vente » du CRM ──
@@ -249,49 +252,33 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
     }
   }
 
-  const basePath = `/${locale}/${adminPrefix}`;
+  // 🔴 Le rappel des ventes en cours était rendu AVANT le wizard, donc AVANT
+  // le titre de la page (qui vit dans le wizard) : on atterrissait sur un
+  // encart orphelin, le titre en dessous. Il passe désormais en prop et
+  // s'affiche SOUS l'en-tête — même information, ordre de lecture rétabli.
+  const brouillonsEnCours =
+    brouillon === undefined
+      ? mesBrouillons.map((b) => ({
+          id: b.id,
+          etape: b.etape,
+          clientRaisonSociale: b.client?.raisonSociale ?? null,
+          modifieLe: b.updatedAt.toLocaleDateString("fr-FR"),
+        }))
+      : [];
 
   return (
-    <>
-      {/* Brouillons en attente : la reprise est le seul chemin quand un devis
-          envoyé attend sa signature — on les affiche AVANT le wizard. */}
-      {mesBrouillons.length > 0 && brouillon === undefined ? (
-        <AdminPageShell>
-          <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
-            <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
-              Ventes en cours ({mesBrouillons.length})
-            </p>
-            <ul className="flex flex-col gap-[var(--space-admin-2)]">
-              {mesBrouillons.map((b) => (
-                <li key={b.id} className="text-[length:var(--text-admin-sm)]">
-                  <Link
-                    href={`${basePath}/qualiopi/vente/new?brouillon=${b.id}`}
-                    className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                  >
-                    {b.client?.raisonSociale ?? "Client non choisi"} — étape {b.etape}/4
-                  </Link>{" "}
-                  <span className="text-[color:var(--color-admin-fg-soft)]">
-                    (modifié le {b.updatedAt.toLocaleDateString("fr-FR")})
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </AdminPageShell>
-      ) : null}
-
-      <VenteWizard
-        adminPrefix={adminPrefix}
-        role={role}
-        clients={clients}
-        offres={offres}
-        formations={formations}
-        {...(clientInitialId !== undefined ? { clientInitialId } : {})}
-        {...(brouillon !== undefined ? { brouillon } : {})}
-        {...(devisInitial !== undefined ? { devisInitial } : {})}
-        {...(sessionInitiale !== undefined ? { sessionInitiale } : {})}
-        {...(checklistInitiale !== undefined ? { checklistInitiale } : {})}
-      />
-    </>
+    <VenteWizard
+      adminPrefix={adminPrefix}
+      role={role}
+      clients={clients}
+      offres={offres}
+      formations={formations}
+      brouillonsEnCours={brouillonsEnCours}
+      {...(clientInitialId !== undefined ? { clientInitialId } : {})}
+      {...(brouillon !== undefined ? { brouillon } : {})}
+      {...(devisInitial !== undefined ? { devisInitial } : {})}
+      {...(sessionInitiale !== undefined ? { sessionInitiale } : {})}
+      {...(checklistInitiale !== undefined ? { checklistInitiale } : {})}
+    />
   );
 }

@@ -492,19 +492,49 @@ describe("evaluerAlertes — diaporama_manquant_session", () => {
 
   it("PAS d'alerte quand le diaporama est déposé (version courante publiée)", async () => {
     mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
-    mp.interventionDocument.findMany.mockResolvedValue([{ interventionSlug: KIT_SLUG }]);
+    // Le `slot` fait partie du select depuis 2026-08-05 : une lecture unique
+    // sert à la fois « ce slug a un kit » et « le diaporama y est ».
+    mp.interventionDocument.findMany.mockResolvedValue([
+      { interventionSlug: KIT_SLUG, slot: "diaporama" },
+    ]);
 
     const alertes = await evaluerAlertes();
     expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
   });
 
-  it("PAS d'alerte pour un slug non résolvable (sur-mesure/dupliquée) — et le kit n'est même pas lu", async () => {
+  it("un kit présent SANS diaporama lève bien l'alerte (autres slots déposés)", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([
+      { interventionSlug: KIT_SLUG, slot: "guide_animation" },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeDefined();
+  });
+
+  // 🔴 Le contrat a changé le 2026-08-05 : la règle lit maintenant les dépôts
+  // AVANT de résoudre, parce qu'un kit réellement déposé prime sur le
+  // catalogue (34 formations en prod avaient un kit invisible). Ce qui doit
+  // rester garanti n'est donc plus « on ne lit pas », mais « une formation
+  // sans kit ne produit AUCUNE alerte » — le silence voulu.
+  it("PAS d'alerte pour un slug sans kit ni catalogue (sur-mesure/dupliquée)", async () => {
     mockSessionAvecFormation("ia-express-copie", new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
 
     const alertes = await evaluerAlertes();
     expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
-    // Early-exit vérifié : sans candidat résolvable, aucune lecture du kit.
-    expect(mp.interventionDocument.findMany).not.toHaveBeenCalled();
+  });
+
+  it("un slug HORS catalogue mais avec kit déposé redevient surveillé", async () => {
+    // Le cas prod : slug hérité de l'offre d'avant juillet, kit bien déposé,
+    // diaporama absent → l'alerte doit se lever (elle était muette avant).
+    mockSessionAvecFormation("agents-automatisations", new Date(Date.now() + 3 * 86_400_000));
+    mp.interventionDocument.findMany.mockResolvedValue([
+      { interventionSlug: "agents-automatisations", slot: "guide_animation" },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeDefined();
   });
 
   it("parle au PASSÉ quand la session a déjà démarré", async () => {
@@ -545,12 +575,16 @@ describe("evaluerAlertes — diaporama_manquant_session", () => {
       (24 * 60 * 60 * 1000);
     expect(Math.round(fenetreJours)).toBe(372);
 
-    // La lecture du kit ne compte que les dépôts RÉELS du bon slot.
+    // La lecture du kit ne compte que les dépôts RÉELS (version courante
+    // publiée). Depuis 2026-08-05 elle ne filtre plus sur le slot : le `slot`
+    // est SÉLECTIONNÉ et trié en mémoire, car la même lecture doit dire à la
+    // fois « ce slug a un kit » et « le diaporama y est ».
     const docCall = mp.interventionDocument.findMany.mock.calls[0] as [
-      { where: { slot: string; currentVersionId: { not: null } } },
+      { where: { currentVersionId: { not: null } }; select: Record<string, boolean> },
     ];
-    expect(docCall[0].where.slot).toBe("diaporama");
     expect(docCall[0].where.currentVersionId).toEqual({ not: null });
+    expect(docCall[0].select.slot).toBe(true);
+    expect(docCall[0].select.interventionSlug).toBe(true);
   });
 });
 

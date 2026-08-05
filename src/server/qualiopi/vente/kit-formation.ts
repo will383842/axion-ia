@@ -22,11 +22,34 @@ import { getInterventionsByFamille } from "@/content/intervention-documents-cata
 /**
  * Slug de kit d'une formation, ou `null` si la formation n'a pas de kit.
  *
- * Résolution STRICTE contre la famille « formation » du catalogue : le slug
- * n'est retourné que s'il correspond à une prestation réelle. Une formation
- * dupliquée ou sur-mesure retourne `null` — jamais un slug deviné.
+ * Deux sources, dans cet ordre :
+ *
+ *  1. `slugsDeposes` — les slugs qui portent RÉELLEMENT des documents en base.
+ *     🔴 Vérification en production le 2026-08-05 : l'écran « Tout pour
+ *     animer » annonçait « pas de kit » sur 34 des 56 formations publiées, qui
+ *     en avaient pourtant un (diaporamas déposés en juin). La refonte de
+ *     l'offre (juillet 2026) a renommé les slugs du catalogue, sans toucher
+ *     ni aux formations importées ni aux dépôts : le catalogue seul ne
+ *     reconnaît plus l'existant. Un kit déposé fait foi — refuser de
+ *     l'afficher parce qu'un fichier statique a changé cache au formateur le
+ *     .pptx qu'il doit projeter.
+ *  2. le catalogue « formation » — pour les prestations de l'offre courante
+ *     dont le kit n'est pas encore déposé (l'écran doit alors dire ce qui
+ *     manque, pas prétendre qu'aucun kit n'est attendu).
+ *
+ * Sans `slugsDeposes`, la résolution reste STRICTEMENT celle du catalogue :
+ * un appelant qui ne peut pas lire la base (module pur, test) garde le
+ * comportement d'origine. Une formation dupliquée (`slug-copie`) ou
+ * sur-mesure retourne `null` dans les deux cas — jamais un slug deviné.
  */
-export function resolveInterventionSlugForFormation(formation: { slug: string }): string | null {
+export function resolveInterventionSlugForFormation(
+  formation: { slug: string },
+  slugsDeposes?: ReadonlySet<string>,
+): string | null {
+  // Un slug vide n'est jamais un kit — garde explicite : un Set mal construit
+  // (chaîne vide issue d'une ligne orpheline) ne doit pas ouvrir la porte.
+  if (formation.slug === "") return null;
+  if (slugsDeposes?.has(formation.slug) === true) return formation.slug;
   const kits = getInterventionsByFamille("formation");
   return kits.some((i) => i.slug === formation.slug) ? formation.slug : null;
 }

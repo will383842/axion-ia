@@ -28,10 +28,17 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  /**
+   * `clientId` : le wizard « Nouvelle vente » envoie ici quand l'offre choisie
+   * est un accompagnement individuel — le client déjà saisi doit suivre, sinon
+   * l'admin le re-cherche et le renvoi n'est qu'un demi-service.
+   */
+  searchParams: Promise<{ clientId?: string }>;
 }
 
-export default async function NouveauParcoursCoachingPage({ params }: PageProps) {
+export default async function NouveauParcoursCoachingPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
+  const sp = await searchParams;
   const session = await auth();
   const role = session?.user?.role;
   if (!session?.user || (role !== "admin" && role !== "super_admin")) {
@@ -85,6 +92,12 @@ export default async function NouveauParcoursCoachingPage({ params }: PageProps)
     devis = [];
   }
 
+  // Le client n'est pré-sélectionné que s'il EXISTE dans la liste chargée :
+  // un uuid inconnu (lien périmé, copier-coller) ne doit pas poser une valeur
+  // fantôme que le <select> n'afficherait pas.
+  const clientInitialId =
+    sp.clientId !== undefined ? clients.find((c) => c.id === sp.clientId)?.id : undefined;
+
   const seancesListUrl = `/${locale}/${adminPrefix}/coaching/seances`;
 
   return (
@@ -109,6 +122,7 @@ export default async function NouveauParcoursCoachingPage({ params }: PageProps)
         clients={clients}
         devis={devis}
         redirectAfterCreate={seancesListUrl}
+        {...(clientInitialId !== undefined ? { clientInitialId } : {})}
       />
     </AdminPageShell>
   );

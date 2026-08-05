@@ -57,6 +57,8 @@ export interface CoachingParcoursFormProps {
   devis: ParcoursDevisOption[];
   /** URL de la liste des séances, cible de la redirection après création. */
   redirectAfterCreate: string;
+  /** Client pré-sélectionné (`?clientId=`, renvoi depuis le wizard de vente). */
+  clientInitialId?: string;
 }
 
 interface SeanceDraft {
@@ -76,6 +78,7 @@ export function CoachingParcoursForm({
   clients,
   devis,
   redirectAfterCreate,
+  clientInitialId,
 }: CoachingParcoursFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -87,7 +90,7 @@ export function CoachingParcoursForm({
   const [beneficiaireNom, setBeneficiaireNom] = useState("");
   const [beneficiaireEmail, setBeneficiaireEmail] = useState("");
   const [beneficiaireEntreprise, setBeneficiaireEntreprise] = useState("");
-  const [clientId, setClientId] = useState("");
+  const [clientId, setClientId] = useState(clientInitialId ?? "");
   const [devisId, setDevisId] = useState("");
   const [estAfest, setEstAfest] = useState(false);
   const [seances, setSeances] = useState<SeanceDraft[]>([{ debut: "", heureFin: "" }]);

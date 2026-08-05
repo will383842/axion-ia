@@ -69,6 +69,8 @@ export interface VenteOffreOption {
   noteDevisFr: string;
   /** Cohérence site↔console jamais vérifiée ou > 30 j (même seuil que l'alerte). */
   tarifNonReverifie: boolean;
+  /** Accompagnement INDIVIDUEL : aucune formation ne s'y rattache (bifurcation). */
+  estUnAUn: boolean;
 }
 
 export interface VenteFormationOption {
@@ -112,6 +114,14 @@ export interface VenteWizardProps {
   formations: VenteFormationOption[];
   /** Pré-sélection client (`?clientId=`, boutons CRM) — le brouillon prime. */
   clientInitialId?: string;
+  /** Ventes déjà commencées par cet admin (rappel de reprise, sous l'en-tête). */
+  brouillonsEnCours?: ReadonlyArray<{
+    id: string;
+    etape: number;
+    clientRaisonSociale: string | null;
+    /** Date déjà formatée fr-FR côté serveur. */
+    modifieLe: string;
+  }>;
   brouillon?: VenteBrouillonInitial;
   devisInitial?: VenteDevisEtat;
   sessionInitiale?: VenteSessionEtat;
@@ -164,6 +174,7 @@ export function VenteWizard({
   offres,
   formations,
   clientInitialId,
+  brouillonsEnCours,
   brouillon,
   devisInitial,
   sessionInitiale,
@@ -527,7 +538,14 @@ export function VenteWizard({
   // ── Gates de navigation ─────────────────────────────────────────────────────
 
   const peutQuitterEtape1 = clientId !== "";
-  const peutQuitterEtape2 = offreId !== "" && (chemin !== "telle_quelle" || formationId !== "");
+  // Une offre 1-to-1 ne mène JAMAIS à l'étape 3 : la vente d'un accompagnement
+  // individuel passe par le parcours de séances, pas par devis+session
+  // collective. Laisser « Suivant » actif renverrait vers un formulaire de
+  // session qu'aucune formation ne peut alimenter.
+  const peutQuitterEtape2 =
+    offreId !== "" &&
+    offreChoisie?.estUnAUn !== true &&
+    (chemin !== "telle_quelle" || formationId !== "");
 
   // ── Rendu ───────────────────────────────────────────────────────────────────
 
@@ -538,6 +556,30 @@ export function VenteWizard({
         description={`Parcours guidé client → formation → devis → session — étape ${etape} sur 4.`}
       />
       <AdminFormDirtyGuard dirty={sale && etape < 4} />
+
+      {/* Reprise : le seul chemin quand un devis envoyé attend sa signature. */}
+      {brouillonsEnCours !== undefined && brouillonsEnCours.length > 0 ? (
+        <div className="mb-[var(--space-admin-5,12px)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
+            Ventes en cours ({brouillonsEnCours.length})
+          </p>
+          <ul className="flex flex-col gap-[var(--space-admin-2)]">
+            {brouillonsEnCours.map((b) => (
+              <li key={b.id} className="text-[length:var(--text-admin-sm)]">
+                <Link
+                  href={`${base}/qualiopi/vente/new?brouillon=${b.id}`}
+                  className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                >
+                  {b.clientRaisonSociale ?? "Client non choisi"} — étape {b.etape}/4
+                </Link>{" "}
+                <span className="text-[color:var(--color-admin-fg-soft)]">
+                  (modifié le {b.modifieLe})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
 
       {/* Stepper (pattern CampaignWizardV2 : pastilles + libellés masqués sous sm:) */}
       <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">
@@ -639,7 +681,9 @@ export function VenteWizard({
           ) : (
             <div className="flex flex-col gap-[var(--space-admin-3,6px)]">
               {clientCree !== null ? (
-                <AdminBadge tone="success">
+                // `self-start` : dans une colonne flex, un badge s'étirait sur
+                // TOUTE la largeur de la carte — une pastille de 1 100 px.
+                <AdminBadge tone="success" className="self-start">
                   Client {clientCree.numero} créé — passez à l&apos;étape suivante
                 </AdminBadge>
               ) : (
@@ -737,131 +781,195 @@ export function VenteWizard({
               </p>
             ) : null}
 
-            <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-              Formation publiée
-              <select
-                value={formationId}
-                onChange={(e) => {
-                  setFormationId(e.target.value);
-                  const f = formations.find((x) => x.id === e.target.value);
-                  if (f !== undefined && dureeHeures === "") setDureeHeures(String(f.dureeHeures));
-                  setSale(true);
-                }}
-                aria-label="Formation"
-                className="admin-input"
+            {/* ── Bifurcation 1-to-1 ────────────────────────────────────────
+                Une formation collective et un accompagnement individuel ne se
+                vendent pas de la même façon : le site public le dit depuis
+                toujours (« Formations IA » / « Coaching IA »). Proposer ici un
+                sélecteur de formation n'a aucun sens — aucune formation ne se
+                rattache à ces offres, et l'admin butait sur une liste vide. */}
+            {offreChoisie?.estUnAUn === true ? (
+              <div
+                role="status"
+                className="flex flex-col gap-[var(--space-admin-3,6px)] rounded border border-[color:var(--color-admin-accent)] p-[var(--space-admin-4,8px)]"
               >
-                <option value="">— Choisir une formation —</option>
-                {formationsDeLOffre.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.numero} — {f.titre} ({f.dureeHeures} h)
-                  </option>
-                ))}
-              </select>
-              {offreId !== "" && formationsDeLOffre.length === 0 ? (
-                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  Aucune formation publiée pour cette offre — adaptez une formation existante ou
-                  créez-en une sur-mesure.
-                </span>
-              ) : null}
-            </label>
+                <p className="text-[length:var(--text-admin-sm)] font-semibold">
+                  {offreChoisie.titreFr} est un accompagnement individuel.
+                </p>
+                <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+                  Il se vend en parcours de séances en tête-à-tête, pas en session collective : il
+                  n&apos;y a donc ni formation du catalogue à choisir, ni convention de groupe. Le
+                  client déjà saisi est repris automatiquement.
+                </p>
+                <div>
+                  <AdminButton
+                    onClick={() =>
+                      router.push(
+                        clientId !== ""
+                          ? `${base}/coaching/parcours/new?clientId=${clientId}`
+                          : `${base}/coaching/parcours/new`,
+                      )
+                    }
+                  >
+                    Créer le parcours 1-to-1
+                  </AdminButton>
+                </div>
+              </div>
+            ) : null}
 
-            {/* Trois chemins — PAS d'édition inline d'une formation publiée
+            {/* Rendu CONDITIONNEL, pas masquage CSS : un champ caché en
+                `display:none` reste dans le DOM — focusable au clavier et lu
+                par les lecteurs d'écran. Ce qui n'a pas de sens ne doit pas
+                exister, pas être invisible. */}
+            {offreChoisie?.estUnAUn === true ? null : (
+              <>
+                <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
+                  Formation publiée
+                  <select
+                    value={formationId}
+                    onChange={(e) => {
+                      setFormationId(e.target.value);
+                      const f = formations.find((x) => x.id === e.target.value);
+                      if (f !== undefined && dureeHeures === "")
+                        setDureeHeures(String(f.dureeHeures));
+                      setSale(true);
+                    }}
+                    aria-label="Formation"
+                    className="admin-input"
+                  >
+                    <option value="">— Choisir une formation —</option>
+                    {formationsDeLOffre.map((f) => (
+                      <option key={f.id} value={f.id}>
+                        {f.numero} — {f.titre} ({f.dureeHeures} h)
+                      </option>
+                    ))}
+                  </select>
+                  {offreId !== "" && formationsDeLOffre.length === 0 ? (
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                      Aucune formation publiée pour cette offre — adaptez une formation existante ou
+                      créez-en une sur-mesure.{" "}
+                      {/* 🔴 Vérification en production le 2026-08-05 : les seules offres
+                      actives sans formation sont les trois accompagnements
+                      INDIVIDUELS (+ « Sur demande »). Le message n'offrait que
+                      des issues « formation », donc aucune issue juste : pour du
+                      1-to-1, le bon geste est le parcours de séances. Tant que
+                      la table de routage offre↔prestation n'existe pas (phase
+                      1b), on ne DEVINE pas — on nomme la troisième issue et on
+                      transporte le client. */}
+                      S&apos;il s&apos;agit d&apos;un accompagnement individuel,{" "}
+                      <Link
+                        href={
+                          clientId !== ""
+                            ? `${base}/coaching/parcours/new?clientId=${clientId}`
+                            : `${base}/coaching/parcours/new`
+                        }
+                        className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                      >
+                        créez plutôt un parcours 1-to-1
+                      </Link>
+                      .
+                    </span>
+                  ) : null}
+                </label>
+
+                {/* Trois chemins — PAS d'édition inline d'une formation publiée
                 (l'éditer la dépublierait). */}
-            <div
-              className="mt-[var(--space-admin-3,6px)] grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-3"
-              role="radiogroup"
-              aria-label="Chemin de la formation"
-            >
-              <button
-                type="button"
-                role="radio"
-                aria-checked={chemin === "telle_quelle"}
-                onClick={() => {
-                  setChemin("telle_quelle");
-                  setSale(true);
-                }}
-                className={cn(
-                  "flex flex-col items-start gap-1 rounded border p-3 text-left transition",
-                  chemin === "telle_quelle"
-                    ? "border-[color:var(--color-admin-accent)] ring-2 ring-[color:var(--color-admin-accent)]"
-                    : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
-                )}
-              >
-                <span className="font-semibold">A — Telle quelle</span>
-                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                  La formation publiée, sans modification (défaut).
-                </span>
-              </button>
-              <button
-                type="button"
-                role="radio"
-                aria-checked={chemin === "adaptation"}
-                onClick={adapterFormation}
-                disabled={!peutPublier || isPending}
-                title={
-                  peutPublier
-                    ? undefined
-                    : "Réservé aux rôles admin / super_admin : l'adaptation devra être publiée, ce que votre rôle ne permet pas."
-                }
-                className={cn(
-                  "flex flex-col items-start gap-1 rounded border p-3 text-left transition",
-                  chemin === "adaptation"
-                    ? "border-[color:var(--color-admin-accent)] ring-2 ring-[color:var(--color-admin-accent)]"
-                    : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
-                  !peutPublier ? "cursor-not-allowed opacity-50" : "",
-                )}
-              >
-                <span className="font-semibold">B — Adapter pour ce client</span>
-                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                  Duplique la formation choisie en brouillon éditable.
-                </span>
-              </button>
-              {/* Bouton (pas un Link) : la navigation ne part QU'APRÈS la
+                <div
+                  className="mt-[var(--space-admin-3,6px)] grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-3"
+                  role="radiogroup"
+                  aria-label="Chemin de la formation"
+                >
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={chemin === "telle_quelle"}
+                    onClick={() => {
+                      setChemin("telle_quelle");
+                      setSale(true);
+                    }}
+                    className={cn(
+                      "flex flex-col items-start gap-1 rounded border p-3 text-left transition",
+                      chemin === "telle_quelle"
+                        ? "border-[color:var(--color-admin-accent)] ring-2 ring-[color:var(--color-admin-accent)]"
+                        : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
+                    )}
+                  >
+                    <span className="font-semibold">A — Telle quelle</span>
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      La formation publiée, sans modification (défaut).
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={chemin === "adaptation"}
+                    onClick={adapterFormation}
+                    disabled={!peutPublier || isPending}
+                    title={
+                      peutPublier
+                        ? undefined
+                        : "Réservé aux rôles admin / super_admin : l'adaptation devra être publiée, ce que votre rôle ne permet pas."
+                    }
+                    className={cn(
+                      "flex flex-col items-start gap-1 rounded border p-3 text-left transition",
+                      chemin === "adaptation"
+                        ? "border-[color:var(--color-admin-accent)] ring-2 ring-[color:var(--color-admin-accent)]"
+                        : "border-[color:var(--color-admin-border)] hover:bg-[color:var(--color-admin-surface-2)]",
+                      !peutPublier ? "cursor-not-allowed opacity-50" : "",
+                    )}
+                  >
+                    <span className="font-semibold">B — Adapter pour ce client</span>
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      Duplique la formation choisie en brouillon éditable.
+                    </span>
+                  </button>
+                  {/* Bouton (pas un Link) : la navigation ne part QU'APRÈS la
                   sauvegarde du brouillon — un Link naviguait immédiatement et
                   perdait toute la saisie depuis la dernière étape
                   (AdminFormDirtyGuard ne couvre que beforeunload). */}
-              <button
-                type="button"
-                disabled={isPending}
-                onClick={() => {
-                  setChemin("sur_mesure");
-                  startTransition(async () => {
-                    await persisterBrouillon(etape);
-                    router.push(`${base}/qualiopi/formations/new`);
-                  });
-                }}
-                className="flex flex-col items-start gap-1 rounded border border-[color:var(--color-admin-border)] p-3 text-left transition hover:bg-[color:var(--color-admin-surface-2)]"
-              >
-                <span className="flex items-center gap-1 font-semibold">
-                  C — Sur-mesure
-                  <ExternalLink size={12} aria-hidden="true" />
-                </span>
-                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                  Créer une formation neuve depuis zéro (le brouillon de vente est conservé).
-                </span>
-              </button>
-            </div>
+                  <button
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => {
+                      setChemin("sur_mesure");
+                      startTransition(async () => {
+                        await persisterBrouillon(etape);
+                        router.push(`${base}/qualiopi/formations/new`);
+                      });
+                    }}
+                    className="flex flex-col items-start gap-1 rounded border border-[color:var(--color-admin-border)] p-3 text-left transition hover:bg-[color:var(--color-admin-surface-2)]"
+                  >
+                    <span className="flex items-center gap-1 font-semibold">
+                      C — Sur-mesure
+                      <ExternalLink size={12} aria-hidden="true" />
+                    </span>
+                    <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                      Créer une formation neuve depuis zéro (le brouillon de vente est conservé).
+                    </span>
+                  </button>
+                </div>
 
-            {adaptation !== null ? (
-              <div
-                role="status"
-                className="rounded border border-[color:var(--color-admin-warning)] p-[var(--space-admin-4,8px)] text-[length:var(--text-admin-sm)]"
-              >
-                <p className="font-semibold">
-                  Adaptation {adaptation.numero} créée (statut : en préparation)
-                </p>
-                <p className="text-[color:var(--color-admin-fg-soft)]">
-                  Complétez-la et publiez-la avant de créer la session — une copie sort en «
-                  intention », elle n&apos;est pas encore éligible aux sessions.
-                </p>
-                <Link
-                  href={`${base}/qualiopi/formations/${adaptation.id}`}
-                  className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
-                >
-                  Ouvrir la fiche de l&apos;adaptation
-                </Link>
-              </div>
-            ) : null}
+                {adaptation !== null ? (
+                  <div
+                    role="status"
+                    className="rounded border border-[color:var(--color-admin-warning)] p-[var(--space-admin-4,8px)] text-[length:var(--text-admin-sm)]"
+                  >
+                    <p className="font-semibold">
+                      Adaptation {adaptation.numero} créée (statut : en préparation)
+                    </p>
+                    <p className="text-[color:var(--color-admin-fg-soft)]">
+                      Complétez-la et publiez-la avant de créer la session — une copie sort en «
+                      intention », elle n&apos;est pas encore éligible aux sessions.
+                    </p>
+                    <Link
+                      href={`${base}/qualiopi/formations/${adaptation.id}`}
+                      className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                    >
+                      Ouvrir la fiche de l&apos;adaptation
+                    </Link>
+                  </div>
+                ) : null}
+              </>
+            )}
           </div>
         </AdminCard>
       ) : null}
