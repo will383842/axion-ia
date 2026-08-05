@@ -134,11 +134,21 @@ function dateFr(iso: string | null): string | null {
 function itemDevis(devis: ChecklistDevisInput | null): ChecklistVenteItem {
   const libelle = LIBELLES.devis;
   if (devis === null) {
-    return { key: "devis", libelle, etat: "a_faire", detail: "Créez le devis (étape 3 du parcours)." };
+    return {
+      key: "devis",
+      libelle,
+      etat: "a_faire",
+      detail: "Créez le devis (étape 3 du parcours).",
+    };
   }
   switch (devis.statut) {
     case "brouillon":
-      return { key: "devis", libelle, etat: "a_faire", detail: "Devis en brouillon — envoyez-le au client." };
+      return {
+        key: "devis",
+        libelle,
+        etat: "a_faire",
+        detail: "Devis en brouillon — envoyez-le au client.",
+      };
     case "envoye": {
       // Trois sous-états d'« envoyé » : la pièce lisible manque (bloquant), le
       // client ne peut pas signer en ligne, ou l'attente normale de signature.
@@ -161,16 +171,41 @@ function itemDevis(devis: ChecklistDevisInput | null): ChecklistVenteItem {
           detail: `${prefixe} — le client ne peut pas signer en ligne (aucune soumission de signature). Réémettez un lien de signature ou recueillez un bon pour accord par retour d'e-mail.`,
         };
       }
-      return { key: "devis", libelle, etat: "a_faire", detail: `${prefixe} — en attente de signature du client.` };
+      return {
+        key: "devis",
+        libelle,
+        etat: "a_faire",
+        detail: `${prefixe} — en attente de signature du client.`,
+      };
     }
     case "accepte":
-      return { key: "devis", libelle, etat: "fait", detail: "Devis accepté — la session peut être créée." };
+      return {
+        key: "devis",
+        libelle,
+        etat: "fait",
+        detail: "Devis accepté — la session peut être créée.",
+      };
     case "transforme_convention":
-      return { key: "devis", libelle, etat: "fait", detail: "Devis accepté et transformé en convention." };
+      return {
+        key: "devis",
+        libelle,
+        etat: "fait",
+        detail: "Devis accepté et transformé en convention.",
+      };
     case "refuse":
-      return { key: "devis", libelle, etat: "bloque", detail: "Devis refusé par le client — révisez l'offre ou clôturez l'affaire." };
+      return {
+        key: "devis",
+        libelle,
+        etat: "bloque",
+        detail: "Devis refusé par le client — révisez l'offre ou clôturez l'affaire.",
+      };
     case "expire":
-      return { key: "devis", libelle, etat: "bloque", detail: "Devis expiré — émettez une révision avant toute suite." };
+      return {
+        key: "devis",
+        libelle,
+        etat: "bloque",
+        detail: "Devis expiré — émettez une révision avant toute suite.",
+      };
   }
 }
 

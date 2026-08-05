@@ -19,14 +19,7 @@
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Check,
-  Circle,
-  CircleCheck,
-  CircleMinus,
-  ExternalLink,
-  OctagonAlert,
-} from "lucide-react";
+import { Check, Circle, CircleCheck, CircleMinus, ExternalLink, OctagonAlert } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -140,10 +133,7 @@ const DEVIS_STATUT_LABELS: Record<VenteDevisEtat["statut"], string> = {
   transforme_convention: "Transformé en convention",
 };
 
-const ETAT_META: Record<
-  ChecklistEtat,
-  { Icone: typeof Circle; classe: string; label: string }
-> = {
+const ETAT_META: Record<ChecklistEtat, { Icone: typeof Circle; classe: string; label: string }> = {
   fait: { Icone: CircleCheck, classe: "text-[color:var(--color-admin-success)]", label: "Fait" },
   a_faire: { Icone: Circle, classe: "text-[color:var(--color-admin-fg-soft)]", label: "À faire" },
   bloque: {
@@ -194,7 +184,9 @@ export function VenteWizard({
 
   // ── Étape 1 — client ──
   const [modeClient, setModeClient] = useState<"existant" | "nouveau">(
-    brouillon?.clientId ? "existant" : (chaine(p, "modeClient") as "existant" | "nouveau") || "existant",
+    brouillon?.clientId
+      ? "existant"
+      : (chaine(p, "modeClient") as "existant" | "nouveau") || "existant",
   );
   const [rechercheClient, setRechercheClient] = useState("");
   const [clientId, setClientId] = useState(brouillon?.clientId ?? clientInitialId ?? "");
@@ -535,8 +527,7 @@ export function VenteWizard({
   // ── Gates de navigation ─────────────────────────────────────────────────────
 
   const peutQuitterEtape1 = clientId !== "";
-  const peutQuitterEtape2 =
-    offreId !== "" && (chemin !== "telle_quelle" || formationId !== "");
+  const peutQuitterEtape2 = offreId !== "" && (chemin !== "telle_quelle" || formationId !== "");
 
   // ── Rendu ───────────────────────────────────────────────────────────────────
 
@@ -860,8 +851,8 @@ export function VenteWizard({
                   Adaptation {adaptation.numero} créée (statut : en préparation)
                 </p>
                 <p className="text-[color:var(--color-admin-fg-soft)]">
-                  Complétez-la et publiez-la avant de créer la session — une copie sort en
-                  « intention », elle n&apos;est pas encore éligible aux sessions.
+                  Complétez-la et publiez-la avant de créer la session — une copie sort en «
+                  intention », elle n&apos;est pas encore éligible aux sessions.
                 </p>
                 <Link
                   href={`${base}/qualiopi/formations/${adaptation.id}`}
@@ -1084,8 +1075,8 @@ export function VenteWizard({
                     (adaptation === null || formationId !== adaptation.id) ? (
                     <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
                       Chemin adaptation : la session doit porter l&apos;adaptation, pas la formation
-                      d&apos;origine. Publiez l&apos;adaptation puis re-sélectionnez-la à l&apos;étape
-                      2 (elle apparaît dans la liste une fois publiée).
+                      d&apos;origine. Publiez l&apos;adaptation puis re-sélectionnez-la à
+                      l&apos;étape 2 (elle apparaît dans la liste une fois publiée).
                     </p>
                   ) : null}
                   <div>
@@ -1107,8 +1098,8 @@ export function VenteWizard({
                   role="status"
                   className="rounded border border-[color:var(--color-admin-border)] p-[var(--space-admin-4,8px)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
                 >
-                  La session se crée quand le devis est accepté — reprenez ce brouillon depuis
-                  « Nouvelle vente » (il est proposé en haut de la page) dès la signature reçue.
+                  La session se crée quand le devis est accepté — reprenez ce brouillon depuis «
+                  Nouvelle vente » (il est proposé en haut de la page) dès la signature reçue.
                 </p>
               ) : (
                 <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">

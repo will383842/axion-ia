@@ -78,8 +78,7 @@ function* combinaisons(): Generator<ChecklistVenteInput> {
       // session — sans session, la page ne peut charger aucun document. Le
       // premier passage de ce balayage générait « documents sans session » et
       // rougissait sur un état impossible en pratique.
-      const jeuxDocs =
-        session === null ? [[]] : [[], TOUS_DOCS.map((type) => ({ type }))];
+      const jeuxDocs = session === null ? [[]] : [[], TOUS_DOCS.map((type) => ({ type }))];
       for (const documentsGeneres of jeuxDocs) {
         yield {
           devis,

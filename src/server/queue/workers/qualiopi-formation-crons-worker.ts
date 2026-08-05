@@ -1100,7 +1100,10 @@ async function handleDevisExpiration(): Promise<void> {
   });
 
   const dormants = await prisma.devis.findMany({
-    where: { statut: "envoye", sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) } },
+    where: {
+      statut: "envoye",
+      sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) },
+    },
     select: {
       id: true,
       numero: true,

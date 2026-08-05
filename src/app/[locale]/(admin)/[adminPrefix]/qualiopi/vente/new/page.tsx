@@ -18,10 +18,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
-import type {
-  ChecklistVenteInput,
-  VenteFinancement,
-} from "@/server/qualiopi/vente/checklist";
+import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {

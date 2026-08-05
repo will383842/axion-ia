@@ -526,9 +526,9 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
       </h3>
 
       <p className="rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-        Toute modification d&apos;une formation validée ou publiée la repasse en «&nbsp;Assemblé&nbsp;»
-        et efface la validation humaine — il faudra revalider puis republier (garde AI Act art.
-        50).
+        Toute modification d&apos;une formation validée ou publiée la repasse en
+        «&nbsp;Assemblé&nbsp;» et efface la validation humaine — il faudra revalider puis republier
+        (garde AI Act art. 50).
       </p>
 
       {/* Titre */}

@@ -83,9 +83,7 @@ describe("createCoachingParcoursAction", () => {
   });
 
   it("REFUSE un slug hors du SSOT des prestations 1-to-1", async () => {
-    const res = await createCoachingParcoursAction(
-      baseInput({ interventionSlug: "slug-invente" }),
-    );
+    const res = await createCoachingParcoursAction(baseInput({ interventionSlug: "slug-invente" }));
     expect("error" in res).toBe(true);
     expect(mp.coachingSession.create).not.toHaveBeenCalled();
   });
@@ -97,7 +95,11 @@ describe("createCoachingParcoursAction", () => {
   });
 
   it("REFUSE un devis non accepté (brouillon)", async () => {
-    mp.devis.findUnique.mockResolvedValue({ id: DEVIS_ID, clientId: CLIENT_ID, statut: "brouillon" });
+    mp.devis.findUnique.mockResolvedValue({
+      id: DEVIS_ID,
+      clientId: CLIENT_ID,
+      statut: "brouillon",
+    });
     const res = await createCoachingParcoursAction(
       baseInput({ clientId: CLIENT_ID, devisId: DEVIS_ID }),
     );

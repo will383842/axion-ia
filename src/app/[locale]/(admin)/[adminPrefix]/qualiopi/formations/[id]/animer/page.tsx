@@ -104,7 +104,10 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
         },
       });
       for (const d of docs) {
-        slotsDeposes.set(d.slot, d.currentVersion?.publishedAt ?? d.currentVersion?.createdAt ?? null);
+        slotsDeposes.set(
+          d.slot,
+          d.currentVersion?.publishedAt ?? d.currentVersion?.createdAt ?? null,
+        );
       }
     } catch {
       // stub-safe : stub Proxy → [] au build
