@@ -357,18 +357,36 @@ describe("handleAlertes (via formationCronsHandler)", () => {
       tick: "2026-06-06T07:00:00Z",
     });
 
-    // Filtre = critique + non-résolue + non-notifiée (anti-spam).
+    // Filtre = non-résolue + non-notifiée, ET (critique OU code de déblocage
+    // du parcours vente) — le seuil critique reste l'anti-spam par défaut.
     const findArgs = mockPrisma.alerteSysteme.findMany.mock.calls[0]![0] as {
       where: Record<string, unknown>;
     };
     expect(findArgs.where).toMatchObject({
-      niveau: "critique",
       resolue: false,
       notifiedAt: null,
+      OR: [
+        { niveau: "critique" },
+        { code: { in: ["devis_signe_convention", "moteur_assemble_a_publier"] } },
+      ],
     });
     expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(2);
     expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-1");
     expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-2");
+  });
+
+  it("les DÉBLOCAGES vente sont notifiés même sans être critiques", async () => {
+    // Promesse du plan « Nouvelle vente » §1a : devis signé et fin de cycle
+    // moteur préviennent l'équipe par email — sans camper l'écran d'alertes.
+    mockPrisma.alerteSysteme.findMany.mockResolvedValue([{ id: "alerte-deblocage" }]);
+    mockNotifierAlerteInterne.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.alertes",
+      tick: "2026-08-05T07:00:00Z",
+    });
+
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-deblocage");
   });
 
   it("ne notifie rien si aucune alerte critique en attente", async () => {

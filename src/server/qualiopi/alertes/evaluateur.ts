@@ -1278,6 +1278,69 @@ async function regleDevisExpire(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
+ * Déblocage — devis signé, convention générable (plan « Nouvelle vente » §1a).
+ *
+ * Un devis passe `accepte` à la signature ; tant que rien n'est construit
+ * dessus, la vente attend UNE action admin (créer la session, générer la
+ * convention) et rien ne le signalait — il fallait rouvrir l'écran Devis pour
+ * l'apprendre. Le cron notifie ce code par email interne (cf. CODES_DEBLOCAGE
+ * du crons-worker).
+ *
+ * ⚠️ « Rien construit dessus » = ni session, ni parcours 1-to-1 : un devis de
+ * coaching reste légitimement `accepte` sans jamais devenir convention
+ * (`createCoachingParcoursAction` s'y adosse tel quel). Sans ces `none`,
+ * l'alerte harcèlerait chaque vente 1-to-1 déjà planifiée.
+ */
+async function regleDevisSigneConvention(_now: Date): Promise<AlerteCandidate[]> {
+  const signes = await prisma.devis.findMany({
+    where: {
+      statut: "accepte",
+      sessions: { none: {} },
+      coachingSessions: { none: {} },
+    },
+    select: {
+      id: true,
+      numero: true,
+      acceptedAt: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return signes.map((d) => ({
+    code: "devis_signe_convention",
+    niveau: "important" as AlerteNiveau,
+    titre: "Devis signé — session et convention à créer",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) est signé${d.acceptedAt != null ? ` depuis le ${d.acceptedAt.toLocaleDateString("fr-FR")}` : ""} : créer la session (ou le parcours 1-to-1) puis générer la convention.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
+ * Déblocage — cycle moteur terminé, publication en attente (plan « Nouvelle
+ * vente » §1a-2, chemin B adaptation).
+ *
+ * `assemble` est le dernier statut que le moteur pose tout seul : la suite
+ * (relecture, publication) est HUMAINE. Une adaptation créée par le wizard
+ * restait invisible une fois générée — l'admin qui attendait pour vendre
+ * n'apprenait la fin du cycle qu'en rouvrant la fiche. La règle couvre toute
+ * formation assemblée, adaptation ou pas : l'attente est la même.
+ */
+async function regleMoteurAssembleAPublier(_now: Date): Promise<AlerteCandidate[]> {
+  const assemblees = await prisma.formation.findMany({
+    where: { statutGeneration: "assemble", statut: { not: "archive" } },
+    select: { id: true, numero: true, titre: true },
+  });
+  return assemblees.map((f) => ({
+    code: "moteur_assemble_a_publier",
+    niveau: "important" as AlerteNiveau,
+    titre: "Génération terminée — formation à relire et publier",
+    message: `Le moteur a terminé « ${f.titre} » (${f.numero}) : relire le contenu assemblé puis publier — la formation n'est pas planifiable avant.`,
+    cibleType: "Formation",
+    cibleId: f.id,
+  }));
+}
+
+/**
  * Signature qui traîne sur une pièce émise — refonte console phase 1
  * (2026-08-01), le second trou trouvé avec le devis dormant.
  *
@@ -1749,6 +1812,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
   { nom: "devis_expire_j7", fn: regleDevisExpireJ7 },
   { nom: "devis_expire", fn: regleDevisExpire },
+  { nom: "devis_signe_convention", fn: regleDevisSigneConvention },
+  { nom: "moteur_assemble_a_publier", fn: regleMoteurAssembleAPublier },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },

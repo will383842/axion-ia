@@ -623,12 +623,20 @@ async function handleAlertes(): Promise<void> {
   try {
     const { crees, resolues } = await synchroniserAlertes();
 
-    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées.
-    // Seuil = critique UNIQUEMENT (anti-spam) ; l'idempotence réelle vit dans
-    // notifierAlerteInterne (claim notifiedAt) — un doublon reste impossible même
-    // si findMany voit une alerte déjà en cours de notification.
+    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées —
+    // plus les DÉBLOCAGES du parcours vente (plan « Nouvelle vente » §1a) :
+    // un devis signé ou un cycle moteur terminé attendent une action admin,
+    // l'email évite de camper l'écran d'alertes. Seuil critique sinon
+    // (anti-spam) ; l'idempotence réelle vit dans notifierAlerteInterne
+    // (claim notifiedAt) — un doublon reste impossible même si findMany voit
+    // une alerte déjà en cours de notification.
+    const CODES_DEBLOCAGE = ["devis_signe_convention", "moteur_assemble_a_publier"];
     const aNotifier = await prisma.alerteSysteme.findMany({
-      where: { niveau: "critique", resolue: false, notifiedAt: null },
+      where: {
+        resolue: false,
+        notifiedAt: null,
+        OR: [{ niveau: "critique" }, { code: { in: CODES_DEBLOCAGE } }],
+      },
       select: { id: true },
     });
     let notifiees = 0;

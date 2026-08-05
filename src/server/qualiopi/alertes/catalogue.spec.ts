@@ -33,6 +33,10 @@ const CODES_ATTENDUS: string[] = [
   "signature_contreseing_du",
   "devis_expire_j7",
   "devis_expire",
+  // Déblocages du parcours vente (2026-08-05) : l'étape suivante attend
+  // l'admin — notifiés par email interne, pas seulement affichés.
+  "devis_signe_convention",
+  "moteur_assemble_a_publier",
   "emails_en_attente_validation",
   "emargement_manquant",
   "session_sans_formateur",

@@ -103,6 +103,23 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Devis expiré sans suite",
     resolutionAuto: true,
   },
+  /**
+   * Déblocages du parcours vente (plan « Nouvelle vente » §1a) — tous deux
+   * notifiés par email interne dès leur création (CODES_DEBLOCAGE du
+   * crons-worker), pas seulement affichés : l'étape suivante attend l'admin.
+   * `resolutionAuto` : la condition disparaît d'elle-même (session/parcours
+   * créé, formation publiée ou cycle relancé).
+   */
+  devis_signe_convention: {
+    niveau: "important",
+    titre: "Devis signé — session et convention à créer",
+    resolutionAuto: true,
+  },
+  moteur_assemble_a_publier: {
+    niveau: "important",
+    titre: "Génération terminée — formation à relire et publier",
+    resolutionAuto: true,
+  },
 
   // ── Référentiel des offres ────────────────────────────────────────────────
   /**
