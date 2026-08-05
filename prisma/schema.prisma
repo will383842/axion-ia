@@ -5331,9 +5331,10 @@ model Client {
   /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
   penalitesRetardActives Boolean @default(false) @map("penalites_retard_actives")
 
-  emailsEnAttente EmailOutbox[]
-  reglesEmail     EmailAutomationSetting[]
-  venteBrouillons VenteBrouillon[]
+  emailsEnAttente  EmailOutbox[]
+  reglesEmail      EmailAutomationSetting[]
+  venteBrouillons  VenteBrouillon[]
+  coachingSessions CoachingSession[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5404,6 +5405,7 @@ model Devis {
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
   venteBrouillons     VenteBrouillon[]
+  coachingSessions    CoachingSession[]
 
   @@index([clientId])
   @@index([statut])
@@ -8739,6 +8741,14 @@ model CoachingSession {
   beneficiaireNom          String?               @map("beneficiaire_nom") @db.VarChar(200)
   beneficiaireEmail        String?               @map("beneficiaire_email") @db.Citext
   beneficiaireEntreprise   String?               @map("beneficiaire_entreprise") @db.VarChar(250)
+  /// Rattachement CRM (parcours vente 2026-08-05). 🔴 Avant : le bénéficiaire
+  /// n'existait qu'en TEXTE LIBRE ci-dessus — impossible de relier un parcours
+  /// 1-to-1 à un Client ou à un Devis depuis la console. Nullable : les
+  /// parcours legacy et les séances créées par le formateur restent valides.
+  clientId                 String?               @map("client_id") @db.Uuid
+  client                   Client?               @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId                  String?               @map("devis_id") @db.Uuid
+  devis                    Devis?                @relation(fields: [devisId], references: [id], onDelete: SetNull)
   // ── Couche administrative/légale AFEST (C1, 2026-06-14) — tout additif ──────
   /// Contrat de coaching récurrent rattaché (un-a-un-recurrent), si applicable.
   coachingContractId       String?               @map("coaching_contract_id") @db.Uuid
@@ -8831,6 +8841,8 @@ model CoachingSession {
   @@index([trainerId])
   @@index([traineeId])
   @@index([coachingContractId])
+  @@index([clientId])
+  @@index([devisId])
   @@index([interventionSlug])
   @@index([dateSeance])
   @@index([estAfest])
