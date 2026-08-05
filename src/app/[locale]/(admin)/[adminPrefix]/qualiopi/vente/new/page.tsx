@@ -86,7 +86,8 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
   // `tarifNonReverifie` : même seuil de 30 jours que l'alerte
   // `offres_site_non_verifiees` — vendre sur un tarif jamais revérifié mérite
   // d'être signalé AU MOMENT du choix, pas seulement sur l'écran d'alertes.
-  const seuilVerif = new Date(Date.now() - 30 * 86_400_000);
+  const now = new Date();
+  const seuilVerif = new Date(now.getTime() - 30 * 86_400_000);
   const offres = offresWithPrice.map((o) => ({
     id: o.offre.id,
     tierId: o.offre.tierId,

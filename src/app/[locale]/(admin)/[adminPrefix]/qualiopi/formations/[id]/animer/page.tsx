@@ -149,7 +149,7 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
         </span>
       );
     }
-    const aRevoir = deposeLe != null && Date.now() - deposeLe.getTime() > 92 * 86_400_000;
+    const aRevoir = deposeLe != null && new Date().getTime() - deposeLe.getTime() > 92 * 86_400_000;
     return (
       <>
         <span className="inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-success)]">
