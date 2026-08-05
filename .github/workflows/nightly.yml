@@ -64,7 +64,7 @@ jobs:
     if: ${{ vars.NIGHTLY_A11Y_ENABLED != 'false' && vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: 10.33.4
       - uses: actions/setup-node@v7
@@ -111,7 +111,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: 10.33.4
       - uses: actions/setup-node@v7
@@ -183,7 +183,7 @@ jobs:
     if: ${{ vars.NIGHTLY_MAIL_TESTER_ENABLED == 'true' }}
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: 10.33.4
       - uses: actions/setup-node@v7
@@ -251,7 +251,7 @@ jobs:
     if: ${{ vars.NIGHTLY_LHCI_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: 10.33.4
       - uses: actions/setup-node@v7
