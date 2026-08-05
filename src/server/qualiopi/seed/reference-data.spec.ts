@@ -9,15 +9,17 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-const { seedOffresSite, seedGrilleQualite, seedGrilleV2 } = vi.hoisted(() => ({
+const { seedOffresSite, seedGrilleQualite, seedGrilleV2, seedGrilleV3 } = vi.hoisted(() => ({
   seedOffresSite: vi.fn(async () => {}),
   seedGrilleQualite: vi.fn(async () => {}),
   seedGrilleV2: vi.fn(async () => {}),
+  seedGrilleV3: vi.fn(async () => {}),
 }));
 
 vi.mock("../../../../prisma/seeds/qualiopi/offres", () => ({ seedOffresSite }));
 vi.mock("../../../../prisma/seeds/qualiopi/grille", () => ({ seedGrilleQualite }));
 vi.mock("../../../../prisma/seeds/qualiopi/grille-v2", () => ({ seedGrilleV2 }));
+vi.mock("../../../../prisma/seeds/qualiopi/grille-v3", () => ({ seedGrilleV3 }));
 
 import { seedQualiopiReferenceData, getQualiopiReferenceDataStatus } from "./reference-data";
 
@@ -51,6 +53,8 @@ function makePrisma(opts: MockOpts = {}) {
       findFirst: vi.fn(async () =>
         grilleActiveCle == null ? null : { cleUnique: grilleActiveCle },
       ),
+      // Auto-réparation : réactivation explicite de la v3 hors verrou.
+      updateMany: vi.fn(async () => ({ count: 1 })),
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
@@ -63,6 +67,7 @@ beforeEach(() => {
   seedOffresSite.mockClear();
   seedGrilleQualite.mockClear();
   seedGrilleV2.mockClear();
+  seedGrilleV3.mockClear();
   process.env["DATABASE_URL"] = "postgresql://u:p@localhost:5432/db";
 });
 
@@ -84,8 +89,9 @@ describe("seedQualiopiReferenceData", () => {
     expect(prisma.$transaction).toHaveBeenCalledOnce();
     expect(seedOffresSite).toHaveBeenCalledOnce();
     expect(seedGrilleQualite).toHaveBeenCalledOnce();
-    // grille déjà active → pas d'auto-réparation, seedGrilleV2 appelé une seule fois (dans la tx)
     expect(seedGrilleV2).toHaveBeenCalledOnce();
+    // grille déjà active → pas d'auto-réparation, seedGrilleV3 appelé une seule fois (dans la tx)
+    expect(seedGrilleV3).toHaveBeenCalledOnce();
   });
 
   it("acquiert un verrou XACT dans une transaction (un seul queryRaw, pas d'unlock manuel)", async () => {
@@ -103,6 +109,8 @@ describe("seedQualiopiReferenceData", () => {
     expect(seedOffresSite).not.toHaveBeenCalled();
     expect(seedGrilleQualite).not.toHaveBeenCalled();
     expect(seedGrilleV2).not.toHaveBeenCalled();
+    // Grille active présente (défaut du mock) → pas d'auto-réparation non plus.
+    expect(seedGrilleV3).not.toHaveBeenCalled();
   });
 
   it("rejette (rollback) si un sous-seed échoue dans la transaction", async () => {
@@ -117,8 +125,13 @@ describe("seedQualiopiReferenceData", () => {
     const prisma = makePrisma({ locked: true, grilleActiveCle: null });
     const report = await seedQualiopiReferenceData(prisma);
     expect(report.ran).toBe(true);
-    // seedGrilleV2 appelé 2× : une fois dans la tx, une fois en réparation hors verrou.
-    expect(seedGrilleV2).toHaveBeenCalledTimes(2);
+    // seedGrilleV3 appelé 2× : une fois dans la tx, une fois en réparation hors
+    // verrou — suivie de la réactivation explicite (v3 active, les autres non).
+    expect(seedGrilleV3).toHaveBeenCalledTimes(2);
+    expect(prisma.grilleQualiteConfig.updateMany).toHaveBeenCalledWith({
+      where: { cleUnique: "grille_qualite_v3" },
+      data: { actif: true },
+    });
   });
 
   it("est un no-op (ran=false, aucune transaction) en mode build stub.invalid", async () => {
