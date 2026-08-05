@@ -16,6 +16,7 @@ import { auth } from "@/auth";
 import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
+import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 
 export const dynamic = "force-dynamic";
@@ -93,6 +94,10 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
     noteDevisFr: o.noteDevisFr,
     tarifNonReverifie:
       o.offre.derniereVerifCoherenceAt === null || o.offre.derniereVerifCoherenceAt < seuilVerif,
+    // Une formation collective et un accompagnement individuel ne se vendent
+    // pas pareil : le wizard doit bifurquer, pas proposer un sélecteur de
+    // formation qui restera vide (cf. `famille-prestation.ts`).
+    estUnAUn: estOffreUnAUn(o.offre.formatPedagogique),
   }));
 
   // ── Pré-sélection client (?clientId=) — boutons « Nouvelle vente » du CRM ──
