@@ -638,6 +638,119 @@ export async function archiveFormationAction(id: string): Promise<ActionResult<{
   return { data: { id: idParsed.data } };
 }
 
+/**
+ * Renvoie une formation publiée (ou assemblée) au point de départ du moteur
+ * (`statutGeneration → intention`) pour la faire repasser par l'étape contenu.
+ *
+ * 🔴 Sans cette action, `publie` est un CUL-DE-SAC : non relançable par
+ * `startGenerationAction` (statuts relançables : intention / structure_generee /
+ * contenu_evalue), no-op côté worker, et « éditer pour dépublier » mène à
+ * `assemble` — pas relançable non plus. Le contournement par duplication est un
+ * piège : slug `-copie` sans kit documentaire, et archivage automatique par le
+ * cleanup du seed. C'est le déblocage requis par le pilote qualité (Phase 3 du
+ * plan parcours vente).
+ *
+ * Gardes :
+ *   - `requireAdminPublish` (on retire une formation du référentiel actif) ;
+ *   - REFUS si session en cours/réalisée (contenu figé, même règle que WS4) ;
+ *   - avertissement explicite : pendant tout le cycle moteur, la formation
+ *     SORT du sélecteur de sessions et de la page publique (fenêtre de
+ *     non-planifiabilité) jusqu'à revalidation + republication.
+ *
+ * Trace : versionHistorique (action "reset_generation") + ActivityLog.
+ */
+export async function resetGenerationStatusAction(
+  id: string,
+): Promise<ActionResult<{ id: string; avertissement: string }>> {
+  const session = await requireAdminPublish();
+  const idParsed = z.string().uuid().safeParse(id);
+  if (!idParsed.success) return { error: "Identifiant invalide" };
+
+  const formation = await prisma.formation.findUnique({
+    where: { id: idParsed.data },
+    select: {
+      id: true,
+      slug: true,
+      statut: true,
+      statutGeneration: true,
+      versionProgramme: true,
+      versionHistorique: true,
+      aiGenerated: true,
+      objectifsPedagogiques: true,
+    },
+  });
+  if (!formation) return { error: "Formation introuvable" };
+  if (formation.statut === "archive" || formation.statutGeneration === "archive") {
+    return { error: "Formation archivée : dupliquez-la plutôt que de relancer le moteur." };
+  }
+  // Seulement les VRAIS culs-de-sac : `contenu_valide`/`contenu_genere` sont
+  // des statuts de MI-CYCLE — un job moteur peut être en file, et
+  // `advanceStatut` (update inconditionnel) écraserait le reset en terminant.
+  if (!["publie", "assemble"].includes(formation.statutGeneration)) {
+    return {
+      error: `Statut "${formation.statutGeneration}" : laissez le cycle en cours se terminer (validation/assemblage), ou utilisez « Lancer la génération » s'il est relançable.`,
+    };
+  }
+  if ((await countLockingSessions(prisma, idParsed.data)) > 0) {
+    return { error: LOCKED_BY_SESSION_ERROR };
+  }
+
+  const nextVersion = bumpProgrammeVersion(formation.versionProgramme);
+  const entry: FormationVersionEntry = {
+    version: nextVersion,
+    at: new Date().toISOString(),
+    by: session.userId,
+    action: "reset_generation",
+    fields: ["statutGeneration"],
+    revalidationRequired: true,
+  };
+
+  await prisma.formation.update({
+    where: { id: idParsed.data },
+    data: {
+      statutGeneration: "intention",
+      validatedBy: null,
+      validatedAt: null,
+      versionProgramme: nextVersion,
+      versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+      // Formation 100 % générée : la colonne objectifs a été écrite par la
+      // MACHINE au cycle précédent. La laisser bloquerait la ré-extraction
+      // (politique « seulement si vide ») → attestations et grilles
+      // imprimeraient à jamais les objectifs de l'ancienne version. Une
+      // saisie HUMAINE (aiGenerated=false) n'est jamais purgée.
+      ...(formation.aiGenerated ? { objectifsPedagogiques: [] as never } : {}),
+    },
+  });
+
+  // 🔴 Purge des validations EN ATTENTE du cycle précédent : depuis `assemble`,
+  // une FileValidation « assemblage » traîne — l'approuver après le reset
+  // ferait sauter `intention → publie` sans nouveau cycle (update
+  // inconditionnel de resolveNextStatutAfterApproval), objectifs vidés.
+  await prisma.fileValidation.deleteMany({
+    where: { formationId: idParsed.data, statut: "en_attente" },
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.formation.reset_generation",
+    targetType: "Formation",
+    targetId: idParsed.data,
+    changes: { from: formation.statutGeneration, to: "intention", version: nextVersion },
+    session,
+  });
+
+  revalidateFormationPages({ slug: formation.slug });
+
+  return {
+    data: {
+      id: idParsed.data,
+      avertissement:
+        "La formation est repartie en « Intention » : elle n'apparaît plus dans le sélecteur " +
+        "de sessions ni sur la page publique tant qu'elle n'a pas été régénérée, revalidée et " +
+        "republiée. Lancez la génération, puis validez le contenu proposé.",
+    },
+  };
+}
+
 /** Construit un slug libre dérivé de `base` (`-copie`, `-copie-2`, …). */
 async function allocateCopySlug(base: string): Promise<string> {
   for (let i = 1; i <= 50; i++) {
@@ -667,10 +780,30 @@ async function allocateCopySlug(base: string): Promise<string> {
  */
 export async function duplicateFormationAction(
   id: string,
+  options?: { clientId?: string; estSurMesure?: boolean },
 ): Promise<ActionResult<{ id: string; numero: string; slug: string }>> {
   const session = await requireAdminWrite();
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
+  const optsParsed = z
+    .object({
+      clientId: z.string().uuid().optional(),
+      estSurMesure: z.boolean().optional(),
+    })
+    .optional()
+    .safeParse(options);
+  if (!optsParsed.success) return { error: "Options invalides" };
+  const opts = optsParsed.data;
+
+  // Existence AVANT écriture : un uuid inexistant lèverait une P2003 brute
+  // (exception) au lieu d'un ActionResult — même contrat que vente-brouillon.
+  if (opts?.clientId !== undefined) {
+    const client = await prisma.client.findUnique({
+      where: { id: opts.clientId },
+      select: { id: true },
+    });
+    if (!client) return { error: "Client introuvable" };
+  }
 
   const source = await prisma.formation.findUnique({
     where: { id: idParsed.data },
@@ -712,8 +845,12 @@ export async function duplicateFormationAction(
           titre: `${source.titre} (copie)`,
           slug: newSlug,
           offreSiteId: source.offreSiteId,
-          clientId: source.clientId,
-          estSurMesure: source.estSurMesure,
+          // Overrides d'adaptation client (chemin B du wizard) : sans
+          // `estSurMesure: true`, une copie de formation catalogue serait
+          // ARCHIVÉE par le prochain cleanup du seed (règle : hors
+          // FORMATIONS_V2 + pas sur-mesure → archive).
+          clientId: opts?.clientId ?? source.clientId,
+          estSurMesure: opts?.estSurMesure ?? source.estSurMesure,
           dureeHeures: source.dureeHeures,
           modalite: source.modalite,
           objectifsPedagogiques: source.objectifsPedagogiques as never,

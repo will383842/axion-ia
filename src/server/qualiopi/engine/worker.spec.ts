@@ -15,41 +15,16 @@
  */
 
 import { describe, it, expect } from "vitest";
-import type { FormationStatutGeneration } from "../../../../prisma/generated/client";
 
-// ── Fonctions pures extraites du moteur de décision ───────────────────────────
-// (Miroir exact de resolveNextStatutAfterApproval / resolveRevertStatutAfterRejection
-//  dans src/server/actions/qualiopi/engine.ts — même logique, testable sans next-auth)
-
-function resolveNextStatutAfterApproval(
-  etape: string,
-  currentStatut: FormationStatutGeneration,
-): FormationStatutGeneration | null {
-  switch (etape) {
-    case "contenu":
-      return "contenu_valide";
-    case "assemblage":
-      return "publie";
-    case "structure":
-      if (currentStatut === "structure_generee") return "contenu_evalue";
-      return null;
-    default:
-      return null;
-  }
-}
-
-function resolveRevertStatutAfterRejection(etape: string): FormationStatutGeneration {
-  switch (etape) {
-    case "contenu":
-      return "structure_generee";
-    case "assemblage":
-      return "contenu_genere";
-    case "structure":
-      return "intention";
-    default:
-      return "intention";
-  }
-}
+// 🔴 On importe les VRAIES fonctions. L'ancien spec testait un « miroir
+// exact » copié localement (justifié à l'époque par next-auth, avant leur
+// extraction dans status-transitions.ts, module pur) : quand la vraie
+// transition assemblage-rejeté a changé, le miroir est resté vert sur
+// l'ancienne valeur — un test qui ne teste pas le code ne garde rien.
+import {
+  resolveNextStatutAfterApproval,
+  resolveRevertStatutAfterRejection,
+} from "./status-transitions";
 
 // ── 1. resolveNextStatutAfterApproval ────────────────────────────────────────
 
@@ -82,8 +57,10 @@ describe("resolveRevertStatutAfterRejection", () => {
     expect(resolveRevertStatutAfterRejection("contenu")).toBe("structure_generee");
   });
 
-  it("étape=assemblage → contenu_genere (correction manuelle)", () => {
-    expect(resolveRevertStatutAfterRejection("assemblage")).toBe("contenu_genere");
+  it("étape=assemblage → contenu_valide (ré-assemblage possible, pas un cul-de-sac)", () => {
+    // `contenu_genere` était un cul-de-sac : ni relançable, ni resetable,
+    // no-op côté worker — le « corriger puis relancer » était impossible.
+    expect(resolveRevertStatutAfterRejection("assemblage")).toBe("contenu_valide");
   });
 
   it("étape=structure → intention (re-démarrage complet)", () => {

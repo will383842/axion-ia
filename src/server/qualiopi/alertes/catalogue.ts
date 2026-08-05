@@ -63,6 +63,79 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Cycle commercial : devis & signatures ─────────────────────────────────
+  /**
+   * 🔴 Bug latent corrigé le 2026-08-05 : ces trois premiers codes étaient émis
+   * par l'évaluateur depuis la refonte du 2026-08-01 mais ABSENTS du catalogue.
+   * Or `synchroniserAlertes` ne résout automatiquement QUE les codes du
+   * catalogue à `resolutionAuto: true` — un devis accepté ou une pièce signée
+   * laissaient donc leur alerte OUVERTE pour toujours (résolution manuelle
+   * seulement, sans que rien ne le signale).
+   */
+  devis_sans_reponse: {
+    niveau: "important",
+    titre: "Devis envoyé sans réponse depuis +7 jours",
+    resolutionAuto: true,
+  },
+  signature_en_attente: {
+    niveau: "important",
+    titre: "Lien de signature sans signature depuis +7 jours",
+    resolutionAuto: true,
+  },
+  signature_contreseing_du: {
+    niveau: "important",
+    titre: "Pièce signée d'un seul côté depuis +7 jours",
+    resolutionAuto: true,
+  },
+  /**
+   * SPEC_PART5 §D.10 — échéance de validité des devis. Le statut `expire` est
+   * posé par le cron `formation-crons.devis-expiration` (06:45), les alertes
+   * sont levées par l'évaluateur (07:00). `devis_expire_j7` = dernière fenêtre
+   * de relance ; `devis_expire` = piste à clôturer ou re-deviser.
+   */
+  devis_expire_j7: {
+    niveau: "important",
+    titre: "Devis expire dans moins de 7 jours",
+    resolutionAuto: true,
+  },
+  devis_expire: {
+    niveau: "info",
+    titre: "Devis expiré sans suite",
+    resolutionAuto: true,
+  },
+  /**
+   * Déblocages du parcours vente (plan « Nouvelle vente » §1a) — tous deux
+   * notifiés par email interne dès leur création (CODES_DEBLOCAGE du
+   * crons-worker), pas seulement affichés : l'étape suivante attend l'admin.
+   * `resolutionAuto` : la condition disparaît d'elle-même (session/parcours
+   * créé, formation publiée ou cycle relancé).
+   */
+  devis_signe_convention: {
+    niveau: "important",
+    titre: "Devis signé — session et convention à créer",
+    resolutionAuto: true,
+  },
+  moteur_assemble_a_publier: {
+    niveau: "important",
+    titre: "Génération terminée — formation à relire et publier",
+    resolutionAuto: true,
+  },
+
+  // ── Référentiel des offres ────────────────────────────────────────────────
+  /**
+   * SPEC_PART5 §A.2 : une offre active dont la cohérence avec la page du site
+   * (titre, durée, promesse, tarif) n'a pas été vérifiée depuis plus de
+   * 30 jours. C'est le point d'entrée de toute vente — vendre sur un tarif
+   * jamais revérifié est l'erreur la plus coûteuse du parcours commercial.
+   * `resolutionAuto: true` : cliquer « Vérifier la cohérence » horodate
+   * `derniereVerifCoherenceAt` et la condition disparaît.
+   */
+  offres_site_non_verifiees: {
+    niveau: "info",
+    titre: "Offre non vérifiée depuis plus de 30 jours",
+    resolutionAuto: true,
+  },
+
   // ── Réclamations ──────────────────────────────────────────────────────────
   reclamation_sans_reponse_j15: {
     niveau: "critique",
@@ -93,6 +166,22 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   session_sans_formateur: {
     niveau: "important",
     titre: "Session à J-7 sans formateur principal",
+    resolutionAuto: true,
+  },
+
+  // ── Animation (kit documentaire) ──────────────────────────────────────────
+  /**
+   * Le diaporama de salle (slot `diaporama` du kit, le .pptx projeté) n'est pas
+   * déposé dans la bibliothèque alors qu'une session démarre sous 7 jours.
+   * Jointure PAR CONVENTION `Formation.slug === interventionSlug`, résolue
+   * strictement (vente/kit-formation.ts) : une formation sur-mesure ou
+   * dupliquée n'a pas de kit → PAS d'alerte (le formateur dépose son support où
+   * il veut ; une alerte insoluble apprendrait à ignorer les alertes).
+   * `resolutionAuto` : disparaît d'elle-même dès le .pptx déposé.
+   */
+  diaporama_manquant_session: {
+    niveau: "important",
+    titre: "Diaporama non déposé pour une session imminente",
     resolutionAuto: true,
   },
 

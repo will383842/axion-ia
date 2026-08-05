@@ -26,9 +26,19 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-vi.mock("./evaluateur", () => ({
-  evaluerAlertes: vi.fn(),
-}));
+vi.mock("./evaluateur", () => {
+  const evaluerAlertes = vi.fn();
+  return {
+    evaluerAlertes,
+    // La variante détaillée enveloppe le même mock : les tests existants
+    // continuent de piloter les candidates via `evaluerAlertes`, zéro échec
+    // par défaut. Le test « résolution suspendue » la surcharge directement.
+    evaluerAlertesDetaille: vi.fn(async () => ({
+      candidates: (await evaluerAlertes()) as unknown[],
+      reglesEnEchec: [] as string[],
+    })),
+  };
+});
 
 vi.mock("./catalogue", () => ({
   ALERTE_CATALOGUE: {
@@ -51,7 +61,7 @@ vi.mock("./catalogue", () => ({
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { prisma } from "@/lib/prisma";
-import { evaluerAlertes } from "./evaluateur";
+import { evaluerAlertes, evaluerAlertesDetaille } from "./evaluateur";
 import {
   creerOuDedup,
   resoudreAlerte,
@@ -400,6 +410,21 @@ describe("synchroniserAlertes", () => {
     const result = await synchroniserAlertes();
     expect(result.resolues).toBe(0);
     // Vérifie que update n'a pas été appelé
+    expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
+  });
+
+  it("SUSPEND la résolution auto quand une règle a échoué (fail-soft ≠ disparu)", async () => {
+    // Une règle en échec ne produit aucune candidate : sans ce garde, un
+    // timeout DB un matin résoudrait EN MASSE toutes ses alertes ouvertes.
+    (evaluerAlertesDetaille as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      candidates: [],
+      reglesEnEchec: ["devis_expire_j7"],
+    });
+    mp.alerteSysteme.findMany.mockResolvedValue([
+      makeAlerte({ id: "alert-ouverte", code: "referent_handicap_absent", cibleId: null }),
+    ]);
+    const result = await synchroniserAlertes();
+    expect(result.resolues).toBe(0);
     expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
   });
 

@@ -33,6 +33,12 @@ vi.mock("@/lib/prisma", () => ({
     relanceProposee: { findMany: vi.fn() },
     // Art. 8 sous-traitance : incidents répétés d'un intervenant. [2026-08-03]
     incident: { groupBy: vi.fn() },
+    // Fraîcheur du référentiel des offres (SPEC_PART5 §A.2). [2026-08-05]
+    offreSite: { findMany: vi.fn() },
+    // Diaporama du kit non déposé pour une session imminente. [2026-08-05]
+    interventionDocument: { findMany: vi.fn() },
+    // Déblocage : cycle moteur terminé, publication en attente. [2026-08-05]
+    formation: { findMany: vi.fn() },
   },
 }));
 
@@ -67,6 +73,9 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { evaluerAlertes } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
+// Catalogue des kits (module pur, non mocké) : fournit un slug RÉEL aux tests
+// de diaporama_manquant_session.
+import { getInterventionsByFamille } from "@/content/intervention-documents-catalog";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers typed
@@ -90,6 +99,9 @@ const mp = prisma as unknown as {
   devis: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { findMany: ReturnType<typeof vi.fn> };
   relanceProposee: { findMany: ReturnType<typeof vi.fn> };
+  offreSite: { findMany: ReturnType<typeof vi.fn> };
+  interventionDocument: { findMany: ReturnType<typeof vi.fn> };
+  formation: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -121,6 +133,14 @@ function setupEmptyMocks() {
   // régression y serait passée inaperçue.
   mp.sousTraitant.findMany.mockResolvedValue([]);
   mp.incident.groupBy.mockResolvedValue([]);
+  // Même piège que sousTraitant/incident ci-dessus : sans ce mock, la règle
+  // offres_site_non_verifiees lirait un mock non configuré, lèverait, et le
+  // fail-soft par règle l'avalerait — règle INERTE dans tous les autres blocs.
+  mp.offreSite.findMany.mockResolvedValue([]);
+  // Idem pour diaporama_manquant_session (lecture du kit documentaire).
+  mp.interventionDocument.findMany.mockResolvedValue([]);
+  // Idem pour moteur_assemble_a_publier (formations assemblées en attente).
+  mp.formation.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -407,6 +427,130 @@ describe("evaluerAlertes — session_sans_formateur", () => {
     const alertes = await evaluerAlertes();
     const a = alertes.find((x) => x.code === "session_sans_formateur");
     expect(a?.message).toContain("INVEST SUN");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle diaporama_manquant_session
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * R03quater — le slot `diaporama` du kit (LE .pptx projeté) n'est pas déposé
+ * pour une session imminente. Jointure PAR CONVENTION Formation.slug ===
+ * interventionSlug, résolue strictement — jamais devinée : les tests couvrent
+ * le slug non résolvable (sur-mesure/dupliquée → silence VOULU).
+ *
+ * Discriminant du mock : cette règle est la SEULE à sélectionner `formation`
+ * dans trainingSession.findMany — c'est sur le `select` qu'on la reconnaît.
+ */
+describe("evaluerAlertes — diaporama_manquant_session", () => {
+  // Slug RÉEL du catalogue (la règle résout contre la famille formation) :
+  // un slug inventé ferait passer le test « slug non résolvable » par vacuité.
+  const KIT_SLUG = getInterventionsByFamille("formation")[0]!.slug;
+
+  function mockSessionAvecFormation(slug: string, dateDebut: Date) {
+    mp.trainingSession.findMany.mockImplementation(
+      ({ select }: { select?: { formation?: unknown } }) => {
+        if (select && "formation" in select) {
+          return Promise.resolve([
+            {
+              id: "ses-200",
+              numero: "SES-2026-200",
+              titreSession: "IA Express — Entreprise Exemple",
+              statut: "planifiee",
+              dateDebut,
+              client: { raisonSociale: "INVEST SUN" },
+              formation: { slug },
+            },
+          ]);
+        }
+        return Promise.resolve([]);
+      },
+    );
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève l'alerte quand le slot diaporama n'est pas déposé (session à J-3)", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "diaporama_manquant_session");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.cibleType).toBe("TrainingSession");
+    expect(a?.cibleId).toBe("ses-200");
+    expect(a?.message).toContain("SES-2026-200");
+    // Le message dit OÙ déposer : le slug du kit dans Documents interventions.
+    expect(a?.message).toContain(KIT_SLUG);
+    expect(a?.message).toContain("Documents interventions");
+  });
+
+  it("PAS d'alerte quand le diaporama est déposé (version courante publiée)", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([{ interventionSlug: KIT_SLUG }]);
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
+  });
+
+  it("PAS d'alerte pour un slug non résolvable (sur-mesure/dupliquée) — et le kit n'est même pas lu", async () => {
+    mockSessionAvecFormation("ia-express-copie", new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((x) => x.code === "diaporama_manquant_session")).toBeUndefined();
+    // Early-exit vérifié : sans candidat résolvable, aucune lecture du kit.
+    expect(mp.interventionDocument.findMany).not.toHaveBeenCalled();
+  });
+
+  it("parle au PASSÉ quand la session a déjà démarré", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() - 5 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "diaporama_manquant_session");
+    expect(a?.message).toContain("a démarré le");
+  });
+
+  it("émet un WHERE borné (statuts actifs, fenêtre J-7 / -365 j) et cible le slot diaporama déposé", async () => {
+    mockSessionAvecFormation(KIT_SLUG, new Date(Date.now() + 3 * 24 * 60 * 60 * 1000));
+    mp.interventionDocument.findMany.mockResolvedValue([]);
+
+    await evaluerAlertes();
+
+    // La requête sessions de CETTE règle (la seule à sélectionner `formation`).
+    const call = mp.trainingSession.findMany.mock.calls.find(
+      (c: Array<{ select?: { formation?: unknown } }>) => c[0]?.select?.formation !== undefined,
+    ) as
+      | [
+          {
+            where: {
+              statut: { in: string[] };
+              dateDebut: { lte: Date; gte: Date };
+            };
+          },
+        ]
+      | undefined;
+    expect(call).toBeDefined();
+    expect(call![0].where.statut).toEqual({ in: ["planifiee", "en_cours"] });
+    expect(call![0].where.dateDebut.lte).toBeInstanceOf(Date);
+    expect(call![0].where.dateDebut.gte).toBeInstanceOf(Date);
+    // Borne basse ~365 j : garde anti-salve du premier passage.
+    const fenetreJours =
+      (call![0].where.dateDebut.lte.getTime() - call![0].where.dateDebut.gte.getTime()) /
+      (24 * 60 * 60 * 1000);
+    expect(Math.round(fenetreJours)).toBe(372);
+
+    // La lecture du kit ne compte que les dépôts RÉELS du bon slot.
+    const docCall = mp.interventionDocument.findMany.mock.calls[0] as [
+      { where: { slot: string; currentVersionId: { not: null } } },
+    ];
+    expect(docCall[0].where.slot).toBe("diaporama");
+    expect(docCall[0].where.currentVersionId).toEqual({ not: null });
   });
 });
 
@@ -1582,5 +1726,223 @@ describe("vigilance sous-traitance", () => {
       };
       expect(arg.where.faitIntervenant.in).toStrictEqual(["annulation_tardive", "desistement"]);
     });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle offres_site_non_verifiees (SPEC_PART5 §A.2) [2026-08-05]
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — offres_site_non_verifiees", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève une alerte info par offre active jamais vérifiée (null)", async () => {
+    mp.offreSite.findMany.mockResolvedValue([
+      {
+        id: "off-1",
+        code: "AXI-OFF-012",
+        titreFr: "IA pour bien commencer",
+        derniereVerifCoherenceAt: null,
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "offres_site_non_verifiees");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("info");
+    expect(alerte?.cibleType).toBe("OffreSite");
+    expect(alerte?.cibleId).toBe("off-1");
+    expect(alerte?.message).toContain("jamais vérifiée");
+    expect(alerte?.message).toContain("AXI-OFF-012");
+  });
+
+  it("mentionne la date pour une offre vérifiée il y a plus de 30 jours", async () => {
+    const ilYa45Jours = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000);
+    mp.offreSite.findMany.mockResolvedValue([
+      {
+        id: "off-2",
+        code: "AXI-OFF-013",
+        titreFr: "Agents & automatisations",
+        derniereVerifCoherenceAt: ilYa45Jours,
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "offres_site_non_verifiees");
+    expect(alerte?.message).toContain("vérifiée pour la dernière fois");
+  });
+
+  it("ne filtre QUE les offres actives, périmées ou jamais vérifiées (garde le where)", async () => {
+    // La garde ne vaut que si elle rougit : on vérifie le WHERE réellement émis,
+    // pas seulement le résultat — un `findMany({})` retournant [] passerait
+    // sinon tous les tests en ne surveillant rien.
+    mp.offreSite.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+    const arg = mp.offreSite.findMany.mock.calls[0]?.[0] as {
+      where: { actif: boolean; OR: unknown[] };
+    };
+    expect(arg.where.actif).toBe(true);
+    expect(arg.where.OR).toHaveLength(2);
+  });
+
+  it("aucune alerte quand toutes les offres sont fraîches", async () => {
+    mp.offreSite.findMany.mockResolvedValue([]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((a) => a.code === "offres_site_non_verifiees")).toBeUndefined();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règles devis_expire_j7 / devis_expire (SPEC_PART5 §D.10) [2026-08-05]
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — échéance des devis", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  // Le mock `devis.findMany` sert les TROIS règles devis (sans_reponse,
+  // expire_j7, expire) : chaque ligne mockée porte donc tous les champs lus
+  // par chacune, et on filtre par code.
+  const dansCinqJours = () => new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+  const ilYaDixJours = () => new Date(Date.now() - 10 * 24 * 60 * 60 * 1000);
+
+  it("devis_expire_j7 : devis envoyé dont l'échéance tombe sous 7 jours", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "dev-1",
+        numero: "AXI-DEV-2026-042",
+        sentAt: ilYaDixJours(),
+        dateValidite: dansCinqJours(),
+        client: { raisonSociale: "INVEST SUN" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "devis_expire_j7");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("important");
+    expect(alerte?.cibleType).toBe("Devis");
+    expect(alerte?.cibleId).toBe("dev-1");
+    expect(alerte?.message).toContain("AXI-DEV-2026-042");
+    expect(alerte?.message).toContain("INVEST SUN");
+  });
+
+  it("devis_expire : devis expiré sans révision → info avec consigne", async () => {
+    mp.devis.findMany.mockResolvedValue([
+      {
+        id: "dev-2",
+        numero: "AXI-DEV-2026-041",
+        sentAt: ilYaDixJours(),
+        dateValidite: ilYaDixJours(),
+        client: { raisonSociale: "INVEST SUN" },
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "devis_expire");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("info");
+    expect(alerte?.message).toContain("nouveau devis");
+  });
+
+  it("les WHERE émis portent bien l'échéance et l'absence de révision (garde)", async () => {
+    // La garde ne vaut que si elle rougit : on vérifie les requêtes réellement
+    // émises. Trois règles appellent devis.findMany — on identifie les deux
+    // nouvelles par la présence de `dateValidite` dans leur where.
+    mp.devis.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+    const wheres = mp.devis.findMany.mock.calls.map(
+      (c) => (c[0] as { where: Record<string, unknown> }).where,
+    );
+    const avecEcheance = wheres.filter((w) => w["dateValidite"] !== undefined);
+    expect(avecEcheance).toHaveLength(2);
+    const surExpire = wheres.find((w) => w["statut"] === "expire");
+    expect(surExpire).toBeDefined();
+    expect(surExpire?.["revisions"]).toEqual({ none: {} });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests déblocages du parcours vente (2026-08-05)
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — devis_signe_convention", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 un devis signé sans session ni parcours → déblocage, important", async () => {
+    mp.devis.findMany.mockImplementation((args: { where: { statut: string } }) =>
+      Promise.resolve(
+        args.where.statut === "accepte"
+          ? [
+              {
+                id: "d-signe",
+                numero: "AXI-DEV-2026-021",
+                acceptedAt: new Date("2026-08-01T10:00:00Z"),
+                client: { raisonSociale: "INVEST SUN" },
+              },
+            ]
+          : [],
+      ),
+    );
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "devis_signe_convention");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("AXI-DEV-2026-021");
+    expect(a?.message).toContain("convention");
+    expect(a?.cibleId).toBe("d-signe");
+  });
+
+  it("le filtre SQL exclut les devis DÉJÀ construits (session ou parcours 1-to-1)", async () => {
+    // Un devis de coaching reste légitimement `accepte` sans convention :
+    // sans les `none`, l'alerte harcèlerait chaque vente 1-to-1 planifiée.
+    await evaluerAlertes();
+    const call = mp.devis.findMany.mock.calls.find(
+      (c) => (c[0] as { where: { statut?: string } }).where.statut === "accepte",
+    );
+    expect(call).toBeDefined();
+    const where = (call![0] as { where: Record<string, unknown> }).where;
+    expect(where["sessions"]).toEqual({ none: {} });
+    expect(where["coachingSessions"]).toEqual({ none: {} });
+  });
+});
+
+describe("evaluerAlertes — moteur_assemble_a_publier", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("🔴 une formation assemblée (fin de cycle moteur) → à relire et publier", async () => {
+    mp.formation.findMany.mockResolvedValue([
+      {
+        id: "f-adapt",
+        numero: "AXI-FORM-2026-031",
+        titre: "IA générative — adaptation INVEST SUN",
+      },
+    ]);
+
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "moteur_assemble_a_publier");
+    expect(a).toBeDefined();
+    expect(a?.niveau).toBe("important");
+    expect(a?.message).toContain("AXI-FORM-2026-031");
+    expect(a?.message).toContain("publier");
+    expect(a?.cibleType).toBe("Formation");
+    expect(a?.cibleId).toBe("f-adapt");
+  });
+
+  it("le filtre SQL ne vise que `assemble`, hors archives", async () => {
+    await evaluerAlertes();
+    const arg = mp.formation.findMany.mock.calls[0]?.[0] as {
+      where: { statutGeneration: string; statut: { not: string } };
+    };
+    expect(arg.where.statutGeneration).toBe("assemble");
+    expect(arg.where.statut).toEqual({ not: "archive" });
   });
 });

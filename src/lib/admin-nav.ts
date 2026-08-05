@@ -845,6 +845,18 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     },
     // « Vue d'ensemble » (/qualiopi) retirée le 2026-08-01 (audit UX, P0 n°3,
     // phase 2) : doublon direct du pipeline — la route redirige en 308.
+    //
+    // ▸ Wizard « Nouvelle vente » (phase 0, plan 2026-08-05) — parcours guidé
+    // client → formation → devis → session → checklist. EN TÊTE du pôle
+    // Catalogue & vente (l'ordre source = l'ordre de rendu) : c'est la porte
+    // d'entrée commerciale, le reste du pôle est du référentiel.
+    {
+      href: `${base}/qualiopi/vente/new`,
+      label: "Nouvelle vente",
+      icon: "ShoppingCart",
+      group: "qualiopi",
+      subGroup: "catalogue",
+    },
     {
       href: `${base}/qualiopi/formations`,
       label: "Formations",

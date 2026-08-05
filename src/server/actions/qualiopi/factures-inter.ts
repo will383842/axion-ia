@@ -5,7 +5,9 @@
  * session inter-entreprises, selon SON financement (override inscription) et SON
  * payeur. Distincte de la facture session-level (intra, financements.ts).
  *
- * TVA exonérée 261-4-4° CGI. Numéro séquentiel AXI-FACT-YYYY-NNN.
+ * TVA : régime dérivé de la config (`regime_tva`, défaut assujetti — cf.
+ * legal/tva.ts) ; la mention n'est jamais codée en dur. Numéro séquentiel
+ * AXI-FACT-YYYY-NNN.
  */
 
 "use server";

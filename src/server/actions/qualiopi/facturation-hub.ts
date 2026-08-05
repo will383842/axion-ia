@@ -822,7 +822,7 @@ export async function envoyerRelanceAction(
   if (relance.factureFormationId === null) {
     return {
       error:
-        "Cette relance concerne un document booking — la traiter depuis son écran dédié (ou l'ignorer ici).",
+        "Cette relance ne porte pas sur une facture formation (devis ou document booking) — la traiter depuis son écran dédié (ou l'ignorer ici).",
     };
   }
 

@@ -22,6 +22,21 @@ const CODES_ATTENDUS: string[] = [
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
   "responsable_qualite_absent",
+  // SPEC_PART5 §A.2, écrite le 2026-08-05 : la colonne `derniereVerifCoherenceAt`
+  // existait depuis T1 sans qu'aucune règle ne surveille son ancienneté.
+  "offres_site_non_verifiees",
+  // Cycle commercial (2026-08-05). Les 3 premiers réparent un bug latent :
+  // émis par l'évaluateur depuis le 2026-08-01 mais hors catalogue → jamais
+  // auto-résolus. Les 2 derniers = SPEC_PART5 §D.10 (échéance de validité).
+  "devis_sans_reponse",
+  "signature_en_attente",
+  "signature_contreseing_du",
+  "devis_expire_j7",
+  "devis_expire",
+  // Déblocages du parcours vente (2026-08-05) : l'étape suivante attend
+  // l'admin — notifiés par email interne, pas seulement affichés.
+  "devis_signe_convention",
+  "moteur_assemble_a_publier",
   "emails_en_attente_validation",
   "emargement_manquant",
   "session_sans_formateur",
@@ -29,6 +44,10 @@ const CODES_ATTENDUS: string[] = [
   // bloquée en `en_cours` sans qu'aucune alerte ne se lève (R03 exige `realisee`,
   // que la clôture auto refuse justement de poser sans émargement).
   "session_bloquee_en_cours",
+  // Phase « Tout pour animer » (2026-08-05) : le slot `diaporama` du kit (LE
+  // .pptx projeté) n'est pas déposé pour une session qui démarre sous 7 jours.
+  // Jamais levée pour une formation sans kit résolvable (sur-mesure, dupliquée).
+  "diaporama_manquant_session",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",

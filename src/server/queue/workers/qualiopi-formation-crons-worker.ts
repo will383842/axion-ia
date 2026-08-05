@@ -76,7 +76,9 @@ export type FormationCronJobType =
   | "formation-crons.factures-retard"
   // Hub facturation Phase 5 — génération des BROUILLONS des plans récurrents
   // (émission + envoi = clics admin, jamais automatiques).
-  | "formation-crons.plans-recurrents";
+  | "formation-crons.plans-recurrents"
+  // Parcours vente — expiration des devis à dateValidite (SPEC_PART5 §D.10).
+  | "formation-crons.devis-expiration";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -621,12 +623,20 @@ async function handleAlertes(): Promise<void> {
   try {
     const { crees, resolues } = await synchroniserAlertes();
 
-    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées.
-    // Seuil = critique UNIQUEMENT (anti-spam) ; l'idempotence réelle vit dans
-    // notifierAlerteInterne (claim notifiedAt) — un doublon reste impossible même
-    // si findMany voit une alerte déjà en cours de notification.
+    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées —
+    // plus les DÉBLOCAGES du parcours vente (plan « Nouvelle vente » §1a) :
+    // un devis signé ou un cycle moteur terminé attendent une action admin,
+    // l'email évite de camper l'écran d'alertes. Seuil critique sinon
+    // (anti-spam) ; l'idempotence réelle vit dans notifierAlerteInterne
+    // (claim notifiedAt) — un doublon reste impossible même si findMany voit
+    // une alerte déjà en cours de notification.
+    const CODES_DEBLOCAGE = ["devis_signe_convention", "moteur_assemble_a_publier"];
     const aNotifier = await prisma.alerteSysteme.findMany({
-      where: { niveau: "critique", resolue: false, notifiedAt: null },
+      where: {
+        resolue: false,
+        notifiedAt: null,
+        OR: [{ niveau: "critique" }, { code: { in: CODES_DEBLOCAGE } }],
+      },
       select: { id: true },
     });
     let notifiees = 0;
@@ -1049,6 +1059,82 @@ async function handleEnqueteEntrepriseJ30(): Promise<void> {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Parcours vente — expiration des devis (SPEC_PART5 §D.10)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Daily 06:45 UTC — passe `envoye → expire` les devis dont `dateValidite` est
+ * dépassée.
+ *
+ * 🔴 Avant ce cron, AUCUN chemin ne posait jamais ce statut à l'échéance : seul
+ * `reviseDevisAction` l'écrivait (en expirant l'ancienne version d'un devis
+ * révisé). Un devis mort depuis des mois restait « envoyé » pour toujours —
+ * le tableau de bord mentait, et `createSessionAction` refusait le devis sans
+ * que rien n'explique pourquoi.
+ *
+ * Statut seul, AUCUN email (même politique que factures-retard). Les alertes
+ * `devis_expire_j7` / `devis_expire` (évaluateur, 07:00) s'appuient sur l'état
+ * posé ici — d'où l'horaire AVANT le job alertes.
+ *
+ * ## Relance J+3 (même passage)
+ *
+ * Un devis `envoye` sans réponse depuis 3 jours fait l'objet d'une PROPOSITION
+ * de relance dans le hub facturation (envoi = clic admin, jamais automatique) —
+ * la mécanique exacte de `quote-pending-reminder` côté booking, appliquée aux
+ * devis CRM. Distincte de l'alerte `devis_sans_reponse` (J+7, évaluateur) :
+ * la RelanceProposee est une ACTION proposée, l'alerte une ESCALADE de
+ * pilotage (cf. `relance-paliers.ts`). L'expiration est posée AVANT la
+ * sélection : un devis échu ce matin ne reçoit pas de relance de courtoisie.
+ */
+async function handleDevisExpiration(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] devis-expiration: stub DB, skip");
+    return;
+  }
+  const now = new Date();
+
+  const res = await prisma.devis.updateMany({
+    where: { statut: "envoye", dateValidite: { lt: now } },
+    data: { statut: "expire" },
+  });
+
+  const dormants = await prisma.devis.findMany({
+    where: {
+      statut: "envoye",
+      sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  let proposees = 0;
+  for (const d of dormants) {
+    // Une proposition par devis (palier unique j3) — idempotent entre passages.
+    const deja = await prisma.relanceProposee.findFirst({
+      where: { devisId: d.id, palier: "j3" },
+      select: { id: true },
+    });
+    if (deja !== null) continue;
+    await prisma.relanceProposee.create({
+      data: {
+        type: "devis_sans_reponse",
+        palier: "j3",
+        devisId: d.id,
+        suggestion: `Devis ${d.numero} (${d.client.raisonSociale}) envoyé sans réponse depuis 3 jours — valable jusqu'au ${d.dateValidite.toLocaleDateString("fr-FR")} — relance de courtoisie.`,
+      },
+    });
+    proposees++;
+  }
+
+  console.log(
+    `[formation-crons] devis-expiration: ${res.count} devis passé(s) envoye→expire, ${proposees} relance(s) J+3 proposée(s) (${dormants.length} sans réponse) — AUCUN email client (manuel)`,
+  );
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -1062,6 +1148,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.convocation-j5": handleConvocationJ5,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
+  "formation-crons.devis-expiration": handleDevisExpiration,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

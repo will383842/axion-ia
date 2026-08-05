@@ -20,6 +20,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { FormationForm } from "@/components/admin/qualiopi/FormationForm";
 import { FormationLifecycleButtons } from "@/components/admin/qualiopi/FormationLifecycleButtons";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -246,6 +247,9 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
             prerequis: formation.prerequis,
             secteurCible: formation.secteurCible,
             outilsClient: formation.outilsClient,
+            objectifsTexte: normaliserObjectifsPedagogiques(formation.objectifsPedagogiques).join(
+              "\n",
+            ),
           }}
         />
       </section>
@@ -254,6 +258,12 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
       <section>
         <h2 className={sectionHeadCls}>Sous-sections</h2>
         <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+          <Link
+            href={`${formationBase}/animer`}
+            className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface)]"
+          >
+            Tout pour animer →
+          </Link>
           <Link
             href={`${formationBase}/supports`}
             className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface)]"

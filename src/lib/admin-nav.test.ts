@@ -88,7 +88,10 @@ describe("buildAdminNav SSOT", () => {
     //      « Connaissances », route → 308. = 135.
     // +1 (2026-08-02) : Rapprochement bancaire (import relevé Finom, groupe
     // finances) = 136.
-    expect(items.length).toBe(136);
+    // +1 (2026-08-05, vente phase 0) : « Nouvelle vente » — wizard guidé
+    // client → formation → devis → session → checklist, en tête du pôle
+    // Catalogue & vente (groupe qualiopi). = 137.
+    expect(items.length).toBe(137);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

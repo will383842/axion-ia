@@ -14,6 +14,21 @@ import {
   normaliserModalite,
   reglesModalitePourPrompt,
 } from "@/server/qualiopi/engine/modalite-pedagogie";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
+
+/**
+ * Rend les objectifs pédagogiques injectables dans un prompt.
+ *
+ * 🔴 L'ancien test `formation.objectifsPedagogiques ? JSON.stringify(...) : fallback`
+ * ne tombait JAMAIS dans le fallback : la colonne Prisma a `@default("[]")`, et
+ * `[]` est truthy — le prompt recevait littéralement `Objectifs pédagogiques : []`
+ * pour toute formation créée via l'UI. Seule une liste NON VIDE de libellés
+ * exploitables compte comme « objectifs fournis ».
+ */
+function objectifsPourPrompt(valeur: unknown, fallback: string): string {
+  const libelles = normaliserObjectifsPedagogiques(valeur);
+  return libelles.length > 0 ? libelles.join(" ; ") : fallback;
+}
 
 // ── Types des builders (compat worker) ───────────────────────────────────────
 
@@ -177,11 +192,10 @@ export function buildStructureUserPrompt(formation: FormationLike): string {
   const duree = formation.dureeHeures ?? 8;
   const modalite = formation.modalite ?? "presentiel";
 
-  const objectifsStr = formation.objectifsPedagogiques
-    ? typeof formation.objectifsPedagogiques === "string"
-      ? formation.objectifsPedagogiques
-      : JSON.stringify(formation.objectifsPedagogiques)
-    : (formation.objectifGeneral ?? "À définir selon le niveau des apprenants");
+  const objectifsStr = objectifsPourPrompt(
+    formation.objectifsPedagogiques,
+    formation.objectifGeneral ?? "À définir selon le niveau des apprenants",
+  );
 
   // Injection du persona si disponible dans programmeDetaille
   const programmeDetaille =
@@ -429,11 +443,7 @@ export function buildBackwardDesignUserPrompt(formation: FormationLike): string 
   const publicVise = formation.publicVise ?? "professionnels en activité";
   const objectifGeneral = formation.objectifGeneral ?? "À préciser";
 
-  const objectifsStr = formation.objectifsPedagogiques
-    ? typeof formation.objectifsPedagogiques === "string"
-      ? formation.objectifsPedagogiques
-      : JSON.stringify(formation.objectifsPedagogiques)
-    : objectifGeneral;
+  const objectifsStr = objectifsPourPrompt(formation.objectifsPedagogiques, objectifGeneral);
 
   return `Applique la méthode Backward Design pour la formation suivante :
 
@@ -652,11 +662,7 @@ export function buildModuleContentStructuredUserPrompt(input: {
     outilsClient: input.outilsClient,
   });
 
-  const objectifsStr = input.objectifsFormation
-    ? typeof input.objectifsFormation === "string"
-      ? input.objectifsFormation
-      : JSON.stringify(input.objectifsFormation)
-    : "cf. objectifs du module";
+  const objectifsStr = objectifsPourPrompt(input.objectifsFormation, "cf. objectifs du module");
 
   const seqStr =
     input.module.sequences && input.module.sequences.length > 0

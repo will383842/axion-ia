@@ -17,7 +17,7 @@ import {
   AdminButton,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { ArrowRight, CalendarX } from "lucide-react";
+import { ArrowRight, CalendarX, Plus } from "lucide-react";
 import { listAllSessions } from "@/server/coaching-admin/queries";
 import { coachingInterventionLabel, sessionStatutLabel } from "@/server/formateur/coaching-options";
 
@@ -49,6 +49,13 @@ export default async function CoachingSeancesPage({
         s.beneficiaireNom
           ? `${s.beneficiaireNom}${s.beneficiaireEntreprise ? ` (${s.beneficiaireEntreprise})` : ""}`
           : "—",
+    },
+    {
+      // Rattachement CRM : la colonne rend visible le lien parcours → client
+      // (les séances legacy sans rattachement affichent un tiret).
+      key: "client",
+      header: "Client",
+      cell: (s) => s.client?.raisonSociale ?? "—",
     },
     {
       key: "statut",
@@ -84,6 +91,13 @@ export default async function CoachingSeancesPage({
           sessions.length === 500
             ? "Les 500 séances les plus récentes, tous formateurs confondus."
             : "Toutes les séances d'accompagnement individuel, tous formateurs confondus."
+        }
+        actions={
+          // Point d'entrée UI de createCoachingParcoursAction : l'admin crée le
+          // parcours et AFFECTE le formateur (principe verrouillé par Will).
+          <AdminButton href={`/${locale}/${adminPrefix}/coaching/parcours/new`} icon={Plus}>
+            Nouveau parcours
+          </AdminButton>
         }
       />
 

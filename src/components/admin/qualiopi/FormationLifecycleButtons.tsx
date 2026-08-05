@@ -25,6 +25,7 @@ import {
   publierIndicateursAction,
   archiveFormationAction,
   duplicateFormationAction,
+  resetGenerationStatusAction,
 } from "@/server/actions/qualiopi/formations";
 import { startGenerationAction } from "@/server/actions/qualiopi/engine";
 
@@ -250,8 +251,29 @@ export function FormationLifecycleButtons({
   const [info, setInfo] = useState<string | null>(null);
   const [showIndicateursForm, setShowIndicateursForm] = useState(false);
   const [confirmArchive, setConfirmArchive] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const isArchive = statut === "archive" || statutGeneration === "archive";
+  // Cul-de-sacs du moteur : statuts que startGenerationAction refuse et que le
+  // worker traite en no-op — seul resetGenerationStatusAction en sort.
+  // `contenu_valide`/`contenu_genere` sont exclus : mi-cycle, un job peut être
+  // en vol et écraserait le reset.
+  const isResetable = ["publie", "assemble"].includes(statutGeneration);
+
+  function handleResetGeneration() {
+    setError(null);
+    setInfo(null);
+    startTransition(async () => {
+      const result = await resetGenerationStatusAction(formationId);
+      if ("error" in result) {
+        setError(result.error);
+      } else {
+        setConfirmReset(false);
+        setInfo(result.data.avertissement);
+        router.refresh();
+      }
+    });
+  }
 
   function handleDuplicate() {
     setError(null);
@@ -331,6 +353,51 @@ export function FormationLifecycleButtons({
           >
             {isPending ? "En cours…" : "Lancer la génération IA"}
           </button>
+        )}
+
+        {/* Ré-enrichir — sort du cul-de-sac publie/assemble pour repasser par le
+            moteur (pilote qualité). 2 temps : l'avertissement de
+            non-planifiabilité est affiché AVANT confirmation. */}
+        {isResetable && !isArchive && (
+          <>
+            {!confirmReset ? (
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => {
+                  setError(null);
+                  setInfo(null);
+                  setConfirmReset(true);
+                }}
+                className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)] hover:border-[color:var(--color-admin-accent)] hover:text-[color:var(--color-admin-accent)] disabled:opacity-50"
+              >
+                Ré-enrichir (moteur IA)
+              </button>
+            ) : (
+              <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+                  La formation sortira du sélecteur de sessions et de la page publique jusqu&apos;à
+                  revalidation + republication. Continuer ?
+                </span>
+                <button
+                  type="button"
+                  disabled={isPending}
+                  onClick={handleResetGeneration}
+                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-accent)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] disabled:opacity-50"
+                >
+                  {isPending ? "…" : "Confirmer le ré-enrichissement"}
+                </button>
+                <button
+                  type="button"
+                  disabled={isPending}
+                  onClick={() => setConfirmReset(false)}
+                  className="rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] disabled:opacity-50"
+                >
+                  Annuler
+                </button>
+              </span>
+            )}
+          </>
         )}
 
         {/* Dupliquer — repart en « intention », non validée (cf. garde d'édition) */}

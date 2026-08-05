@@ -25,6 +25,7 @@ import {
   cumulAnnuelFormateurCents,
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
+import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -264,6 +265,86 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
       cibleId: s.id,
     };
   });
+}
+
+/**
+ * R03quater — Diaporama de salle non déposé pour une session imminente.
+ *
+ * Le slot `diaporama` du kit documentaire est LE .pptx projeté en salle — le
+ * fil conducteur de la séance. Une session qui démarre sous 7 jours sans
+ * diaporama déposé dans la bibliothèque, c'est un formateur qui réclamera le
+ * fichier la veille (ou improvisera).
+ *
+ * ⚠️ La jointure Formation ↔ kit n'existe QUE par convention
+ * (`Formation.slug === interventionSlug`) : elle est résolue STRICTEMENT par
+ * `resolveInterventionSlugForFormation`, jamais devinée. Si le slug n'est pas
+ * résolvable (formation sur-mesure ou dupliquée `slug-copie`), PAS d'alerte :
+ * ces formations n'ont pas de kit dans la bibliothèque, le formateur dépose
+ * son support où il veut — alerter exigerait un dépôt à un emplacement qui
+ * n'existe pas, et une alerte insoluble apprend à ignorer les alertes.
+ *
+ * « Déposé » = une version COURANTE publiée (`currentVersionId` non nul) : une
+ * ligne de slot sans version est un emplacement vide, pas un dépôt.
+ */
+async function regleDiaporamaManquant(now: Date): Promise<AlerteCandidate[]> {
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      // Mêmes bornes que R03bis : horizon J-7, borne basse 365 jours (sans
+      // elle, le premier passage remonterait tout l'historique d'un coup).
+      dateDebut: { lte: daysFromNow(7, now), gte: daysAgo(365, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      statut: true,
+      dateDebut: true,
+      client: { select: { raisonSociale: true } },
+      formation: { select: { slug: true } },
+    },
+  });
+
+  // Garde applicative doublant le `where` (les mocks de test ignorent le SQL),
+  // puis résolution du slug kit — fail-visible : pas de kit, pas d'alerte.
+  const candidates = sessions.flatMap((s) => {
+    if (s.formation == null) return [];
+    if (s.statut !== "planifiee" && s.statut !== "en_cours") return [];
+    if (s.dateDebut > daysFromNow(7, now) || s.dateDebut < daysAgo(365, now)) return [];
+    const slug = resolveInterventionSlugForFormation(s.formation);
+    if (slug === null) return [];
+    return [{ session: s, slug }];
+  });
+  if (candidates.length === 0) return [];
+
+  const deposes = await prisma.interventionDocument.findMany({
+    where: {
+      interventionSlug: { in: [...new Set(candidates.map((c) => c.slug))] },
+      slot: "diaporama",
+      currentVersionId: { not: null },
+    },
+    select: { interventionSlug: true },
+  });
+  const slugsDeposes = new Set(deposes.map((d) => d.interventionSlug));
+
+  return candidates
+    .filter((c) => !slugsDeposes.has(c.slug))
+    .map(({ session: s, slug }) => {
+      // Même règle de langue que R03bis : une session déjà démarrée se dit au
+      // passé — une alerte qui annonce au futur un fait accompli cesse d'être lue.
+      const passee = s.dateDebut.getTime() < now.getTime();
+      const date = s.dateDebut.toLocaleDateString("fr-FR");
+      return {
+        code: "diaporama_manquant_session",
+        niveau: "important" as AlerteNiveau,
+        titre: "Diaporama non déposé pour une session imminente",
+        message: passee
+          ? `La session ${designerSession(s)} a démarré le ${date} sans diaporama de salle déposé : déposer le .pptx dans Documents interventions → Formations → ${slug} (slot « Diaporama formateur »).`
+          : `La session ${designerSession(s)} démarre le ${date} et le diaporama de salle (.pptx) n'est pas déposé : le déposer dans Documents interventions → Formations → ${slug} (slot « Diaporama formateur »).`,
+        cibleType: "TrainingSession",
+        cibleId: s.id,
+      };
+    });
 }
 
 /** R04 — Satisfaction manquante : session realisee > 7 jours + questionnaire non rempli. */
@@ -1133,6 +1214,133 @@ async function regleDevisSansReponse(now: Date): Promise<AlerteCandidate[]> {
 }
 
 /**
+ * R-DEV-EXP-J7 — Devis qui expire dans les 7 jours (SPEC_PART5 §D.10).
+ *
+ * Complémentaire de `devis_sans_reponse` (dormant depuis J+7 après ENVOI) :
+ * ici l'horloge est l'ÉCHÉANCE (`dateValidite`, J+30 par défaut). Un devis
+ * envoyé il y a 25 jours n'est plus « dormant », il est en train de mourir —
+ * c'est la dernière fenêtre utile pour relancer.
+ */
+async function regleDevisExpireJ7(now: Date): Promise<AlerteCandidate[]> {
+  const devisEnFin = await prisma.devis.findMany({
+    where: {
+      statut: "envoye",
+      dateValidite: { gte: now, lte: daysFromNow(7, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return devisEnFin.map((d) => ({
+    code: "devis_expire_j7",
+    niveau: "important" as AlerteNiveau,
+    titre: "Devis expire dans moins de 7 jours",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) expire le ${d.dateValidite.toLocaleDateString("fr-FR")} : dernière fenêtre pour relancer le client avant l'échéance.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
+ * R-DEV-EXP — Devis expiré sans suite (SPEC_PART5 §D.10).
+ *
+ * Le statut `expire` est posé par le cron `formation-crons.devis-expiration`
+ * (06:45, avant ce moteur à 07:00). Un devis expiré qui a déjà une révision
+ * (`revisions`) a une suite — pas d'alerte. Borne basse 90 jours : au-delà,
+ * c'est de l'histoire, pas une action à mener (même logique que la borne de
+ * `session_sans_formateur`).
+ */
+async function regleDevisExpire(now: Date): Promise<AlerteCandidate[]> {
+  const devisExpires = await prisma.devis.findMany({
+    where: {
+      statut: "expire",
+      dateValidite: { gte: daysAgo(90, now), lt: now },
+      revisions: { none: {} },
+    },
+    select: {
+      id: true,
+      numero: true,
+      dateValidite: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return devisExpires.map((d) => ({
+    code: "devis_expire",
+    niveau: "info" as AlerteNiveau,
+    titre: "Devis expiré sans suite",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) a expiré le ${d.dateValidite.toLocaleDateString("fr-FR")} sans acceptation ni révision : créer un nouveau devis ou clôturer la piste.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
+ * Déblocage — devis signé, convention générable (plan « Nouvelle vente » §1a).
+ *
+ * Un devis passe `accepte` à la signature ; tant que rien n'est construit
+ * dessus, la vente attend UNE action admin (créer la session, générer la
+ * convention) et rien ne le signalait — il fallait rouvrir l'écran Devis pour
+ * l'apprendre. Le cron notifie ce code par email interne (cf. CODES_DEBLOCAGE
+ * du crons-worker).
+ *
+ * ⚠️ « Rien construit dessus » = ni session, ni parcours 1-to-1 : un devis de
+ * coaching reste légitimement `accepte` sans jamais devenir convention
+ * (`createCoachingParcoursAction` s'y adosse tel quel). Sans ces `none`,
+ * l'alerte harcèlerait chaque vente 1-to-1 déjà planifiée.
+ */
+async function regleDevisSigneConvention(_now: Date): Promise<AlerteCandidate[]> {
+  const signes = await prisma.devis.findMany({
+    where: {
+      statut: "accepte",
+      sessions: { none: {} },
+      coachingSessions: { none: {} },
+    },
+    select: {
+      id: true,
+      numero: true,
+      acceptedAt: true,
+      client: { select: { raisonSociale: true } },
+    },
+  });
+  return signes.map((d) => ({
+    code: "devis_signe_convention",
+    niveau: "important" as AlerteNiveau,
+    titre: "Devis signé — session et convention à créer",
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) est signé${d.acceptedAt != null ? ` depuis le ${d.acceptedAt.toLocaleDateString("fr-FR")}` : ""} : créer la session (ou le parcours 1-to-1) puis générer la convention.`,
+    cibleType: "Devis",
+    cibleId: d.id,
+  }));
+}
+
+/**
+ * Déblocage — cycle moteur terminé, publication en attente (plan « Nouvelle
+ * vente » §1a-2, chemin B adaptation).
+ *
+ * `assemble` est le dernier statut que le moteur pose tout seul : la suite
+ * (relecture, publication) est HUMAINE. Une adaptation créée par le wizard
+ * restait invisible une fois générée — l'admin qui attendait pour vendre
+ * n'apprenait la fin du cycle qu'en rouvrant la fiche. La règle couvre toute
+ * formation assemblée, adaptation ou pas : l'attente est la même.
+ */
+async function regleMoteurAssembleAPublier(_now: Date): Promise<AlerteCandidate[]> {
+  const assemblees = await prisma.formation.findMany({
+    where: { statutGeneration: "assemble", statut: { not: "archive" } },
+    select: { id: true, numero: true, titre: true },
+  });
+  return assemblees.map((f) => ({
+    code: "moteur_assemble_a_publier",
+    niveau: "important" as AlerteNiveau,
+    titre: "Génération terminée — formation à relire et publier",
+    message: `Le moteur a terminé « ${f.titre} » (${f.numero}) : relire le contenu assemblé puis publier — la formation n'est pas planifiable avant.`,
+    cibleType: "Formation",
+    cibleId: f.id,
+  }));
+}
+
+/**
  * Signature qui traîne sur une pièce émise — refonte console phase 1
  * (2026-08-01), le second trou trouvé avec le devis dormant.
  *
@@ -1539,13 +1747,49 @@ async function regleEmailsEnAttente(): Promise<AlerteCandidate[]> {
   ];
 }
 
+/**
+ * R-OFF — Offres actives non vérifiées depuis plus de 30 jours (SPEC_PART5 §A.2).
+ *
+ * `OffreSite.derniereVerifCoherenceAt` est horodaté par le bouton « Vérifier la
+ * cohérence » de /qualiopi/offres — mais rien ne surveillait son ancienneté :
+ * la colonne existait, l'alerte prévue par la spec n'avait jamais été écrite.
+ * Une offre jamais vérifiée (colonne null) compte comme périmée : c'est le cas
+ * le plus dangereux, pas un cas à part.
+ */
+async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
+  const seuil = daysAgo(30, now);
+  const offres = await prisma.offreSite.findMany({
+    where: {
+      actif: true,
+      OR: [{ derniereVerifCoherenceAt: null }, { derniereVerifCoherenceAt: { lt: seuil } }],
+    },
+    select: { id: true, code: true, titreFr: true, derniereVerifCoherenceAt: true },
+  });
+  return offres.map((o) => {
+    const detail =
+      o.derniereVerifCoherenceAt === null
+        ? "jamais vérifiée depuis sa création"
+        : `vérifiée pour la dernière fois le ${o.derniereVerifCoherenceAt.toLocaleDateString("fr-FR")}`;
+    return {
+      code: "offres_site_non_verifiees",
+      niveau: "info" as AlerteNiveau,
+      titre: "Offre non vérifiée depuis plus de 30 jours",
+      message: `L'offre ${o.code} — « ${o.titreFr} » est ${detail}. Vérifier que titre, durée, promesse et tarif correspondent toujours à la page du site (bouton « Vérifier la cohérence » sur /qualiopi/offres).`,
+      cibleType: "OffreSite",
+      cibleId: o.id,
+    };
+  });
+}
+
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
+  { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
+  { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
   { nom: "attestation_non_envoyee", fn: regleAttestationNonEnvoyee },
@@ -1566,6 +1810,10 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "relance_sans_effet", fn: regleRelanceSansEffet },
   { nom: "dossiers_financement", fn: regleDossiersFinancement },
   { nom: "devis_sans_reponse", fn: regleDevisSansReponse },
+  { nom: "devis_expire_j7", fn: regleDevisExpireJ7 },
+  { nom: "devis_expire", fn: regleDevisExpire },
+  { nom: "devis_signe_convention", fn: regleDevisSigneConvention },
+  { nom: "moteur_assemble_a_publier", fn: regleMoteurAssembleAPublier },
   { nom: "signatures_en_attente", fn: regleSignatureEnAttente },
   { nom: "rgpd_suppression", fn: regleRgpdSuppression },
   { nom: "revue_trimestrielle", fn: regleRevueTrimestrielle },
@@ -1576,25 +1824,40 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
 // Point d'entrée public
 // ─────────────────────────────────────────────────────────────────────────────
 
+export interface EvaluationAlertes {
+  candidates: AlerteCandidate[];
+  /**
+   * Noms des règles ayant LEVÉ (fail-soft). 🔴 Tant que cette liste n'est pas
+   * vide, la résolution automatique doit être SUSPENDUE : une règle en échec
+   * ne produit aucune candidate, et `synchroniserAlertes` résoudrait alors en
+   * masse toutes les alertes ouvertes de ses codes — un simple timeout DB un
+   * matin effacerait à tort toutes les alertes devis.
+   */
+  reglesEnEchec: string[];
+}
+
 /**
- * Évalue toutes les règles et retourne la liste des alertes candidates.
+ * Évalue toutes les règles — variante détaillée qui expose les échecs.
  *
- * Stub-aware : retourne [] si DATABASE_URL contient "stub.invalid".
- * Fail-soft par règle : une erreur de règle est loggée et ignorée.
+ * Stub-aware : vide si DATABASE_URL contient "stub.invalid".
+ * Fail-soft par règle : une erreur de règle est loggée, comptée, et n'empêche
+ * pas les autres règles.
  */
-export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
+export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return [];
+    return { candidates: [], reglesEnEchec: [] };
   }
 
   const now = new Date();
   const toutes: AlerteCandidate[] = [];
+  const reglesEnEchec: string[] = [];
 
   for (const { nom, fn } of REGLES) {
     try {
       const candidates = await fn(now);
       toutes.push(...candidates);
     } catch (err) {
+      reglesEnEchec.push(nom);
       console.error(
         `[evaluateur-alertes] erreur règle ${nom}:`,
         err instanceof Error ? err.message : String(err),
@@ -1602,5 +1865,10 @@ export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
     }
   }
 
-  return toutes;
+  return { candidates: toutes, reglesEnEchec };
+}
+
+/** Compat : la liste des candidates seule (appelants historiques). */
+export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
+  return (await evaluerAlertesDetaille()).candidates;
 }

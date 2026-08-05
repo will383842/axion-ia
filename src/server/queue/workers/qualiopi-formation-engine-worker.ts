@@ -67,6 +67,7 @@ import {
 } from "@/server/qualiopi/alertes/job-ia-echoue";
 // Modules créés par l'autre agent — importés en avance (erreurs "Cannot find module" transitoires)
 import { runAdversarialCritique } from "@/server/qualiopi/engine/adversarial-critique";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 import { validateExcellence } from "@/server/qualiopi/engine/validation-excellence";
 import type {
   FormationStatutGeneration,
@@ -161,6 +162,7 @@ async function advanceStatut(
     aiPromptVersion?: number;
     programmeDetaille?: unknown;
     methodesPedagogiques?: string;
+    objectifsPedagogiques?: unknown;
   },
 ): Promise<void> {
   await prisma.formation.update({
@@ -177,6 +179,9 @@ async function advanceStatut(
         : {}),
       ...(aiFields?.methodesPedagogiques !== undefined
         ? { methodesPedagogiques: aiFields.methodesPedagogiques }
+        : {}),
+      ...(aiFields?.objectifsPedagogiques !== undefined
+        ? { objectifsPedagogiques: aiFields.objectifsPedagogiques as never }
         : {}),
     },
   });
@@ -202,6 +207,39 @@ function mergeStructureIntoProgramme(current: unknown, structureRaw: string): un
       ? (current as Record<string, unknown>)
       : {};
   return { ...base, ...(structure as Record<string, unknown>) };
+}
+
+/**
+ * Extrait les objectifs de la structure générée, au format canonique de la
+ * colonne `Formation.objectifsPedagogiques` (`[{ id, verbe, description }]`,
+ * même forme que l'import catalogue).
+ *
+ * 🔴 Avant ce correctif, le pipeline n'écrivait JAMAIS la colonne : les
+ * objectifs générés dormaient dans `programmeDetaille.objectifs`, invisibles
+ * pour les attestations, grilles d'évaluation et conventions (qui lisent la
+ * colonne via `normaliserObjectifsPedagogiques`). Une formation 100 % générée
+ * sortait donc des documents SANS objectifs.
+ *
+ * La colonne n'est alimentée que si elle est VIDE : une saisie humaine
+ * (formulaire admin) prime toujours sur la reformulation du LLM.
+ *
+ * Limite assumée : le REFINE ne ré-extrait pas (la colonne n'est plus vide, et
+ * on ne sait pas distinguer machine/humain à ce grain) — si une passe de
+ * raffinement retouche les objectifs, la colonne garde la version de la passe
+ * initiale. `resetGenerationStatusAction` purge la colonne des formations
+ * aiGenerated avant un nouveau cycle, ce qui borne la divergence à un cycle.
+ */
+function extraireObjectifsDeStructure(
+  structureRaw: string,
+): Array<{ id: string; verbe: string; description: string }> {
+  const structure = parseOutputSafe(structureRaw);
+  if (structure === null || typeof structure !== "object" || Array.isArray(structure)) return [];
+  const objectifs = (structure as Record<string, unknown>).objectifs;
+  return normaliserObjectifsPedagogiques(objectifs).map((description, i) => ({
+    id: `obj-${i + 1}`,
+    verbe: description.split(/\s+/)[0] ?? "",
+    description,
+  }));
 }
 
 async function stepGenerateStructure(
@@ -233,11 +271,16 @@ async function stepGenerateStructure(
     });
     const output =
       typeof cached.valeur === "string" ? cached.valeur : JSON.stringify(cached.valeur);
+    const objectifsCache =
+      normaliserObjectifsPedagogiques(formation.objectifsPedagogiques).length === 0
+        ? extraireObjectifsDeStructure(output)
+        : [];
     await advanceStatut(formation.id, "structure_generee", {
       aiGenerated: true,
       aiModel: cached.modele,
       aiPromptVersion: promptVersion,
       programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, output),
+      ...(objectifsCache.length > 0 ? { objectifsPedagogiques: objectifsCache } : {}),
     });
     return;
   }
@@ -296,11 +339,16 @@ async function stepGenerateStructure(
     cacheHit: false,
   });
 
+  const objectifsGeneres =
+    normaliserObjectifsPedagogiques(formation.objectifsPedagogiques).length === 0
+      ? extraireObjectifsDeStructure(resp.output)
+      : [];
   await advanceStatut(formation.id, "structure_generee", {
     aiGenerated: true,
     aiModel: resp.model,
     aiPromptVersion: promptVersion,
     programmeDetaille: mergeStructureIntoProgramme(formation.programmeDetaille, resp.output),
+    ...(objectifsGeneres.length > 0 ? { objectifsPedagogiques: objectifsGeneres } : {}),
   });
 }
 

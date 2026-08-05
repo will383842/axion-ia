@@ -44,6 +44,11 @@ vi.mock("@/lib/prisma", () => ({
       findFirst: vi.fn(),
       create: vi.fn(),
     },
+    // Parcours vente 2026-08-05 — expiration des devis + relance J+3.
+    devis: {
+      findMany: vi.fn(),
+      updateMany: vi.fn(),
+    },
     $transaction: vi.fn(),
   },
 }));
@@ -105,6 +110,10 @@ const mockPrisma = prisma as unknown as {
   relanceProposee: {
     findFirst: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
+  };
+  devis: {
+    findMany: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
   };
   $transaction: ReturnType<typeof vi.fn>;
 };
@@ -348,18 +357,36 @@ describe("handleAlertes (via formationCronsHandler)", () => {
       tick: "2026-06-06T07:00:00Z",
     });
 
-    // Filtre = critique + non-résolue + non-notifiée (anti-spam).
+    // Filtre = non-résolue + non-notifiée, ET (critique OU code de déblocage
+    // du parcours vente) — le seuil critique reste l'anti-spam par défaut.
     const findArgs = mockPrisma.alerteSysteme.findMany.mock.calls[0]![0] as {
       where: Record<string, unknown>;
     };
     expect(findArgs.where).toMatchObject({
-      niveau: "critique",
       resolue: false,
       notifiedAt: null,
+      OR: [
+        { niveau: "critique" },
+        { code: { in: ["devis_signe_convention", "moteur_assemble_a_publier"] } },
+      ],
     });
     expect(mockNotifierAlerteInterne).toHaveBeenCalledTimes(2);
     expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-1");
     expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-2");
+  });
+
+  it("les DÉBLOCAGES vente sont notifiés même sans être critiques", async () => {
+    // Promesse du plan « Nouvelle vente » §1a : devis signé et fin de cycle
+    // moteur préviennent l'équipe par email — sans camper l'écran d'alertes.
+    mockPrisma.alerteSysteme.findMany.mockResolvedValue([{ id: "alerte-deblocage" }]);
+    mockNotifierAlerteInterne.mockResolvedValue(undefined);
+
+    await formationCronsHandler({
+      type: "formation-crons.alertes",
+      tick: "2026-08-05T07:00:00Z",
+    });
+
+    expect(mockNotifierAlerteInterne).toHaveBeenCalledWith("alerte-deblocage");
   });
 
   it("ne notifie rien si aucune alerte critique en attente", async () => {
@@ -850,5 +877,87 @@ describe("formation-crons.enquete-entreprise-j30", () => {
     ).resolves.toBeUndefined();
 
     expect(mockPrisma.questionnaire.updateMany).not.toHaveBeenCalled();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests handleDevisExpiration — expiration + relance J+3 (parcours vente)
+//
+// Deux mécaniques dans le même passage quotidien : l'échéance passe les devis
+// `envoye → expire`, puis les devis encore vivants mais muets depuis 3 jours
+// reçoivent une PROPOSITION de relance (hub facturation, envoi = clic admin).
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("handleDevisExpiration — expiration + relance J+3 (via formationCronsHandler)", () => {
+  const JOUR_MS = 24 * 60 * 60 * 1000;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    delete process.env["DATABASE_URL"];
+    mockPrisma.devis.updateMany.mockResolvedValue({ count: 0 });
+    mockPrisma.devis.findMany.mockResolvedValue([]);
+    mockPrisma.relanceProposee.findFirst.mockResolvedValue(null);
+    mockPrisma.relanceProposee.create.mockResolvedValue({ id: "relance-1" });
+  });
+
+  const devisDormant = (joursDepuisEnvoi: number) => ({
+    id: "dev-1",
+    numero: "AXI-DEV-2026-042",
+    dateValidite: new Date(Date.now() + 20 * JOUR_MS),
+    sentAt: new Date(Date.now() - joursDepuisEnvoi * JOUR_MS),
+    client: { raisonSociale: "INVEST SUN" },
+  });
+
+  const lancer = () =>
+    formationCronsHandler({
+      type: "formation-crons.devis-expiration",
+      tick: "2026-08-05T06:45:00Z",
+    });
+
+  it("passe les devis échus envoye→expire (statut seul, jamais d'email)", async () => {
+    await lancer();
+
+    const arg = mockPrisma.devis.updateMany.mock.calls[0]![0] as {
+      where: { statut: string; dateValidite: { lt: Date } };
+      data: { statut: string };
+    };
+    expect(arg.where.statut).toBe("envoye");
+    expect(arg.data.statut).toBe("expire");
+  });
+
+  it("propose UNE relance J+3 pour un devis envoyé sans réponse depuis 3 jours", async () => {
+    mockPrisma.devis.findMany.mockResolvedValue([devisDormant(4)]);
+
+    await lancer();
+
+    // La sélection ne vise que les devis encore `envoye`, expédiés il y a ≥ 3 j.
+    const sel = mockPrisma.devis.findMany.mock.calls[0]![0] as {
+      where: { statut: string; sentAt: { not: null; lte: Date } };
+    };
+    expect(sel.where.statut).toBe("envoye");
+    expect(Date.now() - sel.where.sentAt.lte.getTime()).toBeGreaterThanOrEqual(3 * JOUR_MS - 1000);
+
+    expect(mockPrisma.relanceProposee.create).toHaveBeenCalledTimes(1);
+    const create = mockPrisma.relanceProposee.create.mock.calls[0]![0] as {
+      data: { type: string; palier: string; devisId: string; suggestion: string };
+    };
+    expect(create.data.type).toBe("devis_sans_reponse");
+    expect(create.data.palier).toBe("j3");
+    expect(create.data.devisId).toBe("dev-1");
+    expect(create.data.suggestion).toContain("AXI-DEV-2026-042");
+  });
+
+  it("IDEMPOTENT : une relance déjà proposée sur ce devis n'est jamais doublée", async () => {
+    mockPrisma.devis.findMany.mockResolvedValue([devisDormant(10)]);
+    mockPrisma.relanceProposee.findFirst.mockResolvedValue({ id: "deja-la" });
+
+    await lancer();
+
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+
+  it("aucun devis dormant → aucune relance", async () => {
+    await lancer();
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
   });
 });

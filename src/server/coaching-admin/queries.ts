@@ -21,6 +21,11 @@ export async function listAllSessions() {
       statut: true,
       beneficiaireNom: true,
       beneficiaireEntreprise: true,
+      // Rattachement CRM (colonnes clientId/devisId, chantier vente phase 0) :
+      // sans ces selects, le lien client/devis existait en base mais restait
+      // invisible de toute la console.
+      client: { select: { raisonSociale: true } },
+      devis: { select: { numero: true } },
       trainer: { select: { id: true, prenom: true, nom: true } },
       _count: { select: { optimisations: true, comptesRendus: true, journaux: true } },
     },
@@ -33,6 +38,9 @@ export async function getSessionAdmin(sessionId: string) {
     where: { id: sessionId },
     include: {
       trainer: { select: { prenom: true, nom: true, email: true } },
+      // Rattachement CRM — même visibilité que la liste des séances.
+      client: { select: { raisonSociale: true } },
+      devis: { select: { numero: true } },
       cartographie: true,
       plan: true,
       optimisations: { orderBy: [{ priorite: "asc" }, { createdAt: "asc" }] },

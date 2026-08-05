@@ -239,12 +239,17 @@ function typeTagStyle(type: SupportRenderInput["type"]) {
   return [local.typeTag, local.typeTagStagiaire];
 }
 
-function typeLabelFr(type: SupportRenderInput["type"]): string {
+// Badge de type sur la page de garde et l'en-tête de contenu. Le style du
+// badge est en MAJUSCULES ; les MOTS sont ceux du SSOT SUPPORT_TYPE_LABELS
+// (support-builder.ts) — trois tables divergeaient avant le 2026-08-05, la
+// parité MAJUSCULES ↔ SSOT est verrouillée par support-labels.spec.ts.
+// Exportée pour ce test de parité.
+export function typeLabelFr(type: SupportRenderInput["type"]): string {
   const labels: Record<SupportRenderInput["type"], string> = {
-    slides_formateur: "SLIDES FORMATEUR",
-    slides_stagiaire: "SUPPORT DE COURS",
+    slides_formateur: "LIVRET DE PROJECTION (FORMATEUR)",
+    slides_stagiaire: "SUPPORT DE COURS (STAGIAIRE)",
     livret_stagiaire: "LIVRET STAGIAIRE",
-    memo: "MÉMO",
+    memo: "MÉMO RÉCAPITULATIF",
     guide_animation: "GUIDE D'ANIMATION",
     exercices: "CAHIER D'EXERCICES",
     grille_eval: "GRILLE D'ÉVALUATION",

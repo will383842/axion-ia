@@ -5331,8 +5331,10 @@ model Client {
   /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
   penalitesRetardActives Boolean @default(false) @map("penalites_retard_actives")
 
-  emailsEnAttente EmailOutbox[]
-  reglesEmail     EmailAutomationSetting[]
+  emailsEnAttente  EmailOutbox[]
+  reglesEmail      EmailAutomationSetting[]
+  venteBrouillons  VenteBrouillon[]
+  coachingSessions CoachingSession[]
 
   @@index([statut])
   @@index([nafCode])
@@ -5402,11 +5404,55 @@ model Devis {
   facturesFormation   FactureFormation[]
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
+  venteBrouillons     VenteBrouillon[]
+  coachingSessions    CoachingSession[]
 
   @@index([clientId])
   @@index([statut])
   @@index([documentGenereId])
   @@map("devis")
+}
+
+/// Brouillon du parcours guidé « Nouvelle vente » (wizard admin, plan 2026-08-05).
+///
+/// Une session TrainingSession ne PEUT PAS être brouillon (5 colonnes NOT NULL,
+/// numéro consommé, SessionJour + transition écrits à la création) — ce modèle
+/// porte donc l'état du wizard entre deux visites, et RIEN d'autre.
+///
+/// Payload MINIMISÉ (RGPD) : dès qu'une entité réelle existe (client, devis,
+/// session), le brouillon ne garde que sa référence — les champs libres saisis
+/// avant création (contact, email…) ne vivent dans `payload` QUE tant que le
+/// Client n'est pas créé. Purge : cron `retention-purge` (03:00) sur
+/// `retentionUntil` — posé à la création (90 j par défaut), le brouillon
+/// CONVERTI est supprimé dès la création de la SESSION (fin du wizard). Jamais
+/// de purge des pièces émises (Devis, factures, DocumentGenere : obligation
+/// comptable).
+model VenteBrouillon {
+  id      String @id @default(uuid()) @db.Uuid
+  /// Étape courante du wizard (1 client · 2 formation · 3 session · 4 checklist).
+  etape   Int    @default(1)
+  /// Données du wizard non encore matérialisées en entités réelles.
+  payload Json   @default("{}")
+
+  clientId  String?          @map("client_id") @db.Uuid
+  client    Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId   String?          @map("devis_id") @db.Uuid
+  devis     Devis?           @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  sessionId String?          @map("session_id") @db.Uuid
+  session   TrainingSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  /// Admin propriétaire du brouillon (uuid AdminUser, sans FK — lecture seule).
+  createdByAdminId String? @map("created_by_admin_id") @db.Uuid
+
+  /// Purge RGPD : date au-delà de laquelle le cron retention-purge supprime.
+  retentionUntil DateTime? @map("retention_until")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([retentionUntil])
+  @@index([createdByAdminId, updatedAt])
+  @@map("vente_brouillons")
 }
 
 // ============================================================
@@ -5985,6 +6031,7 @@ model TrainingSession {
   emargementContresignatures EmargementContresignature[]
   /// Journées RÉELLEMENT animées (décision D14). Vide = repli sur `dateDebut..dateFin`.
   jours                      SessionJour[]
+  venteBrouillons            VenteBrouillon[]
 
   @@index([formationId])
   @@index([clientId])
@@ -7313,7 +7360,11 @@ model FactureFormation {
   montantHtCents                Int                          @map("montant_ht_cents")
   /// Exonération TVA (dérivé : true si montantTvaCents == 0). Conservé pour
   /// rétro-compat / export ; la source de vérité est `regimeTva`.
-  tvaExoneree                   Boolean                      @default(true) @map("tva_exoneree")
+  /// 🔴 Défaut passé à `false` (2026-08-05) : le régime par défaut du système est
+  /// `assujetti` — un défaut base à `true` marquait « exonérée » toute insertion
+  /// qui omettait le champ, à rebours de la règle « jamais omettre une TVA due ».
+  /// Tous les chemins applicatifs écrivent la valeur calculée explicitement.
+  tvaExoneree                   Boolean                      @default(false) @map("tva_exoneree")
   /// Régime de TVA appliqué (snapshot) : "assujetti" | "exoneration_261" |
   /// "franchise_293b". Qualiopi n'a aucun effet sur la TVA — cf. legal/tva.ts.
   regimeTva                     String                       @default("assujetti") @map("regime_tva") @db.VarChar(30)
@@ -8691,6 +8742,14 @@ model CoachingSession {
   beneficiaireNom          String?               @map("beneficiaire_nom") @db.VarChar(200)
   beneficiaireEmail        String?               @map("beneficiaire_email") @db.Citext
   beneficiaireEntreprise   String?               @map("beneficiaire_entreprise") @db.VarChar(250)
+  /// Rattachement CRM (parcours vente 2026-08-05). 🔴 Avant : le bénéficiaire
+  /// n'existait qu'en TEXTE LIBRE ci-dessus — impossible de relier un parcours
+  /// 1-to-1 à un Client ou à un Devis depuis la console. Nullable : les
+  /// parcours legacy et les séances créées par le formateur restent valides.
+  clientId                 String?               @map("client_id") @db.Uuid
+  client                   Client?               @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId                  String?               @map("devis_id") @db.Uuid
+  devis                    Devis?                @relation(fields: [devisId], references: [id], onDelete: SetNull)
   // ── Couche administrative/légale AFEST (C1, 2026-06-14) — tout additif ──────
   /// Contrat de coaching récurrent rattaché (un-a-un-recurrent), si applicable.
   coachingContractId       String?               @map("coaching_contract_id") @db.Uuid
@@ -8783,6 +8842,8 @@ model CoachingSession {
   @@index([trainerId])
   @@index([traineeId])
   @@index([coachingContractId])
+  @@index([clientId])
+  @@index([devisId])
   @@index([interventionSlug])
   @@index([dateSeance])
   @@index([estAfest])

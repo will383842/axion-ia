@@ -24,6 +24,7 @@ import {
 import { seedOffresSite } from "../../../../prisma/seeds/qualiopi/offres";
 import { seedGrilleQualite } from "../../../../prisma/seeds/qualiopi/grille";
 import { seedGrilleV2 } from "../../../../prisma/seeds/qualiopi/grille-v2";
+import { seedGrilleV3 } from "../../../../prisma/seeds/qualiopi/grille-v3";
 
 /** Clé du verrou consultatif Postgres (paire arbitraire stable, propre à ce seed). */
 const ADVISORY_LOCK_KEY: readonly [number, number] = [4242, 1];
@@ -138,6 +139,9 @@ export async function seedQualiopiReferenceData(
       await seedOffresSite(tx);
       await seedGrilleQualite(tx);
       await seedGrilleV2(tx);
+      // v3 « Standard Axion-IA » en dernier : c'est elle qui reste active
+      // (chaque seed désactive les autres). promptVersion 3 → cache IA neuf.
+      await seedGrilleV3(tx);
       return true;
     },
     { timeout: 60_000, maxWait: 15_000 },
@@ -151,7 +155,18 @@ export async function seedQualiopiReferenceData(
   let status = await getQualiopiReferenceDataStatus(client);
   if (status.grilleActiveCle == null) {
     try {
-      await seedGrilleV2(client);
+      await seedGrilleV3(client);
+      // seedGrilleV3 early-return si la ligne EXISTE déjà — même inactive.
+      // Sans cette réactivation explicite, « aucune grille active » restait
+      // irréparé et le moteur plantait en fail-loud à l'évaluation.
+      await client.grilleQualiteConfig.updateMany({
+        where: { cleUnique: "grille_qualite_v3" },
+        data: { actif: true },
+      });
+      await client.grilleQualiteConfig.updateMany({
+        where: { cleUnique: { not: "grille_qualite_v3" } },
+        data: { actif: false },
+      });
       status = await getQualiopiReferenceDataStatus(client);
     } catch (err) {
       console.warn(

@@ -1,0 +1,11 @@
+-- Qualiopi — TVA : le défaut base de `factures_formation.tva_exoneree` passe de
+-- TRUE à FALSE.
+--
+-- Le régime TVA par défaut du système est `assujetti` (legal/tva.ts,
+-- REGIME_TVA_DEFAUT) : « ne jamais omettre par erreur une TVA due ». Un défaut
+-- base à TRUE faisait l'inverse — toute insertion qui omettait le champ
+-- produisait une facture marquée exonérée. Tous les chemins applicatifs
+-- écrivent la valeur calculée (`tvaExoneree = montantTvaCents === 0`) : ce
+-- changement ne modifie AUCUNE ligne existante, seulement le comportement des
+-- insertions futures qui omettraient le champ.
+ALTER TABLE "factures_formation" ALTER COLUMN "tva_exoneree" SET DEFAULT false;
