@@ -63,6 +63,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
   },
 
+  // ── Référentiel des offres ────────────────────────────────────────────────
+  /**
+   * SPEC_PART5 §A.2 : une offre active dont la cohérence avec la page du site
+   * (titre, durée, promesse, tarif) n'a pas été vérifiée depuis plus de
+   * 30 jours. C'est le point d'entrée de toute vente — vendre sur un tarif
+   * jamais revérifié est l'erreur la plus coûteuse du parcours commercial.
+   * `resolutionAuto: true` : cliquer « Vérifier la cohérence » horodate
+   * `derniereVerifCoherenceAt` et la condition disparaît.
+   */
+  offres_site_non_verifiees: {
+    niveau: "info",
+    titre: "Offre non vérifiée depuis plus de 30 jours",
+    resolutionAuto: true,
+  },
+
   // ── Réclamations ──────────────────────────────────────────────────────────
   reclamation_sans_reponse_j15: {
     niveau: "critique",

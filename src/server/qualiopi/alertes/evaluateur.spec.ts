@@ -33,6 +33,8 @@ vi.mock("@/lib/prisma", () => ({
     relanceProposee: { findMany: vi.fn() },
     // Art. 8 sous-traitance : incidents répétés d'un intervenant. [2026-08-03]
     incident: { groupBy: vi.fn() },
+    // Fraîcheur du référentiel des offres (SPEC_PART5 §A.2). [2026-08-05]
+    offreSite: { findMany: vi.fn() },
   },
 }));
 
@@ -90,6 +92,7 @@ const mp = prisma as unknown as {
   devis: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { findMany: ReturnType<typeof vi.fn> };
   relanceProposee: { findMany: ReturnType<typeof vi.fn> };
+  offreSite: { findMany: ReturnType<typeof vi.fn> };
 };
 
 const mockGetConfig = getQualiopiConfig as ReturnType<typeof vi.fn>;
@@ -121,6 +124,10 @@ function setupEmptyMocks() {
   // régression y serait passée inaperçue.
   mp.sousTraitant.findMany.mockResolvedValue([]);
   mp.incident.groupBy.mockResolvedValue([]);
+  // Même piège que sousTraitant/incident ci-dessus : sans ce mock, la règle
+  // offres_site_non_verifiees lirait un mock non configuré, lèverait, et le
+  // fail-soft par règle l'avalerait — règle INERTE dans tous les autres blocs.
+  mp.offreSite.findMany.mockResolvedValue([]);
   // Config : referent_handicap_nom non vide, qualiopi_validite dans >90j
   const now = new Date();
   const futur90 = new Date(now.getTime() + 100 * 24 * 60 * 60 * 1000);
@@ -1582,5 +1589,69 @@ describe("vigilance sous-traitance", () => {
       };
       expect(arg.where.faitIntervenant.in).toStrictEqual(["annulation_tardive", "desistement"]);
     });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tests règle offres_site_non_verifiees (SPEC_PART5 §A.2) [2026-08-05]
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("evaluerAlertes — offres_site_non_verifiees", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève une alerte info par offre active jamais vérifiée (null)", async () => {
+    mp.offreSite.findMany.mockResolvedValue([
+      {
+        id: "off-1",
+        code: "AXI-OFF-012",
+        titreFr: "IA pour bien commencer",
+        derniereVerifCoherenceAt: null,
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "offres_site_non_verifiees");
+    expect(alerte).toBeDefined();
+    expect(alerte?.niveau).toBe("info");
+    expect(alerte?.cibleType).toBe("OffreSite");
+    expect(alerte?.cibleId).toBe("off-1");
+    expect(alerte?.message).toContain("jamais vérifiée");
+    expect(alerte?.message).toContain("AXI-OFF-012");
+  });
+
+  it("mentionne la date pour une offre vérifiée il y a plus de 30 jours", async () => {
+    const ilYa45Jours = new Date(Date.now() - 45 * 24 * 60 * 60 * 1000);
+    mp.offreSite.findMany.mockResolvedValue([
+      {
+        id: "off-2",
+        code: "AXI-OFF-013",
+        titreFr: "Agents & automatisations",
+        derniereVerifCoherenceAt: ilYa45Jours,
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const alerte = alertes.find((a) => a.code === "offres_site_non_verifiees");
+    expect(alerte?.message).toContain("vérifiée pour la dernière fois");
+  });
+
+  it("ne filtre QUE les offres actives, périmées ou jamais vérifiées (garde le where)", async () => {
+    // La garde ne vaut que si elle rougit : on vérifie le WHERE réellement émis,
+    // pas seulement le résultat — un `findMany({})` retournant [] passerait
+    // sinon tous les tests en ne surveillant rien.
+    mp.offreSite.findMany.mockResolvedValue([]);
+    await evaluerAlertes();
+    const arg = mp.offreSite.findMany.mock.calls[0]?.[0] as {
+      where: { actif: boolean; OR: unknown[] };
+    };
+    expect(arg.where.actif).toBe(true);
+    expect(arg.where.OR).toHaveLength(2);
+  });
+
+  it("aucune alerte quand toutes les offres sont fraîches", async () => {
+    mp.offreSite.findMany.mockResolvedValue([]);
+    const alertes = await evaluerAlertes();
+    expect(alertes.find((a) => a.code === "offres_site_non_verifiees")).toBeUndefined();
   });
 });

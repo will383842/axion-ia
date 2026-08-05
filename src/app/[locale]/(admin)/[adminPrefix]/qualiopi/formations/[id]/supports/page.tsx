@@ -230,11 +230,13 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
                     )}
                   </td>
 
-                  {/* PDF */}
+                  {/* PDF — `pdfUrl` = témoin d'upload R2, pas cible : l'URL stockée
+                      est pré-signée 900 s et périmée. La route re-signe à la
+                      demande depuis `pdfKey`. Cf. `/api/qualiopi/supports/[id]`. */}
                   <td className={cellCls}>
                     {support?.pdfUrl != null ? (
                       <a
-                        href={support.pdfUrl}
+                        href={`/api/qualiopi/supports/${support.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="admin-button-ghost"

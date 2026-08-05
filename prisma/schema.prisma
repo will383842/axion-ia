@@ -7313,7 +7313,11 @@ model FactureFormation {
   montantHtCents                Int                          @map("montant_ht_cents")
   /// Exonération TVA (dérivé : true si montantTvaCents == 0). Conservé pour
   /// rétro-compat / export ; la source de vérité est `regimeTva`.
-  tvaExoneree                   Boolean                      @default(true) @map("tva_exoneree")
+  /// 🔴 Défaut passé à `false` (2026-08-05) : le régime par défaut du système est
+  /// `assujetti` — un défaut base à `true` marquait « exonérée » toute insertion
+  /// qui omettait le champ, à rebours de la règle « jamais omettre une TVA due ».
+  /// Tous les chemins applicatifs écrivent la valeur calculée explicitement.
+  tvaExoneree                   Boolean                      @default(false) @map("tva_exoneree")
   /// Régime de TVA appliqué (snapshot) : "assujetti" | "exoneration_261" |
   /// "franchise_293b". Qualiopi n'a aucun effet sur la TVA — cf. legal/tva.ts.
   regimeTva                     String                       @default("assujetti") @map("regime_tva") @db.VarChar(30)

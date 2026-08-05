@@ -22,6 +22,9 @@ const CODES_ATTENDUS: string[] = [
   // `resolutionAuto: false`, verrouillé par `besoin-adaptation.spec.ts`.
   "besoin_adaptation_declare",
   "responsable_qualite_absent",
+  // SPEC_PART5 §A.2, écrite le 2026-08-05 : la colonne `derniereVerifCoherenceAt`
+  // existait depuis T1 sans qu'aucune règle ne surveille son ancienneté.
+  "offres_site_non_verifiees",
   "emails_en_attente_validation",
   "emargement_manquant",
   "session_sans_formateur",

@@ -145,13 +145,27 @@ describe("Mention TVA — garde-fou au niveau des sources", () => {
     path.join("src", "server", "qualiopi", "legal", "legal-mentions.ts"),
     path.join("src", "server", "qualiopi", "config", "registry.ts"),
     path.join("src", "server", "qualiopi", "remuneration", "calcul.ts"),
-    path.join("src", "server", "qualiopi", "facturation", "facture-libre-pur.ts"),
+    // ⚠️ Chemin réel `financements/`, pas `facturation/` — l'ancienne entrée
+    // pointait un fichier inexistant et l'allowlist était périmée sans bruit.
+    path.join("src", "server", "qualiopi", "financements", "facture-libre-pur.ts"),
+    // Libellé de canal Facturation Électronique 2026 : « Hors champ (261-4-4°) »
+    // est le NOM du canal, pas une mention imprimée sur une pièce.
+    path.join("src", "server", "qualiopi", "financements", "e-invoicing", "canal.ts"),
+    // Libellés du sélecteur de régime TVA de la console (exoneration_261 →
+    // « Exonération formation (261-4-4° CGI) ») : nommer le régime est le
+    // travail de ce map, la mention rendue reste dérivée de la config.
+    path.join("src", "server", "actions", "qualiopi", "financements.ts"),
   ];
 
   function fichiersDeRendu(): string[] {
     const racines = [
       path.join("src", "server", "qualiopi", "documents", "templates"),
       path.join("src", "components", "admin", "qualiopi"),
+      // Étendu 2026-08-05 : la régression F25 (exonération imprimée en dur)
+      // s'était produite HORS des deux racines historiques. On couvre désormais
+      // les services de facturation et les Server Actions qualiopi.
+      path.join("src", "server", "qualiopi", "financements"),
+      path.join("src", "server", "actions", "qualiopi"),
     ];
     const out: string[] = [];
     for (const racine of racines) {
@@ -184,5 +198,14 @@ describe("Mention TVA — garde-fou au niveau des sources", () => {
 
   it("le recensement trouve bien des fichiers — le garde-fou n'est pas vide", () => {
     expect(fichiersDeRendu().length).toBeGreaterThan(10);
+  });
+
+  it("le défaut base de FactureFormation.tvaExoneree est false (assujetti)", () => {
+    // 🔴 Le défaut était `true` : toute insertion omettant le champ produisait
+    // une facture marquée exonérée, à rebours de REGIME_TVA_DEFAUT="assujetti".
+    // Les chemins applicatifs écrivent la valeur calculée — ce test verrouille
+    // le filet de sécurité pour les insertions brutes/partielles futures.
+    const schema = fs.readFileSync(path.join("prisma", "schema.prisma"), "utf8");
+    expect(schema).toMatch(/tvaExoneree\s+Boolean\s+@default\(false\)/);
   });
 });

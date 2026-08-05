@@ -20,6 +20,7 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { FormationForm } from "@/components/admin/qualiopi/FormationForm";
 import { FormationLifecycleButtons } from "@/components/admin/qualiopi/FormationLifecycleButtons";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
+import { normaliserObjectifsPedagogiques } from "@/server/qualiopi/formations/objectifs";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -246,6 +247,9 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
             prerequis: formation.prerequis,
             secteurCible: formation.secteurCible,
             outilsClient: formation.outilsClient,
+            objectifsTexte: normaliserObjectifsPedagogiques(formation.objectifsPedagogiques).join(
+              "\n",
+            ),
           }}
         />
       </section>

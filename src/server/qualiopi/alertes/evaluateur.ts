@@ -1539,9 +1539,44 @@ async function regleEmailsEnAttente(): Promise<AlerteCandidate[]> {
   ];
 }
 
+/**
+ * R-OFF — Offres actives non vérifiées depuis plus de 30 jours (SPEC_PART5 §A.2).
+ *
+ * `OffreSite.derniereVerifCoherenceAt` est horodaté par le bouton « Vérifier la
+ * cohérence » de /qualiopi/offres — mais rien ne surveillait son ancienneté :
+ * la colonne existait, l'alerte prévue par la spec n'avait jamais été écrite.
+ * Une offre jamais vérifiée (colonne null) compte comme périmée : c'est le cas
+ * le plus dangereux, pas un cas à part.
+ */
+async function regleOffresNonVerifiees(now: Date): Promise<AlerteCandidate[]> {
+  const seuil = daysAgo(30, now);
+  const offres = await prisma.offreSite.findMany({
+    where: {
+      actif: true,
+      OR: [{ derniereVerifCoherenceAt: null }, { derniereVerifCoherenceAt: { lt: seuil } }],
+    },
+    select: { id: true, code: true, titreFr: true, derniereVerifCoherenceAt: true },
+  });
+  return offres.map((o) => {
+    const detail =
+      o.derniereVerifCoherenceAt === null
+        ? "jamais vérifiée depuis sa création"
+        : `vérifiée pour la dernière fois le ${o.derniereVerifCoherenceAt.toLocaleDateString("fr-FR")}`;
+    return {
+      code: "offres_site_non_verifiees",
+      niveau: "info" as AlerteNiveau,
+      titre: "Offre non vérifiée depuis plus de 30 jours",
+      message: `L'offre ${o.code} — « ${o.titreFr} » est ${detail}. Vérifier que titre, durée, promesse et tarif correspondent toujours à la page du site (bouton « Vérifier la cohérence » sur /qualiopi/offres).`,
+      cibleType: "OffreSite",
+      cibleId: o.id,
+    };
+  });
+}
+
 const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "referent_handicap", fn: regleReferentHandicap },
   { nom: "responsable_qualite", fn: regleResponsableQualite },
+  { nom: "offres_site_non_verifiees", fn: regleOffresNonVerifiees },
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },

@@ -338,7 +338,9 @@ export async function validerAccordOpcoAction(input: {
  * - CPF → edofVerifieAt non-null.
  * - OPCO → opcoStatut=accord_recu.
  *
- * TVA exonérée art. 261-4-4° CGI.
+ * TVA : régime dérivé de la config (`regime_tva`, défaut assujetti — cf.
+ * legal/tva.ts) ; `tvaExoneree` est calculé (`totalTvaCents === 0`), jamais posé
+ * d'office.
  */
 export async function genererFactureFormationAction(input: {
   sessionId: string;

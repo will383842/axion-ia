@@ -59,6 +59,8 @@ interface FormationFormEditProps {
     prerequis: string;
     secteurCible: string;
     outilsClient: string;
+    /** Objectifs pédagogiques normalisés côté serveur, un par ligne. */
+    objectifsTexte: string;
   };
 }
 
@@ -93,6 +95,26 @@ function slugify(str: string): string {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Convertit la saisie « un objectif par ligne » vers la forme canonique de la
+ * colonne `Formation.objectifsPedagogiques` — la même que produit l'import
+ * catalogue (`{ id, verbe, description }[]`), pour que grilles d'évaluation,
+ * attestations et conventions la lisent sans surprise.
+ */
+function lignesVersObjectifs(
+  texte: string,
+): Array<{ id: string; verbe: string; description: string }> {
+  return texte
+    .split(/\r?\n/)
+    .map((ligne) => ligne.trim())
+    .filter((ligne) => ligne.length > 0)
+    .map((description, i) => ({
+      id: `obj-${i + 1}`,
+      verbe: description.split(/\s+/)[0] ?? "",
+      description,
+    }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,6 +158,9 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
   const [outilsClient, setOutilsClient] = useState(
     props.id !== undefined ? props.initial.outilsClient : "",
   );
+  const [objectifsTexte, setObjectifsTexte] = useState(
+    props.id !== undefined ? props.initial.objectifsTexte : "",
+  );
 
   // ── Offre sélectionnée (pour afficher la plage durée) ─────────────────────
   const selectedOffre =
@@ -178,6 +203,9 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
         ...(prerequis.trim() ? { prerequis: prerequis.trim() } : {}),
         ...(secteurCible.trim() ? { secteurCible: secteurCible.trim() } : {}),
         ...(outilsClient.trim() ? { outilsClient: outilsClient.trim() } : {}),
+        ...(objectifsTexte.trim()
+          ? { objectifsPedagogiques: lignesVersObjectifs(objectifsTexte) }
+          : {}),
       });
 
       if ("error" in result) {
@@ -226,6 +254,9 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
     }
     if (outilsClient.trim() !== props.initial.outilsClient) {
       updatePayload.outilsClient = outilsClient.trim();
+    }
+    if (objectifsTexte.trim() !== props.initial.objectifsTexte.trim()) {
+      updatePayload.objectifsPedagogiques = lignesVersObjectifs(objectifsTexte);
     }
 
     startTransition(async () => {
@@ -407,6 +438,31 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
             </div>
           </div>
 
+          {/* Objectifs pédagogiques — l'entrée la plus déterminante du moteur IA.
+              Sans elle, le prompt partait sur « À définir selon le niveau des
+              apprenants » et les attestations sortaient sans objectifs. */}
+          <div className="mt-[var(--space-admin-4)]">
+            <label htmlFor="ff-create-objectifs" className={labelCls}>
+              Objectifs pédagogiques
+            </label>
+            <textarea
+              id="ff-create-objectifs"
+              value={objectifsTexte}
+              onChange={(e) => setObjectifsTexte(e.target.value)}
+              rows={4}
+              className={inputCls}
+              placeholder={
+                "Un objectif par ligne, verbe d'action + résultat mesurable.\n" +
+                "ex. Rédiger un prompt efficace avec la méthode CRFE\n" +
+                "ex. Identifier 3 tâches de son métier automatisables par l'IA"
+              }
+            />
+            <p className={hintCls}>
+              Un par ligne. C&apos;est l&apos;entrée la plus importante du moteur IA — et le texte
+              repris sur les grilles d&apos;évaluation et attestations.
+            </p>
+          </div>
+
           {/* Prérequis */}
           <div className="mt-[var(--space-admin-4)]">
             <label htmlFor="ff-create-prerequis" className={labelCls}>
@@ -469,6 +525,12 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
         Modifier la formation
       </h3>
 
+      <p className="rounded border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
+        Toute modification d&apos;une formation validée ou publiée la repasse en «&nbsp;Assemblé&nbsp;»
+        et efface la validation humaine — il faudra revalider puis republier (garde AI Act art.
+        50).
+      </p>
+
       {/* Titre */}
       <div>
         <label htmlFor="ff-edit-titre" className={labelCls}>
@@ -482,6 +544,24 @@ export function FormationForm(props: FormationFormProps): React.ReactElement {
           maxLength={255}
           className={inputCls}
         />
+      </div>
+
+      {/* Objectifs pédagogiques */}
+      <div>
+        <label htmlFor="ff-edit-objectifs" className={labelCls}>
+          Objectifs pédagogiques
+        </label>
+        <textarea
+          id="ff-edit-objectifs"
+          value={objectifsTexte}
+          onChange={(e) => setObjectifsTexte(e.target.value)}
+          rows={4}
+          className={inputCls}
+          placeholder="Un objectif par ligne, verbe d'action + résultat mesurable…"
+        />
+        <p className={hintCls}>
+          Un par ligne. Repris sur les grilles d&apos;évaluation, attestations et conventions.
+        </p>
       </div>
 
       {/* Méthodes pédagogiques */}
