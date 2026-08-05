@@ -16,10 +16,18 @@ import {
   AdminBadge,
   AdminButton,
 } from "@/components/admin/ui";
+import type { Metadata } from "next";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import { ArrowRight, CalendarX, Plus } from "lucide-react";
 import { listAllSessions } from "@/server/coaching-admin/queries";
 import { coachingInterventionLabel, sessionStatutLabel } from "@/server/formateur/coaching-options";
+
+// 🔴 Onglet intitulé « Console admin | Axion-IA » faute de `metadata` : sur un
+// navigateur chargé, la page était introuvable parmi les onglets ouverts.
+export const metadata: Metadata = {
+  title: "Coaching — Séances 1-to-1 | Axion-IA Admin",
+  robots: { index: false, follow: false },
+};
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "short" });
 
@@ -111,7 +119,13 @@ export default async function CoachingSeancesPage({
             <AdminEmptyState
               icon={<CalendarX size={22} aria-hidden="true" />}
               title="Aucune séance enregistrée"
-              description="Les séances apparaissent ici dès qu'un formateur en déclare une."
+              // 🔴 Vu en production le 2026-08-05 : ce texte disait d'ATTENDRE
+              // qu'un formateur déclare une séance — l'exact contraire du
+              // principe posé le même jour (« les formateurs ne construisent
+              // rien : Axion-IA construit et affecte »), et du bouton
+              // « Nouveau parcours » placé juste au-dessus. Un état vide qui
+              // contredit l'action offerte apprend à ne pas lire les états vides.
+              description="Créez le parcours depuis « Nouveau parcours » : vous planifiez les séances et désignez le formateur. Celles qu'un formateur déclare depuis son espace apparaissent également ici."
             />
           }
           rowAction={(s) => (

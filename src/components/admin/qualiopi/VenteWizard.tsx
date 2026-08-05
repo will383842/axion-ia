@@ -112,6 +112,14 @@ export interface VenteWizardProps {
   formations: VenteFormationOption[];
   /** Pré-sélection client (`?clientId=`, boutons CRM) — le brouillon prime. */
   clientInitialId?: string;
+  /** Ventes déjà commencées par cet admin (rappel de reprise, sous l'en-tête). */
+  brouillonsEnCours?: ReadonlyArray<{
+    id: string;
+    etape: number;
+    clientRaisonSociale: string | null;
+    /** Date déjà formatée fr-FR côté serveur. */
+    modifieLe: string;
+  }>;
   brouillon?: VenteBrouillonInitial;
   devisInitial?: VenteDevisEtat;
   sessionInitiale?: VenteSessionEtat;
@@ -164,6 +172,7 @@ export function VenteWizard({
   offres,
   formations,
   clientInitialId,
+  brouillonsEnCours,
   brouillon,
   devisInitial,
   sessionInitiale,
@@ -539,6 +548,30 @@ export function VenteWizard({
       />
       <AdminFormDirtyGuard dirty={sale && etape < 4} />
 
+      {/* Reprise : le seul chemin quand un devis envoyé attend sa signature. */}
+      {brouillonsEnCours !== undefined && brouillonsEnCours.length > 0 ? (
+        <div className="mb-[var(--space-admin-5,12px)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-4)]">
+          <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] font-semibold">
+            Ventes en cours ({brouillonsEnCours.length})
+          </p>
+          <ul className="flex flex-col gap-[var(--space-admin-2)]">
+            {brouillonsEnCours.map((b) => (
+              <li key={b.id} className="text-[length:var(--text-admin-sm)]">
+                <Link
+                  href={`${base}/qualiopi/vente/new?brouillon=${b.id}`}
+                  className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                >
+                  {b.clientRaisonSociale ?? "Client non choisi"} — étape {b.etape}/4
+                </Link>{" "}
+                <span className="text-[color:var(--color-admin-fg-soft)]">
+                  (modifié le {b.modifieLe})
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
       {/* Stepper (pattern CampaignWizardV2 : pastilles + libellés masqués sous sm:) */}
       <div className="mb-[var(--space-admin-6,16px)] flex items-center gap-[var(--space-admin-3,6px)]">
         {([1, 2, 3, 4] as const).map((n) => (
@@ -639,7 +672,9 @@ export function VenteWizard({
           ) : (
             <div className="flex flex-col gap-[var(--space-admin-3,6px)]">
               {clientCree !== null ? (
-                <AdminBadge tone="success">
+                // `self-start` : dans une colonne flex, un badge s'étirait sur
+                // TOUTE la largeur de la carte — une pastille de 1 100 px.
+                <AdminBadge tone="success" className="self-start">
                   Client {clientCree.numero} créé — passez à l&apos;étape suivante
                 </AdminBadge>
               ) : (
@@ -760,7 +795,27 @@ export function VenteWizard({
               {offreId !== "" && formationsDeLOffre.length === 0 ? (
                 <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
                   Aucune formation publiée pour cette offre — adaptez une formation existante ou
-                  créez-en une sur-mesure.
+                  créez-en une sur-mesure.{" "}
+                  {/* 🔴 Vérification en production le 2026-08-05 : les seules offres
+                      actives sans formation sont les trois accompagnements
+                      INDIVIDUELS (+ « Sur demande »). Le message n'offrait que
+                      des issues « formation », donc aucune issue juste : pour du
+                      1-to-1, le bon geste est le parcours de séances. Tant que
+                      la table de routage offre↔prestation n'existe pas (phase
+                      1b), on ne DEVINE pas — on nomme la troisième issue et on
+                      transporte le client. */}
+                  S&apos;il s&apos;agit d&apos;un accompagnement individuel,{" "}
+                  <Link
+                    href={
+                      clientId !== ""
+                        ? `${base}/coaching/parcours/new?clientId=${clientId}`
+                        : `${base}/coaching/parcours/new`
+                    }
+                    className="text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                  >
+                    créez plutôt un parcours 1-to-1
+                  </Link>
+                  .
                 </span>
               ) : null}
             </label>

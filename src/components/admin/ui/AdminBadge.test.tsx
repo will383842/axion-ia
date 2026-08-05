@@ -10,8 +10,36 @@ describe("AdminBadge", () => {
 
   it("applies className prop", () => {
     render(<AdminBadge className="custom-x">A</AdminBadge>);
+    // Le libellé vit dans un span interne (cf. garde des espaces ci-dessous) :
+    // les classes de ton/forme restent sur l'enveloppe.
     const el = screen.getByText("A");
-    expect(el.className).toContain("custom-x");
+    expect(el.parentElement?.className).toContain("custom-x");
+  });
+
+  // 🔴 Vu en production le 2026-08-05 : « Client AXI-CLI-004créé ». L'enveloppe
+  // est un flex, donc chaque nœud de texte devenait un flex item dont les
+  // espaces de bord étaient supprimés. Réintroduire le rendu direct des
+  // children fait rougir ce test.
+  it("préserve les espaces autour d'une valeur interpolée (piège flex)", () => {
+    const numero = "AXI-CLI-004";
+    render(
+      <AdminBadge tone="success">Client {numero} créé — passez à l&apos;étape suivante</AdminBadge>,
+    );
+    const el = screen.getByText(/Client/);
+    expect(el.textContent).toContain("Client AXI-CLI-004 créé");
+    expect(el.textContent).not.toContain("AXI-CLI-004créé");
+  });
+
+  it("le point de statut reste un item distinct du libellé", () => {
+    render(
+      <AdminBadge tone="info" dot>
+        Actif
+      </AdminBadge>,
+    );
+    const libelle = screen.getByText("Actif");
+    const enveloppe = libelle.parentElement;
+    expect(enveloppe?.querySelector("[aria-hidden='true']")).not.toBeNull();
+    expect(enveloppe?.children.length).toBe(2);
   });
 });
 

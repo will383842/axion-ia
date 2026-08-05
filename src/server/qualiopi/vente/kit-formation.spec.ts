@@ -76,4 +76,24 @@ describe("resolveInterventionSlugForFormation", () => {
     expect(audit).toBeDefined();
     expect(resolveInterventionSlugForFormation({ slug: audit!.slug })).toBeNull();
   });
+
+  // 🔴 Vérifié en PRODUCTION le 2026-08-05 : 34 des 56 formations publiées
+  // portaient un kit déposé (diaporamas de juin) que l'écran « Tout pour
+  // animer » déclarait absent — leurs slugs, hérités de l'offre d'avant
+  // juillet, ne sont plus au catalogue. Le dépôt réel doit primer.
+  it("reconnaît un kit DÉPOSÉ dont le slug n'est plus au catalogue (offre renommée)", () => {
+    const legacy = "agents-automatisations";
+    expect(resolveInterventionSlugForFormation({ slug: legacy })).toBeNull();
+    expect(resolveInterventionSlugForFormation({ slug: legacy }, new Set([legacy]))).toBe(legacy);
+  });
+
+  it("un slug vide reste refusé même si le Set en contient un (Set mal construit)", () => {
+    expect(resolveInterventionSlugForFormation({ slug: "" }, new Set([""]))).toBeNull();
+  });
+
+  it("le Set n'ouvre que les slugs qu'il contient — pas les autres", () => {
+    expect(
+      resolveInterventionSlugForFormation({ slug: "ia-express-copie" }, new Set(["autre-slug"])),
+    ).toBeNull();
+  });
 });
