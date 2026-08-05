@@ -16,18 +16,34 @@ describe("AdminBadge", () => {
     expect(el.parentElement?.className).toContain("custom-x");
   });
 
-  // 🔴 Vu en production le 2026-08-05 : « Client AXI-CLI-004créé ». L'enveloppe
-  // est un flex, donc chaque nœud de texte devenait un flex item dont les
-  // espaces de bord étaient supprimés. Réintroduire le rendu direct des
-  // children fait rougir ce test.
-  it("préserve les espaces autour d'une valeur interpolée (piège flex)", () => {
+  /**
+   * 🔴 Vu en production le 2026-08-05 : « Client AXI-CLI-004créé ». L'enveloppe
+   * est un flex : chaque nœud de texte y devient un flex item dont les espaces
+   * de bord sont supprimés, donc tout badge écrivant `Texte {valeur} suite`
+   * perdait ses espaces.
+   *
+   * ⚠️ La garde doit être STRUCTURELLE. Une assertion sur `textContent`
+   * resterait VERTE sans le correctif : jsdom ne calcule aucun layout, la
+   * suppression des espaces est un effet de RENDU que le DOM ne reflète pas
+   * (même piège que les media queries invisibles en jsdom). Ce qu'on peut
+   * vraiment verrouiller, c'est l'invariant qui rend le défaut impossible :
+   * le libellé forme UN SEUL enfant de l'enveloppe.
+   */
+  it("enveloppe le libellé dans un unique élément (invariant anti-collage flex)", () => {
     const numero = "AXI-CLI-004";
     render(
       <AdminBadge tone="success">Client {numero} créé — passez à l&apos;étape suivante</AdminBadge>,
     );
-    const el = screen.getByText(/Client/);
-    expect(el.textContent).toContain("Client AXI-CLI-004 créé");
-    expect(el.textContent).not.toContain("AXI-CLI-004créé");
+    const enveloppe = document.querySelector(".admin-badge-v2");
+    expect(enveloppe).not.toBeNull();
+    // Sans dot : exactement un enfant élément, et AUCUN nœud de texte direct
+    // (un nœud de texte direct = un flex item anonyme = le défaut d'origine).
+    expect(enveloppe!.children.length).toBe(1);
+    const texteDirect = [...enveloppe!.childNodes].filter(
+      (n) => n.nodeType === 3 && (n.textContent ?? "").trim() !== "",
+    );
+    expect(texteDirect).toHaveLength(0);
+    expect(enveloppe!.textContent).toContain("Client AXI-CLI-004 créé");
   });
 
   it("le point de statut reste un item distinct du libellé", () => {
