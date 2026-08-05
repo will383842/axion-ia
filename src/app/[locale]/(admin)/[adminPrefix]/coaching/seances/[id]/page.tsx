@@ -82,6 +82,11 @@ export default async function AdminSeanceDetailPage({
           Bénéficiaire : {s.beneficiaireNom ?? "—"}
           {s.beneficiaireEntreprise ? ` (${s.beneficiaireEntreprise})` : ""}
         </p>
+        {/* Rattachement CRM (clientId/devisId) — tiret pour les séances legacy
+            sans rattachement, la ligne reste pour signaler que le lien existe. */}
+        <p className="text-fg-muted text-sm">
+          Client : {s.client?.raisonSociale ?? "—"} · Devis : {s.devis?.numero ?? "—"}
+        </p>
       </div>
 
       <AfestPanel
