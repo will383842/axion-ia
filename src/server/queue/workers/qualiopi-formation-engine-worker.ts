@@ -222,6 +222,12 @@ function mergeStructureIntoProgramme(current: unknown, structureRaw: string): un
  *
  * La colonne n'est alimentée que si elle est VIDE : une saisie humaine
  * (formulaire admin) prime toujours sur la reformulation du LLM.
+ *
+ * Limite assumée : le REFINE ne ré-extrait pas (la colonne n'est plus vide, et
+ * on ne sait pas distinguer machine/humain à ce grain) — si une passe de
+ * raffinement retouche les objectifs, la colonne garde la version de la passe
+ * initiale. `resetGenerationStatusAction` purge la colonne des formations
+ * aiGenerated avant un nouveau cycle, ce qui borne la divergence à un cycle.
  */
 function extraireObjectifsDeStructure(
   structureRaw: string,

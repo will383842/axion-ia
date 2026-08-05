@@ -1759,25 +1759,40 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
 // Point d'entrée public
 // ─────────────────────────────────────────────────────────────────────────────
 
+export interface EvaluationAlertes {
+  candidates: AlerteCandidate[];
+  /**
+   * Noms des règles ayant LEVÉ (fail-soft). 🔴 Tant que cette liste n'est pas
+   * vide, la résolution automatique doit être SUSPENDUE : une règle en échec
+   * ne produit aucune candidate, et `synchroniserAlertes` résoudrait alors en
+   * masse toutes les alertes ouvertes de ses codes — un simple timeout DB un
+   * matin effacerait à tort toutes les alertes devis.
+   */
+  reglesEnEchec: string[];
+}
+
 /**
- * Évalue toutes les règles et retourne la liste des alertes candidates.
+ * Évalue toutes les règles — variante détaillée qui expose les échecs.
  *
- * Stub-aware : retourne [] si DATABASE_URL contient "stub.invalid".
- * Fail-soft par règle : une erreur de règle est loggée et ignorée.
+ * Stub-aware : vide si DATABASE_URL contient "stub.invalid".
+ * Fail-soft par règle : une erreur de règle est loggée, comptée, et n'empêche
+ * pas les autres règles.
  */
-export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
+export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return [];
+    return { candidates: [], reglesEnEchec: [] };
   }
 
   const now = new Date();
   const toutes: AlerteCandidate[] = [];
+  const reglesEnEchec: string[] = [];
 
   for (const { nom, fn } of REGLES) {
     try {
       const candidates = await fn(now);
       toutes.push(...candidates);
     } catch (err) {
+      reglesEnEchec.push(nom);
       console.error(
         `[evaluateur-alertes] erreur règle ${nom}:`,
         err instanceof Error ? err.message : String(err),
@@ -1785,5 +1800,10 @@ export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
     }
   }
 
-  return toutes;
+  return { candidates: toutes, reglesEnEchec };
+}
+
+/** Compat : la liste des candidates seule (appelants historiques). */
+export async function evaluerAlertes(): Promise<AlerteCandidate[]> {
+  return (await evaluerAlertesDetaille()).candidates;
 }

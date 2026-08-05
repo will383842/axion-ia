@@ -46,8 +46,19 @@ function lireJoursRetention(): number {
 /**
  * Champs de contact LIBRES tolérés dans le payload tant que le Client n'existe
  * pas. Dès que `clientId` est posé, ils sont retirés à l'écriture.
+ *
+ * ⚠️ Cette liste doit couvrir les clés RÉELLEMENT écrites par VenteWizard
+ * (`raisonSociale`, `siret`, `contactEmail`) — la première version ne listait
+ * que des clés théoriques et laissait SIRET + raison sociale en base après
+ * création du client.
  */
-const CHAMPS_CONTACT_LIBRES = ["contactNom", "contactEmail", "contactTelephone"] as const;
+const CHAMPS_CONTACT_LIBRES = [
+  "raisonSociale",
+  "siret",
+  "contactNom",
+  "contactEmail",
+  "contactTelephone",
+] as const;
 
 function contientContactLibre(payload: Record<string, unknown>): boolean {
   return CHAMPS_CONTACT_LIBRES.some((k) => k in payload);
@@ -210,6 +221,24 @@ export async function updateVenteBrouillonAction(
   });
   if (!existant || existant.createdByAdminId !== session.userId) {
     return { error: "Brouillon introuvable" };
+  }
+
+  // Références : vérifier l'EXISTENCE avant d'écrire — un uuid inexistant
+  // levait une P2003 brute (exception) au lieu d'un ActionResult.
+  if (v.clientId !== undefined) {
+    const c = await prisma.client.findUnique({ where: { id: v.clientId }, select: { id: true } });
+    if (!c) return { error: "Client introuvable" };
+  }
+  if (v.devisId !== undefined) {
+    const d = await prisma.devis.findUnique({ where: { id: v.devisId }, select: { id: true } });
+    if (!d) return { error: "Devis introuvable" };
+  }
+  if (v.sessionId !== undefined) {
+    const s = await prisma.trainingSession.findUnique({
+      where: { id: v.sessionId },
+      select: { id: true },
+    });
+    if (!s) return { error: "Session introuvable" };
   }
 
   const clientEffectif = v.clientId ?? existant.clientId;

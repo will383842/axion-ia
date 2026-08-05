@@ -24,15 +24,25 @@ CREATE INDEX IF NOT EXISTS "vente_brouillons_retention_until_idx"
 CREATE INDEX IF NOT EXISTS "vente_brouillons_created_by_admin_id_updated_at_idx"
     ON "vente_brouillons"("created_by_admin_id", "updated_at");
 
-ALTER TABLE "vente_brouillons"
-    ADD CONSTRAINT "vente_brouillons_client_id_fkey"
-    FOREIGN KEY ("client_id") REFERENCES "clients"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
-ALTER TABLE "vente_brouillons"
-    ADD CONSTRAINT "vente_brouillons_devis_id_fkey"
-    FOREIGN KEY ("devis_id") REFERENCES "devis"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
-ALTER TABLE "vente_brouillons"
-    ADD CONSTRAINT "vente_brouillons_session_id_fkey"
-    FOREIGN KEY ("session_id") REFERENCES "training_sessions"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
+-- Contraintes gardées contre le rejeu (duplicate_object) : les IF NOT EXISTS
+-- ci-dessus rendent la migration rejouable — des ADD CONSTRAINT nus casseraient
+-- cette rejouabilité sur une base où l'objet existe déjà (reprise après échec
+-- partiel, db push de dev).
+DO $$ BEGIN
+    ALTER TABLE "vente_brouillons"
+        ADD CONSTRAINT "vente_brouillons_client_id_fkey"
+        FOREIGN KEY ("client_id") REFERENCES "clients"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+    ALTER TABLE "vente_brouillons"
+        ADD CONSTRAINT "vente_brouillons_devis_id_fkey"
+        FOREIGN KEY ("devis_id") REFERENCES "devis"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+    ALTER TABLE "vente_brouillons"
+        ADD CONSTRAINT "vente_brouillons_session_id_fkey"
+        FOREIGN KEY ("session_id") REFERENCES "training_sessions"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;

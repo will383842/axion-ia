@@ -222,10 +222,15 @@ async function objectionMetier(
 async function consequenceSignatureComplete(type: string, documentGenereId: string): Promise<void> {
   if (type !== "devis") return;
   try {
-    // ⚠️ `updateMany` avec garde sur le statut : un devis déjà `accepte`,
-    // `transforme_convention` ou `expire` ne doit pas être rétrogradé.
+    // ⚠️ `updateMany` avec garde sur le statut : un devis déjà `accepte` ou
+    // `transforme_convention` ne doit pas être rétrogradé. `expire` est INCLUS
+    // depuis le cron devis-expiration (06:45) : validité échue à minuit,
+    // client qui signe à 06:00, webhook traité à 06:50 → la preuve de
+    // signature était écrite mais le devis restait « expiré » et
+    // createSessionAction le refusait sans explication. Une signature
+    // intégrale vaut accord, même reçue après l'échéance.
     await prisma.devis.updateMany({
-      where: { documentGenereId, statut: "envoye" },
+      where: { documentGenereId, statut: { in: ["envoye", "expire"] } },
       data: { statut: "accepte", acceptedAt: new Date() },
     });
   } catch (err) {

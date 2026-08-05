@@ -5424,8 +5424,9 @@ model Devis {
 /// avant création (contact, email…) ne vivent dans `payload` QUE tant que le
 /// Client n'est pas créé. Purge : cron `retention-purge` (03:00) sur
 /// `retentionUntil` — posé à la création (90 j par défaut), le brouillon
-/// CONVERTI est supprimé dès la création du devis. Jamais de purge des pièces
-/// émises (Devis, factures, DocumentGenere : obligation comptable).
+/// CONVERTI est supprimé dès la création de la SESSION (fin du wizard). Jamais
+/// de purge des pièces émises (Devis, factures, DocumentGenere : obligation
+/// comptable).
 model VenteBrouillon {
   id      String @id @default(uuid()) @db.Uuid
   /// Étape courante du wizard (1 client · 2 formation · 3 session · 4 checklist).

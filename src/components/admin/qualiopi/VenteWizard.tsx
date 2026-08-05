@@ -345,7 +345,13 @@ export function VenteWizard({
       return;
     }
     startTransition(async () => {
-      const r = await duplicateFormationAction(formationId);
+      // estSurMesure + clientId : sans eux, la copie d'une formation catalogue
+      // serait ARCHIVÉE par le prochain cleanup du seed, et la vente perdrait
+      // le lien client↔adaptation.
+      const r = await duplicateFormationAction(formationId, {
+        estSurMesure: true,
+        ...(clientId !== "" ? { clientId } : {}),
+      });
       if ("error" in r) {
         toast.error(r.error);
         return;
@@ -362,7 +368,12 @@ export function VenteWizard({
       toast.error("Choisissez une offre (étape 2)");
       return;
     }
-    const montantCents = Math.round(parseFloat(montantEur.replace(",", ".")) * 100);
+    // Espaces (dont insécables/fines du format fr-FR affiché en placeholder)
+    // retirés AVANT parseFloat : « 1 190 » s'arrêtait à l'espace → 1,00 € HT
+    // silencieux sur le devis.
+    const montantCents = Math.round(
+      parseFloat(montantEur.replace(/[\s  ]/g, "").replace(",", ".")) * 100,
+    );
     if (!Number.isFinite(montantCents) || montantCents <= 0) {
       toast.error("Renseignez un montant HT (aucun prix ferme n'est pré-rempli pour cette offre)");
       return;
@@ -437,6 +448,22 @@ export function VenteWizard({
 
   function creerSession(): void {
     if (devis === null || !devisAccepte || formationId === "" || clientId === "") return;
+    // Retour arrière après création : createSessionAction TOLÈRE un devis déjà
+    // lié (idempotence côté serveur) — sans cette garde, re-soumettre créait
+    // une SECONDE session réelle sur le même devis.
+    if (sessionCreee !== null) {
+      toast.error(`La session ${sessionCreee.numero} existe déjà pour cette vente`);
+      return;
+    }
+    // Chemin B : la session doit porter l'ADAPTATION publiée, pas l'originale —
+    // sinon la vente « adaptée » anime la formation générique et l'adaptation
+    // reste orpheline.
+    if (chemin === "adaptation" && (adaptation === null || formationId !== adaptation.id)) {
+      toast.error(
+        "Chemin adaptation : publiez l'adaptation puis re-sélectionnez-la à l'étape 2 (elle apparaît dans la liste une fois publiée).",
+      );
+      return;
+    }
     if (dateDebut === "" || dateFin === "") {
       toast.error("Renseignez les dates de début et de fin");
       return;
@@ -785,9 +812,20 @@ export function VenteWizard({
                   Duplique la formation choisie en brouillon éditable.
                 </span>
               </button>
-              <Link
-                href={`${base}/qualiopi/formations/new`}
-                onClick={() => setChemin("sur_mesure")}
+              {/* Bouton (pas un Link) : la navigation ne part QU'APRÈS la
+                  sauvegarde du brouillon — un Link naviguait immédiatement et
+                  perdait toute la saisie depuis la dernière étape
+                  (AdminFormDirtyGuard ne couvre que beforeunload). */}
+              <button
+                type="button"
+                disabled={isPending}
+                onClick={() => {
+                  setChemin("sur_mesure");
+                  startTransition(async () => {
+                    await persisterBrouillon(etape);
+                    router.push(`${base}/qualiopi/formations/new`);
+                  });
+                }}
                 className="flex flex-col items-start gap-1 rounded border border-[color:var(--color-admin-border)] p-3 text-left transition hover:bg-[color:var(--color-admin-surface-2)]"
               >
                 <span className="flex items-center gap-1 font-semibold">
@@ -795,9 +833,9 @@ export function VenteWizard({
                   <ExternalLink size={12} aria-hidden="true" />
                 </span>
                 <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                  Créer une formation neuve depuis zéro.
+                  Créer une formation neuve depuis zéro (le brouillon de vente est conservé).
                 </span>
-              </Link>
+              </button>
             </div>
 
             {adaptation !== null ? (
@@ -946,7 +984,28 @@ export function VenteWizard({
                 </div>
               ) : null}
 
-              {devisAccepte ? (
+              {sessionCreee !== null ? (
+                // Retour arrière après création : ré-afficher le formulaire
+                // permettait une SECONDE session sur le même devis (l'action
+                // serveur tolère un devis déjà lié).
+                <div
+                  role="status"
+                  className="flex flex-wrap items-center gap-[var(--space-admin-3,6px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]"
+                >
+                  <CircleCheck
+                    size={16}
+                    aria-hidden="true"
+                    className="text-[color:var(--color-admin-success)]"
+                  />
+                  <span className="font-semibold">Session {sessionCreee.numero} créée</span>
+                  <Link
+                    href={`${base}/qualiopi/sessions/${sessionCreee.id}`}
+                    className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline hover:no-underline"
+                  >
+                    Ouvrir la session
+                  </Link>
+                </div>
+              ) : devisAccepte ? (
                 <div className="flex flex-col gap-[var(--space-admin-3,6px)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-4,8px)]">
                   <h3 className="font-semibold">Créer la session</h3>
                   <div className="grid grid-cols-1 gap-[var(--space-admin-3,6px)] sm:grid-cols-2">
@@ -1008,12 +1067,23 @@ export function VenteWizard({
                       Choisissez une formation publiée à l&apos;étape 2 (une adaptation doit être
                       publiée avant d&apos;être éligible).
                     </p>
+                  ) : chemin === "adaptation" &&
+                    (adaptation === null || formationId !== adaptation.id) ? (
+                    <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
+                      Chemin adaptation : la session doit porter l&apos;adaptation, pas la formation
+                      d&apos;origine. Publiez l&apos;adaptation puis re-sélectionnez-la à l&apos;étape
+                      2 (elle apparaît dans la liste une fois publiée).
+                    </p>
                   ) : null}
                   <div>
                     <AdminButton
                       onClick={creerSession}
                       loading={isPending}
-                      disabled={formationId === ""}
+                      disabled={
+                        formationId === "" ||
+                        (chemin === "adaptation" &&
+                          (adaptation === null || formationId !== adaptation.id))
+                      }
                     >
                       Créer la session
                     </AdminButton>

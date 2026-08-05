@@ -27,6 +27,11 @@ vi.mock("@/lib/prisma", () => ({
       update: (...a: unknown[]) => mockUpdate(...a),
       delete: (...a: unknown[]) => mockDelete(...a),
     },
+    // Vérification d'existence des références avant écriture (un uuid
+    // inexistant levait une P2003 brute au lieu d'un ActionResult).
+    client: { findUnique: () => Promise.resolve({ id: "ok" }) },
+    devis: { findUnique: () => Promise.resolve({ id: "ok" }) },
+    trainingSession: { findUnique: () => Promise.resolve({ id: "ok" }) },
   },
 }));
 

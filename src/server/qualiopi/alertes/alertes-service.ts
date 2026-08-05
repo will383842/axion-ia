@@ -15,7 +15,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { AlerteNiveau, AlerteSysteme } from "../../../../prisma/generated/client";
-import { evaluerAlertes } from "./evaluateur";
+import { evaluerAlertesDetaille } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -168,12 +168,23 @@ export async function countNonLues(): Promise<number> {
 export async function synchroniserAlertes(): Promise<{ crees: number; resolues: number }> {
   if (isStub()) return { crees: 0, resolues: 0 };
 
-  const candidats = await evaluerAlertes();
+  const { candidates: candidats, reglesEnEchec } = await evaluerAlertesDetaille();
 
   let crees = 0;
   for (const c of candidats) {
     const created = await creerOuDedup(c);
     if (created) crees++;
+  }
+
+  // 🔴 Une règle en échec (fail-soft) ne produit AUCUNE candidate : résoudre
+  // « ce qui n'est plus signalé » effacerait alors en masse toutes les alertes
+  // ouvertes de ses codes — un timeout DB un matin suffirait. Créations
+  // conservées, résolution suspendue jusqu'au prochain tour sain.
+  if (reglesEnEchec.length > 0) {
+    console.warn(
+      `[alertes-service] résolution auto SUSPENDUE ce tour : ${reglesEnEchec.length} règle(s) en échec (${reglesEnEchec.join(", ")})`,
+    );
+    return { crees, resolues: 0 };
   }
 
   // Résolution automatique : codes à resolutionAuto=true dont la condition

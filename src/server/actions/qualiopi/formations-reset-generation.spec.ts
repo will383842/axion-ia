@@ -58,6 +58,8 @@ function formationPubliee(overrides: Record<string, unknown> = {}) {
     statutGeneration: "publie",
     versionProgramme: "1.2",
     versionHistorique: [],
+    aiGenerated: true,
+    objectifsPedagogiques: [{ id: "obj-1", verbe: "Rédiger", description: "Rédiger un prompt" }],
     ...overrides,
   };
 }
@@ -120,5 +122,30 @@ describe("resetGenerationStatusAction", () => {
     );
     const res = await resetGenerationStatusAction(ID);
     expect("data" in res).toBe(true);
+  });
+
+  it("REFUSE les statuts de mi-cycle (contenu_valide : un job peut être en vol)", async () => {
+    mockPrisma.formation.findUnique.mockResolvedValue(
+      formationPubliee({ statutGeneration: "contenu_valide" }),
+    );
+    const res = await resetGenerationStatusAction(ID);
+    expect("error" in res).toBe(true);
+    expect(mockPrisma.formation.update).not.toHaveBeenCalled();
+  });
+
+  it("purge les objectifs ÉCRITS PAR LA MACHINE (aiGenerated=true)", async () => {
+    // Sans purge, la politique « seulement si vide » du worker empêcherait la
+    // ré-extraction : attestations et grilles garderaient les objectifs v1.
+    mockPrisma.formation.findUnique.mockResolvedValue(formationPubliee());
+    await resetGenerationStatusAction(ID);
+    const data = mockPrisma.formation.update.mock.calls[0]![0].data;
+    expect(data.objectifsPedagogiques).toEqual([]);
+  });
+
+  it("ne purge JAMAIS une saisie humaine (aiGenerated=false)", async () => {
+    mockPrisma.formation.findUnique.mockResolvedValue(formationPubliee({ aiGenerated: false }));
+    await resetGenerationStatusAction(ID);
+    const data = mockPrisma.formation.update.mock.calls[0]![0].data;
+    expect(data).not.toHaveProperty("objectifsPedagogiques");
   });
 });

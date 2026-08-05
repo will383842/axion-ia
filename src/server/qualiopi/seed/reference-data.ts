@@ -156,6 +156,17 @@ export async function seedQualiopiReferenceData(
   if (status.grilleActiveCle == null) {
     try {
       await seedGrilleV3(client);
+      // seedGrilleV3 early-return si la ligne EXISTE déjà — même inactive.
+      // Sans cette réactivation explicite, « aucune grille active » restait
+      // irréparé et le moteur plantait en fail-loud à l'évaluation.
+      await client.grilleQualiteConfig.updateMany({
+        where: { cleUnique: "grille_qualite_v3" },
+        data: { actif: true },
+      });
+      await client.grilleQualiteConfig.updateMany({
+        where: { cleUnique: { not: "grille_qualite_v3" } },
+        data: { actif: false },
+      });
       status = await getQualiopiReferenceDataStatus(client);
     } catch (err) {
       console.warn(

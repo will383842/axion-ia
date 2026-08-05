@@ -256,9 +256,9 @@ export function FormationLifecycleButtons({
   const isArchive = statut === "archive" || statutGeneration === "archive";
   // Cul-de-sacs du moteur : statuts que startGenerationAction refuse et que le
   // worker traite en no-op — seul resetGenerationStatusAction en sort.
-  const isResetable = ["publie", "assemble", "contenu_valide", "contenu_genere"].includes(
-    statutGeneration,
-  );
+  // `contenu_valide`/`contenu_genere` sont exclus : mi-cycle, un job peut être
+  // en vol et écraserait le reset.
+  const isResetable = ["publie", "assemble"].includes(statutGeneration);
 
   function handleResetGeneration() {
     setError(null);

@@ -11,11 +11,17 @@ CREATE INDEX IF NOT EXISTS "coaching_sessions_client_id_idx"
 CREATE INDEX IF NOT EXISTS "coaching_sessions_devis_id_idx"
     ON "coaching_sessions"("devis_id");
 
-ALTER TABLE "coaching_sessions"
-    ADD CONSTRAINT "coaching_sessions_client_id_fkey"
-    FOREIGN KEY ("client_id") REFERENCES "clients"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
-ALTER TABLE "coaching_sessions"
-    ADD CONSTRAINT "coaching_sessions_devis_id_fkey"
-    FOREIGN KEY ("devis_id") REFERENCES "devis"("id")
-    ON DELETE SET NULL ON UPDATE CASCADE;
+-- Contraintes gardées contre le rejeu (duplicate_object) : cohérent avec les
+-- IF NOT EXISTS ci-dessus — la migration reste rejouable de bout en bout.
+DO $$ BEGIN
+    ALTER TABLE "coaching_sessions"
+        ADD CONSTRAINT "coaching_sessions_client_id_fkey"
+        FOREIGN KEY ("client_id") REFERENCES "clients"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+    ALTER TABLE "coaching_sessions"
+        ADD CONSTRAINT "coaching_sessions_devis_id_fkey"
+        FOREIGN KEY ("devis_id") REFERENCES "devis"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;

@@ -56,12 +56,14 @@ export async function createCoachingParcoursAction(
     return { error: "Prestation 1-to-1 inconnue" };
   }
 
+  // ⚠️ `statut` (TrainerStatut) = salarie/sous_traitant/dirigeant — la notion
+  // d'activité est le booléen `actif`, pas le statut.
   const trainer = await prisma.trainer.findUnique({
     where: { id: v.trainerId },
-    select: { id: true, statut: true, nom: true },
+    select: { id: true, actif: true, nom: true },
   });
   if (!trainer) return { error: "Formateur introuvable" };
-  if (trainer.statut !== "actif") {
+  if (!trainer.actif) {
     return { error: "Ce formateur n'est pas actif — affectez un formateur actif." };
   }
 
@@ -96,24 +98,41 @@ export async function createCoachingParcoursAction(
     }
   }
 
-  const ids: string[] = [];
-  for (const s of v.seances) {
-    const created = await prisma.coachingSession.create({
-      data: {
-        trainerId: v.trainerId,
-        interventionSlug: v.interventionSlug,
-        dateSeance: s.date,
-        ...(s.dateFin ? { dateSeanceFin: s.dateFin } : {}),
-        beneficiaireNom: v.beneficiaireNom,
-        ...(v.beneficiaireEmail ? { beneficiaireEmail: v.beneficiaireEmail } : {}),
-        ...(v.beneficiaireEntreprise ? { beneficiaireEntreprise: v.beneficiaireEntreprise } : {}),
-        ...(v.clientId ? { clientId: v.clientId } : {}),
-        ...(v.devisId ? { devisId: v.devisId } : {}),
-        ...(v.estAfest !== undefined ? { estAfest: v.estAfest } : {}),
-      },
-      select: { id: true },
+  // Transaction : un échec à la séance k sur N ne doit laisser AUCUNE séance
+  // orpheline en base (l'admin re-soumettrait → doublons dans le calendrier
+  // du formateur). 50 inserts max, aucun risque de timeout.
+  let ids: string[];
+  try {
+    ids = await prisma.$transaction(async (tx) => {
+      const crees: string[] = [];
+      for (const s of v.seances) {
+        const created = await tx.coachingSession.create({
+          data: {
+            trainerId: v.trainerId,
+            interventionSlug: v.interventionSlug,
+            dateSeance: s.date,
+            ...(s.dateFin ? { dateSeanceFin: s.dateFin } : {}),
+            beneficiaireNom: v.beneficiaireNom,
+            ...(v.beneficiaireEmail ? { beneficiaireEmail: v.beneficiaireEmail } : {}),
+            ...(v.beneficiaireEntreprise
+              ? { beneficiaireEntreprise: v.beneficiaireEntreprise }
+              : {}),
+            ...(v.clientId ? { clientId: v.clientId } : {}),
+            ...(v.devisId ? { devisId: v.devisId } : {}),
+            ...(v.estAfest !== undefined ? { estAfest: v.estAfest } : {}),
+          },
+          select: { id: true },
+        });
+        crees.push(created.id);
+      }
+      return crees;
     });
-    ids.push(created.id);
+  } catch (err) {
+    console.error(
+      "[coaching-parcours] création du parcours échouée (aucune séance créée) :",
+      err instanceof Error ? err.message : String(err),
+    );
+    return { error: "Création du parcours échouée — aucune séance n'a été créée, réessayez." };
   }
 
   await logQualiopiActivity({

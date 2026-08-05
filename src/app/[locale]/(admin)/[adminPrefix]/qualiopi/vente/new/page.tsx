@@ -58,6 +58,9 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
       .findMany({
         select: { id: true, numero: true, raisonSociale: true },
         orderBy: { raisonSociale: "asc" },
+        // Borne : la liste part entière au client (filtrage en mémoire).
+        // Largement au-dessus du CRM actuel ; à revoir si import massif.
+        take: 500,
       })
       .catch(() => []),
     prisma.venteBrouillon
@@ -182,17 +185,30 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
               financementType: true,
               opcoSubrogation: true,
               documents: { select: { type: true } },
-              _count: {
-                select: { enrollments: { where: { statut: { in: ["planifiee", "presente"] } } } },
+              enrollments: {
+                where: { statut: { in: ["planifiee", "presente"] } },
+                select: { id: true },
               },
             },
           })
           .catch(() => null);
         if (s !== null) {
           sessionInitiale = { id: s.id, numero: s.numero, statut: s.statut };
+          // Les alertes par SESSION et par INSCRIPTION : `emargement_manquant`
+          // cible Enrollment — la charger seulement par session rendait son
+          // relais checklist définitivement muet.
+          const enrollmentIds = s.enrollments.map((e) => e.id);
           const alertes = await prisma.alerteSysteme
             .findMany({
-              where: { resolue: false, cibleType: "TrainingSession", cibleId: s.id },
+              where: {
+                resolue: false,
+                OR: [
+                  { cibleType: "TrainingSession", cibleId: s.id },
+                  ...(enrollmentIds.length > 0
+                    ? [{ cibleType: "Enrollment", cibleId: { in: enrollmentIds } }]
+                    : []),
+                ],
+              },
               select: { code: true },
             })
             .catch(() => []);
@@ -211,7 +227,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
               opcoSubrogation: s.opcoSubrogation,
             },
             documentsGeneres: s.documents.map((doc) => ({ type: doc.type })),
-            enrollmentsActifs: s._count.enrollments,
+            enrollmentsActifs: s.enrollments.length,
             alertesOuvertes: alertes,
           };
         }

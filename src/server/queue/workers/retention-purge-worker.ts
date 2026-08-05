@@ -253,9 +253,9 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       // Parcours vente — brouillons du wizard « Nouvelle vente » : le payload
       // contient des PII (contact saisi avant création du Client). Même pattern
       // `retentionUntil` que la prospection ci-dessus. Les brouillons convertis
-      // sont supprimés dès la création du devis (côté action) ; ici on ramasse
-      // les abandonnés. Jamais de purge des pièces émises (Devis, factures,
-      // DocumentGenere : obligation comptable).
+      // sont supprimés dès la création de la SESSION (côté wizard) ; ici on
+      // ramasse les abandonnés. Jamais de purge des pièces émises (Devis,
+      // factures, DocumentGenere : obligation comptable).
       const venteBrouillons = await prisma.venteBrouillon.deleteMany({
         where: { retentionUntil: { not: null, lt: now } },
       });

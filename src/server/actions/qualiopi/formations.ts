@@ -675,15 +675,20 @@ export async function resetGenerationStatusAction(
       statutGeneration: true,
       versionProgramme: true,
       versionHistorique: true,
+      aiGenerated: true,
+      objectifsPedagogiques: true,
     },
   });
   if (!formation) return { error: "Formation introuvable" };
   if (formation.statut === "archive" || formation.statutGeneration === "archive") {
     return { error: "Formation archivée : dupliquez-la plutôt que de relancer le moteur." };
   }
-  if (!["publie", "assemble", "contenu_valide", "contenu_genere"].includes(formation.statutGeneration)) {
+  // Seulement les VRAIS culs-de-sac : `contenu_valide`/`contenu_genere` sont
+  // des statuts de MI-CYCLE — un job moteur peut être en file, et
+  // `advanceStatut` (update inconditionnel) écraserait le reset en terminant.
+  if (!["publie", "assemble"].includes(formation.statutGeneration)) {
     return {
-      error: `Statut "${formation.statutGeneration}" déjà relançable ou en cours de cycle : utilisez directement « Lancer la génération ».`,
+      error: `Statut "${formation.statutGeneration}" : laissez le cycle en cours se terminer (validation/assemblage), ou utilisez « Lancer la génération » s'il est relançable.`,
     };
   }
   if ((await countLockingSessions(prisma, idParsed.data)) > 0) {
@@ -708,6 +713,12 @@ export async function resetGenerationStatusAction(
       validatedAt: null,
       versionProgramme: nextVersion,
       versionHistorique: appendVersionEntry(formation.versionHistorique, entry) as never,
+      // Formation 100 % générée : la colonne objectifs a été écrite par la
+      // MACHINE au cycle précédent. La laisser bloquerait la ré-extraction
+      // (politique « seulement si vide ») → attestations et grilles
+      // imprimeraient à jamais les objectifs de l'ancienne version. Une
+      // saisie HUMAINE (aiGenerated=false) n'est jamais purgée.
+      ...(formation.aiGenerated ? { objectifsPedagogiques: [] as never } : {}),
     },
   });
 
@@ -761,10 +772,20 @@ async function allocateCopySlug(base: string): Promise<string> {
  */
 export async function duplicateFormationAction(
   id: string,
+  options?: { clientId?: string; estSurMesure?: boolean },
 ): Promise<ActionResult<{ id: string; numero: string; slug: string }>> {
   const session = await requireAdminWrite();
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
+  const optsParsed = z
+    .object({
+      clientId: z.string().uuid().optional(),
+      estSurMesure: z.boolean().optional(),
+    })
+    .optional()
+    .safeParse(options);
+  if (!optsParsed.success) return { error: "Options invalides" };
+  const opts = optsParsed.data;
 
   const source = await prisma.formation.findUnique({
     where: { id: idParsed.data },
@@ -806,8 +827,12 @@ export async function duplicateFormationAction(
           titre: `${source.titre} (copie)`,
           slug: newSlug,
           offreSiteId: source.offreSiteId,
-          clientId: source.clientId,
-          estSurMesure: source.estSurMesure,
+          // Overrides d'adaptation client (chemin B du wizard) : sans
+          // `estSurMesure: true`, une copie de formation catalogue serait
+          // ARCHIVÉE par le prochain cleanup du seed (règle : hors
+          // FORMATIONS_V2 + pas sur-mesure → archive).
+          clientId: opts?.clientId ?? source.clientId,
+          estSurMesure: opts?.estSurMesure ?? source.estSurMesure,
           dureeHeures: source.dureeHeures,
           modalite: source.modalite,
           objectifsPedagogiques: source.objectifsPedagogiques as never,

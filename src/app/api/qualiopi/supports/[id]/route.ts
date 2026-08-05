@@ -40,6 +40,11 @@ export async function GET(
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
   }
 
+  // Un id non-UUID levait une P2023 Prisma → 500 au lieu d'un 404.
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+    return NextResponse.json({ error: "support_not_found" }, { status: 404 });
+  }
+
   const support = await prisma.supportFormation.findUnique({
     where: { id },
     select: {
