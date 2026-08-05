@@ -48,8 +48,13 @@ export function resolveRevertStatutAfterRejection(etape: string): FormationStatu
       // Retour à structure_generee pour repartir de la structure
       return "structure_generee";
     case "assemblage":
-      // Retour à contenu_genere pour corriger manuellement avant ré-assemblage
-      return "contenu_genere";
+      // 🔴 Retour à `contenu_valide`, PAS `contenu_genere` : `contenu_genere`
+      // est un cul-de-sac (ni relançable par startGenerationAction, ni
+      // resetable, no-op côté worker) — le « corriger puis relancer » promis
+      // était impossible. `contenu_valide` est le statut d'où le worker
+      // ré-assemble : après correction manuelle, la relance re-déroule
+      // stepAssemble et re-soumet une validation d'assemblage.
+      return "contenu_valide";
     case "structure":
       // Retour à intention (re-démarrage complet)
       return "intention";

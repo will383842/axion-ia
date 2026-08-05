@@ -18,6 +18,9 @@ vi.mock("@/lib/prisma", () => ({
     trainingSession: {
       count: vi.fn(),
     },
+    fileValidation: {
+      deleteMany: vi.fn().mockResolvedValue({ count: 0 }),
+    },
   },
 }));
 
@@ -46,6 +49,7 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
   };
   trainingSession: { count: ReturnType<typeof vi.fn> };
+  fileValidation: { deleteMany: ReturnType<typeof vi.fn> };
 };
 
 const ID = "f1234567-89ab-cdef-0123-456789abcdef";
@@ -147,5 +151,18 @@ describe("resetGenerationStatusAction", () => {
     await resetGenerationStatusAction(ID);
     const data = mockPrisma.formation.update.mock.calls[0]![0].data;
     expect(data).not.toHaveProperty("objectifsPedagogiques");
+  });
+
+  it("purge les FileValidation en attente du cycle précédent", async () => {
+    // Une validation « assemblage » en_attente survivant au reset ferait
+    // sauter intention → publie à l'approbation, sans nouveau cycle.
+    mockPrisma.formation.findUnique.mockResolvedValue(
+      formationPubliee({ statutGeneration: "assemble" }),
+    );
+    const res = await resetGenerationStatusAction(ID);
+    expect("data" in res).toBe(true);
+    expect(mockPrisma.fileValidation.deleteMany).toHaveBeenCalledWith({
+      where: { formationId: ID, statut: "en_attente" },
+    });
   });
 });

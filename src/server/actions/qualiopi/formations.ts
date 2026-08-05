@@ -722,6 +722,14 @@ export async function resetGenerationStatusAction(
     },
   });
 
+  // 🔴 Purge des validations EN ATTENTE du cycle précédent : depuis `assemble`,
+  // une FileValidation « assemblage » traîne — l'approuver après le reset
+  // ferait sauter `intention → publie` sans nouveau cycle (update
+  // inconditionnel de resolveNextStatutAfterApproval), objectifs vidés.
+  await prisma.fileValidation.deleteMany({
+    where: { formationId: idParsed.data, statut: "en_attente" },
+  });
+
   await logQualiopiActivity({
     action: "qualiopi.formation.reset_generation",
     targetType: "Formation",
