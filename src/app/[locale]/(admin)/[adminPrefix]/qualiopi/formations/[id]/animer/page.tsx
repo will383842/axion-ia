@@ -86,7 +86,10 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
     ...SLOTS_PROJETES_EN_SALLE,
     ...Object.values(SUPPORT_TYPE_TO_SLOT).filter((s): s is string => s !== null),
   ];
-  const slotsDeposes = new Set<string>();
+  // Slot déposé → date de sa version courante (publication, sinon création) :
+  // l'ancienneté est affichée, et > 3 mois vaut « à revoir » (standard Will —
+  // un diaporama projeté depuis un trimestre mérite une relecture).
+  const slotsDeposes = new Map<string, Date | null>();
   if (kitSlug !== null) {
     try {
       const docs = await prisma.interventionDocument.findMany({
@@ -95,9 +98,14 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
           slot: { in: slotsSuivis },
           currentVersionId: { not: null },
         },
-        select: { slot: true },
+        select: {
+          slot: true,
+          currentVersion: { select: { publishedAt: true, createdAt: true } },
+        },
       });
-      for (const d of docs) slotsDeposes.add(d.slot);
+      for (const d of docs) {
+        slotsDeposes.set(d.slot, d.currentVersion?.publishedAt ?? d.currentVersion?.createdAt ?? null);
+      }
     } catch {
       // stub-safe : stub Proxy → [] au build
     }
@@ -131,15 +139,29 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
   const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
 
   // Badge d'état d'un dépôt de kit (icône lucide, jamais d'emoji).
-  function EtatDepot({ depose }: { depose: boolean }) {
-    return depose ? (
-      <span className="inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-success)]">
-        <CheckCircle2 aria-hidden className="h-3.5 w-3.5" /> Déposé
-      </span>
-    ) : (
-      <span className="inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]">
-        <AlertTriangle aria-hidden className="h-3.5 w-3.5" /> Manquant
-      </span>
+  // `deposeLe` : la date rend l'ancienneté LISIBLE, et > 3 mois ajoute
+  // « à revoir » — sans date on affichait un « Déposé » éternellement vert.
+  function EtatDepot({ depose, deposeLe }: { depose: boolean; deposeLe?: Date | null }) {
+    if (!depose) {
+      return (
+        <span className="inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]">
+          <AlertTriangle aria-hidden className="h-3.5 w-3.5" /> Manquant
+        </span>
+      );
+    }
+    const aRevoir = deposeLe != null && Date.now() - deposeLe.getTime() > 92 * 86_400_000;
+    return (
+      <>
+        <span className="inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-success)]">
+          <CheckCircle2 aria-hidden className="h-3.5 w-3.5" /> Déposé
+          {deposeLe != null ? ` le ${deposeLe.toLocaleDateString("fr-FR")}` : ""}
+        </span>
+        {aRevoir ? (
+          <span className="ml-1 inline-flex items-center gap-1 text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-warning)]">
+            <AlertTriangle aria-hidden className="h-3.5 w-3.5" /> à revoir (+3 mois)
+          </span>
+        ) : null}
+      </>
     );
   }
 
@@ -164,7 +186,10 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
           {kitSlug !== null && slotMeta !== undefined && (
             <p className={`${mutedCls} mt-0.5`}>
               Kit bibliothèque — {slotMeta.titre} :{" "}
-              <EtatDepot depose={slotsDeposes.has(slotMeta.key)} />
+              <EtatDepot
+                depose={slotsDeposes.has(slotMeta.key)}
+                deposeLe={slotsDeposes.get(slotMeta.key) ?? null}
+              />
             </p>
           )}
         </div>
@@ -248,7 +273,10 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
                       </p>
                       {slot.note != null && <p className={`${mutedCls} mt-0.5`}>{slot.note}</p>}
                     </div>
-                    <EtatDepot depose={slotsDeposes.has(slotKey)} />
+                    <EtatDepot
+                      depose={slotsDeposes.has(slotKey)}
+                      deposeLe={slotsDeposes.get(slotKey) ?? null}
+                    />
                   </div>
                   <div className="mt-[var(--space-admin-3)]">
                     <Link href={kitHref} className="admin-button-ghost">

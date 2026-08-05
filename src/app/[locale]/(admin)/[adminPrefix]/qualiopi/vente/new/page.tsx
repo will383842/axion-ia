@@ -31,8 +31,12 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  /** `brouillon` : reprise d'un brouillon de vente existant. */
-  searchParams: Promise<{ brouillon?: string }>;
+  /**
+   * `brouillon` : reprise d'un brouillon de vente existant.
+   * `clientId` : pré-sélection du client (boutons « Nouvelle vente » des
+   * fiches CRM) — ignoré si un brouillon est repris (le brouillon prime).
+   */
+  searchParams: Promise<{ brouillon?: string; clientId?: string }>;
 }
 
 export default async function QualiopiVenteNewPage({ params, searchParams }: PageProps) {
@@ -79,6 +83,10 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
 
   // Montant en CENTIMES résolu côté serveur (même motif que /qualiopi/devis/new :
   // importer pricing-resolver côté client tirerait tout pricing.ts dans le bundle).
+  // `tarifNonReverifie` : même seuil de 30 jours que l'alerte
+  // `offres_site_non_verifiees` — vendre sur un tarif jamais revérifié mérite
+  // d'être signalé AU MOMENT du choix, pas seulement sur l'écran d'alertes.
+  const seuilVerif = new Date(Date.now() - 30 * 86_400_000);
   const offres = offresWithPrice.map((o) => ({
     id: o.offre.id,
     tierId: o.offre.tierId,
@@ -87,7 +95,15 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
     prixLabelFr: o.prixLabelFr,
     prixHtCents: o.prixHtEur === null ? null : Math.round(o.prixHtEur * 100),
     noteDevisFr: o.noteDevisFr,
+    tarifNonReverifie:
+      o.offre.derniereVerifCoherenceAt === null || o.offre.derniereVerifCoherenceAt < seuilVerif,
   }));
+
+  // ── Pré-sélection client (?clientId=) — boutons « Nouvelle vente » du CRM ──
+  const clientInitialId =
+    sp.brouillon === undefined && sp.clientId !== undefined
+      ? clients.find((c) => c.id === sp.clientId)?.id
+      : undefined;
 
   // ── Reprise d'un brouillon (?brouillon=<id>) — borné au propriétaire ───────
   let brouillon:
@@ -272,6 +288,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
         clients={clients}
         offres={offres}
         formations={formations}
+        {...(clientInitialId !== undefined ? { clientInitialId } : {})}
         {...(brouillon !== undefined ? { brouillon } : {})}
         {...(devisInitial !== undefined ? { devisInitial } : {})}
         {...(sessionInitiale !== undefined ? { sessionInitiale } : {})}

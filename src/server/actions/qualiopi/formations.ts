@@ -795,6 +795,16 @@ export async function duplicateFormationAction(
   if (!optsParsed.success) return { error: "Options invalides" };
   const opts = optsParsed.data;
 
+  // Existence AVANT écriture : un uuid inexistant lèverait une P2003 brute
+  // (exception) au lieu d'un ActionResult — même contrat que vente-brouillon.
+  if (opts?.clientId !== undefined) {
+    const client = await prisma.client.findUnique({
+      where: { id: opts.clientId },
+      select: { id: true },
+    });
+    if (!client) return { error: "Client introuvable" };
+  }
+
   const source = await prisma.formation.findUnique({
     where: { id: idParsed.data },
     select: {

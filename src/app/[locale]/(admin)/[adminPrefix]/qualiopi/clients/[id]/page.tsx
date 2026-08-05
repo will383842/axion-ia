@@ -269,9 +269,16 @@ export default async function FicheClient360Page({ params }: PageProps) {
           </>
         }
         actions={
-          <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>
-            Éditer
-          </AdminButton>
+          <>
+            {/* Le wizard pré-sélectionne le client (?clientId=) : le parcours
+                de vente démarre depuis la fiche, sans re-chercher le client. */}
+            <AdminButton href={`${qBase}/vente/new?clientId=${client.id}`}>
+              Nouvelle vente
+            </AdminButton>
+            <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>
+              Éditer
+            </AdminButton>
+          </>
         }
       />
 

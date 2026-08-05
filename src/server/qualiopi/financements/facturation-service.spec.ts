@@ -176,6 +176,47 @@ describe("genererFactureFormation", () => {
     expect(createArg.data["statut"]).toBe("emise");
   });
 
+  it("INVARIANT runtime : tvaExoneree ⇔ montantTvaCents === 0, dans les deux régimes", async () => {
+    // Le test du schéma (tva-mention.spec) ne verrouille que le DÉFAUT de la
+    // colonne ; ici on verrouille que la valeur ÉCRITE dérive du calcul —
+    // jamais un drapeau statique qui pourrait diverger des montants (garde-fou
+    // 0.4 du plan vente : TVA partout, sans exception).
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+    const assujetti = (
+      mockPrisma.factureFormation.create.mock.calls[0]![0] as { data: Record<string, unknown> }
+    ).data;
+    expect(assujetti["tvaExoneree"]).toBe(assujetti["montantTvaCents"] === 0);
+    expect(assujetti["tvaExoneree"]).toBe(false);
+
+    // Exonération = choix EXPLICITE par config (jamais un défaut) : TVA nulle
+    // → et alors seulement, la facture est marquée exonérée.
+    const { getQualiopiConfig } = await import("@/server/qualiopi/config/site-settings");
+    vi.mocked(getQualiopiConfig).mockImplementation(async (key: string) =>
+      key === "regime_tva" ? "exoneration_261" : key === "taux_tva_standard_percent" ? 20 : "",
+    );
+    await genererFactureFormation({
+      sessionId: "sess-uuid-1",
+      destinataire: "entreprise",
+      ventilation: "forfait",
+    });
+    const exonere = (
+      mockPrisma.factureFormation.create.mock.calls[1]![0] as { data: Record<string, unknown> }
+    ).data;
+    expect(exonere["montantTvaCents"]).toBe(0);
+    expect(exonere["tvaExoneree"]).toBe(exonere["montantTvaCents"] === 0);
+    expect(exonere["tvaExoneree"]).toBe(true);
+
+    // clearAllMocks ne restaure PAS les implémentations : on remet le régime
+    // assujetti pour ne pas contaminer les tests suivants.
+    vi.mocked(getQualiopiConfig).mockImplementation(async (key: string) =>
+      key === "regime_tva" ? "assujetti" : key === "taux_tva_standard_percent" ? 20 : "",
+    );
+  });
+
   it("retourne factureId, numero et documentId", async () => {
     const result = await genererFactureFormation({
       sessionId: "sess-uuid-1",

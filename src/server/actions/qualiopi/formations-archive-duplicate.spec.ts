@@ -11,6 +11,8 @@ vi.mock("@/lib/prisma", () => ({
       update: vi.fn().mockResolvedValue({ id: "f1" }),
       create: vi.fn(),
     },
+    // Garde d'existence du clientId (options sur-mesure/adaptation).
+    client: { findUnique: vi.fn() },
   },
 }));
 
@@ -39,6 +41,7 @@ const mockPrisma = prisma as unknown as {
     update: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
   };
+  client: { findUnique: ReturnType<typeof vi.fn> };
 };
 
 const ID = "f1234567-89ab-cdef-0123-456789abcdef";
@@ -47,6 +50,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   mockPrisma.formation.update.mockResolvedValue({ id: ID });
   mockPrisma.formation.create.mockResolvedValue({ id: "new-id", numero: "AXI-FORM-2026-099" });
+  mockPrisma.client.findUnique.mockResolvedValue({ id: "client-1" });
 });
 
 describe("archiveFormationAction", () => {
@@ -118,6 +122,18 @@ describe("duplicateFormationAction", () => {
     expect(data).not.toHaveProperty("certificationType");
     expect(data).not.toHaveProperty("validatedBy");
     expect(data).not.toHaveProperty("indicateursPublies");
+  });
+
+  it("options.clientId inexistant → ActionResult erreur, jamais une P2003 brute", async () => {
+    mockPrisma.formation.findUnique.mockResolvedValue(source);
+    mockPrisma.client.findUnique.mockResolvedValue(null);
+
+    const res = await duplicateFormationAction(ID, {
+      clientId: "c1234567-89ab-cdef-0123-456789abcdef",
+    });
+
+    expect("error" in res && res.error).toBe("Client introuvable");
+    expect(mockPrisma.formation.create).not.toHaveBeenCalled();
   });
 
   it("incrémente le suffixe si -copie est pris", async () => {

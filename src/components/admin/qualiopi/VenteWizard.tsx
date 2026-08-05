@@ -74,6 +74,8 @@ export interface VenteOffreOption {
   /** PU HT en centimes pré-résolu serveur — null = jamais pré-remplir 0. */
   prixHtCents: number | null;
   noteDevisFr: string;
+  /** Cohérence site↔console jamais vérifiée ou > 30 j (même seuil que l'alerte). */
+  tarifNonReverifie: boolean;
 }
 
 export interface VenteFormationOption {
@@ -115,6 +117,8 @@ export interface VenteWizardProps {
   clients: VenteClientOption[];
   offres: VenteOffreOption[];
   formations: VenteFormationOption[];
+  /** Pré-sélection client (`?clientId=`, boutons CRM) — le brouillon prime. */
+  clientInitialId?: string;
   brouillon?: VenteBrouillonInitial;
   devisInitial?: VenteDevisEtat;
   sessionInitiale?: VenteSessionEtat;
@@ -169,6 +173,7 @@ export function VenteWizard({
   clients,
   offres,
   formations,
+  clientInitialId,
   brouillon,
   devisInitial,
   sessionInitiale,
@@ -192,7 +197,7 @@ export function VenteWizard({
     brouillon?.clientId ? "existant" : (chaine(p, "modeClient") as "existant" | "nouveau") || "existant",
   );
   const [rechercheClient, setRechercheClient] = useState("");
-  const [clientId, setClientId] = useState(brouillon?.clientId ?? "");
+  const [clientId, setClientId] = useState(brouillon?.clientId ?? clientInitialId ?? "");
   const [clientCree, setClientCree] = useState<{ id: string; numero: string } | null>(null);
   const [raisonSociale, setRaisonSociale] = useState(chaine(p, "raisonSociale"));
   const [siret, setSiret] = useState(chaine(p, "siret"));
@@ -722,6 +727,7 @@ export function VenteWizard({
                 {offres.map((o) => (
                   <option key={o.id} value={o.id}>
                     {o.code} — {o.titreFr} ({o.prixLabelFr})
+                    {o.tarifNonReverifie ? " — tarif à revérifier" : ""}
                   </option>
                 ))}
               </select>
@@ -730,6 +736,13 @@ export function VenteWizard({
             {offreChoisie !== null ? (
               <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
                 {offreChoisie.noteDevisFr}
+              </p>
+            ) : null}
+            {offreChoisie !== null && offreChoisie.tarifNonReverifie ? (
+              <p className="admin-alert admin-alert-warning text-[length:var(--text-admin-xs)]">
+                Le tarif de cette offre n&apos;a pas été revérifié depuis plus de 30 jours (ou
+                jamais) : confirmer la cohérence avec la page du site avant d&apos;émettre le devis
+                (« Vérifier la cohérence » sur l&apos;écran Offres).
               </p>
             ) : null}
 
