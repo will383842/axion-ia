@@ -194,7 +194,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
   ],
   objectifsFr: [
     "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier l'outil adapté (ChatGPT, Claude, Gemini) selon la tâche",
+    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
     "Formuler une demande structurée (méthode AXION) donnant un résultat exploitable",
     "Réaliser une tâche courante de son poste à l'aide de l'IA",
     "Appliquer les règles de confidentialité : identifier les données à ne pas soumettre",
@@ -397,7 +397,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   ],
   objectifsFr: [
     "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier l'outil adapté selon la tâche",
+    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
     "Formuler une demande structurée (méthode AXION) et l'itérer pour fiabiliser le résultat",
     "Réaliser plusieurs tâches de son poste à l'aide de l'IA",
     "Analyser un document : synthèse et points de vigilance",
@@ -1485,188 +1485,198 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
   },
   programme: [
     {
-      titreFr: "Matin — Le cadre, la voix de la marque, et le trimestre planifié",
+      titreFr: "Matin · Module 1 — Le cadre et la voix de la marque",
       steps: [
         {
           temps: "10'",
           type: "objectif",
           titre:
-            "Module 1 · Ouverture et résultat visé : chacun nomme ce qu'il produit chaque semaine (posts, newsletters, pages) et ce qu'il veut avoir en main ce soir — un dossier de marque écrit et douze semaines planifiées. Règle du jour posée : l'IA fait le premier jet, la marque reste la vôtre.",
+            "Ouverture et résultat visé : chacun nomme ce qu'il produit chaque semaine (posts, newsletters, pages) et ce qu'il veut avoir en main ce soir — un dossier de marque écrit et douze semaines planifiées. Règle du jour posée : l'IA fait le premier jet, la marque reste la vôtre.",
         },
         {
           temps: "20'",
           type: "cadre",
           titre:
-            "Module 1 · Les trois régimes d'usage — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé : où passent un brief, un fichier client, un plan de lancement sous embargo. Démonstration de ré-identification menée par le formateur sur le jeu de contacts fictif du kit : retirer le nom ne rend pas le fichier anonyme, le code postal, la tranche d'âge et la fonction suffisent à retrouver la personne — pseudonymiser n'est pas anonymiser, et le fichier reste soumis au RGPD.",
+            "Les trois régimes d'usage — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé : où passent un brief, un fichier client, un plan de lancement sous embargo. Démonstration de ré-identification menée par le formateur sur le jeu de contacts fictif du kit : retirer le nom ne rend pas le fichier anonyme, le code postal, la tranche d'âge et la fonction suffisent à retrouver la personne — pseudonymiser n'est pas anonymiser, et le fichier reste soumis au RGPD.",
         },
         {
           temps: "15'",
           type: "cadre",
           titre:
-            "Module 1 · Ce qu'on n'a pas le droit de publier, posé AVANT de produire : faux avis et faux témoignages de consommateurs (code de la consommation, art. L.121-4), allégations invérifiables et allégations environnementales, mention due sur un contenu généré diffusé au public (règlement (UE) 2024/1689 sur l'IA, art. 50), consentement préalable avant une newsletter adressée à des particuliers (code des postes et des communications électroniques, art. L.34-5). Fiche récapitulative d'une page remise au kit.",
+            "Ce qu'on n'a pas le droit de publier, posé AVANT de produire : faux avis et faux témoignages de consommateurs (code de la consommation, art. L.121-4), allégations invérifiables et allégations environnementales, mention due sur un contenu généré diffusé au public (règlement (UE) 2024/1689 sur l'IA, art. 50), consentement préalable avant une newsletter adressée à des particuliers (code des postes et des communications électroniques, art. L.34-5). Fiche récapitulative d'une page remise au kit.",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "Module 1 · Démonstration avant / après, UN SEUL outil, prompt affiché en entier à l'écran : le même post écrit sans contexte, puis avec la méthode AXION — Acteur, conteXte, Intention, Output, Normes. On lit les deux résultats à voix haute et la salle dit ce qui a changé.",
+            "Démonstration avant / après, UN SEUL outil, prompt affiché en entier à l'écran : le même post écrit sans contexte, puis avec la méthode AXION — Acteur, conteXte, Intention, Output, Normes. On lit les deux résultats à voix haute et la salle dit ce qui a changé.",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "Module 1 · Atelier chronométré : constituer le dossier de marque sur la trame fournie — ton (trois adjectifs et trois contre-exemples), cibles et personas, interdits de langage, trois exemples de contenus déjà validés — puis le tester immédiatement en relançant une publication réelle avec ce dossier en contexte. Le formateur anime la trame, la salle apporte la voix.",
+            "Atelier chronométré : constituer le dossier de marque sur la trame fournie — ton (trois adjectifs et trois contre-exemples), cibles et personas, interdits de langage, trois exemples de contenus déjà validés — puis le tester immédiatement en relançant une publication réelle avec ce dossier en contexte. Le formateur anime la trame, la salle apporte la voix.",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "Module 1 · Contrôle croisé en binôme sur la grille fournie : le post produit tient-il le ton déclaré, la promesse est-elle vérifiable, la mention de contenu généré est-elle due ? Puis chaque binôme relance le même brief avec le persona du voisin et relève qui a disparu du texte — c'est le biais du brief, avant celui de l'outil.",
+            "Contrôle croisé en binôme sur la grille fournie : le post produit tient-il le ton déclaré, la promesse est-elle vérifiable, la mention de contenu généré est-elle due ? Puis chaque binôme relance le même brief avec le persona du voisin et relève qui a disparu du texte — c'est le biais du brief, avant celui de l'outil.",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 1 · Acquis, formulés en actions : je sais où je dépose et ce que je ne dépose jamais · je sais ce que je ne peux pas publier et ce que je dois mentionner · j'ai un dossier de marque écrit que je peux rouvrir lundi.",
+            "Acquis, formulés en actions : je sais où je dépose et ce que je ne dépose jamais · je sais ce que je ne peux pas publier et ce que je dois mentionner · j'ai un dossier de marque écrit que je peux rouvrir lundi.",
         },
         { temps: "15'", type: "pause", titre: "Pause café" },
-        {
-          temps: "5'",
-          type: "objectif",
-          titre:
-            "Module 2 · Objectif : passer d'un message unique à une série cohérente, et ne plus repartir de zéro chaque lundi.",
-        },
-        {
-          temps: "15'",
-          type: "demonstration",
-          titre:
-            "Module 2 · Démonstration avant / après, UN SEUL outil, prompt affiché en entier : déposer un brief en PDF et une fiche produit (et ce qui fait échouer le dépôt — scan sans texte reconnu, tableau qui se désaligne), puis décliner une idée en publication courte, newsletter, script vidéo et communiqué — en nommant ce qui se dégrade à chaque déclinaison.",
-        },
-        {
-          temps: "30'",
-          type: "pratique",
-          titre:
-            "Module 2 · Atelier chronométré 1 : chacun décline un message réel de l'entreprise sur trois formats, en repartant de son dossier de marque et non d'une consigne nue.",
-        },
-        {
-          temps: "25'",
-          type: "pratique",
-          titre:
-            "Module 2 · Atelier chronométré 2 : construire le calendrier éditorial du trimestre à partir du tableau de sujets fourni — douze semaines, un sujet et un format par semaine, et le nom de la personne qui tient chaque ligne.",
-        },
-        {
-          temps: "10'",
-          type: "verification",
-          titre:
-            "Module 2 · Contrôle croisé en binôme, grille fournie : respect du dossier de marque, promesse vérifiable, appel à l'action présent, mention de contenu généré si elle est due, et calendrier réellement tenable au vu des effectifs annoncés.",
-        },
-        {
-          temps: "5'",
-          type: "synthese",
-          titre:
-            "Module 2 · Acquis en actions et versement au livrable : je décline sans réécrire · je planifie mon trimestre en une séance — ce qui entre dès maintenant dans le dossier de marque.",
-        },
       ],
     },
     {
-      titreFr: "Après-midi — Image, résultats, visibilité de la marque, et ce qu'on diffuse",
+      titreFr: "Matin · Module 2 — D'un message unique à la série : décliner et planifier",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 3 · Objectif : trois usages très attendus, trois périmètres honnêtes — et savoir dire à sa direction ce que l'IA ne fera pas.",
+            "Objectif : passer d'un message unique à une série cohérente, et ne plus repartir de zéro chaque lundi.",
         },
         {
-          temps: "10'",
-          type: "cadre",
-          titre:
-            "Module 3 · Le cadre de l'image, posé avant d'en regarder une seule : à qui appartient ce qu'un outil produit selon ses conditions d'utilisation, ce qu'on ne fait jamais avec le visage ou la voix d'une personne identifiable (droit à l'image, code civil art. 9), et l'obligation de signaler une image ou une vidéo générée diffusée au public (règlement (UE) 2024/1689, art. 50).",
-        },
-        {
-          temps: "10'",
+          temps: "15'",
           type: "demonstration",
           titre:
-            "Module 3 · Revue commentée des quatre visuels pré-produits fournis dans le kit — aucun compte à ouvrir, aucun outil d'image à installer : ce qui tient (illustration d'ambiance, déclinaison de gabarit, recadrage, texte alternatif) et ce qui rate systématiquement (le texte dans l'image, la charte, le logo, le visuel de marque). Le périmètre est annoncé tel quel, sans promesse de génération de visuels.",
-        },
-        {
-          temps: "10'",
-          type: "demonstration",
-          titre:
-            "Module 3 · Résultats de campagne, démonstration avant / après, UN SEUL outil, prompt affiché en entier : l'IA commente, elle ne calcule pas. On décrit la structure de son tableau sans jamais coller l'export, on saisit à la main les quatre valeurs à commenter, et on montre ce qui se passe quand on lui demande un total.",
+            "Démonstration avant / après, UN SEUL outil, prompt affiché en entier : déposer un brief en PDF et une fiche produit (et ce qui fait échouer le dépôt — scan sans texte reconnu, tableau qui se désaligne), puis décliner une idée en publication courte, newsletter, script vidéo et communiqué — en nommant ce qui se dégrade à chaque déclinaison.",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "Module 3 · Atelier chronométré : chacun rédige le commentaire de sa dernière campagne à partir de ses propres chiffres saisis à la main, puis fait proposer trois hypothèses de test à budget constant et tranche celle qu'il retient.",
+            "Atelier chronométré 1 : chacun décline un message réel de l'entreprise sur trois formats, en repartant de son dossier de marque et non d'une consigne nue.",
         },
         {
           temps: "25'",
           type: "pratique",
           titre:
-            "Module 3 · Atelier chronométré : vérifier en direct comment sa marque est décrite par un assistant IA, avec les trois questions fournies (qui est cette entreprise, que vend-elle, à qui la recommanderiez-vous), relever les erreurs et lister ce qui se corrige sur ses propres pages ; puis dégrossir une veille sur deux concurrents et marquer d'une croix tout ce qui reste à vérifier à la source.",
+            "Atelier chronométré 2 : construire le calendrier éditorial du trimestre à partir du tableau de sujets fourni — douze semaines, un sujet et un format par semaine, et le nom de la personne qui tient chaque ligne.",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "Module 3 · Contrôle croisé en binôme, grille fournie : aucun chiffre calculé par l'outil ne subsiste dans le commentaire, aucune donnée client n'a été déposée, chaque affirmation de veille porte la mention vérifiée ou à vérifier.",
+            "Contrôle croisé en binôme, grille fournie : respect du dossier de marque, promesse vérifiable, appel à l'action présent, mention de contenu généré si elle est due, et calendrier réellement tenable au vu des effectifs annoncés.",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 3 · Acquis en actions : je connais le périmètre réel de l'image et je ne le survends pas · je commente un résultat sans exposer mes données · je sais comment ma marque est reprise et ce que je corrige sur mon site.",
+            "Acquis en actions et versement au livrable : je décline sans réécrire · je planifie mon trimestre en une séance — ce qui entre dès maintenant dans le dossier de marque.",
         },
-        { temps: "15'", type: "pause", titre: "Pause café" },
+      ],
+    },
+    {
+      titreFr:
+        "Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 4 · Objectif : ne plus rien diffuser sans savoir ce qui a été vérifié, et par qui.",
-        },
-        {
-          temps: "5'",
-          type: "demonstration",
-          titre:
-            "Module 4 · Micro-démonstration avant / après, UN SEUL outil, prompt affiché en entier : le même paragraphe sur votre marché produit sans contrainte, puis avec l'obligation de citer ses sources — et ce que devient le texte quand on exige la source.",
-        },
-        {
-          temps: "25'",
-          type: "pratique",
-          titre:
-            "Module 4 · Chasse à l'erreur chronométrée : on fait produire un texte sur le marché des participants, chacun surligne ce qui est faux ou invérifiable, on compte à voix haute — puis la salle en tire les quatre contrôles de sa propre grille de relecture avant diffusion.",
+            "Objectif : trois usages très attendus, trois périmètres honnêtes — et savoir dire à sa direction ce que l'IA ne fera pas.",
         },
         {
           temps: "10'",
           type: "cadre",
           titre:
-            "Module 4 · Droits et mentions, en cinq réponses fournies au kit : ce qu'on peut réutiliser d'un texte trouvé en ligne, la citation d'un client et l'accord écrit qu'elle suppose, la propriété de ce que l'outil produit, la mention due sur un contenu généré diffusé au public, et le consentement préalable avant d'écrire à un fichier de particuliers.",
+            "Le cadre de l'image, posé avant d'en regarder une seule : à qui appartient ce qu'un outil produit selon ses conditions d'utilisation, ce qu'on ne fait jamais avec le visage ou la voix d'une personne identifiable (droit à l'image, code civil art. 9), et l'obligation de signaler une image ou une vidéo générée diffusée au public (règlement (UE) 2024/1689, art. 50).",
         },
         {
           temps: "10'",
-          type: "pratique",
+          type: "demonstration",
           titre:
-            "Module 4 · Application immédiate : douze cas de diffusion fournis dans le kit (un avis client repris, une photo trouvée en ligne, un témoignage reformulé, une newsletter à un fichier acheté…) — chacun classe en « je publie » / « je publie avec mention » / « je ne publie pas », correction en salle avec le corrigé du formateur.",
+            "Revue commentée des quatre visuels pré-produits fournis dans le kit — aucun compte à ouvrir, aucun outil d'image à installer : ce qui tient (illustration d'ambiance, déclinaison de gabarit, recadrage, texte alternatif) et ce qui rate systématiquement (le texte dans l'image, la charte, le logo, le visuel de marque). Le périmètre est annoncé tel quel, sans promesse de génération de visuels.",
         },
         {
-          temps: "15'",
-          type: "pratique",
+          temps: "10'",
+          type: "demonstration",
           titre:
-            "Module 4 · Montage du livrable : assembler en un document unique, daté et nominatif le dossier de marque, le calendrier du trimestre, les trames de déclinaison et la grille de relecture — et désigner qui le tient à jour et à quelle date il est revu.",
+            "Résultats de campagne, démonstration avant / après, UN SEUL outil, prompt affiché en entier : l'IA commente, elle ne calcule pas. On décrit la structure de son tableau sans jamais coller l'export, on saisit à la main les quatre valeurs à commenter, et on montre ce qui se passe quand on lui demande un total.",
         },
         {
-          temps: "15'",
+          temps: "30'",
+          type: "pratique",
+          titre:
+            "Atelier chronométré : chacun rédige le commentaire de sa dernière campagne à partir de ses propres chiffres saisis à la main, puis fait proposer trois hypothèses de test à budget constant et tranche celle qu'il retient.",
+        },
+        {
+          temps: "25'",
+          type: "pratique",
+          titre:
+            "Atelier chronométré : vérifier en direct comment sa marque est décrite par un assistant IA, avec les trois questions fournies (qui est cette entreprise, que vend-elle, à qui la recommanderiez-vous), relever les erreurs et lister ce qui se corrige sur ses propres pages ; puis dégrossir une veille sur deux concurrents et marquer d'une croix tout ce qui reste à vérifier à la source.",
+        },
+        {
+          temps: "10'",
           type: "verification",
           titre:
-            "Module 4 · Évaluation des acquis : quiz individuel de validation (10 questions, corrigé en salle) puis auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
+            "Contrôle croisé en binôme, grille fournie : aucun chiffre calculé par l'outil ne subsiste dans le commentaire, aucune donnée client n'a été déposée, chaque affirmation de veille porte la mention vérifiée ou à vérifier.",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 4 · Feuille de route contenu, en actions : trois usages installés dès la semaine suivante, un responsable nommé par usage, une date de revue du calendrier éditorial.",
+            "Acquis en actions : je connais le périmètre réel de l'image et je ne le survends pas · je commente un résultat sans exposer mes données · je sais comment ma marque est reprise et ce que je corrige sur mon site.",
+        },
+        { temps: "15'", type: "pause", titre: "Pause café" },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — Rien ne se diffuse sans vérification",
+      steps: [
+        {
+          temps: "5'",
+          type: "objectif",
+          titre: "Objectif : ne plus rien diffuser sans savoir ce qui a été vérifié, et par qui.",
+        },
+        {
+          temps: "5'",
+          type: "demonstration",
+          titre:
+            "Micro-démonstration avant / après, UN SEUL outil, prompt affiché en entier : le même paragraphe sur votre marché produit sans contrainte, puis avec l'obligation de citer ses sources — et ce que devient le texte quand on exige la source.",
+        },
+        {
+          temps: "25'",
+          type: "pratique",
+          titre:
+            "Chasse à l'erreur chronométrée : on fait produire un texte sur le marché des participants, chacun surligne ce qui est faux ou invérifiable, on compte à voix haute — puis la salle en tire les quatre contrôles de sa propre grille de relecture avant diffusion.",
+        },
+        {
+          temps: "10'",
+          type: "cadre",
+          titre:
+            "Droits et mentions, en cinq réponses fournies au kit : ce qu'on peut réutiliser d'un texte trouvé en ligne, la citation d'un client et l'accord écrit qu'elle suppose, la propriété de ce que l'outil produit, la mention due sur un contenu généré diffusé au public, et le consentement préalable avant d'écrire à un fichier de particuliers.",
+        },
+        {
+          temps: "10'",
+          type: "pratique",
+          titre:
+            "Application immédiate : douze cas de diffusion fournis dans le kit (un avis client repris, une photo trouvée en ligne, un témoignage reformulé, une newsletter à un fichier acheté…) — chacun classe en « je publie » / « je publie avec mention » / « je ne publie pas », correction en salle avec le corrigé du formateur.",
+        },
+        {
+          temps: "15'",
+          type: "pratique",
+          titre:
+            "Montage du livrable : assembler en un document unique, daté et nominatif le dossier de marque, le calendrier du trimestre, les trames de déclinaison et la grille de relecture — et désigner qui le tient à jour et à quelle date il est revu.",
+        },
+        {
+          temps: "15'",
+          type: "verification",
+          titre:
+            "Évaluation des acquis : quiz individuel de validation (10 questions, corrigé en salle) puis auto-évaluation d'une production du jour sur la grille de relecture construite par la salle.",
+        },
+        {
+          temps: "5'",
+          type: "synthese",
+          titre:
+            "Feuille de route contenu, en actions : trois usages installés dès la semaine suivante, un responsable nommé par usage, une date de revue du calendrier éditorial.",
         },
       ],
     },
@@ -1739,14 +1749,13 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
   },
   programme: [
     {
-      titreFr:
-        "Matin — Le cadre, la préparation du rendez-vous et le compte rendu dicté (modules 1 et 2)",
+      titreFr: "Matin · Module 1 — Le cadre et le kit de rendez-vous",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 1 — Objectif : repartir ce soir avec un kit de rendez-vous monté sur une affaire réelle de votre portefeuille, utilisable dès lundi matin",
+            "Objectif : repartir ce soir avec un kit de rendez-vous monté sur une affaire réelle de votre portefeuille, utilisable dès lundi matin",
         },
         {
           temps: "15'",
@@ -1786,11 +1795,16 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
         },
         { temps: "5'", type: "synthese", titre: "Acquis du module, formulés en trois actions" },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 2 — Objectif : sortir du rendez-vous avec le compte rendu, le mail de suivi et les prochaines étapes déjà écrits",
+            "Objectif : sortir du rendez-vous avec le compte rendu, le mail de suivi et les prochaines étapes déjà écrits",
         },
         {
           temps: "10'",
@@ -1830,13 +1844,13 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
       ],
     },
     {
-      titreFr: "Après-midi — Objections, proposition commerciale et fiabilité (modules 3 et 4)",
+      titreFr: "Après-midi · Module 3 — Objections et proposition commerciale",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 3 — Objectif : s'entraîner face à l'objection avant de la subir chez le client, et écrire une proposition qui ne promet rien d'intenable",
+            "Objectif : s'entraîner face à l'objection avant de la subir chez le client, et écrire une proposition qui ne promet rien d'intenable",
         },
         {
           temps: "20'",
@@ -1876,11 +1890,16 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
         },
         { temps: "5'", type: "synthese", titre: "Acquis du module, formulés en trois actions" },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 4 — Objectif : repérer soi-même, sur son propre marché, le moment où l'IA se trompe avec aplomb",
+            "Objectif : repérer soi-même, sur son propre marché, le moment où l'IA se trompe avec aplomb",
         },
         {
           temps: "5'",
@@ -1973,7 +1992,7 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
   ],
   objectifsFr: [
     "Analyser et synthétiser des documents financiers à l'aide de l'IA",
-    "Automatiser des rapprochements simples",
+    "Fiabiliser ses contrôles et rapprochements par une trame de contrôle déroulable",
     "Produire rapports et tableaux de bord assistés",
     "Contrôler et vérifier une production avant diffusion",
     "Appliquer les règles de confidentialité aux données financières",
@@ -1989,188 +2008,198 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
   },
   programme: [
     {
-      titreFr: "Matin — Le partage des rôles, puis le tableur assisté et les trames de contrôle",
+      titreFr: "Matin · Module 1 — Le partage des rôles et l'analyse de documents",
       steps: [
         {
           temps: "10'",
           type: "objectif",
           titre:
-            "Module 1 · Accueil et résultat attendu de la journée : ce soir, chacun sait déposer un document financier long et en tirer une synthèse fiable, obtenir une formule de tableur sans livrer ses données, et écrire autour du chiffre — les chiffres, eux, restent dans vos systèmes (comptabilité, ERP, tableur)",
+            "Accueil et résultat attendu de la journée : ce soir, chacun sait déposer un document financier long et en tirer une synthèse fiable, obtenir une formule de tableur sans livrer ses données, et écrire autour du chiffre — les chiffres, eux, restent dans vos systèmes (comptabilité, ERP, tableur)",
         },
         {
           temps: "15'",
           type: "cadre",
           titre:
-            "Module 1 · Les trois régimes d'usage et la liste rouge du service : fichier des écritures (FEC), balance nominative, salaires, coordonnées bancaires — et pourquoi retirer les noms ne suffit pas : démonstration de ré-identification d'un état de frais « anonymisé » (pseudonymiser n'est pas anonymiser)",
+            "Les trois régimes d'usage et la liste rouge du service : fichier des écritures (FEC), balance nominative, salaires, coordonnées bancaires — et pourquoi retirer les noms ne suffit pas : démonstration de ré-identification d'un état de frais « anonymisé » (pseudonymiser n'est pas anonymiser)",
         },
         {
           temps: "10'",
           type: "cadre",
           titre:
-            "Module 1 · Deux limites posées AVANT le premier atelier : un écart repéré ne désigne jamais une personne — c'est une décision individuelle automatisée au sens de l'art. 22 du RGPD, elle suppose l'information préalable des salariés et la consultation du comité social et économique, et elle reproduit les biais de l'historique qui l'alimente ; noter la solvabilité d'une personne physique est un usage à haut risque au sens de l'annexe III du règlement européen sur l'IA (règlement (UE) 2024/1689)",
+            "Deux limites posées AVANT le premier atelier : un écart repéré ne désigne jamais une personne — c'est une décision individuelle automatisée au sens de l'art. 22 du RGPD, elle suppose l'information préalable des salariés et la consultation du comité social et économique, et elle reproduit les biais de l'historique qui l'alimente ; noter la solvabilité d'une personne physique est un usage à haut risque au sens de l'annexe III du règlement européen sur l'IA (règlement (UE) 2024/1689)",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "Module 1 · Démonstration avant/après : la même demande d'analyse d'un document financier, d'abord sans cadre, puis avec la méthode AXION — Acteur, conteXte, Intention, Output, Normes — prompt affiché en entier à l'écran, un seul outil",
+            "Démonstration avant/après : la même demande d'analyse d'un document financier, d'abord sans cadre, puis avec la méthode AXION — Acteur, conteXte, Intention, Output, Normes — prompt affiché en entier à l'écran, un seul outil",
         },
         {
           temps: "15'",
           type: "pratique",
           titre:
-            "Module 1 · Faites-la se tromper, chronométré : chacun demande à l'outil de lettrer deux extraits, de recalculer un total et de prévoir un atterrissage à partir des trois lignes fournies au kit — on relève les erreurs produites, on en tire la ligne de partage écrite au tableau",
+            "Faites-la se tromper, chronométré : chacun demande à l'outil de lettrer deux extraits, de recalculer un total et de prévoir un atterrissage à partir des trois lignes fournies au kit — on relève les erreurs produites, on en tire la ligne de partage écrite au tableau",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "Module 1 · Atelier chronométré : chacun dépose un document financier long (rapport, liasse, note d'un commissaire aux comptes, contrat de prêt) après l'avoir qualifié dans son régime d'usage, et en tire une synthèse structurée plus trois questions à poser à son émetteur",
+            "Atelier chronométré : chacun dépose un document financier long (rapport, liasse, note d'un commissaire aux comptes, contrat de prêt) après l'avoir qualifié dans son régime d'usage, et en tire une synthèse structurée plus trois questions à poser à son émetteur",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "Module 1 · Contrôle croisé en binôme, grille fournie : le régime d'usage retenu était-il le bon, quelle affirmation de la synthèse n'est pas dans le document source, quel chiffre a été repris sans vérification",
+            "Contrôle croisé en binôme, grille fournie : le régime d'usage retenu était-il le bon, quelle affirmation de la synthèse n'est pas dans le document source, quel chiffre a été repris sans vérification",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 1 · Acquis : je qualifie un document avant de l'ouvrir dans un outil · je sais ce que l'IA ne calculera pas · je synthétise un document long et je sais ce que je dois vérifier derrière",
+            "Acquis : je qualifie un document avant de l'ouvrir dans un outil · je sais ce que l'IA ne calculera pas · je synthétise un document long et je sais ce que je dois vérifier derrière",
         },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Matin · Module 2 — Le tableur assisté et les trames de contrôle",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 2 · Résultat attendu : obtenir une formule ou un croisement de tableur en décrivant seulement la structure de ses colonnes — les données ne sortent jamais du fichier",
+            "Résultat attendu : obtenir une formule ou un croisement de tableur en décrivant seulement la structure de ses colonnes — les données ne sortent jamais du fichier",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "Module 2 · Démonstration avant/après : une formule, un croisement et une mise en forme conditionnelle obtenus en décrivant uniquement les en-têtes de colonnes ; puis l'explication en clair d'une formule héritée que plus personne ne comprend — prompts affichés en entier",
+            "Démonstration avant/après : une formule, un croisement et une mise en forme conditionnelle obtenus en décrivant uniquement les en-têtes de colonnes ; puis l'explication en clair d'une formule héritée que plus personne ne comprend — prompts affichés en entier",
         },
         {
           temps: "35'",
           type: "pratique",
           titre:
-            "Module 2 · Atelier chronométré : chacun apporte un besoin de tableur réel (structure des colonnes seule, aucune donnée) et repart avec sa formule, son croisement ou sa procédure, testés sur le fichier et documentés en français dans le classeur",
+            "Atelier chronométré : chacun apporte un besoin de tableur réel (structure des colonnes seule, aucune donnée) et repart avec sa formule, son croisement ou sa procédure, testés sur le fichier et documentés en français dans le classeur",
         },
         {
           temps: "5'",
           type: "demonstration",
           titre:
-            "Module 2 · Une trame de contrôle plutôt qu'un rapprochement : lecture commentée de la trame de clôture fournie au kit — l'IA écrit la liste des points à vérifier, c'est l'humain qui coche et qui signe",
+            "Une trame de contrôle plutôt qu'un rapprochement : lecture commentée de la trame de clôture fournie au kit — l'IA écrit la liste des points à vérifier, c'est l'humain qui coche et qui signe",
         },
         {
           temps: "15'",
           type: "pratique",
           titre:
-            "Module 2 · Atelier chronométré : produire sa propre trame de contrôle sur un processus réel (clôture, cut-off, état de frais), en recopiant en tête de trame la borne posée le matin — un écart signalé ne désigne jamais une personne",
+            "Atelier chronométré : produire sa propre trame de contrôle sur un processus réel (clôture, cut-off, état de frais), en recopiant en tête de trame la borne posée le matin — un écart signalé ne désigne jamais une personne",
         },
         {
           temps: "5'",
           type: "verification",
           titre:
-            "Module 2 · Contrôle croisé en binôme : la trame de l'autre est-elle cochable par quelqu'un qui n'a pas assisté à la clôture, et sa borne est-elle bien écrite en tête",
+            "Contrôle croisé en binôme : la trame de l'autre est-elle cochable par quelqu'un qui n'a pas assisté à la clôture, et sa borne est-elle bien écrite en tête",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 2 · Acquis et versement au classeur : je décris une structure sans livrer de données · je fais expliquer une formule héritée · je produis une trame de contrôle que quelqu'un d'autre peut dérouler",
+            "Acquis et versement au classeur : je décris une structure sans livrer de données · je fais expliquer une formule héritée · je produis une trame de contrôle que quelqu'un d'autre peut dérouler",
         },
       ],
     },
     {
-      titreFr: "Après-midi — Écrire autour du chiffre, puis fiabilité et ancrage",
+      titreFr: "Après-midi · Module 3 — Écrire autour du chiffre",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 3 · Résultat attendu : faire dire à ses indicateurs déjà calculés ce qu'ils veulent dire, pour le bon lecteur — direction, opérationnels, banque, associé",
+            "Résultat attendu : faire dire à ses indicateurs déjà calculés ce qu'ils veulent dire, pour le bon lecteur — direction, opérationnels, banque, associé",
         },
         {
           temps: "10'",
           type: "demonstration",
           titre:
-            "Module 3 · Démonstration avant/après : d'un tableau de bord déjà calculé au commentaire de gestion, puis le même commentaire reformulé pour un second niveau de lecture — prompt affiché en entier",
+            "Démonstration avant/après : d'un tableau de bord déjà calculé au commentaire de gestion, puis le même commentaire reformulé pour un second niveau de lecture — prompt affiché en entier",
         },
         {
           temps: "35'",
           type: "pratique",
           titre:
-            "Module 3 · Atelier chronométré : chacun rédige le commentaire de son dernier reporting à partir de ses propres chiffres, saisis à la main dans le prompt, structure décrite — puis produit la version destinée à un second lecteur",
+            "Atelier chronométré : chacun rédige le commentaire de son dernier reporting à partir de ses propres chiffres, saisis à la main dans le prompt, structure décrite — puis produit la version destinée à un second lecteur",
         },
         {
           temps: "10'",
           type: "cadre",
           titre:
-            "Module 3 · Ce qu'on n'écrit jamais : les mentions dues d'une relance d'impayé (pénalités de retard, indemnité forfaitaire de recouvrement) que l'IA oublie ou invente et qu'on reprend de la trame du kit ; et l'interdiction de motiver une décision de crédit ou un encours client par un score produit par l'IA — rappel de l'annexe III du règlement européen sur l'IA",
+            "Ce qu'on n'écrit jamais : les mentions dues d'une relance d'impayé (pénalités de retard, indemnité forfaitaire de recouvrement) que l'IA oublie ou invente et qu'on reprend de la trame du kit ; et l'interdiction de motiver une décision de crédit ou un encours client par un score produit par l'IA — rappel de l'annexe III du règlement européen sur l'IA",
         },
         {
           temps: "5'",
           type: "demonstration",
           titre:
-            "Module 3 · Les trois écrits qui rapportent, trames fournies au kit : relance graduée à trois niveaux, note de synthèse au dirigeant, réponse à une demande du commissaire aux comptes — ce que chaque trame impose et ce qu'elle interdit",
+            "Les trois écrits qui rapportent, trames fournies au kit : relance graduée à trois niveaux, note de synthèse au dirigeant, réponse à une demande du commissaire aux comptes — ce que chaque trame impose et ce qu'elle interdit",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "Module 3 · Atelier chronométré : chacun produit soit sa séquence de relance d'impayé à trois niveaux, soit sa note de synthèse au dirigeant, à partir de la trame fournie et de son propre dossier",
+            "Atelier chronométré : chacun produit soit sa séquence de relance d'impayé à trois niveaux, soit sa note de synthèse au dirigeant, à partir de la trame fournie et de son propre dossier",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "Module 3 · Contrôle croisé en binôme, grille fournie : aucun chiffre non vérifié, ton conforme au niveau de relance, mentions dues présentes, destinataire et niveau de lecture cohérents",
+            "Contrôle croisé en binôme, grille fournie : aucun chiffre non vérifié, ton conforme au niveau de relance, mentions dues présentes, destinataire et niveau de lecture cohérents",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 3 · Acquis et versement au classeur : j'écris le commentaire de mes indicateurs · j'adapte le niveau de lecture · je dispose d'une séquence de relance prête à l'emploi",
+            "Acquis et versement au classeur : j'écris le commentaire de mes indicateurs · j'adapte le niveau de lecture · je dispose d'une séquence de relance prête à l'emploi",
         },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — Fiabilité et ancrage",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "Module 4 · Résultat attendu : repérer seul, sans aide, le moment où l'IA se trompe sur un chiffre — et savoir quoi faire à ce moment-là",
+            "Résultat attendu : repérer seul, sans aide, le moment où l'IA se trompe sur un chiffre — et savoir quoi faire à ce moment-là",
         },
         {
           temps: "5'",
           type: "demonstration",
           titre:
-            "Module 4 · Démonstration avant/après : le même calcul demandé deux fois de suite, deux réponses différentes — et le geste de relecture qui l'attrape en dix secondes",
+            "Démonstration avant/après : le même calcul demandé deux fois de suite, deux réponses différentes — et le geste de relecture qui l'attrape en dix secondes",
         },
         {
           temps: "25'",
           type: "pratique",
           titre:
-            "Module 4 · Chasse à l'erreur chronométrée, corrigé fourni au kit : une note financière et un calcul produits par l'IA contenant quatre erreurs de chiffre et deux affirmations non sourcées — chacun surligne, on compte, on compare au corrigé, on en tire la règle de relecture du service",
+            "Chasse à l'erreur chronométrée, corrigé fourni au kit : une note financière et un calcul produits par l'IA contenant quatre erreurs de chiffre et deux affirmations non sourcées — chacun surligne, on compte, on compare au corrigé, on en tire la règle de relecture du service",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "Module 4 · Atelier chronométré : monter son classeur de clôture assistée — trames de contrôle, formules documentées, trame de commentaire, séquence de relance, liste rouge du service, glossaire maison — rangé et nommé pour être rouvert à la prochaine clôture",
+            "Atelier chronométré : monter son classeur de clôture assistée — trames de contrôle, formules documentées, trame de commentaire, séquence de relance, liste rouge du service, glossaire maison — rangé et nommé pour être rouvert à la prochaine clôture",
         },
         {
           temps: "15'",
           type: "verification",
           titre:
-            "Module 4 · Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture du classeur",
+            "Évaluation des acquis : quiz individuel de validation (10 questions) corrigé en salle, puis auto-évaluation d'une production du jour sur la grille de relecture du classeur",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "Module 4 · Feuille de route : trois usages à installer avant la prochaine clôture, qui les tient, et ce qu'on vérifie au bout d'un mois",
+            "Feuille de route : trois usages à installer avant la prochaine clôture, qui les tient, et ce qu'on vérifie au bout d'un mois",
         },
       ],
     },
@@ -2870,196 +2899,206 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
   },
   programme: [
     {
-      titreFr: "Matin — Cadre d'usage et comparaison de devis (modules 1 et 2)",
+      titreFr: "Matin · Module 1 — Le cadre d'usage : ce qui sort, ce qui ne sort jamais",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "M1 · Objectif du module : à la fin, chacun sait ce qu'il peut coller, ce qu'il ne colle jamais, et repart avec son devis de travail prêt — chacun nomme en une phrase le cas qu'il veut avoir traité ce soir",
+            "Objectif du module : à la fin, chacun sait ce qu'il peut coller, ce qu'il ne colle jamais, et repart avec son devis de travail prêt — chacun nomme en une phrase le cas qu'il veut avoir traité ce soir",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "M1 · Démonstration avant / après sur un devis : la comparaison faite à la main, puis la même avec l'IA — un seul outil, la consigne affichée en entier à l'écran ; ce qu'elle aligne (postes, écarts, questions à poser) et ce qu'elle ne calcule pas (totaux, stocks, prévisions)",
+            "Démonstration avant / après sur un devis : la comparaison faite à la main, puis la même avec l'IA — un seul outil, la consigne affichée en entier à l'écran ; ce qu'elle aligne (postes, écarts, questions à poser) et ce qu'elle ne calcule pas (totaux, stocks, prévisions)",
         },
         {
           temps: "15'",
           type: "cadre",
           titre:
-            "M1 · Les trois régimes d'usage et le geste « où passent mes données » : compte grand public, offre entreprise avec engagement écrit de non-réutilisation, environnement validé par la DSI — où lire la clause, en trois clics, sur chacun",
+            "Les trois régimes d'usage et le geste « où passent mes données » : compte grand public, offre entreprise avec engagement écrit de non-réutilisation, environnement validé par la DSI — où lire la clause, en trois clics, sur chacun",
         },
         {
           temps: "10'",
           type: "pratique",
           titre:
-            "M1 · Pratique : chacun ouvre l'outil sur son poste, retrouve sous quel régime il travaille et où est écrit (ou absent) l'engagement de non-réutilisation, et note la réponse en tête de son dossier — tour de salle rapide sur les écarts",
+            "Pratique : chacun ouvre l'outil sur son poste, retrouve sous quel régime il travaille et où est écrit (ou absent) l'engagement de non-réutilisation, et note la réponse en tête de son dossier — tour de salle rapide sur les écarts",
         },
         {
           temps: "20'",
           type: "cadre",
           titre:
-            "M1 · Ce qui ne sort jamais, et pourquoi retirer un nom ne suffit pas : tarifs négociés, contrats, coût de revient (secret des affaires, art. L.151-1 du code de commerce) ; un devis reste couvert par sa clause de confidentialité même sans le nom du fournisseur ; un devis d'artisan, d'indépendant ou d'auto-entrepreneur porte des données personnelles — pseudonymiser n'est pas anonymiser. Ce qu'impose le règlement européen sur l'IA (UE 2024/1689) à un service achats : former ses utilisateurs (art. 4), dire ce qui a été écrit avec l'IA, et ne jamais laisser une machine classer seule un fournisseur personne physique (RGPD art. 22) — la décision reste signée par un acheteur",
+            "Ce qui ne sort jamais, et pourquoi retirer un nom ne suffit pas : tarifs négociés, contrats, coût de revient (secret des affaires, art. L.151-1 du code de commerce) ; un devis reste couvert par sa clause de confidentialité même sans le nom du fournisseur ; un devis d'artisan, d'indépendant ou d'auto-entrepreneur porte des données personnelles — pseudonymiser n'est pas anonymiser. Ce qu'impose le règlement européen sur l'IA (UE 2024/1689) à un service achats : former ses utilisateurs (art. 4), dire ce qui a été écrit avec l'IA, et ne jamais laisser une machine classer seule un fournisseur personne physique (RGPD art. 22) — la décision reste signée par un acheteur",
         },
         {
           temps: "25'",
           type: "pratique",
           titre:
-            "M1 · Pratique : chacun écrit la liste rouge de son service sur la trame à trois colonnes du kit (jamais / seulement en offre entreprise / libre), la fait relire par son voisin qui doit y trouver un oubli, puis prépare son devis de travail exploitable — c'est la matière de tous les ateliers de la journée",
+            "Pratique : chacun écrit la liste rouge de son service sur la trame à trois colonnes du kit (jamais / seulement en offre entreprise / libre), la fait relire par son voisin qui doit y trouver un oubli, puis prépare son devis de travail exploitable — c'est la matière de tous les ateliers de la journée",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "M1 · Vérification corrigée en salle : 5 cas concrets projetés (« je colle / je ne colle pas / je reformule »), chacun répond par écrit, correction et vote à main levée sur les deux cas qui divisent",
+            "Vérification corrigée en salle : 5 cas concrets projetés (« je colle / je ne colle pas / je reformule »), chacun répond par écrit, correction et vote à main levée sur les deux cas qui divisent",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "M1 · Synthèse : les deux gestes que je fais avant chaque copier-coller, et la phrase que je dis au collègue qui veut coller un contrat fournisseur",
+            "Synthèse : les deux gestes que je fais avant chaque copier-coller, et la phrase que je dis au collègue qui veut coller un contrat fournisseur",
         },
         {
           temps: "15'",
           type: "pause",
           titre: "Pause café — 15 minutes, comptées dans le face-à-face",
         },
+      ],
+    },
+    {
+      titreFr: "Matin · Module 2 — Comparer des devis sans en recopier un chiffre",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "M2 · Objectif du module : à la fin, chacun a produit un comparatif de trois devis réels, avec ses propres critères, ses totaux recalculés à la main et ses questions à reposer à chaque fournisseur",
+            "Objectif du module : à la fin, chacun a produit un comparatif de trois devis réels, avec ses propres critères, ses totaux recalculés à la main et ses questions à reposer à chaque fournisseur",
         },
         {
           temps: "15'",
           type: "pratique",
           titre:
-            "M2 · Pratique : déposer ses trois devis (PDF, scan, tableau) et repérer immédiatement ce qui fait échouer l'exercice — scan sans texte reconnu, tableau qui se désaligne, page manquante. Test de contrôle fourni : faire recopier trois montants tirés au hasard et les confronter au document d'origine",
+            "Pratique : déposer ses trois devis (PDF, scan, tableau) et repérer immédiatement ce qui fait échouer l'exercice — scan sans texte reconnu, tableau qui se désaligne, page manquante. Test de contrôle fourni : faire recopier trois montants tirés au hasard et les confronter au document d'origine",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "M2 · Démonstration de biais : le même lot de devis comparé avec deux grilles différentes donne deux classements différents — les deux consignes sont affichées en entier, côte à côte. Ce qu'il faut en retenir : la grille de comparaison vient de vous, l'IA ne fait qu'appliquer la vôtre, y compris quand elle est mauvaise",
+            "Démonstration de biais : le même lot de devis comparé avec deux grilles différentes donne deux classements différents — les deux consignes sont affichées en entier, côte à côte. Ce qu'il faut en retenir : la grille de comparaison vient de vous, l'IA ne fait qu'appliquer la vôtre, y compris quand elle est mauvaise",
         },
         {
           temps: "35'",
           type: "pratique",
           titre:
-            "M2 · Atelier : comparatif réel sur ses trois devis de travail — critères posés et pondérés (coût complet, délai, incoterm, pénalité de retard, garanties, panel existant), postes alignés, totaux recalculés à la main, questions à reposer à chaque fournisseur",
+            "Atelier : comparatif réel sur ses trois devis de travail — critères posés et pondérés (coût complet, délai, incoterm, pénalité de retard, garanties, panel existant), postes alignés, totaux recalculés à la main, questions à reposer à chaque fournisseur",
         },
         {
           temps: "10'",
           type: "pratique",
           titre:
-            "M2 · Pratique : du besoin flou à la consultation — chacun transforme deux lignes de besoin réel en trame de consultation structurée à partir du modèle du kit (objet, périmètre, critères de choix, pièces à fournir, délai de réponse)",
+            "Pratique : du besoin flou à la consultation — chacun transforme deux lignes de besoin réel en trame de consultation structurée à partir du modèle du kit (objet, périmètre, critères de choix, pièces à fournir, délai de réponse)",
         },
         {
           temps: "5'",
           type: "verification",
           titre:
-            "M2 · Vérification : échange de comparatifs en binôme — trouver en cinq minutes une erreur de total et un critère manquant chez son voisin ; correction en salle sur les deux cas les plus fréquents",
+            "Vérification : échange de comparatifs en binôme — trouver en cinq minutes une erreur de total et un critère manquant chez son voisin ; correction en salle sur les deux cas les plus fréquents",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "M2 · Synthèse : ce que je ne délègue jamais dans un comparatif (les critères, les totaux, la décision), et l'ordre dans lequel je m'y prends la prochaine fois",
+            "Synthèse : ce que je ne délègue jamais dans un comparatif (les critères, les totaux, la décision), et l'ordre dans lequel je m'y prends la prochaine fois",
         },
       ],
     },
     {
-      titreFr: "Après-midi — Relances, litiges, négociation et arbitrage (modules 3 et 4)",
+      titreFr: "Après-midi · Module 3 — Relances et litiges : la séquence à trois niveaux",
       steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "M3 · Objectif du module : à la fin, chacun a écrit sa séquence de relance à trois niveaux, un courrier de réserve confronté au modèle du kit, et tenu un face-à-face avec un fournisseur qui refuse",
+            "Objectif du module : à la fin, chacun a écrit sa séquence de relance à trois niveaux, un courrier de réserve confronté au modèle du kit, et tenu un face-à-face avec un fournisseur qui refuse",
         },
         {
           temps: "15'",
           type: "demonstration",
           titre:
-            "M3 · Démonstration avant / après : d'un fil d'e-mails embrouillé sur une commande en retard à une relance calibrée sur la relation — un seul outil, la consigne affichée en entier, y compris la partie qui décrit le ton et ce qu'il ne faut pas écrire",
+            "Démonstration avant / après : d'un fil d'e-mails embrouillé sur une commande en retard à une relance calibrée sur la relation — un seul outil, la consigne affichée en entier, y compris la partie qui décrit le ton et ce qu'il ne faut pas écrire",
         },
         {
           temps: "30'",
           type: "pratique",
           titre:
-            "M3 · Atelier 1 : chacun écrit ses trois niveaux de relance sur un dossier réel (rappel courtois, relance ferme, escalade au responsable), puis la version anglaise du niveau 2 pour un fournisseur étranger — aucune donnée de la liste rouge n'entre dans l'exercice",
+            "Atelier 1 : chacun écrit ses trois niveaux de relance sur un dossier réel (rappel courtois, relance ferme, escalade au responsable), puis la version anglaise du niveau 2 pour un fournisseur étranger — aucune donnée de la liste rouge n'entre dans l'exercice",
         },
         {
           temps: "10'",
           type: "cadre",
           titre:
-            "M3 · Le cadre du litige à réception, lu à la trame du kit : réserve, non-conformité, mise en demeure — ce qu'on écrit et ce qu'on n'écrit jamais (pas de chiffrage de préjudice, pas de résiliation annoncée, pas de reconnaissance de responsabilité). Attention au vocabulaire : une pénalité de retard de livraison est une clause de VOTRE contrat, rien n'est automatique ; à ne pas confondre avec les pénalités de retard de paiement, dues de plein droit entre professionnels (art. L.441-10 du code de commerce)",
+            "Le cadre du litige à réception, lu à la trame du kit : réserve, non-conformité, mise en demeure — ce qu'on écrit et ce qu'on n'écrit jamais (pas de chiffrage de préjudice, pas de résiliation annoncée, pas de reconnaissance de responsabilité). Attention au vocabulaire : une pénalité de retard de livraison est une clause de VOTRE contrat, rien n'est automatique ; à ne pas confondre avec les pénalités de retard de paiement, dues de plein droit entre professionnels (art. L.441-10 du code de commerce)",
         },
         {
           temps: "20'",
           type: "pratique",
           titre:
-            "M3 · Pratique : chacun rédige son courrier de réserve à réception sur un cas réel, puis le compare phrase à phrase aux trois modèles validés fournis dans le kit (réserve à réception, retard de livraison, non-conformité) et surligne ses trois écarts — le modèle du kit fait foi et ne se modifie pas en séance ; toute question de fond est notée pour le juriste du client",
+            "Pratique : chacun rédige son courrier de réserve à réception sur un cas réel, puis le compare phrase à phrase aux trois modèles validés fournis dans le kit (réserve à réception, retard de livraison, non-conformité) et surligne ses trois écarts — le modèle du kit fait foi et ne se modifie pas en séance ; toute question de fond est notée pour le juriste du client",
         },
         {
           temps: "25'",
           type: "pratique",
           titre:
-            "M3 · Atelier 2 : jeu de rôle — l'IA joue le fournisseur qui refuse (scénario, posture et trois objections fournis clés en main dans le kit). Chacun prépare ses réponses, sa limite basse et son plan B, puis passe cinq minutes devant son binôme, grille d'observation en main",
+            "Atelier 2 : jeu de rôle — l'IA joue le fournisseur qui refuse (scénario, posture et trois objections fournis clés en main dans le kit). Chacun prépare ses réponses, sa limite basse et son plan B, puis passe cinq minutes devant son binôme, grille d'observation en main",
         },
         {
           temps: "10'",
           type: "verification",
           titre:
-            "M3 · Vérification corrigée en salle : trois relances anonymes projetées — dire laquelle engage l'entreprise plus que nécessaire, laquelle sera ignorée, et pourquoi ; correction argumentée",
+            "Vérification corrigée en salle : trois relances anonymes projetées — dire laquelle engage l'entreprise plus que nécessaire, laquelle sera ignorée, et pourquoi ; correction argumentée",
         },
         {
           temps: "5'",
           type: "synthese",
           titre:
-            "M3 · Synthèse : les deux écrits que je produirai désormais en dix minutes, et celui que je ferai toujours relire avant envoi",
+            "Synthèse : les deux écrits que je produirai désormais en dix minutes, et celui que je ferai toujours relire avant envoi",
         },
         {
           temps: "15'",
           type: "pause",
           titre: "Pause café — 15 minutes, comptées dans le face-à-face",
         },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — Négociation, arbitrage et fiabilité",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
           titre:
-            "M4 · Objectif du module : à la fin, chacun sait faire tomber une note de marché inventée et repart avec son dossier d'arbitrage fournisseur prêt à être envoyé au décideur",
+            "Objectif du module : à la fin, chacun sait faire tomber une note de marché inventée et repart avec son dossier d'arbitrage fournisseur prêt à être envoyé au décideur",
         },
         {
           temps: "10'",
           type: "demonstration",
           titre:
-            "M4 · Démonstration avant / après : la note d'arbitrage d'une page, d'abord telle qu'on l'écrit à la main aujourd'hui, puis produite à partir du comparatif du matin — consigne affichée en entier, sources du comparatif attachées",
+            "Démonstration avant / après : la note d'arbitrage d'une page, d'abord telle qu'on l'écrit à la main aujourd'hui, puis produite à partir du comparatif du matin — consigne affichée en entier, sources du comparatif attachées",
         },
         {
           temps: "20'",
           type: "pratique",
           titre:
-            "M4 · Chasse à l'erreur : on fait produire une note de marché sur votre famille d'achat, chacun surligne ce qui est faux et on compte à voix haute — fournisseur inventé, référence inventée, prix plausible mais faux. Règle de vérification retenue : toute donnée chiffrée ou tout nom cité doit se retrouver dans une source à vous, sinon il disparaît",
+            "Chasse à l'erreur : on fait produire une note de marché sur votre famille d'achat, chacun surligne ce qui est faux et on compte à voix haute — fournisseur inventé, référence inventée, prix plausible mais faux. Règle de vérification retenue : toute donnée chiffrée ou tout nom cité doit se retrouver dans une source à vous, sinon il disparaît",
         },
         {
           temps: "15'",
           type: "pratique",
           titre:
-            "M4 · Pratique : chacun rédige sa note d'arbitrage d'une page à partir de son propre comparatif (recommandation, deux risques, une question ouverte) et la classe dans son dossier d'arbitrage fournisseur",
+            "Pratique : chacun rédige sa note d'arbitrage d'une page à partir de son propre comparatif (recommandation, deux risques, une question ouverte) et la classe dans son dossier d'arbitrage fournisseur",
         },
         {
           temps: "15'",
           type: "verification",
           titre:
-            "M4 · Évaluation des acquis : quiz individuel de 10 questions corrigé en salle, puis évaluation croisée du dossier d'arbitrage sur la grille du kit (critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise)",
+            "Évaluation des acquis : quiz individuel de 10 questions corrigé en salle, puis évaluation croisée du dossier d'arbitrage sur la grille du kit (critères posés, totaux recalculés, questions au fournisseur, liste rouge respectée, aucune donnée interdite soumise)",
         },
         {
           temps: "10'",
           type: "synthese",
           titre:
-            "M4 · Feuille de route et clôture : trois usages installés dans le service dès la semaine suivante, un responsable et une date pour chacun, écrits en dernière page du dossier",
+            "Feuille de route et clôture : trois usages installés dans le service dès la semaine suivante, un responsable et une date pour chacun, écrits en dernière page du dossier",
         },
       ],
     },
@@ -3132,7 +3171,8 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
   },
   programme: [
     {
-      titreFr: "Matin — Le cadre du ticket, puis les réponses (modules 1 et 2)",
+      titreFr:
+        "Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais",
       steps: [
         {
           temps: "10'",
@@ -3183,6 +3223,11 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
             "Vérification corrigée en salle (5 questions) : sur cinq extraits fournis, ce qui peut être collé, ce qui doit être neutralisé, ce qui ne sort jamais",
         },
         { temps: "15'", type: "pause", titre: "Pause café" },
+      ],
+    },
+    {
+      titreFr: "Matin · Module 2 — Réponses types et réclamations",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
@@ -3216,7 +3261,7 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
     },
     {
       titreFr:
-        "Après-midi — Dossiers en cours, base de connaissances et ce qui part au client (modules 3 et 4)",
+        "Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance",
       steps: [
         {
           temps: "5'",
@@ -3243,17 +3288,22 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
             "Atelier — jeu de rôle : l'IA joue le client mécontent qui revient une troisième fois (trois scénarios et la trame d'escalade fournis au kit) ; chacun conduit l'échange et rédige l'escalade vers le niveau 2",
         },
         { temps: "15'", type: "pause", titre: "Pause café" },
-        {
-          temps: "20'",
-          type: "pratique",
-          titre:
-            "Atelier : ce que disent 200 demandes — chacun regroupe un jeu de verbatims neutralisés (fourni au kit) en causes racines et écrit la note d'une page au responsable",
-        },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — La base de connaissances et ce qui part au client",
+      steps: [
         {
           temps: "10'",
           type: "cadre",
           titre:
             "Ce qui rend une fiche opposable : un motif et un seul, une réponse validée, une date de revue, un propriétaire nommé — et où la base vit, qui la maintient, qui la relit",
+        },
+        {
+          temps: "20'",
+          type: "pratique",
+          titre:
+            "Atelier : ce que disent 200 demandes — chacun regroupe un jeu de verbatims neutralisés (fourni au kit) en causes racines et écrit la note d'une page au responsable",
         },
         {
           temps: "30'",
@@ -5890,7 +5940,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   modalites: ["presentiel"],
   programme: [
     {
-      titreFr: "Matin — Socle commun, garde-fous, et photographie réelle des usages",
+      titreFr: "Matin · Module 1 — Socle commun et garde-fous",
       steps: [
         {
           temps: "10'",
@@ -5941,6 +5991,11 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
             "Les trois règles que tout le monde repart en connaissant, recopiées par chaque table sur sa page du classeur et cochées au mur",
         },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Matin · Module 2 — La photographie réelle des usages, service par service",
+      steps: [
         {
           temps: "5'",
           type: "objectif",
@@ -5986,7 +6041,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       ],
     },
     {
-      titreFr: "Après-midi — Méthode AXION, astuces transposées, règles et engagements",
+      titreFr: "Après-midi · Module 3 — La méthode AXION, par table",
       steps: [
         {
           temps: "5'",
@@ -6025,6 +6080,11 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
             "Ce qui fait qu'une demande marche sans son auteur : les deux leviers le plus souvent oubliés dans cette salle, relevés sur les grilles et affichés",
         },
         { temps: "15'", type: "pause", titre: "Pause" },
+      ],
+    },
+    {
+      titreFr: "Après-midi · Module 4 — Astuces transposées, règles et engagements",
+      steps: [
         {
           temps: "10'",
           type: "demonstration",
