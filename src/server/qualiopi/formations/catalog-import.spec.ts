@@ -162,7 +162,22 @@ describe("buildFormationImportData", () => {
     expect(data.statutGeneration).toBe("publie");
     expect(data.statut).toBe("actif");
     expect(data.aiGenerated).toBe(false);
-    expect(data.ratioPratiquePct).toBeGreaterThanOrEqual(60);
+  });
+
+  /**
+   * 🔴 Ce test exigeait `ratioPratiquePct >= 60`, et il passait — sur une
+   * constante écrite en dur à 70 que personne n'avait vérifiée. Il ne testait
+   * donc que la valeur littérale, jamais la réalité du programme : les
+   * minutages reconstitués donnent 41 à 62 % selon les fiches.
+   *
+   * Le ratio est désormais CALCULÉ. Tant qu'un programme du catalogue ne porte
+   * aucune durée — c'est le cas des 22 aujourd'hui — la valeur déclarée est
+   * `null` : on ne pousse plus de chiffre invérifiable dans le programme
+   * officiel remis au client et à l'OPCO.
+   */
+  it("ne déclare AUCUN ratio de pratique tant que le programme n'est pas minuté", () => {
+    const data = buildFormationImportData(pilote!, "offre-x");
+    expect(data.ratioPratiquePct).toBeNull();
   });
 
   it("ne pose validatedBy/At que si un admin déclenche", () => {

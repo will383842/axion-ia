@@ -40,6 +40,7 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
+import { ratioPratiqueDeclarable } from "./ratio-pratique";
 import { nextNumero } from "../numbering/allocate";
 import { countLockingSessions } from "./edit-guard";
 
@@ -60,11 +61,17 @@ const CANONICAL_DUREE_HEURES: Record<FormationDuree, number> = {
 };
 
 /**
- * Ratio pratique affiché (≥ plancher Qualiopi `ratio_pratique_min`, défaut 60 %).
- * Les formats catalogue sont des ateliers (production réelle dès la séance) →
- * 70 % est un plancher honnête et fidèle au déroulé.
+ * 🔴 `const RATIO_PRATIQUE_PCT = 70` vivait ici, et cette valeur partait dans
+ * `Formation.ratioPratiquePct` — c'est-à-dire dans le programme officiel remis
+ * au client et à l'OPCO — pour les 22 formations, sans que personne ne l'ait
+ * jamais vérifiée. Les minutages reconstitués le 2026-08-06 donnent 41 à 62 %
+ * selon les fiches : de 8 à 29 points d'écart sur une donnée opposable en audit.
+ *
+ * Le ratio est désormais CALCULÉ depuis le programme (cf. `ratio-pratique.ts`),
+ * et vaut `null` tant qu'aucune durée n'est renseignée — ce qui est le cas des
+ * 22 fiches actuelles. Une case vide appelle une correction ; un chiffre faux
+ * se défend devant un auditeur.
  */
-const RATIO_PRATIQUE_PCT = 70;
 
 const METHODES_PEDAGOGIQUES =
   "Pédagogie active et inductive : chaque participant produit dès la séance sur " +
@@ -122,7 +129,8 @@ export interface FormationImportData {
   accessibleHandicap: boolean;
   /** Prérequis (depuis catalogue prerequisFr) — enrichit la génération IA. */
   prerequis: string;
-  ratioPratiquePct: number;
+  /** `null` tant que le programme n'est pas minuté — jamais une valeur de repli. */
+  ratioPratiquePct: number | null;
   certificationType: "aucune";
   typesActionQualiopi: ["classique"];
   estSurMesure: false;
@@ -190,7 +198,8 @@ export function buildFormationImportData(
     // Formats sans prérequis, adaptables (référent handicap org, indicateur 26).
     accessibleHandicap: true,
     prerequis: f.prerequisFr ?? "",
-    ratioPratiquePct: RATIO_PRATIQUE_PCT,
+    // Calculé, jamais présumé — `null` tant que le programme n'est pas minuté.
+    ratioPratiquePct: ratioPratiqueDeclarable(programmeDetaille, f.duree),
     certificationType: "aucune",
     typesActionQualiopi: ["classique"],
     estSurMesure: false,
@@ -345,7 +354,11 @@ export interface CatalogImportOptions {
 }
 
 export type CatalogImportStatus =
-  "created" | "unchanged" | "synced" | "drifted" | "skipped_offre_absente";
+  | "created"
+  | "unchanged"
+  | "synced"
+  | "drifted"
+  | "skipped_offre_absente";
 
 export interface CatalogImportItemResult {
   slug: string;
