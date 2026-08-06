@@ -11,6 +11,7 @@
  * tout `moduleId` qui ne correspond à aucun module du catalogue.
  */
 
+import { IA_POUR_LES_EQUIPES } from "./ia-pour-les-equipes";
 import { IA_POUR_LES_RH } from "./ia-pour-les-rh";
 import type { EnrichissementFormation } from "./types";
 
@@ -18,6 +19,7 @@ export type { EnrichissementFormation, EnrichissementModule } from "./types";
 
 /** Slug de formation → contenu rédigé de ses modules. */
 export const ENRICHISSEMENTS: Readonly<Record<string, EnrichissementFormation>> = {
+  "ia-pour-les-equipes": IA_POUR_LES_EQUIPES,
   "ia-pour-les-rh": IA_POUR_LES_RH,
 };
 
