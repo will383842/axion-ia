@@ -83,12 +83,28 @@ function deballer(raw: unknown): unknown {
 }
 
 /**
- * Tableau de modules, quelle que soit la forme d'entrée.
+ * Les modules TELS QUELS, une fois la forme de stockage déballée — chaîne JSON,
+ * tableau direct, ou objet `{ modules }`.
  *
- * Ordre de résolution : tableau direct, puis `modules`, puis
- * `contenuDetaille.modules` — cette dernière étant la forme produite par le
- * moteur de contenu, la plus riche et la plus fidèle à ce qui sera réellement
- * animé.
+ * 🔴 `lireModulesProgramme` NORMALISE pour l'impression : il ne garde que titre,
+ * durée et séquences, et écarte donc les cinq blocs du contenu pédagogique. Le
+ * générateur de diaporama, branché dessus, recevait des modules vides et
+ * produisait un deck de six slides sans une seule ligne de contenu. Le défaut
+ * n'était visible nulle part : le fichier se produisait, il était simplement
+ * creux.
+ *
+ * Les deux lecteurs partagent donc le déballage et divergent sur le contrat :
+ * l'un rend ce qui s'imprime, l'autre rend tout. Le déballage, lui, n'est écrit
+ * qu'une fois — c'est lui qui porte la connaissance des trois formes.
+ */
+export function modulesBrutsProgramme(programmeDetaille: unknown): unknown[] {
+  return extraireModulesBruts(programmeDetaille);
+}
+
+/**
+ * Ordre de résolution : tableau direct, puis `contenuDetaille.modules`, puis
+ * `modules` — la forme produite par le moteur de contenu passe devant, étant la
+ * plus riche et la plus fidèle à ce qui sera réellement animé.
  */
 function extraireModulesBruts(programmeDetaille: unknown): unknown[] {
   const raw = deballer(programmeDetaille);

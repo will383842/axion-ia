@@ -564,8 +564,41 @@ function xmlNotesMaster(): string {
  * trois donne un fichier que PowerPoint refuse d'ouvrir en disant seulement
  * qu'il est « endommagé ».
  */
+/**
+ * Date figee de toutes les entrees de l'archive.
+ *
+ * 🔴 JSZip horodate chaque entree a l'instant present. Deux generations d'un
+ * contenu IDENTIQUE produisaient donc des octets differents, et donc des
+ * empreintes differentes : la deduplication par SHA-256 ne pouvait pas
+ * fonctionner, et chaque clic sur « Generer » aurait cree une version de plus.
+ *
+ * Le defaut est passe entre les mailles d'un premier test parce que
+ * l'horodatage ZIP a une granularite de DEUX SECONDES : deux rendus consecutifs
+ * tombent dans le meme intervalle et paraissent identiques. Il n'apparait qu'en
+ * suite complete, ou les rendus sont espaces.
+ *
+ * Une date fixe rend l'archive reproductible, ce qui est de toute facon la
+ * bonne propriete pour un fichier derive : deux programmes identiques doivent
+ * produire le meme fichier, sur n'importe quelle machine et n'importe quel jour.
+ */
+const DATE_ARCHIVE = new Date(Date.UTC(2026, 0, 1, 0, 0, 0));
+
 export async function rendreDeckEnPptx(deck: Deck): Promise<Buffer> {
-  const zip = new JSZip();
+  const brut = new JSZip();
+  /**
+   * Écrit une partie à date figée, sans entrée de dossier — jamais `brut.file`
+   * directement.
+   *
+   * `createFolders: false` n'est pas un détail : JSZip crée sinon une entrée
+   * par dossier intermédiaire (`ppt/`, `ppt/slides/`…), horodatée à l'instant
+   * présent. Figer la date des FICHIERS ne suffisait donc pas — les octets
+   * continuaient de bouger d'un rendu à l'autre, et l'empreinte avec eux. Une
+   * archive OOXML n'a de toute façon pas besoin de ces entrées.
+   */
+  const zip = {
+    file: (chemin: string, contenu: string) =>
+      brut.file(chemin, contenu, { date: DATE_ARCHIVE, createFolders: false }),
+  };
   const slides = deck.slides;
   /** Slides portant des notes : elles seules ont une page de notes. */
   const avecNotes = slides.map((s) => s.notes !== undefined && s.notes.length > 0);
@@ -690,5 +723,5 @@ export async function rendreDeckEnPptx(deck: Deck): Promise<Buffer> {
     );
   }
 
-  return zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
+  return brut.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
 }

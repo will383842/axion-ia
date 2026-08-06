@@ -231,3 +231,45 @@ describe("le contenu arrive bien dans le fichier", () => {
     expect(slide).not.toContain("PLAN B");
   });
 });
+
+describe("l'archive est reproductible", () => {
+  /**
+   * 🔴 Le défaut le plus coûteux du générateur, et le plus discret. JSZip
+   * horodate chaque entrée — fichiers ET dossiers intermédiaires — à l'instant
+   * présent. Deux rendus d'un contenu IDENTIQUE produisaient donc des octets
+   * différents, et l'action de génération, qui dédoublonne sur l'empreinte
+   * SHA-256, aurait créé une version à CHAQUE clic.
+   *
+   * Il a échappé à un premier test parce que l'horodatage ZIP a une granularité
+   * de DEUX SECONDES : deux rendus consécutifs tombent dans le même intervalle
+   * et paraissent identiques. Ce test force l'écart.
+   */
+  it("deux rendus du même deck, espacés dans le temps, donnent les mêmes octets", async () => {
+    const contenu = {
+      titre: "Reproductibilité",
+      sousTitre: "x",
+      slides: [
+        { layout: "enonce" as const, fond: "ivoire" as const, titre: "Un énoncé de test" },
+        { layout: "points" as const, fond: "mocha" as const, titre: "Acquis", corps: ["A", "B"] },
+      ],
+    };
+    const premier = await rendreDeckEnPptx(contenu);
+    await new Promise((r) => setTimeout(r, 2500));
+    const second = await rendreDeckEnPptx(contenu);
+
+    expect(second.equals(premier)).toBe(true);
+  }, 15000);
+
+  it("un contenu différent donne bien des octets différents", async () => {
+    const base = { titre: "T", sousTitre: "x" };
+    const a = await rendreDeckEnPptx({
+      ...base,
+      slides: [{ layout: "enonce", fond: "ivoire", titre: "Premier énoncé" }],
+    });
+    const b = await rendreDeckEnPptx({
+      ...base,
+      slides: [{ layout: "enonce", fond: "ivoire", titre: "Second énoncé" }],
+    });
+    expect(b.equals(a)).toBe(false);
+  });
+});
