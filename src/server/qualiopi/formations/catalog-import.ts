@@ -41,6 +41,7 @@ import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
 import { ratioPratiqueDeclarable } from "./ratio-pratique";
+import { enrichissementDe } from "../../../content/formations/modules";
 import { nextNumero } from "../numbering/allocate";
 import { countLockingSessions } from "./edit-guard";
 
@@ -123,6 +124,20 @@ export interface FormationProgrammeModule {
   moduleId: string;
   titre: string;
   sequences: FormationProgrammeSequence[];
+  /** Somme des durees de sequences, posee a l'import. */
+  dureeMin?: number;
+  /**
+   * Les cinq blocs du Standard, presents quand la formation a du contenu
+   * redige (`src/content/formations/modules/`). Types en `unknown` a dessein :
+   * ce module ne valide pas le contenu pedagogique, c'est
+   * `modulePedagogiqueSchema` qui en a la charge. Le declarer ici sert a le
+   * TRANSPORTER sans le perdre, pas a le juger.
+   */
+  objectif?: unknown;
+  demonstration?: unknown;
+  pratique?: unknown;
+  verification?: unknown;
+  synthese?: unknown;
 }
 
 /** Données de création Formation dérivées d'une entrée catalogue (hors `numero`). */
@@ -202,6 +217,38 @@ export function buildFormationImportData(
     }),
   }));
 
+  /**
+   * Fusion du contenu RÉDIGÉ, quand il existe.
+   *
+   * Le catalogue porte ce qui est vendu et publié ; l'enrichissement porte la
+   * matière des documents — prompt exact de la démonstration, consigne de
+   * l'atelier, notes d'animation, plan B. Les deux ne se recopient jamais : le
+   * rattachement se fait par `moduleId`, seule façon d'empêcher deux fichiers
+   * modifiés par des gestes différents de diverger.
+   *
+   * La durée du module est posée ici, à partir de ses séquences : sans elle,
+   * `diagnostiquerModule` ne peut pas dire si les cinq blocs couvrent le temps
+   * annoncé, et le guide d'animation en était réduit à inventer une heure.
+   */
+  const enrichissement = enrichissementDe(f.slugFr);
+  const programmeEnrichi: FormationProgrammeModule[] = programmeDetaille.map((mod) => {
+    const dureeMin = mod.sequences.reduce((n, s) => n + (s.dureeMin ?? 0), 0);
+    const blocs = enrichissement?.find((e) => e.moduleId === mod.moduleId);
+    return {
+      ...mod,
+      ...(dureeMin > 0 ? { dureeMin } : {}),
+      ...(blocs === undefined
+        ? {}
+        : {
+            objectif: blocs.objectif,
+            demonstration: blocs.demonstration,
+            pratique: blocs.pratique,
+            verification: blocs.verification,
+            synthese: blocs.synthese,
+          }),
+    };
+  });
+
   return {
     titre: f.titreFr,
     slug: f.slugFr,
@@ -209,7 +256,7 @@ export function buildFormationImportData(
     dureeHeures: CANONICAL_DUREE_HEURES[f.duree],
     modalite: "presentiel",
     objectifsPedagogiques,
-    programmeDetaille,
+    programmeDetaille: programmeEnrichi,
     methodesPedagogiques: METHODES_PEDAGOGIQUES,
     moyensTechniques: MOYENS_TECHNIQUES,
     ressourcesPedagogiques: RESSOURCES_PEDAGOGIQUES,
@@ -217,7 +264,7 @@ export function buildFormationImportData(
     accessibleHandicap: true,
     prerequis: f.prerequisFr ?? "",
     // Calculé, jamais présumé — `null` tant que le programme n'est pas minuté.
-    ratioPratiquePct: ratioPratiqueDeclarable(programmeDetaille, f.duree),
+    ratioPratiquePct: ratioPratiqueDeclarable(programmeEnrichi, f.duree),
     certificationType: "aucune",
     typesActionQualiopi: ["classique"],
     estSurMesure: false,

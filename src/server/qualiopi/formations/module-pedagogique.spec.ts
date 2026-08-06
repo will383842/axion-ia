@@ -456,3 +456,54 @@ describe("sequenceSchema — ce que la validation ne doit pas effacer", () => {
     expect(valide.type).toBe("pratique");
   });
 });
+
+describe("cohérence de durée — ce que les blocs doivent couvrir", () => {
+  /** Le vrai module 1 de « IA pour les RH » : 120 min, dont 45 hors blocs. */
+  const MODULE_REEL = {
+    ...MODULE_COMPLET,
+    dureeMin: 120,
+    objectif: { ...MODULE_COMPLET.objectif, dureeMin: 10 },
+    demonstration: { ...MODULE_COMPLET.demonstration, dureeMin: 20 },
+    pratique: { ...MODULE_COMPLET.pratique, dureeMin: 25 },
+    verification: { ...MODULE_COMPLET.verification, dureeMin: 15 },
+    synthese: { ...MODULE_COMPLET.synthese, dureeMin: 5 },
+    sequences: [
+      { id: "s1", titre: "Accueil", dureeMin: 10, type: "objectif" },
+      { id: "s2", titre: "Les trois régimes d'usage", dureeMin: 15, type: "cadre" },
+      { id: "s3", titre: "Démonstration de biais", dureeMin: 20, type: "demonstration" },
+      { id: "s4", titre: "Ce que le droit impose", dureeMin: 15, type: "cadre" },
+      { id: "s5", titre: "Atelier en binôme", dureeMin: 25, type: "pratique" },
+      { id: "s6", titre: "Contrôle croisé", dureeMin: 15, type: "verification" },
+      { id: "s7", titre: "Acquis du module", dureeMin: 5, type: "synthese" },
+      { id: "s8", titre: "Pause", dureeMin: 15, type: "pause" },
+    ],
+  };
+
+  /**
+   * 🔴 Les cinq blocs ne couvrent PAS tout le module, et c'est voulu : une pause
+   * n'est pas un bloc, et le cadre — les régimes d'usage, ce qui ne sort jamais,
+   * l'obligation légale — n'en est pas un non plus. Comparer les blocs à la
+   * durée BRUTE aurait déclaré incohérent tout module correctement construit :
+   * la garde se serait désarmée seule au premier contenu écrit.
+   */
+  it("un module réel est cohérent : 75 min de blocs pour 120 dont 45 hors blocs", () => {
+    const d = diagnostiquerModule(MODULE_REEL);
+    expect(d.dureeBlocsMin).toBe(75);
+    expect(d.dureeIncoherente).toBe(false);
+    expect(d.complet).toBe(true);
+  });
+
+  it("mais un vrai écart reste détecté", () => {
+    const d = diagnostiquerModule({
+      ...MODULE_REEL,
+      pratique: { ...MODULE_REEL.pratique, dureeMin: 60 }, // +35 min de nulle part
+    });
+    expect(d.dureeIncoherente).toBe(true);
+    expect(d.complet).toBe(false);
+  });
+
+  it("sans séquences typées, les blocs doivent couvrir toute la durée annoncée", () => {
+    const d = diagnostiquerModule({ ...MODULE_REEL, sequences: [] });
+    expect(d.dureeIncoherente).toBe(true); // 75 de blocs pour 120 annoncées
+  });
+});

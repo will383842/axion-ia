@@ -109,6 +109,22 @@ export const blocObjectifSchema = z.object({
    * `diagnostiquerFormation` qui traque les renvois vers le vide.
    */
   objectifGlobalId: z.string().min(1),
+  /**
+   * Autres objectifs vendus que ce module sert, sans être ce pour quoi il
+   * existe.
+   *
+   * 🔴 Ce champ manquait, et son absence rendait certaines formations
+   * MATHÉMATIQUEMENT impubliables : « IA pour les RH » vend cinq objectifs et
+   * tient en quatre modules. Avec un seul renvoi par module, un objectif restait
+   * forcément découvert, et `diagnostiquerFormation` refusait la publication
+   * d'une formation pourtant complète. Le défaut n'était pas dans la formation,
+   * il était dans le modèle.
+   *
+   * Un seul objectif PRINCIPAL reste exigé : c'est ce que le module vise, et
+   * c'est lui qui décide de son contenu. Les secondaires disent ce qu'il sert en
+   * plus — et ils comptent pour la couverture de l'indicateur 11.
+   */
+  objectifsSecondairesIds: z.array(z.string().min(1)).default([]),
   ...blocBase,
 });
 
@@ -301,6 +317,14 @@ const CORPS_SANS_NOTES = {
   synthese: blocSyntheseSchema.omit({ notes: true }),
 } as const;
 
+/**
+ * Natures de séquence qui consomment du temps de module sans être un des cinq
+ * blocs : la pause, et le cadre (régimes d'usage, ce qui ne sort jamais,
+ * obligation légale). Du temps de formation qui ne se démontre ni ne se
+ * pratique.
+ */
+export const NATURES_HORS_BLOCS = ["cadre", "pause"] as const;
+
 export interface DiagnosticModule {
   moduleId: string;
   titre: string;
@@ -381,11 +405,30 @@ export function diagnostiquerModule(brut: unknown): DiagnosticModule {
       dureeBlocsMin += v.dureeMin;
     }
   }
+  /**
+   * ⚠️ Les cinq blocs ne couvrent PAS tout le module, et c'est voulu.
+   *
+   * Une pause n'est pas un bloc pédagogique, et le cadre — les régimes d'usage,
+   * ce qui ne sort jamais de l'entreprise, l'obligation légale — n'en est pas un
+   * non plus : c'est du temps de formation qui ne se démontre ni ne se pratique.
+   * Comparer les blocs à la durée BRUTE du module déclarerait incohérent tout
+   * module correctement construit, et la garde serait désarmée dès le premier
+   * contenu écrit. On retranche donc ce que les séquences hors blocs consomment.
+   */
+  const minutesHorsBlocs = base.data.sequences.reduce(
+    (n, s) =>
+      s.type !== undefined && (NATURES_HORS_BLOCS as readonly string[]).includes(s.type)
+        ? n + (s.dureeMin ?? 0)
+        : n,
+    0,
+  );
   const dureeAnnoncee = base.data.dureeMin;
+  const dureeAttendueBlocs =
+    dureeAnnoncee === undefined ? undefined : dureeAnnoncee - minutesHorsBlocs;
   const dureeIncoherente =
-    dureeAnnoncee !== undefined &&
+    dureeAttendueBlocs !== undefined &&
     blocsManquants.length === 0 &&
-    Math.abs(dureeBlocsMin - dureeAnnoncee) > TOLERANCE_DUREE_MODULE_MIN;
+    Math.abs(dureeBlocsMin - dureeAttendueBlocs) > TOLERANCE_DUREE_MODULE_MIN;
 
   return {
     moduleId,
@@ -484,9 +527,13 @@ export function diagnostiquerFormation(input: {
     const duree = m["dureeMin"];
     if (typeof duree === "number" && Number.isFinite(duree)) dureeContenuMin += duree;
 
-    const objectif = m["objectif"] as { objectifGlobalId?: unknown } | undefined;
-    const lien = objectif?.objectifGlobalId;
-    if (typeof lien === "string" && lien !== "") {
+    const objectif = m["objectif"] as
+      { objectifGlobalId?: unknown; objectifsSecondairesIds?: unknown } | undefined;
+    const secondaires = Array.isArray(objectif?.objectifsSecondairesIds)
+      ? objectif.objectifsSecondairesIds
+      : [];
+    for (const lien of [objectif?.objectifGlobalId, ...secondaires]) {
+      if (typeof lien !== "string" || lien === "") continue;
       if (declares.has(lien)) couverts.add(lien);
       else {
         const moduleId = typeof m["moduleId"] === "string" ? m["moduleId"] : "(sans identifiant)";
