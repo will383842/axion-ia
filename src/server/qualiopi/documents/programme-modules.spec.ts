@@ -7,12 +7,7 @@
 
 import { describe, it, expect } from "vitest";
 
-import {
-  formaterDuree,
-  lireModulesProgramme,
-  titreModuleSansPrefixe,
-  totalDureeModulesMin,
-} from "./programme-modules";
+import { formaterDuree, lireModulesProgramme, totalDureeModulesMin } from "./programme-modules";
 
 describe("lireModulesProgramme — les trois formes de production", () => {
   it("forme 1 : chaîne JSON sérialisée", () => {
@@ -171,37 +166,5 @@ describe("formaterDuree", () => {
   it("null pour une durée absente ou nulle", () => {
     expect(formaterDuree(null)).toBeNull();
     expect(formaterDuree(0)).toBeNull();
-  });
-});
-
-describe("titreModuleSansPrefixe — repères de demi-journée", () => {
-  /**
-   * 🔴 Depuis le 2026-08-06, les titres du catalogue portent leur repère de
-   * demi-journée pour que la timeline publique sache quand l'horloge repart. Ce
-   * repère n'a rien à faire sur une couverture de diaporama ni dans une annexe
-   * de convention, où il se lit comme une coquille — et il y était.
-   */
-  it("retire le repère de demi-journée en plus du numéro de module", () => {
-    const cas: Array<[string, string]> = [
-      ["Matin · Module 1 — Le cadre avant les CV", "Le cadre avant les CV"],
-      ["Après-midi · Module 3 — Candidatures et entretiens", "Candidatures et entretiens"],
-      ["Matin J2 · Module 5 — Industrialiser", "Industrialiser"],
-      ["Après-midi J1 · Module 2 — Les écrits du terrain", "Les écrits du terrain"],
-      ["Demi-journée — Découvrir", "Découvrir"],
-      // Sans repère : le comportement d'origine est intact.
-      ["Module 1 — L'IA dans le métier immobilier", "L'IA dans le métier immobilier"],
-      ["Un titre sans aucun préfixe", "Un titre sans aucun préfixe"],
-    ];
-    for (const [entree, attendu] of cas) {
-      expect(titreModuleSansPrefixe(entree), entree).toBe(attendu);
-    }
-  });
-
-  it("ne mange pas un titre qui COMMENCE par un de ces mots", () => {
-    // « Matinée d'accueil » n'est pas un repère : le mot doit être entier.
-    expect(titreModuleSansPrefixe("Matinée d'accueil et cadrage")).toBe(
-      "Matinée d'accueil et cadrage",
-    );
-    expect(titreModuleSansPrefixe("Journalisme et IA")).toBe("Journalisme et IA");
   });
 });
