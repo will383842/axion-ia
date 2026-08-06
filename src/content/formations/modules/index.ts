@@ -17,6 +17,12 @@ import { IA_POUR_LA_BANQUE_ASSURANCE } from "./ia-pour-la-banque-assurance";
 import { IA_POUR_LE_COMMERCE } from "./ia-pour-le-commerce";
 import { IA_POUR_L_HOTELLERIE_RESTAURATION } from "./ia-pour-l-hotellerie-restauration";
 import { IA_POUR_L_IMMOBILIER } from "./ia-pour-l-immobilier";
+import { IA_POUR_LA_PRODUCTION } from "./ia-pour-la-production";
+import { IA_POUR_LE_TRANSPORT_LOGISTIQUE } from "./ia-pour-le-transport-logistique";
+import { IA_POUR_L_AUTOMATISATION } from "./ia-pour-l-automatisation";
+import { IA_POUR_L_INDUSTRIE } from "./ia-pour-l-industrie";
+import { IA_POUR_L_IT } from "./ia-pour-l-it";
+import { SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J } from "./seminaire-ia-toute-l-entreprise-1j";
 import { IA_POUR_LA_SANTE } from "./ia-pour-la-sante";
 import { IA_POUR_LE_BTP } from "./ia-pour-le-btp";
 import { IA_POUR_LE_JURIDIQUE } from "./ia-pour-le-juridique";
@@ -39,6 +45,12 @@ export const ENRICHISSEMENTS: Readonly<Record<string, EnrichissementFormation>> 
   "ia-pour-le-commerce": IA_POUR_LE_COMMERCE,
   "ia-pour-l-hotellerie-restauration": IA_POUR_L_HOTELLERIE_RESTAURATION,
   "ia-pour-l-immobilier": IA_POUR_L_IMMOBILIER,
+  "ia-pour-la-production": IA_POUR_LA_PRODUCTION,
+  "ia-pour-le-transport-logistique": IA_POUR_LE_TRANSPORT_LOGISTIQUE,
+  "ia-pour-l-automatisation": IA_POUR_L_AUTOMATISATION,
+  "ia-pour-l-industrie": IA_POUR_L_INDUSTRIE,
+  "ia-pour-l-it": IA_POUR_L_IT,
+  "seminaire-ia-toute-l-entreprise-1j": SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J,
   "ia-pour-la-sante": IA_POUR_LA_SANTE,
   "ia-pour-le-btp": IA_POUR_LE_BTP,
   "ia-pour-le-juridique": IA_POUR_LE_JURIDIQUE,
