@@ -11,6 +11,10 @@
  * tout `moduleId` qui ne correspond à aucun module du catalogue.
  */
 
+import { IA_POUR_LA_FINANCE } from "./ia-pour-la-finance";
+import { IA_POUR_LES_COMMERCIAUX } from "./ia-pour-les-commerciaux";
+import { IA_POUR_LE_MARKETING } from "./ia-pour-le-marketing";
+import { IA_POUR_LA_RELATION_CLIENT } from "./ia-pour-la-relation-client";
 import { IA_POUR_LES_EQUIPES } from "./ia-pour-les-equipes";
 import { IA_POUR_LES_RH } from "./ia-pour-les-rh";
 import type { EnrichissementFormation } from "./types";
@@ -19,6 +23,10 @@ export type { EnrichissementFormation, EnrichissementModule } from "./types";
 
 /** Slug de formation → contenu rédigé de ses modules. */
 export const ENRICHISSEMENTS: Readonly<Record<string, EnrichissementFormation>> = {
+  "ia-pour-la-finance": IA_POUR_LA_FINANCE,
+  "ia-pour-la-relation-client": IA_POUR_LA_RELATION_CLIENT,
+  "ia-pour-le-marketing": IA_POUR_LE_MARKETING,
+  "ia-pour-les-commerciaux": IA_POUR_LES_COMMERCIAUX,
   "ia-pour-les-equipes": IA_POUR_LES_EQUIPES,
   "ia-pour-les-rh": IA_POUR_LES_RH,
 };
