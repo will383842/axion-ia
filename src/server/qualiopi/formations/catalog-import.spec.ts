@@ -175,8 +175,38 @@ describe("buildFormationImportData", () => {
    * `null` : on ne pousse plus de chiffre invérifiable dans le programme
    * officiel remis au client et à l'OPCO.
    */
-  it("ne déclare AUCUN ratio de pratique tant que le programme n'est pas minuté", () => {
+  it("déclare le ratio RÉEL, calculé depuis le programme minuté", () => {
     const data = buildFormationImportData(pilote!, "offre-x");
+    // Le catalogue porte désormais des durées et des types de séquence : le
+    // ratio est donc calculable, et c'est celui-là qui part au programme
+    // officiel — plus une constante.
+    expect(data.ratioPratiquePct).not.toBeNull();
+    expect(data.ratioPratiquePct).toBeGreaterThan(0);
+
+    // Recalcul indépendant, à partir du catalogue lui-même.
+    const steps = pilote!.programme.flatMap((m) => m.steps);
+    const minutes = (t?: string) => {
+      const m = /^(\d+)\s*'?$/.exec((t ?? "").trim());
+      return m?.[1] ? Number.parseInt(m[1], 10) : 0;
+    };
+    const pratique = steps
+      .filter((s) => s.type === "pratique" || s.type === "verification")
+      .reduce((a, s) => a + minutes(s.temps), 0);
+    const dues = { "4h": 240, "1j": 420, "2j": 840, "3j": 1260 }[pilote!.duree];
+    expect(data.ratioPratiquePct).toBe(Math.round((pratique / dues) * 100));
+  });
+
+  /**
+   * 🔴 La garde qui compte : une formation dont le programme ne porte AUCUNE
+   * durée ne doit rien déclarer. C'était le cas des 22 fiches avant leur
+   * minutage, et ce sera celui de toute formation créée à la main.
+   */
+  it("ne déclare RIEN quand le programme ne porte aucune durée", () => {
+    const sansDurees = {
+      ...pilote!,
+      programme: [{ titreFr: "Module 1", steps: [{ titre: "Une séquence sans durée" }] }],
+    };
+    const data = buildFormationImportData(sansDurees, "offre-x");
     expect(data.ratioPratiquePct).toBeNull();
   });
 

@@ -106,6 +106,17 @@ export interface FormationProgrammeSequence {
   titre: string;
   /** Repère de temps si présent dans le catalogue (« 35' », « Pause »). */
   temps?: string;
+  /**
+   * Durée en minutes, dérivée de `temps`.
+   *
+   * 🔴 Sans elle, le programme importé ne portait aucune durée exploitable :
+   * `temps` est une chaîne d'affichage (« 35' »), et le ratio de pratique
+   * n'était donc pas calculable — d'où les 70 % écrits en dur. On la dérive à
+   * l'import pour que la donnée soit chiffrée dès la base.
+   */
+  dureeMin?: number;
+  /** Nature pédagogique (cf. `FormationStepType`) — sert au calcul du ratio. */
+  type?: string;
 }
 
 export interface FormationProgrammeModule {
@@ -179,7 +190,14 @@ export function buildFormationImportData(
         id: `seq-${i + 1}-${j + 1}`,
         titre: step.titre,
       };
-      if (step.temps !== undefined) seq.temps = step.temps;
+      if (step.temps !== undefined) {
+        seq.temps = step.temps;
+        // « 35' » → 35. Un repère non numérique (« Livrable ») ne donne rien :
+        // mieux vaut aucune durée qu'une durée inventée.
+        const m = /^(\d+)\s*'?$/.exec(step.temps.trim());
+        if (m?.[1]) seq.dureeMin = Number.parseInt(m[1], 10);
+      }
+      if (step.type !== undefined) seq.type = step.type;
       return seq;
     }),
   }));

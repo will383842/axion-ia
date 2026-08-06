@@ -46,11 +46,28 @@ function parseDurationMin(temps: string | undefined): number | null {
   return match?.[1] ? Number.parseInt(match[1], 10) : null;
 }
 
-/** Heure de démarrage d'une section d'après son intitulé. */
-function sectionStartMin(label: string): number {
-  return label.trim().toLowerCase().startsWith("après-midi")
-    ? AFTERNOON_START_MIN
-    : MORNING_START_MIN;
+/**
+ * Heure imposée par l'intitulé d'une section, ou `null` si la section poursuit
+ * simplement la précédente.
+ *
+ * 🔴 Corrigé le 2026-08-06. L'ancienne version rendait TOUJOURS une heure, et
+ * `deriveProgrammeSchedule` réinitialisait donc l'horloge à 9 h 00 au début de
+ * chaque section. Tant que les programmes n'étaient découpés qu'en « Matin » /
+ * « Après-midi », le défaut restait invisible ; découpés en modules — ce que le
+ * minutage des 22 fiches impose — les six modules d'une journée s'affichaient
+ * tous comme démarrant à 9 h 00. Deux sections « Matin » se recouvraient
+ * intégralement.
+ *
+ * Désormais : seuls un « Après-midi » (14 h) ou un nouveau « Jour » (9 h)
+ * repositionnent l'horloge. Un module la laisse avancer.
+ */
+function sectionStartMin(label: string): number | null {
+  const l = label.trim().toLowerCase();
+  if (l.startsWith("après-midi")) return AFTERNOON_START_MIN;
+  if (l.startsWith("jour") || l.startsWith("matin") || l.startsWith("demi-journée")) {
+    return MORNING_START_MIN;
+  }
+  return null;
 }
 
 /**
@@ -61,8 +78,12 @@ function sectionStartMin(label: string): number {
 export function deriveProgrammeSchedule(
   programme: ReadonlyArray<FormationProgrammeSection>,
 ): DerivedScheduleSection[] {
+  // L'horloge TRAVERSE les sections : un module enchaîne sur le précédent.
+  // Elle n'est repositionnée que sur un repère explicite (après-midi, jour).
+  let clock = MORNING_START_MIN;
   return programme.map((section) => {
-    let clock = sectionStartMin(section.titreFr);
+    const impose = sectionStartMin(section.titreFr);
+    if (impose !== null) clock = impose;
     const items: DerivedScheduleItem[] = section.steps.map((step) => {
       const dur = parseDurationMin(step.temps);
       if (dur !== null) {

@@ -96,18 +96,41 @@ export function calculerRatioPratique(modules: unknown[], format: FormationDuree
   let minutesProgrammees = 0;
   let auMoinsUneDuree = false;
 
+  /** Ajoute une durée au total, et à la pratique si le type s'y prête. */
+  const compter = (duree: unknown, nature: string) => {
+    if (typeof duree !== "number" || !Number.isFinite(duree) || duree <= 0) return;
+    auMoinsUneDuree = true;
+    minutesProgrammees += duree;
+    if ((BLOCS_COMPTES_COMME_PRATIQUE as readonly string[]).includes(nature)) {
+      minutesPratique += duree;
+    }
+  };
+
   for (const brut of Array.isArray(modules) ? modules : []) {
     if (brut === null || typeof brut !== "object") continue;
     const m = brut as Record<string, unknown>;
 
+    /**
+     * Deux formes coexistent, et le calcul doit lire les deux :
+     *  — le module ENRICHI, dont les cinq blocs sont des propriétés nommées
+     *    (`objectif`, `pratique`…) portant chacune sa durée ;
+     *  — le module du CATALOGUE, dont les séquences sont une liste, chacune
+     *    portant son `type` et sa durée.
+     * La seconde est celle des 22 fiches ; la première est la cible du contenu
+     * pédagogique. Ignorer l'une des deux rendrait le ratio incalculable pour
+     * la moitié du système.
+     */
     for (const [cle, valeur] of Object.entries(m)) {
-      if (valeur === null || typeof valeur !== "object") continue;
-      const duree = (valeur as { dureeMin?: unknown }).dureeMin;
-      if (typeof duree !== "number" || !Number.isFinite(duree) || duree <= 0) continue;
-      auMoinsUneDuree = true;
-      minutesProgrammees += duree;
-      if ((BLOCS_COMPTES_COMME_PRATIQUE as readonly string[]).includes(cle)) {
-        minutesPratique += duree;
+      if (valeur === null || typeof valeur !== "object" || Array.isArray(valeur)) continue;
+      compter((valeur as { dureeMin?: unknown }).dureeMin, cle);
+    }
+
+    const sequences = m["sequences"];
+    if (Array.isArray(sequences)) {
+      for (const s of sequences) {
+        if (s === null || typeof s !== "object") continue;
+        const seq = s as { dureeMin?: unknown; type?: unknown };
+        compter(seq.dureeMin, typeof seq.type === "string" ? seq.type : "");
       }
     }
   }

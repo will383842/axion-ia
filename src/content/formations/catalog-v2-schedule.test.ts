@@ -81,3 +81,54 @@ describe("deriveProgrammeSchedule — conversion durées → heures", () => {
     }
   });
 });
+
+describe("l'horloge traverse les sections", () => {
+  /**
+   * 🔴 Le défaut corrigé le 2026-08-06 : `clock` était réinitialisé au début de
+   * CHAQUE section. Invisible tant que les programmes se découpaient en
+   * « Matin » / « Après-midi » ; dès qu'ils sont découpés en modules — ce que le
+   * minutage des 22 fiches impose — les six modules d'une journée s'affichaient
+   * tous comme démarrant à 9 h 00.
+   */
+  it("un module enchaîne sur le précédent au lieu de repartir à 9 h", () => {
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Module 1 — Cadrer", steps: [{ temps: "60'", titre: "A" }] },
+      { titreFr: "Module 2 — Produire", steps: [{ temps: "45'", titre: "B" }] },
+      { titreFr: "Module 3 — Ancrer", steps: [{ temps: "30'", titre: "C" }] },
+    ]);
+    expect(sections[0]!.items[0]!.time).toBe("9 h 00");
+    expect(sections[1]!.items[0]!.time).toBe("10 h 00");
+    expect(sections[2]!.items[0]!.time).toBe("10 h 45");
+  });
+
+  it("« Après-midi » repositionne bien l'horloge à 14 h", () => {
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Matin — Découvrir", steps: [{ temps: "60'", titre: "A" }] },
+      { titreFr: "Après-midi — Pratiquer", steps: [{ temps: "60'", titre: "B" }] },
+    ]);
+    expect(sections[0]!.items[0]!.time).toBe("9 h 00");
+    expect(sections[1]!.items[0]!.time).toBe("14 h 00");
+  });
+
+  it("un nouveau « Jour » repart à 9 h", () => {
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Jour 1 — Bases", steps: [{ temps: "180'", titre: "A" }] },
+      { titreFr: "Jour 2 — Construire", steps: [{ temps: "60'", titre: "B" }] },
+    ]);
+    expect(sections[1]!.items[0]!.time).toBe("9 h 00");
+  });
+
+  it("une pause fait avancer l'horloge du module suivant", () => {
+    const sections = deriveProgrammeSchedule([
+      {
+        titreFr: "Module 1",
+        steps: [
+          { temps: "60'", titre: "A" },
+          { temps: "15'", titre: "Pause" },
+        ],
+      },
+      { titreFr: "Module 2", steps: [{ temps: "30'", titre: "B" }] },
+    ]);
+    expect(sections[1]!.items[0]!.time).toBe("10 h 15");
+  });
+});
