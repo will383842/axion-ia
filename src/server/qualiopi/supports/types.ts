@@ -66,6 +66,17 @@ export interface ModuleProgramme {
   titre: string;
   dureeMin?: number;
   sequences?: Array<SequencePedagogique>;
+  /**
+   * Les cinq blocs du Standard, présents quand la formation a du contenu
+   * rédigé. Typés `unknown` à dessein : ce module ne valide pas le contenu
+   * pédagogique — c'est `modulePedagogiqueSchema` qui en a la charge. Les
+   * déclarer ici sert à les LIRE, pas à les juger.
+   */
+  objectif?: unknown;
+  demonstration?: unknown;
+  pratique?: unknown;
+  verification?: unknown;
+  synthese?: unknown;
 }
 
 /**

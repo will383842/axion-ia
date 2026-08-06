@@ -363,3 +363,141 @@ describe("construireSupport — guide_animation, minutage", () => {
     expect(textes).toContain("Contrôle croisé [60 min · faire vérifier et corriger en salle]");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Guide d'animation — le contenu rédigé, quand il existe
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Un module rédigé, avec ses cinq blocs et leurs notes d'animation. */
+const MODULE_REDIGE = {
+  moduleId: "mod-1",
+  titre: "Module 1 — Cadrer",
+  sequences: [{ titre: "Atelier", dureeMin: 60, type: "pratique" }],
+  objectif: {
+    enonce: "Vous saurez qualifier un document avant de l'ouvrir dans un outil.",
+    dureeMin: 10,
+    notes: {
+      script: "Tour de table en une phrase, noté au tableau.",
+      planB: "Aucun outil nécessaire : le paperboard suffit.",
+      faq: [{ question: "Ça marche vraiment ?", reponse: "Sur cette tâche, oui." }],
+      blocages: [{ situation: "la salle s'éparpille", parade: "revenir au livrable du jour" }],
+    },
+  },
+  demonstration: {
+    avant: "On reprend le document du voisin et on remplace les phrases une à une.",
+    apres: "La fiche devient un document complet en une passe.",
+    prompt: "Contexte : PME de 40 personnes. Format : 300 mots. Exigence : aucun superlatif.",
+    outil: "Claude",
+    verifieLe: "2026-08-06",
+    dureeMin: 20,
+    notes: {
+      script: "Lancer la version brute d'abord.",
+      planB: "Sorties imprimées page 4.",
+      faq: [],
+      blocages: [],
+    },
+  },
+  pratique: {
+    consigne: "Reprenez un document réel et refaites-le avec la structure vue.",
+    aEmporter: "La fiche mémo des quatre lignes du prompt.",
+    dureeMin: 60,
+    notes: {
+      script: "Annoncer le chrono toutes les cinq minutes.",
+      planB: "Se fait à la main.",
+      faq: [],
+      blocages: [],
+    },
+  },
+  verification: {
+    question: "Quelle ligne du prompt évite le jargon ?",
+    reponseAttendue: "La ligne Exigence.",
+    dureeMin: 10,
+    notes: {
+      script: "Corriger avec la salle, pas devant elle.",
+      planB: "Corrigé page 8.",
+      faq: [],
+      blocages: [],
+    },
+  },
+  synthese: {
+    acquis: ["Vous savez qualifier un document.", "Vous savez nommer ce que vous ne publiez pas."],
+    dureeMin: 5,
+    notes: {
+      script: "Faire formuler, ne pas réciter.",
+      planB: "Aucun outil.",
+      faq: [],
+      blocages: [],
+    },
+  },
+};
+
+const FORMATION_REDIGEE: FormationInput = {
+  titre: "Formation rédigée",
+  objectifsPedagogiques: ["Qualifier un document"],
+  dureeHeures: 2,
+  programmeDetaille: [MODULE_REDIGE],
+};
+
+describe("construireSupport — guide_animation, contenu rédigé", () => {
+  const textes = () => {
+    const contenu = construireSupport("guide_animation", FORMATION_REDIGEE);
+    return contenu.sections
+      .flatMap((s) => s.blocs)
+      .map((b) => b.texte ?? (b.items ?? []).join(" | "));
+  };
+
+  /**
+   * 🔴 La raison d'être du guide. Le formateur est tourné vers la salle : il ne
+   * lit pas l'écran. Un guide qui renverrait à « la slide 14 » l'obligerait à
+   * chercher au moment précis où il ne peut pas. Le prompt et la consigne y sont
+   * donc VERBATIM, doublon assumé avec le diaporama.
+   */
+  it("reprend le prompt de démonstration EN ENTIER", () => {
+    const t = textes();
+    expect(t).toContain(MODULE_REDIGE.demonstration.prompt);
+  });
+
+  it("reprend la consigne d'atelier et ce que les stagiaires emportent", () => {
+    const t = textes().join("\n");
+    expect(t).toContain(MODULE_REDIGE.pratique.consigne);
+    expect(t).toContain("Ils repartent avec : La fiche mémo");
+  });
+
+  it("donne la réponse attendue de la vérification — au formateur, pas à l'écran", () => {
+    expect(textes().join("\n")).toContain("Attendu : La ligne Exigence.");
+  });
+
+  /**
+   * Le plan B se cherche en panique, avec vingt personnes qui attendent. Il doit
+   * figurer sur CHAQUE bloc, pas une fois en annexe.
+   */
+  it("porte un plan B pour chacun des cinq blocs", () => {
+    const plansB = textes().filter((x) => x.startsWith("Plan B :"));
+    expect(plansB).toHaveLength(5);
+  });
+
+  it("porte le script d'animation de chaque bloc", () => {
+    const scripts = textes().filter((x) => x.startsWith("À dire :"));
+    expect(scripts).toHaveLength(5);
+  });
+
+  it("transporte la FAQ et les parades aux blocages", () => {
+    const t = textes().join("\n");
+    expect(t).toContain("Ça marche vraiment ?");
+    expect(t).toContain("Si la salle s'éparpille → revenir au livrable du jour");
+  });
+
+  it("date la vérification des exemples — les interfaces changent vite", () => {
+    expect(textes().join("\n")).toContain("Exemples vérifiés le 2026-08-06.");
+  });
+
+  /**
+   * Un module non rédigé garde le guide minuté d'avant, sans rubriques creuses :
+   * une section « Démonstration » vide se lit comme un défaut d'impression.
+   */
+  it("n'ajoute aucune rubrique quand le module n'est pas rédigé", () => {
+    const contenu = construireSupport("guide_animation", FORMATION_MINUTEE);
+    const rubriques = contenu.sections.flatMap((s) => s.blocs).filter((b) => b.type === "objectif");
+    expect(rubriques).toHaveLength(0);
+  });
+});
