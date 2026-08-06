@@ -84,6 +84,39 @@ function sequencesTitles(mod: ModuleProgramme): string[] {
   return (mod.sequences ?? []).map((s) => s.titre);
 }
 
+/**
+ * Ce que le formateur fait pendant la séquence, en un mot.
+ *
+ * Formulé du point de vue de l'animation — « Le formateur montre », « Chacun
+ * produit » — parce que c'est ce qu'on lit en diagonale entre deux séquences,
+ * pas une taxonomie.
+ */
+const NATURE_SEQUENCE: Record<string, string> = {
+  objectif: "annoncer le résultat visé",
+  cadre: "poser le cadre",
+  demonstration: "montrer, avant/après",
+  pratique: "faire produire, chronométré",
+  verification: "faire vérifier et corriger en salle",
+  synthese: "faire formuler les acquis",
+  pause: "pause",
+};
+
+/**
+ * Durée d'un module, en minutes, ou `null` si elle n'est pas établie.
+ *
+ * 🔴 Le guide d'animation retenait `mod.dureeMin ?? 60`. Or `programmeDetaille`
+ * n'a JAMAIS porté de durée au niveau module — seulement au niveau séquence.
+ * Le repli s'appliquait donc systématiquement : le document que le formateur
+ * suit en salle annonçait quatre modules d'une heure pour une journée de sept,
+ * et les horaires de toutes les séquences en découlaient. On additionne
+ * désormais les séquences, et on se tait quand rien n'est su.
+ */
+function dureeModuleMin(mod: ModuleProgramme): number | null {
+  if (typeof mod.dureeMin === "number" && mod.dureeMin > 0) return mod.dureeMin;
+  const somme = (mod.sequences ?? []).reduce((n, s) => n + (s.dureeMin ?? 0), 0);
+  return somme > 0 ? somme : null;
+}
+
 function moduleResume(mod: ModuleProgramme): string {
   const duree = mod.dureeMin ? ` (${formatDuree(mod.dureeMin)})` : "";
   // `moduleId` est un identifiant technique (« mod-1 »), pas un numero : il
@@ -339,22 +372,46 @@ function buildGuideAnimation(f: FormationInput): SupportContenu {
   });
 
   let cumulMin = 0;
+  /**
+   * Dès qu'un module n'est pas minuté, plus aucun horaire n'est situable : on
+   * cesse d'en annoncer plutôt que de décaler tout le reste de la journée.
+   */
+  let horaireSituable = true;
+
   for (const mod of f.programmeDetaille) {
-    const dureeModule = mod.dureeMin ?? 60;
-    const debut = formatDuree(cumulMin);
-    cumulMin += dureeModule;
-    const fin = formatDuree(cumulMin);
+    const dureeModule = dureeModuleMin(mod);
+    const debutModule = cumulMin;
 
     const blocs: BlocContenu[] = [];
-    blocs.push({ type: "note", texte: `Timing : ${debut} → ${fin}` });
+    if (horaireSituable && dureeModule !== null) {
+      cumulMin += dureeModule;
+      blocs.push({
+        type: "note",
+        texte: `Timing : ${formatDuree(debutModule)} → ${formatDuree(cumulMin)}`,
+      });
+    } else {
+      horaireSituable = false;
+      blocs.push({
+        type: "note",
+        texte: "Module non minuté : caler la durée avec le formateur avant la session.",
+      });
+    }
 
     if (mod.sequences && mod.sequences.length > 0) {
       let seqCumul = 0;
       for (const seq of mod.sequences) {
         const seqDuree = seq.dureeMin ?? 0;
-        const seqDebut = formatDuree(cumulMin - dureeModule + seqCumul);
+        const nature = NATURE_SEQUENCE[seq.type ?? ""];
+        const reperes: string[] = [];
+        if (horaireSituable && seqDuree > 0) {
+          reperes.push(`${formatDuree(debutModule + seqCumul)} — ${seqDuree} min`);
+        } else if (seqDuree > 0) {
+          reperes.push(`${seqDuree} min`);
+        }
+        if (nature !== undefined) reperes.push(nature);
         seqCumul += seqDuree;
-        const label = seqDuree > 0 ? `${seq.titre} [${seqDebut} — ${seqDuree} min]` : seq.titre;
+
+        const label = reperes.length > 0 ? `${seq.titre} [${reperes.join(" · ")}]` : seq.titre;
         blocs.push({ type: "paragraphe", texte: label });
         if (seq.description) {
           blocs.push({ type: "note", texte: `Consigne : ${seq.description}` });

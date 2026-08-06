@@ -48,6 +48,16 @@ export interface SequencePedagogique {
   titre: string;
   dureeMin?: number;
   description?: string;
+  /**
+   * Nature de la séquence (`objectif`, `demonstration`, `pratique`,
+   * `verification`, `synthese`, `cadre`, `pause`).
+   *
+   * C'est l'information dont un formateur a le plus besoin en salle : elle dit
+   * s'il parle, s'il montre, ou s'il fait produire. Elle est écrite en base
+   * depuis l'import du catalogue ; elle n'était simplement pas typée ici, donc
+   * invisible pour les gabarits.
+   */
+  type?: string;
 }
 
 /** Module du programme détaillé. */

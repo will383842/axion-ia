@@ -281,3 +281,85 @@ describe("construireSupport — formation minimale (robustesse)", () => {
     });
   }
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Guide d'animation — le minutage réellement suivi en salle
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Deux modules de 210 min chacun, minutés par leurs séquences. */
+const FORMATION_MINUTEE: FormationInput = {
+  titre: "Formation minutée",
+  objectifsPedagogiques: ["Produire un livrable"],
+  dureeHeures: 7,
+  programmeDetaille: [
+    {
+      moduleId: "mod-1",
+      titre: "Module 1",
+      sequences: [
+        { titre: "Objectif du module", dureeMin: 10, type: "objectif" },
+        { titre: "Démonstration avant/après", dureeMin: 50, type: "demonstration" },
+        { titre: "Atelier chronométré", dureeMin: 150, type: "pratique" },
+      ],
+    },
+    {
+      moduleId: "mod-2",
+      titre: "Module 2",
+      sequences: [
+        { titre: "Contrôle croisé", dureeMin: 60, type: "verification" },
+        { titre: "Assemblage", dureeMin: 150, type: "pratique" },
+      ],
+    },
+  ],
+};
+
+describe("construireSupport — guide_animation, minutage", () => {
+  /**
+   * 🔴 Le guide retenait `mod.dureeMin ?? 60`. Or `programmeDetaille` n'a JAMAIS
+   * porté de durée au niveau module, seulement au niveau séquence : le repli
+   * s'appliquait systématiquement. Le document que le formateur suit en salle
+   * annonçait donc deux modules d'une heure pour une journée de sept, et tous
+   * les horaires de séquences en découlaient.
+   */
+  it("additionne les séquences au lieu d'inventer une heure par module", () => {
+    const contenu = construireSupport("guide_animation", FORMATION_MINUTEE);
+    const timings = contenu.sections
+      .flatMap((s) => s.blocs)
+      .map((b) => b.texte ?? "")
+      .filter((t) => t.startsWith("Timing :"));
+
+    expect(timings).toEqual(["Timing : 0 min → 3h30", "Timing : 3h30 → 7h"]);
+  });
+
+  it("situe chaque séquence à son heure réelle et dit ce que le formateur y fait", () => {
+    const contenu = construireSupport("guide_animation", FORMATION_MINUTEE);
+    const lignes = contenu.sections.flatMap((s) => s.blocs).map((b) => b.texte ?? "");
+
+    expect(lignes).toContain("Objectif du module [0 min — 10 min · annoncer le résultat visé]");
+    expect(lignes).toContain("Atelier chronométré [1h — 150 min · faire produire, chronométré]");
+    expect(lignes).toContain(
+      "Contrôle croisé [3h30 — 60 min · faire vérifier et corriger en salle]",
+    );
+  });
+
+  /**
+   * Un horaire faux est pire qu'un horaire absent : le formateur le suit. Dès
+   * qu'un module n'est pas minuté, plus rien n'est situable après lui.
+   */
+  it("se tait sur les horaires plutôt que de décaler toute la journée", () => {
+    const contenu = construireSupport("guide_animation", {
+      ...FORMATION_MINUTEE,
+      programmeDetaille: [
+        { moduleId: "mod-1", titre: "Module sans minutage", sequences: [{ titre: "Séquence" }] },
+        FORMATION_MINUTEE.programmeDetaille[1]!,
+      ],
+    });
+    const textes = contenu.sections.flatMap((s) => s.blocs).map((b) => b.texte ?? "");
+
+    expect(textes.filter((t) => t.startsWith("Timing :"))).toEqual([]);
+    expect(textes).toContain(
+      "Module non minuté : caler la durée avec le formateur avant la session.",
+    );
+    // La séquence garde sa durée, mais plus son heure : elle n'est plus situable.
+    expect(textes).toContain("Contrôle croisé [60 min · faire vérifier et corriger en salle]");
+  });
+});
