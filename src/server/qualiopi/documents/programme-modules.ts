@@ -30,6 +30,19 @@
 export interface SequenceProgramme {
   titre: string;
   dureeMin: number | null;
+  /**
+   * Nature pédagogique de la séquence (`objectif`, `demonstration`, `pratique`,
+   * `verification`, `synthese`, `cadre`, `pause`), ou `null` sur un programme
+   * qui n'en porte pas.
+   *
+   * Les gabarits imprimés ne s'en servent pas — une annexe de convention ne
+   * qualifie pas ses séquences. La console, elle, en a besoin : c'est ce qui
+   * distingue un atelier d'un exposé, et donc ce qui décide du ratio de
+   * pratique. Le lecteur l'écartait, ce qui obligeait la console à relire le
+   * JSON brut en parallèle — deux lectures d'une même donnée, la porte ouverte
+   * à deux verdicts.
+   */
+  type: string | null;
 }
 
 /** Module tel qu'imprimé : un titre, une durée facultative, ses séquences. */
@@ -102,7 +115,7 @@ function lireSequence(brut: unknown): SequenceProgramme | null {
   const o = brut as Record<string, unknown>;
   const titre = texte(o["titre"]);
   if (titre === null) return null;
-  return { titre, dureeMin: dureeMin(o["dureeMin"]) };
+  return { titre, dureeMin: dureeMin(o["dureeMin"]), type: texte(o["type"]) };
 }
 
 /**

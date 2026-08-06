@@ -42,8 +42,8 @@ const BASE: ProgrammeFormationData = {
       titre: "Comprendre l'IA générative",
       dureeMin: 120,
       sequences: [
-        { titre: "Ce que l'IA sait faire", dureeMin: 45 },
-        { titre: "Ce qu'elle ne sait pas faire", dureeMin: null },
+        { titre: "Ce que l'IA sait faire", dureeMin: 45, type: "demonstration" },
+        { titre: "Ce qu'elle ne sait pas faire", dureeMin: null, type: null },
       ],
     },
     { titre: "Passer à la pratique", dureeMin: null, sequences: [] },
