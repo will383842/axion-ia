@@ -236,7 +236,7 @@ describe("diagnostiquerModule", () => {
 // Niveau FORMATION — ce qu'aucun module ne peut vérifier seul
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { diagnostiquerFormation, demonstrationPerimee } from "./module-pedagogique";
+import { diagnostiquerFormation, demonstrationPerimee, sequenceSchema } from "./module-pedagogique";
 import { calculerRatioPratiquePourMinutes } from "./ratio-pratique";
 
 /** Deux modules complets couvrant obj-1 et obj-2, 90 min chacun, 50 min de pratique. */
@@ -434,5 +434,25 @@ describe("diagnostiquerModule — cohérence des durées", () => {
     const d = diagnostiquerModule(MODULE_COMPLET);
     expect(d.dureeBlocsMin).toBe(90);
     expect(d.dureeIncoherente).toBe(false);
+  });
+});
+
+describe("sequenceSchema — ce que la validation ne doit pas effacer", () => {
+  /**
+   * 🔴 Zod ÉCARTE les clés non déclarées. `temps` et `type` n'y figuraient pas :
+   * valider un module enrichi les aurait silencieusement supprimés, et avec eux
+   * le repère d'affichage de la fiche publique et la nature qui décide du ratio
+   * de pratique. Le module serait ressorti « valide » et amputé.
+   */
+  it("conserve le repère d'affichage et la nature de la séquence", () => {
+    const valide = sequenceSchema.parse({
+      id: "seq-1-3",
+      titre: "Atelier chronométré",
+      temps: "35'",
+      type: "pratique",
+      dureeMin: 35,
+    });
+    expect(valide.temps).toBe("35'");
+    expect(valide.type).toBe("pratique");
   });
 });

@@ -140,26 +140,34 @@ export function calculerRatioPratiquePourMinutes(
 
     /**
      * Deux formes coexistent, et le calcul doit lire les deux :
-     *  — le module ENRICHI, dont les cinq blocs sont des propriétés nommées
-     *    (`objectif`, `pratique`…) portant chacune sa durée ;
      *  — le module du CATALOGUE, dont les séquences sont une liste, chacune
-     *    portant son `type` et sa durée.
-     * La seconde est celle des 22 fiches ; la première est la cible du contenu
-     * pédagogique. Ignorer l'une des deux rendrait le ratio incalculable pour
-     * la moitié du système.
+     *    portant son `type` et sa durée ;
+     *  — le module ENRICHI, dont les cinq blocs sont des propriétés nommées
+     *    (`objectif`, `pratique`…) portant chacune sa durée.
+     *
+     * ⚠️ Un module enrichi porte les DEUX : ses cinq blocs de contenu ET ses
+     * séquences. Les additionner compterait chaque minute deux fois, et le
+     * ratio d'une formation entièrement rédigée doublerait du jour au
+     * lendemain. Les séquences font foi quand elles portent des durées : ce
+     * sont elles qui sont publiées sur la fiche, elles qui somment au temps
+     * vendu, et elles que l'auditeur lit. Les durées des blocs ne servent qu'à
+     * répartir le contenu à l'intérieur d'un module non séquencé.
      */
-    for (const [cle, valeur] of Object.entries(m)) {
-      if (valeur === null || typeof valeur !== "object" || Array.isArray(valeur)) continue;
-      compter((valeur as { dureeMin?: unknown }).dureeMin, cle);
-    }
-
+    let compteSurSequences = false;
     const sequences = m["sequences"];
     if (Array.isArray(sequences)) {
       for (const s of sequences) {
         if (s === null || typeof s !== "object") continue;
         const seq = s as { dureeMin?: unknown; type?: unknown };
+        if (typeof seq.dureeMin === "number" && seq.dureeMin > 0) compteSurSequences = true;
         compter(seq.dureeMin, typeof seq.type === "string" ? seq.type : "");
       }
+    }
+    if (compteSurSequences) continue;
+
+    for (const [cle, valeur] of Object.entries(m)) {
+      if (valeur === null || typeof valeur !== "object" || Array.isArray(valeur)) continue;
+      compter((valeur as { dureeMin?: unknown }).dureeMin, cle);
     }
   }
 

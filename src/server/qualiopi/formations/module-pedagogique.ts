@@ -201,12 +201,24 @@ export const blocSyntheseSchema = z.object({
 // Le module
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Séquence — conservée telle quelle : c'est la forme des 22 formations actuelles. */
+/**
+ * Séquence — conservée telle quelle : c'est la forme des 22 formations actuelles.
+ *
+ * ⚠️ `temps` et `type` doivent figurer ici même s'ils ne servent pas au
+ * diagnostic. Zod ÉCARTE les clés qu'il ne déclare pas : valider un module
+ * enrichi les aurait silencieusement effacés, et avec eux le repère d'affichage
+ * de la fiche publique et la nature qui décide du ratio de pratique. Le module
+ * serait ressorti « valide » et amputé.
+ */
 export const sequenceSchema = z.object({
   id: z.string().min(1),
   titre: z.string().min(1),
   description: z.string().optional(),
   dureeMin: z.number().int().positive().optional(),
+  /** Repère d'affichage tel qu'écrit au catalogue (« 35' »). */
+  temps: z.string().optional(),
+  /** Nature pédagogique (cf. `FormationStepType`). */
+  type: z.string().optional(),
 });
 
 /**

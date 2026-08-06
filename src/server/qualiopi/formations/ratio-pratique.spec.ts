@@ -124,3 +124,62 @@ describe("ratioPratiqueDeclarable — ce qui part dans le programme officiel", (
     expect(ratioPratiqueDeclarable([bancal], "4h")).toBeNull();
   });
 });
+
+describe("un module enrichi ne compte pas ses minutes deux fois", () => {
+  /**
+   * 🔴 Le piège attendait le premier module réellement rédigé. Un module enrichi
+   * porte ses cinq blocs de contenu ET ses séquences, chacun avec sa durée : les
+   * additionner aurait fait DOUBLER le ratio d'une formation au moment même où
+   * on finissait de l'écrire. Et le chiffre part dans le programme opposable.
+   *
+   * Les séquences font foi : ce sont elles qui sont publiées sur la fiche, elles
+   * qui somment au temps vendu, elles que l'auditeur lit.
+   */
+  it("retient les séquences, pas les blocs, quand le module porte les deux", () => {
+    const moduleEnrichi = {
+      moduleId: "mod-1",
+      titre: "Module rédigé",
+      // Les cinq blocs, avec leurs durées de contenu.
+      objectif: { dureeMin: 10 },
+      demonstration: { dureeMin: 20 },
+      pratique: { dureeMin: 150 },
+      verification: { dureeMin: 60 },
+      synthese: { dureeMin: 10 },
+      // Et le découpage publié, qui dit la même journée autrement.
+      sequences: [
+        { titre: "Objectif", dureeMin: 10, type: "objectif" },
+        { titre: "Démonstration", dureeMin: 20, type: "demonstration" },
+        { titre: "Atelier", dureeMin: 150, type: "pratique" },
+        { titre: "Contrôle croisé", dureeMin: 60, type: "verification" },
+        { titre: "Synthèse", dureeMin: 10, type: "synthese" },
+      ],
+    };
+
+    const r = calculerRatioPratique([moduleEnrichi], "4h");
+    expect(r.minutesProgrammees).toBe(250); // et non 500
+    expect(r.minutesPratique).toBe(210); // atelier + contrôle, comptés une fois
+  });
+
+  it("retombe sur les blocs quand le module n'est pas séquencé", () => {
+    const r = calculerRatioPratique(
+      [{ moduleId: "mod-1", pratique: { dureeMin: 90 }, objectif: { dureeMin: 30 } }],
+      "4h",
+    );
+    expect(r.minutesProgrammees).toBe(120);
+    expect(r.minutesPratique).toBe(90);
+  });
+
+  it("retombe aussi sur les blocs quand les séquences n'ont pas de durée", () => {
+    const r = calculerRatioPratique(
+      [
+        {
+          moduleId: "mod-1",
+          pratique: { dureeMin: 90 },
+          sequences: [{ titre: "Atelier", type: "pratique" }],
+        },
+      ],
+      "4h",
+    );
+    expect(r.minutesPratique).toBe(90);
+  });
+});
