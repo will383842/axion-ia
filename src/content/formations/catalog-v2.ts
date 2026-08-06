@@ -5609,7 +5609,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
   programme: [
     {
       titreFr:
-        "Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée",
+        "Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée",
       steps: [
         {
           temps: "5'",
@@ -5663,7 +5663,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
       ],
     },
     {
-      titreFr: "Module 2 — Ce que l'IA ne touche jamais dans ce métier",
+      titreFr: "Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier",
       steps: [
         {
           temps: "5'",
@@ -5710,7 +5710,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
       ],
     },
     {
-      titreFr: "Module 3 — Sinistres, dossiers et documents contractuels",
+      titreFr: "Après-midi · Module 3 — Sinistres, dossiers et documents contractuels",
       steps: [
         {
           temps: "5'",
@@ -5746,7 +5746,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
       ],
     },
     {
-      titreFr: "Module 4 — Réponses aux clients, traçabilité et protocole du service",
+      titreFr: "Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service",
       steps: [
         {
           temps: "5'",

@@ -118,6 +118,53 @@ describe("l'horloge traverse les sections", () => {
     expect(sections[1]!.items[0]!.time).toBe("9 h 00");
   });
 
+  /**
+   * 🔴 Deuxième défaut, trouvé le 2026-08-06 en relisant la timeline réelle des
+   * 22 fiches après application des squelettes. La première correction ne
+   * repositionnait que sur la PRÉSENCE d'un repère — or les squelettes révisés
+   * nomment leurs sections « Matin · Module 1 », « Matin · Module 2 ». Chaque
+   * module d'une même matinée redéclenchait la remise à 9 h 00 : sur
+   * `ia-pour-les-rh`, les modules 1 et 2 s'affichaient tous deux de 9 h à 11 h,
+   * intégralement superposés, sur la fiche publique.
+   */
+  it("« Matin · Module 2 » poursuit la matinée au lieu de la recommencer", () => {
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Matin · Module 1 — Cadrer", steps: [{ temps: "60'", titre: "A" }] },
+      { titreFr: "Matin · Module 2 — Produire", steps: [{ temps: "45'", titre: "B" }] },
+      { titreFr: "Après-midi · Module 3 — Ancrer", steps: [{ temps: "30'", titre: "C" }] },
+      { titreFr: "Après-midi · Module 4 — Valider", steps: [{ temps: "30'", titre: "D" }] },
+    ]);
+    expect(sections[0]!.items[0]!.time).toBe("9 h 00");
+    expect(sections[1]!.items[0]!.time).toBe("10 h 00");
+    expect(sections[2]!.items[0]!.time).toBe("14 h 00");
+    expect(sections[3]!.items[0]!.time).toBe("14 h 30");
+  });
+
+  it("« Matin J2 » repart à 9 h, « Matin J1 · Module 2 » non", () => {
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Matin J1 · Module 1", steps: [{ temps: "60'", titre: "A" }] },
+      { titreFr: "Matin J1 · Module 2", steps: [{ temps: "60'", titre: "B" }] },
+      { titreFr: "Matin J2 · Module 5", steps: [{ temps: "60'", titre: "C" }] },
+    ]);
+    expect(sections[1]!.items[0]!.time).toBe("10 h 00");
+    expect(sections[2]!.items[0]!.time).toBe("9 h 00");
+  });
+
+  it("un titre de module nu n'efface pas le jour en cours", () => {
+    // « Module 4 » n'annonce ni jour ni demi-journée : il poursuit. La section
+    // « Après-midi » qui suit doit donc rester dans le JOUR 2, et non revenir
+    // comparer son jour à une valeur absente.
+    const sections = deriveProgrammeSchedule([
+      { titreFr: "Matin J2 · Module 3", steps: [{ temps: "60'", titre: "A" }] },
+      { titreFr: "Module 4", steps: [{ temps: "60'", titre: "B" }] },
+      { titreFr: "Après-midi J2 · Module 5", steps: [{ temps: "60'", titre: "C" }] },
+      { titreFr: "Après-midi J2 · Module 6", steps: [{ temps: "60'", titre: "D" }] },
+    ]);
+    expect(sections[1]!.items[0]!.time).toBe("10 h 00");
+    expect(sections[2]!.items[0]!.time).toBe("14 h 00");
+    expect(sections[3]!.items[0]!.time).toBe("15 h 00");
+  });
+
   it("une pause fait avancer l'horloge du module suivant", () => {
     const sections = deriveProgrammeSchedule([
       {
@@ -130,5 +177,81 @@ describe("l'horloge traverse les sections", () => {
       { titreFr: "Module 2", steps: [{ temps: "30'", titre: "B" }] },
     ]);
     expect(sections[1]!.items[0]!.time).toBe("10 h 15");
+  });
+});
+
+describe("la timeline publique des 22 fiches ne se superpose jamais", () => {
+  /** Nombre de journées réellement vendues, par format. */
+  const JOURS_PAR_FORMAT: Record<string, number> = { "4h": 1, "1j": 1, "2j": 2, "3j": 3 };
+
+  /**
+   * La garde qui aurait attrapé le défaut sans avoir à relire les 22 timelines à
+   * l'œil. Une journée commence UNE fois : autant de démarrages à 9 h 00 que de
+   * journées vendues, jamais plus. Deux modules d'une même matinée annoncés à
+   * 9 h 00 signifient qu'ils se recouvrent à l'écran.
+   */
+  it("une journée ne démarre qu'une fois", () => {
+    for (const f of FORMATIONS_V2) {
+      const departs = deriveProgrammeSchedule(f.programme).filter(
+        (s) => s.items[0]?.time === "9 h 00",
+      ).length;
+      expect(departs, `${f.id} (${f.duree})`).toBe(JOURS_PAR_FORMAT[f.duree]);
+    }
+  });
+
+  /**
+   * 🔴 `ia-pour-la-banque-assurance` nommait ses sections « Module 1 » … « Module
+   * 4 », sans aucun repère de demi-journée : sa timeline s'affichait d'une
+   * traite de 9 h 00 à 15 h 55, sans pause déjeuner. La garde du nombre de
+   * démarrages ne pouvait pas le voir — il y avait bien UN seul départ à 9 h.
+   * On vend une journée de formation, pas sept heures d'affilée.
+   */
+  it("aucune séquence n'est programmée pendant le déjeuner", () => {
+    const DEJEUNER_DEBUT = 12 * 60 + 45;
+    const DEJEUNER_FIN = 14 * 60;
+    for (const f of FORMATIONS_V2) {
+      if (f.duree === "4h") continue; // une demi-journée court jusqu'à 13 h
+      for (const section of deriveProgrammeSchedule(f.programme)) {
+        for (const item of section.items) {
+          const m = /^(\d+) h (\d{2})$/.exec(item.time);
+          if (!m) continue;
+          const min = Number.parseInt(m[1]!, 10) * 60 + Number.parseInt(m[2]!, 10);
+          expect(
+            min >= DEJEUNER_DEBUT && min < DEJEUNER_FIN,
+            `${f.id} programme « ${item.title.slice(0, 40)} » à ${item.time}`,
+          ).toBe(false);
+        }
+      }
+    }
+  });
+
+  it("aucune journée ne se termine après 18 h", () => {
+    for (const f of FORMATIONS_V2) {
+      const heures = deriveProgrammeSchedule(f.programme)
+        .flatMap((s) => s.items.map((i) => /^(\d+) h (\d{2})$/.exec(i.time)))
+        .filter((m): m is RegExpExecArray => m !== null)
+        .map((m) => Number.parseInt(m[1]!, 10) * 60 + Number.parseInt(m[2]!, 10));
+      expect(Math.max(...heures), f.id).toBeLessThanOrEqual(18 * 60);
+    }
+  });
+
+  it("les heures d'une même demi-journée avancent toujours", () => {
+    for (const f of FORMATIONS_V2) {
+      const sections = deriveProgrammeSchedule(f.programme);
+      let precedent = -1;
+      for (const section of sections) {
+        for (const item of section.items) {
+          const m = /^(\d+) h (\d{2})$/.exec(item.time);
+          if (!m) continue; // marqueur verbatim : ne participe pas à l'horloge
+          const min = Number.parseInt(m[1]!, 10) * 60 + Number.parseInt(m[2]!, 10);
+          // Un retour en arrière n'est licite qu'au démarrage d'une journée.
+          const nouvelleJournee = item === section.items[0] && item.time === "9 h 00";
+          if (!nouvelleJournee) {
+            expect(min, `${f.id} — « ${item.title.slice(0, 40)} »`).toBeGreaterThan(precedent);
+          }
+          precedent = min;
+        }
+      }
+    }
   });
 });
