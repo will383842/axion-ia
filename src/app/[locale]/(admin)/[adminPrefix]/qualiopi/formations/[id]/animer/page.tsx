@@ -298,8 +298,12 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
                       deposeLe={slotsDeposes.get(slotKey) ?? null}
                     />
                   </div>
-                  <div className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-3)]">
-                    <Link href={kitHref} className="admin-button-ghost w-fit">
+                  {/* `items-start` empêche l'étirement du bouton par le flex,
+                      sans ajouter d'utilitaire sur la classe `.admin-*` :
+                      celle-ci vit hors couche et neutraliserait un `w-fit`,
+                      qui ne peindrait alors rien. Une garde le vérifie. */}
+                  <div className="mt-[var(--space-admin-3)] flex flex-col items-start gap-[var(--space-admin-3)]">
+                    <Link href={kitHref} className="admin-button-ghost">
                       {slotsDeposes.has(slotKey)
                         ? "Ouvrir dans la bibliothèque"
                         : "Déposer le fichier"}
