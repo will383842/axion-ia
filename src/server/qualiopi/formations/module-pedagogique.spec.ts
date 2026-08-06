@@ -236,11 +236,8 @@ describe("diagnostiquerModule", () => {
 // Niveau FORMATION — ce qu'aucun module ne peut vérifier seul
 // ─────────────────────────────────────────────────────────────────────────────
 
-import {
-  diagnostiquerFormation,
-  demonstrationPerimee,
-  RATIO_PRATIQUE_MINIMUM_PCT,
-} from "./module-pedagogique";
+import { diagnostiquerFormation, demonstrationPerimee } from "./module-pedagogique";
+import { calculerRatioPratiquePourMinutes } from "./ratio-pratique";
 
 /** Deux modules complets couvrant obj-1 et obj-2, 90 min chacun, 50 min de pratique. */
 function formationSaine() {
@@ -313,15 +310,16 @@ describe("diagnostiquerFormation — durée vendue contre durée réelle", () =>
 });
 
 describe("diagnostiquerFormation — ratio de pratique", () => {
-  it("calcule la part de pratique et refuse sous le seuil du Standard", () => {
-    // 45 min de pratique sur 90 min de module = 50 %, sous les 60 % exigés.
+  it("rapporte la pratique à la durée VENDUE, vérification comprise", () => {
+    // Deux modules : atelier 55 min + vérification 5 min = 60 min de pratique
+    // chacun, soit 120 min sur les 180 min vendues (3 h).
     const d = diagnostiquerFormation(formationSaine());
-    expect(d.ratioPratiquePct).toBe(61);
-    expect(d.ratioPratiquePct).toBeGreaterThanOrEqual(RATIO_PRATIQUE_MINIMUM_PCT);
+    expect(d.ratioPratiquePct).toBe(67);
+    expect(d.seuilPratiquePct).toBe(40); // 180 min vendues → barème demi-journée
     expect(d.publiable).toBe(true);
   });
 
-  it("une formation sans pratique tombe à 0 % et n'est pas publiable", () => {
+  it("sans atelier, il ne reste que la vérification et la formation n'est pas publiable", () => {
     const sansPratique = {
       ...MODULE_COMPLET,
       pratique: { ...MODULE_COMPLET.pratique, dureeMin: 0 },
@@ -331,7 +329,54 @@ describe("diagnostiquerFormation — ratio de pratique", () => {
       objectifsIds: ["obj-1"],
       dureeHeures: 1.5,
     });
-    expect(d.ratioPratiquePct).toBe(0);
+    expect(d.ratioPratiquePct).toBe(6); // 5 min de vérification sur 90 vendues
+    expect(d.publiable).toBe(false);
+  });
+
+  /**
+   * 🔴 La garde qui manquait. Le diagnostic entretenait SON PROPRE calcul, et il
+   * divergeait de `ratio-pratique.ts` sur les trois termes : dénominateur
+   * (temps programmé au lieu du temps vendu), numérateur (bloc `pratique` seul,
+   * `verification` oubliée) et seuil (60 % fixe au lieu du barème par format).
+   * Un écran branché sur le diagnostic et un autre sur le calcul auraient
+   * affiché deux chiffres contradictoires pour la même formation.
+   */
+  it("annonce exactement le même ratio que le module de calcul", () => {
+    for (const cas of [
+      formationSaine(),
+      { modules: [MODULE_COMPLET], objectifsIds: ["obj-1"], dureeHeures: 7 },
+      { modules: [MODULE_COMPLET], objectifsIds: ["obj-1"], dureeHeures: 14 },
+    ]) {
+      const d = diagnostiquerFormation(cas);
+      const attendu = calculerRatioPratiquePourMinutes(cas.modules, cas.dureeHeures * 60);
+      expect(d.ratioPratiquePct).toBe(attendu.pct);
+      expect(d.seuilPratiquePct).toBe(attendu.seuilPct);
+    }
+  });
+
+  /**
+   * Le principe posé dans `ratio-pratique.ts` : une case vide se corrige, un
+   * chiffre faux se défend en audit. Le diagnostic rendait `0` — indiscernable
+   * d'une formation réellement sans pratique.
+   */
+  it("ne déclare AUCUN ratio quand le programme ne porte pas de durées", () => {
+    const sansDurees = [{ moduleId: "mod-1", titre: "Module sans minutage" }];
+    const d = diagnostiquerFormation({
+      modules: sansDurees,
+      objectifsIds: [],
+      dureeHeures: 7,
+    });
+    expect(d.ratioPratiquePct).toBeNull();
+    expect(d.publiable).toBe(false);
+  });
+
+  it("une durée vendue nulle ne produit pas un ratio infini", () => {
+    const d = diagnostiquerFormation({
+      modules: [MODULE_COMPLET],
+      objectifsIds: ["obj-1"],
+      dureeHeures: 0,
+    });
+    expect(d.ratioPratiquePct).toBeNull();
     expect(d.publiable).toBe(false);
   });
 });

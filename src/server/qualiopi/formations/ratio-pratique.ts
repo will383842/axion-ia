@@ -89,8 +89,36 @@ export interface RatioPratique {
  * dix points ; elle est tranchée ici, une fois.
  */
 export function calculerRatioPratique(modules: unknown[], format: FormationDuree): RatioPratique {
-  const minutesDues = MINUTES_DUES_PAR_FORMAT[format];
-  const seuilPct = SEUIL_PRATIQUE_PAR_FORMAT[format];
+  return calculerRatioPratiquePourMinutes(modules, MINUTES_DUES_PAR_FORMAT[format]);
+}
+
+/**
+ * Seuil attendu pour une durée vendue exprimée en minutes.
+ *
+ * Le diagnostic d'une formation connaît un nombre d'heures, jamais un format
+ * catalogue : une formation créée à la main dans la console peut durer 5 h. Sans
+ * cette passerelle, elle serait jugée sur le seuil d'un format qu'elle n'a pas —
+ * ou, pire, sur un second seuil écrit ailleurs, ce qui était le cas.
+ *
+ * On retient le seuil du format le plus proche PAR EXCÈS : une demi-journée
+ * allongée reste jugée comme une journée, jamais plus sévèrement que le format
+ * vendu au-dessus d'elle.
+ */
+export function seuilPratiquePourMinutes(minutesDues: number): number {
+  if (minutesDues <= MINUTES_DUES_PAR_FORMAT["4h"]) return SEUIL_PRATIQUE_PAR_FORMAT["4h"];
+  if (minutesDues <= MINUTES_DUES_PAR_FORMAT["1j"]) return SEUIL_PRATIQUE_PAR_FORMAT["1j"];
+  return SEUIL_PRATIQUE_PAR_FORMAT["2j"];
+}
+
+/**
+ * Cœur du calcul, exprimé en minutes dues. `calculerRatioPratique` n'en est
+ * qu'une façade par format.
+ */
+export function calculerRatioPratiquePourMinutes(
+  modules: unknown[],
+  minutesDues: number,
+): RatioPratique {
+  const seuilPct = seuilPratiquePourMinutes(minutesDues);
 
   let minutesPratique = 0;
   let minutesProgrammees = 0;
@@ -135,7 +163,10 @@ export function calculerRatioPratique(modules: unknown[], format: FormationDuree
     }
   }
 
-  const pct = auMoinsUneDuree ? Math.round((minutesPratique / minutesDues) * 100) : null;
+  // Une durée vendue nulle ou aberrante ne produit pas `Infinity` : elle produit
+  // « on ne sait pas », comme un programme sans durées.
+  const calculable = auMoinsUneDuree && Number.isFinite(minutesDues) && minutesDues > 0;
+  const pct = calculable ? Math.round((minutesPratique / minutesDues) * 100) : null;
 
   return {
     pct,

@@ -33,6 +33,8 @@
 
 import { z } from "zod";
 
+import { calculerRatioPratiquePourMinutes } from "./ratio-pratique";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Notes d'animation
 // ─────────────────────────────────────────────────────────────────────────────
@@ -426,14 +428,16 @@ export interface DiagnosticFormation {
   dureeVendueMin: number;
   /** Écart en minutes (positif = contenu plus long que vendu). */
   ecartDureeMin: number;
-  /** Part de pratique dans le contenu, en pourcentage entier. */
-  ratioPratiquePct: number;
+  /**
+   * Part de pratique rapportée à la durée VENDUE, en pourcentage entier, ou
+   * `null` quand le programme ne porte pas de durées — jamais zéro.
+   */
+  ratioPratiquePct: number | null;
+  /** Seuil attendu pour cette durée vendue. */
+  seuilPratiquePct: number;
   /** La formation peut-elle être publiée en l'état ? */
   publiable: boolean;
 }
-
-/** Seuil de pratique du Standard, repris tel quel de la grille qualité v3. */
-export const RATIO_PRATIQUE_MINIMUM_PCT = 60;
 
 /**
  * Tolérance sur l'écart de durée : un quart d'heure d'imprécision sur une
@@ -460,7 +464,6 @@ export function diagnostiquerFormation(input: {
   const couverts = new Set<string>();
   const renvoisOrphelins: DiagnosticFormation["renvoisOrphelins"] = [];
   let dureeContenuMin = 0;
-  let dureePratiqueMin = 0;
 
   for (const brut of Array.isArray(input.modules) ? input.modules : []) {
     const m = brut as Record<string, unknown> | null;
@@ -468,9 +471,6 @@ export function diagnostiquerFormation(input: {
 
     const duree = m["dureeMin"];
     if (typeof duree === "number" && Number.isFinite(duree)) dureeContenuMin += duree;
-
-    const pratique = m["pratique"] as { dureeMin?: unknown } | undefined;
-    if (pratique && typeof pratique.dureeMin === "number") dureePratiqueMin += pratique.dureeMin;
 
     const objectif = m["objectif"] as { objectifGlobalId?: unknown } | undefined;
     const lien = objectif?.objectifGlobalId;
@@ -484,8 +484,20 @@ export function diagnostiquerFormation(input: {
   }
 
   const objectifsNonCouverts = [...declares].filter((o) => !couverts.has(o));
-  const ratioPratiquePct =
-    dureeContenuMin > 0 ? Math.round((dureePratiqueMin / dureeContenuMin) * 100) : 0;
+
+  /**
+   * 🔴 Le ratio était calculé ICI, et il divergeait de `ratio-pratique.ts` sur
+   * les trois termes à la fois : il rapportait la pratique au temps PROGRAMMÉ
+   * (un programme à moitié vide obtenait donc le meilleur score du catalogue),
+   * ne comptait que le bloc `pratique` en ignorant `verification`, et se jugeait
+   * sur un seuil fixe de 60 % quand l'autre module varie selon le format. Deux
+   * écrans branchés l'un sur le diagnostic et l'autre sur le calcul auraient
+   * affiché deux chiffres contradictoires pour la même formation — et l'un des
+   * deux serait parti dans le programme opposable.
+   *
+   * Il n'y a plus qu'une source.
+   */
+  const ratio = calculerRatioPratiquePourMinutes(input.modules, dureeVendueMin);
   const ecartDureeMin = dureeContenuMin - dureeVendueMin;
   const modulesComplets = modules.filter((m) => m.complet).length;
 
@@ -498,14 +510,15 @@ export function diagnostiquerFormation(input: {
     dureeContenuMin,
     dureeVendueMin,
     ecartDureeMin,
-    ratioPratiquePct,
+    ratioPratiquePct: ratio.pct,
+    seuilPratiquePct: ratio.seuilPct,
     publiable:
       modules.length > 0 &&
       modulesComplets === modules.length &&
       objectifsNonCouverts.length === 0 &&
       renvoisOrphelins.length === 0 &&
       Math.abs(ecartDureeMin) <= TOLERANCE_ECART_DUREE_MIN &&
-      ratioPratiquePct >= RATIO_PRATIQUE_MINIMUM_PCT,
+      ratio.atteintSeuil,
   };
 }
 
