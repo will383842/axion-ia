@@ -50,8 +50,6 @@ import { z } from "zod";
 export const notesAnimateurSchema = z.object({
   /** Ce qu'il faut DIRE, pas ce qu'il faut montrer. */
   script: z.string().min(20, "Le script doit être une consigne utile, pas un mot-clé."),
-  /** Durée de ce bloc, en minutes — alimente le programme minuté annoncé en ouverture. */
-  timingMin: z.number().int().positive().max(240),
   /** Questions récurrentes des stagiaires sur ce point précis, et leur réponse. */
   faq: z
     .array(
@@ -76,6 +74,21 @@ export const notesAnimateurSchema = z.object({
 
 export type NotesAnimateur = z.infer<typeof notesAnimateurSchema>;
 
+/**
+ * Champs communs à tout bloc.
+ *
+ * 🔴 `dureeMin` a d'abord été rangé DANS les notes d'animation. C'était une
+ * erreur de conception : une durée n'est pas un commentaire, c'est de la
+ * structure — elle alimente le programme minuté annoncé en ouverture, la somme
+ * comparée à la durée vendue, et le ratio de pratique (le critère le plus lourd
+ * de la grille qualité). Enfouie dans les notes, elle devenait invisible à tout
+ * calcul.
+ */
+const blocBase = {
+  dureeMin: z.number().int().positive().max(240),
+  notes: notesAnimateurSchema,
+};
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Les cinq blocs
 // ─────────────────────────────────────────────────────────────────────────────
@@ -87,10 +100,14 @@ export const blocObjectifSchema = z.object({
   /**
    * Identifiant de l'objectif GLOBAL de la formation que ce module sert.
    * Sans ce lien, impossible de prouver en fin de formation que les objectifs
-   * déclarés ont été couverts — c'est l'exigence explicite du Standard.
+   * déclarés ont été couverts — indicateur 11.
+   *
+   * ⚠️ Le schéma vérifie qu'un identifiant est PRÉSENT ; il ne peut pas savoir
+   * s'il EXISTE — un module isolé ne connaît pas sa formation. C'est
+   * `diagnostiquerFormation` qui traque les renvois vers le vide.
    */
   objectifGlobalId: z.string().min(1),
-  notes: notesAnimateurSchema,
+  ...blocBase,
 });
 
 /**
@@ -125,16 +142,34 @@ export const blocDemonstrationSchema = z.object({
       apres: z.string().min(1),
     })
     .optional(),
-  notes: notesAnimateurSchema,
+  /**
+   * Capture d'écran annotée — exigée par la checklist du Standard. Décrite
+   * ici (ce qu'elle doit montrer) ; le fichier vit dans la bibliothèque.
+   */
+  captureEcran: z.string().min(10).optional(),
+  /**
+   * 🔴 Date de dernière vérification des captures et exemples, au format
+   * AAAA-MM-JJ. Exigence explicite du Standard : « les interfaces
+   * Claude/ChatGPT/Gemini changent vite ». Une démonstration qui montre une
+   * interface disparue décrédibilise la formation en direct — et rien, sans
+   * cette date, ne permet de repérer le module à revoir.
+   */
+  verifieLe: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Date attendue au format AAAA-MM-JJ."),
+  ...blocBase,
 });
 
 /** Bloc 3 — la pratique immédiate, chronométrée et universelle. */
 export const blocPratiqueSchema = z.object({
   /** Consigne explicite affichée à l'écran, sur une tâche que tout le monde fait. */
   consigne: z.string().min(20),
-  /** Minutage annoncé — il s'affiche sur la slide et tient le programme. */
-  dureeMin: z.number().int().positive().max(120),
-  notes: notesAnimateurSchema,
+  /**
+   * Ce que le stagiaire REPART avec — « fiche mémo des prompts, gabarit
+   * réutilisable ». La checklist du Standard l'exige, et c'est ce qui
+   * distingue un atelier d'une démonstration : « chaque formation doit se
+   * terminer avec un livrable tangible ».
+   */
+  aEmporter: z.string().min(10),
+  ...blocBase,
 });
 
 /** Bloc 4 — la vérification de compréhension, avant de passer au module suivant. */
@@ -142,7 +177,7 @@ export const blocVerificationSchema = z.object({
   question: z.string().min(10),
   /** La réponse attendue — le formateur corrige à l'oral avec le groupe. */
   reponseAttendue: z.string().min(5),
-  notes: notesAnimateurSchema,
+  ...blocBase,
 });
 
 /**
@@ -157,7 +192,7 @@ export const blocSyntheseSchema = z.object({
     .array(z.string().min(10))
     .min(2, "Une synthèse tient en au moins deux acquis.")
     .max(3, "Au-delà de trois, ce n'est plus une synthèse mais un résumé de cours."),
-  notes: notesAnimateurSchema,
+  ...blocBase,
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -228,6 +263,13 @@ export const BLOCS_REQUIS = [
 export type BlocRequis = (typeof BLOCS_REQUIS)[number];
 
 /**
+ * Tolérance entre la somme des blocs et la durée annoncée d'un module.
+ * Cinq minutes couvrent les arrondis d'un découpage réel ; au-delà, c'est le
+ * programme minuté qui ment.
+ */
+export const TOLERANCE_DUREE_MODULE_MIN = 5;
+
+/**
  * Corps de chaque bloc, notes retirées.
  *
  * Chaque bloc est jugé en DEUX temps : son corps, puis ses notes. Un bloc dont
@@ -254,6 +296,17 @@ export interface DiagnosticModule {
   blocsManquants: BlocRequis[];
   /** La durée réelle est-elle renseignée ? Sinon le minutage est inventé. */
   dureeManquante: boolean;
+  /**
+   * La somme des cinq blocs s'écarte-t-elle de la durée annoncée du module ?
+   *
+   * 🔴 Défaut révélé par les tests : rien ne l'empêchait. Un module déclaré
+   * 90 minutes pouvait contenir 100 minutes de blocs — le programme minuté
+   * projeté en ouverture devenait alors faux, et le formateur décrochait du
+   * timing dès le premier module.
+   */
+  dureeIncoherente: boolean;
+  /** Somme réelle des blocs, en minutes (0 si aucun bloc lisible). */
+  dureeBlocsMin: number;
   /** Blocs présents mais dont les notes d'animation sont incomplètes. */
   notesIncompletes: BlocRequis[];
 }
@@ -282,6 +335,8 @@ export function diagnostiquerModule(brut: unknown): DiagnosticModule {
       complet: false,
       blocsManquants: [...BLOCS_REQUIS],
       dureeManquante: true,
+      dureeIncoherente: false,
+      dureeBlocsMin: 0,
       notesIncompletes: [],
     };
   }
@@ -304,12 +359,167 @@ export function diagnostiquerModule(brut: unknown): DiagnosticModule {
     if (!notesOk) notesIncompletes.push(bloc);
   }
 
+  // Somme réelle des blocs, comparée à la durée annoncée du module.
+  let dureeBlocsMin = 0;
+  for (const bloc of BLOCS_REQUIS) {
+    const v = (brut as Record<string, unknown>)[bloc] as { dureeMin?: unknown } | undefined;
+    if (v && typeof v.dureeMin === "number" && Number.isFinite(v.dureeMin)) {
+      dureeBlocsMin += v.dureeMin;
+    }
+  }
+  const dureeAnnoncee = base.data.dureeMin;
+  const dureeIncoherente =
+    dureeAnnoncee !== undefined &&
+    blocsManquants.length === 0 &&
+    Math.abs(dureeBlocsMin - dureeAnnoncee) > TOLERANCE_DUREE_MODULE_MIN;
+
   return {
     moduleId,
     titre,
-    complet: blocsManquants.length === 0 && notesIncompletes.length === 0,
+    complet:
+      blocsManquants.length === 0 &&
+      notesIncompletes.length === 0 &&
+      dureeAnnoncee !== undefined &&
+      !dureeIncoherente,
     blocsManquants,
-    dureeManquante: base.data.dureeMin === undefined,
+    dureeManquante: dureeAnnoncee === undefined,
+    dureeIncoherente,
+    dureeBlocsMin,
     notesIncompletes,
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Diagnostic au niveau FORMATION
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Trois vérités qu'aucun module ne peut établir seul — et dont l'absence
+ * rendait la promesse du modèle creuse :
+ *
+ *  1. **La couverture des objectifs** (indicateur 11). Un module peut déclarer
+ *     servir « obj-42 » qui n'existe pas, et un objectif vendu peut n'être
+ *     couvert par aucun module. Dans les deux cas le schéma passe, et la
+ *     promesse « prouver que les objectifs déclarés ont été couverts » est
+ *     vide. Il faut confronter modules et objectifs.
+ *  2. **La durée réelle contre la durée vendue.** Le programme minuté est
+ *     annoncé en ouverture et engage l'organisme : sept heures vendues, quatre
+ *     heures de contenu, c'est un écart qu'un auditeur voit immédiatement.
+ *  3. **Le ratio de pratique.** C'est le critère le plus lourd de la grille
+ *     qualité (12 points sur 100) et la promesse commerciale affichée sur les
+ *     fiches — « 100 % pratique ». Sans les durées par bloc, il n'était pas
+ *     calculable.
+ */
+export interface DiagnosticFormation {
+  /** Modules complets sur total. */
+  modulesComplets: number;
+  modulesTotal: number;
+  /** Diagnostic détaillé, module par module. */
+  modules: DiagnosticModule[];
+  /** Objectifs vendus qu'AUCUN module ne couvre — indicateur 11 en défaut. */
+  objectifsNonCouverts: string[];
+  /** Renvois vers un objectif qui n'existe pas dans la formation. */
+  renvoisOrphelins: Array<{ moduleId: string; objectifGlobalId: string }>;
+  /** Somme des durées de modules, en minutes. */
+  dureeContenuMin: number;
+  /** Durée vendue, en minutes. */
+  dureeVendueMin: number;
+  /** Écart en minutes (positif = contenu plus long que vendu). */
+  ecartDureeMin: number;
+  /** Part de pratique dans le contenu, en pourcentage entier. */
+  ratioPratiquePct: number;
+  /** La formation peut-elle être publiée en l'état ? */
+  publiable: boolean;
+}
+
+/** Seuil de pratique du Standard, repris tel quel de la grille qualité v3. */
+export const RATIO_PRATIQUE_MINIMUM_PCT = 60;
+
+/**
+ * Tolérance sur l'écart de durée : un quart d'heure d'imprécision sur une
+ * journée est normal, une heure ne l'est pas. Assez large pour ne pas
+ * harceler, assez serré pour attraper un module oublié.
+ */
+export const TOLERANCE_ECART_DUREE_MIN = 15;
+
+/**
+ * Diagnostic complet d'une formation. Ne lève jamais : une entrée aberrante
+ * produit un diagnostic « rien n'est publiable », jamais une exception.
+ */
+export function diagnostiquerFormation(input: {
+  modules: unknown[];
+  /** Identifiants des objectifs pédagogiques déclarés de la formation. */
+  objectifsIds: string[];
+  /** Durée vendue, en heures. */
+  dureeHeures: number;
+}): DiagnosticFormation {
+  const modules = (Array.isArray(input.modules) ? input.modules : []).map(diagnostiquerModule);
+  const dureeVendueMin = Math.round((Number(input.dureeHeures) || 0) * 60);
+
+  const declares = new Set(input.objectifsIds ?? []);
+  const couverts = new Set<string>();
+  const renvoisOrphelins: DiagnosticFormation["renvoisOrphelins"] = [];
+  let dureeContenuMin = 0;
+  let dureePratiqueMin = 0;
+
+  for (const brut of Array.isArray(input.modules) ? input.modules : []) {
+    const m = brut as Record<string, unknown> | null;
+    if (m === null || typeof m !== "object") continue;
+
+    const duree = m["dureeMin"];
+    if (typeof duree === "number" && Number.isFinite(duree)) dureeContenuMin += duree;
+
+    const pratique = m["pratique"] as { dureeMin?: unknown } | undefined;
+    if (pratique && typeof pratique.dureeMin === "number") dureePratiqueMin += pratique.dureeMin;
+
+    const objectif = m["objectif"] as { objectifGlobalId?: unknown } | undefined;
+    const lien = objectif?.objectifGlobalId;
+    if (typeof lien === "string" && lien !== "") {
+      if (declares.has(lien)) couverts.add(lien);
+      else {
+        const moduleId = typeof m["moduleId"] === "string" ? m["moduleId"] : "(sans identifiant)";
+        renvoisOrphelins.push({ moduleId, objectifGlobalId: lien });
+      }
+    }
+  }
+
+  const objectifsNonCouverts = [...declares].filter((o) => !couverts.has(o));
+  const ratioPratiquePct =
+    dureeContenuMin > 0 ? Math.round((dureePratiqueMin / dureeContenuMin) * 100) : 0;
+  const ecartDureeMin = dureeContenuMin - dureeVendueMin;
+  const modulesComplets = modules.filter((m) => m.complet).length;
+
+  return {
+    modulesComplets,
+    modulesTotal: modules.length,
+    modules,
+    objectifsNonCouverts,
+    renvoisOrphelins,
+    dureeContenuMin,
+    dureeVendueMin,
+    ecartDureeMin,
+    ratioPratiquePct,
+    publiable:
+      modules.length > 0 &&
+      modulesComplets === modules.length &&
+      objectifsNonCouverts.length === 0 &&
+      renvoisOrphelins.length === 0 &&
+      Math.abs(ecartDureeMin) <= TOLERANCE_ECART_DUREE_MIN &&
+      ratioPratiquePct >= RATIO_PRATIQUE_MINIMUM_PCT,
+  };
+}
+
+/**
+ * La démonstration a-t-elle été vérifiée récemment ?
+ *
+ * Le Standard recommande une revue trimestrielle du catalogue : au-delà de
+ * quatre-vingt-dix jours, captures et exemples sont réputés à revoir — les
+ * interfaces des modèles changent en quelques semaines.
+ */
+export const FRAICHEUR_DEMO_JOURS = 90;
+
+export function demonstrationPerimee(verifieLe: string, maintenant: Date): boolean {
+  const d = new Date(`${verifieLe}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return true;
+  return maintenant.getTime() - d.getTime() > FRAICHEUR_DEMO_JOURS * 86_400_000;
 }

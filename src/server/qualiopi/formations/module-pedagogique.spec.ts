@@ -29,7 +29,6 @@ const MODULE_PROD = {
 const NOTES_OK = {
   script:
     "Ne cherchez pas le poste le plus compliqué : prenez le dernier publié, on veut comparer avec du connu.",
-  timingMin: 9,
   faq: [
     {
       question: "Le candidat verra-t-il que c'est écrit par une IA ?",
@@ -52,6 +51,7 @@ const MODULE_COMPLET = {
   objectif: {
     enonce: "Vous saurez rédiger une offre d'emploi complète à partir d'une fiche de poste.",
     objectifGlobalId: "obj-1",
+    dureeMin: 5,
     notes: NOTES_OK,
   },
   demonstration: {
@@ -61,16 +61,20 @@ const MODULE_COMPLET = {
       "Contexte : PME de 40 personnes. Rôle : responsable RH, ton direct. Format : 300 mots. Exigence : aucun superlatif.",
     outil: "Claude",
     gain: { avant: "40 min", apres: "10 min" },
+    verifieLe: "2026-08-01",
+    dureeMin: 20,
     notes: NOTES_OK,
   },
   pratique: {
     consigne: "Prenez une offre publiée cette année et réécrivez-la avec la structure vue.",
-    dureeMin: 5,
+    aEmporter: "Fiche mémo des quatre lignes du prompt, à garder.",
+    dureeMin: 55,
     notes: NOTES_OK,
   },
   verification: {
     question: "Quelle partie du prompt évite le « dynamique et motivé » ?",
     reponseAttendue: "La ligne Exigence.",
+    dureeMin: 5,
     notes: NOTES_OK,
   },
   synthese: {
@@ -78,6 +82,7 @@ const MODULE_COMPLET = {
       "Vous savez transformer une fiche de poste en offre publiable.",
       "Vous savez faire retirer le jargon par une contrainte explicite.",
     ],
+    dureeMin: 5,
     notes: NOTES_OK,
   },
   sequences: [],
@@ -143,6 +148,7 @@ describe("blocSyntheseSchema", () => {
           { length: n },
           (_, i) => `Vous savez maintenant faire la chose ${i + 1}.`,
         ),
+        dureeMin: 5,
         notes: base,
       }).success;
     expect(acquis(1)).toBe(false);
@@ -223,5 +229,165 @@ describe("diagnostiquerModule", () => {
       expect(() => diagnostiquerModule(entree)).not.toThrow();
       expect(diagnostiquerModule(entree).complet).toBe(false);
     }
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Niveau FORMATION — ce qu'aucun module ne peut vérifier seul
+// ─────────────────────────────────────────────────────────────────────────────
+
+import {
+  diagnostiquerFormation,
+  demonstrationPerimee,
+  RATIO_PRATIQUE_MINIMUM_PCT,
+} from "./module-pedagogique";
+
+/** Deux modules complets couvrant obj-1 et obj-2, 90 min chacun, 50 min de pratique. */
+function formationSaine() {
+  const m2 = {
+    ...MODULE_COMPLET,
+    moduleId: "mod-2",
+    objectif: { ...MODULE_COMPLET.objectif, objectifGlobalId: "obj-2" },
+  };
+  return {
+    modules: [MODULE_COMPLET, m2],
+    objectifsIds: ["obj-1", "obj-2"],
+    dureeHeures: 3,
+  };
+}
+
+describe("diagnostiquerFormation — couverture des objectifs (indicateur 11)", () => {
+  it("signale un objectif VENDU que plus aucun module ne couvre", () => {
+    const d = diagnostiquerFormation({
+      ...formationSaine(),
+      objectifsIds: ["obj-1", "obj-2", "obj-3"],
+    });
+    expect(d.objectifsNonCouverts).toEqual(["obj-3"]);
+    expect(d.publiable).toBe(false);
+  });
+
+  /**
+   * 🔴 Le trou que le schéma seul ne voit pas : un module peut déclarer servir
+   * un objectif qui n'existe nulle part. Le module est « valide », et la
+   * promesse de couverture est vide.
+   */
+  it("signale un module qui renvoie vers un objectif inexistant", () => {
+    const orphelin = {
+      ...MODULE_COMPLET,
+      moduleId: "mod-9",
+      objectif: { ...MODULE_COMPLET.objectif, objectifGlobalId: "obj-42" },
+    };
+    const d = diagnostiquerFormation({
+      modules: [orphelin],
+      objectifsIds: ["obj-1"],
+      dureeHeures: 1.5,
+    });
+    expect(d.renvoisOrphelins).toEqual([{ moduleId: "mod-9", objectifGlobalId: "obj-42" }]);
+    expect(d.publiable).toBe(false);
+  });
+
+  it("une formation dont tous les objectifs sont couverts est publiable", () => {
+    const d = diagnostiquerFormation(formationSaine());
+    expect(d.objectifsNonCouverts).toEqual([]);
+    expect(d.renvoisOrphelins).toEqual([]);
+    expect(d.modulesComplets).toBe(2);
+    expect(d.publiable).toBe(true);
+  });
+});
+
+describe("diagnostiquerFormation — durée vendue contre durée réelle", () => {
+  it("détecte un contenu plus court que ce qui est vendu", () => {
+    // 2 modules × 90 min = 180 min, vendus 7 h = 420 min.
+    const d = diagnostiquerFormation({ ...formationSaine(), dureeHeures: 7 });
+    expect(d.dureeContenuMin).toBe(180);
+    expect(d.dureeVendueMin).toBe(420);
+    expect(d.ecartDureeMin).toBe(-240);
+    expect(d.publiable).toBe(false);
+  });
+
+  it("tolère un écart de quelques minutes — pas une heure", () => {
+    const d = diagnostiquerFormation({ ...formationSaine(), dureeHeures: 3.1 });
+    expect(Math.abs(d.ecartDureeMin)).toBeLessThanOrEqual(15);
+    expect(d.publiable).toBe(true);
+  });
+});
+
+describe("diagnostiquerFormation — ratio de pratique", () => {
+  it("calcule la part de pratique et refuse sous le seuil du Standard", () => {
+    // 45 min de pratique sur 90 min de module = 50 %, sous les 60 % exigés.
+    const d = diagnostiquerFormation(formationSaine());
+    expect(d.ratioPratiquePct).toBe(61);
+    expect(d.ratioPratiquePct).toBeGreaterThanOrEqual(RATIO_PRATIQUE_MINIMUM_PCT);
+    expect(d.publiable).toBe(true);
+  });
+
+  it("une formation sans pratique tombe à 0 % et n'est pas publiable", () => {
+    const sansPratique = {
+      ...MODULE_COMPLET,
+      pratique: { ...MODULE_COMPLET.pratique, dureeMin: 0 },
+    };
+    const d = diagnostiquerFormation({
+      modules: [sansPratique],
+      objectifsIds: ["obj-1"],
+      dureeHeures: 1.5,
+    });
+    expect(d.ratioPratiquePct).toBe(0);
+    expect(d.publiable).toBe(false);
+  });
+});
+
+describe("diagnostiquerFormation — robustesse", () => {
+  it("ne lève jamais et déclare non publiable sur une entrée aberrante", () => {
+    for (const modules of [[], [null], [42], ["texte"], [{}]]) {
+      const d = diagnostiquerFormation({ modules, objectifsIds: [], dureeHeures: 1 });
+      expect(d.publiable).toBe(false);
+    }
+  });
+});
+
+describe("demonstrationPerimee", () => {
+  const maintenant = new Date("2026-08-06T10:00:00Z");
+
+  it("une vérification de la semaine est fraîche", () => {
+    expect(demonstrationPerimee("2026-08-01", maintenant)).toBe(false);
+  });
+
+  /** Revue trimestrielle du Standard : au-delà de 90 jours, à revoir. */
+  it("une vérification de plus de trois mois est périmée", () => {
+    expect(demonstrationPerimee("2026-04-01", maintenant)).toBe(true);
+  });
+
+  it("une date illisible est traitée comme périmée — jamais comme fraîche", () => {
+    for (const d of ["", "hier", "2026-13-45", "01/08/2026"]) {
+      expect(demonstrationPerimee(d, maintenant)).toBe(true);
+    }
+  });
+});
+
+describe("diagnostiquerModule — cohérence des durées", () => {
+  /**
+   * 🔴 Défaut révélé en écrivant les tests du niveau formation : un module
+   * pouvait annoncer 90 minutes et contenir 100 minutes de blocs. Le programme
+   * minuté projeté en ouverture devenait faux dès le premier module.
+   */
+  it("signale une somme de blocs qui contredit la durée annoncée", () => {
+    const d = diagnostiquerModule({ ...MODULE_COMPLET, dureeMin: 60 });
+    expect(d.dureeBlocsMin).toBe(90);
+    expect(d.dureeIncoherente).toBe(true);
+    expect(d.complet).toBe(false);
+    // Les blocs eux-mêmes sont bons : ce n'est pas eux qu'il faut réécrire.
+    expect(d.blocsManquants).toEqual([]);
+  });
+
+  it("tolère quelques minutes d'arrondi", () => {
+    const d = diagnostiquerModule({ ...MODULE_COMPLET, dureeMin: 93 });
+    expect(d.dureeIncoherente).toBe(false);
+    expect(d.complet).toBe(true);
+  });
+
+  it("un module conforme a des durées cohérentes", () => {
+    const d = diagnostiquerModule(MODULE_COMPLET);
+    expect(d.dureeBlocsMin).toBe(90);
+    expect(d.dureeIncoherente).toBe(false);
   });
 });
