@@ -32,6 +32,7 @@
  */
 
 import type { ModuleProgramme } from "../types";
+import { titreModuleSansPrefixe } from "@/server/qualiopi/documents/programme-modules";
 
 /** Fonds disponibles. Le contraste du deck se joue entre `ivoire` et `mocha`. */
 export type FondSlide = "ivoire" | "mocha" | "sable";
@@ -175,7 +176,9 @@ function slidesDeModule(mod: ModuleProgramme, index: number): Slide[] {
     layout: "couverture",
     fond: "mocha",
     eyebrow: `Module ${numero}`,
-    titre,
+    // Le titre du catalogue porte son repere de demi-journee (« Matin · Module
+    // 1 — … ») : indispensable a la timeline publique, illisible projete.
+    titre: titreModuleSansPrefixe(titre),
     ...(minutes > 0 ? { corps: [duree(minutes)] } : {}),
   });
 
@@ -224,11 +227,16 @@ function slidesDeModule(mod: ModuleProgramme, index: number): Slide[] {
   }
 
   const prompt = texte(demo?.["prompt"]);
+  const outil = texte(demo?.["outil"]);
+  const nomOutil = outil !== undefined && outil.length <= 24 ? outil : undefined;
   if (prompt !== undefined) {
     slides.push({
       layout: "prompt",
       fond: "sable",
-      eyebrow: eyebrow(`Le prompt · ${texte(demo?.["outil"]) ?? "outil de la salle"}`),
+      // L'outil n'entre dans le surtitre que si c'est un NOM. Le champ accepte
+      // une phrase (« Un seul outil, celui valide dans la salle ») : projetee en
+      // surtitre, elle deborde et ne dit rien de plus que le silence.
+      eyebrow: eyebrow(nomOutil === undefined ? "Le prompt" : `Le prompt · ${nomOutil}`),
       titre: "À recopier tel quel",
       corps: [prompt],
       ...(notesDemo !== undefined ? { notes: notesDemo } : {}),

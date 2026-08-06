@@ -140,3 +140,33 @@ describe("construireDeck — robustesse", () => {
     }
   });
 });
+
+describe("construireDeck — ce qui est projeté doit se lire", () => {
+  /**
+   * 🔴 Trouvé en relisant le deck réel : les couvertures de module projetaient
+   * « Matin · Module 1 — Le cadre avant les CV : ce qu'on a le droit de faire ».
+   * Le repère de demi-journée est un artefact de programme, indispensable à la
+   * timeline publique et illisible sur un écran. Il était aussi imprimé dans les
+   * PDF — le correctif est à la source, donc les deux familles en bénéficient.
+   */
+  it("aucune couverture de module ne projette son repère de demi-journée", () => {
+    const deck = deckPilote();
+    for (const slide of deck.slides.filter((s) => s.layout === "couverture")) {
+      expect(slide.titre, slide.titre).not.toMatch(/^(matin|après-midi|jour|demi-journée)/i);
+      expect(slide.titre, slide.titre).not.toMatch(/^module\s*\d/i);
+    }
+  });
+
+  /**
+   * Le champ `outil` accepte une phrase (« Un seul outil, celui validé dans la
+   * salle »). Projetée en surtitre, elle déborde et ne dit rien de plus que le
+   * silence.
+   */
+  it("le surtitre reste court sur toutes les slides", () => {
+    const deck = deckPilote();
+    for (const slide of deck.slides) {
+      if (slide.eyebrow === undefined) continue;
+      expect(slide.eyebrow.length, `« ${slide.eyebrow} »`).toBeLessThanOrEqual(56);
+    }
+  });
+});

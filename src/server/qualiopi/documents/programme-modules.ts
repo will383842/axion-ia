@@ -203,7 +203,31 @@ export function formaterDuree(minutes: number | null): string | null {
  *
  * ⚠️ Tolère les trois tirets (—, –, -) et l'absence d'espace : les titres
  * générés ne sont pas normalisés.
+ *
+ * 🔴 Depuis le 2026-08-06, les titres du catalogue portent AUSSI leur repère de
+ * demi-journée — « Matin · Module 1 — … », « Après-midi J2 · Module 5 — … ». Ce
+ * repère existe pour que la timeline publique sache quand l'horloge repart à
+ * 9 h ou à 14 h ; il n'a rien à faire sur une couverture de diaporama ni dans
+ * une annexe de convention, où il se lit comme une coquille. Il se retire ici,
+ * une fois, pour toutes les familles de pièces.
  */
+/**
+ * Repère de demi-journée en tête de titre : « Matin · », « Après-midi J2 · »,
+ * « Demi-journée — », « Jour 1 — ».
+ *
+ * ⚠️ Pas de `\b` : en JavaScript, `\b` se calcule sur `\w`, qui EXCLUT les
+ * lettres accentuées. « matin\b » matcherait donc à l'intérieur de « Matinée »,
+ * et « Matinée d'accueil » perdrait son titre entier. C'est un séparateur
+ * explicite — point médian ou tiret — qui prouve qu'on a affaire à un repère et
+ * non au premier mot du titre. Les libellés composés passent en premier dans
+ * l'alternance, sans quoi « demi-journée » serait coupé par « jour ».
+ */
+const REPERE_DEMI_JOURNEE =
+  /^\s*(?:demi-journ[ée]e|apr[èe]s-midi|matin|jour)(?:\s*j?\s*\d+)?\s*[·:—–-]\s*/i;
+
 export function titreModuleSansPrefixe(titre: string): string {
-  return titre.replace(/^module\s*\d+\s*[—–-]\s*/i, "").trim();
+  return titre
+    .replace(REPERE_DEMI_JOURNEE, "")
+    .replace(/^module\s*\d+\s*[—–-]\s*/i, "")
+    .trim();
 }
