@@ -11,6 +11,12 @@
  * tout `moduleId` qui ne correspond à aucun module du catalogue.
  */
 
+import { IA_POUR_BIEN_COMMENCER } from "./ia-pour-bien-commencer";
+import { IA_POUR_BIEN_COMMENCER_JOURNEE } from "./ia-pour-bien-commencer-journee";
+import { IA_POUR_LA_BANQUE_ASSURANCE } from "./ia-pour-la-banque-assurance";
+import { IA_POUR_LE_COMMERCE } from "./ia-pour-le-commerce";
+import { IA_POUR_L_HOTELLERIE_RESTAURATION } from "./ia-pour-l-hotellerie-restauration";
+import { IA_POUR_L_IMMOBILIER } from "./ia-pour-l-immobilier";
 import { IA_POUR_LA_SANTE } from "./ia-pour-la-sante";
 import { IA_POUR_LE_BTP } from "./ia-pour-le-btp";
 import { IA_POUR_LE_JURIDIQUE } from "./ia-pour-le-juridique";
@@ -27,6 +33,12 @@ export type { EnrichissementFormation, EnrichissementModule } from "./types";
 
 /** Slug de formation → contenu rédigé de ses modules. */
 export const ENRICHISSEMENTS: Readonly<Record<string, EnrichissementFormation>> = {
+  "ia-pour-bien-commencer": IA_POUR_BIEN_COMMENCER,
+  "ia-pour-bien-commencer-journee": IA_POUR_BIEN_COMMENCER_JOURNEE,
+  "ia-pour-la-banque-assurance": IA_POUR_LA_BANQUE_ASSURANCE,
+  "ia-pour-le-commerce": IA_POUR_LE_COMMERCE,
+  "ia-pour-l-hotellerie-restauration": IA_POUR_L_HOTELLERIE_RESTAURATION,
+  "ia-pour-l-immobilier": IA_POUR_L_IMMOBILIER,
   "ia-pour-la-sante": IA_POUR_LA_SANTE,
   "ia-pour-le-btp": IA_POUR_LE_BTP,
   "ia-pour-le-juridique": IA_POUR_LE_JURIDIQUE,

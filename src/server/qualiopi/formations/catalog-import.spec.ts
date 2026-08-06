@@ -225,13 +225,42 @@ describe("buildFormationImportData", () => {
    * durée ne doit rien déclarer. C'était le cas des 22 fiches avant leur
    * minutage, et ce sera celui de toute formation créée à la main.
    */
+  /**
+   * ⚠️ Le `slugFr` est REMPLACÉ par un slug absent du registre des contenus
+   * rédigés. Sans cela, l'import fusionnerait l'enrichissement de la formation
+   * témoin, dont les cinq blocs portent leurs durées — et le ratio redeviendrait
+   * calculable alors que le test veut précisément l'inverse.
+   *
+   * Le défaut s'est produit : le témoin était `ia-pour-bien-commencer`, et le
+   * jour où cette formation a été rédigée, le test a rougi en annonçant 17 % au
+   * lieu de `null`. Le comportement était juste, c'est le témoin qui avait
+   * changé de nature sous lui. Un slug inexistant le rend insensible aux
+   * rédactions à venir.
+   */
   it("ne déclare RIEN quand le programme ne porte aucune durée", () => {
     const sansDurees = {
       ...pilote!,
+      slugFr: "formation-sans-contenu-redige",
       programme: [{ titreFr: "Module 1", steps: [{ titre: "Une séquence sans durée" }] }],
     };
     const data = buildFormationImportData(sansDurees, "offre-x");
     expect(data.ratioPratiquePct).toBeNull();
+  });
+
+  /**
+   * Le pendant du test précédent, et la raison d'être du repli sur les blocs :
+   * une formation dont le programme publié n'est pas minuté mais dont le contenu
+   * EST rédigé garde un ratio calculable. Mieux vaut le chiffre des blocs
+   * qu'aucun chiffre — le contenu, lui, est bien minuté.
+   */
+  it("retombe sur les blocs rédigés quand les séquences ne sont pas minutées", () => {
+    const sansDureesMaisRedige = {
+      ...pilote!,
+      programme: [{ titreFr: "Module 1", steps: [{ titre: "Une séquence sans durée" }] }],
+    };
+    const data = buildFormationImportData(sansDureesMaisRedige, "offre-x");
+    expect(data.ratioPratiquePct).not.toBeNull();
+    expect(data.ratioPratiquePct).toBeGreaterThan(0);
   });
 
   it("ne pose validatedBy/At que si un admin déclenche", () => {
