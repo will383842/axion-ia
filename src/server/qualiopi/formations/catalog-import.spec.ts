@@ -157,6 +157,30 @@ describe("buildFormationImportData", () => {
     expect(mod0.sequences[0]!.temps).toBe(pilote!.programme[0]!.steps[0]!.temps);
   });
 
+  /**
+   * 🔴 L'import ne transportait que `temps`, une chaîne d'AFFICHAGE (« 35' »).
+   * La base ne portait donc aucune durée exploitable ni aucune nature de
+   * séquence : le ratio de pratique n'y était pas calculable, ce qui est
+   * exactement ce qui a permis aux 70 % écrits en dur de survivre des mois sans
+   * que rien ne les contredise. Tout ce qui est en aval — programme officiel,
+   * écran de la console, futurs documents générés — dépend de ce passage.
+   */
+  it("transporte la durée chiffrée ET la nature de chaque séquence", () => {
+    const data = buildFormationImportData(pilote!, "offre-x");
+    const sequences = data.programmeDetaille.flatMap((m) => m.sequences);
+    const steps = pilote!.programme.flatMap((m) => m.steps);
+
+    expect(sequences).toHaveLength(steps.length);
+    expect(sequences.every((s) => typeof s.dureeMin === "number" && s.dureeMin > 0)).toBe(true);
+    expect(sequences.every((s) => typeof s.type === "string" && s.type.length > 0)).toBe(true);
+
+    // La durée chiffrée dit bien la même chose que le repère d'affichage.
+    for (const [i, sequence] of sequences.entries()) {
+      expect(sequence.dureeMin).toBe(Number.parseInt(steps[i]!.temps!.replace("'", ""), 10));
+      expect(sequence.type).toBe(steps[i]!.type);
+    }
+  });
+
   it("sort en état session-ready", () => {
     const data = buildFormationImportData(pilote!, "offre-x");
     expect(data.statutGeneration).toBe("publie");
