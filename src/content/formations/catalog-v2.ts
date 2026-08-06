@@ -62,13 +62,7 @@ export interface FormationProgrammeStep {
  * qu'elles protègent — et `pause` pour le temps de face-à-face non pédagogique.
  */
 export type FormationStepType =
-  | "objectif"
-  | "demonstration"
-  | "pratique"
-  | "verification"
-  | "synthese"
-  | "cadre"
-  | "pause";
+  "objectif" | "demonstration" | "pratique" | "verification" | "synthese" | "cadre" | "pause";
 
 export interface FormationProgrammeSection {
   /** Ex. « Module 1 — … », « Jour 1 — … ». */
@@ -4591,7 +4585,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
             "Démonstration : un avis à une étoile, deux réponses générées — celle qui aggrave et celle qui referme — prompts affichés en entier, différence commentée mot à mot",
         },
         {
-          temps: "40'",
+          temps: "35'",
           type: "pratique",
           titre:
             "Atelier chronométré : chacun répond à trois avis réels de son enseigne (un positif, un négatif, un injustifié) sur ses avis produit et place de marché, puis complète une réponse type pour sa fiche d'établissement locale",
