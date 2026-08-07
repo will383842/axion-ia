@@ -2536,7 +2536,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
   ],
   objectifsFr: [
     "Produire suivi et reporting de production à l'aide de l'IA",
-    "Utiliser l'IA en appui à la planification",
+    "Commenter un plan de charge calculé par vos outils métiers, sans jamais l'ordonnancer",
     "Rédiger documentation qualité et procédures",
     "Identifier et prototyper une première automatisation de suivi",
     "Appliquer les règles de confidentialité",
@@ -2884,7 +2884,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
   ],
   objectifsFr: [
     "Analyser devis et comparatifs fournisseurs à l'aide de l'IA",
-    "Rédiger un cahier des charges",
+    "Structurer une trame de consultation fournisseur",
     "Produire suivi de commandes et relances",
     "Anticiper les ruptures avec l'appui de l'IA",
     "Appliquer les règles de confidentialité",
@@ -3700,7 +3700,7 @@ const IA_POUR_LA_SANTE: FormationV2 = {
   ],
   objectifsFr: [
     "Rédiger comptes-rendus et courriers à l'aide de l'IA",
-    "Utiliser l'IA en appui à la gestion administrative et aux rendez-vous",
+    "Utiliser l'IA en appui aux écrits de gestion administrative et de coordination",
     "Synthétiser des documents",
     "Appliquer strictement les règles de confidentialité des données de santé",
     "Vérifier une production avant diffusion",
@@ -3985,7 +3985,7 @@ const IA_POUR_LE_BTP: FormationV2 = {
   ],
   objectifsFr: [
     "Rédiger devis et comptes-rendus de chantier à l'aide de l'IA",
-    "Utiliser l'IA en appui au suivi de planning",
+    "Rédiger les écrits qui tiennent le planning : constat de retard, relance, demande d'avenant",
     "Préparer une réponse à un appel d'offres",
     "Synthétiser des documents techniques",
     "Appliquer les règles de confidentialité",
@@ -4769,7 +4769,7 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
   objectifsFr: [
     "Rédiger des réponses aux avis et messages de réservation à l'aide de l'IA",
     "Rédiger menus et supports de communication",
-    "Utiliser l'IA en appui à la planification des équipes",
+    "Préparer une trame de planning dépersonnalisée, les noms restant hors de l'outil",
     "Produire un suivi administratif courant",
     "Appliquer les règles de confidentialité",
   ],
@@ -4997,19 +4997,19 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
     { texteFr: "Le suivi qualité et le reporting assistés par l'IA" },
     { texteFr: "L'aide à la documentation de maintenance" },
     { texteFr: "La synthèse des données de production" },
-    { texteFr: "Les premiers cas d'automatisation sur des tâches de suivi" },
+    { texteFr: "La qualification des premiers dispositifs de suivi automatisable" },
   ],
   objectifsFr: [
     "Produire suivi qualité et reporting à l'aide de l'IA",
     "Rédiger de la documentation de maintenance",
-    "Synthétiser des données de production",
-    "Identifier et prototyper une première automatisation de suivi",
+    "Synthétiser les enregistrements et indicateurs de production déjà validés",
+    "Qualifier ses premiers dispositifs de suivi automatisable et les prioriser",
     "Appliquer les règles de confidentialité",
   ],
   beneficeDirigeantFr:
     "Un suivi plus structuré et une documentation qualité et maintenance tenue à jour plus facilement — le pilotage gagne en netteté, les équipes en temps.",
   equationTempsFr:
-    "2 jours → un rapport qualité mis en forme en quelques minutes à partir des données du jour.",
+    "2 jours → un rapport qualité mis en forme en quelques minutes à partir des enregistrements et indicateurs déjà validés.",
   avantApresFr: {
     avant: "Un reporting qualité et une maintenance chronophages, des données dispersées.",
     apres:
@@ -5341,7 +5341,7 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
     {
       question: "Pourquoi 2 jours et un tarif différent des autres secteurs ?",
       reponse:
-        "L'industrie cumule trois chantiers documentaires lourds (qualité, maintenance, production) et va jusqu'à l'automatisation du suivi, construite et testée au jour 2. Le format 2 jours est scindable en 2×1 jour.",
+        "L'industrie cumule trois chantiers documentaires lourds (qualité, maintenance, production) et va jusqu'à qualifier ses premiers dispositifs de suivi automatisable, puis à les prioriser en feuille de route au jour 2. Le format 2 jours est scindable en 2×1 jour.",
     },
     {
       question: "Nos procédés industriels sont confidentiels — comment est-ce géré ?",
@@ -5378,22 +5378,22 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
   publicViseFr:
     "Exploitants, responsables logistique, personnel administratif des entreprises de transport et de logistique. Planification, suivi, documents de transport : le quotidien de l'exploitation est dense — cette journée montre comment l'IA fluidifie ces tâches pour gagner en réactivité.",
   casUsageFr: [
-    { texteFr: "L'aide à la planification de tournées" },
+    { texteFr: "Les écrits qui accompagnent la tournée" },
     { texteFr: "Le suivi et le reporting d'activité" },
-    { texteFr: "La rédaction de documents de transport" },
+    { texteFr: "La rédaction des écrits qui accompagnent le transport" },
     { texteFr: "La communication avec clients et sous-traitants assistée par l'IA" },
   ],
   objectifsFr: [
-    "Utiliser l'IA en appui à la planification de tournées",
+    "Rédiger les écrits qui accompagnent une tournée préparée par vos outils métiers",
     "Produire suivi et reporting d'activité",
-    "Rédiger des documents de transport",
+    "Rédiger les écrits qui accompagnent le transport, sans jamais générer un document réglementé",
     "Rédiger la communication avec clients et sous-traitants",
     "Appliquer les règles de confidentialité",
   ],
   beneficeDirigeantFr:
     "Une planification facilitée et des documents produits plus rapidement — l'exploitation gagne en réactivité sur toute la chaîne.",
   equationTempsFr:
-    "1 journée → un document de transport rempli en quelques minutes à partir des informations de la commande.",
+    "1 journée → une commande transformée en trois écrits prêts à partir : consigne au conducteur, message au client, courrier d'accompagnement.",
   avantApresFr: {
     avant: "Une planification et un suivi manuels, des documents produits lentement.",
     apres: "Une planification facilitée, des documents et un reporting produits plus rapidement.",
@@ -5549,7 +5549,7 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
           temps: "10'",
           type: "demonstration",
           titre:
-            "Le biais rendu visible : le même tableau d'aléas commenté deux fois par l'assistant, avec puis sans les noms des conducteurs — le ton change et la faute se déplace",
+            "Le biais rendu visible : le même tableau d'aléas du kit commenté deux fois par l'assistant, avec puis sans les prénoms fictifs des conducteurs — le ton change et la faute se déplace",
         },
         {
           temps: "25'",
@@ -5637,10 +5637,11 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
   ],
   objectifsFr: [
     "Synthétiser un dossier client à l'aide de l'IA",
-    "Rédiger courriers et propositions",
+    "Rédiger les courriers et réponses écrites aux clients",
     "Rédiger des réponses aux questions courantes",
     "Appliquer strictement les règles de confidentialité des données financières",
     "Vérifier une production avant diffusion",
+    "Distinguer les usages autorisés des usages à haut risque, et savoir ce qui ne se délègue jamais",
   ],
   beneficeDirigeantFr:
     "Des dossiers traités plus vite et des réponses aux clients plus réactives — la rigueur du secteur est préservée, la lenteur ne l'est pas.",
@@ -5870,7 +5871,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   materielFr:
     "Aucun matériel à prévoir : les démonstrations sont pilotées par le formateur. Chaque participant utilise son téléphone personnel pour le sondage en direct et les QCM",
   outilsFr:
-    "Le séminaire est démonstratif : le formateur pilote ChatGPT, Claude et Gemini en direct. Les participants ne créent aucun compte — ils travaillent par table, sur leurs propres cas d’usage.",
+    "Le séminaire est démonstratif : le formateur pilote en direct un seul assistant, tenu toute la journée pour que la salle suive un geste et non trois interfaces. Les participants ne créent aucun compte — ils travaillent par table, sur leurs propres cas d’usage.",
   seminaire: true,
   titreFr: "Séminaire IA — Mettre toute l'entreprise au diapason",
   accrocheFr:

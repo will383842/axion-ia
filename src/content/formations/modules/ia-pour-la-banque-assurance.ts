@@ -230,6 +230,9 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous reconnaissez une décision qui ne se délègue pas — octroi, notation, tarification, sélection des risques — et vous savez ce que vous devez au client quand un outil est intervenu dans son dossier.",
       objectifGlobalId: "obj-4",
+      // 105 minutes de programme qui n'etaient vendues nulle part : ce que
+      // la formation refuse de deleguer est son enseignement le plus lourd.
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 5,
       notes: {
         script:
