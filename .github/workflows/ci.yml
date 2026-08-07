@@ -219,26 +219,38 @@ jobs:
         # refaite au vrai build de déploiement (Dockerfile / GH Actions deploy).
         # Le Gate B ne valide QUE la compilation du build. (Fix 2026-05-29.)
         #
-        # NODE_OPTIONS heap aligné sur le Dockerfile de déploiement
-        # (max-old-space-size=6144) : le webpack compile du SSG (~18k pages)
-        # dépassait le heap Node par défaut sur ubuntu-latest → « JavaScript heap
-        # out of memory » (cause du Gate B rouge chronique). Env scoppé à CE step
-        # uniquement (pas job-level) pour ne pas impacter Playwright/Lighthouse.
-        # (Fix OOM Gate B 2026-06-14.)
+        # NODE_OPTIONS : le webpack compile du SSG (~18k pages) dépassait le heap
+        # Node par défaut sur ubuntu-latest → « JavaScript heap out of memory »
+        # (cause du Gate B rouge chronique). Env scoppé à CE step uniquement (pas
+        # job-level) pour ne pas impacter Playwright/Lighthouse.
+        # (Fix OOM Gate B 2026-06-14 — heap posé à 6144, aligné sur le Dockerfile ;
+        # désaligné à 8192 le 2026-08-07, motif détaillé juste en dessous.)
+        # 🔴 OOM Gate B 2026-08-07 — heap DÉLIBÉRÉMENT désaligné du Dockerfile.
+        #
+        # Constat : après +1,3 Mo de contenu pédagogique rédigé, ce build nu échoue
+        # en « JavaScript heap out of memory » PENDANT LA COMPILATION (~4 min, avant
+        # « Compiled successfully »), alors que Gate C — qui exécute le `docker build`
+        # du Dockerfile de production, boote le conteneur et vérifie /api/healthz —
+        # compile en 4,2 min et passe, au MÊME heap de 6144, sur les MÊMES routes
+        # (`BUILD_SSG_VILLES_INDEXABLE_ONLY=true` des deux côtés).
+        #
+        # Pourquoi on ne remonte PAS le Dockerfile en écho : il est à 6144 parce
+        # qu'à 8192, BuildKit se faisait OOM-killer SILENCIEUSEMENT à l'export des
+        # layers (~38 min) — 8+ déploiements ratés d'affilée en mai 2026 (cf. le
+        # commentaire du Dockerfile, lignes 148-162). Le budget 16 Go y est compté
+        # au demi-giga près. Toucher à cette valeur rouvre un trou de production
+        # pour réparer un vert de CI : le remède serait pire que le mal.
+        #
+        # Pourquoi ce n'est PAS un vert trompeur : les deux builds ne valident pas
+        # la même chose. Gate B ne vérifie QUE la compilation ; c'est Gate C qui
+        # atteste que l'artefact réellement déployé se construit, démarre et répond.
+        # La fidélité au déploiement est donc portée par Gate C, aux réglages réels,
+        # et elle est verte. Donner ici la marge de compilation ne masque rien.
+        #
+        # `NEXT_PRIVATE_WORKER_THREADS=1` reste aligné sur le Dockerfile (ligne 164) :
+        # les workers parallèles de webpack tiennent chacun leur copie du graphe.
         env:
-          NODE_OPTIONS: --max-old-space-size=6144
-          # OOM Gate B 2026-08-07 : le Dockerfile pose `NEXT_PRIVATE_WORKER_THREADS=1`
-          # (ligne 164) et PAS Gate B — à heap identique (6144), le build Docker
-          # passait quand le build nu échouait en « JavaScript heap out of memory ».
-          # Les workers parallèles de webpack tiennent chacun leur copie du graphe :
-          # sur ~18k pages SSG, la différence suffit à franchir le plafond dès que le
-          # dépôt grossit (ici +1,3 Mo de contenu pédagogique rédigé).
-          #
-          # On ALIGNE plutôt que de relever le plafond : relever la CI seule rendrait
-          # Gate B vert pendant qu'un vrai déploiement échouerait, et relever les deux
-          # reprendrait les 2 Go délibérément rendus à BuildKit + OS (cf. Dockerfile
-          # ligne 158). Gate B ne valide QUE la compilation : la limiter à un worker
-          # la rend plus fidèle à l'artefact réellement déployé, pas moins.
+          NODE_OPTIONS: --max-old-space-size=8192
           NEXT_PRIVATE_WORKER_THREADS: "1"
           # ENOSPC fix 2026-06-22 : aligné sur deploy-coolify.yml + Gate C. Le build de
           # TOUTES les villes par-service en FR ET EN dépassait /mnt à la copie
