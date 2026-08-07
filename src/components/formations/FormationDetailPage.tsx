@@ -73,6 +73,49 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
+/**
+ * Intitulé court d'une séquence, pour le JSON-LD et les résumés.
+ *
+ * Depuis le minutage des 22 fiches (2026-08-06), un titre de séquence est un
+ * paragraphe opposable de 200 à 600 caractères. On coupe à la première
+ * ponctuation forte — deux-points, tiret cadratin, parenthèse — qui sépare
+ * l'intitulé de son développement.
+ */
+function nomCourtSequence(titre: string): string {
+  const coupe = titre.split(/\s(?:—|:|\()/)[0]!.trim();
+  return coupe.length >= 12 ? coupe : titre.slice(0, 90).trim();
+}
+
+/**
+ * Les acquis annoncés d'un module, extraits de sa séquence de synthèse.
+ *
+ * Les synthèses du catalogue s'écrivent « Vos acquis : A · B · C » ou « Acquis
+ * du module, formulés comme des actions : … ». On retire l'étiquette et on
+ * garde la liste — c'est exactement le « ce que vous saurez faire » qu'un
+ * visiteur mobile doit lire SANS déplier le déroulé.
+ */
+function acquisDuModule(steps: ReadonlyArray<{ titre: string; type?: string }>): string | null {
+  const synthese = steps.find((st) => st.type === "synthese");
+  if (synthese === undefined) return null;
+  const deuxPoints = synthese.titre.indexOf(":");
+  const corps =
+    deuxPoints > 0 && deuxPoints < 80 ? synthese.titre.slice(deuxPoints + 1) : synthese.titre;
+  return corps.trim();
+}
+
+/** Durée totale d'un module, sommée sur ses séquences minutées. */
+function dureeModuleLabel(steps: ReadonlyArray<{ temps?: string }>): string | null {
+  const minutes = steps.reduce((total, st) => {
+    const m = /^(\d+)\s*'?$/.exec((st.temps ?? "").trim());
+    return total + (m?.[1] !== undefined ? Number.parseInt(m[1], 10) : 0);
+  }, 0);
+  if (minutes === 0) return null;
+  const h = Math.floor(minutes / 60);
+  const min = minutes % 60;
+  if (h === 0) return `${min} min`;
+  return min === 0 ? `${h} h` : `${h} h ${String(min).padStart(2, "0")}`;
+}
+
 function bracketLabel(b: FormationBracket): string {
   const parts = b.split("-");
   return `${parts[0] ?? ""} à ${parts[1] ?? ""} personnes`;
@@ -258,7 +301,9 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
     }),
     image: courseImages,
   };
-  const programmeSteps = f.programme.flatMap((s) => s.steps).filter((st) => st.titre !== "Pause");
+  const programmeSteps = f.programme
+    .flatMap((s) => s.steps)
+    .filter((st) => st.titre !== "Pause" && st.type !== "pause");
   const howToJsonLd =
     programmeSteps.length > 0
       ? buildHowToJsonLd({
@@ -266,7 +311,11 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
           path,
           name: `Comment se déroule ${f.titreFr}`,
           description: f.accrocheFr,
-          steps: programmeSteps.map((st) => ({ name: st.titre, text: st.titre })),
+          // Depuis le minutage des 22 fiches, un titre de séquence est un
+          // PARAGRAPHE (200 à 600 caractères). `name` doit rester un intitulé :
+          // on coupe à la première ponctuation forte, et le paragraphe entier
+          // reste porté par `text` — rien n'est perdu pour l'indexation.
+          steps: programmeSteps.map((st) => ({ name: nomCourtSequence(st.titre), text: st.titre })),
         })
       : null;
 
@@ -487,6 +536,26 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
         titleEm="est capable de…"
         description="Des compétences directement applicables au quotidien, travaillées en atelier sur vos cas réels."
       >
+        {/* Avant / après — le contraste que le visiteur mobile lit en premier.
+            `avantApresFr` était renseigné sur 21 fiches et affiché nulle part. */}
+        {f.avantApresFr ? (
+          <div className="mx-auto mb-8 grid max-w-4xl gap-3 md:grid-cols-2">
+            <div className="border-border bg-bg shadow-subtle rounded-2xl border p-5">
+              <p className="text-fg-muted mb-2 text-[11.5px] font-bold tracking-wide uppercase">
+                Avant la formation
+              </p>
+              <p className="text-fg-soft text-[14.5px] leading-relaxed">{f.avantApresFr.avant}</p>
+            </div>
+            <div className="border-terracotta/25 bg-terracotta-soft shadow-subtle rounded-2xl border p-5">
+              <p className="text-terracotta-deep mb-2 text-[11.5px] font-bold tracking-wide uppercase">
+                Après la formation
+              </p>
+              <p className="text-fg text-[14.5px] leading-relaxed font-medium">
+                {f.avantApresFr.apres}
+              </p>
+            </div>
+          </div>
+        ) : null}
         <ul className="mx-auto grid max-w-4xl gap-3 md:grid-cols-2">
           {f.objectifsFr.map((o) => (
             <li
@@ -531,8 +600,13 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
               const hasQcm = sectionDay.steps.some((st) => /qcm|quiz/i.test(st.titre));
               const steps = sectionDay.steps.filter(
                 (st) =>
-                  st.titre !== "Pause" && st.temps !== "Livrable" && !/^qcm|^quiz/i.test(st.titre),
+                  st.titre !== "Pause" &&
+                  st.type !== "pause" &&
+                  st.temps !== "Livrable" &&
+                  !/^qcm|^quiz/i.test(st.titre),
               );
+              const acquis = acquisDuModule(sectionDay.steps);
+              const dureeLabel = dureeModuleLabel(sectionDay.steps);
               return (
                 <article
                   key={idx}
@@ -552,18 +626,46 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
                   <h3 className="text-fg text-lg leading-snug font-semibold tracking-tight">
                     {titre}
                   </h3>
-                  <ul className="flex flex-col gap-2.5">
-                    {steps.map((st) => (
-                      <li key={st.titre} className="text-fg-soft flex items-start gap-2.5 text-sm">
-                        <ArrowRight
-                          aria-hidden="true"
-                          className="text-terracotta mt-1 h-3.5 w-3.5 shrink-0"
-                          strokeWidth={2.5}
-                        />
-                        <span className="leading-relaxed">{st.titre}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Ce que le module INSTALLE — lisible sans rien déplier.
+                      Extrait de la séquence de synthèse du programme opposable. */}
+                  {acquis !== null ? (
+                    <p className="text-fg-soft text-sm leading-relaxed">
+                      <span className="text-fg font-semibold">Vous saurez : </span>
+                      {acquis}
+                    </p>
+                  ) : null}
+                  {/* Le déroulé minuté est OPPOSABLE, il reste publié — mais il
+                      se déplie. 200 lignes déroulées d'office, personne ne les
+                      lit sur mobile. <details> natif : zéro JS, contenu dans le
+                      DOM pour l'indexation, pattern maison (FaqAccordion). */}
+                  <details className="group">
+                    <summary className="text-terracotta -m-1 flex cursor-pointer list-none items-center gap-2 p-1 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+                      <ArrowRight
+                        aria-hidden="true"
+                        className="h-3.5 w-3.5 shrink-0 transition-transform group-open:rotate-90"
+                        strokeWidth={2.5}
+                      />
+                      <span className="group-open:hidden">
+                        Voir le déroulé minuté{dureeLabel !== null ? ` (${dureeLabel})` : ""}
+                      </span>
+                      <span className="hidden group-open:inline">Replier le déroulé</span>
+                    </summary>
+                    <ul className="mt-3 flex flex-col gap-2.5">
+                      {steps.map((st) => (
+                        <li
+                          key={st.titre}
+                          className="text-fg-soft flex items-start gap-2.5 text-sm"
+                        >
+                          <ArrowRight
+                            aria-hidden="true"
+                            className="text-terracotta mt-1 h-3.5 w-3.5 shrink-0"
+                            strokeWidth={2.5}
+                          />
+                          <span className="leading-relaxed">{st.titre}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
                   {livrables.map((liv) => (
                     <p
                       key={liv.titre}

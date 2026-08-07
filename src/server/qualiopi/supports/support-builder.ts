@@ -84,6 +84,142 @@ function sequencesTitles(mod: ModuleProgramme): string[] {
   return (mod.sequences ?? []).map((s) => s.titre);
 }
 
+/**
+ * Ce que le formateur fait pendant la séquence, en un mot.
+ *
+ * Formulé du point de vue de l'animation — « Le formateur montre », « Chacun
+ * produit » — parce que c'est ce qu'on lit en diagonale entre deux séquences,
+ * pas une taxonomie.
+ */
+const NATURE_SEQUENCE: Record<string, string> = {
+  objectif: "annoncer le résultat visé",
+  cadre: "poser le cadre",
+  demonstration: "montrer, avant/après",
+  pratique: "faire produire, chronométré",
+  verification: "faire vérifier et corriger en salle",
+  synthese: "faire formuler les acquis",
+  pause: "pause",
+};
+
+/**
+ * Durée d'un module, en minutes, ou `null` si elle n'est pas établie.
+ *
+ * 🔴 Le guide d'animation retenait `mod.dureeMin ?? 60`. Or `programmeDetaille`
+ * n'a JAMAIS porté de durée au niveau module — seulement au niveau séquence.
+ * Le repli s'appliquait donc systématiquement : le document que le formateur
+ * suit en salle annonçait quatre modules d'une heure pour une journée de sept,
+ * et les horaires de toutes les séquences en découlaient. On additionne
+ * désormais les séquences, et on se tait quand rien n'est su.
+ */
+function dureeModuleMin(mod: ModuleProgramme): number | null {
+  if (typeof mod.dureeMin === "number" && mod.dureeMin > 0) return mod.dureeMin;
+  const somme = (mod.sequences ?? []).reduce((n, s) => n + (s.dureeMin ?? 0), 0);
+  return somme > 0 ? somme : null;
+}
+
+/** Chaîne non vide, sinon `undefined`. */
+function txt(v: unknown): string | undefined {
+  return typeof v === "string" && v.trim().length > 0 ? v.trim() : undefined;
+}
+
+/**
+ * Ce que le formateur doit avoir sous les yeux, bloc par bloc.
+ *
+ * ## Pourquoi le guide reprend le prompt et la consigne VERBATIM
+ *
+ * Le diaporama les projette, mais le formateur ne lit pas l'écran : il est
+ * tourné vers la salle. Un guide qui renverrait à « la slide 14 » l'obligerait à
+ * chercher au moment précis où il ne peut pas. Le doublon est délibéré.
+ *
+ * ## Pourquoi le plan B est en tête et non en annexe
+ *
+ * On le cherche en panique, avec vingt personnes qui attendent. Ce qui se
+ * consulte dans l'urgence se place là où l'œil tombe, pas à la fin.
+ *
+ * Rend une liste VIDE quand le module n'a pas de contenu rédigé : le guide
+ * garde alors sa forme minutée d'avant, sans rubriques creuses.
+ */
+function blocsRediges(mod: ModuleProgramme): BlocContenu[] {
+  const blocs: BlocContenu[] = [];
+
+  const rubrique = (titre: string, bloc: unknown, corps: (o: Record<string, unknown>) => void) => {
+    if (bloc === null || typeof bloc !== "object") return;
+    const o = bloc as Record<string, unknown>;
+    blocs.push({ type: "objectif", texte: titre });
+    corps(o);
+
+    const notes = o["notes"];
+    if (notes === null || typeof notes !== "object") return;
+    const n = notes as Record<string, unknown>;
+
+    const script = txt(n["script"]);
+    if (script !== undefined) blocs.push({ type: "paragraphe", texte: `À dire : ${script}` });
+
+    const planB = txt(n["planB"]);
+    if (planB !== undefined) blocs.push({ type: "note", texte: `Plan B : ${planB}` });
+
+    const faq = Array.isArray(n["faq"]) ? n["faq"] : [];
+    const questions = faq
+      .filter((q): q is Record<string, unknown> => q !== null && typeof q === "object")
+      .map((q) => `« ${txt(q["question"]) ?? ""} » → ${txt(q["reponse"]) ?? ""}`)
+      .filter((l) => l.length > 8);
+    if (questions.length > 0) blocs.push({ type: "liste", items: questions });
+
+    const blocages = Array.isArray(n["blocages"]) ? n["blocages"] : [];
+    const parades = blocages
+      .filter((b): b is Record<string, unknown> => b !== null && typeof b === "object")
+      .map((b) => `Si ${txt(b["situation"]) ?? ""} → ${txt(b["parade"]) ?? ""}`)
+      .filter((l) => l.length > 8);
+    if (parades.length > 0) blocs.push({ type: "liste", items: parades });
+  };
+
+  rubrique("Objectif du module", mod.objectif, (o) => {
+    const enonce = txt(o["enonce"]);
+    if (enonce !== undefined) blocs.push({ type: "paragraphe", texte: enonce });
+  });
+
+  rubrique("Démonstration", mod.demonstration, (o) => {
+    const avant = txt(o["avant"]);
+    const apres = txt(o["apres"]);
+    if (avant !== undefined) blocs.push({ type: "paragraphe", texte: `Avant : ${avant}` });
+    if (apres !== undefined) blocs.push({ type: "paragraphe", texte: `Après : ${apres}` });
+    const outil = txt(o["outil"]);
+    if (outil !== undefined) blocs.push({ type: "note", texte: `Outil : ${outil}` });
+    // Le prompt EN ENTIER : un prompt tronqué rend la démonstration
+    // irreproductible, et c'est le formateur qui le tape devant la salle.
+    const prompt = txt(o["prompt"]);
+    if (prompt !== undefined) blocs.push({ type: "exercice", texte: prompt });
+    const verifieLe = txt(o["verifieLe"]);
+    if (verifieLe !== undefined) {
+      blocs.push({ type: "note", texte: `Exemples vérifiés le ${verifieLe}.` });
+    }
+  });
+
+  rubrique("Atelier", mod.pratique, (o) => {
+    const consigne = txt(o["consigne"]);
+    if (consigne !== undefined) blocs.push({ type: "exercice", texte: consigne });
+    const aEmporter = txt(o["aEmporter"]);
+    if (aEmporter !== undefined) {
+      blocs.push({ type: "note", texte: `Ils repartent avec : ${aEmporter}` });
+    }
+  });
+
+  rubrique("Vérification", mod.verification, (o) => {
+    const question = txt(o["question"]);
+    if (question !== undefined) blocs.push({ type: "paragraphe", texte: question });
+    const reponse = txt(o["reponseAttendue"]);
+    if (reponse !== undefined) blocs.push({ type: "note", texte: `Attendu : ${reponse}` });
+  });
+
+  rubrique("Synthèse", mod.synthese, (o) => {
+    const acquis = Array.isArray(o["acquis"]) ? o["acquis"] : [];
+    const items = acquis.filter((a): a is string => typeof a === "string" && a.length > 0);
+    if (items.length > 0) blocs.push({ type: "liste", items });
+  });
+
+  return blocs;
+}
+
 function moduleResume(mod: ModuleProgramme): string {
   const duree = mod.dureeMin ? ` (${formatDuree(mod.dureeMin)})` : "";
   // `moduleId` est un identifiant technique (« mod-1 »), pas un numero : il
@@ -339,28 +475,54 @@ function buildGuideAnimation(f: FormationInput): SupportContenu {
   });
 
   let cumulMin = 0;
+  /**
+   * Dès qu'un module n'est pas minuté, plus aucun horaire n'est situable : on
+   * cesse d'en annoncer plutôt que de décaler tout le reste de la journée.
+   */
+  let horaireSituable = true;
+
   for (const mod of f.programmeDetaille) {
-    const dureeModule = mod.dureeMin ?? 60;
-    const debut = formatDuree(cumulMin);
-    cumulMin += dureeModule;
-    const fin = formatDuree(cumulMin);
+    const dureeModule = dureeModuleMin(mod);
+    const debutModule = cumulMin;
 
     const blocs: BlocContenu[] = [];
-    blocs.push({ type: "note", texte: `Timing : ${debut} → ${fin}` });
+    if (horaireSituable && dureeModule !== null) {
+      cumulMin += dureeModule;
+      blocs.push({
+        type: "note",
+        texte: `Timing : ${formatDuree(debutModule)} → ${formatDuree(cumulMin)}`,
+      });
+    } else {
+      horaireSituable = false;
+      blocs.push({
+        type: "note",
+        texte: "Module non minuté : caler la durée avec le formateur avant la session.",
+      });
+    }
 
     if (mod.sequences && mod.sequences.length > 0) {
       let seqCumul = 0;
       for (const seq of mod.sequences) {
         const seqDuree = seq.dureeMin ?? 0;
-        const seqDebut = formatDuree(cumulMin - dureeModule + seqCumul);
+        const nature = NATURE_SEQUENCE[seq.type ?? ""];
+        const reperes: string[] = [];
+        if (horaireSituable && seqDuree > 0) {
+          reperes.push(`${formatDuree(debutModule + seqCumul)} — ${seqDuree} min`);
+        } else if (seqDuree > 0) {
+          reperes.push(`${seqDuree} min`);
+        }
+        if (nature !== undefined) reperes.push(nature);
         seqCumul += seqDuree;
-        const label = seqDuree > 0 ? `${seq.titre} [${seqDebut} — ${seqDuree} min]` : seq.titre;
+
+        const label = reperes.length > 0 ? `${seq.titre} [${reperes.join(" · ")}]` : seq.titre;
         blocs.push({ type: "paragraphe", texte: label });
         if (seq.description) {
           blocs.push({ type: "note", texte: `Consigne : ${seq.description}` });
         }
       }
     }
+
+    blocs.push(...blocsRediges(mod));
 
     if (f.methodesPedagogiques && f.methodesPedagogiques.length > 0) {
       blocs.push({ type: "liste", items: f.methodesPedagogiques });

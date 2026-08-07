@@ -40,6 +40,8 @@ import type { PrismaClient } from "../../../../prisma/generated/client";
 import type { FormationDuree } from "../../../content/pricing";
 import type { FormationV2 } from "../../../content/formations/catalog-v2";
 import { FORMATIONS_V2 } from "../../../content/formations/catalog-v2";
+import { ratioPratiqueDeclarable } from "./ratio-pratique";
+import { enrichissementDe } from "../../../content/formations/modules";
 import { nextNumero } from "../numbering/allocate";
 import { countLockingSessions } from "./edit-guard";
 
@@ -60,11 +62,17 @@ const CANONICAL_DUREE_HEURES: Record<FormationDuree, number> = {
 };
 
 /**
- * Ratio pratique affiché (≥ plancher Qualiopi `ratio_pratique_min`, défaut 60 %).
- * Les formats catalogue sont des ateliers (production réelle dès la séance) →
- * 70 % est un plancher honnête et fidèle au déroulé.
+ * 🔴 `const RATIO_PRATIQUE_PCT = 70` vivait ici, et cette valeur partait dans
+ * `Formation.ratioPratiquePct` — c'est-à-dire dans le programme officiel remis
+ * au client et à l'OPCO — pour les 22 formations, sans que personne ne l'ait
+ * jamais vérifiée. Les minutages reconstitués le 2026-08-06 donnent 41 à 62 %
+ * selon les fiches : de 8 à 29 points d'écart sur une donnée opposable en audit.
+ *
+ * Le ratio est désormais CALCULÉ depuis le programme (cf. `ratio-pratique.ts`),
+ * et vaut `null` tant qu'aucune durée n'est renseignée — ce qui est le cas des
+ * 22 fiches actuelles. Une case vide appelle une correction ; un chiffre faux
+ * se défend devant un auditeur.
  */
-const RATIO_PRATIQUE_PCT = 70;
 
 const METHODES_PEDAGOGIQUES =
   "Pédagogie active et inductive : chaque participant produit dès la séance sur " +
@@ -99,12 +107,37 @@ export interface FormationProgrammeSequence {
   titre: string;
   /** Repère de temps si présent dans le catalogue (« 35' », « Pause »). */
   temps?: string;
+  /**
+   * Durée en minutes, dérivée de `temps`.
+   *
+   * 🔴 Sans elle, le programme importé ne portait aucune durée exploitable :
+   * `temps` est une chaîne d'affichage (« 35' »), et le ratio de pratique
+   * n'était donc pas calculable — d'où les 70 % écrits en dur. On la dérive à
+   * l'import pour que la donnée soit chiffrée dès la base.
+   */
+  dureeMin?: number;
+  /** Nature pédagogique (cf. `FormationStepType`) — sert au calcul du ratio. */
+  type?: string;
 }
 
 export interface FormationProgrammeModule {
   moduleId: string;
   titre: string;
   sequences: FormationProgrammeSequence[];
+  /** Somme des durees de sequences, posee a l'import. */
+  dureeMin?: number;
+  /**
+   * Les cinq blocs du Standard, presents quand la formation a du contenu
+   * redige (`src/content/formations/modules/`). Types en `unknown` a dessein :
+   * ce module ne valide pas le contenu pedagogique, c'est
+   * `modulePedagogiqueSchema` qui en a la charge. Le declarer ici sert a le
+   * TRANSPORTER sans le perdre, pas a le juger.
+   */
+  objectif?: unknown;
+  demonstration?: unknown;
+  pratique?: unknown;
+  verification?: unknown;
+  synthese?: unknown;
 }
 
 /** Données de création Formation dérivées d'une entrée catalogue (hors `numero`). */
@@ -122,7 +155,8 @@ export interface FormationImportData {
   accessibleHandicap: boolean;
   /** Prérequis (depuis catalogue prerequisFr) — enrichit la génération IA. */
   prerequis: string;
-  ratioPratiquePct: number;
+  /** `null` tant que le programme n'est pas minuté — jamais une valeur de repli. */
+  ratioPratiquePct: number | null;
   certificationType: "aucune";
   typesActionQualiopi: ["classique"];
   estSurMesure: false;
@@ -171,10 +205,49 @@ export function buildFormationImportData(
         id: `seq-${i + 1}-${j + 1}`,
         titre: step.titre,
       };
-      if (step.temps !== undefined) seq.temps = step.temps;
+      if (step.temps !== undefined) {
+        seq.temps = step.temps;
+        // « 35' » → 35. Un repère non numérique (« Livrable ») ne donne rien :
+        // mieux vaut aucune durée qu'une durée inventée.
+        const m = /^(\d+)\s*'?$/.exec(step.temps.trim());
+        if (m?.[1]) seq.dureeMin = Number.parseInt(m[1], 10);
+      }
+      if (step.type !== undefined) seq.type = step.type;
       return seq;
     }),
   }));
+
+  /**
+   * Fusion du contenu RÉDIGÉ, quand il existe.
+   *
+   * Le catalogue porte ce qui est vendu et publié ; l'enrichissement porte la
+   * matière des documents — prompt exact de la démonstration, consigne de
+   * l'atelier, notes d'animation, plan B. Les deux ne se recopient jamais : le
+   * rattachement se fait par `moduleId`, seule façon d'empêcher deux fichiers
+   * modifiés par des gestes différents de diverger.
+   *
+   * La durée du module est posée ici, à partir de ses séquences : sans elle,
+   * `diagnostiquerModule` ne peut pas dire si les cinq blocs couvrent le temps
+   * annoncé, et le guide d'animation en était réduit à inventer une heure.
+   */
+  const enrichissement = enrichissementDe(f.slugFr);
+  const programmeEnrichi: FormationProgrammeModule[] = programmeDetaille.map((mod) => {
+    const dureeMin = mod.sequences.reduce((n, s) => n + (s.dureeMin ?? 0), 0);
+    const blocs = enrichissement?.find((e) => e.moduleId === mod.moduleId);
+    return {
+      ...mod,
+      ...(dureeMin > 0 ? { dureeMin } : {}),
+      ...(blocs === undefined
+        ? {}
+        : {
+            objectif: blocs.objectif,
+            demonstration: blocs.demonstration,
+            pratique: blocs.pratique,
+            verification: blocs.verification,
+            synthese: blocs.synthese,
+          }),
+    };
+  });
 
   return {
     titre: f.titreFr,
@@ -183,14 +256,15 @@ export function buildFormationImportData(
     dureeHeures: CANONICAL_DUREE_HEURES[f.duree],
     modalite: "presentiel",
     objectifsPedagogiques,
-    programmeDetaille,
+    programmeDetaille: programmeEnrichi,
     methodesPedagogiques: METHODES_PEDAGOGIQUES,
     moyensTechniques: MOYENS_TECHNIQUES,
     ressourcesPedagogiques: RESSOURCES_PEDAGOGIQUES,
     // Formats sans prérequis, adaptables (référent handicap org, indicateur 26).
     accessibleHandicap: true,
     prerequis: f.prerequisFr ?? "",
-    ratioPratiquePct: RATIO_PRATIQUE_PCT,
+    // Calculé, jamais présumé — `null` tant que le programme n'est pas minuté.
+    ratioPratiquePct: ratioPratiqueDeclarable(programmeEnrichi, f.duree),
     certificationType: "aucune",
     typesActionQualiopi: ["classique"],
     estSurMesure: false,

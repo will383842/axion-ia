@@ -30,6 +30,19 @@
 export interface SequenceProgramme {
   titre: string;
   dureeMin: number | null;
+  /**
+   * Nature pédagogique de la séquence (`objectif`, `demonstration`, `pratique`,
+   * `verification`, `synthese`, `cadre`, `pause`), ou `null` sur un programme
+   * qui n'en porte pas.
+   *
+   * Les gabarits imprimés ne s'en servent pas — une annexe de convention ne
+   * qualifie pas ses séquences. La console, elle, en a besoin : c'est ce qui
+   * distingue un atelier d'un exposé, et donc ce qui décide du ratio de
+   * pratique. Le lecteur l'écartait, ce qui obligeait la console à relire le
+   * JSON brut en parallèle — deux lectures d'une même donnée, la porte ouverte
+   * à deux verdicts.
+   */
+  type: string | null;
 }
 
 /** Module tel qu'imprimé : un titre, une durée facultative, ses séquences. */
@@ -70,12 +83,28 @@ function deballer(raw: unknown): unknown {
 }
 
 /**
- * Tableau de modules, quelle que soit la forme d'entrée.
+ * Les modules TELS QUELS, une fois la forme de stockage déballée — chaîne JSON,
+ * tableau direct, ou objet `{ modules }`.
  *
- * Ordre de résolution : tableau direct, puis `modules`, puis
- * `contenuDetaille.modules` — cette dernière étant la forme produite par le
- * moteur de contenu, la plus riche et la plus fidèle à ce qui sera réellement
- * animé.
+ * 🔴 `lireModulesProgramme` NORMALISE pour l'impression : il ne garde que titre,
+ * durée et séquences, et écarte donc les cinq blocs du contenu pédagogique. Le
+ * générateur de diaporama, branché dessus, recevait des modules vides et
+ * produisait un deck de six slides sans une seule ligne de contenu. Le défaut
+ * n'était visible nulle part : le fichier se produisait, il était simplement
+ * creux.
+ *
+ * Les deux lecteurs partagent donc le déballage et divergent sur le contrat :
+ * l'un rend ce qui s'imprime, l'autre rend tout. Le déballage, lui, n'est écrit
+ * qu'une fois — c'est lui qui porte la connaissance des trois formes.
+ */
+export function modulesBrutsProgramme(programmeDetaille: unknown): unknown[] {
+  return extraireModulesBruts(programmeDetaille);
+}
+
+/**
+ * Ordre de résolution : tableau direct, puis `contenuDetaille.modules`, puis
+ * `modules` — la forme produite par le moteur de contenu passe devant, étant la
+ * plus riche et la plus fidèle à ce qui sera réellement animé.
  */
 function extraireModulesBruts(programmeDetaille: unknown): unknown[] {
   const raw = deballer(programmeDetaille);
@@ -102,7 +131,7 @@ function lireSequence(brut: unknown): SequenceProgramme | null {
   const o = brut as Record<string, unknown>;
   const titre = texte(o["titre"]);
   if (titre === null) return null;
-  return { titre, dureeMin: dureeMin(o["dureeMin"]) };
+  return { titre, dureeMin: dureeMin(o["dureeMin"]), type: texte(o["type"]) };
 }
 
 /**
@@ -190,7 +219,31 @@ export function formaterDuree(minutes: number | null): string | null {
  *
  * ⚠️ Tolère les trois tirets (—, –, -) et l'absence d'espace : les titres
  * générés ne sont pas normalisés.
+ *
+ * 🔴 Depuis le 2026-08-06, les titres du catalogue portent AUSSI leur repère de
+ * demi-journée — « Matin · Module 1 — … », « Après-midi J2 · Module 5 — … ». Ce
+ * repère existe pour que la timeline publique sache quand l'horloge repart à
+ * 9 h ou à 14 h ; il n'a rien à faire sur une couverture de diaporama ni dans
+ * une annexe de convention, où il se lit comme une coquille. Il se retire ici,
+ * une fois, pour toutes les familles de pièces.
  */
+/**
+ * Repère de demi-journée en tête de titre : « Matin · », « Après-midi J2 · »,
+ * « Demi-journée — », « Jour 1 — ».
+ *
+ * ⚠️ Pas de `\b` : en JavaScript, `\b` se calcule sur `\w`, qui EXCLUT les
+ * lettres accentuées. « matin\b » matcherait donc à l'intérieur de « Matinée »,
+ * et « Matinée d'accueil » perdrait son titre entier. C'est un séparateur
+ * explicite — point médian ou tiret — qui prouve qu'on a affaire à un repère et
+ * non au premier mot du titre. Les libellés composés passent en premier dans
+ * l'alternance, sans quoi « demi-journée » serait coupé par « jour ».
+ */
+const REPERE_DEMI_JOURNEE =
+  /^\s*(?:demi-journ[ée]e|apr[èe]s-midi|matin|jour)(?:\s*j?\s*\d+)?\s*[·:—–-]\s*/i;
+
 export function titreModuleSansPrefixe(titre: string): string {
-  return titre.replace(/^module\s*\d+\s*[—–-]\s*/i, "").trim();
+  return titre
+    .replace(REPERE_DEMI_JOURNEE, "")
+    .replace(/^module\s*\d+\s*[—–-]\s*/i, "")
+    .trim();
 }

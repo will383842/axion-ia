@@ -258,6 +258,14 @@ export default async function QualiopiFormationDetailPage({ params }: PageProps)
       <section>
         <h2 className={sectionHeadCls}>Sous-sections</h2>
         <div className="flex flex-wrap gap-[var(--space-admin-4)]">
+          {/* En premier : c'est le contenu opposable, et il n'était visible
+              nulle part dans la console avant le 2026-08-06. */}
+          <Link
+            href={`${formationBase}/programme`}
+            className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface)]"
+          >
+            Programme pédagogique →
+          </Link>
           <Link
             href={`${formationBase}/animer`}
             className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] hover:bg-[color:var(--color-admin-surface)]"

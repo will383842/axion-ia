@@ -96,6 +96,33 @@ describe("lireModulesProgramme — robustesse", () => {
   });
 });
 
+describe("lireModulesProgramme — nature des séquences", () => {
+  /**
+   * 🔴 Le lecteur écartait `type`. La console devait donc relire le JSON brut en
+   * parallèle pour savoir ce qui compte comme de la pratique : deux lectures
+   * d'une même donnée, et à terme deux verdicts sur le même programme.
+   */
+  it("transporte la nature de chaque séquence", () => {
+    const modules = lireModulesProgramme([
+      {
+        titre: "Module 1",
+        sequences: [
+          { titre: "Démo", dureeMin: 15, type: "demonstration" },
+          { titre: "Atelier", dureeMin: 35, type: "pratique" },
+        ],
+      },
+    ]);
+    expect(modules[0]?.sequences.map((s) => s.type)).toEqual(["demonstration", "pratique"]);
+  });
+
+  it("rend null plutôt qu'une chaîne vide quand la nature manque", () => {
+    const modules = lireModulesProgramme([
+      { titre: "Module", sequences: [{ titre: "A" }, { titre: "B", type: "  " }] },
+    ]);
+    expect(modules[0]?.sequences.map((s) => s.type)).toEqual([null, null]);
+  });
+});
+
 describe("totalDureeModulesMin", () => {
   it("somme les durées de modules", () => {
     expect(
@@ -113,8 +140,8 @@ describe("totalDureeModulesMin", () => {
           titre: "A",
           dureeMin: null,
           sequences: [
-            { titre: "s1", dureeMin: 20 },
-            { titre: "s2", dureeMin: 25 },
+            { titre: "s1", dureeMin: 20, type: null },
+            { titre: "s2", dureeMin: 25, type: null },
           ],
         },
       ]),

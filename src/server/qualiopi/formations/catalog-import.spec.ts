@@ -157,12 +157,110 @@ describe("buildFormationImportData", () => {
     expect(mod0.sequences[0]!.temps).toBe(pilote!.programme[0]!.steps[0]!.temps);
   });
 
+  /**
+   * 🔴 L'import ne transportait que `temps`, une chaîne d'AFFICHAGE (« 35' »).
+   * La base ne portait donc aucune durée exploitable ni aucune nature de
+   * séquence : le ratio de pratique n'y était pas calculable, ce qui est
+   * exactement ce qui a permis aux 70 % écrits en dur de survivre des mois sans
+   * que rien ne les contredise. Tout ce qui est en aval — programme officiel,
+   * écran de la console, futurs documents générés — dépend de ce passage.
+   */
+  it("transporte la durée chiffrée ET la nature de chaque séquence", () => {
+    const data = buildFormationImportData(pilote!, "offre-x");
+    const sequences = data.programmeDetaille.flatMap((m) => m.sequences);
+    const steps = pilote!.programme.flatMap((m) => m.steps);
+
+    expect(sequences).toHaveLength(steps.length);
+    expect(sequences.every((s) => typeof s.dureeMin === "number" && s.dureeMin > 0)).toBe(true);
+    expect(sequences.every((s) => typeof s.type === "string" && s.type.length > 0)).toBe(true);
+
+    // La durée chiffrée dit bien la même chose que le repère d'affichage.
+    for (const [i, sequence] of sequences.entries()) {
+      expect(sequence.dureeMin).toBe(Number.parseInt(steps[i]!.temps!.replace("'", ""), 10));
+      expect(sequence.type).toBe(steps[i]!.type);
+    }
+  });
+
   it("sort en état session-ready", () => {
     const data = buildFormationImportData(pilote!, "offre-x");
     expect(data.statutGeneration).toBe("publie");
     expect(data.statut).toBe("actif");
     expect(data.aiGenerated).toBe(false);
-    expect(data.ratioPratiquePct).toBeGreaterThanOrEqual(60);
+  });
+
+  /**
+   * 🔴 Ce test exigeait `ratioPratiquePct >= 60`, et il passait — sur une
+   * constante écrite en dur à 70 que personne n'avait vérifiée. Il ne testait
+   * donc que la valeur littérale, jamais la réalité du programme : les
+   * minutages reconstitués donnent 41 à 62 % selon les fiches.
+   *
+   * Le ratio est désormais CALCULÉ. Tant qu'un programme du catalogue ne porte
+   * aucune durée — c'est le cas des 22 aujourd'hui — la valeur déclarée est
+   * `null` : on ne pousse plus de chiffre invérifiable dans le programme
+   * officiel remis au client et à l'OPCO.
+   */
+  it("déclare le ratio RÉEL, calculé depuis le programme minuté", () => {
+    const data = buildFormationImportData(pilote!, "offre-x");
+    // Le catalogue porte désormais des durées et des types de séquence : le
+    // ratio est donc calculable, et c'est celui-là qui part au programme
+    // officiel — plus une constante.
+    expect(data.ratioPratiquePct).not.toBeNull();
+    expect(data.ratioPratiquePct).toBeGreaterThan(0);
+
+    // Recalcul indépendant, à partir du catalogue lui-même.
+    const steps = pilote!.programme.flatMap((m) => m.steps);
+    const minutes = (t?: string) => {
+      const m = /^(\d+)\s*'?$/.exec((t ?? "").trim());
+      return m?.[1] ? Number.parseInt(m[1], 10) : 0;
+    };
+    const pratique = steps
+      .filter((s) => s.type === "pratique" || s.type === "verification")
+      .reduce((a, s) => a + minutes(s.temps), 0);
+    const dues = { "4h": 240, "1j": 420, "2j": 840, "3j": 1260 }[pilote!.duree];
+    expect(data.ratioPratiquePct).toBe(Math.round((pratique / dues) * 100));
+  });
+
+  /**
+   * 🔴 La garde qui compte : une formation dont le programme ne porte AUCUNE
+   * durée ne doit rien déclarer. C'était le cas des 22 fiches avant leur
+   * minutage, et ce sera celui de toute formation créée à la main.
+   */
+  /**
+   * ⚠️ Le `slugFr` est REMPLACÉ par un slug absent du registre des contenus
+   * rédigés. Sans cela, l'import fusionnerait l'enrichissement de la formation
+   * témoin, dont les cinq blocs portent leurs durées — et le ratio redeviendrait
+   * calculable alors que le test veut précisément l'inverse.
+   *
+   * Le défaut s'est produit : le témoin était `ia-pour-bien-commencer`, et le
+   * jour où cette formation a été rédigée, le test a rougi en annonçant 17 % au
+   * lieu de `null`. Le comportement était juste, c'est le témoin qui avait
+   * changé de nature sous lui. Un slug inexistant le rend insensible aux
+   * rédactions à venir.
+   */
+  it("ne déclare RIEN quand le programme ne porte aucune durée", () => {
+    const sansDurees = {
+      ...pilote!,
+      slugFr: "formation-sans-contenu-redige",
+      programme: [{ titreFr: "Module 1", steps: [{ titre: "Une séquence sans durée" }] }],
+    };
+    const data = buildFormationImportData(sansDurees, "offre-x");
+    expect(data.ratioPratiquePct).toBeNull();
+  });
+
+  /**
+   * Le pendant du test précédent, et la raison d'être du repli sur les blocs :
+   * une formation dont le programme publié n'est pas minuté mais dont le contenu
+   * EST rédigé garde un ratio calculable. Mieux vaut le chiffre des blocs
+   * qu'aucun chiffre — le contenu, lui, est bien minuté.
+   */
+  it("retombe sur les blocs rédigés quand les séquences ne sont pas minutées", () => {
+    const sansDureesMaisRedige = {
+      ...pilote!,
+      programme: [{ titreFr: "Module 1", steps: [{ titre: "Une séquence sans durée" }] }],
+    };
+    const data = buildFormationImportData(sansDureesMaisRedige, "offre-x");
+    expect(data.ratioPratiquePct).not.toBeNull();
+    expect(data.ratioPratiquePct).toBeGreaterThan(0);
   });
 
   it("ne pose validatedBy/At que si un admin déclenche", () => {

@@ -48,6 +48,16 @@ export interface SequencePedagogique {
   titre: string;
   dureeMin?: number;
   description?: string;
+  /**
+   * Nature de la séquence (`objectif`, `demonstration`, `pratique`,
+   * `verification`, `synthese`, `cadre`, `pause`).
+   *
+   * C'est l'information dont un formateur a le plus besoin en salle : elle dit
+   * s'il parle, s'il montre, ou s'il fait produire. Elle est écrite en base
+   * depuis l'import du catalogue ; elle n'était simplement pas typée ici, donc
+   * invisible pour les gabarits.
+   */
+  type?: string;
 }
 
 /** Module du programme détaillé. */
@@ -56,6 +66,17 @@ export interface ModuleProgramme {
   titre: string;
   dureeMin?: number;
   sequences?: Array<SequencePedagogique>;
+  /**
+   * Les cinq blocs du Standard, présents quand la formation a du contenu
+   * rédigé. Typés `unknown` à dessein : ce module ne valide pas le contenu
+   * pédagogique — c'est `modulePedagogiqueSchema` qui en a la charge. Les
+   * déclarer ici sert à les LIRE, pas à les juger.
+   */
+  objectif?: unknown;
+  demonstration?: unknown;
+  pratique?: unknown;
+  verification?: unknown;
+  synthese?: unknown;
 }
 
 /**

@@ -33,6 +33,8 @@ import {
   SLOTS_PROJETES_EN_SALLE,
 } from "@/server/qualiopi/vente/kit-formation";
 import { getSlot } from "@/content/intervention-documents-catalog";
+import { GenererDiaporamaButton } from "@/components/admin/qualiopi/GenererDiaporamaButton";
+import { genererDiaporamaAction } from "@/server/actions/qualiopi/diaporama";
 import type { SupportType } from "../../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
@@ -296,12 +298,26 @@ export default async function QualiopiFormationAnimerPage({ params }: PageProps)
                       deposeLe={slotsDeposes.get(slotKey) ?? null}
                     />
                   </div>
-                  <div className="mt-[var(--space-admin-3)]">
+                  {/* `items-start` empêche l'étirement du bouton par le flex,
+                      sans ajouter d'utilitaire sur la classe `.admin-*` :
+                      celle-ci vit hors couche et neutraliserait un `w-fit`,
+                      qui ne peindrait alors rien. Une garde le vérifie. */}
+                  <div className="mt-[var(--space-admin-3)] flex flex-col items-start gap-[var(--space-admin-3)]">
                     <Link href={kitHref} className="admin-button-ghost">
                       {slotsDeposes.has(slotKey)
                         ? "Ouvrir dans la bibliothèque"
                         : "Déposer le fichier"}
                     </Link>
+                    {/* Le diaporama peut aussi se GÉNÉRER depuis le programme
+                        rédigé. Le dépôt manuel reste offert juste au-dessus, et
+                        garde la main : la version générée arrive en brouillon. */}
+                    {slotKey === "diaporama" && (
+                      <GenererDiaporamaButton
+                        formationId={formation.id}
+                        action={genererDiaporamaAction}
+                        dejaDepose={slotsDeposes.has(slotKey)}
+                      />
+                    )}
                   </div>
                 </div>
               );
