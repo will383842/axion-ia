@@ -133,7 +133,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou service en panne : les quatre sorties sont imprimées dans le kit formateur (pages 4 à 7, datées). Le déroulé est identique sur papier — la révélation de l'entreprise fictive, le vote à main levée, la comparaison mot à mot. Ne rien improviser : les sorties du kit ont été vérifiées.",
+          "Quota atteint ou service en panne : les quatre sorties sont imprimées dans le kit formateur (datées). Le déroulé est identique sur papier — la révélation de l'entreprise fictive, le vote à main levée, la comparaison mot à mot. Ne rien improviser : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -175,7 +175,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau tombé : l'exercice de repérage se fait sur les trois textes pré-générés du kit (pages 9 à 11, datées), chacun portant des erreurs plantées dans un domaine différent. Le surlignage, le décompte et le tableau des scores se tiennent à l'identique sur papier.",
+          "Réseau tombé : l'exercice de repérage se fait sur les trois textes pré-générés du kit (datées), chacun portant des erreurs plantées dans un domaine différent. Le surlignage, le décompte et le tableau des scores se tiennent à l'identique sur papier.",
       },
     },
     verification: {
@@ -203,7 +203,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le jeu de cartes est physique et le corrigé est imprimé dans le kit (page 13). Aucune dépendance à un outil ni au vidéoprojecteur.",
+          "Le jeu de cartes est physique et le corrigé est imprimé dans le kit. Aucune dépendance à un outil ni au vidéoprojecteur.",
       },
     },
     synthese: {
@@ -292,7 +292,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : la construction de la demande AXION levier par levier se fait au tableau — c'est même meilleur pédagogiquement — et les sorties (spontanée, AXION, après relance) sont imprimées dans le kit (pages 15 à 17, datées) sur le cas du report de livraison.",
+          "Outil indisponible : la construction de la demande AXION levier par levier se fait au tableau — c'est même meilleur pédagogiquement — et les sorties (spontanée, AXION, après relance) sont imprimées dans le kit (datées) sur le cas du report de livraison.",
       },
     },
     pratique: {
@@ -440,7 +440,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux synthèses et les trois échecs sont imprimés dans le kit (pages 20 à 24, datées). La comparaison, l'entourage de la recommandation inventée et le repérage des pages se tiennent à l'identique sur papier.",
+          "Les deux synthèses et les trois échecs sont imprimés dans le kit (datées). La comparaison, l'entourage de la recommandation inventée et le repérage des pages se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -483,7 +483,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau tombé : la synthèse se vérifie sur le couple document/synthèse imprimé du kit (pages 26 à 28) — chercher chaque affirmation dans la source est un exercice papier complet. La dictée se remplace par la trame « note télégraphique → note propre » à la main, et se rejoue au poste dès le retour.",
+          "Réseau tombé : la synthèse se vérifie sur le couple document/synthèse imprimé du kit — chercher chaque affirmation dans la source est un exercice papier complet. La dictée se remplace par la trame « note télégraphique → note propre » à la main, et se rejoue au poste dès le retour.",
       },
     },
     verification: {
@@ -510,7 +510,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "L'exercice est déjà un exercice papier si les synthèses ont été imprimées ; sinon, il se fait sur le couple document/synthèse du kit (pages 26 à 28), qui contient trois affirmations introuvables à découvrir.",
+          "L'exercice est déjà un exercice papier si les synthèses ont été imprimées ; sinon, il se fait sur le couple document/synthèse du kit, qui contient trois affirmations introuvables à découvrir.",
       },
     },
     synthese: {
@@ -578,11 +578,11 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           {
             situation: "Aucun volontaire ne veut prêter sa production du jour.",
             parade:
-              "Ne forcer personne : la production de secours du kit (page 30) contient les deux défauts calibrés. La démonstration perd un peu de chair mais rien de sa mécanique.",
+              "Ne forcer personne : la production de secours du kit contient les deux défauts calibrés. La démonstration perd un peu de chair mais rien de sa mécanique.",
           },
         ],
         planB:
-          "La production de secours et sa relecture aux cinq points sont imprimées dans le kit (pages 30 et 31, datées). La comparaison œil contre grille se fait au paperboard, chronomètre en main.",
+          "La production de secours et sa relecture aux cinq points sont imprimées dans le kit (datées). La comparaison œil contre grille se fait au paperboard, chronomètre en main.",
       },
     },
     pratique: {
@@ -653,7 +653,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit (page 33) et corrigé page 34. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.",
+          "Quiz papier dans le kit et corrigé page 34. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.",
       },
     },
     synthese: {

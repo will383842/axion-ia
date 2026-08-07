@@ -103,7 +103,6 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
       prompt:
         "DÉMONSTRATION — Analyse d'un document financier long, méthode AXION\n\nActeur : tu es contrôleur de gestion dans une PME industrielle de 60 personnes.\nConteXte : je te dépose le rapport du commissaire aux comptes sur l'exercice clos, 34 pages, document fourni au kit de formation.\nIntention : préparer ma réunion avec le dirigeant sans avoir à relire les 34 pages.\nOutput : une synthèse d'une page — cinq constats, chacun suivi entre parenthèses de la page du document où il figure ; puis trois questions à poser à l'émetteur du rapport.\nNormes : n'utilise QUE le document joint. Ne recalcule aucun montant, ne fais aucune addition, aucune moyenne, aucun pourcentage — recopie les chiffres tels qu'ils sont écrits. Si un constat n'est rattachable à aucune page, ne l'écris pas. N'ajoute aucune recommandation.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "3 h", apres: "30 min" },
       captureEcran:
         "Les deux synthèses du rapport côte à côte, avec en rouge les deux montants absents du document source, et les cinq leviers AXION annotés en marge du prompt cadré.",
       verifieLe: VERIFIE_LE,
@@ -139,7 +138,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint, réseau tombé ou service indisponible : les deux sorties — spontanée et cadrée — sont imprimées dans le kit formateur (pages 4 à 6, datées), montants inventés déjà entourés, et le rapport du commissaire aux comptes est fourni imprimé. La recherche des deux montants dans le document se tient à l'identique sur papier — c'est même là qu'elle est la plus frappante. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.",
+          "Quota atteint, réseau tombé ou service indisponible : les deux sorties — spontanée et cadrée — sont imprimées dans le kit formateur (datées), montants inventés déjà entourés, et le rapport du commissaire aux comptes est fourni imprimé. La recherche des deux montants dans le document se tient à l'identique sur papier — c'est même là qu'elle est la plus frappante. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.",
       },
     },
     pratique: {
@@ -163,7 +162,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
             situation:
               "L'outil réussit le lettrage des deux extraits et le total de la page 3 tombe juste — le temps 1 ne produit aucune erreur.",
             parade:
-              "Faire relancer la même demande dans une conversation neuve et comparer les deux sorties, puis exiger l'atterrissage : la projection à partir de trois lignes produit presque toujours un chiffre invérifiable. À défaut, les sorties fautives imprimées du kit (pages 10 à 12) alimentent la ligne de partage à l'identique.",
+              "Faire relancer la même demande dans une conversation neuve et comparer les deux sorties, puis exiger l'atterrissage : la projection à partir de trois lignes produit presque toujours un chiffre invérifiable. À défaut, les sorties fautives imprimées du kit alimentent la ligne de partage à l'identique.",
           },
           {
             situation: "Un stagiaire qualifie son document en « déposable » pour aller plus vite.",
@@ -172,7 +171,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau ou outil indisponibles : les deux temps se tiennent sur papier. Le temps 1 utilise les sorties fautives imprimées du kit (pages 10 à 12), le temps 2 la synthèse imprimée à corriger — la qualification sur grille, elle, ne dépend d'aucun outil par construction.",
+          "Réseau ou outil indisponibles : les deux temps se tiennent sur papier. Le temps 1 utilise les sorties fautives imprimées du kit, le temps 2 la synthèse imprimée à corriger — la qualification sur grille, elle, ne dépend d'aucun outil par construction.",
       },
     },
     verification: {
@@ -204,7 +203,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille et corrigé sont imprimés dans le kit (page 17). Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, écart par écart.",
+          "Grille et corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, écart par écart.",
       },
     },
     synthese: {
@@ -273,7 +272,6 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
       prompt:
         "DÉMONSTRATION 1 — Une formule sans livrer la moindre donnée\n\nMa feuille Excel s'appelle « Balance ». La ligne 1 porte les en-têtes, les données vont de la ligne 2 à la ligne 4000. Colonnes : A compte, B libellé, C date d'écriture, D débit, E crédit, F code journal, G lettrage (vide si non lettré).\nJe veux, en colonne H, le solde de chaque ligne (débit moins crédit) ; et sur une feuille séparée, le total par compte pour le seul journal « VE », sur les écritures non lettrées uniquement.\nDonne-moi la formule de la colonne H, la formule de totalisation, et la marche à suivre pour obtenir le même résultat par tableau croisé dynamique. Je suis sur Excel 365 en français, sépare les arguments par des points-virgules. Ne me demande aucune donnée : je ne te transmets que la structure de mes colonnes.\n\nDÉMONSTRATION 2 — Comprendre une formule héritée\n\nExplique-moi cette formule ligne à ligne, en français, comme si je devais la réécrire moi-même : =SIERREUR(RECHERCHEV($A2;'Plan de comptes'!$A:$D;4;FAUX);SI(ESTVIDE($A2);\"\";\"compte inconnu\"))\nDis ce qu'elle renvoie dans chacun des trois cas possibles, et quel est le risque si l'ordre des colonnes du plan de comptes change. Ne propose aucune version améliorée : je veux d'abord comprendre celle-ci.\n\nDÉMONSTRATION 3 — Une trame de contrôle plutôt qu'un rapprochement\n\nActeur : tu es contrôleur interne dans une PME de 60 personnes.\nConteXte : notre clôture mensuelle comporte ces étapes, que je te décris : arrêté des journaux d'achats et de ventes, rapprochement bancaire, cut-off des factures non parvenues, contrôle des états de frais, revue des comptes d'attente.\nIntention : obtenir une trame de contrôle qu'une personne qui n'a pas assisté à la clôture puisse dérouler seule.\nOutput : une liste de points de contrôle numérotés — chaque point est un geste vérifiable (« rapprocher X avec Y », « vérifier que Z est à zéro »), suivi d'une case à cocher et d'un champ « constaté par / le ». Termine par une ligne de signature.\nNormes : tu écris la liste des points, tu n'exécutes aucun contrôle et tu ne produis aucun chiffre. Aucun point ne vise une personne : un écart signalé ne désigne jamais quelqu'un — recopie cette borne en tête de trame. N'écris aucun point du type « vérifier que tout est correct » : chaque point doit être cochable par oui ou par non.",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "45 min", apres: "10 min" },
       captureEcran:
         "La formule obtenue à partir des seuls en-têtes, annotée « aucune cellule collée » ; l'explication ligne à ligne de la formule héritée ; et la trame de clôture du kit avec sa borne surlignée en tête.",
       verifieLe: VERIFIE_LE,
@@ -302,7 +300,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint, réseau tombé ou service indisponible : les trois sorties sont imprimées dans le kit formateur (pages 7 à 9, datées), et la trame de clôture est fournie imprimée — sa lecture commentée ne dépend d'aucun outil. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.",
+          "Quota atteint, réseau tombé ou service indisponible : les trois sorties sont imprimées dans le kit formateur (datées), et la trame de clôture est fournie imprimée — sa lecture commentée ne dépend d'aucun outil. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.",
       },
     },
     pratique: {
@@ -335,7 +333,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             situation: "Un stagiaire termine l'atelier tableur en dix minutes.",
             parade:
-              "Lui donner le second besoin du kit (page 15, écart de cut-off entre deux extractions) et lui demander de préparer la restitution devant le groupe.",
+              "Lui donner le second besoin du kit (écart de cut-off entre deux extractions) et lui demander de préparer la restitution devant le groupe.",
           },
           {
             situation: "La trame de contrôle produite désigne un service ou une personne.",
@@ -372,7 +370,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille de contrôle imprimée dans le kit (page 17). Le déroulé croisé d'une trame ne dépend d'aucun outil.",
+          "Grille de contrôle imprimée dans le kit. Le déroulé croisé d'une trame ne dépend d'aucun outil.",
       },
     },
     synthese: {
@@ -422,7 +420,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             situation: "Un stagiaire arrive sans reporting et sans chiffres exploitables.",
             parade:
-              "Le tableau de bord fictif du kit (page 19) fournit la matière ; c'est aussi le repli obligatoire de celui qui hésite sur la confidentialité de ses propres chiffres. Personne ne regarde son voisin travailler pendant trente-cinq minutes.",
+              "Le tableau de bord fictif du kit fournit la matière ; c'est aussi le repli obligatoire de celui qui hésite sur la confidentialité de ses propres chiffres. Personne ne regarde son voisin travailler pendant trente-cinq minutes.",
           },
         ],
         planB: "Aucun outil en jeu.",
@@ -436,7 +434,6 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
       prompt:
         "DÉMONSTRATION A — Le commentaire de gestion\n\nVoici les indicateurs de mon reporting de mai, déjà calculés et vérifiés par mes soins. Je te les saisis, tu ne les recalcules pas : chiffre d'affaires 1 240 k€ (mois précédent 1 118 k€) ; marge brute 31,2 % (mois précédent 33,8 %) ; délai moyen de règlement client 62 jours (objectif 45) ; encours clients 410 k€, dont 78 k€ échus.\nÉcris le commentaire de gestion destiné au dirigeant : dix lignes maximum, un paragraphe par indicateur qui bouge, chaque phrase reprenant le chiffre exactement tel que je te l'ai donné. Ne calcule aucun ratio nouveau, n'invente aucune cause, ne propose aucun plan d'action. Là où une explication te manque, écris « cause à confirmer auprès de » suivi du service concerné.\n\nDÉMONSTRATION B — Le second niveau de lecture\n\nReprends le commentaire précédent et réécris-le pour les responsables d'atelier : mêmes chiffres, aucun terme comptable — remplace « marge brute » par ce qu'elle mesure concrètement — et termine par la seule action qui dépend d'eux. Huit lignes maximum.\n\nDÉMONSTRATION C — La relance de niveau 2, complétée depuis la trame du kit\n\nVoici, recopiée entre les balises, la trame de relance de niveau 2 du kit — tu n'en modifies ni la structure ni les mentions.\n[TRAME] Objet : Relance n° 2 — facture [numéro] échue le [date d'échéance]. Madame, Monsieur, sauf erreur de notre part, la facture [numéro] du [date d'émission], d'un montant de [montant] € TTC, demeure impayée à ce jour malgré notre relance du [date de la relance 1]. Nous vous remercions de bien vouloir procéder à son règlement sous [délai] jours. À défaut, conformément à nos conditions générales de vente, des pénalités de retard au taux de [taux] ainsi que l'indemnité forfaitaire pour frais de recouvrement de 40 € par facture seront appliquées. [/TRAME]\nComplète uniquement les champs entre crochets à partir de ces éléments, que je te saisis à la main : facture F-2026-0341, émise le 12 avril 2026, échue le 12 mai 2026, montant 4 830 € TTC, première relance envoyée le 26 mai 2026, délai accordé 8 jours, taux prévu aux conditions générales : taux de la BCE majoré de 10 points.\nNe reformule pas le corps du texte, n'ajoute aucune mention ni aucune pénalité que je n'ai pas fournie, et conserve l'en-tête « Projet — à faire valider par votre conseil avant diffusion ».",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "1 h 30", apres: "20 min" },
       captureEcran:
         "Les deux commentaires côte à côte, la cause inventée de la version libre entourée en rouge et le ratio recalculé faux surligné ; en dessous, la relance de niveau 2 complétée, ses mentions surlignées et reprises mot pour mot de la trame.",
       verifieLe: VERIFIE_LE,
@@ -464,7 +461,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les trois séquences sont imprimées dans le kit (pages 20 à 23, datées) : commentaire libre et commentaire cadré, les trois trames, et la relance complétée. La comparaison se tient à l'identique sur papier, y compris le « d'où sort cette cause ? » posé à la salle.",
+          "Les trois séquences sont imprimées dans le kit (datées) : commentaire libre et commentaire cadré, les trois trames, et la relance complétée. La comparaison se tient à l'identique sur papier, y compris le « d'où sort cette cause ? » posé à la salle.",
       },
     },
     pratique: {
@@ -530,7 +527,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille de contrôle croisé imprimée dans le kit (page 26). Le contrôle ne dépend d'aucun outil.",
+          "Grille de contrôle croisé imprimée dans le kit. Le contrôle ne dépend d'aucun outil.",
       },
     },
     synthese: {
@@ -618,7 +615,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux résultats divergents du même calcul sont imprimés dans le kit (page 22, datés), l'écart déjà encadré. La comparaison se tient à l'identique sur papier.",
+          "Les deux résultats divergents du même calcul sont imprimés dans le kit (datés), l'écart déjà encadré. La comparaison se tient à l'identique sur papier.",
       },
     },
     pratique: {
@@ -677,7 +674,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit (page 27) et corrigé page 28, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
+          "Quiz papier dans le kit et corrigé page 28, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
       },
     },
     synthese: {

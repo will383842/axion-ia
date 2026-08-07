@@ -118,7 +118,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou outil indisponible : le tableau d'alignement est imprimé dans le kit (pages 4 et 5, datées), avec les trois devis source. La lecture ligne à ligne et le repérage des « non chiffré » se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint ou outil indisponible : le tableau d'alignement est imprimé dans le kit (datées), avec les trois devis source. La lecture ligne à ligne et le repérage des « non chiffré » se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -156,7 +156,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le geste « où passent mes données » se fait sur les captures imprimées du kit (pages 7 à 9, datées, un jeu par régime). La liste rouge et le choix des trois devis de travail sont entièrement papier. L'atelier se tient sans réseau.",
+          "Le geste « où passent mes données » se fait sur les captures imprimées du kit (datées, un jeu par régime). La liste rouge et le choix des trois devis de travail sont entièrement papier. L'atelier se tient sans réseau.",
       },
     },
     verification: {
@@ -183,7 +183,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les cinq cas et le corrigé sont imprimés dans le kit (page 11). Sans vidéoprojecteur, ils se distribuent et se corrigent à l'oral.",
+          "Les cinq cas et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, ils se distribuent et se corrigent à l'oral.",
       },
     },
     synthese: {
@@ -265,7 +265,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux sorties sont imprimées dans le kit (pages 15 et 16, datées), pondérations surlignées. Le pari écrit et la comparaison se tiennent à l'identique sur papier.",
+          "Les deux sorties sont imprimées dans le kit (datées), pondérations surlignées. Le pari écrit et la comparaison se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -298,7 +298,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a aucun besoin réel à transformer en consultation.",
             parade:
-              "Le kit fournit deux besoins de secours (page 18). Ne le laissez pas regarder son voisin travailler pendant dix minutes.",
+              "Le kit fournit deux besoins de secours. Ne le laissez pas regarder son voisin travailler pendant dix minutes.",
           },
           {
             situation: "Le réseau sature au moment des dépôts simultanés.",
@@ -324,7 +324,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           {
             situation: "Un binôme ne trouve rien : « son comparatif est parfait ».",
             parade:
-              "Leur donner le comparatif piégé du kit (page 20) : il contient une erreur de total et deux critères manquants. L'œil se règle en trois minutes, puis ils reviennent sur celui du voisin.",
+              "Leur donner le comparatif piégé du kit : il contient une erreur de total et deux critères manquants. L'œil se règle en trois minutes, puis ils reviennent sur celui du voisin.",
           },
         ],
         planB: "L'échange se fait sur papier, la grille de relecture est imprimée au kit.",
@@ -401,7 +401,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le fil balisé et la relance produite sont imprimés dans le kit (pages 23 et 24, datées). La lecture à voix haute et l'analyse des interdits se tiennent à l'identique sur papier.",
+          "Le fil balisé et la relance produite sont imprimés dans le kit (datées). La lecture à voix haute et l'analyse des interdits se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -460,7 +460,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les trois relances et le corrigé sont imprimés dans le kit (page 30). Distribution et correction à l'oral.",
+          "Les trois relances et le corrigé sont imprimés dans le kit. Distribution et correction à l'oral.",
       },
     },
     synthese: {
@@ -531,7 +531,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "La note et son tableau source sont imprimés dans le kit (pages 32 et 33, datées), flèches déjà tracées. La démonstration se tient sur papier.",
+          "La note et son tableau source sont imprimés dans le kit (datées), flèches déjà tracées. La démonstration se tient sur papier.",
       },
     },
     pratique: {
@@ -559,12 +559,12 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           {
             situation: "La salle trouve toutes les erreurs plantées en cinq minutes.",
             parade:
-              "La note complémentaire du kit (page 35) en contient trois plus fines — dont une qui ne se voit qu'en ouvrant la source. C'est celle qui marque.",
+              "La note complémentaire du kit en contient trois plus fines — dont une qui ne se voit qu'en ouvrant la source. C'est celle qui marque.",
           },
           {
             situation: "Un stagiaire n'a pas terminé son comparatif du matin.",
             parade:
-              "Il rédige sa note d'arbitrage sur le comparatif corrigé du kit (page 19). L'exercice d'écriture compte plus que la continuité du support.",
+              "Il rédige sa note d'arbitrage sur le comparatif corrigé du kit. L'exercice d'écriture compte plus que la continuité du support.",
           },
         ],
         planB:
@@ -595,7 +595,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit (page 37) et corrigé page 38, grille croisée page 39. Aucune dépendance à un outil.",
+          "Quiz papier dans le kit et corrigé page 38, grille croisée page 39. Aucune dépendance à un outil.",
       },
     },
     synthese: {

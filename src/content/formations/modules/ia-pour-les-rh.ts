@@ -112,7 +112,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou outil indisponible : les deux sorties sont imprimées dans le kit formateur (pages 4 et 5, datées). L'exercice se tient à l'identique sur papier — le pari écrit, la comparaison ligne à ligne, le repérage à main levée. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint ou outil indisponible : les deux sorties sont imprimées dans le kit formateur (datées). L'exercice se tient à l'identique sur papier — le pari écrit, la comparaison ligne à ligne, le repérage à main levée. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -171,7 +171,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le corrigé est imprimé dans le kit (page 8). Sans vidéoprojecteur, il se distribue et se commente à l'oral.",
+          "Le corrigé est imprimé dans le kit. Sans vidéoprojecteur, il se distribue et se commente à l'oral.",
       },
     },
     synthese: {
@@ -226,7 +226,6 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
       prompt:
         "Acteur : tu es responsable RH d'une PME industrielle de 40 personnes en Isère.\nConteXte : je recrute un comptable unique, rattaché au dirigeant, qui reprend un poste occupé neuf ans par la même personne.\nIntention : produire une offre d'emploi publiable sur notre site et en multidiffusion.\nOutput : 300 mots, titre, missions en cinq puces, profil en trois puces, une phrase de clôture avec la marche à suivre pour postuler.\nNormes : aucun superlatif, aucune promesse de rémunération ou d'avantage, aucune mention de convention collective ou de période d'essai — je les vérifierai moi-même dans nos documents et je les ajouterai.",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "40 min", apres: "10 min" },
       captureEcran:
         "Les deux sorties côte à côte, avec les cinq leviers AXION annotés en marge du prompt structuré.",
       verifieLe: VERIFIE_LE,
@@ -254,7 +253,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux sorties sont imprimées dans le kit (pages 11 et 12, datées). La comparaison se tient à l'identique sur papier.",
+          "Les deux sorties sont imprimées dans le kit (datées). La comparaison se tient à l'identique sur papier.",
       },
     },
     pratique: {
@@ -282,7 +281,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a rien à déposer, il n'a pas de poste ouvert.",
             parade:
-              "Le support fournit une fiche de poste de secours (page 14). Ne le laissez pas regarder son voisin travailler pendant trente-cinq minutes.",
+              "Le support fournit une fiche de poste de secours. Ne le laissez pas regarder son voisin travailler pendant trente-cinq minutes.",
           },
           {
             situation: "Le réseau de la salle sature au moment des dépôts simultanés.",
@@ -314,7 +313,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           {
             situation: "Les copies sont trop propres, rien n'est barré.",
             parade:
-              "Projetez une sortie du kit volontairement chargée (page 16) et faites barrer collectivement. L'œil se règle en trois minutes.",
+              "Projetez une sortie du kit volontairement chargée et faites barrer collectivement. L'œil se règle en trois minutes.",
           },
         ],
         planB: "Grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.",
@@ -385,7 +384,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux sorties sont imprimées dans le kit (pages 19 et 20, datées), avec le surlignage déjà appliqué.",
+          "Les deux sorties sont imprimées dans le kit (datées), avec le surlignage déjà appliqué.",
       },
     },
     pratique: {
@@ -422,7 +421,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : la grille se construit à la main, et les trois présynthèses se font sur les sorties imprimées du kit (pages 22 à 24). Les trames d'information ne dépendent d'aucun outil.",
+          "Outil indisponible : la grille se construit à la main, et les trois présynthèses se font sur les sorties imprimées du kit. Les trames d'information ne dépendent d'aucun outil.",
       },
     },
     verification: {
@@ -510,7 +509,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux réponses sont imprimées dans le kit (pages 29 et 30, datées), avec l'article inventé déjà entouré.",
+          "Les deux réponses sont imprimées dans le kit (datées), avec l'article inventé déjà entouré.",
       },
     },
     pratique: {
@@ -574,8 +573,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 34) et corrigé page 35. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 35. Aucune dépendance à un outil.",
       },
     },
     synthese: {

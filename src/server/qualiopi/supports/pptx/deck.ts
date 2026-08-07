@@ -139,6 +139,26 @@ function texte(v: unknown): string | undefined {
   return typeof v === "string" && v.trim().length > 0 ? v.trim() : undefined;
 }
 
+/**
+ * Les ateliers d'un module, quand il en enchaîne PLUSIEURS.
+ *
+ * Rend une liste vide dès qu'il n'y en a qu'un : le bloc `pratique` le porte
+ * déjà, et un jalon isolé qui répète la consigne n'apporterait rien.
+ */
+function ateliersDuModule(mod: ModuleProgramme): Array<{ titre: string; dureeMin: number | null }> {
+  if (mod === null || typeof mod !== "object") return [];
+  const sequences = Array.isArray(mod.sequences) ? mod.sequences : [];
+  const ateliers = sequences
+    .filter((s): s is NonNullable<typeof s> => s !== null && typeof s === "object")
+    .filter((s) => s.type === "pratique")
+    .map((s) => ({
+      titre: texte(s.titre) ?? "",
+      dureeMin: typeof s.dureeMin === "number" && s.dureeMin > 0 ? s.dureeMin : null,
+    }))
+    .filter((s) => s.titre.length > 0);
+  return ateliers.length > 1 ? ateliers : [];
+}
+
 /** Durée d'un module : ses séquences font foi, comme partout ailleurs. */
 function dureeModule(mod: ModuleProgramme): number {
   if (mod === null || typeof mod !== "object") return 0;
@@ -258,6 +278,32 @@ function slidesDeModule(mod: ModuleProgramme, index: number): Slide[] {
       ...(aEmporter !== undefined ? { corps: [`Vous repartez avec : ${aEmporter}`] } : {}),
       ...(notesPratique !== undefined ? { notes: notesPratique } : {}),
     });
+
+    /**
+     * Un jalon par atelier quand le module en enchaîne plusieurs.
+     *
+     * 🔴 Sans cela, un module de 210 minutes portant trois ateliers ne projetait
+     * QU'UNE slide : la salle passait trois heures et demie devant le même écran,
+     * et le formateur n'avait aucun repère de rythme. C'est ce qui faisait sortir
+     * les formations de deux jours à trente slides — autant qu'une journée.
+     *
+     * Ces jalons ne réécrivent rien : ils reprennent l'intitulé et la durée que
+     * le programme PUBLIÉ annonce déjà. Corriger le générateur plutôt que
+     * redécouper des programmes vendus évite d'y prendre des minutes de pratique
+     * pour financer de nouveaux en-têtes de module.
+     */
+    for (const [i, jalon] of ateliersDuModule(mod).entries()) {
+      slides.push({
+        layout: "enonce",
+        fond: "sable",
+        eyebrow: eyebrow(
+          jalon.dureeMin === null
+            ? `Atelier ${i + 1}`
+            : `Atelier ${i + 1} · ${duree(jalon.dureeMin)}`,
+        ),
+        titre: jalon.titre,
+      });
+    }
   }
 
   const question = texte(verification?.["question"]);

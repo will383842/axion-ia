@@ -131,7 +131,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La fiche et la sortie complète de l'outil sont imprimées dans le kit (pages 4 et 5, datées). La démonstration se tient à l'identique sur papier : le vote à main levée, la lecture des trois réponses, le surlignage des éléments ré-identifiants. Ne rien improviser en direct.",
+          "La fiche et la sortie complète de l'outil sont imprimées dans le kit (datées). La démonstration se tient à l'identique sur papier : le vote à main levée, la lecture des trois réponses, le surlignage des éléments ré-identifiants. Ne rien improviser en direct.",
       },
     },
     pratique: {
@@ -196,7 +196,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les dix pièces et le corrigé sont imprimés dans le kit (pages 8 et 9). Sans vidéoprojecteur, distribution papier et correction à l'oral.",
+          "Les dix pièces et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, distribution papier et correction à l'oral.",
       },
     },
     synthese: {
@@ -283,7 +283,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux avis sont imprimés dans le kit (pages 12 et 13, datées), la ligne ajoutée et les formulations qui basculent déjà surlignées. Le pari écrit et la lecture ligne à ligne se tiennent à l'identique sur papier.",
+          "Les deux avis sont imprimés dans le kit (datées), la ligne ajoutée et les formulations qui basculent déjà surlignées. Le pari écrit et la lecture ligne à ligne se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -343,7 +343,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les huit situations et le corrigé sont imprimés dans le kit (pages 15 et 16). Sans vidéoprojecteur, distribution papier et correction à l'oral.",
+          "Les huit situations et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, distribution papier et correction à l'oral.",
       },
     },
     synthese: {
@@ -425,7 +425,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux réponses sont imprimées dans le kit (pages 19 et 20, datées), la clause inventée entourée, la clause recopiée surlignée avec la page du contrat en vis-à-vis. La recherche dans le contrat papier se fait en salle, au surligneur.",
+          "Les deux réponses sont imprimées dans le kit (datées), la clause inventée entourée, la clause recopiée surlignée avec la page du contrat en vis-à-vis. La recherche dans le contrat papier se fait en salle, au surligneur.",
       },
     },
     pratique: {
@@ -463,7 +463,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : le kit contient les sorties imprimées des deux cas (pages 22 à 25, datées) — synthèse brute et premier jet de courrier. L'atelier bascule sur la correction : chacun vérifie les références aux sources sur le contrat papier, barre ce qui ne s'y retrouve pas, et finalise le courrier à la main. Le cœur du module — recopier, vérifier, motiver — est intact.",
+          "Outil indisponible : le kit contient les sorties imprimées des deux cas (datées) — synthèse brute et premier jet de courrier. L'atelier bascule sur la correction : chacun vérifie les références aux sources sur le contrat papier, barre ce qui ne s'y retrouve pas, et finalise le courrier à la main. Le cœur du module — recopier, vérifier, motiver — est intact.",
       },
     },
     verification: {
@@ -486,7 +486,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           {
             situation: "Les copies sont trop propres, rien n'est barré.",
             parade:
-              "Projeter la production piégée du kit (page 27), qui contient quatre références non sourcées, et faire barrer collectivement. L'œil se règle en trois minutes, puis relancer le croisement.",
+              "Projeter la production piégée du kit, qui contient quatre références non sourcées, et faire barrer collectivement. L'œil se règle en trois minutes, puis relancer le croisement.",
           },
         ],
         planB:
@@ -567,7 +567,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La réponse et la ligne de trace remplie sont imprimées dans le kit (page 30, datée). La démonstration se tient sur papier, et la ligne de trace s'écrit au tableau — le geste des dix secondes reste visible.",
+          "La réponse et la ligne de trace remplie sont imprimées dans le kit (datée). La démonstration se tient sur papier, et la ligne de trace s'écrit au tableau — le geste des dix secondes reste visible.",
       },
     },
     pratique: {
@@ -631,8 +631,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
               "Tenir le quiz quand même, en annonçant le temps exact : « dix questions, douze minutes, correction incluse ». On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 33) et corrigé page 34. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 34. Aucune dépendance à un outil.",
       },
     },
     synthese: {

@@ -91,7 +91,6 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
       prompt:
         "Voici la fiche technique fournisseur ci-jointe. Rédige une fiche produit pour notre site à partir de ce SEUL document. Structure imposée : un titre de 60 caractères maximum commençant par le nom du produit ; un argumentaire de 80 mots orienté usage client ; les caractéristiques en liste, reprises de la fiche technique SANS reformulation. N'ajoute aucune caractéristique, aucune norme, aucune origine, aucune allégation de santé ou environnementale qui ne figure pas dans le document. Prix, disponibilité, garantie et conditions de retour : n'écris rien, laisse quatre lignes marquées « à compléter par le magasin ». Si une information manque, écris « non renseigné » — n'invente rien.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "45 min", apres: "10 min" },
       captureEcran:
         "La fiche technique fournisseur à gauche, la fiche produit générée à droite, une flèche par caractéristique reliant chaque affirmation à la ligne qui la prouve — et les quatre lignes « à compléter par le magasin » entourées.",
       verifieLe: VERIFIE_LE,
@@ -126,7 +125,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (pages 4 et 5, datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -142,7 +141,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             question: "Je n'ai pas de fiche technique sous la main, juste le produit en tête.",
             reponse:
-              "Alors prenez la fiche de secours du kit (page 6). De mémoire, on n'écrit pas une fiche : la règle de la journée est justement qu'une caractéristique se recopie d'un document, jamais d'un souvenir.",
+              "Alors prenez la fiche de secours du kit. De mémoire, on n'écrit pas une fiche : la règle de la journée est justement qu'une caractéristique se recopie d'un document, jamais d'un souvenir.",
           },
           {
             question: "Ma photo de la fiche papier ressort illisible.",
@@ -187,11 +186,10 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             situation: "Les copies sont trop propres, rien n'est barré.",
             parade:
-              "Projetez la fiche volontairement chargée du kit (page 8) et faites barrer collectivement. L'œil se règle en trois minutes, puis renvoyez aux copies réelles.",
+              "Projetez la fiche volontairement chargée du kit et faites barrer collectivement. L'œil se règle en trois minutes, puis renvoyez aux copies réelles.",
           },
         ],
-        planB:
-          "Grille et corrigé sont imprimés dans le kit (pages 7 et 8). Aucun outil nécessaire.",
+        planB: "Grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.",
       },
     },
     synthese: {
@@ -299,7 +297,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             question: "Je n'ai pas de tableau produits, tout est dans le logiciel de caisse.",
             reponse:
-              "Exportez dix produits en tableau si l'export est simple, sinon prenez le tableau de secours du kit (page 13). L'objectif est le procédé, il se transpose lundi.",
+              "Exportez dix produits en tableau si l'export est simple, sinon prenez le tableau de secours du kit. L'objectif est le procédé, il se transpose lundi.",
           },
         ],
         blocages: [
@@ -343,7 +341,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "L'échantillonnage se pratique sur la série témoin imprimée du kit (pages 14 et 15), qui contient trois écarts plantés. Grille et corrigé imprimés, aucun outil nécessaire.",
+          "L'échantillonnage se pratique sur la série témoin imprimée du kit, qui contient trois écarts plantés. Grille et corrigé imprimés, aucun outil nécessaire.",
       },
     },
     synthese: {
@@ -417,7 +415,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
             situation:
               "Les deux totaux sortent identiques, la démonstration du chiffre tombe à plat.",
             parade:
-              "Relancer sur le tableau long du kit (page 18) : plus de lignes, l'écart apparaît. Sinon, montrer les deux captures datées du kit — et le dire : « ça n'a pas raté aujourd'hui, ça ratera lundi ».",
+              "Relancer sur le tableau long du kit : plus de lignes, l'écart apparaît. Sinon, montrer les deux captures datées du kit — et le dire : « ça n'a pas raté aujourd'hui, ça ratera lundi ».",
           },
           {
             situation:
@@ -427,7 +425,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (pages 17 et 18, datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.",
+          "Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.",
       },
     },
     pratique: {
@@ -462,7 +460,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a aucun avis en ligne à traiter.",
             parade:
-              "Le kit fournit trois avis de secours (page 19) : un positif, un négatif, un injustifié. Ne le laissez pas regarder son voisin travailler.",
+              "Le kit fournit trois avis de secours : un positif, un négatif, un injustifié. Ne le laissez pas regarder son voisin travailler.",
           },
         ],
         planB:
@@ -483,7 +481,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             situation: "Un binôme déclare tout publiable sans rien relever.",
             parade:
-              "Leur donner la réponse piégée du kit (page 20), qui contient les trois fuites. S'ils n'en trouvent aucune, refaire la lecture avec eux — l'œil n'est pas réglé.",
+              "Leur donner la réponse piégée du kit, qui contient les trois fuites. S'ils n'en trouvent aucune, refaire la lecture avec eux — l'œil n'est pas réglé.",
           },
         ],
         planB: "Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.",
@@ -558,7 +556,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (pages 22 et 23, datées), écarts surlignés. Le test de la trame finie s'explique sur papier.",
+          "Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (datées), écarts surlignés. Le test de la trame finie s'explique sur papier.",
       },
     },
     pratique: {
@@ -586,7 +584,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           {
             situation: "Un stagiaire a un historique vide ou trop propre, rien à réécrire.",
             parade:
-              "Le kit fournit six demandes à trier (page 24), dont trois fautives. L'exercice tient à l'identique, et souvent mieux : on juge plus lucidement les demandes des autres.",
+              "Le kit fournit six demandes à trier, dont trois fautives. L'exercice tient à l'identique, et souvent mieux : on juge plus lucidement les demandes des autres.",
           },
           {
             situation: "La feuille de route reste vague : « on va utiliser l'IA pour les fiches ».",
@@ -621,8 +619,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 26) et corrigé page 27. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 27. Aucune dépendance à un outil.",
       },
     },
     synthese: {
