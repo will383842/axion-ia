@@ -27,8 +27,11 @@
  *   pnpm tsx scripts/kit-formateur/publier-vers-r2.ts ia-pour-les-rh
  *   pnpm tsx scripts/kit-formateur/publier-vers-r2.ts --dry-run  # sans écrire
  *
- * Requiert `DATABASE_URL` et les variables R2. À lancer depuis le conteneur
- * worker de production, ou en local avec un tunnel.
+ * ⚠️ NE SE LANCE PAS depuis le conteneur de production : l'image est le build
+ * standalone de Next.js, elle n'embarque ni `scripts/` ni `_KIT/` (vérifié le
+ * 2026-08-08 sur le worker). Il faut un clone du dépôt, `DATABASE_URL` pointant
+ * sur la base de prod via un tunnel SSH, et les variables R2. Marche à suivre
+ * complète dans `_KIT/README.md`.
  */
 
 import { createHash } from "node:crypto";
@@ -142,7 +145,8 @@ async function main(): Promise<void> {
   const souci = baseInutilisable();
   if (souci !== null) {
     console.error(`⛔ ${souci}`);
-    console.error("   À lancer depuis le conteneur worker de production, ou avec un tunnel.");
+    console.error("   Depuis un clone du dépôt, avec un tunnel vers la base de prod.");
+    console.error("   Marche à suivre : _KIT/README.md, section « Où lancer la publication ».");
     process.exitCode = 1;
     return;
   }
