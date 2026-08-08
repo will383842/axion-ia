@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour la production (2j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour la production » — 2j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-la-production</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Après-midi J1 — Les écrits du terrain : compte rendu de poste et mode opératoire <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Matin J2 — Fiabiliser ce qui sort : chasse à l'erreur, documents de sécurité, commentaire d'indicateurs <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi J2 — Automatiser un relevé d'atelier, jamais un jugement sur une personne <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu es agent de maîtrise dans un atelier de production, et tu écris pour l'équipe qui prend le poste après moi.<br />ConteXte : je te donne ma dictée brute de fin de poste, prise en marchant, avec des phrases inachevées et des reprises.<br />Intention : produire le passage de consigne écrit que l'équipe suivante lira en trois minutes avant de monter au poste.<br />Output : trois rubriques et rien d'autre — FAITS DU POSTE, DÉCISIONS PRISES, À REPRENDRE PAR L'ÉQUIPE SUIVANTE. Une ligne par point, avec le poste ou la ligne nommé en début de ligne.<br />Normes : n'écris que ce qui est dans ma dictée. N'invente aucun horaire, aucune quantité, aucune référence produit, aucun nom de client. Ne rédige AUCUNE consigne de sécurité et AUCUN paramètre de réglage : si ma dictée en contient, recopie-les mot pour mot entre guillemets et ajoute « à vérifier au document de référence ». Si un point est incompréhensible, écris « à préciser » plutôt que de deviner.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La dictée brute à gauche, le passage de consigne à droite, avec en surlignage les trois « à préciser » que l'outil a rendus au lieu de combler, et le paramètre de réglage laissé entre guillemets.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le régime d'usage retenu par le client).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou réseau tombé : la dictée brute et les deux sorties sont imprimées dans le kit formateur, datées. La comparaison ligne à ligne et le repérage des « à préciser » se tiennent à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Après-midi J1 — Les écrits du terrain : compte rendu de poste et mode opératoire</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la transcription brute de ma dictée de trois minutes, prise en sortant du point de production. Elle contient des hésitations, des reprises et des phrases inachevées.<br />Écris le compte rendu du point sous exactement trois rubriques : FAITS (ce qui a été constaté, une ligne par ligne de production), DÉCISIONS (ce qui a été arbitré, en nommant qui l'a arbitré si je l'ai dit), À RELANCER (l'action, la personne nommée dans ma dictée, l'échéance si je l'ai donnée).<br />N'ajoute rien qui ne soit dans la dictée : aucun tonnage, aucun taux, aucune référence produit, aucun nom de client. Si je n'ai pas donné de porteur ou d'échéance, écris « porteur à désigner » ou « échéance à fixer », n'en invente pas.<br />Ne reformule aucun élément de sécurité et aucun paramètre de conduite : recopie-le tel que je l'ai dit, entre guillemets.<br />Termine par la liste des points de ma dictée que tu n'as pas compris.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La transcription brute et le compte rendu côte à côte, avec la rubrique finale « points non compris » entourée — c'est elle qu'on regarde en premier, avant le reste de la sortie.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La transcription brute, le compte rendu et le mode opératoire sont imprimés dans le kit, datés. La démonstration se tient à l'identique : on lit la dictée à voix haute, on distribue les sorties, on entoure la rubrique des points non compris.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Matin J2 — Fiabiliser ce qui sort : chasse à l'erreur, documents de sécurité, commentaire d'indicateurs</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Je te donne la trame de causerie sécurité ci-jointe et le récit d'un aléa survenu la semaine dernière sur une ligne de production.<br />Remplis la trame rubrique par rubrique, sans en ajouter ni en retirer : contexte de l'aléa en trois lignes, ce qui aurait pu arriver, la question à poser à l'équipe, l'emplacement de signature.<br />Règle absolue : tu n'écris AUCUNE consigne de sécurité et AUCUN geste de conduite. Là où la trame attend une consigne, écris exactement « [recopier ici la consigne du document de référence — visa HSE] » et n'invente rien autour.<br />N'utilise aucun chiffre que je ne t'ai pas donné : ni cadence, ni tonnage, ni durée d'arrêt.<br />Écris au niveau de langue d'un opérateur : phrases courtes, pas de vocabulaire de bureau, pas d'abréviation qui ne soit dans mon récit.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La causerie remplie, avec les trois emplacements « [recopier ici la consigne du document de référence — visa HSE] » surlignés — ce sont les seules lignes que la machine n'a pas écrites, et ce sont les seules qui engagent.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La trame vide et la causerie remplie sont imprimées dans le kit, datées, avec les emplacements de visa déjà surlignés. La démonstration se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi J2 — Automatiser un relevé d'atelier, jamais un jugement sur une personne</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un relevé d'atelier brut, copié tel quel depuis mon fichier de suivi.<br />Mets-le en forme en un suivi hebdomadaire, une ligne par semaine, avec ces colonnes et aucune autre : semaine (numéro), ligne de production, quantité produite, unité, nombre d'arrêts, commentaire.<br />Règles de traitement, à appliquer sans exception : ne convertis aucune unité, recopie l'unité telle qu'elle est écrite ; ne calcule aucun total, aucune moyenne, aucun taux ; laisse vide toute cellule que la source ne renseigne pas et n'estime rien.<br />Ne reprends aucun nom de personne présent dans le relevé : remplace-le par le libellé du poste.<br />Termine par une rubrique « LIGNES DOUTEUSES » où tu listes chaque ligne que tu n'as pas su interpréter, avec la raison : date ambiguë, unité absente, quantité non numérique, doublon apparent.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le relevé brut à gauche, le suivi hebdomadaire à droite, et en bas la rubrique « LIGNES DOUTEUSES » entourée — avec la ligne où « 1,2 » pouvait être des tonnes ou des kilos et n'a pas été tranchée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Le relevé brut, la sortie sans règles et la sortie avec règles sont imprimés dans le kit, datés. La comparaison colonne par colonne se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Vidéoprojecteur en panne : le tour de table et les deux règles se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise</td><td>Démonstration</td><td>Quota atteint ou réseau tombé : la dictée brute et les deux sorties sont imprimées dans le kit formateur, datées. La comparaison ligne à ligne et le repérage des « à préciser » se tiennent à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil pour son premier temps : la liste rouge s'écrit à la main sur la trame. Pour la consigne de poste, réseau tombé, les cinq leviers AXION s'appliquent à l'identique sur la trame papier — ce qui compte est la structure de la demande, pas l'outil qui l'exécute. Chacun relancera au poste, la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin J1 — Le socle : ce qui se pratique à l'atelier, et ce qui ne sort jamais de l'entreprise</td><td>Vérification</td><td>Vidéoprojecteur en panne : les trois consignes se lisent à voix haute par leur auteur, la grille est imprimée et cochée par le voisin. Le corrigé des cinq questions est dans le kit.</td></tr>
+          <tr><td>Après-midi J1 — Les écrits du terrain : compte rendu de poste et mode opératoire</td><td>Démonstration</td><td>La transcription brute, le compte rendu et le mode opératoire sont imprimés dans le kit, datés. La démonstration se tient à l'identique : on lit la dictée à voix haute, on distribue les sorties, on entoure la rubrique des points non compris.</td></tr>
+          <tr><td>Après-midi J1 — Les écrits du terrain : compte rendu de poste et mode opératoire</td><td>Pratique</td><td>Réseau tombé : le compte rendu s'écrit sur la trame papier à partir des notes du point de production, et le mode opératoire sur la trame fournie. La structure — faits, décisions, à relancer — est ce qui compte et elle ne dépend d'aucun outil. Chacun relancera la dictée depuis son poste, les trames sont datées et réutilisables.</td></tr>
+          <tr><td>Après-midi J1 — Les écrits du terrain : compte rendu de poste et mode opératoire</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Matin J2 — Fiabiliser ce qui sort : chasse à l'erreur, documents de sécurité, commentaire d'indicateurs</td><td>Démonstration</td><td>La trame vide et la causerie remplie sont imprimées dans le kit, datées, avec les emplacements de visa déjà surlignés. La démonstration se tient à l'identique sur papier.</td></tr>
+          <tr><td>Matin J2 — Fiabiliser ce qui sort : chasse à l'erreur, documents de sécurité, commentaire d'indicateurs</td><td>Pratique</td><td>Outil indisponible : la chasse à l'erreur se fait sur le texte imprimé du kit, les trois trames de document se remplissent à la main, et le commentaire d'indicateurs s'écrit à partir du jeu d'indicateurs papier fourni. C'est l'atelier le plus robuste des deux jours — gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Matin J2 — Fiabiliser ce qui sort : chasse à l'erreur, documents de sécurité, commentaire d'indicateurs</td><td>Vérification</td><td>Le tableau des erreurs types et le corrigé des cinq questions sont dans le kit.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser un relevé d'atelier, jamais un jugement sur une personne</td><td>Démonstration</td><td>Le relevé brut, la sortie sans règles et la sortie avec règles sont imprimés dans le kit, datés. La comparaison colonne par colonne se tient à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser un relevé d'atelier, jamais un jugement sur une personne</td><td>Pratique</td><td>Outil indisponible : le test des quatre questions et la fiche de qualification ne dépendent d'aucun outil, le suivi hebdomadaire se construit à la main sur la trame du kit à partir du relevé imprimé, et le cas limite se traite au crayon. L'assemblage du classeur se fait en pochette cartonnée. Gardez les quatre temps, ne sacrifiez ni le test ni l'assemblage.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser un relevé d'atelier, jamais un jugement sur une personne</td><td>Vérification</td><td>Quiz papier et corrigé dans le kit, grille d'auto-évaluation imprimée. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

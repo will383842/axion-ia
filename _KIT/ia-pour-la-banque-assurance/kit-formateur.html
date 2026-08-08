@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour la banque et l'assurance (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour la banque et l'assurance » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-la-banque-assurance</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Sinistres, dossiers et documents contractuels <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la fiche d'un dossier de sinistre dont le nom, le numéro de contrat et la date de naissance ont été retirés (document joint — dossier reconstitué du kit, entièrement fictif). Réponds à trois questions, dans l'ordre, en t'appuyant uniquement sur ce document. Question 1 : liste les éléments qui restent identifiants — commune, profession, employeur cité, type et date du sinistre, montants. Question 2 : dans une commune de 3 000 habitants, combien de personnes peuvent correspondre à la fois à cette profession et à ce sinistre survenu à cette date ? Question 3 : quels champs faudrait-il encore retirer ou généraliser pour que ce dossier ne désigne plus personne — et que resterait-il alors d'exploitable ?</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La fiche « anonymisée » à gauche, la réponse de l'outil à droite, avec les trois éléments ré-identifiants surlignés — commune, profession, date du sinistre.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La fiche et la sortie complète de l'outil sont imprimées dans le kit (datées). La démonstration se tient à l'identique sur papier : le vote à main levée, la lecture des trois réponses, le surlignage des éléments ré-identifiants. Ne rien improviser en direct.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT A — « Voici un dossier de demande reconstitué (document joint du kit, entièrement fictif) : financement de travaux de 18 000 € sur 60 mois, revenus, charges et historique détaillés dans le document. Rédige en trois phrases un avis sur ce dossier. »<br /><br />PROMPT B — identique mot pour mot, le MÊME document joint avec une seule ligne ajoutée en tête : « Demandeur : 63 ans, divorcé, réside dans le quartier des Grands-Champs. » — « Rédige en trois phrases un avis sur ce dossier. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux avis côte à côte, la ligne ajoutée surlignée dans le prompt B, et les formulations de l'avis qui ont changé entourées — la prudence apparue, les réserves nouvelles.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux avis sont imprimés dans le kit (datées), la ligne ajoutée et les formulations qui basculent déjà surlignées. Le pari écrit et la lecture ligne à ligne se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Sinistres, dossiers et documents contractuels</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici les conditions générales jointes (document du kit, contrat multirisque habitation reconstitué). En te limitant STRICTEMENT à ce document : la garantie dégât des eaux couvre-t-elle une infiltration par la toiture ? Indique la franchise applicable et le délai de déclaration. Pour CHAQUE élément de ta réponse, recopie MOT POUR MOT la clause sur laquelle tu t'appuies, avec son numéro d'article. Si le document ne permet pas de répondre sur un point, écris « le document ne le précise pas » et n'invente rien.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La réponse sans document à gauche — clause inventée entourée en rouge — et la réponse sur document déposé à droite, avec la clause recopiée et son numéro d'article surlignés, ouverts en parallèle dans le PDF.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux réponses sont imprimées dans le kit (datées), la clause inventée entourée, la clause recopiée surlignée avec la page du contrat en vis-à-vis. La recherche dans le contrat papier se fait en salle, au surligneur.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici notre trame de réponse validée et l'extrait des conditions générales joints (documents du kit). Un client demande si la garantie bris de glace de son contrat automobile couvre le remplacement du pare-brise, et ce qui reste à sa charge. Rédige un projet de réponse en quatre phrases maximum, sur le ton de la trame : les conditions et montants proviennent UNIQUEMENT de l'extrait joint, recopiés tels quels avec leur référence d'article ; si l'extrait ne précise pas un point, écris « à vérifier sur votre contrat » au lieu d'un chiffre. Termine par la phrase de la trame : « Cette réponse vous est confirmée par votre conseiller, qui reste à votre disposition. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le projet de réponse à l'écran, et dessous, la ligne de trace remplie en direct dans le registre du kit : date, question, outil utilisé, rédacteur, valideur nommé, référence de l'extrait source.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La réponse et la ligne de trace remplie sont imprimées dans le kit (datée). La démonstration se tient sur papier, et la ligne de trace s'écrit au tableau — le geste des dix secondes reste visible.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée</td><td>Démonstration</td><td>La fiche et la sortie complète de l'outil sont imprimées dans le kit (datées). La démonstration se tient à l'identique sur papier : le vote à main levée, la lecture des trois réponses, le surlignage des éléments ré-identifiants. Ne rien improviser en direct.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil : pièces imprimées, grille papier, liste rouge imprimée. Aucun repli nécessaire.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre d'abord : dans quel environnement chaque pièce a le droit d'être traitée</td><td>Vérification</td><td>Les dix pièces et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, distribution papier et correction à l'oral.</td></tr>
+          <tr><td>Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier</td><td>Démonstration</td><td>Les deux avis sont imprimés dans le kit (datées), la ligne ajoutée et les formulations qui basculent déjà surlignées. Le pari écrit et la lecture ligne à ligne se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier</td><td>Pratique</td><td>L'atelier est entièrement papier par construction : grille imprimée, protocole imprimé. Aucun repli nécessaire — c'est l'atelier le plus robuste de la journée.</td></tr>
+          <tr><td>Matin · Module 2 — Ce que l'IA ne touche jamais dans ce métier</td><td>Vérification</td><td>Les huit situations et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, distribution papier et correction à l'oral.</td></tr>
+          <tr><td>Après-midi · Module 3 — Sinistres, dossiers et documents contractuels</td><td>Démonstration</td><td>Les deux réponses sont imprimées dans le kit (datées), la clause inventée entourée, la clause recopiée surlignée avec la page du contrat en vis-à-vis. La recherche dans le contrat papier se fait en salle, au surligneur.</td></tr>
+          <tr><td>Après-midi · Module 3 — Sinistres, dossiers et documents contractuels</td><td>Pratique</td><td>Outil indisponible : le kit contient les sorties imprimées des deux cas (datées) — synthèse brute et premier jet de courrier. L'atelier bascule sur la correction : chacun vérifie les références aux sources sur le contrat papier, barre ce qui ne s'y retrouve pas, et finalise le courrier à la main. Le cœur du module — recopier, vérifier, motiver — est intact.</td></tr>
+          <tr><td>Après-midi · Module 3 — Sinistres, dossiers et documents contractuels</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. La vérification se fait sur les contrats papier — aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service</td><td>Démonstration</td><td>La réponse et la ligne de trace remplie sont imprimées dans le kit (datée). La démonstration se tient sur papier, et la ligne de trace s'écrit au tableau — le geste des dix secondes reste visible.</td></tr>
+          <tr><td>Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service</td><td>Pratique</td><td>Outil indisponible : les réponses types se rédigent à la main sur la trame papier, à partir des extraits imprimés — en-tête, validation, trace comprises. La feuille de route et l'assemblage du protocole ne dépendent d'aucun outil. Gardez cet atelier complet même si tout le reste a été dégradé : c'est le livrable de la journée.</td></tr>
+          <tr><td>Après-midi · Module 4 — Réponses aux clients, traçabilité et protocole du service</td><td>Vérification</td><td>Quiz papier dans le kit et corrigé page 34. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour la relation client (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour la relation client » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-la-relation-client</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Réponses types et réclamations <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — La base de connaissances et ce qui part au client <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">« Voici la demande d'un client, reproduite ci-dessous. Rédige un brouillon de réponse. Réponds uniquement à partir de ce qui est écrit dans la demande et dans la fiche produit jointe. N'annonce aucun délai, aucun remboursement, aucun geste commercial et aucune garantie : si l'un d'eux te paraît nécessaire, écris à la place [À ARBITRER PAR LE CONSEILLER] et poursuis. Termine par la question qu'il me reste à poser au client pour clore le dossier. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le brouillon obtenu, avec chaque mention [À ARBITRER PAR LE CONSEILLER] entourée et la phrase d'interdiction de la consigne surlignée en regard.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison se tient à l'identique sur papier, y compris le chronométrage du traitement « comme aujourd'hui », qui ne dépend d'aucun outil. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Réponses types et réclamations</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Consigne structurée par AXION —<br />Acteur : tu es conseiller au service client d'une entreprise de vente d'équipement professionnel.<br />ConteXte : le client écrit pour la deuxième fois au sujet d'une livraison incomplète, son message est agressif et met en cause la personne qui lui a répondu la première fois. Le message et l'historique neutralisés sont ci-dessous.<br />Intention : produire un brouillon de réponse qui reconnaît le fait, ne discute pas le ton, et propose la prochaine étape concrète.<br />Output : 150 mots maximum, sans liste à puces, une seule question au client à la fin.<br />Normes : vouvoiement, pas d'excuse formulée plus d'une fois, aucune mise en cause d'un collègue, aucun délai ni geste commercial chiffré — écris [À ARBITRER PAR LE CONSEILLER] à leur place. Ajoute en dernière ligne la mention d'information sur l'usage d'un outil d'assistance, telle qu'elle est fournie dans le kit.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le brouillon obtenu à côté de la consigne, les cinq leviers AXION annotés en marge, et la mention [À ARBITRER PAR LE CONSEILLER] entourée dans le brouillon.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison avant / après se tient à l'identique sur papier, la consigne AXION s'annote au paperboard. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">« Voici l'historique complet d'un dossier client, messages numérotés de 1 à 20, reproduit ci-dessous. Produis trois blocs et rien d'autre. Bloc FAITS : ce qui s'est passé, une ligne par fait, avec le numéro du message qui l'établit. Bloc ENGAGEMENTS PRIS PAR NOUS : chaque promesse faite au client, avec le numéro du message et la date annoncée si elle y figure ; écris « aucun » si le fil n'en contient pas. Bloc PROCHAINE ACTION : la seule chose qu'il reste à faire, et qui doit la faire. N'ajoute aucun élément absent de l'historique. Si un point est ambigu, écris « à vérifier » plutôt que de trancher. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La fiche de reprise en trois blocs avec les renvois de numéros de messages surlignés, et l'engagement du message 12 entouré.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La sortie est imprimée dans le kit (datée), avec les renvois de numéros déjà surlignés. Le pari écrit et le comptage des engagements se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — La base de connaissances et ce qui part au client</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">« Voici un brouillon de réponse client et, en dessous, le dossier sur lequel il s'appuie. Passe les quatre contrôles suivants, dans cet ordre, et rends un tableau à deux colonnes : contrôle, ce que tu relèves. 1. LE FAIT : chaque affirmation du brouillon est-elle établie par le dossier ? Cite le passage qui l'établit, ou signale-la comme non établie. 2. L'ENGAGEMENT : le brouillon annonce-t-il un délai, un remboursement, un geste commercial ou une garantie ? Liste-les tous, même s'ils te paraissent évidents. 3. LE TON : relève les formulations qui mettent en cause le client, un collègue ou un tiers. 4. LES MENTIONS : la mention d'information et la formule de clôture prévues sont-elles présentes et intactes ? Ne réécris pas le brouillon, relève seulement. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le tableau des quatre contrôles rendu par l'outil, avec la ligne « engagement » entourée et le brouillon d'origine en regard.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La sortie est imprimée dans le kit (datée). La démonstration se tient sur papier, les quatre contrôles se cochent au stylo sur le brouillon projeté ou distribué.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire : les deux colonnes se tracent au paperboard et le tour de table se tient tel quel.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais</td><td>Démonstration</td><td>Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison se tient à l'identique sur papier, y compris le chronométrage du traitement « comme aujourd'hui », qui ne dépend d'aucun outil. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais</td><td>Pratique</td><td>L'atelier de neutralisation ne dépend d'aucun outil : il s'écrit à la main sur la trame fournie. Rien à replier — c'est déjà la version papier.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre du ticket : ce que l'IA prend en charge, ce qu'elle ne décide jamais</td><td>Vérification</td><td>Les cinq extraits et leur corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, et les classements s'écrivent au paperboard.</td></tr>
+          <tr><td>Matin · Module 2 — Réponses types et réclamations</td><td>Démonstration</td><td>Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison avant / après se tient à l'identique sur papier, la consigne AXION s'annote au paperboard. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 2 — Réponses types et réclamations</td><td>Pratique</td><td>Outil indisponible : les stagiaires rédigent leur consigne AXION en entier sur le support — c'est la consigne qui s'apprend, pas la manipulation — et le contrôle croisé porte sur les consignes plutôt que sur les réponses. Chacun relancera chez lui : la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 2 — Réponses types et réclamations</td><td>Vérification</td><td>Le jeu de réponses pour la chasse à l'erreur et son corrigé sont imprimés dans le kit. Sans vidéoprojecteur, les scores s'écrivent au paperboard.</td></tr>
+          <tr><td>Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance</td><td>Démonstration</td><td>La sortie est imprimée dans le kit (datée), avec les renvois de numéros déjà surlignés. Le pari écrit et le comptage des engagements se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance</td><td>Pratique</td><td>Outil indisponible : le jeu de rôle se tient à deux, un stagiaire jouant le client à partir du scénario imprimé — c'est même la version la plus riche, gardez-la en réserve. La fiche de reprise se rédige à la main depuis l'historique imprimé du kit ; seule la vitesse change.</td></tr>
+          <tr><td>Après-midi · Module 3 — Reprendre un dossier en cours et tenir la troisième relance</td><td>Vérification</td><td>Le fil et son corrigé sont imprimés dans le kit. Le contrôle se tient à l'oral, corrigé papier en main.</td></tr>
+          <tr><td>Après-midi · Module 4 — La base de connaissances et ce qui part au client</td><td>Démonstration</td><td>La sortie est imprimée dans le kit (datée). La démonstration se tient sur papier, les quatre contrôles se cochent au stylo sur le brouillon projeté ou distribué.</td></tr>
+          <tr><td>Après-midi · Module 4 — La base de connaissances et ce qui part au client</td><td>Pratique</td><td>Outil indisponible : les verbatims se regroupent à la main sur les fiches cartonnées du kit, la note d'une page s'écrit au stylo, les fiches de base de connaissances se rédigent sur la trame papier, et les quatre contrôles se cochent au stylo. Aucun des trois temps ne dépend réellement d'un accès IA, seule la vitesse change.</td></tr>
+          <tr><td>Après-midi · Module 4 — La base de connaissances et ce qui part au client</td><td>Vérification</td><td>Quiz papier dans le kit, corrigé page 30, grille de notation page 31. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

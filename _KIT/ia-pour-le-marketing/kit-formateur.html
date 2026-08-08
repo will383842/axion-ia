@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour le marketing (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour le marketing » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-le-marketing</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Le cadre et la voix de la marque <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — D'un message unique à la série : décliner et planifier <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Rien ne se diffuse sans vérification <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Le cadre et la voix de la marque</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Demande spontanée : « Écris un post LinkedIn pour annoncer notre nouvelle offre. »<br /><br />Demande structurée (méthode AXION) :<br />Acteur : tu es responsable communication d'un fabricant de menuiseries de 60 personnes en Auvergne-Rhône-Alpes, qui vend à des installateurs professionnels et jamais au particulier.<br />ConteXte : nous ouvrons un service de pose garanti dix ans, réservé aux installateurs partenaires ; l'annonce sort le 15 septembre.<br />Intention : une publication qui fasse demander le dossier partenaire, pas une publication qui fasse plaisir.<br />Output : 150 mots maximum, aucune liste à puces, une seule idée, une question en clôture.<br />Normes : applique le dossier de marque ci-joint — ton sobre et factuel, jamais familier. Aucun superlatif, aucun chiffre que je ne t'ai pas donné, aucune promesse de délai. S'il te manque une information, écris [À COMPLÉTER] au lieu de l'inventer.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux publications côte à côte — la spontanée et la structurée — avec les cinq leviers AXION annotés en marge sur la seconde.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service indisponible : les deux sorties — spontanée et structurée — sont imprimées dans le kit formateur (datées), avec les cinq leviers déjà annotés. La comparaison à voix haute se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — D'un message unique à la série : décliner et planifier</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">« Voici le brief en PDF, la fiche produit et le dossier de marque en pièces jointes. À partir de la SEULE idée « la pose garantie dix ans », produis quatre versions : (1) une publication de 150 mots, (2) l'objet et le corps d'une newsletter de 250 mots adressée aux installateurs déjà clients, (3) un script vidéo de 45 secondes en plans numérotés, (4) un communiqué de 300 mots avec titre, chapeau et une citation attribuée à [NOM DU DIRIGEANT — À COMPLÉTER]. Pour chaque version, indique en une ligne ce que le format t'a obligé à retirer. N'ajoute aucun chiffre, aucune date et aucun nom qui ne figurent pas dans les documents joints. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La déclinaison en quatre formats à l'écran, avec la ligne « ce que ce format m'a obligé à retirer » surlignée sur chacun, et le dépôt du PDF montré en amont.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service indisponible : les quatre formats sont imprimés dans le kit formateur (datés), avec la ligne « ce que ce format m'a obligé à retirer » déjà surlignée. Le relevé de ce qui se dégrade se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">« Je te décris la structure de mon tableau de campagne, je ne te le transmets pas. Colonnes : semaine, nombre d'envois, taux d'ouverture, taux de clic, nombre de demandes de devis. Voici les quatre valeurs que je saisis moi-même, semaine 36 : taux d'ouverture 31 %, taux de clic 2,4 %, 7 demandes de devis, contre 4 la semaine précédente. Rédige en 120 mots le commentaire de ces résultats pour un comité de direction : ce qui progresse, ce qui stagne, et la question que ces chiffres ne permettent pas de trancher. Ne calcule rien, ne recalcule aucun pourcentage, n'ajoute aucun chiffre que je ne t'ai pas donné. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les quatre visuels du kit annotés — ce qui tient, ce qui rate — puis les deux commentaires de campagne côte à côte avec le total recalculé par l'outil entouré en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les quatre visuels sont déjà imprimés dans le kit, la revue ne dépend d'aucun outil. Les deux commentaires de campagne — avec et sans calcul — sont imprimés pages 22 et 23, datés, avec le chiffre faux déjà entouré. L'ensemble de la démonstration se tient sur papier sans rien perdre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Rien ne se diffuse sans vérification</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Sans contrainte : « Rédige un paragraphe de 120 mots sur les tendances du marché de la menuiserie professionnelle en France. »<br /><br />Avec contrainte : « Rédige un paragraphe de 120 mots sur les tendances du marché de la menuiserie professionnelle en France. Pour CHAQUE affirmation chiffrée, indique entre crochets la source précise et son année. Si tu ne disposes pas d'une source que tu peux nommer exactement, n'écris pas l'affirmation : écris à sa place [AUCUNE SOURCE DISPONIBLE]. Ne cite aucune étude dont tu n'es pas certain du titre. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le paragraphe de marché avant / après, les [AUCUNE SOURCE DISPONIBLE] surlignés sur la seconde version.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux paragraphes de marché sont imprimés pages 24 et 25 du kit, datés, avec les [AUCUNE SOURCE DISPONIBLE] déjà surlignés. La lecture à voix haute puis la comparaison se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Le cadre et la voix de la marque</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Vidéoprojecteur en panne : le tour de table, la règle du jour et l'annonce du livrable se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et la voix de la marque</td><td>Démonstration</td><td>Quota atteint ou service indisponible : les deux sorties — spontanée et structurée — sont imprimées dans le kit formateur (datées), avec les cinq leviers déjà annotés. La comparaison à voix haute se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et la voix de la marque</td><td>Pratique</td><td>Réseau tombé : le dossier de marque se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Le test sur publication réelle se remplace par la comparaison des deux sorties imprimées du kit. Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et la voix de la marque</td><td>Vérification</td><td>La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral. Le changement de persona se fait alors sur les deux sorties pré-produites du kit, page 18.</td></tr>
+          <tr><td>Matin · Module 2 — D'un message unique à la série : décliner et planifier</td><td>Démonstration</td><td>Quota atteint ou service indisponible : les quatre formats sont imprimés dans le kit formateur (datés), avec la ligne « ce que ce format m'a obligé à retirer » déjà surlignée. Le relevé de ce qui se dégrade se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 2 — D'un message unique à la série : décliner et planifier</td><td>Pratique</td><td>Réseau tombé : le calendrier se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Pour la déclinaison, utilisez les quatre formats imprimés du kit et faites relever à la main ce que chaque format a retiré. Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.</td></tr>
+          <tr><td>Matin · Module 2 — D'un message unique à la série : décliner et planifier</td><td>Vérification</td><td>La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, en se limitant aux deux dérives les plus fréquentes.</td></tr>
+          <tr><td>Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête</td><td>Démonstration</td><td>Les quatre visuels sont déjà imprimés dans le kit, la revue ne dépend d'aucun outil. Les deux commentaires de campagne — avec et sans calcul — sont imprimés pages 22 et 23, datés, avec le chiffre faux déjà entouré. L'ensemble de la démonstration se tient sur papier sans rien perdre.</td></tr>
+          <tr><td>Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête</td><td>Pratique</td><td>Outil indisponible : le commentaire de campagne s'écrit à la main sur la trame fournie et les trois hypothèses de test se listent en binôme — c'est un exercice d'arbitrage, pas de génération. Pour la visibilité de marque, le kit contient trois réponses d'assistant pré-enregistrées sur des entreprises réelles (page 31) : l'exercice de relevé d'erreurs se tient à l'identique. La veille se dégrossit sur les fiches concurrents imprimées du kit.</td></tr>
+          <tr><td>Après-midi · Module 3 — Image, résultats et visibilité : trois usages au périmètre honnête</td><td>Vérification</td><td>La grille de contrôle est imprimée dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.</td></tr>
+          <tr><td>Après-midi · Module 4 — Rien ne se diffuse sans vérification</td><td>Démonstration</td><td>Les deux paragraphes de marché sont imprimés pages 24 et 25 du kit, datés, avec les [AUCUNE SOURCE DISPONIBLE] déjà surlignés. La lecture à voix haute puis la comparaison se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Rien ne se diffuse sans vérification</td><td>Pratique</td><td>Outil indisponible : la chasse à l'erreur se fait sur le texte imprimé du kit, qui contient les mêmes erreurs plantées. Les douze cas de diffusion et le montage du livrable ne dépendent d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 4 — Rien ne se diffuse sans vérification</td><td>Vérification</td><td>Quiz et corrigé sont imprimés dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

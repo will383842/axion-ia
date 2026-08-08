@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour la finance (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour la finance » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-la-finance</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Le partage des rôles et l'analyse de documents <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Le tableur assisté et les trames de contrôle <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Écrire autour du chiffre <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Fiabilité et ancrage <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Le partage des rôles et l'analyse de documents</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION — Analyse d'un document financier long, méthode AXION<br /><br />Acteur : tu es contrôleur de gestion dans une PME industrielle de 60 personnes.<br />ConteXte : je te dépose le rapport du commissaire aux comptes sur l'exercice clos, 34 pages, document fourni au kit de formation.<br />Intention : préparer ma réunion avec le dirigeant sans avoir à relire les 34 pages.<br />Output : une synthèse d'une page — cinq constats, chacun suivi entre parenthèses de la page du document où il figure ; puis trois questions à poser à l'émetteur du rapport.<br />Normes : n'utilise QUE le document joint. Ne recalcule aucun montant, ne fais aucune addition, aucune moyenne, aucun pourcentage — recopie les chiffres tels qu'ils sont écrits. Si un constat n'est rattachable à aucune page, ne l'écris pas. N'ajoute aucune recommandation.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux synthèses du rapport côte à côte, avec en rouge les deux montants absents du document source, et les cinq leviers AXION annotés en marge du prompt cadré.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé ou service indisponible : les deux sorties — spontanée et cadrée — sont imprimées dans le kit formateur (datées), montants inventés déjà entourés, et le rapport du commissaire aux comptes est fourni imprimé. La recherche des deux montants dans le document se tient à l'identique sur papier — c'est même là qu'elle est la plus frappante. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Le tableur assisté et les trames de contrôle</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION 1 — Une formule sans livrer la moindre donnée<br /><br />Ma feuille Excel s'appelle « Balance ». La ligne 1 porte les en-têtes, les données vont de la ligne 2 à la ligne 4000. Colonnes : A compte, B libellé, C date d'écriture, D débit, E crédit, F code journal, G lettrage (vide si non lettré).<br />Je veux, en colonne H, le solde de chaque ligne (débit moins crédit) ; et sur une feuille séparée, le total par compte pour le seul journal « VE », sur les écritures non lettrées uniquement.<br />Donne-moi la formule de la colonne H, la formule de totalisation, et la marche à suivre pour obtenir le même résultat par tableau croisé dynamique. Je suis sur Excel 365 en français, sépare les arguments par des points-virgules. Ne me demande aucune donnée : je ne te transmets que la structure de mes colonnes.<br /><br />DÉMONSTRATION 2 — Comprendre une formule héritée<br /><br />Explique-moi cette formule ligne à ligne, en français, comme si je devais la réécrire moi-même : =SIERREUR(RECHERCHEV($A2;'Plan de comptes'!$A:$D;4;FAUX);SI(ESTVIDE($A2);&quot;&quot;;&quot;compte inconnu&quot;))<br />Dis ce qu'elle renvoie dans chacun des trois cas possibles, et quel est le risque si l'ordre des colonnes du plan de comptes change. Ne propose aucune version améliorée : je veux d'abord comprendre celle-ci.<br /><br />DÉMONSTRATION 3 — Une trame de contrôle plutôt qu'un rapprochement<br /><br />Acteur : tu es contrôleur interne dans une PME de 60 personnes.<br />ConteXte : notre clôture mensuelle comporte ces étapes, que je te décris : arrêté des journaux d'achats et de ventes, rapprochement bancaire, cut-off des factures non parvenues, contrôle des états de frais, revue des comptes d'attente.<br />Intention : obtenir une trame de contrôle qu'une personne qui n'a pas assisté à la clôture puisse dérouler seule.<br />Output : une liste de points de contrôle numérotés — chaque point est un geste vérifiable (« rapprocher X avec Y », « vérifier que Z est à zéro »), suivi d'une case à cocher et d'un champ « constaté par / le ». Termine par une ligne de signature.<br />Normes : tu écris la liste des points, tu n'exécutes aucun contrôle et tu ne produis aucun chiffre. Aucun point ne vise une personne : un écart signalé ne désigne jamais quelqu'un — recopie cette borne en tête de trame. N'écris aucun point du type « vérifier que tout est correct » : chaque point doit être cochable par oui ou par non.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La formule obtenue à partir des seuls en-têtes, annotée « aucune cellule collée » ; l'explication ligne à ligne de la formule héritée ; et la trame de clôture du kit avec sa borne surlignée en tête.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé ou service indisponible : les trois sorties sont imprimées dans le kit formateur (datées), et la trame de clôture est fournie imprimée — sa lecture commentée ne dépend d'aucun outil. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Écrire autour du chiffre</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION A — Le commentaire de gestion<br /><br />Voici les indicateurs de mon reporting de mai, déjà calculés et vérifiés par mes soins. Je te les saisis, tu ne les recalcules pas : chiffre d'affaires 1 240 k€ (mois précédent 1 118 k€) ; marge brute 31,2 % (mois précédent 33,8 %) ; délai moyen de règlement client 62 jours (objectif 45) ; encours clients 410 k€, dont 78 k€ échus.<br />Écris le commentaire de gestion destiné au dirigeant : dix lignes maximum, un paragraphe par indicateur qui bouge, chaque phrase reprenant le chiffre exactement tel que je te l'ai donné. Ne calcule aucun ratio nouveau, n'invente aucune cause, ne propose aucun plan d'action. Là où une explication te manque, écris « cause à confirmer auprès de » suivi du service concerné.<br /><br />DÉMONSTRATION B — Le second niveau de lecture<br /><br />Reprends le commentaire précédent et réécris-le pour les responsables d'atelier : mêmes chiffres, aucun terme comptable — remplace « marge brute » par ce qu'elle mesure concrètement — et termine par la seule action qui dépend d'eux. Huit lignes maximum.<br /><br />DÉMONSTRATION C — La relance de niveau 2, complétée depuis la trame du kit<br /><br />Voici, recopiée entre les balises, la trame de relance de niveau 2 du kit — tu n'en modifies ni la structure ni les mentions.<br />[TRAME] Objet : Relance n° 2 — facture [numéro] échue le [date d'échéance]. Madame, Monsieur, sauf erreur de notre part, la facture [numéro] du [date d'émission], d'un montant de [montant] € TTC, demeure impayée à ce jour malgré notre relance du [date de la relance 1]. Nous vous remercions de bien vouloir procéder à son règlement sous [délai] jours. À défaut, conformément à nos conditions générales de vente, des pénalités de retard au taux de [taux] ainsi que l'indemnité forfaitaire pour frais de recouvrement de 40 € par facture seront appliquées. [/TRAME]<br />Complète uniquement les champs entre crochets à partir de ces éléments, que je te saisis à la main : facture F-2026-0341, émise le 12 avril 2026, échue le 12 mai 2026, montant 4 830 € TTC, première relance envoyée le 26 mai 2026, délai accordé 8 jours, taux prévu aux conditions générales : taux de la BCE majoré de 10 points.<br />Ne reformule pas le corps du texte, n'ajoute aucune mention ni aucune pénalité que je n'ai pas fournie, et conserve l'en-tête « Projet — à faire valider par votre conseil avant diffusion ».</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux commentaires côte à côte, la cause inventée de la version libre entourée en rouge et le ratio recalculé faux surligné ; en dessous, la relance de niveau 2 complétée, ses mentions surlignées et reprises mot pour mot de la trame.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les trois séquences sont imprimées dans le kit (datées) : commentaire libre et commentaire cadré, les trois trames, et la relance complétée. La comparaison se tient à l'identique sur papier, y compris le « d'où sort cette cause ? » posé à la salle.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Fiabilité et ancrage</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION — Le même calcul, deux fois<br /><br />À lancer deux fois, la seconde dans une conversation NEUVE, sans rien changer au texte (le tableau de douze lignes est fourni au kit, page 22, et se recopie tel quel à la suite du prompt) :<br />Calcule le taux de marge brute de chacune des douze lignes du tableau ci-dessous, puis donne le taux moyen pondéré par le chiffre d'affaires. Détaille chaque étape de ton calcul.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses du même calcul lancé deux fois, côte à côte, avec l'écart sur le taux moyen pondéré encadré en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux résultats divergents du même calcul sont imprimés dans le kit (datés), l'écart déjà encadré. La comparaison se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Le partage des rôles et l'analyse de documents</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table, la liste rouge et la phrase du jour se tiennent au paperboard sans rien perdre — la liste rouge s'écrit de toute façon à la main, avec les mots du service, jamais projetée toute faite.</td></tr>
+          <tr><td>Matin · Module 1 — Le partage des rôles et l'analyse de documents</td><td>Démonstration</td><td>Quota atteint, réseau tombé ou service indisponible : les deux sorties — spontanée et cadrée — sont imprimées dans le kit formateur (datées), montants inventés déjà entourés, et le rapport du commissaire aux comptes est fourni imprimé. La recherche des deux montants dans le document se tient à l'identique sur papier — c'est même là qu'elle est la plus frappante. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.</td></tr>
+          <tr><td>Matin · Module 1 — Le partage des rôles et l'analyse de documents</td><td>Pratique</td><td>Réseau ou outil indisponibles : les deux temps se tiennent sur papier. Le temps 1 utilise les sorties fautives imprimées du kit, le temps 2 la synthèse imprimée à corriger — la qualification sur grille, elle, ne dépend d'aucun outil par construction.</td></tr>
+          <tr><td>Matin · Module 1 — Le partage des rôles et l'analyse de documents</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, écart par écart.</td></tr>
+          <tr><td>Matin · Module 2 — Le tableur assisté et les trames de contrôle</td><td>Démonstration</td><td>Quota atteint, réseau tombé ou service indisponible : les trois sorties sont imprimées dans le kit formateur (datées), et la trame de clôture est fournie imprimée — sa lecture commentée ne dépend d'aucun outil. N'improvisez aucune démonstration de remplacement en direct : les sorties du kit ont été vérifiées, les vôtres ne le seront pas.</td></tr>
+          <tr><td>Matin · Module 2 — Le tableur assisté et les trames de contrôle</td><td>Pratique</td><td>Réseau ou outil indisponibles : les deux temps se tiennent sur papier. Le temps 1 s'écrit à la main — décrire une structure de colonnes est un exercice de rédaction, pas d'outil, et la formule se recopiera lundi. Le temps 2 ne dépend d'aucun outil : c'est le plus robuste de la matinée, gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Matin · Module 2 — Le tableur assisté et les trames de contrôle</td><td>Vérification</td><td>Grille de contrôle imprimée dans le kit. Le déroulé croisé d'une trame ne dépend d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 3 — Écrire autour du chiffre</td><td>Démonstration</td><td>Les trois séquences sont imprimées dans le kit (datées) : commentaire libre et commentaire cadré, les trois trames, et la relance complétée. La comparaison se tient à l'identique sur papier, y compris le « d'où sort cette cause ? » posé à la salle.</td></tr>
+          <tr><td>Après-midi · Module 3 — Écrire autour du chiffre</td><td>Pratique</td><td>Aucun outil n'est indispensable : les deux temps se tiennent sur papier. Le temps 1 s'écrit à la main sur la trame de commentaire du kit — ce qui compte est la structure de la demande, pas l'outil qui l'exécute. Le temps 2 utilise les trames imprimées, qui sont de toute façon la source des mentions.</td></tr>
+          <tr><td>Après-midi · Module 3 — Écrire autour du chiffre</td><td>Vérification</td><td>Grille de contrôle croisé imprimée dans le kit. Le contrôle ne dépend d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage</td><td>Démonstration</td><td>Les deux résultats divergents du même calcul sont imprimés dans le kit (datés), l'écart déjà encadré. La comparaison se tient à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage</td><td>Pratique</td><td>Aucun outil n'est indispensable : le temps 1 est déjà sur papier par construction, et le temps 2 est un travail de rangement — c'est l'atelier le plus robuste de la journée, gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage</td><td>Vérification</td><td>Quiz papier dans le kit et corrigé page 28, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

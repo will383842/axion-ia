@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'IT (2j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'IT » — 2j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-it</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Après-midi J1 — Code, tests et débogage : accélérer sans signer n'importe quoi <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Matin J2 — Les écrits de l'IT : vérifier, spécifier, documenter l'incident <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi J2 — Automatiser une tâche IT et gouverner l'usage <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici une fonction extraite d'un service interne. Explique ce qu'elle fait, ligne par ligne, puis liste les cas d'entrée qu'elle ne traite pas. N'invente aucune valeur : si une constante ou une fonction appelée ici n'est pas sous tes yeux, écris « non résolu » et continue.<br /><br />function resoudreRemise(client, panier) {<br />  const seuil = SEUILS[client.segment] ?? SEUILS.defaut;<br />  if (panier.total &lt; seuil) return 0;<br />  const taux = TAUX[client.segment] ?? 0;<br />  return Math.min(panier.total * taux, PLAFOND);<br />}</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les trois sorties côte à côte, et SOUS chacune le panneau « contexte envoyé » de l'outil — nombre de fichiers lus, noms des fichiers. Encadrer en rouge, dans la sortie du mode chat, la phrase qui affirme une valeur de SEUILS ou de PLAFOND que l'outil n'a jamais vue.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle, passé successivement dans ses trois modes : chat, assistant intégré à l'éditeur, agent.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service indisponible : les trois sorties et les trois panneaux de contexte sont imprimés dans le kit formateur (datées). Le pari écrit, la lecture à voix haute et la comparaison se tiennent à l'identique sur papier. Ne rien improviser en direct sur un autre outil : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Après-midi J1 — Code, tests et débogage : accélérer sans signer n'importe quoi</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DEMANDE SPONTANÉE — « Refais cette fonction proprement. »<br /><br />MÊME DEMANDE AU FORMAT AXION —<br />Acteur : tu es un développeur qui reprend un service hérité, sans son auteur et sans sa documentation.<br />ConteXte : la fonction ci-jointe est appelée depuis trois endroits que je ne te montre pas ; la suite de tests existante tourne avec le lanceur intégré au langage, sans framework maison.<br />Intention : proposer une réécriture à ISO-COMPORTEMENT, pas une amélioration fonctionnelle.<br />Output : d'abord le code réécrit, puis les tests qui prouvent l'iso-comportement, puis la liste des comportements que tu n'as pas pu préserver faute d'information.<br />Normes : n'ajoute AUCUNE dépendance ; ne change aucune signature publique ; ne supprime aucun cas traité, même s'il te paraît mort ; n'écris aucune commande à exécuter ; si un comportement est ambigu, écris « ambigu » et n'arbitre pas.<br /><br />REVUE ASSISTÉE, 2e séquence — « Voici un changement au format diff unifié. Pour chaque bloc modifié, donne trois lignes : ce qui change en une phrase, le risque de régression, et la présence éventuelle en clair d'un secret, d'un identifiant ou d'une adresse. N'évalue pas le style et ne propose aucune réécriture. Si tu ne peux pas juger sans voir un fichier absent du diff, écris « hors diff » et ne suppose rien. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties de la réécriture côte à côte, avec en marge du prompt AXION les cinq leviers annotés, et surlignage dans la sortie spontanée de la dépendance ajoutée et du cas supprimé. Pour la revue : la sortie avec les trois défauts réels cochés en vert et les alertes injustifiées barrées en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux sorties de réécriture et la sortie de revue sont imprimées dans le kit (datées), la sortie de revue déjà annotée. La comparaison, le comptage des faux positifs et la mise en commun se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Matin J2 — Les écrits de l'IT : vérifier, spécifier, documenter l'incident</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">SPÉCIFICATION — « Voici une demande reçue par écrit d'un utilisateur métier, telle quelle : “Il faudrait qu'on puisse exporter les commandes pour la compta, comme avant mais en mieux, et que ça marche aussi pour les avoirs.”<br />Transforme-la en spécification, en exactement quatre sections : (1) ce que la demande dit explicitement ; (2) ce qu'elle suppose sans le dire, sous forme de questions à poser au demandeur, sans aucune réponse inventée ; (3) des critères d'acceptation rédigés en « étant donné / quand / alors », chacun vérifiable par un test ; (4) le hors-périmètre explicite. N'écris aucune estimation de charge, aucune solution technique, aucun nom de table ni de fichier. Si une section ne peut pas être remplie à partir de la demande, écris « à instruire » plutôt qu'une hypothèse. »<br /><br />ÉCRITS D'ASTREINTE — « Voici mes notes brutes d'intervention, NEUTRALISÉES (aucun nom d'hôte réel, aucune adresse, aucun identifiant, aucun extrait de journal) : “02h14 alerte lenteur appli. 02h20 file d'attente qui monte. 02h31 redémarré le service intermédiaire, ça repart 10 min puis rebelote. 02h55 vidé le cache, stable depuis. Pas compris pourquoi.”<br />Produis deux écrits distincts à partir de CES SEULES NOTES. (1) Un compte rendu d'incident : déroulé horodaté, ce qui a été constaté, ce qui a été fait, ce qui reste inexpliqué ; la partie « cause » ne contient que ce que les notes établissent, tout le reste va dans une section « hypothèses non vérifiées ». (2) Un runbook pour un collègue réveillé à 3 h : étapes numérotées, une action par étape, et pour chaque étape la manière de vérifier qu'elle a fonctionné et la manière de revenir en arrière. N'invente aucun horaire, aucun composant, aucune métrique absente des notes. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Pour la spécification : la sortie avec la section 2 (« ce qu'elle suppose ») surlignée — c'est la seule qui n'existait dans aucune version manuelle. Pour l'astreinte : le compte rendu avec la section « hypothèses non vérifiées » encadrée, et à côté la version où l'outil avait été laissé libre et affirmait une cause.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux jeux de sorties (spécification libre / contrainte, compte rendu libre / contraint) sont imprimés dans le kit (datées). La comparaison se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi J2 — Automatiser une tâche IT et gouverner l'usage</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la sortie brute d'une commande d'occupation disque et un fichier de seuils que je te donne ci-dessous (les deux sont des exemples fabriqués, aucun hôte réel).<br />Écris un script POSIX sh qui, pour chaque point de montage dépassant son seuil, écrit UNE ligne sur la sortie standard au format « AAAA-MM-JJ HH:MM point_de_montage pourcentage seuil ».<br />Contraintes strictes : le script ne supprime rien, ne déplace rien, n'écrit dans aucun fichier, n'installe rien, et n'appelle aucune commande d'envoi de courrier ou de notification. Il lit et il affiche, rien d'autre.<br />S'il te manque une information, écris-la en commentaire en tête du script et n'invente aucune valeur par défaut. Ajoute en fin de réponse la liste des entrées qui feraient échouer ce script.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le script rendu, avec surlignage des trois contraintes respectées et, à côté, la sortie d'une première tentative où l'outil avait ajouté un appel de notification non demandé. Encadrer en rouge la ligne ajoutée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Le script rendu, la tentative avec notification ajoutée et la sortie sur jeu d'essai sont imprimés dans le kit (datées). La lecture ligne à ligne se tient à l'identique sur papier — c'est même l'exercice le plus fidèle au geste enseigné.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et les trois règles se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence</td><td>Démonstration</td><td>Quota atteint ou service indisponible : les trois sorties et les trois panneaux de contexte sont imprimés dans le kit formateur (datées). Le pari écrit, la lecture à voix haute et la comparaison se tiennent à l'identique sur papier. Ne rien improviser en direct sur un autre outil : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence</td><td>Pratique</td><td>Réseau tombé : la grille des régimes, le tri des 12 cas et la rédaction des sections 1 et 2 ne dépendent d'aucun outil, ils se font sur le support papier. Seul le montage du bac à sable est reporté — annoncez-le comme premier geste du retour au bureau et faites-le écrire dans la feuille de route.</td></tr>
+          <tr><td>Matin J1 — Ce qui se soumet, avec quel outil, sous quelle licence</td><td>Vérification</td><td>Extraits pièges, grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi J1 — Code, tests et débogage : accélérer sans signer n'importe quoi</td><td>Démonstration</td><td>Les deux sorties de réécriture et la sortie de revue sont imprimées dans le kit (datées), la sortie de revue déjà annotée. La comparaison, le comptage des faux positifs et la mise en commun se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi J1 — Code, tests et débogage : accélérer sans signer n'importe quoi</td><td>Pratique</td><td>Sans réseau : les demandes AXION s'écrivent à la main sur la trame (ce qui compte est la structure, pas l'exécution), et la revue se fait sur la sortie imprimée du kit — le comptage des faux positifs reste identique. L'atelier tests devient une lecture critique d'une suite de tests fournie page 26, avec la question « qu'est-ce que cette suite ne teste pas ? ». Le débogage se tient sur la trace neutralisée du kit.</td></tr>
+          <tr><td>Après-midi J1 — Code, tests et débogage : accélérer sans signer n'importe quoi</td><td>Vérification</td><td>Les 5 questions et leur corrigé sont imprimés dans le kit.</td></tr>
+          <tr><td>Matin J2 — Les écrits de l'IT : vérifier, spécifier, documenter l'incident</td><td>Démonstration</td><td>Les deux jeux de sorties (spécification libre / contrainte, compte rendu libre / contraint) sont imprimés dans le kit (datées). La comparaison se tient à l'identique sur papier.</td></tr>
+          <tr><td>Matin J2 — Les écrits de l'IT : vérifier, spécifier, documenter l'incident</td><td>Pratique</td><td>Sans réseau : la chasse à l'erreur se fait sur les deux procédures pré-générées du kit, erreurs non signalées — le comptage et le débat sur la dispersion restent entiers. La spécification et les écrits d'astreinte s'écrivent à la main sur les trames, et les grilles de relecture en binôme ne dépendent d'aucun outil.</td></tr>
+          <tr><td>Matin J2 — Les écrits de l'IT : vérifier, spécifier, documenter l'incident</td><td>Vérification</td><td>Sans environnement disponible, l'exécution devient une lecture à voix haute par le binôme, qui s'arrête à la première étape qu'il ne saurait pas exécuter. Le kit fournit les 5 questions et leur corrigé.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser une tâche IT et gouverner l'usage</td><td>Démonstration</td><td>Le script rendu, la tentative avec notification ajoutée et la sortie sur jeu d'essai sont imprimés dans le kit (datées). La lecture ligne à ligne se tient à l'identique sur papier — c'est même l'exercice le plus fidèle au geste enseigné.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser une tâche IT et gouverner l'usage</td><td>Pratique</td><td>Sans réseau : la qualification et la gouvernance ne dépendent d'aucun outil. L'automatisation devient une lecture critique du script fourni au kit — chacun écrit son jeu d'essai, son cas limite faux et sa procédure de retour arrière sur ce script-là. Le livrable reste complet, seul le prototype personnel est reporté.</td></tr>
+          <tr><td>Après-midi J2 — Automatiser une tâche IT et gouverner l'usage</td><td>Vérification</td><td>Quiz papier dans le kit et corrigé page 48. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

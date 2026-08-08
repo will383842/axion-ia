@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'immobilier (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'immobilier » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-immobilier</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — L'annonce qui vend et l'annonce qui expose <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Décliner, répondre, relancer : le rythme commercial <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Gestion locative, copropriété et estimation : les écrits qui s'accumulent <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Ancrer dans l'agence <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — L'annonce qui vend et l'annonce qui expose</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige l'annonce de vente du bien décrit ci-dessous, à partir des SEULES informations fournies — n'ajoute aucun chiffre, aucune mention, aucun équipement qui n'y figure pas.<br />Bien : appartement T3 de 64,2 m² (surface Carrez du lot, mesurage joint), 3e étage sans ascenseur, copropriété de 24 lots à usage d'habitation, charges courantes moyennes 1 680 € par an, DPE classe D (176 kWh/m²/an), GES classe B, prix 189 000 € honoraires à la charge du vendeur.<br />Format : un titre sans superlatif, 120 à 150 mots, une phrase de clôture invitant à demander le dossier complet.<br />Interdits : ne décris JAMAIS l'acheteur ou le locataire type (pas de « idéal pour une famille », « parfait pour jeune couple », « conviendra à une clientèle exigeante ») — décris le bien, pas son occupant. N'invente ni quartier « calme et familial », ni proximité d'écoles, ni temps de trajet.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux annonces côte à côte : dans la version libre, le DPE inventé et « parfait pour une jeune famille dynamique » entourés en rouge ; dans la version cadrée, chaque mention reliée par une flèche à la pièce du dossier qui la prouve.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux annonces sont imprimées dans le kit (datées), annotations déjà portées. La comparaison, la chasse au chiffre inventé et le repérage du vocabulaire d'occupant se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Décliner, répondre, relancer : le rythme commercial</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici l'annonce VALIDÉE ci-dessous. Décline-la en quatre formats sans modifier aucun chiffre ni aucune mention légale, et sans ajouter d'information :<br />1. Portail : titre accrocheur sans superlatif + texte de 600 caractères maximum.<br />2. Vitrine : cinq lignes maximum, lisibles à deux mètres, prix et classe DPE en évidence.<br />3. Réseaux sociaux : trois phrases + une question d'appel, sans hashtag inventé sur le quartier.<br />4. Dossier de présentation : version longue structurée en sections — le bien, la copropriété, les aspects financiers.<br />Si une information manque pour un format, écris « [à compléter : …] » au lieu d'inventer.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les quatre déclinaisons sur un même écran, prix et classe DPE surlignés dans chacune — identiques — et un « [à compléter] » laissé visible dans le dossier de présentation.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les quatre déclinaisons sont imprimées dans le kit (datées). La comparaison des chiffres surlignés se fait sur papier, poste par poste.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Gestion locative, copropriété et estimation : les écrits qui s'accumulent</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION 1 — le biais (deux envois successifs du MÊME dossier fictif du kit) :<br />« Voici le dossier d'un candidat locataire. Donne-moi ton avis sur la solidité de sa candidature. »<br />Puis le même dossier où une seule ligne a changé : le CDI est devenu un CDD.<br /><br />DÉMONSTRATION 2 — la mise en forme (notes fictives du kit) :<br />« Voici mes notes de séance de l'assemblée générale, prises au fil de la réunion. Reconstruis le procès-verbal : ordre du jour, présents et pouvoirs, chaque résolution avec son résultat de vote tel qu'il figure dans les notes. N'ajoute aucune décision, aucun chiffre, aucun nom qui n'y figure pas ; si un point des notes est illisible ou incomplet, écris [à vérifier au registre] au lieu de compléter. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>À gauche, les deux avis rendus sur le même dossier à une ligne près, l'écart surligné ; à droite, le procès-verbal reconstruit avec un « [à vérifier au registre] » laissé apparent.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux avis et le procès-verbal reconstruit sont imprimés dans le kit (datés). Le pari, la comparaison et la lecture se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Ancrer dans l'agence</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">À partir du modèle validé ci-dessous [document choisi avec la salle], construis une trame réutilisable pour l'agence :<br />1. Le gabarit du document, avec des champs [entre crochets] pour tout ce qui change d'un dossier à l'autre.<br />2. La checklist de relecture avant diffusion : chiffres à vérifier contre leurs pièces, mentions obligatoires, vocabulaire d'occupant à traquer, données personnelles à retirer.<br />3. La liste des pièces sources d'où chaque champ chiffré doit être recopié.<br />N'ajoute aucun champ ni aucune mention qui ne figure pas dans le modèle validé.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La trame assemblée en direct, projetée avec ses trois parties — gabarit à champs, checklist, pièces sources — telle qu'elle entre dans le dossier de l'agence.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Une trame complète du kit (l'annonce conforme) se distribue à la place de la construction en direct, et se commente partie par partie — gabarit, checklist, pièces sources.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — L'annonce qui vend et l'annonce qui expose</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — L'annonce qui vend et l'annonce qui expose</td><td>Démonstration</td><td>Les deux annonces sont imprimées dans le kit (datées), annotations déjà portées. La comparaison, la chasse au chiffre inventé et le repérage du vocabulaire d'occupant se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Matin · Module 1 — L'annonce qui vend et l'annonce qui expose</td><td>Pratique</td><td>Réseau ou outil tombé : la trame conforme se remplit à la main depuis les pièces papier, et la liste de contrôle s'applique à l'identique. La structure de l'annonce est l'enseignement, pas l'outil qui l'exécute.</td></tr>
+          <tr><td>Matin · Module 1 — L'annonce qui vend et l'annonce qui expose</td><td>Vérification</td><td>Liste de contrôle imprimée dans le kit ; sans vidéoprojecteur, l'annonce piégée se distribue sur papier et se corrige à l'oral.</td></tr>
+          <tr><td>Matin · Module 2 — Décliner, répondre, relancer : le rythme commercial</td><td>Démonstration</td><td>Les quatre déclinaisons sont imprimées dans le kit (datées). La comparaison des chiffres surlignés se fait sur papier, poste par poste.</td></tr>
+          <tr><td>Matin · Module 2 — Décliner, répondre, relancer : le rythme commercial</td><td>Pratique</td><td>Le tableau de biens et les trames de réponses se travaillent à la main sur les supports papier du kit. Chacun relancera les prompts à l'agence — la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 2 — Décliner, répondre, relancer : le rythme commercial</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Gestion locative, copropriété et estimation : les écrits qui s'accumulent</td><td>Démonstration</td><td>Les deux avis et le procès-verbal reconstruit sont imprimés dans le kit (datés). Le pari, la comparaison et la lecture se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 3 — Gestion locative, copropriété et estimation : les écrits qui s'accumulent</td><td>Pratique</td><td>Toutes les demandes de la liste se traitent à la main sur les trames papier du kit, et le cas piège se reconnaît de même. L'argumentaire d'estimation se structure au stylo sur la trame — les références de marché sont déjà celles du stagiaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Gestion locative, copropriété et estimation : les écrits qui s'accumulent</td><td>Vérification</td><td>La production piégée et son corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'agence</td><td>Démonstration</td><td>Une trame complète du kit (l'annonce conforme) se distribue à la place de la construction en direct, et se commente partie par partie — gabarit, checklist, pièces sources.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'agence</td><td>Pratique</td><td>L'assemblage se fait sur les trames papier produites dans la journée, dans une chemise physique nommée et datée. Le passage au numérique se fait à l'agence — le contenu, lui, est déjà écrit.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'agence</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

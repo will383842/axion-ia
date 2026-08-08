@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'hôtellerie-restauration (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'hôtellerie-restauration » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-hotellerie-restauration</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Avis en ligne, messages et demandes de réservation <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Carte, supports et demandes de groupes <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Fiabiliser, évaluer, installer <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu réponds aux avis d'un hôtel-restaurant familial de montagne, ton chaleureux et sobre, sans emphase commerciale.<br />ConteXte : voici le texte d'un avis publié — je colle l'avis seul, sans le nom ni le profil de son auteur.<br />Intention : une réponse publique prête à publier, qui remercie, répond point par point et invite à poursuivre l'échange en privé via l'accueil.<br />Output : 100 mots maximum, en français, signée « La direction ».<br />Normes : ne confirme jamais que la personne a séjourné ou dîné chez nous, ne mentionne ni date, ni chambre, ni montant, n'admets aucun fait que je n'ai pas vérifié, n'annonce aucun geste commercial, ne nomme aucun membre de l'équipe.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses côte à côte — la manuscrite du kit et la sortie AXION — avec les cinq lignes du prompt annotées en marge et, surlignées dans la manuscrite, les trois fuites : la date du séjour, le numéro de chambre, le geste commercial promis en public.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Avis en ligne, messages et demandes de réservation</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu réponds aux avis de notre restaurant, ton courtois et digne, jamais défensif.<br />ConteXte : voici le texte d'un avis négatif publié — collé seul, sans le nom ni le profil de son auteur. Le point critiqué sur le bruit est réel ce soir-là ; le reste, je ne peux pas le vérifier.<br />Intention : une réponse publique qui apaise sans s'aplatir, et invite à poursuivre en privé via l'accueil de l'établissement.<br />Output : 90 mots maximum, en français, signée « La direction ».<br />Normes : quatre interdits absolus — ne confirme jamais que la personne a dîné ou séjourné chez nous ; ne révèle aucun élément de séjour (date, table, chambre, montant, régime alimentaire) ; n'admets aucun fait que je n'ai pas déclaré vérifié et ne mets en cause aucun membre de l'équipe ; n'annonce aucun geste commercial en public.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses côte à côte, avec les quatre fautes de la version spontanée surlignées — confirmation du dîner, serveuse nommée, fait admis sans vérification, geste commercial public — et, en marge de la seconde, les quatre interdits cochés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux réponses sont imprimées dans le kit (datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Carte, supports et demandes de groupes</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu écris la carte d'un restaurant de cuisine française traditionnelle, style appétissant et précis, sans emphase.<br />ConteXte : voici les éléments publics du plat, recopiés de la fiche technique fictive du kit — suprême de volaille, sauce crémée à la moutarde à l'ancienne, purée maison au beurre demi-sel. Je ne colle ni quantités, ni procédé, ni coûts.<br />Intention : un descriptif de carte qui donne envie, puis sa traduction anglaise fidèle.<br />Output : 30 mots maximum en français, puis la version anglaise, sans emoji.<br />Normes : n'écris AUCUNE mention d'allergène, aucune mention « fait maison », aucune origine de viande, aucun label ni appellation — ces mentions sont réglementées et je les recopierai moi-même depuis nos documents validés.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Trois volets : la traduction naïve du kit avec ses deux écarts surlignés (moutarde disparue, gluten changé de ligne), la sortie du prompt borné — descriptif appétissant, zéro mention réglementée —, et la carte finale où la ligne allergènes est recopiée depuis la fiche technique, dans un cadre distinct.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les trois volets sont imprimés dans le kit (datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Fiabiliser, évaluer, installer</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige, en 150 mots, la présentation de l'hôtel-restaurant fictif « Le Balcon des Aravis » à La Clusaz pour la page d'accueil de son site : les chambres, le restaurant, les services proposés et une idée des prix. Ton chaleureux, sans superlatif.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La présentation du kit projetée en grand, les cinq erreurs plantées entourées en rouge une à une — capacité, horaires, label, prix, prestation inexistante — avec, en marge, la vérification qui fait tomber chacune.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La présentation et son corrigé sont imprimés dans le kit (datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Démonstration</td><td>Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil : tri des pièces du kit et rédaction de la liste rouge se font sur papier. Aucun repli nécessaire.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Vérification</td><td>Les dix pièces et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, elles se lisent à voix haute et le vote se fait à main levée.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Démonstration</td><td>Les deux réponses sont imprimées dans le kit (datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Pratique</td><td>Outil ou réseau indisponible : les trames s'écrivent à la main sur les supports du kit, et les avis de secours imprimés servent de matière. La structure AXION s'applique à l'identique — chacun relancera chez lui, la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Démonstration</td><td>Les trois volets sont imprimés dans le kit (datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Pratique</td><td>Outil indisponible : le parcours carte se fait sur la carte de secours et les sorties imprimées du kit — la revalidation, cœur du module, est de toute façon un exercice papier, fiche en main. Le parcours groupes s'écrit sur les trames papier du kit ; chacun relancera la mise en forme chez lui.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Vérification</td><td>Checklist, fiches et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Démonstration</td><td>La présentation et son corrigé sont imprimés dans le kit (datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Pratique</td><td>Sans outil : chacun remplit directement sa fiche d'identité sur la trame papier, et la chasse à l'erreur se fait collectivement sur la présentation imprimée du kit. L'essentiel — les faits exacts écrits et sourcés — ne dépend d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Vérification</td><td>Quiz papier dans le kit et corrigé page 31. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

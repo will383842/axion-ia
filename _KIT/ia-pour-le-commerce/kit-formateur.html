@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour le commerce (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour le commerce » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-le-commerce</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Du un au cinquante : produire en série et décliner <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Le manuel de publication de l'enseigne <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la fiche technique fournisseur ci-jointe. Rédige une fiche produit pour notre site à partir de ce SEUL document. Structure imposée : un titre de 60 caractères maximum commençant par le nom du produit ; un argumentaire de 80 mots orienté usage client ; les caractéristiques en liste, reprises de la fiche technique SANS reformulation. N'ajoute aucune caractéristique, aucune norme, aucune origine, aucune allégation de santé ou environnementale qui ne figure pas dans le document. Prix, disponibilité, garantie et conditions de retour : n'écris rien, laisse quatre lignes marquées « à compléter par le magasin ». Si une information manque, écris « non renseigné » — n'invente rien.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La fiche technique fournisseur à gauche, la fiche produit générée à droite, une flèche par caractéristique reliant chaque affirmation à la ligne qui la prouve — et les quatre lignes « à compléter par le magasin » entourées.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Du un au cinquante : produire en série et décliner</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un tableau de produits (colonnes : référence, nom, catégorie, matière, dimensions, coloris, prix conseillé, points forts fournisseur). Pour CHAQUE ligne, produis une fiche au format EXACT suivant : titre de 60 caractères maximum commençant par le nom ; argumentaire de 60 mots orienté usage client ; caractéristiques en cinq puces reprises du tableau SANS reformulation. N'utilise AUCUNE information absente du tableau ; si une case est vide, écris « non renseigné ». Même structure, même ton, même longueur pour toutes les fiches. Ensuite, pour la référence que je t'indique, décline la fiche en trois versions : description longue pour notre site, description courte de 300 caractères maximum pour la place de marché, et texte d'affiche de rayon — une accroche de huit mots maximum et trois caractéristiques clés — sans rien ajouter au contenu de la fiche.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Trois fiches de la série côte à côte pour montrer l'homogénéité du format, puis les trois déclinaisons du même produit — avec la colonne du tableau source surlignée à chaque reprise.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (pages 10 à 12, datées). La lecture comparée se tient sur papier, à l'identique.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT 1 — répondre à l'avis : « Voici un avis publié sur notre fiche, recopié sans le nom de son auteur : [coller le texte de l'avis]. Rédige une réponse publique de 70 mots maximum qui remercie, exprime notre exigence de qualité et invite à écrire à [adresse du service client] pour examiner la situation. INTERDITS : ne confirme pas que la personne est cliente, ne mentionne ni commande, ni date, ni produit, ni montant, ne promets aucun remboursement ni geste commercial, n'admets aucune faute. »<br /><br />PROMPT 2 — écrire autour du chiffre : « Mon tableau de ventes a les colonnes suivantes : date, magasin, famille de produits, quantité, montant TTC. SANS que je te fournisse les données, écris la formule de tableur qui totalise le montant par famille de produits et par mois, puis explique-la ligne à ligne pour que je puisse l'adapter. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses à l'avis côte à côte — les passages qui confirment la commande et promettent un geste entourés en rouge dans la première — puis les deux totaux différents rendus par l'outil sur les mêmes données collées.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Le manuel de publication de l'enseigne</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Tu appliques la consigne de publication suivante, sans t'en écarter. FORMAT : titre de 60 caractères maximum commençant par le nom du produit ; argumentaire de 60 mots orienté usage client ; caractéristiques en cinq puces reprises de la fiche technique SANS reformulation ; une dernière ligne « Prix, disponibilité, garantie, retours : à compléter par le magasin ». INTERDITS : aucune caractéristique absente de la fiche technique, aucune allégation de santé ou environnementale, aucun superlatif invérifiable, aucun élément concernant un client. Produit à traiter : [coller la fiche technique]. Rends UNIQUEMENT la fiche, sans commentaire.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties de la trame rejouée côte à côte : à gauche le format qui dérive, à droite le format identique au premier passage — les écarts surlignés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (datées), écarts surlignés. Le test de la trame finie s'explique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Démonstration</td><td>Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Pratique</td><td>Réseau tombé : la fiche s'écrit à la main sur la trame papier du support, à partir de la fiche technique. Ce qui compte est la structure et la règle de preuve, pas l'outil qui l'exécute — chacun relancera chez lui, la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Démonstration</td><td>Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (pages 10 à 12, datées). La lecture comparée se tient sur papier, à l'identique.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Pratique</td><td>Outil indisponible : la trame de série se construit sur papier — choix des colonnes, format imposé rubrique par rubrique, règle d'échantillonnage — et l'exercice de contrôle se fait sur la série témoin imprimée du kit. La production réelle se relance au bureau avec la trame datée.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Vérification</td><td>L'échantillonnage se pratique sur la série témoin imprimée du kit, qui contient trois écarts plantés. Grille et corrigé imprimés, aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Démonstration</td><td>Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Pratique</td><td>Outil indisponible : les trois avis du kit se traitent sur les trames papier à trous (remerciement, position, canal privé), et la formule s'écrit à la main à partir de la structure du tableau — la syntaxe exacte se vérifiera au bureau. Rien de l'atelier n'exige l'outil pour être compris.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Démonstration</td><td>Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (datées), écarts surlignés. Le test de la trame finie s'explique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Pratique</td><td>Aucun outil nécessaire : le retour d'historique se remplace par le tri des six demandes du kit, et l'assemblage du manuel se fait sur papier. C'est l'atelier le plus robuste de la journée — gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Vérification</td><td>Quiz papier dans le kit et corrigé page 27. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

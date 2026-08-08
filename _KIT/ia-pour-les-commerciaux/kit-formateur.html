@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour les commerciaux (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour les commerciaux » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-les-commerciaux</code> · 4 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Le cadre et le kit de rendez-vous <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Objections et proposition commerciale <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Le cadre et le kit de rendez-vous</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT — préparation de rendez-vous, structure AXION<br />Acteur : tu es un directeur commercial expérimenté qui prépare un rendez-vous avec moi, commercial d'une PME de robinetterie industrielle.<br />ConteXte : je rencontre jeudi le responsable maintenance d'une usine agroalimentaire d'environ 200 personnes. Je te joins sa plaquette, la page « qui sommes-nous » de son site et le compte rendu de mon appel du 12 juin.<br />Intention : entrer en rendez-vous avec un plan de découverte, pas avec un argumentaire.<br />Output : une fiche d'une page — ce que les documents joints m'apprennent, dix questions ouvertes de découverte, trois hypothèses d'enjeux explicitement étiquetées « hypothèse », et la liste de ce que je dois vérifier auprès de lui.<br />Normes : n'utilise QUE les documents joints. N'invente aucun chiffre d'affaires, aucun effectif, aucun nom de dirigeant, aucune actualité. Si une information manque, écris « non disponible dans les documents fournis ».</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux préparations côte à côte, avec en rouge dans la version libre les quatre éléments inventés — dirigeant, chiffre d'affaires, effectif, actualité — et en vert dans la version sourcée les mentions « non disponible dans les documents fournis ».</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil pour toute la journée, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé, service indisponible : les deux préparations sont imprimées dans le kit formateur (datées). Le pari écrit, la comparaison ligne à ligne et le repérage des inventions se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT — compte rendu dicté<br />Voici la transcription d'une dictée faite en voiture juste après un rendez-vous. Produis trois sorties séparées : (1) un compte rendu interne structuré — contexte, interlocuteurs par leur fonction, besoins exprimés, objections entendues, budget évoqué s'il l'a été ; (2) un mail de suivi adressé au client, ton professionnel et sobre, qui reprend ce qui a été dit et rien d'autre ; (3) les prochaines étapes, avec qui fait quoi et pour quelle date. N'ajoute aucun engagement de prix, de délai ni de remise qui ne figure pas dans la dictée. Signale entre crochets tout passage de la dictée que tu n'as pas compris.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La transcription brute d'une dictée de trois minutes et, en regard, les trois sorties — compte rendu structuré, mail de suivi, prochaines étapes datées — avec un passage incompris signalé entre crochets au lieu d'être inventé.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, le même que dans le module précédent.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint, réseau tombé, service indisponible : la transcription et les trois sorties de la dictée sont imprimées dans le kit formateur (datées). L'annonce des trois causes d'échec et la lecture commentée se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Objections et proposition commerciale</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT 1 — l'acheteur qui n'a pas le droit d'être d'accord<br />Tu es responsable achats d'une usine agroalimentaire de 200 personnes. Tu reçois un fournisseur de robinetterie industrielle que tu ne connais pas, alors que ton fournisseur actuel te donne satisfaction depuis huit ans. Ton objectif est de faire baisser le prix ou de ne pas signer. Tu n'as pas le droit d'être d'accord avec moi, ni de me complimenter, ni de conclure. Pose une objection à la fois, attends ma réponse, puis enchaîne sur la faille de ma réponse. Commence par l'objection prix.<br /><br />PROMPT 2 — la relecture qui contredit<br />Relis la proposition commerciale ci-jointe en te plaçant du côté de l'acheteur, pas du mien. Liste uniquement : les promesses que je ne pourrai pas tenir si le projet dérape, les chiffres avancés sans source, les délais qui m'engagent, et les phrases qui pourraient être lues comme un engagement de résultat. Ne me dis pas ce qui est bien. Ne reformule rien. Si une promesse te paraît tenable, ne la cite pas.<br /><br />PROMPT 3 — de vos notes à la proposition, selon l'interlocuteur<br />Acteur : tu es un directeur commercial expérimenté qui met en forme une proposition, sans jamais décider d'un chiffre à ma place.<br />ConteXte : je vends de la robinetterie industrielle ; voici mes notes sur l'affaire en cours avec une usine agroalimentaire de 200 personnes — besoin exprimé, périmètre discuté, calendrier évoqué, montant ramené à « montant A ».<br />Intention : produire une proposition que le responsable maintenance fera circuler en interne, donc lisible par trois lecteurs différents.<br />Output : une proposition structurée — contexte et besoin reformulés, solution proposée, périmètre et limites, calendrier, conditions renvoyées à nos conditions de vente — puis, pour chaque lecteur (décideur, technique, achats), les deux points à mettre en avant en ouverture.<br />Normes : n'utilise QUE mes notes. Laisse « montant A » tel quel ; n'invente aucun prix, aucune remise, aucun délai d'exécution, aucune pénalité, et n'écris aucune phrase qui promet un résultat. Marque chaque mention contractuelle « à recopier depuis les conditions de vente ». Si une information manque, écris « à compléter » plutôt que d'inventer.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La relecture complaisante et la relecture contrainte côte à côte, avec en marge les quatre éléments que la première a laissés passer — la promesse de délai, le chiffre de gain non sourcé, la formule qui vaut engagement de résultat, la remise annoncée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, le même que le matin.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les trois échanges — jeu de rôle, relecture complaisante contre relecture contrainte, notes mises en proposition — sont imprimés dans le kit (datées). Mieux encore : sans outil, tenez vous-même le rôle de l'acheteur face à un volontaire. C'est la seule séquence de la journée où le repli humain vaut la démonstration.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT — la vérification en trente secondes<br />Tu viens d'affirmer que ce marché progresse de 12 % par an. Sur quelle source précise t'appuies-tu : titre, éditeur, année ? Si tu ne peux pas citer une source que je pourrais ouvrir moi-même, écris « affirmation non sourcée » et n'essaie pas de la justifier autrement.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>L'affirmation « ce marché progresse de 12 % par an » et, dessous, la réponse « affirmation non sourcée » — avec, en regard, la ligne barrée au stylo dans l'argumentaire qui allait partir.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, le même que depuis ce matin.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>L'échange de vérification — l'affirmation, la question, la réponse « affirmation non sourcée » — est imprimé dans le kit (daté). La démonstration se tient sur papier, chronomètre en main, à l'identique.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Le cadre et le kit de rendez-vous</td><td>Objectif</td><td>Aucun outil n'est nécessaire. Sans vidéoprojecteur, les affaires du tour de table s'écrivent au paperboard et la feuille reste affichée toute la journée — c'est même préférable à une slide.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et le kit de rendez-vous</td><td>Démonstration</td><td>Quota atteint, réseau tombé, service indisponible : les deux préparations sont imprimées dans le kit formateur (datées). Le pari écrit, la comparaison ligne à ligne et le repérage des inventions se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et le kit de rendez-vous</td><td>Pratique</td><td>Aucun de ces deux temps ne dépend d'un outil. Le tri des dix éléments est un exercice papier. La fiche de préparation et le plan de découverte s'écrivent à la main sur les trames datées du kit, et la structure AXION s'applique à l'identique : ce qui compte est la façon de poser la demande, pas la machine qui l'exécute. Chacun relancera depuis son poste dans la semaine.</td></tr>
+          <tr><td>Matin · Module 1 — Le cadre et le kit de rendez-vous</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les productions papier.</td></tr>
+          <tr><td>Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances</td><td>Démonstration</td><td>Quota atteint, réseau tombé, service indisponible : la transcription et les trois sorties de la dictée sont imprimées dans le kit formateur (datées). L'annonce des trois causes d'échec et la lecture commentée se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.</td></tr>
+          <tr><td>Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances</td><td>Pratique</td><td>Le compte rendu et la relance s'écrivent à la main sur les trames datées du kit, et le tri du pipeline est un exercice papier : les critères s'écrivent et se confrontent sans machine. Chacun dictera depuis son téléphone dans la semaine.</td></tr>
+          <tr><td>Matin · Module 2 — Après le rendez-vous : compte rendu dicté, suivi et relances</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les tris papier.</td></tr>
+          <tr><td>Après-midi · Module 3 — Objections et proposition commerciale</td><td>Démonstration</td><td>Les trois échanges — jeu de rôle, relecture complaisante contre relecture contrainte, notes mises en proposition — sont imprimés dans le kit (datées). Mieux encore : sans outil, tenez vous-même le rôle de l'acheteur face à un volontaire. C'est la seule séquence de la journée où le repli humain vaut la démonstration.</td></tr>
+          <tr><td>Après-midi · Module 3 — Objections et proposition commerciale</td><td>Pratique</td><td>Le jeu de rôle se tient entre vous et un volontaire, sans machine, et l'entraînement est même meilleur. La proposition s'écrit à la main sur la trame datée du kit, conditions de vente posées sur la table. Gardez ces deux temps complets même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Module 3 — Objections et proposition commerciale</td><td>Vérification</td><td>La grille de contrôle croisé est imprimée dans le kit. Aucune dépendance à un outil : le contrôle se fait au stylo sur les propositions papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché</td><td>Démonstration</td><td>L'échange de vérification — l'affirmation, la question, la réponse « affirmation non sourcée » — est imprimé dans le kit (daté). La démonstration se tient sur papier, chronomètre en main, à l'identique.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché</td><td>Pratique</td><td>Ce module est le plus robuste de la journée si l'outil tombe. La chasse à l'erreur est un exercice papier : les deux documents fautifs sont imprimés (pages 28 et 29). La grille de relecture et la feuille de route ne dépendent d'aucun outil. Gardez ces trois temps complets même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabilité et ancrage sur son propre marché</td><td>Vérification</td><td>Quiz papier dans le kit, corrigé page 33. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

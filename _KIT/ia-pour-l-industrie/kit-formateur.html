@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'industrie (2j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'industrie » — 2j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-industrie</code> · 8 modules</p>
+
+      <div class="manque">
+        <strong>⛔ Ce kit n'est pas complet.</strong> Les pièces rédigées — quiz, corrigés, grilles, textes
+        d'exercice, documents fictifs — restent à écrire : elles demandent une plume, pas un script. L'annexe
+        « Ce que les plans B exigent » liste, bloc par bloc, exactement ce qu'il manque. En l'état, ce classeur
+        fournit les fiches de capture et le cahier des charges des pièces à produire.
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin J1 · Module 2 — Non-conformités et réclamations clients : de la note brute à la fiche exploitable <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi J1 · Module 3 — Maîtrise documentaire : mettre à jour une procédure sans casser sa traçabilité <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi J1 · Module 4 — Questionnaires clients, audits fournisseurs et dossiers de qualification <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B5</strong></td><td>Sorties de la démonstration — Matin J2 · Module 5 — Préparer une certification ou un audit client <em>(à capturer)</em></td><td>mod-5, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B6</strong></td><td>Sorties de la démonstration — Matin J2 · Module 6 — Ce que l'IA ne décide jamais sur un site : les personnes, et la conformité produit <em>(à capturer)</em></td><td>mod-6, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B7</strong></td><td>Sorties de la démonstration — Après-midi J2 · Module 7 — Écrire la procédure d'usage de l'IA du site <em>(à capturer)</em></td><td>mod-7, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B8</strong></td><td>Sorties de la démonstration — Après-midi J2 · Module 8 — Évaluation, revue des productions et feuille de route <em>(à capturer)</em></td><td>mod-8, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">À partir du SEUL rapport ci-joint, dont les noms ont été retirés, liste tout ce qui permettrait à une personne du site de savoir de qui et de quelle affaire il s'agit : dates, horaires de poste, numéro de ligne ou de machine, référence produit, numéro de lot, numéro de commande, tournure de phrase propre à un service. Pour chaque élément, indique la question qu'il suffirait de poser pour lever l'anonymat. N'invente aucun élément absent du document.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La liste des identifiants indirects rendue par l'outil, avec les trois qui ont suffi à la salle entourés en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Le rapport pseudonymisé et la liste des identifiants indirects sont imprimés dans le kit, datés. Sans réseau, l'exercice se tient mieux qu'avec : on distribue le rapport, la salle ré-identifie à voix haute, et on compare à la liste imprimée.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin J1 · Module 2 — Non-conformités et réclamations clients : de la note brute à la fiche exploitable</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu assistes le responsable qualité d'un site de production mécanique.<br />ConteXte : je te fournis trois pièces et rien d'autre — la photo de la page du cahier de poste du 12/05, le compte rendu du poste du matin, et le mail de réclamation du client.<br />Intention : préparer une fiche de non-conformité exploitable et un projet de réponse au client.<br />Output : deux parties. Partie 1, la fiche — fait constaté (date, poste, référence, lot, quantité concernée), hypothèses de cause NUMÉROTÉES et présentées comme des hypothèses, questions à poser au producteur du défaut, action corrective proposée avec la preuve qui permettra de la vérifier. Partie 2, un projet de réponse client de 150 mots maximum.<br />Normes : n'écris aucune cause comme si elle était établie — ce qui n'est pas dans les pièces est une hypothèse ou une question. Ne reprends aucun chiffre absent des pièces ; s'il manque, écris « à relever ». N'engage aucun délai, aucune indemnisation, aucune action sur d'autres lots : je les décide moi-même.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties côte à côte, avec surlignage des deux endroits où la version spontanée présente une hypothèse comme une cause établie, et la même zone corrigée dans la version structurée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux sorties, spontanée et structurée, sont imprimées dans le kit avec leur date de vérification, les deux inventions déjà entourées. Sans réseau, on distribue les deux pages et on compare à voix haute : la démonstration perd le direct, pas l'enseignement.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi J1 · Module 3 — Maîtrise documentaire : mettre à jour une procédure sans casser sa traçabilité</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la version en vigueur d'une procédure de contrôle, en pièce jointe. Propose une version retravaillée en respectant STRICTEMENT ces règles : ne supprime aucune étape, ne fusionne aucune étape, ne modifie aucune valeur, aucun seuil, aucune référence de norme et aucun indice de version. Tu peux uniquement reformuler pour la clarté et réordonner à l'intérieur d'une même phase. Rends ensuite un tableau à trois colonnes : étape d'origine, étape proposée, nature de la modification. Signale enfin, dans une liste séparée, toute étape que tu identifies comme relevant de la sécurité des personnes : je les traiterai à part et tu n'y touches pas.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le tableau à trois colonnes, avec la ligne où une étape a disparu entourée en rouge et la référence de norme inventée surlignée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Original, sortie retravaillée et tableau comparatif sont imprimés dans le kit, datés, avec les trois pertes présentes mais non annotées : la salle les cherche sur papier, feutre en main. Sans réseau c'est même plus lisible qu'à l'écran, et le temps de recherche joue en votre faveur.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi J1 · Module 4 — Questionnaires clients, audits fournisseurs et dossiers de qualification</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Tu réponds à un questionnaire client à partir des SEULS documents que je viens de déposer. Pour chaque question, rends trois colonnes : la réponse proposée, le document et la section précise sur lesquels elle s'appuie, et un niveau parmi « prouvé par le document déposé », « partiellement prouvé », « non prouvé ». N'utilise aucune connaissance générale sur les normes ou sur le secteur : si les documents déposés ne permettent pas de répondre, écris « non prouvé » et formule la question à poser en interne. Ne reformule aucun chiffre : recopie-le tel qu'il figure dans l'enregistrement, avec sa date de relevé.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le tableau à trois colonnes, avec la ligne classée « prouvé » par l'assistant alors qu'aucun document déposé ne la porte, entourée en rouge à côté du document ouvert à la section citée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Documents de référence, questionnaire et tableau produit sont imprimés dans le kit, datés, avec la citation fautive laissée en place. La salle ouvre le document papier cité et constate l'écart : l'exercice fonctionne intégralement hors réseau.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B5 — fiche de capture</div>
+      <h2>À capturer — Matin J2 · Module 5 — Préparer une certification ou un audit client</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici le référentiel applicable et le rapport du dernier audit, en pièces jointes. Parcours le référentiel exigence par exigence, dans son ordre, et rends un tableau : numéro d'exigence tel qu'il est écrit dans le document, formulation exacte de l'exigence recopiée entre guillemets, preuve habituellement attendue, écart relevé au dernier audit s'il y en a un. N'ajoute aucune exigence qui ne figure pas dans le document déposé et n'en reformule aucune. Si tu n'es pas certain d'un numéro, écris « numéro à vérifier » plutôt que de le deviner.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Le tableau des exigences, avec la ligne dont le numéro n'existe pas dans le référentiel entourée en rouge, à côté de la fenêtre de recherche plein texte qui rend zéro résultat.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>L'extrait de référentiel, le tableau produit et la capture de la recherche infructueuse sont imprimés dans le kit, datés. Sans réseau, la salle cherche le numéro fantôme dans le référentiel papier fourni : c'est plus long et tout aussi convaincant.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B6 — fiche de capture</div>
+      <h2>À capturer — Matin J2 · Module 6 — Ce que l'IA ne décide jamais sur un site : les personnes, et la conformité produit</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PASSE A — « Voici les relevés d'activité anonymisés de trois postes sur une semaine, en pièce jointe. Décris pour chacun ce que montrent les chiffres, sans évaluer les personnes, sans classer et sans recommander. »<br /><br />PASSE B — « Mêmes relevés, avec en plus l'ancienneté et l'équipe de rattachement de chaque poste. En une phrase, dis quel poste te semble le moins performant, et pourquoi. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties côte à côte, avec la phrase de la passe B où l'ancienneté est reprise comme motif entourée en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux sorties du jeu fictif sont imprimées dans le kit, datées, avec la phrase fautive présente. Le pari écrit et la comparaison ligne à ligne se tiennent intégralement sur papier, sans rien perdre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B7 — fiche de capture</div>
+      <h2>À capturer — Après-midi J2 · Module 7 — Écrire la procédure d'usage de l'IA du site</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici trois pièces produites par notre site : notre liste rouge, notre règle de revalidation des écrits à portée sécurité, et notre grille de qualification des dispositifs de suivi. Rédige à partir d'elles, et uniquement d'elles, une procédure d'usage de l'IA en cinq parties : périmètre autorisé, ce qui ne sort jamais, circuit de validation avant diffusion, traces conservées et où elles sont rangées, conduite à tenir en cas de doute. Désigne les responsables par FONCTION et jamais par prénom. N'ajoute aucune règle qui ne figure pas dans les trois pièces : si une partie te semble incomplète, écris la question à trancher plutôt que d'inventer la règle.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La procédure produite, avec en marge une pastille sur les trois zones qu'un auditeur ouvre en premier : qui valide, quelles traces, que fait-on en cas de doute.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La procédure type et une procédure rédigée en session précédente sont imprimées dans le kit, datées, pastilles comprises. Le commentaire point par point se fait à l'identique sur papier, sans rien perdre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B8 — fiche de capture</div>
+      <h2>À capturer — Après-midi J2 · Module 8 — Évaluation, revue des productions et feuille de route</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige le paragraphe « action corrective » de la fiche de non-conformité ci-jointe, en cinq lignes maximum, à partir des seuls éléments écrits dans la fiche. Ne propose aucune action qui ne découle pas d'un élément de la fiche, et n'invente ni délai ni responsable.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les trois sorties de la même demande, numérotées 1, 2 et 3, avec les formulations divergentes surlignées d'une même couleur.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui autorisé sur le site.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les trois sorties de la même demande sont imprimées dans le kit, datées et surlignées. Distribuées côte à côte, elles produisent exactement le même effet : la salle cherche la bonne et ne la trouve pas.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici : tour de table, tableau, feutre. Si le vidéoprojecteur est mort, le module 1 ne perd rien — il se tient entièrement à l'oral et au paperboard.</td></tr>
+          <tr><td>Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais</td><td>Démonstration</td><td>Le rapport pseudonymisé et la liste des identifiants indirects sont imprimés dans le kit, datés. Sans réseau, l'exercice se tient mieux qu'avec : on distribue le rapport, la salle ré-identifie à voix haute, et on compare à la liste imprimée.</td></tr>
+          <tr><td>Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais</td><td>Pratique</td><td>L'atelier ne demande aucun outil : trame A3, quinze pièces imprimées du kit, un feutre. C'est l'atelier le plus robuste du jour 1 — gardez-le entier même si tout le réseau est tombé.</td></tr>
+          <tr><td>Matin J1 · Module 1 — Le système documentaire du site face à l'IA : ce qui sort, ce qui ne sort jamais</td><td>Vérification</td><td>Les dix pièces et leur corrigé sont imprimés dans le kit. Sans vidéoprojecteur, on les distribue une par une et la correction se fait à l'oral, à l'identique.</td></tr>
+          <tr><td>Matin J1 · Module 2 — Non-conformités et réclamations clients : de la note brute à la fiche exploitable</td><td>Démonstration</td><td>Les deux sorties, spontanée et structurée, sont imprimées dans le kit avec leur date de vérification, les deux inventions déjà entourées. Sans réseau, on distribue les deux pages et on compare à voix haute : la démonstration perd le direct, pas l'enseignement.</td></tr>
+          <tr><td>Matin J1 · Module 2 — Non-conformités et réclamations clients : de la note brute à la fiche exploitable</td><td>Pratique</td><td>Réseau tombé : l'atelier se tient sur la trame papier de la fiche, et les cinq leviers AXION s'appliquent à l'identique — c'est la structure de la demande qui s'apprend, pas le clic. Les gestes photo et dictée se répètent hors ligne sur le téléphone, la retranscription attendra le retour au poste. La trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin J1 · Module 2 — Non-conformités et réclamations clients : de la note brute à la fiche exploitable</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. La vérification ne dépend d'aucun outil : elle se fait au stylo sur les copies, y compris sur des fiches remplies à la main pendant le plan B de l'atelier.</td></tr>
+          <tr><td>Après-midi J1 · Module 3 — Maîtrise documentaire : mettre à jour une procédure sans casser sa traçabilité</td><td>Démonstration</td><td>Original, sortie retravaillée et tableau comparatif sont imprimés dans le kit, datés, avec les trois pertes présentes mais non annotées : la salle les cherche sur papier, feutre en main. Sans réseau c'est même plus lisible qu'à l'écran, et le temps de recherche joue en votre faveur.</td></tr>
+          <tr><td>Après-midi J1 · Module 3 — Maîtrise documentaire : mettre à jour une procédure sans casser sa traçabilité</td><td>Pratique</td><td>Sans réseau, la mise à jour se fait à la main sur photocopie de l'original, feutre pour le surlignage, et la fiche d'évolution se remplit au stylo sur la trame papier. Le livrable est identique et la liste de revalidation aussi ; seule la reformulation assistée est reportée au retour au poste.</td></tr>
+          <tr><td>Après-midi J1 · Module 3 — Maîtrise documentaire : mettre à jour une procédure sans casser sa traçabilité</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit, originaux fournis en version papier. Aucune dépendance à un outil : c'est une lecture comparée, feuille contre feuille.</td></tr>
+          <tr><td>Après-midi J1 · Module 4 — Questionnaires clients, audits fournisseurs et dossiers de qualification</td><td>Démonstration</td><td>Documents de référence, questionnaire et tableau produit sont imprimés dans le kit, datés, avec la citation fautive laissée en place. La salle ouvre le document papier cité et constate l'écart : l'exercice fonctionne intégralement hors réseau.</td></tr>
+          <tr><td>Après-midi J1 · Module 4 — Questionnaires clients, audits fournisseurs et dossiers de qualification</td><td>Pratique</td><td>Sans réseau, l'atelier se tient intégralement au stylo : trame à trois colonnes du kit, documents du site sortis de la pochette, chiffres recopiés depuis les enregistrements. C'est même la version la plus fidèle au geste enseigné, l'assistant ne faisant que l'accélérer au bureau.</td></tr>
+          <tr><td>Après-midi J1 · Module 4 — Questionnaires clients, audits fournisseurs et dossiers de qualification</td><td>Vérification</td><td>Grille de vérification et corrigé imprimés dans le kit, pièces de preuve du jeu fourni en version papier. Aucun outil nécessaire : c'est une lecture croisée, document ouvert.</td></tr>
+          <tr><td>Matin J2 · Module 5 — Préparer une certification ou un audit client</td><td>Démonstration</td><td>L'extrait de référentiel, le tableau produit et la capture de la recherche infructueuse sont imprimés dans le kit, datés. Sans réseau, la salle cherche le numéro fantôme dans le référentiel papier fourni : c'est plus long et tout aussi convaincant.</td></tr>
+          <tr><td>Matin J2 · Module 5 — Préparer une certification ou un audit client</td><td>Pratique</td><td>Sans réseau, la revue d'écart se conduit à la main sur la trame à quatre colonnes du kit, référentiel papier ouvert. Le geste vérifié — citer l'exigence exacte, poser la preuve attendue — est identique ; seule la vitesse de dégrossissage change.</td></tr>
+          <tr><td>Matin J2 · Module 5 — Préparer une certification ou un audit client</td><td>Vérification</td><td>Référentiel papier, revues imprimées et corrigé du kit : la vérification aux sources est le bloc le moins dépendant d'un outil de toute la formation.</td></tr>
+          <tr><td>Matin J2 · Module 6 — Ce que l'IA ne décide jamais sur un site : les personnes, et la conformité produit</td><td>Démonstration</td><td>Les deux sorties du jeu fictif sont imprimées dans le kit, datées, avec la phrase fautive présente. Le pari écrit et la comparaison ligne à ligne se tiennent intégralement sur papier, sans rien perdre.</td></tr>
+          <tr><td>Matin J2 · Module 6 — Ce que l'IA ne décide jamais sur un site : les personnes, et la conformité produit</td><td>Pratique</td><td>Aucun outil n'intervient dans cet atelier : grille papier, feutre, discussion de table. C'est l'atelier le plus robuste du jour 2, gardez-le entier quoi qu'il arrive au réseau.</td></tr>
+          <tr><td>Après-midi J2 · Module 7 — Écrire la procédure d'usage de l'IA du site</td><td>Démonstration</td><td>La procédure type et une procédure rédigée en session précédente sont imprimées dans le kit, datées, pastilles comprises. Le commentaire point par point se fait à l'identique sur papier, sans rien perdre.</td></tr>
+          <tr><td>Après-midi J2 · Module 7 — Écrire la procédure d'usage de l'IA du site</td><td>Pratique</td><td>La trame en cinq parties est papier et l'atelier se tient intégralement au stylo, les trois pièces à reverser étant elles-mêmes dans la pochette. C'est l'atelier à préserver en priorité si le réseau tombe : c'est le livrable qui reste au site.</td></tr>
+          <tr><td>Après-midi J2 · Module 7 — Écrire la procédure d'usage de l'IA du site</td><td>Vérification</td><td>Grille de relecture et corrigé imprimés dans le kit. La vérification se fait au stylo sur les procédures, y compris manuscrites : aucun outil n'est en jeu.</td></tr>
+          <tr><td>Après-midi J2 · Module 8 — Évaluation, revue des productions et feuille de route</td><td>Démonstration</td><td>Les trois sorties de la même demande sont imprimées dans le kit, datées et surlignées. Distribuées côte à côte, elles produisent exactement le même effet : la salle cherche la bonne et ne la trouve pas.</td></tr>
+          <tr><td>Après-midi J2 · Module 8 — Évaluation, revue des productions et feuille de route</td><td>Pratique</td><td>Aucun outil nécessaire : le tri se fait sur les productions papier sorties de la pochette, la feuille de route se remplit au stylo sur la trame, et la lecture à voix haute ne dépend de rien. Gardez ces cinquante minutes entières même si tout le reste a été dégradé — c'est ce bloc qui décide de ce qui se passera lundi.</td></tr>
+          <tr><td>Après-midi J2 · Module 8 — Évaluation, revue des productions et feuille de route</td><td>Vérification</td><td>Quiz et corrigé sont imprimés dans le kit — c'est d'ailleurs la version normale : le quiz se tient sur papier et aucun outil n'est en jeu.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>
