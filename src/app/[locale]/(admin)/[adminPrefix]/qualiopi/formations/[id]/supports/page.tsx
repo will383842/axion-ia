@@ -17,7 +17,10 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { getFormationById } from "@/server/qualiopi/formations/formations";
 import { SUPPORT_TYPE_LABELS } from "@/server/qualiopi/supports/support-builder";
-import { GenererSupportButton } from "@/components/admin/qualiopi/GenererSupportButton";
+import {
+  GenererSupportButton,
+  type SupportTypeValue,
+} from "@/components/admin/qualiopi/GenererSupportButton";
 import { GenererTousSupportsButton } from "@/components/admin/qualiopi/GenererTousSupportsButton";
 import {
   genererSupportAction,
@@ -53,7 +56,16 @@ const STATUT_LABELS: Record<SupportStatut, string> = {
   archive: "Archivé",
 };
 
-const ALL_TYPES: SupportType[] = [
+/**
+ * Les types que le Formation Engine sait GÉNÉRER — d'où `SupportTypeValue` et
+ * non `SupportType`.
+ *
+ * `kit_formateur_imprime` en est volontairement absent : le kit est écrit à la
+ * main dans `_KIT/<slug>/` et publié par `scripts/kit-formateur/publier-vers-r2.ts`.
+ * Lui donner un bouton « Générer » ici produirait un classeur vide qui
+ * écraserait le vrai. Il apparaît plus bas, en lecture seule.
+ */
+const ALL_TYPES: SupportTypeValue[] = [
   "slides_formateur",
   "slides_stagiaire",
   "livret_stagiaire",
@@ -263,6 +275,34 @@ export default async function QualiopiFormationSupportsPage({ params }: PageProp
           </tbody>
         </table>
       </div>
+
+      {/* Le kit imprimé — présent en base mais absent du tableau ci-dessus,
+          parce qu'il ne se génère pas : il s'écrit dans `_KIT/<slug>/` et se
+          publie par script. Affiché ici pour qu'il soit récupérable depuis la
+          console, sans laisser croire qu'un bouton « Générer » le produirait. */}
+      {(() => {
+        const kit = supportByType.get("kit_formateur_imprime");
+        if (!kit) return null;
+        return (
+          <div className="mt-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+            <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+              Kit formateur imprimé — version {kit.version}
+            </h2>
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+              Le classeur des plans B, écrit à la main et publié par{" "}
+              <code>scripts/kit-formateur/publier-vers-r2.ts</code>. Il ne se génère pas depuis
+              cette page : le produire depuis le moteur donnerait un classeur vide. Les formateurs
+              affectés le récupèrent seuls depuis leur session.
+            </p>
+            <a
+              href={`/api/qualiopi/supports/${kit.id}`}
+              className="mt-[var(--space-admin-3)] inline-block text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline"
+            >
+              Télécharger le PDF
+            </a>
+          </div>
+        );
+      })()}
     </AdminPageShell>
   );
 }

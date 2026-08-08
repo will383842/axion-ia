@@ -28,6 +28,7 @@ const ENUM_SUPPORT_TYPES = [
   "guide_animation",
   "exercices",
   "grille_eval",
+  "kit_formateur_imprime",
 ] as const;
 
 describe("SUPPORT_TYPE_TO_SLOT", () => {

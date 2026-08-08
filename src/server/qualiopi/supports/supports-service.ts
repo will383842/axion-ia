@@ -370,6 +370,13 @@ export async function regenererSupport(input: {
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Les 7 types de supports produits pour une formation. */
+/**
+ * Les types que « Générer tous les supports » produit.
+ *
+ * ⚠️ NE PAS y ajouter `kit_formateur_imprime` : le kit n'est pas produit par le
+ * moteur, et `construireSupport` lève volontairement pour ce type. L'ajouter
+ * ici ferait échouer la génération complète.
+ */
 export const TOUS_SUPPORT_TYPES: readonly SupportType[] = [
   "slides_formateur",
   "slides_stagiaire",

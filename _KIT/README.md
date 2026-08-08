@@ -74,6 +74,41 @@ décrédibilise la formation en direct. Au-delà de trois mois, on recapture.
 conseil avant diffusion »**, non retirable. Le formateur n'arbitre aucune
 question juridique.
 
+## Comment le kit arrive jusqu'au formateur
+
+Le dépôt n'est pas un canal de distribution : un formateur n'y a pas accès, et
+ne doit pas y en avoir. Le chemin est le suivant.
+
+```
+_KIT/<slug>/kit-formateur.pdf
+        │  pnpm tsx scripts/kit-formateur/publier-vers-r2.ts
+        ▼
+   R2  kits-formateur/<slug>/v<N>/kit-formateur.pdf
+        │  + ligne SupportFormation (type kit_formateur_imprime, pdfKey)
+        ▼
+   /api/espace-formateur/kit/<sessionId>   ← re-signe à la demande
+        ▼
+   Espace formateur → sa session → « Télécharger le kit »
+```
+
+Le script est **idempotent** : rejoué sur un PDF inchangé (même SHA-256), il ne
+fait rien. Un PDF modifié incrémente la version, et la version est dans la clé
+R2 — republier n'écrase donc jamais l'objet précédent.
+
+🔴 **Aucune URL signée n'est stockée.** Une URL R2 signée expire en 900 s ; une
+URL figée en base est un lien mort un quart d'heure plus tard. Seule la CLÉ est
+persistée, et la route signe à chaque demande. C'est le même défaut que celui
+déjà corrigé sur `/api/qualiopi/documents/[id]`.
+
+**La garde d'accès** est l'appartenance de la session (formateur principal ou
+co-animateur), pas le slug de la formation — le kit contient les corrigés du
+quiz d'évaluation des acquis. Session inconnue et session d'un autre formateur
+rendent le même 404.
+
+⚠️ Le kit n'est **pas** produit par le Formation Engine : `construireSupport`
+lève volontairement pour ce type, et `TOUS_SUPPORT_TYPES` l'exclut. Le générer
+depuis la console produirait un classeur vide qui écraserait le vrai.
+
 ## État d'avancement
 
 Voir `_KIT/ETAT.md` — écrit à chaque génération complète, donc toujours juste.

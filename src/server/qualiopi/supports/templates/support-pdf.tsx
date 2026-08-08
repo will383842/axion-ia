@@ -253,6 +253,7 @@ export function typeLabelFr(type: SupportRenderInput["type"]): string {
     guide_animation: "GUIDE D'ANIMATION",
     exercices: "CAHIER D'EXERCICES",
     grille_eval: "GRILLE D'ÉVALUATION",
+    kit_formateur_imprime: "KIT FORMATEUR IMPRIMÉ",
   };
   return labels[type];
 }
