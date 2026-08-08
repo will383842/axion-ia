@@ -1,0 +1,3610 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour le BTP (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour le BTP » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-le-btp</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Feuillet personnel de la journée (recto/verso) — le fil rouge et la feuille de route</td><td>Tous les modules</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A2</strong></td><td>Trame « ce qui ne sort jamais de l'entreprise » — trois colonnes, chantier compris</td><td>M1, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A3</strong></td><td>Les trois notes de chantier dictées et leurs deux comptes-rendus, imprimés et datés</td><td>M1, démonstration (plan B)</td><td>1 jeu par table + 1 formateur</td></tr>
+          <tr><td><strong>A4</strong></td><td>Trame du compte-rendu de chantier — présents, avancement par lot, blocages, décisions, actions</td><td>M1 et M2, pratique (plan B)</td><td>3 par stagiaire + 10</td></tr>
+          <tr><td><strong>A5</strong></td><td>Jeu de notes de chantier de secours — pour qui n'a rien apporté</td><td>M1 et M2, pratique</td><td>5 exemplaires</td></tr>
+          <tr><td><strong>A6</strong></td><td>Les trois gestes du terrain et la parade de leurs trois échecs</td><td>M1, pratique (plan B)</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A7</strong></td><td>Grille du contrôle croisé du module 1 — trois colonnes, cinq minutes par relecteur</td><td>M1, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A8</strong></td><td>Le constat de retard écrit à chaud et sa version qui protège l'entreprise, datés</td><td>M2, démonstration (plan B)</td><td>1 jeu par table + 1 formateur</td></tr>
+          <tr><td><strong>A9</strong></td><td>Squelette du courrier qui engage — faits datés, référence à compléter, demande, réserve</td><td>M2, pratique (plan B)</td><td>3 par stagiaire + 10</td></tr>
+          <tr><td><strong>A10</strong></td><td>Scénario de secours « retard du lot plomberie » — les notes datées</td><td>M2, pratique (parade)</td><td>5 exemplaires</td></tr>
+          <tr><td><strong>A11</strong></td><td>Grille de relecture d'une pièce qui engage — faits, dates, destinataires, ton</td><td>M2, vérification</td><td>2 par stagiaire</td></tr>
+          <tr><td><strong>A12</strong></td><td>La relance de sous-traitant volontairement chargée + corrigé</td><td>M2, vérification (parade)</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A13</strong></td><td>La trame de mémoire technique et ses affirmations invérifiables + corrigé</td><td>M3, démonstration (plan B)</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A14</strong></td><td>Le jeu de documents sources fictifs — CCTP, règlement, plan, consignes internes</td><td>M3, pratique (plan B) — support des pièces A13, A15 et A16</td><td>1 jeu par stagiaire</td></tr>
+          <tr><td><strong>A15</strong></td><td>Chasse à l'erreur — la note de méthode produite par IA (dix erreurs) + corrigé</td><td>M3, pratique et vérification (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A16</strong></td><td>Trame des trois questions ancrées — la réponse n'existe qu'avec sa phrase source</td><td>M3, pratique</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A17</strong></td><td>Les deux trames au choix du module 3 — causerie reformulée (visa non retirable) et synthèse d'une page</td><td>M3, pratique (plan B)</td><td>2 de chaque par stagiaire</td></tr>
+          <tr><td><strong>A18</strong></td><td>Grille de vérification du module 3 — chaque affirmation, sa pièce</td><td>M3, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A19</strong></td><td>La pièce « prête à partir » du kit et sa grille pré-remplie</td><td>M4, démonstration (plan B)</td><td>1 par table + 1 formateur</td></tr>
+          <tr><td><strong>A20</strong></td><td>La grille de contrôle avant envoi (vierge) et le bordereau du dossier prêt à envoyer</td><td>M4, pratique (plan B)</td><td>4 par stagiaire + 10</td></tr>
+          <tr><td><strong>A21</strong></td><td>Quiz d'évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A22</strong></td><td>Grille de critères — j'évalue une production de la journée (ligne sécurité éliminatoire)</td><td>M4, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A23</strong></td><td>Ce qu'il faut avoir ouvert et daté avant d'en citer une seule ligne</td><td>M1, M2 et M3, cadre</td><td>1 exemplaire formateur + 1 par stagiaire sur demande</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Comptes-rendus, courriers de chantier et pièces qui engagent <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Appels d'offres, pièces techniques et documents de sécurité <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Le dossier « prêt à envoyer » et ce qu'on installe lundi <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Feuillet personnel de la journée (recto/verso) — le fil rouge et la feuille de route" data-bloc="Tous les modules" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A1 — recto</div>
+      <h2>Mon feuillet de la journée — IA pour le BTP</h2>
+      <p class="piece-usage">
+        Distribué à l'ouverture, rempli au fil des quatre modules, il repart avec son auteur et
+        ouvre son dossier « prêt à envoyer ». Ce n'est pas un support de cours : c'est la première
+        pièce du dossier, et la seule qui ne dépend d'aucun outil.
+      </p>
+
+      <p>
+        <strong>Prénom / poste :</strong> ______________________________ ·
+        <strong>Chantier en cours :</strong> ______________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Matin — le document qui me retient au bureau le soir</div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Une phrase, dite au tour de table. Elle sera reprise au module 4 pour montrer ce que la
+          journée a couvert — et ce qu'elle n'a pas couvert.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La règle de la journée, à recopier telle quelle</div>
+        <ul>
+          <li><strong>L'IA rédige, elle ne chiffre pas, elle ne décide pas.</strong></li>
+          <li>
+            Prix de revient, marges, coefficients, bibliothèque de prix, DPGF, contrats de
+            sous-traitance et coordonnées clients <strong>ne sortent pas de l'entreprise</strong> —
+            et retirer le nom ne suffit pas quand l'adresse du chantier reste.
+          </li>
+          <li>
+            <strong>La sécurité ne se produit jamais à l'IA.</strong> Plan de prévention, PPSPS,
+            analyse de risques, consigne : l'outil peut reformuler un document
+            <em>déjà validé</em>, il n'en crée aucun.
+          </li>
+          <li><strong>Aucun tri de personnes</strong> — candidats, intérimaires, compagnons.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 1 — les trois gestes que j'ai réussis, et celui qui a coincé</div>
+        <p>
+          <span class="coche"></span> dicter &nbsp; <span class="coche"></span> photographier &nbsp;
+          <span class="coche"></span> déposer un plan ou un PDF
+        </p>
+        <p>Ce qui a coincé, et la parade qui a marché :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Modules 1 à 3 — mes questions ouvertes, pour qui de droit</div>
+        <p class="petit">
+          Le formateur n'arbitre aucune question de sécurité, de norme ni de droit. Ce cadre existe
+          pour repartir avec la question <em>écrite</em>, adressée à quelqu'un — jamais avec un
+          demi-avis.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 58%">La question</th>
+              <th style="width: 42%">À qui je la pose (un nom)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="verso-note">→ Tournez le feuillet : le verso se remplit l'après-midi.</p>
+    </section>
+
+    <section class="piece" data-piece="A1">
+      <div class="piece-badge">Pièce A1 — verso</div>
+      <h2>Après-midi — ce que je compte, ce que je finalise, ce que j'installe lundi</h2>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 3 — les affirmations que j'ai barrées, comptées</div>
+        <p>
+          Affirmations chiffrées ou nominatives repérées dans la production relue :
+          <strong>______</strong> · dont barrées faute de pièce qui les prouve :
+          <strong>______</strong>
+        </p>
+        <p>Ce que je change dans ma relecture avant envoi, à partir de lundi :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 4 — ce qui a failli sortir de l'entreprise aujourd'hui</div>
+        <p class="petit">
+          Comptage individuel et silencieux. Seul le total de la salle s'affiche au tableau : le
+          chiffre collectif frappe sans exposer personne.
+        </p>
+        <p>
+          Prix ou marge : <strong>______</strong> · coordonnées d'un client :
+          <strong>______</strong> · adresse de chantier : <strong>______</strong> · pièce de
+          sous-traitance : <strong>______</strong> · nom d'un salarié : <strong>______</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mon dossier « prêt à envoyer » — les trois pièces du jour</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 46%">La pièce</th>
+              <th style="width: 27%">Grille renseignée</th>
+              <th style="width: 27%">Qui relit et signe (un nom)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1.</td><td>☐ oui ☐ non</td><td></td></tr>
+            <tr><td>2.</td><td>☐ oui ☐ non</td><td></td></tr>
+            <tr><td>3.</td><td>☐ oui ☐ non</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ma feuille de route — trois usages datés, un usage écarté</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 46%">L'usage — quelle pièce, sur quel chantier</th>
+              <th style="width: 27%">Quel jour</th>
+              <th style="width: 27%">Qui relit avant diffusion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1.</td><td>____ / ____ / 20____</td><td></td></tr>
+            <tr><td>2.</td><td>____ / ____ / 20____</td><td></td></tr>
+            <tr><td>3.</td><td>____ / ____ / 20____</td><td></td></tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>L'usage que je m'interdis</strong>, celui qui me tentait et que la journée a montré
+          risqué :
+        </p>
+        <div class="lignes"></div>
+        <p class="petit">
+          Un usage sans pièce, sans date et sans relecteur nommé n'est pas un usage, c'est une
+          intention. « J'essaierai l'IA pour les comptes-rendus » ne compte pas.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Tout ce que je produis avec l'IA reste un <strong>projet</strong> : je le relis, je le
+        corrige, je le signe avant tout envoi. <strong>Aucun devis, aucun avenant, aucun délai et
+        aucune réserve ne s'engage par ce texte</strong> — seule la pièce signée engage
+        l'entreprise. <strong>Aucune consigne de sécurité ne s'applique sans validation du
+        responsable compétent</strong> — responsable prévention de l'entreprise ou coordonnateur SPS
+        selon l'opération. Toute question juridique va au conseil de mon entreprise, jamais à l'outil
+        ni au formateur.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2" data-titre="Trame « ce qui ne sort jamais de l'entreprise » — trois colonnes, chantier compris" data-bloc="M1, pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A2</div>
+      <h2>Ma liste rouge — ce qui ne sort jamais de l'entreprise</h2>
+      <p class="piece-usage">
+        Se remplit seul, au stylo, <strong>avant</strong> tout collage dans un outil. La trame est
+        volontairement à trous : personne ne dicte cette liste à votre place. Elle ne dépend d'aucun
+        outil — réseau tombé, l'atelier se tient à l'identique.
+      </p>
+
+      <p>
+        <strong>Mon entreprise / mon poste :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 34%">Ne sort jamais</th>
+            <th style="width: 33%">À neutraliser avant de coller</th>
+            <th style="width: 33%">Libre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="height: 62mm"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les huit familles à passer en revue avant de conclure</div>
+        <ul>
+          <li>Prix de revient, coûts matière et main-d'œuvre, marges, coefficients.</li>
+          <li>Bibliothèque de prix, DPGF, bordereau de prix unitaires.</li>
+          <li>Contrats de sous-traitance, conditions négociées, avenants.</li>
+          <li>Coordonnées du client, du maître d'ouvrage, du maître d'œuvre.</li>
+          <li><strong>Adresse et désignation du chantier</strong> — voir le piège ci-dessous.</li>
+          <li>Données nominatives : compagnons, intérimaires, candidats.</li>
+          <li>Pièces non publiées d'un marché privé, courriers reçus, comptes-rendus d'autrui.</li>
+          <li>Photos où figurent des personnes, une plaque d'immatriculation, un panneau de chantier.</li>
+        </ul>
+        <p class="petit">
+          La question qui débloque : <em>si cela s'affichait demain chez le concurrent qui a chiffré
+          contre vous, ça vous ferait quoi&nbsp;?</em>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le piège du BTP : retirer le nom ne suffit pas</div>
+        <p>
+          « Le chantier de douze logements, rue des Aubépines, lot gros œuvre » ne porte aucun nom de
+          client et désigne exactement un marché, un maître d'ouvrage et un prix. Dans le bâtiment,
+          <strong>l'adresse du chantier est une donnée client</strong> — le panneau de chantier est
+          public, votre prix ne l'est pas.
+        </p>
+        <p>Ce que je remplace, et par quoi :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Après confrontation en binôme</div>
+        <p>Les cas que nous n'avons pas su trancher, à porter en salle :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Cette liste est un <strong>projet</strong> de travail, à relire et à faire valider chez vous.
+        Elle n'engage ni votre direction ni votre service informatique tant qu'elle n'a pas été
+        arbitrée, et <strong>aucun devis, avenant, délai ni réserve ne s'engage par ce document</strong>.
+        Le régime d'usage applicable chez vous se vérifie auprès de votre direction.
+        <strong>Aucune consigne de sécurité ne s'applique sans validation du responsable
+        compétent.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3" data-titre="Les trois notes de chantier dictées et leurs deux comptes-rendus, imprimés et datés" data-bloc="M1, démonstration (plan B)" data-tirage="1 jeu par table + 1 formateur">
+      <div class="piece-badge">Pièce A3 — feuillet f. 1 : les notes dictées, brutes</div>
+      <h2>Les trois notes dictées — BÂTI VERGNOLLE, chantier « Les Terrasses du Vallon »</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 1 : quota atteint, réseau tombé, dictée en direct
+        inexploitable à cause du bruit de salle — la comparaison chronométrée se tient à l'identique
+        sur ces trois feuillets. Lisez les notes à voix haute, distribuez les deux comptes-rendus,
+        faites repérer les « à compléter ». <strong>N'improvisez aucune sortie en direct</strong> :
+        celles-ci ont été vérifiées.
+      </p>
+      <div class="champ-date">
+        <strong>Sorties de référence du kit, vérifiées le :</strong> 06 / 08 / 2026 ·
+        <strong>Recapturées le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Trois notes dictées au téléphone en fin de journée. Transcription brute, non corrigée.
+          Tout est fictif : entreprise, chantier, sociétés, personnes, références de documents.
+        </p>
+        <p><strong>Note n°&nbsp;1 — dictée en voiture, après la visite du matin</strong></p>
+        <p>
+          « Bon alors, Terrasses du Vallon, visite de ce matin, mardi. J'étais avec Rachid — Rachid
+          Amellal, le chef de chantier — et il y avait le conducteur de chez Tavernier Fluides, le
+          lot plomberie, je n'ai pas son nom en tête, il faudra que je le reprenne. Alors la zone du
+          R+1 côté est, elle n'est toujours pas libérée, les attentes plomberie ne sont pas posées,
+          donc on ne peut pas couler. C'était au planning, mais je regarderai l'indice exact, je ne
+          veux pas dire de bêtise. Du coup la dalle du R+1, on ne l'a pas coulée à la date prévue.
+          Le gars de Tavernier m'a dit qu'ils passaient cette semaine, mais il ne s'est engagé sur
+          rien de précis. »
+        </p>
+        <p><strong>Note n°&nbsp;2 — dictée en fin de journée</strong></p>
+        <p>
+          « Deuxième truc : la benne de gravats côté rue est pleine depuis vendredi, elle est restée
+          devant l'accès, il faut que quelqu'un appelle pour l'enlèvement parce que là ça gêne le
+          passage. Ça, c'est urgent, c'est pour demain matin. Et puis les réservations dans le voile
+          du R+1, il y en a deux qui ne correspondent pas au plan, enfin je crois, je n'ai pas eu le
+          plan sous les yeux, c'est à vérifier sur le PLA-TV-R1-04. Ah, et le maître d'œuvre est
+          passé, le cabinet Morel-Bastide, l'architecte a demandé qu'on lui fasse un point écrit. »
+        </p>
+        <p><strong>Note n°&nbsp;3 — dictée en direct devant la salle, hésitations comprises</strong></p>
+        <p>
+          « Euh… troisième point, alors, le compagnon qui monte les banches m'a demandé quelque
+          chose pour le garde-corps du R+2, au droit de la trémie, la trémie de l'escalier je crois,
+          et il dit qu'il manque un truc. Je lui ai dit que je ne tranchais pas ça et que je faisais
+          remonter à Delpouget, c'est lui la prévention. Il faut que ça remonte aujourd'hui, pas
+          demain. Voilà. Ah, et le coulage, si on le fait, il faudra reprendre le planning avec
+          l'OPC, avec Planexo, mais je n'ai pas de date. »
+        </p>
+      </div>
+
+      <p class="petit">
+        Repère de lecture pour le formateur : les notes contiennent <strong>deux noms donnés et un
+        nom manquant</strong>, <strong>une référence de planning que l'auteur refuse de citer de
+        mémoire</strong>, <strong>aucun montant et aucun délai</strong>, <strong>une action
+        urgente</strong> (la benne) et <strong>un point de sécurité expressément non arbitré et
+        remonté à la prévention</strong>. Ce sont ces cinq points qui départagent les deux
+        comptes-rendus.
+      </p>
+
+      <div class="banniere">
+        Notes <strong>fictives</strong>, écrites pour l'exercice. Elles ne décrivent aucun chantier
+        réel et n'énoncent aucune règle. Les comptes-rendus qui suivent sont des
+        <strong>projets</strong> pédagogiques : <strong>aucun devis, avenant, délai ni réserve ne
+        s'engage par ces textes</strong>, et <strong>aucune consigne de sécurité qui y figurerait ne
+        s'applique sans validation du responsable prévention ou du coordonnateur SPS</strong>. Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3">
+      <div class="piece-badge">Pièce A3 — feuillet f. 2 : le compte-rendu sans règles</div>
+      <h2>Compte-rendu n°&nbsp;1 — la demande nue, sans structure imposée et sans interdits</h2>
+      <p class="piece-usage">
+        À distribuer <strong>en premier</strong> et à laisser trouver « très bien ». C'est le piège
+        de la démonstration, et il fonctionne : le texte est fluide, professionnel, et prêt à
+        partir. Ne commentez rien avant que la salle ait comparé avec les notes du feuillet f. 1.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>COMPTE-RENDU DE VISITE DE CHANTIER — Les Terrasses du Vallon</strong></p>
+        <p>
+          <strong>Date de la visite :</strong> mardi 9 juin 2026, 8&nbsp;h&nbsp;30 ·
+          <strong>Rédacteur :</strong> conducteur de travaux ·
+          <strong>Diffusion :</strong> maîtrise d'œuvre, OPC, entreprises
+        </p>
+        <p>
+          <strong>Présents :</strong> M. Rachid Amellal, chef de chantier ; M. Tavernier, conducteur
+          de travaux du lot plomberie ; le conducteur de travaux de l'entreprise.
+        </p>
+        <p>
+          <strong>Avancement.</strong> La zone est du R+1 n'a pas été libérée par le lot plomberie,
+          les attentes n'étant pas posées. Le coulage de la dalle du R+1, prévu conformément au
+          planning contractuel PL-TV-07 indice B, n'a donc pas pu être réalisé. Ce retard est
+          imputable à un défaut d'approvisionnement des collecteurs par le lot plomberie.
+        </p>
+        <p>
+          <strong>Décisions.</strong> L'intervention du lot plomberie est programmée le vendredi
+          12 juin ; le coulage de la dalle suivra le lundi 15 juin. Les deux réservations non
+          conformes relevées dans le voile du R+1 seront reprises par nos soins. L'immobilisation de
+          la grue sur la période représente un surcoût estimé à 4&nbsp;200&nbsp;€ HT, qui fera
+          l'objet d'une demande d'avenant.
+        </p>
+        <p>
+          <strong>Sécurité.</strong> Rappel : le port du harnais est obligatoire au droit des
+          trémies du R+2.
+        </p>
+        <p>
+          <strong>Suite.</strong> Un point écrit sera adressé à la maîtrise d'œuvre. Le planning sera
+          repris avec l'OPC.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce que ce compte-rendu a inventé — à faire trouver, puis à compter</div>
+        <ol>
+          <li>
+            <strong>« mardi 9 juin 2026, 8 h 30 »</strong> — les notes disent « mardi matin ». Une
+            date et une heure précises fabriquées à partir d'une approximation.
+          </li>
+          <li>
+            <strong>« M. Tavernier, conducteur de travaux du lot plomberie »</strong> — la note dit
+            expressément « je n'ai pas son nom en tête ». <em>Tavernier Fluides</em> est le nom de la
+            société : l'outil en a fait le patronyme d'une personne, et cette personne sera nommée
+            dans un document diffusé à quatre destinataires.
+          </li>
+          <li>
+            <strong>« imputable à un défaut d'approvisionnement des collecteurs »</strong> — une
+            cause inventée. Les notes constatent que la zone n'est pas libérée, elles n'en donnent
+            aucune origine. Une imputation écrite dans un compte-rendu diffusé se retrouve dans un
+            dossier de réclamation.
+          </li>
+          <li>
+            <strong>« programmée le vendredi 12 juin », « le coulage suivra le lundi 15 juin »</strong>
+            — deux <strong>engagements de délai</strong> fabriqués, alors que la note dit « il ne
+            s'est engagé sur rien de précis ».
+          </li>
+          <li>
+            <strong>« un surcoût estimé à 4 200 € HT », « fera l'objet d'une demande d'avenant »</strong>
+            — un <strong>montant intégralement inventé</strong> et une demande d'avenant annoncée que
+            personne n'a décidée. C'est le point le plus lourd du texte : l'IA a chiffré, et elle a
+            engagé.
+          </li>
+          <li>
+            <strong>« seront reprises par nos soins »</strong> — une décision prise à la place du
+            conducteur. La note dit « je crois », « je n'ai pas eu le plan sous les yeux », « c'est à
+            vérifier sur le PLA-TV-R1-04 ».
+          </li>
+          <li>
+            <strong>« PL-TV-07 indice B »</strong> — une <strong>référence contractuelle citée de
+            mémoire</strong>, alors que l'auteur dit « je regarderai l'indice exact, je ne veux pas
+            dire de bêtise ». Le jeu de documents du kit (pièce A14) porte l'indice C : l'écart se
+            vérifie pièce en main, en trente secondes.
+          </li>
+          <li>
+            <strong>« le port du harnais est obligatoire au droit des trémies »</strong> —
+            <strong>une consigne de sécurité fabriquée de bout en bout.</strong> Les notes ne portent
+            aucune consigne : elles portent une <em>question</em> posée par un compagnon et
+            expressément remontée à la prévention. L'outil a transformé une question en règle, et
+            cette règle part en diffusion. <strong>Une consigne de sécurité se vérifie auprès du
+            responsable prévention ou du coordonnateur SPS, jamais auprès d'un outil</strong> — et
+            elle ne se rédige pas ici.
+          </li>
+          <li>
+            <strong>La benne de gravats a disparu.</strong> Le seul point urgent des notes — l'accès
+            gêné, l'enlèvement à demander pour le lendemain matin — n'apparaît nulle part.
+            <strong>L'invention se voit&nbsp;; l'oubli, non.</strong>
+          </li>
+        </ol>
+        <p class="petit">
+          Neuf écarts, dont un montant, deux délais, une imputation et une consigne de sécurité. Ce
+          texte, tel quel, est diffusable en trois clics — c'est exactement pourquoi la salle le
+          trouve bon.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3">
+      <div class="piece-badge">Pièce A3 — feuillet f. 3 : le compte-rendu honnête</div>
+      <h2>Compte-rendu n°&nbsp;2 — les mêmes notes, structure imposée et interdits posés</h2>
+
+      <div class="texte-exercice">
+        <p><strong>COMPTE-RENDU DE VISITE DE CHANTIER — PROJET, à relire et à signer</strong></p>
+        <p>
+          <strong>Chantier :</strong> Les Terrasses du Vallon ·
+          <strong>Date de la visite :</strong> mardi matin — date exacte à compléter ·
+          <strong>Rédacteur :</strong> à compléter · <strong>Diffusion :</strong> à compléter
+        </p>
+        <p><strong>PRÉSENTS</strong></p>
+        <ul>
+          <li>M. Rachid Amellal, chef de chantier.</li>
+          <li>
+            Le conducteur du lot plomberie, société Tavernier Fluides — <strong>nom à
+            compléter</strong>.
+          </li>
+          <li>Le rédacteur du présent compte-rendu.</li>
+        </ul>
+        <p><strong>AVANCEMENT PAR LOT</strong></p>
+        <ul>
+          <li>
+            Lot plomberie — zone est du R+1 non libérée, attentes non posées. Cause : non renseignée
+            par les notes.
+          </li>
+          <li>
+            Lot gros œuvre — dalle du R+1 non coulée à la date prévue, faute de zone libérée. Date
+            initialement prévue et référence du planning contractuel : <strong>à compléter d'après
+            la pièce du marché</strong> (indice à vérifier).
+          </li>
+          <li>
+            Installation de chantier — benne de gravats pleine depuis vendredi, laissée devant
+            l'accès, passage gêné.
+          </li>
+        </ul>
+        <p><strong>POINTS DE BLOCAGE</strong></p>
+        <ul>
+          <li>
+            Deux réservations dans le voile du R+1 signalées comme <em>possiblement</em> non
+            conformes au plan PLA-TV-R1-04 — constat non vérifié, plan non consulté au moment de la
+            visite.
+          </li>
+          <li>
+            Question soulevée par un compagnon sur le garde-corps au droit de la trémie d'escalier du
+            R+2. <strong>Aucune réponse n'est apportée ici</strong> : la question est remontée à
+            M. Delpouget, prévention.
+          </li>
+        </ul>
+        <p><strong>DÉCISIONS PRISES</strong></p>
+        <ul>
+          <li>
+            Remontée immédiate de la question du garde-corps à la prévention, le jour même — hors du
+            niveau de décision de la visite.
+          </li>
+          <li>Aucune autre décision n'a été prise pendant la visite.</li>
+        </ul>
+        <p><strong>ACTIONS À SUIVRE</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 52%">L'action</th>
+              <th style="width: 24%">Le responsable</th>
+              <th style="width: 24%">L'échéance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Demander l'enlèvement de la benne — accès gêné</td>
+              <td>à compléter</td>
+              <td>le lendemain matin</td>
+            </tr>
+            <tr>
+              <td>Réponse de la prévention sur le garde-corps de la trémie R+2</td>
+              <td>M. Delpouget</td>
+              <td>le jour même</td>
+            </tr>
+            <tr>
+              <td>Relever le nom du conducteur du lot plomberie</td>
+              <td>à compléter</td>
+              <td>à compléter</td>
+            </tr>
+            <tr>
+              <td>Vérifier les deux réservations sur le plan PLA-TV-R1-04</td>
+              <td>à compléter</td>
+              <td>à compléter</td>
+            </tr>
+            <tr>
+              <td>Reprendre le planning avec l'OPC (Planexo) si le coulage est décalé</td>
+              <td>à compléter</td>
+              <td>à compléter — aucune date donnée</td>
+            </tr>
+            <tr>
+              <td>Adresser un point écrit à la maîtrise d'œuvre (cabinet Morel-Bastide)</td>
+              <td>à compléter</td>
+              <td>à compléter</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Aucun montant, aucun engagement de délai et aucune imputation ne figurent dans ce document :
+          les notes n'en portent pas.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">La lecture commentée — quatre points, pas un de plus</div>
+        <ul>
+          <li>
+            <strong>Onze « à compléter » au lieu de neuf inventions.</strong> Un « à compléter » est
+            une question posée à son auteur, qui se referme en deux minutes au bureau. Une date
+            inventée ne se voit pas et ne se pose pas.
+          </li>
+          <li>
+            <strong>Le montant, les deux délais et l'imputation ont disparu</strong>, parce que la
+            demande les interdisait. C'est l'effet d'une seule ligne de consigne, et c'est la ligne
+            que tout le monde oublie d'écrire.
+          </li>
+          <li>
+            <strong>La question de sécurité est restée une question.</strong> Elle est nommée, elle
+            porte un destinataire et une échéance — et elle ne porte <em>aucune</em> réponse. C'est
+            le seul comportement acceptable : <strong>une consigne de sécurité se vérifie auprès du
+            responsable prévention ou du coordonnateur SPS, jamais auprès d'un outil</strong>.
+          </li>
+          <li>
+            <strong>La benne est là, et elle est dans la bonne rubrique.</strong> Le point urgent est
+            passé en action datée, pas noyé dans un récit.
+          </li>
+        </ul>
+        <p class="petit">
+          Incident à exploiter s'il survient en direct : si la sortie honnête reprend malgré tout un
+          délai ou un montant, gardez-la à l'écran. C'est la preuve vivante que la consigne réduit le
+          risque sans le supprimer — et que la relecture avant envoi reste obligatoire.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Document <strong>fictif</strong> et <strong>projet</strong> : il ne décrit aucun chantier
+        réel. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par ce
+        texte.</strong> <strong>Aucune consigne de sécurité ne s'applique sans validation du
+        responsable prévention ou du coordonnateur SPS</strong>, et aucune ne se vérifie auprès d'un
+        outil. Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4" data-titre="Trame du compte-rendu de chantier — présents, avancement par lot, blocages, décisions, actions" data-bloc="M1 et M2, pratique (plan B)" data-tirage="3 par stagiaire + 10">
+      <div class="piece-badge">Pièce A4</div>
+      <h2>Trame — compte-rendu de chantier diffusable</h2>
+      <p class="piece-usage">
+        Se remplit à la main à partir de vos notes quand le réseau est tombé, et sert de grille de
+        relecture quand il est là. <strong>La structure est l'enseignement, l'outil n'est que
+        l'exécutant.</strong> Trame datée et réutilisable : vous relancerez la dictée depuis votre
+        téléphone.
+      </p>
+
+      <p>
+        <strong>Chantier :</strong> ______________________________ ·
+        <strong>Date de la visite :</strong> ____ / ____ / 20____ ·
+        <strong>Rédigé par :</strong> ______________
+      </p>
+      <p><strong>Diffusion (destinataires et copies) :</strong> ______________________________________</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Présents — un nom, une société, une fonction</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">Nom non connu : écrire « à compléter ». On ne devine pas un patronyme.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Avancement par lot — un lot par ligne, faits seulement</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Points de blocage — le fait, pas la cause, sauf si elle est établie</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Décisions prises — et par qui</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Rien n'a été décidé : écrivez-le. Un compte-rendu sans décision est une information
+          utile ; une décision fabriquée est un engagement.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Actions à suivre — l'action, le responsable, l'échéance</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 52%">L'action</th>
+              <th style="width: 24%">Le responsable</th>
+              <th style="width: 24%">L'échéance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Pas de responsable connu : « à compléter ». Pas d'échéance donnée : « à compléter ». On
+          n'invente ni l'un ni l'autre — un vide se traite, un faux ne se voit pas.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que les notes ne portaient pas — la rubrique qu'on lit en premier</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les quatre interdits, à recopier dans la demande à l'outil</div>
+        <p class="petit">
+          « N'utilise que ce qui figure dans mes notes. <strong>Aucun montant</strong>,
+          <strong>aucun engagement de délai</strong>, <strong>aucune imputation de responsabilité</strong>
+          et <strong>aucune consigne de sécurité</strong> : si mes notes en contiennent, recopie-les
+          mot pour mot entre guillemets et ajoute “à vérifier auprès du responsable compétent”. Si une
+          information manque — nom, date, lot, échéance, référence — écris “à compléter” plutôt que de
+          la deviner. »
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ce compte-rendu est un <strong>projet</strong> : à relire, corriger et signer avant
+        diffusion. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par
+        ce texte.</strong> <strong>Aucune consigne de sécurité portée ici ne s'applique sans
+        validation du responsable prévention ou du coordonnateur SPS</strong> — elle se recopie
+        depuis le document visé, elle ne se vérifie pas auprès d'un outil. Toute question juridique
+        va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5" data-titre="Jeu de notes de chantier de secours — pour qui n'a rien apporté" data-bloc="M1 et M2, pratique" data-tirage="5 exemplaires">
+      <div class="piece-badge">Pièce A5</div>
+      <h2>Notes de chantier de secours — chantier fictif « Le Clos Bertholine »</h2>
+      <p class="piece-usage">
+        Pour le stagiaire qui n'a pas de notes de la semaine sur lui. Il travaille dessus — pas en
+        regardant le voisin travailler. Le chantier est volontairement <strong>différent</strong> de
+        celui de la démonstration : personne ne recopie une sortie déjà vue.
+      </p>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Document fictif. Notes prises au carnet par un chef d'équipe, retranscrites telles quelles.
+          Entreprise fictive BÂTI VERGNOLLE — chantier fictif « Le Clos Bertholine », réhabilitation
+          d'un bâtiment de huit logements.
+        </p>
+        <p><strong>Jeudi — carnet, page du matin</strong></p>
+        <ul>
+          <li>Échafaudage façade nord : monté, pas encore réceptionné. Voir avec Delpouget.</li>
+          <li>
+            Doublages R+1 : 3 pièces sur 5 faites. Le reste bloqué, il manque des rails, le magasin
+            dit « fin de semaine » — pas de date ferme.
+          </li>
+          <li>
+            Le carreleur (société Peyrandet) est passé sans prévenir, il a trouvé porte close.
+            Rappeler. Numéro dans le dossier.
+          </li>
+          <li>
+            Fissure signalée par un locataire au niveau de la cage d'escalier. Je n'ai pas regardé.
+            À faire voir par qui de droit — je ne me prononce pas.
+          </li>
+          <li>Nettoyage des abords : à recaler, la benne repart lundi.</li>
+        </ul>
+        <p><strong>Jeudi — carnet, page de l'après-midi</strong></p>
+        <ul>
+          <li>
+            Réunion de chantier : le maître d'œuvre demande un point écrit sur l'avancement des
+            doublages avant la prochaine réunion. Prochaine réunion : je n'ai pas noté la date.
+          </li>
+          <li>
+            Le lot électricité (société Mondin) demande à passer avant nous sur le R+2. Je n'ai pas
+            tranché, ça change l'ordre du planning.
+          </li>
+          <li>
+            Deux compagnons en congé la semaine prochaine — prévenir, ça change la charge. Ne pas
+            mettre les noms dans le compte-rendu.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que ces notes contiennent, et que le formateur vérifiera</div>
+        <ul>
+          <li>Deux sociétés nommées, aucune personne nommée hors l'entreprise.</li>
+          <li>
+            <strong>Deux points expressément non tranchés</strong> — la fissure et l'ordre de passage
+            du lot électricité. Ils doivent ressortir <em>non tranchés</em>.
+          </li>
+          <li>
+            <strong>Deux échéances absentes</strong> — « fin de semaine » sans date, la date de la
+            prochaine réunion. Elles doivent ressortir en « à compléter ».
+          </li>
+          <li>
+            <strong>Un point de sécurité en suspens</strong> — la réception de l'échafaudage. Aucune
+            réponse ne se produit ici : la question remonte, nommée.
+          </li>
+          <li>Aucun montant, aucun prix, aucune coordonnée client : rien à neutraliser avant collage.</li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Notes <strong>fictives</strong> à usage pédagogique. Ce qui en sera produit reste un
+        <strong>projet</strong> à relire, corriger et signer. <strong>Aucun devis, avenant, délai ni
+        réserve ne s'engage par ces textes</strong>, et <strong>aucune consigne de sécurité ne
+        s'applique sans validation du responsable prévention ou du coordonnateur SPS</strong>. Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6" data-titre="Les trois gestes du terrain et la parade de leurs trois échecs" data-bloc="M1, pratique (plan B)" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A6</div>
+      <h2>Dicter, photographier, déposer — et le test qui évite l'erreur du siècle</h2>
+      <p class="piece-usage">
+        Annoncez les trois causes d'échec <strong>avant</strong> que quiconque échoue : un stagiaire
+        qui échoue sans avoir été prévenu se referme pour la journée&nbsp;; prévenu, il vous appelle.
+        Sans réseau, les trois gestes se démontrent sur cette fiche et sur les captures du kit.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%">Le geste</th>
+            <th style="width: 30%">Ce qui échoue sur un chantier</th>
+            <th>La parade, en une manipulation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dicter</strong><br /><span class="petit">deux minutes, en sortant</span></td>
+            <td>
+              Bruit de fond, débit trop rapide, termes de métier écorchés — banche, cueillie,
+              calfeutrement, arase.
+            </td>
+            <td>
+              Dictez quand même : <strong>corriger deux mots est toujours plus rapide que tout
+              taper</strong>. Dites les références à voix lente et épelée (« P, L, tiret, T, V,
+              tiret, zéro sept »). Ne dictez jamais un prix, une marge ni une coordonnée client.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Photographier</strong><br /><span class="petit">carnet, tableau de planning</span></td>
+            <td>
+              <strong>Photo floue</strong>, reflet, ombre portée du casque, tableau entier illisible.
+            </td>
+            <td>
+              Cadrez <strong>colonne par colonne</strong> plutôt que le tableau entier, à plat, sans
+              angle. Puis demandez : « reconstitue ce tableau en texte, ligne par ligne ». Ce qui est
+              illisible doit ressortir « illisible », pas deviné.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Déposer</strong><br /><span class="petit">plan, CCTP, notice, PDF</span></td>
+            <td>
+              <strong>Plan scanné de travers</strong> ; <strong>PDF image sans texte reconnu</strong> —
+              l'outil ne lit rien et répond quand même.
+            </td>
+            <td>
+              Re-scannez droit, ou photographiez le cartouche séparément. Et surtout : appliquez le
+              test ci-dessous <strong>avant la première question</strong>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le test de lecture — à faire après chaque dépôt, sans exception</div>
+        <p>
+          <strong>« Recopie le titre du document et les trois premières lignes, mot pour mot. »</strong>
+        </p>
+        <p>
+          Si ce qui revient ne correspond pas à ce que vous avez sous les yeux, l'outil ne lit pas le
+          document — <strong>et il répondra quand même à vos questions</strong>. C'est le piège le
+          plus coûteux de la journée : une réponse confiante sur un document que rien n'a lu.
+        </p>
+        <p class="petit">
+          Rien ne revient, ou du charabia : le document est à re-scanner, ou à remplacer par le CCTP
+          papier du kit (pièce A14).
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Avant chaque dépôt, deux questions</div>
+        <ul>
+          <li>
+            <strong>Est-ce une pièce publiée&nbsp;?</strong> Un CCTP ou un règlement de consultation
+            d'une consultation publique, oui. <strong>Un DPGF, jamais</strong> : il porte vos prix.
+          </li>
+          <li>
+            <strong>Ce document nomme-t-il quelqu'un&nbsp;?</strong> Un compagnon, un intérimaire, un
+            riverain, un locataire — on retire avant de déposer.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Fiche de méthode à usage pédagogique. Ce que vous produirez à partir de ces gestes reste un
+        <strong>projet</strong> à relire, corriger et signer. <strong>Aucun devis, avenant, délai ni
+        réserve ne s'engage par ces textes.</strong> <strong>Aucune consigne de sécurité ne
+        s'applique sans validation du responsable prévention ou du coordonnateur SPS.</strong> Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7" data-titre="Grille du contrôle croisé du module 1 — trois colonnes, cinq minutes par relecteur" data-bloc="M1, vérification" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A7</div>
+      <h2>Grille — le compte-rendu du voisin, en cinq minutes minutées</h2>
+      <p class="piece-usage">
+        S'applique au compte-rendu <strong>de l'autre</strong>, jamais au sien. Sans
+        vidéoprojecteur, l'auteur lit son texte à voix haute et le relecteur coche — rien ne change.
+        <strong>Règle du binôme : au moins un écart remonté à l'oral</strong>, sinon la politesse
+        fait tout valider. On corrige le document, jamais la personne.
+      </p>
+
+      <p>
+        <strong>Compte-rendu relu :</strong> ______________________________ ·
+        <strong>Relu par :</strong> ______________ ·
+        <strong>Minuté :</strong> ____ min
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 33%">1. Ce qui manque pour qu'il soit diffusable</th>
+            <th style="width: 33%">2. Ce que l'outil a ajouté que les notes ne portaient pas</th>
+            <th style="width: 34%">3. Ce qui n'aurait jamais dû être collé dans l'outil</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="height: 70mm"></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qu'on cherche, colonne par colonne</div>
+        <ul>
+          <li>
+            <strong>Colonne 1</strong> — destinataires et copies, date de la visite, lot par lot,
+            responsable et échéance sur chaque action. Tout manque passe en « à compléter ».
+          </li>
+          <li>
+            <strong>Colonne 2</strong> — un montant, un délai, une imputation, une cause, un nom, une
+            référence contractuelle, <strong>une consigne de sécurité</strong>. Toute invention se
+            barre au stylo, devant son auteur.
+          </li>
+          <li>
+            <strong>Colonne 3</strong> — c'est <strong>la colonne qui compte le plus</strong>. Un
+            prix, une marge, un extrait de DPGF, un contrat de sous-traitance, une coordonnée client,
+            l'adresse du chantier avec le nom du maître d'ouvrage. Ce qui s'y trouve se nomme à voix
+            haute, et la conversation se supprime.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne qui ne se discute pas</div>
+        <p>
+          <strong>Une consigne de sécurité écrite par l'outil rend le compte-rendu à reprendre, quel
+          que soit le reste.</strong> Elle ne se corrige pas mot à mot : elle se supprime, et la
+          question repart, nommée, au responsable prévention ou au coordonnateur SPS. C'est le seul
+          point de la matinée où l'on n'arbitre rien.
+        </p>
+        <p class="petit">
+          Si aucun binôme n'a coché cette ligne sur trois comptes-rendus lus en salle, le formateur
+          arrête et refait la lecture avec le groupe, sortie n°&nbsp;1 de la pièce A3 sous les yeux.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">L'écart que je remonte à l'oral (au moins un)</div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Cette grille sert à corriger pendant qu'on peut encore corriger : <strong>on ne note pas
+        ici</strong>. L'évaluation des acquis a lieu en fin de journée. Les comptes-rendus relus
+        restent des <strong>projets</strong> — <strong>aucun devis, avenant, délai ni réserve ne
+        s'engage par eux</strong>, et <strong>aucune consigne de sécurité ne s'applique sans
+        validation du responsable prévention ou du coordonnateur SPS</strong>. Toute question
+        juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8" data-titre="Le constat de retard écrit à chaud et sa version qui protège l'entreprise, datés" data-bloc="M2, démonstration (plan B)" data-tirage="1 jeu par table + 1 formateur">
+      <div class="piece-badge">Pièce A8 — feuillet f. 1 : le courrier écrit à chaud</div>
+      <h2>Constat de retard — la version qui part vraiment</h2>
+      <p class="piece-usage">
+        <strong>Lisez-la à voix haute d'abord</strong>, puis demandez : « qui a déjà envoyé
+        celle-là&nbsp;? ». Des mains se lèvent — c'est le moment du module. Ne distribuez la seconde
+        version qu'après. Réseau tombé ou vidéoprojecteur mort : la lecture comparée se tient
+        intégralement sur ces deux feuillets, surlignage compris.
+      </p>
+      <div class="champ-date">
+        <strong>Textes de référence du kit, vérifiés le :</strong> 06 / 08 / 2026 ·
+        <strong>Relus le :</strong> ____ / ____ / 20____ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Courrier fictif, écrit pour l'exercice. Entreprise fictive BÂTI VERGNOLLE, chantier fictif
+          « Les Terrasses du Vallon ».
+        </p>
+        <p><strong>Objet : retard inadmissible du lot plomberie</strong></p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          Nous sommes contraints de revenir vers vous sur la situation, une fois de plus, du lot
+          plomberie, dont l'incurie bloque désormais l'ensemble du chantier. Malgré nos relances
+          répétées, la zone du R+1 n'a jamais été libérée, et il est manifeste que l'entreprise
+          concernée n'a pas la volonté de tenir ses engagements.
+        </p>
+        <p>
+          Ce comportement constitue un manquement contractuel caractérisé, engageant la
+          responsabilité de son auteur au titre du DTU 60.11-3 et des dispositions du CCAG
+          applicables. Nous vous mettons en demeure de faire cesser cette situation sous huit jours.
+        </p>
+        <p>
+          Nous chiffrons d'ores et déjà notre préjudice à 12&nbsp;000&nbsp;€ HT au titre de
+          l'immobilisation de nos moyens et nous en demanderons le règlement intégral. À défaut de
+          réponse, nous saisirons les juridictions compétentes.
+        </p>
+        <p>Dans l'attente, nous vous prions d'agréer, Madame, Monsieur, nos salutations distinguées.</p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce que ce courrier fera dire à l'entreprise qui l'a envoyé</div>
+        <ul>
+          <li>
+            <strong>Aucune date, nulle part.</strong> Ni la date du blocage, ni celle du coulage
+            prévu, ni celle des « relances répétées » — dont rien ne prouve qu'elles existent. Le jour
+            où le dossier sort, ce courrier ne démontre rien.
+          </li>
+          <li>
+            <strong>« incurie », « manifeste », « n'a pas la volonté »</strong> — des opinions
+            présentées comme des faits. Elles se retourneront contre leur auteur avant de servir sa
+            cause.
+          </li>
+          <li>
+            <strong>« manquement contractuel caractérisé »</strong> — une qualification juridique
+            posée par un conducteur de travaux. Ce n'est pas son rôle, et ce n'est pas celui de
+            l'outil non plus.
+          </li>
+          <li>
+            <strong>« DTU 60.11-3 », « les dispositions du CCAG applicables »</strong> — des
+            références citées <strong>de mémoire</strong>, sans que personne ait ouvert la moindre
+            pièce. Une référence qui n'a pas été ouverte ne se cite pas.
+          </li>
+          <li>
+            <strong>« sous huit jours »</strong> — un délai qui ne vient d'aucun document.
+          </li>
+          <li>
+            <strong>« 12 000 € HT », « règlement intégral »</strong> — un chiffrage et une demande de
+            paiement dans une pièce que personne n'a fait relire.
+          </li>
+          <li>
+            <strong>« nous saisirons les juridictions »</strong> — une menace, écrite, datée du jour
+            où l'on était en colère.
+          </li>
+          <li>
+            <strong>Aucun destinataire identifié, aucune copie.</strong> « Madame, Monsieur » n'est
+            ni le maître d'œuvre, ni l'OPC, ni l'entreprise concernée.
+          </li>
+        </ul>
+        <p class="petit">
+          À dire ici, et pas avant : ces huit défauts ne sont pas des défauts de style. Chacun retire
+          de la force à la position de l'entreprise le jour où elle en aura besoin.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8">
+      <div class="piece-badge">Pièce A8 — feuillet f. 2 : la version factuelle</div>
+      <h2>Constat de retard — les mêmes faits, l'effet inverse</h2>
+
+      <div class="texte-exercice">
+        <p class="petit">Courrier fictif — <strong>PROJET</strong>, à relire, compléter et signer.</p>
+        <p>
+          <strong>Destinataire :</strong> cabinet Morel-Bastide, maîtrise d'œuvre ·
+          <strong>Copie :</strong> Planexo, OPC — <em>et à compléter selon la liste de diffusion du
+          marché</em>
+        </p>
+        <p>
+          <strong>Objet :</strong> constat — zone est du R+1 non libérée, coulage de la dalle non
+          réalisé
+        </p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          Nous vous adressons le constat des faits suivants, relevés sur le chantier « Les Terrasses
+          du Vallon ».
+        </p>
+        <p>
+          <strong>Rappel du planning contractuel.</strong> Le coulage de la dalle du R+1 est prévu
+          <em>[référence exacte du planning contractuel et indice — à compléter d'après la pièce du
+          marché]</em>, à la date du <em>[à compléter]</em>.
+        </p>
+        <p><strong>Faits constatés.</strong></p>
+        <ul>
+          <li>
+            Le <em>[date — à compléter]</em>, lors de la visite hebdomadaire, la zone est du R+1
+            n'était pas libérée par le lot plomberie, les attentes n'étant pas posées. Constat établi
+            en présence de M. Rachid Amellal, chef de chantier, et du conducteur du lot plomberie,
+            société Tavernier Fluides <em>[nom à compléter]</em>.
+          </li>
+          <li>
+            À cette même date, le coulage de la dalle du R+1 n'a pas pu être réalisé, l'accès à la
+            zone n'étant pas disponible.
+          </li>
+          <li>
+            Le conducteur du lot plomberie a indiqué une intervention « dans la semaine », sans date
+            arrêtée.
+          </li>
+        </ul>
+        <p>
+          <strong>Conséquence sur notre avancement.</strong> Nos moyens de coulage et notre équipe
+          gros œuvre sont restés sans emploi sur la zone concernée à compter du
+          <em>[date — à compléter]</em>. Les conséquences sur la suite du planning restent à établir
+          avec l'OPC.
+        </p>
+        <p>
+          <strong>Demande.</strong> Nous vous remercions de bien vouloir nous faire connaître votre
+          position et la date à laquelle la zone sera libérée, afin que nous puissions replanifier le
+          coulage avec l'OPC.
+        </p>
+        <p>
+          La présente est établie à titre de constat. <strong>Nous réservons nos droits</strong>, sans
+          qu'aucune évaluation ni aucune demande chiffrée ne soit formulée à ce stade.
+        </p>
+        <p>Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.</p>
+        <p>
+          <strong>Rédigé par :</strong> ______________ · <strong>Relu par :</strong> ______________ ·
+          <strong>Signé par :</strong> ______________ · <strong>Date :</strong> ____ / ____ / 20____
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Les trois différences à pointer, et rien d'autre</div>
+        <ul>
+          <li>
+            <strong>Les dates.</strong> Chaque fait porte la sienne, ou porte « à compléter ». Un
+            fait sans date n'est pas un fait, c'est un souvenir.
+          </li>
+          <li>
+            <strong>La séparation faits / opinions.</strong> Pas un adjectif d'appréciation. La
+            cause n'est pas imputée, la conséquence n'est pas évaluée : les deux restent à établir,
+            et c'est écrit.
+          </li>
+          <li>
+            <strong>La formule finale.</strong> Elle réserve les droits <strong>sans les
+            chiffrer</strong>, sans délai et sans menace. C'est la seule phrase du courrier que
+            l'outil ne doit jamais enrichir.
+          </li>
+        </ul>
+        <p>
+          <strong>Le point à marteler :</strong> l'outil a structuré les faits — la référence au
+          planning contractuel, elle, reste en crochets. Elle se recopie depuis la pièce du marché,
+          ouverte, et la décision d'envoyer reste au signataire.
+        </p>
+        <p class="petit">
+          Question qui vient toujours : « un constat par mail, ça vaut quoi&nbsp;? ». Réponse exacte,
+          prononcée telle quelle : « je ne me prononce pas, notez la question, votre référent
+          tranchera ». Ce que la journée donne, c'est un contenu factuel et daté, quel que soit le
+          canal.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Courriers <strong>fictifs</strong> à usage pédagogique, et <strong>projets</strong> : ils se
+        relisent, se complètent et se signent avant tout envoi. <strong>Aucun devis, aucun avenant,
+        aucun délai et aucune réserve ne s'engage par ces textes</strong> — seule la pièce signée et
+        envoyée engage l'entreprise. <strong>Aucune consigne de sécurité ne s'applique sans
+        validation du responsable prévention ou du coordonnateur SPS.</strong> Toute question
+        juridique, y compris sur la valeur d'un constat, va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A9" data-titre="Squelette du courrier qui engage — faits datés, référence à compléter, demande, réserve" data-bloc="M2, pratique (plan B)" data-tirage="3 par stagiaire + 10">
+      <div class="piece-badge">Pièce A9</div>
+      <h2>Trame — le courrier de chantier qui engage</h2>
+      <p class="piece-usage">
+        Vaut pour les trois pièces de l'atelier : <strong>constat de retard</strong>,
+        <strong>relance de sous-traitant</strong>, <strong>demande d'avenant après imprévu</strong>.
+        Se remplit au stylo avant d'ouvrir quoi que ce soit — c'est la structure qui s'apprend, pas
+        le clic. Outil indisponible : remplissez quand même, la trame est datée et vous relancerez
+        chez vous.
+      </p>
+
+      <p>
+        <strong>Nature de la pièce :</strong> <span class="coche"></span> constat de retard &nbsp;
+        <span class="coche"></span> relance de sous-traitant &nbsp;
+        <span class="coche"></span> demande d'avenant &nbsp;
+        <span class="coche"></span> autre : ______________
+      </p>
+      <p>
+        <strong>Chantier :</strong> ______________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1. Destinataire et copies — un nom, une fonction, une raison</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Une copie de trop dévoile ; une copie oubliée décrédibilise. La liste de diffusion du marché
+          tranche, pas l'outil.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2. Les faits — un par ligne, chacun avec sa date et sa source</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 52%">Le fait, tel que je peux le prouver</th>
+              <th style="width: 22%">Sa date</th>
+              <th style="width: 26%">Où je le prouve</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Colonne « où je le prouve » vide : le fait ne part pas. La question du formateur, quand un
+          texte accuse, est toujours la même — <em>qu'est-ce que vous pouvez prouver, et avec quelle
+          date&nbsp;?</em>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3. La référence contractuelle — en crochets tant que la pièce n'est pas ouverte</div>
+        <p>
+          Référence invoquée : <em>[à compléter — pièce du marché, article, indice]</em>
+        </p>
+        <div class="lignes"></div>
+        <p class="petit">
+          <strong>Une référence ne se cite jamais de mémoire d'outil.</strong> Vous ouvrez la pièce du
+          marché et vous recopiez. Sur le fond, la formule exacte : « je ne me prononce pas, notez la
+          question, votre référent tranchera ».
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4. La demande — une seule, claire, sans qualifier</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">5. La formule de réserve — non chiffrée, sans délai, sans menace</div>
+        <div class="lignes"></div>
+        <p class="petit">
+          C'est la phrase que l'outil enrichit toujours, et celle qu'il ne faut jamais le laisser
+          enrichir. Un montant ou un délai ajouté ici transforme un constat en réclamation.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">6. Qui relit, qui signe — un nom, pas une fonction</div>
+        <p>
+          <strong>Relu par :</strong> ______________ · <strong>Signé par :</strong> ______________ ·
+          <strong>Envoyé le :</strong> ____ / ____ / 20____
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les cinq interdits, à recopier dans la demande à l'outil</div>
+        <p class="petit">
+          « Rédige à partir des seuls faits ci-dessous. <strong>Aucun ton accusateur</strong>,
+          <strong>aucune menace</strong>, <strong>aucune qualification juridique</strong>,
+          <strong>aucun montant</strong>, <strong>aucun délai</strong>. Ne cite aucune référence
+          contractuelle, aucun DTU et aucune norme : laisse un emplacement entre crochets, je les
+          recopierai depuis la pièce du marché. Termine par une formule qui réserve nos droits sans
+          les chiffrer. Je relis, je complète et je signe. »
+        </p>
+      </div>
+
+      <div class="banniere">
+        Le courrier obtenu est un <strong>projet</strong> : relu, complété et signé par vous avant
+        tout envoi. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par
+        ce texte</strong> — un courrier qui engage part relu, ou ne part pas. <strong>Aucune consigne
+        de sécurité ne s'applique sans validation du responsable prévention ou du coordonnateur
+        SPS.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A10" data-titre="Scénario de secours « retard du lot plomberie » — les notes datées" data-bloc="M2, pratique (parade)" data-tirage="5 exemplaires">
+      <div class="piece-badge">Pièce A10</div>
+      <h2>Scénario de secours — le retard du lot plomberie, avec ses notes datées</h2>
+      <p class="piece-usage">
+        Pour le stagiaire qui n'a aucun courrier qui engage en cours sur son chantier. Il travaille
+        dessus, sur les mêmes trames que les autres (pièces A4 et A9). Les notes sont volontairement
+        <strong>incomplètes</strong> : deux emplacements restent en « à compléter », et c'est
+        l'exercice.
+      </p>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Document fictif — BÂTI VERGNOLLE, chantier « Les Terrasses du Vallon », douze logements,
+          marché privé. Maîtrise d'ouvrage : SCI Laurendière. Maîtrise d'œuvre : cabinet
+          Morel-Bastide. OPC : Planexo. Lot plomberie : société Tavernier Fluides.
+        </p>
+        <p><strong>Notes du conducteur de travaux — carnet de chantier</strong></p>
+        <ul>
+          <li>
+            <strong>Lundi 1<sup>er</sup> juin.</strong> Réunion de chantier hebdomadaire. Libération
+            de la zone est du R+1 par le lot plomberie annoncée « pour la fin de semaine ». Noté au
+            compte-rendu de réunion n°&nbsp;14.
+          </li>
+          <li>
+            <strong>Vendredi 5 juin.</strong> Zone non libérée. Attentes non posées. Constat fait
+            avec le chef de chantier. Photo prise, horodatée.
+          </li>
+          <li>
+            <strong>Lundi 8 juin.</strong> Réunion n°&nbsp;15 : la libération est réannoncée « en
+            début de semaine suivante ». Aucune date arrêtée.
+          </li>
+          <li>
+            <strong>Mardi 9 juin.</strong> Zone toujours non libérée. Coulage de la dalle du R+1 non
+            réalisé. Équipe gros œuvre redéployée sur le R+2 en demi-journée.
+          </li>
+          <li>
+            <strong>Planning contractuel :</strong> référence PL-TV-07, indice <em>à compléter — je
+            n'ai pas la pièce sous les yeux</em>. Date contractuelle du coulage : <em>à compléter</em>.
+          </li>
+          <li>
+            <strong>Conséquence :</strong> à établir avec l'OPC. Aucun chiffrage réalisé à ce jour.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que le formateur vérifiera sur la copie</div>
+        <ul>
+          <li>Les quatre dates sont reprises telles quelles, aucune n'est arrondie ni fusionnée.</li>
+          <li>
+            Les deux <strong>« à compléter »</strong> sont <strong>toujours là</strong> à la fin de
+            l'atelier. Une copie où l'indice du planning est renseigné est une copie où quelqu'un a
+            laissé l'outil deviner.
+          </li>
+          <li>
+            Aucun montant n'apparaît. « Équipe redéployée en demi-journée » n'est pas un préjudice
+            chiffré, et ne doit pas le devenir.
+          </li>
+          <li>
+            La source de chaque fait est notée : compte-rendu de réunion n°&nbsp;14, n°&nbsp;15,
+            constat contradictoire, photo horodatée.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Scénario <strong>fictif</strong>. Ce qui en sera produit est un <strong>projet</strong> :
+        relu, complété et signé avant tout envoi. <strong>Aucun devis, aucun avenant, aucun délai et
+        aucune réserve ne s'engage par ces textes.</strong> <strong>Aucune consigne de sécurité ne
+        s'applique sans validation du responsable prévention ou du coordonnateur SPS.</strong> Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11" data-titre="Grille de relecture d'une pièce qui engage — faits, dates, destinataires, ton" data-bloc="M2, vérification" data-tirage="2 par stagiaire">
+      <div class="piece-badge">Pièce A11</div>
+      <h2>Grille — la pièce qui engage, relue par le binôme</h2>
+      <p class="piece-usage">
+        S'applique aux deux pièces de l'atelier, celles <strong>du voisin</strong>. Le geste compte
+        autant que la grille : <strong>faites barrer physiquement, au stylo, toute référence que
+        l'auteur n'a pas recopiée pièce en main</strong>. Aucun outil nécessaire.
+      </p>
+
+      <p>
+        <strong>Pièce relue :</strong> ______________________________ ·
+        <strong>Relue par :</strong> ______________
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 42%">Ce qu'on vérifie</th>
+            <th style="width: 16%">Verdict</th>
+            <th>Ce qu'il faut corriger avant envoi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Chaque fait est vérifiable et sa source est notée</strong> — compte-rendu,
+              photo, constat, courrier reçu
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Les dates sont complètes</strong> — chaque fait porte la sienne</td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Les destinataires et les copies sont les bons</strong>, conformes à la liste de
+              diffusion du marché
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Les mentions attendues de ce type de pièce y sont</strong> — relevées sur la
+              pièce du marché, pas de mémoire
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Le ton reste strictement factuel</strong> — aucune accusation, aucune menace,
+              aucune qualification juridique
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Aucun montant, aucun délai, aucune imputation</strong> que la pièce ne peut
+              prouver
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne qui se barre sans discussion</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 42%">Critère éliminatoire</th>
+              <th style="width: 16%">Verdict</th>
+              <th>Constat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Toute référence contractuelle, tout DTU, toute norme cité sans que la pièce
+                ait été ouverte</strong> — et <strong>toute consigne de sécurité rédigée par
+                l'outil</strong>
+              </td>
+              <td>☐ conforme ☐ <strong>à reprendre</strong></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          Une référence non ouverte <strong>se barre au stylo, devant son auteur</strong> — elle ne
+          se nuance pas. Une consigne de sécurité rédigée par l'outil <strong>se supprime</strong>, et
+          la question repart, nommée, au responsable prévention ou au coordonnateur SPS. Le geste du
+          barrage vaut mieux que le discours.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les trois écarts les plus fréquents, à guetter</div>
+        <ol>
+          <li><strong>L'opinion glissée dans un fait</strong> — un adjectif suffit.</li>
+          <li><strong>La date absente</strong> — « récemment », « à plusieurs reprises ».</li>
+          <li>
+            <strong>La référence contractuelle citée de mémoire</strong> — celle-là se barre
+            systématiquement.
+          </li>
+        </ol>
+        <p class="petit">
+          Cas particulier à trancher tout de suite : « l'outil a mis une date que j'avais bien
+          dictée, je la garde&nbsp;? » — oui, <em>mais</em> vous venez de la vérifier contre vos
+          notes. Ce n'est plus l'outil qui l'affirme, c'est vous. C'est toute la différence.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Cette grille sert à corriger avant l'envoi : <strong>on ne note pas ici</strong>. Les pièces
+        relues restent des <strong>projets</strong> — <strong>aucun devis, aucun avenant, aucun délai
+        et aucune réserve ne s'engage par elles</strong>. <strong>Aucune consigne de sécurité ne
+        s'applique sans validation du responsable prévention ou du coordonnateur SPS.</strong> Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12" data-titre="La relance de sous-traitant volontairement chargée + corrigé" data-bloc="M2, vérification (parade)" data-tirage="1 par table + corrigé formateur">
+      <div class="piece-badge">Pièce A12 — feuille stagiaire</div>
+      <h2>La relance volontairement chargée — à démonter collectivement</h2>
+      <p class="piece-usage">
+        Parade de la vérification du module 2 : quand les copies sont trop propres et que rien n'est
+        relevé, projetez ou distribuez ce courrier et faites-le barrer collectivement à la grille
+        A11. L'œil se règle en trois minutes, puis on refait une passe sur les copies du binôme.
+        Consigne : <em>barrez tout ce qui ne devrait pas partir, et dites pourquoi.</em>
+      </p>
+
+      <div class="texte-exercice">
+        <p class="petit">Courrier fictif, écrit pour l'exercice.</p>
+        <p><strong>Objet : relance</strong></p>
+        <p>
+          Nous revenons vers vous concernant votre intervention sur le chantier, qui accuse
+          récemment un retard important et visiblement volontaire.
+        </p>
+        <p>
+          Comme convenu lors de nos échanges, vos équipes devaient intervenir depuis plusieurs
+          semaines. Votre marché de sous-traitance, conclu au taux de 68&nbsp;€ HT de l'heure pour un
+          montant global de 47&nbsp;500&nbsp;€ HT, prévoit expressément un délai d'exécution que vous
+          ne respectez pas.
+        </p>
+        <p>
+          Nous vous rappelons que les travaux doivent être exécutés conformément au DTU 60.11-3 et à
+          la norme NF P 41-204-2, ainsi qu'aux règles de l'art.
+        </p>
+        <p>
+          Par ailleurs, nous vous demandons de veiller à ce que vos compagnons portent le harnais lors
+          des interventions en hauteur sur le chantier et de limiter les accès sous échafaudage aux
+          seules personnes habilitées.
+        </p>
+        <p>
+          M. Rachid Amellal, notre chef de chantier, se tient à votre disposition. Nous vous
+          remercions d'intervenir rapidement, faute de quoi nous appliquerons les pénalités prévues.
+        </p>
+      </div>
+
+      <p><strong>Nombre de passages que j'ai barrés :</strong> ______</p>
+      <p class="petit">
+        Le score s'écrit au tableau <strong>avant</strong> toute correction : la salle sous-estime
+        toujours, et le chiffre affiché vaut mieux que tout discours sur la vigilance.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A12">
+      <div class="piece-badge">Pièce A12 — corrigé formateur</div>
+      <h2>Corrigé — sept passages, et la règle qui tranche pour chacun</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 32%">Le passage à barrer</th>
+            <th>La nature du défaut — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>« visiblement volontaire »</strong></td>
+            <td>
+              <strong>Une opinion présentée comme un fait.</strong> Un adjectif suffit à transformer
+              un constat en accusation. La question qui tranche : <em>qu'est-ce que vous pouvez
+              prouver, et avec quelle date&nbsp;?</em>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <strong>« récemment », « depuis plusieurs semaines », « comme convenu lors de nos
+              échanges »</strong>
+            </td>
+            <td>
+              <strong>Trois faits sans date et sans source.</strong> Aucun des trois n'est
+              opposable : ils ne renvoient à aucune réunion, aucun compte-rendu, aucun courrier
+              identifiable.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>
+              <strong>« 68 € HT de l'heure », « 47 500 € HT »</strong>
+            </td>
+            <td>
+              <strong>Les conditions du marché de sous-traitance, écrites noir sur blanc dans un
+              courrier</strong> — et, avant cela, très probablement collées dans un outil pour
+              rédiger le texte. C'est exactement ce qui ne sort pas de l'entreprise. Les faits utiles
+              se dictent ; le contrat reste dans le classeur.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <strong>« un délai d'exécution que vous ne respectez pas »</strong>
+            </td>
+            <td>
+              <strong>Une qualification posée sans citer la clause.</strong> Soit la clause est
+              ouverte et se recopie, soit elle ne s'invoque pas. Sur le fond : « je ne me prononce
+              pas, notez la question, votre référent tranchera ».
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>
+              <strong>« conformément au DTU 60.11-3 et à la norme NF P 41-204-2 »</strong>
+            </td>
+            <td>
+              <strong>Deux références citées de mémoire, à consonance vraie.</strong> Le signe qui
+              trahit : elles arrivent pour <em>impressionner</em>, jamais pour renvoyer à un document
+              que l'auteur aurait ouvert. Une référence qui n'a pas été ouverte ne se cite pas — et
+              le formateur ne dit pas non plus si elle existe : « notez la question, votre référent
+              tranchera ».
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>
+              <strong>« veiller à ce que vos compagnons portent le harnais », « limiter les accès
+              sous échafaudage »</strong>
+            </td>
+            <td>
+              <strong>Des consignes de sécurité rédigées dans un courrier commercial.</strong> C'est
+              le passage le plus grave de la page, et celui que la salle trouve en dernier. Deux
+              défauts en un : le texte <em>produit</em> de la sécurité, et il la produit
+              <em>à destination des équipes d'un tiers</em>.
+              <strong>Une consigne de sécurité se vérifie auprès du responsable prévention ou du
+              coordonnateur SPS, jamais auprès d'un outil</strong>, et elle ne se distribue pas par
+              courrier de relance. Le passage se supprime ; la question, si elle existe, remonte à
+              la prévention et au coordonnateur SPS, nommément.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>
+              <strong>« nous appliquerons les pénalités prévues »</strong> — et l'absence totale de
+              destinataire nommé
+            </td>
+            <td>
+              <strong>Une menace chiffrable annoncée sans clause citée, dans une pièce adressée à
+              personne.</strong> Aucun destinataire, aucune copie : ni l'entreprise concernée, ni la
+              maîtrise d'œuvre, ni l'OPC ne sont identifiés.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le débriefing, en trois temps</div>
+        <ul>
+          <li>
+            <strong>Le score d'abord.</strong> Écrivez la moyenne des passages barrés, puis sept.
+            L'écart fait le travail.
+          </li>
+          <li>
+            <strong>Les conditions du marché ensuite.</strong> Demandez à voix haute : « pour écrire
+            ce paragraphe, qu'est-ce qui a été collé dans l'outil&nbsp;? ». Le silence répond.
+          </li>
+          <li>
+            <strong>Le paragraphe sécurité en dernier</strong>, et laissez le silence. C'est la seule
+            ligne du tableau qui met quelqu'un en danger sur un chantier.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Courrier <strong>fictif</strong>, écrit pour l'exercice : aucune de ses affirmations ne fait
+        règle — les fausses comme les vraies —, et aucune référence qui y figure n'est validée par ce
+        support. <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ce texte.</strong>
+        <strong>Toute consigne de sécurité se vérifie auprès du responsable prévention ou du
+        coordonnateur SPS</strong>, sur vos documents visés. Toute question juridique va au conseil
+        de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A13" data-titre="La trame de mémoire technique et ses affirmations invérifiables + corrigé" data-bloc="M3, démonstration (plan B)" data-tirage="1 par table + corrigé formateur">
+      <div class="piece-badge">Pièce A13 — feuillet f. 1 : le texte à surligner</div>
+      <h2>Mémoire technique — « moyens humains et matériels », texte à erreurs plantées</h2>
+      <p class="piece-usage">
+        <strong>La démonstration se tient sur la trace réelle capturée avant la session</strong> —
+        c'est l'objet de la fiche de capture du module 3. Ce feuillet est la
+        <strong>parade</strong> : capture absente, périmée, ou sortie qui ne porte pas les inventions
+        attendues. Texte pédagogique à erreurs plantées, il imite une sortie plausible et non
+        vérifiée. Imprimez-le, distribuez un surligneur, faites surligner
+        <strong>sur le papier</strong> — à l'écran, personne ne surligne et tout le monde survole.
+      </p>
+      <div class="champ-date">
+        <strong>Texte de référence du kit, vérifié le :</strong> 06 / 08 / 2026 ·
+        <strong>Trace réelle capturée le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le contexte donné à l'outil, à lire à voix haute d'abord</div>
+        <p class="petit">
+          Marché public de rénovation d'une école élémentaire en site occupé — <strong>entreprise de
+          second œuvre, dix-huit salariés, lots peinture et sols souples</strong>. Retenez le
+          chiffre : la salle va le perdre en trente secondes.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Texte fictif — entreprise fictive VERGNOLLE FINITIONS, consultation fictive de la commune
+          de Sainte-Amonde, école élémentaire Jean-Farnoux.
+        </p>
+        <p><strong>MÉMOIRE TECHNIQUE — MOYENS HUMAINS ET MATÉRIELS</strong></p>
+        <p>
+          Forte de <strong>vingt-quatre compagnons</strong> répartis en équipes autonomes, notre
+          entreprise dispose des moyens humains nécessaires à la bonne exécution des lots peinture et
+          sols souples. L'encadrement est assuré par un conducteur de travaux dédié et deux chefs
+          d'équipe.
+        </p>
+        <p>
+          Notre engagement en matière de prévention est attesté par notre
+          <strong>certification MASE</strong>, ainsi que par un <strong>taux d'accident du travail
+          nul depuis cinq ans</strong>. Nos équipes appliquent le
+          <strong>protocole de sécurité en site occupé annexé à notre PPSPS</strong>, qui garantit la
+          séparation stricte des flux entre les élèves et les zones de travaux.
+        </p>
+        <p>
+          Notre entreprise est titulaire de la <strong>qualification Qualibat 6111</strong> et d'une
+          <strong>attestation d'assurance décennale couvrant expressément les interventions en site
+          occupé</strong>.
+        </p>
+        <p>
+          Nous justifions d'une expérience éprouvée en bâtiments scolaires, notamment sur le
+          <strong>groupe scolaire de Chastelroy (2024)</strong>, réalisé en site occupé sur une
+          surface de 1&nbsp;850&nbsp;m², et sur le <strong>collège Aurianne-Pescaire (2023)</strong>,
+          où nos équipes sont intervenues pendant l'année scolaire sans interruption du service.
+        </p>
+      </div>
+
+      <p>
+        <strong>Affirmations que j'ai surlignées :</strong> ______ ·
+        <strong>Affirmations relevées en mise en commun :</strong> ______
+      </p>
+      <p class="petit">
+        Faites compter à main levée avant d'annoncer le compte réel. <strong>L'écart entre les deux
+        est l'enseignement</strong> — pas le tableau du feuillet suivant.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A13">
+      <div class="piece-badge">Pièce A13 — feuillet f. 2 : corrigé formateur</div>
+      <h2>Corrigé — huit affirmations, quatre sans aucune pièce</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th style="width: 28%">L'affirmation</th>
+            <th style="width: 22%">La pièce qui la prouverait</th>
+            <th>La nature du défaut — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>« vingt-quatre compagnons »</strong></td>
+            <td>Registre unique du personnel, déclaration sociale</td>
+            <td>
+              <strong>Contredit mot pour mot le contexte donné à l'outil</strong> : dix-huit
+              salariés. L'effectif a été <em>arrondi au-dessus</em> — c'est la première des trois
+              inventions types, et elle passe parce qu'un chiffre rond rassure.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>« certification MASE »</strong></td>
+            <td><strong>Aucune.</strong> L'entreprise n'en détient pas.</td>
+            <td>
+              <strong>Certification approximative</strong> — deuxième invention type. L'outil place un
+              sigle du secteur là où il en faut un. Une certification se prouve par son certificat, en
+              cours de validité, ou ne s'écrit pas.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>« taux d'accident du travail nul depuis cinq ans »</strong></td>
+            <td>Registre des accidents, attestation de l'organisme</td>
+            <td>
+              <strong>Indicateur affirmé sans être relevé.</strong> Peut-être vrai — et c'est le
+              piège : <em>personne ne l'a vérifié avant que la phrase parte</em>.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <strong>« protocole de sécurité en site occupé annexé à notre PPSPS », « séparation
+              stricte des flux »</strong>
+            </td>
+            <td><strong>Aucune.</strong> Le marché n'est pas attribué : ce document n'existe pas.</td>
+            <td>
+              <strong>Le passage le plus grave de la page.</strong> L'outil a produit un
+              <em>engagement de sécurité</em> sur un document inexistant, et il l'a fait dans une
+              pièce qui sera lue par un acheteur public. <strong>La sécurité ne se produit jamais à
+              l'IA</strong> : elle reformule un document déjà validé, elle n'en crée aucun. Ce qui
+              relève de l'organisation de la prévention en site occupé
+              <strong>se vérifie auprès du responsable prévention et du coordonnateur SPS, jamais
+              auprès d'un outil</strong> — et le formateur ne tranche pas non plus : « notez la
+              question, votre référent tranchera ».
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>« qualification Qualibat 6111 »</strong></td>
+            <td>Certificat de qualification en cours de validité</td>
+            <td>
+              <strong>Qualification affirmée sans certificat sous les yeux.</strong> Le numéro a
+              l'air juste : c'est précisément ce qui empêche de le relire. On l'ouvre, ou on le
+              barre.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>
+              <strong>« assurance décennale couvrant expressément les interventions en site
+              occupé »</strong>
+            </td>
+            <td>Attestation d'assurance de l'année en cours</td>
+            <td>
+              <strong>Affirmation altérée.</strong> L'attestation existe ; la mention « couvrant
+              expressément » a été ajoutée par l'outil. Une pièce réelle enrichie d'un mot qu'elle ne
+              porte pas est plus dangereuse qu'une pièce inventée : elle résiste au premier contrôle.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>
+              <strong>« groupe scolaire de Chastelroy (2024), 1 850 m² »</strong>
+            </td>
+            <td><strong>Aucune.</strong> Ce chantier n'existe pas.</td>
+            <td>
+              <strong>Référence de chantier plausible</strong> — troisième invention type, et la plus
+              coûteuse. Nom crédible, année récente, surface précise : rien ne la distingue
+              visuellement d'une référence exacte.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>
+              <strong>« collège Aurianne-Pescaire (2023), pendant l'année scolaire »</strong>
+            </td>
+            <td><strong>Aucune.</strong> Ce chantier n'existe pas non plus.</td>
+            <td>
+              <strong>Seconde référence fabriquée</strong>, et elle en dit plus que la première :
+              l'outil a produit <em>exactement</em> l'argument que la demande réclamait — du site
+              occupé, du scolaire. <strong>Il comble les trous, plausiblement.</strong> Lui donner de
+              vraies références n'y change rien : il complètera ce qui manque.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le débriefing, en trois temps</div>
+        <ul>
+          <li>
+            <strong>Le compte d'abord.</strong> Huit affirmations, dont <strong>quatre sans aucune
+            pièce</strong>. La salle en trouve trois ou quatre au premier passage.
+          </li>
+          <li>
+            <strong>L'effectif ensuite.</strong> Demandez qui a relevé « vingt-quatre » alors que la
+            demande disait dix-huit. C'est la démonstration : le texte contredit son propre énoncé,
+            sur la ligne la plus facile à vérifier, et personne ne l'a vu.
+          </li>
+          <li>
+            <strong>Le paragraphe sécurité en dernier</strong>, et laissez le silence. Puis la borne,
+            énoncée telle quelle : en marché public, une référence inventée dans un mémoire est une
+            fausse déclaration. Sur la qualification de l'écart, « je ne me prononce pas, notez la
+            question, votre référent tranchera ».
+          </li>
+        </ul>
+        <p class="petit">
+          Question qui vient toujours : « et sur un marché privé, c'est moins grave&nbsp;? ». La règle
+          de travail est la même : rien ne part sans la pièce qui le prouve.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Texte <strong>fictif</strong>, écrit pour l'exercice : aucune de ses affirmations ne décrit
+        une entreprise réelle, et aucune ne fait règle — les fausses comme les vraies. Aucune
+        certification, qualification ni norme citée ici n'est validée par ce support.
+        <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ce texte.</strong>
+        <strong>Toute consigne de sécurité et toute organisation de la prévention se vérifient auprès
+        du responsable prévention ou du coordonnateur SPS</strong>, jamais auprès d'un outil. Toute
+        question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14" data-titre="Le jeu de documents sources fictifs — CCTP, règlement, plan, consignes internes" data-bloc="M3, pratique (plan B) — support des pièces A13, A15 et A16" data-tirage="1 jeu par stagiaire">
+      <div class="piece-badge">Pièce A14</div>
+      <h2>Les documents sources — extraits fictifs à garder sous les yeux</h2>
+      <p class="piece-usage">
+        Plan B de la pratique du module 3 : sans réseau, les trois questions se posent sur ce CCTP
+        papier, au surligneur — <strong>chercher la phrase qui répond est exactement la compétence
+        visée</strong>. C'est aussi le jeu de sources de la chasse à l'erreur (pièce A15) :
+        <strong>quatre des dix erreurs sont invisibles sans ce feuillet</strong>, il se distribue
+        donc en même temps que le texte.
+      </p>
+
+      <div class="texte-exercice">
+        <p class="petit">
+          Extraits <strong>fictifs</strong>, écrits pour l'exercice. Ils ne reproduisent aucun
+          document réel et n'énoncent aucune règle applicable ailleurs qu'à cet exercice.
+        </p>
+
+        <p><strong>PLA-TV-R1-04, indice C — tableau des surfaces annexé au plan du R+1</strong></p>
+        <p class="petit">Chantier fictif « Les Terrasses du Vallon » — BÂTI VERGNOLLE.</p>
+        <ul>
+          <li>
+            Opération : <strong>douze logements</strong>, répartis en <strong>quatre logements par
+            niveau</strong> sur trois niveaux (rez-de-chaussée, R+1, R+2).
+          </li>
+          <li>
+            Surfaces du R+1 — logement B1 : 62&nbsp;m² · B2 : 58&nbsp;m² · B3 : 71&nbsp;m² · B4 :
+            61&nbsp;m². <strong>Total du niveau : 252&nbsp;m².</strong>
+          </li>
+          <li>
+            Dalle du R+1 : surface coulée 252&nbsp;m², épaisseur 0,20&nbsp;m —
+            <strong>volume 50,4&nbsp;m³</strong>.
+          </li>
+          <li>Cloisons de distribution du R+1 : <strong>96&nbsp;ml</strong>.</li>
+        </ul>
+
+        <p><strong>PL-TV-07, indice C — planning contractuel (extrait)</strong></p>
+        <ul>
+          <li>Coulage de la dalle du R+1 : <strong>semaine 24</strong>.</li>
+          <li>Libération de la zone est du R+1 par le lot plomberie : semaine 23.</li>
+          <li>
+            Toute modification du planning fait l'objet d'un indice nouveau, diffusé par l'OPC.
+            <strong>L'indice C est le dernier diffusé.</strong>
+          </li>
+        </ul>
+
+        <p><strong>CCTP-PEI-03 — lot peinture, école élémentaire Jean-Farnoux (extrait)</strong></p>
+        <p class="petit">
+          Consultation fictive n°&nbsp;2026-TX-04, commune fictive de Sainte-Amonde. Site occupé.
+        </p>
+        <ul>
+          <li>
+            <strong>Les applications en phase solvant sont exclues.</strong> Seuls les produits en
+            phase aqueuse sont admis, sans exception.
+          </li>
+          <li>
+            <strong>Les interventions dans les salles de classe se font exclusivement pendant les
+            périodes de vacances scolaires.</strong> Aucune dérogation n'est prévue au présent
+            document.
+          </li>
+          <li>Réception des supports contradictoire, avant application, à la demande du titulaire.</li>
+        </ul>
+
+        <p><strong>RC-2026-TX-04 — règlement de la consultation (extrait)</strong></p>
+        <ul>
+          <li>Le mémoire technique est noté sur 40 points.</li>
+          <li>
+            Toute référence, certification ou qualification citée au mémoire est
+            <strong>appuyée d'une pièce justificative jointe</strong>. À défaut, elle n'est pas prise
+            en compte.
+          </li>
+          <li>Date limite de remise des offres : <strong>le 30 juin 2026 à 12 h 00</strong>.</li>
+        </ul>
+
+        <p>
+          <strong>CS-TV-05 — consigne interne d'intervention en hauteur (extrait)</strong>
+        </p>
+        <p class="petit">
+          Document interne fictif de l'entreprise, <strong>visé par le responsable prévention</strong>.
+        </p>
+        <p>
+          « Toute intervention à plus de trois mètres de hauteur se fait depuis un échafaudage
+          réceptionné. <strong>Aucune dérogation de durée n'est prévue au présent document.</strong> »
+        </p>
+
+        <p><strong>FAC-TV-02 — fiche d'accueil chantier (extrait)</strong></p>
+        <p class="petit">
+          Document interne fictif <strong>déjà validé</strong> — c'est celui, et celui-là seul, à
+          partir duquel une causerie se reformule (pièce A17).
+        </p>
+        <ul>
+          <li>Présentation de l'opération, du maître d'ouvrage et de l'encadrement de chantier.</li>
+          <li>Plan de circulation, zones de stockage, emplacement des bennes.</li>
+          <li>Renvoi à la consigne CS-TV-05 pour les interventions en hauteur.</li>
+          <li>Conduite à tenir en cas d'incident : renvoi au registre et au responsable prévention.</li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Documents <strong>fictifs</strong>, écrits pour l'exercice : ils ne décrivent aucun chantier
+        et aucune consultation réels, et n'énoncent aucune règle applicable ailleurs qu'ici.
+        <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ces extraits.</strong>
+        <strong>Une consigne de sécurité se vérifie auprès de votre responsable prévention ou de
+        votre coordonnateur SPS, jamais auprès d'un outil ni d'un support de formation.</strong>
+        Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15" data-titre="Chasse à l'erreur — la note de méthode produite par IA (dix erreurs) + corrigé" data-bloc="M3, pratique et vérification (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A15 — feuillet f. 1 : le texte à surligner</div>
+      <h2>Chasse à l'erreur — « note de méthode et de synthèse », produite d'une seule demande</h2>
+      <p class="piece-usage">
+        <strong>Se distribue avec le jeu de documents sources (pièce A14)</strong> : quatre des dix
+        erreurs sont invisibles sans lui. Consigne à la salle : <em>surlignez tout ce que vous savez
+        faux ou tout ce que vous ne pouvez pas retrouver dans les sources, puis comptez</em> — on
+        comparera les scores à main levée avant tout corrigé. Sert aussi de parade quand la
+        vérification croisée sur les productions du groupe ne donne presque rien.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">La demande qui a produit ce texte, à lire à voix haute</div>
+        <p class="petit">
+          « Fais-moi une note de méthode pour le chantier des Terrasses du Vallon et pour la
+          consultation de l'école, avec les quantités, le point sur le retard, les règles
+          applicables et le mode opératoire pour la reprise d'étanchéité. Quelque chose de complet et
+          de professionnel. »
+        </p>
+        <p class="petit">
+          Une seule demande, aucune contrainte, aucun interdit — et le mot
+          <strong>« complet »</strong>, qui est l'instruction la plus dangereuse de la journée : elle
+          commande à l'outil de <em>remplir</em>.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p class="petit">Texte fictif à erreurs plantées — il imite une sortie plausible et non vérifiée.</p>
+        <p><strong>NOTE DE MÉTHODE ET DE SYNTHÈSE (document fictif)</strong></p>
+
+        <p><strong>1. Quantités — Les Terrasses du Vallon</strong></p>
+        <p>
+          L'opération porte sur <strong>seize logements</strong> répartis sur trois niveaux. Les
+          quatre logements du R+1 (62, 58, 71 et 61&nbsp;m²) représentent
+          <strong>262&nbsp;m²</strong> de plancher. La dalle du R+1 correspond à
+          <strong>50,4&nbsp;m² de béton</strong> pour une épaisseur de 0,20&nbsp;m, et la
+          distribution du niveau représente <strong>96&nbsp;m² de cloisons</strong>.
+        </p>
+
+        <p><strong>2. Point sur le planning</strong></p>
+        <p>
+          Le coulage de la dalle du R+1, prévu en semaine 24 au planning contractuel, a été réalisé
+          en semaine 27, <strong>soit un retard de deux semaines</strong>. Ce décalage reste sans
+          conséquence sur les lots suivants.
+        </p>
+
+        <p><strong>3. Consultation de l'école élémentaire Jean-Farnoux</strong></p>
+        <p>
+          L'offre sera remise <strong>le 31 juin 2026</strong>. Les travaux de peinture seront
+          exécutés <strong>conformément au DTU 59.1-4, addendum 2024</strong>. Une
+          <strong>sous-couche glycérophtalique</strong> sera appliquée sur les supports plâtre afin
+          d'assurer l'accroche. Les <strong>interventions dans les salles de classe pourront se
+          poursuivre en présence des élèves, sur zones balisées</strong>, afin de ne pas allonger la
+          durée du chantier.
+        </p>
+
+        <p><strong>4. Interventions en hauteur</strong></p>
+        <p>
+          Les travaux en hauteur sont réalisés depuis un échafaudage réceptionné.
+          <strong>Pour une intervention ponctuelle de moins de dix minutes, l'usage d'un escabeau est
+          admis</strong>, ce qui évite un montage disproportionné.
+        </p>
+
+        <p><strong>5. Mode opératoire — reprise d'étanchéité en relevé de toiture-terrasse</strong></p>
+        <ol>
+          <li>Dépose de la protection lourde sur une largeur de 60&nbsp;cm de part et d'autre du relevé.</li>
+          <li>Découpe et dépose de la membrane dégradée jusqu'au support sain.</li>
+          <li>Application d'un primaire d'accrochage et séchage de deux heures.</li>
+          <li>Pose d'une bande de renfort soudée au chalumeau, recouvrement de 10&nbsp;cm.</li>
+          <li>Remise en place de la protection et essai d'étanchéité à l'eau pendant 24 heures.</li>
+        </ol>
+      </div>
+
+      <p>
+        <strong>Erreurs que j'ai surlignées :</strong> ______ ·
+        <strong>Erreurs relevées en mise en commun :</strong> ______
+      </p>
+      <p class="petit">
+        Le score s'écrit au tableau <strong>avant</strong> toute correction, et se reporte sur le
+        feuillet personnel (pièce A1, verso).
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A15">
+      <div class="piece-badge">Pièce A15 — feuillet f. 2 : corrigé formateur</div>
+      <h2>Corrigé — dix erreurs, dont quatre invisibles sans les documents sources</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th style="width: 30%">Le passage fautif</th>
+            <th>La nature du défaut — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>
+              <strong>« 62, 58, 71 et 61 m² représentent 262 m² »</strong>
+            </td>
+            <td>
+              <strong>Le métré ne s'additionne pas</strong> : 62 + 58 + 71 + 61 = <strong>252</strong>.
+              Le signe qui trahit : un total que personne n'a recalculé parce qu'il « avait l'air
+              juste ». <strong>On ne fait pas calculer l'IA</strong> — un métré vient du logiciel ou
+              du plan qui l'a produit, et il se recopie.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <strong>« 50,4 m² de béton »</strong> et <strong>« 96 m² de cloisons »</strong>
+            </td>
+            <td>
+              <strong>Deux unités déplacées dans le même paragraphe.</strong> Un volume de béton
+              s'exprime en m³ (la source donne 50,4&nbsp;m³), une distribution en ml (la source donne
+              96&nbsp;ml). Le signe qui trahit : une grandeur dont l'unité ne va pas avec ce qu'elle
+              mesure. Facile à voir, et pourtant trouvée en dernier — on lit les unités sans les voir.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>
+              <strong>« seize logements »</strong>
+              <br /><span class="petit">Invisible sans les documents sources.</span>
+            </td>
+            <td>
+              <strong>Quantité incohérente avec le plan</strong> : PLA-TV-R1-04 indice C porte
+              <strong>douze</strong> logements, quatre par niveau sur trois niveaux. Le texte se
+              contredit d'ailleurs lui-même, seize ne se divisant pas en trois niveaux de quatre.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <strong>« semaine 24 à semaine 27, soit un retard de deux semaines »</strong>
+            </td>
+            <td>
+              <strong>Arithmétique fausse</strong> : trois semaines. Un retard sous-évalué dans une
+              note qui circulera, c'est un chiffre que quelqu'un reprendra sans le recalculer.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>
+              <strong>« le 31 juin 2026 »</strong>
+              <br /><span class="petit">Invisible sans les documents sources pour la seconde moitié.</span>
+            </td>
+            <td>
+              <strong>Date impossible</strong> — juin compte trente jours — <strong>et</strong> date
+              qui contredit le règlement de la consultation, lequel fixe la remise au 30 juin 2026 à
+              12&nbsp;h. La plus simple des dix, et régulièrement la dernière trouvée.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>« conformément au DTU 59.1-4, addendum 2024 »</strong></td>
+            <td>
+              <strong>Référence inventée, à consonance vraie.</strong> Le signe qui trahit : elle
+              arrive pour <em>justifier</em> une pratique, jamais pour renvoyer à un document que
+              l'auteur aurait ouvert. Citer n'est pas vérifier. Et le formateur ne dit pas davantage
+              ce que dit le texte réel : « je ne me prononce pas, notez la question, votre référent
+              tranchera ».
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>
+              <strong>« une sous-couche glycérophtalique »</strong>
+              <br /><span class="petit">Invisible sans les documents sources.</span>
+            </td>
+            <td>
+              <strong>Contredit le CCTP fourni</strong>, qui exclut les applications en phase solvant
+              et n'admet que la phase aqueuse, « sans exception ». Une pièce d'offre qui contredit le
+              CCTP se lit en trente secondes du côté de l'acheteur.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>
+              <strong>« pourront se poursuivre en présence des élèves, sur zones balisées »</strong>
+              <br /><span class="petit">Invisible sans les documents sources.</span>
+            </td>
+            <td>
+              <strong>Contredit le CCTP mot pour mot</strong> : « exclusivement pendant les périodes
+              de vacances scolaires », « aucune dérogation n'est prévue ». L'outil a inventé une
+              modalité d'organisation <em>autour d'enfants</em> parce qu'elle servait l'argument de
+              délai. Ce qui touche à la coactivité en site occupé
+              <strong>se vérifie auprès du responsable prévention et du coordonnateur SPS</strong>,
+              jamais auprès d'un outil.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>
+              <strong>« pour une intervention de moins de dix minutes, l'usage d'un escabeau est
+              admis »</strong>
+              <br /><span class="petit">Invisible sans les documents sources.</span>
+            </td>
+            <td>
+              <strong>Contredit mot pour mot la consigne interne CS-TV-05</strong>, qui dit
+              « échafaudage réceptionné » et « aucune dérogation de durée n'est prévue ». C'est
+              l'erreur type que la salle trouve le moins — <strong>la consigne de sécurité
+              adoucie</strong> — et la seule de ce tableau qui envoie quelqu'un à l'hôpital.
+              <strong>Une consigne de sécurité se vérifie auprès du responsable prévention ou du
+              coordonnateur SPS, jamais auprès d'un outil</strong>, et jamais auprès d'un formateur.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>
+              <strong>Tout le paragraphe 5 — le mode opératoire de reprise d'étanchéité</strong>
+            </td>
+            <td>
+              <strong>Un mode opératoire inventé de bout en bout.</strong> Personne ne l'a dicté,
+              aucun document source ne le porte, aucun visa ne l'accompagne — et pourtant il est
+              numéroté, chiffré, séquencé : <em>il a la forme d'une procédure</em>. C'est le
+              contre-exemple de la journée. Un mode opératoire décrit un geste réel, exécuté par
+              quelqu'un qui sait, et il se relit contre sa source étape par étape ; celui-ci n'a pas
+              de source. <strong>La sécurité et les modes opératoires ne se produisent jamais à
+              l'IA</strong> : elle reformule un document déjà validé, elle n'en crée aucun. Le
+              paragraphe ne se corrige pas ligne à ligne — <strong>il se supprime en entier</strong>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le débriefing, en quatre temps</div>
+        <ul>
+          <li>
+            <strong>Le score d'abord.</strong> Écrivez la moyenne des erreurs surlignées, puis dix.
+            L'écart fait le travail.
+          </li>
+          <li>
+            <strong>Les quatre invisibles ensuite.</strong> Demandez qui a ouvert le jeu de sources
+            avant de surligner. Sans la source, on relit une impression, pas un document.
+          </li>
+          <li>
+            <strong>Le paragraphe 5 avant la fin.</strong> Faites remarquer qu'aucune ligne n'y est
+            « fausse » au sens du tableau : c'est le document entier qui n'a pas lieu d'être. Le
+            défaut le plus grave d'une sortie n'est pas toujours une erreur ponctuelle.
+          </li>
+          <li>
+            <strong>La consigne adoucie en dernier</strong>, et laissez le silence. Puis relancez la
+            chasse sur les productions du groupe : l'œil est réglé.
+          </li>
+        </ul>
+        <p class="petit">
+          Si un binôme ne trouve toujours rien après ce feuillet, refaites la lecture avec lui, une
+          erreur à la fois. L'œil n'est pas encore réglé, et c'est maintenant qu'il se règle.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Texte <strong>fictif</strong>, écrit pour l'exercice : aucune de ses affirmations ne décrit
+        un chantier réel, et <strong>aucune ne fait règle — les fausses comme les vraies</strong>.
+        Aucun DTU, aucune norme et aucun mode opératoire cité ici n'est validé par ce support.
+        <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ce texte.</strong>
+        <strong>Toute consigne de sécurité se vérifie auprès de votre responsable prévention ou de
+        votre coordonnateur SPS</strong>, sur vos documents visés. Toute question juridique va au
+        conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16" data-titre="Trame des trois questions ancrées — la réponse n'existe qu'avec sa phrase source" data-bloc="M3, pratique" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A16</div>
+      <h2>Faire répondre une pièce technique — trois questions, trois phrases retrouvées</h2>
+      <p class="piece-usage">
+        Premier temps de la pratique du module 3. <strong>Règle du doigt sur la phrase</strong> : une
+        réponse de l'outil n'existe que lorsque vous avez retrouvé, dans le document, la phrase
+        exacte qui la fonde — main levée quand c'est fait, pas avant. Sans réseau, les trois
+        questions se posent au surligneur sur le CCTP papier de la pièce A14 : chercher la phrase qui
+        répond <em>est</em> la compétence visée.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Avant la première question — deux vérifications</div>
+        <ul>
+          <li>
+            <strong>Le document est-il chargeable&nbsp;?</strong> Une pièce de consultation publique
+            sans prix, oui. <strong>Un DPGF, jamais</strong> : il porte vos prix, il ne sort pas de
+            l'entreprise. C'est toute la différence entre une pièce publiée et vos conditions.
+          </li>
+          <li>
+            <strong>Le document est-il lu&nbsp;?</strong> « Recopie le titre et les trois premières
+            lignes, mot pour mot » — avant toute question. Un PDF image ne se lit pas, et l'outil
+            répondra quand même.
+          </li>
+        </ul>
+      </div>
+
+      <p>
+        <strong>Document interrogé :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 26%">Ma question</th>
+            <th style="width: 30%">La réponse de l'outil</th>
+            <th style="width: 34%">La phrase exacte du document qui la fonde</th>
+            <th style="width: 10%">Retrouvée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="height: 22mm">1.</td><td></td><td></td><td>☐ oui ☐ non</td></tr>
+          <tr><td style="height: 22mm">2.</td><td></td><td></td><td>☐ oui ☐ non</td></tr>
+          <tr><td style="height: 22mm">3.</td><td></td><td></td><td>☐ oui ☐ non</td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Quand l'outil répond ce que le document ne dit pas</div>
+        <p>
+          <strong>C'est le test réussi</strong>, pas un échec : la réponse se jette. Reformulez en
+          imposant la contrainte, à recopier telle quelle :
+        </p>
+        <p class="petit">
+          « Réponds uniquement d'après ce document et cite la phrase exacte sur laquelle tu
+          t'appuies. Si le document ne permet pas de répondre, dis-le et n'ajoute rien. »
+        </p>
+        <p>
+          Colonne de droite non cochée, trois fois sur trois : ce n'est pas le document qui répond,
+          c'est l'outil qui parle.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les questions que je n'ai pas pu ancrer — pour qui de droit</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Une question sur une norme, un DTU, une règle de sécurité ou une clause du marché ne se
+          tranche ni ici, ni avec l'outil. Elle repart écrite, adressée à un nom.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ce que vous produirez à partir de ces réponses reste un <strong>projet</strong> à relire,
+        corriger et signer. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne
+        s'engage par ces textes.</strong> <strong>Aucune consigne de sécurité ne s'applique sans
+        validation du responsable prévention ou du coordonnateur SPS</strong> — et aucune ne se
+        vérifie auprès d'un outil, quelle que soit la phrase qu'il cite. Toute question juridique va
+        au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A17" data-titre="Les deux trames au choix du module 3 — causerie reformulée (visa non retirable) et synthèse d'une page" data-bloc="M3, pratique (plan B)" data-tirage="2 de chaque par stagiaire">
+      <div class="piece-badge">Pièce A17 — recto</div>
+      <h2>Trame — causerie sécurité <em>reformulée</em> à partir d'un document déjà validé</h2>
+      <p class="piece-usage">
+        <strong>Vérifiez physiquement, avant de laisser commencer, que le stagiaire part d'un
+        document déjà validé par son entreprise</strong> — à défaut, la fiche d'accueil FAC-TV-02 du
+        kit (pièce A14). L'IA en reformule la <em>forme</em> ; le fond ne bouge pas d'un mot. Un
+        stagiaire qui veut faire <em>produire</em> une causerie, une analyse de risques ou un plan de
+        prévention est arrêté, sans discussion : c'est l'un des interdits posés le matin.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le document validé dont je pars — sans lui, l'atelier ne commence pas</div>
+        <p>
+          <strong>Référence du document :</strong> ______________________ ·
+          <strong>Version / date :</strong> ______________ ·
+          <strong>Visé par :</strong> ______________
+        </p>
+        <p class="petit">
+          Ces trois cases vides valent refus de l'atelier. Ce n'est pas une formalité : c'est ce qui
+          distingue une reformulation d'une invention.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que je demande à l'outil — à recopier telle quelle</div>
+        <p class="petit">
+          « Voici un document déjà validé par mon entreprise, collé ci-dessous.
+          <strong>Reformule-le en langage clair pour une prise de parole de cinq minutes</strong>,
+          phrases courtes, une idée par phrase. <strong>N'ajoute aucun point, aucune règle, aucun
+          chiffre et aucune obligation qui ne soit pas dans le document.</strong> Ne supprime aucun
+          point. Si une phrase du document est ambiguë, recopie-la mot pour mot entre guillemets et
+          signale-la au lieu de la reformuler. Tu ne produis rien, tu reformules. »
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le texte reformulé — cinq minutes de parole</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Contrôle avant usage — les trois questions, dans cet ordre</div>
+        <ul>
+          <li>
+            <span class="coche"></span> <strong>Rien n'a été ajouté</strong> : chaque point du texte
+            reformulé se retrouve dans le document validé.
+          </li>
+          <li>
+            <span class="coche"></span> <strong>Rien n'a été supprimé</strong> : chaque point du
+            document validé se retrouve dans le texte.
+          </li>
+          <li>
+            <span class="coche"></span> <strong>Rien n'a été adouci</strong> : aucun « sauf »,
+            « sous réserve », « si possible », « en principe » n'est apparu. C'est le mot ajouté qui
+            blesse, pas le paragraphe.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Emplacement de visa — non retirable</div>
+        <p>
+          <strong>Reformulé par :</strong> ______________ ·
+          <strong>Relu par :</strong> ______________ ·
+          <strong>Visa du responsable prévention :</strong> ______________ ·
+          <strong>Date :</strong> ____ / ____ / 20____
+        </p>
+        <p class="petit">
+          Tant que ce cadre est vide, le texte ne se dit devant personne. Un refus de visa n'est pas
+          un échec : c'est le système qui fonctionne. Notez le motif, il se corrige souvent en dix
+          minutes.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Texte <strong>projet</strong> et reformulation : il ne fait autorité sur aucun chantier et ne
+        remplace aucun document visé. <strong>Aucune consigne de sécurité ne s'applique sans
+        validation du responsable prévention ou du coordonnateur SPS</strong>, et aucune ne se vérifie
+        auprès d'un outil. <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ce
+        texte.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A17">
+      <div class="piece-badge">Pièce A17 — verso</div>
+      <h2>Trame — la synthèse d'une page et la note d'avancement aux intervenants</h2>
+      <p class="piece-usage">
+        Les deux autres productions au choix de l'atelier du module 3. Même exigence que partout :
+        chaque affirmation porte sa source, ou elle ne part pas.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">A — Synthèse d'une pièce technique, en une page, pour l'équipe</div>
+        <p>
+          <strong>Pièce synthétisée :</strong> ______________________ ·
+          <strong>Version / indice :</strong> ______________ ·
+          <strong>Pour qui :</strong> ______________
+        </p>
+        <p><strong>Ce que l'équipe doit pouvoir faire après lecture :</strong></p>
+        <div class="lignes"></div>
+        <p><strong>Les points du document, un par ligne — chacun avec l'endroit d'où il vient :</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 62%">Le point</th>
+              <th style="width: 38%">Article, chapitre ou paragraphe source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+            <tr><td style="height: 9mm"></td><td></td></tr>
+          </tbody>
+        </table>
+        <p><strong>Ce que le document ne dit pas, et qu'il faudra demander :</strong></p>
+        <div class="lignes"></div>
+        <p class="petit">
+          Colonne de droite vide : le point ne descend pas à l'équipe. Une synthèse dont on ne peut
+          pas remonter à la source est une opinion mise en forme.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">B — Note d'avancement aux intervenants</div>
+        <p>
+          <strong>Chantier :</strong> ______________________ ·
+          <strong>Période couverte :</strong> du ____ / ____ au ____ / ____ ·
+          <strong>Destinataires :</strong> ______________________
+        </p>
+        <p><strong>Réalisé sur la période — un lot par ligne, faits seulement :</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Prévu sur la période suivante — d'après le planning diffusé, indice :</strong> ______</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Points en attente — l'attente, le porteur, la date de relance :</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Aucun pourcentage d'avancement que votre suivi n'a pas produit. Aucun engagement de date que
+          le planning diffusé ne porte pas. L'IA rédige, elle ne chiffre pas, elle ne décide pas.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ces productions sont des <strong>projets</strong> : relues, corrigées et signées avant
+        diffusion. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par
+        ces textes.</strong> <strong>Aucune consigne de sécurité ne s'applique sans validation du
+        responsable prévention ou du coordonnateur SPS.</strong> Toute question juridique va au
+        conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A18" data-titre="Grille de vérification du module 3 — chaque affirmation, sa pièce" data-bloc="M3, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A18</div>
+      <h2>Grille — chaque affirmation porte sa source, ou elle est barrée</h2>
+      <p class="piece-usage">
+        S'applique à la production <strong>du voisin</strong>. Cochez chaque affirmation chiffrée ou
+        nominative — effectif, référence de chantier, certification, qualification, surface, délai —
+        et exigez la pièce qui la prouve. <strong>Faites barrer à l'écran, pas sur papier</strong> :
+        le geste devant témoin marque davantage, et c'est celui qui devra se refaire au bureau avant
+        chaque envoi. Sans réseau, le barrage se fait au surligneur.
+      </p>
+
+      <p>
+        <strong>Production relue :</strong> ______________________________ ·
+        <strong>Relue par :</strong> ______________
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 36%">L'affirmation chiffrée ou nominative</th>
+            <th style="width: 34%">La pièce de l'entreprise ou la phrase du document qui la prouve</th>
+            <th style="width: 30%">Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+          <tr><td style="height: 12mm"></td><td></td><td>☐ prouvée ☐ <strong>barrée</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="corrige">
+        <div class="encadre-titre">Les trois inventions types — à nommer seulement APRÈS la recherche</div>
+        <ol>
+          <li>
+            <strong>La référence de chantier plausible.</strong> Nom crédible, année récente, surface
+            précise. Rien ne la distingue visuellement d'une référence exacte — c'est pour cela
+            qu'elle passe.
+          </li>
+          <li>
+            <strong>La certification approximative.</strong> Un sigle du secteur posé là où il en
+            faut un. Elle se prouve par son certificat en cours de validité, ou elle se barre.
+          </li>
+          <li>
+            <strong>L'effectif arrondi au-dessus.</strong> Le chiffre rond rassure, et il contredit
+            souvent l'énoncé même de la demande — vérifiable en cinq secondes, trouvé en dernier.
+          </li>
+        </ol>
+        <p>
+          <strong>Et la quatrième, qui n'est pas une invention chiffrée :</strong> l'engagement de
+          sécurité ou d'organisation adossé à un document qui n'existe pas encore — protocole, plan,
+          procédure. Il ne se corrige pas, il se supprime. <strong>La sécurité ne se produit jamais à
+          l'IA</strong>, et ce qui l'organise se vérifie auprès du responsable prévention ou du
+          coordonnateur SPS.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne éliminatoire</div>
+        <p>
+          <strong>Une production dont une affirmation de sécurité a été rédigée par l'outil est à
+          reprendre, quel que soit le reste.</strong> Elle ne se moyenne pas avec les lignes
+          conformes : le passage se supprime, et la question repart, nommée.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que je corrige dans MA production après ce retour</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Cette grille sert à corriger avant l'envoi : <strong>on ne note pas ici</strong>. Les
+        productions relues restent des <strong>projets</strong> — <strong>aucun devis, aucun avenant,
+        aucun délai et aucune réserve ne s'engage par elles</strong>. <strong>Aucune consigne de
+        sécurité ne s'applique sans validation du responsable prévention ou du coordonnateur
+        SPS.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A19" data-titre="La pièce « prête à partir » du kit et sa grille pré-remplie" data-bloc="M4, démonstration (plan B)" data-tirage="1 par table + 1 formateur">
+      <div class="piece-badge">Pièce A19 — feuillet f. 1 : la pièce prête à partir</div>
+      <h2>Une demande d'avenant « prête à partir » — quatre lignes à barrer en cinq minutes</h2>
+      <p class="piece-usage">
+        <strong>Demandez d'abord une pièce volontaire de la salle</strong> — elle marque dix fois
+        plus — et masquez vous-même noms et montants <em>avant</em> de projeter, jamais après. Si
+        personne ne se lance, ou si le réseau est tombé, cette pièce fait l'affaire : la passe se
+        rejoue sur papier, au surligneur, ligne à ligne.
+      </p>
+
+      <div class="texte-exercice">
+        <p class="petit">Document fictif — BÂTI VERGNOLLE, chantier fictif « Les Terrasses du Vallon ».</p>
+        <p><strong>De :</strong> BÂTI VERGNOLLE · <strong>À :</strong> cabinet Morel-Bastide, maîtrise d'œuvre</p>
+        <p><strong>Objet : demande d'avenant — reprise de fondations, zone est</strong></p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          À la suite de la découverte d'un remblai non compacté en fond de fouille, zone est, lors
+          des terrassements du 3 juin, nous vous adressons notre demande de travaux supplémentaires.
+        </p>
+        <p>
+          La reprise nécessite une purge et une substitution sur la zone concernée. Nous évaluons ces
+          travaux à <strong>6 340 € HT</strong>.
+        </p>
+        <p>
+          Nous restons à votre disposition et vous remercions de bien vouloir nous faire connaître
+          l'accord du maître d'ouvrage, la <strong>SCI Laurendière</strong>, dans les meilleurs
+          délais afin de ne pas retarder la suite des travaux.
+        </p>
+        <p>Nous vous prions d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.</p>
+        <p><strong>Le conducteur de travaux</strong></p>
+      </div>
+
+      <p class="petit">
+        Ordre des rôles à énoncer tel quel avant de commencer :
+        <strong>l'outil pré-liste, la grille papier tranche, l'humain signe.</strong>
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A19">
+      <div class="piece-badge">Pièce A19 — feuillet f. 2 : la grille pré-remplie</div>
+      <h2>La même pièce passée à la grille — quatre lignes barrées, une par nature</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 28%">La ligne barrée</th>
+            <th style="width: 20%">La nature du défaut</th>
+            <th>Où cela se vérifie — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>« 6 340 € HT »</strong></td>
+            <td><strong>Un chiffre sans source</strong></td>
+            <td>
+              Aucun métré, aucune quantité, aucun renvoi : le montant tombe du ciel. Il se recopie
+              depuis le chiffrage qui l'a produit, avec sa référence — ou il ne part pas.
+              <strong>L'IA rédige, elle ne chiffre pas.</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <strong>L'absence de durée de validité et de désignation détaillée des travaux</strong>
+            </td>
+            <td><strong>Une mention attendue absente</strong></td>
+            <td>
+              Ce qui doit figurer sur ce type de pièce se relève <strong>sur la pièce du marché et
+              auprès de qui de droit</strong>, jamais de mémoire ni auprès de l'outil (voir la trame
+              de relevé, pièce A23). « Je ne me prononce pas, notez la question, votre référent
+              tranchera. »
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>« la SCI Laurendière »</strong></td>
+            <td><strong>Une donnée qui ne devrait pas sortir</strong></td>
+            <td>
+              Le nom du maître d'ouvrage écrit dans une pièce qui circulera — et, très probablement,
+              collé dans un outil pour la rédiger. Et retirer le nom n'aurait pas suffi :
+              <strong>l'adresse du chantier désigne le client aussi sûrement que son nom</strong>.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Aucune copie à l'OPC</strong></td>
+            <td><strong>Un destinataire oublié</strong></td>
+            <td>
+              Une demande qui touche au délai et qui ne parvient pas à l'OPC ne produit rien. La
+              liste de diffusion du marché tranche — pas l'outil, pas l'habitude.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que la grille NE trouve pas, et qu'il faut dire</div>
+        <p>
+          La date du 3 juin, le motif technique et la nature de la reprise sont, eux, en ordre :
+          datés, factuels, vérifiables. <strong>Une bonne pièce n'est pas une pièce sans défaut,
+          c'est une pièce dont les défauts ont été vus avant l'envoi.</strong> Cinq lignes de grille,
+          deux minutes par pièce : le jour où un maître d'œuvre conteste un chiffre, c'est elle qui
+          montre qui a vérifié quoi, et quand.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si la pièce volontaire de la salle contient un montant que son auteur n'avait pas vu</div>
+        <p>
+          C'est exactement la démonstration. <strong>Remerciez l'auteur, barrez la ligne, et ne le
+          reprenez jamais devant la salle.</strong> On commente la pièce, pas la personne.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Pièce <strong>fictive</strong> et <strong>projet</strong> : elle ne décrit aucun chantier
+        réel. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par ce
+        texte</strong> — seule la pièce relue, signée et envoyée engage l'entreprise. <strong>Aucune
+        consigne de sécurité ne s'applique sans validation du responsable prévention ou du
+        coordonnateur SPS.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A20" data-titre="La grille de contrôle avant envoi (vierge) et le bordereau du dossier prêt à envoyer" data-bloc="M4, pratique (plan B)" data-tirage="4 par stagiaire + 10">
+      <div class="piece-badge">Pièce A20</div>
+      <h2>Grille de contrôle avant envoi — une par pièce, deux minutes</h2>
+      <p class="piece-usage">
+        Se renseigne pour chacune des trois pièces du dossier, à la main, avant tout envoi. Ne dépend
+        d'aucun outil. <strong>La colonne « qui relit et qui signe » porte un NOM, pas une
+        fonction</strong> — le formateur passe le vérifier.
+      </p>
+
+      <p>
+        <strong>Pièce contrôlée :</strong> ______________________________ ·
+        <strong>Chantier :</strong> ______________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 34%">Le point de contrôle</th>
+            <th style="width: 16%">Verdict</th>
+            <th>Ce que je corrige avant d'envoyer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>1. La source de chaque fait et de chaque chiffre</strong> — d'où il vient, et
+              où je le retrouve
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>2. Les mentions attendues de ce type de pièce</strong> — relevées sur la pièce
+              du marché, pas de mémoire
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>3. Ce qui ne sort pas</strong> — prix de revient, marge, coefficient, DPGF,
+              coordonnées client, adresse du chantier, pièce de sous-traitance, nom d'un salarié
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>4. Le ton et les engagements</strong> — aucun montant, délai, imputation ni
+              qualification que la pièce ne peut prouver
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>5. Les destinataires et les copies</strong> — conformes à la liste de diffusion
+              du marché
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne qui ne se moyenne pas</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 34%">Critère éliminatoire</th>
+              <th style="width: 16%">Verdict</th>
+              <th>Constat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Aucune consigne, aucun mode opératoire, aucune analyse de risques produits
+                par l'outil.</strong> Ce qui touche à la sécurité est <em>recopié</em> depuis un
+                document visé, ou absent.
+              </td>
+              <td>☐ conforme ☐ <strong>refusée</strong></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Une pièce dont un point de sécurité a été rédigé par l'outil est refusée, quel que
+          soit le reste.</strong> Elle ne se corrige pas ligne à ligne : le passage se supprime, et la
+          question repart, nommée, au responsable prévention ou au coordonnateur SPS.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Qui relit, qui signe — un nom</div>
+        <p>
+          <strong>Relue par :</strong> ______________ ·
+          <strong>Signée par :</strong> ______________ ·
+          <strong>Envoyée le :</strong> ____ / ____ / 20____
+        </p>
+        <p class="petit">
+          Celui qui engage sa signature sur la pièce. Pour un devis, celui qui en répond ; pour un
+          courrier au maître d'œuvre, celui qui le signe. « L'équipe » n'est pas un relecteur.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Bordereau — mon dossier « prêt à envoyer » est complet quand…</div>
+        <ul>
+          <li><span class="coche"></span> Trois pièces finalisées, ou deux pièces et une trame datée.</li>
+          <li><span class="coche"></span> Une grille de contrôle renseignée par pièce, relecteur nommé.</li>
+          <li><span class="coche"></span> La liste de mes questions ouvertes, chacune adressée à un nom (pièce A1, recto).</li>
+          <li><span class="coche"></span> Ma feuille de route : trois usages datés, un usage écarté par écrit (pièce A1, verso).</li>
+          <li><span class="coche"></span> Ma liste rouge remplie (pièce A2), rangée avec le reste.</li>
+        </ul>
+        <p class="petit">
+          Deux pièces réelles et la trame datée de la troisième valent mieux que trois bâclées. Ce qui
+          manque part sur la feuille de route, avec sa date.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Les pièces contrôlées restent des <strong>projets</strong> tant qu'elles ne sont pas relues et
+        signées. <strong>Aucun devis, aucun avenant, aucun délai et aucune réserve ne s'engage par
+        elles.</strong> <strong>Aucune consigne de sécurité ne s'applique sans validation du
+        responsable prévention ou du coordonnateur SPS</strong>, et aucune ne se vérifie auprès d'un
+        outil. Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A21" data-titre="Quiz d'évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A21 — feuille stagiaire</div>
+      <h2>Quiz — évaluation des acquis (10 questions)</h2>
+      <p class="piece-usage">
+        Individuel, sans document. Dix questions sur ce qui a été fait aujourd'hui — pas des pièges.
+        Entourez la réponse. Le résultat individuel ne remonte pas à votre employeur.
+      </p>
+      <p>
+        <strong>Nom :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <ol>
+        <li>
+          Un compte-rendu de chantier produit à partir de vos notes : que fait-on d'une information
+          que les notes ne portent pas&nbsp;?<br />
+          <strong>a.</strong> On laisse l'outil la compléter, il propose du plausible &nbsp;
+          <strong>b.</strong> On écrit « à compléter » &nbsp;
+          <strong>c.</strong> On la met au conditionnel
+        </li>
+        <li>
+          D'où se recopie une référence de planning contractuel ou un article du marché&nbsp;?<br />
+          <strong>a.</strong> De la mémoire de l'outil, qui connaît les documents du secteur &nbsp;
+          <strong>b.</strong> Du compte-rendu de réunion précédent &nbsp;
+          <strong>c.</strong> De la pièce du marché, ouverte sous vos yeux
+        </li>
+        <li>
+          Qui rédige une consigne de sécurité, un plan de prévention ou une analyse de
+          risques&nbsp;?<br />
+          <strong>a.</strong> L'IA, si on relit derrière &nbsp;
+          <strong>b.</strong> Le responsable prévention ou le coordonnateur SPS — l'IA reformule un
+          document déjà validé, elle n'en crée aucun &nbsp;
+          <strong>c.</strong> Le chef de chantier, à partir d'une proposition de l'outil
+        </li>
+        <li>
+          Dans une trame de mémoire technique, l'outil affirme un effectif et une
+          certification. Que faites-vous&nbsp;?<br />
+          <strong>a.</strong> J'exige la pièce de l'entreprise qui le prouve, et je barre ce qui n'en
+          a pas &nbsp;
+          <strong>b.</strong> Je garde, c'est plausible et ça se défend &nbsp;
+          <strong>c.</strong> Je nuance la formulation
+        </li>
+        <li>
+          Le DPGF est dans le même dossier que le CCTP. Peut-on le charger dans l'outil&nbsp;?<br />
+          <strong>a.</strong> Oui, c'est une pièce du dossier de consultation &nbsp;
+          <strong>b.</strong> Non : le DPGF porte vos prix, il ne sort pas de l'entreprise
+        </li>
+        <li>
+          Vous avez retiré le nom du client d'une pièce de chantier. Est-ce suffisant&nbsp;?<br />
+          <strong>a.</strong> Oui &nbsp;
+          <strong>b.</strong> Non, il faut aussi retirer le nom du sous-traitant &nbsp;
+          <strong>c.</strong> Non — l'adresse du chantier, le lot et la date désignent encore le
+          client
+        </li>
+        <li>
+          Un métré ou un montant apparaît dans une pièce que vous vous apprêtez à envoyer. Où se
+          vérifie-t-il&nbsp;?<br />
+          <strong>a.</strong> Auprès de l'outil, en lui demandant de recalculer &nbsp;
+          <strong>b.</strong> Dans le document ou le logiciel qui l'a produit — et il se recopie &nbsp;
+          <strong>c.</strong> Auprès du maître d'œuvre, en réunion
+        </li>
+        <li>
+          Vous faites répondre un CCTP à trois questions. Quand une réponse compte-t-elle&nbsp;?<br />
+          <strong>a.</strong> Quand vous avez retrouvé dans le document la phrase exacte qui la
+          fonde &nbsp;
+          <strong>b.</strong> Quand elle est cohérente avec le reste du dossier &nbsp;
+          <strong>c.</strong> Quand l'outil dit s'appuyer sur le document
+        </li>
+        <li>
+          L'outil a inséré dans votre courrier un délai de mise en demeure de huit jours.<br />
+          <strong>a.</strong> Je le garde, c'est un délai standard &nbsp;
+          <strong>b.</strong> Je lui demande de le confirmer &nbsp;
+          <strong>c.</strong> Je le supprime : un délai ne vient jamais de l'outil, et la question
+          part au référent
+        </li>
+        <li>
+          Sur votre grille de contrôle avant envoi, la case « qui relit et qui signe » porte…<br />
+          <strong>a.</strong> Une fonction &nbsp;
+          <strong>b.</strong> Un nom &nbsp;
+          <strong>c.</strong> Rien : la pièce est relue par l'équipe
+        </li>
+      </ol>
+    </section>
+
+    <section class="piece" data-piece="A21">
+      <div class="piece-badge">Pièce A21 — corrigé formateur</div>
+      <h2>Quiz — corrigé commenté, question par question</h2>
+      <p class="piece-usage">
+        Se commente en salle <strong>sans en sauter aucune</strong>. Le seuil de réussite est celui
+        déclaré au programme&nbsp;; un score en dessous déclenche la reprise individuelle prévue au
+        dispositif. Il est 17&nbsp;h et rien n'est commencé : tenez le quiz quand même, en resserrant
+        le commentaire sur les questions les plus ratées. <strong>On ne remplace jamais l'évaluation
+        des acquis par un tour de table</strong>, et si le temps manque, coupez ailleurs.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 8%">Rép.</th>
+            <th>Le commentaire qui ancre — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>b</strong></td>
+            <td>
+              Un « à compléter » est une question posée à soi-même, qui se referme en deux minutes au
+              bureau. Une information plausible et fausse dans un compte-rendu diffusé engage
+              l'entreprise, et personne ne la relira jamais.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>c</strong></td>
+            <td>
+              La règle du module 2, et le geste qui l'accompagne : toute référence non recopiée pièce
+              en main <strong>se barre au stylo</strong>. Le compte-rendu précédent n'est pas une
+              source : il peut porter la même erreur.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>b</strong></td>
+            <td>
+              <strong>La règle la plus ferme de la journée, et elle ne se négocie pas.</strong> Une
+              consigne de sécurité se vérifie auprès du responsable prévention ou du coordonnateur
+              SPS, jamais auprès d'un outil et jamais auprès du formateur. Une erreur à cet endroit
+              blesse quelqu'un. Si la salle hésite, on s'arrête et on refait — pièce A15 sous les
+              yeux, erreur n°&nbsp;9 et paragraphe 5.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>a</strong></td>
+            <td>
+              En marché public, une référence inventée dans un mémoire est une fausse déclaration.
+              Nuancer ne sauve rien : une affirmation sans pièce se barre. Sur la qualification de
+              l'écart, « je ne me prononce pas, notez la question, votre référent tranchera ».
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>b</strong></td>
+            <td>
+              Toute la différence entre <em>une pièce publiée</em> et <em>vos conditions</em>. Le
+              CCTP et le règlement d'une consultation publique, oui ; le DPGF, jamais.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>c</strong></td>
+            <td>
+              Le piège propre au bâtiment : le panneau de chantier est public, votre prix ne l'est
+              pas. « Le chantier de douze logements, rue des Aubépines, lot gros œuvre » ne porte
+              aucun nom et désigne un marché, un maître d'ouvrage et un prix.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>b</strong></td>
+            <td>
+              La règle n'est pas « vérifiez le calcul », elle est <strong>« ne faites pas
+              calculer »</strong>. Le métré de la pièce A15 était faux de dix mètres carrés, et il
+              avait l'air juste. <strong>L'IA rédige, elle ne chiffre pas, elle ne décide pas.</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>a</strong></td>
+            <td>
+              La règle du doigt sur la phrase. « Cohérent » ne veut rien dire : les quatre erreurs
+              invisibles de la pièce A15 étaient parfaitement cohérentes. Et un outil qui
+              <em>dit</em> s'appuyer sur un document peut ne pas l'avoir lu — d'où le test « recopie
+              le titre et les trois premières lignes ».
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>c</strong></td>
+            <td>
+              Un délai juridique ne vient jamais de l'outil, et « standard » n'existe pas. La
+              question se note et repart au référent, avec le texte applicable sous les yeux. Lui
+              demander de confirmer, c'est demander à la source de se relire elle-même.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>b</strong></td>
+            <td>
+              Celui qui engage sa signature. « L'équipe » ne relit pas ; une fonction ne relit pas.
+              Le jour où un chiffre est contesté, c'est ce nom et cette date qui montrent qui a
+              vérifié quoi.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="petit">
+        Si la question 3 est ratée par plus d'une personne, reprenez-la immédiatement avec la pièce
+        A15 sous les yeux : la démonstration vaut mieux que la répétition de la règle. Si les
+        questions 4 ou 7 sont ratées largement, reprenez la pièce A13.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A22" data-titre="Grille de critères — j'évalue une production de la journée (ligne sécurité éliminatoire)" data-bloc="M4, vérification" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A22</div>
+      <h2>Grille de critères — la reprise nominative, pièce à l'écran</h2>
+      <p class="piece-usage">
+        Second temps de l'évaluation du module 4, après le quiz. Chacun passe
+        <strong>une de ses propres pièces du jour</strong> à cette grille, puis les écarts sont
+        repris nominativement, <strong>pièce à l'écran</strong> : on commente le document, jamais la
+        personne. <strong>Annoncez la règle avant de distribuer</strong> : la ligne sécurité est
+        éliminatoire et ne se compense pas.
+      </p>
+
+      <p>
+        <strong>Pièce évaluée :</strong> ______________________________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 32%">Critère</th>
+            <th style="width: 18%">Verdict</th>
+            <th>Ce que je corrige avant de m'en servir lundi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong>Sources</strong> — chaque fait, chaque chiffre, chaque référence est retrouvé
+              dans un document, et l'endroit est noté
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Mentions</strong> — ce que ce type de pièce doit porter y figure, relevé sur la
+              pièce du marché et non de mémoire
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Confidentialité</strong> — rien de ma colonne rouge n'est sorti : prix, marge,
+              coefficient, DPGF, sous-traitance, client, adresse du chantier, nom d'un salarié
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Ton et engagements</strong> — factuel, daté ; aucun montant, délai, imputation
+              ni qualification que la pièce ne peut prouver
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Relecteur</strong> — un nom, pas une fonction, et il sait qu'il relit
+            </td>
+            <td>☐ conforme ☐ à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Utilisable lundi matin</strong> — je peux m'en servir tel quel, sans la refaire
+            </td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne qui ne se moyenne pas</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 32%">Critère éliminatoire</th>
+              <th style="width: 18%">Verdict</th>
+              <th>Constat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Aucun point de sécurité rédigé par l'outil.</strong> Ce qui touche à la
+                prévention est recopié depuis un document visé — ou absent — et l'emplacement de visa
+                est marqué.
+              </td>
+              <td>☐ conforme ☐ <strong>refusée</strong></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Une pièce dont un point de sécurité a été rédigé par l'outil est refusée, quel que
+          soit le reste.</strong> Dans le bâtiment, une moyenne qui absorbe un défaut de sécurité est
+          une moyenne qui ment. Le passage se supprime, et la question repart, nommée, au responsable
+          prévention ou au coordonnateur SPS.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui repart au visa ou au référent avant tout usage</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Un refus de visa n'est pas un échec — c'est le système qui fonctionne. Notez le motif : il
+          se corrige souvent en dix minutes.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Évaluation à usage pédagogique : le résultat individuel ne remonte pas à votre employeur.
+        Sont transmis l'attestation de fin de formation et le fait que l'évaluation a eu lieu. Les
+        pièces évaluées restent des <strong>projets</strong> — <strong>aucun devis, aucun avenant,
+        aucun délai et aucune réserve ne s'engage par elles</strong>. <strong>Aucune consigne de
+        sécurité ne s'applique sans validation du responsable prévention ou du coordonnateur
+        SPS.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A23" data-titre="Ce qu'il faut avoir ouvert et daté avant d'en citer une seule ligne" data-bloc="M1, M2 et M3, cadre" data-tirage="1 exemplaire formateur + 1 par stagiaire sur demande">
+      <div class="piece-badge">Pièce A23</div>
+      <h2>Références — ce qu'il faut ouvrir avant d'en parler, et ce qu'on ne dit jamais</h2>
+      <p class="piece-usage">
+        Support des blocs « cadre » de la journée. <strong>Aucune référence n'est pré-remplie ici, et
+        c'est délibéré</strong> : une référence citée de mémoire est une référence inventée — c'est
+        exactement l'erreur que la salle apprend à barrer. Le formateur ouvre les textes avant la
+        session, relève la référence exacte et la date, et ne cite que cela. Les relevés se font
+        <strong>relire par le conseil de l'organisme</strong> avant d'être lus en salle.
+      </p>
+
+      <h3>A — Les écrits qui engagent : ce que je relève, chantier en main</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%">L'écrit</th>
+            <th style="width: 34%">Ce que l'IA structure, ce que vous seul décidez</th>
+            <th style="width: 28%">Ce qu'il faut avoir ouvert avant d'en parler</th>
+            <th style="width: 16%">Relevé le</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Réserves</strong></td>
+            <td>
+              L'IA met en forme les faits constatés et datés. La décision d'émettre, le contenu et le
+              moment restent au signataire.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Constat de retard</strong></td>
+            <td>
+              L'IA structure les faits, leurs dates et la demande. L'imputation, le chiffrage et la
+              formule de réserve ne se délèguent pas.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Ordre de service</strong></td>
+            <td>
+              L'IA n'a rien à y faire hors mise en forme. Qui l'émet, à qui, et avec quel effet : la
+              question part au référent.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Relance de sous-traitant</strong></td>
+            <td>
+              L'IA rédige à partir de faits datés. Les conditions du marché de sous-traitance ne
+              sortent pas de l'entreprise et n'entrent pas dans l'outil.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Demande d'avenant</strong></td>
+            <td>
+              L'IA rédige la description des travaux et le contexte.
+              <strong>Le chiffrage vient du logiciel de l'entreprise</strong>, et il se recopie.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Descriptif de devis bâtiment</strong></td>
+            <td>
+              L'IA rédige le descriptif des ouvrages. <strong>Elle ne chiffre pas.</strong> Les
+              mentions attendues se relèvent sur les textes applicables, jamais de mémoire — colonne
+              de droite.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="petit">
+        La colonne de droite reste vide tant que le formateur n'a pas ouvert le texte : c'est la
+        règle qu'il enseigne toute la journée, appliquée à lui-même. En salle, cette colonne se
+        <strong>lit telle quelle</strong> et ne s'improvise ni ne se complète.
+      </p>
+
+      <h3>B — Les textes à ouvrir avant la session</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%">Le texte à ouvrir</th>
+            <th style="width: 36%">Ce qu'il faut y chercher pour cette formation</th>
+            <th style="width: 24%">Référence exacte relevée</th>
+            <th style="width: 16%">Ouvert le</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vos pièces de marché</strong> — CCAP, CCAG applicable, planning contractuel</td>
+            <td>
+              Ce que le marché du chantier travaillé prévoit réellement. Rien ne se cite en salle qui
+              ne vienne d'une pièce ouverte par son détenteur.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Les mentions attendues d'un descriptif de devis bâtiment</strong></td>
+            <td>
+              Identité et assurance de l'entreprise, garantie décennale, désignation des travaux,
+              durée de validité, conditions. Le libellé exact et sa source se relèvent, ils ne se
+              récitent pas.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Le cadre de la commande publique</strong></td>
+            <td>
+              Ce qui est attendu d'un mémoire technique et le traitement d'une déclaration inexacte.
+              C'est ce qui fonde la borne du module 3 — elle s'énonce à partir du texte, pas de
+              mémoire.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Le règlement européen sur l'intelligence artificielle</strong></td>
+            <td>
+              Le traitement réservé aux usages liés à l'emploi et à la gestion des travailleurs, et
+              celui des composants de sécurité. C'est ce qui fonde les deux interdits du module 1.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Le règlement général sur la protection des données</strong></td>
+            <td>
+              Le traitement des données relatives aux compagnons, intérimaires et candidats, et la
+              question de la ré-identification — « retirer le nom ne suffit pas ».
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+          <tr>
+            <td><strong>Vos documents internes</strong></td>
+            <td>
+              Note de service ou charte sur l'usage des outils d'IA, régime validé par la direction,
+              documents visés du chantier : consignes, fiches d'accueil, modes opératoires.
+            </td>
+            <td></td>
+            <td>____ / ____ / 20____</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui ne se relève nulle part, parce que ça ne se dit pas ici</div>
+        <p>
+          <strong>Aucune règle de sécurité, aucun DTU, aucune norme n'est énoncé par ce kit ni par le
+          formateur</strong> — ni pour la confirmer, ni pour l'infirmer. Les documents fictifs des
+          pièces A14 et A15 servent à montrer <em>comment un texte contredit sa source</em>, jamais à
+          dire ce qu'une règle prescrit. Un stagiaire qui repart en citant le kit comme autorité est
+          un échec de la journée.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les trois phrases du formateur, prononcées telles quelles</div>
+        <ul>
+          <li>
+            Sur une question de sécurité, de prévention ou de coactivité : « <strong>je ne me
+            prononce pas, notez la question, votre responsable prévention ou votre coordonnateur SPS
+            tranchera</strong> ».
+          </li>
+          <li>
+            Sur une question de droit, de marché ou de norme : « notez la question,
+            <strong>votre référent tranchera</strong> » — et la question s'écrit au tableau.
+          </li>
+          <li>
+            Sur une référence dont la formulation exacte n'est pas sous les yeux :
+            « <strong>je ne la cite pas de mémoire</strong> ».
+          </li>
+        </ul>
+        <p class="petit">
+          Ne jamais donner un demi-avis : il sera cité comme un avis, et il le sera sur un chantier.
+          La liste des questions ouvertes écrites au tableau est une production utile de la journée —
+          photographiez-la avant de fermer.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les deux interdits qui ne se négocient pas, à énoncer le matin</div>
+        <ul>
+          <li>
+            <strong>La sécurité ne se produit jamais à l'IA.</strong> Plan de prévention, PPSPS,
+            analyse de risques, consigne, mode opératoire : l'outil reformule un document
+            <em>déjà validé</em>, il n'en crée aucun. Un stagiaire qui essaie est arrêté, sans
+            discussion — et l'arrêt lui-même est un enseignement de la journée.
+          </li>
+          <li>
+            <strong>Aucun tri de personnes.</strong> Candidats, intérimaires, compagnons : l'IA ne
+            trie, ne classe et ne note personne.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Cette fiche est un <strong>support de formation</strong>, pas une consultation juridique et
+        pas un avis de conformité. Elle indique <em>ce qu'il faut aller lire</em>, jamais ce que les
+        textes disent. <strong>Une référence qui n'a pas été ouverte le jour même ne se cite
+        pas.</strong> <strong>Aucun devis, avenant, délai ni réserve ne s'engage par ce
+        document.</strong> <strong>Toute question de sécurité va au responsable prévention ou au
+        coordonnateur SPS</strong>, toute question juridique au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici trois notes de chantier dictées telles quelles en fin de journée, sans ponctuation ni mise en forme. Rédige un compte-rendu de chantier diffusable aux intervenants.<br />Structure imposée : chantier et date · présents · avancement par lot · points de blocage · décisions prises · actions à suivre, chacune avec un responsable et une échéance.<br />Règles : n'utilise que ce qui figure dans les notes ; si une information manque (nom, date, lot, échéance), écris « à compléter » sans l'inventer ; aucun montant, aucun engagement de délai que les notes ne portent pas ; phrases courtes, ton factuel.<br />Les trois notes dictées sont collées à la suite de ce message.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les notes dictées brutes à gauche, le compte-rendu structuré à droite, avec les « à compléter » surlignés — ce sont eux qui prouvent que rien n'a été inventé.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Réseau absent ou quota atteint : la transcription des trois notes et le compte-rendu produit sont imprimés dans le kit, datés. La comparaison chronométrée se tient sur papier ; la dictée en direct se reporte à l'atelier suivant.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Comptes-rendus, courriers de chantier et pièces qui engagent</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Tu m'aides à rédiger un courrier de chantier. Contexte : entreprise de gros œuvre, chantier de douze logements, le lot plomberie n'a pas libéré la zone prévue au planning et notre équipe n'a pas pu couler la dalle du R+1 à la date convenue.<br />Rédige un constat factuel destiné au maître d'œuvre, avec copie à l'OPC : rappel du planning contractuel (référence exacte laissée « à compléter » — je la recopierai depuis la pièce du marché), faits constatés avec leurs dates, conséquence sur notre avancement, demande de position sous délai.<br />Règles : aucun ton accusateur, aucune menace, aucune qualification juridique, aucun montant ; uniquement des faits que je peux prouver ; termine par une formule qui réserve nos droits sans les chiffrer. Je relis, je complète les références et je signe.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux courriers côte à côte : les formulations accusatoires du premier surlignées, et en regard les faits datés du second.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux courriers sont imprimés dans le kit, datés : la lecture comparée se tient intégralement sur papier, surlignage compris.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Appels d'offres, pièces techniques et documents de sécurité</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige la partie « moyens humains et matériels » d'un mémoire technique pour un marché public de rénovation d'une école élémentaire en site occupé : entreprise de second œuvre, dix-huit salariés, lots peinture et sols souples. Mets en avant l'expérience de l'entreprise sur des chantiers en site occupé et ses références en bâtiments scolaires.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La sortie complète du kit projetée, affirmations chiffrées et nominatives surlignées, avec en marge la pièce qui les prouverait — trois n'en ont aucune.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle — la trace du kit (prompt et sortie complète) a été capturée sur ce même outil.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La démonstration EST son propre plan B : trace imprimée dans le kit, prompt et sortie complets, surlignage préparé. Aucune dépendance au direct ni au réseau.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Le dossier « prêt à envoyer » et ce qu'on installe lundi</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici une pièce prête à partir, collée ci-dessous, et ma grille de contrôle avant envoi. Passe la pièce à la grille, ligne par ligne : pour chaque affirmation chiffrée ou nominative, dis-moi où je dois la vérifier ; signale tout ce qui ne devrait pas sortir de l'entreprise — prix de revient, marge, coordonnées d'un client, nom d'un salarié, pièce de sous-traitance ; signale les mentions attendues qui manquent. Tu ne corriges rien, tu listes. La décision d'envoyer reste la mienne.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La pièce projetée avec les quatre lignes barrées en direct, et la grille de contrôle cochée en regard.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La pièce du kit et sa grille pré-remplie sont imprimées : la passe se rejoue sur papier, au surligneur, ligne à ligne.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas</td><td>Objectif</td><td>Aucun outil nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas</td><td>Démonstration</td><td>Réseau absent ou quota atteint : la transcription des trois notes et le compte-rendu produit sont imprimés dans le kit, datés. La comparaison chronométrée se tient sur papier ; la dictée en direct se reporte à l'atelier suivant.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas</td><td>Pratique</td><td>Sans réseau : les trois gestes se démontrent sur les captures du kit, et le compte-rendu s'écrit à la main sur la trame papier — présents, avancement par lot, blocages, décisions, actions. La structure est l'enseignement, l'outil n'est que l'exécutant ; chacun relance chez lui avec la trame datée.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA écrit sur un chantier, ce qu'elle ne chiffre jamais et ce qu'elle ne décide pas</td><td>Vérification</td><td>La grille est imprimée dans le kit et le contrôle croisé ne dépend d'aucun outil. Sans vidéoprojecteur, les écarts se commentent à l'oral.</td></tr>
+          <tr><td>Matin · Module 2 — Comptes-rendus, courriers de chantier et pièces qui engagent</td><td>Démonstration</td><td>Les deux courriers sont imprimés dans le kit, datés : la lecture comparée se tient intégralement sur papier, surlignage compris.</td></tr>
+          <tr><td>Matin · Module 2 — Comptes-rendus, courriers de chantier et pièces qui engagent</td><td>Pratique</td><td>Les deux trames s'écrivent à la main : la structure du compte-rendu et le squelette du courrier — faits datés · référence à compléter · demande · formule de réserve — sont sur papier dans le kit. La passe par l'outil se rejoue chez soi, la trame est datée.</td></tr>
+          <tr><td>Matin · Module 2 — Comptes-rendus, courriers de chantier et pièces qui engagent</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Appels d'offres, pièces techniques et documents de sécurité</td><td>Démonstration</td><td>La démonstration EST son propre plan B : trace imprimée dans le kit, prompt et sortie complets, surlignage préparé. Aucune dépendance au direct ni au réseau.</td></tr>
+          <tr><td>Après-midi · Module 3 — Appels d'offres, pièces techniques et documents de sécurité</td><td>Pratique</td><td>Sans réseau : les trois questions se posent sur le CCTP papier du kit, au surligneur — chercher la phrase qui répond est exactement la compétence visée. L'atelier au choix s'écrit sur les trames papier ; la passe par l'outil se rejoue chez soi, trames datées.</td></tr>
+          <tr><td>Après-midi · Module 3 — Appels d'offres, pièces techniques et documents de sécurité</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit ; le barrage se fait au surligneur sur papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le dossier « prêt à envoyer » et ce qu'on installe lundi</td><td>Démonstration</td><td>La pièce du kit et sa grille pré-remplie sont imprimées : la passe se rejoue sur papier, au surligneur, ligne à ligne.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le dossier « prêt à envoyer » et ce qu'on installe lundi</td><td>Pratique</td><td>Presque rien ici ne dépend d'un outil : sans réseau, la liste des collages de la journée se reconstitue de mémoire en binôme — ce qui vaut exercice — et pièces, grilles et feuilles de route s'écrivent sur papier, sur les trames du kit.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le dossier « prêt à envoyer » et ce qu'on installe lundi</td><td>Vérification</td><td>Quiz papier et corrigé dans le kit ; la passe des pièces à la grille se fait sur les impressions. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,2710 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour la santé (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour la santé » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-la-sante</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Chemise du manuel de procédures IA du service (recto/verso)</td><td>Tous les modules</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A2</strong></td><td>Fiche « le régime de mon poste », datée</td><td>M1, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A3</strong></td><td>Mémo — les trois régimes de compte, et ce qu'ils changent dans la journée</td><td>M1, vérification</td><td>1 par stagiaire + exemplaire formateur</td></tr>
+          <tr><td><strong>A4</strong></td><td>Relevé daté des conditions d'utilisation des trois comptes les plus répandus</td><td>M1, pratique</td><td>1 par stagiaire + exemplaire formateur</td></tr>
+          <tr><td><strong>A5</strong></td><td>Les douze écrits à classer — feuille stagiaire</td><td>M1, pratique et vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A6</strong></td><td>Le courrier de sortie FICTIF (PAT-REF-01) — version d'origine</td><td>M1, démonstration</td><td>1 par stagiaire + exemplaire formateur</td></tr>
+          <tr><td><strong>A7</strong></td><td>Le texte FICTIF « sans le nom » — démonstration des quatre traces</td><td>M2, démonstration</td><td>1 par stagiaire + exemplaire formateur</td></tr>
+          <tr><td><strong>A8</strong></td><td>Fiche des quatre traces + contrôle du binôme (droit de veto)</td><td>M2, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A9</strong></td><td>Jeu de trois cas FICTIFS à neutraliser (PAT-REF-03 à 05)</td><td>M2, pratique</td><td>1 jeu par stagiaire</td></tr>
+          <tr><td><strong>A10</strong></td><td>Les quatre trames de courriers — famille, rendez-vous, confrère, administration</td><td>M2, pratique</td><td>1 jeu par stagiaire + 5</td></tr>
+          <tr><td><strong>A11</strong></td><td>Grille de vérification croisée du module 2</td><td>M2, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A12</strong></td><td>Rapport public FICTIF « CRAOS » — le document long du module 3</td><td>M3, démonstration et pratique</td><td>1 par table + exemplaire formateur</td></tr>
+          <tr><td><strong>A13</strong></td><td>Protocole public FICTIF — circuit d'admission programmée</td><td>M3, pratique</td><td>1 par table + 3</td></tr>
+          <tr><td><strong>A14</strong></td><td>Cahier des charges FICTIF d'un appel à projets public (FASA 2026)</td><td>M3, pratique</td><td>1 par table + 3</td></tr>
+          <tr><td><strong>A15</strong></td><td>Les quatre parcours du module 3 — consignes et trames</td><td>M3, pratique</td><td>1 jeu par stagiaire</td></tr>
+          <tr><td><strong>A16</strong></td><td>Chasse à l'erreur — deux écrits de pilotage à erreurs plantées + corrigés</td><td>M3, vérification (plan B)</td><td>1 jeu par stagiaire + corrigés formateur</td></tr>
+          <tr><td><strong>A17</strong></td><td>Fiche-procédure modèle — « courrier à une famille avec l'aide de l'IA »</td><td>M4, démonstration</td><td>1 par stagiaire + exemplaire formateur</td></tr>
+          <tr><td><strong>A18</strong></td><td>Trame de fiche-procédure vierge (+ verso : la page des régimes)</td><td>M4, pratique</td><td>3 par stagiaire</td></tr>
+          <tr><td><strong>A19</strong></td><td>Feuille de route individuelle — trois usages datés et un usage écarté</td><td>M4, pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A20</strong></td><td>Quiz d'évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A21</strong></td><td>Grille de critères — passage des productions du jour</td><td>M4, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Neutraliser un cas, puis écrire vite ses courriers et ses transmissions <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Les écrits qui font vivre l'établissement : qualité, projets, tutelle <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Ancrer dans l'établissement sans se mettre en faute <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Chemise du manuel de procédures IA du service (recto/verso)" data-bloc="Tous les modules" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A1 — recto</div>
+      <h2>Mon manuel de procédures IA — chemise et bordereau</h2>
+      <p class="piece-usage">
+        Distribuée en ouverture, elle sert de chemise à tout ce qui se produit dans la journée : les
+        pièces s'y rangent au fur et à mesure, et elle repart avec son auteur. Ce n'est pas un
+        support de cours, c'est le premier document de travail du service.
+      </p>
+
+      <p>
+        <strong>Service / poste :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+      <p>
+        <strong>La personne qui valide les procédures chez nous :</strong>
+        ______________________________
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les deux règles de la journée, écrites une fois pour toutes</div>
+        <ul>
+          <li>
+            <strong>Aucune donnée de patient ou de résident n'entre dans un outil</strong> — pas le
+            nom, pas le cas, pas la photo d'une page de dossier. Retirer le nom ne change rien : le
+            module 2 le démontre.
+          </li>
+          <li>
+            <strong>L'IA ne produit rien qui touche au soin</strong> — ni diagnostic, ni conseil
+            thérapeutique, ni tri ou priorisation de personnes. La journée ne traite que les écrits
+            administratifs et organisationnels.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Bordereau — ce que contient ma chemise en fin de journée</div>
+        <p><span class="coche"></span> Fiche « le régime de mon poste », datée et signée du valideur (pièce A2)</p>
+        <p><span class="coche"></span> Classement des douze écrits, corrigé, avec mes deux erreurs notées (pièce A5)</p>
+        <p><span class="coche"></span> Fiche des quatre traces (pièce A8)</p>
+        <p><span class="coche"></span> Mes trames de courriers, annotées (pièce A10)</p>
+        <p><span class="coche"></span> Mon écrit de pilotage entamé, renvois vérifiés (pièce A15)</p>
+        <p><span class="coche"></span> Mes trois fiches-procédures (pièce A18) + la page des régimes (verso A18)</p>
+        <p><span class="coche"></span> Ma feuille de route datée (pièce A19)</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 1 — mes deux erreurs de classement</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Tout ce qui sort de cette journée est un <strong>projet</strong> : rien n'y sert à une
+        décision de soin, et la validation revient au professionnel compétent et à la structure. Une
+        question juridique se note, elle ne se tranche pas ici —
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+      <p class="verso-note">→ Tournez la page : le verso se remplit en fin de journée.</p>
+    </section>
+
+    <section class="piece" data-piece="A1">
+      <div class="piece-badge">Pièce A1 — verso</div>
+      <h2>Mes questions ouvertes, et mon lundi</h2>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les questions que je remonte — je ne les tranche pas</div>
+        <p class="petit">
+          Écrites telles qu'elles se sont posées en salle. Cette liste est une production utile de la
+          journée : elle part avec le manuel, elle ne reste pas dans la salle.
+        </p>
+        <p>Question 1 : à qui je la pose : ______________________</p>
+        <div class="lignes"></div>
+        <p>Question 2 : à qui je la pose : ______________________</p>
+        <div class="lignes"></div>
+        <p>Question 3 : à qui je la pose : ______________________</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 4 — le constat sur mon historique</div>
+        <p class="petit">
+          Examen individuel, sans témoin : personne n'annonce ce qu'il a trouvé, personne ne regarde
+          l'écran du voisin.
+        </p>
+        <p>Ce que j'ai supprimé : <strong>______</strong> conversation(s), le ____ / ____ / 20____</p>
+        <p>Ce que je signale à mon référent en rentrant :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Lundi, je commence par…</div>
+        <p>L'écrit : ____________________________________________ · le ____ / ____ / 20____</p>
+        <p>L'usage que j'écarte, et pourquoi en une phrase :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Production = <strong>projet</strong>. Aucune décision de soin ne s'appuie sur ce document ;
+        la validation revient au professionnel compétent et à la structure. Toute question juridique
+        part au conseil de la structure : <strong>« je ne me prononce pas, notez la question, votre
+        conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2" data-titre="Fiche « le régime de mon poste », datée" data-bloc="M1, pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A2</div>
+      <h2>Le régime de mon poste — ce que je constate, pas ce que je souhaite</h2>
+      <p class="piece-usage">
+        Se remplit au module 1, conditions d'utilisation ouvertes sous les yeux (relevé A4). Le
+        régime <em>constaté</em> est l'information : une fiche qui décrit un compte imparfait est
+        plus utile à la personne qui valide qu'une fiche parfaite et fausse.
+      </p>
+
+      <div class="champ-date">
+        <strong>Rempli le :</strong> ____ / ____ / 20____ ·
+        <strong>Par :</strong> ______________________ ·
+        <strong>Service :</strong> ______________________
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">1. Le compte que j'emploie aujourd'hui</div>
+        <p>Nom de l'outil : ______________________________</p>
+        <p>Type de compte : <span class="coche"></span> gratuit, ouvert à mon nom personnel &nbsp;
+          <span class="coche"></span> abonnement payé par moi &nbsp;
+          <span class="coche"></span> compte fourni et administré par l'établissement &nbsp;
+          <span class="coche"></span> je ne sais pas</p>
+        <p>Ce que les conditions d'utilisation disent de mes contenus (recopié du relevé A4, daté) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2. Ce qui a le droit d'y entrer, dans mon poste, aujourd'hui</div>
+        <div class="deux-colonnes">
+          <div>
+            <p><strong>Ce qui entre</strong></p>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+          </div>
+          <div>
+            <p><strong>Ce qui n'entre jamais</strong></p>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+          </div>
+        </div>
+        <p class="petit">
+          Le mot <em>jamais</em> s'écrit en toutes lettres, pas d'une croix : le mot engage, la croix
+          non.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3. Qui valide, et à qui remonte le doute</div>
+        <p>La personne qui valide l'usage d'un outil dans l'établissement : ______________________</p>
+        <p>La personne à qui remontent les questions de secret et de données : ______________________</p>
+        <p>Date à laquelle je lui remets cette fiche : ____ / ____ / 20____</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4. Constat de fin de journée (module 4)</div>
+        <p>Ce que j'ai collé aujourd'hui et qui n'aurait pas dû l'être :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Cette fiche est un <strong>projet</strong> décrivant une situation de travail : elle ne
+        qualifie rien en droit et ne sert à aucune décision de soin. Sa validation revient au
+        professionnel compétent et à la structure ; toute question juridique se note pour le conseil
+        de la structure — <strong>« je ne me prononce pas, notez la question, votre conseil
+        tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3" data-titre="Mémo — les trois régimes de compte, et ce qu'ils changent dans la journée" data-bloc="M1, vérification" data-tirage="1 par stagiaire + exemplaire formateur">
+      <div class="piece-badge">Pièce A3</div>
+      <h2>Les trois régimes de compte — mémo de travail</h2>
+      <p class="piece-usage">
+        La pièce contre laquelle les cas litigieux du classement se tranchent en plénière. Le
+        formateur tranche <strong>contre cette fiche</strong>, jamais contre son opinion : la fiche
+        est écrite et datée, l'opinion non.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que ce mémo est, et ce qu'il n'est pas</div>
+        <p>
+          Il décrit <strong>trois situations de compte</strong> telles qu'on les constate, et la
+          conduite de travail que la journée retient dans chacune. Il ne dit pas ce que le droit
+          exige, ne qualifie aucun traitement et n'énonce aucune règle professionnelle : cette
+          qualification se fait dans votre structure, avec les personnes compétentes.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%">Le régime constaté</th>
+            <th style="width: 32%">Ce qu'on observe</th>
+            <th>La conduite de travail retenue aujourd'hui</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Compte grand public, ouvert à titre personnel</strong></td>
+            <td>
+              Aucun engagement pris envers votre établissement. Selon les conditions en vigueur, ce
+              qui y est déposé peut être conservé et réutilisé — à vérifier au relevé A4, à sa date.
+            </td>
+            <td>
+              Rien de professionnel n'y entre tant que la personne qui valide n'a pas dit mieux.
+              C'est la première ligne de la fiche A2. Le doute reste un « jamais ».
+            </td>
+          </tr>
+          <tr>
+            <td><strong>2. Abonnement payant souscrit à titre individuel</strong></td>
+            <td>
+              Payer change le service rendu ; cela ne crée aucun engagement de l'éditeur envers
+              l'établissement, qui n'est pas partie au contrat.
+            </td>
+            <td>
+              Même conduite que le régime 1 pour tout ce qui décrit une personne. L'aisance
+              d'utilisation n'est pas une autorisation.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>3. Environnement retenu et administré par l'établissement</strong></td>
+            <td>
+              L'établissement a choisi l'outil, arrêté par écrit ce qui peut y entrer, et désigné qui
+              répond aux questions.
+            </td>
+            <td>
+              Le seul régime dans lequel la question « puis-je y mettre ceci ? » peut seulement
+              <em>se poser</em> — et elle se tranche chez vous, jamais en salle.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La ligne rouge, dans les trois régimes</div>
+        <ul>
+          <li>
+            <strong>Rien qui décrive une personne accompagnée</strong> n'entre dans un outil — nom,
+            initiales, référence de dossier, récit de séjour, photo d'une page. Le régime ne change
+            pas cette ligne, il ne change que le reste.
+          </li>
+          <li>
+            <strong>Aucun contenu de soin n'est produit par l'outil</strong> : ni diagnostic, ni
+            conseil thérapeutique, ni tri ou priorisation de personnes. Ce n'est le périmètre ni de
+            l'outil, ni de la journée.
+          </li>
+          <li>
+            <strong>Le retrait du nom ne suffit pas.</strong> Un jour de la semaine, un étage, un
+            lien de parenté et un détail singulier suffisent à désigner quelqu'un dans un service —
+            le module 2 le montre en direct.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Quand la question devient juridique ou déontologique</div>
+        <p>
+          Secret partagé, sous-traitance, hébergement, obligations professionnelles : le formateur
+          n'arbitre rien. Formule prononcée telle quelle, puis question écrite au tableau :
+          <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Support de formation, <strong>pas un avis juridique ni un avis professionnel</strong> :
+        aucune décision de soin ne s'y appuie. Le régime applicable chez vous se valide avec la
+        structure et le professionnel compétent — toute question de droit part au conseil de la
+        structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4" data-titre="Relevé daté des conditions d'utilisation des trois comptes les plus répandus" data-bloc="M1, pratique" data-tirage="1 par stagiaire + exemplaire formateur">
+      <div class="piece-badge">Pièce A4</div>
+      <h2>Ce que disent les conditions d'utilisation — relevé à faire, et à dater</h2>
+      <p class="piece-usage">
+        Plan B de la pratique du module 1 : quand le réseau tombe, les conditions ne s'ouvrent plus à
+        l'écran. Ce relevé se remplit <strong>avant la session</strong> par l'organisme, s'imprime
+        avec les extraits en regard, et se distribue tel quel. Une clause recopiée sans date ne vaut
+        rien : les conditions changent, le relevé se refait.
+      </p>
+
+      <div class="champ-date">
+        <strong>Conditions ouvertes et relevées le :</strong> ____ / ____ / 20____ ·
+        <strong>Par :</strong> ______________________ ·
+        <strong>Extraits imprimés joints :</strong> <span class="coche"></span> oui
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les cinq questions posées à chaque compte — toujours les mêmes</div>
+        <ol>
+          <li>Qui est responsable de ce que je dépose : moi, mon établissement, personne ?</li>
+          <li>Ce que je dépose peut-il servir à améliorer ou entraîner le service ?</li>
+          <li>Combien de temps mes échanges sont-ils conservés, et puis-je les supprimer ?</li>
+          <li>Où les contenus sont-ils traités, et qui peut y accéder ?</li>
+          <li>Existe-t-il un contrat signé <em>par l'établissement</em>, ou seulement par moi ?</li>
+        </ol>
+        <p class="petit">
+          On note ce que le texte dit, à sa date, en indiquant où on l'a lu. On n'écrit pas ce qu'on
+          croit savoir, et on n'en tire aucune conclusion juridique en salle.
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%">Le compte</th>
+            <th style="width: 39%">Ce que les conditions disent, à la date du relevé</th>
+            <th>Où ça se lit (rubrique, section)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Compte gratuit, ouvert à titre personnel</strong><br /><span class="petit">Outil : ______________</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Abonnement payant individuel</strong><br /><span class="petit">Outil : ______________</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Offre professionnelle souscrite par un établissement</strong><br /><span class="petit">Outil : ______________</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Consigne au formateur</div>
+        <p>
+          Ce relevé se lit, il ne se commente pas au-delà de ce qui y est écrit. Aucune clause ne se
+          cite de mémoire, aucune conséquence juridique ne s'annonce en salle : ce que la clause
+          implique pour votre établissement, c'est votre conseil qui le dit.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Relevé de formation, <strong>projet</strong> et non consultation : il ne qualifie rien, ne
+        sert à aucune décision de soin, et sa portée s'apprécie avec le professionnel compétent et la
+        structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5" data-titre="Les douze écrits à classer — feuille stagiaire" data-bloc="M1, pratique et vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A5 — feuille stagiaire</div>
+      <h2>Douze écrits — « je peux », « à condition de », « jamais »</h2>
+      <p class="piece-usage">
+        Atelier chronométré du module 1, puis correction croisée en binôme. Complétez la liste avec
+        deux écrits de votre propre quotidien (lignes 13 et 14). Le mot
+        <strong>« jamais » s'écrit en toutes lettres</strong> dans la colonne, pas d'une croix.
+      </p>
+
+      <p>
+        <strong>Nom (facultatif) :</strong> ______________________ ·
+        <strong>Binôme :</strong> ______________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th>L'écrit</th>
+            <th style="width: 26%">Mon classement</th>
+            <th style="width: 20%">À condition de QUOI, validé par QUI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>La relance d'une facture d'un fournisseur, aucune personne accompagnée citée.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>La note de service sur les nouveaux horaires du secrétariat.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Le planning nominatif des résidents de l'étage, « juste avec les initiales ».</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Une transmission ciblée concernant une personne accompagnée.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Le courrier type de convocation à un rendez-vous, à compléter après coup avec le nom.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Le compte rendu de la réunion de service, où deux situations individuelles sont évoquées.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Le mode d'emploi public du logiciel de facturation, pour en tirer une fiche courte.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Le tableau de suivi des heures des agents du service, avec leurs noms.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Le brouillon de réponse à une famille, contenant la référence du dossier.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Le protocole public d'organisation du circuit d'admission, aucune personne citée.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>La photo d'une page de dossier, « pour la faire retranscrire plus vite ».</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>Le dossier d'appel à projets rédigé l'an dernier par le service, jamais publié.</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td><em>Un écrit de mon quotidien :</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td><em>Un écrit de mon quotidien :</em></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les cas que je n'arrive pas à trancher</div>
+        <p class="petit">
+          Ils ne se tranchent pas en salle : ils s'écrivent ici, et ils partent au référent. Une
+          absence de réponse n'est pas une autorisation.
+        </p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Exercice de formation : le classement produit ici est un <strong>projet</strong> de méthode
+        de travail, il ne sert à aucune décision de soin et se valide avec le professionnel compétent
+        et la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5">
+      <div class="piece-badge">Pièce A5 — corrigé formateur</div>
+      <h2>Les douze écrits — corrigé, avec la règle qui tranche</h2>
+      <p class="piece-usage">
+        À donner ligne par ligne APRÈS la correction croisée. Sur les lignes qui divisent, faire
+        défendre chaque camp en une phrase. La règle qui tranche porte toujours sur la
+        <strong>nature de ce qui entrerait dans l'outil</strong> — jamais sur le fond médical, jamais
+        sur le droit.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th style="width: 20%">Classement retenu</th>
+            <th>La règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Je peux</strong></td>
+            <td>
+              Rien dans cet écrit ne décrit une personne accompagnée. C'est de la gestion courante :
+              le terrain le plus sûr de la journée.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Je peux</strong></td>
+            <td>
+              Document d'organisation interne sans personne citée. Faire dire POURQUOI : c'est
+              l'antidote à la prudence excessive, qui pousse à tout s'interdire et à ne rien changer.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Jamais</strong></td>
+            <td>
+              Le retrait du nom ne change pas la nature de la donnée : dans un service, initiales +
+              étage + date désignent une personne. <strong>Ligne piège n° 1</strong> — prendre le
+              temps.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Jamais</strong></td>
+            <td>
+              L'écrit décrit une personne accompagnée de bout en bout. Aucune reformulation ne le
+              rend admissible : ce n'est pas une question de forme.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>À condition de</strong></td>
+            <td>
+              La <em>trame</em> ne décrit personne et peut entrer ; le nom et les éléments nominatifs
+              s'insèrent après, hors outil, sur votre poste. La condition se nomme : « trame vide,
+              remplissage hors outil », et elle a un valideur.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>À condition de</strong></td>
+            <td>
+              Les passages qui décrivent des situations individuelles sortent AVANT, hors outil. S'il
+              ne reste rien une fois sortis, c'est un « jamais » : la condition doit laisser un texte
+              qui tient debout.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>Je peux</strong></td>
+            <td>
+              Document public d'un tiers, diffusé par lui, sans personne citée. Le régime du compte
+              reste à vérifier, la nature du document ne pose pas de difficulté.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>Jamais</strong></td>
+            <td>
+              Nominatif : la règle de la journée protège les personnes accompagnées
+              <strong>et</strong> les agents. Le motif (« un tableau plus lisible ») ne change rien —
+              la règle porte sur la donnée, pas sur l'intention.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>À condition de</strong></td>
+            <td>
+              Une référence de dossier est un identifiant : dans l'établissement, elle désigne
+              immédiatement quelqu'un. L'outil écrit le squelette, vous insérez la référence après.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>Je peux</strong></td>
+            <td>
+              Document d'organisation public, aucune personne citée : c'est exactement le matériau du
+              module 3.
+            </td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td><strong>Jamais</strong></td>
+            <td>
+              Une image d'une page de dossier est un contenu de dossier. Le format n'est pas la
+              question — ce qui est photographié décrit une personne.
+            </td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td><strong>À condition de</strong></td>
+            <td>
+              Aucune personne accompagnée n'y figure, mais le document est interne et non publié :
+              c'est le <em>régime du compte</em> qui décide, pas la nature du contenu. Condition
+              nommée, valideur nommé, sinon « jamais » provisoire.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La question fermée de fin — à poser telle quelle</div>
+        <p>
+          « Un écrit sans nom, mais qui raconte le parcours d'un patient : quel classement ? » —
+          <strong>Jamais.</strong> Le retrait du nom ne change pas la nature de la donnée. C'est la
+          phrase à faire répéter par la salle avant la pause.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si un stagiaire classe tout en « à condition de »</div>
+        <p>
+          Une seule question : <strong>« à condition de QUOI, validé par QUI ? »</strong>. Si la
+          condition n'a ni nom ni date, c'est un « jamais » provisoire. Il corrige seul — ne corrigez
+          pas à sa place.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Corrigé de formation : il tranche sur la <strong>nature de la donnée</strong>, jamais sur une
+        règle médicale, déontologique ou juridique. Aucune décision de soin ne s'y appuie ; la
+        validation revient au professionnel compétent et à la structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6" data-titre="Le courrier de sortie FICTIF (PAT-REF-01) — version d'origine" data-bloc="M1, démonstration" data-tirage="1 par stagiaire + exemplaire formateur">
+      <div class="piece-badge">Pièce A6</div>
+      <h2>Le courrier de sortie FICTIF — la version d'origine</h2>
+      <p class="piece-usage">
+        Le « avant » de la démonstration du module 1. Se lit face à la reprise capturée dans l'outil
+        (fiche de capture du module 1, datée). Dites d'où vient le document AVANT de le distribuer,
+        et répétez-le après : courrier <strong>fictif</strong>, écrit pour la formation, aucune
+        personne réelle — la question « et avec un vrai courrier ? » viendra, et la réponse est
+        « jamais ».
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que ce document est</div>
+        <p>
+          Un courrier <strong>administratif</strong> fictif : rendez-vous, documents remis,
+          transport. Il ne contient aucun élément de soin, aucun nom, aucune initiale, aucune date de
+          naissance — la personne y est désignée par la référence <strong>PAT-REF-01</strong>, qui ne
+          renvoie à rien.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>ÉTABLISSEMENT FICTIF « LES HAUTS-PRÉS » — courrier de fin de séjour</strong></p>
+        <p><strong>Dossier :</strong> PAT-REF-01 · <strong>Service :</strong> admissions programmées</p>
+        <p>
+          Madame, Monsieur, suite à votre séjour qui s'est terminé cette semaine nous vous
+          transmettons les éléments administratifs de votre dossier ainsi que les informations
+          concernant la suite, vous trouverez ci joint le bulletin de situation ainsi que le
+          document pour votre organisme.
+        </p>
+        <p>
+          Il est prévu que vous reveniez pour un rendez vous de suivi, la date vous sera confirmée
+          par le secrétariat, celui ci est joignable aux horaires habituels, un second rendez vous
+          est également à prévoir avec le service social mais nous n'avons pas encore la date, il
+          faudra rappeler.
+        </p>
+        <p>
+          Concernant le transport, la demande a été transmise, en cas de difficulté il convient de
+          se rapprocher du secrétariat qui vous orientera, nous vous rappelons également que les
+          documents doivent être conservés.
+        </p>
+        <p>
+          Restant à votre disposition pour toute information complémentaire, nous vous prions
+          d'agréer, Madame, Monsieur, l'expression de nos salutations distinguées.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Repère formateur — ce que la reprise doit faire apparaître</div>
+        <ul>
+          <li>
+            <strong>Les rendez-vous en liste datée</strong>, au lieu de trois phrases enchaînées où
+            l'on ne sait plus combien il y en a. Faire compter à la salle sur l'original : il y en a
+            deux, et personne ne les voit du premier coup.
+          </li>
+          <li>
+            <strong>Les mentions « À COMPLÉTER »</strong> aux endroits où l'information manque —
+            date du rendez-vous de suivi, rendez-vous avec le service social, horaires du
+            secrétariat. <em>C'est ce qu'on commente, pas la fluidité.</em>
+          </li>
+          <li>
+            <strong>Rien d'ajouté.</strong> Vérifier ligne à ligne que la reprise n'a introduit aucun
+            élément absent de l'original. Si l'outil a ajouté quoi que ce soit, ne le cachez pas :
+            montrez-le, c'est la meilleure preuve que la relecture reste obligatoire.
+          </li>
+        </ul>
+        <p class="petit">
+          La reprise ne se reconstitue jamais à la main : elle se capture dans l'outil de la session
+          et s'imprime datée. Une sortie inventée n'est pas une sortie vérifiée.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Document <strong>fictif</strong> de formation. Rien de ce qui se produit à partir de lui ne
+        sert à une décision de soin ; toute production reste un <strong>projet</strong> validé par le
+        professionnel compétent et la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7" data-titre="Le texte FICTIF « sans le nom » — démonstration des quatre traces" data-bloc="M2, démonstration" data-tirage="1 par stagiaire + exemplaire formateur">
+      <div class="piece-badge">Pièce A7 — feuille stagiaire</div>
+      <h2>« J'ai retiré le nom, donc c'est anonyme » — le texte à démentir</h2>
+      <p class="piece-usage">
+        Distribuée AVANT le pari de la salle. Faites voter à main levée : « ce texte est-il
+        anonyme ? » — le pari est ce qui rend la démonstration mémorable ; sans lui, la salle regarde,
+        avec lui, elle s'est trompée elle-même. Texte <strong>fictif</strong>, écrit pour la
+        formation : dites-le avant, redites-le après.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Note d'organisation — dossier PAT-REF-02 (extrait, nom retiré)</strong></p>
+        <p>
+          La personne est arrivée le mardi de la semaine dernière, en fin d'après-midi, transférée
+          depuis l'établissement voisin. Elle occupe la chambre côté jardin, au premier étage de
+          l'aile B. Sa fille passe tous les jeudis en fin de journée ; elle travaille à la mairie et
+          demande à être prévenue par téléphone plutôt que par courrier. La personne a fêté ses
+          quatre-vingt-sept ans pendant le séjour et le service a organisé un gâteau. Ancienne
+          institutrice du village, elle demande chaque matin le journal local. Le rendez-vous de
+          suivi est à caler avant la fin du mois.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">À surligner, en quatre couleurs</div>
+        <div class="deux-colonnes">
+          <div>
+            <p><span class="coche"></span> <strong>Dates</strong> — tout ce qui situe dans le temps</p>
+            <p><span class="coche"></span> <strong>Lieu</strong> — tout ce qui situe dans l'espace</p>
+          </div>
+          <div>
+            <p><span class="coche"></span> <strong>Entourage</strong> — qui gravite autour</p>
+            <p><span class="coche"></span> <strong>Singularité</strong> — ce qui n'appartient qu'à elle</p>
+          </div>
+        </div>
+        <p>Combien de traces avez-vous comptées ? <strong>______</strong></p>
+      </div>
+
+      <div class="banniere">
+        Texte <strong>fictif</strong>. Il sert à montrer un risque, pas à décrire quelqu'un. Toute
+        production de la journée est un <strong>projet</strong>, ne sert à aucune décision de soin, et
+        se valide auprès du professionnel compétent et de la structure ; question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7">
+      <div class="piece-badge">Pièce A7 — corrigé formateur</div>
+      <h2>Les traces du texte, famille par famille — quatorze, sans le nom</h2>
+      <p class="piece-usage">
+        À lire APRÈS le vote, famille par famille, en cochant sur l'exemplaire projeté ou lu à voix
+        haute. Ce corrigé est un relevé de ce que le texte contient : il ne suppose aucune
+        connaissance médicale, il se vérifie mot à mot sur la feuille.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%">Famille</th>
+            <th style="width: 40%">Les traces présentes dans le texte</th>
+            <th>Ce qu'elles suffisent à faire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dates</strong></td>
+            <td>
+              « le mardi de la semaine dernière » · « en fin d'après-midi » · « tous les jeudis » ·
+              « avant la fin du mois » · l'anniversaire fêté pendant le séjour
+            </td>
+            <td>
+              Une date d'arrivée relative se convertit en date exacte par quiconque connaît le
+              calendrier du service.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Lieu</strong></td>
+            <td>
+              « chambre côté jardin » · « premier étage de l'aile B » · « l'établissement voisin » ·
+              « du village »
+            </td>
+            <td>
+              Trois de ces quatre éléments réduisent la population concernée à une poignée de
+              personnes.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Entourage</strong></td>
+            <td>
+              « sa fille » · « tous les jeudis en fin de journée » · « elle travaille à la mairie » ·
+              la préférence pour le téléphone
+            </td>
+            <td>
+              Le lien de parenté associé à un jour fixe est l'une des traces les plus reconnaissables
+              qui soient dans un établissement.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Singularité</strong></td>
+            <td>
+              « quatre-vingt-sept ans » · « ancienne institutrice » · « le journal local chaque
+              matin » · le gâteau du service
+            </td>
+            <td>
+              Le détail attachant est la trace qu'on oublie de retirer, parce qu'on le trouve joli.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La quinzième trace, celle que personne ne compte</div>
+        <p>
+          <strong>La référence de dossier elle-même</strong> — ici PAT-REF-02. Un identifiant interne
+          n'est pas un anonymat : dans l'établissement, il désigne quelqu'un en un clic. Le faire
+          remarquer en dernier : c'est la trace qui fait le plus d'effet.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui reste après neutralisation complète — et la conclusion</div>
+        <p>
+          « Une personne accompagnée par le service doit recevoir la confirmation d'un rendez-vous de
+          suivi. » C'est tout. Faire constater à la salle qu'il ne reste
+          <strong>rien d'utilisable</strong> : c'est précisément pourquoi la règle du matin ne dit
+          pas « anonymisez », elle dit <strong>« rien n'entre »</strong> — et pourquoi les ateliers
+          tournent sur le jeu fictif du kit (pièce A9).
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si la démonstration en direct tombe à plat</div>
+        <p>
+          Relancer avec « dresse le portrait le plus précis possible de la personne » : le mot
+          « portrait » force la déduction. Si cela ne suffit pas, basculer sur cette pièce papier et
+          ne rien improviser.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Corrigé d'un texte <strong>fictif</strong> : il compte des traces, il n'énonce aucune règle
+        médicale ni juridique. Toute production reste un <strong>projet</strong> sans effet sur une
+        décision de soin, validé par le professionnel compétent et la structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8" data-titre="Fiche des quatre traces + contrôle du binôme (droit de veto)" data-bloc="M2, pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A8</div>
+      <h2>Les quatre traces — fiche de neutralisation et contrôle du binôme</h2>
+      <p class="piece-usage">
+        Se remplit <strong>stylo en main, écrans fermés</strong>. Une neutralisation faite dans
+        l'outil est déjà une fuite : l'ordre des opérations est l'enseignement. Tant qu'une trace
+        reste, rien n'entre. Au moindre doute, on bascule sur un cas du jeu fictif (pièce A9).
+      </p>
+
+      <div class="champ-date">
+        <strong>Neutralisé le :</strong> ____ / ____ / 20____ ·
+        <strong>Contrôlé par (binôme) :</strong> ______________________ ·
+        <strong>Verdict :</strong> <span class="coche"></span> zéro trace &nbsp;
+        <span class="coche"></span> il en reste ______
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 18%">Famille</th>
+            <th style="width: 40%">Ce qu'on y range</th>
+            <th style="width: 22%">Ce que j'ai retiré</th>
+            <th style="width: 20%">Compté par le binôme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Dates</strong></td>
+            <td>Jour de la semaine, moment de la journée, durée de séjour, période, saison, anniversaire.</td>
+            <td></td>
+            <td>reste : ______</td>
+          </tr>
+          <tr>
+            <td><strong>Lieu</strong></td>
+            <td>Étage, aile, numéro ou orientation de chambre, service, commune, établissement d'origine.</td>
+            <td></td>
+            <td>reste : ______</td>
+          </tr>
+          <tr>
+            <td><strong>Entourage</strong></td>
+            <td>Lien de parenté, profession d'un proche, rythme des visites, coordonnées, intervenant extérieur.</td>
+            <td></td>
+            <td>reste : ______</td>
+          </tr>
+          <tr>
+            <td><strong>Singularité</strong></td>
+            <td>Âge, ancien métier, habitude quotidienne, événement marquant, tout détail « attachant ».</td>
+            <td></td>
+            <td>reste : ______</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les trois règles du contrôle</div>
+        <ul>
+          <li>
+            <strong>Le contrôle est un droit de veto, pas un avis.</strong> Tant que le binôme n'a pas
+            écrit « zéro », rien n'entre dans l'outil.
+          </li>
+          <li>
+            <strong>Le contrôleur annonce un NOMBRE</strong> (« il en reste deux »), il ne juge pas le
+            texte. Compter est plus facile que critiquer, et tout aussi efficace.
+          </li>
+          <li>
+            <strong>Les identifiants comptent comme des traces</strong> : référence de dossier, numéro
+            de chambre, numéro de séjour. Ils ne sont pas des anonymats.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si je n'y arrive pas</div>
+        <p>
+          Je bascule sur un cas du jeu fictif (A9) et je le dis. Ce n'est pas un échec de l'exercice :
+          <strong>un texte qui résiste à la neutralisation est un texte qui n'entre pas</strong>, et
+          l'avoir constaté est exactement ce que la journée enseigne.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Méthode de travail, <strong>projet</strong> à valider chez vous : rien de ce qui est produit
+        ici ne sert à une décision de soin, et la validation revient au professionnel compétent et à
+        la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A9" data-titre="Jeu de trois cas FICTIFS à neutraliser (PAT-REF-03 à 05)" data-bloc="M2, pratique" data-tirage="1 jeu par stagiaire">
+      <div class="piece-badge">Pièce A9</div>
+      <h2>Trois cas FICTIFS — la matière de l'atelier, quand on doute</h2>
+      <p class="piece-usage">
+        Pour le stagiaire qui n'a pas de cas neutralisable sous la main, pour celui qui doute, et pour
+        la dictée de la prise en main : <strong>personne ne dicte un contenu réel, même pour
+        essayer</strong>. Ces trois cas sont entièrement inventés — établissement, situations,
+        références. Aucun ne comporte d'élément de soin : ce sont des situations d'organisation.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Cas 1 — dossier PAT-REF-03</strong></p>
+        <p>
+          Le séjour s'achève vendredi. La personne, quatre-vingt-onze ans, occupe la chambre 12 au
+          rez-de-chaussée de l'aile ouest depuis trois semaines. Son fils, pharmacien à Sainte-Foy,
+          appelle tous les lundis matin pour connaître les horaires de visite. Le transport de retour
+          n'est pas confirmé et le bulletin de situation n'a pas été remis. Il faut écrire à la
+          famille pour confirmer l'heure de sortie.
+        </p>
+        <p class="petit">Traces à retirer : <strong>9</strong> (dates 2 · lieu 3 · entourage 2 · singularité 2)</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Cas 2 — dossier PAT-REF-04</strong></p>
+        <p>
+          Le rendez-vous de suivi prévu jeudi prochain doit être reporté : la salle du deuxième étage
+          est indisponible toute la semaine. La personne concernée est arrivée le jour de la fête du
+          village et sa nièce, qui tient le tabac de la place, accompagne systématiquement les
+          déplacements. Il faut prévenir la famille et proposer deux nouvelles dates.
+        </p>
+        <p class="petit">Traces à retirer : <strong>8</strong> (dates 3 · lieu 2 · entourage 2 · singularité 1)</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Cas 3 — dossier PAT-REF-05</strong></p>
+        <p>
+          Une administration demande une attestation de présence pour la période du séjour. Le
+          dossier est incomplet : il manque une pièce que la personne, ancienne cheminote de
+          quatre-vingt-deux ans, doit fournir. Elle est hébergée au troisième étage depuis le mardi
+          de Pâques et son voisin de palier sert d'interprète pour les échanges téléphoniques. Il
+          faut répondre à l'administration et réclamer la pièce manquante.
+        </p>
+        <p class="petit">Traces à retirer : <strong>9</strong> (dates 2 · lieu 2 · entourage 2 · singularité 3)</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Consigne — dans cet ordre, jamais un autre</div>
+        <ol>
+          <li>Neutraliser SUR PAPIER, écran fermé, jusqu'à zéro trace.</li>
+          <li>Faire compter par le binôme, fiche A8 en main. Tant qu'il reste un nombre, on continue.</li>
+          <li>Alors seulement, écrire l'écrit demandé — à partir du texte neutralisé, sur la trame A10.</li>
+        </ol>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Repère formateur — les trois échecs de dépôt, à annoncer AVANT</div>
+        <p class="petit">
+          Un stagiaire qui échoue sans avoir été prévenu se referme pour la journée ; prévenu, il vous
+          appelle.
+        </p>
+        <ul>
+          <li>
+            <strong>Le scan sans texte reconnu</strong> — parade : re-exporter depuis la source, ou
+            photographier la page de près, en deux moitiés.
+          </li>
+          <li>
+            <strong>Le tableau désaligné</strong> — parade : demander une lecture ligne par ligne, et
+            vérifier deux valeurs au hasard contre l'original.
+          </li>
+          <li>
+            <strong>Le fichier trop lourd</strong> — parade : découper le document, ou n'en déposer
+            que la partie utile.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Cas entièrement <strong>fictifs</strong>. Ce qui en sort est un <strong>projet</strong> : rien
+        ne sert à une décision de soin, la validation revient au professionnel compétent et à la
+        structure, et toute question juridique part au conseil de la structure —
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A10" data-titre="Les quatre trames de courriers — famille, rendez-vous, confrère, administration" data-bloc="M2, pratique" data-tirage="1 jeu par stagiaire + 5">
+      <div class="piece-badge">Pièce A10</div>
+      <h2>Quatre trames réutilisables — le squelette, jamais le dossier</h2>
+      <p class="piece-usage">
+        Plan B de la pratique du module 2 : réseau tombé, l'écrit final se rédige à la main sur ces
+        trames — la structure est l'enseignement, chacun relancera la mise en forme au bureau. Les
+        éléments entre chevrons se remplissent <strong>hors outil</strong>, sur votre poste, après.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les marqueurs, toujours les mêmes</div>
+        <p class="petit">
+          &lt;NOM&gt; · &lt;RÉF-DOSSIER&gt; · &lt;DATE&gt; · &lt;HEURE&gt; · &lt;SERVICE&gt; ·
+          &lt;INTERLOCUTEUR&gt;. Un marqueur qui reste dans un courrier envoyé, c'est une relecture
+          qui a sauté : la dernière ligne de la relecture consiste à les chercher tous.
+        </p>
+      </div>
+
+      <h3>Trame 1 — courrier à une famille : confirmation de rendez-vous</h3>
+      <div class="texte-exercice">
+        <p>Objet : confirmation de votre rendez-vous du &lt;DATE&gt;</p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          Nous vous confirmons le rendez-vous fixé au &lt;DATE&gt; à &lt;HEURE&gt;, auprès du
+          &lt;SERVICE&gt;. — <em>l'information essentielle en première phrase, avant toute formule</em>
+        </p>
+        <p>Merci de vous présenter à l'accueil muni des documents suivants : &lt;LISTE&gt;.</p>
+        <p>
+          En cas d'empêchement, vous pouvez joindre le secrétariat au &lt;COORDONNÉES&gt; ; nous vous
+          proposerons une nouvelle date.
+        </p>
+        <p>Formule de politesse d'établissement · &lt;SIGNATAIRE&gt;</p>
+      </div>
+
+      <h3>Trame 2 — courrier à une famille : report d'un rendez-vous</h3>
+      <div class="texte-exercice">
+        <p>Objet : report de votre rendez-vous du &lt;DATE&gt;</p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          Le rendez-vous prévu le &lt;DATE&gt; ne pourra pas se tenir. — <em>l'annonce d'abord, le
+          motif ensuite : jamais l'inverse</em>
+        </p>
+        <p>Motif, en une phrase et sans détour : &lt;MOTIF D'ORGANISATION&gt;.</p>
+        <p>Deux nouvelles dates possibles : &lt;DATE 1&gt; · &lt;DATE 2&gt;. Merci de nous indiquer celle qui vous convient avant le &lt;DATE LIMITE&gt;.</p>
+        <p>Formule de politesse · &lt;SIGNATAIRE&gt;</p>
+      </div>
+
+      <h3>Trame 3 — courrier à un confrère ou à un partenaire</h3>
+      <div class="texte-exercice">
+        <p>Objet : &lt;OBJET ADMINISTRATIF&gt; — dossier &lt;RÉF-DOSSIER&gt;</p>
+        <p>
+          Rappel du cadre en deux lignes : quel service écrit, à quel titre, à propos de quelle
+          démarche administrative.
+        </p>
+        <p>Ce que nous transmettons : &lt;PIÈCES&gt;. Ce que nous demandons : &lt;DEMANDE&gt;, avant le &lt;DATE&gt;.</p>
+        <p>Interlocuteur et coordonnées pour la suite : &lt;INTERLOCUTEUR&gt;.</p>
+        <p class="petit">
+          Aucun élément décrivant la personne accompagnée ne figure dans le texte préparé avec
+          l'outil : il n'y a ici que de l'organisation.
+        </p>
+      </div>
+
+      <h3>Trame 4 — réponse à une administration</h3>
+      <div class="texte-exercice">
+        <p>Objet : réponse à votre courrier du &lt;DATE&gt; — dossier &lt;RÉF-DOSSIER&gt;</p>
+        <p>1. Rappel de la demande, telle qu'elle est formulée dans le courrier reçu.</p>
+        <p>2. Ce que nous répondons, point par point, dans l'ordre de la demande.</p>
+        <p>3. Les pièces jointes, numérotées : &lt;PIÈCE 1&gt; · &lt;PIÈCE 2&gt;.</p>
+        <p>4. Ce qui reste à produire et sous quel délai : &lt;À COMPLÉTER&gt;.</p>
+        <p>5. Interlocuteur unique pour la suite : &lt;INTERLOCUTEUR&gt;.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La règle des marqueurs — à faire répéter</div>
+        <p>
+          <strong>L'outil écrit le squelette, jamais le dossier.</strong> La référence, le nom, les
+          éléments nominatifs s'insèrent après, sur votre poste. Si vous vous surprenez à vouloir
+          « juste donner le contexte » à l'outil pour qu'il écrive mieux : c'est le moment de
+          basculer sur un cas fictif.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Trames remises en <strong>projet</strong> : aucune ne sert à une décision de soin, chacune se
+        valide auprès du professionnel compétent et de la structure avant diffusion. La mention
+        « projet » ne se retire pas avant validation. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11" data-titre="Grille de vérification croisée du module 2" data-bloc="M2, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A11 — feuille stagiaire</div>
+      <h2>Vérification croisée — l'écrit de mon binôme</h2>
+      <p class="piece-usage">
+        S'applique à l'écrit <strong>du binôme</strong>, jamais au sien. Règle du groupe : chaque
+        binôme remonte <strong>au moins un écart</strong>, et le formateur en demandera un à l'oral —
+        la complaisance tombe immédiatement. On compte à voix haute : le comptage collectif règle
+        l'œil de toute la salle en trois productions.
+      </p>
+
+      <p>
+        <strong>Écrit relu :</strong> ______________________________ ·
+        <strong>Relu par :</strong> ______________________
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">Ce qu'on regarde</th>
+            <th style="width: 20%">Verdict</th>
+            <th>Ce qui se corrige séance tenante</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Traces résiduelles — dates</strong></td>
+            <td>reste : ______</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Traces résiduelles — lieu</strong></td>
+            <td>reste : ______</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Traces résiduelles — entourage</strong></td>
+            <td>reste : ______</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Traces résiduelles — singularité</strong></td>
+            <td>reste : ______</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Marqueurs</strong> — reste-t-il un &lt;CHEVRON&gt; non rempli ?</td>
+            <td><span class="coche"></span> non <span class="coche"></span> oui</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Exactitude</strong> — dates, horaires, pièces citées : vérifiés à la source ?</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ton</strong> — adapté au destinataire réel (famille, confrère, administration) ?</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Mentions attendues</strong> — objet, interlocuteur, délai, signataire ?</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à corriger</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Formulations biaisées</strong> — jugement, supposition, familiarité déplacée ?</td>
+            <td><span class="coche"></span> non <span class="coche"></span> oui</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Ajout non demandé</strong> — l'outil a-t-il ajouté ce que le texte source ne disait pas ?</td>
+            <td><span class="coche"></span> non <span class="coche"></span> oui</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Total des traces trouvées, annoncé à voix haute :</strong> ______</p>
+
+      <div class="banniere">
+        L'écrit relu reste un <strong>projet</strong> jusqu'à relecture et validation : il ne sert à
+        aucune décision de soin, et la validation revient au professionnel compétent et à la
+        structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11">
+      <div class="piece-badge">Pièce A11 — corrigé formateur</div>
+      <h2>Les trois traces qui survivent presque toujours</h2>
+      <p class="piece-usage">
+        À commenter après le comptage collectif. Deux ou trois écarts seulement, ceux qui se
+        répètent : le reste se lit sur cette feuille.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 26%">La trace survivante</th>
+            <th style="width: 32%">Pourquoi elle passe entre les mailles</th>
+            <th>La correction qui marche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Le jour de la semaine</strong></td>
+            <td>
+              « jeudi » ne ressemble pas à une donnée : on retire les dates au format chiffré et on
+              laisse les jours en toutes lettres.
+            </td>
+            <td>
+              Remplacer par une formulation sans calendrier : « lors du prochain rendez-vous »,
+              « à la date convenue ».
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Le lien de parenté</strong></td>
+            <td>
+              « sa fille » paraît neutre parce que le prénom a disparu. Associé à un rythme de
+              visite, c'est l'une des traces les plus reconnaissables du texte.
+            </td>
+            <td>
+              « la personne référente du dossier », « l'interlocuteur désigné » — un rôle, pas un
+              lien.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Le détail singulier</strong></td>
+            <td>
+              L'ancien métier, l'habitude quotidienne, l'anecdote : on les garde parce qu'ils rendent
+              le texte vivant. C'est exactement pour cela qu'ils identifient.
+            </td>
+            <td>
+              Retirer sans remplacer. Un écrit administratif n'a pas besoin d'être vivant, il a besoin
+              d'être exact.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si les binômes se valident mutuellement sans rien relever</div>
+        <p>
+          Annoncer que chaque binôme devra restituer <strong>au moins un écart à l'oral</strong>, et
+          désigner le premier. Un binôme qui n'a rien trouvé échange sa production avec un autre
+          binôme : on trouve toujours mieux chez l'autre.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si un stagiaire a collé un extrait réel non contrôlé</div>
+        <p>
+          Arrêter immédiatement, sans négocier : faire supprimer la conversation, puis le dire à la
+          salle sans nommer personne. Le constat se note sur la fiche A2, et se signale au référent en
+          rentrant — <strong>conduite à tenir, pas punition</strong>. Le formateur ne qualifie pas
+          l'incident : il le fait remonter.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Corrigé de méthode : il compte des traces, il n'énonce aucune règle médicale, déontologique ni
+        juridique. Aucune décision de soin ne s'y appuie ; la validation revient au professionnel
+        compétent et à la structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12" data-titre="Rapport public FICTIF « CRAOS » — le document long du module 3" data-bloc="M3, démonstration et pratique" data-tirage="1 par table + exemplaire formateur">
+      <div class="piece-badge">Pièce A12</div>
+      <h2>Rapport public FICTIF — délais administratifs du parcours d'admission</h2>
+      <p class="piece-usage">
+        Le document long de la démonstration et du premier temps de la pratique. Il est
+        <strong>entièrement inventé</strong> : le comité, l'échantillon, les chiffres. Il ne contient
+        aucune donnée de personne et ne traite d'aucune pratique de soin.
+        <strong>Les renvois se font au paragraphe (§), pas à un feuillet</strong> : le kit se réimprime,
+        la numérotation des paragraphes ne bouge pas. La vérification est identique — on retourne au
+        §&nbsp;cité et on lit.
+      </p>
+
+      <div class="champ-date">
+        <strong>Document fictif daté du :</strong> 12 mars 2026 ·
+        <strong>Imprimé pour la session du :</strong> ____ / ____ / 20____
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>COMITÉ RÉGIONAL FICTIF D'APPUI AUX ORGANISATIONS SANITAIRES (CRAOS)<br />
+          Les délais administratifs dans le parcours d'admission programmée<br />
+          Rapport d'observation — publié le 12 mars 2026</strong>
+        </p>
+        <p>
+          <strong>§1 — Objet.</strong> Le comité a observé, entre septembre 2025 et janvier 2026, les
+          délais administratifs du parcours d'admission programmée dans 48 établissements
+          volontaires.
+        </p>
+        <p>
+          <strong>§2 — Méthode.</strong> Les données sont déclaratives : chaque établissement a rempli
+          un questionnaire de 30 items. Aucune donnée n'a été auditée sur pièces. Aucun dossier de
+          personne accompagnée n'a été consulté.
+        </p>
+        <p>
+          <strong>§3 — Premier constat.</strong> 62 % des établissements observés déclarent un délai
+          supérieur à 15 jours entre la décision d'admission et l'envoi complet du dossier
+          administratif.
+        </p>
+        <p>
+          <strong>§4 — Deuxième constat.</strong> Le délai moyen déclaré est de 21 jours, le délai
+          médian de 17 jours. L'écart va de 4 jours pour le premier décile à 52 jours pour le
+          dernier.
+        </p>
+        <p>
+          <strong>§5 — Troisième constat.</strong> Sur les 48 établissements, 3 déclarent un dossier
+          administratif entièrement dématérialisé, 29 un dossier mixte, 16 un dossier entièrement
+          papier.
+        </p>
+        <p>
+          <strong>§6 — Premier point de vigilance.</strong> La double saisie des mêmes informations
+          dans deux applications distinctes est signalée par 41 établissements sur 48.
+        </p>
+        <p>
+          <strong>§7 — Second point de vigilance.</strong> Aucun référent administratif du parcours
+          n'est identifié dans 22 des 48 établissements observés.
+        </p>
+        <p>
+          <strong>§8 — Estimation de coût.</strong> Le coût de la double saisie est estimé à
+          9 400 € par an et par établissement. Cette estimation est déclarative et n'a pas été
+          auditée.
+        </p>
+        <p>
+          <strong>§9 — Action recommandée n° 1.</strong> Désigner nommément, dans chaque
+          établissement, un référent administratif du parcours d'admission.
+        </p>
+        <p>
+          <strong>§10 — Action recommandée n° 2.</strong> Constituer un dossier type unique, commun
+          aux services, et supprimer les formulaires redondants.
+        </p>
+        <p>
+          <strong>§11 — Action recommandée n° 3.</strong> Mesurer le délai deux fois par an et publier
+          la mesure en interne.
+        </p>
+        <p>
+          <strong>§12 — Périmètre et limites.</strong> L'échantillon n'est pas représentatif. Le
+          présent rapport ne traite ni de la qualité des soins, ni de l'organisation des équipes
+          soignantes, ni des systèmes d'information cliniques. Aucune de ses recommandations ne porte
+          sur une pratique de soin.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les trois questions du premier temps — et où se trouve la réponse</div>
+        <p class="petit">
+          Exiger la vérification d'UNE réponse sur trois dans le document, à l'écran ou au doigt sur
+          le papier. Pas les trois — le temps manque — mais jamais zéro.
+        </p>
+        <ul>
+          <li>« Combien d'établissements ont été observés, et les données sont-elles auditées ? » → §1 et §2</li>
+          <li>« Quel est le délai médian, et comment se répartit l'écart ? » → §4</li>
+          <li>« Le rapport dit-il quelque chose de la qualité des soins ? » → §12 : <strong>non</strong>, il l'exclut explicitement. C'est la question qui apprend le plus.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si les renvois produits par l'outil sont faux</div>
+        <p>
+          Le montrer et en faire l'enseignement : <strong>les renvois se vérifient toujours</strong>.
+          Relancer en demandant « cite la phrase exacte en plus du paragraphe » — la citation textuelle
+          se retrouve par recherche même quand la numérotation diffère. Une note sans renvois est
+          invérifiable, donc inutilisable.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Document <strong>fictif</strong>. Toute note produite à partir de lui est un
+        <strong>projet</strong> : elle ne sert à aucune décision de soin et se valide auprès du
+        professionnel compétent et de la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A13" data-titre="Protocole public FICTIF — circuit d'admission programmée" data-bloc="M3, pratique" data-tirage="1 par table + 3">
+      <div class="piece-badge">Pièce A13</div>
+      <h2>Protocole public FICTIF — organisation du circuit d'admission</h2>
+      <p class="piece-usage">
+        Document de secours du module 3 : pour le stagiaire qui n'a apporté aucun document.
+        <strong>Personne ne regarde son voisin travailler pendant quarante-cinq minutes.</strong>
+        Document d'organisation, inventé de bout en bout, sans aucune personne citée et sans aucun
+        contenu de soin.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>ÉTABLISSEMENT FICTIF « LES HAUTS-PRÉS »<br />
+          Protocole public d'organisation — circuit d'admission programmée<br />
+          Version 3, en vigueur depuis le 4 février 2026</strong>
+        </p>
+        <p>
+          <strong>P1 — Objet et périmètre.</strong> Ce protocole décrit le circuit
+          <em>administratif</em> de l'admission programmée, de la décision d'admission à l'archivage
+          du dossier. Il ne décrit aucun acte de soin et ne s'applique pas aux admissions non
+          programmées.
+        </p>
+        <p>
+          <strong>P2 — Étape 1 : ouverture du dossier administratif.</strong> Le secrétariat ouvre le
+          dossier dans les 2 jours ouvrés suivant la décision d'admission et lui attribue une
+          référence unique.
+        </p>
+        <p>
+          <strong>P3 — Étape 2 : envoi du dossier à la personne.</strong> Le dossier type est envoyé
+          dans les 5 jours ouvrés suivant l'ouverture. Il comporte 6 pièces, listées en P7.
+        </p>
+        <p>
+          <strong>P4 — Étape 3 : relance.</strong> Une relance est adressée si les pièces ne sont pas
+          revenues 10 jours ouvrés après l'envoi. Une seconde relance intervient 10 jours ouvrés plus
+          tard ; au-delà, le dossier est signalé au cadre administratif.
+        </p>
+        <p>
+          <strong>P5 — Étape 4 : contrôle de complétude.</strong> Le secrétariat vérifie la présence
+          des 6 pièces et consigne la date de complétude. Aucun dossier incomplet n'est transmis.
+        </p>
+        <p>
+          <strong>P6 — Étape 5 : archivage.</strong> Le dossier est archivé sous sa référence unique
+          dans les 15 jours ouvrés suivant la fin du séjour.
+        </p>
+        <p>
+          <strong>P7 — Les 6 pièces du dossier type.</strong> 1. formulaire de renseignements
+          administratifs ; 2. justificatif de couverture ; 3. attestation de l'organisme ;
+          4. formulaire de personne à prévenir ; 5. document d'information sur les frais de séjour ;
+          6. accusé de réception signé.
+        </p>
+        <p>
+          <strong>P8 — Rôles.</strong> Le secrétariat tient le circuit ; le cadre administratif
+          arbitre les dossiers signalés ; le référent du parcours répond aux questions des familles.
+          Toute question relevant du soin sort de ce protocole et se traite dans le circuit clinique.
+        </p>
+        <p>
+          <strong>P9 — Mesure.</strong> Le délai entre P2 et P5 est mesuré chaque trimestre et publié
+          en interne.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois questions à poser à ce document, pour l'atelier</div>
+        <ul>
+          <li>« Quel est le délai total maximal du circuit, du P2 au P5, si les deux relances sont utilisées ? » → à reconstituer en additionnant P2, P3 et P4</li>
+          <li>« Combien de pièces le dossier type comporte-t-il, et lesquelles ? » → P3 et P7</li>
+          <li>« Qui arbitre un dossier resté incomplet après deux relances ? » → P4 et P8</li>
+        </ul>
+        <p class="petit">
+          Chaque réponse se renvoie à son repère (P2, P7…) et se vérifie dans le document. Une réponse
+          sans renvoi ne compte pas.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Document <strong>fictif</strong>. Ce qui en est tiré est un <strong>projet</strong>, ne sert à
+        aucune décision de soin, et se valide auprès du professionnel compétent et de la structure.
+        Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14" data-titre="Cahier des charges FICTIF d'un appel à projets public (FASA 2026)" data-bloc="M3, pratique" data-tirage="1 par table + 3">
+      <div class="piece-badge">Pièce A14</div>
+      <h2>Appel à projets public FICTIF — cahier des charges FASA 2026</h2>
+      <p class="piece-usage">
+        Matière du parcours « réponse à un appel à projets », et document source de la chasse à
+        l'erreur (pièce A16). Entièrement inventé : le fonds, le calendrier, les montants. Il sert
+        aussi à montrer qu'un cahier des charges se lit <strong>en cherchant les contraintes
+        chiffrées</strong>, pas en le lisant en entier.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>FONDS FICTIF D'APPUI À LA SIMPLIFICATION ADMINISTRATIVE (FASA)<br />
+          Appel à projets 2026 — cahier des charges<br />
+          Publié le 6 janvier 2026</strong>
+        </p>
+        <p>
+          <strong>C1 — Objet.</strong> Le fonds soutient les projets réduisant le temps consacré aux
+          tâches administratives dans les établissements sanitaires et médico-sociaux. Les projets
+          portant sur l'organisation des soins sont hors périmètre.
+        </p>
+        <p>
+          <strong>C2 — Bénéficiaires éligibles.</strong> Les établissements sanitaires et
+          médico-sociaux, seuls ou en groupement. Un même établissement ne peut déposer qu'un seul
+          dossier.
+        </p>
+        <p>
+          <strong>C3 — Calendrier.</strong> Ouverture du dépôt le 6 janvier 2026. Clôture le
+          30 septembre 2026 à 16 h. Notification des décisions en décembre 2026. Aucun dossier
+          déposé hors délai n'est examiné.
+        </p>
+        <p>
+          <strong>C4 — Montant.</strong> La subvention est plafonnée à 40 000 € par projet et ne peut
+          excéder 60 % du budget total éligible. Le cofinancement du solde est à la charge du
+          porteur.
+        </p>
+        <p>
+          <strong>C5 — Durée.</strong> Le projet dure au maximum 18 mois à compter de la
+          notification.
+        </p>
+        <p>
+          <strong>C6 — Format du dossier.</strong> 8 pages maximum hors annexes, police 11 minimum.
+          Les annexes ne sont pas notées.
+        </p>
+        <p>
+          <strong>C7 — Critères de sélection et pondération.</strong> Effet mesurable sur le temps
+          administratif (30) · Caractère reproductible dans d'autres établissements (30) · Solidité
+          du budget et du calendrier (25) · Association des équipes au projet (15).
+        </p>
+        <p>
+          <strong>C8 — Pièces à fournir.</strong> 1. dossier de présentation ; 2. budget détaillé ;
+          3. calendrier ; 4. lettre d'engagement de la direction ; 5. indicateurs de mesure retenus.
+        </p>
+        <p>
+          <strong>C9 — Dépenses exclues du financement.</strong> Dépenses de soin, matériel médical,
+          rémunération de personnel soignant, travaux immobiliers.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La méthode, en une ligne</div>
+        <p>
+          On relève d'abord les <strong>contraintes chiffrées</strong> — date de clôture, plafond,
+          taux, durée, nombre de pages — et on les écrit à part. Tout le reste du dossier se construit
+          contre cette liste. <strong>L'outil construit l'argumentaire et la structure ; les chiffres,
+          c'est vous qui les insérez</strong>, depuis vos tableaux de bord : laissé libre, l'outil
+          mettra un chiffre plausible, et faux.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Cahier des charges <strong>fictif</strong>. Toute réponse rédigée à partir de lui est un
+        <strong>projet</strong> : elle ne sert à aucune décision de soin et se valide auprès du
+        professionnel compétent et de la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15" data-titre="Les quatre parcours du module 3 — consignes et trames" data-bloc="M3, pratique" data-tirage="1 jeu par stagiaire">
+      <div class="piece-badge">Pièce A15 — recto</div>
+      <h2>Quatre parcours au choix — la consigne écrite et la trame</h2>
+      <p class="piece-usage">
+        Plan B de la pratique du module 3 : sans outil, la trame se remplit à la main et la structure
+        reste acquise. <strong>Celui qui hésite prend le parcours 1</strong> : c'est celui qui marche
+        pour tous. Un seul parcours par personne — on ne commence pas deux trames.
+      </p>
+
+      <h3>Parcours 1 — synthèse d'un document long</h3>
+      <div class="encadre">
+        <p class="petit"><strong>Consigne :</strong> à partir du document choisi (le vôtre, ou A12 / A13 du kit), produire une note d'une page : trois constats, deux points de vigilance, trois actions recommandées <em>par le document lui-même</em>. Chaque élément porte son renvoi (§ ou repère). Une rubrique qui ne peut pas être remplie porte la mention « le document ne le précise pas ».</p>
+        <p><strong>Document source :</strong> ______________________ · <strong>Constats</strong> (3, avec renvoi) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Points de vigilance</strong> (2, avec renvoi) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Actions recommandées par le document</strong> (3, avec renvoi) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <h3>Parcours 2 — trame de rapport d'activité</h3>
+      <div class="encadre">
+        <p class="petit"><strong>Consigne :</strong> produire la structure, pas le contenu. Chiffres agrégés uniquement : aucune situation individuelle reconnaissable. Une « situation illustrative » singulière est identifiante — elle se réécrit ou elle sort.</p>
+        <p>1. Périmètre et période couverte :</p>
+        <div class="lignes"></div>
+        <p>2. Activité en chiffres agrégés — les indicateurs retenus (les valeurs se remplissent hors outil, depuis vos tableaux de bord) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>3. Faits marquants de l'organisation :</p>
+        <div class="lignes"></div>
+        <p>4. Difficultés rencontrées et ce qui a été fait :</p>
+        <div class="lignes"></div>
+        <p>5. Perspectives, avec échéance :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <h3>Parcours 3 — réponse à un appel à projets</h3>
+      <div class="encadre">
+        <p class="petit"><strong>Consigne :</strong> commencer par recopier les contraintes chiffrées du cahier des charges (A14 ou le vôtre) — clôture, plafond, taux, durée, nombre de pages. Tout le reste se construit contre cette liste.</p>
+        <p><strong>Contraintes relevées :</strong></p>
+        <div class="lignes"></div>
+        <p>1. Le problème, tel que le cahier des charges le formule (avec renvoi) :</p>
+        <div class="lignes"></div>
+        <p>2. Ce que nous proposons, en trois phrases :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>3. En quoi c'est reproductible ailleurs :</p>
+        <div class="lignes"></div>
+        <p>4. Les indicateurs de mesure retenus :</p>
+        <div class="lignes"></div>
+        <p>5. Budget et calendrier — <strong>chiffres insérés hors outil</strong> : &lt;À COMPLÉTER&gt;</p>
+      </div>
+
+      <h3>Parcours 4 — trame de note de projet personnalisé</h3>
+      <div class="encadre">
+        <p class="petit">
+          <strong>Consigne, à dire deux fois :</strong> la trame sort de l'outil
+          <strong>VIDE de toute personne</strong>. Structure et formulations types seulement ; le
+          remplissage se fait dans l'établissement, hors outil. Aucun contenu concernant une personne
+          accompagnée n'entre ici, à aucun moment.
+        </p>
+        <p>1. Rubriques de la note, dans l'ordre :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>2. Pour chaque rubrique, la formulation type (une phrase à trous) :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>3. Ce qui ne figure jamais dans cette trame :</p>
+        <div class="lignes"></div>
+        <p>4. Qui remplit, qui relit, qui valide :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Trames et écrits produits ici sont des <strong>projets</strong> : aucun ne sert à une décision
+        de soin, chacun se valide auprès du professionnel compétent et de la structure avant
+        diffusion. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15">
+      <div class="piece-badge">Pièce A15 — verso : grille de rendu</div>
+      <h2>Grille de rendu — ce qui est attendu, parcours par parcours</h2>
+      <p class="piece-usage">
+        Se passe sur sa propre production avant de la ranger dans la chemise. Un critère non atteint
+        n'est pas un échec : c'est la ligne à reprendre au bureau, notée telle quelle.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%">Critère</th>
+            <th>Ce qui est attendu</th>
+            <th style="width: 18%">Atteint&nbsp;?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Renvois</strong></td>
+            <td>Chaque affirmation porte le repère de sa source (§, P, C…) — et au moins un renvoi a été vérifié dans le document.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Rien d'ajouté</strong></td>
+            <td>Aucune recommandation, aucun chiffre, aucune conclusion qui ne figure pas dans la source. Les manques portent « le document ne le précise pas ».</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Chiffres</strong></td>
+            <td>Aucun chiffre produit par l'outil : ils viennent des tableaux de bord et s'insèrent hors outil, ou restent en &lt;À COMPLÉTER&gt;.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Aucune personne</strong></td>
+            <td>Aucune situation individuelle reconnaissable, aucune référence de dossier, aucune illustration singulière. Parcours 4 : trame strictement vide.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Contraintes respectées</strong></td>
+            <td>Parcours 3 : plafond, taux, durée, format, date de clôture recopiés et respectés. Autres parcours : format et longueur demandés.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Périmètre</strong></td>
+            <td>Rien qui touche au soin : pas de recommandation clinique, pas de priorisation de personnes, pas d'appréciation d'une pratique professionnelle.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+          <tr>
+            <td><strong>Signature</strong></td>
+            <td>La production porte la mention « projet » et le nom de qui la relira et la validera.</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Les deux lignes que je reprends au bureau :</strong></p>
+      <div class="lignes"></div>
+      <div class="lignes"></div>
+
+      <div class="banniere">
+        La production reste un <strong>projet</strong> tant qu'elle n'est pas relue et validée : elle
+        ne sert à aucune décision de soin, et la validation revient au professionnel compétent et à la
+        structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16" data-titre="Chasse à l'erreur — deux écrits de pilotage à erreurs plantées + corrigés" data-bloc="M3, vérification (plan B)" data-tirage="1 jeu par stagiaire + corrigés formateur">
+      <div class="piece-badge">Pièce A16.1 — texte stagiaire</div>
+      <h2>Chasse à l'erreur — texte 1 : la note pour la direction</h2>
+      <p class="piece-usage">
+        Plan B de la vérification du module 3 : quand personne n'a de production exploitable, la
+        chasse se fait sur ce texte. <strong>Texte pédagogique à erreurs plantées</strong> — ce n'est
+        pas une sortie d'outil réelle, mais il en imite le défaut : fluide, assuré, invérifié.
+        Consigne : surlignez ce qui est inventé, arrondi ou déformé, puis
+        <strong>retournez au rapport A12</strong> pour trancher chaque surlignage. Toutes les erreurs
+        se démontrent sur le papier, sans aucune connaissance médicale.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Note à la direction — synthèse du rapport CRAOS sur les délais d'admission</strong></p>
+        <p>
+          Le rapport du comité régional, publié le 31 avril 2026, observe les délais administratifs du
+          parcours d'admission programmée dans 480 établissements. Il établit que 82 % des
+          établissements dépassent 15 jours entre la décision d'admission et l'envoi du dossier, pour
+          un délai moyen de 21 jours. Le coût de la double saisie y est chiffré à 9 400 € par mois et
+          par établissement, ce qui représente une charge considérable à l'échelle de la région.
+        </p>
+        <p>
+          Le comité recommande de ramener ce délai à 5 jours ouvrés et de généraliser la
+          dématérialisation complète du dossier administratif, conformément à l'instruction DGOS
+          n° 2027-118 du 14 janvier 2027. Il conclut par ailleurs que les établissements engagés dans
+          cette démarche constatent une amélioration mesurable de la qualité des soins.
+        </p>
+        <p>
+          Nous proposons donc d'inscrire ce chantier au plan d'action du prochain trimestre. Source :
+          rapport CRAOS, ainsi qu'une enquête interne de novembre 2027.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Corrigé formateur — texte 1 : huit défauts, et la règle qui tranche</div>
+        <ol>
+          <li>
+            <strong>« publié le 31 avril 2026 »</strong> — <em>date impossible</em> : le 31 avril
+            n'existe pas. L'erreur la plus simple, trouvée en dernier : on lit les dates sans les
+            voir.
+          </li>
+          <li>
+            <strong>« 480 établissements »</strong> — <em>contredit la source fournie</em> : le
+            rapport dit 48 (§1 et §5). Un facteur dix se repère en ouvrant le document, pas en
+            réfléchissant.
+          </li>
+          <li>
+            <strong>« 82 % »</strong> — <em>contredit la source</em> : le §3 dit 62 %. Le chiffre
+            précis est le meilleur déguisement de l'invention.
+          </li>
+          <li>
+            <strong>« 9 400 € par mois »</strong> — <em>unité incohérente</em> : le §8 dit
+            « par an et par établissement ». Changer l'unité multiplie le chiffre par douze sans que
+            rien n'ait l'air faux.
+          </li>
+          <li>
+            <strong>« ramener ce délai à 5 jours ouvrés »</strong> — <em>recommandation inventée</em> :
+            les trois actions du rapport sont aux §9, §10 et §11 ; aucune ne fixe de délai cible.
+          </li>
+          <li>
+            <strong>« instruction DGOS n° 2027-118 du 14 janvier 2027 »</strong> — <em>référence
+            inventée et datée dans le futur</em>. Une référence citée n'est pas une référence
+            vérifiée : celle-ci ne s'ouvre nulle part.
+          </li>
+          <li>
+            <strong>« une amélioration mesurable de la qualité des soins »</strong> —
+            <em>contredit explicitement le périmètre de la source</em> : le §12 exclut la qualité des
+            soins du rapport. On tranche sur ce que le document dit de lui-même, pas sur le fond.
+          </li>
+          <li>
+            <strong>« enquête interne de novembre 2027 »</strong> — <em>source datée dans le
+            futur</em>. Une source qui n'a pas encore eu lieu ne se cite pas.
+          </li>
+        </ol>
+        <p class="petit">
+          Débriefing : compter les surlignages à main levée AVANT de trancher, et écrire le score au
+          tableau. La salle sous-estime toujours ce qu'un écrit non relu contient — le chiffre affiché
+          vaut mieux qu'un discours sur la vigilance. Rien de ce qui est tranché ici ne porte sur le
+          fond médical : chaque défaut se prouve en ouvrant la pièce A12.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Texte pédagogique <strong>fictif</strong>, sans valeur informative. Toute production reste un
+        <strong>projet</strong> sans effet sur une décision de soin ; la validation revient au
+        professionnel compétent et à la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16">
+      <div class="piece-badge">Pièce A16.2 — texte stagiaire</div>
+      <h2>Chasse à l'erreur — texte 2 : la réponse à l'appel à projets</h2>
+      <p class="piece-usage">
+        Deuxième texte de la chasse. Le document source à ouvrir est le cahier des charges
+        <strong>A14</strong>. Même consigne : surligner, retourner à la source, trancher. Limiter à
+        trois surlignages par personne si le temps manque — le geste s'apprend sur trois, pas sur
+        douze.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Dossier de candidature — appel à projets FASA 2026 (extrait)</strong></p>
+        <p>
+          Notre établissement dépose sa candidature avant la date de clôture du 30 février 2026. Le
+          projet, d'une durée de 24 mois, vise à supprimer la double saisie dans le circuit
+          d'admission. Le budget total s'élève à 80 000 €, pour une subvention sollicitée de
+          52 000 €, soit 45 % du budget, conformément au décret n° 2026-4412 du 30 février 2026.
+        </p>
+        <p>
+          L'effet attendu est une économie de 12 000 heures par an pour un effectif de 40 agents
+          administratifs, chacun consacrant aujourd'hui environ 2 heures par semaine à la double
+          saisie. Nous nous appuyons sur le rapport CRAOS, qui établit un gain de 30 % sur les délais
+          d'admission dans les établissements dématérialisés.
+        </p>
+        <p>
+          Le dossier complet, annexes comprises, compte 14 pages. Une part du financement sera
+          affectée à l'acquisition de matériel médical pour le service concerné.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Corrigé formateur — texte 2 : huit défauts, et la règle qui tranche</div>
+        <ol>
+          <li>
+            <strong>« clôture du 30 février 2026 »</strong> — <em>date impossible</em> (le 30 février
+            n'existe pas) <em>et contredit la source</em> : le C3 fixe la clôture au 30 septembre
+            2026. Deux défauts pour le prix d'un.
+          </li>
+          <li>
+            <strong>« durée de 24 mois »</strong> — <em>contredit la source</em> : le C5 plafonne à
+            18 mois. Une contrainte chiffrée non recopiée est une contrainte non respectée.
+          </li>
+          <li>
+            <strong>« subvention de 52 000 € »</strong> — <em>contredit la source</em> : le C4
+            plafonne à 40 000 € par projet.
+          </li>
+          <li>
+            <strong>« 52 000 €, soit 45 % du budget »</strong> — <em>arithmétique contradictoire
+            en interne</em> : 52 000 sur 80 000 font 65 %, pas 45 % — et 65 % dépasse le taux maximal
+            de 60 % du C4. Le calcul se fait de tête, sans document.
+          </li>
+          <li>
+            <strong>« décret n° 2026-4412 du 30 février 2026 »</strong> — <em>référence inventée</em>,
+            portant elle aussi une <em>date impossible</em>. Une référence qu'on ne peut pas ouvrir ne
+            se cite pas.
+          </li>
+          <li>
+            <strong>« 12 000 heures par an pour 40 agents »</strong> — <em>arithmétique
+            contradictoire en interne</em> : 12 000 divisé par 40 fait 300 heures par agent et par an,
+            alors que la phrase suivante annonce environ 2 heures par semaine, soit une centaine
+            d'heures. Le texte se contredit à une ligne d'intervalle.
+          </li>
+          <li>
+            <strong>« le rapport CRAOS établit un gain de 30 % »</strong> — <em>affirmation attribuée
+            à une source qui ne la contient pas</em> : ouvrir A12, aucun paragraphe ne dit cela.
+            Attribuer une conclusion à un document est le défaut le plus difficile à repérer, et le
+            plus coûteux.
+          </li>
+          <li>
+            <strong>« 14 pages annexes comprises »</strong> et <strong>« acquisition de matériel
+            médical »</strong> — <em>contredisent la source</em> : le C6 limite à 8 pages hors
+            annexes, et le C9 exclut le matériel médical du financement.
+          </li>
+        </ol>
+        <p class="petit">
+          À faire remarquer en clôture : aucun de ces huit défauts n'a demandé la moindre connaissance
+          médicale. Une date impossible, un calcul qui se contredit, un chiffre qui n'est pas dans la
+          source, une référence qui ne s'ouvre pas — c'est exactement ce qu'on relira toujours. Celui
+          qui n'a rien trouvé échange sa feuille avec son binôme : on trouve toujours mieux chez
+          l'autre.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Texte pédagogique <strong>fictif</strong>. Rien de ce qui est produit ne sert à une décision
+        de soin ; toute production reste un <strong>projet</strong> validé par le professionnel
+        compétent et la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A17" data-titre="Fiche-procédure modèle — « courrier à une famille avec l'aide de l'IA »" data-bloc="M4, démonstration" data-tirage="1 par stagiaire + exemplaire formateur">
+      <div class="piece-badge">Pièce A17</div>
+      <h2>Fiche-procédure modèle — courrier à une famille avec l'aide de l'IA</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 4 : la démonstration devient une lecture commentée,
+        en-tête d'abord, et <strong>la salle amende la fiche à la main</strong>. Fiche
+        <strong>rédigée pour le kit</strong> — ce n'est pas une sortie d'outil reconstituée. Faites
+        passer le test de la salle : si la fiche contredit ce que la journée a appris, elle est
+        fausse.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">À vérifier AVANT de diffuser le courrier — l'en-tête</div>
+        <p><span class="coche"></span> Zéro trace : dates, lieu, entourage, singularité (fiche A8)</p>
+        <p><span class="coche"></span> Aucun marqueur &lt;CHEVRON&gt; resté non rempli</p>
+        <p><span class="coche"></span> Dates, horaires et pièces citées vérifiés à la source</p>
+        <p><span class="coche"></span> Aucun élément ajouté par l'outil et absent du texte d'origine</p>
+        <p><span class="coche"></span> Aucun contenu de soin, aucune appréciation, aucune consigne médicale</p>
+        <p><span class="coche"></span> Relu et signé par une personne, nommément</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Quand utiliser cette procédure</div>
+        <p>
+          Pour les courriers d'organisation adressés aux familles : confirmation, report, demande de
+          pièce, information pratique. Pas pour un courrier qui rapporte une situation individuelle,
+          pas pour un écrit qui touche au soin.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui ne doit JAMAIS être collé dans l'outil</div>
+        <ul>
+          <li>Aucune donnée de patient ou de résident, <strong>même sans le nom</strong>.</li>
+          <li>Aucune référence de dossier, aucun numéro de chambre, aucun numéro de séjour.</li>
+          <li>Aucune photo ni capture d'une page de dossier.</li>
+          <li>Aucun contenu de soin, ni pour le produire, ni pour le reformuler.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les étapes, une action par étape</div>
+        <ol>
+          <li>Écrire à la main, hors outil, ce que le courrier doit dire : objet, date, action attendue.</li>
+          <li>Retirer les quatre traces. Faire compter par un collègue. Attendre le « zéro ».</li>
+          <li>Ouvrir l'outil et demander la mise en forme sur la trame (pièce A10), avec des marqueurs.</li>
+          <li>Relire contre l'en-tête ci-dessus, ligne par ligne.</li>
+          <li>Insérer hors outil, sur son poste, le nom et les éléments nominatifs.</li>
+          <li>Faire relire et signer. Classer une copie.</li>
+        </ol>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que la salle amende — à la main, séance tenante</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="champ-date">
+        <strong>Fiche établie le :</strong> ____ / ____ / 20____ ·
+        <strong>Amendée en salle le :</strong> ____ / ____ / 20____ ·
+        <strong>À faire viser par :</strong> ______________________
+      </div>
+
+      <div class="banniere">
+        Fiche remise en <strong>projet</strong> — la mention « à faire viser » ne se retire pas avant
+        validation. Rien de ce qu'elle produit ne sert à une décision de soin, et la validation revient
+        au professionnel compétent et à la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A18" data-titre="Trame de fiche-procédure vierge (+ verso : la page des régimes)" data-bloc="M4, pratique" data-tirage="3 par stagiaire">
+      <div class="piece-badge">Pièce A18 — recto</div>
+      <h2>Fiche-procédure — trame vierge</h2>
+      <p class="piece-usage">
+        Trois exemplaires par stagiaire : courrier famille ou confrère · note de transmission
+        administrative · écrit de pilotage. <strong>L'en-tête de vérifications se recopie de la
+        grille utilisée toute la journée</strong> — ne le faites pas réinventer. Si le temps manque :
+        une fiche complète et vérifiée vaut mieux que trois fiches bâclées.
+      </p>
+
+      <p>
+        <strong>Intitulé de la procédure :</strong> ____________________________________________
+      </p>
+      <p><strong>Service :</strong> ______________________ · <strong>Rédigée le :</strong> ____ / ____ / 20____</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">En-tête — à vérifier AVANT diffusion</div>
+        <p><span class="coche"></span> ____________________________________________</p>
+        <p><span class="coche"></span> ____________________________________________</p>
+        <p><span class="coche"></span> ____________________________________________</p>
+        <p><span class="coche"></span> ____________________________________________</p>
+        <p><span class="coche"></span> ____________________________________________</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Quand utiliser cette procédure — et quand ne pas l'utiliser</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui n'entre JAMAIS dans l'outil</div>
+        <p class="petit">Cette rubrique ne s'abrège pas et ne se remplace pas par un renvoi.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les étapes — une action par étape, à l'impératif</div>
+        <p>1. ____________________________________________</p>
+        <p>2. ____________________________________________</p>
+        <p>3. ____________________________________________</p>
+        <p>4. ____________________________________________</p>
+        <p>5. ____________________________________________</p>
+        <p>6. ____________________________________________</p>
+      </div>
+
+      <p>
+        <strong>À faire viser par :</strong> ______________________ ·
+        <strong>Date de visa :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="banniere">
+        Fiche en <strong>projet</strong> tant qu'elle n'est pas visée : rien de ce qu'elle organise ne
+        sert à une décision de soin, et la validation revient au professionnel compétent et à la
+        structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+      <p class="verso-note">→ Le verso ouvre le manuel : régimes, ligne rouge, à qui la question remonte.</p>
+    </section>
+
+    <section class="piece" data-piece="A18">
+      <div class="piece-badge">Pièce A18 — verso</div>
+      <h2>Page d'ouverture du manuel — régimes, ligne rouge, et à qui la question remonte</h2>
+      <p class="piece-usage">
+        La première page du manuel de procédures du service : celle que lira l'encadrement, et celle
+        que lira le collègue absent le jour de la formation. Elle se remplit en dernier, quand les
+        trois fiches sont écrites.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1. Le régime de nos comptes, au ____ / ____ / 20____</div>
+        <p>Outil(s) employé(s) dans le service : ______________________________</p>
+        <p>Régime constaté (report de la fiche A2) : ______________________________</p>
+        <p>Ce que ce régime autorise chez nous, en une phrase :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2. La ligne rouge — non négociable, non abrégée</div>
+        <p>
+          Aucune donnée de patient ou de résident n'entre dans un outil, <strong>même sans le
+          nom</strong> : ni nom, ni initiales, ni référence de dossier, ni récit de séjour, ni photo
+          d'une page. L'IA ne produit aucun contenu de soin : ni diagnostic, ni conseil thérapeutique,
+          ni tri ou priorisation de personnes.
+        </p>
+        <p>Ce que nous ajoutons, propre à notre service :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3. À qui la question remonte</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 45%">La question</th>
+              <th>La personne</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Validation d'un outil ou d'un compte</td><td></td></tr>
+            <tr><td>Secret professionnel, données, hébergement</td><td></td></tr>
+            <tr><td>Validation des procédures du service</td><td></td></tr>
+            <tr><td>Tout doute non tranché</td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Une absence de réponse n'est pas une autorisation : le doute reste un « jamais ». En salle
+          comme au poste, la formule est la même —
+          <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4. Date de revue du manuel</div>
+        <p>Le manuel est relu le ____ / ____ / 20____, par ______________________.</p>
+      </div>
+
+      <div class="banniere">
+        Manuel remis en <strong>projet</strong>, à faire viser avant tout usage régulier : il ne
+        fonde aucune décision de soin, et sa validation revient au professionnel compétent et à la
+        structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A19" data-titre="Feuille de route individuelle — trois usages datés et un usage écarté" data-bloc="M4, pratique" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A19</div>
+      <h2>Ma feuille de route — trois usages datés, un usage écarté</h2>
+      <p class="piece-usage">
+        Le dernier livrable de la journée. <strong>Un usage sans date et sans nom de valideur n'est
+        pas un usage, c'est une intention.</strong> En clôture, chacun lit à voix haute son premier
+        usage daté ET son usage écarté — les deux, dans cet ordre.
+      </p>
+
+      <div class="champ-date">
+        <strong>Établie le :</strong> ____ / ____ / 20____ ·
+        <strong>Par :</strong> ______________________ ·
+        <strong>Service :</strong> ______________________
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 34%">L'écrit — pas « l'IA », un écrit précis</th>
+            <th style="width: 16%">Je commence le</th>
+            <th>Qui valide avant que je démarre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td>____/____/20____</td><td></td></tr>
+          <tr><td>2</td><td></td><td>____/____/20____</td><td></td></tr>
+          <tr><td>3</td><td></td><td>____/____/20____</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">L'usage que j'écarte — et pourquoi, en une phrase</div>
+        <p class="petit">
+          C'est la ligne que l'encadrement lira en premier : elle prouve que vous savez où vous vous
+          arrêtez. Un manuel qui ne dit que « oui » ne protège personne. Bon candidat : tout écrit qui
+          décrit une personne accompagnée.
+        </p>
+        <p>L'usage écarté : ____________________________________________</p>
+        <p>Parce que :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ma date de revue</div>
+        <p>
+          Je relis cette feuille de route le ____ / ____ / 20____, et je note ce qui a réellement été
+          fait. Sans date de revue, la feuille de route redevient une intention en trois semaines.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Visa de l'encadrement</div>
+        <p>Nom : ______________________ · Date : ____ / ____ / 20____ · Signature :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Feuille de route remise en <strong>projet</strong>, à faire viser par l'encadrement avant tout
+        usage régulier. Aucun de ces usages ne concerne une décision de soin ; la validation revient au
+        professionnel compétent et à la structure. Question juridique →
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A20" data-titre="Quiz d'évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A20 — feuille stagiaire</div>
+      <h2>Quiz — évaluation des acquis (10 questions)</h2>
+      <p class="piece-usage">
+        Individuel, sans document. Dix questions sur ce que la journée a fait — pas des pièges.
+        Entourez la réponse. Cette évaluation se tient, se corrige et se conserve : elle ne se
+        remplace jamais par un tour de table, même à 17 h 10.
+      </p>
+      <p>
+        <strong>Nom :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <ol>
+        <li>
+          Vous utilisez un compte gratuit ouvert à votre nom personnel. Que retenez-vous&nbsp;?<br />
+          <strong>a.</strong> Rien de professionnel n'y entre tant que la personne qui valide n'a pas dit mieux &nbsp;
+          <strong>b.</strong> Tout peut y entrer puisque le compte est à moi &nbsp;
+          <strong>c.</strong> Tout peut y entrer si je supprime la conversation après
+        </li>
+        <li>
+          Un écrit sans le nom, mais qui raconte le parcours d'un patient : quel classement&nbsp;?<br />
+          <strong>a.</strong> Je peux &nbsp; <strong>b.</strong> À condition de &nbsp;
+          <strong>c.</strong> Jamais — le retrait du nom ne change pas la nature de la donnée
+        </li>
+        <li>
+          Quelles sont les quatre familles de traces&nbsp;?<br />
+          <strong>a.</strong> Nom, prénom, âge, adresse &nbsp;
+          <strong>b.</strong> Dates, lieu, entourage, singularité &nbsp;
+          <strong>c.</strong> Orthographe, ton, longueur, format
+        </li>
+        <li>
+          Où et quand se fait la neutralisation d'un cas&nbsp;?<br />
+          <strong>a.</strong> Dans l'outil, c'est plus rapide &nbsp;
+          <strong>b.</strong> Hors outil, stylo en main, AVANT toute saisie &nbsp;
+          <strong>c.</strong> Après coup, en relisant la sortie
+        </li>
+        <li>
+          Le contrôle du binôme avant d'appuyer sur Entrée, c'est…<br />
+          <strong>a.</strong> un avis qu'on peut ne pas suivre &nbsp;
+          <strong>b.</strong> un droit de veto : tant qu'il reste un nombre, rien n'entre &nbsp;
+          <strong>c.</strong> une formalité de fin d'exercice
+        </li>
+        <li>
+          Dans une note produite à partir d'un document long, qu'exige-t-on de chaque affirmation&nbsp;?<br />
+          <strong>a.</strong> Qu'elle soit bien écrite &nbsp;
+          <strong>b.</strong> Qu'elle porte le renvoi à sa source, et qu'au moins un renvoi soit vérifié &nbsp;
+          <strong>c.</strong> Qu'elle soit courte
+        </li>
+        <li>
+          Votre dossier d'appel à projets exige des données d'activité chiffrées. Qui les écrit&nbsp;?<br />
+          <strong>a.</strong> L'outil, à partir de ce qu'il sait du secteur &nbsp;
+          <strong>b.</strong> Vous, depuis vos tableaux de bord, insérées hors outil &nbsp;
+          <strong>c.</strong> L'outil, puis on arrondit
+        </li>
+        <li>
+          La trame de note de projet personnalisé sort de l'outil…<br />
+          <strong>a.</strong> déjà remplie, on corrige ensuite &nbsp;
+          <strong>b.</strong> vide de toute personne : le remplissage se fait hors outil &nbsp;
+          <strong>c.</strong> avec un exemple de situation pour montrer le style
+        </li>
+        <li>
+          Diagnostic, conseil thérapeutique, tri ou priorisation de personnes : la journée dit…<br />
+          <strong>a.</strong> que c'est possible avec un prompt bien écrit &nbsp;
+          <strong>b.</strong> que c'est hors périmètre — l'IA n'y entre pas, la journée ne traite que les écrits administratifs et organisationnels &nbsp;
+          <strong>c.</strong> que cela dépend du régime du compte
+        </li>
+        <li>
+          Une question de secret professionnel se pose en salle. Qui tranche&nbsp;?<br />
+          <strong>a.</strong> Le formateur &nbsp; <strong>b.</strong> L'outil &nbsp;
+          <strong>c.</strong> Personne en salle : on note la question, le conseil de la structure tranche
+        </li>
+      </ol>
+
+      <div class="banniere">
+        Évaluation de formation. Aucune réponse de ce quiz ne vaut règle médicale, déontologique ou
+        juridique, et rien ici ne sert à une décision de soin : la validation revient au professionnel
+        compétent et à la structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A20">
+      <div class="piece-badge">Pièce A20 — corrigé formateur</div>
+      <h2>Quiz — corrigé commenté, question par question</h2>
+      <p class="piece-usage">
+        Se commente en salle <strong>sans en passer aucune</strong>. Le seuil de réussite est celui
+        déclaré au programme ; un score en dessous déclenche la reprise individuelle prévue au
+        dispositif. Si le temps manque, le quiz se tient quand même et le commentaire se resserre sur
+        les questions les plus ratées.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 8%">Rép.</th>
+            <th>Le commentaire qui ancre</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>a</strong></td>
+            <td>
+              Le régime 1 de la fiche A3. Supprimer la conversation après coup ne défait rien de ce qui
+              a été envoyé : l'ordre des opérations est tout.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>c</strong></td>
+            <td>
+              <strong>Question de la ligne rouge n° 1.</strong> Si elle est ratée par plusieurs
+              personnes, reprenez-la en entier : c'est la seule erreur de la journée qui ne pardonne
+              pas dehors.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>b</strong></td>
+            <td>La fiche A8. Faites-les réciter dans l'ordre : dates, lieu, entourage, singularité.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>b</strong></td>
+            <td>
+              Pour faire neutraliser le cas par l'outil, il faudrait le lui donner : ce serait déjà
+              trop tard.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>b</strong></td>
+            <td>
+              Le contrôleur annonce un nombre, il ne juge pas le texte. Compter est plus facile que
+              critiquer, et tout aussi efficace.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>b</strong></td>
+            <td>
+              Une note sans renvois est invérifiable, donc inutilisable. Et un renvoi non vérifié n'est
+              pas un renvoi — la chasse à l'erreur l'a montré huit fois.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>b</strong></td>
+            <td>
+              Laissé libre, l'outil mettra un chiffre plausible, et faux. Le texte 2 de la pièce A16 en
+              donne deux exemples qui se contredisent entre eux.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>b</strong></td>
+            <td>
+              Dit deux fois pendant l'atelier, et redit ici : la trame sort vide, le remplissage se
+              fait dans l'établissement.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>b</strong></td>
+            <td>
+              <strong>Question de la ligne rouge n° 2.</strong> Même remarque qu'à la question 2 : si
+              plusieurs personnes la ratent, on reprend. Le refus se prononce à voix haute, calmement —
+              c'est un enseignement, pas un incident.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>c</strong></td>
+            <td>
+              Formule exacte, prononcée telle quelle :
+              <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>. La
+              question s'écrit, et elle part dans le manuel.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que le corrigé n'a pas à faire</div>
+        <p>
+          Aucune de ces dix réponses ne tranche une question médicale, déontologique ou juridique :
+          elles portent toutes sur la <strong>conduite de travail</strong> enseignée dans la journée.
+          Si une réponse est contestée sur le fond du droit ou du soin, on ne débat pas : on note la
+          question et on la fait remonter.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Corrigé de formation, sans valeur de règle médicale ni juridique. Rien n'y sert à une décision
+        de soin ; la validation revient au professionnel compétent et à la structure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A21" data-titre="Grille de critères — passage des productions du jour" data-bloc="M4, vérification" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A21</div>
+      <h2>Grille de critères — je passe mes productions du jour</h2>
+      <p class="piece-usage">
+        Deuxième temps de la vérification finale : chacun passe SES productions à cette grille et note
+        les points à reprendre <strong>sur sa fiche-procédure elle-même</strong> — c'est elle qui vit
+        après la journée, pas cette grille. Une production « parfaite » est une production relue trop
+        vite : relevez au moins un point.
+      </p>
+
+      <p><strong>Productions passées :</strong> ____________________________________________</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">Critère</th>
+            <th style="width: 16%">Verdict</th>
+            <th>Le point à reprendre, reporté sur la fiche-procédure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Aucune personne</strong> — zéro trace, zéro référence de dossier, zéro marqueur oublié</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Aucun contenu de soin</strong> — ni appréciation, ni consigne, ni priorisation</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Exactitude</strong> — chiffres, dates et renvois vérifiés à la source</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Rien d'ajouté</strong> — aucune affirmation absente du document d'origine</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Mention « projet »</strong> — présente, et non retirée</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Valideur nommé</strong> — qui relit, qui vise, à quelle date</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Questions ouvertes</strong> — reportées au verso de la chemise A1, avec leur destinataire</td>
+            <td><span class="coche"></span> oui <span class="coche"></span> à reprendre</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La dernière ligne, à écrire avant de fermer la chemise</div>
+        <p>Ce que je ne ferai plus à partir de demain :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Toutes les productions de la journée restent des <strong>projets</strong> : aucune ne sert à
+        une décision de soin, et leur validation revient au professionnel compétent et à la structure.
+        Toute question juridique part au conseil de la structure —
+        <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+      </div>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un courrier de sortie FICTIF, fourni pour une formation : il ne décrit aucune personne réelle. Reprends-le sans modifier aucune information : corrige la syntaxe, mets les dates et les rendez-vous de suivi en liste, et adopte un ton professionnel et sobre. N'ajoute aucun élément médical, aucun conseil, aucune interprétation. Si une information te semble manquer, écris « À COMPLÉTER » au lieu d'inventer.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux versions côte à côte : le courrier fictif d'origine à gauche, la reprise à droite, avec les mentions « À COMPLÉTER » entourées — c'est elles qu'on commente, pas la fluidité.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service indisponible : la version d'origine et la reprise sont imprimées dans le kit (datées). La comparaison ligne à ligne et la lecture du prompt se font sur papier, sans rien perdre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Neutraliser un cas, puis écrire vite ses courriers et ses transmissions</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un texte FICTIF de formation, dont le nom de la personne a été retiré. Première tâche : liste tout ce que ce texte permet de déduire sur la personne — âge probable, lieux, dates, entourage, situation, éléments singuliers. Deuxième tâche : dis quelles informations un collègue, un voisin ou un proche devrait déjà connaître pour la reconnaître à partir de ce texte. Travaille uniquement à partir du texte fourni, ne complète rien.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La sortie projetée avec les quatre familles de traces surlignées en quatre couleurs : dates, lieu, entourage, singularité du cas.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La sortie est imprimée et surlignée dans le kit (datée). La démonstration se rejoue sur papier : lecture du texte, pari de la salle, puis lecture de la liste des déductions.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Les écrits qui font vivre l'établissement : qualité, projets, tutelle</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un rapport public de quarante pages, joint en PDF. Rédige une note d'une page pour la direction d'un établissement de santé : trois constats principaux, deux points de vigilance, trois actions recommandées par le rapport lui-même. Pour chaque élément, cite la page d'où il vient. N'ajoute aucune recommandation de ton cru. Si une rubrique ne peut pas être remplie à partir du texte, écris « le rapport ne le précise pas ».</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La note d'une page projetée à côté du sommaire du rapport, avec les renvois de page entourés — et une ligne « le rapport ne le précise pas » laissée visible.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La note et le rapport sont imprimés dans le kit (datées), les deux pages à vérifier marquées d'un signet. La démonstration se rejoue sur papier, vérification en direct comprise.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Ancrer dans l'établissement sans se mettre en faute</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige une fiche-procédure d'une page pour le personnel d'un établissement de santé : « produire un courrier à une famille avec l'aide de l'IA ». Structure imposée : en en-tête, la liste des vérifications à faire avant diffusion ; puis quand utiliser cette procédure ; puis ce qui ne doit JAMAIS être collé dans l'outil — aucune donnée de patient ou de résident, même sans le nom ; puis les étapes, numérotées, une action par étape. Phrases courtes, impératives, sans jargon. La fiche tient sur une page.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La fiche projetée en entier, l'en-tête de vérifications surligné, et la ligne « aucune donnée de patient ou de résident, même sans le nom » entourée.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La fiche-procédure du kit (datée) est imprimée : la démonstration devient une lecture commentée, en-tête d'abord, et la salle amende la fiche à la main.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table, la règle et l'annonce du livrable se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions</td><td>Démonstration</td><td>Quota atteint ou service indisponible : la version d'origine et la reprise sont imprimées dans le kit (datées). La comparaison ligne à ligne et la lecture du prompt se font sur papier, sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil : les conditions d'utilisation des trois comptes les plus répandus sont imprimées dans le kit (datées), la fiche et la liste des douze écrits sont sur papier.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA peut faire dans un établissement, et à quelles conditions</td><td>Vérification</td><td>La fiche des trois régimes et le corrigé du classement sont imprimés dans le kit. Sans vidéoprojecteur, ils se distribuent et se commentent à l'oral.</td></tr>
+          <tr><td>Matin · Module 2 — Neutraliser un cas, puis écrire vite ses courriers et ses transmissions</td><td>Démonstration</td><td>La sortie est imprimée et surlignée dans le kit (datée). La démonstration se rejoue sur papier : lecture du texte, pari de la salle, puis lecture de la liste des déductions.</td></tr>
+          <tr><td>Matin · Module 2 — Neutraliser un cas, puis écrire vite ses courriers et ses transmissions</td><td>Pratique</td><td>Réseau ou outil indisponible : la neutralisation et son contrôle sont déjà hors outil, ils se tiennent tels quels. L'écrit final se rédige à la main sur les trames papier du kit (datées) — chacun relancera la mise en forme chez lui, la structure est acquise.</td></tr>
+          <tr><td>Matin · Module 2 — Neutraliser un cas, puis écrire vite ses courriers et ses transmissions</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. La vérification croisée ne dépend d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 3 — Les écrits qui font vivre l'établissement : qualité, projets, tutelle</td><td>Démonstration</td><td>La note et le rapport sont imprimés dans le kit (datées), les deux pages à vérifier marquées d'un signet. La démonstration se rejoue sur papier, vérification en direct comprise.</td></tr>
+          <tr><td>Après-midi · Module 3 — Les écrits qui font vivre l'établissement : qualité, projets, tutelle</td><td>Pratique</td><td>Outil indisponible : les quatre parcours ont leur trame papier dans le kit, et le premier temps se fait sur le rapport imprimé — trois questions, réponses cherchées au sommaire et à l'index. L'exercice démontre au passage, par contraste, ce que l'outil fait gagner.</td></tr>
+          <tr><td>Après-midi · Module 3 — Les écrits qui font vivre l'établissement : qualité, projets, tutelle</td><td>Vérification</td><td>Sans outil, la chasse se fait sur la production papier du plan B précédent : surligner, retourner à la source, trancher — le geste est identique.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'établissement sans se mettre en faute</td><td>Démonstration</td><td>La fiche-procédure du kit (datée) est imprimée : la démonstration devient une lecture commentée, en-tête d'abord, et la salle amende la fiche à la main.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'établissement sans se mettre en faute</td><td>Pratique</td><td>Presque rien ne dépend d'un outil : le manuel et la feuille de route s'écrivent sur les trames papier du kit. Seul le retour sur l'historique suppose l'outil ouvert — à défaut, chacun note de mémoire ce qu'il a collé de douteux, et refait l'exercice au bureau. C'est l'atelier le plus robuste de la journée.</td></tr>
+          <tr><td>Après-midi · Module 4 — Ancrer dans l'établissement sans se mettre en faute</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

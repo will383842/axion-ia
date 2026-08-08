@@ -321,7 +321,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             question: "Je n'ai aucun besoin de tableur en tête.",
             reponse:
-              "Prenez celui du kit page 14 : rapprocher deux extractions qui n'ont pas les mêmes colonnes. Tout le monde a eu ce problème un jour.",
+              "Prenez celui du kit : rapprocher deux extractions qui n'ont pas les mêmes colonnes. Tout le monde a eu ce problème un jour.",
           },
         ],
         blocages: [
@@ -477,7 +477,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             question: "Je peux saisir mes vrais chiffres de marge ?",
             reponse:
-              "Des agrégats non nominatifs, saisis à la main, oui, si votre régime d'usage le permet. Un fichier déposé, un nom de client, une ligne de paie : non, jamais. En cas d'hésitation, le tableau de bord du kit page 19 fait très bien l'affaire et vous relancerez chez vous lundi.",
+              "Des agrégats non nominatifs, saisis à la main, oui, si votre régime d'usage le permet. Un fichier déposé, un nom de client, une ligne de paie : non, jamais. En cas d'hésitation, le tableau de bord du kit fait très bien l'affaire et vous relancerez chez vous lundi.",
           },
           {
             question: "Trois niveaux de relance, ce n'est pas trop agressif pour un bon client ?",
@@ -591,7 +591,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
       apres:
         "Le geste de relecture qui l'attrape en dix secondes : ne jamais lire la conclusion d'abord — pointer chaque chiffre de la sortie, le retrouver dans la source, et seulement ensuite lire le raisonnement.",
       prompt:
-        "DÉMONSTRATION — Le même calcul, deux fois\n\nÀ lancer deux fois, la seconde dans une conversation NEUVE, sans rien changer au texte (le tableau de douze lignes est fourni au kit, page 22, et se recopie tel quel à la suite du prompt) :\nCalcule le taux de marge brute de chacune des douze lignes du tableau ci-dessous, puis donne le taux moyen pondéré par le chiffre d'affaires. Détaille chaque étape de ton calcul.",
+        "DÉMONSTRATION — Le même calcul, deux fois\n\nÀ lancer deux fois, la seconde dans une conversation NEUVE, sans rien changer au texte (le tableau de douze lignes est fourni au kit, et se recopie tel quel à la suite du prompt) :\nCalcule le taux de marge brute de chacune des douze lignes du tableau ci-dessous, puis donne le taux moyen pondéré par le chiffre d'affaires. Détaille chaque étape de ton calcul.",
       outil: "Un seul outil, celui validé dans la salle.",
       captureEcran:
         "Les deux réponses du même calcul lancé deux fois, côte à côte, avec l'écart sur le taux moyen pondéré encadré en rouge.",
@@ -611,7 +611,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             situation: "Les deux lancements du même calcul donnent exactement le même résultat.",
             parade:
-              "Le dire franchement : « elle est stable cette fois, et vous n'aviez aucun moyen de le savoir avant ». Puis relancer en exigeant le détail étape par étape — la divergence apparaît presque toujours sur le pondéré. À défaut, les deux sorties du kit page 22 font le travail.",
+              "Le dire franchement : « elle est stable cette fois, et vous n'aviez aucun moyen de le savoir avant ». Puis relancer en exigeant le détail étape par étape — la divergence apparaît presque toujours sur le pondéré. À défaut, les deux sorties du kit font le travail.",
           },
         ],
         planB:
@@ -638,7 +638,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           {
             situation: "La salle trouve les six erreurs plantées en huit minutes et s'ennuie.",
             parade:
-              "La note du kit page 25 en contient trois de plus, dont une qui ne se voit qu'en rouvrant le document source. La distribuer à ceux qui ont fini, pas d'emblée à tout le monde.",
+              "La note du kit en contient trois de plus, dont une qui ne se voit qu'en rouvrant le document source. La distribuer à ceux qui ont fini, pas d'emblée à tout le monde.",
           },
           {
             situation: "Un stagiaire refuse de monter un classeur, « je retiendrai bien ».",
@@ -674,7 +674,7 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit et corrigé page 28, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
+          "Quiz papier et corrigé imprimés dans le kit, grille d'auto-évaluation dans le classeur. Aucune dépendance à un outil, et c'est délibéré : l'évaluation ne peut pas sauter parce que le réseau est tombé.",
       },
     },
     synthese: {

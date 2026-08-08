@@ -58,6 +58,7 @@ export const SUPPORT_TYPE_LABELS: Record<SupportType, string> = {
   memo: "Mémo récapitulatif",
   guide_animation: "Guide d'animation",
   exercices: "Cahier d'exercices",
+  kit_formateur_imprime: "Kit formateur imprimé",
   grille_eval: "Grille d'évaluation",
 };
 
@@ -723,6 +724,16 @@ export function construireSupport(type: SupportType, formation: FormationInput):
       return buildExercices(formation);
     case "grille_eval":
       return buildGrilleEval(formation);
+    case "kit_formateur_imprime":
+      // 🔴 Le kit n'est PAS produit par le Formation Engine. Il est ecrit a la
+      // main dans `_KIT/<slug>/`, rendu en PDF hors ligne, puis publie par
+      // `scripts/kit-formateur/publier-vers-r2.ts`. Le construire ici
+      // produirait un classeur VIDE qui ecraserait le vrai : mieux vaut
+      // echouer bruyamment.
+      throw new Error(
+        "Le kit formateur imprimé ne se génère pas depuis le moteur : " +
+          "voir scripts/kit-formateur/publier-vers-r2.ts",
+      );
     default: {
       // exhaustive check
       const _never: never = type;

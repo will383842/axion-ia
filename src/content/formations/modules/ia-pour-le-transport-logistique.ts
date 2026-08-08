@@ -436,7 +436,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             situation: "La commande déposée en PDF ressort illisible (scan sans texte reconnu).",
             parade:
-              "Photographier la commande écran par écran plutôt que de déposer le scan, ou dicter les six lignes utiles. La parade est sur le support, page 23.",
+              "Photographier la commande écran par écran plutôt que de déposer le scan, ou dicter les six lignes utiles. La parade est sur le support.",
           },
         ],
         planB:
@@ -456,7 +456,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             question: "Ma tournée de demain n'est pas encore arrêtée.",
             reponse:
-              "Prenez celle d'hier, l'exercice est identique. Ou la commande de secours du kit, page 24.",
+              "Prenez celle d'hier, l'exercice est identique. Ou la commande de secours du kit.",
           },
           {
             question: "Je peux mettre le tarif si mon environnement est validé par ma direction ?",
@@ -501,7 +501,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             situation: "Un binôme valide tout en trois minutes.",
             parade:
-              "Leur donner la sortie du kit page 26, qui contient les quatre invasions typiques. S'ils n'en trouvent aucune, refaire la lecture avec eux — l'œil n'est pas encore réglé.",
+              "Leur donner la sortie du kit, qui contient les quatre invasions typiques. S'ils n'en trouvent aucune, refaire la lecture avec eux — l'œil n'est pas encore réglé.",
           },
         ],
         planB:
@@ -658,7 +658,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit et corrigé page 34. Aucune dépendance à un outil, aucune à un réseau.",
+          "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil, aucune à un réseau.",
       },
     },
     synthese: {

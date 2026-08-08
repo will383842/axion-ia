@@ -276,7 +276,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (pages 10 à 12, datées). La lecture comparée se tient sur papier, à l'identique.",
+          "Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (datées). La lecture comparée se tient sur papier, à l'identique.",
       },
     },
     pratique: {
@@ -619,7 +619,7 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier dans le kit et corrigé page 27. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

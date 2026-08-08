@@ -1,0 +1,3084 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'automatisation (2j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'automatisation » — 2j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-automatisation</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Feuillet personnel des deux jours (recto/verso) — le fil rouge</td><td>Tous les modules</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A2</strong></td><td>Fiche de régime d'usage — les trois régimes, et ce qu'il faut pour passer au suivant</td><td>M1, pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A3</strong></td><td>Grille des 4 questions — une ligne par tâche, conséquence écrite en clair</td><td>M1, pratique</td><td>2 par stagiaire + 5</td></tr>
+          <tr><td><strong>A4</strong></td><td>Le fichier « anonymisé » — démonstration de ré-identification (3 feuillets) + corrigé</td><td>M1, pratique (plan B et démonstration)</td><td>1 jeu par table + corrigé formateur</td></tr>
+          <tr><td><strong>A5</strong></td><td>Les six automatisations à classer au feu tricolore + corrigé commenté</td><td>M1, vérification</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A6</strong></td><td>Fiche du feu tricolore — la règle des deux jours (à emporter)</td><td>M1, synthèse</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A7</strong></td><td>Trame de cartographie — mes tâches répétitives, notées sur quatre critères</td><td>M2, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A8</strong></td><td>Fiche comparative des trois familles d'outils + case « motif de mon choix »</td><td>M2, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A9</strong></td><td>Fiche de cadrage — la trame nommée qui ouvre le jour 2</td><td>M2, pratique</td><td>2 par stagiaire + 5</td></tr>
+          <tr><td><strong>A10</strong></td><td>Grille de faille — le passage croisé en binôme sur la fiche de cadrage</td><td>M2, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A11</strong></td><td>La fiche de cadrage piégée — cinq failles + corrigé commenté</td><td>M2, vérification (parade)</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A12</strong></td><td>Trame AXION — l'instruction qui pilote l'automatisation (vierge + mémo)</td><td>M3, démonstration et pratique</td><td>2 par stagiaire + 5</td></tr>
+          <tr><td><strong>A13</strong></td><td>Les trois états du montage — l'export projeté, deux essais ratés annotés, la version finale</td><td>M3, démonstration (plan B)</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>A14</strong></td><td>Le cas de repli commun — énoncé, fiche d'environnement, trois jeux d'entrées dont un bancal</td><td>M2 et M3, pratique</td><td>1 jeu par stagiaire de repli + 5</td></tr>
+          <tr><td><strong>A15</strong></td><td>Les trois sorties du cas de repli — erreurs plantées et vérifiées + corrigé</td><td>M3, pratique et vérification (plan B)</td><td>1 jeu par stagiaire de repli + corrigé formateur</td></tr>
+          <tr><td><strong>A16</strong></td><td>Journal de tests — trois jeux d'entrées, une ligne par écart</td><td>M3, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A17</strong></td><td>Les deux sorties du module 4 — le total faux parti au destinataire, et le bandeau de blocage</td><td>M4, démonstration (plan B)</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>A18</strong></td><td>La grille des quatre contrôles — à poser sur son propre prototype</td><td>M4, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A19</strong></td><td>Trame de fiche d'usage — celle qui rend la chaîne reprenable sans vous</td><td>M4, pratique et vérification</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A20</strong></td><td>Les trois trames d'information — personnes concernées, mention dans la sortie, point à l'instance</td><td>M4, pratique</td><td>1 jeu par stagiaire + 5</td></tr>
+          <tr><td><strong>A21</strong></td><td>Feuille de route — trois lignes au plus, chacune avec un porteur et une échéance</td><td>M4, pratique et synthèse</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A22</strong></td><td>Test de reprise à blanc — la fiche des manques, et la contresignature</td><td>M4, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A23</strong></td><td>Quiz d'évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A24</strong></td><td>Grille d'auto-évaluation de mon prototype (cinq lignes)</td><td>M4, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A25</strong></td><td>Le tableau des questions ouvertes (affiche formateur, tenue sur les deux jours)</td><td>Tous les modules</td><td>2 exemplaires formateur, format paperboard</td></tr>
+          <tr><td><strong>A26</strong></td><td>Bordereau du dossier d'exploitation — les six pièces remises en main propre</td><td>M4, synthèse</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Après-midi — Jour 1 : cartographier ses tâches et cadrer son cas <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Matin — Jour 2 : construire le prototype <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi — Jour 2 : fiabiliser, mettre en service, décider de la suite <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Feuillet personnel des deux jours (recto/verso) — le fil rouge" data-bloc="Tous les modules" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A1 — recto</div>
+  <h2>Mon feuillet — IA pour l'automatisation</h2>
+  <p class="piece-usage">
+    Distribué au tour de table du premier matin, rempli au fil des deux jours, il repart avec son
+    auteur. C'est le sommaire de son dossier d'exploitation, pas un support de cours. Le formateur
+    le fait ouvrir à chaque ouverture de demi-journée.
+  </p>
+
+  <p>
+    <strong>Nom / poste (facultatif) :</strong> ______________________________ ·
+    <strong>Session du :</strong> ____ / ____ / 20____ au ____ / ____ / 20____
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">Jour 1, matin — la tâche que je refais le plus souvent à la main</div>
+    <div class="lignes"></div>
+    <p>Mon régime d'usage réel aujourd'hui (une seule case) :</p>
+    <p>
+      <span class="coche"></span> compte grand public &nbsp;
+      <span class="coche"></span> offre entreprise avec engagement de non-réutilisation &nbsp;
+      <span class="coche"></span> environnement validé par mon informatique
+    </p>
+    <p>Pour passer au régime supérieur, je dois obtenir : ______________________________</p>
+    <p>de la part de (nom de la fonction, pas « la DSI ») : ______________________________</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Jour 1, après-midi — mon cas retenu</div>
+    <p><strong>Le cas :</strong> ____________________________________________________________</p>
+    <p><strong>Fiche de cadrage enregistrée sous le nom :</strong> _______________________________</p>
+    <p><strong>Famille d'outil retenue :</strong> _______________________ · <strong>Motif :</strong></p>
+    <div class="lignes"></div>
+    <p><strong>Couleur au feu tricolore :</strong> <span class="coche"></span> vert
+      <span class="coche"></span> orange <span class="coche"></span> rouge</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ce que j'apporte demain matin (à cocher ce soir, pas demain)</div>
+    <p><span class="coche"></span> Mes fichiers d'entrée · <span class="coche"></span> mes accès testés ·
+      <span class="coche"></span> trois jeux d'entrées, dont un bancal</p>
+    <p class="petit">
+      Un jeu bancal, c'est : une ligne vide, une date au mauvais format, une colonne manquante. Si
+      je ne peux rien apporter, je le dis ce soir — pas demain matin : on me bascule sur le cas de
+      repli commun (pièce A14).
+    </p>
+  </div>
+  <p class="verso-note">→ Tournez la page : le verso se remplit à la fin du jour 2.</p>
+</section>
+
+<section class="piece" data-piece="A1">
+  <div class="piece-badge">Pièce A1 — verso</div>
+  <h2>Mon prototype, mes contrôles, mon engagement</h2>
+
+  <div class="encadre">
+    <div class="encadre-titre">Jour 2, matin — mon prototype</div>
+    <p>Ce qui a marché du premier coup :</p>
+    <div class="lignes"></div>
+    <p>Ce qui a demandé trois essais :</p>
+    <div class="lignes"></div>
+    <p>Ce qui ne passera jamais (et repart sur ma feuille de route) :</p>
+    <div class="lignes"></div>
+    <p>Nombre d'erreurs trouvées dans MA propre sortie à la chasse à l'erreur : <strong>______</strong></p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Jour 2, après-midi — reprenable par un autre</div>
+    <p>Test de reprise à blanc : questions que mon binôme a dû me poser : <strong>______</strong></p>
+    <p>Fiche d'usage contresignée par : ______________________ le ____ / ____ / 20____</p>
+    <p>Mon engagement à voix haute — quelle automatisation, quel porteur, quelle date :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mes questions restées ouvertes (« votre conseil tranchera »)</div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p>La personne à qui je les pose, et avant quelle date : ______________________________</p>
+  </div>
+
+  <div class="banniere">
+    Tout ce que je produis avec l'IA est un <strong>projet</strong> : je le relis, je le corrige, je
+    le signe avant tout envoi. <strong>Aucune automatisation ne part en production</strong> sans
+    revue humaine, sans avoir été testée, et sans procédure de retour arrière écrite. Toute question
+    juridique ou de conformité va au <strong>conseil de mon entreprise</strong> — ni au formateur, ni
+    à l'outil.
+  </div>
+</section>
+
+<section class="piece" data-piece="A2" data-titre="Fiche de régime d'usage — les trois régimes, et ce qu'il faut pour passer au suivant" data-bloc="M1, pratique" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A2</div>
+  <h2>Fiche de régime d'usage</h2>
+  <p class="piece-usage">
+    Premier temps de la pratique du module 1, au stylo, sans outil. La règle s'énonce avant de
+    distribuer : le régime d'usage se décide AVANT de brancher quoi que ce soit, parce qu'une
+    automatisation ne relit pas un document, elle avale un flux — ce qui entre entre à chaque
+    exécution.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Régime</th>
+        <th>Ce qui le caractérise</th>
+        <th style="width: 30%">Ce qui peut y transiter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1 — Compte grand public</strong></td>
+        <td>
+          Ouvert avec une adresse personnelle ou professionnelle, sans contrat d'entreprise. Aucun
+          engagement écrit sur la réutilisation de ce qui est déposé, aucune garantie de suppression.
+        </td>
+        <td>
+          Rien de nominatif, rien de confidentiel, rien de non publié. Des structures, des modèles,
+          des extraits publics.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2 — Offre entreprise avec engagement de non-réutilisation</strong></td>
+        <td>
+          Contrat signé par l'entreprise, engagement écrit de non-réutilisation des contenus pour
+          l'entraînement, administration des comptes.
+        </td>
+        <td>
+          Ce que votre entreprise a explicitement autorisé, et rien de plus. L'engagement du
+          fournisseur ne remplace pas votre propre décision.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>3 — Environnement validé par votre informatique</strong></td>
+        <td>
+          Instance ou intégration passée en revue chez vous : hébergement, journalisation, durées de
+          conservation, gestion des accès.
+        </td>
+        <td>
+          Ce que la décision écrite prévoit, périmètre par périmètre. La validation porte sur un
+          usage nommé, pas sur l'outil en général.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mon régime réel aujourd'hui — pas celui que je voudrais</div>
+    <p>
+      <span class="coche"></span> Régime 1 &nbsp; <span class="coche"></span> Régime 2 &nbsp;
+      <span class="coche"></span> Régime 3 &nbsp; <span class="coche"></span> Je ne sais pas — et
+      c'est déjà une réponse : je le vérifie avant lundi
+    </p>
+    <p>Nom exact de l'outil validé chez moi (s'il y en a un) : ______________________________</p>
+    <p>Ce qui me le fait dire (contrat, note interne, message de mon informatique, rien) :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Pour passer au régime supérieur</div>
+    <p>Ce que je dois obtenir, écrit en clair (pas « une autorisation ») :</p>
+    <div class="lignes"></div>
+    <p>
+      <strong>De qui, nommément</strong> — la fonction précise, pas un service :
+      ______________________________
+    </p>
+    <p>Avant quelle date : ____ / ____ / 20____ · Ce que je fais en attendant :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Cette fiche est un <strong>projet</strong> de travail : elle se relit, se corrige et s'assume par
+    vous avant d'être présentée à qui que ce soit. Tant que le régime n'est pas arrêté par écrit, les
+    ateliers tournent sur les jeux fournis dans le kit : <strong>rien de nominatif ne transite</strong>.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans test et sans
+    procédure de retour arrière écrite. Toute question juridique va au
+    <strong>conseil de votre entreprise</strong> : le formateur ne se prononce pas.
+  </div>
+</section>
+
+<section class="piece" data-piece="A3" data-titre="Grille des 4 questions — une ligne par tâche, conséquence écrite en clair" data-bloc="M1, pratique" data-tirage="2 par stagiaire + 5">
+  <div class="piece-badge">Pièce A3 — recto</div>
+  <h2>Le test des 4 questions</h2>
+  <p class="piece-usage">
+    Se remplit au stylo, une ligne par tâche répétitive. Le formateur exige la
+    <strong>conséquence écrite en clair</strong>, jamais la case seule : une case cochée ne se relit
+    pas dans six mois.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th>La question</th>
+        <th style="width: 34%">Ce qu'elle déclenche si la réponse est « oui »</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Q1</strong></td>
+        <td>
+          La chaîne traite-t-elle des données qui se rapportent à des personnes —
+          <strong>même sans leur nom</strong>, même par recoupement (référence, date, service,
+          montant) ?
+        </td>
+        <td>
+          <strong>Information des personnes concernées</strong> : elles doivent savoir que le
+          traitement existe, à quoi il sert, et à qui s'adresser.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Q2</strong></td>
+        <td>
+          La chaîne produit-elle, même comme sous-produit, un suivi de l'activité, du rendement ou
+          du comportement de salariés identifiables ?
+        </td>
+        <td>
+          <strong>Consultation de l'instance représentative du personnel</strong> avant mise en
+          service, en plus de l'information.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Q3</strong></td>
+        <td>
+          La sortie sert-elle à prendre, préparer ou orienter une décision qui affecte une personne
+          — salarié, candidat, client, usager ?
+        </td>
+        <td>
+          <strong>Analyse d'impact</strong> à instruire, et point de relecture humaine obligatoire :
+          la décision ne se prend jamais à la sortie de la chaîne.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Q4</strong></td>
+        <td>
+          Une sortie fausse partie sans être relue peut-elle causer un dommage difficilement
+          réparable — argent versé, santé, sécurité, droit, réputation ?
+        </td>
+        <td>
+          Contrôle et point d'arrêt obligatoires. <strong>Si aucun contrôle n'est possible :
+          arrêt</strong> — on n'automatise pas cette tâche en l'état.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 26%">Ma tâche répétitive</th>
+        <th style="width: 7%">Q1</th>
+        <th style="width: 7%">Q2</th>
+        <th style="width: 7%">Q3</th>
+        <th style="width: 7%">Q4</th>
+        <th>La conséquence, écrite en clair : quoi, auprès de qui, avant quand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+      <tr><td></td><td>O / N</td><td>O / N</td><td>O / N</td><td>O / N</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="banniere">
+    Grille de travail — <strong>projet</strong> à relire, corriger et faire valider par le
+    <strong>conseil de votre entreprise</strong> avant toute diffusion : le formateur n'arbitre
+    aucune question juridique. <strong>Aucune automatisation ne part en production</strong> sans
+    revue humaine, sans test et sans procédure de retour arrière écrite.
+  </div>
+</section>
+
+<section class="piece" data-piece="A3">
+  <div class="piece-badge">Pièce A3 — verso, exemple travaillé</div>
+  <h2>Une ligne remplie, pour montrer ce qu'on attend</h2>
+  <p class="piece-usage">
+    À projeter ou lire quand la salle coche sans écrire. Une seule ligne suffit à régler le niveau
+    d'exigence.
+  </p>
+
+  <div class="texte-exercice">
+    <p>
+      <strong>Tâche :</strong> compilation hebdomadaire du tableau de suivi des dossiers du service,
+      envoyée au comité de pilotage.
+    </p>
+    <p><strong>Q1 : oui</strong> — l'export porte une colonne « chargé de dossier ».</p>
+    <p>
+      <strong>Q2 : oui</strong> — le nombre de dossiers en écart par chargé de dossier est un suivi
+      d'activité individuelle, que ce soit ou non le but recherché.
+    </p>
+    <p><strong>Q3 : non</strong> — la synthèse alimente un point d'avancement, aucune décision individuelle.</p>
+    <p><strong>Q4 : non</strong> — une erreur se rattrape au point suivant, sans dommage irréversible.</p>
+    <p>
+      <strong>Conséquence :</strong> informer les chargés de dossier par note de service avant mise
+      en service (rédigée à partir de la trame A20), et porter le point à l'ordre du jour de
+      l'instance représentative avant le lancement. Demande envoyée au responsable des ressources
+      humaines avant le 30 du mois. <strong>Variante qui change tout :</strong> si la colonne
+      « chargé de dossier » est retirée à l'entrée et que la synthèse est produite au niveau du
+      service, Q2 passe à « non » et il ne reste que l'information.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">La règle qui tranche, à énoncer telle quelle</div>
+    <p>
+      Une conséquence utile porte <strong>trois éléments</strong> : quoi (l'acte à poser), auprès de
+      qui (une fonction nommée), avant quand (une date). Il en manque un, la ligne ne vaut rien —
+      elle ne se relit pas et personne ne saura si elle a été faite.
+    </p>
+    <p class="petit">
+      Et la règle du formateur, mot pour mot, dès qu'une main se lève sur le droit applicable :
+      « je ne me prononce pas, notez la question, votre conseil tranchera. »
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A4" data-titre="Le fichier « anonymisé » — démonstration de ré-identification (3 feuillets) + corrigé" data-bloc="M1, pratique (plan B et démonstration)" data-tirage="1 jeu par table + corrigé formateur">
+  <div class="piece-badge">Pièce A4 — feuillets stagiaire</div>
+  <h2>Le fichier « anonymisé » qui ne l'est pas</h2>
+  <p class="piece-usage">
+    Le cœur pédagogique du module 1. Distribuer les trois feuillets ensemble, sans commentaire, et
+    poser une seule question : <em>« ce fichier ne contient aucun nom. Combien de personnes
+    pouvez-vous nommer, ou du moins désigner sans erreur possible ? »</em> Laisser cinq minutes.
+    Tous les éléments nécessaires sont dans les trois feuillets — rien n'est à deviner. Entreprise,
+    personnes et montants sont fictifs ; les références sont de la forme <code>AGT-07</code>.
+  </p>
+
+  <div class="texte-exercice">
+    <p style="text-align: center">
+      <strong>f. 1 — MERIDIA LOGISTIQUE (entreprise fictive)<br />
+      Journal des remboursements de frais — service Exploitation, mois d'avril<br />
+      « extrait anonymisé : les noms ont été retirés »</strong>
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 14%">Réf. agent</th>
+          <th style="width: 12%">Date</th>
+          <th style="width: 20%">Service</th>
+          <th>Motif</th>
+          <th style="width: 16%">Montant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>AGT-01</td><td>03/04</td><td>Exploitation</td><td>Repas en déplacement</td><td>19,10 €</td></tr>
+        <tr><td>AGT-03</td><td>08/04</td><td>Exploitation</td><td>Nuitée hôtel — Lyon</td><td>118,00 €</td></tr>
+        <tr><td>AGT-03</td><td>09/04</td><td>Exploitation</td><td>Repas en déplacement</td><td>19,10 €</td></tr>
+        <tr><td>AGT-03</td><td>09/04</td><td>Exploitation</td><td>Train retour Lyon</td><td>24,50 €</td></tr>
+        <tr><td>AGT-05</td><td>11/04</td><td>Exploitation</td><td>Repas en déplacement</td><td>19,10 €</td></tr>
+        <tr><td>AGT-07</td><td>15/04</td><td>Exploitation</td><td>Nuitée hôtel — salon de Hanovre</td><td>214,00 €</td></tr>
+        <tr><td>AGT-07</td><td>16/04</td><td>Exploitation</td><td>Nuitée hôtel — salon de Hanovre</td><td>214,00 €</td></tr>
+        <tr><td>AGT-07</td><td>17/04</td><td>Exploitation</td><td>Inscription salon professionnel</td><td>480,00 €</td></tr>
+        <tr><td>AGT-09</td><td>22/04</td><td>Exploitation</td><td>Repas en déplacement</td><td>19,10 €</td></tr>
+        <tr><td>AGT-11</td><td>24/04</td><td>Exploitation</td><td>Frais de garde — mission exceptionnelle du samedi</td><td>62,00 €</td></tr>
+        <tr><td>AGT-12</td><td>25/04</td><td>Exploitation</td><td>Indemnité forfaitaire d'astreinte</td><td>310,00 €</td></tr>
+        <tr><td>AGT-12</td><td>29/04</td><td>Exploitation</td><td>Repas en déplacement</td><td>19,10 €</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="texte-exercice">
+    <p style="text-align: center">
+      <strong>f. 2 — Compte rendu de la réunion de service du 30 avril<br />
+      (diffusé par messagerie à l'ensemble du service Exploitation)</strong>
+    </p>
+    <p>
+      <strong>Déplacements du mois.</strong> Le déplacement à Lyon des 8 et 9 avril, chez notre
+      prestataire de transport, a été mené par le <strong>responsable des expéditions</strong>, seul.
+      Le compte rendu de visite est joint au présent document.
+    </p>
+    <p>
+      <strong>Salon de Hanovre.</strong> Le service n'a envoyé qu'<strong>un seul représentant</strong>,
+      du 15 au 17 avril. Son retour d'expérience sera présenté au point de mai.
+    </p>
+    <p>
+      <strong>Astreinte d'avril.</strong> Elle a été tenue par une <strong>seule personne</strong> sur
+      tout le mois, l'agent d'exploitation qui s'était porté volontaire au point de mars.
+    </p>
+    <p>
+      <strong>Mission exceptionnelle du samedi 24 avril.</strong> Une <strong>seule personne</strong>
+      du service a été mobilisée ; l'équipe la remercie.
+    </p>
+    <p>
+      <strong>Effectif.</strong> Le service compte douze agents. Les fonctions de responsable des
+      expéditions et de responsable du quai sont tenues par une personne chacune.
+    </p>
+  </div>
+
+  <div class="texte-exercice">
+    <p style="text-align: center">
+      <strong>f. 3 — Note de service — barème interne des frais<br />
+      (affichée dans le service, remise à l'embauche)</strong>
+    </p>
+    <ul>
+      <li>Repas en déplacement : <strong>19,10 €</strong>, tous agents.</li>
+      <li>Nuitée hôtel, zone A : plafond <strong>118,00 €</strong> ; salon professionnel hors zone euro : plafond <strong>214,00 €</strong>.</li>
+      <li>
+        Indemnité forfaitaire d'astreinte mensuelle : <strong>310,00 €</strong>. Réservée aux
+        <strong>agents d'exploitation de niveau III</strong> inscrits au tour d'astreinte.
+      </li>
+      <li>
+        Frais de garde sur mission exceptionnelle de week-end : <strong>62,00 €</strong> par jour, sur
+        justificatif. Ouverts aux agents déclarant au service du personnel
+        <strong>au moins un enfant de moins de douze ans à charge</strong>.
+      </li>
+    </ul>
+  </div>
+
+  <p>
+    <strong>Ce que vous rendez :</strong> pour chaque référence que vous pensez pouvoir désigner,
+    écrivez la référence, la personne désignée, et <strong>les deux ou trois éléments croisés</strong>
+    qui vous y ont conduit.
+  </p>
+  <div class="lignes"></div>
+  <div class="lignes"></div>
+  <div class="lignes"></div>
+</section>
+
+<section class="piece" data-piece="A4">
+  <div class="piece-badge">Pièce A4 — corrigé formateur</div>
+  <h2>Le recoupement, pas à pas</h2>
+  <p class="piece-usage">
+    À dérouler dans cet ordre, en montrant physiquement les deux feuillets qui se croisent à chaque
+    fois. Sur l'exemplaire de secours du plan B, les trois premiers recoupements sont déjà entourés
+    au feutre : f. 1 lignes AGT-03, AGT-07 et AGT-12, et les paragraphes correspondants de f. 2.
+  </p>
+
+  <div class="corrige">
+    <div class="encadre-titre">Recoupement 1 — AGT-07, le plus immédiat</div>
+    <p>
+      f. 1 : AGT-07 engage des frais de salon à Hanovre les <strong>15, 16 et 17 avril</strong>.
+      f. 2 : le service n'a envoyé <strong>qu'un seul représentant</strong>, <strong>du 15 au
+      17 avril</strong>. Un seul agent peut correspondre. Toute personne du service — et toute
+      personne destinataire du compte rendu — met un nom dessus sans effort.
+    </p>
+    <p>
+      <strong>La règle qui tranche :</strong> une date, un service et un événement singulier
+      suffisent à réduire l'ensemble à une personne. Un identifiant indirect n'a pas besoin d'être un
+      nom ; il lui suffit d'être <strong>discriminant</strong>.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Recoupement 2 — AGT-03, par la fonction</div>
+    <p>
+      f. 1 : AGT-03 est à Lyon les <strong>8 et 9 avril</strong> (nuitée, repas, train retour).
+      f. 2 : le déplacement à Lyon des 8 et 9 avril a été mené par le <strong>responsable des
+      expéditions</strong>, seul, et f. 2 précise que cette fonction est tenue par
+      <strong>une personne</strong>.
+    </p>
+    <p>
+      <strong>La règle qui tranche :</strong> une <strong>fonction unique</strong> dans un périmètre
+      donné désigne une personne aussi sûrement qu'un nom. C'est le recoupement que les organigrammes
+      rendent possible dans toutes les entreprises.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Recoupement 3 — AGT-12, par le montant</div>
+    <p>
+      f. 1 : AGT-12 perçoit <strong>310,00 €</strong>. f. 3 : ce montant est
+      <strong>réservé aux agents d'exploitation de niveau III inscrits au tour d'astreinte</strong>.
+      f. 2 : l'astreinte d'avril a été tenue par <strong>une seule personne</strong> sur tout le mois.
+    </p>
+    <p>
+      <strong>La règle qui tranche :</strong> un <strong>montant</strong> n'est pas un chiffre neutre
+      dès lors qu'un barème le rattache à une catégorie. Il devient un attribut de la personne — ici,
+      son niveau de classification.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Recoupement 4 — AGT-11 : celui qu'il faut garder pour la fin</div>
+    <p>
+      f. 1 : AGT-11 perçoit <strong>62,00 €</strong> de frais de garde le <strong>24 avril</strong>.
+      f. 2 : la mission exceptionnelle du samedi 24 avril n'a mobilisé qu'<strong>une seule
+      personne</strong>. f. 3 : ces frais sont ouverts aux agents déclarant
+      <strong>au moins un enfant de moins de douze ans à charge</strong>.
+    </p>
+    <p>
+      Le fichier « anonymisé » ne se contente donc pas d'identifier AGT-11 : il révèle sur cette
+      personne une <strong>information de vie familiale</strong> qui ne figure nulle part dans la
+      colonne « motif ». Elle sort du barème, par déduction.
+    </p>
+    <p>
+      <strong>La règle qui tranche :</strong> ce qui est <strong>déductible</strong> d'un fichier est
+      dans le fichier. Retirer une colonne ne retire pas l'information qu'un barème public permet de
+      reconstruire.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois phrases à dire en clôture, dans cet ordre</div>
+    <ul>
+      <li>
+        <strong>AGT-01, AGT-05 et AGT-09 restent non identifiés</strong> — et cela ne change rien :
+        un fichier dont une partie des personnes est ré-identifiable est un fichier de données
+        personnelles, en entier.
+      </li>
+      <li>
+        <strong>Personne n'a eu besoin de compétence technique</strong>, seulement de deux documents
+        internes ordinaires. Une automatisation qui avale ce fichier chaque semaine le fait
+        <strong>à chaque exécution</strong>, sans que personne relise.
+      </li>
+      <li>
+        <strong>Ce qu'on en tire pour la journée :</strong> le régime d'usage se décide avant de
+        brancher. Et sur toute question de droit : « je ne me prononce pas, notez la question, votre
+        conseil tranchera. »
+      </li>
+    </ul>
+  </div>
+  <p class="petit">
+    Aucune donnée réelle dans cette pièce : entreprise, montants, dates et références sont
+    construits pour l'exercice. Ne jamais la remplacer par un extrait apporté par un participant,
+    même « déjà anonymisé » — c'est précisément la démonstration en cours.
+  </p>
+</section>
+
+<section class="piece" data-piece="A5" data-titre="Les six automatisations à classer au feu tricolore + corrigé commenté" data-bloc="M1, vérification" data-tirage="1 par table + corrigé formateur">
+  <div class="piece-badge">Pièce A5 — feuille par table</div>
+  <h2>Six automatisations — vert, orange ou rouge ?</h2>
+  <p class="piece-usage">
+    Par table. Chaque classement doit être <strong>justifié par la question du test</strong> qui l'a
+    décidé (A3), jamais par une impression. Le formateur fait justifier AVANT d'annoncer la couleur :
+    une table qui a la bonne couleur pour la mauvaise raison n'a rien acquis.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 5%">N°</th>
+        <th>L'automatisation, telle qu'elle serait mise en œuvre</th>
+        <th style="width: 14%">Couleur</th>
+        <th style="width: 22%">La question qui décide</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>
+          Chaque lundi, la chaîne compile l'export du suivi de dossiers en une synthèse à trois
+          colonnes. L'export ne porte que des numéros de dossiers, aucune colonne de personne. La
+          synthèse est relue et signée avant l'envoi interne.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>
+          Les candidatures reçues sont triées automatiquement. La chaîne remonte les « profils
+          prioritaires » et <strong>écarte les autres</strong> ; seuls les profils remontés sont lus
+          par un humain.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>
+          Chaque lundi, un relevé du nombre de demandes traitées <strong>par agent</strong> est
+          produit et envoyé au responsable de service.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>
+          À réception d'une demande de devis, la chaîne prépare un <strong>brouillon</strong> de
+          réponse à partir du catalogue de prix publié. Le commercial le relit, le corrige et le
+          signe avant tout envoi.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>
+          Les montants des factures fournisseurs sont extraits automatiquement et reportés dans le
+          tableau de règlement. Le virement du lot part <strong>sans relecture</strong>, le jeudi.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>
+          Les comptes rendus d'entretien annuel sont résumés automatiquement, et les résumés sont
+          transmis à la ligne hiérarchique.
+        </td>
+        <td>V &nbsp; O &nbsp; R</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Notre hypothèse de mise en œuvre, quand l'énoncé ne dit pas tout</div>
+    <p>Sur quel cas avons-nous dû supposer quelque chose, et quoi ?</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+</section>
+
+<section class="piece" data-piece="A5">
+  <div class="piece-badge">Pièce A5 — corrigé formateur</div>
+  <h2>Six automatisations — corrigé, avec la règle qui tranche</h2>
+  <p class="piece-usage">
+    Le formateur <strong>lit</strong> ce corrigé, il ne tranche rien en direct : c'est précisément
+    pour cela qu'il est écrit. Les cas 3 et 5 sont volontairement discutables — leur couleur dépend
+    de la mise en œuvre, pas de l'intitulé. Une table conteste sur un point de droit : « je ne me
+    prononce pas, notez la question, votre conseil tranchera. »
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 5%">N°</th>
+        <th style="width: 13%">Couleur</th>
+        <th style="width: 12%">Question</th>
+        <th>La règle qui tranche</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Vert</strong></td>
+        <td>Q1 non</td>
+        <td>
+          Aucune donnée se rapportant à une personne, même par recoupement, et un point de relecture
+          déjà dans la chaîne. Faire dire POURQUOI c'est vert : c'est l'antidote à la prudence
+          paralysante. <em>Attention</em> : si l'export portait une colonne « chargé de dossier », on
+          bascule au cas 3.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Rouge</strong></td>
+        <td>Q3 oui</td>
+        <td>
+          La chaîne <strong>écarte</strong> : la décision est prise à la sortie, sans qu'aucun humain
+          voie les dossiers écartés. Le point de relecture n'existe pas là où il compte. Rouge tant
+          que la mise en œuvre reste celle-là — pas rouge « parce que c'est du recrutement ».
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Orange</strong><br /><span class="petit">(cas discutable)</span></td>
+        <td>Q2 oui</td>
+        <td>
+          Un relevé <strong>par agent</strong> est un suivi d'activité individuelle, que ce soit ou
+          non le but poursuivi : information des salariés ET consultation de l'instance avant mise en
+          service. <strong>Ce qui fait basculer :</strong> agrégé au niveau du service, sans colonne
+          d'agent, Q2 tombe et le cas passe au vert. C'est la mise en œuvre qui décide, et c'est tout
+          l'enseignement du cas.
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Vert</strong></td>
+        <td>Q3 « oui », neutralisée</td>
+        <td>
+          La sortie prépare une décision qui affecte un client, mais le brouillon est relu, corrigé
+          et <strong>signé</strong> par un humain nommé avant tout envoi : le point de relecture est
+          une pièce de la chaîne, pas une intention. Retirez la signature, le cas devient orange.
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Rouge</strong><br /><span class="petit">(cas discutable)</span></td>
+        <td>Q4 oui</td>
+        <td>
+          De l'argent part sans qu'aucun humain n'ait relu : dommage difficilement réparable, aucun
+          contrôle possible en l'état. <strong>Ce qui fait basculer :</strong> un contrôle d'écart
+          entre le montant extrait et le montant du bon de commande, plus un visa avant l'ordre de
+          virement, et le cas passe à l'orange, puis au vert une fois le contrôle testé. Le rouge
+          porte sur l'absence de contrôle, pas sur l'extraction.
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Rouge</strong></td>
+        <td>Q1, Q2 et Q3</td>
+        <td>
+          Trois questions à « oui » d'un coup, sur des propos tenus dans un cadre où la personne
+          n'attend pas d'être résumée par une machine. S'y ajoute le défaut technique vu en
+          démonstration : une reformulation <strong>change le sens</strong> d'un commentaire, et
+          personne ne relit l'original. Rouge, et la question de droit part au conseil.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Si les six cas sont expédiés en dix minutes</div>
+    <p>
+      Reprendre le cas 1 et exiger la question déterminante à l'oral, puis le cas 3. Le rythme
+      retombe immédiatement : la salle comprend que la couleur seule ne vaut rien.
+    </p>
+  </div>
+  <div class="encadre">
+    <div class="encadre-titre">Si deux tables divergent</div>
+    <p>
+      Souvent les deux ont raison, parce qu'elles n'ont pas supposé la même mise en œuvre. Faire dire
+      l'hypothèse à voix haute, l'écrire au tableau à côté de la couleur — c'est elle qui change tout.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A6" data-titre="Fiche du feu tricolore — la règle des deux jours (à emporter)" data-bloc="M1, synthèse" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A6</div>
+  <h2>Le feu tricolore — ce que chaque couleur autorise</h2>
+  <p class="piece-usage">
+    Remise en main propre à la synthèse du module 1, elle fait règle jusqu'à la fin du jour 2 et sert
+    de dernière colonne à la feuille de route (A21). Elle se relit chaque fois qu'une automatisation
+    nouvelle est envisagée, avant d'y consacrer une heure de travail.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 14%">Couleur</th>
+        <th style="width: 38%">Ce qui la déclenche</th>
+        <th>Ce qu'elle autorise, aujourd'hui</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Vert</strong></td>
+        <td>
+          Aucune des quatre questions n'appelle autre chose qu'un point de relecture ordinaire — et
+          ce point est écrit dans la fiche de cadrage.
+        </td>
+        <td>On cadre, on monte, on teste sur trois jeux d'entrées, on documente. C'est tout.</td>
+      </tr>
+      <tr>
+        <td><strong>Orange</strong></td>
+        <td>
+          Au moins une conséquence à franchir avant de brancher : information des personnes,
+          consultation de l'instance, analyse d'impact à instruire.
+        </td>
+        <td>
+          On cadre et on prépare — <strong>on ne branche pas</strong>. La conséquence part sur la
+          feuille de route avec un porteur et une date, et devient un point bloquant.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Rouge</strong></td>
+        <td>
+          Un dommage difficilement réparable sans contrôle possible, ou une donnée qui n'a pas le
+          droit d'entrer dans le régime dont vous disposez.
+        </td>
+        <td>
+          On n'automatise pas en l'état. Deux issues seulement : <strong>changer la mise en
+          œuvre</strong> (ajouter un contrôle, retirer une colonne, couper une étape), ou renoncer.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Trois phrases qui évitent les faux débats</div>
+    <ul>
+      <li>
+        <strong>La couleur porte sur la mise en œuvre, jamais sur l'intitulé.</strong> « Automatiser
+        le recrutement » n'a pas de couleur ; « écarter des candidatures sans relecture » en a une.
+      </li>
+      <li>
+        <strong>Le rouge n'est pas définitif</strong> : c'est une couleur pour aujourd'hui. Un
+        contrôle humain ajouté fait passer bien des rouges en orange.
+      </li>
+      <li>
+        <strong>L'orange n'est pas un refus</strong> : c'est une étape à franchir avant de brancher,
+        avec un nom et une date.
+      </li>
+    </ul>
+  </div>
+
+  <div class="banniere">
+    Cette fiche est un outil de tri interne, <strong>pas un avis juridique</strong> : elle se lit et
+    se corrige avec le <strong>conseil de votre entreprise</strong>, qui seul tranche.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans test et
+    sans procédure de retour arrière écrite.
+  </div>
+</section>
+
+<section class="piece" data-piece="A7" data-titre="Trame de cartographie — mes tâches répétitives, notées sur quatre critères" data-bloc="M2, pratique" data-tirage="1 par stagiaire + 5">
+  <div class="piece-badge">Pièce A7</div>
+  <h2>Cartographie — quatre critères, trois candidates</h2>
+  <p class="piece-usage">
+    Premier temps de la pratique du module 2. Le tri se fait sur des notes, pas sur l'envie. Note de
+    1 à 5 par critère ; le total ne fait pas la décision à lui seul, mais un total bas avec un coût
+    de l'erreur élevé signale toujours un mauvais premier cas.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>La tâche que je refais chaque semaine</th>
+        <th style="width: 10%">Volume</th>
+        <th style="width: 11%">Répétition</th>
+        <th style="width: 13%">Stabilité des règles</th>
+        <th style="width: 13%">Coût de l'erreur</th>
+        <th style="width: 9%">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Comment noter, pour que les notes veuillent dire quelque chose</div>
+    <ul>
+      <li><strong>Volume</strong> — combien d'éléments à chaque exécution. 1 : trois lignes. 5 : plusieurs centaines.</li>
+      <li><strong>Répétition</strong> — à quelle fréquence. 1 : deux fois par an. 5 : tous les jours.</li>
+      <li>
+        <strong>Stabilité des règles</strong> — la règle appliquée change-t-elle ? 1 : elle dépend du
+        cas, de l'interlocuteur, du mois. 5 : elle est écrite et n'a pas bougé depuis un an.
+      </li>
+      <li>
+        <strong>Coût de l'erreur</strong> — ce que coûte une sortie fausse partie sans relecture.
+        <strong>Ici, une note haute ne vaut pas un bon point</strong> : elle vous dit qu'il faudra un
+        contrôle solide, et elle pèse sur la couleur au feu tricolore.
+      </li>
+    </ul>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mes trois candidates, et celle que je retiens</div>
+    <p>Candidate 1 : ____________________________________________________________</p>
+    <p>Candidate 2 : ____________________________________________________________</p>
+    <p>Candidate 3 : ____________________________________________________________</p>
+    <p><strong>Celle que je cadre aujourd'hui</strong>, et pourquoi elle plutôt qu'une autre :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Document de travail — <strong>projet</strong> à relire et corriger avant d'être montré à qui que
+    ce soit. <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans
+    test et sans procédure de retour arrière écrite. Toute question juridique va au
+    <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A8" data-titre="Fiche comparative des trois familles d'outils + case « motif de mon choix »" data-bloc="M2, pratique" data-tirage="1 par stagiaire + 5">
+  <div class="piece-badge">Pièce A8</div>
+  <h2>Trois familles d'outils — laquelle pour mon cas</h2>
+  <p class="piece-usage">
+    Deuxième temps de la pratique du module 2. Le formateur exige le <strong>motif écrit</strong>, pas
+    seulement le nom retenu : un choix sans motif ne se défend pas devant son informatique. Un binôme
+    qui choisit par habitude est renvoyé à cette fiche et doit citer un critère.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%">Famille</th>
+        <th>Comment elle fonctionne</th>
+        <th style="width: 22%">Quand elle gagne</th>
+        <th style="width: 22%">Quand elle perd</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1 — Assistant conversationnel</strong></td>
+        <td>
+          Rien ne persiste d'une fois sur l'autre : vous recollez le contexte et les fichiers à
+          chaque exécution.
+        </td>
+        <td>
+          Pour apprendre, pour les cas mensuels ou trimestriels, pour tout ce qui change de forme à
+          chaque fois. Mise en place immédiate, coût nul.
+        </td>
+        <td>
+          Pour ce qui revient chaque lundi : vous repayez le recollage à chaque exécution, et la
+          sortie dérive parce que le contexte recollé n'est jamais tout à fait le même.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2 — Espace de travail persistant</strong></td>
+        <td>
+          Les fichiers de référence et l'instruction restent en place. Vous rejouez sans tout
+          recoller ; l'instruction se corrige une fois pour toutes.
+        </td>
+        <td>
+          Dès que vous devez recoller les mêmes fichiers à chaque exécution. C'est là que se monte la
+          majorité des cas d'une session.
+        </td>
+        <td>
+          Quand personne n'est responsable de tenir les fichiers de référence à jour : l'espace
+          continue de répondre, avec des données périmées.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>3 — Chaînage entre applications</strong></td>
+        <td>
+          La chaîne part seule, déclenchée par une horloge ou un événement, sans que personne ouvre
+          quoi que ce soit.
+        </td>
+        <td>
+          Quand le volume et la régularité le justifient, et seulement une fois le point d'arrêt et
+          le contrôle écrits, testés et confiés à quelqu'un.
+        </td>
+        <td>
+          Partout ailleurs — et c'est la famille qu'on <strong>montre sans la monter en salle</strong> :
+          un chaînage bricolé en atelier repart chez vous et tourne sans surveillance.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les deux questions qui départagent en trente secondes</div>
+    <ul>
+      <li>
+        <strong>Devez-vous recoller les mêmes fichiers à chaque exécution ?</strong> Si oui, la
+        famille 2 a déjà gagné sur la famille 1.
+      </li>
+      <li>
+        <strong>Qui s'aperçoit que la chaîne a mal tourné, et en combien de temps ?</strong> Si la
+        réponse est « personne » ou « au prochain incident », la famille 3 est prématurée, quel que
+        soit le volume.
+      </li>
+    </ul>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mon choix pour demain</div>
+    <p>
+      Famille retenue : <span class="coche"></span> 1 &nbsp; <span class="coche"></span> 2 &nbsp;
+      <span class="coche"></span> 3 (démonstration seulement) &nbsp;
+      <span class="coche"></span> cas de repli commun (pièce A14)
+    </p>
+    <p><strong>Le motif, appuyé sur un critère de cette fiche</strong> — pas « c'est ce qu'on utilise » :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p>Nom exact de l'outil, tel qu'il est validé chez moi : ______________________________</p>
+  </div>
+
+  <div class="banniere">
+    Comparaison pédagogique, <strong>projet</strong> à relire et corriger : elle ne remplace ni
+    l'évaluation de votre informatique ni le contrat qui vous lie à un fournisseur.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans test et sans
+    procédure de retour arrière écrite. Toute question juridique ou de sécurité va au
+    <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A9" data-titre="Fiche de cadrage — la trame nommée qui ouvre le jour 2" data-bloc="M2, pratique" data-tirage="2 par stagiaire + 5">
+  <div class="piece-badge">Pièce A9</div>
+  <h2>Fiche de cadrage de mon cas</h2>
+  <p class="piece-usage">
+    L'état stable et nommé de la fin du jour 1. Le formateur passe dans les rangs et relance sur les
+    deux entrées qu'on saute toujours — <strong>qui relit</strong> et <strong>comment on
+    arrête</strong>. Il ne rédige à la place de personne. À 17 h 45, une fiche remplie à 80 % et
+    <strong>enregistrée sous un nom</strong> vaut mieux qu'une fiche parfaite restée dans la tête.
+  </p>
+
+  <div class="champ-date">
+    <strong>Nom du fichier :</strong> cadrage-______________________-____/____/20____ ·
+    <strong>Enregistrée :</strong> <span class="coche"></span> oui
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">1 — Entrée</div>
+    <p>D'où viennent les données, sous quel format, qui les produit, à quelle fréquence :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p class="petit">
+      Écrivez aussi ce qui n'est <strong>pas</strong> dans l'entrée : c'est ce que l'outil comblera si
+      vous ne l'interdisez pas.
+    </p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">2 — Étapes, dans l'ordre, avec la règle appliquée à chacune</div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">3 — Sortie attendue</div>
+    <p>Ce qui doit être produit, pour qui, sous quel format, et à quoi on voit qu'elle est juste :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">4 — Point de relecture humaine <span class="petit">(entrée de la fiche, pas une précaution ajoutée à la fin)</span></div>
+    <p><strong>Qui relit</strong> (une fonction nommée, pas « le service ») : ______________________________</p>
+    <p><strong>Il regarde exactement quoi</strong> — deux ou trois points vérifiables :</p>
+    <div class="lignes"></div>
+    <p><strong>Où sa relecture laisse une trace</strong> (la ligne « relu par : ______ le ______ », un visa, un registre) :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">5 — Arrêt</div>
+    <p><strong>À quel signal observable</strong> la chaîne doit s'arrêter — combien d'écarts, sur combien d'exécutions, constatés par qui :</p>
+    <div class="lignes"></div>
+    <p><strong>Qui peut l'arrêter</strong>, et par quel geste concret : ______________________________</p>
+    <p><strong>Comment on revient en arrière</strong> si elle a déjà tourné (procédure de retour arrière) :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">6 — Régime, outil, couleur</div>
+    <p>
+      Régime de données retenu : <span class="coche"></span> 1 &nbsp; <span class="coche"></span> 2
+      &nbsp; <span class="coche"></span> 3 · Outil visé : ______________________________
+    </p>
+    <p>
+      Couleur au feu tricolore : <span class="coche"></span> vert &nbsp;
+      <span class="coche"></span> orange &nbsp; <span class="coche"></span> rouge · Question du test
+      qui l'a décidée : ______
+    </p>
+    <p>Si orange : la conséquence à franchir, son porteur, sa date :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Fiche de travail — <strong>projet</strong> à relire, corriger et signer par vous avant toute
+    diffusion. <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans
+    avoir été testée, et sans procédure de retour arrière écrite. Toute question juridique ou de
+    sécurité va au <strong>conseil de votre entreprise</strong> : le formateur ne se prononce pas.
+  </div>
+</section>
+
+<section class="piece" data-piece="A10" data-titre="Grille de faille — le passage croisé en binôme sur la fiche de cadrage" data-bloc="M2, vérification" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A10</div>
+  <h2>Grille de faille — je relis la fiche de l'autre</h2>
+  <p class="piece-usage">
+    Contrôle <strong>croisé</strong>, jamais auto-correction : chacun relit la fiche du voisin, stylo
+    en main. <strong>Au moins une annotation par fiche</strong>, et le formateur en demandera une à
+    l'oral. Une fiche rendue vierge est refusée : les cinq failles se trouvent dans plus de la moitié
+    des fiches d'une session.
+  </p>
+
+  <p>
+    <strong>Fiche relue — le cas :</strong> ______________________________ ·
+    <strong>Relue par :</strong> ______________
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 24%">La faille cherchée</th>
+        <th style="width: 30%">Où elle se cache, concrètement</th>
+        <th style="width: 12%">Trouvée ?</th>
+        <th>Mon annotation sur la fiche</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Une donnée personnelle oubliée</strong></td>
+        <td>
+          Dans l'entrée, une colonne qu'on ne regarde plus : nom de client, référence d'agent,
+          matricule, adresse électronique, initiales. Et tout ce qui ré-identifie par recoupement.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>2. Un contrôle absent</strong></td>
+        <td>
+          Le point de relecture n'a ni titulaire nommé ni critère vérifiable, ou la sortie part avant
+          lui.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>3. Une sortie invérifiable</strong></td>
+        <td>
+          Un indice, un score, une « tendance », une appréciation : rien qui puisse être recalculé ni
+          confronté à l'entrée.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>4. Un salarié suivi sans le savoir</strong></td>
+        <td>
+          <strong>La plus fréquente</strong> : un tableau de suivi d'activité contient des personnes,
+          et personne ne le voit avant qu'on le dise. Cherchez une colonne d'agent, un temps de
+          traitement, un volume par personne.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>5. Une règle instable</strong></td>
+        <td>
+          Un seuil qui change selon le mois, une liste d'exceptions qui n'est pas écrite, un
+          classement « selon le contexte ».
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">La question qui remplit les cases vides</div>
+    <p>
+      Fiche en main, posez-la telle quelle : <em>« la sortie est fausse, elle part au client. Qui
+      s'en aperçoit, et à quel moment ? »</em> Les cases « qui relit » et « comment on arrête » se
+      remplissent seules.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Point resté ouvert (sécurité ou droit) — à porter sur la fiche</div>
+    <p class="petit">On ne tranche pas en binôme : on note, et le conseil de l'entreprise tranchera.</p>
+    <div class="lignes"></div>
+  </div>
+</section>
+
+<section class="piece" data-piece="A11" data-titre="La fiche de cadrage piégée — cinq failles + corrigé commenté" data-bloc="M2, vérification (parade)" data-tirage="1 par table + corrigé formateur">
+  <div class="piece-badge">Pièce A11 — feuille par table</div>
+  <h2>Fiche de cadrage piégée — trouvez les cinq failles</h2>
+  <p class="piece-usage">
+    Parade de la vérification du module 2 : quand les binômes se valident mutuellement sans rien
+    relever, distribuer cette fiche et faire chercher trois minutes, grille A10 en main. L'œil se
+    règle, et le passage croisé reprend sérieusement. Cas fictif, entreprise fictive.
+  </p>
+
+  <div class="texte-exercice">
+    <p style="text-align: center"><strong>Fiche de cadrage — « Tableau de bord hebdomadaire du service après-vente »</strong></p>
+    <p>
+      <strong>1. Entrée.</strong> Export de l'outil de tickets, tous les lundis matin, au format
+      tableur. Colonnes : numéro de ticket, date d'ouverture, <strong>agent affecté</strong>,
+      <strong>nom du client</strong>, durée de traitement, commentaire de clôture.
+    </p>
+    <p>
+      <strong>2. Étapes.</strong> (a) Reprendre les tickets clos de la semaine. (b) Quand la durée de
+      traitement est vide, la <strong>compléter par la moyenne du mois</strong>. (c) Classer les
+      commentaires de clôture <strong>par ton</strong> — satisfait, neutre, tendu. (d) Calculer un
+      <strong>indice de performance sur 100</strong> par agent. (e) Alerter au-delà du seuil.
+    </p>
+    <p>
+      <strong>3. Sortie attendue.</strong> Un tableau d'indices de performance <strong>par
+      agent</strong>, envoyé au responsable de service et à son adjoint, le lundi à 9 h.
+    </p>
+    <p>
+      <strong>4. Point de relecture humaine.</strong> « Je <strong>regarde vite fait</strong> avant
+      d'envoyer. »
+    </p>
+    <p><strong>5. Arrêt.</strong> « <strong>Si ça ne marche plus.</strong> »</p>
+    <p>
+      <strong>6. Règles.</strong> Le seuil d'alerte est fixé à 48 heures,
+      <strong>sauf pour les clients prioritaires</strong> ; la liste des clients prioritaires
+      <strong>change chaque mois et n'est pas écrite</strong>, le responsable la connaît.
+    </p>
+    <p>
+      <strong>7. Régime et outil.</strong> Régime 1 (compte grand public). Couleur au feu tricolore :
+      vert.
+    </p>
+  </div>
+
+  <p><strong>Notre relevé :</strong> une ligne par faille, avec l'endroit exact de la fiche.</p>
+  <div class="lignes"></div>
+  <div class="lignes"></div>
+  <div class="lignes"></div>
+</section>
+
+<section class="piece" data-piece="A11">
+  <div class="piece-badge">Pièce A11 — corrigé formateur</div>
+  <h2>La fiche piégée — corrigé, avec la règle qui tranche</h2>
+  <p class="piece-usage">
+    Se donne faille par faille, après recherche. Terminer par le paragraphe 7 : c'est lui qui fait le
+    plus d'effet, parce qu'il montre qu'une fiche entièrement fausse peut se conclure par « vert ».
+  </p>
+
+  <div class="corrige">
+    <div class="encadre-titre">Faille 1 — donnée personnelle oubliée (paragraphe 1)</div>
+    <p>
+      La colonne <strong>« nom du client »</strong> entre dans la chaîne à chaque exécution, alors
+      qu'elle ne sert à aucune des étapes. <strong>La règle qui tranche :</strong> une donnée qui
+      n'est utile à aucune étape n'a rien à faire dans l'entrée — on la retire à la source, on ne
+      compte pas sur l'outil pour l'ignorer.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Faille 2 — contrôle absent (paragraphe 4)</div>
+    <p>
+      « Je regarde vite fait » : ni titulaire nommé, ni critère, ni trace.
+      <strong>La règle qui tranche :</strong> une relecture sans titulaire et sans critère n'est pas
+      un contrôle, c'est une intention. Il y faut un nom, deux points vérifiables, et une ligne
+      « relu par : ______ le ______ » qui reste vide tant que personne n'a signé.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Faille 3 — sortie invérifiable (paragraphes 2d et 3)</div>
+    <p>
+      Un « indice de performance sur 100 » dont la formule n'est écrite nulle part ne peut être ni
+      recalculé, ni contesté, ni corrigé. S'y ajoute l'étape (b), qui
+      <strong>fabrique</strong> les durées manquantes au lieu de les signaler, et l'étape (c), qui
+      classe « par ton » — une appréciation, pas une donnée.
+      <strong>La règle qui tranche :</strong> une sortie qu'on ne peut pas confronter à l'entrée
+      n'est pas vérifiable, donc pas diffusable. Une donnée manquante s'écrit « donnée manquante »,
+      elle ne se comble jamais.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Faille 4 — un salarié suivi sans le savoir (paragraphes 1, 2d et 3)</div>
+    <p>
+      <strong>La faille centrale de la fiche.</strong> « Agent affecté » + durée de traitement +
+      indice par agent + envoi à la hiérarchie : c'est un dispositif de suivi individuel du rendement,
+      quel que soit le titre du tableau. <strong>La règle qui tranche :</strong> Q2 du test des 4
+      questions — information des salariés ET consultation de l'instance représentative
+      <strong>avant</strong> la mise en service. Ce qui ferait basculer : agréger au niveau du
+      service et retirer la colonne d'agent.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Faille 5 — règle instable (paragraphes 5 et 6)</div>
+    <p>
+      Un seuil assorti d'exceptions non écrites, qui changent chaque mois et ne vivent que dans la
+      tête d'une personne : la chaîne produira des alertes différentes d'une semaine à l'autre sans
+      que personne sache pourquoi. Même défaut au paragraphe 5 : « si ça ne marche plus » n'est pas
+      un signal observable. <strong>La règle qui tranche :</strong> ce qui n'est pas écrit ne
+      s'automatise pas — et une condition d'arrêt qu'on ne peut pas constater n'arrête rien.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le paragraphe 7, pour finir</div>
+    <p>
+      Régime 1 avec des noms de clients et des indices par salarié : le régime choisi n'autorise
+      rien de ce qui est décrit. Et la couleur annoncée est « vert » alors que Q1, Q2 et Q3 répondent
+      « oui ». <strong>Une couleur ne se déclare pas, elle se déduit des quatre questions</strong> —
+      et c'est pour cela que la grille exige la question déterminante à côté de la couleur.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A12" data-titre="Trame AXION — l'instruction qui pilote l'automatisation (vierge + mémo)" data-bloc="M3, démonstration et pratique" data-tirage="2 par stagiaire + 5">
+  <div class="piece-badge">Pièce A12</div>
+  <h2>Trame AXION — une ligne par levier</h2>
+  <p class="piece-usage">
+    S'écrit au stylo avant d'être saisie. Pour une instruction qu'on rejoue chaque semaine, les cinq
+    leviers ne sont pas facultatifs : c'est ce qui la rend stable d'une exécution à l'autre, et la
+    stabilité est tout l'intérêt d'automatiser. Le formateur laisse AXION affiché au tableau toute la
+    journée.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 18%">Levier</th>
+        <th>La question à se poser pour une automatisation</th>
+        <th style="width: 30%">Ce qui arrive quand il manque</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Acteur</strong></td>
+        <td>Qui l'outil remplace-t-il, sur quelle tâche, et « toujours de la même façon » ?</td>
+        <td>La sortie change de style et de structure à chaque exécution.</td>
+      </tr>
+      <tr>
+        <td><strong>conteXte</strong></td>
+        <td>D'où vient le fichier, à quel rythme, quelles colonnes, produit par quoi ?</td>
+        <td>L'outil devine la structure — et se trompe dès que le fichier change un peu.</td>
+      </tr>
+      <tr>
+        <td><strong>Intention</strong></td>
+        <td>À quoi sert la sortie, pour qui, dans quelle réunion ou quel envoi ?</td>
+        <td>Une sortie correcte que personne ne peut utiliser telle quelle.</td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>Quelles parties, dans quel ordre, et par quoi ça se termine ?</td>
+        <td>
+          Le tableau disparaît au deuxième essai, les puces se multiplient, rien n'est comparable
+          d'une semaine à l'autre.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Normes</strong></td>
+        <td>
+          Qu'est-ce qui est interdit ? Que faire d'une donnée manquante ? Quelle ligne de relecture
+          humaine doit terminer la sortie ?
+        </td>
+        <td>
+          <strong>Le levier décisif ici</strong> : sans lui, l'outil comble les trous au lieu de les
+          signaler, et il le fait de façon plausible.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mon instruction, ligne par ligne</div>
+    <p><strong>A</strong>cteur :</p>
+    <div class="lignes"></div>
+    <p><strong>X</strong> — conteXte :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p><strong>I</strong>ntention :</p>
+    <div class="lignes"></div>
+    <p><strong>O</strong>utput :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p><strong>N</strong>ormes :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les deux phrases à ne jamais retirer des Normes</div>
+    <p>
+      « Si une colonne manque ou si une ligne est vide, <strong>ne devine pas</strong> — écris
+      "donnée manquante" et poursuis. »
+    </p>
+    <p>
+      « Termine toujours par la ligne <strong>"relu par : ______ le ______"</strong>, que je remplis à
+      la main avant tout envoi. »
+    </p>
+    <p class="petit">
+      Une ligne vide dans la sortie se voit ; une bonne intention ne se voit pas. Tant que la ligne
+      n'est pas remplie, tout le monde sait que le document n'est pas diffusable.
+    </p>
+  </div>
+
+  <div class="banniere">
+    La sortie obtenue est un <strong>projet</strong> : relue, corrigée et signée par vous avant tout
+    envoi. <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans test
+    et sans procédure de retour arrière écrite. Rien de nominatif ni de confidentiel n'entre dans
+    l'instruction : utilisez des marqueurs &lt;NOM&gt;, &lt;MONTANT&gt;, &lt;DATE&gt;,
+    &lt;JETON&gt;. Toute question juridique va au <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A13" data-titre="Les trois états du montage — l'export projeté, deux essais ratés annotés, la version finale" data-bloc="M3, démonstration (plan B)" data-tirage="1 jeu formateur + 1 par table">
+  <div class="piece-badge">Pièce A13 — feuillet 1 sur 2</div>
+  <h2>Les trois états du montage — la source, et le premier essai</h2>
+  <p class="piece-usage">
+    Plan B de la démonstration du module 3, et pièce de secours si les deux essais ratés
+    <strong>réussissent</strong> en direct. Les deux essais ratés ne s'escamotent jamais : la salle
+    doit voir qu'une automatisation qui marche est une automatisation qui a échoué deux fois devant
+    témoin. Toutes les inventions ci-dessous se vérifient contre l'extrait d'export imprimé en tête.
+  </p>
+  <div class="champ-date">
+    <strong>Version imprimée du kit vérifiée le :</strong> 2026-08-06 ·
+    <strong>Recapture de session, le :</strong> ____ / ____ / 20____ ·
+    <strong>Outil et version :</strong> ______________________
+  </div>
+
+  <div class="texte-exercice">
+    <p style="text-align: center"><strong>L'extrait d'export projeté — semaine 15 (jeu de démonstration, MERIDIA LOGISTIQUE, fictif)</strong></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Dossier</th><th>État</th><th>Écart S-1 (jours)</th><th>Durée (jours)</th><th>Commentaire</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>D-2041</td><td>En cours</td><td>+2</td><td>12</td><td>relance faite le 10/03</td></tr>
+        <tr><td>D-2042</td><td>Bloqué</td><td>+6</td><td>21</td><td>attente pièce client</td></tr>
+        <tr><td>D-2043</td><td>Clos</td><td>0</td><td>8</td><td>—</td></tr>
+        <tr><td>D-2044</td><td>En cours</td><td>(vide)</td><td>5</td><td>—</td></tr>
+        <tr><td>D-2045</td><td>Bloqué</td><td>+9</td><td>30</td><td>attente devis fournisseur</td></tr>
+      </tbody>
+    </table>
+    <p class="petit">Seuil : un dossier est « en écart » au-delà de 5 jours. Procédures existantes : PR-101 (relance client), PR-107 (escalade fournisseur). Il n'en existe pas d'autre.</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>État 1 — l'instruction « au feeling », en une phrase</strong></p>
+    <div class="prompt-bloc">Fais-moi la synthèse hebdomadaire de ce tableau de suivi.</div>
+    <p><strong>Ce que l'outil a rendu :</strong></p>
+    <p>
+      « Synthèse de la semaine. La situation reste globalement maîtrisée. Cinq dossiers sont suivis,
+      dont un clos, soit un <strong>taux de clôture de 34 %</strong>, en progression. Le dossier
+      D-2044 affiche un <strong>écart de +3 jours</strong>, sans gravité. Deux dossiers restent
+      bloqués en attente de tiers. <strong>Je recommande de relancer le fournisseur du dossier D-2045
+      avant la fin de la semaine</strong> et de mettre en place un suivi hebdomadaire des dossiers
+      bloqués. »
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Annotations de marge — état 1 : ce qu'il faut entourer au feutre</div>
+    <ul>
+      <li>
+        <strong>« taux de clôture de 34 % »</strong> — chiffre inventé et <strong>faux</strong> : un
+        dossier clos sur cinq fait 20 %. Vérifiable ligne à ligne sur l'extrait, en dix secondes,
+        devant la salle.
+      </li>
+      <li>
+        <strong>« D-2044 : écart de +3 jours »</strong> — la case est <strong>vide</strong> dans
+        l'export. L'outil a comblé le trou, de façon plausible. C'est le défaut central de la
+        journée.
+      </li>
+      <li>
+        <strong>« en progression »</strong> — aucune donnée de la semaine précédente n'est fournie :
+        affirmation invérifiable.
+      </li>
+      <li>
+        <strong>« Je recommande… »</strong> — recommandation non demandée : l'outil s'est mis à
+        décider.
+      </li>
+      <li><strong>Ni tableau, ni ligne de relecture.</strong> Rien de comparable d'une semaine à l'autre.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="piece" data-piece="A13">
+  <div class="piece-badge">Pièce A13 — feuillet 2 sur 2</div>
+  <h2>Les trois états du montage — le deuxième essai, et la version finale</h2>
+
+  <div class="texte-exercice">
+    <p><strong>État 2 — on ajoute les Normes, on oublie l'Output</strong></p>
+    <div class="prompt-bloc">Fais-moi la synthèse hebdomadaire de ce tableau de suivi. N'ajoute aucun chiffre absent de l'export ; si une case est vide, n'invente pas, écris « donnée manquante ». Ne formule aucune recommandation.</div>
+    <p><strong>Ce que l'outil a rendu :</strong></p>
+    <p>
+      « Cette semaine, cinq dossiers figurent au suivi. Le dossier D-2041 est en cours avec un écart
+      de deux jours et une durée de douze jours ; une relance a été faite le 10 mars. Le dossier
+      D-2042 est bloqué depuis vingt et un jours, avec un écart de six jours, en attente d'une pièce
+      client. Le dossier D-2043 est clos. Pour le dossier D-2044, l'écart est
+      <strong>donnée manquante</strong>. Le dossier D-2045 est bloqué depuis trente jours avec un
+      écart de neuf jours, en attente d'un devis fournisseur. »
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Annotations de marge — état 2 : le progrès, et le nouveau défaut</div>
+    <ul>
+      <li>
+        <strong>« donnée manquante » sur D-2044 : c'est gagné.</strong> La ligne Normes a fait son
+        travail — le trou est signalé au lieu d'être comblé. Le dire explicitement à la salle.
+      </li>
+      <li>
+        <strong>Le tableau a disparu.</strong> Tout est en prose : on ne repère plus d'un coup d'œil
+        les dossiers en écart, et deux semaines de suite ne se comparent pas.
+      </li>
+      <li>
+        <strong>Aucun tri :</strong> les cinq dossiers sont énumérés, y compris ceux qui vont bien.
+        La sortie a doublé de longueur pour dire moins.
+      </li>
+      <li><strong>Toujours pas de ligne « relu par ».</strong> Rien ne signale que le document n'est pas diffusable.</li>
+      <li class="petit">
+        À faire dire par la salle : le levier qui manque n'est pas Normes, c'est
+        <strong>Output</strong>. On n'a pas raté l'essai, on a déplacé le défaut.
+      </li>
+    </ul>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>État 3 — la version finale, cinq leviers</strong> <span class="petit">(l'instruction complète est celle de la fiche de capture du module 3 ; elle se recopie telle quelle)</span></p>
+    <p><strong>Ce que l'outil a rendu :</strong></p>
+    <table>
+      <thead>
+        <tr><th>Dossier</th><th>État</th><th>Écart par rapport à la semaine précédente</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>D-2042</td><td>Bloqué</td><td>+6 jours</td></tr>
+        <tr><td>D-2045</td><td>Bloqué</td><td>+9 jours</td></tr>
+        <tr><td>D-2044</td><td>En cours</td><td>donnée manquante</td></tr>
+      </tbody>
+    </table>
+    <p>— D-2045 dépasse le seuil pour la troisième semaine, en attente d'un devis fournisseur.</p>
+    <p>— D-2042 reste bloqué en attente d'une pièce client.</p>
+    <p>— Un dossier clos cette semaine : D-2043.</p>
+    <p><strong>Points à vérifier avant envoi :</strong> écart absent pour D-2044.</p>
+    <p><strong>relu par : ______________ le ____ / ____ / 20____</strong></p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Ce qui s'enseigne, et qui n'est pas la version finale</div>
+    <p>
+      <strong>C'est la correction qui enseigne, pas le résultat.</strong> Faire nommer par la salle ce
+      qui a changé entre chaque état, et lequel des cinq leviers l'a produit : Normes entre l'état 1
+      et l'état 2, Output entre l'état 2 et l'état 3. Puis faire remplacer les cinq lignes une par
+      une, à voix haute, sur le cas d'un volontaire — la transposition se comprend en trois minutes,
+      jamais en la décrivant.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A14" data-titre="Le cas de repli commun — énoncé, fiche d'environnement, trois jeux d'entrées dont un bancal" data-bloc="M2 et M3, pratique" data-tirage="1 jeu par stagiaire de repli + 5">
+  <div class="piece-badge">Pièce A14 — feuillet 1 sur 2</div>
+  <h2>Le cas de repli commun — énoncé et fiche d'environnement</h2>
+  <p class="piece-usage">
+    Attribué sans commentaire ni reproche à qui vient « pour voir », à qui n'a pas de fichier, et à
+    qui s'acharne depuis dix minutes sur un accès qui ne s'ouvre pas. Le formateur se fixe une limite
+    de dix minutes par blocage d'accès, puis tranche à la place du participant. Entreprise, dossiers
+    et données sont fictifs.
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">L'énoncé</div>
+    <p>
+      MERIDIA LOGISTIQUE (entreprise fictive) produit chaque semaine une synthèse du suivi de ses
+      dossiers, présentée au comité de pilotage. Elle est aujourd'hui faite à la main : on ouvre
+      l'export, on repère les dossiers en écart, on recopie, on reformule les commentaires, on relit,
+      on envoie. Une heure et demie tous les lundis, et le résultat n'est jamais deux fois pareil.
+    </p>
+    <p>
+      <strong>Votre travail :</strong> monter l'automatisation de cette synthèse, la faire tourner sur
+      les <strong>trois jeux d'entrées</strong> du feuillet 2, et consigner chaque écart dans le
+      journal de tests (pièce A16).
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Fiche d'environnement — ce qui est vrai de ce cas, et ne se discute pas</div>
+    <p>
+      Cette fiche fait foi. <strong>Toute affirmation d'une sortie qui la contredit est une
+      erreur</strong>, même si elle est plausible — c'est ce que l'on cherchera dans la chasse à
+      l'erreur.
+    </p>
+    <ul>
+      <li>
+        <strong>Outil :</strong> espace de travail persistant validé, hôte
+        <code>atelier.exemple.invalid</code>. Jeton d'accès : <code>&lt;JETON_ATELIER&gt;</code> — il
+        ne se recopie ni dans une conversation, ni sur un support imprimé. Serveur d'export :
+        <code>192.0.2.24</code> (réseau de démonstration).
+      </li>
+      <li>
+        <strong>Dépôt de l'export :</strong> chaque lundi à 7 h 30, par l'outil de gestion. Aucun
+        autre dépôt dans la semaine.
+      </li>
+      <li>
+        <strong>Colonnes de l'export, invariables :</strong> Dossier · Date d'ouverture · État ·
+        Écart S-1 (jours) · Durée (jours) · Commentaire.
+        <strong>Il n'existe pas de colonne « montant facturé »</strong> : la facturation est dans un
+        autre système, non accessible depuis l'atelier.
+      </li>
+      <li>
+        <strong>États possibles, liste fermée :</strong> En cours · Bloqué · Clos. Rien d'autre.
+      </li>
+      <li>
+        <strong>Seuil :</strong> un dossier est « en écart » <strong>au-delà de 5 jours</strong>. À
+        5 jours exactement, il ne l'est pas.
+      </li>
+      <li>
+        <strong>Semaine 14 :</strong> elle n'a pas été produite, l'outil de gestion étant arrêté du
+        1<sup>er</sup> au 5 avril. <strong>Aucune comparaison avec la semaine 14 n'est possible.</strong>
+      </li>
+      <li>
+        <strong>Comité de pilotage :</strong> mardi 9 h. Aucun envoi le lundi soir.
+      </li>
+      <li>
+        <strong>Procédures internes existantes :</strong> PR-101 (relance client) et PR-107 (escalade
+        fournisseur). <strong>Il n'en existe aucune autre.</strong>
+      </li>
+    </ul>
+  </div>
+
+  <div class="banniere">
+    Jeu pédagogique entièrement fictif — <strong>projet</strong> de travail, à relire et corriger.
+    Aucune donnée réelle, aucun secret : les hôtes sont en <code>.invalid</code>, les adresses dans
+    la plage de documentation <code>192.0.2.0/24</code>, les jetons sont des marqueurs
+    <code>&lt;JETON&gt;</code>. <strong>Aucune automatisation ne part en production</strong> sans
+    revue humaine, sans test et sans procédure de retour arrière écrite. Toute question juridique va
+    au <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A14">
+  <div class="piece-badge">Pièce A14 — feuillet 2 sur 2</div>
+  <h2>Les trois jeux d'entrées</h2>
+  <p class="piece-usage">
+    Le troisième est volontairement bancal. Ce n'est pas une punition : c'est le seul des trois qui
+    dise comment la chaîne se comporte <strong>quand elle ne comprend pas</strong> — et c'est ce
+    comportement-là qu'on emportera dans les contrôles de l'après-midi.
+  </p>
+
+  <div class="texte-exercice">
+    <p><strong>Jeu 1 — semaine 15 (propre)</strong></p>
+    <table>
+      <thead>
+        <tr><th>Dossier</th><th>Date d'ouverture</th><th>État</th><th>Écart S-1</th><th>Durée</th><th>Commentaire</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>D-2041</td><td>03/03</td><td>En cours</td><td>+2</td><td>12</td><td>relance faite le 10/03</td></tr>
+        <tr><td>D-2042</td><td>18/02</td><td>Bloqué</td><td>+6</td><td>21</td><td>attente pièce client</td></tr>
+        <tr><td>D-2043</td><td>05/03</td><td>Clos</td><td>0</td><td>8</td><td>—</td></tr>
+        <tr><td>D-2044</td><td>11/03</td><td>En cours</td><td>+1</td><td>5</td><td>—</td></tr>
+        <tr><td>D-2045</td><td>27/01</td><td>Bloqué</td><td>+9</td><td>30</td><td>attente devis fournisseur</td></tr>
+        <tr><td>D-2046</td><td>12/03</td><td>En cours</td><td>+3</td><td>4</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="petit">Six lignes. Deux dossiers au-delà du seuil : D-2042 et D-2045.</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Jeu 2 — semaine 16 (variante : la situation se dégrade)</strong></p>
+    <table>
+      <thead>
+        <tr><th>Dossier</th><th>Date d'ouverture</th><th>État</th><th>Écart S-1</th><th>Durée</th><th>Commentaire</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>D-2042</td><td>18/02</td><td>Bloqué</td><td>+11</td><td>28</td><td>attente pièce client</td></tr>
+        <tr><td>D-2045</td><td>27/01</td><td>Bloqué</td><td>+14</td><td>37</td><td>relancé le 02/04</td></tr>
+        <tr><td>D-2047</td><td>20/03</td><td>En cours</td><td>+4</td><td>9</td><td>—</td></tr>
+        <tr><td>D-2048</td><td>22/03</td><td>En cours</td><td>+2</td><td>7</td><td>—</td></tr>
+        <tr><td>D-2049</td><td>24/03</td><td>Clos</td><td>0</td><td>5</td><td>—</td></tr>
+        <tr><td>D-2050</td><td>25/03</td><td>En cours</td><td>+5</td><td>4</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="petit">
+      Six lignes. Deux dossiers au-delà du seuil : D-2042 et D-2045. D-2050 est à
+      <strong>+5 exactement</strong> : il n'est donc pas en écart. Cette ligne est là exprès.
+    </p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Jeu 3 — semaine 17 (bancal)</strong></p>
+    <p class="petit">
+      L'en-tête de cet export ne comporte que cinq colonnes : la colonne <strong>État est
+      absente</strong>. La deuxième ligne est entièrement vide. La date d'ouverture de D-2051 est
+      <strong>31/04</strong>.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Dossier</th><th>Date d'ouverture</th><th>Écart S-1</th><th>Durée</th><th>Commentaire</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>D-2051</td><td>31/04</td><td>+3</td><td>6</td><td>—</td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>D-2052</td><td>02/04</td><td>+8</td><td>15</td><td>attente retour client</td></tr>
+        <tr><td>D-2053</td><td>07/04</td><td>+1</td><td>3</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="petit">
+      Quatre lignes dont une vide. Ce que doit produire une chaîne correcte : signaler la colonne
+      manquante, signaler la ligne vide, signaler la date impossible — et
+      <strong>ne rien deviner</strong>.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A15" data-titre="Les trois sorties du cas de repli — erreurs plantées et vérifiées + corrigé" data-bloc="M3, pratique et vérification (plan B)" data-tirage="1 jeu par stagiaire de repli + corrigé formateur">
+  <div class="piece-badge">Pièce A15 — feuille stagiaire</div>
+  <h2>Les trois sorties du cas de repli — chasse à l'erreur</h2>
+  <p class="piece-usage">
+    Plan B de la pratique et de la vérification du module 3 : service indisponible, l'atelier se
+    poursuit sur papier. Consigne : <strong>surlignez tout ce qui est faux, inventé ou
+    invérifiable, puis comptez</strong>. Tout se vérifie contre la pièce A14 — les jeux d'entrées et
+    la fiche d'environnement. Les comptes vont au tableau, y compris les zéros.
+  </p>
+  <div class="champ-date">
+    <strong>Version imprimée du kit vérifiée le :</strong> 2026-08-06 ·
+    <strong>Erreurs recomptées et confirmées le :</strong> ____ / ____ / 20____ ·
+    <strong>Par :</strong> ______________
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Sortie sur le jeu 1 — semaine 15</strong></p>
+    <table>
+      <thead><tr><th>Dossier</th><th>État</th><th>Écart</th></tr></thead>
+      <tbody>
+        <tr><td>D-2042</td><td>Bloqué</td><td>+6 jours</td></tr>
+        <tr><td>D-2045</td><td>Bloqué</td><td>+9 jours</td></tr>
+      </tbody>
+    </table>
+    <p>— Six dossiers suivis : trois en cours, deux bloqués, un clos, soit <strong>sept lignes traitées</strong>.</p>
+    <p>— Durée cumulée des dossiers bloqués : <strong>21 + 30 = 61 jours</strong>.</p>
+    <p>— D-2046 : <strong>relance en cours</strong>, situation sous contrôle.</p>
+    <p>— Traitement effectué <strong>conformément à la procédure PR-114</strong>.</p>
+    <p><strong>Points à vérifier avant envoi :</strong> aucun.</p>
+    <p>relu par : ______________ le ____ / ____ / 20____</p>
+    <p class="petit">Erreurs trouvées : ______</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Sortie sur le jeu 2 — semaine 16</strong></p>
+    <table>
+      <thead><tr><th>Dossier</th><th>État</th><th>Écart</th></tr></thead>
+      <tbody>
+        <tr><td>D-2042</td><td>Bloqué</td><td>+11 jours</td></tr>
+        <tr><td>D-2045</td><td>Bloqué</td><td>+14 jours</td></tr>
+        <tr><td>D-2050</td><td>En cours</td><td>+5 jours</td></tr>
+        <tr><td>D-2047</td><td><strong>En attente</strong></td><td>+4 jours</td></tr>
+      </tbody>
+    </table>
+    <p>— <strong>Trois dossiers dépassent le seuil</strong> : D-2042, D-2045 et D-2050.</p>
+    <p>— L'écart <strong>se creuse par rapport à la semaine 14</strong>, où le service n'avait qu'un seul dossier bloqué.</p>
+    <p>— D-2045 : <strong>montant facturé de 4 200 €</strong> immobilisé par le blocage.</p>
+    <p><strong>Points à vérifier avant envoi :</strong> aucun.</p>
+    <p>relu par : ______________ le ____ / ____ / 20____</p>
+    <p class="petit">Erreurs trouvées : ______</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Sortie sur le jeu 3 — semaine 17 (le jeu bancal)</strong></p>
+    <table>
+      <thead><tr><th>Dossier</th><th>État</th><th>Écart</th></tr></thead>
+      <tbody>
+        <tr><td>D-2051</td><td><strong>En cours</strong></td><td>+3 jours</td></tr>
+        <tr><td>D-2052</td><td>Bloqué</td><td>+8 jours</td></tr>
+        <tr><td>D-2053</td><td>En cours</td><td>+1 jour</td></tr>
+        <tr><td><strong>D-2054</strong></td><td>En cours</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <p>— D-2051, <strong>ouvert le 31/04</strong>, arrive à échéance le 31/05.</p>
+    <p>— D-2052 : <strong>relancé le 12/04 à la suite du refus du 19/04</strong>.</p>
+    <p>— <strong>Deux dossiers au-delà du seuil sur trois lignes exploitables.</strong></p>
+    <p><strong>Points à vérifier avant envoi :</strong> aucun.</p>
+    <p>relu par : ______________ le ____ / ____ / 20____</p>
+    <p class="petit">Erreurs trouvées : ______</p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A15">
+  <div class="piece-badge">Pièce A15 — corrigé formateur</div>
+  <h2>Les trois sorties — corrigé, avec la règle qui tranche</h2>
+  <p class="piece-usage">
+    Quinze erreurs plantées, toutes vérifiables contre la pièce A14. Faire compter AVANT de
+    commenter et écrire tous les comptes au tableau : un tableau où l'on lit « 0, 0, 4, 7, 2 »
+    enseigne plus que n'importe quel discours sur la vigilance — les zéros sont ceux qui n'ont pas
+    encore regardé. Un participant conteste ? Une seule question : « elle figure où, exactement, dans
+    le jeu d'entrées ? »
+  </p>
+
+  <div class="corrige">
+    <div class="encadre-titre">Sortie 1 — quatre erreurs</div>
+    <ol>
+      <li>
+        <strong>« soit sept lignes traitées »</strong> — le total ne s'additionne pas : 3 + 2 + 1 = 6,
+        et le jeu 1 compte six lignes. <em>La règle :</em> un total se recompte, toujours. Un nombre
+        rond et sûr de lui n'est pas un nombre juste.
+      </li>
+      <li>
+        <strong>« 21 + 30 = 61 jours »</strong> — l'addition est fausse, le résultat est 51.
+        <em>La règle :</em> une opération affichée avec ses termes est la plus facile à vérifier, et
+        c'est justement celle que personne ne vérifie.
+      </li>
+      <li>
+        <strong>« D-2046 : relance en cours »</strong> — le commentaire de D-2046 est vide dans le
+        jeu 1. Valeur comblée. <em>La règle :</em> une case vide s'écrit « donnée manquante », elle ne
+        se remplit jamais à la place de l'entrée.
+      </li>
+      <li>
+        <strong>« procédure PR-114 »</strong> — référence inventée : la fiche d'environnement ne
+        connaît que PR-101 et PR-107. <em>La règle :</em> une référence citée n'est pas une référence
+        vérifiée ; on la confronte à la liste, pas à son air de vraisemblance.
+      </li>
+    </ol>
+    <p class="petit">
+      Le piège de cette sortie : « Points à vérifier avant envoi : aucun », alors que quatre erreurs
+      s'y trouvent. Le faire remarquer en dernier.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Sortie 2 — cinq erreurs</div>
+    <ol>
+      <li>
+        <strong>« Trois dossiers dépassent le seuil », dont D-2050 à +5</strong> — condition inversée :
+        le seuil est <strong>au-delà de 5 jours</strong>, donc +5 n'y est pas. Il y en a deux, pas
+        trois. <em>La règle :</em> « au-delà de » n'est pas « à partir de » ; une chaîne se teste
+        toujours sur la valeur exacte du seuil, et c'est pour cela que la ligne D-2050 existe.
+      </li>
+      <li>
+        <strong>D-2047 « En attente »</strong> — état hors de la liste fermée (En cours, Bloqué, Clos)
+        ; le jeu 2 porte « En cours ». <em>La règle :</em> une liste fermée est un contrôle gratuit —
+        toute valeur hors liste est une invention, sans discussion possible.
+      </li>
+      <li>
+        <strong>« par rapport à la semaine 14 »</strong> — contradiction avec la fiche d'environnement :
+        la semaine 14 n'a pas été produite, aucune comparaison n'est possible.
+        <em>La règle :</em> l'outil ne sait pas ce qui n'existe pas ; il comble avec ce qui devrait
+        exister.
+      </li>
+      <li>
+        <strong>« où le service n'avait qu'un seul dossier bloqué »</strong> — donnée inventée sur une
+        semaine inexistante : l'invention se double d'elle-même pour se rendre crédible.
+      </li>
+      <li>
+        <strong>« montant facturé de 4 200 € »</strong> — contradiction avec la fiche d'environnement :
+        il n'existe pas de colonne « montant facturé », la facturation est dans un autre système.
+        <em>La règle :</em> aucune sortie ne peut contenir ce qui n'est pas entré. C'est l'erreur la
+        plus coûteuse des trois sorties, parce qu'un chiffre en euros ne se conteste pas en réunion.
+      </li>
+    </ol>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Sortie 3 — six erreurs, et le vrai enseignement du jeu bancal</div>
+    <ol>
+      <li>
+        <strong>« ouvert le 31/04 »</strong> — date impossible, le 31 avril n'existe pas. Elle était
+        dans l'entrée : la chaîne l'a recopiée sans la voir. <em>La règle :</em> une date se contrôle
+        avant d'être reprise ; c'est le contrôle le plus simple, et le plus souvent absent.
+      </li>
+      <li>
+        <strong>« arrive à échéance le 31/05 »</strong> — échéance calculée à partir d'une date
+        impossible, donc inventée deux fois. <em>La règle :</em> une erreur d'entrée non signalée se
+        propage en cascade dans tout ce qui en dérive.
+      </li>
+      <li>
+        <strong>D-2051 « En cours »</strong> — la colonne État est <strong>absente</strong> du jeu 3 :
+        l'état a été deviné. <em>La règle :</em> une colonne manquante se signale ; elle ne se
+        reconstitue pas.
+      </li>
+      <li>
+        <strong>D-2054</strong> — dossier qui n'existe dans aucun jeu d'entrées : la ligne vide a été
+        comblée par une ligne inventée. <em>La règle :</em> le plus dangereux n'est pas l'erreur
+        visible, c'est la ligne <strong>ajoutée</strong> — rien dans la sortie ne signale qu'elle
+        n'était pas dans l'entrée.
+      </li>
+      <li>
+        <strong>« relancé le 12/04 à la suite du refus du 19/04 »</strong> — ordre d'opérations
+        impossible : la conséquence précède la cause de sept jours. <em>La règle :</em> une
+        chronologie se lit dans l'ordre, à voix haute ; c'est ainsi qu'on repère ces phrases, jamais
+        en les survolant.
+      </li>
+      <li>
+        <strong>« Deux dossiers au-delà du seuil sur trois lignes exploitables »</strong> — un seul y
+        est (D-2052, +8) ; D-2051 est à +3 et D-2053 à +1. Le compte est faux.
+      </li>
+    </ol>
+    <p class="petit">
+      À dire à ce moment précis, la salle venant de le constater : <strong>une chaîne qui tourne sans
+      relecture ne fait pas moins d'erreurs, elle refait les mêmes chaque semaine</strong> — et
+      celle-ci s'annonce elle-même « aucun point à vérifier » trois fois de suite.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois erreurs les plus fréquentes, à faire nommer par la salle</div>
+    <ul>
+      <li>Une valeur <strong>comblée</strong> à la place de « donnée manquante ».</li>
+      <li>Un <strong>total recalculé</strong> au lieu d'être repris — et faux.</li>
+      <li>Une <strong>reformulation qui change le sens</strong> d'un commentaire, ou lui en ajoute un.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="piece" data-piece="A16" data-titre="Journal de tests — trois jeux d'entrées, une ligne par écart" data-bloc="M3, pratique" data-tirage="1 par stagiaire + 5">
+  <div class="piece-badge">Pièce A16</div>
+  <h2>Journal de tests</h2>
+  <p class="piece-usage">
+    Se remplit <strong>pendant</strong> le test, jamais après : un écart reconstitué de mémoire à midi
+    est un écart perdu. Si la salle construit sans consigner, le formateur arrête tout deux minutes et
+    fait écrire la ligne du dernier écart, tout de suite, à voix haute. Sans ce journal, la chasse à
+    l'erreur n'a rien à mordre — et le dossier d'exploitation n'a pas de mémoire.
+  </p>
+
+  <p>
+    <strong>Mon cas :</strong> ______________________________ ·
+    <strong>Instruction enregistrée à part sous le nom :</strong> ______________________________
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 14%">Jeu d'entrées</th>
+        <th style="width: 10%">Heure</th>
+        <th style="width: 32%">L'écart constaté (ce que je vois, pas ce que j'en pense)</th>
+        <th style="width: 26%">Ce que j'ai changé dans l'instruction</th>
+        <th>Résultat au rejeu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1 — propre</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>1 — propre</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>2 — variante</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>2 — variante</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td><strong>3 — bancal</strong></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td><strong>3 — bancal</strong></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td><strong>3 — bancal</strong></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>4 — plus méchant</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Si les trois jeux passent avant l'heure : le quatrième, plus méchant</div>
+    <p>
+      Deux lignes en double · un montant écrit en toutes lettres · une colonne dans le désordre · une
+      valeur négative là où elle n'a pas de sens.
+      <strong>Ce que vous trouvez maintenant, vous ne le découvrirez pas en production.</strong>
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ce que je retiens des trois jeux</div>
+    <p>Comment ma chaîne se comporte <strong>quand elle ne comprend pas</strong> — en une phrase :</p>
+    <div class="lignes"></div>
+    <p>Le contrôle que cela m'oblige à poser cet après-midi :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Journal de travail — <strong>projet</strong> à relire et corriger, pièce du dossier
+    d'exploitation. <strong>Aucune automatisation ne part en production</strong> sans revue humaine,
+    sans avoir été testée sur un jeu bancal, et sans procédure de retour arrière écrite. Toute
+    question juridique va au <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A17" data-titre="Les deux sorties du module 4 — le total faux parti au destinataire, et le bandeau de blocage" data-bloc="M4, démonstration (plan B)" data-tirage="1 jeu formateur + 1 par table">
+  <div class="piece-badge">Pièce A17</div>
+  <h2>Sans contrôle, avec contrôle — les deux sorties côte à côte</h2>
+  <p class="piece-usage">
+    Plan B de la démonstration du module 4. Poser d'abord l'entrée et la sortie non contrôlée,
+    <strong>sans les commenter</strong>, et attendre que quelqu'un dise ce qui cloche. C'est le moment
+    le plus utile des deux jours et il ne se force pas ; si personne ne trouve, poser l'entrée à côté
+    et laisser trente secondes de plus. Le silence qui précède vaut toute la démonstration.
+  </p>
+  <div class="champ-date">
+    <strong>Version imprimée du kit vérifiée le :</strong> 2026-08-06 ·
+    <strong>Recapture de session, le :</strong> ____ / ____ / 20____ ·
+    <strong>Outil et version :</strong> ______________________
+  </div>
+
+  <div class="texte-exercice">
+    <p style="text-align: center"><strong>L'entrée — extrait de suivi, douze lignes (jeu fictif)</strong></p>
+    <table>
+      <thead><tr><th style="width: 20%">Dossier</th><th style="width: 24%">Jours de retard</th><th>Commentaire</th></tr></thead>
+      <tbody>
+        <tr><td>D-2041</td><td>+2</td><td>relance faite</td></tr>
+        <tr><td>D-2042</td><td>+6</td><td>attente pièce client</td></tr>
+        <tr><td>D-2043</td><td>0</td><td>—</td></tr>
+        <tr><td>D-2044</td><td>+1</td><td>—</td></tr>
+        <tr><td>D-2045</td><td>+9</td><td>attente devis fournisseur</td></tr>
+        <tr><td>D-2046</td><td>+3</td><td>—</td></tr>
+        <tr><td><em>(ligne vide)</em></td><td></td><td></td></tr>
+        <tr><td>D-2047</td><td>+4</td><td>—</td></tr>
+        <tr><td>D-2048</td><td>+2</td><td>—</td></tr>
+        <tr><td>D-2049</td><td>0</td><td>—</td></tr>
+        <tr><td>D-2050</td><td>+5</td><td>—</td></tr>
+        <tr><td>D-2051</td><td>+3</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="petit">Douze lignes, dont une vide. Somme réelle des jours de retard des onze lignes renseignées : <strong>35</strong>.</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Sortie A — sans contrôle. Celle qui est partie au destinataire.</strong></p>
+    <table>
+      <thead><tr><th>Dossier</th><th>Jours de retard</th></tr></thead>
+      <tbody>
+        <tr><td>D-2041</td><td>+2</td></tr>
+        <tr><td>D-2042</td><td>+6</td></tr>
+        <tr><td>D-2043</td><td>0</td></tr>
+        <tr><td>D-2044</td><td>+1</td></tr>
+        <tr><td>D-2045</td><td>+9</td></tr>
+        <tr><td>D-2046</td><td>+3</td></tr>
+        <tr><td>D-2047</td><td>+4</td></tr>
+        <tr><td>D-2048</td><td>+2</td></tr>
+        <tr><td>D-2049</td><td>0</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Total des jours de retard sur le service : 47 jours.</strong> Situation stable par rapport au mois dernier.</p>
+    <p class="petit">
+      <strong>À entourer en rouge sur l'exemplaire formateur :</strong> le total <strong>47</strong> —
+      il ne correspond ni à la somme des neuf lignes affichées (27), ni à la somme réelle de l'entrée
+      (35). Et le tableau s'arrête à D-2049 : <strong>trois dossiers ont disparu</strong> en silence,
+      la ligne vide ayant coupé la lecture. Personne ne s'en est aperçu, et la même sortie repartira
+      fausse la semaine suivante, à l'identique.
+    </p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Sortie B — avec l'instruction de contrôle en tête</strong></p>
+    <div class="banniere">
+      <strong>ÉCART DE VOLUME — 12 lignes en entrée, 9 en sortie. La synthèse n'est pas affichée.</strong>
+    </div>
+    <p><strong>À confirmer par un humain :</strong></p>
+    <ul>
+      <li>Ligne 7 de l'entrée : vide. Aucune valeur n'a été déduite. <strong>NON VÉRIFIÉ.</strong></li>
+      <li>Trois dossiers de l'entrée n'apparaissent pas dans le traitement : D-2050, D-2051 et une ligne sans identifiant.</li>
+      <li>Total non calculé : le contrôle de volume ayant échoué, aucun agrégat n'est produit.</li>
+      <li>« Situation stable par rapport au mois dernier » : aucune donnée du mois précédent n'est fournie. <strong>NON VÉRIFIÉ.</strong></li>
+    </ul>
+    <p><strong>relu par : ______________ le ____ / ____ / 20____</strong></p>
+    <p class="petit">
+      Tant que cette ligne est vide, la sortie n'est pas diffusable — et
+      <strong>cela se voit</strong>. C'est la différence entre un contrôle et une bonne intention.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">La règle à énoncer, une fois la sortie B affichée</div>
+    <p>
+      Une automatisation qui tourne sans surveillance ne fait pas moins d'erreurs :
+      <strong>elle amplifie les siennes</strong>. La même erreur repart chaque semaine, à l'identique,
+      sans que personne la relise. D'où deux pièces obligatoires dans toute chaîne : un
+      <strong>point de relecture humaine</strong>, et un <strong>moyen de l'arrêter</strong>.
+    </p>
+    <p class="petit">
+      Et la réponse à l'objection prévisible : le contrôle bloque la <strong>diffusion</strong>, pas
+      le travail. Une sortie bloquée qu'on regarde coûte infiniment moins cher qu'une sortie fausse
+      qu'on envoie. Il attrape les écarts mécaniques — volume, valeurs comblées ; la ligne « relu
+      par » attrape le reste, et elle n'est signable que par un humain.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A18" data-titre="La grille des quatre contrôles — à poser sur son propre prototype" data-bloc="M4, pratique" data-tirage="1 par stagiaire + 5">
+  <div class="piece-badge">Pièce A18</div>
+  <h2>Les quatre contrôles</h2>
+  <p class="piece-usage">
+    Premier temps de la pratique du module 4. Le troisième est celui qu'on saute : le formateur pose
+    la question à chacun, fiche en main — <em>« la chaîne s'arrête à 6 h du matin. Qui l'apprend,
+    comment, et en combien de temps ? »</em> Sans outil, le contrôle se décrit par écrit ici et se
+    pose chez soi en dix minutes.
+  </p>
+
+  <p><strong>Prototype :</strong> ______________________________ · <strong>Posé le :</strong> ____ / ____ / 20____</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Le contrôle</th>
+        <th style="width: 30%">Ce qu'il doit être pour compter</th>
+        <th style="width: 10%">Posé ?</th>
+        <th>Comment il est posé chez moi, concrètement</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Le point de relecture humaine</strong></td>
+        <td>
+          Une fonction nommée, deux ou trois points vérifiables, et une place dans la sortie
+          elle-même — la ligne « relu par : ______ le ______ », vide tant que personne n'a signé.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>2. Le comportement en cas de sortie anormale</strong></td>
+        <td>
+          Ce que fait la chaîne quand elle ne comprend pas : elle signale et
+          <strong>bloque la diffusion</strong>, elle ne devine pas et ne complète pas. Écart de
+          volume, valeur comblée, donnée hors liste fermée.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>3. Le signal d'alerte</strong> <span class="petit">(celui qu'on saute)</span></td>
+        <td>
+          Qui apprend que la chaîne s'est arrêtée ou a dérapé, par quel canal, et
+          <strong>en combien de temps</strong>. « On s'en rendra compte » n'est pas un signal.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>4. La trace de qui a validé quoi, et quand</strong></td>
+        <td>
+          Une ligne par exécution diffusée : qui a relu, quand, ce qui a été corrigé avant envoi.
+          Tenue par <strong>celui qui exploite</strong>, pas par celui qui contrôle.
+        </td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le contrôle qui manque, et ce que je fais</div>
+    <p>Le contrôle que je ne sais pas poser aujourd'hui : ______________________________</p>
+    <p>Qui peut m'aider (fonction nommée) : ______________________ · Avant le : ____ / ____ / 20____</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le retour arrière — la question qu'on ne pose jamais</div>
+    <p>
+      La chaîne a déjà tourné et diffusé une sortie fausse.
+      <strong>Comment revient-on en arrière ?</strong> Qui prévient les destinataires, avec quel
+      message, et qui corrige la donnée en aval ?
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Grille de travail — <strong>projet</strong> à relire, corriger et signer avant diffusion.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans avoir été
+    testée, et sans <strong>procédure de retour arrière écrite</strong>. Toute question juridique ou
+    de sécurité va au <strong>conseil de votre entreprise</strong> : le formateur ne se prononce pas.
+  </div>
+</section>
+
+<section class="piece" data-piece="A19" data-titre="Trame de fiche d'usage — celle qui rend la chaîne reprenable sans vous" data-bloc="M4, pratique et vérification" data-tirage="1 par stagiaire + 5">
+  <div class="piece-badge">Pièce A19</div>
+  <h2>Fiche d'usage de mon automatisation</h2>
+  <p class="piece-usage">
+    Seuls les champs variables se remplissent : l'en-tête ci-dessous reste apparent et
+    <strong>ne se retire pas</strong>. Cette fiche est l'épreuve de 17 h — votre binôme fera tourner
+    votre automatisation avec elle seule, sans vous. Tout ce qu'il devra vous demander est un manque.
+  </p>
+
+  <div class="banniere">
+    <strong>Projet — à faire valider par votre conseil avant diffusion.</strong> Tout ce que produit
+    cette chaîne est un <strong>projet</strong> : relu, corrigé et signé par un humain avant tout
+    envoi. <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans avoir
+    été testée, et sans procédure de retour arrière écrite. Toute question juridique ou de conformité
+    va au <strong>conseil de l'entreprise</strong>.
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Identification</div>
+    <p><strong>Nom de l'automatisation :</strong> ____________________________________________</p>
+    <p><strong>Responsable (fonction nommée) :</strong> ______________________ · <strong>Suppléant :</strong> ______________________</p>
+    <p><strong>Version :</strong> ______ · <strong>Écrite le :</strong> ____ / ____ / 20____ · <strong>Revue le :</strong> ____ / ____ / 20____</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">1 — À quoi ça sert</div>
+    <p>Ce que la chaîne produit, pour qui, à quelle échéance, et ce qu'elle ne fait pas :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">2 — Sur quelles données</div>
+    <p>Fichier d'entrée, sa provenance, ses colonnes, qui le produit et à quelle heure :</p>
+    <div class="lignes"></div>
+    <p>
+      Régime de données : <span class="coche"></span> 1 &nbsp; <span class="coche"></span> 2 &nbsp;
+      <span class="coche"></span> 3 · Données se rapportant à des personnes :
+      <span class="coche"></span> oui <span class="coche"></span> non — si oui, information faite le :
+      ____ / ____ / 20____
+    </p>
+    <p>Ce qui ne doit jamais entrer dans la chaîne :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">3 — Comment on la lance</div>
+    <p>Les gestes, dans l'ordre, tels qu'un tiers doit pouvoir les suivre sans vous appeler :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p class="petit">
+      Aucun mot de passe, aucune clé, aucun jeton sur cette fiche : renvoyez au coffre de
+      l'entreprise et écrivez le marqueur, par exemple <code>&lt;JETON_ATELIER&gt;</code>.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">4 — Qui relit, et ce qu'il regarde</div>
+    <p>Fonction nommée : ______________________________</p>
+    <p>Les points qu'il vérifie, un par un :</p>
+    <div class="lignes"></div>
+    <p>Où sa relecture laisse une trace : ______________________________</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">5 — Quand on l'arrête</div>
+    <p>
+      Le critère <strong>observable</strong> : combien d'écarts, sur combien d'exécutions, constatés
+      par qui.
+    </p>
+    <div class="lignes"></div>
+    <p>Qui peut l'arrêter, et par quel geste : ______________________________</p>
+    <p>Procédure de retour arrière si une sortie fausse est déjà partie :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">6 — Ce qui reste ouvert</div>
+    <p>Questions à porter au conseil de l'entreprise, avec la date d'envoi :</p>
+    <div class="lignes"></div>
+    <p class="petit">
+      <strong>Contresignature du test de reprise à blanc</strong> (pièce A22) :
+      ______________________ le ____ / ____ / 20____
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A20" data-titre="Les trois trames d'information — personnes concernées, mention dans la sortie, point à l'instance" data-bloc="M4, pratique" data-tirage="1 jeu par stagiaire + 5">
+  <div class="piece-badge">Pièce A20 — feuillet 1 sur 2</div>
+  <h2>Informer : la note aux personnes concernées</h2>
+  <p class="piece-usage">
+    Deuxième temps de la pratique du module 4. <strong>Seuls les champs entre crochets se
+    remplissent.</strong> À la question « on peut l'envoyer aux salariés dès lundi ? », la réponse est
+    non, et l'en-tête le dit : votre conseil la valide, puis vous la diffusez. Notez sur votre feuille
+    de route la date à laquelle vous la lui envoyez.
+  </p>
+
+  <div class="banniere">
+    <strong>Projet — à faire valider par votre conseil avant diffusion.</strong> Ce texte est une
+    trame pédagogique, non un modèle juridique : sa formulation, son destinataire et son moment
+    relèvent du <strong>conseil de votre entreprise</strong>, qui seul tranche.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans test et sans
+    procédure de retour arrière écrite.
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Objet :</strong> mise en service d'un traitement automatisé — [nom de l'automatisation]</p>
+    <p>Bonjour,</p>
+    <p>
+      À compter du [date], le service [service] utilisera un traitement automatisé pour
+      [ce que la chaîne produit, en une phrase, sans jargon].
+    </p>
+    <p>
+      <strong>Ce que le traitement utilise.</strong> Il travaille à partir de [fichier ou source],
+      produit par [qui], et il porte sur les informations suivantes : [colonnes ou catégories, en
+      clair]. Il ne porte sur aucune autre donnée.
+    </p>
+    <p>
+      <strong>À quoi sert le résultat.</strong> [Destinataire] le reçoit [fréquence] pour
+      [usage précis]. <strong>Aucune décision individuelle n'est prise à partir de ce résultat</strong>
+      : [fonction nommée] le relit et le corrige avant tout usage.
+    </p>
+    <p>
+      <strong>Combien de temps les éléments sont conservés.</strong> [Durée], puis [ce qu'il en
+      advient].
+    </p>
+    <p>
+      <strong>À qui s'adresser.</strong> Pour toute question, demande d'accès ou de rectification :
+      [fonction nommée et moyen de contact].
+    </p>
+    <p>[Signature — fonction]</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois champs que personne ne remplit, et qu'il faut exiger</div>
+    <ul>
+      <li><strong>« Il ne porte sur aucune autre donnée »</strong> — si vous ne pouvez pas l'écrire, votre entrée est trop large : retirez des colonnes à la source.</li>
+      <li><strong>La durée de conservation</strong> — « le temps nécessaire » n'est pas une durée.</li>
+      <li><strong>La fonction nommée à contacter</strong> — un service n'est pas un interlocuteur.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="piece" data-piece="A20">
+  <div class="piece-badge">Pièce A20 — feuillet 2 sur 2</div>
+  <h2>Informer : la mention dans la sortie, et le point à l'instance</h2>
+
+  <div class="banniere">
+    <strong>Projet — à faire valider par votre conseil avant diffusion.</strong> Trames pédagogiques,
+    non des modèles juridiques. <strong>Aucune automatisation ne part en production</strong> sans
+    revue humaine, sans test et sans procédure de retour arrière écrite. Toute question juridique va
+    au <strong>conseil de votre entreprise</strong>.
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Trame 2 — la mention à insérer dans le document produit</strong></p>
+    <p class="petit">Se place en pied de la sortie, à côté de la ligne « relu par ». Deux lignes, pas davantage.</p>
+    <p>
+      « Ce document a été préparé avec l'aide d'un traitement automatisé, à partir de [source], le
+      [date]. Il a été <strong>relu et corrigé</strong> par [fonction nommée] avant diffusion. Les
+      éléments marqués <em>NON VÉRIFIÉ</em> n'ont pas pu être confrontés à la source. »
+    </p>
+    <p>relu par : ______________ le ____ / ____ / 20____</p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>Trame 3 — le point à porter à l'ordre du jour de l'instance représentative</strong></p>
+    <p class="petit">
+      À utiliser dès que le test des 4 questions a répondu « oui » à Q2 — un suivi de l'activité, du
+      rendement ou du comportement de salariés identifiables, même comme sous-produit.
+    </p>
+    <p><strong>Point proposé à l'ordre du jour de la réunion du [date] :</strong></p>
+    <p>« Projet de mise en service d'un traitement automatisé — [nom]. »</p>
+    <p><strong>Éléments transmis en amont :</strong></p>
+    <ul>
+      <li>Ce que la chaîne produit, pour qui, à quelle fréquence : [une phrase].</li>
+      <li>Les données utilisées en entrée, colonne par colonne : [liste].</li>
+      <li>Ce qui est <strong>individualisé</strong> dans la sortie, et ce qui ne l'est pas : [en clair].</li>
+      <li>Le point de relecture humaine : qui relit, ce qu'il regarde, où il signe.</li>
+      <li>Le signal d'alerte et la condition d'arrêt, avec leur critère observable.</li>
+      <li>La durée de conservation des sorties et des journaux.</li>
+      <li>Les questions restées ouvertes, transmises au conseil de l'entreprise le [date].</li>
+    </ul>
+    <p><strong>Ce qui est demandé à l'instance :</strong> [avis / information — à faire préciser par votre conseil].</p>
+    <p><strong>Date souhaitée de mise en service :</strong> [date], <strong>sous réserve</strong> de l'issue de ce point.</p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">La phrase du formateur, si la salle demande ce qui est obligatoire</div>
+    <p>
+      Mot pour mot : « je ne me prononce pas, notez la question, votre conseil tranchera. » Puis
+      porter la question sur la feuille de route comme <strong>point bloquant avant lancement</strong>.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A21" data-titre="Feuille de route — trois lignes au plus, chacune avec un porteur et une échéance" data-bloc="M4, pratique et synthèse" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A21</div>
+  <h2>Ma feuille de route</h2>
+  <p class="piece-usage">
+    Troisième temps de la pratique du module 4. Le formateur refuse toute ligne sans porteur et sans
+    date — <strong>une automatisation sans porteur ne se fait pas, elle se raconte</strong> — et fait
+    barrer tout ce qui dépasse trois lignes pour le trimestre : une feuille de route à dix lignes est
+    une liste d'envies, pas un plan.
+  </p>
+
+  <p><strong>Nom :</strong> ______________________________ · <strong>Trimestre :</strong> ______________</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 4%">#</th>
+        <th style="width: 26%">L'automatisation</th>
+        <th style="width: 9%">Couleur</th>
+        <th style="width: 18%">Porteur (fonction nommée)</th>
+        <th style="width: 13%">Échéance</th>
+        <th>Ce qui doit être franchi avant de lancer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td>V O R</td><td></td><td>__/__/20__</td><td></td></tr>
+      <tr><td>2</td><td></td><td>V O R</td><td></td><td>__/__/20__</td><td></td></tr>
+      <tr><td>3</td><td></td><td>V O R</td><td></td><td>__/__/20__</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ce qui doit remonter avant d'être lancé — à isoler ici, pas à noyer plus haut</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 34%">Le point</th>
+          <th style="width: 22%">À qui il remonte</th>
+          <th style="width: 16%">Envoyé le</th>
+          <th>Réponse obtenue le</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td>direction / instance / conseil</td><td>__/__/20__</td><td>__/__/20__</td></tr>
+        <tr><td></td><td>direction / instance / conseil</td><td>__/__/20__</td><td>__/__/20__</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">La troisième colonne du tableau du matin — ce qui ne passera jamais en l'état</div>
+    <p class="petit">
+      Ce n'est pas un échec : c'est un cas qui demande autre chose que deux heures d'atelier. Il
+      porte quand même un porteur et une date de réexamen.
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mon engagement, à voix haute</div>
+    <p>Quelle automatisation : ______________________________</p>
+    <p>Quel porteur : ______________________ · Quel jour : ____ / ____ / 20____</p>
+  </div>
+
+  <div class="banniere">
+    Feuille de travail — <strong>projet</strong> à relire et corriger avant d'être présentée.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans avoir été
+    testée, et sans procédure de retour arrière écrite. Toute question juridique ou de conformité va
+    au <strong>conseil de votre entreprise</strong> et devient un point bloquant tant qu'elle n'a pas
+    de réponse écrite.
+  </div>
+</section>
+
+<section class="piece" data-piece="A22" data-titre="Test de reprise à blanc — la fiche des manques, et la contresignature" data-bloc="M4, vérification" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A22</div>
+  <h2>Reprise à blanc — mon binôme lance ma chaîne sans moi</h2>
+  <p class="piece-usage">
+    L'épreuve de 17 h. <strong>L'auteur se tait</strong> : s'il parle, l'épreuve ne vaut rien et la
+    fiche ressort creuse. Si l'auteur souffle, le formateur le fait changer de place cinq minutes,
+    sans dramatiser. Chaque question posée s'écrit ici : <strong>cette liste est plus précieuse que
+    la fiche elle-même</strong>. Sans outil, la reprise se fait « à la lecture » — le binôme énonce à
+    voix haute chaque geste qu'il ferait, et bute exactement aux mêmes endroits.
+  </p>
+
+  <p>
+    <strong>Automatisation testée :</strong> ______________________________ ·
+    <strong>Auteur :</strong> ______________ · <strong>Testeur :</strong> ______________
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 4%">#</th>
+        <th style="width: 42%">La question que j'ai dû poser à l'auteur</th>
+        <th>Ce que l'auteur ajoute à sa fiche d'usage (A19), section par section</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td></td></tr>
+      <tr><td>2</td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les quatre points que le testeur vérifie, même sans question à poser</div>
+    <ul>
+      <li><span class="coche"></span> J'ai su <strong>lancer</strong> la chaîne avec la seule fiche.</li>
+      <li><span class="coche"></span> J'ai su dire <strong>ce que je devais relire</strong>, et où signer.</li>
+      <li><span class="coche"></span> J'ai su dire <strong>à quel signal l'arrêter</strong>, et par quel geste.</li>
+      <li><span class="coche"></span> J'ai su dire <strong>ce que je ferais si une sortie fausse était déjà partie</strong>.</li>
+    </ul>
+    <p class="petit">
+      Une case non cochée n'est pas un échec du testeur : c'est un manque de la fiche, et il se
+      comble maintenant.
+    </p>
+  </div>
+
+  <div class="champ-date">
+    <strong>Fiche d'usage complétée et contresignée</strong> — testeur : ______________ ·
+    auteur : ______________ · le ____ / ____ / 20____
+  </div>
+
+  <p class="petit">
+    Si le binôme n'a pas réussi à faire tourner la chaîne, l'auteur vient d'apprendre la chose la plus
+    utile de la journée, et il sait exactement quoi compléter : une chaîne que lui seul sait lancer
+    n'existe que tant qu'il est là.
+  </p>
+</section>
+
+<section class="piece" data-piece="A23" data-titre="Quiz d'évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+  <div class="piece-badge">Pièce A23 — feuille stagiaire</div>
+  <h2>Quiz — évaluation des acquis (10 questions)</h2>
+  <p class="piece-usage">
+    Individuel, sans document. Dix questions sur ce qui a été fait pendant les deux jours — pas des
+    pièges. Entourez la réponse. Cette évaluation se tient, se corrige et se conserve : elle ne se
+    remplace jamais par un tour de table. Si l'horaire dérape, on coupe sur la feuille de route,
+    jamais ici.
+  </p>
+  <p>
+    <strong>Nom :</strong> ______________________________ · <strong>Date :</strong> ____ / ____ / 20____
+  </p>
+
+  <ol>
+    <li>
+      À quel moment décide-t-on du régime d'usage des données ?<br />
+      <strong>a.</strong> Une fois le prototype monté, avant la mise en service &nbsp;
+      <strong>b.</strong> Avant de brancher quoi que ce soit &nbsp;
+      <strong>c.</strong> Quand l'informatique le demande
+    </li>
+    <li>
+      Un fichier dont on a retiré tous les noms sort-il du champ des données personnelles ?<br />
+      <strong>a.</strong> Oui, il n'y a plus de nom &nbsp;
+      <strong>b.</strong> Non — dates, service et montants peuvent ré-identifier par recoupement &nbsp;
+      <strong>c.</strong> Oui, s'il ne reste que des références du type AGT-07
+    </li>
+    <li>
+      Une automatisation qui tourne sans point de relecture fait-elle moins d'erreurs qu'un
+      humain ?<br />
+      <strong>a.</strong> Oui, elle est régulière &nbsp;
+      <strong>b.</strong> Non — elle refait la même erreur chaque semaine, à l'identique &nbsp;
+      <strong>c.</strong> Cela dépend de l'outil
+    </li>
+    <li>
+      Votre chaîne produit, même sans le vouloir, un relevé du nombre de demandes traitées par
+      agent. Qu'est-ce que cela déclenche ?<br />
+      <strong>a.</strong> Rien, ce n'est pas le but recherché &nbsp;
+      <strong>b.</strong> L'information des salariés et la consultation de l'instance représentative
+      avant mise en service &nbsp;
+      <strong>c.</strong> Une simple mention dans la fiche d'usage
+    </li>
+    <li>
+      Où s'écrivent le point de relecture humaine et le moyen d'arrêter la chaîne ?<br />
+      <strong>a.</strong> Dans la fiche de cadrage, comme entrées, dès le premier jour &nbsp;
+      <strong>b.</strong> À la fin, une fois que ça marche &nbsp;
+      <strong>c.</strong> Nulle part, c'est du bon sens
+    </li>
+    <li>
+      Vous devez recoller les trois mêmes fichiers de référence à chaque exécution hebdomadaire.
+      Quelle famille d'outil ?<br />
+      <strong>a.</strong> L'assistant conversationnel &nbsp;
+      <strong>b.</strong> L'espace de travail persistant &nbsp;
+      <strong>c.</strong> Le chaînage entre applications, monté en atelier
+    </li>
+    <li>
+      Sur combien de jeux d'entrées fait-on tourner un prototype avant de le croire fiable, et
+      lequel apprend le plus ?<br />
+      <strong>a.</strong> Un seul, le plus propre &nbsp;
+      <strong>b.</strong> Trois au minimum, dont un volontairement bancal &nbsp;
+      <strong>c.</strong> Autant qu'il en faut pour qu'aucun n'échoue
+    </li>
+    <li>
+      Le journal de tests se remplit…<br />
+      <strong>a.</strong> pendant le test, écart par écart &nbsp;
+      <strong>b.</strong> le soir, de mémoire &nbsp;
+      <strong>c.</strong> seulement si un écart est grave
+    </li>
+    <li>
+      Un participant demande si son entreprise a le droit d'automatiser telle tâche. Qui
+      tranche ?<br />
+      <strong>a.</strong> Le formateur &nbsp; <strong>b.</strong> L'outil &nbsp;
+      <strong>c.</strong> Le conseil de l'entreprise — la question se note et se transmet
+    </li>
+    <li>
+      Le contrôle affiche « ÉCART DE VOLUME » et n'affiche pas la synthèse. Que bloque-t-il ?<br />
+      <strong>a.</strong> Le travail du service &nbsp;
+      <strong>b.</strong> La diffusion de la sortie, tant qu'un humain n'a pas regardé &nbsp;
+      <strong>c.</strong> Rien, c'est un simple avertissement
+    </li>
+  </ol>
+</section>
+
+<section class="piece" data-piece="A23">
+  <div class="piece-badge">Pièce A23 — corrigé formateur</div>
+  <h2>Quiz — corrigé commenté, question par question</h2>
+  <p class="piece-usage">
+    Se commente en salle sans en passer aucune. Le seuil de réussite est celui déclaré au programme ;
+    un score en dessous déclenche la reprise individuelle prévue au dispositif. En retard, on resserre
+    le commentaire sur les questions les plus ratées — on ne supprime pas l'évaluation.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th style="width: 6%">N°</th><th style="width: 8%">Rép.</th><th>La règle qui tranche</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td><td><strong>b</strong></td>
+        <td>
+          Une automatisation ne relit pas un document, elle avale un flux : ce qui entre entre à
+          chaque exécution. Le régime se décide donc avant de brancher, pas après.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td><td><strong>b</strong></td>
+        <td>
+          La démonstration du premier matin : AGT-07 identifié par une date et un événement singulier,
+          AGT-03 par une fonction unique, AGT-12 par un montant de barème. Retirer les noms ne fait
+          pas sortir un fichier du champ.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td><td><strong>b</strong></td>
+        <td>
+          Elle amplifie ses erreurs au lieu de les corriger : la même sortie fausse repart chaque
+          semaine, sans que personne la relise. D'où le point de relecture et le moyen d'arrêter.
+        </td>
+      </tr>
+      <tr>
+        <td>4</td><td><strong>b</strong></td>
+        <td>
+          Q2 du test des 4 questions : un suivi d'activité individuelle en est un, que ce soit ou non
+          le but poursuivi. Ce qui ferait basculer : agréger au niveau du service et retirer la
+          colonne d'agent.
+        </td>
+      </tr>
+      <tr>
+        <td>5</td><td><strong>a</strong></td>
+        <td>
+          Ce sont des <strong>entrées</strong> de la fiche de cadrage, au même titre que la sortie
+          attendue — pas des précautions qu'on ajoute à la fin. La question qui remplit les cases :
+          « la sortie est fausse, elle part au client, qui s'en aperçoit et quand ? »
+        </td>
+      </tr>
+      <tr>
+        <td>6</td><td><strong>b</strong></td>
+        <td>
+          Dès qu'il faut recoller les mêmes fichiers à chaque fois, l'espace persistant a déjà gagné.
+          Et le chaînage ne se monte pas en atelier : il repart chez vous et tourne sans surveillance.
+        </td>
+      </tr>
+      <tr>
+        <td>7</td><td><strong>b</strong></td>
+        <td>
+          Le jeu bancal est le seul des trois qui dise comment la chaîne se comporte quand elle ne
+          comprend pas. Ce qui n'a pas été testé sur des cas réels n'est pas un prototype, c'est une
+          intention.
+        </td>
+      </tr>
+      <tr>
+        <td>8</td><td><strong>a</strong></td>
+        <td>
+          Un écart reconstitué de mémoire est un écart perdu. Le journal est ce qui permettra, dans
+          trois semaines, de savoir ce qui avait déjà été essayé.
+        </td>
+      </tr>
+      <tr>
+        <td>9</td><td><strong>c</strong></td>
+        <td>
+          Formule exacte, entendue une dizaine de fois en deux jours : « je ne me prononce pas, notez
+          la question, votre conseil tranchera. »
+        </td>
+      </tr>
+      <tr>
+        <td>10</td><td><strong>b</strong></td>
+        <td>
+          Il bloque la diffusion, pas le travail. Une sortie bloquée qu'on regarde coûte infiniment
+          moins cher qu'une sortie fausse qu'on envoie.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="petit">
+    Le résultat individuel n'est pas transmis à l'employeur. Ce qui est transmis, c'est l'attestation
+    de fin de formation et le fait que l'évaluation a eu lieu.
+  </p>
+</section>
+
+<section class="piece" data-piece="A24" data-titre="Grille d'auto-évaluation de mon prototype (cinq lignes)" data-bloc="M4, vérification" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A24</div>
+  <h2>Mon prototype, ligne par ligne</h2>
+  <p class="piece-usage">
+    Se remplit juste après le quiz, prototype et fiche d'usage sous les yeux. Une grille tout en
+    « oui » est une grille remplie trop vite : le formateur demande alors la preuve d'une seule ligne,
+    au hasard.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 24%">Critère</th>
+        <th style="width: 14%">Verdict</th>
+        <th style="width: 30%">La preuve — où ça se voit</th>
+        <th>Ce qui reste à faire, et quand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Contrôle humain</strong> — un point de relecture nommé, avec ses critères et sa trace dans la sortie</td>
+        <td>☐ oui ☐ à compléter</td><td></td><td></td>
+      </tr>
+      <tr>
+        <td><strong>Traçabilité</strong> — une ligne par exécution diffusée : qui a relu, quand, ce qui a été corrigé</td>
+        <td>☐ oui ☐ à compléter</td><td></td><td></td>
+      </tr>
+      <tr>
+        <td><strong>Régime de données</strong> — arrêté, cohérent avec ce qui entre réellement, et information faite ou datée</td>
+        <td>☐ oui ☐ à compléter</td><td></td><td></td>
+      </tr>
+      <tr>
+        <td><strong>Reprenabilité</strong> — un tiers l'a lancée avec la seule fiche d'usage, sans moi</td>
+        <td>☐ oui ☐ à compléter</td><td></td><td></td>
+      </tr>
+      <tr>
+        <td><strong>Couleur au feu tricolore</strong> — déduite des 4 questions, avec la question déterminante</td>
+        <td>☐ V ☐ O ☐ R</td><td>Question n° ______</td><td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">La ligne qui décide de lundi</div>
+    <p>
+      Si <strong>Reprenabilité</strong> ou <strong>Contrôle humain</strong> reste « à compléter »,
+      la chaîne ne se met pas en service — elle se termine d'abord. Ce que je complète en premier :
+    </p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Auto-évaluation de travail — <strong>projet</strong> à relire et corriger.
+    <strong>Aucune automatisation ne part en production</strong> sans revue humaine, sans avoir été
+    testée, et sans procédure de retour arrière écrite. Toute question juridique ou de conformité va
+    au <strong>conseil de votre entreprise</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A25" data-titre="Le tableau des questions ouvertes (affiche formateur, tenue sur les deux jours)" data-bloc="Tous les modules" data-tirage="2 exemplaires formateur, format paperboard">
+  <div class="piece-badge">Pièce A25 — affiche formateur</div>
+  <h2>Questions ouvertes — « votre conseil tranchera »</h2>
+  <p class="piece-usage">
+    S'affiche dès le premier matin et reste visible jusqu'à la fin. Chaque fois qu'une question de
+    droit ou de sécurité se pose, le formateur prononce la formule <strong>telle quelle</strong> —
+    « je ne me prononce pas, notez la question, votre conseil tranchera » — et l'écrit ici, devant la
+    salle. Le geste vaut autant que la phrase : la question n'est pas évacuée, elle est
+    <strong>capitalisée</strong>. La liste est une production utile des deux jours ; elle est
+    photographiée et envoyée au groupe à la clôture.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 4%">#</th>
+        <th style="width: 46%">La question, telle qu'elle a été posée</th>
+        <th style="width: 14%">Posée par</th>
+        <th>À qui elle part, et avant quand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois moments où cette affiche se remplit toujours</div>
+    <ul>
+      <li>À la pratique du module 1, quand quelqu'un demande si tel usage est autorisé chez lui.</li>
+      <li>Au passage croisé du module 2, sur un désaccord de sécurité informatique entre binômes.</li>
+      <li>À la pratique du module 4, quand un participant demande la validation d'une analyse de conformité.</li>
+    </ul>
+    <p class="petit">
+      Dans les trois cas, la réponse est la même et ne se négocie pas. Une affiche vide à la fin du
+      jour 2 signale que le formateur a tranché des choses qu'il n'avait pas à trancher.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A26" data-titre="Bordereau du dossier d'exploitation — les six pièces remises en main propre" data-bloc="M4, synthèse" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A26</div>
+  <h2>Mon dossier d'exploitation — bordereau de remise</h2>
+  <p class="piece-usage">
+    Se remplit à la clôture, pièce par pièce, pendant que le formateur les nomme à voix haute. Une
+    case non cochée est une pièce manquante, et elle se termine avant lundi — pas « un de ces jours ».
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">✓</th>
+        <th style="width: 32%">La pièce</th>
+        <th style="width: 12%">Trame</th>
+        <th>À quoi elle sert quand ça casse dans trois semaines</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>La fiche de cadrage</strong>, nommée et enregistrée</td>
+        <td>A9</td>
+        <td>Elle dit ce que la chaîne devait faire — et se rejoue telle quelle si tout est à refaire.</td>
+      </tr>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>L'instruction AXION</strong>, enregistrée à part du prototype</td>
+        <td>A12</td>
+        <td>C'est elle qu'on emporte : elle survit au changement d'outil et d'interface.</td>
+      </tr>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>Le journal de tests</strong>, trois jeux d'entrées renseignés</td>
+        <td>A16</td>
+        <td>Il dit ce qui avait déjà été essayé, et ce que ça avait donné. Première pièce à rouvrir.</td>
+      </tr>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>La grille des quatre contrôles</strong>, posés</td>
+        <td>A18</td>
+        <td>Elle dit ce qui devait bloquer, et où le regarder quand rien n'a bloqué.</td>
+      </tr>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>La fiche d'usage</strong>, contresignée par le binôme</td>
+        <td>A19 + A22</td>
+        <td>Elle dit qui relit, comment on lance, quand on arrête, et comment on revient en arrière.</td>
+      </tr>
+      <tr>
+        <td><span class="coche"></span></td>
+        <td><strong>La feuille de route</strong>, trois lignes au plus, avec porteurs et dates</td>
+        <td>A21</td>
+        <td>Elle dit ce qui vient ensuite, et ce qui doit remonter avant d'être lancé.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Et les pièces annexes, si elles ont servi</div>
+    <p>
+      <span class="coche"></span> Fiche de régime d'usage (A2) &nbsp;
+      <span class="coche"></span> Grille des 4 questions remplie (A3) &nbsp;
+      <span class="coche"></span> Fiche du feu tricolore (A6) &nbsp;
+      <span class="coche"></span> Cartographie (A7) &nbsp;
+      <span class="coche"></span> Fiche comparative annotée (A8) &nbsp;
+      <span class="coche"></span> Trames d'information en projet (A20) &nbsp;
+      <span class="coche"></span> Auto-évaluation (A24)
+    </p>
+  </div>
+
+  <div class="banniere">
+    L'ensemble de ce dossier est un <strong>projet</strong> : chaque pièce se relit, se corrige et se
+    signe avant d'être diffusée. <strong>Aucune automatisation ne part en production</strong> sans
+    revue humaine, sans avoir été testée, et sans procédure de retour arrière écrite. Toute question
+    juridique ou de conformité va au <strong>conseil de votre entreprise</strong> — les questions
+    restées ouvertes sont sur l'affiche A25, photographiée et envoyée au groupe.
+  </div>
+</section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici l'extrait de tableau de suivi ci-joint (jeu de démonstration, aucune donnée réelle).<br />Produis la synthèse hebdomadaire en respectant exactement ce format :<br />1. Un tableau à trois colonnes — dossier, état, écart par rapport à la semaine précédente.<br />2. Sous le tableau, trois lignes au maximum sur ce qui a bougé.<br />3. Une dernière ligne intitulée « à vérifier avant envoi ».<br />N'ajoute aucun commentaire, aucune recommandation, aucune donnée absente du fichier. Si une ligne est incomplète, écris « à vérifier » dans la colonne concernée au lieu de la compléter toi-même.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties côte à côte, avec surlignage des trois lignes que la version manuelle a reformulées différemment d'une semaine à l'autre, et de la mention « à vérifier » que la version pilotée fait apparaître.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle — et c'est le même pendant les deux journées.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service indisponible : les deux sorties sont imprimées dans le kit formateur, datées, avec le chronométrage de la version manuelle. La comparaison se tient à l'identique sur papier, et le chiffre affiché reste vrai puisqu'il a été mesuré.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Après-midi — Jour 1 : cartographier ses tâches et cadrer son cas</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Je vais te décrire un processus que je répète chaque semaine. Reformule-le en fiche de cadrage, entrée par entrée, sans rien inventer, et signale explicitement chaque information qui te manque.<br />Entrée : d'où viennent les données, sous quel format, qui les produit, à quelle fréquence.<br />Étapes : ce que je fais, dans l'ordre, avec la règle appliquée à chacune.<br />Sortie : ce qui doit être produit, pour qui, sous quel format.<br />Point de relecture humaine : à quel endroit un humain doit lire avant que la sortie parte, et ce qu'il regarde exactement.<br />Arrêt : à quel signal la chaîne doit s'arrêter, et qui peut l'arrêter.<br />Termine par la liste numérotée des informations qui te manquent pour que cette fiche soit exécutable. N'invente aucune valeur par défaut.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties côte à côte, avec en marge de la version bâclée les six éléments que l'IA a inventés faute de description, et en marge de la version cadrée la liste numérotée des informations manquantes qu'elle réclame.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle — le même que ce matin.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux sorties sont imprimées dans le kit, datées, avec les annotations de marge déjà appliquées. La comparaison se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Matin — Jour 2 : construire le prototype</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu es l'assistant qui exécute cette tâche hebdomadaire à ma place, toujours de la même façon.<br />ConteXte : je reçois chaque lundi un export de suivi au format tableur, produit par notre outil de gestion, une ligne par dossier et cinq colonnes fixes.<br />Intention : produire la synthèse envoyée au comité de pilotage.<br />Output : d'abord un tableau des dossiers en écart, puis trois puces au maximum sur ce qui a bougé, puis une ligne « points à vérifier avant envoi ».<br />Normes : n'ajoute aucun chiffre absent de l'export ; si une colonne manque ou si une ligne est vide, ne devine pas — écris « donnée manquante » et poursuis ; ne formule aucune recommandation ; termine toujours par la ligne « relu par : ______ le ______ », que je remplis à la main avant tout envoi.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les trois états successifs à l'écran : le premier essai qui invente deux chiffres absents de l'export, le deuxième qui les remplace par « donnée manquante » mais perd le tableau, et la version finale conforme aux cinq leviers.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle — le même depuis hier matin.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint : les trois états de la démonstration sont imprimés dans le kit, datés, y compris les deux essais ratés avec leurs annotations. Le montage se commente à l'identique sur papier, et l'instruction reste recopiable.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi — Jour 2 : fiabiliser, mettre en service, décider de la suite</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Avant de me rendre la sortie, exécute ce contrôle et écris-en le résultat en tête de réponse :<br />1. Compte les lignes de l'entrée et celles de la sortie. Si les deux nombres diffèrent, écris « ÉCART DE VOLUME » et n'affiche pas la synthèse.<br />2. Relève toute valeur que tu as complétée, déduite ou reformulée, et liste-la sous « à confirmer par un humain ».<br />3. Si une date, un montant ou un nom ne figure pas tel quel dans l'entrée, écris « NON VÉRIFIÉ » juste à côté.<br />4. Termine par la ligne « relu par : ______ le ______ ». Tant que cette ligne est vide, la sortie n'est pas diffusable.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties côte à côte, avec en rouge le total faux parti au destinataire dans la première, et dans la seconde le bandeau « ÉCART DE VOLUME » qui a bloqué l'affichage de la synthèse.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle — le même depuis hier matin.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux sorties sont imprimées dans le kit, datées, avec le total faux entouré et le bandeau de blocage visible. La démonstration se tient à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Vidéoprojecteur en panne : le tour de table et l'annonce des règles se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais</td><td>Démonstration</td><td>Quota atteint ou service indisponible : les deux sorties sont imprimées dans le kit formateur, datées, avec le chronométrage de la version manuelle. La comparaison se tient à l'identique sur papier, et le chiffre affiché reste vrai puisqu'il a été mesuré.</td></tr>
+          <tr><td>Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais</td><td>Pratique</td><td>Aucun outil n'est nécessaire : la fiche de régime et la grille des 4 questions se remplissent au stylo sur les imprimés du kit. Le seul repli à prévoir est le fichier « anonymisé » de la ré-identification, fourni en version papier avec les trois recoupements déjà entourés.</td></tr>
+          <tr><td>Matin — Jour 1 : ce qu'on peut automatiser, et ce qu'on n'automatise jamais</td><td>Vérification</td><td>Les six cas et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, la correction se fait au paperboard, une colonne par couleur.</td></tr>
+          <tr><td>Après-midi — Jour 1 : cartographier ses tâches et cadrer son cas</td><td>Démonstration</td><td>Les deux sorties sont imprimées dans le kit, datées, avec les annotations de marge déjà appliquées. La comparaison se tient à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi — Jour 1 : cartographier ses tâches et cadrer son cas</td><td>Pratique</td><td>Réseau tombé : la cartographie, la fiche comparative et la fiche de cadrage sont toutes des imprimés du kit et se remplissent au stylo. Seule la démonstration de reformulation par l'IA saute, et elle n'est pas nécessaire à l'atelier — ce qui compte est la structure de la fiche, pas l'outil qui l'a reformulée. Prévenez alors que la fiche devra être ressaisie ce soir ou demain à l'ouverture, sinon la matinée 2 démarre sans support numérique.</td></tr>
+          <tr><td>Après-midi — Jour 1 : cartographier ses tâches et cadrer son cas</td><td>Vérification</td><td>Grille de faille, fiche piégée et corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Matin — Jour 2 : construire le prototype</td><td>Démonstration</td><td>Quota atteint : les trois états de la démonstration sont imprimés dans le kit, datés, y compris les deux essais ratés avec leurs annotations. Le montage se commente à l'identique sur papier, et l'instruction reste recopiable.</td></tr>
+          <tr><td>Matin — Jour 2 : construire le prototype</td><td>Pratique</td><td>Service indisponible : le kit fournit les sorties du cas de repli pour les trois jeux d'entrées, imprimées et datées, y compris celle du jeu bancal. L'atelier se poursuit sur papier — repérer les écarts, écrire ce qu'on changerait dans l'instruction, remplir le journal de tests. C'est moins satisfaisant, mais le journal reste vrai et se rejouera chez eux à l'identique.</td></tr>
+          <tr><td>Matin — Jour 2 : construire le prototype</td><td>Vérification</td><td>Sans outil, la chasse se fait sur les sorties imprimées du cas de repli, qui contiennent des erreurs plantées et vérifiées. Le comptage au tableau et la mise en commun sont identiques.</td></tr>
+          <tr><td>Après-midi — Jour 2 : fiabiliser, mettre en service, décider de la suite</td><td>Démonstration</td><td>Les deux sorties sont imprimées dans le kit, datées, avec le total faux entouré et le bandeau de blocage visible. La démonstration se tient à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi — Jour 2 : fiabiliser, mettre en service, décider de la suite</td><td>Pratique</td><td>Grille des quatre contrôles, trame de fiche d'usage, trames d'information et trame de feuille de route sont toutes imprimées dans le kit et se remplissent au stylo. Seule la pose effective du contrôle dans l'outil saute : elle se décrit alors par écrit sur la fiche, et se rejoue chez soi en dix minutes.</td></tr>
+          <tr><td>Après-midi — Jour 2 : fiabiliser, mettre en service, décider de la suite</td><td>Vérification</td><td>Quiz papier et corrigé sont dans le kit. Si l'outil est indisponible, la reprise à blanc se fait « à la lecture » : le binôme énonce à voix haute chaque geste qu'il ferait à partir de la fiche, et bute exactement aux mêmes endroits.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,2538 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour bien commencer — journée complète (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour bien commencer — journée complète » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-bien-commencer-journee</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Protocole de poste — la trame en quatre pages (le livrable de la journée)</td><td>Tous les modules, assemblé au M4</td><td>1 jeu par stagiaire + 5</td></tr>
+          <tr><td><strong>A2</strong></td><td>Jeu des douze cartes « ça part / ça ne part pas / environnement validé » + corrigé</td><td>M1, vérification</td><td>1 jeu découpé par binôme + corrigé formateur</td></tr>
+          <tr><td><strong>A3</strong></td><td>Trois textes pré-générés à erreurs plantées + corrigés (une famille de métiers chacun)</td><td>M1, pratique (plan B)</td><td>1 jeu par stagiaire + corrigés formateur</td></tr>
+          <tr><td><strong>A4</strong></td><td>Trame AXION vierge, datée</td><td>M2 et M3, pratique</td><td>4 par stagiaire + 10</td></tr>
+          <tr><td><strong>A5</strong></td><td>Mémo des cinq leviers AXION (à emporter)</td><td>M2, démonstration et synthèse</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A6</strong></td><td>Les quatre relances qui débloquent (fiche à emporter)</td><td>M2, démonstration et pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A7</strong></td><td>Atelier de tri des tâches + les douze tâches par famille de poste</td><td>M2, pratique</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A8</strong></td><td>Grille des cinq leviers — contrôle croisé en binôme</td><td>M2, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A9</strong></td><td>Rapport interne fictif MENUISERIE VALLOIRE — document de secours du module 3</td><td>M3, démonstration et pratique</td><td>1 par table + 5 exemplaires</td></tr>
+          <tr><td><strong>A10</strong></td><td>Les deux synthèses du rapport (vague et AXION) + corrigé des trois affirmations introuvables</td><td>M3, démonstration et vérification (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A11</strong></td><td>Grille de vérification d'une synthèse contre sa source (avec décompte)</td><td>M3, vérification</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A12</strong></td><td>Mémo — les trois échecs silencieux du dépôt de fichier et leurs parades</td><td>M3, démonstration et pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A13</strong></td><td>Trame « note télégraphique → note propre » (plan B de la dictée)</td><td>M3, pratique (plan B)</td><td>2 par stagiaire</td></tr>
+          <tr><td><strong>A14</strong></td><td>Notes brutes d'une réunion d'atelier fictive — matière du second passage</td><td>M3, pratique</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A15</strong></td><td>Grille de relecture en cinq points d'une production</td><td>M4, démonstration et vérification</td><td>2 par stagiaire</td></tr>
+          <tr><td><strong>A16</strong></td><td>Production de secours à deux défauts calibrés + corrigé aux cinq points</td><td>M4, démonstration (plan B)</td><td>1 par table + exemplaire formateur</td></tr>
+          <tr><td><strong>A17</strong></td><td>Quiz d'évaluation des acquis (12 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A18</strong></td><td>Parades de démonstration — les formulations exactes à taper quand une démonstration tombe à plat</td><td>M1 à M4, démonstrations</td><td>1 exemplaire formateur</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin — Module 2 : Formuler et relancer jusqu'au résultat utilisable (méthode AXION) <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi — Module 3 : Travailler sur ses documents, dicter, vérifier contre la source <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi — Module 4 : Ce qui sort de vos mains — mon protocole de vérification et de diffusion <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Protocole de poste — la trame en quatre pages (le livrable de la journée)" data-bloc="Tous les modules, assemblé au M4" data-tirage="1 jeu par stagiaire + 5">
+  <div class="piece-badge">Pièce A1 — protocole de poste, page 1 sur 4</div>
+  <h2>Mon protocole de poste — ce que je confie à l'IA, et à quelles conditions</h2>
+  <p class="piece-usage">
+    Annoncé au premier module, rempli pièce par pièce toute la journée, assemblé au module 4. Ce
+    n'est pas un support de cours : c'est le document de travail qui rentre au bureau. Le formateur
+    exige du nommé — quels dossiers, quels fichiers, quel moment de la semaine. « Je ferai
+    attention » n'est pas une ligne de protocole.
+  </p>
+
+  <p>
+    <strong>Nom :</strong> ______________________________ · <strong>Poste :</strong>
+    ______________________________ · <strong>Date :</strong> ____ / ____ / 20____
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">1. Mon régime d'usage — dans lequel suis-je&nbsp;?</div>
+    <p class="petit">
+      Une seule case. Si je ne sais pas répondre, la case cochée est la troisième ligne, et la
+      question part dans ma feuille de route.
+    </p>
+    <p>
+      <span class="coche"></span> <strong>Compte grand public</strong> — ouvert par moi, sans contrat
+      d'entreprise. Aucune donnée de l'entreprise ni de personne n'y entre.
+    </p>
+    <p>
+      <span class="coche"></span> <strong>Offre entreprise avec engagement de non-réutilisation</strong>
+      — souscrite par mon employeur, qui l'a écrit.
+    </p>
+    <p>
+      <span class="coche"></span> <strong>Environnement validé par mon entreprise</strong> — désigné,
+      nommé, et je sais par qui.
+    </p>
+    <p>
+      <span class="coche"></span> <strong>Je ne sais pas encore</strong> — alors je travaille comme en
+      compte grand public jusqu'à réponse.
+    </p>
+    <p style="margin-top: 3mm">
+      Les trois questions qui tranchent, et mes réponses :<br />
+      <em>Qui a signé le contrat&nbsp;?</em> ______________________________<br />
+      <em>Est-il écrit quelque part que mes saisies ne servent pas à entraîner l'outil&nbsp;?</em>
+      ______________________________<br />
+      <em>Qui, dans mon entreprise, répond de cette question&nbsp;?</em>
+      ______________________________
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">2. Ce qui ne sort jamais — ma liste, sur mes dossiers à moi</div>
+    <p class="petit">
+      Interdiction de recopier la liste générique. Chaque ligne nomme un fichier, un dossier ou un
+      type de pièce que j'ai réellement ouvert cette semaine.
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p style="margin-top: 2mm">
+      <strong>Et le rappel qui coûte le plus cher :</strong> retirer le nom ne rend pas un document
+      anonyme — pseudonymiser reste un traitement de données personnelles, et le contexte
+      ré-identifie. Cela vaut aussi pour les <strong>photos</strong> et les
+      <strong>pièces jointes</strong>.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">3. Mes questions restées ouvertes</div>
+    <p class="petit">
+      Celles que le formateur n'a pas tranchées, et il a eu raison. Elles vont à mon conseil.
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Tout ce que je produis avec l'IA est un <strong>projet</strong> : je le relis, je le corrige, je
+    le signe avant tout envoi — l'IA prépare, l'humain décide. Aucune question juridique ne se règle
+    en salle : formule exacte du formateur,
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>. Ce
+    document est une trame de travail, à faire valider par le conseil de votre entreprise avant toute
+    diffusion.
+  </div>
+  <p class="verso-note">→ Tournez : la grille de relecture et la mention au destinataire.</p>
+</section>
+
+<section class="piece" data-piece="A1">
+  <div class="piece-badge">Pièce A1 — protocole de poste, page 2 sur 4</div>
+  <h2>Ma grille de relecture en cinq points, et ce que j'indique au destinataire</h2>
+
+  <div class="encadre">
+    <div class="encadre-titre">4. Ma grille de relecture — calibrée sur MES écrits</div>
+    <p class="petit">
+      Les cinq points ne changent pas. Ce qui change, c'est la colonne de droite : ce que je regarde
+      en particulier sur les écrits de mon poste, écrit avec mes mots.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 26%">Le point</th>
+          <th style="width: 30%">La question</th>
+          <th>Sur mes écrits, je regarde en particulier…</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Exactitude</strong></td>
+          <td>Chiffres, noms, dates : chaque affirmation est-elle vérifiable&nbsp;?</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>2. Ton</strong></td>
+          <td>Adapté au destinataire réel, pas au destinataire moyen&nbsp;?</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>3. Format</strong></td>
+          <td>Le format demandé est-il respecté — longueur, structure, fin&nbsp;?</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>4. Source</strong></td>
+          <td>D'où vient chaque information engageante&nbsp;?</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td><strong>5. Réutilisable tel quel&nbsp;?</strong></td>
+          <td>Qu'est-ce qui doit être personnalisé avant l'envoi&nbsp;?</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="petit">
+      La règle qui va avec, éprouvée cet après-midi : une grille qui ne trouve jamais rien n'a pas
+      été appliquée.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">5. Ce que j'indique au destinataire</div>
+    <p>
+      <span class="coche"></span> J'indique l'usage de l'IA sur ce type d'écrit :
+      ______________________________
+    </p>
+    <p><span class="coche"></span> Je ne l'indique pas sur ce type d'écrit : ______________________________</p>
+    <p>Ma formule, écrite une fois pour toutes et recopiée ensuite :</p>
+    <div class="lignes"></div>
+    <p class="petit">
+      Ce qui ne se discute pas : c'est moi qui signe, donc moi qui réponds du contenu. Ce qui se
+      discute chez moi et pas ici : jusqu'où mon entreprise veut que ce soit indiqué.
+      <strong>Ligne à vérifier contre la charte interne</strong> — la personne qui la connaît :
+      ______________________________
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">6. Ce que je ne confie pas à l'IA — et pourquoi</div>
+    <p class="petit">
+      À remplir avec ce que j'ai barré ce matin, à l'atelier des trois tâches. Une raison par ligne.
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+</section>
+
+<section class="piece" data-piece="A1">
+  <div class="piece-badge">Pièce A1 — protocole de poste, page 3 sur 4</div>
+  <h2>Ce que j'ai produit aujourd'hui — et qui se rejoue tel quel</h2>
+  <p class="piece-usage">
+    Rien ici n'est un exemple : tout a été testé dans la salle, sur des tâches réelles. Cette page
+    est l'inventaire de ce qui rentre au bureau avec moi.
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mes deux demandes AXION conservées</div>
+    <p><strong>Demande 1 — la tâche :</strong> ______________________________</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p class="petit">La relance qui l'a débloquée (n° ____) et ce qu'elle a changé :</p>
+    <div class="lignes"></div>
+    <p style="margin-top: 4mm"><strong>Demande 2 — la tâche :</strong> ______________________________</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p class="petit">La relance qui l'a débloquée (n° ____) et ce qu'elle a changé :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ma synthèse vérifiée</div>
+    <p>Le document synthétisé : ______________________________</p>
+    <p>
+      Affirmations vérifiées contre la source : <strong>______</strong> · dont introuvables dans la
+      source : <strong>______</strong>
+    </p>
+    <p class="petit">Ce que la vérification m'a appris sur ma façon de lire une synthèse :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mes deux notes produites à la voix</div>
+    <p>Note 1 — sujet : ______________________________ · durée de la dictée : ____ min</p>
+    <p>Note 2 — sujet : ______________________________ · durée de la dictée : ____ min</p>
+    <p class="petit">Ce que j'ai dû corriger dans la note propre (c'est là que se loge l'invention) :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <p class="verso-note">→ Tournez : la feuille de route de la semaine.</p>
+</section>
+
+<section class="piece" data-piece="A1">
+  <div class="piece-badge">Pièce A1 — protocole de poste, page 4 sur 4</div>
+  <h2>Ma feuille de route — la semaine qui vient</h2>
+  <p class="piece-usage">
+    Trois usages tenus valent mieux que dix intentions. Un usage sans moment précis n'aura pas lieu :
+    chaque ligne porte un jour et une heure.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%">N°</th>
+        <th>L'usage que je relance seul</th>
+        <th style="width: 24%">Quel jour, à quel moment</th>
+        <th style="width: 18%">Fait&nbsp;?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td></td>
+        <td></td>
+        <td>☐</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td></td>
+        <td></td>
+        <td>☐</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td></td>
+        <td></td>
+        <td>☐</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Lundi matin, j'ouvre quoi en premier&nbsp;?</div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="deux-colonnes">
+    <div>
+      <div class="encadre">
+        <div class="encadre-titre">Ce que je ne ferai PAS</div>
+        <p class="petit">Repris des tâches barrées ce matin.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+    </div>
+    <div>
+      <div class="encadre">
+        <div class="encadre-titre">À qui je pose mes questions</div>
+        <p class="petit">Un nom de fonction par ligne, pas « quelqu'un ».</p>
+        <p>Questions d'outil : ____________________</p>
+        <p>Questions de données : ____________________</p>
+        <p>Questions juridiques : ____________________</p>
+        <p>Charte interne : ____________________</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ma phrase de clôture, lue à voix haute devant le groupe</div>
+    <p>« Lundi, je ______________________________ à ______ h. »</p>
+  </div>
+
+  <div class="banniere">
+    Rappel non retirable : ce protocole est un <strong>projet</strong>, à faire valider par le conseil
+    de votre entreprise avant diffusion — et s'il existe chez vous une règle plus stricte, c'est elle
+    qui gagne. Toute production de l'IA se relit, se corrige et se signe avant envoi. Toute question
+    juridique va à votre conseil :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+  <p>
+    <strong>Signature :</strong> ______________________________ · <strong>Le</strong> ____ / ____ /
+    20____
+  </p>
+</section>
+
+<section class="piece" data-piece="A2" data-titre="Jeu des douze cartes « ça part / ça ne part pas / environnement validé » + corrigé" data-bloc="M1, vérification" data-tirage="1 jeu découpé par binôme + corrigé formateur">
+  <div class="piece-badge">Pièce A2 — cartes à découper</div>
+  <h2>Douze situations à classer — le jeu de cartes</h2>
+  <p class="piece-usage">
+    Vérification du module 1, en binôme. Découper les douze cartes avant la session, un jeu par
+    binôme. Consigne : classer les DOUZE cartes en trois tas avant tout corrigé — corriger au fil de
+    l'eau tue le débat, et c'est le débat qui enseigne.
+  </p>
+
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <strong>Carte 1</strong><br />Une question technique générale, sans le moindre élément de
+          votre entreprise : « comment calcule-t-on une marge commerciale&nbsp;? »
+        </td>
+        <td>
+          <strong>Carte 2</strong><br />La plaquette commerciale publiée sur le site de votre
+          entreprise, pour la reformuler en plus court.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Carte 3</strong><br />La notice publique d'un fournisseur, téléchargée sur son
+          site, pour en tirer un mode d'emploi simplifié.
+        </td>
+        <td>
+          <strong>Carte 4</strong><br />Un modèle de devis vierge, sans aucun client ni montant
+          réels, pour le rendre plus lisible.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Carte 5</strong><br />Le compte rendu de la réunion d'équipe de lundi, avec les
+          noms des participants et ce que chacun a dit.
+        </td>
+        <td>
+          <strong>Carte 6</strong><br />Le compte rendu d'un entretien difficile, « anonymisé » : les
+          noms ont été remplacés par « salarié A » et « salarié B ».
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Carte 7</strong><br />La photo du tableau blanc prise en fin d'atelier, où figurent
+          le planning de la semaine et trois noms de clients.
+        </td>
+        <td>
+          <strong>Carte 8</strong><br />Le mail d'un client reçu ce matin, déposé « juste pour
+          reformuler ma réponse ».
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Carte 9</strong><br />Le fichier de paie du mois, « juste pour vérifier un total
+          qui ne tombe pas juste ».
+        </td>
+        <td>
+          <strong>Carte 10</strong><br />Le tableau des ventes du trimestre, non publié, sans aucun
+          nom de client, pour en tirer un commentaire.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Carte 11</strong><br />Le contrat-cadre signé avec un fournisseur, couvert par une
+          clause de confidentialité, pour en faire un résumé.
+        </td>
+        <td>
+          <strong>Carte 12</strong><br />Le brouillon de la note de service qui paraîtra la semaine
+          prochaine, non encore diffusée, pour en améliorer la clarté.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Feuille de classement du binôme — les numéros de cartes</div>
+    <div class="deux-colonnes">
+      <div>
+        <p><strong>Ça part</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Ça ne part pas</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+      <div>
+        <p><strong>Ça ne part qu'en environnement validé</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Les deux cartes sur lesquelles nous n'étions pas d'accord, et pourquoi :
+        </p>
+        <div class="lignes"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="banniere">
+    Ce classement est un <strong>projet</strong> de règle, pas une décision juridique : il se
+    confronte à la charte de votre entreprise et, en cas de doute, au conseil de votre entreprise.
+    Formule du formateur en salle :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A2">
+  <div class="piece-badge">Pièce A2 — corrigé formateur</div>
+  <h2>Les douze cartes — corrigé, avec la règle qui tranche</h2>
+  <p class="piece-usage">
+    À donner carte par carte, APRÈS que les douze aient été classées. Demander le classement à main
+    levée, puis afficher. Sur les cartes ratées, faire dire POURQUOI par un binôme qui a juste, avant
+    de donner la règle.
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois règles dont tout le corrigé découle</div>
+    <ul>
+      <li>
+        <strong>Ça part</strong> : l'information est déjà publique, ou elle ne concerne ni une
+        personne ni un secret de l'entreprise.
+      </li>
+      <li>
+        <strong>Ça ne part pas</strong> : la pièce identifie une personne — ou permet de la
+        ré-identifier. Le motif invoqué ne change rien : la règle porte sur la donnée, pas sur
+        l'intention.
+      </li>
+      <li>
+        <strong>Ça ne part qu'en environnement validé</strong> : donnée interne non publique et non
+        nominative, dont l'entreprise seule peut décider du sort.
+        <strong>Tant qu'aucun environnement n'a été désigné chez vous, cette colonne vaut « ça ne
+        part pas ».</strong>
+      </li>
+    </ul>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 7%">N°</th>
+        <th style="width: 24%">Verdict</th>
+        <th>La règle qui tranche</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Ça part</strong></td>
+        <td>
+          Aucune donnée : c'est une question de culture générale professionnelle. Faire dire pourquoi
+          — c'est l'antidote à la prudence excessive qui fera abandonner l'outil dès mardi.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Ça part</strong></td>
+        <td>
+          Publiée par l'entreprise elle-même, donc déjà sortie. Ce qui est public ne redevient pas
+          confidentiel en entrant dans un outil.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Ça part</strong></td>
+        <td>Document public d'un tiers, diffusé par lui. Ni nominatif, ni confidentiel.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Ça part</strong></td>
+        <td>
+          Une structure sans données : c'est exactement le bon usage. On travaille le modèle, on
+          remplira les données à la main ensuite.
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>Ça ne part pas</strong></td>
+        <td>
+          Nominatif, et davantage : qui a dit quoi, c'est une donnée sur des personnes identifiées.
+          Ce qui peut partir, c'est la structure d'un compte rendu, pas son contenu.
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>Ça ne part pas</strong> ★</td>
+        <td>
+          <strong>La carte la plus ratée.</strong> Remplacer les noms par des lettres, c'est
+          pseudonymiser — et pseudonymiser reste un traitement de données personnelles. Le service,
+          la date, les faits et le nombre de personnes concernées suffisent à ré-identifier. Voir le
+          commentaire détaillé ci-dessous.
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>Ça ne part pas</strong> ★</td>
+        <td>
+          La règle vaut pour les <strong>images</strong> autant que pour les textes : l'outil lit le
+          tableau blanc. Une photo est une pièce jointe comme une autre. Commentaire détaillé
+          ci-dessous.
+        </td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>Ça ne part pas</strong> ★</td>
+        <td>
+          Nominatif (le client) et confidentiel (sa demande). Le « juste pour reformuler » est le
+          motif le plus fréquent et le moins protecteur qui soit. Commentaire détaillé ci-dessous.
+        </td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><strong>Ça ne part pas</strong></td>
+        <td>
+          Rémunérations nominatives : le cumul le plus sensible qui existe dans une entreprise.
+          Aucun motif ne le fait basculer.
+        </td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><strong>Environnement validé</strong></td>
+        <td>
+          Interne et non publié, mais sans donnée personnelle : c'est typiquement ce qu'un
+          environnement validé permet et qu'un compte grand public interdit. Sans environnement
+          désigné chez vous : ça ne part pas.
+        </td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td><strong>Environnement validé</strong></td>
+        <td>
+          Une clause de confidentialité est un engagement pris par votre entreprise, pas par vous :
+          c'est elle qui décide. Et c'est exactement le genre de question qu'on note pour son
+          conseil.
+        </td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td><strong>Environnement validé</strong></td>
+        <td>
+          Non encore diffusée : la note deviendra publique, elle ne l'est pas aujourd'hui. « Elle va
+          sortir de toute façon » n'est pas une règle — la date de diffusion, si.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="corrige">
+    <div class="encadre-titre">Les trois cartes à commenter en salle — le cœur du module</div>
+    <p>
+      <strong>Carte 6 — le document « anonymisé ».</strong> Faire l'expérience à voix haute :
+      « salarié A, service comptabilité, entretien du 14, absences répétées » — combien de personnes
+      cela peut-il désigner dans un service de six&nbsp;? La salle répond « une ». La règle :
+      <strong>anonymiser n'est pas retirer le nom</strong>, c'est rendre la ré-identification
+      impossible — ce qu'un compte rendu d'entretien ne permet quasiment jamais. Pseudonymiser reste
+      un traitement de données personnelles.
+    </p>
+    <p>
+      <strong>Carte 7 — la photo du tableau blanc.</strong> Le réflexe de la salle : « ce n'est
+      qu'une photo ». Faire remarquer que l'outil la LIT, mieux que la plupart des humains, et que
+      les tableaux blancs de fin de réunion sont couverts de noms de clients, de montants et de
+      plannings. La règle :
+      <strong>une image est une pièce jointe, elle suit exactement les mêmes règles qu'un
+      fichier</strong> — et personne ne relit une photo avant de l'envoyer.
+    </p>
+    <p>
+      <strong>Carte 8 — « juste pour reformuler ».</strong> C'est le motif qui fait tomber la
+      vigilance : on ne demande pas d'analyse, juste un service. La règle :
+      <strong>la règle porte sur la donnée, jamais sur l'intention</strong>. La parade se montre en
+      dix secondes — réécrire la situation en trois lignes neutres, lancer, et constater que la
+      sortie est aussi bonne : l'outil n'avait pas besoin du nom.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Si la salle classe tout en « ça ne part pas »</div>
+    <p>
+      Montrer le coût de l'excès : « si tout est interdit, vous ne vous en servirez jamais, et
+      quelqu'un d'autre le fera sans règles ». Reprendre les cartes 1 et 4 et faire dire pourquoi
+      elles partent.
+    </p>
+  </div>
+  <div class="encadre">
+    <div class="encadre-titre">Si une question dérive vers le droit</div>
+    <p>
+      Formule exacte, prononcée telle quelle : <strong>« je ne me prononce pas, notez la question,
+      votre conseil tranchera »</strong> — et écrire la question au tableau. La liste des questions
+      ouvertes entre dans la feuille de route du protocole.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A3" data-titre="Trois textes pré-générés à erreurs plantées + corrigés (une famille de métiers chacun)" data-bloc="M1, pratique (plan B)" data-tirage="1 jeu par stagiaire + corrigés formateur">
+  <div class="piece-badge">Pièce A3.1 — texte stagiaire</div>
+  <h2>Chasse à l'erreur — texte 1 : métiers administratifs et de gestion</h2>
+  <p class="piece-usage">
+    Plan B de la pratique du module 1, quand le réseau tombe ou qu'un stagiaire ne trouve aucune
+    erreur sur son propre domaine. Ces trois textes imitent une sortie d'IA plausible et non
+    vérifiée. Consigne inchangée : surlignez tout ce qui est faux, inventé ou invérifiable, comptez,
+    puis portez le décompte au tableau.
+  </p>
+
+  <div class="texte-exercice">
+    <p>
+      La gestion des notes de frais et des achats occupe une part croissante du temps administratif
+      en PME. En France, 64&nbsp;% des notes de frais comportent au moins une erreur de saisie, ce
+      qui représente un surcoût moyen de 18&nbsp;€ par note. Le plafond légal de remboursement d'un
+      repas d'affaires est fixé à 32,50&nbsp;€ par le Code général des impôts, quel que soit le
+      secteur d'activité. Depuis le 30 février 2025, toute note de frais doit en outre être
+      conservée sous forme numérique, conformément à la norme NF&nbsp;Z42-013-4. Les justificatifs
+      papier n'ont donc plus aucune valeur probante. Un gestionnaire administratif traite en moyenne
+      320 notes de frais par jour dans une entreprise structurée. Le délai légal de remboursement au
+      salarié est de quinze jours, passé lequel des pénalités s'appliquent automatiquement. Il reste
+      recommandé de conserver l'original papier pendant dix ans, en cas de contrôle.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Corrigé formateur — texte 1 : sept erreurs plantées</div>
+    <ol>
+      <li>
+        <strong>« 64&nbsp;% des notes de frais »</strong> — statistique inventée. Elle est précise,
+        donc crédible : c'est le piège type. Invérifiable = on ne diffuse pas.
+      </li>
+      <li>
+        <strong>« un surcoût moyen de 18&nbsp;€ par note »</strong> — même famille : un montant
+        moyen sorti de nulle part, qui habille le chiffre précédent.
+      </li>
+      <li>
+        <strong>« plafond légal de 32,50&nbsp;€ fixé par le Code général des impôts »</strong> —
+        montant inventé ET obligation attribuée à tort à un texte de loi. Faire remarquer la double
+        faute : le chiffre et sa source.
+      </li>
+      <li>
+        <strong>« depuis le 30 février 2025 »</strong> — le 30 février n'existe pas. L'erreur la
+        plus simple, presque toujours trouvée en dernier : on lit les dates sans les voir.
+      </li>
+      <li>
+        <strong>« norme NF&nbsp;Z42-013-4 »</strong> — référence inventée à consonance vraie (la
+        NF&nbsp;Z42-013 existe, pas ce suffixe). Citer n'est pas vérifier.
+      </li>
+      <li>
+        <strong>Contradiction interne</strong> : « les justificatifs papier n'ont plus aucune valeur
+        probante » puis, six lignes plus loin, « conserver l'original papier pendant dix ans ». Le
+        texte se contredit lui-même — et personne ne l'a vu à la première lecture.
+      </li>
+      <li>
+        <strong>« 320 notes par jour » et « quinze jours, pénalités automatiques »</strong> —
+        cadence irréaliste, et obligation légale inventée de toutes pièces.
+      </li>
+    </ol>
+    <p class="petit">
+      Débriefing : le texte est fluide, structuré, professionnel — et faux sept fois. C'est
+      exactement ce qui rend la relecture non négociable.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A3">
+  <div class="piece-badge">Pièce A3.2 — texte stagiaire</div>
+  <h2>Chasse à l'erreur — texte 2 : métiers techniques, atelier et logistique</h2>
+
+  <div class="texte-exercice">
+    <p>
+      La gestion des stocks en atelier repose sur quelques principes stables. La méthode ABC classe
+      ainsi 80&nbsp;% de la valeur du stock dans 5&nbsp;% des références, ce qui permet de
+      concentrer les contrôles. L'inventaire physique doit être réalisé chaque trimestre, comme
+      l'impose l'article L.&nbsp;123-45 du Code de commerce. Le taux de rotation optimal est de 12,4
+      pour toutes les activités confondues. Depuis le 1er janvier 2019, le code-barres EAN-13 est
+      progressivement remplacé par la norme ISO&nbsp;8859-1, plus adaptée aux flux logistiques. Une
+      palette Europe mesure 120&nbsp;×&nbsp;80&nbsp;cm et supporte 3 tonnes en charge dynamique. Le
+      stock de sécurité se calcule sans tenir compte du délai fournisseur, seule la consommation
+      compte ; il correspond au délai fournisseur multiplié par la consommation moyenne
+      hebdomadaire. Enfin, les équipements de protection individuelle ne sont pas exigés en zone de
+      stockage, la circulaire de 2020 les réservant aux zones de production.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Corrigé formateur — texte 2 : sept erreurs plantées</div>
+    <ol>
+      <li>
+        <strong>« 80&nbsp;% de la valeur dans 5&nbsp;% des références »</strong> — chiffres
+        déformés : la répartition usuellement citée est tout autre. Un principe connu, mal chiffré,
+        se repère mal — d'où sa dangerosité.
+      </li>
+      <li>
+        <strong>« article L. 123-45 du Code de commerce »</strong> — référence inventée, de forme
+        parfaitement crédible. Une référence citée n'est pas une référence vérifiée.
+      </li>
+      <li>
+        <strong>« inventaire physique chaque trimestre »</strong> — périodicité inventée présentée
+        comme une obligation ; la fréquence dépend de l'organisation, pas d'un texte unique.
+      </li>
+      <li>
+        <strong>« taux de rotation optimal de 12,4 pour toutes les activités »</strong> — une valeur
+        unique valable partout n'existe pas : la précision décimale sert uniquement à faire vrai.
+      </li>
+      <li>
+        <strong>« l'EAN-13 remplacé par la norme ISO 8859-1 »</strong> — référence détournée :
+        l'ISO&nbsp;8859-1 est un jeu de caractères, elle n'a rien à voir avec la logistique. Le nom
+        est réel, l'emploi est faux — le piège le plus retors du texte.
+      </li>
+      <li>
+        <strong>« 3 tonnes en charge dynamique »</strong> — capacité très largement surévaluée. Une
+        erreur de ce type, appliquée en atelier, devient une erreur de sécurité.
+      </li>
+      <li>
+        <strong>Contradiction interne + affirmation dangereuse</strong> : « le stock de sécurité se
+        calcule sans tenir compte du délai fournisseur » puis « il correspond au délai fournisseur
+        multiplié par la consommation » — deux phrases qui s'annulent ; et « les EPI ne sont pas
+        exigés en zone de stockage, la circulaire de 2020 » — texte inventé et consigne
+        potentiellement dangereuse.
+      </li>
+    </ol>
+    <p class="petit">
+      À souligner : deux erreurs de ce texte, diffusées telles quelles, toucheraient à la SÉCURITÉ.
+      C'est le meilleur argument de la matinée.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A3">
+  <div class="piece-badge">Pièce A3.3 — texte stagiaire</div>
+  <h2>Chasse à l'erreur — texte 3 : métiers du commerce, de l'accueil et de la relation client</h2>
+
+  <div class="texte-exercice">
+    <p>
+      La prospection commerciale obéit aujourd'hui à des repères bien établis. Il faut en moyenne
+      sept contacts pour conclure une vente, selon une étude de l'INSEE publiée en 2022. Le taux
+      d'ouverture moyen d'un e-mail de prospection est de 47&nbsp;% en France, et de 12&nbsp;% pour
+      les relances. Depuis le 25 mai 2024, la prospection par e-mail vers un professionnel exige un
+      consentement préalable écrit et daté. La règle dite des « 3&nbsp;C » — Contacter, Convaincre,
+      Conclure — est enseignée par les chambres de commerce depuis 1987 et reste la référence du
+      métier. Un commercial sédentaire doit passer au minimum 80 appels par jour, seuil fixé par la
+      convention collective du commerce de gros. Il ne faut jamais annoncer le prix avant le
+      troisième rendez-vous ; le prix doit d'ailleurs figurer dès le premier échange, sous peine de
+      nullité du devis. Enfin, un devis signé électroniquement n'a pas la même valeur juridique
+      qu'un devis signé à la main.
+    </p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Corrigé formateur — texte 3 : sept erreurs plantées</div>
+    <ol>
+      <li>
+        <strong>« sept contacts, selon une étude de l'INSEE de 2022 »</strong> — chiffre inventé,
+        adossé à une source prestigieuse qui ne publie pas ce genre d'étude. La caution fait avaler
+        le chiffre.
+      </li>
+      <li>
+        <strong>« 47&nbsp;% d'ouverture, 12&nbsp;% pour les relances »</strong> — double précision
+        inventée : le chiffre précis est le meilleur déguisement de l'invention.
+      </li>
+      <li>
+        <strong>« depuis le 25 mai 2024, consentement préalable écrit »</strong> — règle et date
+        fabriquées à partir d'un vrai souvenir réglementaire. Une date qui « sonne connu » n'est pas
+        une date vérifiée.
+      </li>
+      <li>
+        <strong>« la règle des 3 C… depuis 1987 »</strong> — méthode et généalogie inventées, avec
+        une fausse institution de rattachement.
+      </li>
+      <li>
+        <strong>« 80 appels par jour, seuil fixé par la convention collective »</strong> — une
+        convention collective ne fixe pas de cadence d'appels : obligation inventée.
+      </li>
+      <li>
+        <strong>Contradiction interne</strong> : « ne jamais annoncer le prix avant le troisième
+        rendez-vous » puis « le prix doit figurer dès le premier échange, sous peine de nullité ».
+        Deux phrases voisines, incompatibles — et la seconde invente en plus une sanction.
+      </li>
+      <li>
+        <strong>« un devis signé électroniquement n'a pas la même valeur »</strong> — affirmation
+        juridique péremptoire et fausse. C'est exactement ce qu'on ne laisse jamais passer sans
+        vérification.
+      </li>
+    </ol>
+    <p class="petit">
+      Débriefing commun aux trois textes : compter les erreurs à main levée, écrire les décomptes au
+      tableau, puis faire nommer les quatre familles — chiffres inventés, références inventées,
+      obligations inventées, contradictions internes. Ce sont celles qu'on relira toujours.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A4" data-titre="Trame AXION vierge, datée" data-bloc="M2 et M3, pratique" data-tirage="4 par stagiaire + 10">
+  <div class="piece-badge">Pièce A4</div>
+  <h2>Trame AXION — une ligne par levier</h2>
+  <p class="piece-usage">
+    Se remplit au stylo, avant de toucher le clavier. Il n'y a pas de demande ratée, il y a des
+    demandes incomplètes. Si l'outil est indisponible : remplissez quand même — c'est la structure
+    qui s'apprend, pas le clic — et lancez la demande dès le retour au poste.
+  </p>
+
+  <p>
+    <strong>Ma tâche :</strong> ____________________________________________________________
+  </p>
+  <p><strong>Date :</strong> ____ / ____ / 20____</p>
+
+  <div class="encadre">
+    <p><strong>Acteur</strong> — à qui l'outil doit ressembler pour bien répondre :</p>
+    <div class="lignes"></div>
+    <p><strong>conteXte</strong> — ce qu'il ignore de ma situation et doit savoir :</p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p><strong>Intention</strong> — ce que le texte doit produire chez le lecteur :</p>
+    <div class="lignes"></div>
+    <p><strong>Output</strong> — format, longueur, ton, par quoi ça se termine :</p>
+    <div class="lignes"></div>
+    <p><strong>Normes</strong> — ce qui est interdit, ce qu'il ne doit pas inventer :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mes deux relances — on relance, on ne recommence pas</div>
+    <p>Relance n° ____ (voir le mémo des quatre relances). Ce qu'elle a changé :</p>
+    <div class="lignes"></div>
+    <p>Relance n° ____. Ce qu'elle a changé :</p>
+    <div class="lignes"></div>
+    <p class="petit">
+      Si une relance dégrade le résultat : « reviens à ta version précédente », puis une autre
+      relance. On ne repart jamais de zéro.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">La version que je conserve</div>
+    <p><span class="coche"></span> Testée · <span class="coche"></span> Relançable telle quelle lundi</p>
+    <p>En une ligne, ce qui l'a débloquée :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    Le texte obtenu est un <strong>projet</strong> : relu, corrigé et signé par vous avant tout
+    envoi. Rien de nominatif ni de confidentiel n'entre dans l'outil — reformulez la situation sans
+    nom, ou utilisez des marqueurs &lt;NOM&gt;, &lt;MONTANT&gt;, &lt;DATE&gt;. Toute question
+    juridique va au conseil de votre entreprise :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A5" data-titre="Mémo des cinq leviers AXION (à emporter)" data-bloc="M2, démonstration et synthèse" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A5</div>
+  <h2>Mémo — les cinq leviers AXION</h2>
+  <p class="piece-usage">
+    À emporter, à garder sous les yeux la première semaine. Elle se lit quand un résultat déçoit : le
+    levier manquant saute aux yeux.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 18%">Levier</th>
+        <th>La question à se poser</th>
+        <th>Ce qui arrive quand il manque</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Acteur</strong></td>
+        <td>À qui l'outil doit-il ressembler&nbsp;? (métier, position, à qui il s'adresse)</td>
+        <td>Un ton générique, ni le vôtre ni celui qu'attend le lecteur.</td>
+      </tr>
+      <tr>
+        <td><strong>conteXte</strong></td>
+        <td>Qu'ignore-t-il de ma situation&nbsp;? (taille, faits, historique, ce qui a déjà eu lieu)</td>
+        <td>
+          Du creux : un texte qui pourrait venir de n'importe quelle entreprise.
+          <strong>C'est le levier le plus souvent manquant</strong> — le contrôle croisé du module 2
+          le montre à chaque session.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Intention</strong></td>
+        <td>Que doit produire le texte chez celui qui le lit&nbsp;?</td>
+        <td>Un texte correct qui ne déclenche rien.</td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>Quel format, quelle longueur, quel ton, et par quoi ça se termine&nbsp;?</td>
+        <td>Trop long, mal calibré, à retravailler entièrement avant de pouvoir l'envoyer.</td>
+      </tr>
+      <tr>
+        <td><strong>Normes</strong></td>
+        <td>Qu'est-ce qui est interdit&nbsp;? Qu'est-ce qu'il ne doit surtout pas inventer&nbsp;?</td>
+        <td>
+          <strong>Le levier que les débutants oublient</strong> : sans lui, l'outil complète — de
+          façon plausible.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le critère qui dit qu'une demande est finie</div>
+    <p>
+      <strong>Une bonne demande marche sans vous.</strong> Si votre voisin la relance telle qu'elle
+      est écrite et n'obtient rien d'utilisable, il manque un levier — pas de la bonne volonté.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les trois réflexes de la journée</div>
+    <ul>
+      <li><strong>Relancer, pas recommencer</strong> — une précision ajoutée, jamais une page blanche.</li>
+      <li>
+        <strong>Relire avant de faire confiance</strong> — chiffres, dates, noms propres, références :
+        c'est là qu'elle invente.
+      </li>
+      <li>
+        <strong>Rien de nominatif ni de confidentiel</strong> n'entre dans l'outil — retirer le nom ne
+        suffit pas, et une photo est une pièce jointe.
+      </li>
+    </ul>
+  </div>
+  <p class="petit">La phrase de la journée : <em>l'IA prépare, l'humain décide et signe.</em></p>
+</section>
+
+<section class="piece" data-piece="A6" data-titre="Les quatre relances qui débloquent (fiche à emporter)" data-bloc="M2, démonstration et pratique" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A6</div>
+  <h2>Les quatre relances qui débloquent</h2>
+  <p class="piece-usage">
+    La devise du module 2 : <strong>on relance, on ne recommence pas.</strong> Le formateur n'en
+    montre qu'une en direct ; les quatre sont ici, à recopier mot pour mot. Chaque demande conservée
+    porte le numéro de la relance qui l'a débloquée.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th style="width: 20%">Le geste</th>
+        <th style="width: 40%">La relance, à recopier telle quelle</th>
+        <th>Quand elle sert, et ce qu'elle corrige</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Préciser la contrainte</strong></td>
+        <td>
+          « Reprends en tenant compte de ceci : le client a déjà subi un report le mois dernier. »
+          <em>(remplacez par votre contrainte réelle)</em>
+        </td>
+        <td>
+          Quand la sortie est juste mais à côté de votre situation. Elle répare un
+          <strong>conteXte</strong> incomplet — le levier le plus souvent oublié.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Donner un exemple</strong></td>
+        <td>
+          « Voici un e-mail dont j'aime le ton : [collez-le]. Reprends dans cet esprit. »
+        </td>
+        <td>
+          Quand le ton ne va pas et que vous ne savez pas le décrire. Montrer coûte moins cher
+          qu'expliquer. <strong>L'exemple collé ne doit contenir aucun nom réel.</strong>
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Imposer le format</strong></td>
+        <td>
+          « Reprends exactement le même contenu en dix lignes maximum, une idée par phrase. »
+        </td>
+        <td>
+          Quand le fond est bon mais le texte trop long ou mal structuré. Elle répare
+          l'<strong>Output</strong> sans toucher au contenu.
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>Faire critiquer</strong></td>
+        <td>
+          « Relis ta propre réponse comme un lecteur pressé : qu'est-ce qui manque ou sonne faux&nbsp;?
+          Corrige. »
+        </td>
+        <td>
+          Quand vous êtes content du résultat — c'est justement là qu'elle sert. Elle trouve toujours
+          quelque chose, et c'est la relance à essayer quand les trois autres ne s'appliquent pas.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">La cinquième phrase, celle qui rattrape</div>
+    <p>
+      Une relance a donné un résultat pire qu'avant&nbsp;? Cela arrive, et le geste existe :
+      <strong>« reviens à ta version précédente »</strong>, puis choisissez une autre relance. On ne
+      repart jamais de zéro.
+    </p>
+  </div>
+
+  <p class="petit">
+    À noter dans votre protocole : au bout de trois relances sans progrès, ce n'est plus la
+    formulation qui bloque — c'est la tâche qui ne se prête pas à l'IA. Barrez-la, c'est une
+    information utile sur votre poste.
+  </p>
+</section>
+
+<section class="piece" data-piece="A7" data-titre="Atelier de tri des tâches + les douze tâches par famille de poste" data-bloc="M2, pratique" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A7</div>
+  <h2>Mes trois tâches de la semaine — l'atelier de tri</h2>
+  <p class="piece-usage">
+    Premier temps de la pratique du module 2, et il n'est pas du remplissage : c'est là qu'on
+    apprend à reconnaître ce qui se prête à l'IA et ce qui ne s'y prête pas. Le formateur passe
+    pendant le tri et fait justifier les barrages — « pourquoi celle-là ne part pas&nbsp;? ».
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th>Une tâche d'écriture ou de reformulation de ma semaine</th>
+        <th style="width: 15%">Ferait sortir une donnée interdite&nbsp;?</th>
+        <th style="width: 15%">Engage une décision&nbsp;?</th>
+        <th style="width: 12%">Retenue</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td>☐</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td>☐</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td>☐</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="petit">
+    Une seule case « oui » suffit à barrer la tâche. Les tâches barrées ne sont pas perdues : elles
+    remplissent la ligne « ce que je ne ferai pas » de mon protocole.
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">Je ne vois aucune tâche d'écriture dans mon poste&nbsp;? — les douze par famille</div>
+    <p class="petit">
+      Reformuler, résumer, répondre, expliquer, préparer : tout cela en est. Prenez la ligne la plus
+      proche de votre quotidien.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Administratif et gestion</th>
+          <th>Technique, atelier, logistique</th>
+          <th>Commerce, accueil, relation client</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1. Reformuler une procédure interne en langage simple</td>
+          <td>1. Mettre au propre un compte rendu d'intervention</td>
+          <td>1. Répondre à une demande de renseignement courante</td>
+        </tr>
+        <tr>
+          <td>2. Rédiger une relance de pièce manquante</td>
+          <td>2. Rédiger une consigne de poste en cinq points</td>
+          <td>2. Reformuler une réponse à un avis négatif public</td>
+        </tr>
+        <tr>
+          <td>3. Résumer un compte rendu de réunion</td>
+          <td>3. Résumer une notice technique pour l'équipe</td>
+          <td>3. Préparer un argumentaire de rendez-vous</td>
+        </tr>
+        <tr>
+          <td>4. Préparer l'ordre du jour d'un point d'équipe</td>
+          <td>4. Transformer des notes de chantier en note propre</td>
+          <td>4. Rédiger une confirmation de rendez-vous</td>
+        </tr>
+        <tr>
+          <td>5. Rédiger une note d'information interne</td>
+          <td>5. Rédiger une demande de devis à un fournisseur</td>
+          <td>5. Reformuler un e-mail difficile avant envoi</td>
+        </tr>
+        <tr>
+          <td>6. Réécrire un e-mail trop long en dix lignes</td>
+          <td>6. Expliquer un mode opératoire à un nouvel arrivant</td>
+          <td>6. Rédiger une annonce de report ou de retard</td>
+        </tr>
+        <tr>
+          <td>7. Rédiger un modèle de réponse type</td>
+          <td>7. Reformuler un signalement en termes factuels</td>
+          <td>7. Résumer un échange client en cinq lignes</td>
+        </tr>
+        <tr>
+          <td>8. Préparer une trame de courrier récurrent</td>
+          <td>8. Préparer une liste de contrôle avant intervention</td>
+          <td>8. Préparer les questions d'un entretien découverte</td>
+        </tr>
+        <tr>
+          <td>9. Résumer un document long en points clés</td>
+          <td>9. Rédiger un compte rendu d'incident sans jargon</td>
+          <td>9. Rédiger une réponse à une demande de remise</td>
+        </tr>
+        <tr>
+          <td>10. Traduire un jargon métier pour un non-initié</td>
+          <td>10. Rédiger une note de passation de poste</td>
+          <td>10. Reformuler une fiche produit pour un client</td>
+        </tr>
+        <tr>
+          <td>11. Rédiger un rappel d'échéance courtois</td>
+          <td>11. Structurer un plan de rangement d'atelier</td>
+          <td>11. Préparer un message de suivi après visite</td>
+        </tr>
+        <tr>
+          <td>12. Préparer un tableau de suivi à partir d'un texte</td>
+          <td>12. Résumer un retour d'expérience d'équipe</td>
+          <td>12. Rédiger un message de remerciement personnalisé</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Contrainte bonus — pour les binômes qui ont fini en avance</div>
+    <p>
+      Rejouez votre demande pour le <strong>destinataire opposé</strong> : un client mécontent au
+      lieu d'un client fidèle, un collègue au lieu d'un responsable, un débutant au lieu d'un
+      expert. Notez ce qui change dans la sortie, et lequel des cinq leviers l'a fait changer.
+    </p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="banniere">
+    On travaille sur des tâches réelles, <strong>reformulées sans aucun nom ni donnée qui ne sort
+    pas</strong> — c'est la liste du module 1, appliquée. Toute production reste un
+    <strong>projet</strong> à relire, corriger et signer avant envoi, et toute question juridique va
+    au conseil de votre entreprise :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A8" data-titre="Grille des cinq leviers — contrôle croisé en binôme" data-bloc="M2, vérification" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A8</div>
+  <h2>Contrôle croisé — la demande du voisin, aux cinq leviers</h2>
+  <p class="piece-usage">
+    S'applique à la demande <strong>du voisin</strong>, jamais à la sienne. Deux temps : le voisin
+    rejoue d'abord la demande TELLE QU'ELLE EST ÉCRITE, sans rien demander à son auteur ; puis il
+    coche cette grille. Le critère, énoncé avant l'échange :
+    <strong>une bonne demande marche sans vous.</strong>
+  </p>
+
+  <p>
+    <strong>Demande relue — la tâche :</strong> ______________________________ ·
+    <strong>Relue par :</strong> ______________
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">Temps 1 — le rejeu</div>
+    <p>
+      <span class="coche"></span> J'ai obtenu un résultat <strong>comparable</strong>, utilisable
+      lui aussi.<br />
+      <span class="coche"></span> J'ai obtenu un résultat <strong>différent mais utilisable</strong>
+      — la demande est bonne.<br />
+      <span class="coche"></span> J'ai obtenu un résultat <strong>inutilisable</strong> — il manque
+      un levier, cherchons lequel.<br />
+      <span class="coche"></span> Je n'ai pas su exécuter la demande sans poser de question — la
+      demande n'est pas finie.
+    </p>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 16%">Levier</th>
+        <th style="width: 12%">Présent&nbsp;?</th>
+        <th style="width: 12%">Clair&nbsp;?</th>
+        <th>S'il manque ou reste flou : la ligne qu'il faudrait ajouter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Acteur</strong></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>conteXte</strong></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Intention</strong></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Output</strong></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>Normes</strong></td>
+        <td>☐ oui ☐ non</td>
+        <td>☐ oui ☐ non</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Obligatoire — le levier le plus faible, nommé à l'oral</div>
+    <p class="petit">
+      Même excellente, une demande a un levier plus faible que les autres. Le nommer empêche la
+      complaisance de tout valider.
+    </p>
+    <p>Le levier le plus faible de cette demande : ______________________ · pourquoi :</p>
+    <div class="lignes"></div>
+  </div>
+
+  <p class="petit">
+    Repère du corrigé oral : le levier manquant est presque toujours le <strong>conteXte</strong> —
+    l'outil ne sait rien de votre situation tant que vous ne la lui écrivez pas.
+  </p>
+</section>
+
+<section class="piece" data-piece="A9" data-titre="Rapport interne fictif MENUISERIE VALLOIRE — document de secours du module 3" data-bloc="M3, démonstration et pratique" data-tirage="1 par table + 5 exemplaires">
+  <div class="piece-badge">Pièce A9</div>
+  <h2>Rapport interne fictif — le document de la démonstration et du secours</h2>
+  <p class="piece-usage">
+    Le rapport de dix-neuf feuillets utilisé par la démonstration du module 3, ici en version
+    condensée mais complète pour l'exercice : chaque paragraphe porte le feuillet d'origine, ce qui
+    permet de vérifier une synthèse chiffre par chiffre. À remettre au stagiaire qui n'a aucun
+    document autorisé sous la main — ou qui doute. Tout est fictif : entreprise, chiffres, faits.
+  </p>
+  <p class="petit">
+    Le formateur utilise CE rapport, jamais un document improvisé : les sorties sont connues et les
+    échecs sont rejouables.
+  </p>
+
+  <div class="texte-exercice">
+    <p style="text-align: center">
+      <strong>MENUISERIE VALLOIRE — VOIRON<br />Rapport interne d'activité de l'atelier — exercice
+      écoulé<br /><span class="petit">Document interne fictif · dix-neuf feuillets · version
+      condensée pour l'exercice</span></strong>
+    </p>
+
+    <p>
+      <strong>1. Objet et périmètre (f.&nbsp;1).</strong> Le présent rapport rend compte de
+      l'activité de l'atelier de Voiron sur l'exercice écoulé. Il ne traite ni de l'activité
+      commerciale, ni de la pose sur chantier, qui font l'objet de documents distincts. Il est
+      destiné à la direction et n'a pas vocation à être diffusé.
+    </p>
+    <p>
+      <strong>2. Activité de l'atelier (f.&nbsp;3).</strong> 1&nbsp;412 commandes ont été traitées
+      sur l'exercice, contre 1&nbsp;305 sur l'exercice précédent. Les fenêtres bois-aluminium
+      représentent 38&nbsp;% des commandes, les portes intérieures 27&nbsp;%, les agencements sur
+      mesure 35&nbsp;%. Le chiffre d'affaires de l'atelier n'est pas repris dans ce rapport&nbsp;: il
+      figure dans le document comptable annuel.
+    </p>
+    <p>
+      <strong>3. Délais et respect des engagements (f.&nbsp;6).</strong> Le délai moyen entre la
+      commande et la mise à disposition s'établit à 34 jours, contre 29 jours sur l'exercice
+      précédent. 22&nbsp;% des commandes ont dépassé le délai annoncé au client. La cause principale
+      relevée est l'attente de quincaillerie (voir le point&nbsp;5).
+    </p>
+    <p>
+      <strong>4. Qualité et retouches (f.&nbsp;9).</strong> 61 retouches ont été effectuées après
+      livraison, soit 4,3&nbsp;% des commandes. Les deux tiers portent sur des réglages de ferrage,
+      le reste sur des finitions. Aucune donnée n'est disponible sur la satisfaction des
+      clients&nbsp;: l'enquête prévue sur l'exercice n'a pas été menée, faute de temps.
+    </p>
+    <p>
+      <strong>5. Approvisionnements (f.&nbsp;11).</strong> Deux fournisseurs de quincaillerie sur
+      trois ont annoncé un allongement de leurs délais au second semestre. Le stock tampon de
+      quincaillerie a été porté de deux à quatre semaines en septembre. Aucun changement de
+      fournisseur n'a été engagé sur l'exercice.
+    </p>
+    <p>
+      <strong>6. Effectifs et compétences (f.&nbsp;13).</strong> L'atelier compte onze salariés, dont
+      deux apprentis. Deux départs en retraite sont attendus dans deux ans. Trois salariés sont
+      formés au réglage de la plaqueuse de chants. Le rapport ne comporte aucune information sur les
+      rémunérations.
+    </p>
+    <p>
+      <strong>7. Sécurité (f.&nbsp;15).</strong> Trois accidents sans arrêt ont été déclarés, aucun
+      accident avec arrêt. Le document unique a été mis à jour en avril.
+    </p>
+    <p>
+      <strong>8. Investissements étudiés (f.&nbsp;16).</strong> Trois pistes ont été étudiées&nbsp;:
+      le remplacement de la plaqueuse de chants (coût estimé 48&nbsp;000&nbsp;€), l'extension du hall
+      de stockage (120&nbsp;000&nbsp;€) et l'acquisition d'un logiciel de suivi d'atelier
+      (9&nbsp;500&nbsp;€ la première année). Le rapport présente ces estimations mais
+      <strong>ne les classe pas et ne recommande aucun arbitrage</strong>&nbsp;: la décision relève
+      de la direction.
+    </p>
+    <p>
+      <strong>9. Points restés ouverts (f.&nbsp;18).</strong> Le rapport ne se prononce pas sur
+      d'éventuels recrutements, ne comporte aucune projection d'activité pour l'exercice à venir et
+      ne traite pas des délais de pose sur chantier.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Trois questions précises à poser au document (atelier du module 3)</div>
+    <ol>
+      <li>De combien le délai moyen a-t-il augmenté, et sur quel feuillet cette information figure-t-elle&nbsp;?</li>
+      <li>Que dit le document de la satisfaction des clients&nbsp;?</li>
+      <li>Quel investissement le document recommande-t-il&nbsp;?</li>
+    </ol>
+    <p class="petit">
+      Réponses attendues&nbsp;: cinq jours (f.&nbsp;6) · rien, l'enquête n'a pas été menée (f.&nbsp;9)
+      · aucun, le document ne recommande rien (f.&nbsp;16). Les questions 2 et 3 sont celles qui
+      provoquent l'invention quand elle ne vient pas seule.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A10" data-titre="Les deux synthèses du rapport (vague et AXION) + corrigé des trois affirmations introuvables" data-bloc="M3, démonstration et vérification (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+  <div class="piece-badge">Pièce A10 — feuille stagiaire</div>
+  <h2>Deux synthèses du même rapport — laquelle enverriez-vous&nbsp;?</h2>
+  <p class="piece-usage">
+    Plan B de la démonstration du module 3, et support de la vérification quand les synthèses des
+    stagiaires n'ont pas pu être imprimées. Consigne : lisez les deux synthèses, puis cherchez
+    <strong>chaque affirmation</strong> dans le rapport (pièce A9). Le couple contient
+    <strong>trois affirmations introuvables dans la source</strong> — à vous de les trouver.
+  </p>
+
+  <div class="texte-exercice">
+    <p><strong>SYNTHÈSE 1 — obtenue avec « résume ce document »</strong></p>
+    <p>
+      Ce rapport dresse le bilan annuel de l'atelier de Menuiserie Valloire. L'activité est en
+      progression, avec un nombre de commandes en hausse et un chiffre d'affaires de l'atelier en
+      progression de 8&nbsp;%. Les délais se sont allongés en raison de difficultés
+      d'approvisionnement chez les fournisseurs de quincaillerie, mais la satisfaction des clients
+      reste bonne. La qualité demeure maîtrisée, avec un nombre limité de retouches, principalement
+      liées au ferrage. L'effectif est stable et la situation en matière de sécurité est
+      satisfaisante. Plusieurs investissements sont envisagés. Il est recommandé de prioriser
+      l'acquisition du logiciel de suivi d'atelier, dont le retour sur investissement est le plus
+      rapide.
+    </p>
+  </div>
+
+  <div class="texte-exercice">
+    <p><strong>SYNTHÈSE 2 — obtenue avec la demande AXION du support</strong></p>
+    <p>
+      <strong>Trois points clés.</strong> 1. L'activité de l'atelier progresse en volume : 1&nbsp;412
+      commandes contre 1&nbsp;305 l'exercice précédent. 2. Les délais se dégradent : le délai moyen
+      passe de 29 à 34 jours, et 22&nbsp;% des commandes ont dépassé le délai annoncé, la
+      quincaillerie étant la cause principale relevée. 3. La qualité reste stable, avec 61 retouches
+      après livraison, dont les deux tiers sur des réglages de ferrage.
+    </p>
+    <p>
+      <strong>Deux chiffres à retenir.</strong> Délai moyen : 34 jours (f.&nbsp;6). Taux de retouche :
+      4,3&nbsp;% des commandes (f.&nbsp;9).
+    </p>
+    <p>
+      <strong>Ce que le document ne dit pas.</strong> Il ne donne aucun chiffre d'affaires de
+      l'atelier (f.&nbsp;3), aucune donnée de satisfaction client — l'enquête n'a pas été menée
+      (f.&nbsp;9) —, ne recommande aucun arbitrage entre les trois investissements étudiés
+      (f.&nbsp;16), et ne se prononce ni sur les recrutements ni sur l'activité à venir (f.&nbsp;18).
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Ma recherche — les trois affirmations introuvables</div>
+    <p>1. ____________________________________________________________</p>
+    <p>2. ____________________________________________________________</p>
+    <p>3. ____________________________________________________________</p>
+    <p class="petit">
+      Pour chacune : est-elle simplement absente du document, ou le document dit-il explicitement le
+      contraire&nbsp;?
+    </p>
+    <div class="lignes"></div>
+  </div>
+</section>
+
+<section class="piece" data-piece="A10">
+  <div class="piece-badge">Pièce A10 — corrigé formateur</div>
+  <h2>Les trois affirmations introuvables — corrigé, avec la règle qui tranche</h2>
+  <p class="piece-usage">
+    À donner APRÈS la recherche. Demander d'abord à main levée : « qui en a trouvé au moins
+    une&nbsp;? » et écrire le nombre de mains au tableau — c'est le chiffre qui fait comprendre
+    qu'une synthèse propre peut mentir sans en avoir l'air.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 32%">L'affirmation (synthèse 1)</th>
+        <th style="width: 26%">Ce que dit réellement la source</th>
+        <th>La règle qui tranche</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <strong>« un chiffre d'affaires de l'atelier en progression de 8&nbsp;% »</strong>
+        </td>
+        <td>
+          Le rapport écrit noir sur blanc (f.&nbsp;3) que le chiffre d'affaires
+          <em>n'est pas repris</em> dans le document.
+        </td>
+        <td>
+          L'invention se niche dans le chiffre précis. Ici l'outil a comblé un manque annoncé par la
+          source — c'est le cas le plus fréquent : <strong>là où le document dit « je ne le dis pas »,
+          l'outil complète</strong>.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>« la satisfaction des clients reste bonne »</strong></td>
+        <td>
+          Le rapport indique (f.&nbsp;9) qu'aucune donnée n'est disponible, l'enquête n'ayant pas été
+          menée.
+        </td>
+        <td>
+          Pas seulement absente : <strong>contredite</strong> par la source. Une affirmation
+          rassurante est celle qu'on relit le moins — et celle qui engage le plus celui qui la
+          transmet.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>« il est recommandé de prioriser le logiciel, dont le retour sur investissement
+          est le plus rapide »</strong>
+        </td>
+        <td>
+          Le rapport présente trois estimations (f.&nbsp;16) mais ne les classe pas et ne recommande
+          aucun arbitrage. La notion de retour sur investissement n'y figure nulle part.
+        </td>
+        <td>
+          <strong>La recommandation inventée</strong> : la synthèse ne se contente pas d'omettre,
+          elle décide à la place de la direction. C'est l'erreur la plus coûteuse d'une synthèse — et
+          celle que la ligne « n'ajoute aucune recommandation » du levier Normes évite.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="corrige">
+    <div class="encadre-titre">Les objections à traiter, et la réponse</div>
+    <p>
+      <strong>« L'affirmation est peut-être vraie&nbsp;! »</strong> — Peut-être. Mais elle est
+      introuvable dans la source, et c'est cela qui compte : celui qui reçoit la synthèse croira
+      qu'elle vient du document. Soit vous la sourcez ailleurs, soit vous la retirez.
+    </p>
+    <p>
+      <strong>« La synthèse 1 n'a pourtant l'air de rien de faux. »</strong> — C'est exactement la
+      démonstration : elle est fluide, plate, rassurante. Personne ne s'en apercevrait sans ouvrir la
+      source. Le contrôle prend cinq minutes, pas une heure.
+    </p>
+    <p>
+      <strong>Si la synthèse vague ressort trop bonne en direct</strong> — poser la question piège :
+      « Que recommande le document sur le budget&nbsp;? ». Le rapport ne recommande rien, et l'outil
+      complète presque toujours. L'invention se provoque quand elle ne vient pas seule.
+    </p>
+  </div>
+
+  <p class="petit">
+    La règle qui part dans le protocole, dite telle quelle : une synthèse ne se transmet qu'après ce
+    contrôle. Et la synthèse 2 montre la parade structurelle — exiger la page de chaque chiffre et la
+    ligne « ce que le document ne dit pas » rend l'invention beaucoup plus difficile.
+  </p>
+</section>
+
+<section class="piece" data-piece="A11" data-titre="Grille de vérification d'une synthèse contre sa source (avec décompte)" data-bloc="M3, vérification" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A11</div>
+  <h2>Vérifier une synthèse contre sa source — affirmation par affirmation</h2>
+  <p class="piece-usage">
+    S'applique à la synthèse <strong>du voisin</strong>, jamais à la sienne : on ne relit pas bien ce
+    qu'on vient de produire. Une case à remplir force la recherche qu'une consigne orale n'obtient
+    pas — chaque affirmation reçoit un feuillet, ou la mention « introuvable ».
+  </p>
+
+  <p>
+    <strong>Synthèse relue :</strong> ______________________________ ·
+    <strong>Document source :</strong> ______________________________ ·
+    <strong>Relue par :</strong> ______________
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th>L'affirmation, recopiée en quelques mots</th>
+        <th style="width: 16%">Trouvée au feuillet…</th>
+        <th style="width: 16%">Introuvable</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>2</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>3</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>4</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>5</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>6</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>7</td><td></td><td></td><td>☐</td></tr>
+      <tr><td>8</td><td></td><td></td><td>☐</td></tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Mon décompte — à reporter sur le protocole</div>
+    <p>
+      Affirmations vérifiées : <strong>______</strong> · retrouvées dans la source :
+      <strong>______</strong> · <strong>introuvables : ______</strong>
+    </p>
+    <p class="petit">Parmi les introuvables, combien étaient simplement absentes, et combien étaient contredites par la source&nbsp;?</p>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le cas qui revient toujours</div>
+    <p>
+      « L'affirmation est vraie, je le sais, mais elle n'est pas dans le document. » Alors elle est
+      <strong>introuvable dans la source</strong> — et c'est cela qui compte : le destinataire
+      croira qu'elle vient du document. Soit on la source ailleurs, soit on la retire.
+    </p>
+  </div>
+
+  <div class="banniere">
+    Une synthèse est un <strong>projet</strong> : elle ne se transmet qu'après ce contrôle, relue,
+    corrigée et signée par vous. Si une affirmation touche à une question juridique ou contractuelle,
+    elle ne se tranche pas ici :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A12" data-titre="Mémo — les trois échecs silencieux du dépôt de fichier et leurs parades" data-bloc="M3, démonstration et pratique" data-tirage="1 par stagiaire + 3">
+  <div class="piece-badge">Pièce A12</div>
+  <h2>Les trois échecs silencieux du dépôt — les reconnaître, les réparer</h2>
+  <p class="piece-usage">
+    Ils sont dits « silencieux » parce que l'outil ne prévient pas : il répond quand même, avec ce
+    qu'il a reçu. Annoncés avant l'atelier, ils cessent d'être humiliants — et le stagiaire qui
+    diagnostique lui-même son échec vient de gagner son autonomie. Le formateur renvoie ici :
+    « c'est l'échec n°&nbsp;1, 2 ou 3&nbsp;? appliquez sa parade ».
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th style="width: 26%">L'échec</th>
+        <th style="width: 32%">Comment je le reconnais</th>
+        <th>La parade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>Le scan sans texte reconnu</strong> — la photo ou le PDF image</td>
+        <td>
+          La réponse décrit l'aspect du document au lieu de son contenu, reste très générale, ou
+          annonce qu'elle ne distingue pas le texte.
+        </td>
+        <td>
+          Recadrer de près, une page par photo, éclairage à plat. À défaut : retaper à la main les
+          quelques lignes réellement utiles. Un document qu'on ne peut pas faire lire, on le résume
+          soi-même.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>Le fichier trop lourd, tronqué sans prévenir</strong></td>
+        <td>
+          La synthèse s'arrête au milieu du document, ou ignore complètement les dernières sections —
+          sans aucun message d'erreur.
+        </td>
+        <td>
+          Demander : <strong>« quelle est la dernière section du document que tu as reçue&nbsp;? »</strong>
+          Si la réponse ne correspond pas à la fin de votre fichier, couper le document en deux et
+          déposer les moitiés l'une après l'autre.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>Le tableau qui se désaligne</strong></td>
+        <td>
+          Les valeurs sont attribuées à la mauvaise colonne ou à la mauvaise ligne. Les totaux ne
+          tombent plus juste.
+        </td>
+        <td>
+          Demander une lecture ligne par ligne en répétant l'intitulé de chaque colonne, puis
+          vérifier deux valeurs au hasard contre l'original. Un tableau se contrôle toujours par
+          échantillon.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Le geste qui précède tous les autres</div>
+    <p>
+      Avant de déposer quoi que ce soit, la question n'est pas « est-ce que l'outil sait le
+      lire&nbsp;? » mais <strong>« est-ce que ce document a le DROIT d'entrer&nbsp;? »</strong>. Si
+      la réponse n'est pas immédiate, prenez le rapport de secours (pièce A9) et notez la question
+      pour votre protocole.
+    </p>
+  </div>
+  <p class="petit">
+    Si un document part par erreur : arrêter, supprimer la conversation, repartir sur le document de
+    secours. L'erreur la plus fréquente en entreprise se rattrape en dix secondes quand on la voit
+    tout de suite.
+  </p>
+</section>
+
+<section class="piece" data-piece="A13" data-titre="Trame « note télégraphique → note propre » (plan B de la dictée)" data-bloc="M3, pratique (plan B)" data-tirage="2 par stagiaire">
+  <div class="piece-badge">Pièce A13</div>
+  <h2>De la note télégraphique à la note propre</h2>
+  <p class="piece-usage">
+    Plan B de la dictée — micro refusé, appareil verrouillé par la DSI, réseau tombé, ou simplement
+    gêne de parler devant les autres. Le canal d'entrée n'a jamais été le sujet : le geste de
+    transformation est identique. Sans réseau, la note propre s'écrit à la main dans le cadre du bas
+    et se rejoue au poste dès le retour.
+  </p>
+
+  <p>
+    <strong>Sujet :</strong> ______________________________ · <strong>Date :</strong> ____ / ____ /
+    20____
+  </p>
+
+  <div class="encadre">
+    <div class="encadre-titre">1. Ce que j'ai dicté, ou noté au télégraphique</div>
+    <p class="petit">
+      Sans phrases, sans souci de style : des mots-clés, des bribes, dans le désordre. Les « euh »,
+      les reprises et les blancs disparaîtront à l'étape suivante — c'est précisément ce que la
+      démonstration a montré. Aucun nom, aucune donnée qui ne sort pas.
+    </p>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">2. La demande de transformation, à recopier telle quelle</div>
+    <p class="petit">
+      Le levier Normes fait ici tout le travail : c'est lui qui empêche l'outil de combler les trous
+      de la dictée.
+    </p>
+    <p>
+      <em>Acteur</em> : tu es assistant chargé de mettre au propre des notes prises à la volée.<br />
+      <em>conteXte</em> : le texte ci-dessous est une prise de notes brute — hésitations, reprises,
+      phrases inachevées, abréviations.<br />
+      <em>Intention</em> : obtenir une note lisible que je pourrai relire et transmettre après
+      correction.<br />
+      <em>Output</em> : une note de quinze lignes maximum — un titre, trois à cinq points, puis une
+      ligne « à faire » indiquant qui fait quoi et pour quand.<br />
+      <em>Normes</em> : <strong>n'ajoute aucune information qui ne soit pas dans mes notes.</strong>
+      Si un point est incompréhensible, écris « [à préciser] » plutôt que de deviner. Ne réponds pas
+      à ma place et ne propose aucune décision.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">3. Ma note propre — projet</div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <div class="lignes"></div>
+    <p class="petit">
+      Contrôle avant de s'en servir : combien de « [à préciser] »&nbsp;? <strong>______</strong> ·
+      combien d'informations ajoutées que je n'avais pas dictées&nbsp;? <strong>______</strong> —
+      c'est là que se loge l'invention.
+    </p>
+  </div>
+
+  <div class="banniere">
+    La note propre est un <strong>projet</strong> : vous la relisez, vous la corrigez, vous la signez
+    avant de la transmettre. Rien de nominatif ni de confidentiel n'entre dans l'outil, y compris
+    dans une dictée. Toute question juridique va au conseil de votre entreprise :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A14" data-titre="Notes brutes d'une réunion d'atelier fictive — matière du second passage" data-bloc="M3, pratique" data-tirage="1 par stagiaire">
+  <div class="piece-badge">Pièce A14</div>
+  <h2>Réunion d'atelier — les notes prises à la volée</h2>
+  <p class="piece-usage">
+    Second passage de l'atelier de dictée : chacun transforme ces notes en compte rendu propre, avec
+    la demande de la pièce A13. Elles sont volontairement mal écrites, incomplètes et par endroits
+    incompréhensibles — c'est ce qui fait apparaître les « [à préciser] », donc l'endroit exact où
+    l'outil aurait inventé. Réunion, entreprise et faits sont fictifs.
+  </p>
+  <p class="petit">
+    À faire remarquer : ces notes ne portent <strong>aucun nom de personne</strong>, uniquement des
+    fonctions. C'est le geste du matin, appliqué à une prise de notes ordinaire.
+  </p>
+
+  <div class="texte-exercice">
+    <p><strong>réunion atelier — jeudi 9 h — 5 présents — menuiserie valloire</strong></p>
+    <p>
+      pt 1 délais — retard sur 4 commandes la sem dernière — cause quincaillerie encore — resp achats
+      dit fournisseur 2 relancé mardi, réponse attendue lundi — voir si on prévient les clients avant
+      ou après
+    </p>
+    <p>
+      pt 2 plaqueuse — bruit anormal depuis ~15 j, chef d'atelier veut une intervention avant fin de
+      mois — devis pas demandé — qui appelle ? pas tranché
+    </p>
+    <p>
+      pt 3 apprenti — a fini son module ferrage — à mettre sur les réglages en binôme la sem
+      prochaine — voir avec le tuteur, tuteur absent aujourd'hui
+    </p>
+    <p>
+      pt 4 zone de découpe — plus personne ne range le soir — proposition de tourner heu de
+      retrancher non de reprendre le point au prochain — pas de décision
+    </p>
+    <p>
+      divers — la grande commande, celle avec les six ouvrants — il manque une cote, à confirmer
+      avant lancement — atelier bloqué dessus sinon
+    </p>
+    <p>prochain point : jeudi prochain même heure</p>
+  </div>
+
+  <div class="corrige">
+    <div class="encadre-titre">Repère formateur — ce qu'une bonne note propre contient</div>
+    <ul>
+      <li>Un titre, la date, le nombre de présents — pas de noms, ils n'y sont pas.</li>
+      <li>
+        Quatre points plus les divers, chacun avec son état :
+        <strong>tranché / en attente / non tranché</strong>. C'est ce que les notes disent vraiment.
+      </li>
+      <li>
+        Une ligne « à faire » : relancer le fournisseur (réponse attendue lundi), demander le devis
+        d'intervention <em>[qui&nbsp;? à préciser]</em>, voir le tuteur pour l'apprenti, confirmer la
+        cote manquante avant lancement.
+      </li>
+      <li>
+        <strong>Au moins deux « [à préciser] »</strong> : qui appelle pour la plaqueuse, et ce qu'il
+        fallait comprendre au point 4. Une note propre qui n'en contient aucun a été
+        <strong>complétée par l'outil</strong> — c'est le débriefing de l'atelier.
+      </li>
+    </ul>
+    <p class="petit">
+      Le piège à faire nommer : « proposition de tourner heu de retrancher non de reprendre le point
+      au prochain » ne veut rien dire. L'outil, s'il n'a pas la consigne Normes, en fera une phrase
+      parfaitement lisible — et parfaitement inventée.
+    </p>
+  </div>
+</section>
+
+<section class="piece" data-piece="A15" data-titre="Grille de relecture en cinq points d'une production" data-bloc="M4, démonstration et vérification" data-tirage="2 par stagiaire">
+  <div class="piece-badge">Pièce A15</div>
+  <h2>Grille de relecture en cinq points — avant que ça sorte de mes mains</h2>
+  <p class="piece-usage">
+    La grille n'est pas plus intelligente que vous : elle est plus régulière, et c'est exactement ce
+    qu'on demande à une relecture. La relecture « à l'œil » prend trente secondes et valide le ton ;
+    celle-ci prend deux minutes et trouve le reste. Règle du contrôle croisé : le voisin vérifie que
+    la grille a été APPLIQUÉE point par point, pas que le texte est beau.
+  </p>
+
+  <p>
+    <strong>La production relue :</strong> ____________________________________________ ·
+    <strong>Destinataire réel :</strong> ______________________
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Le point</th>
+        <th style="width: 26%">Ce que je regarde</th>
+        <th style="width: 14%">Verdict</th>
+        <th>La ligne concernée, et ce que je corrige</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Exactitude</strong></td>
+        <td>Chiffres, noms, dates : chaque affirmation est-elle vérifiable&nbsp;?</td>
+        <td>☐ tenu ☐ à corriger</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>2. Ton</strong></td>
+        <td>Adapté au destinataire indiqué — pas au destinataire moyen&nbsp;?</td>
+        <td>☐ tenu ☐ à corriger</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>3. Format</strong></td>
+        <td>Le format demandé est-il respecté — longueur, structure, ce par quoi ça se termine&nbsp;?</td>
+        <td>☐ tenu ☐ à corriger</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>4. Source</strong></td>
+        <td>D'où vient chaque information engageante&nbsp;? Est-ce vérifiable par le destinataire&nbsp;?</td>
+        <td>☐ tenu ☐ à corriger</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong>5. Réutilisable tel quel</strong></td>
+        <td>Qu'est-ce qui doit être personnalisé ou vérifié avant l'envoi&nbsp;?</td>
+        <td>☐ tenu ☐ à corriger</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Contrôle du voisin</div>
+    <p>
+      <span class="coche"></span> Les cinq points ont été regardés et cochés ou commentés.<br />
+      <span class="coche"></span> Au moins un point est marqué « à corriger ».
+    </p>
+    <p class="petit">
+      Une grille qui ne trouve jamais rien n'a pas été appliquée. Si l'auteur ne trouve rien, échanger
+      les productions : l'œil externe trouve en deux minutes ce que l'auteur ne voit plus.
+    </p>
+  </div>
+
+  <div class="encadre">
+    <div class="encadre-titre">Avant l'envoi</div>
+    <p>
+      <span class="coche"></span> J'indique au destinataire que cet écrit a été préparé avec l'IA,
+      selon la règle inscrite dans mon protocole.<br />
+      <span class="coche"></span> Je signe — donc j'ai vérifié.
+    </p>
+  </div>
+
+  <div class="banniere">
+    Ce qui sort de l'outil est un <strong>projet</strong> : relu, corrigé, signé par vous avant tout
+    envoi. Celui qui envoie signe, donc celui qui envoie vérifie. Une question sur ce que votre
+    entreprise exige d'indiquer&nbsp;? Elle ne se tranche pas en salle :
+    <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>.
+  </div>
+</section>
+
+<section class="piece" data-piece="A16" data-titre="Production de secours à deux défauts calibrés + corrigé aux cinq points" data-bloc="M4, démonstration (plan B)" data-tirage="1 par table + exemplaire formateur">
+  <div class="piece-badge">Pièce A16 — texte stagiaire</div>
+  <h2>La production de secours — à relire à la grille</h2>
+  <p class="piece-usage">
+    Parade de la démonstration du module 4 quand aucun volontaire ne veut prêter sa production du
+    jour, et plan B complet si l'outil est indisponible. Déroulé identique : d'abord la relecture « à
+    l'œil », chronomètre en main, trente secondes ; puis la grille, point par point. Ce texte contient
+    exactement <strong>deux défauts</strong>.
+  </p>
+
+  <div class="texte-exercice">
+    <p><strong>Objet :</strong> Votre commande — nouvelle date de mise à disposition</p>
+    <p>Bonjour,</p>
+    <p>
+      Votre commande de six fenêtres bois-aluminium sera mise à disposition le vendredi 27, soit une
+      semaine après la date initialement annoncée. Ce décalage tient à un retard de livraison de
+      quincaillerie chez l'un de nos fournisseurs.
+    </p>
+    <p>
+      Nos délais restent parmi les plus courts du secteur : 94&nbsp;% de nos commandes sont livrées
+      dans les temps.
+    </p>
+    <p>
+      Nous vous confirmerons la veille par téléphone et restons à votre disposition pour convenir
+      d'un créneau de retrait qui vous convienne.
+    </p>
+    <p>Bien cordialement,<br />L'atelier — Menuiserie Valloire, Voiron</p>
+  </div>
+
+  <p class="petit">
+    Relecture « à l'œil » : le ton est juste, le message est court, la mauvaise nouvelle est annoncée
+    dès la première phrase. Trente secondes, rien à signaler — on l'enverrait. C'est bien le
+    problème.
+  </p>
+</section>
+
+<section class="piece" data-piece="A16">
+  <div class="piece-badge">Pièce A16 — corrigé formateur</div>
+  <h2>Les deux défauts calibrés, trouvés par la grille</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 22%">Le point</th>
+        <th style="width: 16%">Verdict</th>
+        <th>Ce que la grille trouve</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Exactitude</strong></td>
+        <td><strong>À corriger</strong></td>
+        <td>
+          <strong>Défaut n°&nbsp;1 — le chiffre invérifiable.</strong> « 94&nbsp;% de nos commandes
+          sont livrées dans les temps » : d'où sort ce chiffre&nbsp;? Personne dans l'atelier ne peut
+          le produire. Pire, le rapport interne fictif (pièce A9, f.&nbsp;6) indique 22&nbsp;% de
+          dépassements — le chiffre exact serait donc bien plus bas. L'outil ne l'a pas menti : il l'a
+          complété, parce qu'un e-mail rassurant se termine plausiblement par une statistique
+          flatteuse.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>2. Ton</strong></td>
+        <td>Tenu</td>
+        <td>Direct, courtois, sans excuses en cascade. Adapté à un client professionnel.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Format</strong></td>
+        <td>Tenu</td>
+        <td>Court, un objet clair, la mauvaise nouvelle en première phrase, une fin qui engage.</td>
+      </tr>
+      <tr>
+        <td><strong>4. Source</strong></td>
+        <td><strong>À corriger</strong></td>
+        <td>
+          Le même chiffre, vu sous l'autre angle : aucune information engageante ne doit sortir sans
+          source. Faire remarquer que
+          <strong>le point 1 et le point 4 attrapent souvent la même ligne</strong> — c'est normal, et
+          c'est ce qui rend la grille robuste.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>5. Réutilisable tel quel</strong></td>
+        <td><strong>À corriger</strong></td>
+        <td>
+          <strong>Défaut n°&nbsp;2 — « le vendredi 27 ».</strong> Un jour sans mois, une date que
+          personne n'a confrontée au planning de l'atelier. S'y ajoute l'absence de toute
+          personnalisation : ni interlocuteur, ni référence de commande. Le texte est bon, il n'est
+          pas prêt : c'est exactement ce que veut dire « réutilisable tel quel&nbsp;? ».
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="corrige">
+    <div class="encadre-titre">Ce qu'il faut faire dire à la salle</div>
+    <ul>
+      <li>
+        <strong>Le défaut le plus dangereux est celui qui fait plaisir.</strong> Les 94&nbsp;%
+        rassurent le client et flattent l'entreprise — c'est pour cela que personne ne les a relevés à
+        l'œil.
+      </li>
+      <li>
+        <strong>La grille n'a rien inventé</strong> : elle a simplement posé cinq questions dans le
+        même ordre, à chaque fois. Régulière, pas plus intelligente.
+      </li>
+      <li>
+        <strong>Deux minutes contre trente secondes</strong> — chronométrer devant la salle, l'écart
+        est l'argument de tout le module.
+      </li>
+      <li>
+        La chute, à dire telle quelle : <em>celui qui envoie signe, donc celui qui envoie vérifie.</em>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="piece" data-piece="A17" data-titre="Quiz d'évaluation des acquis (12 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+  <div class="piece-badge">Pièce A17 — feuille stagiaire</div>
+  <h2>Quiz — évaluation des acquis (12 questions)</h2>
+  <p class="piece-usage">
+    Individuel, sans document, douze questions sur ce qui a été fait dans la journée — pas des
+    pièges. Entourez la réponse. Le résultat individuel n'est pas transmis à votre employeur.
+  </p>
+  <p>
+    <strong>Nom :</strong> ______________________________ · <strong>Date :</strong> ____ / ____ /
+    20____
+  </p>
+
+  <ol>
+    <li>
+      Une IA générative produit un texte fluide et assuré. Cela prouve-t-il qu'il est exact&nbsp;?<br />
+      <strong>a.</strong> Oui, si le texte est bien écrit &nbsp; <strong>b.</strong> Non — elle
+      produit le texte le plus plausible, pas le plus vrai &nbsp; <strong>c.</strong> Oui, si l'outil
+      est récent
+    </li>
+    <li>
+      Où invente-t-elle le plus volontiers&nbsp;?<br />
+      <strong>a.</strong> Dans les formules de politesse &nbsp; <strong>b.</strong> Dans les
+      chiffres, les dates, les noms propres et les références &nbsp; <strong>c.</strong> Dans la
+      ponctuation
+    </li>
+    <li>
+      Un compte rendu d'entretien où les noms ont été remplacés par « salarié A » et « salarié B »
+      peut-il entrer dans l'outil&nbsp;?<br />
+      <strong>a.</strong> Oui, il est anonymisé &nbsp; <strong>b.</strong> Non — pseudonymiser reste
+      un traitement de données personnelles, et le contexte ré-identifie
+    </li>
+    <li>
+      Votre entreprise n'a désigné aucun environnement validé. Que devient la colonne « ça ne part
+      qu'en environnement validé »&nbsp;?<br />
+      <strong>a.</strong> Elle devient « ça part » &nbsp; <strong>b.</strong> Elle vaut « ça ne part
+      pas » tant qu'aucun environnement n'a été désigné &nbsp; <strong>c.</strong> Chacun décide pour
+      lui
+    </li>
+    <li>
+      Une photo du tableau blanc de fin de réunion suit-elle les mêmes règles qu'un fichier&nbsp;?<br />
+      <strong>a.</strong> Non, une image n'est pas un document &nbsp; <strong>b.</strong> Oui — une
+      image est une pièce jointe, et l'outil la lit
+    </li>
+    <li>
+      Dans AXION, que couvre le levier « conteXte »&nbsp;?<br />
+      <strong>a.</strong> Le ton du texte &nbsp; <strong>b.</strong> Ce que l'outil ignore de ma
+      situation et doit savoir &nbsp; <strong>c.</strong> La longueur maximale
+    </li>
+    <li>
+      À quoi sert le levier « Normes »&nbsp;?<br />
+      <strong>a.</strong> À fixer ce qui est interdit et ce que l'outil ne doit pas inventer &nbsp;
+      <strong>b.</strong> À choisir la langue &nbsp; <strong>c.</strong> À citer les normes du
+      secteur
+    </li>
+    <li>
+      Le résultat déçoit. Quel est le bon geste&nbsp;?<br />
+      <strong>a.</strong> Tout réécrire de zéro &nbsp; <strong>b.</strong> Relancer avec l'une des
+      quatre relances &nbsp; <strong>c.</strong> Changer d'outil
+    </li>
+    <li>
+      Votre relance a donné un résultat pire qu'avant. Que faites-vous&nbsp;?<br />
+      <strong>a.</strong> Vous recommencez la demande depuis la page blanche &nbsp;
+      <strong>b.</strong> Vous demandez « reviens à ta version précédente », puis vous essayez une
+      autre relance &nbsp; <strong>c.</strong> Vous gardez le résultat dégradé
+    </li>
+    <li>
+      Comment savoir si votre fichier a été lu en entier&nbsp;?<br />
+      <strong>a.</strong> L'outil prévient toujours quand il tronque &nbsp; <strong>b.</strong> On
+      lui demande quelle est la dernière section qu'il a reçue &nbsp; <strong>c.</strong> On ne peut
+      pas le savoir
+    </li>
+    <li>
+      Une affirmation de la synthèse est vraie — vous le savez — mais elle ne figure pas dans le
+      document. Que faites-vous&nbsp;?<br />
+      <strong>a.</strong> Vous la gardez, elle est vraie &nbsp; <strong>b.</strong> Vous la sourcez
+      ailleurs ou vous la retirez : le destinataire croirait qu'elle vient du document &nbsp;
+      <strong>c.</strong> Vous demandez à l'outil de la confirmer
+    </li>
+    <li>
+      Une question surgit sur ce que votre entreprise a légalement le droit de faire avec l'IA. Qui
+      tranche&nbsp;?<br />
+      <strong>a.</strong> Le formateur &nbsp; <strong>b.</strong> L'outil &nbsp;
+      <strong>c.</strong> Le conseil de votre entreprise — la question se note, elle ne se tranche
+      pas en salle
+    </li>
+  </ol>
+</section>
+
+<section class="piece" data-piece="A17">
+  <div class="piece-badge">Pièce A17 — corrigé formateur</div>
+  <h2>Quiz — corrigé commenté, question par question</h2>
+  <p class="piece-usage">
+    Se commente en salle sans en passer aucune. Le seuil de réussite est celui déclaré au programme ;
+    un score en dessous déclenche la reprise individuelle prévue au dispositif. Si la journée a pris
+    du retard, couper ailleurs — jamais ici : c'est la première pièce qu'un auditeur demande.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 6%">N°</th>
+        <th style="width: 8%">Rép.</th>
+        <th>Le commentaire qui ancre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><strong>b</strong></td>
+        <td>
+          La phrase du matin : « elle n'a pas menti, elle a complété — et elle complète TOUJOURS ».
+          La fluidité est un style, pas une preuve.
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><strong>b</strong></td>
+        <td>
+          Chacun l'a constaté sur son propre domaine, et les trois textes à erreurs plantées le
+          confirment : l'invention se niche dans le précis, jamais dans le général.
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><strong>b</strong></td>
+        <td>
+          Carte 6 du jeu du matin. Service, date, faits : trois éléments suffisent à ré-identifier
+          une personne dans une équipe.
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><strong>b</strong></td>
+        <td>
+          La colonne du milieu est une frontière, pas une permission. À écrire tel quel dans le
+          protocole — et à faire trancher chez soi.
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><strong>b</strong></td>
+        <td>
+          Carte 7. L'outil lit l'image mieux que la plupart des humains, et personne ne relit une
+          photo avant de l'envoyer.
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><strong>b</strong></td>
+        <td>
+          Le levier « du creux », et celui qui manquait le plus souvent au contrôle croisé du module
+          2. Sans lui, le texte pourrait venir de n'importe quelle entreprise.
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><strong>a</strong></td>
+        <td>
+          Le levier que les débutants oublient — et le seul qui empêche l'outil de compléter. C'est
+          la ligne « n'ajoute aucune recommandation » qui a sauvé la synthèse de l'après-midi.
+        </td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><strong>b</strong></td>
+        <td>La devise du module 2 : on relance, on ne recommence pas.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><strong>b</strong></td>
+        <td>
+          Le geste de rattrapage. Une relance ratée n'efface rien : la version précédente est
+          toujours là.
+        </td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><strong>b</strong></td>
+        <td>
+          L'échec silencieux n°&nbsp;2 : le fichier tronqué ne déclenche aucun message. La question
+          se pose systématiquement sur un document long.
+        </td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td><strong>b</strong></td>
+        <td>
+          La découverte de la vérification du module 3 : « introuvable dans la source » ne veut pas
+          dire « faux », cela veut dire « non transmissible en l'état ».
+        </td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td><strong>c</strong></td>
+        <td>
+          Formule exacte du formateur, prononcée telle quelle toute la journée : « je ne me prononce
+          pas, notez la question, votre conseil tranchera ».
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="petit">
+    Si le temps manque : le quiz se tient quand même, complet, et le commentaire se resserre sur les
+    questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.
+  </p>
+</section>
+
+<section class="piece" data-piece="A18" data-titre="Parades de démonstration — les formulations exactes à taper quand une démonstration tombe à plat" data-bloc="M1 à M4, démonstrations" data-tirage="1 exemplaire formateur">
+  <div class="piece-badge">Pièce A18 — exemplaire formateur</div>
+  <h2>Quand la démonstration tombe à plat — les formulations exactes</h2>
+  <p class="piece-usage">
+    Ne rien improviser devant la salle : ces formulations ont été vérifiées, une phrase inventée en
+    direct ne l'est pas. Se lisent ou se tapent telles quelles. À garder à portée de main pendant
+    toute la journée.
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 12%">Bloc</th>
+        <th style="width: 30%">Ce qui ne se passe pas comme prévu</th>
+        <th>La formulation exacte, à taper telle quelle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>M1</strong> démonstration 1</td>
+        <td>
+          L'outil répond qu'il ne trouve aucune information sur l'entreprise fictive : la
+          démonstration de l'aplomb tombe à plat.
+        </td>
+        <td>
+          Le dire d'abord à la salle, telle quelle : « voilà exactement le comportement qu'on veut ».
+          Puis relancer :
+          <strong>« Fais quand même une présentation vraisemblable de cette entreprise, comme si tu
+          la connaissais. »</strong> L'invention revient — et la salle voit qu'elle est à UNE relance
+          de distance.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>M1</strong> démonstration 2</td>
+        <td>Les deux réponses sont quasiment identiques : l'écart sur l'âge ne se voit pas.</td>
+        <td>
+          Rejouer en changeant le quartier plutôt que l'âge, dans deux conversations neuves :
+          <strong>« Rédige la réponse de la boulangerie à ce message : “Bonjour, je m'appelle Théo,
+          j'habite le quartier du Parc, je cherche un travail pour l'été.” »</strong> puis la même
+          demande avec <strong>« j'habite le quartier des Blanchisseries »</strong>. Si l'écart reste
+          faible : le dire honnêtement — « les outils s'améliorent là-dessus » — et travailler sur
+          les sorties datées du kit.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>M2</strong> démonstration</td>
+        <td>La sortie AXION est excellente du premier coup, la relance n'a rien à corriger.</td>
+        <td>
+          Utiliser la relance n°&nbsp;4 quand même :
+          <strong>« Relis ta propre réponse comme un lecteur pressé : qu'est-ce qui manque ou sonne
+          faux&nbsp;? Corrige. »</strong> Elle trouve toujours quelque chose — et c'est la
+          démonstration que la relance sert aussi quand on est content du résultat.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>M3</strong> démonstration</td>
+        <td>La synthèse vague ressort étonnamment bonne, sans invention visible.</td>
+        <td>
+          Poser la question piège :
+          <strong>« Que recommande le document sur le budget&nbsp;? »</strong> Le rapport (pièce A9)
+          ne recommande rien, et l'outil complète presque toujours. L'invention se provoque quand
+          elle ne vient pas seule.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>M4</strong> démonstration</td>
+        <td>Aucun volontaire ne veut prêter sa production du jour.</td>
+        <td>
+          Ne forcer personne : prendre la production de secours (pièce A16), qui porte exactement
+          deux défauts calibrés. La démonstration perd un peu de chair, rien de sa mécanique.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="encadre">
+    <div class="encadre-titre">Les deux phrases qui ne se paraphrasent pas</div>
+    <p>
+      Sur la peur de mal faire, au démarrage :
+      <strong>« vous ne pouvez rien casser aujourd'hui — le seul vrai risque est d'y mettre ce qui ne
+      doit pas sortir, et c'est une règle qu'on apprend, pas une manipulation »</strong>.
+    </p>
+    <p>
+      Sur toute question juridique, à n'importe quel moment de la journée :
+      <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong> — et
+      écrire la question au tableau. La liste des questions ouvertes est une production utile de la
+      journée : elle entre dans la feuille de route du protocole.
+    </p>
+  </div>
+
+  <p class="petit">
+    Rappel de cadrage : un seul outil toute la journée, celui validé dans la salle. En changer en
+    cours de route perd les débutants et rend les démonstrations irreproductibles.
+  </p>
+</section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">DÉMONSTRATION 1 — l'aplomb. « Présente en dix lignes l'entreprise Menuiserie Valloire à Voiron : son histoire, ses effectifs et ses trois principaux clients. » Puis la reprise : « Reprends ta réponse ligne par ligne. Pour chaque affirmation, dis si elle vient d'une information vérifiable ou si tu l'as inventée pour compléter. Ne corrige rien, signale. »<br /><br />DÉMONSTRATION 2 — le biais. « Rédige la réponse de la boulangerie à ce message : “Bonjour, je m'appelle Théo, j'ai 19 ans, j'habite le quartier, je cherche un travail pour l'été.” » Puis la MÊME demande, un seul mot changé : « Bonjour, je m'appelle Théo, j'ai 58 ans, j'habite le quartier, je cherche un travail pour l'été. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Démonstration 1 : la présentation inventée avec les affirmations avouées surlignées. Démonstration 2 : les deux réponses côte à côte, le mot changé entouré, les formulations qui basculent surlignées.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (tenu toute la journée).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou service en panne : les quatre sorties sont imprimées dans le kit formateur (datées). Le déroulé est identique sur papier — la révélation de l'entreprise fictive, le vote à main levée, la comparaison mot à mot. Ne rien improviser : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin — Module 2 : Formuler et relancer jusqu'au résultat utilisable (méthode AXION)</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">LA DEMANDE AXION (cas du kit si la salle n'apporte rien) :<br />Acteur : tu es assistant de direction dans une PME de services de vingt-cinq personnes.<br />ConteXte : je dois annoncer à un client fidèle un report de livraison d'une semaine, causé par un fournisseur.<br />Intention : obtenir un e-mail que je peux envoyer après relecture, et qui préserve la relation.<br />Output : un e-mail de cent vingt mots maximum — objet, un paragraphe d'explication, une proposition de nouvelle date, une phrase de clôture.<br />Normes : aucun jargon, aucune promesse de compensation, ne pas rejeter la faute sur le fournisseur.<br /><br />LES QUATRE RELANCES QUI DÉBLOQUENT, affichées en entier :<br />1. Préciser la contrainte — « Reprends en tenant compte de ceci : le client a déjà subi un report le mois dernier. »<br />2. Donner un exemple — « Voici un e-mail dont j'aime le ton : [collez-le]. Reprends dans cet esprit. »<br />3. Imposer le format — « Reprends exactement le même contenu en dix lignes maximum, une idée par phrase. »<br />4. Faire critiquer — « Relis ta propre réponse comme un lecteur pressé : qu'est-ce qui manque ou sonne faux ? Corrige. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La demande d'une ligne et sa sortie générique, puis la demande AXION annotée en marge des cinq leviers et sa sortie, puis la relance n° 4 et ce qu'elle a corrigé — trois écrans en séquence.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (tenu toute la journée).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : la construction de la demande AXION levier par levier se fait au tableau — c'est même meilleur pédagogiquement — et les sorties (spontanée, AXION, après relance) sont imprimées dans le kit (datées) sur le cas du report de livraison.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi — Module 3 : Travailler sur ses documents, dicter, vérifier contre la source</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu es un analyste chargé de préparer une synthèse pour quelqu'un qui n'a pas le temps de lire.<br />ConteXte : le document joint est un rapport interne d'une vingtaine de pages ; je dois en restituer l'essentiel à mon responsable.<br />Intention : produire une synthèse fidèle et vérifiable, sans aucune interprétation ajoutée.<br />Output : dix lignes maximum — trois points clés, deux chiffres importants avec la page où chacun figure, puis une ligne « ce que le document ne dit pas ».<br />Normes : appuie-toi UNIQUEMENT sur le document joint. Si une information n'y figure pas, écris « le document ne le dit pas ». N'ajoute aucune recommandation.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux synthèses côte à côte : la recommandation inventée de la version vague entourée en rouge, les numéros de page de la version AXION surlignés — puis le scan illisible et le tableau désaligné, un écran chacun.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (tenu toute la journée).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux synthèses et les trois échecs sont imprimés dans le kit (datées). La comparaison, l'entourage de la recommandation inventée et le repérage des pages se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi — Module 4 : Ce qui sort de vos mains — mon protocole de vérification et de diffusion</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Relis le texte ci-dessous comme un relecteur exigeant, à la grille en cinq points : 1. exactitude — chiffres, noms, dates, chaque affirmation est-elle vérifiable ; 2. ton — adapté au destinataire indiqué ; 3. format — celui demandé est-il respecté ; 4. source — d'où vient chaque information engageante ; 5. réutilisable tel quel — qu'est-ce qui doit être personnalisé avant envoi. Pour chaque point, réponds « tenu » ou « à corriger », en citant la ligne concernée. Ne réécris pas le texte, ne corrige rien toi-même.<br /><br />[Coller ici la production à relire.]</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La production affichée deux fois : vierge après la relecture « à l'œil », puis annotée des cinq points de la grille avec les deux défauts entourés — et la mention au destinataire affichée en dernier.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (tenu toute la journée).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La production de secours et sa relecture aux cinq points sont imprimées dans le kit (datées). La comparaison œil contre grille se fait au paperboard, chronomètre en main.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et l'annonce du livrable se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose</td><td>Démonstration</td><td>Quota atteint ou service en panne : les quatre sorties sont imprimées dans le kit formateur (datées). Le déroulé est identique sur papier — la révélation de l'entreprise fictive, le vote à main levée, la comparaison mot à mot. Ne rien improviser : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose</td><td>Pratique</td><td>Réseau tombé : l'exercice de repérage se fait sur les trois textes pré-générés du kit (datées), chacun portant des erreurs plantées dans un domaine différent. Le surlignage, le décompte et le tableau des scores se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Matin — Module 1 : Le cadre avant les mains sur le clavier — ce que fait l'IA, où vont vos données, ce que la loi impose</td><td>Vérification</td><td>Le jeu de cartes est physique et le corrigé est imprimé dans le kit. Aucune dépendance à un outil ni au vidéoprojecteur.</td></tr>
+          <tr><td>Matin — Module 2 : Formuler et relancer jusqu'au résultat utilisable (méthode AXION)</td><td>Démonstration</td><td>Outil indisponible : la construction de la demande AXION levier par levier se fait au tableau — c'est même meilleur pédagogiquement — et les sorties (spontanée, AXION, après relance) sont imprimées dans le kit (datées) sur le cas du report de livraison.</td></tr>
+          <tr><td>Matin — Module 2 : Formuler et relancer jusqu'au résultat utilisable (méthode AXION)</td><td>Pratique</td><td>Réseau tombé : la demande AXION s'écrit à la main sur la trame papier — c'est la structure qui s'apprend, pas le clavier. Les relances se préparent par écrit, prêtes à être lancées le soir même ; le formateur joue l'outil à l'oral sur deux ou trois demandes pour montrer ce qu'elles produiraient.</td></tr>
+          <tr><td>Matin — Module 2 : Formuler et relancer jusqu'au résultat utilisable (méthode AXION)</td><td>Vérification</td><td>Sans outil, le voisin fait la relecture à froid : « est-ce que je saurais exécuter cette demande sans poser de question ? » — et coche la même grille des cinq leviers. Le test de rejeu se fera au retour au poste, la grille dit déjà l'essentiel.</td></tr>
+          <tr><td>Après-midi — Module 3 : Travailler sur ses documents, dicter, vérifier contre la source</td><td>Démonstration</td><td>Les deux synthèses et les trois échecs sont imprimés dans le kit (datées). La comparaison, l'entourage de la recommandation inventée et le repérage des pages se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Après-midi — Module 3 : Travailler sur ses documents, dicter, vérifier contre la source</td><td>Pratique</td><td>Réseau tombé : la synthèse se vérifie sur le couple document/synthèse imprimé du kit — chercher chaque affirmation dans la source est un exercice papier complet. La dictée se remplace par la trame « note télégraphique → note propre » à la main, et se rejoue au poste dès le retour.</td></tr>
+          <tr><td>Après-midi — Module 3 : Travailler sur ses documents, dicter, vérifier contre la source</td><td>Vérification</td><td>L'exercice est déjà un exercice papier si les synthèses ont été imprimées ; sinon, il se fait sur le couple document/synthèse du kit, qui contient trois affirmations introuvables à découvrir.</td></tr>
+          <tr><td>Après-midi — Module 4 : Ce qui sort de vos mains — mon protocole de vérification et de diffusion</td><td>Démonstration</td><td>La production de secours et sa relecture aux cinq points sont imprimées dans le kit (datées). La comparaison œil contre grille se fait au paperboard, chronomètre en main.</td></tr>
+          <tr><td>Après-midi — Module 4 : Ce qui sort de vos mains — mon protocole de vérification et de diffusion</td><td>Pratique</td><td>L'atelier est entièrement papier : trame, protocole, feuille de route. Aucun outil nécessaire — c'est l'atelier le plus robuste de la journée, il se tient intégralement même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi — Module 4 : Ce qui sort de vos mains — mon protocole de vérification et de diffusion</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

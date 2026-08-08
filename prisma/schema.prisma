@@ -7700,6 +7700,11 @@ enum SupportType {
   guide_animation
   exercices
   grille_eval
+  /// Le classeur A4 que le formateur pose sur la table quand l'outil tombe en
+  /// panne devant la salle. Contrairement aux autres types, il n'est PAS produit
+  /// par le Formation Engine : il est ecrit dans `_KIT/<slug>/` et publie par
+  /// `scripts/kit-formateur/publier-vers-r2.ts`. `contenu` reste donc vide.
+  kit_formateur_imprime
 }
 
 /// Statut de génération d'un support.

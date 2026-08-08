@@ -1,0 +1,2257 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour le commerce (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour le commerce » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-le-commerce</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Fiche technique fournisseur fictive ORVAL (f. 1 et f. 2) + second produit SAULAIE</td><td>M1, démonstration et pratique (blocage)</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A2</strong></td><td>Trame de fiche produit et trame de demande réutilisable</td><td>M1, pratique</td><td>3 par stagiaire + 5</td></tr>
+          <tr><td><strong>A3</strong></td><td>Grille de contrôle croisé du module 1 + corrigé</td><td>M1, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A4</strong></td><td>La fiche produit volontairement chargée + corrigé (treize erreurs)</td><td>M1, vérification (blocage)</td><td>1 par binôme + corrigé formateur</td></tr>
+          <tr><td><strong>A5</strong></td><td>Tableau produits fictif de vingt références (MAISON LIVERNET)</td><td>M2, démonstration et pratique (blocage)</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A6</strong></td><td>Trois fiches de la série + trois déclinaisons du produit témoin, pour la lecture comparée</td><td>M2, démonstration (plan B)</td><td>1 jeu par table + 1 jeu formateur</td></tr>
+          <tr><td><strong>A7</strong></td><td>Trame de série et règle d’échantillonnage</td><td>M2, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A8</strong></td><td>Série témoin à trois écarts plantés + grille d’échantillonnage et corrigé</td><td>M2, vérification (plan B)</td><td>1 jeu par binôme + corrigé formateur</td></tr>
+          <tr><td><strong>A9</strong></td><td>L’avis difficile : les deux réponses comparées, et les deux totaux contradictoires</td><td>M3, démonstration (plan B)</td><td>1 par stagiaire + 1 jeu formateur</td></tr>
+          <tr><td><strong>A10</strong></td><td>Trois avis de secours + trames de réponse à trous + réponse type de la fiche d’établissement</td><td>M3, pratique (plan B)</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A11</strong></td><td>Trame « écrire autour du chiffre » — structure du tableau, jamais son contenu</td><td>M3, pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A12</strong></td><td>Grille de relecture des réponses aux avis + réponse piégée à trois fuites et corrigé</td><td>M3, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A13</strong></td><td>La trame rejouée — sortie molle et sortie durcie, écarts surlignés</td><td>M4, démonstration (plan B)</td><td>1 par stagiaire + 1 jeu formateur</td></tr>
+          <tr><td><strong>A14</strong></td><td>Six demandes à trier, dont trois fautives + corrigé et réécritures</td><td>M4, pratique (blocage)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A15</strong></td><td>Manuel de publication de l’enseigne — page de garde, feuille de route et grille de critères</td><td>M4, pratique et vérification</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A16</strong></td><td>Quiz d’évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Du un au cinquante : produire en série et décliner <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Le manuel de publication de l'enseigne <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Fiche technique fournisseur fictive ORVAL (f. 1 et f. 2) + second produit SAULAIE" data-bloc="M1, démonstration et pratique (blocage)" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A1 — feuillet f. 1</div>
+      <h2>Fiche technique fournisseur — le document dont tout se recopie</h2>
+      <p class="piece-usage">
+        C’est le document source de la journée : la démonstration du module 1 s’y appuie, et le
+        stagiaire qui n’a apporté aucune fiche technique travaille avec celui-ci. La règle du jour
+        se pose sur cette pièce et sur aucune autre :
+        <strong>une fiche produit n’affirme rien que ce document ne prouve</strong>. Tout y est
+        fictif — enseigne, fournisseur, référence, produit, mesures. Aucune société existante n’y
+        est désignée.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>ATELIERS VERBOIS (fournisseur fictif)<br />Fiche technique — référence VB-4120 —
+          Bouteille isotherme ORVAL 750 ml<br />Feuillet f. 1 sur 2 · document fictif du kit</strong>
+        </p>
+        <table>
+          <thead>
+            <tr><th style="width: 34%">Ligne de la fiche technique</th><th>Ce qu’elle dit, mot pour mot</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Désignation</strong></td><td>Bouteille isotherme ORVAL, double paroi, 750 ml</td></tr>
+            <tr><td><strong>Référence</strong></td><td>VB-4120</td></tr>
+            <tr><td><strong>Contenance</strong></td><td>750 ml (bouchon-gobelet : 200 ml)</td></tr>
+            <tr><td><strong>Corps</strong></td><td>Acier inoxydable 18/8, double paroi, isolation sous vide</td></tr>
+            <tr><td><strong>Bouchon</strong></td><td>Polypropylène, joint silicone</td></tr>
+            <tr><td><strong>Poids à vide</strong></td><td>385 g</td></tr>
+            <tr><td><strong>Dimensions</strong></td><td>Hauteur 27,5 cm · diamètre 7,4 cm</td></tr>
+            <tr><td><strong>Maintien en température</strong></td><td>Chaud : 12 h · Froid : 24 h (protocole interne fournisseur PR-118 du 12 mars, communiqué sur demande)</td></tr>
+            <tr><td><strong>Coloris</strong></td><td>Gris ardoise · vert sauge · sable</td></tr>
+            <tr><td><strong>Entretien</strong></td><td>Lavage à la main. <strong>Ne passe pas au lave-vaisselle.</strong></td></tr>
+            <tr><td><strong>Assemblage</strong></td><td>Assemblée en Pologne (origine des composants : voir f. 2)</td></tr>
+            <tr><td><strong>Garantie fabricant</strong></td><td>2 ans</td></tr>
+            <tr><td><strong>Conditionnement</strong></td><td>Carton de 12 · code article par coloris : non renseigné</td></tr>
+            <tr><td><strong>Conformité contact alimentaire</strong></td><td>Attestation fournisseur référencée AV-2031, communiquée sur demande</td></tr>
+            <tr><td><strong>Prix</strong></td><td>Ne figure pas sur la fiche technique — voir le tarif de l’enseigne</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Comment le formateur s’en sert</div>
+        <p>
+          Posez la fiche à gauche, la sortie de l’outil à droite, et faites tracer une flèche par
+          caractéristique. Une affirmation sans flèche est une affirmation à retirer. La colonne de
+          gauche du tableau ci-dessus sert exactement à cela : elle nomme les lignes, donc les
+          flèches ont une cible.
+        </p>
+      </div>
+      <p class="verso-note">→ Tournez le feuillet : composants, entretien, et le second produit du kit.</p>
+    </section>
+
+    <section class="piece" data-piece="A1">
+      <div class="piece-badge">Pièce A1 — feuillet f. 2</div>
+      <h2>Composants, non-renseignés, et le second produit du kit</h2>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>ATELIERS VERBOIS — VB-4120 ORVAL 750 ml — feuillet f. 2 sur 2</strong>
+        </p>
+        <table>
+          <thead>
+            <tr><th style="width: 34%">Ligne de la fiche technique</th><th>Ce qu’elle dit, mot pour mot</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Origine des composants</strong></td><td>Corps inox : Inde · bouchon et joint : Pologne</td></tr>
+            <tr><td><strong>Pièces détachées</strong></td><td>Joint silicone VB-4120-J · bouchon complet VB-4120-B</td></tr>
+            <tr><td><strong>Recyclabilité</strong></td><td><strong>Non renseigné</strong></td></tr>
+            <tr><td><strong>Empreinte environnementale</strong></td><td><strong>Non renseigné</strong></td></tr>
+            <tr><td><strong>Compatibilité boissons gazeuses</strong></td><td><strong>Non renseigné</strong></td></tr>
+            <tr><td><strong>Labels et certifications</strong></td><td><strong>Aucun label déclaré par le fournisseur</strong></td></tr>
+            <tr><td><strong>Notice</strong></td><td>Notice pliée fournie dans l’emballage, français et anglais</td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Les quatre lignes « non renseigné » et la ligne « aucun label déclaré » sont la matière du
+          module&nbsp;: c’est exactement là que l’outil comble le vide de lui-même.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>ATELIERS VERBOIS — référence VB-2075 — Plateau de service SAULAIE<br />
+          second produit, utilisé au module 4 pour rejouer la trame</strong>
+        </p>
+        <table>
+          <thead>
+            <tr><th style="width: 34%">Ligne de la fiche technique</th><th>Ce qu’elle dit, mot pour mot</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Désignation</strong></td><td>Plateau de service SAULAIE, frêne massif huilé</td></tr>
+            <tr><td><strong>Dimensions</strong></td><td>45 × 32 cm · épaisseur 1,8 cm</td></tr>
+            <tr><td><strong>Poids</strong></td><td>1,1 kg</td></tr>
+            <tr><td><strong>Matière et finition</strong></td><td>Frêne massif, huile de lin, poignées découpées</td></tr>
+            <tr><td><strong>Entretien</strong></td><td>Chiffon humide. <strong>Ne passe pas au lave-vaisselle.</strong></td></tr>
+            <tr><td><strong>Origine</strong></td><td>Fabriqué au Portugal</td></tr>
+            <tr><td><strong>Garantie fabricant</strong></td><td>2 ans</td></tr>
+            <tr><td><strong>Essence certifiée</strong></td><td><strong>Non renseigné</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2" data-titre="Trame de fiche produit et trame de demande réutilisable" data-bloc="M1, pratique" data-tirage="3 par stagiaire + 5">
+      <div class="piece-badge">Pièce A2</div>
+      <h2>Ma trame de fiche produit — première pièce du manuel</h2>
+      <p class="piece-usage">
+        Distribuée au démarrage de la pratique du module 1, en trois exemplaires : une par fiche
+        rédigée, plus une d’essai. Réseau tombé, outil indisponible : elle se remplit intégralement
+        au stylo, à partir de la fiche technique — ce qui compte est la structure et la règle de
+        preuve, pas l’outil qui les exécute.
+      </p>
+
+      <p>
+        <strong>Enseigne :</strong> ______________________________ ·
+        <strong>Rédigée par :</strong> ______________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+      <p>
+        <strong>Document source (fiche technique, référence et date) :</strong>
+        ______________________________________________
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1 — Titre : 60 caractères maximum, commençant par le nom du produit</div>
+        <div class="lignes"></div>
+        <p class="petit">Caractères comptés : ______ / 60. Au-delà, on coupe la fin, jamais le nom.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2 — Argumentaire : 80 mots, orienté usage client</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          L’argumentaire porte le style. Il ne porte aucune caractéristique nouvelle : ce qui n’est
+          pas au point 3 ne s’y glisse pas non plus.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3 — Caractéristiques : recopiées, jamais reformulées</div>
+        <table>
+          <thead>
+            <tr><th style="width: 55%">La caractéristique, telle qu’écrite</th><th>La ligne de la fiche technique qui la prouve</th></tr>
+          </thead>
+          <tbody>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+            <tr><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          La colonne de droite vide vaut suppression de la ligne. « Déperlant » qui devient
+          « imperméable » est une caractéristique nouvelle, pas une reformulation.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4 — Les quatre lignes que l’outil n’écrit jamais</div>
+        <ul>
+          <li><span class="coche"></span> <strong>Prix :</strong> ________________ — complété par le magasin le ____ / ____</li>
+          <li><span class="coche"></span> <strong>Disponibilité :</strong> ________________ — source : ______________________</li>
+          <li><span class="coche"></span> <strong>Garantie :</strong> ________________ — vérifiée dans nos conditions de vente</li>
+          <li><span class="coche"></span> <strong>Retours :</strong> ________________ — vérifiés dans nos conditions de vente</li>
+        </ul>
+        <p class="petit">
+          Ces quatre-là viennent de vos systèmes. Un modèle de langage les remplit volontiers, de
+          façon plausible et fausse.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">5 — Ce qui manque au document source</div>
+        <p>Informations absentes de la fiche technique, à compléter par le magasin :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Ce qui n’est pas dans la fiche technique s’écrit « non renseigné », jamais une
+          vraisemblance.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">6 — Ma demande réutilisable, à recopier dans mon manuel</div>
+        <p class="petit">
+          Reprenez la demande projetée en y calant vos rubriques et vos limites chiffrées. Une
+          demande qui laisse un choix ouvert produira un format différent à chaque passage.
+        </p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">7 — Variante support court, pour le binôme qui a fini</div>
+        <p>Version place de marché du même produit, 300 caractères maximum :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">Caractères comptés : ______ / 300. Ce que la contrainte m’a obligé à retirer : ______________________</p>
+      </div>
+
+      <div class="banniere">
+        Toute fiche sortie de cette trame est un <strong>projet</strong> : je la relis contre la
+        fiche technique, je la corrige, je la signe avant publication.
+        <strong>Aucun prix, aucune promotion, aucune allégation produit ne s’engage par ce
+        texte</strong> — prix, disponibilité, garantie et retours viennent des systèmes du magasin,
+        et une caractéristique se recopie du document fournisseur. Toute question juridique va au
+        conseil de l’entreprise : le formateur n’arbitre aucune question de droit.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3" data-titre="Grille de contrôle croisé du module 1 + corrigé" data-bloc="M1, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A3 — feuille stagiaire</div>
+      <h2>Contrôle croisé — la fiche tient-elle contre la fiche technique&nbsp;?</h2>
+      <p class="piece-usage">
+        S’applique aux fiches <strong>du binôme voisin</strong>, jamais aux siennes, et la fiche
+        technique du voisin doit être ouverte sur la table. Consigne annoncée avant de commencer :
+        on <strong>barre au stylo</strong> chaque affirmation non prouvée, puis on compte les barres
+        à voix haute.
+      </p>
+
+      <p>
+        <strong>Fiches relues :</strong> ______________________________ ·
+        <strong>Relues par :</strong> ______________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 34%">Contrôle</th>
+            <th style="width: 16%">Verdict</th>
+            <th>Ce qui est barré, et la ligne qui manquait</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Chaque caractéristique</strong> se retrouve mot pour mot dans la fiche technique</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Aucune norme, aucun label</strong> que le document source ne mentionne</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Origine et matière</strong> reprises telles quelles, sans embellissement</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Aucune allégation de santé ou d’environnement</strong> ajoutée</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Aucun superlatif</strong> invérifiable</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Contenances, poids et dimensions</strong> cohérents entre le titre, l’argumentaire et les puces</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Prix, disponibilité, garantie, retours</strong> laissés au magasin, ou vérifiés et tracés</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Les informations absentes</strong> portent « non renseigné », pas une vraisemblance</td>
+            <td>☐ oui ☐ non</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le décompte, à annoncer à voix haute</div>
+        <p>
+          Barres portées sur la fiche n° 1 : <strong>______</strong> · sur la fiche n° 2 :
+          <strong>______</strong> · total du binôme : <strong>______</strong>
+        </p>
+        <p class="petit">
+          Le total du groupe s’écrit au tableau. C’est le meilleur argument de la journée pour la
+          relecture systématique, et il ne s’obtient pas par un discours.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3">
+      <div class="piece-badge">Pièce A3 — corrigé formateur</div>
+      <h2>Contrôle croisé du module 1 — corrigé commenté</h2>
+      <p class="piece-usage">
+        À projeter ou à lire à voix haute <strong>après</strong> le contrôle. Sans vidéoprojecteur,
+        rien ne se perd : les cinq ajouts se commentent ligne par ligne.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">Les cinq ajouts que l’outil glisse le plus souvent</th>
+            <th>La règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1 — Le superlatif invérifiable</strong> (« la plus performante », « la référence du marché »)</td>
+            <td>
+              Une affirmation qui ne peut être ni ouverte ni mesurée n’est pas une description, c’est
+              une allégation. Elle se retire, elle ne s’adoucit pas : « l’une des plus performantes »
+              a exactement le même défaut.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>2 — Le matériau embelli</strong> (« acier chirurgical » pour un inox 18/8)</td>
+            <td>
+              La règle du jour : une caractéristique se <strong>recopie</strong>, elle ne se
+              reformule pas. Le test est matériel — pointez la ligne du document source ; si le mot
+              n’y est pas, il sort de la fiche.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>3 — La norme ou le label cités de mémoire</strong></td>
+            <td>
+              Un nom de label parfaitement plausible peut être inexistant. Le kit ne dit pas ce que
+              votre étiquetage doit porter : la liste des labels réellement détenus se demande au
+              <strong>responsable qualité de l’enseigne</strong>, pas au formateur et pas à l’outil.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>4 — L’« écologique » sans preuve</strong> (« 100 % recyclable », « éco-conçu »)</td>
+            <td>
+              Quand la fiche technique porte « non renseigné », la fiche produit porte « non
+              renseigné ». Un vide dans le document source n’autorise pas une affirmation, il en
+              interdit une.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>5 — Le stock promis</strong> (« en stock », « expédié demain »)</td>
+            <td>
+              Disponibilité, prix, garantie et retours viennent de vos systèmes. Un modèle de langage
+              les remplit de façon plausible et fausse : ce sont les quatre lignes que la trame
+              réserve au magasin.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>Cas particulier — « garantie 2 ans », et c’est vrai chez nous</strong></td>
+            <td>
+              On la garde, et on note où on l’a vérifiée. La règle ne porte pas sur la véracité mais
+              sur l’<strong>origine</strong> : une fois vérifiée dans vos conditions de vente, ce
+              n’est plus l’outil qui l’affirme, c’est vous.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si les copies sont trop propres et que rien n’est barré</div>
+        <p>
+          Ne discutez pas : passez à la fiche volontairement chargée de la pièce A4 et faites barrer
+          collectivement. L’œil se règle en trois minutes, puis vous renvoyez aux copies réelles.
+          Une copie « parfaite » est une copie relue trop vite, pas une copie juste.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4" data-titre="La fiche produit volontairement chargée + corrigé (treize erreurs)" data-bloc="M1, vérification (blocage)" data-tirage="1 par binôme + corrigé formateur">
+      <div class="piece-badge">Pièce A4 — feuille stagiaire</div>
+      <h2>La fiche chargée — barrez tout ce que la fiche technique ne prouve pas</h2>
+      <p class="piece-usage">
+        À sortir quand les copies du contrôle croisé sont trop propres, et comme exercice
+        d’étalonnage en début de vérification. La fiche technique de référence est la pièce A1 :
+        elle doit être <strong>ouverte sur la table</strong>, sinon on n’attrape rien. Texte
+        pédagogique du kit, écrit pour l’exercice — ce n’est pas une sortie d’outil, il ne porte
+        donc pas de date de capture.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center"><strong>ORVAL 1 L — la gourde isotherme la plus performante du marché</strong></p>
+        <p>
+          Adoptez la bouteille ORVAL des Ateliers Verbois et emportez partout vos boissons préférées.
+          Son acier chirurgical 316L et sa double paroi conservent vos boissons chaudes 18 heures et
+          froides 24 heures. Ultra-légère — moins de 300 g — elle se glisse dans tous les sacs et
+          passe au lave-vaisselle après usage.
+        </p>
+        <ul>
+          <li>Contenance : 750 ml</li>
+          <li>Acier chirurgical 316L, double paroi sous vide</li>
+          <li>Fabriquée en France dans nos ateliers</li>
+          <li>Certifiée Écolabel Bleu Européen, 100 % recyclable</li>
+          <li>Garantie 5 ans</li>
+        </ul>
+        <p>
+          Note moyenne : 4,9/5 sur 312 avis clients.<br />
+          Prix : 34,90 € au lieu de 44,90 €, soit −40 %.<br />
+          En stock — expédition le 31 juin.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Consigne</div>
+        <p>
+          Barrez au stylo. En marge de chaque barre, écrivez <strong>la ligne de la fiche
+          technique</strong> qui contredit l’affirmation, ou <strong>« absent du document »</strong>
+          si aucune ligne n’en parle. Comptez, puis annoncez votre total à voix haute avant le
+          corrigé.
+        </p>
+        <p><strong>Mon total :</strong> ______ affirmations barrées.</p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4">
+      <div class="piece-badge">Pièce A4 — corrigé formateur</div>
+      <h2>La fiche chargée — treize erreurs, et la règle qui tranche</h2>
+      <p class="piece-usage">
+        Comptez d’abord les repérages à main levée, notez le score au tableau, puis corrigez. La
+        salle sous-estime toujours. Commencez par les erreurs 12 et 13 : elles se trouvent sans
+        connaître le produit, et elles mettent la salle en confiance.
+      </p>
+
+      <div class="corrige">
+        <div class="encadre-titre">Les treize erreurs plantées</div>
+        <ol>
+          <li>
+            <strong>« ORVAL 1 L » au titre, « 750 ml » dans les puces</strong> — contenance
+            incohérente à l’intérieur du même texte. Règle : la cohérence interne se contrôle avant
+            même le document source ; un texte qui se contredit ne se corrige pas, il se refait.
+          </li>
+          <li>
+            <strong>« la plus performante du marché »</strong> — superlatif invérifiable. Règle :
+            une affirmation qu’on ne peut ni ouvrir ni mesurer sort de la fiche.
+          </li>
+          <li>
+            <strong>« acier chirurgical 316L »</strong> — la fiche technique porte
+            <em>acier inoxydable 18/8</em>. Règle : une caractéristique se recopie, elle ne se
+            requalifie pas.
+          </li>
+          <li>
+            <strong>« chaudes 18 heures »</strong> — la fiche porte <em>12 h</em>. Règle : un chiffre
+            de performance vient du protocole du fournisseur, jamais d’un arrondi favorable.
+          </li>
+          <li>
+            <strong>« moins de 300 g »</strong> — la fiche porte <em>385 g</em>. Règle : un poids
+            annoncé se vérifie en trois secondes par le client qui la reçoit.
+          </li>
+          <li>
+            <strong>« passe au lave-vaisselle »</strong> — la fiche porte <em>lavage à la main, ne
+            passe pas au lave-vaisselle</em>. Règle : l’erreur d’entretien est celle qui fait revenir
+            le produit ; c’est la plus coûteuse de la liste.
+          </li>
+          <li>
+            <strong>« fabriquée en France dans nos ateliers »</strong> — la fiche porte
+            <em>assemblée en Pologne</em>, corps inox d’Inde. Règle : l’origine se recopie du
+            document source, et une origine ne s’arrondit jamais.
+          </li>
+          <li>
+            <strong>« Certifiée Écolabel Bleu Européen »</strong> — label inventé ; la fiche porte
+            <em>aucun label déclaré par le fournisseur</em>. Règle : la liste des labels réellement
+            détenus se demande au <strong>responsable qualité de l’enseigne</strong>. Le kit ne dit
+            pas ce que l’étiquetage doit porter, il dit d’où vient l’information.
+          </li>
+          <li>
+            <strong>« 100 % recyclable »</strong> — la fiche porte <em>non renseigné</em>. Règle : un
+            vide dans le document source interdit l’affirmation, il ne l’autorise pas.
+          </li>
+          <li>
+            <strong>« Garantie 5 ans »</strong> — la fiche porte <em>2 ans</em>. Règle : la garantie
+            se lit dans vos conditions de vente, jamais dans une sortie d’outil.
+          </li>
+          <li>
+            <strong>« 4,9/5 sur 312 avis clients »</strong> — note et volume inventés. Règle non
+            négociable de la journée : <strong>on ne fabrique jamais un avis, un témoignage ni une
+            note</strong>, et on ne fait jamais écrire un avis par l’IA.
+          </li>
+          <li>
+            <strong>« 34,90 € au lieu de 44,90 €, soit −40 % »</strong> — l’écart réel est de 10 €
+            sur 44,90 €, soit environ 22 %. Règle : un pourcentage intercalé dans une phrase est un
+            calcul non vérifié. Faites poser l’opération devant la salle.
+          </li>
+          <li>
+            <strong>« En stock — expédition le 31 juin »</strong> — date inexistante, et
+            disponibilité que l’outil n’a aucun moyen de connaître. Règle : prix, stock, garantie et
+            retours viennent de vos systèmes, point final.
+          </li>
+        </ol>
+        <p class="petit">
+          Ce que le formateur fait remarquer pour finir : <strong>« froides 24 heures » est exact</strong>.
+          Tout n’est pas faux, et c’est bien le problème — une fiche fausse est une fiche
+          majoritairement juste. C’est pour cela qu’on relit contre le document, pas contre son
+          impression.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5" data-titre="Tableau produits fictif de vingt références (MAISON LIVERNET)" data-bloc="M2, démonstration et pratique (blocage)" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A5</div>
+      <h2>Le tableau produits — la matière de toute la série</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 2, et tableau de secours pour le stagiaire dont tout
+        est dans le logiciel de caisse. Affichez-le en entier avant de lancer la série : la salle
+        doit voir que <strong>tout part des colonnes</strong>. Enseigne, fournisseur, références et
+        prix sont fictifs. <strong>Quatre cases sont volontairement vides</strong> — elles doivent
+        ressortir « non renseigné », jamais comblées.
+      </p>
+
+      <p class="petit">
+        MAISON LIVERNET (enseigne fictive) — extrait du tableau produits, fournisseur ATELIERS
+        VERBOIS. Colonnes : référence, nom, catégorie, matière, dimensions, coloris, prix conseillé
+        TTC, points forts fournisseur. <strong>Aucune colonne de marge, de prix d’achat ni de donnée
+        client</strong> : c’est ainsi qu’un tableau se présente avant dépôt.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 9%">Réf.</th>
+            <th style="width: 20%">Nom</th>
+            <th style="width: 11%">Catégorie</th>
+            <th style="width: 12%">Matière</th>
+            <th style="width: 14%">Dimensions</th>
+            <th style="width: 13%">Coloris</th>
+            <th style="width: 8%">Prix TTC</th>
+            <th>Points forts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>VB-4120</td><td>Bouteille isotherme ORVAL 750 ml</td><td>Nomade</td><td>Inox 18/8</td><td>H 27,5 × Ø 7,4 cm</td><td>gris ardoise, vert sauge, sable</td><td>34,90 €</td><td>12 h chaud / 24 h froid ; lavage main</td></tr>
+          <tr><td>VB-4121</td><td>Bouteille isotherme ORVAL 500 ml</td><td>Nomade</td><td>Inox 18/8</td><td>H 22,0 × Ø 6,8 cm</td><td>gris ardoise, sable</td><td>29,90 €</td><td>10 h chaud / 20 h froid ; lavage main</td></tr>
+          <tr><td>VB-4500</td><td>Cafetière à piston ORVAL 1 L</td><td>Nomade</td><td>Inox 18/8, verre</td><td>H 21,5 × Ø 10,0 cm</td><td>gris ardoise</td><td>44,90 €</td><td>filtre démontable ; 8 tasses</td></tr>
+          <tr><td>VB-2075</td><td>Plateau de service SAULAIE</td><td>Arts de la table</td><td>Frêne huilé</td><td>45 × 32 × 1,8 cm</td><td>naturel</td><td>39,00 €</td><td>poignées découpées ; lavage main</td></tr>
+          <tr><td>VB-2076</td><td>Planche à découper SAULAIE</td><td>Arts de la table</td><td>Frêne huilé</td><td>38 × 24 × 2,0 cm</td><td>naturel</td><td>27,00 €</td><td>rainure à jus ; lavage main</td></tr>
+          <tr><td>VB-9050</td><td>Moulin à poivre SAULAIE</td><td>Arts de la table</td><td>Frêne huilé</td><td>H 21 × Ø 5,5 cm</td><td>naturel</td><td>24,90 €</td><td>mécanisme céramique ; 6 crans</td></tr>
+          <tr><td>VB-9051</td><td>Moulin à sel SAULAIE</td><td>Arts de la table</td><td>Frêne huilé</td><td>H 21 × Ø 5,5 cm</td><td>naturel</td><td>24,90 €</td><td>mécanisme céramique ; 6 crans</td></tr>
+          <tr><td>VB-3310</td><td>Set de 4 bols LUZANE</td><td>Arts de la table</td><td>Grès émaillé</td><td>Ø 13,5 × H 6,5 cm</td><td>craie, terre, bleu nuit</td><td>32,00 €</td><td>lave-vaisselle ; empilables</td></tr>
+          <tr><td>VB-3311</td><td>Set de 4 assiettes LUZANE</td><td>Arts de la table</td><td>Grès émaillé</td><td>Ø 26,5 cm</td><td>craie, terre, bleu nuit</td><td>46,00 €</td><td>lave-vaisselle</td></tr>
+          <tr><td>VB-3312</td><td>Mug LUZANE 35 cl</td><td>Arts de la table</td><td>Grès émaillé</td><td>H 9,5 × Ø 8,5 cm</td><td>craie, terre, bleu nuit</td><td>12,50 €</td><td>lave-vaisselle ; anse pleine</td></tr>
+          <tr><td>VB-5010</td><td>Panier de rangement TRESSE</td><td>Rangement</td><td>Jonc tressé</td><td>40 × 30 × 22 cm</td><td>naturel</td><td>29,00 €</td><td>doublure coton amovible</td></tr>
+          <tr><td>VB-5011</td><td>Corbeille à pain TRESSE</td><td>Rangement</td><td>Jonc tressé</td><td>Ø 24 × H 9 cm</td><td>naturel</td><td>16,50 €</td><td></td></tr>
+          <tr><td>VB-8100</td><td>Boîte de conservation CLARIS 1,2 L</td><td>Rangement</td><td>Verre, bambou</td><td>18 × 13 × 8,5 cm</td><td>transparent</td><td>18,90 €</td><td>joint silicone ; couvercle lavage main</td></tr>
+          <tr><td>VB-8101</td><td>Boîte de conservation CLARIS 0,6 L</td><td>Rangement</td><td>Verre, bambou</td><td>15 × 11 × 6,5 cm</td><td>transparent</td><td>14,90 €</td><td>joint silicone</td></tr>
+          <tr><td>VB-6200</td><td>Théière en fonte MIRANDE 0,8 L</td><td>Arts de la table</td><td>Fonte émaillée</td><td>H 14 × Ø 15 cm</td><td></td><td>54,00 €</td><td>filtre inox amovible ; lavage main</td></tr>
+          <tr><td>VB-6201</td><td>Bouilloire émaillée MIRANDE 1,7 L</td><td>Arts de la table</td><td>Acier émaillé</td><td>H 21 × Ø 20 cm</td><td>ivoire, vert sauge</td><td>42,00 €</td><td>tous feux sauf induction</td></tr>
+          <tr><td>VB-7400</td><td>Lot de 3 torchons GAVRIE</td><td>Textile</td><td>Coton tissé</td><td>50 × 70 cm</td><td>rayé bleu, rayé ocre</td><td>19,50 €</td><td>lavable à 60 °C</td></tr>
+          <tr><td>VB-7401</td><td>Tablier GAVRIE</td><td>Textile</td><td>Coton tissé</td><td></td><td>rayé bleu, rayé ocre</td><td>24,00 €</td><td>cordons réglables</td></tr>
+          <tr><td>VB-1200</td><td>Nappe enduite ROUVRAY</td><td>Textile</td><td>Lin enduit</td><td>140 × 250 cm</td><td>naturel, argile</td><td>59,00 €</td><td>essuyage à l’éponge</td></tr>
+          <tr><td>VB-1201</td><td>Set de table enduit ROUVRAY</td><td>Textile</td><td>Lin enduit</td><td>33 × 45 cm</td><td>naturel, argile</td><td>9,90 €</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La liste rouge, à répéter avant tout dépôt</div>
+        <p>
+          Ce tableau ne porte <strong>aucune colonne de marge, aucun prix d’achat, aucune condition
+          fournisseur, aucune donnée client</strong>. C’est l’état dans lequel un tableau se dépose.
+          Retirer les noms d’un fichier client ne le rend pas déposable ; supprimer une colonne du
+          fichier de travail prend trente secondes et c’est le réflexe à installer.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6" data-titre="Trois fiches de la série + trois déclinaisons du produit témoin, pour la lecture comparée" data-bloc="M2, démonstration (plan B)" data-tirage="1 jeu par table + 1 jeu formateur">
+      <div class="piece-badge">Pièce A6 — recto</div>
+      <h2>Trois fiches de la série — l’homogénéité se lit côte à côte</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 2 : quota atteint, outil indisponible, réseau saturé —
+        la lecture comparée se tient sur ces trois fiches, à l’identique. Elles sortent du tableau
+        de la pièce A5 et d’aucune autre source. Faites lire les <strong>trois titres à la suite</strong>,
+        puis les trois argumentaires : c’est l’homogénéité du format qui frappe, pas la vitesse.
+      </p>
+
+      <div class="champ-date">
+        <strong>Reconstitution pédagogique du kit</strong> — ce n’est pas une sortie d’outil. Si vous
+        imprimez votre propre capture pour la substituer, datez-la ici :
+        <strong>capturée le</strong> ____ / ____ / 20____ · <strong>outil et version :</strong>
+        ______________________ · <strong>par :</strong> ______________. Au-delà de trois mois, on
+        recapture.
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 1 — VB-4120</strong></p>
+        <p><strong>Titre.</strong> Bouteille isotherme ORVAL 750 ml — inox double paroi</p>
+        <p>
+          <strong>Argumentaire.</strong> Emportez votre boisson du matin jusqu’au milieu de
+          l’après-midi sans qu’elle tiédisse. La double paroi en inox tient le chaud douze heures et
+          le froid vingt-quatre. Son diamètre passe dans un porte-gobelet, son bouchon-gobelet évite
+          de chercher une tasse. Elle se lave à la main, en trois gestes, et se garde des années.
+        </p>
+        <ul>
+          <li>Inox 18/8, double paroi</li>
+          <li>H 27,5 × Ø 7,4 cm</li>
+          <li>Gris ardoise, vert sauge, sable</li>
+          <li>12 h chaud / 24 h froid</li>
+          <li>Lavage à la main</li>
+        </ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 2 — VB-3312</strong></p>
+        <p><strong>Titre.</strong> Mug LUZANE 35 cl — grès émaillé, anse pleine</p>
+        <p>
+          <strong>Argumentaire.</strong> Trente-cinq centilitres, c’est le mug du petit-déjeuner
+          plutôt que la tasse d’appoint. Le grès émaillé garde la chaleur plus longtemps qu’une
+          porcelaine fine, et l’anse pleine se tient à pleine main, sans pincer les doigts. Il passe
+          au lave-vaisselle, ce qui décide souvent de l’achat.
+        </p>
+        <ul>
+          <li>Grès émaillé</li>
+          <li>H 9,5 × Ø 8,5 cm</li>
+          <li>Craie, terre, bleu nuit</li>
+          <li>Passe au lave-vaisselle</li>
+          <li>Anse pleine</li>
+        </ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 3 — VB-5010</strong></p>
+        <p><strong>Titre.</strong> Panier de rangement TRESSE — jonc, doublure coton</p>
+        <p>
+          <strong>Argumentaire.</strong> Quarante centimètres de long : le panier prend une brassée
+          de linge, une pile de magazines ou les jouets du salon. Le jonc tressé tient sans se
+          déformer, la doublure coton s’enlève et se lave. Il se pose au sol ou se glisse sous une
+          console, et il se voit sans déranger.
+        </p>
+        <ul>
+          <li>Jonc tressé</li>
+          <li>40 × 30 × 22 cm</li>
+          <li>Coloris naturel</li>
+          <li>Doublure coton amovible</li>
+          <li>Prix, disponibilité, garantie, retours : à compléter par le magasin</li>
+        </ul>
+      </div>
+
+      <p class="verso-note">→ Tournez la page : le même produit, décliné sur trois supports.</p>
+    </section>
+
+    <section class="piece" data-piece="A6">
+      <div class="piece-badge">Pièce A6 — verso</div>
+      <h2>Trois déclinaisons du même produit — une seule matière, zéro réécriture</h2>
+      <p class="piece-usage">
+        Le produit témoin est le VB-4120. Les trois versions ci-dessous ne contiennent
+        <strong>rien</strong> que la fiche 1 du recto ne contienne déjà : c’est le point à faire
+        constater. Celui qui réécrit à la main pour chaque support fait le travail trois fois.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Déclinaison 1 — description longue, site de l’enseigne</strong></p>
+        <p>
+          <strong>Bouteille isotherme ORVAL 750 ml — inox double paroi</strong>
+        </p>
+        <p>
+          Emportez votre boisson du matin jusqu’au milieu de l’après-midi sans qu’elle tiédisse. La
+          double paroi en inox 18/8 tient le chaud douze heures et le froid vingt-quatre, mesurés
+          selon le protocole du fournisseur. Son diamètre de 7,4 cm passe dans un porte-gobelet ;
+          son bouchon-gobelet de 200 ml évite de chercher une tasse. Lavage à la main : elle ne
+          passe pas au lave-vaisselle. Trois coloris : gris ardoise, vert sauge, sable.
+        </p>
+        <p class="petit">Prix, disponibilité, garantie, retours : à compléter par le magasin.</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Déclinaison 2 — description courte, place de marché (300 caractères maximum)</strong></p>
+        <p>
+          Bouteille isotherme ORVAL 750 ml, inox 18/8 double paroi. Chaud 12 h, froid 24 h.
+          Bouchon-gobelet 200 ml. Hauteur 27,5 cm, diamètre 7,4 cm : passe en porte-gobelet. Lavage
+          à la main. Gris ardoise, vert sauge ou sable.
+        </p>
+        <p class="petit">247 caractères. Ce que le format a obligé à retirer : l’usage raconté, le protocole de mesure, la ligne « à compléter par le magasin » — qui se reporte ailleurs sur la place de marché.</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Déclinaison 3 — affiche de rayon</strong></p>
+        <p style="text-align: center"><strong>Chaud 12 heures, froid 24 heures</strong></p>
+        <p style="text-align: center">
+          Inox 18/8 double paroi · 750 ml, bouchon-gobelet 200 ml · Lavage à la main
+        </p>
+        <p class="petit">
+          Accroche : six mots. Trois caractéristiques, pas quatre. Le prix se pose à la main sur
+          l’étiquette du rayon, jamais dans le texte généré.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que le formateur fait dire à la salle</div>
+        <p>
+          Posez une seule question : <strong>« qu’est-ce que la déclinaison 2 contient que la
+          fiche 1 ne contenait pas&nbsp;? »</strong> — la réponse est : rien. Puis la seconde :
+          « qu’est-ce qu’elle a perdu&nbsp;? ». C’est la ligne qui compte, et c’est celle que les
+          stagiaires oublient d’écrire chez eux.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7" data-titre="Trame de série et règle d’échantillonnage" data-bloc="M2, pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A7</div>
+      <h2>Ma trame de série — deuxième pièce du manuel</h2>
+      <p class="piece-usage">
+        Se construit intégralement sur papier : choix des colonnes, format imposé rubrique par
+        rubrique, règle d’échantillonnage. C’est l’atelier du module 2 qui survit à une panne
+        totale, parce que la production réelle se relance au bureau avec la trame datée.
+      </p>
+
+      <p>
+        <strong>Enseigne :</strong> ______________________ ·
+        <strong>Établie le :</strong> ____ / ____ / 20____ ·
+        <strong>Version :</strong> ______
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1 — Mes colonnes, et rien d’autre</div>
+        <p class="petit">
+          Nommez chaque colonne du tableau que vous déposerez. Ce qui n’est pas nommé ici ne doit
+          pas apparaître dans les fiches.
+        </p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Colonnes supprimées avant dépôt</strong> (marges, prix d’achat, conditions fournisseur, données client) :</p>
+        <div class="lignes"></div>
+        <p><strong>Vérifié par le binôme :</strong> ______________ · le ____ / ____ / 20____</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2 — Le format imposé, rubrique par rubrique</div>
+        <table>
+          <thead>
+            <tr><th style="width: 26%">Rubrique</th><th style="width: 26%">Limite chiffrée</th><th>Règle d’écriture</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Titre</td><td>______ caractères max</td><td>commence par ______________________</td></tr>
+            <tr><td>Argumentaire</td><td>______ mots</td><td></td></tr>
+            <tr><td>Caractéristiques</td><td>______ puces</td><td>reprises du tableau, sans reformulation</td></tr>
+            <tr><td>Ligne magasin</td><td></td><td>prix, disponibilité, garantie, retours</td></tr>
+            <tr><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Une rubrique sans limite chiffrée est une rubrique qui dérivera. C’est toujours là que le
+          format lâche.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3 — Les interdits, écrits</div>
+        <ul>
+          <li><span class="coche"></span> Aucune information absente du tableau ; case vide = « non renseigné ».</li>
+          <li><span class="coche"></span> Aucune caractéristique, norme, origine ou label ajouté.</li>
+          <li><span class="coche"></span> Aucune allégation de santé ou d’environnement.</li>
+          <li><span class="coche"></span> Aucun superlatif invérifiable.</li>
+          <li><span class="coche"></span> Aucune formulation stéréotypée sur le genre, l’âge ou l’origine.</li>
+          <li><span class="coche"></span> Autre, propre à mon rayon : ______________________</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4 — Ma règle d’échantillonnage, écrite avec mes mots</div>
+        <p>
+          Sur une série de <strong>______</strong> fiches, je tire <strong>______</strong> fiches
+          <strong>au hasard</strong> (numéros tirés, jamais les premières) et je vérifie :
+        </p>
+        <ul>
+          <li><span class="coche"></span> le prix est conforme au tableau source ;</li>
+          <li><span class="coche"></span> chaque caractéristique est prouvée par le tableau ;</li>
+          <li><span class="coche"></span> les mentions arrêtées par mon enseigne sont présentes ;</li>
+          <li><span class="coche"></span> aucune formulation stéréotypée.</li>
+        </ul>
+        <p>
+          <strong>Si une fiche tombe :</strong> ______________________________________________
+        </p>
+        <p class="petit">
+          La réponse attendue tient en cinq mots, et elle doit être écrite de la main du stagiaire :
+          toute la série repasse. Une erreur d’échantillon vient presque toujours de la trame, donc
+          elle est partout.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">5 — Ce que l’échantillonnage n’attrape pas</div>
+        <p class="petit">
+          Une erreur de <strong>trame</strong> est dans l’échantillon, puisqu’elle est dans toutes
+          les fiches. Une erreur de <strong>ligne du tableau source</strong> ne s’y trouve qu’une
+          fois sur cinquante : c’est le tableau qu’il faut tenir propre, pas les fiches. Écrivez ici
+          qui tient le tableau : ______________________
+        </p>
+      </div>
+
+      <div class="banniere">
+        Toute série produite avec cette trame est un <strong>projet</strong> : elle se relit, se
+        corrige et se signe avant publication.
+        <strong>Aucun prix, aucune promotion, aucune allégation produit ne s’engage par ces
+        textes</strong> — le prix vient du tableau de l’enseigne et se vérifie fiche à fiche. Toute
+        question juridique va au conseil de l’entreprise ; le formateur n’arbitre aucune question de
+        droit.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8" data-titre="Série témoin à trois écarts plantés + grille d’échantillonnage et corrigé" data-bloc="M2, vérification (plan B)" data-tirage="1 jeu par binôme + corrigé formateur">
+      <div class="piece-badge">Pièce A8 — feuille stagiaire</div>
+      <h2>Série témoin — tirez trois fiches au hasard, passez-les aux quatre points</h2>
+      <p class="piece-usage">
+        Plan B de la vérification du module 2 : l’échantillonnage se pratique sur cette série de six
+        fiches, qui contient <strong>trois écarts</strong>. Le tableau source est la pièce A5, et il
+        doit être <strong>ouvert</strong> : sans lui, on n’échantillonne pas, on approuve. Tirez les
+        numéros à voix haute — pas « les trois premières ».
+      </p>
+
+      <p><strong>Numéros tirés :</strong> ______ · ______ · ______ — tirés par : ______________</p>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 1 — VB-4121</strong></p>
+        <p><strong>Bouteille isotherme ORVAL 500 ml — inox double paroi</strong></p>
+        <p>
+          Le format sac à main de la gamme ORVAL. Inox 18/8 double paroi, elle tient le chaud dix
+          heures et le froid vingt. Vingt-deux centimètres de haut : elle tient debout dans un
+          cartable comme dans un sac de sport.
+        </p>
+        <ul><li>Inox 18/8</li><li>H 22,0 × Ø 6,8 cm</li><li>Gris ardoise, sable</li><li>10 h chaud / 20 h froid</li><li>Prix conseillé : 29,90 €</li></ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 2 — VB-3312</strong></p>
+        <p><strong>Mug LUZANE 35 cl — grès émaillé, anse pleine</strong></p>
+        <p>
+          Idéal pour les mamans pressées du matin : trente-cinq centilitres, une anse pleine qui se
+          tient à pleine main, et le lave-vaisselle le soir. Le grès émaillé garde la chaleur plus
+          longtemps qu’une porcelaine fine.
+        </p>
+        <ul><li>Grès émaillé</li><li>H 9,5 × Ø 8,5 cm</li><li>Craie, terre, bleu nuit</li><li>Passe au lave-vaisselle</li><li>Prix conseillé : 12,50 €</li></ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 3 — VB-8101</strong></p>
+        <p><strong>Boîte de conservation CLARIS 0,6 L — verre et bambou</strong></p>
+        <p>
+          La petite boîte du reste de la veille. Corps en verre, couvercle bambou, joint silicone :
+          elle se pose sur la table sans transvaser. Quinze centimètres de long, elle s’empile avec
+          le modèle 1,2 L.
+        </p>
+        <ul><li>Verre, couvercle bambou</li><li>15 × 11 × 6,5 cm</li><li>Transparent</li><li>Joint silicone</li><li>Prix conseillé : 14,90 €</li></ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 4 — VB-9050</strong></p>
+        <p><strong>Moulin à poivre SAULAIE — chêne massif, mécanisme céramique</strong></p>
+        <p>
+          Vingt et un centimètres de chêne massif huilé, un mécanisme céramique réglable sur six
+          crans : de la mouture fine à la mouture concassée, sans changer de moulin.
+        </p>
+        <ul><li>Chêne massif huilé</li><li>H 21 × Ø 5,5 cm</li><li>Naturel</li><li>Mécanisme céramique, 6 crans</li><li>Prix conseillé : 24,90 €</li></ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 5 — VB-8100</strong></p>
+        <p><strong>Boîte de conservation CLARIS 1,2 L — verre et bambou</strong></p>
+        <p>
+          Le format plat familial. Corps en verre, couvercle bambou à joint silicone ; le couvercle
+          se lave à la main. Dix-huit centimètres de long, elle s’empile avec le modèle 0,6 L.
+        </p>
+        <ul><li>Verre, couvercle bambou</li><li>18 × 13 × 8,5 cm</li><li>Transparent</li><li>Joint silicone ; couvercle lavage main</li><li>Prix conseillé : 22,90 €</li></ul>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Fiche 6 — VB-7400</strong></p>
+        <p><strong>Lot de 3 torchons GAVRIE — coton tissé, lavable à 60 °C</strong></p>
+        <p>
+          Trois torchons en coton tissé, cinquante par soixante-dix centimètres. Les mamans
+          apprécieront le lavage à 60 °C, qui vient à bout des taches de cuisine sans décolorer les
+          rayures.
+        </p>
+        <ul><li>Coton tissé</li><li>50 × 70 cm</li><li>Rayé bleu, rayé ocre</li><li>Lavable à 60 °C</li><li>Prix conseillé : 19,50 €</li></ul>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 34%">Les quatre points</th>
+            <th style="width: 12%">Fiche n° ___</th>
+            <th style="width: 12%">Fiche n° ___</th>
+            <th style="width: 12%">Fiche n° ___</th>
+            <th>L’écart relevé</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Prix conforme au tableau source</strong></td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td></tr>
+          <tr><td><strong>Caractéristiques toutes prouvées par le tableau</strong></td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td></tr>
+          <tr><td><strong>Mentions arrêtées par l’enseigne présentes</strong></td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td></tr>
+          <tr><td><strong>Aucune formulation stéréotypée</strong> (genre, âge, origine)</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Verdict :</strong> ☐ série validée ☐ <strong>toute la série repasse</strong> — parce que : ______________________</p>
+    </section>
+
+    <section class="piece" data-piece="A8">
+      <div class="piece-badge">Pièce A8 — corrigé formateur</div>
+      <h2>Série témoin — les trois écarts, et la règle qui tranche</h2>
+      <p class="piece-usage">
+        Ne donnez pas les numéros à l’avance. Si le binôme a tiré trois fiches propres, c’est un
+        excellent cas : faites-lui énoncer ce que son échantillon ne prouve pas. C’est
+        l’enseignement du module, plus encore que les écarts eux-mêmes.
+      </p>
+
+      <div class="corrige">
+        <div class="encadre-titre">Trois écarts — dont un qui apparaît deux fois</div>
+        <ol>
+          <li>
+            <strong>Écart de prix — fiche 5 (VB-8100) : « 22,90 € », le tableau porte 18,90 €.</strong>
+            Règle : le prix se contrôle contre le tableau source, jamais contre le souvenir de ce
+            qu’il coûtait. C’est l’écart qui se répare le plus vite et qui coûte le plus cher, parce
+            qu’un prix affiché engage l’enseigne devant le client.
+          </li>
+          <li>
+            <strong>Caractéristique non prouvée — fiche 4 (VB-9050) : « chêne massif », le tableau
+            porte frêne huilé.</strong> Règle : une matière se recopie du tableau. Ici, le mot est
+            passé du titre à l’argumentaire puis aux puces : une erreur de matière contamine tout le
+            texte, elle ne se corrige pas en une ligne.
+          </li>
+          <li>
+            <strong>Formulation stéréotypée — fiches 2 et 6 : « les mamans pressées », « les mamans
+            apprécieront ».</strong> C’est le <strong>même</strong> écart, et c’est pour cela qu’il
+            apparaît deux fois : il vient de la trame, pas des fiches. Règle : une formulation genrée
+            dans la trame se réplique à l’identique sur les cinquante fiches — c’est le défaut le
+            plus silencieux de la production en série, et le seul que l’échantillonnage attrape à
+            coup sûr.
+          </li>
+        </ol>
+        <p>
+          <strong>Verdict attendu : toute la série repasse.</strong> Faites-le formuler par la salle,
+          avec le motif — parce qu’un écart de trame est partout. Un écart de ligne (le prix de la
+          fiche 5) impose en plus de reprendre le <strong>tableau</strong>, pas seulement les fiches.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le quatrième point : « mentions arrêtées par l’enseigne »</div>
+        <p>
+          Aucun écart n’est planté sur cette ligne, et c’est volontaire. Le kit ne dit pas ce que vos
+          fiches doivent porter : cette liste se demande au <strong>responsable qualité de
+          l’enseigne</strong>, et le manuel de publication la recopiera telle qu’il l’aura arrêtée.
+          Si la question du contenu obligatoire monte en salle, la formule se prononce telle quelle :
+          « je ne me prononce pas, notez la question, votre conseil tranchera ».
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si un binôme valide les trois fiches sans avoir ouvert le tableau</div>
+        <p>
+          Une seule question : <strong>« conforme à quoi&nbsp;? »</strong>. Sans le tableau sous les
+          yeux, on ne vérifie pas, on approuve. Faites refaire, tableau ouvert, chronomètre relancé.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A9" data-titre="L’avis difficile : les deux réponses comparées, et les deux totaux contradictoires" data-bloc="M3, démonstration (plan B)" data-tirage="1 par stagiaire + 1 jeu formateur">
+      <div class="piece-badge">Pièce A9 — recto</div>
+      <h2>Le même avis, deux réponses — ce que la première confirme, la seconde le tait</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 3. Lisez d’abord la réponse qui aggrave, à voix haute
+        et avec conviction : la salle doit sentir qu’elle aurait pu l’écrire. Puis comparez mot à
+        mot. Avis et réponses sont fictifs, recopiés sans nom d’auteur ; l’adresse indiquée est une
+        adresse d’exemple.
+      </p>
+
+      <div class="champ-date">
+        <strong>Reconstitution pédagogique du kit</strong> — pas une sortie d’outil. Capture réelle
+        substituée&nbsp;? <strong>Capturée le</strong> ____ / ____ / 20____ ·
+        <strong>outil et version :</strong> ______________________ · <strong>par :</strong> ______________
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>L’avis publié sur la fiche d’établissement — une étoile</strong></p>
+        <p>
+          « Commande passée le 3 mars, reçue le 19 avec un bouchon fendu. Trois relances au service
+          client, aucune réponse. Une étoile, et je ne reviendrai pas. »
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Réponse A — celle qui aggrave</strong> (les passages fautifs sont soulignés d’un trait au stylo avant impression, ou entourés en salle)</p>
+        <p>
+          « Bonjour, nous sommes désolés pour <strong>votre commande du 3 mars</strong>.
+          <strong>Votre bouteille ORVAL vert sauge</strong> a bien été expédiée le 17 et le
+          transporteur nous a confirmé un retard. <strong>Nous vous remboursons intégralement les
+          34,90 € sous 48 heures</strong> et nous vous offrons un bon d’achat de 20 €.
+          <strong>Nous reconnaissons une erreur de notre service client.</strong> »
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Réponse B — celle qui referme</strong> (68 mots)</p>
+        <p>
+          « Bonjour, merci d’avoir pris le temps de ce retour. Un article endommagé et des relances
+          restées sans réponse ne correspondent pas à ce que nous voulons offrir, et nous le
+          regrettons. Nous ne pouvons pas examiner une situation individuelle sur un espace public :
+          écrivez-nous à service-clients@maison-livernet.test en indiquant votre référence, notre
+          équipe reprendra le dossier. Merci de nous permettre de progresser. »
+        </p>
+      </div>
+
+      <table>
+        <thead>
+          <tr><th style="width: 34%">Ce que fait la réponse A</th><th style="width: 22%">Ce que fait la réponse B</th><th>La règle qui tranche</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Confirme que la personne est cliente et reprend <strong>sa date d’achat</strong></td>
+            <td>Ne confirme rien ; parle de « ce retour »</td>
+            <td>Une réponse publique ne confirme jamais qu’une personne est cliente. Reprendre la date que le client a lui-même publiée, c’est l’enseigne qui la confirme.</td>
+          </tr>
+          <tr>
+            <td>Nomme <strong>le produit et son coloris</strong></td>
+            <td>Ne nomme aucun produit</td>
+            <td>Ni commande, ni date, ni produit, ni montant. Le dossier se traite en privé, dossier en main.</td>
+          </tr>
+          <tr>
+            <td>Promet un <strong>remboursement chiffré</strong> et un geste commercial</td>
+            <td>Invite à écrire, sans rien promettre</td>
+            <td>Rien de ce qui engage l’enseigne ne s’écrit en public : l’avis suivant citera la réponse.</td>
+          </tr>
+          <tr>
+            <td><strong>Admet une faute</strong> précise</td>
+            <td>Regrette l’expérience, sans admettre de fait</td>
+            <td>On peut regretter ce qui a été vécu sans reconnaître un fait précis en public. La nuance est exactement là, et elle se lit dans la trame de la pièce A10.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="verso-note">→ Tournez la page : la bascule sur le chiffre.</p>
+    </section>
+
+    <section class="piece" data-piece="A9">
+      <div class="piece-badge">Pièce A9 — verso</div>
+      <h2>Les deux totaux — l’outil écrit la formule, il ne calcule pas</h2>
+      <p class="piece-usage">
+        Seconde moitié de la démonstration du module 3. En salle, collez le tableau ci-dessous,
+        demandez le total par famille, puis recommencez dans une conversation NEUVE. Si les deux
+        totaux sortent identiques, relancez sur l’ensemble des neuf lignes ; si l’écart n’apparaît
+        toujours pas, montrez les deux réponses imprimées ci-dessous et dites-le franchement :
+        « ça n’a pas raté aujourd’hui, ça ratera lundi ».
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center"><strong>MAISON LIVERNET (fictif) — extrait du tableau de ventes, premier trimestre</strong></p>
+        <table>
+          <thead><tr><th>Mois</th><th>Famille</th><th>Montant TTC</th></tr></thead>
+          <tbody>
+            <tr><td>Janvier</td><td>Arts de la table</td><td>4 210,00 €</td></tr>
+            <tr><td>Janvier</td><td>Rangement</td><td>1 980,50 €</td></tr>
+            <tr><td>Janvier</td><td>Textile</td><td>1 145,00 €</td></tr>
+            <tr><td>Février</td><td>Arts de la table</td><td>3 860,00 €</td></tr>
+            <tr><td>Février</td><td>Rangement</td><td>2 240,00 €</td></tr>
+            <tr><td>Février</td><td>Textile</td><td>990,50 €</td></tr>
+            <tr><td>Mars</td><td>Arts de la table</td><td>4 505,00 €</td></tr>
+            <tr><td>Mars</td><td>Rangement</td><td>1 875,00 €</td></tr>
+            <tr><td>Mars</td><td>Textile</td><td>1 320,00 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Première conversation — « total du trimestre pour Arts de la table »</strong></p>
+        <p>« Le total pour la famille Arts de la table sur le trimestre s’élève à <strong>12 575,00 €</strong>. »</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Seconde conversation, mêmes données collées, même question</strong></p>
+        <p>« Le total pour la famille Arts de la table sur le trimestre s’élève à <strong>12 755,00 €</strong>. »</p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Corrigé — ce que le formateur montre, et la règle</div>
+        <p>
+          Le total réel, posé au tableur, est <strong>12 575,00 €</strong> (4 210 + 3 860 + 4 505).
+          La seconde réponse se trompe de <strong>180 €</strong> — deux chiffres intervertis, un
+          écart de 1,4 % que personne ne voit à l’œil. <strong>Le fait que la première réponse soit
+          juste ne prouve rien</strong> : c’est le point le plus important de la démonstration. Vous
+          n’avez aucun moyen de savoir laquelle est bonne sans ouvrir votre tableur — donc autant
+          l’ouvrir tout de suite.
+        </p>
+        <p>
+          <strong>La règle qui tranche :</strong> un modèle de langage génère du texte plausible, il
+          ne calcule pas. Il écrit la formule que votre tableur exécutera ; le chiffre qui part en
+          réunion est celui du tableur, et vous devez pouvoir dire d’où il sort.
+        </p>
+        <p class="petit">
+          Repères pour le formateur, à ne pas projeter : Rangement = 6 095,50 € · Textile =
+          3 455,50 € · total général = 22 126,00 €. Ils servent à répondre si la salle recalcule.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A10" data-titre="Trois avis de secours + trames de réponse à trous + réponse type de la fiche d’établissement" data-bloc="M3, pratique (plan B)" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A10</div>
+      <h2>Trois avis, trois trames — la réponse se construit, elle ne s’improvise pas</h2>
+      <p class="piece-usage">
+        Pour le stagiaire qui n’a aucun avis en ligne à traiter, et comme plan B intégral quand
+        l’outil est indisponible : les trames à trous se remplissent au stylo. Avis fictifs,
+        recopiés <strong>sans nom d’auteur</strong> — c’est aussi la consigne pour les avis réels
+        des stagiaires. Deux lignes rouges, répétées au démarrage de l’atelier : on ne fabrique
+        jamais un avis, et une réponse publique ne confirme jamais qu’une personne est cliente.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Avis 1 — positif (cinq étoiles)</strong></p>
+        <p>
+          « Accueil impeccable en magasin, on m’a laissé comparer trois modèles sans me presser.
+          Repartie avec exactement ce qu’il me fallait. »
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Avis 2 — négatif et fondé (deux étoiles)</strong></p>
+        <p>
+          « Article annoncé disponible sur le site, indisponible en réalité. Prévenue quatre jours
+          plus tard, après ma relance. Le produit est bien, le suivi non. »
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Avis 3 — injustifié (une étoile)</strong></p>
+        <p>
+          « Magasin fermé alors qu’il devait être ouvert, j’ai fait quarante minutes de route pour
+          rien. Aucun sérieux. » <span class="petit">(Le magasin n’a pas fermé ce jour-là ; l’avis
+          concerne vraisemblablement une autre enseigne.)</span>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 1 — répondre à un avis positif (trente secondes, zéro risque)</div>
+        <p>« Merci ______________________________ (ce que le message dit, sans nommer de produit).</p>
+        <p>Ce que nous cherchons à faire : ______________________________________________.</p>
+        <p>Au plaisir ______________________________. »</p>
+        <p class="petit">
+          C’est la réponse la plus rentable de toutes : c’est elle que lisent les futurs clients. Ne
+          confirmez pas pour autant que la personne est cliente — « merci pour ce retour » suffit.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 2 — répondre à un avis négatif : remerciement, position, canal privé</div>
+        <p><strong>1. Remerciement</strong> — sans confirmer quoi que ce soit :</p>
+        <div class="lignes"></div>
+        <p><strong>2. Position de l’enseigne</strong> — ce que nous voulons offrir, au présent, sans admettre de fait précis :</p>
+        <div class="lignes"></div>
+        <p><strong>3. Canal privé</strong> — l’adresse, et ce qu’il faut indiquer :</p>
+        <div class="lignes"></div>
+        <p><strong>Interdits, à relire avant d’envoyer :</strong></p>
+        <ul>
+          <li><span class="coche"></span> Aucune confirmation que la personne est cliente.</li>
+          <li><span class="coche"></span> Ni commande, ni date, ni produit, ni montant — même si l’avis les cite.</li>
+          <li><span class="coche"></span> Aucun remboursement, aucun geste commercial promis.</li>
+          <li><span class="coche"></span> Aucune faute admise.</li>
+          <li><span class="coche"></span> Longueur : ______ mots (limite que je me fixe : 70).</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 3 — l’avis injustifié</div>
+        <p class="petit">
+          Même structure, une nuance : on ne conteste pas les faits en public et on ne traite pas la
+          personne de menteuse. On indique ce qui est vérifiable de notre côté et on bascule en
+          privé.
+        </p>
+        <p>Ce que je peux dire sans contredire personne :</p>
+        <div class="lignes"></div>
+        <p>Ce que je bascule en privé :</p>
+        <div class="lignes"></div>
+        <p class="petit">
+          Faire retirer un avis est une <strong>question juridique</strong> : elle se note, elle ne
+          se tranche pas en salle.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 4 — la réponse type de ma fiche d’établissement locale</div>
+        <p>Cas le plus fréquent chez nous : ______________________________________________</p>
+        <p>Réponse type, réutilisable telle quelle par un vendeur qui n’était pas en salle :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>
+          <strong>Qui répond :</strong> ______________________ ·
+          <strong>Sous quel délai :</strong> ______________ ·
+          <strong>Qui relit avant publication :</strong> ______________________
+        </p>
+      </div>
+
+      <div class="banniere">
+        Toute réponse écrite sur cette trame est un <strong>projet</strong> : elle se relit, se
+        corrige et se signe avant d’être publiée.
+        <strong>Aucun prix, aucune promotion, aucune allégation produit ne s’engage par ce
+        texte</strong>, et aucun geste commercial ne s’y promet. Un avis ne se fabrique jamais, et
+        aucune donnée personnelle ne s’y écrit. Toute question juridique — retrait d’un avis,
+        contrepartie, signalement — va au conseil de l’entreprise ; le formateur n’en arbitre aucune.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11" data-titre="Trame « écrire autour du chiffre » — structure du tableau, jamais son contenu" data-bloc="M3, pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A11</div>
+      <h2>Écrire autour du chiffre — je décris la structure, je ne livre pas les données</h2>
+      <p class="piece-usage">
+        Se remplit à la main, y compris quand l’outil est indisponible : la syntaxe exacte se
+        vérifiera au bureau, la démarche s’apprend ici. La même liste rouge que le matin s’applique,
+        mot pour mot : ce qui passe dans l’outil est la <strong>structure</strong> du tableau, jamais
+        son contenu.
+      </p>
+
+      <p>
+        <strong>Enseigne :</strong> ______________________ ·
+        <strong>Rempli par :</strong> ______________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1 — La structure de mon tableau (ce que je décris, et rien d’autre)</div>
+        <table>
+          <thead><tr><th style="width: 34%">Nom de la colonne</th><th style="width: 26%">Type de valeur</th><th>Exemple de format (pas de donnée réelle)</th></tr></thead>
+          <tbody>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          « Date, au format jj/mm/aaaa » se décrit. « 03/03, magasin de Vaugnes, 412,50 € » se colle
+          — et ne se colle donc pas.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2 — Ce que je ne colle jamais</div>
+        <ul>
+          <li><span class="coche"></span> Le fichier clients, même privé de ses noms.</li>
+          <li><span class="coche"></span> Les marges, le prix d’achat, les conditions fournisseurs.</li>
+          <li><span class="coche"></span> L’export complet des ventes, « pour que la formule soit juste ».</li>
+          <li><span class="coche"></span> Le chiffre d’affaires détaillé par magasin ou par vendeur.</li>
+        </ul>
+        <p class="petit">
+          La formule sort <strong>identique</strong> avec les seuls noms de colonnes. Coller les
+          données ne l’améliore pas ; cela ne fait qu’exposer les données.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3 — Ce que je demande</div>
+        <p>La formule ou le tableau croisé dont j’ai besoin, décrit en une phrase :</p>
+        <div class="lignes"></div>
+        <p>La formule obtenue, recopiée à la main :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p>
+          <strong>Testée sur mon fichier :</strong> ☐ oui, elle rend le résultat attendu ☐ non,
+          à reprendre — parce que : ______________________
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4 — Le commentaire des résultats, en trois temps</div>
+        <p class="petit">
+          Les valeurs commentées sont saisies à la main, depuis mon tableur. Aucun total, aucune
+          moyenne, aucun pourcentage ne vient de l’outil.
+        </p>
+        <p><strong>Ce qui progresse</strong> (valeur, période, source du chiffre) :</p>
+        <div class="lignes"></div>
+        <p><strong>Ce qui stagne :</strong></p>
+        <div class="lignes"></div>
+        <p><strong>La question que ces chiffres ne permettent pas de trancher :</strong></p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Ce commentaire est un <strong>projet</strong> : il se relit, se corrige et se signe avant
+        d’être présenté. <strong>Aucun chiffre calculé par l’outil n’y figure</strong> — chaque
+        nombre vient de mon tableur et je peux dire d’où il sort.
+        <strong>Aucun prix, aucune promotion, aucune allégation produit ne s’engage par ce
+        texte.</strong> Toute question juridique va au conseil de l’entreprise ; le formateur
+        n’arbitre aucune question de droit.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12" data-titre="Grille de relecture des réponses aux avis + réponse piégée à trois fuites et corrigé" data-bloc="M3, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A12 — feuille stagiaire</div>
+      <h2>Relecture croisée — publiable, ou renvoyée&nbsp;?</h2>
+      <p class="piece-usage">
+        S’applique aux réponses <strong>du binôme voisin</strong>. Chaque réponse est déclarée
+        publiable ou renvoyée, avec son motif : « plutôt bien » n’est pas un verdict. Aucun outil,
+        aucun vidéoprojecteur nécessaire.
+      </p>
+
+      <p>
+        <strong>Réponses relues :</strong> ______________________ ·
+        <strong>Relues par :</strong> ______________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">Ce qu’on cherche</th>
+            <th style="width: 14%">Réponse 1</th>
+            <th style="width: 14%">Réponse 2</th>
+            <th style="width: 14%">Réponse 3</th>
+            <th>La fuite relevée, mot pour mot</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Une donnée personnelle divulguée</strong>, ou la confirmation que la personne est cliente</td>
+            <td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Un élément du dossier</strong> repris : commande, date, produit, montant</td>
+            <td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Un geste commercial promis</strong> : remboursement, bon, remise</td>
+            <td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Une faute admise</strong> ou un engagement pris au nom de l’enseigne</td>
+            <td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>Un canal privé</strong> proposé, avec ce qu’il faut indiquer</td>
+            <td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td>☐ oui ☐ non</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Verdict — réponse 1 :</strong> ☐ publiable ☐ renvoyée ·
+        <strong>2 :</strong> ☐ publiable ☐ renvoyée ·
+        <strong>3 :</strong> ☐ publiable ☐ renvoyée
+      </p>
+      <p class="petit">
+        Règle du binôme : un verdict sans motif écrit ne compte pas. Une réponse « renvoyée » se
+        renvoie avec la phrase à retirer surlignée.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A12">
+      <div class="piece-badge">Pièce A12 — réponse piégée et corrigé formateur</div>
+      <h2>La réponse à trois fuites — pour le binôme qui déclare tout publiable</h2>
+      <p class="piece-usage">
+        À donner au binôme qui n’a rien relevé. Cette réponse contient les trois fuites les plus
+        fréquentes. S’ils n’en trouvent aucune ici non plus, refaites la lecture avec eux : l’œil
+        n’est pas réglé. Texte pédagogique du kit, sur l’enseigne fictive.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Réponse publiée sous l’avis à une étoile — copie d’entraînement</strong></p>
+        <p>
+          « Bonjour Madame, nous sommes navrés de cette expérience. Votre bouteille ORVAL vert sauge,
+          commandée le 3 mars, vous est effectivement parvenue endommagée, et nous en sommes
+          responsables. Nous procédons au remboursement de vos 34,90 € dès cette semaine. Merci de
+          votre fidélité depuis 2023. »
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Corrigé — les trois fuites, et la règle qui tranche</div>
+        <ol>
+          <li>
+            <strong>« Votre bouteille ORVAL vert sauge, commandée le 3 mars »</strong> — c’est la
+            fuite la plus sournoise : <strong>l’enseigne reprend ce que le client a publié</strong>,
+            et en le reprenant, elle le confirme. Règle : une réponse publique ne confirme jamais
+            qu’une personne est cliente et ne reprend ni commande, ni date, ni produit — même quand
+            l’avis les cite lui-même. Le fait que le client l’ait écrit ne vous autorise pas à le
+            confirmer.
+          </li>
+          <li>
+            <strong>« Nous procédons au remboursement de vos 34,90 € »</strong> — geste commercial
+            et montant promis en public. Règle : rien de ce qui engage l’enseigne ne s’écrit sur un
+            espace public ; l’avis suivant citera cette réponse et exigera le même traitement.
+          </li>
+          <li>
+            <strong>« nous en sommes responsables » et « votre fidélité depuis 2023 »</strong> —
+            faute admise en public, plus une donnée du dossier client (l’ancienneté). Règle : on
+            regrette une expérience, on n’admet pas un fait précis, et l’historique d’un client ne
+            sort jamais du dossier. « Bonjour Madame » ajoute d’ailleurs une quatrième maladresse :
+            l’enseigne désigne la personne.
+          </li>
+        </ol>
+        <p>
+          <strong>Verdict attendu : renvoyée.</strong> Faites réécrire la réponse en 70 mots sur la
+          trame de la pièce A10, séance tenante, avant de passer à la suite.
+        </p>
+        <p class="petit">
+          Ce que le formateur fait chercher avant de le nommer : la fuite n° 1. Tant que la salle
+          croit qu’« il l’a écrit lui-même, donc on peut le répéter », rien n’est acquis.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A13" data-titre="La trame rejouée — sortie molle et sortie durcie, écarts surlignés" data-bloc="M4, démonstration (plan B)" data-tirage="1 par stagiaire + 1 jeu formateur">
+      <div class="piece-badge">Pièce A13</div>
+      <h2>La même trame, deux fois — le test qui dit qu’une trame est finie</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 4. Ne l’annoncez pas : montrez d’abord la sortie de
+        gauche et laissez la salle constater la dérive. Le produit rejoué est le plateau SAULAIE
+        (VB-2075, fiche technique en pièce A1, f. 2), après une première fiche produite le matin sur
+        la bouteille ORVAL.
+      </p>
+
+      <div class="champ-date">
+        <strong>Reconstitution pédagogique du kit</strong> — pas une sortie d’outil. Capture réelle
+        substituée&nbsp;? <strong>Capturée le</strong> ____ / ____ / 20____ ·
+        <strong>outil et version :</strong> ______________________ · <strong>par :</strong> ______________
+      </div>
+
+      <div class="texte-exercice">
+        <p>
+          <strong>Sortie 1 — la trame « molle » du matin, rejouée telle quelle</strong><br />
+          <span class="petit">Consigne d’origine : « rédige une fiche produit à partir de cette fiche technique, comme celle de ce matin ».</span>
+        </p>
+        <p>Voici la fiche produit que vous m’avez demandée pour ce plateau :</p>
+        <p>
+          <strong>Plateau de service SAULAIE en frêne massif huilé, fabriqué au Portugal — 45 × 32 cm</strong>
+        </p>
+        <p><strong>Caractéristiques</strong></p>
+        <ul>
+          <li>Frêne massif huilé</li>
+          <li>45 × 32 cm, épaisseur 1,8 cm</li>
+          <li>Poids 1,1 kg</li>
+          <li>Poignées découpées</li>
+          <li>Finition huile de lin</li>
+          <li>Fabriqué au Portugal</li>
+          <li>Garantie 2 ans</li>
+        </ul>
+        <p>
+          <strong>Description</strong> — Un plateau en frêne massif au format généreux, idéal pour le
+          service du petit-déjeuner comme pour l’apéritif. Ses poignées découpées permettent une
+          prise en main sûre, et sa finition à l’huile de lin met en valeur le veinage du bois. Un
+          objet simple et durable, qui traversera les années dans votre intérieur et se transmettra
+          peut-être.
+        </p>
+        <p>N’hésitez pas si vous souhaitez une version plus courte pour la place de marché&nbsp;!</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p>
+          <strong>Sortie 2 — la consigne durcie, rejouée sur le même produit</strong><br />
+          <span class="petit">Format imposé rubrique par rubrique, limites chiffrées, interdits écrits, « rends uniquement la fiche ».</span>
+        </p>
+        <p><strong>Plateau de service SAULAIE — frêne massif huilé, 45 × 32 cm</strong></p>
+        <p>
+          Quarante-cinq centimètres de long : le plateau prend deux bols, la cafetière et le pain
+          sans que rien ne glisse. Le frêne massif tient le poids sans fléchir, les poignées
+          découpées se prennent à pleine main, y compris avec un torchon. La finition à l’huile de
+          lin se ravive d’un chiffon. Il s’essuie humide et ne passe pas au lave-vaisselle.
+        </p>
+        <ul>
+          <li>Frêne massif huilé, finition huile de lin</li>
+          <li>45 × 32 cm, épaisseur 1,8 cm</li>
+          <li>Poids 1,1 kg</li>
+          <li>Poignées découpées</li>
+          <li>Fabriqué au Portugal</li>
+        </ul>
+        <p>Prix, disponibilité, garantie, retours : à compléter par le magasin.</p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Les écarts à surligner, et la règle qui tranche</div>
+        <table>
+          <thead><tr><th style="width: 30%">L’écart de la sortie 1</th><th>Ce que la consigne durcie a fermé</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Le bavardage autour</strong> (« Voici la fiche… », « N’hésitez pas… »)</td>
+              <td>« Rends UNIQUEMENT la fiche, sans commentaire. » Règle : un vendeur pressé copie-colle la sortie entière ; si l’outil bavarde, le bavardage part en ligne.</td>
+            </tr>
+            <tr>
+              <td><strong>Le titre à 79 caractères</strong>, qui empile l’origine et les dimensions</td>
+              <td>Limite chiffrée : 60 caractères, commençant par le nom du produit. Règle : une rubrique sans limite chiffrée dérive au deuxième passage.</td>
+            </tr>
+            <tr>
+              <td><strong>L’ordre des rubriques inversé</strong> — caractéristiques avant argumentaire</td>
+              <td>Format imposé rubrique par rubrique, dans l’ordre. Règle : ce que la consigne n’ordonne pas, l’outil l’ordonne à sa façon, différemment à chaque fois.</td>
+            </tr>
+            <tr>
+              <td><strong>Sept puces au lieu de cinq</strong>, dont la garantie</td>
+              <td>Cinq puces, et la garantie descend sur la ligne magasin. Règle : la garantie se lit dans vos conditions de vente, elle n’est pas une caractéristique produit.</td>
+            </tr>
+            <tr>
+              <td><strong>« traversera les années », « se transmettra peut-être »</strong></td>
+              <td>Interdit écrit : aucun superlatif invérifiable, aucune promesse de durée. Règle : c’est une allégation de durabilité que la fiche technique ne porte pas.</td>
+            </tr>
+            <tr>
+              <td><strong>La ligne magasin absente</strong></td>
+              <td>Dernière ligne imposée par la consigne. Règle : ce qui n’est pas exigé n’est pas produit.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Le test, énoncé en une phrase :</strong> une trame n’entre au manuel que si,
+          rejouée sur un autre produit, elle rend <strong>le même format</strong>. Tant qu’elle
+          dérive, elle laisse un choix ouvert — et le geste à apprendre est de trouver ce choix et de
+          le fermer par une limite chiffrée.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14" data-titre="Six demandes à trier, dont trois fautives + corrigé et réécritures" data-bloc="M4, pratique (blocage)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A14 — feuille stagiaire</div>
+      <h2>Six demandes — laquelle n’aurait jamais dû partir&nbsp;?</h2>
+      <p class="piece-usage">
+        Pour le stagiaire dont l’historique est vide ou trop propre, et comme plan B intégral du
+        premier temps de la pratique du module 4. L’exercice tient à l’identique, et souvent mieux :
+        on juge plus lucidement les demandes des autres. Consigne : cochez, puis
+        <strong>réécrivez</strong> chaque demande fautive en demande propre — c’est la réécriture
+        qui compte, pas le verdict.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th>La demande, telle qu’elle a été envoyée</th>
+            <th style="width: 11%">Propre</th>
+            <th style="width: 11%">Fautive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>« Voici notre tableau produits (référence, nom, matière, dimensions, coloris, prix conseillé). Pour chaque ligne, rédige une fiche au format imposé ci-dessous, sans utiliser aucune information absente du tableau. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>« Voici l’export de nos ventes de mars : nom du client, téléphone, montant, dernier achat. Dis-moi qui relancer en priorité et rédige le message. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>« Voici la fiche technique fournisseur ci-jointe. Rédige la fiche produit à partir de ce seul document ; si une information manque, écris “non renseigné”. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>« Voici notre grille d’achat fournisseur avec les marges par référence. Calcule le prix de vente optimal pour chaque produit et remplis la colonne prix des fiches. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>« Notre nouvelle bouteille ORVAL n’a encore aucun avis. Écris-en trois, enthousiastes et crédibles, pour lancer la fiche. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>« Mon tableau a les colonnes date, magasin, famille de produits, quantité, montant TTC. Sans que je te fournisse les données, écris la formule qui totalise le montant par famille et par mois, puis explique-la ligne à ligne. »</td>
+            <td>☐</td><td>☐</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ma réécriture — une demande fautive, rendue propre</div>
+        <p>Demande n° ______ , réécrite :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">
+          À lire à voix haute, sans se justifier. C’est le geste du module : on ne commente pas sa
+          faute, on écrit la version qui la remplace.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14">
+      <div class="piece-badge">Pièce A14 — corrigé formateur</div>
+      <h2>Six demandes — corrigé, et la réécriture attendue</h2>
+
+      <div class="corrige">
+        <div class="encadre-titre">Trois propres, trois fautives</div>
+        <table>
+          <thead><tr><th style="width: 5%">N°</th><th style="width: 14%">Verdict</th><th>La règle qui tranche, et la réécriture</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>1</td><td><strong>Propre</strong></td>
+              <td>
+                Colonnes nommées, format imposé, interdit écrit. C’est la trame de série du module 2.
+                Faites dire <em>pourquoi</em> elle est propre : sans cela, la fin de journée verse
+                dans la prudence excessive et plus rien ne paraît autorisé.
+              </td>
+            </tr>
+            <tr>
+              <td>2</td><td><strong>Fautive</strong></td>
+              <td>
+                Fichier clients nominatif, avec téléphone et historique d’achat. Règle : aucune donnée
+                client ne passe dans un outil, et <strong>retirer les noms ne suffirait pas</strong>.
+                <em>Réécriture :</em> « Voici la structure de mon fichier de relance : ancienneté du
+                dernier achat, famille de produits, montant moyen. Propose-moi trois critères de
+                priorisation et un modèle de message à trous que je remplirai moi-même. »
+              </td>
+            </tr>
+            <tr>
+              <td>3</td><td><strong>Propre</strong></td>
+              <td>
+                Un seul document source, « non renseigné » imposé pour les manques. C’est la demande
+                du module 1, à la lettre.
+              </td>
+            </tr>
+            <tr>
+              <td>4</td><td><strong>Fautive</strong></td>
+              <td>
+                Deux fautes en une. Règle 1 : conditions d’achat et marges ne se déposent jamais.
+                Règle 2 : <strong>l’outil ne fixe pas les prix</strong> — le prix de vente s’ajoute à
+                la main, sur la ligne prévue. <em>Réécriture :</em> « Laisse la ligne prix vide, avec
+                la mention “à compléter par le magasin”. »
+              </td>
+            </tr>
+            <tr>
+              <td>5</td><td><strong>Fautive</strong></td>
+              <td>
+                La ligne rouge de l’après-midi, dans sa forme la plus nette :
+                <strong>on ne fabrique jamais un avis, un témoignage ni une note, et on ne les fait
+                jamais écrire par l’IA.</strong> Il n’existe pas de réécriture propre de cette
+                demande : elle ne se corrige pas, elle s’abandonne. <em>Ce qui la remplace :</em>
+                solliciter de vrais avis auprès de vrais clients, et répondre à ceux qui arrivent.
+              </td>
+            </tr>
+            <tr>
+              <td>6</td><td><strong>Propre</strong></td>
+              <td>
+                Structure décrite, contenu jamais fourni, et l’outil écrit la formule que le tableur
+                exécutera. Règle : l’IA écrit autour du chiffre, jamais le chiffre.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Si un stagiaire défend la demande n° 4 en disant qu’il « ne s’en serait pas servi » : ce
+          qui est déposé est déposé. La colonne se supprime du fichier de travail avant le dépôt,
+          c’est trente secondes.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15" data-titre="Manuel de publication de l’enseigne — page de garde, feuille de route et grille de critères" data-bloc="M4, pratique et vérification" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A15 — recto</div>
+      <h2>Le manuel de publication de l’enseigne — page de garde</h2>
+      <p class="piece-usage">
+        Deuxième temps de la pratique du module 4, et livrable de la journée. Si le temps manque,
+        coupez tout le reste et tenez trois lignes : le nom du manuel, le relecteur, la date de
+        revue. Le critère de réussite est écrit en bas de cette page, et il se lit à voix haute
+        avant de commencer.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Identification</div>
+        <p>
+          <strong>Nom du manuel :</strong> manuel-publication-______________________-____-____-20____
+        </p>
+        <p>
+          <strong>Enseigne :</strong> ______________________________ ·
+          <strong>Établi le :</strong> ____ / ____ / 20____
+        </p>
+        <p>
+          <strong>Qui relit avant publication (prénom, nom) :</strong> ______________________________
+        </p>
+        <p class="petit">
+          Quelqu’un qui a la fiche technique et les conditions de vente sous la main — pas forcément
+          un chef, mais quelqu’un qui peut <strong>vérifier</strong>, pas seulement relire.
+        </p>
+        <p>
+          <strong>Prochaine revue :</strong> ____ / ____ / 20____ ·
+          <strong>Où il est rangé :</strong> ______________________________
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que le manuel contient</div>
+        <ul>
+          <li><span class="coche"></span> La <strong>trame de fiche produit</strong> et sa checklist de contrôle (pièce A2).</li>
+          <li><span class="coche"></span> Le <strong>procédé de série</strong> et la <strong>règle d’échantillonnage</strong>, écrite avec nos mots (pièce A7).</li>
+          <li><span class="coche"></span> Les <strong>trois déclinaisons</strong> du produit témoin : site, place de marché, rayon.</li>
+          <li><span class="coche"></span> Les <strong>réponses types aux avis</strong> — produit, place de marché, fiche d’établissement (pièce A10).</li>
+          <li><span class="coche"></span> La <strong>trame « écrire autour du chiffre »</strong> et la formule testée (pièce A11).</li>
+          <li><span class="coche"></span> Les <strong>trames de supports de rayon</strong> : affiche, chevalet, étiquette.</li>
+          <li><span class="coche"></span> La <strong>liste des mentions</strong> arrêtée par notre responsable qualité, recopiée telle quelle.</li>
+          <li><span class="coche"></span> La <strong>grille de critères</strong> avant publication (au verso).</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le critère de réussite, à lire à voix haute</div>
+        <p>
+          <strong>Un vendeur qui n’était pas en salle aujourd’hui doit pouvoir publier avec ce
+          manuel, sans rien demander à personne.</strong> Faites-le tester : donnez le manuel à votre
+          voisin de table et demandez-lui de produire une fiche. Ce qu’il vous demande est ce qui
+          manque au manuel.
+        </p>
+        <p><strong>Testé par :</strong> ______________ · <strong>Ce qu’il a dû demander :</strong> ______________________</p>
+      </div>
+
+      <div class="banniere">
+        L’intégralité de ce manuel est un <strong>projet</strong> : chaque trame se relit, se corrige
+        et se signe avant tout usage externe.
+        <strong>Aucun prix, aucune promotion, aucune allégation produit ne s’engage par les textes
+        qui en sortent</strong> — prix, disponibilité, garantie et retours viennent des systèmes du
+        magasin, et une caractéristique se recopie du document fournisseur. Les questions de droit
+        notées au fil de la journée vont au conseil de l’entreprise ; le formateur n’en a arbitré
+        aucune.
+      </div>
+      <p class="verso-note">→ Tournez la page : la feuille de route et la grille de critères.</p>
+    </section>
+
+    <section class="piece" data-piece="A15">
+      <div class="piece-badge">Pièce A15 — verso</div>
+      <h2>Feuille de route, usage écarté, et grille de critères</h2>
+
+      <div class="encadre">
+        <div class="encadre-titre">1 — Trois usages datés</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 5%">N°</th>
+              <th style="width: 34%">L’usage que j’installe</th>
+              <th style="width: 22%">Sur quels produits, quelle série</th>
+              <th style="width: 16%">Qui le tient</th>
+              <th>À partir du</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td></td><td></td><td></td><td>____ / ____ / 20____</td></tr>
+            <tr><td>2</td><td></td><td></td><td></td><td>____ / ____ / 20____</td></tr>
+            <tr><td>3</td><td></td><td></td><td></td><td>____ / ____ / 20____</td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          « On va utiliser l’IA pour les fiches » n’est pas un usage. Quelle série, quel jour, qui
+          relit&nbsp;? Tant que la ligne ne porte pas un nom et une date, elle n’est pas remplie.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2 — L’usage que nous écartons, écrit noir sur blanc</div>
+        <p>Chez nous, on ne fera pas :</p>
+        <div class="lignes"></div>
+        <p><strong>Parce que :</strong></p>
+        <div class="lignes"></div>
+        <p class="petit">
+          L’usage écarté protège l’équipe autant que les trois retenus : il évite qu’un vendeur bien
+          intentionné le fasse dans six mois. Les candidats les plus fréquents : faire écrire des
+          avis, déposer le fichier clients, laisser l’outil fixer les prix.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3 — Grille de critères — ma propre production du jour</div>
+        <p class="petit">
+          Second temps de la vérification du module 4 : après le quiz, chacun passe SA production à
+          cette grille. C’est elle qui relie le quiz au geste réel.
+        </p>
+        <table>
+          <thead>
+            <tr><th style="width: 52%">Le critère</th><th style="width: 20%">Verdict</th><th>Ce qui est corrigé</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chaque caractéristique est prouvée par la fiche technique ou le tableau source</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Aucun label, aucune norme, aucune origine ajoutée</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Prix, disponibilité, garantie, retours laissés au magasin ou vérifiés et tracés</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Les mentions arrêtées par notre responsable qualité sont présentes</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Rien de personnel n’est publié ; aucune réponse ne confirme qu’une personne est cliente</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Aucun chiffre calculé par l’outil ne subsiste</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+            <tr><td>Aucune formulation stéréotypée sur le genre, l’âge ou l’origine</td><td>☐ conforme ☐ à corriger</td><td></td></tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Production contrôlée :</strong> ______________________ ·
+          <strong>Relue par :</strong> ______________ ·
+          <strong>Le :</strong> ____ / ____ / 20____
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4 — Mes questions en attente — celles qui vont au conseil</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <p class="petit">
+        La règle qui reste quand tout le reste est oublié :
+        <strong>rien ne se publie que la fiche technique ne prouve</strong>.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A16" data-titre="Quiz d’évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A16 — feuille stagiaire</div>
+      <h2>Quiz — évaluation des acquis (10 questions)</h2>
+      <p class="piece-usage">
+        Individuel, sans document, entourez la réponse. Dix questions sur ce qui a été fait dans la
+        journée — pas des pièges. Le résultat individuel n’est pas transmis à l’employeur ; ce qui
+        l’est, c’est l’attestation de fin de formation et le fait que l’évaluation a eu lieu.
+      </p>
+      <p>
+        <strong>Nom :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <ol>
+        <li>
+          Une caractéristique écrite dans une fiche produit vient…<br />
+          <strong>a.</strong> de la fiche technique fournisseur, recopiée &nbsp;
+          <strong>b.</strong> de ce que le vendeur sait du produit &nbsp;
+          <strong>c.</strong> de l’outil, qui connaît le marché
+        </li>
+        <li>
+          Prix, disponibilité, garantie et retours : qui les écrit&nbsp;?<br />
+          <strong>a.</strong> L’outil, à partir du prix conseillé &nbsp;
+          <strong>b.</strong> Le magasin, depuis ses propres systèmes &nbsp;
+          <strong>c.</strong> Le fournisseur, dans sa fiche technique
+        </li>
+        <li>
+          Vous tirez trois fiches au hasard dans une série de cinquante, et l’une est fausse. Que
+          fait-on&nbsp;?<br />
+          <strong>a.</strong> On corrige cette fiche et on publie les autres &nbsp;
+          <strong>b.</strong> On tire trois autres fiches pour vérifier &nbsp;
+          <strong>c.</strong> Toute la série repasse : une erreur d’échantillon vient de la trame,
+          donc elle est partout
+        </li>
+        <li>
+          Décliner un produit sur trois supports, c’est…<br />
+          <strong>a.</strong> le réécrire trois fois, une par canal &nbsp;
+          <strong>b.</strong> repartir de la même matière et changer de format, sans rien ajouter
+          &nbsp; <strong>c.</strong> raccourcir la fiche la plus longue
+        </li>
+        <li>
+          Avant de déposer votre tableau produits dans un outil, vous…<br />
+          <strong>a.</strong> supprimez marges, prix d’achat et conditions fournisseurs du fichier de
+          travail &nbsp; <strong>b.</strong> les laissez, puisque vous ne vous en servirez pas &nbsp;
+          <strong>c.</strong> retirez seulement les noms des clients
+        </li>
+        <li>
+          Une nouvelle fiche produit n’a encore aucun avis. On demande à l’IA d’en écrire trois&nbsp;?<br />
+          <strong>a.</strong> Oui, s’ils restent crédibles &nbsp;
+          <strong>b.</strong> Oui, à condition de les signaler comme générés &nbsp;
+          <strong>c.</strong> Jamais : on ne fabrique pas un avis, un témoignage ni une note
+        </li>
+        <li>
+          Dans une réponse publique à un avis, qu’est-ce qu’on ne fait jamais&nbsp;?<br />
+          <strong>a.</strong> Remercier &nbsp;
+          <strong>b.</strong> Confirmer que la personne est cliente, ou reprendre commande, date,
+          produit ou montant &nbsp; <strong>c.</strong> Inviter à écrire en privé
+        </li>
+        <li>
+          Vous avez besoin du total des ventes par famille de produits. Vous…<br />
+          <strong>a.</strong> collez le tableau et recopiez le total que l’outil annonce &nbsp;
+          <strong>b.</strong> décrivez la structure des colonnes, faites écrire la formule, et
+          laissez votre tableur calculer &nbsp; <strong>c.</strong> demandez deux fois et gardez le
+          total qui revient
+        </li>
+        <li>
+          Une trame entre dans le manuel de publication quand…<br />
+          <strong>a.</strong> elle a bien marché une fois &nbsp;
+          <strong>b.</strong> rejouée sur un autre produit, elle rend exactement le même format
+          &nbsp; <strong>c.</strong> le formateur l’a validée en salle
+        </li>
+        <li>
+          Une question de droit surgit — mentions à porter, retrait d’un avis, comparaison avec un
+          concurrent. Qui tranche&nbsp;?<br />
+          <strong>a.</strong> Le formateur &nbsp; <strong>b.</strong> L’outil, s’il cite un texte
+          &nbsp; <strong>c.</strong> Le conseil de l’entreprise ; la question se note
+        </li>
+      </ol>
+    </section>
+
+    <section class="piece" data-piece="A16">
+      <div class="piece-badge">Pièce A16 — corrigé formateur</div>
+      <h2>Quiz — corrigé commenté, question par question</h2>
+      <p class="piece-usage">
+        Se commente en salle sans en passer aucune. Le seuil de réussite est celui déclaré au
+        programme ; un score en dessous déclenche la reprise individuelle prévue au dispositif. S’il
+        est 17 h 15, le quiz se tient quand même, complet, et le commentaire se resserre sur les
+        questions les plus ratées — on ne remplace jamais l’évaluation des acquis par un tour de
+        table.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 6%">N°</th><th style="width: 8%">Rép.</th><th>La règle qui tranche</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td><strong>a</strong></td>
+            <td>
+              La règle qui tient la journée : une fiche produit n’affirme rien que la fiche technique
+              ne prouve. De mémoire, on n’écrit pas une caractéristique — et ce qui manque au
+              document s’écrit « non renseigné ».
+            </td>
+          </tr>
+          <tr>
+            <td>2</td><td><strong>b</strong></td>
+            <td>
+              Un modèle de langage remplit ces quatre lignes de façon plausible et fausse. Elles
+              viennent de vos systèmes, et la trame les réserve explicitement au magasin.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td><td><strong>c</strong></td>
+            <td>
+              La phrase du module 2, formulée par la salle elle-même. Une erreur de trame s’est
+              répliquée sur les cinquante fiches ; l’échantillon ne l’a pas créée, il l’a révélée.
+              Réponse <em>a</em> : corriger la fiche et publier les autres, c’est publier
+              quarante-neuf fois la même erreur.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td><td><strong>b</strong></td>
+            <td>
+              Trois supports, une seule matière, zéro réécriture. La ligne qui compte est celle que
+              tout le monde oublie d’écrire : <em>ce que ce format m’a obligé à retirer</em>.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td><td><strong>a</strong></td>
+            <td>
+              Ce qui est déposé est déposé : « je ne m’en sers pas » ne protège de rien. Et retirer
+              les noms d’un fichier client ne le rend pas déposable — c’est la réponse <em>c</em>, et
+              c’est le piège de la question.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td><td><strong>c</strong></td>
+            <td>
+              Ligne rouge non retirable : on ne fabrique jamais un avis, un témoignage ni une note, et
+              on ne les fait jamais écrire par l’IA. Le signalement (réponse <em>b</em>) ne rachète
+              rien : le problème n’est pas l’origine du texte, c’est qu’il n’y a pas de client
+              derrière.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td><td><strong>b</strong></td>
+            <td>
+              Seconde ligne rouge. La fuite la plus fréquente est celle qui <strong>reprend
+              l’avis</strong> : le client a cité sa date d’achat, la réponse la reformule, et
+              l’enseigne confirme publiquement le dossier.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td><td><strong>b</strong></td>
+            <td>
+              L’outil écrit la formule, il ne calcule pas. Réponse <em>c</em> : deux totaux
+              concordants ne prouvent rien — la démonstration du jour a montré deux totaux
+              différents sur les mêmes données, dont un juste par hasard.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td><td><strong>b</strong></td>
+            <td>
+              Le test de la trame finie. Tant qu’elle dérive, elle laisse un choix ouvert ; on trouve
+              ce choix et on le ferme par une limite chiffrée. C’est ce geste-là qu’ils referont
+              chez eux.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td><td><strong>c</strong></td>
+            <td>
+              Formule exacte, prononcée telle quelle toute la journée : « je ne me prononce pas,
+              notez la question, votre conseil tranchera ». Pour ce qui touche aux mentions à porter
+              sur vos fiches, l’interlocuteur est le responsable qualité de l’enseigne.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Après le quiz — le passage à la grille</div>
+        <p>
+          Chacun passe <strong>sa propre production du jour</strong> à la grille de critères du verso
+          de la pièce A15. C’est ce passage qui relie le quiz au geste réel : un score sans mise en
+          service ne prouve qu’une lecture attentive.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici la fiche technique fournisseur ci-jointe. Rédige une fiche produit pour notre site à partir de ce SEUL document. Structure imposée : un titre de 60 caractères maximum commençant par le nom du produit ; un argumentaire de 80 mots orienté usage client ; les caractéristiques en liste, reprises de la fiche technique SANS reformulation. N'ajoute aucune caractéristique, aucune norme, aucune origine, aucune allégation de santé ou environnementale qui ne figure pas dans le document. Prix, disponibilité, garantie et conditions de retour : n'écris rien, laisse quatre lignes marquées « à compléter par le magasin ». Si une information manque, écris « non renseigné » — n'invente rien.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La fiche technique fournisseur à gauche, la fiche produit générée à droite, une flèche par caractéristique reliant chaque affirmation à la ligne qui la prouve — et les quatre lignes « à compléter par le magasin » entourées.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Du un au cinquante : produire en série et décliner</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Voici un tableau de produits (colonnes : référence, nom, catégorie, matière, dimensions, coloris, prix conseillé, points forts fournisseur). Pour CHAQUE ligne, produis une fiche au format EXACT suivant : titre de 60 caractères maximum commençant par le nom ; argumentaire de 60 mots orienté usage client ; caractéristiques en cinq puces reprises du tableau SANS reformulation. N'utilise AUCUNE information absente du tableau ; si une case est vide, écris « non renseigné ». Même structure, même ton, même longueur pour toutes les fiches. Ensuite, pour la référence que je t'indique, décline la fiche en trois versions : description longue pour notre site, description courte de 300 caractères maximum pour la place de marché, et texte d'affiche de rayon — une accroche de huit mots maximum et trois caractéristiques clés — sans rien ajouter au contenu de la fiche.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Trois fiches de la série côte à côte pour montrer l'homogénéité du format, puis les trois déclinaisons du même produit — avec la colonne du tableau source surlignée à chaque reprise.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (datées). La lecture comparée se tient sur papier, à l'identique.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT 1 — répondre à l'avis : « Voici un avis publié sur notre fiche, recopié sans le nom de son auteur : [coller le texte de l'avis]. Rédige une réponse publique de 70 mots maximum qui remercie, exprime notre exigence de qualité et invite à écrire à [adresse du service client] pour examiner la situation. INTERDITS : ne confirme pas que la personne est cliente, ne mentionne ni commande, ni date, ni produit, ni montant, ne promets aucun remboursement ni geste commercial, n'admets aucune faute. »<br /><br />PROMPT 2 — écrire autour du chiffre : « Mon tableau de ventes a les colonnes suivantes : date, magasin, famille de produits, quantité, montant TTC. SANS que je te fournisse les données, écris la formule de tableur qui totalise le montant par famille de produits et par mois, puis explique-la ligne à ligne pour que je puisse l'adapter. »</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses à l'avis côte à côte — les passages qui confirment la commande et promettent un geste entourés en rouge dans la première — puis les deux totaux différents rendus par l'outil sur les mêmes données collées.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Le manuel de publication de l'enseigne</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Tu appliques la consigne de publication suivante, sans t'en écarter. FORMAT : titre de 60 caractères maximum commençant par le nom du produit ; argumentaire de 60 mots orienté usage client ; caractéristiques en cinq puces reprises de la fiche technique SANS reformulation ; une dernière ligne « Prix, disponibilité, garantie, retours : à compléter par le magasin ». INTERDITS : aucune caractéristique absente de la fiche technique, aucune allégation de santé ou environnementale, aucun superlatif invérifiable, aucun élément concernant un client. Produit à traiter : [coller la fiche technique]. Rends UNIQUEMENT la fiche, sans commentaire.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux sorties de la trame rejouée côte à côte : à gauche le format qui dérive, à droite le format identique au premier passage — les écarts surlignés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (datées), écarts surlignés. Le test de la trame finie s'explique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Démonstration</td><td>Quota atteint ou outil indisponible : la fiche technique et la sortie sont imprimées dans le kit formateur (datées). La lecture flèche par flèche se fait sur papier, à l'identique. Ne rien improviser en direct : les sorties du kit ont été vérifiées.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Pratique</td><td>Réseau tombé : la fiche s'écrit à la main sur la trame papier du support, à partir de la fiche technique. Ce qui compte est la structure et la règle de preuve, pas l'outil qui l'exécute — chacun relancera chez lui, la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien</td><td>Vérification</td><td>Grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Démonstration</td><td>Outil indisponible : le tableau du kit, trois fiches de la série et les trois déclinaisons sont imprimés (datées). La lecture comparée se tient sur papier, à l'identique.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Pratique</td><td>Outil indisponible : la trame de série se construit sur papier — choix des colonnes, format imposé rubrique par rubrique, règle d'échantillonnage — et l'exercice de contrôle se fait sur la série témoin imprimée du kit. La production réelle se relance au bureau avec la trame datée.</td></tr>
+          <tr><td>Matin · Module 2 — Du un au cinquante : produire en série et décliner</td><td>Vérification</td><td>L'échantillonnage se pratique sur la série témoin imprimée du kit, qui contient trois écarts plantés. Grille et corrigé imprimés, aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Démonstration</td><td>Outil indisponible : les deux réponses à l'avis et les deux totaux contradictoires sont imprimés dans le kit (datées), surlignage déjà appliqué. La comparaison mot à mot se tient sur papier.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Pratique</td><td>Outil indisponible : les trois avis du kit se traitent sur les trames papier à trous (remerciement, position, canal privé), et la formule s'écrit à la main à partir de la structure du tableau — la syntaxe exacte se vérifiera au bureau. Rien de l'atelier n'exige l'outil pour être compris.</td></tr>
+          <tr><td>Après-midi · Module 3 — Avis clients, fiche d'établissement et écrire autour du chiffre</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Démonstration</td><td>Outil indisponible : les deux sorties rejouées sont imprimées dans le kit (datées), écarts surlignés. Le test de la trame finie s'explique sur papier.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Pratique</td><td>Aucun outil nécessaire : le retour d'historique se remplace par le tri des six demandes du kit, et l'assemblage du manuel se fait sur papier. C'est l'atelier le plus robuste de la journée — gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Module 4 — Le manuel de publication de l'enseigne</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

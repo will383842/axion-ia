@@ -1,0 +1,2959 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour le transport et la logistique (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour le transport et la logistique » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-le-transport-logistique</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Bordereau du classeur d'exploitation (recto/verso) — le fil rouge de la journée</td><td>Tous les modules</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A2</strong></td><td>Liste rouge de l'exploitation — liste de référence à corriger au stylo</td><td>M1, pratique</td><td>1 par stagiaire + 1 par table</td></tr>
+          <tr><td><strong>A3</strong></td><td>Les dix pièces de l'exploitation à classer — feuille stagiaire + corrigé</td><td>M1, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A4</strong></td><td>Note d'appel — transcription de la dictée et consigne obtenue, datées</td><td>M1, démonstration (plan B)</td><td>1 par stagiaire + 1 jeu formateur</td></tr>
+          <tr><td><strong>A5</strong></td><td>Le compte rendu d'incident « anonymisé » + les trois questions de ré-identification</td><td>M1, démonstration (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A6</strong></td><td>Les deux courriers de litige, datés et annotés — improvisé / structuré</td><td>M2, démonstration (plan B)</td><td>1 par table + 1 jeu formateur</td></tr>
+          <tr><td><strong>A7</strong></td><td>Dossier de litige reconstitué n° 1 — réserve à la livraison (LIT-2026-052, f. 1 à 3)</td><td>M2, pratique</td><td>1 jeu par stagiaire + 3</td></tr>
+          <tr><td><strong>A8</strong></td><td>Contrat de transport type FICTIF (extraits, f. 1 à 3) — le document qu'on OUVRE</td><td>M2, pratique et vérification</td><td>1 par binôme + 3</td></tr>
+          <tr><td><strong>A9</strong></td><td>Grille de contrôle croisé du module 2 + corrigé des cinq mentions inventées</td><td>M2, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A10</strong></td><td>Le courrier volontairement chargé + corrigé — dix défauts vérifiables</td><td>M2, vérification (parade)</td><td>1 par binôme + corrigé formateur</td></tr>
+          <tr><td><strong>A11</strong></td><td>Mémo — les cinq leviers AXION appliqués au litige, et les trois formules qui concèdent</td><td>M2, pratique et synthèse</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A12</strong></td><td>La commande de secours CDE-2026-4187 — document FICTIF déposable (f. 1 et 2)</td><td>M3, démonstration et pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A13</strong></td><td>Les trois sorties du module 3, datées — instructions, confirmation, courrier d'accompagnement</td><td>M3, démonstration (plan B)</td><td>1 par table + 1 jeu formateur</td></tr>
+          <tr><td><strong>A14</strong></td><td>La sortie aux quatre invasions typiques + corrigé — pour le binôme qui valide tout</td><td>M3, vérification (parade)</td><td>1 par binôme + corrigé formateur</td></tr>
+          <tr><td><strong>A15</strong></td><td>Checklist de vérification croisée du module 3 — deux papiers confrontés</td><td>M3, vérification</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>A16</strong></td><td>Trois trames papier — consignes au conducteur, demande d'affrètement, relance</td><td>M3, pratique (plan B)</td><td>1 jeu par stagiaire + 5</td></tr>
+          <tr><td><strong>A17</strong></td><td>Parade du dépôt — le scan illisible, repris écran par écran</td><td>M3, démonstration et pratique (parade)</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A18</strong></td><td>Les deux tableaux d'aléas FICTIFS — avec la colonne des noms, puis sans</td><td>M4, démonstration</td><td>1 par table + 1 jeu formateur</td></tr>
+          <tr><td><strong>A19</strong></td><td>Les deux commentaires produits, datés et surlignés — la personne, puis la cause</td><td>M4, démonstration (plan B)</td><td>1 par table + 1 jeu formateur</td></tr>
+          <tr><td><strong>A20</strong></td><td>Trame de synthèse d'exploitation — version direction et version équipe</td><td>M4, pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A21</strong></td><td>Bordereau d'assemblage du classeur d'exploitation + grille de contrôle avant diffusion</td><td>M4, pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A22</strong></td><td>Feuille de route individuelle — trois usages, un porteur et une date chacun</td><td>M4, pratique et synthèse</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A23</strong></td><td>Quiz d'évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Litiges, réserves et réclamations clients <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Consignes de tournée, documents et affrètement <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Suivi d'activité, personnes et classeur d'exploitation <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Bordereau du classeur d'exploitation (recto/verso) — le fil rouge de la journée" data-bloc="Tous les modules" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A1 — recto</div>
+      <h2>Mon classeur d'exploitation — bordereau de constitution</h2>
+      <p class="piece-usage">
+        Distribué à l'ouverture, rempli au fil de la journée, il repart avec son auteur. Ce n'est pas
+        un support de cours : c'est la première feuille du classeur que chacun diffusera à son
+        service. Un classeur existe à partir du moment où il porte un nom et un titulaire.
+      </p>
+
+      <p>
+        <strong>Service / dépôt :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+      <p>
+        <strong>Nom du classeur</strong> (à prononcer à voix haute en fin de module 2) :
+        <code>classeur-exploitation-</code>______________________<code>-</code>__________
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 1 — ce qui ne sortira plus de mon service</div>
+        <p>L'écrit qui me prend le plus de temps dans la semaine :</p>
+        <div class="lignes"></div>
+        <p>Ce que je ne déposerai plus à partir de lundi :</p>
+        <div class="lignes"></div>
+        <p>
+          Le cas que ma table n'a pas su trancher :
+          ______________________________________________
+        </p>
+        <p class="petit">
+          Versement n° 1 au classeur : la liste rouge de la table, signée (pièce A2).
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 2 — mes deux écrits de litige</div>
+        <p>Réserve rédigée sur le dossier : ______________________</p>
+        <p>Réclamation de retard rédigée sur le dossier : ______________________</p>
+        <p>Mentions barrées par mon binôme parce qu'elles n'étaient pas au contrat :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">Versement n° 2 : les deux courriers relus et corrigés, plus le mémo A11.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 3 — mes trois écrits de tournée</div>
+        <div class="deux-colonnes">
+          <div>
+            <p><strong>Produit aujourd'hui</strong></p>
+            <p><span class="coche"></span> Consignes au conducteur</p>
+            <p><span class="coche"></span> Demande d'affrètement</p>
+            <p><span class="coche"></span> Relance du sous-traitant</p>
+          </div>
+          <div>
+            <p><strong>Chiffres remontés à la commande</strong></p>
+            <p>Heures : ______ / ______</p>
+            <p>Adresses : ______ / ______</p>
+            <p>Non retrouvés, passés en « à confirmer » : ______</p>
+          </div>
+        </div>
+      </div>
+      <p class="verso-note">→ Tournez la feuille : le verso se remplit à partir de 15 h 30.</p>
+    </section>
+
+    <section class="piece" data-piece="A1">
+      <div class="piece-badge">Pièce A1 — verso</div>
+      <h2>Mon suivi d'activité, mon classeur, mon lundi</h2>
+
+      <div class="encadre">
+        <div class="encadre-titre">Module 4 — ma synthèse d'exploitation</div>
+        <p>Les indicateurs que j'ai apportés viennent de : ______________________________</p>
+        <p class="petit">
+          Le chiffre ENTRE dans l'assistant, il n'en sort pas. Aucun indicateur n'est calculé par
+          l'outil.
+        </p>
+        <p>Version direction rédigée <span class="coche"></span> · Version équipe rédigée
+          <span class="coche"></span></p>
+        <p>Ce que j'ai retiré du tableau avant de le déposer :</p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le classeur, tenu par quelqu'un</div>
+        <p><strong>Titulaire du classeur (un nom, pas une fonction) :</strong> ______________________</p>
+        <p><strong>Revu le :</strong> ____ / ____ / 20____ · <strong>Puis tous les :</strong> ______ mois</p>
+        <p>Pièces versées : <span class="coche"></span> liste rouge ·
+          <span class="coche"></span> écrits du jour · <span class="coche"></span> grille de contrôle
+          avant diffusion</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Lundi, je commence par…</div>
+        <p>Usage n° 1 : ______________________________ · porté par : ______________ · à partir du :
+          ____ / ____</p>
+        <p>Usage n° 2 : ______________________________ · porté par : ______________ · à partir du :
+          ____ / ____</p>
+        <p>Usage n° 3 : ______________________________ · porté par : ______________ · à partir du :
+          ____ / ____</p>
+        <p>Mes questions restées ouvertes (dont celles notées « votre conseil tranchera ») :</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Ce que je produis avec un assistant est un <strong>projet</strong> : je le relis, je le
+        corrige, je le signe. <strong>Aucun engagement de délai, aucun prix et aucune réserve sur un
+        litige ne se décident par le texte</strong> — ils se décident par moi, contrat ouvert.
+        Toute question juridique ou réglementaire va au conseil de mon entreprise, pas au formateur
+        et pas à l'outil.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2" data-titre="Liste rouge de l'exploitation — liste de référence à corriger au stylo" data-bloc="M1, pratique" data-tirage="1 par stagiaire + 1 par table">
+      <div class="piece-badge">Pièce A2</div>
+      <h2>La liste rouge de mon exploitation</h2>
+      <p class="piece-usage">
+        Pratique du module 1, vingt minutes chronométrées. <strong>On ne part pas de la page
+        blanche</strong> : la liste ci-dessous se corrige, elle ne se réinvente pas. Ajoutez ce qui
+        vous manque, barrez ce qui ne vous concerne pas, et nommez à la fin le cas que votre table
+        n'a pas su trancher. La table signe.
+      </p>
+
+      <p>
+        <strong>Table / service :</strong> ______________________ ·
+        <strong>Signée par :</strong> ______________________ ·
+        <strong>Le :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 46%">La pièce</th>
+            <th style="width: 18%">Ne sort d'aucun assistant</th>
+            <th style="width: 18%">Environnement validé seulement</th>
+            <th style="width: 18%">Peut sortir</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Tarifs et taux d'affrètement négociés</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Contrats et conditions particulières clients</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Relevé de temps de conduite nominatif</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Positions et traces de géolocalisation des véhicules</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Coordonnées personnelles d'un conducteur</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Compte rendu d'entretien ou suivi disciplinaire</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Pièce touchant un contentieux en cours</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Note d'incident datée et localisée (même sans les noms)</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Ordre de transport reçu d'un donneur d'ordre</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Lettre de voiture ou CMR renseignée</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Cahier des charges d'appel d'offres reçu sous engagement de confidentialité</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Codes d'accès, plans de site, consignes de sûreté d'un client</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Réclamation client nominative</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Facture ou grille de prix d'un sous-traitant</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Fiche de données de sécurité diffusée par le fournisseur</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>Procédure interne déjà diffusée à tout le personnel</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>_______________________________________________</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>_______________________________________________</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>_______________________________________________</td><td>☐</td><td>☐</td><td>☐</td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La question qui débloque une table qui hésite</div>
+        <p>
+          « Cette pièce, vous l'enverriez à un sous-traitant que vous ne connaissez pas ? » Si la
+          réponse est non, la ligne est rouge.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le cas que notre table n'a pas su trancher (obligatoire)</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">Une table qui n'en trouve pas n'a pas cherché.</p>
+      </div>
+
+      <div class="banniere">
+        Cette liste est un <strong>projet</strong> de règle interne : elle se relit, se corrige et se
+        fait valider par votre direction avant diffusion au service. <strong>Aucun engagement de
+        délai, de prix ni de réserve sur un litige ne se décide par ce document.</strong> Toute
+        question sur ce que la loi permet ou interdit va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3" data-titre="Les dix pièces de l'exploitation à classer — feuille stagiaire + corrigé" data-bloc="M1, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A3 — feuille stagiaire</div>
+      <h2>Dix pièces — « je la dépose, dans quel environnement, ou pas du tout »</h2>
+      <p class="piece-usage">
+        Vérification du module 1. Réponse <strong>individuelle et écrite</strong>, avant d'entendre
+        son voisin. Sans vidéoprojecteur, les dix pièces se lisent à voix haute, une par une : rien
+        ne change.
+      </p>
+
+      <p><strong>Nom (facultatif) :</strong> ______________________ · <strong>Date :</strong> ____ / ____ / 20____</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th style="width: 39%">La pièce</th>
+            <th style="width: 16%">Pas du tout</th>
+            <th style="width: 20%">Environnement validé</th>
+            <th style="width: 20%">Pourquoi, en trois mots</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Un ordre de transport reçu d'un donneur d'ordre</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>2</td><td>Le contrat de transport signé avec un client</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>3</td><td>Le relevé de temps de conduite nominatif d'un conducteur</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>4</td><td>Le cahier des charges d'un appel d'offres en cours</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>5</td><td>Une CMR renseignée, à faire résumer</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>6</td><td>Une note d'incident de livraison, noms retirés</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>7</td><td>Le tableau des tarifs négociés du service</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>8</td><td>La réclamation écrite d'un client, avec son nom</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>9</td><td>Une fiche de données de sécurité diffusée par un fournisseur</td><td>☐</td><td>☐</td><td></td></tr>
+          <tr><td>10</td><td>Le dossier d'un contentieux en cours</td><td>☐</td><td>☐</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le critère, si vous bloquez</div>
+        <p>
+          Deux questions, dans cet ordre : <strong>qui figure nommément dedans ?</strong> et
+          <strong>à qui appartient l'information ?</strong> Elles suffisent à trancher huit lignes
+          sur dix.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3">
+      <div class="piece-badge">Pièce A3 — corrigé formateur</div>
+      <h2>Dix pièces — corrigé, avec la règle qui tranche</h2>
+      <p class="piece-usage">
+        À donner pièce par pièce, sans en sauter une. Sur les deux cas volontairement discutables
+        (n° 4 et n° 5), ne tranchez pas à leur place : donnez le critère et laissez la salle
+        conclure.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th style="width: 22%">Verdict attendu</th>
+            <th>La règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Environnement validé</strong></td>
+            <td>
+              Il porte des adresses, des contacts et parfois un prix : information du client, pas la
+              vôtre. C'est le cas le plus fréquent de la journée et le plus traitable — d'où
+              l'importance de ne pas le classer « pas du tout » par prudence.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Pas du tout</strong></td>
+            <td>
+              Le contrat porte les conditions négociées : c'est le secret d'affaires du client et le
+              vôtre. On l'OUVRE pour vérifier une clause ; on ne le dépose pas.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Pas du tout</strong></td>
+            <td>
+              Donnée personnelle de bout en bout, et donnée de suivi d'activité d'une personne
+              identifiée. Deux motifs valent mieux qu'un : celui-ci ne se discute pas.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Discutable — à faire débattre</strong></td>
+            <td>
+              Rien de nominatif, mais l'information appartient au donneur d'ordre et arrive souvent
+              sous engagement de confidentialité. Le critère à donner : <em>l'avez-vous reçu avec
+              une clause de confidentialité, et l'enverriez-vous à un confrère ?</em> Si la salle
+              demande ce que dit la clause : « je ne me prononce pas, notez la question, votre
+              conseil tranchera. »
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>Discutable — à faire débattre</strong></td>
+            <td>
+              Elle porte le nom du destinataire et le détail de la marchandise. Dans un environnement
+              validé par la direction, l'usage est courant et rentable ; sur un compte personnel,
+              non. C'est le tri du matin appliqué à une pièce que tout le monde a en main.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>Pas du tout</strong></td>
+            <td>
+              <strong>C'est LA pièce piège.</strong> Retirer le nom ne l'anonymise pas : la date, la
+              tournée et la marchandise suffisent à désigner le conducteur dans un service où chacun
+              connaît les plannings. Prendre le temps sur celle-là — la pièce A5 la démontre.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>Pas du tout</strong></td>
+            <td>
+              Ce que vous avez négocié fait votre marge. Ce n'est pas une donnée personnelle, c'est
+              un secret d'affaires — il ne se dépose pas plus qu'un contrat.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>Environnement validé</strong></td>
+            <td>
+              Nominative, donc à traiter comme une donnée personnelle : dans l'environnement validé
+              seulement, et jamais si le dossier a basculé en contentieux (voir n° 10).
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>Environnement validé</strong></td>
+            <td>
+              Document diffusé par le fournisseur, sans nom ni prix : le dépôt ne pose pas de
+              difficulté particulière. En revanche,
+              <strong>ce que cette fiche impose en matière de sécurité ou de transport de la
+              matière ne se lit pas dans une réponse d'assistant</strong> : cela se lit dans le
+              document lui-même et se tranche avec le responsable compétent chez vous.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>Pas du tout</strong></td>
+            <td>
+              La seule ligne de la journée qui ne se négocie pas : aucune pièce touchant un
+              contentieux en cours ne sort du service, quel que soit l'environnement.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si la salle classe tout en « pas du tout »</div>
+        <p>
+          Montrer ce que l'excès coûte : si rien ne peut être déposé, la journée n'a plus d'objet et
+          le service n'aura rien gagné. Reprendre la n° 1 et la n° 6 — la plus traitable et la plus
+          piégeuse — et faire dire pourquoi elles ne se classent pas pareil.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4" data-titre="Note d'appel — transcription de la dictée et consigne obtenue, datées" data-bloc="M1, démonstration (plan B)" data-tirage="1 par stagiaire + 1 jeu formateur">
+      <div class="piece-badge">Pièce A4 — recto</div>
+      <h2>La note d'appel dictée, et la consigne qui en sort</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 1 : quota atteint, réseau tombé. La démonstration se
+        tient à l'identique — on lit la dictée à voix haute depuis la transcription ci-dessous, on
+        distribue la consigne, on fait chercher les « à confirmer ».
+        <strong>Ne rien improviser en direct.</strong>
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+      <p class="petit">
+        Contenu de cette pièce vérifié le 6 août 2026. Tous les noms, lieux, références et
+        immatriculations sont <strong>fictifs</strong> et cohérents avec les autres pièces du
+        classeur.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">La transcription — quarante secondes, en vrac, sans ponctuation</div>
+        <p class="petit">
+          À lire à voix haute, avec les hésitations et les reprises. C'est le geste du métier :
+          personne, dans un bureau d'exploitation, ne tape un prompt de douze lignes entre deux
+          appels.
+        </p>
+        <div class="texte-exercice">
+          <p>
+            alors c'est le conducteur de la C il vient de m'appeler il est devant Logival à
+            Neuville-sur-Ance il peut pas rentrer le quai est pris jusqu'à je sais pas trop 15 h
+            peut-être 15 h 30 il y a un autre camion qui décharge et le chef de quai lui a dit de
+            repasser euh donc il faut prévenir le suivant que c'est quai bas hayon obligatoire il y
+            a pas de transpalette électrique sur place et le contact c'est monsieur Fauriel je crois
+            le poste je l'ai plus il faudra passer par le standard et attention ils veulent qu'on
+            prévienne trente minutes avant d'arriver mais je sais pas s'ils veulent un appel ou un
+            message voilà
+          </p>
+        </div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La consigne obtenue — une information par ligne</div>
+        <div class="texte-exercice">
+          <p><strong>Consigne de livraison — plateforme LOGIVAL, Neuville-sur-Ance</strong></p>
+          <p>1. Lieu : plateforme LOGIVAL, Neuville-sur-Ance.</p>
+          <p>2. Créneau : quai occupé jusqu'à 15 h, peut-être 15 h 30 — <strong>à confirmer</strong>.</p>
+          <p>3. Contact sur place : M. Fauriel (nom donné sous réserve) — numéro de poste
+            <strong>à confirmer</strong>, passer par le standard.</p>
+          <p>4. Contrainte de quai : quai bas, hayon obligatoire.</p>
+          <p>5. Contrainte de quai : pas de transpalette électrique sur place.</p>
+          <p>6. Marchandise : non précisée pendant l'appel — <strong>à confirmer</strong>.</p>
+          <p>7. Vigilance : prévenir le quai 30 minutes avant l'arrivée ; moyen (appel ou message)
+            <strong>à confirmer</strong>.</p>
+          <p>8. Vigilance : un autre véhicule décharge, le chef de quai a demandé de repasser.</p>
+        </div>
+        <p class="petit">
+          Cinq mentions « à confirmer » pour huit lignes. Ce sont elles qui prouvent que l'assistant
+          n'a rien inventé : aucune heure, aucune adresse et aucun numéro absents de la dictée n'ont
+          été ajoutés.
+        </p>
+      </div>
+      <p class="verso-note">→ Au verso : la même dictée mal transcrite, et ce qu'on en fait.</p>
+    </section>
+
+    <section class="piece" data-piece="A4">
+      <div class="piece-badge">Pièce A4 — verso</div>
+      <h2>Quand la dictée transcrit de travers — la parade, montrée</h2>
+      <p class="piece-usage">
+        Parade du blocage annoncé : la dictée ressort truffée d'erreurs sur les noms de communes et
+        les immatriculations. <strong>Ne corrigez pas en douce</strong> : montrez-les et faites-les
+        corriger à la main devant la salle. Une transcription approximative sur un nom de commune est
+        la première cause de consigne fausse — et c'est mieux appris ici que sur une tournée.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 34%">Ce qui a été dicté</th>
+            <th style="width: 34%">Ce que la transcription a écrit</th>
+            <th>Ce qu'on fait</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Neuville-sur-Ance</td>
+            <td>« Neuvil sur Anse »</td>
+            <td>Corriger à la main, puis relire à voix haute. Un nom de commune mal transcrit
+              envoie un véhicule ailleurs.</td>
+          </tr>
+          <tr>
+            <td>LOGIVAL</td>
+            <td>« Logi Val »</td>
+            <td>Corriger : le nom du site sert à retrouver le dossier client.</td>
+          </tr>
+          <tr>
+            <td>FX-742-QT</td>
+            <td>« FX 7 42 KT »</td>
+            <td>Une immatriculation ne se devine pas. La recopier depuis le planning, jamais
+              depuis la transcription.</td>
+          </tr>
+          <tr>
+            <td>M. Fauriel</td>
+            <td>« Monsieur Foriel »</td>
+            <td>Laisser la mention « nom donné sous réserve » et vérifier au dossier client.</td>
+          </tr>
+          <tr>
+            <td>« 15 h 30 »</td>
+            <td>« 5 h 30 »</td>
+            <td>L'erreur la plus coûteuse et la moins visible. Toute heure se relit avant envoi.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La règle à énoncer après la correction</div>
+        <p>
+          On relit la transcription <strong>avant</strong> de lancer la demande, et on dicte par
+          phrases courtes, une information par phrase. La dictée alimente l'assistant aussi bien
+          qu'un clavier ; elle n'entend pas mieux que vous le bruit du quai.
+        </p>
+      </div>
+
+      <div class="banniere">
+        La consigne obtenue est un <strong>projet</strong> : elle se relit, se corrige et se signe
+        avant d'être transmise à un conducteur. <strong>Aucun engagement de délai, aucun prix et
+        aucune réserve sur un litige ne se décident par le texte.</strong> Toute question juridique
+        ou réglementaire va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5" data-titre="Le compte rendu d'incident « anonymisé » + les trois questions de ré-identification" data-bloc="M1, démonstration (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A5 — feuille stagiaire</div>
+      <h2>Le compte rendu privé de ses noms — document FICTIF</h2>
+      <p class="piece-usage">
+        Seconde moitié de la démonstration du module 1, et son plan B. Distribuer la version
+        « anonymisée » ci-dessous, puis poser les trois questions du corrigé. Ne prononcez pas le
+        prénom du conducteur : laissez quelqu'un de la salle le faire.
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <p class="petit">
+        Demande qui l'a produite : « Voici un compte rendu d'incident de livraison. Réécris-le en
+        retirant toute donnée personnelle : plus aucun nom, plus aucun matricule, plus aucune
+        immatriculation. Conserve tout le reste du texte à l'identique. »
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Version d'origine — exemplaire formateur, ne pas distribuer</div>
+        <div class="texte-exercice">
+          <p>
+            <strong>TRANSPORTS BELLEVANNE — note d'incident INC-2026-034</strong> (document fictif)
+          </p>
+          <p>
+            Mardi 16 juin 2026. Tournée C, véhicule BJ-905-RD, conducteur M. Marc Ouazine
+            (matricule 0417). Départ du dépôt de Vaugremont à 5 h 40. Au troisième point,
+            livraison de semences au Comptoir agricole de Prénay, le conducteur signale que le
+            portail du site est fermé et qu'aucun contact ne répond. Il attend 55 minutes puis
+            reprend sa tournée. Les trois points suivants sont livrés avec 1 h 10 de retard. Retour
+            au dépôt à 16 h 25 avec deux palettes non livrées.
+          </p>
+        </div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Version « anonymisée » — à distribuer</div>
+        <div class="texte-exercice">
+          <p><strong>Note d'incident</strong> (document fictif)</p>
+          <p>
+            Mardi 16 juin 2026. Tournée C. Départ du dépôt de Vaugremont à 5 h 40. Au troisième
+            point, livraison de semences au Comptoir agricole de Prénay, le conducteur signale que
+            le portail du site est fermé et qu'aucun contact ne répond. Il attend 55 minutes puis
+            reprend sa tournée. Les trois points suivants sont livrés avec 1 h 10 de retard. Retour
+            au dépôt à 16 h 25 avec deux palettes non livrées.
+          </p>
+        </div>
+      </div>
+
+      <p>
+        <strong>Trois questions, posées dans cet ordre — répondez en une ligne chacune :</strong>
+      </p>
+      <p>Quel jour ? ____________________________________________</p>
+      <p>Quelle livraison ? ______________________________________</p>
+      <p>Quelle marchandise ? ____________________________________</p>
+      <p><strong>Alors, qui conduisait ?</strong> ______________________________</p>
+    </section>
+
+    <section class="piece" data-piece="A5">
+      <div class="piece-badge">Pièce A5 — corrigé formateur</div>
+      <h2>Ce que la salle vient de démontrer</h2>
+
+      <div class="corrige">
+        <div class="encadre-titre">La règle qui tranche</div>
+        <ul>
+          <li>
+            <strong>Le nom n'était pas la donnée personnelle : le dossier l'était.</strong> La
+            date, la tournée, le dépôt de départ, le client et la marchandise sont restés. Dans un
+            service où chacun connaît les plannings, ces cinq éléments désignent une personne
+            unique.
+          </li>
+          <li>
+            <strong>Le matricule et l'immatriculation retirés ne changent rien</strong> : ils
+            étaient les identifiants les plus faciles à supprimer, donc les moins protecteurs.
+          </li>
+          <li>
+            <strong>Retirer aussi la date et le lieu ?</strong> Il ne resterait plus rien
+            d'exploitable. C'est exactement le point : un dossier d'incident n'est pas anonymisable
+            — il se traite comme une donnée personnelle, dans l'environnement validé ou pas du tout.
+          </li>
+          <li>
+            <strong>Ce qui reste possible</strong> : travailler la STRUCTURE d'une note d'incident
+            avec des marqueurs &lt;CONDUCTEUR&gt;, &lt;CLIENT&gt;, &lt;DATE&gt; — la forme, pas les
+            faits.
+          </li>
+        </ul>
+        <p class="petit">
+          Si un participant propose de tester avec un vrai dossier d'incident : refuser sans
+          négocier, en une phrase — « aucune pièce touchant un contentieux ou une personne ne sort
+          du service aujourd'hui ». C'est le seul point de la matinée qui ne se discute pas.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ce document est <strong>fictif</strong> et sert à l'exercice. Tout écrit produit avec un
+        assistant reste un <strong>projet</strong> à relire, corriger et signer.
+        <strong>Aucun engagement de délai, de prix ni de réserve sur un litige ne se décide par le
+        texte.</strong> Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6" data-titre="Les deux courriers de litige, datés et annotés — improvisé / structuré" data-bloc="M2, démonstration (plan B)" data-tirage="1 par table + 1 jeu formateur">
+      <div class="piece-badge">Pièce A6 — recto</div>
+      <h2>Le courrier improvisé — 17 juin 2026, 18 h 40</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 2 : la comparaison se tient à l'identique sur papier.
+        Faites d'abord PARIER par écrit — « qu'est-ce que ce courrier concède sans le vouloir ? » —
+        puis lisez à voix haute, lentement. Les formules qui coûtent s'entendent mieux qu'elles ne
+        se lisent.
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+      <p class="petit">
+        Dossier support : LIT-2026-052 (pièce A7, feuillets 1 à 3). Contenu vérifié le 6 août 2026.
+        Entreprises, noms et références <strong>fictifs</strong>.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Objet :</strong> Votre livraison de ce jour</p>
+        <p>Bonjour Monsieur,</p>
+        <p>
+          <strong>Nous sommes sincèrement désolés du désagrément occasionné</strong> par la
+          livraison de cet après-midi sur votre plateforme.
+        </p>
+        <p>
+          <strong>Nous reconnaissons que</strong> trois palettes sont arrivées abîmées et nous vous
+          prions de bien vouloir nous en excuser. Nos équipes sont d'ordinaire très vigilantes et
+          <strong>je ne comprends pas ce qui a pu se passer cette fois</strong>.
+        </p>
+        <p>
+          Vous disposez bien entendu d'un <strong>délai de trente jours pour nous adresser votre
+          réclamation, comme le prévoit la réglementation</strong>.
+        </p>
+        <p>
+          <strong>Nous vous rembourserons</strong> naturellement les marchandises concernées dès
+          réception de votre chiffrage, et nous ferons le nécessaire auprès de notre assurance.
+        </p>
+        <p>Encore toutes nos excuses pour ce contretemps, et merci de votre compréhension.</p>
+        <p>Bien cordialement,</p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Annotations déjà portées — les cinq passages en gras</div>
+        <ol>
+          <li>
+            <strong>« Nous sommes sincèrement désolés du désagrément »</strong> — l'excuse. Elle
+            paraît anodine ; relue six mois plus tard devant un assureur, elle situe la faute.
+          </li>
+          <li>
+            <strong>« Nous reconnaissons que »</strong> — l'aveu pur et simple, écrit avant que
+            quoi que ce soit ait été établi. Le dossier LIT-2026-052 indique que le chargement a été
+            effectué par les équipes de l'expéditeur : rien n'établit à ce stade où le dommage est
+            survenu.
+          </li>
+          <li>
+            <strong>« je ne comprends pas ce qui a pu se passer »</strong> — l'aveu de défaillance
+            déguisé en sincérité.
+          </li>
+          <li>
+            <strong>« délai de trente jours… comme le prévoit la réglementation »</strong> — un
+            délai cité de mémoire, et attribué à un texte que personne n'a ouvert. C'est
+            exactement ce que la ligne Normes du module interdit.
+          </li>
+          <li>
+            <strong>« Nous vous rembourserons »</strong> — un engagement de prix pris par le texte,
+            au nom de l'entreprise, à 18 h 40, entre deux appels.
+          </li>
+        </ol>
+      </div>
+      <p class="verso-note">→ Au verso : le même dossier, structuré par les cinq leviers AXION.</p>
+    </section>
+
+    <section class="piece" data-piece="A6">
+      <div class="piece-badge">Pièce A6 — verso</div>
+      <h2>Le courrier structuré — les faits datés, rien de concédé</h2>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Vérifiée contre la pièce A7 par :</strong> ______________
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La dictée des faits — quarante secondes, à lire à voix haute</div>
+        <div class="texte-exercice">
+          <p>
+            bon alors la livraison de cet après-midi sur Logival Neuville c'est la commande 4187 le
+            camion s'est présenté à 15 h 20 il était dans le créneau 14 h 30 16 h le déchargement
+            s'est fini à 15 h 35 le chef de quai a mis des réserves sur le document trois palettes
+            avec les angles enfoncés et deux panneaux fendus sur la palette 7 le conducteur a pris
+            des photos à 15 h 42 et le client nous écrit ce matin euh non vendredi matin voilà et
+            le bon de chargement dit bien que c'est eux qui ont chargé
+          </p>
+        </div>
+      </div>
+
+      <div class="texte-exercice">
+        <p>
+          <strong>Objet :</strong> Transport CDE-2026-4187 du 17 juin 2026 — réserve à la livraison
+        </p>
+        <p>Madame, Monsieur,</p>
+        <p>Nous avons bien reçu votre signalement et nous l'instruisons.</p>
+        <p>
+          Le 17 juin 2026, le véhicule s'est présenté à la plateforme de Neuville-sur-Ance à 15 h 20,
+          dans le créneau 14 h 30 – 16 h 00 porté à la commande CDE-2026-4187.
+        </p>
+        <p>Le déchargement s'est achevé à 15 h 35.</p>
+        <p>
+          Des réserves ont été portées sur le document de transport par le chef de quai à 15 h 35 :
+          trois palettes présentant des angles enfoncés, deux panneaux fendus sur la palette n° 7.
+        </p>
+        <p>Des photographies ont été prises à 15 h 42 et sont jointes au présent courrier.</p>
+        <p>
+          Le bon de chargement BC-4187 du 16 juin 2026 mentionne que le chargement a été effectué
+          par les équipes de l'expéditeur.
+        </p>
+        <p>
+          Nous vous demandons de nous confirmer par écrit la nature et le montant du dommage
+          constaté, dans le délai de <strong>[délai à retrouver au contrat]</strong> à compter de la
+          livraison, et selon les modalités prévues à
+          <strong>[article à retrouver au contrat]</strong>.
+        </p>
+        <p>Nous restons à votre disposition pour l'instruction de ce dossier.</p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce que fait ce courrier, et ce qu'il ne fait pas</div>
+        <ul>
+          <li>
+            <strong>Les faits, datés et horodatés, une phrase par fait.</strong> Aucune
+            interprétation, aucune cause avancée.
+          </li>
+          <li>
+            <strong>Aucune excuse, aucun aveu, aucun montant.</strong> « Nous avons bien reçu votre
+            signalement et nous l'instruisons » est courtois et ne concède rien : la politesse n'est
+            pas l'aveu.
+          </li>
+          <li>
+            <strong>Deux crochets laissés visibles.</strong> C'est le seul dispositif de la journée
+            qui empêche l'assistant d'inventer une clause : ce qu'il ne peut pas savoir, il l'écrit
+            en creux, et l'exploitant le remplit contrat ouvert (pièce A8).
+          </li>
+          <li>
+            <strong>La mention du bon de chargement est un fait, pas une accusation.</strong> Elle
+            situe le document ; elle ne désigne personne.
+          </li>
+        </ul>
+        <p class="petit">
+          Si l'assistant remplit quand même le délai malgré la ligne Normes : incident précieux,
+          gardez-le à l'écran ou barrez-le sur le papier. Il prouve que la consigne réduit le risque
+          sans le supprimer — la relecture humaine reste obligatoire.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ce courrier est un <strong>projet</strong> : il se relit, se corrige et se signe par
+        l'exploitant avant envoi. <strong>Aucun engagement de délai, aucun prix et aucune réserve
+        sur un litige ne se décident par le texte</strong> — les crochets se remplissent contrat
+        ouvert. Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7" data-titre="Dossier de litige reconstitué n° 1 — réserve à la livraison (LIT-2026-052, f. 1 à 3)" data-bloc="M2, pratique" data-tirage="1 jeu par stagiaire + 3">
+      <div class="piece-badge">Pièce A7 — dossier n° 1</div>
+      <h2>Dossier LIT-2026-052 — avarie constatée à la livraison</h2>
+      <p class="piece-usage">
+        Pratique du module 2, premier dossier. Pour le stagiaire qui n'a aucun litige en cours, et
+        pour tous ceux dont les pièces ne peuvent pas quitter le service. <strong>Tout est
+        fictif</strong> : entreprises, personnes, références, immatriculations. Aucune pièce réelle
+        n'entre dans l'atelier.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>TRANSPORTS BELLEVANNE SAS — dossier de litige LIT-2026-052</strong><br />
+          <span class="petit">document fictif à usage pédagogique — f. 1 sur 3</span>
+        </p>
+        <p><strong>Fiche de synthèse</strong></p>
+        <p>
+          Donneur d'ordre : MENUISERIES CORVELLE, usine de Pontcharme.<br />
+          Transport : commande CDE-2026-4187 du 12 juin 2026.<br />
+          Véhicule : porteur FX-742-QT, hayon.<br />
+          Chargement : usine de Pontcharme, mardi 16 juin 2026, 6 h 40 — bon de chargement BC-4187.<br />
+          Livraison : plateforme LOGIVAL, Neuville-sur-Ance, mercredi 17 juin 2026 — créneau porté à
+          la commande : 14 h 30 – 16 h 00.<br />
+          Marchandise : panneaux et huisseries bois, 12 palettes Europe non gerbables, 4 380 kg,
+          hauteur maximale 1,80 m.
+        </p>
+        <p><strong>Chronologie</strong></p>
+        <p>
+          17/06/2026, 15 h 20 — présentation du véhicule à la plateforme.<br />
+          17/06/2026, 15 h 25 — début du déchargement, quai 7.<br />
+          17/06/2026, 15 h 35 — fin du déchargement ; réserves portées sur le document de transport
+          par le chef de quai.<br />
+          17/06/2026, 15 h 42 — six photographies prises par le conducteur.<br />
+          19/06/2026, 8 h 12 — courriel de réclamation du donneur d'ordre.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <span class="petit">LIT-2026-052 — f. 2 sur 3</span>
+        </p>
+        <p><strong>Extrait du document de transport — mentions manuscrites du quai</strong></p>
+        <p>
+          « Reçu le 17/06/2026 à 15 h 35. <strong>Réserves :</strong> 3 palettes angles enfoncés
+          (n° 2, 7, 11) ; 2 panneaux fendus sur palette n° 7. Photos prises. » — signé
+          M. Fauriel, chef de quai, poste 214.
+        </p>
+        <p><strong>Extrait du bon de chargement BC-4187</strong></p>
+        <p>
+          « Chargement effectué le 16/06/2026 de 6 h 40 à 7 h 25 par le magasin de l'expéditeur.
+          Conducteur non admis sur le quai de chargement (consigne de site). Arrimage vérifié
+          contradictoirement : oui. » — signé M. Tellier, magasin, poste 340.
+        </p>
+        <p><strong>Extrait du courriel de réclamation du 19/06/2026, 8 h 12</strong></p>
+        <p>
+          « Bonjour, nous avons constaté à réception que trois palettes de la livraison du 17 juin
+          étaient endommagées, dont deux panneaux inutilisables sur la palette 7. Nous chiffrons le
+          préjudice à 1 840 € HT et vous demandons de nous indiquer la suite que vous donnez à ce
+          dossier. Cordialement, service approvisionnements, Menuiseries Corvelle. »
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <span class="petit">LIT-2026-052 — f. 3 sur 3</span>
+        </p>
+        <p><strong>Main courante d'exploitation — extraits</strong></p>
+        <p>
+          16/06, 7 h 30 — départ usine de Pontcharme, conforme au bon de chargement.<br />
+          16/06, 17 h 10 — véhicule stationné au dépôt de Vaugremont, remorque bâchée, marchandise
+          non déchargée.<br />
+          17/06, 6 h 05 — départ du dépôt.<br />
+          17/06, 15 h 20 — arrivée Neuville-sur-Ance ; note du conducteur : « quai 7 libre,
+          déchargement par le personnel de la plateforme ».<br />
+          17/06, 16 h 05 — appel du chef de quai signalant les réserves ; note prise par
+          l'exploitation.
+        </p>
+        <p><strong>Ce que le dossier ne dit pas</strong> (à ne compléter par personne) :</p>
+        <p>
+          — à quel moment les angles ont été enfoncés ;<br />
+          — si les palettes n° 2, 7 et 11 étaient les plus exposées au chargement ;<br />
+          — la valeur retenue par le donneur d'ordre pour les deux panneaux ;<br />
+          — ce que le contrat prévoit en matière de délai et de forme de la réclamation.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Dossier <strong>fictif</strong>. Le courrier que vous produirez à partir de lui est un
+        <strong>projet</strong> : relu, corrigé, signé par l'exploitant. <strong>Aucun engagement
+        de délai, aucun prix et aucune réserve sur un litige ne se décident par le texte</strong> —
+        ils se décident par vous, contrat ouvert. Toute question juridique va au conseil de votre
+        entreprise, jamais au formateur.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7">
+      <div class="piece-badge">Pièce A7 — dossier n° 2</div>
+      <h2>Dossier LIT-2026-058 — retard réclamé par le client</h2>
+      <p class="piece-usage">
+        Second dossier de la pratique du module 2. C'est le plus court des deux :
+        <strong>donnez-le en priorité au stagiaire appelé par son bureau</strong> et faites-lui
+        sauter l'autre. Un atelier écourté vaut mieux qu'un atelier abandonné.
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>TRANSPORTS BELLEVANNE SAS — dossier de litige LIT-2026-058</strong><br />
+          <span class="petit">document fictif à usage pédagogique — f. 1 sur 2</span>
+        </p>
+        <p><strong>Fiche de synthèse</strong></p>
+        <p>
+          Client : COMPTOIR AGRICOLE DE PRÉNAY.<br />
+          Transport : commande CDE-2026-4102 du 5 juin 2026.<br />
+          Véhicule : semi HR-318-LN, hayon.<br />
+          Livraison prévue : jeudi 11 juin 2026, créneau 8 h 00 – 10 h 00, site de Prénay.<br />
+          Livraison effectuée : vendredi 12 juin 2026 à 9 h 40.<br />
+          Marchandise : 18 palettes de semences, 7 200 kg.<br />
+          Contact client : Mme Roussille, service réception, poste 118.
+        </p>
+        <p><strong>Chronologie</strong></p>
+        <p>
+          11/06, 6 h 50 — hayon du HR-318-LN hors service au départ du dépôt de Vaugremont.<br />
+          11/06, 7 h 30 — appel au client pour signaler l'impossibilité de tenir le créneau
+          (trace : main courante d'exploitation, appel de 4 minutes).<br />
+          11/06, 13 h 15 — dépannage terminé ; le site de Prénay ferme sa réception à 12 h 00.<br />
+          12/06, 9 h 40 — livraison effectuée, aucune réserve portée au document de transport.<br />
+          16/06, 10 h 05 — courriel de réclamation du client.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <span class="petit">LIT-2026-058 — f. 2 sur 2</span>
+        </p>
+        <p><strong>Courriel de réclamation du 16/06/2026, 10 h 05</strong></p>
+        <p>
+          « Bonjour, votre livraison du 11 juin n'a été effectuée que le lendemain, ce qui a
+          désorganisé notre réception et immobilisé deux personnes. Le contrat prévoit un délai de
+          24 heures et vous ne l'avez pas respecté. Nous demandons une remise de 300 € sur la
+          prochaine facture. Cordialement, Mme Roussille, Comptoir agricole de Prénay. »
+        </p>
+        <p><strong>Ce que le dossier ne dit pas</strong> (à ne compléter par personne) :</p>
+        <p>
+          — ce que le contrat prévoit réellement, et s'il prévoit quoi que ce soit ;<br />
+          — si l'appel du 11 juin à 7 h 30 a été reçu par Mme Roussille ou par un autre poste ;<br />
+          — le coût réellement supporté par le client ;<br />
+          — si une remise a déjà été accordée sur un dossier antérieur.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le piège de ce dossier, à ne pas dévoiler avant la correction</div>
+        <p class="petit">
+          Le client cite « le délai de 24 heures prévu au contrat ». Le contrat type fourni (pièce
+          A8) ne comporte aucune stipulation de ce genre. Une affirmation du client n'est pas plus
+          une source qu'une affirmation d'assistant : elle se vérifie, contrat ouvert.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Dossier <strong>fictif</strong>. Le courrier produit est un <strong>projet</strong> à
+        relire, corriger et signer. <strong>Aucun engagement de délai, aucun prix et aucune réserve
+        sur un litige ne se décident par le texte.</strong> Toute question juridique va au conseil
+        de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8" data-titre="Contrat de transport type FICTIF (extraits, f. 1 à 3) — le document qu'on OUVRE" data-bloc="M2, pratique et vérification" data-tirage="1 par binôme + 3">
+      <div class="piece-badge">Pièce A8</div>
+      <h2>Contrat type FICTIF CTR-CORV-2025 — extraits</h2>
+      <p class="piece-usage">
+        La pièce centrale de la vérification du module 2 : <strong>elle s'OUVRE</strong>. Toute
+        mention de délai, d'article ou de clause portée dans un courrier se retrouve ici, ou se
+        barre au stylo sur la copie du voisin. La vérification confronte deux papiers ; elle ne se
+        fait pas de mémoire.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Avertissement, à lire à voix haute avant distribution</div>
+        <p>
+          Ce contrat est <strong>entièrement fictif</strong>. Il a été écrit pour l'exercice et ne
+          reproduit aucun contrat réel. <strong>Il ne dit rien de ce qui s'applique chez
+          vous</strong> : votre propre contrat, vos conditions particulières et le cadre applicable
+          à votre activité se lisent dans vos documents et se tranchent avec le conseil de votre
+          entreprise.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>CONTRAT DE TRANSPORT — CTR-CORV-2025</strong><br />
+          entre MENUISERIES CORVELLE (le donneur d'ordre) et TRANSPORTS BELLEVANNE SAS (le
+          transporteur)<br />
+          <span class="petit">document fictif — extraits, f. 1 sur 3</span>
+        </p>
+        <p>
+          <strong>Article 1 — Objet.</strong> Le transporteur assure, pour le compte du donneur
+          d'ordre, l'acheminement des marchandises désignées à chaque commande.
+        </p>
+        <p>
+          <strong>Article 2 — Documents contractuels.</strong> Le présent contrat, ses annexes et
+          chaque commande acceptée forment l'ensemble contractuel. En cas de divergence, la commande
+          acceptée prévaut pour ce qui concerne les lieux, dates, créneaux et caractéristiques de la
+          marchandise.
+        </p>
+        <p>
+          <strong>Article 3 — Commandes.</strong> Chaque commande est adressée par écrit et porte au
+          minimum : lieu et créneau de chargement, lieu et créneau de livraison, nature et poids de
+          la marchandise, contraintes d'accès et de quai, contact sur place. Toute information
+          absente de la commande est réputée non convenue.
+        </p>
+        <p>
+          <strong>Article 4 — Chargement et arrimage.</strong> Sauf mention contraire portée à la
+          commande, le chargement est effectué par l'expéditeur. Le bon de chargement mentionne qui
+          a chargé et si l'arrimage a été vérifié contradictoirement.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center"><span class="petit">CTR-CORV-2025 — f. 2 sur 3</span></p>
+        <p>
+          <strong>Article 5 — Créneaux.</strong> Le créneau porté à la commande vaut engagement de
+          présentation du véhicule. Il ne vaut pas engagement d'heure d'achèvement du déchargement,
+          celui-ci dépendant de l'organisation du site de livraison.
+        </p>
+        <p>
+          <strong>Article 6 — Constatation des dommages.</strong> Les réserves sont portées sur le
+          document de transport au moment de la livraison. Elles sont confirmées au transporteur par
+          écrit dans un délai de <strong>trois jours ouvrables</strong> à compter de la livraison,
+          faute de quoi le dossier est clos par les parties.
+        </p>
+        <p>
+          <strong>Article 7 — Réclamations.</strong> Toute réclamation est adressée par écrit au
+          service exploitation du transporteur. Elle mentionne la référence de transport, la date de
+          livraison et la nature du dommage constaté.
+        </p>
+        <p>
+          <strong>Article 8 — Prix et facturation.</strong> Les prix figurent à l'annexe tarifaire,
+          <em>non reproduite dans le présent extrait</em>. Aucune remise, aucun avoir et aucun geste
+          commercial ne résultent du présent contrat ; ils font l'objet d'un accord écrit distinct.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center"><span class="petit">CTR-CORV-2025 — f. 3 sur 3</span></p>
+        <p>
+          <strong>Article 9 — Retards.</strong> Le transporteur informe le donneur d'ordre dès qu'un
+          aléa compromet un créneau. <strong>Aucune pénalité de retard n'est stipulée au présent
+          contrat.</strong>
+        </p>
+        <p>
+          <strong>Article 10 — Assurance.</strong> Le transporteur justifie d'une assurance de
+          responsabilité. <strong>Aucune assurance de la valeur déclarée n'est souscrite</strong>,
+          sauf demande écrite préalable du donneur d'ordre, formulée commande par commande.
+        </p>
+        <p>
+          <strong>Article 11 — Différends.</strong> Les parties recherchent d'abord une solution
+          amiable. Chacune se fait assister de son conseil.
+        </p>
+        <p style="text-align: center">
+          <em>— fin des extraits ; le contrat fictif ne comporte pas d'article au-delà du
+          n° 11 —</em>
+        </p>
+      </div>
+
+      <div class="banniere">
+        Contrat <strong>fictif</strong>, remis pour l'exercice. Il ne vaut aucune indication sur ce
+        qui s'applique à votre entreprise. Tout écrit produit à partir de lui est un
+        <strong>projet</strong> à relire, corriger et signer. <strong>Aucun engagement de délai, de
+        prix ni de réserve sur un litige ne se décide par le texte.</strong> Question juridique :
+        conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A9" data-titre="Grille de contrôle croisé du module 2 + corrigé des cinq mentions inventées" data-bloc="M2, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A9 — feuille stagiaire</div>
+      <h2>Contrôle croisé — la grille du courrier de litige</h2>
+      <p class="piece-usage">
+        S'applique aux <strong>deux courriers du voisin</strong>, jamais aux siens. Contrat type
+        (pièce A8) OUVERT à côté. Règle du binôme : <strong>au moins un écart remonté</strong>,
+        sinon les binômes se valident entre eux. On juge l'écrit, jamais le fond du dossier — qui
+        est responsable de l'avarie n'est pas ce qu'on vérifie ici.
+      </p>
+
+      <p>
+        <strong>Courrier relu :</strong> ______________________ ·
+        <strong>Relu par :</strong> ______________________ ·
+        <strong>Le :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 40%">Ce qu'on vérifie</th>
+            <th style="width: 14%">Verdict</th>
+            <th>La phrase barrée, recopiée ici</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chaque fait est-il <strong>daté et horodaté</strong> ?</td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Une <strong>responsabilité est-elle admise</strong>, même par une formule de politesse
+              ?
+            </td>
+            <td>☐ non ☐ oui</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Chaque <strong>délai</strong> cité se retrouve-t-il dans le contrat A8 ? Article :
+              ______
+            </td>
+            <td>☐ oui ☐ barré</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Chaque <strong>article ou clause</strong> cité existe-t-il au contrat A8 ?</td>
+            <td>☐ oui ☐ barré</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Une <strong>mention d'assurance</strong> a-t-elle été ajoutée ?</td>
+            <td>☐ non ☐ barrée</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Un <strong>geste commercial, une remise ou un avoir</strong> est-il annoncé ?</td>
+            <td>☐ non ☐ barré</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Un <strong>montant</strong> figure-t-il, et vient-il du dossier ?</td>
+            <td>☐ oui ☐ barré</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Une <strong>donnée personnelle de conducteur</strong> a-t-elle été réintroduite ?
+            </td>
+            <td>☐ non ☐ barrée</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              Chaque <strong>chiffre du dossier</strong> (heures, nombre de palettes, poids) est-il
+              exact ?
+            </td>
+            <td>☐ oui ☐ corrigé</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Le courrier tient-il en <strong>une page au plus</strong> ?</td>
+            <td>☐ oui ☐ non</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>L'écart que je remonte à voix haute :</strong></p>
+      <div class="lignes"></div>
+      <p class="petit">
+        Barrez physiquement, au stylo, sur la copie de l'autre. Un courrier rendu avec quatre
+        phrases barrées se retient mieux qu'une consigne de vigilance.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A9">
+      <div class="piece-badge">Pièce A9 — corrigé formateur</div>
+      <h2>Les cinq mentions que l'assistant ajoute sans qu'on les lui demande</h2>
+      <p class="piece-usage">
+        À énoncer après le contrôle croisé, dans cet ordre. Ce sont les cinq récidives : les
+        connaître, c'est savoir où regarder en dix secondes.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 26%">La mention ajoutée</th>
+            <th>La règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Un délai de réclamation</strong></td>
+            <td>
+              Il le remplira, plausiblement et faux. Le contrat fictif A8 stipule trois jours
+              ouvrables à l'article 6 : tout autre délai se barre. Un délai se recopie depuis le
+              contrat OUVERT, jamais depuis une réponse d'assistant, jamais de mémoire.
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Un renvoi à un article</strong></td>
+            <td>
+              Le contrat A8 s'arrête à l'article 11. Tout « article 14.3 », « annexe 2 » ou « clause
+              pénale » cité est inventé — la référence a l'air vraie, c'est tout son danger. Citer
+              n'est pas vérifier.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Une mention d'assurance</strong></td>
+            <td>
+              L'article 10 exclut l'assurance de la valeur déclarée sauf demande écrite préalable.
+              Annoncer une couverture par courrier engage l'entreprise sur ce qu'elle n'a pas
+              souscrit.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Un geste commercial</strong></td>
+            <td>
+              L'article 8 le réserve à un accord écrit distinct. Un dédommagement se décide par une
+              personne, pas par un texte rédigé à 18 h 40 entre deux appels.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>Une excuse</strong></td>
+            <td>
+              « Nous sommes désolés », « veuillez nous excuser », « nous regrettons ce
+              dysfonctionnement » : la politesse n'est pas l'aveu, mais l'excuse en est un aux yeux
+              du lecteur. Remplacer par : « nous avons bien reçu votre signalement et nous
+              l'instruisons ».
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La question qui revient toujours</div>
+        <p>
+          « L'assistant a écrit un délai qui est juste, je le garde ? » — Vous venez de le VÉRIFIER
+          au contrat : ce n'est donc plus l'assistant qui l'affirme, c'est vous. Toute la différence
+          est là, et elle est entière.
+        </p>
+      </div>
+      <div class="encadre">
+        <div class="encadre-titre">Si un binôme part sur le fond du dossier</div>
+        <p>
+          Couper : « ce n'est pas ce qu'on vérifie ici, et ce n'est pas à nous de trancher ». Si la
+          question porte sur ce que le droit prévoit : « je ne me prononce pas, notez la question,
+          votre conseil tranchera » — et l'écrire au tableau.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A10" data-titre="Le courrier volontairement chargé + corrigé — dix défauts vérifiables" data-bloc="M2, vérification (parade)" data-tirage="1 par binôme + corrigé formateur">
+      <div class="piece-badge">Pièce A10 — feuille stagiaire</div>
+      <h2>Le courrier chargé — à barrer collectivement</h2>
+      <p class="piece-usage">
+        Parade de la vérification du module 2 : les copies sont trop propres, rien n'est barré.
+        Distribuez ce courrier, contrat A8 et dossier A7 ouverts à côté, et faites barrer
+        collectivement. <strong>L'œil se règle en trois minutes.</strong> Consigne : barrez tout ce
+        qui n'est pas retrouvable dans le dossier ou dans le contrat, puis comptez.
+      </p>
+
+      <div class="texte-exercice">
+        <p>
+          <strong>Objet :</strong> Réclamation sur la livraison du 17 juin — dossier LIT-2026-052
+        </p>
+        <p>Madame, Monsieur,</p>
+        <p>
+          Nous sommes sincèrement désolés du désagrément causé par l'avarie constatée le
+          31 juin 2026 sur votre plateforme de Neuville-sur-Ance.
+        </p>
+        <p>
+          Le véhicule HR-318-LN s'est présenté dans le créneau convenu et le conducteur a chargé
+          lui-même la marchandise la veille à l'usine de Pontcharme.
+        </p>
+        <p>
+          Nous reconnaissons que 3 palettes sur 12 ont été endommagées, soit 40 % du chargement, et
+          nous en assumons l'entière responsabilité.
+        </p>
+        <p>
+          Conformément à l'article 14.3 du contrat-cadre CTR-CORV-2025, vous disposez d'un délai de
+          trente jours pour nous adresser votre réclamation détaillée.
+        </p>
+        <p>
+          Notre assurance marchandises couvre la valeur déclarée de votre expédition et prendra en
+          charge l'intégralité du préjudice.
+        </p>
+        <p>
+          Nous rappelons par ailleurs que, s'agissant du retard de cinq jours ouvrés intervenu entre
+          le 11 et le 12 juin 2026 sur votre autre dossier, une pénalité de 5 % par jour sera
+          appliquée conformément au contrat.
+        </p>
+        <p>
+          Enfin, nous vous accordons un geste commercial de 250 € sur votre prochaine facture, en
+          signe de notre engagement qualité.
+        </p>
+        <p>Encore toutes nos excuses, et merci de votre compréhension.</p>
+      </div>
+
+      <p>
+        <strong>Nombre de passages barrés par la salle :</strong> ______ ·
+        <strong>Le plus difficile à voir :</strong> ______________________________
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A10">
+      <div class="piece-badge">Pièce A10 — corrigé formateur</div>
+      <h2>Le courrier chargé — dix défauts, et la règle qui tranche chacun</h2>
+
+      <div class="corrige">
+        <div class="encadre-titre">Corrigé, dans l'ordre du courrier</div>
+        <ol>
+          <li>
+            <strong>« Nous sommes sincèrement désolés du désagrément »</strong> — l'excuse. Règle :
+            la politesse n'est pas l'aveu, mais l'excuse en est un pour le lecteur. Remplacer par
+            « nous avons bien reçu votre signalement et nous l'instruisons ».
+          </li>
+          <li>
+            <strong>« le 31 juin 2026 »</strong> — <em>date impossible</em> : le 31 juin n'existe
+            pas, et le dossier LIT-2026-052 date l'avarie du 17 juin 2026. Souvent trouvée en
+            dernier : on lit les dates sans les voir.
+          </li>
+          <li>
+            <strong>« Le véhicule HR-318-LN »</strong> — <em>contradiction avec le dossier</em> :
+            LIT-2026-052 porte le porteur FX-742-QT. HR-318-LN est le véhicule de l'AUTRE dossier.
+            Deux dossiers ouverts en même temps, un chiffre qui glisse de l'un à l'autre : c'est le
+            mécanisme, pas l'accident.
+          </li>
+          <li>
+            <strong>« le conducteur a chargé lui-même la marchandise »</strong> —
+            <em>contradiction avec le bon de chargement BC-4187</em>, qui indique un chargement par
+            le magasin de l'expéditeur, conducteur non admis sur le quai. Ce n'est pas un détail :
+            cette phrase seule change la lecture de tout le dossier.
+          </li>
+          <li>
+            <strong>« Nous reconnaissons que… et nous en assumons l'entière responsabilité »</strong>
+            — l'aveu, écrit avant que rien ne soit établi. Le dossier lui-même dit ne pas savoir à
+            quel moment les angles ont été enfoncés.
+          </li>
+          <li>
+            <strong>« 3 palettes sur 12 endommagées, soit 40 % du chargement »</strong> —
+            <em>arithmétique fausse</em> : 3 sur 12 font 25 %. Le chiffre juste était déjà écrit
+            dans la phrase.
+          </li>
+          <li>
+            <strong>« l'article 14.3 du contrat-cadre CTR-CORV-2025 »</strong> —
+            <em>référence inventée</em> : le contrat fictif A8 s'arrête à l'article 11. Une
+            référence citée n'est pas une référence vérifiée.
+          </li>
+          <li>
+            <strong>« un délai de trente jours »</strong> — <em>délai inventé</em> : l'article 6 du
+            contrat A8 stipule trois jours ouvrables. Un délai se recopie depuis le contrat ouvert,
+            jamais de mémoire.
+          </li>
+          <li>
+            <strong>« Notre assurance marchandises couvre la valeur déclarée »</strong> —
+            <em>contredit l'article 10</em>, qui exclut cette couverture sauf demande écrite
+            préalable. La phrase engage l'entreprise sur ce qu'elle n'a pas souscrit.
+          </li>
+          <li>
+            <strong>« retard de cinq jours ouvrés entre le 11 et le 12 juin 2026 » et « une
+            pénalité de 5 % par jour »</strong> — <em>arithmétique impossible</em> (il y a un jour
+            d'écart, pas cinq) et <em>stipulation inventée</em> : l'article 9 du contrat A8 énonce
+            qu'aucune pénalité de retard n'est stipulée. À quoi s'ajoute le
+            <strong>geste commercial de 250 €</strong>, que l'article 8 réserve à un accord écrit
+            distinct.
+          </li>
+        </ol>
+        <p class="petit">
+          Débriefing en une phrase : le courrier est fluide, poli, bien tourné — et il concède, il
+          invente et il engage l'entreprise dix fois. Ce n'est pas la qualité de l'écriture qui
+          protège, c'est la relecture, contrat ouvert et dossier ouvert.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11" data-titre="Mémo — les cinq leviers AXION appliqués au litige, et les trois formules qui concèdent" data-bloc="M2, pratique et synthèse" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A11</div>
+      <h2>Mémo — écrire un litige avec les cinq leviers</h2>
+      <p class="piece-usage">
+        À emporter, et à relire chaque fois qu'un courrier de litige part de travers : le levier
+        manquant saute aux yeux. Le litige est l'écrit le plus coûteux de l'exploitation — celui
+        qu'on rédige en urgence et qu'on relit six mois plus tard devant un assureur.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 16%">Levier</th>
+            <th style="width: 42%">Ce qu'on écrit, dans un litige</th>
+            <th>Ce qui arrive quand il manque</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Acteur</strong></td>
+            <td>« Tu es exploitant transport et tu écris au nom de l'entreprise. »</td>
+            <td>Un ton de particulier qui s'excuse, ou un ton d'avocat qui menace.</td>
+          </tr>
+          <tr>
+            <td><strong>conteXte</strong></td>
+            <td>
+              « Je te dicte les faits ; <strong>tout ce que je ne dicte pas n'existe pas</strong>. »
+            </td>
+            <td>Il comble les trous avec du vraisemblable : une heure, une cause, un montant.</td>
+          </tr>
+          <tr>
+            <td><strong>Intention</strong></td>
+            <td>« Un courrier destiné à être relu puis envoyé par l'exploitant. »</td>
+            <td>Un texte prêt à partir, qui donne envie de l'envoyer sans le lire.</td>
+          </tr>
+          <tr>
+            <td><strong>Output</strong></td>
+            <td>
+              Une page au plus · les faits datés et horodatés d'abord, une phrase par fait · puis la
+              demande · puis la clôture.
+            </td>
+            <td>Trois pages où le fait principal arrive au milieu du deuxième paragraphe.</td>
+          </tr>
+          <tr>
+            <td><strong>Normes</strong></td>
+            <td>
+              Aucune responsabilité admise · aucune excuse · aucun délai, article ou clause —
+              écrire « [délai à retrouver au contrat] » · aucun fait, aucune heure et aucun montant
+              absents de la dictée.
+            </td>
+            <td>
+              <strong>Le levier qui protège</strong> : sans lui, les cinq mentions de la pièce A9
+              arrivent toutes seules.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les trois formules qui concèdent une responsabilité sans le dire</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 46%">Ce qu'on écrit sans y penser</th>
+              <th>Ce qu'on écrit à la place</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>« Nous sommes désolés du désagrément occasionné »</td>
+              <td>« Nous avons bien reçu votre signalement et nous l'instruisons »</td>
+            </tr>
+            <tr>
+              <td>« Nous reconnaissons que… »</td>
+              <td>« Les réserves portées au document de transport mentionnent… »</td>
+            </tr>
+            <tr>
+              <td>« Nous vous rembourserons / nous ferons un geste »</td>
+              <td>
+                « Nous vous demandons de nous confirmer par écrit la nature et le montant du dommage
+                constaté »
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="petit">
+        La phrase du module : <em>l'assistant rédige, l'exploitant tranche, le contrat fait
+        foi.</em> Et la question qui ferme tout débat : <strong>qui signe ?</strong>
+      </p>
+
+      <div class="banniere">
+        Tout courrier produit avec un assistant est un <strong>projet</strong> : relu, corrigé,
+        signé par vous. <strong>Aucun engagement de délai, aucun prix et aucune réserve sur un
+        litige ne se décident par le texte</strong> — ils se décident par vous, contrat ouvert.
+        Toute question juridique va au conseil de votre entreprise, pas au formateur et pas à
+        l'outil.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12" data-titre="La commande de secours CDE-2026-4187 — document FICTIF déposable (f. 1 et 2)" data-bloc="M3, démonstration et pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A12</div>
+      <h2>Commande de transport FICTIVE — CDE-2026-4187</h2>
+      <p class="piece-usage">
+        La <strong>commande de secours</strong> du module 3 : pour le stagiaire dont la tournée de
+        demain n'est pas arrêtée, pour celui dont les pièces ne peuvent pas sortir du service, et
+        pour tenir la démonstration quand le réseau tombe. C'est aussi la source unique contre
+        laquelle se vérifient les pièces A13, A14 et A15 :
+        <strong>tout chiffre qui n'est pas ici n'existe pas.</strong>
+      </p>
+
+      <div class="texte-exercice">
+        <p style="text-align: center">
+          <strong>MENUISERIES CORVELLE — COMMANDE DE TRANSPORT</strong><br />
+          <span class="petit">document fictif à usage pédagogique — f. 1 sur 2</span>
+        </p>
+        <p>
+          <strong>Référence donneur d'ordre :</strong> CDE-2026-4187<br />
+          <strong>Émise le :</strong> vendredi 12 juin 2026<br />
+          <strong>Transporteur :</strong> TRANSPORTS BELLEVANNE SAS<br />
+          <strong>Émetteur :</strong> Menuiseries Corvelle, usine de Pontcharme
+        </p>
+        <p><strong>CHARGEMENT</strong></p>
+        <p>
+          Lieu : usine de Pontcharme, entrée magasin.<br />
+          Date : mardi 16 juin 2026.<br />
+          Créneau : entre 6 h 00 et 8 h 00.<br />
+          Bon de chargement : BC-4187.<br />
+          Contact au chargement : M. Tellier, magasin, poste 340.<br />
+          Consigne de site : conducteur non admis sur le quai de chargement.
+        </p>
+        <p><strong>LIVRAISON</strong></p>
+        <p>
+          Lieu : plateforme LOGIVAL, Neuville-sur-Ance.<br />
+          Date : mercredi 17 juin 2026.<br />
+          Créneau : 14 h 30 – 16 h 00.<br />
+          Contact sur place : M. Fauriel, chef de quai, poste 214.<br />
+          Quai attribué : quai 7.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p style="text-align: center"><span class="petit">CDE-2026-4187 — f. 2 sur 2</span></p>
+        <p><strong>MARCHANDISE</strong></p>
+        <p>
+          Nature : panneaux et huisseries bois.<br />
+          Conditionnement : 12 palettes Europe (800 × 1 200 mm), non gerbables.<br />
+          Poids total : 4 380 kg.<br />
+          Hauteur maximale : 1,80 m.<br />
+          Reprise de palettes vides : non.
+        </p>
+        <p><strong>CONTRAINTES</strong></p>
+        <p>
+          Quai bas — hayon obligatoire.<br />
+          Pas de transpalette électrique disponible sur le site de livraison.<br />
+          Prévenir le quai 30 minutes avant l'arrivée.
+        </p>
+        <p><strong>DOCUMENTS</strong></p>
+        <p>
+          Bon de livraison en trois exemplaires ; émargement du chef de quai exigé.
+        </p>
+        <p>
+          <strong>NON RENSEIGNÉ PAR LE DONNEUR D'ORDRE</strong> (mentions volontairement absentes) :
+        </p>
+        <p>
+          — numéro de téléphone direct du quai ;<br />
+          — code d'accès du site de livraison ;<br />
+          — moyen à utiliser pour prévenir 30 minutes avant l'arrivée (appel ou message) ;<br />
+          — tolérance de retard admise ;<br />
+          — valeur déclarée de la marchandise ;<br />
+          — ordre de passage souhaité si plusieurs points sont livrés dans la journée.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Pourquoi six mentions manquent volontairement</div>
+        <p class="petit">
+          Ce sont elles qui produisent les « à confirmer ». Une commande complète ne démontre rien :
+          c'est le trou dans la source qui révèle si l'assistant invente ou s'il le signale.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Commande <strong>fictive</strong>. Les écrits produits à partir d'elle sont des
+        <strong>projets</strong> : relus, corrigés et signés avant transmission à un conducteur, à un
+        client ou à un sous-traitant. <strong>Aucun engagement de délai, aucun prix et aucune
+        réserve sur un litige ne se décident par le texte.</strong> Toute question juridique ou
+        réglementaire va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A13" data-titre="Les trois sorties du module 3, datées — instructions, confirmation, courrier d'accompagnement" data-bloc="M3, démonstration (plan B)" data-tirage="1 par table + 1 jeu formateur">
+      <div class="piece-badge">Pièce A13</div>
+      <h2>Les trois écrits produits à partir de la commande — sortie conservée</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 3. Commande A12 posée à GAUCHE, cette pièce à DROITE :
+        le traçage des chiffres se fait au surligneur, d'un papier à l'autre — c'est même plus
+        démonstratif qu'à l'écran. Question à poser pour chaque chiffre :
+        <strong>« cette heure de rendez-vous, elle vient d'où ? »</strong> Tant qu'un chiffre n'est
+        pas remonté à la commande, il ne part pas.
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Vérifiée contre la pièce A12 par :</strong> ______________
+      </div>
+      <p class="petit">Contenu vérifié le 6 août 2026. Toutes les données sont fictives.</p>
+
+      <div class="texte-exercice">
+        <p><strong>1. Instructions au conducteur</strong></p>
+        <p>1. Chargement : usine Menuiseries Corvelle, Pontcharme, entrée magasin.</p>
+        <p>2. Mardi 16 juin 2026, entre 6 h 00 et 8 h 00 — bon de chargement BC-4187.</p>
+        <p>3. Contact au chargement : M. Tellier, magasin, poste 340.</p>
+        <p>4. Tu n'es pas admis sur le quai de chargement (consigne du site).</p>
+        <p>5. Livraison : plateforme LOGIVAL, Neuville-sur-Ance, quai 7.</p>
+        <p>6. Mercredi 17 juin 2026, créneau 14 h 30 – 16 h 00.</p>
+        <p>7. Contact sur place : M. Fauriel, chef de quai, poste 214 — numéro direct du quai
+          <strong>à confirmer</strong>.</p>
+        <p>8. Quai bas, hayon obligatoire ; pas de transpalette électrique sur place.</p>
+        <p>9. Marchandise : 12 palettes Europe non gerbables, 4 380 kg, hauteur 1,80 m.</p>
+        <p>10. Prévenir le quai 30 minutes avant l'arrivée — moyen (appel ou message)
+          <strong>à confirmer</strong> ; code d'accès du site <strong>à confirmer</strong>.</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>2. Message de confirmation au client</strong></p>
+        <p>1. Votre commande CDE-2026-4187 est prise en charge par nos services.</p>
+        <p>2. Chargement prévu le mardi 16 juin 2026 entre 6 h 00 et 8 h 00 à Pontcharme.</p>
+        <p>3. Livraison prévue le mercredi 17 juin 2026 sur le créneau 14 h 30 – 16 h 00 à
+          Neuville-sur-Ance.</p>
+        <p>4. 12 palettes non gerbables, 4 380 kg — véhicule équipé d'un hayon.</p>
+        <p>5. Merci de nous confirmer le numéro direct du quai et le moyen de prévenance à utiliser
+          30 minutes avant l'arrivée (<strong>à confirmer</strong>).</p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>3. Courrier d'accompagnement du transport</strong></p>
+        <p>
+          Le présent transport est effectué pour le compte de Menuiseries Corvelle au titre de la
+          commande CDE-2026-4187 du 12 juin 2026.
+        </p>
+        <p>
+          Il porte 12 palettes Europe non gerbables de panneaux et huisseries bois, d'un poids total
+          de 4 380 kg et d'une hauteur maximale de 1,80 m, chargées à l'usine de Pontcharme le
+          16 juin 2026 sous bon de chargement BC-4187.
+        </p>
+        <p>
+          La livraison est prévue le 17 juin 2026 sur le créneau 14 h 30 – 16 h 00 à la plateforme
+          LOGIVAL de Neuville-sur-Ance, quai 7, contact M. Fauriel, chef de quai.
+        </p>
+        <p>
+          Le bon de livraison est établi en trois exemplaires et l'émargement du chef de quai est
+          exigé à la remise.
+        </p>
+        <p>
+          Toute réserve est portée sur le document de transport au moment de la livraison. Valeur
+          déclarée : <strong>à confirmer — non renseignée à la commande</strong>.
+        </p>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce que la salle doit constater</div>
+        <ul>
+          <li>
+            <strong>Six mentions « à confirmer »</strong> pour trois écrits — exactement les six
+            trous de la commande A12. L'assistant n'a comblé aucun d'eux.
+          </li>
+          <li>
+            <strong>Aucun ordre de passage, aucune répartition de chargement, aucun conducteur
+            désigné.</strong> Il n'a pas construit la tournée : le TMS ordonnance, l'assistant écrit
+            autour.
+          </li>
+          <li>
+            <strong>Aucun document réglementé n'a été rédigé</strong> : ni lettre de voiture, ni
+            déclaration de matière dangereuse. Le courrier d'accompagnement décrit le transport, il
+            ne remplace aucune pièce exigée.
+          </li>
+          <li>
+            <strong>Chaque heure, chaque adresse et chaque contact se retrouvent dans la
+            commande.</strong> C'est ce qu'on trace au surligneur, un trait par chiffre.
+          </li>
+        </ul>
+        <p class="petit">
+          Si l'assistant propose spontanément un ordre de livraison « optimisé » lors d'une capture
+          en direct : le montrer, puis le supprimer devant la salle. C'est la meilleure démonstration
+          possible de la borne du module — il le fera même quand on ne lui demande rien.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ces trois écrits sont des <strong>projets</strong> : relus, corrigés et signés avant
+        transmission. <strong>Aucun engagement de délai, aucun prix et aucune réserve sur un litige
+        ne se décident par le texte.</strong> Les temps de conduite et de repos, les règles
+        applicables aux matières transportées, les poids et les gabarits se vérifient dans le texte
+        OUVERT et dans vos outils métier, jamais dans une réponse d'assistant. Question juridique ou
+        réglementaire : le responsable compétent chez vous, ou le conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14" data-titre="La sortie aux quatre invasions typiques + corrigé — pour le binôme qui valide tout" data-bloc="M3, vérification (parade)" data-tirage="1 par binôme + corrigé formateur">
+      <div class="piece-badge">Pièce A14 — feuille stagiaire</div>
+      <h2>Une autre sortie sur la même commande — cherchez ce qui a bougé</h2>
+      <p class="piece-usage">
+        Parade de la vérification du module 3 : <strong>un binôme valide tout en trois
+        minutes</strong>. Donnez-lui cette sortie, commande A12 posée à côté, sans dire combien de
+        défauts elle contient. S'il n'en trouve aucun, refaites la lecture avec lui — l'œil n'est
+        pas encore réglé. Consigne : surligner, pas cocher. Une case cochée ne prouve rien.
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Instructions au conducteur — commande CDE-2026-4187</strong></p>
+        <p>1. Chargement : usine Menuiseries Corvelle, Pontcharme, mardi 16 juin 2026 au matin.</p>
+        <p>2. Livraison : plateforme LOGIVAL, Neuville-sur-Ance, mercredi 17 juin 2026 dans
+          l'après-midi, à partir de 14 h.</p>
+        <p>3. Contact sur place : Mme Roussille, service réception, poste 118.</p>
+        <p>4. Quai bas, hayon obligatoire ; pas de transpalette électrique sur place.</p>
+        <p>5. Marchandise : 12 palettes de 380 kg, soit 4,38 tonnes ; hauteur 1,80 m³.</p>
+        <p>6. La marchandise est assurée en valeur déclarée ; en cas d'avarie, notre assurance
+          couvre le préjudice.</p>
+        <p>7. Ordre de passage conseillé : livrer Neuville-sur-Ance avant le retour au dépôt de
+          Vaugremont, afin d'optimiser la boucle et de gagner environ 40 minutes.</p>
+        <p>8. Prévenir le quai 30 minutes avant l'arrivée.</p>
+      </div>
+
+      <p><strong>Ce que j'ai surligné, recopié ici :</strong></p>
+      <div class="lignes"></div>
+      <div class="lignes"></div>
+      <div class="lignes"></div>
+    </section>
+
+    <section class="piece" data-piece="A14">
+      <div class="piece-badge">Pièce A14 — corrigé formateur</div>
+      <h2>Les quatre invasions typiques — et deux défauts pour le binôme rapide</h2>
+
+      <div class="corrige">
+        <div class="encadre-titre">Les quatre invasions — celles qui reviennent à chaque session</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 8%">Ligne</th>
+              <th style="width: 26%">L'invasion</th>
+              <th>La règle qui tranche</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2</td>
+              <td><strong>Le créneau arrondi</strong></td>
+              <td>
+                La commande A12 porte « 14 h 30 – 16 h 00 ». La sortie écrit « dans l'après-midi, à
+                partir de 14 h » : la borne de fin a disparu et l'heure de début a reculé d'une
+                demi-heure. Règle : un créneau se recopie au chiffre près, jamais reformulé.
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>Le contact recopié d'une autre commande</strong></td>
+              <td>
+                La commande A12 porte M. Fauriel, chef de quai, poste 214. Mme Roussille, poste 118,
+                est le contact du dossier LIT-2026-058 (Comptoir agricole de Prénay) : elle n'a rien
+                à faire ici. Règle : un contact se retrouve dans LA commande traitée, pas dans la
+                mémoire de la conversation.
+              </td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><strong>La mention d'assurance ajoutée</strong></td>
+              <td>
+                La commande A12 indique explicitement que la valeur déclarée n'est pas renseignée,
+                et l'article 10 du contrat fictif A8 exclut cette couverture sauf demande écrite
+                préalable. Une phrase qui engage l'entreprise, écrite dans une instruction à un
+                conducteur.
+              </td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><strong>L'ordre de passage proposé sans qu'on l'ait demandé</strong></td>
+              <td>
+                Personne n'a demandé d'ordonnancement, et le « gain d'environ 40 minutes » ne
+                s'appuie sur rien. <strong>C'est la borne du module :</strong> le TMS ordonnance, le
+                texte réglementaire et vos outils métier tranchent, l'assistant écrit autour. Il le
+                proposera même quand on ne lui demande rien.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Deux défauts supplémentaires — à garder pour le binôme rapide</div>
+        <ul>
+          <li>
+            <strong>Ligne 5 — « 12 palettes de 380 kg, soit 4,38 tonnes ».</strong> Arithmétique
+            fausse : 12 × 380 = 4 560 kg. Et la commande annonce 4 380 kg au total, pas par palette.
+            L'assistant a fabriqué une répartition que la source ne donne pas.
+          </li>
+          <li>
+            <strong>Ligne 5 — « hauteur 1,80 m³ ».</strong> Unité incohérente : une hauteur se
+            mesure en mètres, pas en mètres cubes. La commande porte bien 1,80 m. Un chiffre juste
+            avec la mauvaise unité passe l'œil de tout le monde.
+          </li>
+        </ul>
+        <p class="petit">
+          Et ce qui manque, à faire remarquer en dernier : les <strong>« à confirmer » ont
+          disparu</strong>. La sortie A13 en portait six ; celle-ci n'en porte aucun, alors que la
+          commande n'a pas changé. Une sortie sans « à confirmer » sur une commande incomplète est
+          une sortie qui a comblé les trous toute seule.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Sur les temps de conduite, une seule réponse est acceptable</div>
+        <p>
+          « Je l'ai lu dans le texte ouvert » ou « je ne l'ai pas cité ».
+          <strong>« L'assistant me l'a dit » n'est pas une source</strong> — dites-le tel quel. Une
+          règle de conduite, de repos, de poids ou de matière transportée se vérifie dans le texte
+          applicable et dans vos outils métier, et se tranche avec le responsable compétent chez
+          vous.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15" data-titre="Checklist de vérification croisée du module 3 — deux papiers confrontés" data-bloc="M3, vérification" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A15</div>
+      <h2>Checklist croisée — la sortie contre la commande</h2>
+      <p class="piece-usage">
+        Checklist en main, <strong>commande d'origine posée à côté</strong> : la vérification
+        confronte deux papiers, elle ne relit pas un écran. On recopie, on ne coche pas — c'est la
+        recopie qui oblige à retourner à la source. Vous ne vérifiez pas tout : vous vérifiez les
+        chiffres. Deux minutes.
+      </p>
+
+      <p>
+        <strong>Sortie relue :</strong> ______________________ ·
+        <strong>Commande source :</strong> ______________________ ·
+        <strong>Relue par :</strong> ______________
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%">Ce qu'on confronte</th>
+            <th style="width: 26%">Ce que dit la COMMANDE (recopier)</th>
+            <th style="width: 26%">Ce que dit la SORTIE (recopier)</th>
+            <th style="width: 24%">Verdict</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Créneau de chargement</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Créneau de livraison</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Adresse de chargement</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Adresse de livraison</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Contact sur place</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Contrainte de quai</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+          <tr><td>Poids, nombre de colis, unité</td><td></td><td></td><td>☐ identique ☐ surligné</td></tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 60%">Ce qui ne devait PAS s'y trouver</th>
+            <th style="width: 16%">Présent ?</th>
+            <th>Recopier la ligne</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Une mention contractuelle inventée (assurance, pénalité, franco, garantie)</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Un ordre de passage proposé</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Une répartition de chargement</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Un conducteur désigné, ou un nom de conducteur</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Un tarif, un taux d'affrètement ou un montant</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Un temps de conduite ou de repos cité — <strong>source :</strong> ____________</td><td>☐ non ☐ oui</td><td></td></tr>
+          <tr><td>Un document réglementé rédigé (lettre de voiture, déclaration de matière)</td><td>☐ non ☐ oui</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Et ce qui doit y être</div>
+        <p>
+          Combien de mentions « à confirmer » ? <strong>______</strong> — combien de trous la
+          commande comporte-t-elle ? <strong>______</strong>. Si le second nombre dépasse le premier,
+          l'assistant a comblé quelque chose. Tout chiffre non retrouvé se surligne, puis se corrige
+          ou se remplace par « à confirmer ».
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16" data-titre="Trois trames papier — consignes au conducteur, demande d'affrètement, relance" data-bloc="M3, pratique (plan B)" data-tirage="1 jeu par stagiaire + 5">
+      <div class="piece-badge">Pièce A16</div>
+      <h2>Trames papier — les trois écrits de la tournée</h2>
+      <p class="piece-usage">
+        Plan B de la pratique du module 3 : réseau tombé, les trois écrits se rédigent ici au stylo,
+        à partir de la commande de secours A12. Ce qui s'apprend est la structure — l'outil ne fait
+        que l'exécuter. <strong>Si le temps manque, gardez la demande d'affrètement et sa
+        relance</strong> : ce sont les deux plus rentables, et la relance est l'écrit que personne
+        n'envoie faute de temps.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Avant de commencer — les deux substitutions, sans exception</div>
+        <p>
+          Chaque <strong>nom de conducteur</strong> devient « le conducteur ». Chaque
+          <strong>tarif négocié</strong> devient « [tarif] ». C'est la règle du matin appliquée, et
+          c'est le moment de la journée où elle se perd.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 1 — instructions au conducteur (dix lignes, une information par ligne)</div>
+        <p class="petit">
+          Ordre imposé : lieu de chargement · date et créneau · contact au chargement · lieu de
+          livraison · date et créneau · contact sur place · contrainte de quai · marchandise ·
+          documents · point de vigilance. Écrire « à confirmer » partout où la commande ne dit rien.
+        </p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 2 — demande d'affrètement</div>
+        <p>
+          Référence de la demande : <strong>AFF-</strong>__________ ·
+          <strong>Émise le :</strong> ____ / ____ / 20____ à ______ h ______
+        </p>
+        <p>Destinataire (sous-traitant) : ______________________________</p>
+        <p>Chargement — lieu : ________________________ · date : ____ / ____ · créneau : ______ – ______</p>
+        <p>Livraison — lieu : __________________________ · date : ____ / ____ · créneau : ______ – ______</p>
+        <p>Marchandise — nature : ____________________ · nombre de palettes : ______ ·
+          poids total : ______ <strong>kg</strong> · hauteur : ______ <strong>m</strong> ·
+          gerbable : ☐ oui ☐ non</p>
+        <p>Contraintes de quai et matériel exigé (hayon, transpalette…) : ______________________</p>
+        <p>Documents exigés à la livraison : ______________________________</p>
+        <p>Reprise de palettes : ☐ oui ☐ non · Contact sur place : ______________________</p>
+        <p>Prix : <strong>[tarif]</strong> — <span class="petit">ne se remplit pas en salle</span></p>
+        <p>Réponse attendue avant le : ____ / ____ à ______ h ______ · Contact exploitation :
+          ______________</p>
+        <p class="petit">
+          Les unités sont imprimées dans la trame exprès : kilogrammes et mètres. Une hauteur en m³
+          ou un poids en tonnes recopié depuis une commande en kilogrammes est le défaut le plus
+          fréquent de l'atelier.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trame 3 — relance du sous-traitant qui n'a pas répondu</div>
+        <p>Rappel : demande <strong>AFF-</strong>__________ envoyée le ____ / ____ à ______ h ______</p>
+        <p>Constat, daté : « à ce jour, ____ / ____ à ______ h, nous n'avons pas reçu votre
+          réponse. »</p>
+        <p>Ce que nous demandons, avec une échéance : ______________________________________</p>
+        <div class="lignes"></div>
+        <p>Ce qui se passe à défaut de réponse (fait, pas menace) :</p>
+        <div class="lignes"></div>
+        <p>Contact et disponibilité pour un point téléphonique : ______________________</p>
+        <p class="petit">
+          Une relance efficace tient en quatre éléments : la référence, le constat daté, une demande
+          avec une heure limite, et ce qui se passera à défaut — énoncé comme un fait
+          d'organisation, jamais comme une menace. Aucun tarif, aucun préjudice chiffré, aucune
+          annonce de rupture.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ces trames produisent des <strong>projets</strong> : relus, corrigés et signés par vous avant
+        transmission. <strong>Aucun engagement de délai, aucun prix et aucune réserve sur un litige
+        ne se décident par le texte.</strong> L'assistant ne construit ni tournée, ni chargement, ni
+        affectation de conducteur, et ne rédige aucun document réglementé. Toute question juridique
+        ou réglementaire va au conseil de votre entreprise ou au responsable compétent.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A17" data-titre="Parade du dépôt — le scan illisible, repris écran par écran" data-bloc="M3, démonstration et pratique (parade)" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A17</div>
+      <h2>Quand la commande déposée ressort illisible — la parade, geste par geste</h2>
+      <p class="piece-usage">
+        Parade annoncée AVANT que quiconque échoue : la commande est un scan sans texte reconnu, et
+        l'assistant paraphrase, invente ou dit ne pas voir le document. Un stagiaire prévenu vous
+        appelle ; un stagiaire surpris se referme pour la journée. Le dépôt de document est le second
+        geste du métier après la dictée : il mérite sa procédure.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Reconnaître le défaut — trois symptômes</div>
+        <ul>
+          <li>La réponse reste générale et ne cite aucun chiffre du document.</li>
+          <li>
+            Les chiffres cités ne correspondent pas au papier que vous avez sous les yeux —
+            <strong>c'est le cas le plus dangereux</strong>, parce qu'il ressemble à une réussite.
+          </li>
+          <li>L'outil indique qu'il ne parvient pas à lire le fichier.</li>
+        </ul>
+        <p class="petit">
+          Test préalable, deux secondes : dans le fichier d'origine, essayez de sélectionner une
+          ligne de texte à la souris. Si rien ne se sélectionne, c'est une image — l'outil aussi ne
+          voit qu'une image.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Parade 1 — reprendre la commande écran par écran</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 10%">Geste</th>
+              <th>Ce qu'on fait exactement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1</strong></td>
+              <td>Ouvrir la commande à l'écran et l'afficher à 100 % — jamais en aperçu réduit.</td>
+            </tr>
+            <tr>
+              <td><strong>2</strong></td>
+              <td>
+                Découper la hauteur de l'écran en trois vues : vue 1 (en-tête et références), vue 2
+                (chargement et livraison), vue 3 (marchandise, contraintes, mentions absentes).
+              </td>
+            </tr>
+            <tr>
+              <td><strong>3</strong></td>
+              <td>
+                Capturer chaque vue avec un <strong>recouvrement de deux lignes</strong> sur la
+                précédente. Sans recouvrement, une ligne se perd dans la charnière et personne ne
+                s'en aperçoit.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>4</strong></td>
+              <td>
+                Déposer les trois captures <strong>dans l'ordre</strong>, en les nommant « vue 1 sur
+                3 », « vue 2 sur 3 », « vue 3 sur 3 ».
+              </td>
+            </tr>
+            <tr>
+              <td><strong>5</strong></td>
+              <td>
+                Demander : « recolle le texte dans l'ordre des vues, n'ajoute rien, et signale toute
+                zone que tu ne lis pas ».
+              </td>
+            </tr>
+            <tr>
+              <td><strong>6</strong></td>
+              <td>
+                <strong>Contrôle obligatoire</strong> : relire deux chiffres au hasard contre le
+                papier — un créneau et un poids. S'ils tombent juste, on continue ; sinon on
+                recommence, on ne corrige pas.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Parade 2 — dicter les six lignes utiles</div>
+        <p>
+          Plus rapide que tout le reste quand le document est mauvais et le téléphone à portée :
+          lieu · créneau · contact sur place · contrainte de quai · marchandise · point de vigilance.
+          Six phrases courtes, une information par phrase, puis on relit la transcription avant de
+          lancer.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qu'on ne fait jamais</div>
+        <ul>
+          <li>
+            <strong>Redresser un chiffre illisible « au plus probable ».</strong> Un créneau flou se
+            confirme au téléphone, il ne se devine pas.
+          </li>
+          <li>
+            <strong>Déposer le scan d'une pièce qui n'aurait pas dû sortir</strong> parce qu'il est
+            de mauvaise qualité : un contrat mal scanné reste un contrat.
+          </li>
+          <li>
+            <strong>Enchaîner sur une deuxième demande</strong> sans avoir vérifié que la première
+            lecture était juste. L'erreur se propage ensuite dans les trois écrits.
+          </li>
+        </ul>
+      </div>
+
+      <div class="banniere">
+        Le texte reconstitué à partir de captures est un <strong>projet</strong> : il se relit contre
+        le papier d'origine, se corrige et se signe. <strong>Aucun engagement de délai, aucun prix
+        et aucune réserve sur un litige ne se décident par le texte.</strong> Toute question
+        juridique ou réglementaire va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A18" data-titre="Les deux tableaux d'aléas FICTIFS — avec la colonne des noms, puis sans" data-bloc="M4, démonstration" data-tirage="1 par table + 1 jeu formateur">
+      <div class="piece-badge">Pièce A18</div>
+      <h2>Tableau des aléas — semaine du 15 au 19 juin 2026 (document FICTIF)</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 4. <strong>À dire AVANT de lancer quoi que ce
+        soit</strong> : les noms de ce tableau sont fictifs, et vous le précisez parce qu'un relevé
+        nominatif d'aléas est une donnée personnelle — il ne se dépose pas, pas même pour une
+        démonstration. Aucun nom de conducteur réel n'entre dans cette séquence, ni dans l'atelier
+        qui suit.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Version 1 — avec la colonne des noms</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 8%">N°</th>
+              <th style="width: 14%">Jour</th>
+              <th style="width: 10%">Tournée</th>
+              <th style="width: 20%">Conducteur</th>
+              <th>Aléa constaté</th>
+              <th style="width: 14%">Temps perdu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Lundi 15/06</td><td>A</td><td>Kevin Ranchère</td><td>Attente à quai — quai unique occupé</td><td>1 h 50</td></tr>
+            <tr><td>2</td><td>Lundi 15/06</td><td>C</td><td>Marc Ouazine</td><td>Créneau intenable — 4 points sur un créneau de 30 minutes</td><td>40 min</td></tr>
+            <tr><td>3</td><td>Mardi 16/06</td><td>C</td><td>Marc Ouazine</td><td>Destinataire fermé, portail clos (réf. INC-2026-034)</td><td>55 min</td></tr>
+            <tr><td>4</td><td>Mardi 16/06</td><td>B</td><td>Samuel Tozzi</td><td>Attente à quai — déchargement d'un autre véhicule</td><td>1 h 05</td></tr>
+            <tr><td>5</td><td>Mercredi 17/06</td><td>A</td><td>Kevin Ranchère</td><td>Avarie constatée à la livraison (réf. LIT-2026-052)</td><td>25 min</td></tr>
+            <tr><td>6</td><td>Mercredi 17/06</td><td>B</td><td>Samuel Tozzi</td><td>Attente à quai — quai non attribué à l'arrivée</td><td>1 h 15</td></tr>
+            <tr><td>7</td><td>Jeudi 18/06</td><td>C</td><td>Marc Ouazine</td><td>Panne — hayon immobilisé</td><td>3 h 05</td></tr>
+            <tr><td>8</td><td>Vendredi 19/06</td><td>A</td><td>Kevin Ranchère</td><td>Créneau intenable — deux rendez-vous fixés à 14 h 30</td><td>55 min</td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Huit aléas sur la semaine. Causes : attente à quai (3), créneau intenable (2),
+          destinataire fermé (1), avarie (1), panne (1).
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Version 2 — colonne des noms retirée</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 8%">N°</th>
+              <th style="width: 16%">Jour</th>
+              <th style="width: 12%">Tournée</th>
+              <th>Aléa constaté</th>
+              <th style="width: 16%">Temps perdu</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Lundi 15/06</td><td>A</td><td>Attente à quai — quai unique occupé</td><td>1 h 50</td></tr>
+            <tr><td>2</td><td>Lundi 15/06</td><td>C</td><td>Créneau intenable — 4 points sur un créneau de 30 minutes</td><td>40 min</td></tr>
+            <tr><td>3</td><td>Mardi 16/06</td><td>C</td><td>Destinataire fermé, portail clos</td><td>55 min</td></tr>
+            <tr><td>4</td><td>Mardi 16/06</td><td>B</td><td>Attente à quai — déchargement d'un autre véhicule</td><td>1 h 05</td></tr>
+            <tr><td>5</td><td>Mercredi 17/06</td><td>A</td><td>Avarie constatée à la livraison</td><td>25 min</td></tr>
+            <tr><td>6</td><td>Mercredi 17/06</td><td>B</td><td>Attente à quai — quai non attribué à l'arrivée</td><td>1 h 15</td></tr>
+            <tr><td>7</td><td>Jeudi 18/06</td><td>C</td><td>Panne — hayon immobilisé</td><td>3 h 05</td></tr>
+            <tr><td>8</td><td>Vendredi 19/06</td><td>A</td><td>Créneau intenable — deux rendez-vous fixés à 14 h 30</td><td>55 min</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="banniere">
+        Tableaux <strong>fictifs</strong>. Le commentaire produit est un <strong>projet</strong> :
+        relu, corrigé, signé avant diffusion. <strong>Aucun engagement de délai, aucun prix et
+        aucune réserve sur un litige ne se décident par le texte.</strong> Un dispositif de suivi
+        de l'activité des personnes ne se met pas en service sans information des salariés ni
+        consultation de leurs représentants — et la question de ce qui s'applique chez vous va au
+        conseil de votre entreprise, pas au formateur.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A19" data-titre="Les deux commentaires produits, datés et surlignés — la personne, puis la cause" data-bloc="M4, démonstration (plan B)" data-tirage="1 par table + 1 jeu formateur">
+      <div class="piece-badge">Pièce A19 — feuille stagiaire</div>
+      <h2>Le même tableau, commenté deux fois</h2>
+      <p class="piece-usage">
+        Plan B de la démonstration du module 4. <strong>Lire le premier à voix haute reste
+        l'essentiel</strong> : c'est le ton qui enseigne, pas l'écran. Puis lire le second. Ne
+        commentez pas trop, le contraste se suffit. Surlignage déjà porté : les passages en gras.
+      </p>
+
+      <div class="champ-date">
+        <strong>Sortie produite le :</strong> ____ / ____ / 20____ ·
+        <strong>Outil et version :</strong> ______________________ ·
+        <strong>Vérifiée contre la pièce A18 par :</strong> ______________
+      </div>
+      <p class="petit">
+        Demande unique, lancée deux fois sur les deux versions du tableau A18 : « Commente-le en dix
+        lignes maximum pour la direction. Porte le commentaire sur les causes et sur les tournées.
+        N'ajoute aucun chiffre qui ne figure pas dans le tableau. Termine par les trois causes les
+        plus fréquentes, dans l'ordre, avec leur nombre d'occurrences repris du tableau. »
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>Commentaire n° 1 — produit sur le tableau AVEC les noms</strong></p>
+        <p>
+          La semaine du 15 au 19 juin a été marquée par <strong>neuf aléas</strong>, en nette
+          dégradation. La tournée A concentre l'essentiel des difficultés :
+          <strong>Kevin Ranchère accumule les retards</strong> avec trois incidents en cinq jours et
+          <strong>5 h 20 de temps perdu</strong>, ce qui interroge sur sa gestion des créneaux. Un
+          <strong>manque de rigueur</strong> se retrouve également chez Marc Ouazine, dont la
+          tournée C enregistre un portail fermé qui aurait pu être anticipé par un simple appel.
+          Samuel Tozzi apparaît plus régulier mais reste pénalisé par des attentes à quai. Le
+          <strong>taux de service de la semaine s'établit à 94 %</strong>. Les trois causes les plus
+          fréquentes sont l'attente à quai, le manque d'anticipation des conducteurs et les créneaux
+          intenables.
+        </p>
+      </div>
+
+      <div class="texte-exercice">
+        <p><strong>Commentaire n° 2 — produit sur le tableau SANS les noms</strong></p>
+        <p>
+          La semaine du 15 au 19 juin enregistre huit aléas, répartis sur les trois tournées. Les
+          attentes à quai représentent à elles seules 4 h 10 de temps perdu sur trois occurrences,
+          réparties entre les tournées A et B, et concernent des sites où le quai n'était ni libre
+          ni attribué à l'arrivée. Les créneaux intenables apparaissent deux fois, avec dans un cas
+          quatre points de livraison positionnés sur un créneau de trente minutes et dans l'autre
+          deux rendez-vous fixés à la même heure. Un portail fermé à l'arrivée a immobilisé une
+          tournée pendant 55 minutes sans qu'aucun contact ne réponde. Une avarie a été constatée à
+          la livraison et fait l'objet d'un dossier distinct. Une panne de hayon a immobilisé un
+          véhicule 3 h 05. Trois causes ressortent, dans l'ordre : attente à quai (3), créneau
+          intenable (2), puis à égalité destinataire fermé, avarie et panne (1 chacune).
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A19">
+      <div class="piece-badge">Pièce A19 — corrigé formateur</div>
+      <h2>Ce que le premier commentaire fait, et ce qu'il invente</h2>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce qui désigne une personne — à faire nommer par la salle</div>
+        <ul>
+          <li>
+            <strong>« Kevin Ranchère accumule les retards »</strong> — le tableau enregistre des
+            aléas subis (un quai occupé, un rendez-vous mal fixé) ; le commentaire les transforme en
+            comportement individuel.
+          </li>
+          <li>
+            <strong>« ce qui interroge sur sa gestion des créneaux »</strong> — les créneaux ne sont
+            pas fixés par le conducteur. L'appréciation est fausse ET individuelle.
+          </li>
+          <li>
+            <strong>« un manque de rigueur »</strong> — une appréciation individuelle que personne
+            n'a demandée, sortie d'un relevé d'exploitation.
+          </li>
+          <li>
+            <strong>« aurait pu être anticipé par un simple appel »</strong> — un reproche déduit de
+            rien : le tableau ne dit pas si un appel a été passé.
+          </li>
+        </ul>
+      </div>
+
+      <div class="corrige">
+        <div class="encadre-titre">Ce qui est faux, et se vérifie sur le tableau A18</div>
+        <ul>
+          <li>
+            <strong>« neuf aléas »</strong> — le tableau en compte <strong>huit</strong>. Un
+            commentaire qui se trompe sur le total se trompera sur tout le reste.
+          </li>
+          <li>
+            <strong>« 5 h 20 de temps perdu » sur la tournée A</strong> — le tableau donne 1 h 50,
+            25 min et 55 min, soit <strong>3 h 10</strong>. Le chiffre est plausible, précis, et
+            faux : c'est le déguisement habituel de l'invention.
+          </li>
+          <li>
+            <strong>« taux de service de 94 % »</strong> — <strong>ce chiffre n'existe nulle
+            part</strong> dans le tableau et ne s'en déduit pas. C'est le contresens central du
+            module : le chiffre ENTRE dans l'assistant, il n'en sort pas. Les indicateurs viennent
+            de vos outils ; l'assistant écrit le commentaire autour.
+          </li>
+          <li>
+            <strong>« le manque d'anticipation des conducteurs » présenté comme une cause</strong> —
+            ce n'est pas une cause du tableau, c'est un jugement inséré dans un classement qui
+            devait être repris tel quel.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si le premier commentaire reste neutre et la démonstration tombe à plat</div>
+        <p>
+          Relancer en ajoutant « qui pose problème dans cette équipe ? ». L'appréciation individuelle
+          ressort immédiatement. Si cela ne suffit pas : cette pièce est le plan B, elle se lit à
+          voix haute et la séquence se tient à l'identique.
+        </p>
+      </div>
+      <div class="encadre">
+        <div class="encadre-titre">Les deux questions qui reviennent</div>
+        <p>
+          <strong>« On n'a plus le droit de dire qu'un conducteur accumule les retards ? »</strong> —
+          Vous avez le droit d'en parler, dans le cadre du management et avec lui. Ce qui n'a rien à
+          faire là, c'est qu'un assistant le formule à partir d'un relevé nominatif que vous lui avez
+          déposé.
+        </p>
+        <p>
+          <strong>« Et si on retire juste les noms ? »</strong> — Vous connaissez la réponse depuis
+          ce matin : sur trois tournées, chacun sait qui conduisait. La parade n'est pas de masquer,
+          elle est de commenter les causes.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A20" data-titre="Trame de synthèse d'exploitation — version direction et version équipe" data-bloc="M4, pratique" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A20</div>
+      <h2>Ma synthèse d'exploitation de la semaine — deux versions</h2>
+      <p class="piece-usage">
+        Pratique du module 4, vingt-cinq minutes. Se remplit au stylo si le réseau tombe : c'est
+        l'atelier le plus robuste de la journée, gardez-le complet même si tout le reste a été
+        dégradé. <strong>Aucun nom, aucune appréciation individuelle.</strong> Les indicateurs
+        viennent de vos outils, déjà calculés.
+      </p>
+
+      <p>
+        <strong>Semaine du :</strong> ____ / ____ au ____ / ____ ·
+        <strong>Service :</strong> ______________________
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les indicateurs que j'apporte — d'où ils viennent</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 34%">Indicateur</th>
+              <th style="width: 22%">Valeur</th>
+              <th>Outil qui l'a calculé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Taux de service</td><td></td><td></td></tr>
+            <tr><td>Nombre d'aléas</td><td></td><td></td></tr>
+            <tr><td>Temps perdu cumulé</td><td></td><td></td></tr>
+            <tr><td>Litiges ouverts / clos</td><td></td><td></td></tr>
+            <tr><td>______________________</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">
+          Une valeur sans outil d'origine ne part pas dans la synthèse. Si la colonne de droite reste
+          vide, l'indicateur n'existe pas encore.
+        </p>
+      </div>
+
+      <div class="deux-colonnes">
+        <div>
+          <div class="encadre">
+            <div class="encadre-titre">Version direction</div>
+            <p class="petit">
+              Dix lignes au plus. Les causes, les tournées, les décisions à prendre. Pas de personne.
+            </p>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+          </div>
+        </div>
+        <div>
+          <div class="encadre">
+            <div class="encadre-titre">Version équipe</div>
+            <p class="petit">
+              Même fond, autre ton. Ce qui change concrètement la semaine prochaine. Pas de personne.
+            </p>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+            <div class="lignes"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Contrôle avant de sortir la synthèse du bureau</div>
+        <p>
+          <span class="coche"></span> Aucun nom de personne · <span class="coche"></span> aucune
+          appréciation individuelle · <span class="coche"></span> chaque chiffre provient d'un outil
+          nommé ci-dessus · <span class="coche"></span> aucun chiffre ajouté par l'assistant ·
+          <span class="coche"></span> les trois causes sont reprises du relevé, pas déduites.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Cette synthèse est un <strong>projet</strong> : relue, corrigée et signée avant diffusion.
+        <strong>Aucun engagement de délai, aucun prix et aucune réserve sur un litige ne se décident
+        par le texte.</strong> On commente des indicateurs, on ne note aucune personne : un
+        dispositif de suivi de l'activité des personnes suppose l'information des salariés et la
+        consultation de leurs représentants avant mise en service. Toute question sur ce qui
+        s'applique chez vous va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A21" data-titre="Bordereau d'assemblage du classeur d'exploitation + grille de contrôle avant diffusion" data-bloc="M4, pratique" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A21</div>
+      <h2>Le classeur d'exploitation — assemblage et contrôle avant diffusion</h2>
+      <p class="piece-usage">
+        Vingt minutes. Le classeur est le livrable de la journée : un document unique, diffusable au
+        service, <strong>tenu par une personne nommée</strong>. Un classeur sans titulaire n'est pas
+        tenu. La réponse à « c'est de la paperasse » tient en une question : le jour où un client
+        conteste un écrit sorti de votre service, avec quoi montrez-vous ce qui a été relu ?
+      </p>
+
+      <p>
+        <strong>Nom du classeur :</strong>
+        <code>classeur-exploitation-</code>______________________<code>-</code>__________
+      </p>
+      <p>
+        <strong>Titulaire (un nom, pas une fonction) :</strong> ______________________ ·
+        <strong>Suppléant :</strong> ______________________
+      </p>
+      <p>
+        <strong>Première diffusion le :</strong> ____ / ____ / 20____ ·
+        <strong>Revue tous les :</strong> ______ mois
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 8%">Versé</th>
+            <th style="width: 40%">Pièce</th>
+            <th>Qui la tient à jour, et à quelle occasion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>☐</td><td>Liste rouge du service, signée et datée</td><td></td></tr>
+          <tr><td>☐</td><td>Les trois régimes d'usage retenus chez nous, et l'outil validé</td><td></td></tr>
+          <tr><td>☐</td><td>Trame de courrier de réserve</td><td></td></tr>
+          <tr><td>☐</td><td>Trame de réclamation de retard</td><td></td></tr>
+          <tr><td>☐</td><td>Mémo des cinq leviers et des formules qui concèdent</td><td></td></tr>
+          <tr><td>☐</td><td>Trame d'instructions au conducteur</td><td></td></tr>
+          <tr><td>☐</td><td>Trame de demande d'affrètement et sa relance</td><td></td></tr>
+          <tr><td>☐</td><td>Checklist « sortie contre commande »</td><td></td></tr>
+          <tr><td>☐</td><td>Trame de synthèse d'exploitation, deux versions</td><td></td></tr>
+          <tr><td>☐</td><td>Grille de contrôle avant diffusion (ci-dessous)</td><td></td></tr>
+          <tr><td>☐</td><td>Les questions laissées ouvertes, adressées au conseil</td><td></td></tr>
+          <tr><td>☐</td><td>______________________________________________</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Grille de contrôle avant diffusion — à appliquer à tout écrit du service</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 56%">Avant d'envoyer, je vérifie que…</th>
+              <th style="width: 22%">Vérifié</th>
+              <th>Corrigé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>chaque chiffre a été retrouvé dans la commande ou le dossier</td><td>☐</td><td></td></tr>
+            <tr><td>chaque délai, article ou clause a été retrouvé au contrat ouvert</td><td>☐</td><td></td></tr>
+            <tr><td>aucune responsabilité n'est admise, même par une formule de politesse</td><td>☐</td><td></td></tr>
+            <tr><td>aucun geste commercial, aucune remise, aucune mention d'assurance</td><td>☐</td><td></td></tr>
+            <tr><td>aucun nom de conducteur, aucun tarif négocié n'a été déposé</td><td>☐</td><td></td></tr>
+            <tr><td>aucun ordre de passage, chargement ou affectation n'a été produit</td><td>☐</td><td></td></tr>
+            <tr><td>aucune règle de conduite, de repos ou de matière transportée n'est citée sans texte ouvert</td><td>☐</td><td></td></tr>
+            <tr><td>les mentions « à confirmer » ont été traitées, pas effacées</td><td>☐</td><td></td></tr>
+            <tr><td>l'écrit est signé par une personne</td><td>☐</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="banniere">
+        Le classeur est un <strong>projet</strong> de document interne : il se relit, se corrige et
+        se fait valider par votre direction avant diffusion au service. <strong>Aucun engagement de
+        délai, aucun prix et aucune réserve sur un litige ne se décide par ce document.</strong>
+        Toute question juridique ou réglementaire va au conseil de votre entreprise, jamais au
+        formateur et jamais à l'outil.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A22" data-titre="Feuille de route individuelle — trois usages, un porteur et une date chacun" data-bloc="M4, pratique et synthèse" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A22</div>
+      <h2>Ma feuille de route — trois usages, portés et datés</h2>
+      <p class="piece-usage">
+        Dix minutes, en fin de journée. <strong>Trois usages, pas dix</strong> : une feuille de route
+        à dix lignes ne se réalise pas. Chaque ligne porte un nom et une date — « la semaine
+        prochaine » n'est pas une date, et « je vais essayer d'utiliser l'IA » n'est pas un usage.
+        La question qui reformule : <em>sur quel écrit, et quel jour ?</em>
+      </p>
+
+      <p>
+        <strong>Service :</strong> ______________________ ·
+        <strong>Établie le :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 30%">L'usage — quel écrit, précisément</th>
+            <th style="width: 18%">Qui le porte</th>
+            <th style="width: 14%">À partir du</th>
+            <th>Ce qu'il faut avoir obtenu avant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td>____ / ____</td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td>____ / ____</td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td>____ / ____</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui passe devant la direction et les représentants du personnel</div>
+        <p>Le ou les usages concernés : ______________________________________________</p>
+        <p>Date à laquelle le sujet est porté : ____ / ____ / 20____ · Par : ______________</p>
+        <p class="petit">
+          Tout ce qui touche au suivi ou à l'évaluation de l'activité des personnes passe par là
+          avant mise en service. Ce qui s'applique exactement à votre entreprise se tranche avec
+          votre conseil.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">L'usage que j'écarte volontairement, et pourquoi</div>
+        <div class="lignes"></div>
+        <p class="petit">
+          Une feuille de route crédible dit aussi ce qu'elle ne fera pas. Le candidat le plus
+          fréquent : faire construire une tournée.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mes questions restées ouvertes — pour le conseil de l'entreprise</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Cette feuille de route est un <strong>projet</strong> : elle se relit, se corrige et se fait
+        valider par votre direction. <strong>Aucun engagement de délai, aucun prix et aucune réserve
+        sur un litige ne se décide par ce document.</strong> Toute question juridique ou
+        réglementaire va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A23" data-titre="Quiz d'évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A23 — feuille stagiaire</div>
+      <h2>Quiz — évaluation des acquis (10 questions)</h2>
+      <p class="piece-usage">
+        Individuel, sans document. Dix questions sur ce qui a été fait dans la journée — pas des
+        pièges. Entourez la réponse.
+      </p>
+      <p>
+        <strong>Nom :</strong> ______________________________ ·
+        <strong>Date :</strong> ____ / ____ / 20____
+      </p>
+
+      <ol>
+        <li>
+          Peut-on demander à un assistant de construire le plan de tournée du lendemain ?<br />
+          <strong>a.</strong> Oui, si on lui donne toutes les commandes &nbsp; <strong>b.</strong>
+          Non — l'ordonnancement reste dans le TMS et relève de l'exploitant &nbsp;
+          <strong>c.</strong> Oui, à condition de relire le résultat
+        </li>
+        <li>
+          D'où provient une règle de temps de conduite et de repos que vous citez dans un écrit
+          ?<br />
+          <strong>a.</strong> De la réponse de l'assistant, si elle est prudente &nbsp;
+          <strong>b.</strong> De l'expérience du service &nbsp; <strong>c.</strong> Du texte
+          applicable OUVERT à l'écran et des outils métier
+        </li>
+        <li>
+          Un compte rendu d'incident dont on a retiré les noms, les matricules et les
+          immatriculations est-il anonyme ?<br />
+          <strong>a.</strong> Oui &nbsp; <strong>b.</strong> Non — la date, la tournée et la
+          marchandise suffisent à ré-identifier le conducteur
+        </li>
+        <li>
+          L'assistant cite un délai de réclamation dans votre courrier de litige. Que faites-vous
+          ?<br />
+          <strong>a.</strong> Je le garde, il a l'air juste &nbsp; <strong>b.</strong> Je le
+          retrouve dans le contrat ouvert, ou je le supprime &nbsp; <strong>c.</strong> Je demande à
+          l'assistant de le vérifier
+        </li>
+        <li>
+          Quelles mentions un assistant ajoute-t-il le plus souvent, sans qu'on les lui demande,
+          dans un courrier de litige ?<br />
+          <strong>a.</strong> Un délai, un renvoi à un article, une mention d'assurance, un geste
+          commercial, une excuse &nbsp; <strong>b.</strong> Des fautes d'orthographe &nbsp;
+          <strong>c.</strong> Des formules trop sèches
+        </li>
+        <li>
+          Votre direction a bloqué l'accès à un outil grand public. Qu'est-ce que cela signifie
+          ?<br />
+          <strong>a.</strong> L'IA est interdite dans l'entreprise &nbsp; <strong>b.</strong> C'est
+          un choix de régime d'usage : il faut travailler avec l'outil validé chez vous &nbsp;
+          <strong>c.</strong> On peut utiliser son compte personnel
+        </li>
+        <li>
+          Avant tout dépôt en atelier, que remplacez-vous systématiquement ?<br />
+          <strong>a.</strong> Les noms de communes &nbsp; <strong>b.</strong> Le nom du conducteur
+          et le tarif négocié &nbsp; <strong>c.</strong> Les références de commande
+        </li>
+        <li>
+          Dans une consigne produite à partir d'une commande, que signifie « à confirmer » ?<br />
+          <strong>a.</strong> Que l'assistant hésite &nbsp; <strong>b.</strong> Que l'information
+          manque dans la commande et qu'il ne l'a pas inventée &nbsp; <strong>c.</strong> Que la
+          consigne est inutilisable
+        </li>
+        <li>
+          Pour commenter le suivi d'activité de la semaine, quelle est la bonne pratique ?<br />
+          <strong>a.</strong> Déposer le relevé nominatif et demander qui pose problème &nbsp;
+          <strong>b.</strong> Retirer les noms et commenter les causes, à partir d'indicateurs déjà
+          calculés par vos outils &nbsp; <strong>c.</strong> Demander à l'assistant de calculer le
+          taux de service
+        </li>
+        <li>
+          Un courrier de réserve a été produit par l'assistant et relu par vous. Qui signe ?<br />
+          <strong>a.</strong> Personne, il part tel quel &nbsp; <strong>b.</strong> L'exploitant qui
+          l'a relu et corrigé &nbsp; <strong>c.</strong> L'assistant, en mentionnant l'outil
+        </li>
+      </ol>
+    </section>
+
+    <section class="piece" data-piece="A23">
+      <div class="piece-badge">Pièce A23 — corrigé formateur</div>
+      <h2>Quiz — corrigé commenté, question par question</h2>
+      <p class="piece-usage">
+        C'est l'évaluation des acquis : elle se tient, elle se corrige, elle se conserve. Ne la
+        sacrifiez jamais au temps qui manque — si vous êtes en retard, coupez ailleurs. Le seuil de
+        réussite est celui déclaré au programme ; un score en dessous déclenche la reprise
+        individuelle prévue au dispositif. Le résultat individuel n'est pas transmis à l'employeur.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 6%">N°</th>
+            <th style="width: 8%">Rép.</th>
+            <th>Le commentaire qui ancre — et la règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>b</strong></td>
+            <td>
+              La borne de la journée, redite à chaque module : l'assistant ne construit aucune
+              tournée, aucun chargement, aucune affectation. Le TMS ordonnance, l'assistant écrit
+              autour — et il proposera un ordre de passage même quand on ne lui demande rien
+              (pièce A14).
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>c</strong></td>
+            <td>
+              <strong>Refusez « l'assistant », même formulé prudemment.</strong> Une règle de
+              conduite, de repos, de poids ou de matière transportée se recopie depuis le texte
+              OUVERT et se vérifie dans vos outils métier. Toute question de conformité va au
+              responsable compétent chez vous, jamais au formateur.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>b</strong></td>
+            <td>
+              Démontré en salle sur la pièce A5 : trois questions ont suffi à retrouver le
+              conducteur. Un dossier d'incident n'est pas anonymisable, il se traite comme une donnée
+              personnelle.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>b</strong></td>
+            <td>
+              Il le remplira, plausiblement et faux — le courrier chargé de la pièce A10 citait
+              trente jours quand le contrat en stipulait trois ouvrables. Vérifié au contrat, ce
+              n'est plus l'assistant qui l'affirme : c'est vous.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>a</strong></td>
+            <td>
+              Les cinq récidives de la pièce A9. Les connaître, c'est savoir où regarder en dix
+              secondes sur n'importe quel courrier.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>b</strong></td>
+            <td>
+              Un blocage n'est pas une interdiction de l'IA, c'est un choix de régime d'usage. La
+              réponse c est le vrai risque : le compte personnel est exactement ce que la liste rouge
+              exclut.
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td><strong>b</strong></td>
+            <td>
+              Les deux substitutions, écrites au tableau avant chaque atelier. C'est la règle qui se
+              perd en dernier — et toujours au moment où on est pressé.
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td><strong>b</strong></td>
+            <td>
+              Les « à confirmer » sont la preuve que rien n'a été inventé. Une sortie sans aucun « à
+              confirmer » sur une commande incomplète a comblé les trous toute seule.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td><strong>b</strong></td>
+            <td>
+              La réponse c est le contresens central de l'après-midi : le chiffre ENTRE dans
+              l'assistant, il n'en sort pas. Et on ne fait noter aucune personne — un suivi de
+              l'activité des personnes suppose l'information des salariés et la consultation de
+              leurs représentants avant mise en service ; ce qui s'applique chez vous se tranche avec
+              votre conseil.
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td><strong>b</strong></td>
+            <td>
+              La question qui ferme le module 2 sans qu'il faille argumenter : <strong>qui
+              signe ?</strong> L'assistant rédige, l'exploitant tranche, le contrat fait foi.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="petit">
+        S'il est 16 h 50 et que le quiz n'est pas commencé : le tenir quand même, complet, en
+        resserrant le commentaire sur les questions les plus ratées. On ne remplace jamais
+        l'évaluation par un tour de table.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT 1 — la note d'appel devient une consigne de livraison<br />Acteur : tu es exploitant transport dans une entreprise de vingt-cinq véhicules.<br />ConteXte : je te dicte au téléphone ce qu'un conducteur vient de me signaler, en vrac et sans ponctuation.<br />Intention : produire la consigne de livraison à transmettre au conducteur suivant.<br />Output : dix lignes maximum, une information par ligne, dans cet ordre — lieu, créneau, contact sur place, contrainte de quai, marchandise, point de vigilance.<br />Normes : n'ajoute aucune heure, aucune adresse et aucun numéro absents de ma dictée ; écris « à confirmer » partout où l'information manque ; ne propose aucun itinéraire et n'organise pas la tournée.<br /><br />PROMPT 2 — « retirer le nom n'anonymise pas »<br />Voici un compte rendu d'incident de livraison. Réécris-le en retirant toute donnée personnelle : plus aucun nom, plus aucun matricule, plus aucune immatriculation. Conserve tout le reste du texte à l'identique.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Deux captures : à gauche la consigne obtenue par dictée, avec les mentions « à confirmer » surlignées ; à droite le compte rendu prétendument anonymisé, avec la date, le lieu de livraison et la nature de la marchandise entourés en rouge.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou réseau tombé : les deux sorties sont imprimées dans le kit formateur (datées), avec la transcription de la note d'appel en regard. La démonstration se tient à l'identique — on lit la dictée à voix haute, on distribue les sorties, on pose les trois questions de ré-identification. Ne rien improviser en direct.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Litiges, réserves et réclamations clients</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu es exploitant transport et tu écris au nom de l'entreprise.<br />ConteXte : je te dicte les faits d'une avarie constatée à la livraison ; tout ce que je ne dicte pas n'existe pas.<br />Intention : produire un courrier de réserve adressé au client, destiné à être relu puis envoyé par l'exploitant.<br />Output : une page maximum, les faits datés et horodatés en premier, une phrase par fait, puis la demande, puis la formule de clôture.<br />Normes : n'admets aucune responsabilité, même implicitement ; n'écris aucune excuse ; ne cite aucun délai, aucun article et aucune clause — écris à la place « [délai à retrouver au contrat] » et je le remplirai moi-même ; n'ajoute aucun fait, aucune heure et aucun montant absents de ma dictée.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux courriers côte à côte : à gauche l'improvisé, avec les trois formules d'excuse et le délai inventé entourés en rouge ; à droite le structuré, avec les crochets « [délai à retrouver au contrat] » surlignés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux courriers sont imprimés dans le kit (datés), annotations déjà portées. La comparaison se tient à l'identique sur papier, et la dictée se lit à voix haute depuis la transcription fournie.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Consignes de tournée, documents et affrètement</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu es exploitant transport et tu écris pour trois destinataires différents.<br />ConteXte : la commande client est jointe ; elle est la SEULE source d'information autorisée.<br />Intention : produire les trois écrits qui accompagnent cette livraison.<br />Output : 1) les instructions au conducteur, dix lignes maximum, une information par ligne ; 2) le message de confirmation au client, cinq lignes ; 3) le courrier d'accompagnement du transport, une demi-page.<br />Normes : n'invente aucune heure, aucune adresse, aucun contact et aucune référence — écris « à confirmer » partout où la commande ne dit rien ; ne propose aucun itinéraire, ne répartis aucun chargement, ne désigne aucun conducteur ; ne rédige ni lettre de voiture, ni déclaration de matière dangereuse, ni aucun document réglementé.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La commande d'origine à gauche, les trois sorties à droite, avec un trait reliant chaque heure et chaque adresse à sa ligne d'origine dans la commande — et les « à confirmer » surlignés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La commande et les trois sorties sont imprimées dans le kit (datées). Le traçage des chiffres jusqu'à la commande se fait au surligneur sur papier, et c'est même plus démonstratif qu'à l'écran.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Suivi d'activité, personnes et classeur d'exploitation</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">PROMPT unique, lancé DEUX fois sur deux versions du même tableau : avec la colonne des noms, puis sans.<br />« Voici le tableau des aléas de la semaine, joint. Commente-le en dix lignes maximum pour la direction. Porte le commentaire sur les causes et sur les tournées. N'ajoute aucun chiffre qui ne figure pas dans le tableau. Termine par les trois causes les plus fréquentes, dans l'ordre, avec leur nombre d'occurrences repris du tableau. »<br /><br />Les deux tableaux sont ceux du kit formateur et les noms qui y figurent sont FICTIFS. Aucun nom de conducteur réel n'est déposé pendant cette démonstration, ni pendant l'atelier qui suit.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux commentaires côte à côte, avec surlignage des passages du premier qui désignent une personne (« accumule les retards », « manque de rigueur ») et de ceux du second qui désignent une cause.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux commentaires sont imprimés dans le kit (datés), surlignage déjà porté. Lire le premier à voix haute reste l'essentiel de la démonstration : c'est le ton qui enseigne, pas l'écran.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Vidéoprojecteur en panne, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais</td><td>Démonstration</td><td>Quota atteint ou réseau tombé : les deux sorties sont imprimées dans le kit formateur (datées), avec la transcription de la note d'appel en regard. La démonstration se tient à l'identique — on lit la dictée à voix haute, on distribue les sorties, on pose les trois questions de ré-identification. Ne rien improviser en direct.</td></tr>
+          <tr><td>Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil : la liste de référence est imprimée et se corrige au stylo. Aucun repli nécessaire.</td></tr>
+          <tr><td>Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais</td><td>Vérification</td><td>Pièces et corrigé sont imprimés dans le kit. Sans vidéoprojecteur, ils se distribuent et se corrigent à l'oral, dans le même temps.</td></tr>
+          <tr><td>Matin · Litiges, réserves et réclamations clients</td><td>Démonstration</td><td>Les deux courriers sont imprimés dans le kit (datés), annotations déjà portées. La comparaison se tient à l'identique sur papier, et la dictée se lit à voix haute depuis la transcription fournie.</td></tr>
+          <tr><td>Matin · Litiges, réserves et réclamations clients</td><td>Pratique</td><td>Réseau tombé : l'atelier se tient à la main sur la trame papier, les cinq leviers s'appliquent à l'identique, et la dictée se remplace par des notes au stylo. Ce qui s'apprend ici est la structure de la demande et la liste de ce qu'on ne concède jamais — l'outil ne fait que l'exécuter.</td></tr>
+          <tr><td>Matin · Litiges, réserves et réclamations clients</td><td>Vérification</td><td>Grille, contrat type et corrigé sont imprimés dans le kit. Aucun outil nécessaire pour tenir la séquence.</td></tr>
+          <tr><td>Après-midi · Consignes de tournée, documents et affrètement</td><td>Démonstration</td><td>La commande et les trois sorties sont imprimées dans le kit (datées). Le traçage des chiffres jusqu'à la commande se fait au surligneur sur papier, et c'est même plus démonstratif qu'à l'écran.</td></tr>
+          <tr><td>Après-midi · Consignes de tournée, documents et affrètement</td><td>Pratique</td><td>Réseau tombé : les trois écrits se rédigent sur les trames papier du kit, à partir de la commande de secours. La demande d'affrètement et sa relance sont les deux plus rentables — gardez-les même s'il faut sacrifier les consignes de tournée.</td></tr>
+          <tr><td>Après-midi · Consignes de tournée, documents et affrètement</td><td>Vérification</td><td>Checklist, commande de secours et corrigé sont imprimés dans le kit. Aucune dépendance à un outil.</td></tr>
+          <tr><td>Après-midi · Suivi d'activité, personnes et classeur d'exploitation</td><td>Démonstration</td><td>Les deux commentaires sont imprimés dans le kit (datés), surlignage déjà porté. Lire le premier à voix haute reste l'essentiel de la démonstration : c'est le ton qui enseigne, pas l'écran.</td></tr>
+          <tr><td>Après-midi · Suivi d'activité, personnes et classeur d'exploitation</td><td>Pratique</td><td>Aucun outil nécessaire : la synthèse se rédige à la main sur la trame du kit, à partir des indicateurs apportés par les participants, et l'assemblage du classeur comme la feuille de route se font au stylo. C'est l'atelier le plus robuste de la journée — gardez-le complet même si tout le reste a été dégradé.</td></tr>
+          <tr><td>Après-midi · Suivi d'activité, personnes et classeur d'exploitation</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil, aucune à un réseau.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

@@ -142,7 +142,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           {
             question: "Je n'ai pas de réclamation en cours à apporter.",
             reponse:
-              "Le kit en fournit trois, page 12. Prenez-en une, elle fera aussi bien l'affaire — ce que vous emportez, c'est la méthode, pas le dossier.",
+              "Le kit en fournit trois. Prenez-en une, elle fera aussi bien l'affaire — ce que vous emportez, c'est la méthode, pas le dossier.",
           },
         ],
         blocages: [
@@ -628,11 +628,11 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           {
             situation: "Les binômes valident toutes les fiches sans relever un seul écart.",
             parade:
-              "Projeter la fiche du kit page 27, qui cumule les trois défauts, et faire relever collectivement. L'œil se règle en trois minutes.",
+              "Projeter la fiche du kit, qui cumule les trois défauts, et faire relever collectivement. L'œil se règle en trois minutes.",
           },
         ],
         planB:
-          "Quiz papier dans le kit, corrigé page 30, grille de notation page 31. Aucune dépendance à un outil.",
+          "Quiz papier et corrigé imprimés dans le kit, grille de notation imprimée. Aucune dépendance à un outil.",
       },
     },
     synthese: {

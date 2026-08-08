@@ -631,7 +631,7 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
               "Tenir le quiz quand même, en annonçant le temps exact : « dix questions, douze minutes, correction incluse ». On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier dans le kit et corrigé page 34. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

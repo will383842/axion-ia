@@ -261,7 +261,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
             situation:
               "Les deux grilles donnent le même classement et la démonstration tombe à plat.",
             parade:
-              "Le kit fournit une consigne C calibrée pour inverser le classement sur ce lot précis (page 14). La lancer sans commentaire, puis reprendre : « il a suffi de changer les pondérations ». Si l'outil est indisponible, passer aux sorties imprimées.",
+              "Le kit fournit une consigne C calibrée pour inverser le classement sur ce lot précis. La lancer sans commentaire, puis reprendre : « il a suffi de changer les pondérations ». Si l'outil est indisponible, passer aux sorties imprimées.",
           },
         ],
         planB:
@@ -307,7 +307,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau tombé : l'alignement se fait sur le comparatif imprimé du kit (déjà produit, daté, page 19) ; les critères, les pondérations, les totaux au tableur ou à la calculatrice et les questions par fournisseur se travaillent à l'identique sur papier. La trame de consultation est un exercice d'écriture qui ne dépend d'aucun outil.",
+          "Réseau tombé : l'alignement se fait sur le comparatif imprimé du kit (déjà produit, daté) ; les critères, les pondérations, les totaux au tableur ou à la calculatrice et les questions par fournisseur se travaillent à l'identique sur papier. La trame de consultation est un exercice d'écriture qui ne dépend d'aucun outil.",
       },
     },
     verification: {
@@ -439,7 +439,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : les relances et le courrier de réserve s'écrivent à la main sur les trames du kit, et le FORMATEUR joue le fournisseur au jeu de rôle — le scénario, la posture et les trois objections sont imprimés (pages 26 à 28, datées). L'atelier tient intégralement sans outil.",
+          "Outil indisponible : les relances et le courrier de réserve s'écrivent à la main sur les trames du kit, et le FORMATEUR joue le fournisseur au jeu de rôle — le scénario, la posture et les trois objections sont imprimés (datées). L'atelier tient intégralement sans outil.",
       },
     },
     verification: {
@@ -595,7 +595,7 @@ export const IA_POUR_LES_ACHATS: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit et corrigé page 38, grille croisée page 39. Aucune dépendance à un outil.",
+          "Quiz papier et corrigé imprimés dans le kit, grille croisée imprimée. Aucune dépendance à un outil.",
       },
     },
     synthese: {

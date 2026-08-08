@@ -1,0 +1,2174 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kit formateur — IA pour l'hôtellerie-restauration (1j)</title>
+    <style>
+@page { size: A4; margin: 18mm 16mm; }
+* { box-sizing: border-box; }
+html { font-size: 11pt; }
+body { font-family: Georgia, "Times New Roman", serif; color: #111; line-height: 1.45; margin: 0; }
+h1, h2, h3, .piece-badge, th, .banniere, .champ-date, .encadre-titre { font-family: "Segoe UI", Arial, sans-serif; }
+h1 { font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-size: 14pt; border-bottom: 2px solid #111; padding-bottom: 1mm; margin: 0 0 4mm; }
+h3 { font-size: 11.5pt; margin: 5mm 0 2mm; }
+p { margin: 0 0 2.5mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 4mm; }
+th, td { border: 1px solid #444; padding: 1.8mm 2.5mm; text-align: left; vertical-align: top; font-size: 10pt; }
+th { background: #eee; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.03em; }
+.piece { page-break-before: always; }
+.piece-badge { display: inline-block; border: 2px solid #111; padding: 1mm 3mm; font-weight: bold; font-size: 10pt; margin-bottom: 2mm; }
+.piece-usage { font-style: italic; color: #333; margin-bottom: 4mm; }
+.banniere { border: 1.5px solid #111; background: #f3f3f3; padding: 2mm 3mm; font-size: 9pt; margin: 3mm 0; }
+.champ-date { border: 1.5px dashed #111; padding: 2mm 3mm; font-size: 9.5pt; margin: 3mm 0; }
+.encadre { border: 1.5px solid #111; padding: 3mm 4mm; margin: 0 0 4mm; }
+.encadre-titre { font-weight: bold; font-size: 9.5pt; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.5mm; }
+.lignes { border-bottom: 1px solid #999; height: 8mm; }
+.texte-exercice { border: 1px solid #444; padding: 4mm 5mm; font-size: 10.5pt; line-height: 1.7; margin: 0 0 4mm; }
+.corrige { background: #f6f6f6; border: 1px dashed #444; padding: 3mm 4mm; margin: 0 0 4mm; }
+.prompt-bloc { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; border: 1px solid #444; background: #fafafa; padding: 3mm 4mm; white-space: pre-wrap; margin: 0 0 4mm; }
+.deux-colonnes { display: flex; gap: 6mm; }
+.deux-colonnes > div { flex: 1; }
+.petit { font-size: 9pt; color: #333; }
+.verso-note { text-align: center; font-style: italic; margin-top: 8mm; }
+.coche { display: inline-block; width: 4mm; height: 4mm; border: 1.2px solid #111; vertical-align: middle; margin-right: 2mm; }
+.manque { border: 2px solid #111; background: #f3f3f3; padding: 3mm 4mm; margin: 0 0 4mm; }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h1>Kit formateur imprimé<br />« IA pour l'hôtellerie-restauration » — 1j</h1>
+      <p><strong>Version du kit :</strong> 2026-08-08 · <strong>Formation :</strong> <code>ia-pour-l-hotellerie-restauration</code> · 4 modules</p>
+
+      
+
+      <div class="encadre">
+        <div class="encadre-titre">À quoi sert ce kit</div>
+        <p>
+          Chaque bloc de la formation porte un plan B : ce que vous faites quand l'outil tombe en panne devant la
+          salle — quota atteint, service indisponible, réseau saturé, vidéoprojecteur mort. Toutes ces parades
+          reposent sur les pièces imprimées de ce classeur.
+          <strong>Sans ce kit imprimé et complet, la session ne se tient pas.</strong>
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Trois règles, avant d'imprimer</div>
+        <ul>
+          <li>
+            <strong>Chaque sortie d'outil porte sa date de capture.</strong> Les pièces B sont des sorties réelles à
+            capturer dans l'outil retenu pour la session — jamais des reconstitutions. Une capture de plus de trois
+            mois se refait : une interface disparue décrédibilise la démonstration en direct.
+          </li>
+          <li>
+            <strong>Chaque trame remise porte la mention « projet — à faire valider par votre conseil avant
+            diffusion »</strong>, non retirable. Le formateur n'arbitre aucune question juridique.
+          </li>
+          <li>
+            <strong>Les pièces se désignent par leur code</strong> (A1, B2…), jamais par un numéro de page : une
+            pagination ne survit pas à la première pièce ajoutée, et un formateur en panne chercherait une page
+            inexistante.
+          </li>
+        </ul>
+      </div>
+
+      <h2>Sommaire des pièces</h2>
+      <table>
+        <thead>
+          <tr><th>Pièce</th><th>Désignation</th><th>Sert au bloc</th><th>Tirage conseillé</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>A1</strong></td><td>Le dossier de l'établissement fictif « Le Balcon des Aravis » — les faits qui tranchent</td><td>Transverse, M1 à M4</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A2</strong></td><td>L'avis du matin et la réponse écrite à chaud — trois fuites</td><td>M1, démonstration (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A3</strong></td><td>Trame « liste rouge de l'établissement » et les trois régimes d'usage</td><td>M1, pratique</td><td>1 par stagiaire + 3 par table</td></tr>
+          <tr><td><strong>A4</strong></td><td>Les dix pièces à classer — je soumets, je ne soumets pas, sous quel compte</td><td>M1, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A5</strong></td><td>Mémo AXION appliqué à l'hôtellerie-restauration (à emporter)</td><td>M1 et M2, démonstration et pratique</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A6</strong></td><td>L'avis négatif et la réponse spontanée — quatre fautes en six lignes</td><td>M2, démonstration (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A7</strong></td><td>Les avis de secours — hôtel, restaurant, café, et l'injuste</td><td>M2, pratique</td><td>1 jeu par stagiaire</td></tr>
+          <tr><td><strong>A8</strong></td><td>Trames de messages de réservation — demande particulière et relance après réservation non honorée</td><td>M2, pratique</td><td>2 par stagiaire + 5</td></tr>
+          <tr><td><strong>A9</strong></td><td>Grille de contrôle croisé des cinq textes</td><td>M2, vérification</td><td>5 par stagiaire</td></tr>
+          <tr><td><strong>A10</strong></td><td>La réponse piégée — trois écarts sous un ton irréprochable</td><td>M2, vérification (parade)</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A11</strong></td><td>Carte de secours et fiches techniques fictives du Balcon des Aravis</td><td>M3, démonstration et pratique</td><td>1 par stagiaire + 5</td></tr>
+          <tr><td><strong>A12</strong></td><td>La traduction naïve de la carte et ses écarts</td><td>M3, démonstration (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A13</strong></td><td>Feuille de recopie des mentions réglementées et checklist de revalidation</td><td>M3, pratique et vérification</td><td>3 par stagiaire + 10</td></tr>
+          <tr><td><strong>A14</strong></td><td>Le dossier « demande de groupe » — demande, devis, message, relance et dix questions</td><td>M3, pratique</td><td>1 jeu par stagiaire</td></tr>
+          <tr><td><strong>A15</strong></td><td>Le devis de groupe qui ne tient pas — sept erreurs</td><td>M3, vérification (parade)</td><td>1 par table + corrigé formateur</td></tr>
+          <tr><td><strong>A16</strong></td><td>La présentation inventée du Balcon des Aravis — cinq erreurs</td><td>M4, démonstration (plan B)</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A17</strong></td><td>Trame de la fiche d'identité IA de l'établissement</td><td>M4, pratique</td><td>2 par stagiaire + 5</td></tr>
+          <tr><td><strong>A18</strong></td><td>Mention d'information au client et bornes de la réponse publique (projet)</td><td>Transverse, M1 et M2</td><td>1 par stagiaire + 3</td></tr>
+          <tr><td><strong>A19</strong></td><td>Quiz d'évaluation des acquis (10 questions) + corrigé commenté</td><td>M4, vérification</td><td>1 par stagiaire + corrigé formateur</td></tr>
+          <tr><td><strong>A20</strong></td><td>Feuille de route de sortie et assemblage du classeur</td><td>M4, synthèse</td><td>1 par stagiaire</td></tr>
+          <tr><td><strong>B1</strong></td><td>Sorties de la démonstration — Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais <em>(à capturer)</em></td><td>mod-1, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B2</strong></td><td>Sorties de la démonstration — Matin · Module 2 — Avis en ligne, messages et demandes de réservation <em>(à capturer)</em></td><td>mod-2, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B3</strong></td><td>Sorties de la démonstration — Après-midi · Module 3 — Carte, supports et demandes de groupes <em>(à capturer)</em></td><td>mod-3, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+          <tr><td><strong>B4</strong></td><td>Sorties de la démonstration — Après-midi · Module 4 — Fiabiliser, évaluer, installer <em>(à capturer)</em></td><td>mod-4, démonstration</td><td>1 jeu formateur + 1 par table</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Liste de contrôle — avant la session</h2>
+      <ul>
+        <li><span class="coche"></span> Toutes les pièces A imprimées aux tirages conseillés ci-dessus.</li>
+        <li><span class="coche"></span> Pièces B capturées dans l'outil de la session, <strong>datées</strong>, de moins de trois mois.</li>
+        <li><span class="coche"></span> Deux <strong>comptes de secours</strong> créés et testés sur l'outil retenu.</li>
+        <li><span class="coche"></span> Surligneurs (un par stagiaire) et chronomètre.</li>
+        <li><span class="coche"></span> Corrigés formateur rangés <strong>séparément</strong> des pièces à distribuer.</li>
+      </ul>
+    </section>
+
+    <section class="piece" data-piece="A1" data-titre="Le dossier de l'établissement fictif « Le Balcon des Aravis » — les faits qui tranchent" data-bloc="Transverse, M1 à M4" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A1</div>
+      <h2>L'univers du kit — un établissement fictif, et ce qu'il est vraiment</h2>
+      <p class="piece-usage">
+        La pièce que le formateur pose en premier et laisse sur la table toute la journée. Tous les
+        exercices du classeur portent des erreurs plantées&nbsp;: elles ne sont vérifiables que
+        parce que ce dossier dit, une fois pour toutes, ce qui est vrai. Quand un stagiaire conteste
+        une correction, on ne discute pas — on revient ici et on lit la ligne.
+      </p>
+      <p class="petit">
+        <strong>Tout est fictif</strong>&nbsp;: établissements, chiffres, clients, avis, plateformes,
+        fiches techniques, documents. Aucun n'existe, et aucune ressemblance avec un établissement
+        réel n'est voulue. Rien de ce dossier ne vaut information sanitaire, tarifaire ou
+        réglementaire pour un établissement réel.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">L'hôtel</div>
+        <ul>
+          <li><strong>14 chambres</strong>&nbsp;: 9 doubles, 3 twin, 2 familiales de 4 couchages — <strong>31 couchages</strong> au total.</li>
+          <li>Classement hôtelier <strong>2 étoiles</strong>. Aucune autre distinction, aucun guide, aucun label.</li>
+          <li>Pas d'ascenseur. Deux chambres en rez-de-chaussée, dont une accessible en fauteuil.</li>
+          <li>Animaux acceptés, supplément <strong>9 €</strong> par nuit. Ni service en chambre, ni climatisation.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le restaurant</div>
+        <ul>
+          <li><strong>48 couverts</strong> en salle, 24 en terrasse. Terrasse fermée du 1<sup>er</sup> novembre au 31 mars.</li>
+          <li>Salle privatisable&nbsp;: <strong>40 personnes assises au maximum</strong>, jamais davantage.</li>
+          <li>Service du <strong>soir du mardi au samedi</strong>, et le <strong>dimanche midi</strong>.</li>
+          <li>Fermeture hebdomadaire&nbsp;: <strong>dimanche soir et lundi</strong>, toute l'année.</li>
+          <li>Fermeture annuelle&nbsp;: <strong>du 5 au 27 novembre</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les prix affichés</div>
+        <table>
+          <thead>
+            <tr><th style="width: 58%">Prestation</th><th>Prix</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chambre double, selon saison</td><td><strong>96 € à 142 €</strong></td></tr>
+            <tr><td>Petit-déjeuner, par personne, non inclus</td><td>14 €</td></tr>
+            <tr><td>Menu du soir</td><td>34 €</td></tr>
+            <tr><td>Formule du dimanche midi</td><td>22 €</td></tr>
+            <tr><td>Menu groupe « Les Aravis », par personne, boissons non comprises</td><td>38 €</td></tr>
+            <tr><td>Forfait boissons groupe, par personne</td><td>9 €</td></tr>
+            <tr><td>Privatisation de la salle, forfaitaire</td><td>150 €</td></tr>
+            <tr><td>Chambre double au tarif groupe, petit-déjeuner compris pour deux</td><td>112 €</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que l'établissement n'a pas — la colonne qui fait tomber les inventions</div>
+        <ul>
+          <li>Ni piscine, ni spa, ni sauna, ni bain nordique, ni salle de sport.</li>
+          <li>Ni navette de gare, ni navette de station, ni voiturier.</li>
+          <li>Aucune distinction gastronomique, aucun label, aucune appellation ni indication d'origine détenue, aucune mention « fait maison » revendiquée sur la carte.</li>
+          <li>Aucun service en chambre, aucun bar ouvert après le service, aucune borne de recharge.</li>
+          <li>Parking&nbsp;: 12 places extérieures, gratuites, non couvertes, non réservables.</li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les autres établissements du kit — et celui qui n'existe pas</div>
+        <ul>
+          <li><strong>La Table du Pré Vieux</strong> — restaurant de village, 32 couverts, ni hôtel ni terrasse.</li>
+          <li><strong>Le Café des Deux Torrents</strong> — café-brasserie, service continu jusqu'à 19 h, pas de service du soir.</li>
+          <li>
+            <strong>Le Balcon des Cimes</strong> — <strong>n'existe pas</strong>. Il apparaît pourtant
+            dans un avis du kit&nbsp;: c'est une erreur plantée, et c'est celle que la salle relève le
+            moins souvent.
+          </li>
+        </ul>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les plateformes du kit</div>
+        <p class="petit">
+          <strong>AVISTOILE</strong> (avis en ligne) et <strong>RÉSAMONT</strong> (réservation) sont
+          inventées pour ce classeur. <strong>Aucune plateforme réelle n'est nommée ici, et aucune ne
+          se nomme en salle</strong>&nbsp;: les règles enseignées valent quelle que soit la plateforme,
+          et nommer celle du voisin transforme l'atelier en règlement de comptes.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ce dossier est un support d'exercice&nbsp;: tout ce que vous produirez à partir de lui est un
+        <strong>projet</strong>, que vous relisez, corrigez et signez avant toute diffusion.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte</strong> — ils s'autorisent avant d'être écrits. Toute
+        question juridique va au conseil de votre entreprise&nbsp;: le formateur n'en arbitre aucune.
+        Aucune donnée réelle de client n'entre dans un outil aujourd'hui.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2" data-titre="L'avis du matin et la réponse écrite à chaud — trois fuites" data-bloc="M1, démonstration (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A2 — feuille stagiaire</div>
+      <h2>Un avis, un dimanche soir — et la réponse partie trop vite</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 1, et sa version papier intégrale quand l'outil tombe.
+        La sortie AXION correspondante est la <strong>capture datée</strong> du jeu B&nbsp;; ce
+        feuillet porte l'avis et la réponse à chaud, qui ne se capturent pas — elles s'écrivent.
+        Consigne avant toute correction&nbsp;: <strong>surlignez ce qui, dans la réponse, ne devrait
+        jamais être lisible par un inconnu.</strong>
+      </p>
+
+      <p class="petit">
+        Avis publié sur AVISTOILE, établissement <strong>Le Balcon des Aravis</strong>. Fictif, comme
+        tout le kit.
+      </p>
+
+      <div class="texte-exercice">
+        <p>
+          « Séjour de trois nuits en février. L'accueil est chaleureux et la cuisine correcte, mais la
+          chambre donnait sur le local à skis et nous avons entendu la porte claquer jusqu'à une heure
+          du matin. Nous l'avons signalé à la réception le deuxième soir&nbsp;: on nous a répondu que
+          l'hôtel était complet. Pour ce prix, on peut espérer dormir. »
+        </p>
+      </div>
+
+      <h3>La réponse écrite à chaud, telle qu'elle est partie</h3>
+      <div class="texte-exercice">
+        <p>
+          « Madame, nous avons bien retrouvé votre réservation du 14 au 17 février en chambre 4, et
+          nous sommes surpris de votre message&nbsp;: vous n'aviez rien signalé à votre départ.
+          L'hôtel était effectivement complet ce week-end-là et nous ne pouvions pas vous changer de
+          chambre. Notre hôtel trois étoiles reste attentif au confort de ses clients. Pour nous faire
+          pardonner, nous vous offrons une nuit lors de votre prochain séjour. — La direction. »
+        </p>
+      </div>
+
+      <p>
+        <strong>Ce que j'ai surligné :</strong> ______ éléments &nbsp;·&nbsp;
+        <strong>Total de la salle :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______
+      </p>
+
+      <div class="banniere">
+        Toute réponse publique préparée aujourd'hui est un <strong>projet</strong>&nbsp;: relue,
+        corrigée et signée par vous avant publication.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A2">
+      <div class="piece-badge">Pièce A2 — corrigé formateur</div>
+      <h2>La réponse à chaud — corrigé, avec la règle qui tranche</h2>
+      <p class="piece-usage">
+        Corriger dans cet ordre&nbsp;: les trois fuites d'abord, l'erreur de fait ensuite, le ton en
+        dernier. La salle trouve toujours le geste commercial, presque jamais la confirmation du
+        séjour — c'est sur elle que porte l'insistance.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 32%">Ce qui est écrit</th>
+            <th style="width: 20%">Nature</th>
+            <th>La règle qui tranche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>« nous avons bien retrouvé votre réservation du 14 au 17 février »</td>
+            <td><strong>Fuite 1 — le séjour confirmé</strong></td>
+            <td>
+              <strong>La faute invisible, celle qui se rate.</strong> Une réponse publique ne confirme
+              jamais qu'une personne a séjourné ou dîné dans l'établissement, et ne révèle aucune date.
+              L'auteur d'un avis peut être un pseudonyme&nbsp;; la maison, elle, vient de le
+              transformer en client identifié devant tout internaute.
+            </td>
+          </tr>
+          <tr>
+            <td>« en chambre 4 »</td>
+            <td><strong>Fuite 2 — l'élément de séjour</strong></td>
+            <td>
+              Numéro de chambre, montant, table, régime alimentaire&nbsp;: rien de ce qui décrit le
+              séjour ne sort. La règle se retient en une phrase — <strong>ce qui est dans le dossier
+              reste dans le dossier</strong>.
+            </td>
+          </tr>
+          <tr>
+            <td>« nous vous offrons une nuit lors de votre prochain séjour »</td>
+            <td><strong>Fuite 3 — le geste commercial public</strong></td>
+            <td>
+              Un geste annoncé en public devient un tarif&nbsp;: le lecteur suivant le demandera. Un
+              geste s'autorise avant de s'écrire, et il s'écrit en privé, jamais dans une réponse
+              publiée.
+            </td>
+          </tr>
+          <tr>
+            <td>« notre hôtel trois étoiles »</td>
+            <td><strong>Erreur de fait</strong></td>
+            <td>
+              Le dossier A1 dit <strong>deux étoiles</strong>. Une réponse publique se relit comme une
+              carte&nbsp;: un classement, un label, une capacité annoncés faux sont opposables. La
+              parade est la fiche d'identité du module 4.
+            </td>
+          </tr>
+          <tr>
+            <td>« vous n'aviez rien signalé à votre départ » · « nous sommes surpris »</td>
+            <td><strong>Ton défensif</strong></td>
+            <td>
+              La contradiction publique de l'auteur ne convainc personne et double l'audience du
+              litige. On ne nie pas, on n'admet pas&nbsp;: « nous ne retrouvons pas la situation
+              décrite », puis l'échange se poursuit en privé, à l'accueil.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si la capture B manque ou n'est plus à jour</div>
+        <p class="petit">
+          Ne pas régénérer devant la salle une « bonne » réponse pour la comparer&nbsp;: la
+          démonstration ne porte pas sur la beauté de la sortie, elle porte sur les cinq lignes de la
+          demande. Lire la ligne Normes du mémo A5 à voix haute, puis faire réécrire la réponse
+          <strong>à la main</strong> en respectant les quatre interdits. Sur papier, l'enseignement
+          est le même — et personne ne peut l'attribuer à l'outil.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A3" data-titre="Trame « liste rouge de l'établissement » et les trois régimes d'usage" data-bloc="M1, pratique" data-tirage="1 par stagiaire + 3 par table">
+      <div class="piece-badge">Pièce A3</div>
+      <h2>La liste rouge de l'établissement — et sous quel compte j'écris</h2>
+      <p class="piece-usage">
+        Première pièce du classeur, et la seule qui se signe par la table. On nomme des
+        <strong>familles</strong> de pièces — « fichier clients », « fiches techniques » — jamais un
+        client, jamais un plat, jamais un salarié. La règle vaut aussi pour le papier de la formation.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 24%">Régime</th>
+            <th style="width: 32%">Le signe qui permet de le reconnaître</th>
+            <th>Ce que j'ai le droit d'y coller</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Compte grand public</strong></td>
+            <td>Ouvert avec une simple adresse, sans contrat signé par l'établissement, conditions modifiables sans préavis.</td>
+            <td>Rien qui vienne d'un client. Des textes déjà publics, le texte seul d'un avis, une trame à crochets.</td>
+          </tr>
+          <tr>
+            <td><strong>Offre professionnelle avec engagement écrit</strong></td>
+            <td>Contrat signé par l'établissement, engagement de non-réutilisation des contenus, durée de conservation annoncée.</td>
+            <td>Ce que l'établissement a écrit noir sur blanc, et rien de plus. Le contrat ne remplace pas la liste rouge&nbsp;: il en fixe la limite.</td>
+          </tr>
+          <tr>
+            <td><strong>Environnement validé par la direction</strong></td>
+            <td>Outil inscrit quelque part, périmètre écrit, une personne responsable nommée dans la maison.</td>
+            <td>Ce que le périmètre écrit autorise nommément — pas ce qu'on suppose autorisé.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mon outil, mon régime</div>
+        <p><strong>Nom exact de l'outil utilisé dans la maison :</strong> ______________________________________</p>
+        <p>
+          <strong>Son régime :</strong> <span class="coche"></span> grand public &nbsp;
+          <span class="coche"></span> offre professionnelle &nbsp; <span class="coche"></span>
+          environnement validé &nbsp; <span class="coche"></span> <strong>je ne sais pas</strong>
+        </p>
+        <p class="petit">« Je ne sais pas » est recevable et utile&nbsp;: la réponse part telle quelle dans les questions ouvertes de la journée.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La liste rouge — ce qui ne sort jamais, quel que soit le compte</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 8%">Vu</th>
+              <th style="width: 40%">Famille de pièces</th>
+              <th>Pourquoi, dit par la table en une ligne</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>☐</td><td><strong>Coordonnées et séjours des clients</strong> — dossiers, arrivées, montants, régimes alimentaires</td><td></td></tr>
+            <tr><td>☐</td><td><strong>Fiches techniques et lignes d'allergènes</strong></td><td></td></tr>
+            <tr><td>☐</td><td><strong>Mentions « fait maison », origines, appellations et labels</strong></td><td></td></tr>
+            <tr><td>☐</td><td><strong>Plannings nominatifs</strong> et éléments de paie</td><td></td></tr>
+            <tr><td>☐</td><td><strong>Identifiants de connexion</strong> — caisse, réservation, banque, messagerie</td><td></td></tr>
+            <tr><td>☐</td><td><strong>Contrats et tarifs fournisseurs</strong></td><td></td></tr>
+            <tr><td>☐</td><td>Ce que notre table ajoute&nbsp;:</td><td></td></tr>
+            <tr><td>☐</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le planning — la distinction qui sert toute l'année</div>
+        <p class="petit">
+          <strong>Nominatif&nbsp;: jamais.</strong> Un planning avec des prénoms dit qui travaille où
+          et quand. <strong>La trame dépersonnalisée&nbsp;: oui</strong> — postes, créneaux,
+          contraintes de service, aucun nom. L'outil propose une répartition&nbsp;; les noms se
+          rattachent chez vous, hors de l'outil, à la main.
+        </p>
+      </div>
+
+      <p>
+        <strong>Liste arrêtée par la table :</strong> ______________________________ &nbsp;·&nbsp;
+        <strong>Le :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="banniere">
+        Cette liste rouge est un <strong>projet de repère interne</strong>, à relire et à faire valider
+        avant diffusion dans l'équipe&nbsp;; toute question juridique va au conseil de votre entreprise
+        — le formateur n'en arbitre aucune.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Aucune donnée réelle de client, de salarié ou de fournisseur n'y figure.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4" data-titre="Les dix pièces à classer — je soumets, je ne soumets pas, sous quel compte" data-bloc="M1, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A4 — feuille stagiaire</div>
+      <h2>Dix pièces du quotidien — laquelle entre dans l'outil&nbsp;?</h2>
+      <p class="piece-usage">
+        Le contrôle du module 1. Une croix par ligne, et une seule, <strong>avant</strong> le corrigé.
+        Le vote se fait à main levée, pièce par pièce&nbsp;: le désaccord affiché est ce qui rend la
+        correction mémorable. Sans vidéoprojecteur, on lit à voix haute — rien ne change.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 5%">N°</th>
+            <th>La pièce, telle qu'elle se présente</th>
+            <th style="width: 11%">Je soumets</th>
+            <th style="width: 14%">Je soumets dépersonnalisée</th>
+            <th style="width: 12%">Jamais</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Le texte d'un avis publié sur AVISTOILE, collé seul, sans le nom ni le profil de son auteur.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>2</td><td>La fiche technique du suprême de volaille&nbsp;: grammages, procédé, coût matière, ligne d'allergènes.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>3</td><td>Le planning de la semaine avec les prénoms de l'équipe, les repos et une contrainte de garde d'enfant.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>4</td><td>Un mail de confirmation&nbsp;: nom du client, dates, numéro de chambre, montant, numéro de réservation.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>5</td><td>La carte des desserts telle qu'elle est affichée en salle, avec ses prix et son bloc de mentions.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>6</td><td>Une demande de groupe reçue par messagerie, avec le nom de l'association et celui de sa secrétaire.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>7</td><td>Le contrat annuel signé avec le fournisseur de boissons, tarifs et remises de fin d'année compris.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>8</td><td>La photo d'un plat dressé, prise en cuisine, sans personne dessus.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>9</td><td>L'identifiant et le mot de passe du logiciel de caisse, pour faire expliquer un message d'erreur.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+          <tr><td>10</td><td>Le texte de présentation publié sur le site de l'établissement.</td><td>☐</td><td>☐</td><td>☐</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Mon score après correction :</strong> ______ / 10 &nbsp;·&nbsp;
+        <strong>Les trois que j'ai ratées :</strong> ______________________________
+      </p>
+
+      <div class="banniere">
+        Ce classement n'autorise rien par lui-même&nbsp;: il est un <strong>projet de règle
+        interne</strong>, à relire et à faire valider dans la maison avant d'être appliqué par
+        d'autres. Toute question juridique va au conseil de votre entreprise.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A4">
+      <div class="piece-badge">Pièce A4 — corrigé formateur</div>
+      <h2>Dix pièces — corrigé, et les trois qui piègent</h2>
+      <p class="piece-usage">
+        Une minute au plus sur les évidentes&nbsp;; garder le temps pour les pièces 2, 3 et 4. Faire
+        dire la raison à voix haute avant de la lire ici&nbsp;: c'est la raison qui s'emporte, pas le
+        verdict.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 5%">N°</th><th style="width: 22%">Verdict</th><th>La règle qui tranche</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td><strong>Je soumets</strong></td>
+            <td>Le texte d'un avis est déjà public&nbsp;; le nom, le profil et le dossier de réservation, non. On envoie ce qui est nécessaire à la rédaction, rien de plus.</td>
+          </tr>
+          <tr>
+            <td>2</td><td><strong>Jamais</strong> — piège</td>
+            <td>
+              Double motif&nbsp;: c'est le savoir-faire de la maison, et c'est le document qui fait foi
+              pour les allergènes. Il se consulte <strong>à côté</strong> du clavier, jamais dedans.
+              Les éléments publics du plat se recopient à la main dans la demande. Le module 3 montre
+              ce qu'il advient quand on le confie à une traduction.
+            </td>
+          </tr>
+          <tr>
+            <td>3</td><td><strong>Dépersonnalisée</strong> — piège</td>
+            <td>
+              Nominatif&nbsp;: jamais. La trame — postes, créneaux, contraintes de service, sans aucun
+              nom — passe, et les noms se rattachent hors outil. La contrainte de garde d'enfant est
+              une donnée de vie privée&nbsp;: elle disparaît avec le prénom.
+            </td>
+          </tr>
+          <tr>
+            <td>4</td><td><strong>Jamais</strong> — piège</td>
+            <td>
+              <strong>Celle qui se rate le plus.</strong> Nom, dates, chambre, montant&nbsp;: rien de
+              public là-dedans. À opposer au « tout est déjà sur internet »&nbsp;: demander ce que ce
+              message dit du client. La réponse suffit.
+            </td>
+          </tr>
+          <tr>
+            <td>5</td><td><strong>Je soumets</strong>, sauf le bloc de mentions</td>
+            <td>
+              La carte est affichée, donc publique. Mais son <strong>bloc de mentions réglementées ne
+              se soumet pas pour être retravaillé ni traduit</strong>&nbsp;: il se recopie depuis les
+              documents validés. Savoir dire oui vite et non net sur la même feuille, c'est
+              l'enseignement de la pièce.
+            </td>
+          </tr>
+          <tr>
+            <td>6</td><td><strong>Dépersonnalisée</strong></td>
+            <td>Le besoin — 34 couverts, un samedi soir, une salle à part — se recopie&nbsp;; le nom de l'association et celui de sa secrétaire restent chez vous, et se remplissent dans la messagerie.</td>
+          </tr>
+          <tr>
+            <td>7</td><td><strong>Jamais</strong></td>
+            <td>Document contractuel et tarifs négociés. Le motif invoqué ne change rien&nbsp;: la règle porte sur la pièce, pas sur l'intention.</td>
+          </tr>
+          <tr>
+            <td>8</td><td><strong>Je soumets</strong></td>
+            <td>
+              Une photo de plat, sans personne et sans document dedans, sert un descriptif. La limite
+              est nette&nbsp;: <strong>photographier la fiche technique pour la déposer dans l'outil,
+              c'est soumettre la fiche technique</strong> — la pièce 2, par un autre chemin.
+            </td>
+          </tr>
+          <tr>
+            <td>9</td><td><strong>Jamais</strong></td>
+            <td>Un identifiant ne se colle nulle part, et un message d'erreur se recopie sans ses secrets. Faire remarquer que la question était légitime&nbsp;: c'est la pièce jointe qui ne l'était pas.</td>
+          </tr>
+          <tr>
+            <td>10</td><td><strong>Je soumets</strong></td>
+            <td>Public, écrit par vous. Savoir dire oui vite est aussi utile que savoir dire non&nbsp;: une règle qui interdit tout se contourne dès le premier coup de feu.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Si la salle classe tout en « jamais »</div>
+        <p class="petit">
+          Reprendre les pièces 1 et 10 et montrer le coût de l'excès&nbsp;: une équipe qui s'interdit
+          tout n'utilisera pas l'outil dans la maison — elle l'utilisera dehors, sur son téléphone,
+          hors de toute règle.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A5" data-titre="Mémo AXION appliqué à l'hôtellerie-restauration (à emporter)" data-bloc="M1 et M2, démonstration et pratique" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A5</div>
+      <h2>Mémo AXION — cinq lignes qui s'écrivent une fois</h2>
+      <p class="piece-usage">
+        À emporter et à coller près du poste de réception. Trois lignes sur cinq sont
+        <strong>fixes</strong> pour la maison&nbsp;: elles se recopient. Seul le conteXte change — le
+        texte de l'avis, la demande du jour. C'est ce qui rend la méthode tenable entre deux services.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 16%">Levier</th>
+            <th style="width: 11%">Fixe&nbsp;?</th>
+            <th>La question à se poser</th>
+            <th style="width: 28%">Ce qui arrive quand il manque</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Acteur</strong></td><td>Fixe</td>
+            <td>Qui écrit, pour quelle maison, dans quel ton&nbsp;? Deux phrases vraies valent mieux que « chaleureux ».</td>
+            <td>Un ton d'hôtel de chaîne, que la clientèle ne reconnaît pas.</td>
+          </tr>
+          <tr>
+            <td><strong>conteXte</strong></td><td><strong>Variable</strong></td>
+            <td>Le texte de l'avis ou de la demande, seul&nbsp;; et surtout&nbsp;: <strong>ce qui est vérifié et ce qui ne l'est pas</strong>.</td>
+            <td>Une réponse qui pourrait aller à n'importe qui — donc à personne.</td>
+          </tr>
+          <tr>
+            <td><strong>Intention</strong></td><td>Variable</td>
+            <td>Que doit-il se passer après lecture&nbsp;? Apaiser, faire venir à l'accueil, obtenir une date&nbsp;?</td>
+            <td>Une politesse qui ne fait rien avancer.</td>
+          </tr>
+          <tr>
+            <td><strong>Output</strong></td><td>Fixe</td>
+            <td>Longueur, langue, signature. « 90 mots, en français, signée La direction. »</td>
+            <td>Un pavé à retailler à 23 h.</td>
+          </tr>
+          <tr>
+            <td><strong>Normes</strong></td><td>Fixe</td>
+            <td>Ce qui est interdit, et ce qu'il ne doit surtout pas inventer.</td>
+            <td><strong>La ligne qui protège la maison</strong>&nbsp;: sans elle, l'outil confirme le séjour, nomme quelqu'un et offre un dessert — de façon plausible, donc crédible.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ma ligne Normes pour une réponse publique — à recopier telle quelle</div>
+        <p class="petit">
+          Quatre interdits absolus&nbsp;: <strong>ne confirme jamais que la personne a séjourné ou
+          dîné chez nous</strong>&nbsp;; <strong>ne révèle aucun élément de séjour</strong> (date,
+          table, chambre, montant, régime alimentaire)&nbsp;; <strong>n'admets aucun fait que je n'ai
+          pas déclaré vérifié et ne mets en cause aucun membre de l'équipe, jamais nommé</strong>&nbsp;;
+          <strong>n'annonce aucun geste commercial, aucune remise ni aucun surclassement en
+          public</strong>. Et&nbsp;: n'ajoute aucun chiffre, aucun classement, aucun label, aucune
+          prestation qui ne soit dans ma fiche d'identité.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ma ligne Normes pour un texte de carte — l'autre couloir</div>
+        <p class="petit">
+          <strong>N'écris aucune mention d'allergène, aucune mention « fait maison », aucune origine
+          de viande, aucun label ni appellation</strong> — ces mentions sont recopiées par nous depuis
+          nos documents validés. N'invente aucun ingrédient, aucune cuisson, aucune provenance. Si un
+          élément te manque, écris [À RECOPIER] et poursuis.
+        </p>
+        <p class="petit">
+          Deux règles de rédaction&nbsp;: une exigence reléguée en fin de liste se perd — mettez en
+          tête celle à laquelle vous tenez le plus&nbsp;; et une consigne qui n'interdit pas
+          explicitement se fait déborder.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mon Acteur et mon Output, écrits une fois pour toutes</div>
+        <p><strong>Acteur :</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Output :</strong></p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Ce que produit cette méthode est un <strong>projet</strong>&nbsp;: vous le relisez, vous le
+        corrigez, vous le signez — c'est un humain qui appuie sur publier ou sur envoyer.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte</strong>&nbsp;: ils s'autorisent avant d'être écrits.
+        Toute question juridique va au conseil de votre entreprise. Aucune donnée réelle de client
+        n'entre dans l'outil&nbsp;: les crochets se remplissent dans votre messagerie.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6" data-titre="L'avis négatif et la réponse spontanée — quatre fautes en six lignes" data-bloc="M2, démonstration (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A6 — feuille stagiaire</div>
+      <h2>Le samedi soir bruyant — et la réponse qui coûte cher</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 2 et sa version papier complète. Consigne, avant toute
+        correction&nbsp;: <strong>« qu'est-ce qui va coûter cher ici&nbsp;? »</strong> — chercher
+        d'abord, montrer ensuite. La sortie bornée correspondante est la capture datée du jeu B.
+      </p>
+
+      <p class="petit">Avis publié sur AVISTOILE, restaurant du <strong>Balcon des Aravis</strong>. Fictif.</p>
+
+      <div class="texte-exercice">
+        <p>
+          « Dîner samedi soir. Le plat était bon, mais la salle était occupée par un groupe très
+          bruyant et il était impossible de s'entendre. La serveuse a fait ce qu'elle a pu. On nous
+          avait promis une table au calme à la réservation&nbsp;: ce n'était pas le cas. Nous ne
+          reviendrons pas. »
+        </p>
+      </div>
+
+      <p class="petit">
+        <strong>Ce que la maison a vérifié :</strong> un groupe était bien accueilli en salle ce
+        soir-là et le niveau sonore a été signalé par deux tables · <strong>ce qu'elle n'a pas
+        vérifié :</strong> ce qui a été dit ou promis lors de la réservation, aucune trace écrite
+        n'existe.
+      </p>
+
+      <h3>La réponse spontanée, telle qu'elle part trop souvent</h3>
+      <div class="texte-exercice">
+        <p>
+          « Bonjour, nous sommes désolés de votre déception lors de votre dîner du samedi 7. Nous
+          confirmons qu'un groupe de 52 personnes était présent ce soir-là et que Sandrine, notre
+          serveuse, a fait de son mieux. Il est exact qu'une table au calme vous avait été promise à
+          la réservation, et nous le reconnaissons. Nous vous offrons l'apéritif lors de votre
+          prochaine venue. — La direction. »
+        </p>
+      </div>
+
+      <p>
+        <strong>Fautes relevées :</strong> ______ &nbsp;·&nbsp;
+        <strong>Total de la salle :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______
+      </p>
+
+      <div class="banniere">
+        Toute réponse publique préparée ici est un <strong>projet</strong>&nbsp;: relue, corrigée et
+        signée avant publication, et relue une seconde fois si personne d'autre n'est disponible —
+        c'est le rôle de la grille A9.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A6">
+      <div class="piece-badge">Pièce A6 — corrigé formateur</div>
+      <h2>Quatre fautes, plus une erreur de fait — corrigé</h2>
+      <p class="piece-usage">
+        La salle trouve la serveuse nommée en dix secondes, le geste commercial ensuite. Elle rate
+        presque toujours la confirmation du dîner et l'aveu du fait non vérifié&nbsp;: insister
+        là-dessus, cocher les quatre interdits un par un sur la sortie bornée.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 34%">Ce qui est écrit</th><th style="width: 18%">Interdit franchi</th><th>La règle qui tranche</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>« lors de votre dîner du samedi 7 »</td>
+            <td><strong>1 — le séjour confirmé</strong></td>
+            <td>La faute invisible. La réponse vient de confirmer publiquement qu'une personne a dîné là, et quand. On répond au texte de l'avis, jamais au dossier.</td>
+          </tr>
+          <tr>
+            <td>« Sandrine, notre serveuse »</td>
+            <td><strong>3 — le salarié nommé</strong></td>
+            <td>Même pour la défendre. Un salarié nommé dans une réponse publique devient la cible du commentaire suivant&nbsp;; la maison répond d'une seule voix, « la direction ».</td>
+          </tr>
+          <tr>
+            <td>« Il est exact qu'une table au calme vous avait été promise »</td>
+            <td><strong>2 — le fait non vérifié admis</strong></td>
+            <td>Aucune trace écrite n'existe. On n'accuse pas, on n'admet pas&nbsp;: « nous ne retrouvons pas la situation décrite » et l'échange se poursuit à l'accueil. Un aveu public est opposable&nbsp;; un « nous vérifions » ne l'est pas.</td>
+          </tr>
+          <tr>
+            <td>« Nous vous offrons l'apéritif »</td>
+            <td><strong>4 — le geste public</strong></td>
+            <td>Annoncé en public, un geste devient un tarif. Il s'autorise avant d'être écrit, et il s'écrit en privé.</td>
+          </tr>
+          <tr>
+            <td>« un groupe de 52 personnes »</td>
+            <td><strong>Erreur de fait</strong></td>
+            <td>
+              <strong>Impossible&nbsp;:</strong> le dossier A1 donne 48 couverts en salle et 40
+              personnes au maximum en privatisation. Le chiffre est plausible, il est faux — c'est
+              exactement ce que produit une rédaction rapide, à l'outil comme à la main. Tout chiffre
+              publié se vérifie sur la fiche d'identité (module 4).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qu'on répond, et ce qu'on ne tranche pas</div>
+        <p class="petit">
+          Le point critiqué sur le bruit est réel&nbsp;: il se reconnaît, sobrement, sans détailler.
+          Si la salle demande ce qu'on a le droit de faire face à un avis mensonger — signalement,
+          suppression, poursuite — la formule est écrite et se prononce telle quelle&nbsp;:
+          <strong>« je ne me prononce pas, notez la question, votre conseil tranchera »</strong>. Et
+          l'interdit qui ne se discute pas&nbsp;: <strong>aucun avis fabriqué, jamais</strong>, ni pour
+          soi, ni contre un concurrent.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A7" data-titre="Les avis de secours — hôtel, restaurant, café, et l'injuste" data-bloc="M2, pratique" data-tirage="1 jeu par stagiaire">
+      <div class="piece-badge">Pièce A7</div>
+      <h2>Quatre avis de secours, et ce que le dossier établit</h2>
+      <p class="piece-usage">
+        Pour qui n'a pas d'avis récent à traiter, ou hésite à sortir les siens. Ordre imposé&nbsp;: le
+        positif d'abord, il règle le ton de la maison&nbsp;; le négatif ensuite&nbsp;; l'injuste en
+        dernier, quand la trame est chaude. Tout est fictif — publié sur AVISTOILE.
+      </p>
+
+      <h3>Avis 1 — le positif (Le Café des Deux Torrents)</h3>
+      <div class="texte-exercice">
+        <p>« Halte parfaite après une matinée de marche. Service rapide, souriant, et la tarte valait le détour. On reviendra. »</p>
+      </div>
+      <p class="petit"><strong>Ce que le dossier établit :</strong> rien à vérifier. L'exercice porte sur le ton&nbsp;: remercier sans emphase, sans promettre, sans confirmer que la personne est venue.</p>
+
+      <h3>Avis 2 — le négatif mesuré (Le Balcon des Aravis, hôtel)</h3>
+      <div class="texte-exercice">
+        <p>« Chambre propre, literie confortable, mais la salle de bains fuyait. Signalé à l'accueil le soir, réparé le lendemain matin&nbsp;: bon point. En revanche, 14 € le petit-déjeuner pour du pain de la veille, c'est cher payé. »</p>
+      </div>
+      <p class="petit"><strong>Ce que le dossier établit :</strong> une fuite a bien été consignée au registre technique et réparée le lendemain matin · le petit-déjeuner est bien affiché à 14 € · la qualité du pain n'est ni établie ni contestée par la maison.</p>
+
+      <h3>Avis 3 — le négatif dur (Le Balcon des Aravis, restaurant)</h3>
+      <div class="texte-exercice">
+        <p>« Deux heures entre l'entrée et le plat, un dimanche midi, avec deux enfants qui n'en pouvaient plus. Personne n'est venu nous expliquer. Dommage, la cuisine est bonne. »</p>
+      </div>
+      <p class="petit"><strong>Ce que le dossier établit :</strong> le service du dimanche midi a effectivement duré, un cuisinier étant absent · aucune information n'a été donnée aux tables · aucun geste n'a été accordé ni demandé.</p>
+
+      <h3>Avis 4 — l'injuste</h3>
+      <div class="texte-exercice">
+        <p>« Séjour catastrophique au <strong>Balcon des Cimes</strong>&nbsp;: spa fermé toute la semaine, navette de gare inexistante malgré la promesse, personnel désagréable, et 40 € de frais de dossier ajoutés à la facture. À fuir. »</p>
+      </div>
+      <p class="petit">
+        <strong>Ce que le dossier établit :</strong> l'établissement s'appelle <strong>Le Balcon des
+        Aravis</strong>, et « Le Balcon des Cimes » ne figure nulle part au dossier · l'établissement
+        n'a <strong>ni spa ni navette</strong> et ne facture <strong>aucun frais de dossier</strong> ·
+        aucun séjour correspondant à cette description n'est retrouvé.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Sur l'avis 4 — ce que la réponse fait, et ne fait pas</div>
+        <p class="petit">
+          Elle ne confirme aucun séjour&nbsp;; elle ne dit pas non plus « vous n'êtes jamais
+          venu »&nbsp;: on ne sait pas qui écrit, et une dénégation publique est un piège. Elle
+          rectifie <strong>ce qui concerne la maison et rien d'autre</strong> — « notre établissement
+          ne propose ni espace bien-être ni navette, et nous ne facturons aucun frais de dossier » —
+          puis invite à écrire à l'accueil. Le reste — plateforme, signalement, suite éventuelle —
+          n'est pas arbitré ici&nbsp;: la question se note, le conseil tranchera. La colère se dit à
+          voix haute au binôme <strong>avant</strong> d'écrire&nbsp;; elle n'entre ni dans la demande,
+          ni dans la réponse.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Chacune des réponses produites ici est un <strong>projet</strong>&nbsp;: relue, corrigée,
+        signée avant publication — et contrôlée sur la grille A9.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise. Ces avis sont fictifs&nbsp;: ils ne
+        dispensent pas de coller le texte seul de vos avis, sans le nom de leur auteur.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A8" data-titre="Trames de messages de réservation — demande particulière et relance après réservation non honorée" data-bloc="M2, pratique" data-tirage="2 par stagiaire + 5">
+      <div class="piece-badge">Pièce A8</div>
+      <h2>Deux messages qui reviennent toute l'année</h2>
+      <p class="piece-usage">
+        Les crochets sont la pièce maîtresse&nbsp;: <strong>[NOM], [DATES], [MONTANT] restent entre
+        crochets dans l'outil</strong> et se remplissent ensuite dans votre messagerie. Une trame dont
+        les crochets sont déjà remplis n'est plus une trame&nbsp;: c'est un dossier client dans un
+        outil.
+      </p>
+
+      <h3>Trame 1 — la demande particulière</h3>
+      <div class="encadre">
+        <p class="petit">Cas couverts&nbsp;: lit bébé, arrivée tardive, animal, chambre au calme, demande liée à l'alimentation.</p>
+        <p><strong>Ce que la trame dit, dans l'ordre :</strong></p>
+        <ol>
+          <li>Remerciement d'une ligne, et reprise de la demande en une phrase — pour prouver qu'elle a été lue.</li>
+          <li>Ce qui est <strong>possible et confirmé</strong>, avec [MONTANT] si un supplément s'applique.</li>
+          <li>Ce qui n'est <strong>pas possible</strong>, dit nettement, sans se justifier sur trois lignes.</li>
+          <li>Ce qui reste <strong>à confirmer</strong>, et par qui — jamais « nous verrons ».</li>
+          <li>Une question de clôture, une seule.</li>
+        </ol>
+        <p><strong>Ma version, au ton de la maison :</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La demande liée à une allergie — ce que la trame ne fait jamais</div>
+        <p>
+          <strong>Aucune trame, aucun modèle et aucun outil ne répond sur un allergène.</strong> La
+          réponse se demande à la cuisine, fiche technique en main, et se
+          <strong>recopie</strong> mot pour mot dans le message. La phrase d'attente est
+          écrite&nbsp;: « nous transmettons votre demande à notre cuisine et revenons vers vous avec
+          une réponse précise ». Ce qui relève d'une règle sanitaire ou d'hygiène se tranche par le
+          responsable qualité ou hygiène de votre établissement&nbsp;— ni par cette trame, ni par le
+          formateur, ni par un outil.
+        </p>
+      </div>
+
+      <h3>Trame 2 — la relance après réservation non honorée</h3>
+      <div class="encadre">
+        <p class="petit">Ferme, courtoise, sans menace, sans pénalité improvisée.</p>
+        <ol>
+          <li>Le constat, factuel et daté par [DATES], sans adjectif.</li>
+          <li>Ce que cela représente pour la maison, en une phrase, sans reproche personnel.</li>
+          <li>Ce que la maison demande&nbsp;: une réponse, une régularisation prévue au contrat, ou simplement un mot la prochaine fois.</li>
+          <li>La porte laissée ouverte, si c'est la position de la maison.</li>
+        </ol>
+        <p class="petit">
+          <strong>Ce qui ne s'écrit pas ici :</strong> un montant, une pénalité, une facturation, une
+          menace de signalement ou d'inscription sur une quelconque liste. Ce que vous avez le droit
+          d'exiger dépend de vos conditions de réservation&nbsp;: la question se note, votre conseil
+          tranchera.
+        </p>
+        <p><strong>Ma version :</strong></p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Ces deux messages sont des <strong>projets</strong>&nbsp;: relus, corrigés et signés par vous
+        avant envoi.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité — « nous vous garderons la chambre », « il restera de la place » — ne se décide
+        par le texte</strong>&nbsp;: une disponibilité se vérifie au planning avant d'être écrite.
+        Toute question juridique va au conseil de votre entreprise. Les crochets se remplissent hors
+        outil.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A9" data-titre="Grille de contrôle croisé des cinq textes" data-bloc="M2, vérification" data-tirage="5 par stagiaire">
+      <div class="piece-badge">Pièce A9</div>
+      <h2>Contrôle croisé — cinq questions, trente secondes</h2>
+      <p class="piece-usage">
+        Une grille par texte, appliquée au texte <strong>de l'autre</strong>, jamais au sien. Règle du
+        binôme&nbsp;: <strong>au moins un écart relevé par texte</strong>, barré au stylo sur la copie
+        — le geste vaut le discours. Cette grille remplace le relecteur absent&nbsp;: à deux dans une
+        petite maison, elle est la deuxième paire d'yeux.
+      </p>
+
+      <p>
+        <strong>Texte relu :</strong> <span class="coche"></span> avis positif
+        <span class="coche"></span> avis négatif <span class="coche"></span> avis injuste
+        <span class="coche"></span> demande particulière <span class="coche"></span> relance
+        &nbsp;·&nbsp; <strong>Relu par :</strong> ______________ &nbsp;·&nbsp;
+        <strong>Le :</strong> ____ / ____ / 20____
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 34%">Ce que je cherche</th><th style="width: 18%">Verdict</th><th>Ce que je relève, mot pour mot</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Rien du séjour n'est révélé</strong><br /><span class="petit">Y compris la confirmation implicite&nbsp;: « lors de votre passage mardi », « nous avons retrouvé votre réservation ».</span></td>
+            <td>☐ rien ☐ à barrer</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>2. Aucun fait non vérifié n'est admis</strong><br /><span class="petit">Ce que la maison n'a pas vérifié ne s'avoue pas&nbsp;: « nous ne retrouvons pas la situation décrite ».</span></td>
+            <td>☐ aucun ☐ à barrer</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>3. Aucun salarié n'est nommé ni mis en cause</strong><br /><span class="petit">Ni pour l'accuser, ni pour le défendre.</span></td>
+            <td>☐ aucun ☐ à barrer</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>4. Aucun geste, remise, surclassement ou disponibilité n'est annoncé</strong><br /><span class="petit">« Nous vous garderons la chambre » en est un.</span></td>
+            <td>☐ aucun ☐ à barrer</td><td></td>
+          </tr>
+          <tr>
+            <td><strong>5. Le ton est celui de la maison, et le texte part tel quel</strong><br /><span class="petit">Chiffres, classement, prestations&nbsp;: conformes à la fiche d'identité&nbsp;?</span></td>
+            <td>☐ oui ☐ à reprendre</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">L'écart que je remonte à l'oral</div>
+        <div class="lignes"></div>
+        <p class="petit">
+          L'écart le plus fréquent, d'après le corrigé du kit&nbsp;: la confirmation implicite du
+          séjour. Elle échappe à la relecture rapide parce qu'elle est aimable.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Un texte coché cinq fois reste un <strong>projet</strong> jusqu'à votre signature&nbsp;: la
+        grille relève, elle ne publie pas.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte</strong> — un écart relevé au point 4 s'autorise avant
+        d'être envoyé, il ne se valide pas par la relecture. Toute question juridique va au conseil de
+        votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A10" data-titre="La réponse piégée — trois écarts sous un ton irréprochable" data-bloc="M2, vérification (parade)" data-tirage="1 par table + corrigé formateur">
+      <div class="piece-badge">Pièce A10 — feuille stagiaire</div>
+      <h2>La réponse piégée — à faire barrer collectivement</h2>
+      <p class="piece-usage">
+        Parade de la vérification du module 2&nbsp;: quand les binômes se valident mutuellement sans
+        rien relever, sortir ce texte et faire barrer au stylo, à voix haute. L'œil se règle en trois
+        minutes, puis le contrôle croisé reprend. <strong>Trois écarts</strong>, et un ton
+        irréprochable.
+      </p>
+
+      <div class="texte-exercice">
+        <p>
+          « Merci pour votre retour, et merci d'avoir séjourné chez nous en janvier. Nous sommes
+          navrés que le chauffage de votre chambre n'ait pas fonctionné&nbsp;: notre technicien est
+          intervenu depuis. Nous avons bien noté votre régime sans gluten et en tiendrons compte lors
+          de votre prochaine venue. Nous restons à votre disposition à l'accueil. — La direction. »
+        </p>
+      </div>
+
+      <p><strong>Écarts relevés par notre table :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______</p>
+    </section>
+
+    <section class="piece" data-piece="A10">
+      <div class="piece-badge">Pièce A10 — corrigé formateur</div>
+      <h2>La réponse piégée — corrigé</h2>
+
+      <div class="corrige">
+        <ol>
+          <li>
+            <strong>« merci d'avoir séjourné chez nous en janvier »</strong> — confirmation du séjour
+            <em>et</em> de sa période, en huit mots aimables. La règle&nbsp;: une réponse publique
+            remercie du <strong>retour</strong>, jamais du séjour. Le test à donner à la
+            salle&nbsp;: retirer les mots « chez nous » et « en janvier » ne retire rien à la
+            courtoisie — c'est la preuve qu'ils ne servaient qu'à trahir.
+          </li>
+          <li>
+            <strong>« votre régime sans gluten »</strong> — <strong>l'écart le plus grave, et celui
+            qu'on relève en dernier</strong>. Un élément d'alimentation publié dans une réponse
+            publique révèle une information intime sur une personne identifiable. La règle&nbsp;: rien
+            de ce qui décrit le client — dates, chambre, montant, régime alimentaire — ne sort du
+            dossier. Ce qui touche à l'alimentation d'un client se traite en privé, avec la cuisine.
+          </li>
+          <li>
+            <strong>« le chauffage n'a pas fonctionné · notre technicien est intervenu depuis »</strong>
+            — un fait non déclaré vérifié, admis publiquement, et une intervention affirmée sans que
+            le dossier l'établisse. La règle&nbsp;: on n'admet en public que ce qu'on a vérifié et
+            qu'on assume d'écrire noir sur blanc&nbsp;; sinon « nous ne retrouvons pas la situation
+            décrite, écrivez-nous à l'accueil ».
+          </li>
+        </ol>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le débriefing, en une phrase</div>
+        <p class="petit">
+          Ce texte est poli, court, bien tourné, et trois fois fautif&nbsp;: c'est exactement le genre
+          de réponse qu'un relecteur pressé valide en dix secondes. La grille A9 n'est pas une
+          formalité — elle est faite pour attraper ce texte-là.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A11" data-titre="Carte de secours et fiches techniques fictives du Balcon des Aravis" data-bloc="M3, démonstration et pratique" data-tirage="1 par stagiaire + 5">
+      <div class="piece-badge">Pièce A11</div>
+      <h2>La carte de secours et ses fiches techniques — feuillets f. 1 et f. 2</h2>
+      <p class="piece-usage">
+        Pour qui n'a ni carte sur lui ni traduction en cours&nbsp;: personne ne regarde son voisin
+        travailler pendant cinquante minutes. Le feuillet f. 2 se pose
+        <strong>à côté du clavier</strong>, jamais dedans, et jamais en photo dans un outil&nbsp;: le
+        geste physique est l'enseignement du module.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que ces fiches sont, et ce qu'elles ne sont pas</div>
+        <p>
+          Ces fiches techniques sont <strong>entièrement inventées</strong>. Elles servent à une seule
+          chose&nbsp;: rendre les écarts de l'exercice <strong>vérifiables</strong>, puisqu'on peut
+          les comparer ligne à ligne. <strong>Elles ne constituent aucune information sanitaire,
+          aucune règle et aucun modèle</strong>, et ne s'appliquent à aucun plat réel. Dans votre
+          établissement, seule votre fiche technique validée fait foi, et c'est votre responsable
+          qualité ou hygiène qui l'arrête — ni ce classeur, ni le formateur, ni un outil.
+        </p>
+      </div>
+
+      <h3>Feuillet f. 1 — la carte, telle qu'elle est affichée</h3>
+      <div class="texte-exercice">
+        <p><strong>LE BALCON DES ARAVIS — carte du soir</strong></p>
+        <p><strong>Entrées</strong><br />Velouté de courge, crème et huile de noisette — 11 €</p>
+        <p><strong>Plats</strong><br />Suprême de volaille, sauce crémée à la moutarde à l'ancienne, purée au beurre demi-sel — 24 €<br />Filet d'omble chevalier, beurre blanc, légumes du moment — 26 €</p>
+        <p><strong>Desserts</strong><br />Tarte fine aux pommes, glace vanille — 9 €<br />Fondant au chocolat, crème anglaise — 9 €</p>
+        <p class="petit">Menu du soir&nbsp;: entrée, plat, dessert — 34 €.</p>
+      </div>
+
+      <h3>Feuillet f. 2 — les fiches techniques (fictives)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 10%">Réf.</th>
+            <th style="width: 30%">Plat</th>
+            <th>Composition portée à la fiche</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>FT-03</strong></td>
+            <td>Velouté de courge</td>
+            <td>Courge · crème (lait) · bouillon de légumes contenant du céleri · huile de noisette (fruit à coque) · sel, poivre.</td>
+          </tr>
+          <tr>
+            <td><strong>FT-07</strong></td>
+            <td>Suprême de volaille, sauce moutarde, purée</td>
+            <td>Suprême de volaille · crème (lait) · <strong>moutarde à l'ancienne</strong> (graines de moutarde, vinaigre) · fond de volaille contenant du céleri · <strong>farine de blé</strong> pour la liaison (gluten) · vin blanc (sulfites) · pommes de terre · beurre demi-sel (lait).</td>
+          </tr>
+          <tr>
+            <td><strong>FT-11</strong></td>
+            <td>Filet d'omble chevalier, beurre blanc</td>
+            <td>Omble chevalier (poisson) · beurre (lait) · échalote · vin blanc (sulfites) · légumes de saison. <strong>Aucune farine, aucune liaison.</strong></td>
+          </tr>
+          <tr>
+            <td><strong>FT-14</strong></td>
+            <td>Tarte fine aux pommes, glace vanille</td>
+            <td>Pâte feuilletée&nbsp;: <strong>farine de blé</strong> (gluten), beurre (lait) · pommes · œufs · glace vanille (lait, œufs).</td>
+          </tr>
+          <tr>
+            <td><strong>FT-16</strong></td>
+            <td>Fondant au chocolat, crème anglaise</td>
+            <td>Chocolat (peut contenir du soja) · œufs · beurre (lait) · <strong>farine de blé</strong> (gluten) · crème anglaise (lait, œufs).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="petit">
+        <strong>Ce que le dossier A1 ajoute :</strong> l'établissement ne revendique aucune mention
+        « fait maison » sur sa carte, ne détient aucune appellation ni indication d'origine, et
+        n'affiche aucune origine de viande sur ce document. Aucune procédure d'adaptation de plat
+        n'existe et aucune n'est promise.
+      </p>
+
+      <div class="banniere">
+        Un descriptif produit à partir de ces feuillets est un <strong>projet</strong>&nbsp;: relu,
+        corrigé, signé, et <strong>revalidé ligne à ligne fiche en main</strong> avant impression.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise&nbsp;; toute question de règle
+        sanitaire ou d'hygiène va au responsable qualité de votre établissement. La fiche technique
+        reste sur la table&nbsp;: elle n'entre pas dans l'outil, ni recopiée en entier, ni
+        photographiée.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12" data-titre="La traduction naïve de la carte et ses écarts" data-bloc="M3, démonstration (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A12 — feuille stagiaire</div>
+      <h2>La carte anglaise traduite d'un bloc — qui voit le problème&nbsp;?</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 3, et sa version papier — la plus sûre, puisqu'elle ne
+        dépend de rien. Consigne&nbsp;: <strong>fiche technique f. 2 de la pièce A11 posée à côté</strong>,
+        et lecture ligne à ligne. Cherchez avant qu'on vous montre. Presque personne ne trouve tout —
+        c'est précisément le point.
+      </p>
+
+      <p class="petit">
+        Document fictif du kit&nbsp;: carte anglaise du Balcon des Aravis, traduite en une fois, un
+        soir, allergènes compris, et relue par personne.
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>LE BALCON DES ARAVIS — evening menu</strong></p>
+        <p><em>Homemade throughout, from our mountain kitchen.</em></p>
+        <p><strong>Pumpkin velouté</strong>, cream and hazelnut oil — 11 €<br /><span class="petit">Allergens: milk, celery, nuts</span></p>
+        <p><strong>Farm-raised Alpine chicken supreme</strong>, creamy sauce, homemade mashed potato — 24 €<br /><span class="petit">Allergens: milk, celery, sulphites</span></p>
+        <p><strong>Char fillet</strong>, beurre blanc, seasonal vegetables — 26 €<br /><span class="petit">Allergens: fish, milk, sulphites, gluten</span></p>
+        <p><strong>Thin apple tart</strong>, vanilla ice cream — 9 €<br /><span class="petit">Allergens: milk, eggs</span></p>
+        <p><strong>Chocolate fondant</strong>, custard — 9 €<br /><span class="petit">Allergens: milk, eggs, gluten, soy</span></p>
+        <p class="petit"><em>All our desserts can be made gluten-free on request. Suitable for guests with allergies.</em></p>
+      </div>
+
+      <p><strong>Écarts que j'ai trouvés :</strong> ______ &nbsp;·&nbsp; <strong>Total de la salle :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______</p>
+
+      <div class="banniere">
+        Ce document est un <strong>exemple d'exercice</strong>, jamais un modèle&nbsp;: aucune de ses
+        lignes ne se recopie dans une carte réelle. Toute mention réglementée d'une carte se recopie
+        depuis vos documents validés et se fait valider par votre responsable qualité ou hygiène avant
+        impression. Toute question juridique va au conseil de votre entreprise.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A12">
+      <div class="piece-badge">Pièce A12 — corrigé formateur</div>
+      <h2>La traduction naïve — corrigé, écart par écart</h2>
+      <p class="piece-usage">
+        Corriger dans l'ordre du tableau. Les deux premiers écarts sont ceux de la démonstration&nbsp;:
+        la moutarde disparue et le gluten changé de ligne. Les trois suivants sont ceux que la salle
+        découvre après coup, et qui font basculer la règle des deux couloirs.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 30%">Ce que la carte anglaise dit</th><th style="width: 24%">Ce qui la contredit</th><th>La règle qui tranche</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Poulet&nbsp;: « milk, celery, sulphites » — <strong>la moutarde a disparu</strong></td>
+            <td><strong>FT-07</strong> porte la moutarde à l'ancienne</td>
+            <td>
+              L'écart invisible&nbsp;: la traduction est excellente partout ailleurs, et c'est
+              justement pour cela qu'on ne la relit pas. <strong>Une mention réglementée ne se traduit
+              pas, ne se reformule pas, ne se régénère pas&nbsp;: elle se recopie</strong> depuis les
+              documents validés de l'établissement. Ce qui se corrige ici n'est pas la traduction,
+              c'est le fait qu'elle ait eu lieu.
+            </td>
+          </tr>
+          <tr>
+            <td>Omble&nbsp;: « …, gluten » — <strong>le gluten a changé de ligne</strong></td>
+            <td><strong>FT-11</strong> ne porte aucune farine&nbsp;; <strong>FT-07</strong> en porte une, et sa ligne ne le dit pas</td>
+            <td>
+              Une mention déplacée est doublement fausse&nbsp;: elle alarme là où il n'y a rien, et
+              elle rassure là où il y a quelque chose. Le contrôle se fait <strong>plat par plat,
+              fiche en main, à voix haute</strong> — jamais par lecture globale.
+            </td>
+          </tr>
+          <tr>
+            <td>Tarte&nbsp;: « milk, eggs »</td>
+            <td><strong>FT-14</strong>&nbsp;: pâte feuilletée à la farine de blé</td>
+            <td>La ligne a été raccourcie pour tenir sur une ligne de carte. La mise en page ne raccourcit jamais une mention&nbsp;: c'est la carte qui s'adapte au bloc, pas l'inverse.</td>
+          </tr>
+          <tr>
+            <td>« Homemade throughout » · « Farm-raised Alpine chicken »</td>
+            <td>Dossier <strong>A1</strong>&nbsp;: aucune mention « fait maison » revendiquée, aucune origine affichée, aucune appellation détenue</td>
+            <td>
+              L'outil a ajouté ce qui « fait bien » sur une carte de montagne. « Fait maison »,
+              origine, label, appellation&nbsp;: ces mentions sont encadrées et se recopient depuis un
+              document qui les établit — ou ne s'écrivent pas.
+            </td>
+          </tr>
+          <tr>
+            <td><strong>« can be made gluten-free on request » · « Suitable for guests with allergies »</strong></td>
+            <td><strong>FT-14 et FT-16</strong> portent de la farine de blé&nbsp;; aucune procédure d'adaptation n'existe au dossier</td>
+            <td>
+              <strong>Le contre-exemple de la journée, à montrer en dernier et à laisser en
+              silence.</strong> Une allégation « sans allergène », « adapté », « convient aux
+              personnes allergiques » produite par un outil et non vérifiée à la source n'est pas une
+              maladresse de style&nbsp;: c'est une affirmation que quelqu'un croira. Elle ne se corrige
+              pas par un meilleur prompt — <strong>elle se supprime</strong>. Et ce qu'on peut ou non
+              adapter, dans un établissement, se décide par le responsable qualité ou hygiène, fiche
+              et procédés en main. Jamais par un outil, jamais par le formateur.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">La règle des deux couloirs, à écrire au tableau</div>
+        <p>
+          <strong>Couloir 1 — l'IA</strong>&nbsp;: le descriptif qui donne envie, et sa traduction.
+          <strong>Couloir 2 — vous</strong>&nbsp;: les mentions réglementées, recopiées depuis vos
+          documents validés, dans un bloc distinct, validées par la cuisine avant impression.
+          <strong>Les deux couloirs ne se croisent jamais.</strong> À l'objection « l'IA traduit très
+          bien »&nbsp;: elle traduit très bien, <em>et</em> la moutarde a disparu. On ne confie pas à
+          la vigilance ce qu'une règle simple élimine.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A13" data-titre="Feuille de recopie des mentions réglementées et checklist de revalidation" data-bloc="M3, pratique et vérification" data-tirage="3 par stagiaire + 10">
+      <div class="piece-badge">Pièce A13</div>
+      <h2>Recopier, puis revalider ligne à ligne</h2>
+      <p class="piece-usage">
+        La pièce qui porte le geste du module&nbsp;: on recopie, on ne génère pas&nbsp;; puis on relit
+        à deux, fiche en main, avant d'imprimer ou d'envoyer. Une feuille par partie de carte
+        traitée.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que ce kit ne fournit pas, et ne fournira jamais</div>
+        <p>
+          <strong>La liste officielle elle-même n'est pas reproduite ici de mémoire</strong>, ni sa
+          traduction. Elle est insérée dans le classeur sous forme de
+          <strong>feuillet séparé, recopié depuis le texte officiel, avec sa source et sa date</strong>,
+          et relu par le conseil de l'organisme avant la session. Un formateur ne cite jamais une
+          mention réglementée de mémoire&nbsp;: il ouvre le feuillet.
+        </p>
+        <p>
+          <span class="coche"></span> <strong>Feuillet officiel inséré</strong> — source&nbsp;:
+          ______________________________ &nbsp;·&nbsp; version datée du&nbsp;: ____ / ____ / 20____
+          &nbsp;·&nbsp; relu par&nbsp;: ______________
+        </p>
+        <p class="petit">
+          Sans ce feuillet, l'atelier carte ne se tient pas&nbsp;: on ne remplace pas une source par un
+          souvenir. Dans l'établissement, la même règle s'applique — la source, ce sont vos documents
+          validés et votre responsable qualité ou hygiène.
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Tableau de recopie — une ligne par plat</div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 22%">Plat</th>
+              <th style="width: 12%">Réf. fiche</th>
+              <th style="width: 26%">Mentions recopiées, mot pour mot</th>
+              <th style="width: 26%">Langue cible — recopiée depuis le feuillet officiel</th>
+              <th>Visa cuisine</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">Une case « visa cuisine » vide vaut refus d'impression. C'est la règle qui s'appliquera chez vous&nbsp;; on l'applique ici.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Checklist de revalidation croisée — sur la production de l'autre</div>
+        <table>
+          <thead>
+            <tr><th style="width: 62%">Question, posée plat par plat</th><th style="width: 20%">Verdict</th><th>Écart relevé</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Chaque mention de la fiche technique figure-t-elle sur la carte, <strong>au bon plat</strong>&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+            <tr><td>Chaque mention figure-t-elle <strong>dans la langue cible</strong>, recopiée depuis le feuillet officiel et non traduite&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+            <tr><td>Le descriptif contient-il une <strong>allégation</strong> d'adaptation, d'absence ou de compatibilité&nbsp;? <span class="petit">(elle se supprime, sans discussion)</span></td><td>☐ aucune ☐ à supprimer</td><td></td></tr>
+            <tr><td>Chaque <strong>origine de viande</strong> annoncée est-elle établie par un document&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+            <tr><td>Chaque <strong>« fait maison »</strong> est-il défendable, document en main&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+            <tr><td>Chaque <strong>label ou appellation</strong> est-il réellement détenu, justificatif à jour&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+            <tr><td>Sur un dossier groupe&nbsp;: chaque <strong>montant</strong> vient-il du stagiaire, chaque <strong>engagement</strong> est-il tenable&nbsp;?</td><td>☐ oui ☐ écart</td><td></td></tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>Verdict :</strong> <span class="coche"></span> la pièce peut partir &nbsp;
+          <span class="coche"></span> <strong>un écart sur une mention réglementée — la pièce repart
+          en correction</strong>, sans discussion
+        </p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">La phrase de clôture, à recopier à la main sur cette feuille</div>
+        <div class="lignes"></div>
+        <p class="petit">« L'IA rédige, la fiche technique fait foi, rien de réglementé ne part sans double lecture. »</p>
+      </div>
+
+      <div class="banniere">
+        Cette feuille est un <strong>projet de contrôle interne</strong>&nbsp;: elle se relit, se
+        corrige et se fait valider dans la maison avant d'être imposée à quelqu'un d'autre. Elle ne
+        remplace ni votre plan de maîtrise sanitaire, ni votre responsable qualité ou hygiène, ni vos
+        documents validés&nbsp;: <strong>toute question de règle sanitaire se tranche chez vous, pas
+        ici</strong>. Toute question juridique va au conseil de votre entreprise.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A14" data-titre="Le dossier « demande de groupe » — demande, devis, message, relance et dix questions" data-bloc="M3, pratique" data-tirage="1 jeu par stagiaire">
+      <div class="piece-badge">Pièce A14</div>
+      <h2>Le dossier de groupe, de la demande à la relance</h2>
+      <p class="piece-usage">
+        Le client fictif du parcours groupes, de bout en bout. Règle du parcours&nbsp;:
+        <strong>l'outil met en forme, il ne chiffre rien</strong>. Si une proposition de tarif apparaît
+        dans une sortie, elle se barre au stylo, immédiatement.
+      </p>
+
+      <h3>Feuillet f. 1 — la demande, reçue par RÉSAMONT</h3>
+      <div class="texte-exercice">
+        <p>
+          « Bonjour, je cherche un lieu pour le repas de fin d'année de notre association, un samedi
+          soir de janvier. Nous serions 34 personnes, dont 3 enfants. Nous souhaiterions une salle à
+          part et un menu unique, et savoir s'il est possible de dormir sur place pour une dizaine de
+          personnes. Une personne du groupe est allergique. Pouvez-vous nous faire une proposition
+          chiffrée avant le 15&nbsp;? — La secrétaire de l'association. »
+        </p>
+      </div>
+      <p class="petit">
+        <strong>Ce que le dossier A1 permet de trancher :</strong> 34 personnes passent en salle
+        privatisée (plafond&nbsp;: 40) · le samedi soir, le service est ouvert · menu groupe 38 € par
+        personne, forfait boissons 9 €, privatisation 150 €, chambre double au tarif groupe 112 € ·
+        l'allergie annoncée <strong>ne se traite pas par écrit type</strong>&nbsp;: la cuisine répond,
+        fiche en main, et la réponse se recopie.
+      </p>
+
+      <h3>Feuillet f. 2 — la trame de devis</h3>
+      <div class="encadre">
+        <table>
+          <thead>
+            <tr><th>Prestation</th><th style="width: 12%">Quantité</th><th style="width: 14%">Prix unitaire</th><th style="width: 16%">Total</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Menu groupe, par personne</td><td></td><td></td><td></td></tr>
+            <tr><td>Forfait boissons, par personne</td><td></td><td></td><td></td></tr>
+            <tr><td>Privatisation de la salle, forfaitaire</td><td></td><td></td><td></td></tr>
+            <tr><td>Nuitée, chambre double au tarif groupe</td><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="3"><strong>Total</strong></td><td></td></tr>
+          </tbody>
+        </table>
+        <p>
+          <span class="coche"></span> <strong>Chaque ligne et le total ont été refaits à la
+          calculatrice</strong> par&nbsp;: ______________ le&nbsp;: ____ / ____ / 20____
+        </p>
+        <p class="petit">
+          Un devis part avec votre signature, jamais avec celle d'un outil. Les prix viennent de vous
+          et de vous seul&nbsp;; ce que le devis n'annonce pas&nbsp;: une remise, un surclassement, une
+          gratuité, une disponibilité non vérifiée au planning.
+        </p>
+      </div>
+
+      <h3>Feuillet f. 3 — le message d'envoi, puis la relance</h3>
+      <div class="encadre">
+        <p><strong>Message d'envoi</strong> — quatre temps&nbsp;: remerciement et reprise du besoin en une phrase · ce que la maison propose, renvoyant au devis joint · ce qui reste à confirmer et par qui · une seule question de clôture, avec une date de réponse souhaitée.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p><strong>Relance à J+7</strong> — trois temps&nbsp;: rappel du devis et de sa date · une information utile qui justifie l'envoi (échéance de réservation de la salle, par exemple) · une question fermée. Sans reproche, sans relance affective, sans pression sur la disponibilité.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <h3>Feuillet f. 4 — les dix questions récurrentes</h3>
+      <table>
+        <thead>
+          <tr><th style="width: 5%">N°</th><th style="width: 50%">La question du client</th><th>Où se trouve la réponse</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Combien de personnes la salle peut-elle accueillir en privatisation&nbsp;?</td><td>Dossier A1 — un plafond ne s'arrondit pas vers le haut.</td></tr>
+          <tr><td>2</td><td>Le menu est-il unique pour tout le groupe&nbsp;?</td><td>Décision de la maison, écrite une fois pour toutes.</td></tr>
+          <tr><td>3</td><td><strong>Peut-on adapter une assiette pour un convive allergique&nbsp;?</strong></td><td><strong>Jamais par réponse type.</strong> La cuisine répond, fiche technique en main&nbsp;; le responsable qualité ou hygiène de l'établissement valide ce qui est possible et ce qui ne l'est pas. La réponse se recopie, elle ne se rédige pas.</td></tr>
+          <tr><td>4</td><td>Les boissons sont-elles comprises&nbsp;?</td><td>Dossier A1 — forfait distinct.</td></tr>
+          <tr><td>5</td><td>Y a-t-il un supplément pour la privatisation&nbsp;?</td><td>Dossier A1 — forfait.</td></tr>
+          <tr><td>6</td><td>Jusqu'à quand peut-on modifier le nombre de convives&nbsp;?</td><td>Vos conditions écrites. Si elles n'existent pas, la question se note&nbsp;: elle ne s'improvise pas dans un message.</td></tr>
+          <tr><td>7</td><td>Quel acompte demandez-vous, et comment se règle-t-il&nbsp;?</td><td>Vos conditions écrites — jamais un montant inventé pour conclure.</td></tr>
+          <tr><td>8</td><td>Peut-on dormir sur place, et à quel tarif&nbsp;?</td><td>Dossier A1, et disponibilité vérifiée au planning avant d'être écrite.</td></tr>
+          <tr><td>9</td><td>Le parking est-il suffisant&nbsp;?</td><td>Dossier A1 — 12 places, non réservables&nbsp;: le dire tel quel vaut mieux qu'un « oui » qui fâchera le soir venu.</td></tr>
+          <tr><td>10</td><td>Peut-on décorer la salle, et jusqu'à quelle heure peut-on rester&nbsp;?</td><td>Décision de la maison. Une réponse type qui invente une règle interne engage la maison auprès de tous les groupes suivants.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="banniere">
+        Devis, messages et réponses types produits ici sont des <strong>projets</strong>&nbsp;: relus,
+        recalculés, corrigés et signés par vous avant envoi.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte</strong> — un tarif proposé par un outil se barre.
+        Toute question juridique va au conseil de votre entreprise&nbsp;; toute question touchant à un
+        allergène ou à l'hygiène va au responsable qualité de votre établissement. Aucune coordonnée
+        de client réel n'entre dans l'outil.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15" data-titre="Le devis de groupe qui ne tient pas — sept erreurs" data-bloc="M3, vérification (parade)" data-tirage="1 par table + corrigé formateur">
+      <div class="piece-badge">Pièce A15 — feuille stagiaire</div>
+      <h2>Le devis qui ne tient pas — comptez avant de corriger</h2>
+      <p class="piece-usage">
+        Parade de la vérification du module 3, et exercice de secours pour le parcours groupes.
+        Consigne&nbsp;: dossier A1 posé à côté, calculatrice en main, surlignez tout ce qui est faux,
+        impossible ou non autorisé. <strong>Comptez, annoncez votre score, puis corrigez.</strong>
+      </p>
+
+      <div class="texte-exercice">
+        <p><strong>LE BALCON DES ARAVIS — proposition de groupe PG-018</strong></p>
+        <p>Objet&nbsp;: repas de fin d'année, <strong>samedi 31 novembre</strong>, salle privatisée pour <strong>52 personnes</strong>.</p>
+        <p>Arrivée des personnes séjournant sur place&nbsp;: <strong>lundi 18 janvier</strong>, départ le mardi 19.</p>
+        <table>
+          <thead><tr><th>Prestation</th><th>Quantité</th><th>Prix unitaire</th><th>Total</th></tr></thead>
+          <tbody>
+            <tr><td>Menu groupe « Les Aravis »</td><td>34</td><td>38 €</td><td>1 254 €</td></tr>
+            <tr><td>Forfait boissons</td><td>34</td><td>9 €</td><td>306 €</td></tr>
+            <tr><td>Privatisation de la salle</td><td>1</td><td>150 €</td><td>150 €</td></tr>
+            <tr><td colspan="3"><strong>Sous-total</strong></td><td><strong>1 610 €</strong></td></tr>
+            <tr><td colspan="3">Geste commercial accordé, 10 %</td><td>− 161 €</td></tr>
+            <tr><td colspan="3"><strong>Total à régler</strong></td><td><strong>1 449 €</strong></td></tr>
+          </tbody>
+        </table>
+        <p>Nous vous <strong>garantissons la disponibilité</strong> de cinq chambres doubles jusqu'au 30 avril.</p>
+        <p>Un <strong>menu sans allergène</strong> sera préparé pour la personne concernée.</p>
+        <p>Notre restaurant, <strong>distingué au guide des Tables de Montagne</strong>, se réjouit de vous accueillir.</p>
+      </div>
+
+      <p><strong>Mon score :</strong> ______ erreurs &nbsp;·&nbsp; <strong>Score de la table :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______</p>
+
+      <div class="banniere">
+        Ce devis est un <strong>exemple d'exercice</strong>&nbsp;: aucune de ses formulations ne se
+        recopie. Un devis réel est un <strong>projet</strong> jusqu'à votre signature, recalculé à la
+        calculatrice ligne par ligne.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise&nbsp;; toute question d'allergène ou
+        d'hygiène va au responsable qualité de votre établissement.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A15">
+      <div class="piece-badge">Pièce A15 — corrigé formateur</div>
+      <h2>Le devis qui ne tient pas — corrigé, sept erreurs</h2>
+      <p class="piece-usage">
+        Écrire le score de la table au tableau <strong>avant</strong> de corriger&nbsp;: la salle
+        trouve trois ou quatre erreurs, rarement sept. Commencer par l'arithmétique — c'est la plus
+        humiliante et la plus utile — et finir par l'allergène, qu'on laisse en silence.
+      </p>
+
+      <div class="corrige">
+        <ol>
+          <li>
+            <strong>« samedi 31 novembre »</strong> — <strong>cette date n'existe pas</strong>, et
+            novembre tombe de surcroît dans la fermeture annuelle (dossier A1&nbsp;: du 5 au 27
+            novembre). La règle&nbsp;: une date écrite dans une proposition se vérifie au calendrier
+            et au planning, jamais à l'intuition.
+          </li>
+          <li>
+            <strong>« salle privatisée pour 52 personnes »</strong> — le dossier A1 plafonne à
+            <strong>40</strong>, et la salle compte 48 couverts. La règle&nbsp;: une capacité annoncée
+            est un engagement&nbsp;; un plafond ne s'arrondit pas vers le haut pour ne pas perdre une
+            affaire.
+          </li>
+          <li>
+            <strong>« arrivée lundi 18 janvier »</strong> — le lundi est jour de fermeture (dossier
+            A1). La règle&nbsp;: l'outil place ce qui est plausible, pas ce qui est ouvert. Les
+            horaires se lisent dans la fiche d'identité.
+          </li>
+          <li>
+            <strong>« 34 × 38 € = 1 254 € »</strong> — le produit est <strong>1 292 €</strong>. La
+            règle&nbsp;: un outil qui met en forme aligne des chiffres, il ne les recalcule pas. Chaque
+            ligne se refait à la calculatrice.
+          </li>
+          <li>
+            <strong>« Sous-total 1 610 € »</strong> — la somme des lignes écrites fait
+            <strong>1 710 €</strong>, et la somme juste <strong>1 748 €</strong>. Deux erreurs
+            superposées&nbsp;: <strong>un total faux passe encore mieux qu'une ligne fausse</strong>,
+            parce que personne ne le refait.
+          </li>
+          <li>
+            <strong>« Geste commercial accordé, 10 % »</strong> et <strong>« nous vous garantissons la
+            disponibilité … jusqu'au 30 avril »</strong> — une remise et un engagement de disponibilité
+            décidés par le texte. La règle&nbsp;: une remise s'autorise avant d'être écrite, une
+            disponibilité se vérifie au planning avant d'être promise. Ni l'une ni l'autre ne se
+            décide en rédigeant.
+          </li>
+          <li>
+            <strong>« un menu sans allergène sera préparé »</strong> et <strong>« distingué au guide
+            des Tables de Montagne »</strong> — l'allégation d'absence d'allergène est
+            <strong>la ligne la plus dangereuse du document</strong>&nbsp;: elle promet à une personne
+            précise quelque chose que ni ce devis, ni un outil, ni le formateur ne peut garantir. Ce
+            qui est possible se décide par le responsable qualité ou hygiène de l'établissement, fiche
+            technique et procédés en main, et la réponse se recopie telle qu'il l'a donnée. Quant à la
+            distinction&nbsp;: le dossier A1 dit que l'établissement n'en détient
+            <strong>aucune</strong>.
+          </li>
+        </ol>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le débriefing, en une phrase</div>
+        <p class="petit">
+          Ce devis est bien présenté, poli, crédible — et sept fois faux. Aucune de ses erreurs ne se
+          voit à la lecture&nbsp;: elles se voient dossier en main et calculatrice en main. C'est
+          exactement le geste que la journée installe.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16" data-titre="La présentation inventée du Balcon des Aravis — cinq erreurs" data-bloc="M4, démonstration (plan B)" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A16 — feuille stagiaire</div>
+      <h2>Une présentation superbe — et cinq énoncés faux</h2>
+      <p class="piece-usage">
+        Support de la démonstration du module 4, et sa version papier. À lire à voix haute avec
+        conviction&nbsp;: la salle doit la trouver bonne, c'est le piège qui enseigne. Puis
+        chercher&nbsp;: <strong>cinq énoncés sont faux</strong>. On en trouve deux ou trois, rarement
+        cinq.
+      </p>
+      <p class="petit">
+        Texte d'exercice du kit, écrit à partir d'une demande qui ne fournissait aucun fait. Le
+        dossier A1 tranche chaque ligne. Établissement fictif.
+      </p>
+
+      <div class="texte-exercice">
+        <p>
+          « Blotti au pied de la chaîne des Aravis, <strong>Le Balcon des Aravis</strong> est une
+          maison de famille où l'on revient. Ses <strong>22 chambres</strong>, récemment rénovées dans
+          un esprit chalet contemporain, offrent presque toutes une vue sur les sommets. Au
+          restaurant, <strong>distingué au guide des Tables de Montagne</strong>, la cuisine est
+          généreuse et de saison&nbsp;; on y dîne <strong>sept jours sur sept, midi et soir</strong>,
+          autour de produits choisis chez les producteurs de la vallée. Après une journée de ski, le
+          petit <strong>espace bien-être — sauna et bain nordique</strong> — fait beaucoup pour la
+          réputation de la maison. Les amis à quatre pattes sont les bienvenus, le parking est gratuit
+          et le local à skis fermé. Comptez <strong>à partir de 79 €</strong> la nuit en chambre
+          double. Une adresse simple, chaleureuse, où l'on prend le temps. »
+        </p>
+      </div>
+
+      <p><strong>J'en ai trouvé :</strong> ______ / 5 &nbsp;·&nbsp; <strong>Score de la salle :</strong> ______ &nbsp;·&nbsp; <strong>Corrigé :</strong> ______</p>
+
+      <div class="banniere">
+        Tout texte de présentation produit à partir d'un outil est un <strong>projet</strong>&nbsp;:
+        chaque chiffre se pointe vers un document, chaque label vers son justificatif, chaque
+        prestation vers la réalité du terrain — et ce qui n'a pas de source se barre.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A16">
+      <div class="piece-badge">Pièce A16 — corrigé formateur</div>
+      <h2>La présentation inventée — corrigé et vérification qui fait tomber chaque erreur</h2>
+      <p class="piece-usage">
+        Corriger dans l'ordre du tableau, en terminant par le label et la prestation&nbsp;: ce sont les
+        deux qui passent presque toujours. Faire remarquer que quatre affirmations du texte sont
+        <strong>vraies</strong> — animaux acceptés, parking gratuit, local à skis, esprit familial — et
+        que rien, à la lecture, ne les distingue des cinq fausses.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 26%">Énoncé</th><th style="width: 22%">Ce que dit le dossier A1</th><th>La vérification qui le fait tomber</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>« 22 chambres »</strong> — capacité</td>
+            <td>14 chambres, 31 couchages</td>
+            <td>Chaque chiffre se pointe vers un document de l'établissement&nbsp;: planning, registre, classement. Un chiffre sans document se barre — il ne se « vérifie plus tard ».</td>
+          </tr>
+          <tr>
+            <td><strong>« sept jours sur sept, midi et soir »</strong> — horaires</td>
+            <td>Soir du mardi au samedi, dimanche midi&nbsp;; fermé dimanche soir et lundi&nbsp;; fermeture annuelle en novembre</td>
+            <td>Les horaires se lisent sur la porte et sur le planning, pas dans un texte. C'est l'erreur qui coûte le plus vite&nbsp;: elle fait venir des gens devant une porte close.</td>
+          </tr>
+          <tr>
+            <td><strong>« distingué au guide des Tables de Montagne »</strong> — label</td>
+            <td><strong>Aucune distinction, aucun label</strong></td>
+            <td><strong>Passe presque toujours.</strong> Chaque label se pointe vers son justificatif, avec sa date de validité. Un label revendiqué et non détenu n'est pas une exagération commerciale&nbsp;: c'est une affirmation opposable.</td>
+          </tr>
+          <tr>
+            <td><strong>« à partir de 79 € »</strong> — prix</td>
+            <td>96 € en basse saison, 142 € en vacances d'hiver</td>
+            <td>Le prix est <strong>plus bas</strong> que le vrai&nbsp;: c'est ce qui le rend crédible et ce qui le rend coûteux. Chaque gamme de prix se pointe vers l'affichage en vigueur.</td>
+          </tr>
+          <tr>
+            <td><strong>« espace bien-être, sauna et bain nordique »</strong> — prestation</td>
+            <td>Ni spa, ni sauna, ni bain nordique</td>
+            <td><strong>Passe presque toujours aussi.</strong> Chaque prestation se pointe vers la réalité du terrain&nbsp;: est-ce que quelqu'un peut y entrer demain&nbsp;? L'outil a comblé un vide par ce qui « se fait » dans un hôtel de montagne.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que le formateur dit ensuite, mot pour mot</div>
+        <p>
+          La demande ne fournissait <strong>rien</strong>, et l'outil a comblé les trous — plausiblement.
+          La parade n'est pas « méfiez-vous », c'est <strong>« fournissez les faits »</strong>&nbsp;: la
+          fiche d'identité A17, tout de suite après. Et le piège résiduel se dit aussi&nbsp;: même
+          nourri de faits exacts, l'outil complète encore ce qui manque. Les trois vérifications
+          restent obligatoires.
+        </p>
+        <p class="petit">
+          Si, relancée en direct, la sortie tombe presque juste&nbsp;: revenir à ce feuillet et le dire
+          — « celle-ci a raison par hasard&nbsp;; vous n'auriez eu aucun moyen de le savoir sans
+          vérifier ». L'enseignement tient tout autant.
+        </p>
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A17" data-titre="Trame de la fiche d'identité IA de l'établissement" data-bloc="M4, pratique" data-tirage="2 par stagiaire + 5">
+      <div class="piece-badge">Pièce A17</div>
+      <h2>La fiche d'identité — les faits que je fournirai désormais</h2>
+      <p class="piece-usage">
+        Dernière pièce du classeur, et la plus réutilisée&nbsp;: elle se colle en tête de chaque
+        demande, et elle sert de source à tous les écrits courants. <strong>Elle ne contient que des
+        faits d'établissement, publics et vérifiés.</strong> Jamais un client, jamais un salarié nommé,
+        jamais un prix d'achat, jamais une ligne d'allergènes.
+      </p>
+
+      <p>
+        <strong>Établissement :</strong> ______________________________ &nbsp;·&nbsp;
+        <strong>Rédigée par :</strong> ______________ &nbsp;·&nbsp;
+        <strong>Le :</strong> ____ / ____ / 20____
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">1 — Capacité, telle qu'un document l'établit</div>
+        <p class="petit">Chambres et couchages · couverts en salle et en terrasse · salle privatisable et son plafond · parking.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">2 — Horaires, par saison</div>
+        <p class="petit">Services ouverts · fermeture hebdomadaire · fermeture annuelle · horaires du petit-déjeuner.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">3 — Gammes de prix affichées</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+        <p class="petit">Des fourchettes, pas des promesses&nbsp;: « à partir de » se vérifie sur l'affichage en vigueur.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">4 — Ce que nous détenons réellement</div>
+        <table>
+          <thead><tr><th style="width: 40%">Classement, label, appellation</th><th style="width: 34%">Justificatif, et où il se trouve</th><th>Valable jusqu'au</th></tr></thead>
+          <tbody>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+            <tr><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">Une ligne sans justificatif se barre. C'est la colonne du milieu qui fait le travail.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">5 — Prestations effectives</div>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">6 — Ce que nous n'avons pas — la section qui empêche l'invention</div>
+        <p class="petit">La plus utile de la fiche, et celle qu'on oublie&nbsp;: écrivez ce qu'un outil ajouterait naturellement à un établissement comme le vôtre, et qui n'existe pas chez vous.</p>
+        <div class="lignes"></div>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce qui ne figure jamais dans cette fiche</div>
+        <p class="petit">
+          <span class="coche"></span> aucun client &nbsp; <span class="coche"></span> aucun salarié
+          nommé &nbsp; <span class="coche"></span> aucun prix d'achat ni marge &nbsp;
+          <span class="coche"></span> aucune ligne d'allergènes ni mention réglementée
+          <span class="petit"> — celles-ci restent dans les fiches techniques validées, et n'entrent pas dans un outil.</span>
+        </p>
+      </div>
+
+      <p>
+        <strong>Qui la tient à jour, nommément :</strong> ______________________ &nbsp;·&nbsp;
+        <strong>À revoir le :</strong> ____ / ____ / 20____
+      </p>
+      <p class="petit">« À revoir à la saison prochaine » ne déclenche rien. Une date, elle, déclenche quelque chose.</p>
+
+      <div class="banniere">
+        Cette fiche est un <strong>projet</strong> tant qu'elle n'a pas été relue et validée dans la
+        maison&nbsp;: elle servira de source à des textes publiés, et engage donc l'établissement à
+        chaque usage.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte</strong>&nbsp;: une fiche n'autorise rien qui n'ait été
+        autorisé ailleurs. Toute question juridique va au conseil de votre entreprise.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A18" data-titre="Mention d'information au client et bornes de la réponse publique (projet)" data-bloc="Transverse, M1 et M2" data-tirage="1 par stagiaire + 3">
+      <div class="piece-badge">Pièce A18</div>
+      <h2>Ce qui part au public — et ce que le formateur ne tranche pas</h2>
+      <p class="piece-usage">
+        Deux textes que la journée utilise et qu'aucun formateur n'arbitre. Ils sont remis comme
+        <strong>projets, à faire valider par le conseil de votre entreprise avant diffusion</strong>.
+        Le premier répond à l'acquis du matin&nbsp;: « je dis au client quand une machine lui répond ».
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">A — Dire qu'un outil a aidé à rédiger (projet)</div>
+        <p class="petit">
+          Trois formulations, à soumettre telles quelles à votre conseil. Aucune n'est recommandée par
+          le formateur&nbsp;: savoir si votre établissement doit informer, et en quels termes, n'est
+          pas tranché en salle.
+        </p>
+        <ul>
+          <li><strong>Version courte :</strong> « Ce message a été préparé avec l'aide d'un outil d'assistance à la rédaction, puis relu et validé par la direction. »</li>
+          <li><strong>Version réponse publique :</strong> « Nos réponses sont préparées avec l'aide d'un outil d'assistance à la rédaction et systématiquement relues avant publication. »</li>
+          <li><strong>Version bloc de signature :</strong> « Assistance à la rédaction&nbsp;: outil d'assistance · Relecture et validation&nbsp;: la direction. »</li>
+        </ul>
+        <p class="petit">Règle d'usage pendant la journée&nbsp;: la mention se place en dernière ligne, elle se recopie sans être modifiée.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">B — Les quatre bornes d'une réponse publique (projet)</div>
+        <ol>
+          <li><strong>On ne confirme jamais qu'une personne a séjourné ou dîné chez nous.</strong> « Nous avons bien retrouvé votre réservation » vient de révéler une relation commerciale à tout internaute.</li>
+          <li><strong>On ne révèle aucun élément de séjour</strong> — date, chambre, table, montant, régime alimentaire. Ce dernier point n'est pas un détail&nbsp;: c'est une information intime.</li>
+          <li><strong>On n'admet aucun fait non vérifié et on ne nomme aucun salarié</strong>, ni pour l'accuser, ni pour le défendre.</li>
+          <li><strong>On n'annonce aucun geste, aucune remise, aucun surclassement en public.</strong> La suite se traite à l'accueil.</li>
+        </ol>
+        <p class="petit">La structure, en quatre temps&nbsp;: remerciement du retour · reconnaissance générale, jamais du cas particulier · invitation à écrire à l'accueil · signature de la direction, jamais d'une personne.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les deux interdits que la journée ne discute pas</div>
+        <p>
+          <strong>Aucun avis fabriqué, jamais</strong> — ni pour soi, ni contre un concurrent, ni
+          « pour l'exemple » en atelier. Ce que fait un autre ne rend rien permis&nbsp;; la seule
+          riposte enseignée ici est de répondre vite et bien à cent pour cent de ses propres avis.
+        </p>
+        <p>
+          <strong>Aucune mention réglementée de carte produite par un outil</strong> — allergènes,
+          « fait maison », origine, appellation. Elles se recopient depuis vos documents validés et se
+          font valider par votre responsable qualité ou hygiène.
+        </p>
+        <p class="petit">
+          Sur les sanctions, les signalements et tout ce qui relève du droit, la formule est écrite et
+          se prononce telle quelle&nbsp;: <strong>« je ne me prononce pas, notez la question, votre
+          conseil tranchera »</strong>.
+        </p>
+      </div>
+
+      <div class="banniere">
+        Ces deux textes sont des <strong>projets — à faire valider par votre conseil avant
+        diffusion</strong>, et cette mention n'est pas retirable.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Le formateur n'arbitre aucune question juridique&nbsp;; aucune question de règle sanitaire ne
+        se tranche ici non plus.
+      </div>
+    </section>
+
+    <section class="piece" data-piece="A19" data-titre="Quiz d'évaluation des acquis (10 questions) + corrigé commenté" data-bloc="M4, vérification" data-tirage="1 par stagiaire + corrigé formateur">
+      <div class="piece-badge">Pièce A19 — feuille stagiaire</div>
+      <h2>Quiz — évaluation des acquis (10 questions)</h2>
+      <p class="piece-usage">
+        Individuel, sans document. Dix questions sur ce qui a été fait aujourd'hui — pas des pièges.
+        Entourez la réponse.
+      </p>
+      <p>
+        <strong>Nom :</strong> ______________________________ &nbsp;·&nbsp;
+        <strong>Date :</strong> ____ / ____ / 20____ &nbsp;·&nbsp; <strong>Session :</strong> ______________
+      </p>
+
+      <ol>
+        <li>
+          Avant de coller quoi que ce soit dans un outil, quelle est la première question&nbsp;?<br />
+          <strong>a.</strong> L'outil est-il rapide&nbsp;? &nbsp; <strong>b.</strong> Sous quel régime
+          tourne ce compte, et qu'ai-je le droit d'y coller au regard de ma liste rouge&nbsp;? &nbsp;
+          <strong>c.</strong> Mes concurrents l'utilisent-ils&nbsp;?
+        </li>
+        <li>
+          Le planning de service&nbsp;: que peut-on soumettre à un outil&nbsp;?<br />
+          <strong>a.</strong> Le planning tel quel, c'est un document interne &nbsp;
+          <strong>b.</strong> La trame dépersonnalisée — postes, créneaux, contraintes de service —
+          jamais les noms, qui se rattachent hors outil &nbsp; <strong>c.</strong> Rien, sous aucune
+          forme
+        </li>
+        <li>
+          Que fait-on d'une ligne d'allergènes&nbsp;?<br />
+          <strong>a.</strong> On la fait traduire, puis on la relit &nbsp; <strong>b.</strong> On la
+          fait reformuler pour qu'elle tienne sur la carte &nbsp; <strong>c.</strong> On la
+          <em>recopie</em> depuis la fiche technique validée&nbsp;: elle ne se génère pas, ne se
+          traduit pas, ne se reformule pas
+        </li>
+        <li>
+          Un avis dit que son auteur a dîné chez vous. Que fait la réponse publique&nbsp;?<br />
+          <strong>a.</strong> Elle le confirme, c'est plus chaleureux &nbsp; <strong>b.</strong> Elle
+          ne le confirme jamais, et ne révèle aucun élément du séjour &nbsp; <strong>c.</strong> Elle
+          le nie si le dossier ne le retrouve pas
+        </li>
+        <li>
+          Une sortie d'outil propose, pour un de vos desserts&nbsp;: « peut être préparé sans gluten
+          sur demande ». Que faites-vous&nbsp;?<br />
+          <strong>a.</strong> Je la garde, la formulation est prudente &nbsp; <strong>b.</strong> Je
+          demande à l'outil de vérifier auprès de ses sources &nbsp; <strong>c.</strong> Je la
+          supprime&nbsp;: une allégation d'absence ou d'adaptation non vérifiée à la source ne se
+          publie pas, et ce qui est possible se décide par le responsable qualité ou hygiène de
+          l'établissement
+        </li>
+        <li>
+          Les quatre interdits d'une réponse publique&nbsp;:<br />
+          <strong>a.</strong> Être trop long, mal orthographié, trop froid, non signé &nbsp;
+          <strong>b.</strong> Confirmer le séjour, révéler un élément du séjour, admettre un fait non
+          vérifié ou nommer un salarié, annoncer un geste commercial en public &nbsp;
+          <strong>c.</strong> Répondre trop tard, trop vite, deux fois, ou pas du tout
+        </li>
+        <li>
+          Pour un devis de groupe, l'outil peut-il chiffrer&nbsp;?<br />
+          <strong>a.</strong> Oui, si on lui a donné les prix &nbsp; <strong>b.</strong> Il met en
+          forme&nbsp;; les prix viennent de vous, et chaque ligne comme chaque total se refont à la
+          calculatrice avant envoi &nbsp; <strong>c.</strong> Oui pour les totaux, non pour les prix
+          unitaires
+        </li>
+        <li>
+          Un concurrent fabrique visiblement ses avis. Que faites-vous&nbsp;?<br />
+          <strong>a.</strong> La même chose, à parts égales &nbsp; <strong>b.</strong> Deux ou trois
+          avis, le temps de rétablir la note &nbsp; <strong>c.</strong> Jamais, ni pour soi ni contre
+          un autre&nbsp;: la seule riposte enseignée est de répondre vite et bien à tous ses propres
+          avis
+        </li>
+        <li>
+          L'outil présente votre établissement sans que vous ayez rien fourni. Quelles sont les trois
+          vérifications&nbsp;?<br />
+          <strong>a.</strong> Relire attentivement, dormir dessus, faire relire &nbsp;
+          <strong>b.</strong> Chaque chiffre vers un document, chaque label vers son justificatif,
+          chaque prestation vers la réalité du terrain — et ce qui n'a pas de source se barre &nbsp;
+          <strong>c.</strong> Demander à l'outil d'indiquer ses sources
+        </li>
+        <li>
+          Un client demande par écrit si un plat convient à son allergie. Que fait la trame du
+          kit&nbsp;?<br />
+          <strong>a.</strong> Elle répond depuis le modèle, c'est à cela qu'elle sert &nbsp;
+          <strong>b.</strong> Elle recopie la ligne de la carte anglaise, qui est plus complète &nbsp;
+          <strong>c.</strong> Elle ne répond pas sur l'allergène&nbsp;: la cuisine répond, fiche
+          technique en main, le responsable qualité de l'établissement valide, et la réponse se
+          recopie
+        </li>
+      </ol>
+    </section>
+
+    <section class="piece" data-piece="A19">
+      <div class="piece-badge">Pièce A19 — corrigé formateur</div>
+      <h2>Quiz — corrigé commenté, question par question</h2>
+      <p class="piece-usage">
+        Se commente en salle <strong>sans en sauter aucune</strong>&nbsp;: c'est l'évaluation des
+        acquis, elle se tient, se corrige et se conserve. Le seuil de réussite est celui déclaré au
+        programme&nbsp;; un score en dessous déclenche la reprise individuelle prévue au dispositif.
+        Faire dire par la salle à quelle séquence chaque question renvoie&nbsp;: c'est la révision de
+        la journée qui s'opère.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th style="width: 6%">N°</th><th style="width: 8%">Rép.</th><th>Le commentaire qui ancre</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td><strong>b</strong></td><td>La question du matin, posée avant tout geste. Un compte dont personne ne connaît le régime est une question ouverte, pas une autorisation.</td></tr>
+          <tr><td>2</td><td><strong>b</strong></td><td>La distinction qui sert toute l'année&nbsp;: nominatif jamais, trame oui. Elle permet de dire oui à une demande utile sans céder sur la règle.</td></tr>
+          <tr>
+            <td>3</td><td><strong>c</strong></td>
+            <td><strong>La question la plus discriminante du corrigé.</strong> Les trois verbes comptent&nbsp;: ni générer, ni traduire, ni reformuler. La moutarde disparue de la pièce A12 est là pour être citée ici.</td>
+          </tr>
+          <tr>
+            <td>4</td><td><strong>b</strong></td>
+            <td><strong>La deuxième question discriminante.</strong> Ni confirmer, ni nier&nbsp;: « nous ne retrouvons pas la situation décrite », puis l'accueil. La réponse c est le piège de ceux qui ont retenu la moitié de la règle.</td>
+          </tr>
+          <tr>
+            <td>5</td><td><strong>c</strong></td>
+            <td>Le contre-exemple du module 3. Une allégation d'absence non vérifiée à la source n'est pas une maladresse de style. Et elle ne se règle pas dans un outil&nbsp;: elle se règle chez vous, avec la personne qui répond de l'hygiène et des fiches.</td>
+          </tr>
+          <tr><td>6</td><td><strong>b</strong></td><td>Les quatre interdits cochés un par un sur la sortie du module 2 — et les quatre fautes de la réponse spontanée en sont l'exacte négation.</td></tr>
+          <tr><td>7</td><td><strong>b</strong></td><td>Un devis part avec votre signature, pas celle d'un outil. Les sept erreurs de la pièce A15 se voient calculatrice en main, jamais à la lecture.</td></tr>
+          <tr><td>8</td><td><strong>c</strong></td><td>L'un des deux interdits que la journée ne discute pas. Ce que fait un autre ne rend rien permis. Sur les sanctions&nbsp;: « je ne me prononce pas, notez la question, votre conseil tranchera ».</td></tr>
+          <tr><td>9</td><td><strong>b</strong></td><td>Les cinq erreurs de la présentation du module 4 tombent avec ces trois vérifications. La parade n'est pas la méfiance, c'est la fiche d'identité.</td></tr>
+          <tr><td>10</td><td><strong>c</strong></td><td>Une trame ne répond jamais sur un allergène, et la carte d'une autre langue n'est pas une source&nbsp;: la source, c'est la fiche technique validée, et la personne qui en répond dans l'établissement.</td></tr>
+        </tbody>
+      </table>
+
+      <p class="petit">
+        S'il est 17 h et que le quiz n'est pas commencé&nbsp;: le tenir quand même, complet, en
+        resserrant le commentaire sur les questions les plus ratées. On coupe ailleurs — jamais ici, et
+        jamais au profit d'un tour de table.
+      </p>
+    </section>
+
+    <section class="piece" data-piece="A20" data-titre="Feuille de route de sortie et assemblage du classeur" data-bloc="M4, synthèse" data-tirage="1 par stagiaire">
+      <div class="piece-badge">Pièce A20</div>
+      <h2>Ce que j'emporte, et ce que je fais la semaine prochaine</h2>
+      <p class="piece-usage">
+        Se remplit debout, à voix haute, devant le groupe. <strong>« Je vais essayer l'IA » ne compte
+        pas</strong>&nbsp;: chaque ligne porte un nom et une date. Le formateur note au tableau,
+        photographie et envoie la photo au groupe — une feuille de route existe à partir du moment où
+        elle est partagée.
+      </p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mon classeur est complet</div>
+        <p>
+          <span class="coche"></span> La liste rouge de l'établissement (A3), signée &nbsp;
+          <span class="coche"></span> Le mémo AXION renseigné (A5) &nbsp;
+          <span class="coche"></span> Mes cinq textes&nbsp;: trois réponses d'avis et deux messages (A7, A8)
+        </p>
+        <p>
+          <span class="coche"></span> La grille de contrôle croisé (A9) &nbsp;
+          <span class="coche"></span> La feuille de recopie et sa checklist (A13) &nbsp;
+          <span class="coche"></span> Mon dossier carte ou mon dossier groupe (A11, A14) &nbsp;
+          <span class="coche"></span> Ma fiche d'identité (A17)
+        </p>
+        <p><strong>Qui tient ce classeur à jour, nommément :</strong> ______________________ &nbsp;·&nbsp; <strong>Revu le :</strong> ____ / ____ / 20____</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Les deux rôles, nommés avant de partir</div>
+        <p>
+          <strong>Qui répond aux avis :</strong> ______________________ &nbsp;·&nbsp;
+          <strong>Sous quel délai :</strong> ______________
+        </p>
+        <p>
+          <strong>Qui valide les mentions réglementées avant toute diffusion :</strong>
+          ______________________
+        </p>
+        <p class="petit">Une carte s'imprime après le visa de la cuisine. Un rôle sans nom n'est pas un rôle.</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Mes trois usages de la semaine prochaine</div>
+        <table>
+          <thead><tr><th style="width: 6%">N°</th><th>Ce que je fais, précisément</th><th style="width: 20%">Qui</th><th style="width: 18%">Quel jour</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td></td><td></td><td></td></tr>
+            <tr><td>2</td><td></td><td></td><td></td></tr>
+            <tr><td>3</td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p class="petit">La question qui débloque un engagement vague&nbsp;: « quel avis, quel jour, qui relit&nbsp;? ».</p>
+      </div>
+
+      <div class="encadre">
+        <div class="encadre-titre">Ce que la journée n'a pas couvert — et qui reste à vos logiciels</div>
+        <p class="petit">
+          La construction du planning, la caisse, la comptabilité, la gestion des stocks et le
+          recrutement ne sont pas traités ici. Le dire est ce qui rend crédible tout le reste.
+        </p>
+        <div class="lignes"></div>
+      </div>
+
+      <div class="banniere">
+        Tout ce que vous emportez aujourd'hui est un ensemble de <strong>projets</strong>&nbsp;: relus,
+        corrigés, signés par vous avant tout usage réel, et validés dans la maison avant d'être imposés
+        à quelqu'un d'autre.
+        <strong>Aucun geste commercial, aucune remise, aucun surclassement et aucun engagement de
+        disponibilité ne se décide par le texte.</strong>
+        Toute question juridique va au conseil de votre entreprise — le formateur n'en arbitre
+        aucune&nbsp;; toute question de règle sanitaire ou d'hygiène va au responsable qualité de votre
+        établissement.
+      </div>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B1 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu réponds aux avis d'un hôtel-restaurant familial de montagne, ton chaleureux et sobre, sans emphase commerciale.<br />ConteXte : voici le texte d'un avis publié — je colle l'avis seul, sans le nom ni le profil de son auteur.<br />Intention : une réponse publique prête à publier, qui remercie, répond point par point et invite à poursuivre l'échange en privé via l'accueil.<br />Output : 100 mots maximum, en français, signée « La direction ».<br />Normes : ne confirme jamais que la personne a séjourné ou dîné chez nous, ne mentionne ni date, ni chambre, ni montant, n'admets aucun fait que je n'ai pas vérifié, n'annonce aucun geste commercial, ne nomme aucun membre de l'équipe.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses côte à côte — la manuscrite du kit et la sortie AXION — avec les cinq lignes du prompt annotées en marge et, surlignées dans la manuscrite, les trois fuites : la date du séjour, le numéro de chambre, le geste commercial promis en public.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B2 — fiche de capture</div>
+      <h2>À capturer — Matin · Module 2 — Avis en ligne, messages et demandes de réservation</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu réponds aux avis de notre restaurant, ton courtois et digne, jamais défensif.<br />ConteXte : voici le texte d'un avis négatif publié — collé seul, sans le nom ni le profil de son auteur. Le point critiqué sur le bruit est réel ce soir-là ; le reste, je ne peux pas le vérifier.<br />Intention : une réponse publique qui apaise sans s'aplatir, et invite à poursuivre en privé via l'accueil de l'établissement.<br />Output : 90 mots maximum, en français, signée « La direction ».<br />Normes : quatre interdits absolus — ne confirme jamais que la personne a dîné ou séjourné chez nous ; ne révèle aucun élément de séjour (date, table, chambre, montant, régime alimentaire) ; n'admets aucun fait que je n'ai pas déclaré vérifié et ne mets en cause aucun membre de l'équipe ; n'annonce aucun geste commercial en public.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Les deux réponses côte à côte, avec les quatre fautes de la version spontanée surlignées — confirmation du dîner, serveuse nommée, fait admis sans vérification, geste commercial public — et, en marge de la seconde, les quatre interdits cochés.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les deux réponses sont imprimées dans le kit (datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B3 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 3 — Carte, supports et demandes de groupes</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Acteur : tu écris la carte d'un restaurant de cuisine française traditionnelle, style appétissant et précis, sans emphase.<br />ConteXte : voici les éléments publics du plat, recopiés de la fiche technique fictive du kit — suprême de volaille, sauce crémée à la moutarde à l'ancienne, purée maison au beurre demi-sel. Je ne colle ni quantités, ni procédé, ni coûts.<br />Intention : un descriptif de carte qui donne envie, puis sa traduction anglaise fidèle.<br />Output : 30 mots maximum en français, puis la version anglaise, sans emoji.<br />Normes : n'écris AUCUNE mention d'allergène, aucune mention « fait maison », aucune origine de viande, aucun label ni appellation — ces mentions sont réglementées et je les recopierai moi-même depuis nos documents validés.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>Trois volets : la traduction naïve du kit avec ses deux écarts surlignés (moutarde disparue, gluten changé de ligne), la sortie du prompt borné — descriptif appétissant, zéro mention réglementée —, et la carte finale où la ligne allergènes est recopiée depuis la fiche technique, dans un cadre distinct.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>Les trois volets sont imprimés dans le kit (datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Pièce B4 — fiche de capture</div>
+      <h2>À capturer — Après-midi · Module 4 — Fiabiliser, évaluer, installer</h2>
+      <p class="piece-usage">
+        À produire AVANT la session, dans l'outil retenu. Une conversation NEUVE par demande. Imprimer chaque sortie
+        avec la demande visible, puis annoter à la main comme indiqué. Jamais de reconstitution : les sorties du kit
+        ont été vérifiées, une sortie inventée ne l'est pas.
+      </p>
+      <div class="champ-date">
+        <strong>Capturé le :</strong> ____ / ____ / 20____ · <strong>Outil et version :</strong> ______________________ ·
+        <strong>Par :</strong> ______________
+      </div>
+
+      <h3>La demande à coller, telle quelle</h3>
+      <div class="prompt-bloc">Rédige, en 150 mots, la présentation de l'hôtel-restaurant fictif « Le Balcon des Aravis » à La Clusaz pour la page d'accueil de son site : les chambres, le restaurant, les services proposés et une idée des prix. Ton chaleureux, sans superlatif.</div>
+
+      <h3>Ce qu'il faut imprimer et annoter</h3>
+      <p>La présentation du kit projetée en grand, les cinq erreurs plantées entourées en rouge une à une — capacité, horaires, label, prix, prestation inexistante — avec, en marge, la vérification qui fait tomber chacune.</p>
+
+      <h3>L'outil</h3>
+      <p>Un seul outil, celui validé dans la salle.</p>
+
+      <div class="encadre">
+        <div class="encadre-titre">Le plan B que cette pièce rend possible</div>
+        <p>La présentation et son corrigé sont imprimés dans le kit (datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.</p>
+      </div>
+
+      <p class="petit">
+        Dernière vérification du contenu de la fiche : 2026-08-06. Si la capture ne porte pas la
+        démonstration (aucun écart visible, sortie hors sujet), recommencer dans une conversation neuve — on
+        n'imprime que des sorties qui tiennent devant la salle.
+      </p>
+    </section>
+
+    <section class="piece">
+      <div class="piece-badge">Annexe</div>
+      <h2>Ce que les plans B exigent, bloc par bloc</h2>
+      <p class="piece-usage">
+        Extrait automatiquement du contenu rédigé de la formation : le texte ci-dessous est celui que le formateur
+        lira dans son guide d'animation. C'est le cahier des charges du kit — toute pièce citée ici et absente du
+        sommaire reste à produire.
+      </p>
+      <table>
+        <thead><tr><th style="width: 26%">Module</th><th style="width: 14%">Bloc</th><th>Ce que le plan B exige</th></tr></thead>
+        <tbody>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Objectif</td><td>Aucun outil n'est nécessaire ici. Sans vidéoprojecteur, le tour de table et la règle du jour se tiennent au paperboard sans rien perdre.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Démonstration</td><td>Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Pratique</td><td>L'atelier ne dépend d'aucun outil : tri des pièces du kit et rédaction de la liste rouge se font sur papier. Aucun repli nécessaire.</td></tr>
+          <tr><td>Matin · Module 1 — Ce que l'IA fait pour l'établissement, et ce qu'on ne lui confie jamais</td><td>Vérification</td><td>Les dix pièces et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, elles se lisent à voix haute et le vote se fait à main levée.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Démonstration</td><td>Les deux réponses sont imprimées dans le kit (datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Pratique</td><td>Outil ou réseau indisponible : les trames s'écrivent à la main sur les supports du kit, et les avis de secours imprimés servent de matière. La structure AXION s'applique à l'identique — chacun relancera chez lui, la trame est datée et réutilisable.</td></tr>
+          <tr><td>Matin · Module 2 — Avis en ligne, messages et demandes de réservation</td><td>Vérification</td><td>Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Démonstration</td><td>Les trois volets sont imprimés dans le kit (datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Pratique</td><td>Outil indisponible : le parcours carte se fait sur la carte de secours et les sorties imprimées du kit — la revalidation, cœur du module, est de toute façon un exercice papier, fiche en main. Le parcours groupes s'écrit sur les trames papier du kit ; chacun relancera la mise en forme chez lui.</td></tr>
+          <tr><td>Après-midi · Module 3 — Carte, supports et demandes de groupes</td><td>Vérification</td><td>Checklist, fiches et corrigé imprimés dans le kit. Aucun outil nécessaire.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Démonstration</td><td>La présentation et son corrigé sont imprimés dans le kit (datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Pratique</td><td>Sans outil : chacun remplit directement sa fiche d'identité sur la trame papier, et la chasse à l'erreur se fait collectivement sur la présentation imprimée du kit. L'essentiel — les faits exacts écrits et sourcés — ne dépend d'aucun outil.</td></tr>
+          <tr><td>Après-midi · Module 4 — Fiabiliser, évaluer, installer</td><td>Vérification</td><td>Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>

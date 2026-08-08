@@ -80,6 +80,12 @@ export const SUPPORT_TYPE_TO_SLOT: Record<SupportType, string | null> = {
   guide_animation: "guide_animation",
   exercices: "cahier_exercices",
   grille_eval: "evaluation_acquis",
+  // Le kit formateur IMPRIMÉ n'a pas d'équivalent dans la bibliothèque : il
+  // n'est pas un fichier déposé pour un slot, c'est le classeur des plans B,
+  // écrit dans `_KIT/<slug>/` et publié par
+  // `scripts/kit-formateur/publier-vers-r2.ts`. Il n'est pas non plus produit
+  // par le Formation Engine — d'où son absence de `TOUS_SUPPORT_TYPES`.
+  kit_formateur_imprime: null,
 };
 
 /**

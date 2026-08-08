@@ -374,7 +374,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Sans réseau : les demandes AXION s'écrivent à la main sur la trame (ce qui compte est la structure, pas l'exécution), et la revue se fait sur la sortie imprimée du kit — le comptage des faux positifs reste identique. L'atelier tests devient une lecture critique d'une suite de tests fournie page 26, avec la question « qu'est-ce que cette suite ne teste pas ? ». Le débogage se tient sur la trace neutralisée du kit.",
+          "Sans réseau : les demandes AXION s'écrivent à la main sur la trame (ce qui compte est la structure, pas l'exécution), et la revue se fait sur la sortie imprimée du kit — le comptage des faux positifs reste identique. L'atelier tests devient une lecture critique d'une suite de tests fournie au kit, avec la question « qu'est-ce que cette suite ne teste pas ? ». Le débogage se tient sur la trace neutralisée du kit.",
       },
     },
     verification: {
@@ -781,7 +781,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
               "Le traiter comme un incident, calmement et sans humilier : on le retire, on note que la règle de la section 1 n'a pas tenu, et on la rectifie. C'est le dernier moment où c'est gratuit.",
           },
         ],
-        planB: "Quiz papier dans le kit et corrigé page 48. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

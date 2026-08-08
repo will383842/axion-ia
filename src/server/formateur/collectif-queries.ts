@@ -16,7 +16,14 @@ import { prisma } from "@/lib/prisma";
 import { resoudreAppartenance, type RoleFormateur } from "./session-membership";
 
 /** Filtre Prisma : sessions du formateur (principal FK OU ligne SessionFormateur). */
-function whereSessionsDuFormateur(trainerId: string) {
+/**
+ * Appartenance d'une session a un formateur : principal OU co-animateur.
+ *
+ * Exportee parce que TROIS endroits en dependent — la liste, le detail, et le
+ * telechargement du kit. Recopiee, elle finirait par diverger, et une garde qui
+ * diverge est une garde qui laisse passer.
+ */
+export function whereSessionsDuFormateur(trainerId: string) {
   return {
     OR: [{ formateurPrincipalId: trainerId }, { sessionFormateurs: { some: { trainerId } } }],
   };

@@ -27,6 +27,7 @@ import { SignatureDocument } from "@/components/espace-formateur/SignatureDocume
 import { signerReleveFormateurAction } from "@/server/actions/qualiopi/releve-signature";
 import { lireEtatSignatureReleve } from "@/server/qualiopi/documents/signature/releve-queries";
 import { getTrainingSessionForFormateur } from "@/server/formateur/collectif-queries";
+import { lireKitFormateur } from "@/server/formateur/kit-queries";
 import {
   FORMATEUR_SESSIONS_PATH,
   MODALITE_LABELS,
@@ -66,6 +67,8 @@ export default async function Page({
   const demiJournees = await lireFeuilleGroupe(id, new Date(), identite.raisonSociale, trainerId);
   // Lu APRÈS la garde de propriété, comme tout le reste de cette page.
   const etatReleve = await lireEtatSignatureReleve(id, trainerId);
+  // Le kit imprime : null s'il n'est pas encore publie pour cette formation.
+  const kit = await lireKitFormateur(id, trainerId);
 
   const lieu = [session.lieuVille, session.lieuCodePostal]
     .filter((v): v is string => Boolean(v))
@@ -128,6 +131,31 @@ export default async function Page({
             </dd>
           </div>
         </dl>
+
+        {/* Kit formateur imprimé — la parade quand l'outil tombe en salle */}
+        {kit !== null ? (
+          <div className="border-border rounded-lg border p-4">
+            <h2 className="text-mocha font-serif text-lg font-semibold">Kit formateur imprimé</h2>
+            <p className="text-fg-muted mt-1 text-sm">
+              Le classeur des plans B : sorties de démonstration, grilles, corrigés et trames. À
+              imprimer <strong>avant</strong> la session — c&apos;est ce qui vous reste quand
+              l&apos;outil tombe en panne devant la salle.
+            </p>
+            <p className="text-fg-muted mt-2 text-xs">
+              Version&nbsp;{kit.version} · {Math.round(kit.sizeBytes / 1024)}&nbsp;Ko
+              {kit.publieLe !== null ? ` · publié le ${dateFmt.format(kit.publieLe)}` : ""}
+            </p>
+            <a
+              href={`/api/espace-formateur/kit/${session.id}`}
+              className="bg-terracotta mt-3 inline-block rounded-md px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              Télécharger le kit (PDF)
+            </a>
+            <p className="text-fg-muted mt-2 text-xs">
+              Les corrigés sont dedans : ne le laissez pas sur la table des stagiaires.
+            </p>
+          </div>
+        ) : null}
 
         {/* Bandeau de rôle / droit de clôture */}
         <div className="border-border bg-sand rounded-lg border p-4 text-sm">
