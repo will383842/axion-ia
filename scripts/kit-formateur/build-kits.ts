@@ -443,9 +443,50 @@ ${CSS}
 // Entrée
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * L'état d'avancement, écrit à chaque génération complète.
+ *
+ * Tenu à la main dans le README, ce tableau aurait menti dès le kit suivant —
+ * c'est le même défaut que la pagination inventée, à une autre échelle. Il n'est
+ * écrit que lors d'une génération SANS argument : une génération ciblée ne voit
+ * qu'une formation et conclurait que les autres n'existent pas.
+ */
+function ecrireEtat(): void {
+  const lignes = Object.keys(ENRICHISSEMENTS)
+    .sort()
+    .map((slug) => {
+      const formation = FORMATIONS_V2.find((f) => f.id === slug);
+      const fragment = join(RACINE_KIT, slug, "pieces.html");
+      const nb = existsSync(fragment)
+        ? lirePiecesRedigees(readFileSync(fragment, "utf8")).filter((p) => p.titre.length > 0)
+            .length
+        : 0;
+      const etat = nb > 0 ? `✅ ${nb} pièces` : "⏳ ossature seule";
+      return `| \`${slug}\` | ${formation?.duree ?? "?"} | ${etat} |`;
+    });
+
+  const redigees = lignes.filter((l) => l.includes("✅")).length;
+  const contenu = `# Kits formateur — état d'avancement
+
+<!-- Écrit par scripts/kit-formateur/build-kits.ts. Ne pas éditer à la main. -->
+
+**${redigees} / ${lignes.length}** formations ont leurs pièces rédigées.
+
+Une formation en « ossature seule » porte ses fiches de capture et le cahier des
+charges de ses pièces, mais ne tient pas une salle : les grilles, corrigés et
+documents d'exercice restent à écrire.
+
+| Formation | Durée | Pièces rédigées |
+| --- | --- | --- |
+${lignes.join("\n")}
+`;
+  writeFileSync(join(RACINE_KIT, "ETAT.md"), contenu, "utf8");
+}
+
 function main(): void {
   const demandes = process.argv.slice(2);
-  const slugs = demandes.length > 0 ? demandes : Object.keys(ENRICHISSEMENTS);
+  const complet = demandes.length === 0;
+  const slugs = complet ? Object.keys(ENRICHISSEMENTS) : demandes;
 
   let produits = 0;
   let avecPieces = 0;
@@ -465,6 +506,8 @@ function main(): void {
     produits += 1;
     if (existsSync(join(dossier, "pieces.html"))) avecPieces += 1;
   }
+
+  if (complet) ecrireEtat();
 
   console.log(
     `${produits} kits produits — dont ${avecPieces} avec leurs pièces rédigées, ` +

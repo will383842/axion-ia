@@ -76,10 +76,8 @@ question juridique.
 
 ## État d'avancement
 
-| Formation                | Pièces rédigées   |
-| ------------------------ | ----------------- |
-| `ia-pour-bien-commencer` | ✅ 11 pièces      |
-| les 21 autres            | ⏳ ossature seule |
+Voir `_KIT/ETAT.md` — écrit à chaque génération complète, donc toujours juste.
+Un tableau tenu à la main ici aurait menti dès le kit suivant.
 
 Une formation sans ses pièces rédigées porte un avertissement en page de garde
 et reste inutilisable en salle : seules ses fiches de capture sont exploitables.
