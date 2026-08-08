@@ -6,6 +6,10 @@ fiches ne renvoient à rien.
 
 Cahier des charges : `_AUDIT/KIT-FORMATEUR-INVENTAIRE-2026-08-07.md`.
 
+⚠️ À ne pas confondre avec `docs/kits/1-to-1-afest/`, qui est le kit d'un autre
+dispositif : l'accompagnement individuel AFEST. Ici, il s'agit du classeur
+imprimé des sessions de groupe du catalogue.
+
 ## Ce que contient un kit
 
 | Préfixe | Nature                                                               | Qui la produit                     |

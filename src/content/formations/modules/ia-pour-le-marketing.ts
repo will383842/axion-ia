@@ -211,7 +211,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral. Le changement de persona se fait alors sur les deux sorties pré-produites du kit, page 18.",
+          "La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral. Le changement de persona se fait alors sur les deux sorties pré-produites du kit.",
       },
     },
     synthese: {
@@ -490,7 +490,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les quatre visuels sont déjà imprimés dans le kit, la revue ne dépend d'aucun outil. Les deux commentaires de campagne — avec et sans calcul — sont imprimés pages 22 et 23, datés, avec le chiffre faux déjà entouré. L'ensemble de la démonstration se tient sur papier sans rien perdre.",
+          "Les quatre visuels sont déjà imprimés dans le kit, la revue ne dépend d'aucun outil. Les deux commentaires de campagne — avec et sans calcul — sont imprimés dans le kit, datés, avec le chiffre faux déjà entouré. L'ensemble de la démonstration se tient sur papier sans rien perdre.",
       },
     },
     pratique: {
@@ -528,7 +528,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : le commentaire de campagne s'écrit à la main sur la trame fournie et les trois hypothèses de test se listent en binôme — c'est un exercice d'arbitrage, pas de génération. Pour la visibilité de marque, le kit contient trois réponses d'assistant pré-enregistrées sur des entreprises réelles (page 31) : l'exercice de relevé d'erreurs se tient à l'identique. La veille se dégrossit sur les fiches concurrents imprimées du kit.",
+          "Outil indisponible : le commentaire de campagne s'écrit à la main sur la trame fournie et les trois hypothèses de test se listent en binôme — c'est un exercice d'arbitrage, pas de génération. Pour la visibilité de marque, le kit contient trois réponses d'assistant pré-enregistrées sur des entreprises réelles : l'exercice de relevé d'erreurs se tient à l'identique. La veille se dégrossit sur les fiches concurrents imprimées du kit.",
       },
     },
     verification: {
@@ -551,7 +551,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           {
             situation: "Un binôme ne trouve aucun écart dans les productions du voisin.",
             parade:
-              "Donnez-leur la production du kit page 33, qui en contient quatre. S'ils n'en trouvent aucun là non plus, refaites la lecture avec eux : l'œil n'est pas encore réglé.",
+              "Donnez-leur la production du kit, qui en contient quatre. S'ils n'en trouvent aucun là non plus, refaites la lecture avec eux : l'œil n'est pas encore réglé.",
           },
         ],
         planB:
@@ -648,7 +648,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux paragraphes de marché sont imprimés pages 24 et 25 du kit, datés, avec les [AUCUNE SOURCE DISPONIBLE] déjà surlignés. La lecture à voix haute puis la comparaison se tiennent à l'identique sur papier.",
+          "Les deux paragraphes de marché sont imprimés dans le kit, datés, avec les [AUCUNE SOURCE DISPONIBLE] déjà surlignés. La lecture à voix haute puis la comparaison se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -676,7 +676,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           {
             situation: "La salle trouve toutes les erreurs plantées et s'ennuie.",
             parade:
-              "Le texte du kit page 29 en contient trois de plus, plus fines — dont une qui ne se voit qu'en ouvrant la source citée.",
+              "Le texte du kit en contient trois de plus, plus fines — dont une qui ne se voit qu'en ouvrant la source citée.",
           },
           {
             situation: "Le montage du livrable est bâclé faute de temps.",

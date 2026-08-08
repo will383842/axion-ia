@@ -438,7 +438,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           {
             situation: "Un binôme ne trouve aucun écart.",
             parade:
-              "Leur donner la production du kit page 26, qui en contient quatre. S'ils n'en trouvent aucun là non plus, refaire la lecture avec eux — l'œil n'est pas encore réglé.",
+              "Leur donner la production du kit, qui en contient quatre. S'ils n'en trouvent aucun là non plus, refaire la lecture avec eux — l'œil n'est pas encore réglé.",
           },
         ],
         planB: "Grille et corrigé imprimés dans le kit.",
@@ -537,7 +537,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
           {
             situation: "La salle trouve toutes les erreurs plantées et s'ennuie.",
             parade:
-              "Le document du kit page 32 en contient trois de plus, plus fines — dont une qui ne se voit qu'en ouvrant le texte source.",
+              "Le document du kit en contient trois de plus, plus fines — dont une qui ne se voit qu'en ouvrant le texte source.",
           },
           {
             situation:
@@ -573,7 +573,7 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier dans le kit et corrigé page 35. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

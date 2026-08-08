@@ -308,7 +308,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           {
             question: "Je n'ai pas de tâches d'écriture dans mon poste.",
             reponse:
-              "Reformuler, résumer, répondre, expliquer une procédure, préparer un point d'équipe : tout cela en est. La page 18 du support liste douze tâches par famille de poste — prenez-y la plus proche de votre quotidien.",
+              "Reformuler, résumer, répondre, expliquer une procédure, préparer un point d'équipe : tout cela en est. Le support liste douze tâches par famille de poste — prenez-y la plus proche de votre quotidien.",
           },
           {
             question: "Ma relance a donné un résultat pire qu'avant.",
@@ -653,7 +653,7 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit et corrigé page 34. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.",
+          "Quiz papier et corrigé imprimés dans le kit. La relecture à la grille est déjà un exercice papier. Aucune dépendance à un outil.",
       },
     },
     synthese: {

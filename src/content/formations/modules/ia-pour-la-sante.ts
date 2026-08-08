@@ -439,7 +439,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a apporté aucun document.",
             parade:
-              "Le kit fournit un protocole public et un cahier des charges d'appel à projets public (pages 20 à 22). Personne ne regarde son voisin travailler pendant quarante-cinq minutes.",
+              "Le kit fournit un protocole public et un cahier des charges d'appel à projets public. Personne ne regarde son voisin travailler pendant quarante-cinq minutes.",
           },
           {
             situation: "Le PDF chargé est un scan sans texte reconnu.",
@@ -616,7 +616,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz papier dans le kit et corrigé page 28. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {

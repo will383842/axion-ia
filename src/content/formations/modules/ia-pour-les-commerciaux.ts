@@ -354,7 +354,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             situation: "Le classement du pipeline ne bouge d'aucun rang après correction.",
             parade:
-              "Le dire tel quel : « vos critères portaient déjà sur l'affaire, bonne nouvelle ». Puis donner le pipeline du kit page 18, dont les critères plantés déplacent cinq rangs.",
+              "Le dire tel quel : « vos critères portaient déjà sur l'affaire, bonne nouvelle ». Puis donner le pipeline du kit, dont les critères plantés déplacent cinq rangs.",
           },
         ],
         planB:
@@ -642,7 +642,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             situation: "La salle trouve toutes les erreurs plantées en dix minutes et s'ennuie.",
             parade:
-              "Le jeu de documents du kit page 30 en contient quatre de plus, dont une qui ne se voit qu'en ouvrant la source citée.",
+              "Le jeu de documents du kit en contient quatre de plus, dont une qui ne se voit qu'en ouvrant la source citée.",
           },
           {
             situation:
@@ -652,7 +652,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "Ce module est le plus robuste de la journée si l'outil tombe. La chasse à l'erreur est un exercice papier : les deux documents fautifs sont imprimés (pages 28 et 29). La grille de relecture et la feuille de route ne dépendent d'aucun outil. Gardez ces trois temps complets même si tout le reste a été dégradé.",
+          "Ce module est le plus robuste de la journée si l'outil tombe. La chasse à l'erreur est un exercice papier : les deux documents fautifs sont imprimés. La grille de relecture et la feuille de route ne dépendent d'aucun outil. Gardez ces trois temps complets même si tout le reste a été dégradé.",
       },
     },
     verification: {
@@ -683,7 +683,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
               "Noter la contestation, donner la réponse du corrigé, poursuivre. La question se rediscute à la pause, pas devant la salle.",
           },
         ],
-        planB: "Quiz papier dans le kit, corrigé page 33. Aucune dépendance à un outil.",
+        planB: "Quiz papier et corrigé imprimés dans le kit. Aucune dépendance à un outil.",
       },
     },
     synthese: {
