@@ -461,11 +461,15 @@ function ecrireEtat(): void {
         ? lirePiecesRedigees(readFileSync(fragment, "utf8")).filter((p) => p.titre.length > 0)
             .length
         : 0;
-      const etat = nb > 0 ? `✅ ${nb} pièces` : "⏳ ossature seule";
-      return `| \`${slug}\` | ${formation?.duree ?? "?"} | ${etat} |`;
+      const etat = nb > 0 ? `**${nb} pièces rédigées**` : "_ossature seule_";
+      return `- \`${slug}\` — ${formation?.duree ?? "?"} — ${etat}`;
     });
 
-  const redigees = lignes.filter((l) => l.includes("✅")).length;
+  const redigees = lignes.filter((l) => l.includes("pièces rédigées")).length;
+  // ⚠️ Une LISTE, pas un tableau. Prettier réaligne les colonnes d'un tableau
+  // Markdown sur la cellule la plus large, en comptant les émojis pour DEUX
+  // caractères — un tableau écrit ici sortirait toujours « mal formaté » et
+  // ferait rougir Gate A à chaque génération. Une liste n'a rien à aligner.
   const contenu = `# Kits formateur — état d'avancement
 
 <!-- Écrit par scripts/kit-formateur/build-kits.ts. Ne pas éditer à la main. -->
@@ -476,8 +480,6 @@ Une formation en « ossature seule » porte ses fiches de capture et le cahier d
 charges de ses pièces, mais ne tient pas une salle : les grilles, corrigés et
 documents d'exercice restent à écrire.
 
-| Formation | Durée | Pièces rédigées |
-| --- | --- | --- |
 ${lignes.join("\n")}
 `;
   writeFileSync(join(RACINE_KIT, "ETAT.md"), contenu, "utf8");
