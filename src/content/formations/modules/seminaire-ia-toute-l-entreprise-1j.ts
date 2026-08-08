@@ -129,10 +129,6 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
         "DÉMONSTRATION 1 — le compte rendu.\n« Voici les notes brutes d'une réunion de service, prises au fil de l'eau et non relues. Produis un compte rendu en trois parties : décisions prises, points restés ouverts, actions avec un responsable et une échéance. N'ajoute aucune décision, aucun nom et aucune date qui ne figure pas dans les notes. Si un point est ambigu, écris [À CONFIRMER] au lieu de trancher. »\n\nDÉMONSTRATION 2 — l'aplomb.\n« Explique en dix lignes ce que prévoit le protocole interne de sécurité Valcambre-3 pour les interventions en hauteur, et cite les articles applicables. »\n(Ce protocole n'existe pas. Puis la reprise :)\n« Reprends ta réponse ligne par ligne. Pour chaque affirmation, dis si elle vient d'une source vérifiable ou si tu l'as complétée pour rendre la réponse plausible. Ne corrige rien, signale. »\n\nDÉMONSTRATION 3 — le biais.\n« Rédige la réponse de l'entreprise à ce message : “Bonjour, je m'appelle Camille, 24 ans, je viens de terminer mes études et je cherche à rejoindre votre équipe.” »\nPuis la MÊME demande, un seul mot changé : « 57 ans » à la place de « 24 ans ».",
       outil:
         "Un seul outil, tenu toute la journée, piloté par le formateur au vidéoprojecteur (Claude ou ChatGPT selon la salle).",
-      gain: {
-        avant: "40 min à la main",
-        apres: "4 min, chronométrées devant la salle",
-      },
       captureEcran:
         "Trois vues. (1) Les notes brutes et le compte rendu produit, côte à côte, avec les mentions [À CONFIRMER] surlignées. (2) La réponse inventée sur le protocole fictif, avec les affirmations avouées à la reprise entourées. (3) Les deux réponses de la démonstration 3 côte à côte, l'âge entouré et les formulations qui basculent surlignées — plus la capture de l'écran d'historique montrant qu'une conversation envoyée ne se rattrape pas.",
       verifieLe: VERIFIE_LE,
@@ -177,7 +173,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint, réseau tombé ou vidéoprojecteur en panne : les six sorties sont imprimées dans le kit formateur (pages 4 à 9, datées) et existent en jeu de photocopies par table. Le déroulé se tient à l'identique — la lecture à voix haute du protocole inventé, le pari à main levée, la comparaison mot à mot. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint, réseau tombé ou vidéoprojecteur en panne : les six sorties sont imprimées dans le kit formateur (datées) et existent en jeu de photocopies par table. Le déroulé se tient à l'identique — la lecture à voix haute du protocole inventé, le pari à main levée, la comparaison mot à mot. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -260,7 +256,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille de correction et le corrigé des douze cartes sont imprimés dans le kit (pages 12 et 13). Sans vidéoprojecteur, la règle commune s'écrit au paperboard et se photographie.",
+          "La grille de correction et le corrigé des douze cartes sont imprimés dans le kit. Sans vidéoprojecteur, la règle commune s'écrit au paperboard et se photographie.",
       },
     },
     synthese: {
@@ -364,7 +360,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau tombé : le graphique agrégé se lit tel quel depuis l'outil de sondage, et le regroupement se fait à la main au paperboard — trois colonnes, comptage à main levée. Si le sondage lui-même n'a pas pu se tenir, le kit fournit un résultat de référence anonymisé (page 16) qu'on annonce COMME TEL, jamais comme celui de la salle.",
+          "Réseau tombé : le graphique agrégé se lit tel quel depuis l'outil de sondage, et le regroupement se fait à la main au paperboard — trois colonnes, comptage à main levée. Si le sondage lui-même n'a pas pu se tenir, le kit fournit un résultat de référence anonymisé qu'on annonce COMME TEL, jamais comme celui de la salle.",
       },
     },
     pratique: {
@@ -446,7 +442,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "Aucun outil nécessaire : les fiches sont en papier, la rotation se fait à la main. Le corrigé type d'une fiche complète est imprimé dans le kit (page 18) pour les tables qui bloquent.",
+          "Aucun outil nécessaire : les fiches sont en papier, la rotation se fait à la main. Le corrigé type d'une fiche complète est imprimé dans le kit pour les tables qui bloquent.",
       },
     },
     synthese: {
@@ -534,7 +530,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           {
             situation: "Personne ne propose de cas, la salle est passive après le déjeuner.",
             parade:
-              "Le kit en fournit trois, déjà anonymisés et transverses (page 21). Ne perdez pas cinq minutes à insister : prenez-en un, annoncez que le prochain viendra d'eux, et avancez.",
+              "Le kit en fournit trois, déjà anonymisés et transverses. Ne perdez pas cinq minutes à insister : prenez-en un, annoncez que le prochain viendra d'eux, et avancez.",
           },
           {
             situation: "Le cas proposé contient un nom de client ou une donnée de salarié.",
@@ -545,11 +541,11 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
             situation:
               "L'écart entre les deux réponses est faible et la démonstration convainc mal.",
             parade:
-              "Durcir la ligne Output en direct — un format très contraint, avec une structure imposée point par point — et relancer. Si l'écart reste faible, dites-le honnêtement et passez aux deux sorties du kit (pages 22 et 23) : mieux vaut un aveu qu'un commentaire qui force le trait.",
+              "Durcir la ligne Output en direct — un format très contraint, avec une structure imposée point par point — et relancer. Si l'écart reste faible, dites-le honnêtement et passez aux deux sorties du kit : mieux vaut un aveu qu'un commentaire qui force le trait.",
           },
         ],
         planB:
-          "Réseau ou vidéoprojecteur tombé : les deux prompts et les deux réponses du cas de secours sont imprimés dans le kit (pages 21 à 23, datées), en jeu par table. La comparaison ligne à ligne se tient à l'identique — c'est la structure de la demande qui s'enseigne, pas le maniement de l'outil.",
+          "Réseau ou vidéoprojecteur tombé : les deux prompts et les deux réponses du cas de secours sont imprimés dans le kit (datées), en jeu par table. La comparaison ligne à ligne se tient à l'identique — c'est la structure de la demande qui s'enseigne, pas le maniement de l'outil.",
       },
     },
     pratique: {
@@ -630,7 +626,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les grilles et deux demandes de référence — une solide, une qui s'effondre hors de son contexte — sont imprimées dans le kit (page 25). L'exercice devient une critique comparée, sans exécution.",
+          "Les grilles et deux demandes de référence — une solide, une qui s'effondre hors de son contexte — sont imprimées dans le kit. L'exercice devient une critique comparée, sans exécution.",
       },
     },
     synthese: {
@@ -733,7 +729,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           },
         ],
         planB:
-          "Sans outil, le concours se tient à l'identique — il ne dépend que du chronomètre. La transposition en direct est alors remplacée par la lecture de l'exemple transposé du kit (page 28, daté), commenté ligne à ligne.",
+          "Sans outil, le concours se tient à l'identique — il ne dépend que du chronomètre. La transposition en direct est alors remplacée par la lecture de l'exemple transposé du kit (daté), commenté ligne à ligne.",
       },
     },
     pratique: {
@@ -814,11 +810,11 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
           {
             situation: "Le sondage ou le QCM en ligne tombe au moment de le lancer.",
             parade:
-              "Basculer immédiatement sur le QCM papier du kit (page 31), sans hésiter ni chercher à réparer devant la salle : la correction se fait à l'oral question par question, les copies se ramassent, l'évaluation est tenue et tracée.",
+              "Basculer immédiatement sur le QCM papier du kit, sans hésiter ni chercher à réparer devant la salle : la correction se fait à l'oral question par question, les copies se ramassent, l'évaluation est tenue et tracée.",
           },
         ],
         planB:
-          "QCM papier et corrigé imprimés dans le kit (pages 31 et 32), en cinquante exemplaires. La correction se fait à l'oral, question par question, et les copies sont ramassées pour être conservées au dossier de la session.",
+          "QCM papier et corrigé imprimés dans le kit, en cinquante exemplaires. La correction se fait à l'oral, question par question, et les copies sont ramassées pour être conservées au dossier de la session.",
       },
     },
     synthese: {

@@ -107,7 +107,6 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
       prompt:
         "Demande spontanée : « Écris un post LinkedIn pour annoncer notre nouvelle offre. »\n\nDemande structurée (méthode AXION) :\nActeur : tu es responsable communication d'un fabricant de menuiseries de 60 personnes en Auvergne-Rhône-Alpes, qui vend à des installateurs professionnels et jamais au particulier.\nConteXte : nous ouvrons un service de pose garanti dix ans, réservé aux installateurs partenaires ; l'annonce sort le 15 septembre.\nIntention : une publication qui fasse demander le dossier partenaire, pas une publication qui fasse plaisir.\nOutput : 150 mots maximum, aucune liste à puces, une seule idée, une question en clôture.\nNormes : applique le dossier de marque ci-joint — ton sobre et factuel, jamais familier. Aucun superlatif, aucun chiffre que je ne t'ai pas donné, aucune promesse de délai. S'il te manque une information, écris [À COMPLÉTER] au lieu de l'inventer.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "45 min", apres: "10 min" },
       captureEcran:
         "Les deux publications côte à côte — la spontanée et la structurée — avec les cinq leviers AXION annotés en marge sur la seconde.",
       verifieLe: VERIFIE_LE,
@@ -136,7 +135,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou service indisponible : les deux sorties — spontanée et structurée — sont imprimées dans le kit formateur (pages 6 et 7, datées), avec les cinq leviers déjà annotés. La comparaison à voix haute se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.",
+          "Quota atteint ou service indisponible : les deux sorties — spontanée et structurée — sont imprimées dans le kit formateur (datées), avec les cinq leviers déjà annotés. La comparaison à voix haute se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -170,11 +169,11 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
             situation:
               "Un stagiaire n'a aucune publication réelle de son entreprise pour tester son dossier.",
             parade:
-              "Le kit fournit un message de secours et sa fiche produit (page 14). Ne le laissez pas regarder son voisin travailler pendant trente minutes.",
+              "Le kit fournit un message de secours et sa fiche produit. Ne le laissez pas regarder son voisin travailler pendant trente minutes.",
           },
         ],
         planB:
-          "Réseau tombé : le dossier de marque se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Le test sur publication réelle se remplace par la comparaison des deux sorties imprimées du kit (pages 6 et 7). Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.",
+          "Réseau tombé : le dossier de marque se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Le test sur publication réelle se remplace par la comparaison des deux sorties imprimées du kit. Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.",
       },
     },
     verification: {
@@ -212,7 +211,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille et le corrigé sont imprimés dans le kit (pages 16 et 17). Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral. Le changement de persona se fait alors sur les deux sorties pré-produites du kit, page 18.",
+          "La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral. Le changement de persona se fait alors sur les deux sorties pré-produites du kit, page 18.",
       },
     },
     synthese: {
@@ -285,7 +284,6 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
       prompt:
         "« Voici le brief en PDF, la fiche produit et le dossier de marque en pièces jointes. À partir de la SEULE idée « la pose garantie dix ans », produis quatre versions : (1) une publication de 150 mots, (2) l'objet et le corps d'une newsletter de 250 mots adressée aux installateurs déjà clients, (3) un script vidéo de 45 secondes en plans numérotés, (4) un communiqué de 300 mots avec titre, chapeau et une citation attribuée à [NOM DU DIRIGEANT — À COMPLÉTER]. Pour chaque version, indique en une ligne ce que le format t'a obligé à retirer. N'ajoute aucun chiffre, aucune date et aucun nom qui ne figurent pas dans les documents joints. »",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "2 h", apres: "25 min" },
       captureEcran:
         "La déclinaison en quatre formats à l'écran, avec la ligne « ce que ce format m'a obligé à retirer » surlignée sur chacun, et le dépôt du PDF montré en amont.",
       verifieLe: VERIFIE_LE,
@@ -313,7 +311,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou service indisponible : les quatre formats sont imprimés dans le kit formateur (pages 8 à 11, datés), avec la ligne « ce que ce format m'a obligé à retirer » déjà surlignée. Le relevé de ce qui se dégrade se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.",
+          "Quota atteint ou service indisponible : les quatre formats sont imprimés dans le kit formateur (datés), avec la ligne « ce que ce format m'a obligé à retirer » déjà surlignée. Le relevé de ce qui se dégrade se tient à l'identique sur papier. N'improvisez aucune sortie en direct : celles du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -341,7 +339,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a aucun message réel à décliner ce jour-là.",
             parade:
-              "Le kit fournit un message de secours et sa fiche produit (page 14). Ne le laissez pas regarder son voisin travailler pendant trente minutes.",
+              "Le kit fournit un message de secours et sa fiche produit. Ne le laissez pas regarder son voisin travailler pendant trente minutes.",
           },
           {
             situation: "Un binôme remplit le calendrier de sujets tous identiques.",
@@ -355,7 +353,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau tombé : le calendrier se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Pour la déclinaison, utilisez les quatre formats imprimés du kit (pages 8 à 11) et faites relever à la main ce que chaque format a retiré. Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.",
+          "Réseau tombé : le calendrier se remplit intégralement à la main sur la trame papier — il ne dépend d'aucun outil. Pour la déclinaison, utilisez les quatre formats imprimés du kit et faites relever à la main ce que chaque format a retiré. Ce qui compte est la structure de la demande, pas l'outil qui l'exécute.",
       },
     },
     verification: {
@@ -382,7 +380,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille et le corrigé sont imprimés dans le kit (pages 16 et 17). Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, en se limitant aux deux dérives les plus fréquentes.",
+          "La grille et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, en se limitant aux deux dérives les plus fréquentes.",
       },
     },
     synthese: {
@@ -526,7 +524,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
             situation:
               "Un participant n'a aucune campagne récente à commenter (poste nouveau, structure sans historique).",
             parade:
-              "Le kit fournit un jeu de résultats de campagne fictif (page 27). Le geste s'apprend sur ces chiffres-là aussi ; ne le laissez pas assister.",
+              "Le kit fournit un jeu de résultats de campagne fictif. Le geste s'apprend sur ces chiffres-là aussi ; ne le laissez pas assister.",
           },
         ],
         planB:
@@ -557,7 +555,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille de contrôle est imprimée dans le kit (page 33). Aucune dépendance à un outil, ni à un vidéoprojecteur.",
+          "La grille de contrôle est imprimée dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.",
       },
     },
     synthese: {
@@ -687,7 +685,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Outil indisponible : la chasse à l'erreur se fait sur le texte imprimé du kit (page 29), qui contient les mêmes erreurs plantées. Les douze cas de diffusion et le montage du livrable ne dépendent d'aucun outil.",
+          "Outil indisponible : la chasse à l'erreur se fait sur le texte imprimé du kit, qui contient les mêmes erreurs plantées. Les douze cas de diffusion et le montage du livrable ne dépendent d'aucun outil.",
       },
     },
     verification: {
@@ -714,7 +712,7 @@ export const IA_POUR_LE_MARKETING: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz et corrigé sont imprimés dans le kit (pages 34 à 36). Aucune dépendance à un outil, ni à un vidéoprojecteur.",
+          "Quiz et corrigé sont imprimés dans le kit. Aucune dépendance à un outil, ni à un vidéoprojecteur.",
       },
     },
     synthese: {

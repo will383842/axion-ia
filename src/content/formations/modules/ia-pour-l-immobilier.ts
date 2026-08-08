@@ -89,7 +89,6 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
       prompt:
         "Rédige l'annonce de vente du bien décrit ci-dessous, à partir des SEULES informations fournies — n'ajoute aucun chiffre, aucune mention, aucun équipement qui n'y figure pas.\nBien : appartement T3 de 64,2 m² (surface Carrez du lot, mesurage joint), 3e étage sans ascenseur, copropriété de 24 lots à usage d'habitation, charges courantes moyennes 1 680 € par an, DPE classe D (176 kWh/m²/an), GES classe B, prix 189 000 € honoraires à la charge du vendeur.\nFormat : un titre sans superlatif, 120 à 150 mots, une phrase de clôture invitant à demander le dossier complet.\nInterdits : ne décris JAMAIS l'acheteur ou le locataire type (pas de « idéal pour une famille », « parfait pour jeune couple », « conviendra à une clientèle exigeante ») — décris le bien, pas son occupant. N'invente ni quartier « calme et familial », ni proximité d'écoles, ni temps de trajet.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "30 min", apres: "10 min" },
       captureEcran:
         "Les deux annonces côte à côte : dans la version libre, le DPE inventé et « parfait pour une jeune famille dynamique » entourés en rouge ; dans la version cadrée, chaque mention reliée par une flèche à la pièce du dossier qui la prouve.",
       verifieLe: VERIFIE_LE,

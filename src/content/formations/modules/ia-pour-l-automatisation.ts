@@ -103,7 +103,6 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
         "Voici l'extrait de tableau de suivi ci-joint (jeu de démonstration, aucune donnée réelle).\nProduis la synthèse hebdomadaire en respectant exactement ce format :\n1. Un tableau à trois colonnes — dossier, état, écart par rapport à la semaine précédente.\n2. Sous le tableau, trois lignes au maximum sur ce qui a bougé.\n3. Une dernière ligne intitulée « à vérifier avant envoi ».\nN'ajoute aucun commentaire, aucune recommandation, aucune donnée absente du fichier. Si une ligne est incomplète, écris « à vérifier » dans la colonne concernée au lieu de la compléter toi-même.",
       outil:
         "Un seul outil, celui validé dans la salle — et c'est le même pendant les deux journées.",
-      gain: { avant: "1 h 30", apres: "12 min" },
       captureEcran:
         "Les deux sorties côte à côte, avec surlignage des trois lignes que la version manuelle a reformulées différemment d'une semaine à l'autre, et de la mention « à vérifier » que la version pilotée fait apparaître.",
       verifieLe: VERIFIE_LE,

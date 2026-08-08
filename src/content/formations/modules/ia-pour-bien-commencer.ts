@@ -387,7 +387,6 @@ export const IA_POUR_BIEN_COMMENCER: EnrichissementFormation = [
         "Acteur : tu es chargé de clientèle dans une entreprise de services de 15 personnes.\nConteXte : la commande d'un client fidèle aura cinq jours ouvrés de retard, la cause est un fournisseur, et c'est la première fois que cela arrive avec ce client.\nIntention : que le client reste en confiance et sache exactement quand il sera livré, sans que l'e-mail promette quoi que ce soit que je ne maîtrise pas.\nOutput : un e-mail de 130 mots maximum, objet compris, ton professionnel et direct, qui annonce le retard dès la première phrase et se termine par la nouvelle date de livraison.\nNormes : pas d'excuses en cascade, pas de jargon, et aucun geste commercial ni remise — si un dédommagement se décide, ce sera par moi, pas par le texte.",
       outil:
         "Un seul outil pour toute la demi-journée — celui préparé avec l'entreprise en amont (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "30 min", apres: "5 min" },
       captureEcran:
         "Les deux e-mails côte à côte — le brouillon laborieux et la sortie AXION — avec la première phrase de chacun surlignée : celle qui tourne autour du pot, celle qui annonce.",
       verifieLe: VERIFIE_LE,

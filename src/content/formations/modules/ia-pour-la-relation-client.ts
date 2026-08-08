@@ -88,7 +88,6 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
       prompt:
         "« Voici la demande d'un client, reproduite ci-dessous. Rédige un brouillon de réponse. Réponds uniquement à partir de ce qui est écrit dans la demande et dans la fiche produit jointe. N'annonce aucun délai, aucun remboursement, aucun geste commercial et aucune garantie : si l'un d'eux te paraît nécessaire, écris à la place [À ARBITRER PAR LE CONSEILLER] et poursuis. Termine par la question qu'il me reste à poser au client pour clore le dossier. »",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "18 min", apres: "5 min" },
       captureEcran:
         "Le brouillon obtenu, avec chaque mention [À ARBITRER PAR LE CONSEILLER] entourée et la phrase d'interdiction de la consigne surlignée en regard.",
       verifieLe: VERIFIE_LE,
@@ -122,7 +121,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (pages 5 et 6, datées). La comparaison se tient à l'identique sur papier, y compris le chronométrage du traitement « comme aujourd'hui », qui ne dépend d'aucun outil. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison se tient à l'identique sur papier, y compris le chronométrage du traitement « comme aujourd'hui », qui ne dépend d'aucun outil. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -188,7 +187,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les cinq extraits et leur corrigé sont imprimés dans le kit (pages 14 et 15). Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, et les classements s'écrivent au paperboard.",
+          "Les cinq extraits et leur corrigé sont imprimés dans le kit. Sans vidéoprojecteur, le corrigé se distribue et se commente à l'oral, et les classements s'écrivent au paperboard.",
       },
     },
     synthese: {
@@ -243,7 +242,6 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
       prompt:
         "Consigne structurée par AXION —\nActeur : tu es conseiller au service client d'une entreprise de vente d'équipement professionnel.\nConteXte : le client écrit pour la deuxième fois au sujet d'une livraison incomplète, son message est agressif et met en cause la personne qui lui a répondu la première fois. Le message et l'historique neutralisés sont ci-dessous.\nIntention : produire un brouillon de réponse qui reconnaît le fait, ne discute pas le ton, et propose la prochaine étape concrète.\nOutput : 150 mots maximum, sans liste à puces, une seule question au client à la fin.\nNormes : vouvoiement, pas d'excuse formulée plus d'une fois, aucune mise en cause d'un collègue, aucun délai ni geste commercial chiffré — écris [À ARBITRER PAR LE CONSEILLER] à leur place. Ajoute en dernière ligne la mention d'information sur l'usage d'un outil d'assistance, telle qu'elle est fournie dans le kit.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "25 min", apres: "6 min" },
       captureEcran:
         "Le brouillon obtenu à côté de la consigne, les cinq leviers AXION annotés en marge, et la mention [À ARBITRER PAR LE CONSEILLER] entourée dans le brouillon.",
       verifieLe: VERIFIE_LE,
@@ -272,7 +270,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (pages 7 et 8, datées). La comparaison avant / après se tient à l'identique sur papier, la consigne AXION s'annote au paperboard. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
+          "Quota atteint, réseau tombé ou réponse aberrante : les deux sorties de cette démonstration sont imprimées dans le kit formateur (datées). La comparaison avant / après se tient à l'identique sur papier, la consigne AXION s'annote au paperboard. Ne rien improviser en direct : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -332,7 +330,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le jeu de réponses pour la chasse à l'erreur et son corrigé sont imprimés dans le kit (pages 16 et 17). Sans vidéoprojecteur, les scores s'écrivent au paperboard.",
+          "Le jeu de réponses pour la chasse à l'erreur et son corrigé sont imprimés dans le kit. Sans vidéoprojecteur, les scores s'écrivent au paperboard.",
       },
     },
     synthese: {
@@ -386,7 +384,6 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
       prompt:
         "« Voici l'historique complet d'un dossier client, messages numérotés de 1 à 20, reproduit ci-dessous. Produis trois blocs et rien d'autre. Bloc FAITS : ce qui s'est passé, une ligne par fait, avec le numéro du message qui l'établit. Bloc ENGAGEMENTS PRIS PAR NOUS : chaque promesse faite au client, avec le numéro du message et la date annoncée si elle y figure ; écris « aucun » si le fil n'en contient pas. Bloc PROCHAINE ACTION : la seule chose qu'il reste à faire, et qui doit la faire. N'ajoute aucun élément absent de l'historique. Si un point est ambigu, écris « à vérifier » plutôt que de trancher. »",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "20 min", apres: "5 min" },
       captureEcran:
         "La fiche de reprise en trois blocs avec les renvois de numéros de messages surlignés, et l'engagement du message 12 entouré.",
       verifieLe: VERIFIE_LE,
@@ -409,7 +406,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "La sortie est imprimée dans le kit (page 21, datée), avec les renvois de numéros déjà surlignés. Le pari écrit et le comptage des engagements se tiennent à l'identique sur papier.",
+          "La sortie est imprimée dans le kit (datée), avec les renvois de numéros déjà surlignés. Le pari écrit et le comptage des engagements se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -477,7 +474,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le fil et son corrigé sont imprimés dans le kit (page 22). Le contrôle se tient à l'oral, corrigé papier en main.",
+          "Le fil et son corrigé sont imprimés dans le kit. Le contrôle se tient à l'oral, corrigé papier en main.",
       },
     },
     synthese: {
@@ -531,7 +528,6 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
       prompt:
         "« Voici un brouillon de réponse client et, en dessous, le dossier sur lequel il s'appuie. Passe les quatre contrôles suivants, dans cet ordre, et rends un tableau à deux colonnes : contrôle, ce que tu relèves. 1. LE FAIT : chaque affirmation du brouillon est-elle établie par le dossier ? Cite le passage qui l'établit, ou signale-la comme non établie. 2. L'ENGAGEMENT : le brouillon annonce-t-il un délai, un remboursement, un geste commercial ou une garantie ? Liste-les tous, même s'ils te paraissent évidents. 3. LE TON : relève les formulations qui mettent en cause le client, un collègue ou un tiers. 4. LES MENTIONS : la mention d'information et la formule de clôture prévues sont-elles présentes et intactes ? Ne réécris pas le brouillon, relève seulement. »",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "12 min", apres: "3 min" },
       captureEcran:
         "Le tableau des quatre contrôles rendu par l'outil, avec la ligne « engagement » entourée et le brouillon d'origine en regard.",
       verifieLe: VERIFIE_LE,
@@ -554,7 +550,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "La sortie est imprimée dans le kit (page 23, datée). La démonstration se tient sur papier, les quatre contrôles se cochent au stylo sur le brouillon projeté ou distribué.",
+          "La sortie est imprimée dans le kit (datée). La démonstration se tient sur papier, les quatre contrôles se cochent au stylo sur le brouillon projeté ou distribué.",
       },
     },
     pratique: {
@@ -636,7 +632,7 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit (page 29), corrigé page 30, grille de notation page 31. Aucune dépendance à un outil.",
+          "Quiz papier dans le kit, corrigé page 30, grille de notation page 31. Aucune dépendance à un outil.",
       },
     },
     synthese: {

@@ -127,7 +127,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou service indisponible : les trois sorties et les trois panneaux de contexte sont imprimés dans le kit formateur (pages 4 à 6, datées). Le pari écrit, la lecture à voix haute et la comparaison se tiennent à l'identique sur papier. Ne rien improviser en direct sur un autre outil : les sorties du kit ont été vérifiées.",
+          "Quota atteint ou service indisponible : les trois sorties et les trois panneaux de contexte sont imprimés dans le kit formateur (datées). Le pari écrit, la lecture à voix haute et la comparaison se tiennent à l'identique sur papier. Ne rien improviser en direct sur un autre outil : les sorties du kit ont été vérifiées.",
       },
     },
     pratique: {
@@ -161,7 +161,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
             situation:
               "Un stagiaire n'a aucun accès administrateur et ne peut pas ouvrir les paramètres de l'outil.",
             parade:
-              "Le kit fournit les trois pages de paramètres imprimées (pages 8 à 10). Il fait l'exercice dessus et note en marge « à vérifier auprès de la DSI le … ». Une ligne de plus dans sa feuille de route, pas une exclusion de l'atelier.",
+              "Le kit fournit les trois pages de paramètres imprimées. Il fait l'exercice dessus et note en marge « à vérifier auprès de la DSI le … ». Une ligne de plus dans sa feuille de route, pas une exclusion de l'atelier.",
           },
           {
             situation:
@@ -172,7 +172,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           {
             situation: "Un binôme finit le tri des 12 cas en dix minutes.",
             parade:
-              "Leur donner les 4 cas supplémentaires du kit (page 12), plus fins — dont un extrait de configuration qui ne contient aucun secret mais révèle l'architecture — et leur demander de préparer la restitution.",
+              "Leur donner les 4 cas supplémentaires du kit, plus fins — dont un extrait de configuration qui ne contient aucun secret mais révèle l'architecture — et leur demander de préparer la restitution.",
           },
         ],
         planB:
@@ -213,7 +213,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Extraits pièges, grille et corrigé sont imprimés dans le kit (pages 13 à 16). Aucun outil nécessaire.",
+          "Extraits pièges, grille et corrigé sont imprimés dans le kit. Aucun outil nécessaire.",
       },
     },
     synthese: {
@@ -325,7 +325,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux sorties de réécriture et la sortie de revue sont imprimées dans le kit (pages 19 à 23, datées), la sortie de revue déjà annotée. La comparaison, le comptage des faux positifs et la mise en commun se tiennent à l'identique sur papier.",
+          "Les deux sorties de réécriture et la sortie de revue sont imprimées dans le kit (datées), la sortie de revue déjà annotée. La comparaison, le comptage des faux positifs et la mise en commun se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -359,7 +359,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
             situation:
               "Un stagiaire n'a pas d'environnement de développement utilisable sur son poste.",
             parade:
-              "Le parcours exploitation du kit (page 25) ne demande qu'un interpréteur de commandes et un fichier d'exemple. Ne le laissez pas regarder son voisin travailler pendant deux heures.",
+              "Le parcours exploitation du kit ne demande qu'un interpréteur de commandes et un fichier d'exemple. Ne le laissez pas regarder son voisin travailler pendant deux heures.",
           },
           {
             situation:
@@ -400,7 +400,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
               "Commencez par la vôtre, une vraie, avec la manière dont vous vous êtes fait avoir. La salle suit dans les trente secondes.",
           },
         ],
-        planB: "Les 5 questions et leur corrigé sont imprimés dans le kit (page 28).",
+        planB: "Les 5 questions et leur corrigé sont imprimés dans le kit.",
       },
     },
     synthese: {
@@ -506,7 +506,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux jeux de sorties (spécification libre / contrainte, compte rendu libre / contraint) sont imprimés dans le kit (pages 31 à 35, datées). La comparaison se tient à l'identique sur papier.",
+          "Les deux jeux de sorties (spécification libre / contrainte, compte rendu libre / contraint) sont imprimés dans le kit (datées). La comparaison se tient à l'identique sur papier.",
       },
     },
     pratique: {
@@ -547,7 +547,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
             situation:
               "Un stagiaire n'a aucune note d'astreinte ni aucun incident récent à documenter.",
             parade:
-              "Le kit fournit un jeu de notes brutes neutralisées (page 37). L'exercice est identique et la grille de relecture aussi.",
+              "Le kit fournit un jeu de notes brutes neutralisées. L'exercice est identique et la grille de relecture aussi.",
           },
           {
             situation: "La salle veut savoir si un runbook généré peut valoir preuve en audit.",
@@ -556,7 +556,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Sans réseau : la chasse à l'erreur se fait sur les deux procédures pré-générées du kit (page 36), erreurs non signalées — le comptage et le débat sur la dispersion restent entiers. La spécification et les écrits d'astreinte s'écrivent à la main sur les trames, et les grilles de relecture en binôme ne dépendent d'aucun outil.",
+          "Sans réseau : la chasse à l'erreur se fait sur les deux procédures pré-générées du kit, erreurs non signalées — le comptage et le débat sur la dispersion restent entiers. La spécification et les écrits d'astreinte s'écrivent à la main sur les trames, et les grilles de relecture en binôme ne dépendent d'aucun outil.",
       },
     },
     verification: {
@@ -588,7 +588,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Sans environnement disponible, l'exécution devient une lecture à voix haute par le binôme, qui s'arrête à la première étape qu'il ne saurait pas exécuter. Le kit fournit les 5 questions et leur corrigé (page 39).",
+          "Sans environnement disponible, l'exécution devient une lecture à voix haute par le binôme, qui s'arrête à la première étape qu'il ne saurait pas exécuter. Le kit fournit les 5 questions et leur corrigé.",
       },
     },
     synthese: {
@@ -696,7 +696,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Le script rendu, la tentative avec notification ajoutée et la sortie sur jeu d'essai sont imprimés dans le kit (pages 42 à 44, datées). La lecture ligne à ligne se tient à l'identique sur papier — c'est même l'exercice le plus fidèle au geste enseigné.",
+          "Le script rendu, la tentative avec notification ajoutée et la sortie sur jeu d'essai sont imprimés dans le kit (datées). La lecture ligne à ligne se tient à l'identique sur papier — c'est même l'exercice le plus fidèle au geste enseigné.",
       },
     },
     pratique: {
@@ -745,7 +745,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
           },
         ],
         planB:
-          "Sans réseau : la qualification et la gouvernance ne dépendent d'aucun outil. L'automatisation devient une lecture critique du script fourni au kit (page 45) — chacun écrit son jeu d'essai, son cas limite faux et sa procédure de retour arrière sur ce script-là. Le livrable reste complet, seul le prototype personnel est reporté.",
+          "Sans réseau : la qualification et la gouvernance ne dépendent d'aucun outil. L'automatisation devient une lecture critique du script fourni au kit — chacun écrit son jeu d'essai, son cas limite faux et sa procédure de retour arrière sur ce script-là. Le livrable reste complet, seul le prototype personnel est reporté.",
       },
     },
     verification: {
@@ -781,8 +781,7 @@ export const IA_POUR_L_IT: EnrichissementFormation = [
               "Le traiter comme un incident, calmement et sans humilier : on le retire, on note que la règle de la section 1 n'a pas tenu, et on la rectifie. C'est le dernier moment où c'est gratuit.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 47) et corrigé page 48. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 48. Aucune dépendance à un outil.",
       },
     },
     synthese: {

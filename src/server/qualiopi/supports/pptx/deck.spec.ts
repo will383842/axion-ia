@@ -170,3 +170,61 @@ describe("construireDeck — ce qui est projeté doit se lire", () => {
     }
   });
 });
+
+describe("construireDeck — le rythme des modules longs", () => {
+  /**
+   * 🔴 Un module de 210 minutes portant trois ateliers ne projetait QU'UNE
+   * slide : trois heures et demie devant le même écran, aucun repère de rythme
+   * pour le formateur. C'est ce qui faisait sortir les formations de deux jours
+   * à trente slides — autant qu'une journée.
+   *
+   * Les jalons ne réécrivent rien : ils reprennent l'intitulé et la durée que le
+   * programme PUBLIÉ annonce déjà. On corrige le générateur plutôt que de
+   * redécouper des programmes vendus — ce qui aurait obligé à y prendre des
+   * minutes de pratique pour financer de nouveaux en-têtes de module.
+   */
+  it("pose un jalon par atelier quand le module en enchaîne plusieurs", () => {
+    const deck = construireDeck({
+      titreFormation: "Module à trois ateliers",
+      dureeHeures: 7,
+      modules: [
+        {
+          moduleId: "mod-1",
+          titre: "Module 1",
+          dureeMin: 210,
+          sequences: [
+            { titre: "Objectif", dureeMin: 5, type: "objectif" },
+            { titre: "Premier atelier chronométré", dureeMin: 45, type: "pratique" },
+            { titre: "Deuxième atelier, en binôme", dureeMin: 60, type: "pratique" },
+            { titre: "Troisième atelier, sur son propre cas", dureeMin: 50, type: "pratique" },
+          ],
+          pratique: { consigne: "Trois temps, décrits ici.", aEmporter: "Vos productions." },
+        } as never,
+      ],
+    });
+    const jalons = deck.slides.filter((s) => s.eyebrow?.includes("Atelier ") === true);
+    expect(jalons.map((s) => s.titre)).toEqual([
+      "Premier atelier chronométré",
+      "Deuxième atelier, en binôme",
+      "Troisième atelier, sur son propre cas",
+    ]);
+    // La durée publiée est reprise telle quelle, jamais recalculée.
+    expect(jalons[1]?.eyebrow).toContain("1 h");
+  });
+
+  it("n'ajoute AUCUN jalon quand le module n'a qu'un seul atelier", () => {
+    const deck = construireDeck({
+      titreFormation: "Module à un atelier",
+      dureeHeures: 7,
+      modules: [
+        {
+          moduleId: "mod-1",
+          titre: "Module 1",
+          sequences: [{ titre: "L'unique atelier", dureeMin: 45, type: "pratique" }],
+          pratique: { consigne: "La consigne, qui suffit.", aEmporter: "Une production." },
+        } as never,
+      ],
+    });
+    expect(deck.slides.filter((s) => s.eyebrow?.includes("Atelier ") === true)).toEqual([]);
+  });
+});

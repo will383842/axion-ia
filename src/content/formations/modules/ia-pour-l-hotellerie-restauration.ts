@@ -103,7 +103,6 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
       prompt:
         "Acteur : tu réponds aux avis d'un hôtel-restaurant familial de montagne, ton chaleureux et sobre, sans emphase commerciale.\nConteXte : voici le texte d'un avis publié — je colle l'avis seul, sans le nom ni le profil de son auteur.\nIntention : une réponse publique prête à publier, qui remercie, répond point par point et invite à poursuivre l'échange en privé via l'accueil.\nOutput : 100 mots maximum, en français, signée « La direction ».\nNormes : ne confirme jamais que la personne a séjourné ou dîné chez nous, ne mentionne ni date, ni chambre, ni montant, n'admets aucun fait que je n'ai pas vérifié, n'annonce aucun geste commercial, ne nomme aucun membre de l'équipe.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "20 min", apres: "5 min" },
       captureEcran:
         "Les deux réponses côte à côte — la manuscrite du kit et la sortie AXION — avec les cinq lignes du prompt annotées en marge et, surlignées dans la manuscrite, les trois fuites : la date du séjour, le numéro de chambre, le geste commercial promis en public.",
       verifieLe: VERIFIE_LE,
@@ -136,7 +135,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (pages 4 et 5, datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.",
+          "Quota atteint ou outil indisponible : les deux réponses sont imprimées dans le kit (datées). La comparaison, la lecture des cinq lignes et le repérage des trois fuites se tiennent à l'identique sur papier.",
       },
     },
     pratique: {
@@ -202,7 +201,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les dix pièces et le corrigé sont imprimés dans le kit (pages 8 et 9). Sans vidéoprojecteur, elles se lisent à voix haute et le vote se fait à main levée.",
+          "Les dix pièces et le corrigé sont imprimés dans le kit. Sans vidéoprojecteur, elles se lisent à voix haute et le vote se fait à main levée.",
       },
     },
     synthese: {
@@ -292,7 +291,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux réponses sont imprimées dans le kit (pages 12 et 13, datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.",
+          "Les deux réponses sont imprimées dans le kit (datées), fautes déjà surlignées. La chasse aux fautes et le pointage des quatre interdits se tiennent sur papier.",
       },
     },
     pratique: {
@@ -308,7 +307,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           {
             question: "Je n'ai pas d'avis négatif récent, je prends quoi ?",
             reponse:
-              "Le kit en fournit trois de secours (page 15), calibrés hôtel, restaurant et café. Prenez celui qui ressemble le plus à ce que vous recevriez.",
+              "Le kit en fournit trois de secours, calibrés hôtel, restaurant et café. Prenez celui qui ressemble le plus à ce que vous recevriez.",
           },
           {
             question: "Je peux répondre au client qui demande un lit bébé en donnant sa chambre ?",
@@ -354,7 +353,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           {
             situation: "Les binômes se valident mutuellement sans rien relever.",
             parade:
-              "Projeter la réponse piégée du kit (page 17), qui contient trois écarts, et faire barrer collectivement. L'œil se règle en trois minutes, puis on reprend le croisé.",
+              "Projeter la réponse piégée du kit, qui contient trois écarts, et faire barrer collectivement. L'œil se règle en trois minutes, puis on reprend le croisé.",
           },
         ],
         planB: "Grille et corrigé imprimés dans le kit. Aucun outil nécessaire.",
@@ -433,7 +432,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les trois volets sont imprimés dans le kit (pages 20 à 22, datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.",
+          "Les trois volets sont imprimés dans le kit (datées), écarts déjà surlignés. La démonstration entière se tient sur papier, et c'est même sa forme la plus sûre.",
       },
     },
     pratique: {
@@ -466,7 +465,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           {
             situation: "Un participant n'a ni carte sur lui ni demande de groupe en cours.",
             parade:
-              "Le kit fournit une carte de secours (page 24) et sa fiche technique fictive, et la demande de groupe sert à tous. Personne ne regarde son voisin travailler pendant cinquante minutes.",
+              "Le kit fournit une carte de secours et sa fiche technique fictive, et la demande de groupe sert à tous. Personne ne regarde son voisin travailler pendant cinquante minutes.",
           },
         ],
         planB:
@@ -569,7 +568,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
           },
         ],
         planB:
-          "La présentation et son corrigé sont imprimés dans le kit (pages 27 et 28, datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.",
+          "La présentation et son corrigé sont imprimés dans le kit (datés), erreurs entourées. La chasse collective se tient sur papier à l'identique.",
       },
     },
     pratique: {
@@ -628,8 +627,7 @@ export const IA_POUR_L_HOTELLERIE_RESTAURATION: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 30) et corrigé page 31. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 31. Aucune dépendance à un outil.",
       },
     },
     synthese: {

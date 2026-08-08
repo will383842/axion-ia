@@ -124,7 +124,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou réseau tombé : les deux sorties sont imprimées dans le kit formateur (pages 3 et 4, datées), avec la transcription de la note d'appel en regard. La démonstration se tient à l'identique — on lit la dictée à voix haute, on distribue les sorties, on pose les trois questions de ré-identification. Ne rien improviser en direct.",
+          "Quota atteint ou réseau tombé : les deux sorties sont imprimées dans le kit formateur (datées), avec la transcription de la note d'appel en regard. La démonstration se tient à l'identique — on lit la dictée à voix haute, on distribue les sorties, on pose les trois questions de ré-identification. Ne rien improviser en direct.",
       },
     },
     pratique: {
@@ -188,7 +188,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Pièces et corrigé sont imprimés dans le kit (pages 6 à 8). Sans vidéoprojecteur, ils se distribuent et se corrigent à l'oral, dans le même temps.",
+          "Pièces et corrigé sont imprimés dans le kit. Sans vidéoprojecteur, ils se distribuent et se corrigent à l'oral, dans le même temps.",
       },
     },
     synthese: {
@@ -243,7 +243,6 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
       prompt:
         "Acteur : tu es exploitant transport et tu écris au nom de l'entreprise.\nConteXte : je te dicte les faits d'une avarie constatée à la livraison ; tout ce que je ne dicte pas n'existe pas.\nIntention : produire un courrier de réserve adressé au client, destiné à être relu puis envoyé par l'exploitant.\nOutput : une page maximum, les faits datés et horodatés en premier, une phrase par fait, puis la demande, puis la formule de clôture.\nNormes : n'admets aucune responsabilité, même implicitement ; n'écris aucune excuse ; ne cite aucun délai, aucun article et aucune clause — écris à la place « [délai à retrouver au contrat] » et je le remplirai moi-même ; n'ajoute aucun fait, aucune heure et aucun montant absents de ma dictée.",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "35 min", apres: "8 min" },
       captureEcran:
         "Les deux courriers côte à côte : à gauche l'improvisé, avec les trois formules d'excuse et le délai inventé entourés en rouge ; à droite le structuré, avec les crochets « [délai à retrouver au contrat] » surlignés.",
       verifieLe: VERIFIE_LE,
@@ -276,7 +275,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux courriers sont imprimés dans le kit (pages 11 et 12, datés), annotations déjà portées. La comparaison se tient à l'identique sur papier, et la dictée se lit à voix haute depuis la transcription fournie.",
+          "Les deux courriers sont imprimés dans le kit (datés), annotations déjà portées. La comparaison se tient à l'identique sur papier, et la dictée se lit à voix haute depuis la transcription fournie.",
       },
     },
     pratique: {
@@ -304,7 +303,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             situation: "Un stagiaire n'a aucun dossier de litige en cours.",
             parade:
-              "Les deux dossiers reconstitués du kit (pages 14 et 15) sont faits pour lui. Ne le laissez pas regarder son voisin travailler pendant quarante-cinq minutes.",
+              "Les deux dossiers reconstitués du kit sont faits pour lui. Ne le laissez pas regarder son voisin travailler pendant quarante-cinq minutes.",
           },
           {
             situation: "Un exploitant est appelé par son bureau et sort en pleine séance.",
@@ -336,7 +335,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           {
             situation: "Les copies sont trop propres, rien n'est barré.",
             parade:
-              "Projeter le courrier volontairement chargé du kit (page 17) et faire barrer collectivement. L'œil se règle en trois minutes.",
+              "Projeter le courrier volontairement chargé du kit et faire barrer collectivement. L'œil se règle en trois minutes.",
           },
           {
             situation: "Un binôme discute dix minutes de qui est responsable de l'avarie.",
@@ -409,7 +408,6 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
       prompt:
         "Acteur : tu es exploitant transport et tu écris pour trois destinataires différents.\nConteXte : la commande client est jointe ; elle est la SEULE source d'information autorisée.\nIntention : produire les trois écrits qui accompagnent cette livraison.\nOutput : 1) les instructions au conducteur, dix lignes maximum, une information par ligne ; 2) le message de confirmation au client, cinq lignes ; 3) le courrier d'accompagnement du transport, une demi-page.\nNormes : n'invente aucune heure, aucune adresse, aucun contact et aucune référence — écris « à confirmer » partout où la commande ne dit rien ; ne propose aucun itinéraire, ne répartis aucun chargement, ne désigne aucun conducteur ; ne rédige ni lettre de voiture, ni déclaration de matière dangereuse, ni aucun document réglementé.",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "25 min", apres: "6 min" },
       captureEcran:
         "La commande d'origine à gauche, les trois sorties à droite, avec un trait reliant chaque heure et chaque adresse à sa ligne d'origine dans la commande — et les « à confirmer » surlignés.",
       verifieLe: VERIFIE_LE,
@@ -442,7 +440,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La commande et les trois sorties sont imprimées dans le kit (pages 20 à 22, datées). Le traçage des chiffres jusqu'à la commande se fait au surligneur sur papier, et c'est même plus démonstratif qu'à l'écran.",
+          "La commande et les trois sorties sont imprimées dans le kit (datées). Le traçage des chiffres jusqu'à la commande se fait au surligneur sur papier, et c'est même plus démonstratif qu'à l'écran.",
       },
     },
     pratique: {
@@ -595,7 +593,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les deux commentaires sont imprimés dans le kit (pages 29 et 30, datés), surlignage déjà porté. Lire le premier à voix haute reste l'essentiel de la démonstration : c'est le ton qui enseigne, pas l'écran.",
+          "Les deux commentaires sont imprimés dans le kit (datés), surlignage déjà porté. Lire le premier à voix haute reste l'essentiel de la démonstration : c'est le ton qui enseigne, pas l'écran.",
       },
     },
     pratique: {
@@ -660,7 +658,7 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quiz papier dans le kit (page 33) et corrigé page 34. Aucune dépendance à un outil, aucune à un réseau.",
+          "Quiz papier dans le kit et corrigé page 34. Aucune dépendance à un outil, aucune à un réseau.",
       },
     },
     synthese: {

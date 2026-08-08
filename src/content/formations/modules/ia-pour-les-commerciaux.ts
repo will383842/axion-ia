@@ -105,7 +105,6 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
       prompt:
         "PROMPT — préparation de rendez-vous, structure AXION\nActeur : tu es un directeur commercial expérimenté qui prépare un rendez-vous avec moi, commercial d'une PME de robinetterie industrielle.\nConteXte : je rencontre jeudi le responsable maintenance d'une usine agroalimentaire d'environ 200 personnes. Je te joins sa plaquette, la page « qui sommes-nous » de son site et le compte rendu de mon appel du 12 juin.\nIntention : entrer en rendez-vous avec un plan de découverte, pas avec un argumentaire.\nOutput : une fiche d'une page — ce que les documents joints m'apprennent, dix questions ouvertes de découverte, trois hypothèses d'enjeux explicitement étiquetées « hypothèse », et la liste de ce que je dois vérifier auprès de lui.\nNormes : n'utilise QUE les documents joints. N'invente aucun chiffre d'affaires, aucun effectif, aucun nom de dirigeant, aucune actualité. Si une information manque, écris « non disponible dans les documents fournis ».",
       outil: "Un seul outil pour toute la journée, celui validé dans la salle.",
-      gain: { avant: "45 min", apres: "10 min" },
       captureEcran:
         "Les deux préparations côte à côte, avec en rouge dans la version libre les quatre éléments inventés — dirigeant, chiffre d'affaires, effectif, actualité — et en vert dans la version sourcée les mentions « non disponible dans les documents fournis ».",
       verifieLe: VERIFIE_LE,
@@ -131,11 +130,11 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
             situation:
               "La réponse libre ne contient aucune erreur repérable : l'entreprise choisie est trop connue.",
             parade:
-              "Basculer sur le dossier de secours du kit (page 6), une PME de trente personnes sans presse. L'invention réapparaît aussitôt. Choisir toujours une cible de la taille de leurs vrais prospects.",
+              "Basculer sur le dossier de secours du kit, une PME de trente personnes sans presse. L'invention réapparaît aussitôt. Choisir toujours une cible de la taille de leurs vrais prospects.",
           },
         ],
         planB:
-          "Quota atteint, réseau tombé, service indisponible : les deux préparations sont imprimées dans le kit formateur (pages 5 à 7, datées). Le pari écrit, la comparaison ligne à ligne et le repérage des inventions se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.",
+          "Quota atteint, réseau tombé, service indisponible : les deux préparations sont imprimées dans le kit formateur (datées). Le pari écrit, la comparaison ligne à ligne et le repérage des inventions se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.",
       },
     },
     pratique: {
@@ -169,7 +168,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             situation: "Un participant n'a apporté aucun document.",
             parade:
-              "Le kit fournit un dossier prospect complet (pages 12 à 15) : plaquette, site imprimé, compte rendu d'appel. Ne le laissez pas regarder travailler son voisin pendant trente-cinq minutes.",
+              "Le kit fournit un dossier prospect complet : plaquette, site imprimé, compte rendu d'appel. Ne le laissez pas regarder travailler son voisin pendant trente-cinq minutes.",
           },
         ],
         planB:
@@ -205,7 +204,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille et corrigé sont imprimés dans le kit (page 19). Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les productions papier.",
+          "Grille et corrigé sont imprimés dans le kit. Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les productions papier.",
       },
     },
     synthese: {
@@ -290,11 +289,11 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           {
             situation: "La dictée en direct est inexploitable à cause du bruit de la salle.",
             parade:
-              "Ne pas recommencer trois fois : la transcription ratée EST l'enseignement. La montrer, nommer la cause, puis afficher la transcription propre du kit (page 9) et poursuivre.",
+              "Ne pas recommencer trois fois : la transcription ratée EST l'enseignement. La montrer, nommer la cause, puis afficher la transcription propre du kit et poursuivre.",
           },
         ],
         planB:
-          "Quota atteint, réseau tombé, service indisponible : la transcription et les trois sorties de la dictée sont imprimées dans le kit formateur (pages 8 et 9, datées). L'annonce des trois causes d'échec et la lecture commentée se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.",
+          "Quota atteint, réseau tombé, service indisponible : la transcription et les trois sorties de la dictée sont imprimées dans le kit formateur (datées). L'annonce des trois causes d'échec et la lecture commentée se tiennent à l'identique sur papier. Ne rien improviser en direct : les sorties du kit ont été vérifiées, celles du jour ne le sont pas.",
       },
     },
     pratique: {
@@ -323,7 +322,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
             situation:
               "Un participant a trois affaires en portefeuille et finit le tri en cinq minutes.",
             parade:
-              "Lui faire trier le pipeline du kit (page 17, quinze affaires) puis préparer la restitution du groupe.",
+              "Lui faire trier le pipeline du kit (quinze affaires) puis préparer la restitution du groupe.",
           },
           {
             situation: "Un participant n'a aucun rendez-vous récent à dicter.",
@@ -359,7 +358,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille et corrigé sont imprimés dans le kit (page 20). Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les tris papier.",
+          "Grille et corrigé sont imprimés dans le kit. Aucun outil n'est nécessaire : le contrôle se fait au stylo sur les tris papier.",
       },
     },
     synthese: {
@@ -459,7 +458,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "Les trois échanges — jeu de rôle, relecture complaisante contre relecture contrainte, notes mises en proposition — sont imprimés dans le kit (pages 22 à 26, datées). Mieux encore : sans outil, tenez vous-même le rôle de l'acheteur face à un volontaire. C'est la seule séquence de la journée où le repli humain vaut la démonstration.",
+          "Les trois échanges — jeu de rôle, relecture complaisante contre relecture contrainte, notes mises en proposition — sont imprimés dans le kit (datées). Mieux encore : sans outil, tenez vous-même le rôle de l'acheteur face à un volontaire. C'est la seule séquence de la journée où le repli humain vaut la démonstration.",
       },
     },
     pratique: {
@@ -529,7 +528,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "La grille de contrôle croisé est imprimée dans le kit (page 31). Aucune dépendance à un outil : le contrôle se fait au stylo sur les propositions papier.",
+          "La grille de contrôle croisé est imprimée dans le kit. Aucune dépendance à un outil : le contrôle se fait au stylo sur les propositions papier.",
       },
     },
     synthese: {
@@ -620,7 +619,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
           },
         ],
         planB:
-          "L'échange de vérification — l'affirmation, la question, la réponse « affirmation non sourcée » — est imprimé dans le kit (page 27, daté). La démonstration se tient sur papier, chronomètre en main, à l'identique.",
+          "L'échange de vérification — l'affirmation, la question, la réponse « affirmation non sourcée » — est imprimé dans le kit (daté). La démonstration se tient sur papier, chronomètre en main, à l'identique.",
       },
     },
     pratique: {
@@ -684,7 +683,7 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
               "Noter la contestation, donner la réponse du corrigé, poursuivre. La question se rediscute à la pause, pas devant la salle.",
           },
         ],
-        planB: "Quiz papier dans le kit (page 32), corrigé page 33. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit, corrigé page 33. Aucune dépendance à un outil.",
       },
     },
     synthese: {

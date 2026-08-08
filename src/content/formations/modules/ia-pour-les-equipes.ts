@@ -81,11 +81,11 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
           {
             situation: "Personne ne propose de cas.",
             parade:
-              "Le kit en fournit trois (page 6), déjà anonymisés. Ne perdez pas cinq minutes à insister — reprenez-en un et avancez.",
+              "Le kit en fournit trois, déjà anonymisés. Ne perdez pas cinq minutes à insister — reprenez-en un et avancez.",
           },
         ],
         planB:
-          "Les deux sorties du cas de secours sont imprimées dans le kit (pages 6 et 7, datées). La comparaison se tient à l'identique.",
+          "Les deux sorties du cas de secours sont imprimées dans le kit (datées). La comparaison se tient à l'identique.",
       },
     },
     pratique: {
@@ -137,7 +137,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "Faire voter à main levée AVANT qu'il ne parle, sur les trois situations suivantes. L'ordre de parole décide de tout.",
           },
         ],
-        planB: "Les dix situations et leur corrigé sont imprimés dans le kit (page 9).",
+        planB: "Les dix situations et leur corrigé sont imprimés dans le kit.",
       },
     },
     synthese: {
@@ -184,7 +184,6 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
       prompt:
         "Même demande que précédemment, avec en plus :\nFORMAT ATTENDU — reproduis exactement cette structure :\n« Objet : … | Contexte en une phrase : … | Trois points, un par ligne, commençant par un verbe : … | Prochaine étape avec une date : … »\nCRITÈRES DE REFUS — ne rends pas ta réponse si elle contient un superlatif, un chiffre que je ne t'ai pas donné, ou plus de 180 mots.",
       outil: "L'outil unique tenu toute la journée.",
-      gain: { avant: "10 min de retouche", apres: "aucune" },
       captureEcran:
         "Les deux sorties, avec la structure imposée surlignée dans la seconde pour montrer qu'elle est suivie littéralement.",
       verifieLe: VERIFIE_LE,
@@ -206,7 +205,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "Ne pas réécrire tout : relancer avec « ta réponse ne suit pas la structure demandée, refais-la en la suivant littéralement ». C'est la démonstration du principe de relance.",
           },
         ],
-        planB: "Les deux sorties sont imprimées dans le kit (pages 13 et 14, datées).",
+        planB: "Les deux sorties sont imprimées dans le kit (datées).",
       },
     },
     pratique: {
@@ -306,7 +305,6 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
       prompt:
         "Voici un tableau de quinze lignes. Pour CHAQUE ligne, produis un document suivant exactement ce modèle :\n[coller ici le document validé au module 2]\nRègles : ne modifie la structure sur aucune ligne ; n'ajoute aucune information absente du tableau ; si une cellule est vide, écris [DONNÉE MANQUANTE] et poursuis ; numérote chaque document par la valeur de la première colonne.",
       outil: "L'outil unique tenu toute la journée.",
-      gain: { avant: "15 documents", apres: "1 demande" },
       captureEcran:
         "La sortie de série, avec deux documents mis côte à côte pour montrer que la structure est identique.",
       verifieLe: VERIFIE_LE,
@@ -328,7 +326,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "Normal sur les longues séries : relancer avec « poursuis à partir de la ligne 6, même modèle ». Le montrer est utile — la salle le rencontrera.",
           },
         ],
-        planB: "La série de démonstration est imprimée dans le kit (pages 18 à 20, datées).",
+        planB: "La série de démonstration est imprimée dans le kit (datées).",
       },
     },
     pratique: {
@@ -381,7 +379,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "Ne pas la donner tout de suite : dire dans quel exemplaire elle se trouve et laisser trente secondes. La trouver soi-même change le souvenir.",
           },
         ],
-        planB: "Les séries et l'erreur glissée sont dans le kit (page 22).",
+        planB: "Les séries et l'erreur glissée sont dans le kit.",
       },
     },
     synthese: {
@@ -448,7 +446,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "C'est une découverte utile, pas un échec : notez-la, elle devient la première ligne de leur feuille de route.",
           },
         ],
-        planB: "Les deux sorties sont imprimées dans le kit (pages 25 et 26, datées).",
+        planB: "Les deux sorties sont imprimées dans le kit (datées).",
       },
     },
     pratique: {
@@ -499,7 +497,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB: "Quiz et corrigé imprimés dans le kit (pages 28 et 29).",
+        planB: "Quiz et corrigé imprimés dans le kit.",
       },
     },
     synthese: {

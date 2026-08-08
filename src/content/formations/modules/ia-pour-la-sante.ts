@@ -88,7 +88,6 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
       prompt:
         "Voici un courrier de sortie FICTIF, fourni pour une formation : il ne décrit aucune personne réelle. Reprends-le sans modifier aucune information : corrige la syntaxe, mets les dates et les rendez-vous de suivi en liste, et adopte un ton professionnel et sobre. N'ajoute aucun élément médical, aucun conseil, aucune interprétation. Si une information te semble manquer, écris « À COMPLÉTER » au lieu d'inventer.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "20 min", apres: "5 min" },
       captureEcran:
         "Les deux versions côte à côte : le courrier fictif d'origine à gauche, la reprise à droite, avec les mentions « À COMPLÉTER » entourées — c'est elles qu'on commente, pas la fluidité.",
       verifieLe: VERIFIE_LE,
@@ -117,7 +116,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Quota atteint ou service indisponible : la version d'origine et la reprise sont imprimées dans le kit (pages 4 et 5, datées). La comparaison ligne à ligne et la lecture du prompt se font sur papier, sans rien perdre.",
+          "Quota atteint ou service indisponible : la version d'origine et la reprise sont imprimées dans le kit (datées). La comparaison ligne à ligne et la lecture du prompt se font sur papier, sans rien perdre.",
       },
     },
     pratique: {
@@ -156,7 +155,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "L'atelier ne dépend d'aucun outil : les conditions d'utilisation des trois comptes les plus répandus sont imprimées dans le kit (pages 6 et 7, datées), la fiche et la liste des douze écrits sont sur papier.",
+          "L'atelier ne dépend d'aucun outil : les conditions d'utilisation des trois comptes les plus répandus sont imprimées dans le kit (datées), la fiche et la liste des douze écrits sont sur papier.",
       },
     },
     verification: {
@@ -183,7 +182,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La fiche des trois régimes et le corrigé du classement sont imprimés dans le kit (page 8). Sans vidéoprojecteur, ils se distribuent et se commentent à l'oral.",
+          "La fiche des trois régimes et le corrigé du classement sont imprimés dans le kit. Sans vidéoprojecteur, ils se distribuent et se commentent à l'oral.",
       },
     },
     synthese: {
@@ -269,7 +268,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La sortie est imprimée et surlignée dans le kit (page 10, datée). La démonstration se rejoue sur papier : lecture du texte, pari de la salle, puis lecture de la liste des déductions.",
+          "La sortie est imprimée et surlignée dans le kit (datée). La démonstration se rejoue sur papier : lecture du texte, pari de la salle, puis lecture de la liste des déductions.",
       },
     },
     pratique: {
@@ -306,7 +305,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Réseau ou outil indisponible : la neutralisation et son contrôle sont déjà hors outil, ils se tiennent tels quels. L'écrit final se rédige à la main sur les trames papier du kit (pages 12 à 15, datées) — chacun relancera la mise en forme chez lui, la structure est acquise.",
+          "Réseau ou outil indisponible : la neutralisation et son contrôle sont déjà hors outil, ils se tiennent tels quels. L'écrit final se rédige à la main sur les trames papier du kit (datées) — chacun relancera la mise en forme chez lui, la structure est acquise.",
       },
     },
     verification: {
@@ -333,7 +332,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "Grille et corrigé sont imprimés dans le kit (page 16). La vérification croisée ne dépend d'aucun outil.",
+          "Grille et corrigé sont imprimés dans le kit. La vérification croisée ne dépend d'aucun outil.",
       },
     },
     synthese: {
@@ -384,7 +383,6 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
       prompt:
         "Voici un rapport public de quarante pages, joint en PDF. Rédige une note d'une page pour la direction d'un établissement de santé : trois constats principaux, deux points de vigilance, trois actions recommandées par le rapport lui-même. Pour chaque élément, cite la page d'où il vient. N'ajoute aucune recommandation de ton cru. Si une rubrique ne peut pas être remplie à partir du texte, écris « le rapport ne le précise pas ».",
       outil: "Un seul outil, celui validé dans la salle.",
-      gain: { avant: "2 h", apres: "20 min" },
       captureEcran:
         "La note d'une page projetée à côté du sommaire du rapport, avec les renvois de page entourés — et une ligne « le rapport ne le précise pas » laissée visible.",
       verifieLe: VERIFIE_LE,
@@ -413,7 +411,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La note et le rapport sont imprimés dans le kit (pages 18 et 19, datées), les deux pages à vérifier marquées d'un signet. La démonstration se rejoue sur papier, vérification en direct comprise.",
+          "La note et le rapport sont imprimés dans le kit (datées), les deux pages à vérifier marquées d'un signet. La démonstration se rejoue sur papier, vérification en direct comprise.",
       },
     },
     pratique: {
@@ -555,7 +553,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
           },
         ],
         planB:
-          "La fiche-procédure du kit (page 25, datée) est imprimée : la démonstration devient une lecture commentée, en-tête d'abord, et la salle amende la fiche à la main.",
+          "La fiche-procédure du kit (datée) est imprimée : la démonstration devient une lecture commentée, en-tête d'abord, et la salle amende la fiche à la main.",
       },
     },
     pratique: {
@@ -618,8 +616,7 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
               "Le tenir quand même, en réduisant le commentaire du corrigé aux questions les plus ratées. On ne remplace jamais l'évaluation par un tour de table.",
           },
         ],
-        planB:
-          "Quiz papier dans le kit (page 27) et corrigé page 28. Aucune dépendance à un outil.",
+        planB: "Quiz papier dans le kit et corrigé page 28. Aucune dépendance à un outil.",
       },
     },
     synthese: {

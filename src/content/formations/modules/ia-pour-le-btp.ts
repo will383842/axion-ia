@@ -94,7 +94,6 @@ export const IA_POUR_LE_BTP: EnrichissementFormation = [
       prompt:
         "Voici trois notes de chantier dictées telles quelles en fin de journée, sans ponctuation ni mise en forme. Rédige un compte-rendu de chantier diffusable aux intervenants.\nStructure imposée : chantier et date · présents · avancement par lot · points de blocage · décisions prises · actions à suivre, chacune avec un responsable et une échéance.\nRègles : n'utilise que ce qui figure dans les notes ; si une information manque (nom, date, lot, échéance), écris « à compléter » sans l'inventer ; aucun montant, aucun engagement de délai que les notes ne portent pas ; phrases courtes, ton factuel.\nLes trois notes dictées sont collées à la suite de ce message.",
       outil: "Un seul outil, celui validé dans la salle (Claude ou ChatGPT selon le groupe).",
-      gain: { avant: "45 min", apres: "10 min" },
       captureEcran:
         "Les notes dictées brutes à gauche, le compte-rendu structuré à droite, avec les « à compléter » surlignés — ce sont eux qui prouvent que rien n'a été inventé.",
       verifieLe: VERIFIE_LE,
