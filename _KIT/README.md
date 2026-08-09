@@ -110,7 +110,9 @@ ssh -N -L 5433:127.0.0.1:5432 axion-prod &
 
 # 2. Environnement
 export DATABASE_URL="postgresql://axionia:<motdepasse>@127.0.0.1:5433/axionia"
-export R2_ACCOUNT_ID=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... R2_BUCKET=...
+export R2_ACCOUNT_ID=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... R2_BUCKET_NAME=...
+# ces quatre-là se relisent depuis le conteneur worker :
+#   ssh axion-prod 'docker exec <worker> printenv | grep -E "^(DATABASE_URL|R2_)"'
 
 # 3. À sec d'abord : il dit ce qu'il ferait sans rien écrire
 pnpm tsx scripts/kit-formateur/publier-vers-r2.ts --dry-run
@@ -134,6 +136,15 @@ rendent le même 404.
 ⚠️ Le kit n'est **pas** produit par le Formation Engine : `construireSupport`
 lève volontairement pour ce type, et `TOUS_SUPPORT_TYPES` l'exclut. Le générer
 depuis la console produirait un classeur vide qui écraserait le vrai.
+
+## Publication effectuée
+
+Les 22 kits ont été publiés le 2026-08-09 : objets présents sur R2 (`22/22`
+vérifiés), 22 lignes `SupportFormation` en version 1, **aucune `pdfUrl` figée**.
+Un second passage du script rend « 22 inchangés » — l'idempotence est vérifiée.
+
+Republier après avoir modifié un PDF : relancer la même commande, elle
+n'enverra que ce qui a changé.
 
 ## État d'avancement
 
