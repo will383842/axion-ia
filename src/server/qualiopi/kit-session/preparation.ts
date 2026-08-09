@@ -44,6 +44,16 @@ export interface SortieCapturee {
 export interface PreparationSession {
   readonly sessionId: string;
   readonly etape: EtapePreparation;
+  /**
+   * Faut-il montrer quoi que ce soit à l'utilisateur ?
+   *
+   * Faux quand il n'y a plus rien à faire (`pret`) ET quand la session est
+   * TERMINÉE ou annulée : préparer le filet d'une séance déjà passée n'a pas de
+   * sens, et un rappel sans objet apprend à ignorer les rappels. La règle
+   * d'alerte `kit_sorties_non_pretes` applique la même exclusion — c'est la
+   * même vérité, elle doit être dite pareil aux deux endroits.
+   */
+  readonly aPreparer: boolean;
   readonly formationSlug: string;
   readonly kitPublie: boolean;
   readonly nbSorties: number;
@@ -85,6 +95,7 @@ export async function lirePreparation(sessionId: string): Promise<PreparationSes
     where: { id: sessionId },
     select: {
       id: true,
+      statut: true,
       formationId: true,
       formation: { select: { slug: true } },
       kitSorties: { select: { sorties: true, genereLe: true, valideLe: true } },
@@ -112,9 +123,13 @@ export async function lirePreparation(sessionId: string): Promise<PreparationSes
         ? "a_valider"
         : "pret";
 
+  // `reportee` reste à préparer : la séance aura lieu, plus tard.
+  const terminee = session.statut === "realisee" || session.statut === "annulee";
+
   return {
     sessionId: session.id,
     etape,
+    aPreparer: !terminee && etape !== "pret",
     formationSlug: session.formation.slug,
     kitPublie,
     nbSorties: sorties.length,

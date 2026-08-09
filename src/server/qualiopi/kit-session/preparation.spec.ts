@@ -27,9 +27,10 @@ const p = prisma as unknown as {
 
 const SESSION = "11111111-1111-1111-1111-111111111111";
 
-function session(kitSorties: unknown) {
+function session(kitSorties: unknown, statut = "planifiee") {
   return {
     id: SESSION,
+    statut,
     formationId: "f-1",
     formation: { slug: "ia-pour-les-rh" },
     kitSorties,
@@ -100,6 +101,39 @@ describe("lirePreparation — l'état se déduit", () => {
     expect(where.pdfKey).toEqual({ not: null });
   });
 
+  it("🔴 n'invite à RIEN préparer sur une session déjà réalisée", async () => {
+    // Verifie visuellement en prod le 2026-08-09 : le bloc s'affichait sur la
+    // session INVEST SUN, terminee depuis neuf jours, et demandait de produire
+    // les sorties. Un rappel sans objet apprend a ignorer les rappels.
+    p.trainingSession.findUnique.mockResolvedValue(session(null, "realisee"));
+    p.supportFormation.count.mockResolvedValue(1);
+
+    const prep = await lirePreparation(SESSION);
+
+    expect(prep?.etape).toBe("a_generer");
+    expect(prep?.aPreparer).toBe(false);
+  });
+
+  it("n'invite à rien préparer sur une session annulée", async () => {
+    p.trainingSession.findUnique.mockResolvedValue(session(null, "annulee"));
+    p.supportFormation.count.mockResolvedValue(1);
+    expect((await lirePreparation(SESSION))?.aPreparer).toBe(false);
+  });
+
+  it("invite à préparer une session REPORTÉE — la séance aura lieu, plus tard", async () => {
+    p.trainingSession.findUnique.mockResolvedValue(session(null, "reportee"));
+    p.supportFormation.count.mockResolvedValue(1);
+    expect((await lirePreparation(SESSION))?.aPreparer).toBe(true);
+  });
+
+  it("n'invite à rien quand tout est prêt", async () => {
+    p.trainingSession.findUnique.mockResolvedValue(
+      session({ sorties: UNE_SORTIE, genereLe: new Date(), valideLe: new Date() }),
+    );
+    p.supportFormation.count.mockResolvedValue(1);
+    expect((await lirePreparation(SESSION))?.aPreparer).toBe(false);
+  });
+
   it("rend null sur une session inconnue, sans lever", async () => {
     p.trainingSession.findUnique.mockResolvedValue(null);
     expect(await lirePreparation(SESSION)).toBeNull();
@@ -132,12 +166,14 @@ describe("listerSessionsAPreparer — l'écran anti-oubli", () => {
     p.trainingSession.findUnique
       .mockResolvedValueOnce({
         id: "s-pret",
+        statut: "planifiee",
         formationId: "f",
         formation: { slug: "x" },
         kitSorties: { sorties: UNE_SORTIE, genereLe: new Date(), valideLe: new Date() },
       })
       .mockResolvedValueOnce({
         id: "s-todo",
+        statut: "planifiee",
         formationId: "f",
         formation: { slug: "x" },
         kitSorties: null,
