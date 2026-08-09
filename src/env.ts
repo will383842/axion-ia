@@ -55,6 +55,17 @@ export const env = createEnv({
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
 
+    // Bot Telegram DÉDIÉ au groupe 📅 Calendly (2026-08-09). Absent = les
+    // rendez-vous repartent sur le bot historique, dans le salon de repli
+    // (`TELEGRAM_CHAT_ID_RDV`) — jamais dans le salon Calendly, où ce bot-là
+    // n'est pas membre. Cf. `resolveTelegramTarget()` dans notifications/routing.ts.
+    //
+    // Les 8 `TELEGRAM_CHAT_ID_<GROUPE>` ne sont volontairement PAS déclarés ici :
+    // ils sont lus par `process.env` direct dans `routing.ts`, comme les 3
+    // existants depuis 2026-07-09. Les déclarer ici obligerait à toucher deux
+    // fichiers pour ajouter un groupe.
+    TELEGRAM_CALENDLY_BOT_TOKEN: z.string().optional(),
+
     // WhatsApp (CallMeBot) — notif GRATUITE des leads humains vers le numéro perso.
     // Optionnelles : sans elles le canal WhatsApp est un no-op silencieux (le reste
     // des notifs Telegram continue normalement). Cf. `src/server/notifications/channels/whatsapp.ts`.
@@ -73,6 +84,14 @@ export const env = createEnv({
     // À générer sur https://calendly.com/integrations/api_webhooks.
     // ⚠️ Server-only : ne JAMAIS l'exposer via NEXT_PUBLIC_*.
     CALENDLY_API_TOKEN: z.string().optional(),
+
+    // Clé de signature du webhook Calendly (2026-08-09, ADR 0039).
+    // Absente = `/api/calendly/webhook` répond 200 sans rien faire, et le
+    // sondage BullMQ (≤ 60 s) reste le chemin nominal. Posée = livraison
+    // instantanée (~2 s). Exige un plan Calendly Standard : le plan gratuit
+    // n'a pas droit aux abonnements webhook.
+    // Obtenue UNE SEULE FOIS via `pnpm calendly:webhook:subscribe`.
+    CALENDLY_WEBHOOK_SIGNING_KEY: z.string().optional(),
 
     // ────────────────────────────────────────────────────────────────
     // Stripe Checkout V1 (Sprint X.2 — Booking V1) + ADR 0013.
@@ -358,11 +377,13 @@ export const env = createEnv({
     MAILWIZZ_API_URL: process.env.MAILWIZZ_API_URL,
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
+    TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
     WHATSAPP_CALLMEBOT_APIKEY: process.env.WHATSAPP_CALLMEBOT_APIKEY,
     WHATSAPP_NOTIFY_PHONE: process.env.WHATSAPP_NOTIFY_PHONE,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
+    CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
     // Stripe Checkout V1 (Booking V1 — ADR 0013)
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,

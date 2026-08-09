@@ -27,10 +27,23 @@ name: Calendly · rafraîchissement horaire
 
 on:
   schedule:
-    # Toutes les heures, à la minute 17 — décalé de l'heure pile pour ne pas
-    # se retrouver dans la bousculade de tous les crons GitHub du monde, qui
-    # se déclenchent massivement à :00 et retardent l'exécution.
-    - cron: "17 * * * *"
+    # ⚠️ CE WORKFLOW N'EST PLUS LE CHEMIN NOMINAL (2026-08-09).
+    #
+    # Le sondage tourne désormais sur le worker BullMQ, toutes les minutes
+    # (`src/server/queue/workers/calendly-poll-worker.ts`). Ce cron-ci est
+    # rétrogradé en FILET DE SÉCURITÉ : il ne sert plus qu'à découvrir les
+    # réservations si le worker est mort, si Redis est tombé, ou si quelqu'un a
+    # posé `BULLMQ_DISABLED=true` sur l'application worker sans s'en rendre compte.
+    #
+    # Pourquoi il n'est PAS supprimé : c'est le seul chemin qui ne dépend ni de
+    # Redis, ni du conteneur worker, ni de BullMQ. Le garder coûte 4 requêtes API
+    # par jour et garantit qu'aucune réservation ne reste invisible plus de 6 h,
+    # quel que soit l'état de l'infrastructure.
+    #
+    # Pourquoi il ne suffisait PAS tout seul : GitHub ne garantit pas l'heure de
+    # déclenchement. Relevé le 2026-08-09 sur 8 passages consécutifs, un trou de
+    # 2 h 44 entre 23:45 et 02:29 — d'où le passage sur BullMQ.
+    - cron: "17 */6 * * *"
   workflow_dispatch:
 
 # Un seul rafraîchissement à la fois. `cancel-in-progress: false` : si un

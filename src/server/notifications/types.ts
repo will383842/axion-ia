@@ -254,16 +254,29 @@ export type NotificationEvent =
         eventUri: string;
         inviteeEmail: string;
         inviteeName: string;
+        /** ISO si connu, sinon texte libre (« (voir mail Calendly) »). */
         eventStartTime: string;
         eventName: string;
         pageUrl?: string;
         utmSource?: string;
         utmCampaign?: string;
+        /** Champs enrichis depuis l'API Calendly (2026-08-09). */
+        inviteePhone?: string;
+        cancelUrl?: string;
       };
     }
   | {
       category: "CALENDLY_INVITEE_CANCELED";
-      payload: { eventUri: string; inviteeEmail: string; reason?: string };
+      payload: {
+        eventUri: string;
+        inviteeEmail: string;
+        reason?: string;
+        // Ajoutés le 2026-08-09 : une annulation qui ne dit ni QUI ni QUAND
+        // oblige à ouvrir la console pour comprendre de quel RDV il s'agit.
+        inviteeName?: string;
+        eventName?: string;
+        eventStartTime?: string;
+      };
     }
   | {
       category: "CALENDLY_INVITEE_RESCHEDULED";
@@ -272,6 +285,8 @@ export type NotificationEvent =
         inviteeEmail: string;
         oldStart: string;
         newStart: string;
+        inviteeName?: string;
+        eventName?: string;
       };
     }
   // === Reply admin (Chantier 5) ===

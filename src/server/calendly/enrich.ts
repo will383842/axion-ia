@@ -173,6 +173,13 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
   // pas faire passer un enrichissement réussi pour un échec.
   if (canceled || rescheduled) {
     const inviteeEmail = (data["inviteeEmail"] as string | undefined) ?? row.inviteeEmail ?? "";
+    // Le nom et le type de RDV viennent de la ligne, complétés par ce que
+    // l'enrichissement vient d'écrire. Sans eux, l'alerte disait seulement
+    // « annulation » + un identifiant technique : illisible depuis un téléphone,
+    // et il fallait ouvrir la console pour savoir DE QUEL rendez-vous il s'agit.
+    const inviteeName = (data["inviteeName"] as string | undefined) ?? row.inviteeName ?? undefined;
+    const eventName =
+      (data["eventTypeName"] as string | undefined) ?? row.eventTypeName ?? undefined;
     try {
       if (canceled) {
         await notify({
@@ -181,6 +188,9 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
             eventUri: eventId,
             inviteeEmail,
             reason: "Annulation constatée côté Calendly",
+            ...(inviteeName ? { inviteeName } : {}),
+            ...(eventName ? { eventName } : {}),
+            ...(row.startTime ? { eventStartTime: row.startTime.toISOString() } : {}),
           },
           // Une annulation ne doit être annoncée qu'une fois, même si
           // l'enrichissement est relancé à la main derrière.
@@ -195,6 +205,8 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
             inviteeEmail,
             oldStart: row.startTime.toISOString(),
             newStart: d.startTime.toISOString(),
+            ...(inviteeName ? { inviteeName } : {}),
+            ...(eventName ? { eventName } : {}),
           },
           dedupKey: `cal-resched-${eventId}-${d.startTime.toISOString()}`,
           dedupTtlSec: 86_400,

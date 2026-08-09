@@ -7,7 +7,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { sendWhatsAppRaw } from "../channels/whatsapp";
-import { shouldNotifyWhatsApp } from "../routing";
+import { shouldNotifyWhatsApp, telegramGroupFor, ALL_NOTIFICATION_CATEGORIES } from "../routing";
 import { escapeMarkdownV2, markdownV2ToPlain, formatNotificationPlain } from "../format";
 import { notify, flushPendingDispatches } from "../index";
 
@@ -85,44 +85,62 @@ describe("sendWhatsAppRaw", () => {
 
 // ── 2. Routing leads-only ────────────────────────────────────────────────────
 describe("shouldNotifyWhatsApp", () => {
-  it("vrai pour les leads humains (contact/devis/RDV/candidature)", () => {
+  // Périmètre arrêté par Will le 2026-08-09 : « ce à quoi je dois réagir dans
+  // l'heure ». CallMeBot n'écrit que dans une seule conversation, donc tout ce
+  // qu'on y met dilue le reste — cette liste est un budget, pas une préférence.
+  it("vrai pour les 3 événements Calendly", () => {
     for (const c of [
-      "CONTACT_FORM_SUBMITTED",
-      "QUOTE_REQUEST_RECEIVED",
-      "AUDIT_REQUEST_SUBMITTED",
-      "JOB_APPLICATION_RECEIVED",
       "CALENDLY_INVITEE_CREATED",
-      "PODCAST_REQUEST_SUBMITTED",
+      "CALENDLY_INVITEE_CANCELED",
+      "CALENDLY_INVITEE_RESCHEDULED",
     ] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(true);
     }
   });
 
-  it("faux pour système / newsletter / avis / ops", () => {
+  it("vrai pour les demandes de prestation, la presse, l'investisseur et les avis", () => {
     for (const c of [
-      "NEWSLETTER_CONFIRMED",
+      "INTERVENTION_REQUEST_SUBMITTED",
+      "AUDIT_REQUEST_SUBMITTED",
+      "IMPLEMENTATION_REQUEST_SUBMITTED",
+      "QUOTE_REQUEST_RECEIVED",
+      "PRESS_REQUEST_SUBMITTED",
+      "INVESTOR_INQUIRY_RECEIVED",
+      "SPEAKER_INVITATION_RECEIVED",
       "REVIEW_SUBMITTED",
-      "SECURITY_ALERT",
-      "BACKUP_FAILED",
-      "DEPLOY_SUCCESS",
-      "BOOKING_CANCELLED",
+    ] as const) {
+      expect(shouldNotifyWhatsApp(c), c).toBe(true);
+    }
+  });
+
+  // 🔴 EXCLUSIONS EXPLICITES — décision de Will du 2026-08-09, pas un oubli.
+  // Ce test est là pour ROUGIR si quelqu'un rajoute une de ces catégories en
+  // croyant combler un trou. Si le besoin change, il faut le lui redemander et
+  // modifier ce test en connaissance de cause.
+  it("faux pour les candidatures (retirées le 2026-08-09 — volume)", () => {
+    for (const c of ["JOB_APPLICATION_RECEIVED", "RECRUITMENT_RECEIVED"] as const) {
+      expect(shouldNotifyWhatsApp(c), c).toBe(false);
+    }
+  });
+
+  it("faux pour contact / support / podcast (retirés le 2026-08-09 — pas urgents)", () => {
+    for (const c of [
+      "CONTACT_FORM_SUBMITTED",
+      "CUSTOMER_SUPPORT_REQUEST",
+      "PODCAST_REQUEST_SUBMITTED",
     ] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }
   });
 
-  // Retiré de la liste WhatsApp le 2026-07-29 — pas un changement d'avis sur
-  // l'intérêt de doubler une réservation, mais un constat : le tunnel de
-  // réservation payante est éteint depuis l'audit 2026-07-09
-  // (`createBookingAction` / `postOption48hAction` n'existent plus), donc ces
-  // deux catégories n'ont PLUS AUCUN ÉMETTEUR. Les laisser entretenait
-  // l'illusion que WhatsApp couvrait des réservations impossibles, et masquait
-  // que le seul canal de RDV vivant est Calendly.
-  //
-  // Ce test échouera le jour où le tunnel renaîtra — c'est voulu : il faudra
-  // alors décider explicitement de re-doubler ces alertes sur WhatsApp.
-  it("faux pour le tunnel de réservation éteint (sans émetteur)", () => {
-    for (const c of ["BOOKING_CREATED", "OPTION_POSTED"] as const) {
+  // Garde générale plutôt qu'un échantillon : couvre newsletter, déploiements,
+  // sauvegardes, incidents, sécurité, Stripe, monitoring ET les 6 dormantes
+  // BOOKING_*/OPTION_*, sans avoir à les énumérer — et couvrira aussi toute
+  // catégorie technique ajoutée plus tard.
+  it("AUCUNE catégorie du groupe Système ne part sur WhatsApp", () => {
+    const systeme = ALL_NOTIFICATION_CATEGORIES.filter((c) => telegramGroupFor(c) === "system");
+    expect(systeme.length).toBeGreaterThan(15);
+    for (const c of systeme) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }
   });
@@ -190,13 +208,14 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
     process.env.WHATSAPP_NOTIFY_PHONE = "+33755512345";
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
+    // Demande de devis, et non plus `CONTACT_FORM_SUBMITTED` : ce dernier est
+    // sorti du canal WhatsApp le 2026-08-09 (décision Will).
     const result = await notify({
-      category: "CONTACT_FORM_SUBMITTED",
+      category: "QUOTE_REQUEST_RECEIVED",
       payload: {
         submissionId: "sub_1",
         contactName: "Marie",
         contactEmail: "marie@example.com",
-        formType: "contact",
         locale: "fr",
       },
     });
@@ -214,12 +233,11 @@ describe("notify() → doublon WhatsApp pour les leads", () => {
     fetchMock.mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
 
     const result = await notify({
-      category: "CONTACT_FORM_SUBMITTED",
+      category: "QUOTE_REQUEST_RECEIVED",
       payload: {
         submissionId: "sub_2",
         contactName: "Jean",
         contactEmail: "jean@example.com",
-        formType: "contact",
         locale: "fr",
       },
     });

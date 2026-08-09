@@ -23,7 +23,7 @@ import {
   shouldDispatchAsync,
   shouldNotifyWhatsApp,
   telegramGroupFor,
-  resolveTelegramChatId,
+  resolveTelegramTarget,
 } from "./routing";
 import { formatNotification, markdownV2ToPlain } from "./format";
 import { sendTelegramRaw } from "./channels/telegram";
@@ -56,21 +56,31 @@ async function dispatchChannels(
 
   for (const ch of channels) {
     if (ch === "telegram") {
-      // Routage 3 groupes : chaque catégorie → son groupe (RDV/Messages/Système).
-      const tgChatId = resolveTelegramChatId(telegramGroupFor(category));
-      tasks.push(
-        sendTelegramRaw({
-          text: formattedText,
-          silent: severity === "info",
-          ...(tgChatId ? { chatId: tgChatId } : {}),
-        })
-          .then((ok) => {
-            results.telegram = ok ? "sent" : "failed";
+      // Routage 8 groupes thématiques (refonte 2026-08-09). `resolveTelegramTarget`
+      // rend le COUPLE (bot, salon) — jamais l'un sans l'autre, sinon on peut
+      // fabriquer un bot qui vise un salon dont il n'est pas membre.
+      const target = resolveTelegramTarget(telegramGroupFor(category));
+      if (!target) {
+        // Ni bot ni salon configurés : ce n'est pas un échec d'envoi, c'est une
+        // absence de configuration. On le distingue pour ne pas faire croire à
+        // une panne réseau dans les logs.
+        results.telegram = "skipped";
+      } else {
+        tasks.push(
+          sendTelegramRaw({
+            text: formattedText,
+            silent: severity === "info",
+            chatId: target.chatId,
+            botToken: target.botToken,
           })
-          .catch(() => {
-            results.telegram = "failed";
-          }),
-      );
+            .then((ok) => {
+              results.telegram = ok ? "sent" : "failed";
+            })
+            .catch(() => {
+              results.telegram = "failed";
+            }),
+        );
+      }
     } else if (ch === "sentry") {
       tasks.push(
         sendSentryBreadcrumb(category, severity, formattedText.slice(0, 200), payload)

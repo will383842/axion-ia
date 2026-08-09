@@ -109,13 +109,18 @@ describe("notify()", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  // « skipped » et non « failed » depuis le 2026-08-09 : l'absence de jeton est
+  // une CONFIGURATION manquante, pas un envoi qui a échoué. Les confondre
+  // faisait chercher une panne réseau dans les logs là où il manquait une
+  // variable d'environnement. `ok` reste faux dans les deux cas.
   it("fail-soft si TELEGRAM_BOT_TOKEN manquant", async () => {
     delete process.env.TELEGRAM_BOT_TOKEN;
     const result = await notify({
       category: "NEWSLETTER_CONFIRMED",
       payload: { email: "x@y.com" },
     });
-    expect(result.channels.telegram).toBe("failed");
+    expect(result.channels.telegram).toBe("skipped");
+    expect(result.ok).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

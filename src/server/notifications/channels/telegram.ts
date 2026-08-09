@@ -18,13 +18,21 @@ export interface TelegramChannelOptions {
   timeoutMs?: number;
   /**
    * chat_id cible (routage par groupe). Défaut : `TELEGRAM_CHAT_ID` (legacy
-   * 1-groupe). Voir `resolveTelegramChatId()` dans routing.ts.
+   * 1-groupe). Voir `resolveTelegramTarget()` dans routing.ts.
    */
   chatId?: string;
+  /**
+   * Jeton du bot émetteur. Défaut : `TELEGRAM_BOT_TOKEN` (bot historique).
+   *
+   * ⚠️ Ne se passe JAMAIS indépendamment de `chatId` : un bot ne peut écrire que
+   * dans les salons dont il est membre. `resolveTelegramTarget()` produit le
+   * couple cohérent — ne pas reconstruire l'un des deux à la main ici.
+   */
+  botToken?: string;
 }
 
 export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boolean> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const token = opts.botToken ?? process.env.TELEGRAM_BOT_TOKEN;
   const chatId = opts.chatId ?? process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
     if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "production") {
