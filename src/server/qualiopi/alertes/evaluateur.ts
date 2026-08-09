@@ -268,6 +268,84 @@ async function regleSessionSansFormateur(now: Date): Promise<AlerteCandidate[]> 
 }
 
 /**
+ * R03quinquies — Sorties de démonstration non prêtes pour une session imminente.
+ *
+ * Le classeur imprimé promet au formateur un filet : « quand l'outil tombe, les
+ * sorties sont imprimées dans le kit ». Ces sorties se produisent session par
+ * session — et rien ne rappelait de les faire. Un filet qu'on oublie de tendre
+ * ne se remarque qu'au moment de la chute, devant la salle.
+ *
+ * Deux états distincts, deux messages : ne RIEN avoir produit, ou avoir produit
+ * sans que personne n'ait relu. Le second est le plus traître, parce qu'il
+ * ressemble à du travail fait — or les fiches promettent que « les sorties du
+ * kit ont été vérifiées », et une démonstration peut rater sans que le modèle
+ * le signale.
+ *
+ * PAS d'alerte quand la formation n'a pas de classeur publié : il n'y aurait
+ * rien à préparer, et une alerte insoluble apprend à ignorer les alertes —
+ * c'est la garde que `regleDiaporamaManquant` pose déjà pour les formations
+ * sur-mesure.
+ */
+async function regleSortiesKitNonPretes(now: Date): Promise<AlerteCandidate[]> {
+  const horizon = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      // Borne basse comme les règles voisines : sans elle, la première
+      // exécution remonterait tout l'historique d'un coup.
+      dateDebut: { lte: horizon, gte: daysAgo(365, now) },
+    },
+    select: {
+      id: true,
+      numero: true,
+      titreSession: true,
+      dateDebut: true,
+      formationId: true,
+      client: { select: { raisonSociale: true } },
+      kitSorties: { select: { sorties: true, valideLe: true } },
+    },
+    take: 50,
+  });
+
+  const candidates: AlerteCandidate[] = [];
+  for (const s of sessions) {
+    const kitPublie =
+      (await prisma.supportFormation.count({
+        where: {
+          formationId: s.formationId,
+          type: "kit_formateur_imprime",
+          pdfKey: { not: null },
+        },
+      })) > 0;
+    if (!kitPublie) continue;
+
+    const nbSorties = Array.isArray(s.kitSorties?.sorties) ? s.kitSorties.sorties.length : 0;
+    const validees = s.kitSorties?.valideLe != null;
+    if (nbSorties > 0 && validees) continue;
+
+    const date = s.dateDebut.toLocaleDateString("fr-FR");
+    const passee = s.dateDebut.getTime() < now.getTime();
+    const quand = passee ? `a démarré le ${date}` : `démarre le ${date}`;
+
+    candidates.push({
+      code: "kit_sorties_non_pretes",
+      niveau: "important" as AlerteNiveau,
+      titre:
+        nbSorties === 0
+          ? "Sorties de démonstration non produites"
+          : "Sorties de démonstration non relues",
+      message:
+        nbSorties === 0
+          ? `La session ${designerSession(s)} ${quand} sans ses sorties de démonstration. Si l'outil tombe en salle, le formateur n'a pas de repli : produisez-les depuis la page de la session.`
+          : `La session ${designerSession(s)} ${quand} avec ${nbSorties} sorties produites mais que personne n'a relues. Le classeur promet au formateur qu'elles ont été vérifiées — une démonstration ratée ne se découvre qu'en salle.`,
+      cibleType: "TrainingSession",
+      cibleId: s.id,
+    });
+  }
+  return candidates;
+}
+
+/**
  * R03quater — Diaporama de salle non déposé pour une session imminente.
  *
  * Le slot `diaporama` du kit documentaire est LE .pptx projeté en salle — le
@@ -1796,6 +1874,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "reclamations_sans_reponse", fn: regleReclamationsSansReponse },
   { nom: "emargement_manquant", fn: regleEmargementManquant },
   { nom: "session_sans_formateur", fn: regleSessionSansFormateur },
+  { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
   { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },

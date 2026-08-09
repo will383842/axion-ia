@@ -18,6 +18,9 @@ import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { PreparationKitSession } from "@/components/admin/qualiopi/PreparationKitSession";
+import { lirePreparation } from "@/server/qualiopi/kit-session/preparation";
+import { genererSortiesAction, validerSortiesAction } from "@/server/actions/qualiopi/kit-session";
 import { SessionLifecycleButtons } from "@/components/admin/qualiopi/SessionLifecycleButtons";
 import { EnrollmentsSection } from "@/components/admin/qualiopi/EnrollmentsSection";
 import { AssignFormateurForm } from "@/components/admin/qualiopi/AssignFormateurForm";
@@ -435,6 +438,9 @@ export default async function SessionHubPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
   const sessionBase = `${base}/${id}`;
+  // Ce que la session attend encore de nous. Deduit, jamais coche.
+  const preparationKit = await lirePreparation(id);
+  const dateValidation = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" });
 
   const sectionHeadCls =
     "text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)] mb-[var(--space-admin-3)]";
@@ -667,6 +673,26 @@ export default async function SessionHubPage({ params }: PageProps) {
           clients={clientsForInter}
         />
       </section>
+
+      {/* ── Préparation du kit — ce qu'il reste à faire pour cette session ──
+          Placé AVANT les sous-pages : c'est le premier geste après une vente,
+          et le seul que rien ne rappelait jusqu'ici. */}
+      {preparationKit !== null && preparationKit.etape !== "pret" ? (
+        <section className="mb-[var(--space-admin-8)]">
+          <PreparationKitSession
+            sessionId={id}
+            etape={preparationKit.etape}
+            aFaire={preparationKit.aFaire}
+            nbSorties={preparationKit.nbSorties}
+            valideLe={
+              preparationKit.valideLe ? dateValidation.format(preparationKit.valideLe) : null
+            }
+            hrefRelecture={`${sessionBase}/kit`}
+            genererAction={genererSortiesAction}
+            validerAction={validerSortiesAction}
+          />
+        </section>
+      ) : null}
 
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
