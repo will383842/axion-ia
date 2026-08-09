@@ -95,6 +95,32 @@ Le script est **idempotent** : rejoué sur un PDF inchangé (même SHA-256), il 
 fait rien. Un PDF modifié incrémente la version, et la version est dans la clé
 R2 — republier n'écrase donc jamais l'objet précédent.
 
+### ⚠️ Où lancer la publication — PAS depuis le conteneur
+
+L'image de production est le build **standalone** de Next.js : elle embarque
+`.next/standalone`, `public` et `prisma`, mais **ni `scripts/` ni `_KIT/`**
+(vérifié le 2026-08-08 sur le conteneur worker). Le script n'y est pas, et les
+PDF non plus.
+
+Il se lance depuis **un clone du dépôt**, avec l'environnement de production :
+
+```bash
+# 1. Tunnel vers la base de prod (le conteneur PG n'est pas exposé)
+ssh -N -L 5433:127.0.0.1:5432 axion-prod &
+
+# 2. Environnement
+export DATABASE_URL="postgresql://axionia:<motdepasse>@127.0.0.1:5433/axionia"
+export R2_ACCOUNT_ID=... R2_ACCESS_KEY_ID=... R2_SECRET_ACCESS_KEY=... R2_BUCKET=...
+
+# 3. À sec d'abord : il dit ce qu'il ferait sans rien écrire
+pnpm tsx scripts/kit-formateur/publier-vers-r2.ts --dry-run
+pnpm tsx scripts/kit-formateur/publier-vers-r2.ts
+```
+
+Le script refuse de démarrer si `DATABASE_URL` est absent ou pointe sur
+`stub.invalid` : sans ce garde-fou, le Proxy stub répondrait `null` à tout et le
+script conclurait sereinement que les 22 formations n'existent pas.
+
 🔴 **Aucune URL signée n'est stockée.** Une URL R2 signée expire en 900 s ; une
 URL figée en base est un lien mort un quart d'heure plus tard. Seule la CLÉ est
 persistée, et la route signe à chaque demande. C'est le même défaut que celui
