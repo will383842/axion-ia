@@ -187,6 +187,7 @@ export async function Footer() {
                 sinon null. Communication générale autorisée (jamais sur les
                 PDF/attestations). */}
             <QualiopiBadge variant="logo" className="mt-6" />
+            <CodeTrendyBadge />
             {/* Liens réassurance OF — Phase B uniquement (pages gatées, sinon 404). */}
             {ofPublic ? (
               <ul className="mt-3 flex flex-col">
@@ -374,6 +375,67 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M11 17v-4.5a2.5 2.5 0 0 1 5 0V17" />
       <path d="M11 10v7" />
     </svg>
+  );
+}
+
+/*
+  Badge CodeTrendy — ajouté 2026-08-09.
+
+  Contrepartie exigée par l'annuaire codetrendy.com : sans badge affiché,
+  l'annonce n'est pas approuvée. Le lien est en `nofollow` (imposé par eux),
+  donc AUCUN bénéfice SEO direct — le seul gain attendu est du trafic référent.
+
+  ⚠️ Ce n'est pas une image, c'est un compteur d'impressions. Leur endpoint
+  renvoie `Cache-Control: no-store` (en tête, il l'emporte sur le `max-age=86400`
+  qui suit dans le même en-tête) : le SVG n'est JAMAIS mis en cache, donc chaque
+  affichage de chaque page déclenche une requête vers codetrendy.com portant IP +
+  User-Agent + Referer du visiteur. C'est délibéré de leur part : c'est ce qui
+  alimente leur vérification « en temps réel ». Ce footer étant rendu sur ~17 600
+  routes, c'est le vrai coût de ce badge — à peser si l'apport de trafic ne suit pas.
+
+  Choix techniques, et pourquoi :
+
+  - `<img>` brut et NON `next/image` : l'optimiseur réécrirait le `src` vers
+    `/_next/image?url=…`, l'appel ne partirait plus vers leur domaine et le badge
+    serait déclaré « non détecté ». `no-img-element` désactivé pour cette raison.
+  - `width={220} height={56}` : dimensions natives lues dans leur `viewBox`. Leur
+    snippet officiel ne fournit QUE `height="54"`, sans largeur — le navigateur ne
+    peut pas réserver la place et la page saute au chargement. Inacceptable ici :
+    le budget interne est CLS = 0.
+  - `loading="lazy"` : le footer est sous la ligne de flottaison, l'image ne doit
+    pas concurrencer le LCP. 🔴 Si CodeTrendy répond « badge non détecté » alors
+    que le code est bien en ligne, c'est le premier suspect : leur vérificateur
+    serait alors un navigateur headless qui attend un chargement réel plutôt qu'un
+    simple `fetch` du HTML. Passer à `eager` avant de chercher ailleurs.
+  - `style=dark` : leur variante sombre (carte bleu-nuit, texte blanc cassé,
+    accent doré), la seule lisible sur le fond mocha. `style=classic` est une
+    carte BLANCHE — vérifié au rendu, elle troue le footer. Tout style inconnu
+    retombe silencieusement sur `classic`. (Valeurs hex volontairement non
+    citées ici : `scripts/check-anti-hex.sh` scanne aussi les commentaires.)
+
+  Pour couper le beacon une fois l'annonce approuvée : le SVG est autonome
+  (3,8 Ko, logo en base64, polices système, aucune ressource externe), donc
+  copiable tel quel dans `public/` et servi en local. Risque assumé : s'ils
+  re-vérifient, l'annonce peut sauter.
+*/
+function CodeTrendyBadge() {
+  return (
+    <a
+      href="https://codetrendy.com/?utm_source=axion-ia.com&utm_medium=badge"
+      target="_blank"
+      rel="nofollow noopener noreferrer"
+      className="focus-visible:ring-terracotta focus-visible:ring-offset-mocha mt-6 inline-flex rounded-[10px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://codetrendy.com/api/badge?style=dark"
+        alt="Axion-IA référencé sur CodeTrendy"
+        width={220}
+        height={56}
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
   );
 }
 
