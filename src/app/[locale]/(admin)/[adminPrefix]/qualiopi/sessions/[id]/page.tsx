@@ -677,7 +677,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       {/* ── Préparation du kit — ce qu'il reste à faire pour cette session ──
           Placé AVANT les sous-pages : c'est le premier geste après une vente,
           et le seul que rien ne rappelait jusqu'ici. */}
-      {preparationKit !== null && preparationKit.etape !== "pret" ? (
+      {preparationKit !== null && preparationKit.aPreparer ? (
         <section className="mb-[var(--space-admin-8)]">
           <PreparationKitSession
             sessionId={id}
