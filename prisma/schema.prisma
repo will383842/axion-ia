@@ -5297,26 +5297,26 @@ model Client {
   createdAt                  DateTime     @default(now()) @map("created_at")
   updatedAt                  DateTime     @updatedAt @map("updated_at")
 
-  devis               Devis[]
-  formations          Formation[]
-  sessions            TrainingSession[]
-  documents           DocumentGenere[]
-  enrollmentsFinances Enrollment[]           @relation("EnrollmentClient")
-  coachingContracts   CoachingContract[]
-  auditMissions       AuditMission[]
-  facturesFormation   FactureFormation[]
-  dossiersFinancement DossierFinancement[]
-  plansRecurrents     PlanRecurrent[]
+  devis                  Devis[]
+  formations             Formation[]
+  sessions               TrainingSession[]
+  documents              DocumentGenere[]
+  enrollmentsFinances    Enrollment[]           @relation("EnrollmentClient")
+  coachingContracts      CoachingContract[]
+  auditMissions          AuditMission[]
+  facturesFormation      FactureFormation[]
+  dossiersFinancement    DossierFinancement[]
+  plansRecurrents        PlanRecurrent[]
   // ── Conditions de paiement propres au client (F61) ──
   //
   // `null` = suivre le réglage global. La nuance compte : un client sans
   // condition particulière et un client réglé explicitement sur la même
   // valeur se comportent pareil AUJOURD'HUI, mais divergeront le jour où le
   // défaut global changera.
-  delaiPaiementJours  Int?                   @map("delai_paiement_jours")
+  delaiPaiementJours     Int?                   @map("delai_paiement_jours")
   /// Taux appliqué au RESTE À CHARGE, pas au montant total.
-  tauxAcomptePct      Int?                   @map("taux_acompte_pct")
-  modeFacturation     ModeFacturationClient? @map("mode_facturation")
+  tauxAcomptePct         Int?                   @map("taux_acompte_pct")
+  modeFacturation        ModeFacturationClient? @map("mode_facturation")
   /// Applique-t-on les pénalités de retard (art. L.441-10) à CE client ?
   ///
   /// `false` par DÉFAUT, et ce défaut est une décision produit explicite :
@@ -5329,7 +5329,7 @@ model Client {
   /// toute facture entre professionnels (art. L.441-9 / L.441-10 / D.441-5) et
   /// restent imprimées sans condition. Ne pas conditionner leur affichage à ce
   /// champ — ce serait une facture non conforme. Cf. `financements/penalites.ts`.
-  penalitesRetardActives Boolean @default(false) @map("penalites_retard_actives")
+  penalitesRetardActives Boolean                @default(false) @map("penalites_retard_actives")
 
   emailsEnAttente  EmailOutbox[]
   reglesEmail      EmailAutomationSetting[]
@@ -6032,6 +6032,10 @@ model TrainingSession {
   /// Journées RÉELLEMENT animées (décision D14). Vide = repli sur `dateDebut..dateFin`.
   jours                      SessionJour[]
   venteBrouillons            VenteBrouillon[]
+  // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
+  /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
+  /// dateFin >= from`). `dateFin` n'avait AUCUN index.
+  kitSorties                 SessionKitSorties?
 
   @@index([formationId])
   @@index([clientId])
@@ -6041,10 +6045,6 @@ model TrainingSession {
   @@index([sessionParentId])
   @@index([sessionReporteeId])
   @@index([formateurPrincipalId])
-  // ── Index composites du cockpit (règle : égalité d'abord, plage ensuite). ──
-  /// Requête calendrier : sessions chevauchant une plage (`dateDebut <= to AND
-  /// dateFin >= from`). `dateFin` n'avait AUCUN index.
-
   @@index([dateDebut, dateFin])
   /// Calendrier filtré par statut / financement (prévisionnel).
   @@index([statut, dateDebut])
@@ -6056,12 +6056,12 @@ model TrainingSession {
 
 /// Formateur (salarié ou sous-traitant). Habilitations = liste de formationIds.
 model Trainer {
-  id                        String        @id @default(uuid()) @db.Uuid
-  nom                       String        @db.VarChar(200)
-  prenom                    String        @db.VarChar(200)
-  email                     String        @unique @db.Citext
-  telephone                 String?       @db.VarChar(40)
-  statut                    TrainerStatut
+  id                           String        @id @default(uuid()) @db.Uuid
+  nom                          String        @db.VarChar(200)
+  prenom                       String        @db.VarChar(200)
+  email                        String        @unique @db.Citext
+  telephone                    String?       @db.VarChar(40)
+  statut                       TrainerStatut
   /// Région d'intervention (Phase 2 calendrier 2026-06-10). Slug parmi les 13
   /// régions FR (cf. src/content/regions.ts). Null = non renseigné.
   ///
@@ -6070,14 +6070,14 @@ model Trainer {
   /// un formateur qui se déplace dans trois régions ne pouvait en déclarer
   /// qu'une seule, ce qui rendait le champ faux dès qu'il servait vraiment.
   /// Les écrans écrivent les deux (la première région retenue alimente celui-ci).
-  region                    String?       @map("region") @db.VarChar(60)
+  region                       String?       @map("region") @db.VarChar(60)
   /// Régions d'intervention, slugs parmi les 13 régions FR. Vide +
   /// `interventionFranceEntiere` faux = non renseigné.
-  regionsIntervention       String[]      @default([]) @map("regions_intervention")
+  regionsIntervention          String[]      @default([]) @map("regions_intervention")
   /// Intervient sur toute la France : dispense de lister les 13 régions, et le
   /// dit explicitement sur les pièces plutôt que par une énumération exhaustive
   /// qu'un lecteur devrait recompter.
-  interventionFranceEntiere Boolean       @default(false) @map("intervention_france_entiere")
+  interventionFranceEntiere    Boolean       @default(false) @map("intervention_france_entiere")
   /// Adresse PROFESSIONNELLE de l'intervenant (son entreprise pour un
   /// sous-traitant, l'organisme pour un dirigeant ou un salarié).
   ///
@@ -6085,33 +6085,33 @@ model Trainer {
   /// deux parties, imprimait un tiret figé à la ligne « Adresse » — un champ
   /// manquant crié sur une pièce contractuelle. Jamais le domicile personnel
   /// (minimisation RGPD) : c'est l'adresse d'exercice qui identifie la partie.
-  adresseProfessionnelle    String?       @map("adresse_professionnelle") @db.Text
-  cvUrl                     String?       @map("cv_url") @db.Text
-  cvUploadedAt              DateTime?     @map("cv_uploaded_at")
+  adresseProfessionnelle       String?       @map("adresse_professionnelle") @db.Text
+  cvUrl                        String?       @map("cv_url") @db.Text
+  cvUploadedAt                 DateTime?     @map("cv_uploaded_at")
   /// [{ domaine, niveauMaitrise, verifiedAt }].
-  domainesCompetences       Json          @default("[]") @map("domaines_competences")
+  domainesCompetences          Json          @default("[]") @map("domaines_competences")
   /// formationIds pour lesquels le formateur est habilité.
-  formationsHabilitees      String[]      @default([]) @map("formations_habilitees")
-  dateEmbauche              DateTime?     @map("date_embauche")
-  tarifJourneeHtCents       Int?          @map("tarif_journee_ht_cents")
+  formationsHabilitees         String[]      @default([]) @map("formations_habilitees")
+  dateEmbauche                 DateTime?     @map("date_embauche")
+  tarifJourneeHtCents          Int?          @map("tarif_journee_ht_cents")
   /// Sous-traitant (off.19/27) : NDA propre + vérification data.gouv.fr. [T11]
-  sousTraitantNda           String?       @map("sous_traitant_nda") @db.VarChar(20)
-  sousTraitantVerifieAt     DateTime?     @map("sous_traitant_verifie_at")
+  sousTraitantNda              String?       @map("sous_traitant_nda") @db.VarChar(20)
+  sousTraitantVerifieAt        DateTime?     @map("sous_traitant_verifie_at")
   /// Capture datée de la vérification data.gouv.fr — la PREUVE, pas seulement sa
   /// date. Miroir de `SousTraitant.screenshotUrl` : les deux natures de
   /// sous-traitant doivent porter les mêmes pièces. [2026-08-03]
-  sousTraitantScreenshotUrl String?       @map("sous_traitant_screenshot_url") @db.Text
-  sousTraitantScreenshotDate DateTime?    @map("sous_traitant_screenshot_date")
+  sousTraitantScreenshotUrl    String?       @map("sous_traitant_screenshot_url") @db.Text
+  sousTraitantScreenshotDate   DateTime?     @map("sous_traitant_screenshot_date")
   /// Signature du CONTRAT-CADRE de sous-traitance.
   ///
   /// 🔴 Sans ce champ, un formateur indépendant ne pouvait PAS être compté par
   /// l'indicateur 27, qui exige « NDA + vérification + contrat signé ». Seuls les
   /// organismes (`SousTraitant.contratSigneAt`) l'étaient : Axion pouvait
   /// référencer dix freelances conformes et rester à zéro. [2026-08-03]
-  sousTraitantContratSigneAt DateTime?    @map("sous_traitant_contrat_signe_at")
+  sousTraitantContratSigneAt   DateTime?     @map("sous_traitant_contrat_signe_at")
   /// Échéance de la vérification annuelle des pièces (art. 8 de la procédure de
   /// sous-traitance). Rappel 30 jours avant. [2026-08-03]
-  sousTraitantProchaineVerifAt DateTime?  @map("sous_traitant_prochaine_verif_at")
+  sousTraitantProchaineVerifAt DateTime?     @map("sous_traitant_prochaine_verif_at")
   /// Attestation de responsabilité civile professionnelle.
   ///
   /// ⚠️ NON BLOQUANTE — décision Will du 2026-08-03. Aucun texte ne l'impose à un
@@ -6119,11 +6119,11 @@ model Trainer {
   /// vivier sans nécessité. Demandée, archivée avec son échéance, son absence lève
   /// une ALERTE — elle n'entre PAS dans le critère de conformité de l'indicateur
   /// 27. Cf. `PROCEDURE-SOUS-TRAITANCE.md` § 4.2.
-  rcProAttestationUrl       String?       @map("rc_pro_attestation_url") @db.Text
-  rcProEcheanceAt           DateTime?     @map("rc_pro_echeance_at")
-  actif                     Boolean       @default(true)
-  createdAt                 DateTime      @default(now()) @map("created_at")
-  updatedAt                 DateTime      @updatedAt @map("updated_at")
+  rcProAttestationUrl          String?       @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt              DateTime?     @map("rc_pro_echeance_at")
+  actif                        Boolean       @default(true)
+  createdAt                    DateTime      @default(now()) @map("created_at")
+  updatedAt                    DateTime      @updatedAt @map("updated_at")
 
   sessionsAnimees TrainingSession[] @relation("SessionFormateurPrincipal")
   bookingsAnimes  Booking[]         @relation("BookingFormateur")
@@ -6162,7 +6162,7 @@ model Trainer {
   documentsGeneres            DocumentGenere[]            @relation("DocumentGenereTrainer")
 
   /// Incidents où ce formateur est mis en cause (art. 7 sous-traitance).
-  incidents                 Incident[]                  @relation("IncidentIntervenant")
+  incidents Incident[] @relation("IncidentIntervenant")
 
   @@index([statut])
   @@index([actif])
@@ -6274,6 +6274,32 @@ enum SessionFormateurRole {
 /// la garde d'habilitation) ; un index partiel SQL garantit un seul `principal`
 /// par session. `tarifHtCents` = snapshot du tarif du formateur figé à
 /// l'affectation (la rémunération ne dérive pas si le tarif change ensuite).
+/// Les sorties de demonstration capturees pour UNE session — le filet du plan B.
+///
+/// Le kit imprime est le meme pour toutes les sessions d'une formation ; les
+/// SORTIES, elles, se refont : une interface d'outil qui a change rend une
+/// demonstration incomprehensible en salle. On les rattache donc a la session,
+/// pas a la formation.
+///
+/// 🔴 `valideLe` n'est pas decoratif. Les fiches promettent au formateur que
+/// « les sorties du kit ont ete verifiees » : une sortie generee que personne
+/// n'a lue n'est pas un filet, c'est un trou avec une date dessus.
+model SessionKitSorties {
+  id          String          @id @default(uuid()) @db.Uuid
+  sessionId   String          @unique @map("session_id") @db.Uuid
+  session     TrainingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  /// [{ moduleId, moduleTitre, prompt, sortie, provider, model, genereLe }]
+  sorties     Json            @default("[]")
+  genereLe    DateTime?       @map("genere_le")
+  /// Validation HUMAINE — qui a lu les sorties et les declare utilisables.
+  valideLe    DateTime?       @map("valide_le")
+  valideParId String?         @map("valide_par_id") @db.Uuid
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  @@map("session_kit_sorties")
+}
+
 model SessionFormateur {
   id            String               @id @default(uuid()) @db.Uuid
   sessionId     String               @map("session_id") @db.Uuid
@@ -7045,25 +7071,25 @@ enum QuestionnaireType {
 /// Questionnaire d'un stagiaire (1 par inscription × type). Rempli via portail
 /// (token) ou saisie admin. `noteGlobale` (1-5) alimente le taux de satisfaction.
 model Questionnaire {
-  id           String            @id @default(uuid()) @db.Uuid
-  enrollmentId String            @map("enrollment_id") @db.Uuid
-  enrollment   Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
-  type         QuestionnaireType
+  id                String            @id @default(uuid()) @db.Uuid
+  enrollmentId      String            @map("enrollment_id") @db.Uuid
+  enrollment        Enrollment        @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  type              QuestionnaireType
   /// Token d'accès portail (non-guessable). timingSafeEqual à la lecture.
-  token        String            @unique @db.VarChar(64)
+  token             String            @unique @db.VarChar(64)
   /// Réponses structurées : { questionId: valeur }.
-  reponses     Json              @default("{}")
+  reponses          Json              @default("{}")
   /// Note globale /5 (satisfaction). Null tant que non répondu.
-  noteGlobale  Int?              @map("note_globale")
-  envoyeAt     DateTime?         @map("envoye_at")
-  reponduAt    DateTime?         @map("repondu_at")
+  noteGlobale       Int?              @map("note_globale")
+  envoyeAt          DateTime?         @map("envoye_at")
+  reponduAt         DateTime?         @map("repondu_at")
   /// 🔴 TRACE des relances — c'est la PREUVE, pas un confort. Devant l'auditeur,
   /// une non-réponse d'un tiers n'est pas une faute de l'organisme ; l'absence
   /// de tentative tracée, si. Plafonné à 2 par le cron (J+3 puis J+10).
-  relanceCount Int               @default(0) @map("relance_count")
-  derniereRelanceAt DateTime?    @map("derniere_relance_at")
-  createdAt    DateTime          @default(now()) @map("created_at")
-  updatedAt    DateTime          @updatedAt @map("updated_at")
+  relanceCount      Int               @default(0) @map("relance_count")
+  derniereRelanceAt DateTime?         @map("derniere_relance_at")
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
 
   @@unique([enrollmentId, type], map: "questionnaire_unique_per_type")
   @@index([enrollmentId])
@@ -7513,35 +7539,35 @@ model Partenariat {
 /// Sous-traitants de l'OF (off.27) : organismes/prestataires (≠ Trainer
 /// sous-traitant individuel). Vérification data.gouv.fr + contrat.
 model SousTraitant {
-  id                String    @id @default(uuid()) @db.Uuid
+  id                  String    @id @default(uuid()) @db.Uuid
   /// RAISON SOCIALE du sous-traitant. Distincte du contact ci-dessous.
-  nom               String    @db.VarChar(250)
+  nom                 String    @db.VarChar(250)
   /// Personne physique qui SIGNE pour le sous-traitant.
   /// 🔴 Sans `contactEmail`, aucun lien de signature ne peut être émis : le
   /// canal A exige une adresse, et l'identité doit venir de la BASE.
-  contactNom        String?   @map("contact_nom") @db.VarChar(200)
-  contactEmail      String?   @map("contact_email") @db.VarChar(320)
+  contactNom          String?   @map("contact_nom") @db.VarChar(200)
+  contactEmail        String?   @map("contact_email") @db.VarChar(320)
   /// Qualité FIGÉE à la signature — porte l'opposabilité du pouvoir de signer.
-  contactFonction   String?   @map("contact_fonction") @db.VarChar(200)
-  siret             String?   @db.VarChar(20)
-  nda               String?   @db.VarChar(20)
-  objetPrestation   String    @map("objet_prestation") @db.Text
-  verifieDataGouvAt DateTime? @map("verifie_data_gouv_at")
+  contactFonction     String?   @map("contact_fonction") @db.VarChar(200)
+  siret               String?   @db.VarChar(20)
+  nda                 String?   @db.VarChar(20)
+  objetPrestation     String    @map("objet_prestation") @db.Text
+  verifieDataGouvAt   DateTime? @map("verifie_data_gouv_at")
   /// Capture datée data.gouv.fr (preuve off.27, archivée AVANT mission). [T17]
-  screenshotUrl     String?   @map("screenshot_url") @db.Text
-  screenshotDate    DateTime? @map("screenshot_date")
-  contratSigneAt    DateTime? @map("contrat_signe_at")
+  screenshotUrl       String?   @map("screenshot_url") @db.Text
+  screenshotDate      DateTime? @map("screenshot_date")
+  contratSigneAt      DateTime? @map("contrat_signe_at")
   /// Échéance de la vérification annuelle des pièces (art. 8). [2026-08-03]
-  prochaineVerifAt  DateTime? @map("prochaine_verif_at")
+  prochaineVerifAt    DateTime? @map("prochaine_verif_at")
   /// RC pro — NON BLOQUANTE, cf. `Trainer.rcProAttestationUrl`. [2026-08-03]
-  rcProAttestationUrl String? @map("rc_pro_attestation_url") @db.Text
-  rcProEcheanceAt   DateTime? @map("rc_pro_echeance_at")
+  rcProAttestationUrl String?   @map("rc_pro_attestation_url") @db.Text
+  rcProEcheanceAt     DateTime? @map("rc_pro_echeance_at")
   /// CV de l'intervenant désigné par l'organisme (art. 4.1 point 3). [2026-08-03]
-  cvUrl             String?   @map("cv_url") @db.Text
-  cvUploadedAt      DateTime? @map("cv_uploaded_at")
-  actif             Boolean   @default(true)
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @updatedAt @map("updated_at")
+  cvUrl               String?   @map("cv_url") @db.Text
+  cvUploadedAt        DateTime? @map("cv_uploaded_at")
+  actif               Boolean   @default(true)
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
 
   documentsGeneres DocumentGenere[]
   /// Incidents où cet organisme est mis en cause (art. 7 sous-traitance).
@@ -7650,11 +7676,11 @@ model Incident {
   updatedAt        DateTime         @updatedAt @map("updated_at")
 
   /// Intervenant externe mis en cause, s'il y en a un. Personne physique…
-  trainerId      String?  @map("trainer_id") @db.Uuid
-  trainer        Trainer? @relation("IncidentIntervenant", fields: [trainerId], references: [id], onDelete: SetNull)
+  trainerId       String?                  @map("trainer_id") @db.Uuid
+  trainer         Trainer?                 @relation("IncidentIntervenant", fields: [trainerId], references: [id], onDelete: SetNull)
   /// …ou organisme sous-traitant.
-  sousTraitantId String?       @map("sous_traitant_id") @db.Uuid
-  sousTraitant   SousTraitant? @relation("IncidentIntervenant", fields: [sousTraitantId], references: [id], onDelete: SetNull)
+  sousTraitantId  String?                  @map("sous_traitant_id") @db.Uuid
+  sousTraitant    SousTraitant?            @relation("IncidentIntervenant", fields: [sousTraitantId], references: [id], onDelete: SetNull)
   /// Le fait constaté. Renseigné dès qu'un intervenant est mis en cause.
   faitIntervenant IncidentFaitIntervenant? @map("fait_intervenant")
 
