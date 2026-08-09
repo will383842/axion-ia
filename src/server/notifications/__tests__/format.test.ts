@@ -87,7 +87,11 @@ describe("formatNotification", () => {
     expect(text).toContain("axion\\-ia\\.com");
   });
 
-  it("severity warn/error utilise le bon emoji", () => {
+  // Depuis la refonte 2026-08-09, le message commence par l'EN-TÊTE DE THÈME et
+  // non plus par l'emoji de gravité : c'est ce que WhatsApp affiche sur l'écran
+  // verrouillé, et c'est là que se joue la distinction entre un rendez-vous et
+  // une candidature. La gravité reste présente, juste après.
+  it("severity warn/error utilise le bon emoji, après le thème", () => {
     const warn = formatNotification(
       {
         category: "OPTION_REFUSED",
@@ -95,7 +99,7 @@ describe("formatNotification", () => {
       },
       "warn",
     );
-    expect(warn.text).toMatch(/^🟡/);
+    expect(warn.text).toMatch(/^🔔 \*SYSTÈME\* · 🟡/);
     const err = formatNotification(
       {
         category: "DEPLOY_FAILED",
@@ -103,6 +107,79 @@ describe("formatNotification", () => {
       },
       "error",
     );
-    expect(err.text).toMatch(/^🔴/);
+    expect(err.text).toMatch(/^🔔 \*SYSTÈME\* · 🔴/);
+  });
+
+  it("chaque thème pose son en-tête en PREMIÈRE ligne", () => {
+    const cas = [
+      {
+        category: "CALENDLY_INVITEE_CREATED" as const,
+        payload: {
+          eventUri: "evt_1",
+          inviteeEmail: "a@b.com",
+          inviteeName: "Marie",
+          eventStartTime: "(voir mail Calendly)",
+          eventName: "Appel découverte",
+        },
+        attendu: "📅 *CALENDLY* · ",
+      },
+      {
+        category: "REVIEW_SUBMITTED" as const,
+        payload: { reviewId: "rev_1", authorName: "Marie D.", rating: 5, hasPhoto: false },
+        attendu: "⭐ *AVIS CLIENT* · ",
+      },
+      {
+        category: "QUOTE_REQUEST_RECEIVED" as const,
+        payload: {
+          submissionId: "sub_1",
+          contactName: "Marie",
+          contactEmail: "a@b.com",
+          locale: "fr" as const,
+        },
+        attendu: "🛠️ *INTERVENTION* · ",
+      },
+    ];
+    for (const { category, payload, attendu } of cas) {
+      const { text } = formatNotification(
+        { category, payload } as Parameters<typeof formatNotification>[0],
+        "info",
+      );
+      expect(text.startsWith(attendu), `${category} → ${text.slice(0, 40)}`).toBe(true);
+    }
+  });
+
+  // L'horaire arrivait brut du payload : un ISO en UTC, illisible sur un
+  // téléphone et faux de deux heures pour un lecteur français.
+  it("l'horaire Calendly est rendu en heure de Paris, le texte libre est conservé", () => {
+    const iso = formatNotification(
+      {
+        category: "CALENDLY_INVITEE_CREATED",
+        payload: {
+          eventUri: "evt_1",
+          inviteeEmail: "a@b.com",
+          inviteeName: "Marie",
+          eventStartTime: "2026-08-20T07:30:00.000Z",
+          eventName: "Appel découverte",
+        },
+      },
+      "info",
+    ).text;
+    expect(iso).toContain("09:30"); // 07:30 UTC = 09:30 à Paris en août
+    expect(iso).not.toContain("2026\\-08\\-20T07");
+
+    const libre = formatNotification(
+      {
+        category: "CALENDLY_INVITEE_CREATED",
+        payload: {
+          eventUri: "evt_2",
+          inviteeEmail: "a@b.com",
+          inviteeName: "Marie",
+          eventStartTime: "(voir mail Calendly)",
+          eventName: "Appel découverte",
+        },
+      },
+      "info",
+    ).text;
+    expect(libre).toContain("voir mail Calendly");
   });
 });

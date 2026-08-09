@@ -211,17 +211,27 @@ export async function discoverNewCalendlyEvents(
 
     let inviteeName: string | null = null;
     let inviteeEmail: string | null = null;
+    let inviteePhone: string | null = null;
+    let cancelUrl: string | null = null;
     let start: Date | null = startTime;
     if (enriched.ok) {
       const fresh = await prisma.calendlyEvent
         .findUnique({
           where: { id: row.id },
-          select: { inviteeName: true, inviteeEmail: true, startTime: true },
+          select: {
+            inviteeName: true,
+            inviteeEmail: true,
+            inviteePhone: true,
+            cancelUrl: true,
+            startTime: true,
+          },
         })
         .catch(() => null);
       if (fresh) {
         inviteeName = fresh.inviteeName;
         inviteeEmail = fresh.inviteeEmail;
+        inviteePhone = fresh.inviteePhone;
+        cancelUrl = fresh.cancelUrl;
         start = fresh.startTime ?? start;
       }
     }
@@ -237,6 +247,8 @@ export async function discoverNewCalendlyEvents(
           inviteeName: inviteeName ?? "(non communiqué)",
           eventStartTime: start?.toISOString() ?? "(voir mail Calendly)",
           eventName: name,
+          ...(inviteePhone ? { inviteePhone } : {}),
+          ...(cancelUrl ? { cancelUrl } : {}),
         },
         dedupKey: row.id,
       });

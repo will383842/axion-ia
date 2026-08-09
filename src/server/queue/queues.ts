@@ -30,6 +30,7 @@ import type { ImageBankTranslateJobData } from "./workers/image-bank-translate-w
 import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image-bank-crons-worker";
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
+import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
 import type {
@@ -79,6 +80,34 @@ export const retentionPurgeQueue: Queue<RetentionPurgeJobData> | null = connecti
       defaultJobOptions: { ...defaultJobOptions, attempts: 1 },
     })
   : null;
+
+/**
+ * Sondage Calendly (2026-08-09) — la seule source de RDV temps quasi réel.
+ *
+ * Calendly Free n'émet AUCUN webhook, et depuis l'ADR 0038 le client réserve sur
+ * calendly.com dans un nouvel onglet : plus rien ne prévient le site. Le sondage
+ * tournait sur un cron GitHub Actions horaire, qui dérive fortement (trou de
+ * 2 h 44 mesuré le 2026-08-09). Il passe donc ici, où BullMQ déclenche à la
+ * minute.
+ *
+ * `attempts: 1` — un passage rate n'a pas à être rejoué : le suivant arrive dans
+ * 60 secondes et repartira d'un état frais. Rejouer accumulerait des appels API
+ * redondants sur un quota de 60 requêtes/minute.
+ */
+export const calendlyPollQueue: Queue<CalendlyPollJobData, void, CalendlyPollJobType> | null =
+  connection
+    ? new Queue<CalendlyPollJobData, void, CalendlyPollJobType>("calendly-poll", {
+        connection,
+        defaultJobOptions: {
+          ...defaultJobOptions,
+          attempts: 1,
+          // Le sondage est à haute fréquence (1440 passages/jour) : sans
+          // rétention courte, la file gonflerait pour rien.
+          removeOnComplete: { age: 3600, count: 100 },
+          removeOnFail: { age: 24 * 3600, count: 200 },
+        },
+      })
+    : null;
 
 // Sprint X.12 — Booking V1 crons (relances paiement, J-7/J-1 reminders, etc.).
 // 1 seule queue qui dispatche par `type`. `attempts: 3` — fail-soft sur DB
@@ -837,6 +866,51 @@ export async function bootRepeatableJobs(): Promise<void> {
     { tick: new Date().toISOString() },
     { repeat: { pattern: "0 3 * * *" }, jobId: "retention-purge-cron" },
   );
+
+  // ── Sondage Calendly (2026-08-09) — VIVANT, c'est le canal de RDV réel ─────
+  //
+  // Deux passes à deux cadences, pour tenir le quota de 60 requêtes/minute de
+  // l'API Calendly. Le raisonnement complet est dans l'en-tête de
+  // `workers/calendly-poll-worker.ts` — NE PAS accélérer `refresh` sans le lire.
+  if (calendlyPollQueue) {
+    const calendlySchedule: Array<{
+      type: CalendlyPollJobType;
+      pattern: string;
+      jobId: string;
+    }> = [
+      // Découverte des réservations prises sur calendly.com : à la minute.
+      // C'est CE passage qui porte la promesse « moins de 60 s ».
+      { type: "discover", pattern: "* * * * *", jobId: "calendly-discover-cron" },
+      // Annulations et déplacements : toutes les 10 min (jusqu'à ~50 requêtes).
+      { type: "refresh", pattern: "*/10 * * * *", jobId: "calendly-refresh-cron" },
+    ];
+
+    // 🔴 Purge EXHAUSTIVE avant ré-enregistrement, et pas le
+    // `removeRepeatable(type, { pattern }, jobId)` utilisé partout ailleurs dans
+    // ce fichier : celui-ci ne sait retirer QUE le pattern qu'on lui passe. Le
+    // jour où l'on change une cadence, l'ancienne entrée reste dans Redis — les
+    // repeatable jobs y PERSISTENT — et les DEUX se déclenchent. Sur une file
+    // qui tourne à la minute et consomme un quota API, ce doublon silencieux
+    // coûterait cher et ne se verrait nulle part. On liste donc l'existant et on
+    // retire tout ce qui n'est plus au programme.
+    const wanted = new Set(calendlySchedule.map((s) => `${s.type}|${s.pattern}`));
+    for (const existing of await calendlyPollQueue.getRepeatableJobs()) {
+      if (!wanted.has(`${existing.name}|${existing.pattern}`)) {
+        await calendlyPollQueue.removeRepeatableByKey(existing.key);
+        console.warn(
+          `[bullmq] calendly-poll : entrée répétable obsolète retirée (${existing.name} @ ${existing.pattern})`,
+        );
+      }
+    }
+
+    for (const { type, pattern, jobId } of calendlySchedule) {
+      await calendlyPollQueue.add(
+        type,
+        { type, tick: new Date().toISOString() },
+        { repeat: { pattern }, jobId },
+      );
+    }
+  }
 
   // Sprint X.12 — Booking V1 crons (legacy, cf. bloc ci-dessus).
   if (bookingCronsQueue) {

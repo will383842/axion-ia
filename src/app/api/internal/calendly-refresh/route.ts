@@ -25,36 +25,22 @@
 
 import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { enrichCalendlyEvent } from "@/server/calendly/enrich";
 import { isCalendlyApiConfigured } from "@/server/calendly/api";
 import { discoverNewCalendlyEvents } from "@/server/calendly/discover";
+import { refreshUpcomingCalendlyEvents } from "@/server/calendly/refresh";
 import { updateTag } from "next/cache";
 import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * Nombre maximum de réservations revues par passage.
- *
- * Borne dure, pour deux raisons : ne pas marteler l'API Calendly (qui applique
- * ses propres quotas), et garantir une durée d'exécution prévisible. Avec un
- * passage horaire, 25 couvre très largement le flux réel — et si un jour ça
- * déborde, le compteur `restants` de la réponse le dira au lieu de tronquer en
- * silence.
- */
-const MAX_PER_RUN = 25;
-
-/**
- * Fenêtre de rattrapage après l'heure prévue.
- *
- * On continue de surveiller un créneau jusqu'à 2 h APRÈS son début : une
- * annulation de dernière minute est précisément celle qu'on veut connaître.
- * Au-delà, le rendez-vous a eu lieu (ou non) et ce n'est plus l'API qui le dira.
- */
-const GRACE_HOURS = 2;
+// ⚠️ Depuis le 2026-08-09, cette route n'est PLUS le chemin nominal. Le sondage
+// tourne toutes les minutes sur le worker BullMQ (`calendly-poll-worker.ts`), et
+// le cron GitHub qui appelle cette route est passé toutes les 6 h : il ne sert
+// plus que de filet si le worker meurt. La logique elle-même vit dans
+// `server/calendly/{discover,refresh}.ts`, partagée par les deux appelants —
+// ne pas la ré-inliner ici, les deux chemins divergeraient.
 
 function constantTimeEquals(a: string, b: string): boolean {
   const ha = crypto.createHash("sha256").update(a, "utf8").digest();
@@ -93,49 +79,12 @@ export async function POST(req: NextRequest): Promise<Response> {
   // Ne throw jamais ; un échec ici ne doit pas empêcher le rafraîchissement.
   const discovery = await discoverNewCalendlyEvents();
 
-  const cutoff = new Date(Date.now() - GRACE_HOURS * 3600_000);
-
-  // Candidats : ce qui peut ENCORE changer.
-  //   • statut `scheduled` — un rendez-vous déjà annulé ou terminé est figé ;
-  //   • une URI d'invitee — sans elle, rien à demander à Calendly ;
-  //   • à venir, OU sans horaire connu (capture jamais enrichie : c'est
-  //     justement le cas qu'on veut rattraper).
-  let candidates: Array<{ id: string; startTime: Date | null }>;
-  try {
-    candidates = await prisma.calendlyEvent.findMany({
-      where: {
-        status: "scheduled",
-        inviteeUri: { not: null },
-        OR: [{ startTime: null }, { startTime: { gte: cutoff } }],
-      },
-      // Les plus proches d'abord : c'est là que l'information a le plus de valeur.
-      orderBy: [{ startTime: "asc" }, { capturedAt: "desc" }],
-      take: MAX_PER_RUN + 1,
-      select: { id: true, startTime: true },
-    });
-  } catch {
-    return Response.json({ ok: false, error: "db_read_failed" }, { status: 500 });
+  // ÉTAPE 2 — rafraîchir les réservations connues (annulations, déplacements).
+  const refresh = await refreshUpcomingCalendlyEvents();
+  if (!refresh.ok) {
+    return Response.json({ ok: false, error: refresh.reason ?? "refresh_failed" }, { status: 500 });
   }
-
-  const overflow = candidates.length > MAX_PER_RUN;
-  const batch = candidates.slice(0, MAX_PER_RUN);
-
-  let updated = 0;
-  let unchanged = 0;
-  const failures: Record<string, number> = {};
-
-  // Séquentiel et non parallèle : on préfère être lent et poli avec l'API
-  // Calendly plutôt que rapide et rate-limité. 25 appels valent quelques
-  // secondes, largement dans le budget d'un cron horaire.
-  for (const c of batch) {
-    const res = await enrichCalendlyEvent(c.id);
-    if (res.ok) {
-      if (res.updatedFields.length > 0) updated += 1;
-      else unchanged += 1;
-    } else {
-      failures[res.reason] = (failures[res.reason] ?? 0) + 1;
-    }
-  }
+  const { examined, updated, unchanged, failures, overflow } = refresh;
 
   // Un statut qui bascule — ou une réservation découverte — change le compteur
   // « à traiter » de la sidebar.
@@ -152,7 +101,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     discovered: discovery.created,
     ...(discovery.ok ? {} : { discoveryError: discovery.reason ?? "unknown" }),
     ...(discovery.remaining ? { discoveryRemaining: discovery.remaining } : {}),
-    examined: batch.length,
+    examined,
     updated,
     unchanged,
     ...(Object.keys(failures).length > 0 ? { failures } : {}),

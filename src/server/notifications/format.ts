@@ -5,6 +5,7 @@
 // https://core.telegram.org/bots/api#markdownv2-style
 
 import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
+import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
@@ -16,20 +17,48 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
   critical: "🚨",
 };
 
+/**
+ * En-tête de THÈME, posé en tête de message (refonte 2026-08-09).
+ *
+ * Sur Telegram il double le nom du groupe — utile, car le bandeau de
+ * notification du téléphone ne montre pas toujours dans quel groupe on écrit.
+ *
+ * Sur WhatsApp il porte TOUTE la distinction : CallMeBot n'écrit que dans une
+ * seule conversation (une clé = un destinataire, pas de groupes), donc il n'y a
+ * pas de fil séparé possible. Ces ~20 caractères sont exactement ce que l'écran
+ * verrouillé affiche — c'est là, et nulle part ailleurs, que se joue le fait de
+ * distinguer un rendez-vous d'une candidature sans ouvrir le téléphone.
+ *
+ * ⚠️ NE PAS déplacer en fin de message ni faire précéder d'autre chose.
+ */
+const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
+  calendly: { emoji: "📅", label: "CALENDLY" },
+  candidatures: { emoji: "💼", label: "CANDIDATURE" },
+  presse: { emoji: "📰", label: "PRESSE" },
+  investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
+  interventions: { emoji: "🛠️", label: "INTERVENTION" },
+  avis: { emoji: "⭐", label: "AVIS CLIENT" },
+  messages: { emoji: "💬", label: "MESSAGE" },
+  system: { emoji: "🔔", label: "SYSTÈME" },
+};
+
+// Les titres ne portent plus d'emoji : depuis le 2026-08-09 l'iconographie vient
+// du THÈME ci-dessus, seule source. Un `📰` dans le titre en plus du `📰` du
+// thème donnait « 📰 PRESSE · 🟢 📰 Demande presse » — illisible.
 const TITLES: Record<NotificationCategory, string> = {
   CONTACT_FORM_SUBMITTED: "Nouveau message contact",
   AUDIT_REQUEST_SUBMITTED: "Nouvelle demande d'audit IA",
   INTERVENTION_REQUEST_SUBMITTED: "Nouvelle demande d'intervention",
   IMPLEMENTATION_REQUEST_SUBMITTED: "Nouvelle demande d'implémentation",
   QUOTE_REQUEST_RECEIVED: "Nouvelle demande de devis",
-  PRESS_REQUEST_SUBMITTED: "📰 Demande presse / média",
-  RECRUITMENT_RECEIVED: "👤 Candidature reçue",
-  JOB_APPLICATION_RECEIVED: "📨 Candidature emploi reçue",
-  REVIEW_SUBMITTED: "⭐ Nouvel avis client (à modérer)",
-  PODCAST_REQUEST_SUBMITTED: "🎙️ Demande de tournage podcast",
-  SPEAKER_INVITATION_RECEIVED: "🎤 Invitation conférence",
-  INVESTOR_INQUIRY_RECEIVED: "💼 Demande investisseur / M&A",
-  CUSTOMER_SUPPORT_REQUEST: "🛟 Support client",
+  PRESS_REQUEST_SUBMITTED: "Demande presse / média",
+  RECRUITMENT_RECEIVED: "Candidature spontanée",
+  JOB_APPLICATION_RECEIVED: "Candidature à une offre",
+  REVIEW_SUBMITTED: "Nouvel avis à modérer",
+  PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
+  SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
+  INVESTOR_INQUIRY_RECEIVED: "Demande investisseur / M&A",
+  CUSTOMER_SUPPORT_REQUEST: "Support client",
   NEWSLETTER_PENDING: "Newsletter — opt-in en attente",
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
@@ -39,9 +68,9 @@ const TITLES: Record<NotificationCategory, string> = {
   OPTION_CONFIRMED: "Option confirmée",
   OPTION_REFUSED: "Option refusée",
   OPTION_EXPIRED: "Option expirée",
-  CALENDLY_INVITEE_CREATED: "Nouvelle réservation Calendly",
-  CALENDLY_INVITEE_CANCELED: "Calendly — annulation",
-  CALENDLY_INVITEE_RESCHEDULED: "Calendly — déplacement",
+  CALENDLY_INVITEE_CREATED: "Nouvelle réservation",
+  CALENDLY_INVITEE_CANCELED: "Rendez-vous annulé",
+  CALENDLY_INVITEE_RESCHEDULED: "Rendez-vous déplacé",
   ADMIN_REPLIED_TO_SUBMISSION: "Réponse admin envoyée",
   DEPLOY_SUCCESS: "Déploiement réussi",
   DEPLOY_FAILED: "Échec déploiement",
@@ -84,6 +113,27 @@ export function formatParisDateTime(input: string | Date | undefined): string {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(d);
+}
+
+/** Reconnaît un horodatage ISO 8601 — et RIEN d'autre. */
+const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/;
+
+/**
+ * Rend lisible un champ qui porte tantôt un instant ISO, tantôt du texte libre.
+ *
+ * Les payloads Calendly mélangent les deux : `discover.ts` envoie un ISO quand
+ * l'API a donné l'horaire, et la chaîne « (voir mail Calendly) » quand elle ne
+ * l'a pas donné. Jusqu'ici les deux étaient affichés bruts — un
+ * `2026-08-20T07:30:00.000Z` dans une notification de téléphone est illisible,
+ * et c'est en plus de l'heure UTC, donc faux de deux heures pour un lecteur français.
+ *
+ * 🔴 Le test ISO est volontairement STRICT (pas un `new Date()` opportuniste) :
+ * `new Date("2026")` est une date valide pour JavaScript, donc un texte libre
+ * commençant par une année se ferait silencieusement réécrire en 1er janvier.
+ */
+function humanDateOrText(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  return ISO_INSTANT.test(value) ? formatParisDateTime(value) : value;
 }
 
 function formatKV(label: string, value: string | number | null | undefined): string | null {
@@ -240,12 +290,30 @@ function formatBody(event: NotificationEvent): string {
       // un identifiant brut, inexploitable depuis le téléphone.
       return [
         formatKV("Type RDV", p.eventName),
-        formatKV("Invitee", p.inviteeName),
+        formatKV("Invité", p.inviteeName),
         formatKV("Email", p.inviteeEmail),
-        formatKV("Début", p.eventStartTime),
+        formatKV("Téléphone", p.inviteePhone),
+        formatKV("Début", humanDateOrText(p.eventStartTime)),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
+        ),
+        formatKV("Annuler / déplacer", p.cancelUrl),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CALENDLY_INVITEE_CANCELED": {
+      const p = event.payload;
+      return [
+        formatKV("Type RDV", p.eventName),
+        formatKV("Invité", p.inviteeName),
+        formatKV("Email", p.inviteeEmail),
+        formatKV("Était prévu le", humanDateOrText(p.eventStartTime)),
+        formatKV("Raison", p.reason),
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
@@ -254,23 +322,18 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
-    case "CALENDLY_INVITEE_CANCELED": {
-      const p = event.payload;
-      return [
-        formatKV("Email", p.inviteeEmail),
-        formatKV("Raison", p.reason),
-        formatKV("ID", p.eventUri),
-      ]
-        .filter((v): v is string => v !== null)
-        .join("\n");
-    }
     case "CALENDLY_INVITEE_RESCHEDULED": {
       const p = event.payload;
       return [
+        formatKV("Type RDV", p.eventName),
+        formatKV("Invité", p.inviteeName),
         formatKV("Email", p.inviteeEmail),
-        formatKV("Avant", p.oldStart),
-        formatKV("Après", p.newStart),
-        formatKV("ID", p.eventUri),
+        formatKV("Avant", humanDateOrText(p.oldStart)),
+        formatKV("Après", humanDateOrText(p.newStart)),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/appels")}/${p.eventUri}`,
+        ),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
@@ -379,7 +442,10 @@ export function formatNotification(
 ): FormattedMessage {
   const emoji = SEVERITY_EMOJI[severity];
   const title = TITLES[event.category];
-  const header = `${emoji} *${escapeMarkdownV2(title)}*`;
+  const theme = THEME[telegramGroupFor(event.category)];
+  const header =
+    `${theme.emoji} *${escapeMarkdownV2(theme.label)}* · ` +
+    `${emoji} *${escapeMarkdownV2(title)}*`;
   const body = formatBody(event);
   const footer = [
     `🕐 ${escapeMarkdownV2(formatParisDateTime(new Date()))}`,

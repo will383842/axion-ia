@@ -106,7 +106,9 @@ export type WorkerName =
   // Qualiopi T6 — auto-transitions formation crons
   | "formation-crons"
   // Import en masse kit formation (ZIP → documents-interventions) 2026-06-13
-  | "kit-import";
+  | "kit-import"
+  // Sondage Calendly 2026-08-09 — découverte des réservations + annulations
+  | "calendly-poll";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.
