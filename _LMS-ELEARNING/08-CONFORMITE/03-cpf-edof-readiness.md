@@ -387,7 +387,7 @@ Tous sous `src/server/queue/workers/elearning-*-worker.ts` (cloisonnement ADR-00
 2. [ ] `Formation` cible renseignée : `codeRncp`/`codeRs`, `numeroEnregistrementFc`, certificateur/habilitation, dates, `blocsCompetences`.
 3. [ ] `edofVerifieAt` posé (compte EDOF actif côté CDC) → `cpfEligible` dérivé `true`.
 4. [ ] Sandbox CDC obtenue → endpoints/format confirmés → `EdofDeclaration.payloadJson` aligné, `edof-client.ts` finalisé.
-5. [ ] Secrets Coolify : `EDOF_ENABLED=true` + `EDOF_SIRET` + `EDOF_API_BASE_URL` + `EDOF_CLIENT_ID/SECRET` (+ webhook), scope RUN web+worker.
+5. [ ] Secrets Coolify (scope RUN web+worker) : poser `EDOF_ENABLED` a true, puis `EDOF_SIRET`, `EDOF_API_BASE_URL`, `EDOF_CLIENT_ID`, `EDOF_CLIENT_SECRET` et la cle webhook. (Noms de variables uniquement, jamais de valeur dans un document.)
 6. [ ] **Redeploy** (pas restart).
 7. [ ] Smoke-test : entrée effective déclenchée à la 1re leçon ; snapshot assiduité quotidien ; service fait à la complétion ; webhook paiement reçu.
 8. [ ] Vérifier conservation/RGPD des nouvelles preuves (doc 05).
