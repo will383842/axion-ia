@@ -15,20 +15,20 @@
 
 ## 0. EXISTANT réutilisé vs NEUF (carte anti-duplication)
 
-| Brique                                                                   | Statut                                      | Référence réelle dans le code                                                                                                                                                                                                                                                                                                                                            |
+| Brique | Statut | Référence réelle dans le code |
 | ------------------------------------------------------------------------ | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Upload média direct navigateur → R2                                      | ♻️ **EXISTANT**                             | `src/lib/r2-storage.ts` → `getSignedUploadUrlR2(key, contentType, ttl)` ; pattern de référence : `src/server/actions/intervention-documents/kit-import.actions.ts` (`prepareKitUploadAction` rend `{uploadUrl, tempKey}`, le navigateur fait `fetch(url,{method:"PUT",body:file})`).                                                                                     |
-| Téléchargement / lecture média                                           | ♻️ **EXISTANT**                             | `getSignedUrlR2(key, ttl)` + `getObjectBufferR2(key)` (fail-soft).                                                                                                                                                                                                                                                                                                       |
-| Wrapper page admin                                                       | ♻️ **EXISTANT**                             | `src/components/admin/ui/AdminPageShell.tsx` (`width="full"                                                                                                                                                                                                                                                                                                              | "narrow"                                                                                                                           | "wide"`), `AdminPageHeader`, `AdminToolbar`, `AdminCard`, `AdminTabs`, `AdminBadge`, `AdminTable`, `AdminConfirmDialog`, `AdminAutosaveIndicator`, `AdminConflictDialog`, `AdminFormDirtyGuard`, `AdminUndoToast`, `AdminEmptyState`, `AdminLoadingState`. Inventaire complet : `src/components/admin/ui/index.ts`. |
-| RBAC server actions                                                      | ♻️ **EXISTANT**                             | `requireAdminRead/Write/Publish/Delete` (rôles `super_admin`/`admin`/`editor`/`reader`). Pattern dans `src/server/actions/knowledge/_guards.ts`. **NEUF** : `src/server/elearning/_guards.ts` (re-export local cloisonné, voir §10).                                                                                                                                     |
-| Navigation admin (SSOT)                                                  | ♻️ **EXISTANT**                             | `src/lib/admin-nav.ts` (`AdminNavItem`, `AdminNavGroup`, `tier: "simple"                                                                                                                                                                                                                                                                                                 | "advanced"`). Sidebar montée = `src/components/admin/ui/AdminSidebarNav.tsx`. **NEUF** : ajout d'un groupe `elearning` (voir §11). |
-| Drag & drop                                                              | ♻️ **EXISTANT (dépendance déjà installée)** | `@dnd-kit/core` ^6.3.1, `@dnd-kit/sortable` ^10, `@dnd-kit/utilities` ^3.2.2 (cf. `package.json`). **Aucune nouvelle dépendance.**                                                                                                                                                                                                                                       |
-| Éditeur de texte riche                                                   | ♻️ **EXISTANT (dépendance déjà installée)** | `@tiptap/react` ^3.22.5, `@tiptap/starter-kit` ^3.22.5, `@tiptap/pm` ^3.22.5 (cf. `package.json`). Sérialisation **JSON Tiptap** dans `ElearningLesson.contenuJson`. **Aucune nouvelle dépendance.**                                                                                                                                                                     |
-| File d'attente / workers                                                 | ♻️ **EXISTANT**                             | `src/server/queue/queues.ts` (`enqueue*`) + workers `src/server/queue/workers/*-worker.ts`. **NEUF** : `elearning-media-worker.ts`, `elearning-ai-authoring-worker.ts` (voir §8, §9).                                                                                                                                                                                    |
-| IA (LLM provider, cache, coût)                                           | ♻️ **EXISTANT**                             | `src/server/content-gen/providers/anthropic.ts` (`anthropicProvider.generate`), `src/server/content-gen/lib/retry.ts` (`withRetry`), `src/server/content-gen/lib/cost-tracker.ts` (`assertCostCapAvailable`, `trackCost`). Pattern complet : `qualiopi-formation-engine-worker.ts`. RAG : réutiliser la base knowledge existante (cf. doc `09-tuteur-rag-assistant.md`). |
-| Coeur LMS (cours/modules/leçons/ressources)                              | 🆕 **NEUF**                                 | Modèles Prisma du doc data-model 01. Code sous `src/server/elearning/**` (ADR-0007).                                                                                                                                                                                                                                                                                     |
-| Course Builder UI (shell, arbre, éditeur leçon, blocs, uploader, aperçu) | 🆕 **NEUF**                                 | `src/components/admin/elearning/builder/**` (voir §3-§6).                                                                                                                                                                                                                                                                                                                |
-| Server actions builder                                                   | 🆕 **NEUF**                                 | `src/server/elearning/actions/course-builder.actions.ts` etc. (voir §10).                                                                                                                                                                                                                                                                                                |
+| Upload média direct navigateur → R2 | ♻️ **EXISTANT** | `src/lib/r2-storage.ts` → `getSignedUploadUrlR2(key, contentType, ttl)` ; pattern de référence : `src/server/actions/intervention-documents/kit-import.actions.ts` (`prepareKitUploadAction` rend `{uploadUrl, tempKey}`, le navigateur fait `fetch(url,{method:"PUT",body:file})`). |
+| Téléchargement / lecture média | ♻️ **EXISTANT** | `getSignedUrlR2(key, ttl)` + `getObjectBufferR2(key)` (fail-soft). |
+| Wrapper page admin | ♻️ **EXISTANT** | `src/components/admin/ui/AdminPageShell.tsx` (`width="full"                                                                                                                                                                                                                                                                                                              | "narrow"                                                                                                                           | "wide"`), `AdminPageHeader`, `AdminToolbar`, `AdminCard`, `AdminTabs`, `AdminBadge`, `AdminTable`, `AdminConfirmDialog`, `AdminAutosaveIndicator`, `AdminConflictDialog`, `AdminFormDirtyGuard`, `AdminUndoToast`, `AdminEmptyState`, `AdminLoadingState`. Inventaire complet : `src/components/admin/ui/index.ts`. |
+| RBAC server actions | ♻️ **EXISTANT** | `requireAdminRead/Write/Publish/Delete` (rôles `super_admin`/`admin`/`editor`/`reader`). Pattern dans `src/server/actions/knowledge/_guards.ts`. **NEUF** : `src/server/elearning/_guards.ts` (re-export local cloisonné, voir §10). |
+| Navigation admin (SSOT) | ♻️ **EXISTANT** | `src/lib/admin-nav.ts` (`AdminNavItem`, `AdminNavGroup`, `tier: "simple"                                                                                                                                                                                                                                                                                                 | "advanced"`). Sidebar montée = `src/components/admin/ui/AdminSidebarNav.tsx`. **NEUF** : ajout d'un groupe `elearning` (voir §11). |
+| Drag & drop | ♻️ **EXISTANT (dépendance déjà installée)** | `@dnd-kit/core` ^6.3.1, `@dnd-kit/sortable` ^10, `@dnd-kit/utilities` ^3.2.2 (cf. `package.json`). **Aucune nouvelle dépendance.** |
+| Éditeur de texte riche | ♻️ **EXISTANT (dépendance déjà installée)** | `@tiptap/react` ^3.22.5, `@tiptap/starter-kit` ^3.22.5, `@tiptap/pm` ^3.22.5 (cf. `package.json`). Sérialisation **JSON Tiptap** dans `ElearningLesson.contenuJson`. **Aucune nouvelle dépendance.** |
+| File d'attente / workers | ♻️ **EXISTANT** | `src/server/queue/queues.ts` (`enqueue*`) + workers `src/server/queue/workers/*-worker.ts`. **NEUF** : `elearning-media-worker.ts`, `elearning-ai-authoring-worker.ts` (voir §8, §9). |
+| IA (LLM provider, cache, coût) | ♻️ **EXISTANT** | `src/server/content-gen/providers/anthropic.ts` (`anthropicProvider.generate`), `src/server/content-gen/lib/retry.ts` (`withRetry`), `src/server/content-gen/lib/cost-tracker.ts` (`assertCostCapAvailable`, `trackCost`). Pattern complet : `qualiopi-formation-engine-worker.ts`. RAG : réutiliser la base knowledge existante (cf. doc `09-tuteur-rag-assistant.md`). |
+| Coeur LMS (cours/modules/leçons/ressources) | 🆕 **NEUF** | Modèles Prisma du doc data-model 01. Code sous `src/server/elearning/**` (ADR-0007). |
+| Course Builder UI (shell, arbre, éditeur leçon, blocs, uploader, aperçu) | 🆕 **NEUF** | `src/components/admin/elearning/builder/**` (voir §3-§6). |
+| Server actions builder | 🆕 **NEUF** | `src/server/elearning/actions/course-builder.actions.ts` etc. (voir §10). |
 
 > **Règle de cloisonnement (ADR-0007) :** tout code neuf vit sous `src/server/elearning/**`, `src/app/[locale]/(admin)/[adminPrefix]/elearning/**`, `src/components/admin/elearning/**`, workers `src/server/queue/workers/elearning-*-worker.ts`. **Jamais** de duplication d'une brique existante.
 
@@ -132,9 +132,7 @@ Sur chaque `ModuleRow` / `LessonRow`, `TreeItemMenu` propose :
       "id": "blk_aa1",
       "type": "richtext",
       "data": {
-        "tiptap": {
-          /* doc Tiptap JSON */
-        },
+        "tiptap": {/* doc Tiptap JSON */},
       },
     },
     {
@@ -165,9 +163,7 @@ Sur chaque `ModuleRow` / `LessonRow`, `TreeItemMenu` propose :
       "type": "callout",
       "data": {
         "variant": "info|astuce|attention",
-        "tiptap": {
-          /* ... */
-        },
+        "tiptap": {/* ... */},
       },
     },
     { "id": "blk_aa6", "type": "quiz", "data": { "quizId": "qz_123", "mode": "inline" } },
@@ -181,9 +177,7 @@ Sur chaque `ModuleRow` / `LessonRow`, `TreeItemMenu` propose :
       "id": "blk_aa9",
       "type": "devoir",
       "data": {
-        "consigne": {
-          /* tiptap */
-        },
+        "consigne": {/* tiptap */},
         "formatsAcceptes": ["pdf", "docx"],
         "tailleMaxMo": 20,
       },
@@ -376,22 +370,22 @@ Voir le cours **exactement comme un apprenant**, sans créer de faux compte ni p
 
 Fichier `src/server/elearning/actions/course-builder.actions.ts` :
 
-| Action                                                                                                             | RBAC                                                    | Rôle                                                                                                                                                                                |
+| Action | RBAC | Rôle |
 | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `createCourseAction({ templateId, titre })`                                                                        | write                                                   | Instancie cours + structure depuis template (transaction).                                                                                                                          |
-| `updateCourseMetaAction({ courseId, ...champs })`                                                                  | write                                                   | Met à jour les champs `ElearningCourse` (debounced autosave).                                                                                                                       |
-| `getLessonContentAction({ lessonId })`                                                                             | read                                                    | Charge `contenuJson` à la demande (lazy).                                                                                                                                           |
-| `saveLessonContentAction({ lessonId, blocks, dominantType, dureeEstimeeMinutes, obligatoire, expectedUpdatedAt })` | write                                                   | Valide via `lessonContentSchema` (Zod) + **dénormalise** vers `videoAssetId/pdfKey/quizId` + **optimistic concurrency** (compare `expectedUpdatedAt`, sinon `AdminConflictDialog`). |
-| `addModuleAction` / `addLessonAction({ moduleId, type })`                                                          | write                                                   | Ajoute en fin de liste (`ordre = max+1`).                                                                                                                                           |
-| `reorderModulesAction({ courseId, orderedIds })`                                                                   | write                                                   | Réécrit tous les `ordre` en transaction.                                                                                                                                            |
-| `reorderLessonsAction({ moduleId, orderedIds })` / `moveLessonAction({ lessonId, toModuleId, toIndex })`           | write                                                   | Idem + cross-module.                                                                                                                                                                |
-| `setUnlockAction({ scope, id, unlockType, unlockDate?, unlockOffsetJours?, unlockQuizId?, unlockScorePct? })`      | write                                                   | Édite les `unlock*` (module **ou** leçon).                                                                                                                                          |
-| `cloneAction({ scope, id, options })`                                                                              | write                                                   | Deep copy (§8).                                                                                                                                                                     |
-| `deleteModuleAction` / `deleteLessonAction`                                                                        | delete (`super_admin`) ou write avec confirmation forte | Suppression (cascade Prisma `onDelete: Cascade`). `AdminConfirmDialog` + `AdminUndoToast` (soft-undo : `archive` plutôt que delete dur si possible).                                |
-| `prepareMediaUploadAction` / `attachResourceAction`                                                                | write                                                   | Upload R2 (§6.1).                                                                                                                                                                   |
-| `prepareVideoUploadAction`                                                                                         | write                                                   | Upload Stream (§6.2).                                                                                                                                                               |
-| `publishCourseAction({ courseId })`                                                                                | **publish** (`admin+`)                                  | Voir §12.                                                                                                                                                                           |
-| `unpublishCourseAction` / `archiveCourseAction`                                                                    | publish                                                 | `statut = brouillon                                                                                                                                                                 | archive`. |
+| `createCourseAction({ templateId, titre })` | write | Instancie cours + structure depuis template (transaction). |
+| `updateCourseMetaAction({ courseId, ...champs })` | write | Met à jour les champs `ElearningCourse` (debounced autosave). |
+| `getLessonContentAction({ lessonId })` | read | Charge `contenuJson` à la demande (lazy). |
+| `saveLessonContentAction({ lessonId, blocks, dominantType, dureeEstimeeMinutes, obligatoire, expectedUpdatedAt })` | write | Valide via `lessonContentSchema` (Zod) + **dénormalise** vers `videoAssetId/pdfKey/quizId` + **optimistic concurrency** (compare `expectedUpdatedAt`, sinon `AdminConflictDialog`). |
+| `addModuleAction` / `addLessonAction({ moduleId, type })` | write | Ajoute en fin de liste (`ordre = max+1`). |
+| `reorderModulesAction({ courseId, orderedIds })` | write | Réécrit tous les `ordre` en transaction. |
+| `reorderLessonsAction({ moduleId, orderedIds })` / `moveLessonAction({ lessonId, toModuleId, toIndex })` | write | Idem + cross-module. |
+| `setUnlockAction({ scope, id, unlockType, unlockDate?, unlockOffsetJours?, unlockQuizId?, unlockScorePct? })` | write | Édite les `unlock*` (module **ou** leçon). |
+| `cloneAction({ scope, id, options })` | write | Deep copy (§8). |
+| `deleteModuleAction` / `deleteLessonAction` | delete (`super_admin`) ou write avec confirmation forte | Suppression (cascade Prisma `onDelete: Cascade`). `AdminConfirmDialog` + `AdminUndoToast` (soft-undo : `archive` plutôt que delete dur si possible). |
+| `prepareMediaUploadAction` / `attachResourceAction` | write | Upload R2 (§6.1). |
+| `prepareVideoUploadAction` | write | Upload Stream (§6.2). |
+| `publishCourseAction({ courseId })` | **publish** (`admin+`) | Voir §12. |
+| `unpublishCourseAction` / `archiveCourseAction` | publish | `statut = brouillon                                                                                                                                                                 | archive`. |
 
 ### 10.3 Services domaine
 
