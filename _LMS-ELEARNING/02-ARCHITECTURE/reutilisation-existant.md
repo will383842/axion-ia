@@ -148,15 +148,16 @@ On ne réutilise pas littéralement `PortailAcces` (couplé au flux Qualiopi `ge
 **Source.** `src/lib/r2-storage.ts` (API complète, lignes 34-228).
 
 **API réutilisée directement (aucune modification) :**
-| Fonction | Ligne | Usage LMS |
-|---|---|---|
-| `isR2Configured()` | `:34` | Garde avant tout accès (mode dégradé). |
-| `uploadToR2(key, buffer, ct, meta)` | `:103` | PDF leçon, ressources, certificats. |
-| `getSignedUrlR2(key, ttl)` | `:133` | Distribution de ressources `telechargeable` + PDF cours. |
+
+| Fonction                             | Ligne  | Usage LMS                                                                                                                                                 |
+| ------------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `isR2Configured()`                   | `:34`  | Garde avant tout accès (mode dégradé).                                                                                                                    |
+| `uploadToR2(key, buffer, ct, meta)`  | `:103` | PDF leçon, ressources, certificats.                                                                                                                       |
+| `getSignedUrlR2(key, ttl)`           | `:133` | Distribution de ressources `telechargeable` + PDF cours.                                                                                                  |
 | `getSignedUploadUrlR2(key, ct, ttl)` | `:156` | **Upload direct navigateur** : médias lourds de l'outil auteur + **devoirs apprenant** (`ElearningLessonType.devoir`) sans transiter par le serveur Next. |
-| `existsInR2(key)` | `:170` | Idempotence upload. |
-| `getObjectBufferR2(key)` | `:208` | Lecture fail-soft (ex. génération ZIP preuves FOAD). |
-| `deleteFromR2(key)` | `:183` | Purge légale fin de rétention. |
+| `existsInR2(key)`                    | `:170` | Idempotence upload.                                                                                                                                       |
+| `getObjectBufferR2(key)`             | `:208` | Lecture fail-soft (ex. génération ZIP preuves FOAD).                                                                                                      |
+| `deleteFromR2(key)`                  | `:183` | Purge légale fin de rétention.                                                                                                                            |
 
 **Convention de clés LMS (nouvelle, alignée sur `invoicePdfKey` :193) :**
 
@@ -251,12 +252,13 @@ elearning/certificats/<year>/<numero>.pdf               # via DocumentGenere (§
 ### 9.3 RBAC — `src/server/actions/knowledge/_guards.ts:20-49`
 
 4 guards prêts à l'emploi, réutilisés **tels quels** dans les server actions LMS :
-| Guard | Ligne | Rôles autorisés | Usage LMS |
-|---|---|---|---|
-| `requireAdminRead()` | `:20` | tous (≥ reader) | lister cours/apprenants/reporting |
-| `requireAdminWrite()` | `:27` | super_admin, admin, editor | créer/éditer cours, modules, leçons, quiz |
-| `requireAdminPublish()` | `:35` | super_admin, admin | **publier** un cours, **octroyer** des accès en masse |
-| `requireAdminDelete()` | `:43` | super_admin | archiver/supprimer |
+
+| Guard                   | Ligne | Rôles autorisés            | Usage LMS                                             |
+| ----------------------- | ----- | -------------------------- | ----------------------------------------------------- |
+| `requireAdminRead()`    | `:20` | tous (≥ reader)            | lister cours/apprenants/reporting                     |
+| `requireAdminWrite()`   | `:27` | super_admin, admin, editor | créer/éditer cours, modules, leçons, quiz             |
+| `requireAdminPublish()` | `:35` | super_admin, admin         | **publier** un cours, **octroyer** des accès en masse |
+| `requireAdminDelete()`  | `:43` | super_admin                | archiver/supprimer                                    |
 
 - Ces guards lisent `auth()` (NextAuth `AdminUser`) — c'est l'**admin Axion-IA**, pas l'apprenant. L'auth **apprenant** est un système séparé (§4).
 - **Réutiliser, ne pas redéfinir.** Si un besoin LMS spécifique apparaît (ex. rôle « auteur de cours »), l'ajouter dans ce fichier (extension), pas dans un nouveau module de guards.
@@ -304,14 +306,15 @@ On ajoute :
 - Helpers d'enqueue typés avec garde `if (!queue) { warn; return; }` (modèle : `enqueueFormationGeneration:505`, `enqueueEmail:605`).
 
 **Nouvelles queues LMS (cloisonnées, ADR-LMS-0007) — workers `src/server/queue/workers/elearning-*-worker.ts` :**
-| Queue | Worker | Rôle | Type |
-|---|---|---|---|
-| `elearning-drip` | `elearning-drip-worker.ts` | déverrouillage par date/offset (drip 3 déclencheurs) | cron + event |
-| `elearning-relance` | `elearning-relance-worker.ts` | relances anti-décrochage (Qualiopi Ind.12) | cron quotidien |
-| `elearning-video-ingest` | `elearning-video-ingest-worker.ts` | poll statut transcodage Cloudflare Stream → maj `videoAssetId` | event |
-| `elearning-quizgen` | `elearning-quizgen-worker.ts` | génération IA de questions (réutilise §7) | event |
-| `elearning-tutor` | `elearning-tutor-worker.ts` | tuteur RAG asynchrone (réponses longues) | event |
-| `elearning-certificat` | `elearning-certificat-worker.ts` | génération PDF certificat (réutilise §8 + @react-pdf) | event |
+
+| Queue                    | Worker                             | Rôle                                                           | Type           |
+| ------------------------ | ---------------------------------- | -------------------------------------------------------------- | -------------- |
+| `elearning-drip`         | `elearning-drip-worker.ts`         | déverrouillage par date/offset (drip 3 déclencheurs)           | cron + event   |
+| `elearning-relance`      | `elearning-relance-worker.ts`      | relances anti-décrochage (Qualiopi Ind.12)                     | cron quotidien |
+| `elearning-video-ingest` | `elearning-video-ingest-worker.ts` | poll statut transcodage Cloudflare Stream → maj `videoAssetId` | event          |
+| `elearning-quizgen`      | `elearning-quizgen-worker.ts`      | génération IA de questions (réutilise §7)                      | event          |
+| `elearning-tutor`        | `elearning-tutor-worker.ts`        | tuteur RAG asynchrone (réponses longues)                       | event          |
+| `elearning-certificat`   | `elearning-certificat-worker.ts`   | génération PDF certificat (réutilise §8 + @react-pdf)          | event          |
 
 - Crons `elearning-drip` / `elearning-relance` ajoutés dans `bootRepeatableJobs()` (même structure `removeRepeatable` + `add({repeat})` que les crons existants, ex. `:899-910`).
 - `startElearningXxxWorker()` appelés depuis `src/server/queue/worker.ts` au boot du process worker.
@@ -329,7 +332,7 @@ On ajoute :
 - Les pages apprenant et admin LMS sont **derrière auth** + doivent être `export const dynamic = "force-dynamic"` → **jamais rendues au build** → pas d'appel DB au SSG. Risque nul si on respecte ça.
 - **Tout service LMS qui pourrait être importé au build** (ex. une vitrine catalogue publique `/elearning` en SSG/ISR) doit être **stub-aware**, exactement comme `portail-service.ts` :
   ```ts
-  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return /* fallback vide */;
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return; /* fallback vide */
   ```
 - **Interdiction** de toucher à la magic string `"stub.invalid"`, à `SKIP_ENV_VALIDATION`, à `BULLMQ_DISABLED` (cf. AGENTS.md). Le LMS s'aligne, ne réécrit rien.
 
