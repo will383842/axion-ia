@@ -476,7 +476,7 @@ describe("evaluerConformite", () => {
     expect(ind16?.statut, "off.16 doit être couvert").toBe("couvert");
   });
 
-  // ── off.28 = AFEST (automatisé) ; off.13/14/15 = APPRENTISSAGE (non applicable) ──
+  // ── off.28 = AFEST (déclaratif SEULEMENT depuis 2026-08-10) ; off.13/14/15 = APPRENTISSAGE ──
 
   it("off.13/14/15/20/29 (apprentissage/CFA) restent NON APPLICABLES même avec AFEST déclaré", async () => {
     // alternance_afest déclaré ne doit PAS rendre les indicateurs apprenti applicables.
@@ -490,7 +490,7 @@ describe("evaluerConformite", () => {
     }
   });
 
-  it("off.28 a_completer si AFEST applicable mais aucun parcours conforme tracé", async () => {
+  it("off.28 a_completer si AFEST déclaré sur une Formation (preuves à constituer manuellement)", async () => {
     mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     const result = await evaluerConformite();
     const ind28 = result.indicateurs.find((i) => i.numero === 28);
@@ -498,7 +498,13 @@ describe("evaluerConformite", () => {
     expect(ind28?.preuves.join(" ")).toMatch(/à compléter/i);
   });
 
-  it("off.28 AUTOMATISÉ → couvert depuis un parcours AFEST 1-to-1 CONFORME (analyse + alternance + éval)", async () => {
+  // 🔴 Retournement 2026-08-10 : l'automatisme est RETIRÉ. Un parcours coaching
+  // (même « conforme » au sens de l'ancienne validation structurelle) ne rend
+  // PLUS `alternance_afest` effectif : le 1-to-1 est du conseil (décision
+  // 2026-07-17). Déclarer l'AFEST au certificateur COFRAC avec des prestations
+  // de conseil comme preuve était le risque d'audit n°1.
+  it("une coachingSession réalisée ne déclenche PLUS alternance_afest ni off.28", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["classique"] }]);
     mockP.coachingSession.findMany.mockResolvedValue([
       {
         cartographie: { taches: [{ tache: "Tri des emails" }] },
@@ -509,34 +515,22 @@ describe("evaluerConformite", () => {
       },
     ]);
     const result = await evaluerConformite();
-    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("couvert");
-    // Les indicateurs apprentissage NE deviennent PAS couverts par l'AFEST.
-    for (const numero of [13, 14, 15, 20, 29]) {
-      expect(result.indicateurs.find((i) => i.numero === numero)?.statut).toBe("non_applicable");
-    }
+    const ind28 = result.indicateurs.find((i) => i.numero === 28);
+    expect(ind28?.statut).toBe("non_applicable");
+    expect(ind28?.preuves).toHaveLength(0);
+    // Le service ne lit même plus les parcours coaching.
+    expect(mockP.coachingSession.findMany).not.toHaveBeenCalled();
   });
 
-  it("off.28 a_completer si cartographie/alternance/éval vides ou malformées (anti faux-positif)", async () => {
-    mockP.coachingSession.findMany.mockResolvedValue([
-      {
-        cartographie: { taches: [] }, // vide
-        evaluations: [],
-        comptesRendus: [
-          { misesEnSituation: [{ cas: "" }], phasesReflexives: [] },
-          { misesEnSituation: [null], phasesReflexives: [{ situation: "ok" }] },
-        ],
-      },
-    ]);
-    const result = await evaluerConformite();
-    expect(result.indicateurs.find((i) => i.numero === 28)?.statut).toBe("a_completer");
-  });
-
-  it("off.28 a_completer si comptesRendus vide même avec cartographie remplie + éval", async () => {
+  it("off.28 jamais couvert automatiquement, même avec AFEST déclaré ET parcours coaching présents", async () => {
+    mockP.formation.findMany.mockResolvedValue([{ typesActionQualiopi: ["alternance_afest"] }]);
     mockP.coachingSession.findMany.mockResolvedValue([
       {
         cartographie: { taches: [{ tache: "x" }] },
         evaluations: [{ id: "e" }],
-        comptesRendus: [],
+        comptesRendus: [
+          { misesEnSituation: [{ cas: "x" }], phasesReflexives: [{ situation: "y" }] },
+        ],
       },
     ]);
     const result = await evaluerConformite();

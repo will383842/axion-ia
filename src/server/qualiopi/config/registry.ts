@@ -159,16 +159,27 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str(),
     description: "Adresse du lieu d'exercice effectif (Grenoble, Isère — Auvergne-Rhône-Alpes).",
   },
-  // ── Régime de TVA (ÉVOLUTIF — cf. legal/tva.ts) ──────────────────────────
-  // Qualiopi n'a AUCUN effet sur la TVA. Défaut « assujetti » (20 %), le seul
-  // sûr tant qu'aucune attestation DREETS (261-4-4°) ni franchise (293 B) n'est
-  // acquise. À changer ici quand le statut fiscal évolue ; les factures déjà
-  // émises gardent leur régime d'origine.
+  // ── Régime de TVA — VERROUILLÉ SUR « ASSUJETTI » ─────────────────────────
+  // 🔴 Décision Will (règle du 2026-08-02, durcie le 2026-08-10) : « on doit
+  // toujours facturer la TVA », « nulle part il ne doit y avoir de TVA
+  // exonérée — même pour les formations ». Le schéma proposait encore
+  // `exoneration_261` et `franchise_293b` dans le <select> admin : un clic
+  // suffisait à faire partir les factures suivantes sans TVA, avec la mention
+  // 261-4-4° imprimée. Les deux options sont RETIRÉES du schéma.
+  //
+  // Effet en profondeur : `getQualiopiConfig` valide la valeur stockée contre
+  // ce schéma et retombe sur le défaut en cas d'échec — une valeur exonérée
+  // qui traînerait en base est donc AUSSI neutralisée en « assujetti », sans
+  // migration. Le type `RegimeTva` (legal/tva.ts) garde ses 3 valeurs pour
+  // relire les snapshots des factures déjà émises ; seul le RÉGLAGE est fermé.
+  //
+  // Pour rouvrir un jour (attestation DREETS 3511-SD + accord expert-comptable
+  // + décision EXPLICITE de Will) : réélargir ce z.enum — tout le reste suit.
   regime_tva: {
-    schema: z.enum(["assujetti", "exoneration_261", "franchise_293b"]),
+    schema: z.enum(["assujetti"]),
     default: REGIME_TVA_DEFAUT,
     description:
-      "Régime de TVA des NOUVELLES factures. Par défaut « assujetti » (TVA 20 %) — le seul sûr tant que l'attestation d'exonération n'est pas obtenue. Ne passez à « exonéré formation (261-4-4°) » QU'APRÈS accord de votre comptable (attestation DREETS, formulaire 3511-SD). Attention : Qualiopi ne donne PAS l'exonération. Les factures déjà émises gardent leur régime.",
+      "Régime de TVA des NOUVELLES factures : « assujetti » (TVA 20 %), seul régime autorisé — décision direction : la TVA est toujours facturée, aucune exonération (même formation). Les factures déjà émises gardent leur régime d'origine.",
   },
   taux_tva_standard_percent: {
     ...num(20),
@@ -319,30 +330,17 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   },
   langue_generation: { ...str("fr"), description: "Langue de génération (FR figé v1)." },
 
-  // ── 1-to-1 / AFEST (C1, 2026-06-14) — enforcement GATED (cf. ADR Phase 0 §7) ──
-  // Tous à false par défaut : la couche AFEST est livrée sans contrainte ; Will
-  // active chaque flag après confirmation du certificateur. Aucune fuite tant
-  // que le périmètre n'est pas certifié.
-  afest_perimetre_certifie: {
-    ...bool(false),
-    description:
-      "L'AFEST / 1-to-1 est dans le périmètre Qualiopi certifié (active mentions périmètre + finançabilité OPCO sur les documents).",
-  },
-  afest_tuteur_obligatoire: {
-    ...bool(false),
-    description:
-      "Tuteur entreprise AFEST obligatoire + signataire du protocole (bloque la clôture si absent). À confirmer avec le certificateur.",
-  },
-  afest_formateur_habilitation_requise: {
-    ...bool(false),
-    description:
-      "Habilitation formateur/accompagnateur AFEST requise (Trainer.afestHabiliteAt) pour animer un parcours AFEST. À confirmer avec le certificateur.",
-  },
-  afest_seuil_heures_min: {
-    ...num(0),
-    description:
-      "Plancher absolu d'heures réalisées pour une attestation 1-to-1 complète (0 = pas de plancher, seuls les % d'assiduité s'appliquent).",
-  },
+  // ── 1-to-1 / AFEST — SUPPRIMÉ le 2026-08-10 ───────────────────────────────
+  // Les 4 clés `afest_perimetre_certifie`, `afest_tuteur_obligatoire`,
+  // `afest_formateur_habilitation_requise` et `afest_seuil_heures_min` sont
+  // retirées : le 1-to-1 est du CONSEIL, hors Qualiopi (décision 2026-07-17,
+  // confirmée 2026-08-10). Vérifié en prod : les 4 valeurs `site_settings`
+  // étaient en position neutre (false/0) — suppression sans impact.
+  // ⚠️ `afest_perimetre_certifie` était LA duplication dangereuse : elle
+  // doublonnait `PERIMETRE_QUALIOPI.un_a_un` (src/server/qualiopi/perimetre.ts,
+  // le SSOT du périmètre) dans un SiteSetting modifiable depuis la console
+  // admin — un clic en admin pouvait contredire le périmètre déclaré au
+  // certificateur. Ne jamais réintroduire un flag de périmètre en config.
 
   // ── Périmètre indicateurs conformité ──────────────────────────────────────
   off29_applicable: {

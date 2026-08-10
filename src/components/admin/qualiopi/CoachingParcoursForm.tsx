@@ -92,7 +92,6 @@ export function CoachingParcoursForm({
   const [beneficiaireEntreprise, setBeneficiaireEntreprise] = useState("");
   const [clientId, setClientId] = useState(clientInitialId ?? "");
   const [devisId, setDevisId] = useState("");
-  const [estAfest, setEstAfest] = useState(false);
   const [seances, setSeances] = useState<SeanceDraft[]>([{ debut: "", heureFin: "" }]);
 
   // Un devis n'appartient qu'à un client : le select devis est filtré sur le
@@ -166,7 +165,6 @@ export function CoachingParcoursForm({
           : {}),
         ...(clientId ? { clientId } : {}),
         ...(devisId ? { devisId } : {}),
-        ...(estAfest ? { estAfest: true } : {}),
         seances: seancesPayload,
       });
 
@@ -360,20 +358,9 @@ export function CoachingParcoursForm({
         </>
       )}
 
-      {/* ── AFEST ─────────────────────────────────────────────────────────── */}
-      <div className="mb-[var(--space-admin-5)]">
-        <label className="flex cursor-pointer items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
-          <input
-            type="checkbox"
-            checked={estAfest}
-            onChange={(e) => setEstAfest(e.target.checked)}
-            disabled={isPending}
-            className="accent-[color:var(--color-admin-accent)]"
-          />
-          <span>Parcours cadré en AFEST</span>
-        </label>
-      </div>
-
+      {/* Checkbox « Parcours cadré en AFEST » RETIRÉE le 2026-08-10 : le
+          1-to-1 est une prestation de conseil (décision Will 2026-07-17),
+          plus aucun parcours ne se cadre en AFEST. */}
       {/* ── Séances du parcours ───────────────────────────────────────────── */}
       <div className="mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-5)]">
         <h3 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">

@@ -291,38 +291,12 @@ export async function checkDoctrine(text: string): Promise<DoctrineCheckResult> 
       // ou panne Postgres). Mirrors a representative subset of the seed
       // BannedPhrase corpus (54 phrases prod) avec les bloquants critiques.
       bannedPhrases = [
-        // City Domination 2026-05-18 P1-2 (décision Will Option A) — Lecture
-        // allégée : "formation" / "formateur" / "former" passent de `block`
-        // à `warn` (cohérent avec seed banned-phrases.ts:44-60). Le naming
-        // brand reste "intervention" / "cabinet IA opérationnel" mais le mot
-        // "formation" est tolérée en copy quand pertinent (descriptif sessions
-        // interventions collectives). Schema.org `Course` activé sur
-        // /interventions/collectives/* pour citation AEO sans dilution naming.
-        {
-          pattern: "formation",
-          reason: "Naming canonique = 'intervention'. Tolérer en copy descriptif",
-          severity: "warn",
-        },
-        {
-          pattern: "formations",
-          reason: "Naming canonique = 'interventions'. Tolérer en copy descriptif",
-          severity: "warn",
-        },
-        {
-          pattern: "formateur",
-          reason: "Naming canonique = 'intervenant'. Tolérer en copy descriptif",
-          severity: "warn",
-        },
-        {
-          pattern: "formatrice",
-          reason: "Naming canonique = 'intervenante'. Tolérer en copy descriptif",
-          severity: "warn",
-        },
-        {
-          pattern: "former",
-          reason: "Préférer 'accompagner' / 'faire monter en compétence' ; tolérer en copy",
-          severity: "warn",
-        },
+        // Règles « formation / formateur / former » RETIRÉES le 2026-08-10
+        // (décision Will). Elles dégradaient encore ces mots en `warn` alors que
+        // le site vend 21 formations au catalogue, expose « Formations IA » en
+        // navigation et indexe `/formations/*`. Le générateur signalait donc
+        // comme suspect le vocabulaire officiel de l'offre.
+        // Ne pas les réintroduire.
         // Marketing-hype §21 (warn)
         { pattern: "le meilleur", reason: "Marketing-hype", severity: "warn" },
         { pattern: "la meilleure", reason: "Marketing-hype", severity: "warn" },

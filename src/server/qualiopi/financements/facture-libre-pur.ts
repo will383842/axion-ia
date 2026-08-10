@@ -4,17 +4,30 @@
  *
  * Règle TVA centrale : l'exonération 261-4-4° CGI ne couvre QUE la formation
  * professionnelle continue. En régime `exoneration_261`, les lignes d'une
- * activité hors champ (audit/implementation/site_web) sont taxées au taux
- * standard, sauf taux explicite par ligne. `franchise_293b` et `assujetti`
- * s'appliquent au niveau de l'entité (aucun forçage par activité).
+ * activité hors champ (un_a_un/audit/implementation/site_web) sont taxées au
+ * taux standard, sauf taux explicite par ligne. `franchise_293b` et
+ * `assujetti` s'appliquent au niveau de l'entité (aucun forçage par activité).
  */
 
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
+import { activitesDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import type { RegimeTva } from "@/server/qualiopi/legal/tva";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 
-/** Activités couvertes par l'exonération 261-4-4° (formation pro continue). */
-export const ACTIVITES_EXONERABLES: ReadonlyArray<ActiviteFacturation> = ["formation", "un_a_un"];
+/**
+ * Activités couvertes par l'exonération 261-4-4° (formation pro continue).
+ *
+ * 🔴 DÉRIVÉE du périmètre Qualiopi (`perimetre.ts`) depuis le 2026-08-10 — ne
+ * plus JAMAIS redéclarer une liste en dur ici. L'ancienne liste littérale
+ * `["formation", "un_a_un"]` était restée sur la doctrine AFEST abandonnée le
+ * 2026-07-17 : en régime `exoneration_261`, un devis, une facture libre ou un
+ * plan récurrent 1-to-1 serait sorti exonéré de TVA — avec la mention
+ * « Prestations de formation professionnelle continue » imprimée sur le PDF —
+ * pour une prestation de CONSEIL. Exonération ⇔ périmètre formation : une
+ * seule table de vérité.
+ */
+export const ACTIVITES_EXONERABLES: ReadonlyArray<ActiviteFacturation> =
+  activitesDansPerimetreQualiopi();
 
 /** Libellés d'affichage des activités (PDF, admin). */
 export const ACTIVITE_LABELS: Record<ActiviteFacturation, string> = {

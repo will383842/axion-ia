@@ -1,14 +1,17 @@
 /**
- * Qualiopi 1-to-1 / AFEST — facturation d'un parcours coaching (parité financement).
+ * Coaching 1-to-1 (conseil) — facturation d'un contrat.
  *
- * Facture un `CoachingContract` (TVA exonérée 261-4-4° CGI) selon son dispositif :
- *   - OPCO : ventilation horaire (barème prise en charge) ou forfait, subrogation
- *            → destinataire OPCO + n° dossier ;
- *   - France Travail : destinataire France Travail + montant aide ;
- *   - CPF : reste à charge bénéficiaire ;
- *   - direct : forfait, destinataire entreprise.
- * Valide les pré-requis bloquants (validateCoachingFinancement). Heures réelles =
- * Σ CompteRenduSeance.dureeMinutes / 60. Réutilise FacturePdf. Stub-aware.
+ * 2026-08-10 (décision Will) : déplacé depuis `coaching-afest/facturation-1to1.ts`
+ * et RÉDUIT. Le 1-to-1 est une prestation de CONSEIL hors Qualiopi :
+ *  - 🔴 la TVA N'EST PAS exonérée. L'exonération 261-4-4° CGI ne couvre que la
+ *    formation professionnelle continue ; les lignes `un_a_un` passent par
+ *    `normaliserLignesPourActivite` et sont taxées au taux standard même en
+ *    régime `exoneration_261` (l'ancien en-tête « TVA exonérée 261-4-4° CGI »
+ *    était FAUX pour du conseil).
+ *  - le financement tiers (OPCO / CPF / France Travail, subrogation) a disparu
+ *    avec le module AFEST : le destinataire est TOUJOURS le client.
+ * Facture au forfait (`CoachingContract.montantHtCents`). Réutilise FacturePdf.
+ * Stub-aware.
  */
 
 import React from "react";
@@ -24,14 +27,13 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import { normaliserLignesPourActivite } from "@/server/qualiopi/financements/facture-libre-pur";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { resoudreConditions } from "@/server/qualiopi/financements/conditions-client";
-import { validateCoachingFinancement, computeCoachingFacturation } from "./financement-1to1";
-import { getHeuresReellesContrat } from "./heures";
-import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import { lignesFacture1to1 } from "./facturation-1to1-pur";
 
 export interface GenererFactureCoachingResult {
   factureId: string;
@@ -40,20 +42,6 @@ export interface GenererFactureCoachingResult {
 }
 
 const MAX_ATTEMPTS = 5;
-
-/**
- * Heures réelles d'un contrat.
- *
- * 🔴 Passe par `getHeuresReellesContrat`, c'est-à-dire par la MÊME fonction et
- * les MÊMES critères que l'attestation, le BPF et le certificat — et sous le
- * régime de preuve de CHAQUE parcours. Une facture qui ne dit pas la même chose
- * que le certificat du même parcours est un motif de redressement à elle seule,
- * et c'était déjà le cas : le BPF filtrait `estAfest` + `statut: realisee`, la
- * facture ne filtrait rien.
- */
-async function heuresReellesContrat(coachingContractId: string): Promise<number> {
-  return getHeuresReellesContrat(coachingContractId);
-}
 
 export async function genererFactureCoaching(
   coachingContractId: string,
@@ -67,49 +55,23 @@ export async function genererFactureCoaching(
     include: { client: true },
   });
 
-  // Pré-requis bloquants du dispositif (OPCO/CPF/France Travail).
-  const blocked = validateCoachingFinancement(contrat);
-  if (blocked) throw new Error(blocked);
-  if (contrat.subrogation && !contrat.client) {
-    throw new Error(
-      "Subrogation OPCO : un client (entreprise/OPCO) doit être rattaché au contrat avant facturation.",
-    );
-  }
-
-  const heures = await heuresReellesContrat(coachingContractId);
-  const calc = computeCoachingFacturation(contrat, heures);
-
-  // Nom/SIRET/adresse du destinataire selon le dispositif.
-  let destinataireNom = "À compléter";
-  let destinataireSiret: string | undefined;
-  let destinataireAdresse: string | undefined;
-  if (calc.destinataire === "opco") {
-    // Nom LISIBLE de l'OPCO (« Atlas » plutôt que le slug « atlas ») — parité collectif.
-    destinataireNom = contrat.client?.opcoIdentifie
-      ? opcoLabel(contrat.client.opcoIdentifie)
-      : "OPCO (à préciser)";
-  } else if (calc.destinataire === "france_travail") {
-    destinataireNom = "France Travail";
-  } else if (contrat.client) {
-    destinataireNom = contrat.client.raisonSociale ?? "Client";
-    destinataireSiret = contrat.client.siret ?? undefined;
-    destinataireAdresse = contrat.client.adresse ?? undefined;
-  }
+  // Destinataire : TOUJOURS le client (le financement tiers a été supprimé).
+  const destinataireNom = contrat.client?.raisonSociale ?? "Client";
+  const destinataireSiret = contrat.client?.siret ?? undefined;
+  const destinataireAdresse = contrat.client?.adresse ?? undefined;
 
   const identite = await getOrganismeIdentite();
   // Garde-fou conformité : facture illégale si identité OF incomplète.
   // Validé hors du try/catch fail-soft de génération PDF (blocage dur).
   assertOrganismeComplet(identite, "facture");
   const annee = new Date().getFullYear();
-  // Échéance : délai configurable — financeur (OPCO subrogé / France Travail)
-  // vs client direct. RIB depuis legal_overrides (null → bloc omis du PDF).
-  // 🔴 Vérification E2E 2026-07-26 — délai propre au client, non lu jusqu'ici.
-  const [delaiGlobal, delaiFinanceur, rib] = await Promise.all([
+  // Échéance : délai du client (spécifique) sinon délai global. RIB depuis
+  // legal_overrides (null → bloc omis du PDF).
+  const [delaiGlobal, rib] = await Promise.all([
     getQualiopiConfig("delai_paiement_jours"),
-    getQualiopiConfig("delai_paiement_financeur_jours"),
     resolveRibFacture(),
   ]);
-  const delaiClient = resoudreConditions(
+  const delaiJours = resoudreConditions(
     {
       delaiPaiementJours: contrat.client?.delaiPaiementJours ?? null,
       tauxAcomptePct: null,
@@ -117,10 +79,6 @@ export async function genererFactureCoaching(
     },
     { delaiPaiementJours: delaiGlobal, tauxAcomptePct: 0, modeFacturation: "acompte_solde" },
   ).delaiPaiementJours;
-  const delaiJours =
-    calc.destinataire === "opco" || calc.destinataire === "france_travail"
-      ? delaiFinanceur
-      : delaiClient;
   const now = new Date();
   const echeance = new Date(now);
   echeance.setDate(
@@ -129,10 +87,19 @@ export async function genererFactureCoaching(
   const fmt = (d: Date) => d.toLocaleDateString("fr-FR");
 
   // Régime de TVA (config, évolutif) + ventilation HT/TVA/TTC. Snapshot facture.
+  // 🔴 `normaliserLignesPourActivite` AVANT tout calcul : en régime
+  // `exoneration_261`, l'activité `un_a_un` est HORS champ de l'exonération —
+  // ses lignes sont taxées au taux standard. Le conseil est taxable.
   const regimeTvaConfig = await getQualiopiConfig("regime_tva");
   const regimeTva: RegimeTva = isRegimeTva(regimeTvaConfig) ? regimeTvaConfig : REGIME_TVA_DEFAUT;
   const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-  const totaux = computeTotauxFacture(calc.lignes, regimeTva, tauxStandard);
+  const lignes = normaliserLignesPourActivite(
+    lignesFacture1to1(contrat.montantHtCents),
+    "un_a_un",
+    regimeTva,
+    tauxStandard,
+  );
+  const totaux = computeTotauxFacture(lignes, regimeTva, tauxStandard);
 
   let factureCreee: { id: string; numero: string } | null = null;
   let documentId: string | null = null;
@@ -160,10 +127,7 @@ export async function genererFactureCoaching(
         ...(destinataireSiret !== undefined ? { siret: destinataireSiret } : {}),
         ...(destinataireAdresse !== undefined ? { adresse: destinataireAdresse } : {}),
       },
-      lignes: calc.lignes,
-      ...(calc.destinataire === "opco" && calc.numeroDossier
-        ? { subrogationOpco: { nomOpco: destinataireNom, numeroDossier: calc.numeroDossier } }
-        : {}),
+      lignes,
       ...(rib !== null ? { rib } : {}),
     };
 
@@ -190,24 +154,20 @@ export async function genererFactureCoaching(
           activite: "un_a_un",
           coachingContractId,
           ...(contrat.clientId != null ? { clientId: contrat.clientId } : {}),
-          destinataire: calc.destinataire,
+          destinataire: "entreprise",
           destinataireNom,
           ...(destinataireSiret !== undefined ? { destinataireSiret } : {}),
           ...(contrat.client?.tvaIntracom != null
             ? { destinataireTvaIntracom: contrat.client.tvaIntracom }
             : {}),
           ...(destinataireAdresse !== undefined ? { destinataireAdresse } : {}),
-          montantHtCents: calc.totalHtCents,
+          montantHtCents: totaux.totalHtCents,
           tvaExoneree: totaux.totalTvaCents === 0,
           regimeTva,
           montantTvaCents: totaux.totalTvaCents,
           montantTtcCents: totaux.totalTtcCents,
-          lignes: calc.lignes as never,
-          subrogation: calc.subrogation,
-          ...(calc.numeroDossier != null ? { numeroDossierOpco: calc.numeroDossier } : {}),
-          ...(calc.montantAideFranceTravailCents != null
-            ? { montantAideFranceTravailCents: calc.montantAideFranceTravailCents }
-            : {}),
+          lignes: lignes as never,
+          subrogation: false,
           statut: "emise",
           emiseAt: now,
           echeanceAt: echeance,

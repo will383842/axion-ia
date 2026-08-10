@@ -38,7 +38,9 @@ const createCoachingParcoursSchema = z.object({
   beneficiaireEntreprise: z.string().max(250).optional(),
   clientId: z.string().uuid().optional(),
   devisId: z.string().uuid().optional(),
-  estAfest: z.boolean().optional(),
+  // `estAfest` RETIRÉ du schéma le 2026-08-10 : le 1-to-1 est du conseil
+  // (décision Will 2026-07-17), plus aucun parcours ne se cadre en AFEST. Le
+  // champ Prisma existe toujours (défaut false) mais n'est plus jamais écrit.
   seances: z.array(seanceSchema).min(1).max(50),
 });
 
@@ -124,7 +126,6 @@ export async function createCoachingParcoursAction(
               : {}),
             ...(clientIdEffectif ? { clientId: clientIdEffectif } : {}),
             ...(v.devisId ? { devisId: v.devisId } : {}),
-            ...(v.estAfest !== undefined ? { estAfest: v.estAfest } : {}),
           },
           select: { id: true },
         });
@@ -150,7 +151,6 @@ export async function createCoachingParcoursAction(
       nbSeances: ids.length,
       clientId: clientIdEffectif ?? null,
       devisId: v.devisId ?? null,
-      estAfest: v.estAfest ?? false,
     },
     session,
   });

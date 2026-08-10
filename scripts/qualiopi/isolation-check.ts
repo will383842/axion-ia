@@ -80,9 +80,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/instrumentation\.ts$/,
   // Routing i18n — pathnames /formations (Phase B).
   /^src\/i18n\/routing\.ts$/,
-  // ── Références transverses légitimes (chantier AFEST 1-to-1 + handicap) ──
-  // Coaching AFEST : l'admin coaching consomme la couche qualiopi coaching-afest
-  // (heures, financement, kits). Surfaces métier de l'AFEST, pas une fuite.
+  // ── Références transverses légitimes (coaching 1-to-1 + handicap) ──
+  // Coaching 1-to-1 (conseil) : l'admin coaching consomme la couche qualiopi
+  // coaching-1to1 (heures, facturation). Surfaces métier, pas une fuite.
+  // (2026-08-10 : le module AFEST `coaching-afest/**` a été supprimé — décision Will.)
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/coaching\//,
   /^src\/components\/admin\/coaching\//,
   // Page publique d'accessibilité — référence le SSOT `HANDICAP_PARTENAIRES`

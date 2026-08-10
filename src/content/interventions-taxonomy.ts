@@ -421,7 +421,7 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
   },
   // -------------------------------------------------------------------------
   // FAMILLE : Individuel — coaching 1-to-1 « Optimisation du poste ».
-  // Refonte 1-to-1 AFEST (Will 2026-06-13) : coaching « Optimisation du poste »,
+  // Refonte 1-to-1 (Will 2026-06-13) : coaching « Optimisation du poste »,
   // générique tous métiers (secrétaire, chef de chantier, commercial…). Le but
   // n'est PAS de construire des automatisations mais de cartographier le
   // fonctionnement actuel et d'identifier ce qu'on peut automatiser pour gagner

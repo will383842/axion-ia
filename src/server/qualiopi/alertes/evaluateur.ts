@@ -1395,7 +1395,7 @@ async function regleDevisSigneConvention(_now: Date): Promise<AlerteCandidate[]>
     code: "devis_signe_convention",
     niveau: "important" as AlerteNiveau,
     titre: "Devis signé — session et convention à créer",
-    message: `Le devis ${d.numero} (${d.client.raisonSociale}) est signé${d.acceptedAt != null ? ` depuis le ${d.acceptedAt.toLocaleDateString("fr-FR")}` : ""} : créer la session (ou le parcours 1-to-1) puis générer la convention.`,
+    message: `Le devis ${d.numero} (${d.client.raisonSociale}) est signé${d.acceptedAt != null ? ` depuis le ${d.acceptedAt.toLocaleDateString("fr-FR")}` : ""} : créer la session puis générer la convention ; pour un devis 1-to-1 (conseil), créer le parcours — contrat de prestation, pas de convention de formation.`,
     cibleType: "Devis",
     cibleId: d.id,
   }));

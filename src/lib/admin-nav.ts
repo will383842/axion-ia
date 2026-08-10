@@ -1192,7 +1192,7 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "documents-interventions",
       subGroup: "outils",
     },
-    // ── Coaching 1-to-1 (séances AFEST remplies par les formateurs) ───────
+    // ── Coaching 1-to-1 (séances de conseil remplies par les formateurs) ──
     {
       href: `${base}/coaching`,
       label: "Tableau de bord",

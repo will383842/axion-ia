@@ -24,7 +24,6 @@ const BASE: TrainerCvSource = {
   cvUrl: null,
   domainesCompetences: [],
   dateEmbauche: null,
-  afestHabiliteAt: null,
   sousTraitantNda: null,
   sousTraitantVerifieAt: null,
 };
@@ -104,9 +103,15 @@ describe("buildCvFormateurData", () => {
     const data = buildCvFormateurData(BASE, [], MAINTENANT);
     expect(data.telephone).toBe("");
     expect(data.dateEmbauche).toBe("");
-    expect(data.afestHabiliteAt).toBe("");
     expect(data.sousTraitantNda).toBe("");
     expect(data.sousTraitantVerifieAt).toBe("");
+  });
+
+  it("le champ d'habilitation AFEST a DISPARU de la fiche (bloc retiré le 2026-08-10)", () => {
+    // Le 1-to-1 est du conseil, hors Qualiopi : la fiche exportée ne porte
+    // plus aucune trace d'habilitation AFEST.
+    const data = buildCvFormateurData(BASE, [], MAINTENANT);
+    expect(Object.keys(data)).not.toContain("afestHabiliteAt");
   });
 
   it("cvJoint reflète la présence d'un cvUrl", () => {

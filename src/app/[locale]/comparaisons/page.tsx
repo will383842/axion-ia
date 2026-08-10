@@ -102,7 +102,7 @@ export default async function ComparisonsListPage({ params }: Props) {
               <h1 className="display-editorial text-fg">
                 {isFr ? "Comparaisons IA " : "Honest AI "}
                 <span
-                  className="text-terracotta italic"
+                  className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {isFr ? "honnêtes" : "comparisons"}
@@ -289,7 +289,7 @@ export default async function ComparisonsListPage({ params }: Props) {
         }
         cta={
           <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} â†’
+            {isFr ? "Voir nos formations" : "See our trainings"} →
           </Cta>
         }
         tone="dark"

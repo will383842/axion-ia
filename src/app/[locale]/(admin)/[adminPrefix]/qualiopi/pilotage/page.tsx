@@ -22,6 +22,7 @@ import { CsvExportButton } from "@/components/admin/qualiopi/CsvExportButton";
 import {
   genererPilotagePdfAction,
   exportPilotageCsvAction,
+  type PilotageExportInput,
 } from "@/server/actions/qualiopi/exports-pdf";
 import {
   getPilotage,
@@ -32,7 +33,6 @@ import {
 } from "@/server/qualiopi/conformite/pilotage-service";
 import { getRevue } from "@/server/qualiopi/registres/revue-direction-service";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import type { TypeActionQualiopi } from "../../../../../../../prisma/generated/client";
 import {
   Briefcase,
   Clock,
@@ -60,11 +60,17 @@ interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-const TYPES_ACTION: Array<{ value: TypeActionQualiopi; label: string }> = [
+// `alternance_afest` retiré des filtres le 2026-08-10 : le 1-to-1 est du
+// conseil, hors Qualiopi (décision 2026-07-17). Le type est aligné sur l'union
+// acceptée par les actions d'export (sans `alternance_afest`), plus étroite que
+// l'enum Prisma hérité.
+const TYPES_ACTION: Array<{
+  value: NonNullable<PilotageExportInput["typeAction"]>;
+  label: string;
+}> = [
   { value: "classique", label: "Classique" },
   { value: "certifiante", label: "Certifiante" },
   { value: "foad", label: "FOAD" },
-  { value: "alternance_afest", label: "AFEST" },
   { value: "sous_traitance", label: "Sous-traitance" },
   { value: "cpf", label: "CPF" },
   { value: "opco", label: "OPCO" },

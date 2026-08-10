@@ -1,8 +1,8 @@
 // Server component — section fondateur Williams (crédibilité + Top 1 %).
 // Réutilisable home / régions / villes. Lit le namespace i18n "home" via
 // `getTranslations("home")` pour rester en synchro avec la home (clés
-// founderEyebrow, founderTitleLine1, founderTitleLine2, founderDescription,
-// founderTagline, founderName, founderRole, founderPhotoAlt, founderStat1-3).
+// founderEyebrow, founderTitleLine1, founderTitleLine2, founderTagline,
+// founderName, founderRole, founderPhotoAlt, founderStat1-3).
 
 import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -44,9 +44,11 @@ export async function FounderTrustSection({ isFr }: FounderTrustSectionProps) {
               >
                 {t("founderTitleLine1")}
                 <br />
-                <span className="text-terracotta italic">{t("founderTitleLine2")}</span>
+                <span className="text-terracotta mx-2 italic">{t("founderTitleLine2")}</span>
               </h2>
-              <p className="text-fg-soft mt-7 text-lg leading-relaxed">{t("founderDescription")}</p>
+              {/* Lead RETIRÉ (Will 2026-08-10) : « Sans intermédiaire, sans
+                  compromis… ». Retiré partout — la même phrase était dupliquée
+                  à l'identique sur la home + toutes les pages régions/villes. */}
               <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
                 <span
                   aria-hidden="true"

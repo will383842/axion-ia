@@ -476,7 +476,7 @@ export const BOOKING_CATALOG: ReadonlyArray<BookingCategory> = [
     iconKey: "user",
     accent: "mocha",
     formats: [
-      // Refonte 1-to-1 AFEST (Will 2026-06-13) : Dirigeant 1j/2j + Collaborateur
+      // Refonte 1-to-1 (Will 2026-06-13) : Dirigeant 1j/2j + Collaborateur
       // « Optimisation du poste » 1j/2j + Suivi régulier. Les formats « 100 % Claude »
       // (centrés outil) ont été retirés. Tous « sur devis » (bookable:false).
       {

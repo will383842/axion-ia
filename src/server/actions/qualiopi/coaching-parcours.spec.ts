@@ -69,7 +69,7 @@ beforeEach(() => {
 describe("createCoachingParcoursAction", () => {
   it("crée une CoachingSession par séance, avec les rattachements CRM", async () => {
     const res = await createCoachingParcoursAction(
-      baseInput({ clientId: CLIENT_ID, devisId: DEVIS_ID, estAfest: true }),
+      baseInput({ clientId: CLIENT_ID, devisId: DEVIS_ID }),
     );
     if (!("data" in res)) throw new Error(`attendu data, reçu ${JSON.stringify(res)}`);
     expect(res.data.count).toBe(2);
@@ -78,8 +78,30 @@ describe("createCoachingParcoursAction", () => {
     expect(data.trainerId).toBe(TRAINER_ID);
     expect(data.clientId).toBe(CLIENT_ID);
     expect(data.devisId).toBe(DEVIS_ID);
-    expect(data.estAfest).toBe(true);
+    // 🔴 2026-08-10 (décision Will 2026-07-17) : le 1-to-1 est du CONSEIL —
+    // `estAfest` a été retiré du schéma d'entrée et n'est plus JAMAIS écrit.
+    // Ce test affirmait l'inverse (estAfest: true accepté et persisté).
+    expect(data.estAfest).toBeUndefined();
     expect(data.beneficiaireNom).toBe("Simone Blanc");
+  });
+
+  it("🔒 un appelant qui tenterait encore de cadrer en AFEST est rejeté par le schéma strict", async () => {
+    // On teste volontairement un champ HORS CONTRAT (l'ancien `estAfest`) :
+    // le cast passe par `unknown` pour simuler un appelant non typé (formulaire
+    // legacy, requête forgée) sans réintroduire le champ dans le type.
+    const payloadLegacy = {
+      ...baseInput({ clientId: CLIENT_ID }),
+      estAfest: true,
+    } as unknown as Parameters<typeof createCoachingParcoursAction>[0];
+    const res = await createCoachingParcoursAction(payloadLegacy);
+    // z.object non-strict IGNORE les clés inconnues : l'important est que même
+    // fourni, le champ ne soit pas persisté.
+    if ("data" in res) {
+      const data = mp.coachingSession.create.mock.calls[0]![0].data;
+      expect(data.estAfest).toBeUndefined();
+    } else {
+      expect("error" in res).toBe(true);
+    }
   });
 
   it("REFUSE un slug hors du SSOT des prestations 1-to-1", async () => {

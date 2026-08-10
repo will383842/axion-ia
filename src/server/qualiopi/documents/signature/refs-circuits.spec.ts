@@ -53,19 +53,11 @@ const REF_REQUISE_PAR_PARTIE: Partial<Record<PartieSignataire, string>> = {
 // Écarts CONNUS et assumés — chacun doit rester justifié, jamais silencieux.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const ECARTS_ASSUMES: ReadonlyArray<{ type: string; partie: PartieSignataire; raison: string }> = [
-  {
-    type: "protocole_afest",
-    partie: "client",
-    // Fait de SCHÉMA, pas oubli de câblage : `CoachingSession` n'a aucune FK
-    // vers `Client` (un coaching peut exister sans fiche CRM ; l'entreprise y
-    // est du texte libre). Fabriquer un rattachement scellerait une identité
-    // que personne n'a saisie. L'admin obtient le refus explicite — actionnable.
-    // Lever cet écart = décision de schéma (FK Client sur CoachingSession).
-    raison:
-      "CoachingSession sans FK Client — refus explicite à l'émission, décision de schéma en attente",
-  },
-];
+// 2026-08-10 (décision Will) : l'unique écart assumé portait sur
+// `protocole_afest`, dont le circuit a disparu avec le module AFEST 1-to-1.
+// La liste reste en place pour le prochain écart légitime.
+const ECARTS_ASSUMES: ReadonlyArray<{ type: string; partie: PartieSignataire; raison: string }> =
+  [];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Où vivent les générateurs de pièces signables.
@@ -74,7 +66,6 @@ const ECARTS_ASSUMES: ReadonlyArray<{ type: string; partie: PartieSignataire; ra
 const FICHIERS_GENERATEURS = [
   "src/server/actions/qualiopi/documents.ts",
   "src/server/actions/qualiopi/devis.ts",
-  "src/server/qualiopi/coaching-afest/protocole-1to1.ts",
 ];
 
 const REF_KEYS = ["sessionId", "clientId", "traineeId", "sousTraitantId", "coachingSessionId"];

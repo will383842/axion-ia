@@ -78,6 +78,9 @@ const DOC_TYPE_TO_NUMBERING: Record<DocumentType, (typeof DOCUMENT_REGISTER_TYPE
   lettre_mission: "document",
   reglement_interieur: "document",
   livret_accueil: "document",
+  // Valeur d'enum HÉRITÉE, plus jamais émise (module AFEST 1-to-1 supprimé le
+  // 2026-08-10, décision Will) — l'entrée reste car le Record est exhaustif
+  // sur `DocumentType` et l'enum Prisma n'est pas modifié à cette étape.
   protocole_afest: "document",
   // Inventaire des moyens pédagogiques (A14).
   inventaire_moyens: "document",
@@ -125,7 +128,7 @@ export interface GenerateDocumentInput {
     /** Sous-traitant partie au contrat — sans lui, aucun lien de signature émissible. */
     sousTraitantId?: string;
     clientId?: string;
-    /** Coaching 1-to-1 AFEST (C1) : rattache le document à son parcours. */
+    /** Coaching 1-to-1 (conseil) : rattache le document à son parcours. */
     coachingSessionId?: string;
     /**
      * Formateur MANDATÉ par la pièce (lettre de mission). Indispensable à la
@@ -138,12 +141,12 @@ export interface GenerateDocumentInput {
    * Métadonnées de PRODUCTION à figer sur la pièce.
    *
    * 🔴 Sert à enregistrer les conditions dans lesquelles le PDF a été calculé,
-   * pas son contenu. L'usage qui l'a fait naître : le régime de preuve d'un
-   * parcours AFEST. Une feuille d'émargement produite sous `legacy_boolean`
-   * continuait d'être servie telle quelle après bascule en `signature_reelle`,
-   * parce que la génération est IDEMPOTENTE — la feuille disait alors une chose
-   * pendant que la facture, le BPF et le certificat du même parcours en
-   * disaient une autre.
+   * pas son contenu. L'usage qui l'a fait naître (régime de preuve AFEST,
+   * module supprimé le 2026-08-10) : une pièce produite sous une condition de
+   * calcul continuait d'être servie telle quelle après changement de la
+   * condition, parce que la génération est IDEMPOTENTE — la pièce disait alors
+   * une chose pendant que les autres surfaces du même dossier en disaient une
+   * autre.
    *
    * ⚠️ Ce n'est PAS un fourre-tout. Une donnée qui appartient au contenu de la
    * pièce doit être dans le PDF, où elle est hachée ; ici rien n'est scellé.
@@ -549,7 +552,7 @@ export async function generateDocument(
      * une génération de pièce pour un instantané qui n'est qu'un confort.
      *
      * 🔴 `identite` est capturée À PART, et ce n'est pas un détail : les formes
-     * de props ne sont PAS uniformes. `DevisPdf` et `ProtocoleAfestPdf` prennent
+     * de props ne sont PAS uniformes. `DevisPdf` prend
      * `{ data }` avec l'identité DANS `data` ; `ConventionPdf`,
      * `ConventionTripartitePdf`, `ContratFormationPdf` et
      * `ContratSousTraitancePdf` prennent `{ data, identite }`. N'instantanéiser

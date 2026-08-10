@@ -50,7 +50,8 @@ describe("matrice des circuits", () => {
         "convention_tripartite",
         "contrat",
         "contrat_sous_traitance",
-        "protocole_afest",
+        // 2026-08-10 (décision Will) : `protocole_afest` retiré — son circuit a
+        // disparu avec le module AFEST 1-to-1 (conseil hors Qualiopi).
       ].sort(),
     );
   });
@@ -62,8 +63,10 @@ describe("matrice des circuits", () => {
     //
     // ⚠️ L'exception est LISTÉE, pas devinée : un test qui dirait « sauf quand
     // ça ne marche pas » ne garderait plus rien. Ajouter une entrée ici doit
-    // rester un geste délibéré.
-    const SIGNE_EN_PREMIER = new Set(["protocole_afest"]);
+    // rester un geste délibéré. (2026-08-10 : la seule exception historique —
+    // `protocole_afest`, où l'organisme proposait le cadrage — a disparu avec
+    // le module AFEST, décision Will. La liste reste pour le prochain cas.)
+    const SIGNE_EN_PREMIER = new Set<string>([]);
     for (const type of TYPES_SIGNABLES) {
       const parties = partiesRequisesPour(type);
       expect(parties).not.toBeNull();
@@ -74,16 +77,10 @@ describe("matrice des circuits", () => {
     }
   });
 
-  it("🔴 le protocole AFEST fait exception, et c'est voulu", () => {
-    // Ici l'organisme signe EN PREMIER : c'est lui qui propose le cadrage
-    // D.6313-3-1 à l'entreprise, puis au bénéficiaire. C'est l'ordre du plan
-    // §II.2 (« Organisme + Entreprise + Bénéficiaire »), pas un accident de
-    // saisie — d'où l'exception explicite du test précédent.
-    expect(partiesRequisesPour("protocole_afest")).toStrictEqual([
-      "axionia",
-      "client",
-      "beneficiaire",
-    ]);
+  it("🔴 le circuit du protocole AFEST a bien DISPARU (module supprimé le 2026-08-10)", () => {
+    // Une pièce qui ne s'émet plus ne doit plus être signable : `null` est le
+    // refus explicite attendu, pas une liste vide.
+    expect(partiesRequisesPour("protocole_afest")).toBeNull();
   });
 
   it("aucun circuit ne déclare deux fois la même partie", () => {

@@ -1897,9 +1897,10 @@ const lettreCadreListeSchema = z.object({
 const lettreCadreSchema = lettreCadreListeSchema
   .extend({
     sessionIds: z.array(z.string().uuid()).max(100).default([]),
-    // Coachings AFEST 1-to-1 et audits (Will 2026-08-01 : « on peut avoir des
-    // sous-traitants aussi » sur ces prestations). Optionnels — une lettre-cadre
-    // peut ne couvrir que des formations, que des coachings, ou un mélange.
+    // Coachings 1-to-1 (conseil) et audits (Will 2026-08-01 : « on peut avoir
+    // des sous-traitants aussi » sur ces prestations). Optionnels — une
+    // lettre-cadre peut ne couvrir que des formations, que des coachings, ou un
+    // mélange.
     coachingIds: z.array(z.string().uuid()).max(100).default([]),
     auditIds: z.array(z.string().uuid()).max(100).default([]),
   })
@@ -1918,7 +1919,7 @@ interface PrestationCandidate {
 
 /**
  * Prestations candidates à une lettre-CADRE : formations collectives, coachings
- * AFEST 1-to-1 et audits de la période dont l'intervenant est le formateur
+ * 1-to-1 (conseil) et audits de la période dont l'intervenant est le formateur
  * principal de la session d'origine.
  *
  * ⚠️ Sessions : pré-filtre SQL large (FK OU affectation), recoupé en mémoire
@@ -3114,7 +3115,8 @@ export async function verserFicheFormateurAction(input: {
       domainesCompetences: true,
       formationsHabilitees: true,
       dateEmbauche: true,
-      afestHabiliteAt: true,
+      // 2026-08-10 : `afestHabiliteAt` n'est plus lu — le bloc « Habilitation
+      // AFEST » a été retiré de la fiche formateur (1-to-1 = conseil, décision Will).
       sousTraitantNda: true,
       adresseProfessionnelle: true,
       sousTraitantVerifieAt: true,

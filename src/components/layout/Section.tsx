@@ -291,12 +291,24 @@ export function Section({
           >
             {title}
             {titleEm ? (
-              <span
-                className={cn("mx-2 italic", emClasses[resolvedTone])}
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {titleEm}
-              </span>
+              <>
+                {/* 🔴 Espace TEXTUELLE, pas seulement visuelle (2026-08-10).
+                    L'accent était séparé par `mx-2` : l'œil voyait bien deux
+                    mots, mais le DOM ne contenait aucun caractère d'espace
+                    entre eux. Le nom accessible du titre et le texte extrait
+                    par les moteurs devenaient « Comment se dérouleconcrètement »,
+                    « Pourquoicette méthode », « Questionsfréquentes » — sur
+                    TOUTES les pages qui passent un `titleEm`.
+                    La marge est remplacée par une vraie espace : le rendu reste
+                    équivalent et le mot redevient un mot. Le `titleTail` (« . »)
+                    continue de coller à l'accent, ce qui est voulu. */}{" "}
+                <span
+                  className={cn("italic", emClasses[resolvedTone])}
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {titleEm}
+                </span>
+              </>
             ) : null}
             {titleTail}
           </TitleTag>

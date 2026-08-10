@@ -133,8 +133,12 @@ const INDICATEUR_DOCUMENT_TYPES: Partial<Record<number, DocumentType[]>> = {
   25: [],
   26: [],
   27: ["convention_tripartite"],
-  // off.28 (AFEST 1-to-1) : protocole AFEST + attestation en heures.
-  28: ["protocole_afest", "attestation", "emargement"],
+  // off.28 (AFEST) : AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil
+  // (décision 2026-07-17). Plus aucun document coaching (protocole AFEST,
+  // attestation, émargement 1-to-1) ne sert de preuve à cet indicateur ;
+  // il reste conditionnel « afest » et non applicable tant qu'aucune
+  // Formation ne déclare `alternance_afest`.
+  28: [],
   29: [],
 
   // C7 — Amélioration

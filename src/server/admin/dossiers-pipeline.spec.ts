@@ -556,7 +556,11 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
     expect(pipeline.devis_attente[0]?.qualiopi).toBe(false);
   });
 
-  it("session → ✅ Qualiopi · coaching (un_a_un / AFEST) → ✅ · mission d'audit → ❌", async () => {
+  // 🔴 Retourné le 2026-08-10 : ce test affirmait « coaching (un_a_un / AFEST)
+  // → ✅ » sur l'ancienne doctrine. Le 1-to-1 est du CONSEIL, hors Qualiopi
+  // (décision Will 2026-07-17, `PERIMETRE_QUALIOPI.un_a_un = false`) : le
+  // coaching doit désormais s'afficher HORS périmètre, comme l'audit.
+  it("session → ✅ Qualiopi · coaching 1-to-1 (conseil) → ❌ · mission d'audit → ❌", async () => {
     vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([
       {
         id: "s1",
@@ -602,7 +606,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
     const pipeline = await lireDossiersPipeline(MAINTENANT);
     const parCle = new Map(pipeline.a_preparer.map((l) => [l.cle, l.qualiopi]));
     expect(parCle.get("session:s1")).toBe(true);
-    expect(parCle.get("coaching:c1")).toBe(true);
+    expect(parCle.get("coaching:c1")).toBe(false);
     expect(parCle.get("audit:a1")).toBe(false);
   });
 

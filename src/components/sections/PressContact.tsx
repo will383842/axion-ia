@@ -52,7 +52,7 @@ export function PressContact({ labels }: PressContactProps) {
               {labels.title}
               {labels.titleEm ? (
                 <span
-                  className="text-terracotta-soft mx-2 italic"
+                  className="text-terracotta-soft italic"
                   style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
                 >
                   {labels.titleEm}

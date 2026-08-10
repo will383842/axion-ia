@@ -62,25 +62,61 @@ export async function buildQualiopiCertificationsSection(
   }
 
   // ── Certification Qualiopi ──
-  let phraseQualiopi = isFr
-    ? `Axion-IA est un organisme de formation certifié Qualiopi (certificat n° ${id.qualiopiNumero}`
-    : `Axion-IA is a Qualiopi-certified training provider (certificate no. ${id.qualiopiNumero}`;
+  //
+  // 🔴 Garde sur les champs vides (2026-08-10). La parenthèse s'ouvrait EN DUR
+  // sur « (certificat n° ${id.qualiopiNumero} » : si le numéro n'était pas
+  // renseigné en admin, les mentions légales publiaient littéralement
+  // « …certifié Qualiopi (certificat n° ). ». Constaté en aperçu local avec la
+  // configuration vide. Le numéro était le SEUL champ sans garde — organisme,
+  // date et validité en avaient déjà une.
+  //
+  // Second défaut du même bloc : « le ${date} » s'accrochait à « délivré par »,
+  // donc une date SANS organisme donnait « (certificat n° X le 12 janvier 2026 »
+  // — sans verbe. La date porte maintenant son propre « délivré le ».
+  //
+  // Chaque segment est optionnel et la parenthèse entière disparaît si aucun
+  // n'est renseigné : la phrase reste grammaticale dans les 16 combinaisons.
+  const details: string[] = [];
+
+  if (id.qualiopiNumero) {
+    details.push(
+      isFr ? `certificat n° ${id.qualiopiNumero}` : `certificate no. ${id.qualiopiNumero}`,
+    );
+  }
+
+  const delivrance: string[] = [];
   if (id.qualiopiOrganisme) {
-    phraseQualiopi += isFr
-      ? `, délivré par ${id.qualiopiOrganisme}`
-      : `, issued by ${id.qualiopiOrganisme}`;
+    delivrance.push(
+      isFr ? `délivré par ${id.qualiopiOrganisme}` : `issued by ${id.qualiopiOrganisme}`,
+    );
   }
   if (id.qualiopiDateObtention) {
-    phraseQualiopi += isFr
-      ? ` le ${formatDateFr(id.qualiopiDateObtention)}`
-      : ` on ${id.qualiopiDateObtention}`;
+    const d = isFr ? formatDateFr(id.qualiopiDateObtention) : id.qualiopiDateObtention;
+    delivrance.push(
+      delivrance.length > 0
+        ? isFr
+          ? `le ${d}`
+          : `on ${d}`
+        : isFr
+          ? `délivré le ${d}`
+          : `issued on ${d}`,
+    );
   }
+  if (delivrance.length > 0) details.push(delivrance.join(" "));
+
   if (id.qualiopiValidite) {
-    phraseQualiopi += isFr
-      ? `, valable jusqu'au ${formatDateFr(id.qualiopiValidite)}`
-      : `, valid until ${id.qualiopiValidite}`;
+    details.push(
+      isFr
+        ? `valable jusqu'au ${formatDateFr(id.qualiopiValidite)}`
+        : `valid until ${id.qualiopiValidite}`,
+    );
   }
-  phraseQualiopi += ").";
+
+  let phraseQualiopi = isFr
+    ? "Axion-IA est un organisme de formation certifié Qualiopi"
+    : "Axion-IA is a Qualiopi-certified training provider";
+  if (details.length > 0) phraseQualiopi += ` (${details.join(", ")})`;
+  phraseQualiopi += ".";
   parts.push(phraseQualiopi);
 
   // Mention obligatoire de la marque Qualiopi (catégories certifiées).

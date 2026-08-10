@@ -625,8 +625,11 @@ export async function lireDossiersPipeline(
       cle: `coaching:${c.id}`,
       colonne: resolu.colonne,
       activite: "coaching",
-      // Coaching 1-to-1 = « un_a_un » dans la taxonomie de facturation (AFEST
-      // comprise) : couvert par le certificat, dixit le SSOT.
+      // Coaching 1-to-1 = « un_a_un » dans la taxonomie de facturation. C'est
+      // du CONSEIL, HORS périmètre Qualiopi depuis la décision Will du
+      // 2026-07-17 (doctrine AFEST abandonnée, confirmée le 2026-08-10) :
+      // `estDansPerimetreQualiopi("un_a_un")` renvoie `false` (SSOT
+      // perimetre.ts, `un_a_un: false`).
       qualiopi: estDansPerimetreQualiopi("un_a_un"),
       archive: resolu.archive,
       // Le « client » d'un coaching : le client du contrat s'il existe, sinon

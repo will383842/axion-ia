@@ -233,6 +233,27 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
+# ── Qualiopi — divulgation publique + affirmation de la certification ────────
+# Décision Will 2026-08-10 : ces deux drapeaux sont pilotés DEPUIS LE DÉPÔT
+# plutôt que par des variables Coolify, pour qu'un `git push` suffise.
+#
+# ⚠️ Ce sont des valeurs par DÉFAUT de l'image. Une variable d'environnement
+# posée côté Coolify (scope RUN) prime toujours sur un `ENV` de Dockerfile —
+# donc pour éteindre en urgence sans redéployer (~25 min de build), poser
+# `QUALIOPI_CERTIFICATION_OBTENUE=false` dans Coolify + Restart : effet en 30 s.
+#
+# `OF_PUBLIC_DISCLOSURE_ENABLED` : rend visibles les pages de l'organisme de
+# formation (catalogue, fiches). Déjà à true côté Coolify — inscrit ici pour
+# que l'image soit autonome.
+# `QUALIOPI_CERTIFICATION_OBTENUE` : autorise à AFFIRMER la certification.
+# Elle se diffuse sur toutes les routes (pastille de pied de page + nœud
+# JSON-LD `#qualiopi` lu par Google) et débloque les mentions OPCO /
+# France Travail. Les valeurs de certificat (numéro, organisme, dates) restent
+# en base, saisies en console admin ; les champs vides ne sont plus rendus
+# (garde posée dans `certifications-section.ts` le 2026-08-10).
+ENV OF_PUBLIC_DISCLOSURE_ENABLED=true
+ENV QUALIOPI_CERTIFICATION_OBTENUE=true
+
 # curl pour healthchecks orchestrator + libc6-compat + openssl REQUIS pour
 # Prisma runtime. Sans openssl au runner stage, Prisma détecte "no openssl"
 # au boot → cherche binary "linux-musl" alors que pnpm prisma:generate

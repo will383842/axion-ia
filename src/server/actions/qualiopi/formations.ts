@@ -44,11 +44,16 @@ type ActionResult<T> = { data: T } | { error: string };
 // ─────────────────────────────────────────────────────────────────────────────
 
 const MODALITES = ["presentiel", "distanciel", "hybride"] as const;
+// Liste LOCALE des types d'action sélectionnables à la création/édition d'une
+// formation — volontairement plus étroite que l'enum Prisma `TypeActionQualiopi`.
+// `alternance_afest` retiré de l'offre le 2026-08-10 : le 1-to-1 est du conseil,
+// hors Qualiopi (décision 2026-07-17). La valeur reste dans l'enum Prisma
+// (héritée, plus jamais émise) ; off.28 redeviendrait applicable si elle était
+// un jour réintroduite ici.
 const TYPES_ACTION_QUALIOPI = [
   "classique",
   "certifiante",
   "foad",
-  "alternance_afest",
   "sous_traitance",
   "cpf",
   "opco",

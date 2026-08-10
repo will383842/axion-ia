@@ -30,10 +30,24 @@ describe("normaliserLignesPourActivite", () => {
     expect(normaliserLignesPourActivite(LIGNES, "site_web", "franchise_293b", 20)).toEqual(LIGNES);
   });
 
-  it("exonération 261 + formation/un_a_un → lignes inchangées (dans le champ)", () => {
+  it("exonération 261 + activité du périmètre → lignes inchangées (dans le champ)", () => {
     for (const activite of ACTIVITES_EXONERABLES) {
       expect(normaliserLignesPourActivite(LIGNES, activite, "exoneration_261", 20)).toEqual(LIGNES);
     }
+  });
+
+  it("🔴 la table des exonérables DÉRIVE du périmètre Qualiopi — formation seule", () => {
+    // Verrouille la correction du 2026-08-10 : `un_a_un` figurait encore dans
+    // une liste en dur (doctrine AFEST abandonnée le 2026-07-17) et une facture
+    // de coaching pouvait sortir exonérée avec la mention « Prestations de
+    // formation professionnelle continue ». L'exonération 261-4-4° ⇔ le
+    // périmètre Qualiopi : une seule table de vérité (`perimetre.ts`).
+    expect(ACTIVITES_EXONERABLES).toEqual(["formation"]);
+  });
+
+  it("🔴 exonération 261 + un_a_un (CONSEIL) → taux standard forcé", () => {
+    const result = normaliserLignesPourActivite(LIGNES, "un_a_un", "exoneration_261", 20);
+    expect(result.every((l) => l.tauxTvaPercent === 20)).toBe(true);
   });
 
   it("exonération 261 + activité HORS champ → taux standard forcé sur les lignes sans taux", () => {

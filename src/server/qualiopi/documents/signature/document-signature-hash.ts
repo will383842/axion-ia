@@ -1,21 +1,19 @@
 /**
  * Signature au grain DOCUMENT — tuple canonique, empreinte et chaînage.
  *
- * Troisième famille de preuve du dépôt, après l'émargement collectif
- * (`emargement/hash.ts`) et la séance AFEST
- * (`coaching-afest/signature/seance-signature-hash.ts`). Les trois partagent le
- * MÊME cœur crypto — `canonicalJson`, `verifierChaine`, `MaillonChaine` — réutilisé
- * sans une ligne de modification. Chacune a SON tuple, SA `hashVersion` et SA
- * `mentionVersion`.
+ * Famille de preuve sœur de l'émargement collectif (`emargement/hash.ts`).
+ * (2026-08-10 : la troisième famille — séance AFEST 1-to-1 — a été supprimée
+ * avec le module, décision Will.) Les familles partagent le MÊME cœur crypto —
+ * `canonicalJson`, `verifierChaine`, `MaillonChaine` — réutilisé sans une ligne
+ * de modification. Chacune a SON tuple, SA `hashVersion` et SA `mentionVersion`.
  *
- * **Le grain.** Une PIÈCE NUMÉROTÉE × une PARTIE. Le collectif signe un créneau,
- * l'AFEST une séance ; ici c'est un engagement sur un document — convention,
- * contrat, protocole, relevé de connexion — que N parties signent chacune une
- * fois.
+ * **Le grain.** Une PIÈCE NUMÉROTÉE × une PARTIE. Le collectif signe un créneau ;
+ * ici c'est un engagement sur un document — convention, contrat, relevé de
+ * connexion — que N parties signent chacune une fois.
  *
  * **La portée de la chaîne.** Elle est le DOCUMENT, pas la partie. Les deux ou
  * trois signataires d'une même pièce s'enchaînent donc les uns derrière les
- * autres, contrairement à l'AFEST où chaque rôle a sa propre chaîne. Ce n'est
+ * autres. Ce n'est
  * pas une incohérence : ici la chaîne doit détecter l'ajout APRÈS COUP d'une
  * partie sur une pièce déjà conclue — une signature de financeur glissée
  * tardivement dans un dossier. Une chaîne par partie ne le verrait pas. Les

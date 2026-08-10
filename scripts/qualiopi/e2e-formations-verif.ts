@@ -1,7 +1,8 @@
 /**
  * Vérification e2e « session de formation COLLECTIVE complète » (throwaway DB).
  *
- * Miroir collectif de e2e-afest-verif.ts. Seede une session réelle (offre +
+ * (Ex-miroir collectif de e2e-afest-verif.ts, supprimé le 2026-08-10 — le
+ * 1-to-1 est du conseil, hors Qualiopi.) Seede une session réelle (offre +
  * formation + session réalisée OPCO + client + 3 stagiaires inscrits présents)
  * puis fait tourner TOUTE la chaîne :
  *   14 documents réglementaires (generateDocument + templates) → attestations
@@ -553,8 +554,9 @@ async function main() {
   report.bpf = {
     nbSessions: bpf.nbSessions,
     nbStagiairesDistincts: bpf.nbStagiairesDistincts,
+    // Depuis le 2026-08-10, le BPF ne porte plus que les sessions collectives
+    // (le 1-to-1 = conseil, hors BPF) : `nbHeuresStagiaires` EST le collectif.
     nbHeuresStagiaires: bpf.nbHeuresStagiaires,
-    nbHeuresStagiairesCollectif: bpf.nbHeuresStagiairesCollectif,
     caTotalHtCents: bpf.caTotalHtCents,
     caOpco: bpf.caParFinanceur.opco,
   };

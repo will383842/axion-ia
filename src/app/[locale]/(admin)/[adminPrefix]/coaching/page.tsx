@@ -1,5 +1,7 @@
-// Coaching 1-to-1 — tableau de bord admin (gains de temps, optimisations,
-// conformité AFEST). Vue transverse toutes séances / tous formateurs.
+// Coaching 1-to-1 — tableau de bord admin (gains de temps, optimisations),
+// pilotage d'une prestation de CONSEIL (hors Qualiopi — décision Will
+// 2026-07-17, module AFEST supprimé 2026-08-10). Vue transverse toutes
+// séances / tous formateurs.
 //
 // 🔴 REFONTE 2026-08-03, revue visuelle. Cette page n'employait AUCUNE
 // primitive admin : ni `AdminPageShell`, ni `AdminPageHeader`, ni `AdminCard`,
@@ -89,7 +91,7 @@ export default async function CoachingDashboardPage({
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Coaching 1-to-1"
-        description="Gains de temps mesurés, optimisations identifiées et conformité AFEST — toutes séances, tous formateurs."
+        description="Gains de temps mesurés, optimisations identifiées et complétude des livrables — toutes séances, tous formateurs."
         actions={
           <AdminButton href={`${base}/seances`} variant="ghost" iconAfter={ArrowRight}>
             Voir les séances
@@ -175,35 +177,38 @@ export default async function CoachingDashboardPage({
       </div>
 
       <AdminCard>
-        <h2 className="admin-h2">Conformité AFEST (séances réalisées)</h2>
-        {d.afest.realisees === 0 ? (
+        <h2 className="admin-h2">Livrables conseil (séances réalisées)</h2>
+        {d.livrables.realisees === 0 ? (
           <AdminEmptyState
             icon={<CheckCheck size={22} aria-hidden="true" />}
             title="Aucune séance réalisée"
-            description="Les taux de conformité AFEST se calculent sur les séances réalisées : cartographie d'activité, plan d'optimisation, et au moins un compte-rendu."
+            description="Les taux de complétude se calculent sur les séances réalisées : cartographie d'activité, plan d'optimisation, et au moins un compte-rendu."
           />
         ) : (
           <>
             <div className="mt-[var(--space-admin-4)] grid grid-cols-2 gap-[var(--space-admin-4)] lg:grid-cols-4">
               <AdminStatCard
                 label="Avec cartographie"
-                value={pct(d.afest.avecCartographie, d.afest.realisees)}
+                value={pct(d.livrables.avecCartographie, d.livrables.realisees)}
               />
-              <AdminStatCard label="Avec plan" value={pct(d.afest.avecPlan, d.afest.realisees)} />
+              <AdminStatCard
+                label="Avec plan"
+                value={pct(d.livrables.avecPlan, d.livrables.realisees)}
+              />
               <AdminStatCard
                 label="Avec compte-rendu"
-                value={pct(d.afest.avecCompteRendu, d.afest.realisees)}
+                value={pct(d.livrables.avecCompteRendu, d.livrables.realisees)}
               />
               <AdminStatCard
                 label="Dossier complet"
-                value={pct(d.afest.completes, d.afest.realisees)}
+                value={pct(d.livrables.completes, d.livrables.realisees)}
                 tone="success"
               />
             </div>
             <p className="admin-meta mt-[var(--space-admin-4)]">
               « Dossier complet » = cartographie d&apos;activité + plan d&apos;optimisation + au
-              moins un compte-rendu (preuves AFEST), sur {d.afest.realisees} séance
-              {d.afest.realisees > 1 ? "s" : ""} réalisée{d.afest.realisees > 1 ? "s" : ""}.
+              moins un compte-rendu remis au client, sur {d.livrables.realisees} séance
+              {d.livrables.realisees > 1 ? "s" : ""} réalisée{d.livrables.realisees > 1 ? "s" : ""}.
             </p>
           </>
         )}

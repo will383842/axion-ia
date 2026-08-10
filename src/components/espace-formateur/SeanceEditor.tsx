@@ -1,5 +1,5 @@
 "use client";
-// use-client: éditeur de séance coaching (5 formulaires AFEST, useState/useTransition).
+// use-client: éditeur de séance coaching (5 livrables conseil, useState/useTransition).
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -311,8 +311,8 @@ function CartographieTab({
   return (
     <div className="space-y-4">
       <p className="text-fg-muted text-sm">
-        Analyse de l&apos;activité réelle (cœur AFEST) : cartographiez les tâches récurrentes pour
-        repérer ce qui peut être optimisé.
+        Analyse de l&apos;activité réelle : cartographiez les tâches récurrentes pour repérer ce qui
+        peut être optimisé.
       </p>
       <Field label="Tâches récurrentes">
         <RepeatableRows
@@ -650,7 +650,6 @@ function ComptesRendusTab({
   const [duree, setDuree] = useState("");
   const [objectifs, setObjectifs] = useState("");
   const [mises, setMises] = useState<Row[]>([]);
-  const [phases, setPhases] = useState<Row[]>([]);
   const [planRemis, setPlanRemis] = useState(false);
   const [suite, setSuite] = useState("");
   const [notes, setNotes] = useState("");
@@ -668,7 +667,6 @@ function ComptesRendusTab({
         dureeMinutes: duree ? Number(duree) : undefined,
         objectifs: objectifs || undefined,
         misesEnSituation: mises,
-        phasesReflexives: phases,
         planRemis,
         suite: suite || undefined,
         notesConfidentielles: notes || undefined,
@@ -681,7 +679,6 @@ function ComptesRendusTab({
       setDuree("");
       setObjectifs("");
       setMises([]);
-      setPhases([]);
       setPlanRemis(false);
       setSuite("");
       setNotes("");
@@ -748,7 +745,7 @@ function ComptesRendusTab({
         <Field label="Objectifs de la séance">
           <Textarea value={objectifs} onChange={(e) => setObjectifs(e.target.value)} />
         </Field>
-        <Field label="Mises en situation (AFEST)">
+        <Field label="Mises en situation">
           <RepeatableRows
             rows={mises}
             onChange={setMises}
@@ -760,16 +757,8 @@ function ComptesRendusTab({
             ]}
           />
         </Field>
-        <Field label="Phases réflexives (AFEST)">
-          <RepeatableRows
-            rows={phases}
-            onChange={setPhases}
-            columns={[
-              { key: "situation", label: "Situation" },
-              { key: "apprentissage", label: "Apprentissage" },
-            ]}
-          />
-        </Field>
+        {/* 2026-08-10 (décision Will) : champ « Phases réflexives (AFEST) »
+            retiré — notion AFEST, le 1-to-1 est du conseil hors Qualiopi. */}
         <label className="text-mocha flex items-center gap-2 text-sm">
           <input
             type="checkbox"

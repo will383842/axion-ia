@@ -23,30 +23,13 @@ type SeedBannedPhrase = { pattern: string; reason: string; severity: "block" | "
 
 const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
   // ===== WARN — Doctrine lexicale assouplie 2026-05-18 P1-2 =====
-  // Avant 2026-05-18 : `block` strict (le LLM ne pouvait pas écrire "formation").
-  // Après : `warn` — le mot est autorisé en copy quand pertinent (sessions
-  // interventions collectives = formations dans le fond), mais le naming brand
-  // canonique reste "intervention". Le warn applique pénalité -5/occurrence
-  // au qualityScore → décourage la sur-utilisation sans bloquer la sémantique.
-  // Cohérent avec Course schema activé sur /interventions/collectives/* pour
-  // citation AEO "formation IA".
-  {
-    pattern: "formation",
-    reason:
-      "Naming canonique = 'intervention'. Tolérer en copy descriptif, mais préférer 'intervention'",
-    severity: "warn",
-  },
-  {
-    pattern: "formateur",
-    reason:
-      "Naming canonique = 'intervenant'. Tolérer en copy descriptif, mais préférer 'intervenant'",
-    severity: "warn",
-  },
-  {
-    pattern: "former",
-    reason: "Préférer 'accompagner' / 'faire monter en compétence' ; tolérer en copy descriptif",
-    severity: "warn",
-  },
+  // « formation » / « formateur » / « former » RETIRÉS du corpus le 2026-08-10
+  // (décision Will). Ils étaient encore en `warn`, ce qui pénalisait le
+  // qualityScore de −5 par occurrence : le générateur était donc dissuadé
+  // d'employer le vocabulaire officiel de l'offre, alors que le site vend
+  // 21 formations au catalogue, expose « Formations IA » en navigation et
+  // indexe `/formations/*`.
+  // Cf. RETIRED_PATTERNS ci-dessous pour la désactivation des lignes en base.
 
   // ===== BLOCK — Phrases interdites doctrine § 21 master prompt =====
   {
@@ -172,6 +155,16 @@ const BANNED_PHRASES: ReadonlyArray<SeedBannedPhrase> = [
 const RETIRED_PATTERNS: ReadonlyArray<string> = [
   // 2026-07-12 (Will) — « agence » autorisé (SEO « agence IA », fin du naming exclusif).
   "agence",
+  // 2026-08-10 (Will) — bannissement du champ lexical « formation » LEVÉ.
+  // ⚠️ Ces lignes existent déjà en base de production : les retirer du corpus
+  // ci-dessus ne suffit PAS, le seed n'efface rien. C'est ce passage par
+  // RETIRED_PATTERNS qui les bascule `isActive: false`.
+  // ⚠️ Et le seed ne tourne pas au déploiement : il faut soit les désactiver
+  // depuis l'admin `/content-gen/settings/banned-phrases`, soit relancer
+  // `pnpm content-gen:seed` dans le conteneur.
+  "formation",
+  "formateur",
+  "former",
 ];
 
 export async function seedBannedPhrases(prisma: PrismaClient): Promise<number> {

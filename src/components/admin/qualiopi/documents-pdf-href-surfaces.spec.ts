@@ -137,7 +137,9 @@ describe("aucun lien de téléchargement ne pointe sur une URL R2 pré-signée f
   it("garde les trois surfaces corrigées hors de la liste des exceptions", () => {
     for (const corrige of [
       "components/admin/qualiopi/DocumentsSection.tsx",
-      "components/admin/coaching/AfestPanel.tsx",
+      // 2026-08-10 : AfestPanel.tsx supprimé (module AFEST retiré, décision
+      // Will) — son successeur facturation reprend la même règle de lien.
+      "components/admin/coaching/CoachingFacturationPanel.tsx",
       "app/[locale]/(admin)/[adminPrefix]/planning/[type]/[id]/page.tsx",
     ]) {
       expect(AUTORISES.has(corrige), `${corrige} a été réinscrit en exception`).toBe(false);

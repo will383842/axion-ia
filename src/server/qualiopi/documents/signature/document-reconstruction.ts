@@ -6,8 +6,9 @@
  * Prisma) pour rester testable et réutilisable ; la confrontation au type
  * généré a donc lieu ici.
  *
- * Miroir de `coaching-afest/signature/seance-reconstruction.ts`, qui fait
- * autorité pour la forme.
+ * Même forme de verrou que `emargement/reconstruction.ts` (l'homologue AFEST,
+ * `coaching-afest/signature/seance-reconstruction.ts`, a été supprimé le
+ * 2026-08-10 avec le module 1-to-1 — décision Will).
  */
 
 import type { DocumentSignature as PrismaDocumentSignature } from "../../../../../prisma/generated/client";

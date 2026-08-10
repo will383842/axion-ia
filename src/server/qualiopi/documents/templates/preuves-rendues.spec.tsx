@@ -35,7 +35,6 @@ import { ConventionPdf } from "./convention";
 import { ConventionTripartitePdf } from "./convention-tripartite";
 import { ContratFormationPdf } from "./contrat-formation";
 import { ContratSousTraitancePdf } from "./contrat-sous-traitance";
-import { ProtocoleAfestPdf } from "./protocole-afest";
 import { AutorisationCaptationPdf } from "./autorisation-captation";
 import { ReleveConnexionPdf } from "./releve-connexion";
 import { LettreMissionPdf } from "./lettre-mission";
@@ -79,12 +78,12 @@ const CAS: ReadonlyArray<{
   partie: string;
   data: Record<string, unknown>;
   /**
-   * 🔴 Quatre templates sur six prennent `identite` en prop SÉPARÉE
+   * 🔴 Plusieurs templates prennent `identite` en prop SÉPARÉE
    * (`ConventionPdf`, `ConventionTripartitePdf`, `ContratFormationPdf`,
-   * `ContratSousTraitancePdf`) ; `DevisPdf` et `ProtocoleAfestPdf` la portent
-   * DANS `data`. Les formes de props ne sont pas uniformes — c'est exactement le
-   * piège qui a fait planter la première version de ce test, et celui que
-   * l'instantané de `generateDocument` doit capturer.
+   * `ContratSousTraitancePdf`) ; `DevisPdf` la porte DANS `data`. Les formes de
+   * props ne sont pas uniformes — c'est exactement le piège qui a fait planter
+   * la première version de ce test, et celui que l'instantané de
+   * `generateDocument` doit capturer.
    */
   identiteEnProp?: boolean;
 }> = [
@@ -233,27 +232,8 @@ const CAS: ReadonlyArray<{
       dateMission: "01/06/2026",
     },
   },
-  {
-    type: "protocole_afest",
-    Composant: ProtocoleAfestPdf as unknown as ComposantTest,
-    partie: "beneficiaire",
-    data: {
-      numero: "AXI-PROT-2026-001",
-      dateEmission: "06/06/2026",
-      identite: IDENTITE,
-      intitule: "AFEST IA",
-      beneficiaire: { nom: "Durand", prenom: "Camille" },
-      formateurAfest: { nom: "Jullin Williams" },
-      analyseActivite: "Analyse",
-      objectifs: ["Objectif A"],
-      misesEnSituation: ["Situation A"],
-      phasesReflexives: "Débriefs",
-      modalitesEvaluation: "Grille",
-      dureePrevueHeures: 14,
-      dateDebut: "01/06/2026",
-      dateFin: "02/06/2026",
-    },
-  },
+  // 2026-08-10 (décision Will) : le cas `protocole_afest` est parti avec son
+  // template et son circuit (module AFEST 1-to-1 supprimé).
   {
     // Consentement d'image : la preuve rendue est celle de la personne
     // concernée, seule signataire. L'organisme ne co-signe pas un consentement.

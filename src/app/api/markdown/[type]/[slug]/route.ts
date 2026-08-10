@@ -174,21 +174,42 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   }
 
   if (type === "faq") {
-    const faq = await prisma.fAQ.findFirst({
-      where: { slug, status: "published" },
-    });
-    if (!faq) return null;
+    // 🔴 CORRIGÉ 2026-08-10 — cette branche n'interrogeait que la table Prisma
+    // `FAQ` (corpus Track B, généré). Or les fiches publiques sont servies par
+    // `listFaqs()`, qui MERGE le corpus éditorial `FAQ_GLOBAL` (88 entrées
+    // codées en dur) avec la base. Résultat : chaque fiche éditoriale annonçait
+    // aux crawlers LLM, via `<link rel="alternate" type="text/markdown">`, une
+    // ressource qui répondait 404. Vérifié en production sur 5 slugs indexés —
+    // 404 sur tous, alors que `/api/markdown/blog/*` répondait 200.
+    //
+    // On lit désormais la MÊME source que la page. La table Prisma reste
+    // interrogée en second pour récupérer un `updatedAt` réel quand la Q/R en
+    // a un ; sinon on retombe sur la date de révision éditoriale.
+    const { listFaqs } = await import("@/lib/knowledge/readers");
+    const faqs = await listFaqs();
+    const entry = faqs.find((f) => f.slug === slug);
+    if (!entry) return null;
+
+    const dbRow = await prisma.fAQ.findFirst({ where: { slug }, select: { updatedAt: true } });
     return {
-      title: faq.questionFr,
+      title: entry.questionFr,
       excerpt: null,
-      body: faq.answerFr,
-      updatedAt: faq.updatedAt,
+      body: entry.answerFr,
+      updatedAt: dbRow?.updatedAt ?? new Date(entry.reviewedAt ?? FAQ_MARKDOWN_FALLBACK_DATE),
       canonicalSegment: "faq",
     };
   }
 
   return null;
 }
+
+/**
+ * Repli de date pour les fiches FAQ éditoriales sans `updatedAt` en base.
+ * Aligné sur `FAQ_LAST_REVIEWED` de `src/app/[locale]/faq/[slug]/page.tsx`,
+ * pour que le markdown servi aux LLM et la page publique annoncent la même
+ * date de révision.
+ */
+const FAQ_MARKDOWN_FALLBACK_DATE = "2026-06-01";
 
 function buildMarkdown(content: MarkdownContent, slug: string, type: string): string {
   // ⚠️ AUDIT 2026-07-21 — cette route sert `bodyText` (Tiptap plain), qui n'est

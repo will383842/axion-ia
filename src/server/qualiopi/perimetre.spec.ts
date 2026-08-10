@@ -20,8 +20,13 @@ describe("estDansPerimetreQualiopi — la table de vérité", () => {
     expect(estDansPerimetreQualiopi("formation")).toBe(true);
   });
 
-  it("un_a_un (coaching 1-to-1 / AFEST) → ✅ Qualiopi (D.6313-3-1)", () => {
-    expect(estDansPerimetreQualiopi("un_a_un")).toBe(true);
+  it("un_a_un (coaching 1-to-1) → ❌ hors périmètre (prestation de CONSEIL, décision Will 2026-07-17)", () => {
+    // 🔴 Ce test affirmait l'inverse (✅ AFEST / D.6313-3-1) jusqu'au
+    // 2026-08-10 : la table de vérité était restée sur la doctrine AFEST de
+    // juin, abandonnée le 2026-07-17. Les kits remis aux clients disent
+    // « pas de QCM, pas d'attestation, non finançable OPCO » — le back-office
+    // doit dire la même chose.
+    expect(estDansPerimetreQualiopi("un_a_un")).toBe(false);
   });
 
   it("audit → ❌ hors périmètre (prestation de conseil)", () => {

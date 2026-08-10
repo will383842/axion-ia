@@ -8,18 +8,10 @@ import {
   optimisationTypeLabel,
   sessionStatutLabel,
 } from "@/server/formateur/coaching-options";
-import { sumHeuresReelles } from "@/server/qualiopi/coaching-afest/heures";
-import { AfestPanel } from "@/components/admin/coaching/AfestPanel";
-import { RegistreSignaturesAfest } from "@/components/admin/coaching/RegistreSignaturesAfest";
-import { listerRegistreSeancesAfest } from "@/server/qualiopi/coaching-afest/signature/registre-seances";
+import { sumHeuresReelles } from "@/server/qualiopi/coaching-1to1/heures";
+import { CoachingFacturationPanel } from "@/components/admin/coaching/CoachingFacturationPanel";
 
 const dateFmt = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
-
-/** Date → "yyyy-mm-dd" pour un <input type="date"> (null si absente). */
-function toDateInput(d: Date | null): string | null {
-  if (!d) return null;
-  return new Date(d).toISOString().slice(0, 10);
-}
 
 function Block({
   title,
@@ -47,23 +39,14 @@ function Line({ label, value }: { label: string; value: React.ReactNode }): Reac
 
 export default async function AdminSeanceDetailPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string; locale: string; adminPrefix: string }>;
-  /** Codes de retour de la révocation, transmis par l'URL — jamais un message. */
-  searchParams: Promise<{ revocation?: string; raison?: string }>;
 }): Promise<React.ReactElement> {
   const { id, locale, adminPrefix } = await params;
-  const { revocation, raison } = await searchParams;
   const s = await getSessionAdmin(id);
   if (!s) notFound();
   const seancesHref = `/${locale}/${adminPrefix}/coaching/seances`;
-  const cheminCourant = `/${locale}/${adminPrefix}/coaching/seances/${s.id}`;
   const heuresReelles = sumHeuresReelles(s.comptesRendus);
-  // 🔴 Les signatures RÉELLES, à côté de la présence DÉCLARÉE qu'affiche le
-  // panneau AFEST. N'en montrer qu'une des deux reviendrait à présenter comme
-  // preuve ce qui n'est qu'une déclaration de l'organisme.
-  const registreSignatures = await listerRegistreSeancesAfest(s.id);
 
   return (
     <div className="space-y-4">
@@ -87,57 +70,17 @@ export default async function AdminSeanceDetailPage({
         <p className="text-fg-muted text-sm">
           Client : {s.client?.raisonSociale ?? "—"} · Devis : {s.devis?.numero ?? "—"}
         </p>
+        <p className="text-fg-muted text-sm">Heures réalisées : {heuresReelles} h</p>
       </div>
 
-      <AfestPanel
-        coachingSessionId={s.id}
-        revalidatePath={`/${locale}/${adminPrefix}/coaching/seances/${s.id}`}
-        estAfest={s.estAfest}
-        heuresReelles={heuresReelles}
-        heuresPrevues={s.heuresPrevuesConvention != null ? Number(s.heuresPrevuesConvention) : null}
-        tuteurNom={s.tuteurEntrepriseNom}
-        tuteurEmail={s.tuteurEntrepriseEmail}
-        attestationResultat={s.attestationResultat}
+      {/* 2026-08-10 (décision Will) : l'ancien AfestPanel (cadrage AFEST,
+          financement OPCO/CPF/FT, certification, kits financeurs) et le registre
+          de signatures AFEST ont été supprimés — le 1-to-1 est une prestation de
+          conseil hors Qualiopi. Ne reste que la facturation directe. */}
+      <CoachingFacturationPanel
         coachingContractId={s.coachingContractId}
-        financement={
-          s.coachingContract
-            ? {
-                financementType: s.coachingContract.financementType,
-                montantHtCents: s.coachingContract.montantHtCents,
-                subrogation: s.coachingContract.subrogation,
-                numeroDossierOpco: s.coachingContract.numeroDossierOpco,
-                conventionTripartiteSigneeAt: toDateInput(
-                  s.coachingContract.conventionTripartiteSigneeAt,
-                ),
-                priseEnChargeMontantCents: s.coachingContract.priseEnChargeMontantCents,
-                priseEnChargeUnite: s.coachingContract.priseEnChargeUnite,
-                edofVerifieAt: toDateInput(s.coachingContract.edofVerifieAt),
-                resteAChargeCents: s.coachingContract.resteAChargeCents,
-                ftDispositif: s.coachingContract.ftDispositif,
-                ftAifPrescriptionDate: toDateInput(s.coachingContract.ftAifPrescriptionDate),
-                ftPoeiOffreEmploiNumero: s.coachingContract.ftPoeiOffreEmploiNumero,
-              }
-            : null
-        }
-        certification={{
-          certificationType: s.certificationType,
-          codeRncp: s.codeRncp,
-          codeRs: s.codeRs,
-          cpfEligible: s.cpfEligible,
-        }}
-        seances={s.comptesRendus.map((c) => ({
-          id: c.id,
-          date: dateFmt.format(c.dateSeance),
-          presenceSignee: c.presenceSigneeAt != null,
-        }))}
+        revalidatePath={`/${locale}/${adminPrefix}/coaching/seances/${s.id}`}
         documents={s.documentsGeneres}
-      />
-
-      <RegistreSignaturesAfest
-        registre={registreSignatures}
-        cheminRetour={cheminCourant}
-        revocation={revocation}
-        raison={raison}
       />
 
       <Block title="Cartographie de l'activité">

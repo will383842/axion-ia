@@ -181,14 +181,6 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     canal: "maison",
     libelle: "contrat de sous-traitance",
   },
-  // 🔴 NE PAS confondre avec l'émargement AFEST par séance : le protocole est la
-  // pièce contractuelle TRIPARTITE signée UNE FOIS, avant le parcours (cadrage
-  // D.6313-3-1). Les confondre a été l'erreur des deux plans précédents.
-  //
-  // ⚠️ Le bénéficiaire est une personne physique SALARIÉE. Son adresse
-  // personnelle ne doit pas être exposée à l'entreprise — le canal maison le
-  // rend plus facile à tenir que le flux fournisseur, qui exposait un
-  // destinataire à chaque partie.
   // 🔴 UNE SEULE partie, et c'est voulu : un consentement est UNILATÉRAL.
   // L'organisme ne "co-signe" pas une autorisation d'image, il la reçoit.
   // Lui faire apposer une signature laisserait croire à un accord négocié, donc
@@ -198,11 +190,10 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     canal: "maison",
     libelle: "autorisation de captation",
   },
-  protocole_afest: {
-    parties: ["axionia", "client", "beneficiaire"],
-    canal: "maison",
-    libelle: "protocole individuel de formation en situation de travail",
-  },
+  // 2026-08-10 (décision Will) : le circuit `protocole_afest` a été retiré avec
+  // le module AFEST 1-to-1 (conseil hors Qualiopi). La valeur d'enum reste au
+  // schéma Prisma ; `circuitPour("protocole_afest")` rend désormais `null` —
+  // la pièce n'est plus jamais émise ni signable.
 };
 
 /**

@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  Search,
+  ClipboardList,
+  Cog,
+  TrendingUp,
+  Database,
+  Unlock,
+  LineChart,
+  ShieldCheck,
+} from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -12,7 +22,14 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { MethodologyHeroSchema } from "@/components/sections/MethodologyHeroSchema";
 import { FaqBlock } from "@/components/sections/FaqBlock";
-import { Illustration } from "@/components/visual/Illustration";
+// `Illustration` RETIRÉ (Will 2026-08-10) : ses deux usages sur cette page
+// étaient des `Illustration` SANS `src`, donc des cadres pointillés
+// « emplacement d'image » servis tels quels en production (slots METHO-02 et
+// METHO-04). Remplacés par du contenu réel — ne pas les réintroduire sans
+// déposer d'abord les .avif dans public/illustrations/.
+import { FadeInOnView } from "@/components/motion/FadeInOnView";
+import { FeatureMediaCard } from "@/components/marketing/FeatureMediaCard";
+import { DarkTriadPanel } from "@/components/marketing/DarkTriadPanel";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   buildProductMetadata,
@@ -42,6 +59,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "La méthode Axion-IA en 4 étapes : cartographie terrain, audit en 5 jours, implémentation en 6-8 semaines, ROI mesuré. Découplée du contrat long. Demandez un audit."
         : "Our methodology: field audit, applied demos, costed plan, piloted implementation.",
     alternates: { fr: "/methodologie", en: "/methodology" },
+    // og:type "article" et non "website" (défaut) : la page émet déjà un nœud
+    // `Article` JSON-LD avec datePublished / dateModified / author. Laisser
+    // "website" contredisait ce signal et privait les aperçus LinkedIn/Facebook
+    // des métadonnées `article:*` (fraîcheur + attribution). Même traitement que
+    // /actualites/[slug] et les autres pages éditoriales.
+    ogType: "article",
+    article: {
+      publishedTime: "2025-12-01",
+      modifiedTime: SITE_EDITORIAL_DATE,
+      section: locale === "fr" ? "Méthodologie" : "Methodology",
+      tags:
+        locale === "fr"
+          ? ["méthodologie IA", "audit IA", "implémentation IA", "ROI IA"]
+          : ["AI methodology", "AI audit", "AI implementation", "AI ROI"],
+    },
   });
 }
 
@@ -150,51 +182,154 @@ export default async function MethodologyPage({ params }: Props) {
         ],
   });
 
+  // Habillage visuel des 4 étapes — accent, icône, et surtout le CHIFFRE-CLÉ
+  // affiché dans la bande. Les durées et livrables sont repris mot pour mot du
+  // texte des étapes ci-dessous (1 journée sur site, audit 5 jours, mise en
+  // production 6-8 semaines, mesure du ROI post-déploiement) : aucun chiffre
+  // nouveau n'est avancé ici. Ordre = celui de `steps`.
+  const STEP_VISUALS = [
+    {
+      accent: "terracotta" as const,
+      Icon: Search,
+      figureFr: "1 jour",
+      figureEn: "1 day",
+      labelFr: "sur site · 3-5 process",
+      labelEn: "on site · 3-5 processes",
+    },
+    {
+      accent: "primary" as const,
+      Icon: ClipboardList,
+      figureFr: "5 jours",
+      figureEn: "5 days",
+      labelFr: "livrable 25-40 pages",
+      labelEn: "25-40 page deliverable",
+    },
+    {
+      accent: "sage" as const,
+      Icon: Cog,
+      figureFr: "6-8 sem.",
+      figureEn: "6-8 wks",
+      labelFr: "jusqu'à la production",
+      labelEn: "through to production",
+    },
+    {
+      accent: "ochre" as const,
+      Icon: TrendingUp,
+      figureFr: "ROI",
+      figureEn: "ROI",
+      labelFr: "mesuré, pas promis",
+      labelEn: "measured, not promised",
+    },
+  ];
+
+  // Étapes — refonte Will 2026-08-10.
+  //
+  // Le paragraphe de 5-6 lignes par étape était le cœur du reproche « beaucoup
+  // trop textuel ». Il est éclaté en trois niveaux de lecture :
+  //   `p`       une phrase, ce que l'étape EST ;
+  //   `bullets` trois points scannables, ce qu'elle CONTIENT ;
+  //   `livrable` ce avec quoi vous repartez.
+  //
+  // Rien n'est perdu pour le référencement : le texte long d'origine reste
+  // intégralement dans le `HowTo` JSON-LD ci-dessus, qui est ce que lisent
+  // Google AI Overviews et Perplexity. Le `livrable` absorbe l'ancienne section
+  // « Quatre livrables » — elle répétait les mêmes 4 items une seconde fois.
   const steps = isFr
     ? [
         {
           n: "01",
           h: "Identifier",
-          p: "Cartographie terrain en 1 journée d'intervention sur site. 3-5 process candidats à l'IA, démos live sur vos données anonymisées, identification des quick-wins déployables sous 30 jours.",
+          p: "Une journée sur site pour cartographier vos process et repérer où l'IA fait gagner du temps.",
+          bullets: [
+            "3 à 5 process candidats retenus",
+            "Démos live sur vos données anonymisées",
+            "Quick-wins déployables sous 30 jours",
+          ],
+          livrable: "Cartographie terrain",
         },
         {
           n: "02",
           h: "Auditer",
-          p: "Audit IA en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation chiffré priorisé. Livrable PDF 25-40 pages + atelier de restitution.",
+          p: "Cinq jours pour chiffrer chaque opportunité et vous remettre un plan que vos équipes peuvent exécuter.",
+          bullets: [
+            "Cartographie complète des process",
+            "Scoring ROI / complexité par opportunité",
+            "Atelier de restitution avec vos équipes",
+          ],
+          livrable: "Plan chiffré priorisé · PDF 25-40 pages",
         },
         {
           n: "03",
           h: "Implémenter",
-          p: "Mise en production en 6-8 semaines : cadrage technique, prototype itératif, tests utilisateurs, déploiement progressif, support 30 jours inclus. Stack open-source ou propriétaire selon le cas.",
+          p: "Six à huit semaines pour passer du plan à une solution qui tourne dans vos outils.",
+          bullets: [
+            "Cadrage technique puis prototype itératif",
+            "Tests utilisateurs, déploiement progressif",
+            "Stack open-source ou propriétaire selon le cas",
+          ],
+          livrable: "Solution en production · 30 jours de support",
         },
         {
           n: "04",
           h: "Mesurer",
-          p: "Mesure du ROI réel post-déploiement : heures économisées, coût économisé, impact qualitatif. Itération si dérive de qualité observée. Pas d'engagement long terme.",
+          p: "On revient compter ce que ça a réellement rapporté, sur les indicateurs convenus au départ.",
+          bullets: [
+            "Heures et coûts économisés, impact qualitatif",
+            "Itération si une dérive de qualité apparaît",
+            "Aucun engagement long terme",
+          ],
+          livrable: "ROI mesuré",
         },
       ]
     : [
         {
           n: "01",
           h: "Identify",
-          p: "Field mapping in 1 day on-site session. 3-5 candidate processes for AI, live demos on your anonymised data, identification of quick-wins deployable within 30 days.",
+          p: "One day on site to map your processes and spot where AI actually saves time.",
+          bullets: [
+            "3 to 5 candidate processes selected",
+            "Live demos on your anonymised data",
+            "Quick-wins deployable within 30 days",
+          ],
+          livrable: "Field mapping",
         },
         {
           n: "02",
           h: "Audit",
-          p: "5-day AI audit: complete mapping, ROI/complexity scoring per opportunity, costed prioritised implementation plan. 25-40 page PDF deliverable + debrief workshop.",
+          p: "Five days to cost every opportunity and hand you a plan your teams can execute.",
+          bullets: [
+            "Complete process mapping",
+            "ROI / complexity scoring per opportunity",
+            "Debrief workshop with your teams",
+          ],
+          livrable: "Costed prioritised plan · 25-40 page PDF",
         },
         {
           n: "03",
           h: "Implement",
-          p: "Production deployment in 6-8 weeks: technical scoping, iterative prototype, user testing, progressive go-live, 30-day support included. Open-source or proprietary stack as needed.",
+          p: "Six to eight weeks to go from plan to a solution running inside your tools.",
+          bullets: [
+            "Technical scoping then iterative prototype",
+            "User testing, progressive rollout",
+            "Open-source or proprietary stack as needed",
+          ],
+          livrable: "Solution in production · 30 days of support",
         },
         {
           n: "04",
           h: "Measure",
-          p: "Real ROI measurement post-deployment: hours saved, costs saved, qualitative impact. Iteration if quality drift observed. No long-term commitment.",
+          p: "We come back and count what it actually returned, on the indicators agreed upfront.",
+          bullets: [
+            "Hours and costs saved, qualitative impact",
+            "Iteration if quality drift appears",
+            "No long-term commitment",
+          ],
+          livrable: "Measured ROI",
         },
       ];
+
+  // Icônes des 3 principes, dans l'ordre de `whyMethodology`.
+  const PRINCIPLE_ICONS = [Database, Unlock, LineChart];
 
   const whyMethodology = isFr
     ? [
@@ -254,6 +389,42 @@ export default async function MethodologyPage({ params }: Props) {
           answer:
             "Quatre temps clairement séparés, chacun produisant un livrable concret : Identifier (cartographie terrain en 1 journée), Auditer (audit en 5 jours), Implémenter (mise en production en 6-8 semaines, support 30 jours inclus), Mesurer (ROI réel post-déploiement).",
         },
+        {
+          id: "par-ou-commencer",
+          question: "Par où commencer si on n'a jamais fait d'IA ?",
+          answer:
+            "Par l'étape 1, la journée d'intervention sur site. Aucun pré-requis technique : on part de vos process actuels et de vos vrais documents. À la fin de la journée, vous avez 3 à 5 pistes chiffrées et vous savez si la suite vaut le coup. Beaucoup d'entreprises s'arrêtent là et déploient les quick-wins en interne.",
+        },
+        {
+          id: "donnees-propres",
+          question: "Faut-il que nos données soient propres ou structurées au préalable ?",
+          answer:
+            "Non. On travaille sur vos données telles qu'elles sont, y compris des PDF scannés, des tableurs bricolés ou des boîtes mail. La qualité des données fait partie du diagnostic : si un process n'est pas exploitable en l'état, c'est une conclusion de l'audit, pas un pré-requis pour le démarrer.",
+        },
+        {
+          id: "qui-intervient",
+          question: "Qui intervient concrètement chez nous ?",
+          answer:
+            "L'intervenant senior qui a cadré votre besoin. C'est lui qui anime la journée sur site, qui conduit l'audit et qui réalise l'implémentation — pas de passage de relais entre un avant-vente et une équipe de production.",
+        },
+        {
+          id: "donnees-sortie",
+          question: "Nos données sortent-elles de l'entreprise ?",
+          answer:
+            "Les démonstrations se font sur des données anonymisées. Pour les solutions déployées, l'hébergement est européen (Hetzner, Francfort) et le traitement conforme RGPD. Selon la sensibilité, la stack peut être open-source auto-hébergée chez vous plutôt que sur un service tiers — c'est un arbitrage posé au cadrage technique.",
+        },
+        {
+          id: "taille-entreprise",
+          question: "La méthode fonctionne-t-elle pour une TPE de 5 personnes ?",
+          answer:
+            "Oui, avec le même niveau d'exigence que pour un grand groupe. Les 4 étapes sont les mêmes, seule leur profondeur varie : chez un artisan, l'étape 1 suffit souvent à dégager 1 à 3 heures par jour.",
+        },
+        {
+          id: "roi-absent",
+          question: "Que se passe-t-il si le ROI n'est pas au rendez-vous ?",
+          answer:
+            "Les indicateurs sont convenus AVANT le déploiement, ce qui rend le constat vérifiable des deux côtés. Si une dérive de qualité est observée, l'étape 4 déclenche une itération. Et comme la méthode est découplée du contrat long, vous n'êtes engagé sur aucune suite : vous pouvez vous arrêter à la fin de n'importe quelle étape.",
+        },
       ]
     : [
         {
@@ -279,6 +450,42 @@ export default async function MethodologyPage({ params }: Props) {
           question: "What are the steps of the Axion-IA methodology?",
           answer:
             "Four clearly separated phases, each producing a concrete deliverable: Identify (1-day field mapping), Audit (5-day audit), Implement (production in 6-8 weeks, 30-day support included), Measure (real post-deployment ROI).",
+        },
+        {
+          id: "par-ou-commencer",
+          question: "Where do we start if we have never done any AI?",
+          answer:
+            "With step 1, the on-site day. No technical prerequisite: we start from your current processes and your real documents. By the end of the day you have 3 to 5 costed leads and you know whether the rest is worth it. Many companies stop there and roll out the quick-wins in-house.",
+        },
+        {
+          id: "donnees-propres",
+          question: "Do our data need to be clean or structured beforehand?",
+          answer:
+            "No. We work with your data as it is, including scanned PDFs, improvised spreadsheets or mailboxes. Data quality is part of the diagnosis: if a process is not usable as-is, that is a finding of the audit, not a prerequisite to start it.",
+        },
+        {
+          id: "qui-intervient",
+          question: "Who actually comes on site?",
+          answer:
+            "The senior who scoped your need. They run the on-site day, conduct the audit and carry out the implementation — no handover between a pre-sales contact and a delivery team.",
+        },
+        {
+          id: "donnees-sortie",
+          question: "Do our data leave the company?",
+          answer:
+            "Demos run on anonymised data. For deployed solutions, hosting is European (Hetzner, Frankfurt) and processing is GDPR-compliant. Depending on sensitivity, the stack can be open-source and self-hosted on your side rather than on a third-party service.",
+        },
+        {
+          id: "taille-entreprise",
+          question: "Does the method work for a 5-person business?",
+          answer:
+            "Yes, with the same standard as for a large group. The 4 steps are identical, only their depth varies: for a craftsman, step 1 alone often frees up 1 to 3 hours a day.",
+        },
+        {
+          id: "roi-absent",
+          question: "What happens if the ROI does not materialise?",
+          answer:
+            "Indicators are agreed BEFORE deployment, which makes the outcome verifiable on both sides. If quality drift is observed, step 4 triggers an iteration. And since the method is decoupled from long contracts, you are committed to nothing further: you can stop at the end of any step.",
         },
       ];
 
@@ -316,7 +523,7 @@ export default async function MethodologyPage({ params }: Props) {
               <h1 className="display-editorial text-fg">
                 {isFr ? "4 étapes vers le " : "4 steps to "}
                 <span
-                  className="text-terracotta italic"
+                  className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {isFr ? "ROI mesurable" : "measurable ROI"}
@@ -364,16 +571,40 @@ export default async function MethodologyPage({ params }: Props) {
         }
       >
         <Container>
-          <ol className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s) => (
-              <li key={s.n} className="space-y-3">
-                <p className="text-primary font-mono text-2xl tabular-nums">{s.n}</p>
-                <h2 className="text-fg text-xl leading-tight font-semibold tracking-tight">
-                  {s.h}
-                </h2>
-                <p className="text-fg-soft text-base leading-relaxed">{s.p}</p>
-              </li>
-            ))}
+          {/* Refonte Will 2026-08-10 — c'était quatre colonnes de texte nu
+              (numéro mono + titre + paragraphe), le principal reproche de
+              « page beaucoup trop textuelle ».
+              Chaque étape porte maintenant une bande visuelle avec SA DURÉE en
+              grand et son livrable en légende : la rangée se lit comme une
+              frise temporelle (1 jour → 5 jours → 6-8 semaines → ROI), et les
+              chiffres sont déjà dans le texte des étapes — rien d'inventé. */}
+          <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {steps.map((s, i) => {
+              const v = STEP_VISUALS[i];
+              if (!v) return null;
+              return (
+                <li key={s.n} className="h-full">
+                  <FadeInOnView delay={i * 70} className="h-full">
+                    <FeatureMediaCard
+                      index={i + 1}
+                      accent={v.accent}
+                      Icon={v.Icon}
+                      title={s.h}
+                      description={s.p}
+                      bullets={s.bullets}
+                      footnote={{
+                        label: isFr ? "Livrable" : "Deliverable",
+                        value: s.livrable,
+                      }}
+                      stat={{
+                        figure: isFr ? v.figureFr : v.figureEn,
+                        label: isFr ? v.labelFr : v.labelEn,
+                      }}
+                    />
+                  </FadeInOnView>
+                </li>
+              );
+            })}
           </ol>
         </Container>
       </Section>
@@ -391,69 +622,29 @@ export default async function MethodologyPage({ params }: Props) {
         }
       >
         <Container>
-          <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-14">
-            {/* Visuel placeholder à gauche en lg, en haut en mobile */}
-            <Illustration
-              slot="METHO-02-mid"
-              aspectRatio="1:1"
-              filenameTarget="public/illustrations/methodologie-mid-1.avif"
-              caption={
-                isFr
-                  ? "Compas de précision sur feuille gridée — précision opérationnelle"
-                  : "Precision compass on gridded paper — operational precision"
-              }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un compas de précision au-dessus d'une feuille gridée, symbole de la précision méthodologique d'Axion-IA."
-                  : "Editorial illustration of a precision compass over gridded paper, symbol of Axion-IA's methodological precision."
-              }
-              className="border-terracotta/30 bg-halo-warm shadow-subtle relative w-full overflow-hidden rounded-2xl border-2 border-dashed lg:sticky lg:top-24"
-            />
-            {/* Liste des 3 principes à droite */}
-            <ol className="space-y-7">
-              {whyMethodology.map((w, i) => (
-                <li key={w.h} className="flex gap-5">
-                  <span
-                    aria-hidden="true"
-                    className="text-terracotta-deep shrink-0 font-mono text-lg tracking-[0.12em] tabular-nums"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight sm:text-2xl">
-                      {w.h}
-                    </h3>
-                    <p className="text-fg-soft mt-3 text-base leading-relaxed sm:text-lg">{w.p}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          {/* Refonte Will 2026-08-10 — cette section affichait un CADRE POINTILLÉ
+              « emplacement d'image » (slot METHO-02, `Illustration` sans `src`)
+              en production, à côté d'une simple liste à puces numérotée.
+              Le placeholder est supprimé : les 3 principes passent dans le
+              panneau mocha partagé, qui casse le rythme ivoire de la page et
+              donne à la section le poids éditorial qu'un cadre vide lui volait. */}
+          <DarkTriadPanel
+            items={whyMethodology.map((w, i) => ({
+              Icon: PRINCIPLE_ICONS[i] ?? ShieldCheck,
+              eyebrow: String(i + 1).padStart(2, "0"),
+              title: w.h,
+              description: w.p,
+            }))}
+          />
         </Container>
       </Section>
 
-      {/* SECTION — closing visual avant CtaBlock */}
-      <Section tone="canvas">
-        <Container>
-          <div className="mx-auto max-w-3xl">
-            <Illustration
-              slot="METHO-04-closing"
-              aspectRatio="16:9"
-              filenameTarget="public/illustrations/methodologie-closing.avif"
-              caption={
-                isFr
-                  ? "Cycle continu — la méthode appliquée, ronde mais pas répétitive"
-                  : "Continuous cycle — method applied, looping but not repeating"
-              }
-              alt={
-                isFr
-                  ? "Illustration éditoriale d'un cycle continu représentant la méthodologie Axion-IA appliquée dans la durée."
-                  : "Editorial illustration of a continuous cycle representing the Axion-IA methodology applied over time."
-              }
-            />
-          </div>
-        </Container>
-      </Section>
+      {/* Section « Quatre livrables » RETIRÉE (Will 2026-08-10, second passage :
+          « ça fait trop basique »). Elle répétait les 4 mêmes items que les
+          étapes juste au-dessus, en plus pauvre. Le livrable de chaque étape est
+          désormais porté par la carte de l'étape elle-même (prop `footnote`) :
+          l'information est au même endroit que son contexte, et la page perd une
+          section redondante au lieu d'en gagner une faible. */}
 
       {/* FAQ AEO — visible + FAQPage JSON-LD auto via FaqAccordion */}
       <FaqBlock
@@ -478,7 +669,7 @@ export default async function MethodologyPage({ params }: Props) {
         }
         cta={
           <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} â†’
+            {isFr ? "Voir nos formations" : "See our trainings"} →
           </Cta>
         }
         tone="dark"

@@ -211,8 +211,8 @@ export default async function StackIaPage({ params }: Props) {
 
   // 6 bénéfices ultimes que la stack IA débloque pour l'entreprise.
   // Disposition orbitale = sens horaire depuis le haut-gauche.
-  // Ordre choisi : Futur (vision) â†’ Performance (opérationnel) â†’
-  // Rentabilité (financier) â†’ Monde (portée) â†’ Argent (résultat) â†’
+  // Ordre choisi : Futur (vision) → Performance (opérationnel) →
+  // Rentabilité (financier) → Monde (portée) → Argent (résultat) →
   // Liberté (humain). On boucle sur l'humain, fin du parcours.
   const heroNodes: ReadonlyArray<StackHeroNode> = isFr
     ? [
@@ -609,8 +609,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Granola",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Compte-rendu client â†’ plan de mission",
-              outputEn: "Client minutes â†’ mission plan",
+              outputFr: "Compte-rendu client → plan de mission",
+              outputEn: "Client minutes → mission plan",
               accent: "sage" as const,
             },
             {
@@ -618,8 +618,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Perplexity",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Veille sourcée â†’ mémo stratégique",
-              outputEn: "Sourced watch â†’ strategic memo",
+              outputFr: "Veille sourcée → mémo stratégique",
+              outputEn: "Sourced watch → strategic memo",
               accent: "sage" as const,
             },
             {
@@ -627,8 +627,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "ChatGPT",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Brainstorming â†’ version qui passe en prod",
-              outputEn: "Brainstorm â†’ version that ships",
+              outputFr: "Brainstorming → version qui passe en prod",
+              outputEn: "Brainstorm → version that ships",
               accent: "primary" as const,
             },
             {
@@ -636,8 +636,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "Cursor",
               toId: "claude-code",
               toName: "Claude Code",
-              outputFr: "Micro-itérations â†’ marathon refactoring",
-              outputEn: "Micro-iterations â†’ refactor marathon",
+              outputFr: "Micro-itérations → marathon refactoring",
+              outputEn: "Micro-iterations → refactor marathon",
               accent: "mocha" as const,
             },
             {
@@ -645,8 +645,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "v0",
               toId: "cursor",
               toName: "Cursor",
-              outputFr: "Prototype 30s â†’ composant en repo",
-              outputEn: "30s prototype â†’ in-repo component",
+              outputFr: "Prototype 30s → composant en repo",
+              outputEn: "30s prototype → in-repo component",
               accent: "mocha" as const,
             },
             {
@@ -654,8 +654,8 @@ export default async function StackIaPage({ params }: Props) {
               fromName: "n8n",
               toId: "claude",
               toName: "Claude",
-              outputFr: "Workflow CRM â†’ enrichissement IA",
-              outputEn: "CRM workflow â†’ AI enrichment",
+              outputFr: "Workflow CRM → enrichissement IA",
+              outputEn: "CRM workflow → AI enrichment",
               accent: "terracotta" as const,
             },
           ].map((combo, idx) => {

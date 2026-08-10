@@ -423,17 +423,14 @@ export async function signerPieceParJetonAction(input: {
  * message qui dit pourquoi, plutôt que de laisser remonter un
  * `identite_non_resolvable` que personne ne saurait interpréter.
  *
- * ## 🔴 L'ORDRE du SSOT est respecté, et il n'est PAS uniforme
+ * ## 🔴 L'ORDRE du SSOT est respecté
  *
- * L'organisme CONCLUT : il contresigne ce que les autres ont accepté. Mais ce
- * n'est pas vrai partout — sur le `protocole_afest`, `axionia` figure EN
- * PREMIER, parce que l'organisme propose le cadrage avant que l'entreprise et le
- * bénéficiaire y adhèrent.
- *
- * La garde ne peut donc pas être « toutes les autres parties ont signé ». Elle
- * est : **toutes les parties placées AVANT `axionia` dans la liste ordonnée**.
- * Écrire la version naïve aurait rendu le protocole AFEST insignable, sans que
- * rien ne le dise.
+ * L'organisme CONCLUT : il contresigne ce que les autres ont accepté. La garde
+ * est : **toutes les parties placées AVANT `axionia` dans la liste ordonnée**
+ * ont signé. (2026-08-10 : le seul circuit où `axionia` figurait en premier —
+ * le `protocole_afest` — a disparu avec le module AFEST, décision Will ; la
+ * forme ordonnée de la garde reste, elle protège tout futur circuit où
+ * l'organisme ne conclurait pas.)
  */
 export async function contresignerPieceAction(input: {
   documentGenereId: string;

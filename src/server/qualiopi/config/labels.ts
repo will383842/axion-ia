@@ -94,11 +94,8 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
   seuil_presence_pct: "Seuil de présence pour attestation complète (%)",
   langue_generation: "Langue de génération des documents",
 
-  // ── 1-to-1 / AFEST ──
-  afest_perimetre_certifie: "AFEST dans le périmètre certifié Qualiopi",
-  afest_tuteur_obligatoire: "Tuteur entreprise obligatoire (AFEST)",
-  afest_formateur_habilitation_requise: "Habilitation formateur requise (AFEST)",
-  afest_seuil_heures_min: "Nombre d'heures minimum pour une attestation 1-to-1",
+  // (1-to-1 / AFEST : les 4 clés `afest_*` ont été supprimées du registre le
+  //  2026-08-10 — le 1-to-1 est du conseil, hors Qualiopi.)
 
   // ── Périmètre indicateurs conformité ──
   off29_applicable: "Indicateur 29 (insertion professionnelle) applicable",
@@ -116,9 +113,11 @@ export const QUALIOPI_CONFIG_OPTION_LABELS: Partial<
   Record<QualiopiConfigKey, Record<string, string>>
 > = {
   regime_tva: {
-    assujetti: "Assujetti — TVA 20 % (par défaut, sûr)",
-    exoneration_261: "Exonéré — formation pro (art. 261-4-4°, attestation DREETS requise)",
-    franchise_293b: "Franchise en base (art. 293 B)",
+    // Options « exonéré 261-4-4° » et « franchise 293 B » retirées le
+    // 2026-08-10 (décision Will : la TVA est toujours facturée, aucune
+    // exonération — même formation). Le schéma du registre ne les accepte
+    // plus ; les réafficher ici sans réélargir le schéma ne ferait rien.
+    assujetti: "Assujetti — TVA 20 % (seul régime autorisé)",
   },
 };
 

@@ -159,9 +159,18 @@ const CATALOG: Catalog = {
             "Un coaching IA individuel se déroule en séances personnalisées centrées sur vos cas réels. On diagnostique d'abord vos besoins, puis on sélectionne les bons outils IA et on les met en place directement sur votre poste, avec un suivi pour ancrer l'usage.",
         },
         {
-          question: "Le coaching 1-to-1 est-il finançable (AFEST) ?",
+          // 🔴 RÉÉCRITE le 2026-08-10. L'ancienne réponse promettait un
+          // financement OPCO via l'AFEST — doctrine de juin ABANDONNÉE le
+          // 2026-07-17 (kits AXION 16/17 : « ce n'est PAS une action de
+          // formation — pas de QCM, pas d'attestation, non finançable OPCO »).
+          // La promesse était EN LIGNE, ET dans le JSON-LD FAQPage, donc
+          // citable par Google et les IA : une non-conformité d'audit directe
+          // et une promesse intenable envers les clients. La réponse honnête
+          // est conservée plutôt que supprimée : la question du financement est
+          // une vraie requête utilisateur — mieux vaut la trancher que la fuir.
+          question: "Le coaching 1-to-1 est-il finançable (OPCO) ?",
           answer:
-            "Oui, le coaching 1-to-1 peut être finançable lorsqu'il est structuré en AFEST, l'action de formation en situation de travail. Dans ce cadre, il peut être pris en charge par votre OPCO selon votre éligibilité, comme un véritable parcours de formation.",
+            "Non. Le coaching 1-to-1 est une prestation de conseil, pas une action de formation : pas de programme pédagogique imposé, pas de QCM, pas d'attestation — et donc pas de prise en charge OPCO. C'est aussi ce qui lui permet de rester entièrement centré sur votre poste et vos cas réels. Si le financement est un critère décisif pour vous, parlez-en lors de l'échange de cadrage : d'autres formats s'inscrivent dans un cadre différent.",
         },
         {
           question: "Faut-il des connaissances techniques ?",
@@ -201,9 +210,10 @@ const CATALOG: Catalog = {
             "Individual AI coaching works through one-on-one sessions focused on your real cases. We first diagnose your needs, then pick the right AI tools and set them up directly in your role, with follow-up to make sure the new usage actually sticks.",
         },
         {
+          // Miroir EN de la réécriture 2026-08-10 (cf. bloc FR ci-dessus).
           question: "Can 1-to-1 coaching be funded?",
           answer:
-            "Yes, 1-to-1 coaching can be funded when it is structured as on-the-job training. In that setup it may be covered through your training provider depending on your eligibility, just like a formal upskilling program rather than a one-off service.",
+            "No. 1-to-1 coaching is a consulting service, not a training action: no imposed syllabus, no quiz, no certificate — and therefore no third-party funding. That is also what keeps it entirely focused on your actual role and real cases. If funding is a decisive criterion for you, raise it during the scoping call: other formats fall under a different framework.",
         },
         {
           question: "Do I need technical skills?",

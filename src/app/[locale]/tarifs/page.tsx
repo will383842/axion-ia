@@ -506,7 +506,7 @@ export default async function PricingPage({ params }: Props) {
       {/* SECTION FAQ — FaqAccordion inject buildFaqJsonLd + Speakable auto */}
       <Section
         eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
-        title={isFr ? "Tarifs · " : "Pricing · "}
+        title={isFr ? "Tarifs ·" : "Pricing ·"}
         titleEm={isFr ? "les vraies réponses" : "real answers"}
         titleTail="."
         description={
@@ -524,7 +524,7 @@ export default async function PricingPage({ params }: Props) {
       {/* CTA final → Contact (point d'entrée commercial canonique post-refonte) */}
       <CtaBlock
         eyebrow={isFr ? "Prêt à démarrer ?" : "Ready to start?"}
-        title={isFr ? "Un devis " : "A "}
+        title={isFr ? "Un devis" : "A"}
         titleEm={isFr ? "personnalisé" : "personalised quote"}
         titleTail={isFr ? " sous 48 h ouvrées." : " within 48 business hours."}
         description={

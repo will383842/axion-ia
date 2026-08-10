@@ -1,12 +1,17 @@
 /**
  * KB V4 — Lint banned words pour KB (FR uniquement V1).
  *
- * Doctrine `axionia-core` 2026-05-06 + §18 décision 7 prompt V4 :
- * Mot « formation » BANNI partout dans le code, copy, docs, slugs, JSON-LD,
- * et bien sûr dans les `KnowledgeTranslation` (`title`/`excerpt`/`body`/
- * `metaTitle`/`metaDescription`).
+ * 🔓 2026-08-10 (décision Will) — le mot « formation » N'EST PLUS BANNI.
+ * Le site vend 21 formations au catalogue, expose « Formations IA » en
+ * navigation et indexe `/formations/*` : proscrire le mot dans la base de
+ * connaissance revenait à interdire au corpus de nommer l'offre.
  *
- * `intervention_module` et `competence_boost` couvrent le sujet.
+ * La liste de motifs est donc vide et ce lint passe systématiquement. Le script
+ * est conservé comme point d'entrée si un mot devait être proscrit un jour —
+ * mais jamais « formation ».
+ *
+ * ⚠️ La protection Qualiopi ne reposait PAS sur ce lint : la garde primaire est
+ * le drapeau `isQualiopiPublicDisclosureEnabled()`, inchangé.
  *
  * Usage CI :
  *   pnpm knowledge:check-banned-words
@@ -18,16 +23,7 @@ import { PrismaClient } from "../prisma/generated/client";
 
 const prisma = new PrismaClient();
 
-const BANNED_PATTERNS: ReadonlyArray<{ pattern: RegExp; reason: string }> = [
-  // « formation » / « formations » / « former » (verbe) — variations courantes
-  // Whitelist : « transformation », « information », « conformation » (faux positifs)
-  // Strategie : matcher "formation" mais pas dans un mot composé contenant autre chose qu'un délimiteur avant.
-  {
-    pattern:
-      /\b(?:[Ff]ormation|[Ff]ormations|[Ff]ormer\b|[Ff]ormateur|[Ff]ormatrice|[Ff]ormateurs|[Ff]ormatrices)\b(?!.*(?:transform|inform|conform|reform|déform|défor))/i,
-    reason: "Mot « formation » banni — utiliser intervention_module ou competence_boost.",
-  },
-];
+const BANNED_PATTERNS: ReadonlyArray<{ pattern: RegExp; reason: string }> = [];
 
 interface Violation {
   readonly entryId: string;

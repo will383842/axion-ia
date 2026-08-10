@@ -98,9 +98,7 @@ function piece(over: Record<string, unknown> = {}) {
     hashSha256: "c".repeat(64),
     metadata: {},
     sessionId: SESSION,
-    coachingSessionId: null,
     signatures: [] as Array<{ id: string }>,
-    coachingSession: null as { trainerId: string } | null,
     session: {
       formateurPrincipalId: null,
       sessionFormateurs: [{ trainerId: TRAINER, role: "co_formateur" }],
@@ -222,12 +220,13 @@ describe("🔴 autorisation du porteur", () => {
     );
   });
 
-  it("accepte le formateur du parcours AFEST rattaché à la pièce", async () => {
+  // 2026-08-10 (décision Will) : le cas « formateur du parcours AFEST rattaché »
+  // est parti avec la branche coaching de `porteurAutorise` (module supprimé).
+  it("refuse un formateur sur une pièce sans session rattachée", async () => {
     mockPrisma.documentGenere.findUnique.mockResolvedValue(
-      piece({ sessionId: null, session: null, coachingSession: { trainerId: TRAINER } }),
+      piece({ sessionId: null, session: null }),
     );
-    const res = await signerDocument(entree());
-    expect(res).toMatchObject({ ok: true });
+    attendRefus(await signerDocument(entree()), "porteur_non_autorise");
   });
 
   it("🔴 le refus d'autorisation passe AVANT `deja_signe` — sinon il fuite l'état", async () => {

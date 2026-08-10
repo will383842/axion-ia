@@ -272,13 +272,15 @@ async function lirePiece(documentGenereId: string, partie: PartieSignataire) {
       hashSha256: true,
       metadata: true,
       sessionId: true,
-      coachingSessionId: true,
       signatures: {
         where: { partie, revokedAt: null },
         select: { id: true },
         take: 1,
       },
-      coachingSession: { select: { trainerId: true } },
+      // 2026-08-10 (décision Will) : la lecture `coachingSession.trainerId` a
+      // été retirée avec le module AFEST 1-to-1 — plus aucune pièce SIGNABLE
+      // n'est rattachée à un parcours coaching. La garde collective (session)
+      // ci-dessous est intacte.
       // 🔴 `formateurPrincipalId` EST lu, et ce n'est pas du zèle.
       //
       // La première version de ce service ne regardait que `sessionFormateurs`.
@@ -348,7 +350,7 @@ function nettoyer(valeur: string | null | undefined): string | null {
  * Et quand elle n'est pas résolvable, on REFUSE plutôt que de fabriquer : sceller
  * un repli littéral (« Le formateur ») dans un tuple haché produirait une
  * signature juridiquement anonyme — précisément le défaut que ce chantier a
- * retiré du côté AFEST.
+ * déjà retiré ailleurs dans le dépôt.
  */
 async function resoudreIdentite(
   porteur: PorteurSignatureDocument,
@@ -573,9 +575,8 @@ async function verifierJeton(
  * plus rien ne recoupait le titre auquel il signait. L'identité scellée aurait
  * été la sienne, mais la ligne aurait dit « le client a accepté ».
  *
- * C'est la classe de faille déjà corrigée deux fois sur ce dépôt — côté
- * collectif (« un stagiaire pouvait signer la feuille d'un absent ») et côté
- * AFEST (« un jeton tuteur ne peut pas écrire une ligne bénéficiaire »).
+ * C'est la classe de faille déjà corrigée sur ce dépôt — côté collectif
+ * (« un stagiaire pouvait signer la feuille d'un absent »).
  *
  * ⚠️ Les canaux NON authentifiés (fournisseur, reversement papier) ne sont pas
  * dans cette table, et c'est délibéré : là, la partie signataire est celle que
@@ -609,7 +610,9 @@ function porteurAutorise(ctx: ContextePiece, porteur: PorteurSignatureDocument):
     if (!PARTIES_PAR_CANAL_AUTHENTIFIE[porteur.type].includes(porteur.partie)) return false;
   }
   if (porteur.type !== "formateur_authentifie") return true;
-  if (ctx.coachingSession?.trainerId === porteur.trainerId) return true;
+  // 2026-08-10 (décision Will) : la branche « formateur du parcours coaching
+  // rattaché » a été retirée avec le module AFEST 1-to-1 ; l'appartenance à la
+  // SESSION collective reste la seule voie d'autorisation d'un formateur.
   if (ctx.session === null) return false;
 
   // 🔴 On délègue à `resoudreAppartenance`, source de vérité UNIQUE de

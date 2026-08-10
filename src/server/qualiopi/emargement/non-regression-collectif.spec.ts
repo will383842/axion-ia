@@ -32,8 +32,9 @@ import {
   calculerSelfHashContresignature,
   type TupleContresignatureV1,
 } from "@/server/qualiopi/emargement/contresignature-hash";
-import { MENTION_VERSION_AFEST } from "./mentions-afest";
-import { HASH_VERSION_SEANCE } from "./seance-signature-hash";
+// 2026-08-10 (décision Will) : le module AFEST 1-to-1 est supprimé (conseil hors
+// Qualiopi). Les imports `MENTION_VERSION_AFEST` / `HASH_VERSION_SEANCE` et leurs
+// cas de test disparaissent avec lui ; les vecteurs d'or COLLECTIFS restent figés.
 import {
   HASH_VERSION_DOCUMENT,
   calculerSelfHashDocument,
@@ -111,27 +112,6 @@ describe("non-régression du chemin collectif", () => {
     );
   });
 
-  it("🔴 la version de mention AFEST est INDÉPENDANTE de celle du collectif", () => {
-    // Le texte AFEST est différent, et c'est précisément pour cela qu'il a SA
-    // propre version. Toucher celle du collectif rendrait invérifiable ce qui a
-    // été présenté aux stagiaires des sessions déjà signées.
-    //
-    // ⚠️ Ce test épinglait `MENTION_VERSION` sur le littéral « v1 ». C'était la
-    // mauvaise forme de garde, et la production l'a démontré : le collectif est
-    // légitimement passé en « v2 » (correctif de FORMULATION — la mention signée
-    // présentait l'horaire de la journée comme celui de la demi-journée, donc
-    // 8 h attestées pour 4 h animées). Épingler un littéral revenait à interdire
-    // au flux collectif de corriger sa propre mention — un test qui échoue sur
-    // un changement légitime finit par être supprimé, et la vraie garde avec lui.
-    //
-    // Ce qu'il faut réellement verrouiller, ce sont les deux invariants
-    // ci-dessous ; ils tiennent quelle que soit la version courante du collectif.
-    expect(MENTION_VERSION_AFEST).not.toBe(MENTION_VERSION);
-    // L'AFEST ne DÉRIVE pas de la constante collective : une valeur dérivée
-    // suivrait silencieusement le prochain bump du collectif.
-    expect(MENTION_VERSION_AFEST).toBe("afest-v1");
-  });
-
   it("🔴 un bump du collectif ne peut PAS rétro-invalider une signature scellée", () => {
     // C'est LA propriété qui protège les empreintes déjà émises, et elle ne
     // dépend pas de la valeur courante de `MENTION_VERSION` : `mentionVersion`
@@ -148,16 +128,14 @@ describe("non-régression du chemin collectif", () => {
   it("🔴 les versions de tuple sont INDÉPENDANTES entre contextes", () => {
     expect(HASH_VERSION_COURANTE).toBe(1);
     expect(HASH_VERSION_CONTRESIGNATURE).toBe(1);
-    expect(HASH_VERSION_SEANCE).toBe(1);
     expect(HASH_VERSION_DOCUMENT).toBe(1);
-    // Elles valent toutes 1 aujourd'hui, mais elles sont QUATRE constantes
-    // distinctes : le jour où l'une bouge, les trois autres ne doivent pas.
+    // Elles valent toutes 1 aujourd'hui, mais elles sont des constantes
+    // distinctes : le jour où l'une bouge, les autres ne doivent pas.
   });
 
-  it("🔴 la version de mention DOCUMENT est INDÉPENDANTE des deux autres", () => {
+  it("🔴 la version de mention DOCUMENT est INDÉPENDANTE de celle du collectif", () => {
     expect(MENTION_VERSION_DOCUMENT).not.toBe(MENTION_VERSION);
-    expect(MENTION_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_AFEST);
-    // Elle ne DÉRIVE d'aucune des deux : une valeur dérivée suivrait
+    // Elle n'en DÉRIVE pas : une valeur dérivée suivrait
     // silencieusement le prochain bump de l'autre famille.
     expect(MENTION_VERSION_DOCUMENT).toBe("doc-v1");
     // Mention et consentement sont DEUX axes : reformuler le texte affiché ne
@@ -165,8 +143,8 @@ describe("non-régression du chemin collectif", () => {
     expect(CONSENTEMENT_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_DOCUMENT);
   });
 
-  it("🔴 le tuple DOCUMENT ne peut pas se confondre avec les trois autres", () => {
-    // Quatre familles de preuve, quatre discriminants. Deux tuples de forme
+  it("🔴 le tuple DOCUMENT ne peut pas se confondre avec les autres", () => {
+    // Plusieurs familles de preuve, autant de discriminants. Deux tuples de forme
     // différente qui produiraient la même empreinte seraient une collision
     // exploitable — et une copie de fichier suffirait à l'introduire.
     const TUPLE_DOCUMENT: TupleDocumentSignatureV1 = {

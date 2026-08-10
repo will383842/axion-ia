@@ -665,7 +665,7 @@ function LettreMissionButtons({
                 setCochees={setCochees}
               />
               <GroupePrestations
-                titre="Coachings 1-to-1 / AFEST"
+                titre="Coachings 1-to-1 (conseil)"
                 prefixe="c"
                 items={candidates.coachings}
                 cochees={cochees}
