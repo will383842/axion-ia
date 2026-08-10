@@ -511,50 +511,10 @@ export async function setTrainerCompetencesAction(input: {
   return { data: { id, nbDomaines: payload.length } };
 }
 
-/**
- * Habilite (ou retire l'habilitation) AFEST d'un formateur — D.6313-3-1 §2.
- *
- * 🔴 `afestHabiliteAt` était LU à trois endroits, dont un garde-fou qui refuse
- * la création d'un parcours AFEST quand il est nul, et n'était ÉCRIT nulle
- * part : l'habilitation était donc impossible à accorder, et le garde-fou
- * infranchissable. Un champ qu'on lit sans jamais pouvoir l'écrire n'est pas
- * une règle, c'est un cul-de-sac.
- */
-export async function setTrainerAfestHabiliteAction(input: {
-  id: string;
-  habilite: boolean;
-  /** Date de l'habilitation (ISO). Absente = aujourd'hui. Ignorée si retrait. */
-  dateHabilitation?: string;
-}): Promise<ActionResult<{ id: string; habiliteAt: string | null }>> {
-  const session = await requireAdminWrite();
-  const parsed = z
-    .object({
-      id: z.string().uuid(),
-      habilite: z.boolean(),
-      dateHabilitation: z.coerce.date().optional(),
-    })
-    .safeParse(input);
-  if (!parsed.success) return { error: "Données invalides" };
-  const { id, habilite, dateHabilitation } = parsed.data;
-
-  const afestHabiliteAt = habilite ? (dateHabilitation ?? new Date()) : null;
-
-  try {
-    await prisma.trainer.update({ where: { id }, data: { afestHabiliteAt } });
-  } catch {
-    return { error: "Formateur introuvable ou mise à jour impossible." };
-  }
-
-  await logQualiopiActivity({
-    action: habilite ? "qualiopi.trainer.afest.habilite" : "qualiopi.trainer.afest.retire",
-    targetType: "Trainer",
-    targetId: id,
-    changes: { habilite, dateHabilitation: afestHabiliteAt?.toISOString() ?? null },
-    session,
-  });
-
-  return { data: { id, habiliteAt: afestHabiliteAt?.toISOString() ?? null } };
-}
+// 2026-08-10 (décision Will) : `setTrainerAfestHabiliteAction` supprimée — le
+// coaching 1-to-1 est une prestation de conseil hors Qualiopi, l'habilitation
+// AFEST n'a plus de surface d'écriture (le champ `afestHabiliteAt` reste au
+// schéma, étape ultérieure).
 
 /** Active / désactive un formateur (un inactif ne peut plus être assigné). */
 export async function setTrainerActifAction(

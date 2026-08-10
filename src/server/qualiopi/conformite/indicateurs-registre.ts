@@ -15,7 +15,10 @@
  *   "cert"  → 3, 7, 16 (formations certifiantes RNCP/RS)
  *   "app"   → 13, 14, 15, 20, 29 (apprentissage/CFA — colonnes AFC/CBC/VAE VIDES
  *             dans la liste officielle Acuria « CERT PPS LIAI QUA 1 V3 »)
- *   "afest" → 28 (AFEST)
+ *   "afest" → 28 (AFEST) — depuis le 2026-08-10, ce conditionnel n'est plus
+ *             JAMAIS activé par le coaching 1-to-1 (conseil, hors Qualiopi —
+ *             décision 2026-07-17) : seul le type d'action `alternance_afest`
+ *             déclaré sur une Formation le rend applicable.
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -300,7 +303,9 @@ export const INDICATEURS_RNQ: readonly IndicateurRNQ[] = [
  *             le rattacher à "alternance_afest" : ce sont des indicateurs apprenti
  *             (citoyenneté/droits/insertion/personnels dédiés apprentis), distincts
  *             de l'AFEST (off.28). Cf. liste officielle Acuria CERT PPS LIAI QUA 1 V3.
- * - "afest" : applicable si "alternance_afest" ∈ typesAction (off.28).
+ * - "afest" : applicable si "alternance_afest" ∈ typesAction (off.28) — types
+ *             DÉCLARÉS sur les Formation uniquement ; le coaching 1-to-1
+ *             (conseil) n'alimente plus jamais cette liste (2026-08-10).
  *
  * Retourne les numéros triés ascendants.
  */

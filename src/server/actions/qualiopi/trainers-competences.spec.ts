@@ -1,9 +1,11 @@
 /**
- * Tests — compétences évaluées et habilitation AFEST.
+ * Tests — compétences évaluées.
  *
- * Ces deux actions ferment des non-conformités, pas des manques de confort :
- * `{domaine, niveauMaitrise, verifiedAt}` et `afestHabiliteAt` étaient LUS par
- * les PDF et par un garde-fou, et ÉCRITS par aucun écran.
+ * Cette action ferme une non-conformité, pas un manque de confort :
+ * `{domaine, niveauMaitrise, verifiedAt}` était LU par les PDF et par un
+ * garde-fou, et ÉCRIT par aucun écran.
+ * (2026-08-10 : les tests de `setTrainerAfestHabiliteAction` sont partis avec
+ * l'action — module AFEST 1-to-1 supprimé, décision Will.)
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -80,40 +82,5 @@ describe("setTrainerCompetencesAction", () => {
     expect(
       "error" in (await setTrainerCompetencesAction({ id: ID, domaines: [{ domaine: "" }] })),
     ).toBe(true);
-  });
-});
-
-describe("setTrainerAfestHabiliteAction", () => {
-  it("habilite à la date fournie", async () => {
-    const { setTrainerAfestHabiliteAction } = await import("./trainers");
-    const res = await setTrainerAfestHabiliteAction({
-      id: ID,
-      habilite: true,
-      dateHabilitation: "2026-07-01",
-    });
-
-    expect("data" in res).toBe(true);
-    const ecrit = update.mock.calls[0]![0].data.afestHabiliteAt as Date;
-    expect(ecrit).toBeInstanceOf(Date);
-    expect(ecrit.toISOString().slice(0, 10)).toBe("2026-07-01");
-  });
-
-  it("sans date : habilite quand même, jamais un null silencieux", async () => {
-    const { setTrainerAfestHabiliteAction } = await import("./trainers");
-    await setTrainerAfestHabiliteAction({ id: ID, habilite: true });
-
-    expect(update.mock.calls[0]![0].data.afestHabiliteAt).toBeInstanceOf(Date);
-  });
-
-  it("retrait : remet à null, et ignore la date fournie", async () => {
-    const { setTrainerAfestHabiliteAction } = await import("./trainers");
-    const res = await setTrainerAfestHabiliteAction({
-      id: ID,
-      habilite: false,
-      dateHabilitation: "2026-07-01",
-    });
-
-    expect(update.mock.calls[0]![0].data.afestHabiliteAt).toBeNull();
-    expect("data" in res && res.data.habiliteAt).toBeNull();
   });
 });

@@ -2,7 +2,7 @@
  * Qualiopi — Fiche formateur : CV + plan de compétences (doc A15, ind. 21/22).
  *
  * Synthèse de la qualification d'un intervenant : identité, statut, domaines de
- * compétences, formations habilitées, habilitation AFEST, sous-traitance
+ * compétences, formations habilitées, sous-traitance
  * (NDA + vérification data.gouv.fr), CV joint. EXPORT D'ÉTAT à la volée : PAS
  * un document officiel numéroté.
  *
@@ -50,8 +50,6 @@ export interface CvFormateurData {
   formationsHabilitees: string[];
   /** True si un CV est téléversé (Trainer.cvUrl non null). */
   cvJoint: boolean;
-  /** Date d'habilitation AFEST formatée (fr-FR) — "" si non habilité. */
-  afestHabiliteAt: string;
   /** NDA propre du sous-traitant — "" si non applicable. */
   sousTraitantNda: string;
   /** Date de vérification data.gouv.fr formatée (fr-FR) — "" si non vérifiée. */
@@ -134,10 +132,8 @@ export function CvFormateurPdf({
             value={data.cvJoint ? "Oui — CV téléversé dans le dossier formateur" : "Non"}
             required
           />
-          <FieldRow
-            label="Habilitation AFEST"
-            value={data.afestHabiliteAt ? `Habilité le ${data.afestHabiliteAt}` : "Non habilité"}
-          />
+          {/* 2026-08-10 (décision Will) : ligne « Habilitation AFEST » retirée —
+              le 1-to-1 est une prestation de conseil hors Qualiopi. */}
         </DocSection>
 
         {/* Sous-traitance (uniquement si sous-traitant) */}

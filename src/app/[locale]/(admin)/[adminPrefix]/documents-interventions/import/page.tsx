@@ -61,7 +61,7 @@ export default async function ImportKitPage(): Promise<React.ReactElement> {
             <em>Documents_PDF</em> et <em>00_Presentation</em>.
           </li>
           <li>
-            <strong>1-to-1 / Coaching AFEST</strong> : dossiers <em>Dirigeant/</em> et{" "}
+            <strong>1-to-1 / Coaching (conseil)</strong> : dossiers <em>Dirigeant/</em> et{" "}
             <em>Collaborateur/</em> (chacun avec <em>Documents_DOCX</em>) — la même trame alimente
             les formats 1 jour et 2 jours.
           </li>

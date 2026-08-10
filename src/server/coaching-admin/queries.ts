@@ -4,7 +4,7 @@
  * Vue transverse (toutes séances, tous formateurs). L'accès est protégé par le
  * middleware admin (groupe `[adminPrefix]`) ; les mutations passent par des
  * actions gardées (`requireAdminWrite`). Dashboards : gains de temps,
- * optimisations par type / par métier, conformité AFEST.
+ * optimisations par type / par métier, complétude des livrables conseil.
  */
 
 import { prisma } from "@/lib/prisma";
@@ -85,8 +85,11 @@ export interface CoachingDashboard {
   gainTempsHSemaineTotal: number;
   /** Gain estimé par métier (interventionSlug). */
   gainByMetier: Array<{ slug: string; sessions: number; gainH: number }>;
-  /** Conformité AFEST sur les séances réalisées. */
-  afest: {
+  /** Complétude des livrables conseil sur les séances réalisées.
+   *  (Renommé depuis « conformité AFEST » le 2026-08-10 : le 1-to-1 est du
+   *  conseil — les métriques mesurent la qualité de service, pas une
+   *  conformité réglementaire.) */
+  livrables: {
     realisees: number;
     avecCartographie: number;
     avecPlan: number;
@@ -109,7 +112,7 @@ export async function getCoachingDashboard(): Promise<CoachingDashboard> {
   const byStatut: Record<string, number> = {};
   const gainByMetierMap = new Map<string, { sessions: number; gainH: number }>();
   let gainTempsHSemaineTotal = 0;
-  const afest = {
+  const livrables = {
     realisees: 0,
     avecCartographie: 0,
     avecPlan: 0,
@@ -127,14 +130,14 @@ export async function getCoachingDashboard(): Promise<CoachingDashboard> {
     gainByMetierMap.set(s.interventionSlug, m);
 
     if (s.statut === "realisee") {
-      afest.realisees += 1;
+      livrables.realisees += 1;
       const hasCarto = !!s.cartographie;
       const hasPlan = !!s.plan;
       const hasCr = s._count.comptesRendus > 0;
-      if (hasCarto) afest.avecCartographie += 1;
-      if (hasPlan) afest.avecPlan += 1;
-      if (hasCr) afest.avecCompteRendu += 1;
-      if (hasCarto && hasPlan && hasCr) afest.completes += 1;
+      if (hasCarto) livrables.avecCartographie += 1;
+      if (hasPlan) livrables.avecPlan += 1;
+      if (hasCr) livrables.avecCompteRendu += 1;
+      if (hasCarto && hasPlan && hasCr) livrables.completes += 1;
     }
   }
 
@@ -161,7 +164,7 @@ export async function getCoachingDashboard(): Promise<CoachingDashboard> {
     gainByMetier: Array.from(gainByMetierMap.entries())
       .map(([slug, v]) => ({ slug, sessions: v.sessions, gainH: v.gainH }))
       .sort((a, b) => b.gainH - a.gainH),
-    afest,
+    livrables,
   };
 }
 

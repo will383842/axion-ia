@@ -65,11 +65,13 @@ const registreSchema = z.object({ type: z.enum(REGISTRE_TYPES) });
 const trainerIdSchema = z.object({ trainerId: z.string().uuid() });
 const enrollmentIdSchema = z.object({ enrollmentId: z.string().uuid() });
 
+// `alternance_afest` retiré des filtres d'export le 2026-08-10 : le 1-to-1 est
+// du conseil, hors Qualiopi (décision 2026-07-17). La valeur reste dans l'enum
+// Prisma (héritée), mais n'est plus proposée ni acceptée comme filtre.
 const TYPE_ACTION_QUALIOPI = [
   "classique",
   "certifiante",
   "foad",
-  "alternance_afest",
   "sous_traitance",
   "cpf",
   "opco",
@@ -171,7 +173,8 @@ export async function genererCvFormateurAction(input: {
       domainesCompetences: true,
       formationsHabilitees: true,
       dateEmbauche: true,
-      afestHabiliteAt: true,
+      // `afestHabiliteAt` n'est plus lu : le bloc « Habilitation AFEST » est
+      // retiré des exports (1-to-1 = conseil, hors Qualiopi — 2026-08-10).
       sousTraitantNda: true,
       sousTraitantVerifieAt: true,
     },
@@ -315,7 +318,6 @@ const TYPE_ACTION_LABELS: Record<string, string> = {
   classique: "Actions classiques",
   certifiante: "Actions certifiantes",
   foad: "FOAD",
-  alternance_afest: "Alternance / AFEST",
   sous_traitance: "Sous-traitance",
   cpf: "CPF",
   opco: "OPCO",

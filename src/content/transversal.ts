@@ -98,10 +98,58 @@ export const ABOUT_TEAM = [
   },
 ] as const;
 
+/**
+ * Corps d'une entrée FAQ dans une langue.
+ *
+ * `question` + `answer` sont les seuls champs OBLIGATOIRES : les 88 entrées
+ * historiques ne portent qu'eux et continuent de fonctionner à l'identique.
+ *
+ * Les champs suivants sont OPTIONNELS et enrichissent la fiche `/faq/[slug]`
+ * (ajoutés le 2026-08-10). Le gabarit ne rend une section QUE si sa donnée
+ * existe : une entrée non enrichie garde exactement la page qu'elle avait.
+ * C'est ce qui permet d'enrichir le corpus question par question, sans
+ * migration de masse et sans jamais afficher de section vide.
+ *
+ * ⚠️ PRIX : ce fichier est scanné par `no-hardcoded-prices.spec.ts`. N'écrire
+ * aucun montant en clair — utiliser un token `{{price:<tierId>|flat}}`, résolu
+ * au rendu depuis le SSOT `pricing.ts`.
+ *
+ * ⚠️ VOCABULAIRE : « audit » désigne la prestation payante `/audit` — pour le
+ * coaching, écrire « état des lieux ». En revanche « formation » est un mot
+ * NORMAL depuis le 2026-08-10 : son bannissement a été levé, le site vendant
+ * 21 formations au catalogue.
+ */
+export interface FaqAnswerBlock {
+  question: string;
+  answer: string;
+  /** Points scannables affichés sous la réponse. Idéalement 3 à 5. */
+  keyPoints?: readonly string[];
+  /** Chiffres-clés de la réponse (grand chiffre + libellé court). */
+  facts?: readonly { figure: string; label: string }[];
+  /** Déroulé concret, quand la réponse en décrit un. */
+  steps?: readonly { title: string; detail: string }[];
+  /** Confusions fréquentes à lever — ce que la réponse n'est PAS. */
+  nuances?: readonly { title: string; detail: string }[];
+}
+
 export interface FaqEntry {
   id: string;
-  fr: { question: string; answer: string };
-  en: { question: string; answer: string };
+  fr: FaqAnswerBlock;
+  en: FaqAnswerBlock;
+  /**
+   * Date de dernière révision éditoriale de CETTE entrée (ISO `YYYY-MM-DD`).
+   *
+   * Sans elle, la fiche retombe sur la constante globale `FAQ_LAST_REVIEWED` —
+   * ce qui faisait déclarer à Google la même date de publication ET de
+   * modification pour les 88 pages. Renseigner dès qu'une entrée est retravaillée.
+   */
+  reviewedAt?: string;
+  /**
+   * Questions réellement liées, par id. Sans elle, le gabarit retombe sur
+   * « les autres questions de la même catégorie, dans l'ordre du tableau » —
+   * un rapprochement qui n'en est pas un.
+   */
+  related?: readonly string[];
 }
 
 export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
@@ -1247,16 +1295,84 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
+    // Première entrée enrichie du corpus (Will 2026-08-10) : elle sert de
+    // patron pour la montée en qualité des 87 autres. Tous les faits ci-dessous
+    // proviennent des pages produit déjà publiées (`/un-a-un`,
+    // `/interventions/individuel`, `IndividualCoachingPage`) — rien n'est
+    // avancé qui ne soit déjà affirmé ailleurs sur le site.
+    //
+    // ⚠️ Volontairement MUET sur le financement. Le dépôt porte deux doctrines
+    // contradictoires sur le statut du 1-to-1 (conseil hors Qualiopi côté
+    // public depuis 2026-07-17, résidus AFEST côté back-office) : tant que ce
+    // n'est pas tranché, on n'affirme ni OPCO, ni AFEST, ni a fortiori CPF.
     id: "coaching-ia-prise-en-main-outils",
+    reviewedAt: "2026-08-10",
+    related: [
+      "coaching-ia-cadres-managers",
+      "accompagnement-ia-individuel-dirigeant",
+      "mentorat-ia-dirigeant",
+    ],
     fr: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui. Si vous voulez être autonome rapidement sur les outils IA (ChatGPT, Claude, automatisations, assistants), le coaching 1-to-1 est le format le plus efficace : on travaille sur VOS cas concrets, à votre rythme, jusqu'à ce que vous soyez à l'aise. Pas de cours générique : chaque séance produit des résultats utilisables tout de suite dans votre quotidien professionnel.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
+      keyPoints: [
+        "Une journée de 7 à 8 h, une seule personne — jamais un groupe",
+        "Sur votre poste réel, vos comptes et vos vrais documents",
+        "ChatGPT, Claude et Gemini, extensions, transcripteurs, puis vos propres assistants",
+        "3 à 5 méthodes maîtrisées et un cahier de prompts qui reste le vôtre",
+        "Livrable écrit sous 7 jours, point de suivi à 30 jours",
+      ],
+      facts: [
+        { figure: "7-8 h", label: "en tête-à-tête" },
+        { figure: "1", label: "seule personne accompagnée" },
+        { figure: "3-5", label: "méthodes maîtrisées" },
+        { figure: "7 j", label: "pour le livrable écrit" },
+      ],
+      steps: [
+        {
+          title: "État des lieux de votre poste",
+          detail:
+            "On passe en revue vos tâches réelles et on chiffre le temps perdu sur les plus répétitives. Ce n'est pas un audit d'entreprise : le périmètre, c'est votre poste.",
+        },
+        {
+          title: "Prise en main des outils",
+          detail:
+            "ChatGPT, Claude, Gemini, extensions de navigateur, transcripteurs de réunion — sur vos propres comptes, pas sur un environnement de démonstration.",
+        },
+        {
+          title: "Pratique sur vos cas",
+          detail:
+            "3 à 5 cas concrets travaillés sur vos vrais documents, jusqu'à ce que la méthode soit acquise. On pratique, on ne se contente pas d'en parler.",
+        },
+        {
+          title: "Plan d'action et suite",
+          detail:
+            "Ce que vous appliquez seul dès le lendemain, et ce qui mériterait un accompagnement dédié. Le livrable écrit arrive sous 7 jours.",
+        },
+      ],
+      nuances: [
+        {
+          title: "Ce n'est pas une session collective",
+          detail:
+            "Le 1-to-1 accueille une seule personne, sur son poste. Pour faire monter toute une équipe, ce sont les interventions collectives, en groupe de 2 à 15 participants.",
+        },
+        {
+          title: "Ce n'est pas un état des lieux de toute l'entreprise",
+          detail:
+            "La journée porte sur un poste et ses tâches. La cartographie chiffrée de l'entreprise entière, avec scoring des opportunités, c'est l'audit IA — une prestation distincte.",
+        },
+        {
+          title: "Le tarif dépend du profil accompagné",
+          detail:
+            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un échange préalable de 30 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
+        },
+      ],
     },
     en: {
       question: "Un coaching IA pour prendre en main les outils, c'est possible ?",
       answer:
-        "Oui. Si vous voulez être autonome rapidement sur les outils IA (ChatGPT, Claude, automatisations, assistants), le coaching 1-to-1 est le format le plus efficace : on travaille sur VOS cas concrets, à votre rythme, jusqu'à ce que vous soyez à l'aise. Pas de cours générique : chaque séance produit des résultats utilisables tout de suite dans votre quotidien professionnel.",
+        "Oui, et c'est le format le plus rapide pour devenir autonome. Le Coaching IA 1-to-1 se déroule sur une journée de 7 à 8 heures, en tête-à-tête avec un intervenant senior, sur votre poste de travail réel et vos propres dossiers. On prend en main les assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — ainsi que les extensions de navigateur et les transcripteurs de réunion, puis on crée vos assistants IA personnels. Rien n'est générique : on travaille sur vos documents, vos données, votre quotidien. Vous repartez avec 3 à 5 méthodes maîtrisées, un cahier de prompts qui reste le vôtre et un plan d'action chiffré ; le livrable écrit suit sous 7 jours, avec un point de suivi à 30 jours. La journée se tient sur site, à distance ou en hybride.",
     },
   },
 ];

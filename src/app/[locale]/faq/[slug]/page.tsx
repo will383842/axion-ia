@@ -15,9 +15,11 @@ import {
   Rss,
   LayoutGrid,
   MessagesSquare,
+  Check,
 } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
+import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
@@ -25,7 +27,8 @@ import { FaqRelatedResources } from "@/components/sections/FaqRelatedResources";
 import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { resolvePriceTokensDeep } from "@/content/pricing-tokens";
 import { buildQAPageJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd } from "@/lib/seo/manon-person";
 import { splitTitleEm } from "@/lib/title";
@@ -47,8 +50,11 @@ export const revalidate = 3600;
 // « Mis à jour » visible avançaient à CHAQUE deploy sans changement de contenu
 // (date-gaming + mensonge affiché à l'utilisateur). Bumper à la main lors d'une
 // vraie révision de la doctrine FAQ.
-// TODO Vague 2 : plomber une vraie date par-entrée via FaqItem (DB updatedAt /
-// date éditoriale par Q-R) pour différencier les dates au lieu d'une seule figée.
+// 2026-08-10 — ce n'est plus qu'un REPLI. Une entrée peut désormais porter sa
+// propre `reviewedAt` (cf. `FaqEntry` dans `src/content/transversal.ts`), et
+// c'est elle qui alimente alors le JSON-LD ET la pastille visible. Avant, les
+// 88 fiches déclaraient toutes la même date de publication et de modification.
+// Les entrées non retravaillées gardent cette valeur.
 const FAQ_LAST_REVIEWED = "2026-06-01";
 
 export async function generateStaticParams() {
@@ -93,6 +99,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/faq/${slug}`,
     title,
     description: copy.answer.length > 155 ? `${copy.answer.slice(0, 152).trimEnd()}…` : copy.answer,
+    // Le flux existe (`/fr/faq/feed.xml`, 200) et était linké visuellement dans
+    // le rail, mais jamais déclaré en `<link rel="alternate">` machine-lisible.
+    rssFeed: `/${locale}/faq/feed.xml`,
   });
   // Fix audit FAQ 2026-05-31 (axe A2) : Track B (auto) non promu tier-1 →
   // `noindex,follow`. Le contrat « tier-2 = noindex » n'était jamais honoré au
@@ -106,13 +115,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function FaqEntryPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  const faqs = await listFaqs();
+  // `resolvePriceTokensDeep` : le hub `/faq` le faisait déjà, la fiche non.
+  // Une réponse contenant un token `{{price:…}}` l'aurait donc affiché en clair
+  // ici. Les prix restent ainsi pilotés par le SSOT `pricing.ts` — le test
+  // `no-hardcoded-prices` interdit d'écrire un montant dans le corpus.
+  const faqs = resolvePriceTokensDeep(await listFaqs(), locale as Locale);
   const entry = faqs.find((f) => f.slug === slug);
   if (!entry) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
   const copy = getCopy(entry, loc);
+
+  // Date de révision PROPRE à l'entrée quand elle existe, sinon repli sur la
+  // constante globale. Avant, les 88 fiches déclaraient toutes la même date de
+  // publication ET de modification — un signal de fraîcheur sans valeur.
+  const reviewedAt = entry.reviewedAt ?? FAQ_LAST_REVIEWED;
 
   // QAPage Schema — direct citability for Perplexity / ChatGPT / Bing Copilot.
   // Audit final P1-8 fix : `buildQAPageJsonLd` factory inclut Speakable
@@ -130,8 +148,11 @@ export default async function FaqEntryPage({ params }: Props) {
     answerHtml: copy.answer,
     slug,
     locale: loc,
-    publishedAt: FAQ_LAST_REVIEWED,
-    dateModified: FAQ_LAST_REVIEWED,
+    publishedAt: reviewedAt,
+    dateModified: reviewedAt,
+    // Rattache la Q/R à son hub : le paramètre existait dans la factory et
+    // n'était jamais passé, laissant le nœud QAPage orphelin de son silo.
+    parentArticleUrl: `${SITE_URL}/${loc}/faq`,
     aiGenerated: isAutoGen,
   });
   // VIS-05 — co-émet le nœud Person Manon pour résoudre l'author @id du QAPage.
@@ -161,11 +182,20 @@ export default async function FaqEntryPage({ params }: Props) {
   // FAQ 2026-05-31), complété par d'autres questions si < 6. Enrichies d'un
   // extrait + label catégorie pour l'affichage en cards (refonte 2026-07-06).
   const pool = faqs.filter((f) => f.slug !== entry.slug);
-  const sameCategory = pool.filter((f) => f.category === entry.category);
-  const relatedRaw = [...sameCategory, ...pool.filter((f) => f.category !== entry.category)].slice(
-    0,
-    6,
-  );
+  // Priorité aux liens EXPLICITES portés par l'entrée (`related`). Sans eux, on
+  // retombe sur « les autres questions de la même catégorie, dans l'ordre du
+  // tableau » — un voisinage d'index, pas une parenté de sujet.
+  const curated = (entry.related ?? [])
+    .map((id) => pool.find((f) => f.slug === id))
+    .filter((f): f is (typeof pool)[number] => Boolean(f));
+  const curatedSlugs = new Set(curated.map((f) => f.slug));
+  const rest = pool.filter((f) => !curatedSlugs.has(f.slug));
+  const sameCategory = rest.filter((f) => f.category === entry.category);
+  const relatedRaw = [
+    ...curated,
+    ...sameCategory,
+    ...rest.filter((f) => f.category !== entry.category),
+  ].slice(0, 6);
   const snippetOf = (a: string) => (a.length > 120 ? `${a.slice(0, 118).trimEnd()}…` : a);
   const related = relatedRaw.map((f) => {
     const c = getCopy(f, loc);
@@ -227,8 +257,8 @@ export default async function FaqEntryPage({ params }: Props) {
     {
       icon: RefreshCw,
       label: isFr
-        ? `Mis à jour : ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}`
-        : `Updated: ${new Date(FAQ_LAST_REVIEWED).toLocaleDateString("en-US", { year: "numeric", month: "long" })}`,
+        ? `Mis à jour : ${new Date(reviewedAt).toLocaleDateString("fr-FR", { year: "numeric", month: "long" })}`
+        : `Updated: ${new Date(reviewedAt).toLocaleDateString("en-US", { year: "numeric", month: "long" })}`,
     },
     {
       icon: ShieldCheck,
@@ -346,7 +376,45 @@ export default async function FaqEntryPage({ params }: Props) {
                     {para}
                   </p>
                 ))}
+
+                {/* Points clés — enrichissement 2026-08-10, rendu UNIQUEMENT si
+                    l'entrée en porte. Ils sont DANS le wrapper `.faq-answer`, donc
+                    couverts par le sélecteur Speakable : les assistants vocaux et
+                    les LLM lisent la réponse complète, pas seulement le paragraphe. */}
+                {entry.keyPointsFr && entry.keyPointsFr.length > 0 ? (
+                  <ul className="not-prose max-w-[72ch] space-y-2.5 pt-1">
+                    {entry.keyPointsFr.map((point) => (
+                      <li key={point} className="flex items-start gap-2.5 text-base leading-snug">
+                        <Check
+                          aria-hidden="true"
+                          className="text-terracotta mt-1 h-4 w-4 shrink-0"
+                          strokeWidth={2.5}
+                        />
+                        <span className="min-w-0">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
               </div>
+
+              {/* Chiffres-clés — repères immédiats, hors zone Speakable pour ne
+                  pas polluer la lecture vocale avec des fragments sans verbe. */}
+              {entry.factsFr && entry.factsFr.length > 0 ? (
+                <dl className="border-border mt-8 grid grid-cols-2 gap-x-6 gap-y-6 border-t pt-7 sm:grid-cols-4">
+                  {entry.factsFr.map((fact) => (
+                    <div key={fact.label} className="flex flex-col gap-1">
+                      <dt className="sr-only">{fact.label}</dt>
+                      <dd
+                        className="text-terracotta text-[2rem] leading-none font-semibold tracking-tight"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {fact.figure}
+                      </dd>
+                      <dd className="text-fg-muted text-[13px] leading-snug">{fact.label}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : null}
 
               {/* E-E-A-T — signataire/relecteur humain visible (auteur = équipe
                   Axion-IA). Renforce le signal « qui répond » pour Google/AEO. */}
@@ -385,7 +453,7 @@ export default async function FaqEntryPage({ params }: Props) {
                         équipe Axion-IA
                       </a>
                       , cabinet IA opérationnel français —{" "}
-                      {new Date(FAQ_LAST_REVIEWED).toLocaleDateString("fr-FR", {
+                      {new Date(reviewedAt).toLocaleDateString("fr-FR", {
                         year: "numeric",
                         month: "long",
                       })}
@@ -401,7 +469,7 @@ export default async function FaqEntryPage({ params }: Props) {
                         Axion-IA team
                       </a>
                       , a French operational AI consultancy —{" "}
-                      {new Date(FAQ_LAST_REVIEWED).toLocaleDateString("en-US", {
+                      {new Date(reviewedAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                       })}
@@ -510,6 +578,91 @@ export default async function FaqEntryPage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {/* ── EN PRATIQUE — déroulé concret ────────────────────────────────
+          Enrichissement 2026-08-10. Rendu UNIQUEMENT si l'entrée porte des
+          `steps`. C'est ce qui fait passer une fiche de « une réponse » à
+          « une réponse et sa mise en œuvre » — le principal reproche fait au
+          gabarit (89 mots de contenu utile sur la fiche coaching).
+          ⚠️ Aucun `HowTo` JSON-LD n'est émis : Google a retiré les rich results
+          HowTo en 2023, et empiler un schéma non nécessaire à côté du `QAPage`
+          est un risque de spam de données structurées pour un gain nul. */}
+      {entry.stepsFr && entry.stepsFr.length > 0 ? (
+        <Section
+          tone="paper"
+          eyebrow={isFr ? "En pratique" : "In practice"}
+          title={isFr ? "Comment ça se passe," : "How it works,"}
+          titleEm={isFr ? "concrètement" : "concretely"}
+          titleTail="."
+        >
+          <Container>
+            <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+              {entry.stepsFr.map((step, i) => (
+                <li key={step.title} className="h-full">
+                  <FadeInOnView delay={i * 70} className="h-full">
+                    <div className="bg-bg border-border hover:border-terracotta hover:shadow-subtle flex h-full flex-col rounded-2xl border p-6 transition-all duration-300">
+                      <span
+                        aria-hidden="true"
+                        className="text-terracotta-deep text-[2.25rem] leading-none font-semibold opacity-30"
+                        style={{ fontFamily: "var(--font-serif)" }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="text-fg mt-4 text-base leading-tight font-bold tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="text-fg-soft mt-2 text-sm leading-relaxed">{step.detail}</p>
+                    </div>
+                  </FadeInOnView>
+                </li>
+              ))}
+            </ol>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* ── À NE PAS CONFONDRE — lève les confusions d'offre ──────────────
+          Rendu uniquement si `nuances`. Répond aux requêtes de comparaison
+          (« coaching ou session collective ? », « coaching ou audit ? ») que la
+          réponse principale n'adresse pas, et qui sont exactement ce que les
+          moteurs génératifs cherchent à trancher. */}
+      {entry.nuancesFr && entry.nuancesFr.length > 0 ? (
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Ne pas confondre" : "Not to be confused"}
+          title={isFr ? "Ce que ce" : "What this"}
+          titleEm={isFr ? "n'est pas" : "is not"}
+          titleTail="."
+          description={
+            isFr
+              ? "Trois confusions fréquentes, tranchées avant que vous ne demandiez un devis."
+              : "Three common mix-ups, settled before you request a quote."
+          }
+        >
+          <Container>
+            <ul className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {entry.nuancesFr.map((item, i) => (
+                <li key={item.title} className="h-full">
+                  <FadeInOnView delay={i * 70} className="h-full">
+                    <div className="bg-paper border-border flex h-full flex-col rounded-2xl border p-6">
+                      <span
+                        aria-hidden="true"
+                        className="bg-terracotta-soft text-terracotta-deep inline-flex h-10 w-10 items-center justify-center rounded-full"
+                      >
+                        <ShieldCheck className="h-5 w-5" strokeWidth={2} />
+                      </span>
+                      <h3 className="text-fg mt-4 text-base leading-tight font-bold tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="text-fg-soft mt-2 text-sm leading-relaxed">{item.detail}</p>
+                    </div>
+                  </FadeInOnView>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* Maillage interne contextuel curé par catégorie (server, 0 JS). */}
       <FaqRelatedResources category={entry.category} locale={locale} isFr={isFr} />

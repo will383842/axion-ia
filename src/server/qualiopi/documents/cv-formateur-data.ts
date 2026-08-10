@@ -73,7 +73,6 @@ export interface TrainerCvSource {
   cvUrl: string | null;
   domainesCompetences: unknown;
   dateEmbauche: Date | null;
-  afestHabiliteAt: Date | null;
   sousTraitantNda: string | null;
   sousTraitantVerifieAt: Date | null;
 }
@@ -101,7 +100,8 @@ export function buildCvFormateurData(
     domainesCompetences: parseDomainesCompetences(trainer.domainesCompetences),
     formationsHabilitees: titresHabilitations,
     cvJoint: trainer.cvUrl != null,
-    afestHabiliteAt: formatDateFr(trainer.afestHabiliteAt),
+    // 2026-08-10 (décision Will) : le bloc « Habilitation AFEST » a été retiré
+    // de la fiche (1-to-1 = conseil, hors Qualiopi) — plus aucun champ propagé.
     sousTraitantNda: trainer.sousTraitantNda ?? "",
     sousTraitantVerifieAt: formatDateFr(trainer.sousTraitantVerifieAt),
   };

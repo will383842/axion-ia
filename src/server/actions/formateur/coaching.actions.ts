@@ -240,7 +240,9 @@ const compteRenduSchema = z.object({
   dureeMinutes: z.number().int().min(0).max(1440).optional(),
   objectifs: z.string().max(8000).optional(),
   misesEnSituation: z.array(z.record(z.unknown())).max(100).default([]),
-  phasesReflexives: z.array(z.record(z.unknown())).max(100).default([]),
+  // 2026-08-10 (décision Will) : `phasesReflexives` retiré du schéma d'entrée —
+  // notion AFEST (alternance réflexive), le 1-to-1 est du conseil hors Qualiopi.
+  // La colonne reste en base (défaut "[]"), plus jamais alimentée.
   planRemis: z.boolean().default(false),
   suite: z.string().max(120).optional(),
   notesConfidentielles: z.string().max(8000).optional(),
@@ -260,7 +262,6 @@ export async function addCompteRenduAction(
       dureeMinutes: rest.dureeMinutes ?? null,
       objectifs: rest.objectifs || null,
       misesEnSituation: asJson(rest.misesEnSituation),
-      phasesReflexives: asJson(rest.phasesReflexives),
       planRemis: rest.planRemis,
       suite: rest.suite || null,
       notesConfidentielles: rest.notesConfidentielles || null,

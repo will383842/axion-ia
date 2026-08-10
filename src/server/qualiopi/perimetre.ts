@@ -43,8 +43,13 @@ export type ActivitePerimetre = ActiviteFacturation;
  * | Activité         | Qualiopi | Justification                                                        |
  * | ---------------- | -------- | -------------------------------------------------------------------- |
  * | `formation`      | ✅       | Action de formation collective — L.6313-1 1° (le cœur du certificat) |
- * | `un_a_un`        | ✅       | Coaching 1-to-1 / AFEST — action de formation en situation de        |
- * |                  |          | travail, D.6313-3-1 (modalité de L.6313-2, donc couverte)            |
+ * | `un_a_un`        | ❌       | Coaching 1-to-1 = prestation de CONSEIL, hors Qualiopi. Décision     |
+ * |                  |          | Will 2026-07-17 (kits AXION 16/17), confirmée 2026-08-10 : « ce      |
+ * |                  |          | n'est PAS une action de formation — pas de QCM, pas d'attestation,   |
+ * |                  |          | non finançable OPCO ». L'ancienne lecture AFEST (D.6313-3-1,         |
+ * |                  |          | doctrine 2026-06-13) est ABANDONNÉE — cette ligne était restée à ✅  |
+ * |                  |          | après le revirement et contredisait le catalogue de documents        |
+ * |                  |          | (`intervention-documents-catalog.ts`) ET les kits remis aux clients. |
  * | `audit`          | ❌       | Diagnostic / prestation de CONSEIL — pas une action de développement |
  * |                  |          | des compétences au sens L.6313-1                                     |
  * | `implementation` | ❌       | Projet technique (intégration IA) — prestation de service            |
@@ -52,7 +57,7 @@ export type ActivitePerimetre = ActiviteFacturation;
  */
 const PERIMETRE_QUALIOPI: Record<ActivitePerimetre, boolean> = {
   formation: true,
-  un_a_un: true,
+  un_a_un: false,
   audit: false,
   implementation: false,
   site_web: false,
@@ -77,6 +82,24 @@ export function estDansPerimetreQualiopi(activite: string | null | undefined): b
     return PERIMETRE_QUALIOPI[activite as ActivitePerimetre];
   }
   return false;
+}
+
+/**
+ * Liste des activités DANS le périmètre Qualiopi, dérivée de la table.
+ *
+ * Ajoutée le 2026-08-10 (audit de cohérence) : l'exonération de TVA
+ * art. 261-4-4° CGI ne couvre que la formation professionnelle continue —
+ * exactement le périmètre de cette table. `ACTIVITES_EXONERABLES`
+ * (`financements/facture-libre-pur.ts`) redéclarait sa PROPRE liste en dur,
+ * restée à l'ancienne doctrine AFEST (`un_a_un` inclus) après le revirement du
+ * 2026-07-17 : un devis ou une facture 1-to-1 pouvait sortir avec la mention
+ * d'exonération FPC sur une prestation de conseil. En dérivant d'ici, la
+ * divergence ne peut plus se reformer.
+ */
+export function activitesDansPerimetreQualiopi(): ReadonlyArray<ActivitePerimetre> {
+  return (Object.keys(PERIMETRE_QUALIOPI) as ActivitePerimetre[]).filter(
+    (activite) => PERIMETRE_QUALIOPI[activite],
+  );
 }
 
 /**

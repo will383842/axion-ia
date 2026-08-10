@@ -105,12 +105,20 @@ export function CtaBlock({
           >
             {title}
             {titleEm ? (
-              <span
-                className={cn("mx-2 italic", emClasses[tone])}
-                style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
-              >
-                {titleEm}
-              </span>
+              <>
+                {/* Espace TEXTUELLE, pas seulement visuelle — même correctif que
+                    `Section` et `FaqBlock` (2026-08-10). `mx-2` séparait les mots
+                    à l'œil mais pas dans le DOM : le CTA de la FAQ était lu
+                    « Posez-la,on vous répond » par les lecteurs d'écran et les
+                    moteurs. Ce composant ferme ~38 pages — le défaut ne se voyait
+                    que sur celles qui passent un `titleEm`. */}{" "}
+                <span
+                  className={cn("italic", emClasses[tone])}
+                  style={{ fontFamily: "var(--font-serif)", fontWeight: 500 }}
+                >
+                  {titleEm}
+                </span>
+              </>
             ) : null}
             {titleTail}
           </h2>

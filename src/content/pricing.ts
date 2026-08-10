@@ -493,7 +493,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     labelFr: "Dirigeant · 1 jour",
     labelEn: "Executives",
     // Will 2026-06-03 — journée 1-to-1 dirigeant portée de 990 à 1 190 € HT.
-    // Will 2026-06-13 — harmonisation 1-to-1 (AFEST) : Dirigeant 1 jour fixé à
+    // Will 2026-06-13 — harmonisation 1-to-1 : Dirigeant 1 jour fixé à
     // 1 390 € HT (fin de la dérive 1 190/1 390 vs intervention-dirigeant-vision ;
     // 393 villes + /reserver + tarifs s'alignent via les tokens de prix).
     priceFlat: 1390,
@@ -510,7 +510,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
   {
     // Will 2026-05-24 — variante 1-to-1 pour collaborateur clé (non-dirigeant).
     // Même format journée 1-to-1 que `intervention-dirigeants`.
-    // Will 2026-06-13 — « Optimisation du poste » (AFEST) : 1 jour fixé à
+    // Will 2026-06-13 — « Optimisation du poste » (1-to-1) : 1 jour fixé à
     // 990 € HT (nouveau prix collaborateur ; propagé aux 393 villes + /un-a-un
     // via les tokens de prix).
     id: "intervention-membre-equipe",
@@ -564,7 +564,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
-    // Will 2026-06-13 — 1-to-1 dirigeant « 2 jours » (AFEST). Prix = 1 390 × ~1,85
+    // Will 2026-06-13 — 1-to-1 dirigeant « 2 jours ». Prix = 1 390 × ~1,85
     // (règle 1j→2j de la grille formations). HT.
     id: "intervention-dirigeant-vision-2j",
     labelFr: "Dirigeant · 2 jours",
@@ -581,7 +581,7 @@ export const INTERVENTION_TIERS: ReadonlyArray<PricingTier> = [
     audienceSizes: ["tpe", "pme", "eti", "grande-entreprise"],
   },
   {
-    // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (AFEST).
+    // Will 2026-06-13 — collaborateur « Optimisation du poste · 2 jours » (1-to-1).
     // Prix = 990 × ~1,85. HT.
     id: "intervention-membre-equipe-2j",
     // Will 2026-06-23 — label SSOT « Public · Durée » (FR only, EN désactivé).

@@ -173,7 +173,6 @@ describe("CvFormateurPdf", () => {
     ],
     formationsHabilitees: ["IA générative pour dirigeants", "Automatiser avec l'IA"],
     cvJoint: true,
-    afestHabiliteAt: "15/04/2026",
     sousTraitantNda: "84691234567",
     sousTraitantVerifieAt: "20/04/2026",
   };
@@ -185,7 +184,7 @@ describe("CvFormateurPdf", () => {
     expectPdf(buffer);
   }, 30_000);
 
-  it("contient identité, compétences, habilitations, AFEST et sous-traitance", () => {
+  it("contient identité, compétences, habilitations et sous-traitance", () => {
     const text = collectPdfTextNormalized(
       React.createElement(CvFormateurPdf, { data, identite: IDENTITE }),
     );
@@ -193,7 +192,9 @@ describe("CvFormateurPdf", () => {
     expect(text).toContain("Sous-traitant");
     expect(text).toContain("IA générative");
     expect(text).toContain("IA générative pour dirigeants");
-    expect(text).toContain("Habilité le 15/04/2026");
+    // 2026-08-10 (décision Will) : la ligne « Habilitation AFEST » a disparu de
+    // la fiche — le 1-to-1 est du conseil hors Qualiopi.
+    expect(text).not.toContain("Habilitation AFEST");
     expect(text).toContain("84691234567");
     expect(text).toContain("Vérifié le 20/04/2026");
     expect(text).toContain("CV téléversé");

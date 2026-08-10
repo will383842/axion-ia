@@ -11,7 +11,9 @@ import { describe, it, expect } from "vitest";
 import { QUALIOPI_CONFIG_REGISTRY } from "./registry";
 
 const numSchema = QUALIOPI_CONFIG_REGISTRY["cpf_reste_a_charge"].schema;
-const boolSchema = QUALIOPI_CONFIG_REGISTRY["afest_perimetre_certifie"].schema;
+// `afest_perimetre_certifie` servait d'exemplaire bool — clé supprimée le
+// 2026-08-10 (1-to-1 = conseil, hors Qualiopi) → on teste sur `off29_applicable`.
+const boolSchema = QUALIOPI_CONFIG_REGISTRY["off29_applicable"].schema;
 
 describe("registre Qualiopi — clés numériques (z.preprocess)", () => {
   it("accepte un vrai nombre fini", () => {

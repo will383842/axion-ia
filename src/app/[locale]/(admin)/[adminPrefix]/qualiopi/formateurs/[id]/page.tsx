@@ -19,7 +19,6 @@ import { TrainerForm } from "@/components/admin/qualiopi/TrainerForm";
 import { TrainerManageForm } from "@/components/admin/qualiopi/TrainerManageForm";
 import { TrainerDocumentsPanel } from "@/components/admin/qualiopi/TrainerDocumentsPanel";
 import { TrainerCompetencesPanel } from "@/components/admin/qualiopi/TrainerCompetencesPanel";
-import { TrainerAfestPanel } from "@/components/admin/qualiopi/TrainerAfestPanel";
 import { TrainerAvailabilityPanel } from "@/components/admin/qualiopi/TrainerAvailabilityPanel";
 import { TrainerCompensationPanel } from "@/components/admin/qualiopi/TrainerCompensationPanel";
 import {
@@ -149,10 +148,6 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       },
     ];
   });
-
-  const afestHabiliteAtInitial = trainer.afestHabiliteAt
-    ? trainer.afestHabiliteAt.toISOString().slice(0, 10)
-    : "";
 
   // Actions de développement des compétences (ind. 22).
   const devActionsRaw = await prisma.trainerDevelopmentAction.findMany({
@@ -362,17 +357,16 @@ export default async function FicheFormateurPage({ params }: PageProps) {
       )}
 
       {/*
-        Compétences ÉVALUÉES et habilitation AFEST (2026-08-02).
+        Compétences ÉVALUÉES (2026-08-02).
 
-        Ces deux surfaces ferment des non-conformités, pas des manques de
-        confort : la structure `{domaine, niveauMaitrise, verifiedAt}` et le
-        champ `afestHabiliteAt` étaient LUS par les PDF et les garde-fous, et
-        ÉCRITS par aucun écran. La fiche formateur sortait donc « — / Non
-        vérifié » sur chaque compétence et « Non habilité » en AFEST, sans
-        qu'aucune manipulation ne puisse y changer quoi que ce soit.
+        Cette surface ferme une non-conformité, pas un manque de confort : la
+        structure `{domaine, niveauMaitrise, verifiedAt}` était LUE par les PDF
+        et les garde-fous, et ÉCRITE par aucun écran.
+
+        (2026-08-10, décision Will : le panneau d'habilitation AFEST a été
+        retiré — le 1-to-1 est une prestation de conseil hors Qualiopi.)
       */}
       <TrainerCompetencesPanel trainerId={trainer.id} domainesInitiaux={domainesInitiaux} />
-      <TrainerAfestPanel trainerId={trainer.id} habiliteAtInitial={afestHabiliteAtInitial} />
 
       {/* Saisie des pièces qui alimentent la carte conformité ci-dessus. */}
       <TrainerDocumentsPanel trainerId={trainer.id} documents={documents} />

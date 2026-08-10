@@ -1,6 +1,12 @@
 /**
  * Qualiopi — Service BPF (Bilan Pédagogique et Financier) (AGENT A — T10 + T17).
  *
+ * Le 1-to-1 (conseil) n'entre plus dans le BPF actions de formation — 2026-08-10.
+ * L'agrégation coaching (CA CoachingContract + heures de séances AFEST) qui
+ * gonflait le CA et les heures stagiaires déclarés à la DREETS a été supprimée :
+ * le coaching 1-to-1 est une prestation de CONSEIL (décision Will 2026-07-17),
+ * hors périmètre du bilan pédagogique et financier.
+ *
  * computeBpf      : agrégats annuels via Prisma (sessions réalisées).
  * bpfToCsv        : export CSV `;`-séparé (pur).
  * listDepenses    : dépenses BPF par année.
@@ -9,11 +15,6 @@
 
 import { prisma } from "@/lib/prisma";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import {
-  heuresReellesSignees,
-  versSeancePourHeures,
-  SEANCE_HEURES_SELECT,
-} from "@/server/qualiopi/coaching-afest/heures";
 
 export interface BpfFinanceurDetail {
   opco: number;
@@ -47,13 +48,8 @@ export interface BpfResult {
   };
   nbSessions: number;
   nbStagiairesDistincts: number;
-  nbHeuresStagiaires: number;
   /** Heures stagiaires des sessions collectives (dureeReelle × participants). */
-  nbHeuresStagiairesCollectif: number;
-  /** Heures stagiaires des parcours coaching AFEST 1-to-1 (Σ séances). */
-  nbHeuresStagiairesCoaching: number;
-  /** Nombre de parcours coaching AFEST réalisés dans l'année. */
-  nbCoachingParcours: number;
+  nbHeuresStagiaires: number;
   caTotalHtCents: number;
   caParFinanceur: BpfFinanceurDetail;
   nbFormateursInternes: number;
@@ -124,17 +120,9 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     }
   }
 
-  // ── Coaching AFEST 1-to-1 (C1) ─────────────────────────────────────────────
-  // Le BPF agrège aussi les parcours de coaching 1-to-1 :
-  //  - CA : CoachingContract.montantHtCents signés dans l'année, ventilés par
-  //    financementType (direct/opco/cpf/france_travail/mixte) ;
-  //  - heures stagiaires : Σ CompteRenduSeance.dureeMinutes / 60 des séances
-  //    AFEST réalisées dans l'année. C'est du 1-to-1 → AUCUNE multiplication
-  //    par un nombre de participants.
-  const coaching = await aggregateCoaching(plage, caParFinanceur);
-
-  const caTotalHtCentsFinal = caTotalHtCents + coaching.caHtCents;
-  const nbHeuresStagiairesFinal = nbHeuresStagiaires + coaching.nbHeuresStagiaires;
+  // Le 1-to-1 (conseil) n'entre plus dans le BPF actions de formation —
+  // 2026-08-10. L'ancien `aggregateCoaching` (CA contrats + heures de séances)
+  // a été supprimé : seules les sessions de FORMATION alimentent le bilan.
 
   const [nbFormateursInternes, nbFormateursExternes, depenses] = await Promise.all([
     // Internes = salariés + dirigeant-formateur (l'OF anime lui-même). Externes = sous-traitants.
@@ -152,81 +140,13 @@ export async function computeBpf(annee: number): Promise<BpfResult> {
     },
     nbSessions,
     nbStagiairesDistincts,
-    nbHeuresStagiaires: nbHeuresStagiairesFinal,
-    nbHeuresStagiairesCollectif: nbHeuresStagiaires,
-    nbHeuresStagiairesCoaching: coaching.nbHeuresStagiaires,
-    nbCoachingParcours: coaching.nbParcours,
-    caTotalHtCents: caTotalHtCentsFinal,
+    nbHeuresStagiaires,
+    caTotalHtCents,
     caParFinanceur,
     nbFormateursInternes,
     nbFormateursExternes,
     depenses,
     calculeAt: new Date(),
-  };
-}
-
-interface CoachingAggregat {
-  caHtCents: number;
-  nbHeuresStagiaires: number;
-  nbParcours: number;
-}
-
-/**
- * Agrège la contribution du coaching AFEST 1-to-1 au BPF d'une année :
- *  - somme CoachingContract.montantHtCents signés dans l'année (ventilés par
- *    financeur, MUTE `caParFinanceur` en place comme les sessions collectives) ;
- *  - somme les heures réelles = Σ CompteRenduSeance.dureeMinutes / 60 des séances
- *    AFEST réalisées dans l'année (1-to-1 : pas de multiplication participants).
- *
- * Note : pas de garde stub.invalid ici — `computeBpf` court-circuite déjà avant
- * tout appel Prisma en mode build stub.
- */
-async function aggregateCoaching(
-  plage: { gte: Date; lt: Date },
-  caParFinanceur: BpfFinanceurDetail,
-): Promise<CoachingAggregat> {
-  const [contracts, coachingSessions] = await Promise.all([
-    prisma.coachingContract.findMany({
-      where: { dateSigneeAt: plage },
-      select: { montantHtCents: true, financementType: true },
-    }),
-    prisma.coachingSession.findMany({
-      where: {
-        estAfest: true,
-        statut: "realisee",
-        dateSeance: plage,
-      },
-      select: {
-        // 🔴 Régime + sélecteur PARTAGÉS avec l'attestation, la facture et le
-        // certificat. Sommer ici des `dureeMinutes` bruts, comme avant, ferait
-        // déclarer au BPF des heures que le certificat du même parcours ne
-        // reconnaît pas.
-        regimePreuve: true,
-        comptesRendus: { select: SEANCE_HEURES_SELECT },
-      },
-    }),
-  ]);
-
-  let caHtCents = 0;
-  for (const contract of contracts) {
-    caHtCents += contract.montantHtCents;
-    const type = contract.financementType ?? "direct";
-    if (type in caParFinanceur) {
-      caParFinanceur[type as keyof BpfFinanceurDetail] += contract.montantHtCents;
-    }
-  }
-
-  const nbHeuresStagiaires = coachingSessions.reduce(
-    (acc, session) =>
-      acc +
-      heuresReellesSignees(session.comptesRendus.map(versSeancePourHeures), session.regimePreuve),
-    0,
-  );
-
-  return {
-    caHtCents,
-    nbHeuresStagiaires: Math.round(nbHeuresStagiaires * 100) / 100,
-    nbParcours: coachingSessions.length,
   };
 }
 
@@ -243,9 +163,6 @@ export function bpfToCsv(bpf: BpfResult): string {
   lignes.push(`Nombre de sessions réalisées;${bpf.nbSessions}`);
   lignes.push(`Nombre de stagiaires distincts;${bpf.nbStagiairesDistincts}`);
   lignes.push(`Nombre d'heures stagiaires;${bpf.nbHeuresStagiaires}`);
-  lignes.push(`  dont sessions collectives;${bpf.nbHeuresStagiairesCollectif}`);
-  lignes.push(`  dont coaching AFEST 1-to-1;${bpf.nbHeuresStagiairesCoaching}`);
-  lignes.push(`Nombre de parcours coaching AFEST;${bpf.nbCoachingParcours}`);
   lignes.push(`Chiffre d'affaires total HT (€);${centimesEnEuros(bpf.caTotalHtCents)}`);
   lignes.push("");
   lignes.push("Financeur;CA HT (€)");
@@ -297,9 +214,6 @@ function buildEmptyBpf(
     nbSessions: 0,
     nbStagiairesDistincts: 0,
     nbHeuresStagiaires: 0,
-    nbHeuresStagiairesCollectif: 0,
-    nbHeuresStagiairesCoaching: 0,
-    nbCoachingParcours: 0,
     caTotalHtCents: 0,
     caParFinanceur: { opco: 0, cpf: 0, france_travail: 0, direct: 0, mixte: 0 },
     nbFormateursInternes: 0,

@@ -45,6 +45,8 @@ const LIBELLES_FICHIER: Record<DocumentType, string> = {
   lettre_mission: "Lettre de mission formateur",
   reglement_interieur: "Règlement intérieur",
   livret_accueil: "Livret d'accueil",
+  // Valeur d'enum héritée, plus jamais émise (module AFEST supprimé 2026-08-10,
+  // décision Will) — Record exhaustif sur `DocumentType`, l'entrée doit rester.
   protocole_afest: "Protocole AFEST",
   inventaire_moyens: "Inventaire des moyens",
   contrat_sous_traitance: "Contrat de sous-traitance",

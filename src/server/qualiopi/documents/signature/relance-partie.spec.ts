@@ -20,9 +20,8 @@ describe("partieARelancer — statut en_attente (personne n'a signé)", () => {
     // `beneficiaire`, et l'action refuserait `client` (hors circuit).
     contrat: "beneficiaire",
     contrat_sous_traitance: "sous_traitant",
-    // L'organisme signe EN PREMIER le protocole AFEST : c'est Will qui bloque,
-    // pas un tiers à relancer par e-mail.
-    protocole_afest: null,
+    // 2026-08-10 (décision Will) : `protocole_afest` retiré de la table — son
+    // circuit a disparu avec le module AFEST 1-to-1.
     // Canal B — le formateur signe authentifié depuis son espace :
     // `resoudreIdentite` refuse d'émettre un lien public pour lui.
     lettre_mission: null,
@@ -59,14 +58,8 @@ describe("partieARelancer — statut partielle (la prochaine partie du circuit)"
     ).toBeNull();
   });
 
-  it("protocole AFEST : l'organisme a signé → relancer le client", () => {
-    expect(partieARelancer("protocole_afest", "partielle", ["axionia"])).toBe("client");
-  });
-
-  it("protocole AFEST : organisme + client → relancer le bénéficiaire", () => {
-    expect(partieARelancer("protocole_afest", "partielle", ["axionia", "client"])).toBe(
-      "beneficiaire",
-    );
+  it("protocole AFEST : circuit disparu → jamais de relance (module supprimé 2026-08-10)", () => {
+    expect(partieARelancer("protocole_afest", "partielle", ["axionia"])).toBeNull();
   });
 
   it("contrat : le bénéficiaire a signé → contreseing organisme, null", () => {

@@ -28,15 +28,17 @@ import {
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 import { calculerSelfHash, type TupleSignatureV1 } from "@/server/qualiopi/emargement/hash";
-import {
-  calculerSelfHashSeance,
-  type TupleSeanceSignatureV1,
-} from "@/server/qualiopi/coaching-afest/signature/seance-signature-hash";
+// 2026-08-10 (décision Will) : la famille AFEST (`seance-signature-hash`) a été
+// supprimée avec le module 1-to-1 — le scénario compare désormais les DEUX
+// familles restantes (collectif, document).
 import { partiesRequisesPour } from "./parties-requises";
 
+// 2026-08-10 : la pièce d'exemple était le protocole AFEST ; son circuit a été
+// retiré avec le module 1-to-1 (décision Will). La convention tripartite est la
+// pièce TRIPARTITE restante — mêmes propriétés de chaîne à trois maillons.
 const PIECE: PieceScellee = {
   documentNumero: "AXI-DOC-2026-0042",
-  documentType: "protocole_afest",
+  documentType: "convention_tripartite",
 };
 const DOC = "11111111-1111-4111-8111-111111111111";
 
@@ -94,13 +96,13 @@ function verifier(lignes: LigneDocumentSignature[], piece: PieceScellee = PIECE)
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("🔴 SCÉNARIO — un protocole AFEST signé par ses TROIS parties", () => {
-  // Le circuit réel : organisme → entreprise → bénéficiaire (SSOT).
-  const [p1, p2, p3] = partiesRequisesPour("protocole_afest")!;
+describe("🔴 SCÉNARIO — une convention tripartite signée par ses TROIS parties", () => {
+  // Le circuit réel : client → financeur → organisme (SSOT).
+  const [p1, p2, p3] = partiesRequisesPour("convention_tripartite")!;
 
-  const s1 = signer(p1!, "Williams Jullin", null);
-  const s2 = signer(p2!, "ACME SAS", s1.selfHash);
-  const s3 = signer(p3!, "Camille Durand", s2.selfHash);
+  const s1 = signer(p1!, "ACME SAS", null);
+  const s2 = signer(p2!, "OPCO Atlas", s1.selfHash);
+  const s3 = signer(p3!, "Williams Jullin", s2.selfHash);
 
   it("la chaîne complète est valide", () => {
     expect(verifier([s1, s2, s3])).toStrictEqual({
@@ -110,10 +112,10 @@ describe("🔴 SCÉNARIO — un protocole AFEST signé par ses TROIS parties", (
     });
   });
 
-  it("l'ordre du SSOT est bien organisme → entreprise → bénéficiaire", () => {
-    // L'organisme signe EN PREMIER ici : c'est lui qui propose le cadrage
-    // D.6313-3-1. C'est l'exception documentée à la règle « axionia contresigne ».
-    expect([p1, p2, p3]).toStrictEqual(["axionia", "client", "beneficiaire"]);
+  it("l'ordre du SSOT est bien client → financeur → organisme", () => {
+    // L'organisme conclut EN DERNIER : il contresigne ce que les autres ont
+    // accepté (règle générale des circuits).
+    expect([p1, p2, p3]).toStrictEqual(["client", "financeur", "axionia"]);
   });
 
   it("🔴 retirer le maillon du MILIEU est détecté — c'est tout l'objet de la chaîne", () => {
@@ -125,8 +127,8 @@ describe("🔴 SCÉNARIO — un protocole AFEST signé par ses TROIS parties", (
   });
 
   it("🔴 réordonner les signatures est détecté", () => {
-    // Présenter le bénéficiaire comme premier signataire changerait le sens du
-    // dossier : il aurait accepté avant que l'organisme ne propose.
+    // Présenter l'organisme comme premier signataire changerait le sens du
+    // dossier : il aurait contresigné avant que quiconque n'accepte.
     const rapport = verifier([s3, s2, s1]);
     expect(rapport.valide).toBe(false);
   });
@@ -228,9 +230,9 @@ describe("🔴 SCÉNARIO — purge RGPD : l'effacement ne casse AUCUNE preuve", 
   });
 });
 
-describe("🔴 SCÉNARIO — les trois familles de preuve ne se confondent jamais", () => {
-  it("un même contenu produit TROIS empreintes différentes selon le registre", () => {
-    // Collectif, AFEST et document partagent le cœur crypto mais ont chacun
+describe("🔴 SCÉNARIO — les familles de preuve ne se confondent jamais", () => {
+  it("un même contenu produit DEUX empreintes différentes selon le registre", () => {
+    // Collectif et document partagent le cœur crypto mais ont chacun
     // leur tuple et leur discriminant. Deux tuples de forme différente qui
     // produiraient la même empreinte seraient une collision exploitable — et
     // une simple copie de fichier suffirait à l'introduire.
@@ -261,22 +263,6 @@ describe("🔴 SCÉNARIO — les trois familles de preuve ne se confondent jamai
       ...commun,
     };
 
-    const seance: TupleSeanceSignatureV1 = {
-      contexteType: "afest_seance",
-      coachingId: DOC,
-      compteRenduSeanceId: "33333333-3333-4333-8333-333333333333",
-      role: "beneficiaire",
-      seanceDate: "2026-06-10",
-      heureDebut: "09:00",
-      heureFin: "12:30",
-      formationIntitule: "Bien démarrer avec l'IA",
-      modules: ["Module 1"],
-      formateurNom: "Williams Jullin",
-      methode: "trace",
-      signatureSha256: "a".repeat(64),
-      ...commun,
-    };
-
     const document: TupleDocumentSignatureV1 = {
       contexteType: "document_engagement",
       documentGenereId: DOC,
@@ -293,12 +279,8 @@ describe("🔴 SCÉNARIO — les trois familles de preuve ne se confondent jamai
       ...commun,
     };
 
-    const empreintes = new Set([
-      calculerSelfHash(collectif),
-      calculerSelfHashSeance(seance),
-      calculerSelfHashDocument(document),
-    ]);
-    expect(empreintes.size).toBe(3);
+    const empreintes = new Set([calculerSelfHash(collectif), calculerSelfHashDocument(document)]);
+    expect(empreintes.size).toBe(2);
   });
 });
 
@@ -307,13 +289,14 @@ describe("🔴 SCÉNARIO — le SSOT couvre les activités contractuelles d'Axio
     // Un type de pièce sans circuit ne peut PAS être signé : le service refuse
     // une liste de parties vide. Ce test empêche qu'on ajoute un type de pièce
     // contractuelle en oubliant de le déclarer.
+    // 2026-08-10 : `protocole_afest` retiré de la liste — son circuit a disparu
+    // avec le module AFEST 1-to-1 (décision Will).
     for (const type of [
       "devis",
       "convention",
       "convention_tripartite",
       "contrat",
       "contrat_sous_traitance",
-      "protocole_afest",
       "lettre_mission",
       "releve_connexion",
     ] as const) {

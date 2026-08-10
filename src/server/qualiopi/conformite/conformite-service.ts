@@ -20,8 +20,12 @@ import { prisma } from "@/lib/prisma";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { INDICATEURS_RNQ, indicateursApplicables } from "./indicateurs-registre";
 
-/** Plafond de scan des parcours AFEST (alerte si atteint — pas de cap silencieux). */
-const COACHING_AFEST_SCAN_LIMIT = 500;
+// AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
+// déclarer l'AFEST au certificateur avec des prestations de conseil comme preuve
+// était le risque d'audit n°1. Les parcours coaching ne dérivent PLUS
+// `alternance_afest` ni ne couvrent off.28. off.28 reste DÉCLARABLE si un jour
+// une Formation porte le type `alternance_afest` — on a retiré l'automatisme,
+// pas la capacité.
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types exportés
@@ -102,7 +106,6 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbDocsAccueil,
     nbDocsPresence,
     responsableQualiteNom,
-    coachingAfestResult,
     nbFormationsAvecStructure,
     nbFormationsAvecContenu,
     moyensActifsParCategorie,
@@ -214,20 +217,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
     // off.31 : responsable qualité = propriétaire du process réclamations/amélioration (config)
     getQualiopiConfig("responsable_qualite_nom").catch(() => ""),
-    // off.13/14/15/28 (AFEST 1-to-1) : preuves dérivées des parcours coaching AFEST
-    //   réalisés (cartographie = analyse activité, alternance mises en situation /
-    //   phases réflexives, évaluation des acquis). Automatisation C1.
-    prisma.coachingSession.findMany({
-      where: { estAfest: true, statut: "realisee" },
-      select: {
-        cartographie: { select: { taches: true } },
-        // [P1] « évaluation des acquis » AFEST = évaluation FINALE (≠ simple
-        //   positionnement d'entrée). On ne retient que les évaluations type=finale.
-        evaluations: { where: { type: "finale" }, select: { id: true } },
-        comptesRendus: { select: { misesEnSituation: true, phasesReflexives: true } },
-      },
-      take: COACHING_AFEST_SCAN_LIMIT,
-    }),
+    // (AFEST retiré 2026-08-10 : la requête `coachingSession` qui dérivait des
+    //  preuves off.28 depuis les parcours coaching vivait ici — supprimée.)
     // Durcissement off.5 (objectifs définis et adaptés) : formations sorties de
     //   « intention » (les objectifs pédagogiques sont posés dès le backward design),
     //   hors archivées. Un simple titre en « intention » ne prouve pas d'objectifs.
@@ -375,47 +366,16 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     }),
   ]);
 
-  // ── Données AFEST 1-to-1 (coaching) — automatisation de off.28 UNIQUEMENT ────
-  //   off.28 = « Formation en situation de travail (AFEST) ». Les indicateurs
-  //   off.13/14/15 sont APPRENTISSAGE/CFA (hors périmètre Axion-IA) → JAMAIS
-  //   dérivés du coaching (cf. set(13/14/15) plus bas + indicateurs-registre).
-  // Validation STRUCTURELLE (anti faux-positif) : un parcours AFEST « conforme »
-  //   = cartographie remplie (≥1 tâche) + alternance tracée (mise en situation +
-  //   phase réflexive non vides) + évaluation des acquis. Une donnée vide ou
-  //   malformée ne compte pas comme preuve.
-  if (coachingAfestResult.length === COACHING_AFEST_SCAN_LIMIT) {
-    console.warn(
-      `[conformite] scan AFEST tronqué à ${COACHING_AFEST_SCAN_LIMIT} parcours — couverture off.28 possiblement sous-estimée.`,
-    );
-  }
-  const hasContent = (arr: unknown, key: string): boolean =>
-    Array.isArray(arr) &&
-    arr.some((x) => {
-      if (x == null || typeof x !== "object") return false;
-      const v = (x as Record<string, unknown>)[key];
-      return typeof v === "string" && v.trim().length > 0;
-    });
-  const coachingAfestConforme = coachingAfestResult.filter(
-    (c) =>
-      Array.isArray(c.cartographie?.taches) &&
-      c.cartographie.taches.length > 0 &&
-      c.evaluations.length > 0 &&
-      c.comptesRendus.some(
-        (cr) =>
-          hasContent(cr.misesEnSituation, "cas") && hasContent(cr.phasesReflexives, "situation"),
-      ),
-  ).length;
-
   const typesAction = typesActionResult;
   // off.3/7/16 : formations avec ≥1 code RS ou RNCP renseigné
   const nbFormationsCertifiantes = formationsCertifiantesResult.length;
+  // AFEST retiré le 2026-08-10 — le 1-to-1 est du conseil (décision 2026-07-17) ;
+  // déclarer l'AFEST au certificateur avec des prestations de conseil comme
+  // preuve était le risque d'audit n°1. `typesActionEffectifs` ne dérive QUE des
+  // `typesAction` déclarés sur les `Formation` : plus AUCUNE injection
+  // d'`alternance_afest` depuis l'existence d'une `coachingSession`.
   const typesActionEffectifs = Array.from(
-    new Set([
-      ...(typesAction.length > 0 ? typesAction : ["classique"]),
-      // Le 1-to-1 AFEST rend SEULEMENT off.28 applicable (via indicateursApplicables).
-      // off.13/14/15 (apprentissage/CFA) ne sont JAMAIS applicables chez Axion-IA.
-      ...(coachingAfestResult.length > 0 ? ["alternance_afest"] : []),
-    ]),
+    new Set([...(typesAction.length > 0 ? typesAction : ["classique"])]),
   );
   const applicablesNums = indicateursApplicables(typesActionEffectifs);
   // off.29 (insertion professionnelle) : indicateur « app » (apprentissage) —
@@ -445,10 +405,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
   const moyensParCategorieCouverts =
     categoriesUtilisees.length > 0 && categoriesSansVerification.length === 0;
-  // off.28 (AFEST) : applicable si l'OF déclare alternance_afest OU s'il existe un
-  //   parcours AFEST 1-to-1. a_completer avec preuve explicite si applicable sans
-  //   parcours conforme. off.13/14/15 (APP/apprentissage) : hors périmètre Axion-IA
-  //   → non_applicable via applicablesNums (jamais déduits du coaching).
+  // off.28 (AFEST) : applicable UNIQUEMENT si une Formation déclare
+  //   `alternance_afest` (plus jamais déduit du coaching — 2026-08-10).
+  //   off.13/14/15 (APP/apprentissage) : hors périmètre Axion-IA →
+  //   non_applicable via applicablesNums.
   const appAfestApplicable = typesActionEffectifs.includes("alternance_afest");
 
   // ── Dérivés P1 (durcissement anti-proxy) ───────────────────────────────────
@@ -609,8 +569,8 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   //   apprentissage », « Exercice de la citoyenneté de l'apprenti », « droits et
   //   devoirs de l'apprenti »). Axion-IA n'exerce PAS l'apprentissage → ces
   //   indicateurs restent NON APPLICABLES (cf. indicateurs-registre : "app"
-  //   découplé de l'AFEST). ⚠️ Ne PAS les déduire du coaching AFEST (1-to-1) :
-  //   ce serait un faux positif à l'audit COFRAC. Seul off.28 est l'AFEST.
+  //   découplé de l'AFEST). Seul off.28 est l'AFEST — et depuis le 2026-08-10
+  //   plus rien n'est déduit du coaching 1-to-1 (conseil, hors Qualiopi).
   set(13, [], false);
   set(14, [], false);
   set(15, [], false);
@@ -787,19 +747,19 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     totalSousTraitantsConformes > 0 || nbProceduresSousTraitance > 0,
   );
-  // off.28 (AFEST) : AUTOMATISÉ — parcours AFEST 1-to-1 conforme = analyse de
-  //   l'activité + alternance mises en situation ↔ phases réflexives + évaluation
-  //   des acquis (L.6313-1-2 / D.6313-3-1). a_completer si applicable sans preuve.
+  // off.28 (AFEST) : plus AUCUNE couverture automatique depuis le coaching
+  //   (retrait 2026-08-10 — le 1-to-1 est du conseil, décision 2026-07-17 ;
+  //   les parcours coaching comme preuve AFEST étaient le risque d'audit n°1).
+  //   L'indicateur reste déclarable : si une Formation porte `alternance_afest`,
+  //   il devient applicable et les preuves sont à constituer manuellement.
   set(
     28,
-    coachingAfestConforme > 0
+    appAfestApplicable
       ? [
-          `${coachingAfestConforme} parcours AFEST conforme${coachingAfestConforme > 1 ? "s" : ""} (analyse, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2)`,
+          "Preuves AFEST à constituer manuellement (analyse de l'activité, alternance mises en situation/phases réflexives, évaluation — L.6313-1-2) — à compléter.",
         ]
-      : appAfestApplicable
-        ? ["Aucun parcours AFEST 1-to-1 conforme tracé — à compléter."]
-        : [],
-    coachingAfestConforme > 0,
+      : [],
+    false,
   );
   // off.29 : insertion / débouchés — NON APPLICABLE par défaut (indicateur
   //          apprentissage/CFA, config `off29_applicable` = false). Si le

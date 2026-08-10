@@ -39,7 +39,7 @@ describe("classifierCanalReglementaire", () => {
     ).toBe("chorus_pro");
   });
 
-  it("formation/1-to-1 sous exonération 261-4-4° → hors champ (e-invoicing ET e-reporting)", () => {
+  it("formation sous exonération 261-4-4° → hors champ (e-invoicing ET e-reporting)", () => {
     expect(
       classifierCanalReglementaire({
         ...base,
@@ -47,9 +47,18 @@ describe("classifierCanalReglementaire", () => {
         regimeTva: "exoneration_261",
       }),
     ).toBe("hors_champ");
+  });
+
+  it("🔴 1-to-1 sous exonération 261 → PA quand même (conseil, hors doctrine AFEST 2026-08-10)", () => {
+    // Ce test affirmait l'inverse (hors_champ) : il verrouillait la doctrine
+    // AFEST abandonnée le 2026-07-17. Le coaching 1-to-1 est une prestation de
+    // CONSEIL : il n'est pas couvert par l'exonération 261-4-4°, sa facture
+    // reste taxable et entre donc dans le champ de la facturation électronique
+    // — le classer « hors champ » était une anomalie déclarative en plus de
+    // l'anomalie de TVA.
     expect(
       classifierCanalReglementaire({ ...base, activite: "un_a_un", regimeTva: "exoneration_261" }),
-    ).toBe("hors_champ");
+    ).toBe("pa_einvoicing");
   });
 
   it("audit sous exonération 261 → PA quand même (l'exonération ne couvre pas le conseil)", () => {

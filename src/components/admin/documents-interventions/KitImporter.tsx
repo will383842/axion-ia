@@ -97,7 +97,7 @@ export function KitImporter(): React.ReactElement {
       >
         <option value="formation">Formations (un dossier par formation)</option>
         <option value="un_a_un">
-          1-to-1 / Coaching AFEST (dossiers Dirigeant + Collaborateur)
+          1-to-1 / Coaching conseil (dossiers Dirigeant + Collaborateur)
         </option>
       </select>
       <label htmlFor="kit-zip" className="text-mocha block text-sm font-medium">
