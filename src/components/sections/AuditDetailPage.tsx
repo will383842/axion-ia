@@ -627,7 +627,7 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
                 className="border-border bg-bg shadow-card hover:border-terracotta group flex h-full flex-col rounded-2xl border p-6 transition hover:-translate-y-1"
               >
                 <p className="text-fg text-[15px] leading-snug font-semibold">
-                  {s.label} <span className="text-terracotta-deep italic">{s.em}</span>
+                  {s.label} <span className="text-terracotta-deep mx-2 italic">{s.em}</span>
                 </p>
                 <p className="text-fg-soft mt-2 line-clamp-3 flex-1 text-sm leading-relaxed">
                   {s.description}

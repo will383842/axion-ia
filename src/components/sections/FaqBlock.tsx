@@ -57,12 +57,19 @@ export function FaqBlock({
           <h2 className="text-fg text-[clamp(2rem,4vw,3rem)] leading-[1.1] font-semibold tracking-tight">
             {title}
             {titleEm ? (
-              <span
-                className="text-terracotta mx-2 italic"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {titleEm}
-              </span>
+              <>
+                {/* Espace TEXTUELLE, pas seulement visuelle (2026-08-10) — même
+                    correctif que `Section` : `mx-2` séparait les deux mots à
+                    l'œil mais pas dans le DOM, et le titre était lu
+                    « Questionsfréquentes » par les lecteurs d'écran comme par
+                    les moteurs. */}{" "}
+                <span
+                  className="text-terracotta italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  {titleEm}
+                </span>
+              </>
             ) : null}
           </h2>
         ) : null}

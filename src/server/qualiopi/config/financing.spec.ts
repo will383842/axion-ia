@@ -82,6 +82,13 @@ describe("SSOT financing — gating Phase A/B", () => {
     process.env.OF_PUBLIC_DISCLOSURE_ENABLED = "true";
     delete process.env.QUALIOPI_CERTIFICATION_OBTENUE;
     expect(getPublicFinancingBlurb("x")).toBeNull();
+    expect(getPublicFinancingMicro("x")).toBeNull();
+    // 🚨 Ce cas MANQUAIT (fuite trouvée le 2026-08-10) : le fait injecté dans
+    // les prompts content-gen affirme « organisme certifié Qualiopi » + une
+    // éligibilité OPCO / France Travail. Il ne gatait que sur la divulgation,
+    // donc il partait en prod alors que la certification n'est pas obtenue.
+    // Sans cette assertion, la garde F13 ne gardait que l'affichage.
+    expect(getFinancingPromptFact()).toBe("");
   });
 
   it("Phase B + certification obtenue → formulation + fait prompt (sans CPF)", () => {

@@ -166,6 +166,21 @@ export function getPublicFinancingMicro(seed: string): string | null {
  */
 export function getFinancingPromptFact(): string {
   if (!isQualiopiPublicDisclosureEnabled()) return "";
+  // 🚨 FUITE CORRIGÉE le 2026-08-10. Cette fonction ne gatait QUE sur la
+  // divulgation, alors qu'elle injecte littéralement « fait vérifié — Axion-IA
+  // est un organisme certifié Qualiopi » dans les prompts de génération
+  // d'articles. `OF_PUBLIC_DISCLOSURE_ENABLED=true` étant posé en prod, la
+  // chaîne content-gen affirmait donc la certification ET l'éligibilité
+  // OPCO / France Travail alors que `QUALIOPI_CERTIFICATION_OBTENUE` est à
+  // false — exactement la non-conformité que l'audit F13 du 2026-07-25 avait
+  // corrigée sur les surfaces d'affichage, mais ce chemin-ci avait été oublié.
+  //
+  // Le test F13 de `financing.spec.ts` ne vérifiait que `getPublicFinancingBlurb`
+  // dans ce scénario : la garde ne gardait rien ici. Un cas dédié a été ajouté.
+  //
+  // Conséquence : le drapeau de certification pilote maintenant TOUTES les
+  // surfaces, affichage comme génération. Un seul interrupteur, cohérent.
+  if (!isQualiopiCertificationObtenue()) return "";
   return [
     "FINANCEMENT (fait vérifié — Axion-IA est un organisme certifié Qualiopi, NDA déclaré) :",
     "- SI ET SEULEMENT SI le sujet touche aux formations / à la montée en compétences, tu PEUX mentionner UNE seule fois, sobrement, que les formations sont ÉLIGIBLES à une prise en charge par les OPCO (salariés/entreprises) et par France Travail (AIF, POEI ; demandeurs d'emploi). Sur un sujet sans rapport, n'en parle pas.",

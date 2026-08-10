@@ -121,7 +121,7 @@ export default async function HelpCenter({ params }: Props) {
               <h1 className="display-editorial text-fg">
                 {isFr ? "Trouver une réponse " : "Find a quick "}
                 <span
-                  className="text-terracotta italic"
+                  className="text-terracotta mx-2 italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
                   {isFr ? "rapide" : "answer"}
@@ -251,7 +251,7 @@ export default async function HelpCenter({ params }: Props) {
         }
         cta={
           <Cta href="/contact" size="lg">
-            Contact â†’
+            Contact →
           </Cta>
         }
       />

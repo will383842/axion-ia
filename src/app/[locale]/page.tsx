@@ -4,19 +4,10 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  TrendingUp,
-  Target,
-  Star,
-  Users,
-  Layers,
-  MapPin,
-  BadgeCheck,
-  Shield,
-  Clock,
-  Sparkles,
-} from "lucide-react";
+// Les icônes des 6 différenciateurs / 3 signaux de réassurance / 4 segments /
+// 16 secteurs sont désormais portées par leurs composants dédiés
+// (WhyDifferentiators, TrustSignalsPanel, AudienceSegments, SectorsGrid).
+import { ArrowRight, Star } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { cn } from "@/lib/utils";
@@ -25,6 +16,10 @@ import { getPublishedReviews, getAggregateRating } from "@/server/reviews/querie
 import { orgAggregateJsonLd } from "@/server/reviews/jsonld";
 import { ReviewCard } from "@/components/reviews/ReviewCard";
 import { HomeReviewsCarousel } from "@/components/home/HomeReviewsCarousel";
+import { WhyDifferentiators } from "@/components/home/WhyDifferentiators";
+import { TrustSignalsPanel } from "@/components/home/TrustSignalsPanel";
+import { AudienceSegments } from "@/components/home/AudienceSegments";
+import { SectorsGrid } from "@/components/home/SectorsGrid";
 import { SERVICE_BY_ID, serviceNavShort, serviceOfficial } from "@/content/services";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { VIDEO_TESTIMONIALS, SECTORS } from "@/content/home-data";
@@ -56,12 +51,23 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
-// ISR 24h — aligné sur les pages services canoniques (/audit, /interventions,
-// /implementation). Sans ce flag, la home reste sur le comportement par défaut
-// Next.js (re-rendue à chaque requête en dev, figée en prod selon config).
-// 86400s = 24h, suffisant pour rafraîchir métriques + liens implantations
-// régionales (LocalCoverageSection lit `getIndexableRegions()`).
-export const revalidate = 86400;
+// ISR 1h — ramené de 86400s (24h) à 3600s le 2026-08-10.
+//
+// 🔴 Pourquoi : la home lit la BASE (`getPublishedReviews` + `getAggregateRating`).
+// Or le build tourne sur GH Actions avec `DATABASE_URL=stub.invalid` (ADR 0026),
+// donc la page est FIGÉE À ZÉRO AVIS au moment du build. Avec un ISR de 24h,
+// l'accueil affichait « Nos premiers avis clients arrivent » pendant 24h APRÈS
+// CHAQUE DÉPLOIEMENT, alors que /fr/avis (dynamique) servait bien les 77 avis.
+// Constaté en prod le 2026-08-10 : `x-nextjs-cache: HIT`, `Age: 73960` (20h33)
+// sur un déploiement de la veille → bloc avis vide, note agrégée absente.
+//
+// 3600s est la fenêtre de repeuplement documentée dans AGENTS.md §ADR 0026
+// pour toutes les pages dépendantes de la base. Le coût est d'un rendu SSG par
+// heure au lieu d'un par jour — négligeable.
+//
+// ⚠️ Ne pas rallonger sans rendre le bloc avis dynamique (Suspense + segment
+// non caché), sinon le symptôme revient à chaque déploiement.
+export const revalidate = 3600;
 
 interface HomeProps {
   params: Promise<{ locale: string }>;
@@ -400,24 +406,15 @@ export default async function Home({ params }: HomeProps) {
                   className="bg-terracotta text-paper cta-lift focus-visible:ring-terracotta inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                 >
                   {isFr
-                    ? "Je veux réserver un appel pour me renseigner"
-                    : "I want to book a call to learn more"}
+                    ? "Je veux réserver un appel pour me renseigner sans aucun engagement"
+                    : "I want to book a call to learn more, with no commitment"}
                   <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
                 </Link>
               </div>
-              {/* Chips bénéfices (remplacent l'ancienne proof-line) — calées sur
-                  le rendu de référence : puces à pastille terracotta. */}
-              <ul className="text-fg-soft mt-8 flex flex-col gap-x-6 gap-y-2.5 text-sm font-medium sm:flex-row sm:flex-wrap sm:items-center sm:text-base">
-                {[t("heroChip1"), t("heroChip2"), t("heroChip3")].map((chip) => (
-                  <li key={chip} className="flex items-center gap-2">
-                    <span
-                      aria-hidden="true"
-                      className="bg-terracotta inline-block h-2 w-2 shrink-0 rounded-full"
-                    />
-                    {chip}
-                  </li>
-                ))}
-              </ul>
+              {/* Chips bénéfices RETIRÉES (Will 2026-08-10) : « Sans engagement /
+                  Formations adaptées / Résultats dès la première semaine » —
+                  redondantes avec le CTA qui porte désormais « sans aucun
+                  engagement ». Clés heroChip1-3 supprimées de fr/en.json. */}
             </div>
 
             {/* Colonne droite : photo hero placeholder. Will drop l'image
@@ -485,9 +482,8 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("valueTitlePart2")}
               </h2>
-              <p className="text-fg-soft mx-auto mt-6 max-w-3xl text-lg leading-relaxed sm:text-xl">
-                {t("valueDescription")}
-              </p>
+              {/* Lead RETIRÉ (Will 2026-08-10) : « Chaque offre répond à un stade
+                  différent… » — clé valueDescription supprimée de fr/en.json. */}
             </div>
           </FadeInOnView>
 
@@ -599,11 +595,11 @@ export default async function Home({ params }: HomeProps) {
                 >
                   {t("founderTitleLine1")}
                   <br />
-                  <span className="text-terracotta italic">{t("founderTitleLine2")}</span>
+                  <span className="text-terracotta mx-2 italic">{t("founderTitleLine2")}</span>
                 </h2>
-                <p className="text-fg-soft mt-7 text-lg leading-relaxed">
-                  {t("founderDescription")}
-                </p>
+                {/* Lead RETIRÉ (Will 2026-08-10) : « Sans intermédiaire, sans
+                    compromis… ». Retiré partout — clé founderDescription supprimée
+                    de fr/en.json, FounderTrustSection nettoyé en parallèle. */}
                 <div className="border-border-strong mt-8 flex items-start gap-4 border-t pt-6">
                   <span className="bg-terracotta mt-1 inline-block h-6 w-0.5 shrink-0 rounded-full" />
                   <p
@@ -661,9 +657,12 @@ export default async function Home({ params }: HomeProps) {
               </div>
             </div>
 
-            {/* Stats bar — 3 colonnes séparées par des dividers verticaux */}
+            {/* Stats bar — mobile-first (Will 2026-08-10) : 1 colonne empilée avec
+                dividers HORIZONTAUX sous 640 px (avant : grid-cols-3 en dur, les
+                3 stats se compressaient dès 320 px et « TPE → CAC40 » cassait),
+                puis 3 colonnes + dividers verticaux à partir de sm. */}
             <div
-              className="border-border-strong mt-16 grid grid-cols-3 divide-x border-t pt-10"
+              className="border-border-strong mt-16 grid grid-cols-1 divide-y border-t pt-10 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
               style={{ borderColor: "var(--color-border-strong)" }}
             >
               {(
@@ -673,7 +672,10 @@ export default async function Home({ params }: HomeProps) {
                   { number: t("founderStat3Number"), label: t("founderStat3Label") },
                 ] as const
               ).map((stat, idx) => (
-                <div key={idx} className="flex flex-col gap-1 px-6 first:pl-0 last:pr-0">
+                <div
+                  key={idx}
+                  className="flex flex-col gap-1 py-5 first:pt-0 last:pb-0 sm:px-6 sm:py-0 sm:first:pt-0 sm:first:pl-0 sm:last:pr-0"
+                >
                   <span
                     className="text-fg text-[clamp(1.25rem,2.5vw,1.75rem)] leading-tight font-semibold tracking-tight"
                     style={{ fontFamily: "var(--font-serif)" }}
@@ -722,159 +724,29 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 .
               </h2>
-              <p className="text-fg-soft mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
-                {isFr
-                  ? "Chaque expertise est autonome — combinable avec les autres ou prise seule. C'est vous qui choisissez selon vos besoins."
-                  : "Each expertise stands alone — combinable with the others or taken solo. You choose based on your needs."}
-              </p>
+              {/* Lead RETIRÉ (Will 2026-08-10) : « Chaque expertise est autonome… ». */}
             </div>
           </FadeInOnView>
 
-          {/* BLOC 2 — 6 différenciateurs COMPACTS (refonte 2026-05-24 Will :
-              avant = grid 3×2 énorme avec hero bands colorés rainbow + numéros
-              géants + accent ribbons → trop massif. Maintenant : grid 3×2 dense,
-              card simple icon + titre + 1 phrase, brand-coherent terracotta).
-              BLOC 3 "Modulaire par design" SUPPRIMÉ (redondant : la modularité
-              est déjà dans la description de section + une carte "De A à Z"). */}
-          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
-            {(
-              [
-                {
-                  Icon: Users,
-                  titleFr: "Zéro intermédiaire",
-                  titleEn: "Zero middleman",
-                  descFr:
-                    "Formateurs, auditeurs, développeurs, implémenteurs — tous seniors expérimentés.",
-                  descEn: "Trainers, auditors, developers, implementers — all seasoned seniors.",
-                },
-                {
-                  Icon: Layers,
-                  titleFr: "De A à Z",
-                  titleEn: "End-to-end",
-                  descFr:
-                    "Formation, audit, 1-to-1, automatisation, plateforme — un seul interlocuteur.",
-                  descEn: "Training, audit, 1-to-1, automation, platform — one single contact.",
-                },
-                {
-                  Icon: MapPin,
-                  titleFr: "Partout en France et dans la francophonie",
-                  titleEn: "Partout en France et dans la francophonie",
-                  descFr:
-                    "13 régions métropolitaines, 5 DROM, entreprises francophones à l'étranger — sur site ou à distance, selon le contexte.",
-                  descEn:
-                    "13 régions métropolitaines, 5 DROM, entreprises francophones à l'étranger — sur site ou à distance, selon le contexte.",
-                },
-                {
-                  Icon: BadgeCheck,
-                  titleFr: "Vous parlez au senior",
-                  titleEn: "You talk to the senior",
-                  descFr:
-                    "Pas à un commercial, pas à un junior. Directement à celui qui fait le travail.",
-                  descEn: "Not to sales, not to a junior. Directly to the person doing the work.",
-                },
-                {
-                  Icon: Target,
-                  titleFr: "Vous êtes au centre",
-                  titleEn: "You're at the center",
-                  descFr:
-                    "Votre projet, votre rythme, votre contexte. On s'adapte à vous — jamais l'inverse.",
-                  descEn:
-                    "Your project, your pace, your context. We adapt to you — never the reverse.",
-                },
-                {
-                  Icon: Sparkles,
-                  titleFr: "Exigence senior absolue",
-                  titleEn: "Strict senior standards",
-                  descFr:
-                    "Résultats mesurables. Même niveau pour un artisan que pour un grand groupe.",
-                  descEn: "Measurable results. Same level for a craftsman or a large group.",
-                },
-              ] as const
-            ).map((card, idx) => (
-              <li
-                key={card.titleFr}
-                className="bg-paper border-border hover:border-terracotta hover:shadow-subtle group flex h-full items-start gap-4 rounded-2xl border p-5 transition-all duration-300 sm:p-6"
-              >
-                <FadeInOnView delay={idx * 40}>
-                  <span
-                    className="bg-terracotta-soft text-terracotta-deep inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110"
-                    aria-hidden="true"
-                  >
-                    <card.Icon className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-fg text-base leading-tight font-bold tracking-tight sm:text-lg">
-                      {isFr ? card.titleFr : card.titleEn}
-                    </h3>
-                    <p className="text-fg-soft mt-1.5 text-sm leading-relaxed">
-                      {isFr ? card.descFr : card.descEn}
-                    </p>
-                  </div>
-                </FadeInOnView>
-              </li>
-            ))}
-          </ul>
+          {/* BLOC 2 — 6 différenciateurs (refonte Will 2026-08-10) : cartes à
+              bande média 16:9 + accent rotatif, 3 par ligne dès md. Données,
+              slots image et layout vivent dans WhyDifferentiators. */}
+          <WhyDifferentiators isFr={isFr} />
 
-          {/* BLOC 4 — Trust signals (3 colonnes inline) + tagline finale */}
+          {/* BLOC 4 — Réassurance (refonte Will 2026-08-10) : les 3 signaux
+              étaient posés à plat sur l ivoire de la page. Ils sont désormais
+              dans un panneau mocha pleine largeur — rupture visuelle premium.
+              Tagline finale « Une vision. Une équipe… » RETIRÉE. */}
+          <div className="mt-20 sm:mt-24">
+            <TrustSignalsPanel isFr={isFr} />
+          </div>
+
+          {/* Réassurance Qualiopi (Phase B) — centrée sous le panneau,
+              hors zone LCP du hero. Pastille texte seul, null hors Phase B. */}
           <FadeInOnView>
-            <div className="border-border mt-20 grid gap-8 border-t pt-12 sm:mt-24 sm:grid-cols-3 sm:gap-10">
-              {(
-                [
-                  {
-                    Icon: Shield,
-                    titleFr: "Sécurité & confidentialité",
-                    titleEn: "Security & confidentiality",
-                    descFr: "Vos données sont protégées. Votre confidentialité est notre priorité.",
-                    descEn: "Your data is protected. Confidentiality is our priority.",
-                  },
-                  {
-                    Icon: TrendingUp,
-                    titleFr: "Résultats mesurables",
-                    titleEn: "Measurable results",
-                    descFr: "Des objectifs clairs, des indicateurs précis, un impact concret.",
-                    descEn: "Clear goals, precise indicators, concrete impact.",
-                  },
-                  {
-                    Icon: Clock,
-                    titleFr: "Accompagnement dans la durée",
-                    titleEn: "Long-term support",
-                    descFr: "Un partenaire fiable, présent à chaque étape de votre croissance.",
-                    descEn: "A reliable partner at every stage of your growth.",
-                  },
-                ] as const
-              ).map((item, idx) => (
-                <div key={idx} className="flex flex-col gap-3 text-center sm:text-left">
-                  <span className="text-terracotta inline-flex h-10 w-10 items-center justify-center self-center sm:self-start">
-                    <item.Icon className="h-6 w-6" aria-hidden="true" strokeWidth={2} />
-                  </span>
-                  <h4 className="text-fg text-base font-bold tracking-tight">
-                    {isFr ? item.titleFr : item.titleEn}
-                  </h4>
-                  <p className="text-fg-soft text-sm leading-relaxed">
-                    {isFr ? item.descFr : item.descEn}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Réassurance Qualiopi (Phase B) — centrée sous les trust signals,
-                hors zone LCP du hero. Pastille texte seul, null hors Phase B. */}
             <div className="mt-10 flex justify-center sm:mt-12">
               <QualiopiBadge variant="inline" />
             </div>
-
-            {/* Tagline finale — pleine largeur centrée, serif italic */}
-            <p
-              className="text-fg-muted mx-auto mt-16 max-w-3xl text-center text-lg leading-relaxed sm:mt-20 sm:text-xl"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {isFr
-                ? "Une vision. Une équipe. Une méthode. Un seul objectif : "
-                : "One vision. One team. One method. One goal: "}
-              <span className="text-terracotta font-semibold italic">
-                {isFr ? "votre réussite." : "your success."}
-              </span>
-            </p>
           </FadeInOnView>
         </Container>
       </section>
@@ -1436,32 +1308,14 @@ export default async function Home({ params }: HomeProps) {
                 </span>
                 {t("audienceTitlePart2")}
               </h2>
-              <p className="text-fg-soft mt-6 max-w-2xl text-lg leading-relaxed">
-                {t("audienceDescription")}
-              </p>
+              {/* Lead RETIRÉ (Will 2026-08-10) : « De l'artisan seul au groupe coté,
+                  la méthode s'adapte. » — clé audienceDescription supprimée. */}
             </div>
           </FadeInOnView>
-          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {audienceSegments.map((seg, idx) => (
-              <li
-                key={seg.id}
-                className="bg-paper border-border hover:border-border-strong flex h-full flex-col gap-4 rounded-2xl border p-7 transition"
-              >
-                <FadeInOnView delay={idx * 70}>
-                  <h3 className="text-fg text-xl leading-tight font-semibold tracking-tight">
-                    {seg.title}
-                  </h3>
-                  <p
-                    className="text-terracotta text-base leading-snug italic"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    {seg.lead}
-                  </p>
-                  <p className="text-fg-soft text-sm leading-relaxed">{seg.detail}</p>
-                </FadeInOnView>
-              </li>
-            ))}
-          </ul>
+          {/* 4 segments (refonte Will 2026-08-10) : chaque carte porte une bande
+              visuelle avec une jauge d échelle (1 barre = artisan, 4 = grand
+              groupe). Slots image prêts dans AudienceSegments. */}
+          <AudienceSegments segments={audienceSegments} isFr={isFr} />
           {/* Nuage de secteurs (Blueprint §11 — éviter section séparée).
               Signal AEO fort : entités sectorielles indexées par LLM. */}
           <FadeInOnView>
@@ -1474,16 +1328,9 @@ export default async function Home({ params }: HomeProps) {
               <p className="text-fg-soft mt-3 max-w-2xl text-base leading-relaxed">
                 {t("audienceSectorsLead")}
               </p>
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {SECTORS.map((sector) => (
-                  <li
-                    key={sector}
-                    className="bg-sand text-fg-soft inline-flex items-center rounded-full px-4 py-1.5 text-sm font-medium"
-                  >
-                    {sector}
-                  </li>
-                ))}
-              </ul>
+              {/* Grille de tuiles (refonte Will 2026-08-10) — remplace le nuage
+                  de pastilles grises. Libellés et ordre pilotés par SECTORS. */}
+              <SectorsGrid sectors={SECTORS} />
             </div>
           </FadeInOnView>
         </Container>

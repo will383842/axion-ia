@@ -54,4 +54,62 @@ describe("buildQualiopiCertificationsSection", () => {
     );
     expect(section?.body).toContain("30 juin 2031");
   });
+
+  /**
+   * Garde des champs vides (2026-08-10).
+   *
+   * La configuration Qualiopi est saisie à la main en console admin : rien ne
+   * garantit qu'elle soit complète le jour où le drapeau de certification est
+   * levé. La phrase doit rester grammaticale dans tous les cas.
+   */
+  describe("champs de configuration incomplets", () => {
+    const identiteVide = {
+      raisonSociale: "Axion-IA SAS",
+      nda: "",
+      qualiopiNumero: "",
+      qualiopiOrganisme: "",
+      qualiopiDateObtention: "",
+      qualiopiValidite: "",
+      categoriesCertifiees: "Actions de formation",
+      logoPath: "",
+      siret: "",
+      adresseSiege: "",
+    };
+
+    it("🔴 numéro vide → AUCUNE parenthèse orpheline « (certificat n° ) »", async () => {
+      mockIdentity.mockResolvedValue(identiteVide);
+      const section = await buildQualiopiCertificationsSection(true);
+      // Le défaut exact constaté en aperçu local avant correctif.
+      expect(section?.body).not.toContain("certificat n° )");
+      expect(section?.body).not.toContain("(certificat n°");
+      expect(section?.body).not.toMatch(/\(\s*\)/);
+      // La phrase reste complète et se termine proprement.
+      expect(section?.body).toContain("Axion-IA est un organisme de formation certifié Qualiopi.");
+    });
+
+    it("date SANS organisme → « délivré le », pas une date sans verbe", async () => {
+      mockIdentity.mockResolvedValue({
+        ...identiteVide,
+        qualiopiNumero: "CERT-2026-001",
+        qualiopiDateObtention: "2026-01-12",
+      });
+      const section = await buildQualiopiCertificationsSection(true);
+      expect(section?.body).toContain("délivré le 12 janvier 2026");
+      // Avant correctif : « (certificat n° CERT-2026-001 le 12 janvier 2026) ».
+      expect(section?.body).not.toContain("CERT-2026-001 le 12 janvier 2026");
+    });
+
+    it("organisme ET date → « délivré par X le D » (formulation d'origine préservée)", async () => {
+      mockIdentity.mockResolvedValue({
+        ...identiteVide,
+        qualiopiNumero: "CERT-2026-001",
+        qualiopiOrganisme: "Certif'OF",
+        qualiopiDateObtention: "2026-01-12",
+      });
+      const section = await buildQualiopiCertificationsSection(true);
+      expect(section?.body).toContain(
+        "(certificat n° CERT-2026-001, délivré par Certif'OF le 12 janvier 2026)",
+      );
+    });
+  });
 });

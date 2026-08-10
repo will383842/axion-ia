@@ -41,6 +41,12 @@ export function LocalCoverageSection({
   tone = "paper",
 }: LocalCoverageSectionProps): ReactNode {
   const regions = getIndexableRegions();
+  // Référence des barres de PIB : le plus gros PIB régional (Île-de-France).
+  const maxPib = regions.reduce(
+    (max, r) =>
+      typeof r.pibBillionsEur === "number" && r.pibBillionsEur > max ? r.pibBillionsEur : max,
+    0,
+  );
 
   return (
     <Section
@@ -55,47 +61,81 @@ export function LocalCoverageSection({
       }
       tone={tone}
     >
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {regions.map((region) => (
-          <li key={region.slug}>
-            <Link
-              href={`/implantations/${region.slug}` as never}
-              data-cta-tracking={`${serviceSlug}_local_coverage_region`}
-              data-source-region={region.slug}
-              data-source-target={`/implantations/${region.slug}`}
-              className="group bg-bg hover:border-terracotta focus-visible:ring-terracotta border-border-strong/40 shadow-subtle hover:shadow-card block h-full rounded-2xl border-2 p-5 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">
-                    <span
-                      aria-hidden="true"
-                      className="bg-terracotta mr-2 inline-block h-1.5 w-1.5 rounded-full align-middle"
-                    />
-                    {region.prefecture}
-                    {typeof region.pibBillionsEur === "number"
-                      ? ` · ${region.pibBillionsEur} Md€`
-                      : ""}
-                  </p>
+      {/* Grille régions — refonte Will 2026-08-10.
+          Avant : cartes `border-2` massives, 2 par ligne sur desktop, chaque
+          région réduite à trois lignes de texte plat. Le tout se lisait comme
+          un annuaire des années 2010 sur 18 entrées.
+          Maintenant : tuiles légères 4 par ligne, et surtout une BARRE DE PIB
+          relative au maximum national — la même donnée qu'avant (`Md€`), mais
+          comparable d'un coup d'œil au lieu d'être un nombre isolé. La rangée
+          devient une lecture du poids économique des territoires couverts.
+
+          ⚠️ Pas de palier `sm:` : `--breakpoint-sm` n'étant pas déclaré dans le
+          `@theme` de globals.css, Tailwind v4 émet les règles `sm:` APRÈS
+          `md:`/`lg:` — un `sm:grid-cols-2` écrasait donc `lg:grid-cols-3` et
+          cette grille rendait 2 colonnes sur grand écran. */}
+      <ul className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        {regions.map((region) => {
+          const pib = typeof region.pibBillionsEur === "number" ? region.pibBillionsEur : null;
+          // Part du PIB régional rapportée au maximum national (Île-de-France).
+          // Plancher à 4 % pour que les plus petits territoires restent visibles.
+          const pibShare = pib !== null && maxPib > 0 ? Math.max(4, (pib / maxPib) * 100) : null;
+
+          return (
+            <li key={region.slug}>
+              <Link
+                href={`/implantations/${region.slug}` as never}
+                data-cta-tracking={`${serviceSlug}_local_coverage_region`}
+                data-source-region={region.slug}
+                data-source-target={`/implantations/${region.slug}`}
+                /* `flex flex-col` + `mt-auto` sur le bloc PIB : sans ça, les
+                   régions au nom long (Provence-Alpes-Côte d'Azur,
+                   Bourgogne-Franche-Comté) passent sur deux lignes et
+                   décalent leur barre vers le bas — les jauges d'une même
+                   rangée ne s'alignaient plus et la comparaison sautait. */
+                className="group bg-paper border-border hover:border-terracotta focus-visible:ring-terracotta hover:shadow-subtle flex h-full flex-col rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <div className="flex items-start justify-between gap-3">
                   <p
-                    className="text-fg mt-2 text-lg leading-tight font-semibold tracking-tight"
+                    className="text-fg min-w-0 text-lg leading-tight font-semibold tracking-tight"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     {region.nameFr}
                   </p>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="text-fg-muted group-hover:text-terracotta h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </div>
-                <ArrowUpRight
-                  aria-hidden="true"
-                  className="text-fg-muted group-hover:text-terracotta h-4 w-4 shrink-0 transition"
-                />
-              </div>
-              <p className="text-fg-muted mt-3 inline-flex items-center gap-1.5 text-xs tabular-nums">
-                <MapPin className="h-3 w-3" aria-hidden="true" />
-                {fmtPopulation(region.population, isFr ? "fr" : "en")} {isFr ? "hab." : "inhab."}
-              </p>
-            </Link>
-          </li>
-        ))}
+
+                <p className="text-fg-muted mt-2 inline-flex items-center gap-1.5 text-xs tabular-nums">
+                  <MapPin className="h-3 w-3 shrink-0" aria-hidden="true" />
+                  {region.prefecture} · {fmtPopulation(region.population, isFr ? "fr" : "en")}{" "}
+                  {isFr ? "hab." : "inhab."}
+                </p>
+
+                {pibShare !== null ? (
+                  <div className="mt-auto pt-4">
+                    {/* Jauge décorative : la valeur chiffrée est juste en dessous,
+                        en texte — rien n'est porté par la seule couleur. */}
+                    <div
+                      aria-hidden="true"
+                      className="bg-sand h-1 w-full overflow-hidden rounded-full"
+                    >
+                      <div
+                        className="bg-terracotta h-full rounded-full transition-transform duration-500 group-hover:scale-x-105"
+                        style={{ width: `${pibShare}%`, transformOrigin: "left" }}
+                      />
+                    </div>
+                    <p className="text-fg-soft mt-2 text-xs font-semibold tabular-nums">
+                      {pib} {isFr ? "Md€ de PIB" : "bn€ GDP"}
+                    </p>
+                  </div>
+                ) : null}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
 
       <div className="mt-12 flex flex-wrap items-center justify-center gap-3">

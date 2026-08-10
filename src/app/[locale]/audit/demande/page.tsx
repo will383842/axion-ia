@@ -54,7 +54,7 @@ export default async function AuditRequest({ params }: Props) {
     },
     {
       icon: Building2,
-      label: isFr ? "TPE â†’ grandes entreprises" : "Small â†’ enterprise",
+      label: isFr ? "TPE → grandes entreprises" : "Small → enterprise",
     },
     {
       icon: Clock,
@@ -87,14 +87,14 @@ export default async function AuditRequest({ params }: Props) {
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {isFr ? "Demander un " : "Request an "}
-            <span className="text-terracotta italic">
+            <span className="text-terracotta mx-2 italic">
               {isFr ? "audit IA personnalisé" : "personalised AI audit"}
             </span>
           </h1>
           <p className="text-fg-soft mt-4 max-w-2xl text-base leading-relaxed sm:text-lg">
             {isFr
-              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité · TPE â†’ ETI · France & international."
-              : "6 questions to frame your project. Personalised quote from 24-48 business hours depending on complexity · Small â†’ enterprise · France & worldwide."}
+              ? "6 questions pour cadrer votre projet. Devis personnalisé à partir de 24-48 h ouvrées selon la complexité · TPE → ETI · France & international."
+              : "6 questions to frame your project. Personalised quote from 24-48 business hours depending on complexity · Small → enterprise · France & worldwide."}
           </p>
 
           {/* Bandeau réassurance — 4 pills */}

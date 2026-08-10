@@ -371,7 +371,7 @@ export default async function CaseStudiesListing({ params }: Props) {
         }
         cta={
           <Cta href="/formations" size="lg">
-            {isFr ? "Voir nos formations" : "See our trainings"} â†’
+            {isFr ? "Voir nos formations" : "See our trainings"} →
           </Cta>
         }
         tone="dark"

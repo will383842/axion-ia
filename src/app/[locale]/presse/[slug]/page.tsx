@@ -353,7 +353,7 @@ export default async function PressReleaseDetailPage({ params }: Props) {
       <Section
         tone="sand"
         eyebrow={isFr ? "Visuels presse" : "Press visuals"}
-        title={isFr ? "Banque d'images " : "Image bank "}
+        title={isFr ? "Banque d'images" : "Image bank"}
         titleEm={isFr ? "CC BY 4.0" : "CC BY 4.0"}
         titleTail="."
         description={
