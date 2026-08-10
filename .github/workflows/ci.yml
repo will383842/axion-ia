@@ -45,7 +45,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v7
@@ -138,7 +138,7 @@ jobs:
       NEXT_PUBLIC_APP_ENV: "production"
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v7
@@ -545,7 +545,7 @@ jobs:
       DIRECT_URL: postgresql://axion_ia_ci:ci_password_dummy@localhost:5432/axion_ia_ci?schema=public
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v7
