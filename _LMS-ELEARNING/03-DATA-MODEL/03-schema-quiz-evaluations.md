@@ -287,17 +287,17 @@ Schémas Zod dans `src/server/elearning/quiz/question-payloads.ts`. **Le serveur
 
 Tout le scoring est **côté serveur** sur les données figées du snapshot (cf. §8). `points` effectifs = `QuizQuestion.pointsOverride ?? Question.points`.
 
-| Type                               | Règle (avec `scoringPartiel=false`)                                | Si `scoringPartiel=true`                                    |
+| Type | Règle (avec `scoringPartiel=false`) | Si `scoringPartiel=true` |
 | ---------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------------ | --- |
-| `qcm_mono` / `vrai_faux`           | choix == unique `estCorrect` → points pleins, sinon 0              | n/a                                                         |
-| `qcm_multi`                        | ensemble sélectionné == ensemble des `estCorrect` → plein, sinon 0 | `points × (justes − faux_cochés) / nbCorrects`, planché à 0 |
-| `appariement`                      | toutes les paires `matchKey` correctes → plein                     | `points × pairesJustes / nbPaires`                          |
-| `texte_a_trous` / `menu_deroulant` | tous les trous justes → plein                                      | somme des `points` par trou juste                           |
-| `ordonnancement`                   | ordre exact → plein                                                | `kendall_tau` ou `positions_justes` selon `scoring`         |
-| `reponse_courte`                   | match exact après normalisation (ou Levenshtein ≤ seuil, ou regex) | n/a                                                         |
-| `numerique`                        | `                                                                  | saisi − valeur                                              | ≤ tolerance` (ou ∈ intervalle) et unité OK | n/a |
-| `zone_cliquable`                   | tous les clics dans des zones `correcte` et nb attendu             | `points × zonesJustes / nbZones`                            |
-| `essai` / `upload`                 | **0 en auto** → `correcte=null`, attempt passe `a_corriger`        | correcteur saisit `noteManuelle`                            |
+| `qcm_mono` / `vrai_faux` | choix == unique `estCorrect` → points pleins, sinon 0 | n/a |
+| `qcm_multi` | ensemble sélectionné == ensemble des `estCorrect` → plein, sinon 0 | `points × (justes − faux_cochés) / nbCorrects`, planché à 0 |
+| `appariement` | toutes les paires `matchKey` correctes → plein | `points × pairesJustes / nbPaires` |
+| `texte_a_trous` / `menu_deroulant` | tous les trous justes → plein | somme des `points` par trou juste |
+| `ordonnancement` | ordre exact → plein | `kendall_tau` ou `positions_justes` selon `scoring` |
+| `reponse_courte` | match exact après normalisation (ou Levenshtein ≤ seuil, ou regex) | n/a |
+| `numerique` | `                                                                  | saisi − valeur                                              | ≤ tolerance` (ou ∈ intervalle) et unité OK | n/a |
+| `zone_cliquable` | tous les clics dans des zones `correcte` et nb attendu | `points × zonesJustes / nbZones` |
+| `essai` / `upload` | **0 en auto** → `correcte=null`, attempt passe `a_corriger` | correcteur saisit `noteManuelle` |
 
 **Score tentative** : `scorePct = round(100 × Σ pointsObtenus / Σ pointsMax)`. **Réussite** : `scorePct ≥ Quiz.seuilReussitePct`. Si au moins une question manuelle non notée → `reussite` reste `null` et `statut=a_corriger` (pas de gating tant que non corrigé).
 
