@@ -40,7 +40,10 @@ export function GET() {
     "fr",
   );
   // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(/^dès\s/, "à partir de ");
+  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+    /^(dès\s|À partir de )/,
+    "à partir de ",
+  );
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
   const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
     compact: true,
