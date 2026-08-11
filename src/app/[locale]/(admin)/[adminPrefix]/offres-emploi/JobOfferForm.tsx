@@ -30,6 +30,7 @@ export interface JobOfferFormInitial {
   city: string;
   region: string;
   country: string;
+  applicantCountries: string;
   salaryMin: string;
   salaryMax: string;
   salaryPeriod: string;
@@ -335,6 +336,27 @@ export function JobOfferForm({ initial }: Props) {
             disabled={pending}
           />
         </div>
+      </div>
+
+      <div className="admin-field">
+        <label htmlFor="applicantCountries" className="admin-label">
+          Candidatures acceptées depuis (codes ISO2, séparés par des virgules)
+        </label>
+        <input
+          id="applicantCountries"
+          name="applicantCountries"
+          type="text"
+          maxLength={300}
+          placeholder="FR, BE, CH, CA, MA, TN, SN, CI"
+          defaultValue={initial?.applicantCountries ?? ""}
+          className="admin-input"
+          disabled={pending}
+        />
+        <p className="admin-meta-small">
+          Vide = France uniquement. Au-delà d&apos;un pays, Google for Jobs remonte l&apos;offre aux
+          candidats de chacun de ces pays — indispensable pour une mission à distance ouverte à la
+          francophonie.
+        </p>
       </div>
 
       <div className="admin-form-row">

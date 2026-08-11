@@ -44,6 +44,7 @@ export default async function EditJobOfferPage({ params }: PageProps) {
     city: o.city ?? "",
     region: o.region ?? "",
     country: o.country,
+    applicantCountries: o.applicantCountries.join(", "),
     salaryMin: o.salaryMin?.toString() ?? "",
     salaryMax: o.salaryMax?.toString() ?? "",
     salaryPeriod: o.salaryPeriod,

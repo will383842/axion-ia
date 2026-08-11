@@ -8592,6 +8592,12 @@ model JobOffer {
   // { city, region? } → JobPosting multi-location (visible Google for Jobs dans
   // toutes ces villes depuis UNE annonce, sans pages dupliquées). FR-only.
   jobLocations   Json?       @map("job_locations")
+  // Pays d'où l'on accepte les candidatures (ISO 3166-1 alpha-2) → JobPosting
+  // `applicantLocationRequirements`. Vide = France seule (défaut historique).
+  // Indispensable pour les missions 100 % à distance ouvertes à la francophonie :
+  // Google for Jobs filtre les offres TELECOMMUTE sur le pays du chercheur, donc
+  // sans ces codes l'annonce reste invisible hors de France.
+  applicantCountries String[] @default([]) @map("applicant_countries")
   salaryMin      Int?        @map("salary_min")
   salaryMax      Int?        @map("salary_max")
   salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)
