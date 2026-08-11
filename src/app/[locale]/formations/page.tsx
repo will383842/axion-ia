@@ -70,6 +70,7 @@ import { ServiceHero } from "@/components/sections/ServiceHero";
 // et l'orbital générique (pas assez travaillé).
 import { HeroOrbital } from "@/components/sections/HeroOrbital";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
 
 interface Props {
@@ -373,6 +374,13 @@ export default async function FormationsHub({ params }: Props) {
             >
               {isFr ? "Réserver un appel" : "Book a call"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
+
+              {/* Réassurance Qualiopi AVEC LOGO — juste sous le hero (Will 2026-08-11 :
+          « dans la page des formations on parle de Qualiopi avec le logo bien
+          visible »). Le composant rend null hors Phase B : rien à gater ici. */}
+              <Container className="-mt-6 mb-4 flex justify-center lg:-mt-10">
+                <QualiopiBadge variant="card" className="w-full max-w-2xl" />
+              </Container>
             </Cta>
             <Cta
               href="/contact"
