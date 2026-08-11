@@ -18,7 +18,6 @@
 
 import {
   CODAGE_TIERS,
-  INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   formatAmount,
   getEntryLabel,
