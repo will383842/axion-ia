@@ -15,6 +15,7 @@ import { SITE_URL } from "@/lib/seo";
 import { pingIndexNow } from "@/lib/indexnow";
 import { enqueueGoogleIndexingForUrls } from "@/server/content-gen/indexing/enqueue";
 import { isJobOfferIndexable } from "@/lib/careers/job-offers";
+import { normalizeApplicantCountries } from "@/lib/careers/format";
 import { deleteCv } from "@/server/careers/cv-storage";
 import { CAREER_CATEGORY_SLUGS } from "@/content/careers/categories";
 import type {
@@ -215,6 +216,10 @@ const upsertSchema = z.object({
   city: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   region: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   country: z.string().length(2).default("FR"),
+  // Pays d'où l'on accepte les candidatures — saisis en clair, séparés par des
+  // virgules (« FR, BE, MA »). Vide = France seule. Codes ISO 3166-1 alpha-2 ;
+  // ce qui n'en est pas un est ignoré silencieusement par la normalisation.
+  applicantCountries: z.preprocess(emptyToUndef, z.string().max(300).optional()),
   salaryMin: optInt,
   salaryMax: optInt,
   salaryPeriod: z.string().max(10).default("YEAR"),
@@ -334,6 +339,7 @@ export async function upsertJobOfferAction(
     city: d.city ?? null,
     region: d.region ?? null,
     country: d.country,
+    applicantCountries: normalizeApplicantCountries(d.applicantCountries?.split(",")),
     salaryMin: d.salaryMin ?? null,
     salaryMax: d.salaryMax ?? null,
     salaryPeriod: d.salaryPeriod,

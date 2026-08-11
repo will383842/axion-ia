@@ -6,6 +6,7 @@
 import { SITE_URL } from "@/lib/seo";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { careerImage } from "@/content/careers/careers-images";
+import { applicantCountryLabel, normalizeApplicantCountries } from "@/lib/careers/format";
 import type { JobOffer } from "../../../prisma/generated/client";
 
 // Aligné sur le nœud Organization canonique (`seo.ts` `#organization`) : même
@@ -19,6 +20,32 @@ const HIRING_ORG = {
   logo: `${SITE_URL}/opengraph-image`,
   sameAs: ["https://www.linkedin.com/company/axion-ia-france"],
 } as const;
+
+/**
+ * `applicantLocationRequirements` — pays depuis lesquels on accepte les
+ * candidatures. Google for Jobs s'en sert pour filtrer les offres TELECOMMUTE
+ * sur le pays du chercheur : sans ce champ (ou avec la seule France, l'ancien
+ * comportement en dur), une mission 100 % à distance ouverte à la francophonie
+ * n'apparaît jamais à un candidat qui cherche depuis Casablanca ou Dakar.
+ *
+ * Un seul pays → objet ; plusieurs → tableau (schema.org accepte les deux).
+ * Aucun pays déclaré → France, pour ne rien changer aux offres existantes.
+ */
+function applicantLocationRequirements(
+  offer: Pick<JobOffer, "applicantCountries">,
+  isFr: boolean,
+): Record<string, unknown> | Array<Record<string, unknown>> {
+  const codes = normalizeApplicantCountries(offer.applicantCountries);
+  if (codes.length === 0) return { "@type": "Country", name: "France" };
+  const nodes = codes.map((code) => ({
+    "@type": "Country",
+    name: applicantCountryLabel(code, isFr),
+    // `identifier` = code ISO 3166-1 alpha-2 : lève l'ambiguïté des noms
+    // traduits pour Google et les moteurs de réponse.
+    identifier: code,
+  }));
+  return nodes.length === 1 ? nodes[0]! : nodes;
+}
 
 /**
  * Construit le JobPosting d'une offre. Renvoie `null` si l'offre ne doit PAS
@@ -99,10 +126,7 @@ export function buildJobPostingJsonLd(
     }));
   } else if (offer.workMode === "remote") {
     jsonLd.jobLocationType = "TELECOMMUTE";
-    jsonLd.applicantLocationRequirements = {
-      "@type": "Country",
-      name: "France",
-    };
+    jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
   } else if (offer.city) {
     jsonLd.jobLocation = {
       "@type": "Place",
@@ -118,16 +142,10 @@ export function buildJobPostingJsonLd(
     // les recherches « télétravail ».
     if (offer.workMode === "hybrid") {
       jsonLd.jobLocationType = "TELECOMMUTE";
-      jsonLd.applicantLocationRequirements = {
-        "@type": "Country",
-        name: "France",
-      };
+      jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
     }
   } else {
-    jsonLd.applicantLocationRequirements = {
-      "@type": "Country",
-      name: "France",
-    };
+    jsonLd.applicantLocationRequirements = applicantLocationRequirements(offer, isFr);
   }
 
   // Rémunération : commission → incentiveCompensation ; sinon baseSalary

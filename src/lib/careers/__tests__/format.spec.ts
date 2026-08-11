@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { isNew, workModeLabel, salaryLabel } from "../format";
+import {
+  isNew,
+  workModeLabel,
+  salaryLabel,
+  contractTypeLabel,
+  normalizeApplicantCountries,
+  applicantCountryLabel,
+} from "../format";
 
 describe("isNew", () => {
   it("true si < 14 jours, false sinon", () => {
@@ -49,5 +56,59 @@ describe("salaryLabel — directive UE 2023/970 (jamais de mention vague)", () =
 
   it("borne unique si une seule valeur", () => {
     expect(salaryLabel({ ...base, salaryMax: null }, true)).toBe("40k EUR /an");
+  });
+});
+
+describe("contractTypeLabel — jamais d'enum schema.org brut en façade", () => {
+  it("traduit chaque type de contrat connu", () => {
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "CONTRACTOR" }, true)).toBe(
+      "freelance (prestation indépendante)",
+    );
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "INTERN" }, true)).toBe(
+      "stage",
+    );
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "PART_TIME" }, true)).toBe(
+      "temps partiel",
+    );
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "FULL_TIME" }, true)).toBe(
+      "CDI temps plein",
+    );
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "FULL_TIME" }, false)).toBe(
+      "full-time permanent contract",
+    );
+  });
+
+  it("le libellé piloté en console prime sur l'enum", () => {
+    expect(
+      contractTypeLabel({ contractLabel: "Freelance", employmentType: "CONTRACTOR" }, true),
+    ).toBe("Freelance");
+  });
+
+  it("type inconnu → null (on n'affiche RIEN plutôt que le code technique)", () => {
+    expect(contractTypeLabel({ contractLabel: null, employmentType: "ZZZ" }, true)).toBeNull();
+  });
+});
+
+describe("normalizeApplicantCountries", () => {
+  it("majuscules, trim, dédup, ordre conservé", () => {
+    expect(normalizeApplicantCountries([" fr ", "be", "FR", "ma"])).toEqual(["FR", "BE", "MA"]);
+  });
+  it("écarte ce qui n'est pas un code ISO2", () => {
+    expect(normalizeApplicantCountries(["FR", "", "FRA", "X"])).toEqual(["FR"]);
+  });
+  it("null / vide → tableau vide", () => {
+    expect(normalizeApplicantCountries(null)).toEqual([]);
+    expect(normalizeApplicantCountries([])).toEqual([]);
+  });
+});
+
+describe("applicantCountryLabel", () => {
+  it("traduit les pays francophones", () => {
+    expect(applicantCountryLabel("MA", true)).toBe("Maroc");
+    expect(applicantCountryLabel("CI", true)).toBe("Côte d'Ivoire");
+    expect(applicantCountryLabel("MA", false)).toBe("Morocco");
+  });
+  it("fallback sur le code si inconnu", () => {
+    expect(applicantCountryLabel("ZZ", true)).toBe("ZZ");
   });
 });

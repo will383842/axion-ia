@@ -24,6 +24,11 @@ import { careerImage } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
+  applicantCountryLabel,
+  contractTypeLabel,
+  normalizeApplicantCountries,
+} from "@/lib/careers/format";
+import {
   getJobOfferBySlug,
   isJobOfferIndexable,
   listIndexableJobOfferSlugs,
@@ -107,18 +112,36 @@ function buildOfferFaq(
     answer: modeAnswer,
   });
 
-  const contract =
-    o.contractLabel ??
-    (o.employmentType === "FULL_TIME"
-      ? isFr
-        ? "CDI temps plein"
-        : "full-time permanent contract"
-      : o.employmentType);
-  items.push({
-    id: "contrat",
-    question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
-    answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
-  });
+  // Libellé traduit (SSOT `format.ts`) : sans lui, l'enum schema.org brut
+  // fuitait en façade (« Il s'agit d'un poste en CONTRACTOR »). `null` si le
+  // type est inconnu → on n'émet pas la question plutôt que d'afficher un code.
+  const contract = contractTypeLabel(o, isFr);
+  if (contract) {
+    items.push({
+      id: "contrat",
+      question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
+      answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
+    });
+  }
+
+  // Pays éligibles (AEO) : « Puis-je postuler depuis le Maroc ? » est LA question
+  // d'un candidat francophone hors de France devant une offre à distance.
+  const countries = normalizeApplicantCountries(o.applicantCountries);
+  if (countries.length > 1) {
+    const names = countries.map((c) => applicantCountryLabel(c, isFr));
+    const listed = isFr
+      ? `${names.slice(0, -1).join(", ")} et ${names[names.length - 1]}`
+      : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+    items.push({
+      id: "pays",
+      question: isFr
+        ? "Depuis quels pays peut-on postuler à cette offre ?"
+        : "Which countries can I apply from?",
+      answer: isFr
+        ? `Les candidatures sont ouvertes depuis ${listed}. Le travail se fait intégralement à distance, en français.`
+        : `Applications are open from ${listed}. The role is fully remote and works in French.`,
+    });
+  }
 
   const sal = salaryLabel(o, isFr);
   if (sal) {
@@ -181,10 +204,25 @@ export async function generateMetadata({
     ),
     ...(offer.ogImagePath ? { ogImage: offer.ogImagePath } : {}),
   });
+  // Offre ouverte à plusieurs pays francophones → `og:locale:alternate` fr_XX.
+  // Le site reste mono-URL (une seule page, pas de duplicata par pays) : on ne
+  // touche donc PAS aux hreflang (qui exigent des URLs distinctes), on se
+  // contente de déclarer les variantes régionales du même contenu français.
+  const countries = normalizeApplicantCountries(offer.applicantCountries);
+  const withOg: Metadata =
+    countries.length > 1
+      ? {
+          ...base,
+          openGraph: {
+            ...base.openGraph,
+            alternateLocale: countries.filter((c) => c !== "FR").map((c) => `fr_${c}`),
+          },
+        }
+      : base;
   if (!isJobOfferIndexable(offer)) {
-    return { ...base, robots: { index: false, follow: true } };
+    return { ...withOg, robots: { index: false, follow: true } };
   }
-  return base;
+  return withOg;
 }
 
 export default async function JobOfferDetailPage({
@@ -211,6 +249,7 @@ export default async function JobOfferDetailPage({
   const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
   const suggested = await listSuggestedOffers(offer, 4);
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
+  const eligibleCountries = normalizeApplicantCountries(offer.applicantCountries);
   const jobCities = Array.isArray(offer.jobLocations)
     ? (offer.jobLocations as Array<{ city?: string }>)
         .map((l) => l.city)
@@ -289,6 +328,18 @@ export default async function JobOfferDetailPage({
               <p data-speakable className="mt-5 text-lg">
                 {summary}
               </p>
+
+              {/* Pays éligibles — l'information que cherche un candidat hors de
+                  France sur une offre à distance. Texte brut (pas de JS) : lu
+                  aussi bien par les moteurs de réponse que par les humains. */}
+              {eligibleCountries.length > 1 ? (
+                <p data-speakable className="text-fg-muted mt-3 text-sm">
+                  {isFr ? "Candidatures ouvertes depuis " : "Open to applicants from "}
+                  <strong>
+                    {eligibleCountries.map((c) => applicantCountryLabel(c, isFr)).join(" · ")}
+                  </strong>
+                </p>
+              ) : null}
 
               {!isClosed ? (
                 <div className="mt-6">

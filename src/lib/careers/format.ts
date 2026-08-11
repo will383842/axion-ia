@@ -12,6 +12,92 @@ export const WORKMODE_LABELS: Record<string, { fr: string; en: string }> = {
   remote: { fr: "Remote", en: "Remote" },
 };
 
+/**
+ * Libellés des types de contrat schema.org (`JobPosting.employmentType`).
+ * SSOT : sans ce mapping, une offre non-FULL_TIME affichait l'enum BRUT en
+ * clair dans la FAQ publique (« Il s'agit d'un poste en CONTRACTOR ») — 9 offres
+ * concernées en prod au 2026-08-11. Clés = valeurs schema.org autorisées.
+ */
+export const EMPLOYMENT_TYPE_LABELS: Record<string, { fr: string; en: string }> = {
+  FULL_TIME: { fr: "CDI temps plein", en: "full-time permanent contract" },
+  PART_TIME: { fr: "temps partiel", en: "part-time contract" },
+  CONTRACTOR: { fr: "freelance (prestation indépendante)", en: "freelance contract" },
+  TEMPORARY: { fr: "CDD", en: "fixed-term contract" },
+  INTERN: { fr: "stage", en: "internship" },
+  VOLUNTEER: { fr: "bénévolat", en: "volunteer role" },
+  PER_DIEM: { fr: "vacation (mission ponctuelle)", en: "per-diem role" },
+  OTHER: { fr: "contrat spécifique", en: "specific contract" },
+};
+
+/**
+ * Libellé lisible du type de contrat. `contractLabel` (piloté en console) prime
+ * toujours ; sinon on traduit l'enum ; en dernier recours on renvoie `null`
+ * plutôt que l'enum brut — un libellé technique n'a rien à faire en façade.
+ */
+export function contractTypeLabel(
+  o: Pick<JobOffer, "contractLabel" | "employmentType">,
+  isFr: boolean,
+): string | null {
+  if (o.contractLabel) return o.contractLabel;
+  return EMPLOYMENT_TYPE_LABELS[o.employmentType]?.[isFr ? "fr" : "en"] ?? null;
+}
+
+/**
+ * Pays d'où l'on accepte les candidatures (`JobOffer.applicantCountries`, codes
+ * ISO 3166-1 alpha-2). Sert à la fois l'affichage et le
+ * `JobPosting.applicantLocationRequirements` (Google for Jobs filtre les offres
+ * télétravail par pays du chercheur : sans ces pays, une annonce ouverte à la
+ * francophonie reste invisible hors de France).
+ */
+export const APPLICANT_COUNTRY_LABELS: Record<string, { fr: string; en: string }> = {
+  FR: { fr: "France", en: "France" },
+  BE: { fr: "Belgique", en: "Belgium" },
+  CH: { fr: "Suisse", en: "Switzerland" },
+  LU: { fr: "Luxembourg", en: "Luxembourg" },
+  MC: { fr: "Monaco", en: "Monaco" },
+  CA: { fr: "Canada", en: "Canada" },
+  MA: { fr: "Maroc", en: "Morocco" },
+  DZ: { fr: "Algérie", en: "Algeria" },
+  TN: { fr: "Tunisie", en: "Tunisia" },
+  SN: { fr: "Sénégal", en: "Senegal" },
+  CI: { fr: "Côte d'Ivoire", en: "Ivory Coast" },
+  CM: { fr: "Cameroun", en: "Cameroon" },
+  BJ: { fr: "Bénin", en: "Benin" },
+  BF: { fr: "Burkina Faso", en: "Burkina Faso" },
+  ML: { fr: "Mali", en: "Mali" },
+  TG: { fr: "Togo", en: "Togo" },
+  NE: { fr: "Niger", en: "Niger" },
+  GA: { fr: "Gabon", en: "Gabon" },
+  CG: { fr: "Congo", en: "Congo" },
+  CD: { fr: "République démocratique du Congo", en: "DR Congo" },
+  MG: { fr: "Madagascar", en: "Madagascar" },
+  MU: { fr: "Maurice", en: "Mauritius" },
+  LB: { fr: "Liban", en: "Lebanon" },
+  HT: { fr: "Haïti", en: "Haiti" },
+};
+
+/** Nom lisible d'un pays éligible, ou son code ISO si inconnu du mapping. */
+export function applicantCountryLabel(code: string, isFr: boolean): string {
+  return APPLICANT_COUNTRY_LABELS[code]?.[isFr ? "fr" : "en"] ?? code;
+}
+
+/**
+ * Codes ISO éligibles, normalisés (majuscules, dédupliqués, ordre conservé).
+ * Liste vide = aucun ciblage explicite → l'appelant retombe sur son défaut.
+ */
+export function normalizeApplicantCountries(codes: readonly string[] | null | undefined): string[] {
+  if (!codes?.length) return [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of codes) {
+    const code = raw.trim().toUpperCase();
+    if (code.length !== 2 || seen.has(code)) continue;
+    seen.add(code);
+    out.push(code);
+  }
+  return out;
+}
+
 /** Une offre est « nouvelle » si publiée il y a moins de 14 jours. */
 export function isNew(datePosted: Date, now: number = Date.now()): boolean {
   return now - datePosted.getTime() < 14 * 24 * 3600 * 1000;
