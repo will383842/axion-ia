@@ -17,14 +17,13 @@
  */
 
 import { Worker, type Job } from "bullmq";
-import { buildIndexNowPayload } from "@/lib/seo-content-gen-factories";
+import { submitToIndexNow } from "@/lib/indexnow";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { redis } from "@/lib/redis";
 import { alertIndexNowFailStreak } from "@/server/content-gen/shared/content-gen-alerts";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-indexnow";
-const ENDPOINT = "https://api.indexnow.org/indexnow";
 
 // Audit indexation 2026-05-15 P0-10 — compteur Redis fail streak.
 // Clé : `indexnow:fail-streak` (TTL 1h). À chaque fail upstream → INCR + TTL refresh.
@@ -103,26 +102,20 @@ async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
     return;
   }
 
-  const payload = buildIndexNowPayload(validUrls);
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20_000);
   try {
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-    if (!res.ok && res.status !== 202) {
-      const reason = `HTTP ${res.status} on ${validUrls.length} urls`;
+    // Cascade d'endpoints (SSOT `src/lib/indexnow.ts`) : `api.indexnow.org`
+    // refuse ce domaine (403 `UserForbiddedToAccessSite`). Sans bascule, chaque
+    // publication tier-1 alimentait le streak d'échec sans notifier personne.
+    const result = await submitToIndexNow(host, key, validUrls, { timeoutMs: 20_000 });
+    if (!result.accepted) {
+      const reason = `aucun endpoint accepté sur ${validUrls.length} urls — ${result.attempts.join(" | ")}`;
       console.warn(`[indexnow-worker] ${reason}`);
       // Audit indexation 2026-05-15 P0-10 — track fail streak + alerte Telegram.
       await recordIndexNowFail(reason);
       return;
     }
     console.log(
-      `[indexnow-worker] OK ${validUrls.length} urls pinged (origin=${origin}, status=${res.status})`,
+      `[indexnow-worker] OK ${validUrls.length} urls pinged (origin=${origin}, endpoint=${result.accepted})`,
     );
     // Succès → reset le streak counter
     await resetIndexNowFailStreak();
@@ -131,8 +124,6 @@ async function processJob(job: Job<IndexNowJobPayload>): Promise<void> {
     const reason = err instanceof Error ? err.message : String(err);
     console.warn(`[indexnow-worker] error:`, err);
     await recordIndexNowFail(reason);
-  } finally {
-    clearTimeout(timeout);
   }
 }
 

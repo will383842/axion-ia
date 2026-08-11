@@ -22,7 +22,7 @@ export {};
 // Limite : ne couvre que les URLs IN sitemap. Pour KB ressources hors sitemap
 // (V1 = 0 KB entries) ou orphans, voir P1-18 BFS link graph audit.
 
-const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
+import { submitToIndexNow } from "../src/lib/indexnow";
 const DEFAULT_SITE_URL = "https://axion-ia.com";
 
 // Fenêtre 7 jours glissante. Cohérent avec cadence factory ~20-100 articles/jour.
@@ -121,32 +121,21 @@ async function collectRecentUrls(siteUrl: string): Promise<string[]> {
   return Array.from(recentUrls);
 }
 
-async function pingBatch(
-  urls: string[],
-  host: string,
-  key: string,
-  keyLocation: string,
-): Promise<void> {
+async function pingBatch(urls: string[], host: string, key: string): Promise<void> {
   if (urls.length === 0) return;
-  const payload = { host, key, keyLocation, urlList: urls };
-  try {
-    const res = await fetch(INDEXNOW_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (res.status >= 200 && res.status < 300) {
-      console.log(`[daily-indexnow-resubmit] OK — ${urls.length} URLs pinged.`);
-    } else {
-      const body = await res.text().catch(() => "");
-      console.warn(
-        `[daily-indexnow-resubmit] non-2xx response : ${res.status} ${res.statusText} — ${body.slice(0, 200)}`,
-      );
-    }
-  } catch (err) {
+  // Cascade d'endpoints (SSOT `src/lib/indexnow.ts`) : `api.indexnow.org` refuse
+  // ce domaine (403 `UserForbiddedToAccessSite`, back-end Microsoft). Sans la
+  // bascule, ce cron re-soumettait dans le vide tous les jours, en silence.
+  const result = await submitToIndexNow(host, key, urls);
+  if (result.accepted) {
+    console.log(
+      `[daily-indexnow-resubmit] OK — ${urls.length} URLs acceptées par ${result.accepted}.`,
+    );
+  } else {
     console.warn(
-      `[daily-indexnow-resubmit] ping error :`,
-      err instanceof Error ? err.message : err,
+      process.env["GITHUB_ACTIONS"] === "true"
+        ? `::warning title=IndexNow::resoumission quotidienne refusée par tous les endpoints (${urls.length} URLs) — ${result.attempts.join(" | ")}`
+        : `[daily-indexnow-resubmit] refusé par tous les endpoints — ${result.attempts.join(" | ")}`,
     );
   }
 }
@@ -165,7 +154,6 @@ async function main(): Promise<void> {
   }
 
   const host = new URL(siteUrl).host;
-  const keyLocation = `${siteUrl}/${key}.txt`;
 
   const recentUrls = await collectRecentUrls(siteUrl);
   if (recentUrls.length === 0) {
@@ -180,7 +168,7 @@ async function main(): Promise<void> {
   // Batch par 1000 (sub-cap pratique IndexNow 10K/batch).
   for (let i = 0; i < recentUrls.length; i += MAX_URLS_PER_BATCH) {
     const batch = recentUrls.slice(i, i + MAX_URLS_PER_BATCH);
-    await pingBatch(batch, host, key, keyLocation);
+    await pingBatch(batch, host, key);
   }
 }
 
