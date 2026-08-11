@@ -741,11 +741,14 @@ export default async function Home({ params }: HomeProps) {
             <TrustSignalsPanel isFr={isFr} />
           </div>
 
-          {/* Réassurance Qualiopi (Phase B) — centrée sous le panneau,
-              hors zone LCP du hero. Pastille texte seul, null hors Phase B. */}
+          {/* Réassurance Qualiopi — centrée sous le panneau, hors zone LCP du
+              hero. Null hors Phase B. Passée de la pastille texte à la CARTE
+              avec le LOGO officiel le 2026-08-11 (demande Will : « le logo bien
+              visible dans la page ») : lockup sur fond blanc + mention
+              obligatoire, largeur bornée pour rester un encart de réassurance. */}
           <FadeInOnView>
             <div className="mt-10 flex justify-center sm:mt-12">
-              <QualiopiBadge variant="inline" />
+              <QualiopiBadge variant="card" className="w-full max-w-xl" />
             </div>
           </FadeInOnView>
         </Container>
