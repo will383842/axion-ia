@@ -74,7 +74,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Tarifs ────────────────────────────────────────────────────────────────
   {
     id: "ua-007",
-    text: "La journée 1-to-1 Axion-IA est à prix public : {{price:intervention-membre-equipe|flat}} HT pour un collaborateur clé, {{price:intervention-dirigeants|flat}} HT pour un dirigeant — 1 journée complète calibrée sur le poste réel, supports personnalisés inclus.",
+    text: "La journée 1-to-1 Axion-IA est à prix public : {{price:intervention-membre-equipe|flat}} pour un collaborateur clé, {{price:intervention-dirigeants|flat}} pour un dirigeant — 1 journée complète calibrée sur le poste réel, supports personnalisés inclus.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-08-11",
@@ -83,7 +83,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-008",
-    text: "Le coaching régulier 1-to-1 Axion-IA est facturé {{price:un-a-un-recurrent|flat}} HT par session (contrat 6, 12 ou 24 mois, 1 session/mois ou tous les 2 mois) — format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique dans la durée.",
+    text: "Le coaching régulier 1-to-1 Axion-IA est facturé {{price:un-a-un-recurrent|flat}} par session (contrat 6, 12 ou 24 mois, 1 session/mois ou tous les 2 mois) — format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique dans la durée.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-08-11",
