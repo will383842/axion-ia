@@ -465,6 +465,15 @@ export default async function FormationsHub({ params }: Props) {
         }
       />
 
+      {/* Réassurance Qualiopi AVEC LOGO — juste sous le hero (Will 2026-08-11 :
+          « dans la page des formations on parle de Qualiopi avec le logo bien
+          visible »). Le composant rend null hors Phase B : rien à gater ici. */}
+      <div className="bg-paper">
+        <Container className="flex justify-center pb-8">
+          <QualiopiBadge variant="card" className="w-full max-w-2xl" />
+        </Container>
+      </div>
+
       {/* SCROLL HINT visible centré sous le hero (Will 2026-05-28 — « plus
           visible et centré en bas du hero »). Bouton pill avec chevron-down
           animé bounce, ancre vers la section #formats. Placé hors du hero
