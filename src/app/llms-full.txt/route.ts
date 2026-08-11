@@ -44,7 +44,10 @@ export function GET() {
     "fr",
   );
   // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(/^dès\s/, "à partir de ");
+  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+    /^(dès\s|À partir de )/,
+    "à partir de ",
+  );
   // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
   // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
   // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
