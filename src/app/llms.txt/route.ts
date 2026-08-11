@@ -17,8 +17,11 @@
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
 import {
+  CODAGE_TIERS,
   INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
+  getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
 } from "@/content/pricing";
@@ -30,10 +33,15 @@ export const runtime = "edge";
 // HTTP `Cache-Control` (1h fresh + 24h SWR) below for CDN caching.
 
 export function GET() {
+  // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
+  // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
+  // le tier le moins cher du groupe UN_A_UN_TIERS.
   const coachingPrice = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
+    getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
+  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(/^dès\s/, "à partir de ");
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
   const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
     compact: true,
@@ -65,12 +73,13 @@ export function GET() {
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
 
-## Modules — 4 prestations
+## Modules — 5 prestations
 
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/formations/tarifs.
 - [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
-- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.${qualiopiSection}
+- [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
+- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.${qualiopiSection}
 
 ## Preuve & méthode
 

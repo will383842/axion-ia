@@ -2,7 +2,7 @@
  * KB sectorielle — Verticale Audits IA (P4 Sprint P1 KB pilote 2026-05-21).
  *
  * 60 facts vérifiés sourcés sur l'audit IA en entreprise France.
- * Sources : INSEE, BPI France, DARES, France Num, Syntec Numérique, CGPME,
+ * Sources : INSEE, BPI France, DARES, France Num, Numeum (ex-Syntec Numérique), CGPME,
  *           ANSSI, CNIL, AI Act eur-lex.europa.eu, AFNOR, ISO.
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
@@ -53,17 +53,17 @@ export const KB_AUDITS: readonly KbFact[] = [
     id: "audit-004",
     text: "Le RGPD (Règlement UE 2016/679) exige une DPIA (Data Protection Impact Assessment) pour tout traitement IA à grande échelle impliquant des données personnelles — y compris les outils RH et CRM.",
     source: "CNIL — Guide DPIA 2023",
-    sourceUrl: "https://www.cnil.fr/fr/DPIA",
+    sourceUrl: "https://www.cnil.fr/fr/intelligence-artificielle",
     verifiedAt: "2026-05-01",
     verticales: ["audits"],
     confidence: 0.98,
   },
   {
     id: "audit-005",
-    text: "60 % des entreprises françaises ayant déployé une solution IA constatent des dérives par rapport aux objectifs initiaux dans les 12 premiers mois (Syntec Numérique, baromètre IA 2025).",
-    source: "Syntec Numérique — Baromètre IA 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-01",
+    text: "60 % des entreprises françaises ayant déployé une solution IA constatent des dérives par rapport aux objectifs initiaux dans les 12 premiers mois (Numeum, ex-Syntec Numérique, baromètre IA 2025).",
+    source: "Numeum (ex-Syntec Numérique) — Baromètre IA 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["audits"],
     confidence: 0.8,
   },
@@ -144,7 +144,7 @@ export const KB_AUDITS: readonly KbFact[] = [
     id: "audit-014",
     text: "La CNIL impose dans son guide sur le développement IA (2024) la tenue d'un registre des traitements IA distinct du RGPD classique, incluant : finalité, base légale, durée de conservation, mesures de minimisation.",
     source: "CNIL — Guide développement IA 2024",
-    sourceUrl: "https://www.cnil.fr/fr/ia-guide",
+    sourceUrl: "https://www.cnil.fr/fr/intelligence-artificielle",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.95,
@@ -218,7 +218,7 @@ export const KB_AUDITS: readonly KbFact[] = [
     id: "audit-022",
     text: "Une DPIA (Data Protection Impact Assessment) IA doit être réalisée avant tout déploiement d'un système de profilage à grande échelle, de surveillance systématique ou de traitement de données sensibles (CNIL liste 14 cas obligatoires).",
     source: "CNIL — Liste DPIA obligatoires 2018-2024",
-    sourceUrl: "https://www.cnil.fr/fr/DPIA",
+    sourceUrl: "https://www.cnil.fr/fr/intelligence-artificielle",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.97,
@@ -364,7 +364,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-038",
-    text: "Selon Gartner (Hype Cycle 2024), 30 % des projets IA générative seront abandonnés après la phase POC d'ici fin 2025, faute de ROI démontré — l'audit early-stage évite l'écueil.",
+    text: "Selon Gartner (Hype Cycle 2024), 30 % des projets IA générative devaient être abandonnés après la phase POC d'ici fin 2025, faute de ROI démontré (projection publiée en 2024) — l'audit early-stage évite l'écueil.",
     source: "Gartner — Hype Cycle for Generative AI 2024",
     sourceUrl: "https://www.gartner.com/en/research/methodologies/gartner-hype-cycle",
     verifiedAt: "2026-05-22",
@@ -384,7 +384,7 @@ export const KB_AUDITS: readonly KbFact[] = [
     id: "audit-040",
     text: "Selon IDC (Worldwide AI Spending Guide 2024), le marché français de l'IA atteindra 12,4 Md€ en 2027 — soit une croissance annuelle moyenne de +29 % sur 2024-2027, justifiant les audits de pertinence des investissements." /* price-exempt: stat marché tierce */,
     source: "IDC — Worldwide AI Spending Guide 2024",
-    sourceUrl: "https://www.idc.com/getdoc.jsp?containerId=IDC_P33198",
+    sourceUrl: "https://www.idc.com",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
     confidence: 0.83,
@@ -512,7 +512,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-054",
-    text: "Le tarif d'un audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) démarre à {{price:audit-strategique-pme|range}}, et un audit ETI (8 cas d'usage, 10 jours) à {{price:audit-strategique-eti|from}}.",
+    text: "Audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) : {{price:audit-strategique-pme|from}}. Audit ETI (8 cas d'usage, 10 jours) : {{price:audit-strategique-eti|from}}.",
     source: "Axion-IA — Grille tarifaire audit 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",

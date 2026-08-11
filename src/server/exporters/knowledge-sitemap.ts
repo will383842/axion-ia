@@ -109,9 +109,15 @@ export async function listKnowledgeSitemapEntries(
       // sinon updatedAt translation. Signal fraîcheur honnête vs Google.
       const lastModified = e.publishedAt ?? frT.updatedAt ?? e.updatedAt;
 
+      // Audit KB 2026-08-11 — préfixe de LOCALE ajouté (`/fr` + `/en`) :
+      // `buildKbPublicUrl` renvoie un chemin SANS locale (`/blog/slug`,
+      // `/connaissances/slug`), or toutes les pages publiques vivent sous
+      // `/[locale]/…`. Sans préfixe, le sitemap émettait des URLs 308/404.
+      // Aligné sur les flux RSS/JSON qui réinjectent déjà la locale.
+      const enPath = urlEn ?? urlFr;
       out.push({
-        url: `${SITE_URL}${urlFr.startsWith("/") ? "" : "/"}${urlFr}`,
-        urlEn: `${SITE_URL}${(urlEn ?? urlFr).startsWith("/") ? "" : "/"}${urlEn ?? urlFr}`,
+        url: `${SITE_URL}/fr${urlFr.startsWith("/") ? "" : "/"}${urlFr}`,
+        urlEn: `${SITE_URL}/en${enPath.startsWith("/") ? "" : "/"}${enPath}`,
         lastModified,
         status: e.status as "published" | "deprecated",
       });

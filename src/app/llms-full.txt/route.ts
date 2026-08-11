@@ -7,8 +7,10 @@ import { CASE_STUDIES } from "@/content/case-studies";
 import { SERVICE_BY_ID } from "@/content/services";
 import {
   AUDIT_TIERS,
+  CODAGE_TIERS,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
+  UN_A_UN_TIERS,
   formatAmount,
   getEntryLabel,
   getTierById,
@@ -35,11 +37,14 @@ export function GET() {
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
   const auditRange = `à partir de ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr")}`;
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, "fr").replace(/^dès\s/, "à partir de ");
-  // intervention-dirigeants alimente le 1-to-1 (UN_A_UN_TIERS).
+  // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
+  // (990 €), pas Dirigeant (1 390 €).
   const coachingEntry = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
+    getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
+  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(/^dès\s/, "à partir de ");
   // Phase B (divulgation publique OF) — route edge sans DB, lecture env flag
   // inline (cf. llms.txt). Bloc omis tant que la Phase A est active.
   // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
@@ -79,7 +84,7 @@ Axion-IA est un organisme de formation certifié **Qualiopi** au titre de la cat
 
 Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
-## 4 modules
+## 5 modules
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
 17 formations IA intra-entreprise sur site (ou distance), 4 paliers durée (4 h à 3 jours), pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
@@ -95,7 +100,11 @@ URL : ${SITE_URL}/fr/implementation
 
 ### Module 4 — ${SERVICE_BY_ID.unAUn.officialFr} (à partir de ${coachingEntry})
 1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 30 min gratuit, progression mesurable à chaque étape.
-URL : ${SITE_URL}/fr/un-a-un${qualiopiBlock}
+URL : ${SITE_URL}/fr/un-a-un
+
+### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${sitesWebEntry})
+Sites web et SaaS sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), conformité RGPD.
+URL : ${SITE_URL}/fr/sites-web-augmentes${qualiopiBlock}
 
 ## FAQ
 

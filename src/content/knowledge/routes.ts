@@ -27,20 +27,28 @@ export const KB_PUBLIC_ROUTES: KbRouteMap = {
   competitor_card: null,
   commercial_doc: null,
   onboarding_step: null,
-  // V4 — Knowledge Factory : tous les types factory passent par hub /ressources/[type]/[slug] V1.
-  // Paths dédiés type-spécifiques (ex. /comparaisons-ia/, /automatisations/) = décision V2.
-  automation_recipe: null,
-  tool_review: null,
-  industry_use_case: null,
-  comparison: null,
-  implementation_playbook: null,
-  prompt_pattern: null,
-  roi_calculator_template: null,
-  intervention_module: null,
-  competence_boost: null,
-  secteur_brief: null,
-  dept_brief: null,
-  metier_brief: null,
+  // V4 — Knowledge Factory. Décision Will 2026-08-11 (« public assumé ») : les
+  // types factory sont servis par les pages réelles `/[locale]/connaissances/[slug]`
+  // (slug = slug de TRADUCTION, ex. `kb-fact-audit-006-fr`) — déjà en ligne,
+  // liées depuis 10 pages services (`RelatedKnowledge`). Ce mapping les rend
+  // visibles du sitemap/RSS/hub, alignant enfin l'exposition sur le site réel.
+  // ⚠️ La page /connaissances est FR-only (`notFound()` si locale ≠ fr) : le
+  // miroir EN déclaré ici ne devient réel que si la page gagne un rendu EN
+  // (routing.ts déclare déjà fr === en pour ce segment).
+  // Historique : la valeur `null` (décision 2026-06-17 anti-soft-404) visait les
+  // URLs de hub `/ressources/<type>/<slug>` qui n'avaient AUCUNE route.
+  automation_recipe: { fr: "/connaissances", en: "/connaissances" },
+  tool_review: { fr: "/connaissances", en: "/connaissances" },
+  industry_use_case: { fr: "/connaissances", en: "/connaissances" },
+  comparison: { fr: "/connaissances", en: "/connaissances" },
+  implementation_playbook: { fr: "/connaissances", en: "/connaissances" },
+  prompt_pattern: { fr: "/connaissances", en: "/connaissances" },
+  roi_calculator_template: { fr: "/connaissances", en: "/connaissances" },
+  intervention_module: { fr: "/connaissances", en: "/connaissances" },
+  competence_boost: { fr: "/connaissances", en: "/connaissances" },
+  secteur_brief: { fr: "/connaissances", en: "/connaissances" },
+  dept_brief: { fr: "/connaissances", en: "/connaissances" },
+  metier_brief: { fr: "/connaissances", en: "/connaissances" },
 };
 
 /** Hub agrégateur (cross-type) — décision Will 2026-05-13. */
@@ -53,14 +61,14 @@ export const KB_CLIENT_HUB_ROUTE = { fr: "/mes-ressources", en: "/my-resources" 
  * Construit l'URL publique d'une entrée KB.
  * Retourne `null` si le type n'a PAS de route de détail dédiée.
  *
- * Audit indexation 2026-06-17 (décision Will « ne plus les exposer ») : les types
- * sans route (`null` dans KB_PUBLIC_ROUTES — methodology, sop, industry_use_case,
- * comparison, automation_recipe, etc.) généraient auparavant une URL de hub
- * `/ressources/<type>/<slug>` **qui n'a aucune route** → soft-404 (HTTP 200) poussé
- * dans sitemap / RSS / llms.txt / maillage interne, gaspillant du crawl budget.
- * Ce sont des faits RAG/grounding, pas des pages destinées au public. On renvoie
- * donc `null` : tous les call sites (knowledge-sitemap/rss/llms-txt, client-surface,
- * actions KB) court-circuitent déjà sur `null` → ces URLs disparaissent proprement.
+ * Audit indexation 2026-06-17 : les types sans route (`null`) généraient une URL
+ * de hub `/ressources/<type>/<slug>` **sans route** → soft-404 poussé dans
+ * sitemap / RSS / maillage interne. Tous les call sites court-circuitent sur
+ * `null` → ces URLs disparaissent proprement.
+ * Audit KB 2026-08-11 (décision Will « public assumé ») : les types factory
+ * pointent désormais vers `/connaissances/[slug]` — page réelle, déjà servie et
+ * maillée depuis les pages services. Seuls les types INTERNES (methodology, sop,
+ * adr, doctrine, commercial_doc, …) restent `null`.
  */
 export function buildKbPublicUrl(type: KbType, locale: "fr" | "en", slug: string): string | null {
   const route = KB_PUBLIC_ROUTES[type];

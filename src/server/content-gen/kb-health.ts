@@ -24,7 +24,11 @@ export interface KbHealthSnapshot {
 
 const HARD_GATE_MIN_PUBLISHED = 50;
 const HARD_GATE_MIN_CANONICAL_RATIO = 0.6;
-const HARD_GATE_MAX_DAYS_SINCE_LAST = 90;
+// Audit KB 2026-08-11 — 90 → 180 j. La KB de faits est un corpus stable seedé
+// (pas un flux) : à 90 j le gate coupait TOUT le content-gen chaque trimestre
+// sans re-seed. Le signal de revue reste à 90 j (`reviewDueAt` posé par
+// `seed-kb-facts.ts`) : l'admin voit la péremption bien avant le hard stop.
+const HARD_GATE_MAX_DAYS_SINCE_LAST = 180;
 
 export class KbNotReadyError extends Error {
   constructor(public readonly snapshot: KbHealthSnapshot) {

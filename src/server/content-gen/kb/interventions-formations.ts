@@ -1,9 +1,9 @@
 /**
  * KB sectorielle — Verticale Interventions & Formations IA (P6 2026-05-22).
  *
- * 32 facts vérifiés sur la formation IA en entreprise France.
+ * 70 facts vérifiés sur la formation IA en entreprise France.
  * Sources : BPI France, France Num, DARES, Pôle Emploi, OCDE,
- *           Syntec Numérique, CPF DREETS, Axion-IA terrain.
+ *           Numeum (ex-Syntec Numérique), CPF DREETS, Axion-IA terrain.
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
  *
@@ -18,7 +18,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Formats de formation ────────────────────────────────────────────────
   {
     id: "form-001",
-    text: "Axion-IA propose des ateliers pratiques de 2h à 4h pour initier les équipes aux outils IA — format conçu pour s'intégrer dans une demi-journée de travail sans immobiliser l'équipe.",
+    text: "Axion-IA propose un format demi-journée (4 h) pour initier les équipes aux outils IA — conçu pour s'intégrer dans une demi-journée de travail sans immobiliser l'équipe, en intra-entreprise (2 à 15 participants).",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -36,7 +36,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-003",
-    text: "Le parcours d'accompagnement intensif Axion-IA dure 6 semaines avec des sessions hebdomadaires de 2h — structuré en 3 phases : découverte, expérimentation, intégration opérationnelle.",
+    text: "L'accompagnement Axion-IA dans la durée combine une formation intensive (1 à 3 jours) puis un suivi individuel via le coaching 1-to-1 régulier — structuré en 3 phases : découverte, expérimentation, intégration opérationnelle.",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -110,7 +110,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Tarifs indicatifs ────────────────────────────────────────────────────
   {
     id: "form-010",
-    text: "Atelier découverte IA en entreprise (2h, jusqu'à 12 personnes) — sur devis selon le périmètre, inclus supports pédagogiques et accès 30 jours à l'espace ressources Axion-IA.",
+    text: "Formation découverte IA en entreprise (demi-journée de 4 h, groupe de 2 à 15 personnes) — prix public par groupe affiché sur la grille tarifaire, supports pédagogiques inclus.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -119,7 +119,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-011",
-    text: "Formation journée complète en entreprise (6h, jusqu'à 10 personnes) — sur devis selon le périmètre, selon secteur et niveau.",
+    text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — prix public fixe par groupe selon la catégorie (offre générale, par métier ou par secteur d'activité), hors frais de déplacement.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -128,7 +128,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-012",
-    text: "Parcours accompagnement 6 semaines (format hybride présentiel + distanciel) — sur devis selon le périmètre, selon l'effectif formé (5 à 20 personnes) — inclus audit initial des usages IA existants.",
+    text: "Pour ancrer les acquis après une formation, Axion-IA propose un suivi hybride : session de formation (1 à 2 jours, présentiel ou distanciel) puis coaching 1-to-1 régulier — incluant un cadrage initial des usages IA existants.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -138,10 +138,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché de la formation IA en France ─────────────────────────────────
   {
     id: "form-015",
-    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME et ETI (Syntec Numérique, 2025).",
-    source: "Syntec Numérique — Rapport formation IA 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-01",
+    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME et ETI (Numeum, ex-Syntec Numérique, 2025).",
+    source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.75,
   },
@@ -210,7 +210,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-021",
-    text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (90 min, jusqu'à 200 personnes) — sur devis selon le périmètre, selon format (présentiel, distanciel, hybride) et déplacements.",
+    text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (format plénière sur 1 journée, grands effectifs — séminaires, kick-off annuels) — sur devis selon le périmètre, le format (présentiel, distanciel, hybride) et les déplacements.",
     source: "Axion-IA — Grille tarifaire 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -260,8 +260,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-026",
     text: "En France, les entreprises de 50 à 249 salariés (PME) représentent 73 % des formations IA achetées en 2024, dépassant les grandes entreprises dont les DSI gèrent l'internalisation progressivement.",
-    source: "Syntec Numérique — Rapport formation IA 2025",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.75,
@@ -311,10 +311,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-031",
-    text: "Le délai moyen entre la demande de formation et la première session Axion-IA est de 10 à 15 jours ouvrés — incluant l'audit rapide des besoins (2h gratuit) et la personnalisation du programme.",
+    text: "Le délai moyen entre la demande de formation et la première session Axion-IA est de 10 à 15 jours ouvrés — incluant l'appel de cadrage des besoins (gratuit, réservable en ligne) et la personnalisation du programme.",
     source: "Axion-IA — Processus commercial 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.9,
   },
@@ -349,8 +349,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-035",
     text: "Le coût moyen d'un formateur IA certifié en France se situe entre 800 et 1 800 € HT par jour en 2025, avec une prime pour les formateurs spécialisés en IA générative (LLM, prompting avancé) atteignant 2 500 € HT/jour." /* price-exempt: stat marché tierce */,
-    source: "Syntec Numérique — Baromètre des métiers du numérique 2025",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — Baromètre des métiers du numérique 2025",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
     confidence: 0.77,
@@ -377,10 +377,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Secteurs banque, assurance, retail, santé ─────────────────────────────
   {
     id: "form-041",
-    text: "Le secteur bancaire et assurantiel est le plus avancé en matière de formation IA en France : 73 % des grandes banques et 68 % des assureurs ont lancé un programme de formation IA pour leurs équipes en 2024 (Fédération Française de l'Assurance).",
-    source: "Fédération Française de l'Assurance — Rapport IA et formation 2024",
-    sourceUrl: "https://www.ffa-assurance.fr",
-    verifiedAt: "2026-05-22",
+    text: "Le secteur bancaire et assurantiel est le plus avancé en matière de formation IA en France : 73 % des grandes banques et 68 % des assureurs ont lancé un programme de formation IA pour leurs équipes en 2024 (France Assureurs, ex-FFA).",
+    source: "France Assureurs (ex-FFA) — Rapport IA et formation 2024",
+    sourceUrl: "https://www.franceassureurs.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.78,
   },
@@ -453,10 +453,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-053",
-    text: "En France, le Syntec Numérique identifie un déficit de 80 000 professionnels maîtrisant l'IA applicative d'ici 2027 — créant une pression sans précédent sur les organismes de formation certifiés et les formateurs experts.",
-    source: "Syntec Numérique — Livre blanc métiers IA 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-22",
+    text: "En France, Numeum (ex-Syntec Numérique) identifie un déficit de 80 000 professionnels maîtrisant l'IA applicative d'ici 2027 — créant une pression sans précédent sur les organismes de formation certifiés et les formateurs experts.",
+    source: "Numeum (ex-Syntec Numérique) — Livre blanc métiers IA 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.78,
   },
@@ -578,7 +578,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Formats innovants ─────────────────────────────────────────────────────
   {
     id: "form-067",
-    text: "Axion-IA propose un format « Lunch & Learn » de 90 minutes sur le temps de déjeuner — idéal pour initier un premier groupe pilote sans mobiliser de budget formation, avec un kit de ressources envoyé sous 48h post-session.",
+    text: "Le format demi-journée (4 h) Axion-IA est idéal pour initier un premier groupe pilote sans mobiliser un budget formation complet — supports pédagogiques remis aux participants à l'issue de la session.",
     source: "Axion-IA — Formats innovants formation IA 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",
@@ -630,18 +630,18 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-072",
-    text: "Les supports de formation Axion-IA sont mis à jour tous les 90 jours pour intégrer les nouvelles versions des outils IA (GPT-4o, Claude 3.7, Gemini 2.0) — garantissant que les participants travaillent avec les outils en production au moment de la formation.",
+    text: "Les supports de formation Axion-IA sont mis à jour tous les 90 jours pour intégrer les modèles de dernière génération des principaux fournisseurs (OpenAI, Anthropic, Google) — garantissant que les participants travaillent avec les outils en production au moment de la formation.",
     source: "Axion-IA — Politique mise à jour contenus pédagogiques 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
-  // ── Formations inter-entreprises ──────────────────────────────────────────
+  // ── Modalité intra-entreprise ─────────────────────────────────────────────
   {
     id: "form-073",
-    text: "Axion-IA organise des sessions inter-entreprises à Paris, Lyon et Bordeaux (groupes de 8 à 16 personnes) — permettant aux participants de bénéficier des retours d'expérience d'autres secteurs et d'élargir leur réseau IA professionnel.",
-    source: "Axion-IA — Calendrier formations inter-entreprises 2026",
+    text: "Les formations Axion-IA sont dispensées en intra-entreprise, sur site partout en France ou à distance — le programme est calibré sur le secteur et les cas réels de l'entreprise, plutôt que sur des sessions inter-entreprises génériques.",
+    source: "Axion-IA — Modalités formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
@@ -695,10 +695,14 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-077",
-    text: "Les prestations de formation Axion-IA recueillent une note moyenne de 4,88/5 sur 17 avis clients vérifiés — dont 15 notes maximales. Chaque avis est publié individuellement et consultable sur axion-ia.com/avis.",
-    source: "Axion-IA — Bilan qualité et satisfaction 2026",
+    // 🔄 Audit KB 2026-08-11 : ce fait dupliquait la stat de form-018
+    // (4,88/5 sur 17 avis). Réécrit sur un angle différent à partir des mêmes
+    // données réelles : le corpus complet des 77 avis, toutes prestations
+    // confondues, et sa fenêtre de collecte. Aucun chiffre nouveau.
+    text: "Toutes prestations confondues, Axion-IA totalise 77 avis clients vérifiés collectés du 20 juin au 6 juillet 2026, pour une note moyenne de 4,88/5. Chaque avis est publié individuellement avec le secteur et la ville du client sur axion-ia.com/avis.",
+    source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-08-11",
     verticales: ["interventions_formations"],
     confidence: 0.87,
   },
@@ -712,7 +716,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     text: "Sur les 77 avis clients vérifiés d'Axion-IA, 68 attribuent la note maximale de 5/5 et 9 la note de 4/5 — aucune note inférieure à 4. Le détail par prestation et par ville est public sur axion-ia.com/avis.",
     source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-22",
+    // La date de vérification ne peut pas précéder la période de collecte citée.
+    verifiedAt: "2026-07-06",
     verticales: ["interventions_formations"],
     confidence: 0.88,
   },
