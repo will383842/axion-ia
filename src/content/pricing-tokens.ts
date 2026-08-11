@@ -26,7 +26,9 @@
 import type { Locale } from "@/i18n/routing";
 import { fmtNumber } from "@/lib/intl";
 import {
+  MAINTENANCE_TIERS,
   PRICING_CATEGORIES,
+  UN_A_UN_RECURRING_TIER,
   UN_A_UN_TIERS,
   formatAmount,
   formatAmountRange,
@@ -97,6 +99,10 @@ export const PRICE_TOKEN_REGISTRY: ReadonlyMap<string, RegistryEntry> = (() => {
   const allTierGroups: ReadonlyArray<ReadonlyArray<PricingTier>> = [
     ...Object.values(PRICING_CATEGORIES),
     UN_A_UN_TIERS,
+    // Tiers hors PRICING_CATEGORIES mais tokenisables (KB facts, prose) :
+    // coaching récurrent 1-to-1 + maintenance post-livraison.
+    [UN_A_UN_RECURRING_TIER],
+    MAINTENANCE_TIERS,
   ];
   for (const group of allTierGroups) {
     for (const tier of group) {

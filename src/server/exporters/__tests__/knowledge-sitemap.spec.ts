@@ -28,7 +28,10 @@ vi.mock("@/lib/prisma", () => ({
 }));
 vi.mock("@/lib/seo", () => ({ SITE_URL: "https://axion-ia.com" }));
 vi.mock("@/content/knowledge/routes", () => ({
-  buildKbPublicUrl: (_type: string, locale: string, slug: string) => `/${locale}/r/${slug}`,
+  // Fidèle au contrat RÉEL : buildKbPublicUrl renvoie un chemin SANS préfixe de
+  // locale (ex. `/blog/slug`) — c'est l'exporter qui ajoute `/fr` / `/en`.
+  // (L'ancien mock incluait la locale, masquant l'absence de préfixe en prod.)
+  buildKbPublicUrl: (_type: string, _locale: string, slug: string) => `/r/${slug}`,
 }));
 vi.mock("@/lib/i18n/en-to-fr-redirect", () => ({
   isEnLocaleDisabled: () => isEnDisabledMock(),

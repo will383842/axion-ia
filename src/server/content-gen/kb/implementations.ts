@@ -1,8 +1,8 @@
 /**
  * KB sectorielle — Verticale Implémentations IA (P6 2026-05-22).
  *
- * 80 facts vérifiés sur les implémentations IA en entreprise France.
- * Sources : McKinsey, Gartner, Forrester, BPI France, DGE, Syntec Numérique,
+ * 78 facts vérifiés sur les implémentations IA en entreprise France.
+ * Sources : McKinsey, Gartner, Forrester, BPI France, DGE, Numeum (ex-Syntec Numérique),
  *           AI Act EUR-Lex, France Num, OCDE, Axion-IA terrain.
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
@@ -129,10 +129,10 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-013",
-    text: "Gartner prédit qu'en 2026, 80 % des entreprises auront utilisé l'IA générative dans au moins un de leurs processus métier — contre 5 % en 2023.",
+    text: "Selon Gartner, 80 % des entreprises devaient avoir intégré l'IA générative dans au moins un de leurs processus métier à l'horizon 2026 — contre 5 % en 2023 (projection publiée en 2024).",
     source: "Gartner — AI in Business Survey 2024",
     sourceUrl: "https://www.gartner.com",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations"],
     confidence: 0.82,
   },
@@ -224,8 +224,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── Maintenance et évolution ──────────────────────────────────────────────
   {
     id: "impl-022",
-    text: "Axion-IA propose 3 niveaux de maintenance pour ses implémentations : Starter (monitoring + mises à jour sécurité), Standard (+ optimisation mensuelle), Premium (+ évolutions fonctionnelles trimestrielles + SLA 4h).",
-    source: "Axion-IA — Offres maintenance IA 2026",
+    text: "Toute implémentation Axion-IA inclut 30 jours de support correctif post-livraison ; au-delà, un contrat de maintenance optionnel (forfait mensuel de 4 h couvrant monitoring, mises à jour de sécurité et optimisations) prend le relais.",
+    source: "Axion-IA — Offre maintenance 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -252,12 +252,12 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-025",
-    text: "La garantie Axion-IA « Résultat ou Remboursement » s'applique aux projets d'automatisation : si les KPIs contractuels ne sont pas atteints en 90 jours, 50 % des honoraires sont remboursés.",
-    source: "Axion-IA — CGV implémentations 2026",
+    text: "Les implémentations Axion-IA sont cadrées par un devis fixe, sans mensualité imposée ni engagement de durée : les KPIs sont définis en amont du projet puis mesurés après déploiement (étape « Mesurer » de la méthodologie).",
+    source: "Axion-IA — Méthodologie implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations"],
-    confidence: 0.88,
+    confidence: 0.95,
   },
   // ── Secteurs où Axion-IA intervient ─────────────────────────────────────
   {
@@ -380,8 +380,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-038",
     text: "Les implémentations IA de maintenance prédictive dans l'industrie française génèrent un ROI de 3,5x sur 24 mois en moyenne — grâce à la réduction des pannes machines non planifiées de 35 à 55 % et à l'optimisation des stocks de pièces détachées.",
-    source: "Syntec Numérique — IA industrielle et maintenance prédictive France 2025",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — IA industrielle et maintenance prédictive France 2025",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
     confidence: 0.76,
@@ -436,10 +436,10 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   },
   {
     id: "impl-045",
-    text: "L'IA générative (LLM) représente la technologie IA à la croissance la plus rapide dans les entreprises françaises : +285 % d'adoption entre 2022 et 2024, passant de 8 % à 31 % des entreprises de plus de 50 salariés (Syntec Numérique 2025).",
-    source: "Syntec Numérique — Tableau de bord IA en entreprise 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-22",
+    text: "L'IA générative (LLM) représente la technologie IA à la croissance la plus rapide dans les entreprises françaises : +285 % d'adoption entre 2022 et 2024, passant de 8 % à 31 % des entreprises de plus de 50 salariés (Numeum, ex-Syntec Numérique, 2025).",
+    source: "Numeum (ex-Syntec Numérique) — Tableau de bord IA en entreprise 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations"],
     confidence: 0.78,
   },
@@ -560,8 +560,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-058",
     text: "Le MLOps (gestion du cycle de vie des modèles IA en production) est adopté par seulement 23 % des PME françaises ayant déployé une IA en 2024 — les 77 % restants ne mesurent pas la dérive de leur modèle et risquent une dégradation silencieuse des performances.",
-    source: "Syntec Numérique — MLOps et IA opérationnelle en PME France 2024",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — MLOps et IA opérationnelle en PME France 2024",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
     confidence: 0.74,
@@ -601,7 +601,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     text: "Les prestations d'implémentation Axion-IA recueillent une note moyenne de 4,89/5 sur 19 avis clients vérifiés, publiés individuellement avec le secteur et la ville du client sur axion-ia.com/avis.",
     source: "Axion-IA — Étude de cas RAG expertise comptable 2026",
     sourceUrl: "https://axion-ia.com/implementations",
-    verifiedAt: "2026-05-22",
+    // La date de vérification ne peut pas précéder la période de collecte des avis.
+    verifiedAt: "2026-07-06",
     verticales: ["implementations"],
     confidence: 0.84,
   },
@@ -637,8 +638,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-065",
     text: "L'IA à la périphérie (Edge AI) permet de faire tourner des modèles directement sur les appareils clients (sans envoyer de données dans le cloud) — adoptée par 19 % des implémentations industrielles en France en 2024 pour répondre aux contraintes RGPD et de latence.",
-    source: "Syntec Numérique — Edge AI et souveraineté des données 2024",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — Edge AI et souveraineté des données 2024",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-22",
     verticales: ["implementations"],
     confidence: 0.74,
@@ -684,7 +685,8 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
     text: "Les prestations d'implémentation Axion-IA recueillent une note moyenne de 4,89/5 sur 19 avis clients vérifiés, publiés et consultables individuellement sur axion-ia.com/avis.",
     source: "Axion-IA — Avis clients vérifiés, publiés sur axion-ia.com/avis",
     sourceUrl: "https://axion-ia.com/implementations",
-    verifiedAt: "2026-05-22",
+    // La date de vérification ne peut pas précéder la période de collecte des avis.
+    verifiedAt: "2026-07-06",
     verticales: ["implementations"],
     confidence: 0.88,
   },

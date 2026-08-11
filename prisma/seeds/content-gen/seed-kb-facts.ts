@@ -22,6 +22,7 @@ import { KB_SITES_WEB_AUGMENTES } from "../../../src/server/content-gen/kb/sites
 import { KB_VILLES_ALL } from "../../../src/server/content-gen/kb/villes-facts";
 import type { KbFact } from "../../../src/server/content-gen/kb/audits";
 import { servicesForVerticales, serviceTagSlug } from "../../../src/content/knowledge/services";
+import { resolvePriceTokens } from "../../../src/content/pricing-tokens";
 
 /** Tous les facts sectoriels à seeder. Idempotent : upsert sur slug unique. */
 const ALL_KB_FACTS: readonly KbFact[] = [
@@ -80,6 +81,14 @@ async function upsertEmbedding(
 async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   const entrySlug = `kb-fact-${fact.id}`;
 
+  // Audit KB 2026-08-11 — les tokens `{{price:…}}` sont résolus À L'ÉCRITURE
+  // (comme l'ingestion chatbot, cf. `seed-sources.ts`) : sans ça, le token part
+  // brut dans la page publique /connaissances ET dans le grounding LLM.
+  const factText = resolvePriceTokens(fact.text, "fr");
+  // Revue de fraîcheur : due 90 j après la vérification du fait. Signal admin
+  // AVANT le hard gate kb-health (180 j) — cf. `kb-health.ts`.
+  const reviewDueAt = new Date(new Date(fact.verifiedAt).getTime() + 90 * 24 * 3600 * 1000);
+
   const entry = await prisma.knowledgeEntry.upsert({
     where: { slug: entrySlug },
     update: {
@@ -87,6 +96,10 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       pipelineStage: "published",
       audience: "public",
       publishedAt: new Date(fact.verifiedAt),
+      reviewDueAt,
+      // Un slug ré-listé dans les fichiers KB ressuscite une entrée soft-deleted
+      // par la réconciliation (cf. `reconcileDeletedFacts`).
+      deletedAt: null,
     },
     create: {
       slug: entrySlug,
@@ -97,13 +110,14 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       status: "published",
       pipelineStage: "published",
       publishedAt: new Date(fact.verifiedAt),
+      reviewDueAt,
     },
   });
 
   const translationSlug = `${entrySlug}-fr`;
-  const title = fact.text.slice(0, 120).replace(/[.…]$/, "") + "…";
-  const bodyHtml = `<p>${fact.text}</p><p><em>Source : <a href="${fact.sourceUrl}" rel="noopener noreferrer">${fact.source}</a></em></p>`;
-  const bodyText = `${fact.text} Source : ${fact.source}.`;
+  const title = factText.slice(0, 120).replace(/[.…]$/, "") + "…";
+  const bodyHtml = `<p>${factText}</p><p><em>Source : <a href="${fact.sourceUrl}" rel="noopener noreferrer">${fact.source}</a></em></p>`;
+  const bodyText = `${factText} Source : ${fact.source}.`;
 
   const translation = await prisma.knowledgeTranslation.upsert({
     where: { locale_slug: { locale: "fr", slug: translationSlug } },
@@ -111,7 +125,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       title,
       body: bodyHtml,
       bodyText,
-      excerpt: fact.text.slice(0, 300),
+      excerpt: factText.slice(0, 300),
       metaTitle: title.slice(0, 70),
       qualityScore: fact.confidence,
       wordCount: bodyText.split(/\s+/).length,
@@ -123,7 +137,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       title,
       body: bodyHtml,
       bodyText,
-      excerpt: fact.text.slice(0, 300),
+      excerpt: factText.slice(0, 300),
       metaTitle: title.slice(0, 70),
       qualityScore: fact.confidence,
       wordCount: bodyText.split(/\s+/).length,
@@ -137,7 +151,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   if (embeddingsEnabled) {
     await upsertEmbedding(prisma, translation.id, {
       title,
-      excerpt: fact.text.slice(0, 300),
+      excerpt: factText.slice(0, 300),
       bodyText,
     });
   }
@@ -181,6 +195,30 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   }
 }
 
+/**
+ * Réconciliation des suppressions — Audit KB 2026-08-11.
+ *
+ * Le seed est upsert-only : un fait PURGÉ des fichiers TS (ex. faits
+ * « financement » retirés en juin 2026) restait publié en base à vie — servi en
+ * page publique /connaissances ET récupérable par le RAG. Cette passe
+ * soft-delete (deletedAt + status archived) toute entrée `kb-fact-*` absente de
+ * `ALL_KB_FACTS`. Réversible : re-lister le slug dans un fichier KB le
+ * ressuscite au prochain seed (l'upsert remet `deletedAt: null`).
+ * Périmètre strict `kb-fact-` : ne touche jamais les entrées nées de la
+ * factory/ingest (slugs différents).
+ */
+async function reconcileDeletedFacts(prisma: PrismaClient): Promise<number> {
+  const keptSlugs = ALL_KB_FACTS.map((f) => `kb-fact-${f.id}`);
+  const result = await prisma.knowledgeEntry.updateMany({
+    where: {
+      slug: { startsWith: "kb-fact-", notIn: keptSlugs },
+      deletedAt: null,
+    },
+    data: { deletedAt: new Date(), status: "archived" },
+  });
+  return result.count;
+}
+
 export async function seedKbFacts(prisma: PrismaClient): Promise<number> {
   let upserted = 0;
 
@@ -193,6 +231,13 @@ export async function seedKbFacts(prisma: PrismaClient): Promise<number> {
   for (const fact of ALL_KB_FACTS) {
     await upsertFact(prisma, fact);
     upserted++;
+  }
+
+  const reconciled = await reconcileDeletedFacts(prisma);
+  if (reconciled > 0) {
+    console.log(
+      `[seed-kb-facts] ${reconciled} fait(s) kb-fact-* absent(s) des fichiers TS → soft-deleted (archived).`,
+    );
   }
 
   return upserted;

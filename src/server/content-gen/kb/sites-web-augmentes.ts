@@ -1,8 +1,8 @@
 /**
  * KB sectorielle — Verticale Web & Digital IA / Sites Web Augmentés (P6 2026-05-22).
  *
- * 28 facts vérifiés sur la création et l'augmentation de sites web par l'IA en France.
- * Sources : Nielsen Norman Group, Think with Google, Syntec Numérique,
+ * 60 facts vérifiés sur la création et l'augmentation de sites web par l'IA en France.
+ * Sources : Nielsen Norman Group, Think with Google, Numeum (ex-Syntec Numérique),
  *           BPI France, DGE, McKinsey, HubSpot, Semrush, Axion-IA terrain.
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
@@ -120,7 +120,7 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-012",
-    text: "Les Core Web Vitals (LCP ≤ 2,5s, INP ≤ 200ms, CLS = 0) sont un facteur de classement Google depuis 2021 et restent déterminants en 2026 — les sites avec 'Good' CWV ont en moyenne 24 % de trafic organique supplémentaire (Ahrefs, CWV Study 2025).",
+    text: "Les Core Web Vitals (LCP ≤ 2,5s, INP ≤ 200ms, CLS ≤ 0,1) sont un facteur de classement Google depuis 2021 et restent déterminants en 2026 — les sites avec 'Good' CWV ont en moyenne 24 % de trafic organique supplémentaire (Ahrefs, CWV Study 2025).",
     source: "Ahrefs — Core Web Vitals Impact Study 2025",
     sourceUrl: "https://ahrefs.com",
     verifiedAt: "2026-05-01",
@@ -129,10 +129,10 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-013",
-    text: "Next.js (framework React) est le framework le plus utilisé pour les sites web IA en France en 2025 (33 % des nouveaux projets web B2B IA selon Syntec Numérique) — pour sa compatibilité native avec les API IA et son support SSR/ISR.",
-    source: "Syntec Numérique — Observatoire des technologies web 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-01",
+    text: "Next.js (framework React) est le framework le plus utilisé pour les sites web IA en France en 2025 (33 % des nouveaux projets web B2B IA selon Numeum, ex-Syntec Numérique) — pour sa compatibilité native avec les API IA et son support SSR/ISR.",
+    source: "Numeum (ex-Syntec Numérique) — Observatoire des technologies web 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["sites_web_augmentes"],
     confidence: 0.72,
   },
@@ -157,10 +157,10 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-016",
-    text: "Axion-IA propose un audit web IA préalable gratuit (2h) pour évaluer le ROI potentiel avant tout développement — incluant analyse du trafic actuel, identification des cas d'usage IA prioritaires et estimation du coût de déploiement.",
+    text: "Chaque projet web IA Axion-IA démarre par un appel de cadrage gratuit et sans engagement (réservable en ligne) pour identifier les cas d'usage IA prioritaires — le chiffrage précis fait ensuite l'objet d'un devis fixe.",
     source: "Axion-IA — Service Web & Digital IA 2026",
-    sourceUrl: "https://axion-ia.com/sites-web-augmentes",
-    verifiedAt: "2026-05-01",
+    sourceUrl: "https://axion-ia.com/appel",
+    verifiedAt: "2026-08-11",
     verticales: ["sites_web_augmentes"],
     confidence: 0.95,
   },
@@ -275,10 +275,10 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   },
   {
     id: "web-028",
-    text: "Axion-IA garantit 99,5 % de disponibilité sur les chatbots hébergés en propre (VPS Hetzner + Cloudflare) et fournit un tableau de bord monitoring en temps réel — SLA contractuel inclus dans toutes les offres web IA.",
-    source: "Axion-IA — SLA Web & Digital IA 2026",
+    text: "Les chatbots et sites web IA livrés par Axion-IA sont hébergés en propre sur infrastructure européenne (VPS Hetzner + Cloudflare, conformité RGPD) avec supervision et monitoring — sans dépendance à un SaaS tiers américain pour les données clients.",
+    source: "Axion-IA — Infrastructure Web & Digital IA 2026",
     sourceUrl: "https://axion-ia.com/sites-web-augmentes",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-08-11",
     verticales: ["sites_web_augmentes"],
     confidence: 0.95,
   },
@@ -511,18 +511,18 @@ export const KB_SITES_WEB_AUGMENTES: readonly KbFact[] = [
   {
     id: "web-051",
     text: "Le marché français du développement web avec intégration IA est estimé à 680 millions d'euros en 2025, en croissance de 42 % vs 2024 — porté par la demande des PME pour des sites web chatbot-first et la vague SEO/AEO post-SGE.",
-    source: "Syntec Numérique — Marchés web et IA applicative 2025",
-    sourceUrl: "https://syntec-numerique.fr",
+    source: "Numeum (ex-Syntec Numérique) — Marchés web et IA applicative 2025",
+    sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-05-22",
     verticales: ["sites_web_augmentes"],
     confidence: 0.72,
   },
   {
     id: "web-052",
-    text: "Les agences web traditionnelles qui n'intègrent pas l'IA dans leurs processus perdent en moyenne 28 % de leurs appels d'offres PME face à des acteurs IA-first en 2024-2025 — selon une étude Syntec Numérique sur le marché des services web B2B.",
-    source: "Syntec Numérique — Disruption IA dans les services web B2B 2025",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-22",
+    text: "Les agences web traditionnelles qui n'intègrent pas l'IA dans leurs processus perdent en moyenne 28 % de leurs appels d'offres PME face à des acteurs IA-first en 2024-2025 — selon une étude Numeum (ex-Syntec Numérique) sur le marché des services web B2B.",
+    source: "Numeum (ex-Syntec Numérique) — Disruption IA dans les services web B2B 2025",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["sites_web_augmentes"],
     confidence: 0.71,
   },
