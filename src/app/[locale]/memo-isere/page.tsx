@@ -21,6 +21,7 @@
 
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -111,8 +112,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon — 474 communes, vous choisissez votre zone. Vendez des formations IA finançables OPCO : 500 € par journée de formation vendue, revenus non plafonnés, démarrage septembre." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "Axion-IA is hiring independent sales reps between Grenoble, Valence, Die and Lyon — 474 towns, you pick your area. Sell OPCO-fundable AI trainings: €500 per training day sold, uncapped income, starting September." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon — 474 communes, vous choisissez votre zone. Vendez des formations IA finançables OPCO : 500 € par journée de formation vendue, revenus non plafonnés." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "Axion-IA is hiring independent sales reps between Grenoble, Valence, Die and Lyon — 474 towns, you pick your area. Sell OPCO-fundable AI trainings: €500 per training day sold, uncapped income." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     }),
     title: { absolute: title },
   };
@@ -131,54 +132,61 @@ function Stars({ rating }: { rating: number }) {
 
 /** Carte d'avis — pep's 2026-08-12 : liseré terracotta, guillemet géant en
  *  filigrane, avatar-initiale, hover levé — les cartes plates « manquaient
- *  d'énergie » (retour Will). */
+ *  d'énergie » (retour Will). Carte ENTIÈRE cliquable vers la page publique de
+ *  l'avis /avis/[slug] (exigence Will 2026-08-12), focus visible. */
 function ReviewCard({ r }: { r: PublicReview }) {
   const who = `${r.authorFirstName} ${r.authorLastInitial}`;
   const context = [r.companyName, r.cityName].filter(Boolean).join(" · ");
   return (
-    <figure className="border-border bg-paper shadow-subtle hover:shadow-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 pt-7 transition-all duration-300 hover:-translate-y-1">
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1.5"
-        style={{
-          background:
-            "linear-gradient(90deg, var(--color-terracotta), var(--color-terracotta-deep))",
-        }}
-      />
-      <span
-        aria-hidden="true"
-        className="text-terracotta/10 pointer-events-none absolute -top-3 right-3 font-serif text-[6rem] leading-none select-none"
-      >
-        »
-      </span>
-      <Stars rating={r.rating} />
-      {r.title ? (
-        <p className="mt-3 font-serif text-xl leading-snug font-semibold">{r.title}</p>
-      ) : null}
-      <blockquote className="text-fg-soft mt-2 line-clamp-5 leading-relaxed">
-        {r.comment}
-      </blockquote>
-      <figcaption className="mt-auto flex items-center gap-3 pt-5">
+    <Link
+      href={{ pathname: "/avis/[slug]", params: { slug: r.slug } }}
+      aria-label={`Lire l'avis complet de ${who}`}
+      className="focus-visible:ring-terracotta block h-full rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+    >
+      <figure className="border-border bg-paper shadow-subtle hover:shadow-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 pt-7 transition-all duration-300 hover:-translate-y-1">
         <span
           aria-hidden="true"
-          className="bg-terracotta text-paper inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold"
+          className="absolute inset-x-0 top-0 h-1.5"
+          style={{
+            background:
+              "linear-gradient(90deg, var(--color-terracotta), var(--color-terracotta-deep))",
+          }}
+        />
+        <span
+          aria-hidden="true"
+          className="text-terracotta/10 pointer-events-none absolute -top-3 right-3 font-serif text-[6rem] leading-none select-none"
         >
-          {r.authorFirstName.charAt(0)}
+          »
         </span>
-        <span className="min-w-0 text-sm leading-tight">
-          <span className="text-fg block font-semibold">
-            {who}
-            {r.isVerified ? (
-              <span className="text-sage ml-2 inline-flex items-center gap-1 align-middle text-xs font-medium">
-                <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
-                vérifié
-              </span>
-            ) : null}
+        <Stars rating={r.rating} />
+        {r.title ? (
+          <p className="mt-3 font-serif text-xl leading-snug font-semibold">{r.title}</p>
+        ) : null}
+        <blockquote className="text-fg-soft mt-2 line-clamp-5 leading-relaxed">
+          {r.comment}
+        </blockquote>
+        <figcaption className="mt-auto flex items-center gap-3 pt-5">
+          <span
+            aria-hidden="true"
+            className="bg-terracotta text-paper inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold"
+          >
+            {r.authorFirstName.charAt(0)}
           </span>
-          {context ? <span className="text-fg-muted">{context}</span> : null}
-        </span>
-      </figcaption>
-    </figure>
+          <span className="min-w-0 text-sm leading-tight">
+            <span className="text-fg block font-semibold">
+              {who}
+              {r.isVerified ? (
+                <span className="text-sage ml-2 inline-flex items-center gap-1 align-middle text-xs font-medium">
+                  <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
+                  vérifié
+                </span>
+              ) : null}
+            </span>
+            {context ? <span className="text-fg-muted">{context}</span> : null}
+          </span>
+        </figcaption>
+      </figure>
+    </Link>
   );
 }
 
@@ -314,7 +322,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "demarrage",
       question: "Quand est-ce que ça démarre ?",
       answer:
-        "Septembre. Les candidatures sont ouvertes dès maintenant : tu candidates en quelques minutes, on échange par téléphone, puis tu suis la formation à l'offre avant de démarrer sur ta zone.",
+        "Dès que ta candidature est validée : un échange téléphonique, la formation à l'offre, et tu démarres sur ton secteur.",
     },
     {
       id: "paiement",
@@ -344,7 +352,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — TPE et artisans compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — TPE et artisans compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     datePosted: SITE_EDITORIAL_DATE,
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
@@ -406,7 +414,7 @@ export default async function MemoIserePage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
                 />
-                Vu dans Le Mémo de l’Isère · Démarrage septembre
+                Vu dans Le Mémo de l’Isère · On recrute
               </HeroBadge>
               <h1 className="display-editorial text-fg">
                 Devenez commercial IA indépendant{" "}
@@ -851,10 +859,7 @@ export default async function MemoIserePage({ params }: Props) {
       ) : null}
 
       {/* CTA band terracotta — pattern /fr/audit (entre avis et intégration) */}
-      <BandeCta
-        title="Septembre arrive vite ⏳ — les secteurs partent un par un."
-        track="memo-band-apply"
-      />
+      <BandeCta title="Les secteurs partent un par un ⏳" track="memo-band-apply" />
 
       {/* 8 ── Intégration & aide au démarrage */}
       <Section
@@ -1107,7 +1112,7 @@ export default async function MemoIserePage({ params }: Props) {
           partagés — le CTA pointe vers le tunnel de candidature) */}
       <div id="postuler">
         <CtaBlock
-          eyebrow="Démarrage septembre"
+          eyebrow="On recrute"
           title="Prêt à devenir le commercial IA de"
           titleEm="ta zone ?"
           description="Les candidatures sont ouvertes 🚀 3 minutes chrono, zéro CV, une question par écran : un message libre qui te ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
