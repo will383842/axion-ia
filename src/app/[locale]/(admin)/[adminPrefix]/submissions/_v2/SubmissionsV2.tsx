@@ -127,10 +127,15 @@ export async function SubmissionsV2({
   const csvUrl = `/api/admin/submissions/export?${csvParams.toString()}`;
 
   const base = `/fr/${adminPrefix}/${basePath}`;
-  // Le détail existe UNIQUEMENT à /contacts/messages/[id] (canonique). Les vues
-  // filtrées (commercial, presse) pointent donc là — sinon /contacts/commercial/[id]
-  // ou /contacts/presse/[id] (inexistants) → 404 au clic sur une ligne.
-  const detailBase = `/fr/${adminPrefix}/contacts/messages`;
+  // Le détail existe à /contacts/messages/[id] (canonique) — SAUF pour l'onglet
+  // Commercial, qui a sa propre route détail depuis le tunnel candidature
+  // (2026-08-12) : le retour ramène au listing Commercial, pas aux Messages.
+  // Les autres vues filtrées (presse, clients…) pointent toujours vers Messages,
+  // sinon /contacts/presse/[id] (inexistant) → 404 au clic sur une ligne.
+  const detailBase =
+    basePath === "contacts/commercial"
+      ? `/fr/${adminPrefix}/contacts/commercial`
+      : `/fr/${adminPrefix}/contacts/messages`;
 
   // Onglets Actifs / Archivés / Corbeille (fix P0-2 : les archivés et les
   // soft-deleted sont masqués par défaut ; chaque onglet force ses params).
