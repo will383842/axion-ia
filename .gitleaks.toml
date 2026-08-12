@@ -34,4 +34,22 @@ regexes = [
   # suffirait pas, le commit d'origine porte toujours la chaîne. L'allowlist est
   # le seul moyen sans réécrire l'historique.
   '''(?i)test[_-]secret[_-]''',
+  # Clé localStorage du wizard de candidature commerciale (PAS un secret).
+  #
+  # Ajouté 2026-08-12 : `src/lib/commercial-application/model.ts` déclare
+  # `COMMERCIAL_APPLICATION_STORAGE_KEY = "axionia-candidature-commercial-v1"`
+  # — le nom de la clé de sauvegarde auto du brouillon dans le localStorage du
+  # navigateur. La règle `generic-api-key` la relève sur son entropie (3.80)
+  # parce que la constante s'appelle « …_KEY », sans voir que la valeur est un
+  # simple identifiant public visible par n'importe quel visiteur dans les
+  # DevTools.
+  #
+  # Volontairement ÉTROIT : seule cette valeur précise (version incluse) est
+  # ignorée — un vrai secret ne ressemblerait jamais à ce slug préfixé
+  # `axionia-`.
+  #
+  # ⚠️ gitleaks scanne l'HISTORIQUE (`git log -p`) : renommer la constante ne
+  # suffirait pas, le commit d'origine (b97e7ffe) porte toujours la chaîne.
+  # L'allowlist est le seul moyen sans réécrire l'historique.
+  '''axionia-candidature-commercial-v\d+''',
 ]
