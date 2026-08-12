@@ -86,34 +86,34 @@ export function ReportView({
     <div className="min-w-0">
       {/* ═══ 1. LE VERDICT ═══════════════════════════════════════════════ */}
       <header id={HERO_ID}>
-        <p className="text-terracotta-deep text-[12px] font-bold tracking-[0.16em] uppercase">
+        <p className="text-[var(--sim-accent-strong)] text-[12px] font-bold tracking-[0.16em] uppercase">
           Votre estimation
         </p>
-        <h2 className="text-fg mt-3 text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[32px]">
+        <h2 className="text-[var(--sim-fg)] mt-3 text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[32px]">
           Vous pouvez récupérer l&apos;équivalent de{" "}
-          <em className="text-terracotta not-italic">{n(report.totalSavedHoursPerYear)} heures</em>{" "}
+          <em className="text-[var(--sim-accent-text)] not-italic">{n(report.totalSavedHoursPerYear)} heures</em>{" "}
           par an.
         </h2>
 
-        <div className="border-terracotta/25 bg-halo-warm shadow-card relative mt-6 overflow-hidden rounded-3xl border-2 p-6 sm:p-8">
+        <div className="border-[var(--sim-accent-border)]/25 sim-halo shadow-card relative mt-6 overflow-hidden rounded-3xl border-2 p-6 sm:p-8">
           <div
             aria-hidden="true"
-            className="bg-terracotta/15 pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full blur-3xl"
+            className="bg-[var(--sim-accent-text)]/15 pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full blur-3xl"
           />
-          <p className="text-fg-soft relative text-[13px] font-semibold tracking-wide uppercase">
+          <p className="text-[var(--sim-fg-soft)] relative text-[13px] font-semibold tracking-wide uppercase">
             Valeur annuelle de ce temps
           </p>
           <p
-            className="text-fg relative mt-2 leading-none tracking-tight tabular-nums"
+            className="text-[var(--sim-fg)] relative mt-2 leading-none tracking-tight tabular-nums"
             style={{ fontFamily: "var(--font-serif)", fontSize: "clamp(2.75rem, 11vw, 4.5rem)" }}
           >
             {eur(report.totalSavedEurPerYear)}
           </p>
-          <p className="text-fg-soft relative mt-3 text-[14px] leading-relaxed">
+          <p className="text-[var(--sim-fg-soft)] relative mt-3 text-[14px] leading-relaxed">
             Fourchette réaliste : de{" "}
-            <strong className="text-fg font-semibold">{eur(report.totalSavedEurLow)}</strong> à{" "}
-            <strong className="text-fg font-semibold">{eur(report.totalSavedEurHigh)}</strong> selon
-            votre rythme d&apos;adoption.
+            <strong className="text-[var(--sim-fg)] font-semibold">{eur(report.totalSavedEurLow)}</strong> à{" "}
+            <strong className="text-[var(--sim-fg)] font-semibold">{eur(report.totalSavedEurHigh)}</strong>{" "}
+            selon votre rythme d&apos;adoption.
           </p>
 
           <dl className="relative mt-6 grid grid-cols-3 gap-2.5">
@@ -144,23 +144,23 @@ export function ReportView({
           </dl>
         </div>
 
-        <p className="text-fg-soft mt-5 text-[15px] leading-relaxed text-pretty">
+        <p className="text-[var(--sim-fg-soft)] mt-5 text-[15px] leading-relaxed text-pretty">
           Estimation établie pour {sectorLabel}, {report.headcount} personne
           {report.headcount > 1 ? "s" : ""}, sur la base des volumes que vous venez de déclarer.
           Chaque euro affiché se rattache à une tâche précise, détaillée ci-dessous.
         </p>
-        <p className="text-fg-muted mt-2 text-[13.5px] leading-relaxed text-pretty">
+        <p className="text-[var(--sim-fg-muted)] mt-2 text-[13.5px] leading-relaxed text-pretty">
           Cela représente {n(report.pctOfTeamCapacity)} % du temps total de votre équipe : le
           reste, c&apos;est votre métier — et il n&apos;est pas question d&apos;y toucher.
         </p>
       </header>
 
       {/* ── Réglage du coût horaire ─────────────────────────────────────── */}
-      <section aria-labelledby="roi-cost" className="border-border mt-8 rounded-2xl border p-5">
-        <h3 id="roi-cost" className="text-fg text-[15px] font-bold tracking-tight">
+      <section aria-labelledby="roi-cost" className="border-[var(--sim-border)] mt-8 rounded-2xl border p-5">
+        <h3 id="roi-cost" className="text-[var(--sim-fg)] text-[15px] font-bold tracking-tight">
           Ajustez le coût horaire chargé
         </h3>
-        <p className="text-fg-muted mt-1 text-[13px] leading-relaxed">
+        <p className="text-[var(--sim-fg-muted)] mt-1 text-[13px] leading-relaxed">
           Salaire brut et charges patronales, ramenés à l&apos;heure travaillée. C&apos;est le seul
           réglage qui change les euros — jamais l&apos;ordre des priorités, qui se raisonne en temps.
         </p>
@@ -176,8 +176,8 @@ export function ReportView({
                 className={cn(
                   "focus-visible:ring-terracotta min-h-[52px] rounded-xl border-2 text-[15px] font-bold tabular-nums transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                   active
-                    ? "border-terracotta bg-terracotta text-paper"
-                    : "border-border bg-paper text-fg hover:border-border-strong",
+                    ? "border-[var(--sim-accent-border)] bg-terracotta text-paper"
+                    : "border-[var(--sim-border)] bg-[var(--sim-surface)] text-[var(--sim-fg)] hover:border-[var(--sim-border-strong)]",
                 )}
               >
                 {value} €
@@ -191,11 +191,11 @@ export function ReportView({
       <section aria-labelledby="roi-plan" className="mt-12">
         <h3
           id="roi-plan"
-          className="text-fg text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
+          className="text-[var(--sim-fg)] text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
         >
           Par quoi commencer
         </h3>
-        <p className="text-fg-soft mt-2 text-[15px] leading-relaxed text-pretty">
+        <p className="text-[var(--sim-fg-soft)] mt-2 text-[15px] leading-relaxed text-pretty">
           Classées par rapport entre le gain et l&apos;effort — pas par gain brut. La première ligne
           est celle qui vous rapporte le plus vite, pas celle qui rapporte le plus.
         </p>
@@ -213,7 +213,7 @@ export function ReportView({
         </ol>
 
         {report.tasks.length > report.topTasks.length ? (
-          <p className="text-fg-muted mt-4 text-[13px] leading-relaxed">
+          <p className="text-[var(--sim-fg-muted)] mt-4 text-[13px] leading-relaxed">
             {report.tasks.length - report.topTasks.length} autre
             {report.tasks.length - report.topTasks.length > 1 ? "s" : ""} tâche
             {report.tasks.length - report.topTasks.length > 1 ? "s" : ""} chiffrée
@@ -227,11 +227,11 @@ export function ReportView({
       <section aria-labelledby="roi-roadmap" className="mt-12">
         <h3
           id="roi-roadmap"
-          className="text-fg text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
+          className="text-[var(--sim-fg)] text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
         >
           Dans quel ordre
         </h3>
-        <p className="text-fg-soft mt-2 text-[15px] leading-relaxed text-pretty">
+        <p className="text-[var(--sim-fg-soft)] mt-2 text-[15px] leading-relaxed text-pretty">
           Les délais tiennent compte de vos outils actuels. Ce qui est annoncé à trente jours est
           réellement livrable en trente jours.
         </p>
@@ -240,22 +240,22 @@ export function ReportView({
           {report.roadmap.map((wave) => (
             <li
               key={wave.id}
-              className="border-border bg-paper flex flex-col gap-1.5 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+              className="border-[var(--sim-border)] bg-[var(--sim-surface)] flex flex-col gap-1.5 rounded-2xl border p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
             >
               <div className="min-w-0">
-                <p className="text-terracotta-deep text-[12px] font-bold tracking-[0.14em] uppercase">
+                <p className="text-[var(--sim-accent-strong)] text-[12px] font-bold tracking-[0.14em] uppercase">
                   {wave.horizonFr}
                 </p>
-                <p className="text-fg mt-1 text-[16px] leading-snug font-semibold">
+                <p className="text-[var(--sim-fg)] mt-1 text-[16px] leading-snug font-semibold">
                   {wave.labelFr}
                 </p>
-                <p className="text-fg-muted mt-1 text-[13px]">
+                <p className="text-[var(--sim-fg-muted)] mt-1 text-[13px]">
                   {wave.taskIds.length} tâche{wave.taskIds.length > 1 ? "s" : ""}
                 </p>
               </div>
-              <p className="text-terracotta-deep shrink-0 text-[22px] font-bold tracking-tight tabular-nums">
+              <p className="text-[var(--sim-accent-strong)] shrink-0 text-[22px] font-bold tracking-tight tabular-nums">
                 {eur(wave.savedEurPerYear)}
-                <span className="text-fg-muted ml-1 text-[13px] font-medium">/ an</span>
+                <span className="text-[var(--sim-fg-muted)] ml-1 text-[13px] font-medium">/ an</span>
               </p>
             </li>
           ))}
@@ -267,7 +267,7 @@ export function ReportView({
         <section aria-labelledby="roi-split" className="mt-12">
           <h3
             id="roi-split"
-            className="text-fg text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
+            className="text-[var(--sim-fg)] text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
           >
             D&apos;où vient ce temps
           </h3>
@@ -275,13 +275,13 @@ export function ReportView({
             {report.byFunction.map((f) => (
               <li key={f.fn} className="flex flex-col gap-1.5">
                 <div className="flex items-baseline justify-between gap-3 text-[14px]">
-                  <span className="text-fg font-semibold">{businessFunctionLabel(f.fn)}</span>
-                  <span className="text-fg-soft shrink-0 tabular-nums">
+                  <span className="text-[var(--sim-fg)] font-semibold">{businessFunctionLabel(f.fn)}</span>
+                  <span className="text-[var(--sim-fg-soft)] shrink-0 tabular-nums">
                     {n(f.savedHoursPerYear)} h ·{" "}
-                    <span className="text-fg font-semibold">{f.sharePct} %</span>
+                    <span className="text-[var(--sim-fg)] font-semibold">{f.sharePct} %</span>
                   </span>
                 </div>
-                <div className="bg-border/60 h-2 w-full overflow-hidden rounded-full">
+                <div className="bg-[var(--sim-border)]/60 h-2 w-full overflow-hidden rounded-full">
                   <div
                     className="bg-terracotta h-full rounded-full"
                     style={{ width: `${f.sharePct}%` }}
@@ -297,22 +297,22 @@ export function ReportView({
       <section aria-labelledby="roi-limits" className="mt-12">
         <h3
           id="roi-limits"
-          className="text-fg text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
+          className="text-[var(--sim-fg)] text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
         >
           Ce que nous ne vous promettons pas
         </h3>
 
         <ul className="mt-6 flex flex-col gap-3">
           {report.nonAutomatable.map((item) => (
-            <li key={item.id} className="border-border bg-sand/50 rounded-2xl border p-5">
-              <p className="text-fg flex items-start gap-2.5 text-[16px] leading-snug font-semibold">
+            <li key={item.id} className="border-[var(--sim-border)] bg-[var(--sim-subtle)]/50 rounded-2xl border p-5">
+              <p className="text-[var(--sim-fg)] flex items-start gap-2.5 text-[16px] leading-snug font-semibold">
                 <ShieldCheck
                   aria-hidden="true"
-                  className="text-terracotta-deep mt-0.5 h-4.5 w-4.5 shrink-0"
+                  className="text-[var(--sim-accent-strong)] mt-0.5 h-4.5 w-4.5 shrink-0"
                 />
                 {item.labelFr}
               </p>
-              <p className="text-fg-soft mt-2 text-[14px] leading-relaxed">{item.reasonFr}</p>
+              <p className="text-[var(--sim-fg-soft)] mt-2 text-[14px] leading-relaxed">{item.reasonFr}</p>
             </li>
           ))}
         </ul>
@@ -337,15 +337,15 @@ export function ReportView({
           </Notice>
         ) : null}
 
-        <details className="border-border group mt-4 rounded-2xl border">
-          <summary className="text-fg flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 px-5 text-[15px] font-bold">
+        <details className="border-[var(--sim-border)] group mt-4 rounded-2xl border">
+          <summary className="text-[var(--sim-fg)] flex min-h-[56px] cursor-pointer list-none items-center justify-between gap-3 px-5 text-[15px] font-bold">
             Comment ces chiffres sont calculés
             <ChevronDown
               aria-hidden="true"
-              className="text-fg-muted h-4 w-4 shrink-0 transition-transform group-open:rotate-180"
+              className="text-[var(--sim-fg-muted)] h-4 w-4 shrink-0 transition-transform group-open:rotate-180"
             />
           </summary>
-          <div className="text-fg-soft border-border/70 flex flex-col gap-3 border-t px-5 py-5 text-[14px] leading-relaxed">
+          <div className="text-[var(--sim-fg-soft)] border-[var(--sim-border)]/70 flex flex-col gap-3 border-t px-5 py-5 text-[14px] leading-relaxed">
             <p>
               Pour chaque tâche : votre volume annuel, multiplié par un temps unitaire de référence,
               multiplié par la part de ce temps réellement supprimable. Le résultat est ensuite
@@ -353,7 +353,7 @@ export function ReportView({
             </p>
             <p>
               Les temps unitaires et les taux d&apos;automatisation sont des{" "}
-              <strong className="text-fg font-semibold">hypothèses de modèle argumentées</strong>,
+              <strong className="text-[var(--sim-fg)] font-semibold">hypothèses de modèle argumentées</strong>,
               pas les résultats d&apos;une étude. Chaque tâche du plan d&apos;action affiche la
               sienne : dépliez « Pourquoi ce chiffre ».
             </p>
@@ -363,7 +363,7 @@ export function ReportView({
               {n(ROI_MODEL_CONSTANTS.annualHoursPerFte)} heures pour un équivalent temps plein
               (durée légale française). Coût horaire retenu : {eur(report.hourlyCostEur)}.
             </p>
-            <p className="text-fg-muted">
+            <p className="text-[var(--sim-fg-muted)]">
               Ce rapport est une estimation, pas un engagement de résultat, et ne constitue ni un
               devis ni un audit. Vos résultats réels dépendent de vos process et de votre adoption
               interne.
@@ -376,7 +376,7 @@ export function ReportView({
       <section aria-labelledby="roi-next" className="mt-12">
         <h3
           id="roi-next"
-          className="text-fg text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
+          className="text-[var(--sim-fg)] text-[22px] leading-tight font-bold tracking-tight sm:text-[26px]"
         >
           Repartez avec ce rapport
         </h3>
@@ -413,11 +413,11 @@ export function ReportView({
           repère une réponse fausse et ne peut pas la corriger ne demande pas un
           rendez-vous, il ferme l'onglet. « Recommencer », en revanche, est
           masqué en tunnel — repartir de zéro n'y sert personne. */}
-      <div className="border-border mt-10 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:gap-4">
+      <div className="border-[var(--sim-border)] mt-10 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:gap-4">
         <button
           type="button"
           onClick={onBack}
-          className="text-fg-soft hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+          className="text-[var(--sim-fg-soft)] hover:text-[var(--sim-accent-text)] focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           Modifier mes réponses
@@ -426,7 +426,7 @@ export function ReportView({
           <button
             type="button"
             onClick={onRestart}
-            className="text-fg-soft hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+            className="text-[var(--sim-fg-soft)] hover:text-[var(--sim-accent-text)] focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
           >
             <RotateCcw aria-hidden="true" className="h-4 w-4" />
             Recommencer
@@ -460,14 +460,14 @@ function Kpi({
   // libellé (un `dt` en `sr-only` PLUS le même texte visible dans le `dd`),
   // que les lecteurs d'écran annonçaient donc deux fois de suite.
   return (
-    <div className="bg-paper border-border flex flex-col rounded-2xl border p-3">
-      <Icon aria-hidden="true" className="text-terracotta-deep mb-1.5 h-4 w-4" />
-      <dt className="text-fg-soft order-2 mt-1.5 text-[11.5px] leading-snug">{label}</dt>
+    <div className="bg-[var(--sim-surface)] border-[var(--sim-border)] flex flex-col rounded-2xl border p-3">
+      <Icon aria-hidden="true" className="text-[var(--sim-accent-strong)] mb-1.5 h-4 w-4" />
+      <dt className="text-[var(--sim-fg-soft)] order-2 mt-1.5 text-[11.5px] leading-snug">{label}</dt>
       <dd className="order-1">
-        <span className="text-fg text-[22px] leading-none font-bold tracking-tight tabular-nums">
+        <span className="text-[var(--sim-fg)] text-[22px] leading-none font-bold tracking-tight tabular-nums">
           {value}
         </span>
-        <span className="text-fg-muted ml-1 text-[12px] font-medium">{unit}</span>
+        <span className="text-[var(--sim-fg-muted)] ml-1 text-[12px] font-medium">{unit}</span>
       </dd>
     </div>
   );
@@ -492,7 +492,7 @@ function TaskCard({
     <li
       className={cn(
         "rounded-2xl border-2 p-5",
-        isTop ? "border-terracotta bg-terracotta-soft/40" : "border-border bg-paper",
+        isTop ? "border-[var(--sim-accent-border)] bg-[var(--sim-accent-soft)]" : "border-[var(--sim-border)] bg-[var(--sim-surface)]",
       )}
     >
       <div className="flex items-start gap-3">
@@ -500,16 +500,16 @@ function TaskCard({
           aria-hidden="true"
           className={cn(
             "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[15px] font-bold tabular-nums",
-            isTop ? "bg-terracotta text-paper" : "bg-sand text-fg-soft",
+            isTop ? "bg-terracotta text-paper" : "bg-[var(--sim-subtle)] text-[var(--sim-fg-soft)]",
           )}
         >
           {rank}
         </span>
         <div className="min-w-0 flex-1">
-          <h4 className="text-fg text-[17px] leading-snug font-bold tracking-tight text-balance">
+          <h4 className="text-[var(--sim-fg)] text-[17px] leading-snug font-bold tracking-tight text-balance">
             {task.labelFr}
           </h4>
-          <p className="text-fg-muted mt-1 text-[13px]">
+          <p className="text-[var(--sim-fg-muted)] mt-1 text-[13px]">
             {businessFunctionLabel(task.fn)} · {n(Math.round(result.annualVolume))}{" "}
             {volumeUnitLabel(task.volumeKey, result.annualVolume)} par an
           </p>
@@ -517,44 +517,44 @@ function TaskCard({
       </div>
 
       {/* Chiffres — la ligne que le dirigeant lit en premier. */}
-      <dl className="border-border/70 mt-4 grid grid-cols-3 gap-3 border-t pt-4">
+      <dl className="border-[var(--sim-border)]/70 mt-4 grid grid-cols-3 gap-3 border-t pt-4">
         <div>
-          <dt className="text-fg-muted text-[11px] font-semibold tracking-wide uppercase">
+          <dt className="text-[var(--sim-fg-muted)] text-[11px] font-semibold tracking-wide uppercase">
             Temps rendu
           </dt>
-          <dd className="text-fg mt-0.5 text-[17px] font-bold tabular-nums">
+          <dd className="text-[var(--sim-fg)] mt-0.5 text-[17px] font-bold tabular-nums">
             {n(Math.round(result.savedHoursPerYear))} h
           </dd>
         </div>
         <div>
-          <dt className="text-fg-muted text-[11px] font-semibold tracking-wide uppercase">
+          <dt className="text-[var(--sim-fg-muted)] text-[11px] font-semibold tracking-wide uppercase">
             Valeur
           </dt>
-          <dd className="text-terracotta-deep mt-0.5 text-[17px] font-bold tabular-nums">
+          <dd className="text-[var(--sim-accent-strong)] mt-0.5 text-[17px] font-bold tabular-nums">
             {eur(Math.round(result.savedEurPerYear))}
           </dd>
         </div>
         <div>
-          <dt className="text-fg-muted text-[11px] font-semibold tracking-wide uppercase">
+          <dt className="text-[var(--sim-fg-muted)] text-[11px] font-semibold tracking-wide uppercase">
             Délai
           </dt>
-          <dd className="text-fg mt-0.5 text-[17px] font-bold tabular-nums">
+          <dd className="text-[var(--sim-fg)] mt-0.5 text-[17px] font-bold tabular-nums">
             {result.weeksToValue} sem.
           </dd>
         </div>
       </dl>
 
-      <p className="text-fg-soft mt-4 text-[14px] leading-relaxed text-pretty">{task.howFr}</p>
+      <p className="text-[var(--sim-fg-soft)] mt-4 text-[14px] leading-relaxed text-pretty">{task.howFr}</p>
 
       <details className="group mt-3">
-        <summary className="text-fg-muted hover:text-terracotta inline-flex cursor-pointer list-none items-center gap-1.5 py-2 text-[13px] font-semibold transition">
+        <summary className="text-[var(--sim-fg-muted)] hover:text-[var(--sim-accent-text)] inline-flex cursor-pointer list-none items-center gap-1.5 py-2 text-[13px] font-semibold transition">
           Pourquoi ce chiffre
           <ChevronDown
             aria-hidden="true"
             className="h-3.5 w-3.5 transition-transform group-open:rotate-180"
           />
         </summary>
-        <p className="text-fg-soft border-terracotta/40 mt-1 border-l-2 pl-3 text-[13.5px] leading-relaxed">
+        <p className="text-[var(--sim-fg-soft)] border-[var(--sim-accent-border)]/40 mt-1 border-l-2 pl-3 text-[13.5px] leading-relaxed">
           {task.proofFr} Sur cette base, vous y passez aujourd&apos;hui environ{" "}
           {n(Math.round(result.currentHoursPerYear))} heures par an.
         </p>
@@ -569,13 +569,13 @@ function Notice({ tone, children }: { tone: "info" | "warn"; children: React.Rea
       className={cn(
         "mt-4 flex gap-2.5 rounded-2xl border p-4 text-[14px] leading-relaxed",
         tone === "warn"
-          ? "border-terracotta/40 bg-terracotta-soft/40 text-fg"
-          : "border-border bg-canvas text-fg-soft",
+          ? "border-[var(--sim-accent-border)]/40 bg-[var(--sim-accent-soft)] text-[var(--sim-fg)]"
+          : "border-[var(--sim-border)] bg-[var(--sim-bg)] text-[var(--sim-fg-soft)]",
       )}
     >
       <AlertTriangle
         aria-hidden="true"
-        className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0"
+        className="text-[var(--sim-accent-strong)] mt-0.5 h-4 w-4 shrink-0"
       />
       <span>{children}</span>
     </p>
@@ -642,7 +642,7 @@ function StickyReportCta() {
     >
       <div
         className={cn(
-          "bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur",
+          "bg-[var(--sim-surface)]/90 border-[var(--sim-border)] supports-[backdrop-filter]:bg-[var(--sim-surface)]/75 border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur",
           visible ? "pointer-events-auto" : "pointer-events-none",
         )}
         // Sans la safe-area, la barre passe sous la barre d'accueil iOS et le
@@ -689,7 +689,7 @@ function ShareRow() {
       <button
         type="button"
         onClick={copy}
-        className="text-fg-soft border-border hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full border px-5 text-[14.5px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+        className="text-[var(--sim-fg-soft)] border-[var(--sim-border)] hover:border-[var(--sim-accent-border)] hover:text-[var(--sim-accent-text)] focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full border px-5 text-[14.5px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
       >
         {copied ? (
           <Check aria-hidden="true" className="h-4 w-4" />
@@ -701,7 +701,7 @@ function ShareRow() {
       <p aria-live="polite" className="sr-only">
         {copied ? "Lien copié dans le presse-papiers." : ""}
       </p>
-      <p className="text-fg-muted mt-2 text-[12.5px] leading-relaxed">
+      <p className="text-[var(--sim-fg-muted)] mt-2 text-[12.5px] leading-relaxed">
         Le lien contient vos réponses : la personne qui l&apos;ouvre voit exactement ce rapport.
       </p>
     </div>
@@ -710,11 +710,11 @@ function ShareRow() {
 
 function EmptyReport({ onBack, onRestart }: { onBack: () => void; onRestart: () => void }) {
   return (
-    <div className="border-border bg-paper rounded-3xl border p-6 sm:p-8">
-      <h2 className="text-fg text-[24px] leading-tight font-bold tracking-tight">
+    <div className="border-[var(--sim-border)] bg-[var(--sim-surface)] rounded-3xl border p-6 sm:p-8">
+      <h2 className="text-[var(--sim-fg)] text-[24px] leading-tight font-bold tracking-tight">
         Nous n&apos;avons rien pu chiffrer
       </h2>
-      <p className="text-fg-soft mt-3 text-[15px] leading-relaxed text-pretty">
+      <p className="text-[var(--sim-fg-soft)] mt-3 text-[15px] leading-relaxed text-pretty">
         Vous avez répondu « je ne sais pas » à toutes les questions de volume, ou déclaré des
         volumes nuls. Plutôt que d&apos;inventer des chiffres à votre place, nous préférons ne rien
         afficher. Reprenez le questionnaire avec des ordres de grandeur, même très approximatifs :
@@ -732,7 +732,7 @@ function EmptyReport({ onBack, onRestart }: { onBack: () => void; onRestart: () 
         <button
           type="button"
           onClick={onRestart}
-          className="text-fg-soft border-border hover:border-terracotta focus-visible:ring-terracotta inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border px-6 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+          className="text-[var(--sim-fg-soft)] border-[var(--sim-border)] hover:border-[var(--sim-accent-border)] focus-visible:ring-terracotta inline-flex min-h-[52px] items-center justify-center gap-2 rounded-full border px-6 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
         >
           <RotateCcw aria-hidden="true" className="h-4 w-4" />
           Recommencer
@@ -744,8 +744,8 @@ function EmptyReport({ onBack, onRestart }: { onBack: () => void; onRestart: () 
           C'est précisément ce qu'un audit va chercher — laisser cette page en
           cul-de-sac perdrait un prospect au moment exact où il découvre qu'il ne
           sait pas mesurer son propre temps. */}
-      <div className="border-border mt-6 border-t pt-6">
-        <p className="text-fg-soft text-[14.5px] leading-relaxed text-pretty">
+      <div className="border-[var(--sim-border)] mt-6 border-t pt-6">
+        <p className="text-[var(--sim-fg-soft)] text-[14.5px] leading-relaxed text-pretty">
           Vous ne connaissez pas ces volumes ? C&apos;est fréquent, et ce n&apos;est pas un
           problème : les compter est justement la première chose que fait un audit.
         </p>

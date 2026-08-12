@@ -106,14 +106,14 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
   if (sent) {
     return (
       <div
-        className={cn("border-terracotta/40 bg-terracotta-soft/40 rounded-2xl border-2 p-6", className)}
+        className={cn("border-[var(--sim-accent-border)]/40 bg-[var(--sim-accent-soft)] rounded-2xl border-2 p-6", className)}
         role="status"
       >
-        <p className="text-fg flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
-          <Check aria-hidden="true" className="text-terracotta h-5 w-5 shrink-0" />
+        <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
+          <Check aria-hidden="true" className="text-[var(--sim-accent-text)] h-5 w-5 shrink-0" />
           C&apos;est parti
         </p>
-        <p className="text-fg-soft mt-2 text-[14.5px] leading-relaxed">
+        <p className="text-[var(--sim-fg-soft)] mt-2 text-[14.5px] leading-relaxed">
           Votre rapport arrive dans quelques instants à l&apos;adresse indiquée. S&apos;il tarde,
           regardez dans les indésirables — et gardez le lien de cette page, il reste valable.
         </p>
@@ -125,13 +125,13 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
     <form
       onSubmit={onSubmit}
       noValidate
-      className={cn("border-border bg-paper rounded-2xl border p-5 sm:p-6", className)}
+      className={cn("border-[var(--sim-border)] bg-[var(--sim-surface)] rounded-2xl border p-5 sm:p-6", className)}
     >
-      <p className="text-fg flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
-        <Mail aria-hidden="true" className="text-terracotta-deep h-5 w-5 shrink-0" />
+      <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
+        <Mail aria-hidden="true" className="text-[var(--sim-accent-strong)] h-5 w-5 shrink-0" />
         Recevez ce rapport par e-mail
       </p>
-      <p className="text-fg-soft mt-2 text-[14px] leading-relaxed">
+      <p className="text-[var(--sim-fg-soft)] mt-2 text-[14px] leading-relaxed">
         Vos chiffres, votre plan d&apos;action et le lien permanent vers cette page — pour le
         relire au calme ou le transmettre à votre équipe.
       </p>
@@ -174,9 +174,13 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
           name="consent"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
-          className="border-border-strong text-terracotta focus-visible:ring-terracotta mt-0.5 h-5 w-5 shrink-0 rounded focus-visible:ring-2 focus-visible:ring-offset-2"
+          // 24 px : la case elle-même reste sous le seuil WCAG 2.5.8, mais le
+          // `<label>` qui l'entoure est cliquable sur toute sa surface — c'est
+          // lui la vraie cible. On l'élargit quand même, parce qu'au pouce on
+          // vise instinctivement la case, pas le texte.
+          className="border-[var(--sim-border-strong)] text-[var(--sim-accent-text)] focus-visible:ring-terracotta mt-0.5 h-6 w-6 shrink-0 rounded focus-visible:ring-2 focus-visible:ring-offset-2"
         />
-        <span className="text-fg-soft text-[13.5px] leading-relaxed">
+        <span className="text-[var(--sim-fg-soft)] text-[13.5px] leading-relaxed">
           J&apos;accepte de recevoir ce rapport et d&apos;être recontacté par Axion-IA à ce sujet.
           Aucune revente de données, désinscription en un clic.
         </span>
@@ -186,7 +190,7 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
       {turnstileWidget}
 
       {error ? (
-        <p role="alert" className="text-terracotta-deep mt-4 text-[14px] leading-relaxed font-medium">
+        <p role="alert" className="text-[var(--sim-accent-strong)] mt-4 text-[14px] leading-relaxed font-medium">
           {error}
         </p>
       ) : null}
@@ -238,9 +242,9 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-fg mb-1.5 flex items-baseline gap-2 text-[14px] font-semibold">
+      <label htmlFor={id} className="text-[var(--sim-fg)] mb-1.5 flex items-baseline gap-2 text-[14px] font-semibold">
         {label}
-        {hint ? <span className="text-fg-muted text-[12px] font-normal">{hint}</span> : null}
+        {hint ? <span className="text-[var(--sim-fg-muted)] text-[12px] font-normal">{hint}</span> : null}
       </label>
       <input
         id={id}
@@ -253,7 +257,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         // 16 px minimum : en dessous, Safari iOS zoome à la mise au point et
         // casse la mise en page du formulaire.
-        className="border-border-strong bg-canvas text-fg focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+        className="border-[var(--sim-border-strong)] bg-[var(--sim-bg)] text-[var(--sim-fg)] focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
       />
     </div>
   );

@@ -377,6 +377,62 @@
       radial-gradient(at 10% 94%, rgba(178, 63, 22, 0.1) 0px, transparent 50%);
   }
 
+  /* ── Thème du simulateur de gains ────────────────────────────────────────
+     Le simulateur est servi à DEUX endroits qui n'ont pas la même identité :
+       • `/roi` — page éditoriale publique, fond ivoire ;
+       • `/simulateur` — étape du tunnel publicitaire, dans la continuité de
+         `/diagnostic`, fond encre.
+     Coder deux jeux de composants serait le meilleur moyen de les faire
+     diverger : une correction sur l'un et pas sur l'autre, et le tunnel se
+     dégrade sans que personne ne le voie. Les composants utilisent donc des
+     variables, et seul le SCOPE change.
+     Les couleurs d'accent (`bg-terracotta` + `text-paper`) restent littérales :
+     terracotta sur blanc tient sur les deux fonds (5,81:1, vérifié par le
+     gate), le thématiser ne ferait qu'ajouter un risque. */
+  .sim-scope {
+    --sim-bg: var(--color-canvas);
+    --sim-surface: var(--color-paper);
+    --sim-subtle: var(--color-sand);
+    --sim-fg: var(--color-fg);
+    --sim-fg-soft: var(--color-fg-soft);
+    --sim-fg-muted: var(--color-fg-muted);
+    --sim-border: var(--color-border);
+    --sim-border-strong: var(--color-border-strong);
+    /* Terracotta pour du TEXTE — pas pour un fond. */
+    --sim-accent-text: var(--color-terracotta);
+    --sim-accent-strong: var(--color-terracotta-deep);
+    --sim-accent-soft: var(--color-terracotta-soft);
+    --sim-accent-border: var(--color-terracotta);
+  }
+
+  .sim-scope[data-tone="dark"] {
+    --sim-bg: var(--color-ink);
+    --sim-surface: var(--color-mocha);
+    --sim-subtle: var(--color-mocha-soft);
+    --sim-fg: var(--color-mocha-fg);
+    --sim-fg-soft: var(--color-mocha-fg-muted);
+    --sim-fg-muted: var(--color-mocha-fg-muted);
+    --sim-border: var(--color-border-on-mocha);
+    --sim-border-strong: var(--color-mocha-fg-muted);
+    /* 🔴 Le terracotta de marque ne donne que 2,61:1 sur mocha : illisible.
+       C'est exactement ce pour quoi `--color-terracotta-on-mocha` existe. */
+    --sim-accent-text: var(--color-terracotta-on-mocha);
+    --sim-accent-strong: var(--color-terracotta-on-mocha);
+    --sim-accent-soft: color-mix(in srgb, var(--color-terracotta) 26%, var(--color-mocha));
+    --sim-accent-border: var(--color-terracotta-on-mocha);
+  }
+
+  /* Halo du bloc de résultat — se substitue à `bg-halo-warm`, qui est calibré
+     pour l'ivoire et disparaît sur fond sombre. */
+  .sim-halo {
+    background-color: var(--sim-surface);
+    background-image: radial-gradient(
+      at 82% 8%,
+      color-mix(in srgb, var(--sim-accent-text) 22%, transparent) 0px,
+      transparent 60%
+    );
+  }
+
   /* Diviseur éditorial : ligne fine sable centrée */
   .divider-editorial {
     height: 1px;

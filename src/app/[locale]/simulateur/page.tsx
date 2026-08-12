@@ -59,22 +59,26 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
   const initialShowReport = sp[REPORT_QUERY_PARAM] === "1" && initialAnswers !== null;
 
   return (
-    <div className="axion-funnel-shell bg-canvas min-h-screen">
-      <Container className="max-w-2xl py-8 sm:py-12">
-        {/* En-tête minimal : la marque, rien de cliquable qui sorte du tunnel. */}
-        <p className="text-terracotta-deep text-[12px] font-bold tracking-[0.16em] uppercase">
-          Axion-IA · {isFr ? "Simulateur de gains" : "Gains simulator"}
+    <div className="axion-vsl-shell bg-vsl min-h-screen">
+      <Container className="max-w-2xl px-5 py-8 sm:py-12">
+        {/* Marque rendue EXACTEMENT comme sur `/diagnostic` : c'est la seule
+            chose qui reste à l'écran d'une page à l'autre, donc le seul repère
+            qui dit au visiteur qu'il n'a pas changé de site en cliquant sur la
+            publicité. Toute divergence ici se lit comme une redirection
+            douteuse. */}
+        <p className="text-mocha-fg text-center text-[15px] font-bold tracking-[0.2em] uppercase">
+          Axion<span className="text-terracotta-on-mocha">-</span>IA
         </p>
-        <h1 className="text-fg mt-3 text-[28px] leading-[1.12] font-bold tracking-tight text-balance sm:text-[36px]">
+        <h1 className="text-mocha-fg mt-6 text-[28px] leading-[1.12] font-bold tracking-tight text-balance sm:text-[36px]">
           {isFr ? (
             <>
               Quelles tâches votre entreprise{" "}
-              <em className="text-terracotta not-italic">doit automatiser</em> en premier ?
+              <em className="text-terracotta-on-mocha not-italic">doit automatiser</em> en premier ?
             </>
           ) : (
             <>
               Which tasks should your company{" "}
-              <em className="text-terracotta not-italic">automate</em> first?
+              <em className="text-terracotta-on-mocha not-italic">automate</em> first?
             </>
           )}
         </h1>
@@ -84,23 +88,27 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
             temps pendant lequel on peut perdre le visiteur. Le détail du modèle
             est reporté sous le questionnaire, où il rassure ceux qui le
             cherchent sans retarder ceux qui veulent commencer. */}
-        <p className="text-fg-soft mt-3 text-[16px] leading-relaxed text-pretty">
+        <p className="text-mocha-fg-muted mt-3 text-[16px] leading-relaxed text-pretty">
           {isFr
             ? "Une dizaine de questions sur vos volumes réels. Trois minutes, sans inscription."
             : "A dozen questions about your real volumes. Three minutes, no sign-up."}
         </p>
 
-        <div className="border-border bg-paper shadow-card mt-6 rounded-3xl border p-5 sm:p-8">
+        {/* Le simulateur hérite de l'habillage sombre par `tone="dark"` : mêmes
+            composants que sur `/roi`, seules les variables de `.sim-scope`
+            changent. */}
+        <div className="border-border-on-mocha bg-mocha/40 mt-6 rounded-3xl border p-5 sm:p-8">
           <SimulatorFlow
             locale={loc}
             initialAnswers={initialAnswers}
             initialShowReport={initialShowReport}
             funnel
+            tone="dark"
           />
         </div>
 
-        <p className="text-fg-muted mt-8 flex items-start gap-2 text-[13px] leading-relaxed">
-          <ShieldCheck aria-hidden="true" className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0" />
+        <p className="text-mocha-fg-muted mt-8 flex items-start gap-2 text-[13px] leading-relaxed">
+          <ShieldCheck aria-hidden="true" className="text-terracotta-on-mocha mt-0.5 h-4 w-4 shrink-0" />
           <span>
             {isFr
               ? `Modèle ouvert : ${AUTOMATABLE_TASKS.length} tâches de référence, chacune avec son temps et la justification de son taux. Rien n'est transmis tant que vous ne le demandez pas.`
@@ -108,7 +116,7 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
           </span>
         </p>
 
-        <p className="text-fg-muted mt-4 text-center text-[12.5px] leading-relaxed">
+        <p className="text-mocha-fg-muted mt-4 text-center text-[12.5px] leading-relaxed">
           {isFr
             ? "Estimation issue d'un modèle dont les hypothèses sont publiées. Ni un devis, ni un audit, ni un engagement de résultat."
             : "Estimate from a model whose assumptions are published. Neither a quote, nor an audit, nor a performance guarantee."}

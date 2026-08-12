@@ -69,6 +69,14 @@ interface SimulatorFlowProps {
   initialShowReport?: boolean;
   /** Variante tunnel : masque les liens de sortie autres que les CTA. */
   funnel?: boolean;
+  /**
+   * Habillage. `light` sur `/roi`, page éditoriale ivoire ; `dark` dans le
+   * tunnel publicitaire, pour être dans la continuité visuelle de
+   * `/diagnostic`. Le basculement passe entièrement par les variables de
+   * `.sim-scope` (cf. `globals.css`) : aucun composant n'est dupliqué, donc
+   * aucune correction ne peut s'appliquer à un habillage et pas à l'autre.
+   */
+  tone?: "light" | "dark";
   className?: string;
 }
 
@@ -77,6 +85,7 @@ export function SimulatorFlow({
   initialAnswers,
   initialShowReport = false,
   funnel = false,
+  tone = "light",
   className,
 }: SimulatorFlowProps) {
   const [answers, setAnswers] = React.useState<RoiAnswers>(initialAnswers ?? EMPTY_ANSWERS);
@@ -228,7 +237,7 @@ export function SimulatorFlow({
   // ── Rapport ─────────────────────────────────────────────────────────────
   if (showReport) {
     return (
-      <div ref={topRef} className={cn("scroll-mt-24", className)}>
+      <div ref={topRef} data-tone={tone} className={cn("sim-scope scroll-mt-24", className)}>
         <div ref={headingRef} tabIndex={-1} className="outline-none">
           <ReportView
             locale={locale}
@@ -256,14 +265,30 @@ export function SimulatorFlow({
   const phaseTotal = isFraming ? FRAMING_STEPS.length : steps.length - FRAMING_STEPS.length;
   const pct = Math.round(((phaseIndex + 1) / Math.max(1, phaseTotal)) * 100);
 
-  const selected = answered.has(step.id) ? selectedOptionIds(answers, step) : [];
+  // 🔴 Le pré-cochage sectoriel remplit `answers.functions` au moment où le
+  // SECTEUR est choisi — donc sans passer par l'écran des fonctions, donc sans
+  // entrer dans `answered`. En ne se fiant qu'à `answered`, l'écran s'affichait
+  // entièrement décoché, sous un texte qui annonce « nous avons coché ce qui
+  // existe chez presque tous les acteurs de votre secteur », avec le bouton
+  // « Continuer » DÉSACTIVÉ. Le parcours était bloqué net pour tout le monde.
+  //
+  // Le test unitaire ne pouvait pas le voir : il vérifiait `applyStepAnswer`,
+  // qui remplissait bien les fonctions. C'est le chemin d'AFFICHAGE qui était
+  // rompu. Défaut trouvé par le parcours automatisé de bout en bout.
+  //
+  // La règle est donc DÉRIVÉE DE LA DONNÉE et non d'un état parallèle : des
+  // fonctions présentes sont des fonctions cochées, quelle que soit leur
+  // origine. Deux sources de vérité se seraient désynchronisées de nouveau.
+  const isDisplayedAsAnswered =
+    answered.has(step.id) || (step.kind === "multi" && answers.functions.length > 0);
+  const selected = isDisplayedAsAnswered ? selectedOptionIds(answers, step) : [];
   const identifiedTasks = report.tasks.length;
 
   return (
-    <div ref={topRef} className={cn("scroll-mt-24", className)}>
+    <div ref={topRef} data-tone={tone} className={cn("sim-scope scroll-mt-24", className)}>
       {/* ── Progression ─────────────────────────────────────────────────── */}
       <div className="mb-7">
-        <div className="text-fg-muted mb-2 flex items-baseline justify-between text-[12px] font-bold tracking-[0.14em] uppercase">
+        <div className="text-[var(--sim-fg-muted)] mb-2 flex items-baseline justify-between text-[12px] font-bold tracking-[0.14em] uppercase">
           <span>{phaseLabel}</span>
           <span className="tabular-nums">
             {phaseIndex + 1} / {phaseTotal}
@@ -275,7 +300,7 @@ export function SimulatorFlow({
           aria-valuemin={0}
           aria-valuemax={100}
           aria-label={`Progression : ${phaseLabel}, étape ${phaseIndex + 1} sur ${phaseTotal}`}
-          className="bg-border/70 h-1.5 w-full overflow-hidden rounded-full"
+          className="bg-[var(--sim-border)]/70 h-1.5 w-full overflow-hidden rounded-full"
         >
           <div
             className="bg-terracotta h-full rounded-full transition-[width] duration-300 ease-out"
@@ -303,9 +328,9 @@ export function SimulatorFlow({
       {!isFraming && identifiedTasks > 0 ? (
         <p
           aria-live="polite"
-          className="border-terracotta/30 bg-terracotta-soft/40 text-fg mt-6 flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-[14px] leading-snug font-medium"
+          className="border-[var(--sim-accent-border)]/30 bg-[var(--sim-accent-soft)] text-[var(--sim-fg)] mt-6 flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-[14px] leading-snug font-medium"
         >
-          <Sparkles aria-hidden="true" className="text-terracotta-deep h-4 w-4 shrink-0" />
+          <Sparkles aria-hidden="true" className="text-[var(--sim-accent-strong)] h-4 w-4 shrink-0" />
           <span>
             {identifiedTasks} tâche{identifiedTasks > 1 ? "s" : ""} automatisable
             {identifiedTasks > 1 ? "s" : ""} déjà identifiée{identifiedTasks > 1 ? "s" : ""} chez
@@ -320,7 +345,7 @@ export function SimulatorFlow({
           <button
             type="button"
             onClick={goBack}
-            className="text-fg-soft hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+            className="text-[var(--sim-fg-soft)] hover:text-[var(--sim-accent-text)] focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
           >
             <ArrowLeft aria-hidden="true" className="h-4 w-4" />
             Revenir à la question précédente
@@ -328,7 +353,7 @@ export function SimulatorFlow({
         </div>
       ) : null}
 
-      <p className="text-fg-muted mt-8 text-[12.5px] leading-relaxed">
+      <p className="text-[var(--sim-fg-muted)] mt-8 text-[12.5px] leading-relaxed">
         {stepIndex === 0
           ? "Une dizaine de questions, environ trois minutes. Aucune inscription, et rien n'est transmis : tout se calcule dans votre navigateur."
           : "Aucune inscription, aucune donnée transmise pendant le questionnaire : tout se calcule dans votre navigateur."}

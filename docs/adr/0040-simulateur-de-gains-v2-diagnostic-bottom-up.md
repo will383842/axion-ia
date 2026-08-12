@@ -189,7 +189,55 @@ CSS tout en chargeant Clarity déposerait des cookies tiers sans consentement :
 un manquement caractérisé, pas une optimisation. Les deux conditions vivent dans
 le même module pour qu'on ne puisse pas modifier l'une sans voir l'autre.
 
-### 11. Les réponses vivent dans l'URL
+### 11. Le simulateur est THÉMÉ, pas dupliqué
+
+Le simulateur est servi à deux endroits qui n'ont pas la même identité : `/roi`,
+page éditoriale ivoire, et `/simulateur`, étape du tunnel dans la continuité de
+`/diagnostic`, fond encre. Un visiteur qui clique sur le bouton d'une publicité
+doit avoir l'impression de rester au même endroit — une rupture d'habillage se
+lit comme une redirection douteuse.
+
+Deux jeux de composants auraient fini par diverger : une correction sur l'un et
+pas sur l'autre, et le tunnel se dégrade sans que personne ne le voie. Les
+composants utilisent donc les variables de `.sim-scope` (`globals.css`), et seul
+`data-tone` change. Un test verrouille les deux habillages.
+
+Les accents restent littéraux (`bg-terracotta` + `text-paper`) : terracotta sur
+blanc tient sur les deux fonds (5,81:1, vérifié par le gate), les thématiser
+n'ajouterait que du risque. Seul le terracotta de TEXTE bascule — le terracotta
+de marque ne donne que 2,61:1 sur mocha, ce pour quoi
+`--color-terracotta-on-mocha` existe.
+
+Le CSS de coque du tunnel vit dans un composant partagé (`FunnelShellStyle`),
+pour la même raison : deux copies auraient divergé.
+
+### 12. Le parcours complet est rejoué en machine
+
+Un script Playwright rejoue le trajet réel — URL de publicité Facebook avec ses
+`utm_*` et son `fbclid`, atterrissage, clic, questionnaire complet, rapport,
+réglage du coût, dépliant de preuve, formulaire — sur un iPhone 13, en
+capturant chaque écran et en vérifiant à chaque étape : pas de débordement
+horizontal, pas de bannière de consentement, aucune erreur de console, taille
+des cibles tactiles, et présence du cookie d'attribution.
+
+**Ce parcours a trouvé un défaut BLOQUANT que la suite de tests ne pouvait pas
+voir.** Le pré-cochage sectoriel inscrivait bien les fonctions dans les réponses
+— `applyStepAnswer` était juste, et testé — mais l'écran les affichait
+**décochées**, avec le bouton « Continuer » **désactivé**, sous un texte
+annonçant « nous avons coché ce qui existe chez presque tous les acteurs de
+votre secteur ». Le tunnel était coupé, pour tout le monde, à l'écran 4.
+
+La cause : la sélection d'affichage se fiait à un état parallèle (`answered`),
+alimenté uniquement par une interaction sur l'écran lui-même — alors que le
+pré-remplissage a lieu à l'écran du SECTEUR. La règle est désormais **dérivée de
+la donnée** : des fonctions présentes sont des fonctions cochées, quelle que
+soit leur origine. Et `SimulatorFlow.spec.tsx` rend le composant pour l'attester.
+
+🔑 Leçon générale : une logique pure juste ne garantit rien sur le chemin
+d'affichage. Pour un tunnel, la seule vérification qui compte est celle qui
+rejoue le parcours.
+
+### 13. Les réponses vivent dans l'URL
 
 `?d=<réponses>&r=1`, mis à jour par `history.replaceState` — donc sans jamais
 déclencher de `popstate`, donc sans re-rendu de route Next : sur mobile en 4G, un

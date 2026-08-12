@@ -65,13 +65,13 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
   return (
     <fieldset className="min-w-0">
       <legend className="mb-2 block">
-        <span className="text-fg block text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[32px]">
+        <span className="text-[var(--sim-fg)] block text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[32px]">
           {step.titleFr}
         </span>
       </legend>
 
       {step.hintFr ? (
-        <p className="text-fg-soft mb-7 text-[15px] leading-relaxed text-pretty sm:text-base">
+        <p className="text-[var(--sim-fg-soft)] mb-7 text-[15px] leading-relaxed text-pretty sm:text-base">
           {step.hintFr}
         </p>
       ) : (
@@ -105,8 +105,8 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                 // il reste la cible du focus clavier.
                 "focus-within:ring-terracotta focus-within:ring-2 focus-within:ring-offset-2",
                 isSelected
-                  ? "border-terracotta bg-terracotta-soft"
-                  : "border-border bg-paper hover:border-border-strong active:bg-sand",
+                  ? "border-[var(--sim-accent-border)] bg-[var(--sim-accent-soft)]"
+                  : "border-[var(--sim-border)] bg-[var(--sim-surface)] hover:border-[var(--sim-border-strong)] active:bg-[var(--sim-subtle)]",
               )}
             >
               <input
@@ -129,13 +129,13 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                   className={cn(
                     "block leading-snug font-semibold text-balance",
                     compact ? "text-[15px]" : "text-[16px]",
-                    isSelected ? "text-terracotta-deep" : "text-fg",
+                    isSelected ? "text-[var(--sim-accent-strong)]" : "text-[var(--sim-fg)]",
                   )}
                 >
                   {option.labelFr}
                 </span>
                 {option.hintFr ? (
-                  <span className="text-fg-muted mt-0.5 block text-[13px] leading-snug">
+                  <span className="text-[var(--sim-fg-muted)] mt-0.5 block text-[13px] leading-snug">
                     {option.hintFr}
                   </span>
                 ) : null}
@@ -152,8 +152,8 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                   isMulti ? "rounded-md" : "rounded-full",
                   compact ? "absolute top-3 right-3 h-5 w-5" : "h-6 w-6",
                   isSelected
-                    ? "border-terracotta bg-terracotta text-paper"
-                    : "border-border-strong bg-transparent",
+                    ? "border-[var(--sim-accent-border)] bg-terracotta text-paper"
+                    : "border-[var(--sim-border-strong)] bg-transparent",
                 )}
               >
                 {isSelected ? (
