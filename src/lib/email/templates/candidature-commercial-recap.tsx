@@ -96,7 +96,9 @@ export function CandidatureCommercialRecapEmail({
     <EmailLayout
       preview={`Candidature commerciale — ${qui}`}
       title={`Candidature commerciale — ${qui}`}
-      cta={p.consoleUrl ? { label: "Ouvrir la fiche en console", href: p.consoleUrl } : undefined}
+      {...(p.consoleUrl
+        ? { cta: { label: "Ouvrir la fiche en console", href: p.consoleUrl } }
+        : {})}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
