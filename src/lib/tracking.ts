@@ -38,7 +38,26 @@ export type FunnelEvent =
   | "Chat Qualified"
   | "Chat RDV"
   | "Chat Lead"
-  | "Chat Escalated";
+  | "Chat Escalated"
+  // Simulateur de gains v2 (2026-08-12). « Simulator Step » est émis à CHAQUE
+  // écran répondu, avec `step` et `stepIndex` en props : c'est ce qui permet de
+  // lire la courbe d'abandon écran par écran dans Plausible et de savoir quelle
+  // question fait décrocher. Sans lui, on ne saurait qu'une chose — le nombre
+  // de gens qui arrivent au bout — ce qui n'indique jamais quoi corriger.
+  | "Simulator Started"
+  | "Simulator Step"
+  | "Simulator Completed"
+  | "Simulator Report Requested"
+  // Le lead le plus chaud du tunnel : il a laissé un numéro APRÈS avoir reçu
+  // son rapport, donc sans y être contraint.
+  | "Simulator Callback Requested"
+  // Pages d'atterrissage publicitaires (VSL). « Landing Video Played » est le
+  // seul signal qui distingue un clic accidentel d'un visiteur réellement
+  // engagé : sur une pub vidéo, le taux de lecture prédit la conversion bien
+  // mieux que le temps passé sur la page.
+  | "Landing Viewed"
+  | "Landing Video Played"
+  | "Landing CTA Clicked";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).
@@ -65,6 +84,38 @@ export interface FunnelProps {
   requiresNda?: "yes" | "no";
   /** Bucket prix (ne PAS envoyer prix exact pour anonymat). */
   priceBucket?: "lt-500" | "500-1000" | "1000-2000" | "2000-5000" | "gt-5000";
+  // ── Simulateur de gains v2 ───────────────────────────────────────────────
+  /** Identifiant de l'écran répondu (`sector`, `functions`, `volume:…`). */
+  step?: string;
+  /** Rang de l'écran dans le parcours, à partir de 1. */
+  stepIndex?: number;
+  /** Nombre total d'écrans du parcours tel que calculé pour ce visiteur. */
+  stepTotal?: number;
+  /** Secteur déclaré — donnée d'entreprise, jamais nominative. */
+  sector?: string;
+  /** Tranche d'effectif déclarée. */
+  headcount?: string;
+  /** Nombre de tâches chiffrées dans le rapport final. */
+  taskCount?: number;
+  /**
+   * Bucket du gain annuel estimé. Bucket et non montant : le montant exact,
+   * croisé au secteur et à l'effectif, réidentifierait une entreprise.
+   */
+  gainBucket?: "lt-10k" | "10k-50k" | "50k-150k" | "150k-500k" | "gt-500k";
+  // ── Pages d'atterrissage publicitaires ───────────────────────────────────
+  /** Identifiant de la page d'atterrissage (slug), pour comparer les variantes. */
+  landing?: string;
+  /** Emplacement du bouton cliqué (`hero`, `sous-video`, `bas-de-page`). */
+  placement?: string;
+}
+
+/** Range le gain annuel estimé dans un bucket anonyme. */
+export function gainBucketOf(eurPerYear: number): NonNullable<FunnelProps["gainBucket"]> {
+  if (eurPerYear < 10_000) return "lt-10k";
+  if (eurPerYear < 50_000) return "10k-50k";
+  if (eurPerYear < 150_000) return "50k-150k";
+  if (eurPerYear < 500_000) return "150k-500k";
+  return "gt-500k";
 }
 
 /**
