@@ -415,12 +415,11 @@ export default async function MemoIserePage({ params }: Props) {
                 </span>
               </h1>
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Le job : démarcher les <strong>PME et ETI</strong> de ta zone — du cabinet comptable
-                au site industriel, en passant par la boulangerie…{" "}
-                <strong>quel que soit le secteur</strong> — et leur proposer des formations IA que
-                l’AI Act rend obligatoires et que l’OPCO finance. Toi, tu touches la commission. De
-                Grenoble à Valence, de Die à Lyon : {MEMO_ZONE_TOTAL} communes, et tu choisis la
-                tienne.
+                Le job : démarcher les <strong>PME, ETI et grands groupes</strong> de ta zone — du
+                site industriel au siège régional, <strong>quel que soit le secteur</strong> — et
+                leur proposer des formations et des audits IA, que l’AI Act rend incontournables et
+                que l’OPCO finance. Toi, tu touches la commission. De Grenoble à Valence, de Die à
+                Lyon, tu choisis ton secteur : un vrai territoire à toi.
               </p>
 
               <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
