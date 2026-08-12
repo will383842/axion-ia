@@ -13,15 +13,11 @@
 // ⚠️ CTA « J'envoie ma candidature » : ancre #postuler EN ATTENTE (décision
 // Will 2026-08-12 — le formulaire arrive plus tard, aucun lien externe).
 //
-// 📷 Images : AUCUN Unsplash (décision Will). Emplacements `Illustration` avec
-// nom de fichier cible ; en production un emplacement sans fichier est MASQUÉ
-// (le cadre pointillé vide en prod a déjà été refusé le 2026-08-10) — dès que
-// Will dépose l'image dans public/illustrations/, elle apparaît au build suivant.
+// 📷 Images : pool Unsplash déjà curé du site (revirement Will 2026-08-12 —
+// remplacer les emplacements à créer par de vraies photos). Crédits affichés.
 
 import type { Metadata } from "next";
 import Image from "next/image";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
@@ -49,7 +45,8 @@ import { FaqBlock } from "@/components/sections/FaqBlock";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
-import { Illustration } from "@/components/visual/Illustration";
+import { UnsplashCredit } from "@/components/media/UnsplashCredit";
+import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import {
@@ -60,19 +57,12 @@ import {
 
 export const revalidate = 3600;
 
-/** Emplacement image : visible en dev (cadre + fichier cible), masqué en prod
- *  tant que le fichier n'existe pas — jamais de cadre vide en production. */
-function illustrationReady(publicRelPath: string): boolean {
-  return existsSync(join(process.cwd(), "public", publicRelPath));
-}
-function showIllustrationSlot(publicRelPath: string): boolean {
-  return process.env.NODE_ENV !== "production" || illustrationReady(publicRelPath);
-}
-
-const HERO_IMG = "illustrations/memo-isere-hero.avif";
-const TERRAIN_IMG = "illustrations/memo-isere-terrain.avif";
-const SECTEURS_IMG = "illustrations/memo-isere-secteurs.avif";
-const EQUIPE_IMG = "illustrations/memo-isere-equipe.avif";
+// 📷 Images : pool Unsplash déjà CURÉ du site (décision Will 2026-08-12,
+// « mets des images Unsplash à la place ») — jamais de nouvelles photos sans
+// relecture en planche-contact (l'API ne filtre pas le N&B).
+const IMG_HERO = careerImage("business-developer-ia"); // poignée de main B2B
+const IMG_TERRAIN = careerImage("formateur-ia-itinerant"); // formation en salle
+const IMG_EQUIPE = CAREERS_HERO; // équipe en collaboration
 
 // Secteurs démarchés — le job = les PME QUEL QUE SOIT le secteur (Will
 // 2026-08-12). Emojis assumés : ambiance fun/sympa demandée, même registre
@@ -368,8 +358,6 @@ export default async function MemoIserePage({ params }: Props) {
     speakable: { selectors: ["h1", "[data-speakable]"] },
   });
 
-  const heroReady = illustrationReady(HERO_IMG);
-
   return (
     <>
       <JsonLd data={jobJsonLd} scriptId="jsonld-memo-jobposting" />
@@ -392,7 +380,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Vu dans Le Mémo de l’Isère · Démarrage septembre
               </HeroBadge>
               <h1 className="display-editorial text-fg">
-                Devenez commercial IA{" "}
+                Devenez commercial IA indépendant{" "}
                 <span
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
@@ -440,22 +428,29 @@ export default async function MemoIserePage({ params }: Props) {
               </div>
             </div>
 
-            {showIllustrationSlot(HERO_IMG) ? (
-              <Illustration
-                slot="MEMO-01-hero"
-                aspectRatio="4:5"
-                filenameTarget={`public/${HERO_IMG}`}
-                {...(heroReady ? { src: `/${HERO_IMG}`, priority: true } : {})}
-                caption="Un indépendant en rendez-vous chez une entreprise locale"
-                alt="Commercial indépendant Axion-IA en rendez-vous chez un artisan du Sud-Grésivaudan"
+            <div>
+              <div className="border-border shadow-card relative aspect-[4/5] overflow-hidden rounded-3xl border">
+                <Image
+                  src={IMG_HERO.url}
+                  alt="Rendez-vous commercial B2B — poignée de main avec un dirigeant de PME"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-cover"
+                />
+              </div>
+              <UnsplashCredit
+                photographerName={IMG_HERO.byName}
+                photographerUrl={IMG_HERO.byUrl}
+                className="text-right"
               />
-            ) : null}
+            </div>
           </div>
         </Container>
       </Section>
 
       {/* 2 ── Bande de réassurance */}
-      <Section className="py-8 sm:py-8">
+      <Section className="py-6 sm:py-8 lg:py-8">
         <Container>
           <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3" role="list">
             {[
@@ -478,7 +473,7 @@ export default async function MemoIserePage({ params }: Props) {
 
       {/* 2bis ── Panneau sombre d'ouverture — le pattern « L'IA, tout le monde
           en parle » de /fr/audit : une déclaration franche + 3 chiffres. */}
-      <Section className="pt-2 sm:pt-2">
+      <Section className="py-10 sm:py-12 lg:py-14">
         <Container>
           <div className="bg-mocha relative overflow-hidden rounded-2xl px-7 py-9 sm:px-10 sm:py-11">
             <span
@@ -586,6 +581,7 @@ export default async function MemoIserePage({ params }: Props) {
       {/* 3bis ── Tes futurs clients — TOUS les secteurs (Will 2026-08-12 :
           « démarcher les PME quel que soit le secteur », ambiance fun). */}
       <Section
+        className="py-14 sm:py-16 lg:py-20"
         eyebrow="Tes futurs clients"
         title="Ton prochain client ? La boulangerie"
         titleEm="d'en face"
@@ -613,23 +609,13 @@ export default async function MemoIserePage({ params }: Props) {
             … et tous les autres : si une entreprise de ta zone a des équipes et des dossiers à
             traiter, elle est concernée.
           </p>
-          {showIllustrationSlot(SECTEURS_IMG) ? (
-            <div className="mx-auto mt-8 max-w-3xl">
-              <Illustration
-                slot="MEMO-03-secteurs"
-                aspectRatio="16:9"
-                filenameTarget={`public/${SECTEURS_IMG}`}
-                {...(illustrationReady(SECTEURS_IMG) ? { src: `/${SECTEURS_IMG}` } : {})}
-                caption="Commerces, ateliers, cabinets : tes clients sont déjà dans ta rue"
-                alt="Rue commerçante d'une petite ville du corridor avec commerces et artisans"
-              />
-            </div>
-          ) : null}
         </Container>
       </Section>
 
       {/* 4 ── Rémunération transparente */}
       <Section
+        tone="sand"
+        className="py-14 sm:py-16 lg:py-20"
         eyebrow="Rémunération"
         title="500 € par journée de formation" /* price-exempt: commission recrutement */
         titleEm="vendue"
@@ -678,12 +664,6 @@ export default async function MemoIserePage({ params }: Props) {
           </p>
         </Container>
       </Section>
-
-      {/* CTA band terracotta — pattern /fr/audit, 1er passage */}
-      <BandeCta
-        title="Ta zone t’attend — prends-la avant qu’un autre la choisisse."
-        track="memo-band1-apply"
-      />
 
       {/* 5 ── Comment ça marche — section terracotta pleine largeur, le bloc
           signature de /fr/audit (« Un audit IA rigoureux et complet ») : les
@@ -765,24 +745,30 @@ export default async function MemoIserePage({ params }: Props) {
       </section>
 
       {/* 6 ── Bandeau image terrain */}
-      {showIllustrationSlot(TERRAIN_IMG) ? (
-        <Section>
-          <Container className="max-w-4xl">
-            <Illustration
-              slot="MEMO-02-terrain"
-              aspectRatio="16:9"
-              filenameTarget={`public/${TERRAIN_IMG}`}
-              {...(illustrationReady(TERRAIN_IMG) ? { src: `/${TERRAIN_IMG}` } : {})}
-              caption="Le terrain : les entreprises du corridor, de la vallée de l'Isère au Rhône"
-              alt="Rencontre commerciale dans une entreprise locale, entre Grenoble, Valence et Lyon"
+      <Section className="py-14 sm:py-16 lg:py-20">
+        <Container className="max-w-4xl">
+          <div className="border-border shadow-card relative aspect-[16/9] overflow-hidden rounded-3xl border">
+            <Image
+              src={IMG_TERRAIN.url}
+              alt="Présentation d'une formation IA devant une équipe en entreprise"
+              fill
+              sizes="(max-width: 1024px) 100vw, 896px"
+              className="object-cover"
             />
-          </Container>
-        </Section>
-      ) : null}
+          </div>
+          <UnsplashCredit
+            photographerName={IMG_TERRAIN.byName}
+            photographerUrl={IMG_TERRAIN.byUrl}
+            className="text-right"
+          />
+        </Container>
+      </Section>
 
       {/* 7 ── Avis clients (preuve que le produit se vend) */}
       {reviews.length >= 3 ? (
         <Section
+          tone="sand"
+          className="py-14 sm:py-16 lg:py-20"
           eyebrow="La preuve"
           title="Le produit que tu vendras, nos clients le"
           titleEm="recommandent"
@@ -807,8 +793,19 @@ export default async function MemoIserePage({ params }: Props) {
         </Section>
       ) : null}
 
+      {/* CTA band terracotta — pattern /fr/audit (entre avis et intégration) */}
+      <BandeCta
+        title="Septembre arrive vite — les zones partent une par une."
+        track="memo-band-apply"
+      />
+
       {/* 8 ── Intégration & aide au démarrage */}
-      <Section tone="sand" eyebrow="Jamais seul" title="Intégration et aide au" titleEm="démarrage">
+      <Section
+        className="py-14 sm:py-16 lg:py-20"
+        eyebrow="Jamais seul"
+        title="Intégration et aide au"
+        titleEm="démarrage"
+      >
         <Container>
           <DarkTriadPanel
             items={[
@@ -835,23 +832,29 @@ export default async function MemoIserePage({ params }: Props) {
               },
             ]}
           />
-          {showIllustrationSlot(EQUIPE_IMG) ? (
-            <div className="mx-auto mt-8 max-w-3xl">
-              <Illustration
-                slot="MEMO-04-equipe"
-                aspectRatio="16:9"
-                filenameTarget={`public/${EQUIPE_IMG}`}
-                {...(illustrationReady(EQUIPE_IMG) ? { src: `/${EQUIPE_IMG}` } : {})}
-                caption="La formation à l'offre, puis le terrain — accompagné du premier au dernier rendez-vous"
-                alt="Session de préparation entre un commercial et l'équipe Axion-IA"
+          <div className="mx-auto mt-8 max-w-3xl">
+            <div className="border-border shadow-card relative aspect-[16/9] overflow-hidden rounded-3xl border">
+              <Image
+                src={IMG_EQUIPE.url}
+                alt="L'équipe en préparation — supports, argumentaires et premiers rendez-vous"
+                fill
+                sizes="(max-width: 1024px) 100vw, 768px"
+                className="object-cover"
               />
             </div>
-          ) : null}
+            <UnsplashCredit
+              photographerName={IMG_EQUIPE.byName}
+              photographerUrl={IMG_EQUIPE.byUrl}
+              className="text-right"
+            />
+          </div>
         </Container>
       </Section>
 
       {/* 9 ── Poste évolutif */}
       <Section
+        tone="sand"
+        className="py-14 sm:py-16 lg:py-20"
         eyebrow="La suite"
         title="Un poste qui"
         titleEm="évolue"
@@ -891,34 +894,49 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* 10 ── Fondateur */}
-      <Section tone="sand" eyebrow="Qui recrute" title="Le mot du" titleEm="fondateur">
+      {/* 10 ── Fondateur — bande mocha pleine largeur, même mise en page que le
+          bandeau sombre de /fr/audit (retour Will 2026-08-12). */}
+      <section className="bg-mocha-rich text-mocha-fg py-16 sm:py-20 lg:py-24">
         <Container>
-          <div className="border-border bg-paper shadow-card mx-auto flex max-w-3xl flex-col items-center gap-6 rounded-3xl border p-8 sm:flex-row sm:items-start">
-            <Image
-              src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
-              alt="Williams Jullin, fondateur d'Axion-IA"
-              width={128}
-              height={128}
-              className="h-32 w-32 shrink-0 rounded-2xl object-cover"
-            />
-            <div>
-              <blockquote className="text-fg-soft text-lg leading-relaxed">
-                « Je forme moi-même les dirigeants et leurs équipes, et je vois la même chose
-                partout : les entreprises veulent passer à l’IA mais personne ne vient les voir. De
-                Grenoble à Lyon en passant par Valence et Die, c’est chez nous — je cherche des gens
-                du coin qui connaissent leur territoire et qui veulent être payés à la hauteur de ce
-                qu’ils apportent. »
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-mocha-fg/70 text-[13px] font-medium tracking-[0.16em] uppercase">
+                Qui recrute
+              </p>
+              <h2 className="mt-4 text-[clamp(1.75rem,4vw,2.75rem)] leading-[1.05] font-semibold tracking-tight">
+                Le mot du{" "}
+                <span
+                  className="text-terracotta-soft italic"
+                  style={{ fontFamily: "var(--font-serif)" }}
+                >
+                  fondateur
+                </span>
+              </h2>
+              <blockquote data-speakable className="text-mocha-fg/85 mt-5 text-lg leading-relaxed">
+                « Les dirigeants me disent tous la même chose : ils veulent passer à l’IA, mais
+                personne ne vient les voir. De Grenoble à Lyon, de Valence à Die, c’est chez nous —
+                je cherche des gens du coin, qui connaissent leur territoire et qui veulent être
+                payés à la hauteur de ce qu’ils apportent. »
               </blockquote>
-              <p className="mt-4 font-semibold">Williams Jullin</p>
-              <p className="text-fg-muted text-sm">Fondateur d’Axion-IA · Grenoble</p>
+              <p className="mt-5 font-semibold">Williams Jullin</p>
+              <p className="text-mocha-fg/70 text-sm">Fondateur d’Axion-IA · Grenoble</p>
+            </div>
+            <div className="shrink-0">
+              <Image
+                src="/illustrations/william-fondateur-formateur-ia-axion-ia.png"
+                alt="Williams Jullin, fondateur d'Axion-IA"
+                width={224}
+                height={224}
+                className="h-44 w-44 rounded-3xl object-cover sm:h-56 sm:w-56"
+              />
             </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
       {/* 11 ── Profils recherchés */}
       <Section
+        className="py-14 sm:py-16 lg:py-20"
         eyebrow="Les profils"
         title="Débutant ou routier de la vente :"
         titleEm="bienvenue"
@@ -947,40 +965,50 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* CTA band terracotta — pattern /fr/audit, 2e passage */}
-      <BandeCta
-        title="Septembre arrive vite — les zones partent une par une."
-        track="memo-band2-apply"
-      />
-
-      {/* 12 ── Zone couverte — GEO : 474 communes officielles en 13 territoires,
-          grille façon « L'audit IA disponible partout en France » de /fr/audit. */}
+      {/* 12 ── Zone couverte — 474 communes en 13 territoires. Accordéons
+          <details> CSS-only : les 13 murs de texte étaient « visuellement
+          catastrophiques » (Will) ; les villes principales restent visibles,
+          la liste complète (SEO/GEO) se déplie. */}
       <Section
         tone="sand"
+        className="py-14 sm:py-16 lg:py-20"
         eyebrow="Ton territoire"
         title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
         titleEm="Lyon, Valence et Die"
-        description="Tu choisis ta zone parmi 13 territoires ; tant qu'elle est disponible, elle devient la tienne. Chaque commune — y compris la plus petite — compte des artisans, des commerces et des PME que personne n'a démarchés sur l'IA."
+        description="En indépendant ou apporteur d'affaires, tu choisis ta zone parmi 13 territoires ; tant qu'elle est disponible, elle devient la tienne. Chaque commune — y compris la plus petite — compte des PME que personne n'a démarchées sur l'IA."
       >
-        <Container>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Container className="max-w-4xl">
+          <ul className="space-y-3" role="list">
             {MEMO_ZONE_CLUSTERS.map((cl) => (
-              <div
-                key={cl.label}
-                className="border-border bg-paper shadow-subtle hover:shadow-card rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <h3 className="font-serif text-lg leading-snug font-semibold">{cl.label}</h3>
-                  <span className="text-terracotta shrink-0 text-xs font-bold tracking-wide uppercase">
-                    {cl.communes.length} communes
-                  </span>
-                </div>
-                <p className="text-fg-muted mt-3 text-[13px] leading-relaxed">
-                  {cl.communes.join(" · ")}
-                </p>
-              </div>
+              <li key={cl.label}>
+                <details className="group border-border bg-paper shadow-subtle overflow-hidden rounded-2xl border">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                    <span className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <span className="font-serif text-lg leading-snug font-semibold">
+                        {cl.label}
+                      </span>
+                      <span className="text-fg-muted hidden text-sm sm:inline">
+                        {cl.principales.slice(0, 3).join(" · ")}
+                        {cl.principales.length > 3 ? "…" : ""}
+                      </span>
+                    </span>
+                    <span className="text-terracotta flex shrink-0 items-center gap-2 text-xs font-bold tracking-wide uppercase">
+                      {cl.communes.length} communes
+                      <span
+                        aria-hidden="true"
+                        className="transition-transform duration-200 group-open:rotate-90"
+                      >
+                        →
+                      </span>
+                    </span>
+                  </summary>
+                  <p className="text-fg-muted border-border border-t px-5 py-4 text-[13px] leading-relaxed">
+                    {cl.communes.join(" · ")}
+                  </p>
+                </details>
+              </li>
             ))}
-          </div>
+          </ul>
           <p data-speakable className="text-fg-muted mt-6 max-w-2xl text-sm leading-relaxed">
             Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
             regarde ensemble, la zone s’adapte.
@@ -1004,7 +1032,7 @@ export default async function MemoIserePage({ params }: Props) {
           eyebrow="Démarrage septembre"
           title="Prêt à devenir le commercial IA de"
           titleEm="ta zone ?"
-          description="Les candidatures sont ouvertes — le formulaire arrive ici très prochainement. 2 minutes, CV optionnel, débutants bienvenus."
+          description="Les candidatures sont ouvertes. 2 minutes, CV optionnel, débutants bienvenus — en indépendant ou apporteur d’affaires."
           cta={<CtaCandidature track="memo-final-apply" />}
         />
       </div>
