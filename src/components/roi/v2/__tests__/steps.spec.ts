@@ -16,6 +16,8 @@ import {
   type VolumeStep,
 } from "../steps";
 import type { RoiAnswers } from "@/content/roi/model/types";
+import { SECTOR_DEFAULT_FUNCTIONS } from "@/content/roi/model/functions";
+import { selectVolumeQuestions } from "@/content/roi/model/questions";
 
 const BASE: RoiAnswers = {
   sector: "generique",
@@ -57,6 +59,57 @@ describe("construction du parcours", () => {
 
   it("n'ajoute aucun écran pour la seule fonction direction", () => {
     expect(buildSteps(["direction"])).toHaveLength(FRAMING_STEPS.length);
+  });
+});
+
+describe("pré-remplissage sectoriel", () => {
+  const sectorStep = FRAMING_STEPS[0]!;
+
+  it("pré-coche les fonctions habituelles du secteur choisi", () => {
+    // L'écran des fonctions devient une confirmation d'un appui au lieu d'un
+    // arbitrage à huit cases : c'est le point de décrochage le plus probable
+    // du parcours.
+    const next = applyStepAnswer(BASE, sectorStep, ["juridique"]);
+    expect(next.functions).toEqual(SECTOR_DEFAULT_FUNCTIONS.juridique);
+    expect(next.functions.length).toBeGreaterThan(0);
+  });
+
+  it("n'écrase jamais une sélection faite à la main", () => {
+    // Revenir en arrière pour corriger son secteur ne doit pas effacer les
+    // fonctions que l'utilisateur a lui-même ajustées.
+    const custom: RoiAnswers = { ...BASE, functions: ["marketing", "rh"] };
+    const next = applyStepAnswer(custom, sectorStep, ["juridique"], true);
+    expect(next.sector).toBe("juridique");
+    expect(next.functions).toEqual(["marketing", "rh"]);
+  });
+
+  it("garde chaque préréglage entre deux et trois fonctions", () => {
+    // Chaque fonction ajoute deux questions de volume : au-delà de trois, le
+    // pré-remplissage allongerait le questionnaire au lieu de le raccourcir.
+    for (const [sector, fns] of Object.entries(SECTOR_DEFAULT_FUNCTIONS)) {
+      expect(fns.length, `secteur ${sector}`).toBeGreaterThanOrEqual(2);
+      expect(fns.length, `secteur ${sector}`).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it("ne pré-coche que des fonctions réellement interrogeables", () => {
+    // `direction` n'a aucune question de volume : la pré-cocher gonflerait la
+    // liste des « fonctions non mesurées » du rapport sans rien apporter.
+    for (const [sector, fns] of Object.entries(SECTOR_DEFAULT_FUNCTIONS)) {
+      expect(fns, `secteur ${sector}`).not.toContain("direction");
+      expect(selectVolumeQuestions(fns).length, `secteur ${sector}`).toBeGreaterThan(0);
+    }
+  });
+
+  it("produit un parcours court pour tous les secteurs", () => {
+    // Promesse affichée à l'utilisateur : « une dizaine de questions, environ
+    // trois minutes ». Elle doit tenir pour chaque secteur, pré-remplissage
+    // accepté tel quel.
+    for (const [sector, fns] of Object.entries(SECTOR_DEFAULT_FUNCTIONS)) {
+      const total = buildSteps(fns).length;
+      expect(total, `secteur ${sector}`).toBeLessThanOrEqual(10);
+      expect(total, `secteur ${sector}`).toBeGreaterThanOrEqual(8);
+    }
   });
 });
 

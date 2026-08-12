@@ -36,12 +36,15 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
   const isMulti = step.kind === "multi";
   const selectedSet = React.useMemo(() => new Set(selected), [selected]);
 
-  // Deux colonnes seulement si TOUS les libellés sont courts et sans précision :
-  // une grille irrégulière se lit plus mal qu'une simple pile.
+  // Deux colonnes soit sur demande explicite de l'écran (listes longues à
+  // libellés courts : secteur, effectif), soit quand tous les libellés sont
+  // assez courts pour ne pas produire une grille irrégulière — plus pénible à
+  // lire qu'une simple pile.
   const compact =
-    !isMulti &&
-    step.options.every((o) => o.labelFr.length <= 18 && !o.hintFr) &&
-    step.options.length >= 4;
+    step.twoColumns ||
+    (!isMulti &&
+      step.options.every((o) => o.labelFr.length <= 18 && !o.hintFr) &&
+      step.options.length >= 4);
 
   const toggle = React.useCallback(
     (optionId: string) => {
@@ -75,7 +78,9 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
         <div className="mb-7" />
       )}
 
-      <div className={cn("grid gap-2.5", compact && "xs:grid-cols-2")}>
+      {/* `grid-cols-2` sans préfixe : la densité est nécessaire DÈS le plus
+          petit écran, c'est précisément là que le défilement coûte le plus. */}
+      <div className={cn("grid gap-2.5", compact && "grid-cols-2")}>
         {step.options.map((option) => {
           const isSelected = selectedSet.has(option.id);
           return (

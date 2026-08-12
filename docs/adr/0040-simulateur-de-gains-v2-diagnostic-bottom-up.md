@@ -102,7 +102,47 @@ notre nom.
   d'appeler `headers()` dans le layout racine). Retirée du sitemap via
   `EXCLUDED_FROM_INDEX`. En trafic payant, chaque lien du méga-menu est une fuite.
 
-### 8. Les réponses vivent dans l'URL
+### 8. Le parcours est optimisé contre l'abandon, et mesuré
+
+Cinq décisions prises spécifiquement pour ne pas perdre de monde en route :
+
+- **Pré-cochage sectoriel des fonctions** (`SECTOR_DEFAULT_FUNCTIONS`). L'écran
+  « qu'est-ce qui vous prend du temps ? » était le seul du parcours à demander un
+  vrai arbitrage (huit cases) ET un appui supplémentaire pour continuer : le
+  point de décrochage le plus probable, et celui qui commande la longueur de
+  toute la suite. Il devient une confirmation d'un appui. Effet mesurable : le
+  parcours tombe à **8-10 écrans pour tous les secteurs** au lieu d'un maximum
+  possible de 16. Un test le verrouille secteur par secteur.
+- **Écrans secteur et effectif sur deux colonnes**, avec des libellés raccourcis
+  réservés au wizard. Onze options empilées à 60 px, c'était 700 px de
+  défilement avant le premier appui — sur le premier écran du parcours.
+- **Compteur de valeur en cours de route** : « 3 tâches automatisables déjà
+  identifiées chez vous », affiché pendant la phase des volumes. Entre la
+  cinquième et la dixième question l'utilisateur n'a encore rien reçu ; c'est là
+  qu'on le perd. Le compteur est exact — ce sont les tâches réellement chiffrées
+  à cet instant — donc il ne promet rien de faux.
+- **Promesse de durée sur le premier écran** : « une dizaine de questions,
+  environ trois minutes ». Un questionnaire de durée inconnue se ferme.
+- **Barre collante mobile « Recevoir ce rapport »** sur le rapport. Le
+  formulaire reste APRÈS les limites — ordre voulu — mais il est désormais à un
+  appui de distance depuis n'importe quel point d'un document de plusieurs
+  milliers de pixels. Deux `IntersectionObserver` et **aucun écouteur de
+  défilement** : sur une page longue, un écouteur `scroll` pèse directement sur
+  l'INP, plafonné à 100 ms par le budget du dépôt.
+
+**Mesure.** Quatre événements sont émis vers Plausible, déclarés dans le type
+fermé `FunnelEvent` conformément à la doctrine de `tracking.ts` : `Simulator
+Started`, `Simulator Step` (à CHAQUE écran, avec `step` / `stepIndex` /
+`stepTotal`), `Simulator Completed`, `Simulator Report Requested`. Sans
+l'événement par écran, on ne saurait qu'une chose — combien de gens arrivent au
+bout — ce qui n'indique jamais quoi corriger. Le gain annuel part en **bucket**
+(`gainBucketOf`), jamais en montant exact : croisé au secteur et à l'effectif, il
+réidentifierait une entreprise.
+
+`Simulator Report Requested` n'est émis qu'APRÈS confirmation du serveur —
+compter les tentatives gonflerait artificiellement le taux de conversion.
+
+### 9. Les réponses vivent dans l'URL
 
 `?d=<réponses>&r=1`, mis à jour par `history.replaceState` — donc sans jamais
 déclencher de `popstate`, donc sans re-rendu de route Next : sur mobile en 4G, un
@@ -157,7 +197,7 @@ question, donc jamais au premier rendu.
 - **Nouveau canal** : template e-mail `roi-report` + action
   `src/features/roi-report/actions.ts` (mêmes protections que `unified-contact` :
   rate-limit dur, honeypot dur, Turnstile souple).
-- **111 tests** verrouillent le modèle, dont une suite `realism.spec.ts` qui borne
+- **116 tests** verrouillent le modèle et le parcours, dont une suite `realism.spec.ts` qui borne
   les montants annoncés sur quatre archétypes d'entreprise. Ces bornes sont
   larges à dessein : elles n'imposent pas une valeur, elles interdisent
   l'absurde. Si l'une casse, la bonne question n'est pas « comment faire repasser

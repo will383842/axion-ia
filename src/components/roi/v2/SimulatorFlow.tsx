@@ -21,11 +21,12 @@
 // avoir sauté une étape.
 
 import * as React from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import type { RoiAnswers } from "@/content/roi/model/types";
 import { diagnose } from "@/lib/roi/diagnose";
+import { gainBucketOf, trackFunnel } from "@/lib/tracking";
 import { REPORT_QUERY_PARAM, ROI_QUERY_PARAM, encodeAnswers } from "@/lib/roi/encode";
 import {
   FRAMING_STEPS,
@@ -130,18 +131,51 @@ export function SimulatorFlow({
       isFirstRender.current = false;
       return;
     }
-    topRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+    // Défilement INSTANTANÉ, pas fluide : l'écran change entièrement de contenu,
+    // regarder défiler la question précédente vers le haut n'apporte aucune
+    // continuité et retarde la lecture. Le mouvement fluide entrerait en outre
+    // en conflit avec le `focus()` qui suit, et il ignore
+    // `prefers-reduced-motion`.
+    topRef.current?.scrollIntoView({ block: "start", behavior: "auto" });
     headingRef.current?.focus({ preventScroll: true });
   }, [stepIndex, showReport]);
 
   const report = React.useMemo(() => diagnose(answers), [answers]);
 
+  // ── Mesure du tunnel ────────────────────────────────────────────────────
+  // Sans événement par écran, on ne saurait qu'une chose — combien de gens
+  // arrivent au bout — ce qui n'indique jamais QUELLE question fait décrocher.
+  const hasStarted = React.useRef(initialAnswers != null);
+  const reportTracked = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!showReport || reportTracked.current) return;
+    reportTracked.current = true;
+    trackFunnel("Simulator Completed", {
+      sector: answers.sector,
+      headcount: answers.headcount,
+      taskCount: report.tasks.length,
+      gainBucket: gainBucketOf(report.totalSavedEurPerYear),
+    });
+  }, [answers.headcount, answers.sector, report, showReport]);
+
   // ── Navigation ──────────────────────────────────────────────────────────
   const goNext = React.useCallback(
-    (nextAnswers: RoiAnswers) => {
+    (nextAnswers: RoiAnswers, answeredStep: Step) => {
       // Le parcours est recalculé à partir des NOUVELLES réponses : cocher une
       // fonction supplémentaire allonge la suite immédiatement.
       const nextSteps = buildSteps(nextAnswers.functions);
+
+      if (!hasStarted.current) {
+        hasStarted.current = true;
+        trackFunnel("Simulator Started", { sector: nextAnswers.sector });
+      }
+      trackFunnel("Simulator Step", {
+        step: answeredStep.id,
+        stepIndex: stepIndex + 1,
+        stepTotal: nextSteps.length,
+      });
+
       if (stepIndex + 1 >= nextSteps.length) setShowReport(true);
       else setStepIndex(stepIndex + 1);
     },
@@ -151,7 +185,7 @@ export function SimulatorFlow({
   const handleSelect = React.useCallback(
     (optionIds: readonly string[]) => {
       if (!step) return;
-      const next = applyStepAnswer(answers, step, optionIds);
+      const next = applyStepAnswer(answers, step, optionIds, answered.has("functions"));
       setAnswers(next);
       setAnswered((prev) => new Set(prev).add(step.id));
 
@@ -159,16 +193,16 @@ export function SimulatorFlow({
       // se sélectionner — sans lui, l'écran change avant que l'œil ait
       // enregistré son propre appui, ce qui donne une impression d'erreur.
       if (step.kind !== "multi") {
-        window.setTimeout(() => goNext(next), 180);
+        window.setTimeout(() => goNext(next, step), 180);
       }
     },
-    [answers, goNext, step],
+    [answered, answers, goNext, step],
   );
 
   const handleContinue = React.useCallback(() => {
     if (!step) return;
     setAnswered((prev) => new Set(prev).add(step.id));
-    goNext(answers);
+    goNext(answers, step);
   }, [answers, goNext, step]);
 
   const goBack = React.useCallback(() => {
@@ -223,6 +257,7 @@ export function SimulatorFlow({
   const pct = Math.round(((phaseIndex + 1) / Math.max(1, phaseTotal)) * 100);
 
   const selected = answered.has(step.id) ? selectedOptionIds(answers, step) : [];
+  const identifiedTasks = report.tasks.length;
 
   return (
     <div ref={topRef} className={cn("scroll-mt-24", className)}>
@@ -260,6 +295,25 @@ export function SimulatorFlow({
         />
       </div>
 
+      {/* ── Retour de valeur en cours de route ──────────────────────────── */}
+      {/* Entre la cinquième et la dixième question, l'utilisateur n'a encore
+          rien reçu : c'est là qu'on le perd. Ce compteur lui montre que son
+          effort produit déjà quelque chose. Il est exact — ce sont les tâches
+          réellement chiffrées à cet instant — donc il ne promet rien de faux. */}
+      {!isFraming && identifiedTasks > 0 ? (
+        <p
+          aria-live="polite"
+          className="border-terracotta/30 bg-terracotta-soft/40 text-fg mt-6 flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-[14px] leading-snug font-medium"
+        >
+          <Sparkles aria-hidden="true" className="text-terracotta-deep h-4 w-4 shrink-0" />
+          <span>
+            {identifiedTasks} tâche{identifiedTasks > 1 ? "s" : ""} automatisable
+            {identifiedTasks > 1 ? "s" : ""} déjà identifiée{identifiedTasks > 1 ? "s" : ""} chez
+            vous.
+          </span>
+        </p>
+      ) : null}
+
       {/* ── Retour ──────────────────────────────────────────────────────── */}
       {stepIndex > 0 ? (
         <div className="mt-6">
@@ -275,8 +329,9 @@ export function SimulatorFlow({
       ) : null}
 
       <p className="text-fg-muted mt-8 text-[12.5px] leading-relaxed">
-        Aucune inscription, aucune donnée transmise pendant le questionnaire : tout se calcule
-        dans votre navigateur.
+        {stepIndex === 0
+          ? "Une dizaine de questions, environ trois minutes. Aucune inscription, et rien n'est transmis : tout se calcule dans votre navigateur."
+          : "Aucune inscription, aucune donnée transmise pendant le questionnaire : tout se calcule dans votre navigateur."}
       </p>
     </div>
   );

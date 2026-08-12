@@ -10,7 +10,13 @@
 // une question exige d'aller compter, elle est mal posée — c'est exactement le
 // défaut qui a coulé la v1.
 
-import type { BusinessFunction, BusinessFunctionDef, VolumeDef, VolumeKey } from "./types";
+import type {
+  BusinessFunction,
+  BusinessFunctionDef,
+  RoiSectorKey,
+  VolumeDef,
+  VolumeKey,
+} from "./types";
 
 export const BUSINESS_FUNCTIONS: readonly BusinessFunctionDef[] = [
   {
@@ -196,6 +202,48 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
     unitFr: ["rapprochement", "rapprochements"],
   },
 ] as const;
+
+// ---------------------------------------------------------------------------
+// Pré-remplissage sectoriel
+// ---------------------------------------------------------------------------
+
+/**
+ * Fonctions PRÉ-COCHÉES à l'écran « qu'est-ce qui vous prend du temps ? »,
+ * selon le secteur déclaré juste avant.
+ *
+ * ── Pourquoi ce pré-remplissage existe ────────────────────────────────────
+ * Cet écran est le seul du parcours qui demande une VRAIE décision (huit cases
+ * à arbitrer) et le seul qui exige un appui supplémentaire pour continuer.
+ * C'est mécaniquement le point de décrochage le plus probable. Il commande en
+ * outre toute la suite : trop de cases cochées, et le questionnaire s'allonge
+ * jusqu'à l'abandon.
+ *
+ * En proposant d'emblée les deux ou trois fonctions qui existent chez
+ * quasiment tous les acteurs du secteur, l'écran passe d'un arbitrage à une
+ * simple confirmation — un appui — tout en restant entièrement modifiable.
+ *
+ * ── Règle de composition ──────────────────────────────────────────────────
+ * DEUX à TROIS fonctions, jamais plus : chacune ajoute deux questions de
+ * volume. On ne retient que celles dont la présence ne fait aucun doute dans
+ * le secteur. `marketing`, `rh` et `finance` sont volontairement rares ici —
+ * ce sont précisément les fonctions qu'une TPE n'a pas, et les pré-cocher
+ * ferait répondre « je ne sais pas » à des questions inutiles.
+ */
+export const SECTOR_DEFAULT_FUNCTIONS: Readonly<
+  Record<RoiSectorKey, readonly BusinessFunction[]>
+> = {
+  generique: ["administratif", "commercial", "production"],
+  comptabilite_finance: ["administratif", "production", "finance"],
+  btp_immobilier: ["administratif", "commercial", "production"],
+  restauration_hotellerie: ["administratif", "relation_client"],
+  sante_medecine: ["administratif", "relation_client", "production"],
+  juridique: ["administratif", "production"],
+  commerce_retail: ["administratif", "commercial", "relation_client"],
+  industrie_logistique: ["administratif", "production", "commercial"],
+  artisanat_services: ["administratif", "commercial"],
+  rh_recrutement: ["administratif", "rh", "relation_client"],
+  collectivites_public: ["administratif", "production", "relation_client"],
+};
 
 const VOLUME_BY_KEY: ReadonlyMap<VolumeKey, VolumeDef> = new Map(VOLUME_DEFS.map((v) => [v.key, v]));
 

@@ -29,6 +29,14 @@
 
 import type { ClientSectorSlug } from "@/content/sectors";
 
+/**
+ * Secteur retenu par le simulateur : les 10 secteurs clients canoniques, plus
+ * un profil générique pour les métiers hors liste. En générique, le modèle
+ * s'interdit les tâches et les pondérations sectorielles — on ne prétend pas
+ * connaître un métier que l'utilisateur n'a pas nommé.
+ */
+export type RoiSectorKey = ClientSectorSlug | "generique";
+
 // ---------------------------------------------------------------------------
 // Fonctions de l'entreprise
 // ---------------------------------------------------------------------------
@@ -317,7 +325,7 @@ export const HEADCOUNT_BANDS: readonly HeadcountDef[] = [
  * il le dit (`unmeasuredFunctions`).
  */
 export interface RoiAnswers {
-  readonly sector: ClientSectorSlug | "generique";
+  readonly sector: RoiSectorKey;
   readonly headcount: HeadcountBand;
   readonly maturity: DigitalMaturity;
   /** Fonctions déclarées présentes dans l'entreprise. */

@@ -28,6 +28,7 @@ import { submitRoiReportAction } from "@/features/roi-report/actions";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
+import { gainBucketOf, trackFunnel } from "@/lib/tracking";
 
 interface ReportEmailFormProps {
   report: RoiReport;
@@ -80,6 +81,14 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
           setError(result.error || "L'envoi a échoué. Réessayez dans un instant.");
           return;
         }
+        // Événement émis APRÈS confirmation du serveur, jamais à la soumission :
+        // compter les tentatives gonflerait le taux de conversion du tunnel.
+        trackFunnel("Simulator Report Requested", {
+          sector: report.answers.sector,
+          headcount: report.answers.headcount,
+          taskCount: report.tasks.length,
+          gainBucket: gainBucketOf(report.totalSavedEurPerYear),
+        });
         setSent(true);
       } catch (err) {
         setError(
@@ -91,7 +100,7 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
         setPending(false);
       }
     },
-    [consent, diagnostic, locale, pending, resetTurnstile, turnstileToken],
+    [consent, diagnostic, locale, pending, report, resetTurnstile, turnstileToken],
   );
 
   if (sent) {

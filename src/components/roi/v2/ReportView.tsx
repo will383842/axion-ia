@@ -28,6 +28,7 @@ import {
   ChevronDown,
   Clock,
   Link2,
+  Mail,
   RotateCcw,
   ShieldCheck,
   Users,
@@ -44,6 +45,9 @@ import { ReportEmailForm } from "./ReportEmailForm";
 
 /** Coûts horaires chargés proposés — des paliers, pas un curseur au doigt. */
 const HOURLY_PRESETS = [35, 45, 60, 85] as const;
+
+const HERO_ID = "roi-report-hero";
+const EMAIL_FORM_ID = "roi-email-form";
 
 interface ReportViewProps {
   locale: Locale;
@@ -81,7 +85,7 @@ export function ReportView({
   return (
     <div className="min-w-0">
       {/* ═══ 1. LE VERDICT ═══════════════════════════════════════════════ */}
-      <header>
+      <header id={HERO_ID}>
         <p className="text-terracotta-deep text-[12px] font-bold tracking-[0.16em] uppercase">
           Votre estimation
         </p>
@@ -376,7 +380,9 @@ export function ReportView({
         >
           Repartez avec ce rapport
         </h3>
-        <ReportEmailForm report={report} locale={locale} className="mt-5" />
+        <div id={EMAIL_FORM_ID} className="scroll-mt-20">
+          <ReportEmailForm report={report} locale={locale} className="mt-5" />
+        </div>
 
         <ShareRow />
 
@@ -427,6 +433,8 @@ export function ReportView({
           </button>
         ) : null}
       </div>
+
+      <StickyReportCta />
     </div>
   );
 }
@@ -446,16 +454,20 @@ function Kpi({
   unit: string;
   label: string;
 }) {
+  // `dt` avant `dd` dans le DOM — c'est ce qu'exige la spécification, et c'est
+  // l'ordre que lisent les lecteurs d'écran. L'inversion visuelle passe par
+  // `order`, pas par l'ordre du balisage. La version précédente doublait le
+  // libellé (un `dt` en `sr-only` PLUS le même texte visible dans le `dd`),
+  // que les lecteurs d'écran annonçaient donc deux fois de suite.
   return (
-    <div className="bg-paper border-border rounded-2xl border p-3">
+    <div className="bg-paper border-border flex flex-col rounded-2xl border p-3">
       <Icon aria-hidden="true" className="text-terracotta-deep mb-1.5 h-4 w-4" />
-      <dt className="sr-only">{label}</dt>
-      <dd>
+      <dt className="text-fg-soft order-2 mt-1.5 text-[11.5px] leading-snug">{label}</dt>
+      <dd className="order-1">
         <span className="text-fg text-[22px] leading-none font-bold tracking-tight tabular-nums">
           {value}
         </span>
         <span className="text-fg-muted ml-1 text-[12px] font-medium">{unit}</span>
-        <span className="text-fg-soft mt-1.5 block text-[11.5px] leading-snug">{label}</span>
       </dd>
     </div>
   );
@@ -571,6 +583,87 @@ function Notice({ tone, children }: { tone: "info" | "warn"; children: React.Rea
 }
 
 /**
+ * Barre collante mobile — « Recevoir ce rapport ».
+ *
+ * ── Pourquoi elle existe ──────────────────────────────────────────────────
+ * Le rapport fait plusieurs milliers de pixels sur un téléphone. Le formulaire
+ * de capture vit tout en bas, APRÈS les limites — un ordre voulu, pour qu'un
+ * dirigeant ne découvre jamais les réserves une fois son adresse donnée. Mais
+ * cet ordre place aussi la capture là où le moins de gens arrivent.
+ *
+ * La barre résout la contradiction sans rien réordonner : le formulaire reste à
+ * sa place, et il est à un appui de distance depuis n'importe quel point du
+ * rapport.
+ *
+ * ── Pourquoi deux IntersectionObserver et aucun écouteur de défilement ────
+ * Un écouteur `scroll` sur une page longue déclenche des recalculs à chaque
+ * frame et pèse directement sur l'INP, que le budget du dépôt plafonne à
+ * 100 ms. Deux observateurs suffisent et ne coûtent rien :
+ *   • le héros visible  → l'utilisateur est encore en haut, la barre gênerait ;
+ *   • le formulaire visible → il y est, la barre n'a plus d'objet et le
+ *     masquerait en partie.
+ */
+function StickyReportCta() {
+  const [heroVisible, setHeroVisible] = React.useState(true);
+  const [formVisible, setFormVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const observe = (id: string, set: (v: boolean) => void) => {
+      const el = document.getElementById(id);
+      if (!el) return undefined;
+      const io = new IntersectionObserver(
+        (entries) => set(entries.some((e) => e.isIntersecting)),
+        { rootMargin: "0px 0px -20% 0px" },
+      );
+      io.observe(el);
+      return io;
+    };
+    const heroIo = observe(HERO_ID, setHeroVisible);
+    const formIo = observe(EMAIL_FORM_ID, setFormVisible);
+    return () => {
+      heroIo?.disconnect();
+      formIo?.disconnect();
+    };
+  }, []);
+
+  const visible = !heroVisible && !formVisible;
+
+  const goToForm = React.useCallback(() => {
+    document.getElementById(EMAIL_FORM_ID)?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, []);
+
+  return (
+    <div
+      aria-hidden={!visible}
+      className={cn(
+        "pointer-events-none fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-out motion-reduce:transition-none lg:hidden",
+        visible ? "translate-y-0" : "translate-y-full",
+      )}
+    >
+      <div
+        className={cn(
+          "bg-paper/90 border-border supports-[backdrop-filter]:bg-paper/75 border-t px-4 pt-3 shadow-[0_-8px_24px_-12px_rgba(0,0,0,0.18)] backdrop-blur",
+          visible ? "pointer-events-auto" : "pointer-events-none",
+        )}
+        // Sans la safe-area, la barre passe sous la barre d'accueil iOS et le
+        // bouton devient partiellement intouchable.
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
+      >
+        <button
+          type="button"
+          onClick={goToForm}
+          {...(visible ? {} : { tabIndex: -1 })}
+          className="bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full px-6 text-[15px] font-bold tracking-tight focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          <Mail aria-hidden="true" className="h-4 w-4" />
+          Recevoir ce rapport
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Copie du lien. Le partage interne — au comité de direction, à l'associé, à
  * l'expert-comptable — est le canal de diffusion le plus efficace de ce
  * rapport, et le seul qui soit gratuit.
@@ -623,9 +716,9 @@ function EmptyReport({ onBack, onRestart }: { onBack: () => void; onRestart: () 
       </h2>
       <p className="text-fg-soft mt-3 text-[15px] leading-relaxed text-pretty">
         Vous avez répondu « je ne sais pas » à toutes les questions de volume, ou déclaré des
-        volumes nuls. Plutôt que d&apos;inventer des chiffres, nous préférons ne rien afficher.
-        Reprenez le questionnaire avec des ordres de grandeur, même approximatifs : c&apos;est
-        largement suffisant.
+        volumes nuls. Plutôt que d&apos;inventer des chiffres à votre place, nous préférons ne rien
+        afficher. Reprenez le questionnaire avec des ordres de grandeur, même très approximatifs :
+        c&apos;est largement suffisant.
       </p>
       <div className="mt-6 flex flex-col gap-3 sm:flex-row">
         <button
@@ -644,6 +737,22 @@ function EmptyReport({ onBack, onRestart }: { onBack: () => void; onRestart: () 
           <RotateCcw aria-hidden="true" className="h-4 w-4" />
           Recommencer
         </button>
+      </div>
+
+      {/* Sortie humaine. Ne pas connaître ses volumes n'est pas une faute : sur
+          beaucoup de sujets, personne dans l'entreprise ne les a jamais comptés.
+          C'est précisément ce qu'un audit va chercher — laisser cette page en
+          cul-de-sac perdrait un prospect au moment exact où il découvre qu'il ne
+          sait pas mesurer son propre temps. */}
+      <div className="border-border mt-6 border-t pt-6">
+        <p className="text-fg-soft text-[14.5px] leading-relaxed text-pretty">
+          Vous ne connaissez pas ces volumes ? C&apos;est fréquent, et ce n&apos;est pas un
+          problème : les compter est justement la première chose que fait un audit.
+        </p>
+        <Cta href="/appel" variant="outline" size="md" className="mt-4" track="roi-vide-appel">
+          En parler vingt minutes
+          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        </Cta>
       </div>
     </div>
   );

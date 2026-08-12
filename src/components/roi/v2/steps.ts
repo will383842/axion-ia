@@ -15,9 +15,10 @@ import {
   MATURITY_LEVELS,
   type BusinessFunction,
   type RoiAnswers,
+  type RoiSectorKey,
   type VolumeKey,
 } from "@/content/roi/model/types";
-import { BUSINESS_FUNCTIONS } from "@/content/roi/model/functions";
+import { BUSINESS_FUNCTIONS, SECTOR_DEFAULT_FUNCTIONS } from "@/content/roi/model/functions";
 import { selectVolumeQuestions } from "@/content/roi/model/questions";
 import { CLIENT_SECTORS } from "@/content/sectors";
 
@@ -37,6 +38,13 @@ interface StepBase {
   readonly titleFr: string;
   readonly hintFr?: string;
   readonly options: readonly StepOption[];
+  /**
+   * Force l'affichage sur deux colonnes dès le plus petit écran. Réservé aux
+   * listes longues à libellés courts : onze options empilées à 60 px, c'est
+   * sept cents pixels de défilement avant le premier appui — sur le tout
+   * premier écran du parcours, c'est le pire endroit possible pour en demander.
+   */
+  readonly twoColumns?: boolean;
 }
 
 export interface SingleStep extends StepBase {
@@ -66,15 +74,39 @@ export type Step = SingleStep | MultiStep | VolumeStep;
 // Écrans de cadrage — toujours posés, dans cet ordre
 // ---------------------------------------------------------------------------
 
+/**
+ * Libellés RACCOURCIS pour l'écran secteur, afin de tenir sur deux colonnes au
+ * pouce. Le SSOT `CLIENT_SECTORS` garde les libellés complets, utilisés partout
+ * ailleurs (rapport, e-mail, JSON-LD) : on n'abrège que l'endroit où la densité
+ * prime sur la précision, parce que l'emoji et le contexte lèvent l'ambiguïté.
+ */
+const SECTOR_SHORT_LABELS: Readonly<Record<string, string>> = {
+  comptabilite_finance: "Comptabilité",
+  btp_immobilier: "BTP, immobilier",
+  restauration_hotellerie: "Restauration, hôtel",
+  sante_medecine: "Santé",
+  juridique: "Juridique",
+  commerce_retail: "Commerce",
+  industrie_logistique: "Industrie, logistique",
+  artisanat_services: "Artisanat, services",
+  rh_recrutement: "RH, recrutement",
+  collectivites_public: "Public, collectivité",
+};
+
 const SECTOR_STEP: SingleStep = {
   kind: "single",
   field: "sector",
   id: "sector",
   titleFr: "Dans quel secteur travaillez-vous ?",
-  hintFr: "Le secteur détermine les tâches que nous allons examiner, et leur poids réel.",
+  hintFr: "Il détermine les tâches que nous allons examiner, et leur poids réel.",
+  twoColumns: true,
   options: [
-    ...CLIENT_SECTORS.map((s) => ({ id: s.slug, labelFr: s.labelFr, emoji: s.emoji })),
-    { id: "generique", labelFr: "Un autre secteur", emoji: "🧭" },
+    ...CLIENT_SECTORS.map((s) => ({
+      id: s.slug,
+      labelFr: SECTOR_SHORT_LABELS[s.slug] ?? s.labelFr,
+      emoji: s.emoji,
+    })),
+    { id: "generique", labelFr: "Autre secteur", emoji: "🧭" },
   ],
 };
 
@@ -84,6 +116,7 @@ const HEADCOUNT_STEP: SingleStep = {
   id: "headcount",
   titleFr: "Combien êtes-vous dans l'entreprise ?",
   hintFr: "Toutes les personnes qui travaillent avec vous, y compris vous.",
+  twoColumns: true,
   options: HEADCOUNT_BANDS.map((b) => ({ id: b.id, labelFr: b.labelFr })),
 };
 
@@ -102,7 +135,8 @@ const FUNCTIONS_STEP: MultiStep = {
   field: "functions",
   id: "functions",
   titleFr: "Qu'est-ce qui vous prend du temps ?",
-  hintFr: "Cochez tout ce qui existe chez vous. Les questions suivantes s'adapteront.",
+  hintFr:
+    "Nous avons coché ce qui existe chez presque tous les acteurs de votre secteur. Ajustez si besoin — les questions suivantes s'adapteront.",
   minChoices: 1,
   options: BUSINESS_FUNCTIONS.map((f) => ({
     id: f.id,
@@ -157,11 +191,28 @@ export function applyStepAnswer(
   answers: RoiAnswers,
   step: Step,
   optionIds: readonly string[],
+  /**
+   * True si l'utilisateur a DÉJÀ validé lui-même l'écran des fonctions. Bloque
+   * alors le pré-remplissage sectoriel : revenir en arrière pour corriger son
+   * secteur ne doit jamais écraser une sélection faite à la main.
+   */
+  functionsAnswered = false,
 ): RoiAnswers {
   if (step.kind === "single") {
     const id = optionIds[0];
     if (!id) return answers;
-    if (step.field === "sector") return { ...answers, sector: id as RoiAnswers["sector"] };
+    if (step.field === "sector") {
+      const sector = id as RoiSectorKey;
+      return {
+        ...answers,
+        sector,
+        // Pré-cochage : l'écran suivant devient une confirmation plutôt qu'un
+        // arbitrage à huit cases. Cf. `SECTOR_DEFAULT_FUNCTIONS`.
+        ...(functionsAnswered
+          ? {}
+          : { functions: SECTOR_DEFAULT_FUNCTIONS[sector] ?? SECTOR_DEFAULT_FUNCTIONS.generique }),
+      };
+    }
     if (step.field === "headcount") return { ...answers, headcount: id as RoiAnswers["headcount"] };
     return { ...answers, maturity: id as RoiAnswers["maturity"] };
   }
