@@ -19,12 +19,20 @@ import { ReportEmailForm } from "../ReportEmailForm";
 import { diagnose } from "@/lib/roi/diagnose";
 import type { RoiAnswers } from "@/content/roi/model/types";
 
-const submitRoiReportAction = vi.fn(async () => ({ ok: true, submissionId: "uuid-de-test" }));
-const attachRoiCallbackAction = vi.fn(async () => ({ ok: true }));
+// Signature explicite : sans elle, `mock.calls[0]` est un tuple VIDE et
+// l'assertion sur la `FormData` transmise ne compile pas. `pnpm test` ne
+// typecheck pas — seul `pnpm typecheck` l'aurait vu, et c'est un gate de CI.
+const submitRoiReportAction = vi.fn(async (_prev: unknown, _fd: FormData) => ({
+  ok: true as const,
+  submissionId: "uuid-de-test",
+}));
+const attachRoiCallbackAction = vi.fn(async (_prev: unknown, _fd: FormData) => ({
+  ok: true as const,
+}));
 
 vi.mock("@/features/roi-report/actions", () => ({
-  submitRoiReportAction: (...args: unknown[]) => submitRoiReportAction(...(args as [])),
-  attachRoiCallbackAction: (...args: unknown[]) => attachRoiCallbackAction(...(args as [])),
+  submitRoiReportAction: (prev: unknown, fd: FormData) => submitRoiReportAction(prev, fd),
+  attachRoiCallbackAction: (prev: unknown, fd: FormData) => attachRoiCallbackAction(prev, fd),
 }));
 vi.mock("@/components/forms/TurnstileWidget", () => ({
   useTurnstileToken: () => ({ token: null, widget: null, reset: vi.fn() }),
@@ -122,7 +130,7 @@ describe("second temps — le rappel téléphonique", () => {
     await user.click(screen.getByRole("button", { name: /Me rappeler/i }));
 
     expect(attachRoiCallbackAction).toHaveBeenCalledTimes(1);
-    const fd = attachRoiCallbackAction.mock.calls[0]![1] as unknown as FormData;
+    const fd = attachRoiCallbackAction.mock.calls[0]![1];
     expect(fd.get("submissionId")).toBe("uuid-de-test");
     expect(fd.get("telephone")).toBe("06 12 34 56 78");
 
