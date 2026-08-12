@@ -48,6 +48,9 @@ export type FunnelEvent =
   | "Simulator Step"
   | "Simulator Completed"
   | "Simulator Report Requested"
+  // Le lead le plus chaud du tunnel : il a laissé un numéro APRÈS avoir reçu
+  // son rapport, donc sans y être contraint.
+  | "Simulator Callback Requested"
   // Pages d'atterrissage publicitaires (VSL). « Landing Video Played » est le
   // seul signal qui distingue un clic accidentel d'un visiteur réellement
   // engagé : sur une pub vidéo, le taux de lecture prédit la conversion bien

@@ -32,13 +32,17 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
-import { roiReportRequestSchema } from "@/lib/schemas/roi-report-schema";
+import { roiCallbackSchema, roiReportRequestSchema } from "@/lib/schemas/roi-report-schema";
 import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/encode";
 import { diagnose } from "@/lib/roi/diagnose";
 import { clientSectorLabel } from "@/content/sectors";
 import { HEADCOUNT_BANDS } from "@/content/roi/model/types";
 
-export type RoiReportState = { ok: true } | { ok: false; error: string };
+export type RoiReportState =
+  // `submissionId` est rendu au client pour qu'il puisse, dans un SECOND temps,
+  // rattacher un numéro de téléphone au lead déjà créé (cf.
+  // `attachRoiCallbackAction`). Sans lui, il faudrait redemander l'e-mail.
+  { ok: true; submissionId: string } | { ok: false; error: string };
 
 const CONSENT_VERSION = "v1-2026-08-12";
 
@@ -70,7 +74,7 @@ export async function submitRoiReportAction(
   // Honeypot : succès silencieux. Un robot qui reçoit une erreur adapte son
   // remplissage ; un robot qui croit avoir réussi n'apprend rien.
   if (formData.get("website")) {
-    return { ok: true };
+    return { ok: true, submissionId: "" };
   }
 
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
@@ -201,7 +205,7 @@ export async function submitRoiReportAction(
       });
     }
 
-    return { ok: true };
+    return { ok: true, submissionId: submission.id };
   } catch (err) {
     console.error("[roi-report] échec persistance Submission:", err);
     Sentry.captureException(err, {
@@ -211,5 +215,103 @@ export async function submitRoiReportAction(
       ok: false,
       error: "Nous n'avons pas pu enregistrer votre demande. Réessayez dans un instant.",
     };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Deuxième temps : le rappel téléphonique
+// ---------------------------------------------------------------------------
+
+export type RoiCallbackState = { ok: true } | { ok: false; error: string };
+
+/**
+ * Rattache un numéro de téléphone à un lead DÉJÀ créé par
+ * `submitRoiReportAction`.
+ *
+ * ── Pourquoi une seconde action plutôt qu'un champ de plus ────────────────
+ * Le téléphone est le champ le plus coûteux d'un formulaire : c'est celui qui
+ * fait penser « ils vont me harceler ». Le demander à l'entrée aurait fait
+ * perdre des rapports envoyés — donc des e-mails, donc des leads. Le demander
+ * une fois le rapport parti, à quelqu'un qui vient de recevoir quelque chose,
+ * en échange d'un service explicite, coûte zéro conversion : celui qui refuse
+ * reste un lead complet.
+ *
+ * ── Sécurité ──────────────────────────────────────────────────────────────
+ * L'identifiant vient du client. Trois protections, sans quoi n'importe qui
+ * pourrait écraser le numéro d'un lead existant :
+ *   1. l'identifiant est un UUID v4 — non énumérable en pratique ;
+ *   2. rate-limit par IP ;
+ *   3. surtout : l'écriture n'a lieu QUE si `contactPhone` est encore vide.
+ *      Le numéro ne peut donc être posé qu'une fois, jamais remplacé.
+ */
+export async function attachRoiCallbackAction(
+  _prev: RoiCallbackState,
+  formData: FormData,
+): Promise<RoiCallbackState> {
+  const ip = await getClientIp();
+
+  const rl = await checkRateLimit(`roi-callback:${ip}`, { limit: 5, windowSec: 600 });
+  if (!rl.allowed) {
+    return { ok: false, error: "Trop de tentatives. Réessayez dans quelques minutes." };
+  }
+
+  const parsed = roiCallbackSchema.safeParse({
+    submissionId: formData.get("submissionId"),
+    telephone: formData.get("telephone"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Ce numéro semble incorrect." };
+  }
+  const { submissionId, telephone } = parsed.data;
+
+  try {
+    const existing = await prisma.submission.findUnique({
+      where: { id: submissionId },
+      select: { id: true, contactPhone: true, companyName: true },
+    });
+    if (!existing) {
+      return { ok: false, error: "Demande introuvable. Renvoyez-vous le rapport, puis réessayez." };
+    }
+    // Écriture unique : un numéro déjà posé n'est jamais remplacé.
+    if (existing.contactPhone) return { ok: true };
+
+    await prisma.submission.update({
+      where: { id: submissionId },
+      data: { contactPhone: encryptPii(telephone) },
+    });
+
+    // Meilleur effort : un lead qui accepte d'être rappelé est le plus chaud du
+    // tunnel, la notification doit partir — mais son échec ne doit pas faire
+    // croire au visiteur que son numéro n'a pas été pris.
+    try {
+      await notify({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: {
+          submissionId: existing.id,
+          contactName: "—",
+          contactEmail: "—",
+          contactPhone: telephone,
+          ...(existing.companyName && existing.companyName !== "—"
+            ? { companyName: existing.companyName }
+            : {}),
+          formType: "simulateur_roi_rappel",
+          locale: "fr",
+        },
+        dedupKey: `${existing.id}:phone`,
+      } as Parameters<typeof notify>[0]);
+    } catch (notifErr) {
+      console.error("[roi-report] notify rappel best-effort a échoué:", notifErr);
+      Sentry.captureException(notifErr, {
+        tags: { action: "attachRoiCallbackAction", step: "notify" },
+      });
+    }
+
+    return { ok: true };
+  } catch (err) {
+    console.error("[roi-report] échec rattachement téléphone:", err);
+    Sentry.captureException(err, {
+      tags: { action: "attachRoiCallbackAction", step: "persist" },
+    });
+    return { ok: false, error: "Nous n'avons pas pu enregistrer votre numéro. Réessayez." };
   }
 }

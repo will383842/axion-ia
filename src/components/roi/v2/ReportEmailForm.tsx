@@ -19,12 +19,12 @@
 // frappe — donc la moitié des rapports jamais reçus.
 
 import * as React from "react";
-import { Check, Loader2, Mail } from "lucide-react";
+import { Check, Loader2, Mail, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/i18n/routing";
 import type { RoiReport } from "@/content/roi/model/types";
 import { encodeAnswers } from "@/lib/roi/encode";
-import { submitRoiReportAction } from "@/features/roi-report/actions";
+import { attachRoiCallbackAction, submitRoiReportAction } from "@/features/roi-report/actions";
 import { useTurnstileToken } from "@/components/forms/TurnstileWidget";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
@@ -45,8 +45,9 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
   const [companyName, setCompanyName] = React.useState("");
   const [consent, setConsent] = React.useState(false);
   const [pending, setPending] = React.useState(false);
-  const [sent, setSent] = React.useState(false);
+  const [submissionId, setSubmissionId] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const sent = submissionId !== null;
 
   const {
     token: turnstileToken,
@@ -89,7 +90,7 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
           taskCount: report.tasks.length,
           gainBucket: gainBucketOf(report.totalSavedEurPerYear),
         });
-        setSent(true);
+        setSubmissionId(result.submissionId);
       } catch (err) {
         setError(
           isStaleServerActionError(err)
@@ -117,6 +118,10 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
           Votre rapport arrive dans quelques instants à l&apos;adresse indiquée. S&apos;il tarde,
           regardez dans les indésirables — et gardez le lien de cette page, il reste valable.
         </p>
+
+        {/* Deuxième temps : le téléphone. Il n'apparaît QU'ICI, une fois le
+            rapport parti. Cf. `attachRoiCallbackAction`. */}
+        {submissionId ? <CallbackAsk submissionId={submissionId} /> : null}
       </div>
     );
   }
@@ -260,5 +265,123 @@ function Field({
         className="border-[var(--sim-border-strong)] bg-[var(--sim-bg)] text-[var(--sim-fg)] focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
       />
     </div>
+  );
+}
+
+/**
+ * Demande du numéro de téléphone — DEUXIÈME temps, après l'envoi du rapport.
+ *
+ * ── Ce qui fait que ce champ ne coûte rien ────────────────────────────────
+ * • Il n'existe pas tant que le rapport n'est pas parti. La personne a déjà
+ *   obtenu ce qu'elle venait chercher : refuser ici ne lui retire rien, et
+ *   nous, on garde un lead complet.
+ * • Il annonce une contrepartie PRÉCISE et bornée — quinze minutes, sur le
+ *   plan qu'elle vient de lire. Un « pour être recontacté » sans objet ni
+ *   durée est exactement ce qui fait fermer l'onglet.
+ * • Il dit non seulement ce qu'on va faire, mais ce qu'on ne fera pas. La
+ *   crainte attachée au téléphone n'est pas d'être appelé une fois, c'est
+ *   d'être rappelé indéfiniment.
+ * • Il se ferme sans culpabilisation : pas de « non merci, je préfère perdre
+ *   du temps ». Le refus se fait en ignorant le bloc, ce qui est le geste par
+ *   défaut.
+ */
+function CallbackAsk({ submissionId }: { submissionId: string }) {
+  const [telephone, setTelephone] = React.useState("");
+  const [pending, setPending] = React.useState(false);
+  const [done, setDone] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  const onSubmit = React.useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      if (pending) return;
+      setError(null);
+      setPending(true);
+      try {
+        const fd = new FormData();
+        fd.set("submissionId", submissionId);
+        fd.set("telephone", telephone);
+        const result = await attachRoiCallbackAction({ ok: false, error: "" }, fd);
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
+        trackFunnel("Simulator Callback Requested", {});
+        setDone(true);
+      } catch (err) {
+        setError(
+          isStaleServerActionError(err)
+            ? STALE_PAGE_MESSAGE
+            : "L'enregistrement a échoué. Réessayez dans un instant.",
+        );
+      } finally {
+        setPending(false);
+      }
+    },
+    [pending, submissionId, telephone],
+  );
+
+  if (done) {
+    return (
+      <p
+        role="status"
+        className="border-[var(--sim-border)] text-[var(--sim-fg-soft)] mt-5 flex items-start gap-2.5 border-t pt-5 text-[14px] leading-relaxed"
+      >
+        <Check aria-hidden="true" className="text-[var(--sim-accent-text)] mt-0.5 h-4 w-4 shrink-0" />
+        <span>
+          C&apos;est noté. Nous vous appelons sous deux jours ouvrés, à l&apos;heure qui vous
+          arrange — vous pourrez la choisir par retour d&apos;e-mail.
+        </span>
+      </p>
+    );
+  }
+
+  return (
+    <form onSubmit={onSubmit} noValidate className="border-[var(--sim-border)] mt-5 border-t pt-5">
+      <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[15px] font-bold tracking-tight">
+        <Phone aria-hidden="true" className="text-[var(--sim-accent-text)] h-4 w-4 shrink-0" />
+        Vous voulez qu&apos;on le passe en revue avec vous ?
+      </p>
+      <p className="text-[var(--sim-fg-soft)] mt-2 text-[13.5px] leading-relaxed">
+        Quinze minutes au téléphone sur votre plan : par quoi commencer chez vous, ce qui ne
+        vaut pas le coup, ce que ça demande. Laissez un numéro si vous le souhaitez —{" "}
+        <strong className="text-[var(--sim-fg)] font-semibold">
+          un seul appel, jamais de relance automatique
+        </strong>
+        , et votre rapport vous est acquis dans tous les cas.
+      </p>
+
+      <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
+        <input
+          id="roi-tel"
+          name="telephone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          aria-label="Votre numéro de téléphone"
+          placeholder="06 12 34 56 78"
+          value={telephone}
+          onChange={(e) => setTelephone(e.target.value)}
+          className="border-[var(--sim-border-strong)] bg-[var(--sim-bg)] text-[var(--sim-fg)] focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+        />
+        <button
+          type="submit"
+          disabled={pending || telephone.trim().length < 8}
+          className={cn(
+            "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta flex min-h-[52px] shrink-0 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-bold transition",
+            "focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+            "disabled:cursor-not-allowed disabled:opacity-40",
+          )}
+        >
+          {pending ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : "Me rappeler"}
+        </button>
+      </div>
+
+      {error ? (
+        <p role="alert" className="text-[var(--sim-accent-strong)] mt-3 text-[13.5px] font-medium">
+          {error}
+        </p>
+      ) : null}
+    </form>
   );
 }
