@@ -305,11 +305,12 @@ export default async function JobOfferDetailPage({
           ? "100 % à distance"
           : "Fully remote"
         : `${WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"] ?? ""}${offer.city ? ` · ${offer.city}` : ""}`;
+  // Contrat : libellé libre admin si présent, sinon dérivé de l'enum (SSOT
+  // contractTypeLabel) — sans repli, la carte manquait sur la moitié des offres.
+  const contractFact = offer.contractLabel ?? contractTypeLabel(offer, isFr);
   const heroFacts = [
     sal ? { label: isFr ? "Rémunération" : "Pay", value: sal } : null,
-    offer.contractLabel
-      ? { label: isFr ? "Contrat" : "Contract", value: offer.contractLabel }
-      : null,
+    contractFact ? { label: isFr ? "Contrat" : "Contract", value: contractFact } : null,
     { label: isFr ? "Zone" : "Area", value: zoneLabel },
     offer.startDate
       ? {
