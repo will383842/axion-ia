@@ -130,7 +130,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "Devenez commercial IA indépendant en Sud-Grésivaudan · 500 €/jour vendu"
+    ? "Devenez commercial IA indépendant en Sud-Grésivaudan · 500 €/jour vendu" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
     : "Become an independent AI sales rep in Sud-Grésivaudan";
   return {
     ...buildProductMetadata({
@@ -138,8 +138,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       path: "/memo-isere",
       title,
       description: isFr
-        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Saint-Marcellin à Pont-en-Royans : vendez des formations IA finançables OPCO aux entreprises locales. 500 € par journée de formation vendue, revenus non plafonnés, démarrage septembre."
-        : "Axion-IA is hiring independent sales reps in Sud-Grésivaudan (Isère): sell OPCO-fundable AI trainings to local businesses. €500 per training day sold, uncapped income, starting September.",
+        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Saint-Marcellin à Pont-en-Royans : vendez des formations IA finançables OPCO aux entreprises locales. 500 € par journée de formation vendue, revenus non plafonnés, démarrage septembre." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "Axion-IA is hiring independent sales reps in Sud-Grésivaudan (Isère): sell OPCO-fundable AI trainings to local businesses. €500 per training day sold, uncapped income, starting September." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     }),
     title: { absolute: title },
   };
@@ -216,7 +216,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "remuneration",
       question: "Combien gagne-t-on exactement ?",
       answer:
-        "500 € par journée de formation vendue, sans plafond. Exemple de calcul : 5 journées vendues dans le mois = 2 500 €, 20 journées = 10 000 €. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. C'est un exemple de calcul, pas une promesse : tes revenus dépendent de tes ventes.",
+        "500 € par journée de formation vendue, sans plafond. Exemple de calcul : 5 journées vendues dans le mois = 2 500 €, 20 journées = 10 000 €. Les audits et intégrations IA rapportent en plus un pourcentage de la facture. C'est un exemple de calcul, pas une promesse : tes revenus dépendent de tes ventes." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     },
     {
       id: "statut",
@@ -257,7 +257,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
       answer:
-        "Tu factures ta commission en tant qu'indépendant dès que la vente est signée et facturée au client. 500 € par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel.",
+        "Tu factures ta commission en tant qu'indépendant dès que la vente est signée et facturée au client. 500 € par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     },
     {
       id: "engagement",
@@ -281,7 +281,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires en Sud-Grésivaudan (Isère) pour promouvoir ses formations et audits IA auprès des entreprises locales. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie.",
+      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires en Sud-Grésivaudan (Isère) pour promouvoir ses formations et audits IA auprès des entreprises locales. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     datePosted: SITE_EDITORIAL_DATE,
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
@@ -293,7 +293,7 @@ export default async function MemoIserePage({ params }: Props) {
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, poste évolutif (responsable de secteur).",
     incentiveCompensation:
-      "Rémunération 100 % à la commission : 500 € par journée de formation vendue, sans plafond ; pourcentage de la facture sur les audits et intégrations IA.",
+      "Rémunération 100 % à la commission : 500 € par journée de formation vendue, sans plafond ; pourcentage de la facture sur les audits et intégrations IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     hiringOrganization: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
@@ -364,7 +364,10 @@ export default async function MemoIserePage({ params }: Props) {
 
               <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {[
-                  { label: "Par jour de formation vendu", value: "500 €" },
+                  {
+                    label: "Par jour de formation vendu",
+                    value: "500 €",
+                  } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   { label: "Plafond de revenus", value: "Aucun" },
                   { label: "Démarrage", value: "Septembre" },
                 ].map((f) => (
@@ -491,16 +494,25 @@ export default async function MemoIserePage({ params }: Props) {
       {/* 4 ── Rémunération transparente */}
       <Section
         eyebrow="Rémunération"
-        title="500 € par journée de formation"
+        title="500 € par journée de formation" /* price-exempt: commission recrutement */
         titleEm="vendue"
         description="Sans plafond, sans quota, sans salaire fixe à mériter : chaque vente te paie. Les audits et intégrations IA rapportent en plus un pourcentage de la facture."
       >
         <Container>
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
             {[
-              { jours: "5 jours vendus", mois: "2 500 €" },
-              { jours: "10 jours vendus", mois: "5 000 €" },
-              { jours: "20 jours vendus", mois: "10 000 €" },
+              {
+                jours: "5 jours vendus",
+                mois: "2 500 €",
+              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+              {
+                jours: "10 jours vendus",
+                mois: "5 000 €",
+              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+              {
+                jours: "20 jours vendus",
+                mois: "10 000 €",
+              } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
             ].map((t, i) => (
               <div
                 key={t.jours}
@@ -520,7 +532,8 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </div>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes
+            Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes{" "}
+            {/* price-exempt: commission recrutement */}
             commissions dépendent de tes ventes.
           </p>
         </Container>
@@ -560,8 +573,11 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: LineChart,
                 title: "Tu touches à chaque vente",
                 description:
-                  "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel.",
-                stat: { figure: "500 €", label: "par jour vendu" },
+                  "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                stat: {
+                  figure: "500 €",
+                  label: "par jour vendu",
+                } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
               },
             ].map((c, i) => (
               <li key={c.title} className="h-full">
