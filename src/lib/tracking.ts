@@ -47,7 +47,14 @@ export type FunnelEvent =
   | "Simulator Started"
   | "Simulator Step"
   | "Simulator Completed"
-  | "Simulator Report Requested";
+  | "Simulator Report Requested"
+  // Pages d'atterrissage publicitaires (VSL). « Landing Video Played » est le
+  // seul signal qui distingue un clic accidentel d'un visiteur réellement
+  // engagé : sur une pub vidéo, le taux de lecture prédit la conversion bien
+  // mieux que le temps passé sur la page.
+  | "Landing Viewed"
+  | "Landing Video Played"
+  | "Landing CTA Clicked";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).
@@ -92,6 +99,11 @@ export interface FunnelProps {
    * croisé au secteur et à l'effectif, réidentifierait une entreprise.
    */
   gainBucket?: "lt-10k" | "10k-50k" | "50k-150k" | "150k-500k" | "gt-500k";
+  // ── Pages d'atterrissage publicitaires ───────────────────────────────────
+  /** Identifiant de la page d'atterrissage (slug), pour comparer les variantes. */
+  landing?: string;
+  /** Emplacement du bouton cliqué (`hero`, `sous-video`, `bas-de-page`). */
+  placement?: string;
 }
 
 /** Range le gain annuel estimé dans un bucket anonyme. */

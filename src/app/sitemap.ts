@@ -189,6 +189,8 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // Console « URL noindexée dans le sitemap » corrigée plus haut pour
   // `/mes-donnees/export`.
   "/simulateur",
+  // Page d'atterrissage publicitaire — `noindex`, même raison que ci-dessus.
+  "/diagnostic",
   "/recherche",
   "/preferences-cookies",
   // V-11 sprint UX 2026-05-22 — `/glossaire` hub double-déclaré entre pages.xml

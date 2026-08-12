@@ -142,7 +142,54 @@ réidentifierait une entreprise.
 `Simulator Report Requested` n'est émis qu'APRÈS confirmation du serveur —
 compter les tentatives gonflerait artificiellement le taux de conversion.
 
-### 9. Les réponses vivent dans l'URL
+### 9. Une page d'atterrissage publicitaire séparée : `/diagnostic`
+
+Tunnel complet : **publicité vidéo Facebook → `/diagnostic` → `/simulateur` →
+rapport → e-mail**.
+
+`/diagnostic` est une page de vente vidéo (fond encre, texte ivoire, accent
+terracotta), `noindex`, hors sitemap, sans en-tête ni pied de page. Elle
+**n'embarque pas** le simulateur : celui-ci est servi depuis `/roi`, le menu
+Ressources et le pied de page, et doit garder son habillage clair. L'y encastrer
+en version sombre le coupleraient à une page publicitaire, et toute retouche de
+la publicité risquerait d'abîmer un outil utilisé ailleurs. La page convainc,
+puis elle envoie.
+
+Trois décisions notables :
+
+- **Jeton `--color-ink`** (`#14100e`) et utilitaire `.bg-vsl`. La charte
+  interdit le noir pur, à raison : sous du texte ivoire, un `#000` scintille sur
+  écran OLED. On reste dans la famille chaude. Les trois paires de la page sont
+  ajoutées à `check-contrast.ts` — 17,1:1 · 8,3:1 · 7,3:1, toutes AAA.
+- **Vidéo native, jamais d'embed tiers.** Un iframe YouTube ou Vimeo dépose ses
+  cookies au parse, donc avant consentement : c'est le problème résolu par
+  l'ADR 0034 pour Calendly, au prix d'un écran juridique intercalé. Sur une page
+  publicitaire, ce serait rédhibitoire. `<video preload="none">` avec affiche,
+  servi depuis notre domaine. ⚠️ `csp.ts` ne déclare aucun `media-src` : une
+  vidéo hébergée hors domaine serait bloquée **sans message d'erreur visible**.
+- **Aucune preuve sociale inventée.** Les pages de ce format ouvrent sur
+  « +12 000 clients nous font confiance ». Nous n'avons pas ce chiffre. Les
+  trois preuves retenues — gratuit, sans inscription, 24 tâches justifiées —
+  sont vérifiables sur le site, et le visage du fondateur remplace les
+  témoignages que nous n'avons pas.
+
+### 10. Ni Clarity ni bannière de consentement sur les pages de tunnel
+
+Constat de la première capture mobile réelle de `/diagnostic` (iPhone 13,
+390 px) : **la bannière de consentement occupait 48 % du premier écran**. Le
+premier contact avec Axion-IA, payé au clic, portait sur Microsoft Clarity.
+
+La bannière n'existe QUE pour Clarity — Plausible est auto-hébergé, anonyme et
+sans cookie, et la doctrine du site le déclare toujours actif sans consentement.
+`Clarity` et `CookieConsent` renvoient donc `null` sur `/diagnostic` et
+`/simulateur` (cf. `lib/analytics/ad-landing-routes.ts`).
+
+🔴 **La bannière disparaît parce que la CAUSE disparaît.** Masquer la bannière en
+CSS tout en chargeant Clarity déposerait des cookies tiers sans consentement :
+un manquement caractérisé, pas une optimisation. Les deux conditions vivent dans
+le même module pour qu'on ne puisse pas modifier l'une sans voir l'autre.
+
+### 11. Les réponses vivent dans l'URL
 
 `?d=<réponses>&r=1`, mis à jour par `history.replaceState` — donc sans jamais
 déclencher de `popstate`, donc sans re-rendu de route Next : sur mobile en 4G, un

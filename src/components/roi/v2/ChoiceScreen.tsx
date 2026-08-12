@@ -87,7 +87,20 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
             <label
               key={option.id}
               className={cn(
-                "group relative flex min-h-[60px] cursor-pointer items-center gap-3 rounded-2xl border-2 px-4 py-3.5 transition-colors",
+                "group relative flex cursor-pointer rounded-2xl border-2 transition-colors",
+                // ── Deux dispositions, pour une raison mesurée ──────────────
+                // En deux colonnes, une cellule ne fait que 153 px au pouce.
+                // Disposition en RANGÉE (emoji · libellé · pastille), il ne
+                // restait que 4 px entre la fin du texte et la pastille : pas
+                // un chevauchement au sens du DOM, mais l'œil en lit un — et un
+                // mot long d'un seul tenant (« Comptabilité ») ne peut pas se
+                // couper pour se rattraper.
+                // En COLONNE, le libellé dispose de toute la largeur utile et
+                // la contention disparaît, pour ~10 px de hauteur en plus par
+                // cellule. Mesuré sur iPhone 13 (390 px).
+                compact
+                  ? "min-h-[76px] flex-col justify-center gap-1 px-3 py-3 pr-9"
+                  : "min-h-[60px] items-center gap-3 px-4 py-3.5",
                 // `focus-within` porte l'anneau : l'input réel est masqué, mais
                 // il reste la cible du focus clavier.
                 "focus-within:ring-terracotta focus-within:ring-2 focus-within:ring-offset-2",
@@ -111,10 +124,11 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                 </span>
               ) : null}
 
-              <span className="min-w-0 flex-1">
+              <span className={cn("min-w-0", !compact && "flex-1")}>
                 <span
                   className={cn(
-                    "block text-[16px] leading-snug font-semibold",
+                    "block leading-snug font-semibold text-balance",
+                    compact ? "text-[15px]" : "text-[16px]",
                     isSelected ? "text-terracotta-deep" : "text-fg",
                   )}
                 >
@@ -128,18 +142,23 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
               </span>
 
               {/* Pastille d'état — le seul repère visuel qui ne dépend pas de la
-                  couleur, exigé pour les daltonismes (WCAG 1.4.1). */}
+                  couleur, exigé pour les daltonismes (WCAG 1.4.1). En deux
+                  colonnes elle sort du flux et se cale en haut à droite : elle
+                  reste visible sans disputer sa largeur au libellé. */}
               <span
                 aria-hidden="true"
                 className={cn(
-                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors",
+                  "flex shrink-0 items-center justify-center border-2 transition-colors",
                   isMulti ? "rounded-md" : "rounded-full",
+                  compact ? "absolute top-3 right-3 h-5 w-5" : "h-6 w-6",
                   isSelected
                     ? "border-terracotta bg-terracotta text-paper"
                     : "border-border-strong bg-transparent",
                 )}
               >
-                {isSelected ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}
+                {isSelected ? (
+                  <Check className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} strokeWidth={3} />
+                ) : null}
               </span>
             </label>
           );

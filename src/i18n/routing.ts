@@ -284,6 +284,13 @@ export const routing = defineRouting({
     // en-tête ni pied de page pour le trafic payant. `noindex` : c'est la
     // variante tunnel d'une page déjà indexée, pas une page de plus.
     "/simulateur": "/simulateur",
+    // Page d'atterrissage publicitaire (VSL vidéo) — envoie sur `/simulateur`.
+    // `noindex` + hors sitemap : contenu redondant avec `/roi`, qui est la page
+    // canonique et indexée.
+    // ⚠️ À ne pas confondre avec `/interventions/gagner-du-temps`, ancienne
+    // formation collective retirée le 2026-06-12 et redirigée 301 vers
+    // `/formations` (cf. next.config.ts).
+    "/diagnostic": "/diagnostic",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },

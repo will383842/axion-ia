@@ -78,22 +78,19 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
             </>
           )}
         </h1>
-        <p className="text-fg-soft mt-4 text-[16px] leading-relaxed text-pretty">
+        {/* Introduction volontairement COURTE. La version longue repoussait la
+            première question sous la ligne de flottaison au mobile — sur une
+            page de tunnel, tout ce qui précède la première question est du
+            temps pendant lequel on peut perdre le visiteur. Le détail du modèle
+            est reporté sous le questionnaire, où il rassure ceux qui le
+            cherchent sans retarder ceux qui veulent commencer. */}
+        <p className="text-fg-soft mt-3 text-[16px] leading-relaxed text-pretty">
           {isFr
-            ? `Une dizaine de questions sur vos volumes réels, et vous repartez avec vos cinq premières tâches à automatiser, le temps et l'argent récupérables, et le calendrier pour y arriver. Trois minutes, sans inscription.`
-            : `A dozen questions about your real volumes, and you leave with your first five tasks to automate, the time and money recoverable, and the schedule to get there. Three minutes, no sign-up.`}
+            ? "Une dizaine de questions sur vos volumes réels. Trois minutes, sans inscription."
+            : "A dozen questions about your real volumes. Three minutes, no sign-up."}
         </p>
 
-        <p className="text-fg-muted mt-4 flex items-start gap-2 text-[13px] leading-relaxed">
-          <ShieldCheck aria-hidden="true" className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0" />
-          <span>
-            {isFr
-              ? `Modèle ouvert : ${AUTOMATABLE_TASKS.length} tâches de référence, chacune avec son temps et la justification de son taux. Rien n'est transmis tant que vous ne le demandez pas.`
-              : `Open model: ${AUTOMATABLE_TASKS.length} reference tasks, each with its time and the reasoning behind its rate. Nothing is transmitted unless you ask.`}
-          </span>
-        </p>
-
-        <div className="border-border bg-paper shadow-card mt-8 rounded-3xl border p-5 sm:p-8">
+        <div className="border-border bg-paper shadow-card mt-6 rounded-3xl border p-5 sm:p-8">
           <SimulatorFlow
             locale={loc}
             initialAnswers={initialAnswers}
@@ -102,7 +99,16 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
           />
         </div>
 
-        <p className="text-fg-muted mt-8 text-center text-[12.5px] leading-relaxed">
+        <p className="text-fg-muted mt-8 flex items-start gap-2 text-[13px] leading-relaxed">
+          <ShieldCheck aria-hidden="true" className="text-terracotta-deep mt-0.5 h-4 w-4 shrink-0" />
+          <span>
+            {isFr
+              ? `Modèle ouvert : ${AUTOMATABLE_TASKS.length} tâches de référence, chacune avec son temps et la justification de son taux. Rien n'est transmis tant que vous ne le demandez pas.`
+              : `Open model: ${AUTOMATABLE_TASKS.length} reference tasks, each with its time and the reasoning behind its rate. Nothing is transmitted unless you ask.`}
+          </span>
+        </p>
+
+        <p className="text-fg-muted mt-4 text-center text-[12.5px] leading-relaxed">
           {isFr
             ? "Estimation issue d'un modèle dont les hypothèses sont publiées. Ni un devis, ni un audit, ni un engagement de résultat."
             : "Estimate from a model whose assumptions are published. Neither a quote, nor an audit, nor a performance guarantee."}
