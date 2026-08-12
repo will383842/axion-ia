@@ -1,13 +1,14 @@
-// Landing /memo-isere — recrutement commercial indépendant / apporteur d'affaires
-// pour la zone du Mémorial de l'Isère (hebdo du Sud-Grésivaudan, Saint-Marcellin).
-// Point d'entrée de l'annonce presse papier → SEO/AEO/GEO local à fond :
-// les 47 communes OFFICIELLES de la CC Saint-Marcellin Vercors Isère Communauté
-// (source geo.api.gouv.fr, EPCI 200070431 — rien d'inventé) portent le
-// JobPosting multi-lieux ET la section visible « zone couverte ».
+// Landing /memo-isere — recrutement commercial indépendant / apporteur d'affaires.
+// Point d'entrée de l'annonce presse du Mémorial de l'Isère (hebdo du
+// Sud-Grésivaudan), mais la zone proposée est TOUT LE CORRIDOR Grenoble ↔
+// Valence ↔ Die ↔ Lyon : 474 communes officielles, petites incluses
+// (13 EPCI, geo.api.gouv.fr — cf. content/recrutement/memo-isere-zone.ts).
+// Le candidat CHOISIT sa zone tant qu'elle est disponible.
 //
-// Design : langage /methodologie (HeroBadge, cartes de faits serif,
-// FeatureMediaCard, DarkTriadPanel, FaqBlock, CtaBlock) — retour Will
-// 2026-08-12 : « du pep's, côté startup, donner envie de nous rejoindre ».
+// Design : rythme de /fr/audit (retour Will 2026-08-12 « respecte la page
+// audit ») — panneau sombre tôt, section terracotta pleine largeur, bandes CTA
+// terracotta répétées, grille géographique par territoires — avec les
+// composants partagés (HeroBadge, FeatureMediaCard, DarkTriadPanel, FaqBlock).
 //
 // ⚠️ CTA « J'envoie ma candidature » : ancre #postuler EN ATTENTE (décision
 // Will 2026-08-12 — le formulaire arrive plus tard, aucun lien externe).
@@ -51,63 +52,13 @@ import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { Illustration } from "@/components/visual/Illustration";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
+import {
+  MEMO_ZONE_CLUSTERS,
+  MEMO_ZONE_PRINCIPALES,
+  MEMO_ZONE_TOTAL,
+} from "@/content/recrutement/memo-isere-zone";
 
 export const revalidate = 3600;
-
-// ── Zone couverte — les 47 communes OFFICIELLES de la CC Saint-Marcellin
-// Vercors Isère Communauté (geo.api.gouv.fr/epcis/200070431/communes,
-// relevé 2026-08-12). C'est la zone de diffusion du Mémorial de l'Isère
-// (« 47 communes du Sud-Grésivaudan »). NE PAS éditer à la main : re-relever
-// l'API si le périmètre intercommunal change.
-const COMMUNES = [
-  "Saint-Marcellin",
-  "Vinay",
-  "Chatte",
-  "Saint-Romans",
-  "Saint-Sauveur",
-  "Pont-en-Royans",
-  "Saint-Hilaire-du-Rosier",
-  "Saint-Lattier",
-  "Saint-Just-de-Claix",
-  "Saint-Vérand",
-  "La Sône",
-  "Saint Antoine l'Abbaye",
-  "Chasselay",
-  "L'Albenc",
-  "Poliénas",
-  "Cognin-les-Gorges",
-  "Izeron",
-  "Beaulieu",
-  "Bessins",
-  "Beauvoir-en-Royans",
-  "Chantesse",
-  "Chevrières",
-  "Choranche",
-  "Châtelus",
-  "Cras",
-  "La Rivière",
-  "Malleval-en-Vercors",
-  "Montagne",
-  "Montaud",
-  "Morette",
-  "Murinais",
-  "Notre-Dame-de-l'Osier",
-  "Presles",
-  "Quincieu",
-  "Rencurel",
-  "Rovon",
-  "Saint-André-en-Royans",
-  "Saint-Appolinard",
-  "Saint-Bonnet-de-Chavagne",
-  "Saint-Gervais",
-  "Saint-Pierre-de-Chérennes",
-  "Saint-Quentin-sur-Isère",
-  "Serre-Nerpol",
-  "Têche",
-  "Varacieux",
-  "Vatilieu",
-  "Auberives-en-Royans",
-] as const;
 
 /** Emplacement image : visible en dev (cadre + fichier cible), masqué en prod
  *  tant que le fichier n'existe pas — jamais de cadre vide en production. */
@@ -130,16 +81,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   const title = isFr
-    ? "Devenez commercial IA indépendant en Sud-Grésivaudan · 500 €/jour vendu" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-    : "Become an independent AI sales rep in Sud-Grésivaudan";
+    ? "Devenez commercial IA indépendant, de Grenoble à Lyon · 500 €/jour vendu" /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+    : "Become an independent AI sales rep between Grenoble and Lyon";
   return {
     ...buildProductMetadata({
       locale,
       path: "/memo-isere",
       title,
       description: isFr
-        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Saint-Marcellin à Pont-en-Royans : vendez des formations IA finançables OPCO aux entreprises locales. 500 € par journée de formation vendue, revenus non plafonnés, démarrage septembre." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
-        : "Axion-IA is hiring independent sales reps in Sud-Grésivaudan (Isère): sell OPCO-fundable AI trainings to local businesses. €500 per training day sold, uncapped income, starting September." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        ? "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon — 474 communes, vous choisissez votre zone. Vendez des formations IA finançables OPCO : 500 € par journée de formation vendue, revenus non plafonnés, démarrage septembre." /* price-exempt: commission commerciale de recrutement, pas un tarif client */
+        : "Axion-IA is hiring independent sales reps between Grenoble, Valence, Die and Lyon — 474 towns, you pick your area. Sell OPCO-fundable AI trainings: €500 per training day sold, uncapped income, starting September." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     }),
     title: { absolute: title },
   };
@@ -156,27 +107,84 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
+/** Carte d'avis — pep's 2026-08-12 : liseré terracotta, guillemet géant en
+ *  filigrane, avatar-initiale, hover levé — les cartes plates « manquaient
+ *  d'énergie » (retour Will). */
 function ReviewCard({ r }: { r: PublicReview }) {
   const who = `${r.authorFirstName} ${r.authorLastInitial}`;
   const context = [r.companyName, r.cityName].filter(Boolean).join(" · ");
   return (
-    <figure className="border-border bg-paper shadow-subtle flex h-full flex-col rounded-2xl border p-6">
+    <figure className="border-border bg-paper shadow-subtle hover:shadow-card relative flex h-full flex-col overflow-hidden rounded-2xl border p-6 pt-7 transition-all duration-300 hover:-translate-y-1">
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1.5"
+        style={{
+          background:
+            "linear-gradient(90deg, var(--color-terracotta), var(--color-terracotta-deep))",
+        }}
+      />
+      <span
+        aria-hidden="true"
+        className="text-terracotta/10 pointer-events-none absolute -top-3 right-3 font-serif text-[6rem] leading-none select-none"
+      >
+        »
+      </span>
       <Stars rating={r.rating} />
-      {r.title ? <p className="mt-3 font-serif text-lg font-semibold">{r.title}</p> : null}
+      {r.title ? (
+        <p className="mt-3 font-serif text-xl leading-snug font-semibold">{r.title}</p>
+      ) : null}
       <blockquote className="text-fg-soft mt-2 line-clamp-5 leading-relaxed">
         {r.comment}
       </blockquote>
-      <figcaption className="text-fg-muted mt-auto pt-4 text-sm">
-        <span className="text-fg font-semibold">{who}</span>
-        {context ? <span> — {context}</span> : null}
-        {r.isVerified ? (
-          <span className="text-sage ml-2 inline-flex items-center gap-1">
-            <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
-            vérifié
+      <figcaption className="mt-auto flex items-center gap-3 pt-5">
+        <span
+          aria-hidden="true"
+          className="bg-terracotta text-paper inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-lg font-semibold"
+        >
+          {r.authorFirstName.charAt(0)}
+        </span>
+        <span className="min-w-0 text-sm leading-tight">
+          <span className="text-fg block font-semibold">
+            {who}
+            {r.isVerified ? (
+              <span className="text-sage ml-2 inline-flex items-center gap-1 align-middle text-xs font-medium">
+                <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
+                vérifié
+              </span>
+            ) : null}
           </span>
-        ) : null}
+          {context ? <span className="text-fg-muted">{context}</span> : null}
+        </span>
       </figcaption>
     </figure>
+  );
+}
+
+/** Bande CTA terracotta pleine largeur — le pattern de /fr/audit (« On cadre
+ *  votre audit IA, au bon niveau »), répété entre les grandes sections. */
+function BandeCta({ title, track }: { title: string; track: string }) {
+  return (
+    <section
+      className="py-12 sm:py-14"
+      style={{
+        background:
+          "linear-gradient(135deg, var(--color-terracotta), var(--color-terracotta-deep))",
+      }}
+    >
+      <Container className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+        <h2 className="max-w-xl font-serif text-2xl leading-snug font-semibold text-[color:var(--color-bg)] sm:text-3xl">
+          {title}
+        </h2>
+        <Cta
+          href="#postuler"
+          size="lg"
+          track={track}
+          className="text-terracotta-deep shrink-0 bg-[color:var(--color-paper)] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] hover:bg-[color:var(--color-bg)]"
+        >
+          J’envoie ma candidature →
+        </Cta>
+      </Container>
+    </section>
   );
 }
 
@@ -209,7 +217,17 @@ export default async function MemoIserePage({ params }: Props) {
   const reviews = reviewsIsere.length >= 3 ? reviewsIsere : [];
   const { total: totalAll } = await getPublishedReviews({ pageSize: 1 });
 
-  const villesPhares = ["Saint-Marcellin", "Vinay", "Chatte", "Saint-Romans", "Pont-en-Royans"];
+  const villesPhares = [
+    "Grenoble",
+    "Voiron",
+    "Saint-Marcellin",
+    "Valence",
+    "Romans-sur-Isère",
+    "Vienne",
+    "Bourgoin-Jallieu",
+    "Die",
+    "Lyon",
+  ];
 
   const faqItems = [
     {
@@ -232,8 +250,8 @@ export default async function MemoIserePage({ params }: Props) {
     },
     {
       id: "zone",
-      question: "Quelle est la zone exacte ?",
-      answer: `Le Sud-Grésivaudan, entre Grenoble et Valence : les 47 communes de la communauté de communes Saint-Marcellin Vercors Isère — dont ${villesPhares.join(", ")} — et leurs alentours. C'est ton territoire : les entreprises locales n'ont jamais été démarchées sur l'IA.`,
+      question: "Quelle est la zone exacte ? Puis-je choisir la mienne ?",
+      answer: `Tout le corridor de Grenoble à Lyon, de Valence à Die : ${MEMO_ZONE_TOTAL} communes réparties sur 13 territoires (${villesPhares.join(", ")}… et toutes les communes entre, y compris les petites). Tu choisis ta zone : tant qu'elle est disponible, elle devient la tienne. Les petites communes sont un vrai atout — personne n'y démarche l'IA.`,
     },
     {
       id: "debutant",
@@ -281,7 +299,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires en Sud-Grésivaudan (Isère) pour promouvoir ses formations et audits IA auprès des entreprises locales. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des entreprises locales. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     datePosted: SITE_EDITORIAL_DATE,
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
@@ -289,7 +307,7 @@ export default async function MemoIserePage({ params }: Props) {
     qualifications:
       "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
     responsibilities:
-      "Prospecter les entreprises du Sud-Grésivaudan, présenter les formations et audits IA, suivre ses ventes et commissions sur un tableau de bord.",
+      "Prospecter les entreprises de sa zone (choisie entre Grenoble, Valence, Die et Lyon), présenter les formations et audits IA, suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, poste évolutif (responsable de secteur).",
     incentiveCompensation:
@@ -301,7 +319,7 @@ export default async function MemoIserePage({ params }: Props) {
       url: SITE_URL,
       sameAs: ["https://www.linkedin.com/company/axion-ia-france"],
     },
-    jobLocation: COMMUNES.map((city) => ({
+    jobLocation: MEMO_ZONE_PRINCIPALES.map((city) => ({
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
@@ -318,9 +336,9 @@ export default async function MemoIserePage({ params }: Props) {
   const webpageJsonLd = buildWebPageJsonLd({
     locale: loc,
     path: "/memo-isere",
-    name: "Devenir commercial IA indépendant en Sud-Grésivaudan · Axion-IA",
+    name: "Devenir commercial IA indépendant, de Grenoble à Lyon · Axion-IA",
     description:
-      "Recrutement de commerciaux indépendants et apporteurs d'affaires IA sur les 47 communes du Sud-Grésivaudan.",
+      "Recrutement de commerciaux indépendants et apporteurs d'affaires IA sur 474 communes, de Grenoble à Valence, Die et Lyon — zone au choix.",
     speakable: { selectors: ["h1", "[data-speakable]"] },
   });
 
@@ -353,13 +371,13 @@ export default async function MemoIserePage({ params }: Props) {
                   className="text-terracotta italic"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  en Sud-Grésivaudan
+                  sur votre territoire
                 </span>
               </h1>
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                Vendez des formations et audits IA aux entreprises de votre territoire, de
-                Saint-Marcellin à Pont-en-Royans. L’AI Act rend la formation obligatoire, l’OPCO la
-                finance — vous, vous touchez la commission.
+                De Grenoble à Valence, de Die à Lyon : {MEMO_ZONE_TOTAL} communes — et vous
+                choisissez votre zone, elle devient la vôtre tant qu’elle est disponible. L’AI Act
+                rend la formation obligatoire, l’OPCO la finance — vous, vous touchez la commission.
               </p>
 
               <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -369,7 +387,7 @@ export default async function MemoIserePage({ params }: Props) {
                     value: "500 €",
                   } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   { label: "Plafond de revenus", value: "Aucun" },
-                  { label: "Démarrage", value: "Septembre" },
+                  { label: "Communes au choix", value: String(MEMO_ZONE_TOTAL) },
                 ].map((f) => (
                   <div
                     key={f.label}
@@ -429,6 +447,51 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </Section>
 
+      {/* 2bis ── Panneau sombre d'ouverture — le pattern « L'IA, tout le monde
+          en parle » de /fr/audit : une déclaration franche + 3 chiffres. */}
+      <Section className="pt-2 sm:pt-2">
+        <Container>
+          <div className="bg-mocha relative overflow-hidden rounded-2xl px-7 py-9 sm:px-10 sm:py-11">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-30"
+              style={{
+                backgroundImage:
+                  "radial-gradient(90% 120% at 85% 0%, var(--color-terracotta) 0%, transparent 55%)",
+              }}
+            />
+            <div className="relative grid items-center gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+              <h2 className="font-serif text-3xl leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
+                L’IA, tout le monde en parle.{" "}
+                <span className="text-terracotta-soft italic">
+                  Toi, tu vas être payé pour la vendre.
+                </span>
+              </h2>
+              <dl className="grid grid-cols-3 gap-4">
+                {[
+                  {
+                    v: "500 €",
+                    l: "par jour vendu",
+                  } /* price-exempt: commission recrutement */,
+                  { v: String(MEMO_ZONE_TOTAL), l: "communes au choix" },
+                  { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
+                ].map((s) => (
+                  <div key={s.l}>
+                    <dt className="sr-only">{s.l}</dt>
+                    <dd className="text-terracotta-soft font-serif text-2xl font-semibold sm:text-3xl">
+                      {s.v}
+                    </dd>
+                    <dd className="mt-1 text-[11px] font-semibold tracking-wide text-[color:var(--color-bg)]/70 uppercase">
+                      {s.l}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       {/* 3 ── Pourquoi c'est si facile à vendre */}
       <Section
         tone="sand"
@@ -461,7 +524,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: TrendingUp,
                 title: "La demande explose",
                 description:
-                  "Toutes les TPE-PME parlent d'IA — et personne n'est venu les voir en Sud-Grésivaudan. Tu arrives premier sur un territoire vierge.",
+                  "Toutes les TPE-PME parlent d'IA — et personne n'est venu les voir sur ta zone, surtout dans les petites communes. Tu arrives premier.",
                 stat: { figure: "1er", label: "sur ta zone" },
               },
               {
@@ -532,68 +595,100 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </div>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes{" "}
-            {/* price-exempt: commission recrutement */}
-            commissions dépendent de tes ventes.
+            {/* Chaîne JS unique + marqueur ATTACHÉS : prettier avait éclaté le
+                texte JSX et déplacé le marqueur hors de la ligne du montant →
+                garde-fou prix rouge en CI alors qu'il passait en local. */}
+            {
+              "Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes commissions dépendent de tes ventes." /* price-exempt: commission recrutement */
+            }
           </p>
         </Container>
       </Section>
 
-      {/* 5 ── Comment ça marche */}
-      <Section tone="sand" eyebrow="Le parcours" title="Comment ça" titleEm="marche">
+      {/* CTA band terracotta — pattern /fr/audit, 1er passage */}
+      <BandeCta
+        title="Ta zone t’attend — prends-la avant qu’un autre la choisisse."
+        track="memo-band1-apply"
+      />
+
+      {/* 5 ── Comment ça marche — section terracotta pleine largeur, le bloc
+          signature de /fr/audit (« Un audit IA rigoureux et complet ») : les
+          cartes blanches claquent sur le fond terracotta. */}
+      <section
+        className="py-16 sm:py-20"
+        style={{
+          background:
+            "linear-gradient(150deg, var(--color-terracotta) 0%, var(--color-terracotta-deep) 100%)",
+        }}
+      >
         <Container>
-          <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-            {[
-              {
-                accent: "terracotta" as const,
-                Icon: Rocket,
-                title: "Tu candidates",
-                description:
-                  "2 minutes, CV optionnel. On échange ensuite par téléphone pour valider que la zone et le rythme te conviennent.",
-                stat: { figure: "2 min", label: "pour candidater" },
-              },
-              {
-                accent: "primary" as const,
-                Icon: GraduationCap,
-                title: "On te forme à l'offre",
-                description:
-                  "Formations, audits, financements OPCO : tu maîtrises l'offre et les argumentaires avant ton premier rendez-vous.",
-                stat: { figure: "Offre", label: "maîtrisée avant de vendre" },
-              },
-              {
-                accent: "sage" as const,
-                Icon: MapPin,
-                title: "Tu prospectes TA zone",
-                description:
-                  "Le Sud-Grésivaudan est ton territoire : artisans, commerces, PME. Tu connais déjà les gens — c'est ton avantage.",
-                stat: { figure: "47", label: "communes couvertes" },
-              },
-              {
-                accent: "plum" as const,
-                Icon: LineChart,
-                title: "Tu touches à chaque vente",
-                description:
-                  "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-                stat: {
-                  figure: "500 €",
-                  label: "par jour vendu",
-                } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-              },
-            ].map((c, i) => (
-              <li key={c.title} className="h-full">
-                <FeatureMediaCard
-                  index={i + 1}
-                  accent={c.accent}
-                  Icon={c.Icon}
-                  title={c.title}
-                  description={c.description}
-                  stat={c.stat}
-                />
-              </li>
-            ))}
-          </ol>
+          <p className="flex items-center gap-2 text-xs font-bold tracking-[0.14em] text-[color:var(--color-bg)]/80 uppercase">
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-bg)]"
+            />
+            Le parcours
+          </p>
+          <h2 className="mt-3 font-serif text-3xl font-semibold text-[color:var(--color-bg)] sm:text-4xl">
+            Comment ça{" "}
+            <span className="text-sand italic" style={{ fontFamily: "var(--font-serif)" }}>
+              marche
+            </span>
+          </h2>
+          <div className="mt-10">
+            <ol className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+              {[
+                {
+                  accent: "terracotta" as const,
+                  Icon: Rocket,
+                  title: "Tu candidates",
+                  description:
+                    "2 minutes, CV optionnel. On échange ensuite par téléphone pour valider que la zone et le rythme te conviennent.",
+                  stat: { figure: "2 min", label: "pour candidater" },
+                },
+                {
+                  accent: "primary" as const,
+                  Icon: GraduationCap,
+                  title: "On te forme à l'offre",
+                  description:
+                    "Formations, audits, financements OPCO : tu maîtrises l'offre et les argumentaires avant ton premier rendez-vous.",
+                  stat: { figure: "Offre", label: "maîtrisée avant de vendre" },
+                },
+                {
+                  accent: "sage" as const,
+                  Icon: MapPin,
+                  title: "Tu choisis TA zone",
+                  description:
+                    "De Grenoble à Lyon, de Valence à Die : tu prends la zone que tu connais — elle devient la tienne tant qu'elle est disponible.",
+                  stat: { figure: "474", label: "communes au choix" },
+                },
+                {
+                  accent: "plum" as const,
+                  Icon: LineChart,
+                  title: "Tu touches à chaque vente",
+                  description:
+                    "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                  stat: {
+                    figure: "500 €",
+                    label: "par jour vendu",
+                  } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                },
+              ].map((c, i) => (
+                <li key={c.title} className="h-full">
+                  <FeatureMediaCard
+                    index={i + 1}
+                    accent={c.accent}
+                    Icon={c.Icon}
+                    title={c.title}
+                    description={c.description}
+                    stat={c.stat}
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
         </Container>
-      </Section>
+      </section>
 
       {/* 6 ── Bandeau image terrain */}
       {showIllustrationSlot(TERRAIN_IMG) ? (
@@ -604,8 +699,8 @@ export default async function MemoIserePage({ params }: Props) {
               aspectRatio="16:9"
               filenameTarget={`public/${TERRAIN_IMG}`}
               {...(illustrationReady(TERRAIN_IMG) ? { src: `/${TERRAIN_IMG}` } : {})}
-              caption="Le terrain : les entreprises du Sud-Grésivaudan, de la vallée de l'Isère au Vercors"
-              alt="Rencontre commerciale dans une entreprise du Sud-Grésivaudan, entre Vercors et vallée de l'Isère"
+              caption="Le terrain : les entreprises du corridor, de la vallée de l'Isère au Rhône"
+              alt="Rencontre commerciale dans une entreprise locale, entre Grenoble, Valence et Lyon"
             />
           </Container>
         </Section>
@@ -724,9 +819,10 @@ export default async function MemoIserePage({ params }: Props) {
             <div>
               <blockquote className="text-fg-soft text-lg leading-relaxed">
                 « Je forme moi-même les dirigeants et leurs équipes, et je vois la même chose
-                partout : les entreprises veulent passer à l’IA mais personne ne vient les voir. Le
-                Sud-Grésivaudan, c’est chez nous — je cherche des gens du coin qui connaissent leur
-                territoire et qui veulent être payés à la hauteur de ce qu’ils apportent. »
+                partout : les entreprises veulent passer à l’IA mais personne ne vient les voir. De
+                Grenoble à Lyon en passant par Valence et Die, c’est chez nous — je cherche des gens
+                du coin qui connaissent leur territoire et qui veulent être payés à la hauteur de ce
+                qu’ils apportent. »
               </blockquote>
               <p className="mt-4 font-semibold">Williams Jullin</p>
               <p className="text-fg-muted text-sm">Fondateur d’Axion-IA · Grenoble</p>
@@ -765,28 +861,43 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* 12 ── Zone couverte — GEO : les 47 communes officielles */}
+      {/* CTA band terracotta — pattern /fr/audit, 2e passage */}
+      <BandeCta
+        title="Septembre arrive vite — les zones partent une par une."
+        track="memo-band2-apply"
+      />
+
+      {/* 12 ── Zone couverte — GEO : 474 communes officielles en 13 territoires,
+          grille façon « L'audit IA disponible partout en France » de /fr/audit. */}
       <Section
         tone="sand"
         eyebrow="Ton territoire"
-        title="Les 47 communes du"
-        titleEm="Sud-Grésivaudan"
-        description="La zone du Mémo de l'Isère, entre Grenoble et Valence : chaque commune compte des artisans, des commerces et des PME qui n'ont jamais été démarchés sur l'IA."
+        title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
+        titleEm="Lyon, Valence et Die"
+        description="Tu choisis ta zone parmi 13 territoires ; tant qu'elle est disponible, elle devient la tienne. Chaque commune — y compris la plus petite — compte des artisans, des commerces et des PME que personne n'a démarchés sur l'IA."
       >
         <Container>
-          <ul className="flex flex-wrap gap-2" role="list">
-            {COMMUNES.map((c) => (
-              <li
-                key={c}
-                className="border-border text-fg-muted bg-paper rounded-full border px-3 py-1 text-sm"
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {MEMO_ZONE_CLUSTERS.map((cl) => (
+              <div
+                key={cl.label}
+                className="border-border bg-paper shadow-subtle hover:shadow-card rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-0.5"
               >
-                {c}
-              </li>
+                <div className="flex items-baseline justify-between gap-2">
+                  <h3 className="font-serif text-lg leading-snug font-semibold">{cl.label}</h3>
+                  <span className="text-terracotta shrink-0 text-xs font-bold tracking-wide uppercase">
+                    {cl.communes.length} communes
+                  </span>
+                </div>
+                <p className="text-fg-muted mt-3 text-[13px] leading-relaxed">
+                  {cl.communes.join(" · ")}
+                </p>
+              </div>
             ))}
-          </ul>
-          <p data-speakable className="text-fg-muted mt-5 max-w-2xl text-sm leading-relaxed">
-            Tu habites Tullins, Voiron, Saint-Égrève ou ailleurs à proximité ? La zone s’étend aux
-            alentours immédiats — candidate et on regarde ensemble.
+          </div>
+          <p data-speakable className="text-fg-muted mt-6 max-w-2xl text-sm leading-relaxed">
+            Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
+            regarde ensemble, la zone s’adapte.
           </p>
         </Container>
       </Section>
