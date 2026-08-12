@@ -944,10 +944,17 @@ export default async function UnAUnHubPage({ params }: Props) {
                         "Oui. Toute la France métropolitaine : Paris et l'Île-de-France en priorité, puis Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes et plus de 2 100 communes éligibles. À l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.",
                     },
                     {
+                      // ⚠️ Même correction que sur /formations le 2026-08-12 : cette
+                      // réponse promettait un remboursement intégral et un gain de temps
+                      // « systématique ». Les CGV (`src/content/legal.ts`) posent une
+                      // obligation de MOYENS et écrivent « aucune garantie de résultat
+                      // n'est donnée ; les gains, ROI ou performances évoqués sont
+                      // indicatifs » — une page publique ne peut pas engager au-delà.
+                      // Ne PAS réintroduire de promesse de résultat ici.
                       id: "garantie",
                       question: "Garantie de résultat ?",
                       answer:
-                        "Si vous n'avez rien tiré de la journée (cas extrêmement rare), on rembourse intégralement. Concrètement, on s'engage à vous apporter systématiquement un gain de temps et une optimisation dès la première journée.",
+                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos dossiers et de ce que vous appliquez ensuite. Ce que nous engageons figure au devis : une journée en tête-à-tête sur votre poste réel, le livrable écrit sous 7 jours et un point de suivi à 30 jours. En cas d'imprévu de votre côté, la journée est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
                     },
                   ]
                 : [
@@ -994,10 +1001,14 @@ export default async function UnAUnHubPage({ params }: Props) {
                         "Yes. All metropolitan France: Paris and Greater Paris first, then Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Rennes and 2,100+ eligible communes. Internationally, we intervene in French-speaking organisations on missions of one week minimum.",
                     },
                     {
+                      // Miroir EN de la correction du 2026-08-12 — voir le commentaire
+                      // détaillé sur l'entrée `garantie` du bloc FR. Le site est servi en
+                      // français uniquement, mais laisser ici la promesse retirée côté FR
+                      // reviendrait à la garder armée dans le dépôt.
                       id: "guarantee",
                       question: "Guarantee?",
                       answer:
-                        "If you got nothing from the day (extremely rare), we refund in full. Concretely, we commit to systematically bringing you a time saving and an optimisation from the very first day.",
+                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your own files and on what you apply afterwards. What we do commit to is written in the quote: a one-to-one day on your actual workstation, the written deliverable within 7 days and a follow-up at 30 days. If something unexpected comes up on your side, the day can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
                     },
                   ]
             }
