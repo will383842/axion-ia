@@ -351,7 +351,7 @@ export default async function MemoIserePage({ params }: Props) {
     responsibilities:
       "Prospecter les PME, ETI et grands groupes de sa zone (TPE et artisans compris) (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
-      "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, poste évolutif (responsable de secteur).",
+      "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, activité évolutive (responsable de secteur).",
     incentiveCompensation:
       "Rémunération 100 % à la commission : 500 € par journée de formation vendue, sans plafond ; pourcentage de la facture sur les audits et intégrations IA." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     hiringOrganization: {
@@ -909,7 +909,7 @@ export default async function MemoIserePage({ params }: Props) {
         tone="sand"
         className="py-14 sm:py-16 lg:py-20"
         eyebrow="La suite"
-        title="Un poste qui"
+        title="Une activité qui"
         titleEm="évolue"
         description="Apporteur d'affaires aujourd'hui, responsable demain : les meilleurs commerciaux de chaque zone prennent l'animation de leur secteur, puis du réseau."
       >
@@ -993,7 +993,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="Les profils"
         title="Débutant ou routier de la vente :"
         titleEm="bienvenue"
-        description="Ce qui compte, c'est l'aisance relationnelle et la connaissance du territoire — pas le diplôme."
+        description="Ce qui compte, c'est l'aisance relationnelle et la connaissance du territoire — pas le diplôme. Activité d'indépendant, sans lien de subordination, ouverte à toutes et à tous sans discrimination."
       >
         <Container>
           <ul className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2" role="list">
