@@ -34,6 +34,7 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
 const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
+  "monteur-video": { emoji: "🎬", label: "MONTEUR VIDÉO" },
   presse: { emoji: "📰", label: "PRESSE" },
   investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
   interventions: { emoji: "🛠️", label: "INTERVENTION" },
@@ -54,6 +55,7 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "Demande presse / média",
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
@@ -200,7 +202,8 @@ function formatBody(event: NotificationEvent): string {
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
-    case "JOB_APPLICATION_RECEIVED": {
+    case "JOB_APPLICATION_RECEIVED":
+    case "VIDEO_EDITOR_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
         formatKV("Candidat", p.contactName),

@@ -92,11 +92,26 @@ function buildOfferFaq(
   const items: Array<{ id: string; question: string; answer: string }> = [];
   const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
 
+  // Pays éligibles calculés AVANT la réponse télétravail : quand une offre à
+  // distance est ouverte hors de France (`applicant_countries`), dire « ouvert
+  // partout en France » contredit la réponse « pays » trois questions plus bas —
+  // et c'est la phrase que reprend un moteur de réponse.
+  const countries = normalizeApplicantCountries(o.applicantCountries);
+  const countryNames = countries.map((c) => applicantCountryLabel(c, isFr));
+
+  const remoteScope =
+    countries.length > 1
+      ? isFr
+        ? `ouvert depuis ${countries.length} pays francophones (${countryNames.slice(0, 5).join(", ")}…)`
+        : `open from ${countries.length} French-speaking countries (${countryNames.slice(0, 5).join(", ")}…)`
+      : isFr
+        ? "ouvert partout en France"
+        : "open across France";
   const modeAnswer =
     o.workMode === "remote"
       ? isFr
-        ? "Oui, ce poste est en télétravail (à distance), ouvert partout en France."
-        : "Yes, this role is fully remote, open across France."
+        ? `Oui, ce poste est en télétravail (à distance), ${remoteScope}.`
+        : `Yes, this role is fully remote, ${remoteScope}.`
       : o.workMode === "hybrid"
         ? isFr
           ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
@@ -126,9 +141,8 @@ function buildOfferFaq(
 
   // Pays éligibles (AEO) : « Puis-je postuler depuis le Maroc ? » est LA question
   // d'un candidat francophone hors de France devant une offre à distance.
-  const countries = normalizeApplicantCountries(o.applicantCountries);
   if (countries.length > 1) {
-    const names = countries.map((c) => applicantCountryLabel(c, isFr));
+    const names = countryNames;
     const listed = isFr
       ? `${names.slice(0, -1).join(", ")} et ${names[names.length - 1]}`
       : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;

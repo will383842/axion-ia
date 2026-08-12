@@ -12,6 +12,7 @@ import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
 import { deleteCv } from "@/server/careers/cv-storage";
+import { VIDEO_EDITOR_OFFER_SLUG } from "@/lib/careers/video-editor-offer";
 import type { JobApplicationStatus, Locale } from "../../../prisma/generated/client";
 
 const STATUSES = ["new", "reviewing", "shortlisted", "rejected", "hired", "archived"] as const;
@@ -53,6 +54,10 @@ const listSchema = z.object({
     z.string().uuid().optional(),
   ),
   status: z.enum([...STATUSES, "all"]).default("all"),
+  // Vues séparées (demande Will 2026-08-12) : la vue standard EXCLUT l'offre
+  // monteur vidéo freelance, qui a son propre onglet — les deux flux ne se
+  // mélangent jamais dans la même liste.
+  view: z.enum(["standard", "monteur"]).default("standard"),
   onlyAttention: z.coerce.boolean().optional(),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(10).max(100).default(50),
@@ -78,6 +83,14 @@ export async function listApplicationsAction(input: Partial<ListApplicationsInpu
   if (parsed.offerId) where.offerId = parsed.offerId;
   if (parsed.status !== "all") where.status = parsed.status;
   if (parsed.onlyAttention) where.needsAttention = true;
+  if (parsed.view === "monteur") {
+    where.offer = { slug: VIDEO_EDITOR_OFFER_SLUG };
+  } else if (!parsed.offerId) {
+    // Vue standard sans filtre d'offre explicite : les candidatures monteur
+    // vidéo restent dans leur onglet. Un `offerId` explicite (lien depuis la
+    // fiche offre) garde la priorité et n'est pas amputé.
+    where.offer = { slug: { not: VIDEO_EDITOR_OFFER_SLUG } };
+  }
 
   const [total, rows] = await Promise.all([
     prisma.jobApplication.count({ where }),

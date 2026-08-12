@@ -121,7 +121,12 @@ export type NotificationEvent =
       };
     }
   | {
-      category: "JOB_APPLICATION_RECEIVED";
+      // `VIDEO_EDITOR_APPLICATION_RECEIVED` = même payload, mais catégorie SÉPARÉE
+      // (demande Will 2026-08-12) : les candidatures à l'offre monteur vidéo
+      // freelance ont leur propre groupe Telegram + doublon WhatsApp, pour ne pas
+      // être mélangées aux autres candidatures. Le choix de catégorie se fait au
+      // call-site sur le slug de l'offre (cf. `videoEditorNotificationCategory`).
+      category: "JOB_APPLICATION_RECEIVED" | "VIDEO_EDITOR_APPLICATION_RECEIVED";
       payload: {
         applicationId: string;
         contactName: string;

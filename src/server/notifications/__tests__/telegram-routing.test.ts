@@ -26,6 +26,15 @@ describe("telegramGroupFor", () => {
     }
   });
 
+  // Demande Will 2026-08-12 : l'offre monteur vidéo freelance a son propre salon,
+  // ses candidatures ne se mélangent ni aux autres offres ni aux messages.
+  it("🎬 Monteur vidéo : salon dédié, seul", () => {
+    const monteur = ALL_NOTIFICATION_CATEGORIES.filter(
+      (c) => telegramGroupFor(c) === "monteur-video",
+    );
+    expect(monteur).toEqual(["VIDEO_EDITOR_APPLICATION_RECEIVED"]);
+  });
+
   it("📰 Presse · 💰 Investisseurs : un groupe chacun", () => {
     expect(telegramGroupFor("PRESS_REQUEST_SUBMITTED")).toBe("presse");
     expect(telegramGroupFor("INVESTOR_INQUIRY_RECEIVED")).toBe("investisseurs");
@@ -76,6 +85,7 @@ describe("telegramGroupFor", () => {
     const groups: TelegramGroup[] = [
       "calendly",
       "candidatures",
+      "monteur-video",
       "presse",
       "investisseurs",
       "interventions",
@@ -149,10 +159,29 @@ describe("resolveTelegramTarget", () => {
 
     expect(resolveTelegramTarget("calendly")?.chatId).toBe("-rdv");
     expect(resolveTelegramTarget("candidatures")?.chatId).toBe("-messages");
+    // Salon monteur vidéo pas encore créé → ces candidatures suivent le groupe
+    // Candidatures (lui-même en repli Messages ici) : rien ne se perd.
+    expect(resolveTelegramTarget("monteur-video")?.chatId).toBe("-messages");
     expect(resolveTelegramTarget("interventions")?.chatId).toBe("-messages");
     expect(resolveTelegramTarget("investisseurs")?.chatId).toBe("-messages");
     // L'avis tombait dans Système : on y retombe, pas dans Messages.
     expect(resolveTelegramTarget("avis")?.chatId).toBe("-systeme");
+  });
+
+  it("🎬 monteur vidéo : repli sur Candidatures, salon dédié dès qu'il existe", () => {
+    process.env.TELEGRAM_BOT_TOKEN = "bot-principal";
+    process.env.TELEGRAM_CHAT_ID_CANDIDATURES = "-candidatures";
+    expect(resolveTelegramTarget("monteur-video")).toEqual({
+      botToken: "bot-principal",
+      chatId: "-candidatures",
+      dedicated: false,
+    });
+    process.env.TELEGRAM_CHAT_ID_MONTEUR_VIDEO = "-monteur";
+    expect(resolveTelegramTarget("monteur-video")).toEqual({
+      botToken: "bot-principal",
+      chatId: "-monteur",
+      dedicated: true,
+    });
   });
 
   it("repli ultime sur TELEGRAM_CHAT_ID (mode 1-groupe historique)", () => {

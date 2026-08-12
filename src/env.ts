@@ -60,7 +60,7 @@ export const env = createEnv({
     // (`TELEGRAM_CHAT_ID_RDV`) — jamais dans le salon Calendly, où ce bot-là
     // n'est pas membre. Cf. `resolveTelegramTarget()` dans notifications/routing.ts.
     //
-    // Les 8 `TELEGRAM_CHAT_ID_<GROUPE>` ne sont volontairement PAS déclarés ici :
+    // Les 9 `TELEGRAM_CHAT_ID_<GROUPE>` ne sont volontairement PAS déclarés ici :
     // ils sont lus par `process.env` direct dans `routing.ts`, comme les 3
     // existants depuis 2026-07-09. Les déclarer ici obligerait à toucher deux
     // fichiers pour ajouter un groupe.
