@@ -1,11 +1,11 @@
 // Candidature commerciale — modèle partagé client/serveur (tunnel sans CV,
-// Mémorial de l'Isère 2026-08-12).
+// Mémorial de l’Isère 2026-08-12).
 //
 // Vit dans `lib/` (frontière de modules) : le wizard (`components/forms/…`) et
 // la Server Action (`features/commercial-application/…`) consomment tous deux
-// ces constantes + le schéma Zod, sans jamais s'importer l'un l'autre.
+// ces constantes + le schéma Zod, sans jamais s’importer l’un l’autre.
 //
-// Règle absolue du brief : AUCUNE mention de « PME » nulle part — on s'adresse
+// Règle absolue du brief : AUCUNE mention de « PME » nulle part — on s’adresse
 // à toutes les entreprises, tous types de clients.
 
 import { z } from "zod";
@@ -75,14 +75,14 @@ export const STATUT_OPTIONS = [
 ] as const satisfies readonly ChoiceOption[];
 
 export const SOURCE_OPTIONS = [
-  { id: "memorial-isere", label: "Le Mémorial de l'Isère" },
+  { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },
   { id: "bouche-a-oreille", label: "Bouche à oreille" },
   { id: "autre", label: "Autre" },
 ] as const satisfies readonly ChoiceOption[];
 
-/** Retrouve le label lisible d'une option (fallback : l'id brut). */
+/** Retrouve le label lisible d’une option (fallback : l’id brut). */
 export function optionLabel(options: readonly ChoiceOption[], id: string | undefined): string {
   if (!id) return "—";
   return options.find((o) => o.id === id)?.label ?? id;
@@ -90,7 +90,7 @@ export function optionLabel(options: readonly ChoiceOption[], id: string | undef
 
 // ── Zone de travail : régions + départements (métropole + DROM) ─────────────
 
-/** Les 13 régions métropolitaines — sélectionnables d'un tap. */
+/** Les 13 régions métropolitaines — sélectionnables d’un tap. */
 export const REGIONS_ZONE = [
   "Auvergne-Rhône-Alpes",
   "Bourgogne-Franche-Comté",
@@ -104,7 +104,7 @@ export const REGIONS_ZONE = [
   "Nouvelle-Aquitaine",
   "Occitanie",
   "Pays de la Loire",
-  "Provence-Alpes-Côte d'Azur",
+  "Provence-Alpes-Côte d’Azur",
 ] as const;
 
 export interface Departement {
@@ -135,8 +135,8 @@ export const DEPARTEMENTS: readonly Departement[] = [
   { code: "19", nom: "Corrèze" },
   { code: "2A", nom: "Corse-du-Sud" },
   { code: "2B", nom: "Haute-Corse" },
-  { code: "21", nom: "Côte-d'Or" },
-  { code: "22", nom: "Côtes-d'Armor" },
+  { code: "21", nom: "Côte-d’Or" },
+  { code: "22", nom: "Côtes-d’Armor" },
   { code: "23", nom: "Creuse" },
   { code: "24", nom: "Dordogne" },
   { code: "25", nom: "Doubs" },
@@ -209,7 +209,7 @@ export const DEPARTEMENTS: readonly Departement[] = [
   { code: "92", nom: "Hauts-de-Seine" },
   { code: "93", nom: "Seine-Saint-Denis" },
   { code: "94", nom: "Val-de-Marne" },
-  { code: "95", nom: "Val-d'Oise" },
+  { code: "95", nom: "Val-d’Oise" },
   { code: "971", nom: "Guadeloupe" },
   { code: "972", nom: "Martinique" },
   { code: "973", nom: "Guyane" },
@@ -273,7 +273,7 @@ export const commercialApplicationSchema = z
     nom: z.string().trim().min(1).max(60),
     email: z.string().trim().email().max(180),
     telephone: z.string().trim().min(6).max(40),
-    /** FACULTATIF (décision Will 2026-08-12 — réserve légale levée par l'option). */
+    /** FACULTATIF (décision Will 2026-08-12 — réserve légale levée par l’option). */
     dateNaissance: z
       .string()
       .regex(/^\d{4}-\d{2}-\d{2}$/)
