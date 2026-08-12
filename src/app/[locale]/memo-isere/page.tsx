@@ -329,7 +329,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "candidater",
       question: "Comment candidater ?",
       answer:
-        "En quelques minutes, sans CV obligatoire : ce qui compte, c'est ta motivation et ta connaissance du territoire. Les candidatures ouvrent sur cette page — clique sur « J'envoie ma candidature ».",
+        "En 2 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te rappelle vite pour en parler de vive voix.",
     },
   ];
 
@@ -448,7 +448,8 @@ export default async function MemoIserePage({ params }: Props) {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <CtaCandidature track="memo-hero-apply" />
                 <p className="text-fg-muted text-sm">
-                  2 minutes · CV optionnel · débutants bienvenus
+                  2 minutes chrono ⏱️ · zéro CV, zéro lettre de motivation — juste un message qui te
+                  ressemble
                 </p>
               </div>
             </div>
@@ -482,7 +483,7 @@ export default async function MemoIserePage({ params }: Props) {
               "Organisme certifié Qualiopi",
               "Formations finançables OPCO",
               "Statut libre : micro-entreprise, VRP, apporteur",
-              "Cumulable avec un emploi",
+              "Cumulable avec ton job actuel",
             ].map((t) => (
               <li
                 key={t}
@@ -513,7 +514,7 @@ export default async function MemoIserePage({ params }: Props) {
               <h2 className="font-serif text-3xl leading-snug font-semibold text-[color:var(--color-bg)] sm:text-4xl">
                 L’IA, tout le monde en parle.{" "}
                 <span className="text-terracotta-soft italic">
-                  Toi, tu vas être payé pour la vendre.
+                  Toi, tu vas être payé pour la vendre. 💶
                 </span>
               </h2>
               <dl className="grid grid-cols-3 gap-4">
@@ -750,7 +751,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: Rocket,
                   title: "Tu candidates",
                   description:
-                    "2 minutes, CV optionnel. On échange ensuite par téléphone pour valider que la zone et le rythme te conviennent.",
+                    "2 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On t'appelle ensuite pour faire connaissance.",
                   stat: { figure: "2 min", label: "pour candidater" },
                 },
                 {
@@ -848,7 +849,7 @@ export default async function MemoIserePage({ params }: Props) {
 
       {/* CTA band terracotta — pattern /fr/audit (entre avis et intégration) */}
       <BandeCta
-        title="Septembre arrive vite — les secteurs partent un par un."
+        title="Septembre arrive vite ⏳ — les secteurs partent un par un."
         track="memo-band-apply"
       />
 
@@ -993,7 +994,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="Les profils"
         title="Débutant ou routier de la vente :"
         titleEm="bienvenue"
-        description="Ce qui compte, c'est l'aisance relationnelle et la connaissance du territoire — pas le diplôme. Activité d'indépendant, sans lien de subordination, ouverte à toutes et à tous sans discrimination."
+        description="Ce qui compte, c'est l'aisance relationnelle et la connaissance du territoire — pas le diplôme 👋 Activité d'indépendant, sans lien de subordination, ouverte à toutes et à tous sans discrimination."
       >
         <Container>
           <ul className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2" role="list">
@@ -1105,7 +1106,7 @@ export default async function MemoIserePage({ params }: Props) {
           eyebrow="Démarrage septembre"
           title="Prêt à devenir le commercial IA de"
           titleEm="ta zone ?"
-          description="Les candidatures sont ouvertes. 2 minutes, CV optionnel, débutants bienvenus — en indépendant ou apporteur d’affaires."
+          description="Les candidatures sont ouvertes 🚀 2 minutes chrono, zéro CV : un message libre qui te ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
           cta={<CtaCandidature track="memo-final-apply" />}
         />
       </div>
