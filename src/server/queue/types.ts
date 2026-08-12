@@ -96,7 +96,11 @@ export type EmailJobName =
   | "facture-envoi"
   // Convention de formation — envoi MANUEL du lien de signature au client.
   // Sans lui, l'admin copiait l'URL brute du lien dans sa messagerie.
-  | "convention-envoi";
+  | "convention-envoi"
+  // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12) :
+  // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
+  | "candidature-commercial-confirmee"
+  | "candidature-commercial-recap";
 
 export interface EmailJobData {
   template: EmailJobName;
