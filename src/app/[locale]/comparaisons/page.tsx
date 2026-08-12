@@ -22,6 +22,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { ComparisonsHeroSchema } from "@/components/sections/ComparisonsHeroSchema";
 import { COMPARISONS } from "@/content/comparaisons";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -180,6 +181,7 @@ export default async function ComparisonsListPage({ params }: Props) {
               slot="COMP-02-matrix"
               aspectRatio="1:1"
               filenameTarget="public/illustrations/comparaisons-mid-1.avif"
+              src="/illustrations/comparaisons-mid-1.avif"
               caption={
                 isFr
                   ? "Matrice de décision éditoriale — axes ROI / complexité"
@@ -187,10 +189,11 @@ export default async function ComparisonsListPage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Illustration éditoriale d'une matrice 2D représentant les axes de décision d'un comparatif IA chez Axion-IA."
-                  : "Editorial illustration of a 2D matrix representing decision axes for an AI comparison at Axion-IA."
+                  ? "Un intervenant trace un schéma au feutre sur un tableau blanc."
+                  : "A consultant drawing a diagram in marker pen on a whiteboard."
               }
             />
+            <EditorialPhotoCredit slot="comparaisons-mid-1" />
           </div>
         </Container>
       </Section>

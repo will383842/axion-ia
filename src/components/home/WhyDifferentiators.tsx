@@ -20,14 +20,19 @@
 // exactement « tous seniors expérimentés » : rien n'est dit du statut
 // (salarié / sous-traitant) des intervenants.
 //
-// Pour brancher de vrais visuels : déposer les .avif aux noms `imageTarget`
-// puis passer `image: { src, alt }`. Ratio source 16:9 (1600×900) — le chiffre
-// -clé s'efface au profit de l'image et la bascule se fait à CLS = 0.
+// Les six visuels sont branchés depuis `home-images.ts` (photos Unsplash curées
+// en AVIF local, 16:9 1600×900). Le chiffre-clé de la bande s'efface alors au
+// profit de la photo ; le ratio étant identique dans les deux modes, la bascule
+// se fait à CLS = 0. Les crédits photographes sont rendus sous la grille —
+// obligation CGU, ne pas les retirer sans retirer les photos.
 
 import { Users, Layers, MapPin, BadgeCheck, Target, Sparkles } from "lucide-react";
 
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import type { ServiceAccent } from "@/content/services-visual";
+import { homeImageFor } from "@/content/home/home-images";
+import { getHomePhotoCredit } from "@/content/home/home-photos";
+import { UnsplashCreditList } from "@/components/media/UnsplashCreditList";
 
 import { FeatureMediaCard } from "@/components/marketing/FeatureMediaCard";
 
@@ -41,9 +46,8 @@ interface Differentiator {
   titleEn: string;
   descFr: string;
   descEn: string;
-  /** Nom de fichier attendu quand Will produira le visuel. */
-  imageTarget: string;
-  image?: { src: string; alt: string };
+  /** Clé du visuel dans `HOME_IMAGES` / `HOME_PHOTO_CREDITS`. */
+  slot: string;
 }
 
 const DIFFERENTIATORS: readonly Differentiator[] = [
@@ -59,7 +63,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "Vous traitez directement avec les formateurs, auditeurs, développeurs et implémenteurs qui interviennent chez vous. Tous seniors.",
     descEn:
       "You deal directly with the trainers, auditors, developers and implementers who work on your site. All seniors.",
-    imageTarget: "public/illustrations/home-why-01-aucun-intermediaire.avif",
+    slot: "why-01-aucun-intermediaire",
   },
   {
     accent: "primary",
@@ -73,7 +77,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "Formation, coaching, audit, automatisation, plateforme sur mesure. Vous n'arbitrez entre aucun prestataire et vous ne recollez aucun livrable.",
     descEn:
       "Training, coaching, audit, automation, custom platform. No vendors to arbitrate between, no deliverables to stitch back together.",
-    imageTarget: "public/illustrations/home-why-02-cinq-metiers.avif",
+    slot: "why-02-cinq-metiers",
   },
   {
     accent: "sage",
@@ -87,7 +91,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "Toute la France métropolitaine et ultramarine, plus les entreprises francophones à l'étranger. Sur site — ou à distance quand c'est plus efficace.",
     descEn:
       "All of metropolitan and overseas France, plus French-speaking companies abroad. On site — or remote when that works better.",
-    imageTarget: "public/illustrations/home-why-03-couverture.avif",
+    slot: "why-03-couverture",
   },
   {
     accent: "ochre",
@@ -110,7 +114,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "L'intervenant senior qui cadre votre besoin est celui qui le réalise et qui vous le livre. Pas de passage de relais en cours de route.",
     descEn:
       "The senior who scopes your need is the one who builds it and hands it over. No handover midway.",
-    imageTarget: "public/illustrations/home-why-04-meme-expert.avif",
+    slot: "why-04-meme-expert",
   },
   {
     accent: "plum",
@@ -124,7 +128,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "Votre planning, vos outils, vos contraintes métier. Rien n'est plaqué depuis un catalogue — on part de ce que vous avez déjà.",
     descEn:
       "Your schedule, your tools, your business constraints. Nothing lifted from a catalogue — we start from what you already run.",
-    imageTarget: "public/illustrations/home-why-05-votre-rythme.avif",
+    slot: "why-05-votre-rythme",
   },
   {
     accent: "terracotta",
@@ -138,7 +142,7 @@ const DIFFERENTIATORS: readonly Differentiator[] = [
       "Un artisan seul reçoit le même niveau qu'un groupe coté. Objectifs posés au départ, résultats mesurés à l'arrivée.",
     descEn:
       "A solo craftsman gets the same level as a listed group. Goals set upfront, results measured at the end.",
-    imageTarget: "public/illustrations/home-why-06-meme-exigence.avif",
+    slot: "why-06-meme-exigence",
   },
 ] as const;
 
@@ -149,25 +153,35 @@ export function WhyDifferentiators({ isFr }: { isFr: boolean }) {
     // alors les règles `sm:` APRÈS `md:`/`lg:`. Le jeton a été déclaré le
     // 2026-08-10 dans globals.css — l'ordre est rétabli, `sm:` est de nouveau
     // utilisable partout.)
-    <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-      {DIFFERENTIATORS.map((card, idx) => (
-        <li key={card.titleFr} className="h-full">
-          <FadeInOnView delay={idx * 40} className="h-full">
-            <FeatureMediaCard
-              index={idx + 1}
-              accent={card.accent}
-              Icon={card.Icon}
-              title={isFr ? card.titleFr : card.titleEn}
-              description={isFr ? card.descFr : card.descEn}
-              stat={{
-                figure: card.statFigure,
-                label: isFr ? card.statLabelFr : card.statLabelEn,
-              }}
-              {...(card.image ? { image: card.image } : {})}
-            />
-          </FadeInOnView>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+        {DIFFERENTIATORS.map((card, idx) => {
+          const image = homeImageFor(card.slot, isFr);
+          return (
+            <li key={card.titleFr} className="h-full">
+              <FadeInOnView delay={idx * 40} className="h-full">
+                <FeatureMediaCard
+                  index={idx + 1}
+                  accent={card.accent}
+                  Icon={card.Icon}
+                  title={isFr ? card.titleFr : card.titleEn}
+                  description={isFr ? card.descFr : card.descEn}
+                  stat={{
+                    figure: card.statFigure,
+                    label: isFr ? card.statLabelFr : card.statLabelEn,
+                  }}
+                  {...(image ? { image } : {})}
+                />
+              </FadeInOnView>
+            </li>
+          );
+        })}
+      </ul>
+      <UnsplashCreditList
+        credits={DIFFERENTIATORS.map((c) => getHomePhotoCredit(c.slot)).filter(
+          (c): c is NonNullable<typeof c> => Boolean(c),
+        )}
+      />
+    </>
   );
 }

@@ -20,6 +20,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { CaseStudiesHeroSchema } from "@/components/sections/CaseStudiesHeroSchema";
 import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
@@ -347,6 +348,7 @@ export default async function CaseStudiesListing({ params }: Props) {
             slot="CAS-02-mid"
             aspectRatio="16:9"
             filenameTarget="public/illustrations/cas-concrets-mid-1.avif"
+            src="/illustrations/cas-concrets-mid-1.avif"
             caption={
               isFr
                 ? "Collection éditoriale d'objets opérationnels — chaque cas, sa preuve"
@@ -354,10 +356,11 @@ export default async function CaseStudiesListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une collection d'objets opérationnels symbolisant les cas concrets clients Axion-IA."
-                : "Editorial illustration of a collection of operational objects symbolizing Axion-IA client case studies."
+                ? "Une courbe de progression tracée à la main sur du papier quadrillé, règle et stylo posés à côté."
+                : "A growth curve hand-drawn on graph paper, with a ruler and pen beside it."
             }
           />
+          <EditorialPhotoCredit slot="cas-concrets-mid-1" />
         </Container>
       </Section>
 
