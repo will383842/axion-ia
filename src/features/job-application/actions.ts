@@ -271,6 +271,7 @@ export async function submitJobApplicationAction(
         offerCategory: offer.category,
         ...(d.city ? { city: d.city } : {}),
         ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
+        ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
         locale,

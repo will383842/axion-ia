@@ -25,6 +25,7 @@ export type NotificationEvent =
         budgetIndicative?: string;
         timingWeeks?: string;
         subType?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -42,6 +43,7 @@ export type NotificationEvent =
         subType?: string;
         budgetIndicative?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -57,6 +59,7 @@ export type NotificationEvent =
         companyName?: string;
         subType?: string;
         urgency?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -71,6 +74,7 @@ export type NotificationEvent =
         ville?: string;
         companyName?: string;
         scope?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -86,6 +90,7 @@ export type NotificationEvent =
         companyName?: string;
         budget?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -104,6 +109,7 @@ export type NotificationEvent =
         contactPhone?: string;
         outlet?: string;
         deadline?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -116,6 +122,7 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         position?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -136,6 +143,8 @@ export type NotificationEvent =
         offerCategory?: string;
         city?: string;
         salaryExpectation?: string;
+        /** Début du texte de motivation (tronqué côté émetteur). */
+        motivationExcerpt?: string;
         hasCv: boolean;
         hasPhoto?: boolean;
         locale: "fr" | "en";
@@ -174,6 +183,7 @@ export type NotificationEvent =
         postalCode: string;
         /** Début de la description d'activité (aperçu). */
         activityExcerpt?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -187,6 +197,7 @@ export type NotificationEvent =
         contactPhone?: string;
         eventName?: string;
         eventDate?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -199,6 +210,7 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         firm?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -212,6 +224,7 @@ export type NotificationEvent =
         contactPhone?: string;
         ville?: string;
         companyName?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -268,6 +281,8 @@ export type NotificationEvent =
         /** Champs enrichis depuis l'API Calendly (2026-08-09). */
         inviteePhone?: string;
         cancelUrl?: string;
+        /** Réponses libres du formulaire Calendly (hors téléphone), « Q : R » concaténées. */
+        answersText?: string;
       };
     }
   | {

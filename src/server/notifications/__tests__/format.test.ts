@@ -68,6 +68,67 @@ describe("formatNotification", () => {
     expect(text).toContain("CONTACT\\_FORM\\_SUBMITTED");
   });
 
+  // Demande Will 2026-08-12 : le CONTENU écrit par le visiteur doit arriver
+  // dans Telegram/WhatsApp, pas seulement les métadonnées. Ces trois cas
+  // rougissent si quelqu'un retire les champs message/motivation/réponses.
+  it("le contenu du message du visiteur est rendu (formulaires unifiés)", () => {
+    const { text } = formatNotification(
+      {
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: {
+          submissionId: "sub_9",
+          contactName: "Marie",
+          contactEmail: "m@x.fr",
+          formType: "contact",
+          message: "Bonjour, je cherche une formation IA pour 12 personnes.",
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    expect(text).toContain("*Message*");
+    expect(text).toContain("formation IA pour 12 personnes");
+  });
+
+  it("la motivation d'une candidature est rendue", () => {
+    const { text } = formatNotification(
+      {
+        category: "JOB_APPLICATION_RECEIVED",
+        payload: {
+          applicationId: "app_1",
+          contactName: "Ali",
+          contactEmail: "a@x.fr",
+          offerTitle: "Monteur vidéo freelance",
+          motivationExcerpt: "Dix ans de montage documentaire.",
+          hasCv: true,
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    expect(text).toContain("*Motivation*");
+    expect(text).toContain("montage documentaire");
+  });
+
+  it("les réponses du formulaire Calendly sont rendues", () => {
+    const { text } = formatNotification(
+      {
+        category: "CALENDLY_INVITEE_CREATED",
+        payload: {
+          eventUri: "evt_1",
+          inviteeEmail: "i@x.fr",
+          inviteeName: "Zoé",
+          eventStartTime: "2026-08-20T10:00:00Z",
+          eventName: "appel",
+          answersText: "Votre besoin : automatiser la compta",
+        },
+      },
+      "info",
+    );
+    expect(text).toContain("*Réponses formulaire*");
+    expect(text).toContain("automatiser la compta");
+  });
+
   it("CALENDLY_INVITEE_CREATED inclut start-time et page URL échappés", () => {
     const { text } = formatNotification(
       {

@@ -180,6 +180,9 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Nom", p.contactName),
         formatKV("Email", p.contactEmail),
         "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
+        // Le CONTENU du message, en tête (demande Will 2026-08-12) : c'est ce
+        // qu'on veut lire depuis le téléphone, avant les métadonnées.
+        "message" in p ? formatKV("Message", p.message) : null,
         "ville" in p ? formatKV("Ville", p.ville) : null,
         "companyName" in p ? formatKV("Société", p.companyName) : null,
         "companySize" in p ? formatKV("Taille", p.companySize) : null,
@@ -213,6 +216,7 @@ function formatBody(event: NotificationEvent): string {
         p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
         p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
+        p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
@@ -297,6 +301,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Email", p.inviteeEmail),
         formatKV("Téléphone", p.inviteePhone),
         formatKV("Début", humanDateOrText(p.eventStartTime)),
+        formatKV("Réponses formulaire", p.answersText),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),

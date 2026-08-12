@@ -1,6 +1,17 @@
 // Dynamic OG image generator — 1200×675, served at /api/og?title=...
-// Used by Twitter / LinkedIn / Facebook / Slack previews. Supports 4 module
-// accents via the `accent` query param.
+// Used by Twitter / LinkedIn / Facebook / Slack previews et indexée par
+// Google Images.
+//
+// Refonte 2026-08-12 (demande Will) : l'ancienne carte (fond blanc, police
+// système, pavé « A ») était off-brand à côté de la carte d'accueil
+// `opengraph-image.tsx`. Celle-ci reprend exactement son langage — fond
+// terracotta dégradé, badge papier « Axion-IA », titre ivoire — avec en plus
+// les VRAIES polices du site (Fraunces / Manrope, chargées depuis
+// `public/fonts/`, Satori ne connaissant pas les fontes CSS).
+//
+// Le param `accent` est toujours accepté (URLs OG déjà émises/cachées) mais
+// n'a plus d'effet : depuis le brand-fix 2026-06-20 la marque n'émet qu'une
+// seule signature visuelle, et aucun call-site ne passait `ogAccent`.
 
 import { ImageResponse } from "@vercel/og";
 
@@ -9,126 +20,118 @@ export const runtime = "edge";
 // hex-ok: dynamic OG image runs in Edge runtime where Tailwind tokens are
 // not available. Hex values mirror globals.css palette deliberately
 // (doctrine v3 Editorial Premium Light, ADR 0002).
-const ACCENTS: Record<string, string> = {
-  // Brand-fix 2026-06-20 — accent par défaut = terracotta (signature de marque,
-  // cf. globals.css --color-terracotta + manifest theme_color). Avant, le défaut
-  // était `primary` (bleu) → Google Images indexait des cartes OG bleues
-  // off-brand pour la majorité des pages (toutes celles qui passent par
-  // buildProductMetadata sans `ogAccent`). Le token bleu `primary` est RETIRÉ
-  // volontairement : la marque ne doit jamais émettre de carte OG bleue. Un
-  // éventuel `accent=primary` résiduel retombe sur terracotta (fallback ci-dessous).
-  terracotta: "#c24a1b", // hex-ok: --color-terracotta v3 (signature marque)
-  purple: "#7c3aed", // hex-ok: accent-purple token
-  orange: "#c24a1b", // hex-ok: alias terracotta (était #f97316 orange vif off-brand)
-  green: "#16a34a", // hex-ok: accent-green token
-};
+const TERRACOTTA = "#c24a1b"; // hex-ok: --color-terracotta v3
+const TERRACOTTA_DEEP = "#8c3010"; // hex-ok: --color-terracotta-deep v3
+const IVOIRE = "#faf8f3"; // hex-ok: --color-bg v3
+const PAPER = "#ffffff"; // hex-ok: --color-paper v3
+const FG = "#1a1815"; // hex-ok: --color-fg v3
 
-const FG = "#0a0e1a"; // hex-ok: --color-fg token
-const BG = "#ffffff"; // hex-ok: --color-bg token
-const MUTED = "#475569"; // hex-ok: gray-600 token
-const WHITE = "#ffffff"; // hex-ok: --color-bg token
+// Chargées une fois par isolate edge (promesses au module scope, attendues
+// dans GET). `import.meta.url` fait embarquer les .ttf dans le bundle edge.
+const frauncesRegular = fetch(
+  new URL("../../../../public/fonts/Fraunces-Regular.ttf", import.meta.url),
+).then((res) => res.arrayBuffer());
+const frauncesItalic = fetch(
+  new URL("../../../../public/fonts/Fraunces-Italic.ttf", import.meta.url),
+).then((res) => res.arrayBuffer());
+const manropeRegular = fetch(
+  new URL("../../../../public/fonts/Manrope-Regular.ttf", import.meta.url),
+).then((res) => res.arrayBuffer());
 
-export function GET(req: Request) {
+/** Taille de titre adaptée à la longueur — un titre court se lit en affiche,
+ *  un titre long doit tenir en 3 lignes sans déborder de la carte. */
+function titleFontSize(title: string): number {
+  if (title.length <= 35) return 80;
+  if (title.length <= 70) return 64;
+  if (title.length <= 110) return 54;
+  return 46;
+}
+
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const title = searchParams.get("title") ?? "Axion-IA — Cabinet IA opérationnel";
-  const eyebrow = searchParams.get("eyebrow") ?? "Axion-IA";
-  const accent = ACCENTS[searchParams.get("accent") ?? "terracotta"] ?? ACCENTS["terracotta"];
+  const title = (searchParams.get("title") ?? "Cabinet IA opérationnel").slice(0, 140);
+  const eyebrow = searchParams.get("eyebrow") ?? "Interventions · Audits · Formations IA";
 
   return new ImageResponse(
     <div
       style={{
-        height: "100%",
         width: "100%",
-        backgroundColor: BG,
-        color: FG,
+        height: "100%",
         display: "flex",
         flexDirection: "column",
-        padding: "72px 80px",
-        fontFamily: "system-ui, sans-serif",
-        position: "relative",
+        background: `linear-gradient(135deg, ${TERRACOTTA} 0%, ${TERRACOTTA_DEEP} 100%)`,
+        padding: "64px 72px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <div
-          style={{
-            width: 56,
-            height: 56,
-            backgroundColor: accent,
-            color: WHITE,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 32,
-            fontWeight: 700,
-            borderRadius: 6,
-          }}
-        >
-          A
-        </div>
-        <span
-          style={{
-            fontSize: 18,
-            fontWeight: 600,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            color: accent,
-          }}
-        >
-          {eyebrow}
-        </span>
-      </div>
-
+      {/* Badge papier — même signature que la carte d'accueil */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          flex: 1,
-          paddingTop: 24,
+          alignItems: "center",
+          background: PAPER,
+          color: FG,
+          padding: "10px 22px",
+          borderRadius: 16,
+          fontSize: 32,
+          fontFamily: "Fraunces",
+          letterSpacing: "-0.02em",
+          alignSelf: "flex-start",
         }}
       >
-        <h1
+        <span>Axion</span>
+        <span style={{ margin: "0 4px", opacity: 0.6 }}>-</span>
+        <span style={{ color: TERRACOTTA, fontStyle: "italic" }}>IA</span>
+      </div>
+
+      {/* Titre éditorial de la page */}
+      <div
+        style={{
+          display: "flex",
+          flex: 1,
+          alignItems: "center",
+          paddingTop: 24,
+          paddingBottom: 24,
+        }}
+      >
+        <div
           style={{
-            fontSize: 72,
-            fontWeight: 700,
-            lineHeight: 1.05,
+            fontSize: titleFontSize(title),
+            fontFamily: "Fraunces",
+            color: IVOIRE,
+            lineHeight: 1.12,
             letterSpacing: "-0.02em",
-            margin: 0,
-            maxWidth: 1040,
+            maxWidth: 1020,
           }}
         >
           {title}
-        </h1>
+        </div>
       </div>
 
+      {/* Pied : contexte + domaine */}
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
-          color: MUTED,
-          fontSize: 22,
+          color: IVOIRE,
+          fontSize: 24,
+          fontFamily: "Manrope",
+          opacity: 0.9,
         }}
       >
+        <span>{eyebrow}</span>
         <span>axion-ia.com</span>
-        <span>Cabinet IA · UE</span>
       </div>
-
-      {/* Editorial v3 accent stripe */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 12,
-          backgroundColor: accent,
-        }}
-      />
     </div>,
     // 1200×675 = plancher Google Discover (cohérent avec opengraph-image.tsx).
-    // Le contenu interne est en height:100% → pas de distorsion. Avant : 630
-    // (standard OG) rendait ces cartes inéligibles à Discover.
-    { width: 1200, height: 675 },
+    {
+      width: 1200,
+      height: 675,
+      fonts: [
+        { name: "Fraunces", data: await frauncesRegular, style: "normal", weight: 400 },
+        { name: "Fraunces", data: await frauncesItalic, style: "italic", weight: 400 },
+        { name: "Manrope", data: await manropeRegular, style: "normal", weight: 400 },
+      ],
+    },
   );
 }

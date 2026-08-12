@@ -25,7 +25,18 @@ import { prisma } from "@/lib/prisma";
 import { notify } from "@/server/notifications";
 import { fetchCalendlyInvitee, isCalendlyApiConfigured } from "./api";
 
-export type EnrichOutcome = { ok: true; updatedFields: string[] } | { ok: false; reason: string };
+export type EnrichOutcome =
+  | {
+      ok: true;
+      updatedFields: string[];
+      /**
+       * Réponses libres du formulaire Calendly, NON persistées (la colonne
+       * `notes` appartient à l'admin) — transmises à l'appelant pour la
+       * notification de création uniquement.
+       */
+      answersText: string | null;
+    }
+  | { ok: false; reason: string };
 
 /** `active`/`canceled` (API Calendly) → enum `CalendlyEventStatus`. */
 function mapCalendlyStatus(raw: string | null): "scheduled" | "canceled" | null {
@@ -217,5 +228,5 @@ export async function enrichCalendlyEvent(eventId: string): Promise<EnrichOutcom
     }
   }
 
-  return { ok: true, updatedFields };
+  return { ok: true, updatedFields, answersText: d.answersText };
 }
