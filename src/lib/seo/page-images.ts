@@ -1626,9 +1626,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Guide IA Axion-IA — un manuel opérationnel pour dirigeants",
         nameEn: "Axion-IA AI guide — an operational manual for executives",
         altFr:
-          "Un livre ouvert posé sur une table claire, image du guide IA opérationnel publié par Axion-IA.",
+          "Une main tient une feuille de graphiques imprimés au-dessus d'un ordinateur portable, à côté d'un carnet ouvert — image du guide IA opérationnel publié par Axion-IA.",
         altEn:
-          "An open book resting on a light-coloured table, illustrating the operational AI guide published by Axion-IA.",
+          "A hand holding a sheet of printed charts above a laptop, next to an open notebook — illustrating the operational AI guide published by Axion-IA.",
         width: 1600,
         height: 900,
         representativeOfPage: true,

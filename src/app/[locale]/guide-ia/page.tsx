@@ -161,13 +161,13 @@ export default async function AiGuidePage({ params }: Props) {
             src="/illustrations/guide-ia-hero.avif"
             caption={
               isFr
-                ? "Couverture éditoriale — livre opérationnel ouvert sur table claire"
-                : "Editorial cover — operational book open on a light table"
+                ? "Document de travail — le guide s'utilise sur des cas réels"
+                : "A working document — the guide is meant to be used on real cases"
             }
             alt={
               isFr
-                ? "Un livre ouvert posé sur une table claire."
-                : "An open book resting on a light-coloured table."
+                ? "Une main tient une feuille de graphiques imprimés au-dessus d'un ordinateur portable, à côté d'un carnet ouvert."
+                : "A hand holding a sheet of printed charts above a laptop, next to an open notebook."
             }
             priority
           />
