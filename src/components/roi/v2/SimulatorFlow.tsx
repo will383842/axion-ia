@@ -31,6 +31,7 @@ import {
   FRAMING_STEPS,
   applyStepAnswer,
   buildSteps,
+  firstUnansweredIndex,
   selectedOptionIds,
   type Step,
 } from "./steps";
@@ -44,6 +45,20 @@ const EMPTY_ANSWERS: RoiAnswers = {
   functions: [],
   volumes: {},
 };
+
+/**
+ * Reconstruit l'ensemble des écrans déjà répondus à partir de réponses venues
+ * de l'URL. Le cadrage est réputé répondu dès qu'un diagnostic a été décodé —
+ * ses trois premiers champs ont toujours une valeur, on ne peut pas distinguer
+ * « choisi » de « valeur par défaut ». Les volumes, eux, sont explicites.
+ */
+function seedAnswered(initial: RoiAnswers | null | undefined): ReadonlySet<string> {
+  if (!initial) return new Set<string>();
+  const seed = new Set<string>(["sector", "headcount", "maturity"]);
+  if (initial.functions.length > 0) seed.add("functions");
+  for (const key of Object.keys(initial.volumes)) seed.add(`volume:${key}`);
+  return seed;
+}
 
 interface SimulatorFlowProps {
   locale: Locale;
@@ -64,19 +79,31 @@ export function SimulatorFlow({
   className,
 }: SimulatorFlowProps) {
   const [answers, setAnswers] = React.useState<RoiAnswers>(initialAnswers ?? EMPTY_ANSWERS);
-  const [stepIndex, setStepIndex] = React.useState(0);
   const [showReport, setShowReport] = React.useState(initialShowReport);
 
   // Un écran répondu reste marqué comme tel même si la réponse « je ne sais
   // pas » ne laisse aucune trace dans `answers` — sans quoi la sélection
   // disparaîtrait visuellement au retour en arrière.
-  const [answered, setAnswered] = React.useState<ReadonlySet<string>>(() => {
-    if (!initialAnswers) return new Set<string>();
-    const seed = new Set<string>(["sector", "headcount", "maturity"]);
-    if (initialAnswers.functions.length > 0) seed.add("functions");
-    for (const key of Object.keys(initialAnswers.volumes)) seed.add(`volume:${key}`);
-    return seed;
-  });
+  const [answered, setAnswered] = React.useState<ReadonlySet<string>>(() =>
+    seedAnswered(initialAnswers),
+  );
+
+  // Reprise d'un parcours interrompu : rechargement de page, retour depuis un
+  // autre onglet, ou lien à demi rempli reçu d'un collègue. On repart au
+  // premier écran SANS réponse plutôt qu'au début — refaire quatre écrans déjà
+  // remplis est le meilleur moyen de perdre quelqu'un à la reprise.
+  const [stepIndex, setStepIndex] = React.useState(() =>
+    initialAnswers
+      ? Math.min(
+          firstUnansweredIndex(
+            initialAnswers,
+            buildSteps(initialAnswers.functions),
+            seedAnswered(initialAnswers),
+          ),
+          buildSteps(initialAnswers.functions).length - 1,
+        )
+      : 0,
+  );
 
   const steps = React.useMemo(() => buildSteps(answers.functions), [answers.functions]);
   const step: Step | undefined = steps[stepIndex];

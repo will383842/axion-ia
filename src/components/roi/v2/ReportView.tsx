@@ -403,16 +403,20 @@ export function ReportView({
       </section>
 
       {/* ── Reprise du questionnaire ────────────────────────────────────── */}
-      {!funnel ? (
-        <div className="border-border mt-10 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="text-fg-soft hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
-          >
-            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-            Modifier mes réponses
-          </button>
+      {/* « Modifier » reste disponible PARTOUT, tunnel compris : quelqu'un qui
+          repère une réponse fausse et ne peut pas la corriger ne demande pas un
+          rendez-vous, il ferme l'onglet. « Recommencer », en revanche, est
+          masqué en tunnel — repartir de zéro n'y sert personne. */}
+      <div className="border-border mt-10 flex flex-col gap-2 border-t pt-6 sm:flex-row sm:gap-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-fg-soft hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+        >
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+          Modifier mes réponses
+        </button>
+        {!funnel ? (
           <button
             type="button"
             onClick={onRestart}
@@ -421,8 +425,8 @@ export function ReportView({
             <RotateCcw aria-hidden="true" className="h-4 w-4" />
             Recommencer
           </button>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </div>
   );
 }
