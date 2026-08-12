@@ -183,6 +183,12 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // EN `/my-data/export` partage le même endpoint, on exclut la clé canonique.
   "/mes-donnees/export",
   "/confirmation",
+  // Variante tunnel du simulateur (2026-08-12) : même contenu que `/roi`, sans
+  // en-tête ni pied de page, servie au trafic payant. Elle porte `noindex` —
+  // l'annoncer dans pages.xml produirait exactement l'incohérence Search
+  // Console « URL noindexée dans le sitemap » corrigée plus haut pour
+  // `/mes-donnees/export`.
+  "/simulateur",
   "/recherche",
   "/preferences-cookies",
   // V-11 sprint UX 2026-05-22 — `/glossaire` hub double-déclaré entre pages.xml

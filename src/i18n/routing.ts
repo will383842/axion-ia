@@ -280,6 +280,10 @@ export const routing = defineRouting({
     // vérité unique = pricing.ts. Sert le nouvel onglet header « Tarifs ».
     "/tarifs": { fr: "/tarifs", en: "/pricing" },
     "/roi": "/roi",
+    // Simulateur de gains v2 (2026-08-12) — même moteur que `/roi`, servi sans
+    // en-tête ni pied de page pour le trafic payant. `noindex` : c'est la
+    // variante tunnel d'une page déjà indexée, pas une page de plus.
+    "/simulateur": "/simulateur",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
