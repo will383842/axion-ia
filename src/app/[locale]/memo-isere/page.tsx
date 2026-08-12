@@ -10,8 +10,11 @@
 // terracotta répétées, grille géographique par territoires — avec les
 // composants partagés (HeroBadge, FeatureMediaCard, DarkTriadPanel, FaqBlock).
 //
-// ⚠️ CTA « J'envoie ma candidature » : ancre #postuler EN ATTENTE (décision
-// Will 2026-08-12 — le formulaire arrive plus tard, aucun lien externe).
+// CTA « J'envoie ma candidature » : depuis le 2026-08-12, tous les CTA
+// pointent vers le tunnel de candidature sans CV
+// /devenir-commercial-ia/candidature (l'ancre d'attente #postuler n'a plus de
+// raison d'être ; l'id reste posé sur le CtaBlock final au cas où des liens
+// externes #postuler circulent déjà).
 //
 // 📷 Images : pool Unsplash déjà curé du site (revirement Will 2026-08-12 —
 // remplacer les emplacements à créer par de vraies photos). Crédits affichés.
@@ -195,7 +198,7 @@ function BandeCta({ title, track }: { title: string; track: string }) {
           {title}
         </h2>
         <Cta
-          href="#postuler"
+          href="/devenir-commercial-ia/candidature"
           size="lg"
           track={track}
           className="text-terracotta-deep shrink-0 bg-[color:var(--color-paper)] shadow-[0_8px_24px_-8px_rgba(0,0,0,0.35)] hover:bg-[color:var(--color-bg)]"
@@ -207,11 +210,11 @@ function BandeCta({ title, track }: { title: string; track: string }) {
   );
 }
 
-/** CTA candidature — répété sur la page. Ancre #postuler EN ATTENTE du
- *  formulaire (décision Will 2026-08-12) : aucun lien externe pour l'instant. */
+/** CTA candidature — répété sur la page. Pointe vers le tunnel sans CV
+ *  (3 minutes, un écran par question) depuis le 2026-08-12. */
 function CtaCandidature({ track }: { track: string }) {
   return (
-    <Cta href="#postuler" size="lg" track={track}>
+    <Cta href="/devenir-commercial-ia/candidature" size="lg" track={track}>
       J’envoie ma candidature →
     </Cta>
   );
@@ -1100,18 +1103,23 @@ export default async function MemoIserePage({ params }: Props) {
         items={faqItems}
       />
 
-      {/* 14 ── CTA final (ancre #postuler — formulaire à venir) */}
+      {/* 14 ── CTA final (id="postuler" conservé pour les liens externes déjà
+          partagés — le CTA pointe vers le tunnel de candidature) */}
       <div id="postuler">
         <CtaBlock
           eyebrow="Démarrage septembre"
           title="Prêt à devenir le commercial IA de"
           titleEm="ta zone ?"
-          description="Les candidatures sont ouvertes 🚀 2 minutes chrono, zéro CV : un message libre qui te ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
+          description="Les candidatures sont ouvertes 🚀 3 minutes chrono, zéro CV, une question par écran : un message libre qui te ressemble remplace la lettre de motivation. En indépendant ou apporteur d'affaires — débutants bienvenus."
           cta={<CtaCandidature track="memo-final-apply" />}
         />
       </div>
 
-      <StickyMobileCta href="#postuler" label="J'envoie ma candidature" track="memo-sticky-apply" />
+      <StickyMobileCta
+        href="/devenir-commercial-ia/candidature"
+        label="J'envoie ma candidature"
+        track="memo-sticky-apply"
+      />
     </>
   );
 }
