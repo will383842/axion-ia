@@ -90,8 +90,8 @@ export default async function DevenirCommercialHub({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: isFr
-      ? "Commercial indépendant en IA (agent commercial / VRP)"
-      : "Independent AI sales representative",
+      ? "Commercial indépendant en IA (agent commercial, VRP, apporteur d'affaires)"
+      : "Independent AI sales representative (agent or business introducer)",
     description: isFr
       ? "Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut indépendant, produits souvent finançables, rémunération à la commission déplafonnée, emploi du temps libre."
       : "Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to companies of all sizes. Self-employed status, often-fundable products, uncapped commission-based pay.",

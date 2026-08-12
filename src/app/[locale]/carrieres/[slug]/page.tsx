@@ -99,6 +99,15 @@ function buildOfferFaq(
   const countries = normalizeApplicantCountries(o.applicantCountries);
   const countryNames = countries.map((c) => applicantCountryLabel(c, isFr));
 
+  // Villes du poste (multi-lieux) : un poste à zone nationale ne doit pas
+  // répondre « en présentiel à Grenoble » — c'est la question n°1 d'un candidat
+  // hors Isère, et la réponse que reprennent les moteurs de réponse.
+  const faqCities = Array.isArray(o.jobLocations)
+    ? (o.jobLocations as Array<{ city?: string }>)
+        .map((l) => l.city)
+        .filter((c): c is string => Boolean(c))
+    : [];
+
   const remoteScope =
     countries.length > 1
       ? isFr
@@ -108,22 +117,31 @@ function buildOfferFaq(
         ? "ouvert partout en France"
         : "open across France";
   const modeAnswer =
-    o.workMode === "remote"
+    faqCities.length > 1
       ? isFr
-        ? `Oui, ce poste est en télétravail (à distance), ${remoteScope}.`
-        : `Yes, this role is fully remote, ${remoteScope}.`
-      : o.workMode === "hybrid"
+        ? `Le poste couvre toute la France — interventions organisées par secteurs autour de ${faqCities.length} villes (${faqCities.slice(0, 5).join(", ")}…)${o.city ? `, avec un rattachement à ${o.city}` : ""}.`
+        : `The role covers all of France — organised by sector around ${faqCities.length} cities (${faqCities.slice(0, 5).join(", ")}…)${o.city ? `, with a home base in ${o.city}` : ""}.`
+      : o.workMode === "remote"
         ? isFr
-          ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
-          : `This role is hybrid: partly on-site${cityPart} and partly remote.`
-        : isFr
-          ? `Ce poste est en présentiel${cityPart}.`
-          : `This role is on-site${cityPart}.`;
+          ? `Oui, ce poste est en télétravail (à distance), ${remoteScope}.`
+          : `Yes, this role is fully remote, ${remoteScope}.`
+        : o.workMode === "hybrid"
+          ? isFr
+            ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
+            : `This role is hybrid: partly on-site${cityPart} and partly remote.`
+          : isFr
+            ? `Ce poste est en présentiel${cityPart}.`
+            : `This role is on-site${cityPart}.`;
   items.push({
     id: "teletravail",
-    question: isFr
-      ? `Le poste de ${title} est-il en télétravail ?`
-      : `Is the ${title} role remote?`,
+    question:
+      faqCities.length > 1
+        ? isFr
+          ? `Où s'exerce le poste de ${title} ?`
+          : `Where is the ${title} role based?`
+        : isFr
+          ? `Le poste de ${title} est-il en télétravail ?`
+          : `Is the ${title} role remote?`,
     answer: modeAnswer,
   });
 
@@ -322,8 +340,14 @@ export default async function JobOfferDetailPage({
             {/* Colonne gauche — texte */}
             <div>
               <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
-                {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
-                {offer.city ? ` · ${offer.city}` : ""}
+                {/* Multi-lieux : « Sur site · Grenoble » sur un poste qui couvre
+                    40 villes était contre-vendeur (retour Will 2026-08-12) —
+                    la zone réelle prime sur le site de rattachement. */}
+                {jobCities.length > 0
+                  ? isFr
+                    ? `France entière${offer.city ? ` · basé à ${offer.city}` : ""}`
+                    : `France-wide${offer.city ? ` · based in ${offer.city}` : ""}`
+                  : `${WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"] ?? ""}${offer.city ? ` · ${offer.city}` : ""}`}
               </p>
               <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">{title}</h1>
 
