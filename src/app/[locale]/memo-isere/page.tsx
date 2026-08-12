@@ -63,23 +63,32 @@ export const revalidate = 3600;
 const IMG_HERO = careerImage("business-developer-ia"); // poignée de main B2B
 const IMG_TERRAIN = careerImage("formateur-ia-itinerant"); // formation en salle
 const IMG_EQUIPE = CAREERS_HERO; // équipe en collaboration
+// Vignettes des cartes territoires — pool curé, cyclé sur les 13 cartes.
+const ZONE_CARD_IMAGES = [
+  careerImage("business-developer-ia"),
+  careerImage("consultant-ia-generative"),
+  careerImage("consultant-data-strategie"),
+  careerImage("formateur-ia-itinerant"),
+  careerImage("product-manager-ia"),
+  CAREERS_HERO,
+] as const;
 
 // Secteurs démarchés — le job = les PME QUEL QUE SOIT le secteur (Will
 // 2026-08-12). Emojis assumés : ambiance fun/sympa demandée, même registre
 // que les perks des pages carrières.
 const SECTEURS = [
-  { emoji: "🥖", label: "Boulangeries & commerces" },
-  { emoji: "🔧", label: "Garages & artisans" },
+  { emoji: "🏭", label: "Industrie & sites de production" },
   { emoji: "🏗️", label: "BTP & construction" },
-  { emoji: "🏨", label: "Hôtels & restaurants" },
-  { emoji: "🧾", label: "Experts-comptables" },
-  { emoji: "⚖️", label: "Avocats & notaires" },
-  { emoji: "🩺", label: "Santé & paramédical" },
-  { emoji: "🏭", label: "Industrie & ateliers" },
   { emoji: "🚚", label: "Transport & logistique" },
-  { emoji: "🌾", label: "Agriculture & viticulture" },
-  { emoji: "🏠", label: "Immobilier" },
-  { emoji: "💇", label: "Coiffure & bien-être" },
+  { emoji: "🏢", label: "Sièges & services B2B" },
+  { emoji: "🧾", label: "Cabinets comptables & juridiques" },
+  { emoji: "🏥", label: "Santé, cliniques & labos" },
+  { emoji: "🛒", label: "Négoce & distribution" },
+  { emoji: "🏨", label: "Hôtellerie & restauration" },
+  { emoji: "🌾", label: "Agroalimentaire & viticulture" },
+  { emoji: "🏠", label: "Immobilier & promotion" },
+  { emoji: "⚙️", label: "Ateliers & artisans qui grandissent" },
+  { emoji: "🖥️", label: "Agences & ESN" },
 ] as const;
 
 interface Props {
@@ -216,15 +225,32 @@ export default async function MemoIserePage({ params }: Props) {
   const isFr = loc === "fr";
   if (!isFr) notFound(); // page presse locale FR-only (EN 301 → FR au runtime)
 
-  // Avis réels — priorité Isère (45 des 77 avis publiés), meilleurs d'abord.
-  // Stub-aware : au build GH Actions la liste est vide → section masquée,
-  // l'ISR la repeuple en prod sous 1 h.
-  const { items: reviewsIsere, total: totalIsere } = await getPublishedReviews({
+  // Avis réels — priorité Isère (45 des 77 avis publiés). On fait REMONTER les
+  // avis « entreprise » (raison sociale renseignée) : la page vise PME, ETI et
+  // grands groupes — un avis de DSI de groupe vend mieux le produit qu'un avis
+  // d'indépendant (retour Will 2026-08-12). Stub-aware : au build GH Actions la
+  // liste est vide → section masquée, l'ISR la repeuple en prod sous 1 h.
+  const { items: poolIsere, total: totalIsere } = await getPublishedReviews({
     departmentCode: "38",
     sort: "rating_desc",
-    pageSize: 6,
+    pageSize: 24,
   });
-  const reviews = reviewsIsere.length >= 3 ? reviewsIsere : [];
+  // Score « entreprise » : le vocabulaire PME/ETI/groupe (DSI, collaborateurs,
+  // adoption, salariés…) pèse plus qu'une simple raison sociale — beaucoup
+  // d'indépendants en ont une aussi.
+  const ENTREPRISE_RE =
+    /(DSI|groupe|collaborateurs?|salari[ée]s?|équipes?|adoption|industriel(?:le)?|production|PME|ETI|direction|managers?)/i;
+  const scored = poolIsere
+    .map((r) => ({
+      r,
+      score:
+        (ENTREPRISE_RE.test(`${r.title ?? ""} ${r.comment}`) ? 2 : 0) +
+        (r.companyName ? 1 : 0) +
+        (r.isVerified ? 1 : 0),
+    }))
+    .sort((a, b) => b.score - a.score || b.r.rating - a.r.rating);
+  const reviewsPick = scored.map((x) => x.r).slice(0, 6);
+  const reviews = reviewsPick.length >= 3 ? reviewsPick : [];
   const { total: totalAll } = await getPublishedReviews({ pageSize: 1 });
 
   const villesPhares = [
@@ -261,7 +287,7 @@ export default async function MemoIserePage({ params }: Props) {
     {
       id: "zone",
       question: "Quelle est la zone exacte ? Puis-je choisir la mienne ?",
-      answer: `Tout le corridor de Grenoble à Lyon, de Valence à Die : ${MEMO_ZONE_TOTAL} communes réparties sur 13 territoires (${villesPhares.join(", ")}… et toutes les communes entre, y compris les petites). Tu choisis ta zone : tant qu'elle est disponible, elle devient la tienne. Les petites communes sont un vrai atout — personne n'y démarche l'IA.`,
+      answer: `Tu choisis un SECTEUR, pas une seule commune : l'un des 13 territoires du corridor Grenoble - Lyon - Valence - Die (${villesPhares.join(", ")}…), soit ${MEMO_ZONE_TOTAL} communes au total, petites incluses. Tant qu'un secteur est disponible, il devient le tien — un vrai territoire de plusieurs dizaines de communes.`,
     },
     {
       id: "debutant",
@@ -273,7 +299,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "quelles-entreprises",
       question: "Quelles entreprises est-ce que je démarche ?",
       answer:
-        "Les PME et ETI de ta zone d'abord — plus il y a d'équipes à former, plus la vente rapporte — mais aussi les TPE, artisans, commerçants et professions libérales. Quel que soit le secteur d'activité : industrie, BTP, comptabilité, santé, hôtellerie-restauration, transport, agriculture, immobilier, commerce… L'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
+        "Les PME, ETI et grands groupes de ta zone d'abord — plus il y a d'équipes à former, plus la vente rapporte : une seule ETI peut représenter des dizaines de journées. Les TPE, artisans et professions libérales restent d'excellentes premières ventes. Quel que soit le secteur d'activité : industrie, BTP, comptabilité, santé, hôtellerie-restauration, transport, agriculture, immobilier, commerce… L'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
     },
     {
       id: "pourquoi-ca-se-vend",
@@ -315,7 +341,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI, TPE et artisans locaux, quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — TPE et artisans compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     datePosted: SITE_EDITORIAL_DATE,
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
@@ -323,7 +349,7 @@ export default async function MemoIserePage({ params }: Props) {
     qualifications:
       "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
     responsibilities:
-      "Prospecter les PME, ETI, TPE, artisans et commerçants de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
+      "Prospecter les PME, ETI et grands groupes de sa zone (TPE et artisans compris) (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, poste évolutif (responsable de secteur).",
     incentiveCompensation:
@@ -548,7 +574,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: TrendingUp,
                 title: "La demande explose",
                 description:
-                  "Toutes les PME et ETI parlent d'IA — et personne n'est venu les voir sur ta zone, surtout hors des grandes villes. Tu arrives premier.",
+                  "PME, ETI, grands groupes : tout le monde parle d'IA — et personne n'est venu les voir sur ta zone. Tu arrives premier.",
                 stat: { figure: "1er", label: "sur ta zone" },
               },
               {
@@ -583,10 +609,10 @@ export default async function MemoIserePage({ params }: Props) {
       <Section
         className="py-14 sm:py-16 lg:py-20"
         eyebrow="Tes futurs clients"
-        title="Ton prochain client ? La boulangerie"
-        titleEm="d'en face"
-        titleTail=" — ou l'usine d'à côté"
-        description="PME, ETI, TPE, artisans, commerçants, professions libérales : l'AI Act ne fait pas de tri entre les secteurs, l'OPCO non plus. Des équipes à former, il y en a de 3 à 3 000 salariés — et tu connais déjà la moitié de ces gens."
+        title="Ton prochain client ? Le site industriel"
+        titleEm="d'à côté"
+        titleTail=" — ou le siège régional"
+        description="PME, ETI et grands groupes d'abord : plus l'équipe est grande, plus la vente est grosse — une ETI qui forme 40 personnes, c'est des dizaines de journées facturées. L'AI Act ne fait pas de tri entre les secteurs, l'OPCO non plus."
       >
         <Container>
           <ul
@@ -606,8 +632,8 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </ul>
           <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
-            … et tous les autres : si une entreprise de ta zone a des équipes et des dossiers à
-            traiter, elle est concernée.
+            … et tous les autres, du grand groupe à la TPE du coin : si une entreprise de ta zone a
+            des équipes et des dossiers à traiter, elle est concernée.
           </p>
         </Container>
       </Section>
@@ -619,7 +645,7 @@ export default async function MemoIserePage({ params }: Props) {
         eyebrow="Rémunération"
         title="500 € par journée de formation" /* price-exempt: commission recrutement */
         titleEm="vendue"
-        description="Sans plafond, sans quota, sans salaire fixe à mériter : chaque vente te paie. Les audits et intégrations IA rapportent en plus un pourcentage de la facture."
+        description="Sans plafond, sans quota, sans salaire fixe à mériter : chaque vente te paie. Une ETI qui forme 40 personnes, c'est des dizaines de journées d'un coup — et les audits et intégrations IA rapportent en plus un pourcentage de la facture."
       >
         <Container>
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
@@ -662,6 +688,34 @@ export default async function MemoIserePage({ params }: Props) {
               "Exemples de calcul (500 € × journées vendues) — pas une promesse de revenus : tes commissions dépendent de tes ventes." /* price-exempt: commission recrutement */
             }
           </p>
+          <div className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2">
+            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+              <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
+                Produit n°1 — Formations IA
+              </p>
+              <p className="mt-2 font-serif text-xl font-semibold">
+                {"500 € par journée vendue" /* price-exempt: commission recrutement */}
+              </p>
+              <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+                Formations au poste de travail, finançables OPCO, rendues incontournables par l’AI
+                Act. Une ETI qui forme 40 personnes = des dizaines de journées.
+              </p>
+            </div>
+            <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
+              <p className="text-terracotta text-xs font-bold tracking-wide uppercase">
+                Produit n°2 — Audits IA
+              </p>
+              <p className="mt-2 font-serif text-xl font-semibold">
+                Commission selon le type d’audit
+              </p>
+              <p className="text-fg-soft mt-2 text-sm leading-relaxed">
+                Un audit IA, c’est simple à expliquer : on cartographie les process de l’entreprise,
+                on chiffre où l’IA fait gagner du temps et de l’argent, et le dirigeant repart avec
+                un plan d’action priorisé. Quatre niveaux selon la taille (TPE → ETI) — ta
+                commission suit le niveau vendu.
+              </p>
+            </div>
+          </div>
         </Container>
       </Section>
 
@@ -713,7 +767,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: MapPin,
                   title: "Tu choisis TA zone",
                   description:
-                    "De Grenoble à Lyon, de Valence à Die : tu prends la zone que tu connais — elle devient la tienne tant qu'elle est disponible.",
+                    "De Grenoble à Lyon, de Valence à Die : tu prends le secteur que tu connais — des dizaines de communes, à toi tant qu'il est disponible.",
                   stat: { figure: "474", label: "communes au choix" },
                 },
                 {
@@ -721,7 +775,7 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: LineChart,
                   title: "Tu touches à chaque vente",
                   description:
-                    "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+                    "500 € par journée de formation vendue, commission selon le type d'audit IA. Ton tableau de bord suit tout en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   stat: {
                     figure: "500 €", // price-exempt: commission recrutement
                     label: "par jour vendu",
@@ -795,7 +849,7 @@ export default async function MemoIserePage({ params }: Props) {
 
       {/* CTA band terracotta — pattern /fr/audit (entre avis et intégration) */}
       <BandeCta
-        title="Septembre arrive vite — les zones partent une par une."
+        title="Septembre arrive vite — les secteurs partent un par un."
         track="memo-band-apply"
       />
 
@@ -965,53 +1019,73 @@ export default async function MemoIserePage({ params }: Props) {
         </Container>
       </Section>
 
-      {/* 12 ── Zone couverte — 474 communes en 13 territoires. Accordéons
-          <details> CSS-only : les 13 murs de texte étaient « visuellement
-          catastrophiques » (Will) ; les villes principales restent visibles,
-          la liste complète (SEO/GEO) se déplie. */}
+      {/* 12 ── Zone couverte — petits blocs avec vignette (demande Will
+          2026-08-12, « mieux visuellement que des bandeaux ») ; la liste
+          complète des 474 communes reste dans UN déroulant global (SEO/GEO). */}
       <Section
         tone="sand"
         className="py-14 sm:py-16 lg:py-20"
-        eyebrow="Ton territoire"
+        eyebrow="Ton secteur"
         title={`${MEMO_ZONE_TOTAL} communes, de Grenoble à`}
         titleEm="Lyon, Valence et Die"
-        description="En indépendant ou apporteur d'affaires, tu choisis ta zone parmi 13 territoires ; tant qu'elle est disponible, elle devient la tienne. Chaque commune — y compris la plus petite — compte des PME que personne n'a démarchées sur l'IA."
+        description="En indépendant ou apporteur d'affaires, tu choisis TON SECTEUR — pas une commune : l'un de ces 13 territoires, des dizaines de communes chacun. Tant qu'il est disponible, il est à toi."
       >
-        <Container className="max-w-4xl">
-          <ul className="space-y-3" role="list">
-            {MEMO_ZONE_CLUSTERS.map((cl) => (
-              <li key={cl.label}>
-                <details className="group border-border bg-paper shadow-subtle overflow-hidden rounded-2xl border">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 [&::-webkit-details-marker]:hidden">
-                    <span className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <span className="font-serif text-lg leading-snug font-semibold">
-                        {cl.label}
-                      </span>
-                      <span className="text-fg-muted hidden text-sm sm:inline">
-                        {cl.principales.slice(0, 3).join(" · ")}
-                        {cl.principales.length > 3 ? "…" : ""}
-                      </span>
-                    </span>
-                    <span className="text-terracotta flex shrink-0 items-center gap-2 text-xs font-bold tracking-wide uppercase">
-                      {cl.communes.length} communes
-                      <span
+        <Container>
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" role="list">
+            {MEMO_ZONE_CLUSTERS.map((cl, i) => {
+              const img = ZONE_CARD_IMAGES[i % ZONE_CARD_IMAGES.length] ?? CAREERS_HERO;
+              return (
+                <li key={cl.label}>
+                  <div className="border-border bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 hover:-translate-y-1">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <Image
+                        src={img.url}
+                        alt=""
                         aria-hidden="true"
-                        className="transition-transform duration-200 group-open:rotate-90"
-                      >
-                        →
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="bg-terracotta text-paper absolute right-2 bottom-2 rounded-full px-2.5 py-0.5 text-[11px] font-bold">
+                        {cl.communes.length} communes
                       </span>
-                    </span>
-                  </summary>
-                  <p className="text-fg-muted border-border border-t px-5 py-4 text-[13px] leading-relaxed">
-                    {cl.communes.join(" · ")}
-                  </p>
-                </details>
-              </li>
-            ))}
+                    </div>
+                    <div className="flex flex-1 flex-col p-4">
+                      <h3 className="font-serif text-base leading-snug font-semibold">
+                        {cl.label}
+                      </h3>
+                      <p className="text-fg-muted mt-1 text-xs leading-relaxed">
+                        {cl.principales.slice(0, 3).join(" · ")}
+                        {cl.communes.length > 3 ? "…" : ""}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
+          <details className="border-border bg-paper shadow-subtle group mt-6 overflow-hidden rounded-2xl border">
+            <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+              Voir la liste complète des {MEMO_ZONE_TOTAL} communes
+              <span
+                aria-hidden="true"
+                className="text-terracotta transition-transform duration-200 group-open:rotate-90"
+              >
+                →
+              </span>
+            </summary>
+            <div className="border-border space-y-4 border-t px-5 py-4">
+              {MEMO_ZONE_CLUSTERS.map((cl) => (
+                <p key={cl.label} className="text-fg-muted text-[13px] leading-relaxed">
+                  <span className="text-fg font-semibold">{cl.label} : </span>
+                  {cl.communes.join(" · ")}
+                </p>
+              ))}
+            </div>
+          </details>
           <p data-speakable className="text-fg-muted mt-6 max-w-2xl text-sm leading-relaxed">
             Ta commune n’est pas dans la liste mais tu es à proximité ? Candidate quand même — on
-            regarde ensemble, la zone s’adapte.
+            regarde ensemble, le secteur s’adapte.
           </p>
         </Container>
       </Section>
