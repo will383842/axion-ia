@@ -195,7 +195,8 @@ describe("codes d'URL", () => {
 
     for (const b of HEADCOUNT_BANDS) expect(HEADCOUNT_CODES[b.id], `tranche ${b.id}`).toBeTruthy();
     for (const m of MATURITY_LEVELS) expect(MATURITY_CODES[m.id], `maturité ${m.id}`).toBeTruthy();
-    for (const f of BUSINESS_FUNCTIONS) expect(FUNCTION_CODES[f.id], `fonction ${f.id}`).toBeTruthy();
+    for (const f of BUSINESS_FUNCTIONS)
+      expect(FUNCTION_CODES[f.id], `fonction ${f.id}`).toBeTruthy();
 
     for (const table of [SECTOR_CODES, HEADCOUNT_CODES, MATURITY_CODES, FUNCTION_CODES]) {
       const codes = Object.values(table);

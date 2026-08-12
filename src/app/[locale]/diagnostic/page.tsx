@@ -104,18 +104,14 @@ export default async function DiagnosticLandingPage({ params }: Props) {
 
         {/* ── Objections levées d'avance ────────────────────────────────── */}
         <p className="text-mocha-fg-muted mx-auto mt-5 max-w-xl text-center text-[16px] leading-relaxed text-pretty sm:text-[17px]">
-          <strong className="text-mocha-fg font-bold">{c.subtitle.strong}</strong>{" "}
-          {c.subtitle.rest}
+          <strong className="text-mocha-fg font-bold">{c.subtitle.strong}</strong> {c.subtitle.rest}
         </p>
 
         {/* ── Preuves ───────────────────────────────────────────────────── */}
         {/* Une ligne compacte, sous la promesse : elle la rend crédible sans
             repousser le titre. Faits vérifiables uniquement — aucun compteur de
             clients, aucun témoignage, aucun logo. */}
-        <ul
-          role="list"
-          className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-2"
-        >
+        <ul role="list" className="mt-5 flex flex-wrap justify-center gap-x-4 gap-y-2">
           {c.proofs.map((proof) => (
             <li key={proof.label} className="flex items-center gap-1.5">
               <Check

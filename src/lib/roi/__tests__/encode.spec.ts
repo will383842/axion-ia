@@ -6,12 +6,7 @@
 // du tunnel. D'où les tests de tolérance ci-dessous.
 
 import { describe, it, expect } from "vitest";
-import {
-  ROI_QUERY_PARAM,
-  answersToQuery,
-  decodeAnswers,
-  encodeAnswers,
-} from "@/lib/roi/encode";
+import { ROI_QUERY_PARAM, answersToQuery, decodeAnswers, encodeAnswers } from "@/lib/roi/encode";
 import { diagnose } from "@/lib/roi/diagnose";
 import type { RoiAnswers } from "@/content/roi/model/types";
 

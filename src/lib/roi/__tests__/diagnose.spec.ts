@@ -8,7 +8,11 @@
 import { describe, it, expect } from "vitest";
 import { diagnose, isTaskApplicable, selectNonAutomatable } from "@/lib/roi/diagnose";
 import { AUTOMATABLE_TASKS, getAutomatableTask } from "@/content/roi/model/tasks";
-import { ROI_MODEL_CONSTANTS, CAPACITY_GUARD_SHARE, type RoiAnswers } from "@/content/roi/model/types";
+import {
+  ROI_MODEL_CONSTANTS,
+  CAPACITY_GUARD_SHARE,
+  type RoiAnswers,
+} from "@/content/roi/model/types";
 
 function answers(over: Partial<RoiAnswers> = {}): RoiAnswers {
   return {
@@ -30,9 +34,7 @@ describe("exclusion des grandeurs non mesurées", () => {
   });
 
   it("ignore une grandeur déclarée à zéro plutôt que d'afficher une ligne vide", () => {
-    const r = diagnose(
-      answers({ functions: ["marketing"], volumes: { publications_mois: 0 } }),
-    );
+    const r = diagnose(answers({ functions: ["marketing"], volumes: { publications_mois: 0 } }));
     expect(r.tasks.map((t) => t.task.id)).not.toContain("publication_contenu");
   });
 

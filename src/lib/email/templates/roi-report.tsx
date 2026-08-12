@@ -175,18 +175,13 @@ export function RoiReportEmail({
             color: C.textMuted,
           }}
         >
-          {t.hoursLine(
-            formatNum(p.savedHoursPerYear, locale),
-            formatNum(p.fteRecovered, locale),
-          )}
+          {t.hoursLine(formatNum(p.savedHoursPerYear, locale), formatNum(p.fteRecovered, locale))}
         </Text>
       </Section>
 
       {/* ── Le plan ────────────────────────────────────────────────────── */}
       <Text style={emailStyles.headingStyle}>{t.planTitle}</Text>
-      <Text
-        style={{ ...emailStyles.paragraphStyle, fontSize: "14px", color: C.textMuted }}
-      >
+      <Text style={{ ...emailStyles.paragraphStyle, fontSize: "14px", color: C.textMuted }}>
         {t.planIntro}
       </Text>
 
@@ -217,11 +212,7 @@ export function RoiReportEmail({
                   color: C.textMuted,
                 }}
               >
-                {t.taskLine(
-                  formatNum(task.hours, locale),
-                  formatEur(task.eur, locale),
-                  task.weeks,
-                )}
+                {t.taskLine(formatNum(task.hours, locale), formatEur(task.eur, locale), task.weeks)}
               </Text>
             </Column>
           </Row>
@@ -244,9 +235,7 @@ export function RoiReportEmail({
       >
         {t.disclaimerTitle}
       </Text>
-      <Text
-        style={{ ...emailStyles.paragraphStyle, fontSize: "13px", color: C.textMuted }}
-      >
+      <Text style={{ ...emailStyles.paragraphStyle, fontSize: "13px", color: C.textMuted }}>
         {t.disclaimer}
       </Text>
     </EmailLayout>

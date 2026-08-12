@@ -108,7 +108,10 @@ export default async function SimulateurFunnelPage({ params, searchParams }: Pro
         </div>
 
         <p className="text-mocha-fg-muted mt-8 flex items-start gap-2 text-[13px] leading-relaxed">
-          <ShieldCheck aria-hidden="true" className="text-terracotta-on-mocha mt-0.5 h-4 w-4 shrink-0" />
+          <ShieldCheck
+            aria-hidden="true"
+            className="text-terracotta-on-mocha mt-0.5 h-4 w-4 shrink-0"
+          />
           <span>
             {isFr
               ? `Modèle ouvert : ${AUTOMATABLE_TASKS.length} tâches de référence, chacune avec son temps et la justification de son taux. Rien n'est transmis tant que vous ne le demandez pas.`

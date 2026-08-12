@@ -130,8 +130,16 @@ describe("enregistrement des réponses", () => {
     // dépendre de l'ordre des appuis rendrait le parcours imprévisible et les
     // liens partagés non reproductibles.
     const fnStep = FRAMING_STEPS[3]!;
-    const clickedBackwards = applyStepAnswer(BASE, fnStep, ["finance", "commercial", "administratif"]);
-    const clickedForwards = applyStepAnswer(BASE, fnStep, ["administratif", "commercial", "finance"]);
+    const clickedBackwards = applyStepAnswer(BASE, fnStep, [
+      "finance",
+      "commercial",
+      "administratif",
+    ]);
+    const clickedForwards = applyStepAnswer(BASE, fnStep, [
+      "administratif",
+      "commercial",
+      "finance",
+    ]);
     expect(clickedBackwards.functions).toEqual(clickedForwards.functions);
     expect(clickedBackwards.functions).toEqual(["administratif", "commercial", "finance"]);
   });

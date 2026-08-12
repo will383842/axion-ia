@@ -107,14 +107,17 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
   if (sent) {
     return (
       <div
-        className={cn("border-[var(--sim-accent-border)]/40 bg-[var(--sim-accent-soft)] rounded-2xl border-2 p-6", className)}
+        className={cn(
+          "rounded-2xl border-2 border-[var(--sim-accent-border)]/40 bg-[var(--sim-accent-soft)] p-6",
+          className,
+        )}
         role="status"
       >
-        <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
-          <Check aria-hidden="true" className="text-[var(--sim-accent-text)] h-5 w-5 shrink-0" />
+        <p className="flex items-center gap-2.5 text-[17px] font-bold tracking-tight text-[var(--sim-fg)]">
+          <Check aria-hidden="true" className="h-5 w-5 shrink-0 text-[var(--sim-accent-text)]" />
           C&apos;est parti
         </p>
-        <p className="text-[var(--sim-fg-soft)] mt-2 text-[14.5px] leading-relaxed">
+        <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--sim-fg-soft)]">
           Votre rapport arrive dans quelques instants à l&apos;adresse indiquée. S&apos;il tarde,
           regardez dans les indésirables — et gardez le lien de cette page, il reste valable.
         </p>
@@ -130,15 +133,18 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
     <form
       onSubmit={onSubmit}
       noValidate
-      className={cn("border-[var(--sim-border)] bg-[var(--sim-surface)] rounded-2xl border p-5 sm:p-6", className)}
+      className={cn(
+        "rounded-2xl border border-[var(--sim-border)] bg-[var(--sim-surface)] p-5 sm:p-6",
+        className,
+      )}
     >
-      <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[17px] font-bold tracking-tight">
-        <Mail aria-hidden="true" className="text-[var(--sim-accent-strong)] h-5 w-5 shrink-0" />
+      <p className="flex items-center gap-2.5 text-[17px] font-bold tracking-tight text-[var(--sim-fg)]">
+        <Mail aria-hidden="true" className="h-5 w-5 shrink-0 text-[var(--sim-accent-strong)]" />
         Recevez ce rapport par e-mail
       </p>
-      <p className="text-[var(--sim-fg-soft)] mt-2 text-[14px] leading-relaxed">
-        Vos chiffres, votre plan d&apos;action et le lien permanent vers cette page — pour le
-        relire au calme ou le transmettre à votre équipe.
+      <p className="mt-2 text-[14px] leading-relaxed text-[var(--sim-fg-soft)]">
+        Vos chiffres, votre plan d&apos;action et le lien permanent vers cette page — pour le relire
+        au calme ou le transmettre à votre équipe.
       </p>
 
       <div className="mt-5 flex flex-col gap-3.5">
@@ -183,9 +189,9 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
           // `<label>` qui l'entoure est cliquable sur toute sa surface — c'est
           // lui la vraie cible. On l'élargit quand même, parce qu'au pouce on
           // vise instinctivement la case, pas le texte.
-          className="border-[var(--sim-border-strong)] text-[var(--sim-accent-text)] focus-visible:ring-terracotta mt-0.5 h-6 w-6 shrink-0 rounded focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="focus-visible:ring-terracotta mt-0.5 h-6 w-6 shrink-0 rounded border-[var(--sim-border-strong)] text-[var(--sim-accent-text)] focus-visible:ring-2 focus-visible:ring-offset-2"
         />
-        <span className="text-[var(--sim-fg-soft)] text-[13.5px] leading-relaxed">
+        <span className="text-[13.5px] leading-relaxed text-[var(--sim-fg-soft)]">
           J&apos;accepte de recevoir ce rapport et d&apos;être recontacté par Axion-IA à ce sujet.
           Aucune revente de données, désinscription en un clic.
         </span>
@@ -195,7 +201,10 @@ export function ReportEmailForm({ report, locale, className }: ReportEmailFormPr
       {turnstileWidget}
 
       {error ? (
-        <p role="alert" className="text-[var(--sim-accent-strong)] mt-4 text-[14px] leading-relaxed font-medium">
+        <p
+          role="alert"
+          className="mt-4 text-[14px] leading-relaxed font-medium text-[var(--sim-accent-strong)]"
+        >
           {error}
         </p>
       ) : null}
@@ -247,9 +256,14 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-[var(--sim-fg)] mb-1.5 flex items-baseline gap-2 text-[14px] font-semibold">
+      <label
+        htmlFor={id}
+        className="mb-1.5 flex items-baseline gap-2 text-[14px] font-semibold text-[var(--sim-fg)]"
+      >
         {label}
-        {hint ? <span className="text-[var(--sim-fg-muted)] text-[12px] font-normal">{hint}</span> : null}
+        {hint ? (
+          <span className="text-[12px] font-normal text-[var(--sim-fg-muted)]">{hint}</span>
+        ) : null}
       </label>
       <input
         id={id}
@@ -262,7 +276,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         // 16 px minimum : en dessous, Safari iOS zoome à la mise au point et
         // casse la mise en page du formulaire.
-        className="border-[var(--sim-border-strong)] bg-[var(--sim-bg)] text-[var(--sim-fg)] focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+        className="focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 border-[var(--sim-border-strong)] bg-[var(--sim-bg)] px-4 text-[16px] text-[var(--sim-fg)] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
       />
     </div>
   );
@@ -325,9 +339,12 @@ function CallbackAsk({ submissionId }: { submissionId: string }) {
     return (
       <p
         role="status"
-        className="border-[var(--sim-border)] text-[var(--sim-fg-soft)] mt-5 flex items-start gap-2.5 border-t pt-5 text-[14px] leading-relaxed"
+        className="mt-5 flex items-start gap-2.5 border-t border-[var(--sim-border)] pt-5 text-[14px] leading-relaxed text-[var(--sim-fg-soft)]"
       >
-        <Check aria-hidden="true" className="text-[var(--sim-accent-text)] mt-0.5 h-4 w-4 shrink-0" />
+        <Check
+          aria-hidden="true"
+          className="mt-0.5 h-4 w-4 shrink-0 text-[var(--sim-accent-text)]"
+        />
         <span>
           C&apos;est noté. Nous vous appelons sous deux jours ouvrés, à l&apos;heure qui vous
           arrange — vous pourrez la choisir par retour d&apos;e-mail.
@@ -337,15 +354,15 @@ function CallbackAsk({ submissionId }: { submissionId: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="border-[var(--sim-border)] mt-5 border-t pt-5">
-      <p className="text-[var(--sim-fg)] flex items-center gap-2.5 text-[15px] font-bold tracking-tight">
-        <Phone aria-hidden="true" className="text-[var(--sim-accent-text)] h-4 w-4 shrink-0" />
+    <form onSubmit={onSubmit} noValidate className="mt-5 border-t border-[var(--sim-border)] pt-5">
+      <p className="flex items-center gap-2.5 text-[15px] font-bold tracking-tight text-[var(--sim-fg)]">
+        <Phone aria-hidden="true" className="h-4 w-4 shrink-0 text-[var(--sim-accent-text)]" />
         Vous voulez qu&apos;on le passe en revue avec vous ?
       </p>
-      <p className="text-[var(--sim-fg-soft)] mt-2 text-[13.5px] leading-relaxed">
-        Quinze minutes au téléphone sur votre plan : par quoi commencer chez vous, ce qui ne
-        vaut pas le coup, ce que ça demande. Laissez un numéro si vous le souhaitez —{" "}
-        <strong className="text-[var(--sim-fg)] font-semibold">
+      <p className="mt-2 text-[13.5px] leading-relaxed text-[var(--sim-fg-soft)]">
+        Quinze minutes au téléphone sur votre plan : par quoi commencer chez vous, ce qui ne vaut
+        pas le coup, ce que ça demande. Laissez un numéro si vous le souhaitez —{" "}
+        <strong className="font-semibold text-[var(--sim-fg)]">
           un seul appel, jamais de relance automatique
         </strong>
         , et votre rapport vous est acquis dans tous les cas.
@@ -362,7 +379,7 @@ function CallbackAsk({ submissionId }: { submissionId: string }) {
           placeholder="06 12 34 56 78"
           value={telephone}
           onChange={(e) => setTelephone(e.target.value)}
-          className="border-[var(--sim-border-strong)] bg-[var(--sim-bg)] text-[var(--sim-fg)] focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 px-4 text-[16px] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
+          className="focus-visible:ring-terracotta min-h-[52px] w-full rounded-xl border-2 border-[var(--sim-border-strong)] bg-[var(--sim-bg)] px-4 text-[16px] text-[var(--sim-fg)] focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:outline-none"
         />
         <button
           type="submit"
@@ -373,12 +390,16 @@ function CallbackAsk({ submissionId }: { submissionId: string }) {
             "disabled:cursor-not-allowed disabled:opacity-40",
           )}
         >
-          {pending ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : "Me rappeler"}
+          {pending ? (
+            <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
+          ) : (
+            "Me rappeler"
+          )}
         </button>
       </div>
 
       {error ? (
-        <p role="alert" className="text-[var(--sim-accent-strong)] mt-3 text-[13.5px] font-medium">
+        <p role="alert" className="mt-3 text-[13.5px] font-medium text-[var(--sim-accent-strong)]">
           {error}
         </p>
       ) : null}

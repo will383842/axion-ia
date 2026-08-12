@@ -65,13 +65,13 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
   return (
     <fieldset className="min-w-0">
       <legend className="mb-2 block">
-        <span className="text-[var(--sim-fg)] block text-[26px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[32px]">
+        <span className="block text-[26px] leading-[1.15] font-bold tracking-tight text-balance text-[var(--sim-fg)] sm:text-[32px]">
           {step.titleFr}
         </span>
       </legend>
 
       {step.hintFr ? (
-        <p className="text-[var(--sim-fg-soft)] mb-7 text-[15px] leading-relaxed text-pretty sm:text-base">
+        <p className="mb-7 text-[15px] leading-relaxed text-pretty text-[var(--sim-fg-soft)] sm:text-base">
           {step.hintFr}
         </p>
       ) : (
@@ -135,7 +135,7 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                   {option.labelFr}
                 </span>
                 {option.hintFr ? (
-                  <span className="text-[var(--sim-fg-muted)] mt-0.5 block text-[13px] leading-snug">
+                  <span className="mt-0.5 block text-[13px] leading-snug text-[var(--sim-fg-muted)]">
                     {option.hintFr}
                   </span>
                 ) : null}
@@ -152,7 +152,7 @@ export function ChoiceScreen({ step, selected, onSelect, onContinue }: ChoiceScr
                   isMulti ? "rounded-md" : "rounded-full",
                   compact ? "absolute top-3 right-3 h-5 w-5" : "h-6 w-6",
                   isSelected
-                    ? "border-[var(--sim-accent-border)] bg-terracotta text-paper"
+                    ? "bg-terracotta text-paper border-[var(--sim-accent-border)]"
                     : "border-[var(--sim-border-strong)] bg-transparent",
                 )}
               >

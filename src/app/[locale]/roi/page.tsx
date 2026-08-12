@@ -124,9 +124,15 @@ export default async function RoiPage({ params, searchParams }: Props) {
   // ── Contenu ───────────────────────────────────────────────────────────────
 
   const heroChips = [
-    { icon: ListChecks, label: isFr ? "Vos premières tâches à automatiser" : "Your first tasks to automate" },
+    {
+      icon: ListChecks,
+      label: isFr ? "Vos premières tâches à automatiser" : "Your first tasks to automate",
+    },
     { icon: Clock, label: isFr ? "Temps et argent récupérables" : "Time and money recoverable" },
-    { icon: Route, label: isFr ? "Feuille de route 30 j / 3 mois / 6 mois" : "Roadmap 30 d / 3 mo / 6 mo" },
+    {
+      icon: Route,
+      label: isFr ? "Feuille de route 30 j / 3 mois / 6 mois" : "Roadmap 30 d / 3 mo / 6 mo",
+    },
     { icon: ShieldCheck, label: isFr ? "Ce qui ne s'automatise pas" : "What cannot be automated" },
   ] as const;
 
@@ -440,7 +446,11 @@ export default async function RoiPage({ params, searchParams }: Props) {
       {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Simulateur de gains · gratuit, sans inscription" : "Gains simulator · free, no sign-up"}
+        eyebrow={
+          isFr
+            ? "Simulateur de gains · gratuit, sans inscription"
+            : "Gains simulator · free, no sign-up"
+        }
         title={isFr ? "Quelles tâches votre entreprise" : "Which tasks should your company"}
         titleEm={isFr ? "doit automatiser" : "automate"}
         titleTail={isFr ? " en premier ?" : " first?"}
@@ -483,7 +493,11 @@ export default async function RoiPage({ params, searchParams }: Props) {
           <ul role="list" className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-5">
             {heroChips.map((chip) => (
               <li key={chip.label} className="text-fg-soft inline-flex items-center gap-2 text-sm">
-                <chip.icon aria-hidden="true" className="text-terracotta h-4 w-4 shrink-0" strokeWidth={2} />
+                <chip.icon
+                  aria-hidden="true"
+                  className="text-terracotta h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                />
                 <span>{chip.label}</span>
               </li>
             ))}

@@ -9,28 +9,15 @@
 import { z } from "zod";
 
 export const roiReportRequestSchema = z.object({
-  nom: z
-    .string()
-    .trim()
-    .min(2, "Indiquez votre prénom.")
-    .max(120, "Ce nom est trop long."),
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email("Cette adresse e-mail semble incorrecte.")
-    .max(254),
+  nom: z.string().trim().min(2, "Indiquez votre prénom.").max(120, "Ce nom est trop long."),
+  email: z.string().trim().toLowerCase().email("Cette adresse e-mail semble incorrecte.").max(254),
   companyName: z.string().trim().max(200).optional(),
   /**
    * Réponses encodées (cf. `lib/roi/encode.ts`). Le serveur les redécode et
    * recalcule le rapport lui-même : rien de ce que le client affiche n'est
    * repris tel quel dans l'e-mail.
    */
-  diagnostic: z
-    .string()
-    .trim()
-    .min(6, "Diagnostic manquant.")
-    .max(600, "Diagnostic invalide."),
+  diagnostic: z.string().trim().min(6, "Diagnostic manquant.").max(600, "Diagnostic invalide."),
   locale: z.string().default("fr"),
   /**
    * Consentement explicite. Obligatoire : l'e-mail sert aussi de point de

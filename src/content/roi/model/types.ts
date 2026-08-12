@@ -245,7 +245,8 @@ export const MATURITY_LEVELS: readonly MaturityDef[] = [
   {
     id: "papier",
     labelFr: "Beaucoup de papier et de saisie manuelle",
-    hintFr: "Les informations existent, mais elles ne sont pas encore exploitables par une machine.",
+    hintFr:
+      "Les informations existent, mais elles ne sont pas encore exploitables par une machine.",
     factor: 0.7,
     weeksPenalty: 4,
   },

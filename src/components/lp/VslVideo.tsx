@@ -37,14 +37,7 @@ interface VslVideoProps {
   className?: string;
 }
 
-export function VslVideo({
-  src,
-  poster,
-  durationLabel,
-  label,
-  landing,
-  className,
-}: VslVideoProps) {
+export function VslVideo({ src, poster, durationLabel, label, landing, className }: VslVideoProps) {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [started, setStarted] = React.useState(false);
 
@@ -88,7 +81,7 @@ export function VslVideo({
             <button
               type="button"
               onClick={play}
-              className="group focus-visible:ring-terracotta absolute inset-0 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-inset focus-visible:outline-none"
+              className="group focus-visible:ring-terracotta absolute inset-0 flex items-center justify-center focus-visible:ring-2 focus-visible:outline-none focus-visible:ring-inset"
               aria-label={`Lire la vidéo (${durationLabel})`}
             >
               {/* L'affiche est rendue par `next/image` plutôt que par l'attribut

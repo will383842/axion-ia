@@ -104,9 +104,7 @@ describe("enchaînement des écrans", () => {
     expect(screen.getByText("Dans quel secteur travaillez-vous ?")).toBeInTheDocument();
     await user.click(screen.getByText("Juridique"));
 
-    expect(
-      await screen.findByText("Combien êtes-vous dans l'entreprise ?"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("Combien êtes-vous dans l'entreprise ?")).toBeInTheDocument();
   });
 
   it("permet de revenir en arrière sans perdre la réponse déjà donnée", async () => {

@@ -288,7 +288,7 @@ export function SimulatorFlow({
     <div ref={topRef} data-tone={tone} className={cn("sim-scope scroll-mt-24", className)}>
       {/* ── Progression ─────────────────────────────────────────────────── */}
       <div className="mb-7">
-        <div className="text-[var(--sim-fg-muted)] mb-2 flex items-baseline justify-between text-[12px] font-bold tracking-[0.14em] uppercase">
+        <div className="mb-2 flex items-baseline justify-between text-[12px] font-bold tracking-[0.14em] text-[var(--sim-fg-muted)] uppercase">
           <span>{phaseLabel}</span>
           <span className="tabular-nums">
             {phaseIndex + 1} / {phaseTotal}
@@ -300,7 +300,7 @@ export function SimulatorFlow({
           aria-valuemin={0}
           aria-valuemax={100}
           aria-label={`Progression : ${phaseLabel}, étape ${phaseIndex + 1} sur ${phaseTotal}`}
-          className="bg-[var(--sim-border)]/70 h-1.5 w-full overflow-hidden rounded-full"
+          className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--sim-border)]/70"
         >
           <div
             className="bg-terracotta h-full rounded-full transition-[width] duration-300 ease-out"
@@ -328,9 +328,12 @@ export function SimulatorFlow({
       {!isFraming && identifiedTasks > 0 ? (
         <p
           aria-live="polite"
-          className="border-[var(--sim-accent-border)]/30 bg-[var(--sim-accent-soft)] text-[var(--sim-fg)] mt-6 flex items-center gap-2.5 rounded-2xl border px-4 py-3 text-[14px] leading-snug font-medium"
+          className="mt-6 flex items-center gap-2.5 rounded-2xl border border-[var(--sim-accent-border)]/30 bg-[var(--sim-accent-soft)] px-4 py-3 text-[14px] leading-snug font-medium text-[var(--sim-fg)]"
         >
-          <Sparkles aria-hidden="true" className="text-[var(--sim-accent-strong)] h-4 w-4 shrink-0" />
+          <Sparkles
+            aria-hidden="true"
+            className="h-4 w-4 shrink-0 text-[var(--sim-accent-strong)]"
+          />
           <span>
             {identifiedTasks} tâche{identifiedTasks > 1 ? "s" : ""} automatisable
             {identifiedTasks > 1 ? "s" : ""} déjà identifiée{identifiedTasks > 1 ? "s" : ""} chez
@@ -345,7 +348,7 @@ export function SimulatorFlow({
           <button
             type="button"
             onClick={goBack}
-            className="text-[var(--sim-fg-soft)] hover:text-[var(--sim-accent-text)] focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold transition focus-visible:ring-2 focus-visible:outline-none"
+            className="focus-visible:ring-terracotta inline-flex min-h-[48px] items-center gap-2 rounded-full px-4 text-[15px] font-semibold text-[var(--sim-fg-soft)] transition hover:text-[var(--sim-accent-text)] focus-visible:ring-2 focus-visible:outline-none"
           >
             <ArrowLeft aria-hidden="true" className="h-4 w-4" />
             Revenir à la question précédente
@@ -353,7 +356,7 @@ export function SimulatorFlow({
         </div>
       ) : null}
 
-      <p className="text-[var(--sim-fg-muted)] mt-8 text-[12.5px] leading-relaxed">
+      <p className="mt-8 text-[12.5px] leading-relaxed text-[var(--sim-fg-muted)]">
         {stepIndex === 0
           ? "Une dizaine de questions, environ trois minutes. Aucune inscription, et rien n'est transmis : tout se calcule dans votre navigateur."
           : "Aucune inscription, aucune donnée transmise pendant le questionnaire : tout se calcule dans votre navigateur."}

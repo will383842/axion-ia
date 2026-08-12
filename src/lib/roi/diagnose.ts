@@ -133,9 +133,7 @@ function computeTask(
   // pénalité nulle). Appliquer la pénalité à plat repoussait les gains
   // immédiats hors de la première vague, ce qui privait précisément les
   // entreprises les moins matures du seul plan qu'elles peuvent suivre.
-  const weeksToValue = Math.round(
-    task.weeksToValue + ctx.weeksPenalty * ((task.effort - 1) / 4),
-  );
+  const weeksToValue = Math.round(task.weeksToValue + ctx.weeksPenalty * ((task.effort - 1) / 4));
 
   // Le score récompense le gain, pénalise l'effort ET le délai, et corrige par
   // la confiance : un gain énorme mais incertain et lointain ne doit pas passer
@@ -226,9 +224,7 @@ export function selectNonAutomatable(
   const fnSet = new Set(functions);
 
   const sectorial =
-    sector === "generique"
-      ? []
-      : NON_AUTOMATABLE_TASKS.filter((t) => t.sectors?.includes(sector));
+    sector === "generique" ? [] : NON_AUTOMATABLE_TASKS.filter((t) => t.sectors?.includes(sector));
 
   const transversal = NON_AUTOMATABLE_TASKS.filter((t) => !t.sectors && fnSet.has(t.fn));
 
@@ -255,8 +251,7 @@ export function selectNonAutomatable(
 export function diagnose(answers: RoiAnswers): RoiReport {
   const hourlyCostEur = hourlyCostOf(answers);
   const headcount = headcountOf(answers);
-  const maturity =
-    MATURITY_LEVELS.find((m) => m.id === answers.maturity) ?? MATURITY_LEVELS[2]!;
+  const maturity = MATURITY_LEVELS.find((m) => m.id === answers.maturity) ?? MATURITY_LEVELS[2]!;
 
   const ctx: TaskContext = {
     sector: answers.sector,
@@ -336,13 +331,9 @@ export function diagnose(answers: RoiAnswers): RoiReport {
     totalSavedEurLow: Math.round(totalSavedHoursLow * hourlyCostEur),
     totalSavedEurHigh: Math.round(totalSavedHoursHigh * hourlyCostEur),
     fteRecovered: round1(totalSavedHoursPerYear / ROI_MODEL_CONSTANTS.annualHoursPerFte),
-    daysFreedPerMonth: Math.round(
-      totalSavedHoursPerYear / ROI_MODEL_CONSTANTS.hoursPerDay / 12,
-    ),
+    daysFreedPerMonth: Math.round(totalSavedHoursPerYear / ROI_MODEL_CONSTANTS.hoursPerDay / 12),
     pctOfTeamCapacity:
-      teamCapacityHours > 0
-        ? Math.round((totalSavedHoursPerYear / teamCapacityHours) * 100)
-        : 0,
+      teamCapacityHours > 0 ? Math.round((totalSavedHoursPerYear / teamCapacityHours) * 100) : 0,
     unmeasuredFunctions,
     isEmpty: results.length === 0,
     capacityCapped,

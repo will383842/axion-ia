@@ -99,7 +99,12 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
     period: "mois",
     unitFr: ["document", "documents"],
   },
-  { key: "emails_traites_jour", fn: "administratif", period: "jour", unitFr: ["e-mail", "e-mails"] },
+  {
+    key: "emails_traites_jour",
+    fn: "administratif",
+    period: "jour",
+    unitFr: ["e-mail", "e-mails"],
+  },
   {
     key: "rdv_planifies_semaine",
     fn: "administratif",
@@ -181,7 +186,12 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
     period: "mois",
     unitFr: ["publication", "publications"],
   },
-  { key: "articles_rediges_mois", fn: "marketing", period: "mois", unitFr: ["article", "articles"] },
+  {
+    key: "articles_rediges_mois",
+    fn: "marketing",
+    period: "mois",
+    unitFr: ["article", "articles"],
+  },
 
   // ── RH ───────────────────────────────────────────────────────────────────
   {
@@ -194,7 +204,12 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
   { key: "onboardings_an", fn: "rh", period: "an", unitFr: ["intégration", "intégrations"] },
 
   // ── Finance / direction ──────────────────────────────────────────────────
-  { key: "reportings_produits_mois", fn: "finance", period: "mois", unitFr: ["rapport", "rapports"] },
+  {
+    key: "reportings_produits_mois",
+    fn: "finance",
+    period: "mois",
+    unitFr: ["rapport", "rapports"],
+  },
   {
     key: "rapprochements_mois",
     fn: "finance",
@@ -229,23 +244,24 @@ export const VOLUME_DEFS: readonly VolumeDef[] = [
  * ce sont précisément les fonctions qu'une TPE n'a pas, et les pré-cocher
  * ferait répondre « je ne sais pas » à des questions inutiles.
  */
-export const SECTOR_DEFAULT_FUNCTIONS: Readonly<
-  Record<RoiSectorKey, readonly BusinessFunction[]>
-> = {
-  generique: ["administratif", "commercial", "production"],
-  comptabilite_finance: ["administratif", "production", "finance"],
-  btp_immobilier: ["administratif", "commercial", "production"],
-  restauration_hotellerie: ["administratif", "relation_client"],
-  sante_medecine: ["administratif", "relation_client", "production"],
-  juridique: ["administratif", "production"],
-  commerce_retail: ["administratif", "commercial", "relation_client"],
-  industrie_logistique: ["administratif", "production", "commercial"],
-  artisanat_services: ["administratif", "commercial"],
-  rh_recrutement: ["administratif", "rh", "relation_client"],
-  collectivites_public: ["administratif", "production", "relation_client"],
-};
+export const SECTOR_DEFAULT_FUNCTIONS: Readonly<Record<RoiSectorKey, readonly BusinessFunction[]>> =
+  {
+    generique: ["administratif", "commercial", "production"],
+    comptabilite_finance: ["administratif", "production", "finance"],
+    btp_immobilier: ["administratif", "commercial", "production"],
+    restauration_hotellerie: ["administratif", "relation_client"],
+    sante_medecine: ["administratif", "relation_client", "production"],
+    juridique: ["administratif", "production"],
+    commerce_retail: ["administratif", "commercial", "relation_client"],
+    industrie_logistique: ["administratif", "production", "commercial"],
+    artisanat_services: ["administratif", "commercial"],
+    rh_recrutement: ["administratif", "rh", "relation_client"],
+    collectivites_public: ["administratif", "production", "relation_client"],
+  };
 
-const VOLUME_BY_KEY: ReadonlyMap<VolumeKey, VolumeDef> = new Map(VOLUME_DEFS.map((v) => [v.key, v]));
+const VOLUME_BY_KEY: ReadonlyMap<VolumeKey, VolumeDef> = new Map(
+  VOLUME_DEFS.map((v) => [v.key, v]),
+);
 
 export function getVolumeDef(key: VolumeKey): VolumeDef | undefined {
   return VOLUME_BY_KEY.get(key);
