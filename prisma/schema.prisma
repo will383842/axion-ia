@@ -730,6 +730,13 @@ model Submission {
   contactName        String            @map("contact_name") @db.Text
   contactRole        String?           @map("contact_role") @db.VarChar(100)
   contactEmail       String            @map("contact_email") @db.Citext
+  /// Index de recherche RGPD (2026-08-12). `contact_email` étant chiffré avec
+  /// un IV ALÉATOIRE, aucune égalité SQL n'y est possible : l'export art. 15 et
+  /// l'effacement art. 17 renvoyaient donc VIDE en répondant « succès ».
+  /// HMAC-SHA256 déterministe — helper `src/lib/security/email-hash.ts`.
+  /// Nullable : lignes antérieures au remplissage rétroactif, et remis à NULL
+  /// après effacement pour que la personne redevienne introuvable.
+  contactEmailHash   String?           @map("contact_email_hash") @db.VarChar(64)
   contactPhone       String?           @map("contact_phone") @db.Text
   // Payload form
   details            Json
@@ -793,6 +800,11 @@ model Submission {
   @@index([locale])
   @@index([submittedAt])
   @@index([contactEmail])
+  /// Index de l'empreinte e-mail — c'est LUI que doivent interroger l'export
+  /// (art. 15) et l'effacement (art. 17). `@@index([contactEmail])` ci-dessus
+  /// ne sert plus à rien depuis le chiffrement : il indexe des cryptogrammes
+  /// tous différents.
+  @@index([contactEmailHash])
   // Sprint Notif Infra 2026-05-26 — filtres inbox.
   @@index([needsAttention, archivedAt])
   @@index([lastRepliedAt])
@@ -8583,27 +8595,27 @@ model JobOffer {
   bodyTextEn String @map("body_text_en") @db.Text
 
   // JobPosting / Google for Jobs
-  employmentType String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
-  workMode       JobWorkMode @default(on_site) @map("work_mode")
-  city           String?     @db.VarChar(120)
-  region         String?     @db.VarChar(120)
-  country        String      @default("FR") @db.VarChar(2)
+  employmentType     String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
+  workMode           JobWorkMode @default(on_site) @map("work_mode")
+  city               String?     @db.VarChar(120)
+  region             String?     @db.VarChar(120)
+  country            String      @default("FR") @db.VarChar(2)
   // Zone d'emploi multi-villes (postes itinérants/territoriaux) : tableau JSON de
   // { city, region? } → JobPosting multi-location (visible Google for Jobs dans
   // toutes ces villes depuis UNE annonce, sans pages dupliquées). FR-only.
-  jobLocations   Json?       @map("job_locations")
+  jobLocations       Json?       @map("job_locations")
   // Pays d'où l'on accepte les candidatures (ISO 3166-1 alpha-2) → JobPosting
   // `applicantLocationRequirements`. Vide = France seule (défaut historique).
   // Indispensable pour les missions 100 % à distance ouvertes à la francophonie :
   // Google for Jobs filtre les offres TELECOMMUTE sur le pays du chercheur, donc
   // sans ces codes l'annonce reste invisible hors de France.
-  applicantCountries String[] @default([]) @map("applicant_countries")
-  salaryMin      Int?        @map("salary_min")
-  salaryMax      Int?        @map("salary_max")
-  salaryPeriod   String      @default("YEAR") @map("salary_period") @db.VarChar(10)
-  salaryCurrency String      @default("EUR") @map("salary_currency") @db.VarChar(3)
-  salaryVisible  Boolean     @default(true) @map("salary_visible")
-  isCommission   Boolean     @default(false) @map("is_commission")
+  applicantCountries String[]    @default([]) @map("applicant_countries")
+  salaryMin          Int?        @map("salary_min")
+  salaryMax          Int?        @map("salary_max")
+  salaryPeriod       String      @default("YEAR") @map("salary_period") @db.VarChar(10)
+  salaryCurrency     String      @default("EUR") @map("salary_currency") @db.VarChar(3)
+  salaryVisible      Boolean     @default(true) @map("salary_visible")
+  isCommission       Boolean     @default(false) @map("is_commission")
 
   // Mobilité — n'affiche permis/véhicule sur le formulaire que si true
   requiresDriverLicense Boolean @default(false) @map("requires_driver_license")

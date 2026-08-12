@@ -37,6 +37,7 @@ import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/en
 import { diagnose } from "@/lib/roi/diagnose";
 import { clientSectorLabel } from "@/content/sectors";
 import { HEADCOUNT_BANDS } from "@/content/roi/model/types";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export type RoiReportState =
   // `submissionId` est rendu au client pour qu'il puisse, dans un SECOND temps,
@@ -127,6 +128,7 @@ export async function submitRoiReportAction(
         companyName: data.companyName ?? "—",
         contactName: encryptPii(data.nom),
         contactEmail: encryptPii(data.email),
+        contactEmailHash: hashEmailForLookup(data.email),
         contactPhone: null,
         sector: answers.sector,
         employeesCount: headcountLabel,
