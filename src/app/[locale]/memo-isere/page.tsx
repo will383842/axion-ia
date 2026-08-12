@@ -71,6 +71,26 @@ function showIllustrationSlot(publicRelPath: string): boolean {
 
 const HERO_IMG = "illustrations/memo-isere-hero.avif";
 const TERRAIN_IMG = "illustrations/memo-isere-terrain.avif";
+const SECTEURS_IMG = "illustrations/memo-isere-secteurs.avif";
+const EQUIPE_IMG = "illustrations/memo-isere-equipe.avif";
+
+// Secteurs démarchés — le job = les PME QUEL QUE SOIT le secteur (Will
+// 2026-08-12). Emojis assumés : ambiance fun/sympa demandée, même registre
+// que les perks des pages carrières.
+const SECTEURS = [
+  { emoji: "🥖", label: "Boulangeries & commerces" },
+  { emoji: "🔧", label: "Garages & artisans" },
+  { emoji: "🏗️", label: "BTP & construction" },
+  { emoji: "🏨", label: "Hôtels & restaurants" },
+  { emoji: "🧾", label: "Experts-comptables" },
+  { emoji: "⚖️", label: "Avocats & notaires" },
+  { emoji: "🩺", label: "Santé & paramédical" },
+  { emoji: "🏭", label: "Industrie & ateliers" },
+  { emoji: "🚚", label: "Transport & logistique" },
+  { emoji: "🌾", label: "Agriculture & viticulture" },
+  { emoji: "🏠", label: "Immobilier" },
+  { emoji: "💇", label: "Coiffure & bien-être" },
+] as const;
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -260,6 +280,12 @@ export default async function MemoIserePage({ params }: Props) {
         "Non. On te forme complètement à l'offre (formations, audits, financements) et on te fournit les supports et les argumentaires. Ce qui compte : l'aisance relationnelle et l'envie d'aller voir les entreprises de ta zone.",
     },
     {
+      id: "quelles-entreprises",
+      question: "Quelles entreprises est-ce que je démarche ?",
+      answer:
+        "Les PME et ETI de ta zone d'abord — plus il y a d'équipes à former, plus la vente rapporte — mais aussi les TPE, artisans, commerçants et professions libérales. Quel que soit le secteur d'activité : industrie, BTP, comptabilité, santé, hôtellerie-restauration, transport, agriculture, immobilier, commerce… L'obligation de formation de l'AI Act et le financement OPCO concernent tout le monde.",
+    },
+    {
       id: "pourquoi-ca-se-vend",
       question: "Pourquoi les entreprises achètent-elles ces formations ?",
       answer:
@@ -299,7 +325,7 @@ export default async function MemoIserePage({ params }: Props) {
     "@type": "JobPosting",
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
-      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des entreprises locales. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+      "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI, TPE et artisans locaux, quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre, démarrage en septembre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     datePosted: SITE_EDITORIAL_DATE,
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
@@ -307,7 +333,7 @@ export default async function MemoIserePage({ params }: Props) {
     qualifications:
       "Aisance relationnelle et motivation. Débutants acceptés : formation complète à l'offre IA fournie.",
     responsibilities:
-      "Prospecter les entreprises de sa zone (choisie entre Grenoble, Valence, Die et Lyon), présenter les formations et audits IA, suivre ses ventes et commissions sur un tableau de bord.",
+      "Prospecter les PME, ETI, TPE, artisans et commerçants de sa zone (choisie entre Grenoble, Valence, Die et Lyon), quel que soit leur secteur d'activité ; présenter les formations et audits IA ; suivre ses ventes et commissions sur un tableau de bord.",
     jobBenefits:
       "Statut indépendant, revenus non plafonnés, emploi du temps libre, territoire dédié, supports et argumentaires fournis, accompagnement au démarrage, poste évolutif (responsable de secteur).",
     incentiveCompensation:
@@ -375,9 +401,12 @@ export default async function MemoIserePage({ params }: Props) {
                 </span>
               </h1>
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
-                De Grenoble à Valence, de Die à Lyon : {MEMO_ZONE_TOTAL} communes — et vous
-                choisissez votre zone, elle devient la vôtre tant qu’elle est disponible. L’AI Act
-                rend la formation obligatoire, l’OPCO la finance — vous, vous touchez la commission.
+                Le job : démarcher les <strong>PME et ETI</strong> de ta zone — du cabinet comptable
+                au site industriel, en passant par la boulangerie…{" "}
+                <strong>quel que soit le secteur</strong> — et leur proposer des formations IA que
+                l’AI Act rend obligatoires et que l’OPCO finance. Toi, tu touches la commission. De
+                Grenoble à Valence, de Die à Lyon : {MEMO_ZONE_TOTAL} communes, et tu choisis la
+                tienne.
               </p>
 
               <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -524,7 +553,7 @@ export default async function MemoIserePage({ params }: Props) {
                 Icon: TrendingUp,
                 title: "La demande explose",
                 description:
-                  "Toutes les TPE-PME parlent d'IA — et personne n'est venu les voir sur ta zone, surtout dans les petites communes. Tu arrives premier.",
+                  "Toutes les PME et ETI parlent d'IA — et personne n'est venu les voir sur ta zone, surtout hors des grandes villes. Tu arrives premier.",
                 stat: { figure: "1er", label: "sur ta zone" },
               },
               {
@@ -551,6 +580,51 @@ export default async function MemoIserePage({ params }: Props) {
           <div className="mt-8 text-center">
             <CtaCandidature track="memo-sell-apply" />
           </div>
+        </Container>
+      </Section>
+
+      {/* 3bis ── Tes futurs clients — TOUS les secteurs (Will 2026-08-12 :
+          « démarcher les PME quel que soit le secteur », ambiance fun). */}
+      <Section
+        eyebrow="Tes futurs clients"
+        title="Ton prochain client ? La boulangerie"
+        titleEm="d'en face"
+        titleTail=" — ou l'usine d'à côté"
+        description="PME, ETI, TPE, artisans, commerçants, professions libérales : l'AI Act ne fait pas de tri entre les secteurs, l'OPCO non plus. Des équipes à former, il y en a de 3 à 3 000 salariés — et tu connais déjà la moitié de ces gens."
+      >
+        <Container>
+          <ul
+            className="mx-auto grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4"
+            role="list"
+          >
+            {SECTEURS.map((s) => (
+              <li
+                key={s.label}
+                className="border-border bg-paper shadow-subtle hover:border-terracotta flex items-center gap-3 rounded-2xl border px-4 py-3 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <span aria-hidden="true" className="text-2xl">
+                  {s.emoji}
+                </span>
+                <span className="text-fg text-sm leading-snug font-medium">{s.label}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-fg-muted mx-auto mt-5 max-w-2xl text-center text-sm">
+            … et tous les autres : si une entreprise de ta zone a des équipes et des dossiers à
+            traiter, elle est concernée.
+          </p>
+          {showIllustrationSlot(SECTEURS_IMG) ? (
+            <div className="mx-auto mt-8 max-w-3xl">
+              <Illustration
+                slot="MEMO-03-secteurs"
+                aspectRatio="16:9"
+                filenameTarget={`public/${SECTEURS_IMG}`}
+                {...(illustrationReady(SECTEURS_IMG) ? { src: `/${SECTEURS_IMG}` } : {})}
+                caption="Commerces, ateliers, cabinets : tes clients sont déjà dans ta rue"
+                alt="Rue commerçante d'une petite ville du corridor avec commerces et artisans"
+              />
+            </div>
+          ) : null}
         </Container>
       </Section>
 
@@ -761,6 +835,18 @@ export default async function MemoIserePage({ params }: Props) {
               },
             ]}
           />
+          {showIllustrationSlot(EQUIPE_IMG) ? (
+            <div className="mx-auto mt-8 max-w-3xl">
+              <Illustration
+                slot="MEMO-04-equipe"
+                aspectRatio="16:9"
+                filenameTarget={`public/${EQUIPE_IMG}`}
+                {...(illustrationReady(EQUIPE_IMG) ? { src: `/${EQUIPE_IMG}` } : {})}
+                caption="La formation à l'offre, puis le terrain — accompagné du premier au dernier rendez-vous"
+                alt="Session de préparation entre un commercial et l'équipe Axion-IA"
+              />
+            </div>
+          ) : null}
         </Container>
       </Section>
 
