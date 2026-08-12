@@ -20,7 +20,7 @@ import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
-import { careerImage } from "@/content/careers/careers-images";
+import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import {
@@ -495,6 +495,51 @@ export default async function JobOfferDetailPage({
                 </Link>
               </div>
             </aside>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Parité images/texte (demande Will 2026-08-12) : entre la photo du hero
+          et les vignettes du bas, le corps (~2 500 c.) ne portait AUCUNE image.
+          Deux scènes d'équipe déjà curées du pool carrières — jamais la photo
+          de l'offre elle-même (filtre sur l'URL). */}
+      <Section tone="sand">
+        <Container>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {[
+              {
+                ...CAREERS_HERO,
+                altFr: "Travail d'équipe chez Axion-IA — collaboration sur ordinateurs portables",
+              },
+              {
+                ...careerImage("consultant-ia-generative"),
+                altFr: "Réunion d'équipe autour d'une table, ordinateurs ouverts",
+              },
+              {
+                ...careerImage("formateur-ia-itinerant"),
+                altFr: "Présentation devant une équipe en atelier",
+              },
+            ]
+              .filter((b) => b.url !== img.url)
+              .slice(0, 2)
+              .map((b) => (
+                <figure key={b.url}>
+                  <div className="border-border shadow-card relative aspect-[3/2] overflow-hidden rounded-3xl border">
+                    <Image
+                      src={b.url}
+                      alt={isFr ? b.altFr : b.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <UnsplashCredit
+                    photographerName={b.byName}
+                    photographerUrl={b.byUrl}
+                    className="text-right"
+                  />
+                </figure>
+              ))}
           </div>
         </Container>
       </Section>

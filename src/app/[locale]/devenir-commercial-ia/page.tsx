@@ -28,6 +28,33 @@ import {
 
 export const revalidate = 3600;
 
+// Corridor Grenoble ↔ Valence ↔ Lyon en profondeur (demande Will 2026-08-12) :
+// Google for Jobs classe par proximité, et ces villes moyennes A48/A49/A7 sont
+// le territoire réel des commerciaux. Même liste que `job_locations` des 4
+// offres DB (SQL du même jour) — à faire évoluer ensemble.
+const CORRIDOR_CITIES = [
+  "Échirolles",
+  "Saint-Martin-d'Hères",
+  "Meylan",
+  "Crolles",
+  "Voreppe",
+  "Voiron",
+  "Moirans",
+  "Tullins",
+  "Vinay",
+  "Saint-Marcellin",
+  "Romans-sur-Isère",
+  "Bourg-de-Péage",
+  "Valence",
+  "Tain-l'Hermitage",
+  "Vienne",
+  "Rives",
+  "La Tour-du-Pin",
+  "Bourgoin-Jallieu",
+  "L'Isle-d'Abeau",
+  "Villefontaine",
+] as const;
+
 interface Props {
   params: Promise<{ locale: string }>;
 }
@@ -71,18 +98,29 @@ export default async function DevenirCommercialHub({ params }: Props) {
   // JobPosting MULTI-LIEUX (40 hubs) → Google for Jobs fait remonter l'offre
   // pour chaque ville et ses alentours (par proximité), depuis CETTE page France
   // indexée — sans exposer 40 landing pages quasi-dupliquées (anti-doorway).
-  const hubPlaces = getHubLocations().map((h) => {
-    const regionLabel = getRegion(h.regionSlug)?.nameFr;
-    return {
+  const hubPlaces = [
+    ...getHubLocations().map((h) => {
+      const regionLabel = getRegion(h.regionSlug)?.nameFr;
+      return {
+        "@type": "Place",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: h.nameFr,
+          ...(regionLabel ? { addressRegion: regionLabel } : {}),
+          addressCountry: "FR",
+        },
+      };
+    }),
+    ...CORRIDOR_CITIES.map((city) => ({
       "@type": "Place",
       address: {
         "@type": "PostalAddress",
-        addressLocality: h.nameFr,
-        ...(regionLabel ? { addressRegion: regionLabel } : {}),
+        addressLocality: city,
+        addressRegion: "Auvergne-Rhône-Alpes",
         addressCountry: "FR",
       },
-    };
-  });
+    })),
+  ];
 
   // Pas de validThrough : offre permanente (décision Will 2026-07-03). L'annonce
   // reste active jusqu'à retrait manuel — cohérent avec les offres DB (job-posting.ts).
