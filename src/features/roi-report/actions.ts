@@ -34,6 +34,7 @@ import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
 import { roiCallbackSchema, roiReportRequestSchema } from "@/lib/schemas/roi-report-schema";
 import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/encode";
+import type { RoiSubmissionDetails } from "@/lib/roi/submission-details";
 import { diagnose } from "@/lib/roi/diagnose";
 import { clientSectorLabel } from "@/content/sectors";
 import { HEADCOUNT_BANDS } from "@/content/roi/model/types";
@@ -120,6 +121,28 @@ export async function submitRoiReportAction(
   const sectorLabel =
     answers.sector === "generique" ? "Autre secteur" : clientSectorLabel(answers.sector);
 
+  // Typé par `RoiSubmissionDetails` : ce JSON est lu par l'export CSV de la
+  // console, et Prisma ne contraint pas `details`. Sans ce type, renommer une
+  // clé ici viderait une colonne de l'export en silence.
+  const details: RoiSubmissionDetails = {
+    unifiedType: "simulateur_roi",
+    consentVersion: CONSENT_VERSION,
+    // Le diagnostic encodé permet de rejouer EXACTEMENT le rapport vu par le
+    // prospect — indispensable pour préparer un appel sans lui redemander ce
+    // qu'il vient de saisir.
+    diagnostic: data.diagnostic,
+    reportUrl,
+    maturity: answers.maturity,
+    // Les agrégats sont dupliqués ici pour rester filtrables en console sans
+    // avoir à re-décoder le diagnostic.
+    savedHoursPerYear: report.totalSavedHoursPerYear,
+    savedEurPerYear: report.totalSavedEurPerYear,
+    fteRecovered: report.fteRecovered,
+    topTaskIds: report.topTasks.map((t) => t.task.id),
+    ...(turnstilePassed ? {} : { turnstilePassed: false as const }),
+    ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
+  };
+
   try {
     const submission = await prisma.submission.create({
       data: {
@@ -132,24 +155,7 @@ export async function submitRoiReportAction(
         contactPhone: null,
         sector: answers.sector,
         employeesCount: headcountLabel,
-        details: {
-          unifiedType: "simulateur_roi",
-          consentVersion: CONSENT_VERSION,
-          // Le diagnostic encodé permet de rejouer EXACTEMENT le rapport vu par
-          // le prospect — indispensable pour préparer un appel sans lui
-          // redemander ce qu'il vient de saisir.
-          diagnostic: data.diagnostic,
-          reportUrl,
-          maturity: answers.maturity,
-          // Les agrégats sont dupliqués ici pour rester filtrables en console
-          // sans avoir à re-décoder le diagnostic.
-          savedHoursPerYear: report.totalSavedHoursPerYear,
-          savedEurPerYear: report.totalSavedEurPerYear,
-          fteRecovered: report.fteRecovered,
-          topTaskIds: report.topTasks.map((t) => t.task.id),
-          ...(turnstilePassed ? {} : { turnstilePassed: false }),
-          ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
-        } as object,
+        details: details as object,
         ipAddress: ip,
         ipHash: safeHashIp(ip),
         userAgent,
