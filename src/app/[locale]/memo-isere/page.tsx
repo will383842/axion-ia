@@ -185,7 +185,7 @@ function ReviewCard({ r }: { r: PublicReview }) {
 function CtaCandidature({ track }: { track: string }) {
   return (
     <Cta href="#postuler" size="lg" track={track}>
-      J'envoie ma candidature →
+      J’envoie ma candidature →
     </Cta>
   );
 }
@@ -345,7 +345,7 @@ export default async function MemoIserePage({ params }: Props) {
                   aria-hidden="true"
                   className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
                 />
-                Vu dans Le Mémo de l'Isère · Démarrage septembre
+                Vu dans Le Mémo de l’Isère · Démarrage septembre
               </HeroBadge>
               <h1 className="display-editorial text-fg">
                 Devenez commercial IA{" "}
@@ -358,7 +358,7 @@ export default async function MemoIserePage({ params }: Props) {
               </h1>
               <p data-speakable className="text-fg-soft mt-5 max-w-xl text-lg leading-relaxed">
                 Vendez des formations et audits IA aux entreprises de votre territoire, de
-                Saint-Marcellin à Pont-en-Royans. L'AI Act rend la formation obligatoire, l'OPCO la
+                Saint-Marcellin à Pont-en-Royans. L’AI Act rend la formation obligatoire, l’OPCO la
                 finance — vous, vous touchez la commission.
               </p>
 
@@ -708,12 +708,12 @@ export default async function MemoIserePage({ params }: Props) {
             <div>
               <blockquote className="text-fg-soft text-lg leading-relaxed">
                 « Je forme moi-même les dirigeants et leurs équipes, et je vois la même chose
-                partout : les entreprises veulent passer à l'IA mais personne ne vient les voir. Le
-                Sud-Grésivaudan, c'est chez nous — je cherche des gens du coin qui connaissent leur
-                territoire et qui veulent être payés à la hauteur de ce qu'ils apportent. »
+                partout : les entreprises veulent passer à l’IA mais personne ne vient les voir. Le
+                Sud-Grésivaudan, c’est chez nous — je cherche des gens du coin qui connaissent leur
+                territoire et qui veulent être payés à la hauteur de ce qu’ils apportent. »
               </blockquote>
               <p className="mt-4 font-semibold">Williams Jullin</p>
-              <p className="text-fg-muted text-sm">Fondateur d'Axion-IA · Grenoble</p>
+              <p className="text-fg-muted text-sm">Fondateur d’Axion-IA · Grenoble</p>
             </div>
           </div>
         </Container>
@@ -769,7 +769,7 @@ export default async function MemoIserePage({ params }: Props) {
             ))}
           </ul>
           <p data-speakable className="text-fg-muted mt-5 max-w-2xl text-sm leading-relaxed">
-            Tu habites Tullins, Voiron, Saint-Égrève ou ailleurs à proximité ? La zone s'étend aux
+            Tu habites Tullins, Voiron, Saint-Égrève ou ailleurs à proximité ? La zone s’étend aux
             alentours immédiats — candidate et on regarde ensemble.
           </p>
         </Container>
