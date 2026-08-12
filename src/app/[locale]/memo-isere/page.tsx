@@ -384,7 +384,7 @@ export default async function MemoIserePage({ params }: Props) {
                 {[
                   {
                     label: "Par jour de formation vendu",
-                    value: "500 €",
+                    value: "500 €", // price-exempt: commission recrutement
                   } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   { label: "Plafond de revenus", value: "Aucun" },
                   { label: "Communes au choix", value: String(MEMO_ZONE_TOTAL) },
@@ -470,7 +470,7 @@ export default async function MemoIserePage({ params }: Props) {
               <dl className="grid grid-cols-3 gap-4">
                 {[
                   {
-                    v: "500 €",
+                    v: "500 €", // price-exempt: commission recrutement
                     l: "par jour vendu",
                   } /* price-exempt: commission recrutement */,
                   { v: String(MEMO_ZONE_TOTAL), l: "communes au choix" },
@@ -566,15 +566,15 @@ export default async function MemoIserePage({ params }: Props) {
             {[
               {
                 jours: "5 jours vendus",
-                mois: "2 500 €",
+                mois: "2 500 €", // price-exempt: commission recrutement
               } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
               {
                 jours: "10 jours vendus",
-                mois: "5 000 €",
+                mois: "5 000 €", // price-exempt: commission recrutement
               } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
               {
                 jours: "20 jours vendus",
-                mois: "10 000 €",
+                mois: "10 000 €", // price-exempt: commission recrutement
               } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
             ].map((t, i) => (
               <div
@@ -669,7 +669,7 @@ export default async function MemoIserePage({ params }: Props) {
                   description:
                     "500 € par journée de formation vendue, % sur les audits. Ton tableau de bord suit tes ventes et commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   stat: {
-                    figure: "500 €",
+                    figure: "500 €", // price-exempt: commission recrutement
                     label: "par jour vendu",
                   } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                 },
