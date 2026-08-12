@@ -35,6 +35,15 @@ describe("telegramGroupFor", () => {
     expect(monteur).toEqual(["VIDEO_EDITOR_APPLICATION_RECEIVED"]);
   });
 
+  // Même logique pour le tunnel commercial Mémorial de l'Isère (2026-08-12) :
+  // une campagne de recrutement = un salon, jamais mélangée aux autres.
+  it("🧲 Commercial Mémo : salon dédié, seul", () => {
+    const memo = ALL_NOTIFICATION_CATEGORIES.filter(
+      (c) => telegramGroupFor(c) === "commercial-memo",
+    );
+    expect(memo).toEqual(["COMMERCIAL_APPLICATION_RECEIVED"]);
+  });
+
   it("📰 Presse · 💰 Investisseurs : un groupe chacun", () => {
     expect(telegramGroupFor("PRESS_REQUEST_SUBMITTED")).toBe("presse");
     expect(telegramGroupFor("INVESTOR_INQUIRY_RECEIVED")).toBe("investisseurs");
@@ -86,6 +95,7 @@ describe("telegramGroupFor", () => {
       "calendly",
       "candidatures",
       "monteur-video",
+      "commercial-memo",
       "presse",
       "investisseurs",
       "interventions",
@@ -166,6 +176,22 @@ describe("resolveTelegramTarget", () => {
     expect(resolveTelegramTarget("investisseurs")?.chatId).toBe("-messages");
     // L'avis tombait dans Système : on y retombe, pas dans Messages.
     expect(resolveTelegramTarget("avis")?.chatId).toBe("-systeme");
+  });
+
+  it("🧲 commercial mémo : repli sur Candidatures, salon dédié dès qu'il existe", () => {
+    process.env.TELEGRAM_BOT_TOKEN = "bot-principal";
+    process.env.TELEGRAM_CHAT_ID_CANDIDATURES = "-candidatures";
+    expect(resolveTelegramTarget("commercial-memo")).toEqual({
+      botToken: "bot-principal",
+      chatId: "-candidatures",
+      dedicated: false,
+    });
+    process.env.TELEGRAM_CHAT_ID_COMMERCIAL_MEMO = "-memo";
+    expect(resolveTelegramTarget("commercial-memo")).toEqual({
+      botToken: "bot-principal",
+      chatId: "-memo",
+      dedicated: true,
+    });
   });
 
   it("🎬 monteur vidéo : repli sur Candidatures, salon dédié dès qu'il existe", () => {

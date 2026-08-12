@@ -120,6 +120,12 @@ describe("shouldNotifyWhatsApp", () => {
     expect(shouldNotifyWhatsApp("VIDEO_EDITOR_APPLICATION_RECEIVED")).toBe(true);
   });
 
+  // Même décision pour les candidatures commerciales du tunnel Mémorial de
+  // l'Isère (Will 2026-08-12) : campagne active, catégorie dédiée, en-tête 🧲.
+  it("vrai pour la candidature commerciale (demande Will 2026-08-12)", () => {
+    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(true);
+  });
+
   // 🔴 EXCLUSIONS EXPLICITES — décision de Will du 2026-08-09, pas un oubli.
   // Ce test est là pour ROUGIR si quelqu'un rajoute une de ces catégories en
   // croyant combler un trou. Si le besoin change, il faut le lui redemander et

@@ -35,6 +35,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
   "monteur-video": { emoji: "🎬", label: "MONTEUR VIDÉO" },
+  "commercial-memo": { emoji: "🧲", label: "COMMERCIAL MÉMO" },
   presse: { emoji: "📰", label: "PRESSE" },
   investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
   interventions: { emoji: "🛠️", label: "INTERVENTION" },
@@ -56,6 +57,7 @@ const TITLES: Record<NotificationCategory, string> = {
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
+  COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
@@ -222,6 +224,26 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "COMMERCIAL_APPLICATION_RECEIVED": {
+      // Message COURT par choix : les 6 champs qui permettent de juger la
+      // candidature depuis l'écran verrouillé. Le récap complet (expériences,
+      // pitch, message libre) vit dans l'email interne + la console.
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.contactName),
+        p.ville ? formatKV("Ville", p.ville) : null,
+        p.zone ? formatKV("Zone souhaitée", p.zone) : null,
+        p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
+        p.availability ? formatKV("Disponible", p.availability) : null,
+        formatKV("Utilise l'IA", p.usesAi ? "oui" : "non"),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}`,
         ),
       ]
         .filter((v): v is string => v !== null)

@@ -151,6 +151,30 @@ export type NotificationEvent =
       };
     }
   | {
+      // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
+      // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
+      // autres candidatures : salon Telegram dédié 🧲 + doublon WhatsApp, comme
+      // le monteur vidéo. Message volontairement COURT : les 6 champs qui
+      // permettent de juger depuis le téléphone, le reste vit en console.
+      category: "COMMERCIAL_APPLICATION_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        ville?: string;
+        /** Zone souhaitée (labels lisibles) ou « Mobile — peu importe ». */
+        zone?: string;
+        /** Années d'expérience B2B (« 3-5 ans ») ou « aucune ». */
+        b2bYears?: string;
+        /** Disponibilité annoncée (« septembre 2026 »). */
+        availability?: string;
+        /** Utilise déjà l'IA au quotidien. */
+        usesAi: boolean;
+        locale: "fr" | "en";
+      };
+    }
+  | {
       category: "REVIEW_SUBMITTED";
       payload: {
         reviewId: string;

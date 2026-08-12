@@ -26,6 +26,7 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   REVIEW_SUBMITTED: { channels: ["telegram"], severity: "info" },
   // Demande de tournage podcast (2026-07-21) — lead entrant, Telegram groupe
   // « Messages ». `rateLimitPerHour` volontairement absent : le volume attendu
@@ -108,6 +109,7 @@ export type TelegramGroup =
   | "calendly"
   | "candidatures"
   | "monteur-video"
+  | "commercial-memo"
   | "presse"
   | "investisseurs"
   | "interventions"
@@ -141,6 +143,12 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // seule, pas mélangée avec les autres offres »). Le tri par offre se fait au
   // call-site (`videoEditorNotificationCategory`), pas ici.
   VIDEO_EDITOR_APPLICATION_RECEIVED: "monteur-video",
+
+  // 🧲 Commercial Mémo — les candidatures commerciales du tunnel sans CV
+  // `/devenir-commercial-ia/candidature` (annonce Mémorial de l'Isère) SEULEMENT,
+  // dans leur propre salon (même logique que le monteur vidéo : une campagne de
+  // recrutement = un fil, jamais mélangée aux autres candidatures).
+  COMMERCIAL_APPLICATION_RECEIVED: "commercial-memo",
 
   // 📰 Presse
   PRESS_REQUEST_SUBMITTED: "presse",
@@ -255,6 +263,11 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // CallMeBot = un seul fil → la séparation passe par l'en-tête 🎬 MONTEUR VIDÉO.
   "VIDEO_EDITOR_APPLICATION_RECEIVED",
 
+  // 🧲 Candidatures commerciales (tunnel Mémorial de l'Isère) — même décision
+  // que le monteur vidéo (Will 2026-08-12) : campagne active à fort enjeu, le
+  // doublon WhatsApp est voulu. Séparation par l'en-tête 🧲 COMMERCIAL MÉMO.
+  "COMMERCIAL_APPLICATION_RECEIVED",
+
   // ── HORS WhatsApp, sur décision explicite de Will (2026-08-09) ─────────────
   // Ne pas les remettre sans le lui redemander — leur absence est un CHOIX, pas
   // un oubli, et `__tests__/whatsapp.test.ts` la verrouille explicitement.
@@ -284,6 +297,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   calendly: "TELEGRAM_CHAT_ID_CALENDLY",
   candidatures: "TELEGRAM_CHAT_ID_CANDIDATURES",
   "monteur-video": "TELEGRAM_CHAT_ID_MONTEUR_VIDEO",
+  "commercial-memo": "TELEGRAM_CHAT_ID_COMMERCIAL_MEMO",
   presse: "TELEGRAM_CHAT_ID_PRESSE",
   investisseurs: "TELEGRAM_CHAT_ID_INVESTISSEURS",
   interventions: "TELEGRAM_CHAT_ID_INTERVENTIONS",
@@ -307,6 +321,13 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   // Tant que Will n'a pas créé le salon dédié, ces candidatures retombent dans
   // 💼 Candidatures — exactement là où elles arrivaient avant cette séparation.
   "monteur-video": [
+    "TELEGRAM_CHAT_ID_CANDIDATURES",
+    "TELEGRAM_CHAT_ID_MESSAGES",
+    "TELEGRAM_CHAT_ID",
+  ],
+  // Même repli que le monteur vidéo : tant que le salon 🧲 n'existe pas, ces
+  // candidatures retombent dans 💼 Candidatures — rien ne se perd.
+  "commercial-memo": [
     "TELEGRAM_CHAT_ID_CANDIDATURES",
     "TELEGRAM_CHAT_ID_MESSAGES",
     "TELEGRAM_CHAT_ID",
