@@ -51,12 +51,17 @@ export type RoiReportRequest = z.infer<typeof roiReportRequestSchema>;
  */
 export const roiCallbackSchema = z.object({
   submissionId: z.string().uuid("Référence invalide."),
+  // La règle porte sur ce qui compte — le NOMBRE DE CHIFFRES — et non sur la
+  // position des séparateurs. Une expression positionnelle rejetait
+  // « (06) 12345678 » au seul motif qu'il commence par une parenthèse : rien
+  // qui justifie de jeter un numéro que quelqu'un vient d'accepter de donner.
   telephone: z
     .string()
     .trim()
     .min(8, "Numéro trop court.")
     .max(30, "Numéro trop long.")
-    .regex(/^[+0-9][\s0-9()\-.]{6,28}$/, "Ce numéro semble incorrect."),
+    .regex(/^[+\d(][\d\s()\-.+]*$/, "Ce numéro semble incorrect.")
+    .refine((v) => (v.match(/\d/g) ?? []).length >= 8, "Ce numéro semble trop court."),
 });
 
 export type RoiCallbackRequest = z.infer<typeof roiCallbackSchema>;
