@@ -31,6 +31,8 @@ import { FAQ_IMAGES } from "@/content/faq/faq-images";
 import { FAQ_CATEGORIES } from "@/content/faq-categories";
 
 /** Emplacement de rendu de l'image sur la page (pour que la page filtre son manifeste). */
+import { HOME_IMAGES } from "@/content/home/home-images";
+
 export type PageImageSlot =
   | "grid" // grille de photos illustratives
   | "banner" // bandeau full-bleed / quadriptyque
@@ -136,6 +138,24 @@ const FAQ_PAGE_IMAGES: readonly PageImagesManifest[] = [
 // ---------------------------------------------------------------------------
 // Ordonné par pilier. Chaque entrée = une route RÉELLE de l'App Router.
 
+// ===== Accueil — bandes média des blocs « Ce qui nous distingue » / « Pour qui »
+// Photos Unsplash curées en AVIF local (16:9 1600×900). Les alternatives
+// viennent du SSOT `home-images.ts` : une re-curation ne peut pas les
+// désynchroniser du rendu. Crédits photographes rendus sous chaque grille.
+function homeManifestImage(slot: string, nameFr: string, nameEn: string): PageImage {
+  const img = HOME_IMAGES[slot]!;
+  return {
+    src: img.src,
+    nameFr,
+    nameEn,
+    altFr: img.altFr,
+    altEn: img.altEn,
+    width: img.width,
+    height: img.height,
+    slot: "grid",
+  };
+}
+
 export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   // ===== Cas concrets (index / listing) =====
   // Images SEO-only (pas rendues en <Image> sur la page : le héro affiche des
@@ -147,6 +167,18 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   {
     path: "/cas-concrets",
     images: [
+      {
+        src: "/illustrations/cas-concrets-mid-1.avif",
+        nameFr: "Cas concrets Axion-IA — chaque mission, sa preuve opérationnelle",
+        nameEn: "Axion-IA case studies — each engagement with its operational proof",
+        altFr:
+          "Une courbe de progression tracée à la main sur du papier quadrillé, règle et stylo posés à côté — image des cas concrets clients Axion-IA.",
+        altEn:
+          "A growth curve hand-drawn on graph paper with a ruler and pen beside it — illustrating Axion-IA client case studies.",
+        width: 1600,
+        height: 900,
+        slot: "inline",
+      },
       {
         src: "/illustrations/home-bandeau-team.avif",
         nameFr: "Équipe Axion-IA — proof social cas clients IA",
@@ -1291,6 +1323,56 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   {
     path: "/",
     images: [
+      homeManifestImage(
+        "why-01-aucun-intermediaire",
+        "Travailler sans intermédiaire avec un intervenant senior Axion-IA",
+        "Working directly with a senior Axion-IA consultant",
+      ),
+      homeManifestImage(
+        "why-02-cinq-metiers",
+        "Cinq métiers IA réunis dans une seule équipe — Axion-IA",
+        "Five AI disciplines under one roof — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-03-couverture",
+        "Couverture France entière — 13 régions et 5 DROM — Axion-IA",
+        "Nationwide French coverage — 13 régions and 5 DROM — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-04-meme-expert",
+        "Le même expert du cadrage à la livraison — Axion-IA",
+        "The same expert from scoping to delivery — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-05-votre-rythme",
+        "Un accompagnement IA au rythme de l'entreprise — Axion-IA",
+        "AI support at the company's own pace — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-06-meme-exigence",
+        "La même exigence pour l'artisan et le grand groupe — Axion-IA",
+        "The same standard for the craftsman and the large group — Axion-IA",
+      ),
+      homeManifestImage(
+        "audience-01-tpe",
+        "IA pour les TPE et artisans (1 à 9 salariés) — Axion-IA",
+        "AI for micro-businesses and craftsmen (1 to 9 employees) — Axion-IA",
+      ),
+      homeManifestImage(
+        "audience-02-pme",
+        "IA pour les PME (10 à 249 salariés) — Axion-IA",
+        "AI for small and medium businesses (10 to 249 employees) — Axion-IA",
+      ),
+      homeManifestImage(
+        "audience-03-eti",
+        "IA pour les ETI (250 à 4 999 salariés) — Axion-IA",
+        "AI for mid-cap companies (250 to 4,999 employees) — Axion-IA",
+      ),
+      homeManifestImage(
+        "audience-04-grands-comptes",
+        "IA pour les grands comptes (5 000 salariés et plus) — Axion-IA",
+        "AI for large accounts (5,000+ employees) — Axion-IA",
+      ),
       {
         src: "/illustrations/home-hero-equipe.avif",
         nameFr: "L'équipe Axion-IA — cabinet IA pour entreprises",
@@ -1453,6 +1535,119 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   },
   ...SECTOR_PAGE_IMAGES,
   ...FAQ_PAGE_IMAGES,
+  // ===== Methodologie — bandes editoriales (photos Unsplash curees) =====
+  {
+    path: "/methodologie",
+    images: [
+      {
+        src: "/illustrations/methodologie-demarche.avif",
+        nameFr: "Méthodologie Axion-IA — quatre temps, un livrable par étape",
+        nameEn: "Axion-IA methodology — four phases, one deliverable per step",
+        altFr:
+          "Une équipe travaille devant un tableau blanc couvert de notes de cadrage, illustrant les quatre temps de la méthodologie Axion-IA.",
+        altEn:
+          "A team working at a whiteboard covered with scoping notes, illustrating the four phases of the Axion-IA methodology.",
+        width: 1600,
+        height: 900,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/methodologie-terrain.avif",
+        nameFr: "La méthode Axion-IA se joue sur le terrain, chez le client",
+        nameEn: "The Axion-IA method plays out on the client's own ground",
+        altFr:
+          "Un intervenant échange avec deux salariés autour d'un poste de travail : la méthode Axion-IA s'applique sur les dossiers réels de l'entreprise.",
+        altEn:
+          "A consultant talking with two employees around a workstation: the Axion-IA method is applied to the company's real files.",
+        width: 1600,
+        height: 900,
+        slot: "inline",
+      },
+    ],
+  },
+  {
+    path: "/centre-aide",
+    images: [
+      {
+        src: "/illustrations/centre-aide-hero.avif",
+        nameFr: "Centre d'aide Axion-IA — les réponses rangées comme dans un manuel",
+        nameEn: "Axion-IA help centre — answers organised like a manual",
+        altFr:
+          "Rayonnages d'une bibliothèque garnie de livres, éclairés à la lumière du jour — image du centre d'aide Axion-IA.",
+        altEn:
+          "Library shelves filled with books lit by daylight — image of the Axion-IA help centre.",
+        width: 1600,
+        height: 900,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+    ],
+  },
+  {
+    path: "/comparaisons",
+    images: [
+      {
+        src: "/illustrations/comparaisons-mid-1.avif",
+        nameFr: "Comparatifs IA Axion-IA — arbitrer entre ROI et complexité",
+        nameEn: "Axion-IA AI comparisons — weighing ROI against complexity",
+        altFr:
+          "Un intervenant trace un schéma au feutre sur un tableau blanc — image des comparatifs IA d'Axion-IA.",
+        altEn:
+          "A consultant drawing a diagram in marker pen on a whiteboard — illustrating Axion-IA's AI comparisons.",
+        width: 1200,
+        height: 1200,
+        slot: "inline",
+      },
+    ],
+  },
+  {
+    path: "/stack-ia",
+    images: [
+      {
+        src: "/illustrations/stack-ia-closing.avif",
+        nameFr: "Stack IA Axion-IA — des outils rangés, prêts à servir",
+        nameEn: "Axion-IA AI stack — tools kept in order, ready to use",
+        altFr:
+          "Outils rangés sur un établi d'atelier, image de la stack IA opérationnelle proposée par Axion-IA.",
+        altEn:
+          "Tools arranged on a workshop bench, illustrating the operational AI stack proposed by Axion-IA.",
+        width: 1600,
+        height: 900,
+        slot: "inline",
+      },
+    ],
+  },
+  {
+    path: "/guide-ia",
+    images: [
+      {
+        src: "/illustrations/guide-ia-hero.avif",
+        nameFr: "Guide IA Axion-IA — un manuel opérationnel pour dirigeants",
+        nameEn: "Axion-IA AI guide — an operational manual for executives",
+        altFr:
+          "Un livre ouvert posé sur une table claire, image du guide IA opérationnel publié par Axion-IA.",
+        altEn:
+          "An open book resting on a light-coloured table, illustrating the operational AI guide published by Axion-IA.",
+        width: 1600,
+        height: 900,
+        representativeOfPage: true,
+        slot: "hero",
+      },
+      {
+        src: "/illustrations/guide-ia-closing.avif",
+        nameFr: "Du guide IA à l'application concrète en entreprise",
+        nameEn: "From the AI guide to concrete application in the company",
+        altFr:
+          "Des mains tournent la page d'un livre ouvert : passer de la lecture du guide IA à son application dans l'entreprise.",
+        altEn:
+          "Hands turning the page of an open book: moving from reading the AI guide to applying it in the company.",
+        width: 1600,
+        height: 900,
+        slot: "inline",
+      },
+    ],
+  },
 ];
 
 // ---------------------------------------------------------------------------

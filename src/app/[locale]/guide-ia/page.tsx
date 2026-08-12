@@ -11,6 +11,7 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { NewsletterForm } from "@/components/forms/NewsletterForm";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 
@@ -157,6 +158,7 @@ export default async function AiGuidePage({ params }: Props) {
             slot="GUIDE-01-hero"
             aspectRatio="16:9"
             filenameTarget="public/illustrations/guide-ia-hero.avif"
+            src="/illustrations/guide-ia-hero.avif"
             caption={
               isFr
                 ? "Couverture éditoriale — livre opérationnel ouvert sur table claire"
@@ -164,11 +166,12 @@ export default async function AiGuidePage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une couverture de livre opérationnel ouverte, symbole du guide IA Axion-IA 40 pages."
-                : "Editorial illustration of an open operational book cover, symbol of the 40-page Axion-IA AI guide."
+                ? "Un livre ouvert posé sur une table claire."
+                : "An open book resting on a light-coloured table."
             }
             priority
           />
+          <EditorialPhotoCredit slot="guide-ia-hero" />
         </Container>
       </Section>
 
@@ -300,6 +303,7 @@ export default async function AiGuidePage({ params }: Props) {
             slot="GUIDE-03-closing"
             aspectRatio="16:9"
             filenameTarget="public/illustrations/guide-ia-closing.avif"
+            src="/illustrations/guide-ia-closing.avif"
             caption={
               isFr
                 ? "Page tournée — passer du guide à l'application concrète"
@@ -307,10 +311,11 @@ export default async function AiGuidePage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'une page de livre tournée, symbole du passage du guide à l'application IA concrète."
-                : "Editorial illustration of a turning book page, symbolizing the move from guide to concrete AI application."
+                ? "Des mains tournent la page d'un livre ouvert."
+                : "Hands turning the page of an open book."
             }
           />
+          <EditorialPhotoCredit slot="guide-ia-closing" />
         </Container>
       </Section>
 
