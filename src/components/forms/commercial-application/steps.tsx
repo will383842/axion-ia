@@ -624,9 +624,16 @@ export function StepZone({ a, set, errors }: StepProps) {
           />
           <input
             id="ca-zone-recherche"
+            type="search"
             className={cn(FIELD_CLASS, "pl-11")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            // La touche « Rechercher » du clavier mobile (Enter) déclencherait
+            // la soumission implicite du form → avance d'écran surprise. On la
+            // neutralise : ici, Enter ne doit que filtrer, jamais naviguer.
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.preventDefault();
+            }}
             placeholder="Isère, 38, Drôme…"
             autoComplete="off"
           />
