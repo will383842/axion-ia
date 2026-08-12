@@ -172,9 +172,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Cas concrets Axion-IA — chaque mission, sa preuve opérationnelle",
         nameEn: "Axion-IA case studies — each engagement with its operational proof",
         altFr:
-          "Vue en plongée d'un plan de travail où sont disposés des outils et un carnet, image des cas concrets clients Axion-IA.",
+          "Une courbe de progression tracée à la main sur du papier quadrillé, règle et stylo posés à côté — image des cas concrets clients Axion-IA.",
         altEn:
-          "Overhead view of a workspace laid out with tools and a notebook, illustrating Axion-IA client case studies.",
+          "A growth curve hand-drawn on graph paper with a ruler and pen beside it — illustrating Axion-IA client case studies.",
         width: 1600,
         height: 900,
         slot: "inline",
@@ -1592,9 +1592,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Comparatifs IA Axion-IA — arbitrer entre ROI et complexité",
         nameEn: "Axion-IA AI comparisons — weighing ROI against complexity",
         altFr:
-          "Notes autocollantes alignées sur un mur pour comparer des options, image des comparatifs IA d'Axion-IA.",
+          "Un intervenant trace un schéma au feutre sur un tableau blanc — image des comparatifs IA d'Axion-IA.",
         altEn:
-          "Sticky notes lined up on a wall to compare options, illustrating Axion-IA's AI comparisons.",
+          "A consultant drawing a diagram in marker pen on a whiteboard — illustrating Axion-IA's AI comparisons.",
         width: 1200,
         height: 1200,
         slot: "inline",

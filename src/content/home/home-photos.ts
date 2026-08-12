@@ -72,11 +72,11 @@ export const HOME_PHOTO_CREDITS: Record<string, HomePhotoCredit> = {
   },
   "audience-01-tpe": {
     slot: "audience-01-tpe",
-    photoId: "bdO_mCH27dE",
-    photographer: "Giovanni Simonicca",
-    photographerUrl: "https://unsplash.com/@joexcam",
-    photoUrl: "https://unsplash.com/photos/bdO_mCH27dE",
-    alt: "Two men working at olivier's bakery stall with baked goods.",
+    photoId: "IxgPCAUSaOM",
+    photographer: "Remy  Baudouin",
+    photographerUrl: "https://unsplash.com/@philmouss",
+    photoUrl: "https://unsplash.com/photos/IxgPCAUSaOM",
+    alt: "woman leaning on pink desk",
   },
   "audience-02-pme": {
     slot: "audience-02-pme",
@@ -96,11 +96,11 @@ export const HOME_PHOTO_CREDITS: Record<string, HomePhotoCredit> = {
   },
   "audience-04-grands-comptes": {
     slot: "audience-04-grands-comptes",
-    photoId: "KatP61RjRT0",
-    photographer: "DM David",
-    photographerUrl: "https://unsplash.com/@dm_david",
-    photoUrl: "https://unsplash.com/photos/KatP61RjRT0",
-    alt: "Modern glass building against a clear blue sky.",
+    photoId: "HR7PVFL20N0",
+    photographer: "JIRAN FAMILY",
+    photographerUrl: "https://unsplash.com/@jiranfamily",
+    photoUrl: "https://unsplash.com/photos/HR7PVFL20N0",
+    alt: "a white couch sitting in a living room next to a plant",
   },
 } as const;
 

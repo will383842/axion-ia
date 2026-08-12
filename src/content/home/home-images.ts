@@ -61,8 +61,8 @@ export const HOME_IMAGES: Record<string, HomeImage> = {
   ),
   "audience-01-tpe": img(
     "audience-01-tpe",
-    "Un artisan derrière le comptoir de son commerce",
-    "A craftsman behind the counter of their shop",
+    "Une commerçante dans sa boutique, entourée de ses articles",
+    "A shopkeeper in her store, surrounded by her products",
   ),
   "audience-02-pme": img(
     "audience-02-pme",
@@ -76,8 +76,8 @@ export const HOME_IMAGES: Record<string, HomeImage> = {
   ),
   "audience-04-grands-comptes": img(
     "audience-04-grands-comptes",
-    "Façade vitrée d'un immeuble de bureaux dans un quartier d'affaires",
-    "Glass facade of an office building in a business district",
+    "Le hall d'accueil lumineux d'un immeuble de bureaux",
+    "The bright reception hall of an office building",
   ),
 } as const;
 

@@ -189,8 +189,8 @@ export default async function ComparisonsListPage({ params }: Props) {
               }
               alt={
                 isFr
-                  ? "Notes autocollantes alignées sur un mur pour comparer des options."
-                  : "Sticky notes lined up on a wall to compare options."
+                  ? "Un intervenant trace un schéma au feutre sur un tableau blanc."
+                  : "A consultant drawing a diagram in marker pen on a whiteboard."
               }
             />
             <EditorialPhotoCredit slot="comparaisons-mid-1" />

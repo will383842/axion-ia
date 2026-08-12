@@ -178,7 +178,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Do you work in regional cities (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…)?",
       answer:
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Travel costs included.",
+        // « Travel costs included » a ete retire le 2026-08-12 : c'etait la SEULE
+        // surface du site a l'affirmer, et elle contredisait la doctrine tenue
+        // partout ailleurs (frais de deplacement factures en sus, sur une ligne
+        // distincte du devis). Ne pas le reintroduire.
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
     },
   },
   {

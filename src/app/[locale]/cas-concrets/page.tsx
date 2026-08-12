@@ -356,8 +356,8 @@ export default async function CaseStudiesListing({ params }: Props) {
             }
             alt={
               isFr
-                ? "Vue en plongée d'un plan de travail où sont disposés des outils et un carnet."
-                : "Overhead view of a workspace laid out with tools and a notebook."
+                ? "Une courbe de progression tracée à la main sur du papier quadrillé, règle et stylo posés à côté."
+                : "A growth curve hand-drawn on graph paper, with a ruler and pen beside it."
             }
           />
           <EditorialPhotoCredit slot="cas-concrets-mid-1" />
