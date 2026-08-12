@@ -3824,6 +3824,74 @@ model WebVitalSample {
   @@map("web_vital_samples")
 }
 
+/// Événement de tunnel d'acquisition (simulateur de gains, pages
+/// d'atterrissage publicitaires).
+///
+/// ── Pourquoi une table plutôt que Plausible seul ──────────────────────────
+/// Plausible donne des totaux par événement. Il ne permet pas de reconstituer
+/// un PARCOURS : savoir que 100 visiteurs ont démarré et 30 terminé ne dit pas
+/// à quel écran les 70 autres sont partis, ni si ceux qui décrochent viennent
+/// d'une campagne précise. C'est pourtant la seule information qui indique
+/// quoi corriger. Le chaînage par `sessionId` le permet ici.
+///
+/// ── Ce que cette table ne contient JAMAIS ─────────────────────────────────
+/// Aucune donnée nominative, aucune adresse IP (même hachée), aucun montant
+/// exact — seulement des tranches. Le montant exact, croisé au secteur et à
+/// l'effectif, réidentifierait une entreprise. `sessionId` est ÉPHÉMÈRE
+/// (`sessionStorage` du navigateur, jamais un cookie) : il disparaît à la
+/// fermeture de l'onglet et ne suit personne d'un site à l'autre.
+///
+/// Cette combinaison — première partie, finalité unique, pas de recoupement,
+/// rétention bornée — est ce qui range la mesure sous l'exemption de
+/// consentement de la CNIL pour la mesure d'audience. Y ajouter une donnée
+/// identifiante ferait tomber l'exemption et exigerait une bannière : les
+/// pages de tunnel n'en ont volontairement pas.
+model FunnelEvent {
+  id String @id @default(cuid())
+
+  /// Tunnel concerné : `simulateur`, `diagnostic`.
+  funnel String @db.VarChar(40)
+  /// Nom d'événement, aligné sur le type `FunnelEvent` de `src/lib/tracking.ts`.
+  event  String @db.VarChar(48)
+
+  /// Identifiant de session éphémère — permet de chaîner un parcours, pas
+  /// d'identifier une personne.
+  sessionId String @map("session_id") @db.VarChar(64)
+
+  locale     String? @db.VarChar(10)
+  route      String? @db.VarChar(255)
+  deviceType String? @map("device_type") @db.VarChar(10)
+
+  /// Écran atteint, et son rang : c'est ce qui donne la courbe d'abandon.
+  step      String? @db.VarChar(60)
+  stepIndex Int?    @map("step_index")
+  stepTotal Int?    @map("step_total")
+
+  /// Caractéristiques déclarées de l'entreprise, jamais nominatives.
+  sector    String? @db.VarChar(60)
+  headcount String? @db.VarChar(40)
+
+  /// Tranche de gain estimé — jamais le montant exact.
+  gainBucket String? @map("gain_bucket") @db.VarChar(20)
+
+  /// Attribution publicitaire, relue côté serveur depuis le cookie UTM.
+  utmSource   String? @map("utm_source") @db.VarChar(80)
+  utmMedium   String? @map("utm_medium") @db.VarChar(80)
+  utmCampaign String? @map("utm_campaign") @db.VarChar(120)
+
+  /// Page d'atterrissage et emplacement du bouton, pour comparer les variantes.
+  landing   String? @db.VarChar(60)
+  placement String? @db.VarChar(40)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([funnel, event, createdAt(sort: Desc)])
+  @@index([sessionId])
+  /// Sert la purge de rétention, qui balaie par date.
+  @@index([createdAt])
+  @@map("funnel_events")
+}
+
 /// Ledger de coût atomique par appel provider. Source de vérité cost cap.
 model CostLedger {
   id           String      @id @default(cuid())

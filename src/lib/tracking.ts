@@ -8,6 +8,7 @@
 //   - Doctrine privacy-first : pas de PII dans les props (juste IDs/buckets)
 
 import { trackEvent } from "@/lib/analytics/plausible-tracker";
+import { sendFunnelBeacon } from "@/lib/analytics/funnel-beacon";
 
 /**
  * Événements funnel V1. Tout nouvel événement DOIT être ajouté ici (et pas
@@ -133,6 +134,16 @@ export function trackFunnel(event: FunnelEvent, props: FunnelProps = {}): void {
     if (typeof v === "string" || typeof v === "number") cleaned[k] = v;
   }
   trackEvent(event, Object.keys(cleaned).length > 0 ? { props: cleaned } : undefined);
+
+  // Miroir serveur pour les seuls événements d'acquisition (cf.
+  // `FUNNEL_EVENT_NAMES`) : Plausible donne des totaux, la base donne le
+  // PARCOURS — donc l'écran exact où les visiteurs décrochent. Le branchement
+  // est ici, et non dans chaque composant, pour qu'aucun appelant n'ait à
+  // penser à la mesure : tout événement déjà suivi l'est des deux côtés.
+  //
+  // `sendFunnelBeacon` ne lève jamais et écarte de lui-même les événements non
+  // journalisés ainsi que les pages hors tunnel.
+  sendFunnelBeacon(event, props);
 }
 
 /**
