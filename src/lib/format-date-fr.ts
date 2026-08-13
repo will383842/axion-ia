@@ -47,6 +47,23 @@ export function formatDateFrShort(d: Date | string | null | undefined): string {
   return FORMATTER_FR_DATE.format(date);
 }
 
+const FORMATTER_FR_TIME = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+/**
+ * "16:23" — heure seule, pour les listes qui séparent date et heure en deux
+ * colonnes (boîte de réception messages).
+ */
+export function formatTimeFr(d: Date | string | null | undefined): string {
+  if (d === null || d === undefined) return "—";
+  const date = typeof d === "string" ? new Date(d) : d;
+  if (Number.isNaN(date.getTime())) return "—";
+  return FORMATTER_FR_TIME.format(date);
+}
+
 /**
  * "il y a 2 j" / "il y a 3 h" / "à l'instant".
  */
