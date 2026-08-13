@@ -33,6 +33,7 @@
 export type AdminNavGroup =
   | "main"
   | "contacts"
+  | "tunnels"
   | "content"
   | "content_gen"
   | "qualiopi"
@@ -142,6 +143,7 @@ export interface AdminNavItem {
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
   main: "Activité quotidienne",
   contacts: "Boîte de réception",
+  tunnels: "Tunnels",
   content: "Contenu",
   content_gen: "Génération de contenu",
   // Renommé le 2026-08-01 (question Will : « pourquoi l'activité audit IA est
@@ -287,6 +289,7 @@ export const GROUP_POLE_LABELS: Partial<Record<AdminNavGroup, Readonly<Record<st
 export const ADMIN_NAV_GROUP_ORDER: ReadonlyArray<AdminNavGroup> = [
   "main",
   "contacts",
+  "tunnels",
   "content",
   "content_gen",
   "qualiopi",
@@ -443,6 +446,28 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Demandes de podcast",
       icon: "Mic",
       group: "contacts",
+    },
+    // ── Tunnels d'acquisition (2026-08-12) ────────────────────────────
+    // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre
+    // les gens qui ONT écrit, celui-ci montre ceux qu'on a PERDUS en route.
+    // C'est la seule lecture qui dise quoi corriger sur les pages.
+    {
+      href: `${base}/tunnels`,
+      label: "Vue d'ensemble",
+      icon: "Funnel",
+      group: "tunnels",
+    },
+    {
+      href: `${base}/tunnels/prospects`,
+      label: "Tunnel de prospects",
+      icon: "UserSearch",
+      group: "tunnels",
+    },
+    {
+      href: `${base}/tunnels/vente`,
+      label: "Tunnel de vente",
+      icon: "Coins",
+      group: "tunnels",
     },
     // ▸ Vues filtrées de « Messages » — hors sidebar (cf. bloc ci-dessus),
     //   conservées pour ⌘K, les favoris et les breadcrumbs.

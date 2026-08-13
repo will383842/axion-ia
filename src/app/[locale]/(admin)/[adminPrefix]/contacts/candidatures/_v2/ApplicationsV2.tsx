@@ -13,6 +13,7 @@ import {
   AdminEmptyState,
   AdminButton,
   AdminEtatBooleen,
+  AdminFilterTabs,
   AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
@@ -56,6 +57,10 @@ export function ApplicationsV2({
   totalPages,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
+  // Flux séparés (demande Will 2026-08-12) : l'offre monteur vidéo freelance a
+  // son propre onglet ; la vue standard ne la montre jamais.
+  const view = sp["view"] === "monteur" ? "monteur" : "standard";
+  const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
   const columns: ReadonlyArray<AdminTableColumn<JobApplicationListItem>> = [
     { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },
     {
@@ -90,13 +95,23 @@ export function ApplicationsV2({
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title="Candidatures emploi"
+        title={view === "monteur" ? "Candidatures — Monteur vidéo" : "Candidatures emploi"}
         description={`${total} candidature${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
+      />
+
+      <AdminFilterTabs
+        className="mb-[var(--space-admin-5)]"
+        current={view}
+        options={[
+          { value: "standard", label: "Autres offres", href: baseHref },
+          { value: "monteur", label: "Monteur vidéo", href: `${baseHref}?view=monteur` },
+        ]}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
           {offerId ? <input type="hidden" name="offerId" value={offerId} /> : null}
+          {view === "monteur" ? <input type="hidden" name="view" value="monteur" /> : null}
           <div className="admin-filters-grid">
             <div className="admin-field">
               <label htmlFor="status" className="admin-label">
@@ -135,7 +150,10 @@ export function ApplicationsV2({
             <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
-            <Link href={`/fr/${adminPrefix}/contacts/candidatures`} className="admin-button-ghost">
+            <Link
+              href={view === "monteur" ? `${baseHref}?view=monteur` : baseHref}
+              className="admin-button-ghost"
+            >
               Réinitialiser
             </Link>
           </div>
@@ -176,6 +194,7 @@ export function ApplicationsV2({
           status: sp["status"],
           offerId: sp["offerId"],
           attention: sp["attention"],
+          view: view === "monteur" ? "monteur" : undefined,
         }}
       />
     </AdminPageShell>

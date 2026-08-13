@@ -23,6 +23,8 @@ export async function GET(): Promise<Response> {
   const entries: Array<{ path: string; priority: string; freq: string }> = [
     { path: "/devenir-commercial-ia", priority: "0.9", freq: "weekly" },
     { path: "/devenir-commercial-ia/candidature", priority: "0.7", freq: "monthly" },
+    // Landing presse « Le Mémo de l'Isère » — recrutement Sud-Grésivaudan (2026-08-12).
+    { path: "/memo-isere", priority: "0.9", freq: "weekly" },
   ];
 
   const urls = entries

@@ -405,7 +405,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         ...durationSummary("essentielle", "fr"),
         price: `à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_FR,
-        groupSize: "2 à 30 personnes",
+        groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
         audience: "TPE / PME / Grandes entreprises · sans pré-requis IA",
         outcomes: [
@@ -426,7 +426,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         ...durationSummary("essentielle", "en"),
         price: `Starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
         priceTiers: ESSENTIELLE_PRICE_TIERS_EN,
-        groupSize: "2 to 30 people",
+        groupSize: "2 to 15 people",
         format: "On site · France & international",
         audience: "Small / mid-market / enterprise · no AI prerequisites",
         outcomes: [
@@ -447,7 +447,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       title: "L'intervention IA",
       titleEm: "Essentielle",
       answer:
-        "Une journée de formation IA sur site avec votre équipe (2 à 30 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'usages IA applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
+        "Une journée de formation IA sur site avec votre équipe (2 à 15 personnes) : découverte des outils principaux, ateliers pratiques sur leurs vraies tâches, idées d'usages IA applicables. Vos équipes repartent avec une boîte à outils standardisée et 5 à 10 usages concrets identifiés. Tous secteurs, tous niveaux.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Réserver une intervention",
       ctaSecondary: "Voir les cas concrets",
@@ -545,7 +545,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       ],
       metaSeo: {
         title: `Intervention IA Essentielle · cabinet Axion-IA · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}`,
-        description: `Une journée de formation IA sur site (2 à 30 personnes) : découverte des outils, ateliers pratiques, idées d'usages IA opérationnels. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
+        description: `Une journée de formation IA sur site (2 à 15 personnes) : découverte des outils, ateliers pratiques, idées d'usages IA opérationnels. Boîte à outils standardisée fournie. Tous secteurs, tous niveaux, à partir de ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "fr")}.`,
       },
       daySchedule: programmeToDaySchedule("essentielle", "fr", LOGISTICS_NOTE_FR),
     },
@@ -555,7 +555,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       titleEm: "Essential",
       titleTail: " AI session",
       answer:
-        "A one-day on-site AI training with your team (2 to 30 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply AI usage ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
+        "A one-day on-site AI training with your team (2 to 15 people): discovery of the main tools, hands-on workshops on their real tasks, ready-to-apply AI usage ideas. Your team leaves with a standardised toolbox and 5 to 10 concrete uses identified. All industries, all levels.",
       priceEur: ESSENTIELLE_BASE_PRICE_EUR,
       ctaPrimary: "Book a session",
       ctaSecondary: "See case studies",
@@ -620,7 +620,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         "Book the next available session. The on-site calendar shows live availability.",
       metaSeo: {
         title: `Essential AI session · Axion-IA consultancy · ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}`,
-        description: `A one-day on-site AI training (2 to 30 people): tool discovery, hands-on workshops, AI usage ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
+        description: `A one-day on-site AI training (2 to 15 people): tool discovery, hands-on workshops, AI usage ideas. Standardised toolbox provided. All industries, all levels, starting at ${formatAmount(ESSENTIELLE_BASE_PRICE_EUR, "en")}.`,
       },
       daySchedule: programmeToDaySchedule("essentielle", "en", LOGISTICS_NOTE_EN),
     },
@@ -641,7 +641,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         ...durationSummary("approfondie", "fr"),
         price: `À partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_FR,
-        groupSize: "2 à 30 personnes",
+        groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
         audience: "Équipes opérationnelles complètes · TPE, PME, ETI",
         outcomes: [
@@ -662,7 +662,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         ...durationSummary("approfondie", "en"),
         price: `Starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}`,
         priceTiers: APPROFONDIE_PRICE_TIERS_EN,
-        groupSize: "2 to 30 people",
+        groupSize: "2 to 15 people",
         format: "On site · France & international",
         audience: "Full operational teams · small to mid-market",
         outcomes: [
@@ -683,7 +683,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Format équipes étendu · 2 jours sur site",
         title: "Approfondie",
         titleEm: "2 jours équipes",
-        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 30 personnes selon le palier choisi : ${APPROFONDIE_BRACKETS_FR}). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
+        answer: `Deux journées consécutives sur site (à partir de ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "fr")}) pour creuser l'IA en équipe (2 à 15 personnes selon le palier choisi : ${APPROFONDIE_BRACKETS_FR}). Ateliers étendus, co-construction d'usages IA sur vos vrais cas d'usage métier, plan d'action 30 jours partagé. Pour les équipes qui ne se contentent pas de découvrir.`,
         ctaPrimary: "Réserver l'Approfondie",
         faqIntro: "équipes",
       }),
@@ -724,7 +724,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "headcount",
           question: "Quelle taille d'équipe ?",
           answer:
-            "De 2 à 30 personnes, mêmes paliers que l'Essentielle (2-8 / 9-15 / 16-30) avec tarif dégressif. Au-delà de 30, voir « Sur demande particulière ».",
+            "De 2 à 15 personnes, mêmes paliers que l'Essentielle (2-8 / 9-15 / 16-30) avec tarif dégressif. Au-delà de 30, voir « Sur demande particulière ».",
         },
         {
           id: "tools",
@@ -779,7 +779,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Extended team format · 2 days on site",
         title: "Deep Dive",
         titleEm: "2-day teams",
-        answer: `Two consecutive on-site days (starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 30 people depending on tier: ${APPROFONDIE_BRACKETS_EN}). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
+        answer: `Two consecutive on-site days (starting at ${formatAmount(APPROFONDIE_BASE_PRICE_EUR, "en")}) to go deep on AI as a team (2 to 15 people depending on tier: ${APPROFONDIE_BRACKETS_EN}). Extended workshops, automation co-build on your real domain use cases, shared 30-day action plan. For teams that don't settle for discovery.`,
         ctaPrimary: "Book Deep Dive",
         faqIntro: "teams",
       }),
@@ -820,7 +820,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "headcount",
           question: "What team size?",
           answer:
-            "From 2 to 30 people, same tiers as the Essential (2-15 / 16-30) with scaling pricing. Beyond 30, see 'Bespoke session'.",
+            "From 2 to 15 people, same tiers as the Essential (2-15 / 16-30) with scaling pricing. Beyond 30, see 'Bespoke session'.",
         },
         {
           id: "tools",
@@ -1040,7 +1040,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Une journée pour gagner du temps concrètement : méthodes IA appliquées sur les tâches répétitives, prompts efficaces, intégration dans le flux de travail quotidien. Vos équipes ressortent avec des heures gagnées chaque semaine.",
         ...durationSummary("gagner-du-temps", "fr"),
         price: TEMPS_PRICE_FR,
-        groupSize: "2 à 30 personnes",
+        groupSize: "2 à 15 personnes",
         format: "Sur site · France & international",
         audience: "Équipes opérationnelles · TPE, PME, ETI",
         outcomes: [
@@ -1060,7 +1060,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "One day to save time concretely: AI methods on repetitive tasks, effective prompts, integration into daily workflow. Your teams leave with hours saved every week.",
         ...durationSummary("gagner-du-temps", "en"),
         price: TEMPS_PRICE_EN,
-        groupSize: "2 to 30 people",
+        groupSize: "2 to 15 people",
         format: "On site · France & international",
         audience: "Operational teams · small to mid-market",
         outcomes: [
@@ -1081,7 +1081,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Productivité équipes · 1 journée sur site",
         title: "Gagner du temps",
         titleEm: "concrètement",
-        answer: `Une journée à partir de ${TEMPS_PRICE_FR} sur site, dédiée à la productivité de vos équipes (2 à 30 personnes, tarif dégressif en 2 paliers). On identifie les tâches répétitives qui mangent leurs heures, on apprend à les traiter avec l'IA, on intègre dans leur flux de travail quotidien. Vos équipes repartent avec 5 à 10 méthodes maîtrisées et un gain mesurable de plusieurs heures par semaine et par personne.`,
+        answer: `Une journée à partir de ${TEMPS_PRICE_FR} sur site, dédiée à la productivité de vos équipes (2 à 15 personnes, tarif dégressif en 2 paliers). On identifie les tâches répétitives qui mangent leurs heures, on apprend à les traiter avec l'IA, on intègre dans leur flux de travail quotidien. Vos équipes repartent avec 5 à 10 méthodes maîtrisées et un gain mesurable de plusieurs heures par semaine et par personne.`,
         ctaPrimary: "Réserver Gagner du temps",
         faqIntro: "équipes",
       }),
@@ -1117,7 +1117,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "headcount",
           question: "Quelle taille d'équipe ?",
           answer:
-            "De 2 à 30 personnes, en 2 paliers (2-15 / 16-30) pour garder l'aspect atelier (chacun manipule ses outils). Au-delà de 30, voir la Conférence (effectif libre).",
+            "De 2 à 15 personnes, en 2 paliers (2-15 / 16-30) pour garder l'aspect atelier (chacun manipule ses outils). Au-delà de 30, voir la Conférence (effectif libre).",
         },
         {
           id: "tools",
@@ -1178,7 +1178,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Team productivity · 1 day on site",
         title: "Save Time",
         titleEm: "concretely",
-        answer: `A day starting at ${TEMPS_PRICE_EN} on site, dedicated to your teams' productivity (2 to 30 people, scaling price in 2 tiers). We identify the repetitive tasks eating their hours, learn to handle them with AI, embed them in their daily workflow. Your teams leave with 5 to 10 methods mastered and a measurable gain of several hours per week and per person.`,
+        answer: `A day starting at ${TEMPS_PRICE_EN} on site, dedicated to your teams' productivity (2 to 15 people, scaling price in 2 tiers). We identify the repetitive tasks eating their hours, learn to handle them with AI, embed them in their daily workflow. Your teams leave with 5 to 10 methods mastered and a measurable gain of several hours per week and per person.`,
         ctaPrimary: "Book Save Time",
         faqIntro: "teams",
       }),
@@ -1214,7 +1214,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           id: "headcount",
           question: "What team size?",
           answer:
-            "From 2 to 30 people, in 2 tiers (2-15 / 16-30) to keep the workshop feel (everyone uses their own tools). Beyond 30, see the Talk (open headcount).",
+            "From 2 to 15 people, in 2 tiers (2-15 / 16-30) to keep the workshop feel (everyone uses their own tools). Beyond 30, see the Talk (open headcount).",
         },
         {
           id: "tools",
@@ -1255,7 +1255,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "Une journée 100 % dédiée à Claude (Anthropic). Trois volets : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (Claude Code en CLI, génération et refactoring). Vos équipes ressortent autonomes sur l'outil de pointe IA.",
         ...durationSummary("intervention-claude", "fr"),
         price: CLAUDE_PRICE_FR,
-        groupSize: "2 à 30 personnes (2 paliers)",
+        groupSize: "2 à 15 personnes (2 paliers)",
         format: "Sur site · France & international",
         audience: "Équipes qui veulent maîtriser Claude en profondeur",
         outcomes: [
@@ -1275,7 +1275,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
           "A full day 100 % focused on Claude (Anthropic). Three tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, memory) and Code (Claude Code CLI, generation and refactoring). Your teams leave autonomous on the cutting-edge AI tool.",
         ...durationSummary("intervention-claude", "en"),
         price: CLAUDE_PRICE_EN,
-        groupSize: "2 to 30 people (2 tiers)",
+        groupSize: "2 to 15 people (2 tiers)",
         format: "On site · France & international",
         audience: "Teams that want to master Claude in depth",
         outcomes: [
@@ -1296,7 +1296,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Intervention outil-spécifique · Claude (Anthropic) · 1 journée",
         title: "Intervention Claude",
         titleEm: "Chat · Cowork · Code",
-        answer: `Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). De 2 à 30 personnes, tarif dégressif en 2 paliers. À partir de ${CLAUDE_PRICE_FR} — réservation directe sur le calendrier.`,
+        answer: `Une journée 100 % dédiée à Claude (Anthropic) sur site, structurée en trois volets pratiques : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire de projet) et Code (Claude Code en CLI, génération et refactoring de code). De 2 à 15 personnes, tarif dégressif en 2 paliers. À partir de ${CLAUDE_PRICE_FR} — réservation directe sur le calendrier.`,
         ctaPrimary: "Réserver la Formation Claude",
         faqIntro: "équipes Claude",
       }),
@@ -1354,7 +1354,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Maîtrisez Claude (Anthropic) en profondeur",
-      ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. À partir de ${CLAUDE_PRICE_FR}, jusqu'à 30 personnes.`,
+      ctaBlockDescription: `Réservez la prochaine date — calendrier en temps réel, confirmation immédiate. À partir de ${CLAUDE_PRICE_FR}, jusqu'à 15 personnes.`,
       testimonials: [
         {
           id: "cld-t1",
@@ -1390,7 +1390,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
       metaSeo: {
         title: "Expert Claude (Anthropic) · Formation IA outil-spécifique · Axion-IA",
         description:
-          "Formation sur site dédiée à Claude (Anthropic) : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (CLI). Groupe jusqu'à 30 personnes, tarif dégressif.",
+          "Formation sur site dédiée à Claude (Anthropic) : Chat (rédaction, analyse, synthèse), Cowork (Projects, fichiers, mémoire) et Code (CLI). Groupe jusqu'à 15 personnes, tarif dégressif.",
       },
     },
     en: {
@@ -1398,7 +1398,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         eyebrow: "Tool-specific intervention · Claude (Anthropic) · 1 day",
         title: "Claude intervention",
         titleEm: "Chat · Cowork · Code",
-        answer: `A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). From 2 to 30 people, scaling price in 2 tiers. Starting at ${CLAUDE_PRICE_EN} — direct calendar booking.`,
+        answer: `A full day 100 % focused on Claude (Anthropic) on site, structured around three practical tracks: Chat (writing, analysis, synthesis), Cowork (Projects, files, project memory) and Code (Claude Code CLI, code generation and refactoring). From 2 to 15 people, scaling price in 2 tiers. Starting at ${CLAUDE_PRICE_EN} — direct calendar booking.`,
         ctaPrimary: "Book the Claude Training",
         faqIntro: "Claude teams",
       }),
@@ -1456,11 +1456,11 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
       ],
       ctaBlockTitle: "Master Claude (Anthropic) in depth",
-      ctaBlockDescription: `Book the next date — live calendar, instant confirmation. Starting at ${CLAUDE_PRICE_EN}, up to 30 people.`,
+      ctaBlockDescription: `Book the next date — live calendar, instant confirmation. Starting at ${CLAUDE_PRICE_EN}, up to 15 people.`,
       metaSeo: {
         title: "Claude (Anthropic) Expert Training · AI Tool-specific Session · Axion-IA",
         description:
-          "On-site training dedicated to Claude (Anthropic): Chat (writing, analysis), Cowork (Projects, files, memory) and Code (CLI). Groups up to 30 people, scaling fee.",
+          "On-site training dedicated to Claude (Anthropic): Chat (writing, analysis), Cowork (Projects, files, memory) and Code (CLI). Groups up to 15 people, scaling fee.",
       },
     },
   },

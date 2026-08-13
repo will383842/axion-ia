@@ -48,6 +48,7 @@ import {
   Users,
   BadgeCheck,
   type LucideIcon,
+  Filter,
 } from "lucide-react";
 import { navIcon } from "@/lib/admin-nav-icons";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
@@ -74,6 +75,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
   // canal de la boîte de réception, pas une rubrique à part (cf. admin-nav.ts).
   contacts: Inbox,
+  tunnels: Filter,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,

@@ -249,6 +249,7 @@ export async function discoverNewCalendlyEvents(
           eventName: name,
           ...(inviteePhone ? { inviteePhone } : {}),
           ...(cancelUrl ? { cancelUrl } : {}),
+          ...(enriched.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
         },
         dedupKey: row.id,
       });

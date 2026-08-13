@@ -121,6 +121,9 @@ describe("fetchCalendlyInvitee — résolution", () => {
     });
     expect(res.data.startTime?.toISOString()).toBe("2026-08-03T09:00:00.000Z");
     expect(res.data.endTime?.toISOString()).toBe("2026-08-03T09:30:00.000Z");
+    // Réponses libres : la question téléphone est EXCLUE (déjà portée par
+    // `inviteePhone` — sinon le numéro apparaît deux fois dans la notif).
+    expect(res.data.answersText).toBe("Votre société ? : ACME");
   });
 
   it("envoie le jeton en Bearer et ne met pas la réponse en cache", async () => {

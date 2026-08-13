@@ -203,6 +203,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       ...(parsed.data.pageUrl ? { pageUrl: parsed.data.pageUrl } : {}),
       ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
       ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+      ...(enriched?.ok && enriched.answersText ? { answersText: enriched.answersText } : {}),
     },
     dedupKey: event.id,
   });

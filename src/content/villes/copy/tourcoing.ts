@@ -51,7 +51,7 @@ export const TOURCOING_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 30 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
         whyHere: [
           "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
@@ -92,13 +92,13 @@ export const TOURCOING_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures",
             detail:
-              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 30 personnes, pour poser des automatisations concrètes sans y passer la journée.",
+              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 15 personnes, pour poser des automatisations concrètes sans y passer la journée.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 journée)",
             detail:
-              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 30 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
+              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 15 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
           },
           {
             sizeLabel: "ETI",
@@ -120,7 +120,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 30 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",
@@ -143,7 +143,7 @@ export const TOURCOING_COPY: VilleCopy = {
           "Le créneau est garanti dès la confirmation de réservation. Les comptes et outils installés sont les vôtres : hébergement et usages restent sous votre contrôle, sans verrou Axion-IA et sans données transmises à des tiers sans accord explicite, conformément au RGPD. Si vos collaborateurs ne sont pas autonomes le lendemain matin sur les outils installés, une séance de remédiation vous est offerte. Le vocabulaire, les exemples et les démos sont ajustés à votre secteur tourquennois — textile, commerce, IT ou santé — sans session générique recyclée.",
       },
       en: {
-        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 30 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
+        hero: "Axion-IA intervient à Tourcoing pour des formations IA collectives sur site, calibrées pour les équipes du textile-habillement, du commerce de détail et des services IT du bassin. Williams se déplace dans vos locaux — quartier de l'Union, Parc de la Marlière ou centre-ville — avec un principe simple : vos collaborateurs ne repartent pas avec des slides, mais avec des outils IA installés et configurés sur leur poste, prêts à servir dès le lendemain matin. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour 2 à 15 personnes ; les formats journée et deux jours couvrent les équipes plus larges. Contenu, vocabulaire et démos sont ajustés à votre métier tourquennois, sans session générique recyclée.",
         whyHere: [
           "Tourcoing concentre près de 9 500 établissements actifs, avec une forte densité dans le textile-habillement et le commerce de détail : deux secteurs où devis, relances et gestion fournisseurs restent largement manuels. Nos sessions ciblent précisément ces tâches répétitives.",
           "Le bassin Roubaix-Tourcoing est le berceau de la vente à distance (La Redoute, 3 Suisses) et reste un pôle e-commerce vivant avec Showroomprivé : nous formons les équipes catalogue, marketing et service client à automatiser la rédaction de fiches produit et le tri des demandes entrantes.",
@@ -184,13 +184,13 @@ export const TOURCOING_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures",
             detail:
-              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 30 personnes, pour poser des automatisations concrètes sans y passer la journée.",
+              "Pour les artisans, commerçants et indépendants du centre-ville de Tourcoing : demi-journée à {{price:intervention-4h|flat}}, de 2 à 15 personnes, pour poser des automatisations concrètes sans y passer la journée.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle ou Gagner du temps (1 journée)",
             detail:
-              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 30 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
+              "Pour les PME textiles, commerciales ou IT du Parc de la Marlière : une journée complète, de 2 à 15 personnes, pour outiller un groupe entier ou un département (commercial, achats, service client).",
           },
           {
             sizeLabel: "ETI",
@@ -212,7 +212,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous accueillir ?",
-            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 30 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
+            a: "La Formation 4 heures comme les formats journée (Essentielle, Gagner du temps) accueillent jusqu'à 15 participants en interaction. Au-delà, le format Conférence en plénière, avec ateliers en sous-groupes, est mieux adapté aux grandes audiences.",
           },
           {
             q: "Les outils installés restent-ils utilisables après la session ?",

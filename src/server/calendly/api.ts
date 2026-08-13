@@ -57,6 +57,13 @@ export interface CalendlyInviteeData {
   rescheduleUrl: string | null;
   /** Nom humain de l'event-type (ex « Premier contact — 30 min »). */
   eventTypeName: string | null;
+  /**
+   * Réponses libres du formulaire de réservation (hors question téléphone,
+   * déjà portée par `inviteePhone`), concaténées « Question : Réponse ».
+   * C'est le CONTENU que l'invité a écrit — demande Will 2026-08-12 : le
+   * recevoir dans la notification, pas seulement les métadonnées du RDV.
+   */
+  answersText: string | null;
 }
 
 export type CalendlyFetchResult =
@@ -143,6 +150,25 @@ function extractPhone(
     if (PHONE_LOCATION_TYPES.has(type) && looksLikePhone) return value.slice(0, 40);
   }
   return null;
+}
+
+/**
+ * Concatène les réponses libres du formulaire en « Q : R » lisibles, en
+ * excluant la question téléphone (même regex que `extractPhone` — sinon le
+ * numéro apparaîtrait deux fois dans la notification).
+ */
+function extractAnswersText(questionsAndAnswers: unknown): string | null {
+  if (!Array.isArray(questionsAndAnswers)) return null;
+  const parts: string[] = [];
+  for (const qa of questionsAndAnswers) {
+    if (typeof qa !== "object" || qa === null) continue;
+    const q = (qa as { question?: unknown }).question;
+    const a = (qa as { answer?: unknown }).answer;
+    if (typeof q !== "string" || typeof a !== "string" || !a.trim()) continue;
+    if (/t[ée]l[ée]phone|phone|mobile|portable/i.test(q)) continue;
+    parts.push(`${q.trim()} : ${a.trim()}`);
+  }
+  return parts.length > 0 ? parts.join(" · ").slice(0, 600) : null;
 }
 
 function parseDate(value: unknown): Date | null {
@@ -247,6 +273,7 @@ export async function fetchCalendlyInvitee(
       cancelUrl: stringOrNull(invitee["cancel_url"], 500),
       rescheduleUrl: stringOrNull(invitee["reschedule_url"], 500),
       eventTypeName: stringOrNull(event["name"], 255),
+      answersText: extractAnswersText(invitee["questions_and_answers"]),
     },
   };
 }

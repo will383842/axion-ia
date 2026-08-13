@@ -21,6 +21,8 @@ export default async function ApplicationsListPage({ params, searchParams }: Pag
   const result = await listApplicationsAction({
     offerId: sp.offerId,
     status: sp.status as never,
+    // Onglet 🎬 Monteur vidéo : flux séparé, jamais mélangé à la liste standard.
+    view: sp.view === "monteur" ? "monteur" : "standard",
     onlyAttention: sp.attention === "1",
     page: sp.page ? parseInt(sp.page, 10) : 1,
   });

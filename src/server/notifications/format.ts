@@ -34,6 +34,8 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
 const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   calendly: { emoji: "📅", label: "CALENDLY" },
   candidatures: { emoji: "💼", label: "CANDIDATURE" },
+  "monteur-video": { emoji: "🎬", label: "MONTEUR VIDÉO" },
+  "commercial-memo": { emoji: "🧲", label: "COMMERCIAL MÉMO" },
   presse: { emoji: "📰", label: "PRESSE" },
   investisseurs: { emoji: "💰", label: "INVESTISSEUR" },
   interventions: { emoji: "🛠️", label: "INTERVENTION" },
@@ -54,6 +56,8 @@ const TITLES: Record<NotificationCategory, string> = {
   PRESS_REQUEST_SUBMITTED: "Demande presse / média",
   RECRUITMENT_RECEIVED: "Candidature spontanée",
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
+  COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
@@ -179,6 +183,9 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Nom", p.contactName),
         formatKV("Email", p.contactEmail),
         "contactPhone" in p ? formatKV("Téléphone", p.contactPhone) : null,
+        // Le CONTENU du message, en tête (demande Will 2026-08-12) : c'est ce
+        // qu'on veut lire depuis le téléphone, avant les métadonnées.
+        "message" in p ? formatKV("Message", p.message) : null,
         "ville" in p ? formatKV("Ville", p.ville) : null,
         "companyName" in p ? formatKV("Société", p.companyName) : null,
         "companySize" in p ? formatKV("Taille", p.companySize) : null,
@@ -201,7 +208,8 @@ function formatBody(event: NotificationEvent): string {
       ].filter((v): v is string => v !== null);
       return lines.join("\n");
     }
-    case "JOB_APPLICATION_RECEIVED": {
+    case "JOB_APPLICATION_RECEIVED":
+    case "VIDEO_EDITOR_APPLICATION_RECEIVED": {
       const p = event.payload;
       return [
         formatKV("Candidat", p.contactName),
@@ -211,11 +219,32 @@ function formatBody(event: NotificationEvent): string {
         p.offerCategory ? formatKV("Catégorie", careerCategoryLabel(p.offerCategory, true)) : null,
         p.city ? formatKV("Ville", p.city) : null,
         p.salaryExpectation ? formatKV("Prétention", p.salaryExpectation) : null,
+        p.motivationExcerpt ? formatKV("Motivation", p.motivationExcerpt) : null,
         formatKV("CV", p.hasCv ? "joint ✅" : "non fourni"),
         p.hasPhoto ? formatKV("Photo", "jointe ✅") : null,
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/candidatures")}/${p.applicationId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "COMMERCIAL_APPLICATION_RECEIVED": {
+      // Message COURT par choix : les 6 champs qui permettent de juger la
+      // candidature depuis l'écran verrouillé. Le récap complet (expériences,
+      // pitch, message libre) vit dans l'email interne + la console.
+      const p = event.payload;
+      return [
+        formatKV("Candidat", p.contactName),
+        p.ville ? formatKV("Ville", p.ville) : null,
+        p.zone ? formatKV("Zone souhaitée", p.zone) : null,
+        p.b2bYears ? formatKV("Expérience B2B", p.b2bYears) : null,
+        p.availability ? formatKV("Disponible", p.availability) : null,
+        formatKV("Utilise l'IA", p.usesAi ? "oui" : "non"),
+        formatKV(
+          "Voir en console",
+          `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}`,
         ),
       ]
         .filter((v): v is string => v !== null)
@@ -312,6 +341,7 @@ function formatBody(event: NotificationEvent): string {
         formatKV("Email", p.inviteeEmail),
         formatKV("Téléphone", p.inviteePhone),
         formatKV("Début", humanDateOrText(p.eventStartTime)),
+        formatKV("Réponses formulaire", p.answersText),
         formatKV("Page", p.pageUrl),
         formatKV("UTM source", p.utmSource),
         formatKV("UTM campagne", p.utmCampaign),

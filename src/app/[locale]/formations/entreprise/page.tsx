@@ -467,8 +467,8 @@ export default async function FormationsEntreprise({ params }: Props) {
       id: "nombre-participants",
       question: isFr ? "Combien de personnes peut-on former ?" : "How many people can be trained?",
       answer: isFr
-        ? "De 2 à 30 personnes selon la formation (les gammes Agents & Automatisations et Claude sont en groupes limités à 12 pour garder un atelier efficace). Le tarif étant par session, former plus de personnes optimise le coût par participant."
-        : "From 2 to 30 people depending on the training (the Agents & Automation and Claude ranges are capped at 12 for an effective workshop). As the price is per session, training more people optimises the cost per participant.",
+        ? "De 2 à 15 personnes selon la formation (les gammes Agents & Automatisations et Claude sont en groupes limités à 12 pour garder un atelier efficace). Le tarif étant par session, former plus de personnes optimise le coût par participant."
+        : "From 2 to 15 people depending on the training (the Agents & Automation and Claude ranges are capped at 12 for an effective workshop). As the price is per session, training more people optimises the cost per participant.",
     },
     {
       id: "prerequis",
