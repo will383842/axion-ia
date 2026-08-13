@@ -11,7 +11,6 @@ import { SubmissionFilters } from "../SubmissionFilters";
 import {
   AdminPageShell,
   AdminPageHeader,
-  AdminStatusBadge,
   AdminBadge,
   AdminFilterTabs,
 } from "@/components/admin/ui";
@@ -19,13 +18,8 @@ import { AdminListScaffold } from "../../_v2/AdminListScaffold";
 import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
 import { SubmissionRowActions } from "./SubmissionRowActions";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
-import { formatDateFrShort } from "@/lib/format-date-fr";
-const STATUS_LABELS: Record<string, string> = {
-  new: "Nouveau",
-  in_progress: "En cours",
-  processed: "Traité",
-  archived: "Archivé",
-};
+import { formatDateFrShort, formatTimeFr } from "@/lib/format-date-fr";
+import { splitNomPrenom } from "@/lib/nom-prenom";
 
 /**
  * Computed reply badge — derives 4 visual states from SubmissionListItem :
@@ -83,6 +77,13 @@ interface Props {
    * Prioritaire sur le filtre `unifiedType` de l'URL.
    */
   forcedTypes?: ReadonlyArray<string>;
+  /**
+   * Sous-onglets « Catégorie » (2026-08-13) rendus AU-DESSUS des onglets
+   * Actifs/Archivés/Corbeille. Construits par la page /contacts/messages
+   * (qui possède le paramètre `?cat=`) — ce composant se contente de les
+   * afficher et de préserver `cat` dans la pagination et les onglets de vue.
+   */
+  categoryTabs?: React.ReactNode;
 }
 
 export async function SubmissionsV2({
@@ -90,6 +91,7 @@ export async function SubmissionsV2({
   searchParams,
   basePath = "submissions",
   forcedTypes,
+  categoryTabs,
 }: Props): Promise<React.ReactElement> {
   const includeArchived = searchParams["includeArchived"] === "true";
   const deleted = searchParams["deleted"] === "true";
@@ -144,42 +146,56 @@ export async function SubmissionsV2({
     : includeArchived && searchParams["status"] === "archived"
       ? "archived"
       : "active";
+  // Le sous-onglet Catégorie (?cat=) doit survivre au passage Actifs ↔
+  // Archivés ↔ Corbeille, sinon changer de vue ramènerait à « Tous ».
+  const cat = searchParams["cat"];
+  const catSuffix = cat ? `cat=${encodeURIComponent(cat)}` : null;
   const tabOptions = [
-    { value: "active", label: "Actifs", href: base },
+    { value: "active", label: "Actifs", href: catSuffix ? `${base}?${catSuffix}` : base },
     {
       value: "archived",
       label: "Archivés",
-      href: `${base}?includeArchived=true&status=archived`,
+      href: `${base}?includeArchived=true&status=archived${catSuffix ? `&${catSuffix}` : ""}`,
     },
-    { value: "trash", label: "Corbeille", href: `${base}?deleted=true` },
+    {
+      value: "trash",
+      label: "Corbeille",
+      href: `${base}?deleted=true${catSuffix ? `&${catSuffix}` : ""}`,
+    },
   ];
 
+  // Colonnes 2026-08-13 (demande Will) : l'état de réponse d'abord, puis
+  // date / heure / CONTENU du message directement dans la liste, puis
+  // nom / prénom / email / téléphone. Société, statut pipeline et langue
+  // restent visibles dans le détail — ils encombraient la liste.
   const rows = result.items.map((s) => {
     const r = replyBadge(s);
+    const { prenom, nom } = splitNomPrenom(s.contactName);
     return {
       id: s.id,
       detailHref: `${detailBase}/${s.id}`,
       cells: [
-        formatDateFrShort(s.submittedAt),
-        resolveSubmissionLabel(s.type, s.unifiedType),
         <AdminBadge key="reply" tone={r.tone} className="gap-1">
           <r.Icone size={12} aria-hidden="true" className="shrink-0" />
           {r.label}
         </AdminBadge>,
-        <AdminStatusBadge
-          key="status"
-          type="image-asset"
-          status={s.status}
-          label={STATUS_LABELS[s.status] ?? s.status}
-        />,
-        s.companyName,
-        <span key="contact" className="block">
-          <div>{s.contactName}</div>
-          <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            {s.contactEmail}
-          </div>
-        </span>,
-        s.locale.toUpperCase(),
+        formatDateFrShort(s.submittedAt),
+        formatTimeFr(s.submittedAt),
+        s.messageExtrait ? (
+          <span
+            key="message"
+            className="line-clamp-2 block max-w-[44ch] min-w-[24ch] text-[length:var(--text-admin-sm)] whitespace-normal"
+          >
+            {s.messageExtrait}
+          </span>
+        ) : (
+          "—"
+        ),
+        nom ?? "—",
+        prenom ?? "—",
+        s.contactEmail || "—",
+        s.contactPhone ?? "—",
+        resolveSubmissionLabel(s.type, s.unifiedType),
         <SubmissionRowActions
           key="actions"
           id={s.id}
@@ -203,6 +219,7 @@ export async function SubmissionsV2({
           </Link>
         }
       />
+      {categoryTabs ? <div className="mb-[var(--space-admin-4)]">{categoryTabs}</div> : null}
       <div className="mb-[var(--space-admin-4)]">
         <AdminFilterTabs options={tabOptions} current={currentTab} label="Vue" />
       </div>
@@ -219,13 +236,15 @@ export async function SubmissionsV2({
         page={result.page}
         totalPages={result.totalPages}
         columnHeaders={[
-          "Date",
-          "Type",
           "Réponse",
-          "Statut",
-          "Société",
-          "Contact",
-          "Langue",
+          "Date",
+          "Heure",
+          "Message",
+          "Nom",
+          "Prénom",
+          "Email",
+          "Téléphone",
+          "Type",
           "Actions",
         ]}
         rows={rows}
@@ -244,6 +263,9 @@ export async function SubmissionsV2({
           // Préserve les onglets Archivés / Corbeille au-delà de la page 1.
           includeArchived: searchParams["includeArchived"],
           deleted: searchParams["deleted"],
+          // Sous-onglet Catégorie (/contacts/messages?cat=…) — sinon perdu
+          // dès la page 2.
+          cat,
         }}
       />
     </AdminPageShell>

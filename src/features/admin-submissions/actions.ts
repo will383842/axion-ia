@@ -94,6 +94,11 @@ export interface SubmissionListItem {
   companyName: string;
   contactName: string;
   contactEmail: string;
+  /** Téléphone déchiffré (2026-08-13 — colonne Téléphone du listing). Null si absent. */
+  contactPhone: string | null;
+  /** Extrait du contenu (details.message, tronqué à 300 caractères) pour
+   *  l'afficher directement dans le listing (demande Will 2026-08-13). */
+  messageExtrait: string | null;
   sector: string | null;
   assignedTo: string | null;
   submittedAt: Date;
@@ -203,6 +208,7 @@ export async function listSubmissionsAction(
     companyName: true,
     contactName: true,
     contactEmail: true,
+    contactPhone: true,
     sector: true,
     assignedTo: true,
     submittedAt: true,
@@ -232,6 +238,7 @@ export async function listSubmissionsAction(
         : null;
     const unifiedType =
       details && typeof details.unifiedType === "string" ? details.unifiedType : null;
+    const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
       type: s.type,
@@ -240,6 +247,12 @@ export async function listSubmissionsAction(
       companyName: s.companyName,
       contactName: decryptPii(s.contactName),
       contactEmail: decryptPii(s.contactEmail),
+      contactPhone: s.contactPhone ? decryptPii(s.contactPhone) : null,
+      messageExtrait: rawMessage
+        ? rawMessage.length > 300
+          ? `${rawMessage.slice(0, 300)}…`
+          : rawMessage
+        : null,
       sector: s.sector,
       assignedTo: s.assignedTo,
       submittedAt: s.submittedAt,

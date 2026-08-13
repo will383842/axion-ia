@@ -66,6 +66,9 @@ export function SubmissionFilters({ initial, hideCategory = false }: FiltersProp
     // Corbeille (2026-07-10) — passthrough caché : conserve l'onglet Corbeille
     // (deleted=true) quand on applique un filtre depuis cette vue.
     deleted: initial.deleted ?? "false",
+    // Sous-onglet Catégorie de /contacts/messages (2026-08-13) — passthrough
+    // caché : appliquer un filtre ne doit pas ramener à l'onglet « Tous ».
+    cat: initial.cat ?? "",
   });
 
   function handleSubmit(e: React.FormEvent) {
