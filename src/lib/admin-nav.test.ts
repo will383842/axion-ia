@@ -91,7 +91,7 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-08-05, vente phase 0) : « Nouvelle vente » — wizard guidé
     // client → formation → devis → session → checklist, en tête du pôle
     // Catalogue & vente (groupe qualiopi). = 137.
-    expect(items.length).toBe(137);
+    expect(items.length).toBe(140);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

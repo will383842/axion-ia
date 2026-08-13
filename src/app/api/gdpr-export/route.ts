@@ -30,6 +30,7 @@ import { verifyGdprToken } from "@/lib/gdpr-token";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -66,8 +67,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
   }
 
+  // 🔴 On interroge l'EMPREINTE, jamais `contactEmail`. Cette colonne est
+  // chiffrée avec un IV aléatoire : l'égalité SQL qui se trouvait ici ne
+  // pouvait JAMAIS correspondre, et l'export art. 15 renvoyait donc une liste
+  // VIDE présentée comme complète. Le repli sur `contactEmail` couvre les
+  // lignes stockées en clair et celles antérieures au remplissage rétroactif.
+  const lookupHash = hashEmailForLookup(email);
   const submissions = await prisma.submission.findMany({
-    where: { contactEmail: email },
+    where: {
+      OR: [...(lookupHash ? [{ contactEmailHash: lookupHash }] : []), { contactEmail: email }],
+    },
     orderBy: { submittedAt: "desc" },
     select: {
       id: true,

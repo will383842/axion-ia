@@ -134,11 +134,19 @@ export function JobApplicationForm({
             <label htmlFor="civility" className={LABEL}>
               {isFr ? "Civilité" : "Title"}
             </label>
+            {/* Facultative, et AUCUNE valeur présélectionnée : la CJUE
+                (Mousse c. SNCF, C-394/23, janvier 2025) a jugé que collecter
+                systématiquement la civilité n'est pas « nécessaire à
+                l'exécution du contrat ». Un champ vide par défaut est la
+                preuve qu'il ne l'est pas.
+                Les valeurs STOCKÉES restent « Mme » et « M. » : les
+                candidatures déjà en base les utilisent, et changer la valeur
+                rendrait les anciennes lignes incohérentes avec les nouvelles.
+                Seuls les libellés affichés sont en toutes lettres. */}
             <select id="civility" name="civility" className={FIELD} disabled={submitting}>
-              <option value="">—</option>
-              <option value="Mme">{isFr ? "Mme" : "Ms"}</option>
-              <option value="M.">{isFr ? "M." : "Mr"}</option>
-              <option value="Autre">{isFr ? "Autre" : "Other"}</option>
+              <option value="">{isFr ? "— non précisé" : "— not specified"}</option>
+              <option value="Mme">{isFr ? "Madame" : "Ms"}</option>
+              <option value="M.">{isFr ? "Monsieur" : "Mr"}</option>
             </select>
           </div>
           <div>
@@ -375,13 +383,22 @@ export function JobApplicationForm({
         </div>
         <div>
           <label htmlFor="photo" className={LABEL}>
-            {isFr ? "Photo (JPG, PNG) — optionnel" : "Photo (JPG, PNG) — optional"}
+            {isFr
+              ? "Photo (JPG, PNG, WebP, HEIC) — facultative"
+              : "Photo (JPG, PNG, WebP, HEIC) — optional"}
           </label>
+          {/* `accept` aligné sur ce que le serveur valide réellement
+              (`validatePhoto`). Avec `image/*`, le sélecteur laissait choisir
+              un GIF ou un AVIF : le fichier partait, puis était refusé APRÈS
+              le téléversement. Sur mobile, c'est plusieurs mégaoctets envoyés
+              en 4G pour un message d'erreur — le genre de friction qui fait
+              abandonner une candidature.
+              HEIC est explicite : c'est le format par défaut des iPhone. */}
           <input
             id="photo"
             name="photo"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
             ref={photoRef}
             className="text-sm"
             disabled={submitting}

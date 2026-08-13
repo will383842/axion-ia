@@ -47,6 +47,7 @@ const DEFAULTS = {
   webVitals: 6,
   imageLogs: 12,
   chat: 12,
+  funnelEvents: 12,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -89,6 +90,7 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         chatEscalations: 0,
         chatSemanticCache: 0,
         chatIdempotency: 0,
+        funnelEvents: 0,
       };
 
       // 1) activity_logs ancients
@@ -195,6 +197,19 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.webVitals = webVitalsResult.count;
 
+      // 7 bis) funnel_events (tunnels d'acquisition, 2026-08-12).
+      // 🔴 Cette purge n'est PAS optionnelle. La table est collectée sans
+      // bannière de consentement, sous l'exemption CNIL « mesure d'audience »,
+      // et cette exemption exige une rétention bornée. La désactiver ne
+      // produirait aucune erreur visible — seulement une collecte devenue
+      // illégale. 12 mois : sous le plafond de 13 mois de la CNIL, et assez
+      // long pour comparer une saison publicitaire à la précédente.
+      const funnelMonths = readMonths("RETENTION_FUNNEL_EVENTS_MONTHS", DEFAULTS.funnelEvents);
+      const funnelResult = await prisma.funnelEvent.deleteMany({
+        where: { createdAt: { lt: monthsAgo(funnelMonths) } },
+      });
+      counts.funnelEvents = funnelResult.count;
+
       // 8) image_usage_logs + image_download_logs (image-bank Sprint 7 V1).
       // ip_hash SHA-256 + IP_HASH_SALT — non réversible mais quasi-identifiant
       // longue durée. Purge 12 mois par défaut (RGPD art. 5.1.e minimisation).
@@ -273,7 +288,8 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `webVitals=${counts.webVitals} ` +
           `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
           `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
-          `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency}`,
+          `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
+          `funnelEvents=${counts.funnelEvents}`,
       );
     },
     {

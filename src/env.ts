@@ -243,6 +243,10 @@ export const env = createEnv({
     RETENTION_GENERATION_LOGS_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_COST_LEDGER_MONTHS: z.coerce.number().int().min(1).optional(),
     RETENTION_WEB_VITALS_MONTHS: z.coerce.number().int().min(1).optional(),
+    // Tunnels d'acquisition. Défaut 12 mois côté worker — sous le plafond de
+    // 13 mois de la CNIL pour la mesure d'audience, dont dépend l'absence de
+    // bannière sur les pages de tunnel.
+    RETENTION_FUNNEL_EVENTS_MONTHS: z.coerce.number().int().min(1).optional(),
 
     // Content Generator V1 (Sprint 1 Day 1 AGT-B) — providers IA + KB ingest.
     // Toutes optional V1 : le BUILD continue sans elles ; seul le RUN (génération
@@ -425,6 +429,7 @@ export const env = createEnv({
     RETENTION_GENERATION_LOGS_MONTHS: process.env.RETENTION_GENERATION_LOGS_MONTHS,
     RETENTION_COST_LEDGER_MONTHS: process.env.RETENTION_COST_LEDGER_MONTHS,
     RETENTION_WEB_VITALS_MONTHS: process.env.RETENTION_WEB_VITALS_MONTHS,
+    RETENTION_FUNNEL_EVENTS_MONTHS: process.env.RETENTION_FUNNEL_EVENTS_MONTHS,
     // Content Generator V1 (Sprint 1 Day 1 AGT-B)
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,

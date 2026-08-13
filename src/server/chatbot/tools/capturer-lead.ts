@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 /**
  * Notifie l'équipe d'un NOUVEAU lead chatbot (best-effort, fail-soft — ne fait
@@ -107,6 +108,7 @@ export async function capturerLead(
           companyName: input.structure ?? "Via chatbot",
           contactName: input.nom,
           contactEmail: input.email,
+          contactEmailHash: hashEmailForLookup(input.email),
           ...(input.telephone ? { contactPhone: input.telephone } : {}),
           details: { besoin: input.besoin_resume, canal: "chatbot", consentementRgpd: true },
           source: "chatbot",
