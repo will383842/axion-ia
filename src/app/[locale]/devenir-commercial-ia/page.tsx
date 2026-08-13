@@ -16,15 +16,10 @@ import {
   buildCommercialFaqItems,
 } from "@/components/services/devenir-commercial/CommercialPageBody";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import { COMMERCIAL_OFFER_DATE_POSTED } from "@/content/recrutement/dates";
 import { getHubLocations } from "@/content/recrutement/satellites";
 import { getRegion } from "@/content/regions";
-import {
-  buildProductMetadata,
-  buildFaqJsonLd,
-  buildWebPageJsonLd,
-  SITE_URL,
-  SITE_EDITORIAL_DATE,
-} from "@/lib/seo";
+import { buildProductMetadata, buildFaqJsonLd, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
 
@@ -133,7 +128,7 @@ export default async function DevenirCommercialHub({ params }: Props) {
     description: isFr
       ? "Axion-IA recrute des commerciaux indépendants partout en France pour vendre ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI, artisans, commerçants et grandes entreprises. Statut indépendant, produits souvent finançables, rémunération à la commission déplafonnée, emploi du temps libre."
       : "Axion-IA is hiring independent sales reps across France to sell its AI trainings, audits, 1-on-1 support and integrations to companies of all sizes. Self-employed status, often-fundable products, uncapped commission-based pay.",
-    datePosted: SITE_EDITORIAL_DATE,
+    datePosted: COMMERCIAL_OFFER_DATE_POSTED,
     employmentType: "CONTRACTOR",
     occupationalCategory: isFr
       ? "Commercial · Agent commercial · VRP · Apporteur d'affaires"

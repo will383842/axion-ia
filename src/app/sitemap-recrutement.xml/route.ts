@@ -9,15 +9,17 @@
 //
 // FR canonique uniquement (EN désactivé 2026-05-16 → 301, hors crawl budget).
 
-import { SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { COMMERCIAL_OFFER_DATE_POSTED } from "@/content/recrutement/dates";
+import { SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
 export async function GET(): Promise<Response> {
-  // Audit fraîcheur 2026-06-08 : lastmod figé sur la date éditoriale (pas
-  // BUILD_TIME, qui avançait à chaque deploy sans changement de l'offre).
-  const lm = SITE_EDITORIAL_DATE;
+  // lastmod = date de (re)publication de l'offre commerciale — suit la même
+  // constante que le JobPosting de la page (pas BUILD_TIME, qui avançait à
+  // chaque deploy sans changement de l'offre).
+  const lm = COMMERCIAL_OFFER_DATE_POSTED;
   const entries: Array<{ path: string; priority: string; freq: string }> = [
     { path: "/devenir-commercial-ia", priority: "0.9", freq: "weekly" },
     { path: "/devenir-commercial-ia/candidature", priority: "0.7", freq: "monthly" },

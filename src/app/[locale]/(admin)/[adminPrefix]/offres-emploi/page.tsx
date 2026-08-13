@@ -4,6 +4,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { listJobOffersAction } from "@/features/admin-job-offers/actions";
+import { listStaleJobPostings } from "@/server/careers/freshness";
 import { JobOffersV2 } from "./_v2/JobOffersV2";
 
 export const dynamic = "force-dynamic";
@@ -19,12 +20,16 @@ export default async function JobOffersListPage({ params, searchParams }: PagePr
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const result = await listJobOffersAction({
-    category: sp.category as never,
-    status: sp.status as never,
-    search: sp.search,
-    page: sp.page ? parseInt(sp.page, 10) : 1,
-  });
+  const [result, staleOffers] = await Promise.all([
+    listJobOffersAction({
+      category: sp.category as never,
+      status: sp.status as never,
+      search: sp.search,
+      page: sp.page ? parseInt(sp.page, 10) : 1,
+    }),
+    // Fraîcheur Google for Jobs : offres (DB + statiques) à republier.
+    listStaleJobPostings().catch(() => []),
+  ]);
 
   return (
     <JobOffersV2
@@ -34,6 +39,7 @@ export default async function JobOffersListPage({ params, searchParams }: PagePr
       total={result.total}
       page={result.page}
       totalPages={result.totalPages}
+      staleOffers={staleOffers}
     />
   );
 }

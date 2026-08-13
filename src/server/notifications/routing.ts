@@ -24,6 +24,9 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // investisseur (signal stratégique fort), "info" pour les 4 autres. ---
   PRESS_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
+  // Rappel hebdo « offres à republier » (cron offres-fraicheur) — maintenance
+  // SEO, pas un lead : Telegram seul, jamais WhatsApp.
+  JOB_OFFERS_STALE: { channels: ["telegram"], severity: "warn" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
@@ -137,6 +140,8 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // 💼 Candidatures — offres d'emploi publiées ET candidature spontanée/commerciale.
   JOB_APPLICATION_RECEIVED: "candidatures",
   RECRUITMENT_RECEIVED: "candidatures",
+  // Le rappel « offres à republier » vit avec les offres qu'il concerne.
+  JOB_OFFERS_STALE: "candidatures",
 
   // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
   // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce

@@ -58,6 +58,7 @@ const TITLES: Record<NotificationCategory, string> = {
   JOB_APPLICATION_RECEIVED: "Candidature à une offre",
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature monteur vidéo",
   COMMERCIAL_APPLICATION_RECEIVED: "Candidature commercial",
+  JOB_OFFERS_STALE: "Offres d'emploi à republier",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
@@ -244,6 +245,23 @@ function formatBody(event: NotificationEvent): string {
         formatKV(
           "Voir en console",
           `${SITE_URL}${adminPath("fr", "contacts/commercial")}/${p.submissionId}`,
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "JOB_OFFERS_STALE": {
+      const p = event.payload;
+      const lines = p.offers.map((o) =>
+        formatKV(o.kind === "statique" ? "Page statique" : "Offre", `${o.title} — ${o.daysOld} j`),
+      );
+      return [
+        formatKV("Seuil", `${p.thresholdDays} jours sans republication`),
+        ...lines,
+        formatKV("Republier en console", `${SITE_URL}${adminPath("fr", "offres-emploi")}`),
+        formatKV(
+          "Règle",
+          "republier UNIQUEMENT si l'offre est toujours ouverte (bouton Republier) — les pages statiques passent par une modif de code",
         ),
       ]
         .filter((v): v is string => v !== null)

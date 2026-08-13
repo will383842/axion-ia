@@ -1411,6 +1411,13 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "45 6 * * *",
         jobId: "formation-crons-devis-expiration-cron",
       },
+      // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram des
+      // offres à republier, hebdo lundi 08:15 UTC (après les crons du matin).
+      {
+        type: "formation-crons.offres-fraicheur",
+        pattern: "15 8 * * 1",
+        jobId: "formation-crons-offres-fraicheur-cron",
+      },
     ];
 
     for (const { type, pattern, jobId } of formationCronSchedule) {
