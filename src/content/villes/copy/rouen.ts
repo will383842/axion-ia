@@ -209,7 +209,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Rouen business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rouen micro-businesses to large industrial mid-caps at the Madrillet and tertiary HQs on the Plateau de la Vatine.",

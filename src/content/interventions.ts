@@ -199,7 +199,9 @@ export interface DaySchedule {
 // ============================================================================
 
 // Will 2026-06-03 — 2 paliers (2-15 / 16-30). `intimiste` (ex-bracket 2-8) supprimé.
-export type EssentielleTier = "standard" | "complete";
+// « complete » (16-30 personnes) retiré le 2026-08-13 avec le palier mort de
+// pricing.ts — cf. la note sur ESSENTIELLE_SUB_TIERS.
+export type EssentielleTier = "standard";
 
 export interface EssentielleTierDef {
   id: EssentielleTier;
@@ -704,8 +706,8 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
             "À la fin du jour 2, plan d'action concret partagé : qui fait quoi, quand, avec quels outils, quels gains attendus.",
         },
         {
-          title: "Tarif dégressif au nombre de participants",
-          description: `2 paliers d'effectif : 2-15 personnes (${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "fr")}), 16-30 (${formatAmount(APPROFONDIE_SUB_TIERS[1]!.priceFlat, "fr")}). Plus l'équipe est grande, plus le coût par personne baisse.`,
+          title: "Un tarif par groupe, pas par personne",
+          description: `${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "fr")} pour le groupe (2 à 15 personnes) : plus l'équipe formée est grande, plus le coût par personne baisse. Au-delà de 15, le format Conférence prend le relais, sur devis.`,
         },
       ],
       metrics: [
@@ -801,7 +803,7 @@ export const INTERVENTIONS: ReadonlyArray<InterventionContent> = [
         },
         {
           title: "Pricing scales with headcount",
-          description: `2 tiers: 2-15 people (${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "en")}), 16-30 (${formatAmount(APPROFONDIE_SUB_TIERS[1]!.priceFlat, "en")}). The bigger the team, the lower the per-person cost.`,
+          description: `${formatAmount(APPROFONDIE_SUB_TIERS[0]!.priceFlat, "en")} per group (2 to 15 people): the bigger the team you train, the lower the per-person cost. Beyond 15, the Conference format takes over, on quote.`,
         },
       ],
       metrics: [

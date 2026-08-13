@@ -185,7 +185,7 @@ export const LE_MANS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause disponible, jamais activée à ce jour).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Le Mans maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from local Sarthe micro-firms to insurance and mobility mid-caps headquartered in the Le Mans basin.",

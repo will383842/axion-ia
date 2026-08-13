@@ -188,7 +188,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Angers maps what can be automated in your organization — whether you're a plant-industry mid-cap, an industrial SME or a services micro-business — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every business size in the Angers metropolitan area.",
@@ -832,7 +832,7 @@ export const ANGERS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec votre feuille de route personnalisée et votre pleine autonomie.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Angers individually supports executives and managers in the plant industry, manufacturing (Scania, Eviden/Atos, Thales), agri-food (Cointreau) and French Tech Angers startups. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your real use cases — plant R&D reports, industrial data, Anjou commercial management. You progress at your own pace, without superfluous theory.",

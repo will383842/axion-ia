@@ -183,7 +183,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions dans le bassin Aix-Marseille).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Aix-en-Provence company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Aix micro-businesses to industrial mid-caps and large-group sites in the Aix-Marseille basin (aerospace, energy, microelectronics, B2B services). Read-out always in person at your premises, action plan handed over face to face.",
@@ -826,7 +826,7 @@ export const AIX_EN_PROVENCE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Aix-en-Provence individually supports executives and senior managers at industrial SMEs, aerospace mid-caps and consulting firms across the Aix-Marseille basin. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme is built around your specific business reality — Arbois technopole, Les Milles, Marignane, Rousset. You accelerate your AI proficiency without wasting time on non-applicable theory.",

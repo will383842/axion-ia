@@ -190,7 +190,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande — point particulièrement important pour les organisations strasbourgeoises opérant dans un cadre juridique européen. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande — point particulièrement important pour les organisations strasbourgeoises opérant dans un cadre juridique européen. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Strasbourg organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Strasbourg micro-businesses to European institutions at Wacken and Eurométropole industrial groups.",

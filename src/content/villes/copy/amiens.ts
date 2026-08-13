@@ -179,7 +179,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Amiens micro-businesses and craft firms to large industrial sites such as P&G or Valeo Embrayages.",
@@ -821,7 +821,7 @@ export const AMIENS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie. Si la première séance ne vous apporte pas de valeur concrète, elle est remboursée intégralement.",
+          "Aucun engagement de durée minimum : vous pilotez le programme séance par séance. Confidentialité stricte. Aucun lock-in : vous repartez avec vos plans d'action et votre autonomie.",
       },
       en: {
         hero: "Axion-IA's 1-to-1 AI coaching in Amiens individually supports executives and managers at manufacturing SMEs, logistics companies and service firms across Hauts-de-France. Starting from {{price:intervention-dirigeants|compact}} excl. VAT for micro-businesses, each programme targets your real use cases — production management, supplier documentation, reporting, agri-food R&D. You progress at your own pace without halting your operations.",

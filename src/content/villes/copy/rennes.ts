@@ -191,7 +191,7 @@ export const RENNES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire rennais ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
