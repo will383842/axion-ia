@@ -8664,6 +8664,10 @@ model JobOffer {
 
   // JobPosting / Google for Jobs
   employmentType     String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
+  // Second type schema.org optionnel — JobPosting.employmentType accepte un
+  // TABLEAU : une offre ouverte « en CDI ou en freelance » doit déclarer les
+  // deux, sinon Google la cache à la moitié des profils qu'elle accepte.
+  secondaryEmploymentType String? @map("secondary_employment_type") @db.VarChar(20)
   workMode           JobWorkMode @default(on_site) @map("work_mode")
   city               String?     @db.VarChar(120)
   region             String?     @db.VarChar(120)

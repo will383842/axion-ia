@@ -218,6 +218,8 @@ const upsertSchema = z.object({
   bodyJsonEn: z.string().optional(),
   bodyTextEn: z.string().default(""),
   employmentType: z.string().max(20).default("FULL_TIME"),
+  // Second type schema.org optionnel ("" → undefined → null en base).
+  secondaryEmploymentType: z.preprocess(emptyToUndef, z.string().max(20).optional()),
   workMode: z.enum(["on_site", "hybrid", "remote"]).default("on_site"),
   city: z.preprocess(emptyToUndef, z.string().max(120).optional()),
   region: z.preprocess(emptyToUndef, z.string().max(120).optional()),
@@ -341,6 +343,11 @@ export async function upsertJobOfferAction(
     bodyEn: d.bodyEn || d.bodyFr,
     bodyTextEn: d.bodyTextEn || d.bodyTextFr,
     employmentType: d.employmentType,
+    // Garde-fou : un second type identique au premier n'apporte rien → null.
+    secondaryEmploymentType:
+      d.secondaryEmploymentType && d.secondaryEmploymentType !== d.employmentType
+        ? d.secondaryEmploymentType
+        : null,
     workMode: d.workMode,
     city: d.city ?? null,
     region: d.region ?? null,

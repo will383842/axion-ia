@@ -78,6 +78,21 @@ describe("contractTypeLabel — jamais d'enum schema.org brut en façade", () =>
     );
   });
 
+  it("affiche « X ou Y » quand un second type est déclaré (façade = JSON-LD)", () => {
+    expect(
+      contractTypeLabel(
+        { contractLabel: null, employmentType: "FULL_TIME", secondaryEmploymentType: "CONTRACTOR" },
+        true,
+      ),
+    ).toBe("CDI temps plein ou freelance (prestation indépendante)");
+    expect(
+      contractTypeLabel(
+        { contractLabel: null, employmentType: "FULL_TIME", secondaryEmploymentType: "CONTRACTOR" },
+        false,
+      ),
+    ).toBe("full-time permanent contract or freelance contract");
+  });
+
   it("le libellé piloté en console prime sur l'enum", () => {
     expect(
       contractTypeLabel({ contractLabel: "Freelance", employmentType: "CONTRACTOR" }, true),
