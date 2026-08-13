@@ -382,7 +382,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["definition-axion-ia", "tarifs-publics-transparents", "comment-commencer"],
     fr: {
-      question: "Quels sont les 3 modules ?",
+      // « Quels sont les 3 modules ? » reformulée le 2026-08-13 (décision Will) :
+      // le titre affichait « 3 » alors que la réponse explique les 5 prestations.
+      // Le SLUG `les-3-modules-axion-ia` reste, lui, INCHANGÉ (URL indexée).
+      question: "Quels sont les modules d'Axion-IA ?",
       answer:
         "Le découpage historique en trois modules — interventions, audit, implémentation — a été élargi : l'offre Axion-IA compte aujourd'hui cinq prestations, et c'est cette liste qui fait foi.\n\nLes Formations IA se déroulent en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants, dans vos locaux ou à distance. Le Coaching IA 1-to-1 est une journée de 7 à 8 heures avec une seule personne, sur son poste réel. L'Audit IA cartographie vos process et chiffre les opportunités, sur quatre niveaux selon la taille de l'entreprise et le périmètre. L'Implémentation IA met en production les automatisations retenues, avec 30 jours de support inclus à la livraison. Les Sites web & SaaS IA greffent chatbot, recherche sémantique ou agents sur votre site existant, ou construisent une plateforme IA-native.\n\nCes cinq prestations sont indépendantes : rien n'oblige à les enchaîner dans cet ordre.",
       keyPoints: [
@@ -417,7 +420,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
     },
     en: {
-      question: "What are the 3 modules?",
+      question: "What are Axion-IA's modules?",
       answer: modulesAnswerEn(),
     },
   },
