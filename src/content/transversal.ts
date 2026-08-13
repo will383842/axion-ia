@@ -4042,7 +4042,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       keyPoints: [
         "Toujours en intra : une session est montée pour une seule entreprise",
         "Groupe de 2 à 15 personnes, sur site ou à distance, au même tarif",
-        "Journée type de 7 heures ; du format 4 heures aux parcours de 2 à 3 jours",
+        "Journée type de 7 heures ; du format 4 heures aux parcours de 2 journées",
         "Le cadre de confidentialité est posé avant tout atelier",
         "Quiz individuel de 10 questions et attestation individuelle à l'issue",
       ],
@@ -4105,7 +4105,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Proposez-vous une formation ChatGPT ou Claude pour les entreprises ?",
       answer:
-        "Oui, et sans se limiter à un seul éditeur. Les formations Axion-IA font pratiquer côte à côte les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — pour que chacun sache lequel choisir selon le besoin, plutôt que d'apprendre par cœur les menus d'un produit. Le reste du paysage (Microsoft Copilot, Mistral, Perplexity, Midjourney, Sora, HeyGen) est situé en panorama, pour savoir à quoi sert quoi, sans être manipulé en séance.\n\nLe contenu va au-delà de la prise en main : formuler une demande structurée avec la méthode AXION, construire des prompts réutilisables sur ses tâches récurrentes, créer ses propres assistants, vérifier une production avant de la diffuser, et savoir quelles données ne se soumettent jamais.\n\nCe parti pris d'indépendance a une raison simple : les modèles changent vite. Une compétence attachée à un seul produit se périme avec lui ; une méthode de formulation et de vérification, non. Les sessions se tiennent en intra, en groupe de 2 à 15 personnes, sur site ou à distance, de la demi-journée de 4 heures aux parcours de 2 à 3 jours.",
+        "Oui, et sans se limiter à un seul éditeur. Les formations Axion-IA font pratiquer côte à côte les trois assistants les plus utilisés en entreprise — ChatGPT, Claude et Gemini — pour que chacun sache lequel choisir selon le besoin, plutôt que d'apprendre par cœur les menus d'un produit. Le reste du paysage (Microsoft Copilot, Mistral, Perplexity, Midjourney, Sora, HeyGen) est situé en panorama, pour savoir à quoi sert quoi, sans être manipulé en séance.\n\nLe contenu va au-delà de la prise en main : formuler une demande structurée avec la méthode AXION, construire des prompts réutilisables sur ses tâches récurrentes, créer ses propres assistants, vérifier une production avant de la diffuser, et savoir quelles données ne se soumettent jamais.\n\nCe parti pris d'indépendance a une raison simple : les modèles changent vite. Une compétence attachée à un seul produit se périme avec lui ; une méthode de formulation et de vérification, non. Les sessions se tiennent en intra, en groupe de 2 à 15 personnes, sur site ou à distance, de la demi-journée de 4 heures aux parcours de 2 journées.",
       keyPoints: [
         "ChatGPT, Claude et Gemini pratiqués côte à côte, sur vos propres cas",
         "Copilot, Mistral, Perplexity et les outils d'image ou de vidéo situés en panorama",
@@ -4190,7 +4190,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "4 heures ne remplacent pas un parcours",
           detail:
-            "Le format lève les blocages et installe les premiers usages. Construire des automatisations et les mettre en service demande un format de 2 à 3 jours.",
+            "Le format lève les blocages et installe les premiers usages. Construire des automatisations et les mettre en service demande un format de 2 journées.",
         },
         {
           title: "Ce n'est pas réservé aux petites équipes",
