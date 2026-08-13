@@ -5,7 +5,7 @@
 // utilitaires admin.css (legit — pas de composant filtre dédié).
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TriangleAlert } from "lucide-react";
 import {
   AdminPageShell,
   AdminPageHeader,
@@ -144,10 +144,11 @@ export function JobOffersV2({
           DB) se republient par une modif de code. */}
       {staleOffers.length > 0 ? (
         <AdminCard className="mb-[var(--space-admin-5)]">
-          <p className="admin-label" role="alert">
-            ⚠️ {staleOffers.length} offre{staleOffers.length > 1 ? "s" : ""} à republier — la date
-            vue par Google dépasse 45 jours, l&apos;offre devient invisible dans les filtres «
-            récent » de Google for Jobs.
+          <p className="admin-label flex items-center gap-2" role="alert">
+            <TriangleAlert size={16} aria-hidden="true" className="shrink-0" />
+            {staleOffers.length} offre{staleOffers.length > 1 ? "s" : ""} à republier — la date vue
+            par Google dépasse 45 jours, l&apos;offre devient invisible dans les filtres « récent »
+            de Google for Jobs.
           </p>
           <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]">
             {staleOffers.map((o) => (

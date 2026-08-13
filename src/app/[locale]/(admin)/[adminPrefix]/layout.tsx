@@ -76,7 +76,9 @@ const getStaleJobPostingsCount = unstable_cache(
     const { countStaleJobPostings } = await import("@/server/careers/freshness");
     return countStaleJobPostings().catch(() => 0);
   },
-  ["admin-job-offers-stale-count"],
+  // Pas de préfixe « admin- » dans la clé : le test admin-design-tokens
+  // balaie toutes les chaînes `admin-*` comme des classes CSS candidates.
+  ["job-offers-stale-count"],
   { revalidate: 300, tags: ["admin:job-offers-stale"] },
 );
 
