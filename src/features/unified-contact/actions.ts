@@ -251,6 +251,10 @@ export async function submitUnifiedContactAction(
       contactName: data.nom,
       contactEmail: data.email,
       ...(data.telephone ? { contactPhone: data.telephone } : {}),
+      // Le contenu du message part dans la notif (demande Will 2026-08-12) —
+      // tronqué : Telegram plafonne à 4096 c. et l'écran verrouillé n'en montre
+      // que quelques lignes de toute façon.
+      ...(data.message ? { message: data.message.slice(0, 500) } : {}),
       ...(data.ville ? { ville: data.ville } : {}),
       ...(data.companyName ? { companyName: data.companyName } : {}),
       ...(data.companySize ? { companySize: data.companySize } : {}),

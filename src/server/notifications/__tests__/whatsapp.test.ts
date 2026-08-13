@@ -113,11 +113,24 @@ describe("shouldNotifyWhatsApp", () => {
     }
   });
 
+  // Exception demandée par Will le 2026-08-12 : les candidatures à l'offre
+  // monteur vidéo freelance (catégorie dédiée, triée par slug au call-site)
+  // arrivent SUR WhatsApp — sans rouvrir la porte aux autres candidatures.
+  it("vrai pour la candidature monteur vidéo (demande Will 2026-08-12)", () => {
+    expect(shouldNotifyWhatsApp("VIDEO_EDITOR_APPLICATION_RECEIVED")).toBe(true);
+  });
+
+  // Même décision pour les candidatures commerciales du tunnel Mémorial de
+  // l'Isère (Will 2026-08-12) : campagne active, catégorie dédiée, en-tête 🧲.
+  it("vrai pour la candidature commerciale (demande Will 2026-08-12)", () => {
+    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(true);
+  });
+
   // 🔴 EXCLUSIONS EXPLICITES — décision de Will du 2026-08-09, pas un oubli.
   // Ce test est là pour ROUGIR si quelqu'un rajoute une de ces catégories en
   // croyant combler un trou. Si le besoin change, il faut le lui redemander et
   // modifier ce test en connaissance de cause.
-  it("faux pour les candidatures (retirées le 2026-08-09 — volume)", () => {
+  it("faux pour les candidatures génériques (retirées le 2026-08-09 — volume)", () => {
     for (const c of ["JOB_APPLICATION_RECEIVED", "RECRUITMENT_RECEIVED"] as const) {
       expect(shouldNotifyWhatsApp(c), c).toBe(false);
     }

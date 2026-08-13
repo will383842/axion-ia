@@ -130,6 +130,14 @@ import {
 import { QuoteReminderEmail, quoteReminderSubject } from "./quote-reminder";
 import { QuoteExpiredEmail, quoteExpiredSubject } from "./quote-expired";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
+import {
+  CandidatureCommercialConfirmeeEmail,
+  candidatureCommercialConfirmeeSubject,
+} from "./candidature-commercial-confirmee";
+import {
+  CandidatureCommercialRecapEmail,
+  candidatureCommercialRecapSubject,
+} from "./candidature-commercial-recap";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
@@ -358,6 +366,15 @@ const TEMPLATES: TemplateMap = {
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
   "facture-envoi": { subject: factureEnvoiSubject, component: FactureEnvoiEmail },
+  // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12)
+  "candidature-commercial-confirmee": {
+    subject: candidatureCommercialConfirmeeSubject,
+    component: CandidatureCommercialConfirmeeEmail,
+  },
+  "candidature-commercial-recap": {
+    subject: candidatureCommercialRecapSubject,
+    component: CandidatureCommercialRecapEmail,
+  },
 };
 
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */

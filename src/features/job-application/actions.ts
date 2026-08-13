@@ -17,6 +17,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
+import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 import { adminPath } from "@/lib/admin-path";
@@ -159,6 +160,7 @@ export async function submitJobApplicationAction(
     where: { id: d.offerId },
     select: {
       id: true,
+      slug: true,
       titleFr: true,
       category: true,
       status: true,
@@ -254,9 +256,12 @@ export async function submitJobApplicationAction(
       },
     });
 
-    // 9. Telegram
+    // 9. Telegram (+ WhatsApp pour l'offre monteur vidéo) — catégorie séparée
+    // pour cette offre : salon 🎬 dédié, pas mélangée aux autres candidatures.
     await notify({
-      category: "JOB_APPLICATION_RECEIVED",
+      category: isVideoEditorOffer(offer.slug)
+        ? "VIDEO_EDITOR_APPLICATION_RECEIVED"
+        : "JOB_APPLICATION_RECEIVED",
       payload: {
         applicationId: app.id,
         contactName: `${d.firstName} ${d.lastName}`.trim(),
@@ -266,6 +271,7 @@ export async function submitJobApplicationAction(
         offerCategory: offer.category,
         ...(d.city ? { city: d.city } : {}),
         ...(d.salaryExpectation ? { salaryExpectation: d.salaryExpectation } : {}),
+        ...(d.motivation ? { motivationExcerpt: d.motivation.slice(0, 500) } : {}),
         hasCv: Boolean(cvStoragePath),
         hasPhoto: Boolean(photoStoragePath),
         locale,

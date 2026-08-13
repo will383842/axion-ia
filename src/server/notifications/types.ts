@@ -25,6 +25,7 @@ export type NotificationEvent =
         budgetIndicative?: string;
         timingWeeks?: string;
         subType?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -42,6 +43,7 @@ export type NotificationEvent =
         subType?: string;
         budgetIndicative?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -57,6 +59,7 @@ export type NotificationEvent =
         companyName?: string;
         subType?: string;
         urgency?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -71,6 +74,7 @@ export type NotificationEvent =
         ville?: string;
         companyName?: string;
         scope?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -86,6 +90,7 @@ export type NotificationEvent =
         companyName?: string;
         budget?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -104,6 +109,7 @@ export type NotificationEvent =
         contactPhone?: string;
         outlet?: string;
         deadline?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -116,12 +122,18 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         position?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
     }
   | {
-      category: "JOB_APPLICATION_RECEIVED";
+      // `VIDEO_EDITOR_APPLICATION_RECEIVED` = même payload, mais catégorie SÉPARÉE
+      // (demande Will 2026-08-12) : les candidatures à l'offre monteur vidéo
+      // freelance ont leur propre groupe Telegram + doublon WhatsApp, pour ne pas
+      // être mélangées aux autres candidatures. Le choix de catégorie se fait au
+      // call-site sur le slug de l'offre (cf. `videoEditorNotificationCategory`).
+      category: "JOB_APPLICATION_RECEIVED" | "VIDEO_EDITOR_APPLICATION_RECEIVED";
       payload: {
         applicationId: string;
         contactName: string;
@@ -131,8 +143,34 @@ export type NotificationEvent =
         offerCategory?: string;
         city?: string;
         salaryExpectation?: string;
+        /** Début du texte de motivation (tronqué côté émetteur). */
+        motivationExcerpt?: string;
         hasCv: boolean;
         hasPhoto?: boolean;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
+      // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
+      // autres candidatures : salon Telegram dédié 🧲 + doublon WhatsApp, comme
+      // le monteur vidéo. Message volontairement COURT : les 6 champs qui
+      // permettent de juger depuis le téléphone, le reste vit en console.
+      category: "COMMERCIAL_APPLICATION_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        ville?: string;
+        /** Zone souhaitée (labels lisibles) ou « Mobile — peu importe ». */
+        zone?: string;
+        /** Années d'expérience B2B (« 3-5 ans ») ou « aucune ». */
+        b2bYears?: string;
+        /** Disponibilité annoncée (« septembre 2026 »). */
+        availability?: string;
+        /** Utilise déjà l'IA au quotidien. */
+        usesAi: boolean;
         locale: "fr" | "en";
       };
     }
@@ -169,6 +207,7 @@ export type NotificationEvent =
         postalCode: string;
         /** Début de la description d'activité (aperçu). */
         activityExcerpt?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -182,6 +221,7 @@ export type NotificationEvent =
         contactPhone?: string;
         eventName?: string;
         eventDate?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -194,6 +234,7 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         firm?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -207,6 +248,7 @@ export type NotificationEvent =
         contactPhone?: string;
         ville?: string;
         companyName?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -263,6 +305,8 @@ export type NotificationEvent =
         /** Champs enrichis depuis l'API Calendly (2026-08-09). */
         inviteePhone?: string;
         cancelUrl?: string;
+        /** Réponses libres du formulaire Calendly (hors téléphone), « Q : R » concaténées. */
+        answersText?: string;
       };
     }
   | {

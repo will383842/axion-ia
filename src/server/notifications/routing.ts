@@ -25,6 +25,8 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   PRESS_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
   RECRUITMENT_RECEIVED: { channels: ["telegram"], severity: "info" },
   JOB_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  VIDEO_EDITOR_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
+  COMMERCIAL_APPLICATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   REVIEW_SUBMITTED: { channels: ["telegram"], severity: "info" },
   // Demande de tournage podcast (2026-07-21) — lead entrant, Telegram groupe
   // « Messages ». `rateLimitPerHour` volontairement absent : le volume attendu
@@ -96,15 +98,18 @@ export function shouldDispatchAsync(severity: NotificationSeverity): boolean {
 // grossier — le groupe « Messages » recevait 12 catégories très différentes
 // (une candidature, un investisseur et une demande de devis dans le même fil),
 // et le groupe « RDV » mélangeait Calendly avec 6 catégories du tunnel de
-// réservation payante éteint. On passe à 8 groupes thématiques.
+// réservation payante éteint. On passe à 8 groupes thématiques (+ le salon 🎬
+// monteur vidéo ajouté le 2026-08-12, dédié à une seule offre).
 //
 // DEUX BOTS : le groupe 📅 Calendly a son propre bot (`TELEGRAM_CALENDLY_BOT_TOKEN`),
-// les 7 autres gardent le bot historique. Cf. `resolveTelegramTarget()` plus bas,
+// tous les autres gardent le bot historique. Cf. `resolveTelegramTarget()` plus bas,
 // qui traite (bot, salon) comme un COUPLE — ne jamais les résoudre séparément.
 
 export type TelegramGroup =
   | "calendly"
   | "candidatures"
+  | "monteur-video"
+  | "commercial-memo"
   | "presse"
   | "investisseurs"
   | "interventions"
@@ -132,6 +137,18 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // 💼 Candidatures — offres d'emploi publiées ET candidature spontanée/commerciale.
   JOB_APPLICATION_RECEIVED: "candidatures",
   RECRUITMENT_RECEIVED: "candidatures",
+
+  // 🎬 Monteur vidéo — les candidatures à l'offre `monteur-video-freelance-distance`
+  // SEULEMENT, dans leur propre salon (demande Will 2026-08-12 : « cette annonce
+  // seule, pas mélangée avec les autres offres »). Le tri par offre se fait au
+  // call-site (`videoEditorNotificationCategory`), pas ici.
+  VIDEO_EDITOR_APPLICATION_RECEIVED: "monteur-video",
+
+  // 🧲 Commercial Mémo — les candidatures commerciales du tunnel sans CV
+  // `/devenir-commercial-ia/candidature` (annonce Mémorial de l'Isère) SEULEMENT,
+  // dans leur propre salon (même logique que le monteur vidéo : une campagne de
+  // recrutement = un fil, jamais mélangée aux autres candidatures).
+  COMMERCIAL_APPLICATION_RECEIVED: "commercial-memo",
 
   // 📰 Presse
   PRESS_REQUEST_SUBMITTED: "presse",
@@ -240,6 +257,17 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // ⭐ Avis client à modérer.
   "REVIEW_SUBMITTED",
 
+  // 🎬 Candidatures monteur vidéo — demande EXPLICITE de Will (2026-08-12) pour
+  // CETTE offre seulement. Ce n'est PAS un retour en arrière sur l'exclusion des
+  // candidatures (ci-dessous) : `JOB_APPLICATION_RECEIVED` reste hors WhatsApp.
+  // CallMeBot = un seul fil → la séparation passe par l'en-tête 🎬 MONTEUR VIDÉO.
+  "VIDEO_EDITOR_APPLICATION_RECEIVED",
+
+  // 🧲 Candidatures commerciales (tunnel Mémorial de l'Isère) — même décision
+  // que le monteur vidéo (Will 2026-08-12) : campagne active à fort enjeu, le
+  // doublon WhatsApp est voulu. Séparation par l'en-tête 🧲 COMMERCIAL MÉMO.
+  "COMMERCIAL_APPLICATION_RECEIVED",
+
   // ── HORS WhatsApp, sur décision explicite de Will (2026-08-09) ─────────────
   // Ne pas les remettre sans le lui redemander — leur absence est un CHOIX, pas
   // un oubli, et `__tests__/whatsapp.test.ts` la verrouille explicitement.
@@ -268,6 +296,8 @@ export function shouldNotifyWhatsApp(category: NotificationCategory): boolean {
 const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   calendly: "TELEGRAM_CHAT_ID_CALENDLY",
   candidatures: "TELEGRAM_CHAT_ID_CANDIDATURES",
+  "monteur-video": "TELEGRAM_CHAT_ID_MONTEUR_VIDEO",
+  "commercial-memo": "TELEGRAM_CHAT_ID_COMMERCIAL_MEMO",
   presse: "TELEGRAM_CHAT_ID_PRESSE",
   investisseurs: "TELEGRAM_CHAT_ID_INVESTISSEURS",
   interventions: "TELEGRAM_CHAT_ID_INTERVENTIONS",
@@ -288,6 +318,20 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
 const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   calendly: ["TELEGRAM_CHAT_ID_RDV", "TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   candidatures: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
+  // Tant que Will n'a pas créé le salon dédié, ces candidatures retombent dans
+  // 💼 Candidatures — exactement là où elles arrivaient avant cette séparation.
+  "monteur-video": [
+    "TELEGRAM_CHAT_ID_CANDIDATURES",
+    "TELEGRAM_CHAT_ID_MESSAGES",
+    "TELEGRAM_CHAT_ID",
+  ],
+  // Même repli que le monteur vidéo : tant que le salon 🧲 n'existe pas, ces
+  // candidatures retombent dans 💼 Candidatures — rien ne se perd.
+  "commercial-memo": [
+    "TELEGRAM_CHAT_ID_CANDIDATURES",
+    "TELEGRAM_CHAT_ID_MESSAGES",
+    "TELEGRAM_CHAT_ID",
+  ],
   presse: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   investisseurs: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   interventions: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
@@ -326,7 +370,7 @@ export interface TelegramTarget {
  */
 export function resolveTelegramTarget(group: TelegramGroup): TelegramTarget | undefined {
   const mainBot = envValue("TELEGRAM_BOT_TOKEN");
-  // Seul le groupe Calendly a un bot dédié ; les 7 autres partagent l'historique.
+  // Seul le groupe Calendly a un bot dédié ; tous les autres partagent l'historique.
   const dedicatedBot = group === "calendly" ? envValue("TELEGRAM_CALENDLY_BOT_TOKEN") : mainBot;
   const dedicatedChat = envValue(CHAT_ID_ENV[group]);
 

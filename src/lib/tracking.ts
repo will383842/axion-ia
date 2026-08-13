@@ -58,7 +58,13 @@ export type FunnelEvent =
   // mieux que le temps passé sur la page.
   | "Landing Viewed"
   | "Landing Video Played"
-  | "Landing CTA Clicked";
+  | "Landing CTA Clicked"
+  // Tunnel candidature commerciale (2026-08-13) — analytics d'abandon :
+  // un « Step » par écran atteint, pour voir OÙ les candidats décrochent.
+  // Anonyme : le nom d'écran seulement, jamais de donnée personnelle.
+  | "Candidature Started"
+  | "Candidature Step"
+  | "Candidature Completed";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).
@@ -85,7 +91,7 @@ export interface FunnelProps {
   requiresNda?: "yes" | "no";
   /** Bucket prix (ne PAS envoyer prix exact pour anonymat). */
   priceBucket?: "lt-500" | "500-1000" | "1000-2000" | "2000-5000" | "gt-5000";
-  // ── Simulateur de gains v2 ───────────────────────────────────────────────
+  // ── Simulateur de gains v2 + tunnel candidature (« Candidature Step ») ──
   /** Identifiant de l'écran répondu (`sector`, `functions`, `volume:…`). */
   step?: string;
   /** Rang de l'écran dans le parcours, à partir de 1. */
