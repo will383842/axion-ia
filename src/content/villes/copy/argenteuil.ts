@@ -210,7 +210,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement.",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your Argenteuil business and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Val-d'Oise traders and craftspeople to construction, services and logistics SMEs in the Seine–Saint-Lazare basin.",
@@ -848,7 +848,7 @@ export const ARGENTEUIL_COPY: VilleCopy = {
           },
           {
             q: "Que se passe-t-il si je ne vois pas de résultat concret après la première séance ?",
-            a: "Si après la première séance vous n'avez pas identifié au moins un cas d'usage où l'IA vous fait gagner du temps, séance remboursée intégralement. Engagement qualité Axion-IA.",
+            a: "",
           },
         ],
         guarantees:

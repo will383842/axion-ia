@@ -205,7 +205,7 @@ const FLASH_BENEFITS: ReadonlyArray<AuditBenefit> = [
     titleFr: "Plan d'action sous 48 h",
     titleEn: "Action plan within 48 h",
     bodyFr:
-      "Rapport synthèse sous 48 h ouvrées : outils recommandés, 3-5 quick-wins activables maintenant, estimation gain horaire mensuel. Document directement actionnable.",
+      "Rapport synthèse sous 48 h ouvrées en règle générale — remis sous 7 jours au plus tard : outils recommandés, 3-5 quick-wins activables maintenant, estimation gain horaire mensuel. Document directement actionnable.",
     bodyEn:
       "Synthesis report within 48 business hours: recommended tools, 3-5 quick-wins activable now, monthly hourly gain estimate. Directly actionable document.",
   },
@@ -688,8 +688,8 @@ export const AUDIT_DETAIL_CONFIGS: Record<AuditTier, AuditDetailConfig> = {
       formatEn: "On site, at your premises",
       audienceFr: "TPE 1-19 salariés · artisans · commerçants · indépendants",
       audienceEn: "Small businesses 1-19 staff · artisans · retailers · freelancers",
-      deliverableFr: "Rapport 8-15 pages + prompts testés, sous 48 h",
-      deliverableEn: "8-15 page report + tested prompts, within 48 h",
+      deliverableFr: "Rapport 8-15 pages + prompts testés, sous 48 h ouvrées (7 jours max)",
+      deliverableEn: "8-15 page report + tested prompts, within 48 working hours (7 days max)",
     },
     promiseFr: `Audit IA complet pour TPE, artisan ou commerçant. Une journée complète sur place : on cartographie toute votre activité, on teste l'IA en live sur vos vrais cas, et on livre un plan d'action chiffré sous 48 h. Réservation directe au calendrier (${formatAmount(PRICE_FLASH_ONSITE, "fr", { compact: true })}).`,
     promiseEn: `Complete AI audit for a small business, artisan or retailer. One full day on site: we map your entire activity, test AI live on your real cases, and deliver a costed action plan within 48 h. Direct calendar booking (${formatAmount(PRICE_FLASH_ONSITE, "en", { compact: true })}).`,

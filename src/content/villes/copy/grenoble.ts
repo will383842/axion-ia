@@ -180,7 +180,7 @@ export const GRENOBLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, mais jamais activée à ce jour sur nos missions grenobloises).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Aucun lock-in technologique : votre plan d'action est exécutable avec n'importe quel prestataire ou en interne.",
       },
       en: {
         hero: "Axion-IA's AI audit in Grenoble precisely maps what can be automated in your processes — whether documentary R&D at a CEA-Leti spin-off, production planning at an industrial equipment manufacturer or lead qualification at an Inovallée software editor — and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from deep-tech micro-businesses to large industrial group AI leadership.",

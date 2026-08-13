@@ -176,7 +176,7 @@ export const MARSEILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la Région Sud ou par vos équipes en interne, sans contrat de suivi obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais activée à ce jour).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la Région Sud ou par vos équipes en interne, sans contrat de suivi obligatoire.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated in your Marseille organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Marseille commerce micro-businesses to large logistics groups at the Vieux-Port or Joliette district.",
