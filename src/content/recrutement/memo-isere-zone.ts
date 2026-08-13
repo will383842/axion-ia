@@ -139,7 +139,7 @@ export const MEMO_ZONE_CLUSTERS: readonly ZoneCluster[] = [
   },
   // EPCI 200070431
   {
-    label: "Sud-Grésivaudan (zone du Mémo)",
+    label: "Sud-Grésivaudan",
     communes: [
       "Auberives-en-Royans",
       "Beaulieu",

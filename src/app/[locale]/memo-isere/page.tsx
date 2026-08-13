@@ -328,7 +328,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "paiement",
       question: "Comment et quand suis-je payé ?",
       answer:
-        "Tu factures ta commission en tant qu'indépendant dès que la vente est signée et facturée au client. 500 € par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
+        "En tant qu'indépendant, tu factures ta commission à Axion-IA une fois que le client a réglé sa facture — pas à la signature. C'est la règle du jeu de l'apport d'affaires : la commission est due quand l'argent est encaissé. 500 € par journée de formation vendue, pourcentage sur les audits et intégrations — le tableau de suivi te montre tes ventes et tes commissions en temps réel." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
     },
     {
       id: "engagement",
@@ -340,7 +340,7 @@ export default async function MemoIserePage({ params }: Props) {
       id: "candidater",
       question: "Comment candidater ?",
       answer:
-        "En 2 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te rappelle vite pour en parler de vive voix.",
+        "En 3 minutes chrono : zéro CV demandé, et la lettre de motivation ? On a remplacé cette vieillerie par un message libre 😉 — raconte-nous qui tu es, ce que tu connais de ton coin et pourquoi ton secteur, c'est toi. On te rappelle vite pour en parler de vive voix.",
     },
   ];
 
@@ -443,7 +443,9 @@ export default async function MemoIserePage({ params }: Props) {
                     value: "500 €", // price-exempt: commission recrutement
                   } /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
                   { label: "Plafond de revenus", value: "Aucun" },
-                  { label: "Communes au choix", value: String(MEMO_ZONE_TOTAL) },
+                  // On choisit un SECTEUR (13 territoires), pas une commune
+                  // (cadrage Will 2026-08-13 — une commune seule est trop petite).
+                  { label: "Secteurs au choix", value: String(MEMO_ZONE_CLUSTERS.length) },
                 ].map((f) => (
                   <div
                     key={f.label}
@@ -462,7 +464,7 @@ export default async function MemoIserePage({ params }: Props) {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <CtaCandidature track="memo-hero-apply" />
                 <p className="text-fg-muted text-sm">
-                  2 minutes chrono ⏱️ · zéro CV, zéro lettre de motivation — juste un message qui te
+                  3 minutes chrono ⏱️ · zéro CV, zéro lettre de motivation — juste un message qui te
                   ressemble
                 </p>
               </div>
@@ -537,7 +539,7 @@ export default async function MemoIserePage({ params }: Props) {
                     v: "500 €", // price-exempt: commission recrutement
                     l: "par jour vendu",
                   } /* price-exempt: commission recrutement */,
-                  { v: String(MEMO_ZONE_TOTAL), l: "communes au choix" },
+                  { v: String(MEMO_ZONE_CLUSTERS.length), l: "secteurs au choix" },
                   { v: totalAll > 0 ? `${totalAll} avis` : "4,9/5", l: "clients conquis" },
                 ].map((s) => (
                   <div key={s.l}>
@@ -765,8 +767,8 @@ export default async function MemoIserePage({ params }: Props) {
                   Icon: Rocket,
                   title: "Tu candidates",
                   description:
-                    "2 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On t'appelle ensuite pour faire connaissance.",
-                  stat: { figure: "2 min", label: "pour candidater" },
+                    "3 minutes chrono : pas de CV, pas de lettre de motivation à l'ancienne — un message libre pour te présenter. On t'appelle ensuite pour faire connaissance.",
+                  stat: { figure: "3 min", label: "pour candidater" },
                 },
                 {
                   accent: "primary" as const,
@@ -782,7 +784,7 @@ export default async function MemoIserePage({ params }: Props) {
                   title: "Tu choisis TA zone",
                   description:
                     "De Grenoble à Lyon, de Valence à Die : tu prends le secteur que tu connais — des dizaines de communes, à toi tant qu'il est disponible.",
-                  stat: { figure: "474", label: "communes au choix" },
+                  stat: { figure: String(MEMO_ZONE_CLUSTERS.length), label: "secteurs au choix" },
                 },
                 {
                   accent: "plum" as const,
@@ -926,33 +928,57 @@ export default async function MemoIserePage({ params }: Props) {
         description="Apporteur d'affaires aujourd'hui, responsable demain : les meilleurs commerciaux de chaque zone prennent l'animation de leur secteur, puis du réseau."
       >
         <Container>
+          {/* Images : pool Unsplash déjà CURÉ du site uniquement (careerImage),
+              bande en tête de carte comme les blocs territoires — retour Will
+              2026-08-13. Crédit photographe affiché sous chaque carte. */}
           <ol className="mx-auto grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               {
                 step: "Aujourd'hui",
                 title: "Commercial indépendant",
                 text: "Tu vends sur ta zone, tu encaisses tes commissions.",
+                img: careerImage("business-developer-ia"),
+                alt: "Commercial indépendant en rendez-vous avec un dirigeant d'entreprise",
               },
               {
                 step: "Ensuite",
                 title: "Responsable de secteur",
                 text: "Tu animes les commerciaux de ton secteur et touches sur leurs ventes.",
+                img: careerImage("customer-success-ia"),
+                alt: "Responsable de secteur qui anime son équipe de commerciaux",
               },
               {
                 step: "Demain",
                 title: "Responsable réseau",
                 text: "Tu structures la force de vente sur plusieurs départements.",
+                img: careerImage("responsable-reseau-commercial"),
+                alt: "Responsable réseau qui structure la force de vente sur plusieurs départements",
               },
             ].map((s) => (
-              <li
-                key={s.title}
-                className="border-border bg-paper shadow-subtle rounded-2xl border p-6"
-              >
-                <p className="text-terracotta text-xs font-semibold tracking-wide uppercase">
-                  {s.step}
-                </p>
-                <p className="mt-1 font-serif text-lg font-semibold">{s.title}</p>
-                <p className="text-fg-soft mt-2 text-sm leading-relaxed">{s.text}</p>
+              <li key={s.title} className="flex h-full flex-col">
+                <div className="border-border bg-paper shadow-subtle flex flex-1 flex-col overflow-hidden rounded-2xl border">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    <Image
+                      src={s.img.url}
+                      alt={s.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="text-terracotta text-xs font-semibold tracking-wide uppercase">
+                      {s.step}
+                    </p>
+                    <p className="mt-1 font-serif text-lg font-semibold">{s.title}</p>
+                    <p className="text-fg-soft mt-2 text-sm leading-relaxed">{s.text}</p>
+                  </div>
+                </div>
+                <UnsplashCredit
+                  photographerName={s.img.byName}
+                  photographerUrl={s.img.byUrl}
+                  className="text-right"
+                />
               </li>
             ))}
           </ol>
@@ -979,9 +1005,10 @@ export default async function MemoIserePage({ params }: Props) {
               </h2>
               <blockquote data-speakable className="text-mocha-fg/85 mt-5 text-lg leading-relaxed">
                 « Les dirigeants me disent tous la même chose : ils veulent passer à l’IA, mais
-                personne ne vient les voir. De Grenoble à Lyon, de Valence à Die, c’est chez nous —
-                je cherche des gens du coin, qui connaissent leur territoire et qui veulent être
-                payés à la hauteur de ce qu’ils apportent. »
+                personne ne vient les voir. Je cherche des gens du coin, qui connaissent leur
+                territoire et qui veulent être payés à la hauteur de ce qu’ils apportent. Le
+                corridor, c’est chez nous — mais Axion-IA intervient partout en France et dans toute
+                la francophonie : le terrain ne manquera jamais. »
               </blockquote>
               <p className="mt-5 font-semibold">Williams Jullin</p>
               <p className="text-mocha-fg/70 text-sm">Fondateur d’Axion-IA · Grenoble</p>
