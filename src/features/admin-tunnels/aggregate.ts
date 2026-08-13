@@ -20,6 +20,9 @@
  * populations et rendre les deux taux faux à la fois.
  */
 
+import { getVolumeDef } from "@/content/roi/model/functions";
+import type { VolumeKey } from "@/content/roi/model/types";
+
 /** Projection minimale d'une ligne de `funnel_events`. */
 export type LigneTunnel = {
   funnel: string;
@@ -390,4 +393,36 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
       .map(([cle, rapports]) => ({ cle, rapports }))
       .sort((x, y) => y.rapports - x.rapports),
   };
+}
+
+/**
+ * Libellé lisible d'un écran du questionnaire.
+ *
+ * Les balises portent l'identifiant technique (`volume:factures_emises_mois`).
+ * L'afficher tel quel dans la console donnait « 3. volume:ventes » en valeur
+ * mise en avant de la carte « écran le plus coûteux » — exact, et illisible.
+ *
+ * Repli volontaire sur l'identifiant brut : un écran ajouté au questionnaire et
+ * oublié ici doit rester VISIBLE, quitte à être moche. Le masquer ferait
+ * disparaître une ligne d'abandon sans que personne ne s'en aperçoive.
+ */
+export function libelleEcran(step: string): string {
+  const fixes: Readonly<Record<string, string>> = {
+    sector: "Secteur d'activité",
+    headcount: "Effectif",
+    maturity: "Maturité numérique",
+    functions: "Fonctions concernées",
+  };
+  const fixe = fixes[step];
+  if (fixe) return fixe;
+
+  if (step.startsWith("volume:")) {
+    const def = getVolumeDef(step.slice("volume:".length) as VolumeKey);
+    if (def) {
+      const pluriel = def.unitFr[1] ?? def.unitFr[0] ?? step;
+      return `${pluriel.charAt(0).toUpperCase()}${pluriel.slice(1)} (par ${def.period})`;
+    }
+  }
+
+  return step;
 }

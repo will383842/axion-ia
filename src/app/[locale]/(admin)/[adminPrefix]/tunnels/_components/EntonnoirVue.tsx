@@ -47,13 +47,20 @@ export function EntonnoirVue({ entonnoir }: { entonnoir: Entonnoir }): React.Rea
                   </span>
                 </div>
 
+                {/* Jetons imposés par la charte de la console : accent
+                    terracotta sur sa piste éclaircie. La version initiale
+                    utilisait le bleu « info » sur un gris neutre — deux
+                    couleurs étrangères à la palette, qui juraient avec le reste
+                    de l'écran. Le commentaire de `--color-admin-accent-track`
+                    dans admin.css est explicite : « jamais un gris étranger ».
+                    Même forme que la jauge de couverture content-gen. */}
                 <div
-                  className="mt-[var(--space-admin-1)] h-3 w-full overflow-hidden rounded-[var(--radius-admin-sm)] bg-[color:var(--color-admin-neutral-soft)]"
+                  className="mt-[var(--space-admin-1)] h-3 w-full overflow-hidden rounded-full bg-[color:var(--color-admin-accent-track)]"
                   role="img"
                   aria-label={`${etape.libelle} : ${etape.sessions} sessions, ${etape.partDepuisBase} % de la base`}
                 >
                   <div
-                    className="h-full bg-[color:var(--color-admin-info)]"
+                    className="h-full rounded-full bg-[color:var(--color-admin-accent)]"
                     style={{ width: `${Math.max(etape.partDepuisBase, 0.5)}%` }}
                   />
                 </div>
