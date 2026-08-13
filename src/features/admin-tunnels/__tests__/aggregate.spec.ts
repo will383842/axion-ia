@@ -7,7 +7,7 @@
 // nombre plausible mais mensonger.
 
 import { describe, it, expect } from "vitest";
-import { agregerTunnels, type LigneTunnel } from "@/features/admin-tunnels/aggregate";
+import { agregerTunnels, libelleEcran, type LigneTunnel } from "@/features/admin-tunnels/aggregate";
 
 const T0 = new Date("2026-08-01T10:00:00.000Z");
 
@@ -317,5 +317,34 @@ describe("agregerTunnels — totaux de tête", () => {
     expect(s.questionnairesTermines).toBe(3);
     expect(s.rapportsDemandes).toBe(2);
     expect(s.rappelsDemandes).toBe(1);
+  });
+});
+
+describe("libelleEcran", () => {
+  it("traduit les écrans de cadrage", () => {
+    expect(libelleEcran("sector")).toBe("Secteur d'activité");
+    expect(libelleEcran("headcount")).toBe("Effectif");
+    expect(libelleEcran("maturity")).toBe("Maturité numérique");
+    expect(libelleEcran("functions")).toBe("Fonctions concernées");
+  });
+
+  it("traduit une question de volume à partir de sa définition", () => {
+    // L'identifiant brut « volume:factures_emises_mois » s'affichait tel quel
+    // en valeur mise en avant de la carte « écran le plus coûteux ».
+    expect(libelleEcran("volume:factures_emises_mois")).toBe("Factures (par mois)");
+  });
+
+  it("RETOMBE sur l'identifiant brut plutôt que de masquer un écran inconnu", () => {
+    // Un écran ajouté au questionnaire et oublié ici doit rester VISIBLE,
+    // quitte à être moche : le masquer ferait disparaître une ligne d'abandon
+    // sans que personne ne s'en aperçoive.
+    expect(libelleEcran("volume:cle_inexistante")).toBe("volume:cle_inexistante");
+    expect(libelleEcran("ecran_futur")).toBe("ecran_futur");
+  });
+
+  it("ne rend jamais une chaîne vide", () => {
+    for (const s of ["sector", "volume:factures_emises_mois", "inconnu", ""]) {
+      expect(typeof libelleEcran(s)).toBe("string");
+    }
   });
 });
