@@ -55,7 +55,7 @@ export const NANTERRE_COPY: VilleCopy = {
         whyHere: [
           "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
           "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
-          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 30 personnes sans bloquer toute l'organisation.",
+          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
           "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
           "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
           "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
@@ -90,13 +90,13 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
             detail:
               "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 30 personnes)",
+            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 15 personnes)",
             detail:
               "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
           },
@@ -120,7 +120,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",
@@ -147,7 +147,7 @@ export const NANTERRE_COPY: VilleCopy = {
         whyHere: [
           "Nanterre concentre des sièges financiers et tertiaires majeurs — Société Générale, Natixis, ainsi que VINCI (QG mondial « L'Archipel », 74 000 m² près de la gare RER E Nanterre-La Folie) et Faurecia Sièges d'Automobile au parc des Champs-Pierreux : autant d'équipes que nous formons par métier, finance, conseil ou production.",
           "Toute la commune est couverte en présentiel : Nanterre-Préfecture, ZAC Seine Arche, secteur L'Archipel/La Folie, parc des Champs-Pierreux et l'éco-quartier des Groues (76 hectares en chantier, appelés à accueillir 12 000 emplois).",
-          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 30 personnes sans bloquer toute l'organisation.",
+          "Le format quatre heures et le format Essentielle conviennent aux PME du 92 en structuration, souvent sans ressource DSI dédiée, qui veulent former 2 à 15 personnes sans bloquer toute l'organisation.",
           "Le format Conférence s'adresse aux grandes plénières des sièges de la frange ouest de La Défense ; le format Dirigeants permet un cadrage en huis-clos pour les comités de direction et directions Transformation du bassin Puteaux–Courbevoie–Rueil-Malmaison.",
           "La proximité de l'Université Paris Nanterre et du laboratoire EconomiX (UMR 7235 CNRS, avenue de la République) alimente un vivier data, économie et gestion : nous ajustons les démos aux usages d'analyse et de reporting des cabinets et services études du 92.",
           "Vocabulaire calibré sur votre secteur dominant — activités financières et assurances, sièges sociaux et conseil, informatique, R&D : aucune session générique recyclée d'un client à l'autre.",
@@ -182,13 +182,13 @@ export const NANTERRE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "TPE",
-            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 30 personnes)",
+            price: "Formation 4 heures ({{price:intervention-4h|flat}}, 2 à 15 personnes)",
             detail:
               "Pour indépendants, jeunes structures des Groues et petites équipes de Nanterre-Préfecture : une demi-journée pour installer et prendre en main les premiers outils IA sur les postes, sans bloquer la journée entière.",
           },
           {
             sizeLabel: "PME",
-            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 30 personnes)",
+            price: "Format Essentielle ou Gagner du temps (1 journée, 2 à 15 personnes)",
             detail:
               "Le format Essentielle pour poser les bases sur un groupe, ou Gagner du temps pour focaliser une journée sur l'automatisation des tâches répétitives d'un service — commercial, finance, qualité, études.",
           },
@@ -212,7 +212,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quelle taille de groupe pouvez-vous former sur site à Nanterre ?",
-            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 30 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
+            a: "La Formation 4 heures comme les formats journée Essentielle accueillent jusqu'à 15 personnes. Au-delà, le format Conférence avec un schéma plénière puis ateliers en sous-groupes est plus adapté aux grandes plénières des sièges de la frange ouest de La Défense.",
           },
           {
             q: "Les outils installés sur les postes restent-ils utilisables après la session ?",

@@ -52,11 +52,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
   services: {
     interventions: {
       fr: {
-        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 30 personnes.",
+        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
-          "Le format Essentielle (1 jour, 2 à 30 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
+          "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
           "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de TPE/PME et d'ETI dunkerquoises.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
@@ -93,13 +93,13 @@ export const DUNKERQUE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures — {{price:intervention-4h|flat}}",
             detail:
-              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 30 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
+              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 15 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle (1 j) ou Gagner du temps (1 j)",
             detail:
-              "Le format Essentielle (1 jour, 2 à 30 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
+              "Le format Essentielle (1 jour, 2 à 15 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
           },
           {
             sizeLabel: "ETI",
@@ -144,11 +144,11 @@ export const DUNKERQUE_COPY: VilleCopy = {
           "Créneau confirmé dès la validation de la réservation. En cas de problème technique de notre fait le jour de la formation, la session est reportée. Notre engagement porte sur l'opérationnel : chaque participant repart avec ses outils IA installés et configurés pour son usage réel, dans l'objectif d'une autonomie dès le lendemain. Vocabulaire et démos ajustés à votre secteur dunkerquois — portuaire, logistique, maintenance, services — sans session générique recyclée. Chaque livrable intègre une analyse RGPD et AI Act, avec contrôle des données par le client.",
       },
       en: {
-        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 30 personnes.",
+        hero: "Les formations IA Axion-IA à Dunkerque se déroulent sur site, dans vos locaux du Dunkerquois, en formats d'une demi-journée à deux journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — devis, suivi de commandes, planning maintenance, tâches administratives. Williams se déplace sur Dunkerque sous 5 jours ouvrés après validation du devis. Chaque session est calibrée sur les enjeux du bassin : sous-traitance portuaire du Grand Port Maritime, logistique, maintenance industrielle, métallurgie, grande distribution et services aux entreprises. Le format Formation 4 heures démarre à {{price:intervention-4h|flat}} pour des groupes de 2 à 15 personnes.",
         whyHere: [
           "Dunkerque est un terrain de formation prioritaire pour Axion-IA : autour du Grand Port Maritime, premier employeur de la ville, gravitent des centaines de TPE et PME de maintenance, logistique et services dont les équipes ont des cas d'usage IA très concrets à automatiser.",
           "Tout le bassin couvert en présentiel : zone portuaire, Grande-Synthe, Coudekerque-Branche, Leffrinckoucke, Bourbourg, Gravelines, et l'ensemble de la Communauté Urbaine de Dunkerque.",
-          "Le format Essentielle (1 jour, 2 à 30 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
+          "Le format Essentielle (1 jour, 2 à 15 personnes) est conçu pour les structures dunkerquoises de quelques personnes à plusieurs dizaines de collaborateurs : PME de sous-traitance, cabinets de services, ateliers de maintenance, commerces.",
           "Le format Conférence convient aux plénières d'entreprise et aux fournisseurs des donneurs d'ordre industriels du bassin (sidérurgie, aluminium, pétrochimie, gaz industriels).",
           "Le format Dirigeant (1 jour) permet un cadrage en huis-clos pour les comités de direction de TPE/PME et d'ETI dunkerquoises.",
           "Vocabulaire ajusté à votre secteur dominant : activités portuaires, métallurgie, pétrochimie sous-traitée, entreposage, transport. Les démos sont calibrées sur vos données, pas sur des exemples génériques.",
@@ -185,13 +185,13 @@ export const DUNKERQUE_COPY: VilleCopy = {
             sizeLabel: "TPE",
             price: "Formation 4 heures — {{price:intervention-4h|flat}}",
             detail:
-              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 30 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
+              "Pour artisans, sous-traitants et prestataires de services dunkerquois : demi-journée sur site, groupe de 2 à 15 personnes, pour installer et prendre en main les premiers outils IA du quotidien.",
           },
           {
             sizeLabel: "PME",
             price: "Essentielle (1 j) ou Gagner du temps (1 j)",
             detail:
-              "Le format Essentielle (1 jour, 2 à 30 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
+              "Le format Essentielle (1 jour, 2 à 15 personnes) pour le groupe entier, ou Gagner du temps (1 jour) pour cibler un département : devis, suivi commandes, planning maintenance, administratif.",
           },
           {
             sizeLabel: "ETI",

@@ -9,7 +9,7 @@ import {
   AUDIT_TIERS,
   CODAGE_TIERS,
   IMPLEMENTATION_TIERS,
-  INTERVENTION_TIERS,
+  getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
   formatAmount,
   getEntryLabel,
@@ -23,15 +23,18 @@ export function GET() {
   // Sprint 14.10.5 — prix dérivés du SSOT pricing.ts (zéro hardcode).
   // L'ancienne mention « 290-1990 € » audit était OBSOLÈTE (les vrais tiers
   // commencent à 490 €). Range complet du catalogue audit (Flash → ETI).
-  const interventionsEntry = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    "fr",
-  );
-  const interventionsCompact = formatAmount(
-    getTierById(INTERVENTION_TIERS, "intervention-essentielle").priceFlat!,
-    "fr",
-    { compact: true },
-  );
+  // 🔴 2026-08-13 — ces deux valeurs venaient de `INTERVENTION_TIERS`
+  // (« intervention-essentielle », 2 450 €), la génération PRÉCÉDENTE de
+  // l'offre. Les pages `/interventions/*` redirigent vers `/formations` depuis
+  // la migration, mais leurs TARIFS continuaient d'alimenter ce fichier : les
+  // moteurs IA lisaient « Formations IA à partir de 2 450 € HT » alors que le
+  // site affiche 1 200 € (4 h) et 1 900 € (journée). Prix d'entrée doublé pour
+  // quiconque interroge une IA sur nos tarifs.
+  // La source correcte est `FORMATION_PRICE_MATRIX`, celle que servent
+  // /formations, /tarifs et le catalogue.
+  const formationsEntryEur = getFormationCatalogPriceRange().minEur;
+  const interventionsEntry = formatAmount(formationsEntryEur, "fr");
+  const interventionsCompact = formatAmount(formationsEntryEur, "fr", { compact: true });
   // Audit = prix d'entrée « à partir de » : les niveaux Ciblé/PME/ETI sont
   // « à partir de 1 900 € · sur devis » depuis 2026-06-03 (plus de borne haute
   // priceMax → l'ancienne fourchette Flash→PME-max rendait « NaN »).
@@ -90,7 +93,7 @@ Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur 
 ## 5 modules
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
-17 formations IA intra-entreprise sur site (ou distance), 4 paliers durée (4 h à 3 jours), pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
+Formations IA intra-entreprise sur site (ou à distance), de 4 h à 2 jours, pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
 URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/formations/tarifs
 
 ### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
