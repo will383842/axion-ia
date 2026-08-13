@@ -67,6 +67,19 @@ const getUnreadContactsCount = unstable_cache(
   { revalidate: 30, tags: ["admin:contacts-unread"] },
 );
 
+// Pastille « offres d'emploi à republier » (fraîcheur Google for Jobs,
+// 2026-08-13). Cache 5 min — le compteur ne bouge qu'à la republication ou au
+// vieillissement quotidien ; invalidation immédiate via revalidateTag
+// "admin:job-offers-stale" depuis les server actions offres-emploi.
+const getStaleJobPostingsCount = unstable_cache(
+  async (): Promise<number> => {
+    const { countStaleJobPostings } = await import("@/server/careers/freshness");
+    return countStaleJobPostings().catch(() => 0);
+  },
+  ["admin-job-offers-stale-count"],
+  { revalidate: 300, tags: ["admin:job-offers-stale"] },
+);
+
 import {
   getInboxActionCounts,
   EMPTY_INBOX_COUNTS,
@@ -191,6 +204,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Pastilles console Qualiopi (refonte phase 1, 2026-08-01) : signatures en
   // attente + e-mails à valider + alertes non lues. Fail-soft interne → 0.
   let qualiopiCounts: QualiopiNavCounts = COMPTEURS_VIDES;
+  // Pastille « offres d'emploi à republier » (fraîcheur Google for Jobs).
+  let staleJobOffersCount = 0;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -208,6 +223,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       unreadCount,
       inboxActionCounts,
       qualiopiNavCounts,
+      staleJobsCount,
     ] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
@@ -222,6 +238,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       getUnreadContactsCount(),
       getInboxActionCounts(),
       compterQualiopiNav().catch(() => COMPTEURS_VIDES),
+      getStaleJobPostingsCount().catch(() => 0),
     ]);
 
     failedJobsCount = failedCount;
@@ -229,6 +246,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     unreadContactsCount = unreadCount;
     inboxCounts = inboxActionCounts;
     qualiopiCounts = qualiopiNavCounts;
+    staleJobOffersCount = staleJobsCount;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -358,6 +376,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             unreadContactsCount={unreadContactsCount}
             inboxCounts={inboxCounts}
             qualiopiCounts={qualiopiCounts}
+            staleJobOffersCount={staleJobOffersCount}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}

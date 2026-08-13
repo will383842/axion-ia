@@ -137,6 +137,22 @@ export type NotificationEvent =
       };
     }
   | {
+      // Rappel hebdo du cron `formation-crons.offres-fraicheur` : offres
+      // d'emploi dont le datePosted (celui que Google for Jobs voit) dépasse le
+      // seuil de republication. La republication reste HUMAINE (bouton console) —
+      // jamais de bump automatique de date (fausse fraîcheur = spam Google).
+      category: "JOB_OFFERS_STALE";
+      payload: {
+        thresholdDays: number;
+        offers: Array<{
+          title: string;
+          daysOld: number;
+          /** "db" = republiable en console ; "statique" = page code (Claude). */
+          kind: "db" | "statique";
+        }>;
+      };
+    }
+  | {
       category: "REVIEW_SUBMITTED";
       payload: {
         reviewId: string;

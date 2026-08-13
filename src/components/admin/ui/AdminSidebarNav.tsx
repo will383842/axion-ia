@@ -168,6 +168,13 @@ interface AdminSidebarNavProps {
     relances: number;
     total: number;
   };
+  /**
+   * Compteur « offres d'emploi à republier » (fraîcheur Google for Jobs,
+   * 2026-08-13) : offres publiées dont la date de publication effective dépasse
+   * le seuil (45 j). Même philosophie « reste à faire » : descend à zéro après
+   * republication (bouton « Republier » sur la fiche offre).
+   */
+  staleJobOffersCount?: number;
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -186,6 +193,7 @@ export function AdminSidebarNav({
   unreadContactsCount = 0,
   inboxCounts,
   qualiopiCounts,
+  staleJobOffersCount = 0,
   userEmail,
   accountHref,
   logoutAction,
@@ -427,6 +435,12 @@ export function AdminSidebarNav({
     }
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
       return { count: unreadContactsCount, tone: "danger", label: "contacts sans réponse" };
+    }
+    // ── Offres d'emploi à republier (fraîcheur Google for Jobs, 2026-08-13) ──
+    // Égalité EXACTE : la pastille vit sur l'onglet « Offres d'emploi », pas
+    // sur ses sous-routes (/new, /[id]).
+    if (staleJobOffersCount > 0 && href === `${accountHref ?? ""}/offres-emploi`) {
+      return { count: staleJobOffersCount, tone: "warn", label: "offres à republier" };
     }
     // ── Console Qualiopi (refonte phase 1, 2026-08-01) ───────────────────
     // Égalité EXACTE (même précaution que la boîte de réception) : sans elle,

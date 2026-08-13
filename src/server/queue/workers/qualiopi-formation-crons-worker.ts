@@ -78,7 +78,10 @@ export type FormationCronJobType =
   // (émission + envoi = clics admin, jamais automatiques).
   | "formation-crons.plans-recurrents"
   // Parcours vente — expiration des devis à dateValidite (SPEC_PART5 §D.10).
-  | "formation-crons.devis-expiration";
+  | "formation-crons.devis-expiration"
+  // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram hebdo
+  // des offres à republier. AUCUN bump de date automatique (règle Google).
+  | "formation-crons.offres-fraicheur";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -1135,6 +1138,36 @@ async function handleDevisExpiration(): Promise<void> {
   );
 }
 
+/**
+ * Fraîcheur des offres d'emploi (hebdo lundi 08:15). Détecte les offres dont le
+ * datePosted effectif (celui du JSON-LD Google for Jobs) dépasse le seuil et le
+ * rappelle sur Telegram (groupe 💼 Candidatures). La republication reste un clic
+ * HUMAIN en console (« Republier ») — jamais de rafraîchissement automatique de
+ * date sans retouche réelle de l'offre (fausse fraîcheur = pénalité Google).
+ */
+async function handleOffresFraicheur(): Promise<void> {
+  const { listStaleJobPostings, JOB_OFFER_FRESHNESS_MAX_DAYS } =
+    await import("@/server/careers/freshness");
+  const stale = await listStaleJobPostings(new Date());
+  if (stale.length === 0) {
+    console.log("[formation-crons] offres-fraicheur: 0 offre à republier");
+    return;
+  }
+  const { notify } = await import("@/server/notifications");
+  await notify({
+    category: "JOB_OFFERS_STALE",
+    payload: {
+      thresholdDays: JOB_OFFER_FRESHNESS_MAX_DAYS,
+      offers: stale.map((o) => ({ title: o.title, daysOld: o.daysOld, kind: o.kind })),
+    },
+    // Un rappel par jour maximum, même si le job est rejoué (retry BullMQ).
+    dedupKey: `job-offers-stale-${new Date().toISOString().slice(0, 10)}`,
+  });
+  console.log(
+    `[formation-crons] offres-fraicheur: ${stale.length} offre(s) > ${JOB_OFFER_FRESHNESS_MAX_DAYS} j signalée(s) sur Telegram`,
+  );
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -1149,6 +1182,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
+  "formation-crons.offres-fraicheur": handleOffresFraicheur,
 };
 
 /** Logique de dispatch pure (exportée pour les tests). */

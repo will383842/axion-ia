@@ -18,6 +18,7 @@ import {
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
 import type { JobOfferListItem } from "@/features/admin-job-offers/actions";
+import type { StaleJobPosting } from "@/server/careers/freshness";
 import { CAREER_CATEGORIES, careerCategoryLabel } from "@/content/careers/categories";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -49,6 +50,8 @@ interface Props {
   total: number;
   page: number;
   totalPages: number;
+  /** Offres à republier (fraîcheur Google for Jobs) — bandeau d'alerte. */
+  staleOffers?: ReadonlyArray<StaleJobPosting>;
 }
 
 export function JobOffersV2({
@@ -58,6 +61,7 @@ export function JobOffersV2({
   total,
   page,
   totalPages,
+  staleOffers = [],
 }: Props): React.ReactElement {
   const columns: ReadonlyArray<AdminTableColumn<JobOfferListItem>> = [
     { key: "order", header: "Ordre", cell: (o) => o.displayOrder },
@@ -114,6 +118,37 @@ export function JobOffersV2({
           </Link>
         }
       />
+
+      {/* Bandeau fraîcheur Google for Jobs : offres dont la date de publication
+          effective dépasse 45 j. Republier = clic HUMAIN (fiche offre) après
+          avoir vérifié que l'offre est toujours ouverte — jamais automatique
+          (fausse fraîcheur = pénalité Google). Les offres statiques (pages hors
+          DB) se republient par une modif de code. */}
+      {staleOffers.length > 0 ? (
+        <AdminCard className="mb-[var(--space-admin-5)]">
+          <p className="admin-label" role="alert">
+            ⚠️ {staleOffers.length} offre{staleOffers.length > 1 ? "s" : ""} à republier — la date
+            vue par Google dépasse 45 jours, l&apos;offre devient invisible dans les filtres «
+            récent » de Google for Jobs.
+          </p>
+          <ul className="mt-[var(--space-admin-3)] flex flex-col gap-[var(--space-admin-2)]">
+            {staleOffers.map((o) => (
+              <li key={`${o.kind}-${o.slug}`} className="admin-meta-small">
+                {o.kind === "db" && o.id ? (
+                  <Link href={`/fr/${adminPrefix}/offres-emploi/${o.id}`} className="admin-link">
+                    {o.title}
+                  </Link>
+                ) : (
+                  <>
+                    {o.title} <span className="admin-meta-small">(page statique — modif code)</span>
+                  </>
+                )}{" "}
+                · {o.daysOld} jours — si toujours ouverte : relire puis « Republier » sur la fiche.
+              </li>
+            ))}
+          </ul>
+        </AdminCard>
+      ) : null}
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
