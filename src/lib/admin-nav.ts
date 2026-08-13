@@ -1361,6 +1361,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // ── ops & monitoring ─────────────────────────────────────────────────
     { href: `${base}/analytics`, label: "Statistiques & SEO", icon: "BarChart3", group: "ops" },
     { href: `${base}/web-vitals`, label: "Web Vitals", icon: "Activity", group: "ops" },
+    // Journal des e-mails reellement partis (2026-08-13). La table existait
+    // depuis le debut, indexee pour etre lue — et n'etait affichee nulle part.
+    // A ne pas confondre avec « E-mails a valider » (Qualiopi), qui est une
+    // corbeille d'approbation et ne montre que 5 gabarits sur 66.
+    {
+      href: `${base}/emails-envoyes`,
+      label: "E-mails envoyés",
+      icon: "MailCheck",
+      group: "ops",
+    },
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
     { href: `${base}/infra`, label: "Infra & outils", icon: "Wrench", group: "ops" },
     {
