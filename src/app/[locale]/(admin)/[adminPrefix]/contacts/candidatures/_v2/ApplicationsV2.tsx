@@ -1,6 +1,9 @@
-// Liste admin des candidatures emploi — AdminPageShell + AdminCard + table CSS.
+// Liste admin des candidatures — AdminPageShell + AdminCard + table CSS.
 // Track 2 migration (juin 2026) : table `.admin-table` → <AdminTable>,
 // badge statut → <AdminBadge>.
+// Sous-onglets 2026-08-13 : Toutes / Monteur vidéo / Mémo Isère. Les lignes
+// sont des CandidatureUnifieeItem : les candidatures commerciales (Mémo
+// Isère) viennent de la table Submission et pointent vers leur propre détail.
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -17,9 +20,11 @@ import {
   AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import type { JobApplicationListItem } from "@/features/admin-job-applications/actions";
+import type { CandidatureUnifieeItem } from "@/features/admin-job-applications/actions";
 // Date affichée en FR (audit UX : ISO brut "2026-07-31" illisible pour Will).
 import { formatDateFrShort } from "@/lib/format-date-fr";
+
+export type CandidaturesView = "all" | "monteur" | "memo" | "standard";
 
 const STATUS_LABELS: Record<string, string> = {
   new: "Nouvelle",
@@ -39,10 +44,41 @@ const STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
   archived: "neutral",
 };
 
+// Statuts des candidatures commerciales (enum SubmissionStatus — la table
+// Submission porte aussi les états pipeline de /planning/pipeline).
+const COMMERCIALE_STATUS_LABELS: Record<string, string> = {
+  new: "Nouvelle",
+  in_progress: "En cours",
+  processed: "Traitée",
+  archived: "Archivée",
+  qualifying: "Qualification",
+  negotiating: "Négociation",
+  converted: "Convertie",
+  lost: "Perdue",
+};
+const COMMERCIALE_STATUS_TONE: Record<string, "success" | "warning" | "neutral"> = {
+  new: "warning",
+  in_progress: "warning",
+  qualifying: "warning",
+  negotiating: "warning",
+  processed: "success",
+  converted: "success",
+  archived: "neutral",
+  lost: "neutral",
+};
+
+const TITLES: Record<CandidaturesView, string> = {
+  all: "Candidatures",
+  monteur: "Candidatures — Monteur vidéo",
+  memo: "Candidatures — Mémo Isère",
+  standard: "Candidatures emploi",
+};
+
 interface Props {
   adminPrefix: string;
   searchParams: Record<string, string | undefined>;
-  items: ReadonlyArray<JobApplicationListItem>;
+  view: CandidaturesView;
+  items: ReadonlyArray<CandidatureUnifieeItem>;
   total: number;
   page: number;
   totalPages: number;
@@ -51,17 +87,21 @@ interface Props {
 export function ApplicationsV2({
   adminPrefix,
   searchParams: sp,
+  view,
   items,
   total,
   page,
   totalPages,
 }: Props): React.ReactElement {
   const offerId = sp["offerId"];
-  // Flux séparés (demande Will 2026-08-12) : l'offre monteur vidéo freelance a
-  // son propre onglet ; la vue standard ne la montre jamais.
-  const view = sp["view"] === "monteur" ? "monteur" : "standard";
   const baseHref = `/fr/${adminPrefix}/contacts/candidatures`;
-  const columns: ReadonlyArray<AdminTableColumn<JobApplicationListItem>> = [
+  const viewQuery = view === "all" ? "" : `?view=${view}`;
+  // Le filtre statut n'a de sens que sur une vue mono-table : les vues
+  // fusionnée (Toutes) et commerciale (Mémo Isère) mélangent deux enums de
+  // statut différents — on n'y garde que « À traiter ».
+  const showStatusFilter = view === "monteur" || view === "standard" || Boolean(offerId);
+
+  const columns: ReadonlyArray<AdminTableColumn<CandidatureUnifieeItem>> = [
     { key: "date", header: "Date", cell: (a) => formatDateFrShort(a.submittedAt) },
     {
       key: "candidate",
@@ -74,28 +114,35 @@ export function ApplicationsV2({
       ),
     },
     { key: "email", header: "Email", cell: (a) => a.contactEmail },
-    { key: "offer", header: "Offre", cell: (a) => a.offerTitleSnap },
+    { key: "offer", header: "Offre", cell: (a) => a.offerLabel },
     {
       key: "cv",
       header: "CV",
-      cell: (a) => (
-        <AdminEtatBooleen actif={a.hasCv} libelles={{ vrai: "CV joint", faux: "Sans CV" }} />
-      ),
+      cell: (a) =>
+        a.hasCv === null ? (
+          "—"
+        ) : (
+          <AdminEtatBooleen actif={a.hasCv} libelles={{ vrai: "CV joint", faux: "Sans CV" }} />
+        ),
     },
     {
       key: "status",
       header: "Statut",
-      cell: (a) => (
-        <AdminBadge tone={STATUS_TONE[a.status] ?? "neutral"}>
-          {STATUS_LABELS[a.status] ?? a.status}
-        </AdminBadge>
-      ),
+      cell: (a) => {
+        const labels = a.source === "commerciale" ? COMMERCIALE_STATUS_LABELS : STATUS_LABELS;
+        const tones = a.source === "commerciale" ? COMMERCIALE_STATUS_TONE : STATUS_TONE;
+        return (
+          <AdminBadge tone={tones[a.status] ?? "neutral"}>
+            {labels[a.status] ?? a.status}
+          </AdminBadge>
+        );
+      },
     },
   ];
   return (
     <AdminPageShell width="wide">
       <AdminPageHeader
-        title={view === "monteur" ? "Candidatures — Monteur vidéo" : "Candidatures emploi"}
+        title={TITLES[view]}
         description={`${total} candidature${total > 1 ? "s" : ""} · page ${page}/${totalPages}`}
       />
 
@@ -103,34 +150,37 @@ export function ApplicationsV2({
         className="mb-[var(--space-admin-5)]"
         current={view}
         options={[
-          { value: "standard", label: "Autres offres", href: baseHref },
+          { value: "all", label: "Toutes", href: baseHref },
           { value: "monteur", label: "Monteur vidéo", href: `${baseHref}?view=monteur` },
+          { value: "memo", label: "Mémo Isère", href: `${baseHref}?view=memo` },
         ]}
       />
 
       <AdminCard className="mb-[var(--space-admin-5)]">
         <form className="admin-filters">
           {offerId ? <input type="hidden" name="offerId" value={offerId} /> : null}
-          {view === "monteur" ? <input type="hidden" name="view" value="monteur" /> : null}
+          {view !== "all" ? <input type="hidden" name="view" value={view} /> : null}
           <div className="admin-filters-grid">
-            <div className="admin-field">
-              <label htmlFor="status" className="admin-label">
-                Statut
-              </label>
-              <select
-                id="status"
-                name="status"
-                defaultValue={sp["status"] ?? "all"}
-                className="admin-input"
-              >
-                <option value="all">Tous</option>
-                {Object.entries(STATUS_LABELS).map(([k, v]) => (
-                  <option key={k} value={k}>
-                    {v}
-                  </option>
-                ))}
-              </select>
-            </div>
+            {showStatusFilter ? (
+              <div className="admin-field">
+                <label htmlFor="status" className="admin-label">
+                  Statut
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  defaultValue={sp["status"] ?? "all"}
+                  className="admin-input"
+                >
+                  <option value="all">Tous</option>
+                  {Object.entries(STATUS_LABELS).map(([k, v]) => (
+                    <option key={k} value={k}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ) : null}
             <div className="admin-field">
               <label htmlFor="attention" className="admin-label">
                 À traiter
@@ -150,10 +200,7 @@ export function ApplicationsV2({
             <button type="submit" className="admin-button-secondary">
               Appliquer
             </button>
-            <Link
-              href={view === "monteur" ? `${baseHref}?view=monteur` : baseHref}
-              className="admin-button-ghost"
-            >
+            <Link href={`${baseHref}${viewQuery}`} className="admin-button-ghost">
               Réinitialiser
             </Link>
           </div>
@@ -167,10 +214,14 @@ export function ApplicationsV2({
           columns={columns}
           rows={items}
           getRowId={(a) => a.id}
-          caption="Liste des candidatures emploi"
+          caption="Liste des candidatures"
           rowAction={(a) => (
             <AdminButton
-              href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}`}
+              href={
+                a.source === "commerciale"
+                  ? `/fr/${adminPrefix}/contacts/commercial/${a.id}`
+                  : `/fr/${adminPrefix}/contacts/candidatures/${a.id}`
+              }
               variant="ghost"
               size="sm"
               iconAfter={ArrowRight}
@@ -189,12 +240,12 @@ export function ApplicationsV2({
       <AdminPagination
         page={page}
         totalPages={totalPages}
-        baseHref={`/fr/${adminPrefix}/contacts/candidatures`}
+        baseHref={baseHref}
         preservedParams={{
-          status: sp["status"],
+          status: showStatusFilter ? sp["status"] : undefined,
           offerId: sp["offerId"],
           attention: sp["attention"],
-          view: view === "monteur" ? "monteur" : undefined,
+          view: view === "all" ? undefined : view,
         }}
       />
     </AdminPageShell>
