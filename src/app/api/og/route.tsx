@@ -2,14 +2,18 @@
 // Used by Twitter / LinkedIn / Facebook / Slack previews et indexée par
 // Google Images.
 //
-// Refonte 2026-08-13 (maquette validée Will) : carte éditoriale IVOIRE —
-// fond --color-bg, barre terracotta pleine hauteur à gauche, badge-logo
-// pilule « Axion-IA .com », titre serif encre, trait terracotta, sous-titre
-// Manrope, pied de page avec glyphes globe/épingle dessinés en divs (pas
+// Refonte 2026-08-13 (maquette validée Will, fidélité maximale) : carte
+// éditoriale ivoire aux coins arrondis posée sur un fin fond clair, barre
+// terracotta pleine hauteur épousant l'arrondi gauche, badge-logo pilule
+// « Axion-IA .com », titre serif encre bleutée, trait terracotta,
+// sous-titre Manrope, pied de page globe/épingle en glyphes divs (pas
 // d'emoji : Satori les résoudrait via un CDN externe, interdit en prod
-// self-hosted). Décor droit abstrait : cercle pêche pâle + éventail d'arcs
-// terracotta translucides + trame de points — uniquement des divs absolus
-// (gradients + border-radius), Satori ne supportant ni SVG externe ni grid.
+// self-hosted) avec séparateur vertical fin. Décor droit : lavis pêche
+// diffus sur presque toute la moitié droite + nappe de fines lignes qui
+// ondulent en diagonale (flancs d'ellipses géantes tournées — jamais de
+// cercle fermé visible) + trame de points discrète — uniquement des divs
+// absolus (gradients + border-radius + rotate), Satori ne supportant ni
+// SVG externe ni grid.
 //
 // Le param `accent` est toujours accepté (URLs OG déjà émises/cachées) mais
 // n'a plus d'effet : depuis le brand-fix 2026-06-20 la marque n'émet qu'une
@@ -20,14 +24,16 @@ import { ImageResponse } from "@vercel/og";
 export const runtime = "edge";
 
 // hex-ok: dynamic OG image runs in Edge runtime where Tailwind tokens are
-// not available. Hex values mirror globals.css palette deliberately
-// (doctrine v3 Editorial Premium Light, ADR 0002).
+// not available. Hex values mirror globals.css palette + la maquette OG
+// validée par Will (encre bleutée) deliberately (doctrine v3 Editorial
+// Premium Light, ADR 0002).
 const TERRACOTTA = "#c24a1b"; // hex-ok: --color-terracotta v3
 const IVOIRE = "#faf8f3"; // hex-ok: --color-bg v3
 const PAPER = "#ffffff"; // hex-ok: --color-paper v3
-const FG = "#1a1815"; // hex-ok: --color-fg v3
-const MUTED = "rgba(26, 24, 21, 0.62)"; // encre adoucie (sous-titre)
-const HAIRLINE = "rgba(26, 24, 21, 0.14)"; // séparateur pied de page
+const FRAME = "#f2f0ea"; // hex-ok: fond clair autour de la carte (maquette)
+const INK = "#272c3d"; // hex-ok: encre bleutée très sombre de la maquette
+const MUTED = "rgba(39, 44, 61, 0.68)"; // encre bleutée adoucie (sous-titre)
+const HAIRLINE = "rgba(39, 44, 61, 0.16)"; // filets pied de page
 
 // Chargées une fois par isolate edge (promesses au module scope, attendues
 // dans GET). `import.meta.url` fait embarquer les .ttf dans le bundle edge.
@@ -53,32 +59,40 @@ function titleFontSize(title: string): number {
   return 46;
 }
 
-/** Éventail d'arcs terracotta translucides : cercles concentriques centrés
- *  hors-canvas (bas-droite), seules les portions hautes traversent la carte
- *  en fines courbes parallèles — l'équivalent Satori du « fan » de la
- *  maquette, sans SVG. */
-function decorArcs() {
-  const cx = 1660; // centre X (hors canvas, à droite)
-  const cy = 1140; // centre Y (hors canvas, en bas)
-  const arcs = [];
-  for (let i = 0; i < 14; i++) {
-    const r = 560 + i * 30;
-    arcs.push(
+/** Nappe de fines lignes ondulantes (maquette) : flancs gauches d'ellipses
+ *  géantes tournées, échelonnées du haut-droit vers le bas — les ellipses
+ *  débordent très largement du canvas, on ne voit jamais de cercle fermé,
+ *  seulement des courbes parallèles qui coulent en diagonale. */
+function flowLines() {
+  const lines = [];
+  // Une seule famille de courbes en « C » ouvertes vers la droite : le
+  // flanc gauche de chaque ellipse entre par le bord haut (~x 810-1040),
+  // bombe à gauche vers (~x 780, y 470), puis s'évase vers le coin
+  // bas-droit — le flux diagonal de la maquette. Copies translatées d'un
+  // pas constant : lignes parallèles, jamais de croisement ni de cercle
+  // fermé visible (l'ellipse déborde largement du canvas en haut).
+  for (let i = 0; i < 28; i++) {
+    const w = 800;
+    const h = 1150;
+    const cx = 1210 + i * 10;
+    const cy = 70;
+    lines.push(
       <div
-        key={i}
+        key={`a${i}`}
         style={{
           position: "absolute",
-          left: cx - r,
-          top: cy - r,
-          width: r * 2,
-          height: r * 2,
+          left: cx - w / 2,
+          top: cy - h / 2,
+          width: w,
+          height: h,
           borderRadius: 9999,
-          border: "1.5px solid rgba(194, 74, 27, 0.20)", // hex-ok: rgb de --color-terracotta
+          border: "1.4px solid rgba(194, 74, 27, 0.14)", // hex-ok: rgb de --color-terracotta
+          transform: "rotate(22deg)",
         }}
       />,
     );
   }
-  return arcs;
+  return lines;
 }
 
 export async function GET(req: Request) {
@@ -88,229 +102,262 @@ export async function GET(req: Request) {
     searchParams.get("eyebrow") ?? "Formations IA, audits et automatisations pour entreprises";
 
   return new ImageResponse(
+    // Fond clair autour de la carte arrondie (maquette : coins visibles).
     <div
       style={{
         width: "100%",
         height: "100%",
         display: "flex",
-        position: "relative",
-        background: IVOIRE,
+        background: FRAME,
+        padding: 9,
         fontFamily: "Manrope",
-        overflow: "hidden",
       }}
     >
-      {/* Décor droit — grand cercle pêche très pâle */}
-      <div
-        style={{
-          position: "absolute",
-          right: -180,
-          top: -200,
-          width: 680,
-          height: 680,
-          borderRadius: 9999,
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(194, 74, 27, 0.10) 0%, rgba(194, 74, 27, 0.04) 70%, rgba(194, 74, 27, 0.02) 100%)", // hex-ok: rgb de --color-terracotta
-        }}
-      />
-
-      {/* Décor droit — éventail d'arcs terracotta */}
-      {decorArcs()}
-
-      {/* Décor droit — trame de points */}
-      <div
-        style={{
-          position: "absolute",
-          left: 960,
-          top: 290,
-          width: 230,
-          height: 320,
-          backgroundImage:
-            "radial-gradient(circle at 11px 11px, rgba(194, 74, 27, 0.35) 10%, transparent 11%)", // hex-ok: rgb de --color-terracotta
-          backgroundSize: "22px 22px",
-        }}
-      />
-
-      {/* Barre terracotta pleine hauteur, bord gauche */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          width: 14,
-          height: "100%",
-          background: TERRACOTTA,
-        }}
-      />
-
-      {/* Colonne de contenu */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          height: "100%",
-          padding: "48px 72px 44px 86px",
+          flex: 1,
+          position: "relative",
+          background: IVOIRE,
+          borderRadius: 26,
+          border: "1px solid rgba(39, 44, 61, 0.08)", // hex-ok: liseré carte
+          overflow: "hidden",
         }}
       >
-        {/* Badge-logo pilule — reprend le logo du site */}
+        {/* Lavis pêche diffus sur la moitié droite — aucun contour net */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage:
+              "radial-gradient(ellipse 900px 720px at 88% 22%, rgba(238, 168, 118, 0.34) 0%, rgba(238, 168, 118, 0.16) 48%, rgba(238, 168, 118, 0.00) 74%)", // hex-ok: lavis pêche maquette
+          }}
+        />
+
+        {/* Second lavis, coin bas-droit — la nappe repose dessus */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage:
+              "radial-gradient(ellipse 720px 520px at 97% 92%, rgba(238, 168, 118, 0.20) 0%, rgba(238, 168, 118, 0.00) 68%)", // hex-ok: lavis pêche maquette
+          }}
+        />
+
+        {/* Nappe de lignes ondulantes */}
+        {flowLines()}
+
+        {/* Trame de points discrète, intégrée dans la vague bas-droit */}
+        <div
+          style={{
+            position: "absolute",
+            left: 1000,
+            top: 330,
+            width: 175,
+            height: 270,
+            backgroundImage:
+              "radial-gradient(circle at 9px 9px, rgba(194, 74, 27, 0.22) 9%, transparent 10%)", // hex-ok: rgb de --color-terracotta
+            backgroundSize: "18px 18px",
+          }}
+        />
+
+        {/* Barre terracotta pleine hauteur, épouse l'arrondi gauche */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: 14,
+            height: "100%",
+            background: TERRACOTTA,
+          }}
+        />
+
+        {/* Colonne de contenu */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center",
-            alignSelf: "flex-start",
-            background: PAPER,
-            border: `4px solid ${TERRACOTTA}`,
-            borderRadius: 48,
-            padding: "12px 34px 10px",
+            width: "100%",
+            height: "100%",
+            padding: "40px 64px 36px 78px",
           }}
         >
+          {/* Badge-logo pilule — reprend le logo du site */}
           <div
             style={{
               display: "flex",
-              fontFamily: "Fraunces",
-              fontWeight: 700,
-              fontSize: 42,
-              letterSpacing: "-0.02em",
-              color: FG,
-              lineHeight: 1.1,
+              flexDirection: "column",
+              alignItems: "center",
+              alignSelf: "flex-start",
+              background: PAPER,
+              border: `3px solid ${TERRACOTTA}`,
+              borderRadius: 48,
+              padding: "12px 40px 10px",
             }}
           >
-            <span>Axion-</span>
-            <span style={{ color: TERRACOTTA, fontStyle: "italic" }}>IA</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", marginTop: 2 }}>
-            <div style={{ width: 26, height: 2.5, background: TERRACOTTA }} />
-            <span
+            <div
               style={{
-                fontFamily: "Manrope",
+                display: "flex",
+                fontFamily: "Fraunces",
                 fontWeight: 700,
-                fontSize: 19,
-                color: TERRACOTTA,
-                margin: "0 8px",
+                fontSize: 42,
+                letterSpacing: "-0.02em",
+                color: INK,
+                lineHeight: 1.1,
               }}
             >
-              .com
-            </span>
-            <div style={{ width: 26, height: 2.5, background: TERRACOTTA }} />
+              <span>Axion</span>
+              <span style={{ color: TERRACOTTA, fontStyle: "italic" }}>-IA</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", marginTop: 2 }}>
+              <div style={{ width: 26, height: 2.5, background: TERRACOTTA }} />
+              <span
+                style={{
+                  fontFamily: "Manrope",
+                  fontWeight: 700,
+                  fontSize: 19,
+                  color: TERRACOTTA,
+                  margin: "0 8px",
+                }}
+              >
+                .com
+              </span>
+              <div style={{ width: 26, height: 2.5, background: TERRACOTTA }} />
+            </div>
           </div>
-        </div>
 
-        {/* Bloc titre + trait + sous-titre, centré verticalement */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-            justifyContent: "center",
-            paddingTop: 16,
-            paddingBottom: 16,
-          }}
-        >
+          {/* Bloc titre + trait + sous-titre, centré verticalement */}
           <div
             style={{
-              fontSize: titleFontSize(title),
-              fontFamily: "Fraunces",
-              fontWeight: 700,
-              color: FG,
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-              maxWidth: 850,
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "center",
+              paddingTop: 14,
+              paddingBottom: 14,
             }}
           >
-            {title}
-          </div>
-          <div
-            style={{
-              width: 64,
-              height: 5,
-              borderRadius: 3,
-              background: TERRACOTTA,
-              marginTop: 28,
-              marginBottom: 22,
-            }}
-          />
-          <div
-            style={{
-              fontSize: 30,
-              fontFamily: "Manrope",
-              color: MUTED,
-              lineHeight: 1.4,
-              maxWidth: 640,
-            }}
-          >
-            {eyebrow}
-          </div>
-        </div>
-
-        {/* Pied de page : séparateur fin + domaine / localisation */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderTop: `1.5px solid ${HAIRLINE}`,
-            paddingTop: 22,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* Glyphe globe : cercle + méridien + équateur */}
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                width: 26,
-                height: 26,
-                borderRadius: 9999,
-                border: `2px solid ${FG}`,
-                marginRight: 14,
+                fontSize: titleFontSize(title),
+                fontFamily: "Fraunces",
+                fontWeight: 700,
+                color: INK,
+                lineHeight: 1.08,
+                letterSpacing: "-0.03em",
+                maxWidth: 850,
               }}
             >
+              {title}
+            </div>
+            <div
+              style={{
+                width: 64,
+                height: 5,
+                borderRadius: 3,
+                background: TERRACOTTA,
+                marginTop: 26,
+                marginBottom: 20,
+              }}
+            />
+            <div
+              style={{
+                fontSize: 30,
+                fontFamily: "Manrope",
+                color: MUTED,
+                lineHeight: 1.4,
+                maxWidth: 640,
+              }}
+            >
+              {eyebrow}
+            </div>
+          </div>
+
+          {/* Pied de page : filet fin + domaine | séparateur | localisation */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderTop: `1.5px solid ${HAIRLINE}`,
+              paddingTop: 20,
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* Glyphe globe : cercle + méridien + équateur */}
               <div
                 style={{
-                  position: "absolute",
-                  left: 0,
-                  top: 10,
-                  width: 22,
-                  height: 2,
-                  background: FG,
-                }}
-              />
-              <div
-                style={{
-                  width: 11,
-                  height: 20,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
+                  width: 26,
+                  height: 26,
                   borderRadius: 9999,
-                  border: `2px solid ${FG}`,
+                  border: `2px solid ${INK}`,
+                  marginRight: 14,
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 10,
+                    width: 22,
+                    height: 2,
+                    background: INK,
+                  }}
+                />
+                <div
+                  style={{
+                    width: 11,
+                    height: 20,
+                    borderRadius: 9999,
+                    border: `2px solid ${INK}`,
+                  }}
+                />
+              </div>
+              <span style={{ fontSize: 25, color: INK }}>axion-ia.com</span>
+              {/* Séparateur vertical fin (maquette) */}
+              <div
+                style={{
+                  width: 1.5,
+                  height: 34,
+                  background: HAIRLINE,
+                  marginLeft: 56,
                 }}
               />
             </div>
-            <span style={{ fontSize: 25, color: FG }}>axion-ia.com</span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {/* Glyphe épingle : goutte tournée à 45° + point central */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 21,
-                height: 21,
-                border: `2.5px solid ${FG}`,
-                borderTopLeftRadius: 9999,
-                borderTopRightRadius: 9999,
-                borderBottomLeftRadius: 9999,
-                borderBottomRightRadius: 0,
-                transform: "rotate(45deg)",
-                marginRight: 14,
-                marginBottom: 4,
-              }}
-            >
-              <div style={{ width: 7, height: 7, borderRadius: 9999, background: FG }} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {/* Glyphe épingle : goutte tournée à 45° + point central */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: 21,
+                  height: 21,
+                  border: `2.5px solid ${INK}`,
+                  borderTopLeftRadius: 9999,
+                  borderTopRightRadius: 9999,
+                  borderBottomLeftRadius: 9999,
+                  borderBottomRightRadius: 0,
+                  transform: "rotate(45deg)",
+                  marginRight: 14,
+                  marginBottom: 4,
+                }}
+              >
+                <div style={{ width: 7, height: 7, borderRadius: 9999, background: INK }} />
+              </div>
+              <span style={{ fontSize: 25, color: INK }}>Cabinet IA · France</span>
             </div>
-            <span style={{ fontSize: 25, color: FG }}>Cabinet IA · France</span>
           </div>
         </div>
       </div>
