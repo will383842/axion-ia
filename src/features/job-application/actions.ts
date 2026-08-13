@@ -19,7 +19,6 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { EmailJobName } from "@/server/queue/types";
 import { adminPath } from "@/lib/admin-path";
 import {
   storeCv,
@@ -279,12 +278,16 @@ export async function submitJobApplicationAction(
       dedupKey: app.id,
     });
 
-    // 10. Email accusé (réutilise contact-confirmed, 0 nouveau template)
-    await enqueueEmail("contact-confirmed" as EmailJobName, d.email, locale, {
+    // 10. Accusé de réception au candidat.
+    // 🔴 Gabarit DÉDIÉ depuis le 2026-08-13. Avant, on réutilisait
+    // `contact-confirmed`, qui promet « une réponse sous 48 heures ouvrées » —
+    // promesse FAUSSE pour un recrutement, et démentie par le stock de
+    // candidatures en attente. Le nouveau gabarit n'annonce aucun délai : il
+    // dit qu'on lit, qu'on répondra, y compris négativement. C'est le seul
+    // engagement tenable.
+    await enqueueEmail("candidature-recue", d.email, locale, {
       contactName: `${d.firstName} ${d.lastName}`.trim(),
-      submissionId: app.id,
-      type: "recrutement",
-      subType: offer.titleFr,
+      offerTitle: offer.titleFr,
     });
 
     revalidatePath(adminPath("fr", "contacts/candidatures"));

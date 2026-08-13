@@ -35,6 +35,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { deleteCv } from "@/server/careers/cv-storage";
 import type { RetentionPurgeJobData } from "../types";
 
 const DEFAULTS = {
@@ -48,6 +49,7 @@ const DEFAULTS = {
   imageLogs: 12,
   chat: 12,
   funnelEvents: 12,
+  candidatures: 24,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -91,6 +93,8 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         chatSemanticCache: 0,
         chatIdempotency: 0,
         funnelEvents: 0,
+        candidatures: 0,
+        candidaturesFichiers: 0,
       };
 
       // 1) activity_logs ancients
@@ -210,6 +214,36 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
       });
       counts.funnelEvents = funnelResult.count;
 
+      // 7 ter) job_applications (candidatures, 2026-08-13).
+      // 🔴 SEULE table à données personnelles qui n'avait AUCUNE purge, alors
+      // qu'elle en porte le plus : nom, e-mail, téléphone, ville, CV et photo.
+      // Les fichiers vivent hors base (volume disque) : supprimer la ligne sans
+      // eux laisserait les CV et les photos sur le disque indéfiniment — le
+      // pire des deux mondes, une base propre et un disque qui ne l'est pas.
+      // 24 mois : recommandation CNIL pour un candidat non retenu.
+      const candidaturesMois = readMonths("RETENTION_CANDIDATURES_MONTHS", DEFAULTS.candidatures);
+      const candidaturesPerimees = await prisma.jobApplication.findMany({
+        where: { submittedAt: { lt: monthsAgo(candidaturesMois) } },
+        select: { id: true, cvStoragePath: true, photoStoragePath: true },
+      });
+
+      for (const c of candidaturesPerimees) {
+        // Fichiers d'abord : si la suppression disque échoue, la ligne reste et
+        // la purge repassera demain. L'inverse perdrait le chemin du fichier et
+        // le rendrait introuvable — donc ineffaçable.
+        try {
+          await deleteCv(c.cvStoragePath);
+          await deleteCv(c.photoStoragePath);
+          if (c.cvStoragePath) counts.candidaturesFichiers += 1;
+          if (c.photoStoragePath) counts.candidaturesFichiers += 1;
+        } catch (err) {
+          console.error(`[retention-purge] fichiers de la candidature ${c.id} :`, err);
+          continue;
+        }
+        await prisma.jobApplication.delete({ where: { id: c.id } });
+        counts.candidatures += 1;
+      }
+
       // 8) image_usage_logs + image_download_logs (image-bank Sprint 7 V1).
       // ip_hash SHA-256 + IP_HASH_SALT — non réversible mais quasi-identifiant
       // longue durée. Purge 12 mois par défaut (RGPD art. 5.1.e minimisation).
@@ -289,7 +323,8 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
           `imageUsageLogs=${counts.imageUsageLogs} imageDownloadLogs=${counts.imageDownloadLogs} ` +
           `chatConversations=${counts.chatConversations} chatEscalations=${counts.chatEscalations} ` +
           `chatSemanticCache=${counts.chatSemanticCache} chatIdempotency=${counts.chatIdempotency} ` +
-          `funnelEvents=${counts.funnelEvents}`,
+          `funnelEvents=${counts.funnelEvents} ` +
+          `candidatures=${counts.candidatures} (${counts.candidaturesFichiers} fichiers)`,
       );
     },
     {
