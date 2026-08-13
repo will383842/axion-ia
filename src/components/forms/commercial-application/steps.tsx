@@ -25,8 +25,8 @@ import {
 import {
   Chip,
   ChipGroup,
-  GhostButton,
   MonthYearSelect,
+  RequiredMark,
   StepHeading,
   TextField,
   FIELD_CLASS,
@@ -57,11 +57,15 @@ const DISPO_YEARS: readonly string[] = [
 export function StepIdentite({ a, set, errors }: StepProps) {
   return (
     <div>
-      <StepHeading title="Qui es-tu ?" hint="Le minimum pour te répondre — rien de plus." />
+      <StepHeading
+        title="Qui es-tu ?"
+        hint="Le minimum pour te répondre — rien de plus. Les champs marqués * sont obligatoires."
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField
           label="Prénom"
           fieldId="ca-prenom"
+          requiredField
           value={a.prenom}
           onChange={(e) => set({ prenom: e.target.value })}
           autoComplete="given-name"
@@ -71,6 +75,7 @@ export function StepIdentite({ a, set, errors }: StepProps) {
         <TextField
           label="Nom"
           fieldId="ca-nom"
+          requiredField
           value={a.nom}
           onChange={(e) => set({ nom: e.target.value })}
           autoComplete="family-name"
@@ -84,6 +89,7 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           fieldId="ca-email"
           type="email"
           inputMode="email"
+          requiredField
           value={a.email}
           onChange={(e) => set({ email: e.target.value })}
           autoComplete="email"
@@ -95,6 +101,7 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           fieldId="ca-telephone"
           type="tel"
           inputMode="tel"
+          requiredField
           value={a.telephone}
           onChange={(e) => set({ telephone: e.target.value })}
           autoComplete="tel"
@@ -106,6 +113,7 @@ export function StepIdentite({ a, set, errors }: StepProps) {
         <TextField
           label="Ville"
           fieldId="ca-ville"
+          requiredField
           value={a.ville}
           onChange={(e) => set({ ville: e.target.value })}
           autoComplete="address-level2"
@@ -116,6 +124,7 @@ export function StepIdentite({ a, set, errors }: StepProps) {
           label="Code postal"
           fieldId="ca-cp"
           inputMode="numeric"
+          requiredField
           value={a.codePostal}
           onChange={(e) => set({ codePostal: e.target.value })}
           autoComplete="postal-code"
@@ -192,7 +201,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
         title="Le prérequis"
         hint="Ce poste demande une vraie expérience de la vente B2B. C’est le seul prérequis, mais il est indispensable."
       />
-      <ChipGroup legend="As-tu déjà vendu en B2B ?" error={errors.b2bDejaVendu}>
+      <ChipGroup legend="As-tu déjà vendu en B2B ?" requiredField error={errors.b2bDejaVendu}>
         <Chip
           name="b2b"
           value="oui"
@@ -211,7 +220,7 @@ export function StepB2b({ a, set, errors }: StepProps) {
 
       {a.b2bDejaVendu === true ? (
         <div className="mt-6">
-          <ChipGroup legend="Depuis combien d’années ?" error={errors.b2bAnnees}>
+          <ChipGroup legend="Depuis combien d’années ?" requiredField error={errors.b2bAnnees}>
             {B2B_ANNEES_OPTIONS.map((o) => (
               <Chip
                 key={o.id}
@@ -320,6 +329,7 @@ export function StepParcours({
                   <TextField
                     label="Entreprise"
                     fieldId={`${pre}-entreprise`}
+                    requiredField
                     value={exp.entreprise}
                     onChange={(e) => onPatchExperience(exp.id, { entreprise: e.target.value })}
                     maxLength={120}
@@ -329,6 +339,7 @@ export function StepParcours({
                   <TextField
                     label="Ville ou département de l’entreprise"
                     fieldId={`${pre}-ville`}
+                    requiredField
                     value={exp.ville}
                     onChange={(e) => onPatchExperience(exp.id, { ville: e.target.value })}
                     maxLength={120}
@@ -337,6 +348,7 @@ export function StepParcours({
                   <TextField
                     label="Poste occupé"
                     fieldId={`${pre}-poste`}
+                    requiredField
                     value={exp.poste}
                     onChange={(e) => onPatchExperience(exp.id, { poste: e.target.value })}
                     maxLength={120}
@@ -346,6 +358,7 @@ export function StepParcours({
                   <MonthYearSelect
                     idPrefix={`${pre}-debut`}
                     label="De"
+                    requiredField
                     monthValue={exp.debutMois}
                     yearValue={exp.debutAnnee}
                     months={MOIS_FR}
@@ -358,6 +371,7 @@ export function StepParcours({
                     <MonthYearSelect
                       idPrefix={`${pre}-fin`}
                       label="À"
+                      requiredField={!exp.posteActuel}
                       monthValue={exp.finMois}
                       yearValue={exp.finAnnee}
                       months={MOIS_FR}
@@ -408,10 +422,16 @@ export function StepParcours({
         })}
       </div>
       {a.experiences.length < 8 ? (
-        <GhostButton type="button" onClick={onAddExperience} className="mt-3">
-          <Plus aria-hidden="true" className="h-4 w-4" />
+        /* Bouton bien VISIBLE (retour Will 2026-08-13) : pleine largeur,
+           bordure terracotta — le bouton fantôme passait inaperçu. */
+        <button
+          type="button"
+          onClick={onAddExperience}
+          className="border-terracotta text-terracotta-deep bg-terracotta-soft/40 hover:bg-terracotta-soft focus-visible:ring-terracotta mt-4 inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 text-base font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
+          <Plus aria-hidden="true" className="h-5 w-5" />
           Ajouter une expérience
-        </GhostButton>
+        </button>
       ) : (
         <p className="text-fg-muted mt-3 text-sm">8 expériences maximum — c’est déjà très bien.</p>
       )}
@@ -425,7 +445,11 @@ export function StepIa({ a, set, errors }: StepProps) {
   return (
     <div>
       <StepHeading title="L’IA au quotidien 🤖" />
-      <ChipGroup legend="Utilises-tu déjà l’IA au quotidien ?" error={errors.iaUtilise}>
+      <ChipGroup
+        legend="Utilises-tu déjà l’IA au quotidien ?"
+        requiredField
+        error={errors.iaUtilise}
+      >
         <Chip
           name="ia"
           value="oui"
@@ -477,19 +501,32 @@ export function StepIa({ a, set, errors }: StepProps) {
             </div>
           ) : null}
           <div className="mt-4">
+            {/* OBLIGATOIRE quand la réponse IA est Oui (retour Will 2026-08-13). */}
             <label className={LABEL_CLASS} htmlFor="ca-ia-usage">
               Pourquoi, et pour quoi faire ?
-              <span className="text-fg-muted ml-1.5 font-normal">(facultatif)</span>
+              <RequiredMark />
             </label>
             <textarea
               id="ca-ia-usage"
               rows={3}
               maxLength={600}
-              className={FIELD_CLASS}
+              className={cn(FIELD_CLASS, errors.iaUsage && "border-terracotta-deep")}
               value={a.iaUsage}
               onChange={(e) => set({ iaUsage: e.target.value })}
               placeholder="2-3 lignes suffisent : préparer tes rendez-vous, rédiger tes emails, chercher des infos sur un prospect…"
+              aria-required={true}
+              aria-invalid={errors.iaUsage ? true : undefined}
+              aria-describedby={errors.iaUsage ? "ca-ia-usage-error" : undefined}
             />
+            {errors.iaUsage ? (
+              <p
+                id="ca-ia-usage-error"
+                className="text-terracotta-deep mt-1.5 text-sm"
+                role="alert"
+              >
+                {errors.iaUsage}
+              </p>
+            ) : null}
           </div>
         </>
       ) : null}
@@ -505,6 +542,7 @@ export function StepInformatique({ a, set, errors }: StepProps) {
       <StepHeading title="L’informatique" />
       <ChipGroup
         legend="Utilises-tu l’informatique dans ton travail ?"
+        requiredField
         error={errors.informatiqueUtilise}
       >
         <Chip
@@ -693,7 +731,7 @@ export function StepPitch({ a, set, errors }: StepProps) {
         hint="Si tu devais te décrire, de façon qui te mette vraiment en valeur ?"
       />
       <label className="sr-only" htmlFor="ca-pitch">
-        Décris-toi en 300 à 800 caractères
+        Décris-toi en 150 à 800 caractères
       </label>
       <textarea
         id="ca-pitch"
@@ -703,6 +741,7 @@ export function StepPitch({ a, set, errors }: StepProps) {
         value={a.pitch}
         onChange={(e) => set({ pitch: e.target.value })}
         placeholder="Ce que tu sais faire mieux que les autres, ce dont tu es fier, la vente que tu racontes encore aujourd’hui…"
+        aria-required={true}
         aria-describedby="ca-pitch-compteur"
         aria-invalid={errors.pitch ? true : undefined}
       />
@@ -718,12 +757,18 @@ export function StepPitch({ a, set, errors }: StepProps) {
           id="ca-pitch-compteur"
           className={cn(
             "shrink-0 text-sm tabular-nums",
-            len >= 300 && len <= 800 ? "text-fg-soft" : "text-fg-muted",
+            len >= 150 && len <= 800 ? "text-fg-soft" : "text-fg-muted",
           )}
         >
-          {len} / 300-800
+          {len} / 150-800
         </p>
       </div>
+      {/* Anti-tassement (retour Will 2026-08-13) : annoncer le message libre
+          qui vient juste après, pour que le candidat ne mette pas tout ici. */}
+      <p className="text-fg-muted mt-3 text-sm">
+        Étape suivante : ton message libre (facultatif) — garde ce que tu veux nous dire pour
+        l’écran d’après.
+      </p>
     </div>
   );
 }
@@ -762,6 +807,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
       <MonthYearSelect
         idPrefix="ca-dispo"
         label="À partir de quand es-tu disponible ?"
+        requiredField
         monthValue={a.dispoMois}
         yearValue={a.dispoAnnee}
         months={MOIS_FR}
@@ -772,7 +818,11 @@ export function StepDetails({ a, set, errors }: StepProps) {
       />
 
       <div className="mt-6">
-        <ChipGroup legend="As-tu le permis et un véhicule ?" error={errors.permisVehicule}>
+        <ChipGroup
+          legend="As-tu le permis et un véhicule ?"
+          requiredField
+          error={errors.permisVehicule}
+        >
           <Chip
             name="permis"
             value="oui"

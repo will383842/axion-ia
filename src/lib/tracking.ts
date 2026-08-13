@@ -38,7 +38,13 @@ export type FunnelEvent =
   | "Chat Qualified"
   | "Chat RDV"
   | "Chat Lead"
-  | "Chat Escalated";
+  | "Chat Escalated"
+  // Tunnel candidature commerciale (2026-08-13) — analytics d'abandon :
+  // un « Step » par écran atteint, pour voir OÙ les candidats décrochent.
+  // Anonyme : le nom d'écran seulement, jamais de donnée personnelle.
+  | "Candidature Started"
+  | "Candidature Step"
+  | "Candidature Completed";
 
 /**
  * Props standard validées (clés stables, valeurs string/number uniquement).
@@ -65,6 +71,10 @@ export interface FunnelProps {
   requiresNda?: "yes" | "no";
   /** Bucket prix (ne PAS envoyer prix exact pour anonymat). */
   priceBucket?: "lt-500" | "500-1000" | "1000-2000" | "2000-5000" | "gt-5000";
+  /** Funnel pas-à-pas (« Candidature Step ») : nom d'écran + position. */
+  step?: string;
+  stepIndex?: number;
+  stepTotal?: number;
 }
 
 /**

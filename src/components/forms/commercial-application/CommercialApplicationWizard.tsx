@@ -13,8 +13,9 @@
 
 import * as React from "react";
 import { useLocale } from "next-intl";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Plus } from "lucide-react";
 import { submitCommercialApplicationAction } from "@/features/commercial-application/actions";
+import { trackFunnel } from "@/lib/tracking";
 import { isStaleServerActionError } from "@/lib/forms/form-errors";
 import { HoneypotField } from "@/components/forms/HoneypotField";
 import { GhostButton, PrimaryButton, StepTransition } from "./ui";
@@ -44,6 +45,25 @@ import {
 
 const TOTAL_STEPS = 9;
 
+/** Promesse de l'écran d'accueil — commission commerciale de recrutement,
+ *  pas un tarif client. */
+const PROMESSE_COMMISSION = "500 € par journée de formation vendue"; // price-exempt: commission recrutement
+
+/** Noms d'écrans des événements Plausible « Candidature Step » — anonymes,
+ *  jamais de donnée personnelle (doctrine privacy-first de lib/tracking). */
+const STEP_NAMES: readonly string[] = [
+  "accueil",
+  "identite",
+  "b2b",
+  "parcours",
+  "ia",
+  "informatique",
+  "zone",
+  "pitch",
+  "message",
+  "details",
+];
+
 export function CommercialApplicationWizard(): React.ReactNode {
   const locale = useLocale();
   // 0 = accueil, 1..9 = étapes, 10 = confirmation.
@@ -53,6 +73,9 @@ export function CommercialApplicationWizard(): React.ReactNode {
   const [submitting, setSubmitting] = React.useState(false);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [submissionId, setSubmissionId] = React.useState<string>("");
+  // Confirmation inline avant de quitter l'étape expériences (retour Will
+  // 2026-08-13) — jamais de window.confirm.
+  const [confirmParcours, setConfirmParcours] = React.useState(false);
 
   const formRef = React.useRef<HTMLFormElement>(null);
   const topRef = React.useRef<HTMLDivElement>(null);
@@ -94,6 +117,18 @@ export function CommercialApplicationWizard(): React.ReactNode {
     headingRef.current?.focus({ preventScroll: true });
   }, [screen]);
 
+  // ── Analytics d'abandon (Plausible, anonyme — retour Will 2026-08-13) ────
+  // Un événement par écran ATTEINT : le funnel montre où les candidats
+  // décrochent. Aucune donnée personnelle, uniquement le nom d'écran.
+  React.useEffect(() => {
+    if (screen < 1 || screen > TOTAL_STEPS) return;
+    trackFunnel("Candidature Step", {
+      step: STEP_NAMES[screen] ?? String(screen),
+      stepIndex: screen,
+      stepTotal: TOTAL_STEPS,
+    });
+  }, [screen]);
+
   const set = React.useCallback((patch: Partial<WizardAnswers>) => {
     setAnswers((prev) => ({ ...prev, ...patch }));
   }, []);
@@ -128,6 +163,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
   const goBack = React.useCallback(() => {
     setErrors({});
     setServerError(null);
+    setConfirmParcours(false);
     setScreen((s) => Math.max(0, s - 1));
   }, []);
 
@@ -144,6 +180,7 @@ export function CommercialApplicationWizard(): React.ReactNode {
         return;
       }
       setSubmissionId(result.submissionId);
+      trackFunnel("Candidature Completed");
       clearDraft();
       setScreen(10);
     } catch (err) {
@@ -159,18 +196,30 @@ export function CommercialApplicationWizard(): React.ReactNode {
 
   const goNext = React.useCallback(() => {
     if (screen === 0) {
+      trackFunnel("Candidature Started");
       setScreen(1);
       return;
     }
     const stepErrors = validateStep(screen, answers);
     setErrors(stepErrors);
-    if (Object.keys(stepErrors).length > 0) return;
+    if (Object.keys(stepErrors).length > 0) {
+      setConfirmParcours(false);
+      return;
+    }
+    // Étape expériences : une confirmation inline avant de continuer (retour
+    // Will 2026-08-13) — premier « Continuer » pose la question, la réponse
+    // se donne dans le panneau (ou par un second « Continuer »).
+    if (screen === 3 && !confirmParcours) {
+      setConfirmParcours(true);
+      return;
+    }
+    setConfirmParcours(false);
     if (screen < TOTAL_STEPS) {
       setScreen(screen + 1);
       return;
     }
     void submitToServer();
-  }, [screen, answers, submitToServer]);
+  }, [screen, answers, confirmParcours, submitToServer]);
 
   const onFormSubmit = React.useCallback(
     (e: React.FormEvent) => {
@@ -250,18 +299,67 @@ export function CommercialApplicationWizard(): React.ReactNode {
         <div ref={headingRef} tabIndex={-1} className="outline-none">
           <StepTransition key={screen}>
             {screen === 0 ? (
+              /* Accueil enrichi (retour Will 2026-08-13 « blocosse, trop
+                 vide ») : mini-cartes + rappel de la promesse, dans le langage
+                 visuel du site (cartes serif, terracotta — cf. memo-isere). */
               <div className="text-center sm:text-left">
+                <div className="bg-halo-warm border-terracotta/30 mb-5 inline-flex items-center gap-2 rounded-full border px-4 py-1.5">
+                  <span
+                    aria-hidden="true"
+                    className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+                  />
+                  <span className="text-terracotta-deep text-sm font-semibold">
+                    Candidatures ouvertes
+                  </span>
+                </div>
                 <h1 className="text-fg text-[32px] leading-[1.1] font-bold tracking-tight text-balance sm:text-[40px]">
                   Rejoins Axion-IA — commercial indépendant 👋
                 </h1>
                 <p className="text-fg-soft mt-5 text-lg leading-relaxed text-pretty">
-                  Pas de CV. Pas de lettre de motivation. Juste quelques questions essentielles. 3
-                  minutes chrono.
+                  Pas de CV. Pas de lettre de motivation. Juste quelques questions essentielles.
                 </p>
-                <p className="text-fg-muted mt-3 text-sm leading-relaxed">
-                  Tes réponses sont sauvegardées au fur et à mesure sur ton appareil : tu peux
-                  fermer et revenir quand tu veux.
-                </p>
+
+                <ul className="mt-7 grid grid-cols-1 gap-3 text-left sm:grid-cols-3" role="list">
+                  {[
+                    {
+                      emoji: "✅",
+                      title: "Zéro CV",
+                      text: "Un message libre remplace la lettre de motivation.",
+                    },
+                    {
+                      emoji: "⏱️",
+                      title: "3 minutes",
+                      text: "Une question par écran, à portée de pouce.",
+                    },
+                    {
+                      emoji: "💾",
+                      title: "Reprise possible",
+                      text: "Tes réponses sont sauvegardées sur ton appareil : ferme, reviens, tu reprends où tu étais.",
+                    },
+                  ].map((c) => (
+                    <li
+                      key={c.title}
+                      className="border-border bg-paper shadow-subtle rounded-2xl border p-4"
+                    >
+                      <p className="text-fg font-serif text-lg leading-snug font-semibold">
+                        <span aria-hidden="true" className="mr-1.5">
+                          {c.emoji}
+                        </span>
+                        {c.title}
+                      </p>
+                      <p className="text-fg-soft mt-1 text-sm leading-relaxed">{c.text}</p>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="border-terracotta/30 bg-terracotta-soft/40 mt-4 rounded-2xl border px-5 py-4 text-left">
+                  <p className="text-terracotta-deep font-serif text-xl leading-snug font-semibold">
+                    {PROMESSE_COMMISSION}
+                  </p>
+                  <p className="text-fg-soft mt-1 text-sm leading-relaxed">
+                    Revenus non plafonnés, statut indépendant, secteur à toi.
+                  </p>
+                </div>
               </div>
             ) : null}
             {screen === 1 ? <StepIdentite a={answers} set={set} errors={errors} /> : null}
@@ -284,6 +382,43 @@ export function CommercialApplicationWizard(): React.ReactNode {
             {screen === 9 ? <StepDetails a={answers} set={set} errors={errors} /> : null}
           </StepTransition>
         </div>
+
+        {screen === 3 && confirmParcours ? (
+          <div
+            className="border-terracotta bg-terracotta-soft/50 mt-6 rounded-2xl border-2 p-5"
+            role="group"
+            aria-label="Confirmation de ton parcours"
+          >
+            <p className="text-fg font-semibold">
+              Es-tu sûr d’avoir mis TOUTES tes expériences professionnelles des 10 dernières années
+              ?
+            </p>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmParcours(false);
+                  setScreen(4);
+                }}
+                className="bg-terracotta focus-visible:ring-terracotta inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-semibold text-white transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <Check aria-hidden="true" className="h-4 w-4" />
+                Oui, je continue
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmParcours(false);
+                  addExperience();
+                }}
+                className="border-terracotta text-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border-2 px-5 text-[15px] font-semibold transition-colors hover:bg-white/60 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+              >
+                <Plus aria-hidden="true" className="h-4 w-4" />
+                J’en ajoute une
+              </button>
+            </div>
+          </div>
+        ) : null}
 
         {serverError ? (
           <p

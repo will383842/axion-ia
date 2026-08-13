@@ -198,6 +198,9 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
     }
     case 4: {
       if (a.iaUtilise === null) e.iaUtilise = "Réponds par oui ou par non.";
+      // OBLIGATOIRE quand la réponse est Oui (retour Will 2026-08-13).
+      if (a.iaUtilise === true && !a.iaUsage.trim())
+        e.iaUsage = "Explique en quelques mots pourquoi, et pour quoi faire.";
       return e;
     }
     case 5: {
@@ -211,8 +214,8 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
     }
     case 7: {
       const len = a.pitch.trim().length;
-      if (len < 300)
-        e.pitch = `Encore ${300 - len} caractère${300 - len > 1 ? "s" : ""} — développe un peu, ça compte.`;
+      if (len < 150)
+        e.pitch = `Encore ${150 - len} caractère${150 - len > 1 ? "s" : ""} — développe un peu, ça compte.`;
       else if (len > 800) e.pitch = `${len - 800} caractère${len - 800 > 1 ? "s" : ""} de trop.`;
       return e;
     }
@@ -220,6 +223,14 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
       return e;
     case 9: {
       if (!a.dispoMois || !a.dispoAnnee) e.dispo = "Indique le mois et l’année.";
+      else {
+        // Une disponibilité ne peut pas être dans le passé (retour Will
+        // 2026-08-13) : le mois courant est accepté, pas avant.
+        const now = new Date();
+        const courant = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+        if (mmYYYY(a.dispoMois.padStart(2, "0"), a.dispoAnnee) < courant)
+          e.dispo = "Cette date est déjà passée — indique le mois courant ou un mois à venir.";
+      }
       if (a.permisVehicule === null) e.permisVehicule = "Réponds par oui ou par non.";
       if (
         a.linkedin.trim() &&

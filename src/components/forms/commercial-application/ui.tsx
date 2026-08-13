@@ -18,18 +18,38 @@ export const FIELD_CLASS =
 
 export const LABEL_CLASS = "text-fg mb-1.5 block text-sm font-semibold";
 
+/** Astérisque des champs obligatoires (retour Will 2026-08-13) — visuel
+ *  seulement : l'accessibilité passe par `aria-required` sur le champ. */
+export function RequiredMark() {
+  return (
+    <span aria-hidden="true" className="text-terracotta-deep ml-0.5">
+      *
+    </span>
+  );
+}
+
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   fieldId: string;
   error?: string | undefined;
   optionalHint?: boolean;
+  /** Champ obligatoire : astérisque visible + aria-required. */
+  requiredField?: boolean;
 }
 
-export function TextField({ label, fieldId, error, optionalHint, ...rest }: TextFieldProps) {
+export function TextField({
+  label,
+  fieldId,
+  error,
+  optionalHint,
+  requiredField,
+  ...rest
+}: TextFieldProps) {
   return (
     <div>
       <label className={LABEL_CLASS} htmlFor={fieldId}>
         {label}
+        {requiredField ? <RequiredMark /> : null}
         {optionalHint ? (
           <span className="text-fg-muted ml-1.5 font-normal">(facultatif)</span>
         ) : null}
@@ -37,6 +57,7 @@ export function TextField({ label, fieldId, error, optionalHint, ...rest }: Text
       <input
         id={fieldId}
         className={cn(FIELD_CLASS, error && "border-terracotta-deep")}
+        aria-required={requiredField ? true : undefined}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${fieldId}-error` : undefined}
         {...rest}
@@ -119,15 +140,25 @@ interface ChipGroupProps {
   legend: string;
   error?: string | undefined;
   optionalHint?: boolean;
+  /** Groupe obligatoire : astérisque visible sur la légende. */
+  requiredField?: boolean;
   columns?: 1 | 2;
   children: React.ReactNode;
 }
 
-export function ChipGroup({ legend, error, optionalHint, columns = 2, children }: ChipGroupProps) {
+export function ChipGroup({
+  legend,
+  error,
+  optionalHint,
+  requiredField,
+  columns = 2,
+  children,
+}: ChipGroupProps) {
   return (
-    <fieldset>
+    <fieldset aria-required={requiredField ? true : undefined}>
       <legend className={LABEL_CLASS}>
         {legend}
+        {requiredField ? <RequiredMark /> : null}
         {optionalHint ? (
           <span className="text-fg-muted ml-1.5 font-normal">(facultatif)</span>
         ) : null}
@@ -238,6 +269,8 @@ interface MonthYearProps {
   error?: string | undefined;
   disabled?: boolean;
   optionalHint?: boolean;
+  /** Sélection obligatoire : astérisque visible + aria-required. */
+  requiredField?: boolean;
 }
 
 export function MonthYearSelect({
@@ -252,11 +285,13 @@ export function MonthYearSelect({
   error,
   disabled,
   optionalHint,
+  requiredField,
 }: MonthYearProps) {
   return (
     <div>
       <label className={LABEL_CLASS} htmlFor={`${idPrefix}-mois`}>
         {label}
+        {requiredField ? <RequiredMark /> : null}
         {optionalHint ? (
           <span className="text-fg-muted ml-1.5 font-normal">(facultatif)</span>
         ) : null}
@@ -269,6 +304,7 @@ export function MonthYearSelect({
           onChange={(e) => onMonthChange(e.target.value)}
           disabled={disabled}
           aria-label={`${label} — mois`}
+          aria-required={requiredField ? true : undefined}
           aria-invalid={error ? true : undefined}
         >
           <option value="">Mois</option>
@@ -285,6 +321,7 @@ export function MonthYearSelect({
           onChange={(e) => onYearChange(e.target.value)}
           disabled={disabled}
           aria-label={`${label} — année`}
+          aria-required={requiredField ? true : undefined}
           aria-invalid={error ? true : undefined}
         >
           <option value="">Année</option>

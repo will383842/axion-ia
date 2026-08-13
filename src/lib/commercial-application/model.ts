@@ -76,6 +76,7 @@ export const STATUT_OPTIONS = [
 
 export const SOURCE_OPTIONS = [
   { id: "memorial-isere", label: "Le Mémorial de l’Isère" },
+  { id: "site-web", label: "Site web Axion-IA.com" },
   { id: "qr-code", label: "QR code" },
   { id: "linkedin", label: "LinkedIn" },
   { id: "bouche-a-oreille", label: "Bouche à oreille" },
@@ -305,7 +306,7 @@ export const commercialApplicationSchema = z
     /** Labels lisibles (« Isère (38) », « Auvergne-Rhône-Alpes »). */
     zones: z.array(z.string().trim().min(1).max(60)).max(30).optional(),
     deplacement: z.enum(DEPLACEMENT_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
-    pitch: z.string().trim().min(300).max(800),
+    pitch: z.string().trim().min(150).max(800),
     messageLibre: z.string().trim().max(2000).optional(),
     disponibilite: z.string().regex(MOIS_ANNEE),
     permisVehicule: z.boolean(),
@@ -317,6 +318,12 @@ export const commercialApplicationSchema = z
   .refine((d) => d.zoneMobile || (d.zones?.length ?? 0) > 0, {
     message: "Choisis au moins une zone, ou « Peu importe, je suis mobile ».",
     path: ["zones"],
+  })
+  // « Pourquoi, et pour quoi faire ? » est OBLIGATOIRE quand la réponse IA
+  // est Oui (retour Will 2026-08-13) — gardé aussi côté serveur.
+  .refine((d) => !d.iaUtilise || Boolean(d.iaUsage && d.iaUsage.trim().length > 0), {
+    message: "Explique en quelques mots pourquoi, et pour quoi faire.",
+    path: ["iaUsage"],
   });
 
 export type CommercialApplicationInput = z.infer<typeof commercialApplicationSchema>;
