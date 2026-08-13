@@ -74,6 +74,19 @@ export type LigneRepartition = {
   partRapport: number;
 };
 
+/** Statistiques d'un tunnel pris isolément. */
+export type StatsTunnel = {
+  cle: string;
+  libelle: string;
+  sessions: number;
+  questionnairesOuverts: number;
+  questionnairesTermines: number;
+  rapportsDemandes: number;
+  rappelsDemandes: number;
+  /** Rapports demandés rapportés aux sessions du tunnel, en pourcentage. */
+  partRapport: number;
+};
+
 export type SyntheseTunnels = {
   sessions: number;
   sessionsPub: number;
@@ -81,12 +94,31 @@ export type SyntheseTunnels = {
   questionnairesTermines: number;
   rapportsDemandes: number;
   rappelsDemandes: number;
+  /**
+   * Statistiques par tunnel, chaque session attribuée au tunnel où elle a
+   * COMMENCÉ.
+   *
+   * 🔴 Attribution à l'entrée, et non présence : une session qui voit la page
+   * publicitaire puis passe au questionnaire touche deux tunnels. La compter
+   * dans les deux ferait une somme supérieure au total et rendrait tout
+   * pourcentage faux. Attribuée à son entrée, la somme des tunnels égale
+   * exactement le nombre de sessions — et la question à laquelle ce tableau
+   * répond devient « quelle porte d'entrée amène, et convertit ».
+   */
+  parTunnel: StatsTunnel[];
   entonnoirs: Entonnoir[];
   abandonParEcran: AbandonEcran[];
   parCampagne: LigneRepartition[];
   parAppareil: LigneRepartition[];
   parSecteur: LigneRepartition[];
   parTranche: Array<{ cle: string; rapports: number }>;
+};
+
+/** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */
+const LIBELLES_TUNNEL: Readonly<Record<string, string>> = {
+  diagnostic: "Page publicitaire (/diagnostic)",
+  simulateur: "Questionnaire nu (/simulateur)",
+  roi: "Questionnaire public (/roi)",
 };
 
 const E = {
@@ -117,6 +149,16 @@ type Session = {
   secteur: string | null;
   tranche: string | null;
   aVuLaPub: boolean;
+  /**
+   * Tunnel où la session a commencé, et l'instant correspondant.
+   *
+   * 🔴 Déterminé par la DATE la plus ancienne, jamais par l'ordre d'arrivée
+   * des lignes. Se fier à l'ordre marcherait tant que l'appelant trie par
+   * date croissante — et attribuerait silencieusement toutes les sessions au
+   * mauvais tunnel le jour où quelqu'un changerait ce tri.
+   */
+  tunnelEntree: string | null;
+  debut: number;
 };
 
 function grouper(lignes: readonly LigneTunnel[]): Map<string, Session> {
@@ -134,11 +176,18 @@ function grouper(lignes: readonly LigneTunnel[]): Map<string, Session> {
         secteur: null,
         tranche: null,
         aVuLaPub: false,
+        tunnelEntree: null,
+        debut: Number.POSITIVE_INFINITY,
       };
       sessions.set(l.sessionId, s);
     }
 
     s.evenements.add(l.event);
+    const instant = l.createdAt.getTime();
+    if (instant < s.debut) {
+      s.debut = instant;
+      s.tunnelEntree = l.funnel;
+    }
     if (l.event === E.vue) s.aVuLaPub = true;
     if (l.event === E.ecran && typeof l.stepIndex === "number" && l.step) {
       s.ecransRepondus.set(l.stepIndex, l.step);
@@ -245,6 +294,38 @@ function abandons(sessions: readonly Session[]): AbandonEcran[] {
     .sort((a, b) => a.stepIndex - b.stepIndex);
 }
 
+/** Statistiques par tunnel d'entrée, triées par volume décroissant. */
+function parTunnel(sessions: readonly Session[]): StatsTunnel[] {
+  const paniers = new Map<string, StatsTunnel>();
+
+  for (const s of sessions) {
+    const cle = s.tunnelEntree ?? "inconnu";
+    const p =
+      paniers.get(cle) ??
+      ({
+        cle,
+        libelle: LIBELLES_TUNNEL[cle] ?? cle,
+        sessions: 0,
+        questionnairesOuverts: 0,
+        questionnairesTermines: 0,
+        rapportsDemandes: 0,
+        rappelsDemandes: 0,
+        partRapport: 0,
+      } satisfies StatsTunnel);
+
+    p.sessions += 1;
+    if (s.evenements.has(E.demarre)) p.questionnairesOuverts += 1;
+    if (s.evenements.has(E.termine)) p.questionnairesTermines += 1;
+    if (s.evenements.has(E.rapport)) p.rapportsDemandes += 1;
+    if (s.evenements.has(E.rappel)) p.rappelsDemandes += 1;
+    paniers.set(cle, p);
+  }
+
+  return [...paniers.values()]
+    .map((p) => ({ ...p, partRapport: part(p.rapportsDemandes, p.sessions) }))
+    .sort((a, b) => b.sessions - a.sessions || a.cle.localeCompare(b.cle));
+}
+
 /** Transforme les balises brutes en synthèse affichable. */
 export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels {
   const toutes = [...grouper(lignes).values()];
@@ -260,6 +341,7 @@ export function agregerTunnels(lignes: readonly LigneTunnel[]): SyntheseTunnels 
     questionnairesTermines: toutes.filter(a(E.termine)).length,
     rapportsDemandes: toutes.filter(a(E.rapport)).length,
     rappelsDemandes: toutes.filter(a(E.rappel)).length,
+    parTunnel: parTunnel(toutes),
     entonnoirs: [
       entonnoir(
         "Depuis la page publicitaire",

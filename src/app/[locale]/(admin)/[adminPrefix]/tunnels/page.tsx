@@ -10,8 +10,15 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { AdminPageHeader, AdminStatCard } from "@/components/admin/ui";
+import {
+  AdminPageHeader,
+  AdminStatCard,
+  AdminTable,
+  AdminEmptyState,
+  type AdminTableColumn,
+} from "@/components/admin/ui";
 import { chargerTunnels, lireFenetre, FENETRES } from "@/features/admin-tunnels/query";
+import type { StatsTunnel } from "@/features/admin-tunnels/aggregate";
 import { EntonnoirVue } from "./_components/EntonnoirVue";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +49,45 @@ export default async function TunnelsPage({
     synthese.questionnairesOuverts > 0
       ? Math.round((synthese.rapportsDemandes / synthese.questionnairesOuverts) * 1000) / 10
       : 0;
+
+  const colonnesTunnel: ReadonlyArray<AdminTableColumn<StatsTunnel>> = [
+    { key: "cle", header: "Tunnel d'entrée", cell: (r) => r.libelle, width: "38%" },
+    {
+      key: "sessions",
+      header: "Sessions",
+      align: "right",
+      cell: (r) => r.sessions.toLocaleString("fr-FR"),
+    },
+    {
+      key: "ouverts",
+      header: "Questionnaires",
+      align: "right",
+      cell: (r) => r.questionnairesOuverts.toLocaleString("fr-FR"),
+      hiddenBelow: "sm",
+    },
+    {
+      key: "termines",
+      header: "Terminés",
+      align: "right",
+      cell: (r) => r.questionnairesTermines.toLocaleString("fr-FR"),
+      hiddenBelow: "sm",
+    },
+    {
+      key: "rapports",
+      header: "Rapports",
+      align: "right",
+      cell: (r) => r.rapportsDemandes.toLocaleString("fr-FR"),
+    },
+    {
+      key: "part",
+      header: "Conversion",
+      align: "right",
+      // Sous 5 sessions, un pourcentage n'est que du bruit affiché avec
+      // assurance. On préfère le dire.
+      cell: (r) =>
+        r.sessions < 5 ? <span className="admin-meta-small">trop peu</span> : `${r.partRapport} %`,
+    },
+  ];
 
   return (
     <>
@@ -100,6 +146,30 @@ export default async function TunnelsPage({
           href={`${base}/prospects?fenetre=${jours}`}
         />
       </div>
+
+      <section className="mt-[var(--space-admin-6)]">
+        <h2 className="admin-h2">Par tunnel</h2>
+        <p className="admin-lede">
+          Chaque session est comptée dans le tunnel où elle a <strong>commencé</strong>. Un visiteur
+          qui arrive par la page publicitaire puis enchaîne sur le questionnaire reste attribué à la
+          page publicitaire : c&apos;est elle qui l&apos;a amené. La somme des lignes égale donc
+          exactement le nombre de sessions.
+        </p>
+        {synthese.parTunnel.length === 0 ? (
+          <AdminEmptyState
+            title="Aucune session sur la période"
+            description="Les tunnels apparaîtront dès la première visite mesurée."
+          />
+        ) : (
+          <AdminTable
+            columns={colonnesTunnel}
+            rows={synthese.parTunnel}
+            getRowId={(r) => r.cle}
+            rowHref={(r) => `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`}
+            caption="Sessions et conversions par tunnel d'entrée"
+          />
+        )}
+      </section>
 
       <div className="mt-[var(--space-admin-6)] grid gap-[var(--space-admin-4)] lg:grid-cols-2">
         {synthese.entonnoirs.map((e) => (

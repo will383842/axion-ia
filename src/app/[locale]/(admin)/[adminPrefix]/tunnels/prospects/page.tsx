@@ -17,7 +17,8 @@ import {
   AdminEmptyState,
   type AdminTableColumn,
 } from "@/components/admin/ui";
-import { chargerTunnels, lireFenetre, FENETRES } from "@/features/admin-tunnels/query";
+import { chargerTunnels, lireFenetre, lireTunnel, FENETRES } from "@/features/admin-tunnels/query";
+import { FUNNEL_KEYS } from "@/lib/schemas/funnel-event-schema";
 import type { AbandonEcran, LigneRepartition } from "@/features/admin-tunnels/aggregate";
 
 export const dynamic = "force-dynamic";
@@ -48,9 +49,20 @@ export default async function TunnelProspectsPage({
   const session = await auth();
   if (!session?.user) redirect(`/fr/${adminPrefix}/login`);
 
-  const jours = lireFenetre((await searchParams).fenetre);
-  const { synthese } = await chargerTunnels(jours);
+  const params_ = await searchParams;
+  const jours = lireFenetre(params_.fenetre);
+  const tunnel = lireTunnel(params_.tunnel);
+  const { synthese } = await chargerTunnels(jours, tunnel);
   const base = `/fr/${adminPrefix}/tunnels/prospects`;
+  /** Conserve les deux filtres d'un lien à l'autre. */
+  const lien = (f: number, t: string | null): string =>
+    `${base}?fenetre=${f}${t ? `&tunnel=${t}` : ""}`;
+
+  const LIBELLES: Readonly<Record<string, string>> = {
+    diagnostic: "Page publicitaire",
+    simulateur: "Questionnaire nu",
+    roi: "Questionnaire public",
+  };
 
   // L'écran le plus coûteux : celui qui perd le plus de sessions en valeur
   // ABSOLUE. Trier par pourcentage désignerait un écran vu par trois
@@ -119,7 +131,7 @@ export default async function TunnelProspectsPage({
             {FENETRES.map((f) => (
               <Link
                 key={f.jours}
-                href={`${base}?fenetre=${f.jours}`}
+                href={lien(f.jours, tunnel)}
                 className={
                   f.jours === jours ? "admin-button admin-button-sm" : "admin-button-ghost"
                 }
@@ -131,6 +143,38 @@ export default async function TunnelProspectsPage({
           </nav>
         }
       />
+
+      <nav aria-label="Tunnel" className="admin-filter-tabs mb-[var(--space-admin-4)]">
+        <Link
+          href={lien(jours, null)}
+          className={tunnel === null ? "admin-button admin-button-sm" : "admin-button-ghost"}
+          aria-current={tunnel === null ? "page" : undefined}
+        >
+          Tous les tunnels
+        </Link>
+        {FUNNEL_KEYS.map((k) => (
+          <Link
+            key={k}
+            href={lien(jours, k)}
+            className={tunnel === k ? "admin-button admin-button-sm" : "admin-button-ghost"}
+            aria-current={tunnel === k ? "page" : undefined}
+          >
+            {LIBELLES[k] ?? k}
+          </Link>
+        ))}
+      </nav>
+
+      {/* ⚠️ Le filtre porte sur les balises, pas sur les sessions : isoler le
+          questionnaire coupe la partie « page publicitaire » d'un parcours
+          mixte. Sans cet avertissement, on lirait une chute d'entrée là où il
+          n'y a qu'un périmètre restreint. */}
+      {tunnel !== null ? (
+        <p className="admin-alert admin-alert-info">
+          Vue restreinte à <strong>{LIBELLES[tunnel] ?? tunnel}</strong> : seules les balises émises
+          sur cette page sont comptées. Un visiteur venu de la page publicitaire y apparaît sans son
+          étape d&apos;arrivée.
+        </p>
+      ) : null}
 
       <div className="admin-kpi-grid">
         <AdminStatCard

@@ -114,6 +114,88 @@ describe("agregerTunnels — bases de calcul", () => {
   });
 });
 
+describe("agregerTunnels — statistiques par tunnel", () => {
+  it("attribue chaque session au tunnel où elle a COMMENCÉ", () => {
+    // Une session entrée par la page publicitaire puis passée au
+    // questionnaire touche deux tunnels. Elle appartient au premier.
+    const lignes = [
+      balise("a", "Landing Viewed", {
+        funnel: "diagnostic",
+        createdAt: new Date("2026-08-01T10:00:00Z"),
+      }),
+      balise("a", "Simulator Started", {
+        funnel: "simulateur",
+        createdAt: new Date("2026-08-01T10:02:00Z"),
+      }),
+      balise("a", "Simulator Completed", {
+        funnel: "simulateur",
+        createdAt: new Date("2026-08-01T10:05:00Z"),
+      }),
+    ];
+
+    const parTunnel = agregerTunnels(lignes).parTunnel;
+    expect(parTunnel).toHaveLength(1);
+    expect(parTunnel[0]?.cle).toBe("diagnostic");
+    expect(parTunnel[0]?.questionnairesTermines).toBe(1);
+  });
+
+  it("SOMME exactement au nombre de sessions — la propriété qui rend les taux justes", () => {
+    // Compter une session dans chaque tunnel touché ferait une somme
+    // supérieure au total, et tout pourcentage bâti dessus serait faux sans
+    // qu'aucun chiffre n'ait l'air aberrant.
+    const lignes = [
+      balise("a", "Landing Viewed", {
+        funnel: "diagnostic",
+        createdAt: new Date("2026-08-01T10:00:00Z"),
+      }),
+      balise("a", "Simulator Started", {
+        funnel: "simulateur",
+        createdAt: new Date("2026-08-01T10:01:00Z"),
+      }),
+      balise("b", "Simulator Started", {
+        funnel: "simulateur",
+        createdAt: new Date("2026-08-01T11:00:00Z"),
+      }),
+      balise("c", "Simulator Started", {
+        funnel: "roi",
+        createdAt: new Date("2026-08-01T12:00:00Z"),
+      }),
+    ];
+
+    const s = agregerTunnels(lignes);
+    const somme = s.parTunnel.reduce((n, t) => n + t.sessions, 0);
+    expect(somme).toBe(s.sessions);
+    expect(somme).toBe(3);
+  });
+
+  it("ne dépend PAS de l'ordre des lignes reçues", () => {
+    // Se fier à l'ordre d'arrivée marcherait tant que l'appelant trie par date
+    // croissante. Le jour où ce tri change, toutes les sessions basculeraient
+    // silencieusement dans le mauvais tunnel.
+    const tot = new Date("2026-08-01T10:00:00Z");
+    const tard = new Date("2026-08-01T10:05:00Z");
+    const desordre = [
+      balise("a", "Simulator Started", { funnel: "simulateur", createdAt: tard }),
+      balise("a", "Landing Viewed", { funnel: "diagnostic", createdAt: tot }),
+    ];
+    expect(agregerTunnels(desordre).parTunnel[0]?.cle).toBe("diagnostic");
+  });
+
+  it("nomme les tunnels lisiblement, et laisse passer une clé inconnue", () => {
+    const lignes = [balise("a", "Simulator Started", { funnel: "roi" })];
+    expect(agregerTunnels(lignes).parTunnel[0]?.libelle).toContain("/roi");
+  });
+
+  it("trie par volume, pour que le tunnel dominant soit en tête", () => {
+    const lignes = [
+      balise("a", "Simulator Started", { funnel: "roi" }),
+      balise("b", "Simulator Started", { funnel: "simulateur" }),
+      balise("c", "Simulator Started", { funnel: "simulateur" }),
+    ];
+    expect(agregerTunnels(lignes).parTunnel[0]?.cle).toBe("simulateur");
+  });
+});
+
 describe("agregerTunnels — courbe d'abandon écran par écran", () => {
   const ecran = (id: string, rang: number, nom: string): LigneTunnel =>
     balise(id, "Simulator Step", { step: nom, stepIndex: rang });

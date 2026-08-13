@@ -7,6 +7,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { agregerTunnels, type LigneTunnel, type SyntheseTunnels } from "./aggregate";
+import { FUNNEL_KEYS } from "@/lib/schemas/funnel-event-schema";
 
 /** Fenêtres proposées dans l'entête de la page. */
 export const FENETRES = [
@@ -27,6 +28,9 @@ export const FENETRE_PAR_DEFAUT = 30;
  */
 const PLAFOND_LIGNES = 100_000;
 
+/** Choix de tunnel dans l'entête. `null` = tous. */
+export type FiltreTunnel = string | null;
+
 export type ChargementTunnels = {
   synthese: SyntheseTunnels;
   depuis: Date;
@@ -35,6 +39,17 @@ export type ChargementTunnels = {
   tronquee: boolean;
 };
 
+/**
+ * Normalise le paramètre de tunnel reçu de l'URL.
+ *
+ * Liste fermée : une valeur libre arriverait telle quelle dans le `where`
+ * Prisma et rendrait une page vide sans erreur — on ne saurait pas si le
+ * tunnel n'a pas de trafic ou si le nom est faux.
+ */
+export function lireTunnel(brut: string | undefined): FiltreTunnel {
+  return brut && (FUNNEL_KEYS as readonly string[]).includes(brut) ? brut : null;
+}
+
 /** Normalise le paramètre de fenêtre reçu de l'URL. */
 export function lireFenetre(brut: string | undefined): number {
   const n = Number(brut);
@@ -42,12 +57,19 @@ export function lireFenetre(brut: string | undefined): number {
   return connue ? connue.jours : FENETRE_PAR_DEFAUT;
 }
 
-export async function chargerTunnels(jours: number): Promise<ChargementTunnels> {
+export async function chargerTunnels(
+  jours: number,
+  tunnel: FiltreTunnel = null,
+): Promise<ChargementTunnels> {
   const depuis = new Date();
   depuis.setUTCDate(depuis.getUTCDate() - jours);
 
+  // ⚠️ Le filtre porte sur les BALISES, pas sur les sessions : restreindre à
+  // `simulateur` coupe la partie « page publicitaire » d'un parcours mixte.
+  // C'est voulu — on regarde alors ce qui se passe SUR cette page — mais
+  // l'entonnoir publicitaire devient forcément vide, et la page le dit.
   const lignes = await prisma.funnelEvent.findMany({
-    where: { createdAt: { gte: depuis } },
+    where: { createdAt: { gte: depuis }, ...(tunnel ? { funnel: tunnel } : {}) },
     select: {
       funnel: true,
       event: true,
