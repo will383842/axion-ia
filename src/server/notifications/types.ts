@@ -229,6 +229,24 @@ export type NotificationEvent =
       };
     }
   | {
+      // Demande RGPD déposée depuis le portail stagiaire (2026-08-13).
+      //
+      // 🔴 Sévérité `warn`, et ce n'est pas de la prudence : le délai de
+      // réponse est d'UN MOIS et il court dès le dépôt. Avant cette
+      // catégorie, la demande n'était signalée à PERSONNE — elle pouvait
+      // dormir jusqu'à ce que la personne saisisse la CNIL.
+      category: "RGPD_REQUEST_SUBMITTED";
+      payload: {
+        demandeId: string;
+        /** `export` (art. 15) ou `suppression` (art. 17). */
+        type: string;
+        traineeNom: string;
+        traineeEmail: string;
+        /** Échéance légale, déjà formatée. */
+        echeance: string;
+      };
+    }
+  | {
       category: "SPEAKER_INVITATION_RECEIVED";
       payload: {
         submissionId: string;

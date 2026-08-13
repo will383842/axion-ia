@@ -35,6 +35,8 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   // « Messages ». `rateLimitPerHour` volontairement absent : le volume attendu
   // est faible et le rate-limit IP côté Server Action suffit.
   PODCAST_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "info" },
+  // `warn` et non `info` : un délai légal court dès le dépôt.
+  RGPD_REQUEST_SUBMITTED: { channels: ["telegram"], severity: "warn" },
   SPEAKER_INVITATION_RECEIVED: { channels: ["telegram"], severity: "info" },
   INVESTOR_INQUIRY_RECEIVED: { channels: ["telegram"], severity: "warn" },
   CUSTOMER_SUPPORT_REQUEST: { channels: ["telegram"], severity: "warn" },
@@ -174,6 +176,7 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   CONTACT_FORM_SUBMITTED: "messages",
   CUSTOMER_SUPPORT_REQUEST: "messages",
   PODCAST_REQUEST_SUBMITTED: "messages",
+  RGPD_REQUEST_SUBMITTED: "messages",
   SPEAKER_INVITATION_RECEIVED: "messages",
 
   // 🔔 Système — newsletter, ops, et le tunnel de réservation payante ÉTEINT.
