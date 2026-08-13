@@ -53,7 +53,7 @@ export function EntonnoirVue({ entonnoir }: { entonnoir: Entonnoir }): React.Rea
                     couleurs étrangères à la palette, qui juraient avec le reste
                     de l'écran. Le commentaire de `--color-admin-accent-track`
                     dans admin.css est explicite : « jamais un gris étranger ».
-                    Même forme que la jauge de couverture content-gen. */}
+                    Même forme que les jauges de couverture de la console. */}
                 <div
                   className="mt-[var(--space-admin-1)] h-3 w-full overflow-hidden rounded-full bg-[color:var(--color-admin-accent-track)]"
                   role="img"
