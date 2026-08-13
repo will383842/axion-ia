@@ -15,12 +15,7 @@ import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER, type PricingTier } from "@/
 import { resolveOfferUrl, hasResolvableUrl } from "@/lib/offer-url";
 
 export type OfferVertical =
-  | "audit"
-  | "formation"
-  | "implementation"
-  | "sites-web"
-  | "un-a-un"
-  | "maintenance";
+  "audit" | "formation" | "implementation" | "sites-web" | "un-a-un" | "maintenance";
 
 export type OfferFormat = "presentiel" | "distanciel" | "mixte";
 
