@@ -36,6 +36,12 @@ export type EmailJobName =
   | "podcast-demande-recue"
   | "rappel-confirme"
   | "chatbot-demande-transmise"
+  // Remplacent `contact-confirmed` sur deux flux ou il disait FAUX :
+  // il promettait une reponse « sous 48 heures ouvrees » a un candidat
+  // (un recrutement ne se traite pas en deux jours) et annoncait un
+  // rappel a quelqu'un qui venait simplement de laisser un avis.
+  | "candidature-recue"
+  | "avis-recu"
   // Sprint X.5bis — parcours B (formulaire devis qualifié)
   | "quote-request-received"
   // Sprint X.13 (Booking V1) — paiements Stripe Checkout

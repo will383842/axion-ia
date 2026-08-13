@@ -20,7 +20,6 @@ import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
-import type { EmailJobName } from "@/server/queue/types";
 import { adminPath } from "@/lib/admin-path";
 import { storeCv } from "@/server/careers/cv-storage";
 import { reviewSubmissionSchema, deriveLastInitial } from "@/lib/schemas/review-submission-schema";
@@ -229,11 +228,14 @@ export async function submitReviewAction(
       dedupKey: review.id,
     });
 
-    // 11. Email accusé au client (réutilise contact-confirmed, 0 nouveau template)
-    await enqueueEmail("contact-confirmed" as EmailJobName, d.email, locale, {
+    // 11. Remerciement au client.
+    // 🔴 Gabarit DÉDIÉ depuis le 2026-08-13. Avant, `contact-confirmed`
+    // annonçait « nous revenons vers vous sous 48 heures » à quelqu'un qui
+    // venait simplement de laisser un avis — un avis n'est pas une demande, et
+    // promettre un rappel donnait l'impression que le message n'avait pas été
+    // lu. Le nouveau gabarit remercie et explique la modération.
+    await enqueueEmail("avis-recu", d.email, locale, {
       contactName: `${d.firstName} ${lastInitial}`.trim(),
-      submissionId: review.id,
-      type: "avis",
     });
 
     revalidatePath(adminPath("fr", "avis"));

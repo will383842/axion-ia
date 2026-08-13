@@ -42,6 +42,8 @@ import {
   ChatbotDemandeTransmiseEmail,
   chatbotDemandeTransmiseSubject,
 } from "./chatbot-demande-transmise";
+import { CandidatureRecueEmail, candidatureRecueSubject } from "./candidature-recue";
+import { AvisRecuEmail, avisRecuSubject } from "./avis-recu";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
 import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
@@ -231,6 +233,14 @@ const TEMPLATES: TemplateMap = {
   "chatbot-demande-transmise": {
     subject: chatbotDemandeTransmiseSubject,
     component: ChatbotDemandeTransmiseEmail,
+  },
+  "candidature-recue": {
+    subject: candidatureRecueSubject,
+    component: CandidatureRecueEmail,
+  },
+  "avis-recu": {
+    subject: avisRecuSubject,
+    component: AvisRecuEmail,
   },
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,

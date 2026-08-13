@@ -113,12 +113,13 @@ function emailTemplateFor(type: UnifiedContactType): EmailJobName {
       return "audit-confirmed";
     case "implementation":
       return "implementation-confirmed";
-    // Form v2 — fallback sur `contact-confirmed` pour les 5 nouveaux types.
-    // Des templates dédiés (press-confirmed / recruitment-confirmed / etc.)
-    // peuvent être ajoutés ultérieurement ; pour l'instant la confirmation
-    // générique « nous revenons vers vous » suffit. Le routage interne fin
-    // se fait côté Telegram (catégories distinctes).
+    // `quote-request-received` était écrit et déclaré depuis le sprint Booking,
+    // mais appelé NULLE PART : les demandes de devis retombaient sur l'accusé
+    // générique. Branché le 2026-08-13.
     case "devis":
+      return "quote-request-received";
+    // Les autres types gardent l'accusé générique. Le routage interne fin se
+    // fait côté Telegram (catégories distinctes).
     case "formation":
     case "un_a_un":
     case "partenariat":
@@ -289,6 +290,9 @@ export async function submitUnifiedContactAction(
       await enqueueEmail(emailTemplateFor(data.type), data.email, locale, {
         contactName: data.nom,
         submissionId: submission.id,
+        // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
+        // lui, le gabarit affichait « votre demande de devis pour undefined ».
+        ...(data.companyName ? { companyName: data.companyName } : {}),
         type: data.type,
         subType: data.subType,
         // Champs hérités utilisés par les templates existants (audit-confirmed,
