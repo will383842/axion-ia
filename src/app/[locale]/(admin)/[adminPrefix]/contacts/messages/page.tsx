@@ -8,7 +8,7 @@
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { AdminFilterTabs } from "@/components/admin/ui";
+import { AdminTabs } from "@/components/admin/AdminTabs";
 import { SubmissionsV2 } from "../../submissions/_v2/SubmissionsV2";
 import { PodcastRequestsView } from "./PodcastRequestsView";
 
@@ -59,16 +59,21 @@ export default async function ContactsMessagesPage({ params, searchParams }: Pag
 
   const category = CATEGORIES.find((c) => c.value === sp.cat) ?? CATEGORIES[0]!;
   const base = `/fr/${adminPrefix}/contacts/messages`;
+  // Vrais sous-onglets soulignés (demande Will 2026-08-13), même composant que
+  // les hubs Tunnels / Documents — plus le bloc segmenté étiqueté « Catégorie »
+  // qui lisait comme un header. 9 onglets : défilement horizontal sous 1024 px.
   const categoryTabs = (
-    <AdminFilterTabs
-      label="Catégorie"
-      current={category.value}
-      options={CATEGORIES.map((c) => ({
-        value: c.value,
-        label: c.label,
-        href: c.value === "tous" ? base : `${base}?cat=${c.value}`,
-      }))}
-    />
+    <div className="overflow-x-auto">
+      <AdminTabs
+        ariaLabel="Catégorie"
+        activeTabId={category.value}
+        tabs={CATEGORIES.map((c) => ({
+          id: c.value,
+          label: c.label,
+          href: c.value === "tous" ? base : `${base}?cat=${c.value}`,
+        }))}
+      />
+    </div>
   );
 
   if (category.value === "podcast") {
