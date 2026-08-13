@@ -41,6 +41,7 @@ import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { readUtmCookie, UTM_COOKIE_NAME } from "@/lib/utm";
 import { REFERRER_CITY_COOKIE_NAME } from "@/lib/pseo-referrer";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 export type UnifiedContactState = { ok: true; submissionId: string } | { ok: false; error: string };
 
@@ -215,6 +216,7 @@ export async function submitUnifiedContactAction(
         companyName: data.companyName ?? "—",
         contactName: encryptPii(data.nom),
         contactEmail: encryptPii(data.email),
+        contactEmailHash: hashEmailForLookup(data.email),
         contactPhone: encryptPii(data.telephone) ?? null,
         sector: data.companySector ?? null,
         employeesCount: data.companySize ?? null,

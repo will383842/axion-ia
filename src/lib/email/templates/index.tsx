@@ -29,6 +29,7 @@ import {
   newsletterConfirmOptinSubject,
 } from "./newsletter-confirm-optin";
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
+import { RoiReportEmail, roiReportSubject } from "./roi-report";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
@@ -191,6 +192,10 @@ const TEMPLATES: TemplateMap = {
   "contact-confirmed": {
     subject: contactConfirmedSubject,
     component: ContactConfirmedEmail,
+  },
+  "roi-report": {
+    subject: roiReportSubject,
+    component: RoiReportEmail,
   },
   "gdpr-export-link": {
     subject: gdprExportLinkSubject,

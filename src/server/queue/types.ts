@@ -21,6 +21,8 @@ export type EmailJobName =
   | "implementation-confirmed"
   | "newsletter-confirm-optin"
   | "contact-confirmed"
+  // Simulateur de gains v2 — envoi du rapport au dirigeant qui le demande.
+  | "roi-report"
   | "gdpr-export-link"
   // Sprint X.5bis — parcours B (formulaire devis qualifié)
   | "quote-request-received"

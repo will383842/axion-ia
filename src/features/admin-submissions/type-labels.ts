@@ -41,6 +41,11 @@ export const UNIFIED_TYPE_LABELS: Record<string, string> = {
   investisseur: "Investisseur / M&A",
   support_client: "Support client",
   autre: "Autre demande",
+  // Simulateur de gains (2026-08-12). Sans cette entrée, les leads du tunnel
+  // publicitaire s'affichaient « Contact » via le repli sur `dbType` — ils
+  // étaient donc indiscernables d'un message de contact ordinaire, alors
+  // qu'ils arrivent avec un gain estimé et un diagnostic complet.
+  simulateur_roi: "Simulateur de gains",
 };
 
 /**

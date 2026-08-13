@@ -160,6 +160,13 @@ export interface JobApplicationDetail {
   salaryExpectation: string | null;
   hasPhoto: boolean;
   photoOriginalName: string | null;
+  /**
+   * Type de la photo. Sert à savoir si un navigateur sait l'AFFICHER : le
+   * téléversement accepte le HEIC (format par défaut des iPhone), qu'aucun
+   * navigateur hors Safari ne sait rendre. Sans cette information, la console
+   * afficherait une image cassée au lieu de proposer le téléchargement.
+   */
+  photoMimeType: string | null;
   internalNotes: string | null;
   assignedTo: string | null;
   needsAttention: boolean;
@@ -199,6 +206,7 @@ export async function getApplicationDetailAction(id: string): Promise<JobApplica
     salaryExpectation: a.salaryExpectation,
     hasPhoto: Boolean(a.photoStoragePath),
     photoOriginalName: a.photoOriginalName,
+    photoMimeType: a.photoMimeType,
     internalNotes: a.internalNotes,
     assignedTo: a.assignedTo,
     needsAttention: a.needsAttention,
