@@ -21,6 +21,7 @@ import { hashIp } from "@/lib/security/ip-hash";
 import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
+import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
 import { podcastRequestSchema } from "@/lib/schemas/podcast-request-schema";
 
@@ -103,6 +104,21 @@ export async function submitPodcastRequestAction(
       },
       select: { id: true },
     });
+
+    // 7 bis. Accusé de réception au dirigeant (2026-08-13).
+    // Ce formulaire — relayé par les QR des flyers papier — ne renvoyait RIEN.
+    // Quelqu'un proposait son entreprise pour un tournage et n'entendait plus
+    // jamais parler de nous. Meilleur effort : la demande est déjà en base, un
+    // échec d'envoi ne doit pas la perdre.
+    try {
+      await enqueueEmail("podcast-demande-recue", d.email, locale, {
+        leaderName: d.leaderName,
+        companyName: d.companyName,
+        city: d.city,
+      });
+    } catch (err) {
+      console.error("[podcast-request] accusé de réception impossible :", err);
+    }
 
     // 7. Notification Will — Telegram (groupe « Messages »). Le canal WhatsApp
     // se greffe automatiquement dès que WHATSAPP_CALLMEBOT_APIKEY +

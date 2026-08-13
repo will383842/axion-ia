@@ -61,6 +61,7 @@ const TITLES: Record<NotificationCategory, string> = {
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   REVIEW_SUBMITTED: "Nouvel avis à modérer",
   PODCAST_REQUEST_SUBMITTED: "Demande de tournage podcast",
+  RGPD_REQUEST_SUBMITTED: "⚖️ Demande RGPD — délai 1 mois",
   SPEAKER_INVITATION_RECEIVED: "Invitation conférence",
   INVESTOR_INQUIRY_RECEIVED: "Demande investisseur / M&A",
   CUSTOMER_SUPPORT_REQUEST: "Support client",
@@ -282,6 +283,16 @@ function formatBody(event: NotificationEvent): string {
       ]
         .filter((v): v is string => v !== null)
         .join("\n");
+    }
+    case "RGPD_REQUEST_SUBMITTED": {
+      const p = event.payload;
+      return [
+        formatKV("Nature", p.type === "suppression" ? "Effacement (art. 17)" : "Accès (art. 15)"),
+        formatKV("Personne", p.traineeNom),
+        formatKV("Email", p.traineeEmail),
+        formatKV("À traiter avant le", p.echeance),
+        formatKV("Référence", p.demandeId),
+      ].join("\n");
     }
     case "PODCAST_REQUEST_SUBMITTED": {
       const p = event.payload;

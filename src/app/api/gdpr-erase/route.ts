@@ -34,6 +34,7 @@ import {
   eraseSubmissionsForEmail,
 } from "@/lib/rgpd-erase";
 import { alertIncident } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -101,6 +102,34 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
   });
+
+  // ── Confirmation à la personne ───────────────────────────────────────────
+  // 🔴 Ajouté le 2026-08-13. Jusque-là, l'effacement s'exécutait sans que la
+  // personne en soit JAMAIS informée. Deux conséquences : aucune preuve de son
+  // côté, et — puisque son adresse vient d'être anonymisée ci-dessus — plus
+  // aucun moyen de la recontacter. L'omission était donc DÉFINITIVE.
+  //
+  // L'adresse ne survit plus que dans `email`, variable locale : la mettre en
+  // file la copie dans la charge utile de la tâche, seul endroit où elle
+  // persistera. C'est aussi pourquoi l'envoi est mis en file ICI et non
+  // ailleurs — le déplacer après une future étape d'effacement le casserait.
+  //
+  // Meilleur effort : l'effacement est fait et acté. Un échec d'envoi ne doit
+  // pas transformer une réussite en erreur 500 côté visiteur.
+  try {
+    await enqueueEmail("rgpd-effacement-confirme", email, "fr", {
+      effectueLe: new Date().toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      }),
+      demandes: submissionsResult.anonymized,
+      newsletter: newsletterResult.deleted,
+      conversations: chatResult.conversationsDeleted,
+    });
+  } catch (err) {
+    console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
+  }
 
   // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
   try {

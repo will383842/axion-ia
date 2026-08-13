@@ -31,6 +31,17 @@ import {
 import { ContactConfirmedEmail, contactConfirmedSubject } from "./contact-confirmed";
 import { RoiReportEmail, roiReportSubject } from "./roi-report";
 import { GdprExportLinkEmail, gdprExportLinkSubject } from "./gdpr-export-link";
+import { RgpdDemandeRecueEmail, rgpdDemandeRecueSubject } from "./rgpd-demande-recue";
+import {
+  RgpdEffacementConfirmeEmail,
+  rgpdEffacementConfirmeSubject,
+} from "./rgpd-effacement-confirme";
+import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-demande-recue";
+import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
+import {
+  ChatbotDemandeTransmiseEmail,
+  chatbotDemandeTransmiseSubject,
+} from "./chatbot-demande-transmise";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
 import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
@@ -200,6 +211,26 @@ const TEMPLATES: TemplateMap = {
   "gdpr-export-link": {
     subject: gdprExportLinkSubject,
     component: GdprExportLinkEmail,
+  },
+  "rgpd-demande-recue": {
+    subject: rgpdDemandeRecueSubject,
+    component: RgpdDemandeRecueEmail,
+  },
+  "rgpd-effacement-confirme": {
+    subject: rgpdEffacementConfirmeSubject,
+    component: RgpdEffacementConfirmeEmail,
+  },
+  "podcast-demande-recue": {
+    subject: podcastDemandeRecueSubject,
+    component: PodcastDemandeRecueEmail,
+  },
+  "rappel-confirme": {
+    subject: rappelConfirmeSubject,
+    component: RappelConfirmeEmail,
+  },
+  "chatbot-demande-transmise": {
+    subject: chatbotDemandeTransmiseSubject,
+    component: ChatbotDemandeTransmiseEmail,
   },
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,
