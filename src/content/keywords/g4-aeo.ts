@@ -325,7 +325,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Former une équipe à l'IA : combien d'heures pour quel résultat ?",
       metaTitle: "Heures de formation IA équipe PME | Axion-IA",
       metaDescription:
-        "Une équipe de 5 à 20 personnes atteint l'autonomie opérationnelle en 7 à 14 heures (2 à 3 jours).",
+        "Une équipe de 5 à 20 personnes atteint l'autonomie opérationnelle en 7 à 14 heures (1 à 2 jours).",
       h2Variants: [
         "Formation 4h : les cas d'usage immédiats",
         "Formation 2 jours : l'équipe autonome",
