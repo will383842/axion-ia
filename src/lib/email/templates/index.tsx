@@ -36,6 +36,12 @@ import {
   RgpdEffacementConfirmeEmail,
   rgpdEffacementConfirmeSubject,
 } from "./rgpd-effacement-confirme";
+import { PodcastDemandeRecueEmail, podcastDemandeRecueSubject } from "./podcast-demande-recue";
+import { RappelConfirmeEmail, rappelConfirmeSubject } from "./rappel-confirme";
+import {
+  ChatbotDemandeTransmiseEmail,
+  chatbotDemandeTransmiseSubject,
+} from "./chatbot-demande-transmise";
 import { QuoteRequestReceivedEmail, quoteRequestReceivedSubject } from "./quote-request-received";
 import { PaymentLinkEmail, paymentLinkSubject } from "./payment-link";
 import { PaymentReceiptEmail, paymentReceiptSubject } from "./payment-receipt";
@@ -213,6 +219,18 @@ const TEMPLATES: TemplateMap = {
   "rgpd-effacement-confirme": {
     subject: rgpdEffacementConfirmeSubject,
     component: RgpdEffacementConfirmeEmail,
+  },
+  "podcast-demande-recue": {
+    subject: podcastDemandeRecueSubject,
+    component: PodcastDemandeRecueEmail,
+  },
+  "rappel-confirme": {
+    subject: rappelConfirmeSubject,
+    component: RappelConfirmeEmail,
+  },
+  "chatbot-demande-transmise": {
+    subject: chatbotDemandeTransmiseSubject,
+    component: ChatbotDemandeTransmiseEmail,
   },
   "quote-request-received": {
     subject: quoteRequestReceivedSubject,

@@ -25,6 +25,8 @@ const transaction = vi.fn(
     }) as unknown,
 );
 
+const enqueueEmailMock = vi.fn((..._a: unknown[]) => Promise.resolve({ enqueued: true }));
+
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     chatActionIdempotency: {
@@ -34,6 +36,10 @@ vi.mock("@/lib/prisma", () => ({
     submission: { create: (...a: unknown[]) => submissionCreate(...a) },
     $transaction: (...a: unknown[]) => transaction(...(a as [(tx: unknown) => unknown])),
   },
+}));
+
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: (...a: unknown[]) => enqueueEmailMock(...a),
 }));
 
 import { capturerLead, CapturerLeadInputSchema } from "@/server/chatbot/tools/capturer-lead";
@@ -52,6 +58,7 @@ beforeEach(() => {
   idemCreate.mockReset();
   convUpdate.mockReset();
   transaction.mockClear();
+  enqueueEmailMock.mockClear();
 });
 
 describe("T-17 capturer_lead", () => {
@@ -120,4 +127,38 @@ describe("T-17 capturer_lead", () => {
     await capturerLead(validInput, { ...ctx, ipHash: "abcdef" });
     expect(submissionCreate.mock.calls[0]![0].data.ipHash).toBe("abcdef");
   });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Confirmation au visiteur (2026-08-13)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Ce que ces tests protègent : le visiteur laissait son adresse dans une
+// fenêtre de discussion qu'il allait fermer, et ne recevait RIEN. Aucune
+// trace de son geste, ni preuve, ni moyen de relancer.
+
+describe("capturer_lead — confirmation au visiteur", () => {
+  it("envoie une confirmation sur un NOUVEAU lead", async () => {
+    findUnique.mockResolvedValue(null);
+    submissionCreate.mockResolvedValue({ id: "sub-neuf" });
+    idemCreate.mockResolvedValue({});
+
+    await capturerLead(validInput, ctx);
+
+    expect(enqueueEmailMock).toHaveBeenCalledTimes(1);
+    const [gabarit, destinataire] = enqueueEmailMock.mock.calls[0]!;
+    expect(gabarit).toBe("chatbot-demande-transmise");
+    expect(destinataire).toBe("jean@acme.fr");
+  }, 20_000);
+
+  it("N'ENVOIE RIEN sur un rejeu idempotent", async () => {
+    // Le chatbot rejoue ses actions. Sans la garde `!result.idempotent`, la
+    // même personne recevrait un e-mail à chaque rejeu — exactement le genre
+    // de nuisance qui fait marquer un expéditeur comme indésirable.
+    findUnique.mockResolvedValue({ resultat: { submissionId: "sub-existant" } });
+
+    await capturerLead(validInput, ctx);
+
+    expect(enqueueEmailMock).not.toHaveBeenCalled();
+  }, 20_000);
 });

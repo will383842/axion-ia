@@ -30,6 +30,12 @@ export type EmailJobName =
   // juste après, ce qui rendait l'omission irrattrapable.
   | "rgpd-demande-recue"
   | "rgpd-effacement-confirme"
+  // Accusés commerciaux ajoutés le 2026-08-13 : ces trois canaux ne
+  // répondaient RIEN à l'expéditeur. Gabarits dédiés et non
+  // `contact-confirmed`, qui sert déjà à huit flux différents.
+  | "podcast-demande-recue"
+  | "rappel-confirme"
+  | "chatbot-demande-transmise"
   // Sprint X.5bis — parcours B (formulaire devis qualifié)
   | "quote-request-received"
   // Sprint X.13 (Booking V1) — paiements Stripe Checkout

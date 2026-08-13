@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendTelegram } from "@/lib/telegram";
+import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -146,6 +147,21 @@ export async function capturerLead(
   // idempotent → pas de double-ping). Fail-soft : n'impacte pas le résultat.
   if (!result.idempotent) {
     await notifyNewLead(input, result.submissionId);
+
+    // Confirmation au visiteur (2026-08-13). Il laissait son adresse dans une
+    // fenêtre de discussion qu'il allait fermer, et ne recevait rien : aucune
+    // trace de son geste, ni preuve ni moyen de relancer.
+    //
+    // 🔴 Sous la même garde `!result.idempotent` que la notification interne :
+    // un rejeu ne doit PAS renvoyer un second e-mail à la même personne.
+    try {
+      await enqueueEmail("chatbot-demande-transmise", input.email, "fr", {
+        contexte: "rappel",
+        ...(input.besoin_resume ? { extrait: input.besoin_resume.slice(0, 200) } : {}),
+      });
+    } catch (err) {
+      console.warn("[capturer_lead] confirmation e-mail échouée:", err);
+    }
   }
   return result;
 }

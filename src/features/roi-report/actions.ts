@@ -24,7 +24,7 @@ import { prisma } from "@/lib/prisma";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { encryptPii } from "@/lib/pii-crypto";
+import { encryptPii, decryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
 import { notify } from "@/server/notifications";
 import { enqueueEmail } from "@/server/queue/queues";
@@ -275,7 +275,19 @@ export async function attachRoiCallbackAction(
   try {
     const existing = await prisma.submission.findUnique({
       where: { id: submissionId },
-      select: { id: true, contactPhone: true, companyName: true },
+      // `contactEmail`/`contactName` : nécessaires pour confirmer le rappel à
+      // la personne. Ils sont chiffrés au repos, d'où le déchiffrement plus bas.
+      select: {
+        id: true,
+        contactPhone: true,
+        companyName: true,
+        contactEmail: true,
+        contactName: true,
+        // La locale n'est pas dans le formulaire de rappel : on reprend celle
+        // de la soumission d'origine, pour ne pas répondre en français à
+        // quelqu'un qui a fait tout le parcours en anglais.
+        locale: true,
+      },
     });
     if (!existing) {
       return { ok: false, error: "Demande introuvable. Renvoyez-vous le rapport, puis réessayez." };
@@ -287,6 +299,23 @@ export async function attachRoiCallbackAction(
       where: { id: submissionId },
       data: { contactPhone: encryptPii(telephone) },
     });
+
+    // Confirmation à la personne (2026-08-13). C'est le geste le plus engageant
+    // du tunnel — laisser son numéro APRÈS avoir reçu son rapport, sans y être
+    // contraint — et il ne recevait aucune confirmation. Le numéro est rappelé
+    // dans l'e-mail pour qu'une faute de frappe se voie tout de suite.
+    try {
+      const clair = decryptPii(existing.contactEmail);
+      if (clair && clair.includes("@")) {
+        const prenom = decryptPii(existing.contactName)?.split(" ")[0] ?? "";
+        await enqueueEmail("rappel-confirme", clair, existing.locale, {
+          prenom: prenom || "et merci",
+          telephone,
+        });
+      }
+    } catch (err) {
+      console.error("[roi-callback] confirmation impossible :", err);
+    }
 
     // Meilleur effort : un lead qui accepte d'être rappelé est le plus chaud du
     // tunnel, la notification doit partir — mais son échec ne doit pas faire
