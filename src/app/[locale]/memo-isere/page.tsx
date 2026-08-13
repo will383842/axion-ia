@@ -51,7 +51,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
 import { getPublishedReviews, type PublicReview } from "@/server/reviews/queries";
 import {
   MEMO_ZONE_CLUSTERS,
@@ -353,7 +353,10 @@ export default async function MemoIserePage({ params }: Props) {
     title: "Commercial indépendant IA (apporteur d'affaires)",
     description:
       "Axion-IA recrute des commerciaux indépendants et apporteurs d'affaires de Grenoble à Valence, Die et Lyon (474 communes, zone au choix selon disponibilité) pour promouvoir ses formations et audits IA auprès des PME, ETI et grands groupes locaux — TPE et artisans compris — quel que soit le secteur d'activité. L'AI Act impose la formation des équipes à l'IA et les formations sont finançables OPCO : la vente est facilitée. 500 € par journée de formation vendue, revenus non plafonnés, statut libre. Débutants acceptés, formation à l'offre fournie." /* price-exempt: commission commerciale de recrutement, pas un tarif client */,
-    datePosted: SITE_EDITORIAL_DATE,
+    // Date RÉELLE de mise en ligne de l'annonce (règle Google for Jobs : jamais
+    // une date antérieure à l'existence de l'URL). À rafraîchir UNIQUEMENT lors
+    // d'une vraie republication de l'offre (contenu revu, offre toujours ouverte).
+    datePosted: "2026-08-13T00:00:00.000Z",
     employmentType: "CONTRACTOR",
     occupationalCategory: "Commercial indépendant · Agent commercial · VRP · Apporteur d'affaires",
     industry: "Intelligence artificielle · Formation · Services aux entreprises",
