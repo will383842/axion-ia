@@ -15,7 +15,12 @@ import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER, type PricingTier } from "@/
 import { resolveOfferUrl, hasResolvableUrl } from "@/lib/offer-url";
 
 export type OfferVertical =
-  "audit" | "formation" | "implementation" | "sites-web" | "un-a-un" | "maintenance";
+  | "audit"
+  | "formation"
+  | "implementation"
+  | "sites-web"
+  | "un-a-un"
+  | "maintenance";
 
 export type OfferFormat = "presentiel" | "distanciel" | "mixte";
 
@@ -57,7 +62,7 @@ export interface Offer {
 
 // ── Parsing facettes ──────────────────────────────────────────────────────
 
-/** « 2 à 30 personnes » → {min:2,max:30} ; « 1 dirigeant (1-to-1) » → {min:1,max:1}. */
+/** « 2 à 15 personnes » → {min:2,max:30} ; « 1 dirigeant (1-to-1) » → {min:1,max:1}. */
 export function parseEffectif(groupSizeFr?: string): { min?: number; max?: number } {
   if (!groupSizeFr) return {};
   const range = groupSizeFr.match(/(\d+)\s*à\s*(\d+)/);

@@ -261,7 +261,7 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     hoursMax: 8,
     summaryDurationFr: "1 journée sur site (9 h – 17 h)",
     summaryDurationEn: "1 day on site (9 a.m. – 5 p.m.)",
-    publicViseFr: "Équipes de 2 à 30 personnes découvrant l'IA opérationnelle.",
+    publicViseFr: "Équipes de 2 à 15 personnes découvrant l'IA opérationnelle.",
     modalites: TOUTES_MODALITES,
     programme: ESSENTIELLE_PROGRAMME,
   },
@@ -292,7 +292,7 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     hoursMax: 14,
     summaryDurationFr: "2 jours consécutifs sur site",
     summaryDurationEn: "2 consecutive days on site",
-    publicViseFr: "Équipes de 2 à 30 personnes visant un ancrage durable des pratiques IA.",
+    publicViseFr: "Équipes de 2 à 15 personnes visant un ancrage durable des pratiques IA.",
     modalites: TOUTES_MODALITES,
   },
   {
@@ -350,7 +350,7 @@ export const FORMATION_SKELETONS: ReadonlyArray<FormationSkeleton> = [
     hoursMax: 8,
     summaryDurationFr: "1 journée sur site",
     summaryDurationEn: "1 day on site",
-    publicViseFr: "Équipes de 2 à 30 personnes outillées sur Claude (Anthropic).",
+    publicViseFr: "Équipes de 2 à 15 personnes outillées sur Claude (Anthropic).",
     modalites: TOUTES_MODALITES,
   },
   {

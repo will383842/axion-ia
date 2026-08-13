@@ -158,7 +158,7 @@ export default async function ImplantationsHub({ params }: Props) {
           getEntryPriceEur(INTERVENTION_TIERS)!,
           loc,
           { compact: true },
-        )}, groupes 1-30 personnes, sur vos vraies données.`,
+        )}, groupes de 2 à 15 personnes, sur vos vraies données.`,
       },
       {
         position: 3,
