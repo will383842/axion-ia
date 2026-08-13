@@ -103,6 +103,9 @@ export interface JobOfferListItem {
   filledAt: Date | null;
   validThrough: Date | null;
   updatedAt: Date;
+  /** Date de publication EFFECTIVE (publishedAt ?? datePosted) — celle que
+   *  Google for Jobs voit dans le JSON-LD (même règle que job-posting.ts). */
+  postedAt: Date;
   applicationsCount: number;
 }
 
@@ -139,6 +142,8 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
         filledAt: true,
         validThrough: true,
         updatedAt: true,
+        publishedAt: true,
+        datePosted: true,
         _count: { select: { applications: true } },
       },
     }),
@@ -156,6 +161,7 @@ export async function listJobOffersAction(input: Partial<ListJobOffersInput> = {
     filledAt: r.filledAt,
     validThrough: r.validThrough,
     updatedAt: r.updatedAt,
+    postedAt: r.publishedAt ?? r.datePosted,
     applicationsCount: r._count.applications,
   }));
   return {

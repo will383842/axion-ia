@@ -26,6 +26,19 @@ const STATUS_LABELS: Record<string, string> = {
   published: "Publié",
   archived: "Archivé",
 };
+
+// Date de publication effective (celle du JSON-LD Google) + âge en jours.
+// Rendu serveur uniquement → Intl est stable (pas d'hydration mismatch).
+const DATE_FR = new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" });
+function postedCell(postedAt: Date): React.ReactElement {
+  const days = Math.max(0, Math.floor((Date.now() - postedAt.getTime()) / 86_400_000));
+  return (
+    <>
+      {DATE_FR.format(postedAt)}
+      <span className="admin-meta-small"> · {days} j</span>
+    </>
+  );
+}
 const WORKMODE_LABELS: Record<string, string> = {
   on_site: "Sur site",
   hybrid: "Hybride",
@@ -80,6 +93,11 @@ export function JobOffersV2({
       key: "location",
       header: "Lieu",
       cell: (o) => o.city ?? WORKMODE_LABELS[o.workMode] ?? "—",
+    },
+    {
+      key: "posted",
+      header: "Publiée le",
+      cell: (o) => postedCell(o.postedAt),
     },
     {
       key: "status",
