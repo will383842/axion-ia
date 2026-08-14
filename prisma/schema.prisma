@@ -10762,6 +10762,8 @@ model ConsentEvent {
   /// plus ancien » — la requête de l'art. 15 et celle d'un contrôle CNIL.
   @@index([personKey, occurredAt(sort: Desc)])
   @@map("consent_events")
+}
+
 // ============================================================
 // Lot L5 — ÉVÉNEMENTS ENTRANTS du CRM (consentements CRM → site)
 // ============================================================
