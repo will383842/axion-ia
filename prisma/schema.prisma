@@ -10762,4 +10762,61 @@ model ConsentEvent {
   /// plus ancien » — la requête de l'art. 15 et celle d'un contrôle CNIL.
   @@index([personKey, occurredAt(sort: Desc)])
   @@map("consent_events")
+// ============================================================
+// Lot L5 — ÉVÉNEMENTS ENTRANTS du CRM (consentements CRM → site)
+// ============================================================
+//
+// Le flux principal est site → CRM. Les consentements font exception : ils
+// doivent converger DANS LES DEUX SENS, sinon les deux systèmes finissent par
+// écrire des états opposés (plan §« Synchro BIDIRECTIONNELLE »).
+//
+// Cette table est le JOURNAL de ce que le CRM nous a envoyé, et rien d'autre :
+//   · `eventId` UNIQUE ⇒ idempotence. Rejouer le même événement ne réapplique
+//     rien et répond quand même 200 — un émetteur qui retente sur timeout ne
+//     doit pas voir d'erreur pour un travail déjà fait.
+//   · `payload` conserve le corps reçu tel quel : quand un effet ne s'applique
+//     pas (adresse inconnue du site), l'événement reste PROUVABLE. Une
+//     opposition qu'on n'a pas su rattacher doit laisser une trace, pas
+//     disparaître.
+//
+// 🔴 ANTI-BOUCLE : un événement consigné ici porte `origin='crm'` et ne
+// repart JAMAIS vers le CRM par l'outbox. Le handler n'appelle donc aucune
+// fonction `sync*ToCrm` — c'est vérifié par un test qui espionne le module.
+//
+// INERTIE : la route existe mais aucun émetteur n'est configuré tant que le
+// CRM n'a pas son secret ; sans `SITE_SYNC_HMAC_SECRET`, tout est refusé.
+
+model CrmInboundEvent {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Identifiant de l'événement chez l'ÉMETTEUR (le CRM). Clé d'idempotence.
+  eventId String @unique @map("event_id") @db.VarChar(80)
+
+  /// `consent_optout` | `consent_optin` | `erasure`.
+  eventType String @map("event_type") @db.VarChar(40)
+
+  /// sha256(email en minuscules) — NON salé, calculé par le CRM. Ce n'est PAS
+  /// le `person_key` du site (qui est un HMAC clé, cf. `email-hash.ts`) : les
+  /// deux ne se comparent jamais directement.
+  emailHash String @map("email_hash") @db.VarChar(64)
+
+  /// `business` ou `vivier` — l'univers concerné par l'opposition.
+  scope String @db.VarChar(16)
+
+  /// Corps reçu, conservé intégralement (preuve + rejeu manuel éventuel).
+  payload Json
+
+  /// Renseigné quand le traitement local a été mené à son terme (avec ou sans
+  /// effet). `null` = reçu mais pas encore appliqué.
+  processedAt DateTime? @map("processed_at")
+
+  /// Résumé de l'effet local : `applied` (une ligne modifiée), `no_match`
+  /// (aucune correspondance côté site), `ignored` (hors périmètre).
+  outcome String? @db.VarChar(24)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([emailHash])
+  @@index([createdAt(sort: Desc)])
+  @@map("crm_inbound_events")
 }
