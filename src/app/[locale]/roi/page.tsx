@@ -461,7 +461,15 @@ export default async function RoiPage({ params, searchParams }: Props) {
           `py-24` sur mobile, soit 96 px perdus en haut d'un écran de 664 px
           avant même le premier mot. Sur cette page l'objectif est que la
           première QUESTION soit visible sans défiler. */}
-      <Section id="simulateur" tone="mocha" className="pt-8 pb-16 sm:pt-10 sm:pb-20">
+      {/* 🔴 `.bg-vsl` et NON `tone="mocha"`. Les deux sont sombres, mais pas de
+          la même façon : `bg-mocha-rich` est le brun du site, plus clair, et le
+          commentaire de `globals.css` le dit — « `.bg-vsl` est plus sombre que
+          `.bg-mocha-rich` ». `.bg-vsl` porte l'encre `--color-ink` et les deux
+          halos qui font l'identité des pages `/diagnostic` et `/simulateur`.
+          Un visiteur qui passe d'une page à l'autre doit reconnaître le même
+          endroit : c'est tout l'objet. On sort donc du gabarit `Section` pour
+          reprendre EXACTEMENT le motif des pages de tunnel. */}
+      <section id="simulateur" className="bg-vsl scroll-mt-24 pt-8 pb-16 sm:pt-10 sm:pb-20">
         <Container className="max-w-2xl">
           <p className="text-terracotta-on-mocha text-center text-[13px] font-semibold tracking-[0.14em] uppercase">
             {isFr
@@ -525,7 +533,7 @@ export default async function RoiPage({ params, searchParams }: Props) {
             ))}
           </ul>
         </Container>
-      </Section>
+      </section>
 
       {/* La photo d'en-tête et le renvoi vers l'audit sur mesure suivent
           l'outil : ils enrichissent la page pour le référencement sans plus
