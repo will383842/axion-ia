@@ -733,8 +733,18 @@ jobs:
             echo "::warning::REVALIDATE_SECRET absent côté GitHub Actions — revalidation ISR des index DB SKIP. Ces pages se ré-hydratent quand même d'elles-mêmes sous 1h (revalidate=3600). Ajoute le secret (= REVALIDATE_SECRET du runtime Coolify) pour combler la fenêtre vide post-deploy."
             exit 0
           fi
-          # Ces pages d'index lisent la DB → pré-rendues VIDES sous le stub de build.
-          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie"]'
+          # Ces pages lisent la DB → pré-rendues VIDES sous le stub de build.
+          #
+          # `/fr/diagnostic` ajoutée le 2026-08-14 : la page d'atterrissage
+          # publicitaire porte désormais la note agrégée, le mur d'avis clients
+          # et les comptes par secteur, tous lus en base (PR #597). Sans cette
+          # entrée, CHAQUE déploiement remettait la page en version vide pendant
+          # ~1-2 h — vécu deux fois le jour même : le déploiement de #598 a
+          # écrasé la page réparée à la main une heure plus tôt. C'est la page
+          # qui reçoit le trafic PAYANT : une heure de blocs vides s'y paie au
+          # clic. (`/fr/roi` n'a pas besoin d'être listée : elle ne lit pas la
+          # base — tout son contenu vient de fichiers du dépôt.)
+          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -744,6 +754,36 @@ jobs:
           echo "  HTTP ${code} — $(cat /tmp/reval.json 2>/dev/null || echo '(no body)')"
           if [ "${code}" != "200" ]; then
             echo "::warning::Revalidation index DB non confirmée (HTTP ${code}) — non bloquant. Vérifie que REVALIDATE_SECRET côté GitHub == côté Coolify (RUN)."
+          fi
+
+      # ── Purge CF ciblée des pages tout juste revalidées ──────────────────
+      # La purge globale du job `deploy` arrive AVANT la revalidation ci-dessus :
+      # tout visiteur (ou le LHCI) qui passe dans l'intervalle refige la version
+      # STUB chez Cloudflare pour s-maxage=3600. Vécu le 2026-08-14 sur
+      # /fr/diagnostic : origin frais, edge vide pendant une heure. Purger ces
+      # cinq URLs APRÈS la revalidation ferme la fenêtre : le prochain hit
+      # re-cache la version peuplée. Purge par LISTE D'URLS, pas
+      # `purge_everything` — le sweep de chauffe qui suit repartirait de zéro.
+      # Best-effort comme le reste du job : jamais bloquant.
+      - name: Purge CF des pages revalidées (anti-stub-figé)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          set -uo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ] || [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::warning::Purge ciblée SKIP (secret CF ou REVALIDATE_SECRET absent) — l'edge se rafraîchit seul sous 1h."
+            exit 0
+          fi
+          FILES='["https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic"]'
+          code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data "{\"files\":${FILES}}" \
+            "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" || echo "000")
+          echo "  HTTP ${code} — $(cat /tmp/cfpurge.json 2>/dev/null | head -c 300 || echo '(no body)')"
+          if [ "${code}" != "200" ]; then
+            echo "::warning::Purge CF ciblée non confirmée (HTTP ${code}) — non bloquant."
           fi
 
       # 2026-07-20 — Chauffe PRIORITAIRE des pages stratégiques + de leurs images
@@ -762,7 +802,10 @@ jobs:
         run: |
           set -uo pipefail
           UA="AxionIA-CacheWarmer/1.0"
-          STRATEGIC="/fr /fr/audit /fr/formations /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
+          # `/fr/diagnostic` ajoutée 2026-08-14 : hors sitemap (noindex) donc
+          # invisible du sweep, mais c'est la page du trafic PAYANT — le premier
+          # clic publicitaire ne doit pas payer l'optimisation des images.
+          STRATEGIC="/fr /fr/diagnostic /fr/audit /fr/formations /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
           for p in ${STRATEGIC}; do
             url="${SITE}${p}"
             html=$(curl -sS -m 25 -A "${UA}" "${url}" || true)
