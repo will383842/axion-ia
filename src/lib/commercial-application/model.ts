@@ -13,8 +13,17 @@ import { z } from "zod";
 /** Clé localStorage de la sauvegarde auto (le candidat peut fermer et revenir). */
 export const COMMERCIAL_APPLICATION_STORAGE_KEY = "axionia-candidature-commercial-v1";
 
-/** Version du consentement RGPD affiché par le formulaire. */
-export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "commercial-tunnel-v1-2026-08-12";
+/**
+ * Version du consentement RGPD affiché par le formulaire.
+ *
+ * v2 (lot L4) — valeur FERME décidée au plan §2.3. Elle recouvre les DEUX
+ * textes affichés ensemble : la case obligatoire (étude de la candidature) et
+ * la case optionnelle, décochée par défaut (conservation en vivier 2 ans).
+ *
+ * 🔴 Le CRM REJETTE en 422 toute fiche candidat dont la version n'est pas v2 :
+ * cette constante et la liste côté CRM doivent bouger ensemble.
+ */
+export const COMMERCIAL_APPLICATION_CONSENT_VERSION = "memo-v2-2026-08-13";
 
 /** Durée de conservation annoncée dans la mention RGPD (candidatures). */
 export const COMMERCIAL_APPLICATION_RETENTION = "2 ans";
@@ -314,6 +323,15 @@ export const commercialApplicationSchema = z
     linkedin: z.string().trim().max(255).optional(),
     sourceConnaissance: z.enum(SOURCE_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
     consent: z.literal(true),
+    /**
+     * Accord OPTIONNEL de conservation en vivier (lot L4).
+     *
+     * `z.boolean().optional()` et surtout PAS `z.literal(true)` : la case est
+     * facultative, un refus (`false`) comme une absence sont des réponses
+     * parfaitement valides. L'exiger la rendrait bloquante — donc plus un
+     * consentement libre, donc juridiquement sans valeur.
+     */
+    consentVivier: z.boolean().optional(),
   })
   .refine((d) => d.zoneMobile || (d.zones?.length ?? 0) > 0, {
     message: "Choisis au moins une zone, ou « Peu importe, je suis mobile ».",

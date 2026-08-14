@@ -895,16 +895,7 @@ export function StepDetails({ a, set, errors }: StepProps) {
             aria-describedby={errors.consent ? "ca-consent-error" : undefined}
           />
           <span className="text-fg-soft text-sm leading-relaxed">
-            J’accepte que mes données soient traitées par Axion-IA pour l’étude de ma candidature.
-            Elles sont conservées 2 ans au maximum, puis supprimées.{" "}
-            <a
-              href="/fr/politique-confidentialite"
-              className="text-terracotta-deep underline underline-offset-2"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Politique de confidentialité
-            </a>
+            J’accepte que mes informations soient utilisées pour l’étude de ma candidature.
           </span>
         </label>
         {errors.consent ? (
@@ -912,6 +903,41 @@ export function StepDetails({ a, set, errors }: StepProps) {
             {errors.consent}
           </p>
         ) : null}
+
+        {/*
+          CONSENTEMENT VIVIER — case OPTIONNELLE, DÉCOCHÉE PAR DÉFAUT (lot L4,
+          plan §2.3, texte VALIDÉ repris mot pour mot).
+
+          Elle ne conditionne RIEN : le wizard se soumet qu'elle soit cochée ou
+          non, et `validate()` ne la regarde pas — volontairement. C'est ce qui
+          en fait un consentement libre, donc valide. La conserver bloquante,
+          ou pré-cochée, la rendrait juridiquement sans valeur.
+
+          Conservation en vivier ≠ conservation de la candidature en cours :
+          deux finalités distinctes, deux cases distinctes.
+        */}
+        <label className="mt-4 flex cursor-pointer items-start gap-3">
+          <input
+            type="checkbox"
+            checked={a.consentVivier}
+            onChange={(e) => set({ consentVivier: e.target.checked })}
+            className="accent-terracotta mt-0.5 h-5 w-5 shrink-0"
+          />
+          <span className="text-fg-soft text-sm leading-relaxed">
+            J’accepte qu’Axion-IA conserve ma candidature dans son vivier pendant 2 ans afin de me
+            recontacter pour d’autres opportunités correspondant à mon profil. Je peux retirer cet
+            accord à tout moment (contact@axion-ia.com ou le lien présent dans chaque message).
+            Détails :{" "}
+            <a
+              href="/fr/politique-confidentialite"
+              className="text-terracotta-deep underline underline-offset-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              politique de confidentialité
+            </a>
+          </span>
+        </label>
       </div>
     </div>
   );

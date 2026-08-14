@@ -151,6 +151,7 @@ import {
   CandidatureCommercialRecapEmail,
   candidatureCommercialRecapSubject,
 } from "./candidature-commercial-recap";
+import { VivierInformationEmail, vivierInformationSubject } from "./vivier-information";
 import { ConventionEnvoiEmail, conventionEnvoiSubject } from "./convention-envoi";
 import { FactureEnvoiEmail, factureEnvoiSubject } from "./facture-envoi";
 
@@ -415,6 +416,10 @@ const TEMPLATES: TemplateMap = {
   "candidature-commercial-recap": {
     subject: candidatureCommercialRecapSubject,
     component: CandidatureCommercialRecapEmail,
+  },
+  "vivier-information": {
+    subject: vivierInformationSubject,
+    component: VivierInformationEmail,
   },
 };
 

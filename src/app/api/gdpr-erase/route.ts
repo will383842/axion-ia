@@ -26,6 +26,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import {
@@ -84,6 +86,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     eraseKbDataForEmail(email),
   ]);
 
+  // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
+  // univers et inscrit l'empreinte en liste de suppression (ce qui empêche une
+  // réinsertion par un futur import).
+  //
+  // 🔴 NON BLOQUANT, et calculé AVANT d'effacer localement l'adresse : une
+  // personne qui exerce son droit à l'effacement doit l'obtenir sur le site,
+  // que le second système réponde ou non. Lui renvoyer une erreur parce qu'un
+  // CRM inerte n'a pas répondu serait une régression de droit.
+  const crmResult = await propagateGdprToCrm({
+    action: "erase",
+    personKey: hashEmailForLookup(email) ?? "",
+    email,
+  });
+
   // Activity log RGPD : trace forensique immuable
   await prisma.activityLog.create({
     data: {
@@ -98,6 +114,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         kbBookmarksDeleted: kbResult.bookmarksDeleted,
         chatConversationsDeleted: chatResult.conversationsDeleted,
         chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+        // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
+        // local doit se voir dans le journal, jamais se supposer.
+        crmStatus: crmResult.status,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
@@ -150,6 +169,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       kbBookmarksDeleted: kbResult.bookmarksDeleted,
       chatConversationsDeleted: chatResult.conversationsDeleted,
       chatEscalationsAnonymized: chatResult.escalationsAnonymized,
+      /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
+      crm: crmResult.status,
     },
     notice: {
       explanation:
@@ -158,6 +179,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",
         "ActivityLog : conservé (immuable, art. 30 RGPD register).",
         "generation_logs / cost_ledger / web_vital_samples : logs techniques sans PII visiteur (purgés par retention-purge-worker).",
+        // Conservé au titre de l'art. 17(3)(e) : c'est la preuve exigée par
+        // l'art. 7(1). L'effacer reviendrait à détruire la démonstration que le
+        // traitement passé était licite — y compris celui qu'on vient d'effacer.
+        // Le registre ne contient AUCUNE adresse en clair, seulement une
+        // empreinte : il ne permet pas de retrouver la personne.
+        "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
       ],
       contactDpo: "contact@axion-ia.com",
     },

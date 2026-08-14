@@ -362,6 +362,14 @@ export const routing = defineRouting({
 
     "/confirmation": { fr: "/confirmation", en: "/confirmation" },
     "/desabonnement": { fr: "/desabonnement", en: "/unsubscribe" },
+    // Lot L4 — confirmation d'opposition à la conservation en vivier.
+    // ⚠️ Chemin IDENTIQUE en fr et en, volontairement : le bug next-intl v4.11 /
+    // Next 16.2 (boucle 307 auto-redirect, cf. AGENTS.md) ne se déclenche QUE
+    // sur les routes dont le mapping diffère entre locales. Un chemin unique
+    // met cette page hors d'atteinte du bug, sans rien attendre de son
+    // correctif — et le mot « vivier » n'a de toute façon pas à être traduit
+    // sur un site francophone.
+    "/vivier-opposition": { fr: "/vivier-opposition", en: "/vivier-opposition" },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/mes-donnees/export": { fr: "/mes-donnees/export", en: "/my-data/export" },

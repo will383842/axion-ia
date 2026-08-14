@@ -62,6 +62,8 @@ export interface WizardAnswers {
   linkedin: string;
   sourceConnaissance: string;
   consent: boolean;
+  /** Accord OPTIONNEL de conservation en vivier 2 ans (lot L4). */
+  consentVivier: boolean;
 }
 
 export function newExperience(open = true): ExperienceDraft {
@@ -114,6 +116,9 @@ export function emptyAnswers(): WizardAnswers {
     linkedin: "",
     sourceConnaissance: "",
     consent: false,
+    // Décoché par défaut : un consentement pré-coché n'en est pas un
+    // (RGPD art. 4.11 — « acte positif clair »).
+    consentVivier: false,
   };
 }
 
@@ -297,6 +302,9 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
     ...(a.linkedin.trim() ? { linkedin: a.linkedin.trim() } : {}),
     ...(a.sourceConnaissance ? { sourceConnaissance: a.sourceConnaissance } : {}),
     consent: true,
+    // Transmis TEL QUEL, y compris `false` : le serveur doit pouvoir
+    // distinguer un refus explicite d'une absence de réponse.
+    consentVivier: a.consentVivier,
   };
 }
 

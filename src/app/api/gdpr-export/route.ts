@@ -27,6 +27,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
+import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
@@ -127,6 +128,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Données chatbot RGPD art. 15 (T-23) : conversations + messages + escalades.
   const chat = await exportChatDataForEmail(email);
 
+  // Registre de consentements (lot L4) — la PREUVE de ce que la personne a
+  // accepté, et quand. Elle fait partie de « toutes les données la concernant ».
+  const consentEvents = lookupHash
+    ? await prisma.consentEvent.findMany({
+        where: { personKey: lookupHash },
+        orderBy: { occurredAt: "desc" },
+        select: {
+          formRef: true,
+          consentVersion: true,
+          action: true,
+          occurredAt: true,
+        },
+      })
+    : [];
+
+  // ART. 15 BI-SYSTÈME (lot L4) — le CRM détient peut-être aussi des données.
+  // NON BLOQUANT : s'il ne répond pas, l'export local part quand même. Rendre
+  // une réponse partielle vaut infiniment mieux que rendre une erreur.
+  const crm = await propagateGdprToCrm({ action: "export", personKey: lookupHash ?? "", email });
+
   // Activity log RGPD : tracé de l'export self-service
   await prisma.activityLog.create({
     data: {
@@ -141,6 +162,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         kbBookmarksCount: kb.bookmarks.length,
         chatConversationsCount: chat.conversations.length,
         chatEscalationsCount: chat.escalations.length,
+        consentEventsCount: consentEvents.length,
+        crmStatus: crm.status,
       },
       ipAddress: req.headers.get("x-forwarded-for") ?? null,
     },
@@ -154,6 +177,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     newsletter,
     kb,
     chat,
+    consentEvents,
+    // Volet CRM : soit son contenu (`status: "ok"`), soit la raison honnête
+    // pour laquelle il est absent. On ne présente JAMAIS un export amputé comme
+    // complet — c'est exactement le défaut qui rendait l'art. 15 muet avant.
+    crm,
     notice: {
       excludedTables: [
         "generation_logs (audit trail technique content-gen, sans PII visiteur)",

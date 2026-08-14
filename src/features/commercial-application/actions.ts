@@ -19,6 +19,7 @@ import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncCandidateToCrm } from "@/server/crm-sync";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -184,6 +185,11 @@ export async function submitCommercialApplicationAction(
     return b.debut.localeCompare(a.debut);
   });
 
+  // Horodatage de l'accord vivier, calculé UNE fois : la même valeur part en
+  // base (`details.vivierConsentAt`) et vers le CRM (`consent.vivier_at`). Deux
+  // `new Date()` distincts donneraient deux preuves divergentes du même geste.
+  const vivierConsentAt = d.consentVivier ? new Date() : null;
+
   // 5. Persist Submission — AVANT toute notification (règle du brief).
   try {
     const submission = await prisma.submission.create({
@@ -205,6 +211,12 @@ export async function submitCommercialApplicationAction(
           message: d.pitch,
           source: "/devenir-commercial-ia/candidature",
           consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
+          // Accord VIVIER (lot L4) — un HORODATAGE, pas un booléen : « oui »
+          // sans date ne prouve rien, et c'est cette date qui fait courir les
+          // 2 ans. Absent = refus (le défaut). `Submission.details` étant un
+          // JSON libre, aucune migration n'est nécessaire ici — contrairement à
+          // `JobApplication`, qui a reçu une vraie colonne.
+          ...(vivierConsentAt ? { vivierConsentAt: vivierConsentAt.toISOString() } : {}),
           ...(Object.keys(funnel).length > 0 ? { funnel: funnel as unknown as object } : {}),
           // Bloc structuré rendu par la vue détail console (accordéons, chips).
           // PII minimisée : nom/email/téléphone vivent UNIQUEMENT dans les
@@ -267,6 +279,10 @@ export async function submitCommercialApplicationAction(
         version: COMMERCIAL_APPLICATION_CONSENT_VERSION,
         at: submission.submittedAt,
         textRef: "commercial-tunnel",
+        // Renseigné UNIQUEMENT si la case optionnelle a été cochée : c'est ce
+        // que le CRM lit pour savoir s'il peut conserver la fiche au-delà du
+        // recrutement en cours.
+        vivierAt: vivierConsentAt,
       },
       attributes: {
         ville: d.ville,
@@ -280,6 +296,30 @@ export async function submitCommercialApplicationAction(
       },
       experiences,
     });
+
+    // REGISTRE DE PREUVE (lot L4) — best-effort, jamais bloquant. Les deux
+    // accords sont consignés SÉPARÉMENT : ils ont deux finalités distinctes, et
+    // les fondre en une ligne rendrait impossible de prouver lequel a été donné.
+    await recordConsentEvent({
+      email: d.email,
+      formRef: CONSENT_FORM_REFS.commercialApplication,
+      consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
+      action: "optin",
+      occurredAt: submission.submittedAt,
+      ip,
+      userAgent,
+    });
+    if (vivierConsentAt) {
+      await recordConsentEvent({
+        email: d.email,
+        formRef: CONSENT_FORM_REFS.commercialApplicationVivier,
+        consentVersion: COMMERCIAL_APPLICATION_CONSENT_VERSION,
+        action: "optin",
+        occurredAt: vivierConsentAt,
+        ip,
+        userAgent,
+      });
+    }
 
     // 6. Telegram + WhatsApp — best-effort, la candidature est déjà en base.
     try {
