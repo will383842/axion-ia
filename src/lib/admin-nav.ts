@@ -138,6 +138,17 @@ export interface AdminNavItem {
    * réservé aux N3 à venir.)
    */
   parent?: string;
+  /**
+   * Indentation forcée dans la sidebar, quand la profondeur d'URL ne reflète
+   * pas la hiérarchie voulue. Par défaut `<AdminSidebarNav>` déduit le niveau
+   * du nombre de segments (`itemLevel`) : `/contacts/messages` → 1,
+   * `/contacts/messages/x` → 2. Les catégories de Messages vivent sur des
+   * routes SŒURS (`/contacts/presse`, `/podcast`…) qui donneraient donc 1,
+   * c'est-à-dire le même cran que « Messages » — visuellement des voisines,
+   * pas des filles. Ce champ les repousse d'un cran sans déplacer les URLs
+   * (⌘K, favoris et liens externes restent valides).
+   */
+  navLevel?: number;
 }
 
 export const ADMIN_NAV_GROUP_LABELS: Record<AdminNavGroup, string> = {
@@ -424,27 +435,85 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       icon: "PhoneCall",
       group: "contacts",
     },
+    // « Messages » = TOUTES les soumissions. Ses 8 catégories sont rendues
+    // juste en dessous, indentées d'un cran (`navLevel: 2`) — demande Will
+    // 2026-08-14 : « les sous-onglets dans la sidebar, pas dans la page ».
+    // Elles remplacent la rangée d'onglets qui vivait dans l'écran.
     {
       href: `${base}/contacts/messages`,
       label: "Messages",
       icon: "Mail",
       group: "contacts",
     },
+    // ▸ Catégories de « Messages » (niveau 3 visuel). Ces routes existaient
+    //   déjà, masquées de la sidebar depuis le 2026-07-29 ; elles y reviennent
+    //   sous leur parent au lieu d'être un filtre interne à la page. Libellés
+    //   sans le préfixe « Messages · » : l'indentation le dit déjà.
+    {
+      href: `${base}/contacts/clients`,
+      label: "Clients",
+      icon: "Briefcase",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/presse`,
+      label: "Presse",
+      icon: "Newspaper",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/partenariats`,
+      label: "Partenariats",
+      icon: "Handshake",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/investisseurs`,
+      label: "Investisseurs",
+      icon: "TrendingUp",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/conferences`,
+      label: "Conférences",
+      icon: "Presentation",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/commercial`,
+      label: "Recrutement",
+      icon: "UserSearch",
+      group: "contacts",
+      navLevel: 2,
+    },
+    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
+    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
+    // layout Contacts impose son propre AdminPageShell), d'où le `navLevel`
+    // explicite : l'URL ne dit pas qu'elle est une catégorie de Messages.
+    {
+      href: `${base}/podcast`,
+      label: "Podcast",
+      icon: "Mic",
+      group: "contacts",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/contacts/autres`,
+      label: "Autres",
+      icon: "MessagesSquare",
+      group: "contacts",
+      navLevel: 2,
+    },
     // Candidatures aux offres publiées (JobApplication : CV/photo, workflow RH).
     {
       href: `${base}/contacts/candidatures`,
       label: "Candidatures",
       icon: "UserPlus",
-      group: "contacts",
-    },
-    // Demandes de tournage podcast (2026-07-21) — lead entrant de la page
-    // publique /podcast + du QR du flyer papier. Route hors `/contacts/*` (le
-    // layout Contacts impose son propre AdminPageShell), mais rangée ici dans
-    // la sidebar : c'est un formulaire entrant comme les autres.
-    {
-      href: `${base}/podcast`,
-      label: "Demandes de podcast",
-      icon: "Mic",
       group: "contacts",
     },
     // ── Tunnels d'acquisition (2026-08-12) ────────────────────────────
@@ -468,43 +537,6 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       label: "Tunnel de vente",
       icon: "Coins",
       group: "tunnels",
-    },
-    // ▸ Vues filtrées de « Messages » — hors sidebar (cf. bloc ci-dessus),
-    //   conservées pour ⌘K, les favoris et les breadcrumbs.
-    {
-      href: `${base}/contacts/clients`,
-      label: "Messages · Clients",
-      icon: "Briefcase",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/presse`,
-      label: "Messages · Presse",
-      icon: "Newspaper",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/partenariats`,
-      label: "Messages · Partenariats",
-      icon: "Handshake",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/investisseurs`,
-      label: "Messages · Investisseurs",
-      icon: "TrendingUp",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
-    },
-    {
-      href: `${base}/contacts/commercial`,
-      label: "Messages · Recrutement",
-      icon: "UserSearch",
-      group: "contacts",
-      parent: `${base}/contacts/messages`,
     },
     // ── contenu ──────────────────────────────────────────────────────────
     {

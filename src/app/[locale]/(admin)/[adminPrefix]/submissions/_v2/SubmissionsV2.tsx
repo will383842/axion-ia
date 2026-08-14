@@ -71,19 +71,15 @@ interface Props {
     | "contacts/presse"
     | "contacts/clients"
     | "contacts/partenariats"
-    | "contacts/investisseurs";
+    | "contacts/investisseurs"
+    | "contacts/conferences"
+    | "contacts/autres";
   /**
-   * Force le filtre par catégorie (onglets Clients/Presse/Partenariats/…).
-   * Prioritaire sur le filtre `unifiedType` de l'URL.
+   * Force le filtre par catégorie (une route = une catégorie, cf. la sidebar
+   * où elles sont indentées sous « Messages »). Prioritaire sur le filtre
+   * `unifiedType` de l'URL.
    */
   forcedTypes?: ReadonlyArray<string>;
-  /**
-   * Sous-onglets « Catégorie » (2026-08-13) rendus AU-DESSUS des onglets
-   * Actifs/Archivés/Corbeille. Construits par la page /contacts/messages
-   * (qui possède le paramètre `?cat=`) — ce composant se contente de les
-   * afficher et de préserver `cat` dans la pagination et les onglets de vue.
-   */
-  categoryTabs?: React.ReactNode;
 }
 
 export async function SubmissionsV2({
@@ -91,7 +87,6 @@ export async function SubmissionsV2({
   searchParams,
   basePath = "submissions",
   forcedTypes,
-  categoryTabs,
 }: Props): Promise<React.ReactElement> {
   const includeArchived = searchParams["includeArchived"] === "true";
   const deleted = searchParams["deleted"] === "true";
@@ -146,21 +141,20 @@ export async function SubmissionsV2({
     : includeArchived && searchParams["status"] === "archived"
       ? "archived"
       : "active";
-  // Le sous-onglet Catégorie (?cat=) doit survivre au passage Actifs ↔
-  // Archivés ↔ Corbeille, sinon changer de vue ramènerait à « Tous ».
-  const cat = searchParams["cat"];
-  const catSuffix = cat ? `cat=${encodeURIComponent(cat)}` : null;
+  // `base` porte déjà la catégorie : chaque catégorie est une ROUTE (cf. la
+  // sidebar, où elles sont indentées sous « Messages »). Changer de vue ne
+  // peut donc plus ramener à « Tous », sans paramètre à recopier.
   const tabOptions = [
-    { value: "active", label: "Actifs", href: catSuffix ? `${base}?${catSuffix}` : base },
+    { value: "active", label: "Actifs", href: base },
     {
       value: "archived",
       label: "Archivés",
-      href: `${base}?includeArchived=true&status=archived${catSuffix ? `&${catSuffix}` : ""}`,
+      href: `${base}?includeArchived=true&status=archived`,
     },
     {
       value: "trash",
       label: "Corbeille",
-      href: `${base}?deleted=true${catSuffix ? `&${catSuffix}` : ""}`,
+      href: `${base}?deleted=true`,
     },
   ];
 
@@ -219,7 +213,6 @@ export async function SubmissionsV2({
           </Link>
         }
       />
-      {categoryTabs ? <div className="mb-[var(--space-admin-4)]">{categoryTabs}</div> : null}
       <div className="mb-[var(--space-admin-4)]">
         <AdminFilterTabs options={tabOptions} current={currentTab} label="Vue" />
       </div>
@@ -263,9 +256,6 @@ export async function SubmissionsV2({
           // Préserve les onglets Archivés / Corbeille au-delà de la page 1.
           includeArchived: searchParams["includeArchived"],
           deleted: searchParams["deleted"],
-          // Sous-onglet Catégorie (/contacts/messages?cat=…) — sinon perdu
-          // dès la page 2.
-          cat,
         }}
       />
     </AdminPageShell>

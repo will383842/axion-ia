@@ -91,7 +91,11 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-08-05, vente phase 0) : « Nouvelle vente » — wizard guidé
     // client → formation → devis → session → checklist, en tête du pôle
     // Catalogue & vente (groupe qualiopi). = 137.
-    expect(items.length).toBe(141);
+    // +2 (2026-08-14, catégories de Messages remontées dans la sidebar) :
+    // « Conférences » et « Autres » n'existaient que comme filtre interne à
+    // l'écran Messages ; elles ont désormais leur route, comme les 6 autres
+    // catégories. = 143.
+    expect(items.length).toBe(143);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
@@ -194,7 +198,9 @@ describe("buildAdminNav SSOT", () => {
     const candidatures = items.find((it) => it.label === "Candidatures");
     expect(candidatures?.group).toBe("contacts");
     expect(candidatures?.href).toBe("/fr/p/contacts/candidatures");
-    expect(items.find((it) => it.label === "Messages · Recrutement")?.group).toBe("contacts");
+    // Libellé raccourci le 2026-08-14 : « Recrutement » est désormais indenté
+    // sous « Messages », l'indentation dit ce que le préfixe disait.
+    expect(items.find((it) => it.label === "Recrutement")?.group).toBe("contacts");
   });
 
   // ── Refonte « Boîte de réception » 2026-07-29 ───────────────────────────
@@ -212,14 +218,40 @@ describe("buildAdminNav SSOT", () => {
       expect(ADMIN_NAV_GROUP_LABELS["contacts"]).toBe("Boîte de réception");
     });
 
-    it("expose exactement 5 canaux visibles, un par type d'entrée réel", () => {
-      expect(visible.map((it) => it.href)).toEqual([
+    // 🔴 Révision Will 2026-08-14 : les catégories de Messages REVIENNENT dans
+    // la sidebar, indentées sous leur parent (`navLevel: 2`), au lieu d'être un
+    // filtre interne à l'écran. Ce qui était banni le 2026-07-29, c'est une
+    // entrée par TABLE au même rang que les canaux — pas une hiérarchie qui
+    // montre à quel canal chaque vue appartient. Les canaux RACINE restent donc
+    // au nombre de 4 (+ Messages), et tout ce qui est indenté est une catégorie.
+    it("expose 5 canaux racine, un par type d'entrée réel", () => {
+      expect(visible.filter((it) => it.navLevel == null).map((it) => it.href)).toEqual([
         "/fr/p/contacts",
         "/fr/p/contacts/appels",
         "/fr/p/contacts/messages",
         "/fr/p/contacts/candidatures",
-        "/fr/p/podcast",
       ]);
+    });
+
+    it("les 8 catégories de Messages sont indentées sous lui", () => {
+      const enfants = visible.filter((it) => it.navLevel === 2);
+      expect(enfants.map((it) => it.label)).toEqual([
+        "Clients",
+        "Presse",
+        "Partenariats",
+        "Investisseurs",
+        "Conférences",
+        "Recrutement",
+        "Podcast",
+        "Autres",
+      ]);
+      // Rendues APRÈS « Messages » : la sidebar est une liste à plat que seule
+      // l'indentation hiérarchise — un enfant placé ailleurs paraîtrait
+      // appartenir au canal qui le précède.
+      const iMessages = visible.findIndex((it) => it.href === "/fr/p/contacts/messages");
+      for (const enfant of enfants) {
+        expect(visible.indexOf(enfant), enfant.label).toBeGreaterThan(iMessages);
+      }
     });
 
     // Le cœur du problème d'origine : trois entrées pour la même table
@@ -237,9 +269,10 @@ describe("buildAdminNav SSOT", () => {
       }
     });
 
-    // Rien ne doit être PERDU : les vues filtrées restent des routes valides,
-    // simplement retirées de la sidebar (⌘K les voit toujours).
-    it("les vues filtrées de Submission survivent hors sidebar", () => {
+    // Les URLs des vues filtrées n'ont PAS bougé en revenant dans la sidebar :
+    // ⌘K, les favoris et les liens externes déjà posés restent valides. C'est
+    // tout l'intérêt de `navLevel` — indenter sans déplacer.
+    it("les vues filtrées de Submission gardent leurs URLs historiques", () => {
       for (const href of [
         "/fr/p/contacts/clients",
         "/fr/p/contacts/presse",
@@ -249,7 +282,8 @@ describe("buildAdminNav SSOT", () => {
       ]) {
         const hit = items.find((it) => it.href === href);
         expect(hit, href).toBeDefined();
-        expect(hit?.parent, href).toBe("/fr/p/contacts/messages");
+        expect(hit?.navLevel, href).toBe(2);
+        expect(hit?.parent, href).toBeUndefined();
       }
     });
 
