@@ -444,30 +444,101 @@ export default async function RoiPage({ params, searchParams }: Props) {
       </div>
 
       {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
-      <Section
-        titleAs="h1"
-        eyebrow={
-          isFr
-            ? "Simulateur de gains · gratuit, sans inscription"
-            : "Gains simulator · free, no sign-up"
-        }
-        title={isFr ? "Quelles tâches votre entreprise" : "Which tasks should your company"}
-        titleEm={isFr ? "doit automatiser" : "automate"}
-        titleTail={isFr ? " en premier ?" : " first?"}
-        description={
-          isFr
-            ? "Dix questions sur vos volumes réels — devis, factures, appels, comptes-rendus — et vous repartez avec un rapport nominatif : vos cinq premières tâches à automatiser, le temps et l'argent récupérables, et le calendrier pour y arriver."
-            : "Ten questions about your real volumes — quotes, invoices, calls, minutes — and you leave with a tailored report: your first five tasks to automate, the time and money recoverable, and the schedule to get there."
-        }
-        media={
-          heroImage ? (
+      {/* ── L'OUTIL EN TÊTE, DANS LE MÊME HABIT QUE LE TUNNEL ───────────
+          Avant le 2026-08-14, cette page ouvrait sur un en-tête complet —
+          titre en trois lignes, photo, deux boutons, liste de gages — et le
+          simulateur n'arrivait qu'en DEUXIÈME section. Sur un téléphone,
+          l'outil n'était visible sur aucun écran d'accueil : il fallait faire
+          défiler pour découvrir qu'il existait, sur une page de 17 000 px.
+          Le visiteur venu de Google repartait avant.
+
+          Désormais l'outil EST l'accueil, et il porte l'habit sombre des pages
+          de tunnel (`tone="mocha"`, le ton sombre natif du site + le thème
+          sombre du questionnaire). Le contenu de référencement suit dessous —
+          il reste indispensable pour que la page se positionne, mais il ne
+          bloque plus l'accès à l'outil. */}
+      {/* Rembourrage vertical resserré : le gabarit de section applique
+          `py-24` sur mobile, soit 96 px perdus en haut d'un écran de 664 px
+          avant même le premier mot. Sur cette page l'objectif est que la
+          première QUESTION soit visible sans défiler. */}
+      <Section id="simulateur" tone="mocha" className="pt-8 pb-16 sm:pt-10 sm:pb-20">
+        <Container className="max-w-2xl">
+          <p className="text-terracotta-on-mocha text-center text-[13px] font-semibold tracking-[0.14em] uppercase">
+            {isFr
+              ? "Simulateur de gains · gratuit, sans inscription"
+              : "Gains simulator · free, no sign-up"}
+          </p>
+
+          {/* Typographie alignée sur `/simulateur` et `/diagnostic` : 28 px sur
+              mobile, sans empattement, interlignage serré. Le grand titre serif
+              du site prenait trois lignes et repoussait l'outil hors de
+              l'écran. */}
+          <h1 className="text-mocha-fg mt-5 text-center text-[28px] leading-[1.12] font-bold tracking-tight text-balance sm:text-[36px]">
+            {isFr ? (
+              <>
+                Quelles tâches votre entreprise{" "}
+                <em className="text-terracotta-on-mocha not-italic">doit automatiser</em> en premier
+                ?
+              </>
+            ) : (
+              <>
+                Which tasks should your company{" "}
+                <em className="text-terracotta-on-mocha not-italic">automate</em> first?
+              </>
+            )}
+          </h1>
+
+          <p className="text-mocha-fg/80 mx-auto mt-4 max-w-xl text-center text-[15px] leading-relaxed">
+            {isFr
+              ? "Dix questions sur vos volumes réels. Vous repartez avec vos cinq premières tâches à automatiser, le temps et l'argent récupérables, et le calendrier pour y arriver."
+              : "Ten questions about your real volumes. You leave with your first five tasks to automate, the time and money recoverable, and the schedule to get there."}
+          </p>
+
+          <div className="mt-8">
+            <SimulatorFlow
+              locale={loc}
+              initialAnswers={initialAnswers}
+              initialShowReport={initialShowReport}
+              tone="dark"
+            />
+          </div>
+
+          {/* Les gages descendent SOUS l'outil : avant, ils s'intercalaient
+              entre le titre et le questionnaire et retardaient la première
+              question de plusieurs centaines de pixels. */}
+          <ul
+            role="list"
+            className="mt-8 flex flex-col items-center gap-2.5 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-6"
+          >
+            {heroChips.map((chip) => (
+              <li
+                key={chip.label}
+                className="text-mocha-fg/75 inline-flex items-center gap-2 text-sm"
+              >
+                <chip.icon
+                  aria-hidden="true"
+                  className="text-terracotta-on-mocha h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                />
+                <span>{chip.label}</span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </Section>
+
+      {/* La photo d'en-tête et le renvoi vers l'audit sur mesure suivent
+          l'outil : ils enrichissent la page pour le référencement sans plus
+          s'interposer entre le visiteur et la première question. */}
+      {heroImage ? (
+        <Section tone="canvas">
+          <Container className="max-w-2xl">
             <figure>
               <Image
                 src={heroImage.src}
                 alt={isFr ? heroImage.altFr : heroImage.altEn}
                 width={heroImage.width}
                 height={heroImage.height}
-                priority
                 sizes="(max-width: 1024px) 100vw, 48vw"
                 className="mx-auto h-auto w-full max-w-[520px] rounded-2xl"
               />
@@ -477,44 +548,15 @@ export default async function RoiPage({ params, searchParams }: Props) {
                 className="text-center text-[11px]"
               />
             </figure>
-          ) : undefined
-        }
-      >
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-3">
-            <Cta href="#simulateur" variant="primary" size="lg" track="roi-hero-simulateur">
-              {isFr ? "Commencer le diagnostic" : "Start the diagnostic"}
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
-            </Cta>
-            <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
-              {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
-            </Cta>
-          </div>
-          <ul role="list" className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-5">
-            {heroChips.map((chip) => (
-              <li key={chip.label} className="text-fg-soft inline-flex items-center gap-2 text-sm">
-                <chip.icon
-                  aria-hidden="true"
-                  className="text-terracotta h-4 w-4 shrink-0"
-                  strokeWidth={2}
-                />
-                <span>{chip.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
-
-      {/* ── LE SIMULATEUR ────────────────────────────────────────────────── */}
-      <Section id="simulateur" tone="canvas">
-        <Container className="max-w-2xl">
-          <SimulatorFlow
-            locale={loc}
-            initialAnswers={initialAnswers}
-            initialShowReport={initialShowReport}
-          />
-        </Container>
-      </Section>
+            <div className="mt-6 flex justify-center">
+              <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
+                {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Cta>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
 
       {/* ── BANDEAU ──────────────────────────────────────────────────────── */}
       {bannerImage ? (
