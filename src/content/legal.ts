@@ -443,13 +443,42 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // lecteur. Le texte énonce désormais le droit (qui existe de toute
           // façon), constate l'état réel, et prend l'engagement pour la suite.
           //
-          // Le code tient déjà la même ligne : `documents.ts` refuse d'émettre
-          // un contrat individuel tant que `mediateur_consommation_nom` et
-          // `mediateur_consommation_url` sont vides. Le jour de l'adhésion,
-          // renseigner ces deux clés en configuration Qualiopi ET remplacer le
-          // paragraphe ci-dessous par le nom et l'adresse du médiateur.
+          // ⚠️ 2026-08-14 — CE COMMENTAIRE AFFIRMAIT UNE CHOSE FAUSSE : il
+          // disait que « `documents.ts` refuse d'émettre un contrat individuel »
+          // tant que `mediateur_consommation_nom` et `mediateur_consommation_url`
+          // sont vides. Vérification faite dans le code : il n'y a AUCUN refus.
+          // `documents.ts` ÉMET le contrat, et se contente de rendre l'absence
+          // de médiateur visible à l'admin + tracée au journal d'audit — choix
+          // délibéré et mieux raisonné que le blocage, expliqué sur place : le
+          // jour d'un contrôle, la question n'est pas « le logiciel bloquait-il ? »
+          // mais « quels contrats ont été émis sans la mention ? ».
+          //
+          // Le jour de l'adhésion : renseigner ces deux clés en configuration
+          // Qualiopi, remplacer le paragraphe ci-dessous par le nom et l'adresse
+          // du médiateur, ET modifier `contrat-formation.tsx` qui n'imprime
+          // aucune clause de médiation même une fois les clés renseignées.
+          // 🔴 2026-08-14, DÉCISION WILL — l'engagement ajouté le matin même
+          // (« et aucun produit numérique ne lui sera vendu, avant cette
+          // adhésion ») est RETIRÉ. Motif : il transformait une contrainte
+          // légale en engagement contractuel opposable, que la partie adverse
+          // pourrait invoquer sans même se référer au Code de la consommation.
+          //
+          // ⚠️ CE RETRAIT NE CHANGE RIEN À L'OBLIGATION. L'art. L.612-1 impose
+          // au professionnel de garantir au consommateur le recours effectif et
+          // gratuit à un médiateur agréé CECMC, que les CGV en parlent ou non.
+          // Le déclencheur est la QUALITÉ DE L'ACHETEUR (un consommateur), pas
+          // la nature du produit : un fichier vendu à un particulier y est
+          // soumis exactement comme une formation. Amende administrative
+          // jusqu'à 15 000 € pour une personne morale (art. L.641-1).
+          //
+          // 🔴 RISQUE RÉSIDUEL ASSUMÉ : la phrase « À ce jour, Axion-IA ne
+          // commercialise aucune prestation auprès de consommateurs » est vraie
+          // aujourd'hui et deviendrait FAUSSE le jour où une vente B2C s'ouvre
+          // sans adhésion — sur un support contractuel. Avant d'ouvrir un
+          // tunnel de vente à des particuliers : soit adhérer à un médiateur et
+          // publier ses coordonnées ici, soit réécrire ce constat.
           title: "Particulier — médiation de la consommation",
-          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation ni aucun produit numérique auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier, et aucun produit numérique ne lui sera vendu, avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section, reportés au contrat de formation et rappelés lors de la commande d'un produit numérique. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
+          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section et reportés au contrat de formation. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
         },
         {
           title: "Particulier — juridiction compétente",
