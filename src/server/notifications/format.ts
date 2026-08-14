@@ -108,6 +108,7 @@ const CRM_SYNC_ALERT_LABELS: Record<CrmSyncAlertKind, string> = {
   backlog: "File d'attente au-dessus du seuil",
   reconcile_gap: "Enregistrements source sans ligne d'outbox",
   reconcile_failed: "Échec du batch de réconciliation",
+  scan_capped: "Balayage d'abonnés plafonné — un optout CRM peut être raté",
 };
 
 const MD_V2_RESERVED = /[_*[\]()~`>#+\-=|{}.!\\]/g;
