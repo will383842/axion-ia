@@ -510,7 +510,10 @@ export function AdminSidebarNav({
     const Icon = navIcon(item.icon);
     const active = item.href === activeHref;
     const badge = badgeFor(item.href);
-    const level = collapsed ? 0 : itemLevel(item.href);
+    // `navLevel` prime sur la déduction par URL : une catégorie de Messages
+    // vit sur une route sœur (`/contacts/presse`, `/podcast`) dont la
+    // profondeur ne dit pas qu'elle est une fille.
+    const level = collapsed ? 0 : (item.navLevel ?? itemLevel(item.href));
     const iconSize = level >= 1 ? 14 : 16;
     return (
       <li key={item.href}>
