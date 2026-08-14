@@ -101,6 +101,8 @@ describe("telegramGroupFor", () => {
       "interventions",
       "avis",
       "messages",
+      // 🔗 Salon dédié aux anomalies de la synchro CRM (lot L5, 2026-08-14).
+      "crm-sync",
       "system",
     ];
     expect(ALL_NOTIFICATION_CATEGORIES.length).toBeGreaterThan(30);

@@ -4,7 +4,12 @@
 // renvoie `Bad Request: can't parse entities`. Cf.
 // https://core.telegram.org/bots/api#markdownv2-style
 
-import type { NotificationCategory, NotificationEvent, NotificationSeverity } from "./types";
+import type {
+  CrmSyncAlertKind,
+  NotificationCategory,
+  NotificationEvent,
+  NotificationSeverity,
+} from "./types";
 import { telegramGroupFor, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
@@ -41,6 +46,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   interventions: { emoji: "🛠️", label: "INTERVENTION" },
   avis: { emoji: "⭐", label: "AVIS CLIENT" },
   messages: { emoji: "💬", label: "MESSAGE" },
+  "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -87,6 +93,22 @@ const TITLES: Record<NotificationCategory, string> = {
   STRIPE_EVENT: "Stripe — événement",
   STRIPE_WEBHOOK_SIGNATURE_FAIL: "Stripe — signature webhook invalide",
   MONITORING_ALERT: "Alerte monitoring",
+  CRM_SYNC_ALERT: "Synchro CRM — anomalie",
+};
+
+/**
+ * Libellé humain de chaque anomalie de synchro.
+ *
+ * `Record<CrmSyncAlertKind, …>` : ajouter un `kind` sans son libellé ne compile
+ * pas. Une alerte dont on ne saurait pas dire ce qu'elle signale ne vaudrait
+ * pas mieux que pas d'alerte du tout.
+ */
+const CRM_SYNC_ALERT_LABELS: Record<CrmSyncAlertKind, string> = {
+  gave_up: "Abandon définitif — le lead n'arrivera pas au CRM",
+  backlog: "File d'attente au-dessus du seuil",
+  reconcile_gap: "Enregistrements source sans ligne d'outbox",
+  reconcile_failed: "Échec du batch de réconciliation",
+  scan_capped: "Balayage d'abonnés plafonné — un optout CRM peut être raté",
 };
 
 const MD_V2_RESERVED = /[_*[\]()~`>#+\-=|{}.!\\]/g;
@@ -482,6 +504,18 @@ function formatBody(event: NotificationEvent): string {
       return [
         formatKV("Type", p.kind),
         formatKV("Détails", JSON.stringify(p.details).slice(0, 800)),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "CRM_SYNC_ALERT": {
+      const p = event.payload;
+      return [
+        formatKV("Anomalie", CRM_SYNC_ALERT_LABELS[p.kind]),
+        formatKV("Nombre", p.count),
+        formatKV("Source", p.subjectRef),
+        formatKV("Détail", p.detail?.slice(0, 400)),
+        formatKV("Console", `${SITE_URL}${adminPath("fr", "synchro-crm")}`),
       ]
         .filter((v): v is string => v !== null)
         .join("\n");

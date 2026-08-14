@@ -84,6 +84,23 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
     severity: "warn",
     rateLimitPerHour: 30,
   },
+
+  // --- Synchro CRM (lot L5) ---
+  //
+  // `error` et pas `warn` : un abandon définitif est un lead qui n'arrivera
+  // JAMAIS au CRM sans intervention humaine. Le canal Sentry double Telegram
+  // pour que l'anomalie survive à un salon non lu.
+  //
+  // `rateLimitPerHour` est une SECONDE ceinture, pas la première : l'anti-bruit
+  // réel est la clé de dédup horaire par `kind` posée dans `crm-sync/alerts.ts`
+  // (4 types × 1/h = 4 messages/h au pire). Ce plafond de 12 ne mord donc
+  // jamais en fonctionnement nominal — il n'est là que si un futur appelant
+  // oubliait la clé de dédup.
+  CRM_SYNC_ALERT: {
+    channels: ["telegram", "sentry"],
+    severity: "error",
+    rateLimitPerHour: 12,
+  },
 };
 
 export function getRouting(category: NotificationCategory): RoutingEntry {
@@ -120,6 +137,7 @@ export type TelegramGroup =
   | "interventions"
   | "avis"
   | "messages"
+  | "crm-sync"
   | "system";
 
 /**
@@ -178,6 +196,13 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   PODCAST_REQUEST_SUBMITTED: "messages",
   RGPD_REQUEST_SUBMITTED: "messages",
   SPEAKER_INVITATION_RECEIVED: "messages",
+
+  // 🔗 Synchro CRM — salon dédié plutôt que Système, pour une raison précise :
+  // ces alertes se lisent en RÉGIME (« la file monte depuis 3 h »), pas à
+  // l'unité. Noyées entre deux sauvegardes réussies, la tendance disparaît.
+  // Le salon est optionnel : sans `TELEGRAM_CHAT_ID_CRM_SYNC`, on retombe sur
+  // 🔔 Système, exactement là où ces messages seraient allés sinon.
+  CRM_SYNC_ALERT: "crm-sync",
 
   // 🔔 Système — newsletter, ops, et le tunnel de réservation payante ÉTEINT.
   //
@@ -311,6 +336,7 @@ const CHAT_ID_ENV: Record<TelegramGroup, string> = {
   interventions: "TELEGRAM_CHAT_ID_INTERVENTIONS",
   avis: "TELEGRAM_CHAT_ID_AVIS",
   messages: "TELEGRAM_CHAT_ID_MESSAGES",
+  "crm-sync": "TELEGRAM_CHAT_ID_CRM_SYNC",
   system: "TELEGRAM_CHAT_ID_SYSTEM",
 };
 
@@ -346,6 +372,10 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   // L'avis tombait dans Système avant le 2026-08-09 — on y retombe.
   avis: ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   messages: ["TELEGRAM_CHAT_ID"],
+  // Tant que le salon 🔗 dédié n'existe pas, ces alertes techniques retombent
+  // dans 🔔 Système — là où elles seraient allées si on n'avait pas créé de
+  // groupe. Le repli n'est donc jamais une perte, juste un mélange.
+  "crm-sync": ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
   system: ["TELEGRAM_CHAT_ID"],
 };
 

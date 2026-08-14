@@ -427,7 +427,47 @@ export type NotificationEvent =
   | {
       category: "MONITORING_ALERT";
       payload: { kind: string; details: Record<string, unknown> };
+    }
+  // === Synchro CRM (lot L5) ===
+  //
+  // Une seule catégorie pour les QUATRE anomalies de la synchro, et pas une par
+  // anomalie : c'est `kind` qui distingue, ce qui permet de router, de dédupliquer
+  // et de couper les quatre d'un seul geste. L'anti-bruit vit au call-site
+  // (`crm-sync/alerts.ts`) sous forme de clé de dédup HORAIRE par `kind` — une
+  // synchro en panne produit une alerte par heure, pas une par ligne.
+  | {
+      category: "CRM_SYNC_ALERT";
+      payload: {
+        kind: CrmSyncAlertKind;
+        /** Volume concerné (backlog, nombre de sources sans ligne d'outbox…). */
+        count?: number;
+        /** Message d'erreur ou précision libre. */
+        detail?: string;
+        /** Référence de l'enregistrement source, pour un abandon unitaire. */
+        subjectRef?: string;
+      };
     };
+
+/**
+ * Les quatre anomalies que la synchro sait signaler.
+ *
+ *  · `gave_up`          — une ligne d'outbox est DÉFINITIVEMENT abandonnée
+ *                         (refus 422 du CRM ou plafond de tentatives). C'est un
+ *                         lead qui n'arrivera jamais sans intervention humaine.
+ *  · `backlog`          — la file dépasse le seuil ferme du plan (50).
+ *  · `reconcile_gap`    — le batch quotidien a trouvé des enregistrements
+ *                         SOURCE sans ligne d'outbox (la fenêtre post-commit).
+ *  · `reconcile_failed` — le batch lui-même a échoué. Sans cette alerte, la
+ *                         garantie quotidienne s'éteindrait en silence.
+ */
+export type CrmSyncAlertKind =
+  | "gave_up"
+  | "backlog"
+  | "reconcile_gap"
+  | "reconcile_failed"
+  // Le balayage d'abonnés a atteint son plafond : la correspondance par
+  // empreinte n'est plus exhaustive — un optout CRM peut être raté.
+  | "scan_capped";
 
 export type NotificationCategory = NotificationEvent["category"];
 

@@ -32,6 +32,25 @@ export { enqueueCrmSyncEvent, newCrmEventId } from "./enqueue";
 export { emitOutboxRow } from "./emit";
 export * from "./types";
 
+// ── Lot L5 — observabilité, réconciliation, sens entrant ────────────────────
+export { alertCrmSync, crmSyncAlertDedupKey, CRM_SYNC_BACKLOG_THRESHOLD } from "./alerts";
+export { getCrmSyncHealth, CRM_SYNC_ERROR_ROWS, type CrmSyncHealth } from "./health";
+export {
+  collectReconciliation,
+  runCrmSyncReconciliation,
+  RECONCILE_WINDOW_DAYS,
+  type ReconcileReport,
+} from "./reconcile";
+export {
+  parseInboundPayload,
+  processInboundEvent,
+  verifyInboundRequest,
+  signInboundBody,
+  sha256Email,
+  INBOUND_REPLAY_WINDOW_SEC,
+  type CrmInboundPayload,
+} from "./inbound";
+
 interface PersonInput {
   email: string;
   firstName?: string | null;

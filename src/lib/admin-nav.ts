@@ -1412,6 +1412,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops",
     },
     { href: `${base}/alerts`, label: "Alertes ops", icon: "AlertTriangle", group: "ops" },
+    // Santé de la synchronisation vers Axion CRM Pro (lot L5, 2026-08-14) :
+    // dernier succès, file d'attente, abandons définitifs, écart de
+    // réconciliation, lignes en erreur avec rejeu. Rangée en « ops » et non en
+    // « contacts » : c'est un tableau d'exploitation, pas un écran métier.
+    {
+      href: `${base}/synchro-crm`,
+      label: "Synchro CRM",
+      icon: "RefreshCw",
+      group: "ops",
+    },
     { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "ops" },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },

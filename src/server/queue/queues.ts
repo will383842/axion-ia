@@ -983,6 +983,26 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "sweep" },
       { repeat: { pattern: "*/10 * * * *" }, jobId: "crm-sync-sweep-cron" },
     );
+
+    // ── Lot L5 — réconciliation QUOTIDIENNE ────────────────────────────────
+    // 04 h 30 UTC : creux de trafic, et surtout APRÈS que la nuit a laissé au
+    // balayage toutes ses chances de rattraper. Comparer avant les rattrapages
+    // ferait remonter comme « manquant » ce qui n'était que « pas encore parti ».
+    //
+    // Le balayage donne la FRAÎCHEUR, ce passage donne la GARANTIE : il compare
+    // les enregistrements source aux `subject_ref` réellement émis et journalise
+    // ses compteurs même quand tout va bien (l'absence de nouvelles doit être
+    // visible, leçon IndexNow). Drapeau à OFF ⇒ sortie immédiate.
+    await crmSyncQueue.removeRepeatable(
+      "reconcile",
+      { pattern: "30 4 * * *" },
+      "crm-sync-reconcile-cron",
+    );
+    await crmSyncQueue.add(
+      "reconcile",
+      { type: "reconcile" },
+      { repeat: { pattern: "30 4 * * *" }, jobId: "crm-sync-reconcile-cron" },
+    );
   }
 
   // ── Lot L4 — intégration au vivier à J+30 ────────────────────────────────

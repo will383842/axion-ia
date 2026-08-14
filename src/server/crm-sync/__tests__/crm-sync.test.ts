@@ -13,6 +13,7 @@ const findUniqueMock = vi.fn();
 const updateMock = vi.fn();
 const findManyMock = vi.fn();
 const findFirstMock = vi.fn();
+const countMock = vi.fn();
 const queueAddMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
@@ -23,6 +24,8 @@ vi.mock("@/lib/prisma", () => ({
       update: (...args: unknown[]) => updateMock(...args),
       findMany: (...args: unknown[]) => findManyMock(...args),
       findFirst: (...args: unknown[]) => findFirstMock(...args),
+      // Lot L5 : le balayage mesure désormais la file (seuil d'alerte 50).
+      count: (...args: unknown[]) => countMock(...args),
     },
   },
 }));
@@ -50,6 +53,7 @@ beforeEach(() => {
   createMock.mockResolvedValue({ id: "outbox-1" });
   queueAddMock.mockResolvedValue(undefined);
   updateMock.mockResolvedValue({});
+  countMock.mockResolvedValue(0);
 });
 
 afterEach(() => {
@@ -125,7 +129,16 @@ describe("inertie (drapeaux à OFF)", () => {
 
     const res = await sweepCrmSyncOutbox();
 
-    expect(res).toEqual({ emitted: 0, sent: 0, oldestPendingMinutes: null });
+    // `gaveUp` et `backlog` ajoutés au lot L5 (observabilité) : le balayage est
+    // devenu le point de mesure de la file, puisque c'est le seul endroit qui
+    // la regarde dans son ensemble.
+    expect(res).toEqual({
+      emitted: 0,
+      sent: 0,
+      gaveUp: 0,
+      backlog: 0,
+      oldestPendingMinutes: null,
+    });
     expect(findManyMock).not.toHaveBeenCalled();
   });
 });

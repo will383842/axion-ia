@@ -25,13 +25,20 @@
 import { Worker, type Job } from "bullmq";
 
 import { prisma } from "@/lib/prisma";
+import { alertCrmSync, CRM_SYNC_BACKLOG_THRESHOLD } from "@/server/crm-sync/alerts";
 import { isCrmSyncEnabled } from "@/server/crm-sync/config";
 import { emitOutboxRow } from "@/server/crm-sync/emit";
+import { runCrmSyncReconciliation } from "@/server/crm-sync/reconcile";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 export const CRM_SYNC_QUEUE_NAME = "crm-sync";
 
-export type CrmSyncJobType = "emit" | "sweep";
+/**
+ * `reconcile` ajouté au lot L5 : le passage QUOTIDIEN qui compare les
+ * enregistrements source aux `subject_ref` émis. Le balayage donne la
+ * fraîcheur, la réconciliation donne la garantie.
+ */
+export type CrmSyncJobType = "emit" | "sweep" | "reconcile";
 
 export interface CrmSyncJobData {
   readonly type?: CrmSyncJobType;
@@ -45,9 +52,13 @@ const SWEEP_BATCH = 50;
 export async function sweepCrmSyncOutbox(): Promise<{
   emitted: number;
   sent: number;
+  gaveUp: number;
+  backlog: number;
   oldestPendingMinutes: number | null;
 }> {
-  if (!isCrmSyncEnabled()) return { emitted: 0, sent: 0, oldestPendingMinutes: null };
+  if (!isCrmSyncEnabled()) {
+    return { emitted: 0, sent: 0, gaveUp: 0, backlog: 0, oldestPendingMinutes: null };
+  }
 
   const due = await prisma.crmSyncOutbox.findMany({
     where: {
@@ -56,24 +67,49 @@ export async function sweepCrmSyncOutbox(): Promise<{
     },
     orderBy: { createdAt: "asc" },
     take: SWEEP_BATCH,
-    select: { id: true },
+    select: { id: true, subjectRef: true },
   });
 
   let sent = 0;
+  let gaveUp = 0;
   for (const row of due) {
     const result = await emitOutboxRow(row.id);
     if (result.status === "sent") sent += 1;
+    if (result.status === "gave_up") {
+      gaveUp += 1;
+      // ALERTE sur ABANDON DÉFINITIF : ce lead n'arrivera jamais au CRM sans
+      // intervention humaine. C'est la seule anomalie de la synchro qui
+      // constitue une perte sèche — les autres ne sont que du retard.
+      // L'anti-bruit horaire vit dans `alertCrmSync` : dix abandons dans la
+      // même heure font UN message, pas dix.
+      await alertCrmSync({
+        kind: "gave_up",
+        subjectRef: row.subjectRef,
+        ...(result.error !== undefined ? { detail: result.error } : {}),
+      });
+    }
   }
 
-  const oldest = await prisma.crmSyncOutbox.findFirst({
-    where: { status: { in: ["pending", "failed"] } },
-    orderBy: { createdAt: "asc" },
-    select: { createdAt: true },
-  });
+  const [oldest, backlog] = await Promise.all([
+    prisma.crmSyncOutbox.findFirst({
+      where: { status: { in: ["pending", "failed"] } },
+      orderBy: { createdAt: "asc" },
+      select: { createdAt: true },
+    }),
+    prisma.crmSyncOutbox.count({ where: { status: { in: ["pending", "failed"] } } }),
+  ]);
+
+  // ALERTE de BACKLOG, mesurée au sweep — le seul endroit où la file est
+  // regardée dans son ensemble. Seuil FERME du plan : 50.
+  if (backlog > CRM_SYNC_BACKLOG_THRESHOLD) {
+    await alertCrmSync({ kind: "backlog", count: backlog });
+  }
 
   return {
     emitted: due.length,
     sent,
+    gaveUp,
+    backlog,
     oldestPendingMinutes: oldest
       ? Math.round((Date.now() - oldest.createdAt.getTime()) / 60_000)
       : null,
@@ -83,13 +119,22 @@ export async function sweepCrmSyncOutbox(): Promise<{
 async function processJob(job: Job<CrmSyncJobData>): Promise<void> {
   if (!isCrmSyncEnabled()) return;
 
+  // La réconciliation quotidienne. Elle ne lève jamais : un échec du batch est
+  // lui-même signalé par une alerte (`reconcile_failed`), ce qui vaut mieux
+  // qu'un job rouge dont personne ne lit la trace.
+  if (job.data.type === "reconcile") {
+    await runCrmSyncReconciliation();
+    return;
+  }
+
   if (job.data.type === "sweep" || !job.data.outboxId) {
     const res = await sweepCrmSyncOutbox();
     // On ne journalise QUE ce qui s'est passé : un « rien à faire » toutes les
     // 10 minutes noierait les logs (144 lignes/jour) sans jamais rien apprendre.
     if (res.emitted > 0) {
       console.warn(
-        `[crm-sync] balayage : ${res.sent}/${res.emitted} émis, retard max ${res.oldestPendingMinutes ?? 0} min`,
+        `[crm-sync] balayage : ${res.sent}/${res.emitted} émis, ${res.gaveUp} abandon(s), ` +
+          `file ${res.backlog}, retard max ${res.oldestPendingMinutes ?? 0} min`,
       );
     }
     return;
@@ -100,6 +145,12 @@ async function processJob(job: Job<CrmSyncJobData>): Promise<void> {
     console.error(
       `[crm-sync] abandon définitif de ${job.data.outboxId} (HTTP ${result.httpStatus ?? "?"}) : ${result.error ?? ""}`,
     );
+    // Même alerte que dans le balayage : un abandon reste un abandon, qu'il
+    // survienne à la première tentative ou à la huitième.
+    await alertCrmSync({
+      kind: "gave_up",
+      ...(result.error !== undefined ? { detail: result.error } : {}),
+    });
   }
 }
 

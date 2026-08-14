@@ -95,7 +95,10 @@ describe("buildAdminNav SSOT", () => {
     // « Conférences » et « Autres » n'existaient que comme filtre interne à
     // l'écran Messages ; elles ont désormais leur route, comme les 6 autres
     // catégories. = 143.
-    expect(items.length).toBe(143);
+    // +1 (2026-08-14, lot L5 observabilité) : « Synchro CRM » (groupe ops) —
+    // santé de l'outbox site → Axion CRM Pro : dernier succès, file d'attente,
+    // abandons définitifs, écart de réconciliation, rejeu d'une ligne. = 144.
+    expect(items.length).toBe(144);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
