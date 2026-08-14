@@ -22,6 +22,7 @@
 
 import { getVolumeDef } from "@/content/roi/model/functions";
 import type { VolumeKey } from "@/content/roi/model/types";
+import type { FunnelKey } from "@/lib/schemas/funnel-event-schema";
 
 /** Projection minimale d'une ligne de `funnel_events`. */
 export type LigneTunnel = {
@@ -81,6 +82,12 @@ export type LigneRepartition = {
 export type StatsTunnel = {
   cle: string;
   libelle: string;
+  /**
+   * Chemin public de la page, pour l'ouvrir depuis la console. `null` sur une
+   * clé inconnue — une balise portant un tunnel qui n'existe plus dans le code
+   * doit rester VISIBLE, mais on ne fabrique pas un lien vers une page morte.
+   */
+  chemin: string | null;
   sessions: number;
   questionnairesOuverts: number;
   questionnairesTermines: number;
@@ -117,12 +124,42 @@ export type SyntheseTunnels = {
   parTranche: Array<{ cle: string; rapports: number }>;
 };
 
+/**
+ * Les trois pages de tunnel du site, dans l'ordre du parcours.
+ *
+ * 🔴 SOURCE UNIQUE. Ce tableau sert à trois choses à la fois : nommer les
+ * lignes, fabriquer le lien qui ouvre la page publique depuis la console, et —
+ * surtout — GARANTIR QUE LES TROIS LIGNES EXISTENT TOUJOURS.
+ *
+ * Avant le 2026-08-14, le tableau « Par tunnel » n'affichait que les tunnels
+ * ayant au moins une session. `funnel_events` étant vide en production, l'écran
+ * ne montrait rien, et la lecture naturelle était « `/roi` n'est pas suivie par
+ * la console » — alors qu'elle l'était depuis le premier jour. Un zéro affiché
+ * et un tunnel absent disent deux choses opposées ; seul le premier est vrai.
+ *
+ * `FUNNEL_KEYS` reste l'autorité sur les clés admises (schéma Zod côté API) :
+ * l'ordre et les libellés sont ici, mais une clé ajoutée là-bas et oubliée ici
+ * ferait rougir le test d'exhaustivité.
+ */
+export const TUNNELS_CONNUS: ReadonlyArray<{
+  cle: FunnelKey;
+  libelle: string;
+  chemin: string;
+}> = [
+  { cle: "diagnostic", libelle: "Page publicitaire", chemin: "/fr/diagnostic" },
+  { cle: "simulateur", libelle: "Questionnaire nu", chemin: "/fr/simulateur" },
+  { cle: "roi", libelle: "Questionnaire public", chemin: "/fr/roi" },
+];
+
 /** Noms lisibles des tunnels. Une clé inconnue s'affiche telle quelle. */
-const LIBELLES_TUNNEL: Readonly<Record<string, string>> = {
-  diagnostic: "Page publicitaire (/diagnostic)",
-  simulateur: "Questionnaire nu (/simulateur)",
-  roi: "Questionnaire public (/roi)",
-};
+const LIBELLES_TUNNEL: Readonly<Record<string, string>> = Object.fromEntries(
+  TUNNELS_CONNUS.map((t) => [t.cle, `${t.libelle} (${t.chemin.replace(/^\/fr/, "")})`]),
+);
+
+/** Chemin public d'un tunnel, `null` si la clé n'est pas connue. */
+const CHEMINS_TUNNEL: Readonly<Record<string, string>> = Object.fromEntries(
+  TUNNELS_CONNUS.map((t) => [t.cle, t.chemin]),
+);
 
 const E = {
   vue: "Landing Viewed",
@@ -297,24 +334,34 @@ function abandons(sessions: readonly Session[]): AbandonEcran[] {
     .sort((a, b) => a.stepIndex - b.stepIndex);
 }
 
-/** Statistiques par tunnel d'entrée, triées par volume décroissant. */
+/**
+ * Statistiques par tunnel d'entrée, triées par volume décroissant.
+ *
+ * Les trois tunnels connus sont AMORCÉS À ZÉRO avant tout comptage : une page
+ * suivie mais sans visiteur doit apparaître avec un zéro, pas disparaître. Une
+ * clé inconnue rencontrée dans les balises s'ajoute quand même — un tunnel
+ * retiré du code mais encore présent en base reste visible, quitte à être moche.
+ */
 function parTunnel(sessions: readonly Session[]): StatsTunnel[] {
-  const paniers = new Map<string, StatsTunnel>();
+  const vide = (cle: string): StatsTunnel => ({
+    cle,
+    libelle: LIBELLES_TUNNEL[cle] ?? cle,
+    chemin: CHEMINS_TUNNEL[cle] ?? null,
+    sessions: 0,
+    questionnairesOuverts: 0,
+    questionnairesTermines: 0,
+    rapportsDemandes: 0,
+    rappelsDemandes: 0,
+    partRapport: 0,
+  });
+
+  const paniers = new Map<string, StatsTunnel>(
+    TUNNELS_CONNUS.map((t) => [t.cle, vide(t.cle)] as const),
+  );
 
   for (const s of sessions) {
     const cle = s.tunnelEntree ?? "inconnu";
-    const p =
-      paniers.get(cle) ??
-      ({
-        cle,
-        libelle: LIBELLES_TUNNEL[cle] ?? cle,
-        sessions: 0,
-        questionnairesOuverts: 0,
-        questionnairesTermines: 0,
-        rapportsDemandes: 0,
-        rappelsDemandes: 0,
-        partRapport: 0,
-      } satisfies StatsTunnel);
+    const p = paniers.get(cle) ?? vide(cle);
 
     p.sessions += 1;
     if (s.evenements.has(E.demarre)) p.questionnairesOuverts += 1;
