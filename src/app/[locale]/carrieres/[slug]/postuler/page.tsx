@@ -107,7 +107,6 @@ export default async function PostulerPage({
         <div className="border-border bg-paper shadow-card mx-auto mt-8 max-w-2xl rounded-3xl border p-6 sm:p-9">
           <JobApplicationForm
             offerId={offer.id}
-            offerTitle={title}
             requiresDriverLicense={offer.requiresDriverLicense}
             requiresVehicle={offer.requiresVehicle}
             screeningQuestions={screeningQuestions}

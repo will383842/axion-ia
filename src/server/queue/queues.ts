@@ -23,6 +23,8 @@ import type {
   SiteRouteAnomalyDetectorJobData,
   SiteRouteDiscoveryJobData,
   SiteRouteGscJobData,
+  VivierCronJobData,
+  VivierCronJobType,
 } from "./types";
 import type { ImageBankEnrichJobData } from "./workers/image-bank-enrich-worker";
 import type { ImageBankImportJobData } from "./workers/image-bank-import-worker";
@@ -133,6 +135,31 @@ export const crmSyncQueue: Queue<CrmSyncJobData, void, CrmSyncJobType> | null = 
         attempts: 1,
         removeOnComplete: { age: 24 * 3600, count: 500 },
         removeOnFail: { age: 7 * 24 * 3600, count: 500 },
+      },
+    })
+  : null;
+
+/**
+ * Lot L4 (2026-08-14) — passage quotidien du VIVIER candidats.
+ *
+ * Intègre au vivier CRM les candidatures dont la fenêtre d'opposition de
+ * 30 jours est échue, sans opposition. File SÉPARÉE de `crm-sync` : celle-ci
+ * transporte des événements, celle-là applique une règle de temps. Les mêler
+ * ferait dépendre une horloge RGPD de la santé de la file de synchro.
+ *
+ * `attempts: 1` : rater un passage n'a aucune conséquence — le lendemain
+ * reprendra exactement les mêmes lignes (l'état est en base, pas dans la file),
+ * et une candidature dont la fenêtre est échue le reste. Rejouer n'apporterait
+ * donc rien, sinon des doublons de trafic.
+ */
+export const vivierCronsQueue: Queue<VivierCronJobData, void, VivierCronJobType> | null = connection
+  ? new Queue<VivierCronJobData, void, VivierCronJobType>("vivier-crons", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+        removeOnFail: { age: 30 * 24 * 3600, count: 100 },
       },
     })
   : null;
@@ -955,6 +982,27 @@ export async function bootRepeatableJobs(): Promise<void> {
       "sweep",
       { type: "sweep" },
       { repeat: { pattern: "*/10 * * * *" }, jobId: "crm-sync-sweep-cron" },
+    );
+  }
+
+  // ── Lot L4 — intégration au vivier à J+30 ────────────────────────────────
+  // Une fois par jour à 05:00 UTC (créneau libre : 03:00 et 04:00 sont déjà
+  // chargés — purge RGPD, embeddings, brand-voice). La cadence quotidienne
+  // suffit : la règle porte sur des JOURS, pas sur des minutes, et un passage
+  // manqué est rattrapé par le suivant sans perte (l'état vit en base).
+  //
+  // Il tourne même quand les drapeaux sont à OFF — et ne trouve alors rien,
+  // puisque dans cet état aucune candidature n'a jamais été informée.
+  if (vivierCronsQueue) {
+    await vivierCronsQueue.removeRepeatable(
+      "integrate-stock",
+      { pattern: "0 5 * * *" },
+      "vivier-integrate-stock-cron",
+    );
+    await vivierCronsQueue.add(
+      "integrate-stock",
+      { type: "integrate-stock", tick: new Date().toISOString() },
+      { repeat: { pattern: "0 5 * * *" }, jobId: "vivier-integrate-stock-cron" },
     );
   }
 

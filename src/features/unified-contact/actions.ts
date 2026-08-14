@@ -26,6 +26,7 @@ import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { syncFormSubmissionToCrm } from "@/server/crm-sync";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import {
   unifiedContactSchema,
@@ -271,6 +272,20 @@ export async function submitUnifiedContactAction(
         ...(data.source ? { source: data.source } : {}),
         ...(Object.keys(funnel).length > 0 ? { funnel } : {}),
       },
+    });
+
+    // 6 bis. REGISTRE DE PREUVE (lot L4) — best-effort, jamais bloquant. La
+    // version vivait jusqu'ici dans `details.consentVersion`, un JSON : lisible
+    // à l'unité, inexploitable pour répondre « prouvez le consentement de cette
+    // personne ». Elle est désormais AUSSI dans un registre indexé par personne.
+    await recordConsentEvent({
+      email: data.email,
+      formRef: CONSENT_FORM_REFS.unifiedContact,
+      consentVersion: CONSENT_VERSION,
+      action: "optin",
+      occurredAt: submission.submittedAt,
+      ip,
+      userAgent,
     });
 
     // 7. Telegram notification — via hub typé (cf. ADR 0027).

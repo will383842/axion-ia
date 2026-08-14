@@ -120,7 +120,29 @@ export type EmailJobName =
   // Candidature commerciale (tunnel sans CV, Mémorial de l'Isère 2026-08-12) :
   // accusé chaleureux au candidat + récapitulatif complet à l'équipe interne.
   | "candidature-commercial-confirmee"
-  | "candidature-commercial-recap";
+  | "candidature-commercial-recap"
+  // Lot L4 2026-08-14 — information RGPD au stock de candidatures avant
+  // intégration au vivier (lien d'opposition, fenêtre de 30 jours).
+  | "vivier-information";
+
+/**
+ * Lot L4 — passage quotidien du vivier candidats.
+ *
+ * ⚠️ Ces types vivent ICI, et non dans le worker, CONTRAIREMENT au motif des
+ * autres files. Raison mesurée : `queues.ts` est importé par toute Server
+ * Action qui enfile quoi que ce soit ; s'il pointait vers le worker (même en
+ * `import type`), l'outil de test résout quand même le module et tire derrière
+ * lui `server/vivier/stock` → `crm-sync` → `queues` — un CYCLE, et ~2 s de
+ * chargement supplémentaires. Ce coût a fait DÉPASSER le budget de 5 s d'un
+ * test sans rapport (`api/calendly/client-event`), qui passait avant.
+ * Déclarer les types dans ce module partagé supprime l'arête, donc le cycle.
+ */
+export type VivierCronJobType = "integrate-stock";
+
+export interface VivierCronJobData {
+  readonly type?: VivierCronJobType;
+  readonly tick?: string;
+}
 
 export interface EmailJobData {
   template: EmailJobName;

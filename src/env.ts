@@ -65,6 +65,14 @@ export const env = createEnv({
     CRM_SYNC_URL: z.string().url().optional(),
     // Secret partagé du canal signé (64 hex). Jamais dans un commit.
     SITE_SYNC_HMAC_SECRET: z.string().optional(),
+    // ── Reprise du STOCK de candidatures (lot L4, 2026-08-14) ──────────────
+    // Autorise l'ENVOI de l'email d'information au stock existant (fenêtre
+    // d'opposition de 30 jours avant intégration au vivier). Distinct de
+    // CRM_SYNC_CANDIDATES_ENABLED à dessein : on informe les candidats AVANT
+    // d'ouvrir le canal CRM — c'est même l'ordre imposé, la fenêtre de 30 jours
+    // devant s'écouler d'abord. Tant qu'il n'est pas à "true", la campagne
+    // refuse de s'exécuter sans même lire la base.
+    VIVIER_STOCK_ENABLED: z.enum(["true", "false"]).optional(),
 
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
@@ -401,6 +409,7 @@ export const env = createEnv({
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
+    VIVIER_STOCK_ENABLED: process.env.VIVIER_STOCK_ENABLED,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,

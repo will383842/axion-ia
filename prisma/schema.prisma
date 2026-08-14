@@ -8779,6 +8779,25 @@ model JobApplication {
   consentVersion String  @map("consent_version") @db.VarChar(40)
   locale         Locale  @default(fr)
 
+  /// Lot L4 — accord de CONSERVATION EN VIVIER (case optionnelle, décochée par
+  /// défaut, textes v2). Il ne se déduit PAS de `consentVersion` : celui-ci
+  /// n'atteste que du consentement à l'ÉTUDE de la candidature, qui est
+  /// obligatoire. `null` = pas d'accord vivier — c'est le cas de TOUT le stock
+  /// antérieur, et c'est précisément ce qui justifie la mécanique
+  /// d'information + opposition ci-dessous.
+  consentVivierAt DateTime? @map("consent_vivier_at")
+
+  /// Mécanique « stock » (plan §2.3, option (b), fenêtre d'opposition 30 j) —
+  /// trois horodatages, trois faits distincts, jamais déduits l'un de l'autre :
+  ///  · `vivierInfoSentAt`  : l'email d'information est PARTI (départ de l'horloge) ;
+  ///  · `vivierOpposedAt`   : la personne s'est OPPOSÉE (un clic, sans login) ;
+  ///  · `vivierSyncedAt`    : la fiche a été INTÉGRÉE au vivier CRM (idempotence).
+  /// Une opposition posée après l'intégration reste vraie : c'est le CRM qui
+  /// reçoit alors un `opt_out`, on ne réécrit jamais l'histoire côté site.
+  vivierInfoSentAt DateTime? @map("vivier_info_sent_at")
+  vivierOpposedAt  DateTime? @map("vivier_opposed_at")
+  vivierSyncedAt   DateTime? @map("vivier_synced_at")
+
   // Workflow admin
   status         JobApplicationStatus @default(new)
   internalNotes  String?              @map("internal_notes") @db.Text
@@ -8790,6 +8809,10 @@ model JobApplication {
   @@index([offerId])
   @@index([status, needsAttention])
   @@index([submittedAt])
+  /// Lot L4 — l'index qui porte le job J+30 : « les fiches informées, non
+  /// opposées, pas encore intégrées ». Sans lui le job scannerait toute la
+  /// table à chaque passage quotidien.
+  @@index([vivierInfoSentAt, vivierOpposedAt, vivierSyncedAt])
   @@map("job_applications")
 }
 
@@ -10690,4 +10713,53 @@ model CrmSyncOutbox {
   @@index([subjectRef])
   @@index([createdAt(sort: Desc)])
   @@map("crm_sync_outbox")
+}
+
+/// REGISTRE DE PREUVE DES CONSENTEMENTS (lot L4, plan §2.8.1).
+///
+/// Avant ce registre, la preuve était ÉCLATÉE et partiellement absente :
+/// `details.consentVersion` dans un JSON pour les submissions, une colonne
+/// dédiée pour les candidatures, et RIEN du tout pour la newsletter. En cas de
+/// contrôle, « prouvez que cette personne a consenti, à quelle version du texte
+/// et quand » n'avait pas de réponse uniforme.
+///
+/// Trois partis pris :
+///  1. Le registre vit CÔTÉ SITE, là où le consentement est recueilli. Le CRM
+///     n'en reçoit qu'une projection (dernier état + version) — il n'est jamais
+///     la source de vérité d'un consentement.
+///  2. Il est APPEND-ONLY : un retrait n'efface pas l'accord, il ajoute une
+///     ligne `optout`. L'historique est la preuve ; le réécrire la détruirait.
+///  3. Il ne porte AUCUNE adresse en clair — seulement `personKey`
+///     (= `hashEmailForLookup(email)`, la clé qui traverse les deux systèmes).
+///     Un registre de preuve RGPD qui serait lui-même un annuaire d'emails
+///     serait une régression, pas une garantie.
+model ConsentEvent {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// `hashEmailForLookup(email)` — jamais l'email lui-même.
+  personKey String @map("person_key") @db.VarChar(64)
+
+  /// Point de capture (`job-application-form`, `newsletter`…) : sans lui, deux
+  /// consentements de finalités différentes seraient indiscernables.
+  formRef String @map("form_ref") @db.VarChar(64)
+
+  /// Version EXACTE du texte affiché (`careers-v2-2026-08-13`…). C'est elle qui
+  /// permet de reconstituer ce que la personne a réellement lu.
+  consentVersion String @map("consent_version") @db.VarChar(64)
+
+  /// `optin` | `optout`.
+  action String @db.VarChar(16)
+
+  /// Quand le consentement a été DONNÉ (≠ `createdAt`, quand la ligne a été
+  /// écrite) : un enregistrement différé ou rejoué ne doit pas décaler la preuve.
+  occurredAt DateTime @map("occurred_at")
+
+  ipHash    String?  @map("ip_hash") @db.VarChar(64)
+  userAgent String?  @map("user_agent") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  /// « Tout l'historique de consentement de cette personne, du plus récent au
+  /// plus ancien » — la requête de l'art. 15 et celle d'un contrôle CNIL.
+  @@index([personKey, occurredAt(sort: Desc)])
+  @@map("consent_events")
 }

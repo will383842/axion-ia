@@ -20,6 +20,7 @@ import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
 import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
 import { syncCandidateToCrm } from "@/server/crm-sync";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
 import {
@@ -30,7 +31,16 @@ import {
 } from "@/server/careers/cv-storage";
 import type { Prisma } from "../../../prisma/generated/client";
 
-const CONSENT_VERSION = "careers-v1-2026-06-09";
+/**
+ * Version v2 (lot L4) — FERME, décidée au plan §2.3. Elle recouvre DEUX textes
+ * affichés ensemble : la case obligatoire (étude de la candidature) et la case
+ * optionnelle, décochée par défaut (conservation en vivier 2 ans).
+ *
+ * 🔴 Le CRM REJETTE en 422 toute fiche candidat dont la version n'est pas v2 :
+ * cette constante et la liste côté CRM doivent bouger ensemble. Elle tient dans
+ * `consent_version VARCHAR(40)` (21 caractères).
+ */
+const CONSENT_VERSION = "careers-v2-2026-08-13";
 
 export type JobApplicationState =
   { ok: true; applicationId: string } | { ok: false; error: string };
@@ -131,6 +141,13 @@ export async function submitJobApplicationAction(
   // 4. Consentement RGPD obligatoire
   const consent = formData.get("consent") === "true" || formData.get("consent") === "on";
   if (!consent) return { ok: false, error: "Le consentement RGPD est requis." };
+
+  // 4bis. Accord OPTIONNEL de conservation en vivier (case décochée par
+  // défaut, textes v2). Il n'est JAMAIS bloquant : refuser le vivier n'empêche
+  // pas de postuler — c'est ce qui en fait un consentement libre, donc valide.
+  // Toute absence, valeur vide ou valeur inattendue vaut REFUS.
+  const consentVivier =
+    formData.get("consentVivier") === "true" || formData.get("consentVivier") === "on";
 
   // 5. Zod
   const parsed = appSchema.safeParse({
@@ -252,10 +269,39 @@ export async function submitJobApplicationAction(
         ipHash: hashIp(ip),
         userAgent,
         consentVersion: CONSENT_VERSION,
+        // Accord vivier : un HORODATAGE, pas un booléen. « Oui » sans date ne
+        // prouve rien ; c'est la date qui fait courir les 2 ans de conservation
+        // et qui se transmet au CRM. `null` = refus, et c'est le défaut.
+        ...(consentVivier ? { consentVivierAt: new Date() } : {}),
         locale,
         ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
       },
     });
+
+    // 8 ter. REGISTRE DE PREUVE (lot L4) — une ligne par consentement recueilli,
+    // best-effort : il ne fait jamais échouer une candidature. Les deux accords
+    // sont consignés SÉPARÉMENT parce qu'ils ont deux finalités distinctes ;
+    // les fondre en une ligne rendrait impossible de prouver lequel a été donné.
+    await recordConsentEvent({
+      email: d.email,
+      formRef: CONSENT_FORM_REFS.jobApplication,
+      consentVersion: CONSENT_VERSION,
+      action: "optin",
+      occurredAt: app.submittedAt,
+      ip,
+      userAgent,
+    });
+    if (consentVivier) {
+      await recordConsentEvent({
+        email: d.email,
+        formRef: CONSENT_FORM_REFS.jobApplicationVivier,
+        consentVersion: CONSENT_VERSION,
+        action: "optin",
+        occurredAt: app.submittedAt,
+        ip,
+        userAgent,
+      });
+    }
 
     // 8 bis. Synchro CRM — univers VIVIER (lot L2).
     //
@@ -278,7 +324,15 @@ export async function submitJobApplicationAction(
         lastName: d.lastName,
         phone: d.phone ?? null,
       },
-      consent: { version: CONSENT_VERSION, at: app.submittedAt, textRef: "job-application-form" },
+      consent: {
+        version: CONSENT_VERSION,
+        at: app.submittedAt,
+        textRef: "job-application-form",
+        // Renseigné UNIQUEMENT si la case optionnelle a été cochée. Le CRM lit
+        // `consent.vivier_at` pour savoir s'il a le droit de conserver la fiche
+        // au-delà du recrutement en cours.
+        vivierAt: consentVivier ? app.submittedAt : null,
+      },
       cvRef: cvStoragePath ? `site:cv:${app.id}` : null,
       attributes: {
         ...(d.experienceBand ? { experienceBand: d.experienceBand } : {}),

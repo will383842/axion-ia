@@ -25,7 +25,6 @@ export interface ScreeningQuestion {
 
 interface Props {
   offerId: string;
-  offerTitle: string;
   requiresDriverLicense: boolean;
   requiresVehicle: boolean;
   screeningQuestions: ScreeningQuestion[];
@@ -33,7 +32,6 @@ interface Props {
 
 export function JobApplicationForm({
   offerId,
-  offerTitle,
   requiresDriverLicense,
   requiresVehicle,
   screeningQuestions,
@@ -46,6 +44,9 @@ export function JobApplicationForm({
   const [photoName, setPhotoName] = React.useState<string>("");
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
   const [consent, setConsent] = React.useState(false);
+  // Accord VIVIER — optionnel, et donc `false` au départ. Une case pré-cochée
+  // ne serait pas un consentement (RGPD art. 4.11 : « acte positif clair »).
+  const [consentVivier, setConsentVivier] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [done, setDone] = React.useState<string | null>(null);
@@ -81,6 +82,9 @@ export function JobApplicationForm({
       fd.set("offerId", offerId);
       fd.set("locale", locale);
       fd.set("consent", "true");
+      // Les cases n'ont pas d'attribut `name` (motif existant du formulaire) :
+      // les valeurs sont posées explicitement ici.
+      fd.set("consentVivier", consentVivier ? "true" : "false");
       if (turnstileToken) fd.set("cf-turnstile-response", turnstileToken);
 
       const result = await submitJobApplicationAction({ ok: false, error: "" }, fd);
@@ -428,6 +432,24 @@ export function JobApplicationForm({
             disabled={submitting}
           />
         </div>
+        {/*
+          CONSENTEMENTS v2 (lot L4, plan §2.3) — textes VALIDÉS, repris MOT POUR
+          MOT. Ne pas les reformuler : c'est la version `careers-v2-2026-08-13`
+          qui atteste de ce libellé précis, et le CRM refuse toute fiche portant
+          une autre version.
+
+          Deux cases, deux finalités, et c'est tout l'enjeu :
+            · la première est OBLIGATOIRE — sans elle, pas d'étude possible ;
+            · la seconde est OPTIONNELLE et DÉCOCHÉE PAR DÉFAUT. Elle ne
+              conditionne RIEN : on peut postuler en la laissant vide. C'est
+              précisément ce qui rend ce consentement libre, donc valide — une
+              case pré-cochée ou bloquante ne vaudrait rien juridiquement.
+
+          Texte français uniquement : il a été validé en français et lui seul.
+          En produire une traduction reviendrait à fabriquer un second texte
+          juridique non validé, sur lequel reposerait la licéité d'un
+          traitement. (La locale EN est de toute façon redirigée en 301.)
+        */}
         <label className="flex items-start gap-2 text-sm">
           <input
             type="checkbox"
@@ -437,9 +459,33 @@ export function JobApplicationForm({
             disabled={submitting}
           />
           <span>
-            {isFr
-              ? `J'accepte que mes données (et mon CV) soient traitées par Axion-IA pour le suivi de ma candidature à « ${offerTitle} » (RGPD).`
-              : `I agree that my data (and CV) be processed by Axion-IA to handle my application to "${offerTitle}" (GDPR).`}
+            J&apos;accepte que mes informations soient utilisées pour l&apos;étude de ma
+            candidature.
+          </span>
+        </label>
+
+        <label className="mt-3 flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={consentVivier}
+            onChange={(ev) => setConsentVivier(ev.target.checked)}
+            className="mt-1"
+            disabled={submitting}
+          />
+          <span className="text-fg-soft">
+            J&apos;accepte qu&apos;Axion-IA conserve ma candidature dans son vivier pendant 2 ans
+            afin de me recontacter pour d&apos;autres opportunités correspondant à mon profil. Je
+            peux retirer cet accord à tout moment (contact@axion-ia.com ou le lien présent dans
+            chaque message). Détails :{" "}
+            <a
+              href="/fr/politique-confidentialite"
+              className="underline underline-offset-2"
+              target="_blank"
+              rel="noreferrer"
+            >
+              politique de confidentialité
+            </a>
+            .
           </span>
         </label>
       </fieldset>

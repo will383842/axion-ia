@@ -23,6 +23,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import { parseLocale } from "@/lib/schemas/locale";
 import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
+import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
 
@@ -187,6 +188,16 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
       ...(sub.source ? { payload: { source: sub.source } } : {}),
     });
 
+    // REGISTRE DE PREUVE (lot L4) — la lettre n'en avait AUCUNE : le double
+    // opt-in prouvait le geste, mais rien ne disait QUEL texte avait été
+    // accepté. C'est désormais consigné, et à la CONFIRMATION seulement.
+    await recordConsentEvent({
+      email: sub.email,
+      formRef: CONSENT_FORM_REFS.newsletter,
+      consentVersion: NEWSLETTER_CONSENT_VERSION,
+      action: "optin",
+    });
+
     await notify({
       category: "NEWSLETTER_CONFIRMED",
       payload: { email: redactEmail(sub.email), locale: sub.locale },
@@ -249,6 +260,16 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
       subjectRef: `site:newsletter_subscriber:${sub.id}`,
       person: { email: sub.email },
       payload: { reason: "unsubscribe-link" },
+    });
+
+    // Le RETRAIT est une preuve au même titre que l'accord : il s'AJOUTE au
+    // registre (`optout`), il n'efface pas la ligne d'opt-in. C'est la
+    // succession des deux qui raconte l'histoire complète.
+    await recordConsentEvent({
+      email: sub.email,
+      formRef: CONSENT_FORM_REFS.newsletter,
+      consentVersion: NEWSLETTER_CONSENT_VERSION,
+      action: "optout",
     });
 
     await notify({

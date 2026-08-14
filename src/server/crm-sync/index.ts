@@ -7,6 +7,7 @@ import {
   type CrmEventType,
   type CrmFormType,
   type CrmSyncEvent,
+  type CrmUniverse,
 } from "./types";
 
 /**
@@ -124,8 +125,8 @@ export async function syncCandidateToCrm(
     experiences?: unknown[];
     cvRef?: string | null;
   },
-): Promise<void> {
-  await dispatch("application_submitted", input, {
+): Promise<string | null> {
+  return dispatch("application_submitted", input, {
     candidate: clean({
       family: input.family,
       offer_slug: input.offerSlug ?? undefined,
@@ -136,13 +137,40 @@ export async function syncCandidateToCrm(
   });
 }
 
+/**
+ * OPPOSITION à la conservation en VIVIER (lot L4) — un clic, sans login.
+ *
+ * Trois précisions qui comptent :
+ *  · l'univers est FORCÉ à `vivier`. Sans cela `universeOf()` classerait un
+ *    `opt_out` en `business` (c'est son défaut) et l'opposition d'un candidat
+ *    irait inscrire la personne en liste d'opposition COMMERCIALE — un
+ *    contresens : les deux listes sont distinctes par construction (plan §2.3),
+ *    se retirer d'un vivier de recrutement n'est pas se désinscrire d'une
+ *    lettre d'information ;
+ *  · `payload.scope = "vivier"` le dit une seconde fois, dans le corps même du
+ *    message, pour que le CRM n'ait pas à le déduire de l'univers ;
+ *  · comme tout flux `vivier`, il reste soumis à `CRM_SYNC_CANDIDATES_ENABLED`.
+ *    Ce n'est pas gênant : tant que ce drapeau est à OFF, aucune fiche candidat
+ *    n'est jamais partie au CRM, il n'y a donc rien à y opposer. La source de
+ *    vérité de l'opposition est et reste `vivierOpposedAt` côté site.
+ */
+export async function syncVivierOppositionToCrm(input: BaseInput): Promise<void> {
+  await dispatch(
+    "opt_out",
+    { ...input, payload: { ...(input.payload ?? {}), scope: "vivier" } },
+    {},
+    "vivier",
+  );
+}
+
 async function dispatch(
   eventType: CrmEventType,
   input: BaseInput,
   extra: Partial<CrmSyncEvent>,
-): Promise<void> {
+  universe?: CrmUniverse,
+): Promise<string | null> {
   const personKey = safePersonKey(input.person.email);
-  if (!personKey) return;
+  if (!personKey) return null;
 
   const [firstName, lastName] = splitName(input.person);
 
@@ -167,7 +195,10 @@ async function dispatch(
     ...extra,
   };
 
-  await enqueueCrmSyncEvent(event, input.tx ? { tx: input.tx } : {});
+  return enqueueCrmSyncEvent(event, {
+    ...(input.tx ? { tx: input.tx } : {}),
+    ...(universe ? { universe } : {}),
+  });
 }
 
 function companySection(company: CompanyInput): NonNullable<CrmSyncEvent["company"]> {
