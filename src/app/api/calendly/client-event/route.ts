@@ -30,6 +30,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { notify } from "@/server/notifications";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { hashIp } from "@/lib/security/ip-hash";
@@ -162,6 +163,26 @@ export async function POST(req: Request): Promise<NextResponse> {
     const code = (e as { code?: unknown })?.code;
     if (code === "P2002") return NextResponse.json({ ok: true, deduped: true });
     throw e;
+  }
+
+  // 7 bis. Synchro CRM (lot L2). Sans adresse d'invité, on ne peut pas
+  // calculer la clé de personne : on n'émet rien plutôt que d'inventer une
+  // fiche anonyme. L'enrichissement API (étape 8) la récupérera peut-être, et
+  // c'est le passage `discover` qui portera alors l'événement.
+  if (inviteeEmail) {
+    await syncCalendlyEventToCrm({
+      kind: "booked",
+      subjectRef: `site:calendly_event:${event.id}`,
+      sourceSlug: "calendly",
+      person: { email: inviteeEmail, fullName: inviteeName ?? null },
+      payload: {
+        eventTypeSlug: parsed.data.eventTypeSlug,
+        pageUrl: parsed.data.pageUrl,
+        ...(parsed.data.utmSource ? { utmSource: parsed.data.utmSource } : {}),
+        ...(parsed.data.utmCampaign ? { utmCampaign: parsed.data.utmCampaign } : {}),
+        ...(parsed.data.utmMedium ? { utmMedium: parsed.data.utmMedium } : {}),
+      },
+    });
   }
 
   // 8. Enrichissement API — inerte sans `CALENDLY_API_TOKEN` (aucun appel

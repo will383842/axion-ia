@@ -21,6 +21,7 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -159,6 +160,26 @@ export async function submitRoiReportAction(
         ipAddress: ip,
         ipHash: safeHashIp(ip),
         userAgent,
+      },
+    });
+
+    // Synchro CRM (lot L2) — outbox locale, best-effort, jamais bloquante.
+    // Ne fait rien tant que `CRM_SYNC_ENABLED` n'est pas à "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:submission:${submission.id}`,
+      formType: "simulateur_roi",
+      occurredAt: submission.submittedAt,
+      person: { email: data.email, fullName: data.nom },
+      company: {
+        name: data.companyName ?? null,
+        sizeCategory: answers.headcount,
+        sector: answers.sector,
+      },
+      consent: { version: CONSENT_VERSION, at: submission.submittedAt, textRef: "roi-report-form" },
+      payload: {
+        savedEurPerYear: report.totalSavedEurPerYear,
+        maturity: answers.maturity,
+        ...(Object.keys(funnel).length > 0 ? { funnel } : {}),
       },
     });
 

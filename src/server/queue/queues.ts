@@ -31,6 +31,7 @@ import type { ImageBankCronJobData, ImageBankCronJobType } from "./workers/image
 import type { ImageBankAutoConvertJobData } from "./workers/image-bank-auto-convert-worker";
 import type { KitImportJobData } from "./workers/kit-import-worker";
 import type { CalendlyPollJobData, CalendlyPollJobType } from "./workers/calendly-poll-worker";
+import type { CrmSyncJobData, CrmSyncJobType } from "./workers/crm-sync-worker";
 import { AUTO_CONVERT_QUEUE_NAME } from "@/server/image-bank/constants";
 import type { FormationEngineJobData } from "./workers/qualiopi-formation-engine-worker";
 import type {
@@ -108,6 +109,33 @@ export const calendlyPollQueue: Queue<CalendlyPollJobData, void, CalendlyPollJob
         },
       })
     : null;
+
+/**
+ * Lot L2 (2026-08-14) — synchronisation sortante vers Axion CRM Pro.
+ *
+ * Deux types de jobs sur la même file :
+ *   · `emit`  : émettre UNE ligne d'outbox, poussé juste après l'écriture
+ *               métier — c'est la fraîcheur (« temps réel ») ;
+ *   · `sweep` : balayer les lignes en attente ou en échec dont l'heure de
+ *               nouvelle tentative est venue — c'est la GARANTIE. Si Redis, le
+ *               worker ou le CRM sont tombés, c'est ce passage qui rattrape.
+ *
+ * `attempts: 1` : le rejeu n'est PAS confié à BullMQ mais à l'outbox
+ * elle-même (colonnes `attempts` / `next_attempt_at`), qui survit à une purge
+ * de Redis et reste inspectable en base. Deux mécanismes de retry superposés
+ * produiraient des tentatives en rafale impossibles à raisonner.
+ */
+export const crmSyncQueue: Queue<CrmSyncJobData, void, CrmSyncJobType> | null = connection
+  ? new Queue<CrmSyncJobData, void, CrmSyncJobType>("crm-sync", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 1,
+        removeOnComplete: { age: 24 * 3600, count: 500 },
+        removeOnFail: { age: 7 * 24 * 3600, count: 500 },
+      },
+    })
+  : null;
 
 // Sprint X.12 — Booking V1 crons (relances paiement, J-7/J-1 reminders, etc.).
 // 1 seule queue qui dispatche par `type`. `attempts: 3` — fail-soft sur DB
@@ -910,6 +938,24 @@ export async function bootRepeatableJobs(): Promise<void> {
         { repeat: { pattern }, jobId },
       );
     }
+  }
+
+  // ── Lot L2 — balayage de l'outbox CRM ────────────────────────────────────
+  // Toutes les 10 minutes. C'est le RATTRAPAGE : l'émission immédiate est un
+  // confort, ce passage est la garantie de livraison. Il tourne même quand le
+  // drapeau `CRM_SYNC_ENABLED` est à OFF — et ne trouve alors rien, puisque
+  // dans cet état aucune ligne n'est jamais écrite.
+  if (crmSyncQueue) {
+    await crmSyncQueue.removeRepeatable(
+      "sweep",
+      { pattern: "*/10 * * * *" },
+      "crm-sync-sweep-cron",
+    );
+    await crmSyncQueue.add(
+      "sweep",
+      { type: "sweep" },
+      { repeat: { pattern: "*/10 * * * *" }, jobId: "crm-sync-sweep-cron" },
+    );
   }
 
   // Sprint X.12 — Booking V1 crons (legacy, cf. bloc ci-dessus).

@@ -31,6 +31,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncCalendlyEventToCrm } from "@/server/crm-sync";
 import { notify } from "@/server/notifications";
 import { CALENDLY_API_BASE, isCalendlyApiConfigured } from "./api";
 import { enrichCalendlyEvent } from "./enrich";
@@ -234,6 +235,24 @@ export async function discoverNewCalendlyEvents(
         cancelUrl = fresh.cancelUrl;
         start = fresh.startTime ?? start;
       }
+    }
+
+    // Synchro CRM (lot L2) — après enrichissement : c'est lui qui apporte
+    // l'adresse de l'invité, sans laquelle aucune clé de personne n'est
+    // calculable (le postMessage de l'embed ne transmet aucune PII).
+    if (inviteeEmail) {
+      await syncCalendlyEventToCrm({
+        kind: "booked",
+        subjectRef: `site:calendly_event:${row.id}`,
+        sourceSlug: "calendly",
+        ...(start ? { occurredAt: start } : {}),
+        person: {
+          email: inviteeEmail,
+          fullName: inviteeName,
+          phone: inviteePhone,
+        },
+        payload: { eventTypeName: name, source: "api_poll" },
+      });
     }
 
     // Même alerte que pour une capture depuis /appel : c'est le même

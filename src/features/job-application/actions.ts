@@ -18,6 +18,8 @@ import { getClientIp } from "@/lib/client-ip";
 import { parseLocale } from "@/lib/schemas/locale";
 import { notify } from "@/server/notifications";
 import { isVideoEditorOffer } from "@/lib/careers/video-editor-offer";
+import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
+import { syncCandidateToCrm } from "@/server/crm-sync";
 import { enqueueEmail } from "@/server/queue/queues";
 import { adminPath } from "@/lib/admin-path";
 import {
@@ -253,6 +255,39 @@ export async function submitJobApplicationAction(
         locale,
         ...(Object.keys(answers).length > 0 ? { answers: answers as Prisma.InputJsonValue } : {}),
       },
+    });
+
+    // 8 bis. Synchro CRM — univers VIVIER (lot L2).
+    //
+    // 🔴 DOUBLE VERROU, et le second est le vrai : le drapeau
+    // `CRM_SYNC_CANDIDATES_ENABLED` évite d'émettre pour rien, mais c'est le
+    // CRM qui REFUSE (422) toute fiche candidat dont la version de
+    // consentement n'est pas v2. Les 71 candidatures du stock portent
+    // `careers-v1-2026-06-09`, dont le texte ne couvre QUE l'étude de la
+    // candidature en cours : elles ne peuvent pas entrer au vivier tant que le
+    // texte v2 n'est pas servi. Le refus est donc attendu, et sain.
+    await syncCandidateToCrm({
+      subjectRef: `site:job_application:${app.id}`,
+      family: candidateFamilyForOffer(offer.slug, offer.category),
+      offerSlug: offer.slug,
+      sourceSlug: "site-candidature-offre",
+      occurredAt: app.submittedAt,
+      person: {
+        email: d.email,
+        firstName: d.firstName,
+        lastName: d.lastName,
+        phone: d.phone ?? null,
+      },
+      consent: { version: CONSENT_VERSION, at: app.submittedAt, textRef: "job-application-form" },
+      cvRef: cvStoragePath ? `site:cv:${app.id}` : null,
+      attributes: {
+        ...(d.experienceBand ? { experienceBand: d.experienceBand } : {}),
+        ...(d.availability ? { availability: d.availability } : {}),
+        ...(d.city ? { city: d.city } : {}),
+        hasDriverLicense,
+        hasVehicle,
+      },
+      payload: { offerTitle: offer.titleFr },
     });
 
     // 9. Telegram (+ WhatsApp pour l'offre monteur vidéo) — catégorie séparée
