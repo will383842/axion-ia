@@ -46,3 +46,12 @@ export function vivierIntegrationCutoff(
 ): Date {
   return new Date(now.getTime() - windowDays * 24 * 60 * 60 * 1000);
 }
+
+/**
+ * Version de consentement DÉDIÉE à l'intégration du STOCK (option (b) du plan
+ * §2.3, décision actée) : l'acte juridique n'est pas une case cochée mais
+ * l'email d'information `vivier-information` + 30 jours sans opposition.
+ * Valeur FERME, énumérée côté CRM (`Taxonomy::CANDIDATE_CONSENT_VERSIONS_V2`) :
+ * les deux listes bougent ENSEMBLE, sinon 422 en masse au J+30.
+ */
+export const VIVIER_STOCK_CONSENT_VERSION = "vivier-stock-2026-08-14";

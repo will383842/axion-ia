@@ -125,8 +125,8 @@ export async function syncCandidateToCrm(
     experiences?: unknown[];
     cvRef?: string | null;
   },
-): Promise<void> {
-  await dispatch("application_submitted", input, {
+): Promise<string | null> {
+  return dispatch("application_submitted", input, {
     candidate: clean({
       family: input.family,
       offer_slug: input.offerSlug ?? undefined,
@@ -168,9 +168,9 @@ async function dispatch(
   input: BaseInput,
   extra: Partial<CrmSyncEvent>,
   universe?: CrmUniverse,
-): Promise<void> {
+): Promise<string | null> {
   const personKey = safePersonKey(input.person.email);
-  if (!personKey) return;
+  if (!personKey) return null;
 
   const [firstName, lastName] = splitName(input.person);
 
@@ -195,7 +195,7 @@ async function dispatch(
     ...extra,
   };
 
-  await enqueueCrmSyncEvent(event, {
+  return enqueueCrmSyncEvent(event, {
     ...(input.tx ? { tx: input.tx } : {}),
     ...(universe ? { universe } : {}),
   });

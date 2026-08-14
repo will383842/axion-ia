@@ -25,12 +25,14 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { normalizeEmail } from "@/lib/security/email-hash";
 import { candidateFamilyForOffer } from "@/lib/careers/candidate-family";
 import { syncCandidateToCrm } from "@/server/crm-sync";
+import { isCrmSyncCandidatesEnabled } from "@/server/crm-sync/config";
 import { enqueueEmail } from "@/server/queue/queues";
 
 import {
   isVivierStockEnabled,
   vivierIntegrationCutoff,
   VIVIER_OPPOSITION_WINDOW_DAYS,
+  VIVIER_STOCK_CONSENT_VERSION,
 } from "./config";
 import { signVivierOppositionToken } from "./token";
 
@@ -195,6 +197,20 @@ export async function integrateVivierStock(
   const windowDays = options.windowDays ?? VIVIER_OPPOSITION_WINDOW_DAYS;
   const cutoff = vivierIntegrationCutoff(now, windowDays);
 
+  // ── GARDE D'ETAT MIXTE (defaut BLOQUANT trouve en revue adversariale) ────
+  // La sequence d'exploitation PREVUE informe le stock AVANT d'ouvrir le
+  // canal candidats. Dans cet etat, `enqueueCrmSyncEvent` refuse EN SILENCE
+  // (drapeau OFF => null) : sans cette garde, on posait quand meme
+  // `vivierSyncedAt`, et les 71 fiches du stock etaient exclues A JAMAIS du
+  // rattrapage (`where vivierSyncedAt: null`) sans qu'une seule ligne
+  // d'outbox existe. On ne consomme l'echeance QUE si le canal peut ecrire.
+  if (!isCrmSyncCandidatesEnabled()) {
+    console.warn(
+      "[vivier] integration J+30 differee : CRM_SYNC_CANDIDATES_ENABLED est ferme — rien n'est consomme, le passage suivant rattrapera.",
+    );
+    return { due: 0, integrated: 0, skipped: 0 };
+  }
+
   const rows = await prisma.jobApplication.findMany({
     where: {
       // Informée…
@@ -231,7 +247,7 @@ export async function integrateVivierStock(
       continue;
     }
 
-    await syncCandidateToCrm({
+    const outboxId = await syncCandidateToCrm({
       subjectRef: `site:job_application:${row.id}`,
       family: candidateFamilyForOffer(row.offer?.slug, row.offer?.category),
       offerSlug: row.offer?.slug ?? null,
@@ -244,9 +260,13 @@ export async function integrateVivierStock(
         phone: safeDecrypt(row.phone),
       },
       consent: {
-        version: row.consentVersion,
-        at: row.submittedAt,
-        textRef: "job-application-form",
+        // PAS `row.consentVersion` (v1 : etude de la candidature seulement,
+        // le CRM la rejette a raison). L'acte juridique qui fonde l'entree en
+        // vivier du STOCK est l'email d'information + 30 j sans opposition —
+        // il a sa propre version FERME, enumeree cote CRM.
+        version: VIVIER_STOCK_CONSENT_VERSION,
+        at: row.vivierInfoSentAt ?? row.submittedAt,
+        textRef: "vivier-information-email",
         // La base légale de la conservation en vivier n'est PAS un accord
         // exprès ici : c'est l'information loyale + absence d'opposition
         // pendant 30 jours. On horodate donc l'accord réputé acquis à la date
@@ -263,6 +283,15 @@ export async function integrateVivierStock(
       },
       payload: { offerTitle: row.offerTitleSnap },
     });
+
+    if (outboxId === null) {
+      // Aucune ligne d'outbox posee (drapeau retombe entre-temps, echec
+      // d'ecriture « evenement perdu ») : on NE consomme PAS l'echeance —
+      // le passage suivant reessaiera. Marquer « integre » sans ecriture
+      // confirmee serait une perte silencieuse.
+      report.skipped += 1;
+      continue;
+    }
 
     await prisma.jobApplication.update({
       where: { id: row.id },

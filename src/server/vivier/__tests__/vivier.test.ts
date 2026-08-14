@@ -136,13 +136,39 @@ describe("inertie", () => {
     expect(enqueueEmailMock).not.toHaveBeenCalled();
   });
 
-  it("l'intégration n'écrit aucune ligne d'outbox tant que le flux candidats est fermé", async () => {
+  it("l'intégration ne consomme RIEN tant que le flux candidats est fermé (état mixte de la séquence d'activation)", async () => {
+    // 🔴 Défaut BLOQUANT trouvé en revue adversariale : dans l'état PRÉVU par
+    // la séquence d'activation (stock informé AVANT l'ouverture du canal),
+    // l'enqueue refusait en silence et `vivierSyncedAt` était quand même
+    // posé — les 71 fiches sortaient à jamais du rattrapage. La garde doit
+    // sortir AVANT toute lecture : rien de lu, rien d'écrit, rien de consommé.
     delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
     findManyMock.mockResolvedValue([candidature()]);
 
-    await integrateVivierStock({ now: new Date("2026-08-14T10:00:00Z") });
+    const report = await integrateVivierStock({ now: new Date("2026-08-14T10:00:00Z") });
 
+    expect(report).toEqual({ due: 0, integrated: 0, skipped: 0 });
+    expect(findManyMock).not.toHaveBeenCalled();
     expect(outboxCreateMock).not.toHaveBeenCalled();
+    // SURTOUT : `vivierSyncedAt` n'est jamais posé — l'échéance survit.
+    expect(updateMock).not.toHaveBeenCalled();
+  });
+
+  it("une échéance n'est consommée QUE si la ligne d'outbox existe réellement", async () => {
+    // Canal ouvert mais écriture d'outbox en échec (« événement perdu ») :
+    // l'enqueue rend null — la fiche ne doit PAS être marquée intégrée.
+    enableCandidates();
+    const now = new Date("2026-08-14T10:00:00Z");
+    findManyMock.mockResolvedValue([
+      candidature({ vivierInfoSentAt: new Date(now.getTime() - 31 * JOUR_MS) }),
+    ]);
+    outboxCreateMock.mockRejectedValueOnce(new Error("base indisponible"));
+
+    const report = await integrateVivierStock({ now });
+
+    expect(report.integrated).toBe(0);
+    expect(report.skipped).toBe(1);
+    expect(updateMock).not.toHaveBeenCalled();
   });
 });
 
@@ -189,6 +215,7 @@ describe("fenêtre d'opposition", () => {
   });
 
   it("intègre une candidature dont la fenêtre est échue", async () => {
+    enableCandidates();
     const now = new Date("2026-08-14T10:00:00Z");
     findManyMock.mockResolvedValue([
       candidature({ vivierInfoSentAt: new Date(now.getTime() - 31 * JOUR_MS) }),
@@ -198,6 +225,12 @@ describe("fenêtre d'opposition", () => {
 
     expect(report.integrated).toBe(1);
     expect(outboxCreateMock).toHaveBeenCalledTimes(1);
+    // La version envoyée est celle du STOCK (l'acte = information + 30 j sans
+    // opposition), JAMAIS la v1 de la fiche : le CRM n'accepte que des
+    // versions énumérées, et v1 = 422 en masse au J+30.
+    const sent = outboxCreateMock.mock.calls[0]?.[0]?.data?.payload;
+    expect(sent.consent.version).toBe("vivier-stock-2026-08-14");
+    expect(sent.consent.text_ref).toBe("vivier-information-email");
 
     const data = outboxCreateMock.mock.calls[0]?.[0]?.data;
     expect(data.universe).toBe("vivier");
