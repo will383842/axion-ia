@@ -88,18 +88,46 @@ Passer par `environment:` plutôt que par le `.env` du dépôt évite d'écrire 
 le dépôt CRM. Si l'on modifie tout de même son `.env`, il faut ensuite
 `docker compose exec api php artisan config:clear`.
 
-### 2.2 Les quatre pièges rencontrés au montage
+### 2.2 Les six pièges rencontrés au montage
+
+Tous ont été traversés pour obtenir un `5 PASS / 0 FAIL`. Aucun ne relève du
+code du lot : ce sont des états de la pile locale.
 
 1. **`APP_KEY` est absent du `.env` du dépôt.** Sans lui, toute requête finit en
    `MissingAppKeyException` (via le driver de session Redis). Générer :
    `php -r 'echo "base64:".base64_encode(random_bytes(32));'`.
 
-2. **Aucun workspace `axion-ia` en base.** `CRM_INGEST_BUSINESS_WORKSPACE` vaut
+2. 🔴 **La base de dev du CRM peut être en RETARD sur le schéma L2.** Celle
+   rencontrée ici portait 91 tables mais 12 lignes de `migrations`, et son
+   `activities` n'avait ni `external_ref`, ni `person_key`, ni `kind`, ni
+   `subject_type`. Symptôme : **HTTP 500 `ingest_failed`**, signature et contrat
+   pourtant acceptés — l'échec n'arrive qu'au moment d'écrire. `php artisan migrate`
+   n'y suffit pas ; il a fallu repartir d'une base neuve :
+
+   ```bash
+   docker exec axion-crm-postgres psql -U axion -d postgres -c "CREATE DATABASE axion_crm_e2e OWNER axion;"
+   MSYS_NO_PATHCONV=1 docker exec axion-crm-postgres \
+     psql -U axion -d axion_crm_e2e -f /docker-entrypoint-initdb.d/01-extensions.sql
+   # puis DB_DATABASE=axion_crm_e2e dans la surcouche, et :
+   docker compose … exec -T api php artisan migrate --force
+   ```
+
+   Les extensions (`postgis`, `vector`, `pg_partman`…) ne sont installées par
+   l'image que sur la base créée au PREMIER démarrage : une base ajoutée
+   ensuite doit les recevoir à la main, d'où le rejeu du script d'init.
+   Le vérificateur interroge alors `--crm-db=axion_crm_e2e` (ou `CRM_PG_DATABASE`).
+
+3. **Le workspace de destination n'existe pas forcément.** La migration du socle
+   L2 crée `vivier-candidats`, **pas** le workspace commercial.
+   `CRM_INGEST_BUSINESS_WORKSPACE` vaut
    `axion-ia` par défaut (`config/crm.php`) ; si ce slug n'existe pas, l'ingestion
    lève `workspace_missing`. Lister les slugs disponibles :
 
    ```bash
-   docker exec axion-crm-postgres psql -U axion -d axion_crm -tAc "select slug from workspaces"
+   docker exec axion-crm-postgres psql -U axion -d axion_crm_e2e -tAc "select slug from workspaces"
+   # au besoin :
+   docker exec axion-crm-postgres psql -U axion -d axion_crm_e2e \
+     -c "insert into workspaces (slug, name) values ('axion-ia', 'Axion-IA') on conflict do nothing;"
    ```
 
    🔴 **`workspace_missing` sort en 503, exactement comme `ingest_disabled`.**
@@ -107,7 +135,7 @@ le dépôt CRM. Si l'on modifie tout de même son `.env`, il faut ensuite
    montée. `run-loop-check.ts` distingue les deux par le code d'erreur du corps —
    ne pas défaire cette distinction.
 
-3. **La cible `dev` désactive opcache** (`Dockerfile.laravel`, `opcache.enable=0`)
+4. **La cible `dev` désactive opcache** (`Dockerfile.laravel`, `opcache.enable=0`)
    et sert l'application depuis le bind mount `./backend`. Sur Windows
    (gRPC-FUSE), le bootstrap Laravel relit ~3000 fichiers **à chaque requête** :
    mesuré **47 à 82 s**. Or l'émetteur du site coupe à **10 s**
@@ -124,10 +152,20 @@ le dépôt CRM. Si l'on modifie tout de même son `.env`, il faut ensuite
    `volumes` se **fusionnent** entre fichiers compose : la surcharge s'ajoute au
    bind mount, elle ne le remplace pas.
 
-4. **La cible `prod` ne se construit pas ici** : son étage `composer-deps`
+   Mesuré après la surcharge : **180 s à froid** (compilation initiale), puis
+   **0,3 à 1,4 s** à chaud. Il faut donc **préchauffer** (`curl …/up`) avant de
+   lancer le vérificateur, et **après chaque redémarrage** du conteneur —
+   opcache vit dans le processus, un `up --force-recreate` le repart à zéro.
+
+5. **La cible `prod` ne se construit pas ici** : son étage `composer-deps`
    échoue (`composer install`, exit 2). Elle aurait été la voie rapide (application
    copiée dans l'image + opcache) ; en attendant, c'est la cible `dev` + la
-   surcharge opcache du point 3.
+   surcharge opcache du point 4.
+
+6. **Telescope bruite les erreurs.** Sur une base sans `telescope_entries`, la
+   moindre exception en fait naître une seconde, qui masque la première dans les
+   journaux. `TELESCOPE_ENABLED=false` dans la surcouche rend les erreurs
+   lisibles.
 
 ### 2.3 Côté site
 
@@ -160,12 +198,28 @@ verrou d'inertie du lot ferait qu'il n'y aurait rien à observer ; le dernier
 
 ## 3. Ce que lit le rapport
 
+Sortie réelle obtenue contre la pile CRM locale (Laravel + Postgres), le
+2026-08-14 :
+
 ```
-  [PASS] config     cible=… (CRM réel | MOCK intégré)
-  [PASS] enqueue    outbox=<uuid> event_id=<uuid>
+=== Boucle site → CRM : vérification de bout en bout ===
+
+  [PASS] config     cible=http://localhost:58080/api/internal/site-sync (CRM réel)
+  [PASS] enqueue    outbox=4b7cde11-95eb-4d13-8eb6-df27bc208814 event_id=743ce0d1-1847-4d13-bb9a-013eb8758d9a
   [PASS] emit       HTTP 200 → statut CRM « created »
-  [PASS] crm-db     activity=…|company|… company=… contact=…
+  [PASS] crm-db     activity=1|company|1 company=1 contact=1
   [PASS] replay     le rejeu ne crée rien : « noop_idempotent »
+
+=== BOUCLE VÉRIFIÉE — 5 PASS / 0 FAIL / 0 SKIP ===
+```
+
+Contre-vérification en base, après le rejeu — **une seule** activité, ce qui est
+la preuve que le second envoi n'a rien écrit :
+
+```
+ id |      kind       | subject_type | subject_id |             external_ref              |       title
+----+-----------------+--------------+------------+---------------------------------------+--------------------
+  1 | form_submission | company      |          1 | site:event:743ce0d1-…                 | Formulaire — audit
 ```
 
 Code de sortie **0** si aucun `FAIL`, **1** sinon. Un `SKIP` n'est jamais un
