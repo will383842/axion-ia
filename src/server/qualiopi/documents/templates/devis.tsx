@@ -196,6 +196,13 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
         ? tauxStandard
         : 0;
   const mentionRegimeTva = mentionTva(data.regimeTva);
+  // Renvoi aux CGV. `identite.site` peut être vide (config Qualiopi non
+  // renseignée) : dans ce cas on énonce quand même l'opposabilité et le canal
+  // de communication, plutôt que de rendre une URL tronquée du type « /conditions-generales ».
+  const siteBase = identite.site.replace(/\/+$/, "");
+  const cgvMention = siteBase
+    ? `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'${identite.raisonSociale || "Axion-IA"}, consultables sur ${siteBase}/conditions-generales et communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`
+    : `L'acceptation du présent devis emporte acceptation des Conditions générales de vente, communiquées sur simple demande. Elles prévalent sur toutes conditions d'achat du client, sauf dérogation écrite et signée des deux parties.`;
   const afficheEstimation =
     data.montantOpcoEstimeCents !== undefined || data.resteAChargeCents !== undefined;
 
@@ -308,6 +315,21 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           <Text style={styles.legalLine}>
             {`Devis gratuit, valable jusqu'au ${data.dateValidite}. Au-delà de cette date, les conditions (tarifs, disponibilités) sont susceptibles d'être révisées.`}
           </Text>
+          {/* 🔴 2026-08-14 — le devis ne renvoyait à AUCUNE condition générale.
+              La convention, la convention tripartite et le contrat de formation
+              annexent bien les CGV : le volet formation était couvert. Le devis
+              ne l'était pas — c'est-à-dire précisément le canal des prestations
+              d'audit, d'implémentation, de site web et de coaching, celles qui
+              portent le plus de risque (systèmes du Client, fournisseurs tiers,
+              contenus générés).
+
+              Or les CGV n'ont d'effet que si le Client en a eu connaissance
+              AVANT de s'engager (art. 1119 C. civ.). Le renvoi doit donc figurer
+              sur la pièce que le Client LIT et SIGNE, au-dessus de sa signature
+              — pas dans un document séparé qu'on lui aurait éventuellement
+              transmis. C'est la même leçon que le circuit « Bon pour accord »
+              ci-dessous : on signe ce qu'on a sous les yeux. */}
+          <Text style={styles.legalLine}>{cgvMention}</Text>
         </LegalCallout>
 
         {/* ── Bon pour accord — en bas du document, SOUS les totaux ──
@@ -327,7 +349,8 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           <Text style={styles.accordTitle}>Bon pour accord</Text>
           <Text style={styles.accordHint}>
             Le client accepte le présent devis dans son intégralité : désignations, quantités, prix
-            unitaires, taux de TVA et totaux ci-dessus.
+            unitaires, taux de TVA et totaux ci-dessus, ainsi que les Conditions générales de vente
+            rappelées ci-dessus, dont il reconnaît avoir pris connaissance.
           </Text>
           {/* 🔴 L'emplacement de DATE n'est affiché que tant que personne n'a
               signé, et il ne doit pas disparaître du chemin papier : sur une
