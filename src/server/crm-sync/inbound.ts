@@ -42,6 +42,7 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 import { prisma } from "@/lib/prisma";
+import { alertCrmSync } from "./alerts";
 
 import { crmSyncSecret } from "./config";
 
@@ -220,10 +221,20 @@ export async function processInboundEvent(payload: CrmInboundPayload): Promise<C
     });
   } catch (error) {
     // Course entre deux livraisons du même événement : la seconde viole
-    // l'unicité. L'effet local étant idempotent (une désinscription déjà faite
-    // reste faite), la bonne réponse reste un succès.
-    console.warn("[crm-sync][entrant] écriture du journal refusée (doublon probable):", error);
-    return { ok: true, outcome: "duplicate" };
+    // l'unicité (P2002). L'effet local étant idempotent, la bonne réponse est
+    // un succès. MAIS seulement pour P2002 : une panne DB transitoire déguisée
+    // en « doublon » renverrait 200 à l'émetteur — l'événement ne serait
+    // JAMAIS consigné et jamais retenté (défaut relevé en revue adversariale).
+    const isUniqueViolation =
+      typeof error === "object" && error !== null && (error as { code?: string }).code === "P2002";
+    if (isUniqueViolation) {
+      return { ok: true, outcome: "duplicate" };
+    }
+    console.error(
+      "[crm-sync][entrant] écriture du journal en échec (l'émetteur retentera):",
+      error,
+    );
+    throw error;
   }
 
   return { ok: true, outcome };
@@ -260,6 +271,9 @@ export async function findSubscriberIdByHash(emailHash: string): Promise<string 
   const subscribers = await prisma.newsletterSubscriber.findMany({
     where: { status: "confirmed" },
     select: { id: true, email: true },
+    // Ordre STABLE : sans lui, le sous-ensemble tronqué au plafond serait
+    // non déterministe — le même optout pourrait alterner match/no_match.
+    orderBy: { id: "asc" },
     take: MAX_SCAN_SUBSCRIBERS,
   });
 
@@ -270,11 +284,18 @@ export async function findSubscriberIdByHash(emailHash: string): Promise<string 
 
   if (subscribers.length >= MAX_SCAN_SUBSCRIBERS) {
     // Ne PAS taire : au-delà du plafond, un `no_match` cesse d'être une
-    // information fiable. C'est le signal qu'il faut une colonne d'index.
+    // information fiable — un optout raté en silence est exactement le genre
+    // d'échec que ce lot existe pour rendre VISIBLE. Alerte Telegram (kind
+    // dédié, anti-bruit horaire) en plus du log : un warn que personne ne
+    // lit n'est pas un signal (leçon fondatrice).
     console.warn(
       `[crm-sync][entrant] balayage plafonné à ${MAX_SCAN_SUBSCRIBERS} abonnés — ` +
         "la correspondance par empreinte n'est plus exhaustive.",
     );
+    await alertCrmSync({
+      kind: "scan_capped",
+      detail: `Balayage plafonné à ${MAX_SCAN_SUBSCRIBERS} abonnés confirmés : un optout CRM peut être raté. Poser une colonne d'empreinte indexée.`,
+    });
   }
 
   return null;

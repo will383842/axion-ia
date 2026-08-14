@@ -53,10 +53,17 @@ export async function rejouerLigneCrmSyncAction(input: {
     return { error: "Cette ligne a déjà été acquittée par le CRM — rien à rejouer." };
   }
 
-  await prisma.crmSyncOutbox.update({
-    where: { id: row.id },
+  // `status: { not: "sent" }` dans le WHERE : entre le contrôle ci-dessus et
+  // cette écriture, la ligne a pu être acquittée par le balayage (TOCTOU relevé
+  // en revue adversariale). `updateMany` + garde = zéro re-émission d'un
+  // événement déjà acquitté, sans verrou.
+  const updated = await prisma.crmSyncOutbox.updateMany({
+    where: { id: row.id, status: { not: "sent" } },
     data: { status: "pending", nextAttemptAt: null, attempts: 0, lastError: null },
   });
+  if (updated.count === 0) {
+    return { error: "Cette ligne vient d'être acquittée par le CRM — rien à rejouer." };
+  }
 
   // `jobId` HORODATÉ : le job d'origine (`crm-sync-emit-<id>`) peut encore
   // exister dans Redis, et BullMQ ignore silencieusement un ajout portant un

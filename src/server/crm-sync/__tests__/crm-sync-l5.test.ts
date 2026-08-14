@@ -18,29 +18,38 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // `vi.hoisted` et non de simples `const` : Vitest REMONTE les `vi.mock`
 // au-dessus du corps du module. Des doubles déclarés en `const` seraient donc
 // lus avant leur initialisation (« Cannot access before initialization »).
-const { outbox, inbound, subscriber, submission, jobApplication, queueAdd, enqueueSpy } =
-  vi.hoisted(() => ({
-    outbox: {
-      findFirst: vi.fn(),
-      findMany: vi.fn(),
-      findUnique: vi.fn(),
-      create: vi.fn(),
-      update: vi.fn(),
-      count: vi.fn(),
-      groupBy: vi.fn(),
-    },
-    inbound: {
-      findUnique: vi.fn(),
-      create: vi.fn(),
-      count: vi.fn(),
-      findFirst: vi.fn(),
-    },
-    subscriber: { findMany: vi.fn(), update: vi.fn() },
-    submission: { findMany: vi.fn() },
-    jobApplication: { findMany: vi.fn() },
-    queueAdd: vi.fn(),
-    enqueueSpy: vi.fn(),
-  }));
+const {
+  outbox,
+  inbound,
+  subscriber,
+  submission,
+  jobApplication,
+  queueAdd,
+  enqueueSpy,
+  siteSettingUpsert,
+} = vi.hoisted(() => ({
+  outbox: {
+    findFirst: vi.fn(),
+    findMany: vi.fn(),
+    findUnique: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    count: vi.fn(),
+    groupBy: vi.fn(),
+  },
+  inbound: {
+    findUnique: vi.fn(),
+    create: vi.fn(),
+    count: vi.fn(),
+    findFirst: vi.fn(),
+  },
+  subscriber: { findMany: vi.fn(), update: vi.fn() },
+  submission: { findMany: vi.fn() },
+  jobApplication: { findMany: vi.fn() },
+  queueAdd: vi.fn(),
+  enqueueSpy: vi.fn(),
+  siteSettingUpsert: vi.fn(),
+}));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -49,6 +58,9 @@ vi.mock("@/lib/prisma", () => ({
     newsletterSubscriber: subscriber,
     submission,
     jobApplication,
+    siteSetting: {
+      upsert: (...args: unknown[]) => siteSettingUpsert(...args),
+    },
   },
 }));
 
@@ -107,6 +119,10 @@ const OLD_ENV = { ...process.env };
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // Marqueur d'activation : par defaut, il vient d'etre pose (premier passage).
+  siteSettingUpsert.mockImplementation((args: { create: { value: string } }) =>
+    Promise.resolve({ value: args.create.value }),
+  );
   vi.useRealTimers();
   redisStore.clear();
   process.env.SITE_SYNC_HMAC_SECRET = "secret-de-test-l5";
@@ -232,15 +248,25 @@ describe("idempotence du webhook entrant", () => {
     expect(subscriber.update).toHaveBeenCalledTimes(1);
   });
 
-  it("une course sur la contrainte UNIQUE reste un succès", async () => {
+  it("une course sur la contrainte UNIQUE (P2002) reste un succès", async () => {
     enable();
     subscriber.findMany.mockResolvedValue([{ id: "sub-1", email: "zz.test@example.invalid" }]);
-    inbound.create.mockRejectedValue(new Error("duplicate key value violates unique constraint"));
+    inbound.create.mockRejectedValue(Object.assign(new Error("unique"), { code: "P2002" }));
 
     const result = await processInboundEvent(EVENEMENT);
 
     expect(result.ok).toBe(true);
     expect(result.outcome).toBe("duplicate");
+  });
+
+  it("une panne DB au journal n'est PAS un doublon : l'erreur remonte, l'émetteur retentera", async () => {
+    // 🔴 Revue adversariale : traiter TOUTE erreur comme un doublon renvoyait
+    // 200 à l'émetteur — l'événement n'était jamais consigné, jamais retenté.
+    enable();
+    subscriber.findMany.mockResolvedValue([{ id: "sub-1", email: "zz.test@example.invalid" }]);
+    inbound.create.mockRejectedValue(new Error("connection reset"));
+
+    await expect(processInboundEvent(EVENEMENT)).rejects.toThrow("connection reset");
   });
 });
 
@@ -402,15 +428,42 @@ describe("batch de réconciliation", () => {
     expect(submission.findMany).not.toHaveBeenCalled();
   });
 
-  it("aucune ligne d'outbox : ne compare rien (la période d'avant l'allumage n'est pas fautive)", async () => {
+  it("outbox VIDE : le filet compare quand même depuis le marqueur d'activation", async () => {
+    // 🔴 Revue adversariale : borner sur la 1re ligne d'outbox rendait le
+    // filet AVEUGLE au moment de l'allumage — si la toute premiere capture
+    // tombe dans la fenetre post-commit, il n'existe AUCUNE ligne d'outbox et
+    // l'ancien code concluait « rien a comparer ». Le marqueur d'activation
+    // fait foi : une submission posterieure au marqueur SANS ligne d'outbox
+    // est un ecart, des le premier passage.
     enable();
-    outbox.findFirst.mockResolvedValue(null);
+    submission.findMany.mockResolvedValue([{ id: "s-perdue" }]);
+    outbox.findMany.mockResolvedValue([]);
+    jobApplication.findMany.mockResolvedValue([]);
+    const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const rapport = await runCrmSyncReconciliation();
+
+    expect(siteSettingUpsert).toHaveBeenCalledTimes(1);
+    const famille = rapport.families.find((f) => f.family === "submission");
+    expect(famille?.missing).toBe(1);
+    expect(famille?.missingIds).toEqual(["site:submission:s-perdue"]);
+  });
+
+  it("le marqueur d'activation est posé UNE fois puis fait foi (update: {})", async () => {
+    enable();
+    const posee = new Date(Date.now() - 2 * 86400000).toISOString();
+    siteSettingUpsert.mockResolvedValue({ value: posee });
+    submission.findMany.mockResolvedValue([]);
+    jobApplication.findMany.mockResolvedValue([]);
+    outbox.findMany.mockResolvedValue([]);
 
     const rapport = await collectReconciliation();
 
-    expect(rapport.since).toBeNull();
-    expect(rapport.families).toEqual([]);
-    expect(submission.findMany).not.toHaveBeenCalled();
+    // La borne basse est le marqueur EXISTANT, pas « maintenant ».
+    expect(rapport.since).toBe(posee);
+    const upsertArgs = siteSettingUpsert.mock.calls[0]?.[0] as { update: object };
+    expect(upsertArgs.update).toEqual({});
   });
 
   it("compte les sources sans ligne d'outbox et alerte", async () => {
@@ -418,8 +471,8 @@ describe("batch de réconciliation", () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
 
-    outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 3 * 86400000) });
     submission.findMany.mockResolvedValue([{ id: "s-1" }, { id: "s-2" }, { id: "s-3" }]);
+    jobApplication.findMany.mockResolvedValue([]);
     // Seules deux des trois soumissions ont produit un événement.
     outbox.findMany.mockResolvedValue([
       { subjectRef: "site:submission:s-1" },
@@ -440,7 +493,8 @@ describe("batch de réconciliation", () => {
   it("ne compare PAS le vivier tant que le flux candidats est fermé", async () => {
     enable();
     delete process.env.CRM_SYNC_CANDIDATES_ENABLED;
-    outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 86400000) });
+    submission.findMany.mockResolvedValue([]);
+    outbox.findMany.mockResolvedValue([]);
 
     const rapport = await collectReconciliation();
 
@@ -453,8 +507,8 @@ describe("batch de réconciliation", () => {
     enable();
     const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
-    outbox.findFirst.mockResolvedValue({ createdAt: new Date(Date.now() - 86400000) });
     submission.findMany.mockResolvedValue([{ id: "s-1" }]);
+    jobApplication.findMany.mockResolvedValue([]);
     outbox.findMany.mockResolvedValue([{ subjectRef: "site:submission:s-1" }]);
 
     const rapport = await runCrmSyncReconciliation();

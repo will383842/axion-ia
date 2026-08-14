@@ -115,28 +115,30 @@ export async function collectReconciliation(): Promise<ReconcileReport> {
     };
   }
 
-  // Borne 1 : on ne remonte jamais avant la toute première ligne d'outbox.
-  // Sans elle, la semaine qui suit l'allumage du drapeau produirait un écart
-  // massif et parfaitement légitime — la meilleure façon de faire ignorer
-  // l'alerte pour toujours.
-  const first = await prisma.crmSyncOutbox.findFirst({
-    orderBy: { createdAt: "asc" },
-    select: { createdAt: true },
+  // Borne 1 : l'horodatage d'ACTIVATION du drapeau — pas la première ligne
+  // d'outbox. La revue adversariale a montré que borner sur la 1re ligne
+  // rendait le filet AVEUGLE précisément sur sa raison d'être : si la toute
+  // première capture post-allumage tombe dans la fenêtre post-commit (crash
+  // entre l'écriture métier et l'outbox), il n'existe AUCUNE ligne d'outbox —
+  // et l'ancienne borne concluait « rien à comparer » puis excluait cette
+  // submission pour toujours. Le marqueur est posé une seule fois, au premier
+  // passage drapeau ouvert, et fait foi ensuite.
+  const marker = await prisma.siteSetting.upsert({
+    where: { key: "crm_sync_activated_at" },
+    create: {
+      key: "crm_sync_activated_at",
+      value: ranAt,
+      description:
+        "Horodatage du premier passage de réconciliation avec CRM_SYNC_ENABLED ouvert — borne basse du filet (ne pas modifier).",
+      category: "general",
+    },
+    update: {},
+    select: { value: true },
   });
-
-  if (!first) {
-    return {
-      ranAt,
-      enabled: true,
-      windowDays: RECONCILE_WINDOW_DAYS,
-      since: null,
-      families: [],
-      totalMissing: 0,
-    };
-  }
+  const activatedAt = new Date(String(marker.value));
 
   const windowStart = new Date(Date.now() - RECONCILE_WINDOW_DAYS * 24 * 60 * 60 * 1000);
-  const since = first.createdAt > windowStart ? first.createdAt : windowStart;
+  const since = activatedAt > windowStart ? activatedAt : windowStart;
   // Borne 2 : la période de grâce, pour ne pas accuser ce qui vient d'arriver.
   const until = new Date(Date.now() - GRACE_MS);
 

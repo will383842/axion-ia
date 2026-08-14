@@ -460,7 +460,14 @@ export type NotificationEvent =
  *  · `reconcile_failed` — le batch lui-même a échoué. Sans cette alerte, la
  *                         garantie quotidienne s'éteindrait en silence.
  */
-export type CrmSyncAlertKind = "gave_up" | "backlog" | "reconcile_gap" | "reconcile_failed";
+export type CrmSyncAlertKind =
+  | "gave_up"
+  | "backlog"
+  | "reconcile_gap"
+  | "reconcile_failed"
+  // Le balayage d'abonnés a atteint son plafond : la correspondance par
+  // empreinte n'est plus exhaustive — un optout CRM peut être raté.
+  | "scan_capped";
 
 export type NotificationCategory = NotificationEvent["category"];
 
