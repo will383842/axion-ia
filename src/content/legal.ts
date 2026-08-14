@@ -157,7 +157,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       sections: [
         {
           title: "Objet et champ d'application",
-          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, et conception de sites web et plateformes SaaS augmentés par l'IA. Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire.",
+          body: "Les présentes conditions générales régissent la vente et la fourniture de l'ensemble des prestations d'Axion-IA : formations et interventions IA sur site (collectives et individuelles), audits IA, implémentations IA, coaching individuel 1-to-1, conception de sites web et plateformes SaaS augmentés par l'IA, ainsi que la vente de produits numériques (contenus téléchargeables ou accessibles en ligne, tels que documents, guides, modèles, gabarits, enregistrements vidéo ou audio). Elles s'appliquent à toute commande, à l'exclusion de tout autre document. Les prestations s'adressent principalement à des clients professionnels agissant dans le cadre de leur activité. Lorsqu'une formation est souscrite par une personne physique pour son propre compte, les dispositions de la section « Dispositions applicables au particulier (consommateur) » s'appliquent et prévalent sur toute clause contraire. Les produits numériques relèvent d'un régime distinct, énoncé aux sections « Produits numériques » ; le régime du contrat de formation professionnelle ne leur est pas applicable.",
         },
         {
           title: "Dispositions propres à la formation professionnelle",
@@ -165,7 +165,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Définitions",
-          body: "« Axion-IA » désigne le prestataire ; « Client » le professionnel qui signe le devis ou passe commande ; « Prestations » les services commandés ; « Livrables » les éléments remis au Client (rapports, supports, code, configurations, documents) ; « Devis » la proposition chiffrée détaillant le périmètre, le prix et les délais.",
+          body: "« Axion-IA » désigne le prestataire ; « Client » le professionnel qui signe le devis ou passe commande, et, lorsque la stipulation le prévoit, la personne physique qui contracte en dehors de toute activité professionnelle ; « Prestations » les services commandés ; « Livrables » les éléments remis au Client (rapports, supports, code, configurations, documents) ; « Devis » la proposition chiffrée détaillant le périmètre, le prix et les délais ; « Produit numérique » tout contenu numérique non fourni sur un support matériel, vendu à l'unité et livré par téléchargement ou par accès à un espace en ligne, sans intervention ni accompagnement d'Axion-IA.",
         },
         {
           title: "Acceptation et opposabilité des CGV",
@@ -333,6 +333,62 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Sauf opposition écrite du Client, Axion-IA peut mentionner le nom et le logo du Client ainsi qu'une description générale de la prestation à titre de référence commerciale, dans le respect de la confidentialité des informations sensibles.",
         },
         {
+          // 2026-08-14 — les CGV ignoraient totalement le produit numérique :
+          // ni « téléchargement », ni « support », ni durée d'accès nulle part.
+          // Or « Devis et commande » suppose un devis signé, et « Annulation,
+          // report et remboursement » calcule un barème « en jours ouvrés avant
+          // la date de début de la prestation » — deux notions vides pour un
+          // fichier livré à la seconde du paiement. Sans régime propre, une
+          // vente en ligne se retrouvait sans stipulation applicable.
+          //
+          // 🔴 Le prix s'affiche TTC dès qu'un consommateur peut acheter
+          // (art. L.112-1 C. conso.), alors que la section « Prix » raisonne en
+          // HT pour le B2B. C'est dit ici, faute de quoi l'affichage boutique
+          // contredirait les CGV.
+          title: "Produits numériques — nature, livraison et accès",
+          body: "Les produits numériques sont des contenus fournis sans support matériel : aucun exemplaire physique n'est expédié, et aucune version imprimée n'est due. La fiche de chaque produit précise, avant l'achat, son contenu, son format de fichier, son volume approximatif, la configuration nécessaire pour l'utiliser et, le cas échéant, ses limites d'interopérabilité (art. L.111-1 du Code de la consommation). L'achat d'un produit numérique s'effectue en ligne et ne donne pas lieu à l'établissement d'un devis : la validation de la commande et son paiement tiennent lieu d'acceptation. Le prix est affiché toutes taxes comprises lorsque l'acheteur est un consommateur. La livraison intervient immédiatement après encaissement du prix, par mise à disposition d'un lien de téléchargement ou d'un accès à un espace en ligne, transmis à l'adresse électronique indiquée lors de la commande ; il appartient au Client de fournir une adresse valide et de vérifier ses filtres anti-spam. Le lien de téléchargement reste actif pendant la durée indiquée sur la fiche produit et, à défaut d'indication, pendant douze (12) mois à compter de la livraison ; le Client est invité à télécharger et à conserver son propre exemplaire du fichier, Axion-IA n'assurant pas la conservation illimitée d'un accès.",
+        },
+        {
+          // 🔴 2026-08-14 — LE point qui expose. L'art. L.221-28 13° C. conso.
+          // n'exonère du droit de rétractation de 14 jours QUE si l'exécution a
+          // commencé après accord préalable exprès ET renoncement exprès du
+          // consommateur. Sans ce recueil, un particulier peut télécharger le
+          // fichier puis exiger le remboursement pendant 14 jours, et il a
+          // raison.
+          //
+          // Trois exigences qui font tomber la renonciation si on les rate, et
+          // que la case seule ne suffit pas à satisfaire :
+          //   1. la case doit être DISTINCTE de l'acceptation des CGV — une
+          //      case globale « j'accepte tout » n'est pas un consentement
+          //      exprès à la renonciation ;
+          //   2. elle ne doit pas être pré-cochée, et le consentement doit être
+          //      horodaté et CONSERVÉ : la preuve incombe au professionnel ;
+          //   3. la confirmation sur support durable doit RAPPELER la
+          //      renonciation (art. L.221-13), sinon le délai court malgré la
+          //      case.
+          //
+          // ⚠️ Aucun composant d'interface ne met encore ceci en œuvre : il
+          // n'existe à ce jour aucune route publique de paiement. Cette section
+          // définit le régime ; la case naîtra avec le tunnel de vente. Une
+          // case reliée à aucun paiement ne prouverait rien.
+          title: "Produits numériques — droit de rétractation et renonciation expresse",
+          body: "Le consommateur qui achète un produit numérique dispose en principe d'un délai de quatorze (14) jours pour se rétracter (art. L.221-18 du Code de la consommation). Par exception, ce droit ne peut plus être exercé lorsque l'exécution du contrat a commencé après que le consommateur a expressément donné son accord préalable à cette exécution immédiate et a expressément reconnu qu'il perdrait son droit de rétractation (art. L.221-28 13° du même code). En conséquence, l'accès au produit numérique n'est ouvert qu'après recueil, au moment du paiement, d'un consentement exprès recueilli par une case à cocher distincte de l'acceptation des présentes conditions, non cochée par défaut, formulée en substance ainsi : « Je demande l'exécution immédiate de ma commande et je reconnais perdre mon droit de rétractation de quatorze jours dès la mise à disposition du fichier. » La date et l'heure de ce consentement sont enregistrées et conservées par Axion-IA, à qui la preuve en incombe, et la confirmation de commande adressée sur support durable en rappelle la portée. À défaut de recueil de ce consentement dans ces conditions, le délai de rétractation de quatorze jours demeure applicable et le remboursement intervient dans les quatorze jours suivant la demande. Le Client professionnel ne bénéficie pas du droit de rétractation, sous réserve de l'exception énoncée à la section « Rétractation du Client professionnel ».",
+        },
+        {
+          // 2026-08-14 — le barème d'annulation des CGV se calcule « en jours
+          // ouvrés avant la date de début de la prestation » : inapplicable à
+          // un fichier. Sans régime propre, la seule règle lisible aurait été
+          // celle d'une prestation à date, donc « aucune somme n'est due » à
+          // plus de 15 jours — pour un fichier déjà téléchargé.
+          //
+          // 🔴 La renonciation à la rétractation n'efface PAS la garantie
+          // légale de conformité (art. L.224-25-12 et s. C. conso.), qui est
+          // d'ordre public. Le dire ici évite la lecture « j'ai coché, je n'ai
+          // plus aucun recours », qui serait fausse et abusive.
+          title: "Produits numériques — garantie de conformité et remboursement",
+          body: "Le barème d'annulation applicable aux prestations à date convenue ne s'applique pas aux produits numériques, qui ne comportent pas de date de début. Lorsque la renonciation au droit de rétractation a été valablement recueillie, la seule insatisfaction ou le changement d'avis du Client n'ouvre droit à aucun remboursement. En revanche, Axion-IA reste tenue de la conformité du contenu numérique fourni : en cas de fichier inaccessible, corrompu, incomplet ou non conforme à sa description, le Client le signale à contact@axion-ia.com et Axion-IA procède à la mise à disposition d'un exemplaire conforme ; si cette mise en conformité s'avère impossible ou n'intervient pas dans un délai raisonnable, le prix est remboursé. Le consommateur conserve en toute hypothèse le bénéfice de la garantie légale de conformité des contenus et services numériques (art. L.224-25-12 et suivants du Code de la consommation) et de la garantie des vices cachés (art. 1641 et suivants du Code civil), qu'aucune stipulation des présentes ne restreint. Les remboursements sont effectués par le même moyen de paiement que celui utilisé lors de la commande, sauf accord contraire du Client.",
+        },
+        {
           title: "Rétractation du Client professionnel",
           body: "Les prestations conclues entre professionnels ne relèvent pas du droit de rétractation prévu par le Code de la consommation. Par exception, le Client professionnel employant cinq salariés au plus bénéficie d'un délai de rétractation de 14 jours pour les contrats conclus hors établissement dont l'objet n'entre pas dans le champ de son activité principale (art. L221-3 du Code de la consommation).",
         },
@@ -351,8 +407,21 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Lorsqu'une formation est souscrite par une personne physique pour son propre compte, en dehors de toute activité professionnelle, les dispositions suivantes s'appliquent et prévalent sur toute clause contraire des présentes. La relation est régie par un contrat de formation professionnelle conforme aux articles L.6353-3 à L.6353-7 du Code du travail. Ce contrat mentionne l'objet, la nature, la durée, les effectifs, le prix et les modalités de règlement, ainsi que les sanctions applicables et les titres des intervenants.",
         },
         {
+          // 🔴 2026-08-14 — DÉLIMITATION. Ce régime est propre au contrat de
+          // formation professionnelle. L'interdiction de percevoir une somme
+          // avant dix jours (L.6353-6) est d'ordre public et NE SE RENONCE PAS :
+          // aucune case à cocher ne rend conforme un paiement immédiat pour une
+          // FORMATION vendue à un particulier. C'est une limite structurelle,
+          // pas un défaut de rédaction — un tunnel à paiement immédiat est
+          // viable pour un produit numérique, il ne l'est pas pour une formation
+          // vendue à un consommateur.
+          //
+          // La délimitation existait déjà, mais implicitement : elle tenait à la
+          // subordonnée « Lorsqu'une formation est souscrite » de la section
+          // chapeau, pendant que les cinq sous-titres annoncent « Particulier —
+          // … » et se lisent comme une règle générale. Elle est désormais dite.
           title: "Particulier — délai de rétractation et interdiction de paiement",
-          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique.",
+          body: "Le particulier dispose d'un délai de dix jours à compter de la signature du contrat pour se rétracter, par lettre recommandée avec accusé de réception (art. L.6353-5 du Code du travail). Aucune somme ne peut être exigée ni versée avant l'expiration de ce délai de dix jours (art. L.6353-6). À l'issue de ce délai, il ne peut être exigé plus de 30 % du prix convenu ; le solde est échelonné au fur et à mesure du déroulement de l'action. Lorsque le contrat est en outre conclu à distance ou hors établissement, le particulier bénéficie du délai de quatorze jours prévu à l'article L.221-18 du Code de la consommation ; en cas de concours des deux régimes, le délai le plus favorable au particulier s'applique. Les présentes dispositions sont propres au contrat de formation professionnelle : elles ne régissent pas la vente de produits numériques, soumise aux sections « Produits numériques » qui leur sont consacrées. Réciproquement, la renonciation au droit de rétractation prévue pour les produits numériques ne peut être opposée au particulier au titre d'une action de formation, le délai de dix jours et l'interdiction de percevoir une somme avant son expiration étant d'ordre public.",
         },
         {
           title: "Particulier — abandon et force majeure",
@@ -380,7 +449,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // renseigner ces deux clés en configuration Qualiopi ET remplacer le
           // paragraphe ci-dessous par le nom et l'adresse du médiateur.
           title: "Particulier — médiation de la consommation",
-          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section et reportés au contrat de formation. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
+          body: "Conformément aux articles L.612-1 et suivants du Code de la consommation, tout consommateur a le droit de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable d'un litige qui l'opposerait à un professionnel, après avoir tenté de le résoudre directement par une réclamation écrite. À ce jour, Axion-IA ne commercialise aucune prestation ni aucun produit numérique auprès de consommateurs et n'a donc pas adhéré à un dispositif de médiation. Aucun contrat de formation ne sera conclu avec un particulier, et aucun produit numérique ne lui sera vendu, avant cette adhésion : le nom et les coordonnées du médiateur agréé seront alors publiés dans la présente section, reportés au contrat de formation et rappelés lors de la commande d'un produit numérique. Le particulier conserve en toute hypothèse la faculté de saisir la plateforme européenne de règlement en ligne des litiges.",
         },
         {
           title: "Particulier — juridiction compétente",
@@ -402,7 +471,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // ⚠️ Toute nouvelle clause limitative ajoutée aux CGV doit être
           // ajoutée à cette liste dans le même patch.
           title: "Particulier — clauses non opposables au consommateur",
-          body: "Ne sont pas opposables au Client consommateur, qui conserve l'intégralité des droits qu'il tient du Code de la consommation et du Code civil : la limitation et le plafonnement de responsabilité ainsi que les exclusions de réparation ; le délai de forclusion de quatre-vingt-dix jours ; l'exclusion de pénalité, d'indemnité ou de résolution en cas de retard d'exécution ; la garantie contre les réclamations de tiers mise à la charge du Client ; l'exclusion de responsabilité au titre de la sauvegarde préalable des données ; et l'engagement de non-sollicitation. Le nom et l'image du consommateur ne sont utilisés à titre de référence commerciale qu'avec son accord exprès et préalable, révocable à tout moment.",
+          body: "Ne sont pas opposables au Client consommateur, qui conserve l'intégralité des droits qu'il tient du Code de la consommation et du Code civil : la limitation et le plafonnement de responsabilité ainsi que les exclusions de réparation ; le délai de forclusion de quatre-vingt-dix jours ; l'exclusion de pénalité, d'indemnité ou de résolution en cas de retard d'exécution ; la garantie contre les réclamations de tiers mise à la charge du Client ; l'exclusion de responsabilité au titre de la sauvegarde préalable des données ; et l'engagement de non-sollicitation. Aucune stipulation des présentes, y compris la renonciation au droit de rétractation applicable aux produits numériques, ne restreint la garantie légale de conformité des contenus et services numériques ni la garantie des vices cachés, dont le consommateur conserve l'entier bénéfice ; la renonciation au droit de rétractation ne vaut que si elle a été recueillie dans les conditions énoncées à la section qui la prévoit. Le nom et l'image du consommateur ne sont utilisés à titre de référence commerciale qu'avec son accord exprès et préalable, révocable à tout moment.",
         },
         {
           // 2026-08-14 — aucun délai de forclusion n'existait : une contestation

@@ -161,6 +161,92 @@ describe("CGV — clauses limitatives présentes", () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// 1 bis. Produits numériques
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("CGV — produits numériques", () => {
+  it("le champ d'application et les définitions les connaissent", () => {
+    // Trou comblé : le régime pouvait exister en section dédiée tout en étant
+    // absent de l'objet des CGV — donc sans rattachement au contrat.
+    expect(section("Objet et champ d'application")).toMatch(/produits numériques/);
+    expect(section("Définitions")).toMatch(/«\s*Produit numérique\s*»/);
+  });
+
+  it("nature : sans support matériel, format et configuration annoncés avant l'achat", () => {
+    const b = section("Produits numériques — nature, livraison et accès");
+    expect(b).toMatch(/sans support matériel/);
+    expect(b).toMatch(/aucun exemplaire physique/);
+    expect(b).toMatch(/format de fichier/);
+    expect(b).toMatch(/interopérabilité/);
+  });
+
+  it("livraison et durée d'accès : immédiate, par lien, bornée et non illimitée", () => {
+    const b = section("Produits numériques — nature, livraison et accès");
+    expect(b).toMatch(/immédiatement après encaissement/);
+    expect(b).toMatch(/lien de téléchargement/);
+    expect(b).toMatch(/douze \(12\) mois/);
+    // 🔴 Ne pas promettre une conservation perpétuelle d'un accès.
+    expect(b).toMatch(/n'assurant pas la conservation illimitée/);
+  });
+
+  it("prix affiché TTC au consommateur, et pas de devis pour un achat en ligne", () => {
+    // La section « Prix » raisonne en HT (B2B) : sans cette précision,
+    // l'affichage boutique contredirait les CGV (art. L.112-1 C. conso.).
+    const b = section("Produits numériques — nature, livraison et accès");
+    expect(b).toMatch(/toutes taxes comprises/);
+    expect(b).toMatch(/ne donne pas lieu à l'établissement d'un devis/);
+  });
+
+  it("renonciation à rétractation : les trois conditions qui la font tenir", () => {
+    // 🔴 Sans ces trois-là, la renonciation tombe et le consommateur peut
+    // télécharger puis exiger le remboursement pendant 14 jours.
+    const b = section("Produits numériques — droit de rétractation et renonciation expresse");
+    expect(b).toMatch(/L\.221-28 13°/);
+    // 1. case DISTINCTE de l'acceptation des CGV, non pré-cochée
+    expect(b).toMatch(/distincte de l'acceptation des présentes conditions/);
+    expect(b).toMatch(/non cochée par défaut/);
+    // 2. horodatage + conservation, charge de la preuve sur le professionnel
+    expect(b).toMatch(/conservées par Axion-IA, à qui la preuve en incombe/);
+    // 3. rappel sur support durable
+    expect(b).toMatch(/support durable en rappelle la portée/);
+    // Et le sort de l'absence de recueil, dit explicitement.
+    expect(b).toMatch(/À défaut de recueil/);
+    expect(b).toMatch(/quatorze jours demeure applicable/);
+  });
+
+  it("remboursement : barème à date écarté, conformité maintenue", () => {
+    const b = section("Produits numériques — garantie de conformité et remboursement");
+    expect(b).toMatch(/barème d'annulation .* ne s'applique pas aux produits numériques/);
+    expect(b).toMatch(/L\.224-25-12/);
+    expect(b).toMatch(/vices cachés/);
+    expect(b).toMatch(/même moyen de paiement/);
+  });
+
+  it("le régime formation est écarté NOMMÉMENT, dans les deux sens", () => {
+    // 🔴 L.6353-6 est d'ordre public : aucune case ne rend conforme un paiement
+    // immédiat pour une FORMATION vendue à un particulier. Un tunnel à paiement
+    // immédiat est viable pour un fichier, pas pour une formation.
+    const formation = section("Particulier — délai de rétractation et interdiction de paiement");
+    expect(formation).toMatch(/propres au contrat de formation professionnelle/);
+    expect(formation).toMatch(/ne régissent pas la vente de produits numériques/);
+    expect(formation).toMatch(/d'ordre public/);
+    expect(section("Objet et champ d'application")).toMatch(
+      /le régime du contrat de formation professionnelle ne leur est pas applicable/,
+    );
+  });
+
+  it("la médiation ne devient pas mensongère : l'engagement couvre aussi le numérique", () => {
+    // 🔴 La section affirme qu'Axion-IA ne vend rien aux consommateurs. Ouvrir
+    // une boutique sans toucher à cette phrase la rendrait FAUSSE sur un
+    // support contractuel. L'adhésion à un médiateur est une obligation légale
+    // (L.612-1), pas une option : la promesse doit couvrir les deux canaux.
+    const b = section("Particulier — médiation de la consommation");
+    expect(b).toMatch(/aucun produit numérique/);
+    expect(b).toMatch(/aucun produit numérique ne lui sera vendu, avant cette adhésion/);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // 2. Cohérence du verrou consommateur
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -183,6 +269,25 @@ describe("CGV — verrou consommateur", () => {
     ["exclusion au titre de la sauvegarde", /sauvegarde préalable des données/],
     ["non-sollicitation", /non-sollicitation/],
   ];
+
+  /**
+   * 🔴 Les produits numériques inversent la logique : leur clause phare — la
+   * renonciation au droit de rétractation — VISE le consommateur et ne peut donc
+   * pas être neutralisée, sinon elle ne sert plus à rien. Ce qui doit être
+   * verrouillé ici, c'est ce qu'elle NE doit pas emporter avec elle : la
+   * garantie légale de conformité et les vices cachés, qui sont d'ordre public.
+   * Une lecture « j'ai coché, je n'ai plus aucun recours » serait fausse et
+   * abusive.
+   */
+  const GARANTIES_PRESERVEES: ReadonlyArray<[string, RegExp]> = [
+    ["garantie légale de conformité du numérique", /garantie légale de conformité des contenus/],
+    ["vices cachés", /vices cachés/],
+    ["renonciation valable uniquement si bien recueillie", /ne vaut que si elle a été recueillie/],
+  ];
+
+  it.each(GARANTIES_PRESERVEES)("préserve « %s » malgré la renonciation", (_libelle, motif) => {
+    expect(verrou).toMatch(motif);
+  });
 
   it.each(CLAUSES_A_NEUTRALISER)("neutralise « %s » nommément", (_libelle, motif) => {
     expect(verrou).toMatch(motif);
