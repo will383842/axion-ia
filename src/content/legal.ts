@@ -188,16 +188,55 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Le délai de paiement convenu ne peut excéder les plafonds de l'article L441-10 du Code de commerce (60 jours à compter de l'émission de la facture, ou 45 jours fin de mois). Tout retard entraîne de plein droit, sans rappel préalable et dès le jour suivant la date d'échéance : (i) des pénalités de retard calculées au taux d'intérêt appliqué par la Banque centrale européenne à son opération de refinancement la plus récente, majoré de 10 points de pourcentage ; (ii) une indemnité forfaitaire pour frais de recouvrement de 40 € par facture (art. L441-10 II et D441-5 du Code de commerce), sans préjudice d'une indemnisation complémentaire sur justificatifs si les frais réellement exposés sont supérieurs. En cas de retard, Axion-IA peut suspendre les prestations en cours jusqu'au complet paiement.",
         },
         {
+          // 2026-08-14 — la rédaction précédente qualifiait les délais
+          // d'« engagement de moyens » et exonérait du retard imputable au
+          // Client, mais n'écartait NI la pénalité, NI l'indemnité, NI la
+          // résolution. Un retard de trois semaines sur une implémentation
+          // restait donc indemnisable au droit commun (art. 1231-1 C. civ.).
+          // Le seuil de 60 jours + mise en demeure de 30 jours borne le risque
+          // sans le supprimer : au-delà, le Client garde ses recours — c'est
+          // ce qui rend la clause tenable entre professionnels (L442-1 C. com.).
           title: "Exécution des prestations et délais",
-          body: "Les délais figurent au devis ; ils constituent un engagement de moyens et courent à compter de la réunion des conditions de démarrage (acompte, accès, informations et disponibilités nécessaires). Axion-IA ne saurait être tenue responsable d'un retard imputable au Client (défaut d'accès aux données, indisponibilité des équipes, validations tardives) ou à un cas de force majeure.",
+          body: "Les délais figurant au devis ou au planning sont donnés à titre indicatif et constituent un engagement de moyens. Ils courent à compter de la réunion des conditions de démarrage (acompte, accès, informations, contenus, validations et disponibilités nécessaires) et sont prolongés de plein droit de la durée du retard du Client dans la fourniture de ces éléments. Un retard d'exécution ne peut donner lieu ni à pénalité, ni à indemnité, ni à résolution du contrat, sauf retard excédant soixante (60) jours imputable exclusivement à Axion-IA et après mise en demeure écrite restée sans effet pendant trente (30) jours. Axion-IA ne saurait être tenue responsable d'un retard imputable au Client (défaut d'accès aux données, indisponibilité des équipes, validations tardives), à un tiers ou à un cas de force majeure.",
         },
         {
           title: "Obligations et collaboration du Client",
-          body: "Le Client s'engage à collaborer activement et de bonne foi : fournir en temps utile les informations, accès, environnements et moyens nécessaires, désigner un interlocuteur décisionnaire, et garantir qu'il dispose des droits sur les données et systèmes confiés à Axion-IA. Le Client demeure responsable de l'usage qu'il fait des Livrables et des décisions qu'il prend sur leur fondement.",
+          body: "Le Client s'engage à collaborer activement et de bonne foi : fournir en temps utile les informations, accès, environnements et moyens nécessaires, désigner un interlocuteur décisionnaire, et garantir qu'il dispose de l'ensemble des droits et autorisations sur les données, contenus et systèmes qu'il confie ou rend accessibles à Axion-IA, ainsi que du caractère licite de leur traitement dans le cadre des prestations, notamment au regard de la réglementation applicable aux données personnelles. Le Client demeure responsable de l'usage qu'il fait des Livrables et des décisions qu'il prend sur leur fondement.",
+        },
+        {
+          // 2026-08-14 — aucune clause ne traitait la sauvegarde préalable ni
+          // la sécurité des systèmes du Client, alors que l'offre comprend des
+          // implémentations et automatisations exécutées DANS ses systèmes.
+          // Sans cette clause, une perte de données survenue pendant une
+          // intervention est arbitrée au seul détriment d'Axion-IA, qui n'a ni
+          // la maîtrise ni la connaissance de l'état antérieur des systèmes.
+          title: "Sauvegarde préalable et sécurité des systèmes du Client",
+          body: "Préalablement à toute intervention d'Axion-IA sur ses systèmes, le Client procède à une sauvegarde complète et vérifiée de ses données, configurations et environnements. Axion-IA ne saurait être tenue responsable de la perte, de l'altération ou de l'indisponibilité de données dont la sauvegarde préalable incombait au Client. Le Client demeure responsable de la sécurité de ses propres systèmes d'information (protection contre les codes malveillants, pare-feu, mises à jour, gestion des accès et des habilitations), y compris des systèmes sur lesquels sont déployées les solutions livrées, et de la conservation de ses identifiants et secrets d'accès.",
+        },
+        {
+          // 2026-08-14 — les prestations reposent intégralement sur des briques
+          // tierces (modèles d'IA, API, hébergeurs). Rien ne les couvrait : la
+          // force majeure ne suffit pas, car l'art. 1218 C. civ. exige
+          // l'imprévisibilité ET l'irrésistibilité — une hausse tarifaire d'API,
+          // une dépréciation de modèle ou un changement de conditions d'usage
+          // n'y entrent pas, alors que ce sont les événements les plus probables.
+          title: "Services, technologies et fournisseurs tiers",
+          body: "Les prestations d'Axion-IA s'appuient sur des services, logiciels, modèles d'intelligence artificielle, interfaces de programmation (API) et infrastructures d'hébergement fournis par des tiers. Axion-IA ne saurait être tenue responsable des conséquences directes ou indirectes d'une interruption, d'une dégradation, d'une modification, d'une hausse tarifaire, d'un changement de conditions d'utilisation ou d'une suppression de ces services tiers, d'une évolution des modèles d'intelligence artificielle affectant la qualité, le format, le coût ou la disponibilité des résultats, d'une défaillance des réseaux de télécommunications ou d'alimentation électrique, ou d'une cyberattaque affectant le Client ou un tiers. Sauf stipulation contraire au devis, le Client fait son affaire de la souscription, du paiement et du maintien des abonnements aux services tiers nécessaires au fonctionnement des solutions livrées, ainsi que du respect des conditions d'utilisation de ces services. Lorsqu'un service tiers devient indisponible ou inadapté, Axion-IA propose au Client, dans la mesure du possible, une solution de remplacement, dont la mise en œuvre fait l'objet d'un avenant chiffré.",
         },
         {
           title: "Propriété intellectuelle des livrables",
           body: "Les méthodes, savoir-faire, outils, modèles et éléments préexistants mobilisés par Axion-IA demeurent sa propriété exclusive. Sauf stipulation contraire au devis, les droits d'exploitation sur les Livrables spécifiquement réalisés pour le Client lui sont cédés, dans les limites précisées au devis, après paiement intégral du prix, conformément à l'article L131-3 du Code de la propriété intellectuelle. Axion-IA conserve le droit de réutiliser les compétences, connaissances et savoir-faire génériques acquis à l'occasion de la prestation.",
+        },
+        {
+          // 2026-08-14 — la section précédente ne traitait la propriété
+          // intellectuelle que dans le sens Axion-IA → Client (cession des
+          // livrables). Rien ne couvrait le sens inverse : un tiers reprochant
+          // au Client d'exploiter un contenu qu'il avait lui-même fourni, ou un
+          // contenu produit par un système d'IA dont la disponibilité des droits
+          // n'a pas été vérifiée. C'est pourtant le contentieux le plus probable
+          // sur une prestation de génération de contenu.
+          title: "Propriété intellectuelle — garanties du Client",
+          body: "Le Client garantit Axion-IA contre toute réclamation, action ou revendication de tiers fondée sur les contenus, données, marques, logiciels ou éléments qu'il fournit à Axion-IA ou qu'il fait traiter par les solutions livrées, et prend à sa charge les conséquences pécuniaires d'une telle réclamation, y compris les frais de défense justifiés. Le Client fait son affaire de la vérification de la disponibilité des droits sur les contenus générés ou assistés par des systèmes d'intelligence artificielle avant toute exploitation, publication ou diffusion commerciale.",
         },
         {
           title: "Confidentialité",
@@ -208,20 +247,50 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           body: "Chaque partie respecte la réglementation applicable aux données personnelles (RGPD, UE 2016/679). Lorsque, dans le cadre d'une prestation, Axion-IA traite des données personnelles pour le compte du Client, les parties concluent un accord de sous-traitance conforme à l'article 28 du RGPD précisant l'objet, la durée, la nature et les finalités du traitement, les mesures de sécurité et de confidentialité, ainsi que le sort des données en fin de prestation. Le traitement des données collectées via le site est décrit dans la Politique de confidentialité.",
         },
         {
+          // 2026-08-14 — la section « transparence » ci-dessous transférait bien
+          // au Client la responsabilité de la validation, mais NULLE PART le
+          // Client ne reconnaissait le caractère probabiliste des systèmes d'IA,
+          // et NULLE PART Axion-IA n'écartait la garantie d'exactitude. Or c'est
+          // exactement la brèche par laquelle passe un litige sur un contenu
+          // généré : « le résultat était faux » n'a pas la même portée selon que
+          // le contrat annonce, ou non, qu'il PEUT l'être.
+          title: "Nature probabiliste des systèmes d'intelligence artificielle",
+          body: "Le Client reconnaît que les systèmes d'intelligence artificielle sont par nature probabilistes et peuvent produire des résultats inexacts, incomplets, obsolètes ou inappropriés, y compris des affirmations erronées présentées de manière plausible. En conséquence, les contenus, analyses, réponses, recommandations ou décisions produits par les solutions d'intelligence artificielle livrées, paramétrées ou exploitées par Axion-IA sont fournis à titre d'aide et doivent faire l'objet d'une validation humaine par le Client avant toute utilisation, publication, diffusion ou décision. Le Client demeure seul responsable de l'usage qu'il fait des résultats produits et des décisions prises sur leur fondement. Axion-IA ne garantit ni l'exactitude, ni l'exhaustivité, ni la reproductibilité, ni l'adéquation à un usage particulier des contenus générés. Les dispositifs de contrôle éventuellement mis en place (ancrage documentaire, filtres, garde-fous) réduisent ce risque sans le supprimer et ne valent pas garantie de résultat.",
+        },
+        {
           title: "Recours à l'intelligence artificielle et transparence",
           body: "Certaines prestations recourent à des systèmes d'intelligence artificielle, y compris générative. Axion-IA en informe le Client et, le cas échéant, signale les contenus générés ou assistés par IA, conformément à l'article 50 du Règlement européen sur l'intelligence artificielle (UE 2024/1689). Le Client reste responsable de la validation et de l'usage final des résultats produits avec l'assistance de l'IA.",
         },
         {
           title: "Garanties et responsabilité",
-          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Aucune garantie de résultat n'est donnée ; les gains, ROI ou performances évoqués sont indicatifs et dépendent de facteurs propres au Client. La responsabilité d'Axion-IA, toutes causes confondues, est limitée aux dommages directs et plafonnée au montant HT effectivement perçu au titre de la prestation à l'origine du dommage. Sont exclus les dommages indirects (perte d'exploitation, de données, de chiffre d'affaires ou d'image). Ces limitations ne s'appliquent ni en cas de faute lourde ou dolosive, ni dans les cas où la loi les prohibe.",
+          body: "Axion-IA exécute ses prestations selon les règles de l'art, dans le cadre d'une obligation de moyens. Axion-IA ne souscrit aucune obligation de résultat. Les gains de productivité, économies de temps, taux d'automatisation, indicateurs de performance ou retours sur investissement évoqués dans les propositions commerciales, supports de présentation, contenus du site ou échanges précontractuels constituent des estimations indicatives, dépendantes de facteurs propres au Client, et ne constituent en aucun cas un engagement contractuel d'Axion-IA.",
+        },
+        {
+          // 2026-08-14 — le plafond existait mais sans BORNE TEMPORELLE : « le
+          // montant perçu au titre de la prestation à l'origine du dommage »
+          // grossit indéfiniment sur une relation pluriannuelle. La fenêtre de
+          // douze mois le stabilise. La liste d'exclusions a par ailleurs été
+          // complétée (perte de chance, perte de clientèle, coûts d'interruption
+          // d'activité, recours d'un tiers contre le Client) : une exclusion non
+          // énumérée n'est pas une exclusion.
+          //
+          // 🔴 La réciprocité de la renonciation n'est pas cosmétique : entre
+          // professionnels, une limitation UNILATÉRALE est le premier angle
+          // d'attaque au titre du déséquilibre significatif (L442-1 C. com.).
+          title: "Limitation de responsabilité — plafond et exclusions",
+          body: "En toute hypothèse, la responsabilité totale et cumulée d'Axion-IA, toutes causes et tous préjudices confondus, est limitée aux dommages directs et expressément plafonnée au montant hors taxes effectivement payé par le Client au titre de la prestation en cause au cours des douze (12) mois précédant le fait générateur. Sont expressément exclus de la réparation, chacune des parties y renonçant réciproquement : les dommages indirects et immatériels, notamment perte de chiffre d'affaires, perte de bénéfice, perte d'exploitation, perte de clientèle, perte de chance, perte ou altération de données, préjudice d'image, coûts d'interruption d'activité, ainsi que tout préjudice résultant du recours d'un tiers contre le Client. Ces limitations et exclusions ne s'appliquent ni en cas de dol ou de faute lourde d'Axion-IA, ni aux dommages corporels, ni dans les cas où la loi les prohibe, ni au Client consommateur dans les conditions énoncées à la section qui lui est consacrée.",
         },
         {
           title: "Assurance",
-          body: "Axion-IA déclare être titulaire d'une assurance de responsabilité civile professionnelle couvrant les conséquences pécuniaires de sa responsabilité dans le cadre de ses prestations. Les coordonnées de l'assureur sont communiquées sur demande.",
+          body: "Axion-IA déclare avoir souscrit auprès d'une compagnie notoirement solvable une assurance de responsabilité civile professionnelle couvrant les conséquences pécuniaires de sa responsabilité au titre de ses prestations, et s'engage à en justifier sur demande du Client. Les coordonnées de l'assureur et une attestation en cours de validité sont communiquées sur demande.",
         },
         {
+          // 2026-08-14 — « le contrat peut être résolu si l'empêchement devient
+          // définitif » laissait sans issue l'empêchement LONG mais non
+          // définitif : chacun restait tenu, sans terme. Le seuil de 60 jours
+          // ouvre une sortie symétrique et sans indemnité.
           title: "Force majeure",
-          body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement, et le contrat peut être résolu si l'empêchement devient définitif.",
+          body: "Aucune partie ne peut être tenue responsable d'un manquement résultant d'un cas de force majeure au sens de l'article 1218 du Code civil et de la jurisprudence française (notamment grève, panne majeure, catastrophe, épidémie, défaillance d'un fournisseur essentiel). La partie empêchée en informe l'autre sans délai ; les obligations sont suspendues pendant la durée de l'empêchement. Si l'empêchement excède soixante (60) jours, chaque partie peut résilier le contrat par écrit sans indemnité de part ni d'autre, les prestations effectivement réalisées à cette date restant dues au prorata.",
         },
         {
           // 🔴 Audit certification 2026-07-26 (F51). Le barème des CGV (7 j / 2 j
@@ -316,6 +385,38 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Particulier — juridiction compétente",
           body: "La clause attributive de compétence prévue aux présentes n'est pas opposable au particulier. Celui-ci peut saisir, à son choix, la juridiction du lieu où il demeurait au moment de la conclusion du contrat, celle du lieu de survenance du fait dommageable, ou l'une des juridictions territorialement compétentes en application du Code de procédure civile (art. R.631-3 du Code de la consommation).",
+        },
+        {
+          // 🔴 2026-08-14 — VERROU. Les présentes CGV portent désormais des
+          // clauses limitatives calibrées pour une relation entre
+          // professionnels. Opposées à un consommateur, plusieurs d'entre elles
+          // sont abusives de plein droit (art. R.212-1 et R.212-2 C. conso.) —
+          // et une clause abusive n'est pas seulement écartée : sa présence
+          // fragilise la lecture de tout le contrat, et expose à la sanction
+          // administrative de la DGCCRF.
+          //
+          // Cette section les neutralise NOMMÉMENT plutôt que par la formule
+          // générale « prévalent sur toute clause contraire » : une exclusion
+          // implicite se plaide, une exclusion énumérée se constate.
+          //
+          // ⚠️ Toute nouvelle clause limitative ajoutée aux CGV doit être
+          // ajoutée à cette liste dans le même patch.
+          title: "Particulier — clauses non opposables au consommateur",
+          body: "Ne sont pas opposables au Client consommateur, qui conserve l'intégralité des droits qu'il tient du Code de la consommation et du Code civil : la limitation et le plafonnement de responsabilité ainsi que les exclusions de réparation ; le délai de forclusion de quatre-vingt-dix jours ; l'exclusion de pénalité, d'indemnité ou de résolution en cas de retard d'exécution ; la garantie contre les réclamations de tiers mise à la charge du Client ; l'exclusion de responsabilité au titre de la sauvegarde préalable des données ; et l'engagement de non-sollicitation. Le nom et l'image du consommateur ne sont utilisés à titre de référence commerciale qu'avec son accord exprès et préalable, révocable à tout moment.",
+        },
+        {
+          // 2026-08-14 — aucun délai de forclusion n'existait : une contestation
+          // de conformité restait recevable pendant cinq ans (art. 2224 C. civ.),
+          // sur une prestation dont les traces techniques (logs, versions de
+          // modèles, états des systèmes du Client) ne survivent pas à cette durée.
+          //
+          // 🔴 Réservé au Client PROFESSIONNEL, et dit comme tel. Opposé à un
+          // consommateur, un délai conventionnel réduisant la prescription légale
+          // est présumé abusif (art. R.212-1 C. conso.) et ferait tomber la clause
+          // entière. La réserve « vices cachés / dol » est ce qui la rend tenable
+          // entre professionnels au regard de l'article L442-1 du Code de commerce.
+          title: "Délai de réclamation sur une prestation",
+          body: "Le Client professionnel dispose d'un délai de quatre-vingt-dix (90) jours à compter de la livraison ou de la survenance du fait invoqué pour notifier à Axion-IA, par écrit et de manière motivée, toute réclamation relative à une prestation. À défaut, la réclamation est forclose. Ce délai ne s'applique ni en cas de dol, ni en cas de vice caché ne pouvant être décelé dans ce délai, ni au Client consommateur, qui conserve l'intégralité des délais légaux dont il bénéficie.",
         },
         {
           title: "Réclamations et règlement des litiges",

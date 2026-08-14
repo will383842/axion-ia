@@ -21,7 +21,14 @@ const SLUG = "conditions-generales" as const;
 // 2026-07-30 : révision du paragraphe « médiation de la consommation ». La
 // valeur précédente était calquée sur la déclaration d'accessibilité ; les
 // deux pages évoluent séparément, elles ne sont plus liées.
-const LAST_UPDATED_ISO = "2026-07-30";
+//
+// 2026-08-14 : ajout des clauses limitatives manquantes (services et
+// fournisseurs tiers, sauvegarde et sécurité des systèmes du Client, nature
+// probabiliste de l'IA, garantie PI du Client, plafond borné à 12 mois,
+// forclusion 90 jours) + verrou « clauses non opposables au consommateur ».
+// 🔴 Cette date fait foi : l'intro des CGV renvoie à elle pour déterminer la
+// version applicable. La modifier SANS toucher au texte antidate une version.
+const LAST_UPDATED_ISO = "2026-08-14";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -61,7 +68,7 @@ export default async function ConditionsGenerales({ params }: Props) {
         {...(copy.titleEm !== undefined ? { titleEm: copy.titleEm } : {})}
         intro={copy.intro}
         sections={copy.sections}
-        lastUpdated={isFr ? "30 juillet 2026" : "July 30, 2026"}
+        lastUpdated={isFr ? "14 août 2026" : "August 14, 2026"}
         lastUpdatedIso={LAST_UPDATED_ISO}
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },

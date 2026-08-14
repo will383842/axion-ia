@@ -91,6 +91,39 @@ describe("DevisPdf — mentions obligatoires", () => {
     expect(text).toContain("Devis gratuit, valable jusqu'au 06/07/2026");
   });
 
+  // 🔴 2026-08-14 — le devis ne renvoyait à AUCUNE condition générale, alors
+  // que la convention, la convention tripartite et le contrat de formation les
+  // annexent. Le volet formation était couvert ; l'audit, l'implémentation, le
+  // site web et le coaching ne l'étaient pas — c'est-à-dire les prestations qui
+  // portent le risque « systèmes du Client / fournisseurs tiers / contenus
+  // générés ». Sans connaissance des CGV AVANT l'engagement (art. 1119 C. civ.),
+  // les clauses limitatives ne sont pas opposables.
+  //
+  // Assertions volontairement fragmentaires : `collectPdfText` fabrique des
+  // espaces, une phrase entière se casserait sur un retour à la ligne.
+  it("renvoie aux CGV et les rend opposables, URL comprise", () => {
+    expect(text).toContain("Conditions générales de vente");
+    expect(text).toContain("https://www.axion-ia.fr/conditions-generales");
+    expect(text).toMatch(/pr[ée]valent sur toutes conditions d'achat/);
+  });
+
+  it("le « Bon pour accord » couvre aussi les CGV, pas seulement les montants", () => {
+    // Le client doit accepter les CGV par le MÊME geste que les totaux : c'est
+    // la signature qui vaut acceptation, pas une transmission antérieure
+    // hypothétique.
+    expect(text).toMatch(/reconna[îi]t avoir pris connaissance/);
+  });
+
+  it("sans site renseigné, énonce quand même l'opposabilité sans URL tronquée", () => {
+    // Config Qualiopi incomplète : `site` vide. Le renvoi doit dégrader vers
+    // « communiquées sur simple demande » — jamais vers « /conditions-generales »
+    // seul, qui ne mène nulle part sur un PDF imprimé.
+    const sansSite = devisText(makeDevis({ identite: { ...IDENTITE, site: "" } }));
+    expect(sansSite).toContain("Conditions générales de vente");
+    expect(sansSite).toContain("communiquées sur simple demande");
+    expect(sansSite).not.toContain("/conditions-generales");
+  });
+
   it("porte la mention d'exonération TVA (régime exoneration_261)", () => {
     expect(text).toContain(LEGAL_MENTIONS.factureExonerationTva);
   });
