@@ -13,6 +13,7 @@
 import crypto from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncNewsletterOptInToCrm, syncNewsletterOptOutToCrm } from "@/server/crm-sync";
 import { newsletterSchema } from "@/lib/schemas/forms";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -24,6 +25,15 @@ import { getClientIp } from "@/lib/client-ip";
 import { hashIp } from "@/lib/security/ip-hash";
 
 export type NewsletterState = { ok: true } | { ok: false; error: string };
+
+/**
+ * Première version de consentement NOMMÉE pour la lettre (décision actée
+ * 2026-08-13). La lettre n'en persistait aucune : le double opt-in prouvait le
+ * geste, mais rien ne disait QUEL texte la personne avait accepté. Cette
+ * constante voyage avec la fiche vers le CRM ; la persister côté site suppose
+ * une colonne, qui viendra avec le lot « consentements centralisés ».
+ */
+const NEWSLETTER_CONSENT_VERSION = "newsletter-v1-2026-08-13";
 
 export async function subscribeNewsletterAction(
   _prev: NewsletterState,
@@ -163,6 +173,20 @@ export async function confirmNewsletterAction(token: string | null): Promise<Con
         confirmToken: null,
       },
     });
+    // Synchro CRM (lot L2) — émise à la CONFIRMATION, jamais à la demande
+    // d'inscription : tant que l'adresse n'est pas confirmée, il n'y a pas de
+    // consentement à transmettre (et l'inscription peut être le fait d'un tiers).
+    await syncNewsletterOptInToCrm({
+      subjectRef: `site:newsletter_subscriber:${sub.id}`,
+      person: { email: sub.email },
+      consent: {
+        version: NEWSLETTER_CONSENT_VERSION,
+        at: new Date(),
+        textRef: "newsletter-double-optin",
+      },
+      ...(sub.source ? { payload: { source: sub.source } } : {}),
+    });
+
     await notify({
       category: "NEWSLETTER_CONFIRMED",
       payload: { email: redactEmail(sub.email), locale: sub.locale },
@@ -218,6 +242,15 @@ export async function unsubscribeNewsletterAction(token: string | null): Promise
         unsubscribedAt: new Date(),
       },
     });
+    // Synchro CRM (lot L2) — l'opposition doit valoir PARTOUT : le CRM inscrit
+    // l'adresse (hashée) en liste d'opposition business, ce qui empêche aussi
+    // toute réinsertion par un futur re-scrape.
+    await syncNewsletterOptOutToCrm({
+      subjectRef: `site:newsletter_subscriber:${sub.id}`,
+      person: { email: sub.email },
+      payload: { reason: "unsubscribe-link" },
+    });
+
     await notify({
       category: "NEWSLETTER_UNSUBSCRIBED",
       payload: { email: redactEmail(sub.email), locale: sub.locale },

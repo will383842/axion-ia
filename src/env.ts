@@ -52,6 +52,20 @@ export const env = createEnv({
     MAILWIZZ_API_URL: z.string().url().optional(),
     MAILWIZZ_API_KEY: z.string().optional(),
 
+    // ── Synchro sortante vers Axion CRM Pro (lot L2, 2026-08-14) ───────────
+    // Drapeau MAÎTRE : tant qu'il ne vaut pas exactement "true", aucune ligne
+    // d'outbox n'est écrite et aucun appel réseau n'est émis — le site se
+    // comporte EXACTEMENT comme avant le lot. Rollback = repasser à "false".
+    // Optionnelles toutes les quatre : un site sans CRM doit démarrer.
+    CRM_SYNC_ENABLED: z.enum(["true", "false"]).optional(),
+    // Second verrou, propre aux flux CANDIDATS. Ne s'ouvre qu'après que les
+    // textes de consentement v2 sont servis en production (le CRM rejette de
+    // toute façon toute fiche candidat sans consentement v2).
+    CRM_SYNC_CANDIDATES_ENABLED: z.enum(["true", "false"]).optional(),
+    CRM_SYNC_URL: z.string().url().optional(),
+    // Secret partagé du canal signé (64 hex). Jamais dans un commit.
+    SITE_SYNC_HMAC_SECRET: z.string().optional(),
+
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
 
@@ -383,6 +397,10 @@ export const env = createEnv({
     PMTA_API_KEY: process.env.PMTA_API_KEY,
     MAILWIZZ_API_URL: process.env.MAILWIZZ_API_URL,
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
+    CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
+    CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
+    CRM_SYNC_URL: process.env.CRM_SYNC_URL,
+    SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,

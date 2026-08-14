@@ -12,6 +12,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncReviewToCrm } from "@/server/crm-sync";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -209,6 +210,17 @@ export async function submitReviewAction(
       }
     }
     if (!review) return { ok: false, error: "Une erreur est survenue. Réessayez." };
+
+    // 9 bis. Synchro CRM (lot L2) — l'auteur d'un avis certifie être un client
+    // réel : c'est le seul événement entrant du site qui porte cette qualité.
+    // Le CONTENU de l'avis reste sur le site ; le CRM ne reçoit que la fiche.
+    await syncReviewToCrm({
+      subjectRef: `site:customer_review:${review.id}`,
+      person: { email: d.email, firstName: d.firstName, lastName: d.lastName ?? null },
+      ...(d.companyName ? { company: { name: d.companyName } } : {}),
+      consent: { version: CONSENT_VERSION, textRef: "review-form" },
+      payload: { rating: d.rating },
+    });
 
     // 10. Telegram (admin → modération)
     await notify({

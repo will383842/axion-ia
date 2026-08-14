@@ -18,6 +18,7 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncCandidateToCrm } from "@/server/crm-sync";
 import { SubmissionType } from "../../../prisma/generated/client";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -242,6 +243,42 @@ export async function submitCommercialApplicationAction(
         ipHash: safeHashIp(ip),
         userAgent,
       },
+    });
+
+    // 5 bis. Synchro CRM — univers VIVIER (lot L2).
+    // Même double verrou que les candidatures aux offres : le CRM REFUSE toute
+    // fiche candidat dont la version de consentement n'est pas v2. Le texte
+    // actuel (`commercial-tunnel-v1-2026-08-12`) ne couvre que l'étude de la
+    // candidature — le refus est donc l'issue ATTENDUE tant que le texte v2
+    // n'est pas servi en production.
+    await syncCandidateToCrm({
+      subjectRef: `site:submission:${submission.id}`,
+      family: "candidat_commercial",
+      offerSlug: "commercial-memo",
+      sourceSlug: "site-candidature-commerciale",
+      occurredAt: submission.submittedAt,
+      person: {
+        email: d.email,
+        firstName: d.prenom,
+        lastName: d.nom,
+        phone: d.telephone,
+      },
+      consent: {
+        version: COMMERCIAL_APPLICATION_CONSENT_VERSION,
+        at: submission.submittedAt,
+        textRef: "commercial-tunnel",
+      },
+      attributes: {
+        ville: d.ville,
+        codePostal: d.codePostal,
+        b2bDejaVendu: d.b2bDejaVendu,
+        ...(d.b2bAnnees ? { b2bAnnees: d.b2bAnnees } : {}),
+        iaUtilise: d.iaUtilise,
+        disponibilite: d.disponibilite,
+        permisVehicule: d.permisVehicule,
+        ...(d.zones?.length ? { zones: d.zones } : {}),
+      },
+      experiences,
     });
 
     // 6. Telegram + WhatsApp — best-effort, la candidature est déjà en base.

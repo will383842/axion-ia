@@ -8663,31 +8663,31 @@ model JobOffer {
   bodyTextEn String @map("body_text_en") @db.Text
 
   // JobPosting / Google for Jobs
-  employmentType     String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
+  employmentType          String      @default("FULL_TIME") @map("employment_type") @db.VarChar(20)
   // Second type schema.org optionnel — JobPosting.employmentType accepte un
   // TABLEAU : une offre ouverte « en CDI ou en freelance » doit déclarer les
   // deux, sinon Google la cache à la moitié des profils qu'elle accepte.
-  secondaryEmploymentType String? @map("secondary_employment_type") @db.VarChar(20)
-  workMode           JobWorkMode @default(on_site) @map("work_mode")
-  city               String?     @db.VarChar(120)
-  region             String?     @db.VarChar(120)
-  country            String      @default("FR") @db.VarChar(2)
+  secondaryEmploymentType String?     @map("secondary_employment_type") @db.VarChar(20)
+  workMode                JobWorkMode @default(on_site) @map("work_mode")
+  city                    String?     @db.VarChar(120)
+  region                  String?     @db.VarChar(120)
+  country                 String      @default("FR") @db.VarChar(2)
   // Zone d'emploi multi-villes (postes itinérants/territoriaux) : tableau JSON de
   // { city, region? } → JobPosting multi-location (visible Google for Jobs dans
   // toutes ces villes depuis UNE annonce, sans pages dupliquées). FR-only.
-  jobLocations       Json?       @map("job_locations")
+  jobLocations            Json?       @map("job_locations")
   // Pays d'où l'on accepte les candidatures (ISO 3166-1 alpha-2) → JobPosting
   // `applicantLocationRequirements`. Vide = France seule (défaut historique).
   // Indispensable pour les missions 100 % à distance ouvertes à la francophonie :
   // Google for Jobs filtre les offres TELECOMMUTE sur le pays du chercheur, donc
   // sans ces codes l'annonce reste invisible hors de France.
-  applicantCountries String[]    @default([]) @map("applicant_countries")
-  salaryMin          Int?        @map("salary_min")
-  salaryMax          Int?        @map("salary_max")
-  salaryPeriod       String      @default("YEAR") @map("salary_period") @db.VarChar(10)
-  salaryCurrency     String      @default("EUR") @map("salary_currency") @db.VarChar(3)
-  salaryVisible      Boolean     @default(true) @map("salary_visible")
-  isCommission       Boolean     @default(false) @map("is_commission")
+  applicantCountries      String[]    @default([]) @map("applicant_countries")
+  salaryMin               Int?        @map("salary_min")
+  salaryMax               Int?        @map("salary_max")
+  salaryPeriod            String      @default("YEAR") @map("salary_period") @db.VarChar(10)
+  salaryCurrency          String      @default("EUR") @map("salary_currency") @db.VarChar(3)
+  salaryVisible           Boolean     @default(true) @map("salary_visible")
+  isCommission            Boolean     @default(false) @map("is_commission")
 
   // Mobilité — n'affiche permis/véhicule sur le formulaire que si true
   requiresDriverLicense Boolean @default(false) @map("requires_driver_license")
@@ -10610,4 +10610,84 @@ model PodcastRequest {
   @@index([status, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
   @@map("podcast_requests")
+}
+
+// ============================================================
+// Lot L2 (2026-08-14) — OUTBOX de synchronisation vers Axion CRM Pro
+// ============================================================
+// Motif « outbox » : l'événement à émettre est POSÉ EN BASE avant toute
+// tentative réseau. Aucun appel réseau n'est fait sur le chemin du formulaire —
+// le CRM peut être injoignable, cela ne change rien pour l'utilisateur.
+//
+// ⚠️ L'écriture est POST-COMMIT, pas dans la transaction métier, sauf au seul
+// point de capture qui en ouvre déjà une (`chatbot/tools/capturer-lead.ts`, via
+// le paramètre `tx`). Ce choix est délibéré et documenté dans
+// `src/server/crm-sync/enqueue.ts` : dans la même transaction, un échec
+// d'insertion de l'outbox ferait ROLLBACK la soumission — un lead perdu à cause
+// de la synchro CRM, ce que la doctrine « zéro perte de lead » interdit. Le
+// filet contre la fenêtre (crash entre les deux écritures) est la
+// réconciliation, qui compare les enregistrements source aux `subject_ref` émis.
+//
+// L'émission réelle est best-effort, et le rejeu périodique rattrape tout ce
+// qui a échoué. Un CRM indisponible = des lignes `pending` qui s'accumulent,
+// jamais une soumission perdue ni un formulaire bloqué.
+//
+// INERTIE : tant que `CRM_SYNC_ENABLED` est absent/false, RIEN n'est écrit
+// dans cette table et aucun appel réseau n'est émis (cf. src/server/crm-sync).
+
+enum CrmSyncStatus {
+  /// En attente d'émission (ou d'une nouvelle tentative).
+  pending
+  /// Acquittée par le CRM (2xx).
+  sent
+  /// Dernière tentative en échec — sera rejouée.
+  failed
+  /// Refus DÉFINITIF du CRM (422 : contrat, consentement, taxonomie) ou
+  /// plafond de tentatives atteint. Ne sera plus rejouée : à traiter à la main.
+  gave_up
+}
+
+model CrmSyncOutbox {
+  id String @id @default(uuid()) @db.Uuid
+
+  /// Clé d'idempotence de l'ÉVÉNEMENT, envoyée telle quelle au CRM, qui la
+  /// stocke en `activities.external_ref`. Rejouer la même ligne ne crée donc
+  /// jamais de doublon côté CRM.
+  eventId String @unique @map("event_id") @db.Uuid
+
+  /// Type d'événement du contrat d'ingestion (form_submission, calendly_booked,
+  /// newsletter_optin, application_submitted…).
+  eventType String @map("event_type") @db.VarChar(64)
+
+  /// Référence de l'enregistrement SOURCE (`site:submission:<uuid>`) — permet
+  /// de retrouver la ligne d'origine depuis la console et de réconcilier.
+  subjectRef String @map("subject_ref") @db.VarChar(180)
+
+  /// `business` ou `vivier` — informatif côté site (la destination reste une
+  /// décision du CRM), mais indispensable pour filtrer les flux candidats.
+  universe String @db.VarChar(16)
+
+  /// Corps exact envoyé au CRM (PII déchiffrées au moment de la construction).
+  payload Json
+
+  status   CrmSyncStatus @default(pending)
+  attempts Int           @default(0)
+
+  lastError      String?   @map("last_error") @db.VarChar(500)
+  lastAttemptAt  DateTime? @map("last_attempt_at")
+  /// Backoff exponentiel : le rejeu ne reprend pas une ligne avant cette date.
+  nextAttemptAt  DateTime? @map("next_attempt_at")
+  sentAt         DateTime? @map("sent_at")
+  responseStatus Int?      @map("response_status")
+  /// Statut renvoyé par le CRM (created / updated / noop_idempotent /
+  /// pending_match / opted_out) — utile au tableau de santé de la synchro.
+  crmResult      String?   @map("crm_result") @db.VarChar(32)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([status, nextAttemptAt])
+  @@index([subjectRef])
+  @@index([createdAt(sort: Desc)])
+  @@map("crm_sync_outbox")
 }

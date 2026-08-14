@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
 import { Prisma } from "../../../../prisma/generated/client";
@@ -128,6 +129,22 @@ export async function capturerLead(
       await tx.chatConversation.update({
         where: { id: conversationId },
         data: { submissionId: submission.id },
+      });
+
+      // Synchro CRM (lot L2) — ici, et ICI SEULEMENT, l'outbox est écrite DANS
+      // la transaction métier : c'est le seul point de capture du site qui en
+      // ouvre déjà une. On y gagne la garantie « si le lead existe, l'événement
+      // existe » sans rien changer au risque. Ailleurs, l'écriture est
+      // post-commit pour qu'un échec de synchro ne puisse jamais faire
+      // rollback un lead.
+      await syncFormSubmissionToCrm({
+        tx,
+        subjectRef: `site:submission:${submission.id}`,
+        formType: "autre",
+        sourceSlug: "chatbot",
+        person: { email: input.email, fullName: input.nom, phone: input.telephone ?? null },
+        ...(input.structure ? { company: { name: input.structure } } : {}),
+        payload: { canal: "chatbot" },
       });
 
       return { submissionId: submission.id, idempotent: false };

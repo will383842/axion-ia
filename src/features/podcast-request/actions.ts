@@ -14,6 +14,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
@@ -103,6 +104,17 @@ export async function submitPodcastRequestAction(
         consentVersion: CONSENT_VERSION,
       },
       select: { id: true },
+    });
+
+    // 6 bis. Synchro CRM (lot L2) — inerte tant que `CRM_SYNC_ENABLED` ≠ "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:podcast_request:${created.id}`,
+      formType: "podcast",
+      sourceSlug: "site-formulaire-podcast",
+      person: { email: d.email, fullName: d.leaderName, phone: d.phone },
+      company: { name: d.companyName, postcode: d.postalCode, city: d.city, sector: d.activity },
+      consent: { version: CONSENT_VERSION, textRef: "podcast-form" },
+      payload: { source },
     });
 
     // 7 bis. Accusé de réception au dirigeant (2026-08-13).

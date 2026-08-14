@@ -25,6 +25,7 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { syncFormSubmissionToCrm } from "@/server/crm-sync";
 import { SubmissionType } from "../../../prisma/generated/client";
 import {
   unifiedContactSchema,
@@ -239,6 +240,36 @@ export async function submitUnifiedContactAction(
         // (throw si IP_HASH_SALT absent). En cas d'échec → null + log.
         ipHash: safeHashIp(ip),
         userAgent,
+      },
+    });
+
+    // 6bis. Synchro CRM (lot L2) — outbox locale, best-effort, JAMAIS bloquante.
+    // Aucun try/catch ici : `syncFormSubmissionToCrm` ne lève pas, et ne fait
+    // rien du tout tant que `CRM_SYNC_ENABLED` n'est pas à "true".
+    await syncFormSubmissionToCrm({
+      subjectRef: `site:submission:${submission.id}`,
+      formType: data.type,
+      occurredAt: submission.submittedAt,
+      person: {
+        email: data.email,
+        fullName: data.nom,
+        phone: data.telephone ?? null,
+      },
+      company: {
+        name: data.companyName ?? null,
+        city: data.ville ?? null,
+        sizeCategory: data.companySize ?? null,
+        sector: data.companySector ?? null,
+      },
+      consent: {
+        version: CONSENT_VERSION,
+        at: submission.submittedAt,
+        textRef: "unified-contact-form",
+      },
+      payload: {
+        ...(data.subType ? { subType: data.subType } : {}),
+        ...(data.source ? { source: data.source } : {}),
+        ...(Object.keys(funnel).length > 0 ? { funnel } : {}),
       },
     });
 
