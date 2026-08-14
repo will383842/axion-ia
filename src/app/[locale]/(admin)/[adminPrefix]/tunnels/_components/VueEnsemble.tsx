@@ -11,7 +11,6 @@ import {
   AdminPageHeader,
   AdminStatCard,
   AdminTable,
-  AdminEmptyState,
   type AdminTableColumn,
 } from "@/components/admin/ui";
 import { FENETRES } from "@/features/admin-tunnels/query";
@@ -38,7 +37,20 @@ export function VueEnsemble({
       : 0;
 
   const colonnesTunnel: ReadonlyArray<AdminTableColumn<StatsTunnel>> = [
-    { key: "cle", header: "Tunnel d'entrée", cell: (r) => r.libelle, width: "38%" },
+    {
+      key: "cle",
+      header: "Tunnel d'entrée",
+      // 🔴 Lien EXPLICITE en cellule, et non plus `rowHref` (lien étiré sur la
+      // ligne entière). La ligne porte désormais une seconde action — ouvrir la
+      // page publique — et le contrat de `AdminTable` est clair : le lien étiré
+      // recouvre la ligne, donc il interdit tout autre élément cliquable.
+      cell: (r) => (
+        <Link href={`${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`} className="admin-link">
+          {r.libelle}
+        </Link>
+      ),
+      width: "38%",
+    },
     {
       key: "sessions",
       header: "Sessions",
@@ -150,20 +162,30 @@ export function VueEnsemble({
           page publicitaire : c&apos;est elle qui l&apos;a amené. La somme des lignes égale donc
           exactement le nombre de sessions.
         </p>
-        {synthese.parTunnel.length === 0 ? (
-          <AdminEmptyState
-            title="Aucune session sur la période"
-            description="Les tunnels apparaîtront dès la première visite mesurée."
-          />
-        ) : (
-          <AdminTable
-            columns={colonnesTunnel}
-            rows={synthese.parTunnel}
-            getRowId={(r) => r.cle}
-            rowHref={(r) => `${base}/prospects?fenetre=${jours}&tunnel=${r.cle}`}
-            caption="Sessions et conversions par tunnel d'entrée"
-          />
-        )}
+        {/* 🔴 Les trois pages sont TOUJOURS listées, à zéro s'il le faut. Le
+            tableau ne montrait auparavant que les tunnels ayant au moins une
+            session : sans trafic mesuré il restait vide, et un écran vide se lit
+            « cette page n'est pas suivie » — au lieu de « personne n'est encore
+            venu ». Le lien de droite ouvre la page publique, pour vérifier d'un
+            clic ce que voit un visiteur. */}
+        <AdminTable
+          columns={colonnesTunnel}
+          rows={synthese.parTunnel}
+          getRowId={(r) => r.cle}
+          rowAction={(r) =>
+            r.chemin ? (
+              <a
+                href={r.chemin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="admin-link admin-meta-small"
+              >
+                Voir la page ↗
+              </a>
+            ) : null
+          }
+          caption="Sessions et conversions par tunnel d'entrée"
+        />
       </section>
 
       <div className="mt-[var(--space-admin-6)] grid gap-[var(--space-admin-4)] lg:grid-cols-2">

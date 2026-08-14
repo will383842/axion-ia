@@ -11,29 +11,43 @@
 // qui reconstruit le temps par le bas, et un rapport nominatif — plan d'action,
 // feuille de route, limites assumées. Voir `src/content/roi/model/`.
 //
-// ⚠️ Les chiffres restent des HYPOTHÈSES DE MODÈLE, jamais une étude. La
-// section « Notre modèle d'estimation » les expose, et chaque tâche du rapport
-// porte sa propre justification. Ne pas réintroduire de formulation du type
-// « observé sur N entreprises » sans étude publiable : art. L121-2 du Code de
-// la consommation.
+// ⚠️ Les chiffres restent des HYPOTHÈSES DE MODÈLE, jamais une étude. Le bloc
+// « Le modèle, à découvert » les expose, et chaque tâche du rapport porte sa
+// propre justification. Ne pas réintroduire de formulation du type « observé
+// sur N entreprises » sans étude publiable : art. L121-2 du Code de la
+// consommation.
 //
-// Server Component pur ; seul `SimulatorFlow` porte du JS.
+// ── Coupe du 2026-08-14 : la page passe au format tunnel ──────────────────
+// Will, après lecture mobile : « la page a trop de texte, je veux exactement le
+// même niveau et le même design que les pages des autres tunnels de vente ».
+// Cinq sections éditoriales ont été retirées — photo d'en-tête isolée, mode
+// d'emploi en quatre cartes, tableau détaillé des hypothèses, portrait du
+// fondateur, cartes illustrées des secteurs. La page passait ~17 000 px ; il
+// en reste ~5 000.
+//
+// 🔴 Ce qui est CONSERVÉ, et pourquoi on ne le recoupe pas :
+//   - les 4 « ce que ce simulateur n'est pas » : ce sont les mentions qui
+//     tiennent la promesse commerciale à distance d'un engagement de résultat
+//     (obligation de MOYENS, cf. CGV). Elles ne sont pas du décor éditorial ;
+//   - les 7 hypothèses du modèle, repliées dans un accordéon CSS : un
+//     simulateur qui cache ses hypothèses ne vaut rien, mais elles n'ont pas
+//     à retarder la première question. Repliées, elles pèsent une ligne à
+//     l'écran et restent entières dans le DOM, donc indexées ;
+//   - la FAQ et le maillage secteurs / villes : c'est ce qui fait que `/roi`
+//     est la seule des trois pages de tunnel à être indexée. `/simulateur` et
+//     `/diagnostic` sont `noindex` : si `/roi` perd son contenu, plus aucune
+//     des trois n'existe pour Google.
+//
+// Server Component pur ; seul `SimulatorFlow` porte du JS. L'accordéon des
+// hypothèses réutilise `FaqAccordion`, qui est en `<details>/<summary>` pur :
+// zéro octet ajouté au First Load JS.
 
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  BarChart3,
-  Clock,
-  ListChecks,
-  Quote,
-  Route,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Clock, ListChecks, Route, ShieldCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
@@ -55,7 +69,6 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildWebPageJsonLd,
-  buildHowToJsonLd,
   buildItemListJsonLd,
   buildPageImageGraphJsonLd,
   buildPrimaryImageOfPage,
@@ -111,7 +124,9 @@ export default async function RoiPage({ params, searchParams }: Props) {
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
   const bannerImage = pageImages.find((i) => i.slot === "banner");
-  const portraitImage = pageImages.find((i) => i.slot === "portrait");
+  // Plus de `portrait` : la citation du fondateur a été retirée avec la coupe du
+  // 2026-08-14, et l'entrée correspondante a quitté le manifeste `/roi` — le
+  // sitemap images ne déclare que des images RÉELLEMENT affichées.
   const villes = getVillesIndexableNow().slice(0, 60);
 
   const creditFor = (src: string) => {
@@ -136,126 +151,96 @@ export default async function RoiPage({ params, searchParams }: Props) {
     { icon: ShieldCheck, label: isFr ? "Ce qui ne s'automatise pas" : "What cannot be automated" },
   ] as const;
 
-  const howItWorks = isFr
-    ? [
-        {
-          icon: Users,
-          name: "Décrivez votre entreprise",
-          text: "Secteur, effectif, outils déjà en place, et les fonctions qui vous prennent du temps. Quatre écrans, quatre appuis.",
-        },
-        {
-          icon: BarChart3,
-          name: "Donnez vos volumes réels",
-          text: "Combien de devis par semaine, de factures par mois, d'appels par jour. Toujours par tranche, jamais un chiffre exact — et « je ne sais pas » est une réponse valable.",
-        },
-        {
-          icon: ListChecks,
-          name: "Recevez votre plan d'action",
-          text: "Vos cinq premières tâches à automatiser, classées par rapport entre le gain et l'effort, chacune avec son gain annuel et son délai de mise en œuvre.",
-        },
-        {
-          icon: Route,
-          name: "Suivez la feuille de route",
-          text: "Ce qui est lançable sous trente jours, ce qui demande de la préparation, et les chantiers de fond. Avec les montants associés à chaque vague.",
-        },
-      ]
-    : [
-        {
-          icon: Users,
-          name: "Describe your company",
-          text: "Sector, headcount, tools already in place, and the functions that eat your time. Four screens, four taps.",
-        },
-        {
-          icon: BarChart3,
-          name: "Give your real volumes",
-          text: "How many quotes a week, invoices a month, calls a day. Always as a range, never an exact figure — and “I don't know” is a valid answer.",
-        },
-        {
-          icon: ListChecks,
-          name: "Get your action plan",
-          text: "Your first five tasks to automate, ranked by gain against effort, each with its annual gain and lead time.",
-        },
-        {
-          icon: Route,
-          name: "Follow the roadmap",
-          text: "What you can start within thirty days, what needs preparation, and the deeper projects. With the amount attached to each wave.",
-        },
-      ];
-
   // Hypothèses du modèle — E-E-A-T. Lues depuis le SSOT, jamais recopiées.
+  //
+  // Rendues dans un accordéon replié (`FaqAccordion`, CSS pur) et non plus dans
+  // un tableau de définitions déployé : elles occupaient à elles seules un écran
+  // et demi sur mobile. Repliées, elles pèsent sept lignes — et le contenu reste
+  // entier dans le DOM, donc lisible par un moteur comme par un lecteur d'écran.
   const assumptions = isFr
     ? [
         {
-          term: "Tâches au référentiel",
-          value: `${AUTOMATABLE_TASKS.length}`,
-          note: "Chaque tâche porte son temps unitaire de référence, la part de ce temps réellement supprimable, son délai de mise en œuvre et la justification de ce taux. Rien n'est agrégé sans être traçable.",
+          id: "referentiel",
+          question: `Tâches au référentiel — ${AUTOMATABLE_TASKS.length}`,
+          answer:
+            "Chaque tâche porte son temps unitaire de référence, la part de ce temps réellement supprimable, son délai de mise en œuvre et la justification de ce taux. Rien n'est agrégé sans être traçable.",
         },
         {
-          term: "Part supprimable la plus élevée",
-          value: `${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
-          note: "Jamais 100 %. Il reste toujours la relecture, la décision et l'envoi. Les tâches qui engagent votre responsabilité plafonnent bien plus bas.",
+          id: "part-supprimable",
+          question: `Part supprimable la plus élevée — ${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
+          answer:
+            "Jamais 100 %. Il reste toujours la relecture, la décision et l'envoi. Les tâches qui engagent votre responsabilité plafonnent bien plus bas.",
         },
         {
-          term: "Journée de travail",
-          value: `${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
-          note: "Durée légale française : 35 heures hebdomadaires réparties sur 5 jours.",
+          id: "journee",
+          question: `Journée de travail — ${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
+          answer: "Durée légale française : 35 heures hebdomadaires réparties sur 5 jours.",
         },
         {
-          term: "Jours ouvrés",
-          value: `${ROI_MODEL_CONSTANTS.workingDaysPerYear} / an`,
-          note: "Hors congés payés et RTT. Les volumes hebdomadaires sont annualisés sur 44 semaines ouvrées.",
+          id: "jours-ouvres",
+          question: `Jours ouvrés — ${ROI_MODEL_CONSTANTS.workingDaysPerYear} / an`,
+          answer:
+            "Hors congés payés et RTT. Les volumes hebdomadaires sont annualisés sur 44 semaines ouvrées.",
         },
         {
-          term: "Équivalent temps plein",
-          value: `${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("fr-FR")} h / an`,
-          note: "Durée légale annuelle du travail en France. Sert de dénominateur au calcul d'ETP récupérés.",
+          id: "etp",
+          question: `Équivalent temps plein — ${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("fr-FR")} h / an`,
+          answer:
+            "Durée légale annuelle du travail en France. Sert de dénominateur au calcul d'ETP récupérés.",
         },
         {
-          term: "Maturité numérique",
-          value: `${MATURITY_LEVELS.length} niveaux`,
-          note: "Vos outils actuels modulent le gain et le délai. Une entreprise encore sur papier récupère moins vite — mais elle peut lancer les mêmes actions immédiates.",
+          id: "maturite",
+          question: `Maturité numérique — ${MATURITY_LEVELS.length} niveaux`,
+          answer:
+            "Vos outils actuels modulent le gain et le délai. Une entreprise encore sur papier récupère moins vite — mais elle peut lancer les mêmes actions immédiates.",
         },
         {
-          term: "Plafond de vraisemblance",
-          value: "60 %",
-          note: "Les tâches du référentiel ne peuvent jamais représenter plus de 60 % de la capacité de votre équipe. Au-delà, l'estimation est réduite : le reste de la journée part dans votre métier, les déplacements et les imprévus.",
+          id: "plafond",
+          question: "Plafond de vraisemblance — 60 %",
+          answer:
+            "Les tâches du référentiel ne peuvent jamais représenter plus de 60 % de la capacité de votre équipe. Au-delà, l'estimation est réduite : le reste de la journée part dans votre métier, les déplacements et les imprévus.",
         },
       ]
     : [
         {
-          term: "Tasks in the catalogue",
-          value: `${AUTOMATABLE_TASKS.length}`,
-          note: "Each task carries its reference unit time, the share of that time genuinely removable, its lead time and the reasoning behind that rate. Nothing is aggregated without being traceable.",
+          id: "referentiel",
+          question: `Tasks in the catalogue — ${AUTOMATABLE_TASKS.length}`,
+          answer:
+            "Each task carries its reference unit time, the share of that time genuinely removable, its lead time and the reasoning behind that rate. Nothing is aggregated without being traceable.",
         },
         {
-          term: "Highest removable share",
-          value: `${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
-          note: "Never 100 %. Review, decision and sending always remain. Tasks that engage your liability cap far lower.",
+          id: "part-supprimable",
+          question: `Highest removable share — ${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
+          answer:
+            "Never 100 %. Review, decision and sending always remain. Tasks that engage your liability cap far lower.",
         },
         {
-          term: "Working day",
-          value: `${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
-          note: "French statutory duration: 35 hours a week over 5 days.",
+          id: "journee",
+          question: `Working day — ${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
+          answer: "French statutory duration: 35 hours a week over 5 days.",
         },
         {
-          term: "Working days",
-          value: `${ROI_MODEL_CONSTANTS.workingDaysPerYear} / year`,
-          note: "Excluding paid leave and RTT. Weekly volumes are annualised over 44 working weeks.",
+          id: "jours-ouvres",
+          question: `Working days — ${ROI_MODEL_CONSTANTS.workingDaysPerYear} / year`,
+          answer:
+            "Excluding paid leave and RTT. Weekly volumes are annualised over 44 working weeks.",
         },
         {
-          term: "Full-time equivalent",
-          value: `${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("en-GB")} h / year`,
-          note: "French statutory annual working time. Denominator for the FTE-recovered figure.",
+          id: "etp",
+          question: `Full-time equivalent — ${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("en-GB")} h / year`,
+          answer: "French statutory annual working time. Denominator for the FTE-recovered figure.",
         },
         {
-          term: "Digital maturity",
-          value: `${MATURITY_LEVELS.length} levels`,
-          note: "Your current tools modulate both gain and lead time. A paper-based company recovers more slowly — but it can start the same immediate actions.",
+          id: "maturite",
+          question: `Digital maturity — ${MATURITY_LEVELS.length} levels`,
+          answer:
+            "Your current tools modulate both gain and lead time. A paper-based company recovers more slowly — but it can start the same immediate actions.",
         },
         {
-          term: "Plausibility ceiling",
-          value: "60 %",
-          note: "Catalogued tasks can never represent more than 60 % of your team's capacity. Beyond that the estimate is scaled down: the rest of the day goes to your actual trade, travel and the unexpected.",
+          id: "plafond",
+          question: "Plausibility ceiling — 60 %",
+          answer:
+            "Catalogued tasks can never represent more than 60 % of your team's capacity. Beyond that the estimate is scaled down: the rest of the day goes to your actual trade, travel and the unexpected.",
         },
       ];
 
@@ -397,18 +382,13 @@ export default async function RoiPage({ params, searchParams }: Props) {
         ],
   } as const;
 
-  const howToJsonLd = buildHowToJsonLd({
-    locale: loc,
-    path: PATH,
-    name: isFr
-      ? "Comment estimer les gains d'une automatisation par l'IA dans son entreprise"
-      : "How to estimate the gains of AI automation in your company",
-    description: isFr
-      ? "Quatre étapes pour obtenir, avec le simulateur Axion-IA, un rapport chiffré des tâches à automatiser en priorité dans votre entreprise."
-      : "Four steps to obtain, with the Axion-IA simulator, a costed report of the tasks to automate first in your company.",
-    totalTime: "PT4M",
-    steps: howItWorks.map((s) => ({ name: s.name, text: s.text })),
-  });
+  // 🔴 Le `HowTo` a été RETIRÉ avec la section « Mode d'emploi » qui en était le
+  // miroir visible, pas oublié. Un balisage structuré doit décrire ce que la
+  // page affiche : garder les quatre étapes en JSON-LD alors qu'aucune n'est
+  // plus rendue serait exactement le cas que Google qualifie de contenu
+  // structuré non visible, sanctionné par l'ignorance de tout le balisage de la
+  // page. Si le mode d'emploi revient un jour à l'écran, `buildHowToJsonLd`
+  // existe toujours et se réimporte en une ligne.
 
   const sectorsItemListJsonLd = buildItemListJsonLd({
     locale: loc,
@@ -432,7 +412,6 @@ export default async function RoiPage({ params, searchParams }: Props) {
     <>
       <JsonLd data={webPageJsonLd} />
       <JsonLd data={webApplicationJsonLd} />
-      <JsonLd data={howToJsonLd} />
       <JsonLd data={sectorsItemListJsonLd} />
       {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
       <JsonLd data={buildFaqSpeakableJsonLd({ items: faqItems, dateModified: MODEL_REVISED_AT })} />
@@ -444,31 +423,118 @@ export default async function RoiPage({ params, searchParams }: Props) {
       </div>
 
       {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
-      <Section
-        titleAs="h1"
-        eyebrow={
-          isFr
-            ? "Simulateur de gains · gratuit, sans inscription"
-            : "Gains simulator · free, no sign-up"
-        }
-        title={isFr ? "Quelles tâches votre entreprise" : "Which tasks should your company"}
-        titleEm={isFr ? "doit automatiser" : "automate"}
-        titleTail={isFr ? " en premier ?" : " first?"}
-        description={
-          isFr
-            ? "Dix questions sur vos volumes réels — devis, factures, appels, comptes-rendus — et vous repartez avec un rapport nominatif : vos cinq premières tâches à automatiser, le temps et l'argent récupérables, et le calendrier pour y arriver."
-            : "Ten questions about your real volumes — quotes, invoices, calls, minutes — and you leave with a tailored report: your first five tasks to automate, the time and money recoverable, and the schedule to get there."
-        }
-        media={
-          heroImage ? (
+      {/* ── L'OUTIL EN TÊTE, DANS LE MÊME HABIT QUE LE TUNNEL ───────────
+          Avant le 2026-08-14, cette page ouvrait sur un en-tête complet —
+          titre en trois lignes, photo, deux boutons, liste de gages — et le
+          simulateur n'arrivait qu'en DEUXIÈME section. Sur un téléphone,
+          l'outil n'était visible sur aucun écran d'accueil : il fallait faire
+          défiler pour découvrir qu'il existait, sur une page de 17 000 px.
+          Le visiteur venu de Google repartait avant.
+
+          Désormais l'outil EST l'accueil, et il porte l'habit sombre des pages
+          de tunnel (`tone="mocha"`, le ton sombre natif du site + le thème
+          sombre du questionnaire). Le contenu de référencement suit dessous —
+          il reste indispensable pour que la page se positionne, mais il ne
+          bloque plus l'accès à l'outil. */}
+      {/* Rembourrage vertical resserré : le gabarit de section applique
+          `py-24` sur mobile, soit 96 px perdus en haut d'un écran de 664 px
+          avant même le premier mot. Sur cette page l'objectif est que la
+          première QUESTION soit visible sans défiler. */}
+      {/* 🔴 `.bg-vsl` et NON `tone="mocha"`. Les deux sont sombres, mais pas de
+          la même façon : `bg-mocha-rich` est le brun du site, plus clair, et le
+          commentaire de `globals.css` le dit — « `.bg-vsl` est plus sombre que
+          `.bg-mocha-rich` ». `.bg-vsl` porte l'encre `--color-ink` et les deux
+          halos qui font l'identité des pages `/diagnostic` et `/simulateur`.
+          Un visiteur qui passe d'une page à l'autre doit reconnaître le même
+          endroit : c'est tout l'objet. On sort donc du gabarit `Section` pour
+          reprendre EXACTEMENT le motif des pages de tunnel. */}
+      <section id="simulateur" className="bg-vsl scroll-mt-24 pt-8 pb-16 sm:pt-10 sm:pb-20">
+        <Container className="max-w-2xl">
+          {/* Typographie alignée sur `/simulateur` et `/diagnostic` : 28 px sur
+              mobile, sans empattement, interlignage serré. Le grand titre serif
+              du site prenait trois lignes et repoussait l'outil hors de
+              l'écran. */}
+          <h1 className="text-mocha-fg text-[28px] leading-[1.12] font-bold tracking-tight text-balance sm:text-[36px]">
+            {isFr ? (
+              <>
+                Quelles tâches votre entreprise{" "}
+                <em className="text-terracotta-on-mocha not-italic">doit automatiser</em> en premier
+                ?
+              </>
+            ) : (
+              <>
+                Which tasks should your company{" "}
+                <em className="text-terracotta-on-mocha not-italic">automate</em> first?
+              </>
+            )}
+          </h1>
+
+          {/* 🔴 Intro d'UNE ligne, reprise mot pour mot de `/simulateur`.
+              La version longue — « vos cinq premières tâches, le temps et
+              l'argent récupérables, et le calendrier pour y arriver » — tenait
+              en quatre lignes sur mobile et repoussait d'autant la première
+              question. Sur une page dont le seul travail est de faire
+              commencer le questionnaire, tout ce qui précède la première
+              question est du temps pendant lequel on peut perdre le visiteur.
+              Le détail du modèle est déjà repris plus bas, où il rassure ceux
+              qui le cherchent sans retarder ceux qui veulent commencer. */}
+          <p className="text-mocha-fg-muted mt-3 text-[16px] leading-relaxed text-pretty">
+            {isFr
+              ? "Une dizaine de questions sur vos volumes réels. Trois minutes, sans inscription."
+              : "A dozen questions about your real volumes. Three minutes, no sign-up."}
+          </p>
+
+          {/* Même cadre bordé que dans le tunnel : il détache le questionnaire
+              du fond et signale « ici, on agit ». Sans lui, l'outil flottait
+              sur l'encre et se confondait avec le texte. */}
+          <div className="border-border-on-mocha bg-mocha/40 mt-6 rounded-3xl border p-5 sm:p-8">
+            <SimulatorFlow
+              locale={loc}
+              initialAnswers={initialAnswers}
+              initialShowReport={initialShowReport}
+              tone="dark"
+            />
+          </div>
+
+          {/* Les gages descendent SOUS l'outil : avant, ils s'intercalaient
+              entre le titre et le questionnaire et retardaient la première
+              question de plusieurs centaines de pixels. */}
+          <ul
+            role="list"
+            className="mt-8 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-6"
+          >
+            {heroChips.map((chip) => (
+              <li
+                key={chip.label}
+                className="text-mocha-fg/75 inline-flex items-center gap-2 text-sm"
+              >
+                <chip.icon
+                  aria-hidden="true"
+                  className="text-terracotta-on-mocha h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                />
+                <span>{chip.label}</span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+      {/* ── PHOTO REPRÉSENTATIVE + RENVOI VERS L'AUDIT ───────────────────
+          Une seule photo ici, et c'est celle marquée `representativeOfPage`
+          dans le manifeste : c'est elle qui sert d'`og:image` et de
+          `primaryImageOfPage`. Une image annoncée dans le balisage mais absente
+          de la page est un mensonge structuré — on la garde donc à l'écran,
+          compacte, plutôt que de la retirer du manifeste. */}
+      {heroImage ? (
+        <Section tone="canvas" className="py-12 sm:py-14 lg:py-16">
+          <Container className="max-w-2xl">
             <figure>
               <Image
                 src={heroImage.src}
                 alt={isFr ? heroImage.altFr : heroImage.altEn}
                 width={heroImage.width}
                 height={heroImage.height}
-                priority
-                sizes="(max-width: 1024px) 100vw, 48vw"
+                sizes="(max-width: 640px) 100vw, 520px"
                 className="mx-auto h-auto w-full max-w-[520px] rounded-2xl"
               />
               <UnsplashCredit
@@ -477,48 +543,97 @@ export default async function RoiPage({ params, searchParams }: Props) {
                 className="text-center text-[11px]"
               />
             </figure>
-          ) : undefined
+            <div className="mt-6 flex justify-center">
+              <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
+                {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Cta>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* ── LE MODÈLE, À DÉCOUVERT ───────────────────────────────────────
+          Ce qui reste du chapitre « Notre modèle d'estimation » : une phrase,
+          les quatre mentions qui bornent la promesse, et les sept hypothèses
+          repliées. Le tableau de définitions déployé occupait un écran et demi
+          sur mobile pour une information que presque personne ne lit avant
+          d'avoir vu son résultat — mais que tout le monde doit pouvoir
+          retrouver. */}
+      <Section
+        id="methodologie"
+        tone="sand"
+        className="py-16 sm:py-20 lg:py-24"
+        eyebrow={isFr ? "Transparence" : "Transparency"}
+        title={isFr ? "Le modèle," : "The model,"}
+        titleEm={isFr ? "à découvert" : "in the open"}
+        description={
+          isFr
+            ? "Un simulateur qui cache ses hypothèses ne vaut rien. Voici ce que le nôtre suppose, et ce qu'il ne prétend pas savoir."
+            : "A simulator that hides its assumptions is worthless. Here is what ours assumes, and what it doesn't claim to know."
         }
       >
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-3">
-            <Cta href="#simulateur" variant="primary" size="lg" track="roi-hero-simulateur">
-              {isFr ? "Commencer le diagnostic" : "Start the diagnostic"}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* 🔴 Ces quatre lignes ne sont pas de l'habillage éditorial : ce sont
+              elles qui maintiennent l'estimation du côté de l'obligation de
+              MOYENS. Les retirer ferait du simulateur une promesse chiffrée. */}
+          <div className="border-terracotta/30 bg-paper shadow-subtle rounded-2xl border-2 p-5 sm:p-6">
+            <h3 className="text-fg text-base font-bold tracking-tight">
+              {isFr ? "Ce que ce simulateur n'est pas" : "What this simulator is not"}
+            </h3>
+            <ul role="list" className="mt-3 flex flex-col gap-2.5">
+              {(isFr
+                ? [
+                    "Ce n'est pas une étude : nous ne publions aucun panel d'entreprises mesurées.",
+                    "Ce n'est pas un engagement de résultat : vos gains dépendent de votre adoption interne.",
+                    "Ce n'est pas un devis : aucun prix n'est établi sans étude de votre contexte.",
+                    "Ce n'est pas un audit : il repose sur ce que vous déclarez, pas sur des mesures.",
+                  ]
+                : [
+                    "It is not a study: we publish no panel of measured companies.",
+                    "It is not a performance guarantee: your gains depend on internal adoption.",
+                    "It is not a quote: no price is set without studying your context.",
+                    "It is not an audit: it rests on what you declare, not on measurements.",
+                  ]
+              ).map((item) => (
+                <li
+                  key={item}
+                  className="text-fg-soft flex items-start gap-2.5 text-[13px] leading-relaxed"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="text-terracotta mt-1.5 h-1 w-1 shrink-0 rounded-full bg-current"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="text-fg mt-5 text-[15px] leading-relaxed" data-speakable data-answer>
+              {isFr
+                ? "Pour un chiffrage réel, il faut mesurer vos process avant et après. C'est l'objet de l'audit Axion-IA : relevé des tâches, mesure du temps passé, plan d'implémentation chiffré."
+                : "For real figures, your processes must be measured before and after. That is what the Axion-IA audit does: a task inventory, a measurement of time spent, a costed implementation plan."}
+            </p>
+            <Cta href="/audit" variant="primary" size="md" className="mt-4" track="roi-metho-audit">
+              {isFr ? "Découvrir l'audit" : "Discover the audit"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
-            <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
-              {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
-            </Cta>
           </div>
-          <ul role="list" className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-5">
-            {heroChips.map((chip) => (
-              <li key={chip.label} className="text-fg-soft inline-flex items-center gap-2 text-sm">
-                <chip.icon
-                  aria-hidden="true"
-                  className="text-terracotta h-4 w-4 shrink-0"
-                  strokeWidth={2}
-                />
-                <span>{chip.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
 
-      {/* ── LE SIMULATEUR ────────────────────────────────────────────────── */}
-      <Section id="simulateur" tone="canvas">
-        <Container className="max-w-2xl">
-          <SimulatorFlow
-            locale={loc}
-            initialAnswers={initialAnswers}
-            initialShowReport={initialShowReport}
-          />
-        </Container>
+          {/* Accordéon `<details>` pur — aucun octet de JS ajouté. Replié, il
+              tient en sept lignes ; déplié, il livre exactement ce que le
+              tableau livrait avant. */}
+          <div>
+            <h3 className="text-fg text-base font-bold tracking-tight">
+              {isFr ? "Les hypothèses, une par une" : "The assumptions, one by one"}
+            </h3>
+            <FaqAccordion items={assumptions} emitJsonLd={false} className="mt-1" />
+          </div>
+        </div>
       </Section>
 
       {/* ── BANDEAU ──────────────────────────────────────────────────────── */}
       {bannerImage ? (
-        <Container className="pt-12 md:pt-16">
+        <Container className="pt-10 md:pt-12">
           <figure>
             <Image
               src={bannerImage.src}
@@ -543,241 +658,10 @@ export default async function RoiPage({ params, searchParams }: Props) {
         </Container>
       ) : null}
 
-      {/* ── MODE D'EMPLOI (miroir visible du HowTo JSON-LD) ──────────────── */}
-      <Section
-        id="mode-emploi"
-        tone="paper"
-        eyebrow={isFr ? "Mode d'emploi" : "How it works"}
-        title={isFr ? "Quatre étapes," : "Four steps,"}
-        titleEm={isFr ? "trois minutes" : "three minutes"}
-        description={
-          isFr
-            ? "Le simulateur ne vous demande rien que vous ne sachiez déjà sur votre entreprise. Aucun chiffre à taper : tout se répond par tranche, en un appui."
-            : "The simulator asks nothing you don't already know about your company. No figure to type: everything is answered as a range, in one tap."
-        }
-      >
-        <ol role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-4">
-          {howItWorks.map((s, i) => (
-            <li
-              key={s.name}
-              id={`step-${i + 1}`}
-              className="border-border bg-canvas shadow-subtle flex h-full flex-col gap-2.5 rounded-2xl border p-5"
-            >
-              <div className="flex items-center gap-2.5">
-                <span className="bg-terracotta/10 text-terracotta inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                  <s.icon aria-hidden="true" className="h-4 w-4" />
-                </span>
-                <span className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase tabular-nums">
-                  {isFr ? "Étape" : "Step"} {i + 1}
-                </span>
-              </div>
-              <h3 className="text-fg text-[15px] leading-tight font-semibold tracking-tight">
-                {s.name}
-              </h3>
-              <p className="text-fg-soft text-[13px] leading-relaxed">{s.text}</p>
-            </li>
-          ))}
-        </ol>
-      </Section>
-
-      {/* ── MODÈLE D'ESTIMATION (E-E-A-T) ────────────────────────────────── */}
-      <Section
-        id="methodologie"
-        tone="sand"
-        eyebrow={isFr ? "Transparence" : "Transparency"}
-        title={isFr ? "Notre modèle" : "Our estimation"}
-        titleEm={isFr ? "d'estimation, à découvert" : "model, in the open"}
-        description={
-          isFr
-            ? "Un simulateur qui cache ses hypothèses ne vaut rien. Voici exactement ce que le nôtre suppose, et ce qu'il ne prétend pas savoir."
-            : "A simulator that hides its assumptions is worthless. Here is exactly what ours assumes, and what it doesn't claim to know."
-        }
-      >
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_1fr]">
-          <dl className="border-border divide-border divide-y border-y">
-            {assumptions.map((a) => (
-              <div key={a.term} className="grid grid-cols-1 gap-1 py-4 sm:grid-cols-[1fr_auto]">
-                <dt className="text-fg text-[15px] font-semibold tracking-tight">{a.term}</dt>
-                <dd className="text-terracotta-deep order-first text-lg font-bold tabular-nums sm:order-none sm:text-right sm:text-base">
-                  {a.value}
-                </dd>
-                <p className="text-fg-soft text-[13px] leading-relaxed sm:col-span-2">{a.note}</p>
-              </div>
-            ))}
-          </dl>
-
-          <div className="flex flex-col gap-5">
-            <div className="border-terracotta/30 bg-paper shadow-subtle rounded-2xl border-2 p-6">
-              <h3 className="text-fg text-base font-bold tracking-tight">
-                {isFr ? "Ce que ce simulateur n'est pas" : "What this simulator is not"}
-              </h3>
-              <ul role="list" className="mt-3 flex flex-col gap-2.5">
-                {(isFr
-                  ? [
-                      "Ce n'est pas une étude : nous ne publions aucun panel d'entreprises mesurées.",
-                      "Ce n'est pas un engagement de résultat : vos gains dépendent de votre adoption interne.",
-                      "Ce n'est pas un devis : aucun prix n'est établi sans étude de votre contexte.",
-                      "Ce n'est pas un audit : il repose sur ce que vous déclarez, pas sur des mesures.",
-                    ]
-                  : [
-                      "It is not a study: we publish no panel of measured companies.",
-                      "It is not a performance guarantee: your gains depend on internal adoption.",
-                      "It is not a quote: no price is set without studying your context.",
-                      "It is not an audit: it rests on what you declare, not on measurements.",
-                    ]
-                ).map((item) => (
-                  <li
-                    key={item}
-                    className="text-fg-soft flex items-start gap-2.5 text-[13px] leading-relaxed"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="text-terracotta mt-1.5 h-1 w-1 shrink-0 rounded-full bg-current"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="bg-halo-warm border-border rounded-2xl border p-6">
-              <p className="text-fg text-[15px] leading-relaxed" data-speakable data-answer>
-                {isFr
-                  ? "Pour obtenir un chiffrage réel, il faut mesurer vos process avant et après. C'est précisément ce que fait l'audit Axion-IA : un relevé des tâches, une mesure du temps passé, puis un plan d'implémentation chiffré."
-                  : "To get real figures, your processes must be measured before and after. That is precisely what the Axion-IA audit does: a task inventory, a measurement of time spent, then a costed implementation plan."}
-              </p>
-              <Cta
-                href="/audit"
-                variant="primary"
-                size="md"
-                className="mt-4"
-                track="roi-metho-audit"
-              >
-                {isFr ? "Découvrir l'audit" : "Discover the audit"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </Cta>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── SECTEURS ─────────────────────────────────────────────────────── */}
-      <Section
-        id="secteurs"
-        eyebrow={isFr ? "Par secteur" : "By sector"}
-        title={isFr ? "Les gains ne tombent pas" : "Gains don't land"}
-        titleEm={isFr ? "au même endroit" : "in the same place"}
-        description={
-          isFr
-            ? "Un cabinet juridique gagne surtout sur la recherche documentaire ; un cabinet comptable, sur le rapprochement d'écritures. Le simulateur ajuste les temps et les tâches à votre métier — explorez aussi la page dédiée au vôtre."
-            : "A law firm mostly gains on documentary research; an accounting firm, on reconciling entries. The simulator adjusts times and tasks to your trade — explore the page dedicated to yours as well."
-        }
-      >
-        <ul
-          role="list"
-          className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
-        >
-          {CLIENT_SECTORS.map((s) => (
-            <li key={s.slug}>
-              <Link
-                href={`/secteurs/${s.slug}` as never}
-                className="shadow-subtle hover:shadow-elevated group bg-paper flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={`/illustrations/secteurs/${s.slug}.avif`}
-                    alt={
-                      isFr
-                        ? `Gains de temps grâce à l'IA pour ${s.fullFr} — Axion-IA`
-                        : `AI time savings for ${s.fullFr} — Axion-IA`
-                    }
-                    fill
-                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
-                    loading="lazy"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="bg-paper/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
-                  >
-                    {s.emoji}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col gap-1 p-4">
-                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
-                  <span className="text-terracotta mt-auto text-[13px] font-medium">
-                    {isFr ? "Voir →" : "See →"}
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* ── ENGAGEMENT FONDATEUR ─────────────────────────────────────────── */}
-      {portraitImage ? (
-        <Section id="engagement" tone="mocha">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-            <Image
-              src={portraitImage.src}
-              alt={isFr ? portraitImage.altFr : portraitImage.altEn}
-              width={portraitImage.width}
-              height={portraitImage.height}
-              sizes="(max-width: 1024px) 60vw, 30vw"
-              loading="lazy"
-              className="mx-auto h-auto w-full max-w-[280px] rounded-2xl object-cover"
-            />
-            <figure className="flex flex-col gap-4">
-              <Quote aria-hidden="true" className="text-terracotta h-8 w-8" />
-              <blockquote
-                className="text-mocha-fg text-lg leading-relaxed font-medium md:text-xl"
-                data-speakable
-              >
-                {isFr
-                  ? "« La plupart des calculateurs de ROI vous demandent d'inventer le chiffre qui sert ensuite à vous impressionner. J'ai préféré ne demander que ce que vous savez, et vous dire aussi ce qui ne s'automatise pas. Un outil qui sait dire non est le seul qu'on croit quand il dit oui. »"
-                  : "“Most ROI calculators ask you to invent the very figure they then use to impress you. I chose to ask only what you know, and to tell you what cannot be automated too. A tool that can say no is the only one you believe when it says yes.”"}
-              </blockquote>
-              <figcaption className="text-mocha-fg/80 text-sm">
-                {isFr
-                  ? "Williams — Fondateur d'Axion-IA, auteur du modèle d'estimation"
-                  : "Williams — Founder of Axion-IA, author of the estimation model"}
-              </figcaption>
-            </figure>
-          </div>
-        </Section>
-      ) : null}
-
-      {/* ── VILLES (GEO / maillage) ──────────────────────────────────────── */}
-      <Section
-        id="villes"
-        tone="sand"
-        eyebrow={isFr ? "Partout en France" : "Across France"}
-        title={isFr ? "Faites gagner du temps à vos équipes," : "Save your teams time,"}
-        titleEm={isFr ? "près de chez vous" : "near you"}
-        description={
-          isFr
-            ? "Nous formons vos équipes en présentiel dans toute la France. Trouvez votre ville :"
-            : "We train your teams in person across France. Find your city:"
-        }
-      >
-        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
-          {villes.map((v) => (
-            <li key={v.slug}>
-              <Link
-                href={`/formations/par-ville/${v.slug}` as never}
-                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
-              >
-                {isFr ? `Formation IA ${v.nameFr}` : `AI training ${v.nameFr}`}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
       {/* ── FAQ (rendue — le FAQPage JSON-LD est émis plus haut) ─────────── */}
       <Section
         id="faq"
+        className="py-16 sm:py-20 lg:py-24"
         eyebrow={isFr ? "Questions fréquentes" : "Frequently asked"}
         title={isFr ? "Vos questions sur" : "Your questions about"}
         titleEm={isFr ? "l'estimation des gains" : "estimating the gains"}
@@ -785,6 +669,80 @@ export default async function RoiPage({ params, searchParams }: Props) {
         <div className="max-w-3xl">
           <FaqAccordion items={faqItems} emitJsonLd={false} />
         </div>
+      </Section>
+
+      {/* ── MAILLAGE : SECTEURS ET VILLES ────────────────────────────────
+          Les dix secteurs étaient rendus en cartes illustrées, les soixante
+          villes en pastilles : deux traitements pour la même chose, et la
+          grille de photos pesait à elle seule plus d'un écran. Un seul
+          traitement désormais, en pastilles — le maillage interne (les ~70
+          liens qui font vivre cette page dans l'index) est intact, l'encombrement
+          divisé. */}
+      <Section
+        id="ou-aller"
+        tone="sand"
+        className="py-16 sm:py-20 lg:py-24"
+        eyebrow={isFr ? "Aller au précis" : "Get specific"}
+        title={isFr ? "Les gains ne tombent pas" : "Gains don't land"}
+        titleEm={isFr ? "au même endroit" : "in the same place"}
+        description={
+          isFr
+            ? "Un cabinet juridique gagne surtout sur la recherche documentaire ; un cabinet comptable, sur le rapprochement d'écritures. Le simulateur ajuste les temps à votre métier — et nous formons vos équipes en présentiel partout en France."
+            : "A law firm mostly gains on documentary research; an accounting firm, on reconciling entries. The simulator adjusts times to your trade — and we train your teams in person across France."
+        }
+      >
+        <h3 className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase">
+          {isFr ? "Par secteur" : "By sector"}
+        </h3>
+        <ul role="list" className="mt-3 flex flex-wrap gap-2">
+          {CLIENT_SECTORS.map((s) => (
+            <li key={s.slug}>
+              <Link
+                href={`/secteurs/${s.slug}` as never}
+                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+              >
+                <span aria-hidden="true">{s.emoji}</span>
+                {s.labelFr}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* 🔴 Les soixante villes sont REPLIÉES, pas réduites. Déployées, elles
+            occupaient à elles seules trois écrans de téléphone — soit un tiers
+            de la page — pour soixante libellés quasi identiques. Repliées, elles
+            tiennent en une ligne, et les soixante liens restent dans le DOM :
+            `<details>` masque visuellement, il ne retire rien du document, donc
+            le maillage interne est intact pour les moteurs comme pour un lecteur
+            d'écran. Ne pas remplacer par un rendu conditionnel en JS, qui lui
+            supprimerait vraiment les liens. */}
+        <details className="group border-border mt-8 border-t">
+          <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-[15px] font-medium">
+            <span>
+              {isFr
+                ? `Formations en présentiel dans ${villes.length} villes`
+                : `In-person training in ${villes.length} cities`}
+            </span>
+            <span
+              aria-hidden="true"
+              className="text-fg-muted shrink-0 text-xl leading-none transition-transform group-open:rotate-45"
+            >
+              +
+            </span>
+          </summary>
+          <ul role="list" className="flex flex-wrap gap-2 pb-2">
+            {villes.map((v) => (
+              <li key={v.slug}>
+                <Link
+                  href={`/formations/par-ville/${v.slug}` as never}
+                  className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+                >
+                  {isFr ? `Formation IA ${v.nameFr}` : `AI training ${v.nameFr}`}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </details>
       </Section>
 
       {/* ── CTA FINAL ────────────────────────────────────────────────────── */}

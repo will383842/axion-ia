@@ -1519,18 +1519,12 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         height: 800,
         slot: "grid",
       },
-      {
-        src: "/illustrations/home-founder-william.avif",
-        nameFr: "Williams — Fondateur Axion-IA, auteur du modèle d'estimation",
-        nameEn: "Williams — Axion-IA founder, author of the estimation model",
-        altFr:
-          "Portrait de Williams, fondateur d'Axion-IA. Il conçoit les formations IA dont ce simulateur estime les gains de temps pour les équipes.",
-        altEn:
-          "Portrait of Williams, Axion-IA founder. He designs the AI trainings whose time savings this simulator estimates for teams.",
-        width: 800,
-        height: 1000,
-        slot: "portrait",
-      },
+      // 🔴 Le portrait du fondateur (`/illustrations/home-founder-william.avif`,
+      // slot `portrait`) a été retiré de CETTE page le 2026-08-14 : la citation
+      // qu'il accompagnait a disparu avec la coupe de `/roi` au format tunnel.
+      // Le fichier existe toujours et reste déclaré sur les pages qui l'affichent
+      // réellement — il n'a rien à faire dans le sitemap images d'une page qui ne
+      // le rend plus (cf. l'avertissement en tête de `sitemap-images-services`).
     ],
   },
   ...SECTOR_PAGE_IMAGES,

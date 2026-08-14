@@ -7,7 +7,13 @@
 // nombre plausible mais mensonger.
 
 import { describe, it, expect } from "vitest";
-import { agregerTunnels, libelleEcran, type LigneTunnel } from "@/features/admin-tunnels/aggregate";
+import {
+  agregerTunnels,
+  libelleEcran,
+  TUNNELS_CONNUS,
+  type LigneTunnel,
+} from "@/features/admin-tunnels/aggregate";
+import { FUNNEL_KEYS } from "@/lib/schemas/funnel-event-schema";
 
 const T0 = new Date("2026-08-01T10:00:00.000Z");
 
@@ -134,9 +140,31 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     ];
 
     const parTunnel = agregerTunnels(lignes).parTunnel;
-    expect(parTunnel).toHaveLength(1);
+    // Les trois tunnels connus sont toujours là ; un seul porte la session.
+    expect(parTunnel).toHaveLength(3);
     expect(parTunnel[0]?.cle).toBe("diagnostic");
     expect(parTunnel[0]?.questionnairesTermines).toBe(1);
+    expect(parTunnel.find((t) => t.cle === "simulateur")?.sessions).toBe(0);
+  });
+
+  it("liste les TROIS tunnels même sans une seule balise", () => {
+    // 🔴 C'est l'invariant qui a motivé le changement : `funnel_events` était
+    // vide en production, le tableau ne rendait donc rien, et l'absence se
+    // lisait « /roi n'est pas suivie » au lieu de « personne n'est venu ».
+    const parTunnel = agregerTunnels([]).parTunnel;
+    expect(parTunnel.map((t) => t.cle)).toEqual(
+      expect.arrayContaining(["diagnostic", "simulateur", "roi"]),
+    );
+    expect(parTunnel).toHaveLength(3);
+    expect(parTunnel.every((t) => t.sessions === 0)).toBe(true);
+    // Chaque ligne porte de quoi ouvrir la page publique depuis la console.
+    expect(parTunnel.find((t) => t.cle === "roi")?.chemin).toBe("/fr/roi");
+  });
+
+  it("couvre toutes les clés admises par le schéma — aucune page suivie sans ligne", () => {
+    // Une clé ajoutée à `FUNNEL_KEYS` et oubliée dans `TUNNELS_CONNUS`
+    // produirait une page mesurée mais invisible dans la console.
+    expect([...TUNNELS_CONNUS].map((t) => t.cle).sort()).toEqual([...FUNNEL_KEYS].sort());
   });
 
   it("SOMME exactement au nombre de sessions — la propriété qui rend les taux justes", () => {

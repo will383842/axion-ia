@@ -14,7 +14,7 @@ import {
 } from "@/components/admin/ui";
 import { FENETRES } from "@/features/admin-tunnels/query";
 import { FUNNEL_KEYS } from "@/lib/schemas/funnel-event-schema";
-import { libelleEcran } from "@/features/admin-tunnels/aggregate";
+import { libelleEcran, TUNNELS_CONNUS } from "@/features/admin-tunnels/aggregate";
 import type {
   AbandonEcran,
   LigneRepartition,
@@ -42,11 +42,12 @@ export function VueProspects({
 }): React.ReactElement {
   const base = `/fr/${adminPrefix}/tunnels/prospects`;
 
-  const LIBELLES: Readonly<Record<string, string>> = {
-    diagnostic: "Page publicitaire",
-    simulateur: "Questionnaire nu",
-    roi: "Questionnaire public",
-  };
+  // Noms courts des filtres, dérivés de la SOURCE UNIQUE des tunnels. Cette
+  // table était recopiée à la main ici : une page ajoutée d'un côté et pas de
+  // l'autre affichait sa clé technique en guise de nom, sans rien casser.
+  const LIBELLES: Readonly<Record<string, string>> = Object.fromEntries(
+    TUNNELS_CONNUS.map((t) => [t.cle, t.libelle]),
+  );
 
   /** Conserve les deux filtres d'un lien à l'autre. */
   const lien = (f: number, t: string | null): string =>
