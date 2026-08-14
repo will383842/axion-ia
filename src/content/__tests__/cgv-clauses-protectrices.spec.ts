@@ -235,15 +235,28 @@ describe("CGV — produits numériques", () => {
     );
   });
 
-  it("la médiation ne devient pas mensongère : l'engagement couvre aussi le numérique", () => {
-    // 🔴 La section affirme qu'Axion-IA ne vend rien aux consommateurs. Ouvrir
-    // une boutique sans toucher à cette phrase la rendrait FAUSSE sur un
-    // support contractuel. L'adhésion à un médiateur est une obligation légale
-    // (L.612-1), pas une option : la promesse doit couvrir les deux canaux.
-    const b = section("Particulier — médiation de la consommation");
-    expect(b).toMatch(/aucun produit numérique/);
-    expect(b).toMatch(/aucun produit numérique ne lui sera vendu, avant cette adhésion/);
-  });
+  /**
+   * 🔴 2026-08-14, DÉCISION WILL — un test vérifiait ici que la section
+   * « Particulier — médiation de la consommation » étendait son engagement aux
+   * produits numériques (« aucun produit numérique ne lui sera vendu, avant
+   * cette adhésion »). Cet engagement a été RETIRÉ à sa demande : il
+   * transformait une contrainte légale en engagement contractuel opposable.
+   *
+   * Le test est donc retiré avec lui — un test qui verrouille une clause
+   * supprimée ne garde rien, il empêche seulement de la supprimer.
+   *
+   * ⚠️ NE PAS LE RÉTABLIR « pour bien faire » sans en reparler à Will : le
+   * retrait est délibéré et documenté dans `legal.ts` au-dessus de la section.
+   *
+   * 🔴 CE QUI RESTE VRAI MALGRÉ CE RETRAIT, et qui n'est plus verrouillé par
+   * aucun test : l'art. L.612-1 impose d'avoir adhéré à un médiateur agréé
+   * CECMC dès qu'un CONSOMMATEUR peut acheter — un fichier vendu à un
+   * particulier y est soumis exactement comme une formation, le déclencheur
+   * étant la qualité de l'acheteur et non la nature du produit. Et la phrase
+   * « À ce jour, Axion-IA ne commercialise aucune prestation auprès de
+   * consommateurs » deviendrait FAUSSE, sur un support contractuel, le jour où
+   * une vente B2C s'ouvrirait sans adhésion.
+   */
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
