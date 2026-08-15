@@ -751,7 +751,27 @@ jobs:
           # exactement le mécanisme qui a mordu `/fr/diagnostic` la veille. C'est
           # la porte d'entrée de tout le contenu généré : la manquer annule une
           # partie du bénéfice de la production.
-          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog"]'
+          #
+          # ÉLARGISSEMENT 2026-08-15 (audit GEO/AEO E2E, GEO-023 — prescrit par
+          # 8 agents indépendants). Deux familles de pages manquaient :
+          #   • les pages qui lisent la BASE hors des quatre index historiques :
+          #     `/fr` (note agrégée + mur d'avis), `/fr/blog` (index articles),
+          #     `/fr/memo-isere`, `/fr/sites-web-augmentes`, `/fr/audit`,
+          #     `/fr/formations`, `/fr/implementation` ;
+          #   • les pages dont le JSON-LD `#organization` du layout dépend de
+          #     `env.COMPANY_VAT_NUMBER` / `COMPANY_REGISTRATION_NUMBER`, ABSENTS
+          #     du build GitHub Actions et présents seulement au runtime Coolify :
+          #     `/fr/mentions-legales` (qui affichait « communiqué sur demande »
+          #     six fois trois heures après un deploy) et `/fr/conditions-generales`.
+          #     C'est LA page que Google et les LLM recoupent avec SIRENE pour la
+          #     fusion d'entité — la servir amputée coûte le Knowledge Panel.
+          #
+          # ⚠️ CETTE LISTE ET CELLE DU STEP SUIVANT (purge CF `FILES`) DOIVENT
+          # RESTER IDENTIQUES, au préfixe `https://axion-ia.com` près. Verrouillé
+          # par `tests/unit/ci/deploy-warm-listes.spec.ts` : revalider sans
+          # purger laisse la version amputée figée à l'edge pour s-maxage=3600.
+          # Plafond Cloudflare Free : 30 URLs par appel de purge par liste — 14 ici.
+          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -782,7 +802,9 @@ jobs:
             echo "::warning::Purge ciblée SKIP (secret CF ou REVALIDATE_SECRET absent) — l'edge se rafraîchit seul sous 1h."
             exit 0
           fi
-          FILES='["https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog"]'
+          # ⚠️ MÊME ENSEMBLE QUE `PATHS` DU STEP PRÉCÉDENT, au préfixe près.
+          # Verrouillé par `tests/unit/ci/deploy-warm-listes.spec.ts`.
+          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation"]'
           code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             -H "Content-Type: application/json" \
@@ -812,7 +834,10 @@ jobs:
           # `/fr/diagnostic` ajoutée 2026-08-14 : hors sitemap (noindex) donc
           # invisible du sweep, mais c'est la page du trafic PAYANT — le premier
           # clic publicitaire ne doit pas payer l'optimisation des images.
-          STRATEGIC="/fr /fr/diagnostic /fr/audit /fr/formations /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
+          # `/fr/sites-web-augmentes` ajoutée 2026-08-15 (audit GEO/AEO E2E) :
+          # c'est la seule des quatre pages de service à ne figurer dans AUCUNE
+          # des trois listes de ce job.
+          STRATEGIC="/fr /fr/diagnostic /fr/audit /fr/formations /fr/sites-web-augmentes /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
           for p in ${STRATEGIC}; do
             url="${SITE}${p}"
             html=$(curl -sS -m 25 -A "${UA}" "${url}" || true)
