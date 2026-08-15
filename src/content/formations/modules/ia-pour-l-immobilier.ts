@@ -54,6 +54,12 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous produisez une annonce complète qui ne porte que ce que votre dossier prouve, et vous repérez la formulation qui décrit l'occupant au lieu du bien.",
       objectifGlobalId: "obj-1",
+      // Deux gestes s'installent ici et resservent toute la journée : barrer le
+      // chiffre produit par l'IA et le recopier depuis le diagnostic, le
+      // mesurage ou le registre de l'agence (obj-2) ; et traquer le vocabulaire
+      // d'occupant sur sa propre annonce comme sur celle du binôme au contrôle
+      // croisé (obj-3).
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -209,11 +215,12 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous déclinez une annonce validée sur trois supports sans la réécrire, et vous répondez à un prospect dans l'heure avec vos trois réponses types.",
-      objectifGlobalId: "obj-3",
-      // Ce module sert aussi la rédaction d'annonces (les déclinaisons par
-      // support) et l'application des règles de confidentialité (le cadre « ce
-      // qu'on ne colle jamais » + la grille de vérification des données).
-      objectifsSecondairesIds: ["obj-1", "obj-5"],
+      objectifGlobalId: "obj-4",
+      // Le second temps de l'atelier construit les trois réponses types à
+      // champs — premier contact, demande de visite, relance après visite —
+      // vides de toute donnée de prospect, la personnalisation restant dans la
+      // messagerie (obj-5).
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -345,11 +352,13 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un écrit de gestion défendable à partir de vos pièces, et vous reconnaissez — et refusez par écrit — la demande de tri de candidats locataires.",
-      objectifGlobalId: "obj-4",
+      objectifGlobalId: "obj-6",
       // L'atelier bâtit aussi l'argumentaire d'estimation sur les références de
       // marché fournies par le stagiaire — appui à l'estimation, jamais
-      // estimation par l'outil.
-      objectifsSecondairesIds: ["obj-2"],
+      // estimation par l'outil (obj-7). Et le cas piège de la liste fait
+      // reconnaître puis refuser par écrit le tri de candidats locataires, avec
+      // la phrase apprise (obj-8, première moitié).
+      objectifsSecondairesIds: ["obj-7", "obj-8"],
       dureeMin: 5,
       notes: {
         script:
@@ -488,7 +497,12 @@ export const IA_POUR_L_IMMOBILIER: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repartez avec le dossier de trames vérifiées de votre agence, trois usages datés — et la liste de ce qui n'entre jamais dans un outil.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-8",
+      // La checklist portée par chaque trame reprend les deux gestes du matin
+      // et les rend transmissibles à toute l'agence : les pièces sources d'où
+      // chaque chiffre se recopie (obj-2) et le vocabulaire d'occupant à
+      // traquer avant diffusion (obj-3) — tous deux repris au quiz de fin.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
         script:

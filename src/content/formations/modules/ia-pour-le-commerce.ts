@@ -54,6 +54,10 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une fiche produit publiable à partir d'une fiche technique fournisseur, et vous savez dire, ligne par ligne, ce qui doit être vérifié avant publication.",
+      // Production de la fiche depuis la seule fiche technique — prix,
+      // disponibilité, garantie et retours laissés « à compléter par le magasin »
+      // — puis contrôle croisé grille en main sur la fiche d'un pair : le module
+      // couvre l'objectif entier, sans objectif secondaire.
       objectifGlobalId: "obj-1",
       dureeMin: 5,
       notes: {
@@ -223,10 +227,14 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une série de fiches homogènes depuis votre tableau produits, et vous déclinez un même produit sur trois supports — dont un support de point de vente — sans le réécrire.",
-      objectifGlobalId: "obj-1",
-      // La déclinaison impose un support de point de vente (affiche de rayon) :
-      // le module sert donc aussi la production des supports en magasin.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-3",
+      // L'atelier commence par le passage du tableau produits à la liste rouge —
+      // marges, conditions d'achat, donnée client — avec la règle du RGPD et
+      // celle des formulations stéréotypées qui se répliquent sur toute la série ;
+      // la vérification tient le contrôle par échantillonnage, trois fiches
+      // tirées au hasard et quatre points, et fait énoncer la règle qui
+      // s'applique lorsqu'une fiche tombe.
+      objectifsSecondairesIds: ["obj-2", "obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -369,11 +377,13 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous répondez publiquement à un avis difficile sans rien révéler du client ni engager l'enseigne, et vous faites écrire formules et commentaires autour de vos chiffres sans jamais les livrer.",
-      objectifGlobalId: "obj-2",
-      // Le second versant du module — « écrire autour du chiffre » — sert
-      // l'appui à l'analyse des ventes : formules, tableaux croisés,
-      // commentaires de résultats déjà calculés.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-6",
+      // L'ouverture et la synthèse posent l'interdiction de fabriquer un avis,
+      // un témoignage ou une note, et la distinguent de ce qui est autorisé —
+      // répondre à un avis déjà publié. Le second versant du module, « écrire
+      // autour du chiffre », fait obtenir la formule ou le tableau croisé depuis
+      // la seule structure du tableau, puis la tester sur son propre fichier.
+      objectifsSecondairesIds: ["obj-5", "obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -512,11 +522,13 @@ export const IA_POUR_LE_COMMERCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repérez dans votre propre historique ce qui n'aurait jamais dû être collé, et vous repartez avec le manuel de publication de l'enseigne, utilisable dès demain par un vendeur qui n'était pas en salle.",
-      objectifGlobalId: "obj-5",
-      // Le manuel assemble aussi les trames de supports de rayon produites au
-      // module 2 : il sert donc, en second, la production des supports de
-      // point de vente.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-8",
+      // Le premier temps de l'atelier fait relire son propre historique pour
+      // repérer ce qui n'aurait jamais dû être collé — fichier clients, marges,
+      // conditions fournisseurs — et réécrire une demande fautive en demande
+      // propre : c'est la règle de nettoyage du module 2, reprise sur les
+      // demandes réellement passées dans la journée.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:

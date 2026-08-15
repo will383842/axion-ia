@@ -62,9 +62,10 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous décrivez ce qu'une IA générative fait bien et où elle invente, et vous dites, AVANT chaque usage, où vont les informations que vous lui donnez et ce qui ne sort jamais.",
       objectifGlobalId: "obj-1",
-      // Les régimes d'usage, la liste de ce qui ne sort jamais et le tri
-      // « ça part / ça ne part pas » installent les règles de confidentialité.
-      objectifsSecondairesIds: ["obj-6"],
+      // La vérification — douze situations classées « ça part / ça ne part pas /
+      // ça ne part qu'en environnement validé » — et le régime d'usage nommé en
+      // synthèse servent obj-2.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 3,
       notes: {
         script:
@@ -237,10 +238,11 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous obtenez au premier ou au deuxième essai, sur une tâche réelle de votre poste, un texte que vous pouvez envoyer après relecture.",
-      objectifGlobalId: "obj-3",
-      // L'atelier fait choisir les tâches qui se prêtent à l'IA (obj-2) et les
-      // réalise réellement sur le poste de chacun (obj-4).
-      objectifsSecondairesIds: ["obj-2", "obj-4"],
+      objectifGlobalId: "obj-4",
+      // Le tri qui ouvre l'atelier 1 — « barrez celles qui feraient sortir des
+      // données interdites » — applique aux tâches réelles du poste le régime
+      // d'usage arrêté le matin : c'est lui qui sert obj-2.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 3,
       notes: {
         script:
@@ -391,10 +393,11 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous déposez un document autorisé dans l'outil, vous en tirez une synthèse que vous vérifiez ligne à ligne contre la source, et vous produisez une note propre à partir d'une dictée de deux minutes.",
       objectifGlobalId: "obj-5",
-      // La dictée et le travail sur ses propres pièces réalisent des tâches du
-      // poste (obj-4) ; le filtre « quels documents ont le droit d'entrer »
-      // applique les règles de confidentialité (obj-6).
-      objectifsSecondairesIds: ["obj-4", "obj-6"],
+      // Le filtre du dépôt — « est-ce que ce document a le DROIT d'entrer ? » —
+      // applique le régime d'usage du matin et sert obj-2 ; l'atelier 2, dictée
+      // de deux minutes puis compte rendu de réunion, sert obj-6 et n'est servi
+      // que là.
+      objectifsSecondairesIds: ["obj-2", "obj-6"],
       dureeMin: 3,
       notes: {
         script:
@@ -538,11 +541,13 @@ export const IA_POUR_BIEN_COMMENCER_JOURNEE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repartez avec un protocole de poste écrit à votre nom : ce que vous confiez à l'IA, ce que vous ne lui confiez pas, et ce que vous vérifiez avant d'envoyer.",
-      objectifGlobalId: "obj-6",
-      // Le protocole écrit « ce que je confie / ce que je ne confie pas » est
-      // la formalisation d'obj-2 : les tâches qui se prêtent à l'IA et celles
-      // qui ne s'y prêtent pas, arrêtées poste par poste.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-7",
+      // La règle qui accompagne l'envoi — ce qu'on indique au destinataire
+      // quand un écrit a été produit avec l'IA — sert la seconde moitié
+      // d'obj-3. La première moitié (usages interdits ou à haut risque au sens
+      // du règlement européen) n'est traitée par aucune séquence : elle n'est
+      // qu'annoncée dans la parade du module 1.
+      objectifsSecondairesIds: ["obj-3"],
       dureeMin: 3,
       notes: {
         script:

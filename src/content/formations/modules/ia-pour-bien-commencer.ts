@@ -49,10 +49,11 @@ export const IA_POUR_BIEN_COMMENCER: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous décrivez en une phrase ce qu'une IA générative peut faire sur votre poste, vous citez trois informations que vous ne lui donnerez jamais, et vous savez qu'un seul mot changé dans une demande peut faire basculer la réponse.",
       objectifGlobalId: "obj-1",
-      // La liste de ce qui ne sort jamais est posée au cadre, mais c'est la
-      // vérification de ce module (huit situations « je peux / je ne peux
-      // pas ») qui installe le réflexe de confidentialité.
-      objectifsSecondairesIds: ["obj-5"],
+      // La pratique — chasse à l'erreur chronométrée sur son propre domaine,
+      // décompte des affirmations inventées, puis un seul mot changé — sert
+      // obj-2 ; la vérification (huit situations « je peux le soumettre / je
+      // ne peux pas » et le régime d'usage nommé en synthèse) sert obj-3.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 3,
       notes: {
         script:
@@ -222,7 +223,11 @@ export const IA_POUR_BIEN_COMMENCER: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous transformez une demande vague en demande structurée par les cinq leviers AXION, et vous obtenez un texte utilisable dès le premier ou le deuxième essai.",
-      objectifGlobalId: "obj-3",
+      objectifGlobalId: "obj-4",
+      // Le premier temps de la pratique — déposer un document non sensible,
+      // en tirer cinq points, puis relancer sa demande par ajout d'une seule
+      // précision plutôt qu'en la réécrivant — sert obj-5.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 3,
       notes: {
         script:
@@ -365,10 +370,12 @@ export const IA_POUR_BIEN_COMMENCER: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repartez avec trois demandes écrites et testées, relançables telles quelles lundi matin, vous savez quelles tâches de votre poste se prêtent à l'IA et lesquelles ne s'y prêtent pas, et vous savez ce que vous relisez avant de diffuser un texte.",
-      objectifGlobalId: "obj-4",
-      // Le tri des tâches du poste en deux colonnes — « se prête à l'IA / ne
-      // s'y prête pas » — ouvre l'atelier : c'est lui qui sert obj-2.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-5",
+      // Les demandes AXION écrites sur la trame pour les deux tâches traitées
+      // servent obj-4 ; la vérification — relecture de sa meilleure production
+      // à la grille fournie, au moins un point à corriger relevé, signalement
+      // de l'usage de l'IA avant diffusion — sert obj-6.
+      objectifsSecondairesIds: ["obj-4", "obj-6"],
       dureeMin: 3,
       notes: {
         script:
