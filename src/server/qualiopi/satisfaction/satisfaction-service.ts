@@ -10,6 +10,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
@@ -123,7 +124,14 @@ export async function soumettreReponses(
         select: {
           id: true,
           traineeId: true,
-          session: { select: { clientId: true } },
+          // Identité du ou de la stagiaire : uniquement pour rendre l'alerte de
+          // positionnement tardif actionnable (« qui, quelle session »). Aucune
+          // donnée sensible n'entre ici.
+          trainee: { select: { prenom: true, nom: true } },
+          // 🔴 `dateDebut` : c'est le repère qui manquait. Sans lui, la
+          // transcription automatique datait l'évaluation « initiale » à
+          // l'instant de la réponse — y compris après la fin de la formation.
+          session: { select: { clientId: true, titreSession: true, dateDebut: true } },
         },
       },
     },
@@ -135,11 +143,16 @@ export async function soumettreReponses(
 
   const premiereSoumission = questionnaire.reponduAt === null;
 
+  // Un SEUL instant pour l'horodatage et pour le versement : `reponduAt` en base
+  // et la date de l'évaluation transcrite doivent désigner le même moment, pas
+  // deux `new Date()` distants de quelques millisecondes.
+  const dateReponse = new Date();
+
   const updated = await prisma.questionnaire.update({
     where: { id: questionnaire.id },
     data: {
       reponses: input.reponses as never,
-      reponduAt: new Date(),
+      reponduAt: dateReponse,
       ...(input.noteGlobale !== undefined ? { noteGlobale: input.noteGlobale } : {}),
     },
     select: { id: true },
@@ -162,6 +175,8 @@ export async function soumettreReponses(
   //   l'auto-évaluation `niveauParObjectif` (échelle 1..3, la même que la
   //   grille). La provenance est écrite dans `recommandations` : c'est un
   //   niveau DÉCLARÉ, pas mesuré, et l'auditeur doit pouvoir le lire.
+  //   ⚠️ Versé UNIQUEMENT si la réponse précède le début de la session (au jour
+  //   près) : cf. la garde chronologique dans `verserAuxRegistres`.
   // - satisfaction (chaud/froid) notée → appréciation source « stagiaire »,
   //   verbatim conservé tel quel.
   //
@@ -172,12 +187,23 @@ export async function soumettreReponses(
   // vient de payer.
   if (premiereSoumission) {
     try {
+      const trainee = questionnaire.enrollment.trainee;
+      const nomComplet = `${trainee?.prenom ?? ""} ${trainee?.nom ?? ""}`.trim();
+      const sessionDuQuestionnaire = questionnaire.enrollment.session;
+
       await verserAuxRegistres({
         type: questionnaire.type,
         enrollmentId: questionnaire.enrollment.id,
         traineeId: questionnaire.enrollment.traineeId,
-        clientId: questionnaire.enrollment.session?.clientId ?? null,
+        clientId: sessionDuQuestionnaire?.clientId ?? null,
         reponses: input.reponses,
+        dateReponse,
+        dateDebutSession:
+          sessionDuQuestionnaire?.dateDebut instanceof Date
+            ? sessionDuQuestionnaire.dateDebut
+            : null,
+        stagiaire: nomComplet === "" ? "Le ou la stagiaire" : nomComplet,
+        titreSession: sessionDuQuestionnaire?.titreSession ?? "sa session",
         ...(input.noteGlobale !== undefined ? { noteGlobale: input.noteGlobale } : {}),
       });
     } catch (err) {
@@ -199,6 +225,26 @@ export async function soumettreReponses(
 const NIVEAUX_VALIDES = new Set([1, 2, 3]);
 
 /**
+ * Début de la journée civile UTC, en millisecondes.
+ *
+ * Délibérément LOCAL et non importé d'`evaluations-service` : ce module est
+ * mocké en bloc dans les tests de satisfaction, un helper importé de là y
+ * arriverait `undefined`. La règle de fond n'est pas dupliquée pour autant —
+ * `createEvaluation` la ré-applique et REFUSE l'écriture. Ce pré-contrôle ne
+ * sert qu'à produire une alerte lisible plutôt qu'une exception brute.
+ */
+function jourUtcLocal(d: Date): number {
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+
+/** JJ/MM/AAAA en UTC — indépendant de la locale du serveur. */
+function formaterJourLocal(d: Date): string {
+  const jour = String(d.getUTCDate()).padStart(2, "0");
+  const mois = String(d.getUTCMonth() + 1).padStart(2, "0");
+  return `${jour}/${mois}/${d.getUTCFullYear()}`;
+}
+
+/**
  * Verse une réponse de questionnaire dans les registres que les indicateurs
  * lisent. Cf. le commentaire d'appel dans `soumettreReponses`.
  */
@@ -209,6 +255,14 @@ async function verserAuxRegistres(input: {
   clientId: string | null;
   reponses: Record<string, unknown>;
   noteGlobale?: number;
+  /** Instant de la réponse — le MÊME objet que le `reponduAt` écrit en base. */
+  dateReponse: Date;
+  /** Début de la session de l'inscription. `null` si illisible. */
+  dateDebutSession: Date | null;
+  /** Nom affichable du ou de la stagiaire (alerte actionnable). */
+  stagiaire: string;
+  /** Titre de la session (alerte actionnable). */
+  titreSession: string;
 }): Promise<void> {
   if (input.type === "positionnement") {
     const niveaux = input.reponses["niveauParObjectif"];
@@ -228,10 +282,68 @@ async function verserAuxRegistres(input: {
     });
     if (dejaUne > 0) return;
 
+    // ── Chronologie : un « avant formation » ne se date pas après la formation ─
+    //
+    // 🔴 Audit blanc de certification 2026-08-15. C'est CE chemin qui a fabriqué
+    // la non-conformité majeure de l'indicateur 4 : la stagiaire a répondu au
+    // positionnement le 04/08, quatre jours après la clôture de sa session du
+    // 31/07, et la transcription automatique datait l'évaluation « initiale » de
+    // `new Date()` — l'instant de la soumission. Le dossier portait donc, sur une
+    // seule capture d'écran, un « avant formation » postérieur à l'« après
+    // formation ». Sans garde ici, le prochain stagiaire en retard régénérait
+    // exactement la même anomalie.
+    //
+    // On NE fabrique PAS une preuve de complaisance (on ne recule pas la date à
+    // la veille de la session : ce serait un faux). On ne verse rien, et on le
+    // DIT — dans le journal serveur ET sur /qualiopi/a-traiter, la première page
+    // ouverte le matin. Une absence assumée se rattrape devant un auditeur ;
+    // une pièce fausse, non.
+    if (input.dateDebutSession === null) {
+      console.error(
+        `[satisfaction-service] positionnement (inscription ${input.enrollmentId}) : ` +
+          `début de session illisible — évaluation initiale NON versée, chronologie invérifiable.`,
+      );
+      return;
+    }
+
+    if (jourUtcLocal(input.dateReponse) > jourUtcLocal(input.dateDebutSession)) {
+      const jourReponse = formaterJourLocal(input.dateReponse);
+      const jourDebut = formaterJourLocal(input.dateDebutSession);
+
+      console.warn(
+        `[satisfaction-service] positionnement (inscription ${input.enrollmentId}) répondu le ` +
+          `${jourReponse}, après le début de session du ${jourDebut} — évaluation initiale NON versée.`,
+      );
+
+      // Alerte console : `creerOuDedup` dédoublonne sur (code, cibleId) tant
+      // qu'elle est ouverte, et ce code n'est pas en résolution automatique —
+      // elle reste donc visible jusqu'à ce qu'un humain traite le dossier.
+      await creerOuDedup({
+        code: "positionnement_hors_delai",
+        niveau: "important",
+        titre: "Positionnement d'entrée répondu après le début de la session",
+        message:
+          `${input.stagiaire} a répondu au questionnaire de positionnement le ${jourReponse}, ` +
+          `après le début de la session « ${input.titreSession} » du ${jourDebut}. Aucune évaluation ` +
+          `initiale n'a été versée au dossier : une évaluation « avant formation » datée après la ` +
+          `formation n'est pas une preuve recevable (indicateur 4). Recueillez le positionnement ` +
+          `d'entrée par un autre moyen, ou notez au dossier qu'il n'a pas pu l'être.`,
+        cibleType: "Enrollment",
+        cibleId: input.enrollmentId,
+        metadata: {
+          repondu: input.dateReponse.toISOString(),
+          debutSession: input.dateDebutSession.toISOString(),
+        },
+      });
+      return;
+    }
+
     await createEvaluation({
       enrollmentId: input.enrollmentId,
       type: "initiale",
-      dateEvaluation: new Date().toISOString(),
+      // La date de l'évaluation est celle de la RÉPONSE, pas un instant
+      // recalculé : c'est ce que le dossier doit pouvoir démontrer.
+      dateEvaluation: input.dateReponse.toISOString(),
       competences,
       recommandations:
         "Positionnement à l'entrée — transcription automatique de l'auto-évaluation déclarée par le ou la stagiaire dans le questionnaire de positionnement (niveau déclaré par objectif, à confirmer par le formateur).",

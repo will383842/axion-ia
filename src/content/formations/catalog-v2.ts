@@ -182,22 +182,34 @@ const BIEN_COMMENCER_4H: FormationV2 = {
   publicViseFr:
     "Tout collaborateur, toutes fonctions : de ceux qui n'ont jamais ouvert un outil d'IA à ceux qui en entendent parler partout sans savoir par où commencer. En 4 heures, l'équipe passe de « on en entend parler partout » à « je sais m'en servir » — une immersion dense et concrète, sans jargon, pour lever les blocages.",
   casUsageFr: [
-    { texteFr: "Une vision claire de ce que l'IA peut — et ne peut pas — faire pour son poste" },
     {
-      texteFr: "Les meilleurs outils du moment (ChatGPT, Claude, Gemini) et lequel utiliser quand",
+      texteFr:
+        "L'e-mail qu'on repousse depuis deux jours — Annoncer un retard à un client, refuser une demande, relancer sans braquer : produire une première version au bon ton, puis la corriger à la grille avant de l'envoyer.",
     },
     {
       texteFr:
-        "Les premières techniques pour obtenir des résultats utiles, pas des réponses génériques",
+        "Le document qu'on n'a pas le temps de lire — Déposer un rapport, un devis reçu ou un export dans l'outil, en tirer une synthèse, et reconnaître les trois cas où le dépôt échoue en silence : scan sans texte reconnu, fichier tronqué, tableau désaligné.",
     },
-    { texteFr: "Des cas d'usage directement applicables à son poste, dès le lendemain" },
+    {
+      texteFr:
+        "Le compte rendu de la réunion de ce matin — Transformer des notes éparses en compte rendu structuré : ce qui a été décidé, qui fait quoi, pour quand, relu et corrigé avant diffusion.",
+    },
+    {
+      texteFr:
+        "La réponse type à réadapter pour la dixième fois — Reprendre une trame standard du service et l'ajuster au dossier du destinataire, sans réécrire l'ensemble et sans perdre les mentions obligatoires.",
+    },
+    {
+      texteFr:
+        "Le tri de sa propre semaine — Passer en revue les tâches de son poste et les séparer en deux colonnes : celles qui se prêtent à l'IA, et celles qu'on ne lui confie pas, avec la raison écrite en face.",
+    },
   ],
   objectifsFr: [
-    "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
-    "Formuler une demande structurée (méthode AXION) donnant un résultat exploitable",
-    "Réaliser une tâche courante de son poste à l'aide de l'IA",
-    "Appliquer les règles de confidentialité : identifier les données à ne pas soumettre",
+    "Décrire en une phrase ce qu'une IA générative produit et ce qu'elle ne vérifie pas, et citer trois informations qui ne lui sont jamais soumises",
+    "Repérer, sur un texte généré portant sur son propre domaine, les affirmations inventées — chiffres, dates, noms — en établir le décompte, et constater l'effet d'un seul mot modifié dans la demande sur la réponse obtenue",
+    "Trancher huit situations « je peux le soumettre / je ne peux pas » en justifiant chacune par la règle applicable, et nommer le régime d'usage en vigueur dans son entreprise",
+    "Rédiger une demande structurée par les cinq leviers de la méthode AXION (Acteur, conteXte, Intention, Output, Normes) et identifier, grille en main, le levier manquant d'une demande rédigée par un tiers",
+    "Réaliser à l'aide de l'IA deux tâches réelles de son poste et exploiter un document déposé dans l'outil, en relançant chaque demande par ajout d'une seule précision plutôt qu'en la réécrivant",
+    "Contrôler une production avant diffusion à l'aide de la grille fournie — exactitude des chiffres, noms et dates, ton, structure, réutilisabilité — relever au moins un point à corriger, et signaler au destinataire qu'un écrit a été rédigé avec l'IA",
   ],
   beneficeDirigeantFr:
     "En une demi-journée, toute l'équipe a fait ses premiers pas : chacun connaît les bons outils, sait les utiliser sur une tâche réelle de son quotidien et repart avec les bons réflexes de confidentialité — sans désorganiser votre activité.",
@@ -208,6 +220,18 @@ const BIEN_COMMENCER_4H: FormationV2 = {
     apres:
       "Chacun a fait ses premiers pas, connaît les bons outils et sait les utiliser sur une tâche réelle de son quotidien.",
   },
+  resultatsFr: [
+    {
+      valeur: "63 %",
+      label: "du temps en atelier et en évaluation, sur ses propres tâches (programme minuté)",
+    },
+    {
+      valeur: "3",
+      label: "demandes AXION écrites, testées et emportées, relançables telles quelles",
+    },
+    { valeur: "2", label: "tâches réelles du poste traitées en séance" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
@@ -387,21 +411,39 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   publicViseFr:
     "Tout collaborateur, toutes fonctions. Le format d'une journée pour aller plus loin que la découverte : autant de pratique que de théorie, sur les cas d'usage réels de chaque participant. On ne repart pas avec des notes, mais avec des méthodes déjà testées sur son propre travail.",
   casUsageFr: [
-    { texteFr: "Tout l'essentiel de la version condensée, avec le temps de le mettre en pratique" },
-    { texteFr: "Des ateliers guidés sur les cas d'usage propres à chaque participant" },
-    { texteFr: "Des techniques approfondies pour des résultats fiables et réutilisables" },
     {
       texteFr:
-        "Un premier aperçu des usages avancés : traitement de documents, automatisation légère",
+        "Le compte rendu dicté en sortant de réunion — Dicter deux minutes de notes depuis son téléphone et en sortir un compte rendu structuré (décisions, actions, échéances) sans avoir touché un clavier.",
+    },
+    {
+      texteFr:
+        "Le rapport de vingt pages arrivé hier — Déposer le document, en tirer une synthèse, lui poser trois questions précises, puis vérifier chaque réponse contre les pages d'origine avant de la transmettre.",
+    },
+    {
+      texteFr:
+        "L'e-mail délicat — Annoncer un retard, refuser une demande, relancer un impayé : obtenir une première version au bon ton dès le deuxième essai, puis la passer à la grille en cinq points.",
+    },
+    {
+      texteFr:
+        "La note technique à rendre lisible — Réécrire un texte spécialisé pour un destinataire qui ne connaît pas le sujet, à longueur et format imposés, sans perdre les données qui engagent.",
+    },
+    {
+      texteFr:
+        "Le fichier « anonymisé » qui ne l'est pas — Reconnaître qu'un document dont on a retiré les noms reste ré-identifiable par croisement, et décider ce qui peut réellement entrer dans l'outil.",
+    },
+    {
+      texteFr:
+        "Le protocole de poste — Écrire noir sur blanc ce qu'on confie à l'IA, ce qu'on ne lui confie pas, ce qu'on relit avant d'envoyer et ce qu'on signale au destinataire : la page qui reste sur le bureau après la formation.",
     },
   ],
   objectifsFr: [
-    "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
-    "Formuler une demande structurée (méthode AXION) et l'itérer pour fiabiliser le résultat",
-    "Réaliser plusieurs tâches de son poste à l'aide de l'IA",
-    "Analyser un document : synthèse et points de vigilance",
-    "Appliquer les règles de confidentialité et vérifier une production avant diffusion",
+    "Décrire ce qu'une IA générative fait bien et ce qu'elle invente, repérer sur une production portant sur son propre domaine les affirmations fausses, et lui en faire justifier chacune",
+    "Nommer le régime d'usage applicable à son poste — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'entreprise — et classer douze situations réelles en « ça part / ça ne part pas / ça ne part qu'en environnement validé »",
+    "Citer les usages que le règlement européen sur l'IA interdit ou classe à haut risque en contexte professionnel, ainsi que l'obligation d'indiquer un contenu généré par IA",
+    "Rédiger une demande structurée par les cinq leviers AXION et la débloquer par la relance adaptée — préciser la contrainte, fournir un exemple de sortie, imposer le format, faire critiquer la réponse — plutôt qu'en la réécrivant",
+    "Déposer un document autorisé dans l'outil, en tirer une synthèse et trois réponses ciblées, puis retrouver dans le document source chaque affirmation produite",
+    "Produire un écrit exploitable à partir d'une dictée de deux minutes, puis à partir de notes de réunion, sans repasser au clavier",
+    "Rédiger son protocole de poste — régime d'usage, liste de ce qui ne sort jamais, grille de relecture en cinq points, mention au destinataire — et l'appliquer à une production réalisée dans la journée",
   ],
   beneficeDirigeantFr:
     "À la fin de la journée, chaque participant a testé plusieurs usages sur ses propres tâches et sait par où continuer seul — l'appropriation est faite pendant la formation, pas remise à plus tard.",
@@ -412,6 +454,15 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
     apres:
       "Chaque participant a testé plusieurs usages sur ses propres tâches et sait par où continuer seul.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label: "du temps en atelier et en évaluation, sur ses propres dossiers (programme minuté)",
+    },
+    { valeur: "1", label: "protocole de poste écrit, propre au poste de chaque participant" },
+    { valeur: "2", label: "notes produites à la voix, sans clavier" },
+    { valeur: "12", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
@@ -668,17 +719,40 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
   publicViseFr:
     "Collaborateurs de tous services qui utilisent déjà l'IA, mais chacun à sa façon, avec des résultats inégaux. Cette journée transforme des usages dispersés en une pratique commune, efficace et partagée — sur les vraies tâches de votre entreprise.",
   casUsageFr: [
-    { texteFr: "Des techniques avancées pour obtenir exactement ce qu'on attend de l'IA" },
-    { texteFr: "La rédaction, la synthèse et la recherche accélérées" },
-    { texteFr: "Des prompts réutilisables, construits pendant la formation" },
-    { texteFr: "Des ateliers sur les tâches réelles apportées par les participants" },
+    {
+      texteFr:
+        "Le compte rendu du lundi matin — Passer de notes brutes à un compte rendu diffusable en quelques minutes, au format que le service a fixé une fois pour toutes et que tout le monde applique.",
+    },
+    {
+      texteFr:
+        "Les quinze courriers de la même campagne — Produire une série homogène de relances, d'attestations ou de convocations à partir d'un tableau, puis la contrôler par échantillon plutôt que pièce à pièce.",
+    },
+    {
+      texteFr:
+        "La formule de tableur qu'on n'écrit jamais — Faire rédiger et expliquer une formule ou un croisement de colonnes en décrivant la structure du fichier, sans jamais y coller les données elles-mêmes.",
+    },
+    {
+      texteFr:
+        "La demande qui ne marche que pour son auteur — Transformer un prompt personnel en demande partagée qu'un collègue rejoue sur son propre cas et obtient le même résultat : le seul test qui vaut.",
+    },
+    {
+      texteFr:
+        "L'erreur qui se recopie quinze fois — Glisser un contrôle par échantillon dans une production en série, et retrouver la mention obligatoire manquante avant que le lot ne parte.",
+    },
+    {
+      texteFr:
+        "Le mode d'emploi du service — Écrire les règles communes : ce qui ne sort jamais, ce qui doit être signalé au destinataire, qui relit quoi et qui tranche en cas de doute.",
+    },
   ],
   objectifsFr: [
-    "Formuler des demandes structurées avancées (méthode AXION) adaptées à ses tâches",
-    "Accélérer la rédaction, la synthèse et la recherche d'informations à l'aide de l'IA",
-    "Construire et réutiliser des prompts sur ses tâches récurrentes",
-    "Vérifier et fiabiliser une production avant diffusion",
-    "Appliquer les règles de confidentialité",
+    "Nommer le régime d'usage de chacun de ses documents et appliquer la liste « ce qui ne sort jamais » arbitrée collectivement à partir de dix situations tranchées en séance",
+    "Repérer, avant de la lancer, une demande qui introduit un biais, et le démontrer en ne modifiant qu'un seul mot",
+    "Relever le temps et le nombre d'allers-retours d'une tâche récurrente réalisée sans IA, puis comparer avec la même tâche outillée — l'écart constaté pouvant être nul",
+    "Rédiger une demande AXION avancée — contrainte chiffrée, exemple de sortie fourni, format imposé, critères de refus — jusqu'à obtenir le format exact attendu sans retouche",
+    "Vérifier qu'une demande est transmissible : la faire rejouer par un collègue sur son propre cas, sans son auteur, et réécrire sur place ce qui ne tient pas",
+    "Produire une série de quinze documents homogènes à partir d'un tableau, puis la contrôler par échantillon en retrouvant l'erreur qui s'y est dupliquée",
+    "Faire écrire une formule de tableur, expliquer un croisement et décrire une structure de données sans jamais soumettre les données elles-mêmes",
+    "Rédiger le mode d'emploi commun du service — liste « ce qui ne sort jamais », demandes AXION éprouvées par un tiers, procédure de série et son contrôle, tableau « qui relit quoi, qui tranche »",
   ],
   beneficeDirigeantFr:
     "Une équipe qui partage les mêmes bons réflexes et gagne un temps mesurable sur ses tâches récurrentes — au lieu d'un usage au cas par cas, dépendant de la personne.",
@@ -689,6 +763,19 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
     apres:
       "Une équipe qui partage les mêmes bons réflexes et gagne un temps mesurable sur ses tâches récurrentes.",
   },
+  resultatsFr: [
+    {
+      valeur: "60 %",
+      label:
+        "du temps en atelier et en évaluation, sur les tâches réelles apportées (programme minuté)",
+    },
+    {
+      valeur: "15",
+      label: "documents produits en série depuis un tableau, puis contrôlés par échantillon",
+    },
+    { valeur: "1", label: "mode d'emploi commun rédigé et validé par le service" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin — Module 1 : le cadre commun avant de toucher à quoi que ce soit",
@@ -918,17 +1005,40 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
   prerequisFr:
     "Aucun prérequis technique poussé. Une pratique régulière des outils bureautiques suffit ; aucune compétence en programmation n'est demandée.",
   casUsageFr: [
-    { texteFr: "La capacité à repérer les tâches qui méritent d'être automatisées" },
-    { texteFr: "La conception d'un premier processus automatisé simple" },
-    { texteFr: "Un panorama des outils compatibles avec votre environnement" },
-    { texteFr: "Une première réalisation, construite et testée sur un cas de votre activité" },
+    {
+      texteFr:
+        "Le rapport qu'on recompile chaque lundi — Préparer une fois la compilation d'un tableau de suivi, puis la rejouer chaque semaine sur un nouvel export, avec son point de relecture humaine et sa trace de validation.",
+    },
+    {
+      texteFr:
+        "Le tri de la boîte partagée — Classer les demandes entrantes par nature et par urgence selon des règles écrites, et faire remonter à un humain dès qu'un cas sort du cadre prévu.",
+    },
+    {
+      texteFr:
+        "Les quinze courriers d'une même campagne — Générer une série de documents homogènes à partir d'un tableau, puis la contrôler par échantillon plutôt que pièce à pièce.",
+    },
+    {
+      texteFr:
+        "L'extraction d'un lot de pièces reçues — Sortir les mêmes champs d'une série de documents (dates, montants, références) et faire signaler par la chaîne ce qui manque ou ne colle pas, au lieu de le découvrir après coup.",
+    },
+    {
+      texteFr:
+        "Le jeu d'entrées bancal — Faire tourner sa chaîne sur une ligne vide, une date au mauvais format et une colonne manquante avant de la croire fiable, et consigner chaque écart au journal de tests.",
+    },
+    {
+      texteFr:
+        "La tâche qu'on renonce à automatiser — Passer une idée au test des quatre questions et l'écarter, ou la faire remonter à la direction et au CSE, avant d'y consacrer une heure de travail.",
+    },
   ],
   objectifsFr: [
-    "Identifier les tâches répétitives automatisables dans son activité",
-    "Concevoir un processus automatisé simple assisté par l'IA",
-    "Choisir un outil adapté à son environnement",
-    "Construire et tester un premier prototype sur un cas réel",
-    "Appliquer les règles de confidentialité et de fiabilité",
+    "Situer le régime d'usage réellement en vigueur pour ses données — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'informatique — et écrire ce qu'il faudrait obtenir, et de qui, pour passer au régime supérieur",
+    "Démontrer qu'un fichier dont on a retiré les noms reste un traitement de données personnelles, et en tirer la conséquence sur ce qui peut alimenter une automatisation",
+    "Qualifier une tâche au test des quatre questions — données personnelles, effet sur une personne, décision sans relecture humaine, suivi de l'activité de salariés — et écrire en clair la conséquence déclenchée : information des salariés, consultation du CSE, analyse d'impact, ou renoncement",
+    "Classer une automatisation au feu vert, orange ou rouge et justifier ce classement au corrigé fourni",
+    "Cartographier ses tâches répétitives sur quatre critères — volume, répétition, stabilité des règles, coût de l'erreur — et rédiger la fiche de cadrage d'un cas : entrée, étapes, sortie attendue, point de relecture humaine, régime de données, outil retenu",
+    "Construire un prototype piloté par une instruction rédigée aux cinq leviers AXION, le faire tourner sur trois jeux d'entrées dont un volontairement bancal, et consigner chaque écart dans un journal de tests",
+    "Poser sur son prototype les quatre contrôles de fiabilité : le point de relecture humaine, le comportement en cas de sortie anormale, le signal d'alerte, la trace de qui a validé quoi et quand",
+    "Rédiger la fiche d'usage qui rend l'automatisation reprenable par un tiers, et le prouver en la faisant lancer par un binôme sans son auteur",
   ],
   beneficeDirigeantFr:
     "Une première automatisation en place à la fin des deux jours, et une méthode pour en repérer d'autres — les tâches refaites à la main chaque semaine commencent à disparaître.",
@@ -938,6 +1048,22 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
     avant: "Des tâches répétitives faites manuellement, semaine après semaine.",
     apres: "Une première automatisation en place et une méthode pour en repérer d'autres.",
   },
+  resultatsFr: [
+    {
+      valeur: "62 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "1",
+      label:
+        "prototype construit, éprouvé sur trois jeux d'entrées et rendu reprenable par un tiers",
+    },
+    {
+      valeur: "3",
+      label: "tâches candidates cartographiées, qualifiées et classées au feu tricolore",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA et aux données concernées par les cas pratiques",
   programme: [
@@ -3392,17 +3518,40 @@ const IA_POUR_L_IT: FormationV2 = {
   prerequisFr:
     "Aisance en développement ou en administration système utile. Les exercices s'adaptent au niveau et à l'environnement technique des participants.",
   casUsageFr: [
-    { texteFr: "L'assistance au code et à la documentation technique" },
-    { texteFr: "Le débogage assisté par l'IA" },
-    { texteFr: "La rédaction de spécifications facilitée" },
-    { texteFr: "Les premiers cas d'automatisation de tâches IT récurrentes" },
+    {
+      texteFr:
+        "La fonction héritée sans un seul test — Faire générer les tests d'une fonction existante, les exécuter et corriger jusqu'au vert, en vérifiant d'abord que le test sait rougir.",
+    },
+    {
+      texteFr:
+        "La revue de changement du vendredi — Passer un changement en revue assistée, relever la régression, le secret laissé en clair et le cas limite non traité, et compter ce qui est signalé à tort.",
+    },
+    {
+      texteFr:
+        "Le runbook d'astreinte qu'on n'écrit jamais — Passer de notes brutes ou d'une dictée à une procédure qu'un collègue exécute à 3 h du matin, avec sa vérification par étape et son retour arrière.",
+    },
+    {
+      texteFr:
+        "La demande métier reçue par e-mail — Transformer un besoin flou en spécification, critères d'acceptation et tickets bornés, avec le hors-périmètre écrit noir sur blanc.",
+    },
+    {
+      texteFr:
+        "La trace d'erreur de production — Passer d'une trace neutralisée à trois hypothèses testables, chacune vérifiée dans son propre environnement, sans jamais coller la trace telle quelle.",
+    },
+    {
+      texteFr:
+        "La tâche IT récurrente — Automatiser un tri de journaux, une revue de dépendances ou un rapport hebdomadaire, avec son jeu d'essai, son cas limite volontairement faux et sa procédure de retour arrière écrite avant la mise en service.",
+    },
   ],
   objectifsFr: [
-    "Utiliser l'IA en assistance au code et à la documentation technique",
-    "Déboguer avec l'appui de l'IA",
-    "Rédiger des spécifications assistées",
-    "Identifier et prototyper une automatisation de tâche IT récurrente",
-    "Appliquer les règles de confidentialité",
+    "Relever, dans les paramètres de son propre outil et sans rien lui soumettre, ce qui est journalisé, ce qui est retenu pour l'entraînement et ce qui est effaçable, puis en déduire le régime d'usage réel de son poste",
+    "Rédiger une règle de soumission qui autorise explicitement plutôt qu'elle n'interdit vaguement, la confronter à douze cas limites classés « soumettable / à neutraliser d'abord / jamais », et l'éprouver sur trois extraits pièges en relevant ce qui passe à tort",
+    "Situer la propriété d'une sortie produite avec l'IA : licence, contamination par du copyleft, titularité, cession au client",
+    "Structurer une demande technique aux cinq leviers AXION en écrivant ce que la ligne Normes doit interdire, puis faire générer les tests d'une fonction existante et les corriger jusqu'au vert",
+    "Conduire une revue assistée sur un changement porteur de défauts connus — une régression, un secret en clair, un cas limite non traité — les relever et compter les alertes injustifiées",
+    "Chiffrer le taux d'erreur d'une production IA sur son propre environnement — version, option, chemin, commande inventée — au lieu d'en débattre",
+    "Transformer une demande métier floue en spécification testable, critères d'acceptation et tickets bornés, et rédiger un runbook qu'un binôme exécute pas à pas sans son auteur",
+    "Qualifier une tâche IT avant de l'automatiser au regard des usages classés à haut risque par le règlement européen sur l'IA, construire l'automatisation avec son jeu d'essai, et écrire la procédure de retour arrière avant toute mise en service",
   ],
   beneficeDirigeantFr:
     "Un développement plus rapide et une documentation tenue à jour plus facilement — l'équipe IT livre plus sans s'épuiser sur les tâches récurrentes.",
@@ -3412,6 +3561,18 @@ const IA_POUR_L_IT: FormationV2 = {
     avant: "Une dette technique et une documentation qui prennent du retard.",
     apres: "Un développement plus rapide, une documentation tenue à jour plus facilement.",
   },
+  resultatsFr: [
+    {
+      valeur: "63 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "6",
+      label: "sections de runbook rédigées et emportées par chaque participant",
+    },
+    { valeur: "12", label: "cas limites de soumission tranchés, corrigé en main" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA, environnement de développement habituel",
   programme: [
@@ -5894,7 +6055,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage et les QCM (évaluation individuelle et nominative) ; un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
   casUsageFr: [
     {
-      texteFr: "Donner un socle commun IA à tous les services, en une journée",
+      texteFr:
+        "Le socle commun, en une journée — Réunir tous les services le même jour et repartir avec une règle écrite que chaque table a arbitrée sur douze situations réelles, puis défendue en plénière.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-1.webp",
       imageCredit: {
         name: "Product School",
@@ -5902,7 +6064,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Faire émerger les usages IA déjà présents dans l'entreprise",
+      texteFr:
+        "La photographie réelle des usages — Faire remonter, service par service et sans aucun nom, les outils d'IA déjà utilisés, y compris ceux que personne n'a validés, et le temps que coûtent chaque semaine les trois tâches les plus lourdes.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-2.webp",
       imageCredit: {
         name: "FORTYTWO",
@@ -5910,7 +6073,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Partager une méthode commune pour bien s'exprimer face à l'IA",
+      texteFr:
+        "Une méthode de demande partagée — Écrire par table deux demandes aux cinq leviers AXION sur des tâches réelles, puis vérifier qu'elles produisent le même résultat entre les mains d'une autre table.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-3.webp",
       imageCredit: {
         name: "Alexandre Pellaes",
@@ -5918,7 +6082,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Repartir avec des règles communes et des engagements par service",
+      texteFr:
+        "Les engagements par service — Repartir avec trois engagements écrits par service, annoncés devant les autres, un référent IA désigné devant tout le monde et le classeur de bord remis table par table.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-4.webp",
       imageCredit: {
         name: "krakenimages",
@@ -5927,17 +6092,33 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     },
   ],
   objectifsFr: [
-    "Comprendre le fonctionnement, les apports et les risques de l'IA générative, et disposer d'un socle commun de vocabulaire",
-    "Identifier les règles de sécurité et de confidentialité applicables à leurs usages, et le cadre légal qui s'impose à l'entreprise",
-    "Structurer une demande à l'IA grâce à la méthode AXION, partagée par tous",
-    "Situer les usages de l'IA déjà présents dans l'entreprise, service par service",
-    "Repérer les cas d'usage à fort potentiel dans leur propre périmètre",
-    "S'accorder sur des règles communes et des engagements concrets pour la suite",
+    "Distinguer une réponse assurée d'une réponse vérifiée, et nommer les trois risques montrés en direct : l'affirmation fausse mais crédible, le biais déclenché par un seul mot changé, la donnée déposée qu'on ne peut plus reprendre",
+    "Trancher douze situations en « ça peut sortir » / « ça ne sort jamais » / « ça ne se soumet pas du tout, c'est une décision sur une personne », et écrire la règle commune de sa table en une phrase",
+    "Citer les trois obligations qui pèsent sur l'employeur — information et consultation du comité social et économique, mention d'un contenu produit par IA transmis à un tiers, formation des équipes — et les usages mis hors jeu pour la journée",
+    "Recenser, service par service, les trois tâches les plus lourdes, le temps qu'elles coûtent chaque semaine et les usages de l'IA déjà en place, y compris ceux que personne n'a validés",
+    "Rédiger une demande aux cinq leviers AXION qui produit le même résultat entre les mains d'une autre table, et nommer le levier manquant lorsque ce n'est pas le cas",
+    "Transposer à son propre quotidien une astuce trouvée par un autre service, en la rangeant dans l'une des six familles de tâches transverses, et en produire la version diffusable",
+    "Formuler trois engagements écrits par service, en écartant les usages mis hors jeu le matin, et identifier le référent IA désigné pour la suite",
   ],
   beneficeDirigeantFr:
     "En une journée, toute l'entreprise partage un socle commun, rend visibles les usages IA déjà présents, et repart avec des règles et des engagements concrets par service — un vrai point de départ pour votre politique IA.",
   equationTempsFr:
     "1 journée réunissant toute l'entreprise → un socle commun, une cartographie réelle des usages, et une feuille de route collective formalisée le jour même.",
+  resultatsFr: [
+    {
+      valeur: "50",
+      label: "participants au maximum, réunis le même jour en tables de 6 à 8",
+    },
+    {
+      valeur: "56 %",
+      label: "du temps en travail par table et en évaluation (programme minuté)",
+    },
+    { valeur: "3", label: "engagements écrits par service, annoncés devant les autres" },
+    {
+      valeur: "10",
+      label: "questions d'évaluation individuelle, corrigées et commentées en salle",
+    },
+  ],
   modalites: ["presentiel"],
   programme: [
     {
@@ -5953,7 +6134,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
           temps: "5'",
           type: "objectif",
           titre:
-            "Ce que chacun saura faire à 17 h 30 : les six acquis de la journée affichés au mur, cochés au fil des séquences — nommer ce qu'on ne soumet jamais, écrire une demande qui marche sans son auteur, situer les usages de son service, transposer une astuce, écrire trois engagements",
+            "Ce que chacun saura faire à 17 h 30 : les acquis de la journée affichés au mur, cochés au fil des séquences — nommer ce qu'on ne soumet jamais, écrire une demande qui marche sans son auteur, situer les usages de son service, transposer une astuce, écrire trois engagements",
         },
         {
           temps: "20'",
@@ -6132,7 +6313,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
           temps: "5'",
           type: "synthese",
           titre:
-            "Bilan : les six acquis cochés au mur, le référent IA désigné devant tout le monde, et le classeur de bord remis table par table",
+            "Bilan : les acquis cochés au mur, le référent IA désigné devant tout le monde, et le classeur de bord remis table par table",
         },
       ],
     },

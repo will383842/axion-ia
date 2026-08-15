@@ -211,6 +211,53 @@ describe("CvFormateurPdf", () => {
     );
     expect(text).not.toContain("Sous-traitance (ind. 27)");
   });
+
+  // 🔴 Audit blanc 2026-08-15 — la fiche ne doit JAMAIS annoncer un CV téléversé
+  // quand la seule pièce au dossier est elle-même.
+  it("aucun CV source → la fiche dit qu'elle en tient lieu, sans prétendre à un téléversement", () => {
+    const text = collectPdfTextNormalized(
+      React.createElement(CvFormateurPdf, {
+        data: { ...data, cvJoint: false, pieceCompetences: "fiche_organisme" },
+        identite: IDENTITE,
+      }),
+    );
+    expect(text).toContain("aucun CV téléversé");
+    expect(text).toContain("fiche de compétences");
+    expect(text).not.toContain("Le CV original téléversé fait partie du dossier formateur");
+  });
+
+  // 🔴 Audit blanc 2026-08-15 — la mention légale annonce l'indicateur 22 : la
+  // pièce doit en restituer le contenu, ou écrire son absence noir sur blanc.
+  it("les actions de développement des compétences (ind. 22) sont imprimées", () => {
+    const text = collectPdfTextNormalized(
+      React.createElement(CvFormateurPdf, {
+        data: {
+          ...data,
+          actionsDeveloppement: [
+            {
+              date: "12/05/2026",
+              type: "Formation suivie",
+              description: "Certification RAG avancé",
+            },
+          ],
+        },
+        identite: IDENTITE,
+      }),
+    );
+    expect(text).toContain("Entretien et développement des compétences (ind. 22)");
+    expect(text).toContain("Certification RAG avancé");
+  });
+
+  it("aucune action ind. 22 → l'absence est ÉCRITE, jamais passée sous silence", () => {
+    const text = collectPdfTextNormalized(
+      React.createElement(CvFormateurPdf, {
+        data: { ...data, actionsDeveloppement: [] },
+        identite: IDENTITE,
+      }),
+    );
+    expect(text).toContain("Entretien et développement des compétences (ind. 22)");
+    expect(text).toContain("Aucune action");
+  });
 });
 
 // ============================================================

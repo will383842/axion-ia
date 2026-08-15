@@ -977,15 +977,44 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
       title: "Procédure de",
       titleEm: "réclamation",
       intro:
-        "Procédure de traitement des réclamations relatives aux prestations de formation d'Axion-IA : qui peut réclamer, comment déposer une réclamation, délais de réponse, traitement et voies de recours.",
+        "Procédure de traitement des difficultés, des réclamations et des aléas survenus en cours de prestation chez Axion-IA : qui peut signaler, comment déposer une réclamation, délais de réponse, traitement et actions correctives, enregistrement au registre des incidents, voies de recours internes et externes.",
       sections: [
         {
+          // 🔴 Audit blanc Qualiopi 2026-08-15 — écart sur l'indicateur 31.
+          // Le RNQ V9 nomme TROIS objets : « les difficultés, réclamations et
+          // ALÉAS survenus en cours de prestation ». Le champ d'application
+          // publié n'en couvrait qu'un — la réclamation — et le mot « aléa »
+          // n'apparaissait dans aucun texte publié.
+          //
+          // Le dispositif, lui, existait déjà : le registre des incidents est
+          // opérationnel (`src/server/qualiopi/registres/incidents-service.ts`,
+          // modèle Prisma `Incident` : type, gravité, action corrective, statut,
+          // export PDF). L'écart était purement rédactionnel — mais un auditeur
+          // COFRAC cherche littéralement les trois mots du libellé officiel, et
+          // un dispositif non décrit est un dispositif qu'il ne peut pas coter.
+          //
+          // ⚠️ Les définitions ci-dessous sont alignées sur les énumérations
+          // RÉELLES de la base (IncidentType, IncidentGravite, IncidentStatut).
+          // Si ces enums évoluent, ce texte doit suivre : décrire un registre
+          // autrement qu'il n'est tenu vaut moins que ne pas le décrire.
           title: "Objet et champ d'application",
-          body: "La présente procédure décrit les modalités de dépôt et de traitement des réclamations relatives aux prestations de formation d'Axion-IA. Peut formuler une réclamation toute personne concernée par une action de formation : le stagiaire, l'entreprise cliente qui commande la formation, ainsi que le financeur (OPCO, France Travail ou tout autre organisme prenant en charge le coût). Une réclamation s'entend de toute expression écrite d'insatisfaction relative à l'organisation, au contenu, au déroulement, aux moyens pédagogiques ou aux conditions administratives d'une formation.",
+          body: "La présente procédure décrit les modalités de signalement et de traitement des difficultés, des réclamations et des aléas survenus en cours de prestation. Elle s'applique à l'ensemble des actions de formation d'Axion-IA, en présentiel comme à distance, ainsi qu'aux prestations d'accompagnement qui les prolongent. Peut la mettre en œuvre toute personne concernée par une prestation : le stagiaire, l'entreprise cliente qui la commande, le financeur (OPCO, France Travail ou tout autre organisme prenant en charge le coût), ainsi que le formateur ou l'intervenant qui la réalise. Les trois objets se distinguent par leur nature. Une difficulté est un obstacle rencontré pendant le déroulement de la prestation et signalé afin d'être levé sans attendre : rythme inadapté, prérequis manquant, défaut d'accessibilité, accès à un outil ou à une salle. Une réclamation s'entend de toute expression écrite d'insatisfaction relative à l'organisation, au contenu, au déroulement, aux moyens pédagogiques ou aux conditions administratives d'une prestation. Un aléa est un événement imprévu qui affecte l'exécution de la prestation telle qu'elle était prévue : indisponibilité d'un formateur, défaillance technique, indisponibilité des locaux, absence collective, cas de force majeure.",
         },
         {
-          title: "Comment déposer une réclamation",
-          body: "Toute réclamation est formulée par écrit, afin d'en garantir la traçabilité. Elle peut être adressée par email à contact@axion-ia.com ou par courrier au siège de l'organisme. Pour permettre un traitement efficace, la réclamation précise l'identité du réclamant, la formation concernée (intitulé et dates), une description factuelle de la situation et, le cas échéant, les attentes du réclamant.",
+          // 🔴 2026-08-15 — AUCUN DÉLAI DE DÉPÔT. Le livret d'accueil imposait
+          // « dans un délai de 10 jours ouvrés suivant la situation litigieuse »
+          // (clause retirée le même jour). Un délai de forclusion sur le dépôt
+          // d'une réclamation qualité est un non-sens au regard de l'indicateur
+          // 31 : il rend irrecevable la réclamation qui arrive après le solde de
+          // la formation, c'est-à-dire précisément celle que l'auditeur cherche.
+          //
+          // ⚠️ La dernière phrase n'est PAS un renoncement au délai de
+          // forclusion de 90 jours des CGV (section « Délai de réclamation sur
+          // une prestation ») : elle sépare la recevabilité au titre de la
+          // présente procédure QUALITÉ de la mise en jeu de la responsabilité
+          // CONTRACTUELLE. Sans cette phrase, les deux textes se démentaient.
+          title: "Comment signaler une difficulté ou déposer une réclamation",
+          body: "Une difficulté peut être signalée à tout moment, oralement au formateur pendant la séquence ou par écrit à contact@axion-ia.com. Le formateur y répond immédiatement lorsque sa levée relève de lui et la transmet au référent pédagogique dans le cas contraire. Une réclamation est formulée par écrit, afin d'en garantir la traçabilité : par email à contact@axion-ia.com ou par courrier au siège de l'organisme. Pour permettre un traitement efficace, elle précise l'identité du réclamant, la prestation concernée (intitulé et dates), une description factuelle de la situation et, le cas échéant, les attentes du réclamant. Aucun délai de dépôt n'est opposé au réclamant : une réclamation est recevable pendant le déroulement de la prestation comme après son terme. Les délais de réclamation prévus par les conditions générales de vente concernent la mise en jeu de la responsabilité contractuelle d'Axion-IA ; ils sont sans effet sur la recevabilité d'une réclamation au titre de la présente procédure.",
         },
         {
           title: "Délais de traitement",
@@ -993,23 +1022,80 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Traitement et actions correctives",
-          body: "Chaque réclamation est enregistrée puis instruite par le référent pédagogique. L'instruction consiste à analyser les faits, à recueillir si nécessaire le point de vue du formateur et des parties concernées, et à déterminer les suites appropriées. Lorsqu'un dysfonctionnement est avéré, une ou plusieurs actions correctives sont définies et mises en œuvre afin d'éviter son renouvellement.",
+          body: "Chaque réclamation est enregistrée puis instruite par le référent pédagogique. L'instruction consiste à analyser les faits, à recueillir si nécessaire le point de vue du formateur et des parties concernées, et à déterminer les suites appropriées. Lorsqu'un dysfonctionnement est avéré, une ou plusieurs actions correctives sont définies et mises en œuvre afin d'éviter son renouvellement. Le responsable qualité est propriétaire de la présente procédure : il s'assure de son application, du respect des délais annoncés et de la clôture effective de chaque dossier.",
         },
         {
-          title: "Suivi et amélioration continue",
-          body: "Les réclamations et les actions correctives associées sont consignées dans un registre interne. Elles font l'objet d'un suivi et d'une analyse périodique qui alimentent la démarche d'amélioration continue de la qualité des prestations.",
+          // 🔴 2026-08-15 — SECTION AJOUTÉE. C'est le cœur de la correction :
+          // l'indicateur 31 attend un traitement décrit des aléas, distinct de
+          // celui des réclamations (un aléa n'a pas de réclamant, personne ne
+          // se plaint, et pourtant la prestation dévie de ce qui était prévu).
+          //
+          // Les mesures de remédiation énumérées sont limitatives et doivent le
+          // rester : chacune est réellement praticable et sans surcoût pour le
+          // client. N'ajouter une mesure ici que si elle est effectivement
+          // tenable — un engagement publié se constate le jour de l'audit.
+          //
+          // ⚠️ Le délai de 24 heures ouvrées est un ENGAGEMENT PUBLIÉ : il
+          // suppose que le registre des incidents soit alimenté au fil de l'eau
+          // et non reconstitué avant l'audit. `dateIncident` et `createdAt` du
+          // modèle `Incident` sont deux champs distincts ; un écart systématique
+          // entre les deux est exactement ce qu'un auditeur regarde.
+          title: "Aléas survenus en cours de prestation",
+          body: "Tout aléa survenu en cours de prestation est déclaré au responsable qualité dans un délai de 24 heures ouvrées à compter de sa survenance ou, s'il est constaté plus tard, de sa découverte. La déclaration incombe au formateur ou à l'intervenant qui constate l'aléa ; le stagiaire, l'entreprise cliente et le financeur peuvent également le signaler, par les mêmes voies qu'une réclamation. Chaque aléa est systématiquement enregistré au registre des incidents, qui mentionne sa date, son type (pédagogique, administratif, technique ou autre), sa gravité (mineure, majeure ou critique), la session concernée le cas échéant, l'action corrective décidée et son statut de traitement (ouvert, en cours, résolu) jusqu'à la clôture du dossier. Selon la nature de l'aléa, les mesures de remédiation admises sont le report de la séquence ou de la session sans frais pour le client, le remplacement du formateur par un intervenant de compétences équivalentes, ou l'organisation d'une séquence de rattrapage permettant d'atteindre les objectifs pédagogiques prévus. Le stagiaire, l'entreprise cliente et, lorsque la prestation est financée, le financeur sont informés de l'aléa, de la mesure retenue et de ses conséquences éventuelles sur le calendrier, sur les modalités ou sur la durée de la prestation.",
         },
         {
-          title: "Voies de recours",
-          body: "Si la réponse apportée ne satisfait pas le réclamant, celui-ci peut demander un réexamen de sa situation. Lorsque la formation fait l'objet d'un financement, le financeur (OPCO, France Travail ou autre) peut également être informé. Les litiges qui ne trouveraient pas de solution amiable relèvent des dispositions prévues par les conditions générales.",
+          title: "Suivi, registres et amélioration continue",
+          body: "Les réclamations sont consignées au registre des réclamations, les aléas au registre des incidents. L'un et l'autre sont tenus à jour, exportables et tenus à la disposition du client, du financeur et de l'organisme certificateur. Les actions correctives associées, leur mise en œuvre et leur efficacité font l'objet d'un suivi et d'une analyse périodique en revue de direction, qui alimentent la démarche d'amélioration continue de la qualité des prestations.",
+        },
+        {
+          title: "Voies de recours internes",
+          body: "Si la réponse apportée ne satisfait pas le réclamant, celui-ci peut demander un réexamen de sa situation auprès de la direction d'Axion-IA, en exposant les motifs de sa contestation. Le réexamen donne lieu à une réponse écrite. Lorsque la prestation fait l'objet d'un financement, le financeur (OPCO, France Travail ou autre) peut être informé à tout moment de la réclamation et des suites qui lui ont été données.",
+        },
+        {
+          // 🔴 2026-08-15 — SECTION AJOUTÉE. Aucune voie de recours EXTERNE
+          // n'était publiée : la procédure se refermait sur « les dispositions
+          // prévues par les conditions générales », ce qu'un auditeur lit comme
+          // une absence de recours indépendant.
+          //
+          // ⚠️⚠️ NE PAS NOMMER DE MÉDIATEUR ICI. Axion-IA n'a adhéré à AUCUN
+          // dispositif de médiation de la consommation à ce jour — c'est déjà
+          // constaté aux mentions légales (« Médiation de la consommation ») et
+          // aux CGV (« Particulier — médiation de la consommation »). Écrire un
+          // nom de médiateur sur une page publique alors qu'aucune adhésion
+          // n'existe est une affirmation fausse sur un support opposable : le
+          // silence est moins grave que le mensonge.
+          //
+          // 📍 EMPLACEMENT RÉSERVÉ — le jour de l'adhésion à un médiateur agréé
+          // CECMC (obligation de l'art. L.612-1 dès la première vente à un
+          // consommateur), insérer ICI une phrase du type : « Conformément aux
+          // articles L.611-1 et suivants du Code de la consommation, le client
+          // consommateur peut recourir gratuitement au médiateur <NOM>,
+          // <ADRESSE POSTALE>, <URL>, après avoir adressé une réclamation
+          // écrite à Axion-IA. » Et dans le MÊME patch : renseigner les clés
+          // `mediateur_consommation_nom` / `mediateur_consommation_url` en
+          // configuration Qualiopi, remplacer le constat des CGV et des
+          // mentions légales, et compléter `contrat-formation.tsx` qui
+          // n'imprime aucune clause de médiation.
+          title: "Voies de recours externes",
+          body: "Lorsque le désaccord persiste à l'issue du réexamen interne, le client conserve l'intégralité des voies de recours de droit commun. Les prestations d'Axion-IA étant commercialisées auprès d'une clientèle professionnelle, le dispositif de médiation de la consommation prévu aux articles L.611-1 et suivants du Code de la consommation n'est pas applicable à ces relations et Axion-IA n'a, à ce jour, adhéré à aucun dispositif de médiation ; toute vente à un consommateur suppose l'adhésion préalable à un médiateur agréé, dont les coordonnées seront alors publiées dans la présente section. À défaut de résolution amiable, le litige relève du tribunal compétent désigné par les conditions générales de vente, soit celui du ressort du siège social d'Axion-IA. Lorsque la prestation bénéficie d'un financement public ou mutualisé, le financeur peut être saisi au titre du contrôle qu'il exerce sur les actions qu'il prend en charge. Les services régionaux de contrôle de la formation professionnelle (DREETS) exercent le contrôle des organismes de formation en application des articles L.6361-1 et suivants du Code du travail et peuvent être saisis à ce titre. Enfin, lorsque Axion-IA est titulaire de la certification Qualiopi, toute réclamation relative au respect du Référentiel National Qualité peut en outre être portée à la connaissance de son organisme certificateur, dont les coordonnées sont communiquées sur simple demande.",
         },
       ],
       metaSeo: {
-        title: "Procédure de réclamation · Axion-IA",
+        title: "Difficultés, réclamations et aléas · Axion-IA",
         description:
-          "Procédure de réclamation des formations Axion-IA : dépôt par écrit, accusé de réception sous 5 jours ouvrés, réponse circonstanciée sous 15 jours ouvrés, actions correctives et voies de recours.",
+          "Procédure Axion-IA de traitement des difficultés, réclamations et aléas : dépôt écrit sans délai opposable, accusé de réception sous 5 jours ouvrés, réponse sous 15 jours ouvrés, registre des incidents et voies de recours.",
       },
     },
+    // ⚠️ 2026-08-15 — DIVERGENCE FR/EN ASSUMÉE. Le bloc `en` ci-dessous n'a PAS
+    // été mis à jour : il décrit encore la procédure d'avant la correction de
+    // l'indicateur 31 (pas d'aléas, pas de voie de recours externe, champ
+    // d'application borné à la réclamation). Motif : décision Will du
+    // 2026-08-12 — site français uniquement, ne rien produire de nouveau en
+    // anglais ; le locale EN est par ailleurs intercepté en 301 vers le FR par
+    // `src/proxy.ts`, la page anglaise n'est donc pas servie.
+    // 🔴 SI EN EST RÉACTIVÉ (`EN_LOCALE_ENABLED=true`), ce bloc redevient
+    // public et RÉINTRODUIT l'écart d'audit : le traduire AVANT de basculer le
+    // drapeau, ou retirer la page EN de l'index.
     en: {
       title: "Complaints",
       titleEm: "procedure",

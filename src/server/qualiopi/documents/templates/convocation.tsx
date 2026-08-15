@@ -4,7 +4,8 @@
  * Mention réglementaire "À conserver". Contient les informations de session
  * (intitulé, dates, horaires heure de Paris, modalité, lieu/visio, formateur,
  * contact), les informations stagiaire, l'équipement requis (distanciel),
- * les documents joints et les mentions handicap/absence.
+ * les documents mis à disposition dans l'espace stagiaire et les mentions
+ * handicap/absence.
  *
  * NE PAS "use client" — rendu serveur exclusif (@react-pdf/renderer).
  */
@@ -32,10 +33,29 @@ export interface ConvocationData {
   intituleFormation: string;
   dateDebut: string;
   dateFin: string;
-  horaires: string; /** Heure de Paris, ex: "09h00–17h00 (heure de Paris)" */
+  /**
+   * Plage(s) horaire(s) NUE(S), sans mention de fuseau — ex. « 09h00–17h00 » ou
+   * « 09h00–12h30, 13h30–17h00 ». Le gabarit ajoute lui-même « (heure de
+   * Paris) » : une valeur qui porte déjà la mention l'imprimerait en double sur
+   * une pièce légale. L'ancien commentaire donnait justement l'exemple inverse.
+   */
+  horaires: string;
   dureeHeures: number;
   modalite: "présentiel" | "distanciel" | "mixte";
   lieu?: string;
+  /**
+   * ⚠️ Modalité d'accès en distanciel — attendue par l'indicateur 9 au même
+   * titre que l'adresse en présentiel. Le gabarit MASQUE `lieu` dès que la
+   * modalité est « distanciel » : sans `lienVisio`, la convocation ne dit alors
+   * strictement RIEN de la façon de rejoindre la session.
+   *
+   * 🔴 Constaté à l'audit blanc 2026-08-15 : le seul appelant
+   * (`genererConvocationAction`, src/server/actions/qualiopi/documents.ts) ne
+   * renseigne ni `lienVisio` ni `idReunion` ni `contactTelephone`, alors que la
+   * session porte bien `lieuVisioUrl` en base. Toute convocation distancielle
+   * part donc sans modalité d'accès. Correctif hors périmètre de ce fichier :
+   * il se fait au point d'appel, pas ici.
+   */
   lienVisio?: string;
   idReunion?: string;
   nomFormateur: string;
@@ -132,10 +152,28 @@ export function ConvocationPdf({
           </DocSection>
         ) : null}
 
-        {/* Section 4 : Documents joints */}
-        <DocSection title="Documents joints à cette convocation">
+        {/* Section 4 : Documents mis à disposition */}
+        {/*
+          🔴 Audit blanc 2026-08-15. Cette section s'intitulait « Documents joints
+          à cette convocation » et affirmait « Les documents suivants vous sont
+          transmis avec cette convocation ». Or l'e-mail de convocation
+          (`envoyerConvocation`, notifications-service.ts) n'attache AUCUN
+          fichier : il porte un lien personnel vers l'espace stagiaire, lequel
+          délivre effectivement ces quatre éléments. La pièce attestait donc une
+          transmission qui n'avait pas lieu sous la forme annoncée — et
+          l'auditeur qui confronte la convocation au journal d'envoi relève la
+          contradiction sans même ouvrir le portail.
+
+          La formule décrit désormais ce qui se passe réellement. NE PAS la
+          re-durcir en « joints » sans avoir d'abord attaché les pièces à
+          l'e-mail : c'est la phrase qui suit le code, jamais l'inverse.
+          Indicateur 9 (information sur les conditions de déroulement).
+        */}
+        <DocSection title="Documents mis à votre disposition">
           <Text style={pdfStyles.paragraph}>
-            Les documents suivants vous sont transmis avec cette convocation :
+            Les documents suivants sont mis à votre disposition dans votre espace stagiaire,
+            accessible par le lien personnel qui vous est adressé par courriel avec cette
+            convocation :
           </Text>
           <BulletList
             items={[
@@ -145,6 +183,10 @@ export function ConvocationPdf({
               "Questionnaire de positionnement (à remplir avant la formation)",
             ]}
           />
+          <Text style={pdfStyles.paragraph}>
+            Si vous ne parvenez pas à accéder à votre espace stagiaire, signalez-le au contact
+            indiqué ci-dessus : ces documents vous seront adressés par un autre moyen.
+          </Text>
         </DocSection>
 
         {/* Section 5 : Situation handicap */}

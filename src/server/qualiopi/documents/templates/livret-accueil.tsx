@@ -77,6 +77,13 @@ export function LivretAccueilPdf({
   data: LivretAccueilData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
+  // Renvoi vers la procédure de réclamation publiée (cf. section 6). Même
+  // traitement que le renvoi aux CGV du devis : `identite.site` peut être vide
+  // (config Qualiopi non renseignée), auquel cas on énonce l'existence de la
+  // procédure plutôt que d'imprimer une URL tronquée du type « /reclamations »,
+  // inexploitable pour le stagiaire.
+  const siteBase = identite.site.replace(/\/+$/, "");
+
   return (
     <Document>
       <QualiopiPage
@@ -223,11 +230,25 @@ export function LivretAccueilPdf({
 
             `fiche-adaptation.tsx` faisait déjà correctement les trois lignes ;
             c'est ce modèle qu'on applique ici.
+
+            🔴 Audit blanc 2026-08-15 — complément. Le correctif du 03/08 avait
+            bien mis `referentHandicapNom` EN TÊTE, mais laissé derrière lui la
+            chaîne de repli `|| identite.raisonSociale || "Axion-IA SAS"`. Si
+            `referent_handicap_nom` est vidé en configuration, le livret réimprime
+            donc « Référent handicap : AXION IA SAS » — exactement le défaut que
+            la correction prétendait avoir supprimé, en silence et sans rien qui
+            alerte. Un repli qui restaure la non-conformité annule la garde.
+
+            Le champ est désormais `required` : à défaut de nom, la ligne sort en
+            rouge (« Non renseigné »). C'est délibérément l'inverse du traitement
+            réservé au numéro Qualiopi (F29, plus haut) — un organisme peut
+            légitimement ne pas encore être certifié, alors que TOUT organisme de
+            formation doit avoir désigné une personne physique comme référent
+            handicap (art. L.6352-3, indicateur 26). Ici l'absence n'est pas un
+            état normal : c'est une non-conformité, et elle doit sauter aux yeux
+            de celui qui relit la pièce avant remise.
           */}
-          <FieldRow
-            label="Référent handicap"
-            value={identite.referentHandicapNom || identite.raisonSociale || "Axion-IA SAS"}
-          />
+          <FieldRow label="Référent handicap" value={identite.referentHandicapNom || ""} required />
           <FieldRow label="Email" value={identite.referentHandicapEmail || identite.email || "—"} />
           {identite.referentHandicapTelephone ? (
             <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
@@ -243,6 +264,29 @@ export function LivretAccueilPdf({
         </DocSection>
 
         {/* Réclamations */}
+        {/*
+          🔴 Audit blanc 2026-08-15. Cette section imposait au stagiaire de
+          réclamer « dans un délai de 10 jours ouvrés suivant la situation
+          litigieuse ». Ce délai ne figure NI dans la procédure publiée sur
+          /reclamations, NI dans le règlement intérieur publié : le stagiaire
+          recevait donc deux règles différentes sur le même droit, et celle qui
+          éteignait son droit de réclamer au bout de dix jours était précisément
+          celle qui n'était pas publiée.
+
+          Une clause qui abrège le délai pour agir relève en outre de la liste
+          grise de l'article R.212-2 10° du Code de la consommation (présomption
+          simple d'abus) — un risque inutile pour une règle qui n'apportait rien
+          à l'organisme.
+
+          Ce qui RESTE est ce qui engage l'organisme et profite au stagiaire :
+          l'écrit auprès du référent, l'accusé de réception sous 5 jours ouvrés
+          et la réponse circonstanciée sous 15 jours ouvrés — les trois délais
+          de la procédure publiée, à l'identique.
+
+          Le renvoi qui suit est la garantie STRUCTURELLE contre une nouvelle
+          divergence : la pièce remise ne redit plus la procédure, elle désigne
+          sa source de vérité (`src/content/legal.ts`, entrée « reclamations »).
+        */}
         <DocSection title="6. Réclamations">
           <Text style={local.bodyText}>
             Votre satisfaction est notre priorité. Si vous rencontrez un problème ou si vous
@@ -251,11 +295,15 @@ export function LivretAccueilPdf({
           <BulletList
             items={[
               "Par écrit (courrier ou email) auprès de votre référent pédagogique.",
-              "Dans un délai de 10 jours ouvrés suivant la situation litigieuse.",
               "Nous vous accuserons réception sous 5 jours ouvrés et vous apporterons une réponse circonstanciée dans un délai maximum de 15 jours ouvrés.",
             ]}
           />
           <FieldRow label="Email réclamations" value={identite.email || "—"} />
+          <Text style={pdfStyles.legalNote}>
+            {siteBase
+              ? `Procédure complète (dépôt, traitement, suivi et voies de recours) : ${siteBase}/reclamations`
+              : "La procédure complète (dépôt, traitement, suivi et voies de recours) est publiée sur notre site, rubrique « Réclamations », et communiquée sur simple demande."}
+          </Text>
         </DocSection>
 
         {/* RGPD */}
