@@ -17,6 +17,12 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ReviewStatus } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+// Fix 2026-08-15 (audit e2e) — options par défaut partagées : sans elles, les
+// files ad-hoc créées ici héritaient du défaut BullMQ (1 seule tentative).
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
+// Fix 2026-08-15 (audit e2e, E4) — motif anti-zombie : jamais d'`add` sur une
+// clé squattée par un job terminé, jamais de `remove` sur un job en vol.
+import { resolveReenqueueAction } from "@/server/content-gen/queue/reenqueue-policy";
 // Audit UX 2026-08-01 — colonne « Titre » sur la file de relecture (même
 // source que la liste des jobs, cf. docblock `extractJobTitle`).
 import { extractJobTitle } from "@/server/content-gen/shared/admin-labels";
@@ -47,8 +53,29 @@ function getPublishQueue(): Queue | null {
   if (publishQueue) return publishQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e) — `defaultJobOptions` partagées (retries + backoff),
+  // sinon défaut BullMQ = 1 tentative et un kill switch fait échouer définitivement.
+  publishQueue = new Queue("content-publish", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return publishQueue;
+}
+
+// Fix 2026-08-15 (audit e2e, E4) — file de la boucle qualité. `requestEdits`
+// posait le statut `quality_improving` sans JAMAIS rien enfiler ici (le seul
+// producteur était le gen-worker) : chaque « Demander des modifications »
+// strandait donc le job à vie. Même motif lazy-singleton que ci-dessus.
+let improverQueue: Queue | null = null;
+function getImproverQueue(): Queue | null {
+  if (improverQueue) return improverQueue;
+  const redisUrl = process.env.REDIS_URL;
+  if (!redisUrl) return null;
+  improverQueue = new Queue("content-quality-improver", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
+  return improverQueue;
 }
 
 async function enqueuePublish(reviewQueueId: string, promoteToTier1: boolean): Promise<void> {
@@ -105,6 +132,10 @@ export async function listReviewPaginated(
   status?: ReviewStatus,
   page: number = 1,
 ): Promise<ListReviewResult> {
+  // Fix 2026-08-15 (audit e2e, E5) — "use server" fait de chaque export un
+  // endpoint POST public : sans garde, la file de relecture (contenus non
+  // publiés inclus) était lisible par un appelant non authentifié.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   if (status !== undefined) ReviewStatusSchema.parse(status);
   ReviewPageSchema.parse(page);
@@ -143,6 +174,8 @@ export async function listReviewPaginated(
 }
 
 export async function listReview(status?: ReviewStatus): Promise<ReadonlyArray<ReviewRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   if (status !== undefined) ReviewStatusSchema.parse(status);
   const where = status ? { status } : {};
@@ -245,26 +278,51 @@ export async function bulkApproveReviews(
       include: { job: { select: { id: true } } },
       take: limit,
     });
+    // Fix 2026-08-15 (audit e2e, E9) — isolation par item (motif déjà appliqué à
+    // `retryAllFailed`) : avant, une exception à l'item k laissait la revue k
+    // `approved` SANS job publish ET interrompait k+1..N. On isole chaque item,
+    // on approuve de façon atomique (filtre `status: "pending"` — une revue déjà
+    // transitionnée par un autre admin est simplement sautée), et on retourne le
+    // compte RÉEL d'approbations, pas le nombre de candidats.
+    let approved = 0;
+    const failures: string[] = [];
     for (const r of candidates) {
-      await prisma.reviewQueue.update({
-        where: { id: r.id },
-        data: {
-          status: "approved",
-          reviewedBy: session.userId,
-          reviewNotes: `[bulk approve] score >= ${minScore}`,
-          reviewedAt: new Date(),
-        },
-      });
-      await enqueuePublish(r.id, true); // tout publié = indexé (tier-1), cf. approveReview
+      try {
+        const res = await prisma.reviewQueue.updateMany({
+          where: { id: r.id, status: "pending" },
+          data: {
+            status: "approved",
+            reviewedBy: session.userId,
+            reviewNotes: `[bulk approve] score >= ${minScore}`,
+            reviewedAt: new Date(),
+          },
+        });
+        if (res.count === 0) continue; // déjà transitionnée entre-temps
+        approved++;
+        await enqueuePublish(r.id, true); // tout publié = indexé (tier-1), cf. approveReview
+      } catch (e) {
+        // Une revue approuvée dont l'enqueue a échoué reste `approved` en DB —
+        // rattrapable via « Approuver + rendre visible » (promoteToTier1).
+        failures.push(r.id);
+        Sentry.captureException(e, {
+          tags: { area: "content-gen", action: "bulkApproveReviews.item" },
+          extra: { reviewQueueId: r.id },
+        });
+      }
+    }
+    if (failures.length > 0) {
+      console.warn(
+        `[review.bulkApprove] ${failures.length}/${candidates.length} items en échec : ${failures.join(", ")}`,
+      );
     }
     await logActivity({
       session,
       action: "content-gen.review.bulk-approve",
       targetType: "ReviewQueue",
-      changes: { minScore, count: candidates.length },
+      changes: { minScore, count: approved, selected: candidates.length, failed: failures.length },
     });
     revalidatePath(adminBase());
-    return { approved: candidates.length };
+    return { approved };
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "bulkApproveReviews" } });
     throw e;
@@ -380,10 +438,27 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
   try {
     const review = await prisma.reviewQueue.findUnique({
       where: { id },
-      select: { jobId: true, status: true },
+      select: {
+        jobId: true,
+        status: true,
+        // Fix 2026-08-15 (E4) — nécessaires au payload et au jobId de la boucle
+        // qualité (cf. enqueue ci-dessous).
+        job: { select: { qualityScore: true, qualityImprovementAttempts: true } },
+      },
     });
     if (!review) throw new Error("review_not_found");
     if (review.status !== "pending") throw new Error("review_not_pending");
+
+    // Fix 2026-08-15 (audit e2e, E4) — garde AVANT la mutation : sans Redis,
+    // poser `quality_improving` sans rien enfiler strandait le job à vie (le
+    // seul producteur de `content-quality-improver` était le gen-worker —
+    // 56 jobs figés depuis le 20/07 constatés en prod).
+    const queue = getImproverQueue();
+    if (!queue) {
+      throw new Error(
+        "redis_indisponible : impossible d'enfiler la demande de modifications — rien n'a été modifié.",
+      );
+    }
 
     await prisma.$transaction([
       prisma.reviewQueue.update({
@@ -400,6 +475,27 @@ export async function requestEdits(id: string, comment: string): Promise<void> {
         data: { status: "quality_improving" },
       }),
     ]);
+
+    // Fix 2026-08-15 (audit e2e, E4) — enfile RÉELLEMENT le job dans la boucle
+    // qualité. Le jobId inclut le numéro de tentative (`-a<n>`, même format que
+    // le gen-worker et le balayage de reprise) : un jobId fixe `quality-<id>`
+    // serait silencieusement dédupliqué par BullMQ dès la 2ᵉ passe. Ordre des
+    // opérations : la transaction DB d'abord — si l'enqueue échoue malgré tout,
+    // le job est `quality_improving` sans porteur, état que le balayage
+    // `sweepStrandedQualityJobs` réinjecte sous 1 h (aucun état perdu).
+    const bullJobId = `quality-${review.jobId}-a${review.job.qualityImprovementAttempts}`;
+    const existing = await queue.getJob(bullJobId);
+    const action = resolveReenqueueAction(existing ? await existing.getState() : null);
+    if (action === "remove-then-enqueue" && existing) {
+      await existing.remove();
+    }
+    if (action !== "skip-in-flight") {
+      await queue.add(
+        "improve",
+        { contentGenJobId: review.jobId, previousScore: review.job.qualityScore ?? 0 },
+        { jobId: bullJobId },
+      );
+    }
     await logActivity({
       session,
       action: "content-gen.review.request-edits",

@@ -48,6 +48,13 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({
   captureWorkerError: (...args: unknown[]) => captureWorkerErrorMock(...args),
 }));
 
+// Fix 2026-08-15 (F8) : le worker consulte désormais le kill switch global
+// avant tout appel OpenAI payant — mocké inactif par défaut.
+const readKillSwitchMock = vi.fn();
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: (...args: unknown[]) => readKillSwitchMock(...args),
+}));
+
 vi.mock("bullmq", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Worker: vi.fn().mockImplementation((name: string, fn: any) => {
@@ -97,6 +104,7 @@ beforeEach(() => {
 
   configUpsertMock.mockResolvedValue({ key: "embeddings_last_run", value: {} });
   executeRawMock.mockResolvedValue(1);
+  readKillSwitchMock.mockResolvedValue({ active: false });
 });
 
 afterEach(() => {
@@ -241,6 +249,27 @@ describe("embeddings-backfill-worker", () => {
     )?.create?.value;
     expect(lastRunValue?.processed).toBe(3);
     expect(lastRunValue?.errors).toBe(20);
+  });
+
+  it("T7 (F8 2026-08-15): kill switch actif → skip propre, aucun appel OpenAI ni DB articles", async () => {
+    readKillSwitchMock.mockResolvedValue({ active: true, reason: "arrêt d'urgence test" });
+
+    const fn = capturedProcessor.fn!;
+    // Skip PROPRE : pas d'échec bruyant.
+    await expect(fn(MOCK_JOB)).resolves.not.toThrow();
+
+    expect(queryRawUnsafeMock).not.toHaveBeenCalled();
+    expect(openaiEmbeddingsCreateMock).not.toHaveBeenCalled();
+    expect(executeRawMock).not.toHaveBeenCalled();
+
+    // Trace du skip dans embeddings_last_run (même motif que le flag env).
+    expect(configUpsertMock).toHaveBeenCalledTimes(1);
+    const upsertCall = configUpsertMock.mock.calls[0]?.[0] as {
+      where: { key: string };
+      create: { value: { skippedReason: string } };
+    };
+    expect(upsertCall?.where?.key).toBe("embeddings_last_run");
+    expect(upsertCall?.create?.value?.skippedReason).toContain("kill_switch actif");
   });
 
   it("T6: nom de worker enregistré correctement via EMBEDDINGS_BACKFILL_QUEUE", () => {

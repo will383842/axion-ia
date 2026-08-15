@@ -12,14 +12,32 @@
  *     ET `GOOGLE_INDEXING_SA_JSON` set (cf. worker skeleton V1).
  *     SSOT env vars aligné audit indexation 2026-05-15 P0-9.
  *
- * Idempotency : utilise `jobId` déterministe (`indexing-${articleId}-${kind}`)
- * pour éviter doublons si re-enqueued. BullMQ dédoublonne sur jobId.
+ * Idempotency : jobId déterministe (`indexnow-${articleId}-${event}`) pour
+ * éviter les doublons d'un ping EN VOL. Fix 2026-08-15 (D5 audit e2e) : cette
+ * idempotence ne vaut que pour un job actif/waiting — un job TERMINÉ reste
+ * dans Redis (removeOnComplete count 1000) et squattait la clé : le chemin
+ * REFRESH (re-publication d'un article existant) repassait ici avec le même
+ * articleId + event `publish` par défaut, BullMQ ignorait silencieusement le
+ * `add` → un article rafraîchi n'était souvent JAMAIS re-pingé. On applique
+ * désormais le motif remove-then-enqueue de `reenqueue-policy` (même doctrine
+ * que `enqueueGenJob`, fix 2026-07-17) : jobId STABLE conservé (pas de suffixe
+ * horodaté qui rendrait la clé introuvable et empilerait des doublons en vol),
+ * mais un job complété/failed est supprimé avant le `add`.
  *
  * Fire-and-forget : ne throw jamais. Tout échec d'enqueue → log warn + continue.
  */
 
-import { Queue } from "bullmq";
+import { Queue, type Job } from "bullmq";
 import { buildArticleUrl, type BuildArticleUrlInput } from "./url-builder";
+import { isRoutableArticleSlug } from "@/server/content-gen/blog/resolve-article-route";
+import {
+  resolveReenqueueAction,
+  type BullJobState,
+} from "@/server/content-gen/queue/reenqueue-policy";
+// Fix 2026-08-15 — files créées à la volée : sans defaultJobOptions elles
+// héritaient du défaut BullMQ (1 tentative, aucune rétention bornée). Aligné
+// sur le module partagé job-options (retries + backoff + retention).
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 
 const INDEXNOW_QUEUE = "content-indexnow";
 const GOOGLE_INDEXING_QUEUE = "content-google-indexing";
@@ -31,7 +49,10 @@ function getIndexNowQueue(): Queue | null {
   if (indexNowQueue) return indexNowQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  indexNowQueue = new Queue(INDEXNOW_QUEUE, { connection: { url: redisUrl } });
+  indexNowQueue = new Queue(INDEXNOW_QUEUE, {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return indexNowQueue;
 }
 
@@ -39,8 +60,56 @@ function getGoogleIndexingQueue(): Queue | null {
   if (googleIndexingQueue) return googleIndexingQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  googleIndexingQueue = new Queue(GOOGLE_INDEXING_QUEUE, { connection: { url: redisUrl } });
+  googleIndexingQueue = new Queue(GOOGLE_INDEXING_QUEUE, {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return googleIndexingQueue;
+}
+
+/**
+ * Fix 2026-08-15 (D5) — add avec politique de ré-enfilage. Un `queue.add` sur
+ * un jobId dont le job précédent est TERMINÉ (completed/failed, conservé par la
+ * rétention) est silencieusement ignoré par BullMQ : le re-ping d'un article
+ * rafraîchi n'était donc jamais enfilé. On supprime le job périmé avant le add
+ * (motif `resolveReenqueueAction`, cf. reenqueue-policy.ts). Un job encore EN
+ * VOL est laissé tel quel (idempotence d'origine préservée) : l'occurrence est
+ * couverte par le ping déjà en attente → on répond `true`.
+ *
+ * Défensif de bout en bout (contrat fire-and-forget du module) : toute erreur
+ * de lecture d'état retombe sur le comportement `add` historique.
+ */
+async function addPingWithReenqueue(
+  queue: Queue,
+  data: Record<string, unknown>,
+  jobId: string,
+): Promise<boolean> {
+  let existing: Job | undefined;
+  let state: BullJobState | null = null;
+  try {
+    existing = await queue.getJob(jobId);
+    state = existing ? ((await existing.getState()) as BullJobState) : null;
+  } catch {
+    // Lecture d'état impossible (Redis flaky, mock partiel en test) → on
+    // retombe sur le add nu, comportement historique.
+    existing = undefined;
+    state = null;
+  }
+  const action = resolveReenqueueAction(state);
+  if (action === "skip-in-flight") {
+    // Un ping identique attend déjà son tour : ne pas doublonner.
+    return true;
+  }
+  if (action === "remove-then-enqueue" && existing) {
+    try {
+      await existing.remove();
+    } catch {
+      // Course rarissime (job repris entre getState et remove) : le add
+      // no-opera alors comme avant — pas pire que l'ancien comportement.
+    }
+  }
+  await queue.add("ping", data, { jobId });
+  return true;
 }
 
 /**
@@ -91,6 +160,17 @@ export interface EnqueueIndexingResult {
 export async function enqueueIndexingForTier1(
   input: EnqueueIndexingInput,
 ): Promise<EnqueueIndexingResult> {
+  // Fix 2026-08-15 (D8) — garde-fou slug routable : un slug contenant `/`
+  // (donnée malformée, cf. incident GSC 2026-07-11) produirait une URL à deux
+  // segments qui 404 dur. On ne pinge JAMAIS une telle URL (ping = inviter
+  // Google/Bing à crawler un 404).
+  if (!isRoutableArticleSlug(input.slug)) {
+    console.warn(
+      `[indexing-enqueue] slug non routable (contient "/" ou vide) — ping refusé pour article ${input.articleId}: "${input.slug}"`,
+    );
+    return { url: "", indexnowEnqueued: false, googleEnqueued: false };
+  }
+
   const url = buildArticleUrl(input);
   const event: IndexingLifecycleEvent = input.lifecycleEvent ?? "publish";
 
@@ -102,14 +182,15 @@ export async function enqueueIndexingForTier1(
     const queue = getIndexNowQueue();
     if (queue) {
       try {
-        await queue.add(
-          "ping",
+        // jobId suffixé event pour permettre re-ping si lifecycle change rapidement
+        // (publish → delete dans la même fenêtre BullMQ). Fix 2026-08-15 (D5) :
+        // remove-then-enqueue pour qu'un REFRESH (même articleId, même event)
+        // soit re-pingé au lieu d'être avalé par la clé du job complété.
+        indexnowEnqueued = await addPingWithReenqueue(
+          queue,
           { urls: [url], origin: input.origin },
-          // jobId suffixé event pour permettre re-ping si lifecycle change rapidement
-          // (publish → delete dans la même fenêtre BullMQ).
-          { jobId: `indexnow-${input.articleId}-${event}` },
+          `indexnow-${input.articleId}-${event}`,
         );
-        indexnowEnqueued = true;
       } catch (err) {
         console.warn(
           `[indexing-enqueue] indexnow add failed for article ${input.articleId}:`,
@@ -133,12 +214,11 @@ export async function enqueueIndexingForTier1(
     const queue = getGoogleIndexingQueue();
     if (queue) {
       try {
-        await queue.add(
-          "ping",
+        googleEnqueued = await addPingWithReenqueue(
+          queue,
           { url, type: eventToGoogleType(event) },
-          { jobId: `google-indexing-${input.articleId}-${event}` },
+          `google-indexing-${input.articleId}-${event}`,
         );
-        googleEnqueued = true;
       } catch (err) {
         console.warn(
           `[indexing-enqueue] google-indexing add failed for article ${input.articleId}:`,
@@ -185,12 +265,12 @@ export async function enqueueIndexingForUrls(
     const queue = getIndexNowQueue();
     if (queue) {
       try {
-        await queue.add(
-          "ping",
+        // Fix 2026-08-15 (D5) — même motif remove-then-enqueue que le chemin article.
+        indexnowEnqueued = await addPingWithReenqueue(
+          queue,
           { urls: validUrls, origin: input.origin },
-          { jobId: `indexnow-${input.entityId}-${event}` },
+          `indexnow-${input.entityId}-${event}`,
         );
-        indexnowEnqueued = true;
       } catch (err) {
         console.warn(
           `[indexing-enqueue] indexnow batch failed for ${input.entityId}:`,
@@ -215,12 +295,12 @@ export async function enqueueIndexingForUrls(
         const url = validUrls[i];
         if (typeof url !== "string") continue;
         try {
-          await queue.add(
-            "ping",
+          const added = await addPingWithReenqueue(
+            queue,
             { url, type },
-            { jobId: `google-indexing-${input.entityId}-${i}-${event}` },
+            `google-indexing-${input.entityId}-${i}-${event}`,
           );
-          googleEnqueued = true;
+          googleEnqueued = googleEnqueued || added;
         } catch (err) {
           console.warn(
             `[indexing-enqueue] google-indexing add failed for ${input.entityId} url ${url}:`,
@@ -266,12 +346,12 @@ export async function enqueueGoogleIndexingForUrls(
     const url = validUrls[i];
     if (typeof url !== "string") continue;
     try {
-      await queue.add(
-        "ping",
+      const added = await addPingWithReenqueue(
+        queue,
         { url, type },
-        { jobId: `google-indexing-${input.entityId}-${i}-${event}` },
+        `google-indexing-${input.entityId}-${i}-${event}`,
       );
-      googleEnqueued = true;
+      googleEnqueued = googleEnqueued || added;
     } catch (err) {
       console.warn(
         `[indexing-enqueue] google-only add failed for ${input.entityId} url ${url}:`,

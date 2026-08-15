@@ -44,9 +44,35 @@ vi.mock("@/lib/prisma", () => ({
 vi.mock("@/server/actions/content-gen/_settings", () => ({
   readContentGenConfig: (key: string) => readConfigMock(key),
 }));
-vi.mock("@/server/content-gen/scheduler/anti-burst", () => ({
-  computeAntiBurstSchedule: vi.fn(() => []),
-  msSinceStartOfDay: vi.fn(() => 0),
+vi.mock("@/server/content-gen/scheduler/anti-burst", async () => {
+  const actual = await vi.importActual<typeof import("@/server/content-gen/scheduler/anti-burst")>(
+    "@/server/content-gen/scheduler/anti-burst",
+  );
+  return {
+    ...actual,
+    computeAntiBurstSchedule: vi.fn(() => []),
+    // Milieu de journée (2026-08-15) : le rythme quotidien n'est pas le sujet de
+    // ce fichier, on veut simplement un budget de tick non nul.
+    msSinceStartOfDay: vi.fn(() => 43_200_000),
+  };
+});
+
+// Reprise du retard (2026-08-15) — hors sujet ici : neutralisée.
+vi.mock("@/server/content-gen/recovery/backlog-recovery", () => ({
+  DEFAULT_RECOVERY_SETTINGS: {
+    enabled: false,
+    maxPerTick: 0,
+    maxPerDay: 0,
+    maxRetries: 3,
+    stuckAfterMinutes: 60,
+  },
+  drainFailedJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStuckJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStrandedQualityJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+}));
+
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: vi.fn(async () => ({ active: false })),
 }));
 vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
   alertCampaignDone: (...args: unknown[]) => alertCampaignDoneMock(...args),

@@ -1,8 +1,104 @@
 import { describe, expect, it } from "vitest";
-import { computeAntiBurstSchedule, msSinceStartOfDay } from "../anti-burst";
+import {
+  computeAntiBurstSchedule,
+  computeCampaignTickBudget,
+  msSinceStartOfDay,
+} from "../anti-burst";
 
 const HOUR = 3_600_000;
 const DAY = 86_400_000;
+
+/**
+ * Régression 2026-08-15 — budget de tick par campagne.
+ *
+ * L'ancienne formule `max(1, ceil(dailyArticles / 96))` ignorait totalement ce
+ * qui avait déjà été produit dans la journée. Son plancher à 1 faisait enfiler un
+ * job à CHACUN des 96 ticks quotidiens : ~96 jobs/jour quelle que soit la cible.
+ * Mesuré en production les 23 et 24 juillet : ~88 jobs/jour pour une campagne
+ * réglée à 20, soit un crédit provider consommé près de cinq fois trop vite.
+ */
+describe("computeCampaignTickBudget", () => {
+  it("n'enfile rien quand la cible du jour est déjà atteinte", () => {
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: 20,
+        msSinceStartOfDay: HOUR * 12,
+        antiBurstEnabled: true,
+      }),
+    ).toBe(0);
+  });
+
+  it("n'enfile rien quand la production est en avance sur la courbe du jour", () => {
+    // À la moitié de la journée, la courbe idéale vaut 10 sur une cible de 20.
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: 10,
+        msSinceStartOfDay: DAY / 2,
+        antiBurstEnabled: true,
+      }),
+    ).toBe(0);
+  });
+
+  it("rattrape exactement le retard sur la courbe du jour", () => {
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: 6,
+        msSinceStartOfDay: DAY / 2,
+        antiBurstEnabled: true,
+      }),
+    ).toBe(4);
+  });
+
+  it("ne dépasse jamais la cible du jour, même en fin de journée", () => {
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: 0,
+        msSinceStartOfDay: DAY,
+        antiBurstEnabled: true,
+      }),
+    ).toBe(20);
+  });
+
+  it("le total d'une journée entière tient la cible (le bug des ~96/jour)", () => {
+    // Simulation des 96 ticks : la somme doit valoir la cible, pas 96.
+    let created = 0;
+    for (let tick = 1; tick <= 96; tick++) {
+      created += computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: created,
+        msSinceStartOfDay: (DAY / 96) * tick,
+        antiBurstEnabled: true,
+      });
+    }
+    expect(created).toBe(20);
+  });
+
+  it("anti-burst désactivé : rattrape tout le reste d'un coup", () => {
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 20,
+        createdToday: 5,
+        msSinceStartOfDay: HOUR,
+        antiBurstEnabled: false,
+      }),
+    ).toBe(15);
+  });
+
+  it("cible nulle ou négative : rien à enfiler", () => {
+    expect(
+      computeCampaignTickBudget({
+        dailyTarget: 0,
+        createdToday: 0,
+        msSinceStartOfDay: HOUR,
+        antiBurstEnabled: true,
+      }),
+    ).toBe(0);
+  });
+});
 
 describe("computeAntiBurstSchedule", () => {
   it("returns empty when no target defined", () => {

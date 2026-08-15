@@ -68,9 +68,19 @@ vi.mock("@/server/content-gen/indexing/enqueue", () => ({
   enqueueIndexingForTier1: enqueueIndexingMock,
 }));
 
+// Fix 2026-08-15 (D8/D9) — le worker consomme désormais aussi buildArticlePath
+// (revalidation ISR de la page démotée) : le mock doit exposer les deux exports.
 vi.mock("@/server/content-gen/indexing/url-builder", () => ({
   buildArticleUrl: ({ slug, isNews }: { slug: string; isNews: boolean }) =>
     `https://axion-ia.com/fr/${isNews ? "actualites" : "blog"}/${slug}`,
+  buildArticlePath: ({ slug, isNews }: { slug: string; isNews: boolean }) =>
+    `/fr/${isNews ? "actualites" : "blog"}/${slug}`,
+}));
+
+// Fix 2026-08-15 (D9) — revalidation ISR sur demote, mockée (contrat {ok}).
+const revalidateContentMock = vi.hoisted(() => vi.fn());
+vi.mock("@/server/content-gen/shared/revalidate-content", () => ({
+  revalidateContent: revalidateContentMock,
 }));
 
 vi.mock("@/server/actions/content-gen/_settings", () => ({
@@ -135,6 +145,7 @@ describe("content-tier-lifecycle-worker — Sub-agent D Sprint S+5 P2-10", () =>
     fetchCtrMock.mockReset();
     readConfigMock.mockReset().mockResolvedValue({ active: false });
     alertTier3Mock.mockReset().mockResolvedValue(undefined);
+    revalidateContentMock.mockReset().mockResolvedValue({ ok: true });
     workerOnMock.mockReset();
     capturedProcessor.current = null;
   });
@@ -240,5 +251,30 @@ describe("content-tier-lifecycle-worker — Sub-agent D Sprint S+5 P2-10", () =>
     const [count, oldestAge] = alertTier3Mock.mock.calls[0] as [number, number];
     expect(count).toBe(2);
     expect(oldestAge).toBeGreaterThanOrEqual(119); // ~120j
+
+    // Fix 2026-08-15 (D9) — la page démotée est revalidée (meta noindex frais)
+    // AVANT le ping URL_UPDATED, sitemaps inclus.
+    expect(revalidateContentMock).toHaveBeenCalledTimes(1);
+    const [revalInput] = revalidateContentMock.mock.calls[0] as [{ paths: string[] }];
+    expect(revalInput.paths).toContain("/fr/blog/audit-conformite-rgpd-ia");
+    expect(revalInput.paths).toContain("/sitemap.xml");
+  });
+
+  it("Fix 2026-08-15 D9 : promote ne déclenche PAS de revalidation (périmètre demote uniquement)", async () => {
+    const article = makeArticle({
+      id: "art-promote-noreval",
+      slug: "un-a-un-dirigeants-ia",
+      publishedAt: new Date(Date.now() - 30 * 86_400_000),
+      indexationTier: "tier_2_noindex_follow",
+    });
+    articleFindManyMock
+      .mockResolvedValueOnce([article])
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([]);
+    fetchCtrMock.mockResolvedValue({ ctr: 0.04, impressions: 200, clicks: 8 });
+
+    await loadAndRunProcessor();
+
+    expect(revalidateContentMock).not.toHaveBeenCalled();
   });
 });

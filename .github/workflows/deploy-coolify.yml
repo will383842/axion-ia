@@ -744,7 +744,14 @@ jobs:
           # qui reçoit le trafic PAYANT : une heure de blocs vides s'y paie au
           # clic. (`/fr/roi` n'a pas besoin d'être listée : elle ne lit pas la
           # base — tout son contenu vient de fichiers du dépôt.)
-          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic"]'
+          # `/fr/blog` ajoutée le 2026-08-15 (audit e2e du générateur de contenus) :
+          # l'index du blog lit la base en premier et retombe sur les fichiers du
+          # dépôt au build (stub.invalid). Il servait donc une liste appauvrie
+          # jusqu'à une heure après chaque déploiement, puis se figeait à l'edge —
+          # exactement le mécanisme qui a mordu `/fr/diagnostic` la veille. C'est
+          # la porte d'entrée de tout le contenu généré : la manquer annule une
+          # partie du bénéfice de la production.
+          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -775,7 +782,7 @@ jobs:
             echo "::warning::Purge ciblée SKIP (secret CF ou REVALIDATE_SECRET absent) — l'edge se rafraîchit seul sous 1h."
             exit 0
           fi
-          FILES='["https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic"]'
+          FILES='["https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog"]'
           code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             -H "Content-Type: application/json" \
@@ -864,7 +871,6 @@ jobs:
             echo "::warning::Warmer capé ${cap}/${total} — surplus chauffé par trafic/crawl."
           fi
           echo "::notice::Warm terminé (best-effort, non bloquant)."
-
 
   # ══════════════════════════════════════════════════════════════════════════
   # notify — annonce Telegram du résultat du déploiement (2026-07-29)

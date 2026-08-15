@@ -18,6 +18,7 @@ import {
   type GenerationResponse,
   type IProvider,
 } from "./IProvider";
+import { clearProviderFailureStreak, recordPermanentProviderFailure } from "./quota-guard";
 import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
 import { perplexityProvider } from "./perplexity";
@@ -166,6 +167,9 @@ export async function generate(req: GenerationRequest): Promise<GenerationRespon
     try {
       const result = await provider.generate(req);
       recordSuccess(provider.key);
+      // Garde-fou quota (2026-08-15) : un appel réussi prouve que le compte est
+      // de nouveau approvisionné → on efface la série d'échecs permanents.
+      void clearProviderFailureStreak(provider.key).catch(() => undefined);
       return result;
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
@@ -175,6 +179,12 @@ export async function generate(req: GenerationRequest): Promise<GenerationRespon
       }
       // Auth failed / cost cap / content_filter → pas de fallback inutile
       if (err instanceof ProviderError && !err.retryable) {
+        // Garde-fou quota (2026-08-15) — le circuit breaker ci-dessus ne fait que
+        // rendre l'échec immédiat ; il ne remonte à personne. Une panne PERMANENTE
+        // (solde épuisé, clé refusée) ne guérit pas d'elle-même : on la compte, et
+        // au-delà du seuil la production s'arrête d'elle-même au lieu de brûler des
+        // milliers de jobs en attendant qu'un humain s'en aperçoive.
+        await recordPermanentProviderFailure(provider.key, err.code, err.message);
         throw err;
       }
       // sinon : try next provider in chain (fallback automatique)

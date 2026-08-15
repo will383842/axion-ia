@@ -15,7 +15,12 @@
 import { Queue, Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
-import { persistContentGenConfig } from "@/server/content-gen/config-store";
+// Fix 2026-08-15 (audit e2e, C8) — `readKillSwitchFailSafe` : une erreur DB
+// transitoire ne doit pas « dé-geler » silencieusement un arrêt d'urgence.
+import { persistContentGenConfig, readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+// Fix 2026-08-15 (audit e2e, C2) — politique de retries partagée pour les files
+// créées à la volée (sans elle : attempts=1, cf. job-options.ts).
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { logGeneration, logStep } from "@/server/content-gen/shared/generation-log";
 // B.8 P1.5 P0-3 — LLM-as-judge (reviewer multi-dim, gpt-4o depuis la décision
 // Will 2026-07-09 « 100% OpenAI » — cf. llm-judge.ts).
@@ -42,7 +47,15 @@ function getContentGenQueue(): Queue | null {
   if (contentGenQueue) return contentGenQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e, C2) — sans `defaultJobOptions`, cette file
+  // ad-hoc héritait du défaut BullMQ (attempts=1) : la re-génération enfilée
+  // vers content-gen qui rencontrait le kill switch (throw volontaire pour
+  // re-livraison) mourait définitivement à la 1ʳᵉ tentative — le contenu
+  // restait bloqué au lieu d'être repris au dégel.
+  contentGenQueue = new Queue("content-gen", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return contentGenQueue;
 }
 
@@ -51,7 +64,12 @@ function getPublishQueue(): Queue | null {
   if (publishQueue) return publishQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e, C2) — même correctif : un incident passager au
+  // publish (Redis/DB/kill switch) perdait le job définitivement (attempts=1).
+  publishQueue = new Queue("content-publish", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return publishQueue;
 }
 
@@ -96,9 +114,10 @@ function currentMonthKey(): string {
  * Lit les coûts mensuels accumulés du quality_loop dans `ContentGenConfig`.
  * Si reset mensuel détecté, remet à 0. Retourne le total USD du mois courant.
  *
- * V1 : value reste à 0 (pas de LLM call dans quality-improver V1, juste
- * increment counter). V2 incrémente cette clé à chaque re-prompt LLM.
- * Le check actuel sert de garde-fou défensif pour V2 sans casser V1.
+ * Fix 2026-08-15 (audit e2e, C5) — la clé est désormais réellement incrémentée
+ * (cf. `addQualityLoopSpend`) : jusqu'ici la V2 (juge LLM + re-génération)
+ * dépensait sans jamais alimenter ce compteur, donc le cap 100 $/mois comparé
+ * plus bas ne pouvait JAMAIS se déclencher — garde morte.
  */
 async function getQualityLoopMonthSpent(): Promise<number> {
   const month = currentMonthKey();
@@ -119,6 +138,51 @@ async function getQualityLoopMonthSpent(): Promise<number> {
   return stored.usd;
 }
 
+/**
+ * Fix 2026-08-15 (audit e2e, C5) — incrémente la dépense mensuelle de la boucle
+ * qualité (clé `quality_loop_month_spent`).
+ *
+ * Pourquoi : le cap `monthlyBudgetCapUsd` (100 $/mois) lisait cette clé et la
+ * remettait à zéro au changement de mois, mais AUCUN code ne l'incrémentait —
+ * la boucle pouvait dépenser sans limite, le garde-fou budgétaire était mort.
+ * Sont désormais comptés : le coût du juge LLM (mesuré via CostLedger, car
+ * `reviewArticle` ne retourne pas son coût) et le coût de chaque re-génération
+ * (appelé depuis content-gen-worker quand un feedback juge est injecté).
+ *
+ * Fail-open assumé : un échec de lecture/écriture ne casse jamais le job (le
+ * cap est un plafond de confort, pas un invariant de cohérence). Le
+ * lire-modifier-écrire n'est pas atomique sous concurrence (2 workers) : une
+ * perte occasionnelle de quelques cents est tolérable pour un cap approximatif.
+ *
+ * Exporté : content-gen-worker l'importe pour comptabiliser les re-générations.
+ */
+export async function addQualityLoopSpend(deltaUsd: number, jobId?: string): Promise<void> {
+  if (!Number.isFinite(deltaUsd) || deltaUsd <= 0) return;
+  try {
+    const month = currentMonthKey();
+    const stored = await readContentGenConfig<QualityLoopMonthSpent>(QUALITY_LOOP_SPENT_KEY, {
+      usd: 0,
+      month,
+    });
+    // Changement de mois entre deux passes : on repart de 0 (même sémantique
+    // que le reset de getQualityLoopMonthSpent).
+    const base = stored.month === month ? stored.usd : 0;
+    const usd = Math.round((base + deltaUsd) * 10_000) / 10_000;
+    await persistContentGenConfig(
+      QUALITY_LOOP_SPENT_KEY,
+      { usd, month },
+      "quality-loop",
+      `Dépense boucle qualité +$${deltaUsd.toFixed(4)}${jobId ? ` (job ${jobId})` : ""}`,
+    );
+  } catch (err) {
+    // Fail-open : le suivi budgétaire ne doit jamais faire échouer un job.
+    console.warn(
+      "[quality-loop] incrément dépense mensuelle échoué (fail-open):",
+      err instanceof Error ? err.message : err,
+    );
+  }
+}
+
 export interface QualityImproveJobPayload {
   readonly contentGenJobId: string;
   readonly previousScore: number;
@@ -136,9 +200,9 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const { contentGenJobId, previousScore } = job.data;
 
   // Kill switch hard-gate (P1-7 fix audit opérationnel 2026-05-14).
-  const killSwitch = await readContentGenConfig<{ active: boolean }>("kill_switch", {
-    active: false,
-  });
+  // Fix 2026-08-15 (C8) — lecture fail-SAFE : état illisible (panne DB) =
+  // switch considéré ACTIF, on ne continue pas à dépenser en aveugle.
+  const killSwitch = await readKillSwitchFailSafe();
   if (killSwitch.active) {
     console.log(`[quality-improver-worker] kill switch active, requeue job ${contentGenJobId}`);
     throw new Error("kill_switch_active");
@@ -225,6 +289,11 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
 
   const output = dbJob.outputJsonRaw as Record<string, unknown> | null;
   let judge: JudgeResult | null = null;
+  // Fix 2026-08-15 (C5) — borne temporelle pour retrouver le coût du juge dans
+  // CostLedger : `reviewArticle` ne retourne pas son coût (il est tracké par le
+  // provider), on somme donc les lignes du ledger de CE job écrites après cet
+  // instant. Précis au job près (jobId + timestamp), sans toucher au juge.
+  const judgePassStartedAt = new Date();
   if (output && typeof output["title"] === "string" && typeof output["bodyHtml"] === "string") {
     try {
       judge = await reviewArticle(
@@ -266,6 +335,22 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         step: "quality_loop_pass",
         message: `LLM-judge failed: ${err instanceof Error ? err.message : "unknown"}`,
       });
+    }
+    // Fix 2026-08-15 (audit e2e, C5) — comptabilise le coût RÉEL de l'appel juge
+    // dans la dépense mensuelle de la boucle (le cap 100 $/mois était comparé à
+    // une clé jamais incrémentée). Lu dans CostLedger (le provider y trace chaque
+    // appel avec jobId) ; fail-open : un ledger indisponible ne casse pas le job.
+    try {
+      const judgeSpend = await prisma.costLedger.aggregate({
+        _sum: { costUsd: true },
+        where: { jobId: contentGenJobId, timestamp: { gte: judgePassStartedAt } },
+      });
+      await addQualityLoopSpend(Number(judgeSpend._sum.costUsd ?? 0), contentGenJobId);
+    } catch (err) {
+      console.warn(
+        "[quality-loop] lecture coût juge (CostLedger) échouée (fail-open):",
+        err instanceof Error ? err.message : err,
+      );
     }
   }
 
@@ -400,9 +485,14 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
         "finalIndexationTier"
       ];
       // Même formule que le gen-worker : le score DÉTERMINISTE (pas l'editorialScore
-      // du juge) décide de la promotion tier-1, et un contenu déclassé tier_3 par un
-      // garde-fou (soft-404…) n'est jamais promu. Un article validé par le juge mais
-      // sous le seuil publie donc en tier_2_noindex_follow — publié, hors index.
+      // du juge) décide, et un contenu déclassé tier_3 par un garde-fou (soft-404…)
+      // n'est jamais promu.
+      //
+      // ⚠️ Fix 2026-08-15 — ce drapeau ne décide PLUS du tier. Depuis la décision
+      // Will du 2026-06-17, le publish force `tier_1_indexable` pour toute
+      // publication ; à false, l'article est publié et indexable, seul le PING
+      // moteurs est omis. Le commentaire précédent (« publie en
+      // tier_2_noindex_follow — publié, hors index ») était faux depuis deux mois.
       const shouldPromoteTier1 =
         score >= autoPromoteTier1MinScore && finalTier !== "tier_3_noindex_nofollow";
 
@@ -430,7 +520,7 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       await logStep(
         contentGenJobId,
         "publish",
-        `Auto-publication sur verdict juge=publish → ${shouldPromoteTier1 ? "tier_1_indexable" : "tier_2_noindex_follow"}`,
+        `Auto-publication sur verdict juge=publish → tier_1_indexable ${shouldPromoteTier1 ? "+ ping moteurs" : "SANS ping moteurs"}`,
         {
           editorial_score: editorialScoreInt,
           quality_score: score,

@@ -71,6 +71,47 @@ export function computeAntiBurstSchedule(input: AntiBurstInput): ReadonlyArray<A
   return decisions;
 }
 
+export interface CampaignTickBudgetInput {
+  /** Cible quotidienne de la campagne (`dailyArticles`). */
+  readonly dailyTarget: number;
+  /** Jobs déjà créés aujourd'hui POUR CETTE CAMPAGNE (status != cancelled). */
+  readonly createdToday: number;
+  /** Temps écoulé depuis startOfDay UTC (ms). */
+  readonly msSinceStartOfDay: number;
+  /** Si false : rattrape le reste de la journée d'un coup. */
+  readonly antiBurstEnabled: boolean;
+}
+
+/**
+ * Budget d'un tick pour une campagne en mode `dailyArticles` (sans
+ * `dailyTargetByType`).
+ *
+ * Fix 2026-08-15 (audit e2e) — l'ancienne formule `max(1, ceil(daily / 96))` ne
+ * comptait JAMAIS les jobs déjà créés dans la journée : le plancher à 1 faisait
+ * enqueue 1 job à chacun des 96 ticks quotidiens, soit ~96 jobs/jour quelle que
+ * soit la cible. Mesuré en prod les 23-24/07 : ~88 jobs/jour pour une campagne
+ * réglée à 20. La cible était donc dépassée d'un facteur ~5, et le crédit
+ * provider brûlé d'autant.
+ *
+ * Même algorithme que `computeAntiBurstSchedule`, appliqué à la campagne entière
+ * plutôt que par type : on n'enqueue que le retard réel sur la courbe idéale,
+ * et jamais au-delà de la cible du jour. Le rattrapage d'un tick manqué reste
+ * automatique (le retard est repris au tick suivant).
+ */
+export function computeCampaignTickBudget(input: CampaignTickBudgetInput): number {
+  const target = Math.max(0, Math.floor(input.dailyTarget));
+  if (target <= 0) return 0;
+
+  const created = Math.max(0, input.createdToday);
+  if (created >= target) return 0;
+
+  if (!input.antiBurstEnabled) return target - created;
+
+  const tClamped = Math.max(0, Math.min(MS_PER_DAY, input.msSinceStartOfDay));
+  const expected = Math.min(Math.ceil((tClamped / MS_PER_DAY) * target), target);
+  return Math.max(0, expected - created);
+}
+
 /** Helper pour les workers : extraire le ms depuis startOfDay UTC. */
 export function msSinceStartOfDay(now: Date = new Date()): number {
   const startOfDay = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());

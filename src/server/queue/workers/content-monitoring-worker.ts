@@ -469,15 +469,71 @@ async function checkCityEquity(): Promise<void> {
   }
 }
 
-async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void> {
-  // 5 checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
-  await Promise.allSettled([
-    checkQueueStuck(),
-    checkSoft404(),
-    checkIndexationStagnant(),
-    checkAnomalies(),
-    checkCityEquity(),
-  ]);
+/**
+ * F6 complément (Fix 2026-08-15, audit e2e) — le bandeau « coût 80/100 % »
+ * (`cost_cap_80_active`) est écrit `active:true` par le cost-tracker mais
+ * n'était JAMAIS repassé à false : alerte périmée affichée indéfiniment dans
+ * les layouts admin → accoutumance. Le reset mensuel l'éteint désormais
+ * (cf. `resetMonthlyCostCounters`), et ce check couvre l'autre cas : un admin
+ * qui relève le cap (ou remet le compteur) en cours de mois. Si la dépense du
+ * provider concerné est repassée sous 80 % du cap, on résout l'alerte via le
+ * même `resolveAnomaly` que les autres bandeaux.
+ */
+async function checkCostCapBannerStale(): Promise<void> {
+  const row = await prisma.contentGenConfig
+    .findUnique({ where: { key: "cost_cap_80_active" } })
+    .catch(() => null);
+  const value = row?.value as { active?: boolean; provider?: string } | null;
+  if (value?.active !== true || !value.provider) return;
+
+  const config = await prisma.providerConfig
+    .findUnique({
+      where: { provider: value.provider as never },
+      select: { monthlyCapUsd: true, currentMonthSpentUsd: true },
+    })
+    .catch(() => null);
+  if (!config) return;
+
+  const cap = Number(config.monthlyCapUsd);
+  const spent = Number(config.currentMonthSpentUsd);
+  // Condition disparue (cap relevé, compteur remis à 0) → bandeau résolu.
+  if (cap <= 0 || spent < cap * 0.8) {
+    await resolveAnomaly("cost_cap_80_active");
+    console.log(
+      `[content-monitoring] cost_cap_80_active résolu (provider=${value.provider}, spent=${spent.toFixed(2)}/${cap.toFixed(2)})`,
+    );
+  }
+}
+
+async function processJob(job: Job<{ readonly trigger: string }>): Promise<void> {
+  // Checks en parallèle (Promise.allSettled : un fail n'en bloque pas d'autres).
+  //
+  // Fix 2026-08-15 (audit e2e, F4) — les résultats étaient IGNORÉS : un check
+  // qui rejetait disparaissait sans log ni Sentry, et le handler `failed` du
+  // worker ne se déclenchait jamais (allSettled ne rejette pas). Le moniteur ne
+  // se surveillait donc pas lui-même. On garde l'isolation (un check en échec
+  // ne fait PAS échouer le tick — les autres checks ont tourné), mais chaque
+  // rejet est désormais journalisé ET remonté à Sentry pour rougir quelque part.
+  const checks: ReadonlyArray<readonly [string, Promise<void>]> = [
+    ["queueStuck", checkQueueStuck()],
+    ["soft404", checkSoft404()],
+    ["indexationStagnant", checkIndexationStagnant()],
+    ["anomalies", checkAnomalies()],
+    ["cityEquity", checkCityEquity()],
+    ["costCapBannerStale", checkCostCapBannerStale()],
+  ];
+  const results = await Promise.allSettled(checks.map(([, p]) => p));
+  results.forEach((result, i) => {
+    if (result.status !== "rejected") return;
+    const checkName = checks[i]?.[0] ?? `check#${i}`;
+    const cause = result.reason instanceof Error ? result.reason : new Error(String(result.reason));
+    // Le nom du check est préfixé dans le message (et non dans le workerName,
+    // typé union `WorkerName`) — il entre ainsi dans le fingerprint Sentry, qui
+    // groupe par les 100 premiers caractères du message.
+    const err = new Error(`check ${checkName} failed: ${cause.message}`, { cause });
+    console.error(`[content-monitoring] check ${checkName} FAILED:`, cause);
+    captureWorkerError("content-monitoring", QUEUE_NAME, job, err);
+  });
 }
 
 let workerInstance: Worker | null = null;

@@ -2,9 +2,13 @@
  * P1.5 QW-2 — Tests throttle publish-worker : drip window + daily cap.
  *
  * Scénarios couverts :
- *  1. heure 3h CET (out_of_window) → job.moveToDelayed + return
- *  2. 30 articles publiés aujourd'hui (max_daily) → job.moveToDelayed + return
+ *  1. heure 3h CET (out_of_window) → job.moveToDelayed + throw DelayedError
+ *     (Fix 2026-08-15 D3 — contrat BullMQ v5 après moveToDelayed manuel)
+ *  2. 30 articles publiés aujourd'hui (max_daily) → moveToDelayed + DelayedError
  *  3. 10h CET + 10 articles publiés → publish passe le gate (processJob continue)
+ *     + le slot journalier est RENDU quand le pipeline sort sans publier
+ *     (Fix 2026-08-15 D4 — le cap n'est plus mangé à vide par les rejeux)
+ *  4. review non approuvée → early-return sans publication → slot rendu (D4)
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -48,9 +52,24 @@ const {
   };
 });
 
+// Fix 2026-08-15 (D3) — le worker importe désormais DelayedError de bullmq :
+// le mock doit l'exposer (classe fidèle : name + message par défaut, comme
+// bullmq/dist/esm/classes/errors/delayed-error.js). Déclarée via vi.hoisted
+// pour être visible depuis la factory vi.mock (hoistée en tête de fichier).
+const { MockDelayedError } = vi.hoisted(() => {
+  class MockDelayedErrorInner extends Error {
+    constructor(message = "bullmq:movedToDelayed") {
+      super(message);
+      this.name = "DelayedError";
+    }
+  }
+  return { MockDelayedError: MockDelayedErrorInner };
+});
+
 vi.mock("bullmq", () => ({
   Worker: workerCtorMock,
   Queue: queueCtorMock,
+  DelayedError: MockDelayedError,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -79,12 +98,16 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({
   captureWorkerError: captureWorkerErrorMock,
 }));
 
+// Fix 2026-08-15 (D6) — le worker lit désormais les booléens du résultat.
 vi.mock("@/server/content-gen/indexing/enqueue", () => ({
-  enqueueIndexingForTier1: vi.fn().mockResolvedValue(undefined),
+  enqueueIndexingForTier1: vi
+    .fn()
+    .mockResolvedValue({ url: "x", indexnowEnqueued: true, googleEnqueued: false }),
 }));
 
+// Fix 2026-08-15 (D1) — revalidateContent retourne désormais { ok, reason }.
 vi.mock("@/server/content-gen/shared/revalidate-content", () => ({
-  revalidateContent: vi.fn().mockResolvedValue(undefined),
+  revalidateContent: vi.fn().mockResolvedValue({ ok: true }),
 }));
 
 vi.mock("@/server/content-gen/generators/blog-from-rss", () => ({
@@ -148,14 +171,16 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     vi.useRealTimers();
   });
 
-  it("out_of_window : 3h CET → moveToDelayed appelé, article non créé", async () => {
+  it("out_of_window : 3h CET → moveToDelayed + DelayedError, article non créé", async () => {
     // En mai (CEST = UTC+2) : 3h Paris = 1h UTC
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-05-21T01:00:00.000Z"));
 
     const processor = await getProcessor();
     const job = fakeJob(JOB_DATA);
-    await processor(job);
+    // Fix 2026-08-15 (D3) — contrat BullMQ v5 : après moveToDelayed manuel, le
+    // processor DOIT lever DelayedError (sinon « job not in active state »).
+    await expect(processor(job)).rejects.toThrow("bullmq:movedToDelayed");
 
     expect(job.moveToDelayed).toHaveBeenCalledOnce();
     // La cible est après le début de la fenêtre (8h CET ≥ now)
@@ -172,7 +197,7 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
     void delayDate;
   });
 
-  it("max_daily : 30 articles publiés aujourd'hui (10h CET) → moveToDelayed", async () => {
+  it("max_daily : cap atteint (10h CET) → moveToDelayed + DelayedError", async () => {
     // 10h Paris en mai = 8h UTC
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-05-21T08:00:00.000Z"));
@@ -181,10 +206,12 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
 
     const processor = await getProcessor();
     const job = fakeJob(JOB_DATA);
-    await processor(job);
+    // Fix 2026-08-15 (D3) — même contrat que out_of_window.
+    await expect(processor(job)).rejects.toThrow("bullmq:movedToDelayed");
 
     expect(redisIncrMock).toHaveBeenCalledOnce();
-    expect(redisDecrMock).toHaveBeenCalledOnce(); // annule l'incrément
+    // UN SEUL decr (annulation inline du cap) — pas de double-restitution D4.
+    expect(redisDecrMock).toHaveBeenCalledOnce();
     expect(job.moveToDelayed).toHaveBeenCalledOnce();
     const [delayTs] = (job.moveToDelayed as ReturnType<typeof vi.fn>).mock.calls[0] as [number];
     expect(delayTs).toBeGreaterThan(new Date("2026-05-21T08:00:00.000Z").getTime());
@@ -206,7 +233,32 @@ describe("content-publish-worker — P1.5 QW-2 throttle", () => {
 
     expect(job.moveToDelayed).not.toHaveBeenCalled();
     expect(redisIncrMock).toHaveBeenCalledOnce();
-    expect(redisDecrMock).not.toHaveBeenCalled();
+    // Fix 2026-08-15 (D4) — le pipeline a throw APRÈS l'acquisition du slot
+    // sans publier : le finally rend le slot (avant ce fix, chaque échec/rejeu
+    // consommait un slot du cap journalier à vide).
+    expect(redisDecrMock).toHaveBeenCalledOnce();
     expect(reviewFindMock).toHaveBeenCalledOnce();
+  });
+
+  it("D4 : review non approuvée → early-return sans publication → slot rendu", async () => {
+    // 10h Paris = 8h UTC — gates passés, slot acquis (INCR → 10)
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-21T08:00:00.000Z"));
+    redisIncrMock.mockResolvedValue(10);
+    // Review existante mais PAS approuvée → early-return métier (skip)
+    reviewFindMock.mockResolvedValue({
+      id: "rq-abc",
+      status: "pending",
+      job: { id: "cg-1" },
+    });
+
+    const processor = await getProcessor();
+    const job = fakeJob(JOB_DATA);
+    await processor(job); // resolve sans throw (skip propre)
+
+    expect(job.moveToDelayed).not.toHaveBeenCalled();
+    expect(redisIncrMock).toHaveBeenCalledOnce();
+    // Fix 2026-08-15 (D4) — le slot acquis est rendu : rien n'a été publié.
+    expect(redisDecrMock).toHaveBeenCalledOnce();
   });
 });
