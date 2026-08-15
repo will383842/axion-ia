@@ -98,7 +98,13 @@ describe("buildAdminNav SSOT", () => {
     // +1 (2026-08-14, lot L5 observabilité) : « Synchro CRM » (groupe ops) —
     // santé de l'outbox site → Axion CRM Pro : dernier succès, file d'attente,
     // abandons définitifs, écart de réconciliation, rejeu d'une ligne. = 144.
-    expect(items.length).toBe(144);
+    // +3 (2026-08-15, sous-onglets QR du catalogue remontés dans la sidebar) :
+    // « QR du catalogue », « QR avis du catalogue » et « QR dans le catalogue »
+    // remplacent la rangée de chips qui vivait dans l'en-tête de l'écran QR.
+    // Chacun pointe une vraie route enfant : usePathname ne porte pas la query
+    // string, donc des entrées en `?category=` n'auraient jamais été
+    // surlignées. = 147.
+    expect(items.length).toBe(147);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
