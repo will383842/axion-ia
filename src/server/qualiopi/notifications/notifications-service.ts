@@ -2,7 +2,9 @@
  * Qualiopi — Service d'envoi d'emails transactionnels lifecycle (T15).
  *
  * Fonctions exportées :
- *   envoyerConvocation        : enrollment confirmé → qualiopi-convocation
+ *   envoyerConvocation        : cron J-5 (off.9) → qualiopi-convocation
+ *                               ⚠️ PAS appelé à la confirmation d'inscription —
+ *                               cf. le commentaire de la fonction.
  *   envoyerRappelJ7           : session J-7 → qualiopi-rappel-j7 (par enrollment)
  *   envoyerSatisfactionJ1     : session réalisée J+1 → qualiopi-satisfaction-j1
  *   envoyerSuiviJ30           : session réalisée J+30 → qualiopi-suivi-j30
@@ -118,8 +120,39 @@ async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promi
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Envoie la convocation officielle au stagiaire lors de la confirmation
- * de son inscription (enrollment). Idempotent : jobId fixe par enrollmentId.
+ * Envoie la convocation officielle au stagiaire. Idempotent : jobId fixe par
+ * enrollmentId.
+ *
+ * ── Ce que cet e-mail transmet, exactement ───────────────────────────────────
+ *
+ * AUCUNE pièce jointe : il porte le lien personnel vers l'espace stagiaire,
+ * qui délivre programme, règlement intérieur, livret d'accueil et questionnaire
+ * de positionnement. Le PDF de convocation
+ * (documents/templates/convocation.tsx) dit désormais exactement cela — il
+ * annonçait auparavant des documents « transmis avec cette convocation », ce
+ * qui était faux. Les deux textes sont solidaires : si l'on retire un jour
+ * `lienPortail` du payload, ou si l'on attache réellement les fichiers, il faut
+ * rectifier le gabarit PDF dans le même geste.
+ *
+ * ── 🔴 Pourquoi ce gabarit n'a JAMAIS été déclenché (audit blanc 2026-08-15) ──
+ *
+ * Zéro envoi sur 98 e-mails et 11 gabarits utilisés, tous dossiers confondus.
+ * Le seul appelant est le cron `formation-crons.convocation-j5`
+ * (queue/workers/qualiopi-formation-crons-worker.ts), qui ne retient que les
+ * sessions `planifiee` dont `dateDebut` tombe dans [now+4,5 j ; now+5,5 j] au
+ * passage quotidien de 08:00 UTC. Deux conséquences :
+ *
+ *   1. `enrollTraineeAction` (actions/qualiopi/enrollments.ts) N'APPELLE PAS
+ *      cette fonction — contrairement à ce qu'annonçait l'en-tête du fichier.
+ *      Rien ne part à la confirmation de l'inscription.
+ *   2. Le cron ne rattrape RIEN : une inscription enregistrée à moins de 5
+ *      jours de la session — le cas d'un premier dossier réel — n'a plus aucune
+ *      fenêtre, et le stagiaire ne reçoit jamais de convocation.
+ *
+ * Le chaînon manquant est donc un appel au point de confirmation d'inscription,
+ * et/ou un rattrapage dans le cron pour les enrollments créés après J-5. Les
+ * deux fichiers concernés sont hors du périmètre de ce correctif : ne pas
+ * câbler à l'aveugle depuis ici.
  */
 export async function envoyerConvocation(enrollmentId: string): Promise<void> {
   if (isStub()) return;
@@ -153,6 +186,23 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
   const { trainee, session } = enrollment;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const lienPortail = await getOrCreatePortailLien(trainee.id, baseUrl);
+
+  // La convocation ATTESTE que les documents sont accessibles « par le lien
+  // personnel qui vous est adressé par courriel avec cette convocation ». Si la
+  // création du jeton échoue, `getOrCreatePortailLien` retombe EN SILENCE sur la
+  // route nue /portail/mon-espace, qui refuse l'accès faute de session : la
+  // pièce affirmerait alors ce que l'e-mail ne tient pas.
+  //
+  // On laisse malgré tout PARTIR la convocation — la retenir romprait
+  // l'obligation d'information (indicateur 9) alors que la page de refus offre
+  // une demande d'accès — mais le défaut est journalisé, jamais deviné.
+  if (lienPortail === `${baseUrl}/fr/portail/mon-espace`) {
+    console.error(
+      `[notifications] convocation: aucun lien portail personnel pour le stagiaire ${trainee.id} ` +
+        `(inscription ${enrollmentId}) — la convocation part avec un lien d'accès NON personnalisé, ` +
+        `alors que le PDF annonce un accès direct aux documents`,
+    );
+  }
 
   await enqueueEmail(
     "qualiopi-convocation",

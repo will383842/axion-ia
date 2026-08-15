@@ -106,6 +106,9 @@ export const QUALIOPI_CONFIG_LABELS: Record<QualiopiConfigKey, string> = {
 
   // ── Gouvernance qualité ──
   gouvernance_roles: "Rôles de gouvernance qualité",
+
+  // ── Coordination des intervenants ──
+  modalites_coordination: "Modalités de coordination des intervenants",
 };
 
 /** Libellés lisibles des options, pour les clés à choix fermé (rendues en <select>). */

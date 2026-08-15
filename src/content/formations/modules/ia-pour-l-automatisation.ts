@@ -57,11 +57,12 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous classez chacune de vos tâches répétitives en feu vert, feu orange ou feu rouge, et vous nommez le régime d'usage dans lequel vous travaillez réellement aujourd'hui.",
-      objectifGlobalId: "obj-5",
-      // L'atelier des 4 questions fait passer en revue les tâches répétitives de
-      // chacun : c'est le premier tri de ce qui est automatisable (obj-1), même
-      // si la cartographie complète n'arrive qu'au module 2.
-      objectifsSecondairesIds: ["obj-1"],
+      objectifGlobalId: "obj-4",
+      // Le module nomme aussi le régime d'usage réellement en vigueur (obj-1),
+      // ré-identifie en direct un fichier « anonymisé » du kit pour montrer
+      // qu'il reste un traitement de données personnelles (obj-2), et fait
+      // remplir la grille des 4 questions avec sa conséquence (obj-3).
+      objectifsSecondairesIds: ["obj-1", "obj-2", "obj-3"],
       dureeMin: 10,
       notes: {
         script:
@@ -260,11 +261,10 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez trié vos tâches répétitives sur quatre critères, retenu un cas, et produit sa fiche de cadrage nommée — entrée, étapes, sortie, point de relecture humaine, régime de données et outil.",
-      objectifGlobalId: "obj-1",
-      // La fiche de cadrage EST la conception du processus (obj-2), et la
-      // séquence de comparaison des trois familles d'outils fait réellement
-      // choisir l'outil de la journée du lendemain (obj-3).
-      objectifsSecondairesIds: ["obj-2", "obj-3"],
+      objectifGlobalId: "obj-5",
+      // La fiche de cadrage porte le régime de données du cas retenu : elle
+      // rejoue par écrit le régime d'usage arrêté au module 1 (obj-1).
+      objectifsSecondairesIds: ["obj-1"],
       dureeMin: 10,
       notes: {
         script:
@@ -454,10 +454,10 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, votre automatisation tourne sur trois jeux d'entrées réels, dont un bancal, et vous avez consigné chaque écart dans un journal de tests.",
-      objectifGlobalId: "obj-4",
-      // L'instruction qui pilote la chaîne est la mise en oeuvre de la
-      // conception cadrée la veille : construire, c'est finir de concevoir.
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-6",
+      // L'instruction qui pilote la chaîne est la mise en oeuvre de la fiche
+      // de cadrage écrite la veille (obj-5) : construire, c'est finir de concevoir.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 10,
       notes: {
         script:
@@ -639,7 +639,12 @@ export const IA_POUR_L_AUTOMATISATION: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, votre automatisation est reprenable par quelqu'un d'autre que vous : quatre contrôles posés, une fiche d'usage contresignée, et une feuille de route où chaque prochaine automatisation porte un porteur et une échéance.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-8",
+      // Les quatre contrôles de fiabilité posés en ouverture de module —
+      // relecture humaine, sortie anormale, signal d'alerte, trace de
+      // validation — sont l'objectif 7 ; la fiche d'usage contresignée et son
+      // épreuve par un binôme sont l'objectif 8, principal ici.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 10,
       notes: {
         script:

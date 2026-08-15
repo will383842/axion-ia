@@ -38,7 +38,13 @@ vi.mock("@/server/qualiopi/portail/appreciation-service", () => ({
   creerAppreciation: vi.fn().mockResolvedValue({ id: "appr-1" }),
 }));
 
+// Alerte console (indicateur 4) : positionnement répondu après le début de session.
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuDedup: vi.fn().mockResolvedValue(null),
+}));
+
 import { prisma } from "@/lib/prisma";
+import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { makeQrToken } from "@/server/qualiopi/documents/qr";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { creerAppreciation } from "@/server/qualiopi/portail/appreciation-service";
@@ -59,6 +65,7 @@ const mockPrisma = prisma as unknown as {
 };
 const mockCreateEvaluation = createEvaluation as ReturnType<typeof vi.fn>;
 const mockCreerAppreciation = creerAppreciation as ReturnType<typeof vi.fn>;
+const mockCreerOuDedup = creerOuDedup as ReturnType<typeof vi.fn>;
 
 const mockMakeQrToken = makeQrToken as ReturnType<typeof vi.fn>;
 
@@ -300,14 +307,29 @@ describe("listQuestionnairesSession", () => {
 // verrouillent le pont — vérifiés par réintroduction du défaut.
 
 describe("soumettreReponses — versement aux registres", () => {
-  const ENROLLMENT = {
-    id: "enroll-1",
-    traineeId: "trainee-1",
-    session: { clientId: "client-1" },
-  };
+  /** Dates relatives à l'instant du test : aucune horloge figée n'est nécessaire. */
+  const JOUR_MS = 24 * 60 * 60 * 1000;
+  const dansNJours = (n: number) => new Date(Date.now() + n * JOUR_MS);
 
-  function questionnaire(type: string, reponduAt: Date | null = null) {
-    return { id: "q-1", type, reponduAt, enrollment: ENROLLMENT };
+  function enrollment(dateDebut: Date | null = dansNJours(2)) {
+    return {
+      id: "enroll-1",
+      traineeId: "trainee-1",
+      trainee: { prenom: "Simone", nom: "Blanc" },
+      session: {
+        clientId: "client-1",
+        titreSession: "Prospecter avec l'IA",
+        dateDebut,
+      },
+    };
+  }
+
+  function questionnaire(
+    type: string,
+    reponduAt: Date | null = null,
+    dateDebut: Date | null = dansNJours(2),
+  ) {
+    return { id: "q-1", type, reponduAt, enrollment: enrollment(dateDebut) };
   }
 
   beforeEach(() => {
@@ -316,6 +338,7 @@ describe("soumettreReponses — versement aux registres", () => {
     mockPrisma.evaluationAcquis.count.mockResolvedValue(0);
     mockCreateEvaluation.mockResolvedValue({ id: "eval-1" });
     mockCreerAppreciation.mockResolvedValue({ id: "appr-1" });
+    mockCreerOuDedup.mockResolvedValue(null);
   });
 
   it("positionnement → une évaluation INITIALE transcrite depuis niveauParObjectif", async () => {
@@ -460,5 +483,118 @@ describe("soumettreReponses — versement aux registres", () => {
     await soumettreReponses({ token: "tok-p", reponses: { secteur: "immobilier" } });
 
     expect(mockCreateEvaluation).not.toHaveBeenCalled();
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Chronologie du positionnement (indicateur 4, non graduable)
+  // ───────────────────────────────────────────────────────────────────────────
+  //
+  // 🔴 Audit blanc 2026-08-15. La stagiaire a répondu au positionnement le 04/08,
+  // quatre jours après la clôture de sa session du 31/07 : la transcription
+  // automatique datait l'évaluation « initiale » de l'instant de la soumission,
+  // et le dossier portait un « avant formation » postérieur à l'« après
+  // formation ». Ces cas rougissent si la garde saute.
+
+  it("🔴 positionnement répondu APRÈS le début de session : AUCUNE évaluation initiale versée", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    // Session commencée il y a 4 jours — exactement le dossier de l'audit.
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("positionnement", null, dansNJours(-4)),
+    );
+
+    await soumettreReponses({
+      token: "tok-p",
+      reponses: { niveauParObjectif: { "Rédiger des annonces": 3 } },
+    });
+
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("🔴 …et l'absence est SIGNALÉE : une alerte console est levée sur l'inscription", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("positionnement", null, dansNJours(-4)),
+    );
+
+    await soumettreReponses({
+      token: "tok-p",
+      reponses: { niveauParObjectif: { A: 2 } },
+    });
+
+    expect(mockCreerOuDedup).toHaveBeenCalledOnce();
+    const alerte = mockCreerOuDedup.mock.calls[0]![0] as {
+      code: string;
+      niveau: string;
+      titre: string;
+      message: string;
+      cibleType?: string;
+      cibleId?: string;
+    };
+    expect(alerte.code).toBe("positionnement_hors_delai");
+    expect(alerte.cibleType).toBe("Enrollment");
+    expect(alerte.cibleId).toBe("enroll-1");
+    // L'alerte doit être actionnable : QUI, QUELLE session, et QUOI faire.
+    expect(alerte.message).toContain("Simone Blanc");
+    expect(alerte.message).toContain("Prospecter avec l'IA");
+    expect(alerte.message).toContain("Aucune évaluation initiale");
+    warn.mockRestore();
+  });
+
+  it("positionnement répondu le JOUR MÊME du début : l'évaluation initiale est versée", async () => {
+    // La session a commencé ce matin, la stagiaire répond dans la foulée : c'est
+    // le cas nominal, la garde ne doit surtout pas l'écarter.
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("positionnement", null, new Date()),
+    );
+
+    await soumettreReponses({ token: "tok-p", reponses: { niveauParObjectif: { A: 2 } } });
+
+    expect(mockCreateEvaluation).toHaveBeenCalledOnce();
+    expect(mockCreerOuDedup).not.toHaveBeenCalled();
+  });
+
+  it("l'évaluation transcrite porte la date de la RÉPONSE", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(questionnaire("positionnement"));
+
+    const avant = Date.now();
+    await soumettreReponses({ token: "tok-p", reponses: { niveauParObjectif: { A: 3 } } });
+    const apres = Date.now();
+
+    const passe = mockCreateEvaluation.mock.calls[0]![0] as { dateEvaluation: string };
+    const datee = new Date(passe.dateEvaluation).getTime();
+    expect(datee).toBeGreaterThanOrEqual(avant);
+    expect(datee).toBeLessThanOrEqual(apres);
+
+    // …et c'est le MÊME instant que le `reponduAt` écrit en base.
+    const update = mockPrisma.questionnaire.update.mock.calls[0]![0] as {
+      data: Record<string, unknown>;
+    };
+    expect((update.data["reponduAt"] as Date).toISOString()).toBe(passe.dateEvaluation);
+  });
+
+  it("🔴 début de session illisible : rien n'est versé (chronologie invérifiable)", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("positionnement", null, null),
+    );
+
+    await soumettreReponses({ token: "tok-p", reponses: { niveauParObjectif: { A: 3 } } });
+
+    expect(mockCreateEvaluation).not.toHaveBeenCalled();
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+  });
+
+  it("une satisfaction reste versée quelle que soit la date (la garde ne vise que le positionnement)", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      questionnaire("satisfaction_froid", null, dansNJours(-40)),
+    );
+
+    await soumettreReponses({ token: "tok-s", reponses: {}, noteGlobale: 5 });
+
+    expect(mockCreerAppreciation).toHaveBeenCalledOnce();
+    expect(mockCreerOuDedup).not.toHaveBeenCalled();
   });
 });

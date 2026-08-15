@@ -12,6 +12,24 @@
  *   - off.29 gaté par la config `off29_applicable` (défaut false → non
  *     applicable ; true → applicable, à renseigner manuellement).
  *
+ * AUDIT BLANC 2026-08-15 — cinq règles déclaraient « Couvert » sur un signal
+ * qui ne prouvait pas l'exigence :
+ *   - off.4  : un questionnaire de positionnement RÉPONDU, à n'importe quelle
+ *              date, couvrait tout le catalogue. Il doit l'être AVANT le début
+ *              de la session de l'inscription, et la mesure est une COUVERTURE
+ *              (inscrits positionnés / inscrits de sessions démarrées).
+ *   - off.8  : idem pour l'évaluation initiale (`dateEvaluation` ≤ début).
+ *   - off.18 : la coordination se déduisait d'un NOMBRE d'intervenants et de
+ *              moyens — nul avec un intervenant unique. Exige désormais une
+ *              preuve ÉCRITE (config `modalites_coordination` ou pièce
+ *              « inventaire des moyens » / « organisation de l'action »).
+ *   - off.21 : une simple URL de CV suffisait, alors que `Trainer.cvUrl` peut
+ *              pointer vers la fiche que l'outil a lui-même générée. Exige en
+ *              plus une pièce de compétence VALIDÉE au dossier formateur.
+ *   - off.30 : le groupBy sur `source` comptait des QUALITÉS déclarées, pas des
+ *              parties prenantes — chez cet organisme les deux « sources
+ *              distinctes » sont la même personne physique.
+ *
  * Stub-aware : si DATABASE_URL contient "stub.invalid", retourne un résultat
  * vide (safe au build SSG).
  */
@@ -83,7 +101,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const [
     nbFormations,
     nbSessionsRealisees,
-    nbEvaluationsInitiales,
+    evaluationsInitiales,
     nbEvaluationsFinales,
     nbAppreciations,
     nbReclamations,
@@ -114,7 +132,7 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     // ── P1 (durcissement anti-proxy — audit 2026-07-14) ──────────────────────
     appreciationSources,
     nbEnrollmentsEmarges,
-    nbPositionnementsBesoin,
+    positionnementsRepondus,
     nbFormationsResultatsPublies,
     nbSousTraitantsConformes,
     nbTrainersAvecCVRecent,
@@ -131,10 +149,35 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     nbFormateursSousTraitants,
     nbFormateursSousTraitantsConformes,
     nbProceduresSousTraitance,
+    // ── Audit blanc 2026-08-15 (off.4 / off.8 / off.18 / off.21 / off.30) ────
+    // ⚠️ Ajoutés EN FIN de liste, comme les trois précédents : plusieurs tests
+    // mockent des compteurs par POSITION (`mockResolvedValueOnce` en cascade).
+    nbInscritsSessionsDemarrees,
+    nbFormateursPieceCompetence,
+    nbPiecesCoordination,
+    modalitesCoordination,
+    appreciationsAuteurs,
   ] = await Promise.all([
     prisma.formation.count(),
     prisma.trainingSession.count({ where: { statut: "realisee" } }),
-    prisma.evaluationAcquis.count({ where: { type: "initiale" } }),
+    // off.8 : positionnement À L'ENTRÉE — la DATE fait la preuve.
+    //
+    // 🔴 Audit blanc 2026-08-15. `count({ type: "initiale" })` acceptait une
+    // grille saisie n'importe quand, y compris après la fin de l'action : une
+    // évaluation « initiale » remplie le dernier jour ne positionne personne.
+    // Prisma ne sait pas comparer deux colonnes à travers une relation
+    // (`date_evaluation <= sessions.date_debut`) → on rapatrie les dates et on
+    // rapproche en mémoire. `take` généreux : le volume est de l'ordre du
+    // millier de lignes chez un OF de cette taille.
+    prisma.evaluationAcquis.findMany({
+      where: { type: "initiale" },
+      select: {
+        enrollmentId: true,
+        dateEvaluation: true,
+        enrollment: { select: { session: { select: { dateDebut: true } } } },
+      },
+      take: 2000,
+    }),
     prisma.evaluationAcquis.count({ where: { type: "finale" } }),
     // off.30 : compter les appréciations multi-parties (≠ questionnaires stagiaire seul)
     prisma.appreciation.count(),
@@ -253,8 +296,23 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.appreciation.groupBy({ by: ["source"] }),
     // off.12 : émargements RÉELLEMENT signés (Enrollment.emargementSigneAt), ≠ simple PDF.
     prisma.enrollment.count({ where: { emargementSigneAt: { not: null } } }),
-    // off.4 : analyse du besoin = questionnaire de positionnement RÉPONDU (≠ grille d'acquis off.8).
-    prisma.questionnaire.count({ where: { type: "positionnement", reponduAt: { not: null } } }),
+    // off.4 : analyse du besoin = questionnaire de positionnement RÉPONDU (≠ grille d'acquis off.8),
+    //   et RÉPONDU AVANT le démarrage de la session de l'inscription.
+    //
+    // 🔴 Audit blanc 2026-08-15. Le compteur ne portait aucune contrainte de
+    // date : UNE réponse, à n'importe quel moment, « couvrait » les 22
+    // formations du catalogue. Analyser un besoin après avoir formé n'est pas
+    // une analyse du besoin. Rapprochement des dates en mémoire (Prisma ne
+    // compare pas deux colonnes à travers une relation).
+    prisma.questionnaire.findMany({
+      where: { type: "positionnement", reponduAt: { not: null } },
+      select: {
+        enrollmentId: true,
+        reponduAt: true,
+        enrollment: { select: { session: { select: { dateDebut: true } } } },
+      },
+      take: 2000,
+    }),
     // off.2 : indicateurs de résultats RÉELLEMENT publiés (diffusion), pas seulement mesurés.
     prisma.formation.count({ where: { indicateursPubliesAt: { not: null } } }),
     // off.27 : sous-traitants CONFORMES (vigilance) = NDA + vérif data.gouv + contrat signé.
@@ -364,6 +422,62 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     prisma.documentGenere.count({
       where: { type: "procedure_sous_traitance", annuleeAt: null },
     }),
+    // ── Audit blanc 2026-08-15 — 5 règles durcies. Ajouts EN FIN de liste. ───
+    //
+    // off.4 / off.8 — DÉNOMINATEUR de couverture : les inscriptions dont la
+    // session a DÉMARRÉ. C'est la population sur laquelle un auditeur tire au
+    // sort. Les inscriptions sur une session à venir sont exclues à dessein :
+    // un stagiaire inscrit pour dans deux mois n'est pas encore en défaut de
+    // positionnement, et l'inclure ferait crier la garde sans motif.
+    prisma.enrollment.count({ where: { session: { dateDebut: { lte: maintenant } } } }),
+    // off.21 — formateurs ACTIFS disposant d'au moins une pièce de compétence
+    // VALIDÉE au dossier (CV source, diplôme ou certification).
+    //
+    // 🔴 `Trainer.cvUrl` ne prouve rien à lui seul : quand l'outil génère la
+    // fiche formateur (DocumentType `cv_formateur`), il pose lui-même `cvUrl`
+    // sur la route de téléchargement de CETTE fiche. L'indicateur validait donc
+    // une pièce que l'organisme s'était écrite. Seule une pièce VERSÉE puis
+    // VALIDÉE par un administrateur justifie la compétence.
+    //
+    // ⚠️ Une pièce périmée est exclue : le schéma pose explicitement que
+    // l'expiration n'est PAS un statut et se déduit de `dateExpiration`. Sans
+    // ce filtre, une certification expirée resterait « valide » indéfiniment.
+    // `dateExpiration: null` = pièce sans échéance (un diplôme) → conservée.
+    prisma.trainerDocument
+      .findMany({
+        where: {
+          type: { in: ["cv", "diplome", "certification"] },
+          statutValidation: "valide",
+          trainer: { actif: true },
+          OR: [{ dateExpiration: null }, { dateExpiration: { gte: maintenant } }],
+        },
+        select: { trainerId: true },
+        distinct: ["trainerId"],
+      })
+      .then((r) => r.length),
+    // off.18 — pièces écrites décrivant l'organisation et les moyens mobilisés.
+    // Seconde voie de preuve de la coordination, à côté de la config.
+    // `annuleeAt: null` : une pièce annulée ne prouve rien.
+    prisma.documentGenere.count({
+      where: {
+        type: { in: ["inventaire_moyens", "organisation_action"] },
+        annuleeAt: null,
+      },
+    }),
+    // off.18 — modalités de coordination des intervenants, écrites en
+    // configuration (qui pilote, quels points, quel support, quelle fréquence).
+    getQualiopiConfig("modalites_coordination").catch(() => ""),
+    // off.30 — QUI s'exprime, et pas seulement en quelle qualité. Voir le bloc
+    // de dérivation plus bas : `groupBy(["source"])` comptait des qualités
+    // déclarées, alors que deux qualités peuvent être la même personne.
+    prisma.appreciation.findMany({
+      select: {
+        source: true,
+        clientId: true,
+        trainee: { select: { email: true } },
+      },
+      take: 2000,
+    }),
   ]);
 
   const typesAction = typesActionResult;
@@ -412,7 +526,10 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   const appAfestApplicable = typesActionEffectifs.includes("alternance_afest");
 
   // ── Dérivés P1 (durcissement anti-proxy) ───────────────────────────────────
-  //   off.30 : nombre de sources d'appréciation DISTINCTES (multi-parties si ≥ 2).
+  //   off.30 : nombre de QUALITÉS déclarées distinctes sur les appréciations.
+  //   ⚠️ Une qualité déclarée n'est PAS une partie prenante — cf. le bloc
+  //   « personnes physiques » plus bas, qui est la garde réelle depuis
+  //   l'audit blanc 2026-08-15.
   const nbAppreciationSourcesDistinctes = appreciationSources.length;
   //   off.26 : email référent handicap réellement renseigné (le nom a un défaut config).
   const referentHandicapEmailRenseigne = referentHandicapEmail.trim().length > 0;
@@ -423,6 +540,122 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     const blocs = r.blocsCompetences;
     return Array.isArray(blocs) && blocs.length > 0;
   }).length;
+
+  // ── off.4 / off.8 : la DATE fait la preuve (audit blanc 2026-08-15) ────────
+  //
+  // Les deux indicateurs portent sur ce qui se passe AVANT l'entrée en
+  // formation : recueillir le besoin (off.4), situer le niveau (off.8). Une
+  // pièce datée d'après le démarrage documente l'action, elle ne la prépare
+  // pas — et c'est très exactement ce qu'un auditeur regarde en premier sur ces
+  // deux lignes. Le rapprochement des dates se fait ici, en mémoire : Prisma ne
+  // compare pas deux colonnes à travers une relation.
+  //
+  // Les positionnements HORS DÉLAI sont comptés séparément, à dessein : agrégés
+  // au compteur unique, ils s'y cachaient et gonflaient un chiffre rassurant.
+  const positionnementsAvantDebut = new Set<string>();
+  let nbPositionnementsHorsDelai = 0;
+  for (const q of positionnementsRepondus) {
+    const reponduAt = q.reponduAt;
+    if (reponduAt === null) continue;
+    const dateDebut = q.enrollment.session.dateDebut;
+    if (reponduAt.getTime() > dateDebut.getTime()) {
+      nbPositionnementsHorsDelai += 1;
+      continue;
+    }
+    // Conforme. Retenu dans la couverture seulement si la session a démarré —
+    // sinon le numérateur dépasserait un dénominateur qui l'exclut.
+    if (dateDebut.getTime() <= maintenant.getTime()) {
+      positionnementsAvantDebut.add(q.enrollmentId);
+    }
+  }
+  const nbInscritsPositionnesAvantDebut = positionnementsAvantDebut.size;
+
+  const evaluationsInitialesAvantDebut = new Set<string>();
+  let nbEvaluationsInitialesHorsDelai = 0;
+  for (const e of evaluationsInitiales) {
+    const enrollmentId = e.enrollmentId;
+    const dateDebut = e.enrollment?.session.dateDebut ?? null;
+    if (enrollmentId === null || dateDebut === null) {
+      // Évaluation rattachée à un parcours 1-to-1 (conseil, hors périmètre
+      // Qualiopi depuis le 2026-08-10) : aucune date de démarrage de session à
+      // laquelle la comparer, donc rien de prouvé sur le positionnement.
+      nbEvaluationsInitialesHorsDelai += 1;
+      continue;
+    }
+    if (e.dateEvaluation.getTime() > dateDebut.getTime()) {
+      nbEvaluationsInitialesHorsDelai += 1;
+      continue;
+    }
+    if (dateDebut.getTime() <= maintenant.getTime()) {
+      evaluationsInitialesAvantDebut.add(enrollmentId);
+    }
+  }
+  const nbInscritsEvaluesAEntree = evaluationsInitialesAvantDebut.size;
+
+  // ── off.18 : la coordination se PROUVE par écrit (audit blanc 2026-08-15) ──
+  //   Config `modalites_coordination` non vide OU pièce « inventaire des
+  //   moyens » / « organisation de l'action » non annulée au registre.
+  const modalitesCoordinationRenseignees = modalitesCoordination.trim().length > 0;
+  const preuveCoordinationEcrite = modalitesCoordinationRenseignees || nbPiecesCoordination > 0;
+
+  // ── off.30 : QUI s'exprime, pas en quelle qualité (audit blanc 2026-08-15) ─
+  //
+  // `groupBy(["source"])` comptait les QUALITÉS déclarées (stagiaire,
+  // entreprise, financeur, formateur). Chez cet organisme, les deux « sources
+  // distinctes » relevées étaient la MÊME personne physique : la stagiaire est
+  // aussi la représentante du client. L'indicateur affichait donc « multi-
+  // parties » sur une seule voix.
+  //
+  // Identité retenue : l'ADRESSE E-MAIL seule, normalisée. Choix délibéré —
+  //   • le nom seul est ambigu (deux homonymes compteraient pour deux, et une
+  //     même personne écrite « W. Jullin » puis « Williams Jullin » pour deux
+  //     également : dans les deux sens, l'erreur SUR-compte les parties) ;
+  //   • l'identifiant technique (traineeId / clientId) ne dédoublonne rien : la
+  //     même personne physique est justement portée par deux enregistrements
+  //     différents, et c'est le cœur du problème.
+  //
+  // L'auteur se déduit de la QUALITÉ déclarée : une appréciation « entreprise »
+  // est écrite par le contact du client, pas par le stagiaire inscrit. On ne
+  // bascule PAS de l'un à l'autre en repli — ce repli fabriquerait un second
+  // auteur là où il n'y en a peut-être qu'un, c'est-à-dire exactement la
+  // complaisance qu'on corrige. Sans information de rattachement, on ne
+  // fabrique rien : l'appréciation est comptée « auteur non établi » et ne
+  // participe pas à la couverture.
+  const clientIdsAppreciations = Array.from(
+    new Set(
+      appreciationsAuteurs
+        .map((a) => a.clientId)
+        .filter((id): id is string => typeof id === "string" && id.length > 0),
+    ),
+  );
+  // `Appreciation.clientId` n'a pas de relation Prisma déclarée (colonne nue) :
+  // la résolution des contacts demande une seconde requête, faite seulement si
+  // au moins une appréciation porte un client.
+  const contactsClients =
+    clientIdsAppreciations.length > 0
+      ? await prisma.client.findMany({
+          where: { id: { in: clientIdsAppreciations } },
+          select: { id: true, contactEmail: true },
+        })
+      : [];
+  const contactParClient = new Map(contactsClients.map((c) => [c.id, c.contactEmail]));
+  const personnesAppreciations = new Set<string>();
+  let nbAppreciationsAuteurNonEtabli = 0;
+  for (const a of appreciationsAuteurs) {
+    const emailAuteur =
+      a.source === "stagiaire"
+        ? (a.trainee?.email ?? null)
+        : a.clientId != null
+          ? (contactParClient.get(a.clientId) ?? null)
+          : null;
+    const cle = typeof emailAuteur === "string" ? emailAuteur.trim().toLowerCase() : "";
+    if (cle === "") {
+      nbAppreciationsAuteurNonEtabli += 1;
+      continue;
+    }
+    personnesAppreciations.add(cle);
+  }
+  const nbPersonnesAppreciations = personnesAppreciations.size;
 
   // ── Table de preuves par indicateur ────────────────────────────────────────
   // Chaque entrée : { preuves[], couvert }
@@ -481,13 +714,29 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // off.4 : ANALYSE DU BESOIN — [P1] mesurée par le questionnaire de positionnement
   //         RÉPONDU (attentes/besoins/contexte), et non plus par la grille d'acquis
   //         (qui est off.8). Dissociation off.4 ≠ off.8.
+  //
+  // [audit blanc 2026-08-15] COUVERTURE et DATE, plus volumétrie. L'ancien
+  // calcul (`nbPositionnementsBesoin > 0`) déclarait l'indicateur couvert dès
+  // UNE réponse, à n'importe quelle date : une seule analyse du besoin, saisie
+  // après coup, « couvrait » les 22 formations du catalogue. Seuil retenu :
+  // TOUS les inscrits d'une session déjà démarrée doivent avoir été positionnés
+  // avant son début — c'est ce que vérifie un auditeur qui tire un dossier au
+  // hasard.
   set(
     4,
     [
-      `${nbFormations} formation${nbFormations > 1 ? "s" : ""}`,
-      `${nbPositionnementsBesoin} analyse${nbPositionnementsBesoin > 1 ? "s" : ""} du besoin (questionnaire de positionnement répondu)`,
+      `${nbInscritsPositionnesAvantDebut} inscrit${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} sur ${nbInscritsSessionsDemarrees} positionné${nbInscritsPositionnesAvantDebut > 1 ? "s" : ""} avant le début de leur session (questionnaire de positionnement répondu)`,
+      nbPositionnementsHorsDelai > 0
+        ? `${nbPositionnementsHorsDelai} positionnement${nbPositionnementsHorsDelai > 1 ? "s" : ""} répondu${nbPositionnementsHorsDelai > 1 ? "s" : ""} HORS DÉLAI (après le démarrage) — ne prouve${nbPositionnementsHorsDelai > 1 ? "nt" : ""} pas l'analyse du besoin en amont`
+        : "Aucun positionnement répondu hors délai",
+      nbInscritsSessionsDemarrees === 0
+        ? "Aucune inscription sur une session démarrée — l'analyse du besoin en amont n'est pas encore démontrable"
+        : nbInscritsPositionnesAvantDebut < nbInscritsSessionsDemarrees
+          ? `${nbInscritsSessionsDemarrees - nbInscritsPositionnesAvantDebut} inscrit(s) entré(s) en formation sans analyse du besoin préalable`
+          : "Chaque inscrit d'une session démarrée a été positionné avant le début",
     ],
-    nbFormations > 0 && nbPositionnementsBesoin > 0,
+    nbInscritsSessionsDemarrees > 0 &&
+      nbInscritsPositionnesAvantDebut === nbInscritsSessionsDemarrees,
   );
   // off.5 : objectifs définis — durci sur les formations réellement structurées
   //         (sorties de « intention »), pas la seule existence d'une fiche.
@@ -520,12 +769,24 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
     ],
     nbFormationsCertifiantesAvecBlocs > 0,
   );
+  // off.8 : POSITIONNEMENT À L'ENTRÉE — [audit blanc 2026-08-15] même exigence
+  //         de date et même expression en couverture que off.4. Une grille
+  //         « initiale » saisie après le démarrage documente l'action, elle ne
+  //         positionne personne à l'entrée.
   set(
     8,
     [
-      `${nbEvaluationsInitiales} évaluation${nbEvaluationsInitiales > 1 ? "s" : ""} initiale${nbEvaluationsInitiales > 1 ? "s" : ""} de positionnement`,
+      `${nbInscritsEvaluesAEntree} inscrit${nbInscritsEvaluesAEntree > 1 ? "s" : ""} sur ${nbInscritsSessionsDemarrees} évalué${nbInscritsEvaluesAEntree > 1 ? "s" : ""} à l'entrée avant le début de leur session`,
+      nbEvaluationsInitialesHorsDelai > 0
+        ? `${nbEvaluationsInitialesHorsDelai} évaluation${nbEvaluationsInitialesHorsDelai > 1 ? "s" : ""} initiale${nbEvaluationsInitialesHorsDelai > 1 ? "s" : ""} HORS DÉLAI ou sans session rattachée sur ${evaluationsInitiales.length} enregistrée${evaluationsInitiales.length > 1 ? "s" : ""}`
+        : `${evaluationsInitiales.length} évaluation${evaluationsInitiales.length > 1 ? "s" : ""} initiale${evaluationsInitiales.length > 1 ? "s" : ""} enregistrée${evaluationsInitiales.length > 1 ? "s" : ""}, aucune hors délai`,
+      nbInscritsSessionsDemarrees === 0
+        ? "Aucune inscription sur une session démarrée — le positionnement à l'entrée n'est pas encore démontrable"
+        : nbInscritsEvaluesAEntree < nbInscritsSessionsDemarrees
+          ? `${nbInscritsSessionsDemarrees - nbInscritsEvaluesAEntree} inscrit(s) entré(s) en formation sans évaluation initiale préalable`
+          : "Chaque inscrit d'une session démarrée a été évalué avant le début",
     ],
-    nbEvaluationsInitiales > 0,
+    nbInscritsSessionsDemarrees > 0 && nbInscritsEvaluesAEntree === nbInscritsSessionsDemarrees,
   );
 
   // Critère 3
@@ -603,6 +864,15 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   // off.18 : coordination des moyens — exige des formateurs actifs ET, pour
   //          chaque catégorie de moyens UTILISÉE (≥1 moyen actif), au moins 1
   //          moyen vérifié (dateVerification non null).
+  //
+  // 🔴 [audit blanc 2026-08-15] Ces deux conditions restent nécessaires, elles
+  // ne sont plus suffisantes. Elles ne comptaient que des OBJETS : avec un
+  // intervenant unique, « 1 formateur coordonné » ne coordonne personne, et un
+  // inventaire vérifié dit que les moyens existent, pas comment on les articule.
+  // La coordination se prouve par écrit — les modalités décrites en
+  // configuration, ou une pièce « inventaire des moyens » / « organisation de
+  // l'action » versée au registre (celle-ci porte le calendrier réel, la
+  // modalité, le lieu et l'encadrement).
   set(
     18,
     [
@@ -613,8 +883,13 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
       categoriesSansVerification.length > 0
         ? `Catégorie(s) sans moyen vérifié : ${categoriesSansVerification.join(", ")}`
         : "Chaque catégorie utilisée a au moins 1 moyen vérifié",
+      modalitesCoordinationRenseignees
+        ? "Modalités de coordination des intervenants décrites en configuration"
+        : nbPiecesCoordination > 0
+          ? `${nbPiecesCoordination} pièce${nbPiecesCoordination > 1 ? "s" : ""} « inventaire des moyens » / « organisation de l'action » au registre`
+          : "Aucune preuve écrite de coordination — off.18 exige les modalités de coordination en configuration OU une pièce « inventaire des moyens » / « organisation de l'action »",
     ],
-    nbTrainers > 0 && moyensParCategorieCouverts,
+    nbTrainers > 0 && moyensParCategorieCouverts && preuveCoordinationEcrite,
   );
   // off.19 : ressources pédagogiques mises à disposition — [P1] supports RÉELLEMENT
   //          finalisés (statut=genere ET pdfKey non null), pas un brouillon IA jamais rendu.
@@ -647,16 +922,36 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 5
-  // off.21 : [P1] couvert seulement si ≥1 formateur actif avec CV téléversé ET À JOUR
-  //          (cvUploadedAt < 24 mois — aligné sur le pilotage M11 / l'alerte R11). Un CV
-  //          non daté ou périmé ne prouve pas la mobilisation actuelle de la compétence.
+  // off.21 : [P1] couvert seulement si ≥1 formateur actif avec fiche à jour
+  //          (cvUploadedAt < 24 mois — aligné sur le pilotage M11 / l'alerte R11). Une
+  //          fiche non datée ou périmée ne prouve pas la mobilisation actuelle
+  //          de la compétence.
+  //
+  // 🔴 [audit blanc 2026-08-15] DEUX corrections.
+  //
+  //   1. Le LIBELLÉ mentait. Il annonçait « CV téléversé » alors que la seule
+  //      chose vérifiée était la présence d'une URL dans `cvUrl` — et quand
+  //      l'outil génère la fiche formateur, c'est LUI qui pose cette URL, sur
+  //      la route de téléchargement de la fiche qu'il vient d'écrire. Devant un
+  //      auditeur, présenter cette pièce comme un CV téléversé par le formateur
+  //      est une affirmation fausse. Le libellé dit désormais « fiche formateur
+  //      au dossier », qui est exactement ce dont l'organisme dispose.
+  //
+  //   2. La COUVERTURE exige en plus une pièce de compétence VALIDÉE au dossier
+  //      (CV source, diplôme ou certification, statut « valide », non périmée).
+  //      Une fiche que l'organisme s'écrit à lui-même ne justifie pas une
+  //      qualification ; la pièce d'origine, versée puis validée, si.
   set(
     21,
     [
-      `${nbTrainersAvecCVRecent} formateur${nbTrainersAvecCVRecent > 1 ? "s" : ""} actif${nbTrainersAvecCVRecent > 1 ? "s" : ""} avec CV téléversé et à jour (< 24 mois)`,
-      `${nbTrainersAvecCV} formateur${nbTrainersAvecCV > 1 ? "s" : ""} avec CV téléversé (toutes dates) / ${nbTrainers} actif${nbTrainers > 1 ? "s" : ""}`,
+      `${nbTrainersAvecCVRecent} formateur${nbTrainersAvecCVRecent > 1 ? "s" : ""} actif${nbTrainersAvecCVRecent > 1 ? "s" : ""} avec fiche formateur au dossier, datée de moins de 24 mois`,
+      `${nbFormateursPieceCompetence} formateur${nbFormateursPieceCompetence > 1 ? "s" : ""} actif${nbFormateursPieceCompetence > 1 ? "s" : ""} avec au moins une pièce de compétence validée au registre (CV source, diplôme ou certification)`,
+      `${nbTrainersAvecCV} formateur${nbTrainersAvecCV > 1 ? "s" : ""} avec fiche au dossier toutes dates confondues / ${nbTrainers} actif${nbTrainers > 1 ? "s" : ""}`,
+      nbFormateursPieceCompetence === 0
+        ? "Aucune pièce de compétence validée — la fiche formateur peut être celle que l'outil a lui-même générée : elle ne justifie pas la qualification"
+        : "Compétences justifiées par des pièces versées et validées au dossier formateur",
     ],
-    nbTrainersAvecCVRecent > 0,
+    nbTrainersAvecCVRecent > 0 && nbFormateursPieceCompetence > 0,
   );
   // off.22 : [P1] entretien/développement des compétences DANS LE TEMPS — exige une
   //          trace DATÉE et RÉCENTE (< 24 mois) d'action de développement (entretien
@@ -775,17 +1070,39 @@ export async function evaluerConformite(): Promise<ConformiteResult> {
   );
 
   // Critère 7
-  // off.30 : [P1] « multi-parties » réellement vérifié — exige des appréciations d'au
-  //   moins 2 SOURCES DISTINCTES (stagiaire/entreprise/financeur/formateur). Une seule
-  //   appréciation stagiaire ne couvre plus l'indicateur.
-  set(
-    30,
-    [
-      `${nbAppreciations} appréciation${nbAppreciations > 1 ? "s" : ""} recueillie${nbAppreciations > 1 ? "s" : ""}`,
-      `${nbAppreciationSourcesDistinctes} source${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} distincte${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} parmi stagiaire/entreprise/financeur/formateur (≥ 2 requis)`,
-    ],
-    nbAppreciationSourcesDistinctes >= 2,
-  );
+  // off.30 : « multi-parties » — [audit blanc 2026-08-15] deux conditions, pas une.
+  //
+  // Le `groupBy(["source"])` comptait des QUALITÉS DÉCLARÉES, pas des parties
+  // prenantes. Chez cet organisme les deux « sources distinctes » relevées sont
+  // la MÊME personne physique : la stagiaire est aussi la représentante du
+  // client. L'indicateur affichait « multi-parties » sur une seule voix — et
+  // c'est précisément la question que pose l'auditeur (« qui d'autre s'est
+  // exprimé ? »).
+  //
+  // Couverture = ≥ 2 qualités déclarées ET ≥ 2 personnes physiques distinctes.
+  // Les deux sont nécessaires : deux stagiaires font deux personnes mais une
+  // seule partie prenante ; deux qualités portées par une seule personne font
+  // une seule voix. Les appréciations dont l'auteur n'est pas rattaché en base
+  // ne comptent ni pour l'un ni pour l'autre — on ne les invente pas, on les
+  // affiche telles quelles.
+  const off30MultiPartiesEtabli =
+    nbAppreciationSourcesDistinctes >= 2 && nbPersonnesAppreciations >= 2;
+  const off30Preuves: string[] = [
+    `${nbAppreciations} appréciation${nbAppreciations > 1 ? "s" : ""} recueillie${nbAppreciations > 1 ? "s" : ""}`,
+    `${nbAppreciationSourcesDistinctes} qualité${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} déclarée${nbAppreciationSourcesDistinctes > 1 ? "s" : ""} parmi stagiaire/entreprise/financeur/formateur (≥ 2 requises)`,
+    `${nbPersonnesAppreciations} personne${nbPersonnesAppreciations > 1 ? "s" : ""} physique${nbPersonnesAppreciations > 1 ? "s" : ""} distincte${nbPersonnesAppreciations > 1 ? "s" : ""} identifiée${nbPersonnesAppreciations > 1 ? "s" : ""} derrière ces appréciations (≥ 2 requises)`,
+  ];
+  if (nbAppreciationsAuteurNonEtabli > 0) {
+    off30Preuves.push(
+      `${nbAppreciationsAuteurNonEtabli} appréciation${nbAppreciationsAuteurNonEtabli > 1 ? "s" : ""}, rattachement des auteurs non établi — ne compte${nbAppreciationsAuteurNonEtabli > 1 ? "nt" : ""} pas comme partie prenante distincte`,
+    );
+  }
+  if (nbAppreciations > 0 && !off30MultiPartiesEtabli) {
+    off30Preuves.push(
+      "Multi-parties non démontré : deux qualités déclarées peuvent être la même personne physique (stagiaire également représentante du client).",
+    );
+  }
+  set(30, off30Preuves, off30MultiPartiesEtabli);
   // off.31 : traitement des réclamations — le RNQ exige un PROCESS opérationnel
   //   DIFFUSÉ, avec un responsable identifié. [P1] la couverture n'est plus déduite du
   //   seul nom du responsable (qui a un défaut de configuration auto-seedé) : elle exige

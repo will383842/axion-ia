@@ -55,7 +55,15 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous classez n'importe quelle pièce de l'exploitation avant de la déposer — dans quel environnement, ou pas du tout — et vous traitez un dossier privé de son nom comme une donnée personnelle.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-1",
+      // Le tri des dix pièces en vérification et la liste rouge de l'atelier
+      // servent en plein l'objectif 1. La seconde moitié de l'énoncé — le
+      // dossier privé de son nom — est l'objectif 2, démontré par la
+      // ré-identification en trois questions. La consigne de livraison obtenue
+      // par dictée, avec ses « à confirmer », est l'objectif 3 : c'est ici, et
+      // nulle part ailleurs de la journée, qu'elle se produit à partir d'une
+      // dictée téléphonique.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -223,9 +231,14 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous produisez un courrier de réserve ou de réclamation qui expose les faits datés sans admettre de responsabilité, et vous supprimez tout délai que vous n'avez pas retrouvé au contrat.",
       objectifGlobalId: "obj-4",
-      // L'atelier se tient sur pièces reconstituées dès qu'un dossier ne peut
-      // pas sortir du service : la règle du module 1 s'applique ici en acte.
-      objectifsSecondairesIds: ["obj-5"],
+      // Le courrier de réserve exposant des faits datés sans admettre de
+      // responsabilité est l'objectif 4, produit en atelier puis passé à la
+      // grille. La seconde moitié de l'énoncé — supprimer tout délai non
+      // retrouvé au contrat — est l'objectif 5, joué au contrôle croisé, où
+      // chaque mention non retrouvée est barrée au stylo. Et l'atelier se
+      // tient sur pièces reconstituées dès qu'un dossier ne peut pas sortir
+      // du service : l'objectif 1 s'applique ici en acte.
+      objectifsSecondairesIds: ["obj-5", "obj-1"],
       dureeMin: 5,
       notes: {
         script:
@@ -379,11 +392,15 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez les écrits qui accompagnent une tournée — instructions au conducteur, message au client, demande d'affrètement et relance — sans jamais laisser l'assistant construire la tournée ni rédiger un document réglementé.",
-      objectifGlobalId: "obj-3",
-      // Les consignes de tournée sont l'APPUI à la planification (obj-1) : le
-      // TMS ordonnance, l'assistant écrit autour. La demande d'affrètement et
-      // sa relance sont de la communication sous-traitants (obj-4).
-      objectifsSecondairesIds: ["obj-1", "obj-4"],
+      objectifGlobalId: "obj-6",
+      // Les quatre écrits de l'énoncé — instructions au conducteur, message au
+      // client, demande d'affrètement et relance — sont exactement l'objectif
+      // 6, chaque chiffre remontant à la commande d'origine à la vérification.
+      // La borne de l'énoncé — « sans jamais laisser l'assistant construire la
+      // tournée ni rédiger un document réglementé » — est l'objectif 7 :
+      // ordonnancement, chargement, affectation, temps de conduite et
+      // documents réglementés restent au TMS et au texte.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -540,10 +557,17 @@ export const IA_POUR_LE_TRANSPORT_LOGISTIQUE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous rédigez le commentaire de votre reporting d'exploitation à partir d'indicateurs déjà calculés par vos outils, sans jamais faire noter une personne, et vous repartez avec le classeur d'exploitation assemblé.",
-      objectifGlobalId: "obj-2",
-      // Le suivi d'activité est le point où la donnée personnelle de conducteur
-      // revient par la fenêtre : la règle de confidentialité s'y rejoue en acte.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-8",
+      // La synthèse d'exploitation en version direction et en version équipe,
+      // à partir d'indicateurs déjà calculés et sans commentaire sur une
+      // personne, puis l'assemblage du classeur nommé et attribué à un
+      // titulaire : c'est l'objectif 8, dans son ordre. Le suivi d'activité est
+      // aussi le point où la donnée personnelle de conducteur revient par la
+      // fenêtre — colonne des noms retirée, ré-identification par la tournée :
+      // l'objectif 2 s'y rejoue en acte. Enfin, le quiz de fin interroge
+      // nommément ce que l'assistant ne construit jamais et la source d'une
+      // règle de temps de conduite, soit l'objectif 7.
+      objectifsSecondairesIds: ["obj-2", "obj-7"],
       dureeMin: 5,
       notes: {
         script:

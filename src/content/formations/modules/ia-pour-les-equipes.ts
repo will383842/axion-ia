@@ -33,7 +33,12 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
     objectif: {
       enonce:
         "À midi, vous nommez le régime d'usage de chacun de vos documents, vous appliquez la liste commune du service, et vous savez ce qui ne sort jamais.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-1",
+      // La séquence chronométrée — réaliser une tâche récurrente COMME
+      // D'HABITUDE, sans IA, en notant son temps et ses allers-retours — pose
+      // la moitié « avant » de l'objectif 2 ; la comparaison se fait au
+      // module 2.
+      objectifsSecondairesIds: ["obj-2"],
       dureeMin: 5,
       notes: {
         script:
@@ -144,7 +149,7 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
       acquis: [
         "Je nomme le régime d'usage de chacun de mes documents.",
         "J'applique la liste commune du service, écrite ce matin.",
-        "Je repère une demande qui introduit un biais avant de la lancer.",
+        "Je sais ce qui ne sort jamais du service, sans avoir à le demander.",
       ],
       dureeMin: 5,
       notes: {
@@ -165,8 +170,12 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
     objectif: {
       enonce:
         "En sortant de ce module, vous obtenez un résultat au format exact attendu, sans passer dix minutes à le retoucher.",
-      objectifGlobalId: "obj-1",
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-3",
+      // Refaire la tâche chronométrée du module 1 et poser le nouveau temps en
+      // face de l'ancien referme l'objectif 2 ; la vérification — le voisin
+      // rejoue VOTRE demande sur son propre cas, et tout ce qui supposait un
+      // contexte implicite est réécrit sur place — sert l'objectif 4.
+      objectifsSecondairesIds: ["obj-2", "obj-4"],
       dureeMin: 3,
       notes: {
         script:
@@ -286,8 +295,11 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
     objectif: {
       enonce:
         "En sortant, vous produisez une série de documents homogènes à partir d'un tableau, au lieu de les écrire un par un — et vous savez la contrôler.",
-      objectifGlobalId: "obj-2",
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-5",
+      // Les trois exercices de tableur — faire écrire une formule, faire
+      // expliquer un croisement, décrire une structure de données — sont le
+      // seul endroit du programme qui sert l'objectif 6.
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 3,
       notes: {
         script:
@@ -407,7 +419,12 @@ export const IA_POUR_LES_EQUIPES: EnrichissementFormation = [
     objectif: {
       enonce:
         "En sortant, le service dispose d'un mode d'emploi écrit que chacun a validé, et sait qui relit quoi.",
-      objectifGlobalId: "obj-4",
+      objectifGlobalId: "obj-7",
+      // Le mode d'emploi commun consolide par écrit la liste « ce qui ne sort
+      // jamais » arrêtée le matin (objectif 1) et retient les demandes
+      // « éprouvées par un autre que leur auteur », qui est le critère de
+      // transmissibilité de l'objectif 4.
+      objectifsSecondairesIds: ["obj-1", "obj-4"],
       dureeMin: 3,
       notes: {
         script:

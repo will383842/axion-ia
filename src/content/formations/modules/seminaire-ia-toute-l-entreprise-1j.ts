@@ -82,10 +82,12 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous dites en une phrase ce qu'une IA générative fait bien et où elle invente, et vous nommez ce qui ne sort jamais de l'entreprise sans avoir à demander à personne.",
       objectifGlobalId: "obj-1",
-      // Le tri des douze cartes, la grille de correction et la liste des usages
-      // mis hors jeu installent les règles de sécurité et le cadre légal : c'est
-      // le même module qui les porte, sans rattachement forcé.
-      objectifsSecondairesIds: ["obj-2"],
+      // Le tri des douze cartes et sa grille de correction servent l'objectif 2
+      // (trancher « ça peut sortir » / « ça ne sort jamais » / « décision sur
+      // une personne ») ; la liste des usages mis hors jeu et le rappel des
+      // trois obligations de l'employeur servent l'objectif 3. C'est le même
+      // module qui les porte, sans rattachement forcé.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -292,10 +294,10 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, chaque service sait nommer ses trois tâches les plus lourdes, le temps qu'elles lui coûtent chaque semaine, et les usages de l'IA déjà en place chez lui — y compris ceux que personne n'a validés.",
       objectifGlobalId: "obj-4",
-      // Lister les tâches lourdes et le temps qu'elles coûtent, c'est déjà
-      // repérer les cas d'usage à fort potentiel de son propre périmètre : le
-      // module 4 les transformera en engagements.
-      objectifsSecondairesIds: ["obj-5"],
+      // Recensement pur : le module chiffre les tâches, il ne produit encore ni
+      // demande AXION ni engagement. Aucun objectif secondaire n'est revendiqué
+      // plutôt qu'un rattachement de complaisance.
+      objectifsSecondairesIds: [],
       dureeMin: 5,
       notes: {
         script:
@@ -476,7 +478,7 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de cet après-midi, votre table repart avec deux demandes écrites aux cinq leviers, testées, qui produisent le même résultat entre les mains d'un collègue qui ne les a pas écrites.",
-      objectifGlobalId: "obj-3",
+      objectifGlobalId: "obj-5",
       dureeMin: 5,
       notes: {
         script:
@@ -667,11 +669,13 @@ export const SEMINAIRE_IA_TOUTE_L_ENTREPRISE_1J: EnrichissementFormation = [
     objectif: {
       enonce:
         "À 17 h 30, chaque service a écrit trois engagements concrets, l'entreprise a désigné son référent IA devant tout le monde, et le classeur de bord est remis table par table.",
-      objectifGlobalId: "obj-6",
-      // Transposer l'astuce d'un autre service à son propre quotidien, c'est
-      // repérer un cas d'usage à fort potentiel dans son périmètre — le module 2
-      // avait chiffré les tâches, celui-ci désigne lesquelles on attaque.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-7",
+      // Le premier temps du module transpose l'astuce d'un autre service au
+      // quotidien de sa table, en la rangeant dans l'une des six familles de
+      // tâches transverses : c'est l'objectif 6. Le second temps — trois
+      // engagements écrits par service et la désignation du référent IA — est
+      // l'objectif 7, principal ici.
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 3,
       notes: {
         script:
