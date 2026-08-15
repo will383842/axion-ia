@@ -105,8 +105,6 @@ describe("buildArticlePath (Fix 2026-08-15 D8 — path relatif pour revalidateCo
   });
 
   it("retourne le chemin relatif canonique (actualités)", () => {
-    expect(buildArticlePath({ slug: "news-item", isNews: true })).toBe(
-      "/fr/actualites/news-item",
-    );
+    expect(buildArticlePath({ slug: "news-item", isNews: true })).toBe("/fr/actualites/news-item");
   });
 });

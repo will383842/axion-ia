@@ -1047,7 +1047,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
         contentGenJobId,
         "validation",
         `Publication automatique refusée — cause${blockCauses.length > 1 ? "s" : ""} : ${blockCauses.join(" + ")}`,
-        { causes: blockCauses, computed_tier: "tier_3_noindex_nofollow", auto_publish_blocked: true },
+        {
+          causes: blockCauses,
+          computed_tier: "tier_3_noindex_nofollow",
+          auto_publish_blocked: true,
+        },
       );
     }
 

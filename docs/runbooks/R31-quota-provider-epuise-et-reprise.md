@@ -47,11 +47,11 @@ régénéré, même après rechargement du crédit.**
 
 À chaque tick de l'orchestrateur (toutes les 15 min), trois balayages :
 
-| Balayage | Cible | Effet |
-| --- | --- | --- |
-| `drainFailedJobs` | échecs de cause **externe et passagère** | remise en file, rythmée |
-| `sweepStuckJobs` | jobs `queued`/`running` figés > 60 min | remise en file |
-| `sweepStrandedQualityJobs` | jobs `quality_improving` figés > 60 min | réinjection dans la boucle qualité |
+| Balayage                   | Cible                                    | Effet                              |
+| -------------------------- | ---------------------------------------- | ---------------------------------- |
+| `drainFailedJobs`          | échecs de cause **externe et passagère** | remise en file, rythmée            |
+| `sweepStuckJobs`           | jobs `queued`/`running` figés > 60 min   | remise en file                     |
+| `sweepStrandedQualityJobs` | jobs `quality_improving` figés > 60 min  | réinjection dans la boucle qualité |
 
 Points importants :
 

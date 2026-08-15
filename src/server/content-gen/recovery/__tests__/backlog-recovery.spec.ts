@@ -35,11 +35,13 @@ import {
 function makeQueue(existingState: string | null = null) {
   const removeMock = vi.fn().mockResolvedValue(undefined);
   const addMock = vi.fn().mockResolvedValue({ id: "bull-1" });
-  const getJobMock = vi.fn().mockResolvedValue(
-    existingState === null
-      ? null
-      : { getState: vi.fn().mockResolvedValue(existingState), remove: removeMock },
-  );
+  const getJobMock = vi
+    .fn()
+    .mockResolvedValue(
+      existingState === null
+        ? null
+        : { getState: vi.fn().mockResolvedValue(existingState), remove: removeMock },
+    );
   return {
     queue: { getJob: getJobMock, add: addMock } as never,
     addMock,

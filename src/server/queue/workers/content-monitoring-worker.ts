@@ -526,8 +526,7 @@ async function processJob(job: Job<{ readonly trigger: string }>): Promise<void>
   results.forEach((result, i) => {
     if (result.status !== "rejected") return;
     const checkName = checks[i]?.[0] ?? `check#${i}`;
-    const cause =
-      result.reason instanceof Error ? result.reason : new Error(String(result.reason));
+    const cause = result.reason instanceof Error ? result.reason : new Error(String(result.reason));
     // Le nom du check est préfixé dans le message (et non dans le workerName,
     // typé union `WorkerName`) — il entre ainsi dans le fingerprint Sentry, qui
     // groupe par les 100 premiers caractères du message.

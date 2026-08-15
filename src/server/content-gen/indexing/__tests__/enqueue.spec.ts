@@ -228,11 +228,9 @@ describe("enqueueIndexingForTier1", () => {
     expect(result.indexnowEnqueued).toBe(true);
     expect(removeMock).toHaveBeenCalledOnce();
     expect(addMock).toHaveBeenCalledOnce();
-    expect(addMock).toHaveBeenCalledWith(
-      "ping",
-      expect.anything(),
-      { jobId: "indexnow-a-refresh-publish" },
-    );
+    expect(addMock).toHaveBeenCalledWith("ping", expect.anything(), {
+      jobId: "indexnow-a-refresh-publish",
+    });
   });
 
   it("D5 : job précédent encore en vol (waiting) → pas de doublon, mais enqueued=true", async () => {

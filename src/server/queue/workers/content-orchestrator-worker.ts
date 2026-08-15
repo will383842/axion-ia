@@ -388,7 +388,9 @@ async function createJobForSlot(opts: {
             },
             { jobId },
           );
-          console.warn(`[orchestrator] slot ${slotIndex} — job orphelin ré-enfilé (${existing.id})`);
+          console.warn(
+            `[orchestrator] slot ${slotIndex} — job orphelin ré-enfilé (${existing.id})`,
+          );
         }
       }
     } catch (repairErr) {
