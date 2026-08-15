@@ -1146,7 +1146,26 @@ async function executePublishPipeline(
   // P0-10 — best-effort post-transaction : l'article est déjà en DB et publié.
   // Un échec de l'enqueue d'indexation NE doit PAS rollback ni masquer la publication.
   // On log via console.warn + logStepError pour visibilité sans blast radius.
-  if (promoteToTier1) {
+  // Fix 2026-08-15 (audit e2e) — le ping n'est plus conditionné à
+  // `promoteToTier1`.
+  //
+  // Depuis la décision Will du 2026-06-17, TOUT article publié l'est en
+  // `tier_1_indexable` : il entre au sitemap et sert `index,follow`. Ne pas
+  // pinger un article sous le seuil ne le protégeait donc de rien — Google le
+  // découvrait de toute façon par le sitemap — mais retardait de plusieurs jours
+  // la découverte des articles concernés. Une incohérence pure : le sitemap
+  // disait « indexe-moi », le ping disait « pas la peine ».
+  //
+  // Les deux canaux restent gardés en aval par leurs propres verrous : IndexNow
+  // exige `INDEXNOW_KEY`, et l'API Google reste derrière son double opt-in
+  // (`GOOGLE_INDEXING_API_ENABLED` + `GOOGLE_INDEXING_ARTICLES`) avec son quota
+  // de 200/24 h. Aucun risque de dépense ni de dépassement ici.
+  //
+  // ⚠️ À savoir pour la suite : la protection anti-doorway que `promoteToTier1`
+  // était censé porter (soft-404, score < 50, doctrine) n'existe plus depuis
+  // juin — ni au tier, ni désormais au ping. Rétablir un vrai tier-2 reste une
+  // décision ouverte, à prendre côté doctrine d'indexation, pas ici.
+  {
     try {
       // Fix 2026-08-15 (D6 audit e2e) — le helper retourne des booléens
       // (indexnowEnqueued/googleEnqueued) qui étaient IGNORÉS : on logguait
