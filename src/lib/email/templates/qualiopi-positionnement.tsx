@@ -68,9 +68,15 @@ export function QualiopiPositionnementEmail({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>Bonjour {p.stagiairePrenomNom},</Text>
+      {/* 🔴 Formulation NEUTRE en genre, et ce n'est pas un détail de style : ce
+          gabarit part à TOUS les stagiaires, pas à celui pour qui il a été
+          écrit. « Vous êtes inscrite » — première rédaction, calquée sur la
+          première stagiaire réelle — se trompe une fois sur deux dès le
+          deuxième dossier. Aucun accord de participe passé au vous dans ce
+          fichier : le contexte ne porte pas le genre du destinataire. */}
       <Text style={emailStyles.paragraphStyle}>
-        Vous êtes inscrite à la formation <strong>{p.titreFormation}</strong>, qui débute le{" "}
-        <strong>{p.dateDebutFormation}</strong>.
+        Votre inscription à la formation <strong>{p.titreFormation}</strong> est enregistrée. Elle
+        débute le <strong>{p.dateDebutFormation}</strong>.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Avant de commencer, nous avons besoin de connaître votre niveau de départ et vos attentes :
