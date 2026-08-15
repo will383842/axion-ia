@@ -135,8 +135,10 @@ describe("formationCronsHandler", () => {
   });
 
   it("dispatche vers handleConvocationJ5 pour type convocation-j5", async () => {
-    // Stub DB → aucune session planifiée dans la fenêtre J-5
-    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+    // La sélection porte désormais sur les INSCRIPTIONS non convoquées, plus
+    // sur les sessions d'une fenêtre de date (cf. le bloc dédié plus bas).
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
+    mockPrisma.enrollment.count.mockResolvedValue(0);
 
     await expect(
       formationCronsHandler({
@@ -158,11 +160,11 @@ describe("formationCronsHandler", () => {
 // Tests handleConvocationJ5 (via formationCronsHandler)
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("handleConvocationJ5 (via formationCronsHandler)", () => {
+describe("handleConvocationJ5 — sélection par ÉTAT, pas par fenêtre de date", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Environnement non-stub pour ces tests
     delete process.env["DATABASE_URL"];
+    mockPrisma.enrollment.count.mockResolvedValue(0);
   });
 
   it("skip si DATABASE_URL = stub.invalid (stub-aware)", async () => {
@@ -173,15 +175,15 @@ describe("handleConvocationJ5 (via formationCronsHandler)", () => {
         type: "formation-crons.convocation-j5",
         tick: "2026-06-06T08:00:00Z",
       });
-      expect(mockPrisma.trainingSession.findMany).not.toHaveBeenCalled();
+      expect(mockPrisma.enrollment.findMany).not.toHaveBeenCalled();
       expect(mockEnvoyerConvocation).not.toHaveBeenCalled();
     } finally {
       process.env["DATABASE_URL"] = original;
     }
   });
 
-  it("ne fait rien si aucune session planifiée dans la fenêtre J-5", async () => {
-    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+  it("ne fait rien si aucune inscription n'est candidate", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
 
     await formationCronsHandler({
       type: "formation-crons.convocation-j5",
@@ -191,16 +193,11 @@ describe("handleConvocationJ5 (via formationCronsHandler)", () => {
     expect(mockEnvoyerConvocation).not.toHaveBeenCalled();
   });
 
-  it("appelle envoyerConvocation pour chaque enrollment des sessions J-5", async () => {
-    mockPrisma.trainingSession.findMany.mockResolvedValue([
-      {
-        id: "session-uuid-1",
-        enrollments: [{ id: "enroll-uuid-1" }, { id: "enroll-uuid-2" }],
-      },
-      {
-        id: "session-uuid-2",
-        enrollments: [{ id: "enroll-uuid-3" }],
-      },
+  it("convoque chaque inscription candidate", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-uuid-1" },
+      { id: "enroll-uuid-2" },
+      { id: "enroll-uuid-3" },
     ]);
     mockEnvoyerConvocation.mockResolvedValue(undefined);
 
@@ -211,21 +208,19 @@ describe("handleConvocationJ5 (via formationCronsHandler)", () => {
 
     expect(mockEnvoyerConvocation).toHaveBeenCalledTimes(3);
     expect(mockEnvoyerConvocation).toHaveBeenCalledWith("enroll-uuid-1");
-    expect(mockEnvoyerConvocation).toHaveBeenCalledWith("enroll-uuid-2");
     expect(mockEnvoyerConvocation).toHaveBeenCalledWith("enroll-uuid-3");
   });
 
-  it("continue en cas d'erreur sur un enrollment (fail-soft)", async () => {
-    mockPrisma.trainingSession.findMany.mockResolvedValue([
-      {
-        id: "session-uuid-1",
-        enrollments: [{ id: "enroll-ok-1" }, { id: "enroll-ko-1" }, { id: "enroll-ok-2" }],
-      },
+  it("continue en cas d'erreur sur une inscription (fail-soft)", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([
+      { id: "enroll-ok-1" },
+      { id: "enroll-ko-1" },
+      { id: "enroll-ok-2" },
     ]);
     mockEnvoyerConvocation
-      .mockResolvedValueOnce(undefined) // ok-1
-      .mockRejectedValueOnce(new Error("Email service down")) // ko-1
-      .mockResolvedValueOnce(undefined); // ok-2
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error("Email service down"))
+      .mockResolvedValueOnce(undefined);
 
     await expect(
       formationCronsHandler({
@@ -237,40 +232,76 @@ describe("handleConvocationJ5 (via formationCronsHandler)", () => {
     expect(mockEnvoyerConvocation).toHaveBeenCalledTimes(3);
   });
 
-  it("scanne les sessions dans la fenêtre [J+4.5j, J+5.5j]", async () => {
-    mockPrisma.trainingSession.findMany.mockResolvedValue([]);
+  /**
+   * 🔴 LE TEST QUI VERROUILLE LE CORRECTIF.
+   *
+   * L'ancienne sélection exigeait `dateDebut` dans [J+4,5 ; J+5,5] — un
+   * PLANCHER autant qu'un plafond. Vérifié en base de production le 15/08/2026 :
+   * aucune session réelle n'a jamais existé cinq jours avant son début (celle du
+   * 31/07 créée le 31/07 à 14h51 pour un début à 07h00, celle du 16/08 la
+   * veille). Une session créée à l'intérieur de sa propre fenêtre n'y entrait
+   * jamais — d'où ZÉRO convocation envoyée sur tout l'historique.
+   *
+   * Ce test échoue si quelqu'un réintroduit un plancher : c'était l'ancien test
+   * « scanne les sessions dans la fenêtre [J+4.5j, J+5.5j] », qui verrouillait
+   * le défaut au lieu de le dénoncer.
+   */
+  it("🔴 AUCUN plancher de date : une session créée la veille reste candidate", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
 
     await formationCronsHandler({
       type: "formation-crons.convocation-j5",
       tick: "2026-06-06T08:00:00Z",
     });
 
-    const rawCall = mockPrisma.trainingSession.findMany.mock.calls[0];
-    expect(rawCall).toBeDefined();
-    const callArgs = rawCall![0] as {
+    const appel = mockPrisma.enrollment.findMany.mock.calls[0]?.[0] as {
       where: {
-        statut: string;
-        dateDebut: { gte: Date; lte: Date };
+        convocationEnvoyeeAt: null;
+        session: { statut: string; dateDebut: { gt: Date; lte: Date; gte?: Date } };
       };
     };
-    expect(callArgs.where.statut).toBe("planifiee");
+    expect(appel).toBeDefined();
 
-    const now = new Date();
-    const expectedStart = new Date(now.getTime() + 4.5 * 24 * 60 * 60 * 1000);
-    const expectedEnd = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
+    // L'ÉTAT est la garde : tant que la colonne est nulle, on est candidat.
+    expect(appel.where.convocationEnvoyeeAt).toBeNull();
 
-    // Tolérance de 5 secondes pour le temps d'exécution du test
-    const tolerance = 5000;
-    expect(callArgs.where.dateDebut.gte.getTime()).toBeGreaterThan(
-      expectedStart.getTime() - tolerance,
+    // Le plafond haut demeure (on ne convoque pas trois mois à l'avance)…
+    const plafondAttendu = Date.now() + 5.5 * 24 * 60 * 60 * 1000;
+    expect(Math.abs(appel.where.session.dateDebut.lte.getTime() - plafondAttendu)).toBeLessThan(
+      5000,
     );
-    expect(callArgs.where.dateDebut.gte.getTime()).toBeLessThan(
-      expectedStart.getTime() + tolerance,
-    );
-    expect(callArgs.where.dateDebut.lte.getTime()).toBeGreaterThan(
-      expectedEnd.getTime() - tolerance,
-    );
-    expect(callArgs.where.dateDebut.lte.getTime()).toBeLessThan(expectedEnd.getTime() + tolerance);
+
+    // …mais la borne basse est « pas encore commencée », PAS « dans 4,5 jours ».
+    expect(
+      appel.where.session.dateDebut.gte,
+      "un plancher de date a été réintroduit : les sessions créées tardivement redeviennent invisibles",
+    ).toBeUndefined();
+    expect(Math.abs(appel.where.session.dateDebut.gt.getTime() - Date.now())).toBeLessThan(5000);
+  });
+
+  /**
+   * Ce que le rattrapage ne peut PAS réparer, il doit le DIRE. Convoquer après
+   * le démarrage fabriquerait une pièce fausse : l'écart se consigne.
+   */
+  it("compte et journalise les sessions DÉJÀ démarrées sans convocation", async () => {
+    mockPrisma.enrollment.findMany.mockResolvedValue([]);
+    mockPrisma.enrollment.count.mockResolvedValue(2);
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    try {
+      await formationCronsHandler({
+        type: "formation-crons.convocation-j5",
+        tick: "2026-06-06T08:00:00Z",
+      });
+
+      expect(mockPrisma.enrollment.count).toHaveBeenCalled();
+      const messages = erreur.mock.calls.map((c) => String(c[0])).join(" | ");
+      expect(messages).toContain("DÉMARRÉ sans convocation");
+      // Et surtout : aucun envoi rétroactif.
+      expect(mockEnvoyerConvocation).not.toHaveBeenCalled();
+    } finally {
+      erreur.mockRestore();
+    }
   });
 });
 
