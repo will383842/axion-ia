@@ -69,6 +69,13 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 
 const mockGetTrainerConformite = vi.fn();
+const { mockGetTrainerConflicts } = vi.hoisted(() => ({
+  mockGetTrainerConflicts: vi.fn(),
+}));
+vi.mock("@/features/admin-planning/queries", () => ({
+  getTrainerConflicts: mockGetTrainerConflicts,
+}));
+
 vi.mock("@/server/qualiopi/trainers/documents", () => ({
   getTrainerConformite: (...a: unknown[]) => mockGetTrainerConformite(...a),
 }));
@@ -219,9 +226,22 @@ describe("setTrainerActifAction", () => {
   });
 });
 
+const DEBUT = new Date("2026-09-10T07:00:00Z");
+const FIN = new Date("2026-09-10T15:00:00Z");
+
+/** Session mockée AVEC ses dates : le contrôle de conflit en a besoin. */
+function sessionMock() {
+  return { formationId: FORMATION_ID, dateDebut: DEBUT, dateFin: FIN, statut: "planifiee" };
+}
+
 describe("assignTrainerToSessionAction (blocage habilitation)", () => {
+  beforeEach(() => {
+    // Par défaut : aucun conflit d'agenda. Les tests qui en veulent un le disent.
+    mockGetTrainerConflicts.mockResolvedValue([]);
+  });
+
   it("assigne un formateur habilité", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
@@ -236,7 +256,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
   });
 
   it("dual-write : upsert la ligne SessionFormateur principal + snapshot tarif", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
@@ -261,15 +281,81 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
   });
 
   it("dual-write : le retrait (trainerId null) supprime le principal sans upsert", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
     expect(mockSessionFormateurDeleteMany).toHaveBeenCalled();
     expect(mockSessionFormateurUpsert).not.toHaveBeenCalled();
   });
 
+  /**
+   * 🔴 LE TEST QUI DÉPLACE LE CONTRÔLE AU BON ENDROIT.
+   *
+   * `getTrainerConflicts` existait, testé, et son commentaire posait déjà le
+   * diagnostic. Mais il n'avait qu'UN appelant : une page de DÉTAIL du planning.
+   * Le conflit s'affichait donc APRÈS l'affectation, à qui ouvrait cette page —
+   * à un formateur on l'ouvre, à cent personne ne l'ouvre.
+   */
+  it("🔴 REFUSE un formateur déjà mobilisé sur une prestation qui chevauche", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      habilitations: [{ formationId: FORMATION_ID }],
+      sousTraitantVerifieAt: null,
+    });
+    mockGetTrainerConflicts.mockResolvedValue([
+      { key: "formation:autre", titre: "IA pour les équipes", debut: DEBUT, fin: FIN },
+    ]);
+
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+
+    expect("error" in r, "l'affectation a été acceptée malgré un conflit d'agenda").toBe(true);
+    expect((r as { error: string }).error).toContain("déjà mobilisé");
+    // Le message NOMME la prestation en cause : un refus opaque produit un appel.
+    expect((r as { error: string }).error).toContain("IA pour les équipes");
+    // Et surtout : RIEN n'a été écrit.
+    expect(mockSessionUpdate).not.toHaveBeenCalled();
+  });
+
+  it("le contrôle de conflit interroge bien l'agenda DU formateur visé", async () => {
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      habilitations: [{ formationId: FORMATION_ID }],
+      sousTraitantVerifieAt: null,
+    });
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+
+    await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+
+    expect(mockGetTrainerConflicts).toHaveBeenCalledWith(
+      TRAINER_ID,
+      expect.objectContaining({ debut: DEBUT, fin: FIN, key: `formation:${SESSION_ID}` }),
+    );
+  });
+
+  it("une lecture d'agenda en panne ne bloque PAS une affectation légitime", async () => {
+    // Garde-fou d'ordonnancement, pas acte engageant : il échoue en douceur.
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
+    mockTrainerFindUnique.mockResolvedValue({
+      actif: true,
+      statut: "salarie",
+      habilitations: [{ formationId: FORMATION_ID }],
+      sousTraitantVerifieAt: null,
+    });
+    mockGetTrainerConflicts.mockRejectedValue(new Error("planning indisponible"));
+    mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
+
+    const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: TRAINER_ID });
+
+    expect("data" in r).toBe(true);
+    expect(mockSessionUpdate).toHaveBeenCalled();
+  });
+
   it("REFUSE un formateur non habilité sur la formation", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "salarie",
@@ -283,7 +369,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
   });
 
   it("REFUSE un sous-traitant non vérifié", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "sous_traitant",
@@ -296,7 +382,7 @@ describe("assignTrainerToSessionAction (blocage habilitation)", () => {
   });
 
   it("autorise le retrait (trainerId = null) sans contrôle", async () => {
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockSessionUpdate.mockResolvedValue({ id: SESSION_ID });
     const r = await assignTrainerToSessionAction({ sessionId: SESSION_ID, trainerId: null });
     expect(r).toEqual({ data: { sessionId: SESSION_ID, avertissements: [] } });
@@ -309,7 +395,7 @@ describe("assignTrainerToSessionAction — conformité : avertit, ne bloque JAMA
     // Ce fichier n'a pas de `clearAllMocks` global : sans ce reset, les appels
     // des tests précédents feraient échouer `not.toHaveBeenCalled()`.
     mockGetTrainerConformite.mockReset();
-    mockSessionFindUnique.mockResolvedValue({ formationId: FORMATION_ID });
+    mockSessionFindUnique.mockResolvedValue(sessionMock());
     mockTrainerFindUnique.mockResolvedValue({
       actif: true,
       statut: "sous_traitant",

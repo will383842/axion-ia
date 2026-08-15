@@ -25,6 +25,8 @@ import {
   type TrainerHabilitationFields,
 } from "@/server/qualiopi/trainers/trainers";
 import { getTrainerConformite } from "@/server/qualiopi/trainers/documents";
+import { getTrainerConflicts } from "@/features/admin-planning/queries";
+import type { PlanningStatut } from "@/features/admin-planning/types";
 import { getAllRegionSlugs } from "@/content/regions";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -566,11 +568,17 @@ export async function assignTrainerToSessionAction(
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId, trainerId } = parsed.data;
 
-  let trainingSession: { formationId: string } | null;
+  let trainingSession: {
+    formationId: string;
+    dateDebut: Date;
+    dateFin: Date | null;
+    statut: string;
+  } | null;
   try {
     trainingSession = await prisma.trainingSession.findUnique({
       where: { id: sessionId },
-      select: { formationId: true },
+      // Dates et statut : necessaires au controle de conflit ci-dessous.
+      select: { formationId: true, dateDebut: true, dateFin: true, statut: true },
     });
   } catch {
     return { error: "Erreur lors de la lecture de la session" };
@@ -613,6 +621,44 @@ export async function assignTrainerToSessionAction(
     if (!check.ok) {
       return { error: `Assignation refusée : ${check.raison}` };
     }
+
+    // 🔴 DOUBLE-AFFECTATION — le contrôle existait, personne ne l'appelait.
+    //
+    // `getTrainerConflicts` était écrit, testé, et son propre commentaire posait
+    // le diagnostic : « rien n'empêchait jusqu'ici d'affecter un formateur à
+    // deux prestations simultanées ; la garde `isTrainerHabilite` ne vérifie que
+    // l'habilitation, jamais la disponibilité ». Mais il n'avait qu'UN appelant
+    // — une page de DÉTAIL du planning. Le conflit s'affichait donc APRÈS
+    // l'affectation, à qui ouvrait cette page. À un formateur on l'ouvre ; à
+    // cent, personne ne l'ouvre.
+    //
+    // Le contrôle est déplacé là où la décision se prend. Il est en `try` :
+    // une lecture de planning qui échoue ne doit pas bloquer une affectation
+    // légitime — c'est un garde-fou d'ordonnancement, pas un acte engageant.
+    try {
+      const conflits = await getTrainerConflicts(trainerId, {
+        key: `formation:${sessionId}`,
+        debut: trainingSession.dateDebut,
+        fin: trainingSession.dateFin,
+        statut: trainingSession.statut as PlanningStatut,
+      });
+      if (conflits.length > 0) {
+        const premier = conflits[0];
+        const autres = conflits.length > 1 ? ` (et ${conflits.length - 1} autre(s))` : "";
+        return {
+          error:
+            `Assignation refusée : ce formateur est déjà mobilisé sur « ${premier?.titre ?? "une autre prestation"} »` +
+            ` du ${premier?.debut.toLocaleDateString("fr-FR")} au ${(premier?.fin ?? premier?.debut)?.toLocaleDateString("fr-FR")}${autres}.` +
+            ` Libérez d'abord cette prestation, ou choisissez un autre formateur.`,
+        };
+      }
+    } catch (err) {
+      console.error(
+        `[trainers] contrôle de conflit indisponible pour ${trainerId} sur ${sessionId}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+
     tarifSnapshot = trainer.tarifJourneeHtCents ?? null;
   }
 
