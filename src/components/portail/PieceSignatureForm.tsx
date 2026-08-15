@@ -45,7 +45,12 @@ export interface PieceSignatureFormProps {
   /** Date de validité — un devis en a une, une convention non. */
   dateValiditeLisible: string | null;
   organismeNom: string;
-  clientRaisonSociale: string;
+  /**
+   * Destinataire de la pièce. `null` quand aucun rattachement ne le résout —
+   * la phrase se tait alors, plutôt que de nommer l'organisme lui-même comme
+   * elle le faisait avant le 2026-08-15.
+   */
+  clientRaisonSociale: string | null;
   /** Identité FIGÉE à l'émission. Affichée pour vérification, jamais éditable. */
   signataireNom: string;
   signataireQualite: string | null;
@@ -144,7 +149,9 @@ export function PieceSignatureForm({
         {`${pieceLibelle.charAt(0).toUpperCase()}${pieceLibelle.slice(1)} ${numero}`}
       </h1>
       <p className="mt-1 text-sm text-gray-600">
-        {`Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`}
+        {clientRaisonSociale !== null && clientRaisonSociale !== ""
+          ? `Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`
+          : `Établie par ${organismeNom}.`}
         {dateValiditeLisible !== null ? ` Valable jusqu'au ${dateValiditeLisible}.` : ""}
       </p>
 
@@ -219,7 +226,10 @@ export function PieceSignatureForm({
               rel="noopener noreferrer"
               className="underline underline-offset-4"
             >
-              Ouvrir le devis complet au format PDF
+              {/* 🔴 Disait « le devis » sur TOUTES les pièces — donc sur une
+                  convention, un contrat, une tripartite. Le libellé DÉRIVE du
+                  SSOT des circuits, il ne se réécrit pas ici. */}
+              {`Ouvrir ${pieceLibelle} au format PDF`}
             </a>
             <span className="block text-xs text-gray-600">
               C&apos;est ce document exact, et son empreinte, que votre signature scelle.
@@ -301,7 +311,7 @@ export function PieceSignatureForm({
           disabled={!pretASigner || enCours}
           className="mt-6 rounded bg-gray-900 px-5 py-2.5 text-sm font-medium text-white disabled:opacity-40"
         >
-          {enCours ? "Enregistrement…" : "Signer le devis"}
+          {enCours ? "Enregistrement…" : `Signer ${pieceLibelle}`}
         </button>
         {!pretASigner && (
           <p className="mt-2 text-xs text-gray-600">
