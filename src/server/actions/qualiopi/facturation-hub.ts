@@ -18,7 +18,11 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   genererFactureLibre,
   genererAvoirFacture,
@@ -76,7 +80,8 @@ export async function genererFactureLibreAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : emettre une facture engage l'organisme comptablement.
+  const session = await requireHabilitation("facturer");
   const parsed = GenererFactureLibreSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -184,7 +189,8 @@ export async function genererFactureDepuisDevisAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : facture issue d'un devis accepte.
+  const session = await requireHabilitation("facturer");
   const parsed = DepuisDevisSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
 
@@ -378,7 +384,8 @@ export async function genererAvoirAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : avoir : piece fiscale a numerotation legale AXI-AVO.
+  const session = await requireHabilitation("facturer");
   const parsed = GenererAvoirSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide (motif : 5 caractères minimum)." };
 
@@ -488,7 +495,8 @@ export async function creerDossierFinancementAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : ouverture d'une demande de prise en charge.
+  const session = await requireHabilitation("deposer_demande_financeur");
   const parsed = CreerDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -556,7 +564,8 @@ export async function transitionnerDossierAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : transition d'un dossier de financement.
+  const session = await requireHabilitation("deposer_demande_financeur");
   const parsed = TransitionDossierSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
   const input = parsed.data;
@@ -1074,7 +1083,8 @@ export async function emettreFactureBrouillonAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible au build." };
   }
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : LE clic qui rend la facture definitive.
+  const session = await requireHabilitation("facturer");
   const parsed = EmettreBrouillonSchema.safeParse(rawInput);
   if (!parsed.success) return { error: "Entrée invalide." };
 

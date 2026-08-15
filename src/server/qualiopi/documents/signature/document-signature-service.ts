@@ -43,6 +43,7 @@ import { prisma } from "@/lib/prisma";
 import { resolveLegalIdentity } from "@/lib/legal-identity";
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import { storeSignatureImage, supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { peutEngager } from "@/server/auth/habilitations";
 import { resoudreAppartenance, type RoleFormateur } from "@/server/formateur/session-membership";
 import {
   calculerSelfHashDocument,
@@ -593,8 +594,19 @@ const PARTIES_PAR_CANAL_AUTHENTIFIE: Readonly<
   organisme_authentifie: ["axionia", "responsable_pedagogique"],
 };
 
-/** Rôles habilités à engager l'organisme ou à verser une preuve au dossier. */
-const ROLES_ADMIN_HABILITES = new Set(["super_admin", "admin"]);
+/**
+ * Rôles habilités à engager l'organisme ou à verser une preuve au dossier.
+ *
+ * 🔴 Cette constante était, jusqu'au 2026-08-15, la SEULE expression serveur de
+ * la frontière « engage l'organisme » — non exportée, un seul site d'appel,
+ * pendant que 311 autres actes passaient par `requireAdminWrite` (qui autorise
+ * `editor`). Elle délègue désormais au SSOT `@/server/auth/habilitations` :
+ * deux définitions de la même frontière divergeraient un jour, et ce serait
+ * celle qu'on a oublié de durcir qui servirait.
+ */
+const ROLES_ADMIN_HABILITES = {
+  has: (role: string): boolean => peutEngager(role, "contresigner"),
+};
 
 /**
  * Le porteur a-t-il quelque chose à voir avec cette pièce, et signe-t-il au bon

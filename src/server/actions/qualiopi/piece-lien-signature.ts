@@ -55,7 +55,7 @@ import {
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
 import { enqueueEmail } from "@/server/queue/queues";
-import { requireAdminWrite, logQualiopiActivity } from "./_guards";
+import { requireAdminWrite, requireHabilitation, logQualiopiActivity } from "./_guards";
 
 type Resultat<T> = { data: T } | { error: string };
 
@@ -447,6 +447,14 @@ export async function envoyerLienSignatureParEmailAction(
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
   }
+  // 🔴 GARDE EN PREMIER (2026-08-15). Elle était posée APRÈS la lecture de la
+  // pièce, la résolution de l'identité du signataire et l'émission du lien :
+  // un appel non habilité obtenait donc la raison sociale du client, le titre
+  // de la session et l'identité du signataire avant d'être refusé — et faisait
+  // au passage RÉVOQUER le lien précédent (`emettreLienSignatureAction` réémet).
+  // Une garde qui s'exécute après l'effet ne garde rien.
+  const session = await requireHabilitation("contresigner");
+
   const parsed = envoiSchema.safeParse(input);
   if (!parsed.success) return { error: "Entrée invalide." };
   const { documentGenereId, partie, messagePersonnalise } = parsed.data;
@@ -475,7 +483,6 @@ export async function envoyerLienSignatureParEmailAction(
   const emis = await emettreLienSignatureAction({ documentGenereId, partie });
   if ("error" in emis) return emis;
 
-  const session = await requireAdminWrite();
   let garePourValidation = false;
   try {
     const res = await enqueueEmail(

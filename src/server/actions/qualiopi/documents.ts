@@ -31,7 +31,11 @@ import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
@@ -1123,7 +1127,8 @@ export async function genererCertificatRealisationAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : certificat de realisation R.6313-3 : piece opposable au financeur.
+  const adminSession = await requireHabilitation("attester");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -1323,7 +1328,8 @@ export async function genererKitOpcoAction(input: {
   sessionId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit OPCO depose au nom du client (mandat).
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = sessionIdSchema.safeParse(input);
@@ -1437,7 +1443,8 @@ export async function genererKitCpfAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit CPF/EDOF depose au nom du stagiaire.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -1531,7 +1538,8 @@ export async function genererKitFranceTravailAction(input: {
   enrollmentId: string;
   rectificationMotif?: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : kit France Travail (AIF/POEI/CSP).
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = enrollmentIdSchema.safeParse(input);
@@ -3102,7 +3110,8 @@ const DEV_ACTION_LABELS: Record<string, string> = {
 export async function verserFicheFormateurAction(input: {
   trainerId: string;
 }): Promise<ActionResult<{ documentId: string; numero: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : la fiche formateur materialise la verification des competences (ind. 21/22).
+  const adminSession = await requireHabilitation("habiliter_formateur");
   if (isStub()) return { error: "Génération désactivée en mode build (stub)" };
 
   const parsed = trainerIdSchema.safeParse(input);

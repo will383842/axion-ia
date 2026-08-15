@@ -422,11 +422,17 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // P1-8 — Passer campaignId pour log structuré keyword_select_exhausted
       // et préparer l'isolation future des pools par campagne.
       // Note: spread conditionnel requis (exactOptionalPropertyTypes: true).
+      // 2026-08-15 — `rotationSeed` : graine stable pour la rotation des
+      // gabarits géo de REPLI. Le `slotIndex` du job est croissant et
+      // reproductible, là où le compteur en mémoire du worker repartait de zéro
+      // à chaque redémarrage (chaque ville reprenait alors au même gabarit).
+      const slotSeed = inputPayload["slotIndex"];
       const selected = await selectKeywordRich({
         vertical: campaignSector,
         contentType,
         ...(cityRef ? { city: cityRef } : {}),
         ...(dbJob.campaignId ? { campaignId: dbJob.campaignId } : {}),
+        ...(typeof slotSeed === "number" ? { rotationSeed: slotSeed } : {}),
       });
       if (selected) {
         resolvedKeyword = selected.term;

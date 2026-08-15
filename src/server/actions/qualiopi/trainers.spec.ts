@@ -57,6 +57,7 @@ vi.mock("@/lib/prisma", () => {
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   // DEFENSIF, pas obligatoire : ce spec n'exerce pas
   // `deleteTrainerDevelopmentActionAction`, et la transformation SSR de Vite
   // reecrit les imports nommes en acces de propriete PARESSEUX — l'absence de

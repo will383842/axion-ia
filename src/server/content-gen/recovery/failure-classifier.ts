@@ -117,17 +117,70 @@ export function classifyFailure(errorMessage: string | null | undefined): Failur
 }
 
 /**
+ * Âge maximal, en jours, d'une dépêche RSS encore digne d'être publiée.
+ *
+ * Aligné sur la politique `rssMaxAgeDays` du pipeline d'actualités (2 à 3 jours
+ * selon la configuration). On retient 3 jours, la valeur la plus permissive :
+ * la reprise ne doit pas être plus stricte que la production normale, mais elle
+ * ne doit surtout pas l'être moins.
+ */
+const RSS_MAX_AGE_DAYS = 3;
+const MS_PER_DAY = 86_400_000;
+
+/**
+ * Le sujet porté par ce job est-il encore d'actualité ?
+ *
+ * Incident du 2026-08-15, découvert en production dans l'heure suivant la mise
+ * en service de la reprise : quatre dépêches datées du 6 juillet ont été
+ * republiées le 15 août, en pleine page « actualités ». La cause est une
+ * différence de nature entre deux familles de jobs, que le classement par
+ * message d'erreur ne voyait pas :
+ *
+ *  - un job de CAMPAGNE ne porte ni sujet ni mot-clé (`{vertical, slotIndex,
+ *    campaignName}`) — le mot-clé est pioché à l'exécution. Le relancer produit
+ *    donc du contenu FRAIS, et c'est tout l'intérêt de la reprise ;
+ *  - un job RSS porte au contraire la dépêche ENTIÈRE, figée à sa date de
+ *    parution. Le relancer republie cette dépêche telle quelle, des semaines
+ *    plus tard — exactement ce que la politique de fraîcheur du pipeline
+ *    d'actualités interdit par ailleurs.
+ *
+ * D'où ce garde-fou : un job dont le sujet est figé n'est relançable que tant
+ * que ce sujet est frais. Sans `rssPubDate` exploitable, on refuse (une dépêche
+ * dont on ne peut pas dater la source ne peut pas être déclarée fraîche).
+ */
+export function isTopicStillFresh(
+  contentType: string,
+  inputPayload: unknown,
+  now: Date = new Date(),
+): boolean {
+  if (contentType !== "blog_from_rss") return true;
+
+  const payload = inputPayload as { rssPubDate?: unknown } | null | undefined;
+  const raw = payload?.rssPubDate;
+  if (typeof raw !== "string") return false;
+
+  const published = new Date(raw);
+  if (Number.isNaN(published.getTime())) return false;
+
+  const ageDays = (now.getTime() - published.getTime()) / MS_PER_DAY;
+  return ageDays <= RSS_MAX_AGE_DAYS;
+}
+
+/**
  * Un job est-il relançable automatiquement ?
  *
- * Deux conditions cumulatives : l'échec doit être transitoire, ET le job ne doit
- * pas avoir déjà épuisé son budget de tentatives (sans quoi un provider durablement
- * dégradé ferait tourner le drain en boucle sur les mêmes jobs).
+ * Trois conditions cumulatives : l'échec doit être transitoire, le job ne doit
+ * pas avoir épuisé son budget de tentatives (sans quoi un provider durablement
+ * dégradé ferait tourner le drain en boucle sur les mêmes jobs), et son sujet
+ * doit être encore d'actualité (cf. `isTopicStillFresh`).
  */
 export function isAutoRetryable(
   errorMessage: string | null | undefined,
   retryCount: number,
   maxRetries: number,
+  job?: { readonly contentType: string; readonly inputPayload: unknown },
 ): boolean {
   if (retryCount >= maxRetries) return false;
+  if (job && !isTopicStillFresh(job.contentType, job.inputPayload)) return false;
   return classifyFailure(errorMessage) === "transient";
 }

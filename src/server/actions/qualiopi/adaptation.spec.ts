@@ -55,6 +55,7 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   requireSuperAdmin: () => requireSuperAdmin(),
   logQualiopiActivity: (a: unknown) => logActivity(a),
 }));

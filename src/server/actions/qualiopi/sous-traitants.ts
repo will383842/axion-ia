@@ -14,7 +14,11 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { siretField } from "@/lib/siret-schema";
 import { premierMessageZod } from "@/lib/zod-message";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireHabilitation,
+  requireAdminWrite,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import {
   creerSousTraitant,
   verifierDataGouv,
@@ -129,7 +133,8 @@ export async function verifierSousTraitantOfAction(input: {
   id: string;
   verifieDataGouvAt?: Date;
 }): Promise<ActionResult<{ id: string; verifieDataGouvAt: Date }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : verification de l'organisme sous-traitant au registre.
+  const session = await requireHabilitation("habiliter_formateur");
   const parsed = verifierSousTraitantOfSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, verifieDataGouvAt } = parsed.data;
