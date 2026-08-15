@@ -70,9 +70,10 @@ interface BatchSettings {
   readonly antiBurstEnabled?: boolean;
 }
 
-interface KillSwitchState {
-  readonly active: boolean;
-}
+// L'interface locale `KillSwitchState` a été retirée le 2026-08-15 : l'état du
+// kill switch est désormais lu par `readKillSwitchFailSafe`, qui porte son
+// propre type (et traite une erreur DB comme un arrêt, au lieu de retomber sur
+// un défaut permissif).
 
 let contentGenQueue: Queue | null = null;
 function getContentGenQueue(): Queue {
