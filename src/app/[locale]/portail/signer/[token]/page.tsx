@@ -97,7 +97,22 @@ export default async function SignerDevisPage({ params }: PageProps) {
     // `createdAt` : indispensable à la clé R2 (`documents/<année>/…`). Sans lui
     // on ne peut pas re-signer, et c'est faute de l'avoir sélectionné qu'on
     // passait `pdfUrl` — une URL — là où une clé était attendue.
-    select: { numero: true, type: true, pdfUrl: true, createdAt: true },
+    //
+    // 🔴 2026-08-15 — les quatre rattachements sont sélectionnés pour résoudre
+    // le DESTINATAIRE de la pièce. Ils manquaient, et la page retombait sur
+    // `identite.raisonSociale` : une convention adressée à INVEST SUN
+    // s'affichait « Établie par AXION IA SAS à l'attention de AXION IA SAS ».
+    // Constaté par Will sur la pièce réelle AXI-DOC-2026-032.
+    select: {
+      numero: true,
+      type: true,
+      pdfUrl: true,
+      createdAt: true,
+      client: { select: { raisonSociale: true } },
+      trainee: { select: { prenom: true, nom: true } },
+      sousTraitant: { select: { nom: true } },
+      session: { select: { client: { select: { raisonSociale: true } } } },
+    },
   });
   if (piece === null) notFound();
 
@@ -176,6 +191,26 @@ export default async function SignerDevisPage({ params }: PageProps) {
     }
   }
 
+  // ── À l'attention de QUI ──
+  //
+  // 🔴 Se lisait `devis?.clientRaisonSociale ?? identite.raisonSociale`. Sur
+  // toute pièce AUTRE qu'un devis — donc sur les cinq pièces contractuelles —
+  // `devis` vaut `null`, et le repli désignait l'organisme lui-même : la page
+  // affirmait qu'AXION IA établissait une convention à l'attention d'AXION IA.
+  // Le signataire lisait le nom de sa propre contrepartie à la place du sien.
+  //
+  // On résout depuis les rattachements RÉELS de la pièce, du plus spécifique au
+  // plus général. `null` quand rien ne se résout : la phrase se tait alors
+  // plutôt que de nommer quelqu'un au hasard — un destinataire faux est pire
+  // qu'un destinataire absent sur une pièce qu'on s'apprête à signer.
+  const destinataire: string | null =
+    devis?.clientRaisonSociale ??
+    piece.client?.raisonSociale ??
+    piece.session?.client?.raisonSociale ??
+    piece.sousTraitant?.nom ??
+    (piece.trainee !== null ? `${piece.trainee.prenom} ${piece.trainee.nom}`.trim() : null) ??
+    null;
+
   const mentions = mentionCompleteDocument(
     verif.partie,
     {
@@ -193,7 +228,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       pieceLibelle={circuit.libelle}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
-      clientRaisonSociale={devis?.clientRaisonSociale ?? identite.raisonSociale}
+      clientRaisonSociale={destinataire}
       signataireNom={verif.signataireNom}
       signataireQualite={verif.signataireQualite}
       {...(devis !== null
