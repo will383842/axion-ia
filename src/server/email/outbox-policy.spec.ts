@@ -145,6 +145,10 @@ describe("Cohérence avec les noms de jobs réels", () => {
     "qualiopi-portail-acces",
     "qualiopi-alerte-interne",
     "qualiopi-relance-impayee",
+    // Positionnement (2026-08-15) — envoyé par `envoyerPositionnement`, depuis
+    // l'action « Envoyer au stagiaire ». Remplace le repli sur
+    // `qualiopi-portail-acces`, qui invitait le stagiaire à ignorer le message.
+    "qualiopi-positionnement",
     // Relances questionnaires + enquête entreprise (2026-08-04) — envoyés par
     // les crons relance-questionnaires / enquete-entreprise-j30.
     "qualiopi-questionnaire-relance",

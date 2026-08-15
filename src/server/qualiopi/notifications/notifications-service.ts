@@ -507,6 +507,64 @@ const LIBELLE_QUESTIONNAIRE: Record<string, string> = {
  * Idempotence : le jobId inclut le numéro de relance — la relance N ne part
  * qu'une fois, la relance N+1 reste possible.
  */
+/**
+ * Envoie le questionnaire de POSITIONNEMENT au stagiaire (indicateur 8).
+ *
+ * 🔴 Remplace le repli sur `demanderAccesParEmail()`, qui envoyait le template
+ * de RE-DEMANDE d'accès portail — un email affirmant une demande que le
+ * stagiaire n'avait pas faite, et se terminant par « vous pouvez ignorer cet
+ * email ». Constaté sur le premier dossier réel, la veille de la formation :
+ * l'indicateur 8 reposait sur un message qui demandait qu'on l'ignore.
+ *
+ * ⚠️ Volontairement SANS garde sur `envoyeAt` : renvoyer le positionnement est
+ * légitime (le stagiaire a perdu le mail, l'adresse a changé). La garde qui
+ * compte — « déjà répondu » — est posée en amont dans `envoyerQuestionnaireAction`.
+ */
+export async function envoyerPositionnement(questionnaireId: string): Promise<void> {
+  if (isStub()) return;
+
+  const q = await prisma.questionnaire.findUnique({
+    where: { id: questionnaireId },
+    select: {
+      id: true,
+      reponduAt: true,
+      enrollment: {
+        select: {
+          trainee: { select: { id: true, email: true, nom: true, prenom: true } },
+          session: { select: { numero: true, titreSession: true, dateDebut: true } },
+        },
+      },
+    },
+  });
+
+  // Un positionnement déjà répondu n'a plus de destinataire : le renvoyer
+  // laisserait croire au stagiaire que sa réponse s'est perdue.
+  if (!q || q.reponduAt !== null) return;
+
+  const { trainee, session } = q.enrollment;
+  if (!trainee.email) return;
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
+
+  await enqueueEmail(
+    "qualiopi-positionnement",
+    trainee.email,
+    "fr",
+    {
+      stagiairePrenomNom: `${trainee.prenom} ${trainee.nom}`.trim(),
+      titreFormation: session.titreSession,
+      dateDebutFormation: fmtDate(session.dateDebut),
+      lienQuestionnaire,
+      numeroSession: session.numero,
+    },
+    // 🔴 `jobId` horodaté, PAS `qualiopi-positionnement-${q.id}` : la
+    // déduplication BullMQ rendrait tout renvoi silencieusement inopérant, et
+    // c'est exactement le renvoi qu'on vient de rendre nécessaire.
+    { jobId: `qualiopi-positionnement-${q.id}-${Date.now()}` },
+  );
+}
+
 export async function envoyerRelanceQuestionnaire(questionnaireId: string): Promise<void> {
   if (isStub()) return;
 

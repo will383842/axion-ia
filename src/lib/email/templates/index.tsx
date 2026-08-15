@@ -81,6 +81,10 @@ import {
 } from "./qualiopi-satisfaction-j1";
 import { QualiopiSuiviJ30Email, qualiopiSuiviJ30Subject } from "./qualiopi-suivi-j30";
 import {
+  QualiopiPositionnementEmail,
+  qualiopiPositionnementSubject,
+} from "./qualiopi-positionnement";
+import {
   QualiopiQuestionnaireRelanceEmail,
   qualiopiQuestionnaireRelanceSubject,
 } from "./qualiopi-questionnaire-relance";
@@ -323,6 +327,10 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-suivi-j30": {
     subject: qualiopiSuiviJ30Subject,
     component: QualiopiSuiviJ30Email,
+  },
+  "qualiopi-positionnement": {
+    subject: qualiopiPositionnementSubject,
+    component: QualiopiPositionnementEmail,
   },
   "qualiopi-questionnaire-relance": {
     subject: qualiopiQuestionnaireRelanceSubject,

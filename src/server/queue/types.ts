@@ -98,6 +98,9 @@ export type EmailJobName =
   | "qualiopi-rappel-j7"
   | "qualiopi-satisfaction-j1"
   | "qualiopi-suivi-j30"
+  // Positionnement (ind. 8) — AVANT la formation. Distinct de l'accès portail :
+  // celui-ci demandait qu'on l'ignore, cf. `qualiopi-positionnement.tsx`.
+  | "qualiopi-positionnement"
   // Relance de questionnaire sans réponse (J+3 / J+10) + enquête ENTREPRISE.
   | "qualiopi-questionnaire-relance"
   | "qualiopi-enquete-entreprise"

@@ -66,6 +66,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   "qualiopi-rappel-j7",
   "qualiopi-satisfaction-j1",
   "qualiopi-suivi-j30",
+  // Un positionnement retenu en validation manque la formation qu'il devait
+  // préparer : il n'a de valeur qu'AVANT, donc il part seul.
+  "qualiopi-positionnement",
   "qualiopi-questionnaire-relance",
   "qualiopi-enquete-entreprise",
   "qualiopi-attestation-disponible",
@@ -93,6 +96,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-rappel-j7": "Rappel à J-7",
   "qualiopi-satisfaction-j1": "Questionnaire de satisfaction (J+1)",
   "qualiopi-suivi-j30": "Suivi à J+30",
+  "qualiopi-positionnement": "Questionnaire de positionnement (avant la formation)",
   "qualiopi-questionnaire-relance": "Relance de questionnaire sans réponse",
   "qualiopi-enquete-entreprise": "Enquête de satisfaction entreprise",
   "qualiopi-attestation-disponible": "Attestation disponible",
