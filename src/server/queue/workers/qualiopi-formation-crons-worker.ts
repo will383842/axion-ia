@@ -691,44 +691,74 @@ async function handleConvocationJ5(): Promise<void> {
   }
 
   const now = new Date();
-  const windowStart = new Date(now.getTime() + 4.5 * 24 * 60 * 60 * 1000);
-  const windowEnd = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
+  // 🔴 PLUS DE FENÊTRE BASSE (2026-08-15). L'ancienne sélection ne retenait que
+  // les sessions dont `dateDebut` tombait dans [J-5,5 ; J-4,5] au passage de
+  // 08:00 UTC. Vérifié en base de production : sur tout l'historique, AUCUNE
+  // convocation n'était jamais partie — et la cause n'était pas le cron, qui
+  // tourne bien, mais cette fenêtre. Aucune session réelle n'a jamais existé
+  // cinq jours avant son début : celle du 31/07 a été créée le 31/07 à 14h51
+  // pour un début à 07h00, celle du 16/08 la veille. Une session créée À
+  // L'INTÉRIEUR de sa propre fenêtre n'y entre jamais, et rien ne la rattrapait.
+  //
+  // Le plafond haut demeure : on ne convoque pas trois mois à l'avance, la
+  // convocation porte les informations logistiques finales. Ce qui disparaît,
+  // c'est le plancher — donc le cron RATTRAPE, chaque jour, tant que la session
+  // n'a pas commencé.
+  const plafond = new Date(now.getTime() + 5.5 * 24 * 60 * 60 * 1000);
 
-  const sessions = await prisma.trainingSession.findMany({
+  const enrollments = await prisma.enrollment.findMany({
     where: {
-      statut: "planifiee",
-      dateDebut: { gte: windowStart, lte: windowEnd },
-    },
-    select: {
-      id: true,
-      enrollments: {
-        where: { statut: { in: ["planifiee", "presente"] } },
-        select: { id: true },
+      statut: { in: ["planifiee", "presente"] },
+      // L'ÉTAT, pas la date : tant que la colonne est nulle, l'inscription
+      // reste candidate. Une exécution manquée (déploiement, coupure Redis)
+      // cesse d'être définitive.
+      convocationEnvoyeeAt: null,
+      session: {
+        statut: "planifiee",
+        // Pas encore commencée : convoquer après coup fabriquerait une pièce
+        // fausse. Ce cas relève d'un écart à consigner, pas d'un envoi.
+        dateDebut: { gt: now, lte: plafond },
       },
     },
+    select: { id: true },
   });
 
   let ok = 0;
   let ko = 0;
 
-  for (const session of sessions) {
-    for (const enrollment of session.enrollments) {
-      try {
-        await envoyerConvocation(enrollment.id);
-        ok++;
-      } catch (err) {
-        ko++;
-        console.error(
-          `[formation-crons] convocation-j5: erreur enrollment ${enrollment.id}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
+  for (const enrollment of enrollments) {
+    try {
+      await envoyerConvocation(enrollment.id);
+      ok++;
+    } catch (err) {
+      ko++;
+      console.error(
+        `[formation-crons] convocation-j5: erreur enrollment ${enrollment.id}:`,
+        err instanceof Error ? err.message : String(err),
+      );
     }
   }
 
-  const totalEnrollments = sessions.reduce((acc, s) => acc + s.enrollments.length, 0);
+  // ⚠️ Ce que le cron ne peut PAS rattraper, il le DIT. Une session déjà
+  // commencée sans convocation est un écart d'indicateur 9 : il se consigne, il
+  // ne se répare pas par un envoi antidaté.
+  const manquees = await prisma.enrollment.count({
+    where: {
+      statut: { in: ["planifiee", "presente"] },
+      convocationEnvoyeeAt: null,
+      session: { dateDebut: { lte: now }, statut: { in: ["planifiee", "en_cours", "realisee"] } },
+    },
+  });
+  if (manquees > 0) {
+    console.error(
+      `[formation-crons] convocation-j5: ${manquees} inscription(s) dont la session a DÉMARRÉ sans convocation — ` +
+        `écart ind. 9 à consigner, aucun envoi rétroactif ne le répare`,
+    );
+  }
+
   console.log(
-    `[formation-crons] convocation-j5: ${ok} convocations envoyées, ${ko} erreurs (${sessions.length} sessions scannées, ${totalEnrollments} enrollments)`,
+    `[formation-crons] convocation-j5: ${ok} convocation(s) envoyée(s), ${ko} erreur(s) ` +
+      `(${enrollments.length} inscription(s) candidate(s), ${manquees} déjà démarrée(s) sans convocation)`,
   );
 }
 

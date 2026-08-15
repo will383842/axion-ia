@@ -6530,6 +6530,21 @@ model Enrollment {
   attestationDocumentId String?                  @map("attestation_document_id") @db.Uuid
   attestationDocument   DocumentGenere?          @relation("EnrollmentAttestation", fields: [attestationDocumentId], references: [id], onDelete: SetNull)
   attestationGenereeAt  DateTime?                @map("attestation_generee_at")
+  /// Convocation reglementaire (ind. 9) reellement PARTIE — pas seulement generee.
+  ///
+  /// 🔴 Verifie en production le 15/08/2026 : AUCUNE convocation n'etait jamais
+  /// partie, sur tout l'historique. La cause n'etait pas le cron, qui tourne
+  /// bien, mais sa selection : une FENETRE [J-5,5 ; J-4,5] sur `dateDebut`.
+  /// Or aucune session reelle n'a jamais existe cinq jours avant son debut —
+  /// la session du 31/07 a ete creee le 31/07 a 14h51 pour un debut a 07h00, et
+  /// celle du 16/08 la veille. Une session creee A L'INTERIEUR de sa propre
+  /// fenetre n'y entre jamais, et rien ne la rattrape.
+  ///
+  /// Cette colonne remplace le balayage par date par un ETAT : « cette
+  /// inscription a-t-elle recu sa convocation ? ». Le cron devient rattrapant,
+  /// et une execution manquee (deploiement, coupure Redis) cesse d'etre
+  /// definitive.
+  convocationEnvoyeeAt  DateTime?                @map("convocation_envoyee_at")
   // ── Inter-entreprises (R-INTER) : financement PAR PARTICIPANT ──────────────
   // Utilisés uniquement quand la session est `interEntreprises` (participants de
   // sociétés différentes, chacun son financeur/sa facture). En intra : null
@@ -6561,6 +6576,9 @@ model Enrollment {
   @@index([traineeId])
   @@index([statut])
   @@index([clientId])
+  /// Selection du cron de convocation : les inscriptions actives non encore
+  /// convoquees. Sans lui, le rattrapage balaie toute la table chaque jour.
+  @@index([convocationEnvoyeeAt, statut])
   @@map("enrollments")
 }
 
