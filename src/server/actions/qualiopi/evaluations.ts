@@ -13,7 +13,11 @@
 "use server";
 
 import { z } from "zod";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { createEvaluation } from "@/server/qualiopi/evaluations/evaluations-service";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
 
@@ -138,7 +142,8 @@ export async function genererAttestationAction(input: {
 }): Promise<
   ActionResult<{ resultat: "complete" | "partielle" | "aucune"; documentId: string | null }>
 > {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : l'attestation atteste la realisation au nom de l'organisme.
+  const session = await requireHabilitation("attester");
   const parsed = genererAttestationSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;

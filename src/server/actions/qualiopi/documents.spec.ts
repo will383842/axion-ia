@@ -91,6 +91,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
     userId: "user-admin-uuid",
     role: "super_admin",
   }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 

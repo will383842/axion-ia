@@ -53,6 +53,7 @@ vi.mock("@/lib/prisma", () => {
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: () => mockRequireAdminWrite(),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: (...a: unknown[]) => mockLog(...a),
 }));
 
