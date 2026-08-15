@@ -65,21 +65,44 @@ Points importants :
 - les jobs en boucle qualité sont réinjectés **sans être régénérés** : ils
   portent déjà un contenu payé.
 
-### Réglages — clé `ContentGenConfig.backlog_recovery`
+### Le plafond qui compte : `ContentGenConfig.daily_generation_cap`
+
+```json
+{ "maxPerDay": 20 }
+```
+
+**C'est un plafond GLOBAL, tous canaux confondus** (décision Will 2026-08-15) :
+production neuve ET relances puisent dans le même budget quotidien. Avant, chaque
+canal avait le sien et ils s'additionnaient (20 + 40 = 60/jour) ; ce n'était pas
+le plafond voulu.
+
+Le budget est lissé sur la journée par la même courbe que le rythme des
+campagnes. Sans ce lissage, la reprise épuiserait le quota dès la première heure
+et affamerait la production neuve. Concrètement :
+
+- campagne en pause → la reprise dispose des 20 ;
+- campagne active → les deux se partagent les 20, la reprise passant en premier
+  à chaque tick.
+
+Une valeur absente ou aberrante retombe sur 20 : une configuration cassée ne peut
+ni geler la production, ni la laisser filer.
+
+### Réglages secondaires — clé `ContentGenConfig.backlog_recovery`
 
 ```json
 {
   "enabled": true,
   "maxPerTick": 5,
-  "maxPerDay": 40,
+  "maxPerDay": 20,
   "maxRetries": 3,
   "stuckAfterMinutes": 60
 }
 ```
 
-`maxPerDay: 40` est délibérément modeste : le retard se résorbe sans jamais
-dominer la production neuve ni provoquer un pic de dépense. Avec ~1 340 échecs
-relançables, la résorption prend environ cinq semaines.
+Ces valeurs bornent la reprise pour elle-même ; c'est le plafond global ci-dessus
+qui tranche en pratique. À 20/jour partagés, la résorption des ~1 340 échecs
+relançables prend environ dix semaines si la campagne reste en pause, davantage
+si elle produit en parallèle.
 
 ## Procédure de reprise après une panne de crédit
 

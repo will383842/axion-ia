@@ -70,6 +70,21 @@ interface BatchSettings {
   readonly antiBurstEnabled?: boolean;
 }
 
+/**
+ * Plafond quotidien GLOBAL de génération, tous canaux confondus (décision Will
+ * 2026-08-15, clé `ContentGenConfig.daily_generation_cap`).
+ *
+ * Avant, la reprise du retard et la production neuve avaient chacune leur
+ * budget : ils s'additionnaient. Le plafond voulu porte sur le TOTAL — c'est le
+ * nombre de contenus qu'on accepte de payer dans une journée, peu importe qu'ils
+ * soient neufs ou rejoués.
+ */
+interface DailyGenerationCap {
+  readonly maxPerDay: number;
+}
+
+const DEFAULT_DAILY_GENERATION_CAP: DailyGenerationCap = { maxPerDay: 20 };
+
 // L'interface locale `KillSwitchState` a été retirée le 2026-08-15 : l'état du
 // kill switch est désormais lu par `readKillSwitchFailSafe`, qui porte son
 // propre type (et traite une erreur DB comme un arrêt, au lieu de retomber sur
@@ -766,6 +781,53 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
     );
   }
 
+  // ── Plafond quotidien GLOBAL (décision Will 2026-08-15) ────────────────────
+  //
+  // La reprise du retard et la production neuve avaient chacune leur budget :
+  // ils s'ADDITIONNAIENT (20 + 40 = 60/jour). Le plafond demandé est un plafond
+  // de bout en bout — 20 contenus par jour, tous canaux confondus. C'est donc un
+  // budget UNIQUE, calculé ici une fois par tick et consommé d'abord par la
+  // reprise, puis par les campagnes.
+  //
+  // Il est lissé sur la journée par la même courbe que le rythme des campagnes :
+  // sans ce lissage, la reprise épuiserait le quota du jour dès la première
+  // heure et affamerait la production neuve.
+  const dailyCap = await readContentGenConfig<DailyGenerationCap>(
+    "daily_generation_cap",
+    DEFAULT_DAILY_GENERATION_CAP,
+  );
+  const startOfDayUtcGlobal = new Date();
+  startOfDayUtcGlobal.setUTCHours(0, 0, 0, 0);
+  // Deux natures de consommation à compter : les jobs CRÉÉS aujourd'hui
+  // (production neuve) et les jobs RELANCÉS aujourd'hui (reprise). La clause
+  // `createdAt` exclut du second comptage les jobs déjà comptés au premier.
+  const [createdTodayAll, requeuedTodayAll] = await Promise.all([
+    prisma.contentGenJob.count({
+      where: { createdAt: { gte: startOfDayUtcGlobal }, status: { not: "cancelled" } },
+    }),
+    prisma.contentGenJob.count({
+      where: {
+        retryCount: { gt: 0 },
+        updatedAt: { gte: startOfDayUtcGlobal },
+        createdAt: { lt: startOfDayUtcGlobal },
+      },
+    }),
+  ]);
+  const consumedToday = createdTodayAll + requeuedTodayAll;
+  // Défensif : une valeur de configuration absente ou aberrante ne doit pas
+  // produire un budget NaN, qui gèlerait silencieusement toute la production.
+  const capPerDay =
+    Number.isFinite(dailyCap?.maxPerDay) && (dailyCap?.maxPerDay ?? 0) > 0
+      ? dailyCap.maxPerDay
+      : DEFAULT_DAILY_GENERATION_CAP.maxPerDay;
+  const allowedNow = computeCampaignTickBudget({
+    dailyTarget: capPerDay,
+    createdToday: consumedToday,
+    msSinceStartOfDay: msSinceStartOfDay(),
+    antiBurstEnabled: true,
+  });
+  let globalRoom = allowedNow;
+
   // Reprise du retard (2026-08-15) — AVANT l'early-return « aucune campagne en
   // cours », pour deux raisons : une partie des jobs en échec n'appartient à
   // aucune campagne (enqueues directs, RSS), et le retard doit continuer à se
@@ -780,8 +842,13 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       DEFAULT_RECOVERY_SETTINGS,
     );
     const genQueue = getContentGenQueue();
-    const stuck = await sweepStuckJobs(genQueue, recovery);
-    const drained = await drainFailedJobs(genQueue, recovery);
+    const stuck = await sweepStuckJobs(genQueue, recovery, globalRoom);
+    globalRoom = Math.max(0, globalRoom - stuck.requeued);
+    const drained = await drainFailedJobs(genQueue, recovery, globalRoom);
+    globalRoom = Math.max(0, globalRoom - drained.requeued);
+    // La réinjection en boucle qualité ne consomme PAS le budget : elle ne
+    // génère aucun contenu neuf, elle reprend l'évaluation d'un contenu déjà
+    // produit et déjà payé.
     const improver = getQualityImproverQueue();
     const stranded = improver
       ? await sweepStrandedQualityJobs(improver, recovery)
@@ -1009,7 +1076,16 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
         continue;
       }
     }
-    const toEnqueue = Math.min(perCampaignTick, remaining);
+    // Le plafond quotidien global (partagé avec la reprise du retard) prime sur
+    // le rythme propre de la campagne : ce que la reprise a déjà consommé n'est
+    // plus disponible pour la production neuve.
+    if (globalRoom <= 0) {
+      console.log(
+        `[orchestrator] plafond quotidien global atteint (${consumedToday}/${capPerDay}) — campaign=${campaign.id} attend le prochain tick`,
+      );
+      break;
+    }
+    const toEnqueue = Math.min(perCampaignTick, remaining, globalRoom);
     const villeAnchors = await resolveVilleAnchors(campaign);
 
     // Sprint Campaign Controls — dispatch selon cityProcessingMode
@@ -1033,6 +1109,7 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
       );
     }
     totalEnqueued += enqueued;
+    globalRoom = Math.max(0, globalRoom - enqueued);
 
     // P1 2026-06-13 — Fix dérive : incrémenter du nombre RÉELLEMENT enqueué
     // (`enqueued`), pas du nombre visé (`toEnqueue`). En mode séquentiel, une

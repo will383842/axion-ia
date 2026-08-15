@@ -189,6 +189,10 @@ beforeEach(() => {
   readConfigMock.mockImplementation(async (key: string) => {
     if (key === "kill_switch") return { active: false };
     if (key === "batches") return { workersConcurrency: 3 };
+    // Plafond global volontairement large par défaut : les scénarios de ce
+    // fichier testent le RYTHME propre à la campagne. Le plafond global a son
+    // propre scénario (P0ter), où il est ramené à sa valeur réelle.
+    if (key === "daily_generation_cap") return { maxPerDay: 100_000 };
     return {};
   });
   campaignUpdateMock.mockResolvedValue({ id: "campaign-1" });
@@ -247,6 +251,55 @@ describe("Orchestrator — per-campaign dailyArticles budget (Phase 4)", () => {
     await fn(MOCK_JOB);
 
     expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+  });
+
+  // Décision Will 2026-08-15 — le plafond quotidien porte sur le TOTAL (neuf +
+  // relances), pas sur chaque canal séparément. Avant, la reprise du retard
+  // (40/j) et la production neuve (20/j) s'additionnaient à 60/j.
+  it("P0ter: plafond quotidien global atteint → aucune production neuve", async () => {
+    const campaign = makeCampaign({
+      dailyArticles: 96,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    readConfigMock.mockImplementation(async (key: string) => {
+      if (key === "kill_switch") return { active: false };
+      if (key === "batches") return { workersConcurrency: 3 };
+      if (key === "daily_generation_cap") return { maxPerDay: 20 };
+      return {};
+    });
+    // 20 jobs déjà consommés aujourd'hui = le plafond global entier. Le rythme
+    // propre de la campagne autoriserait pourtant encore un job à ce tick.
+    contentGenJobCountMock.mockResolvedValue(20);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+  });
+
+  it("P0quater: le plafond global prime sur le rythme de la campagne", async () => {
+    // Une campagne réglée à 192/jour voudrait 2 jobs à ce tick ; le plafond
+    // global de 20/jour n'en autorise qu'un seul quinze minutes après minuit.
+    const campaign = makeCampaign({
+      dailyArticles: 192,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    readConfigMock.mockImplementation(async (key: string) => {
+      if (key === "kill_switch") return { active: false };
+      if (key === "batches") return { workersConcurrency: 3 };
+      if (key === "daily_generation_cap") return { maxPerDay: 20 };
+      return {};
+    });
+    contentGenJobCountMock.mockResolvedValue(0);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(contentGenJobCreateMock).toHaveBeenCalledTimes(1);
   });
 
   it("P1: dailyArticles=96 → ceil(96/96)=1 job enqueued per tick", async () => {

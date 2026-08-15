@@ -872,7 +872,6 @@ jobs:
           fi
           echo "::notice::Warm terminé (best-effort, non bloquant)."
 
-
   # ══════════════════════════════════════════════════════════════════════════
   # notify — annonce Telegram du résultat du déploiement (2026-07-29)
   # ══════════════════════════════════════════════════════════════════════════

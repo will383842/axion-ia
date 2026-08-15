@@ -48,7 +48,15 @@ export interface BacklogRecoverySettings {
   readonly enabled: boolean;
   /** Nombre maximum de jobs relancés par tick (96 ticks/jour). */
   readonly maxPerTick: number;
-  /** Plafond quotidien de relances, indépendant de la production neuve. */
+  /**
+   * Plafond quotidien PROPRE aux relances.
+   *
+   * Depuis le 2026-08-15, ce n'est plus le plafond qui compte en pratique : le
+   * tick de l'orchestrateur impose au-dessus un **plafond quotidien GLOBAL**
+   * partagé avec la production neuve (décision Will : 20 contenus/jour tous
+   * canaux confondus). Ce champ reste comme garde-fou secondaire, utile quand la
+   * reprise est appelée hors du tick.
+   */
   readonly maxPerDay: number;
   /** Nombre de tentatives au-delà duquel un job n'est plus repris. */
   readonly maxRetries: number;
@@ -58,11 +66,11 @@ export interface BacklogRecoverySettings {
 
 export const DEFAULT_RECOVERY_SETTINGS: BacklogRecoverySettings = {
   enabled: true,
-  // 5/tick × 96 ticks = 480/jour en théorie, borné à 40 par le plafond quotidien.
   maxPerTick: 5,
-  // 40/jour : le retard de 1 340 jobs se résorbe en ~5 semaines sans jamais
-  // dominer la production neuve ni provoquer un pic de dépense.
-  maxPerDay: 40,
+  // Aligné sur le plafond global de 20/jour (décision Will 2026-08-15) : la
+  // reprise ne doit jamais, à elle seule, dépasser ce que le système entier
+  // s'autorise sur une journée.
+  maxPerDay: 20,
   maxRetries: 3,
   // 60 min : très au-dessus de la durée d'un job (lock BullMQ = 120 s) et des
   // pauses de kill switch courtes, donc aucun risque de doubler un job vivant.
@@ -144,8 +152,15 @@ export async function requeueContentGenJob(
 export async function drainFailedJobs(
   queue: Queue,
   settings: BacklogRecoverySettings,
+  /**
+   * Budget imposé par l'appelant pour ce tick (plafond quotidien GLOBAL partagé
+   * avec la production neuve). Quand il est fourni, il prime : la reprise ne
+   * peut pas puiser au-delà de ce que le système entier s'autorise ce jour-là.
+   */
+  sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
   if (!settings.enabled || settings.maxPerTick <= 0) return { requeued: 0, skipped: 0 };
+  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
 
   const startOfDayUtc = new Date();
   startOfDayUtc.setUTCHours(0, 0, 0, 0);
@@ -161,7 +176,8 @@ export async function drainFailedJobs(
   const dailyRoom = Math.max(0, settings.maxPerDay - alreadyToday);
   if (dailyRoom === 0) return { requeued: 0, skipped: 0 };
 
-  const budget = Math.min(settings.maxPerTick, dailyRoom);
+  const budget = Math.min(settings.maxPerTick, dailyRoom, sharedBudget ?? Number.MAX_SAFE_INTEGER);
+  if (budget <= 0) return { requeued: 0, skipped: 0 };
 
   // On lit un peu plus large que le budget : une partie des candidats sera
   // écartée par la classification (échecs de qualité mêlés aux échecs d'infra).
@@ -224,7 +240,10 @@ export async function drainFailedJobs(
 export async function sweepStuckJobs(
   queue: Queue,
   settings: BacklogRecoverySettings,
+  /** Budget partagé du tick (cf. `drainFailedJobs`). Prime quand il est fourni. */
+  sharedBudget?: number,
 ): Promise<RecoveryOutcome> {
+  if (sharedBudget !== undefined && sharedBudget <= 0) return { requeued: 0, skipped: 0 };
   const threshold = new Date(Date.now() - settings.stuckAfterMinutes * MS_PER_MINUTE);
 
   const stuck = await prisma.contentGenJob.findMany({
@@ -247,6 +266,7 @@ export async function sweepStuckJobs(
   let requeued = 0;
   let skipped = 0;
   for (const job of stuck) {
+    if (sharedBudget !== undefined && requeued >= sharedBudget) break;
     if (job.retryCount >= settings.maxRetries) {
       skipped++;
       continue;
