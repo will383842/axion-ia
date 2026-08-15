@@ -620,6 +620,23 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
       },
       { jobId: `qualiopi-enquete-entreprise-relance-${q.id}-${numeroRelance}` },
     );
+  } else if (q.type === "positionnement") {
+    // 🔴 2026-08-15 — MÊME DÉFAUT que l'envoi initial, trouvé en auditant les
+    // autres e-mails à la demande de Will.
+    //
+    // Le cron `relance-questionnaires` ne filtre PAS sur le type : un
+    // positionnement sans réponse à J+3 était relancé avec
+    // `qualiopi-questionnaire-relance`, dont le corps affirme « Vous avez suivi
+    // la formation X » et dont l'objet annonce « votre avis sur X ».
+    //
+    // Un positionnement se recueille AVANT la formation. Les deux phrases
+    // étaient donc fausses, et la seconde transformait un questionnaire
+    // préparatoire en enquête de satisfaction — sur une formation que le
+    // stagiaire n'avait pas encore suivie.
+    //
+    // On relance avec le template de positionnement, qui dit « avant le début
+    // de la formation » — la phrase juste dans les deux cas.
+    await envoyerPositionnement(q.id);
   } else {
     const lienQuestionnaire = await getOrCreatePortailLien(trainee.id, baseUrl);
     await enqueueEmail(
