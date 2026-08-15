@@ -74,16 +74,16 @@ export function QualiopiPositionnementEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Avant de commencer, nous avons besoin de connaître votre niveau de départ et vos attentes :
-        c'est ce que recueille le <strong>questionnaire de positionnement</strong>. Il prend environ
-        cinq minutes, et il se remplit en ligne — rien à imprimer, rien à renvoyer.
+        c&apos;est ce que recueille le <strong>questionnaire de positionnement</strong>. Il prend
+        environ cinq minutes, et il se remplit en ligne — rien à imprimer, rien à renvoyer.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Merci de le remplir <strong>avant le début de la formation</strong>. Vos réponses servent
-        directement à ajuster le contenu de la journée : sans elles, nous animons à l'aveugle.
+        directement à ajuster le contenu de la journée : sans elles, nous animons à l&apos;aveugle.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Si vous n'avez pas eu le temps, ce n'est pas bloquant : nous le remplirons ensemble à
-        l'ouverture de la session. Session {p.numeroSession}.
+        Si vous n&apos;avez pas eu le temps, ce n&apos;est pas bloquant : nous le remplirons
+        ensemble à l&apos;ouverture de la session. Session {p.numeroSession}.
       </Text>
     </EmailLayout>
   );
