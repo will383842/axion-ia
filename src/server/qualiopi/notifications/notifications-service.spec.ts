@@ -16,6 +16,9 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     enrollment: {
       findUnique: vi.fn(),
+      // Convocation (J4, 2026-08-15) : l'envoi pose `convocationEnvoyeeAt`,
+      // l'ÉTAT qui rend le cron rattrapant.
+      update: vi.fn(),
     },
     trainingSession: {
       findUnique: vi.fn(),
@@ -90,7 +93,7 @@ import {
 } from "./notifications-service";
 
 const mockPrisma = prisma as unknown as {
-  enrollment: { findUnique: ReturnType<typeof vi.fn> };
+  enrollment: { findUnique: ReturnType<typeof vi.fn>; update: ReturnType<typeof vi.fn> };
   trainingSession: {
     findUnique: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
@@ -175,6 +178,7 @@ describe("envoyerConvocation", () => {
     vi.clearAllMocks();
     // Par défaut : accès portail existant (idempotent)
     mockPrisma.portailAcces.findFirst.mockResolvedValue({ token: FAKE_TOKEN });
+    mockPrisma.enrollment.update.mockResolvedValue({});
   });
 
   it("enqueue le bon template avec jobId stable", async () => {
@@ -186,7 +190,25 @@ describe("envoyerConvocation", () => {
     expect(call[1]).toBe("jean@example.com");
     expect(call[2]).toBe("fr");
     expect((call[3] as Record<string, unknown>)["stagiairePrenomNom"]).toBe("Jean Dupont");
-    expect((call[4] as { jobId?: string }).jobId).toBe(`qualiopi-convocation-${ENROLLMENT_ID}`);
+    // 🔴 CLÉ DE DATE OBLIGATOIRE (J4, 2026-08-15). L'assertion précédente exigeait
+    // un jobId SANS clé de date — elle verrouillait le défaut au lieu de le
+    // dénoncer. La convocation était le seul envoi à ne pas en porter, alors
+    // qu'elle est le seul à porter une obligation réglementaire (ind. 9) : sans
+    // elle, la déduplication BullMQ expire au min(7 jours, 1 000 jobs) et un
+    // second envoi redevient possible sans que rien ne le dise.
+    const jobId = (call[4] as { jobId?: string }).jobId ?? "";
+    const suffixe = jobId.replace(`qualiopi-convocation-${ENROLLMENT_ID}-`, "");
+    expect(jobId.startsWith(`qualiopi-convocation-${ENROLLMENT_ID}-`)).toBe(true);
+    expect(suffixe, "la clé de date manque au jobId de la convocation").toHaveLength(8);
+    expect(Number.isNaN(Number(suffixe))).toBe(false);
+
+    // L'ÉTAT est posé APRÈS l'enqueue : c'est lui qui rend le cron rattrapant.
+    expect(mockPrisma.enrollment.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: ENROLLMENT_ID },
+        data: expect.objectContaining({ convocationEnvoyeeAt: expect.any(Date) }),
+      }),
+    );
   });
 
   it("lienPortail contient /portail/acces/ (pas /espace-stagiaire)", async () => {
