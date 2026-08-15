@@ -17,6 +17,9 @@ vi.mock("@/lib/prisma", () => ({
     enrollment: {
       findUnique: vi.fn(),
       update: vi.fn(),
+      // Claim atomique d'idempotence (2026-08-15) : la garde n'est plus une
+      // lecture, c'est un `updateMany` conditionné sur `attestationGenereeAt`.
+      updateMany: vi.fn(),
     },
     // Régénération FORCÉE = rectification : on lit le numéro de l'attestation
     // remplacée pour que la nouvelle pièce déclare ce qu'elle rectifie.
@@ -94,6 +97,7 @@ const mockPrisma = prisma as unknown as {
   enrollment: {
     findUnique: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
+    updateMany: ReturnType<typeof vi.fn>;
   };
   documentGenere: { findUnique: ReturnType<typeof vi.fn> };
   trainer: {
@@ -170,6 +174,9 @@ describe("genererAttestationPourEnrollment", () => {
     mockClassifier.mockReturnValue("complete");
     mockPrisma.enrollment.findUnique.mockResolvedValue(makeEnrollment());
     mockPrisma.enrollment.update.mockResolvedValue({});
+    // Défaut : le claim RÉUSSIT (count = 1). Les tests qui veulent simuler une
+    // course le surchargent explicitement.
+    mockPrisma.enrollment.updateMany.mockResolvedValue({ count: 1 });
     mockPrisma.activityLog.create.mockResolvedValue({});
     mockGenDoc.mockResolvedValue({
       id: "doc-uuid-1",
