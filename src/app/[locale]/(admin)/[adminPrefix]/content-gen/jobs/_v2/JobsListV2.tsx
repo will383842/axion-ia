@@ -18,7 +18,16 @@ import {
   AdminPagination,
 } from "@/components/admin/ui";
 import type { AdminTableColumn } from "@/components/admin/ui";
-import { listJobs, retryAllFailed, deleteFailedJobs } from "@/server/actions/content-gen/jobs";
+import {
+  listJobs,
+  retryAllFailed,
+  deleteFailedJobs,
+  countDeletableFailedJobs,
+} from "@/server/actions/content-gen/jobs";
+// Fix 2026-08-15 (audit e2e, bonus) — classification transitoire/permanent des
+// échecs (module pur partagé avec la reprise automatique) : permet de voir d'un
+// coup d'œil ce que la reprise relancera seule et ce qui demande une intervention.
+import { classifyFailure } from "@/server/content-gen/recovery/failure-classifier";
 import { formatDateFr } from "@/lib/format-date-fr";
 import { listTemplates } from "@/server/actions/content-gen/templates";
 import { libelleInstructionIA } from "@/components/admin/content-gen/template-labels";
@@ -46,6 +55,12 @@ const STATUSES: ReadonlyArray<ContentGenJobStatus> = [
   "published",
   "failed",
   "cancelled",
+  // Fix 2026-08-15 (audit e2e, E8) — les quarantaines étaient absentes du
+  // filtre : impossible d'isoler à l'écran les jobs bloqués par le LLM-judge
+  // ou le fact-check, alors qu'ils exigent une décision humaine (relance ou
+  // suppression définitive).
+  "quarantined_critical",
+  "quarantined_factcheck",
 ];
 
 const TYPES: ReadonlyArray<ContentType> = [
@@ -73,7 +88,9 @@ export async function JobsListV2({
   searchParams: sp,
 }: Props): Promise<React.ReactElement> {
   const page = sp["page"] ? parseInt(sp["page"], 10) : 1;
-  const [result, templates] = await Promise.all([
+  // Fix 2026-08-15 (E3) — `deletableCount` alimente la confirmation chiffrée de
+  // la suppression définitive (l'admin doit retaper ce nombre exact).
+  const [result, templates, deletableCount] = await Promise.all([
     listJobs({
       ...(sp["status"] ? { status: sp["status"] as ContentGenJobStatus } : {}),
       ...(sp["contentType"] ? { contentType: sp["contentType"] as ContentType } : {}),
@@ -84,6 +101,7 @@ export async function JobsListV2({
       page,
     }),
     listTemplates({ isActive: true }),
+    countDeletableFailedJobs(),
   ]);
 
   const base = `/fr/${adminPrefix}/content-gen/jobs`;
@@ -93,9 +111,13 @@ export async function JobsListV2({
     await retryAllFailed();
   }
 
-  async function deleteFailed() {
+  // Fix 2026-08-15 (audit e2e, E3) — la suppression exige désormais le nombre
+  // exact de jobs (validé côté serveur, rôle super_admin) : un POST accidentel
+  // ou une page périmée ne détruit plus rien. NaN → -1, jamais égal au compte.
+  async function deleteFailed(formData: FormData) {
     "use server";
-    await deleteFailedJobs();
+    const raw = parseInt(String(formData.get("confirmationCount") ?? ""), 10);
+    await deleteFailedJobs(Number.isFinite(raw) ? raw : -1);
   }
 
   type JobRow = (typeof result.rows)[number];
@@ -160,11 +182,31 @@ export async function JobsListV2({
     {
       key: "error",
       header: "Erreur",
-      cell: (r) => (
-        <span title={r.errorMessage ?? ""}>
-          {r.errorMessage ? r.errorMessage.slice(0, 40) : "—"}
-        </span>
-      ),
+      // Fix 2026-08-15 (audit e2e, bonus) — cause d'échec classifiée : une panne
+      // « passagère » (quota/réseau provider) sera relancée automatiquement par
+      // la reprise ; une cause « définitive » (qualité, doublon, config) demande
+      // une intervention. Même classifieur que la reprise → l'écran dit
+      // exactement ce que le système fera.
+      cell: (r) => {
+        if (!r.errorMessage) return "—";
+        const cause = classifyFailure(r.errorMessage);
+        return (
+          <span title={r.errorMessage} className="flex items-center gap-[var(--space-admin-2)]">
+            <AdminBadge
+              tone={
+                cause === "transient" ? "info" : cause === "permanent" ? "destructive" : "neutral"
+              }
+            >
+              {cause === "transient"
+                ? "Passagère (relance auto)"
+                : cause === "permanent"
+                  ? "Définitive"
+                  : "Indéterminée"}
+            </AdminBadge>
+            <span>{r.errorMessage.slice(0, 40)}</span>
+          </span>
+        );
+      },
     },
   ];
 
@@ -183,15 +225,44 @@ export async function JobsListV2({
                 Relancer tous les échecs
               </button>
             </form>
-            <form action={deleteFailed}>
-              <button
-                type="submit"
-                className="admin-button-ghost admin-button-ghost-danger"
-                title="Supprime définitivement les jobs en échec/bloqués (tentatives ratées, sans contenu publié)"
-              >
-                Supprimer les jobs en échec
-              </button>
-            </form>
+            {/* Fix 2026-08-15 (audit e2e, E3) — double étape avant suppression :
+                un slot de campagne est consommé À VIE, supprimer un job en échec
+                perd donc son contenu DÉFINITIVEMENT (il ne sera jamais régénéré).
+                L'ancien bouton one-click au libellé anodin a détruit ce risque en
+                silence. <details> = confirmation dépliable sans JS client, et
+                l'admin doit retaper le nombre exact (revalidé côté serveur,
+                rôle super_admin requis). */}
+            {deletableCount > 0 ? (
+              <details>
+                <summary className="admin-button-ghost admin-button-ghost-danger cursor-pointer list-none">
+                  Supprimer définitivement {deletableCount} job{deletableCount > 1 ? "s" : ""} en
+                  échec/quarantaine…
+                </summary>
+                <form
+                  action={deleteFailed}
+                  className="mt-[var(--space-admin-2)] flex flex-wrap items-end gap-[var(--space-admin-2)]"
+                >
+                  <div className="admin-field">
+                    <label htmlFor="confirmationCount" className="admin-label">
+                      Suppression DÉFINITIVE : ces contenus ne seront JAMAIS régénérés (slots de
+                      campagne consommés à vie). Tapez {deletableCount} pour confirmer.
+                    </label>
+                    <input
+                      id="confirmationCount"
+                      name="confirmationCount"
+                      type="number"
+                      required
+                      min={0}
+                      className="admin-input"
+                      placeholder={String(deletableCount)}
+                    />
+                  </div>
+                  <button type="submit" className="admin-button-ghost admin-button-ghost-danger">
+                    Je confirme la suppression définitive
+                  </button>
+                </form>
+              </details>
+            ) : null}
           </div>
         }
       />

@@ -17,11 +17,14 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 
-const { webVitalCreateMock, webVitalFindManyMock, alertBulkMock } = vi.hoisted(() => ({
-  webVitalCreateMock: vi.fn().mockResolvedValue({}),
-  webVitalFindManyMock: vi.fn().mockResolvedValue([]),
-  alertBulkMock: vi.fn().mockResolvedValue(undefined),
-}));
+const { webVitalCreateMock, webVitalFindManyMock, alertBulkMock, readKillSwitchMock } = vi.hoisted(
+  () => ({
+    webVitalCreateMock: vi.fn().mockResolvedValue({}),
+    webVitalFindManyMock: vi.fn().mockResolvedValue([]),
+    alertBulkMock: vi.fn().mockResolvedValue(undefined),
+    readKillSwitchMock: vi.fn().mockResolvedValue({ active: false }),
+  }),
+);
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -34,6 +37,12 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
   alertWebVitalsBulk: alertBulkMock,
+}));
+
+// Fix 2026-08-15 (F8) : le worker consulte désormais le kill switch global
+// avant de consommer le quota PSI — mocké inactif par défaut.
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: readKillSwitchMock,
 }));
 
 import { runPsiTickForTest, _internals } from "../content-psi-monitor-worker";
@@ -75,6 +84,7 @@ describe("content-psi-monitor-worker — Sub-agent D Sprint S+5 P2-10", () => {
     webVitalCreateMock.mockResolvedValue({});
     webVitalFindManyMock.mockResolvedValue([]);
     alertBulkMock.mockResolvedValue(undefined);
+    readKillSwitchMock.mockResolvedValue({ active: false });
     // Bypass throttle 2s entre URLs : stub setTimeout pour qu'il résolve
     // immédiatement (worker throttle 15 × 2s = 30s sinon, hors budget tests).
     // AbortController.setTimeout du fetch est aussi affecté mais OK car on
@@ -111,6 +121,24 @@ describe("content-psi-monitor-worker — Sub-agent D Sprint S+5 P2-10", () => {
     expect(webVitalCreateMock).not.toHaveBeenCalled();
     expect(alertBulkMock).not.toHaveBeenCalled();
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("GOOGLE_PSI_API_KEY absent"));
+    warnSpy.mockRestore();
+    vi.unstubAllGlobals();
+  });
+
+  it("F8 2026-08-15 : kill switch actif → skip propre, 0 fetch PSI (quota préservé)", async () => {
+    process.env.GOOGLE_PSI_API_KEY = "test-psi-key";
+    readKillSwitchMock.mockResolvedValue({ active: true, reason: "arrêt d'urgence test" });
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    // Ne doit PAS throw : skip silencieux, pas d'échec bruyant.
+    await expect(runPsiTickForTest()).resolves.not.toThrow();
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(webVitalCreateMock).not.toHaveBeenCalled();
+    expect(alertBulkMock).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("kill switch actif"));
     warnSpy.mockRestore();
     vi.unstubAllGlobals();
   });

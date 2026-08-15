@@ -495,3 +495,75 @@ export async function alertTier3Stagnant(
     // best-effort
   }
 }
+
+/**
+ * Auto-arrêt de la production sur panne permanente d'un provider (quota épuisé,
+ * authentification refusée). Ajouté 2026-08-15 : jusque-là, un compte sans
+ * crédit laissait l'orchestrateur enfiler des jobs voués à l'échec jusqu'à
+ * intervention manuelle (~1 500 jobs perdus entre le 09/07 et le 24/07).
+ */
+export async function alertGenerationHalted(
+  provider: string,
+  reason: string,
+  providerMessage: string,
+): Promise<void> {
+  try {
+    await sendTelegram({
+      tag: "MONITORING",
+      body:
+        `*[🛑 GÉNÉRATION ARRÊTÉE]* provider ${provider}.\n` +
+        `${reason}\n` +
+        `Message du provider : ${providerMessage.slice(0, 200)}\n` +
+        `Les jobs en échec seront relancés automatiquement à la reprise.\n` +
+        `→ ${adminUrl("/settings/kill-switch")}\n` +
+        `Runbook : \`R01\` (kill-switch release) + \`R02\` (cost cap)`,
+    });
+  } catch {
+    // best-effort
+  }
+}
+
+/** Une chute de position keyword détectée par le détecteur weekly. */
+export interface KeywordRankDropInput {
+  readonly keyword: string;
+  /** Position actuelle (après la chute). */
+  readonly position: number;
+  /** Places perdues sur 7 j (positionDelta > 0 = descente). */
+  readonly delta: number;
+  readonly targetUrl: string | null;
+}
+
+/**
+ * 18. Chutes de positions keywords (> 5 places en 7 j) — agrégée.
+ *
+ * Fix 2026-08-15 (audit e2e, F9) — `keyword-opportunity-detector.ts` loggait un
+ * `console.warn` avec un commentaire affirmant que l'alerte Telegram était
+ * « câblée dans content-monitoring-worker » : c'était FAUX, aucune alerte
+ * rank-drop n'existait nulle part. Helper agrégé (1 message par run weekly,
+ * top N listé) pour éviter le spam — même doctrine que `alertWebVitalsBulk`.
+ */
+export async function alertKeywordRankDrops(
+  topDrops: ReadonlyArray<KeywordRankDropInput>,
+  totalDrops: number,
+): Promise<void> {
+  if (topDrops.length === 0) return;
+  try {
+    const lines = topDrops.map(
+      (d) =>
+        `• \`${d.keyword}\` : -${d.delta} places (position ${d.position})` +
+        `${d.targetUrl ? ` — ${d.targetUrl}` : ""}`,
+    );
+    await sendTelegram({
+      tag: "MONITORING",
+      silent: true,
+      body:
+        `*[⚠️ CHUTES DE POSITIONS]* ${totalDrops} keyword(s) en chute > 5 places sur 7 j.\n` +
+        `Top ${topDrops.length} :\n` +
+        lines.join("\n") +
+        `\n→ ${adminUrl("/keywords")}\n` +
+        `Action : vérifier contenu + concurrence sur ces requêtes.`,
+    });
+  } catch {
+    // best-effort
+  }
+}

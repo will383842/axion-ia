@@ -39,6 +39,8 @@ export interface BannedPhraseRow {
 }
 
 export async function listBannedPhrases(): Promise<ReadonlyArray<BannedPhraseRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   const rows = await prisma.bannedPhrase.findMany({
     orderBy: [{ isActive: "desc" }, { pattern: "asc" }],
   });

@@ -1,10 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { addMock, queueCtorMock } = vi.hoisted(() => {
+// Fix 2026-08-15 (D5) — le mock expose aussi `getJob` : le helper
+// addPingWithReenqueue lit l'état du job existant avant le add (motif
+// remove-then-enqueue, cf. reenqueue-policy). Par défaut aucun job existant.
+const { addMock, getJobMock, queueCtorMock } = vi.hoisted(() => {
   const addMockInner = vi.fn().mockResolvedValue({ id: "job-id" });
+  const getJobMockInner = vi.fn().mockResolvedValue(undefined);
   return {
     addMock: addMockInner,
-    queueCtorMock: vi.fn(() => ({ add: addMockInner })),
+    getJobMock: getJobMockInner,
+    queueCtorMock: vi.fn(() => ({ add: addMockInner, getJob: getJobMockInner })),
   };
 });
 
@@ -24,6 +29,8 @@ describe("enqueueIndexingForTier1", () => {
   beforeEach(() => {
     originalEnv = { ...process.env };
     addMock.mockClear();
+    getJobMock.mockClear();
+    getJobMock.mockResolvedValue(undefined);
     queueCtorMock.mockClear();
     _resetIndexingQueuesForTest();
     process.env.REDIS_URL = "redis://test:6379";
@@ -196,6 +203,115 @@ describe("enqueueIndexingForTier1", () => {
     expect(addMock).toHaveBeenCalledOnce();
   });
 
+  // ── Fix 2026-08-15 (D5 audit e2e) — re-ping après job complété ─────────────
+  // Symptôme corrigé : le jobId `indexnow-${articleId}-publish` est stable ; le
+  // chemin REFRESH repassait ici avec le même articleId + event publish, or le
+  // job COMPLÉTÉ précédent squattait la clé dans Redis (retention count 1000) →
+  // BullMQ ignorait silencieusement le `add` → article rafraîchi jamais re-pingé.
+
+  it("D5 : job précédent complété → remove puis add (re-ping du refresh)", async () => {
+    process.env.INDEXNOW_KEY = "key";
+    delete process.env.GOOGLE_INDEXING_API_ENABLED;
+    const removeMock = vi.fn().mockResolvedValue(undefined);
+    getJobMock.mockResolvedValue({
+      getState: vi.fn().mockResolvedValue("completed"),
+      remove: removeMock,
+    });
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-refresh",
+      slug: "my-post",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    expect(result.indexnowEnqueued).toBe(true);
+    expect(removeMock).toHaveBeenCalledOnce();
+    expect(addMock).toHaveBeenCalledOnce();
+    expect(addMock).toHaveBeenCalledWith(
+      "ping",
+      expect.anything(),
+      { jobId: "indexnow-a-refresh-publish" },
+    );
+  });
+
+  it("D5 : job précédent encore en vol (waiting) → pas de doublon, mais enqueued=true", async () => {
+    process.env.INDEXNOW_KEY = "key";
+    delete process.env.GOOGLE_INDEXING_API_ENABLED;
+    const removeMock = vi.fn();
+    getJobMock.mockResolvedValue({
+      getState: vi.fn().mockResolvedValue("waiting"),
+      remove: removeMock,
+    });
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-inflight",
+      slug: "my-post",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    // Le ping en attente couvre l'occurrence : idempotence d'origine préservée.
+    expect(result.indexnowEnqueued).toBe(true);
+    expect(removeMock).not.toHaveBeenCalled();
+    expect(addMock).not.toHaveBeenCalled();
+  });
+
+  it("D5 : getJob qui throw (Redis flaky) → fallback add nu (comportement historique)", async () => {
+    process.env.INDEXNOW_KEY = "key";
+    delete process.env.GOOGLE_INDEXING_API_ENABLED;
+    getJobMock.mockRejectedValue(new Error("connection lost"));
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-flaky",
+      slug: "my-post",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    expect(result.indexnowEnqueued).toBe(true);
+    expect(addMock).toHaveBeenCalledOnce();
+  });
+
+  // Fix 2026-08-15 (D8) — garde isRoutableArticleSlug : un slug avec `/`
+  // (donnée malformée, incident GSC 2026-07-11) produirait une URL 404 dure.
+  it("D8 : slug contenant / → aucun ping (garde slug routable)", async () => {
+    process.env.INDEXNOW_KEY = "key";
+    process.env.GOOGLE_INDEXING_API_ENABLED = "true";
+    process.env.GOOGLE_INDEXING_ARTICLES = "true";
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-malformed",
+      slug: "glossaire/formation-ia-maurepas",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    expect(result.indexnowEnqueued).toBe(false);
+    expect(result.googleEnqueued).toBe(false);
+    expect(addMock).not.toHaveBeenCalled();
+  });
+
+  // Fix 2026-08-15 (D8) — un article guide est pingé sous sa VRAIE route.
+  it("D8 : slug guide-* → URL pingée sous /fr/guides/ (pas /fr/blog/ qui 308)", async () => {
+    process.env.INDEXNOW_KEY = "key";
+    delete process.env.GOOGLE_INDEXING_API_ENABLED;
+
+    const result = await enqueueIndexingForTier1({
+      articleId: "a-guide",
+      slug: "guide-audit-ia-pme",
+      isNews: false,
+      origin: "content-gen",
+    });
+
+    expect(result.url).toBe("https://axion-ia.com/fr/guides/guide-audit-ia-pme");
+    expect(addMock).toHaveBeenCalledWith(
+      "ping",
+      expect.objectContaining({ urls: ["https://axion-ia.com/fr/guides/guide-audit-ia-pme"] }),
+      expect.anything(),
+    );
+  });
+
   it("uses deterministic jobId for idempotency", async () => {
     process.env.INDEXNOW_KEY = "key";
     process.env.GOOGLE_INDEXING_API_ENABLED = "true";
@@ -229,6 +345,8 @@ describe("enqueueGoogleIndexingForUrls (google-only, offres d'emploi)", () => {
   beforeEach(() => {
     originalEnv = { ...process.env };
     addMock.mockClear();
+    getJobMock.mockClear();
+    getJobMock.mockResolvedValue(undefined);
     queueCtorMock.mockClear();
     _resetIndexingQueuesForTest();
     process.env.REDIS_URL = "redis://test:6379";

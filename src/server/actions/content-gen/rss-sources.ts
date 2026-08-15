@@ -87,6 +87,8 @@ function rowFromPrisma(row: {
  * backfillées depuis le ContentGenConfig JSON legacy (cf. backfill script).
  */
 export async function listRssSourcesFromDb(): Promise<ReadonlyArray<RssSourceRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return [];
   const rows = await prisma.rssSource.findMany({
     orderBy: [{ enabled: "desc" }, { createdAt: "desc" }],
@@ -95,6 +97,8 @@ export async function listRssSourcesFromDb(): Promise<ReadonlyArray<RssSourceRow
 }
 
 export async function getRssSourceByIdFromDb(id: string): Promise<RssSourceRow | null> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   if (process.env.DATABASE_URL?.includes("stub.invalid")) return null;
   const row = await prisma.rssSource.findUnique({ where: { id } });
   return row ? rowFromPrisma(row) : null;

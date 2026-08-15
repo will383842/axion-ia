@@ -14,6 +14,10 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
+import {
+  alertKeywordRankDrops,
+  type KeywordRankDropInput,
+} from "@/server/content-gen/shared/content-gen-alerts";
 
 const QUEUE_NAME = "keyword-opportunity-detector";
 
@@ -48,6 +52,11 @@ async function detectOpportunities(): Promise<OpportunityStats> {
 
   stats.keywordsScanned = trackings.length;
 
+  // Fix 2026-08-15 (audit e2e, F9) — collecte des chutes pour UNE alerte
+  // Telegram agrégée en fin de run (voir plus bas). Avant : simple console.warn
+  // avec un commentaire mensonger promettant que l'alerte existait ailleurs.
+  const rankDrops: KeywordRankDropInput[] = [];
+
   for (const tracking of trackings) {
     const pos = Number(tracking.position);
     const delta = tracking.positionDelta ? Number(tracking.positionDelta) : 0;
@@ -62,10 +71,19 @@ async function detectOpportunities(): Promise<OpportunityStats> {
       });
     }
 
-    // Détection rank drop > 5 places
+    // Détection rank drop > 5 places.
+    // Fix 2026-08-15 (F9) — l'ancien commentaire affirmait « Telegram câblé
+    // dans content-monitoring-worker » : aucune alerte rank-drop n'y a jamais
+    // existé. Le log structuré est conservé (observabilité), et l'alerte
+    // Telegram est désormais RÉELLEMENT envoyée, agrégée en fin de run.
     if (delta > 5) {
       stats.rankDropAlerts++;
-      // Log structuré (Telegram câblé dans content-monitoring-worker)
+      rankDrops.push({
+        keyword: tracking.keyword,
+        position: pos,
+        delta,
+        targetUrl: tracking.targetUrl,
+      });
       console.warn(
         JSON.stringify({
           event: "keyword_rank_drop",
@@ -92,6 +110,13 @@ async function detectOpportunities(): Promise<OpportunityStats> {
         trendDirection: delta > 2 ? "down" : delta < -2 ? "up" : "stable",
       },
     });
+  }
+
+  // Fix 2026-08-15 (F9) — alerte agrégée : 1 message Telegram par run weekly
+  // (top 10 listé), best-effort — un échec Telegram ne fait pas échouer le run.
+  if (rankDrops.length > 0) {
+    const topDrops = [...rankDrops].sort((a, b) => b.delta - a.delta).slice(0, 10);
+    await alertKeywordRankDrops(topDrops, rankDrops.length).catch(() => undefined);
   }
 
   return stats;

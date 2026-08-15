@@ -10,7 +10,8 @@
  * 5. Resolve generator via getGenerator(contentType)
  * 6. Call generator.generate(input) → GeneratorOutput
  * 7. Post-process : Q/R extraction (enqueue 8 micro-jobs qa_extract_and_publish)
- * 8. Insert Article DB tier_2_noindex_follow par défaut (review-queue)
+ * 8. Insert Article DB (review-queue) — le tier est décidé par le publish worker,
+ *    qui force `tier_1_indexable` depuis la décision Will du 2026-06-17
  * 9. Update ContentGenJob status → needs_review
  * 10. Publish Telegram alert (§ 12.3bis)
  *
@@ -33,6 +34,17 @@ import {
 } from "@/server/content-gen/quality/intent-enforcement";
 import { checkDoctrine } from "@/server/content-gen/quality/doctrine-check";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
+// Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
+// erreur DB transitoire « dé-gelait » silencieusement un arrêt d'urgence
+// (readContentGenConfig avale l'erreur et rend {active:false}).
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+// Fix 2026-08-15 (audit e2e, C2) — politique de retries partagée pour les files
+// créées à la volée (sans elle : attempts=1, un throw kill-switch tuait le job).
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
+// Fix 2026-08-15 (audit e2e, C5) — la re-génération demandée par la boucle
+// qualité doit alimenter le compteur de dépense mensuel de la boucle (le cap
+// 100 $/mois comparait une clé que personne n'incrémentait — garde morte).
+import { addQualityLoopSpend } from "./content-quality-improver-worker";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import {
   alertBatchFail,
@@ -58,7 +70,10 @@ import {
   hammingToSimilarityPct,
 } from "@/server/content-gen/dedup/topic-fingerprint";
 // Sprint Final P1-14 — Global keyword lock Redis (Fl-08 multi-campagnes parallèles).
-import { acquireKeywordLock } from "@/server/content-gen/lib/keyword-lock";
+// Fix 2026-08-15 (C3) — le lock est désormais acquis AVEC token de propriété
+// (contentGenJobId) : une re-génération de boucle qualité ou un retry BullMQ
+// qui retombe sur SON PROPRE lock ne se fait plus `cancelled` à tort.
+import { acquireKeywordLock, KEYWORD_LOCK_TTL_SEC } from "@/server/content-gen/lib/keyword-lock";
 // 2026-06-15 — Branche les ContentTemplate (console) au pipeline (override prompt).
 import {
   resolveTemplateOverride,
@@ -77,10 +92,6 @@ import {
 } from "@/server/content-gen/kb/sector-pain-matrix";
 import { getVille, getRegionByDepartement } from "@/content/villes";
 
-interface KillSwitchState {
-  readonly active: boolean;
-}
-
 interface PoliciesConfig {
   readonly plagiarismJaccardInternal?: number;
   readonly plagiarismJaccardRss?: number;
@@ -93,8 +104,10 @@ interface PoliciesConfig {
   readonly factoryAutoPublishAllBlogTypes?: boolean;
   /**
    * Audit indexation 2026-05-18 — promotion tier-1 DIRECTE si score >= seuil.
-   * Default 75. Articles factory >= 75 → publish direct tier_1_indexable
-   * (sitemap immédiat + IndexNow + Google Indexing ping). 999 pour désactiver.
+   * Default 50 (décision Will 2026-06-16 ; corrigé 2026-08-15, la JSDoc disait
+   * encore « 75 » alors que le code applique `?? 50`). Articles factory >= 50 →
+   * publish direct tier_1_indexable (sitemap immédiat + IndexNow + Google
+   * Indexing ping). 999 pour désactiver.
    */
   readonly factoryAutoPromoteTier1MinScore?: number;
   /**
@@ -178,8 +191,13 @@ function getQualityImproverQueue(): Queue | null {
   if (qualityImproverQueue) return qualityImproverQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
+  // Fix 2026-08-15 (audit e2e, C2) — sans `defaultJobOptions`, cette file ad-hoc
+  // héritait du défaut BullMQ (attempts=1) : un job improver qui rencontrait le
+  // kill switch (throw volontaire pour re-livraison) mourait définitivement à la
+  // 1ʳᵉ tentative au lieu d'être re-livré, laissant la ligne DB zombie.
   qualityImproverQueue = new Queue("content-quality-improver", {
     connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
   });
   return qualityImproverQueue;
 }
@@ -189,7 +207,13 @@ function getPublishQueue(): Queue | null {
   if (publishQueue) return publishQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  publishQueue = new Queue("content-publish", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e, C2) — même correctif que ci-dessus : la file
+  // publish ad-hoc n'avait qu'une tentative, un incident passager au publish
+  // (Redis/DB/kill switch) perdait le job définitivement.
+  publishQueue = new Queue("content-publish", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return publishQueue;
 }
 
@@ -261,9 +285,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   // 0. Kill switch hard-gate (§ 12 master prompt) — checked AVANT lookup DB
   // pour économiser les queries quand le switch est ON. Le worker BullMQ
   // requeue le job avec backoff exponentiel quand on throw — pas de fail.
-  const killSwitch = await readContentGenConfig<KillSwitchState>("kill_switch", {
-    active: false,
-  });
+  // Fix 2026-08-15 (C8) — lecture fail-SAFE : si l'état du switch est illisible
+  // (panne DB), on le considère ACTIF au lieu de continuer à produire.
+  const killSwitch = await readKillSwitchFailSafe();
   if (killSwitch.active) {
     await logStep(contentGenJobId, "kill_switch_check", "Kill switch active — job requeued");
     throw new KillSwitchActiveError();
@@ -305,44 +329,55 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     throw err;
   }
 
-  // 3. Status → running + dedup pre-IA
-  await prisma.contentGenJob.update({
-    where: { id: contentGenJobId },
-    data: { status: "running", startedAt: new Date() },
-  });
-
-  const title = typeof inputPayload["title"] === "string" ? inputPayload["title"] : "";
-  if (title) {
-    const dedup = await checkDedup({
-      title,
-      ...(typeof inputPayload["primaryKeyword"] === "string"
-        ? { primaryKeyword: inputPayload["primaryKeyword"] }
-        : {}),
-      ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
-      ...(dbJob.targetAudienceSize ? { targetAudienceSize: dbJob.targetAudienceSize } : {}),
-      ...(dbJob.targetAudienceOrganisation
-        ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
-        : {}),
-    });
-    if (!dedup.passed) {
-      await logStep(contentGenJobId, "dedup_check", `Dedup blocked: ${dedup.reason ?? "unknown"}`, {
-        reason: dedup.reason,
-      });
-      await prisma.contentGenJob.update({
-        where: { id: contentGenJobId },
-        data: {
-          status: "cancelled",
-          errorMessage: `Dedup pre-IA: ${dedup.reason ?? "unknown"}`,
-        },
-      });
-      return;
-    }
-    await logStep(contentGenJobId, "dedup_check", "Dedup passed");
-  }
-
-  // 4. Resolve generator + generate
-  const generator = getGenerator(contentType);
+  // Fix 2026-08-15 (audit e2e, C4) — le try/catch d'échec s'ouvrait APRÈS le
+  // passage à `running` et le dedup pré-IA : une erreur DB dans ces étapes
+  // (update dedup, checkDedup) laissait le job en `running` pour toujours —
+  // aucun code ne le repassait jamais en `failed` — et le slot de campagne
+  // restait consommé par un fantôme. On ouvre le try AVANT ces étapes : toute
+  // erreur y bascule désormais le job en `failed` via le catch commun.
   try {
+    // 3. Status → running + dedup pre-IA
+    await prisma.contentGenJob.update({
+      where: { id: contentGenJobId },
+      data: { status: "running", startedAt: new Date() },
+    });
+
+    const title = typeof inputPayload["title"] === "string" ? inputPayload["title"] : "";
+    if (title) {
+      const dedup = await checkDedup({
+        title,
+        ...(typeof inputPayload["primaryKeyword"] === "string"
+          ? { primaryKeyword: inputPayload["primaryKeyword"] }
+          : {}),
+        ...(dbJob.anchorVilleSlug ? { anchorVilleSlug: dbJob.anchorVilleSlug } : {}),
+        ...(dbJob.targetAudienceSize ? { targetAudienceSize: dbJob.targetAudienceSize } : {}),
+        ...(dbJob.targetAudienceOrganisation
+          ? { targetAudienceOrganisation: dbJob.targetAudienceOrganisation }
+          : {}),
+      });
+      if (!dedup.passed) {
+        await logStep(
+          contentGenJobId,
+          "dedup_check",
+          `Dedup blocked: ${dedup.reason ?? "unknown"}`,
+          {
+            reason: dedup.reason,
+          },
+        );
+        await prisma.contentGenJob.update({
+          where: { id: contentGenJobId },
+          data: {
+            status: "cancelled",
+            errorMessage: `Dedup pre-IA: ${dedup.reason ?? "unknown"}`,
+          },
+        });
+        return;
+      }
+      await logStep(contentGenJobId, "dedup_check", "Dedup passed");
+    }
+
+    // 4. Resolve generator + generate
+    const generator = getGenerator(contentType);
     // B.5 P1.5 — Si aucun primaryKeyword dans le payload, selectionner depuis
     // les seeds (rotation equitable lastUsedAt ASC, fallback in-memory 747 seeds).
     // Applicable pour blog_article, blog_from_keywords, guide_pilier, landing_ville.
@@ -427,7 +462,17 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Released par content-publish-worker. Auto-release via TTL si crash.
     // Stub-aware build SSG : acquire=true no-op.
     if (resolvedKeyword) {
-      const locked = await acquireKeywordLock(resolvedKeyword);
+      // Fix 2026-08-15 (audit e2e, C3) — token de propriété = contentGenJobId.
+      // Symptôme corrigé : une re-génération de boucle qualité (< 30 min) ou un
+      // retry BullMQ retombait sur SON PROPRE lock (posé à la passe précédente,
+      // relâché uniquement au publish) et se faisait `cancelled` « Keyword lock
+      // held by another worker ». Avec le token, retrouver son propre lock =
+      // acquis (ré-entrant, TTL rafraîchi) ; seul un job CONCURRENT est refusé.
+      const locked = await acquireKeywordLock(
+        resolvedKeyword,
+        KEYWORD_LOCK_TTL_SEC,
+        contentGenJobId,
+      );
       if (!locked) {
         await logStep(
           contentGenJobId,
@@ -456,7 +501,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
       await logStep(contentGenJobId, "keyword_lock", `Keyword lock acquired: ${resolvedKeyword}`, {
         keyword: resolvedKeyword,
-        ttl_sec: 1800,
+        ttl_sec: KEYWORD_LOCK_TTL_SEC,
       });
     }
 
@@ -993,11 +1038,16 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       if (!intent.aligned) blockCauses.push("Intention de recherche non respectée");
       if (doctrineHardFail) blockCauses.push("Doctrine (prix/SIREN non conforme)");
       if (benefitFail) blockCauses.push("Bénéfice concret insuffisant");
+      // Fix 2026-08-15 — le journal annonçait un déclassement « en noindex »
+      // qui n'a plus lieu à la publication : `content-publish-worker.ts` force
+      // `tier_1_indexable` depuis la décision Will du 2026-06-17. Ce que ce
+      // verdict produit réellement, c'est un `blockingFail` → le job part en
+      // `needs_review` au lieu de s'auto-publier. Le message le dit désormais.
       await logStep(
         contentGenJobId,
         "validation",
-        `Déclassé en noindex (tier_3) — cause${blockCauses.length > 1 ? "s" : ""} : ${blockCauses.join(" + ")}`,
-        { causes: blockCauses, tier: "tier_3_noindex_nofollow" },
+        `Publication automatique refusée — cause${blockCauses.length > 1 ? "s" : ""} : ${blockCauses.join(" + ")}`,
+        { causes: blockCauses, computed_tier: "tier_3_noindex_nofollow", auto_publish_blocked: true },
       );
     }
 
@@ -1087,7 +1137,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     //
     // P1-1 (audit content-gen 2026-06-15) — PLANCHER DE QUALITÉ. L'auto-publish
     // exige désormais `score >= qualityThreshold` (même seuil que la boucle
-    // qualité, 60 par défaut). Sans ce plancher, deux trous laissaient passer du
+    // qualité, 75 par défaut — corrigé 2026-08-15, le commentaire disait « 60 »
+    // alors que QUALITY_LOOP_THRESHOLD_DEFAULT vaut 75). Sans ce plancher, deux
+    // trous laissaient passer du
     // contenu faible/indexable sans relecture :
     //   (a) `score === 0` (scorer raté/absent) : NON éligible à la boucle
     //       (qui exige score>0) → était auto-publié tel quel.
@@ -1096,7 +1148,9 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // d'abord les contenus faibles ») : un contenu encore faible après la boucle
     // (ou non scoré) part en needs_review au lieu d'être indexé. Les contenus
     // ≥ seuil restent en full-auto (throughput préservé). RSS garde son propre
-    // plancher `rssAutoPublishMinScore` (75).
+    // plancher `rssAutoPublishMinScore` (60 par défaut — corrigé 2026-08-15, le
+    // commentaire disait « 75 » alors que RSS_AUTOPUBLISH_MIN_SCORE_DEFAULT
+    // vaut 60).
     //
     // 2026-07-01 — Les NEWS (`blog_from_rss`) sont EXCLUES du full-auto global :
     // elles ont leur gate dédié `rssAutoPublishRequested` (toggle newsAutoPublish).
@@ -1107,7 +1161,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
 
     // 2026-07-03 — Priorité auto-publish NEWS sur la boucle qualité.
     // Bug corrigé : une news (`blog_from_rss`) scorée entre `rssAutoPublishMinScore`
-    // (60) et le seuil de boucle qualité (65) partait d'abord en `quality_improving`
+    // (60) et le seuil de boucle qualité (75 par défaut — corrigé 2026-08-15, le
+    // commentaire disait « 65 ») partait d'abord en `quality_improving`
     // (la boucle était prioritaire), PUIS restait piégée en `needs_review` à la
     // sortie de la boucle — le worker `content-quality-improver-worker` ne
     // réapplique JAMAIS la décision auto-publish RSS. Résultat concret : 0 news
@@ -1149,15 +1204,34 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       rss_auto_publish: rssAutoPublishRequested,
     });
 
+    // Fix 2026-08-15 (audit e2e, C5) — si cette exécution est une RE-génération
+    // demandée par la boucle qualité (feedback juge injecté), son coût LLM EST
+    // une dépense de la boucle : on l'ajoute au compteur mensuel que le cap
+    // `monthlyBudgetCapUsd` (100 $/mois) du quality-improver compare. Jusqu'ici,
+    // AUCUN code n'incrémentait cette clé — le cap était une garde morte.
+    // Fail-open dans le helper : un échec d'écriture ne casse jamais le job.
+    if (improvementFeedback !== undefined) {
+      await addQualityLoopSpend(output.totalCostUsd, contentGenJobId);
+    }
+
     if (nextStatus === "quality_improving") {
       // Enqueue quality-improver-worker (le worker pickera, ré-évaluera ou
       // basculera vers needs_review/failed selon cap auto). § 27 master prompt.
       const queue = getQualityImproverQueue();
       if (queue) {
+        // Fix 2026-08-15 (audit e2e, C1 BLOQUANT) — le jobId était FIXE
+        // (`quality-<id>`) : le job Redis de la passe 1 restant en mémoire
+        // (removeOnComplete count:1000), BullMQ ignorait SILENCIEUSEMENT le
+        // `add` de la passe 2 → le ContentGenJob restait `quality_improving` à
+        // vie (56 cas en prod depuis le 20/07). On suffixe par le numéro de
+        // tentative : chaque passe a sa propre clé, plus aucune collision.
+        // ⚠️ Format `quality-<id>-a<attempts>` = EXACTEMENT celui du balayage de
+        // reprise (recovery/backlog-recovery.ts, sweepStrandedQualityJobs) —
+        // toute divergence recréerait des doublons ou des trous.
         await queue.add(
           "improve",
           { contentGenJobId, previousScore: score },
-          { jobId: `quality-${contentGenJobId}` },
+          { jobId: `quality-${contentGenJobId}-a${dbJob.qualityImprovementAttempts}` },
         );
         await logStep(contentGenJobId, "quality_check", "Enqueued quality-improver", {
           previous_score: score,
@@ -1202,22 +1276,22 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     }
 
     if (nextStatus === "approved") {
-      // Audit indexation 2026-05-18 — auto-pub avec promotion conditionnelle :
-      //   score >= factoryAutoPromoteTier1MinScore (default 75)
-      //     → publish DIRECT tier_1_indexable (sitemap immédiat + IndexNow ping)
-      //   sinon → tier_2_noindex_follow (hors sitemap, attente tier-lifecycle CTR)
-      // 2026-06-16 (décision Will, remplace le « 0 tout-indexable » du 2026-06-14)
-      // — défaut 50 : un article n'est promu tier_1_indexable (sitemap + IndexNow)
-      // que si score >= 50, APRÈS la boucle qualité (§27) qui ré-enrichit les
-      // articles sous le seuil quality_loop. En dessous de 50 → tier_2
-      // noindex_follow (garde-fou anti-doorway HCU, rattrapage via tier-lifecycle
-      // CTR). Override via policy `factoryAutoPromoteTier1MinScore`.
+      // ⚠️ Fix 2026-08-15 — CE QUE `shouldPromoteTier1` FAIT RÉELLEMENT.
+      //
+      // Ce drapeau ne décide PLUS du tier de l'article. Depuis la décision Will
+      // du 2026-06-17, `content-publish-worker.ts` force `tier_1_indexable` pour
+      // TOUTE publication, quel que soit `promoteToTier1`. Le seul effet restant
+      // du drapeau est le PING d'indexation (IndexNow + Google) : à false,
+      // l'article est publié, entre au sitemap et sert `index,follow` — il n'est
+      // simplement pas signalé activement aux moteurs.
+      //
+      // Les commentaires et journaux qui promettaient ici un déclassement en
+      // `tier_2_noindex_follow` étaient donc faux depuis deux mois : le
+      // garde-fou anti-doorway décrit ci-dessous n'existe plus côté publication.
+      // Ils sont réécrits plutôt que supprimés, pour que la prochaine lecture ne
+      // reparte pas sur la même croyance. Le comportement, lui, est INCHANGÉ :
+      // c'est une décision métier, pas un bug à corriger ici.
       const autoPromoteTier1MinScore = policies.factoryAutoPromoteTier1MinScore ?? 50;
-      // 2026-06-14 — Garde-fou soft-404 : même en « tout indexable », on n'indexe
-      // PAS un contenu que le generator a jugé dégénéré/vide (soft-404 →
-      // finalIndexationTier=tier_3). Ce contenu est tout de même publié, mais en
-      // tier_2_noindex_follow (publié, hors index) au lieu de tier_1. Évite
-      // d'envoyer du contenu junk à Google (risque HCU/thin-content).
       const shouldPromoteTier1 =
         score >= autoPromoteTier1MinScore && finalIndexationTier !== "tier_3_noindex_nofollow";
 
@@ -1236,8 +1310,10 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
           contentGenJobId,
           "publish",
           shouldPromoteTier1
-            ? `Enqueued auto-pub direct tier-1 (score ${score} >= ${autoPromoteTier1MinScore})`
-            : `Enqueued auto-pub tier-2 (score ${score} < ${autoPromoteTier1MinScore})`,
+            ? `Auto-publication tier-1 indexable + ping moteurs (score ${score} >= ${autoPromoteTier1MinScore})`
+            : // Le journal disait « tier-2 » ; c'était faux (le publish force
+              // tier-1). Seul le ping est omis.
+              `Auto-publication tier-1 indexable SANS ping moteurs (score ${score} < ${autoPromoteTier1MinScore})`,
           {
             review_queue_id: review.id,
             score,

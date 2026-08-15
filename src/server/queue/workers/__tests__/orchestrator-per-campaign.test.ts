@@ -48,9 +48,37 @@ vi.mock("@/server/actions/content-gen/_settings", () => ({
   readContentGenConfig: (key: string) => readConfigMock(key),
 }));
 
-vi.mock("@/server/content-gen/scheduler/anti-burst", () => ({
-  computeAntiBurstSchedule: vi.fn(() => []),
-  msSinceStartOfDay: vi.fn(() => 0),
+// `computeCampaignTickBudget` n'est PAS mocké : c'est la logique de rythme
+// corrigée le 2026-08-15, on veut la tester pour de vrai. `msSinceStartOfDay`
+// est figé à 900 000 ms = 15 min = exactement un tick après minuit, ce qui rend
+// les budgets attendus lisibles (1/96ᵉ de la cible du jour).
+vi.mock("@/server/content-gen/scheduler/anti-burst", async () => {
+  const actual = await vi.importActual<typeof import("@/server/content-gen/scheduler/anti-burst")>(
+    "@/server/content-gen/scheduler/anti-burst",
+  );
+  return {
+    ...actual,
+    computeAntiBurstSchedule: vi.fn(() => []),
+    msSinceStartOfDay: vi.fn(() => 900_000),
+  };
+});
+
+// Reprise du retard (2026-08-15) — hors sujet ici : neutralisée.
+vi.mock("@/server/content-gen/recovery/backlog-recovery", () => ({
+  DEFAULT_RECOVERY_SETTINGS: {
+    enabled: false,
+    maxPerTick: 0,
+    maxPerDay: 0,
+    maxRetries: 3,
+    stuckAfterMinutes: 60,
+  },
+  drainFailedJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStuckJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStrandedQualityJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+}));
+
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: vi.fn(async () => ({ active: false })),
 }));
 
 vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
@@ -185,6 +213,42 @@ function getProcessor() {
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("Orchestrator — per-campaign dailyArticles budget (Phase 4)", () => {
+  // Régression 2026-08-15 — l'ancienne formule `max(1, ceil(daily/96))` ne
+  // regardait jamais ce qui avait déjà été créé dans la journée : le plancher à 1
+  // faisait enfiler un job à chacun des 96 ticks, soit ~96 jobs/jour quelle que
+  // soit la cible (mesuré en prod : ~88/jour pour une campagne réglée à 20).
+  it("P0: cible du jour déjà tenue → aucun job enfilé (garde anti-dépassement)", async () => {
+    const campaign = makeCampaign({
+      dailyArticles: 20,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    // 20 jobs déjà créés aujourd'hui pour cette campagne = la cible entière.
+    contentGenJobCountMock.mockResolvedValue(20);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+  });
+
+  it("P0bis: en avance sur la courbe du jour → rien enfilé ce tick", async () => {
+    const campaign = makeCampaign({
+      dailyArticles: 96,
+      villeScopeMode: "custom_subset",
+      customVilleSlugs: ["paris"],
+    });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    // À 15 min (1/96ᵉ de la journée) la courbe idéale vaut 1 ; 5 déjà créés → 0.
+    contentGenJobCountMock.mockResolvedValue(5);
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+  });
+
   it("P1: dailyArticles=96 → ceil(96/96)=1 job enqueued per tick", async () => {
     const campaign = makeCampaign({
       dailyArticles: 96,

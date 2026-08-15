@@ -23,6 +23,8 @@ import type {
   ServiceSector,
 } from "../../../../prisma/generated/client";
 import { logActivity } from "@/server/content-gen/shared/activity-log";
+// Fix 2026-08-15 (audit e2e) — options par défaut partagées des files content-gen.
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { BANNED_FROM_EDITORIAL_MIX } from "@/server/content-gen/shared/editorial-mix-rules";
 import { requireAdmin } from "./_auth";
 import {
@@ -99,7 +101,12 @@ function getContentGenQueue(): Queue | null {
   if (contentGenQueue) return contentGenQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e) — `defaultJobOptions` partagées : sans elles
+  // la file héritait du défaut BullMQ (1 tentative, pas de backoff).
+  contentGenQueue = new Queue("content-gen", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return contentGenQueue;
 }
 
@@ -171,6 +178,10 @@ const DEFAULT_CAMPAIGN_PAGE_SIZE = 25;
 const MAX_CAMPAIGN_PAGE_SIZE = 200;
 
 export async function listCampaigns(opts: ListCampaignsOptions = {}): Promise<ListCampaignsResult> {
+  // Fix 2026-08-15 (audit e2e, E5) — "use server" fait de chaque export un
+  // endpoint POST public : lecture à garder derrière la même barrière que les
+  // mutations.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation (optional enums).
   if (opts.status !== undefined) CoverageStatusSchema.parse(opts.status);
   if (opts.serviceSector !== undefined) ServiceSectorSchema.parse(opts.serviceSector);
@@ -220,6 +231,8 @@ export async function listCampaigns(opts: ListCampaignsOptions = {}): Promise<Li
 }
 
 export async function getCampaign(id: string): Promise<CampaignDetail | null> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  await requireAdmin();
   // Sprint Final P1-3 — Zod runtime validation.
   CoverageCampaignIdSchema.parse(id);
   const r = await prisma.coverageCampaign.findUnique({ where: { id } });
@@ -920,6 +933,9 @@ export interface CampaignTemplateRow {
  * Utilisé par le wizard Coverage (step 0 Preset) pour afficher les presets.
  */
 export async function listCampaignTemplates(): Promise<ReadonlyArray<CampaignTemplateRow>> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // Placé HORS du try : un appel non authentifié doit échouer, pas retourner [].
+  await requireAdmin();
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = await (prisma as any).campaignTemplate.findMany({

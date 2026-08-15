@@ -227,17 +227,32 @@ export async function ingestEntry(payload: IngestPayload): Promise<IngestResult>
         select: { id: true },
       });
 
-      // Persiste embedding pour dedup futur
-      const vectorLiteral = `[${embedding.embedding.join(",")}]`;
-      await tx.$executeRawUnsafe(
-        `INSERT INTO knowledge_embeddings (id, translation_id, embedding, model, model_version, dimensionality, embedded_at)
-         VALUES (gen_random_uuid(), $1::uuid, $2::vector, $3, $4, $5, NOW())`,
-        translation.id,
-        vectorLiteral,
-        EMBEDDING_MODEL_NAME,
-        embedding.modelVersion,
-        EMBEDDING_DIMENSION,
-      );
+      // Persiste embedding pour dedup futur.
+      //
+      // Fix 2026-08-15 (audit e2e) — garde anti-stub, alignée sur celle que le
+      // seed applique déjà (`seed-kb-facts.ts`). Sans clé Voyage,
+      // `generateEmbedding` retombe sur un vecteur SHA-256 non sémantique. En
+      // écrire un ici empoisonnerait la table de deux façons : le dedup
+      // vectoriel ne rejetterait plus rien (la similarité de vecteurs de hachage
+      // est quasi aléatoire, sauf texte strictement identique), et la recherche
+      // hybride classerait ensuite contre ces lignes. Mieux vaut aucun vecteur
+      // qu'un faux : l'entrée reste ingérée, seul son embedding est différé.
+      if (embedding.modelVersion.endsWith("-stub")) {
+        console.warn(
+          `[kb-ingest] embedding stub (clé Voyage absente) — vecteur NON persisté pour translation=${translation.id}`,
+        );
+      } else {
+        const vectorLiteral = `[${embedding.embedding.join(",")}]`;
+        await tx.$executeRawUnsafe(
+          `INSERT INTO knowledge_embeddings (id, translation_id, embedding, model, model_version, dimensionality, embedded_at)
+           VALUES (gen_random_uuid(), $1::uuid, $2::vector, $3, $4, $5, NOW())`,
+          translation.id,
+          vectorLiteral,
+          EMBEDDING_MODEL_NAME,
+          embedding.modelVersion,
+          EMBEDDING_DIMENSION,
+        );
+      }
 
       // Tags optionnels (upsert)
       if (payload.tags && payload.tags.length > 0) {
