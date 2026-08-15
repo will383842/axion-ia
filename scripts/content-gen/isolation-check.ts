@@ -408,6 +408,15 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   //   (`"server/content-gen/lib/category-mapper.ts"` — miroir de la migration
   //   20260616180000, non renommable sans migration). Aucun import, aucun code
   //   pipeline : exactement le même cas que `admin-nav.test.ts` ci-dessus.
+  // - keyword-opportunity-detector.ts (2026-08-15) : worker du pipeline
+  //   content-gen à part entière — il détecte les opportunités de mots-clés qui
+  //   alimentent la génération, et il est enregistré parmi les crons content-gen
+  //   (`queues.ts`). Son nom ne porte simplement pas le préfixe `content-` du
+  //   motif générique `content-*-worker.ts` ci-dessus. Le marqueur vient de son
+  //   import d'alerte (`shared/content-gen-alerts`), ajouté pour que la détection
+  //   de chute de position PRÉVIENNE réellement : elle se contentait d'un
+  //   `console.warn` sous un commentaire affirmant à tort qu'une alerte Telegram
+  //   était câblée ailleurs. Consommateur légitime, pas une fuite de périmètre.
   /^prisma\/migrations\/\d+_content_template_history\/migration\.sql$/,
   /^scripts\/activate-content-gen-value-metier\.ts$/,
   /^scripts\/depublish-en-translations\.ts$/,
@@ -415,6 +424,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^src\/lib\/admin-nav\.test\.ts$/,
   /^src\/scripts\/backfill-hero-images\.ts$/,
   /^src\/content\/__tests__\/services-ssot\.spec\.ts$/,
+  /^src\/server\/queue\/workers\/keyword-opportunity-detector\.ts$/,
 ];
 
 /**
