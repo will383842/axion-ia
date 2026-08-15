@@ -40,7 +40,7 @@
 import type { Queue } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { resolveReenqueueAction, type BullJobState } from "../queue/reenqueue-policy";
-import { isAutoRetryable } from "./failure-classifier";
+import { isAutoRetryable, isTopicStillFresh } from "./failure-classifier";
 
 /** Réglages de la reprise, surchargeables via la clé ContentGenConfig `backlog_recovery`. */
 export interface BacklogRecoverySettings {
@@ -199,7 +199,9 @@ export async function drainFailedJobs(
   let skipped = 0;
   for (const job of candidates) {
     if (requeued >= budget) break;
-    if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries)) {
+    // Le job est passé en entier au test : la fraîcheur du sujet se juge sur sa
+    // charge utile, pas sur son message d'erreur (incident RSS du 2026-08-15).
+    if (!isAutoRetryable(job.errorMessage, job.retryCount, settings.maxRetries, job)) {
       skipped++;
       continue;
     }
@@ -268,6 +270,12 @@ export async function sweepStuckJobs(
   for (const job of stuck) {
     if (sharedBudget !== undefined && requeued >= sharedBudget) break;
     if (job.retryCount >= settings.maxRetries) {
+      skipped++;
+      continue;
+    }
+    // Même garde que le drain : un job figé qui porte une dépêche périmée ne
+    // doit pas être remis en circulation (incident RSS du 2026-08-15).
+    if (!isTopicStillFresh(job.contentType, job.inputPayload)) {
       skipped++;
       continue;
     }
