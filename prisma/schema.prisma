@@ -280,11 +280,29 @@ enum SurveyStatus {
 
 // CLAUDE.md §14 livre la doctrine FR : super admin / admin / editeur / lecteur.
 // Convention §17 (commentaires + identifiers en anglais) → on garde editor/reader.
+/// Rôles d'administration.
+///
+/// 🔴 AJOUTÉS EN FIN D'ÉNUMÉRATION, jamais intercalés. Un `ALTER TYPE … ADD
+/// VALUE … BEFORE` réordonne le type Postgres, et tout tri par rang change de
+/// sens en silence. L'ordre ici n'a aucune signification hiérarchique : la
+/// hiérarchie réelle vit dans `src/server/auth/habilitations.ts`.
+///
+/// `responsable_qualite` et `secretaire` (2026-08-15) rendent la matrice
+/// d'habilitation EXPRIMABLE : jusque-là, il n'existait aucun rôle pour la
+/// personne qui gère le dossier sans engager l'organisme — la seule façon de
+/// lui donner accès était `editor`, qui pouvait attester, facturer, conclure
+/// un devis et habiliter un formateur.
 enum AdminRole {
   super_admin
   admin
   editor // = editeur (FR doctrine §14)
   reader // = lecteur (FR doctrine §14)
+  /// Pilote la qualité : atteste, valide une évaluation finale, habilite un
+  /// formateur (ind. 11/21/22). N'engage JAMAIS sur le contractuel ni le financier.
+  responsable_qualite
+  /// Poste administratif : tout ce qui n'engage pas — créer une session,
+  /// inscrire, générer les brouillons, convoquer, relancer, classer, consulter.
+  secretaire
 }
 
 enum AdminStatus {

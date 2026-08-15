@@ -1,10 +1,13 @@
 /**
  * Qualiopi — RBAC guards + audit trail pour les Server Actions.
  *
- * Réutilise les guards RBAC de la Knowledge Base (NextAuth 5, rôles
- * super_admin/admin/editor/reader) — AUCUN nouveau rôle NextAuth. Les rôles
- * métier (formateur interne/externe, auditeur) sont modélisés par-dessus via
- * des tables applicatives + token auditeur (livrés en T11/T12), pas ici.
+ * Réutilise les guards RBAC de la Knowledge Base (NextAuth 5). Les rôles
+ * `responsable_qualite` et `secretaire` ont été AJOUTÉS à `AdminRole` le
+ * 2026-08-15 : sans eux, la matrice d'habilitation n'était pas exprimable —
+ * la seule façon de donner accès à un poste administratif était `editor`, qui
+ * pouvait attester, facturer, conclure un devis et habiliter un formateur.
+ * Les rôles applicatifs (formateur interne/externe, auditeur) restent modélisés
+ * par-dessus via des tables + token auditeur, pas ici.
  *
  * `logQualiopiActivity()` = miroir du pattern `logActivity()` content-gen
  * (best-effort, fail-silent) → trace toute mutation Qualiopi dans `ActivityLog`
@@ -24,6 +27,7 @@ import {
   requireSuperAdmin,
   type AdminSession,
 } from "@/server/actions/knowledge/_guards";
+import { peutEngager, MOTIF_REFUS, type ActeEngageant } from "@/server/auth/habilitations";
 
 export {
   requireAdminRead,
@@ -37,6 +41,33 @@ export {
 // comme un Server Action runtime → `registerServerReference(AdminSession, …)` →
 // `ReferenceError: AdminSession is not defined` (500 sur toute la console admin).
 // Les consommateurs importent le type depuis sa source : @/server/actions/knowledge/_guards.
+
+/**
+ * Garde des actes qui ENGAGENT L'ORGANISME — la seule porte, pour tous.
+ *
+ * 🔴 À utiliser À LA PLACE de `requireAdminWrite` sur tout acte engageant.
+ * `requireAdminWrite` autorise `editor` : c'est correct pour produire un
+ * brouillon, envoyer une convocation ou classer une pièce, et c'est faux pour
+ * attester, facturer, conclure ou habiliter. La matrice vit dans un module PUR
+ * (`@/server/auth/habilitations`), pas ici : une garde recopiée action par
+ * action est exactement ce qui a laissé quatre actes engageants ouverts à
+ * `editor` jusqu'au 2026-08-15.
+ *
+ * ⚠️ Le message d'erreur porte le MOTIF, pas un code. Il remonte tel quel à
+ * l'écran : « cet acte engage l'organisme — à faire par un responsable
+ * habilité » évite l'appel téléphonique que produit un bouton absent sans
+ * explication.
+ *
+ * @param acte  acte engageant, au sens de `ActeEngageant`.
+ * @throws `forbidden: <motif>` si le rôle de la session n'est pas habilité.
+ */
+export async function requireHabilitation(acte: ActeEngageant): Promise<AdminSession> {
+  const session = await requireAdminRead();
+  if (!peutEngager(session.role, acte)) {
+    throw new Error(`forbidden: ${MOTIF_REFUS[acte]}`);
+  }
+  return session;
+}
 
 export interface QualiopiActivityInput {
   /** Action canonique ex. "qualiopi.config.set", "qualiopi.formation.publish". */

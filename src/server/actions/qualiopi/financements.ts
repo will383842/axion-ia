@@ -23,7 +23,11 @@
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { computeVentilationDossier } from "@/server/qualiopi/financements/opco-calcul";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
@@ -300,7 +304,8 @@ export async function setFinancementSessionAction(input: {
 export async function validerAccordOpcoAction(input: {
   sessionId: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : acter l'accord OPCO conditionne la facturation subrogee.
+  const adminSession = await requireHabilitation("deposer_demande_financeur");
   const parsed = validerAccordOpcoSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { sessionId } = parsed.data;
@@ -347,7 +352,8 @@ export async function genererFactureFormationAction(input: {
   destinataire: FactureFormationDestinataire;
   ventilation: "forfait" | "horaire";
 }): Promise<ActionResult<{ factureId: string; numero: string; documentId: string | null }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : facture de formation : numerotation legale, TVA.
+  const adminSession = await requireHabilitation("facturer");
 
   // Stub-aware : build-time, aucune facture ne doit être créée
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
@@ -685,7 +691,8 @@ export async function verifierSousTraitantAction(input: {
   trainerId: string;
   sousTraitantNda: string;
 }): Promise<ActionResult<{ id: string }>> {
-  const adminSession = await requireAdminWrite();
+  // Acte ENGAGEANT : lever la reserve d'un sous-traitant l'autorise a animer.
+  const adminSession = await requireHabilitation("habiliter_formateur");
   const parsed = verifierSousTraitantSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { trainerId, sousTraitantNda } = parsed.data;

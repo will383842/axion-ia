@@ -18,7 +18,11 @@
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  requireAdminWrite,
+  requireHabilitation,
+  logQualiopiActivity,
+} from "@/server/actions/qualiopi/_guards";
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import { estimateOpcoCoverage } from "@/server/qualiopi/crm/devis";
@@ -650,7 +654,8 @@ export async function sendDevisAction(
  * Marque le devis comme accepté (statut → accepte, acceptedAt = now).
  */
 export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : accepter un devis conclut le contrat au nom de l'organisme.
+  const session = await requireHabilitation("conclure_devis");
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 
@@ -681,7 +686,8 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
 export async function transformDevisToConventionAction(
   id: string,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : transformer un devis en convention cloture le cycle contractuel.
+  const session = await requireHabilitation("conclure_devis");
   const idParsed = z.string().uuid().safeParse(id);
   if (!idParsed.success) return { error: "Identifiant invalide" };
 

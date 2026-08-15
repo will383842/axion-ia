@@ -16,6 +16,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import {
   requireAdminWrite,
+  requireHabilitation,
   requireAdminDelete,
   logQualiopiActivity,
 } from "@/server/actions/qualiopi/_guards";
@@ -283,7 +284,8 @@ export async function updateTrainerAction(
 export async function setTrainerHabilitationsAction(
   input: z.infer<typeof setHabilitationsSchema>,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : habiliter un formateur engage la qualite de l'action (ind. 21/22).
+  const session = await requireHabilitation("habiliter_formateur");
   const parsed = setHabilitationsSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, formationsHabilitees: demandees } = parsed.data;
@@ -363,7 +365,8 @@ export async function setTrainerHabilitationsAction(
 export async function verifyTrainerSousTraitantAction(
   input: z.infer<typeof verifySousTraitantSchema>,
 ): Promise<ActionResult<{ id: string }>> {
-  const session = await requireAdminWrite();
+  // Acte ENGAGEANT : lever la reserve d'un sous-traitant l'autorise a animer (ind. 27).
+  const session = await requireHabilitation("habiliter_formateur");
   const parsed = verifySousTraitantSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const { id, sousTraitantNda } = parsed.data;
