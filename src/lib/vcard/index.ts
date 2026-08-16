@@ -30,6 +30,8 @@
 // `QUALIOPI_CERTIFICATION_OBTENUE` vaut `false` : tant que le certificat n'est
 // pas délivré, la fiche ne l'affirme pas. Cf. `src/server/qualiopi/config/flag.ts`.
 
+import { BRAND } from "@/lib/brand";
+
 import { PHOTO_JPEG_BASE64 } from "./photo";
 
 /** Longueur maximale d'une ligne vCard, en octets, pliage compris (RFC 2426 §2.6). */
@@ -38,24 +40,61 @@ const MAX_LINE_OCTETS = 75;
 /**
  * Identité publiée dans la fiche.
  *
- * Les données de la société proviennent des mentions légales du site
- * (AXION IA SAS, RCS Grenoble 108018631). Le téléphone et l'e-mail sont ceux
- * imprimés sur la carte de visite — les trois surfaces doivent rester
- * cohérentes : la fiche enregistrée, la carte imprimée et le site.
+ * ── Tout ce qui a une SSOT en dérive ─────────────────────────────────────────
+ * La raison sociale, le nom du fondateur et l'URL du site NE sont PAS recopiés
+ * ici : ils viennent de `@/lib/brand`. Ce n'est pas une préférence de style.
+ * Le 02/08/2026, la raison sociale existait en **sept copies littérales
+ * divergentes** et l'entité déclarait DEUX adresses de siège selon la page ;
+ * Google rapproche `legalName` et `address` des registres SIRENE/INPI pour
+ * décider si le site EST l'entreprise immatriculée, et un écart d'un seul
+ * caractère casse ce rapprochement — sans jamais faire échouer un build.
+ * Cf. `src/lib/seo/__tests__/identite-legale-registre.spec.ts`.
+ *
+ * Une carte de visite est la pire surface où laisser diverger ces valeurs :
+ * elle est imprimée, distribuée, et ne se corrige plus.
+ *
+ * ── Ce qui reste littéral, et pourquoi ───────────────────────────────────────
+ * L'adresse est écrite ici sous sa forme **structurée** (vCard `ADR` veut des
+ * champs séparés, le JSON-LD une `streetAddress` d'un seul tenant) : aucune des
+ * deux ne dérive de l'autre sans reformatage. Elle est donc recopiée du Kbis à
+ * l'identique, casse comprise, et une garde la compare au JSON-LD de
+ * l'organisation — c'est le test qui tient la cohérence, pas la discipline.
+ *
+ * Le téléphone et l'e-mail sont ceux imprimés sur la carte papier ; ils n'ont
+ * pas de SSOT et sont gardés par un test dédié.
  */
 export const WILLIAMS = {
+  /**
+   * `N` veut le nom et le prénom SÉPARÉS, quand la SSOT ne porte que le nom
+   * complet. La découpe est donc écrite à la main, et une garde vérifie que
+   * `prénom + nom` reconstitue exactement `FOUNDER.fullName`.
+   */
   prenom: "Williams",
   nom: "Jullin",
+  /**
+   * `TITLE` sans la société : la vCard porte déjà `ORG`, et le carnet
+   * d'adresses affiche les deux l'un sous l'autre — « Fondateur & CEO
+   * d'Axion-IA / AXION IA SAS » y dirait deux fois la même chose. C'est donc le
+   * préfixe de `FOUNDER.jobTitleFr`, et une garde vérifie qu'il en reste un.
+   */
   fonction: "Fondateur & CEO",
   role: "Architecte IA — formation, audit, implémentation",
-  societe: "AXION IA SAS",
+  societe: BRAND.legalName,
   telephone: "+33743331201",
   email: "williamsjullin@axion-ia.com",
-  siteWeb: "https://axion-ia.com",
+  siteWeb: BRAND.url,
   whatsapp: "https://wa.me/33743331201",
+  /**
+   * Adresse du siège, recopiée du Kbis (RCS Grenoble à jour au 30/07/2026) et
+   * de l'avis de situation SIRENE du 02/08/2026, qui concordent.
+   *
+   * 🔴 Le complément « ELITE BUREAUX - boîte 53 » fait partie de l'adresse
+   * immatriculée — SIRENE le porte sur sa propre ligne. L'omettre casse
+   * l'exact-match NAP. Ne pas « nettoyer » ce champ.
+   */
   adresse: {
     complement: "ELITE BUREAUX - boîte 53",
-    rue: "11 avenue Paul Verlaine",
+    rue: "11 Avenue Paul Verlaine",
     ville: "Grenoble",
     codePostal: "38100",
     pays: "France",

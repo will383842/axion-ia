@@ -7,6 +7,9 @@
 // panne qu'aucune relecture humaine n'attrape.
 
 import { describe, it, expect } from "vitest";
+
+import { BRAND, FOUNDER } from "@/lib/brand";
+
 import { buildVCard, escapeValue, foldLine, WILLIAMS } from "./index";
 
 /** Reconstitue le texte logique en supprimant le pliage (RFC 2426 §2.6). */
@@ -66,6 +69,27 @@ describe("vCard — contenu", () => {
     expect(field(lines, "ORG")).toBe("AXION IA SAS");
   });
 
+  it("reste alignée sur les SSOT d'identité", () => {
+    // Le 02/08/2026, la raison sociale existait en sept copies littérales
+    // divergentes. Ces gardes comparent la sortie RÉELLE de la fiche aux SSOT,
+    // pas les constantes entre elles.
+    //
+    // ⚠️ Ce qu'elles attrapent exactement : une DIVERGENCE — la SSOT change et
+    // la fiche ne suit pas. Elles ne verraient PAS une recopie à l'identique
+    // (remplacer `BRAND.legalName` par la même chaîne en dur les laisse
+    // vertes) ; c'est l'invariant n° 2 de
+    // `src/lib/seo/__tests__/identite-legale-registre.spec.ts` qui traque la
+    // duplication, et il ne connaît que la propriété `legalName:`. Ne pas lire
+    // ce test comme une interdiction de recopier.
+    expect(field(lines, "ORG")).toBe(BRAND.legalName);
+    expect(field(lines, "URL")).toBe(BRAND.url);
+    // `N` veut nom et prénom séparés : la découpe est manuelle, donc vérifiée.
+    expect(field(lines, "FN")).toBe(FOUNDER.fullName);
+    // `TITLE` omet la société — que porte déjà `ORG` — mais doit rester le
+    // préfixe exact de la fonction publiée ailleurs, sinon les deux divergent.
+    expect(FOUNDER.jobTitleFr.startsWith(field(lines, "TITLE") ?? "")).toBe(true);
+  });
+
   it("porte le téléphone et l'e-mail imprimés sur la carte", () => {
     // Ces deux valeurs figurent en clair sur la carte papier : si elles
     // divergent ici, la fiche enregistrée contredit la carte en main.
@@ -75,7 +99,7 @@ describe("vCard — contenu", () => {
 
   it("donne l'adresse du siège en champs structurés", () => {
     expect(field(lines, "ADR")).toBe(
-      ";ELITE BUREAUX - boîte 53;11 avenue Paul Verlaine;Grenoble;;38100;France",
+      ";ELITE BUREAUX - boîte 53;11 Avenue Paul Verlaine;Grenoble;;38100;France",
     );
   });
 
