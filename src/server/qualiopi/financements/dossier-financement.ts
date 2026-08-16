@@ -15,6 +15,7 @@
 import { prisma } from "@/lib/prisma";
 import { opcoLabel } from "./opco-referentiel";
 import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
+import { sessionExigeUnDossier } from "./dossier-auto";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -316,6 +317,26 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
     where: { id: sessionId },
     select: SELECT_SESSION_PAYEURS,
   });
+
+  // 🔴 16/08 — le repli sur « opco » MENTAIT sur les affaires sans financeur.
+  //
+  // `DossierFinancementType` ne contient que `opco | france_travail | cpf |
+  // mixte` : il n'y a **aucune** valeur pour un financement direct. Le repli
+  // faisait donc d'une affaire payée sur fonds propres un dossier « OPCO » —
+  // et si le client avait un OPCO identifié, son nom était même inscrit comme
+  // financeur d'une affaire qui n'en a jamais eu.
+  //
+  // Le défaut était discret tant que l'ouverture était manuelle et rare ; le
+  // sous-lot 8C, qui ouvre les dossiers tout seuls, l'aurait multiplié.
+  //
+  // On refuse au lieu de mal typer : un dossier ne se justifie que s'il y a un
+  // financeur à suivre. `sessionExigeUnDossier` dit lesquels, et c'est la même
+  // règle que celle qui décide de l'ouverture automatique — une seule, pas deux.
+  if (!sessionExigeUnDossier(session.financementType)) {
+    throw new Error(
+      "Aucun dossier de financement pour cette session : son financement est direct (ou non déclaré), il n'y a donc pas de financeur à suivre. Déclarez d'abord un financement OPCO, CPF, France Travail ou mixte.",
+    );
+  }
 
   const type =
     session.financementType === "france_travail"

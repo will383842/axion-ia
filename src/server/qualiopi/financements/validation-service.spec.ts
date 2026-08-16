@@ -606,3 +606,62 @@ describe("getFinancementValidations", () => {
     expect(cpfElig.result.gravite).toBe("critique");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// `mixte` obeit aux memes regles que `opco` — corrige le 16/08
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Le depot traitait deja `mixte` comme de l'OPCO a TROIS endroits (refus de
+// facturer sans accord, validation manuelle de l'accord, choix du financeur au
+// dossier). Les deux gardes de DEMARRAGE, elles, testaient `!== "opco"` strict.
+//
+// Consequence : une session mixte pouvait demarrer SANS accord du financeur, et
+// en subrogation SANS convention tripartite — irregulier au regard de l'art.
+// L.6353-2. Une part mutualisee obeit aux memes regles que si elle etait seule.
+
+describe("un financement MIXTE porte une part mutualisee — les gardes s'appliquent", () => {
+  it("le demarrage est BLOQUE sans accord, comme pour un opco pur", () => {
+    const r = validateOpcoAccord(
+      makeSession({ financementType: "mixte", opcoStatut: "non_demande", statut: "planifiee" }),
+    );
+    expect(r.ok, "une session mixte a pu demarrer sans accord du financeur").toBe(false);
+    expect(r.gravite).toBe("critique");
+  });
+
+  it("avec accord recu, elle demarre — la garde ne bloque pas au-dela du necessaire", () => {
+    const r = validateOpcoAccord(
+      makeSession({ financementType: "mixte", opcoStatut: "accord_recu", statut: "planifiee" }),
+    );
+    expect(r.ok).toBe(true);
+  });
+
+  it("en subrogation, la convention tripartite reste EXIGEE", () => {
+    const r = validateOpcoConventionTripartite(
+      makeSession({
+        financementType: "mixte",
+        opcoSubrogation: true,
+        statut: "planifiee",
+        conventionTripartiteSigneeAt: null,
+      }),
+    );
+    expect(r.ok, "subrogation mixte sans tripartite : irregulier au regard de L.6353-2").toBe(
+      false,
+    );
+    expect(r.gravite).toBe("critique");
+  });
+
+  it("un financement DIRECT reste hors de ces deux gardes", () => {
+    // La garde ne doit pas s'elargir au-dela de la part mutualisee : une
+    // affaire sur fonds propres n'attend l'accord de personne.
+    expect(
+      validateOpcoAccord(
+        makeSession({ financementType: "direct", opcoStatut: "non_demande", statut: "planifiee" }),
+      ).ok,
+    ).toBe(true);
+    expect(
+      validateOpcoConventionTripartite(
+        makeSession({ financementType: "direct", opcoSubrogation: true, statut: "planifiee" }),
+      ).ok,
+    ).toBe(true);
+  });
+});
