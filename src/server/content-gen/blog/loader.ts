@@ -63,7 +63,16 @@ export interface BlogArticleView {
   readonly photographerName: string | null;
   readonly photographerUrl: string | null;
   /** Sources citées (ContentCitation DB) — émises en isBasedOn JSON-LD. */
-  readonly citations: ReadonlyArray<{ name: string; url: string }>;
+  readonly citations: ReadonlyArray<{
+    name: string;
+    url: string;
+    /**
+     * Date reelle de derniere verification du lien (`ExternalReference`),
+     * ou `null`. GEO-071 : c'est la SEULE source legitime d'une mention
+     * « derniere verification » cote rendu — jamais la date de l'article.
+     */
+    lastVerifiedAt: Date | null;
+  }>;
   /**
    * FAQ structurée (Article.faqJson). Écrite par les generators mais jamais
    * rendue avant le chantier templates 2026-06-21 → alimente l'accordéon FAQ
@@ -154,7 +163,15 @@ export async function loadBlogArticleForView(
       prisma.contentCitation
         .findMany({
           where: { articleId: dbArticle.id },
-          include: { externalReference: { select: { url: true, title: true } } },
+          // GEO-071 (audit GEO/AEO 2026-08-14) — `lastVerifiedAt` AJOUTE.
+          // La colonne existe sur `ExternalReference` et le persisteur de
+          // citations l'ecrit deja (`persist-citations.ts`), mais AUCUNE page ne
+          // la lisait : l'interface affichait a la place la date de modification
+          // de l'article sous l'etiquette « Derniere verification ». On lit
+          // desormais la vraie donnee, quitte a ce qu'elle soit nulle.
+          include: {
+            externalReference: { select: { url: true, title: true, lastVerifiedAt: true } },
+          },
         })
         .catch(() => []),
       // CGU Unsplash §6 — lookup photographe depuis ImageAsset par filePath
@@ -233,6 +250,7 @@ export async function loadBlogArticleForView(
       citations: rawCitations.map((c) => ({
         name: c.externalReference.title,
         url: c.externalReference.url,
+        lastVerifiedAt: c.externalReference.lastVerifiedAt ?? null,
       })),
       faqItems: parseFaqItems(catTags?.faqJson),
       keyTakeaway: catTags?.keyTakeaway ?? null,

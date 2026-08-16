@@ -573,12 +573,28 @@ export default async function NewsArticlePage({ params }: Props) {
           <ArticleSources
             items={citations.map((c) => ({ name: c.title, url: c.url }))}
             locale="fr"
-            lastVerified={updatedIso}
+            // GEO-071 (audit GEO/AEO 2026-08-14) — la date de l'article ne peut PAS
+            // servir d'etiquette « derniere verification » : elle affirmerait que les
+            // sources ont ete controlees ce jour-la, ce que personne n'a fait.
+            // Le bloc disparait tant qu'aucune vraie date n'existe — comportement
+            // documente par le composant lui-meme (« pas de date = pas de bloc »).
+            // Le branchement de la vraie donnee (`ExternalReference.lastVerifiedAt`)
+            // est fait sur `/blog` ; ces deux familles ont un autre chargeur, elles
+            // suivront dans un lot dedie plutot que d'etre bricolees ici.
+            lastVerified={null}
           />
 
           {/* Transparence E-E-A-T (fraîcheur) — actualités = 30 j. */}
           <ArticleTransparencyBlock
-            lastVerified={article.updatedAt ?? article.publishedAt}
+            // GEO-071 (audit GEO/AEO 2026-08-14) — la date de l'article ne peut PAS
+            // servir d'etiquette « derniere verification » : elle affirmerait que les
+            // sources ont ete controlees ce jour-la, ce que personne n'a fait.
+            // Le bloc disparait tant qu'aucune vraie date n'existe — comportement
+            // documente par le composant lui-meme (« pas de date = pas de bloc »).
+            // Le branchement de la vraie donnee (`ExternalReference.lastVerifiedAt`)
+            // est fait sur `/blog` ; ces deux familles ont un autre chargeur, elles
+            // suivront dans un lot dedie plutot que d'etre bricolees ici.
+            lastVerified={null}
             updateCycleDays={30}
             locale="fr"
           />
