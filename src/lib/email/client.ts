@@ -1,22 +1,30 @@
 // Nodemailer wrapper (Sprint 15 / M8).
 //
-// Architecture transport — ÉTAT RÉEL, corrigé le 2026-08-16 :
+// Architecture transport — état relevé DANS Coolify le 2026-08-16 :
 //   dev   : Nodemailer → SMTP localhost:2525 → Mailhog UI 8025
-//   prod  : Nodemailer → SMTP **Zoho Mail authentifié** (`smtppro.zoho.eu:465`,
-//           SSL implicite + AUTH), via `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`.
+//   prod  : Nodemailer → SMTP **ZeptoMail** (`smtp.zeptomail.eu:587`, STARTTLS,
+//           utilisateur littéral `emailapikey` + jeton « Send Mail »), via
+//           `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS`.
 //
-// ⚠️ L'hôte est `smtppro`, pas `smtp` : le compte est sur un plan PAYANT
-// (Mail Lite 5 Go, 2 licences, échéance 27/12/2026), et Zoho réserve les hôtes
-// `pro` à ses plans payants. Valeurs relevées au panneau Zoho le 2026-08-16 —
-// une première rédaction de cet en-tête annonçait `smtp.zoho.eu:587`, ce qui
-// aurait envoyé un opérateur sur un hôte qui n'accepte pas ce compte.
+// 🔴 CES VARIABLES VIVENT SUR L'APP COOLIFY `axion-ia-worker`, pas sur l'app
+// web. Le worker BullMQ est une SECONDE application Coolify, avec son propre
+// environnement, et c'est lui seul qui appelle `sendEmail()` — le conteneur web
+// ne fait qu'enfiler. Le 2026-08-16, la bascule vers ZeptoMail a été faite sur
+// l'app web, vérifiée, redéployée et déclarée terminée : elle n'avait AUCUN
+// effet, le worker envoyait toujours par Zoho. Preuve à chercher dans les logs
+// DU WORKER : `[email-worker] relais SMTP joignable et authentifié ✓`.
 //
-// ⚠️ L'en-tête annonçait « localhost:2525 → PowerMTA → IP dédiée Hetzner »
-// jusqu'au 2026-08-16. PowerMTA n'a jamais été déployé ; la migration vers Zoho
-// date du 2026-05-13. Trois autres fichiers portaient la même fiction
-// (`email-worker.ts`, `README.md`, `.env.example`) — tous corrigés dans le même
-// geste, parce qu'un opérateur qui suivait `.env.example` déployait une
-// configuration qui n'envoyait rien.
+// ⚠️ Cet en-tête a menti deux fois, et c'est instructif :
+//   - jusqu'au 2026-08-16 : « localhost:2525 → PowerMTA → IP dédiée Hetzner ».
+//     PowerMTA n'a jamais été déployé.
+//   - le 2026-08-16 au matin : « smtppro.zoho.eu:465 », écrit d'après la page
+//     de configuration du panneau Zoho — alors que la valeur RÉELLEMENT en
+//     service était `smtp.zoho.eu`. Documenter d'après le fournisseur plutôt
+//     que d'après la production produit une fiction crédible.
+//
+// Zoho Mail reste en service comme BOÎTE humaine (contact@axion-ia.com, plan
+// payant Mail Lite, IMAP `imappro.zoho.eu:993`). ZeptoMail est envoi-seul : il
+// s'ajoute à Zoho, il ne le remplace pas.
 //
 // Pas de Resend / SendGrid / Mailgun / Brevo (interdits par doctrine).
 //
