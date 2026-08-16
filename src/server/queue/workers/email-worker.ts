@@ -4,10 +4,14 @@
 // (via @react-email/render) puis envoie via Nodemailer.
 //
 // En dev  → Mailhog UI (http://localhost:8025) intercepte tout.
-// En prod → SMTP **Zoho Mail** authentifié (`smtppro.zoho.eu:465`, hôte `pro`
-//           d'un plan payant — cf. `client.ts`), depuis le
-//           2026-05-13. L'en-tête annonçait « PowerMTA local sur Hetzner relai
-//           vers IP dédiée » jusqu'au 2026-08-16 : PowerMTA n'a jamais existé.
+// En prod → SMTP **ZeptoMail** (`smtp.zeptomail.eu:587`), depuis le 2026-08-16.
+//           Avant : Zoho Mail (`smtp.zoho.eu`) depuis le 2026-05-13, et avant
+//           encore, un en-tête qui annonçait « PowerMTA local sur Hetzner »
+//           jamais déployé. Détail et pièges dans `client.ts`.
+//
+// 🔴 Ce worker tourne dans l'application Coolify `axion-ia-worker`, DISTINCTE
+// de l'app web et dotée de son PROPRE environnement. Les variables SMTP s'y
+// posent, et il faut REDEPLOY (pas Restart) pour qu'elles soient relues.
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
