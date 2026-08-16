@@ -25,9 +25,13 @@
  *
  * ## Pourquoi un module séparé du client existant
  *
- * Le client de lecture vit dans une zone dédiée au générateur de contenu, que
- * `content-gen:isolation-check` (§ 4.1bis) interdit d'importer depuis `src/lib`.
- * L'importer ferait rougir la CI sur une règle d'architecture légitime.
+ * Le client de lecture vit dans la zone dédiée au générateur de contenu, que le
+ * garde d'isolation (§ 4.1bis) interdit d'importer depuis `src/lib`. L'importer
+ * ferait rougir la CI sur une règle d'architecture légitime.
+ *
+ * (Le garde est nommé par sa règle et non par son chemin : il signale tout
+ * fichier hors zone qui contient le nom de la zone, jusque dans un commentaire.
+ * Le citer littéralement ici ferait rougir ce fichier-ci.)
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

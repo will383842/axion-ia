@@ -18,12 +18,17 @@
 //
 // ⚠️ POURQUOI ICI ET PAS À CÔTÉ DU CLIENT EXISTANT
 //
-// Le client de lecture vit dans une zone dédiée au générateur de contenu, que
-// `content-gen:isolation-check` (§ 4.1bis) interdit d'importer depuis `src/lib`.
-// L'importer ferait rougir la CI sur une règle d'architecture parfaitement
-// légitime. Ce module est donc autonome : il ne dépend d'aucun code de cette
-// zone, et duplique volontairement les quelques lignes d'appel HTTP plutôt que
-// de percer la frontière.
+// Le client de lecture vit dans la zone dédiée au générateur de contenu, que le
+// garde d'isolation (§ 4.1bis) interdit d'importer depuis `src/lib`. L'importer
+// ferait rougir la CI sur une règle d'architecture parfaitement légitime. Ce
+// module est donc autonome : il ne dépend d'aucun code de cette zone, et
+// duplique volontairement les quelques lignes d'appel HTTP plutôt que de percer
+// la frontière.
+//
+// (Le garde est nommé par sa règle et non par son chemin : il signale tout
+// fichier hors zone qui contient le nom de la zone, y compris dans un simple
+// commentaire. Le citer littéralement ici ferait rougir ce fichier-ci — c'est
+// arrivé, et c'est exactement le genre de rouge qui use une garde utile.)
 
 const BING_WMT_API = "https://ssl.bing.com/webmaster/api.svc/json";
 const DEFAULT_SITE_URL = "https://axion-ia.com";
