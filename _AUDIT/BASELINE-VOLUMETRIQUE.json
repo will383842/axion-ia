@@ -1,0 +1,58 @@
+{
+  "_lisezMoi": [
+    "T0 — baseline de performance des surfaces admin, mesurée AU VOLUME CIBLE.",
+    "",
+    "Ce fichier n'est pas un rapport : c'est un contrat. Le job CI 'Gate E - Volumetrie'",
+    "seede la fixture (prisma/seeds/volumetrie), rejoue chaque sonde declaree dans",
+    "src/server/admin/sondes-volumetriques.ts, et compare. Une sonde sans mesure, ou",
+    "dont la mesure depasse son budget, fait echouer le job.",
+    "",
+    "Pour (re)mesurer : pnpm volumetrie:seed puis pnpm volumetrie:mesure --ecrire.",
+    "",
+    "'volumes' doit rester identique a VOLUMES (fixture-volumetrique.ts). S'ils divergent,",
+    "la baseline a ete mesuree sur un autre jeu de donnees : ce n'est plus une baseline,",
+    "c'est un chiffre qui lui ressemble. Le test unitaire rougit dans ce cas."
+  ],
+  "volumes": {
+    "formateurs": 100,
+    "clients": 300,
+    "formations": 40,
+    "sessions": 1200,
+    "stagiaires": 3000,
+    "inscriptions": 8000,
+    "documents": 6000,
+    "alertesOuvertes": 400,
+    "sessionsInterEntreprises": 400,
+    "moisCouverts": 12
+  },
+  "mesures": {
+    "sessions_liste": {
+      "msMediane": null,
+      "requetes": null,
+      "mesureLe": null,
+      "note": "Jamais mesuree. Le job CI de volumetrie refuse tant que cette valeur est nulle."
+    },
+    "sessions_liste_archives": {
+      "msMediane": null,
+      "requetes": null,
+      "mesureLe": null,
+      "note": "Jamais mesuree."
+    },
+    "dossiers_pipeline": {
+      "msMediane": null,
+      "requetes": null,
+      "mesureLe": null,
+      "note": "Jamais mesuree."
+    },
+    "dossiers_pipeline_archives": {
+      "msMediane": null,
+      "requetes": null,
+      "mesureLe": null,
+      "note": "Jamais mesuree."
+    }
+  },
+  "playwright4g": {
+    "etat": "non_fait",
+    "note": "Mesure (b) du Lot 0 : hub de session + 2 pages d'emargement, bride 4G, critere 'contenu utile visible et CTA cliquable'. Exige l'application lancee sur une preproduction. Non remplacable par les sondes serveur ci-dessus."
+  }
+}
