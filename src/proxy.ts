@@ -463,6 +463,11 @@ export const config = {
     // middleware préfixe la locale et `/catalogue/index.html` (le catalogue à
     // feuilleter, cible d'un QR imprimé) part dans le routeur puis en 404,
     // alors que le PDF voisin passe. Constaté en prod le 2026-08-16.
-    "/((?!api/|widget/|qr/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html)$).*)",
+    // `.vcf` exclu : la fiche contact `/williams-jullin.vcf`
+    // (src/app/williams-jullin.vcf/route.ts) est la cible du QR imprimé sur la
+    // carte de visite. Route racine, aucune variante localisée. Sans
+    // l'exclusion, la règle 0bis 301 vers `/fr/williams-jullin.vcf` → 404, et
+    // les cartes déjà distribuées ne mènent plus nulle part.
+    "/((?!api/|widget/|qr/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };
