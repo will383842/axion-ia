@@ -70,13 +70,13 @@ export const SONDES: readonly Sonde[] = [
   },
   {
     cle: "dossiers_pipeline",
-    page: "/[adminPrefix]/dossiers",
+    page: "/[adminPrefix]/qualiopi/dossiers",
     intitule: "Pipeline des dossiers, 7 colonnes dérivées",
     budgetMs: 600,
   },
   {
     cle: "dossiers_pipeline_archives",
-    page: "/[adminPrefix]/dossiers?archives=1",
+    page: "/[adminPrefix]/qualiopi/dossiers?archives=1",
     intitule: "Pipeline des dossiers, mode archives",
     budgetMs: 900,
   },
