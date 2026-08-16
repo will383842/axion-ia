@@ -52,24 +52,47 @@ complet) vert = preuve. Détail dans `docs/adr/0041`.
   **écrit**, pas seulement codé. La moitié de la réponse n'est pas dans le dépôt
   (`/image-bank/*` doit être routé vers le volume).
 
-## 4. 🔴 Le constat qui corrige l'audit — à lire avant de chiffrer le lot 19
+## 4. ✅ GEO-118 vérifié en production — et la leçon d'un témoin invalide
 
-**Le bloc « Contenus IA à {ville} » est absent de TOUTES les villes**, y compris
-celles que #658 ne concerne pas (Chambéry, rendue au runtime avec la vraie
-base). Vérifié par `curl` sur 8 villes.
+**Mesuré après déploiement de `788e6ba` :**
 
-Donc la cause immédiate n'est **pas** celle que GEO-118 décrit :
-`getBlogArticlesByVille` rend `0` partout, ce qui renvoie vers
-`Article.mentionedCities` ou vers les trois autres filtres de la requête.
+| Ville                       | Pré-rendue | Avant | Après |
+| --------------------------- | ---------- | ----- | ----- |
+| Paris, Lyon                 | oui        | 0     | **1** |
+| Marseille, Toulouse, Lille  | oui        | 0     | 0     |
+| Rosny-sous-Bois, Mitry-Mory | non        | —     | 1     |
+| Chambéry                    | non        | 0     | 0     |
 
-L'audit l'avait pressenti (« amplitude INCERTAINE », « trancher
-`mentionedCities` avant de chiffrer »). **C'est tranché : le gain visible
-aujourd'hui est nul.** #658 lève une précondition — sans elle, peupler
-`mentionedCities` n'aurait rien changé sur Paris — mais ce n'est pas un gain de
-contenu. Détail et requêtes SQL dans le commentaire de la PR #658.
+Le bloc de Paris porte deux articles réels. L'étape de chauffe ajoutée par #658
+s'est exécutée avec succès : c'est elle qui l'a fait apparaître. **Le correctif
+fonctionne, et GEO-118 est exactement ce que l'audit décrivait.**
 
-⛔ **Ne pas conclure « le bloc marche » d'un déploiement réussi.** Le contrôle
-est `curl -s https://axion-ia.com/fr/implantations/ile-de-france/paris | grep -c "Contenus IA à"`.
+### 🔑 L'erreur que j'ai commise, et qui vaut d'être retenue
+
+En cours de nuit j'ai conclu — et écrit sur la PR — que « le gain visible est
+nul » et que la cause était en amont, dans `Article.mentionedCities`.
+
+**C'était faux.** J'avais pris **Chambéry comme témoin** : rendue au runtime avec
+la vraie base, donc hors du mécanisme GEO-118. Son bloc étant vide aussi, j'en
+ai déduit que le mécanisme n'était pas la cause.
+
+Le témoin était invalide : **Chambéry n'est mentionnée par aucun article.** Une
+ville sans mention n'affiche légitimement aucun bloc.
+
+> **Un témoin négatif ne vaut que si l'on a vérifié qu'il DEVRAIT être positif.**
+
+Le bon témoin était une ville **non pré-rendue ET mentionnée** — Rosny-sous-Bois,
+Mitry-Mory. Elles affichent le bloc, n'ayant jamais souffert du défaut, pendant
+que Paris et Lyon servaient une version vide figée au build.
+
+### Ce qui reste vrai
+
+La portée est **bornée par le corpus** : seules les villes réellement citées en
+bénéficient. Marseille, Toulouse et Lille ont bien été revalidées et restent
+sans bloc — aucun article ne les mentionne. Le gain croît avec le contenu
+produit, il ne le précède pas.
+
+Contrôle : `curl -s https://axion-ia.com/fr/implantations/ile-de-france/paris | grep -c "Contenus IA à"` → **1**.
 
 ## 5. Pièges payés cette nuit — à ne pas repayer
 
