@@ -20,13 +20,16 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { SONDES, type CleSonde } from "../../src/server/admin/sondes-volumetriques";
+import { libelleVerdict, verdictSonde } from "../../src/server/admin/verdict-volumetrique";
 import { VOLUMES } from "../../prisma/seeds/volumetrie/fixture-volumetrique";
 import { cibleAutorisee } from "../../prisma/seeds/volumetrie/garde-cible";
 
 const CHEMIN_BASELINE = resolve(process.cwd(), "_AUDIT/BASELINE-VOLUMETRIQUE.json");
 const REPETITIONS = 5;
-/** Marge au-dessus de la baseline avant de crier à la régression. */
-const TOLERANCE = 1.4;
+// 🔴 La règle de décision (budget, tolérance, plancher de bruit) vit dans
+// `src/server/admin/verdict-volumetrique.ts` et NON ici : `scripts/**` est hors
+// de l'`include` Vitest, donc tout ce qui est écrit dans ce fichier est du code
+// que personne ne teste. Ne pas la ramener ici.
 
 interface Mesure {
   msMediane: number | null;
@@ -109,25 +112,14 @@ async function main(): Promise<void> {
     }
     const ms = Math.round(mediane(temps));
     const ref = baseline.mesures[sonde.cle];
+    const baselineMs = ref?.msMediane ?? null;
 
-    let etat: string;
-    let ecart = "—";
-    if (ref == null || ref.msMediane == null) {
-      etat = "❌ AUCUNE BASELINE";
-      rouge = true;
-    } else if (ms > sonde.budgetMs) {
-      etat = `❌ HORS BUDGET (${sonde.budgetMs} ms)`;
-      ecart = `${ms - ref.msMediane >= 0 ? "+" : ""}${ms - ref.msMediane} ms`;
-      rouge = true;
-    } else if (ms > ref.msMediane * TOLERANCE) {
-      etat = `❌ RÉGRESSION (baseline ${ref.msMediane} ms)`;
-      ecart = `+${ms - ref.msMediane} ms`;
-      rouge = true;
-    } else {
-      etat = "✓";
-      ecart = `${ms - ref.msMediane >= 0 ? "+" : ""}${ms - ref.msMediane} ms`;
-    }
-    lignes.push({ sonde, ms, ecart, verdict: etat });
+    const v = verdictSonde({ ms, budgetMs: sonde.budgetMs, baselineMs });
+    if (v.rouge) rouge = true;
+
+    const delta = baselineMs == null ? null : ms - baselineMs;
+    const ecart = delta == null ? "—" : `${delta >= 0 ? "+" : ""}${delta} ms`;
+    lignes.push({ sonde, ms, ecart, verdict: libelleVerdict(v) });
   }
 
   console.log(
@@ -143,10 +135,15 @@ async function main(): Promise<void> {
   if (process.argv.includes("--ecrire")) {
     const horodatage = new Date().toISOString().slice(0, 10);
     for (const l of lignes) {
+      // La note explique CE QUE la mesure veut dire (volume, run CI, budget) :
+      // l'écraser à chaque re-mesure remplacerait une baseline expliquée par
+      // quatre nombres nus. On garde la précédente si aucune n'est fournie.
+      const precedente = baseline.mesures[l.sonde.cle];
       baseline.mesures[l.sonde.cle] = {
         msMediane: l.ms,
         requetes: null,
         mesureLe: horodatage,
+        ...(precedente?.note != null ? { note: precedente.note } : {}),
       };
     }
     writeFileSync(CHEMIN_BASELINE, `${JSON.stringify(baseline, null, 2)}\n`, "utf-8");
