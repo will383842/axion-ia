@@ -1,0 +1,71 @@
+{
+  "_lisezMoi": [
+    "T0 — baseline de performance des surfaces admin, mesurée AU VOLUME CIBLE.",
+    "",
+    "Ce fichier n'est pas un rapport : c'est un contrat. Le job CI 'Gate E - Volumetrie'",
+    "seede la fixture (prisma/seeds/volumetrie), rejoue chaque sonde declaree dans",
+    "src/server/admin/sondes-volumetriques.ts, et compare. Une sonde sans mesure, ou",
+    "dont la mesure depasse son budget, fait echouer le job.",
+    "",
+    "Pour (re)mesurer : pnpm volumetrie:seed puis pnpm volumetrie:mesure --ecrire.",
+    "",
+    "'volumes' doit rester identique a VOLUMES (fixture-volumetrique.ts). S'ils divergent,",
+    "la baseline a ete mesuree sur un autre jeu de donnees : ce n'est plus une baseline,",
+    "c'est un chiffre qui lui ressemble. Le test unitaire rougit dans ce cas."
+  ],
+  "volumes": {
+    "formateurs": 100,
+    "clients": 300,
+    "formations": 40,
+    "sessions": 1200,
+    "stagiaires": 3000,
+    "inscriptions": 8000,
+    "documents": 6000,
+    "alertesOuvertes": 400,
+    "sessionsInterEntreprises": 400,
+    "moisCouverts": 12
+  },
+  "mesures": {
+    "sessions_liste": {
+      "msMediane": 10,
+      "requetes": null,
+      "mesureLe": "2026-08-16",
+      "note": "Mesuree en CI (run 31952147429, job 95178854317) contre la fixture reellement ecrite : 1200 sessions, 8000 inscriptions, 1236 creances. Budget 450 ms."
+    },
+    "sessions_liste_archives": {
+      "msMediane": 7,
+      "requetes": null,
+      "mesureLe": "2026-08-16",
+      "note": "Meme run. Le mode archives est PLUS rapide que la fenetre 12 mois : il n'a pas de borne de date a evaluer. Budget 700 ms."
+    },
+    "dossiers_pipeline": {
+      "msMediane": 17,
+      "requetes": null,
+      "mesureLe": "2026-08-16",
+      "note": "Meme run, 7 colonnes derivees sur 400 dossiers. Budget 600 ms."
+    },
+    "dossiers_pipeline_archives": {
+      "msMediane": 12,
+      "requetes": null,
+      "mesureLe": "2026-08-16",
+      "note": "Meme run. Budget 900 ms."
+    }
+  },
+  "_ceQueCesChiffresDisent": [
+    "A 1200 sessions, les REQUETES ne sont PAS le goulot : 7 a 17 ms pour des budgets",
+    "de 450 a 900 ms, soit 2 a 4 % du budget. C'est l'issue que le plan avait anticipee",
+    "pour le Lot 0 — « le serveur est deja < 2 s → D1 requalifie en probleme de feedback",
+    "client ». La journee du Lot 4 bascule donc vers les loading.tsx granulaires (il n'y",
+    "en a qu'UN aujourd'hui, au niveau [adminPrefix] : c'est tout ou rien), et NON vers",
+    "de l'optimisation de requetes.",
+    "",
+    "🔴 Corollaire sur la garde elle-meme : a 7-17 ms, le seuil de regression relatif",
+    "(1,4 x baseline) tombe DANS le bruit d'ordonnancement d'un runner GitHub partage.",
+    "Un plancher de bruit a ete pose (voir src/server/admin/verdict-volumetrique.ts) :",
+    "en dessous de 50 ms, seul le budget compte. Une garde qui crie a tort cesse d'etre lue."
+  ],
+  "playwright4g": {
+    "etat": "non_fait",
+    "note": "Mesure (b) du Lot 0 : hub de session + 2 pages d'emargement, bride 4G, critere 'contenu utile visible et CTA cliquable'. Exige l'application lancee sur une preproduction. Non remplacable par les sondes serveur ci-dessus."
+  }
+}
