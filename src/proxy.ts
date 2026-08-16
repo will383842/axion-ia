@@ -458,6 +458,11 @@ export const config = {
     // `qr/` exclu : redirection publique des QR dynamiques (src/app/qr/[slug]/route.ts),
     // route racine NON localisée qui émet elle-même son 302. Sans exclusion, la
     // règle 0bis 301 `/qr/x` → `/fr/qr/x` (404 + fige la cible dans les caches).
-    "/((?!api/|widget/|qr/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf)$).*)",
+    // `.html` exclu : un fichier .html ne peut venir que de /public/ — aucune
+    // route Next ne se termine par cette extension. Sans l'exclusion, le
+    // middleware préfixe la locale et `/catalogue/index.html` (le catalogue à
+    // feuilleter, cible d'un QR imprimé) part dans le routeur puis en 404,
+    // alors que le PDF voisin passe. Constaté en prod le 2026-08-16.
+    "/((?!api/|widget/|qr/|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|.*\\.txt$|.*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html)$).*)",
   ],
 };
