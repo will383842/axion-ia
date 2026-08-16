@@ -322,6 +322,32 @@ export default async function BlogArticle({ params }: Props) {
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
+
+  // 🔴 GEO-071 (audit GEO/AEO 2026-08-14) — la VRAIE date de vérification des
+  // sources, ou `null`.
+  //
+  // Ces deux blocs affichaient jusqu'ici `view.updatedAt` sous l'étiquette
+  // « Dernière vérification » : on affirmait au lecteur et aux moteurs que les
+  // sources avaient été contrôlées ce jour-là, alors que personne ne les avait
+  // ouvertes. `ArticleTransparencyBlock` documentait pourtant l'inverse dans son
+  // propre en-tête — « alimenté par la donnée DB réelle, jamais inventée ». La
+  // garantie était écrite dans le composant et rompue au point d'appel.
+  //
+  // La donnée existe : `ExternalReference.lastVerifiedAt`, écrite par
+  // `persist-citations.ts`, mais lue par personne. On prend la PLUS RÉCENTE des
+  // citations de l'article — dire « vérifié le » sur la plus ancienne serait
+  // sous-estimer, sur une moyenne serait inventer.
+  //
+  // `null` si aucune citation n'a jamais été vérifiée : les deux blocs
+  // disparaissent alors, ce qui est le comportement documenté (« pas de date =
+  // pas de bloc »). Une absence est honnête ; une date fabriquée ne l'est pas.
+  const datesVerifiees = view.citations
+    .map((c) => c.lastVerifiedAt)
+    .filter((d): d is Date => d instanceof Date);
+  const sourcesVerifiees =
+    datesVerifiees.length > 0
+      ? new Date(Math.max(...datesVerifiees.map((d) => d.getTime())))
+      : null;
   // VIS-01 — Les articles DB stockent du bodyHtml (sortie content-gen) ; les
   // articles FS legacy stockent de la prose brute. On rend le HTML sanitisé pour
   // les DB (avec ancres h2 via buildToc) et on garde parseBody pour les FS.
@@ -683,14 +709,14 @@ export default async function BlogArticle({ params }: Props) {
           <ArticleSources
             items={view.citations}
             locale={loc}
-            lastVerified={view.updatedAt ?? view.publishedAt}
+            lastVerified={sourcesVerifiees ? sourcesVerifiees.toISOString().slice(0, 10) : null}
           />
 
           {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
           E-E-A-T : dernière vérification + cycle de mise à jour (signal de
           fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
           <ArticleTransparencyBlock
-            lastVerified={view.updatedAt ?? view.publishedAt}
+            lastVerified={sourcesVerifiees}
             updateCycleDays={90}
             locale={loc}
           />

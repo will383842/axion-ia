@@ -236,6 +236,24 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
   // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
   /^tests\/unit\/seo\/sitemap-hygiene\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO, GEO-010 et GEO-071) — MÊME
+  // RAISONNEMENT que les exceptions ci-dessus.
+  //
+  // Cette garde vérifie que les pages éditoriales cessent d'afficher une date de
+  // « dernière vérification » fabriquée à partir de la date de l'article. Elle
+  // doit donc citer le chargeur (`content-gen/blog/loader.ts`) et le composant
+  // (`components/content-gen/ArticleSources`) : c'est précisément le couplage
+  // qu'elle surveille. Lui interdire de les nommer reviendrait à lui interdire
+  // de faire son travail.
+  //
+  // Lecture de fichier en assertion, aucun `import` d'exécution : le couplage
+  // que le § 4.1bis interdit n'existe pas ici.
+  //
+  // 🔑 C'est la TROISIÈME garde de ce chantier à trébucher ici. La règle
+  // implicite mérite d'être dite : une garde qui surveille une frontière doit
+  // pouvoir nommer les deux côtés. Ajouter l'exception fait partie du travail,
+  // ce n'est pas un contournement.
+  /^tests\/unit\/seo\/sources-eeat\.spec\.ts$/,
   // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, GEO-028) — MÊME RAISONNEMENT
   // que l'exception a11y ci-dessus.
   //
