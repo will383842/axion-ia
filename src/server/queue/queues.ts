@@ -346,7 +346,9 @@ export const contentPsiMonitorQueue: Queue | null = connection
 /**
  * Sprint A 2026-05-21 D-P5-3 — Rapport qualité hebdomadaire content-gen.
  * Cron lundi 7h00 UTC (≈ 8h CET). KPIs publiés/rejetés/coût/villes/anomalies.
- * Destinataire : WEEKLY_REPORT_EMAIL env var (défaut williamsjullin@gmail.com).
+ * Destinataire : WEEKLY_REPORT_EMAIL, sinon l'adresse de l'organisme
+ * (`lib/destinataires-internes.ts`). Ce commentaire annonçait encore un repli
+ * sur une boîte Gmail personnelle, qui n'existe plus.
  */
 export const contentWeeklyReportQueue: Queue | null = connection
   ? new Queue("content-weekly-report", {

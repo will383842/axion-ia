@@ -89,6 +89,10 @@ import { listMoyens } from "@/server/qualiopi/moyens/moyens-service";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
 import { getSousTraitant } from "@/server/qualiopi/registres/sous-traitants-service";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  montantPrisEnChargeCents,
+  resteAChargeCents,
+} from "@/server/qualiopi/financements/prise-en-charge-montant";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -371,7 +375,16 @@ export async function genererConventionTripartiteAction(input: {
       montantHtCents: true,
       opcoSubrogation: true,
       numeroDossierOpco: true,
+      // 🔴 16/08 — `priseEnChargeMontantCents` était sélectionné SEUL et lu comme
+      // un total. C'est un TARIF : son sens dépend entièrement de l'unité, et
+      // les plafonds le bornent. Sans ces quatre champs, la convention imprimait
+      // « Prise en charge OPCO : 40,00 € » pour un OPCO couvrant 40 €/h sur 14 h
+      // et 8 participants, soit 4 480 € — un facteur 112, sur la pièce que lit
+      // le financeur et que trois parties signent.
       priseEnChargeMontantCents: true,
+      priseEnChargeUnite: true,
+      priseEnChargePlafondFormationCents: true,
+      priseEnChargePlafondAnnuelCents: true,
       formationSnapshot: true,
       formation: {
         select: {
@@ -407,8 +420,29 @@ export async function genererConventionTripartiteAction(input: {
     ? opcoLabel(session.client.opcoIdentifie)
     : "OPCO (à préciser)";
   const numeroPriseEnCharge = session.numeroDossierOpco ?? session.client.opcoNumeroAdherent ?? "—";
-  const montantPrisEnCharge = (session.priseEnChargeMontantCents ?? 0) / 100;
   const prixHt = session.montantHtCents / 100;
+
+  // 🔴 16/08 — le montant pris en charge se CALCULE, il ne se lit pas.
+  //
+  // `priseEnChargeMontantCents` est un TARIF (€/h, €/j, €/formation,
+  // €/an/salarié) : le lire brut imprimait « 40,00 € » là où l'OPCO couvre
+  // 40 €/h × 14 h × 8 participants = 4 480 €. Sur une pièce contractuelle
+  // signée par trois parties, avec un reste à charge faux du même écart.
+  //
+  // ⚠️ `null` = montant NON ÉTABLI (tarif absent, unité absente, durée requise
+  // et inconnue). Le gabarit le dit alors, au lieu d'imprimer 0 — un zéro se
+  // lirait comme « le financeur ne prend rien en charge », ce qui est une
+  // affirmation, et une affirmation fausse.
+  const basePriseEnCharge = {
+    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+    priseEnChargeUnite: session.priseEnChargeUnite,
+    priseEnChargePlafondFormationCents: session.priseEnChargePlafondFormationCents,
+    priseEnChargePlafondAnnuelCents: session.priseEnChargePlafondAnnuelCents,
+    dureeHeures: formationDoc.dureeHeures ?? session.formation.dureeHeures,
+    nbParticipants: session.nbParticipantsPrevus,
+  };
+  const priseEnChargeCents = montantPrisEnChargeCents(basePriseEnCharge);
+  const resteCents = resteAChargeCents(basePriseEnCharge, session.montantHtCents);
 
   const doc = await generateDocument({
     type: "convention_tripartite",
@@ -438,8 +472,9 @@ export async function genererConventionTripartiteAction(input: {
           lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
           prixHt,
-          montantPrisEnCharge,
-          resteAChargeClient: Math.max(0, prixHt - montantPrisEnCharge),
+          // `null` quand le montant n'est pas établi : le gabarit le DIT.
+          montantPrisEnCharge: priseEnChargeCents !== null ? priseEnChargeCents / 100 : null,
+          resteAChargeClient: resteCents !== null ? resteCents / 100 : null,
           dateConvention: formatDateFr(new Date()),
         },
         identite,

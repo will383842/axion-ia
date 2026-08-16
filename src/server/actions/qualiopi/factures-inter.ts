@@ -147,7 +147,11 @@ export async function genererFactureParInscriptionAction(
     };
   }
 
-  const destinataire = destinataireFacture(resolved.financementType);
+  // 🔴 La subrogation décide de QUI est facturé, pas seulement de qui paie.
+  // Sans elle, l'OPCO rembourse son adhérent : la facture va à l'entreprise.
+  const destinataire = destinataireFacture(resolved.financementType, {
+    opcoSubrogation: enrollment.session.opcoSubrogation,
+  });
   const payeur = enrollment.client ?? enrollment.session.client;
   const traineeNom = `${enrollment.trainee.prenom} ${enrollment.trainee.nom}`;
 

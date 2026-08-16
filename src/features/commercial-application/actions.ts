@@ -18,6 +18,7 @@
 import { headers, cookies } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
+import { destinataireCandidatures } from "@/lib/destinataires-internes";
 import { syncCandidateToCrm } from "@/server/crm-sync";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
@@ -62,14 +63,20 @@ function safeHashIp(ip: string | null | undefined): string | null {
   }
 }
 
-/** Destinataire du récap interne — même chaîne de repli que les alertes internes. */
+/**
+ * Destinataire du récap interne — SSOT `lib/destinataires-internes.ts`.
+ *
+ * 🔴 Le repli en dur était une adresse Gmail PERSONNELLE. Ce message-ci ne
+ * transporte pas un simple avis : il porte la **candidature complète** —
+ * identité, parcours, coordonnées. La faire atterrir hors du domaine de
+ * l'organisme, sur une boîte qui ne survit pas au départ d'une personne, n'est
+ * pas un défaut de confort. Décision de Will le 16/08 : `contact@axion-ia.com`.
+ *
+ * La chaîne de replis est conservée à l'identique (sa variable propre d'abord) :
+ * une candidature n'a pas à suivre le canal des alertes de conformité.
+ */
 function internalRecipient(): string {
-  return (
-    process.env["COMMERCIAL_APPLICATIONS_EMAIL"] ??
-    process.env["QUALIOPI_ALERTE_EMAIL"] ??
-    process.env["WEEKLY_REPORT_EMAIL"] ??
-    "williamsjullin@gmail.com"
-  );
+  return destinataireCandidatures();
 }
 
 const oui = (v: boolean) => (v ? "Oui" : "Non");

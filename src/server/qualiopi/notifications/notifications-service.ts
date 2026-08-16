@@ -21,6 +21,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { enqueueEmail } from "@/server/queue/queues";
 import { creerTokenInscription } from "@/server/qualiopi/emargement/token-service";
 import { formatLieu } from "@/server/qualiopi/lieu/format-lieu";
@@ -753,8 +754,9 @@ export async function envoyerEnqueteEntreprise(sessionId: string): Promise<void>
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Envoie une alerte interne à l'équipe Axion-IA (destinataire = env var
- * QUALIOPI_ALERTE_EMAIL ou WEEKLY_REPORT_EMAIL ou noreply admin).
+ * Envoie une alerte interne à l'équipe Axion-IA (destinataire résolu par
+ * `destinataireAlertesInternes()` : QUALIOPI_ALERTE_EMAIL, sinon
+ * WEEKLY_REPORT_EMAIL, sinon l'adresse de l'organisme).
  * NE PAS utiliser pour notifier des stagiaires.
  * Idempotent : jobId = qualiopi-alerte-interne-{alerteId}.
  */
@@ -786,11 +788,14 @@ export async function notifierAlerteInterne(alerteId: string): Promise<void> {
 
   if (!alerte) return;
 
-  // Destinataire interne : priorité QUALIOPI_ALERTE_EMAIL, sinon WEEKLY_REPORT_EMAIL
-  const destinataire =
-    process.env["QUALIOPI_ALERTE_EMAIL"] ??
-    process.env["WEEKLY_REPORT_EMAIL"] ??
-    "williamsjullin@gmail.com";
+  // Destinataire interne — SSOT `lib/destinataires-internes.ts`.
+  //
+  // 🔴 Le repli en dur était une adresse Gmail PERSONNELLE, et il était recopié
+  // à la main dans un second fichier (celui des candidatures commerciales, qui
+  // envoie le CV complet d'un candidat). Trois valeurs coexistaient pour la
+  // même question : la troisième était juste, les deux autres fausses.
+  // Décision de Will le 16/08 : `contact@axion-ia.com`, résolue en UN endroit.
+  const destinataire = destinataireAlertesInternes();
 
   const payload: Record<string, unknown> = {
     niveau: alerte.niveau,
