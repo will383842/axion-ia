@@ -791,7 +791,7 @@ jobs:
           # par `tests/unit/ci/deploy-warm-listes.spec.ts` : revalider sans
           # purger laisse la version amputée figée à l'edge pour s-maxage=3600.
           # Plafond Cloudflare Free : 30 URLs par appel de purge par liste — 14 ici.
-          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation"]'
+          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -824,7 +824,7 @@ jobs:
           fi
           # ⚠️ MÊME ENSEMBLE QUE `PATHS` DU STEP PRÉCÉDENT, au préfixe près.
           # Verrouillé par `tests/unit/ci/deploy-warm-listes.spec.ts`.
-          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation"]'
+          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation","https://axion-ia.com/fr/blog/page/2","https://axion-ia.com/fr/blog/page/3","https://axion-ia.com/fr/blog/page/4","https://axion-ia.com/fr/blog/page/5"]'
           code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             -H "Content-Type: application/json" \
@@ -834,6 +834,77 @@ jobs:
           if [ "${code}" != "200" ]; then
             echo "::warning::Purge CF ciblée non confirmée (HTTP ${code}) — non bloquant."
           fi
+
+      # ── Hubs villes pré-rendus : revalidation + purge (GEO-118) ──────────
+      # Ces pages affichent un bloc « articles mentionnant {ville} » qui LIT LA
+      # BASE. Le build tourne sous les URLs stub (ADR 0026) : la requête rend
+      # `[]`, le bloc n'est pas rendu. Avec `revalidate = 86400` et des
+      # déploiements plus fréquents qu'une fois par jour, ces pages ne repassent
+      # JAMAIS par un rendu peuplé — le bloc est structurellement absent, et ce
+      # sont Paris, Lyon, Marseille…
+      #
+      # Les ~2 100 autres villes vont bien : `dynamicParams` les rend au RUNTIME,
+      # avec la vraie base. Le défaut ne touche QUE les villes pré-rendues.
+      # (L'audit annonçait « ~480 hubs villes » : le compte et la population
+      # touchée étaient tous deux inexacts. La nuance rend le correctif borné.)
+      #
+      # ⚠️ LA LISTE N'EST PAS ÉCRITE ICI, ET C'EST LE POINT. Ce job n'a ni
+      # checkout ni Node — cinq `curl` sur un runner nu, et c'est très bien
+      # ainsi. Il lit donc un fichier versionné, ARTEFACT de
+      # `src/content/villes/prerendu.ts` — la MÊME source que
+      # `generateStaticParams`. Recopier le seuil de population ici rejouerait le
+      # défaut d'origine : deux endroits qui décrivent le même ensemble finissent
+      # par diverger. `tests/unit/ci/deploy-warm-listes.spec.ts` recalcule la
+      # liste et rougit si le fichier a dérivé.
+      #
+      # Régénérer : pnpm tsx scripts/ci/hubs-villes-prerendus.ts --ecrire
+      - name: Revalidate + purge hubs villes pré-rendus (anti-empty-ISR)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          LISTE: .github/warm/hubs-villes-prerendus.json
+        run: |
+          set -uo pipefail
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::warning::REVALIDATE_SECRET absent — hubs villes non revalidés. Le bloc « articles mentionnant {ville} » restera absent sur les villes pré-rendues."
+            exit 0
+          fi
+          # Ce job n'a pas de checkout : on récupère la liste depuis le dépôt au
+          # commit déployé, pas depuis `main` — sinon on chaufferait une liste
+          # qui ne correspond pas à l'image en ligne.
+          if ! curl -sSfL -m 30 -o /tmp/hubs-villes.json               "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/${LISTE}"; then
+            echo "::warning::Liste des hubs villes introuvable au commit ${GITHUB_SHA} — étape ignorée."
+            exit 0
+          fi
+          NB=$(jq 'length' /tmp/hubs-villes.json)
+          echo "Hubs villes pré-rendus : ${NB}"
+
+          PATHS_VILLES=$(jq -c '.' /tmp/hubs-villes.json)
+          code=$(curl -sS -o /tmp/reval-villes.json -w "%{http_code}" -m 60 -X POST             -H "Content-Type: application/json"             -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}"             --data "{\"paths\":${PATHS_VILLES}}"             "${SITE}/api/internal/revalidate" || echo "000")
+          echo "  revalidate HTTP ${code}"
+          if [ "${code}" != "200" ]; then
+            echo "::warning::Revalidation des hubs villes non confirmée (HTTP ${code}) — non bloquant."
+          fi
+
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ]; then
+            echo "::warning::Purge CF des hubs villes SKIP (secret absent) — l'edge se rafraîchit seul sous 24h."
+            exit 0
+          fi
+          # Purge APRÈS la revalidation : l'inverse laisse le prochain hit refiger
+          # la version vide à l'edge pour s-maxage=3600 (vécu le 2026-08-14 sur
+          # /fr/diagnostic).
+          #
+          # Découpage en lots de 30 = plafond du plan Free PAR APPEL. Au-delà,
+          # Cloudflare rejette l'appel ENTIER : pas une seule URL purgée, et sans
+          # lire le corps de la réponse ça ressemble à un succès. Le découpage est
+          # une garde, pas une politesse.
+          I=0
+          while [ "${I}" -lt "${NB}" ]; do
+            LOT=$(jq -c --argjson i "${I}" --arg s "${SITE}"               '[.[$i:$i+30][] | $s + .]' /tmp/hubs-villes.json)
+            code=$(curl -sS -o /tmp/cfpurge-villes.json -w "%{http_code}" -m 30 -X POST               -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"               -H "Content-Type: application/json"               --data "{\"files\":${LOT}}"               "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" || echo "000")
+            echo "  purge lot ${I}..$((I + 30)) HTTP ${code} — $(head -c 160 /tmp/cfpurge-villes.json 2>/dev/null || echo '(no body)')"
+            I=$((I + 30))
+          done
 
       # 2026-07-20 — Chauffe PRIORITAIRE des pages stratégiques + de leurs images
       # LCP. Deux problèmes que le sweep sitemap ci-dessous ne couvre pas :
