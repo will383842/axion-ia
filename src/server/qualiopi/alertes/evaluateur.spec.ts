@@ -71,7 +71,7 @@ import {
   cumulAnnuelFormateurCents,
   listTrainerDocuments,
 } from "@/server/qualiopi/trainers/documents";
-import { evaluerAlertes } from "./evaluateur";
+import { evaluerAlertes, evaluerAlertesDetaille, PLAFOND_CANDIDATES_PAR_REGLE } from "./evaluateur";
 import { ALERTE_CATALOGUE } from "./catalogue";
 // Catalogue des kits (module pur, non mocké) : fournit un slug RÉEL aux tests
 // de diaporama_manquant_session.
@@ -1978,5 +1978,66 @@ describe("evaluerAlertes — moteur_assemble_a_publier", () => {
     };
     expect(arg.where.statutGeneration).toBe("assemble");
     expect(arg.where.statut).toEqual({ not: "archive" });
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// T3a — la troncature est DÉCLARÉE, jamais silencieuse
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 une règle qui dégénère est bornée ET le dit", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  /** N réclamations sans réponse — la règle la plus simple à faire déborder. */
+  function reclamations(n: number) {
+    return Array.from({ length: n }, (_, i) => ({
+      id: `rec-${i}`,
+      numero: `AXI-REC-${i}`,
+      reclamantNom: `Personne ${i}`,
+      dateReception: new Date("2026-01-01T00:00:00Z"),
+    }));
+  }
+
+  it("sous le plafond, rien n'est tronqué et rien n'est déclaré", async () => {
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE));
+    const { candidates, reglesTronquees } = await evaluerAlertesDetaille();
+    expect(reglesTronquees).toEqual([]);
+    expect(candidates.filter((c) => c.code === "reclamation_sans_reponse_j15")).toHaveLength(
+      PLAFOND_CANDIDATES_PAR_REGLE,
+    );
+  });
+
+  it("🔴 au-dessus du plafond, la moisson est bornée", async () => {
+    // Sans borne, une condition trop large sur 8 000 inscriptions inonderait la
+    // table d'alertes — et la console deviendrait illisible au moment précis où
+    // elle sert le plus.
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE + 57));
+    const { candidates } = await evaluerAlertesDetaille();
+    expect(candidates.filter((c) => c.code === "reclamation_sans_reponse_j15")).toHaveLength(
+      PLAFOND_CANDIDATES_PAR_REGLE,
+    );
+  });
+
+  it("🔴 et elle DIT combien elle a laissé de côté", async () => {
+    // Un moteur qui remonte les N premières en silence fabrique la certitude
+    // qu'il n'y a rien d'autre. C'est le pire des trois états possibles.
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE + 57));
+    const { reglesTronquees } = await evaluerAlertesDetaille();
+    expect(reglesTronquees).toEqual([
+      {
+        nom: "reclamations_sans_reponse",
+        trouvees: PLAFOND_CANDIDATES_PAR_REGLE + 57,
+        retenues: PLAFOND_CANDIDATES_PAR_REGLE,
+      },
+    ]);
+  });
+
+  it("la troncature d'une règle n'affecte pas les autres", async () => {
+    mp.reclamation.findMany.mockResolvedValue(reclamations(PLAFOND_CANDIDATES_PAR_REGLE + 1));
+    const { reglesTronquees } = await evaluerAlertesDetaille();
+    expect(reglesTronquees).toHaveLength(1);
   });
 });

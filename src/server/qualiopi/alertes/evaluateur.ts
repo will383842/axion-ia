@@ -1921,7 +1921,34 @@ export interface EvaluationAlertes {
    * matin effacerait à tort toutes les alertes devis.
    */
   reglesEnEchec: string[];
+  /**
+   * T3a — noms des règles dont la moisson a été TRONQUÉE au plafond, avec le
+   * nombre réel de candidates trouvées.
+   *
+   * 🔴 Une troncature muette est le pire des trois états possibles. Un moteur
+   * qui remonte tout est lent ; un moteur qui remonte les N premières et le
+   * DIT est utilisable ; un moteur qui remonte les N premières en silence
+   * fabrique la certitude qu'il n'y a rien d'autre. C'est le même principe que
+   * les plafonds d'écran (T1) : un plafond annoncé est une information, un
+   * plafond tu est un mensonge par omission.
+   */
+  reglesTronquees: { nom: string; trouvees: number; retenues: number }[];
 }
+
+/**
+ * Plafond de candidates par règle et par passage.
+ *
+ * Il ne protège pas la base — les requêtes des règles restent non bornées, et
+ * ce point est traité à part (cf. le commentaire de `evaluerAlertesDetaille`).
+ * Il protège l'ÉTAPE D'ÉCRITURE : sans lui, une règle qui dégénère (une
+ * condition trop large sur 8 000 inscriptions) inonderait la table d'alertes,
+ * et la console deviendrait illisible au moment précis où elle sert le plus.
+ *
+ * 200 : bien au-dessus de tout volume légitime observé (la règle la plus
+ * bavarde en produit quelques dizaines), assez bas pour qu'une dégénérescence
+ * se voie immédiatement dans `reglesTronquees`.
+ */
+export const PLAFOND_CANDIDATES_PAR_REGLE = 200;
 
 /**
  * Évalue toutes les règles — variante détaillée qui expose les échecs.
@@ -1929,20 +1956,54 @@ export interface EvaluationAlertes {
  * Stub-aware : vide si DATABASE_URL contient "stub.invalid".
  * Fail-soft par règle : une erreur de règle est loggée, comptée, et n'empêche
  * pas les autres règles.
+ *
+ * ⚠️ CE QUE T3a NE FAIT DÉLIBÉRÉMENT PAS, et pourquoi c'est écrit ici.
+ *
+ * Les 31 `findMany` des règles restent SANS `take`. Le plan (T3a, 3ᵉ puce)
+ * demandait de les borner ; ce n'est pas un oubli, c'est un refus motivé :
+ *
+ * - plusieurs règles **agrègent** (compter des présences, comparer un seuil de
+ *   satisfaction, recouper deux listes). Poser un `take` dessus ne les rendrait
+ *   pas plus rapides : ça les rendrait **fausses**, en silence, dans un système
+ *   de conformité où une alerte manquante est un risque d'audit ;
+ * - distinguer, sur 31 requêtes, celles qui énumèrent de celles qui agrègent
+ *   demande de lire chaque règle et son usage — c'est un chantier à part entière,
+ *   pas une passe mécanique ;
+ * - le plafond posé ci-dessus protège déjà ce qui coûtait vraiment : l'étape
+ *   d'écriture et la lisibilité de la console.
+ *
+ * 🔴 Le coût réel de ces 31 requêtes n'est aujourd'hui **pas mesuré**. Il le
+ * deviendra : la fixture volumétrique (T0) et le gate de mesure existent
+ * désormais, et une sonde sur le passage du cron dira lesquelles pèsent
+ * réellement. Borner à l'aveugle avant cette mesure reviendrait à optimiser au
+ * hasard un système qui, aujourd'hui, tient 400 alertes.
  */
 export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return { candidates: [], reglesEnEchec: [] };
+    return { candidates: [], reglesEnEchec: [], reglesTronquees: [] };
   }
 
   const now = new Date();
   const toutes: AlerteCandidate[] = [];
   const reglesEnEchec: string[] = [];
+  const reglesTronquees: { nom: string; trouvees: number; retenues: number }[] = [];
 
   for (const { nom, fn } of REGLES) {
     try {
       const candidates = await fn(now);
-      toutes.push(...candidates);
+      if (candidates.length > PLAFOND_CANDIDATES_PAR_REGLE) {
+        reglesTronquees.push({
+          nom,
+          trouvees: candidates.length,
+          retenues: PLAFOND_CANDIDATES_PAR_REGLE,
+        });
+        console.warn(
+          `[evaluateur-alertes] règle ${nom} TRONQUÉE : ${candidates.length} candidates ` +
+            `trouvées, ${PLAFOND_CANDIDATES_PAR_REGLE} retenues. Une règle aussi bavarde est ` +
+            `presque toujours une condition trop large, pas un vrai afflux.`,
+        );
+      }
+      toutes.push(...candidates.slice(0, PLAFOND_CANDIDATES_PAR_REGLE));
     } catch (err) {
       reglesEnEchec.push(nom);
       console.error(
@@ -1952,7 +2013,7 @@ export async function evaluerAlertesDetaille(): Promise<EvaluationAlertes> {
     }
   }
 
-  return { candidates: toutes, reglesEnEchec };
+  return { candidates: toutes, reglesEnEchec, reglesTronquees };
 }
 
 /** Compat : la liste des candidates seule (appelants historiques). */
