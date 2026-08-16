@@ -57,6 +57,10 @@ import { ContratSousTraitancePdf } from "@/server/qualiopi/documents/templates/c
 import { ReleveConnexionPdf } from "@/server/qualiopi/documents/templates/releve-connexion";
 import { LettreMissionPdf } from "@/server/qualiopi/documents/templates/lettre-mission";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
+import {
+  versionGabaritCourante,
+  versionGabaritInstantane,
+} from "@/server/qualiopi/documents/templates/gabarit-versions";
 
 /**
  * Type de pièce → composant de rendu.
@@ -85,7 +89,12 @@ const COMPOSANTS: Readonly<Record<string, ComposantPiece>> = {
 };
 
 export type RefusExemplaire =
-  "introuvable" | "aucune_signature" | "type_non_rendu" | "instantane_absent" | "indisponible";
+  | "introuvable"
+  | "aucune_signature"
+  | "type_non_rendu"
+  | "instantane_absent"
+  | "gabarit_modifie"
+  | "indisponible";
 
 export type ResultatExemplaire =
   | { ok: true; buffer: Buffer; nomFichier: string }
@@ -99,6 +108,12 @@ const MESSAGES: Record<RefusExemplaire, string> = {
     "Ce type de pièce ne sait pas encore rendre ses signatures dans le document. La preuve reste consultable au registre.",
   instantane_absent:
     "Cette pièce a été générée avant l'enregistrement de son instantané de rendu : l'exemplaire signé ne peut pas être reproduit fidèlement. Régénérez la pièce avant de la faire signer.",
+  // 🔴 Le pendant du précédent, sur l'axe du GABARIT et non des données.
+  // Le message dit ce qui s'est passé ET ce qui reste vrai : la signature n'est
+  // pas invalidée, c'est sa REPRODUCTION à l'identique qui ne l'est plus. Sans
+  // cette précision, un lecteur conclurait que la pièce est caduque.
+  gabarit_modifie:
+    "Le modèle de cette pièce a évolué depuis sa signature : l'exemplaire signé ne peut pas être reproduit à l'identique, et le reconstituer avec le modèle actuel afficherait des clauses que le signataire n'a jamais lues. La signature reste valable et consultable au registre, avec l'empreinte du document exact qui a été signé.",
   indisponible: "Indisponible.",
 };
 
@@ -222,6 +237,22 @@ export async function rendreExemplaireSigne(documentGenereId: string): Promise<R
   const snap = instantane(piece.metadata);
   if (snap === null) {
     return { ok: false, raison: "instantane_absent", message: MESSAGES.instantane_absent };
+  }
+
+  // ── 🔴 LE GABARIT A-T-IL CHANGÉ DEPUIS LA SIGNATURE ? ─────────────────────
+  //
+  // L'instantané ci-dessus garantit la fidélité des DONNÉES. Il ne disait rien
+  // du TEXTE : on rejouait de vieilles données à travers le composant
+  // d'aujourd'hui. Retoucher une convention réécrivait donc rétroactivement
+  // l'exemplaire signé de toutes celles déjà signées — des clauses jamais lues
+  // par le signataire, sous un document présenté comme sa copie, et dont
+  // l'empreinte scellée ne correspond plus.
+  //
+  // La règle de l'en-tête vaut pour les deux axes : « le dire vaut mieux qu'un
+  // PDF reconstruit dont personne ne pourrait garantir la fidélité ».
+  const versionCourante = versionGabaritCourante(piece.type);
+  if (versionCourante !== null && versionGabaritInstantane(snap) !== versionCourante) {
+    return { ok: false, raison: "gabarit_modifie", message: MESSAGES.gabarit_modifie };
   }
 
   const lignes = await prisma.documentSignature.findMany({
