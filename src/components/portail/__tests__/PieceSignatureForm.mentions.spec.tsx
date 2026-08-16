@@ -62,13 +62,21 @@ describe("aucun texte ne disparaît de la page de consentement", () => {
     }
   });
 
-  it("les mentions encadrantes restent VISIBLES, pas repliées derrière un dépli", () => {
-    // Décision assumée : masquer une information légalement due sur l'écran
-    // même où l'on recueille un consentement est un arbitrage juridique qui ne
-    // se prend pas seul. Si un `<details>` apparaît un jour ici, ce test doit
-    // rougir pour que la décision soit explicite.
+  it("le repli est un `<details>` NATIF — pas un masquage maison", () => {
+    // Décision de Will du 16/08 : on replie. Ce qui rend le repli défendable
+    // tient à l'élément choisi : `<details>` garde le texte dans le DOM,
+    // atteignable au clavier, annoncé par les lecteurs d'écran, et imprimé par
+    // certains navigateurs. Un `display:none` piloté en JavaScript n'aurait
+    // aucune de ces propriétés. Ce test rougit si quelqu'un « modernise » le
+    // bloc en composant maison.
     const { container } = monter();
-    expect(container.querySelector("details")).toBeNull();
+    expect(container.querySelector("details")).not.toBeNull();
+    expect(container.querySelector("details > summary")).not.toBeNull();
+  });
+
+  it("le résumé ANNONCE combien de mentions il cache — un dépli muet se referme sur son contenu", () => {
+    monter();
+    expect(screen.getByText(/3 mentions/)).toBeInTheDocument();
   });
 });
 

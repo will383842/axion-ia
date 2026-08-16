@@ -328,31 +328,49 @@ export function PieceSignatureForm({
         </label>
 
         {/* CE QUI ENCADRE L'ENGAGEMENT — valeur juridique, consentement, RGPD.
-            🔴 TOUJOURS VISIBLE, et c'est une décision.
+            Replié, sur DÉCISION DE WILL du 16/08.
 
-            Le plan proposait de replier ce bloc derrière un « Vos droits et la
-            valeur de cette signature ». Je ne l'ai pas fait : masquer, même
-            derrière un dépli, une information légalement due sur l'écran MÊME
-            où l'on recueille un consentement, est un arbitrage juridique que je
-            ne prends pas seul. Et le gain de lisibilité ne vient pas du
-            masquage — il vient de la STRUCTURE. Une phrase par paragraphe se
-            lit ; vingt lignes collées, non.
+            J'avais d'abord laissé ce bloc déployé, au motif qu'on ne masque pas
+            une information légalement due sur l'écran même où l'on recueille un
+            consentement. Will a tranché : on replie. C'est sa décision, et elle
+            se défend — un pavé que personne ne lit n'informe personne mieux
+            qu'un dépli qu'on peut ouvrir.
 
-            À faire relire par l'avocat en même temps que les clauses OPCO : si
-            le dépli est acceptable, il se posera ici en trois lignes. */}
+            🔴 CE QUI REND LE DÉPLI DÉFENDABLE, et qu'il ne faut pas défaire :
+
+            1. `<details>` est un élément NATIF : le texte reste dans le DOM, il
+               est atteignable au clavier, annoncé par les lecteurs d'écran, et
+               imprimé par certains navigateurs. Un `display:none` piloté en
+               JavaScript n'aurait aucune de ces propriétés — ne pas « moderniser »
+               ce bloc en composant maison ;
+            2. l'ATTESTATION — la phrase qu'on accepte en cochant — reste
+               DEHORS, au-dessus. Ce qui est replié encadre l'engagement, ce
+               n'est pas l'engagement ;
+            3. le résumé ANNONCE ce qu'il contient et combien : « 4 mentions ».
+               Un dépli muet se referme sur son contenu ; un dépli qui compte
+               dit qu'il y a quelque chose à lire.
+
+            ⚠️ Toujours à faire relire par l'avocat avec les clauses OPCO. Le
+            repli est un choix d'affichage, pas un avis juridique. */}
         {mentionsEncadrantes.length > 0 && (
-          <div className="mt-4 rounded border border-gray-200 bg-gray-50 p-4">
-            <h3 className="text-xs font-semibold tracking-wide text-gray-700 uppercase">
-              Valeur de cette signature et vos droits
-            </h3>
-            <div className="mt-2 space-y-2">
+          <details className="group mt-4 rounded border border-gray-200 bg-gray-50">
+            <summary className="cursor-pointer list-none p-3 text-xs font-semibold tracking-wide text-gray-700 uppercase hover:bg-gray-100">
+              <span aria-hidden="true" className="mr-1 inline-block group-open:hidden">
+                +
+              </span>
+              <span aria-hidden="true" className="mr-1 hidden group-open:inline-block">
+                −
+              </span>
+              Valeur de cette signature et vos droits ({mentionsEncadrantes.length} mentions)
+            </summary>
+            <div className="space-y-2 px-3 pt-1 pb-3">
               {mentionsEncadrantes.map((texte) => (
                 <p key={texte} className="text-xs leading-relaxed text-gray-700">
                   {texte}
                 </p>
               ))}
             </div>
-          </div>
+          </details>
         )}
 
         {erreur !== null && (
