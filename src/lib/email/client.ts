@@ -1,8 +1,22 @@
 // Nodemailer wrapper (Sprint 15 / M8).
 //
-// Architecture transport (CLAUDE.md v6 §11) :
+// Architecture transport — ÉTAT RÉEL, corrigé le 2026-08-16 :
 //   dev   : Nodemailer → SMTP localhost:2525 → Mailhog UI 8025
-//   prod  : Nodemailer → SMTP localhost:2525 → PowerMTA → IP dediee Hetzner
+//   prod  : Nodemailer → SMTP **Zoho Mail authentifié** (`smtppro.zoho.eu:465`,
+//           SSL implicite + AUTH), via `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`.
+//
+// ⚠️ L'hôte est `smtppro`, pas `smtp` : le compte est sur un plan PAYANT
+// (Mail Lite 5 Go, 2 licences, échéance 27/12/2026), et Zoho réserve les hôtes
+// `pro` à ses plans payants. Valeurs relevées au panneau Zoho le 2026-08-16 —
+// une première rédaction de cet en-tête annonçait `smtp.zoho.eu:587`, ce qui
+// aurait envoyé un opérateur sur un hôte qui n'accepte pas ce compte.
+//
+// ⚠️ L'en-tête annonçait « localhost:2525 → PowerMTA → IP dédiée Hetzner »
+// jusqu'au 2026-08-16. PowerMTA n'a jamais été déployé ; la migration vers Zoho
+// date du 2026-05-13. Trois autres fichiers portaient la même fiction
+// (`email-worker.ts`, `README.md`, `.env.example`) — tous corrigés dans le même
+// geste, parce qu'un opérateur qui suivait `.env.example` déployait une
+// configuration qui n'envoyait rien.
 //
 // Pas de Resend / SendGrid / Mailgun / Brevo (interdits par doctrine).
 //
@@ -39,6 +53,34 @@ const FROM_MARKETING = process.env.SMTP_FROM_MARKETING ?? "news@axion-ia.com";
 
 let _transport: Transporter | null = null;
 
+/**
+ * 🔴 Audit du 2026-08-16 — LE REPLI SILENCIEUX.
+ *
+ * `getTransport()` basculait de comportement sur la seule PRÉSENCE de
+ * `SMTP_USER` / `SMTP_PASS` : présents → Zoho authentifié et chiffré ; absents →
+ * `localhost:2525` avec `ignoreTLS: true`. Ces deux variables n'étaient
+ * déclarées NI dans `src/env.ts` (donc hors validation Zod) NI dans
+ * `.env.example`. Un secret perdu lors d'une reconfiguration Coolify, ou
+ * simplement mal orthographié, ne faisait donc pas échouer le démarrage : il
+ * faisait retomber la PRODUCTION sur un relais local inexistant, en clair.
+ *
+ * On refuse désormais ce repli en production. Le choix de lever ICI plutôt que
+ * d'exiger les variables dans `env.ts` est délibéré : une exigence au niveau de
+ * l'env ferait échouer le BOOT du conteneur si jamais les variables portaient
+ * un autre nom côté Coolify — on transformerait un défaut d'e-mail en panne de
+ * site. Lever ici fait échouer les ENVOIS, bruyamment, avec un message explicite
+ * consigné dans `email_logs` — et le reste de l'application continue de tourner.
+ */
+function assertTransportUtilisable(hasAuth: boolean, host: string, port: number): void {
+  if (hasAuth) return;
+  if (process.env.NODE_ENV !== "production") return;
+  throw new Error(
+    `[email] configuration SMTP incomplète en production : SMTP_USER et/ou SMTP_PASS absents, ` +
+      `le transport retomberait sur ${host}:${port} SANS authentification ni chiffrement. ` +
+      `Envoi refusé plutôt que dégradé en silence — poser les deux variables dans Coolify (scope RUN).`,
+  );
+}
+
 function getTransport(): Transporter {
   if (_transport) return _transport;
   const host = process.env.SMTP_HOST ?? "localhost";
@@ -47,6 +89,8 @@ function getTransport(): Transporter {
   const pass = process.env.SMTP_PASS;
   const hasAuth = Boolean(user && pass);
 
+  assertTransportUtilisable(hasAuth, host, port);
+
   _transport = nodemailer.createTransport({
     host,
     port,
@@ -54,14 +98,59 @@ function getTransport(): Transporter {
     //  - SMTP authentifié (Zoho, SES, Brevo…) : TLS + auth. Port 465 = SMTPS
     //    implicite ; 587/25 = STARTTLS (requireTLS). NÉCESSAIRE pour un relais
     //    externe (sinon connexion rejetée / non chiffrée).
-    //  - Relais local sans auth (PowerMTA/Mailhog sur localhost) : ni TLS ni
-    //    auth — comportement legacy conservé quand SMTP_USER/PASS absents.
+    //  - Relais local sans auth (Mailhog sur localhost) : ni TLS ni auth —
+    //    comportement legacy conservé quand SMTP_USER/PASS absents.
     secure: port === 465,
     ...(hasAuth
       ? { auth: { user: user as string, pass: pass as string }, requireTLS: port !== 465 }
       : { ignoreTLS: true }),
+
+    // 🔴 Audit du 2026-08-16 (F-01) — CONNEXIONS MISES EN POOL.
+    //
+    // Sans `pool`, nodemailer ouvre une connexion SMTP NEUVE, s'authentifie et
+    // la referme À CHAQUE MESSAGE. Croisé avec la `concurrency: 8` d'alors, un
+    // lot dense se présentait comme huit ouvertures et huit authentifications
+    // simultanées, répétées — le profil qu'un relais lit comme une attaque, et
+    // que Zoho sanctionne en abaissant une borne déjà dynamique.
+    //
+    // 2 connexions, alignées sur la `concurrency: 2` du worker : au-delà, un
+    // consommateur attendrait une connexion libre sans rien gagner.
+    pool: true,
+    maxConnections: 2,
+    // Recyclage après 100 messages. Les relais coupent d'eux-mêmes une session
+    // trop longue ; reprendre la main dessus évite de découvrir la coupure sous
+    // la forme d'un envoi perdu.
+    maxMessages: 100,
+
+    // Soupape de sûreté SOUS le limiteur BullMQ (40/h) : 2 messages par
+    // seconde. Elle ne mord jamais en fonctionnement normal — elle existe pour
+    // le jour où un appelant contournera `enqueueEmail()` et enverra en direct.
+    // Ce chemin existe déjà : `content-weekly-report-worker.ts` appelle
+    // `sendEmail()` sans passer par la file (contournement connu du 13/08).
+    rateDelta: 1000,
+    rateLimit: 2,
   });
   return _transport;
+}
+
+/**
+ * Vérifie que le relais SMTP est joignable ET que l'authentification passe.
+ *
+ * Personne ne le faisait : aucun `verify()` nulle part dans le dépôt. La
+ * première preuve qu'un identifiant Zoho avait expiré était donc un e-mail non
+ * reçu par un stagiaire — constat a posteriori, sans horodatage exploitable.
+ *
+ * Appelé une fois au démarrage du worker. NE LÈVE PAS : un relais injoignable
+ * ne doit pas empêcher les quarante autres workers de démarrer. Retourne le
+ * verdict, à charge de l'appelant de crier.
+ */
+export async function verifyTransport(): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    await getTransport().verify();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
 }
 
 export interface SendEmailParams {

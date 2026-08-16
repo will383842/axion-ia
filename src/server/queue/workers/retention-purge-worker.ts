@@ -27,6 +27,9 @@
 //   RETENTION_GENERATION_LOGS_MONTHS=12   (audit B5)
 //   RETENTION_COST_LEDGER_MONTHS=24       (audit B5 — obligation comptable française)
 //   RETENTION_WEB_VITALS_MONTHS=6         (audit B5)
+//   RETENTION_EMAIL_LOGS_MONTHS=36        (audit e-mail 2026-08-16 — cycle Qualiopi)
+//   RETENTION_EMAIL_LOGS_MARKETING_MONTHS=13 (audit e-mail — norme CNIL prospection)
+//   RETENTION_EMAIL_OUTBOX_MONTHS=36      (audit e-mail — etats terminaux seuls)
 //   RETENTION_CHAT_MONTHS=12              (chatbot — conversations/messages/escalades + cache/idempotence)
 //
 // Sécurité : aucune action si valeur < 1 (anti-misconfig accidentel).
@@ -50,6 +53,12 @@ const DEFAULTS = {
   chat: 12,
   funnelEvents: 12,
   candidatures: 24,
+  // Chaine d'envoi (audit 2026-08-16). 36 mois = cycle de certification
+  // Qualiopi ; 13 mois = norme CNIL de prospection. Voir le bloc commente
+  // dans le handler pour le raisonnement.
+  emailLogsTransac: 36,
+  emailLogsMarketing: 13,
+  emailOutbox: 36,
 } as const;
 
 function monthsAgo(months: number): Date {
@@ -95,6 +104,8 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         funnelEvents: 0,
         candidatures: 0,
         candidaturesFichiers: 0,
+        emailLogs: 0,
+        emailOutbox: 0,
       };
 
       // 1) activity_logs ancients
@@ -313,6 +324,74 @@ export function startRetentionPurgeWorker(): Worker<RetentionPurgeJobData> {
         `[retention-purge][prospection] companies=${prospCompanies.count} ` +
           `persons=${prospPersons.count} practitioners=${prospPractitioners.count} ` +
           `accessLogs=${prospAccess.count}`,
+      );
+
+      // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────
+      //
+      // `email_logs` et `email_outbox` n'étaient dans AUCUNE purge, alors que
+      // ce worker en couvre vingt et une. Deux conséquences : une croissance
+      // non bornée de la table la plus écrite de la chaîne, et un `recipient`
+      // conservé en clair indéfiniment — alors que `SubmissionReply.toEmail`,
+      // qui porte la même donnée, est chiffré au repos. `email_outbox` est
+      // pire encore : son `payload` fige la charge utile complète, PII incluse.
+      //
+      // 🔴 DEUX DURÉES, ET L'ÉCART EST LE POINT ENTIER.
+      //
+      // Purger ce journal, c'est effacer la preuve qu'une convocation est
+      // partie — les indicateurs Qualiopi 4, 9, 11, 30 et 32 en dépendent. Une
+      // durée unique et courte détruirait la conformité ; une durée unique et
+      // longue laisserait des adresses de prospects en clair bien au-delà de
+      // ce que la CNIL admet. On sépare donc sur le seul axe qui compte :
+      //
+      //   - TRANSACTIONNEL (36 mois) — convocations, attestations, devis,
+      //     factures. Aligné sur le cycle de certification Qualiopi de 3 ans :
+      //     un audit de surveillance doit pouvoir remonter à l'origine du
+      //     cycle en cours.
+      //   - MARKETING (13 mois) — double opt-in newsletter. Aligné sur la
+      //     norme CNIL de conservation des données de prospection.
+      //
+      // ⚠️ `readMonths` refuse toute valeur < 1 : une variable d'environnement
+      // vidée par accident retombe sur la valeur par défaut au lieu de purger
+      // tout le journal. C'est la garde anti-misconfig déjà en place au-dessus.
+      const emailTransacMonths = readMonths(
+        "RETENTION_EMAIL_LOGS_MONTHS",
+        DEFAULTS.emailLogsTransac,
+      );
+      const emailMarketingMonths = readMonths(
+        "RETENTION_EMAIL_LOGS_MARKETING_MONTHS",
+        DEFAULTS.emailLogsMarketing,
+      );
+      const emailLogsTransac = await prisma.emailLog.deleteMany({
+        where: { marketing: false, createdAt: { lt: monthsAgo(emailTransacMonths) } },
+      });
+      const emailLogsMarketing = await prisma.emailLog.deleteMany({
+        where: { marketing: true, createdAt: { lt: monthsAgo(emailMarketingMonths) } },
+      });
+      counts.emailLogs = emailLogsTransac.count + emailLogsMarketing.count;
+
+      // Corbeille de validation : on ne purge QUE les états terminaux.
+      //
+      // 🔴 `a_valider` et `approuve` sont volontairement exclus, et ce n'est
+      // pas une précaution de confort : ce sont des e-mails qui attendent
+      // encore un geste humain. Les purger sur l'âge ferait disparaître en
+      // silence un message que quelqu'un doit approuver — le destinataire ne
+      // recevrait jamais rien, et personne ne saurait pourquoi. Une entrée qui
+      // moisit en `a_valider` est un problème d'exploitation à voir, pas un
+      // déchet à ramasser.
+      const outboxMonths = readMonths("RETENTION_EMAIL_OUTBOX_MONTHS", DEFAULTS.emailOutbox);
+      const outboxPurge = await prisma.emailOutbox.deleteMany({
+        where: {
+          statut: { in: ["envoye", "refuse"] },
+          createdAt: { lt: monthsAgo(outboxMonths) },
+        },
+      });
+      counts.emailOutbox = outboxPurge.count;
+
+      console.log(
+        `[retention-purge][email] logs=${counts.emailLogs} ` +
+          `(transac ${emailLogsTransac.count}/${emailTransacMonths}m + ` +
+          `marketing ${emailLogsMarketing.count}/${emailMarketingMonths}m) ` +
+          `outbox=${counts.emailOutbox}/${outboxMonths}m`,
       );
 
       console.log(

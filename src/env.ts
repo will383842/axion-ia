@@ -44,6 +44,19 @@ export const env = createEnv({
 
     SMTP_HOST: z.string().default("localhost"),
     SMTP_PORT: z.coerce.number().int().positive().default(2525),
+    // 🔴 Audit du 2026-08-16 — ces deux variables n'étaient déclarées NULLE
+    // PART, alors qu'elles décident à elles seules si la production parle à
+    // Zoho en TLS authentifié ou retombe sur `localhost:2525` en clair (cf.
+    // `assertTransportUtilisable` dans `src/lib/email/client.ts`).
+    //
+    // Volontairement `.optional()` et NON requises en production : le dev et
+    // les tests tournent sans, et surtout une exigence bloquante ici ferait
+    // échouer le BOOT du conteneur si les variables portaient un autre nom côté
+    // Coolify — on transformerait un défaut d'e-mail en panne de site. Le refus
+    // dur vit dans `client.ts`, au moment de l'envoi. Les déclarer ici les rend
+    // typées, documentées, et visibles de quiconque lit la configuration.
+    SMTP_USER: z.string().optional(),
+    SMTP_PASS: z.string().optional(),
     SMTP_FROM_ADDRESS: z.string().email().default("noreply@axion-ia.com"),
     SMTP_FROM_NAME: z.string().default("Axion-IA"),
     SMTP_FROM_MARKETING: z.string().email().default("news@axion-ia.com"),
@@ -398,6 +411,8 @@ export const env = createEnv({
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     SMTP_HOST: process.env.SMTP_HOST,
     SMTP_PORT: process.env.SMTP_PORT,
+    SMTP_USER: process.env.SMTP_USER,
+    SMTP_PASS: process.env.SMTP_PASS,
     SMTP_FROM_ADDRESS: process.env.SMTP_FROM_ADDRESS,
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     SMTP_FROM_MARKETING: process.env.SMTP_FROM_MARKETING,

@@ -1,68 +1,33 @@
 // Worker BullMQ — envoi des emails (Sprint 15 / M8 step 4).
 //
 // Consume la queue `emails` : pour chaque job, render le template React Email
-// (via @react-email/render) puis envoie via Nodemailer SMTP localhost:2525.
+// (via @react-email/render) puis envoie via Nodemailer.
 //
-// En dev → Mailhog UI (http://localhost:8025) intercepte tout.
-// En prod → PowerMTA local sur Hetzner relai vers IP dediee.
+// En dev  → Mailhog UI (http://localhost:8025) intercepte tout.
+// En prod → SMTP **Zoho Mail** authentifié (`smtppro.zoho.eu:465`, hôte `pro`
+//           d'un plan payant — cf. `client.ts`), depuis le
+//           2026-05-13. L'en-tête annonçait « PowerMTA local sur Hetzner relai
+//           vers IP dédiée » jusqu'au 2026-08-16 : PowerMTA n'a jamais existé.
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
-import { sendEmail } from "@/lib/email/client";
+import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
+import { cloturerJournal } from "@/server/email/email-log";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
 /**
- * Journalise durablement un envoi dans EmailLog (traçabilité audit). FAIL-SOFT :
- * une erreur d'écriture ne doit JAMAIS transformer un envoi réussi en échec/retry
- * (log console seulement, pas de rethrow). Une ligne par tentative.
+ * Plafond cumulé des pièces jointes, en octets bruts (avant encodage base64).
+ * Exporté pour que la garde soit testable — une borne qu'aucun test ne lit se
+ * fait relever d'un facteur dix le jour où un envoi coince.
  */
-async function logEmail(entry: {
-  template: EmailJobName;
-  recipient: string;
-  locale: EmailJobData["locale"];
-  marketing: boolean;
-  attempts: number;
-  status: EmailLogStatus;
-  entityType?: string;
-  entityId?: string;
-  jobId?: string;
-  providerMessageId?: string;
-  error?: string;
-  sentAt?: Date;
-  failedAt?: Date;
-}): Promise<void> {
-  try {
-    await prisma.emailLog.create({
-      data: {
-        template: entry.template,
-        recipient: entry.recipient,
-        locale: entry.locale,
-        marketing: entry.marketing,
-        attempts: entry.attempts,
-        status: entry.status,
-        ...(entry.entityType ? { entityType: entry.entityType } : {}),
-        ...(entry.entityId ? { entityId: entry.entityId } : {}),
-        ...(entry.jobId ? { jobId: entry.jobId } : {}),
-        ...(entry.providerMessageId ? { providerMessageId: entry.providerMessageId } : {}),
-        ...(entry.error ? { error: entry.error } : {}),
-        ...(entry.sentAt ? { sentAt: entry.sentAt } : {}),
-        ...(entry.failedAt ? { failedAt: entry.failedAt } : {}),
-      },
-    });
-  } catch (e) {
-    console.error(
-      `[email-worker] EmailLog write failed (${entry.template} → ${entry.recipient}):`,
-      e instanceof Error ? e.message : String(e),
-    );
-  }
-}
+export const TAILLE_MAX_PJ_OCTETS = 10 * 1_048_576;
 
 /**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
@@ -70,7 +35,7 @@ async function logEmail(entry: {
  * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
  * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
  */
-async function resolveAttachments(
+export async function resolveAttachments(
   attachments: EmailJobData["attachments"],
 ): Promise<SendEmailParams["attachments"]> {
   if (!attachments || attachments.length === 0) return undefined;
@@ -80,6 +45,7 @@ async function resolveAttachments(
     );
   }
   const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+  let octetsTotal = 0;
   for (const att of attachments) {
     const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
     if (buffer === null) {
@@ -87,11 +53,35 @@ async function resolveAttachments(
         `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
       );
     }
+    octetsTotal += buffer.byteLength;
     resolved.push({
       filename: att.filename,
       content: buffer,
       contentType: att.contentType ?? "application/pdf",
     });
+  }
+
+  // 🔴 Audit du 2026-08-16 — AUCUNE garde de taille n'existait.
+  //
+  // On tirait de R2 des tampons de taille arbitraire et on les confiait au
+  // relais. Le refus arrivait donc de Zoho, après transfert, sous la forme d'un
+  // rejet SMTP opaque — puis cinq fois de suite, le temps que BullMQ épuise ses
+  // tentatives à repousser les mêmes mégaoctets.
+  //
+  // Le seuil porte sur les octets BRUTS alors que le plafond des relais porte
+  // sur le message encodé : le base64 gonfle d'environ un tiers, et s'ajoutent
+  // le corps HTML et les en-têtes. 10 Mo bruts ≈ 13,7 Mo transmis, ce qui reste
+  // sous les plafonds usuels (~15 Mo ZeptoMail, ~20 Mo Zoho Mail) avec de la
+  // marge. Repère : le catalogue imprimable, la plus grosse PJ du dépôt, pèse
+  // 7,8 Mo — rien d'existant ne bute sur ce seuil aujourd'hui.
+  if (octetsTotal > TAILLE_MAX_PJ_OCTETS) {
+    const mo = (n: number): string => (n / 1_048_576).toFixed(1);
+    throw new Error(
+      `[email-worker] pièces jointes trop lourdes : ${mo(octetsTotal)} Mo bruts pour ` +
+        `${resolved.length} fichier(s), plafond ${mo(TAILLE_MAX_PJ_OCTETS)} Mo. Le relais ` +
+        `rejetterait le message après transfert — on refuse ici, avec un motif lisible. ` +
+        `Alléger le document ou le remplacer par un lien de téléchargement.`,
+    );
   }
   return resolved;
 }
@@ -138,7 +128,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         });
         // Journalisation fail-soft : ne jamais rethrow après un envoi réussi
         // (sinon retry BullMQ → email renvoyé).
-        await logEmail({
+        await cloturerJournal({
           template,
           recipient: to,
           locale,
@@ -153,7 +143,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         });
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
-        await logEmail({
+        await cloturerJournal({
           template,
           recipient: to,
           locale,
@@ -171,7 +161,41 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     },
     {
       connection: getBullConnectionOrThrow(),
-      concurrency: 8,
+      // 🔴 Audit du 2026-08-16 (F-01) — LE LIMITEUR QUI MANQUAIT.
+      //
+      // Douze workers de ce dépôt bornent leur débit ; celui qui parle au SEUL
+      // tiers à quota n'en avait aucun. `concurrency: 8` et un transport sans
+      // `pool` ouvraient huit connexions SMTP neuves en parallèle — le profil
+      // exact qu'un relais lit comme une attaque.
+      //
+      // 40/h contre un plafond Zoho de 50 à 500/h. Le plancher est retenu, et
+      // non la moyenne, parce que cette borne est DYNAMIQUE : Zoho l'ajuste sur
+      // la réputation de l'expéditeur, et elle est IDENTIQUE en gratuit et en
+      // payant — le compte est sur Mail Lite, monter de gamme ne la relèverait
+      // pas. Seul un débit régulier l'élève. Se caler sous le plancher est donc
+      // la seule position qui ne dépende pas d'une valeur qu'on ne peut ni lire
+      // ni négocier.
+      //
+      // ⚠️ Ce bridage protège la BOÎTE, pas seulement les envois. Le site émet
+      // depuis la messagerie métier : un throttle — ou pire, une suspension —
+      // déclenché par une rafale ne coûterait pas des e-mails automatiques, il
+      // coûterait `contact@axion-ia.com`. Il reste utile après la bascule vers
+      // un relais transactionnel, à recalibrer alors sur SES limites.
+      //
+      // Ordre de grandeur : la prod envoie ~4 e-mails/jour, pic mesuré 5/h. On
+      // est donc à un facteur 8 au-dessus du besoin actuel — le déclencheur est
+      // `BATCH_LIMIT = 100` du vivier, qui part sans délai. À 40/h, ce lot
+      // s'étale sur 2 h 30 au lieu de saturer en quelques minutes.
+      //
+      // 🔑 Le limiteur BullMQ DIFFÈRE la prise du job : il ne consomme pas de
+      // tentative et ne déclenche aucun backoff. Un e-mail retardé par le
+      // bridage n'est pas un e-mail en risque de perte.
+      limiter: { max: 40, duration: 3_600_000 },
+      // 8 → 2. Le débit est déjà borné au-dessus ; au-delà de 2 en parallèle on
+      // ne gagne rien qu'un pic de connexions simultanées, et le transport est
+      // désormais mis en pool sur 2 connexions (cf. `client.ts`) — garder les
+      // deux chiffres alignés évite qu'un worker attende une connexion libre.
+      concurrency: 2,
       lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).
@@ -181,7 +205,24 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     },
   );
 
-  worker.on("ready", () => console.log("[email-worker] ready"));
+  worker.on("ready", () => {
+    console.log("[email-worker] ready");
+    // Vérification du relais AU DÉMARRAGE (audit 2026-08-16). Sans elle, la
+    // première preuve qu'un identifiant Zoho a expiré est un e-mail qu'un
+    // stagiaire n'a pas reçu — constat a posteriori, sans date exploitable.
+    // Volontairement non bloquante : un relais injoignable ne doit pas empêcher
+    // le worker de consommer (les jobs échoueront et seront journalisés), et
+    // encore moins empêcher les quarante autres workers de démarrer.
+    void verifyTransport().then((r) => {
+      if (r.ok) {
+        console.log("[email-worker] relais SMTP joignable et authentifié ✓");
+      } else {
+        console.error(
+          `[email-worker] ⛔ RELAIS SMTP INUTILISABLE — aucun e-mail ne partira : ${r.error}`,
+        );
+      }
+    });
+  });
   worker.on("completed", (job) => console.log(`[email-worker] sent: ${job.name} → ${job.data.to}`));
   worker.on("failed", (job, err) => {
     console.error(`[email-worker] failed: ${job?.name} → ${job?.data?.to}: ${err.message}`);

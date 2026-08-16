@@ -36,6 +36,7 @@ import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 import { palierPourJours, libellePalier } from "@/server/qualiopi/financements/relance-paliers";
 import { writeSessionTransition } from "@/server/qualiopi/formations/transition-helper";
+import { verifierSanteEmails } from "@/server/email/health";
 import type { TrainingSessionStatut } from "@/server/qualiopi/formations/types";
 import type { Prisma } from "../../../../prisma/generated/client";
 import { genererAttestationPourEnrollment } from "@/server/qualiopi/evaluations/attestation-service";
@@ -81,7 +82,15 @@ export type FormationCronJobType =
   | "formation-crons.devis-expiration"
   // Fraîcheur des offres d'emploi (Google for Jobs) — rappel Telegram hebdo
   // des offres à republier. AUCUN bump de date automatique (règle Google).
-  | "formation-crons.offres-fraicheur";
+  | "formation-crons.offres-fraicheur"
+  // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE.
+  //
+  // ⚠️ Ce passage n'est pas « formation », et il vit pourtant ici. C'est un
+  // choix : `formation-crons` est le seul répartiteur de crons déjà branché sur
+  // le moteur d'alertes, et la chaîne d'e-mails est précisément ce qui porte la
+  // conformité de la formation. Créer une file dédiée pour un `count()` horaire
+  // aurait ajouté une septième file à surveiller pour surveiller.
+  | "formation-crons.email-sante";
 
 export interface FormationCronJobData {
   type: FormationCronJobType;
@@ -1213,7 +1222,38 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
   "formation-crons.offres-fraicheur": handleOffresFraicheur,
+  "formation-crons.email-sante": handleEmailSante,
 };
+
+/**
+ * Surveillance horaire de la chaîne d'envoi (audit 2026-08-16).
+ *
+ * Le corps vit dans `server/email/health.ts` — ici on ne fait que déclencher et
+ * tracer. Fail-soft par construction : `verifierSanteEmails` ne lève pas, mais
+ * le `catch` reste, parce qu'une surveillance qui casse son propre cron ferait
+ * taire au passage tout ce que ce cron surveille par ailleurs.
+ */
+async function handleEmailSante(): Promise<void> {
+  try {
+    const sante = await verifierSanteEmails();
+    if (sante.alertesLevees.length === 0) {
+      console.log(
+        `[formation-crons] email-sante: RAS (${sante.echecsRecents} échec(s) récent(s), ` +
+          `${sante.bloquesEnFile} en attente)`,
+      );
+      return;
+    }
+    console.error(
+      `[formation-crons] email-sante: ${sante.alertesLevees.join(", ")} — ` +
+        `${sante.echecsRecents} échec(s), ${sante.bloquesEnFile} bloqué(s)`,
+    );
+  } catch (e) {
+    console.error(
+      "[formation-crons] email-sante: surveillance en échec :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
+}
 
 /** Logique de dispatch pure (exportée pour les tests). */
 export async function formationCronsHandler(data: FormationCronJobData): Promise<void> {

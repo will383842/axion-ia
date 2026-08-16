@@ -16,6 +16,8 @@
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email/client";
+import { cloturerJournal } from "@/server/email/email-log";
+import { EmailLogStatus } from "../../../../prisma/generated/client";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-weekly-report";
@@ -158,7 +160,52 @@ async function processJob(_job: Job<{ readonly trigger: string }>): Promise<void
 
   const stats = await collectWeeklyStats(since);
   const { subject, html, text } = buildEmailHtml(stats, weekLabel);
-  await sendEmail({ to: REPORT_TO, subject, html, text });
+
+  // 🔴 Audit du 2026-08-16 — LE SEUL ENVOI QUI ÉCHAPPAIT AU JOURNAL.
+  //
+  // C'est l'unique appelant de `sendEmail()` hors de l'entonnoir
+  // `enqueueEmail()`. Il ne peut pas y entrer : `enqueueEmail` exige un
+  // `EmailJobName` du registre des 75 gabarits, or ce rapport compose son HTML
+  // à la volée. Le convertir en gabarit React Email serait disproportionné pour
+  // un envoi hebdomadaire à une adresse interne.
+  //
+  // Mais « hors de l'entonnoir » ne doit pas vouloir dire « invisible ». Sans
+  // ce journal, un rapport qui cesse de partir ne laisse aucune trace : ni dans
+  // la page « E-mails envoyés », ni pour `verifierSanteEmails()`. On journalise
+  // donc à la main ce que le worker d'e-mails aurait journalisé.
+  //
+  // Le débit, lui, est déjà borné : ce chemin ne passe pas par le limiteur
+  // BullMQ de la file `emails`, mais il passe par le transport, dont la soupape
+  // `rateDelta`/`rateLimit` a été posée pour exactement ce cas.
+  const jobId = `content-weekly-report-${weekEnd.toISOString().slice(0, 10)}`;
+  try {
+    const result = await sendEmail({ to: REPORT_TO, subject, html, text });
+    await cloturerJournal({
+      template: "content-weekly-report",
+      recipient: REPORT_TO,
+      locale: "fr",
+      marketing: false,
+      attempts: 1,
+      status: EmailLogStatus.sent,
+      providerMessageId: result.messageId,
+      sentAt: new Date(),
+      jobId,
+    });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    await cloturerJournal({
+      template: "content-weekly-report",
+      recipient: REPORT_TO,
+      locale: "fr",
+      marketing: false,
+      attempts: 1,
+      status: EmailLogStatus.failed,
+      error: msg.slice(0, 2000),
+      failedAt: new Date(),
+      jobId,
+    });
+    throw err;
+  }
 }
 
 let workerInstance: Worker | null = null;

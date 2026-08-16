@@ -471,6 +471,35 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Revue trimestrielle à réaliser",
     resolutionAuto: true,
   },
+
+  // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────────
+  //
+  // Ces deux codes sont émis par `verifierSanteEmails()` (server/email/health.ts),
+  // appelé par le cron horaire `formation-crons.email-sante`. Ils comblent le
+  // trou le plus coûteux du système : jusqu'ici, RIEN ne lisait `email_logs` à
+  // la recherche d'échecs, et Sentry n'a jamais reçu une seule erreur de worker.
+  // Un mot de passe SMTP expiré coupait donc tous les envois en silence.
+  //
+  // ⚠️ `resolutionAuto: false` pour les deux, et c'est STRUCTUREL — même piège
+  // que `besoin_adaptation_declare` ci-dessus. Ces alertes ne naissent pas du
+  // balayage de `evaluerAlertes()` mais d'un cron distinct ; les passer à `true`
+  // les ferait résoudre par le premier `synchroniserAlertes` venu, avant même
+  // que quiconque les ait lues. Elles se résolvent à la main, une fois la
+  // chaîne réparée et un envoi de contrôle passé.
+  //
+  // `critique` assumé pour les deux : la chaîne porte convocations, attestations
+  // et questionnaires — les indicateurs 4, 9, 11, 30 et 32 en dépendent. Il n'y
+  // a pas de version « on verra demain » d'une convocation non partie.
+  emails_en_echec: {
+    niveau: "critique",
+    titre: "Envois d'e-mails en échec",
+    resolutionAuto: false,
+  },
+  emails_bloques_en_file: {
+    niveau: "critique",
+    titre: "E-mails enfilés mais jamais envoyés",
+    resolutionAuto: false,
+  },
 } as const;
 
 /**
