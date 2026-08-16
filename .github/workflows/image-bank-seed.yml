@@ -6,7 +6,9 @@ name: Image Bank · Seed + Enrich (SEO/AEO/GEO)
 #   3. Enrichissement via enrich-images.cjs (Node.js pur, fetch natif, 0 npm install)
 #
 # Déclenchements :
-#   - Automatique : après chaque deploy réussi de deploy-coolify.yml
+#   - Automatique : après chaque **job `deploy`** réussi de deploy-coolify.yml
+#     (et NON après le workflow entier — cf. le job `porte` : un gate
+#     Lighthouse rouge ou une compilation annulée éteignaient tout le seed)
 #   - Manuel : GitHub Actions → Run workflow
 #
 # Idempotent : seed upsert par slug, enrich skip images avec metaTitle existant.
@@ -40,16 +42,79 @@ on:
 
 permissions:
   contents: read
+  # Requis par le job `porte` : lire la conclusion du job `deploy` de l'exécution
+  # amont via l'API. Sans cette permission, `gh api …/jobs` renvoie 403 et la
+  # porte resterait fermée — c'est-à-dire le défaut qu'elle répare.
+  actions: read
 
 jobs:
+  # ── Porte de déclenchement — GEO-089 (audit GEO/AEO 2026-08-14, lot 18) ──────
+  #
+  # 🔴 CE JOB EXISTE PARCE QUE LE SEED NE PARTAIT PLUS. L'audit a relevé
+  # « 24 exécutions, toutes en mai 2026 ». Cause racine tracée le 2026-08-16 :
+  #
+  # la condition était `github.event.workflow_run.conclusion == 'success'`,
+  # c'est-à-dire la conclusion du **workflow de déploiement ENTIER**. Or ce
+  # workflow ne fait pas que déployer : il enchaîne un gate Lighthouse, un ping
+  # IndexNow, un sweep de chauffe. Et son job `build` porte
+  # `cancel-in-progress: true`.
+  #
+  # Conséquences, toutes les deux observées :
+  #   - une compilation annulée par la suivante → conclusion `cancelled`
+  #     → seed sauté, alors qu'aucun déploiement n'a même eu lieu ;
+  #   - un gate Lighthouse rouge → conclusion `failure`
+  #     → seed sauté, alors que **le déploiement, lui, a réussi**.
+  #
+  # 🔑 Le seed dépend d'UNE chose : que le conteneur tourne la nouvelle image.
+  # C'est le job `deploy` qui l'établit. Le coupler au verdict d'un gate de
+  # qualité indépendant, c'est éteindre tout le pipeline image à la première
+  # régression Web Vitals — sans que personne ne fasse le lien.
+  #
+  # On interroge donc la conclusion du JOB `deploy`, pas celle du workflow.
+  porte:
+    name: Le job deploy a-t-il reussi ?
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      lancer: ${{ steps.verdict.outputs.lancer }}
+    steps:
+      - name: Resoudre la conclusion du job `deploy`
+        id: verdict
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENEMENT: ${{ github.event_name }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENEMENT" = "workflow_dispatch" ]; then
+            echo "Declenchement manuel — on lance."
+            echo "lancer=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          # `--jq` filtre cote serveur : on ne rapatrie pas tout le payload.
+          # ⚠️ Le nom ci-dessous est le `name:` EXACT du job dans
+          # deploy-coolify.yml — « Trigger Coolify deploy », pas « Deploy ».
+          # Un filtre approximatif ne matcherait rien et refermerait la porte en
+          # silence : exactement le defaut qu'on repare ici. La coherence des
+          # deux fichiers est verrouillee par
+          # tests/unit/ci/seed-images-declencheur.spec.ts.
+          JOBS_URL="repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs?per_page=100"
+          FILTRE='.jobs[] | select(.name == "Trigger Coolify deploy") | .conclusion'
+          CONCLUSION=$(gh api "$JOBS_URL" --jq "$FILTRE" | head -1)
+          echo "Conclusion du job deploy : '${CONCLUSION:-<introuvable>}'"
+          if [ "$CONCLUSION" = "success" ]; then
+            echo "lancer=true" >> "$GITHUB_OUTPUT"
+          else
+            # Pas un echec de CE workflow : il n'y avait simplement rien a semer.
+            echo "Le deploiement n'a pas abouti — seed saute (ce n'est pas une erreur)."
+            echo "lancer=false" >> "$GITHUB_OUTPUT"
+          fi
+
   seed-and-enrich:
     name: Seed image bank + Enrich SEO/AEO/GEO
     runs-on: ubuntu-latest
-    timeout-minutes: 55   # seed ~2min + tsx install ~2min + 133×17s enrich ~38min + buffer
-
-    if: >
-      github.event_name == 'workflow_dispatch' ||
-      github.event.workflow_run.conclusion == 'success'
+    timeout-minutes: 55 # seed ~2min + tsx install ~2min + 133×17s enrich ~38min + buffer
+    needs: porte
+    if: needs.porte.outputs.lancer == 'true'
 
     steps:
       - name: Checkout
