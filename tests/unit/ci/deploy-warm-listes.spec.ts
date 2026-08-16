@@ -24,6 +24,9 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { villesPrerenduesAuBuild } from "@/content/villes/prerendu";
+import { contenuAttendu } from "../../../scripts/ci/hubs-villes-prerendus";
+
 // Vitest s'exécute depuis la racine du dépôt (`pnpm test`). On évite
 // `import.meta.dirname` : la transformation SSR de Vitest ne le garantit pas.
 const RACINE = process.cwd();
@@ -134,5 +137,74 @@ describe("deploy-coolify.yml — job warm : revalidation ISR et purge CF ciblée
     // cache que le sweep vient de remplir — do-not-touch documenté par H4.
     const jobWarm = WORKFLOW.slice(WORKFLOW.indexOf("\n  warm:"));
     expect(jobWarm).not.toContain('"purge_everything"');
+  });
+});
+
+/**
+ * GEO-118 — les hubs villes PRÉ-RENDUS servent un bloc DB-dépendant vide.
+ *
+ * Le build tourne sous les URLs stub (ADR 0026) : le bloc « articles mentionnant
+ * {ville} » rend `[]`. Avec `revalidate = 86400` et des déploiements plus
+ * fréquents qu'une fois par jour, ces pages ne repassent jamais par un rendu
+ * peuplé. Les ~2 100 villes rendues à la demande, elles, vont bien : leur
+ * premier rendu a lieu au runtime, avec la vraie base.
+ *
+ * Ce que ce bloc protège n'est pas « la liste est bonne aujourd'hui » — c'est
+ * qu'elle ne peut pas DÉRIVER de son critère. Le défaut d'origine est exactement
+ * une divergence entre deux endroits qui décrivent le même ensemble.
+ */
+describe("deploy-coolify.yml — hubs villes pré-rendus (GEO-118)", () => {
+  const FICHIER = ".github/warm/hubs-villes-prerendus.json";
+
+  it("le fichier lu par le workflow est à jour vis-à-vis du critère de pré-rendu", () => {
+    // Recalcul depuis la MÊME source que `generateStaticParams`. Rougit le jour
+    // où une ville franchit les 100 000 habitants sans qu'on régénère —
+    // c'est-à-dire le jour où la chauffe cesserait de couvrir ce qu'elle doit.
+    expect(lire(FICHIER)).toBe(contenuAttendu());
+  });
+
+  it("la liste couvre les villes pré-rendues, et elles seules", () => {
+    const liste = JSON.parse(lire(FICHIER)) as string[];
+    const attendues = villesPrerenduesAuBuild();
+
+    expect(liste).toHaveLength(attendues.length);
+    // Les plus grosses villes sont celles qui pèsent : leur absence serait le
+    // défaut lui-même, pas un détail de couverture.
+    expect(liste).toContain("/fr/implantations/ile-de-france/paris");
+    expect(liste).toContain("/fr/implantations/auvergne-rhone-alpes/lyon");
+    // Aucune ville sous le seuil ne doit s'y trouver : chauffer les ~2 100
+    // autres multiplierait les rendus origine pour un contenu déjà correct.
+    const slugsPrerendus = new Set(attendues.map((v) => v.slug));
+    const intrus = liste.filter((p) => !slugsPrerendus.has(p.split("/").pop() ?? ""));
+    expect(intrus).toEqual([]);
+  });
+
+  it("le workflow lit le fichier au lieu de recopier le critère", () => {
+    const jobWarm = WORKFLOW.slice(WORKFLOW.indexOf("\n  warm:"));
+    expect(jobWarm).toContain(FICHIER);
+    // Recopier le seuil dans le YAML rejouerait le défaut d'origine.
+    expect(jobWarm).not.toMatch(/population\s*>=|100_000|100000/);
+  });
+
+  it("la purge est découpée par lots de 30 — le plafond du plan Free", () => {
+    // Sans découpage, Cloudflare rejette l'appel ENTIER au-delà de 30 URLs :
+    // pas une seule page purgée, et sans lire le corps de la réponse ça
+    // ressemble à un succès. La liste dépasse déjà 30, donc le découpage n'est
+    // pas théorique.
+    const liste = JSON.parse(lire(FICHIER)) as string[];
+    expect(liste.length).toBeGreaterThan(30);
+
+    const jobWarm = WORKFLOW.slice(WORKFLOW.indexOf("\n  warm:"));
+    const etape = jobWarm.slice(jobWarm.indexOf("hubs villes pré-rendus"));
+    expect(etape).toContain("$i:$i+30");
+    expect(etape).toMatch(/I=\$\(\(I \+ 30\)\)/);
+  });
+
+  it("la revalidation précède la purge", () => {
+    // L'inverse laisse le prochain hit refiger la version vide à l'edge pour
+    // s-maxage=3600 — mécanisme vécu le 2026-08-14 sur /fr/diagnostic.
+    const jobWarm = WORKFLOW.slice(WORKFLOW.indexOf("\n  warm:"));
+    const etape = jobWarm.slice(jobWarm.indexOf("hubs villes pré-rendus"));
+    expect(etape.indexOf("/api/internal/revalidate")).toBeLessThan(etape.indexOf("purge_cache"));
   });
 });
