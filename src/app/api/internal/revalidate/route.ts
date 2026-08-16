@@ -16,6 +16,7 @@ import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,19 +64,21 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response("invalid_json", { status: 400 });
   }
 
-  const revalidatedPaths: string[] = [];
+  // 🔴 GEO-120 — invalider l'origine NE SUFFIT PAS. `revalidatePath()` ne touche
+  // que le cache Next ; Cloudflare continue de servir sa copie jusqu'à
+  // expiration du `s-maxage` (1 h sur les hubs, 24 h sur l'éditorial). Mesuré à
+  // l'audit du 2026-08-14 : aucune mutation de contenu ne purgeait l'edge, donc
+  // publier rendait la page fraîche à l'origine et **périmée pour le public et
+  // les crawlers** pendant tout ce délai. On passe désormais par le helper
+  // partagé, qui enchaîne origine puis edge — dans cet ordre, jamais l'inverse.
+  const invalidation = await revalidateAndPurge(
+    body.paths ?? [],
+    revalidatePath,
+    "api/internal/revalidate",
+  );
+  const revalidatedPaths = invalidation.cheminsRevalides;
   const revalidatedTags: string[] = [];
 
-  for (const path of body.paths ?? []) {
-    if (typeof path === "string" && path.startsWith("/")) {
-      try {
-        revalidatePath(path);
-        revalidatedPaths.push(path);
-      } catch {
-        // log silencieux — best-effort
-      }
-    }
-  }
   for (const tag of body.tags ?? []) {
     if (typeof tag === "string" && tag.length > 0) {
       try {
@@ -93,5 +96,12 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   return Response.json({
     revalidated: { paths: revalidatedPaths, tags: revalidatedTags },
+    // Rendu explicite pour que l'appelant distingue « edge non configuré » (dev,
+    // build stub) d'« edge purgé » — et voie ce que le plafond a écarté.
+    edge: {
+      configured: invalidation.edgeConfigure,
+      purged: invalidation.urlsPurgees.length,
+      skipped: invalidation.urlsEcartees,
+    },
   });
 }

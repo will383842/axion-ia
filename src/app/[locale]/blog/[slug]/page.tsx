@@ -63,6 +63,7 @@ import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pric
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
 import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -366,8 +367,13 @@ export default async function BlogArticle({ params }: Props) {
   // À partir de … » (le mode `range` porte sa propre amorce). Défaut
   // PRÉEXISTANT ici : le corps résolvait déjà les tokens, donc la collision
   // était visible en clair sur le site avant même le correctif FAQ.
+  // GEO-079/081 — `prefixerLiensInternes` en DERNIER : les liens internes des
+  // corps persistés sont écrits sans préfixe de langue et provoquent chacun une
+  // redirection (parfois deux). On réécrit au rendu, ce qui couvre tout le stock
+  // déjà publié sans reprise de base. Aucun coût client : ce code ne quitte pas
+  // le serveur.
   const dbBodyHtml = dbBody
-    ? collapsePriceProseDuplicates(resolvePriceTokens(dbBody.html, loc))
+    ? prefixerLiensInternes(collapsePriceProseDuplicates(resolvePriceTokens(dbBody.html, loc)), loc)
     : null;
   // P3 QW — TOC Featured Snippets : ancres alignées sur les id réellement injectés
   // (VIS-04, fini les ancres mortes). DB → toc de buildToc ; FS → extractTocItems.

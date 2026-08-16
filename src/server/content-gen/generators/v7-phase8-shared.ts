@@ -207,7 +207,7 @@ ${config.userPromptFocusSection}
 - Quand c'est pertinent (1 à 2 max), utilise un encadré : <aside class="callout callout-warning"><p class="callout-label">Attention</p><p>…</p></aside>. Variantes de classe : callout-info, callout-note, callout-warning, callout-danger.
 - FAQ : 8-12 paires Q/R substantielles (réponses ≥ 2 lignes)
 - ≥ 4 liens externes <a> vers sources d'autorité (INSEE, DARES, BPI, EU AI Act…)
-- ≥ 3 liens internes vers /audit, /interventions/essentielle, /implementations, /un-a-un
+- ≥ 3 liens internes vers /audit, /formations, /implementation, /un-a-un
 - Le primary keyword DOIT apparaître textuellement dans le <h1> ET début du metaTitle.
 - metaTitle : OBLIGATOIREMENT 50 à 60 caractères (compte les espaces). NE JAMAIS descendre sous 50 : si trop court, ajoute une précision utile (bénéfice, secteur). NE PAS dépasser 60.
 - metaDescription : OBLIGATOIREMENT 140 à 160 caractères (compte les espaces), phrase complète. NE JAMAIS descendre sous 140 : développe jusqu'à la fourchette. NE PAS dépasser 160.
@@ -379,7 +379,7 @@ label : ${config.recommendedCtaLabel}
       issues.push(`citations externes ${citationCount} < 4 — ajouter sources d'autorité`);
     if (internalLinkCount < 3)
       issues.push(
-        `internal_links ${internalLinkCount} < 3 — lier /audit, /interventions/essentielle, /implementations`,
+        `internal_links ${internalLinkCount} < 3 — lier /audit, /formations, /implementation`,
       );
     prevFeedback = `Score ${score}/100 insuffisant. À corriger : ${issues.join(" ; ")}.`;
   }
