@@ -123,7 +123,39 @@ function getQualityImproverQueue(): Queue | null {
  * sur N slots sans dérive aléatoire (remplace Math.random()).
  * seed = offset pour décorreler type / intent / audience sur le même slotIndex.
  * Ex : dist={A:40,B:30,C:30}, slotIndex=0→A, slotIndex=40→B, slotIndex=70→C.
+ *
+ * 🔴 CORRIGÉ 2026-08-16 (audit GEO/AEO E2E) — LES POIDS EN FRACTIONS RENDAIENT
+ * TOUJOURS LA PREMIÈRE CLÉ.
+ *
+ * L'implémentation d'origine calculait `position = (slotIndex + seed) % total`
+ * en prenant la SOMME BRUTE des poids comme modulo. Ça ne marche que si cette
+ * somme est un entier supérieur à 1. Or la production stocke ses répartitions
+ * en FRACTIONS de somme 1 — ce n'est pas une hypothèse, c'est écrit dans
+ * `intent-distribution-schema.ts` (« la production les stocke en fractions de
+ * somme 1, tandis que l'écran de réglage les présente en pourcentages ») et
+ * répété dans le bloc de fallback global de ce fichier même.
+ *
+ * Avec `total = 1`, `(slotIndex + seed) % 1` vaut `0` pour tout entier :
+ * `position` ne bouge JAMAIS, la première clé de l'objet gagne à chaque slot.
+ * Effet mesurable : toute campagne dépourvue de `searchIntentMix` propre reçoit
+ * le `globalIntentMix`, dont `informational` est la première clé → **100 %
+ * d'informational dès le premier tick**, en silence, sans qu'aucune erreur ne
+ * soit levée. Les axes audience / activité / secteur client sont exposés au
+ * même défaut dès que leurs poids sont écrits en fractions.
+ *
+ * Le correctif ramène les poids sur une ÉCHELLE FIXE de 100 avant le tirage.
+ * L'échelle d'entrée cesse alors d'avoir un effet — ce que la docstring
+ * ci-dessus promettait déjà, et qui était faux.
+ *
+ * ⚠️ Compatibilité : pour des poids en POURCENTAGES (somme 100, cas des seeds
+ * `DEFAULT_INTENT_MIX` et de tout ce que valide `PercentRecordSchema`), le
+ * calcul est INCHANGÉ au bit près — `(w / 100) * 100 === w` et le modulo porte
+ * déjà sur 100. Aucune séquence existante ne bouge.
+ *
+ * Garde : `src/server/queue/workers/__tests__/sample-weighted-echelle.spec.ts`.
  */
+const ECHELLE_TIRAGE = 100;
+
 function sampleWeighted<K extends string>(
   dist: Record<K, number>,
   slotIndex: number,
@@ -132,11 +164,13 @@ function sampleWeighted<K extends string>(
   const entries = Object.entries(dist) as Array<[K, number]>;
   if (entries.length === 0) return null;
   const total = entries.reduce((a, [, w]) => a + w, 0);
-  if (total <= 0) return null;
-  const position = (slotIndex + seed) % total;
+  // `!(total > 0)` plutôt que `total <= 0` : attrape aussi `NaN`, qu'une
+  // configuration abîmée peut produire et qui passerait la comparaison inverse.
+  if (!(total > 0)) return null;
+  const position = (slotIndex + seed) % ECHELLE_TIRAGE;
   let cumulative = 0;
   for (const [key, w] of entries) {
-    cumulative += w;
+    cumulative += (w / total) * ECHELLE_TIRAGE;
     if (position < cumulative) return key;
   }
   return entries[entries.length - 1]![0];
