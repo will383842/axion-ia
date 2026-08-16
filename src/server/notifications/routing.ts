@@ -301,6 +301,20 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   // doublon WhatsApp est voulu. Séparation par l'en-tête 🧲 COMMERCIAL MÉMO.
   "COMMERCIAL_APPLICATION_RECEIVED",
 
+  // ✉️ Formulaire de contact — REMIS le 2026-08-16, sur demande explicite de
+  // Will après un envoi de contrôle où il n'a rien reçu sur son téléphone.
+  //
+  // Il en avait été retiré le 2026-08-09 au motif que « ce sont des gens qui
+  // attendent une réponse, mais rarement dans l'heure ». La décision s'inverse
+  // en connaissance de cause : le formulaire unifié est la porte d'entrée
+  // commerciale principale du site, et laisser une demande dormir jusqu'à la
+  // prochaine ouverture de Telegram coûte plus cher que la dilution du fil.
+  //
+  // ⚠️ C'est le premier flux à VOLUME de cette liste. Si le fil WhatsApp devient
+  // bruyant, c'est ici qu'il faudra revenir — pas sur Calendly ni sur les
+  // demandes de prestation.
+  "CONTACT_FORM_SUBMITTED",
+
   // ── HORS WhatsApp, sur décision explicite de Will (2026-08-09) ─────────────
   // Ne pas les remettre sans le lui redemander — leur absence est un CHOIX, pas
   // un oubli, et `__tests__/whatsapp.test.ts` la verrouille explicitement.
@@ -310,9 +324,10 @@ const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<Noti
   //    le pic du 05/08 (17 candidatures en une journée) montre que ce volume
   //    noie un fil qui doit rester réservé à l'urgent. Restent sur Telegram,
   //    dans leur groupe 💼 Candidatures.
-  //  · `CONTACT_FORM_SUBMITTED`, `CUSTOMER_SUPPORT_REQUEST`,
-  //    `PODCAST_REQUEST_SUBMITTED` — y étaient aussi, retirées : ce sont des gens
-  //    qui attendent une réponse, mais rarement dans l'heure.
+  //  · `CUSTOMER_SUPPORT_REQUEST`, `PODCAST_REQUEST_SUBMITTED` — retirées le
+  //    2026-08-09 : ce sont des gens qui attendent une réponse, mais rarement
+  //    dans l'heure. (`CONTACT_FORM_SUBMITTED` figurait ici jusqu'au 2026-08-16,
+  //    puis a été REMIS sur demande de Will — voir plus haut.)
   //  · `NEWSLETTER_*`, `DEPLOY_*`, `BACKUP_*`, `INCIDENT_DETECTED`,
   //    `SECURITY_ALERT`, `STRIPE_*`, `MONITORING_ALERT` — jamais ajoutées.
   //  · les 6 dormantes `BOOKING_*`/`OPTION_*` — tunnel éteint, aucun émetteur.

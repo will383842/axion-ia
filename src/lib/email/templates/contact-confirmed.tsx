@@ -45,7 +45,12 @@ export function ContactConfirmedEmail({
     <EmailLayout
       preview={t.title}
       title={t.title}
-      cta={{ label: t.cta, href: `${baseUrl}/${locale}/interventions` }}
+      // 🔴 Corrigé le 2026-08-16 : le bouton « Voir le calendrier » pointait sur
+      // `/interventions`, une page de présentation des prestations — pas un
+      // calendrier. Un destinataire qui suivait la promesse du texte (« passez
+      // directement par notre calendrier de réservation ») atterrissait sur
+      // autre chose. La page de réservation du site est `/appel`.
+      cta={{ label: t.cta, href: `${baseUrl}/${locale === "en" ? "en/book-a-call" : "fr/appel"}` }}
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro(p.contactName)}</Text>

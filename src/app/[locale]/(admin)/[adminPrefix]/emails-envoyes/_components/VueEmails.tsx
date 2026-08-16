@@ -127,20 +127,51 @@ export function VueEmails({
         title="E-mails envoyés"
         description="Tout ce qui est réellement parti : gabarit, destinataire, résultat."
         actions={
-          <nav aria-label="Période" className="flex flex-wrap gap-[var(--space-admin-2)]">
-            {FENETRES_EMAILS.map((f) => (
-              <Link
-                key={f.jours}
-                href={lien({ jours: f.jours, page: 1 })}
-                className={
-                  f.jours === filtres.jours ? "admin-button admin-button-sm" : "admin-button-ghost"
-                }
-                aria-current={f.jours === filtres.jours ? "page" : undefined}
-              >
-                {f.libelle}
-              </Link>
-            ))}
-          </nav>
+          <div className="flex flex-wrap items-center gap-[var(--space-admin-2)]">
+            <nav aria-label="Période" className="flex flex-wrap gap-[var(--space-admin-2)]">
+              {FENETRES_EMAILS.map((f) => (
+                <Link
+                  key={f.jours}
+                  href={lien({ jours: f.jours, page: 1 })}
+                  className={
+                    f.jours === filtres.jours
+                      ? "admin-button admin-button-sm"
+                      : "admin-button-ghost"
+                  }
+                  aria-current={f.jours === filtres.jours ? "page" : undefined}
+                >
+                  {f.libelle}
+                </Link>
+              ))}
+            </nav>
+            {/*
+              Tableau de bord du relais (2026-08-16, demande Will après la
+              bascule vers ZeptoMail).
+
+              Sa place est ICI et non dans la navigation : `admin-nav.test.ts`
+              verrouille l'invariant « tout href de la nav est une route interne
+              préfixée », et cet invariant n'est pas décoratif — la mise en
+              surbrillance de l'entrée active compare des chemins.
+
+              Sa place est ici pour une seconde raison, meilleure : les deux
+              écrans répondent à la même question — « mes e-mails partent-ils ? »
+              — mais depuis les deux bouts de la chaîne. Ce tableau dit ce que
+              l'application a TENTÉ ; ZeptoMail dit ce que le relais a réellement
+              REMIS, et ce qui a rebondi. L'écart entre les deux EST
+              l'information, et tant qu'aucun endpoint de rebond n'existe, la
+              comparer à l'œil est le seul moyen de voir un destinataire qui n'a
+              rien reçu.
+            */}
+            <a
+              href="https://zeptomail.zoho.eu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="admin-button-ghost"
+              title="Compteurs envoyés / livrés / rebonds, côté relais"
+            >
+              ZeptoMail ↗
+            </a>
+          </div>
         }
       />
 
