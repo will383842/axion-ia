@@ -43,7 +43,7 @@ describe("routing.ts — en-tête HTTP Link hreflang", () => {
     expect(
       /\balternateLinks\s*:\s*false\b/.test(CODE),
       "`alternateLinks: false` a disparu de defineRouting(). next-intl réémettrait " +
-        "sur CHAQUE page un en-tête Link hreflang=\"en\" vers /en/*, qui répond 301 → FR. " +
+        'sur CHAQUE page un en-tête Link hreflang="en" vers /en/*, qui répond 301 → FR. ' +
         "Si EN est réactivé un jour, c'est `EN_LOCALE_ENABLED` qu'il faut basculer, " +
         "pas ce drapeau.",
     ).toBe(true);
