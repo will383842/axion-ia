@@ -1,0 +1,31 @@
+-- Journal des envois : indexer `job_id`, devenu le critere de filtre le plus
+-- chaud du modele.
+--
+-- Avant l'audit du 16/08, `job_id` n'etait qu'une colonne de tracabilite : on
+-- l'ecrivait, on ne la lisait jamais. C'est pourquoi elle est restee le seul
+-- critere de filtre du modele sans index -- les cinq autres (`template`,
+-- `status`, `entity_*`, `recipient`, `created_at`) en ont un.
+--
+-- Le correctif d'observabilite change ca. La ligne « en attente » est desormais
+-- posee A L'ENFILAGE et close par le worker, donc CHAQUE e-mail declenche :
+--   1. une lecture `WHERE job_id = ?`            (garde anti-doublon)
+--   2. une ecriture `WHERE job_id = ? AND status = 'pending'` (cloture)
+--
+-- Sans index, ce sont deux balayages sequentiels d'`email_logs` par e-mail
+-- envoye. Sur les 102 lignes actuelles, c'est indetectable. Le cout croit avec
+-- la taille du journal, qui croit avec les envois : le jour ou le lot vivier de
+-- 100 destinataires part sur un journal de 100 000 lignes, chaque envoi balaie
+-- 100 000 lignes deux fois. C'est le profil type du defaut qui n'existe pas en
+-- recette et qui apparait seul, plus tard, sous la charge.
+--
+-- Index COMPOSE `(job_id, status)` plutot que `job_id` seul : il sert la
+-- cloture telle quelle, et sert aussi la garde anti-doublon par prefixe gauche.
+-- Un seul index couvre les deux acces -- inutile d'en payer deux en ecriture.
+--
+-- Pas de CONCURRENTLY : `prisma migrate deploy` execute la migration dans une
+-- transaction, ce qui l'interdit. Le verrou d'ecriture est sans consequence
+-- ici (table de 102 lignes au moment de la pose) ; si ce fichier devait etre
+-- rejoue un jour sur un journal volumineux, le sortir de la transaction et
+-- passer en CREATE INDEX CONCURRENTLY.
+CREATE INDEX IF NOT EXISTS "email_logs_job_id_status_idx"
+  ON "email_logs" ("job_id", "status");

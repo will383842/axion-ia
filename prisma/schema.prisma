@@ -930,6 +930,18 @@ model EmailLog {
   @@index([entityType, entityId])
   @@index([recipient])
   @@index([createdAt])
+  /// Audit du 2026-08-16 — `job_id` etait le SEUL critere de filtre sans index,
+  /// et il est devenu le plus chaud du modele : depuis que la ligne « en
+  /// attente » est posee a l'enfilage, CHAQUE envoi lit par `job_id` (garde
+  /// anti-doublon) puis ecrit par `job_id` + `status` (cloture). Deux balayages
+  /// sequentiels par e-mail, invisibles sur les 102 lignes d'aujourd'hui et
+  /// quadratiques a mesure que le journal grossit -- exactement le profil d'un
+  /// defaut qui n'apparait qu'apres la mise a l'echelle.
+  ///
+  /// Compose `(job_id, status)` et non `job_id` seul : il sert la cloture
+  /// telle quelle, et sert la garde anti-doublon par prefixe gauche. Un seul
+  /// index couvre donc les deux acces.
+  @@index([jobId, status])
   @@map("email_logs")
 }
 
