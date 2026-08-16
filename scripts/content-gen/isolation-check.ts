@@ -223,6 +223,19 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // empêcher, et sur les SUPPORTS DE FORMATION, terrain direct de l'audit
   // Qualiopi.
   /^tests\/unit\/ci\/gate-a11y-cablage\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO, GEO-145) — MÊME RAISONNEMENT
+  // que l'exception a11y ci-dessus.
+  //
+  // Cette garde de sitemap lit `prisma/seeds/content-gen/author-profile.ts`
+  // pour vérifier que le profil `manon` y est déclaré ACTIF. C'est la
+  // PRÉCONDITION de la déclaration de `/fr/equipe/manon` dans `pages.xml` : la
+  // page est DB-dépendante et répond 404 si le profil est absent ou inactif.
+  // Déclarer dans un sitemap une URL qui peut 404 est pire que ne pas la
+  // déclarer — la garde lie donc la déclaration à ce qui la rend légitime.
+  //
+  // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  /^tests\/unit\/seo\/sitemap-hygiene\.spec\.ts$/,
   // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, GEO-028) — MÊME RAISONNEMENT
   // que l'exception a11y ci-dessus.
   //
