@@ -130,6 +130,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             : `${SITE_URL}${view.featuredImage}`,
         }
       : {}),
+    // GEO-142 (audit GEO/AEO 2026-08-14) — les 126 articles de blog n'émettaient
+    // AUCUNE balise `article:*`, alors que `/actualites/[slug]` les émet depuis
+    // toujours par le même mécanisme. Mesuré en production le 2026-08-16 :
+    // 0 balise `property="article:*"` sur un article de blog, 2 sur une
+    // actualité. Facebook, LinkedIn et les crawlers news lisent ces balises
+    // pour dater et attribuer un contenu.
+    //
+    // ⚠️ Les valeurs sont REPRISES du JSON-LD de la même page (l.356-364), pas
+    // recalculées : le signal porteur reste `datePublished`/`dateModified`, et
+    // deux sources de date sur une même page finissent toujours par diverger.
+    article: {
+      ...(view.publishedAt ? { publishedTime: view.publishedAt } : {}),
+      ...((view.updatedAt ?? view.publishedAt)
+        ? { modifiedTime: view.updatedAt ?? view.publishedAt }
+        : {}),
+      ...(view.author ? { authors: [view.author] } : {}),
+      ...(view.category ? { section: view.category } : {}),
+      ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
+    },
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
