@@ -122,6 +122,37 @@ export function RelancesATraiter({
   /** Relance dont la boîte de dialogue est ouverte. */
   const [aConfirmer, setAConfirmer] = useState<RelanceItem | null>(null);
   const [releveVerifie, setReleveVerifie] = useState(false);
+  /**
+   * Adresse saisie à la main par l'admin.
+   *
+   * 🔴 Ce champ manquait, et son absence transformait une garde juste en
+   * IMPASSE. Le sous-lot 8E refuse d'envoyer une relance sans contact du
+   * financeur — c'est le bon réflexe, une mise en demeure ne part pas au
+   * hasard. Mais aucun formulaire du dépôt ne renseigne
+   * `DossierFinancement.financeurContactEmail`, et cette boîte de dialogue
+   * n'offrait aucun moyen d'en saisir un : sur une facture subrogée, la relance
+   * devenait tout simplement impossible.
+   *
+   * Le serveur acceptait pourtant déjà une adresse forcée. Il ne manquait que
+   * l'endroit où la taper. C'est le reproche que ce projet se fait à lui-même :
+   * *l'écran doit expliquer, pas seulement interdire* — et une explication sans
+   * issue reste un mur.
+   */
+  const [destinataireSaisi, setDestinataireSaisi] = useState("");
+
+  /**
+   * À qui l'e-mail part, en toutes lettres.
+   *
+   * 🔴 Le bouton disait « Envoyer la relance au client » dans TOUS les cas — y
+   * compris sur une facture subrogée, où c'est le financeur qui doit. Sur
+   * l'écran qui déclenche une mise en demeure, nommer le mauvais destinataire
+   * est exactement la faute que le sous-lot 8E corrige côté serveur.
+   */
+  const LIBELLE_DEBITEUR: Record<NonNullable<RelanceDetail["qualiteDebiteur"]>, string> = {
+    entreprise: "au client",
+    financeur: "au financeur",
+    beneficiaire: "au bénéficiaire",
+  };
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const annulerRef = useRef<HTMLButtonElement | null>(null);
 
@@ -141,6 +172,9 @@ export function RelancesATraiter({
   const fermer = () => {
     setAConfirmer(null);
     setReleveVerifie(false);
+    // L'adresse saisie ne survit pas à la fermeture : la reporter d'une relance
+    // à l'autre enverrait au débiteur d'hier.
+    setDestinataireSaisi("");
   };
 
   const traiter = (relanceId: string, action: "ignorer" | "reporter") => {
@@ -162,6 +196,10 @@ export function RelancesATraiter({
       const res = await envoyerRelanceAction({
         relanceId: relance.id,
         confirmationReleveBancaire: true,
+        // L'adresse saisie PRIME et lève l'empêchement : l'admin peut connaître
+        // le gestionnaire du dossier sans que la base le porte encore. Ce qu'on
+        // ne fait jamais, c'est la DEVINER à sa place.
+        ...(destinataireSaisi.trim() !== "" ? { to: destinataireSaisi.trim() } : {}),
       });
       if ("error" in res) {
         setErreur(res.error);
@@ -184,6 +222,9 @@ export function RelancesATraiter({
   };
 
   const detail = aConfirmer?.detail;
+  // Repli sur « entreprise » quand aucun détail n'a pu être chargé : c'est le
+  // cas le plus fréquent, et c'est aussi le libellé qui existait avant.
+  const qualiteDebiteur = detail?.qualiteDebiteur ?? "entreprise";
   const hrefRapprochement =
     baseHref !== undefined ? `${baseHref}/${LIEN_RAPPROCHEMENT}` : LIEN_RAPPROCHEMENT;
 
@@ -367,6 +408,39 @@ export function RelancesATraiter({
               </p>
             )}
 
+            {/* 🔴 L'ISSUE. Sans ce champ, l'empêchement ci-dessus était un mur :
+                le serveur refusait, et l'écran n'offrait aucun moyen d'avancer.
+                Une garde juste transformée en impasse finit contournée — ou pire,
+                l'utilisateur saisit l'adresse du client « pour que ça passe »,
+                c'est-à-dire exactement la faute que la garde empêche.
+
+                Le champ est proposé en PERMANENCE, pas seulement en cas de
+                refus : corriger une adresse obsolète est légitime même quand le
+                système en connaît une. */}
+            <label
+              htmlFor="relance-destinataire"
+              className="mb-[var(--space-admin-4)] block text-[length:var(--text-admin-sm)]"
+            >
+              <span className="mb-[var(--space-admin-1)] block text-[color:var(--color-admin-fg-muted)]">
+                {detail?.empechement != null
+                  ? "Adresse du destinataire (obligatoire ici)"
+                  : "Envoyer à une autre adresse (facultatif)"}
+              </span>
+              <input
+                id="relance-destinataire"
+                type="email"
+                value={destinataireSaisi}
+                onChange={(e) => setDestinataireSaisi(e.target.value)}
+                disabled={isPending}
+                placeholder={detail?.destinataire ?? "gestionnaire@financeur.fr"}
+                // ⚠️ Pas de `w-full` ici : `.admin-input` vit hors couche et bat
+                // les utilitaires Tailwind, qui ne peindraient donc rien. Une
+                // garde du système de design l'a attrapé — la largeur se règle
+                // dans `admin.css`, au même niveau de cascade.
+                className="admin-input"
+              />
+            </label>
+
             {detail?.penalitesActives === true && (
               <p className="admin-alert admin-alert-info mb-[var(--space-admin-4)]">
                 Les pénalités de retard sont activées pour ce client : leur montant sera chiffré
@@ -431,17 +505,32 @@ export function RelancesATraiter({
               >
                 Annuler
               </button>
+              {/* 🔴 Le bouton reste inactif tant que l'empêchement n'est pas
+                  levé par une adresse saisie. Sans cette condition, le clic
+                  partait, le serveur refusait, et l'écran affichait une erreur
+                  après coup — un refus qu'on découvre APRÈS avoir agi apprend à
+                  cliquer quand même. */}
               <button
                 type="button"
                 className="admin-button"
-                disabled={isPending || !releveVerifie}
+                disabled={
+                  isPending ||
+                  !releveVerifie ||
+                  (detail?.empechement != null && destinataireSaisi.trim() === "")
+                }
                 onClick={confirmerEnvoi}
               >
-                {isPending ? "Envoi…" : "Envoyer la relance au client"}
+                {isPending ? "Envoi…" : `Envoyer la relance ${LIBELLE_DEBITEUR[qualiteDebiteur]}`}
               </button>
             </div>
+            {/* Le libellé et cette phrase disaient « au client » dans TOUS les
+                cas — y compris sur une facture subrogée, où le débiteur est le
+                financeur. Sur l'écran qui déclenche une mise en demeure,
+                nommer le mauvais destinataire est précisément ce que le
+                sous-lot 8E corrige côté serveur : l'écran doit dire la même
+                chose que ce que l'action fait. */}
             <p className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-              Une fois confirmé, l&apos;e-mail part directement au client.
+              {`Une fois confirmé, l'e-mail part directement ${LIBELLE_DEBITEUR[qualiteDebiteur]}.`}
             </p>
           </>
         )}
