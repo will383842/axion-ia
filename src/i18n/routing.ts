@@ -332,10 +332,22 @@ export const routing = defineRouting({
     // publiés (DB-driven, FR-only doctrine v1.2). Détail `/guides/[slug]` =
     // page rendue par `loadGuideForView` (HowTo JSON-LD si steps fiables).
     // Les guides individuels apparaissent aussi dans le sub-sitemap `blog`
-    // (continuité éditoriale Articles) ; le hub a son propre sub-sitemap
-    // `guides` (1 URL : le hub lui-même).
+    // (continuité éditoriale Articles). Le hub est émis par `pages.xml` — son
+    // sub-sitemap dédié a été retiré le 2026-08-16 (GEO-147, redondant à 1 URL).
     "/guides": { fr: "/guides", en: "/guides" },
     "/guides/[slug]": { fr: "/guides/[slug]", en: "/guides/[slug]" },
+
+    // GEO-131 (audit GEO/AEO 2026-08-14) — `/ressources` existe, répond 200 et
+    // est indexable, mais n'était déclarée dans AUCUN sitemap : la clé manquait
+    // ici, et `pages.xml` est construit en parcourant `routing.pathnames`.
+    // Vérifié en production le 2026-08-16 : `GET /fr/ressources` → 200, et
+    // 0 occurrence dans `sitemap/pages.xml`.
+    //
+    // Slug IDENTIQUE en EN, comme `/guides` juste au-dessus : c'est le motif qui
+    // évite d'avoir à déclarer une entrée dédiée dans `mapEnToFr` (le repli
+    // « slugs identiques » la couvre) et qui n'expose pas la route au bug de
+    // boucle 307 de next-intl, lequel ne frappe que les mappings `fr ≠ en`.
+    "/ressources": { fr: "/ressources", en: "/ressources" },
 
     // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement
