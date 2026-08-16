@@ -90,15 +90,14 @@ export default async function CatalogueImprimePage({ params }: PageProps) {
       <section className="admin-card" style={{ marginBottom: "var(--space-admin-4)" }}>
         <h2 className="admin-section-title">Avant de commander un tirage</h2>
         <ol style={{ margin: 0, paddingLeft: "1.2em", lineHeight: 1.7 }}>
-          <li>
-            Relire les {offres.length} offres ci-dessous — surtout les prix.
-          </li>
+          <li>Relire les {offres.length} offres ci-dessous — surtout les prix.</li>
           <li>
             Régénérer les données :{" "}
             <code className="admin-code-inline">pnpm tsx scripts/export-catalogue-kdp.ts</code>
           </li>
           <li>
-            Reconstruire et exporter les 4 PDF (cf. <code className="admin-code-inline">catalogue-kdp/README.md</code>).
+            Reconstruire et exporter les 4 PDF (cf.{" "}
+            <code className="admin-code-inline">catalogue-kdp/README.md</code>).
           </li>
         </ol>
         <p style={{ marginBottom: 0, marginTop: "var(--space-admin-3)" }}>
@@ -158,9 +157,9 @@ export default async function CatalogueImprimePage({ params }: PageProps) {
       <p style={{ marginTop: "var(--space-admin-4)", opacity: 0.75 }}>
         {offres.length} offres au catalogue du site, dont {surDevis.length} sur devis. Le livre en
         imprime 21 : la composition et l’ordre sont portés par{" "}
-        <code className="admin-code-inline">catalogue-kdp/objectifs-livre.cjs</code>, parce qu’une double-page est produite par
-        entrée et que les numéros du sommaire sont écrits en dur — ajouter une offre décalerait
-        toute la pagination, et l’épaisseur du dos avec elle.
+        <code className="admin-code-inline">catalogue-kdp/objectifs-livre.cjs</code>, parce qu’une
+        double-page est produite par entrée et que les numéros du sommaire sont écrits en dur —
+        ajouter une offre décalerait toute la pagination, et l’épaisseur du dos avec elle.
       </p>
     </div>
   );
