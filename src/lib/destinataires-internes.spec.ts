@@ -96,17 +96,14 @@ describe("🔴 la garde qui empêche le retour d'une boîte personnelle", () => 
     // Balayage statique : c'est la SEULE garde qui attrape une recopie à la
     // main dans un troisième fichier — exactement ce qui s'était produit.
     //
-    // 🔴 RÈGLE INVERSÉE le 16/08, après qu'une vérification adversariale a
-    // prouvé par exécution que la version précédente laissait passer
+    // 🔴 ÉLARGIE le 16/08, après qu'une vérification adversariale a prouvé par
+    // exécution que la version précédente laissait passer
     // `williamsjullin@gmail.com` — L'ADRESSE EXACTE DU DÉFAUT D'ORIGINE —
     // dès qu'on l'écrivait entre backticks au lieu de guillemets. Elle laissait
-    // passer aussi proton, icloud, orange, laposte : sa liste de domaines
-    // interdits était fermée, donc contournable par n'importe quel domaine
-    // absent de la liste.
+    // passer aussi proton, icloud, orange, laposte : trop peu de domaines.
     //
     // Une garde qui échoue sur son propre cas d'école est pire qu'une absence
-    // de garde : elle rassure. On n'énumère donc plus ce qui est INTERDIT
-    // (liste ouverte, impossible à tenir) mais ce qui est AUTORISÉ.
+    // de garde : elle rassure.
     //
     // ⚠️ On ne teste pas ses propres commentaires : ce fichier et le module
     // qu'il couvre CITENT l'ancienne adresse pour expliquer le défaut.
