@@ -223,6 +223,21 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // empêcher, et sur les SUPPORTS DE FORMATION, terrain direct de l'audit
   // Qualiopi.
   /^tests\/unit\/ci\/gate-a11y-cablage\.spec\.ts$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, GEO-028) — MÊME RAISONNEMENT
+  // que l'exception a11y ci-dessus.
+  //
+  // Ce test LIT `prisma/seeds/content-gen/author-profile.ts` pour en extraire le
+  // chemin du portrait de byline, puis vérifie que ce fichier, s'il est local et
+  // hors budget de poids, est bien servi par `next/image`. Lecture de fichier en
+  // assertion, aucun `import`, aucune dépendance à l'exécution : le couplage que
+  // § 4.1bis interdit n'existe pas ici.
+  //
+  // Coder le chemin en dur dans le test serait la fausse simplification : le
+  // portrait changerait dans le seed et la garde continuerait à mesurer l'ancien
+  // fichier — verte sur une régression. Le SSOT est le seed, la garde doit le
+  // suivre. C'est précisément le défaut mesuré (1,5 Mo servis en 64 × 64 sur
+  // toutes les pages éditoriales) que ce fichier existe pour empêcher.
+  /^src\/components\/knowledge\/public\/AuthorByline\.spec\.tsx$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL
