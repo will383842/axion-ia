@@ -251,6 +251,21 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // suivre. C'est précisément le défaut mesuré (1,5 Mo servis en 64 × 64 sur
   // toutes les pages éditoriales) que ce fichier existe pour empêcher.
   /^src\/components\/knowledge\/public\/AuthorByline\.spec\.tsx$/,
+  // Exception ajoutée 2026-08-16 (audit GEO/AEO E2E, mesure des gates).
+  //
+  // Ce test LIT CE FICHIER-CI, pour vérifier qu'une exception d'architecture ne
+  // désigne pas un script disparu : `export-gsc-crawl-stats` a été renommé en
+  // `export-gsc-search-analytics`, et une exception qui pointe un fichier
+  // inexistant ne protège plus rien — elle a juste l'air de protéger.
+  //
+  // Une garde qui surveille une frontière doit pouvoir NOMMER LES DEUX CÔTÉS.
+  // C'est le seul cas où le nom de la zone est irréductible : on peut reformuler
+  // une phrase, pas un chemin qu'on ouvre en lecture. Ajouter l'exception fait
+  // donc partie du travail, ce n'est pas un contournement.
+  //
+  // Lecture de fichier en assertion, aucun `import`, aucune dépendance à
+  // l'exécution : le couplage que § 4.1bis interdit n'existe pas ici.
+  /^tests\/unit\/ci\/gate-mobile-et-inp\.spec\.ts$/,
   // Exceptions ajoutées 2026-05-20 (sessions city-quality + S+5 P2 + keywords + sentry).
   // Ces fichiers mentionnent "content-gen" uniquement dans des commentaires JSDoc
   // ou des commentaires de code (référence à un consommateur, contexte audit, URL

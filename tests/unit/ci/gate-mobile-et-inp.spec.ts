@@ -40,6 +40,24 @@ function lire(chemin: string): string {
   return readFileSync(join(RACINE, chemin), "utf8");
 }
 
+/**
+ * Ne garde que les lignes qui SONT une exception d'architecture, c'est-a-dire
+ * un litteral d'expression reguliere ancre (`/^…/`).
+ *
+ * Pourquoi pas « retirer les commentaires » : la liste d'exceptions est faite
+ * d'expressions regulieres dont plusieurs se terminent par `.*` puis leur
+ * delimiteur — la sequence ferme un bloc de commentaire, et un decoupeur naif
+ * avale alors toute la liste. C'est le meme piege que `*` suivi de `/` dans un
+ * commentaire JSX, deja paye deux fois dans ce depot. On selectionne donc ce
+ * qu'on veut lire, au lieu d'essayer de soustraire ce qu'on ne veut pas.
+ */
+function exceptionsDeclarees(source: string): string {
+  return source
+    .split("\n")
+    .filter((ligne) => /^\s*\/\^/.test(ligne))
+    .join("\n");
+}
+
 const WORKFLOW = ".github/workflows/deploy-coolify.yml";
 const CONF_DESKTOP = "lighthouserc.postdeploy.json";
 const CONF_MOBILE = "lighthouserc.postdeploy.mobile.json";
@@ -148,7 +166,15 @@ describe("GEO-032 — le fichier ne promet plus ce qu'il ne mesure pas", () => {
 
   it("l'exception d'architecture pointe le nouveau nom", () => {
     // Une exception qui designe un fichier disparu ne protege plus rien.
-    const check = lire("scripts/content-gen/isolation-check.ts");
+    //
+    // On regarde les EXCEPTIONS DECLAREES, pas la prose autour. Premiere
+    // redaction : on cherchait l'ancien nom dans le fichier entier, et le test
+    // est tombe sur le COMMENTAIRE qui explique le renommage. Un garde statique
+    // qui lit tout un fichier finit toujours par trouver sa propre
+    // documentation ; interdire d'ecrire « X a ete renomme en Y » pour pouvoir
+    // verifier que Y est bien utilise, c'est payer la garde en effacant la
+    // raison du changement.
+    const check = exceptionsDeclarees(lire("scripts/content-gen/isolation-check.ts"));
     expect(check).toContain("export-gsc-search-analytics");
     expect(check).not.toContain("export-gsc-crawl-stats");
   });
