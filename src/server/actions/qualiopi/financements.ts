@@ -281,6 +281,44 @@ export async function setFinancementSessionAction(input: {
 
   if (Object.keys(updateData).length === 0) return { error: "Aucun champ à mettre à jour" };
 
+  // 🔴 COHÉRENCE type de client × dispositif de financement — garde SERVEUR.
+  //
+  // Aucune validation croisée n'existait : rien n'interdisait un CPF sur une
+  // entreprise ni un OPCO sur un particulier. Les formulaires masquent, la
+  // Server Action acceptait — et un dispositif incohérent ne se voit qu'au
+  // refus du financeur, des semaines plus tard, quand la formation a eu lieu.
+  //
+  // Deux contradictions seulement, celles qui ne souffrent aucune exception :
+  //   · le CPF est le compte d'une PERSONNE. Une personne morale n'en a pas.
+  //   · un OPCO finance l'obligation de formation d'un EMPLOYEUR. Un particulier
+  //     qui se forme à titre individuel n'en relève d'aucun.
+  //
+  // ⚠️ `france_travail` n'est PAS restreint : un demandeur d'emploi est un
+  // particulier, mais un employeur peut aussi monter une POEI. `mixte` et
+  // `direct` non plus. Une garde qui refuserait un cas légitime serait pire que
+  // l'absence de garde — on la contournerait, et elle finirait désarmée.
+  if (fields.financementType === "cpf" || fields.financementType === "opco") {
+    const avecClient = await prisma.trainingSession
+      .findUnique({ where: { id: sessionId }, select: { client: { select: { type: true } } } })
+      .catch(() => null);
+    const typeClient = avecClient?.client?.type ?? null;
+
+    if (fields.financementType === "cpf" && typeClient === "entreprise") {
+      return {
+        error:
+          "Financement refusé : le CPF est le compte personnel d'un stagiaire, une personne morale n'en dispose pas. " +
+          "Pour une entreprise, choisissez OPCO ou financement direct.",
+      };
+    }
+    if (fields.financementType === "opco" && typeClient === "particulier") {
+      return {
+        error:
+          "Financement refusé : un OPCO finance l'obligation de formation d'un employeur — un particulier n'en relève pas. " +
+          "Pour un particulier, choisissez CPF, France Travail ou financement direct.",
+      };
+    }
+  }
+
   await prisma.trainingSession.update({
     where: { id: sessionId },
     data: updateData as Parameters<typeof prisma.trainingSession.update>[0]["data"],

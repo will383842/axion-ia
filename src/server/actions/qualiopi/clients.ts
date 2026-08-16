@@ -33,107 +33,158 @@ const CLIENT_STATUTS = [
   "perdu",
 ] as const;
 
-const createClientSchema = z.object({
-  /** entreprise (B2B) | particulier (B2C). Défaut entreprise. */
-  type: z.enum(CLIENT_TYPES).optional(),
-  raisonSociale: z.string().min(1).max(250),
-  // Format + clé de Luhn + rejet des valeurs de remplissage. `max(14)` seul
-  // acceptait « 00000000000000 », valeur réellement persistée en production, et
-  // qui se propage jusqu'au `<ram:ID schemeID="0009">` du Factur-X — donc à une
-  // facture non routable par la Plateforme Agréée. Reste FACULTATIF.
-  siret: siretField.optional(),
-  nafCode: z.string().max(6).optional(),
-  conventionCollective: z.string().max(200).optional(),
-  /** Code IDCC de la branche (précise la convention collective). */
-  idcc: z.string().max(10).optional(),
-  secteur: z.string().max(200).optional(),
-  taille: z.enum(COMPANY_SIZES).optional(),
-  adresse: z.string().optional(),
-  contactNom: z.string().max(200).optional(),
-  contactEmail: z.string().email().optional(),
-  contactTelephone: z.string().max(40).optional(),
-  contactFonction: z.string().max(150).optional(),
-  /**
-   * OPCO saisi manuellement. Si absent, inféré depuis l'IDCC puis le NAF.
-   *
-   * `.min(1)` est BLOQUANT, pas cosmétique : une option vide de `<select>`
-   * soumettrait `""`, qui serait écrit en base, continuerait d'afficher
-   * « À déterminer » (chaîne vide falsy) et surtout désactiverait à vie la
-   * ré-inférence de `updateClientAction` (sa garde teste `== null`). Un clic
-   * suffirait à briquer le mécanisme.
-   */
-  opcoIdentifie: z.string().min(1).max(60).optional(),
-  opcoNumeroAdherent: z.string().max(80).optional(),
-  opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
-  source: z.string().max(120).optional(),
-  contexteIa: z.string().optional(),
-  notes: z.string().optional(),
-});
+/**
+ * Cohérence type × champs d'entreprise — garde SERVEUR.
+ *
+ * 🔴 Aujourd'hui, seule l'interface masque SIRET, NAF, taille, IDCC et OPCO
+ * pour un particulier (`ClientEditForm`, `ClientBrancheForm`). Une Server Action
+ * est appelable directement : masquer n'est pas interdire. C'est exactement le
+ * défaut corrigé au Lot 10 sur les habilitations, appliqué ici aux données.
+ *
+ * Ce que ces champs signifient : un SIRET identifie un établissement, un IDCC
+ * une convention collective de branche, un OPCO l'opérateur qui finance
+ * l'obligation de formation d'un EMPLOYEUR. Aucun n'a de sens pour une personne
+ * physique qui se forme à titre individuel — et un OPCO posé sur un particulier
+ * produirait un dossier de financement qu'aucun financeur n'accepterait.
+ *
+ * ⚠️ La règle ne mord QUE si le type `particulier` est présent dans la charge :
+ * une mise à jour qui ne touche pas au type ne peut pas être refusée à cause de
+ * données historiques qu'elle ne modifie pas.
+ */
+const CHAMPS_ENTREPRISE = [
+  "siret",
+  "nafCode",
+  "conventionCollective",
+  "idcc",
+  "taille",
+  "opcoIdentifie",
+  "opcoNumeroAdherent",
+  "opcoEnveloppeAnnuelleCents",
+] as const;
 
-const updateClientSchema = z.object({
-  id: z.string().uuid(),
-  type: z.enum(CLIENT_TYPES).optional(),
-  raisonSociale: z.string().min(1).max(250).optional(),
-  // Même règle qu'à la création : la mise à jour est une porte d'entrée
-  // distincte, elle doit être fermée séparément.
-  //
-  // `.nullable()` en PLUS ici : la chaîne vide rend `undefined` (= « champ non
-  // transmis », donc « ne rien changer »), elle ne peut donc pas effacer. Sans
-  // `null`, un SIRET erroné saisi une fois serait DÉFINITIF — et un futur écran
-  // d'édition pré-rempli avec une valeur invalide (chantier V18) refuserait
-  // toute modification de la fiche, y compris des champs sans rapport.
-  siret: siretField.nullable().optional(),
-  nafCode: z.string().max(6).optional(),
-  conventionCollective: z.string().max(200).optional(),
-  /** Code IDCC de la branche (précise la convention collective). */
-  idcc: z.string().max(10).optional(),
-  secteur: z.string().max(200).optional(),
-  taille: z.enum(COMPANY_SIZES).optional(),
-  adresse: z.string().optional(),
-  contactNom: z.string().max(200).optional(),
-  /**
-   * `.nullable()` en PLUS, exactement pour le motif déjà écrit sur `siret` : la
-   * chaîne vide rend `undefined` (= « ne rien changer »), elle ne peut donc pas
-   * effacer, et sans `null` une adresse saisie par erreur serait DÉFINITIVE.
-   *
-   * 🔴 Ici l'enjeu est plus lourd que pour le SIRET : c'est à cette adresse que
-   * part le LIEN DE SIGNATURE du devis. Une adresse fautive qu'on ne peut pas
-   * retirer laisserait l'écran d'édition proposer d'envoyer un engagement
-   * contractuel à un destinataire dont on sait qu'il est faux.
-   */
-  contactEmail: z.string().email().nullable().optional(),
-  contactTelephone: z.string().max(40).optional(),
-  contactFonction: z.string().max(150).optional(),
-  /**
-   * Voir createClientSchema pour `.min(1)`.
-   *
-   * `.nullable()` en PLUS ici, et c'est structurant : `null` signifie
-   * « remettre en inféré » — on efface la saisie ET on relance le calcul.
-   * Sans lui, un OPCO saisi par erreur serait définitif via l'interface (la
-   * ré-inférence refuse par construction de toucher une valeur non vide), sur
-   * une pièce opposable au financeur et à l'auditeur.
-   */
-  opcoIdentifie: z.string().min(1).max(60).nullable().optional(),
-  opcoNumeroAdherent: z.string().max(80).optional(),
-  opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
-  statut: z.enum(CLIENT_STATUTS).optional(),
-  source: z.string().max(120).optional(),
-  contexteIa: z.string().optional(),
-  notes: z.string().optional(),
-  besoinsIdentifies: z.unknown().optional(),
-  /**
-   * Applique-t-on les pénalités de retard (art. L.441-10) à ce client ?
-   *
-   * 🔴 `false` par défaut au schéma, et ce défaut est une décision produit :
-   * facturer des pénalités à tout le monde est commercialement destructeur. On
-   * coche client par client.
-   *
-   * ⚠️ Gouverne l'APPLICATION des frais (montant chiffré dans une relance et sur
-   * la fiche client), JAMAIS la MENTION légale — obligatoire sur toute facture
-   * entre professionnels et imprimée sans condition. Cf. `financements/penalites.ts`.
-   */
-  penalitesRetardActives: z.boolean().optional(),
-});
+function refuserChampsEntreprisePourParticulier(
+  valeurs: Record<string, unknown>,
+  ctx: z.RefinementCtx,
+): void {
+  if (valeurs["type"] !== "particulier") return;
+  for (const champ of CHAMPS_ENTREPRISE) {
+    const v = valeurs[champ];
+    if (v === undefined || v === null || v === "") continue;
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: [champ],
+      message:
+        `« ${champ} » ne s'applique pas à un particulier : ce champ identifie un employeur ` +
+        `(établissement, branche, opérateur de compétences). Retirez-le, ou changez le type du client.`,
+    });
+  }
+}
+
+const createClientSchema = z
+  .object({
+    /** entreprise (B2B) | particulier (B2C). Défaut entreprise. */
+    type: z.enum(CLIENT_TYPES).optional(),
+    raisonSociale: z.string().min(1).max(250),
+    // Format + clé de Luhn + rejet des valeurs de remplissage. `max(14)` seul
+    // acceptait « 00000000000000 », valeur réellement persistée en production, et
+    // qui se propage jusqu'au `<ram:ID schemeID="0009">` du Factur-X — donc à une
+    // facture non routable par la Plateforme Agréée. Reste FACULTATIF.
+    siret: siretField.optional(),
+    nafCode: z.string().max(6).optional(),
+    conventionCollective: z.string().max(200).optional(),
+    /** Code IDCC de la branche (précise la convention collective). */
+    idcc: z.string().max(10).optional(),
+    secteur: z.string().max(200).optional(),
+    taille: z.enum(COMPANY_SIZES).optional(),
+    adresse: z.string().optional(),
+    contactNom: z.string().max(200).optional(),
+    contactEmail: z.string().email().optional(),
+    contactTelephone: z.string().max(40).optional(),
+    contactFonction: z.string().max(150).optional(),
+    /**
+     * OPCO saisi manuellement. Si absent, inféré depuis l'IDCC puis le NAF.
+     *
+     * `.min(1)` est BLOQUANT, pas cosmétique : une option vide de `<select>`
+     * soumettrait `""`, qui serait écrit en base, continuerait d'afficher
+     * « À déterminer » (chaîne vide falsy) et surtout désactiverait à vie la
+     * ré-inférence de `updateClientAction` (sa garde teste `== null`). Un clic
+     * suffirait à briquer le mécanisme.
+     */
+    opcoIdentifie: z.string().min(1).max(60).optional(),
+    opcoNumeroAdherent: z.string().max(80).optional(),
+    opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
+    source: z.string().max(120).optional(),
+    contexteIa: z.string().optional(),
+    notes: z.string().optional(),
+  })
+  .superRefine(refuserChampsEntreprisePourParticulier);
+
+const updateClientSchema = z
+  .object({
+    id: z.string().uuid(),
+    type: z.enum(CLIENT_TYPES).optional(),
+    raisonSociale: z.string().min(1).max(250).optional(),
+    // Même règle qu'à la création : la mise à jour est une porte d'entrée
+    // distincte, elle doit être fermée séparément.
+    //
+    // `.nullable()` en PLUS ici : la chaîne vide rend `undefined` (= « champ non
+    // transmis », donc « ne rien changer »), elle ne peut donc pas effacer. Sans
+    // `null`, un SIRET erroné saisi une fois serait DÉFINITIF — et un futur écran
+    // d'édition pré-rempli avec une valeur invalide (chantier V18) refuserait
+    // toute modification de la fiche, y compris des champs sans rapport.
+    siret: siretField.nullable().optional(),
+    nafCode: z.string().max(6).optional(),
+    conventionCollective: z.string().max(200).optional(),
+    /** Code IDCC de la branche (précise la convention collective). */
+    idcc: z.string().max(10).optional(),
+    secteur: z.string().max(200).optional(),
+    taille: z.enum(COMPANY_SIZES).optional(),
+    adresse: z.string().optional(),
+    contactNom: z.string().max(200).optional(),
+    /**
+     * `.nullable()` en PLUS, exactement pour le motif déjà écrit sur `siret` : la
+     * chaîne vide rend `undefined` (= « ne rien changer »), elle ne peut donc pas
+     * effacer, et sans `null` une adresse saisie par erreur serait DÉFINITIVE.
+     *
+     * 🔴 Ici l'enjeu est plus lourd que pour le SIRET : c'est à cette adresse que
+     * part le LIEN DE SIGNATURE du devis. Une adresse fautive qu'on ne peut pas
+     * retirer laisserait l'écran d'édition proposer d'envoyer un engagement
+     * contractuel à un destinataire dont on sait qu'il est faux.
+     */
+    contactEmail: z.string().email().nullable().optional(),
+    contactTelephone: z.string().max(40).optional(),
+    contactFonction: z.string().max(150).optional(),
+    /**
+     * Voir createClientSchema pour `.min(1)`.
+     *
+     * `.nullable()` en PLUS ici, et c'est structurant : `null` signifie
+     * « remettre en inféré » — on efface la saisie ET on relance le calcul.
+     * Sans lui, un OPCO saisi par erreur serait définitif via l'interface (la
+     * ré-inférence refuse par construction de toucher une valeur non vide), sur
+     * une pièce opposable au financeur et à l'auditeur.
+     */
+    opcoIdentifie: z.string().min(1).max(60).nullable().optional(),
+    opcoNumeroAdherent: z.string().max(80).optional(),
+    opcoEnveloppeAnnuelleCents: z.number().int().min(0).optional(),
+    statut: z.enum(CLIENT_STATUTS).optional(),
+    source: z.string().max(120).optional(),
+    contexteIa: z.string().optional(),
+    notes: z.string().optional(),
+    besoinsIdentifies: z.unknown().optional(),
+    /**
+     * Applique-t-on les pénalités de retard (art. L.441-10) à ce client ?
+     *
+     * 🔴 `false` par défaut au schéma, et ce défaut est une décision produit :
+     * facturer des pénalités à tout le monde est commercialement destructeur. On
+     * coche client par client.
+     *
+     * ⚠️ Gouverne l'APPLICATION des frais (montant chiffré dans une relance et sur
+     * la fiche client), JAMAIS la MENTION légale — obligatoire sur toute facture
+     * entre professionnels et imprimée sans condition. Cf. `financements/penalites.ts`.
+     */
+    penalitesRetardActives: z.boolean().optional(),
+  })
+  .superRefine(refuserChampsEntreprisePourParticulier);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
