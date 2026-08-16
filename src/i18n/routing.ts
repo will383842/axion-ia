@@ -345,6 +345,11 @@ export const routing = defineRouting({
       en: "/gallery/[slug]/download",
     },
 
+    // Catalogue imprimé — page d'atterrissage du QR code imprimé en page 03 du
+    // catalogue papier (2026-08-15). L'URL courte `axion-ia.com/catalogue` est
+    // IMPRIMÉE : elle ne doit jamais changer. fr==en (EN redirigé 301→FR).
+    "/catalogue": { fr: "/catalogue", en: "/catalogue" },
+
     // Avis clients — système d'avis modérés soumis par les clients (2026-07-06).
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307 self-loop.
     // ⚠️ Routes STATIQUES + facettes (2 segments) déclarées AVANT `/avis/[slug]`

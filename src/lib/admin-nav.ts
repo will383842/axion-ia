@@ -1423,6 +1423,35 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops",
     },
     { href: `${base}/qr-codes`, label: "QR codes & liens", icon: "QrCode", group: "ops" },
+    // ▸ Sous-onglets du catalogue imprimé (niveau 2). Demande Will 2026-08-15 :
+    //   « il faut que ce soit dans le sidebar et pas dans le header de la page ».
+    //   Chacun pointe une VRAIE route enfant plutôt qu'un `?category=` : le
+    //   surlignage compare `usePathname()`, qui ne porte jamais la query string
+    //   — trois entrées en query n'auraient jamais été surlignées.
+    {
+      href: `${base}/qr-codes/catalogue`,
+      label: "QR du catalogue",
+      icon: "BookOpen",
+      group: "ops",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/qr-codes/avis`,
+      label: "QR avis du catalogue",
+      icon: "Quote",
+      group: "ops",
+      navLevel: 2,
+    },
+    {
+      href: `${base}/qr-codes/pages`,
+      label: "QR dans le catalogue",
+      // pas "QrCode" : le parent « QR codes & liens » la porte déjà, et deux
+      // entrées du même groupe avec la même icône sont indistinguables dans la
+      // sidebar (garde-fou admin-nav-icons.test.ts).
+      icon: "Tags",
+      group: "ops",
+      navLevel: 2,
+    },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
     {

@@ -20,6 +20,15 @@ export default defineConfig({
     // gates strict + baseline 1687/1694 maintenu. À investiguer / retirer
     // après upgrade Vitest 3.x (qui supporte Node 24 nativement).
     fileParallelism: false,
+    // Le pool dimensionne encore ses forks sur le nombre de cœurs (CPU - 1),
+    // alors que `fileParallelism: false` n'en fait travailler qu'un à la fois.
+    // Sur une machine 12 cœurs / 16 Go, jusqu'à onze forks jsdom inactifs
+    // restent en vie et finissent par faire tuer un worker en cours de suite —
+    // `ChildProcess.onUnexpectedExit`, sans aucun test en échec, ce qui bloque
+    // le hook pre-push sans dire pourquoi (constaté trois fois le 2026-08-15).
+    // Les fichiers étant déjà sérialisés, plafonner ne coûte rien en durée, et
+    // les runners CI (2-4 cœurs) sont en dessous du plafond : inchangé pour eux.
+    poolOptions: { forks: { maxForks: 3 } },
     environment: "jsdom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
