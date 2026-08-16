@@ -193,16 +193,27 @@ export function ServicesGrid({
         // Nom affiché : override d'item, sinon navShort (showcase) / officiel.
         const displayName =
           item.title ?? (variant === "showcase" ? serviceNavShort(service, isFr) : official);
-        // aria-label textuel : titre s'il est une string, sinon nom officiel.
-        const ariaName = typeof displayName === "string" ? displayName : official;
         const href = item.href ?? service.href;
         const ctx: ServiceCardContext = { service, visual, accent, index, isFr, item };
         const body = renderBody?.(ctx);
+        // GEO-122 (audit GEO/AEO 2026-08-14) — WCAG 2.5.3 « Label in Name ».
+        // La carte portait un `aria-label` reduit au seul nom du service, plus
+        // COURT que son texte visible : un utilisateur qui dicte « ouvre <titre
+        // visible> » ne matchait pas le nom accessible. On pointe desormais le
+        // titre VISIBLE via `aria-labelledby` — le nom accessible devient, par
+        // construction, exactement le libelle affiche.
+        //
+        // `cardAriaLabel` reste prioritaire : c'est un libelle choisi
+        // explicitement par l'appelant, pas une troncature accidentelle.
+        const titleId = `svc-${variant}-${item.serviceId}-${index}`;
+        const nameProps = cardAriaLabel
+          ? { "aria-label": cardAriaLabel(ctx) }
+          : { "aria-labelledby": titleId };
 
         const card = (
           <Link
             href={href as HrefProp}
-            aria-label={cardAriaLabel?.(ctx) ?? ariaName}
+            {...nameProps}
             className={cardShellClass(variant, accent)}
             {...item.data}
           >
@@ -229,7 +240,10 @@ export function ServicesGrid({
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </span>
-                <span className="text-fg flex items-start justify-between gap-2 text-base leading-tight font-semibold">
+                <span
+                  id={titleId}
+                  className="text-fg flex items-start justify-between gap-2 text-base leading-tight font-semibold"
+                >
                   {displayName}
                   <ArrowUpRight
                     className={cn(
@@ -248,6 +262,7 @@ export function ServicesGrid({
                 </span>
                 {/* Titre XL serif = élément le plus visible de la carte. */}
                 <h3
+                  id={titleId}
                   className="text-fg text-[clamp(1.75rem,2.5vw,2.5rem)] leading-[1.02] font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
@@ -258,7 +273,9 @@ export function ServicesGrid({
             ) : (
               <>
                 <ChipIcon variant={variant} visual={visual} accent={accent} />
-                <span className="text-fg text-sm font-semibold tracking-tight">{displayName}</span>
+                <span id={titleId} className="text-fg text-sm font-semibold tracking-tight">
+                  {displayName}
+                </span>
                 {body}
               </>
             )}

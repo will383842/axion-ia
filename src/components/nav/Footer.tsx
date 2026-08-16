@@ -322,15 +322,20 @@ interface FooterColumnProps {
 function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
   return (
     <div>
-      <h3 className="text-mocha-fg/50 mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
+      {/* GEO-124 (audit GEO/AEO 2026-08-14) — `h2`/`h3` et non `h3`/`h4`.
+          Les colonnes du pied de page sont des sections de premier niveau du
+          document : demarrer a `h3` sautait le niveau `h2` sur toute page dont
+          le contenu principal s'arrete a `h1`. La taille est imposee par les
+          classes, pas par la balise — aucun changement visuel. */}
+      <h2 className="text-mocha-fg/50 mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
         {title}
-      </h3>
+      </h2>
       <FooterLinkList items={items} />
       {subgroup ? (
         <>
-          <h4 className="text-mocha-fg/40 mt-5 mb-2 text-[10px] font-semibold tracking-[0.16em] uppercase">
+          <h3 className="text-mocha-fg/40 mt-5 mb-2 text-[10px] font-semibold tracking-[0.16em] uppercase">
             {subgroup.title}
-          </h4>
+          </h3>
           <FooterLinkList items={subgroup.items} />
         </>
       ) : null}
