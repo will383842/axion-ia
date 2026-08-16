@@ -39,6 +39,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { BadgeCheck, Check, Clock, Quote, ShieldCheck } from "lucide-react";
 import { routing } from "@/i18n/routing";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { Container } from "@/components/layout/Container";
 import { Link } from "@/i18n/navigation";
 import { VslVideo } from "@/components/lp/VslVideo";
@@ -61,12 +62,27 @@ const MIN_REVIEWS_FOR_BAND = 5;
 
 export const revalidate = 3600;
 
-export const metadata: Metadata = {
-  title: "Quelles tâches votre entreprise peut arrêter de faire à la main · Axion-IA",
-  description:
-    "Un diagnostic de trois minutes : vos premières tâches à automatiser, le temps et l'argent récupérables, la feuille de route. Gratuit, sans inscription.",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) return {};
+  return {
+    // `{ absolute }` : le titre porte DÉJÀ la marque, et le layout racine
+    // applique `title.template = "%s · Axion-IA"` — sans ce bypass le SERP
+    // affichait « … · Axion-IA · Axion-IA » (GEO-057).
+    title: {
+      absolute: "Quelles tâches votre entreprise peut arrêter de faire à la main · Axion-IA",
+    },
+    description:
+      "Un diagnostic de trois minutes : vos premières tâches à automatiser, le temps et l'argent récupérables, la feuille de route. Gratuit, sans inscription.",
+    // GEO-138 — canonical auto-référent EXPLICITE. Le layout ne fuite plus son
+    // `alternates` : sans ce bloc la page n'annoncerait plus rien du tout, alors
+    // qu'elle reçoit du trafic payant. EN désactivé (301→FR) → toujours FR.
+    alternates: {
+      canonical: isEnLocaleDisabled() ? "/fr/diagnostic" : `/${locale}/diagnostic`,
+    },
+    robots: { index: false, follow: false },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

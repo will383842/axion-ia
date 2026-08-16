@@ -13,6 +13,25 @@ export const routing = defineRouting({
   locales: ["fr", "en"],
   defaultLocale: "fr",
   localePrefix: "always",
+  // GEO-005 (audit GEO/AEO 2026-08-15) — next-intl émet par défaut un en-tête
+  // HTTP `Link: <…/fr/x>; hreflang="fr", <…/en/x>; hreflang="en", <…/x>;
+  // hreflang="x-default"` sur CHAQUE réponse HTML dès que `locales.length > 1`.
+  // Or EN est désactivé depuis 2026-05-16 : `/en/*` répond 301 → FR et l'URL
+  // sans préfixe redirige elle aussi. On annonçait donc à Google, sur 100 % des
+  // pages, un alternate `en` vers une redirection et un `x-default` différent de
+  // celui du HTML — signal contradictoire, gaspillage de crawl-budget,
+  // impressions résiduelles `/en/*` en GSC.
+  //
+  // Le hreflang reste porté par le HTML (`buildProductMetadata` dans
+  // `src/lib/seo.ts` + `src/app/[locale]/layout.tsx`), qui est déjà correctement
+  // gaté par `isEnLocaleDisabled()`. C'est le canal de référence : couper
+  // l'en-tête HTTP supprime la contradiction sans rien perdre.
+  //
+  // ⚠️ NE PAS « corriger » en retirant `en` de `locales` : la toggle EN doit
+  // rester (AGENTS.md). Si EN est un jour réactivé, le hreflang HTML se
+  // repeuple tout seul via `EN_LOCALE_ENABLED=true`.
+  // Garde : `src/i18n/__tests__/alternate-links-header.spec.ts`.
+  alternateLinks: false,
   pathnames: {
     "/": "/",
     "/design": "/design",

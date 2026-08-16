@@ -215,7 +215,10 @@ export function ensureArticleMetaTitle(
   const mt = (metaTitle ?? "").trim();
   const base = mt.length >= META_TITLE_MISSING_BELOW ? mt : title.trim();
   if (base.length >= META_TITLE_SUFFIX_BELOW) return base;
-  if (base.endsWith(TITLE_BRAND_SUFFIX)) return base;
+  // GEO-057 — `endsWith` laissait passer « … Axion-IA … » et fabriquait un
+  // deuxième « · Axion-IA ». La marque ne doit apparaître qu'UNE fois, où
+  // qu'elle soit déjà.
+  if (base.includes("Axion-IA")) return base;
   const suffixed = `${base}${TITLE_BRAND_SUFFIX}`;
   return suffixed.length <= META_TITLE_MAX ? suffixed : base;
 }
@@ -265,16 +268,29 @@ export function buildProductMetadata({
   const enDisabled = isEnLocaleDisabled();
   // title-double-suffix fix (2026-06-14) : le root layout déclare
   // `title.template = "%s · Axion-IA"`. Next.js l'applique à toute `title` string
-  // renvoyée ici. Si le titre source contient DÉJÀ « · Axion-IA », le template
-  // le ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
+  // renvoyée ici. Si le titre source porte DÉJÀ la marque, le template la
+  // ré-ajoute → « … · Axion-IA · Axion-IA ». On renvoie alors `{ absolute }`
   // (bypass template) ; sinon la string brute (le template appose le suffixe).
-  const TITLE_SUFFIX = " · Axion-IA";
+  //
+  // GEO-057 (audit GEO/AEO 2026-08-15) — le test était `endsWith(" · Axion-IA")`
+  // et ne couvrait donc QUE le suffixe exact. Un titre qui porte la marque
+  // AILLEURS qu'en toute fin la reprenait une seconde fois via le template.
+  // Trois familles vivantes le prouvaient en SERP :
+  //   · `/faq/[slug]`      « … · FAQ Axion-IA »            → « … · FAQ Axion-IA · Axion-IA »
+  //   · `/stack-ia/[tool]` « … · cabinet Axion-IA »        → « … · cabinet Axion-IA · Axion-IA »
+  //   · `/blog/page/N`     « … · Axion-IA · page 2 »       → « … · page 2 · Axion-IA »
+  // On généralise donc le bypass à « la marque est DÉJÀ quelque part dans le
+  // titre ». C'est un SUR-ENSEMBLE strict de l'ancien test : tout titre finissant
+  // par ` · Axion-IA` contient « Axion-IA », donc le comportement existant est
+  // conservé au bit près. Aucun titre ne perd sa marque : on cesse seulement de
+  // l'écrire deux fois.
+  const BRAND = "Axion-IA";
   // P0 qualité 2026-06-25 — filet de sécurité longueur titre pour les ARTICLES
   // uniquement (ogType="article"). Si le titre fourni est court (< 45 car), on le
   // suffixe «  · Axion-IA » sans dépasser 60 car. Déterministe, ne touche que les
   // titres courts ; les pages services (ogType="website") restent inchangées.
   const effectiveTitle = ogType === "article" ? ensureArticleMetaTitle(title, title) : title;
-  const resolvedTitle: NonNullable<Metadata["title"]> = effectiveTitle.endsWith(TITLE_SUFFIX)
+  const resolvedTitle: NonNullable<Metadata["title"]> = effectiveTitle.includes(BRAND)
     ? { absolute: effectiveTitle }
     : effectiveTitle;
   // Sprint Web Vitals fix 2026-05-17 — normalize canonical (strip trailing
