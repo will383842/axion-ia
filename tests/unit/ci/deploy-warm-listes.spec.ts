@@ -160,7 +160,14 @@ describe("deploy-coolify.yml — hubs villes pré-rendus (GEO-118)", () => {
     // Recalcul depuis la MÊME source que `generateStaticParams`. Rougit le jour
     // où une ville franchit les 100 000 habitants sans qu'on régénère —
     // c'est-à-dire le jour où la chauffe cesserait de couvrir ce qu'elle doit.
-    expect(lire(FICHIER)).toBe(contenuAttendu());
+    //
+    // Fins de ligne normalisées : `core.autocrlf` rend le fichier en CRLF sur
+    // un poste Windows et en LF sur le runner. Comparer les octets bruts ferait
+    // une garde VERTE EN CI ET ROUGE EN LOCAL — le meilleur moyen d'apprendre à
+    // l'ignorer. Ce qu'on compare, c'est la liste, pas la façon dont le poste
+    // termine ses lignes.
+    const sansCr = (s: string): string => s.replace(/\r\n/g, "\n");
+    expect(sansCr(lire(FICHIER))).toBe(sansCr(contenuAttendu()));
   });
 
   it("la liste couvre les villes pré-rendues, et elles seules", () => {
