@@ -7,10 +7,40 @@ import { BlogListingView, buildBlogListingMetadata } from "../../_views/BlogList
 // Audit indexation GSC 2026-07-31 (P1 « BYPASS /fr/blog ») — remplace la
 // pagination `?page=N` qui rendait le hub dynamique (non cacheable CDN, cf.
 // commentaire de `../../page.tsx`). Route ISR : rendue à la demande puis
-// cacheable à l'edge comme toute page du site. Pas de `generateStaticParams` :
-// le nombre de pages dépend de la DB (0 au build stub) — `dynamicParams`
-// (défaut true) rend chaque page à la première requête, l'ISR fait le reste.
+// cacheable à l'edge comme toute page du site.
+//
+// 🔴 RECTIFIÉ le 2026-08-16 — GEO-061 (audit GEO/AEO du 2026-08-14, lot 19).
+//
+// Le commentaire précédent affirmait que sans `generateStaticParams`,
+// « `dynamicParams` rend chaque page à la première requête, l'ISR fait le
+// reste ». **C'est faux, et mesuré en production le 2026-08-16 :**
+//
+//   /fr/blog        → `x-nextjs-prerender: 1`, `x-nextjs-cache: HIT`,
+//                     `Cache-Control: s-maxage=3600`
+//   /fr/blog/page/2 → AUCUN de ces en-têtes,
+//                     `Cache-Control: private, no-store`, `cf-cache-status: BYPASS`
+//
+// Un segment dynamique qui n'entre dans aucun manifeste de pré-rendu n'est pas
+// servi en ISR : il est servi **entièrement dynamiquement**. Chaque passage de
+// visiteur ou de crawler traverse donc l'origine et déclenche un rendu complet,
+// et Cloudflare ne peut rien mettre en cache.
 export const revalidate = 3600;
+
+/**
+ * Plancher de pages pré-rendues. Au-delà, `dynamicParams` (défaut `true`) prend
+ * le relais — mais ces pages-là resteront dynamiques, d'où un plancher plutôt
+ * qu'une liste exhaustive : les premières pages concentrent l'essentiel du
+ * crawl et des visites.
+ *
+ * ⚠️ Volontairement SANS lecture de base : le build tourne avec les URLs stub
+ * (contrat ADR 0026), et `generateStaticParams` doit rendre le même résultat en
+ * build et en production.
+ */
+const PAGES_PRERENDUES = [2, 3, 4, 5] as const;
+
+export function generateStaticParams(): Array<{ num: string }> {
+  return PAGES_PRERENDUES.map((n) => ({ num: String(n) }));
+}
 
 interface Props {
   params: Promise<{ locale: string; num: string }>;
