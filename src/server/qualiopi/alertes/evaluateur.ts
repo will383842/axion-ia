@@ -1574,16 +1574,28 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       financeurNom: true,
       numeroDossierExterne: true,
       echeanceFinanceurAt: true,
+      // 🔴 16/08 — sans subrogation, le financeur ne verse RIEN à l'organisme :
+      // il rembourse son adhérent. L'alerte disait pourtant « relancer le
+      // financeur » dans les deux cas, ce qui envoie réclamer à quelqu'un qui
+      // ne doit rien et laisse le vrai débiteur tranquille. Le message suit
+      // désormais le circuit réel.
+      subrogation: true,
       ...SELECT_DOSSIER_LIBELLE,
     },
   });
   for (const d of enRetard) {
     if (!d.echeanceFinanceurAt) continue;
+    const echeance = d.echeanceFinanceurAt.toLocaleDateString("fr-FR");
+    const financeur = d.financeurNom ?? "financeur non nommé";
     alertes.push({
       code: "financeur_paiement_en_retard",
       niveau: "critique",
-      titre: "Paiement du financeur en retard (échéance dépassée)",
-      message: `Le paiement du dossier ${libelleDossier(d)} (${d.financeurNom ?? "financeur non nommé"}) était attendu le ${d.echeanceFinanceurAt.toLocaleDateString("fr-FR")} et n'est pas reçu : relancer le financeur.`,
+      titre: d.subrogation
+        ? "Paiement du financeur en retard (échéance dépassée)"
+        : "Encaissement en retard — hors subrogation, c'est le client qui doit",
+      message: d.subrogation
+        ? `Le paiement du dossier ${libelleDossier(d)} (${financeur}) était attendu le ${echeance} et n'est pas reçu : relancer le financeur.`
+        : `Le règlement du dossier ${libelleDossier(d)} était attendu le ${echeance} et n'est pas reçu. ⚠️ Ce dossier est SANS subrogation : ${financeur} rembourse le client, il ne verse rien à l'organisme. C'est le CLIENT qu'il faut relancer.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });

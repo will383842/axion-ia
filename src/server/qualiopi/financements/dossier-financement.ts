@@ -14,6 +14,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { opcoLabel } from "./opco-referentiel";
+import { construireLignesPayeurs, montantDemandeFinanceurCents } from "./dossier-payeurs";
 import type { DossierFinancementStatut, Prisma } from "../../../../prisma/generated/client";
 
 /** Transitions autorisées (machine à états — tout le reste est rejeté). */
@@ -162,7 +163,26 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
       opcoSubrogation: true,
       numeroDossierOpco: true,
       priseEnChargeMontantCents: true,
-      client: { select: { raisonSociale: true, opcoIdentifie: true } },
+      edofVerifieAt: true,
+      ftDispositif: true,
+      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+      // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises.
+      // Ce `select` n'existait pas : le dossier se construisait sur les seuls
+      // champs de la session, donc six entreprises et six OPCO ne faisaient
+      // qu'UNE créance. Les abandons et exclusions sont hors périmètre : on ne
+      // réclame pas le siège de quelqu'un qui n'a pas suivi l'action.
+      enrollments: {
+        where: { statut: { notIn: ["abandon", "exclu"] } },
+        select: {
+          financementType: true,
+          clientId: true,
+          numeroDossierOpco: true,
+          edofVerifieAt: true,
+          ftDispositif: true,
+          montantHtCents: true,
+          client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+        },
+      },
     },
   });
 
@@ -176,7 +196,29 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
           : "opco";
 
   const priseEnCharge = session.priseEnChargeMontantCents ?? 0;
-  const resteACharge = Math.max(0, session.montantHtCents - priseEnCharge);
+
+  // 🔴 T4a — les créances viennent des INSCRIPTIONS quand il y en a.
+  //
+  // Avant : une seule ligne, au nom du client porteur, pour le montant de la
+  // session. En inter-entreprises, six employeurs relevant de six OPCO ne
+  // faisaient donc qu'une créance — alors que `DossierPayeur` est
+  // multi-payeurs depuis l'origine et que `resolveEnrollmentFinancement`
+  // existait déjà, inutilisé ici.
+  //
+  // Sans inscription, `construireLignesPayeurs` rend exactement la ventilation
+  // historique (OPCO subrogé + reste à charge, ou entreprise seule) : le
+  // comportement d'une session intra est inchangé.
+  const lignesPayeurs = construireLignesPayeurs(session.enrollments, {
+    financementType: session.financementType,
+    clientId: session.clientId,
+    numeroDossierOpco: session.numeroDossierOpco,
+    edofVerifieAt: session.edofVerifieAt,
+    ftDispositif: session.ftDispositif,
+    montantHtCents: session.montantHtCents,
+    opcoSubrogation: session.opcoSubrogation,
+    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+    client: session.client,
+  });
 
   const dossier = await prisma.dossierFinancement.create({
     data: {
@@ -196,39 +238,25 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
       ...(session.numeroDossierOpco != null
         ? { numeroDossierExterne: session.numeroDossierOpco }
         : {}),
-      montantDemandeCents: priseEnCharge > 0 ? priseEnCharge : session.montantHtCents,
+      // 🔴 T4a — le montant DEMANDÉ au financeur est la somme de ce que les
+      // lignes financeur attendent, pas le montant de la session.
+      //
+      // L'ancienne formule (`priseEnCharge > 0 ? priseEnCharge : montantHt`)
+      // valait pour une session intra à un seul payeur. En inter-entreprises,
+      // elle aurait annoncé au financeur un montant sans rapport avec les
+      // sièges réellement pris en charge — et le cockpit aurait comparé ce
+      // montant à des encaissements calculés autrement.
+      //
+      // Repli sur l'ancienne formule quand aucune ligne financeur n'existe :
+      // un dossier en financement direct n'a rien à demander à personne, et
+      // afficher 0 se lirait comme une erreur de génération.
+      montantDemandeCents: montantDemandeFinanceurCents(lignesPayeurs, {
+        priseEnCharge,
+        montantSessionCents: session.montantHtCents,
+      }),
       ...(session.clientId != null ? { clientId: session.clientId } : {}),
       trainingSessionId: session.id,
-      payeurs: {
-        create: session.opcoSubrogation
-          ? [
-              {
-                payeurType: "opco_subroge",
-                // Pas de garde de type ici : cette branche est déjà conditionnée
-                // par `session.opcoSubrogation`, qui implique un financement OPCO.
-                payeurNom: session.client?.opcoIdentifie
-                  ? opcoLabel(session.client.opcoIdentifie)
-                  : "OPCO",
-                montantAttenduCents: priseEnCharge,
-              },
-              ...(resteACharge > 0
-                ? [
-                    {
-                      payeurType: "entreprise" as const,
-                      payeurNom: session.client?.raisonSociale ?? "Entreprise",
-                      montantAttenduCents: resteACharge,
-                    },
-                  ]
-                : []),
-            ]
-          : [
-              {
-                payeurType: "entreprise",
-                payeurNom: session.client?.raisonSociale ?? "Entreprise",
-                montantAttenduCents: session.montantHtCents,
-              },
-            ],
-      },
+      payeurs: { create: lignesPayeurs },
     },
     select: { id: true },
   });
