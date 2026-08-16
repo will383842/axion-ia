@@ -4,7 +4,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, STATIC_LOCALES } from "@/i18n/routing";
-import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { SkipToContent } from "@/components/a11y/SkipToContent";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
@@ -145,16 +144,21 @@ export async function generateMetadata({
     description: isFr
       ? "Cabinet IA opérationnel · interventions, audit et implémentation IA pour entreprises."
       : "Operational AI consultancy · on-site AI sessions, audits and implementation for companies.",
-    alternates: {
-      // EN désactivé (301→FR) : le canonical de la home est toujours /fr, et on
-      // n'émet PAS de hreflang `en` (sinon Google reçoit un alternate pointant
-      // vers une URL 301 = signal de crawl gaspillé). Cf. seo.ts buildProductMetadata
-      // qui applique le même gate. Réactivation : EN_LOCALE_ENABLED=true.
-      canonical: isEnLocaleDisabled() ? "/fr" : `/${locale}`,
-      languages: isEnLocaleDisabled()
-        ? { fr: "/fr", "x-default": "/fr" }
-        : { fr: "/fr", en: "/en", "x-default": "/fr" },
-    },
+    // GEO-138 (audit GEO/AEO 2026-08-15) — PAS d'`alternates` ici.
+    //
+    // Next Metadata fait hériter aux pages tout champ top-level qu'elles ne
+    // redéfinissent pas. Un `alternates.canonical` posé au LAYOUT fuitait donc
+    // vers chaque page qui n'en déclare pas : `/fr/diagnostic`, `/fr/simulateur`
+    // et `/fr/components` annonçaient « je suis un duplicata de la home »
+    // (vérifié live 2026-08-14). La home, elle, n'a jamais eu besoin de ce bloc :
+    // elle pose son propre canonical via `buildProductMetadata` (`page.tsx`,
+    // `path: "/"`). Le bloc ne servait donc qu'à fuiter.
+    //
+    // Une page sans `alternates` n'annonce plus RIEN : Google auto-sélectionne
+    // l'URL canonique, comportement sain — bien meilleur qu'un canonical FAUX.
+    // Le hreflang reste porté page par page par `buildProductMetadata`, qui
+    // applique le gate `isEnLocaleDisabled()`.
+    // Garde : `src/app/[locale]/__tests__/canonical-heritage.spec.ts`.
     openGraph: {
       type: "website",
       locale: isFr ? "fr_FR" : "en_US",

@@ -17,6 +17,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ShieldCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
+import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { Container } from "@/components/layout/Container";
 import { SimulatorFlow } from "@/components/roi/v2/SimulatorFlow";
 import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/encode";
@@ -34,12 +35,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!hasLocale(routing.locales, locale)) return {};
   const isFr = locale === "fr";
   return {
-    title: isFr
-      ? "Quelles tâches automatiser en premier ? · Axion-IA"
-      : "Which tasks to automate first? · Axion-IA",
+    // `{ absolute }` : le titre porte DÉJÀ la marque, et le layout racine
+    // applique `title.template = "%s · Axion-IA"` — sans ce bypass le SERP
+    // affichait « … · Axion-IA · Axion-IA » (GEO-057).
+    title: {
+      absolute: isFr
+        ? "Quelles tâches automatiser en premier ? · Axion-IA"
+        : "Which tasks to automate first? · Axion-IA",
+    },
     description: isFr
       ? "Dix questions, un rapport nominatif : vos premières tâches à automatiser, le temps et l'argent récupérables, la feuille de route."
       : "Ten questions, a tailored report: your first tasks to automate, the time and money recoverable, the roadmap.",
+    // GEO-138 — canonical auto-référent EXPLICITE. Le layout ne fuite plus son
+    // `alternates` : sans ce bloc la page n'annoncerait plus rien du tout, alors
+    // qu'elle reçoit du trafic payant. EN désactivé (301→FR) → toujours FR.
+    alternates: {
+      canonical: isEnLocaleDisabled() ? "/fr/simulateur" : `/${locale}/simulateur`,
+    },
     // Le layout porte déjà `noindex`. Répété ici pour que la règle survive à un
     // éventuel déplacement du fichier.
     robots: { index: false, follow: false },
