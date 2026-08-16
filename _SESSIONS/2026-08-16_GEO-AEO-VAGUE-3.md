@@ -1,7 +1,7 @@
 # GEO/AEO — vague 3 · journal de reprise
 
 > **Mis à jour en continu.** Si la session se ferme, **repartir de ce fichier**.
-> Dernière écriture : 2026-08-16, après le lot 16 (gates de mesure).
+> Dernière écriture : 2026-08-16, après le traçage de GEO-094.
 
 ---
 
@@ -160,8 +160,37 @@ Les ~480 hubs villes ne régénèrent jamais. ⚠️ **NE PAS** baisser `revalid
   ❓ Question ouverte : **pourquoi le `workflow_run` du seed ne se déclenche-t-il
   jamais** (24 runs, tous en mai 2026) ?
 - **GEO-093** 75 `thumbnailUrl` en 404.
-- **GEO-094** chaîne d'upload admin cassée, **3 valeurs par défaut divergentes**
-  pour `IMAGE_BANK_STORAGE_PATH`, absente d'`env.ts`.
+- **GEO-094** 🔴 **TRACÉ LE 2026-08-16 — bien plus profond que « 3 défauts
+  divergents ». C'est une DÉCISION DE STOCKAGE, pas un correctif de ligne.**
+
+  Trois écarts qui s'empilent, chacun vérifié dans le code :
+
+  1. **Chemin d'écriture ≠ chemin de lecture.**
+     `utils/paths.ts:69` (import, écrit) → `/var/data/image-bank` ;
+     `galerie/[slug]/telecharger/route.ts:101` (lit) → `/data/image-bank`.
+     La variable n'est déclarée ni dans `env.ts` ni dans aucun `.env*.example`,
+     donc en prod **les deux défauts s'appliquent réellement**.
+  2. **Le nom du dossier ne correspond pas non plus.** L'import crée
+     `join(base, randomUUID())` et ne renvoie ce `uuid` que dans `ImportResult` ;
+     `upload.action.ts` ne le passe PAS comme `id` à `imageBankService.create()`.
+     La ligne reçoit donc un `id` Prisma distinct. Or la route lit
+     `join(base, image.id, …)` → elle cherche un dossier qui n'a jamais existé.
+  3. **`filePath` est malformé en production.** `publicUrlFromLocalPath()` ne
+     retire que le préfixe `public/` et rajoute `/`. En prod le chemin est déjà
+     absolu (`/var/data/image-bank/<uuid>/image-lg.webp`) → le résultat est
+     `//var/data/image-bank/…`, c'est-à-dire une **URL protocole-relative** que
+     le navigateur résout en `https://var/data/…`.
+
+  🔑 **Conséquence** : les images téléversées depuis la console n'ont jamais pu
+  ni s'afficher ni se télécharger en production. Les visuels visibles
+  aujourd'hui sont ceux du seed (chemin `public/`, branche `isSlugBased`), qui
+  emprunte un tout autre code.
+
+  ⛔ **NON PATCHÉ VOLONTAIREMENT.** Réparer suppose de choisir comment les
+  fichiers sont servis (volume Docker derrière une route, CDN, ou `public/`) —
+  c'est une décision d'architecture. La corriger à moitié (aligner seulement le
+  chemin de base) laisserait les téléchargements en 404 tout en donnant
+  l'impression que c'est réglé. **À trancher avec Will avant patch.**
 - **GEO-095** `trackUsage()` sans appelant — 🔴 **bloqué : lot 9 d'abord**,
   sinon il fabrique la pollution de `lastmod` qu'on vient de corriger.
 - **GEO-098 / GEO-102 / GEO-015** contenu des visuels (hero hors-sujet, `alt` en
