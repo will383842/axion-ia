@@ -22,6 +22,32 @@ const LIMITE_TELEGRAM = 4096;
 const TAILLE_MORCEAU = 3900;
 
 /**
+ * Nombre maximal de morceaux envoyes pour un meme message.
+ *
+ * L'audit prescrivait deux choses pour GEO-137 : chunker ICI, et plafonner le
+ * nombre d'items dans l'alerte Qualiopi. Le second volet appartient a chaque
+ * constructeur d'alerte — ce point d'entree ne voit qu'une chaine, il ne sait
+ * pas ce qu'est un « item ». Le poser au mauvais endroit reviendrait a tronquer
+ * a l'aveugle.
+ *
+ * Ce qui est faisable ici, et qui couvre le meme risque pour TOUTES les
+ * categories : borner le nombre de morceaux. Sans cette borne, decouper
+ * transforme une alerte de 40 000 caracteres en dix notifications illisibles —
+ * on aurait remplace une perte par du bruit, ce qui fait desapprendre a lire les
+ * alertes.
+ */
+const MAX_MORCEAUX = 3;
+
+/**
+ * Mention ajoutee quand un message a ete tronque.
+ *
+ * ⚠️ Aucun caractere special MarkdownV2 (`_*[]()~`, backtick, > # + - = | { } . !) :
+ * un seul suffirait a faire refuser le morceau entier par Telegram, et on
+ * perdrait le message qu'on essaie justement de sauver.
+ */
+const MENTION_TRONQUE = "MESSAGE TRONQUE voir les journaux serveur";
+
+/**
  * Decoupe un message trop long en morceaux envoyables.
  *
  * 🔴 GEO-137 (audit GEO/AEO 2026-08-14) — POURQUOI CETTE FONCTION EXISTE.
@@ -65,7 +91,11 @@ export function decouperPourTelegram(texte: string, taille = TAILLE_MORCEAU): st
     }
   }
   if (courant) morceaux.push(courant);
-  return morceaux;
+  if (morceaux.length <= MAX_MORCEAUX) return morceaux;
+  const gardes = morceaux.slice(0, MAX_MORCEAUX);
+  gardes[MAX_MORCEAUX - 1] = `${gardes[MAX_MORCEAUX - 1] ?? ""}
+${MENTION_TRONQUE}`;
+  return gardes;
 }
 
 export interface TelegramChannelOptions {
