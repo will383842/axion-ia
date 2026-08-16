@@ -4,7 +4,8 @@
 // (via @react-email/render) puis envoie via Nodemailer.
 //
 // En dev  → Mailhog UI (http://localhost:8025) intercepte tout.
-// En prod → SMTP **Zoho Mail** authentifié (`smtp.zoho.eu:587`), depuis le
+// En prod → SMTP **Zoho Mail** authentifié (`smtppro.zoho.eu:465`, hôte `pro`
+//           d'un plan payant — cf. `client.ts`), depuis le
 //           2026-05-13. L'en-tête annonçait « PowerMTA local sur Hetzner relai
 //           vers IP dédiée » jusqu'au 2026-08-16 : PowerMTA n'a jamais existé.
 

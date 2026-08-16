@@ -2,8 +2,14 @@
 //
 // Architecture transport — ÉTAT RÉEL, corrigé le 2026-08-16 :
 //   dev   : Nodemailer → SMTP localhost:2525 → Mailhog UI 8025
-//   prod  : Nodemailer → SMTP **Zoho Mail authentifié** (`smtp.zoho.eu:587`,
-//           STARTTLS + AUTH), via `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`.
+//   prod  : Nodemailer → SMTP **Zoho Mail authentifié** (`smtppro.zoho.eu:465`,
+//           SSL implicite + AUTH), via `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`.
+//
+// ⚠️ L'hôte est `smtppro`, pas `smtp` : le compte est sur un plan PAYANT
+// (Mail Lite 5 Go, 2 licences, échéance 27/12/2026), et Zoho réserve les hôtes
+// `pro` à ses plans payants. Valeurs relevées au panneau Zoho le 2026-08-16 —
+// une première rédaction de cet en-tête annonçait `smtp.zoho.eu:587`, ce qui
+// aurait envoyé un opérateur sur un hôte qui n'accepte pas ce compte.
 //
 // ⚠️ L'en-tête annonçait « localhost:2525 → PowerMTA → IP dédiée Hetzner »
 // jusqu'au 2026-08-16. PowerMTA n'a jamais été déployé ; la migration vers Zoho
