@@ -14,8 +14,67 @@
 
 import { prisma } from "@/lib/prisma";
 import { opcoLabel } from "./opco-referentiel";
-import { construireLignesPayeurs, montantDemandeFinanceurCents } from "./dossier-payeurs";
+import {
+  construireLignesPayeurs,
+  montantDemandeFinanceurCents,
+  type ContexteSessionPayeurs,
+} from "./dossier-payeurs";
 import type { DossierFinancementStatut, Prisma } from "../../../../prisma/generated/client";
+
+/**
+ * Les colonnes de session dont dépend la ventilation des créances — écrites UNE
+ * fois, lues par la création du dossier ET par sa reventilation.
+ *
+ * 🔴 Deux `select` distincts finiraient par diverger : la création ventilerait
+ * sur les inscriptions et la reventilation sur autre chose, et le dossier
+ * changerait de forme au moment de l'accord sans que personne ne comprenne.
+ */
+const SELECT_SESSION_PAYEURS = {
+  id: true,
+  clientId: true,
+  montantHtCents: true,
+  financementType: true,
+  opcoSubrogation: true,
+  numeroDossierOpco: true,
+  priseEnChargeMontantCents: true,
+  edofVerifieAt: true,
+  ftDispositif: true,
+  client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+  // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises. Les
+  // abandons et exclusions sont hors périmètre : on ne réclame pas le siège de
+  // quelqu'un qui n'a pas suivi l'action.
+  enrollments: {
+    where: { statut: { notIn: ["abandon", "exclu"] } },
+    select: {
+      financementType: true,
+      clientId: true,
+      numeroDossierOpco: true,
+      edofVerifieAt: true,
+      ftDispositif: true,
+      montantHtCents: true,
+      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
+    },
+  },
+} satisfies Prisma.TrainingSessionSelect;
+
+type SessionPourPayeurs = Prisma.TrainingSessionGetPayload<{
+  select: typeof SELECT_SESSION_PAYEURS;
+}>;
+
+/** Traduit la session lue en contexte de ventilation. */
+function contexteDepuisSession(session: SessionPourPayeurs): ContexteSessionPayeurs {
+  return {
+    financementType: session.financementType,
+    clientId: session.clientId,
+    numeroDossierOpco: session.numeroDossierOpco,
+    edofVerifieAt: session.edofVerifieAt,
+    ftDispositif: session.ftDispositif,
+    montantHtCents: session.montantHtCents,
+    opcoSubrogation: session.opcoSubrogation,
+    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+    client: session.client,
+  };
+}
 
 /** Transitions autorisées (machine à états — tout le reste est rejeté). */
 export const DOSSIER_TRANSITIONS: Record<
@@ -88,7 +147,83 @@ export async function transitionnerDossier(input: {
   if (count === 0) {
     throw new Error("Transition concurrente détectée — recharger le dossier.");
   }
+
+  // ── 🔴 LA DÉCISION DU FINANCEUR CHANGE QUI DOIT QUOI ──────────────────────
+  //
+  // Question de Will le 16/08 : que se passe-t-il si l'OPCO ne prend qu'une
+  // partie en charge, s'il change son montant après coup, ou s'il annule ?
+  // Réponse d'alors : RIEN. Les créances étaient écrites une fois à la création
+  // et jamais retouchées — aucun code du dépôt n'écrivait dans `DossierPayeur`
+  // après le `create`. Le reste à charge du client restait faux, et rien ne
+  // signalait qu'il devenait débiteur du tout.
+  //
+  // Les trois cas ne font qu'un : le PLAFOND du financeur change.
+  //   accord reçu  → le montant accordé (à défaut, ce qui était demandé)
+  //   refus        → 0, tout retombe sur les entreprises
+  //
+  // ⚠️ Seules ces deux transitions reventilent. `facture`, `paiement_recu` et
+  // `clos` n'apportent aucune information nouvelle sur QUI doit : recalculer là
+  // écraserait une ventilation éventuellement corrigée à la main entre-temps.
+  if (input.vers === "accord_recu" || input.vers === "refuse") {
+    await reventilerPayeurs(input.dossierId, input.vers === "refuse" ? 0 : null);
+  }
+
   return { statut: input.vers };
+}
+
+/**
+ * Recalcule les créances d'un dossier après une décision du financeur.
+ *
+ * @param plafondForce `0` pour un refus/une annulation ; `null` pour reprendre
+ *   le montant accordé s'il existe, sinon celui demandé.
+ *
+ * Best-effort : une transition déjà écrite ne doit pas être annulée parce que
+ * la ventilation n'a pas pu être refaite. L'échec est journalisé ; la
+ * transition, elle, est un fait acté par un humain habilité.
+ *
+ * 🔴 Les lignes sont REMPLACÉES, pas complétées : une ventilation est un
+ * partage, pas un historique. Y ajouter les nouvelles lignes ferait un dossier
+ * dont la somme des créances dépasse le prix de la formation.
+ */
+export async function reventilerPayeurs(
+  dossierId: string,
+  plafondForce: number | null,
+): Promise<void> {
+  try {
+    const dossier = await prisma.dossierFinancement.findUnique({
+      where: { id: dossierId },
+      select: {
+        montantDemandeCents: true,
+        montantAccordeCents: true,
+        trainingSession: { select: SELECT_SESSION_PAYEURS },
+      },
+    });
+    const session = dossier?.trainingSession;
+    // Sans session rattachée (dossier de coaching, d'audit, ou facture libre),
+    // la ventilation par siège n'a pas de sens : on ne touche à rien.
+    if (!dossier || !session) return;
+
+    const plafond =
+      plafondForce !== null
+        ? plafondForce
+        : (dossier.montantAccordeCents ?? dossier.montantDemandeCents);
+
+    const lignes = construireLignesPayeurs(session.enrollments, contexteDepuisSession(session), {
+      plafondFinanceurCents: plafond,
+    });
+
+    await prisma.$transaction([
+      prisma.dossierPayeur.deleteMany({ where: { dossierId } }),
+      prisma.dossierPayeur.createMany({
+        data: lignes.map((l) => ({ ...l, dossierId })),
+      }),
+    ]);
+  } catch (err) {
+    console.error("[dossier-financement] reventilation impossible", {
+      dossierId,
+      err: err instanceof Error ? err.message : String(err),
+    });
+  }
 }
 
 /**
@@ -155,35 +290,7 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
 
   const session = await prisma.trainingSession.findUniqueOrThrow({
     where: { id: sessionId },
-    select: {
-      id: true,
-      clientId: true,
-      montantHtCents: true,
-      financementType: true,
-      opcoSubrogation: true,
-      numeroDossierOpco: true,
-      priseEnChargeMontantCents: true,
-      edofVerifieAt: true,
-      ftDispositif: true,
-      client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
-      // 🔴 T4a — les inscriptions décident des payeurs en inter-entreprises.
-      // Ce `select` n'existait pas : le dossier se construisait sur les seuls
-      // champs de la session, donc six entreprises et six OPCO ne faisaient
-      // qu'UNE créance. Les abandons et exclusions sont hors périmètre : on ne
-      // réclame pas le siège de quelqu'un qui n'a pas suivi l'action.
-      enrollments: {
-        where: { statut: { notIn: ["abandon", "exclu"] } },
-        select: {
-          financementType: true,
-          clientId: true,
-          numeroDossierOpco: true,
-          edofVerifieAt: true,
-          ftDispositif: true,
-          montantHtCents: true,
-          client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
-        },
-      },
-    },
+    select: SELECT_SESSION_PAYEURS,
   });
 
   const type =
@@ -208,17 +315,13 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
   // Sans inscription, `construireLignesPayeurs` rend exactement la ventilation
   // historique (OPCO subrogé + reste à charge, ou entreprise seule) : le
   // comportement d'une session intra est inchangé.
-  const lignesPayeurs = construireLignesPayeurs(session.enrollments, {
-    financementType: session.financementType,
-    clientId: session.clientId,
-    numeroDossierOpco: session.numeroDossierOpco,
-    edofVerifieAt: session.edofVerifieAt,
-    ftDispositif: session.ftDispositif,
-    montantHtCents: session.montantHtCents,
-    opcoSubrogation: session.opcoSubrogation,
-    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
-    client: session.client,
-  });
+  // Le plafond n'est pas forcé ici : `construireLignesPayeurs` reprend la prise
+  // en charge DÉCLARÉE sur la session. C'est la demande, pas encore la réponse
+  // du financeur — celle-ci reventile au moment de l'accord ou du refus.
+  const lignesPayeurs = construireLignesPayeurs(
+    session.enrollments,
+    contexteDepuisSession(session),
+  );
 
   const dossier = await prisma.dossierFinancement.create({
     data: {
