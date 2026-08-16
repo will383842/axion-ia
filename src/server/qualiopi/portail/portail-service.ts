@@ -63,6 +63,14 @@ export interface QuestionnaireResume {
   /** Titre de la session rattachée — affiché en tête du questionnaire. */
   sessionTitre: string;
   /**
+   * Dates et statut de la session — nécessaires pour décider À QUEL MOMENT le
+   * questionnaire est proposé (cf. `questionnaire-moment.ts`). Sans elles, le
+   * portail proposait « votre retour à chaud » la veille de la formation.
+   */
+  sessionDateDebut: Date | null;
+  sessionDateFin: Date | null;
+  sessionStatut: string | null;
+  /**
    * Objectifs pédagogiques de la formation. Le questionnaire de POSITIONNEMENT
    * demande au bénéficiaire de s'auto-évaluer sur chacun : c'est ce qui en fait
    * une évaluation des acquis à l'entrée (off.8) et non un simple déclaratif,
@@ -342,6 +350,7 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
               titreSession: true,
               dateDebut: true,
               dateFin: true,
+              statut: true,
               formation: { select: { objectifsPedagogiques: true } },
               // Pièces d'information de la session. On ne remonte QUE les types
               // destinés au stagiaire : ni convention, ni facture, ni lettre de
@@ -413,6 +422,9 @@ export async function getEspaceStagiaire(traineeId: string): Promise<EspaceStagi
       token: q.token,
       reponduAt: q.reponduAt ?? null,
       sessionTitre: e.session?.titreSession ?? "",
+      sessionDateDebut: e.session?.dateDebut ?? null,
+      sessionDateFin: e.session?.dateFin ?? null,
+      sessionStatut: e.session?.statut ?? null,
       objectifs,
     }));
   });
