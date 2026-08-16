@@ -1,137 +1,115 @@
 /**
- * Verrou GEO-137 — une alerte trop longue n'arrivait jamais chez son
- * destinataire (audit GEO/AEO end-to-end du 2026-08-14, lot 8).
+ * Verrou GEO-137 — une alerte trop longue n'arrivait pas, et une alerte trop
+ * longue ne se lit pas (audit GEO/AEO end-to-end du 2026-08-14, lot 8).
  *
- * ## Le défaut
+ * ## Le défaut mesuré
  *
  * `sendTelegramRaw` postait `text` tel quel. L'API Telegram plafonne
- * `sendMessage.text` à **4096 caractères** : au-delà elle répond 400 et la
- * fonction rend `false`. Le contrat fail-soft du canal (« ne throw jamais »)
- * fait que l'appelant continue comme si de rien n'était.
+ * `sendMessage.text` à **4096 caractères** : au-delà elle répond 400. L'échec
+ * **était** journalisé (`console.warn("[notif:telegram] 400: …")`) — ce n'était
+ * donc pas un silence total — mais le contrat fail-soft du canal faisait que
+ * l'appelant continuait comme si de rien n'était, et le destinataire ne recevait
+ * **rien**. `notify()` rend bien `{ ok, channels }`, mais aucun appelant de
+ * production ne lit ce retour : seuls les tests le consultent.
  *
- * ⚠️ PRÉCISION IMPORTANTE, vérifiée dans le code : l'échec **est** journalisé
- * (`console.warn("[notif:telegram] 400: …")`). Ce n'était donc pas un silence
- * total, contrairement à ce que laissait entendre une première lecture — c'était
- * une perte visible seulement dans les journaux serveur, jamais chez le
- * destinataire, et jamais remontée comme incident. `notify()` rend bien
- * `{ ok, channels }`, mais **aucun appelant de production ne lit ce retour** :
- * seuls les tests le consultent.
+ * ## Pourquoi on tronque, et non plus on découpe
  *
- * Le défaut a été trouvé sur les alertes Qualiopi ; il porte sur **toutes** les
- * catégories, car c'est ce point d'entrée qui leur est commun.
+ * La première version envoyait le message en plusieurs morceaux. Essayée en
+ * conditions réelles, elle a été rejetée par Will : « inutile de recevoir un
+ * message si long dans Telegram, je ne vais pas le lire ».
  *
- * ## Pourquoi on découpe sur les sauts de ligne
+ * 🔑 Une notification n'est pas un rapport : elle sert à dire **qu'il se passe
+ * quelque chose** et **où regarder**. Livrer 6 000 caractères en trois messages
+ * ne les rend pas lisibles — ça produit trois notifications ignorées au lieu
+ * d'une perte, et ça fait désapprendre à lire les alertes.
  *
- * Une coupe arbitraire tombe un jour au milieu d'une entité MarkdownV2
- * (`*gras*`, `[lien](url)`) : Telegram refuse alors le morceau, et on aurait
- * remplacé une perte par une autre. Les gabarits produisent une ligne par item —
- * la frontière de ligne est donc une frontière sûre.
+ * On garde donc le début du message et on annonce combien de lignes ont été
+ * écartées.
  */
 
 import { describe, expect, it } from "vitest";
 
-import { decouperPourTelegram } from "@/server/notifications/channels/telegram";
+import { PLAFOND_TELEGRAM, preparerPourTelegram } from "@/server/notifications/channels/telegram";
 
-/** Plafond dur de l'API Telegram. Aucun morceau ne doit jamais le dépasser. */
-const PLAFOND_API = 4096;
-
-/** Caractères que MarkdownV2 réserve : un seul non échappé fait refuser le morceau. */
+/** Caractères que MarkdownV2 réserve : un seul non échappé fait refuser le message. */
 const SPECIAUX_MARKDOWN_V2 = /[_*[\]()~`>#+\-=|{}.!]/;
 
 function messageDe(nbLignes: number, prefixe = "Item"): string {
   return Array.from({ length: nbLignes }, (_, i) => `${prefixe} ${i}`).join("\n");
 }
 
-describe("découpage Telegram — le plafond de l'API (GEO-137)", () => {
+describe("préparation Telegram — le message arrive (GEO-137)", () => {
   it("un message court n'est pas touché", () => {
-    const court = "Alerte : 3 sessions à convoquer.";
-    expect(decouperPourTelegram(court)).toEqual([court]);
+    const court = "Alerte : 3 sessions a convoquer";
+    expect(preparerPourTelegram(court)).toBe(court);
   });
 
-  it("🔴 un message long est découpé — il n'est plus refusé par l'API", () => {
+  it("🔴 un message long passe sous le plafond de l'API", () => {
     const long = messageDe(600, "Ligne de rapport");
     // On vérifie l'hypothèse du test avant de tester : un échantillon qui
     // resterait sous le plafond ne prouverait rien.
-    expect(long.length).toBeGreaterThan(PLAFOND_API);
+    expect(long.length).toBeGreaterThan(PLAFOND_TELEGRAM);
 
-    const morceaux = decouperPourTelegram(long);
     expect(
-      morceaux.length,
-      "un message de plus de 4096 caractères n'est pas découpé : l'API le refuse " +
-        "et il n'arrive jamais chez le destinataire.",
-    ).toBeGreaterThan(1);
-    for (const m of morceaux) expect(m.length).toBeLessThanOrEqual(PLAFOND_API);
+      preparerPourTelegram(long).length,
+      "le message depasse encore le plafond : l'API le refusera et il n'arrivera pas.",
+    ).toBeLessThanOrEqual(PLAFOND_TELEGRAM);
   });
 
-  it("aucun caractère n'est perdu ni dupliqué tant qu'on est sous la borne", () => {
-    const long = messageDe(300);
-    expect(decouperPourTelegram(long).join("\n")).toBe(long);
-  });
-
-  it("les coupes tombent sur des frontières de LIGNE, pas au milieu", () => {
-    // C'est la propriété qui protège les entités MarkdownV2.
-    const long = Array.from({ length: 200 }, (_, i) => `*Item ${i}* voici du texte`).join("\n");
-    for (const m of decouperPourTelegram(long)) {
-      for (const ligne of m.split("\n")) {
-        expect(
-          ligne === "" || /^\*Item \d+\* voici du texte$/.test(ligne),
-          `ligne coupée en deux : « ${ligne} » — une entité MarkdownV2 peut être ` +
-            `tranchée, et Telegram refusera le morceau.`,
-        ).toBe(true);
-      }
+  it("la coupe tombe sur une frontière de LIGNE, jamais au milieu", () => {
+    // C'est la propriété qui protège les entités MarkdownV2 : une coupe
+    // arbitraire tranche un jour un `*gras*` et Telegram refuse tout.
+    const long = Array.from({ length: 400 }, (_, i) => `*Item ${i}* voici du texte`).join("\n");
+    const lignes = preparerPourTelegram(long).split("\n");
+    // La dernière ligne est la mention de troncature ; les autres sont intactes.
+    for (const ligne of lignes.slice(0, -1)) {
+      expect(
+        /^\*Item \d+\* voici du texte$/.test(ligne),
+        `ligne coupee en deux : « ${ligne} » — une entite MarkdownV2 peut etre ` +
+          `tranchee, et Telegram refusera le message entier.`,
+      ).toBe(true);
     }
   });
 
-  it("une ligne unique trop longue est coupée net — limite assumée", () => {
-    // Il n'existe pas de frontière sûre dans ce cas. Le test fige le
-    // comportement plutôt que de laisser croire qu'il est résolu : si ce cas
-    // apparaît en vrai, c'est le gabarit qu'il faut corriger.
-    const uneLigne = "x".repeat(9000);
-    const morceaux = decouperPourTelegram(uneLigne);
-    expect(morceaux.length).toBeGreaterThan(1);
-    for (const m of morceaux) expect(m.length).toBeLessThanOrEqual(PLAFOND_API);
-    expect(morceaux.join("")).toBe(uneLigne);
-  });
-
-  it("le seuil retenu laisse une marge sous le plafond de l'API", () => {
-    // L'échappement MarkdownV2 peut encore allonger le texte en aval : viser
-    // exactement 4096 reviendrait à repasser au-dessus.
-    for (const m of decouperPourTelegram(messageDe(500, "0123456789"))) {
-      expect(m.length).toBeLessThan(PLAFOND_API);
-    }
+  it("le début du message est conservé — c'est là qu'est le titre", () => {
+    const long = ["ALERTE IMPORTANTE", "", ...messageDe(600).split("\n")].join("\n");
+    expect(preparerPourTelegram(long).startsWith("ALERTE IMPORTANTE")).toBe(true);
   });
 });
 
-describe("découpage Telegram — découper ne doit pas devenir du bruit", () => {
-  const ENORME = messageDe(5000);
+describe("préparation Telegram — le message reste lisible", () => {
+  const LONG = messageDe(600);
 
-  it("🔴 le nombre de morceaux est BORNÉ", () => {
-    // Sans cette borne, une alerte de 40 000 caractères partirait en dix
-    // notifications illisibles : on aurait remplacé une perte par du bruit, ce
-    // qui fait désapprendre à lire les alertes. C'est l'équivalent, à ce niveau,
-    // du « plafonner à 15 items » que l'audit prescrivait côté constructeur
-    // d'alerte — ce point d'entrée ne voit qu'une chaîne, il ne sait pas ce
-    // qu'est un item.
-    expect(decouperPourTelegram(ENORME).length).toBeLessThanOrEqual(3);
+  it("🔴 un seul message est produit, pas une rafale", () => {
+    // Le cœur de la décision : une notification dit qu'il se passe quelque
+    // chose, elle ne transporte pas le rapport.
+    expect(typeof preparerPourTelegram(LONG)).toBe("string");
   });
 
-  it("un message tronqué le DIT", () => {
+  it("la troncature est ANNONCÉE, avec le nombre de lignes écartées", () => {
     // Sans mention, le lecteur croit avoir tout vu — c'est pire qu'une coupure
-    // visible.
-    expect(decouperPourTelegram(ENORME).at(-1)).toContain("MESSAGE TRONQUE");
+    // visible. Le compte permet de juger si ça vaut la peine d'aller voir.
+    const derniere = preparerPourTelegram(LONG).split("\n").at(-1) ?? "";
+    expect(derniere).toMatch(/^TRONQUE \d+ lignes non affichees voir la console$/);
+    const compte = Number(/^TRONQUE (\d+)/.exec(derniere)?.[1] ?? 0);
+    expect(compte).toBeGreaterThan(0);
+    expect(compte).toBeLessThan(600);
   });
 
-  it("la mention de troncature ne contient aucun caractère spécial MarkdownV2", () => {
-    // Un seul suffirait à faire refuser le morceau entier par Telegram : on
-    // perdrait le message qu'on essaie justement de sauver.
-    const mention = (decouperPourTelegram(ENORME).at(-1) ?? "").split("\n").at(-1) ?? "";
-    expect(mention).toBe("MESSAGE TRONQUE voir les journaux serveur");
-    expect(SPECIAUX_MARKDOWN_V2.test(mention)).toBe(false);
+  it("la mention ne contient aucun caractère spécial MarkdownV2", () => {
+    // Un seul suffirait à faire refuser le message entier : on perdrait celui
+    // qu'on essaie justement de sauver.
+    const derniere = preparerPourTelegram(LONG).split("\n").at(-1) ?? "";
+    expect(SPECIAUX_MARKDOWN_V2.test(derniere)).toBe(false);
   });
 
-  it("les morceaux conservés restent sous le plafond, mention comprise", () => {
-    for (const m of decouperPourTelegram(ENORME)) {
-      expect(m.length).toBeLessThanOrEqual(PLAFOND_API);
-    }
+  it("une ligne unique trop longue est coupée net — limite assumée", () => {
+    // Aucune frontière sûre n'existe dans ce cas. Le test fige le comportement
+    // plutôt que de laisser croire qu'il est résolu : si ce cas apparaît en
+    // vrai, c'est le gabarit qu'il faut corriger.
+    const uneLigne = "x".repeat(9000);
+    const prepare = preparerPourTelegram(uneLigne);
+    expect(prepare.length).toBeLessThanOrEqual(PLAFOND_TELEGRAM);
+    expect(prepare).toContain("TRONQUE");
   });
 });

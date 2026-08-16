@@ -16,86 +16,78 @@ const TG_API = "https://api.telegram.org";
 const LIMITE_TELEGRAM = 4096;
 
 /**
- * Taille visee par morceau. En dessous du plafond pour absorber les quelques
- * caracteres qu'un echappement MarkdownV2 peut encore ajouter en aval.
+ * Longueur maximale conservee. En dessous du plafond dur pour absorber les
+ * quelques caracteres qu'un echappement MarkdownV2 peut encore ajouter en aval,
+ * et la mention de troncature.
  */
-const TAILLE_MORCEAU = 3900;
+const TAILLE_UTILE = 3800;
 
 /**
- * Nombre maximal de morceaux envoyes pour un meme message.
+ * Prepare un message pour l'envoi : le tronque proprement s'il depasse le
+ * plafond de l'API.
  *
- * L'audit prescrivait deux choses pour GEO-137 : chunker ICI, et plafonner le
- * nombre d'items dans l'alerte Qualiopi. Le second volet appartient a chaque
- * constructeur d'alerte — ce point d'entree ne voit qu'une chaine, il ne sait
- * pas ce qu'est un « item ». Le poser au mauvais endroit reviendrait a tronquer
- * a l'aveugle.
+ * 🔴 GEO-137 (audit GEO/AEO 2026-08-14) — POURQUOI CETTE FONCTION EXISTE.
+ * `sendTelegramRaw` postait `text` tel quel. Un message depassant 4096
+ * caracteres recevait un 400 ; l'echec etait journalise
+ * (`console.warn("[notif:telegram] 400: …")`) mais le contrat fail-soft du canal
+ * faisait que l'appelant continuait comme si de rien n'etait, et le destinataire
+ * ne recevait RIEN. Trouve sur les alertes Qualiopi, le defaut portait sur
+ * toutes les categories : c'est ce point d'entree qui leur est commun.
  *
- * Ce qui est faisable ici, et qui couvre le meme risque pour TOUTES les
- * categories : borner le nombre de morceaux. Sans cette borne, decouper
- * transforme une alerte de 40 000 caracteres en dix notifications illisibles —
- * on aurait remplace une perte par du bruit, ce qui fait desapprendre a lire les
- * alertes.
+ * 🔑 POURQUOI ON TRONQUE, ET NON PLUS ON DECOUPE. La premiere version envoyait
+ * le message en plusieurs morceaux. Elle a ete essayee en conditions reelles,
+ * et Will a tranche : « inutile de recevoir un message si long dans Telegram,
+ * je ne vais pas le lire ». Il a raison, et c'est la bonne facon de poser le
+ * probleme. Une notification n'est pas un rapport : elle sert a dire QU'IL SE
+ * PASSE QUELQUE CHOSE et OU REGARDER. Livrer 6 000 caracteres en trois messages
+ * ne les rend pas lisibles — ca produit trois notifications ignorees au lieu
+ * d'une perte, et ca fait desapprendre a lire les alertes.
+ *
+ * On garde donc le DEBUT du message — ou se trouvent le titre et les premieres
+ * lignes utiles — et on annonce explicitement combien de lignes ont ete
+ * ecartees. Le detail complet reste en base et dans les journaux ; Telegram
+ * n'est pas l'endroit ou on le consulte.
+ *
+ * ⚠️ La coupe tombe sur une FRONTIERE DE LIGNE, jamais au milieu : une coupe
+ * arbitraire tranche un jour une entite MarkdownV2 (`*gras*`, `[lien](url)`),
+ * Telegram refuse alors le message, et on aurait remplace une perte par une
+ * autre. Les gabarits produisent une ligne par item : la frontiere de ligne est
+ * sure.
  */
-const MAX_MORCEAUX = 3;
+export function preparerPourTelegram(texte: string, taille = TAILLE_UTILE): string {
+  if (texte.length <= taille) return texte;
+
+  const lignes = texte.split("\n");
+  const gardees: string[] = [];
+  let longueur = 0;
+  for (const ligne of lignes) {
+    const cout = gardees.length === 0 ? ligne.length : ligne.length + 1;
+    if (longueur + cout > taille) break;
+    gardees.push(ligne);
+    longueur += cout;
+  }
+
+  // Cas limite : la toute premiere ligne depasse deja la taille utile. Aucune
+  // frontiere sure n'existe alors — on coupe net. Ce cas ne se produit pas sur
+  // les gabarits actuels ; s'il apparait, c'est le gabarit qu'il faut corriger.
+  if (gardees.length === 0) {
+    return `${texte.slice(0, taille)}\n${mentionTroncature(lignes.length)}`;
+  }
+
+  const ecartees = lignes.length - gardees.length;
+  return `${gardees.join("\n")}\n${mentionTroncature(ecartees)}`;
+}
 
 /**
  * Mention ajoutee quand un message a ete tronque.
  *
- * ⚠️ Aucun caractere special MarkdownV2 (`_*[]()~`, backtick, > # + - = | { } . !) :
- * un seul suffirait a faire refuser le morceau entier par Telegram, et on
- * perdrait le message qu'on essaie justement de sauver.
+ * ⚠️ AUCUN caractere special MarkdownV2 (`_ * [ ] ( ) ~ backtick > # + - = | { } . !`) :
+ * un seul suffirait a faire refuser le message entier par Telegram, et on
+ * perdrait celui qu'on essaie justement de sauver. Les chiffres et les lettres
+ * sont surs ; les deux points aussi.
  */
-const MENTION_TRONQUE = "MESSAGE TRONQUE voir les journaux serveur";
-
-/**
- * Decoupe un message trop long en morceaux envoyables.
- *
- * 🔴 GEO-137 (audit GEO/AEO 2026-08-14) — POURQUOI CETTE FONCTION EXISTE.
- * `sendTelegramRaw` postait `text` tel quel. Un message depassant 4096
- * caracteres recevait un 400, la fonction rendait `false`, et le contrat
- * fail-soft (« ne throw jamais ») transformait ca en silence : l'alerte
- * n'arrivait pas, et rien ne le signalait. Le defaut a ete trouve sur les
- * alertes Qualiopi, mais il portait sur TOUTES les categories de notification —
- * c'est ce point d'entree qui est commun.
- *
- * ⚠️ On decoupe sur les SAUTS DE LIGNE, jamais au milieu d'une ligne tant qu'on
- * peut l'eviter : une coupe arbitraire tombe un jour au milieu d'une entite
- * MarkdownV2 (`*gras*`, `[lien](url)`), et Telegram refuse alors le morceau —
- * on aurait remplace une perte silencieuse par une autre.
- *
- * LIMITE ASSUMEE : si une SEULE ligne depasse la taille d'un morceau, il n'y a
- * pas de frontiere sure. Elle est alors coupee net. Ce cas ne se produit pas
- * sur les gabarits actuels (une ligne y est un item de liste) ; s'il apparait,
- * c'est le gabarit qu'il faut corriger, pas cette fonction.
- */
-export function decouperPourTelegram(texte: string, taille = TAILLE_MORCEAU): string[] {
-  if (texte.length <= taille) return [texte];
-  const morceaux: string[] = [];
-  let courant = "";
-  for (const ligne of texte.split("\n")) {
-    // Ligne seule plus longue qu'un morceau : aucune frontiere sure.
-    if (ligne.length > taille) {
-      if (courant) {
-        morceaux.push(courant);
-        courant = "";
-      }
-      for (let i = 0; i < ligne.length; i += taille) morceaux.push(ligne.slice(i, i + taille));
-      continue;
-    }
-    const candidat = courant ? `${courant}\n${ligne}` : ligne;
-    if (candidat.length > taille) {
-      morceaux.push(courant);
-      courant = ligne;
-    } else {
-      courant = candidat;
-    }
-  }
-  if (courant) morceaux.push(courant);
-  if (morceaux.length <= MAX_MORCEAUX) return morceaux;
-  const gardes = morceaux.slice(0, MAX_MORCEAUX);
-  gardes[MAX_MORCEAUX - 1] = `${gardes[MAX_MORCEAUX - 1] ?? ""}
-${MENTION_TRONQUE}`;
-  return gardes;
+function mentionTroncature(lignesEcartees: number): string {
+  return `TRONQUE ${lignesEcartees} lignes non affichees voir la console`;
 }
 
 export interface TelegramChannelOptions {
@@ -120,26 +112,8 @@ export interface TelegramChannelOptions {
   botToken?: string;
 }
 
-/**
- * Envoie un message, en le decoupant si necessaire (GEO-137).
- *
- * Rend `true` seulement si TOUS les morceaux sont partis : un message dont la
- * seconde moitie manque n'est pas un message envoye.
- */
+/** Envoie un message, tronque au besoin pour qu'il arrive (GEO-137). */
 export async function sendTelegramRaw(opts: TelegramChannelOptions): Promise<boolean> {
-  const morceaux = decouperPourTelegram(opts.text);
-  if (morceaux.length === 1) return envoyerUnMorceau(opts, opts.text);
-  let toutOk = true;
-  for (const morceau of morceaux) {
-    // Sequentiel et non parallele : Telegram limite le debit par salon, et un
-    // envoi concurrent melangerait l'ordre des morceaux a l'affichage.
-    const ok = await envoyerUnMorceau(opts, morceau);
-    if (!ok) toutOk = false;
-  }
-  return toutOk;
-}
-
-async function envoyerUnMorceau(opts: TelegramChannelOptions, texte: string): Promise<boolean> {
   const token = opts.botToken ?? process.env.TELEGRAM_BOT_TOKEN;
   const chatId = opts.chatId ?? process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
@@ -157,7 +131,7 @@ async function envoyerUnMorceau(opts: TelegramChannelOptions, texte: string): Pr
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
-        text: texte,
+        text: preparerPourTelegram(opts.text),
         parse_mode: "MarkdownV2",
         disable_notification: opts.silent ?? false,
       }),
@@ -179,3 +153,6 @@ async function envoyerUnMorceau(opts: TelegramChannelOptions, texte: string): Pr
     return false;
   }
 }
+
+/** Plafond dur de l'API, exporté pour les gardes. */
+export const PLAFOND_TELEGRAM = LIMITE_TELEGRAM;
