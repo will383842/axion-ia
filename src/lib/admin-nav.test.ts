@@ -104,7 +104,14 @@ describe("buildAdminNav SSOT", () => {
     // Chacun pointe une vraie route enfant : usePathname ne porte pas la query
     // string, donc des entrées en `?category=` n'auraient jamais été
     // surlignées. = 147.
-    expect(items.length).toBe(147);
+    // +1 (2026-08-16, « Catalogue imprimé ») : écran de relecture des faits du
+    // livre — prix, durée, format — avant tirage KDP. Le catalogue papier est
+    // distribué en main propre, un prix faux ne se corrige pas ; depuis le
+    // branchement SSOT (scripts/export-catalogue-kdp.ts) ces valeurs viennent
+    // du site, cet écran les montre telles qu'elles partiront à l'impression.
+    // Niveau 1 et non sous-onglet des QR : les QR ne sont qu'un composant du
+    // livre. = 148.
+    expect(items.length).toBe(148);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {

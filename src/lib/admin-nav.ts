@@ -1452,6 +1452,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
       group: "ops",
       navLevel: 2,
     },
+    // Relecture du catalogue papier avant tirage KDP (2026-08-16). Niveau 1 :
+    // ce n'est pas un sous-onglet des QR, c'est le livre lui-même — les QR n'en
+    // sont qu'un composant imprimé. Icône "BookOpenText" et non "BookOpen", que
+    // « QR du catalogue » porte déjà dans ce même groupe.
+    {
+      href: `${base}/catalogue-imprime`,
+      label: "Catalogue imprimé",
+      icon: "BookOpenText",
+      group: "ops",
+    },
     // ── système ──────────────────────────────────────────────────────────
     { href: `${base}/users`, label: "Utilisateurs", icon: "Users", group: "system" },
     {
