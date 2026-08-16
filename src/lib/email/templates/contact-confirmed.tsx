@@ -14,16 +14,21 @@ const COPY = {
     title: "Message bien reçu",
     intro: (n: string) => `Bonjour ${n},`,
     body: "Nous avons bien reçu votre message. Notre équipe revient vers vous sous 48 heures ouvrées.",
-    next: "Pour les sujets urgents (intervention sous 7 jours), pensez à passer directement par notre calendrier de réservation.",
-    cta: "Voir le calendrier",
+    // 🔴 Corrigé le 2026-08-16. Le texte promettait « notre calendrier de
+    // réservation » et le bouton disait « Voir le calendrier » — alors que le
+    // site n'expose pas de calendrier public, mais une page de réservation
+    // d'appel. Changer la destination sans changer le libellé aurait laissé la
+    // moitié du défaut : un bouton qui annonce autre chose que ce qu'il ouvre.
+    next: "Pour les sujets urgents (intervention sous 7 jours), réservez directement un appel avec nous.",
+    cta: "Réserver un appel",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Message received",
     intro: (n: string) => `Hello ${n},`,
     body: "We received your message. Our team gets back to you within 48 working hours.",
-    next: "For urgent topics (session within 7 days), please use our booking calendar directly.",
-    cta: "View calendar",
+    next: "For urgent topics (session within 7 days), book a call with us directly.",
+    cta: "Book a call",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
