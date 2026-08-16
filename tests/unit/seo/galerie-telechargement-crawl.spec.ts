@@ -54,7 +54,7 @@ describe("galerie — les liens de téléchargement ne se suivent pas (GEO-035)"
     }
   });
 
-  it("barrière 1 — les deux ancres portent `rel=\"nofollow\"`", () => {
+  it('barrière 1 — les deux ancres portent `rel="nofollow"`', () => {
     // On compte les ancres qui déclarent l'attribut `download` : ce sont
     // exactement les deux boutons de téléchargement.
     const ancres = PAGE.match(/<a\b[\s\S]*?>/g) ?? [];
@@ -67,7 +67,7 @@ describe("galerie — les liens de téléchargement ne se suivent pas (GEO-035)"
     for (const a of telechargements) {
       expect(
         /rel="nofollow"/.test(a),
-        "une ancre de téléchargement a perdu son `rel=\"nofollow\"` : les moteurs " +
+        'une ancre de téléchargement a perdu son `rel="nofollow"` : les moteurs ' +
           "se remettent à suivre ~576 URLs qui font travailler l'origine.",
       ).toBe(true);
     }
