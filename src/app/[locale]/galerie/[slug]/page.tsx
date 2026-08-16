@@ -240,7 +240,10 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
   const attribution = `© ${resolveCopyrightHolder(image.copyrightHolder)} — « ${tr.title} ». Licence CC BY 4.0. Source : ${pageUrl}`;
 
   return (
-    <main className="container mx-auto max-w-6xl px-4 py-10">
+    // GEO-123 (audit GEO/AEO 2026-08-14) — conteneur de mise en page, pas un
+    // `<main>` : le layout `[locale]` en porte deja un, et deux `<main>`
+    // imbriques rendent le contenu principal non identifiable.
+    <div className="container mx-auto max-w-6xl px-4 py-10">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
@@ -555,7 +558,7 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
           </div>
         </section>
       )}
-    </main>
+    </div>
   );
 }
 

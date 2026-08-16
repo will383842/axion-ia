@@ -58,7 +58,10 @@ export default async function CataloguePage({ params }: Props) {
   const isFr = locale === "fr";
 
   return (
-    <main className="py-10 sm:py-14">
+    // GEO-123 (audit GEO/AEO 2026-08-14) — conteneur de mise en page, pas un
+    // `<main>` : le layout `[locale]` en porte deja un, et deux `<main>`
+    // imbriques rendent le contenu principal non identifiable.
+    <div className="py-10 sm:py-14">
       <Container>
         <Breadcrumbs items={[{ label: isFr ? "Catalogue" : "Catalogue", href: PATH }]} />
 
@@ -99,6 +102,6 @@ export default async function CataloguePage({ params }: Props) {
             : "The PDF is around 8 MB — prefer Wi-Fi if you are on the move."}
         </p>
       </Container>
-    </main>
+    </div>
   );
 }
