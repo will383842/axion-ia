@@ -191,6 +191,7 @@ Les ~480 hubs villes ne régénèrent jamais. ⚠️ **NE PAS** baisser `revalid
   c'est une décision d'architecture. La corriger à moitié (aligner seulement le
   chemin de base) laisserait les téléchargements en 404 tout en donnant
   l'impression que c'est réglé. **À trancher avec Will avant patch.**
+
 - **GEO-095** `trackUsage()` sans appelant — 🔴 **bloqué : lot 9 d'abord**,
   sinon il fabrique la pollution de `lastmod` qu'on vient de corriger.
 - **GEO-098 / GEO-102 / GEO-015** contenu des visuels (hero hors-sujet, `alt` en
