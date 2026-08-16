@@ -793,10 +793,14 @@ describe("deriverStatutDossier — attente de l'accord financeur (8D)", () => {
 });
 
 describe("🔴 8D — la vue doit annoncer ce que la GARDE va refuser", () => {
-  // `accordFinanceurAttendu` recopie la règle de `validateOpcoAccord` plutôt que
-  // de l'importer (couche de lecture, sans service de validation). Ce test les
-  // COUPLE : si l'une des deux bouge sans l'autre, il rougit — et l'écran
-  // cesserait d'annoncer ce que le démarrage refuse.
+  // 🔴 Ce test a RÉELLEMENT rougi, le 16/08 : `accordFinanceurAttendu`
+  // recopiait la règle de `validateOpcoAccord` et n'a pas suivi son
+  // élargissement à `mixte`. Un dossier que le démarrage allait refuser
+  // n'apparaissait alors dans aucune colonne d'attente.
+  //
+  // La recopie a été remplacée par un import du prédicat partagé. Le test
+  // reste : il vérifie maintenant, cas par cas, que les deux couches disent
+  // la même chose — y compris si quelqu'un réintroduit une règle locale.
   const base = {
     opcoSubrogation: false,
     numeroDossierOpco: null,
@@ -820,6 +824,10 @@ describe("🔴 8D — la vue doit annoncer ce que la GARDE va refuser", () => {
     ["cpf", "non_demande"],
     ["france_travail", "non_demande"],
     ["mixte", "non_demande"],
+    ["mixte", "demande_en_cours"],
+    ["mixte", "accord_recu"],
+    ["cpf", "demande_en_cours"],
+    ["france_travail", "demande_en_cours"],
   ])("%s / %s — la colonne dit exactement ce que la garde bloque", (financement, statutOpco) => {
     const session = {
       ...base,

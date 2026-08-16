@@ -122,7 +122,7 @@ export function validateFinancementMutualiseSansCertification(
  * si elle était seule ; c'est le fait qu'une autre part soit directe qui ne
  * change rien à l'obligation.
  */
-function estFinancementOpco(financementType: string | null | undefined): boolean {
+export function estFinancementOpco(financementType: string | null | undefined): boolean {
   return financementType === "opco" || financementType === "mixte";
 }
 

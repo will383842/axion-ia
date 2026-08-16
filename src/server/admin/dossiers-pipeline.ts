@@ -26,6 +26,7 @@
 import { prisma } from "@/lib/prisma";
 import { estDansPerimetreQualiopi } from "@/server/qualiopi/perimetre";
 import { STATUTS_FACTURE_OUVERTE } from "@/server/qualiopi/financements/statuts-facture";
+import { estFinancementOpco } from "@/server/qualiopi/financements/validation-service";
 import type {
   AuditMissionStatut,
   CoachingSessionStatut,
@@ -312,23 +313,26 @@ export function estDossierArchive(dossier: DossierSource, maintenant: Date): boo
  * Sous-lot 8D — l'accord du financeur est-il encore attendu ?
  *
  * 🔴 La règle est celle de `validateOpcoAccord` (`validation-service.ts`), le
- * blocage du démarrage, **délibérément recopiée à l'identique** plutôt
- * qu'importée : ce module est la couche de LECTURE du pipeline et n'importe
- * aucun service de validation. Ce qui compte est qu'elle reste alignée — la vue
- * doit annoncer ce que la garde refusera. Le test négatif de
- * `dossiers-pipeline.spec.ts` couple les deux : si l'une bouge sans l'autre,
- * il rougit.
+ * blocage du démarrage. Elle était ici **recopiée** — et la recopie a divergé
+ * dès le premier changement : quand la garde a été élargie à `mixte` le 16/08,
+ * cette fonction est restée sur `=== "opco"`. Un dossier `mixte` que le
+ * démarrage allait refuser n'apparaissait dans AUCUNE colonne d'attente : le
+ * refus tombait sans que rien ne l'ait annoncé.
  *
- * ⚠️ Volontairement limitée à `opco`. Le blocage du démarrage l'est aussi, et
- * peindre en « attente financeur » un dossier CPF ou France Travail que rien
- * n'empêche de démarrer serait une alerte fausse — le pire état d'un écran de
- * pilotage. Élargir la colonne suppose d'élargir d'abord la garde.
+ * Le test de couplage a rougi comme prévu — mais un test qui surveille une
+ * duplication ne fait que signaler la dérive après coup. On importe désormais
+ * le prédicat : la vue ne peut plus diverger de la garde, par construction.
+ *
+ * ⚠️ Reste limitée aux financements mutualisés. Peindre en « attente
+ * financeur » un dossier CPF ou France Travail que rien n'empêche de démarrer
+ * serait une alerte fausse — le pire état d'un écran de pilotage. Élargir la
+ * colonne suppose d'élargir d'abord la garde, et c'est maintenant automatique.
  */
 export function accordFinanceurAttendu(
   financementType: string | null | undefined,
   opcoStatut: string | null | undefined,
 ): boolean {
-  if (financementType !== "opco") return false;
+  if (!estFinancementOpco(financementType)) return false;
   return opcoStatut !== "accord_recu" && opcoStatut !== "paiement_recu";
 }
 

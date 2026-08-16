@@ -237,10 +237,45 @@ export async function reventilerPayeurs(
       plafondFinanceurCents: plafond,
     });
 
+    // ── 🔴 UNE CRÉANCE DÉJÀ FACTURÉE NE SE REVENTILE PAS ─────────────────────
+    //
+    // La suppression/recréation était sans danger tant que `factureFormationId`
+    // n'était écrit nulle part. Depuis qu'une facture s'y rattache à
+    // l'émission, effacer la ligne **casserait le lien d'une facture réelle** —
+    // une perte de donnée silencieuse, et une facture orpheline dans un dossier
+    // qui ne saurait plus ce qu'elle solde.
+    //
+    // Sur le fond : une créance facturée est ENGAGÉE. Une pièce comptable est
+    // partie, avec un numéro légal, chez un débiteur nommé. La reventiler
+    // reviendrait à modifier après coup ce qui a été réclamé. On ne redistribue
+    // donc que le solde NON facturé.
+    const dejaFacturees = await prisma.dossierPayeur.findMany({
+      where: { dossierId, factureFormationId: { not: null } },
+      select: { id: true, payeurType: true, montantAttenduCents: true },
+    });
+
+    // Ce que les créances engagées ont déjà pris au financeur : le nouveau
+    // plafond ne peut porter que sur le reste.
+    const engageFinanceur = dejaFacturees
+      .filter((c) => c.payeurType === "opco_subroge" || c.payeurType === "france_travail")
+      .reduce((n, c) => n + c.montantAttenduCents, 0);
+
+    const aReecrire = lignes
+      // Les lignes engagées restent telles quelles : on ne recrée que ce qui ne
+      // l'est pas, et on retire du nouveau partage ce qui est déjà parti.
+      .map((l) =>
+        (l.payeurType === "opco_subroge" || l.payeurType === "france_travail") &&
+        engageFinanceur > 0
+          ? { ...l, montantAttenduCents: Math.max(0, l.montantAttenduCents - engageFinanceur) }
+          : l,
+      )
+      .filter((l) => l.montantAttenduCents > 0);
+
     await prisma.$transaction([
-      prisma.dossierPayeur.deleteMany({ where: { dossierId } }),
+      // ⚠️ Le `where` EXCLUT les lignes facturées — c'est toute la garde.
+      prisma.dossierPayeur.deleteMany({ where: { dossierId, factureFormationId: null } }),
       prisma.dossierPayeur.createMany({
-        data: lignes.map((l) => ({ ...l, dossierId })),
+        data: aReecrire.map((l) => ({ ...l, dossierId })),
       }),
     ]);
   } catch (err) {
