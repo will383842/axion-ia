@@ -7,11 +7,14 @@
 //
 // Pure, déterministe, zéro dépendance — sûr pour Server Component + script.
 
-import type { Ville } from "@/content/villes";
+// Découplage 2026-08-16 : geo ne lit que des champs structurels (slug, region,
+// departement, geo) plus un booléen « a un copy ». Passer par `core` évite les
+// 29 Mo de contenu éditorial du barrel — ~578 ms au lieu de ~41 s à froid.
+import type { VilleData } from "@/content/villes/core";
 import type { CaseStudy } from "@/content/case-studies";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { BLOG_POSTS, type BlogPost } from "@/content/transversal";
-import { VILLES } from "@/content/villes";
+import { VILLES_CORE, hasVilleCopy } from "@/content/villes/core";
 import { slugify } from "@/lib/slug";
 
 const EARTH_RADIUS_KM = 6371;
@@ -31,7 +34,7 @@ export function haversineKm(
 }
 
 interface NearbyVille {
-  ville: Ville;
+  ville: VilleData;
   distanceKm: number;
 }
 
@@ -43,14 +46,14 @@ export function getNearbyVilles(
 ): NearbyVille[] {
   const opts = options ?? {};
   const candidates: NearbyVille[] = [];
-  for (const ville of VILLES) {
+  for (const ville of VILLES_CORE) {
     if (opts.excludeSlug && ville.slug === opts.excludeSlug) continue;
     if (opts.sameRegion && ville.region !== opts.sameRegion) continue;
     // Audit maillage 2026-07-03 — `indexableOnly` : ne retenir que les villes
     // avec `copy` (= vraies pages éligibles à l'index). Évite de mailler vers
     // les ~2 280 communes stub noindex (doorway HCU) et de gaspiller le
     // link-equity des pages indexables sur des pages volontairement noindex.
-    if (opts.indexableOnly && !ville.copy) continue;
+    if (opts.indexableOnly && !hasVilleCopy(ville.slug)) continue;
     const distanceKm = haversineKm(origin, ville.geo);
     if (typeof opts.maxKm === "number" && distanceKm > opts.maxKm) continue;
     candidates.push({ ville, distanceKm });
@@ -98,7 +101,7 @@ export function getNearbyCases(
  * le DB-based pour les articles factory content-gen, le FS-based pour le
  * legacy blog posts inline-coded.
  */
-export function getRelatedBlogPosts(ville: Ville, n = 3): BlogPost[] {
+export function getRelatedBlogPosts(ville: VilleData, n = 3): BlogPost[] {
   const wantedTags = new Set([ville.slug, ville.region]);
   const matches = BLOG_POSTS.filter((post) => {
     if (post.relatedCities?.includes(ville.slug)) return true;
@@ -140,12 +143,12 @@ export interface NearbyVillesExtended {
  * Pas de double-comptage (une ville n'apparaît que dans le bucket le plus
  * restrictif qui la contient).
  */
-export function getNearbyVillesExtended(source: Ville): NearbyVillesExtended {
+export function getNearbyVillesExtended(source: VilleData): NearbyVillesExtended {
   const immediates: NearbyVille[] = [];
   const sameDepartement: NearbyVille[] = [];
   const economicArea: NearbyVille[] = [];
 
-  for (const ville of VILLES) {
+  for (const ville of VILLES_CORE) {
     if (ville.slug === source.slug) continue;
     const distanceKm = haversineKm(source.geo, ville.geo);
 
@@ -197,7 +200,7 @@ interface NearbyCasesResult {
  * la région, pas de la commune" pour transparence.
  */
 export function getNearbyCasesWithFallback(
-  source: Ville,
+  source: VilleData,
   options?: {
     radiusKm?: number;
     n?: number;
@@ -219,7 +222,7 @@ export function getNearbyCasesWithFallback(
   // région source, puis chercher des cas dans un rayon élargi 200 km autour
   // de chaque (couvre la région typique).
   const regionalCases = new Map<string, NearbyCase>(); // dedup par caseStudy.slug
-  for (const candidate of VILLES) {
+  for (const candidate of VILLES_CORE) {
     if (candidate.region !== source.region) continue;
     const nearby = getNearbyCases(candidate.geo, 50, n);
     for (const nc of nearby) {

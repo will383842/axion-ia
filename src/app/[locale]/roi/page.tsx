@@ -63,7 +63,7 @@ import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/en
 import { ROI_MODEL_CONSTANTS, MATURITY_LEVELS } from "@/content/roi/model/types";
 import { AUTOMATABLE_TASKS } from "@/content/roi/model/tasks";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { ROI_PHOTO_CREDITS } from "@/content/roi/roi-photos";
 import {
   buildProductMetadata,
@@ -127,7 +127,7 @@ export default async function RoiPage({ params, searchParams }: Props) {
   // Plus de `portrait` : la citation du fondateur a été retirée avec la coupe du
   // 2026-08-14, et l'entrée correspondante a quitté le manifeste `/roi` — le
   // sitemap images ne déclare que des images RÉELLEMENT affichées.
-  const villes = getVillesIndexableNow().slice(0, 60);
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
 
   const creditFor = (src: string) => {
     const slot = src.split("/").pop()?.replace(".avif", "") ?? "";

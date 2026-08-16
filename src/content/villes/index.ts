@@ -9,27 +9,34 @@
 // `indexable` (cf. `getIndexableVilles()`). Les ~2 280 communes sans copy
 // existent en SSG mais sortent en `<meta name="robots" content="noindex" />`.
 
+// ⚡ COÛT DE CE MODULE (découplage 2026-08-16)
+//
+// Importer ce barrel coûte ~41 s à froid sous vitest : `copy/_auto-generated-index`
+// fait 2 118 imports statiques pour ~29 Mo de TypeScript. C'est le prix du contenu
+// éditorial, et il est justifié quand on en a besoin (pages villes, RAG, sitemap
+// avec copy).
+//
+// Si tu n'as besoin QUE de données structurelles — slug, population, département,
+// région, coordonnées — ou de savoir si une ville est indexable, importe
+// **`@/content/villes/core`** : même donnée, ~578 ms au lieu de ~41 s.
+//
+// Ce fichier ne recalcule rien : le classement d'indexabilité vit dans `core.ts`
+// (source unique), et on se contente ici d'habiller les résultats avec `copy` et
+// `economicData`.
 import type { VilleData } from "./data/types";
 import type { VilleCopy } from "./copy/types";
 import type { VilleEconomicData } from "./economic-data/types";
 import { getVilleEconomicData } from "./economic-data";
-import { PREMIUM_REWRITE_SLUGS } from "./premium-rewrite-slugs";
-import { UNIQUE_VILLE_SLUGS } from "./unique-ville-slugs";
-import { REGIONS, type Region } from "@/content/regions";
-
-import { VILLES_ILE_DE_FRANCE } from "./data/ile-de-france";
-import { VILLES_AUVERGNE_RHONE_ALPES } from "./data/auvergne-rhone-alpes";
-import { VILLES_PROVENCE_ALPES_COTE_D_AZUR } from "./data/provence-alpes-cote-d-azur";
-import { VILLES_OCCITANIE } from "./data/occitanie";
-import { VILLES_NOUVELLE_AQUITAINE } from "./data/nouvelle-aquitaine";
-import { VILLES_HAUTS_DE_FRANCE } from "./data/hauts-de-france";
-import { VILLES_GRAND_EST } from "./data/grand-est";
-import { VILLES_PAYS_DE_LA_LOIRE } from "./data/pays-de-la-loire";
-import { VILLES_BRETAGNE } from "./data/bretagne";
-import { VILLES_NORMANDIE } from "./data/normandie";
-import { VILLES_BOURGOGNE_FRANCHE_COMTE } from "./data/bourgogne-franche-comte";
-import { VILLES_CENTRE_VAL_DE_LOIRE } from "./data/centre-val-de-loire";
-import { VILLES_CORSE } from "./data/corse";
+import type { Region } from "@/content/regions";
+import {
+  VILLES_CORE,
+  hasVilleCopy,
+  isPremiumVilleCore,
+  cohortSize as cohortSizeCore,
+  isVilleIndexable as isVilleIndexableCore,
+  getVillesCoreIndexableNow,
+  getRegionByDepartement as getRegionByDepartementCore,
+} from "./core";
 
 import { AIX_EN_PROVENCE_COPY } from "./copy/aix-en-provence";
 import { AMIENS_COPY } from "./copy/amiens";
@@ -142,21 +149,8 @@ const COPY_BY_SLUG: Record<string, VilleCopy> = {
   villeurbanne: VILLEURBANNE_COPY,
 };
 
-const RAW_VILLES: ReadonlyArray<VilleData> = [
-  ...VILLES_ILE_DE_FRANCE,
-  ...VILLES_AUVERGNE_RHONE_ALPES,
-  ...VILLES_PROVENCE_ALPES_COTE_D_AZUR,
-  ...VILLES_OCCITANIE,
-  ...VILLES_NOUVELLE_AQUITAINE,
-  ...VILLES_HAUTS_DE_FRANCE,
-  ...VILLES_GRAND_EST,
-  ...VILLES_PAYS_DE_LA_LOIRE,
-  ...VILLES_BRETAGNE,
-  ...VILLES_NORMANDIE,
-  ...VILLES_BOURGOGNE_FRANCHE_COMTE,
-  ...VILLES_CENTRE_VAL_DE_LOIRE,
-  ...VILLES_CORSE,
-];
+// La liste brute vient de `core.ts` (data/ seul) — plus de duplication ici.
+const RAW_VILLES: ReadonlyArray<VilleData> = VILLES_CORE;
 
 export const VILLES: ReadonlyArray<Ville> = RAW_VILLES.map((v) => {
   const copy = COPY_BY_SLUG[v.slug];
@@ -190,133 +184,30 @@ export function getVillesByRegion(regionSlug: string): ReadonlyArray<Ville> {
   return VILLES.filter((v) => v.region === regionSlug);
 }
 
-// ─── Phasing indexation — drip automatique anti « scaled content abuse » ─────
-// Décision Will 2026-05-28 : toutes les villes finissent indexées, mais
-// PROGRESSIVEMENT et AUTOMATIQUEMENT, pour ne pas exposer 2157 pages d'un coup
-// à Google sur un domaine jeune (risque scaled-content / indexation partielle /
-// jugement qualité site-wide). La cohorte indexable est calculée depuis la DATE
-// runtime :
-//   - Jour 0 (INDEXATION_START) : toutes les villes premium (pop ≥ 20k OU
-//     rewrite premium MANUAL-REWRITE) = cohorte initiale ~655.
-//   - +VILLES_PER_DAY villes/jour ensuite, par population décroissante.
-//   → couverture 100 % des 2157 villes en ~30 jours, SANS intervention manuelle.
-// Le sitemap (revalidate quotidien) + les pages villes (ISR 24 h) recalculent
-// l'éligibilité chaque jour → la cohorte s'élargit toute seule. Pour accélérer/
-// ralentir le ramp, ajuster VILLES_PER_DAY (1 commit). Pour tout indexer
-// immédiatement, mettre INDEXATION_START loin dans le passé.
-const INDEXATION_START = new Date("2026-05-28T00:00:00Z");
-const VILLES_PER_DAY = 50;
-
-// DRIP EN 2 PHASES (audit GSC 2026-06-05 A-01 ; décision Will 2026-06-05).
+// ─── Phasing indexation — délégué à `core.ts` ────────────────────────────────
 //
-// PHASE 1 — BURST initial figé (~cohorte du 2026-06-06) : `min(elapsed, BURST_DAYS)`.
-//   L'ancien ramp +50/JOUR noyait Google (famine crawl → 0 indexé). On fige donc le
-//   socle initial à premium + BURST_DAYS*50.
+// Tout le calcul (constantes de drip, `RANKED_INDEXABLE`, tri, cohorte) a été
+// DÉPLACÉ dans `./core.ts` le 2026-08-16, sans changement de comportement : il ne
+// dépend que de champs structurels et de trois ensembles de slugs, jamais du
+// corps des `copy`. Le garder ici obligeait tout consommateur de
+// `isVilleIndexable` à charger 29 Mo de contenu éditorial pour obtenir un booléen.
 //
-// PHASE 2 — RÉOUVERTURE PROGRESSIVE AUTOMATIQUE & ACCÉLÉRANTE (à partir de REOPEN_START) :
-//   les villes UNIQUES restantes ressortent du noindex toutes seules, par semaine, à un
-//   rythme qui MONTE (le crawl de Google grandit avec l'âge + l'autorité du domaine) :
-//     semaine 1 = +REOPEN_WEEK1 villes, puis +REOPEN_ACCEL de plus chaque semaine
-//     (S1=100, S2=125, S3=150, S4=175, S5=200…) jusqu'à couvrir TOUTES les villes uniques.
-//   → ~710 villes uniques restantes rouvertes en ~5-6 semaines, sans intervention.
-//
-// Garde-fous :
-//   • « l'indexation ne rétracte JAMAIS » : `cohortSize` est monotone croissant (BURST figé
-//     + réouverture qui ne fait qu'augmenter) → aucune ville déjà indexable ne repasse noindex.
-//   • Les ~341 villes NON-uniques (quasi-doublons) ne sont PAS dans `RANKED_INDEXABLE` →
-//     elles restent noindex pour toujours (anti-doorway HCU), la réouverture ne les touche pas.
-//   • Pour accélérer/ralentir : ajuster REOPEN_WEEK1 / REOPEN_ACCEL (1 commit).
-const BURST_DAYS = 9; // socle figé = premium + 9*50 (~cohorte du 2026-06-06)
-const REOPEN_START = new Date("2026-06-06T00:00:00Z");
-const REOPEN_WEEK1 = 100; // villes rouvertes la 1re semaine
-const REOPEN_ACCEL = 25; // +25 villes/semaine de plus chaque semaine (S1=100…S5=200)
-const WEEK_MS = 7 * 86_400_000;
-
-/** Nb de villes uniques rouvertes (cumul) depuis REOPEN_START — accélérant par semaine. */
-function reopenedSince(now: Date): number {
-  const ms = now.getTime() - REOPEN_START.getTime();
-  if (ms <= 0) return 0;
-  const w = Math.floor(ms / WEEK_MS); // semaines pleines écoulées
-  // cumul = Σ_{k=1..w} (REOPEN_WEEK1 + REOPEN_ACCEL*(k-1))
-  return REOPEN_WEEK1 * w + (REOPEN_ACCEL * (w * (w - 1))) / 2;
-}
+// On ne réimplémente RIEN ci-dessous : on enrobe. Une seule source de vérité pour
+// les décisions d'indexation (robots des pages, sitemap, whitelist Edge).
 
 /** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
 export function isPremiumVille(v: Ville): boolean {
-  return !!v.copy && (v.population >= 20_000 || PREMIUM_REWRITE_SLUGS.has(v.slug));
+  return isPremiumVilleCore(v);
 }
 
-// Villes RÉELLEMENT indexables — garde-fou anti-doorway au mérite (décision Will
-// 2026-05-31 « indexation au mérite + AEO », Phase 2B). Une ville n'entre dans la
-// cohorte d'indexation que si elle a un `copy` ET passe le scorer d'unicité
-// (`UNIQUE_VILLE_SLUGS` : score d'unicité ≥ 0.6 OU premium/gold force-inclus —
-// cf. scripts/villes/compute-ville-uniqueness.ts). Les ~341 villes templatées
-// (clusters de communes voisines quasi-identiques) restent PRÉSENTES, crawlables,
-// maillées et citables par les IA (AEO), mais sortent `noindex` au niveau page
-// (via `isVilleIndexable`) et hors sitemap — sans recréer de doorway HCU 2024.
-//
-// NB : `getIndexableVilles()` (= villes avec copy, 2157) reste la base structurelle
-// stable du sitemap (chunks). La décision d'indexation effective (robots des
-// pages + contenu du sitemap) passe, elle, par `isVilleIndexable` ⟶
-// `RANKED_INDEXABLE`. Depuis l'audit indexation 2026-07-31, la whitelist Edge
-// `seo-noindex-routes.ts` (X-Robots-Tag) suit AUSSI `isVilleIndexable`, via le
-// fichier généré `src/generated/indexable-villes.ts` (régénérer avec
-// `pnpm tsx scripts/gen-indexable-villes.ts` après modification des données).
-//
-// P0 2026-07-03 (décision Will) — CAP INDEXATION T1/T2 + CURÉES. Concentration
-// du budget de crawl sur les villes à valeur pendant que l'infra d'indexation
-// (backlinks, soumission sitemap GSC, cache CDN) est en cours de correction.
-// On restreint la cohorte indexable aux villes PREMIUM : `isPremiumVille` = a un
-// `copy` ET (population ≥ 20 000 [= T1/T2, 455 villes] OU réécriture manuelle
-// gold `PREMIUM_REWRITE_SLUGS` [~25 petites villes curées]). Résultat ≈ 480
-// villes indexées ; les ~1336 petites villes auto-templatées (T3/T4 non curées)
-// passent `noindex,follow` + hors sitemap — mais restent live, crawlables,
-// maillées et citables par les IA (AEO). ZÉRO risque doorway, crawl concentré.
-// RÉVERSIBLE : retirer `isPremiumVille(v) &&` ci-dessous (retour à copy+unique,
-// ~1816 indexées) quand l'autorité du site sera montée.
-//
-// Tri par priorité : premium d'abord (population décroissante), puis le reste.
-// Ordre déterministe et stable entre builds (tri par pop puis slug en tie-break).
-const RANKED_INDEXABLE: ReadonlyArray<Ville> = VILLES.filter(
-  (v) => isPremiumVille(v) && UNIQUE_VILLE_SLUGS.has(v.slug),
-).sort((a, b) => {
-  const pa = isPremiumVille(a);
-  const pb = isPremiumVille(b);
-  if (pa !== pb) return pa ? -1 : 1;
-  if (b.population !== a.population) return b.population - a.population;
-  return a.slug.localeCompare(b.slug);
-});
-
-const PREMIUM_COUNT = RANKED_INDEXABLE.filter(isPremiumVille).length;
-const INDEXABLE_RANK = new Map(RANKED_INDEXABLE.map((v, i) => [v.slug, i] as const));
-
-/** Taille de la cohorte indexable à la date `now` (premium + ramp quotidien). */
+/** Taille de la cohorte indexable à la date `now`. Cf. `core.cohortSize`. */
 export function cohortSize(now: Date = new Date()): number {
-  const elapsed = Math.max(
-    0,
-    Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
-  );
-  // Phase 1 : socle initial figé (~cohorte du 2026-06-06). Phase 2 : réouverture
-  // automatique accélérante des villes uniques restantes (cf. reopenedSince).
-  const burst = PREMIUM_COUNT + Math.min(elapsed, BURST_DAYS) * VILLES_PER_DAY;
-  return Math.min(RANKED_INDEXABLE.length, burst + reopenedSince(now));
+  return cohortSizeCore(now);
 }
 
-/**
- * True si la ville (par slug) est indexable.
- *
- * P0 2026-06-14 (décision Will) : le drip progressif est RETIRÉ — toutes les
- * villes UNIQUES éligibles (`RANKED_INDEXABLE` = copy + score d'unicité ≥ 0,6 ou
- * premium) sont indexables IMMÉDIATEMENT (le contenu villes est unique, validé
- * par la recette 2026-06-14). On ne gate plus sur `cohortSize(now)`.
- *
- * ⚠️ Les ~341 quasi-doublons (copy mais hors `UNIQUE_VILLE_SLUGS`) et les stubs
- * sans copy restent hors `RANKED_INDEXABLE` → `noindex` (anti-doorway HCU,
- * aucun contenu unique à indexer). `now` conservé pour compat de signature.
- */
+/** True si la ville (par slug) est indexable. Cf. `core.isVilleIndexable`. */
 export function isVilleIndexable(slug: string, now: Date = new Date()): boolean {
-  void now;
-  return INDEXABLE_RANK.has(slug);
+  return isVilleIndexableCore(slug, now);
 }
 
 /**
@@ -326,30 +217,21 @@ export function isVilleIndexable(slug: string, now: Date = new Date()): boolean 
  * `seo-noindex-routes.ts` (X-Robots-Tag) et son test de sync.
  *
  * ⚠️ Ne PAS confondre avec le drip temporel : une ville éligible n'est
- * réellement `index:true` aujourd'hui que si `isVilleIndexable(slug)` est vrai
- * (cohorte du jour). Le sitemap filtre le CONTENU via `isVilleIndexable`, mais
- * la liste des sub-sitemaps reste basée sur l'ensemble éligible (structure stable).
+ * réellement `index:true` aujourd'hui que si `isVilleIndexable(slug)` est vrai.
  */
 export function getIndexableVilles(): ReadonlyArray<Ville> {
-  return VILLES.filter((v) => !!v.copy);
+  return VILLES.filter((v) => hasVilleCopy(v.slug));
 }
 
 /**
- * Villes réellement dans la cohorte indexable À LA DATE `now` (drip progressif :
- * premium jour 0, puis +VILLES_PER_DAY/jour). Sous-ensemble de
- * `getIndexableVilles()`. Cf. [[isVilleIndexable]].
+ * Villes réellement dans la cohorte indexable À LA DATE `now`. Sous-ensemble de
+ * `getIndexableVilles()`, dans l'ordre de classement de `core`. Cf. [[isVilleIndexable]].
  */
 export function getVillesIndexableNow(now: Date = new Date()): ReadonlyArray<Ville> {
-  return RANKED_INDEXABLE.slice(0, cohortSize(now));
+  // `core` donne l'ordre ; on ré-hydrate chaque entrée avec son `copy`.
+  return getVillesCoreIndexableNow(now).map((v) => SLUG_INDEX.get(v.slug) as Ville);
 }
 
-/**
- * Toutes les villes d'un département donné (code INSEE 2 ou 3 caractères :
- * "75", "13", "2A", "2B", "974" pour l'historique DROM, etc.).
- * Retourne un tableau vide si le code est inconnu (pas d'erreur).
- * P2-4 Sprint S+5 — utilisé par les pages /implantations/[region]/[dept] et
- * par les helpers content-gen quand un cas concret cible un département.
- */
 export function getVillesByDepartement(code: string): ReadonlyArray<Ville> {
   return VILLES.filter((v) => v.departement === code);
 }
@@ -361,5 +243,5 @@ export function getVillesByDepartement(code: string): ReadonlyArray<Ville> {
  * vers sa région parente sans relire VILLES.
  */
 export function getRegionByDepartement(code: string): Region | undefined {
-  return REGIONS.find((r) => r.departements.includes(code));
+  return getRegionByDepartementCore(code);
 }

@@ -3,13 +3,13 @@
 
 import { describe, it, expect } from "vitest";
 import { getNearbyVillesExtended, getNearbyCasesWithFallback } from "../geo";
-import { getVille, VILLES } from "@/content/villes";
+import { getVilleCore, VILLES_CORE } from "@/content/villes/core";
 
 describe("getNearbyVillesExtended — Phase D alentours 3 dimensions", () => {
-  const paris = VILLES.find((v) => v.slug === "paris");
+  const paris = VILLES_CORE.find((v) => v.slug === "paris");
 
   it("retourne les 3 buckets immediates + sameDepartement + economicArea", () => {
-    if (!paris) throw new Error("Paris missing in VILLES fixture");
+    if (!paris) throw new Error("Paris missing in VILLES_CORE fixture");
     const result = getNearbyVillesExtended(paris);
     expect(result).toHaveProperty("immediates");
     expect(result).toHaveProperty("sameDepartement");
@@ -87,7 +87,7 @@ describe("getNearbyVillesExtended — Phase D alentours 3 dimensions", () => {
   it("ville isolée (Île de France périphérique) peut avoir immediates vide", () => {
     // Si Paris est isolée — improbable mais safe : on teste avec une ville
     // moins centrale comme Saint-Paul (Réunion) si présente.
-    const candidate = VILLES.find((v) => v.region === "auvergne-rhone-alpes");
+    const candidate = VILLES_CORE.find((v) => v.region === "auvergne-rhone-alpes");
     if (!candidate) return;
     const result = getNearbyVillesExtended(candidate);
     expect(result.immediates.length).toBeGreaterThanOrEqual(0);
@@ -95,7 +95,7 @@ describe("getNearbyVillesExtended — Phase D alentours 3 dimensions", () => {
 });
 
 describe("getNearbyCasesWithFallback — Phase F fallback cascade", () => {
-  const paris = getVille("paris");
+  const paris = getVilleCore("paris");
 
   it("retourne { cases, fallbackLevel }", () => {
     if (!paris) throw new Error("Paris missing");
@@ -114,7 +114,7 @@ describe("getNearbyCasesWithFallback — Phase F fallback cascade", () => {
   it("fallback `region` si proximity vide (ville isolée Tier-3)", () => {
     // Test sur une ville moyenne (≤30K hab) qui a probablement peu de cas
     // concrets à proximité.
-    const smallVille = VILLES.find((v) => v.population && v.population < 30000);
+    const smallVille = VILLES_CORE.find((v) => v.population && v.population < 30000);
     if (!smallVille) return;
     const result = getNearbyCasesWithFallback(smallVille, { radiusKm: 20, n: 3 });
     expect(["proximity", "region", "sector", "none"]).toContain(result.fallbackLevel);

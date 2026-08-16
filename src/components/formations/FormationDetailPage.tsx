@@ -64,7 +64,7 @@ import {
 } from "@/content/formations/catalog-v2-facts";
 import { formatAmount, type FormationBracket } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
@@ -328,7 +328,7 @@ export function FormationDetailPage({ formation: f, locale }: Props): ReactNode 
       (x) => x.id !== f.id && !x.seminaire && x.categorie !== f.categorie && x.duree === f.duree,
     ),
   ].slice(0, 4);
-  const villes = getVillesIndexableNow().slice(0, 48);
+  const villes = getVillesCoreIndexableNow().slice(0, 48);
 
   const breadcrumbItems = [
     { href: "/formations", label: "Formations IA" },
