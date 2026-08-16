@@ -1,9 +1,15 @@
-name: GSC Crawl Stats weekly export
+name: GSC Search Analytics weekly export
 
-# P2-28 (audit re-run 2026-05-15 AGENT 7) — export hebdo automatique des
-# Google Search Console crawl stats dans `_AUDIT/crawl-stats-YYYY-WW.csv`.
-# Permet de mesurer le gate « crawl budget < 30 % factory output » au prochain
-# audit, et de tracker les régressions Googlebot dans la durée.
+# Export hebdo des PERFORMANCES DE RECHERCHE Search Console dans
+# `_AUDIT/search-analytics-YYYY-WW.csv`.
+#
+# 🔴 RENOMMÉ le 2026-08-16 — GEO-032. Ce workflow s'appelait « Crawl Stats »
+# et prétendait mesurer le gate « budget de crawl < 30 % de la production ».
+# Il n'a jamais exporté de données d'exploration : le script interroge
+# `searchAnalytics`, dont les colonnes sont impressions/clics/CTR/position.
+# Le rapport « Statistiques d'exploration » de GSC n'a pas d'API publique —
+# la mesure promise était irréalisable, pas seulement absente. Pour de vraies
+# données d'exploration : les journaux Caddy filtrés sur Googlebot.
 #
 # Schedule : lundi 08:00 UTC (créneau low-traffic + GSC API stable, données
 # de la semaine N-1 finalisées).
@@ -43,7 +49,7 @@ permissions:
 
 jobs:
   export:
-    name: GSC export → _AUDIT/crawl-stats-*.csv
+    name: GSC export → _AUDIT/search-analytics-*.csv
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -73,7 +79,7 @@ jobs:
           if [ -z "${GSC_PROPERTY_URL:-}" ]; then
             echo "::warning::GSC_PROPERTY_URL var absent — defaulting to sc-domain:axion-ia.com"
           fi
-          node scripts/perf/export-gsc-crawl-stats.mjs
+          node scripts/perf/export-gsc-search-analytics.mjs
 
       - name: Commit CSV if changed
         if: ${{ inputs.dry_run != 'true' }}
@@ -81,9 +87,9 @@ jobs:
           set -euo pipefail
           git config user.name "axion-ia-bot"
           git config user.email "bot@axion-ia.com"
-          if [ -n "$(git status --porcelain _AUDIT/crawl-stats-*.csv)" ]; then
+          if [ -n "$(git status --porcelain _AUDIT/search-analytics-*.csv)" ]; then
             week=$(date -u +%G-W%V)
-            git add _AUDIT/crawl-stats-*.csv
+            git add _AUDIT/search-analytics-*.csv
             git commit -m "chore(audit): gsc crawl stats export $week"
             git push
           else

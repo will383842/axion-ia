@@ -636,6 +636,26 @@ jobs:
           # `//doctrine` du fichier de config pour le détail + la réversibilité.
           pnpm exec lhci assert --config=lighthouserc.postdeploy.json
 
+          # ── GEO-121 — passe MOBILE (audit GEO/AEO 2026-08-14, lot 16) ──────
+          # Aucune porte ne mesurait le mobile : ce gate tournait desktop seul,
+          # et les 2 projets Playwright mobile ne sont executes nulle part. Or
+          # l'indexation de Google est mobile-first — la version mesuree n'etait
+          # pas celle qui est classee.
+          #
+          # Les assertions mobiles sont TOUTES en WARN (cf. le bloc //doctrine
+          # de lighthouserc.postdeploy.mobile.json) : on n'a aucune ligne de
+          # base, et poser des seuils bloquants a l'aveugle bloquerait tous les
+          # deploiements des le premier run. Un gate qui bloque tout se fait
+          # desactiver, donc ne garde plus rien.
+          #
+          # `|| true` sur le collect : une passe mobile qui echoue a collecter ne
+          # doit pas faire tomber un deploiement par ailleurs sain. L'assert, lui,
+          # ne peut pas echouer puisque tout est en WARN — il sert a IMPRIMER les
+          # valeurs dans le journal, ce qui est le but de cette etape.
+          rm -rf .lighthouseci
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1             --settings.preset=mobile --settings.throttlingMethod=devtools || true
+          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json || true
+
   # ───────────────────────────────────────────────────────────────────────
   # IndexNow post-deploy — Audit indexation 2026-06-20.
   # `scripts/indexnow-ping.ts` tourne en `postbuild` DANS le builder Docker, où

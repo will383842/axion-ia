@@ -124,7 +124,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // isolation-check, KB transitions, etc.). Pas de violation isolation —
   // exceptions explicites doctrine §4.1bis.
   /^\.github\/workflows\/ci\.yml$/,
-  /^\.github\/workflows\/gsc-crawl-stats-weekly\.yml$/,
+  /^\.github\/workflows\/gsc-search-analytics-weekly\.yml$/,
   /^\.github\/workflows\/content-gen-seed\.yml$/,
   /^\.github\/workflows\/enable-openai-embeddings\.yml$/,
   // Workflow de seed KB manuel — référence content-gen (seeding KB) en CI.
@@ -137,7 +137,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   /^prisma\/seed\.ts$/,
   /^prisma\/seeds\/blog-fs-bootstrap\.ts$/,
   /^scripts\/image-bank\/isolation-check\.ts$/,
-  /^scripts\/perf\/export-gsc-crawl-stats\.mjs$/,
+  /^scripts\/perf\/export-gsc-search-analytics\.mjs$/,
   /^src\/app\/\[locale\]\/\(admin\)\/\[adminPrefix\]\/web-vitals\/page\.tsx$/,
   /^src\/app\/\[locale\]\/centre-aide\/\[slug\]\/page\.tsx$/,
   /^src\/app\/\[locale\]\/guides\/\[slug\]\/page\.tsx$/,
