@@ -3,7 +3,7 @@
 <title>Catalogue Axion-IA — à feuilleter</title>
 <meta name="description" content="Le catalogue complet des offres Axion-IA : formations IA, coaching 1-to-1, audits et implémentation. Une double-page par offre.">
 <style>
-  :root { --creme:#faf8f3; --encre:#1a1613; --terracotta:#b23f16; --ratio:1.2956; }
+  :root { --creme:#faf8f3; --encre:#1a1613; --terracotta:#b23f16; --ratio:1.2943; }
   * { box-sizing: border-box; }
   html, body { margin:0; padding:0; height:100%; background:#14100e; color:var(--creme);
     font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overscroll-behavior: none; }
@@ -25,6 +25,11 @@
     width:min(96vw, calc((100vh - 132px) * 2 / var(--ratio)));
     aspect-ratio: 2 / var(--ratio);
     box-shadow:0 18px 50px rgba(0,0,0,.55); transform-style:preserve-3d; }
+  /* Couverture : une page centree, moitie moins large. */
+  .livre.solo { grid-template-columns:1fr;
+    width:min(52vw, calc((100vh - 132px) / var(--ratio)));
+    aspect-ratio: 1 / var(--ratio); }
+  .livre.solo::after { display:none; }
   .livre img { display:block; width:100%; height:100%; object-fit:contain; background:var(--creme); }
   /* Le pli central : deux dégradés symétriques, sinon les deux pages semblent
      une seule image coupée en deux. */
@@ -102,7 +107,7 @@
 <script>
 (function () {
   'use strict';
-  var PAGES = [{"f":"p001.jpg","n":"01"},{"f":"p002.jpg","n":"02"},{"f":"p003.jpg","n":"03"},{"f":"p004.jpg","n":"04"},{"f":"p005.jpg","n":"05"},{"f":"p006.jpg","n":"06"},{"f":"p007.jpg","n":"07"},{"f":"p008.jpg","n":"08"},{"f":"p009.jpg","n":"09"},{"f":"p010.jpg","n":"10"},{"f":"p011.jpg","n":"11"},{"f":"p012.jpg","n":"12"},{"f":"p013.jpg","n":"13"},{"f":"p014.jpg","n":"14"},{"f":"p015.jpg","n":"15"},{"f":"p016.jpg","n":"16"},{"f":"p017.jpg","n":"17"},{"f":"p018.jpg","n":"18"},{"f":"p019.jpg","n":"19"},{"f":"p020.jpg","n":"20"},{"f":"p021.jpg","n":"21"},{"f":"p022.jpg","n":"22"},{"f":"p023.jpg","n":"23"},{"f":"p024.jpg","n":"24"},{"f":"p025.jpg","n":"25"},{"f":"p026.jpg","n":"26"},{"f":"p027.jpg","n":"27"},{"f":"p028.jpg","n":"28"},{"f":"p029.jpg","n":"29"},{"f":"p030.jpg","n":"30"},{"f":"p031.jpg","n":"31"},{"f":"p032.jpg","n":"32"},{"f":"p033.jpg","n":"33"},{"f":"p034.jpg","n":"34"},{"f":"p035.jpg","n":"35"},{"f":"p036.jpg","n":"36"},{"f":"p037.jpg","n":"37"},{"f":"p038.jpg","n":"38"},{"f":"p039.jpg","n":"39"},{"f":"p040.jpg","n":"40"},{"f":"p041.jpg","n":"41"},{"f":"p042.jpg","n":"42"},{"f":"p043.jpg","n":"43"},{"f":"p044.jpg","n":"44"},{"f":"p045.jpg","n":"45"},{"f":"p046.jpg","n":"46"},{"f":"p047.jpg","n":"47"},{"f":"p048.jpg","n":"48"},{"f":"p049.jpg","n":"49"},{"f":"p050.jpg","n":"50"},{"f":"p051.jpg","n":"51"},{"f":"p052.jpg","n":"52"},{"f":"p053.jpg","n":"53"},{"f":"p054.jpg","n":"54"},{"f":"p055.jpg","n":"55"},{"f":"p056.jpg","n":"56"},{"f":"p057.jpg","n":"57"},{"f":"p058.jpg","n":"58"},{"f":"p059.jpg","n":"59"},{"f":"p060.jpg","n":"60"},{"f":"p061.jpg","n":"61"},{"f":"p062.jpg","n":"62"},{"f":"p063.jpg","n":"63"},{"f":"p064.jpg","n":"64"},{"f":"p065.jpg","n":"65"},{"f":"p066.jpg","n":"66"},{"f":"p067.jpg","n":"67"},{"f":"p068.jpg","n":"68"},{"f":"p069.jpg","n":"69"},{"f":"p070.jpg","n":"70"},{"f":"p071.jpg","n":"71"},{"f":"p072.jpg","n":"72"},{"f":"p073.jpg","n":"73"},{"f":"p074.jpg","n":"74"},{"f":"p075.jpg","n":"75"},{"f":"p076.jpg","n":"76"},{"f":"p077.jpg","n":"77"},{"f":"p078.jpg","n":"78"},{"f":"p079.jpg","n":"79"},{"f":"p080.jpg","n":"80"},{"f":"p081.jpg","n":"81"},{"f":"p082.jpg","n":"82"},{"f":"p083.jpg","n":"83"},{"f":"p084.jpg","n":"84"}];
+  var PAGES = [{"f":"couv1.jpg","n":"","s":true},{"f":"p001.jpg","n":"01","s":false},{"f":"p002.jpg","n":"02","s":false},{"f":"p003.jpg","n":"03","s":false},{"f":"p004.jpg","n":"04","s":false},{"f":"p005.jpg","n":"05","s":false},{"f":"p006.jpg","n":"06","s":false},{"f":"p007.jpg","n":"07","s":false},{"f":"p008.jpg","n":"08","s":false},{"f":"p009.jpg","n":"09","s":false},{"f":"p010.jpg","n":"10","s":false},{"f":"p011.jpg","n":"11","s":false},{"f":"p012.jpg","n":"12","s":false},{"f":"p013.jpg","n":"13","s":false},{"f":"p014.jpg","n":"14","s":false},{"f":"p015.jpg","n":"15","s":false},{"f":"p016.jpg","n":"16","s":false},{"f":"p017.jpg","n":"17","s":false},{"f":"p018.jpg","n":"18","s":false},{"f":"p019.jpg","n":"19","s":false},{"f":"p020.jpg","n":"20","s":false},{"f":"p021.jpg","n":"21","s":false},{"f":"p022.jpg","n":"22","s":false},{"f":"p023.jpg","n":"23","s":false},{"f":"p024.jpg","n":"24","s":false},{"f":"p025.jpg","n":"25","s":false},{"f":"p026.jpg","n":"26","s":false},{"f":"p027.jpg","n":"27","s":false},{"f":"p028.jpg","n":"28","s":false},{"f":"p029.jpg","n":"29","s":false},{"f":"p030.jpg","n":"30","s":false},{"f":"p031.jpg","n":"31","s":false},{"f":"p032.jpg","n":"32","s":false},{"f":"p033.jpg","n":"33","s":false},{"f":"p034.jpg","n":"34","s":false},{"f":"p035.jpg","n":"35","s":false},{"f":"p036.jpg","n":"36","s":false},{"f":"p037.jpg","n":"37","s":false},{"f":"p038.jpg","n":"38","s":false},{"f":"p039.jpg","n":"39","s":false},{"f":"p040.jpg","n":"40","s":false},{"f":"p041.jpg","n":"41","s":false},{"f":"p042.jpg","n":"42","s":false},{"f":"p043.jpg","n":"43","s":false},{"f":"p044.jpg","n":"44","s":false},{"f":"p045.jpg","n":"45","s":false},{"f":"p046.jpg","n":"46","s":false},{"f":"p047.jpg","n":"47","s":false},{"f":"p048.jpg","n":"48","s":false},{"f":"p049.jpg","n":"49","s":false},{"f":"p050.jpg","n":"50","s":false},{"f":"p051.jpg","n":"51","s":false},{"f":"p052.jpg","n":"52","s":false},{"f":"p053.jpg","n":"53","s":false},{"f":"p054.jpg","n":"54","s":false},{"f":"p055.jpg","n":"55","s":false},{"f":"p056.jpg","n":"56","s":false},{"f":"p057.jpg","n":"57","s":false},{"f":"p058.jpg","n":"58","s":false},{"f":"p059.jpg","n":"59","s":false},{"f":"p060.jpg","n":"60","s":false},{"f":"p061.jpg","n":"61","s":false},{"f":"p062.jpg","n":"62","s":false},{"f":"p063.jpg","n":"63","s":false},{"f":"p064.jpg","n":"64","s":false},{"f":"p065.jpg","n":"65","s":false},{"f":"p066.jpg","n":"66","s":false},{"f":"p067.jpg","n":"67","s":false},{"f":"p068.jpg","n":"68","s":false},{"f":"p069.jpg","n":"69","s":false},{"f":"p070.jpg","n":"70","s":false},{"f":"p071.jpg","n":"71","s":false},{"f":"p072.jpg","n":"72","s":false},{"f":"p073.jpg","n":"73","s":false},{"f":"p074.jpg","n":"74","s":false},{"f":"p075.jpg","n":"75","s":false},{"f":"p076.jpg","n":"76","s":false},{"f":"p077.jpg","n":"77","s":false},{"f":"p078.jpg","n":"78","s":false},{"f":"p079.jpg","n":"79","s":false},{"f":"p080.jpg","n":"80","s":false},{"f":"p081.jpg","n":"81","s":false},{"f":"p082.jpg","n":"82","s":false},{"f":"p083.jpg","n":"83","s":false},{"f":"p084.jpg","n":"84","s":false},{"f":"couv4.jpg","n":"","s":true}];
   var BASE = 'pages-web/';
   var livre = document.getElementById('livre');
   var pgG = document.getElementById('pgG'), pgD = document.getElementById('pgD');
@@ -113,7 +118,9 @@
   var i = 0;            // index de la page de GAUCHE de la vue courante
   var enCours = false;
 
-  function pas() { return MOBILE() ? 1 : 2; }
+  // Une couverture n'a pas de vis-a-vis : elle avance d'un cran, pas de deux.
+  function seule(k) { return !!(PAGES[k] && PAGES[k].s); }
+  function pas() { return (MOBILE() || seule(i)) ? 1 : 2; }
   function url(k) { return PAGES[k] ? BASE + PAGES[k].f : ''; }
 
   // Préchargement du voisinage. Fait PENDANT la lecture, jamais pendant le
@@ -132,14 +139,17 @@
 
   function libelle() {
     var g = PAGES[i], d = PAGES[i + 1];
-    if (MOBILE() || !d) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
+    if (g && g.s) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
+    if (MOBILE() || !d || seule(i + 1)) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
     if (g && g.n && d.n) return 'pages ' + g.n + '–' + d.n;
     return (i + 1) + ' / ' + PAGES.length;
   }
 
   function rendre() {
+    var solo = MOBILE() || seule(i) || seule(i + 1);
+    livre.classList.toggle('solo', solo);
     pgG.src = url(i);
-    if (MOBILE()) { pgD.style.display = 'none'; }
+    if (solo) { pgD.style.display = 'none'; }
     else { pgD.style.display = ''; pgD.src = url(i + 1); }
     compte.textContent = libelle();
     bPrec.disabled = i <= 0;
@@ -150,7 +160,7 @@
   // Une feuille = un élément, deux faces, deux images. Rien d'autre à animer :
   // c'est ce qui permet au tournage de tenir dans une image d'affichage.
   function tourner(sens, fin) {
-    if (MOBILE()) { fin(); return; }
+    if (MOBILE() || seule(i) || seule(i + 1) || seule(i + pas())) { fin(); return; }
     var rectoIdx = sens > 0 ? i + 1 : i;           // la face qu'on soulève
     var versoIdx = sens > 0 ? i + 2 : i - 1;       // ce qu'on découvre au dos
     if (!PAGES[rectoIdx] || !PAGES[versoIdx]) { fin(); return; }
