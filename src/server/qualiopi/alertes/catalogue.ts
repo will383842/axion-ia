@@ -9,12 +9,48 @@
  */
 
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
+import type { GuichetAlerte } from "./routage";
 
-export interface AlerteCatalogueEntry {
+/**
+ * Lot 14 §14.3 — la désescalade, et son motif quand elle n'a pas lieu.
+ *
+ * 🔴 Une alerte qui ne se referme pas quand sa cause disparaît transforme la
+ * liste en HISTORIQUE : elle cesse de décrire l'état. C'est un choix parfois
+ * légitime (un fait accompli s'acquitte, il ne s'efface pas) et parfois un
+ * simple oubli — et au 16/08/2026, **rien ne permettait de distinguer les
+ * deux** : six codes portaient `resolutionAuto: false` sans une ligne
+ * d'explication, exactement comme les trois codes dont l'oubli avait laissé
+ * des alertes ouvertes pour toujours (corrigé le 2026-08-05).
+ *
+ * D'où l'union : `false` EXIGE un motif, à la compilation. On ne peut plus
+ * oublier en silence — on peut seulement décider, et l'écrire.
+ */
+type ResolutionAuto =
+  | { readonly resolutionAuto: true }
+  | {
+      readonly resolutionAuto: false;
+      /** Pourquoi cette alerte ne doit PAS se refermer toute seule. */
+      readonly motifSansResolutionAuto: string;
+    };
+
+export type AlerteCatalogueEntry = {
   readonly niveau: AlerteNiveau;
   readonly titre: string;
-  readonly resolutionAuto: boolean;
-}
+  /**
+   * Lot 14 — à QUI cette alerte s'adresse, par la nature de l'acte qu'elle
+   * réclame. Voir `routage.ts` pour la définition des guichets.
+   *
+   * 🔴 Champ OBLIGATOIRE, et c'est tout l'intérêt : ajouter un code d'alerte
+   * sans dire qui doit agir ne compile pas. Une table de routage séparée aurait
+   * laissé le code oublié partir « au canal par défaut » — c'est-à-dire au
+   * canal global unique qu'on vient précisément de supprimer.
+   *
+   * ⚠️ Le guichet est ORTHOGONAL au niveau. `niveau` dit s'il faut sursauter,
+   * `guichet` dit qui a la main. Une alerte critique peut relever du
+   * secrétariat, une alerte `info` de la direction.
+   */
+  readonly guichet: GuichetAlerte;
+} & ResolutionAuto;
 
 /**
  * Catalogue complet des ~28 codes d'alertes (SPEC_PART2 §6.5).
@@ -27,6 +63,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Référent handicap absent",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   /**
    * Un bénéficiaire a déclaré un besoin d'adaptation depuis son portail.
@@ -54,6 +91,9 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Besoin d'adaptation déclaré par un bénéficiaire",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — l'alerte naît du geste du bénéficiaire, pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait dès le premier tour, avant que quiconque l'ait lue. Elle se résout à la main, quand l'adaptation a été prise en compte.",
+    guichet: "qualite",
   },
 
   // ── Pilotage qualité ────────────────────────────────────────────────────────
@@ -61,6 +101,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Responsable qualité non désigné",
     resolutionAuto: true,
+    guichet: "direction",
   },
 
   // ── Cycle commercial : devis & signatures ─────────────────────────────────
@@ -76,16 +117,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Devis envoyé sans réponse depuis +7 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   signature_en_attente: {
     niveau: "important",
     titre: "Lien de signature sans signature depuis +7 jours",
     resolutionAuto: true,
+    guichet: "administratif",
   },
   signature_contreseing_du: {
     niveau: "important",
     titre: "Pièce signée d'un seul côté depuis +7 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   /**
    * SPEC_PART5 §D.10 — échéance de validité des devis. Le statut `expire` est
@@ -97,11 +141,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Devis expire dans moins de 7 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   devis_expire: {
     niveau: "info",
     titre: "Devis expiré sans suite",
     resolutionAuto: true,
+    guichet: "direction",
   },
   /**
    * Déblocages du parcours vente (plan « Nouvelle vente » §1a) — tous deux
@@ -114,11 +160,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Devis signé — session et convention à créer",
     resolutionAuto: true,
+    guichet: "administratif",
   },
   moteur_assemble_a_publier: {
     niveau: "important",
     titre: "Génération terminée — formation à relire et publier",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── Référentiel des offres ────────────────────────────────────────────────
@@ -134,6 +182,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "info",
     titre: "Offre non vérifiée depuis plus de 30 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── Réclamations ──────────────────────────────────────────────────────────
@@ -141,6 +190,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Réclamation sans réponse depuis +15 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── Émargement / présence ──────────────────────────────────────────────────
@@ -148,6 +198,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Émargement manquant (session réalisée)",
     resolutionAuto: true,
+    guichet: "administratif",
   },
   /**
    * Angle mort structurel comblé : `emargement_manquant` ne se déclenche que sur
@@ -160,6 +211,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Session non clôturée faute d'émargement",
     resolutionAuto: true,
+    guichet: "administratif",
   },
   // 🔴 LE JOUR MÊME, pas trois jours après.
   //
@@ -177,6 +229,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Session en cours sans dispositif de signature",
     resolutionAuto: true,
+    guichet: "administratif",
   },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
@@ -184,6 +237,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Session à J-7 sans formateur principal",
     resolutionAuto: true,
+    guichet: "administratif",
   },
 
   // ── Animation (kit documentaire) ──────────────────────────────────────────
@@ -200,6 +254,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Diaporama non déposé pour une session imminente",
     resolutionAuto: true,
+    guichet: "formateur",
   },
 
   // ── Satisfaction ──────────────────────────────────────────────────────────
@@ -207,11 +262,17 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Questionnaire de satisfaction non rempli",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non (relance auto) ». La relance du questionnaire porte le rattrapage ; l alerte, elle, reste la TRACE que le retour n a pas été recueilli. La refermer parce que le stagiaire a fini par répondre effacerait le fait qu il a fallu relancer — or c est ce fait que l auditeur regarde (ind. 30).",
+    guichet: "administratif",
   },
   satisfaction_sous_seuil: {
     niveau: "important",
     titre: "Taux de satisfaction sous le seuil",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non (action corrective) ». La moyenne peut remonter d elle-même dès que d autres réponses arrivent ; refermer l alerte à ce moment-là effacerait la tâche AVANT que l analyse et le plan d action (ind. 30 et 32) aient eu lieu.",
+    guichet: "qualite",
   },
 
   // ── Évaluation des acquis ──────────────────────────────────────────────────
@@ -219,6 +280,9 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Évaluation finale des acquis manquante",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non ». Une session réalisée sans évaluation finale des acquis est un manquement au sens de l indicateur 11 : il s acquitte quand l évaluation a été VALIDÉE par un habilité, pas quand une ligne apparaît en base.",
+    guichet: "formateur",
   },
 
   // ── Attestations ──────────────────────────────────────────────────────────
@@ -226,6 +290,9 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Attestation non envoyée au stagiaire",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non ». L attestation est un droit du stagiaire (L.6353-1). Le manquement se solde par un geste tracé, pas par la disparition du signal.",
+    guichet: "administratif",
   },
 
   // ── Qualiopi expiration ────────────────────────────────────────────────────
@@ -233,16 +300,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Certification Qualiopi expire dans 90 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   qualiopi_expire_j30: {
     niveau: "critique",
     titre: "Certification Qualiopi expire dans 30 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   qualiopi_expire: {
     niveau: "critique",
     titre: "Certification Qualiopi expirée",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non », là où _j90 et _j30 portent « Oui si renouvelée ». Les paliers d avertissement se referment seuls ; celui-ci constate que la certification EST expirée, et l acquittement est la trace que la direction l a vu.",
+    guichet: "direction",
   },
 
   // ── BPF ──────────────────────────────────────────────────────────────────
@@ -250,21 +322,25 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "info",
     titre: "Bilan Pédagogique et Financier à déposer (J-60)",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   bpf_a_deposer_j30: {
     niveau: "important",
     titre: "Bilan Pédagogique et Financier à déposer (J-30)",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   bpf_a_deposer_j7: {
     niveau: "critique",
     titre: "Bilan Pédagogique et Financier à déposer (J-7)",
     resolutionAuto: true,
+    guichet: "direction",
   },
   bpf_en_retard: {
     niveau: "critique",
     titre: "Bilan Pédagogique et Financier en retard",
     resolutionAuto: true,
+    guichet: "direction",
   },
 
   // ── Veille ────────────────────────────────────────────────────────────────
@@ -272,6 +348,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Aucune entrée de veille depuis 45 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── Emails en attente de validation ───────────────────────────────────────
@@ -285,6 +362,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Des emails attendent votre validation",
     resolutionAuto: true,
+    guichet: "administratif",
   },
 
   // ── Formateurs ────────────────────────────────────────────────────────────
@@ -292,6 +370,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "CV formateur non mis à jour depuis 12 mois",
     resolutionAuto: true,
+    guichet: "formateur",
   },
 
   // ── Sous-traitants ────────────────────────────────────────────────────────
@@ -299,11 +378,15 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Qualiopi sous-traitant expire dans 60 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   sous_traitant_qualiopi_expire: {
     niveau: "critique",
     titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non », là où _j60 porte « Oui si renouvelée ». Des sessions futures sont déjà positionnées sur un sous-traitant non certifié : la situation s acquitte, elle ne s efface pas.",
+    guichet: "qualite",
   },
   // ── Vigilance sous-traitance (art. 4 et 8 de la procédure) [2026-08-03] ────
   //
@@ -314,6 +397,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Sous-traitant sans contrat-cadre signé",
     resolutionAuto: true,
+    guichet: "direction",
   },
   // ⚠️ ABSENCE de RC pro = « important », pas « critique ». Décision Will du
   // 2026-08-03 : la RC pro n'est PAS exigée à l'entrée, pour ne pas réduire le
@@ -324,6 +408,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Sous-traitant sans attestation RC pro",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   // 🔴 EXPIRATION, en revanche, est critique : l'attestation existait, elle a
   // été acceptée, et elle est tombée. C'est une régression de vigilance, pas un
@@ -332,17 +417,20 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Attestation RC pro sous-traitant expirée",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   sous_traitant_rc_pro_expire_j60: {
     niveau: "important",
     titre: "Attestation RC pro sous-traitant expire dans 60 jours",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   // Art. 8 : les pièces se revérifient annuellement. Rappel 30 jours avant.
   sous_traitant_verification_annuelle_due: {
     niveau: "important",
     titre: "Vérification annuelle d'un sous-traitant à effectuer",
     resolutionAuto: true,
+    guichet: "qualite",
   },
   // Art. 8 : les incidents pèsent à la reconduction. « important » et non
   // « critique » — l'alerte informe, elle n'interdit pas d'affecter.
@@ -350,6 +438,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Intervenant externe : incidents répétés",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── OPCO / financement ────────────────────────────────────────────────────
@@ -357,16 +446,21 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Session dans 7 jours sans accord OPCO",
     resolutionAuto: true,
+    guichet: "direction",
   },
   opco_formation_demarree_sans_accord: {
     niveau: "critique",
     titre: "Formation démarrée sans accord OPCO",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non ». FAIT ACCOMPLI : la formation a démarré sans accord, le risque financier est déjà pris. Un accord obtenu après coup ferait disparaître l alerte comme si de rien n était, alors que c est précisément l écart qu il faut avoir vu.",
+    guichet: "direction",
   },
   convention_tripartite_manquante: {
     niveau: "critique",
     titre: "Convention tripartite manquante (subrogation OPCO)",
     resolutionAuto: true,
+    guichet: "direction",
   },
   // Référentiel OPCO versionné (Lot 5) : le barème en vigueur d'un OPCO a un
   // relevé portail périmé (> config `bareme_opco_validite_mois`, défaut 12 mois).
@@ -374,12 +468,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
     resolutionAuto: true,
+    guichet: "direction",
   },
   // [T17.1 — S7] Convention de formation (L.6353-1) non établie avant démarrage (off.9).
   convention_formation_manquante: {
     niveau: "critique",
     titre: "Convention de formation manquante avant démarrage",
     resolutionAuto: true,
+    guichet: "direction",
   },
 
   // ── Facturation ───────────────────────────────────────────────────────────
@@ -402,11 +498,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Facture impayée depuis +30 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   facture_impayee_j60: {
     niveau: "critique",
     titre: "Facture impayée depuis +60 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   /**
    * Filet de sécurité du circuit de recouvrement.
@@ -425,6 +523,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Facture émise sans date d'échéance",
     resolutionAuto: true,
+    guichet: "direction",
   },
   /**
    * Relance envoyée, restée sans effet.
@@ -441,6 +540,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Relance envoyée sans effet depuis +15 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
 
   // ── Dossiers de financement (suivi OPCO / France Travail) ────────────────
@@ -453,11 +553,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Dossier de financement envoyé sans réponse depuis +30 jours",
     resolutionAuto: true,
+    guichet: "direction",
   },
   financeur_paiement_en_retard: {
     niveau: "critique",
     titre: "Paiement du financeur en retard (échéance dépassée)",
     resolutionAuto: true,
+    guichet: "direction",
   },
 
   // ── IA / système ──────────────────────────────────────────────────────────
@@ -471,6 +573,9 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "important",
     titre: "Génération IA d'une formation en échec",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par l'échec d'un job, pas par le balayage quotidien : la résolution automatique l'effacerait au tour suivant. Un échec s'acquitte à la main, une fois la cause comprise.",
+    guichet: "direction",
   },
 
   // ── RGPD ──────────────────────────────────────────────────────────────────
@@ -478,6 +583,9 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "info",
     titre: "Demande de suppression RGPD non traitée depuis 30 jours",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "SPEC_PART2 §6.5 — « Non ». Une demande d effacement non traitée sous 30 jours est un dépassement de délai RGPD : il reste à documenter même une fois la suppression faite.",
+    guichet: "qualite",
   },
 
   // ── Pilotage — cadence trimestrielle (LOT 4) ──────────────────────────────
@@ -487,6 +595,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "info",
     titre: "Revue trimestrielle à réaliser",
     resolutionAuto: true,
+    guichet: "qualite",
   },
 
   // ── Chaîne d'envoi d'e-mails (audit du 2026-08-16) ────────────────────────
@@ -511,11 +620,17 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     niveau: "critique",
     titre: "Envois d'e-mails en échec",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail (`server/email/health.ts`), jamais par `evaluerAlertes`. La passer à `true` la ferait résoudre au premier `synchroniserAlertes`, alors que le relais est peut-être toujours injoignable.",
+    guichet: "direction",
   },
   emails_bloques_en_file: {
     niveau: "critique",
     titre: "E-mails enfilés mais jamais envoyés",
     resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — même origine que `emails_en_echec` : la sonde de santé e-mail, hors du balayage quotidien.",
+    guichet: "direction",
   },
 } as const;
 
