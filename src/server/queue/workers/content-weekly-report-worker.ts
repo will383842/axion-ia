@@ -15,11 +15,16 @@
 
 import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
+import { destinataireRapportHebdo } from "@/lib/destinataires-internes";
 import { sendEmail } from "@/lib/email/client";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 
 const QUEUE_NAME = "content-weekly-report";
-const REPORT_TO = process.env.WEEKLY_REPORT_EMAIL ?? "contact@axion-ia.com";
+// SSOT `lib/destinataires-internes.ts`. Ce fichier portait DÉJÀ la bonne
+// adresse — c'est justement ce qui rendait la divergence invisible : deux
+// autres endroits repliaient sur une boîte Gmail personnelle, et rien ne les
+// confrontait. Les trois passent maintenant par la même fonction.
+const REPORT_TO = destinataireRapportHebdo();
 
 async function collectWeeklyStats(since: Date): Promise<{
   published: number;
