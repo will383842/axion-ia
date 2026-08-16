@@ -2,7 +2,10 @@
 // pur (0 JS : filtres par query-param server-side → INP préservé). Niveau /audit.
 
 import type { Metadata } from "next";
-import Link from "next/link";
+// Link next-intl (et NON `next/link`) : sinon les 54 liens d'offres, les filtres
+// et les liens verticales sortent locale-less et coûtent un 301 chacun
+// (audit GEO/AEO 2026-08-14, GEO-080).
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -110,13 +113,19 @@ export default async function CarrieresHubPage({
   const activeCategories = Array.from(new Set(all.map((o) => o.category)));
   const activeWorkModes = Array.from(new Set(all.map((o) => o.workMode)));
   // Conserve les deux dimensions de filtre dans l'URL (0 JS, INP préservé).
-  const filterHref = (cat?: string, wm?: string): string => {
-    const query = new URLSearchParams();
-    if (cat) query.set("category", cat);
-    if (wm) query.set("workMode", wm);
-    if (sp.q) query.set("q", sp.q);
-    const s = query.toString();
-    return s ? `/carrieres?${s}` : "/carrieres";
+  // Forme objet `{ pathname, query }` : le Link next-intl localise le pathname
+  // (`/carrieres` → `/careers` en EN) et laisse Next sérialiser la query.
+  const filterHref = (
+    cat?: string,
+    wm?: string,
+  ): { pathname: "/carrieres"; query?: Record<string, string> } => {
+    const query: Record<string, string> = {};
+    if (cat) query.category = cat;
+    if (wm) query.workMode = wm;
+    if (sp.q) query.q = sp.q;
+    return Object.keys(query).length > 0
+      ? { pathname: "/carrieres", query }
+      : { pathname: "/carrieres" };
   };
 
   return (
@@ -374,7 +383,7 @@ export default async function CarrieresHubPage({
                           return (
                             <li key={o.id}>
                               <Link
-                                href={`/carrieres/${o.slug}`}
+                                href={{ pathname: "/carrieres/[slug]", params: { slug: o.slug } }}
                                 className="border-border hover:border-terracotta bg-paper shadow-subtle hover:shadow-card group flex h-full flex-col overflow-hidden rounded-2xl border transition"
                               >
                                 <div className="relative aspect-[16/7] overflow-hidden">
@@ -565,7 +574,9 @@ export default async function CarrieresHubPage({
                 {CAREER_VERTICALS.map((v) => (
                   <li key={v.href}>
                     <Link
-                      href={v.href}
+                      // `CAREER_VERTICALS.href` est un `string` : même échappatoire
+                      // de typage que `Cta.tsx` (chemins nus, résolus par next-intl).
+                      href={v.href as never}
                       className="border-mocha-fg/25 hover:border-terracotta inline-block rounded-full border px-4 py-2 text-sm transition-colors"
                     >
                       {isFr ? v.fr : v.en} →

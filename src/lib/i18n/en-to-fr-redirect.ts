@@ -93,6 +93,11 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
   ["/en/help/category/", "/fr/centre-aide/categorie/"],
   ["/en/help/", "/fr/centre-aide/"],
   ["/en/help", "/fr/centre-aide"],
+  // `/book-a-call` est le pathname EN canonique de `/appel` (`routing.ts:277`),
+  // et la règle next.config `/en/book` → `/en/book-a-call` (qui s'exécute AVANT
+  // le middleware) alimente cette URL. Déclaré AVANT `/en/book` : match le plus
+  // long d'abord (audit GEO/AEO 2026-08-14, GEO-060).
+  ["/en/book-a-call", "/fr/appel"],
   ["/en/book", "/fr/appel"],
   ["/en/search", "/fr/recherche"],
   ["/en/ai-guide", "/fr/guide-ia"],
@@ -134,7 +139,15 @@ const EN_TO_FR_PREFIXES: ReadonlyArray<readonly [string, string]> = [
  */
 export function mapEnToFr(pathname: string): string {
   for (const [enPrefix, frPrefix] of EN_TO_FR_PREFIXES) {
-    if (pathname === enPrefix || pathname.startsWith(enPrefix)) {
+    // Frontière de SEGMENT (GEO-060) : un préfixe sans `/` final ne doit matcher
+    // que le chemin exact ou un sous-chemin `<préfixe>/…`. Sans cette borne,
+    // `/en/book-a-call` matchait `/en/book` et devenait `/fr/appel-a-call` (404) ;
+    // `/en/booking/<token>/cancel` devenait `/fr/appeling/<token>/cancel`.
+    // Les préfixes AVEC `/` final gardent le match par préfixe (paramétrés).
+    const matches = enPrefix.endsWith("/")
+      ? pathname.startsWith(enPrefix)
+      : pathname === enPrefix || pathname.startsWith(`${enPrefix}/`);
+    if (matches) {
       return frPrefix + pathname.slice(enPrefix.length);
     }
   }

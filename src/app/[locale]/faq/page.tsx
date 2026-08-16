@@ -17,6 +17,7 @@ import { Container } from "@/components/layout/Container";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
+import { Button } from "@/components/ui/button";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { FaqHeroImage } from "@/components/sections/FaqHeroImage";
 import { FaqHubExplorer } from "@/components/sections/FaqHubExplorer";
@@ -308,12 +309,17 @@ export default async function FaqPage({ params }: Props) {
                   {isFr ? "Rechercher une question" : "Search a question"}
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
-                <Cta href={`/${locale}/faq/par-thematique`} variant="outline" size="lg">
+                {/* Chemin NU : <Cta> passe par le Link next-intl, qui préfixe
+                    déjà le locale. Un `/${locale}/…` ici produirait `/fr/fr/…`
+                    → 404 (audit GEO/AEO 2026-08-14, GEO-013). */}
+                <Cta href="/faq/par-thematique" variant="outline" size="lg">
                   {isFr ? "Par thématique" : "By topic"}
                 </Cta>
-                <Cta href={`/${locale}/faq/feed.xml`} variant="outline" size="lg">
-                  {isFr ? "S'abonner RSS" : "Subscribe RSS"}
-                </Cta>
+                {/* feed.xml n'est pas une route next-intl (route handler) :
+                    ancre brute préfixée à la main, comme les cartes ci-dessous. */}
+                <Button asChild variant="outline" size="lg" shape="pill">
+                  <a href={`/${locale}/faq/feed.xml`}>{isFr ? "S'abonner RSS" : "Subscribe RSS"}</a>
+                </Button>
               </div>
             </div>
             <FaqHeroImage
