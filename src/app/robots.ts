@@ -15,6 +15,17 @@ import { SITE_URL } from "@/lib/seo";
 const COMMON_DISALLOW = [
   "/api/",
   "/_next/",
+  // GEO-035 (audit GEO/AEO 2026-08-14) — les routes de telechargement de la
+  // banque d'images. Chaque visite y declenche une transformation Sharp et une
+  // ecriture en base ; les pages galerie en exposent DEUX ancres chacune, soit
+  // ~576 URLs crawlables pour ~288 pages. Aucune n'a de valeur d'indexation :
+  // ce sont des actions, pas des documents.
+  //
+  // Les deux locales sont listees : le segment est traduit (`telecharger` en
+  // FR, `download` en EN) et robots.txt ne connait pas la table de routage.
+  // L'etoile initiale couvre le prefixe de locale.
+  "/*/telecharger",
+  "/*/download",
   // P1-15 audit indexation 2026-05-15 — hygiène robots.txt
   // Surfaces privées / utilisateur authentifié : pas d'indexation.
   "/mes-donnees/",
