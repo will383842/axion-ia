@@ -126,8 +126,32 @@ export async function marquerPaiementRecuSiSoldee(dossierId: string): Promise<vo
  * OPCO existants (source Qualiopi inchangée — le dossier est la vue de
  * pilotage). Payeurs : OPCO subrogé + reste à charge entreprise si
  * subrogation, sinon entreprise seule.
+ *
+ * 🔴 IDEMPOTENT depuis le sous-lot 8C : si un dossier existe déjà pour cette
+ * session, il est rendu tel quel. Deux raisons, et la seconde n'existait pas
+ * avant 8C :
+ *
+ *  1. le bouton du hub facturation créait un dossier **à chaque clic** — deux
+ *     clics, deux créances pour la même affaire, et le cockpit comptait double.
+ *     C'est le même défaut que la file de validation d'e-mails (Lot 3quinquies) ;
+ *  2. l'ouverture automatique à la déclaration du financement passe par ici.
+ *     Sans idempotence, corriger un champ après coup dupliquerait le dossier.
+ *
+ * ⚠️ Ce n'est pas une garantie de base : sans contrainte d'unicité, deux appels
+ * strictement simultanés peuvent encore passer. Le cas est théorique (l'action
+ * est admin, séquentielle) et une contrainte relève d'une migration — hors du
+ * périmètre des lots UI. C'est dit ici plutôt que supposé ailleurs.
  */
 export async function creerDossierDepuisSession(sessionId: string): Promise<{ id: string }> {
+  const existant = await prisma.dossierFinancement.findFirst({
+    where: { trainingSessionId: sessionId },
+    select: { id: true },
+    // Le plus ancien : si un doublon a été créé avant cette garde, c'est lui
+    // qui porte l'historique de transitions.
+    orderBy: { createdAt: "asc" },
+  });
+  if (existant !== null) return existant;
+
   const session = await prisma.trainingSession.findUniqueOrThrow({
     where: { id: sessionId },
     select: {

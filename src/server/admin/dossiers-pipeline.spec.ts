@@ -14,6 +14,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 import {
+  accordFinanceurAttendu,
   deriverStatutDossier,
   estDossierArchive,
   lireDossiersPipeline,
@@ -22,6 +23,7 @@ import {
   FENETRE_SOLDES_JOURS,
   type DossierSource,
 } from "./dossiers-pipeline";
+import { validateOpcoAccord } from "@/server/qualiopi/financements/validation-service";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -49,6 +51,10 @@ const sessionBase = {
   signatureEnAttente: false,
   factureImpayee: false,
   financementNonSolde: false,
+  // Sous-lot 8D — le cas ORDINAIRE est « pas d'accord à attendre » : la
+  // majorité des affaires sont en financement direct. Mettre `true` par défaut
+  // aurait peint tous les tests existants en « attente financeur ».
+  accordFinanceurAttendu: false,
   updatedAt: RECENT,
 } satisfies DossierSource;
 
@@ -729,5 +735,98 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
 
     const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sous-lot 8D — la colonne « Attente financeur »
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// 🔴 Le défaut : une session `planifiee` dont l'OPCO n'avait pas répondu
+// tombait dans « À préparer », au MÊME endroit qu'une affaire dont l'argent est
+// sécurisé. Le système EMPÊCHE de démarrer sans accord (`validateOpcoAccord`)
+// mais ne PRÉVENAIT pas qu'il allait l'empêcher : on le découvrait le matin de
+// la formation, quand le bouton « démarrer » refuse.
+
+describe("deriverStatutDossier — attente de l'accord financeur (8D)", () => {
+  it("🔴 planifiée + accord attendu → « Attente financeur », PAS « À préparer »", () => {
+    expect(deriverStatutDossier({ ...sessionBase, accordFinanceurAttendu: true }, MAINTENANT)).toBe(
+      "attente_financeur",
+    );
+  });
+
+  it("🔴 l'attente d'accord PRIME sur l'attente de signature", () => {
+    // Faire signer une convention avant d'avoir l'accord du financeur, c'est
+    // engager le client sur une prestation qui ne pourra pas démarrer. Ce qui
+    // bloque en premier doit se voir en premier.
+    expect(
+      deriverStatutDossier(
+        { ...sessionBase, accordFinanceurAttendu: true, signatureEnAttente: true },
+        MAINTENANT,
+      ),
+    ).toBe("attente_financeur");
+  });
+
+  it("accord acquis → le dossier retrouve son cours normal", () => {
+    expect(deriverStatutDossier({ ...sessionBase }, MAINTENANT)).toBe("a_preparer");
+    expect(deriverStatutDossier({ ...sessionBase, signatureEnAttente: true }, MAINTENANT)).toBe(
+      "signature_attente",
+    );
+  });
+
+  it("une session DÉJÀ démarrée ou réalisée ne retourne pas en attente d'accord", () => {
+    // Le jour J prime, et une session réalisée relève de la règle de solde.
+    expect(
+      deriverStatutDossier(
+        { ...sessionBase, statut: "en_cours", accordFinanceurAttendu: true },
+        MAINTENANT,
+      ),
+    ).toBe("en_cours");
+  });
+
+  it("la colonne est déclarée, ordonnée avant la signature, et porte une action", () => {
+    const ids = COLONNES_PIPELINE.map((c) => c.id);
+    expect(ids).toContain("attente_financeur");
+    expect(ids.indexOf("attente_financeur")).toBeLessThan(ids.indexOf("signature_attente"));
+    expect(libellerProchaineAction("attente_financeur", "formation")).toContain("financeur");
+  });
+});
+
+describe("🔴 8D — la vue doit annoncer ce que la GARDE va refuser", () => {
+  // `accordFinanceurAttendu` recopie la règle de `validateOpcoAccord` plutôt que
+  // de l'importer (couche de lecture, sans service de validation). Ce test les
+  // COUPLE : si l'une des deux bouge sans l'autre, il rougit — et l'écran
+  // cesserait d'annoncer ce que le démarrage refuse.
+  const base = {
+    opcoSubrogation: false,
+    numeroDossierOpco: null,
+    conventionTripartiteSigneeAt: null,
+    edofVerifieAt: null,
+    ftDispositif: null,
+    ftAifPrescriptionDate: null,
+    ftPoeiAccordFinancementAt: null,
+    ftPoeiEngagementSigneAt: null,
+    ftPoeiOffreEmploiNumero: null,
+    statut: "planifiee" as const,
+  };
+
+  it.each([
+    ["opco", "non_demande"],
+    ["opco", "demande_en_cours"],
+    ["opco", "refuse"],
+    ["opco", "accord_recu"],
+    ["opco", "paiement_recu"],
+    ["direct", "non_demande"],
+    ["cpf", "non_demande"],
+    ["france_travail", "non_demande"],
+    ["mixte", "non_demande"],
+  ])("%s / %s — la colonne dit exactement ce que la garde bloque", (financement, statutOpco) => {
+    const session = {
+      ...base,
+      financementType: financement,
+      opcoStatut: statutOpco,
+    } as never;
+    const bloque = !validateOpcoAccord(session).ok;
+    expect(accordFinanceurAttendu(financement, statutOpco)).toBe(bloque);
   });
 });

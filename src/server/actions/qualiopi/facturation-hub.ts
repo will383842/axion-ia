@@ -45,6 +45,7 @@ import {
 import { calculerEcheanceFacture } from "@/server/qualiopi/financements/conditions-client";
 import { calculerPenalitesRetard } from "@/server/qualiopi/financements/penalites";
 import { libellePalier, tonPalier } from "@/server/qualiopi/financements/relance-paliers";
+import { resoudreDestinataireRelance } from "@/server/qualiopi/financements/relance-destinataire";
 import { resteDuNetCents } from "@/server/qualiopi/crm/clients";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
@@ -845,13 +846,26 @@ export async function envoyerRelanceAction(
       montantHtCents: true,
       montantTtcCents: true,
       echeanceAt: true,
+      destinataire: true,
       destinataireNom: true,
       clientId: true,
+      // Sous-lot 8E : sur une facture subrogée, le débiteur est le financeur, et
+      // son gestionnaire vit ici — pas sur le client.
+      dossierFinancement: {
+        select: {
+          financeurNom: true,
+          financeurContactNom: true,
+          financeurContactEmail: true,
+          numeroDossierExterne: true,
+          subrogation: true,
+        },
+      },
       client: {
         select: {
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          opcoIdentifie: true,
           penalitesRetardActives: true,
         },
       },
@@ -861,7 +875,31 @@ export async function envoyerRelanceAction(
   });
   if (facture === null) return { error: "Facture introuvable." };
 
-  const to = input.to ?? facture.client?.contactEmail ?? null;
+  // ── 🔴 SOUS-LOT 8E — À QUI on réclame ─────────────────────────────────────
+  //
+  // Cette ligne valait `input.to ?? facture.client?.contactEmail`. Sur une
+  // facture libellée à l'OPCO (subrogation), elle envoyait donc au CLIENT une
+  // relance — au palier haut, une **mise en demeure** chiffrant des pénalités
+  // L.441-10 — pour une somme qu'il ne doit pas. L'audit OPCO du 15/08 (T4) l'a
+  // relevé ; ce module en fait désormais une dérivation unique, partagée avec
+  // l'écran qui l'annonce (`relance-contexte.ts`).
+  //
+  // L'empêchement est un REFUS, pas un avertissement : sans contact financeur
+  // connu, on n'envoie rien. Se rabattre sur le client serait exactement la
+  // faute qu'on corrige.
+  const debiteur = resoudreDestinataireRelance(
+    {
+      destinataire: facture.destinataire,
+      destinataireNom: facture.destinataireNom,
+      dossier: facture.dossierFinancement,
+      client: facture.client,
+    },
+    input.to,
+  );
+  if (debiteur.empechement !== null) {
+    return { error: debiteur.empechement };
+  }
+  const to = debiteur.email;
   if (to === null) {
     return { error: "Aucun destinataire : renseigner un email (ou l'email de contact du client)." };
   }
@@ -915,8 +953,11 @@ export async function envoyerRelanceAction(
     to,
     "fr",
     {
-      destinataireNom:
-        facture.client?.contactNom ?? facture.client?.raisonSociale ?? facture.destinataireNom,
+      // 🔴 8E — le nom d'appel suit le DÉBITEUR, pas le client. Écrire
+      // « Madame Dupont » (le contact du client) en tête d'une relance adressée
+      // au gestionnaire d'un OPCO nommerait la mauvaise personne dans un
+      // courrier qui peut être une mise en demeure.
+      destinataireNom: debiteur.nom,
       numeroFacture: facture.numero,
       // RESTE DÛ NET — jamais le TTC total : un client ayant versé son acompte
       // recevait sinon une relance au montant plein.

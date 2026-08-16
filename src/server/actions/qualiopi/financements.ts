@@ -54,6 +54,8 @@ import {
   CLIENT_FACTURABLE_SELECT,
 } from "@/server/qualiopi/financements/destinataire-facture";
 import { DELAI_PAIEMENT_DEFAUT_JOURS } from "@/server/qualiopi/financements/conditions-client";
+import { creerDossierDepuisSession } from "@/server/qualiopi/financements/dossier-financement";
+import { changementOuvreUnDossier } from "@/server/qualiopi/financements/dossier-auto";
 import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
@@ -319,6 +321,13 @@ export async function setFinancementSessionAction(input: {
     }
   }
 
+  // Le financement AVANT écriture : c'est lui qui dit si ce changement fait
+  // ENTRER la session dans le périmètre suivi (cf. `changementOuvreUnDossier`).
+  // Lu ici, pas après : après, il est déjà écrasé.
+  const avant = await prisma.trainingSession
+    .findUnique({ where: { id: sessionId }, select: { financementType: true } })
+    .catch(() => null);
+
   await prisma.trainingSession.update({
     where: { id: sessionId },
     data: updateData as Parameters<typeof prisma.trainingSession.update>[0]["data"],
@@ -331,6 +340,42 @@ export async function setFinancementSessionAction(input: {
     changes: updateData,
     session,
   });
+
+  // ── 🔴 SOUS-LOT 8C — le dossier de financement s'ouvre TOUT SEUL ──────────
+  //
+  // Il n'avait qu'un appelant : un bouton. Vérifié en production, **zéro
+  // dossier n'existait** — donc aucune alerte de suivi financeur, aucune ligne
+  // au cockpit, pour aucune affaire. Le suivi OPCO était éteint sans que rien
+  // ne le dise.
+  //
+  // 🔑 Pourquoi il est légitime d'automatiser ICI alors que le bouton manuel
+  // est gardé par `deposer_demande_financeur` : ce n'est pas le même acte.
+  // Ouvrir le dossier (`a_monter`) est un classeur vide qui ne parle à
+  // personne ; DÉPOSER la demande (`a_monter → envoye`) engage l'organisme au
+  // nom du client et reste le clic habilité qu'il a toujours été.
+  // Produire ≠ remettre.
+  //
+  // Fail-soft, et c'est délibéré : le financement de la session vient d'être
+  // enregistré. Faire échouer l'action parce que la vue de PILOTAGE n'a pas pu
+  // s'ouvrir perdrait la donnée métier au profit de son tableau de bord.
+  // L'échec est journalisé, et le bouton manuel reste le rattrapage.
+  if (changementOuvreUnDossier(avant?.financementType, fields.financementType)) {
+    try {
+      const dossier = await creerDossierDepuisSession(sessionId);
+      await logQualiopiActivity({
+        action: "qualiopi.dossier_financement.ouvert_auto",
+        targetType: "DossierFinancement",
+        targetId: dossier.id,
+        changes: { sessionId, financementType: fields.financementType, statut: "a_monter" },
+        session,
+      });
+    } catch (err) {
+      console.error("[financements] ouverture auto du dossier impossible", {
+        sessionId,
+        err: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
 
   return { data: { id: sessionId } };
 }

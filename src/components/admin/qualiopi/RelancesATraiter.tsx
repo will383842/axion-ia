@@ -61,6 +61,16 @@ export interface RelanceDetail {
   joursRetard: number;
   palierLibelle: string;
   destinataire: string | null;
+  /**
+   * Qui doit la somme — sous-lot 8E. Le CLIENT de l'affaire et le DÉBITEUR de
+   * la facture ne sont pas la même personne dès qu'il y a subrogation, et cet
+   * écran les affichait comme un seul.
+   */
+  qualiteDebiteur: "entreprise" | "financeur" | "beneficiaire";
+  /** Ce qui empêche l'envoi, rédigé côté serveur. `null` = envoyable. */
+  empechement: string | null;
+  /** Contexte du destinataire (subrogation, n° de dossier), ou null. */
+  precisionDestinataire: string | null;
   penalitesActives: boolean;
   historique: RelanceHistoriqueItem[];
 }
@@ -303,6 +313,23 @@ export function RelancesATraiter({
                 </dd>
                 <dt className="text-[color:var(--color-admin-fg-muted)]">Palier</dt>
                 <dd>{detail.palierLibelle}</dd>
+                {/* Sous-lot 8E — « Débiteur » est une ligne DISTINCTE de
+                    « Client ». Les fondre était le défaut : sur une facture
+                    subrogée, l'écran nommait le client et l'e-mail partait
+                    chez lui. */}
+                <dt className="text-[color:var(--color-admin-fg-muted)]">Débiteur</dt>
+                <dd>
+                  {detail.qualiteDebiteur === "financeur"
+                    ? "le financeur"
+                    : detail.qualiteDebiteur === "beneficiaire"
+                      ? "le bénéficiaire"
+                      : "l'entreprise cliente"}
+                  {detail.precisionDestinataire !== null ? (
+                    <span className="block text-[color:var(--color-admin-fg-muted)]">
+                      {detail.precisionDestinataire}
+                    </span>
+                  ) : null}
+                </dd>
                 <dt className="text-[color:var(--color-admin-fg-muted)]">Destinataire</dt>
                 <dd>{detail.destinataire ?? "aucun e-mail de contact"}</dd>
               </dl>
@@ -328,6 +355,16 @@ export function RelancesATraiter({
                   ))}
                 </ul>
               </div>
+            )}
+
+            {/* 🔴 8E — l'écran EXPLIQUE le refus au lieu de se contenter de le
+                subir au clic. Un bouton qui échoue sans dire pourquoi produit
+                un appel téléphonique ; ici il produirait pire : la tentation de
+                saisir l'adresse du client « pour que ça passe ». */}
+            {detail?.empechement != null && (
+              <p className="admin-alert admin-alert-warning mb-[var(--space-admin-4)]">
+                {detail.empechement}
+              </p>
             )}
 
             {detail?.penalitesActives === true && (

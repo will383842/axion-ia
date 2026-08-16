@@ -39,7 +39,13 @@ import type {
 
 /** Identifiants des colonnes, dans l'ordre du cycle de vie d'une affaire. */
 export type ColonnePipeline =
-  "devis_attente" | "signature_attente" | "a_preparer" | "en_cours" | "a_solder" | "soldes";
+  | "devis_attente"
+  | "attente_financeur"
+  | "signature_attente"
+  | "a_preparer"
+  | "en_cours"
+  | "a_solder"
+  | "soldes";
 
 /**
  * Fenêtre d'affichage des dossiers soldés : au-delà, la ligne sort de la vue
@@ -66,6 +72,19 @@ export const COLONNES_PIPELINE: ReadonlyArray<{
     id: "devis_attente",
     label: "Devis en attente",
     description: "Devis envoyés au client, sans réponse — à relancer ou à statuer.",
+  },
+  {
+    id: "attente_financeur",
+    label: "Attente financeur",
+    // 🔴 Sous-lot 8D — cette colonne manquait, et son absence coûtait cher.
+    // Une session dont l'OPCO n'a pas répondu tombait dans « À préparer », au
+    // MÊME endroit qu'une affaire dont l'argent est sécurisé. Le système
+    // EMPÊCHE de démarrer sans accord (`validateOpcoAccord`) mais ne PRÉVENAIT
+    // pas qu'il allait l'empêcher : on le découvrait le matin de la formation,
+    // quand le bouton « démarrer » refuse. La faute était évitée ; la surprise,
+    // non. Et un dossier qui attend trois semaines n'apparaissait nulle part.
+    description:
+      "Demande de prise en charge déposée, sans accord du financeur — l'argent n'est PAS sécurisé, et le démarrage sera refusé.",
   },
   {
     id: "signature_attente",
@@ -129,6 +148,16 @@ export type DossierSource =
       factureImpayee: boolean;
       /** Un dossier de financement existe et n'est ni `paiement_recu` ni `clos`. */
       financementNonSolde: boolean;
+      /**
+       * Sous-lot 8D — le financement est mutualisé ET l'accord n'est PAS acquis.
+       *
+       * 🔴 Distinct de `financementNonSolde`, qui parle d'ARGENT PAS ENCORE
+       * REÇU sur une affaire déjà réalisée. Celui-ci parle d'un accord PAS
+       * ENCORE DONNÉ sur une affaire qui n'a pas commencé — et qui ne pourra
+       * pas commencer. Les confondre, c'est ranger « on attend le virement »
+       * et « on n'a pas le droit de démarrer » dans la même case.
+       */
+      accordFinanceurAttendu: boolean;
       updatedAt: Date;
     }
   | {
@@ -202,6 +231,12 @@ export function deriverStatutDossier(
     case "session":
       switch (dossier.statut) {
         case "planifiee":
+          // 🔴 Sous-lot 8D — l'attente d'accord PRIME sur l'attente de
+          // signature, et ce n'est pas un détail d'ordre. Faire signer une
+          // convention avant d'avoir l'accord du financeur, c'est engager le
+          // client sur une prestation qui ne pourra pas démarrer. Ce qui
+          // bloque en premier doit se voir en premier.
+          if (dossier.accordFinanceurAttendu) return "attente_financeur";
           return dossier.signatureEnAttente ? "signature_attente" : "a_preparer";
         case "en_cours":
           return "en_cours";
@@ -274,6 +309,30 @@ export function estDossierArchive(dossier: DossierSource, maintenant: Date): boo
 }
 
 /**
+ * Sous-lot 8D — l'accord du financeur est-il encore attendu ?
+ *
+ * 🔴 La règle est celle de `validateOpcoAccord` (`validation-service.ts`), le
+ * blocage du démarrage, **délibérément recopiée à l'identique** plutôt
+ * qu'importée : ce module est la couche de LECTURE du pipeline et n'importe
+ * aucun service de validation. Ce qui compte est qu'elle reste alignée — la vue
+ * doit annoncer ce que la garde refusera. Le test négatif de
+ * `dossiers-pipeline.spec.ts` couple les deux : si l'une bouge sans l'autre,
+ * il rougit.
+ *
+ * ⚠️ Volontairement limitée à `opco`. Le blocage du démarrage l'est aussi, et
+ * peindre en « attente financeur » un dossier CPF ou France Travail que rien
+ * n'empêche de démarrer serait une alerte fausse — le pire état d'un écran de
+ * pilotage. Élargir la colonne suppose d'élargir d'abord la garde.
+ */
+export function accordFinanceurAttendu(
+  financementType: string | null | undefined,
+  opcoStatut: string | null | undefined,
+): boolean {
+  if (financementType !== "opco") return false;
+  return opcoStatut !== "accord_recu" && opcoStatut !== "paiement_recu";
+}
+
+/**
  * Prochaine action HUMAINE d'une ligne, selon sa colonne. C'est ce qui
  * distingue un pipeline d'une liste : chaque ligne dit quoi faire ensuite.
  */
@@ -284,6 +343,8 @@ export function libellerProchaineAction(
   switch (colonne) {
     case "devis_attente":
       return "Relancer le client, ou marquer la réponse (accepté / refusé)";
+    case "attente_financeur":
+      return "Relancer le financeur, ou acter sa réponse — sans accord, le démarrage sera refusé";
     case "signature_attente":
       return "Faire signer la pièce en attente (ou poser le contreseing)";
     case "a_preparer":
@@ -479,6 +540,12 @@ async function lireSessionsVivantes() {
           dateDebut: true,
           dateFin: true,
           updatedAt: true,
+          // Sous-lot 8D — les deux champs dont dépend « attente financeur ».
+          // Ce sont EXACTEMENT ceux que lit `validateOpcoAccord`, le blocage du
+          // démarrage : la vue doit annoncer ce que la garde va refuser, sinon
+          // elle annonce autre chose.
+          financementType: true,
+          opcoStatut: true,
           client: { select: { raisonSociale: true } },
           documents: {
             where: { statutSignature: { in: ["en_attente", "partielle"] } },
@@ -588,10 +655,11 @@ async function lireAuditsVivants() {
   }
 }
 
-/** Pipeline vide — les 6 colonnes présentes, aucune ligne. */
+/** Pipeline vide — les 7 colonnes présentes, aucune ligne. */
 function pipelineVide(): DossiersPipeline {
   return {
     devis_attente: [],
+    attente_financeur: [],
     signature_attente: [],
     a_preparer: [],
     en_cours: [],
@@ -685,6 +753,7 @@ export async function lireDossiersPipeline(
       signatureEnAttente: s.documents.length > 0,
       factureImpayee: s.facturesFormation.length > 0,
       financementNonSolde: s.dossiersFinancement.length > 0,
+      accordFinanceurAttendu: accordFinanceurAttendu(s.financementType, s.opcoStatut),
       updatedAt: s.updatedAt,
     });
     if (!resolu) continue;
