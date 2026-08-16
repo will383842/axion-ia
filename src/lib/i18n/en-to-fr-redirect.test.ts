@@ -186,6 +186,42 @@ describe("mapEnToFr", () => {
     });
   });
 
+  // Audit GEO/AEO 2026-08-14 — GEO-060. `mapEnToFr` matchait par
+  // `startsWith` NU : `/en/book-a-call` (pathname EN canonique de `/appel`,
+  // cf. `routing.ts:277`) matchait l'entrée `/en/book` et produisait
+  // `/fr/appel` + `-a-call` = `/fr/appel-a-call` → 404 terminal, alimenté par
+  // la règle next.config `/en/book` → 308 → `/en/book-a-call`.
+  describe("frontière de segment — collision de préfixe (GEO-060)", () => {
+    it("/en/book-a-call → /fr/appel (et surtout PAS /fr/appel-a-call)", () => {
+      expect(mapEnToFr("/en/book-a-call")).toBe("/fr/appel");
+    });
+    it("/en/book → /fr/appel", () => {
+      expect(mapEnToFr("/en/book")).toBe("/fr/appel");
+    });
+    it("aucune cible ne concatène un suffixe au slug FR", () => {
+      for (const p of ["/en/book-a-call", "/en/book", "/en/booking/tok123/cancel"]) {
+        expect(mapEnToFr(p)).not.toBe("/fr/appel-a-call");
+        expect(mapEnToFr(p)).not.toContain("/fr/appeling");
+      }
+    });
+    // `/booking/[token]/cancel` + `/reschedule` (routing.ts:107-113) partagent
+    // le préfixe `book` : sans frontière de segment ils devenaient
+    // `/fr/appeling/<token>/cancel`.
+    it("/en/booking/<token>/cancel → /fr/booking/<token>/cancel (slug identique)", () => {
+      expect(mapEnToFr("/en/booking/abc123/cancel")).toBe("/fr/booking/abc123/cancel");
+    });
+    it("/en/booking/<token>/reschedule → /fr/booking/<token>/reschedule", () => {
+      expect(mapEnToFr("/en/booking/abc123/reschedule")).toBe("/fr/booking/abc123/reschedule");
+    });
+    // Non-régression de la borne : les enfants légitimes des entrées SANS
+    // slash final doivent continuer à matcher (`<préfixe>/…`).
+    it("les enfants légitimes matchent toujours (/en/help/x, /en/gallery/x)", () => {
+      expect(mapEnToFr("/en/help/x")).toBe("/fr/centre-aide/x");
+      expect(mapEnToFr("/en/gallery/x")).toBe("/fr/galerie/x");
+      expect(mapEnToFr("/en/one-to-one/by-city/lyon")).toBe("/fr/un-a-un/par-ville/lyon");
+    });
+  });
+
   describe("fallback — slugs identiques FR/EN (swap préfixe seulement)", () => {
     it("/en/blog → /fr/blog", () => {
       expect(mapEnToFr("/en/blog")).toBe("/fr/blog");

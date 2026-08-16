@@ -2086,7 +2086,10 @@ export function buildImageGraphJsonLd({
       encodingFormat: img.encodingFormat ?? "image/png",
       representativeOfPage: img.representativeOfPage === true,
       license,
-      acquireLicensePage: `${SITE_URL}/${locale}/cgu`,
+      // `/cgu` n'a jamais existé : les 141 ImageObject des pages marketing
+      // pointaient un 404 (audit GEO/AEO 2026-08-14, GEO-016). La page réelle
+      // est `/conditions-generales` (EN : `/terms`), résolue via `routing.pathnames`.
+      acquireLicensePage: `${SITE_URL}/${locale}${resolveLocalizedPath("/conditions-generales", locale)}`,
       creator: {
         "@type": "Organization",
         // VIS-17 (audit visibilité 2026-06-05) — aligne sur l'@id canonique de

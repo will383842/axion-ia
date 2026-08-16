@@ -3,7 +3,10 @@
 // noindex si draft/pourvue/expirée/non-tier1 ; offres suggérées ; CTA postuler.
 
 import type { Metadata } from "next";
-import Link from "next/link";
+// Link next-intl (et NON `next/link`) : sinon le retour hub, les offres
+// similaires et les liens verticales sortent locale-less → un 301 par lien
+// (audit GEO/AEO 2026-08-14, GEO-080).
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -514,7 +517,9 @@ export default async function JobOfferDetailPage({
                   {CAREER_VERTICALS.map((v) => (
                     <li key={v.href}>
                       <Link
-                        href={v.href}
+                        // `CAREER_VERTICALS.href` est un `string` : même
+                        // échappatoire de typage que `Cta.tsx`.
+                        href={v.href as never}
                         className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 underline underline-offset-2"
                       >
                         {isFr ? v.fr : v.en} →
@@ -678,7 +683,7 @@ export default async function JobOfferDetailPage({
                 return (
                   <li key={s.id}>
                     <Link
-                      href={`/carrieres/${s.slug}`}
+                      href={{ pathname: "/carrieres/[slug]", params: { slug: s.slug } }}
                       className="border-border hover:border-terracotta shadow-subtle hover:shadow-card flex items-center gap-4 rounded-xl border bg-white p-3 transition"
                     >
                       <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">

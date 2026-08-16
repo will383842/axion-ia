@@ -518,6 +518,17 @@ const nextConfig: NextConfig = {
         destination: "/:locale/sites-web-augmentes",
         permanent: true,
       },
+      // Audit GEO/AEO 2026-08-14 (GEO-012) — `/implementations` (pluriel) est codé
+      // en dur dans les prompts générateurs et dans les citations KB, mais la seule
+      // route réelle est `/implementation` (singulier) : ~la moitié du corpus blog
+      // envoyait ses liens in-body sur un 404. Filet de redirect top-level.
+      // ⚠️ Ne matche QUE `implementations` : les 2 157 pages villes `/implantations/*`
+      // (« implAntations », sans `e`) ne sont pas capturées — segment littéral distinct.
+      {
+        source: "/:locale(fr|en)/implementations",
+        destination: "/:locale/implementation",
+        permanent: true,
+      },
       // EN miroir (path `/locations` au lieu de `/implantations`)
       {
         source: "/:locale(fr|en)/locations/:region/:ville/audits",
