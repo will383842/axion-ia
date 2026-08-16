@@ -92,6 +92,13 @@ const CODES_ATTENDUS: string[] = [
   "job_ia_echoue",
   "suppression_rgpd_j30",
   "revue_trimestrielle_a_faire",
+  // Chaîne d'envoi d'e-mails (audit du 2026-08-16). Comme
+  // `besoin_adaptation_declare`, ces deux codes naissent d'un cron DISTINCT
+  // (`formation-crons.email-sante`) et non du balayage d'`evaluerAlertes()` —
+  // d'où leur `resolutionAuto: false`, sans quoi le premier
+  // `synchroniserAlertes` venu les résoudrait avant que quiconque les ait lus.
+  "emails_en_echec",
+  "emails_bloques_en_file",
 ];
 
 const NIVEAUX_VALIDES: AlerteNiveau[] = ["info", "important", "critique"];

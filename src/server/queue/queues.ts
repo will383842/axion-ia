@@ -15,7 +15,6 @@ import type {
   EmailJobName,
   OptionExpirationJobData,
   OptionReminderJobData,
-  NewsletterCampaignJobData,
   SearchIndexerJobData,
   RetentionPurgeJobData,
   BookingCronJobData,
@@ -69,9 +68,21 @@ export const optionReminderQueue: Queue<OptionReminderJobData> | null = connecti
     })
   : null;
 
-export const newsletterQueue: Queue<NewsletterCampaignJobData> | null = connection
-  ? new Queue<NewsletterCampaignJobData>("newsletter", { connection, defaultJobOptions })
-  : null;
+// `newsletterQueue` retirée le 2026-08-16 (audit de la chaîne d'envoi).
+//
+// Elle était déclarée, connectée à Redis, et n'avait NI producteur NI worker :
+// aucun appelant dans tout le dépôt, aucun consommateur. Une file ouverte que
+// personne ne remplit et que personne ne vide n'est pas une réserve pour plus
+// tard — c'est une clé Redis qui laisse croire qu'un envoi de campagne existe.
+// L'écrire le jour venu coûtera trois lignes ; la garder coûtait une ambiguïté
+// permanente sur ce que le système sait faire.
+//
+// ⚠️ Conséquence à connaître avant la bascule ZeptoMail : ce dépôt n'envoie
+// AUCUNE campagne de masse, et c'est ce qui rend la bascule légitime —
+// ZeptoMail est un service transactionnel, y router du marketing en nombre est
+// contraire à ses conditions et se solde par une suspension. Si une campagne
+// doit exister un jour, elle passe par un autre canal, pas par ici.
+// Le type `NewsletterCampaignJobData` reste dans `types.ts` pour cet usage.
 
 export const searchIndexerQueue: Queue<SearchIndexerJobData> | null = connection
   ? new Queue<SearchIndexerJobData>("search-indexer", { connection, defaultJobOptions })

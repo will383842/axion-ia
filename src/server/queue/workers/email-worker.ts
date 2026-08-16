@@ -23,12 +23,19 @@ import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
 /**
+ * Plafond cumulé des pièces jointes, en octets bruts (avant encodage base64).
+ * Exporté pour que la garde soit testable — une borne qu'aucun test ne lit se
+ * fait relever d'un facteur dix le jour où un envoi coince.
+ */
+export const TAILLE_MAX_PJ_OCTETS = 10 * 1_048_576;
+
+/**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
  * FAIL-HARD (revue M8) : les templates affirment « le document est joint » —
  * envoyer sans la PJ serait un mensonge au client. PJ irrécupérable → throw
  * → retry BullMQ (backoff), puis job `failed` visible (Sentry + logs).
  */
-async function resolveAttachments(
+export async function resolveAttachments(
   attachments: EmailJobData["attachments"],
 ): Promise<SendEmailParams["attachments"]> {
   if (!attachments || attachments.length === 0) return undefined;
@@ -38,6 +45,7 @@ async function resolveAttachments(
     );
   }
   const resolved: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+  let octetsTotal = 0;
   for (const att of attachments) {
     const buffer = await getObjectBufferR2(att.r2Key).catch(() => null);
     if (buffer === null) {
@@ -45,11 +53,35 @@ async function resolveAttachments(
         `[email-worker] PJ introuvable sur R2 (${att.r2Key}) — envoi refusé, retry BullMQ`,
       );
     }
+    octetsTotal += buffer.byteLength;
     resolved.push({
       filename: att.filename,
       content: buffer,
       contentType: att.contentType ?? "application/pdf",
     });
+  }
+
+  // 🔴 Audit du 2026-08-16 — AUCUNE garde de taille n'existait.
+  //
+  // On tirait de R2 des tampons de taille arbitraire et on les confiait au
+  // relais. Le refus arrivait donc de Zoho, après transfert, sous la forme d'un
+  // rejet SMTP opaque — puis cinq fois de suite, le temps que BullMQ épuise ses
+  // tentatives à repousser les mêmes mégaoctets.
+  //
+  // Le seuil porte sur les octets BRUTS alors que le plafond des relais porte
+  // sur le message encodé : le base64 gonfle d'environ un tiers, et s'ajoutent
+  // le corps HTML et les en-têtes. 10 Mo bruts ≈ 13,7 Mo transmis, ce qui reste
+  // sous les plafonds usuels (~15 Mo ZeptoMail, ~20 Mo Zoho Mail) avec de la
+  // marge. Repère : le catalogue imprimable, la plus grosse PJ du dépôt, pèse
+  // 7,8 Mo — rien d'existant ne bute sur ce seuil aujourd'hui.
+  if (octetsTotal > TAILLE_MAX_PJ_OCTETS) {
+    const mo = (n: number): string => (n / 1_048_576).toFixed(1);
+    throw new Error(
+      `[email-worker] pièces jointes trop lourdes : ${mo(octetsTotal)} Mo bruts pour ` +
+        `${resolved.length} fichier(s), plafond ${mo(TAILLE_MAX_PJ_OCTETS)} Mo. Le relais ` +
+        `rejetterait le message après transfert — on refuse ici, avec un motif lisible. ` +
+        `Alléger le document ou le remplacer par un lien de téléchargement.`,
+    );
   }
   return resolved;
 }

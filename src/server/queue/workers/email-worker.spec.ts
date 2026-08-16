@@ -41,10 +41,17 @@ vi.mock("@/lib/email/client", () => ({
 vi.mock("@/lib/email/templates", () => ({ renderEmailTemplate: vi.fn() }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: vi.fn(), isDecryptedEmailUsable: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
-vi.mock("@/lib/r2-storage", () => ({ isR2Configured: vi.fn(), getObjectBufferR2: vi.fn() }));
+const { isR2ConfiguredMock, getObjectBufferR2Mock } = vi.hoisted(() => ({
+  isR2ConfiguredMock: vi.fn(),
+  getObjectBufferR2Mock: vi.fn(),
+}));
+vi.mock("@/lib/r2-storage", () => ({
+  isR2Configured: (...a: unknown[]) => isR2ConfiguredMock(...a),
+  getObjectBufferR2: (...a: unknown[]) => getObjectBufferR2Mock(...a),
+}));
 vi.mock("@/server/email/email-log", () => ({ cloturerJournal: vi.fn() }));
 
-import { startEmailWorker } from "./email-worker";
+import { startEmailWorker, resolveAttachments, TAILLE_MAX_PJ_OCTETS } from "./email-worker";
 
 /** Les options du worker sont le 3e argument du constructeur BullMQ. */
 function optionsWorker(): Record<string, unknown> {
@@ -95,5 +102,47 @@ describe("worker d'envoi — ce que le bridage ne doit PAS casser", () => {
   it("consomme bien la file `emails`", () => {
     startEmailWorker();
     expect(workerConstructeur.mock.calls[0]?.[0]).toBe("emails");
+  });
+});
+
+describe("pièces jointes — le plafond de taille (audit 2026-08-16)", () => {
+  const pj = (cle: string) => [{ filename: "doc.pdf", r2Key: cle }];
+
+  beforeEach(() => {
+    isR2ConfiguredMock.mockReturnValue(true);
+  });
+
+  it("laisse passer une pièce jointe sous le plafond", async () => {
+    getObjectBufferR2Mock.mockResolvedValue(Buffer.alloc(1_048_576));
+    const r = await resolveAttachments(pj("k1"));
+    expect(r).toHaveLength(1);
+  });
+
+  // 🔴 Sans cette garde, le refus venait du relais APRÈS transfert, sous forme
+  // d'un rejet SMTP opaque — puis cinq fois de suite, le temps que BullMQ
+  // épuise ses tentatives à repousser les mêmes mégaoctets.
+  it("refuse au-delà du plafond, avec un motif lisible", async () => {
+    getObjectBufferR2Mock.mockResolvedValue(Buffer.alloc(TAILLE_MAX_PJ_OCTETS + 1));
+    await expect(resolveAttachments(pj("k1"))).rejects.toThrow(/trop lourdes/);
+  });
+
+  // Le plafond porte sur le CUMUL, pas sur chaque fichier : trois pièces
+  // acceptables séparément forment un message que le relais rejette.
+  it("plafonne le CUMUL et non chaque fichier pris isolément", async () => {
+    const moitie = Math.ceil(TAILLE_MAX_PJ_OCTETS / 2) + 1;
+    getObjectBufferR2Mock.mockResolvedValue(Buffer.alloc(moitie));
+    await expect(
+      resolveAttachments([
+        { filename: "a.pdf", r2Key: "k1" },
+        { filename: "b.pdf", r2Key: "k2" },
+      ]),
+    ).rejects.toThrow(/trop lourdes/);
+  });
+
+  // La marge d'encodage est le point : le plafond porte sur les octets BRUTS,
+  // le relais sur le message encodé, et le base64 gonfle d'environ un tiers.
+  it("garde une marge sous le plafond du relais, base64 compris", () => {
+    const transmis = TAILLE_MAX_PJ_OCTETS * (4 / 3);
+    expect(transmis).toBeLessThan(15 * 1_048_576);
   });
 });
