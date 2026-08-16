@@ -161,6 +161,23 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     titre: "Session non clôturée faute d'émargement",
     resolutionAuto: true,
   },
+  // 🔴 LE JOUR MÊME, pas trois jours après.
+  //
+  // Constaté sur AXI-SESS-2026-005 : la stagiaire n'a jamais pu émarger, et
+  // aucune alerte ne pouvait le dire TANT QU'IL ÉTAIT ENCORE TEMPS.
+  //   · R03 `emargement_manquant` exige `statut = "realisee"` — or la clôture
+  //     automatique REFUSE de passer en `realisee` une session dont personne
+  //     n'a de trace de présence. La session reste `en_cours`, et R03 ne la
+  //     voit jamais.
+  //   · R03ter `session_bloquee_en_cours` se déclenche à J+3 — soit un jour
+  //     APRÈS l'expiration des jetons (fenêtre de 48 h après la fin).
+  // Les deux CONSTATENT ; aucune ne GARDE. Celle-ci se lève pendant que le
+  // rattrapage est encore possible.
+  session_sans_dispositif_emargement: {
+    niveau: "critique",
+    titre: "Session en cours sans dispositif de signature",
+    resolutionAuto: true,
+  },
 
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {

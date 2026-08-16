@@ -104,6 +104,11 @@ export type EmailJobName =
   // Relance de questionnaire sans réponse (J+3 / J+10) + enquête ENTREPRISE.
   | "qualiopi-questionnaire-relance"
   | "qualiopi-enquete-entreprise"
+  // Lien PERSONNEL de signature de la feuille de présence. 🔴 Il n'existait
+  // pas : `emettreLiensSessionAction` fabriquait les jetons et les affichait à
+  // l'écran, sans jamais rien envoyer. La chaîne probante des indicateurs 9 et
+  // 11 reposait sur un envoi que personne n'avait écrit.
+  | "qualiopi-emargement-lien"
   | "qualiopi-attestation-disponible"
   | "qualiopi-relance-impayee"
   | "qualiopi-portail-acces"
