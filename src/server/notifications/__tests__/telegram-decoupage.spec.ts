@@ -12,19 +12,17 @@
  * **rien**. `notify()` rend bien `{ ok, channels }`, mais aucun appelant de
  * production ne lit ce retour : seuls les tests le consultent.
  *
- * ## Pourquoi on tronque, et non plus on découpe
+ * ## Deux corrections successives, guidées par l'usage réel
  *
- * La première version envoyait le message en plusieurs morceaux. Essayée en
- * conditions réelles, elle a été rejetée par Will : « inutile de recevoir un
- * message si long dans Telegram, je ne vais pas le lire ».
+ * 1. **Découper** le message en morceaux : il arrivait enfin — mais en trois
+ *    notifications. Rejeté après essai en conditions réelles : « inutile de
+ *    recevoir un message si long dans Telegram, je ne vais pas le lire ».
+ * 2. **Tronquer** à un écran, en annonçant le nombre de lignes écartées.
  *
- * 🔑 Une notification n'est pas un rapport : elle sert à dire **qu'il se passe
- * quelque chose** et **où regarder**. Livrer 6 000 caractères en trois messages
- * ne les rend pas lisibles — ça produit trois notifications ignorées au lieu
- * d'une perte, et ça fait désapprendre à lire les alertes.
- *
- * On garde donc le début du message et on annonce combien de lignes ont été
- * écartées.
+ * 🔑 La contrainte qui compte n'est PAS le plafond de l'API, c'est la LECTURE.
+ * Une notification dit **qu'il se passe quelque chose** et **où regarder** ;
+ * elle ne transporte pas le rapport. Une alerte non lue ne vaut pas mieux qu'une
+ * alerte perdue.
  */
 
 import { describe, expect, it } from "vitest";
@@ -34,6 +32,10 @@ import { PLAFOND_TELEGRAM, preparerPourTelegram } from "@/server/notifications/c
 /** Caractères que MarkdownV2 réserve : un seul non échappé fait refuser le message. */
 const SPECIAUX_MARKDOWN_V2 = /[_*[\]()~`>#+\-=|{}.!]/;
 
+/** Ce qui tient sur un écran de téléphone sans faire défiler. */
+const LONGUEUR_LISIBLE = 900;
+const LIGNES_LISIBLES = 11;
+
 function messageDe(nbLignes: number, prefixe = "Item"): string {
   return Array.from({ length: nbLignes }, (_, i) => `${prefixe} ${i}`).join("\n");
 }
@@ -42,6 +44,13 @@ describe("préparation Telegram — le message arrive (GEO-137)", () => {
   it("un message court n'est pas touché", () => {
     const court = "Alerte : 3 sessions a convoquer";
     expect(preparerPourTelegram(court)).toBe(court);
+  });
+
+  it("un message normal multi-lignes n'est pas mutilé", () => {
+    // La borne ne doit pas abîmer les alertes ordinaires, qui sont l'immense
+    // majorité : un événement unique tient en quelques lignes.
+    const normal = ["ALERTE", "", "Nouvelle candidature recue", "Voir la console"].join("\n");
+    expect(preparerPourTelegram(normal)).toBe(normal);
   });
 
   it("🔴 un message long passe sous le plafond de l'API", () => {
@@ -77,12 +86,22 @@ describe("préparation Telegram — le message arrive (GEO-137)", () => {
   });
 });
 
-describe("préparation Telegram — le message reste lisible", () => {
+describe("préparation Telegram — le message se lit d'un coup d'œil", () => {
   const LONG = messageDe(600);
 
-  it("🔴 un seul message est produit, pas une rafale", () => {
-    // Le cœur de la décision : une notification dit qu'il se passe quelque
-    // chose, elle ne transporte pas le rapport.
+  it("🔴 le message tient sur un ÉCRAN, pas seulement sous le plafond de l'API", () => {
+    // Le plafond technique est à 4096 ; ce n'est pas la contrainte qui compte.
+    // Une alerte se lit sur un téléphone, souvent en marchant.
+    expect(preparerPourTelegram(LONG).length).toBeLessThanOrEqual(LONGUEUR_LISIBLE);
+  });
+
+  it("🔴 le nombre de LIGNES est borné, pas seulement les caractères", () => {
+    // Un humain scanne des lignes, pas des caractères : quinze lignes courtes
+    // tiennent sous la limite de taille et forment quand même un mur illisible.
+    expect(preparerPourTelegram(LONG).split("\n").length).toBeLessThanOrEqual(LIGNES_LISIBLES);
+  });
+
+  it("un seul message est produit, jamais une rafale", () => {
     expect(typeof preparerPourTelegram(LONG)).toBe("string");
   });
 

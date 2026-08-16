@@ -16,11 +16,27 @@ const TG_API = "https://api.telegram.org";
 const LIMITE_TELEGRAM = 4096;
 
 /**
- * Longueur maximale conservee. En dessous du plafond dur pour absorber les
- * quelques caracteres qu'un echappement MarkdownV2 peut encore ajouter en aval,
- * et la mention de troncature.
+ * Longueur maximale conservee.
+ *
+ * 🔑 Ce n'est PAS une contrainte technique — le plafond de l'API est a 4096.
+ * C'est une contrainte de LECTURE, decidee par Will apres essai en conditions
+ * reelles : « je veux le message encore plus court ». Une alerte se lit sur un
+ * telephone, souvent en marchant ; au-dela d'un ecran, elle n'est plus lue, et
+ * une alerte non lue ne vaut pas mieux qu'une alerte perdue.
+ *
+ * 800 caracteres correspondent a ce qui tient sans faire defiler.
  */
-const TAILLE_UTILE = 3800;
+const TAILLE_UTILE = 800;
+
+/**
+ * Nombre maximal de lignes conservees.
+ *
+ * Le compte de caracteres ne suffit pas : un humain SCANNE DES LIGNES, pas des
+ * caracteres. Quinze lignes courtes tiennent sous 800 caracteres tout en
+ * produisant un mur illisible. Les deux bornes s'appliquent, la premiere
+ * atteinte l'emporte.
+ */
+const MAX_LIGNES = 10;
 
 /**
  * Prepare un message pour l'envoi : le tronque proprement s'il depasse le
@@ -54,13 +70,18 @@ const TAILLE_UTILE = 3800;
  * autre. Les gabarits produisent une ligne par item : la frontiere de ligne est
  * sure.
  */
-export function preparerPourTelegram(texte: string, taille = TAILLE_UTILE): string {
-  if (texte.length <= taille) return texte;
-
+export function preparerPourTelegram(
+  texte: string,
+  taille = TAILLE_UTILE,
+  maxLignes = MAX_LIGNES,
+): string {
   const lignes = texte.split("\n");
+  if (texte.length <= taille && lignes.length <= maxLignes) return texte;
+
   const gardees: string[] = [];
   let longueur = 0;
   for (const ligne of lignes) {
+    if (gardees.length >= maxLignes) break;
     const cout = gardees.length === 0 ? ligne.length : ligne.length + 1;
     if (longueur + cout > taille) break;
     gardees.push(ligne);
