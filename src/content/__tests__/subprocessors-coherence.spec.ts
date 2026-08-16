@@ -62,14 +62,19 @@ const CSP_HOST_OWNER: Record<string, string> = {
  * Un motif vague ici est une faute : c'est la porte de sortie du garde-fou.
  */
 const CSP_HOST_JUSTIFIED: Record<string, string> = {
-  // `next/font/google` télécharge et AUTO-HÉBERGE les fontes au build
-  // (src/app/[locale]/layout.tsx : Manrope, Inconsolata, Fraunces). Aucune
-  // requête runtime du navigateur vers Google — vérifié le 2026-07-26 :
+  // Les fontes sont servies depuis le dépôt (`next/font/local`, fichiers
+  // `src/fonts/*.woff2` — cf. src/app/[locale]/layout.tsx : Manrope,
+  // Inconsolata, Fraunces). Aucune requête du navigateur vers Google —
+  // vérifié le 2026-07-26 :
   //   curl -s https://axion-ia.com/fr/appel | grep -o 'fonts\.\(googleapis\|gstatic\)\.com' → vide
-  // Ces deux directives CSP sont défensives/vestigiales. Si elles devenaient
-  // effectives, Google deviendrait un sous-traitant à déclarer.
+  // Depuis le 2026-08-16 le BUILD non plus ne joint Google : ces deux
+  // directives CSP n'ont plus aucun consommateur, ni au build ni au runtime.
+  // Elles sont vestigiales et pourraient être retirées de `src/lib/csp.ts`
+  // (non fait ici : hors sujet de la bascule, et une CSP se resserre dans une
+  // PR qui ne fait que ça). Si elles redevenaient effectives, Google
+  // redeviendrait un sous-traitant à déclarer.
   "fonts.googleapis.com":
-    "next/font/google auto-héberge au build — aucune requête runtime (vérifié en prod)",
+    "fontes auto-hébergées depuis le dépôt (next/font/local) — aucune requête runtime NI build",
   "fonts.gstatic.com": "idem fonts.googleapis.com",
 };
 
