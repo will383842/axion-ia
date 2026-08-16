@@ -48,7 +48,7 @@ import {
   isQualiopiCertificationObtenue,
 } from "@/server/qualiopi/config/flag";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -102,7 +102,7 @@ export default async function FinancementPage({ params }: Props) {
   const inlinePhotos = pageImages.filter((i) => i.slot === "inline");
   const gridImages = pageImages.filter((i) => i.slot === "grid");
   const portraitImage = pageImages.find((i) => i.slot === "portrait");
-  const villes = getVillesIndexableNow().slice(0, 60);
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
 
   // Attribution photographe Unsplash (CGU §6).
   const UNSPLASH_CREDITS: Record<string, { name: string; url: string }> = {

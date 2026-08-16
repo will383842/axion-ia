@@ -56,7 +56,7 @@ import {
 } from "../quality";
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { GeneratorBaseInput, GeneratorOutput } from "./types";
-import { getVille } from "@/content/villes";
+import { getVilleCore } from "@/content/villes/core";
 import { getVilleEconomicData } from "@/content/villes/economic-data";
 import {
   buildLocalAnchorBlock,
@@ -120,7 +120,7 @@ export async function runV7Phase8Pipeline(
   // (nommer la ville + interdiction de génériques/invention). Fail-soft total.
   let localAnchorBlock = "";
   if (input.anchorVilleSlug) {
-    const villeMeta = getVille(input.anchorVilleSlug);
+    const villeMeta = getVilleCore(input.anchorVilleSlug);
     if (villeMeta) {
       const kbFacts = villeEconomicToAnchorFacts(getVilleEconomicData(input.anchorVilleSlug), {
         ville: villeMeta.nameFr,

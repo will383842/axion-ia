@@ -81,16 +81,16 @@ vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn()
 
 // ─── Dataset villes réduit (perf + pouvoir de détection) ─────────────────────
 //
-// `expandVilleAnchors` fait un import dynamique de `@/content/villes`. Ce barrel
-// tire 43 modules `copy/` (3,3 Mo) + 43 modules `economic-data/` (868 Ko) et
-// applique `resolvePriceTokensDeep` aux 2 157 communes au chargement — dont
-// AUCUN octet n'est utile ici : `getVille()` et `getNearbyVilles()` ne lisent
-// que slug / region / departement / geo.
+// `expandVilleAnchors` importe `@/content/villes/core` — le point d'entrée
+// structurel introduit par le découplage du 2026-08-16 (~578 ms, contre ~41 s
+// pour le barrel `@/content/villes` et ses 2 118 imports de contenu éditorial).
 //
-// Mesuré le 2026-08-16 : l'import seul coûtait 42 s à 71 s selon la charge de la
-// machine, contre un `testTimeout` à 60 s — le test tombait dès que deux suites
-// tournaient en parallèle (constaté sur un `pre-push`). Le coût n'était pas
-// borné, donc aucune valeur de timeout ne pouvait le rendre fiable.
+// Le mock ci-dessous n'est donc PLUS là pour la vitesse : il est là pour le
+// POUVOIR DE DÉTECTION. Sur les 2 157 communes réelles, « rayon 50 km autour de
+// Paris » renvoie des dizaines de résultats et on ne peut affirmer qu'un vague
+// `toContain` — c'est précisément ce que faisait l'ancien test, qui passait même
+// quand le filtre par département était cassé. Avec 8 communes choisies, chaque
+// mode a un contre-exemple à écarter et l'assertion devient une égalité exacte.
 //
 // On substitue 8 communes RÉELLES (coordonnées INSEE copiées de `data/`).
 // `@/lib/geo` n'est PAS mocké : haversine, le tri par distance et le filtre
@@ -159,14 +159,21 @@ const { VILLES_FIXTURE, VILLES_FIXTURE_BY_SLUG } = vi.hoisted(() => {
   };
 });
 
-vi.mock("@/content/villes", () => ({
-  VILLES: VILLES_FIXTURE,
-  getVille: (slug: string) => VILLES_FIXTURE_BY_SLUG.get(slug),
-  getVilleByInsee: () => undefined,
+vi.mock("@/content/villes/core", () => ({
+  VILLES_CORE: VILLES_FIXTURE,
+  getVilleCore: (slug: string) => VILLES_FIXTURE_BY_SLUG.get(slug),
+  getVilleCoreByInsee: () => undefined,
   getAllVilleSlugs: () => VILLES_FIXTURE.map((v) => v.slug),
-  getVillesByRegion: (region: string) => VILLES_FIXTURE.filter((v) => v.region === region),
-  getVillesByDepartement: (code: string) => VILLES_FIXTURE.filter((v) => v.departement === code),
-  getVillesIndexableNow: () => VILLES_FIXTURE,
+  getVillesCoreByRegion: (region: string) => VILLES_FIXTURE.filter((v) => v.region === region),
+  getVillesCoreByDepartement: (code: string) =>
+    VILLES_FIXTURE.filter((v) => v.departement === code),
+  getVillesCoreIndexableNow: () => VILLES_FIXTURE,
+  getIndexableVillesCore: () => VILLES_FIXTURE,
+  hasVilleCopy: () => true,
+  isPremiumVilleCore: () => true,
+  isVilleIndexable: () => true,
+  cohortSize: () => VILLES_FIXTURE.length,
+  getRegionByDepartement: () => undefined,
 }));
 
 vi.mock("bullmq", () => ({
@@ -281,14 +288,11 @@ describe("multi-axes — helpers purs", () => {
   // transformation vitest de geo + case-studies + transversal. On l'isole ici :
   // les tests qui suivent mesurent la logique, pas le chargement du module, et
   // si ce coût dérive un jour c'est CE hook qui échoue — pas un test au hasard.
-  // `expandVilleAnchors` fait `Promise.all([import("@/lib/geo"), import("@/content/villes")])`.
-  // Lancées EN CONCURRENCE à froid, vitest transforme quand même le vrai barrel
-  // villes (~20 s) avant de lui substituer le mock — le mock s'applique bien
-  // (VILLES.length === 8) mais le coût de transformation est payé. Charger geo
-  // seul d'abord sérialise la résolution et supprime ce coût.
-  //
-  // Mesuré à froid (cache vite vidé) : sans ce préchauffage 34 s et hook en
-  // timeout, 3 fois sur 3 ; avec, 4,6 s dont 345 ms d'import.
+  // `expandVilleAnchors` fait `Promise.all([import("@/lib/geo"), import(".../core")])`.
+  // Lancées EN CONCURRENCE à froid, vitest transformait le vrai module avant de
+  // lui substituer le mock ; charger geo seul d'abord sérialise la résolution.
+  // Coût désormais marginal, mais on garde le préchauffage : il isole l'import
+  // du module sous test, donc une dérive future échoue ICI et pas au hasard.
   beforeAll(async () => {
     await import("@/lib/geo");
   }, 30000);

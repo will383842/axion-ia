@@ -21,7 +21,7 @@ import {
   type Verticale,
 } from "./kb/sector-pain-matrix";
 import { buildLocalAnchorBlock, villeEconomicToAnchorFacts } from "./local/local-anchor";
-import { getVille, getRegionByDepartement } from "@/content/villes";
+import { getVilleCore, getRegionByDepartement } from "@/content/villes/core";
 import { getVilleEconomicData } from "@/content/villes/economic-data";
 
 export interface Ph3AugmentationInput {
@@ -53,7 +53,7 @@ export function buildPh3PromptAugmentation(input: Ph3AugmentationInput): string 
   // 2. Ancrage local — dès qu'une ville est ancrée (tous profils). Mode dégradé
   //    (kbFacts null) géré par buildLocalAnchorBlock : aucune invention.
   if (input.anchorVilleSlug) {
-    const v = getVille(input.anchorVilleSlug);
+    const v = getVilleCore(input.anchorVilleSlug);
     if (v) {
       const region = getRegionByDepartement(v.departement)?.nameFr ?? v.region;
       const departement = v.departementLabel ?? v.departement;

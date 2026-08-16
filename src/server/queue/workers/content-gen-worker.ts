@@ -90,7 +90,7 @@ import {
   type Secteur,
   type Verticale,
 } from "@/server/content-gen/kb/sector-pain-matrix";
-import { getVille, getRegionByDepartement } from "@/content/villes";
+import { getVilleCore, getRegionByDepartement } from "@/content/villes/core";
 
 interface PoliciesConfig {
   readonly plagiarismJaccardInternal?: number;
@@ -409,7 +409,7 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       // keyword GÉO ("<vertical> IA <ville/région>") via keyword-templates au
       // lieu d'un keyword transversal. Avant, `anchorVilleSlug` n'était JAMAIS
       // passé à selectKeyword → le mode géo (pourtant implémenté) restait inerte.
-      const anchorVille = dbJob.anchorVilleSlug ? getVille(dbJob.anchorVilleSlug) : undefined;
+      const anchorVille = dbJob.anchorVilleSlug ? getVilleCore(dbJob.anchorVilleSlug) : undefined;
       const cityRef = anchorVille
         ? {
             name: anchorVille.nameFr,

@@ -61,7 +61,7 @@ import {
   LEGAL_MENTIONS,
 } from "@/server/qualiopi/legal/legal-mentions";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
@@ -115,7 +115,7 @@ export default async function CertificationQualiopiPage({ params }: Props) {
   const agrementPhotos = pageImages.filter((i) => i.slot === "inline");
   const gridImages = pageImages.filter((i) => i.slot === "grid");
   const portraitImage = pageImages.find((i) => i.slot === "portrait");
-  const villes = getVillesIndexableNow().slice(0, 60);
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
 
   // Indicateur RNQ 2 : diffusion publique des indicateurs de résultats.
   //   Stub-aware (build) → « en cours de constitution » ; repeuplé à l'ISR.
