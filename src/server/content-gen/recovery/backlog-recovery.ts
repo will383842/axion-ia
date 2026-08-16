@@ -183,7 +183,20 @@ export async function drainFailedJobs(
   // écartée par la classification (échecs de qualité mêlés aux échecs d'infra).
   const candidates = await prisma.contentGenJob.findMany({
     where: { status: "failed", retryCount: { lt: settings.maxRetries } },
-    orderBy: { updatedAt: "asc" },
+    // Fix 2026-08-15 — reprise dans l'ORDRE DU PLAN, pas dans l'ordre des échecs.
+    //
+    // `updatedAt` datait la dernière tentative : les jobs déjà rejoués une fois
+    // (la relance-test du 18/07) remontaient donc en tête, et le plan était
+    // repris en désordre. `createdAt` est l'ordre dans lequel l'orchestrateur a
+    // enfilé les slots — vérifié en base : il suit exactement le `slotIndex`
+    // (2, 77, 102, 241, 242…).
+    //
+    // Ce n'est pas cosmétique. Chaque job en échec porte sa place dans le plan
+    // et ce qui en découle : `slotIndex`, type de contenu, ville d'ancrage et
+    // intention de recherche, tous échantillonnés déterministement à partir du
+    // slot. Reprendre dans cet ordre, c'est rejouer la campagne telle qu'elle
+    // avait été conçue, en repartant là où elle s'était interrompue.
+    orderBy: { createdAt: "asc" },
     take: budget * 6,
     select: {
       id: true,
