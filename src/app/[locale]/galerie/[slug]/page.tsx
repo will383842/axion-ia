@@ -397,11 +397,25 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
           className="flex flex-col gap-6"
           aria-label={isFr ? "Métadonnées de l'image" : "Image metadata"}
         >
-          {/* Boutons téléchargement */}
+          {/* Boutons téléchargement.
+
+              🔴 GEO-035 (audit GEO/AEO 2026-08-14) — `rel="nofollow"` OBLIGATOIRE.
+              Ces deux ancres sont crawlables : sur ~288 pages galerie, elles
+              exposent 576 URLs dont CHAQUE visite déclenche une transformation
+              Sharp et deux écritures en base. Un robot qui suit les liens fait
+              donc travailler l'origine pour rien, et faisait au passage remonter
+              le `lastmod` du sitemap images (GEO-036, corrigé dans la route).
+
+              `nofollow` dit aux moteurs de ne pas suivre ; la règle `Disallow`
+              posée sur le segment `telecharger` dans `robots.ts` le double côté crawl, et le
+              `X-Robots-Tag: noindex, nofollow` de la route ferme le troisième
+              chemin. Les trois sont volontaires : un seul suffirait à un robot
+              respectueux, les trois couvrent les autres. */}
           <div className="flex flex-col gap-2.5">
             <a
               href={dlJpeg}
               download
+              rel="nofollow"
               className="bg-terracotta focus-visible:ring-terracotta flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
               <DownloadIcon className="h-4 w-4" />
@@ -410,6 +424,7 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
             <a
               href={dlWebp}
               download
+              rel="nofollow"
               className="hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             >
               <DownloadIcon className="h-4 w-4" />
