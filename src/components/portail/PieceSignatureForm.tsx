@@ -71,8 +71,29 @@ export interface PieceSignatureFormProps {
   pieceLibelle: string;
   /** Lien vers le PDF exact qui sera scellé. */
   pdfUrl: string | null;
-  /** Mention affichée AU SIGNATAIRE, et dont la version est scellée. */
-  mention: string;
+  /**
+   * Mentions affichées AU SIGNATAIRE, dans l'ordre rendu par
+   * `mentionCompleteDocument` : attestation, valeur juridique, plafond du canal,
+   * consentement, RGPD.
+   *
+   * 🔴 Lot 3quater — c'était UNE chaîne, produite par un `mentions.join(" ")`
+   * chez l'appelant. Une vingtaine de lignes de droit s'écrasaient donc en un
+   * seul pavé compact, glissé dans l'étiquette de la case à cocher, juste
+   * au-dessus du bouton de signature. Un mur de texte avant un engagement se lit
+   * comme un obstacle, pas comme une information — et la phrase qui compte
+   * vraiment, celle qu'on accepte en cochant, y devenait la plus difficile à
+   * trouver.
+   *
+   * La structure existait déjà dans la donnée : `mentionCompleteDocument` rend
+   * un TABLEAU. C'est l'appelant qui l'aplatissait.
+   *
+   * ⚠️ AUCUN texte n'est modifié, ajouté ni retiré — seule la mise en page
+   * change. C'est ce qui rend l'opération sûre : `mentionVersion` et
+   * `consentementVersion` identifient le CONTENU des textes et entrent dans le
+   * tuple haché ; le contenu ne bouge pas, donc aucune version à incrémenter et
+   * aucune empreinte déjà scellée ne devient invérifiable.
+   */
+  mentions: readonly string[];
   signerAction: (input: {
     token: string;
     methode: "trace" | "confirmation_accessible";
@@ -96,9 +117,15 @@ export function PieceSignatureForm({
   mentionTva,
   pieceLibelle,
   pdfUrl,
-  mention,
+  mentions,
   signerAction,
 }: PieceSignatureFormProps): React.ReactElement {
+  // La PREMIÈRE mention est l'attestation : c'est ce que la partie déclare
+  // accepter, et donc ce qu'on coche. Les suivantes l'encadrent (valeur
+  // juridique, consentement, RGPD) — elles s'appliquent, mais ce n'est pas
+  // elles qu'on « accepte ». Les mettre toutes dans l'étiquette rendait
+  // l'engagement lui-même illisible.
+  const [attestation, ...mentionsEncadrantes] = mentions;
   const [trace, setTrace] = useState<string | null>(null);
   const [modeAccessible, setModeAccessible] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -288,6 +315,7 @@ export function PieceSignatureForm({
           </div>
         )}
 
+        {/* L'ENGAGEMENT — court, isolé, et c'est lui qu'on coche. */}
         <label className="mt-5 flex items-start gap-3 text-sm text-gray-900">
           <input
             type="checkbox"
@@ -296,8 +324,54 @@ export function PieceSignatureForm({
             disabled={enCours}
             className="mt-1"
           />
-          <span>{mention}</span>
+          <span>{attestation}</span>
         </label>
+
+        {/* CE QUI ENCADRE L'ENGAGEMENT — valeur juridique, consentement, RGPD.
+            Replié, sur DÉCISION DE WILL du 16/08.
+
+            J'avais d'abord laissé ce bloc déployé, au motif qu'on ne masque pas
+            une information légalement due sur l'écran même où l'on recueille un
+            consentement. Will a tranché : on replie. C'est sa décision, et elle
+            se défend — un pavé que personne ne lit n'informe personne mieux
+            qu'un dépli qu'on peut ouvrir.
+
+            🔴 CE QUI REND LE DÉPLI DÉFENDABLE, et qu'il ne faut pas défaire :
+
+            1. `<details>` est un élément NATIF : le texte reste dans le DOM, il
+               est atteignable au clavier, annoncé par les lecteurs d'écran, et
+               imprimé par certains navigateurs. Un `display:none` piloté en
+               JavaScript n'aurait aucune de ces propriétés — ne pas « moderniser »
+               ce bloc en composant maison ;
+            2. l'ATTESTATION — la phrase qu'on accepte en cochant — reste
+               DEHORS, au-dessus. Ce qui est replié encadre l'engagement, ce
+               n'est pas l'engagement ;
+            3. le résumé ANNONCE ce qu'il contient et combien : « 4 mentions ».
+               Un dépli muet se referme sur son contenu ; un dépli qui compte
+               dit qu'il y a quelque chose à lire.
+
+            ⚠️ Toujours à faire relire par l'avocat avec les clauses OPCO. Le
+            repli est un choix d'affichage, pas un avis juridique. */}
+        {mentionsEncadrantes.length > 0 && (
+          <details className="group mt-4 rounded border border-gray-200 bg-gray-50">
+            <summary className="cursor-pointer list-none p-3 text-xs font-semibold tracking-wide text-gray-700 uppercase hover:bg-gray-100">
+              <span aria-hidden="true" className="mr-1 inline-block group-open:hidden">
+                +
+              </span>
+              <span aria-hidden="true" className="mr-1 hidden group-open:inline-block">
+                −
+              </span>
+              Valeur de cette signature et vos droits ({mentionsEncadrantes.length} mentions)
+            </summary>
+            <div className="space-y-2 px-3 pt-1 pb-3">
+              {mentionsEncadrantes.map((texte) => (
+                <p key={texte} className="text-xs leading-relaxed text-gray-700">
+                  {texte}
+                </p>
+              ))}
+            </div>
+          </details>
+        )}
 
         {erreur !== null && (
           <p role="alert" className="mt-4 text-sm text-red-700">

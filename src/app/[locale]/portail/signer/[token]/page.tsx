@@ -240,7 +240,12 @@ export default async function SignerDevisPage({ params }: PageProps) {
           }
         : {})}
       pdfUrl={pdfUrl}
-      mention={mentions.join(" ")}
+      // 🔴 Lot 3quater — c'était `mentions.join(" ")`. La structure existait
+      // dans la donnée (`mentionCompleteDocument` rend un TABLEAU) et se
+      // perdait ici, en un pavé compact au-dessus du bouton de signature.
+      // Le formulaire reçoit désormais le tableau et le rend structuré ; aucun
+      // texte ne change, donc aucune version de mention à incrémenter.
+      mentions={mentions}
       signerAction={signerPieceParJetonAction}
     />
   );
