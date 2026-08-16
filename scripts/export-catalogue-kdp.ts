@@ -44,11 +44,14 @@ import { writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { FORMATIONS_V2, type FormationV2 } from "@/content/formations/catalog-v2";
+// Pas de `getFormationEffectif` ici : l'effectif est figé côté livre
+// (`prose-livre.cjs`). Le livre écrit « 2 à 15 participants · intra-entreprise »
+// quand le SSOT rend « Jusqu'à 15 participants » — la plupart des formations ne
+// renseignent pas `effectifFr` et retombent sur la valeur par défaut, plus pauvre.
 import {
   formatDureeFr,
   getFormationModalites,
   formatModalitesFr,
-  getFormationEffectif,
 } from "@/content/formations/catalog-v2-facts";
 import { formatFormationPrice } from "@/content/pricing";
 
