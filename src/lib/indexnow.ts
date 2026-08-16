@@ -28,6 +28,8 @@
 // marcher, tout le monde est servi), et on bascule sur les endpoints qui
 // acceptent réellement. La spec IndexNow garantit qu'une soumission à
 // N'IMPORTE quel participant est partagée avec les autres.
+import { submitUrlsToBing } from "@/lib/seo/bing-wmt-submit";
+
 const ENDPOINTS = [
   "https://api.indexnow.org/indexnow",
   "https://yandex.com/indexnow",
@@ -129,15 +131,13 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
   const host = siteHost();
   const label = context ?? "indexnow";
 
-  if (!key) {
-    if (process.env["NODE_ENV"] !== "production") {
-      console.warn(`[${label}] INDEXNOW_KEY missing — would notify ${urls.length} url(s)`);
-    }
-    return;
-  }
-
-  // Validation : toutes les URLs doivent matcher l'host configuré
-  // (IndexNow refuse le batch entier sinon, code 422).
+  // Validation REMONTEE avant le controle de cle (GEO-105) : elle ne depend
+  // d'aucune cle, et Bing doit pouvoir etre notifie meme si `INDEXNOW_KEY` est
+  // absente. Les deux mecanismes sont independants — les enchainer ferait
+  // dependre l'un de la configuration de l'autre.
+  //
+  // Toutes les URLs doivent matcher l'host configure (IndexNow refuse le batch
+  // entier sinon, code 422).
   const valid = urls.filter((u) => {
     try {
       return new URL(u).host === host;
@@ -147,6 +147,48 @@ export function pingIndexNow(urls: ReadonlyArray<string>, context?: string): voi
   });
   if (valid.length === 0) {
     console.error(`[${label}] no valid URLs for host=${host}, ignored ${urls.length} input(s)`);
+    return;
+  }
+
+  // 🔴 GEO-105 / GEO-106 — BING, EN PARALLELE ET INDEPENDAMMENT.
+  //
+  // Mesure de l'audit : quand le site publie, SEUL YANDEX est reellement
+  // prevenu. L'endpoint Microsoft de la cascade ci-dessous repond 403 depuis le
+  // 2026-08-11 (cause racine cote Microsoft, ticket ouvert, decision actee : on
+  // ne re-diagnostique pas). Or Bing alimente Copilot et le grounding de
+  // ChatGPT Search : l'ignorer revient a laisser hors du circuit le moteur qui
+  // nourrit deux des moteurs de reponse qu'on cherche a atteindre.
+  //
+  // La voie directe (`SubmitUrlBatch`) ne passe pas par l'agregateur et n'est
+  // donc pas concernee par ce 403.
+  //
+  // Fire-and-forget comme le reste : une soumission ratee ne doit jamais faire
+  // echouer une publication. Le silence est distingue de l'absence de cle — un
+  // « non configure » qui ressemble a une panne fait perdre du temps.
+  void submitUrlsToBing([...valid], label)
+    .then((r) => {
+      if (!r.configured) {
+        if (process.env["NODE_ENV"] !== "production") {
+          console.warn(
+            `[${label}] BING_WMT_API_KEY absente — ${valid.length} url(s) non soumises a Bing`,
+          );
+        }
+        return;
+      }
+      if (r.failed > 0) {
+        console.error(
+          `[${label}] bing : ${r.failed} url(s) refusee(s), ${r.submitted} acceptee(s)`,
+        );
+      }
+    })
+    .catch((err: unknown) => {
+      console.error(`[${label}] bing : echec inattendu —`, err);
+    });
+
+  if (!key) {
+    if (process.env["NODE_ENV"] !== "production") {
+      console.warn(`[${label}] INDEXNOW_KEY missing — would notify ${urls.length} url(s)`);
+    }
     return;
   }
 
