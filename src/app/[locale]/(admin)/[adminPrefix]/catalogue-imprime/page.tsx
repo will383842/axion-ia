@@ -23,9 +23,11 @@
 // site font 225 caractères contre 58 pour ceux du livre, les verser tels quels
 // ferait déborder les cadres. Cette page dit donc ce que le SITE pilote.
 import type { Metadata } from "next";
+import { AlertTriangle } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
+import { AdminPageHeader } from "@/components/admin/ui";
 import { FORMATIONS_V2, type FormationV2 } from "@/content/formations/catalog-v2";
 import {
   formatDureeFr,
@@ -77,15 +79,11 @@ export default async function CatalogueImprimePage({ params }: PageProps) {
   const surDevis = offres.filter((o) => o.surDevis);
 
   return (
-    <div className="admin-layout-v">
-      <header>
-        <h1 className="admin-h">Catalogue imprimé</h1>
-        <p className="admin-lede">
-          Les faits tels qu’ils partiront à l’impression. Le catalogue papier est distribué en main
-          propre : un prix faux ne se corrige pas. Modifier une valeur ici se fait là où on la
-          modifie déjà — c’est le site qui pilote, le livre suit.
-        </p>
-      </header>
+    <div>
+      <AdminPageHeader
+        title="Catalogue imprimé"
+        description="Les faits tels qu’ils partiront à l’impression. Le catalogue papier est distribué en main propre : un prix faux ne se corrige pas. Modifier une valeur ici se fait là où on la modifie déjà — c’est le site qui pilote, le livre suit."
+      />
 
       <section className="admin-card" style={{ marginBottom: "var(--space-admin-4)" }}>
         <h2 className="admin-section-title">Avant de commander un tirage</h2>
@@ -108,7 +106,13 @@ export default async function CatalogueImprimePage({ params }: PageProps) {
 
       {incomplets.length > 0 ? (
         <section className="admin-card" style={{ marginBottom: "var(--space-admin-4)" }}>
-          <h2 className="admin-section-title">⚠️ {incomplets.length} offre(s) incomplète(s)</h2>
+          <h2
+            className="admin-section-title"
+            style={{ display: "flex", alignItems: "center", gap: "var(--space-admin-2)" }}
+          >
+            <AlertTriangle size={20} aria-hidden="true" />
+            {incomplets.length} offre(s) incomplète(s)
+          </h2>
           <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
             {incomplets.map((o) => (
               <li key={o.slug}>
