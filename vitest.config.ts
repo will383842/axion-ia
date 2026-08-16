@@ -42,6 +42,11 @@ export default defineConfig({
       "tests/e2e-crm-sync/**/*.{test,spec}.{ts,tsx}",
       // T16 — seeds qualiopi (buildDemoData pure, no DB)
       "prisma/seeds/qualiopi/**/*.spec.ts",
+      // T0 — fixture volumétrique. 🔴 Sans cette ligne, le spec qui vérifie la
+      // garde « ne jamais écrire en production » ne serait JAMAIS exécuté : un
+      // fichier de test hors `include` est un fichier mort, et personne ne le
+      // voit puisqu'il n'échoue pas non plus.
+      "prisma/seeds/volumetrie/**/*.spec.ts",
     ],
     exclude: ["node_modules", ".next", "tests/e2e/**", "tests/integration/**"],
     coverage: {
