@@ -95,7 +95,7 @@ describe("manifeste — on ne déclare que ce que la page rend (GEO-056)", () =>
     expect(
       hero?.src,
       "le slot `hero` a disparu du manifeste alors que la page le consomme en " +
-        "repli : `images.find((i) => i.slot === \"hero\")` rendrait `undefined`.",
+        'repli : `images.find((i) => i.slot === "hero")` rendrait `undefined`.',
     ).toBe("/illustrations/home-hero-equipe.avif");
 
     const page = readFileSync(
@@ -125,7 +125,7 @@ describe("manifeste — on ne déclare que ce que la page rend (GEO-056)", () =>
 describe("licence — on ne licencie que ce qui nous appartient (GEO-037)", () => {
   const SITEMAP = sansCommentaires(source("src/app/sitemap-images-services.xml/route.ts"));
 
-  it("les photos tierces sont marquées `origin: \"unsplash\"`", () => {
+  it('les photos tierces sont marquées `origin: "unsplash"`', () => {
     const tierces = PAGE_IMAGES_MANIFEST.flatMap((p) => p.images).filter(
       (i) => i.origin === "unsplash",
     );
