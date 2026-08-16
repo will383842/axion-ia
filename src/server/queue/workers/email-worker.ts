@@ -129,7 +129,41 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     },
     {
       connection: getBullConnectionOrThrow(),
-      concurrency: 8,
+      // 🔴 Audit du 2026-08-16 (F-01) — LE LIMITEUR QUI MANQUAIT.
+      //
+      // Douze workers de ce dépôt bornent leur débit ; celui qui parle au SEUL
+      // tiers à quota n'en avait aucun. `concurrency: 8` et un transport sans
+      // `pool` ouvraient huit connexions SMTP neuves en parallèle — le profil
+      // exact qu'un relais lit comme une attaque.
+      //
+      // 40/h contre un plafond Zoho de 50 à 500/h. Le plancher est retenu, et
+      // non la moyenne, parce que cette borne est DYNAMIQUE : Zoho l'ajuste sur
+      // la réputation de l'expéditeur, et elle est IDENTIQUE en gratuit et en
+      // payant — le compte est sur Mail Lite, monter de gamme ne la relèverait
+      // pas. Seul un débit régulier l'élève. Se caler sous le plancher est donc
+      // la seule position qui ne dépende pas d'une valeur qu'on ne peut ni lire
+      // ni négocier.
+      //
+      // ⚠️ Ce bridage protège la BOÎTE, pas seulement les envois. Le site émet
+      // depuis la messagerie métier : un throttle — ou pire, une suspension —
+      // déclenché par une rafale ne coûterait pas des e-mails automatiques, il
+      // coûterait `contact@axion-ia.com`. Il reste utile après la bascule vers
+      // un relais transactionnel, à recalibrer alors sur SES limites.
+      //
+      // Ordre de grandeur : la prod envoie ~4 e-mails/jour, pic mesuré 5/h. On
+      // est donc à un facteur 8 au-dessus du besoin actuel — le déclencheur est
+      // `BATCH_LIMIT = 100` du vivier, qui part sans délai. À 40/h, ce lot
+      // s'étale sur 2 h 30 au lieu de saturer en quelques minutes.
+      //
+      // 🔑 Le limiteur BullMQ DIFFÈRE la prise du job : il ne consomme pas de
+      // tentative et ne déclenche aucun backoff. Un e-mail retardé par le
+      // bridage n'est pas un e-mail en risque de perte.
+      limiter: { max: 40, duration: 3_600_000 },
+      // 8 → 2. Le débit est déjà borné au-dessus ; au-delà de 2 en parallèle on
+      // ne gagne rien qu'un pic de connexions simultanées, et le transport est
+      // désormais mis en pool sur 2 connexions (cf. `client.ts`) — garder les
+      // deux chiffres alignés évite qu'un worker attende une connexion libre.
+      concurrency: 2,
       lockDuration: 120_000,
       // P2-23 audit indexation 2026-05-18 — bornage retention Redis :
       // garde 1000 jobs completed + 5000 jobs failed max (BullMQ purge auto).

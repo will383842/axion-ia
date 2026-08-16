@@ -98,12 +98,37 @@ function getTransport(): Transporter {
     //  - SMTP authentifié (Zoho, SES, Brevo…) : TLS + auth. Port 465 = SMTPS
     //    implicite ; 587/25 = STARTTLS (requireTLS). NÉCESSAIRE pour un relais
     //    externe (sinon connexion rejetée / non chiffrée).
-    //  - Relais local sans auth (PowerMTA/Mailhog sur localhost) : ni TLS ni
-    //    auth — comportement legacy conservé quand SMTP_USER/PASS absents.
+    //  - Relais local sans auth (Mailhog sur localhost) : ni TLS ni auth —
+    //    comportement legacy conservé quand SMTP_USER/PASS absents.
     secure: port === 465,
     ...(hasAuth
       ? { auth: { user: user as string, pass: pass as string }, requireTLS: port !== 465 }
       : { ignoreTLS: true }),
+
+    // 🔴 Audit du 2026-08-16 (F-01) — CONNEXIONS MISES EN POOL.
+    //
+    // Sans `pool`, nodemailer ouvre une connexion SMTP NEUVE, s'authentifie et
+    // la referme À CHAQUE MESSAGE. Croisé avec la `concurrency: 8` d'alors, un
+    // lot dense se présentait comme huit ouvertures et huit authentifications
+    // simultanées, répétées — le profil qu'un relais lit comme une attaque, et
+    // que Zoho sanctionne en abaissant une borne déjà dynamique.
+    //
+    // 2 connexions, alignées sur la `concurrency: 2` du worker : au-delà, un
+    // consommateur attendrait une connexion libre sans rien gagner.
+    pool: true,
+    maxConnections: 2,
+    // Recyclage après 100 messages. Les relais coupent d'eux-mêmes une session
+    // trop longue ; reprendre la main dessus évite de découvrir la coupure sous
+    // la forme d'un envoi perdu.
+    maxMessages: 100,
+
+    // Soupape de sûreté SOUS le limiteur BullMQ (40/h) : 2 messages par
+    // seconde. Elle ne mord jamais en fonctionnement normal — elle existe pour
+    // le jour où un appelant contournera `enqueueEmail()` et enverra en direct.
+    // Ce chemin existe déjà : `content-weekly-report-worker.ts` appelle
+    // `sendEmail()` sans passer par la file (contournement connu du 13/08).
+    rateDelta: 1000,
+    rateLimit: 2,
   });
   return _transport;
 }
