@@ -343,6 +343,60 @@ export interface LigneDossier {
 /** Les lignes groupées par colonne — toujours les 6 clés, listes vides incluses. */
 export type DossiersPipeline = Record<ColonnePipeline, LigneDossier[]>;
 
+/** Les quatre sources lues, dans l'ordre du `Promise.all`. */
+export type SourcePipeline = "devis" | "sessions" | "coachings" | "audits";
+
+/**
+ * Ce qu'une source a RÉELLEMENT lu, et ce qu'elle aurait dû lire.
+ *
+ * 🔴 Pourquoi ce type existe. Le module promet, quinze lignes plus bas, qu'« une
+ * prestation réalisée mais IMPAYÉE n'est JAMAIS soldée — et elle ne sort JAMAIS
+ * de la vue, quel que soit son âge ». Le plafond `TAKE_MAX` la fait sortir : au
+ * delà de 200 sessions vivantes, triées par `updatedAt desc`, une créance
+ * ancienne n'atteint même pas `deriverStatutDossier`. **La garde métier est
+ * désarmée par une limite de lecture, et rien ne le disait.**
+ *
+ * ⚠️ `total` compte les lignes de la SOURCE, avec le même `where` que le
+ * `findMany` — PAS les lignes affichées, que la dérivation écarte ensuite
+ * (soldés hors fenêtre, annulés). La phrase honnête est donc « 200 sessions
+ * lues sur 1 187 », jamais « 200 affichées sur 1 187 ».
+ */
+export interface TroncatureSource {
+  source: SourcePipeline;
+  /** Libellé humain, pour le bandeau. */
+  label: string;
+  /** Lignes effectivement lues = min(TAKE_MAX, total). */
+  lues: number;
+  /** Total en base pour le MÊME `where` que le `findMany`. */
+  total: number;
+  /** `lues < total`. Le seul booléen que la page a le droit de croire. */
+  tronquee: boolean;
+  /**
+   * `false` si la lecture a échoué (stub de build, base indisponible).
+   *
+   * 🔴 Distinct de `tronquee: false` : « je sais qu'il n'y a rien de plus » et
+   * « je n'ai pas pu savoir » n'appellent pas le même message. Confondre les
+   * deux ferait afficher une vue rassurante sur une panne.
+   */
+  fiable: boolean;
+}
+
+/** Retour de `lireDossiersPipeline` : les lignes ET l'aveu de ce qui manque. */
+export interface LecturePipeline {
+  colonnes: DossiersPipeline;
+  sources: TroncatureSource[];
+  /** Au moins une source tronquée — raccourci pour le bandeau. */
+  tronquee: boolean;
+}
+
+/** Libellés des sources, pour le bandeau de troncature. */
+const LABELS_SOURCE: Record<SourcePipeline, string> = {
+  devis: "devis en attente",
+  sessions: "sessions",
+  coachings: "séances de coaching",
+  audits: "missions d'audit",
+};
+
 /** Statuts de facture qui signifient « de l'argent est attendu ». `brouillon`
  *  n'est pas encore une créance ; `annulee` n'en sera jamais une.
  *  Alias local du SSOT `STATUTS_FACTURE_OUVERTE` — même définition, un seul
@@ -368,25 +422,32 @@ function activiteDevis(activite: string | null): ActiviteDossier {
 }
 
 /** Devis envoyés (colonne « Devis en attente »). Stub-safe → []. */
+/** LE `where` des devis en attente — ecrit une fois, lu deux fois. */
+const WHERE_DEVIS_ENVOYES = { statut: "envoye" } as const;
+
 async function lireDevisEnvoyes() {
   try {
-    return await prisma.devis.findMany({
-      where: { statut: "envoye" },
-      // Les plus anciens d'abord : ce sont eux qu'on relance en premier.
-      orderBy: [{ sentAt: "asc" }, { id: "asc" }],
-      take: TAKE_MAX,
-      select: {
-        id: true,
-        numero: true,
-        activite: true,
-        statut: true,
-        sentAt: true,
-        dateValidite: true,
-        client: { select: { raisonSociale: true } },
-      },
-    });
+    const [lignes, total] = await Promise.all([
+      prisma.devis.findMany({
+        where: WHERE_DEVIS_ENVOYES,
+        // Les plus anciens d'abord : ce sont eux qu'on relance en premier.
+        orderBy: [{ sentAt: "asc" }, { id: "asc" }],
+        take: TAKE_MAX,
+        select: {
+          id: true,
+          numero: true,
+          activite: true,
+          statut: true,
+          sentAt: true,
+          dateValidite: true,
+          client: { select: { raisonSociale: true } },
+        },
+      }),
+      prisma.devis.count({ where: WHERE_DEVIS_ENVOYES }),
+    ]);
+    return { lignes, total, fiable: true };
   } catch {
-    return [];
+    return { lignes: [], total: 0, fiable: false };
   }
 }
 
@@ -396,42 +457,51 @@ async function lireDevisEnvoyes() {
  * `take: 1` : on ne veut pas les pièces, seulement savoir s'il en EXISTE une.
  * Stub-safe → [].
  */
+/** LE `where` de cette source — ecrit une fois, lu deux fois. */
+function whereSessionsVivantes() {
+  return { statut: { in: ["planifiee", "en_cours", "realisee"] as TrainingSessionStatut[] } };
+}
+
 async function lireSessionsVivantes() {
   try {
-    return await prisma.trainingSession.findMany({
-      where: { statut: { in: ["planifiee", "en_cours", "realisee"] } },
-      // Activité récente d'abord : sous plafond, on sacrifie les dossiers
-      // dormants, jamais ceux qui bougent.
-      orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
-      take: TAKE_MAX,
-      select: {
-        id: true,
-        numero: true,
-        titreSession: true,
-        statut: true,
-        dateDebut: true,
-        dateFin: true,
-        updatedAt: true,
-        client: { select: { raisonSociale: true } },
-        documents: {
-          where: { statutSignature: { in: ["en_attente", "partielle"] } },
-          select: { id: true },
-          take: 1,
+    const [lignes, total] = await Promise.all([
+      prisma.trainingSession.findMany({
+        where: whereSessionsVivantes(),
+        // Activité récente d'abord : sous plafond, on sacrifie les dossiers
+        // dormants, jamais ceux qui bougent.
+        orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+        take: TAKE_MAX,
+        select: {
+          id: true,
+          numero: true,
+          titreSession: true,
+          statut: true,
+          dateDebut: true,
+          dateFin: true,
+          updatedAt: true,
+          client: { select: { raisonSociale: true } },
+          documents: {
+            where: { statutSignature: { in: ["en_attente", "partielle"] } },
+            select: { id: true },
+            take: 1,
+          },
+          facturesFormation: {
+            where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
+            select: { id: true },
+            take: 1,
+          },
+          dossiersFinancement: {
+            where: { statut: { notIn: [...STATUTS_FINANCEMENT_SOLDE] } },
+            select: { id: true },
+            take: 1,
+          },
         },
-        facturesFormation: {
-          where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
-          select: { id: true },
-          take: 1,
-        },
-        dossiersFinancement: {
-          where: { statut: { notIn: [...STATUTS_FINANCEMENT_SOLDE] } },
-          select: { id: true },
-          take: 1,
-        },
-      },
-    });
+      }),
+      prisma.trainingSession.count({ where: whereSessionsVivantes() }),
+    ]);
+    return { lignes, total, fiable: true };
   } catch {
-    return [];
+    return { lignes: [], total: 0, fiable: false };
   }
 }
 
@@ -440,63 +510,81 @@ async function lireSessionsVivantes() {
  * CONTRAT (`CoachingContract.factures`), pas de la séance — c'est là qu'on
  * regarde. Stub-safe → [].
  */
+/** LE `where` de cette source — ecrit une fois, lu deux fois. */
+function whereCoachingsVivants() {
+  return { statut: { in: ["planifiee", "realisee"] as CoachingSessionStatut[] } };
+}
+
 async function lireCoachingsVivants() {
   try {
-    return await prisma.coachingSession.findMany({
-      where: { statut: { in: ["planifiee", "realisee"] } },
-      orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
-      take: TAKE_MAX,
-      select: {
-        id: true,
-        interventionSlug: true,
-        statut: true,
-        dateSeance: true,
-        dateSeanceFin: true,
-        updatedAt: true,
-        beneficiaireNom: true,
-        beneficiaireEntreprise: true,
-        coachingContract: {
-          select: {
-            client: { select: { raisonSociale: true } },
-            factures: {
-              where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
-              select: { id: true },
-              take: 1,
+    const [lignes, total] = await Promise.all([
+      prisma.coachingSession.findMany({
+        where: whereCoachingsVivants(),
+        orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+        take: TAKE_MAX,
+        select: {
+          id: true,
+          interventionSlug: true,
+          statut: true,
+          dateSeance: true,
+          dateSeanceFin: true,
+          updatedAt: true,
+          beneficiaireNom: true,
+          beneficiaireEntreprise: true,
+          coachingContract: {
+            select: {
+              client: { select: { raisonSociale: true } },
+              factures: {
+                where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
+                select: { id: true },
+                take: 1,
+              },
             },
           },
         },
-      },
-    });
+      }),
+      prisma.coachingSession.count({ where: whereCoachingsVivants() }),
+    ]);
+    return { lignes, total, fiable: true };
   } catch {
-    return [];
+    return { lignes: [], total: 0, fiable: false };
   }
 }
 
 /** Missions d'audit vivantes. Stub-safe → []. */
+/** LE `where` de cette source — ecrit une fois, lu deux fois. */
+function whereAuditsVivants() {
+  return { statut: { in: ["planifiee", "en_cours", "realisee"] as AuditMissionStatut[] } };
+}
+
 async function lireAuditsVivants() {
   try {
-    return await prisma.auditMission.findMany({
-      where: { statut: { in: ["planifiee", "en_cours", "realisee"] } },
-      orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
-      take: TAKE_MAX,
-      select: {
-        id: true,
-        numero: true,
-        titre: true,
-        statut: true,
-        dateDebut: true,
-        dateFin: true,
-        updatedAt: true,
-        client: { select: { raisonSociale: true } },
-        facturesFormation: {
-          where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
-          select: { id: true },
-          take: 1,
+    const [lignes, total] = await Promise.all([
+      prisma.auditMission.findMany({
+        where: whereAuditsVivants(),
+        orderBy: [{ updatedAt: "desc" }, { id: "asc" }],
+        take: TAKE_MAX,
+        select: {
+          id: true,
+          numero: true,
+          titre: true,
+          statut: true,
+          dateDebut: true,
+          dateFin: true,
+          updatedAt: true,
+          client: { select: { raisonSociale: true } },
+          facturesFormation: {
+            where: { statut: { in: [...STATUTS_FACTURE_IMPAYEE] } },
+            select: { id: true },
+            take: 1,
+          },
         },
-      },
-    });
+      }),
+      prisma.auditMission.count({ where: whereAuditsVivants() }),
+    ]);
+    return { lignes, total, fiable: true };
   } catch {
-    return [];
+    return { lignes: [], total: 0, fiable: false };
   }
 }
 
@@ -533,7 +621,7 @@ export interface OptionsLectureDossiers {
 export async function lireDossiersPipeline(
   maintenant: Date = new Date(),
   options: OptionsLectureDossiers = {},
-): Promise<DossiersPipeline> {
+): Promise<LecturePipeline> {
   const avecArchives = options.avecArchives === true;
   /**
    * Colonne + drapeau d'archive d'une affaire. La dérivation de la phase 2
@@ -551,12 +639,16 @@ export async function lireDossiersPipeline(
     }
     return null;
   };
-  const [devis, sessions, coachings, audits] = await Promise.all([
+  const [srcDevis, srcSessions, srcCoachings, srcAudits] = await Promise.all([
     lireDevisEnvoyes(),
     lireSessionsVivantes(),
     lireCoachingsVivants(),
     lireAuditsVivants(),
   ]);
+  const devis = srcDevis.lignes;
+  const sessions = srcSessions.lignes;
+  const coachings = srcCoachings.lignes;
+  const audits = srcAudits.lignes;
 
   const pipeline = pipelineVide();
   const ajouter = (ligne: LigneDossier) => pipeline[ligne.colonne].push(ligne);
@@ -675,5 +767,25 @@ export async function lireDossiersPipeline(
     });
   }
 
-  return pipeline;
+  const sources: TroncatureSource[] = (
+    [
+      ["devis", srcDevis] as const,
+      ["sessions", srcSessions] as const,
+      ["coachings", srcCoachings] as const,
+      ["audits", srcAudits] as const,
+    ] satisfies ReadonlyArray<
+      readonly [SourcePipeline, { lignes: unknown[]; total: number; fiable: boolean }]
+    >
+  ).map(([source, src]) => ({
+    source,
+    label: LABELS_SOURCE[source],
+    lues: src.lignes.length,
+    total: src.total,
+    // `fiable: false` ⇒ jamais `tronquee: true` : on n'accuse pas une troncature
+    // qu'on n'a pas pu mesurer. L'écran distingue les deux (cf. `TroncatureSource`).
+    tronquee: src.fiable && src.lignes.length < src.total,
+    fiable: src.fiable,
+  }));
+
+  return { colonnes: pipeline, sources, tronquee: sources.some((s) => s.tronquee) };
 }
