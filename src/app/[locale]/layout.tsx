@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Inconsolata, Fraunces } from "next/font/google";
+import localFont from "next/font/local";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -24,15 +24,46 @@ import { env } from "@/env";
 import type { Locale } from "@/i18n/routing";
 import "../globals.css";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Fontes auto-hébergées DEPUIS LE DÉPÔT (`next/font/local`), plus depuis Google.
+//
+// Pourquoi (2026-08-16, GEO/AEO vague 3) : `next/font/google` va chercher le CSS
+// puis les `.woff2` sur fonts.googleapis.com / fonts.gstatic.com **pendant le
+// build**. Le build de production dépendait donc d'un fetch vivant vers un
+// tiers. Le 2026-08-16, gstatic a répondu `404` sur les URLs que le CSS venait
+// lui-même de servir aux runners GitHub : plus aucun build n'est passé après
+// 15h56 (dernier déploiement réussi cf26c3c à 14h51), et trois gates ont rougi
+// sur un code parfaitement sain. Un build hermétique n'a pas ce point de
+// rupture.
+//
+// Les fichiers de `src/fonts/` sont les `.woff2` **sous-ensemble latin** servis
+// par Google pour ces mêmes familles. Le sous-ensemble latin couvre le français
+// en entier, œ/Œ compris (U+0152-0153 en fait partie) ; le site est
+// francophone seulement (décision Will 2026-08-12), les autres sous-ensembles
+// n'étaient jamais téléchargés par un visiteur.
+//
+// Les déclarations ci-dessous **recopient à l'identique** les `@font-face` que
+// Google produisait pour ces mêmes appels : mêmes fichiers, mêmes graisses,
+// mêmes styles. Le rendu est donc inchangé — seul l'endroit d'où vient
+// l'octet change. Aucun octet supplémentaire n'atteint le visiteur :
+// `next/font/google` auto-hébergeait déjà ces fichiers dans le bundle.
+//
+// Pour rafraîchir une fonte, voir `docs/adr/0027-fontes-locales.md`.
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Manrope — sans-serif éditorial pour body / eyebrow / h1-h6.
 // Doctrine v3 Editorial Premium Light : ADR 0002 (pivot v3) + ADR 0004
 // (typo baseline 18/15 v3.1). Trimmed à 2 weights (400 + 600) — couvre
 // l'ensemble des usages, économise ~50 KB woff2 vs un chargement 4-weights.
-const manrope = Manrope({
-  subsets: ["latin"],
+// Un seul fichier variable sert les deux graisses : c'est exactement ce que
+// Google renvoyait pour `Manrope:wght@400;600`.
+const manrope = localFont({
+  src: [
+    { path: "../../fonts/manrope-latin-var.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/manrope-latin-var.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-manrope",
   display: "swap",
-  weight: ["400", "600"],
 });
 
 // P3-35 (audit re-run 2026-05-15 AGENT 6) — Inconsolata preload:false.
@@ -42,8 +73,14 @@ const manrope = Manrope({
 // `preload: false` retire le `<link rel="preload">` mais garde le swap CSS
 // — les pages qui utilisent vraiment Inconsolata chargeront le font dans
 // la cascade normale (~150-300ms après FCP, invisible UX).
-const inconsolata = Inconsolata({
-  subsets: ["latin"],
+const inconsolata = localFont({
+  src: [
+    {
+      path: "../../fonts/inconsolata-latin-var.woff2",
+      weight: "200 900",
+      style: "normal",
+    },
+  ],
   variable: "--font-inconsolata",
   display: "swap",
   preload: false,
@@ -83,13 +120,37 @@ const inconsolata = Inconsolata({
 // (très en dessous du « good » Google = 0.1). À valider par le gate Lighthouse
 // CI (job `lhci`, autorité Web Vitals) au prochain deploy ; rollback = remettre
 // `display: "optional"` si régression au-delà du budget.
-const fraunces = Fraunces({
-  subsets: ["latin"],
+//
+// `adjustFontFallback` : `next/font/google` acceptait `true` et choisissait
+// seul la fonte-repère. En local il faut la NOMMER — « Times New Roman » pour
+// une serif (c'est ce que le loader Google retenait pour Fraunces). Les
+// `size-adjust` / `ascent-override` restent calculés sur les métriques du
+// fichier réel : la chaîne de repli métrique décrite ci-dessus est conservée,
+// et avec elle le comportement CLS mesuré.
+const fraunces = localFont({
+  src: [
+    { path: "../../fonts/fraunces-latin-var.woff2", weight: "400", style: "normal" },
+    { path: "../../fonts/fraunces-latin-var.woff2", weight: "500", style: "normal" },
+    { path: "../../fonts/fraunces-latin-var.woff2", weight: "600", style: "normal" },
+    {
+      path: "../../fonts/fraunces-latin-var-italic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../../fonts/fraunces-latin-var-italic.woff2",
+      weight: "500",
+      style: "italic",
+    },
+    {
+      path: "../../fonts/fraunces-latin-var-italic.woff2",
+      weight: "600",
+      style: "italic",
+    },
+  ],
   variable: "--font-fraunces",
   display: "swap",
-  adjustFontFallback: true,
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  adjustFontFallback: "Times New Roman",
 });
 
 // Pre-render only the build-time locales (FR ; EN exclu tant que désactivé —
