@@ -6,13 +6,14 @@
 //   - Sharp `limitInputPixels: 100_000_000` (anti zip-bomb)
 //   - SHA-256 dedup avant écriture
 //   - Storage local en dev (`public/image-bank/{uuid}/...`), S3 Hetzner en prod
-//   - `.withMetadata()` pour stripper EXIF puis ré-embed copyright propre
+//   - AUCUN `.withMetadata()` : c'est son ABSENCE qui strippe l'EXIF (cf. § RGPD)
+//   - `.autoOrient()` sur chaque variant : la rotation est cuite dans les pixels
 //   - Slugs ASCII via slugify strict
 //
 // Voir spec détaillée : `references/responsive-variants.md`.
 
 import { createHash, randomUUID } from "node:crypto";
-import { mkdir } from "node:fs/promises";
+import { mkdir, stat } from "node:fs/promises";
 import { join } from "node:path";
 
 import sharp from "sharp";
@@ -66,30 +67,53 @@ export class ImageImportService {
     const dir = join(storageBase, uuid);
     await mkdir(dir, { recursive: true });
 
-    const orientation = computeOrientation(meta.width, meta.height);
-    const aspectRatio = computeAspectRatio(meta.width, meta.height);
-
-    // 3.5) RGPD CRITIQUE : strip EXIF GPS si présent (PII).
-    // Sharp `.withMetadata()` par défaut preserve EXIF. On force la normalization
-    // sur tous les variants via `withMetadata({ orientation: 1 })` qui re-écrit
-    // l'EXIF minimal SANS les tags GPS (Sharp strip automatiquement les autres
-    // tags non-whitelistés). Photo iPhone embarque latitude/longitude → si publié
-    // c'est PII = violation RGPD. Sécurité par défaut.
+    // 3.5) 🔴 RGPD + ORIENTATION — lire ceci avant de toucher au pipeline Sharp.
     //
-    // Pour preserver intentionnellement un GPS (ex. photo lieu touristique),
-    // le caller doit le copier dans `image.geoPosition` AVANT et nous le strip
-    // toujours du fichier final.
+    // Ce bloc affirmait l'inverse de ce que le code faisait. Rectifié le
+    // 2026-08-16 (audit GEO/AEO, GEO-091/GEO-092), contre-épreuve à l'appui sur
+    // une photo de téléphone simulée (orientation EXIF 6 + tag GPS 0x8825).
+    //
+    // ⚠️ `.withMetadata()` ne strippe RIEN — il CONSERVE. Sa documentation :
+    //    « Include all metadata (EXIF, XMP, IPTC) from the input image in the
+    //      output image. The default behaviour, when withMetadata is NOT used,
+    //      is to strip all metadata. »
+    //    Mesuré : EXIF d'entrée 300 octets → sortie 300 octets, tag GPS 0x8825
+    //    toujours là. Sans l'appel : 0 octet, GPS parti. C'est donc l'ABSENCE
+    //    d'appel qui protège. Ne le réintroduisez pas « pour normaliser ».
+    //
+    // ⚠️ `withMetadata({ orientation: 1 })` était pire qu'inutile : il écrasait
+    //    le tag « pivote-moi » SANS faire pivoter les pixels. Une photo prise en
+    //    portrait ressortait couchée (mesuré : 200×150 au lieu de 200×267), et
+    //    le navigateur ne pouvait plus la redresser puisque l'indice avait été
+    //    effacé. `.autoOrient()` cuit la rotation dans les pixels — après quoi
+    //    plus aucun tag n'est nécessaire.
+    //
+    // 🔑 Les deux corrections sont INDISSOCIABLES. `metadata()` documente que
+    //    `width`/`height` sont les pixels STOCKÉS, « EXIF orientation is not
+    //    taken into consideration ». Une photo portrait de téléphone est stockée
+    //    en paysage. Ne corriger que l'EXIF publierait des images couchées ; ne
+    //    corriger que la rotation laisserait les dimensions inversées en base
+    //    (mauvais ratio → CLS, mauvaise facette `orientation`). On lit donc
+    //    partout `meta.autoOrient`, jamais `meta.width`/`meta.height`.
+    //
+    // Pour conserver volontairement une position (photo de lieu), le caller la
+    // recopie dans `image.geoPosition` ; le fichier livré, lui, n'en porte jamais.
+    const largeur = meta.autoOrient.width;
+    const hauteur = meta.autoOrient.height;
+
+    const orientation = computeOrientation(largeur, hauteur);
+    const aspectRatio = computeAspectRatio(largeur, hauteur);
 
     // 4) Variants WebP — boucle sm/md/lg/xl (skip si > source width)
     const srcsetParts: string[] = [];
     let mainPath = "";
     for (const v of WEBP_VARIANTS) {
-      if (meta.width < v.width && v.name !== "sm") continue;
+      if (largeur < v.width && v.name !== "sm") continue;
       const out = join(dir, `image-${v.name}.webp`);
       await sharp(input.buffer, SHARP_LIMITS)
-        .resize({ width: Math.min(v.width, meta.width), withoutEnlargement: true })
+        .autoOrient()
+        .resize({ width: Math.min(v.width, largeur), withoutEnlargement: true })
         .webp({ quality: WEBP_QUALITY, effort: WEBP_EFFORT })
-        .withMetadata({ orientation: 1 }) // strip EXIF rotation, normalize
         .toFile(out);
       srcsetParts.push(`${publicUrlFromLocalPath(out)} ${v.width}w`);
       if (v.name === "lg") mainPath = publicUrlFromLocalPath(out);
@@ -102,20 +126,20 @@ export class ImageImportService {
     // 5) Thumbnail (300w default)
     const thumbOut = join(dir, "thumb.webp");
     await sharp(input.buffer, SHARP_LIMITS)
+      .autoOrient()
       .resize({ width: THUMBNAIL_WIDTH, withoutEnlargement: true })
       .webp({ quality: WEBP_QUALITY, effort: WEBP_EFFORT })
-      .withMetadata({ orientation: 1 })
       .toFile(thumbOut);
 
     // 6) AVIF — md/lg (qualité 55 = visuellement équivalent à WebP 80, mais plus léger)
     let avifPath: string | null = null;
     for (const v of AVIF_VARIANTS) {
-      if (meta.width < v.width && v.name !== "md") continue;
+      if (largeur < v.width && v.name !== "md") continue;
       const out = join(dir, `image-${v.name}.avif`);
       await sharp(input.buffer, SHARP_LIMITS)
-        .resize({ width: Math.min(v.width, meta.width), withoutEnlargement: true })
+        .autoOrient()
+        .resize({ width: Math.min(v.width, largeur), withoutEnlargement: true })
         .avif({ quality: AVIF_QUALITY, effort: AVIF_EFFORT })
-        .withMetadata({ orientation: 1 })
         .toFile(out);
       if (v.name === "lg" || (v.name === "md" && !avifPath)) {
         avifPath = publicUrlFromLocalPath(out);
@@ -127,6 +151,7 @@ export class ImageImportService {
     // `og.webp` à côté des autres variants pour servir `og:image` direct.
     const ogOut = join(dir, "og.webp");
     await sharp(input.buffer, SHARP_LIMITS)
+      .autoOrient()
       .resize({
         width: OG_VARIANT.width,
         height: OG_VARIANT.height,
@@ -134,24 +159,33 @@ export class ImageImportService {
         position: "attention", // smart crop Sharp (centre sur zone d'intérêt)
       })
       .webp({ quality: WEBP_QUALITY, effort: WEBP_EFFORT })
-      .withMetadata({ orientation: 1 })
       .toFile(ogOut);
 
     // 7) LQIP : 20w blur jpeg base64 (≤ 1 KB inline)
     const lqipBuffer = await sharp(input.buffer, SHARP_LIMITS)
+      .autoOrient() // sinon l'aperçu flou sort dans l'autre sens que l'image finale
       .resize({ width: LQIP_WIDTH, withoutEnlargement: true })
       .blur(LQIP_BLUR)
       .jpeg({ quality: LQIP_JPEG_QUALITY })
       .toBuffer();
     const lqipDataUri = `data:image/jpeg;base64,${lqipBuffer.toString("base64")}`;
 
-    // 8) Final filesize (lg si dispo, sinon md)
+    // 8) Poids du fichier livré (lg si dispo, sinon md).
+    //
+    // 🔴 Rectifié le 2026-08-16 : ce bloc lisait `sharp(chemin).metadata().size`,
+    // qui vaut TOUJOURS `undefined` — la propriété est documentée « Total size of
+    // image in bytes, for Stream and Buffer input only », et un chemin de fichier
+    // n'est ni l'un ni l'autre. Le `?? 0` transformait ce trou en un zéro
+    // plausible : **toutes** les images de la banque portaient `fileSize = 0`,
+    // sans erreur ni journal. Mesuré : `sharp(CHEMIN).metadata().size` →
+    // `undefined`, `sharp(BUFFER)` → 142, fichier réel → 142 octets.
+    // On demande donc sa taille au système de fichiers, seul à la connaître.
     const lgPath = join(dir, "image-lg.webp");
     const fallbackPath = join(dir, "image-md.webp");
-    const lgStat = await sharp(lgPath)
-      .metadata()
-      .catch(() => sharp(fallbackPath).metadata());
-    const fileSize = lgStat.size ?? 0;
+    const fileSize = await stat(lgPath)
+      .then((s) => s.size)
+      .catch(() => stat(fallbackPath).then((s) => s.size))
+      .catch(() => 0);
 
     return {
       uuid,
@@ -163,8 +197,8 @@ export class ImageImportService {
       lqipDataUri,
       fileFormat: "webp",
       fileSize,
-      width: meta.width,
-      height: meta.height,
+      width: largeur,
+      height: hauteur,
       orientation,
       aspectRatio,
       srcset: srcsetParts.join(", "),
