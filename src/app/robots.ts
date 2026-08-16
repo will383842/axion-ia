@@ -102,11 +102,27 @@ const COMMON_DISALLOW = [
 // Longest-match : cet `Allow` l'emporte sur `Disallow: /api/`, exactement comme
 // `/api/og` et `/api/avis/photo` ci-dessus, sans rouvrir `/api/auth`,
 // `/api/admin`, les webhooks ni les routes RGPD.
+//
+// AUDIT GEO/AEO 2026-08-15 (GEO-031) — exports Observatoire AJOUTÉS.
+// Même classe d'erreur que `/api/markdown/` ci-dessus, sur une autre surface :
+// `/llms.txt` annonce l'Observatoire en « données ouvertes CC BY 4.0 » et la
+// page `/observatoire-ia` déclare ses deux exports en JSON-LD `DataDownload`.
+// Or `Disallow: /api/` les interdisait dans les douze blocs — on publiait une
+// licence d'usage sur un fichier qu'aucun crawler respectueux n'avait le droit
+// de télécharger. Un jeu de données ouvert non téléchargeable n'est pas cité.
+//
+// 🔴 Forme ÉTROITE délibérée (deux entrées explicites) plutôt que le préfixe
+// `/api/observatoire/`. `src/app/api/observatoire/` ne contient AUJOURD'HUI que
+// ces deux routes, toutes deux publiques — mais le préfixe autoriserait par
+// avance toute route future ajoutée sous ce dossier, y compris une route
+// d'écriture ou d'administration. On n'ouvre que ce qu'on a vérifié.
 const COMMON_ALLOW = [
   "/",
   "/api/og",
   "/api/avis/photo",
   "/api/markdown/",
+  "/api/observatoire/export-csv",
+  "/api/observatoire/export-json",
   "/_next/image",
   "/_next/static",
 ];
