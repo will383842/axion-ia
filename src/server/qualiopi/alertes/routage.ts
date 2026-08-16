@@ -5,7 +5,7 @@
  *
  * Vérifié dans `notifications-service.ts` avant ce lot : **toute** alerte
  * partait à **une seule adresse**, choisie par
- * `QUALIOPI_ALERTE_EMAIL ?? WEEKLY_REPORT_EMAIL ?? "williamsjullin@gmail.com"`
+ * `QUALIOPI_ALERTE_EMAIL ?? WEEKLY_REPORT_EMAIL ?? une adresse Gmail personnelle`
  * — un e-mail par alerte, `jobId` par alerte.
  *
  * À un formateur et trois sessions, c'était une notification. À cent

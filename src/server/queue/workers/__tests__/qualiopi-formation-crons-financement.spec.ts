@@ -72,6 +72,18 @@ vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
   synchroniserAlertes: vi.fn().mockResolvedValue({ crees: 0, resolues: 0 }),
 }));
 
+// Lot 14 — la notification des alertes a quitté le cron pour `envoi-groupe`.
+// 🔴 Sans ce mock, la suite ne se CHARGE plus : `envoi-groupe` importe
+// `@/server/queue/queues`, qui instancie une vraie `Queue` BullMQ au premier
+// import. Le mock de `notifications-service` masquait jusqu'ici cet import
+// transitif. Ce fichier ne teste pas les alertes — il teste le financement —
+// mais il monte le worker entier, donc il paie tous ses imports.
+vi.mock("@/server/qualiopi/alertes/envoi-groupe", () => ({
+  notifierAlertesGroupees: vi
+    .fn()
+    .mockResolvedValue({ messages: 0, alertes: 0, sansGuichet: 0, replis: [] }),
+}));
+
 vi.mock("../connection", () => ({
   getBullConnectionOrThrow: vi.fn().mockReturnValue({}),
 }));

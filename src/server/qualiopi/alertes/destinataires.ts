@@ -25,24 +25,25 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import type { RoleAdmin } from "@/server/auth/habilitations";
 import { GUICHETS, LIBELLE_GUICHET, ROLES_PAR_GUICHET, type GuichetAlerte } from "./routage";
 
 /**
- * L'adresse de dernier recours.
+ * L'adresse de dernier recours — **empruntée au SSOT**, jamais réécrite.
  *
- * ⚠️ Elle reprend volontairement la chaîne d'origine de `notifierAlerteInterne`
- * pour ne rien perdre en route — mais elle n'est plus le destinataire NORMAL,
- * seulement le filet. Le repli en dur `williamsjullin@gmail.com` du dépôt est
- * hors périmètre de ce lot (il est déjà relevé au Lot 13) ; ce module ne
- * l'ajoute pas, il hérite de celui qui existe et le déclare.
+ * 🔴 Ma première version recopiait ici la chaîne d'origine de
+ * `notifierAlerteInterne`, repli en dur sur une adresse Gmail personnelle
+ * compris. La garde `destinataires-internes.spec.ts` l'a refusée en CI — et elle avait
+ * raison : le Lot 13 venait précisément de supprimer cette adresse personnelle
+ * de deux endroits, dont un qui envoyait le CV complet d'un candidat hors du
+ * domaine de l'organisme. Recopier un repli, c'est ressusciter celui qu'on
+ * vient d'enterrer.
+ *
+ * Ce module ne connaît donc plus aucune adresse. Il demande.
  */
 function adresseDeSecours(): string {
-  return (
-    process.env["QUALIOPI_ALERTE_EMAIL"] ??
-    process.env["WEEKLY_REPORT_EMAIL"] ??
-    "williamsjullin@gmail.com"
-  );
+  return destinataireAlertesInternes();
 }
 
 /** Le drapeau qui ouvre le guichet `formateur` vers l'extérieur. */
