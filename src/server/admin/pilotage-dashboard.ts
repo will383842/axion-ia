@@ -1013,7 +1013,7 @@ export async function getPilotageDashboard(
     dossiersRetard,
     devisSansRep,
   ] = await Promise.all([
-    lireDossiersPipeline(maintenant),
+    lireDossiersPipeline(maintenant).then((l) => l.colonnes),
     listAlertes({ resolue: false, niveau: "critique", limit: 20 }),
     consolidationPromise,
     caRealisePlage(plage),

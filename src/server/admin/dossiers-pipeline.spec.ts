@@ -25,10 +25,12 @@ import {
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    devis: { findMany: vi.fn() },
-    trainingSession: { findMany: vi.fn() },
-    coachingSession: { findMany: vi.fn() },
-    auditMission: { findMany: vi.fn() },
+    // `count` : chaque source rend desormais son TOTAL en base a cote de ses
+    // lignes, pour que la vue puisse DIRE ce qu'elle n'a pas lu (T1, 16/08).
+    devis: { findMany: vi.fn(), count: vi.fn() },
+    trainingSession: { findMany: vi.fn(), count: vi.fn() },
+    coachingSession: { findMany: vi.fn(), count: vi.fn() },
+    auditMission: { findMany: vi.fn(), count: vi.fn() },
   },
 }));
 
@@ -276,10 +278,15 @@ describe("lireDossiersPipeline", () => {
     vi.mocked(prisma.trainingSession.findMany).mockResolvedValue([]);
     vi.mocked(prisma.coachingSession.findMany).mockResolvedValue([]);
     vi.mocked(prisma.auditMission.findMany).mockResolvedValue([]);
+    // Par defaut : le total egale ce qui est lu — aucune troncature.
+    vi.mocked(prisma.devis.count).mockResolvedValue(0);
+    vi.mocked(prisma.trainingSession.count).mockResolvedValue(0);
+    vi.mocked(prisma.coachingSession.count).mockResolvedValue(0);
+    vi.mocked(prisma.auditMission.count).mockResolvedValue(0);
   });
 
   it("retourne les 6 colonnes vides quand il n'y a aucune affaire", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.keys(pipeline).sort()).toEqual(COLONNES_PIPELINE.map((c) => c.id).sort());
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
@@ -290,7 +297,7 @@ describe("lireDossiersPipeline", () => {
     vi.mocked(prisma.coachingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
     vi.mocked(prisma.auditMission.findMany).mockRejectedValue(new Error("stub.invalid"));
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
@@ -309,7 +316,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.devis_attente).toHaveLength(1);
     expect(pipeline.devis_attente[0]?.client).toBe("INVEST SUN");
     expect(pipeline.devis_attente[0]?.cheminFiche).toBe("/qualiopi/devis/d1");
@@ -347,7 +354,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.signature_attente).toHaveLength(1);
     expect(pipeline.signature_attente[0]?.cheminFiche).toBe("/qualiopi/sessions/s1");
     expect(pipeline.signature_attente[0]?.activite).toBe("formation");
@@ -375,7 +382,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.a_solder).toHaveLength(1);
     expect(pipeline.a_solder[0]?.client).toBe("INVEST SUN");
     expect(pipeline.a_solder[0]?.activite).toBe("coaching");
@@ -397,7 +404,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.client).toBe("INVEST SUN");
   });
@@ -417,7 +424,7 @@ describe("lireDossiersPipeline", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.en_cours).toHaveLength(1);
     expect(pipeline.en_cours[0]?.activite).toBe("audit");
     expect(pipeline.en_cours[0]?.cheminFiche).toBe("/qualiopi/audits/a1");
@@ -531,7 +538,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     const parCle = new Map(pipeline.devis_attente.map((l) => [l.cle, l.qualiopi]));
     expect(parCle.get("devis:d-form")).toBe(true);
     expect(parCle.get("devis:d-audit")).toBe(false);
@@ -551,7 +558,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.devis_attente[0]?.activite).toBe("formation");
     expect(pipeline.devis_attente[0]?.qualiopi).toBe(false);
   });
@@ -603,7 +610,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     const parCle = new Map(pipeline.a_preparer.map((l) => [l.cle, l.qualiopi]));
     expect(parCle.get("session:s1")).toBe(true);
     expect(parCle.get("coaching:c1")).toBe(false);
@@ -627,7 +634,7 @@ describe("lireDossiersPipeline — badge périmètre Qualiopi (phase 3)", () => 
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.archive).toBe(false);
   });
@@ -657,12 +664,12 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
   });
 
   it("un soldé de 45 j est ABSENT de la lecture normale (comportement phase 2 intact)", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT);
+    const pipeline = (await lireDossiersPipeline(MAINTENANT)).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
   it("le même soldé de 45 j apparaît en mode avecArchives — colonne « Soldés », archive: true", async () => {
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(pipeline.soldes).toHaveLength(1);
     expect(pipeline.soldes[0]?.cle).toBe("session:s-arch");
     expect(pipeline.soldes[0]?.archive).toBe(true);
@@ -687,7 +694,7 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(pipeline.a_solder).toHaveLength(1);
     expect(pipeline.a_solder[0]?.archive).toBe(false);
     expect(pipeline.soldes).toHaveLength(0);
@@ -710,7 +717,7 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
       } as never,
     ]);
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 
@@ -720,7 +727,7 @@ describe("lireDossiersPipeline — mode archives (phase 3)", () => {
     vi.mocked(prisma.coachingSession.findMany).mockRejectedValue(new Error("stub.invalid"));
     vi.mocked(prisma.auditMission.findMany).mockRejectedValue(new Error("stub.invalid"));
 
-    const pipeline = await lireDossiersPipeline(MAINTENANT, { avecArchives: true });
+    const pipeline = (await lireDossiersPipeline(MAINTENANT, { avecArchives: true })).colonnes;
     expect(Object.values(pipeline).every((lignes) => lignes.length === 0)).toBe(true);
   });
 });
