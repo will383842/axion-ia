@@ -53,7 +53,7 @@ function segmentsConnus(): Set<string> {
 
   const routing = lire("src/i18n/routing.ts");
   for (const litteral of routing.matchAll(/"(\/[^"]*)"/g)) {
-    for (const segment of litteral[1].split("/")) {
+    for (const segment of (litteral[1] ?? "").split("/")) {
       if (segment && !segment.startsWith("[")) connus.add(segment);
     }
   }
@@ -68,7 +68,7 @@ function segmentsCites(): { bucket: string; segment: string }[] {
     const globs = Array.isArray(bucket.path) ? bucket.path : bucket.path ? [bucket.path] : [];
     for (const glob of globs) {
       for (const trouve of glob.matchAll(/chunks\/app\/\*\*\/([A-Za-z0-9._-]+)\//g)) {
-        cites.push({ bucket: bucket.name ?? "(sans nom)", segment: trouve[1] });
+        cites.push({ bucket: bucket.name ?? "(sans nom)", segment: trouve[1] ?? "" });
       }
     }
   }
@@ -102,7 +102,10 @@ describe("package.json — buckets size-limit", () => {
     const exception = /Exception\s*:\s*`(\/[a-z0-9-]+)`/.exec(agents);
     expect(exception, "Exception de budget introuvable dans AGENTS.md").not.toBeNull();
 
-    const route = exception![1]; // ex. « /appel »
+    const route = exception?.[1]; // ex. « /appel »
+    if (route === undefined) {
+      throw new Error("Exception de budget introuvable dans AGENTS.md");
+    }
     const bucket = BUCKETS.find((b) => (b.name ?? "").includes(route));
     expect(
       bucket,

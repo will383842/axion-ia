@@ -43,7 +43,11 @@ function listeJson(nom: string): string[] {
     trouve,
     `Affectation ${nom}='[…]' introuvable dans deploy-coolify.yml — la liste a été renommée ou reformatée. Ce verrou doit être mis à jour EN MÊME TEMPS, pas contourné.`,
   ).not.toBeNull();
-  const valeur: unknown = JSON.parse(trouve![1]);
+  const capture = trouve?.[1];
+  if (capture === undefined) {
+    throw new Error(`Affectation ${nom}='[…]' introuvable dans deploy-coolify.yml`);
+  }
+  const valeur: unknown = JSON.parse(capture);
   expect(Array.isArray(valeur)).toBe(true);
   return valeur as string[];
 }
@@ -114,7 +118,11 @@ describe("deploy-coolify.yml — job warm : revalidation ISR et purge CF ciblée
   it("chauffe en priorité les pages stratégiques, `/fr/sites-web-augmentes` comprise", () => {
     const trouve = /\bSTRATEGIC="([^"]*)"/.exec(WORKFLOW);
     expect(trouve, 'Affectation STRATEGIC="…" introuvable').not.toBeNull();
-    const strategiques = new Set(trouve![1].split(/\s+/).filter(Boolean));
+    const capture = trouve?.[1];
+    if (capture === undefined) {
+      throw new Error('Affectation STRATEGIC="…" introuvable dans deploy-coolify.yml');
+    }
+    const strategiques = new Set(capture.split(/\s+/).filter(Boolean));
 
     for (const p of ["/fr", "/fr/audit", "/fr/formations", "/fr/sites-web-augmentes"]) {
       expect(strategiques.has(p), `${p} doit figurer dans la chauffe prioritaire`).toBe(true);
