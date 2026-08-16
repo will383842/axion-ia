@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { imageWatermarkService } from "@/server/image-bank/services/image-watermark.service";
 import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
+import { getStorageBasePath } from "@/server/image-bank/utils/paths";
 
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_SEC = 60;
@@ -97,8 +98,16 @@ export async function GET(
       return NextResponse.json({ error: "Image file not found" }, { status: 404 });
     }
   } else {
-    // Images admin uploadées dans Docker volume
-    const storageBasePath = process.env.IMAGE_BANK_STORAGE_PATH ?? "/data/image-bank";
+    // Images admin uploadées dans le volume Docker.
+    //
+    // 🔴 GEO-094 — cette ligne recopiait la résolution du chemin avec un défaut
+    // DIFFÉRENT de celui de l'écriture : `/data/image-bank` ici contre
+    // `/var/data/image-bank` dans le pipeline d'import. Comme la variable n'est
+    // déclarée nulle part, les deux défauts s'appliquaient réellement en
+    // production — on lisait donc dans un dossier où rien n'a jamais été écrit.
+    // On appelle désormais la MÊME fonction que l'écriture : la divergence
+    // devient impossible par construction.
+    const storageBasePath = getStorageBasePath();
     const variantFilename = variant === "original" ? "original" : `image-${variant}.webp`;
     const variantPath = path.join(storageBasePath, image.id, variantFilename);
     try {
