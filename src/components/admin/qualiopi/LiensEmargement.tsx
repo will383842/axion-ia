@@ -50,6 +50,23 @@ export interface LiensEmargementProps {
     sessionId: string;
     motif: string;
   }) => Promise<{ data: { revoques: number } } | { error: string }>;
+  /**
+   * 🔴 L'ENVOI — il n'existait pas. `emettreAction` fabriquait le lien et
+   * l'affichait ; rien ne partait jamais. Constaté sur AXI-SESS-2026-005 : la
+   * stagiaire n'a jamais pu émarger, et le seul écran qui aurait pu le dire
+   * affichait un lien parfaitement valide.
+   *
+   * Geste SÉPARÉ de l'émission : réémettre révoque les jetons précédents, donc
+   * un envoi implicite à chaque affichage de l'écran enverrait des salves dont
+   * chacune annulerait la précédente.
+   */
+  envoyerAction: (input: {
+    sessionId: string;
+    enrollmentId?: string;
+  }) => Promise<
+    | { data: { envoyes: number; echecs: Array<{ stagiaireNom: string; motif: string }> } }
+    | { error: string }
+  >;
 }
 
 export function LiensEmargement({
@@ -57,6 +74,7 @@ export function LiensEmargement({
   hasCreneaux,
   emettreAction,
   revoquerAction,
+  envoyerAction,
 }: LiensEmargementProps): React.ReactElement {
   const router = useRouter();
   const [liens, setLiens] = useState<LienAffiche[] | null>(null);
@@ -98,6 +116,39 @@ export function LiensEmargement({
       setMessage(
         `${r.data.revoques} lien${r.data.revoques > 1 ? "s" : ""} révoqué${r.data.revoques > 1 ? "s" : ""}. Les anciens liens ne signent plus.`,
       );
+      router.refresh();
+    });
+  }
+
+  /**
+   * Envoie le lien par e-mail — à tous, ou à une seule personne.
+   *
+   * ⚠️ Chaque envoi émet un jeton NEUF et révoque le précédent du même
+   * stagiaire. Le texte de l'écran le dit : sans cela, un admin qui renvoie à
+   * un retardataire croirait laisser les autres liens intacts.
+   */
+  function envoyer(enrollmentId?: string) {
+    setErreur(null);
+    setMessage(null);
+    startTransition(async () => {
+      const r = await envoyerAction(
+        enrollmentId === undefined ? { sessionId } : { sessionId, enrollmentId },
+      );
+      if ("error" in r) {
+        setErreur(r.error);
+        return;
+      }
+      // 🔴 Les échecs sont NOMMÉS. « 3 envoyés » sur 4 stagiaires laisserait
+      // chercher lequel manque — sur une pièce probante, c'est inacceptable.
+      const echecs = r.data.echecs;
+      setMessage(
+        `${r.data.envoyes} lien${r.data.envoyes > 1 ? "s" : ""} envoyé${r.data.envoyes > 1 ? "s" : ""}.` +
+          (echecs.length > 0
+            ? ` Non envoyé à : ${echecs.map((e) => `${e.stagiaireNom} (${e.motif})`).join(" · ")}`
+            : ""),
+      );
+      // L'envoi a émis de nouveaux jetons : les liens affichés sont périmés.
+      setLiens(null);
       router.refresh();
     });
   }
@@ -147,6 +198,14 @@ export function LiensEmargement({
         </button>
         <button
           type="button"
+          onClick={() => envoyer()}
+          disabled={isPending}
+          className="admin-button"
+        >
+          {isPending ? "Envoi…" : "Envoyer les liens par e-mail"}
+        </button>
+        <button
+          type="button"
           onClick={revoquer}
           disabled={isPending}
           className="admin-button-ghost"
@@ -154,6 +213,11 @@ export function LiensEmargement({
           Révoquer tous les liens
         </button>
       </div>
+      <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+        Envoyer produit un lien neuf pour chaque destinataire et{" "}
+        <strong>invalide le lien précédent</strong> de cette personne. Un stagiaire qui avait déjà
+        reçu le sien devra utiliser le nouveau.
+      </p>
 
       {erreur !== null && (
         <p

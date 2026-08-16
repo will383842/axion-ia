@@ -73,6 +73,10 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   "qualiopi-enquete-entreprise",
   "qualiopi-attestation-disponible",
   "qualiopi-portail-acces",
+  // Retenir un lien d'émargement en validation lui retire sa raison d'être :
+  // il n'a de valeur que PENDANT la session, et le jeton expire 48 h après sa
+  // fin. Même raisonnement que la convocation.
+  "qualiopi-emargement-lien",
   "qualiopi-alerte-interne",
 ] as const;
 
@@ -101,6 +105,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-enquete-entreprise": "Enquête de satisfaction entreprise",
   "qualiopi-attestation-disponible": "Attestation disponible",
   "qualiopi-portail-acces": "Accès au portail",
+  "qualiopi-emargement-lien": "Lien de signature de présence",
   "qualiopi-alerte-interne": "Alerte interne",
   "qualiopi-relance-impayee": "Relance d'impayé",
 };

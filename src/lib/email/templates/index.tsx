@@ -94,6 +94,10 @@ import {
 } from "./qualiopi-enquete-entreprise";
 import { QualiopiPortailAccesEmail, qualiopiPortailAccesSubject } from "./qualiopi-portail-acces";
 import {
+  QualiopiEmargementLienEmail,
+  qualiopiEmargementLienSubject,
+} from "./qualiopi-emargement-lien";
+import {
   QualiopiAttestationDisponibleEmail,
   qualiopiAttestationDisponibleSubject,
 } from "./qualiopi-attestation-disponible";
@@ -353,6 +357,13 @@ const TEMPLATES: TemplateMap = {
   "qualiopi-portail-acces": {
     subject: qualiopiPortailAccesSubject,
     component: QualiopiPortailAccesEmail,
+  },
+  // Lien personnel de signature de présence. Gabarit DÉDIÉ : réemployer
+  // `qualiopi-portail-acces` ferait dire au message « vous pouvez ignorer cet
+  // email » à quelqu'un qui doit précisément ne pas l'ignorer.
+  "qualiopi-emargement-lien": {
+    subject: qualiopiEmargementLienSubject,
+    component: QualiopiEmargementLienEmail,
   },
   "qualiopi-alerte-interne": {
     subject: qualiopiAlerteInterneSubject,

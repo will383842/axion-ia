@@ -202,6 +202,12 @@ describe("Cohérence avec les noms de jobs réels", () => {
     "qualiopi-suivi-j30",
     "qualiopi-attestation-disponible",
     "qualiopi-portail-acces",
+    // Lien PERSONNEL de signature de présence (2026-08-16) — envoyé par
+    // `envoyerLiensPourSession`, depuis la console ou le cron J-0. Il
+    // n'existait pas : les jetons étaient fabriqués et affichés, jamais
+    // transmis, et la chaîne probante des indicateurs 9 et 11 reposait sur un
+    // envoi que personne n'avait écrit.
+    "qualiopi-emargement-lien",
     "qualiopi-alerte-interne",
     "qualiopi-relance-impayee",
     // Positionnement (2026-08-15) — envoyé par `envoyerPositionnement`, depuis

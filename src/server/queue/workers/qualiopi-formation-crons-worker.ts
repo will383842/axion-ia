@@ -72,6 +72,9 @@ export type FormationCronJobType =
   | "formation-crons.alertes"
   // T17 CLUSTER 3 — convocation réglementaire J-5 (off.9)
   | "formation-crons.convocation-j5"
+  // 2026-08-16 — liens de signature des sessions qui COMMENCENT aujourd'hui.
+  // Envoyer un lien n'engage pas l'organisme (signer, si) : automatisable.
+  | "formation-crons.liens-emargement-j0"
   // Hub facturation Phase 3 — marquage des factures en retard (STATUT SEUL,
   // AUCUN email : les relances sont 100 % manuelles, règle produit).
   | "formation-crons.factures-retard"
@@ -1207,6 +1210,116 @@ async function handleOffresFraicheur(): Promise<void> {
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// J-0 — les liens de signature partent le matin même
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Émet et envoie les liens de signature des sessions qui COMMENCENT aujourd'hui.
+ *
+ * 🔴 Pourquoi ce cron existe. Sur le premier dossier réel, AXI-SESS-2026-005,
+ * la stagiaire n'a jamais pu émarger : l'émission des liens était un geste
+ * manuel, sur un écran qu'il fallait penser à ouvrir le bon jour. Rien ne le
+ * rappelait, et la seule alerte possible se levait trois jours plus tard, soit
+ * un jour après l'expiration des jetons.
+ *
+ * La frontière du plan est respectée : **envoyer un lien de signature n'engage
+ * pas l'organisme** — c'est SIGNER qui engage, et signer reste le geste du
+ * stagiaire. L'automatiser est donc légitime, au même titre que la convocation.
+ *
+ * ⚠️ LA GARDE QUI COMPTE : on ne traite QUE les sessions dont AUCUN inscrit
+ * actif n'a de jeton vivant. Sans elle, une session de trois jours verrait ses
+ * liens réémis chaque matin — et comme toute émission révoque la précédente,
+ * les stagiaires arriveraient le jour 2 avec un lien mort dans leur boîte,
+ * pendant que la console afficherait « liens émis ». Le remède aurait fabriqué
+ * une panne plus subtile que la maladie.
+ *
+ * ⚠️ Une session sans journée déclarée n'est PAS forcée : `creerTokenInscription`
+ * refuse, et il a raison — une feuille sans horaires réels est insuffisamment
+ * probante. Le cron le journalise ; l'alerte `session_sans_dispositif_emargement`
+ * le rend visible dans la console le jour même.
+ */
+async function handleLiensEmargementJ0(): Promise<void> {
+  if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
+    console.log("[formation-crons] liens-emargement-j0: stub DB, skip");
+    return;
+  }
+
+  const now = new Date();
+  const debutJour = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0),
+  );
+  const finJour = new Date(debutJour.getTime() + 24 * 60 * 60 * 1000);
+
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { gte: debutJour, lt: finJour },
+      AND: [
+        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        // La garde anti-réémission : personne n'a de lien vivant.
+        {
+          enrollments: {
+            none: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
+          },
+        },
+      ],
+    },
+    select: { id: true, numero: true, _count: { select: { jours: true } } },
+    take: 50,
+  });
+
+  let traitees = 0;
+  let sansJournees = 0;
+  let enEchec = 0;
+
+  for (const session of sessions) {
+    if (session._count.jours === 0) {
+      sansJournees++;
+      console.error(
+        `[formation-crons] liens-emargement-j0: ${session.numero} commence aujourd'hui SANS journée déclarée — ` +
+          `aucun lien ne peut être émis, personne ne pourra signer. Déclarez les journées puis envoyez les liens.`,
+      );
+      continue;
+    }
+    try {
+      // ⚠️ Import DYNAMIQUE, et pas en tête de fichier. `envoi-liens.ts` tire
+      // `queues.ts`, qui instancie une file BullMQ au chargement du module. En
+      // tête, il entrerait dans le graphe de CE fichier — que plusieurs specs
+      // chargent en simulant `notifications-service` pour couper précisément
+      // cette chaîne. Elles se sont mises à échouer au collect, sur un module
+      // qu'elles ne testent pas. Même raisonnement que le commentaire de
+      // `types.ts` sur le cycle worker ↔ queues.
+      const { envoyerLiensPourSession } = await import("@/server/qualiopi/emargement/envoi-liens");
+      const r = await envoyerLiensPourSession({ sessionId: session.id, origine: "cron-j0" });
+      if (r.ok) {
+        traitees++;
+        if (r.echecs.length > 0) {
+          console.error(
+            `[formation-crons] liens-emargement-j0: ${session.numero} — ${r.echecs.length} stagiaire(s) sans lien : ` +
+              r.echecs.map((e) => `${e.stagiaireNom} (${e.motif})`).join(" · "),
+          );
+        }
+      } else {
+        enEchec++;
+        console.error(`[formation-crons] liens-emargement-j0: ${session.numero} — ${r.motif}`);
+      }
+    } catch (err) {
+      enEchec++;
+      console.error(
+        `[formation-crons] liens-emargement-j0: erreur session ${session.numero}:`,
+        err instanceof Error ? err.message : String(err),
+      );
+    }
+  }
+
+  console.log(
+    `[formation-crons] liens-emargement-j0: ${traitees} session(s) servie(s), ` +
+      `${sansJournees} sans journée déclarée, ${enEchec} en échec ` +
+      `(${sessions.length} session(s) démarrant aujourd'hui sans lien vivant)`,
+  );
+}
+
 const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.date-debut": handleDateDebut,
   "formation-crons.cloture-auto": handleClotureAuto,
@@ -1218,6 +1331,7 @@ const HANDLERS: Record<FormationCronJobType, () => Promise<void>> = {
   "formation-crons.enquete-entreprise-j30": handleEnqueteEntrepriseJ30,
   "formation-crons.alertes": handleAlertes,
   "formation-crons.convocation-j5": handleConvocationJ5,
+  "formation-crons.liens-emargement-j0": handleLiensEmargementJ0,
   "formation-crons.factures-retard": handleFacturesRetard,
   "formation-crons.plans-recurrents": handlePlansRecurrents,
   "formation-crons.devis-expiration": handleDevisExpiration,
