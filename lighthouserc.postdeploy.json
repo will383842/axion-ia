@@ -6,7 +6,8 @@
     "Décision : /fr/audit gated au seuil Google « good » CLS≤0.1 (au lieu de la cible interne 0.05). Reste un VRAI gate (une vraie régression >0.1 échoue, là où Google flaggerait aussi) mais l'artefact 0.0925 cesse de masquer les vraies régressions Web Vitals des 4 autres URLs. Toutes les autres pages restent à 0.05.",
     "Les 6 assertions Core Web Vitals en ERROR reproduisent celles de lighthouserc.json (seule la CLS de /fr/audit diverge). Les audits A11y/best-practices de lighthouserc.json sont en WARN (non-bloquants) → volontairement omis ici : ils ne gatent rien et ajoutent du bruit. Le score perf catégorie reste gated.",
     "Réversible : quand la cause racine police est traitée (ex. size-adjust/ascent-override calés manuellement, ou display:optional), supprimer ce fichier et repointer le step assert sur le défaut (lighthouserc.json).",
-    "Voir mémoire lhci-postdeploy-cls-audit-flake + AGENTS.md budgets Web Vitals."
+    "Voir mémoire lhci-postdeploy-cls-audit-flake + AGENTS.md budgets Web Vitals.",
+    "GEO-114 (2026-08-16) : le gate ne portait AUCUNE assertion INP, alors que le contrat de performance fixe INP <= 100 ms p75. Ajoutee ici en WARN et non en ERROR, deliberement : en laboratoire l'INP n'est mesure que si la page recoit une interaction, et Lighthouse rend 'non applicable' sinon. Le poser en erreur ferait echouer des deploiements sur une absence de mesure, pas sur une regression. Le passer en ERROR quand 2-3 deploiements auront etabli qu'une valeur est bien produite sur les 5 URLs."
   ],
   "ci": {
     "assert": {
@@ -14,23 +15,95 @@
         {
           "matchingUrlPattern": "^(?!.*/fr/audit/?$).*$",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.9 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 150 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
-            "speed-index": ["error", { "maxNumericValue": 2500 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.9
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.05
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 150
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         },
         {
           "matchingUrlPattern": ".*/fr/audit/?$",
           "assertions": {
-            "categories:performance": ["error", { "minScore": 0.9 }],
-            "largest-contentful-paint": ["error", { "maxNumericValue": 1800 }],
-            "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
-            "total-blocking-time": ["error", { "maxNumericValue": 150 }],
-            "first-contentful-paint": ["error", { "maxNumericValue": 1500 }],
-            "speed-index": ["error", { "maxNumericValue": 2500 }]
+            "categories:performance": [
+              "error",
+              {
+                "minScore": 0.9
+              }
+            ],
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1800
+              }
+            ],
+            "cumulative-layout-shift": [
+              "error",
+              {
+                "maxNumericValue": 0.1
+              }
+            ],
+            "total-blocking-time": [
+              "error",
+              {
+                "maxNumericValue": 150
+              }
+            ],
+            "first-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 1500
+              }
+            ],
+            "speed-index": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 100
+              }
+            ]
           }
         }
       ]
