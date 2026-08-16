@@ -133,7 +133,10 @@ const HOW_TO_X_IN_Y_CONFIG = buildConfig(
 Tutoriel pas-à-pas (5-8 étapes) pour réaliser X dans le contexte Y (ville).
 Chaque étape = h3 + paragraphe court + tip pratique. FAQ × 8. Mention
 intervention Axion-IA en alternative pro.`,
-  "/interventions/essentielle",
+  // GEO-081 — était `/interventions/essentielle`, qui enchaînait DEUX
+  // redirections (301 vers la variante préfixée, puis 308 vers `/formations`).
+  // On recommande directement la destination finale.
+  "/formations",
   `Faire faire par Axion-IA · ${ESSENTIELLE_CTA_PRICE}`,
 );
 
