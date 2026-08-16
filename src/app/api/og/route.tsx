@@ -366,6 +366,28 @@ export async function GET(req: Request) {
     {
       width: 1200,
       height: 675,
+      // 🔴 GEO-058 (audit GEO/AEO 2026-08-14) — AUCUNE image OG n'était mise en
+      // cache par le CDN. Mesuré en production le 2026-08-16 :
+      //   Cache-Control: public, max-age=0, must-revalidate
+      //   cf-cache-status: DYNAMIC
+      // Chaque fetch — chaque partage LinkedIn, chaque re-crawl, chaque aperçu
+      // Slack — refaisait donc un rendu Satori complet (~2 s) à l'origine, pour
+      // une image dont le contenu est ENTIÈREMENT déterminé par la query string.
+      //
+      // `immutable` est exact ici, et ce n'est pas un raccourci : le rendu est
+      // une fonction pure de `title` + `eyebrow`. Deux contenus différents ont
+      // deux URLs différentes ; la même URL rendra toujours la même image.
+      //
+      // ⚠️ CE QUE CE CORRECTIF NE RÉSOUT PAS. `title` est libre : n'importe qui
+      // peut fabriquer une URL inédite et déclencher un rendu. Le cache ne borne
+      // pas cet abus, il supprime seulement le coût RÉPÉTÉ sur nos propres URLs,
+      // qui sont un ensemble fini. Borner l'abus demanderait de signer les URLs
+      // (HMAC) — ce qui invaliderait toutes les URLs OG déjà émises et mises en
+      // cache par les réseaux sociaux. Arbitrage à part entière, pas un
+      // effet de bord de ce lot.
+      headers: {
+        "Cache-Control": "public, max-age=31536000, s-maxage=31536000, immutable",
+      },
       fonts: [
         { name: "Fraunces", data: await frauncesBold, style: "normal", weight: 700 },
         { name: "Fraunces", data: await frauncesItalic, style: "italic", weight: 400 },
