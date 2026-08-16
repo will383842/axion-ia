@@ -1,68 +1,25 @@
 // Worker BullMQ — envoi des emails (Sprint 15 / M8 step 4).
 //
 // Consume la queue `emails` : pour chaque job, render le template React Email
-// (via @react-email/render) puis envoie via Nodemailer SMTP localhost:2525.
+// (via @react-email/render) puis envoie via Nodemailer.
 //
-// En dev → Mailhog UI (http://localhost:8025) intercepte tout.
-// En prod → PowerMTA local sur Hetzner relai vers IP dediee.
+// En dev  → Mailhog UI (http://localhost:8025) intercepte tout.
+// En prod → SMTP **Zoho Mail** authentifié (`smtp.zoho.eu:587`), depuis le
+//           2026-05-13. L'en-tête annonçait « PowerMTA local sur Hetzner relai
+//           vers IP dédiée » jusqu'au 2026-08-16 : PowerMTA n'a jamais existé.
 
 import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
-import { sendEmail } from "@/lib/email/client";
+import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
+import { cloturerJournal } from "@/server/email/email-log";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
-
-/**
- * Journalise durablement un envoi dans EmailLog (traçabilité audit). FAIL-SOFT :
- * une erreur d'écriture ne doit JAMAIS transformer un envoi réussi en échec/retry
- * (log console seulement, pas de rethrow). Une ligne par tentative.
- */
-async function logEmail(entry: {
-  template: EmailJobName;
-  recipient: string;
-  locale: EmailJobData["locale"];
-  marketing: boolean;
-  attempts: number;
-  status: EmailLogStatus;
-  entityType?: string;
-  entityId?: string;
-  jobId?: string;
-  providerMessageId?: string;
-  error?: string;
-  sentAt?: Date;
-  failedAt?: Date;
-}): Promise<void> {
-  try {
-    await prisma.emailLog.create({
-      data: {
-        template: entry.template,
-        recipient: entry.recipient,
-        locale: entry.locale,
-        marketing: entry.marketing,
-        attempts: entry.attempts,
-        status: entry.status,
-        ...(entry.entityType ? { entityType: entry.entityType } : {}),
-        ...(entry.entityId ? { entityId: entry.entityId } : {}),
-        ...(entry.jobId ? { jobId: entry.jobId } : {}),
-        ...(entry.providerMessageId ? { providerMessageId: entry.providerMessageId } : {}),
-        ...(entry.error ? { error: entry.error } : {}),
-        ...(entry.sentAt ? { sentAt: entry.sentAt } : {}),
-        ...(entry.failedAt ? { failedAt: entry.failedAt } : {}),
-      },
-    });
-  } catch (e) {
-    console.error(
-      `[email-worker] EmailLog write failed (${entry.template} → ${entry.recipient}):`,
-      e instanceof Error ? e.message : String(e),
-    );
-  }
-}
 
 /**
  * Hub facturation — résout les pièces jointes d'un job (clé R2 → Buffer).
@@ -138,7 +95,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         });
         // Journalisation fail-soft : ne jamais rethrow après un envoi réussi
         // (sinon retry BullMQ → email renvoyé).
-        await logEmail({
+        await cloturerJournal({
           template,
           recipient: to,
           locale,
@@ -153,7 +110,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         });
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
-        await logEmail({
+        await cloturerJournal({
           template,
           recipient: to,
           locale,
@@ -181,7 +138,24 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     },
   );
 
-  worker.on("ready", () => console.log("[email-worker] ready"));
+  worker.on("ready", () => {
+    console.log("[email-worker] ready");
+    // Vérification du relais AU DÉMARRAGE (audit 2026-08-16). Sans elle, la
+    // première preuve qu'un identifiant Zoho a expiré est un e-mail qu'un
+    // stagiaire n'a pas reçu — constat a posteriori, sans date exploitable.
+    // Volontairement non bloquante : un relais injoignable ne doit pas empêcher
+    // le worker de consommer (les jobs échoueront et seront journalisés), et
+    // encore moins empêcher les quarante autres workers de démarrer.
+    void verifyTransport().then((r) => {
+      if (r.ok) {
+        console.log("[email-worker] relais SMTP joignable et authentifié ✓");
+      } else {
+        console.error(
+          `[email-worker] ⛔ RELAIS SMTP INUTILISABLE — aucun e-mail ne partira : ${r.error}`,
+        );
+      }
+    });
+  });
   worker.on("completed", (job) => console.log(`[email-worker] sent: ${job.name} → ${job.data.to}`));
   worker.on("failed", (job, err) => {
     console.error(`[email-worker] failed: ${job?.name} → ${job?.data?.to}: ${err.message}`);

@@ -22,7 +22,7 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 - **State** : `@tanstack/react-query`
 - **Animation** : `IntersectionObserver` natif + CSS transitions (`FadeInOnView`, ~0 KB shipped) — `prefers-reduced-motion` strict via `globals.css`
 - **Auth** : Auth.js v5 (`next-auth@beta`) + 2FA TOTP + WebAuthn (Sprint 16)
-- **Email** : `nodemailer` + `@react-email` → PowerMTA + MailWizz self-hosted (Sprint 19) — **Resend interdit**
+- **Email** : `nodemailer` + `@react-email` → SMTP **Zoho Mail** authentifié (`smtp.zoho.eu:587`, depuis le 2026-05-13) — **Resend interdit**. PowerMTA / MailWizz : jamais déployés, mention retirée le 2026-08-16.
 - **Queue** : `bullmq` + `ioredis` (Sprint 18)
 - **Tests** : `vitest` (unit) + `@playwright/test` × 5 projects (cross-browser + mobile) + `@axe-core/playwright`
 - **Quality** : Husky + lint-staged + commitlint + 4 anti-grep custom + size-limit

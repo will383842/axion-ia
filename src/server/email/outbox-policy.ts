@@ -133,6 +133,27 @@ export interface RegleAutomatisation {
  * `regles` ne doit contenir que des règles applicables au destinataire : c'est
  * à l'appelant de filtrer sur le bon `clientId`. Mélanger les clients ici
  * produirait une résolution silencieusement fausse.
+ *
+ * 🔴 Audit du 2026-08-16 — LA GARDE QUALIOPI N'EXISTAIT PAS.
+ *
+ * L'en-tête de ce fichier pose depuis le premier jour la règle fondatrice :
+ * « commercial → validation, Qualiopi → automatique », au motif que retenir une
+ * convocation exposerait un stagiaire à ne jamais la recevoir. Seule la
+ * première moitié était appliquée. `EMAILS_AUTOMATIQUES_PAR_DEFAUT` et
+ * `estEmailQualiopiAutomatique()` étaient exportés et testés, mais n'avaient
+ * AUCUN appelant en production : la liste ne servait qu'à peupler le menu
+ * déroulant de la page de réglages.
+ *
+ * Conséquence mesurée à la lecture : une seule règle enregistrée depuis la
+ * console — portée `global`, nature « toutes », mode `validation` — garait
+ * l'intégralité de la chaîne réglementaire. Convocations, rappels J-7,
+ * satisfaction J+1, suivi J+30, attestations, alertes internes.
+ *
+ * La garde ci-dessous ne supprime pas la liberté de réglage, elle en retire
+ * l'angle mort : une règle qui NOMME `qualiopi-convocation` reste souveraine
+ * (on peut vouloir relire une convocation précise, c'est un choix conscient) ;
+ * une règle attrape-tout ne peut plus emporter la chaîne réglementaire au
+ * passage, parce que personne ne l'a jamais voulu explicitement.
  */
 export function resoudreModeEnvoi(
   template: string,
@@ -145,13 +166,33 @@ export function resoudreModeEnvoi(
     return r ? r.mode : null;
   };
 
-  return (
-    trouve("client", true) ??
-    trouve("client", false) ??
-    trouve("global", true) ??
-    trouve("global", false) ??
-    modeParDefaut(template)
-  );
+  // ⚠️ L'ORDRE des quatre niveaux est celui documenté ci-dessus et ne change
+  // pas : le passage en boucle sert uniquement à distinguer, à chaque niveau,
+  // une règle qui NOMME le template d'une règle attrape-tout. Résoudre par une
+  // cascade de `??` obligerait à réordonner, et une règle client générale
+  // cesserait de primer sur une règle globale nominative.
+  const niveaux = [
+    { mode: trouve("client", true), attrapeTout: false },
+    { mode: trouve("client", false), attrapeTout: true },
+    { mode: trouve("global", true), attrapeTout: false },
+    { mode: trouve("global", false), attrapeTout: true },
+  ];
+
+  for (const niveau of niveaux) {
+    if (niveau.mode === null) continue;
+    // La garde : une règle qui ne nomme pas le template ne peut pas retenir un
+    // envoi dont le retard casse une obligation réglementaire.
+    if (
+      niveau.attrapeTout &&
+      niveau.mode === "validation" &&
+      estEmailQualiopiAutomatique(template)
+    ) {
+      return "auto";
+    }
+    return niveau.mode;
+  }
+
+  return modeParDefaut(template);
 }
 
 /**

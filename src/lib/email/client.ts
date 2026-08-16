@@ -1,8 +1,16 @@
 // Nodemailer wrapper (Sprint 15 / M8).
 //
-// Architecture transport (CLAUDE.md v6 §11) :
+// Architecture transport — ÉTAT RÉEL, corrigé le 2026-08-16 :
 //   dev   : Nodemailer → SMTP localhost:2525 → Mailhog UI 8025
-//   prod  : Nodemailer → SMTP localhost:2525 → PowerMTA → IP dediee Hetzner
+//   prod  : Nodemailer → SMTP **Zoho Mail authentifié** (`smtp.zoho.eu:587`,
+//           STARTTLS + AUTH), via `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`.
+//
+// ⚠️ L'en-tête annonçait « localhost:2525 → PowerMTA → IP dédiée Hetzner »
+// jusqu'au 2026-08-16. PowerMTA n'a jamais été déployé ; la migration vers Zoho
+// date du 2026-05-13. Trois autres fichiers portaient la même fiction
+// (`email-worker.ts`, `README.md`, `.env.example`) — tous corrigés dans le même
+// geste, parce qu'un opérateur qui suivait `.env.example` déployait une
+// configuration qui n'envoyait rien.
 //
 // Pas de Resend / SendGrid / Mailgun / Brevo (interdits par doctrine).
 //
@@ -39,6 +47,34 @@ const FROM_MARKETING = process.env.SMTP_FROM_MARKETING ?? "news@axion-ia.com";
 
 let _transport: Transporter | null = null;
 
+/**
+ * 🔴 Audit du 2026-08-16 — LE REPLI SILENCIEUX.
+ *
+ * `getTransport()` basculait de comportement sur la seule PRÉSENCE de
+ * `SMTP_USER` / `SMTP_PASS` : présents → Zoho authentifié et chiffré ; absents →
+ * `localhost:2525` avec `ignoreTLS: true`. Ces deux variables n'étaient
+ * déclarées NI dans `src/env.ts` (donc hors validation Zod) NI dans
+ * `.env.example`. Un secret perdu lors d'une reconfiguration Coolify, ou
+ * simplement mal orthographié, ne faisait donc pas échouer le démarrage : il
+ * faisait retomber la PRODUCTION sur un relais local inexistant, en clair.
+ *
+ * On refuse désormais ce repli en production. Le choix de lever ICI plutôt que
+ * d'exiger les variables dans `env.ts` est délibéré : une exigence au niveau de
+ * l'env ferait échouer le BOOT du conteneur si jamais les variables portaient
+ * un autre nom côté Coolify — on transformerait un défaut d'e-mail en panne de
+ * site. Lever ici fait échouer les ENVOIS, bruyamment, avec un message explicite
+ * consigné dans `email_logs` — et le reste de l'application continue de tourner.
+ */
+function assertTransportUtilisable(hasAuth: boolean, host: string, port: number): void {
+  if (hasAuth) return;
+  if (process.env.NODE_ENV !== "production") return;
+  throw new Error(
+    `[email] configuration SMTP incomplète en production : SMTP_USER et/ou SMTP_PASS absents, ` +
+      `le transport retomberait sur ${host}:${port} SANS authentification ni chiffrement. ` +
+      `Envoi refusé plutôt que dégradé en silence — poser les deux variables dans Coolify (scope RUN).`,
+  );
+}
+
 function getTransport(): Transporter {
   if (_transport) return _transport;
   const host = process.env.SMTP_HOST ?? "localhost";
@@ -46,6 +82,8 @@ function getTransport(): Transporter {
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   const hasAuth = Boolean(user && pass);
+
+  assertTransportUtilisable(hasAuth, host, port);
 
   _transport = nodemailer.createTransport({
     host,
@@ -62,6 +100,26 @@ function getTransport(): Transporter {
       : { ignoreTLS: true }),
   });
   return _transport;
+}
+
+/**
+ * Vérifie que le relais SMTP est joignable ET que l'authentification passe.
+ *
+ * Personne ne le faisait : aucun `verify()` nulle part dans le dépôt. La
+ * première preuve qu'un identifiant Zoho avait expiré était donc un e-mail non
+ * reçu par un stagiaire — constat a posteriori, sans horodatage exploitable.
+ *
+ * Appelé une fois au démarrage du worker. NE LÈVE PAS : un relais injoignable
+ * ne doit pas empêcher les quarante autres workers de démarrer. Retourne le
+ * verdict, à charge de l'appelant de crier.
+ */
+export async function verifyTransport(): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    await getTransport().verify();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
 }
 
 export interface SendEmailParams {

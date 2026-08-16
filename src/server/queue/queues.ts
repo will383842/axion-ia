@@ -9,6 +9,7 @@
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
+import { journaliserEnAttente } from "@/server/email/email-log";
 import type {
   EmailJobData,
   EmailJobName,
@@ -772,11 +773,56 @@ export async function enqueueEmail(
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
   if (options?.jobId) addOptions["jobId"] = options.jobId;
-  await emailsQueue.add(
+  const job = await emailsQueue.add(
     template,
     data,
     Object.keys(addOptions).length > 0 ? addOptions : undefined,
   );
+
+  // 🔴 Audit du 2026-08-16 — la ligne « en attente » qui manquait.
+  //
+  // `EmailLogStatus.pending` existait au schéma et n'était JAMAIS écrit : le
+  // worker ne créait la ligne qu'à l'issue de la tentative. Un job enfilé mais
+  // jamais consommé — worker mort, Redis coupé — ne laissait donc aucune trace,
+  // et la console affichait « 0 échec », rigoureusement indistinguable de
+  // « aucun e-mail à envoyer ».
+  //
+  // On pose la ligne ICI, le worker la clôt. Une ligne restée `pending` est
+  // désormais le signal d'une chaîne rompue, et `verifierSanteEmails()` la lit.
+  //
+  // `await` volontaire plutôt qu'un `void` : la fonction ne lève jamais (elle
+  // avale ses propres erreurs), et l'attendre garantit que la ligne existe
+  // avant que le worker ne cherche à la clôturer — sinon on créerait deux
+  // lignes pour un seul envoi sur les files rapides.
+  //
+  // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
+  // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
+  // il porte son propre suivi, plus riche, sur `SubmissionReply`
+  // (`deliveryStatus` / `sentAt` / `failedAt` / `errorMsg` / `retryCount`), et
+  // le worker sort par un `return` anticipé sans passer par `cloturerJournal`.
+  // Deux conséquences si on l'enfilait ici :
+  //   - la ligne resterait `pending` À VIE, et `verifierSanteEmails()` lèverait
+  //     une alerte CRITIQUE « e-mails bloqués en file » dès la première réponse
+  //     admin — une surveillance neuve qui crie sur son propre bruit se fait
+  //     désarmer en trois jours ;
+  //   - elle porterait `recipient: ""`, l'appelant passant une adresse vide
+  //     exprès (aucune PII dans le payload de file, le worker la déchiffre
+  //     depuis la base).
+  // Le fait que la page « E-mails envoyés » omette les réponses admin reste un
+  // constat OUVERT de l'audit — il se corrige côté lecture, pas en fabriquant
+  // ici des lignes qui ne seront jamais closes.
+  if (template !== "submission-reply") {
+    await journaliserEnAttente({
+      template,
+      recipient: to,
+      locale,
+      marketing: options?.marketing === true,
+      jobId: job.id,
+      ...(options?.entityType ? { entityType: options.entityType } : {}),
+      ...(options?.entityId ? { entityId: options.entityId } : {}),
+    });
+  }
+
   return { enqueued: true };
 }
 
@@ -1531,6 +1577,16 @@ export async function bootRepeatableJobs(): Promise<void> {
         type: "formation-crons.offres-fraicheur",
         pattern: "15 8 * * 1",
         jobId: "formation-crons-offres-fraicheur-cron",
+      },
+      // Surveillance de la chaîne d'envoi (audit 2026-08-16) — HORAIRE, et non
+      // quotidienne comme ses voisines. Une panne d'e-mails découverte le
+      // lendemain matin, c'est une journée de convocations et d'attestations
+      // perdue ; à l'heure, c'est un incident. `:20` pour ne pas tomber sur la
+      // minute ronde où se pressent les autres files.
+      {
+        type: "formation-crons.email-sante",
+        pattern: "20 * * * *",
+        jobId: "formation-crons-email-sante-cron",
       },
     ];
 
