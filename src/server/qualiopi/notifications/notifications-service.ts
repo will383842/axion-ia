@@ -218,8 +218,22 @@ export async function envoyerConvocation(enrollmentId: string): Promise<void> {
       numeroSession: session.numero,
       lienPortail,
     },
-    { jobId: `qualiopi-convocation-${enrollmentId}` },
+    // 🔴 Clé de DATE, comme rappel-j7 / satisfaction-j1 / suivi-j30. La
+    // convocation etait le seul envoi a ne pas en porter, alors qu'elle est le
+    // seul a porter une obligation reglementaire (ind. 9). Sans elle, la
+    // deduplication BullMQ expire au min(7 jours, 1 000 jobs) et un second
+    // envoi redevient possible sans que rien ne le dise.
+    { jobId: `qualiopi-convocation-${enrollmentId}-${dateKey(session.dateDebut)}` },
   );
+
+  // 🔴 ÉTAT, et non fenêtre de date. C'est cette colonne qui rend le cron
+  // rattrapant : tant qu'elle est nulle, l'inscription reste candidate. Posée
+  // APRÈS l'enqueue — poser avant ferait mentir la colonne si la file est
+  // indisponible, et le rattrapage ne reviendrait jamais.
+  await prisma.enrollment.update({
+    where: { id: enrollmentId },
+    data: { convocationEnvoyeeAt: new Date() },
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
