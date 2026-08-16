@@ -7,6 +7,7 @@ import { FOUNDER, BRAND } from "@/lib/brand";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
+import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 
 // SITE_URL vit désormais dans `@/lib/site-url`, un module tier-0 sans autre
 // dépendance que `@/env`. Ce fichier fait 2 249 lignes et tire tout le graphe
@@ -1440,6 +1441,7 @@ export function buildLocalBusinessJsonLd({
   openingHours,
 }: LocalBusinessJsonLdInput) {
   const url = `${SITE_URL}/${locale}${path}`;
+  const sameAsAnnuaires = buildLocalBusinessSameAsFR();
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -1456,6 +1458,24 @@ export function buildLocalBusinessJsonLd({
       name: areaServed.name,
     },
     knowsLanguage: ["fr", "en"],
+    // 🔴 GEO-046 (audit GEO/AEO 2026-08-14) — `buildLocalBusinessSameAsFR()`
+    // existait, exporte, teste... et N'AVAIT AUCUN APPELANT. Le module de
+    // citations locales etait donc inerte pour DEUX raisons independantes : ses
+    // donnees sont vides, et rien ne l'appelait. On corrige ici la seconde.
+    //
+    // Aujourd'hui cette liste est VIDE (toutes les entrees ont `listingUrl:
+    // null`) : la cle `sameAs` n'est donc pas emise, et le JSON-LD est
+    // strictement inchange. Ce qui change, c'est que le jour ou les URLs sont
+    // renseignees, elles ARRIVENT — au lieu de rester dans un module que
+    // personne n'interroge.
+    //
+    // ⚠️ ARBITRAGE A4 — NE PAS renseigner ces `listingUrl` avant d'avoir
+    // CORRIGE les fiches correspondantes. Les deux plus visibles (LinkedIn, Les
+    // Pepites Tech) ancrent aujourd'hui l'entite a PARIS et ecorchent le nom du
+    // fondateur : les declarer en `sameAs` reviendrait a SIGNER SOI-MEME
+    // l'erreur que les moteurs arbitrent deja contre nous. L'ordre est :
+    // corriger les fiches (R-01 a R-03), puis renseigner ici.
+    ...(sameAsAnnuaires.length > 0 ? { sameAs: [...sameAsAnnuaires] } : {}),
     ...(priceRange ? { priceRange } : {}),
     ...(address
       ? {

@@ -369,7 +369,24 @@ export default async function BlogArticle({ params }: Props) {
   const articleJsonLd = isDbHtml
     ? buildBlogPostingJsonLd({
         title: view.title,
-        description: view.excerpt,
+        // 🔴 GEO-044 (audit GEO/AEO 2026-08-14) — `view.excerpt` est VIDE sur les
+        // 126 articles : le worker de publication ne l'écrit jamais. Le JSON-LD
+        // servait donc `"description": ""` — mesuré en production le 2026-08-16.
+        // Un `BlogPosting` sans description prive les moteurs de réponse du seul
+        // résumé structuré qu'ils peuvent citer sans lire la page entière.
+        //
+        // On réutilise EXACTEMENT le calcul de la balise `<meta name="description">`
+        // de la même page (`generateMetadata`, l.114) : même helper, mêmes replis
+        // (metaDescription → excerpt → directAnswer). Deux descriptions calculées
+        // différemment sur une même page finiraient par diverger, et c'est
+        // précisément ce genre d'écart que l'audit relève ailleurs.
+        //
+        // Corriger le worker ne réparerait que les articles FUTURS ; ce repli au
+        // rendu couvre aussi les 126 déjà publiés, sans backfill.
+        description: ensureArticleMetaDescription(view.metaDescription ?? view.excerpt, {
+          excerpt: view.excerpt,
+          directAnswer: view.directAnswer,
+        }),
         slug,
         locale: loc,
         publishedAt: view.publishedAt,
