@@ -92,9 +92,22 @@ describe("l'ordre des variables", () => {
 });
 
 describe("🔴 la garde qui empêche le retour d'une boîte personnelle", () => {
-  it("aucun fichier source ne code en dur une adresse gmail/outlook/yahoo", () => {
+  it("aucun fichier source ne code en dur une adresse hors du domaine de l'organisme", () => {
     // Balayage statique : c'est la SEULE garde qui attrape une recopie à la
     // main dans un troisième fichier — exactement ce qui s'était produit.
+    //
+    // 🔴 RÈGLE INVERSÉE le 16/08, après qu'une vérification adversariale a
+    // prouvé par exécution que la version précédente laissait passer
+    // `williamsjullin@gmail.com` — L'ADRESSE EXACTE DU DÉFAUT D'ORIGINE —
+    // dès qu'on l'écrivait entre backticks au lieu de guillemets. Elle laissait
+    // passer aussi proton, icloud, orange, laposte : sa liste de domaines
+    // interdits était fermée, donc contournable par n'importe quel domaine
+    // absent de la liste.
+    //
+    // Une garde qui échoue sur son propre cas d'école est pire qu'une absence
+    // de garde : elle rassure. On n'énumère donc plus ce qui est INTERDIT
+    // (liste ouverte, impossible à tenir) mais ce qui est AUTORISÉ.
+    //
     // ⚠️ On ne teste pas ses propres commentaires : ce fichier et le module
     // qu'il couvre CITENT l'ancienne adresse pour expliquer le défaut.
     const racine = join(process.cwd(), "src");
@@ -102,6 +115,68 @@ describe("🔴 la garde qui empêche le retour d'une boîte personnelle", () => 
       join("lib", "destinataires-internes.ts"),
       join("lib", "destinataires-internes.spec.ts"),
     ];
+
+    /**
+     * ⚠️ POURQUOI UNE LISTE DE DOMAINES INTERDITS, ET NON UNE LISTE D'AUTORISÉS.
+     *
+     * La règle inverse — « toute adresse littérale hors `@axion-ia.com` est
+     * suspecte » — a été essayée le 16/08 et rendue : **155 correspondances**,
+     * presque toutes légitimes. Des adresses d'exemple dans les formulaires
+     * (`vous@entreprise.fr`, `prenom.nom@exemple.fr`, qui apprennent au visiteur
+     * ce qu'on attend de lui) et des fixtures de test (`claire@meridian.fr`,
+     * `a@x.fr`), qui ne désignent personne et ne reçoivent rien.
+     *
+     * Une garde qui signale 155 lignes légitimes est une garde qu'on désactive
+     * dans la semaine. Le défaut visé est précis — **une boîte PERSONNELLE
+     * utilisée comme destinataire de repli** — et la mesure doit l'être aussi.
+     *
+     * La liste s'élargit donc au lieu de s'inverser, et elle couvre les
+     * fournisseurs grand public réellement susceptibles d'héberger la boîte
+     * d'un salarié.
+     */
+    const DOMAINES_PERSONNELS = [
+      "gmail",
+      "googlemail",
+      "outlook",
+      "hotmail",
+      "live",
+      "msn",
+      "yahoo",
+      "ymail",
+      "icloud",
+      "me\\.com",
+      "mac\\.com",
+      "proton",
+      "protonmail",
+      "aol",
+      "gmx",
+      "zoho",
+      "yandex",
+      "mail\\.ru",
+      "free",
+      "orange",
+      "wanadoo",
+      "sfr",
+      "laposte",
+      "bbox",
+      "numericable",
+      "neuf",
+      "aliceadsl",
+    ].join("|");
+
+    /**
+     * 🔴 Les trois délimiteurs, backticks COMPRIS.
+     *
+     * C'est l'omission du backtick qui rendait la garde contournable : la
+     * vérification adversariale du 16/08 a prouvé par exécution qu'un
+     * `` `williamsjullin@gmail.com` `` — **l'adresse exacte du défaut
+     * d'origine** — passait au vert. Une garde qui échoue sur son propre cas
+     * d'école est pire qu'une absence de garde : elle rassure.
+     */
+    const ADRESSE_PERSO = new RegExp(
+      `["'\`][\\w.+-]+@([\\w.-]*\\.)?(${DOMAINES_PERSONNELS})\\.[a-z]{2,}["'\`]`,
+      "i",
+    );
 
     const suspects: string[] = [];
     const parcourir = (dossier: string): void => {
@@ -114,13 +189,39 @@ describe("🔴 la garde qui empêche le retour d'une boîte personnelle", () => 
         if (!/\.(ts|tsx)$/.test(entree)) continue;
         if (exclus.some((e) => chemin.endsWith(e))) continue;
         const contenu = readFileSync(chemin, "utf8");
-        if (/["'][\w.+-]+@(gmail|outlook|hotmail|yahoo|free)\.[a-z]{2,}["']/i.test(contenu)) {
-          suspects.push(chemin);
-        }
+        if (ADRESSE_PERSO.test(contenu)) suspects.push(chemin);
       }
     };
     parcourir(racine);
 
     expect(suspects).toEqual([]);
+  });
+
+  it("🔴 attrape l'adresse du défaut d'origine dans les TROIS délimiteurs", () => {
+    // Le contournement prouvé : seuls les guillemets étaient reconnus.
+    const DOMAINES = "gmail|outlook|proton|icloud|orange|laposte";
+    const regex = new RegExp(`["'\`][\\w.+-]+@([\\w.-]*\\.)?(${DOMAINES})\\.[a-z]{2,}["'\`]`, "i");
+
+    expect(regex.test('const a = "williamsjullin@gmail.com";')).toBe(true);
+    expect(regex.test("const a = 'williamsjullin@gmail.com';")).toBe(true);
+    expect(regex.test("const a = `williamsjullin@gmail.com`;")).toBe(true);
+  });
+
+  it("🔴 attrape les autres fournisseurs grand public, pas seulement les quatre d'origine", () => {
+    const DOMAINES = "gmail|outlook|proton|icloud|orange|laposte";
+    const regex = new RegExp(`["'\`][\\w.+-]+@([\\w.-]*\\.)?(${DOMAINES})\\.[a-z]{2,}["'\`]`, "i");
+
+    for (const a of ["will@proton.me", "will@icloud.com", "will@orange.fr", "will@laposte.net"]) {
+      expect(regex.test(`const x = "${a}";`), a).toBe(true);
+    }
+  });
+
+  it("laisse passer une adresse d'exemple ou de fixture — sinon la garde serait désactivée", () => {
+    const DOMAINES = "gmail|outlook|proton|icloud";
+    const regex = new RegExp(`["'\`][\\w.+-]+@([\\w.-]*\\.)?(${DOMAINES})\\.[a-z]{2,}["'\`]`, "i");
+
+    for (const a of ["vous@entreprise.fr", "prenom.nom@exemple.fr", "claire@meridian.fr"]) {
+      expect(regex.test(`const x = "${a}";`), a).toBe(false);
+    }
   });
 });

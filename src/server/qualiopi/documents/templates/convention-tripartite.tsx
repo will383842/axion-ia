@@ -93,8 +93,21 @@ export interface ConventionTripartiteData {
   sanction?: string;
   // Conditions financières
   prixHt: number;
-  montantPrisEnCharge: number;
-  resteAChargeClient: number;
+  /**
+   * Montant TOTAL pris en charge par le financeur, en euros.
+   *
+   * 🔴 `null` = **non établi**, et il faut le dire. Ce champ recevait
+   * auparavant `priseEnChargeMontantCents / 100` — c'est-à-dire un TARIF lu
+   * comme un total : un OPCO couvrant 40 €/h sur 14 h et 8 participants faisait
+   * imprimer « 40,00 € » au lieu de 4 480 €, sur une pièce signée par trois
+   * parties, avec un reste à charge faux du même écart.
+   *
+   * ⚠️ Ne JAMAIS remplacer ce `null` par 0 : un zéro affirme que le financeur
+   * ne prend rien en charge. L'absence de donnée n'est pas une donnée nulle.
+   */
+  montantPrisEnCharge: number | null;
+  /** Reste à charge, en euros. `null` quand la prise en charge n'est pas établie. */
+  resteAChargeClient: number | null;
   // Date convention
   dateConvention: string;
   /**
@@ -300,14 +313,33 @@ export function ConventionTripartitePdf({
             <Text style={local.amountLabel}>Prix total HT</Text>
             <Text style={local.amountValue}>{formatEur(data.prixHt)}</Text>
           </View>
+          {/* 🔴 Un montant NON ÉTABLI se dit, il ne s'imprime pas à zéro.
+              « 0,00 € » sur une convention affirme que le financeur ne prend
+              rien en charge — une affirmation, et fausse. « À déterminer »
+              décrit exactement l'état du dossier : le barème n'a pas encore été
+              relevé, ou son unité n'a pas été saisie. */}
           <View style={local.amountRow}>
             <Text style={local.amountLabel}>Prise en charge OPCO ({data.opco.nom})</Text>
-            <Text style={local.amountValue}>{formatEur(data.montantPrisEnCharge)}</Text>
+            <Text style={local.amountValue}>
+              {data.montantPrisEnCharge !== null
+                ? formatEur(data.montantPrisEnCharge)
+                : "À déterminer"}
+            </Text>
           </View>
           <View style={local.amountRow}>
             <Text style={local.amountLabel}>Reste à charge client</Text>
-            <Text style={local.amountValue}>{formatEur(data.resteAChargeClient)}</Text>
+            <Text style={local.amountValue}>
+              {data.resteAChargeClient !== null
+                ? formatEur(data.resteAChargeClient)
+                : "À déterminer"}
+            </Text>
           </View>
+          {data.montantPrisEnCharge === null ? (
+            <Text style={local.subrogationNote}>
+              Le montant de prise en charge sera arrêté par le financeur dans son accord écrit ; le
+              solde correspondant restera dû par le client.
+            </Text>
+          ) : null}
           {/*
             🔴 F25 — la mention TVA vient du régime CONFIGURÉ, jamais d'une
             constante. L'exonération 261-4-4° était imprimée en dur alors que

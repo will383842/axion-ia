@@ -14,6 +14,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { opcoLabel } from "./opco-referentiel";
+import { montantPrisEnChargeCents } from "./prise-en-charge-montant";
 import {
   construireLignesPayeurs,
   montantDemandeFinanceurCents,
@@ -36,7 +37,14 @@ const SELECT_SESSION_PAYEURS = {
   financementType: true,
   opcoSubrogation: true,
   numeroDossierOpco: true,
+  // 🔴 Le tarif NE SE LIT PAS SEUL — cf. `prise-en-charge-montant.ts`. L'unité
+  // et les plafonds décident de ce qu'il vaut ; la durée et l'effectif aussi.
   priseEnChargeMontantCents: true,
+  priseEnChargeUnite: true,
+  priseEnChargePlafondFormationCents: true,
+  priseEnChargePlafondAnnuelCents: true,
+  nbParticipantsPrevus: true,
+  formation: { select: { dureeHeures: true } },
   edofVerifieAt: true,
   ftDispositif: true,
   client: { select: { id: true, raisonSociale: true, opcoIdentifie: true } },
@@ -71,7 +79,23 @@ function contexteDepuisSession(session: SessionPourPayeurs): ContexteSessionPaye
     ftDispositif: session.ftDispositif,
     montantHtCents: session.montantHtCents,
     opcoSubrogation: session.opcoSubrogation,
-    priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+    // 🔴 Le MONTANT CALCULÉ, pas le tarif brut. `priseEnChargeMontantCents` est
+    // un tarif dont le sens dépend de l'unité : le passer tel quel plafonnait
+    // la part financeur à « 40 € » quand l'OPCO couvre 40 €/h × 14 h × 8
+    // participants. Les créances étaient fausses du même facteur.
+    //
+    // `null` se propage volontairement : `construireLignesPayeurs` traite un
+    // plafond nul comme « pas de plafond connu » et laisse le financeur couvrir
+    // ce qui le concerne — c'est la demande, avant la réponse. Un 0 aurait
+    // signifié « refus », ce qui n'est pas la même chose.
+    priseEnChargeMontantCents: montantPrisEnChargeCents({
+      priseEnChargeMontantCents: session.priseEnChargeMontantCents,
+      priseEnChargeUnite: session.priseEnChargeUnite,
+      priseEnChargePlafondFormationCents: session.priseEnChargePlafondFormationCents,
+      priseEnChargePlafondAnnuelCents: session.priseEnChargePlafondAnnuelCents,
+      dureeHeures: session.formation?.dureeHeures ?? null,
+      nbParticipants: session.nbParticipantsPrevus,
+    }),
     client: session.client,
   };
 }
@@ -302,7 +326,8 @@ export async function creerDossierDepuisSession(sessionId: string): Promise<{ id
           ? "mixte"
           : "opco";
 
-  const priseEnCharge = session.priseEnChargeMontantCents ?? 0;
+  // Montant CALCULÉ (unité, durée, effectif, plafonds), jamais le tarif brut.
+  const priseEnCharge = contexteDepuisSession(session).priseEnChargeMontantCents ?? 0;
 
   // 🔴 T4a — les créances viennent des INSCRIPTIONS quand il y en a.
   //

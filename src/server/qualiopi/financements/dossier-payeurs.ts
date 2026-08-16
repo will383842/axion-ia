@@ -273,8 +273,17 @@ export function construireLignesPayeurs(
  * ou deux entreprises, choisies par l'ordre de la requête. Personne ne pourrait
  * expliquer au client pourquoi c'est lui.
  *
- * L'arrondi en centimes est donné au siège le plus gros : le total ventilé est
- * ainsi rigoureusement égal au plafond, sans centime perdu ni inventé.
+ * Le reliquat d'arrondi — et ce que les sièges saturés n'ont pas pu absorber —
+ * est replacé sur les sièges qui ont encore de la place, du plus gros au plus
+ * petit. Le financeur reçoit ainsi exactement son plafond dès lors que le brut
+ * le permet, et le total ventilé reste rigoureusement égal au dû.
+ *
+ * ⚠️ Cette affirmation était FAUSSE avant le 16/08 et le commentaire la
+ * proclamait quand même : le cumul se faisait sur la part non bornée, si bien
+ * qu'un siège saturé faisait silencieusement basculer sa différence sur les
+ * entreprises. Prouvé par exécution, corrigé, et couvert par un test à sièges
+ * très hétérogènes — celui qui existait prenait trois sièges quasi égaux, où
+ * l'écart est nul par construction.
  */
 function appliquerPlafondFinanceur(
   creances: ReadonlyArray<CreanceSiege>,
@@ -290,19 +299,51 @@ function appliquerPlafondFinanceur(
   const plafond = sansPlafond ? brutFinanceur : Math.max(0, Math.min(plafondCents, brutFinanceur));
 
   // Part de chaque siège financé, au prorata du plafond.
+  //
+  // 🔴 CORRIGÉ le 16/08, défaut prouvé par exécution lors de la vérification
+  // adversariale. La boucle stockait la part BORNÉE (`Math.min(part,
+  // c.montantCents)`) mais cumulait la part NON bornée. Le dernier siège
+  // recevait donc `plafond - cumul` calculé sur un cumul surévalué, puis se
+  // faisait raboter à son propre montant — et l'écart disparaissait.
+  //
+  // Cas qui le démontre : 40 sièges à 3 c + 1 siège à 500 c, plafond 619.
+  // Le financeur ne recevait que 580 au lieu de 619 : **39 centimes basculaient
+  // en silence sur les entreprises**. Le total restait juste (rien n'était
+  // perdu), mais la répartition ne l'était pas — et le commentaire affirmait
+  // « rigoureusement égal au plafond ».
+  //
+  // Deux passes plutôt qu'une : la première distribue au prorata en bornant
+  // chaque siège, la seconde replace le reliquat sur les sièges qui peuvent
+  // encore l'absorber. Sans elle, un plafond n'est atteint que si aucun siège
+  // ne sature — c'est-à-dire dans le cas facile.
   const parts = new Map<CreanceSiege, number>();
-  if (brutFinanceur > 0) {
-    let cumul = 0;
+  if (brutFinanceur > 0 && plafond > 0) {
+    let distribue = 0;
     // Le plus gros siège en dernier : c'est lui qui absorbe l'arrondi.
     const ordonnes = [...avecFinanceur].sort((a, b) => a.montantCents - b.montantCents);
-    ordonnes.forEach((c, i) => {
-      const dernier = i === ordonnes.length - 1;
-      const part = dernier
-        ? plafond - cumul
-        : Math.floor((c.montantCents * plafond) / brutFinanceur);
-      parts.set(c, Math.max(0, Math.min(part, c.montantCents)));
-      cumul += part;
-    });
+    for (const c of ordonnes) {
+      const voulu = Math.floor((c.montantCents * plafond) / brutFinanceur);
+      const part = Math.max(0, Math.min(voulu, c.montantCents, plafond - distribue));
+      parts.set(c, part);
+      distribue += part;
+    }
+
+    // Reliquat : arrondis vers le bas + sièges saturés. On le replace sur les
+    // sièges qui ont encore de la place, du plus gros au plus petit — c'est
+    // celui qui peut absorber le plus qui doit être servi en premier, sinon on
+    // repasse plusieurs fois sur des sièges pleins.
+    let reliquat = plafond - distribue;
+    if (reliquat > 0) {
+      for (const c of [...avecFinanceur].sort((a, b) => b.montantCents - a.montantCents)) {
+        if (reliquat <= 0) break;
+        const dejaPris = parts.get(c) ?? 0;
+        const place = c.montantCents - dejaPris;
+        if (place <= 0) continue;
+        const ajout = Math.min(place, reliquat);
+        parts.set(c, dejaPris + ajout);
+        reliquat -= ajout;
+      }
+    }
   }
 
   for (const creance of creances) {

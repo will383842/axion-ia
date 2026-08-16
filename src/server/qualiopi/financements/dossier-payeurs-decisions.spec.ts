@@ -195,3 +195,49 @@ describe("🔴 l'OPCO ANNULE sa prise en charge", () => {
     expect(lignes[0]).toMatchObject({ payeurType: "entreprise", montantAttenduCents: 150000 });
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Le reliquat d'arrondi — defaut prouve par execution le 16/08
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Le commentaire affirmait « le total ventile est rigoureusement egal au
+// plafond ». C'etait FAUX : le cumul se faisait sur la part NON bornee, si bien
+// qu'un siege sature faisait basculer sa difference sur les entreprises, en
+// silence. Le test cense couvrir le cas prenait trois sieges quasi egaux, ou
+// l'ecart est nul PAR CONSTRUCTION — il ne pouvait pas rougir.
+
+describe("le financeur recoit EXACTEMENT son plafond, meme a sieges heterogenes", () => {
+  it("40 petits sieges + 1 gros : le siege sature ne mange pas le plafond", () => {
+    const petits = Array.from({ length: 40 }, (_, i) => siegeOpco(`P${i}`, 3, `cp-${i}`));
+    const gros = siegeOpco("Gros", 500, "cg");
+
+    const lignes = construireLignesPayeurs([...petits, gros], SESSION_SUBROGEE, {
+      plafondFinanceurCents: 619,
+    });
+
+    const opco = lignes.find((l) => l.payeurType === "opco_subroge");
+    expect(opco?.montantAttenduCents).toBe(619);
+
+    // Et le total du ne bouge pas : 40 x 3 + 500 = 620.
+    expect(lignes.reduce((n, l) => n + l.montantAttenduCents, 0)).toBe(620);
+  });
+
+  it("un plafond egal au brut donne TOUT au financeur, sans reliquat perdu", () => {
+    const sieges = [siegeOpco("A", 7, "a"), siegeOpco("B", 11, "b"), siegeOpco("C", 13, "c")];
+    const lignes = construireLignesPayeurs(sieges, SESSION_SUBROGEE, {
+      plafondFinanceurCents: 31,
+    });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]?.payeurType).toBe("opco_subroge");
+    expect(lignes[0]?.montantAttenduCents).toBe(31);
+  });
+
+  it("plafond impair sur sieges egaux : rien ne se perd au centime", () => {
+    const sieges = [siegeOpco("A", 100, "a"), siegeOpco("B", 100, "b"), siegeOpco("C", 100, "c")];
+    const lignes = construireLignesPayeurs(sieges, SESSION_SUBROGEE, {
+      plafondFinanceurCents: 101,
+    });
+    expect(lignes.find((l) => l.payeurType === "opco_subroge")?.montantAttenduCents).toBe(101);
+    expect(lignes.reduce((n, l) => n + l.montantAttenduCents, 0)).toBe(300);
+  });
+});
