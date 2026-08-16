@@ -924,6 +924,41 @@ export function buildOrganizationJsonLd({
       "https://www.linkedin.com/company/axion-ia-france",
       "https://about.me/axion-ia",
       "https://www.indiehackers.com/AxionIA",
+      // GEO-045 / arbitrage A4 — F6S DECLAREE le 2026-08-16, une fois la fiche
+      // CORRIGEE et pas avant.
+      //
+      // Pourquoi cette fiche compte : sur « Qui est Axion-IA ? », le moteur de
+      // reponse teste cite F6S en source n°2 (Crunchbase en n°1) et ZERO fois
+      // axion-ia.com. Ce sont ces pages qui definissent l'entreprise pour les
+      // moteurs de reponse aujourd'hui — les declarer en `sameAs`, c'est dire
+      // explicitement « cette fiche, c'est moi » au lieu de laisser deviner.
+      //
+      // 🔴 L'ORDRE EST LA CONDITION. Avant correction, la fiche annoncait un
+      // siege a PARIS. La declarer alors aurait revenu a SIGNER SOI-MEME
+      // l'erreur que les moteurs arbitrent deja contre nous — c'est exactement
+      // ce que l'arbitrage A4 interdit. Corrigee par Will le 2026-08-16
+      // (localisation Grenoble, fondation 2026, site sans redirection), verifiee
+      // par lui apres rechargement.
+      //
+      // ⚠️ Le suffixe `1` du slug n'est PAS un doublon : F6S a du suffixer parce
+      // que `axion-ia` etait deja pris par le profil MEMBRE. Deux types d'objets
+      // ne partagent pas une URL. C'est bien la fiche SOCIETE.
+      //
+      // ⚠️ Verification automatique IMPOSSIBLE sur ce domaine : F6S sert un mur
+      // anti-bot (`<title>Checking your browser</title>`, 200 trompeur). Un
+      // `curl` de controle ne prouvera jamais rien ici — ne pas conclure d'un
+      // 200 que la page est bonne.
+      "https://www.f6s.com/axion-ia1",
+      // GEO-020 / GEO-045 — Crunchbase DECLAREE le 2026-08-16, meme condition :
+      // apres correction, pas avant. C'est la source n°1 citee par le moteur de
+      // reponse sur « Qui est Axion-IA ? ».
+      //
+      // ⚠️ Meme impossibilite de verification automatique que F6S, sur un autre
+      // mode : Crunchbase repond 403 aux robots (`<title>One moment, please…</title>`,
+      // 8 760 octets de page de controle). L'audit ne l'avait pas vue non plus.
+      // La seule verification possible est humaine, connectee — elle a ete faite
+      // par Will le 2026-08-16.
+      "https://www.crunchbase.com/organization/axion-ia",
     ],
     hasOfferCatalog: {
       "@type": "OfferCatalog",
