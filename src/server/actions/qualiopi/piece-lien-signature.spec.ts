@@ -47,6 +47,7 @@ vi.mock("next/headers", () => ({
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("./_guards", () => ({
   requireAdminWrite: vi.fn(),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn(),
 }));
 

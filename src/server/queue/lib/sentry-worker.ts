@@ -108,7 +108,12 @@ export type WorkerName =
   // Import en masse kit formation (ZIP → documents-interventions) 2026-06-13
   | "kit-import"
   // Sondage Calendly 2026-08-09 — découverte des réservations + annulations
-  | "calendly-poll";
+  | "calendly-poll"
+  // Lot L2 2026-08-14 — synchro sortante de l'outbox vers Axion CRM Pro
+  | "crm-sync"
+  // Lot L4 2026-08-14 — intégration au vivier à échéance de la fenêtre
+  // d'opposition de 30 jours (passage quotidien)
+  | "vivier-crons";
 
 /**
  * Capture une exception worker dans Sentry avec tags + extras PII-safe.

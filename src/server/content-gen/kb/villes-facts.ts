@@ -10,7 +10,7 @@
  * Confiance : uniquement faits à ≥ 0.75. Statistiques incertaines → confidence 0.70-0.75 + note source.
  *
  * Format : { id, text, source, sourceUrl, verifiedAt, verticales, confidence }
- * Usage : seed via `scripts/seed-kb-villes-facts.ts`
+ * Usage : seed via `prisma/seeds/content-gen/seed-kb-facts.ts` (ALL_KB_FACTS)
  */
 
 import type { KbFact } from "./audits";
@@ -1061,10 +1061,10 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-010",
-    text: "Chaque État membre de l'UE devait désigner une autorité nationale compétente pour superviser l'AI Act au plus tard le 2 août 2025. En France, la CNIL et l'ANSSI sont pressenties comme autorités co-compétentes.",
+    text: "Chaque État membre de l'UE devait désigner ses autorités nationales compétentes pour superviser l'AI Act au plus tard le 2 août 2025. En France, la CNIL a été confirmée dans un rôle central de la supervision des systèmes d'IA, aux côtés d'autres autorités sectorielles selon les domaines concernés.",
     source: "EUR-Lex — Règlement UE 2024/1689, Art. 70",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-25",
+    verifiedAt: "2026-08-11",
     verticales: ["audits"],
     confidence: 0.92,
   },
@@ -1277,11 +1277,11 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-003",
-    text: "Gartner (2024) prédit que d'ici 2026, 80 % des entreprises auront utilisé des APIs ou des modèles IA génératifs en production, contre moins de 5 % début 2023 — une adoption sans précédent historique.",
+    text: "Selon Gartner, 80 % des entreprises devaient avoir utilisé des APIs ou des modèles IA génératifs en production à l'horizon 2026, contre moins de 5 % début 2023 — projection publiée en 2024, illustrant un rythme d'adoption sans précédent historique.",
     source: "Gartner — Hype Cycle for Artificial Intelligence 2024",
     sourceUrl:
       "https://www.gartner.com/en/articles/what-s-new-in-artificial-intelligence-from-the-2024-gartner-hype-cycle",
-    verifiedAt: "2026-05-25",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations"],
     confidence: 0.88,
   },
@@ -1318,7 +1318,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "OCDE — The Impact of AI on the Labour Market 2023",
     sourceUrl: "https://www.oecd.org/employment/labour-stats/",
     verifiedAt: "2026-05-25",
-    verticales: ["un-a-un", "implementations"],
+    verticales: ["un_a_un", "implementations"],
     confidence: 0.88,
   },
   {
@@ -1337,7 +1337,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     sourceUrl:
       "https://github.blog/2023-06-27-research-quantifying-github-copilots-impact-in-education/",
     verifiedAt: "2026-05-25",
-    verticales: ["sites-web-augmentes", "implementations"],
+    verticales: ["sites_web_augmentes", "implementations"],
     confidence: 0.9,
   },
   {
@@ -1392,7 +1392,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "HubSpot — State of Marketing Report 2024",
     sourceUrl: "https://www.hubspot.com/state-of-marketing",
     verifiedAt: "2026-05-25",
-    verticales: ["sites-web-augmentes", "implementations"],
+    verticales: ["sites_web_augmentes", "implementations"],
     confidence: 0.82,
   },
   {
@@ -1425,11 +1425,11 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-019",
-    text: "Selon Gartner (2024), d'ici 2026, 30 % du temps des travailleurs du savoir sera économisé grâce aux assistants IA, libérant des capacités pour des tâches à plus haute valeur ajoutée créative et stratégique.",
+    text: "Selon Gartner, 30 % du temps des travailleurs du savoir devait être économisé grâce aux assistants IA à l'horizon 2026 — projection publiée en 2024 —, libérant des capacités pour des tâches à plus haute valeur ajoutée créative et stratégique.",
     source: "Gartner — Future of Work 2024",
     sourceUrl: "https://www.gartner.com/en/human-resources/topics/future-of-work",
-    verifiedAt: "2026-05-25",
-    verticales: ["implementations", "un-a-un"],
+    verifiedAt: "2026-08-11",
+    verticales: ["implementations", "un_a_un"],
     confidence: 0.82,
   },
   {
@@ -1443,10 +1443,10 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-021",
-    text: "Selon Syntec Numérique (2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les PME et ETI adoptant les solutions cloud IA.",
-    source: "Syntec Numérique — Panorama IA France 2024",
-    sourceUrl: "https://syntec-numerique.fr",
-    verifiedAt: "2026-05-25",
+    text: "Selon Numeum (ex-Syntec Numérique, 2024), le marché français de l'IA atteint 6,5 milliards d'euros en 2024 (+35 % vs 2023) avec une projection à 15 milliards d'euros en 2027, tirée par les PME et ETI adoptant les solutions cloud IA.",
+    source: "Numeum (ex-Syntec Numérique) — Panorama IA France 2024",
+    sourceUrl: "https://numeum.fr",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations"],
     confidence: 0.8,
   },
@@ -1456,7 +1456,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "France Stratégie — Les métiers en 2030 : quelle automatisation par l'IA ? 2024",
     sourceUrl: "https://www.strategie.gouv.fr",
     verifiedAt: "2026-05-25",
-    verticales: ["implementations", "un-a-un"],
+    verticales: ["implementations", "un_a_un"],
     confidence: 0.85,
   },
   {
@@ -1465,7 +1465,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Salesforce + Dynamic Yield — AI in E-commerce 2024",
     sourceUrl: "https://www.salesforce.com",
     verifiedAt: "2026-05-25",
-    verticales: ["sites-web-augmentes", "implementations"],
+    verticales: ["sites_web_augmentes", "implementations"],
     confidence: 0.8,
   },
   {
@@ -1520,7 +1520,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Gartner + Zendesk — CX Trends 2024",
     sourceUrl: "https://www.zendesk.fr/customer-experience-trends/",
     verifiedAt: "2026-05-25",
-    verticales: ["implementations", "sites-web-augmentes"],
+    verticales: ["implementations", "sites_web_augmentes"],
     confidence: 0.82,
   },
   {
@@ -1584,7 +1584,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "France Num — Baromètre transformation numérique 2024",
     sourceUrl: "https://www.francenum.gouv.fr",
     verifiedAt: "2026-05-25",
-    verticales: ["implementations", "un-a-un"],
+    verticales: ["implementations", "un_a_un"],
     confidence: 0.78,
   },
   {
@@ -1593,7 +1593,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Semrush — AI Content Strategy Report 2024",
     sourceUrl: "https://www.semrush.com/blog/ai-content/",
     verifiedAt: "2026-05-25",
-    verticales: ["sites-web-augmentes"],
+    verticales: ["sites_web_augmentes"],
     confidence: 0.75,
   },
   {
@@ -1620,7 +1620,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Sopra Steria + IFOP — Baromètre IA & Travail 2024",
     sourceUrl: "https://www.soprasteria.com/fr",
     verifiedAt: "2026-05-25",
-    verticales: ["un-a-un", "implementations"],
+    verticales: ["un_a_un", "implementations"],
     confidence: 0.8,
   },
   {
@@ -1638,7 +1638,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Gartner — AI Augmented Development 2024",
     sourceUrl: "https://www.gartner.com/en/information-technology",
     verifiedAt: "2026-05-25",
-    verticales: ["sites-web-augmentes", "implementations"],
+    verticales: ["sites_web_augmentes", "implementations"],
     confidence: 0.82,
   },
   {
@@ -1647,7 +1647,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Bain & Company — GenAI in Retail 2024",
     sourceUrl: "https://www.bain.com/insights/generative-ai-retail/",
     verifiedAt: "2026-05-25",
-    verticales: ["implementations", "sites-web-augmentes"],
+    verticales: ["implementations", "sites_web_augmentes"],
     confidence: 0.8,
   },
   {
@@ -1666,7 +1666,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Deloitte — AI Skills & ROI Report 2024",
     sourceUrl: "https://www.deloitte.com",
     verifiedAt: "2026-05-25",
-    verticales: ["un-a-un", "implementations"],
+    verticales: ["un_a_un", "implementations"],
     confidence: 0.78,
   },
   {
@@ -1675,7 +1675,7 @@ export const KB_ROI_IA: readonly KbFact[] = [
     source: "Forrester — AI for Customer Retention 2024",
     sourceUrl: "https://www.forrester.com",
     verifiedAt: "2026-05-25",
-    verticales: ["implementations", "sites-web-augmentes"],
+    verticales: ["implementations", "sites_web_augmentes"],
     confidence: 0.78,
   },
   {
@@ -1707,10 +1707,10 @@ export const KB_ROI_IA: readonly KbFact[] = [
   },
   {
     id: "roi-ia-050",
-    text: "Selon le rapport Mazars/Opinion Way (2024) sur 500 ETI françaises, les entreprises ayant nommé un Chief AI Officer (CAIO) ou un référent IA dédié obtiennent un ROI IA 2,3x supérieur à celles sans leadership IA identifié.",
-    source: "Mazars + Opinion Way — IA dans les ETI françaises 2024",
-    sourceUrl: "https://www.mazars.fr",
-    verifiedAt: "2026-05-25",
+    text: "Selon le rapport Forvis Mazars/Opinion Way (2024) sur 500 ETI françaises, les entreprises ayant nommé un Chief AI Officer (CAIO) ou un référent IA dédié obtiennent un ROI IA 2,3x supérieur à celles sans leadership IA identifié.",
+    source: "Forvis Mazars + Opinion Way — IA dans les ETI françaises 2024",
+    sourceUrl: "https://www.forvismazars.com/fr",
+    verifiedAt: "2026-08-11",
     verticales: ["implementations", "audits"],
     confidence: 0.78,
   },

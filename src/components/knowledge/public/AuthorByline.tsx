@@ -3,8 +3,19 @@
 // Affiche avatar + nom + bio courte + date publication + date lastReviewedAt
 // jamais cachée. Schema Person JSON-LD intégré.
 
+import Image from "next/image";
+
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { SITE_URL } from "@/lib/seo";
+
+/**
+ * Une URL d'avatar servie depuis `public/` (donc optimisable par `next/image`)
+ * commence par une seule barre oblique. `//cdn…` est protocol-relative : c'est
+ * une ressource DISTANTE, que l'optimiseur refuserait (`remotePatterns`).
+ */
+export function isLocalAvatarUrl(url: string): boolean {
+  return url.startsWith("/") && !url.startsWith("//");
+}
 
 export interface AuthorBylineProps {
   readonly authorName: string;
@@ -52,22 +63,41 @@ export function AuthorByline(props: AuthorBylineProps) {
   return (
     <aside className="border-border bg-paper shadow-subtle my-6 flex flex-wrap items-start gap-4 rounded-2xl border p-5 md:p-6">
       {authorAvatarUrl ? (
-        // Sprint Final P1-6 (audit 2026-05-22) — `<img>` conservé car
-        // `authorAvatarUrl` est une URL remote arbitraire (DB) et
-        // `next.config.ts` `images.remotePatterns: []` n'autorise pas
-        // l'optimizer next/image dessus. Ajout `loading="lazy"` +
-        // `decoding="async"` pour éviter blocage main-thread + lazy off-fold.
-        // CLS déjà mitigé par width/height fixés.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={authorAvatarUrl}
-          alt={isFr ? `Portrait de ${authorName}` : `Portrait of ${authorName}`}
-          width={64}
-          height={64}
-          loading="lazy"
-          decoding="async"
-          className="ring-border h-16 w-16 shrink-0 rounded-full object-cover ring-1"
-        />
+        // 🔴 GEO-028 (audit GEO/AEO 2026-08-15) — le raisonnement de 2026-05-22
+        // (« `authorAvatarUrl` est une URL remote arbitraire, donc `<img>` brut »)
+        // était vrai pour le cas DISTANT et faux pour le cas réel : le SSOT
+        // `AuthorProfile.photoUrl256` pointe sur `/auteurs/manon.png`, un fichier
+        // LOCAL de 1 513 427 octets, servi tel quel et affiché en 64 × 64 sur
+        // toutes les pages éditoriales (blog, actualités, guides, cas concrets).
+        // 1,5 Mo pour 64 px : une taxe directe sur le budget de crawl.
+        //
+        // Correctif : quand l'URL est locale, `next/image` la sert en AVIF/WebP
+        // dimensionné (64 px + 128 px pour les écrans à haute densité). Le cas
+        // distant garde le `<img>` brut — `images.remotePatterns` n'autorise que
+        // `images.unsplash.com`, l'optimiseur refuserait toute autre origine.
+        // Dans les deux cas : `loading="lazy"` (bloc en bas d'article) et
+        // dimensions fixées (CLS = 0).
+        isLocalAvatarUrl(authorAvatarUrl) ? (
+          <Image
+            src={authorAvatarUrl}
+            alt={isFr ? `Portrait de ${authorName}` : `Portrait of ${authorName}`}
+            width={64}
+            height={64}
+            loading="lazy"
+            className="ring-border h-16 w-16 shrink-0 rounded-full object-cover ring-1"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element -- origine distante non autorisée par `images.remotePatterns` : l'optimiseur renverrait 400.
+          <img
+            src={authorAvatarUrl}
+            alt={isFr ? `Portrait de ${authorName}` : `Portrait of ${authorName}`}
+            width={64}
+            height={64}
+            loading="lazy"
+            decoding="async"
+            className="ring-border h-16 w-16 shrink-0 rounded-full object-cover ring-1"
+          />
+        )
       ) : null}
       <div className="min-w-0 flex-1">
         <p className="text-fg-muted text-[11px] font-semibold tracking-[0.16em] uppercase">

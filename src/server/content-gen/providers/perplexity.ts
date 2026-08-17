@@ -71,12 +71,52 @@ function getApiKey(): string {
   return key;
 }
 
-function mapHttpError(status: number, body: string): ProviderError {
+/**
+ * Map les erreurs HTTP Perplexity vers ProviderError typés.
+ *
+ * Exporté uniquement pour les tests (même motif que `mapOpenAiError`) : la
+ * distinction 429 rate-limit / 429 quota décide du flag `retryable`, donc du
+ * fait qu'un job reboucle indéfiniment ou échoue net.
+ *
+ * Fix 2026-08-15 (audit e2e, F3) — Perplexity avait le bug quota de juillet à
+ * l'identique : TOUT 429 était mappé `rate_limited` retryable, sans détecter le
+ * crédit épuisé. Un compte à sec ⇒ retries 10/30/60 s par appel + re-tentatives
+ * BullMQ, cause invisible (le body d'origine était en plus écrasé par la
+ * constante « Perplexity rate limited »). C'est exactement le bug déjà corrigé
+ * pour OpenAI (`openai.ts`, AUDIT 2026-07-21) et Anthropic (`anthropic.ts`).
+ *
+ * ⚠️ Ordre important (leçon anthropic.ts) : on ne bascule en quota que sur une
+ * mention EXPLICITE de crédit/quota épuisé, testée AVANT le rate-limit
+ * générique — un message de rate-limit qui renvoie vers la page billing ne
+ * doit PAS être classé quota. Bénéfice bonus : le code `quota_exhausted`
+ * non-retryable permet au quota-guard de déclencher l'auto-arrêt si Perplexity
+ * devient un jour un provider critique.
+ */
+export function mapPerplexityError(status: number, body: string): ProviderError {
   if (status === 401 || status === 403) {
     return new ProviderError(`Perplexity auth: ${body}`, "auth_failed", "perplexity", false);
   }
   if (status === 429) {
-    return new ProviderError(`Perplexity rate limited`, "rate_limited", "perplexity", true);
+    const isQuota =
+      /insufficient[_-]?(quota|credit)|credit balance|out of credits?|exceeded your current quota|purchase (more )?credits?/i.test(
+        body,
+      );
+    if (isQuota) {
+      // Message d'origine CONSERVÉ (il était écrasé avant le fix — la cause
+      // réelle n'apparaissait ni en base ni dans les alertes).
+      return new ProviderError(
+        `Perplexity quota épuisé (compte à recharger) : ${body.slice(0, 300)}`,
+        "quota_exhausted",
+        "perplexity",
+        false,
+      );
+    }
+    return new ProviderError(
+      `Perplexity rate limited: ${body.slice(0, 300)}`,
+      "rate_limited",
+      "perplexity",
+      true,
+    );
   }
   if (status >= 500) {
     return new ProviderError(`Perplexity server ${status}`, "down", "perplexity", true);
@@ -155,7 +195,7 @@ export const perplexityProvider: IProvider = {
         clearTimeout(timeoutHandle);
         if (!res.ok) {
           const errBody = await res.text();
-          throw mapHttpError(res.status, errBody);
+          throw mapPerplexityError(res.status, errBody);
         }
         return (await res.json()) as PerplexityResponse;
       } catch (err) {

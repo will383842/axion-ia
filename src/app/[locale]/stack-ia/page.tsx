@@ -13,6 +13,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Illustration } from "@/components/visual/Illustration";
+import { EditorialPhotoCredit } from "@/components/media/EditorialPhotoCredit";
 import { StackHeroSchema, type StackHeroNode } from "@/components/sections/StackHeroSchema";
 import { ToolLogo } from "@/components/sections/ToolLogo";
 import {
@@ -808,6 +809,7 @@ export default async function StackIaPage({ params }: Props) {
             slot="STACK-02-closing"
             aspectRatio="16:9"
             filenameTarget="public/illustrations/stack-ia-closing.avif"
+            src="/illustrations/stack-ia-closing.avif"
             caption={
               isFr
                 ? "Atelier d'outils éditorial — stack en mouvement, prête à servir"
@@ -815,10 +817,11 @@ export default async function StackIaPage({ params }: Props) {
             }
             alt={
               isFr
-                ? "Illustration éditoriale d'un atelier d'outils opérationnels symbolisant la stack IA Axion-IA en marche."
-                : "Editorial illustration of an operational tool workshop symbolizing the Axion-IA AI stack at work."
+                ? "Outils rangés sur un établi d'atelier."
+                : "Tools arranged on a workshop bench."
             }
           />
+          <EditorialPhotoCredit slot="stack-ia-closing" />
         </Container>
       </Section>
 

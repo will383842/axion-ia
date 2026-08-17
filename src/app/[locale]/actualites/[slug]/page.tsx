@@ -59,6 +59,7 @@ import { ArticleTOC, type TocItem } from "@/components/seo/ArticleTOC";
 import { buildToc } from "@/lib/knowledge/article-enrich";
 import { ArticleShareBar } from "@/components/content-gen/ArticleShareBar";
 import { ArticleTransparencyBlock } from "@/components/content-gen/ArticleTransparencyBlock";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 // ISR pure : revalidate toutes les heures + on-demand generation au premier
 // hit pour les nouveaux slugs. Ni `force-static` (incompatible avec dynamic
@@ -344,7 +345,9 @@ export default async function NewsArticlePage({ params }: Props) {
   const hasHtmlBody =
     typeof t.body === "string" && /<(h[1-6]|p|ul|ol|blockquote|table|figure|div)\b/i.test(t.body);
   const newsBodyToc = hasHtmlBody ? buildToc(sanitizeContentGenHtml(t.body)) : null;
-  const bodyHtmlFallback = newsBodyToc ? newsBodyToc.html : null;
+  // GEO-079/081 — voir `@/lib/content/liens-internes` : les liens internes des
+  // corps persistes sont ecrits sans prefixe de langue et redirigent chacun.
+  const bodyHtmlFallback = newsBodyToc ? prefixerLiensInternes(newsBodyToc.html, locale) : null;
   const tocItems: TocItem[] = newsBodyToc
     ? newsBodyToc.toc.map((h) => ({ anchor: h.id, title: h.text, level: 2 as const }))
     : [];
@@ -573,12 +576,28 @@ export default async function NewsArticlePage({ params }: Props) {
           <ArticleSources
             items={citations.map((c) => ({ name: c.title, url: c.url }))}
             locale="fr"
-            lastVerified={updatedIso}
+            // GEO-071 (audit GEO/AEO 2026-08-14) — la date de l'article ne peut PAS
+            // servir d'etiquette « derniere verification » : elle affirmerait que les
+            // sources ont ete controlees ce jour-la, ce que personne n'a fait.
+            // Le bloc disparait tant qu'aucune vraie date n'existe — comportement
+            // documente par le composant lui-meme (« pas de date = pas de bloc »).
+            // Le branchement de la vraie donnee (`ExternalReference.lastVerifiedAt`)
+            // est fait sur `/blog` ; ces deux familles ont un autre chargeur, elles
+            // suivront dans un lot dedie plutot que d'etre bricolees ici.
+            lastVerified={null}
           />
 
           {/* Transparence E-E-A-T (fraîcheur) — actualités = 30 j. */}
           <ArticleTransparencyBlock
-            lastVerified={article.updatedAt ?? article.publishedAt}
+            // GEO-071 (audit GEO/AEO 2026-08-14) — la date de l'article ne peut PAS
+            // servir d'etiquette « derniere verification » : elle affirmerait que les
+            // sources ont ete controlees ce jour-la, ce que personne n'a fait.
+            // Le bloc disparait tant qu'aucune vraie date n'existe — comportement
+            // documente par le composant lui-meme (« pas de date = pas de bloc »).
+            // Le branchement de la vraie donnee (`ExternalReference.lastVerifiedAt`)
+            // est fait sur `/blog` ; ces deux familles ont un autre chargeur, elles
+            // suivront dans un lot dedie plutot que d'etre bricolees ici.
+            lastVerified={null}
             updateCycleDays={30}
             locale="fr"
           />

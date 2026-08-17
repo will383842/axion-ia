@@ -23,6 +23,7 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { imageWatermarkService } from "@/server/image-bank/services/image-watermark.service";
 import { hashImageBankIp } from "@/server/image-bank/utils/ip-hash";
+import { getStorageBasePath } from "@/server/image-bank/utils/paths";
 
 const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_SEC = 60;
@@ -97,8 +98,16 @@ export async function GET(
       return NextResponse.json({ error: "Image file not found" }, { status: 404 });
     }
   } else {
-    // Images admin uploadées dans Docker volume
-    const storageBasePath = process.env.IMAGE_BANK_STORAGE_PATH ?? "/data/image-bank";
+    // Images admin uploadées dans le volume Docker.
+    //
+    // 🔴 GEO-094 — cette ligne recopiait la résolution du chemin avec un défaut
+    // DIFFÉRENT de celui de l'écriture : `/data/image-bank` ici contre
+    // `/var/data/image-bank` dans le pipeline d'import. Comme la variable n'est
+    // déclarée nulle part, les deux défauts s'appliquaient réellement en
+    // production — on lisait donc dans un dossier où rien n'a jamais été écrit.
+    // On appelle désormais la MÊME fonction que l'écriture : la divergence
+    // devient impossible par construction.
+    const storageBasePath = getStorageBasePath();
     const variantFilename = variant === "original" ? "original" : `image-${variant}.webp`;
     const variantPath = path.join(storageBasePath, image.id, variantFilename);
     try {
@@ -141,12 +150,25 @@ export async function GET(
     })
     .catch((err) => console.error("[telecharger] track failed:", err));
 
-  void prisma.imageAsset
-    .update({
-      where: { id: image.id },
-      data: { downloadCount: { increment: 1 } },
-    })
-    .catch(() => undefined);
+  // 🔴 GEO-036 (audit GEO/AEO 2026-08-14) — ÉCRITURE BRUTE, et ce n'est pas une
+  // coquetterie : `prisma.imageAsset.update()` déclenche le `@updatedAt` du
+  // modèle, et `sitemaps/images-fr.xml` lit précisément `updatedAt` pour son
+  // `<lastmod>`. Chaque téléchargement — donc chaque passage de robot sur les
+  // 576 URLs `/telecharger` exposées par les pages galerie — réécrivait la date
+  // de dernière modification de l'image. Résultat mesuré par l'audit : 7 lignes
+  // bumpées en 8 h 20 de nuit, sans publication, sans seed, sans activité
+  // humaine. Le signal de fraîcheur envoyé à Google devenait du bruit de crawl.
+  //
+  // Un `UPDATE` SQL direct ne touche QUE le compteur : `@updatedAt` est appliqué
+  // par le client Prisma, pas par la base. Le compteur reste vivant (il est
+  // affiché dans la console d'administration, `image-bank/_v2/OverviewV2.tsx`) et
+  // la ligne éditoriale cesse d'être polluée.
+  //
+  // Non bloquant comme avant (`void` + `catch`) : un compteur perdu ne doit
+  // jamais faire échouer un téléchargement.
+  void prisma.$executeRaw`UPDATE image_assets SET download_count = download_count + 1 WHERE id = ${image.id}`.catch(
+    () => undefined,
+  );
 
   const t = image.translations[0];
   const filename = `${t?.slug ?? image.id}-${variant}.${fileExtension}`;

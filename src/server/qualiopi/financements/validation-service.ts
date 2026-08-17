@@ -104,11 +104,34 @@ export function validateFinancementMutualiseSansCertification(
 }
 
 /**
- * Accord OPCO BLOQUANT : si financement=opco ET session non démarrée,
+ * Un financement relève-t-il d'un OPCO ?
+ *
+ * 🔴 `mixte` EN FAIT PARTIE, et son omission était un défaut réel corrigé le
+ * 16/08. Le dépôt traitait déjà `mixte` comme de l'OPCO à **trois** endroits —
+ * refus de facturer sans accord (`financements.ts`), validation manuelle de
+ * l'accord, et choix du financeur à la création du dossier — mais les deux
+ * gardes de DÉMARRAGE ci-dessous testaient `!== "opco"` strict.
+ *
+ * Conséquence : une session `mixte` pouvait démarrer **sans accord du
+ * financeur**, et en subrogation **sans convention tripartite** — irrégulier au
+ * regard de l'art. L.6353-2. La divergence était même documentée comme un test
+ * (« ne dit rien non plus sur un financement mixte ») : un comportement
+ * constaté avait été verrouillé au lieu d'être corrigé.
+ *
+ * Un `mixte` porte une part mutualisée. Cette part obéit aux mêmes règles que
+ * si elle était seule ; c'est le fait qu'une autre part soit directe qui ne
+ * change rien à l'obligation.
+ */
+export function estFinancementOpco(financementType: string | null | undefined): boolean {
+  return financementType === "opco" || financementType === "mixte";
+}
+
+/**
+ * Accord OPCO BLOQUANT : si financement=opco (ou mixte) ET session non démarrée,
  * l'accord doit être reçu avant tout démarrage.
  */
 export function validateOpcoAccord(session: SessionFinancementFields): ValidationResult {
-  if (session.financementType !== "opco") return { ok: true };
+  if (!estFinancementOpco(session.financementType)) return { ok: true };
   if (
     session.opcoStatut !== "accord_recu" &&
     session.opcoStatut !== "paiement_recu" &&
@@ -137,7 +160,7 @@ export function validateOpcoAccord(session: SessionFinancementFields): Validatio
 export function validateOpcoConventionTripartite(
   session: SessionFinancementFields,
 ): ValidationResult {
-  if (session.financementType !== "opco") return { ok: true };
+  if (!estFinancementOpco(session.financementType)) return { ok: true };
   if (!session.opcoSubrogation) return { ok: true };
   if (session.statut === "planifiee" && !session.conventionTripartiteSigneeAt) {
     return {

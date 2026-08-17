@@ -48,6 +48,7 @@ import {
   Users,
   BadgeCheck,
   type LucideIcon,
+  Filter,
 } from "lucide-react";
 import { navIcon } from "@/lib/admin-nav-icons";
 import type { AdminNavItem, AdminNavGroup } from "@/lib/admin-nav";
@@ -74,6 +75,7 @@ const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
   // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un
   // canal de la boîte de réception, pas une rubrique à part (cf. admin-nav.ts).
   contacts: Inbox,
+  tunnels: Filter,
   content: Newspaper,
   content_gen: Sparkles,
   qualiopi: GraduationCap,
@@ -168,6 +170,13 @@ interface AdminSidebarNavProps {
     relances: number;
     total: number;
   };
+  /**
+   * Compteur « offres d'emploi à republier » (fraîcheur Google for Jobs,
+   * 2026-08-13) : offres publiées dont la date de publication effective dépasse
+   * le seuil (45 j). Même philosophie « reste à faire » : descend à zéro après
+   * republication (bouton « Republier » sur la fiche offre).
+   */
+  staleJobOffersCount?: number;
   /** Email de l'utilisateur connecté (footer profil). */
   userEmail?: string | null;
   /** Href base admin (ex. /fr/<adminPrefix>) — lien profil/paramètres. */
@@ -186,6 +195,7 @@ export function AdminSidebarNav({
   unreadContactsCount = 0,
   inboxCounts,
   qualiopiCounts,
+  staleJobOffersCount = 0,
   userEmail,
   accountHref,
   logoutAction,
@@ -428,6 +438,12 @@ export function AdminSidebarNav({
     if (unreadContactsCount > 0 && href.includes("/contacts/messages")) {
       return { count: unreadContactsCount, tone: "danger", label: "contacts sans réponse" };
     }
+    // ── Offres d'emploi à republier (fraîcheur Google for Jobs, 2026-08-13) ──
+    // Égalité EXACTE : la pastille vit sur l'onglet « Offres d'emploi », pas
+    // sur ses sous-routes (/new, /[id]).
+    if (staleJobOffersCount > 0 && href === `${accountHref ?? ""}/offres-emploi`) {
+      return { count: staleJobOffersCount, tone: "warn", label: "offres à republier" };
+    }
     // ── Console Qualiopi (refonte phase 1, 2026-08-01) ───────────────────
     // Égalité EXACTE (même précaution que la boîte de réception) : sans elle,
     // « À traiter » capterait /qualiopi/a-traiter/* et « Alertes » capterait
@@ -494,7 +510,10 @@ export function AdminSidebarNav({
     const Icon = navIcon(item.icon);
     const active = item.href === activeHref;
     const badge = badgeFor(item.href);
-    const level = collapsed ? 0 : itemLevel(item.href);
+    // `navLevel` prime sur la déduction par URL : une catégorie de Messages
+    // vit sur une route sœur (`/contacts/presse`, `/podcast`) dont la
+    // profondeur ne dit pas qu'elle est une fille.
+    const level = collapsed ? 0 : (item.navLevel ?? itemLevel(item.href));
     const iconSize = level >= 1 ? 14 : 16;
     return (
       <li key={item.href}>

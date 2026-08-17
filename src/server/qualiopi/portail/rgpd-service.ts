@@ -19,6 +19,8 @@ import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { supprimerImageSignature } from "@/server/qualiopi/emargement/storage";
+import { enqueueEmail } from "@/server/queue/queues";
+import { notify } from "@/server/notifications";
 import type { RgpdDemandeType } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -361,5 +363,70 @@ export async function creerDemandeRgpd(
     select: { id: true, type: true, demandeAt: true },
   });
 
+  // ── Prévenir les DEUX parties ────────────────────────────────────────────
+  // 🔴 Avant le 2026-08-13, cette fonction s'arrêtait à la ligne du dessus.
+  // Ni la personne ni l'équipe n'étaient prévenues : la demande pouvait dormir
+  // indéfiniment alors que le délai de réponse est d'UN MOIS et court dès le
+  // dépôt. Le premier signal aurait été une saisine de la CNIL.
+  //
+  // Meilleur effort : la demande est DÉJÀ enregistrée. Un échec de
+  // notification ne doit pas la faire échouer — ce serait remplacer un défaut
+  // silencieux par une perte franche.
+  try {
+    await notifierDemandeRgpd(traineeId, demande.id, demande.type, demande.demandeAt);
+  } catch (err) {
+    console.error("[rgpd-service] notification de demande impossible :", err);
+  }
+
   return { id: demande.id, type: demande.type, demandeAt: demande.demandeAt };
+}
+
+/** Délai de réponse imposé par l'article 12.3 du RGPD. */
+const DELAI_REPONSE_JOURS = 30;
+
+/**
+ * Accuse réception auprès de la personne ET alerte l'équipe.
+ *
+ * Séparée de `creerDemandeRgpd` pour que l'échec d'un canal n'emporte pas
+ * l'autre : une alerte Telegram muette ne doit pas priver la personne de son
+ * accusé, et réciproquement.
+ */
+async function notifierDemandeRgpd(
+  traineeId: string,
+  demandeId: string,
+  type: RgpdDemandeType,
+  demandeAt: Date,
+): Promise<void> {
+  const trainee = await prisma.trainee.findUnique({
+    where: { id: traineeId },
+    select: { email: true, nom: true, prenom: true },
+  });
+  if (!trainee?.email) return;
+
+  const echeance = new Date(demandeAt);
+  echeance.setDate(echeance.getDate() + DELAI_REPONSE_JOURS);
+  const fmt = (d: Date): string =>
+    d.toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
+
+  const nomComplet = `${trainee.prenom} ${trainee.nom}`.trim();
+
+  // Accusé à la personne : c'est sa seule preuve que la demande est arrivée,
+  // et il matérialise la date de départ du délai pour les deux parties.
+  await enqueueEmail("rgpd-demande-recue", trainee.email, "fr", {
+    type,
+    reference: demandeId,
+    deposeeLe: fmt(demandeAt),
+  });
+
+  // Alerte interne, en `warn` : c'est un délai légal, pas une information.
+  await notify({
+    category: "RGPD_REQUEST_SUBMITTED",
+    payload: {
+      demandeId,
+      type,
+      traineeNom: nomComplet,
+      traineeEmail: trainee.email,
+      echeance: fmt(echeance),
+    },
+  });
 }

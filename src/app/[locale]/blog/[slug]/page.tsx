@@ -63,6 +63,7 @@ import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pric
 // BlogPosting (type correct + author @id résolu + AI Act + image hero).
 import { buildBlogPostingJsonLd } from "@/lib/seo-content-gen-factories";
 import { getManonPersonJsonLd, getManonByline } from "@/lib/seo/manon-person";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 // Sprint 8 V2 : ISR Next 16 — la route est pré-rendue au build pour les slugs
 // FS connus (generateStaticParams) puis re-validée toutes les heures. Les
@@ -130,6 +131,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             : `${SITE_URL}${view.featuredImage}`,
         }
       : {}),
+    // GEO-142 (audit GEO/AEO 2026-08-14) — les 126 articles de blog n'émettaient
+    // AUCUNE balise `article:*`, alors que `/actualites/[slug]` les émet depuis
+    // toujours par le même mécanisme. Mesuré en production le 2026-08-16 :
+    // 0 balise `property="article:*"` sur un article de blog, 2 sur une
+    // actualité. Facebook, LinkedIn et les crawlers news lisent ces balises
+    // pour dater et attribuer un contenu.
+    //
+    // ⚠️ Les valeurs sont REPRISES du JSON-LD de la même page (l.356-364), pas
+    // recalculées : le signal porteur reste `datePublished`/`dateModified`, et
+    // deux sources de date sur une même page finissent toujours par diverger.
+    article: {
+      ...(view.publishedAt ? { publishedTime: view.publishedAt } : {}),
+      ...((view.updatedAt ?? view.publishedAt)
+        ? { modifiedTime: view.updatedAt ?? view.publishedAt }
+        : {}),
+      ...(view.author ? { authors: [view.author] } : {}),
+      ...(view.category ? { section: view.category } : {}),
+      ...(view.tags.length > 0 ? { tags: [...view.tags] } : {}),
+    },
   });
   // Anti-doorway HCU 2024 — meta robots dérivé du tier (Sprint 14.10).
   // tier-1-indexable = index follow (sitemap inclus) · tier-2 = noindex follow
@@ -303,6 +323,32 @@ export default async function BlogArticle({ params }: Props) {
   }
 
   const wordCount = view.body.trim().split(/\s+/).length;
+
+  // 🔴 GEO-071 (audit GEO/AEO 2026-08-14) — la VRAIE date de vérification des
+  // sources, ou `null`.
+  //
+  // Ces deux blocs affichaient jusqu'ici `view.updatedAt` sous l'étiquette
+  // « Dernière vérification » : on affirmait au lecteur et aux moteurs que les
+  // sources avaient été contrôlées ce jour-là, alors que personne ne les avait
+  // ouvertes. `ArticleTransparencyBlock` documentait pourtant l'inverse dans son
+  // propre en-tête — « alimenté par la donnée DB réelle, jamais inventée ». La
+  // garantie était écrite dans le composant et rompue au point d'appel.
+  //
+  // La donnée existe : `ExternalReference.lastVerifiedAt`, écrite par
+  // `persist-citations.ts`, mais lue par personne. On prend la PLUS RÉCENTE des
+  // citations de l'article — dire « vérifié le » sur la plus ancienne serait
+  // sous-estimer, sur une moyenne serait inventer.
+  //
+  // `null` si aucune citation n'a jamais été vérifiée : les deux blocs
+  // disparaissent alors, ce qui est le comportement documenté (« pas de date =
+  // pas de bloc »). Une absence est honnête ; une date fabriquée ne l'est pas.
+  const datesVerifiees = view.citations
+    .map((c) => c.lastVerifiedAt)
+    .filter((d): d is Date => d instanceof Date);
+  const sourcesVerifiees =
+    datesVerifiees.length > 0
+      ? new Date(Math.max(...datesVerifiees.map((d) => d.getTime())))
+      : null;
   // VIS-01 — Les articles DB stockent du bodyHtml (sortie content-gen) ; les
   // articles FS legacy stockent de la prose brute. On rend le HTML sanitisé pour
   // les DB (avec ancres h2 via buildToc) et on garde parseBody pour les FS.
@@ -321,8 +367,13 @@ export default async function BlogArticle({ params }: Props) {
   // À partir de … » (le mode `range` porte sa propre amorce). Défaut
   // PRÉEXISTANT ici : le corps résolvait déjà les tokens, donc la collision
   // était visible en clair sur le site avant même le correctif FAQ.
+  // GEO-079/081 — `prefixerLiensInternes` en DERNIER : les liens internes des
+  // corps persistés sont écrits sans préfixe de langue et provoquent chacun une
+  // redirection (parfois deux). On réécrit au rendu, ce qui couvre tout le stock
+  // déjà publié sans reprise de base. Aucun coût client : ce code ne quitte pas
+  // le serveur.
   const dbBodyHtml = dbBody
-    ? collapsePriceProseDuplicates(resolvePriceTokens(dbBody.html, loc))
+    ? prefixerLiensInternes(collapsePriceProseDuplicates(resolvePriceTokens(dbBody.html, loc)), loc)
     : null;
   // P3 QW — TOC Featured Snippets : ancres alignées sur les id réellement injectés
   // (VIS-04, fini les ancres mortes). DB → toc de buildToc ; FS → extractTocItems.
@@ -350,7 +401,24 @@ export default async function BlogArticle({ params }: Props) {
   const articleJsonLd = isDbHtml
     ? buildBlogPostingJsonLd({
         title: view.title,
-        description: view.excerpt,
+        // 🔴 GEO-044 (audit GEO/AEO 2026-08-14) — `view.excerpt` est VIDE sur les
+        // 126 articles : le worker de publication ne l'écrit jamais. Le JSON-LD
+        // servait donc `"description": ""` — mesuré en production le 2026-08-16.
+        // Un `BlogPosting` sans description prive les moteurs de réponse du seul
+        // résumé structuré qu'ils peuvent citer sans lire la page entière.
+        //
+        // On réutilise EXACTEMENT le calcul de la balise `<meta name="description">`
+        // de la même page (`generateMetadata`, l.114) : même helper, mêmes replis
+        // (metaDescription → excerpt → directAnswer). Deux descriptions calculées
+        // différemment sur une même page finiraient par diverger, et c'est
+        // précisément ce genre d'écart que l'audit relève ailleurs.
+        //
+        // Corriger le worker ne réparerait que les articles FUTURS ; ce repli au
+        // rendu couvre aussi les 126 déjà publiés, sans backfill.
+        description: ensureArticleMetaDescription(view.metaDescription ?? view.excerpt, {
+          excerpt: view.excerpt,
+          directAnswer: view.directAnswer,
+        }),
         slug,
         locale: loc,
         publishedAt: view.publishedAt,
@@ -664,14 +732,14 @@ export default async function BlogArticle({ params }: Props) {
           <ArticleSources
             items={view.citations}
             locale={loc}
-            lastVerified={view.updatedAt ?? view.publishedAt}
+            lastVerified={sourcesVerifiees ? sourcesVerifiees.toISOString().slice(0, 10) : null}
           />
 
           {/* Refonte templates 2026-06-22 (Chantier 2b) — bloc de transparence
           E-E-A-T : dernière vérification + cycle de mise à jour (signal de
           fraîcheur Google/IA). Cycle aligné sur la doctrine de re-publication. */}
           <ArticleTransparencyBlock
-            lastVerified={view.updatedAt ?? view.publishedAt}
+            lastVerified={sourcesVerifiees}
             updateCycleDays={90}
             locale={loc}
           />

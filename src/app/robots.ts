@@ -15,6 +15,17 @@ import { SITE_URL } from "@/lib/seo";
 const COMMON_DISALLOW = [
   "/api/",
   "/_next/",
+  // GEO-035 (audit GEO/AEO 2026-08-14) — les routes de telechargement de la
+  // banque d'images. Chaque visite y declenche une transformation Sharp et une
+  // ecriture en base ; les pages galerie en exposent DEUX ancres chacune, soit
+  // ~576 URLs crawlables pour ~288 pages. Aucune n'a de valeur d'indexation :
+  // ce sont des actions, pas des documents.
+  //
+  // Les deux locales sont listees : le segment est traduit (`telecharger` en
+  // FR, `download` en EN) et robots.txt ne connait pas la table de routage.
+  // L'etoile initiale couvre le prefixe de locale.
+  "/*/telecharger",
+  "/*/download",
   // P1-15 audit indexation 2026-05-15 — hygiène robots.txt
   // Surfaces privées / utilisateur authentifié : pas d'indexation.
   "/mes-donnees/",
@@ -102,11 +113,27 @@ const COMMON_DISALLOW = [
 // Longest-match : cet `Allow` l'emporte sur `Disallow: /api/`, exactement comme
 // `/api/og` et `/api/avis/photo` ci-dessus, sans rouvrir `/api/auth`,
 // `/api/admin`, les webhooks ni les routes RGPD.
+//
+// AUDIT GEO/AEO 2026-08-15 (GEO-031) — exports Observatoire AJOUTÉS.
+// Même classe d'erreur que `/api/markdown/` ci-dessus, sur une autre surface :
+// `/llms.txt` annonce l'Observatoire en « données ouvertes CC BY 4.0 » et la
+// page `/observatoire-ia` déclare ses deux exports en JSON-LD `DataDownload`.
+// Or `Disallow: /api/` les interdisait dans les douze blocs — on publiait une
+// licence d'usage sur un fichier qu'aucun crawler respectueux n'avait le droit
+// de télécharger. Un jeu de données ouvert non téléchargeable n'est pas cité.
+//
+// 🔴 Forme ÉTROITE délibérée (deux entrées explicites) plutôt que le préfixe
+// `/api/observatoire/`. `src/app/api/observatoire/` ne contient AUJOURD'HUI que
+// ces deux routes, toutes deux publiques — mais le préfixe autoriserait par
+// avance toute route future ajoutée sous ce dossier, y compris une route
+// d'écriture ou d'administration. On n'ouvre que ce qu'on a vérifié.
 const COMMON_ALLOW = [
   "/",
   "/api/og",
   "/api/avis/photo",
   "/api/markdown/",
+  "/api/observatoire/export-csv",
+  "/api/observatoire/export-json",
   "/_next/image",
   "/_next/static",
 ];

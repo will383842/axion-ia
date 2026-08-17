@@ -16,6 +16,7 @@ import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { adminPath } from "@/lib/admin-path";
 import { decryptPii } from "@/lib/pii-crypto";
+import { ROI_DETAILS_KEYS as K } from "@/lib/roi/submission-details";
 import type {
   SubmissionType,
   SubmissionStatus,
@@ -93,6 +94,11 @@ export interface SubmissionListItem {
   companyName: string;
   contactName: string;
   contactEmail: string;
+  /** Téléphone déchiffré (2026-08-13 — colonne Téléphone du listing). Null si absent. */
+  contactPhone: string | null;
+  /** Extrait du contenu (details.message, tronqué à 300 caractères) pour
+   *  l'afficher directement dans le listing (demande Will 2026-08-13). */
+  messageExtrait: string | null;
   sector: string | null;
   assignedTo: string | null;
   submittedAt: Date;
@@ -202,6 +208,7 @@ export async function listSubmissionsAction(
     companyName: true,
     contactName: true,
     contactEmail: true,
+    contactPhone: true,
     sector: true,
     assignedTo: true,
     submittedAt: true,
@@ -231,6 +238,7 @@ export async function listSubmissionsAction(
         : null;
     const unifiedType =
       details && typeof details.unifiedType === "string" ? details.unifiedType : null;
+    const rawMessage = details && typeof details.message === "string" ? details.message.trim() : "";
     return {
       id: s.id,
       type: s.type,
@@ -239,6 +247,12 @@ export async function listSubmissionsAction(
       companyName: s.companyName,
       contactName: decryptPii(s.contactName),
       contactEmail: decryptPii(s.contactEmail),
+      contactPhone: s.contactPhone ? decryptPii(s.contactPhone) : null,
+      messageExtrait: rawMessage
+        ? rawMessage.length > 300
+          ? `${rawMessage.slice(0, 300)}…`
+          : rawMessage
+        : null,
       sector: s.sector,
       assignedTo: s.assignedTo,
       submittedAt: s.submittedAt,
@@ -548,6 +562,11 @@ export async function exportSubmissionsCsvAction(
       assignedTo: true,
       internalNotes: true,
       submittedAt: true,
+      // `details` porte le type métier fin, l'attribution publicitaire et — pour
+      // les leads du simulateur — le gain estimé. Il n'était pas sélectionné :
+      // l'export était donc inutilisable pour prioriser un rappel ou alimenter
+      // un CRM, alors que la donnée existe en base depuis le premier jour.
+      details: true,
     },
   });
 
@@ -567,6 +586,19 @@ export async function exportSubmissionsCsvAction(
     "assignedTo",
     "internalNotes",
     "submittedAt",
+    // Type métier fin : `type` ne connaît que 5 valeurs d'enum, l'essentiel de
+    // la distinction vit dans `details.unifiedType`.
+    "categorie",
+    // Attribution publicitaire — sans elle, impossible de rapprocher un lead
+    // de la campagne qui l'a payé.
+    "utmSource",
+    "utmMedium",
+    "utmCampaign",
+    // Spécifique simulateur : vide pour les autres formulaires.
+    "gainEstimeEurAn",
+    "heuresEstimeesAn",
+    "maturiteNumerique",
+    "lienRapport",
   ];
   const escape = (v: unknown): string => {
     if (v == null) return "";
@@ -574,7 +606,19 @@ export async function exportSubmissionsCsvAction(
     if (/[",\n;]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
     return s;
   };
+  // `details` est un Json libre : on y pioche défensivement, une clé absente
+  // ne doit jamais faire échouer l'export entier.
+  const lire = (source: unknown, ...chemin: string[]): unknown => {
+    let courant = source;
+    for (const cle of chemin) {
+      if (typeof courant !== "object" || courant === null) return undefined;
+      courant = (courant as Record<string, unknown>)[cle];
+    }
+    return courant;
+  };
+
   const lines = rows.map((raw) => {
+    const d = raw.details;
     // Déchiffre le PII (enc:v1) pour un export lisible. No-op sur le clair.
     const r: Record<string, unknown> = {
       ...raw,
@@ -582,6 +626,17 @@ export async function exportSubmissionsCsvAction(
       contactEmail: decryptPii(raw.contactEmail),
       contactPhone: decryptPii(raw.contactPhone),
       address: decryptPii(raw.address),
+      // Les noms de clés viennent de `ROI_DETAILS_KEYS`, partagé avec
+      // l'écriture : un renommage côté simulateur casse le typecheck au lieu
+      // de vider ces colonnes en silence.
+      categorie: lire(d, K.categorie),
+      utmSource: lire(d, K.funnel, "utm", "utm_source"),
+      utmMedium: lire(d, K.funnel, "utm", "utm_medium"),
+      utmCampaign: lire(d, K.funnel, "utm", "utm_campaign"),
+      gainEstimeEurAn: lire(d, K.gain),
+      heuresEstimeesAn: lire(d, K.heures),
+      maturiteNumerique: lire(d, K.maturite),
+      lienRapport: lire(d, K.rapport),
     };
     return headers.map((h) => escape(r[h])).join(";");
   });

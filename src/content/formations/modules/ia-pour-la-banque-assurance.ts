@@ -62,7 +62,14 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, devant n'importe quelle pièce d'un dossier, vous nommez l'environnement dans lequel vous avez le droit de la traiter — ou vous dites « pas du tout », et vous savez pourquoi.",
-      objectifGlobalId: "obj-4",
+      objectifGlobalId: "obj-1",
+      // L'énoncé EST l'objectif 1 : nommer le régime pièce par pièce, ou
+      // refuser — et la vérification le fait justifier face au corrigé. La
+      // démonstration de ré-identification (commune, profession, date du
+      // sinistre) sert l'objectif 2 ; l'atelier, qui annote la liste rouge du
+      // service et fait nommer par écrit le cas litigieux à faire trancher par
+      // la conformité, sert l'objectif 3 — c'est la page 1 du protocole.
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -230,9 +237,12 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous reconnaissez une décision qui ne se délègue pas — octroi, notation, tarification, sélection des risques — et vous savez ce que vous devez au client quand un outil est intervenu dans son dossier.",
       objectifGlobalId: "obj-4",
-      // 105 minutes de programme qui n'etaient vendues nulle part : ce que
-      // la formation refuse de deleguer est son enseignement le plus lourd.
-      objectifsSecondairesIds: ["obj-6"],
+      // La grille en quatre questions, le classement en « périmètre / hors
+      // périmètre / à faire trancher » et les huit situations de la
+      // vérification servent l'objectif 4 mot pour mot. Le second temps de
+      // l'atelier — les trois phrases de l'établissement : ce qu'on dit au
+      // client, qui décide et signe, ce qu'on trace — est l'objectif 5.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -370,11 +380,14 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez la synthèse d'un dossier et le courrier motivé qui l'accompagne, prêts pour un rendez-vous, dans le régime d'usage identifié le matin — chaque référence contractuelle retrouvée à la source.",
-      objectifGlobalId: "obj-1",
-      // Le courrier d'acceptation ou de refus motivé produit à l'atelier sert
-      // l'objectif « courriers et propositions » ; la vérification aux sources
-      // en binômes croisés sert « vérifier une production avant diffusion ».
-      objectifsSecondairesIds: ["obj-2", "obj-5"],
+      objectifGlobalId: "obj-6",
+      // La synthèse du dossier et le courrier motivé, chaque garantie,
+      // franchise et délai recopié du document déposé avec sa référence
+      // d'article : c'est l'objectif 6, produit en atelier sur dossier
+      // reconstitué. La vérification aux sources en binômes croisés — barrer
+      // toute phrase orpheline et contrôler l'en-tête « Projet — à faire
+      // valider » — est l'objectif 7.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -517,10 +530,13 @@ export const IA_POUR_LA_BANQUE_ASSURANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez des réponses homogènes aux questions récurrentes de votre service, chacune tracée et validée avant envoi — et vous repartez avec le protocole complet, prêt à passer en validation conformité.",
-      objectifGlobalId: "obj-3",
-      // La ligne de trace et la validation nommée avant envoi servent
-      // « vérifier une production avant diffusion » ; le quiz final valide les
-      // acquis de la journée entière.
+      objectifGlobalId: "obj-8",
+      // Les trois réponses types portant leurs champs interdits, leur
+      // validation humaine nommée et leur ligne de trace, puis l'assemblage du
+      // protocole du service à soumettre à la conformité : c'est l'objectif 8,
+      // page 3 puis page 4. Ce que la trame impose à la réponse — renvoi au
+      // conseiller, valideur nommé, six champs de trace — est ce que
+      // l'établissement doit au client, soit l'objectif 5.
       objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {

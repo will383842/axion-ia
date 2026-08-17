@@ -43,7 +43,14 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous nommez le régime d'usage adapté à chaque document RH, et vous repérez un critère interdit dans une demande AVANT de la lancer.",
-      objectifGlobalId: "obj-4",
+      objectifGlobalId: "obj-2",
+      // L'atelier réécrit les trois demandes de tri irrecevables et nomme, pour
+      // chacune, le critère interdit et la trace de décision humaine à
+      // conserver : c'est l'objectif 2, terme pour terme.
+      // Le régime d'usage retenu pour chaque demande — et la raison pour
+      // laquelle retirer le nom ne suffit pas — n'est travaillé qu'ici :
+      // l'objectif 1 est donc servi par ce module, en second.
+      objectifsSecondairesIds: ["obj-1"],
       dureeMin: 10,
       notes: {
         script:
@@ -205,10 +212,15 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un écrit RH publiable et vous le déclinez en trois formats, en barrant toute affirmation que vous n'avez pas vérifiée dans un document.",
-      objectifGlobalId: "obj-1",
-      // Ce module produit aussi les ecrits de communication interne :
-      // publication interne, support d'onboarding, trame d'entretien.
-      objectifsSecondairesIds: ["obj-3"],
+      objectifGlobalId: "obj-4",
+      // L'atelier produit l'écrit publiable — offre, support d'onboarding ou
+      // trame d'entretien professionnel — et le décline en trois formats :
+      // c'est l'objectif 4.
+      // Les cinq leviers AXION et les trois gestes d'entrée d'un document
+      // (dépôt, dictée, photo) sont l'objet du premier temps de l'atelier
+      // (objectif 3) ; le contrôle croisé barre ensuite toute affirmation non
+      // vérifiée et toute formulation discriminante réintroduite (objectif 5).
+      objectifsSecondairesIds: ["obj-3", "obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -344,7 +356,14 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une présynthèse de candidature sous votre propre grille, et vous savez prouver après coup que la décision est restée humaine.",
-      objectifGlobalId: "obj-2",
+      objectifGlobalId: "obj-6",
+      // La grille de lecture est construite à partir de la seule fiche de
+      // poste, champs interdits en en-tête, puis appliquée aux trois
+      // candidatures du jeu sans classement ni score : c'est l'objectif 6.
+      // Le troisième temps complète les champs variables de la mention
+      // d'information des candidats et de la note au CSE, et produit la réponse
+      // au candidat non retenu (objectif 7) — servi ici et nulle part ailleurs.
+      objectifsSecondairesIds: ["obj-7"],
       dureeMin: 5,
       notes: {
         script:
@@ -469,7 +488,13 @@ export const IA_POUR_LES_RH: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous savez à quel moment l'IA vous ment dans votre propre domaine, et vous repartez avec un dossier de poste utilisable dès demain.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-8",
+      // La chasse à l'erreur porte sur une réponse de droit social produite par
+      // l'IA, et l'assemblage du dossier de poste ouvre le journal de relecture
+      // humaine — qui a relu, quand, ce qui a été modifié : c'est l'objectif 8.
+      // L'auto-évaluation finale repasse une production du jour à la grille de
+      // relecture (objectif 5), déjà travaillée au module 2.
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:

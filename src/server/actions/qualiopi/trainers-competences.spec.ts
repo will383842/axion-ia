@@ -17,6 +17,7 @@ vi.mock("@/lib/prisma", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(async () => ({ user: { id: "admin-1" } })),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   requireAdminDelete: vi.fn(async () => ({ user: { id: "admin-1" } })),
   logQualiopiActivity: vi.fn(async () => undefined),
 }));

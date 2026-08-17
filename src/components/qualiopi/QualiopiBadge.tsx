@@ -76,21 +76,34 @@ export async function QualiopiBadge({ className, variant = "card" }: QualiopiBad
   }
 
   if (variant === "logo") {
-    // Logo officiel seul (footer) — aucun texte de mention à côté (décision Will).
+    // Logo officiel seul (footer) — aucun texte de mention à côté (décision Will,
+    // la mention obligatoire est de toute façon INTÉGRÉE au lockup).
+    //
+    // 🔴 Corrigé le 2026-08-11 : le rendu écrasait le lockup 3:2 (1536×1024 —
+    // logo Qualiopi + Marianne + mention + marque Axion-IA) dans 84 px de large,
+    // à même le fond mocha du footer. Résultat : un timbre-poste illisible avec
+    // « des choses bizarres autour » (la pastille Axion-IA et la mention,
+    // microscopiques), et une non-conformité — la règle d'usage de la marque
+    // impose l'affichage SUR FOND BLANC. Désormais : carte blanche + largeur
+    // lisible + attributs width/height au vrai ratio (anti-CLS).
     return identity.logoPath ? (
-      // eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification graphique ni ré-encodage autorisés (règle d'usage de la marque), donc <img> brut et non next/image.
-      <img
-        src={identity.logoPath}
-        alt={
-          isFr ? "Logo Qualiopi — certification qualité" : "Qualiopi logo — quality certification"
-        }
-        width={84}
-        height={84}
-        loading="lazy"
-        decoding="async"
+      <span
+        className={`inline-block rounded-md bg-white p-3 ${className ?? ""}`.trim()}
         title={title}
-        className={`h-auto w-[84px] ${className ?? ""}`.trim()}
-      />
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- logo officiel Qualiopi : aucune modification graphique ni ré-encodage autorisés (règle d'usage de la marque), donc <img> brut et non next/image. */}
+        <img
+          src={identity.logoPath}
+          alt={
+            isFr ? "Logo Qualiopi — certification qualité" : "Qualiopi logo — quality certification"
+          }
+          width={210}
+          height={140}
+          loading="lazy"
+          decoding="async"
+          className="h-auto w-[210px]"
+        />
+      </span>
     ) : (
       <span
         aria-hidden="true"
@@ -117,11 +130,12 @@ export async function QualiopiBadge({ className, variant = "card" }: QualiopiBad
                 ? "Logo Qualiopi — certification qualité"
                 : "Qualiopi logo — quality certification"
             }
-            width={84}
-            height={84}
+            // Ratio réel du lockup 3:2 (2026-08-11) — 84×84 l'écrasait.
+            width={180}
+            height={120}
             loading="lazy"
             decoding="async"
-            className="h-auto w-[84px] shrink-0"
+            className="h-auto w-[180px] shrink-0"
           />
         ) : (
           <span

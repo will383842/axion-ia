@@ -29,8 +29,16 @@ async function processJob(job: Job<CostCapResetJobPayload>): Promise<void> {
   console.log(
     `[cost-cap-reset] tick=${job.data.tick} trigger=${job.data.trigger} → calling resetMonthlyCostCounters()`,
   );
-  const resetCount = await resetMonthlyCostCounters();
-  console.log(`[cost-cap-reset] reset ${resetCount} provider counter(s) for new month`);
+  // Fix 2026-08-15 (audit e2e, F1) — `resetMonthlyCostCounters()` ne remettait
+  // que les compteurs à 0 : les providers désactivés par le cost-cap (et le
+  // kill switch auto) restaient coupés à perpétuité, contredisant l'en-tête de
+  // ce worker. La fonction réarme désormais aussi ce que le cost-cap a coupé
+  // et retourne un récapitulatif — journalisé ici pour l'audit trail Coolify.
+  const summary = await resetMonthlyCostCounters();
+  console.log(
+    `[cost-cap-reset] reset ${summary.countersReset} provider counter(s) for new month — ` +
+      `reenabled=[${summary.reenabledProviders.join(", ")}] killSwitchLifted=${summary.killSwitchLifted}`,
+  );
 }
 
 let workerInstance: Worker<CostCapResetJobPayload> | null = null;

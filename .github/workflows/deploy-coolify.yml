@@ -636,6 +636,26 @@ jobs:
           # `//doctrine` du fichier de config pour le détail + la réversibilité.
           pnpm exec lhci assert --config=lighthouserc.postdeploy.json
 
+          # ── GEO-121 — passe MOBILE (audit GEO/AEO 2026-08-14, lot 16) ──────
+          # Aucune porte ne mesurait le mobile : ce gate tournait desktop seul,
+          # et les 2 projets Playwright mobile ne sont executes nulle part. Or
+          # l'indexation de Google est mobile-first — la version mesuree n'etait
+          # pas celle qui est classee.
+          #
+          # Les assertions mobiles sont TOUTES en WARN (cf. le bloc //doctrine
+          # de lighthouserc.postdeploy.mobile.json) : on n'a aucune ligne de
+          # base, et poser des seuils bloquants a l'aveugle bloquerait tous les
+          # deploiements des le premier run. Un gate qui bloque tout se fait
+          # desactiver, donc ne garde plus rien.
+          #
+          # `|| true` sur le collect : une passe mobile qui echoue a collecter ne
+          # doit pas faire tomber un deploiement par ailleurs sain. L'assert, lui,
+          # ne peut pas echouer puisque tout est en WARN — il sert a IMPRIMER les
+          # valeurs dans le journal, ce qui est le but de cette etape.
+          rm -rf .lighthouseci
+          pnpm exec lhci collect "${URLS[@]}" --numberOfRuns=1             --settings.preset=mobile --settings.throttlingMethod=devtools || true
+          pnpm exec lhci assert --config=lighthouserc.postdeploy.mobile.json || true
+
   # ───────────────────────────────────────────────────────────────────────
   # IndexNow post-deploy — Audit indexation 2026-06-20.
   # `scripts/indexnow-ping.ts` tourne en `postbuild` DANS le builder Docker, où
@@ -733,8 +753,45 @@ jobs:
             echo "::warning::REVALIDATE_SECRET absent côté GitHub Actions — revalidation ISR des index DB SKIP. Ces pages se ré-hydratent quand même d'elles-mêmes sous 1h (revalidate=3600). Ajoute le secret (= REVALIDATE_SECRET du runtime Coolify) pour combler la fenêtre vide post-deploy."
             exit 0
           fi
-          # Ces pages d'index lisent la DB → pré-rendues VIDES sous le stub de build.
-          PATHS='["/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie"]'
+          # Ces pages lisent la DB → pré-rendues VIDES sous le stub de build.
+          #
+          # `/fr/diagnostic` ajoutée le 2026-08-14 : la page d'atterrissage
+          # publicitaire porte désormais la note agrégée, le mur d'avis clients
+          # et les comptes par secteur, tous lus en base (PR #597). Sans cette
+          # entrée, CHAQUE déploiement remettait la page en version vide pendant
+          # ~1-2 h — vécu deux fois le jour même : le déploiement de #598 a
+          # écrasé la page réparée à la main une heure plus tôt. C'est la page
+          # qui reçoit le trafic PAYANT : une heure de blocs vides s'y paie au
+          # clic. (`/fr/roi` n'a pas besoin d'être listée : elle ne lit pas la
+          # base — tout son contenu vient de fichiers du dépôt.)
+          # `/fr/blog` ajoutée le 2026-08-15 (audit e2e du générateur de contenus) :
+          # l'index du blog lit la base en premier et retombe sur les fichiers du
+          # dépôt au build (stub.invalid). Il servait donc une liste appauvrie
+          # jusqu'à une heure après chaque déploiement, puis se figeait à l'edge —
+          # exactement le mécanisme qui a mordu `/fr/diagnostic` la veille. C'est
+          # la porte d'entrée de tout le contenu généré : la manquer annule une
+          # partie du bénéfice de la production.
+          #
+          # ÉLARGISSEMENT 2026-08-15 (audit GEO/AEO E2E, GEO-023 — prescrit par
+          # 8 agents indépendants). Deux familles de pages manquaient :
+          #   • les pages qui lisent la BASE hors des quatre index historiques :
+          #     `/fr` (note agrégée + mur d'avis), `/fr/blog` (index articles),
+          #     `/fr/memo-isere`, `/fr/sites-web-augmentes`, `/fr/audit`,
+          #     `/fr/formations`, `/fr/implementation` ;
+          #   • les pages dont le JSON-LD `#organization` du layout dépend de
+          #     `env.COMPANY_VAT_NUMBER` / `COMPANY_REGISTRATION_NUMBER`, ABSENTS
+          #     du build GitHub Actions et présents seulement au runtime Coolify :
+          #     `/fr/mentions-legales` (qui affichait « communiqué sur demande »
+          #     six fois trois heures après un deploy) et `/fr/conditions-generales`.
+          #     C'est LA page que Google et les LLM recoupent avec SIRENE pour la
+          #     fusion d'entité — la servir amputée coûte le Knowledge Panel.
+          #
+          # ⚠️ CETTE LISTE ET CELLE DU STEP SUIVANT (purge CF `FILES`) DOIVENT
+          # RESTER IDENTIQUES, au préfixe `https://axion-ia.com` près. Verrouillé
+          # par `tests/unit/ci/deploy-warm-listes.spec.ts` : revalider sans
+          # purger laisse la version amputée figée à l'edge pour s-maxage=3600.
+          # Plafond Cloudflare Free : 30 URLs par appel de purge par liste — 14 ici.
+          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5","/fr/connaissances/page/2","/fr/connaissances/page/3","/fr/connaissances/page/4","/fr/connaissances/page/5"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -745,6 +802,109 @@ jobs:
           if [ "${code}" != "200" ]; then
             echo "::warning::Revalidation index DB non confirmée (HTTP ${code}) — non bloquant. Vérifie que REVALIDATE_SECRET côté GitHub == côté Coolify (RUN)."
           fi
+
+      # ── Purge CF ciblée des pages tout juste revalidées ──────────────────
+      # La purge globale du job `deploy` arrive AVANT la revalidation ci-dessus :
+      # tout visiteur (ou le LHCI) qui passe dans l'intervalle refige la version
+      # STUB chez Cloudflare pour s-maxage=3600. Vécu le 2026-08-14 sur
+      # /fr/diagnostic : origin frais, edge vide pendant une heure. Purger ces
+      # cinq URLs APRÈS la revalidation ferme la fenêtre : le prochain hit
+      # re-cache la version peuplée. Purge par LISTE D'URLS, pas
+      # `purge_everything` — le sweep de chauffe qui suit repartirait de zéro.
+      # Best-effort comme le reste du job : jamais bloquant.
+      - name: Purge CF des pages revalidées (anti-stub-figé)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          set -uo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ] || [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::warning::Purge ciblée SKIP (secret CF ou REVALIDATE_SECRET absent) — l'edge se rafraîchit seul sous 1h."
+            exit 0
+          fi
+          # ⚠️ MÊME ENSEMBLE QUE `PATHS` DU STEP PRÉCÉDENT, au préfixe près.
+          # Verrouillé par `tests/unit/ci/deploy-warm-listes.spec.ts`.
+          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation","https://axion-ia.com/fr/blog/page/2","https://axion-ia.com/fr/blog/page/3","https://axion-ia.com/fr/blog/page/4","https://axion-ia.com/fr/blog/page/5","https://axion-ia.com/fr/connaissances/page/2","https://axion-ia.com/fr/connaissances/page/3","https://axion-ia.com/fr/connaissances/page/4","https://axion-ia.com/fr/connaissances/page/5"]'
+          code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
+            -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data "{\"files\":${FILES}}" \
+            "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" || echo "000")
+          echo "  HTTP ${code} — $(cat /tmp/cfpurge.json 2>/dev/null | head -c 300 || echo '(no body)')"
+          if [ "${code}" != "200" ]; then
+            echo "::warning::Purge CF ciblée non confirmée (HTTP ${code}) — non bloquant."
+          fi
+
+      # ── Hubs villes pré-rendus : revalidation + purge (GEO-118) ──────────
+      # Ces pages affichent un bloc « articles mentionnant {ville} » qui LIT LA
+      # BASE. Le build tourne sous les URLs stub (ADR 0026) : la requête rend
+      # `[]`, le bloc n'est pas rendu. Avec `revalidate = 86400` et des
+      # déploiements plus fréquents qu'une fois par jour, ces pages ne repassent
+      # JAMAIS par un rendu peuplé — le bloc est structurellement absent, et ce
+      # sont Paris, Lyon, Marseille…
+      #
+      # Les ~2 100 autres villes vont bien : `dynamicParams` les rend au RUNTIME,
+      # avec la vraie base. Le défaut ne touche QUE les villes pré-rendues.
+      # (L'audit annonçait « ~480 hubs villes » : le compte et la population
+      # touchée étaient tous deux inexacts. La nuance rend le correctif borné.)
+      #
+      # ⚠️ LA LISTE N'EST PAS ÉCRITE ICI, ET C'EST LE POINT. Ce job n'a ni
+      # checkout ni Node — cinq `curl` sur un runner nu, et c'est très bien
+      # ainsi. Il lit donc un fichier versionné, ARTEFACT de
+      # `src/content/villes/prerendu.ts` — la MÊME source que
+      # `generateStaticParams`. Recopier le seuil de population ici rejouerait le
+      # défaut d'origine : deux endroits qui décrivent le même ensemble finissent
+      # par diverger. `tests/unit/ci/deploy-warm-listes.spec.ts` recalcule la
+      # liste et rougit si le fichier a dérivé.
+      #
+      # Régénérer : pnpm tsx scripts/ci/hubs-villes-prerendus.ts --ecrire
+      - name: Revalidate + purge hubs villes pré-rendus (anti-empty-ISR)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          LISTE: .github/warm/hubs-villes-prerendus.json
+        run: |
+          set -uo pipefail
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then
+            echo "::warning::REVALIDATE_SECRET absent — hubs villes non revalidés. Le bloc « articles mentionnant {ville} » restera absent sur les villes pré-rendues."
+            exit 0
+          fi
+          # Ce job n'a pas de checkout : on récupère la liste depuis le dépôt au
+          # commit déployé, pas depuis `main` — sinon on chaufferait une liste
+          # qui ne correspond pas à l'image en ligne.
+          if ! curl -sSfL -m 30 -o /tmp/hubs-villes.json               "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/${LISTE}"; then
+            echo "::warning::Liste des hubs villes introuvable au commit ${GITHUB_SHA} — étape ignorée."
+            exit 0
+          fi
+          NB=$(jq 'length' /tmp/hubs-villes.json)
+          echo "Hubs villes pré-rendus : ${NB}"
+
+          PATHS_VILLES=$(jq -c '.' /tmp/hubs-villes.json)
+          code=$(curl -sS -o /tmp/reval-villes.json -w "%{http_code}" -m 60 -X POST             -H "Content-Type: application/json"             -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}"             --data "{\"paths\":${PATHS_VILLES}}"             "${SITE}/api/internal/revalidate" || echo "000")
+          echo "  revalidate HTTP ${code}"
+          if [ "${code}" != "200" ]; then
+            echo "::warning::Revalidation des hubs villes non confirmée (HTTP ${code}) — non bloquant."
+          fi
+
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ]; then
+            echo "::warning::Purge CF des hubs villes SKIP (secret absent) — l'edge se rafraîchit seul sous 24h."
+            exit 0
+          fi
+          # Purge APRÈS la revalidation : l'inverse laisse le prochain hit refiger
+          # la version vide à l'edge pour s-maxage=3600 (vécu le 2026-08-14 sur
+          # /fr/diagnostic).
+          #
+          # Découpage en lots de 30 = plafond du plan Free PAR APPEL. Au-delà,
+          # Cloudflare rejette l'appel ENTIER : pas une seule URL purgée, et sans
+          # lire le corps de la réponse ça ressemble à un succès. Le découpage est
+          # une garde, pas une politesse.
+          I=0
+          while [ "${I}" -lt "${NB}" ]; do
+            LOT=$(jq -c --argjson i "${I}" --arg s "${SITE}"               '[.[$i:$i+30][] | $s + .]' /tmp/hubs-villes.json)
+            code=$(curl -sS -o /tmp/cfpurge-villes.json -w "%{http_code}" -m 30 -X POST               -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}"               -H "Content-Type: application/json"               --data "{\"files\":${LOT}}"               "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" || echo "000")
+            echo "  purge lot ${I}..$((I + 30)) HTTP ${code} — $(head -c 160 /tmp/cfpurge-villes.json 2>/dev/null || echo '(no body)')"
+            I=$((I + 30))
+          done
 
       # 2026-07-20 — Chauffe PRIORITAIRE des pages stratégiques + de leurs images
       # LCP. Deux problèmes que le sweep sitemap ci-dessous ne couvre pas :
@@ -762,7 +922,13 @@ jobs:
         run: |
           set -uo pipefail
           UA="AxionIA-CacheWarmer/1.0"
-          STRATEGIC="/fr /fr/audit /fr/formations /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
+          # `/fr/diagnostic` ajoutée 2026-08-14 : hors sitemap (noindex) donc
+          # invisible du sweep, mais c'est la page du trafic PAYANT — le premier
+          # clic publicitaire ne doit pas payer l'optimisation des images.
+          # `/fr/sites-web-augmentes` ajoutée 2026-08-15 (audit GEO/AEO E2E) :
+          # c'est la seule des quatre pages de service à ne figurer dans AUCUNE
+          # des trois listes de ce job.
+          STRATEGIC="/fr /fr/diagnostic /fr/audit /fr/formations /fr/sites-web-augmentes /fr/interventions /fr/implementation /fr/cas-concrets /fr/methodologie /fr/comparaisons /fr/stack-ia /fr/guide-ia /fr/connaissances /fr/faq /fr/contact /fr/appel"
           for p in ${STRATEGIC}; do
             url="${SITE}${p}"
             html=$(curl -sS -m 25 -A "${UA}" "${url}" || true)
@@ -821,7 +987,6 @@ jobs:
             echo "::warning::Warmer capé ${cap}/${total} — surplus chauffé par trafic/crawl."
           fi
           echo "::notice::Warm terminé (best-effort, non bloquant)."
-
 
   # ══════════════════════════════════════════════════════════════════════════
   # notify — annonce Telegram du résultat du déploiement (2026-07-29)

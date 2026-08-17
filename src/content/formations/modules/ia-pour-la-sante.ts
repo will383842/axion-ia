@@ -52,7 +52,12 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous classez n'importe quel écrit de votre poste en « je peux », « à condition de », « jamais » — et vous savez à qui remonte le doute, au lieu de trancher seul.",
-      objectifGlobalId: "obj-4",
+      objectifGlobalId: "obj-2",
+      // Le premier temps de l'atelier renseigne et date la fiche « le régime de
+      // mon poste », nom du valideur compris (obj-1) ; la correction en
+      // plénière pose la ligne rouge du métier et la personne à qui le doute
+      // remonte au lieu d'être tranché en salle (obj-3).
+      objectifsSecondairesIds: ["obj-1", "obj-3"],
       dureeMin: 5,
       notes: {
         script:
@@ -217,13 +222,11 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez un courrier ou une note de transmission diffusable à partir d'un texte que vous avez rendu réellement non identifiant — contrôlé par un collègue AVANT d'entrer dans l'outil.",
-      objectifGlobalId: "obj-1",
-      // Ce module produit aussi les trames de courriers de gestion courante :
-      // confirmation ou report de rendez-vous aux familles, réponse à une
-      // administration — l'appui administratif vendu en obj-2. Et il installe
-      // le geste central de la confidentialité (obj-4) : neutraliser hors
-      // outil, contrôler à deux.
-      objectifsSecondairesIds: ["obj-2", "obj-4"],
+      objectifGlobalId: "obj-5",
+      // Le deuxième temps de l'atelier est la neutralisation elle-même :
+      // réécriture stylo en main, hors outil, jusqu'à disparition des quatre
+      // traces, puis comptage par le binôme avant toute soumission (obj-4).
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -361,11 +364,11 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez en une séance un écrit de pilotage que vous repoussez d'habitude — synthèse, trame de rapport d'activité, réponse à une tutelle ou à un appel à projets — et chaque affirmation y est renvoyée à sa page source.",
-      objectifGlobalId: "obj-3",
-      // Les écrits de pilotage sont l'appui administratif vendu en obj-2, et
-      // la chasse à l'erreur de fin de module est le geste de vérification
-      // avant diffusion vendu en obj-5.
-      objectifsSecondairesIds: ["obj-2", "obj-5"],
+      objectifGlobalId: "obj-7",
+      // Le premier temps de l'atelier est l'interrogation d'un document long
+      // de l'établissement — trois questions, trois réponses rattachées à leur
+      // page d'origine et vérifiées dans le document (obj-6).
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 5,
       notes: {
         script:
@@ -503,11 +506,12 @@ export const IA_POUR_LA_SANTE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repartez avec le manuel de procédures IA de votre service — trois fiches portant leur liste de vérifications — et trois usages datés, à faire viser par votre encadrement.",
-      objectifGlobalId: "obj-5",
-      // Le retour sur l'historique du jour et le renvoi au référent protection
-      // des données prolongent la confidentialité (obj-4) jusque dans
-      // l'ancrage.
-      objectifsSecondairesIds: ["obj-4"],
+      objectifGlobalId: "obj-8",
+      // Le retour sur l'historique du jour se reporte en bas de la fiche « le
+      // régime de mon poste », qui sort ainsi datée et complétée (obj-1) ; le
+      // manuel porte en outre la page « régimes, ligne rouge et à qui la
+      // question remonte », reprise au quiz de fin (obj-3).
+      objectifsSecondairesIds: ["obj-1", "obj-3"],
       dureeMin: 5,
       notes: {
         script:

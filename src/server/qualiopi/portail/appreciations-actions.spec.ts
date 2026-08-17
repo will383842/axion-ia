@@ -25,6 +25,7 @@ vi.mock("@/lib/prisma", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-uuid-1" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   // 🔴 F45 — `traiterDemandeRgpdAction` exige désormais `requireAdminPublish`
   // (admin / super_admin) et non plus `requireAdminWrite` (qui laissait passer
   // le rôle `editor`) : clore une demande RGPD engage la responsabilité du

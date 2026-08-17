@@ -2,13 +2,12 @@
  * Sprint Campaign Controls (§ 25.2 v1.8 2026-05-22) — C.1
  *
  * Tests orchestrator sequential city processing.
- * 6 scénarios :
- *  1. mode parallel → ignore currentCityIndex, traite toutes villes simultanément
- *  2. mode sequential, ville 0 pending → skip enqueue
- *  3. mode sequential, ville 0 terminée → enqueue ville 0 + incrément currentCityIndex
- *  4. mode sequential, currentCityIndex = villes.length → skip (fin)
- *  5. mode sequential, currentCityIndex null → démarre à 0
- *  6. mode parallel avec campaign sans villes → comportement inchangé
+ *
+ * Mis à jour le 2026-08-15 : le scénario « la ville 0 est terminée → on enfile ET
+ * on avance l'index dans la foulée » encodait en réalité le bug. Avancer l'index
+ * à l'enfilement rendait l'attente inopérante (le tick suivant comptait les jobs
+ * de la ville suivante, toujours vide). Les scénarios décrivent désormais le
+ * comportement voulu : l'index n'avance qu'une fois la ville couverte ET drainée.
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -52,9 +51,35 @@ vi.mock("@/server/actions/content-gen/_settings", () => ({
   readContentGenConfig: (key: string) => readConfigMock(key),
 }));
 
-vi.mock("@/server/content-gen/scheduler/anti-burst", () => ({
-  computeAntiBurstSchedule: vi.fn(() => []),
-  msSinceStartOfDay: vi.fn(() => 0),
+vi.mock("@/server/content-gen/scheduler/anti-burst", async () => {
+  const actual = await vi.importActual<typeof import("@/server/content-gen/scheduler/anti-burst")>(
+    "@/server/content-gen/scheduler/anti-burst",
+  );
+  return {
+    ...actual,
+    computeAntiBurstSchedule: vi.fn(() => []),
+    // Milieu de journée : le budget de tick n'est pas le sujet de ce fichier, on
+    // veut juste qu'il soit non nul pour observer le séquencement des villes.
+    msSinceStartOfDay: vi.fn(() => 43_200_000),
+  };
+});
+
+// Reprise du retard (2026-08-15) — hors sujet ici : neutralisée.
+vi.mock("@/server/content-gen/recovery/backlog-recovery", () => ({
+  DEFAULT_RECOVERY_SETTINGS: {
+    enabled: false,
+    maxPerTick: 0,
+    maxPerDay: 0,
+    maxRetries: 3,
+    stuckAfterMinutes: 60,
+  },
+  drainFailedJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStuckJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+  sweepStrandedQualityJobs: vi.fn(async () => ({ requeued: 0, skipped: 0 })),
+}));
+
+vi.mock("@/server/content-gen/config-store", () => ({
+  readKillSwitchFailSafe: vi.fn(async () => ({ active: false })),
 }));
 
 vi.mock("@/server/content-gen/shared/content-gen-alerts", () => ({
@@ -184,6 +209,40 @@ function getProcessor() {
   return capturedProcessor.fn!;
 }
 
+/**
+ * Le worker appelle `contentGenJob.count` pour plusieurs questions différentes.
+ * Ce routeur distingue les trois qui comptent ici, à partir du `where` :
+ *  - créés aujourd'hui pour la campagne (rythme quotidien) ;
+ *  - créés pour la ville courante (couverture de la ville) ;
+ *  - encore en cours pour la ville courante (attente avant de passer à la suite).
+ */
+function routeCounts(opts: {
+  createdToday?: number;
+  cityCreated?: number;
+  cityPending?: number;
+}): void {
+  contentGenJobCountMock.mockImplementation(async (args: unknown) => {
+    const where = (args as { where?: Record<string, unknown> } | undefined)?.where ?? {};
+    const hasVille = "anchorVilleSlug" in where;
+    const status = where.status as { in?: string[] } | undefined;
+    if (hasVille && status?.in) return opts.cityPending ?? 0;
+    if (hasVille) return opts.cityCreated ?? 0;
+    if ("createdAt" in where) return opts.createdToday ?? 0;
+    return 0;
+  });
+}
+
+/** Lit la valeur de `currentCityIndex` écrite par le worker, si elle l'a été. */
+function readCityIndexUpdate(): number | undefined {
+  const calls = campaignUpdateMock.mock.calls as unknown[][];
+  const found = calls.find(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (call) => (call[0] as any)?.data?.currentCityIndex !== undefined,
+  );
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (found?.[0] as any)?.data?.currentCityIndex as number | undefined;
+}
+
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("Orchestrator — sequential city processing", () => {
@@ -200,39 +259,50 @@ describe("Orchestrator — sequential city processing", () => {
     expect(contentGenJobCreateMock).toHaveBeenCalled();
   });
 
-  it("C2: mode sequential, ville 0 pending → skip enqueue (count > 0)", async () => {
+  // Régression 2026-08-15 — l'index de ville était avancé dès l'enfilement, si
+  // bien que le comptage « jobs en cours » du tick suivant portait sur la ville
+  // SUIVANTE (toujours vide) : l'attente promise par le mode séquentiel ne
+  // pouvait jamais se déclencher. Chaque ville ne recevait qu'un budget de tick,
+  // puis la campagne cessait d'enfiler tout en restant `running`.
+  it("C2: ville couverte mais jobs encore en cours → on attend, rien enfilé, index inchangé", async () => {
     const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: 0 });
     campaignFindManyMock.mockResolvedValue([campaign]);
-    // Première ville (paris) a des jobs pending
-    contentGenJobCountMock.mockResolvedValue(3);
+    // 30 articles / 3 villes = 10 par ville : couverture atteinte, 3 encore en vol.
+    routeCounts({ cityCreated: 10, cityPending: 3 });
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    // Aucun job créé
     expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+    expect(readCityIndexUpdate()).toBeUndefined();
   });
 
-  it("C3: mode sequential, ville 0 terminée → enqueue jobs + incrément currentCityIndex", async () => {
+  it("C3: ville pas encore couverte → enfile pour ELLE, sans avancer l'index", async () => {
     const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: 0 });
     campaignFindManyMock.mockResolvedValue([campaign]);
-    // Ville courante (index 0 = paris) : 0 jobs pending
-    contentGenJobCountMock.mockResolvedValue(0);
+    routeCounts({ cityCreated: 0, cityPending: 0 });
 
     const fn = getProcessor();
     await fn(MOCK_JOB);
 
-    // Des jobs ont été créés
     expect(contentGenJobCreateMock).toHaveBeenCalled();
-    // currentCityIndex incrémenté
-    const updateCalls = campaignUpdateMock.mock.calls as unknown[][];
-    const cityIndexUpdate = updateCalls.find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (call) => (call[0] as any)?.data?.currentCityIndex !== undefined,
-    );
-    expect(cityIndexUpdate).toBeDefined();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((cityIndexUpdate?.[0] as any)?.data?.currentCityIndex).toBe(1);
+    const createArg: any = contentGenJobCreateMock.mock.calls[0]?.[0];
+    expect(createArg?.data?.anchorVilleSlug).toBe("paris");
+    // L'index n'avance PAS tant que la ville n'est pas couverte et drainée.
+    expect(readCityIndexUpdate()).toBeUndefined();
+  });
+
+  it("C3bis: ville couverte ET drainée → l'index avance, sans rien enfiler ce tick", async () => {
+    const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: 0 });
+    campaignFindManyMock.mockResolvedValue([campaign]);
+    routeCounts({ cityCreated: 10, cityPending: 0 });
+
+    const fn = getProcessor();
+    await fn(MOCK_JOB);
+
+    expect(contentGenJobCreateMock).not.toHaveBeenCalled();
+    expect(readCityIndexUpdate()).toBe(1);
   });
 
   it("C4: mode sequential, currentCityIndex = villes.length → skip (toutes villes terminées)", async () => {
@@ -251,7 +321,7 @@ describe("Orchestrator — sequential city processing", () => {
   it("C5: mode sequential, currentCityIndex null → démarre à index 0 (paris)", async () => {
     const campaign = makeCampaign({ cityProcessingMode: "sequential", currentCityIndex: null });
     campaignFindManyMock.mockResolvedValue([campaign]);
-    contentGenJobCountMock.mockResolvedValue(0);
+    routeCounts({ cityCreated: 0, cityPending: 0 });
 
     const fn = getProcessor();
     await fn(MOCK_JOB);

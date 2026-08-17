@@ -30,7 +30,7 @@ export {};
 // V1 = ping fixe top-15 + villes dynamique. V2 (Sprint 17) = diff git changed-routes only.
 // Sprint 21 = diff RSS feed lastModified field.
 
-const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
+import { submitToIndexNow } from "../src/lib/indexnow";
 
 const STRATEGIC_PATHS = [
   "/",
@@ -71,7 +71,6 @@ async function main(): Promise<void> {
   }
 
   const host = new URL(siteUrl).host;
-  const keyLocation = `${siteUrl}/${key}.txt`;
 
   // Audit indexation 2026-05-18 P0-5 — respect EN_LOCALE_ENABLED (2026-05-16 EN OFF).
   // Émet uniquement les URLs des locales effectivement servies en prod.
@@ -97,25 +96,33 @@ async function main(): Promise<void> {
   const imageBankUrls = await collectImageBankUrls(siteUrl);
   urlList.push(...imageBankUrls);
 
-  const payload = { host, key, keyLocation, urlList };
-
-  try {
-    const res = await fetch(INDEXNOW_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (res.status >= 200 && res.status < 300) {
-      console.log(`[indexnow-ping] OK — ${urlList.length} URLs pinged.`);
-    } else {
-      const body = await res.text().catch(() => "");
-      console.warn(
-        `[indexnow-ping] non-2xx response : ${res.status} ${res.statusText} — ${body.slice(0, 200)}`,
-      );
+  // Cascade d'endpoints (SSOT `src/lib/indexnow.ts`) : `api.indexnow.org`
+  // renvoie 403 `UserForbiddedToAccessSite` pour ce domaine — problème back-end
+  // Microsoft, pas un défaut de notre clé (cf. le commentaire du SSOT).
+  const result = await submitToIndexNow(host, key, urlList);
+  if (result.accepted) {
+    console.log(`[indexnow-ping] OK — ${urlList.length} URLs acceptées par ${result.accepted}.`);
+    // Un endpoint a beau accepter, si l'agrégateur refuse c'est que Bing ne
+    // reçoit rien : on le dit, sinon le run reste vert et l'anomalie invisible.
+    const refus = result.attempts.filter((a) => !a.endsWith("OK"));
+    if (refus.length > 0) {
+      warn(`endpoint(s) en échec malgré le succès global — ${refus.join(" | ")}`);
     }
-  } catch (err) {
-    console.warn(`[indexnow-ping] error :`, err instanceof Error ? err.message : err);
+  } else {
+    // ⚠️ On n'échoue PAS le déploiement pour une indisponibilité tierce, mais on
+    // laisse une annotation VISIBLE dans le résumé du run. Le `|| true` du
+    // workflow rendait ce cas totalement muet auparavant.
+    warn(`AUCUN endpoint n'a accepté les ${urlList.length} URLs — ${result.attempts.join(" | ")}`);
   }
+}
+
+/** Annotation GitHub Actions — visible dans le résumé du run, pas noyée dans le log. */
+function warn(message: string): void {
+  console.warn(
+    process.env["GITHUB_ACTIONS"] === "true"
+      ? `::warning title=IndexNow::${message}`
+      : `[indexnow-ping] ${message}`,
+  );
 }
 
 /**
@@ -175,7 +182,7 @@ async function collectIndexableCityUrls(
 
 async function collectImageBankUrls(siteUrl: string): Promise<string[]> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
-    return [];
+    return collectImageBankUrlsFromSitemap(siteUrl);
   }
   try {
     const { prisma } = await import("../src/lib/prisma");
@@ -198,8 +205,38 @@ async function collectImageBankUrls(siteUrl: string): Promise<string[]> {
     }
     return urls;
   } catch (err) {
+    // Post-deploy GH Actions : ni DATABASE_URL ni client Prisma généré — le
+    // repli sitemap lit la prod live (défaut 2026-08-11 : « Cannot find module
+    // 'prisma/generated/client' » → les URLs galerie n'étaient JAMAIS soumises).
     console.warn(
-      `[indexnow-ping] image-bank URLs skipped :`,
+      `[indexnow-ping] image-bank via DB indisponible (${err instanceof Error ? err.message : String(err)}) — repli sitemap`,
+    );
+    return collectImageBankUrlsFromSitemap(siteUrl);
+  }
+}
+
+/**
+ * Repli sans DB : extrait les URLs de pages galerie du sitemap images public
+ * (rendu au runtime par la prod, donc complet même quand ce script tourne dans
+ * un contexte sans base — job post-deploy GH Actions notamment).
+ * `<image:loc>` (fichiers) n'est pas capté : le motif exige la balise nue `<loc>`.
+ */
+async function collectImageBankUrlsFromSitemap(siteUrl: string): Promise<string[]> {
+  try {
+    const res = await fetch(`${siteUrl}/sitemaps/images-fr.xml`, {
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) {
+      console.warn(`[indexnow-ping] sitemap images-fr.xml → HTTP ${res.status}, image-bank skip`);
+      return [];
+    }
+    const xml = await res.text();
+    const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g), (m) => m[1]!);
+    console.log(`[indexnow-ping] image-bank via sitemap : ${urls.length} URLs`);
+    return urls;
+  } catch (err) {
+    console.warn(
+      `[indexnow-ping] image-bank sitemap fallback échoué :`,
       err instanceof Error ? err.message : err,
     );
     return [];

@@ -72,6 +72,8 @@
     "image-bank:isolation-check": "tsx scripts/image-bank/isolation-check.ts",
     "qualiopi:seed": "tsx prisma/seeds/qualiopi/index.ts",
     "qualiopi:seed-demo": "tsx prisma/seeds/qualiopi/demo.ts",
+    "volumetrie:seed": "tsx prisma/seeds/volumetrie/fixture-volumetrique.ts",
+    "volumetrie:mesure": "tsx scripts/volumetrie/mesurer.ts",
     "qualiopi:purge-demo": "tsx prisma/scripts/purge-demo-qualiopi.ts",
     "backfill:echeance": "tsx scripts/backfill-echeance-factures.ts",
     "calendly:webhook:subscribe": "tsx scripts/calendly-webhook-subscribe.ts",
@@ -98,7 +100,8 @@
     "worker": "tsx src/server/queue/worker.ts",
     "adr:new": "tsx scripts/adr-new.ts",
     "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm admin-nav:routes-check && pnpm image-bank:isolation-check && pnpm qualiopi:isolation-check && pnpm test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "notif:test-telegram": "tsx scripts/notif/test-telegram.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
@@ -220,7 +223,7 @@
       "prettier --write"
     ]
   },
-  "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /reserver (calendrier client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS.",
+  "_size_limit_doctrine": "Sprint S6.3 P1-6 (2026-05-15) — refactor multi-bucket aligné AGENTS.md. 75 KB gz/route (cible interne stricte), 110 KB sur /appel (iframe Calendly client-heavy, ADR exception). Per-route strict path-matching n'est pas supporté nativement par size-limit (les page-*.js sont sommés sur tout le glob) ; on contrôle donc le shell partagé + les pages standard via globs séparés, et Lighthouse CI gate-b reste l'autorité finale pour les seuils per-route LCP/INP/CLS. ⚠️ 2026-08-15 (audit GEO/AEO E2E, GEO-025) : les trois globs /reserver étaient MORTS depuis la suppression de la page le 2026-06-26 (Will) — size-limit ne mesurait donc RIEN sur l'exception de budget, et /appel, la vraie page à iframe Calendly, tombait dans le bucket 'Pages standard' à 75 KB au lieu des 110 KB promis par AGENTS.md. Verrou : tests/unit/ci/size-limit-buckets.spec.ts refuse tout glob nommant une route qui n'existe plus. ⚠️ Ces gates sont en continue-on-error dans ci.yml : elles rapportent, elles ne bloquent pas.",
   "_size_limit_running_note": "running:false sur chaque entrée (2026-05-29) — on ne mesure QUE la taille gz (le seuil du gate), pas le temps d'exécution JS qui exige un Chrome headless. size-limit lançait Chrome en CI et restait bloqué (« Running JS in headless Chrome » → SIGTERM Gate B). Lighthouse CI reste l'autorité perf (LCP/INP/CLS). Cf doctrine ci-dessous.",
   "size-limit": [
     {
@@ -236,22 +239,16 @@
       "running": false
     },
     {
-      "name": "Routes /reserver (exception calendrier — 110 KB gz cumulé)",
-      "path": ".next/static/chunks/app/**/reserver/**/page-*.js",
+      "name": "Routes /appel (exception iframe Calendly — 110 KB gz cumulé)",
+      "path": ".next/static/chunks/app/**/appel/**/page-*.js",
       "limit": "110 KB",
       "running": false
     },
     {
-      "name": "Routes /reserver — chunks dynamiques (Calendar SSR=false)",
-      "path": ".next/static/chunks/app/**/reserver/**/*.js",
-      "limit": "150 KB",
-      "running": false
-    },
-    {
-      "name": "Pages standard (toutes routes hors /reserver) — page chunks individuels",
+      "name": "Pages standard (toutes routes hors /appel) — page chunks individuels",
       "path": [
         ".next/static/chunks/app/**/page-*.js",
-        "!.next/static/chunks/app/**/reserver/**"
+        "!.next/static/chunks/app/**/appel/**"
       ],
       "limit": "75 KB",
       "running": false

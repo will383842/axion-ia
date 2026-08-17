@@ -21,6 +21,57 @@
 import { prisma } from "@/lib/prisma";
 import { writeAuditLog } from "@/server/content-gen/audit-log";
 
+/**
+ * Lecture nue d'une clé ContentGenConfig, sans passer par la Server Action.
+ *
+ * Même sémantique de fusion que `readContentGenConfig` (les défauts d'un objet
+ * simple sont fusionnés en surface), à une différence près : les erreurs ne sont
+ * PAS avalées, elles remontent. L'appelant décide de sa politique — ce qui
+ * permet notamment de traiter une panne DB en fail-SAFE là où c'est nécessaire
+ * (cf. `readKillSwitchFailSafe`), au lieu de retomber silencieusement sur un
+ * défaut permissif.
+ */
+export async function readContentGenConfigDirect<T>(key: string, defaultValue: T): Promise<T> {
+  const row = await prisma.contentGenConfig.findUnique({ where: { key } });
+  if (!row) return defaultValue;
+  const stored = row.value as unknown;
+  const isPlainObject = (v: unknown): v is Record<string, unknown> =>
+    typeof v === "object" && v !== null && !Array.isArray(v);
+  if (isPlainObject(defaultValue) && isPlainObject(stored)) {
+    return { ...defaultValue, ...stored } as T;
+  }
+  return stored as T;
+}
+
+export interface KillSwitchState {
+  readonly active: boolean;
+  readonly reason?: string;
+  readonly activatedAt?: string;
+  /** true = posé automatiquement (garde-fou quota), false/absent = décision humaine. */
+  readonly auto?: boolean;
+}
+
+/**
+ * Lecture du kill switch en fail-SAFE.
+ *
+ * Fix 2026-08-15 (audit e2e) — `readContentGenConfig` avale toute erreur et
+ * retombe sur le défaut. Pour le kill switch, ce défaut est `{active:false}` :
+ * une simple erreur DB transitoire « dé-gelait » donc silencieusement un arrêt
+ * d'urgence. Un interrupteur de sécurité doit tomber du côté sûr : si l'état ne
+ * peut pas être lu, on considère la production comme arrêtée.
+ */
+export async function readKillSwitchFailSafe(): Promise<KillSwitchState> {
+  try {
+    return await readContentGenConfigDirect<KillSwitchState>("kill_switch", { active: false });
+  } catch (err) {
+    console.error(
+      "[kill-switch] lecture impossible — arrêt par précaution (fail-safe):",
+      err instanceof Error ? err.message : err,
+    );
+    return { active: true, reason: "État du kill switch illisible (erreur base de données)" };
+  }
+}
+
 /** Acteur humain à l'origine de l'écriture. Absent = écriture système (worker). */
 export interface ContentGenConfigActor {
   readonly userId?: string;

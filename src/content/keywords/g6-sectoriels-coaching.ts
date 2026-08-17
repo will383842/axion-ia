@@ -1020,7 +1020,7 @@ const KW_IT: KeywordSeed[] = [
       h1: "Formation IA pour équipes techniques : passer de l'expérimentation à la production",
       metaTitle: "Formation IA équipe technique IT — Axion-IA",
       metaDescription:
-        "Formation IA pour développeurs, DevOps et tech leads : API Claude, patterns LLM, sécurité, gouvernance. Présentiel ou remote, 1 à 3 jours.",
+        "Formation IA pour développeurs, DevOps et tech leads : API Claude, patterns LLM, sécurité, gouvernance. Présentiel ou remote, 1 à 2 jours.",
       h2Variants: [
         "Programme formation IA développeurs et tech leads",
         "Hands-on : déployer votre premier agent IA en production",

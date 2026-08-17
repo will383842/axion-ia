@@ -51,7 +51,13 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous classez l'outil de votre équipe dans son régime d'usage, vous neutralisez un ticket réel avant de le confier à un outil, et vous disposez du jeu de travail de votre journée.",
-      objectifGlobalId: "obj-5",
+      objectifGlobalId: "obj-2",
+      // L'atelier produit les trois demandes neutralisées à la liste rouge et la
+      // vérification fait classer les cinq extraits fournis : c'est l'objectif
+      // de neutralisation que le module sert principalement. Le premier contrôle
+      // de la vérification fait par ailleurs classer l'outil réellement utilisé
+      // par l'équipe dans son régime d'usage, avec sa phrase de périmètre.
+      objectifsSecondairesIds: ["obj-1"],
       dureeMin: 10,
       notes: {
         script:
@@ -221,10 +227,11 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous produisez une réponse type réutilisable et une réclamation traitée, l'une et l'autre validées par un pair sur grille.",
-      objectifGlobalId: "obj-1",
-      // Le module traite aussi une réclamation de bout en bout (démonstration
-      // AXION + atelier + chasse à l'erreur).
-      objectifsSecondairesIds: ["obj-2"],
+      objectifGlobalId: "obj-3",
+      // La chasse à l'erreur de la vérification porte sur les réponses produites
+      // à l'atelier : chaque binôme y repère le délai, l'avoir ou le geste
+      // commercial que personne n'a autorisés, et en annonce le décompte.
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -363,10 +370,11 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous reprenez un dossier en cours en cinq minutes à partir de son historique, et vous conduisez une troisième relance jusqu'à l'escalade rédigée.",
-      objectifGlobalId: "obj-3",
-      // Le jeu de rôle conduit une réclamation de troisième relance jusqu'à
-      // l'escalade vers le niveau 2.
-      objectifsSecondairesIds: ["obj-2"],
+      // Fiche de reprise en trois blocs avec renvoi au numéro de message,
+      // réponse fiche en main à la vérification, puis troisième relance conduite
+      // jusqu'à l'escalade rédigée sur la trame : le module couvre l'objectif
+      // entier, sans objectif secondaire.
+      objectifGlobalId: "obj-5",
       dureeMin: 5,
       notes: {
         script:
@@ -507,10 +515,12 @@ export const IA_POUR_LA_RELATION_CLIENT: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous transformez vos réponses du matin en fiches de base de connaissances opposables, et vous n'envoyez aucune réponse qui n'ait passé les quatre contrôles.",
-      objectifGlobalId: "obj-4",
-      // Le module applique aussi la mention d'information et les règles sur ce
-      // qui part au client — la confidentialité jusqu'à l'envoi.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-7",
+      // Le premier temps de l'atelier regroupe les verbatims neutralisés en cinq
+      // causes racines au maximum et en tire la note d'une page au responsable ;
+      // le troisième applique les quatre contrôles avant envoi et fixe ce qui ne
+      // part jamais au client.
+      objectifsSecondairesIds: ["obj-6", "obj-8"],
       dureeMin: 5,
       notes: {
         script:

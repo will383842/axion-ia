@@ -10,6 +10,12 @@
  *
  * Les `iconName` sont résolus côté composant (lucide). FR canonique — EN =
  * miroir (locale 301→FR).
+ *
+ * Passe « restitution de valeur » (2026-08-15) : les accroches `intro` disent
+ * désormais le changement observable pour l'entreprise, pas la catégorie
+ * d'outil. Registre : constat et ordre de grandeur, jamais de promesse de
+ * résultat chiffré (l'audit est une prestation de conseil, obligation de
+ * moyens). Aucune statistique d'Axion-IA ne doit apparaître ici.
  */
 
 export type CapabilityIconName =
@@ -45,7 +51,8 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "Rocket",
     title: "Stratégie IA & transformation globale",
-    intro: "Une vision IA d'ensemble, déclinée et pilotée dans toute l'entreprise.",
+    intro:
+      "Une feuille de route IA d'ensemble, priorisée par gain attendu et pilotée dans la durée.",
     items: [
       "Vision et feuille de route IA à l'échelle de l'entreprise",
       "Priorisation des chantiers par ROI et faisabilité",
@@ -85,7 +92,8 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "ShoppingCart",
     title: "E-commerce & vente en ligne",
-    intro: "Vendre plus, mieux, à chaque visiteur.",
+    intro:
+      "La bonne offre devant chaque visiteur, et des fiches produits qui ne se saisissent plus à la main.",
     items: [
       "Recommandations produits personnalisées",
       "Recherche sémantique et merchandising intelligent",
@@ -98,7 +106,7 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "Megaphone",
     title: "Marketing & contenu",
-    intro: "Produire et diffuser plus, avec moins de ressources.",
+    intro: "Produire et diffuser bien plus de contenu, à ressources constantes.",
     items: [
       "Production de contenu (articles, posts, newsletters)",
       "SEO / AEO et visibilité dans les IA (ChatGPT, Claude…)",
@@ -185,7 +193,8 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "Factory",
     title: "Production, industrie & terrain",
-    intro: "Automatiser le répétitif, fiabiliser, aider la décision terrain.",
+    intro:
+      "Moins de gestes répétitifs, moins de rebuts, et une décision terrain qui ne dépend plus d'un seul sachant.",
     items: [
       "Automatisation des tâches métier répétitives",
       "Contrôle qualité automatisé par vision",
@@ -198,7 +207,8 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "Code2",
     title: "IT, développement & cybersécurité",
-    intro: "Livrer plus vite, superviser, sécuriser.",
+    intro:
+      "Livrer plus vite, voir les incidents avant vos utilisateurs, réduire la surface d'attaque.",
     items: [
       "Copilotes de code et accélération du développement",
       "Helpdesk IT et résolution d'incidents",
@@ -249,7 +259,7 @@ export const AUDIT_CAPABILITIES: ReadonlyArray<CapabilityDomain> = [
   {
     icon: "Lightbulb",
     title: "Direction, stratégie & innovation",
-    intro: "Voir plus loin, arbitrer plus vite, préparer la suite.",
+    intro: "Voir venir, arbitrer sur des scénarios chiffrés, préparer le coup d'après.",
     items: [
       "Veille stratégique, sectorielle et concurrentielle",
       "Aide à la décision et scénarisation (what-if)",

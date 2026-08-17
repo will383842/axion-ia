@@ -1,9 +1,15 @@
 /**
  * Admin — Qualiopi · Liste des sessions de formation (T8).
  *
- * Affiche toutes les sessions avec : numéro, titre, formation, dates,
+ * Affiche une PAGE de sessions avec : numéro, titre, formation, dates,
  * modalité, statut, nb inscrits, taux de présence moyen.
  * Lien vers la page émargement par session.
+ *
+ * 🔴 Fenêtre par défaut : 12 mois glissants (cf. `FENETRE_SESSIONS_MOIS`), et
+ * 25 lignes par page. L'écran chargeait auparavant TOUTES les sessions avec
+ * TOUTES leurs inscriptions ; il ne s'affichait plus sous 30 s à la cible.
+ * L'historique complet reste atteignable par le lien « archives » ci-dessous —
+ * la fenêtre borne la VUE, jamais les données.
  *
  * Server Component. Force-dynamic. Robots noindex.
  */
@@ -16,8 +22,10 @@ import { CalendarDays, PlayCircle, CalendarClock, CheckCircle2 } from "lucide-re
 import { auth } from "@/auth";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminPagination } from "@/components/admin/ui/AdminPagination";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listSessionsForAdmin } from "@/server/qualiopi/presence/queries";
+import { FENETRE_SESSIONS_MOIS, parsePageParam } from "@/server/qualiopi/presence/sessions-liste";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
 
@@ -51,9 +59,10 @@ function formatDateFR(d: Date): string {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function QualiopiSessionsPage({ params }: PageProps) {
+export default async function QualiopiSessionsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
   const session = await auth();
   const role = session?.user?.role;
@@ -61,16 +70,32 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
     redirect(`/${locale}/${adminPrefix}/login`);
   }
 
-  const sessions = await listSessionsForAdmin();
+  const sp = await searchParams;
+  const avecArchives = sp["archives"] === "1";
+  const liste = await listSessionsForAdmin({
+    page: parsePageParam(sp["page"]),
+    avecArchives,
+  });
+  const sessions = liste.rows;
 
   // Même seuil que la grille d'émargement, le détail de session et l'attestation.
   // Il était figé à 80 ici : réglé à 90, une session à 85 % s'affichait verte dans
   // cette liste et « partielle » sur la page de détail, pour la même quantité.
   const seuilPresencePct = await getQualiopiConfig("seuil_presence_pct");
 
-  const enCours = sessions.filter((s) => s.statut === "en_cours").length;
-  const planifiees = sessions.filter((s) => s.statut === "planifiee").length;
-  const realisees = sessions.filter((s) => s.statut === "realisee").length;
+  // Préfixe locale inclus : les liens de pagination et d'archives se résolvent
+  // directement, sans passer par le redirect 301 de proxy.ts.
+  const base = `/${locale}/${adminPrefix}/qualiopi/sessions`;
+  const hrefArchives = `${base}?archives=1`;
+  const perimetre = avecArchives
+    ? "Archives comprises — tout l'historique"
+    : `Les ${FENETRE_SESSIONS_MOIS} derniers mois et les sessions à venir`;
+  const pagination = `page ${liste.page} / ${liste.totalPages}`;
+  const description = `${perimetre} · ${liste.total} sessions · ${pagination}.`;
+  const labelArchives = `Voir les archives (${liste.nbArchives} sessions plus anciennes)`;
+  const messageVide = avecArchives
+    ? "Aucune session. Créez-en une depuis la page Formations."
+    : "Aucune session sur la période. Ouvrez les archives, ou créez-en une.";
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -80,7 +105,7 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Sessions"
-        description="Toutes les sessions de formation. Cliquez sur « Ouvrir » pour accéder au hub de la session."
+        description={description}
         actions={
           <Link href={`/${locale}/${adminPrefix}/qualiopi/sessions/new`} className="admin-button">
             + Nouvelle session
@@ -88,26 +113,77 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
         }
       />
 
+      {/* Accès EXPLICITE aux archives : la fenêtre de 12 mois cache des
+          sessions réelles, il faut donc dire combien et par où les reprendre.
+          Une fenêtre muette se lit comme une perte de données. */}
+      <div className="mb-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+        {avecArchives ? (
+          <Link href={base} className="admin-button-ghost">
+            ← Revenir aux {FENETRE_SESSIONS_MOIS} derniers mois
+          </Link>
+        ) : liste.nbArchives > 0 ? (
+          <Link href={hrefArchives} className="admin-button-ghost">
+            {labelArchives}
+          </Link>
+        ) : null}
+      </div>
+
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-        <AdminStatCard label="Total sessions" value={sessions.length} icon={CalendarDays} />
+        {/* Les quatre compteurs portent sur la FENÊTRE entière, pas sur les 25
+            lignes affichées : ils venaient d'un `filter` sur le tableau rendu,
+            ce qui, une fois la liste paginée, aurait affiché « 3 en cours »
+            pour la seule page courante.
+
+            🔴 ET LEURS LIBELLÉS LE DISENT. Avant la fenêtre de 12 mois, « Total
+            sessions » comptait tout l'historique ; il compte désormais la
+            fenêtre. Un indicateur dont le SENS change sans que le LIBELLÉ bouge
+            est un chiffre faux mais plausible — la pire espèce, parce que
+            personne ne le vérifie. Le périmètre est donc écrit dans le libellé,
+            et il suit le mode : en archives, les compteurs portent sur tout.
+
+            🔴 Mais il n'est écrit QUE là où il change quelque chose, et il est
+            écrit JUSTE. La fenêtre ne borne que le PASSÉ (`dateDebut >= J-12
+            mois`, aucune borne haute) :
+              — « Réalisées » est entièrement passé → son sens change, le
+                libellé doit le porter ;
+              — « Sessions » mélange passé et futur → « 12 derniers mois » seul
+                serait faux, il faut « et à venir » ;
+              — « En cours » et « Planifiées » ne sont pas rognés en pratique
+                (une session en cours a commencé récemment, une session
+                planifiée est à venir) : leur coller « 12 derniers mois »
+                affirmerait une restriction qui ne s'applique pas. Un périmètre
+                surajouté ment autant qu'un périmètre tu. */}
+        <AdminStatCard
+          label={
+            liste.avecArchives
+              ? "Sessions (tout l'historique)"
+              : `Sessions (${FENETRE_SESSIONS_MOIS} derniers mois et à venir)`
+          }
+          value={liste.total}
+          icon={CalendarDays}
+        />
         <AdminStatCard
           label="En cours"
-          value={enCours}
+          value={liste.compteurs.enCours}
           icon={PlayCircle}
-          tone={enCours > 0 ? "warning" : "default"}
+          tone={liste.compteurs.enCours > 0 ? "warning" : "default"}
         />
-        <AdminStatCard label="Planifiées" value={planifiees} icon={CalendarClock} />
+        <AdminStatCard label="Planifiées" value={liste.compteurs.planifiees} icon={CalendarClock} />
         <AdminStatCard
-          label="Réalisées"
-          value={realisees}
+          label={
+            liste.avecArchives
+              ? "Réalisées (tout l'historique)"
+              : `Réalisées (${FENETRE_SESSIONS_MOIS} derniers mois)`
+          }
+          value={liste.compteurs.realisees}
           icon={CheckCircle2}
-          tone={realisees > 0 ? "success" : "default"}
+          tone={liste.compteurs.realisees > 0 ? "success" : "default"}
         />
       </div>
 
       {sessions.length === 0 ? (
         <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucune session trouvée. Créez une session depuis la page Formations.
+          {messageVide}
         </p>
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
@@ -239,6 +315,15 @@ export default async function QualiopiSessionsPage({ params }: PageProps) {
           </table>
         </div>
       )}
+
+      {/* `archives` est préservé dans les liens : sans lui, passer à la page 2
+          des archives retomberait silencieusement dans la fenêtre de 12 mois. */}
+      <AdminPagination
+        page={liste.page}
+        totalPages={liste.totalPages}
+        baseHref={base}
+        preservedParams={{ archives: avecArchives ? "1" : undefined }}
+      />
     </AdminPageShell>
   );
 }

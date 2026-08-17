@@ -20,6 +20,8 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import type { ContentType, SearchIntent } from "../../../../prisma/generated/client";
+// Fix 2026-08-15 (audit e2e) — options par défaut partagées des files content-gen.
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { requireAdmin } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -70,7 +72,12 @@ function getContentGenQueue(): Queue | null {
   if (contentGenQueue) return contentGenQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) return null;
-  contentGenQueue = new Queue("content-gen", { connection: { url: redisUrl } });
+  // Fix 2026-08-15 (audit e2e) — `defaultJobOptions` partagées : sans elles
+  // la file héritait du défaut BullMQ (1 tentative, pas de backoff).
+  contentGenQueue = new Queue("content-gen", {
+    connection: { url: redisUrl },
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return contentGenQueue;
 }
 

@@ -50,13 +50,34 @@ describe("resolveEnrollmentFinancement", () => {
 });
 
 describe("destinataireFacture", () => {
+  const AVEC = { opcoSubrogation: true };
+  const SANS = { opcoSubrogation: false };
+
   it("mappe chaque financement au bon destinataire", () => {
-    expect(destinataireFacture("opco")).toBe("opco");
-    expect(destinataireFacture("cpf")).toBe("stagiaire");
-    expect(destinataireFacture("france_travail")).toBe("france_travail");
-    expect(destinataireFacture("direct")).toBe("entreprise");
-    expect(destinataireFacture("mixte")).toBe("entreprise");
-    expect(destinataireFacture(null)).toBe("entreprise");
+    expect(destinataireFacture("opco", AVEC)).toBe("opco");
+    expect(destinataireFacture("cpf", SANS)).toBe("stagiaire");
+    expect(destinataireFacture("france_travail", SANS)).toBe("france_travail");
+    expect(destinataireFacture("direct", SANS)).toBe("entreprise");
+    expect(destinataireFacture("mixte", SANS)).toBe("entreprise");
+    expect(destinataireFacture(null, SANS)).toBe("entreprise");
+  });
+
+  // 🔴 LE test du 16/08. Cette fonction rendait « opco » dès que le financement
+  // était OPCO, sans jamais regarder la subrogation. Sans subrogation, l'OPCO
+  // ne doit RIEN à l'organisme — il rembourse son adhérent. La facture partait
+  // donc à un destinataire qui ne la paierait jamais, pendant que l'entreprise,
+  // seule débitrice, n'était facturée nulle part.
+  it("🔴 OPCO SANS subrogation → la facture va à l'ENTREPRISE, pas à l'OPCO", () => {
+    expect(destinataireFacture("opco", SANS)).toBe("entreprise");
+  });
+
+  it("la subrogation ne change QUE le cas OPCO", () => {
+    // CPF et France Travail ont leurs propres circuits : les faire dépendre de
+    // `opcoSubrogation` mélangerait deux dispositifs sans rapport.
+    expect(destinataireFacture("cpf", AVEC)).toBe("stagiaire");
+    expect(destinataireFacture("france_travail", AVEC)).toBe("france_travail");
+    expect(destinataireFacture("direct", AVEC)).toBe("entreprise");
+    expect(destinataireFacture("mixte", AVEC)).toBe("entreprise");
   });
 });
 

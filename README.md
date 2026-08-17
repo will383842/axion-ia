@@ -22,7 +22,7 @@ pnpm verify:all     # typecheck + lint + i18n + 3 anti-grep + tests
 - **State** : `@tanstack/react-query`
 - **Animation** : `IntersectionObserver` natif + CSS transitions (`FadeInOnView`, ~0 KB shipped) — `prefers-reduced-motion` strict via `globals.css`
 - **Auth** : Auth.js v5 (`next-auth@beta`) + 2FA TOTP + WebAuthn (Sprint 16)
-- **Email** : `nodemailer` + `@react-email` → PowerMTA + MailWizz self-hosted (Sprint 19) — **Resend interdit**
+- **Email** : `nodemailer` + `@react-email` → SMTP **ZeptoMail** (`smtp.zeptomail.eu:587`, depuis le 2026-08-16) — **Resend interdit**. Zoho Mail reste la **boîte** `contact@axion-ia.com` (plan payant Mail Lite), ZeptoMail est envoi-seul. ⚠️ Variables SMTP à poser sur l'app Coolify **`axion-ia-worker`**, pas sur l'app web : c'est le worker qui envoie. PowerMTA / MailWizz : jamais déployés.
 - **Queue** : `bullmq` + `ioredis` (Sprint 18)
 - **Tests** : `vitest` (unit) + `@playwright/test` × 5 projects (cross-browser + mobile) + `@axe-core/playwright`
 - **Quality** : Husky + lint-staged + commitlint + 4 anti-grep custom + size-limit

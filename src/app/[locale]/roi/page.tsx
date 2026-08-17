@@ -1,43 +1,53 @@
-// Page-outil « Simulateur de gains IA » (/roi) — refonte 2026-07-09.
+// Page-outil « Simulateur de gains IA » (/roi) — refonte v2, 2026-08-12.
 //
-// Trois défauts corrigés par rapport à la version précédente :
-//   1. Les deux visuels étaient des `IllustrationPlaceholder` : la production
-//      affichait des cadres pointillés portant l'ID de slot et le nom du fichier
-//      cible. Remplacés par de vraies photos curées (`page-images.ts` → SSOT).
-//   2. Un `FAQPage` JSON-LD était émis alors qu'AUCUNE FAQ n'était rendue.
-//      Structured data sans contenu visible = violation des règles Google.
-//      La FAQ est désormais affichée (`FaqAccordion`, `emitJsonLd={false}` pour
-//      qu'un seul nœud FAQPage existe : celui, speakable, émis ici).
-//   3. Le simulateur ne prenait que 2 curseurs. Il porte maintenant le secteur,
-//      le scénario d'adoption, la ventilation par famille de tâches et une
-//      valorisation financière optionnelle.
+// ── Ce que la v2 change ───────────────────────────────────────────────────
+// La v1 demandait au dirigeant d'estimer lui-même « ses heures quotidiennes sur
+// tâches répétitives » — le seul chiffre qu'un dirigeant ne connaît pas. Tout
+// le calcul en découlait, donc tout le résultat était une conjecture que
+// l'utilisateur savait avoir lui-même fabriquée.
 //
-// ⚠️ Les chiffres affichés sont des HYPOTHÈSES DE MODÈLE, jamais une étude. La
-// section « Notre modèle d'estimation » les expose intégralement. Ne pas
-// réintroduire de formulation du type « observé sur N entreprises » sans étude
-// publiable : article L121-2 du Code de la consommation.
+// La v2 pose un DIAGNOSTIC : des questions auxquelles on répond de tête
+// (« combien de devis par semaine ? »), un référentiel de tâches automatisables
+// qui reconstruit le temps par le bas, et un rapport nominatif — plan d'action,
+// feuille de route, limites assumées. Voir `src/content/roi/model/`.
 //
-// Server Component pur ; seuls `RoiSimulator` et `StickyMobileCta` portent du JS.
+// ⚠️ Les chiffres restent des HYPOTHÈSES DE MODÈLE, jamais une étude. Le bloc
+// « Le modèle, à découvert » les expose, et chaque tâche du rapport porte sa
+// propre justification. Ne pas réintroduire de formulation du type « observé
+// sur N entreprises » sans étude publiable : art. L121-2 du Code de la
+// consommation.
+//
+// ── Coupe du 2026-08-14 : la page passe au format tunnel ──────────────────
+// Will, après lecture mobile : « la page a trop de texte, je veux exactement le
+// même niveau et le même design que les pages des autres tunnels de vente ».
+// Cinq sections éditoriales ont été retirées — photo d'en-tête isolée, mode
+// d'emploi en quatre cartes, tableau détaillé des hypothèses, portrait du
+// fondateur, cartes illustrées des secteurs. La page passait ~17 000 px ; il
+// en reste ~5 000.
+//
+// 🔴 Ce qui est CONSERVÉ, et pourquoi on ne le recoupe pas :
+//   - les 4 « ce que ce simulateur n'est pas » : ce sont les mentions qui
+//     tiennent la promesse commerciale à distance d'un engagement de résultat
+//     (obligation de MOYENS, cf. CGV). Elles ne sont pas du décor éditorial ;
+//   - les 7 hypothèses du modèle, repliées dans un accordéon CSS : un
+//     simulateur qui cache ses hypothèses ne vaut rien, mais elles n'ont pas
+//     à retarder la première question. Repliées, elles pèsent une ligne à
+//     l'écran et restent entières dans le DOM, donc indexées ;
+//   - la FAQ et le maillage secteurs / villes : c'est ce qui fait que `/roi`
+//     est la seule des trois pages de tunnel à être indexée. `/simulateur` et
+//     `/diagnostic` sont `noindex` : si `/roi` perd son contenu, plus aucune
+//     des trois n'existe pour Google.
+//
+// Server Component pur ; seul `SimulatorFlow` porte du JS. L'accordéon des
+// hypothèses réutilise `FaqAccordion`, qui est en `<details>/<summary>` pur :
+// zéro octet ajouté au First Load JS.
 
 import type { Metadata } from "next";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import {
-  ArrowRight,
-  BarChart3,
-  Calendar,
-  Clock,
-  FileText,
-  Gauge,
-  MousePointerClick,
-  PenLine,
-  Quote,
-  Search,
-  SlidersHorizontal,
-  Users,
-} from "lucide-react";
+import { ArrowRight, Clock, ListChecks, Route, ShieldCheck } from "lucide-react";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
@@ -47,18 +57,18 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
-import { RoiSimulator, type RoiSimulatorLabels } from "@/components/roi/RoiSimulator";
-import { ADOPTION_EFFICIENCY, ROI_CONSTANTS } from "@/components/roi/compute";
+import { SimulatorFlow } from "@/components/roi/v2/SimulatorFlow";
+import { decodeAnswers, REPORT_QUERY_PARAM, ROI_QUERY_PARAM } from "@/lib/roi/encode";
+import { ROI_MODEL_CONSTANTS, MATURITY_LEVELS } from "@/content/roi/model/types";
+import { AUTOMATABLE_TASKS } from "@/content/roi/model/tasks";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesIndexableNow } from "@/content/villes";
+import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { ROI_PHOTO_CREDITS } from "@/content/roi/roi-photos";
 import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildWebPageJsonLd,
-  buildHowToJsonLd,
   buildItemListJsonLd,
   buildPageImageGraphJsonLd,
   buildPrimaryImageOfPage,
@@ -68,24 +78,24 @@ import { getPageImages } from "@/lib/seo/page-images";
 
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 const PATH = "/roi";
 
 /** Date de dernière révision éditoriale du modèle — alimente `dateModified`. */
-const MODEL_REVISED_AT = "2026-07-09T00:00:00.000Z";
+const MODEL_REVISED_AT = "2026-08-12T00:00:00.000Z";
 
-// Le bloc « villes » suit la cohorte indexable, qui s'élargit avec le temps.
 export const revalidate = 3600;
 
 function metaFor(isFr: boolean) {
   return {
     title: isFr
-      ? "Simulateur de gains IA · combien d'heures votre équipe gagnera · Axion-IA"
-      : "AI gains simulator · how many hours your team will save · Axion-IA",
+      ? "Simulateur de gains IA · le rapport que votre entreprise peut récupérer · Axion-IA"
+      : "AI gains simulator · what your company can recover · Axion-IA",
     description: isFr
-      ? "Combien d'heures votre équipe gagnera-t-elle après une formation IA ? Choisissez votre secteur, votre effectif et votre scénario d'adoption : heures rendues, jours libérés, ETP récupérés, et valeur financière si vous le souhaitez. Modèle d'estimation transparent."
-      : "How many hours will your team save after an AI training? Pick your sector, headcount and adoption scenario: hours freed, days returned, FTE recovered, and the financial value if you want it. Transparent estimation model.",
+      ? "Répondez à une dizaine de questions sur vos volumes réels et recevez un rapport nominatif : les premières tâches à automatiser, le temps et l'argent récupérables, la feuille de route à 30 jours, 3 mois et 6 mois. Gratuit, sans inscription."
+      : "Answer a dozen questions about your real volumes and get a tailored report: the first tasks to automate, the time and money you can recover, and a roadmap at 30 days, 3 months and 6 months. Free, no sign-up.",
   };
 }
 
@@ -96,7 +106,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({ locale, path: PATH, title, description });
 }
 
-export default async function RoiPage({ params }: Props) {
+export default async function RoiPage({ params, searchParams }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
@@ -104,15 +114,21 @@ export default async function RoiPage({ params }: Props) {
   const isFr = loc === "fr";
   const meta = metaFor(isFr);
 
+  // Reprise d'un lien partagé. `searchParams` rend la route dynamique à la
+  // demande uniquement : sans paramètre, Next sert la version statique.
+  const sp = await searchParams;
+  const rawDiagnostic = typeof sp[ROI_QUERY_PARAM] === "string" ? sp[ROI_QUERY_PARAM] : null;
+  const initialAnswers = decodeAnswers(rawDiagnostic);
+  const initialShowReport = sp[REPORT_QUERY_PARAM] === "1" && initialAnswers !== null;
+
   const pageImages = getPageImages(PATH);
   const heroImage = pageImages.find((i) => i.slot === "hero");
   const bannerImage = pageImages.find((i) => i.slot === "banner");
-  const taskImages = pageImages.filter((i) => i.slot === "grid");
-  const portraitImage = pageImages.find((i) => i.slot === "portrait");
-  const villes = getVillesIndexableNow().slice(0, 60);
+  // Plus de `portrait` : la citation du fondateur a été retirée avec la coupe du
+  // 2026-08-14, et l'entrée correspondante a quitté le manifeste `/roi` — le
+  // sitemap images ne déclare que des images RÉELLEMENT affichées.
+  const villes = getVillesCoreIndexableNow().slice(0, 60);
 
-  // Crédit photographe par fichier (CGU Unsplash §9). Clé = basename du slot.
-  // Le portrait du fondateur n'est pas une photo Unsplash → pas de crédit.
   const creditFor = (src: string) => {
     const slot = src.split("/").pop()?.replace(".avif", "") ?? "";
     return ROI_PHOTO_CREDITS[slot];
@@ -123,384 +139,198 @@ export default async function RoiPage({ params }: Props) {
   // ── Contenu ───────────────────────────────────────────────────────────────
 
   const heroChips = [
-    { icon: Clock, label: isFr ? "Heures rendues / jour" : "Hours freed / day" },
-    { icon: Calendar, label: isFr ? "Jours libérés / mois" : "Days freed / month" },
-    { icon: Users, label: isFr ? "ETP récupérés / an" : "FTE recovered / year" },
-    { icon: Gauge, label: isFr ? "Modèle transparent" : "Transparent model" },
+    {
+      icon: ListChecks,
+      label: isFr ? "Vos premières tâches à automatiser" : "Your first tasks to automate",
+    },
+    { icon: Clock, label: isFr ? "Temps et argent récupérables" : "Time and money recoverable" },
+    {
+      icon: Route,
+      label: isFr ? "Feuille de route 30 j / 3 mois / 6 mois" : "Roadmap 30 d / 3 mo / 6 mo",
+    },
+    { icon: ShieldCheck, label: isFr ? "Ce qui ne s'automatise pas" : "What cannot be automated" },
   ] as const;
 
-  const simulatorLabels: RoiSimulatorLabels = isFr
-    ? {
-        intro:
-          "Choisissez votre secteur, votre effectif et le scénario d'adoption qui vous ressemble. Le résultat s'affiche en heures, en jours et en équivalents temps plein — pas en jargon.",
-        sector: "Votre secteur d'activité",
-        sectorGeneric: "Tous secteurs (profil moyen)",
-        sectorHint:
-          "Le secteur ajuste la répartition des heures rendues entre rédaction, recherche, synthèse et reporting.",
-        teamSize: "Combien de collaborateurs concernés ?",
-        hoursDailyOnRepetitive: "Heures par jour sur tâches répétitives ?",
-        hoursDailyHint:
-          "Rédaction d'emails, comptes-rendus, recherche d'infos, classement, synthèses. Estimez à la louche, par personne et par jour.",
-        adoption: "Votre scénario d'adoption",
-        adoptionHint:
-          "L'écart entre une équipe qui outille réellement ses workflows et une équipe qui « a suivi la formation » est le premier facteur de variance. À vous de choisir votre hypothèse.",
-        adoptionPrudent: "Prudent",
-        adoptionRealiste: "Réaliste",
-        adoptionAmbitieux: "Ambitieux",
-        adoptionPrudentHint: "Adoption partielle, quelques usages ancrés.",
-        adoptionRealisteHint: "Usage régulier sur les tâches ciblées.",
-        adoptionAmbitieuxHint: "Workflows outillés, pratique quotidienne.",
-        resultIntro: "Voici à quoi ressemblera votre semaine",
-        hoursSavedPerDay: "Gagnées par jour, par personne",
-        pctTimeFreedSentence: "Soit {pct} % de la journée rendus à la valeur ajoutée.",
-        daysLiberatedPerMonth: "Jours libérés par mois sur l'équipe",
-        fteRecovered: "Équivalents temps plein récupérés sur l'année",
-        emailsAssistedPerMonth: "Emails rédigés avec assistance / mois",
-        reportsAssistedPerMonth: "Comptes-rendus assistés / mois",
-        breakdownTitle: "D'où viennent ces heures",
-        breakdownHint:
-          "Répartition des heures rendues entre les quatre familles de tâches, selon le profil de votre secteur.",
-        taskRedaction: "Rédaction",
-        taskRecherche: "Recherche d'information",
-        taskSynthese: "Synthèse & comptes-rendus",
-        taskReporting: "Reporting",
-        hoursPerWeekShort: "h/sem",
-        moneyToggle: "Voir la valeur financière",
-        moneyIntro:
-          "Le temps rendu a une valeur. Réglez votre coût horaire chargé moyen pour la traduire en euros.",
-        hourlyCost: "Coût horaire chargé moyen",
-        hourlyCostHint:
-          "Salaire brut + charges patronales, ramené à l'heure travaillée. Ajustez selon vos profils.",
-        annualValue: "Valeur annuelle",
-        annualValueHint: "Heures rendues sur l'année × coût horaire chargé.",
-        trainingCost: "Coût formation",
-        trainingCostHintOne: "Formation Essentielle, 1 session sur site.",
-        trainingCostHintMany: "Formation Essentielle, {sessions} sessions sur site.",
-        payback: "Retour sur la formation",
-        paybackHint: "Jours ouvrés avant que les heures rendues couvrent le coût.",
-        paybackNone: "—",
-        workingDays: "j ouvrés",
-        estimateNote:
-          "Ordres de grandeur issus d'un modèle d'estimation dont toutes les hypothèses sont détaillées plus bas. Vos résultats réels dépendent de votre adoption interne, de vos outils et de vos process. Ces chiffres ne constituent pas un engagement de résultat.",
-        liveSummary:
-          "Estimation mise à jour : {hours} heures gagnées par jour et par personne, {days} jours libérés par mois sur l'équipe, {fte} équivalents temps plein récupérés sur l'année.",
-      }
-    : {
-        intro:
-          "Pick your sector, your headcount and the adoption scenario that fits you. Results show up in hours, days and full-time equivalents — not in jargon.",
-        sector: "Your sector",
-        sectorGeneric: "All sectors (average profile)",
-        sectorHint:
-          "The sector adjusts how the freed hours split across writing, research, summarising and reporting.",
-        teamSize: "How many employees involved?",
-        hoursDailyOnRepetitive: "Hours per day on repetitive tasks?",
-        hoursDailyHint:
-          "Email writing, minutes, info research, filing, summaries. Estimate roughly, per person, per day.",
-        adoption: "Your adoption scenario",
-        adoptionHint:
-          "The gap between a team that actually rewires its workflows and a team that merely attended the training is the single largest source of variance. You choose the assumption.",
-        adoptionPrudent: "Cautious",
-        adoptionRealiste: "Realistic",
-        adoptionAmbitieux: "Ambitious",
-        adoptionPrudentHint: "Partial adoption, a few habits stick.",
-        adoptionRealisteHint: "Regular use on the targeted tasks.",
-        adoptionAmbitieuxHint: "Tooled workflows, daily practice.",
-        resultIntro: "Here's what your week will look like",
-        hoursSavedPerDay: "Saved per day, per person",
-        pctTimeFreedSentence: "That's {pct} % of the day returned to value-add work.",
-        daysLiberatedPerMonth: "Days freed per month across the team",
-        fteRecovered: "Full-time equivalents recovered per year",
-        emailsAssistedPerMonth: "AI-assisted emails / month",
-        reportsAssistedPerMonth: "AI-assisted minutes / month",
-        breakdownTitle: "Where these hours come from",
-        breakdownHint:
-          "How the freed hours split across the four task families, based on your sector's profile.",
-        taskRedaction: "Writing",
-        taskRecherche: "Information research",
-        taskSynthese: "Summaries & minutes",
-        taskReporting: "Reporting",
-        hoursPerWeekShort: "h/wk",
-        moneyToggle: "See the financial value",
-        moneyIntro:
-          "Time returned has a value. Set your average fully-loaded hourly cost to translate it into euros.",
-        hourlyCost: "Average fully-loaded hourly cost",
-        hourlyCostHint:
-          "Gross salary plus employer contributions, per hour worked. Adjust to your profiles.",
-        annualValue: "Annual value",
-        annualValueHint: "Hours freed per year × fully-loaded hourly cost.",
-        trainingCost: "Training cost",
-        trainingCostHintOne: "Essential training, 1 on-site session.",
-        trainingCostHintMany: "Essential training, {sessions} on-site sessions.",
-        payback: "Payback",
-        paybackHint: "Working days before the freed hours cover the cost.",
-        paybackNone: "—",
-        workingDays: "working days",
-        estimateNote:
-          "Orders of magnitude from an estimation model whose assumptions are all spelled out below. Your actual results depend on internal adoption, tools and processes. These figures are not a performance guarantee.",
-        liveSummary:
-          "Estimate updated: {hours} hours saved per day per person, {days} days freed per month across the team, {fte} full-time equivalents recovered per year.",
-      };
-
-  // Les 4 familles de tâches, appariées aux photos du manifeste (même ordre).
-  const taskFamilies = (
-    isFr
-      ? [
-          {
-            icon: PenLine,
-            title: "Rédaction",
-            body: "Emails, propositions, réponses types, contenus. La tâche la plus universelle, et celle où l'assistance se voit dès le premier jour.",
-          },
-          {
-            icon: Search,
-            title: "Recherche d'information",
-            body: "Retrouver une clause, une procédure, un historique client. Le temps perdu à chercher est invisible dans les tableaux de bord — et considérable.",
-          },
-          {
-            icon: FileText,
-            title: "Synthèse & comptes-rendus",
-            body: "Transformer une réunion, un appel ou vingt pages en un résumé actionnable. Un gain immédiat pour les métiers documentaires.",
-          },
-          {
-            icon: BarChart3,
-            title: "Reporting",
-            body: "Extraire, croiser, mettre en forme, commenter. Les tâches les plus mécaniques du mois, souvent concentrées sur quelques personnes.",
-          },
-        ]
-      : [
-          {
-            icon: PenLine,
-            title: "Writing",
-            body: "Emails, proposals, standard replies, content. The most universal task, and the one where assistance shows from day one.",
-          },
-          {
-            icon: Search,
-            title: "Information research",
-            body: "Finding a clause, a procedure, a customer history. Time lost searching is invisible in dashboards — and considerable.",
-          },
-          {
-            icon: FileText,
-            title: "Summaries & minutes",
-            body: "Turning a meeting, a call or twenty pages into an actionable summary. An immediate win for document-heavy roles.",
-          },
-          {
-            icon: BarChart3,
-            title: "Reporting",
-            body: "Extract, cross-reference, format, comment. The most mechanical tasks of the month, often concentrated on a few people.",
-          },
-        ]
-  ).map((f, i) => ({ ...f, image: taskImages[i] }));
-
-  // Étapes d'usage du simulateur — miroir visible du HowTo JSON-LD.
-  const howToSteps = isFr
-    ? [
-        {
-          icon: MousePointerClick,
-          name: "Choisissez votre secteur",
-          text: "Le secteur présélectionne un volume typique de tâches répétitives et ajuste la répartition des heures rendues entre rédaction, recherche, synthèse et reporting.",
-        },
-        {
-          icon: Users,
-          name: "Indiquez votre effectif",
-          text: "Renseignez le nombre de collaborateurs réellement concernés par la formation, pas l'effectif total de l'entreprise.",
-        },
-        {
-          icon: Clock,
-          name: "Estimez les heures répétitives",
-          text: "Comptez, par personne et par jour, les heures passées à rédiger, chercher, résumer et reporter. Une estimation à la louche suffit.",
-        },
-        {
-          icon: SlidersHorizontal,
-          name: "Choisissez votre scénario d'adoption",
-          text: "Prudent, réaliste ou ambitieux : vous fixez vous-même l'hypothèse d'efficacité, de 40 % à 75 % du temps répétitif. Le résultat s'actualise instantanément.",
-        },
-      ]
-    : [
-        {
-          icon: MousePointerClick,
-          name: "Pick your sector",
-          text: "The sector preselects a typical volume of repetitive tasks and adjusts how freed hours split across writing, research, summarising and reporting.",
-        },
-        {
-          icon: Users,
-          name: "Enter your headcount",
-          text: "Fill in the number of employees actually involved in the training, not the company's total headcount.",
-        },
-        {
-          icon: Clock,
-          name: "Estimate the repetitive hours",
-          text: "Count, per person per day, the hours spent writing, searching, summarising and reporting. A rough estimate is enough.",
-        },
-        {
-          icon: SlidersHorizontal,
-          name: "Choose your adoption scenario",
-          text: "Cautious, realistic or ambitious: you set the efficiency assumption yourself, from 40 % to 75 % of repetitive time. Results update instantly.",
-        },
-      ];
-
-  // Hypothèses du modèle — E-E-A-T. Toutes lues depuis le SSOT `compute.ts`.
+  // Hypothèses du modèle — E-E-A-T. Lues depuis le SSOT, jamais recopiées.
+  //
+  // Rendues dans un accordéon replié (`FaqAccordion`, CSS pur) et non plus dans
+  // un tableau de définitions déployé : elles occupaient à elles seules un écran
+  // et demi sur mobile. Repliées, elles pèsent sept lignes — et le contenu reste
+  // entier dans le DOM, donc lisible par un moteur comme par un lecteur d'écran.
   const assumptions = isFr
     ? [
         {
-          term: "Efficacité sur les tâches répétitives",
-          value: `${Math.round(ADOPTION_EFFICIENCY.prudent * 100)} % · ${Math.round(ADOPTION_EFFICIENCY.realiste * 100)} % · ${Math.round(ADOPTION_EFFICIENCY.ambitieux * 100)} %`,
-          note: "Selon le scénario d'adoption que vous choisissez. C'est le seul levier d'incertitude que nous exposons explicitement, plutôt que d'imposer un chiffre unique.",
+          id: "referentiel",
+          question: `Tâches au référentiel — ${AUTOMATABLE_TASKS.length}`,
+          answer:
+            "Chaque tâche porte son temps unitaire de référence, la part de ce temps réellement supprimable, son délai de mise en œuvre et la justification de ce taux. Rien n'est agrégé sans être traçable.",
         },
         {
-          term: "Journée de travail",
-          value: `${ROI_CONSTANTS.hoursPerDay} h`,
-          note: "Durée légale française : 35 heures hebdomadaires réparties sur 5 jours.",
+          id: "part-supprimable",
+          question: `Part supprimable la plus élevée — ${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
+          answer:
+            "Jamais 100 %. Il reste toujours la relecture, la décision et l'envoi. Les tâches qui engagent votre responsabilité plafonnent bien plus bas.",
         },
         {
-          term: "Jours ouvrés",
-          value: `${ROI_CONSTANTS.workingDaysPerMonth} / mois · ${ROI_CONSTANTS.workingDaysPerYear} / an`,
-          note: "Moyenne annuelle lissée, hors congés payés et RTT.",
+          id: "journee",
+          question: `Journée de travail — ${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
+          answer: "Durée légale française : 35 heures hebdomadaires réparties sur 5 jours.",
         },
         {
-          term: "Équivalent temps plein",
-          value: `${ROI_CONSTANTS.annualHoursPerFte.toLocaleString("fr-FR")} h / an`,
-          note: "Durée légale annuelle du travail en France. Sert de dénominateur au calcul d'ETP récupérés.",
+          id: "jours-ouvres",
+          question: `Jours ouvrés — ${ROI_MODEL_CONSTANTS.workingDaysPerYear} / an`,
+          answer:
+            "Hors congés payés et RTT. Les volumes hebdomadaires sont annualisés sur 44 semaines ouvrées.",
         },
         {
-          term: "Emails rédigés",
-          value: `${ROI_CONSTANTS.emailsSentPerDayPerPerson} / jour / personne`,
-          note: "Hypothèse de volume avant assistance. Sert uniquement à rendre le gain tangible, jamais à le calculer.",
+          id: "etp",
+          question: `Équivalent temps plein — ${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("fr-FR")} h / an`,
+          answer:
+            "Durée légale annuelle du travail en France. Sert de dénominateur au calcul d'ETP récupérés.",
         },
         {
-          term: "Comptes-rendus produits",
-          value: `${ROI_CONSTANTS.reportsPerMonthPerPerson} / mois / personne`,
-          note: "Même statut : une hypothèse de volume, pas une mesure.",
+          id: "maturite",
+          question: `Maturité numérique — ${MATURITY_LEVELS.length} niveaux`,
+          answer:
+            "Vos outils actuels modulent le gain et le délai. Une entreprise encore sur papier récupère moins vite — mais elle peut lancer les mêmes actions immédiates.",
         },
         {
-          term: "Coût de la formation",
-          value: "Tarif public Essentielle",
-          note: "Lu directement depuis notre grille tarifaire publique, selon l'effectif et le nombre de sessions nécessaires (30 personnes maximum par session).",
+          id: "plafond",
+          question: "Plafond de vraisemblance — 60 %",
+          answer:
+            "Les tâches du référentiel ne peuvent jamais représenter plus de 60 % de la capacité de votre équipe. Au-delà, l'estimation est réduite : le reste de la journée part dans votre métier, les déplacements et les imprévus.",
         },
       ]
     : [
         {
-          term: "Efficiency on repetitive tasks",
-          value: `${Math.round(ADOPTION_EFFICIENCY.prudent * 100)} % · ${Math.round(ADOPTION_EFFICIENCY.realiste * 100)} % · ${Math.round(ADOPTION_EFFICIENCY.ambitieux * 100)} %`,
-          note: "Depending on the adoption scenario you pick. It's the only uncertainty lever we expose explicitly, rather than imposing a single number.",
+          id: "referentiel",
+          question: `Tasks in the catalogue — ${AUTOMATABLE_TASKS.length}`,
+          answer:
+            "Each task carries its reference unit time, the share of that time genuinely removable, its lead time and the reasoning behind that rate. Nothing is aggregated without being traceable.",
         },
         {
-          term: "Working day",
-          value: `${ROI_CONSTANTS.hoursPerDay} h`,
-          note: "French statutory duration: 35 hours a week over 5 days.",
+          id: "part-supprimable",
+          question: `Highest removable share — ${Math.round(Math.max(...AUTOMATABLE_TASKS.map((t) => t.automationRate)) * 100)} %`,
+          answer:
+            "Never 100 %. Review, decision and sending always remain. Tasks that engage your liability cap far lower.",
         },
         {
-          term: "Working days",
-          value: `${ROI_CONSTANTS.workingDaysPerMonth} / month · ${ROI_CONSTANTS.workingDaysPerYear} / year`,
-          note: "Smoothed annual average, excluding paid leave and RTT.",
+          id: "journee",
+          question: `Working day — ${ROI_MODEL_CONSTANTS.hoursPerDay} h`,
+          answer: "French statutory duration: 35 hours a week over 5 days.",
         },
         {
-          term: "Full-time equivalent",
-          value: `${ROI_CONSTANTS.annualHoursPerFte.toLocaleString("en-GB")} h / year`,
-          note: "French statutory annual working time. Denominator for the FTE-recovered figure.",
+          id: "jours-ouvres",
+          question: `Working days — ${ROI_MODEL_CONSTANTS.workingDaysPerYear} / year`,
+          answer:
+            "Excluding paid leave and RTT. Weekly volumes are annualised over 44 working weeks.",
         },
         {
-          term: "Emails written",
-          value: `${ROI_CONSTANTS.emailsSentPerDayPerPerson} / day / person`,
-          note: "Volume assumption before assistance. It only makes the gain tangible; it never drives the calculation.",
+          id: "etp",
+          question: `Full-time equivalent — ${ROI_MODEL_CONSTANTS.annualHoursPerFte.toLocaleString("en-GB")} h / year`,
+          answer: "French statutory annual working time. Denominator for the FTE-recovered figure.",
         },
         {
-          term: "Minutes produced",
-          value: `${ROI_CONSTANTS.reportsPerMonthPerPerson} / month / person`,
-          note: "Same status: a volume assumption, not a measurement.",
+          id: "maturite",
+          question: `Digital maturity — ${MATURITY_LEVELS.length} levels`,
+          answer:
+            "Your current tools modulate both gain and lead time. A paper-based company recovers more slowly — but it can start the same immediate actions.",
         },
         {
-          term: "Training cost",
-          value: "Public Essential rate",
-          note: "Read straight from our public price list, based on headcount and the number of sessions required (30 people maximum per session).",
+          id: "plafond",
+          question: "Plausibility ceiling — 60 %",
+          answer:
+            "Catalogued tasks can never represent more than 60 % of your team's capacity. Beyond that the estimate is scaled down: the rest of the day goes to your actual trade, travel and the unexpected.",
         },
       ];
 
   const faqItems = isFr
     ? [
         {
-          id: "combien-heures",
-          question: "Combien d'heures par jour l'IA peut-elle libérer dans mon équipe ?",
+          id: "quelles-taches-automatiser",
+          question: "Quelles tâches faut-il automatiser en premier dans une PME ?",
           answer:
-            "Cela dépend de deux choses : le temps que vos équipes passent aujourd'hui sur des tâches répétitives, et le degré d'adoption réel des outils après la formation. Notre modèle applique une efficacité de 40 % (adoption prudente) à 75 % (workflows outillés, pratique quotidienne) sur ce temps répétitif. Pour une personne consacrant 3 heures par jour à la rédaction, la recherche et la synthèse, cela représente 1,2 à 2,3 heures rendues par jour.",
+            "Celles qui combinent un volume élevé, un temps unitaire significatif et un faible effort de mise en œuvre. En pratique, ce sont presque toujours les mêmes : les comptes-rendus de réunion, les relances de devis et de factures impayées, la prise de rendez-vous et le tri du courrier entrant. Notre simulateur les classe pour votre entreprise selon vos volumes réels, en pondérant le gain par l'effort — pas par le gain brut, sinon il recommanderait toujours le chantier le plus lourd en premier.",
         },
         {
-          id: "comment-calculer-roi",
-          question: "Comment calculer le ROI d'une formation IA pour une PME ?",
+          id: "comment-calculer-gains",
+          question: "Comment calculer concrètement les gains d'une automatisation par l'IA ?",
           answer:
-            "Commencez par le temps, pas par l'argent. Estimez les heures quotidiennes passées sur les tâches répétitives, multipliez par votre effectif concerné et par une hypothèse d'efficacité assumée. Vous obtenez des heures rendues, convertibles en jours libérés puis en équivalents temps plein. La conversion en euros n'est qu'une dernière étape : heures annuelles rendues × coût horaire chargé. Notre simulateur enchaîne ces étapes et affiche chaque hypothèse.",
+            "Partez de la tâche, pas de la technologie. Comptez son volume annuel, multipliez par le temps qu'elle prend une fois, puis par la part de ce temps réellement supprimable — jamais la totalité, il reste toujours la relecture et la décision. Vous obtenez des heures, convertibles en euros par le coût horaire chargé. C'est exactement l'enchaînement que notre simulateur applique, tâche par tâche, avec chaque hypothèse affichée.",
         },
         {
-          id: "quand-resultats",
-          question: "En combien de temps les résultats sont-ils visibles après une formation IA ?",
+          id: "combien-de-temps",
+          question: "Combien de temps prend ce simulateur ?",
           answer:
-            "Les premiers réflexes s'installent dès les jours suivants, parce que les participants travaillent sur leurs propres cas pendant la formation. Mais un gain de temps mesurable suppose que les nouveaux usages remplacent durablement les anciens : comptez plutôt 4 à 8 semaines de pratique régulière avant de pouvoir constater un effet stable sur la charge de travail.",
+            "Entre deux et quatre minutes selon la taille de votre entreprise. Le questionnaire s'adapte : un artisan seul répond à huit questions, un cabinet de quarante personnes à seize. Tout se répond par tranches, en un appui, sans jamais taper un chiffre — et sans inscription.",
         },
         {
           id: "chiffres-exacts",
           question: "Les chiffres du simulateur sont-ils des chiffres réels ?",
           answer:
-            "Non, et nous ne le prétendons pas. Ce sont des ordres de grandeur produits par un modèle d'estimation dont toutes les hypothèses sont publiées sur cette page. Ils ne constituent pas un engagement de résultat. Pour un chiffrage sur vos process réels, avec mesure avant/après, c'est l'objet de l'audit Axion-IA.",
+            "Ce sont des ordres de grandeur produits par un modèle d'estimation dont toutes les hypothèses sont publiées, et dont chaque tâche affiche sa propre justification. Ils ne constituent ni un engagement de résultat, ni un devis, ni un audit. Pour un chiffrage sur vos process réels, avec mesure avant et après, c'est l'objet de l'audit Axion-IA.",
         },
         {
-          id: "pourquoi-scenarios",
-          question: "Pourquoi trois scénarios d'adoption plutôt qu'un seul chiffre ?",
+          id: "pourquoi-tranches",
+          question: "Pourquoi le questionnaire ne demande-t-il que des tranches ?",
           answer:
-            "Parce que l'écart entre une équipe qui reconstruit réellement ses workflows et une équipe qui a simplement suivi une formation est le premier facteur de variance des résultats — bien avant le secteur ou la taille. Afficher un chiffre unique reviendrait à masquer cette incertitude. Nous préférons vous laisser choisir votre hypothèse en connaissance de cause.",
+            "Parce que personne ne sait de tête s'il émet 34 ou 41 factures par mois, mais tout le monde sait que c'est entre 20 et 50. Une tranche est donc plus honnête qu'un chiffre précis inventé sur le moment — et elle se répond au pouce, sans ouvrir de logiciel. « Je ne sais pas » est également proposé partout : la tâche correspondante est alors exclue du total plutôt qu'estimée au jugé.",
         },
         {
-          id: "secteur-change-quoi",
-          question: "Qu'est-ce que le choix du secteur change au résultat ?",
+          id: "que-contient-rapport",
+          question: "Que contient le rapport final ?",
           answer:
-            "Le secteur ajuste deux choses : le volume typique d'heures répétitives présélectionné, et la répartition des heures rendues entre les quatre familles de tâches. Un cabinet juridique passe davantage de temps en recherche documentaire ; un cabinet comptable, en reporting. Le total de temps gagné reste piloté par vos propres curseurs.",
+            "Le temps et l'argent récupérables sur l'année avec leur fourchette, vos cinq premières tâches à automatiser avec pour chacune le volume constaté, le gain annuel et le délai de mise en œuvre, une feuille de route en trois vagues, la ventilation du gain par fonction, et ce qui ne s'automatise pas chez vous. Le rapport a une adresse permanente : vous pouvez le transmettre à votre associé ou à votre expert-comptable.",
         },
         {
-          id: "formation-financable",
-          question: "La formation qui produit ces gains est-elle finançable ?",
+          id: "donnees-collectees",
+          question: "Mes réponses sont-elles enregistrées ?",
           answer:
-            "Nos formations IA sont éligibles aux dispositifs de financement de la formation professionnelle selon votre situation (OPCO, France Travail). Nous étudions votre prise en charge et montons le dossier avec vous.",
+            "Non. Le questionnaire et le calcul se déroulent entièrement dans votre navigateur : aucune réponse n'est transmise tant que vous ne demandez pas explicitement à recevoir le rapport par e-mail. Le rapport complet reste visible à l'écran sans rien saisir.",
         },
       ]
     : [
         {
-          id: "combien-heures",
-          question: "How many hours per day can AI free up in my team?",
+          id: "quelles-taches-automatiser",
+          question: "Which tasks should an SME automate first?",
           answer:
-            "It depends on two things: how much time your teams currently spend on repetitive tasks, and how deeply the tools are actually adopted after training. Our model applies an efficiency of 40 % (cautious adoption) to 75 % (tooled workflows, daily practice) to that repetitive time. For someone spending 3 hours a day writing, searching and summarising, that's 1.2 to 2.3 hours returned per day.",
+            "Those combining high volume, meaningful unit time and low implementation effort. In practice it is almost always the same handful: meeting minutes, quote and unpaid-invoice follow-ups, appointment booking and inbound mail triage. Our simulator ranks them for your company from your real volumes, weighting gain against effort — not raw gain, which would always recommend the heaviest project first.",
         },
         {
-          id: "comment-calculer-roi",
-          question: "How do you calculate the ROI of AI training for an SME?",
+          id: "comment-calculer-gains",
+          question: "How do you actually calculate the gains of AI automation?",
           answer:
-            "Start with time, not money. Estimate the daily hours spent on repetitive tasks, multiply by the headcount involved and by an efficiency assumption you own. You get freed hours, convertible into days and then into full-time equivalents. Converting to euros is only the last step: annual hours freed × fully-loaded hourly cost. Our simulator chains these steps and shows every assumption.",
+            "Start from the task, not the technology. Count its annual volume, multiply by how long it takes once, then by the share of that time genuinely removable — never all of it, review and decision always remain. You get hours, convertible into euros through the fully-loaded hourly cost. That is exactly the chain our simulator applies, task by task, with every assumption on display.",
         },
         {
-          id: "quand-resultats",
-          question: "How quickly are results visible after AI training?",
+          id: "combien-de-temps",
+          question: "How long does the simulator take?",
           answer:
-            "The first reflexes appear within days, because participants work on their own cases during the training. But measurable time savings require the new habits to durably replace the old ones: expect 4 to 8 weeks of regular practice before a stable effect on workload can be observed.",
+            "Two to four minutes depending on your size. The questionnaire adapts: a sole trader answers eight questions, a forty-person firm sixteen. Everything is answered as a range, in one tap, without ever typing a figure — and without signing up.",
         },
         {
           id: "chiffres-exacts",
           question: "Are the simulator's figures real measurements?",
           answer:
-            "No, and we don't claim they are. They are orders of magnitude produced by an estimation model whose assumptions are all published on this page. They are not a performance guarantee. For figures grounded in your actual processes, with before/after measurement, that is what the Axion-IA audit is for.",
+            "They are orders of magnitude produced by an estimation model whose assumptions are all published, and where each task shows its own reasoning. They are neither a performance guarantee, nor a quote, nor an audit. For figures grounded in your actual processes, with before and after measurement, that is what the Axion-IA audit is for.",
         },
         {
-          id: "pourquoi-scenarios",
-          question: "Why three adoption scenarios rather than a single number?",
+          id: "pourquoi-tranches",
+          question: "Why does the questionnaire only ask for ranges?",
           answer:
-            "Because the gap between a team that genuinely rebuilds its workflows and a team that merely attended a training is the largest source of variance in outcomes — ahead of sector or size. Showing a single number would hide that uncertainty. We would rather let you pick your assumption knowingly.",
+            "Because nobody knows off-hand whether they issue 34 or 41 invoices a month, but everyone knows it is between 20 and 50. A range is therefore more honest than a precise figure invented on the spot — and it can be answered with a thumb, without opening any software. “I don't know” is offered everywhere too: the matching task is then excluded from the total rather than guessed.",
         },
         {
-          id: "secteur-change-quoi",
-          question: "What does picking a sector change in the result?",
+          id: "que-contient-rapport",
+          question: "What does the final report contain?",
           answer:
-            "The sector adjusts two things: the typical volume of repetitive hours preselected, and how the freed hours split across the four task families. A law firm spends more time on documentary research; an accounting firm, on reporting. The total time saved stays driven by your own sliders.",
+            "The time and money recoverable over a year with their range, your first five tasks to automate each with observed volume, annual gain and lead time, a three-wave roadmap, the split of the gain by function, and what cannot be automated in your case. The report has a permanent address: you can pass it to your partner or your accountant.",
         },
         {
-          id: "formation-financable",
-          question: "Can the training that produces these gains be funded?",
+          id: "donnees-collectees",
+          question: "Are my answers stored?",
           answer:
-            "Our AI trainings are eligible for professional training funding schemes depending on your situation (OPCO, France Travail). We study your funding and build the file with you.",
+            "No. The questionnaire and the calculation run entirely in your browser: nothing is transmitted unless you explicitly ask to receive the report by email. The full report stays visible on screen without entering anything.",
         },
       ];
 
@@ -517,13 +347,11 @@ export default async function RoiPage({ params }: Props) {
     ...(primaryImage ? { extra: { primaryImageOfPage: primaryImage } } : {}),
   });
 
-  // Le simulateur EST une application web gratuite : on le déclare comme telle.
-  // Pas d'`aggregateRating` inventé — l'outil n'est pas noté.
   const webApplicationJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "@id": `${SITE_URL}/${loc}${PATH}#simulateur`,
-    name: isFr ? "Simulateur de gains de temps IA" : "AI time-savings simulator",
+    name: isFr ? "Simulateur de gains IA" : "AI gains simulator",
     url: `${SITE_URL}/${loc}${PATH}`,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
@@ -533,37 +361,34 @@ export default async function RoiPage({ params }: Props) {
     offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
     provider: { "@id": `${SITE_URL}/#organization` },
     description: isFr
-      ? "Estime les heures rendues, les jours libérés et les équivalents temps plein récupérés par une équipe après une formation IA, à partir du secteur, de l'effectif, du temps passé sur les tâches répétitives et du scénario d'adoption retenu."
-      : "Estimates the hours freed, days returned and full-time equivalents recovered by a team after an AI training, from sector, headcount, time spent on repetitive tasks and the chosen adoption scenario.",
+      ? "Établit un diagnostic à partir des volumes réels d'une entreprise et produit un rapport nominatif : premières tâches à automatiser classées par rapport gain/effort, temps et argent récupérables avec fourchette, feuille de route à 30 jours, 3 mois et 6 mois, et limites assumées."
+      : "Builds a diagnostic from a company's real volumes and produces a tailored report: first tasks to automate ranked by gain against effort, time and money recoverable with a range, roadmap at 30 days, 3 months and 6 months, and stated limits.",
     featureList: isFr
       ? [
-          "Préréglages par secteur d'activité",
-          "Trois scénarios d'adoption (40 %, 60 %, 75 %)",
-          "Ventilation des heures rendues par famille de tâches",
-          "Conversion en équivalents temps plein",
-          "Valorisation financière optionnelle et délai de retour",
+          "Questionnaire adaptatif de 10 à 16 questions",
+          `Référentiel de ${AUTOMATABLE_TASKS.length} tâches automatisables`,
+          "Classement des priorités par rapport gain / effort",
+          "Feuille de route en trois vagues",
+          "Fourchette basse et haute par niveau de confiance",
+          "Rapport partageable par lien permanent",
         ]
       : [
-          "Sector presets",
-          "Three adoption scenarios (40 %, 60 %, 75 %)",
-          "Freed hours broken down by task family",
-          "Conversion into full-time equivalents",
-          "Optional financial valuation and payback delay",
+          "Adaptive questionnaire of 10 to 16 questions",
+          `Catalogue of ${AUTOMATABLE_TASKS.length} automatable tasks`,
+          "Priorities ranked by gain against effort",
+          "Three-wave roadmap",
+          "Low and high range by confidence level",
+          "Report shareable through a permanent link",
         ],
   } as const;
 
-  const howToJsonLd = buildHowToJsonLd({
-    locale: loc,
-    path: PATH,
-    name: isFr
-      ? "Comment estimer les gains de temps d'une formation IA"
-      : "How to estimate the time savings of an AI training",
-    description: isFr
-      ? "Quatre étapes pour estimer, avec le simulateur Axion-IA, les heures rendues à une équipe après une formation à l'intelligence artificielle."
-      : "Four steps to estimate, with the Axion-IA simulator, the hours returned to a team after an artificial-intelligence training.",
-    totalTime: "PT2M",
-    steps: howToSteps.map((s) => ({ name: s.name, text: s.text })),
-  });
+  // 🔴 Le `HowTo` a été RETIRÉ avec la section « Mode d'emploi » qui en était le
+  // miroir visible, pas oublié. Un balisage structuré doit décrire ce que la
+  // page affiche : garder les quatre étapes en JSON-LD alors qu'aucune n'est
+  // plus rendue serait exactement le cas que Google qualifie de contenu
+  // structuré non visible, sanctionné par l'ignorance de tout le balisage de la
+  // page. Si le mode d'emploi revient un jour à l'écran, `buildHowToJsonLd`
+  // existe toujours et se réimporte en une ligne.
 
   const sectorsItemListJsonLd = buildItemListJsonLd({
     locale: loc,
@@ -587,7 +412,6 @@ export default async function RoiPage({ params }: Props) {
     <>
       <JsonLd data={webPageJsonLd} />
       <JsonLd data={webApplicationJsonLd} />
-      <JsonLd data={howToJsonLd} />
       <JsonLd data={sectorsItemListJsonLd} />
       {imageGraphJsonLd ? <JsonLd data={imageGraphJsonLd} /> : null}
       <JsonLd data={buildFaqSpeakableJsonLd({ items: faqItems, dateModified: MODEL_REVISED_AT })} />
@@ -599,27 +423,118 @@ export default async function RoiPage({ params }: Props) {
       </div>
 
       {/* ── HÉRO ─────────────────────────────────────────────────────────── */}
-      <Section
-        titleAs="h1"
-        eyebrow={isFr ? "Simulateur de gains · gratuit" : "Gains simulator · free"}
-        title={isFr ? "Combien d'heures votre équipe" : "How many hours will your team"}
-        titleEm={isFr ? "gagnera" : "save"}
-        titleTail={isFr ? " après la formation ?" : " after training?"}
-        description={
-          isFr
-            ? "Pas de pourcentage de ROI sorti d'un chapeau. Des heures rendues à vos équipes, un modèle d'estimation dont chaque hypothèse est publiée — et la valeur en euros seulement si vous la demandez."
-            : "No ROI percentage pulled from a hat. Hours returned to your teams, an estimation model whose every assumption is published — and the value in euros only if you ask for it."
-        }
-        media={
-          heroImage ? (
+      {/* ── L'OUTIL EN TÊTE, DANS LE MÊME HABIT QUE LE TUNNEL ───────────
+          Avant le 2026-08-14, cette page ouvrait sur un en-tête complet —
+          titre en trois lignes, photo, deux boutons, liste de gages — et le
+          simulateur n'arrivait qu'en DEUXIÈME section. Sur un téléphone,
+          l'outil n'était visible sur aucun écran d'accueil : il fallait faire
+          défiler pour découvrir qu'il existait, sur une page de 17 000 px.
+          Le visiteur venu de Google repartait avant.
+
+          Désormais l'outil EST l'accueil, et il porte l'habit sombre des pages
+          de tunnel (`tone="mocha"`, le ton sombre natif du site + le thème
+          sombre du questionnaire). Le contenu de référencement suit dessous —
+          il reste indispensable pour que la page se positionne, mais il ne
+          bloque plus l'accès à l'outil. */}
+      {/* Rembourrage vertical resserré : le gabarit de section applique
+          `py-24` sur mobile, soit 96 px perdus en haut d'un écran de 664 px
+          avant même le premier mot. Sur cette page l'objectif est que la
+          première QUESTION soit visible sans défiler. */}
+      {/* 🔴 `.bg-vsl` et NON `tone="mocha"`. Les deux sont sombres, mais pas de
+          la même façon : `bg-mocha-rich` est le brun du site, plus clair, et le
+          commentaire de `globals.css` le dit — « `.bg-vsl` est plus sombre que
+          `.bg-mocha-rich` ». `.bg-vsl` porte l'encre `--color-ink` et les deux
+          halos qui font l'identité des pages `/diagnostic` et `/simulateur`.
+          Un visiteur qui passe d'une page à l'autre doit reconnaître le même
+          endroit : c'est tout l'objet. On sort donc du gabarit `Section` pour
+          reprendre EXACTEMENT le motif des pages de tunnel. */}
+      <section id="simulateur" className="bg-vsl scroll-mt-24 pt-8 pb-16 sm:pt-10 sm:pb-20">
+        <Container className="max-w-2xl">
+          {/* Typographie alignée sur `/simulateur` et `/diagnostic` : 28 px sur
+              mobile, sans empattement, interlignage serré. Le grand titre serif
+              du site prenait trois lignes et repoussait l'outil hors de
+              l'écran. */}
+          <h1 className="text-mocha-fg text-[28px] leading-[1.12] font-bold tracking-tight text-balance sm:text-[36px]">
+            {isFr ? (
+              <>
+                Quelles tâches votre entreprise{" "}
+                <em className="text-terracotta-on-mocha not-italic">doit automatiser</em> en premier
+                ?
+              </>
+            ) : (
+              <>
+                Which tasks should your company{" "}
+                <em className="text-terracotta-on-mocha not-italic">automate</em> first?
+              </>
+            )}
+          </h1>
+
+          {/* 🔴 Intro d'UNE ligne, reprise mot pour mot de `/simulateur`.
+              La version longue — « vos cinq premières tâches, le temps et
+              l'argent récupérables, et le calendrier pour y arriver » — tenait
+              en quatre lignes sur mobile et repoussait d'autant la première
+              question. Sur une page dont le seul travail est de faire
+              commencer le questionnaire, tout ce qui précède la première
+              question est du temps pendant lequel on peut perdre le visiteur.
+              Le détail du modèle est déjà repris plus bas, où il rassure ceux
+              qui le cherchent sans retarder ceux qui veulent commencer. */}
+          <p className="text-mocha-fg-muted mt-3 text-[16px] leading-relaxed text-pretty">
+            {isFr
+              ? "Une dizaine de questions sur vos volumes réels. Trois minutes, sans inscription."
+              : "A dozen questions about your real volumes. Three minutes, no sign-up."}
+          </p>
+
+          {/* Même cadre bordé que dans le tunnel : il détache le questionnaire
+              du fond et signale « ici, on agit ». Sans lui, l'outil flottait
+              sur l'encre et se confondait avec le texte. */}
+          <div className="border-border-on-mocha bg-mocha/40 mt-6 rounded-3xl border p-5 sm:p-8">
+            <SimulatorFlow
+              locale={loc}
+              initialAnswers={initialAnswers}
+              initialShowReport={initialShowReport}
+              tone="dark"
+            />
+          </div>
+
+          {/* Les gages descendent SOUS l'outil : avant, ils s'intercalaient
+              entre le titre et le questionnaire et retardaient la première
+              question de plusieurs centaines de pixels. */}
+          <ul
+            role="list"
+            className="mt-8 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:gap-x-6"
+          >
+            {heroChips.map((chip) => (
+              <li
+                key={chip.label}
+                className="text-mocha-fg/75 inline-flex items-center gap-2 text-sm"
+              >
+                <chip.icon
+                  aria-hidden="true"
+                  className="text-terracotta-on-mocha h-4 w-4 shrink-0"
+                  strokeWidth={2}
+                />
+                <span>{chip.label}</span>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+      {/* ── PHOTO REPRÉSENTATIVE + RENVOI VERS L'AUDIT ───────────────────
+          Une seule photo ici, et c'est celle marquée `representativeOfPage`
+          dans le manifeste : c'est elle qui sert d'`og:image` et de
+          `primaryImageOfPage`. Une image annoncée dans le balisage mais absente
+          de la page est un mensonge structuré — on la garde donc à l'écran,
+          compacte, plutôt que de la retirer du manifeste. */}
+      {heroImage ? (
+        <Section tone="canvas" className="py-12 sm:py-14 lg:py-16">
+          <Container className="max-w-2xl">
             <figure>
               <Image
                 src={heroImage.src}
                 alt={isFr ? heroImage.altFr : heroImage.altEn}
                 width={heroImage.width}
                 height={heroImage.height}
-                priority
-                sizes="(max-width: 1024px) 100vw, 48vw"
+                sizes="(max-width: 640px) 100vw, 520px"
                 className="mx-auto h-auto w-full max-w-[520px] rounded-2xl"
               />
               <UnsplashCredit
@@ -628,40 +543,97 @@ export default async function RoiPage({ params }: Props) {
                 className="text-center text-[11px]"
               />
             </figure>
-          ) : undefined
+            <div className="mt-6 flex justify-center">
+              <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
+                {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </Cta>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {/* ── LE MODÈLE, À DÉCOUVERT ───────────────────────────────────────
+          Ce qui reste du chapitre « Notre modèle d'estimation » : une phrase,
+          les quatre mentions qui bornent la promesse, et les sept hypothèses
+          repliées. Le tableau de définitions déployé occupait un écran et demi
+          sur mobile pour une information que presque personne ne lit avant
+          d'avoir vu son résultat — mais que tout le monde doit pouvoir
+          retrouver. */}
+      <Section
+        id="methodologie"
+        tone="sand"
+        className="py-16 sm:py-20 lg:py-24"
+        eyebrow={isFr ? "Transparence" : "Transparency"}
+        title={isFr ? "Le modèle," : "The model,"}
+        titleEm={isFr ? "à découvert" : "in the open"}
+        description={
+          isFr
+            ? "Un simulateur qui cache ses hypothèses ne vaut rien. Voici ce que le nôtre suppose, et ce qu'il ne prétend pas savoir."
+            : "A simulator that hides its assumptions is worthless. Here is what ours assumes, and what it doesn't claim to know."
         }
       >
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-3">
-            <Cta href="#simulateur" variant="primary" size="lg" track="roi-hero-simulateur">
-              {isFr ? "Lancer le simulateur" : "Run the simulator"}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* 🔴 Ces quatre lignes ne sont pas de l'habillage éditorial : ce sont
+              elles qui maintiennent l'estimation du côté de l'obligation de
+              MOYENS. Les retirer ferait du simulateur une promesse chiffrée. */}
+          <div className="border-terracotta/30 bg-paper shadow-subtle rounded-2xl border-2 p-5 sm:p-6">
+            <h3 className="text-fg text-base font-bold tracking-tight">
+              {isFr ? "Ce que ce simulateur n'est pas" : "What this simulator is not"}
+            </h3>
+            <ul role="list" className="mt-3 flex flex-col gap-2.5">
+              {(isFr
+                ? [
+                    "Ce n'est pas une étude : nous ne publions aucun panel d'entreprises mesurées.",
+                    "Ce n'est pas un engagement de résultat : vos gains dépendent de votre adoption interne.",
+                    "Ce n'est pas un devis : aucun prix n'est établi sans étude de votre contexte.",
+                    "Ce n'est pas un audit : il repose sur ce que vous déclarez, pas sur des mesures.",
+                  ]
+                : [
+                    "It is not a study: we publish no panel of measured companies.",
+                    "It is not a performance guarantee: your gains depend on internal adoption.",
+                    "It is not a quote: no price is set without studying your context.",
+                    "It is not an audit: it rests on what you declare, not on measurements.",
+                  ]
+              ).map((item) => (
+                <li
+                  key={item}
+                  className="text-fg-soft flex items-start gap-2.5 text-[13px] leading-relaxed"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="text-terracotta mt-1.5 h-1 w-1 shrink-0 rounded-full bg-current"
+                  />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="text-fg mt-5 text-[15px] leading-relaxed" data-speakable data-answer>
+              {isFr
+                ? "Pour un chiffrage réel, il faut mesurer vos process avant et après. C'est l'objet de l'audit Axion-IA : relevé des tâches, mesure du temps passé, plan d'implémentation chiffré."
+                : "For real figures, your processes must be measured before and after. That is what the Axion-IA audit does: a task inventory, a measurement of time spent, a costed implementation plan."}
+            </p>
+            <Cta href="/audit" variant="primary" size="md" className="mt-4" track="roi-metho-audit">
+              {isFr ? "Découvrir l'audit" : "Discover the audit"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
-            <Cta href="/audit" variant="outline" size="lg" track="roi-hero-audit">
-              {isFr ? "Faire mesurer sur mes process" : "Measure on my processes"}
-            </Cta>
           </div>
-          <ul role="list" className="flex flex-wrap gap-x-5 gap-y-2.5">
-            {heroChips.map((chip) => (
-              <li key={chip.label} className="text-fg-soft inline-flex items-center gap-2 text-sm">
-                <chip.icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-                <span>{chip.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Section>
 
-      {/* ── LE SIMULATEUR ────────────────────────────────────────────────── */}
-      <Section id="simulateur" tone="canvas">
-        <Container className="max-w-6xl">
-          <RoiSimulator locale={loc} labels={simulatorLabels} />
-        </Container>
+          {/* Accordéon `<details>` pur — aucun octet de JS ajouté. Replié, il
+              tient en sept lignes ; déplié, il livre exactement ce que le
+              tableau livrait avant. */}
+          <div>
+            <h3 className="text-fg text-base font-bold tracking-tight">
+              {isFr ? "Les hypothèses, une par une" : "The assumptions, one by one"}
+            </h3>
+            <FaqAccordion items={assumptions} emitJsonLd={false} className="mt-1" />
+          </div>
+        </div>
       </Section>
 
       {/* ── BANDEAU ──────────────────────────────────────────────────────── */}
       {bannerImage ? (
-        <Container className="pt-12 md:pt-16">
+        <Container className="pt-10 md:pt-12">
           <figure>
             <Image
               src={bannerImage.src}
@@ -686,288 +658,10 @@ export default async function RoiPage({ params }: Props) {
         </Container>
       ) : null}
 
-      {/* ── LES 4 FAMILLES DE TÂCHES ─────────────────────────────────────── */}
-      <Section
-        id="familles"
-        tone="paper"
-        eyebrow={isFr ? "D'où viennent les heures" : "Where the hours come from"}
-        title={isFr ? "Quatre familles de tâches," : "Four task families,"}
-        titleEm={isFr ? "un même levier" : "one lever"}
-        description={
-          isFr
-            ? "Les gains d'une formation IA ne se répartissent pas au hasard. Ils se concentrent sur quatre familles de tâches, dont le poids varie selon votre métier."
-            : "The gains of an AI training don't spread at random. They concentrate on four task families, whose weight varies with your trade."
-        }
-      >
-        <ul role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-5 lg:grid-cols-4">
-          {taskFamilies.map((f) => (
-            <li
-              key={f.title}
-              className="border-border bg-canvas shadow-subtle flex h-full flex-col overflow-hidden rounded-2xl border"
-            >
-              {f.image ? (
-                <div className="relative aspect-[3/2] overflow-hidden">
-                  <Image
-                    src={f.image.src}
-                    alt={isFr ? f.image.altFr : f.image.altEn}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 479px) 50vw, 100vw"
-                    loading="lazy"
-                    className="object-cover"
-                  />
-                </div>
-              ) : null}
-              <div className="flex flex-1 flex-col gap-2 p-5">
-                <span className="bg-terracotta/10 text-terracotta inline-flex h-10 w-10 items-center justify-center rounded-xl">
-                  <f.icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <h3 className="text-fg text-base font-semibold tracking-tight">{f.title}</h3>
-                <p className="text-fg-soft text-sm leading-relaxed">{f.body}</p>
-                {f.image ? (
-                  <UnsplashCredit
-                    photographerName={creditFor(f.image.src)?.photographer}
-                    photographerUrl={creditFor(f.image.src)?.photographerUrl}
-                    className="mt-auto pt-2 text-[11px]"
-                  />
-                ) : null}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* ── MODE D'EMPLOI (miroir visible du HowTo JSON-LD) ──────────────── */}
-      <Section
-        id="mode-emploi"
-        eyebrow={isFr ? "Mode d'emploi" : "How it works"}
-        title={isFr ? "Quatre réglages," : "Four settings,"}
-        titleEm={isFr ? "deux minutes" : "two minutes"}
-        description={
-          isFr
-            ? "Le simulateur ne vous demande rien que vous ne sachiez déjà sur votre équipe."
-            : "The simulator asks nothing you don't already know about your team."
-        }
-      >
-        <ol role="list" className="xs:grid-cols-2 grid grid-cols-1 gap-4 lg:grid-cols-4">
-          {howToSteps.map((s, i) => (
-            <li
-              key={s.name}
-              id={`step-${i + 1}`}
-              className="border-border bg-paper shadow-subtle flex h-full flex-col gap-2.5 rounded-2xl border p-5"
-            >
-              <div className="flex items-center gap-2.5">
-                <span className="bg-terracotta/10 text-terracotta inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                  <s.icon aria-hidden="true" className="h-4 w-4" />
-                </span>
-                <span className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase tabular-nums">
-                  {isFr ? "Étape" : "Step"} {i + 1}
-                </span>
-              </div>
-              <h3 className="text-fg text-[15px] leading-tight font-semibold tracking-tight">
-                {s.name}
-              </h3>
-              <p className="text-fg-soft text-[13px] leading-relaxed">{s.text}</p>
-            </li>
-          ))}
-        </ol>
-      </Section>
-
-      {/* ── MODÈLE D'ESTIMATION (E-E-A-T) ────────────────────────────────── */}
-      <Section
-        id="methodologie"
-        tone="sand"
-        eyebrow={isFr ? "Transparence" : "Transparency"}
-        title={isFr ? "Notre modèle" : "Our estimation"}
-        titleEm={isFr ? "d'estimation, à découvert" : "model, in the open"}
-        description={
-          isFr
-            ? "Un simulateur qui cache ses hypothèses ne vaut rien. Voici exactement ce que le nôtre suppose, et ce qu'il ne prétend pas savoir."
-            : "A simulator that hides its assumptions is worthless. Here is exactly what ours assumes, and what it doesn't claim to know."
-        }
-      >
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.15fr_1fr]">
-          <dl className="border-border divide-border divide-y border-y">
-            {assumptions.map((a) => (
-              <div key={a.term} className="grid grid-cols-1 gap-1 py-4 sm:grid-cols-[1fr_auto]">
-                <dt className="text-fg text-[15px] font-semibold tracking-tight">{a.term}</dt>
-                <dd className="text-terracotta-deep order-first text-lg font-bold tabular-nums sm:order-none sm:text-right sm:text-base">
-                  {a.value}
-                </dd>
-                <p className="text-fg-soft text-[13px] leading-relaxed sm:col-span-2">{a.note}</p>
-              </div>
-            ))}
-          </dl>
-
-          <div className="flex flex-col gap-5">
-            <div className="border-terracotta/30 bg-paper shadow-subtle rounded-2xl border-2 p-6">
-              <h3 className="text-fg text-base font-bold tracking-tight">
-                {isFr ? "Ce que ce simulateur n'est pas" : "What this simulator is not"}
-              </h3>
-              <ul role="list" className="mt-3 flex flex-col gap-2.5">
-                {(isFr
-                  ? [
-                      "Ce n'est pas une étude : nous ne publions aucun panel d'entreprises mesurées.",
-                      "Ce n'est pas un engagement de résultat : vos gains dépendent de votre adoption interne.",
-                      "Ce n'est pas un devis : le coût affiché suit notre grille publique, sans étude de votre contexte.",
-                    ]
-                  : [
-                      "It is not a study: we publish no panel of measured companies.",
-                      "It is not a performance guarantee: your gains depend on internal adoption.",
-                      "It is not a quote: the cost shown follows our public price list, with no study of your context.",
-                    ]
-                ).map((item) => (
-                  <li
-                    key={item}
-                    className="text-fg-soft flex items-start gap-2.5 text-[13px] leading-relaxed"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="text-terracotta mt-1.5 h-1 w-1 shrink-0 rounded-full bg-current"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="bg-halo-warm border-border rounded-2xl border p-6">
-              <p className="text-fg text-[15px] leading-relaxed" data-speakable data-answer>
-                {isFr
-                  ? "Pour obtenir un chiffrage réel, il faut mesurer vos process avant et après. C'est précisément ce que fait l'audit Axion-IA : un relevé des tâches, une mesure du temps passé, puis un plan d'implémentation chiffré."
-                  : "To get real figures, your processes must be measured before and after. That is precisely what the Axion-IA audit does: a task inventory, a measurement of time spent, then a costed implementation plan."}
-              </p>
-              <Cta
-                href="/audit"
-                variant="primary"
-                size="md"
-                className="mt-4"
-                track="roi-metho-audit"
-              >
-                {isFr ? "Découvrir l'audit" : "Discover the audit"}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </Cta>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── SECTEURS ─────────────────────────────────────────────────────── */}
-      <Section
-        id="secteurs"
-        eyebrow={isFr ? "Par secteur" : "By sector"}
-        title={isFr ? "Les gains ne tombent pas" : "Gains don't land"}
-        titleEm={isFr ? "au même endroit" : "in the same place"}
-        description={
-          isFr
-            ? "Un cabinet juridique gagne surtout sur la recherche documentaire ; un cabinet comptable, sur le reporting. Choisissez votre secteur dans le simulateur, ou explorez la page dédiée à votre métier."
-            : "A law firm mostly gains on documentary research; an accounting firm, on reporting. Pick your sector in the simulator, or explore the page dedicated to your trade."
-        }
-      >
-        <ul
-          role="list"
-          className="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5"
-        >
-          {CLIENT_SECTORS.map((s) => (
-            <li key={s.slug}>
-              <Link
-                href={`/secteurs/${s.slug}` as never}
-                className="shadow-subtle hover:shadow-elevated group bg-paper flex h-full flex-col overflow-hidden rounded-2xl transition hover:-translate-y-0.5"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={`/illustrations/secteurs/${s.slug}.avif`}
-                    alt={
-                      isFr
-                        ? `Gains de temps grâce à l'IA pour ${s.fullFr} — Axion-IA`
-                        : `AI time savings for ${s.fullFr} — Axion-IA`
-                    }
-                    fill
-                    sizes="(min-width: 1024px) 20vw, (min-width: 768px) 33vw, (min-width: 479px) 50vw, 100vw"
-                    loading="lazy"
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="bg-paper/90 shadow-subtle absolute top-2.5 left-2.5 inline-flex h-8 w-8 items-center justify-center rounded-lg text-base"
-                  >
-                    {s.emoji}
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col gap-1 p-4">
-                  <span className="text-fg text-sm font-semibold tracking-tight">{s.labelFr}</span>
-                  <span className="text-terracotta mt-auto text-[13px] font-medium">
-                    {isFr ? "Voir →" : "See →"}
-                  </span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* ── ENGAGEMENT FONDATEUR ─────────────────────────────────────────── */}
-      {portraitImage ? (
-        <Section id="engagement" tone="mocha">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-            <Image
-              src={portraitImage.src}
-              alt={isFr ? portraitImage.altFr : portraitImage.altEn}
-              width={portraitImage.width}
-              height={portraitImage.height}
-              sizes="(max-width: 1024px) 60vw, 30vw"
-              loading="lazy"
-              className="mx-auto h-auto w-full max-w-[280px] rounded-2xl object-cover"
-            />
-            <figure className="flex flex-col gap-4">
-              <Quote aria-hidden="true" className="text-terracotta h-8 w-8" />
-              <blockquote
-                className="text-mocha-fg text-lg leading-relaxed font-medium md:text-xl"
-                data-speakable
-              >
-                {isFr
-                  ? "« J'aurais pu afficher un chiffre unique et flatteur. J'ai préféré vous montrer les trois hypothèses et vous laisser choisir la vôtre. Un simulateur qui ne dit pas ce qu'il suppose ne vous aide pas à décider. »"
-                  : "“I could have shown a single flattering number. I chose to show you the three assumptions instead, and let you pick yours. A simulator that won't say what it assumes doesn't help you decide.”"}
-              </blockquote>
-              <figcaption className="text-mocha-fg/80 text-sm">
-                {isFr
-                  ? "Williams — Fondateur d'Axion-IA, auteur du modèle d'estimation"
-                  : "Williams — Founder of Axion-IA, author of the estimation model"}
-              </figcaption>
-            </figure>
-          </div>
-        </Section>
-      ) : null}
-
-      {/* ── VILLES (GEO / maillage) ──────────────────────────────────────── */}
-      <Section
-        id="villes"
-        tone="sand"
-        eyebrow={isFr ? "Partout en France" : "Across France"}
-        title={isFr ? "Faites gagner du temps à vos équipes," : "Save your teams time,"}
-        titleEm={isFr ? "près de chez vous" : "near you"}
-        description={
-          isFr
-            ? "Nous formons vos équipes en présentiel dans toute la France. Trouvez votre ville :"
-            : "We train your teams in person across France. Find your city:"
-        }
-      >
-        <ul role="list" className="flex flex-wrap gap-x-2 gap-y-2.5">
-          {villes.map((v) => (
-            <li key={v.slug}>
-              <Link
-                href={`/formations/par-ville/${v.slug}` as never}
-                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
-              >
-                {isFr ? `Formation IA ${v.nameFr}` : `AI training ${v.nameFr}`}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
       {/* ── FAQ (rendue — le FAQPage JSON-LD est émis plus haut) ─────────── */}
       <Section
         id="faq"
+        className="py-16 sm:py-20 lg:py-24"
         eyebrow={isFr ? "Questions fréquentes" : "Frequently asked"}
         title={isFr ? "Vos questions sur" : "Your questions about"}
         titleEm={isFr ? "l'estimation des gains" : "estimating the gains"}
@@ -975,6 +669,80 @@ export default async function RoiPage({ params }: Props) {
         <div className="max-w-3xl">
           <FaqAccordion items={faqItems} emitJsonLd={false} />
         </div>
+      </Section>
+
+      {/* ── MAILLAGE : SECTEURS ET VILLES ────────────────────────────────
+          Les dix secteurs étaient rendus en cartes illustrées, les soixante
+          villes en pastilles : deux traitements pour la même chose, et la
+          grille de photos pesait à elle seule plus d'un écran. Un seul
+          traitement désormais, en pastilles — le maillage interne (les ~70
+          liens qui font vivre cette page dans l'index) est intact, l'encombrement
+          divisé. */}
+      <Section
+        id="ou-aller"
+        tone="sand"
+        className="py-16 sm:py-20 lg:py-24"
+        eyebrow={isFr ? "Aller au précis" : "Get specific"}
+        title={isFr ? "Les gains ne tombent pas" : "Gains don't land"}
+        titleEm={isFr ? "au même endroit" : "in the same place"}
+        description={
+          isFr
+            ? "Un cabinet juridique gagne surtout sur la recherche documentaire ; un cabinet comptable, sur le rapprochement d'écritures. Le simulateur ajuste les temps à votre métier — et nous formons vos équipes en présentiel partout en France."
+            : "A law firm mostly gains on documentary research; an accounting firm, on reconciling entries. The simulator adjusts times to your trade — and we train your teams in person across France."
+        }
+      >
+        <h3 className="text-fg-muted text-[12px] font-bold tracking-[0.16em] uppercase">
+          {isFr ? "Par secteur" : "By sector"}
+        </h3>
+        <ul role="list" className="mt-3 flex flex-wrap gap-2">
+          {CLIENT_SECTORS.map((s) => (
+            <li key={s.slug}>
+              <Link
+                href={`/secteurs/${s.slug}` as never}
+                className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+              >
+                <span aria-hidden="true">{s.emoji}</span>
+                {s.labelFr}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* 🔴 Les soixante villes sont REPLIÉES, pas réduites. Déployées, elles
+            occupaient à elles seules trois écrans de téléphone — soit un tiers
+            de la page — pour soixante libellés quasi identiques. Repliées, elles
+            tiennent en une ligne, et les soixante liens restent dans le DOM :
+            `<details>` masque visuellement, il ne retire rien du document, donc
+            le maillage interne est intact pour les moteurs comme pour un lecteur
+            d'écran. Ne pas remplacer par un rendu conditionnel en JS, qui lui
+            supprimerait vraiment les liens. */}
+        <details className="group border-border mt-8 border-t">
+          <summary className="text-fg flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-left text-[15px] font-medium">
+            <span>
+              {isFr
+                ? `Formations en présentiel dans ${villes.length} villes`
+                : `In-person training in ${villes.length} cities`}
+            </span>
+            <span
+              aria-hidden="true"
+              className="text-fg-muted shrink-0 text-xl leading-none transition-transform group-open:rotate-45"
+            >
+              +
+            </span>
+          </summary>
+          <ul role="list" className="flex flex-wrap gap-2 pb-2">
+            {villes.map((v) => (
+              <li key={v.slug}>
+                <Link
+                  href={`/formations/par-ville/${v.slug}` as never}
+                  className="text-fg-soft bg-canvas border-border hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-3 py-1.5 text-[13px] font-medium transition"
+                >
+                  {isFr ? `Formation IA ${v.nameFr}` : `AI training ${v.nameFr}`}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </details>
       </Section>
 
       {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
@@ -999,12 +767,6 @@ export default async function RoiPage({ params }: Props) {
             </Cta>
           </>
         }
-      />
-
-      <StickyMobileCta
-        href="/audit"
-        label={isFr ? "Demander un audit" : "Request an audit"}
-        track="roi-sticky-audit"
       />
     </>
   );

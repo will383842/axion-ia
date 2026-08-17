@@ -24,20 +24,31 @@ export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<
   },
 );
 
-export const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  function CardTitle({ className, ...rest }, ref) {
-    return (
-      <h3
-        ref={ref}
-        className={cn(
-          "text-fg text-xl leading-tight font-semibold tracking-tight",
-          className,
-        )}
-        {...rest}
-      />
-    );
-  },
-);
+/**
+ * GEO-124 (audit GEO/AEO 2026-08-14) — niveau de titre RENDU CONFIGURABLE.
+ *
+ * `CardTitle` etait fige en `<h3>`. Sur les pages ou les cartes suivent
+ * directement le `<h1>` sans `<h2>` intermediaire, l'outline sautait un niveau
+ * (`h1 -> h3`) : un lecteur d'ecran et un extracteur de plan y voient une
+ * section manquante.
+ *
+ * `as` est OPTIONNEL et vaut `h3` : les usages existants ne bougent pas d'un
+ * pixel ni d'une balise. Seules les pages qui ont besoin de fermer leur outline
+ * passent `as="h2"`. La taille reste imposee par les classes, pas par la
+ * balise — aucun changement visuel.
+ */
+export const CardTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement> & { as?: "h2" | "h3" | "h4" }
+>(function CardTitle({ className, as: Tag = "h3", ...rest }, ref) {
+  return (
+    <Tag
+      ref={ref}
+      className={cn("text-fg text-xl leading-tight font-semibold tracking-tight", className)}
+      {...rest}
+    />
+  );
+});
 
 export const CardDescription = React.forwardRef<
   HTMLParagraphElement,

@@ -30,6 +30,12 @@ import {
   revoquerTokensInscription,
   TokenEmargementError,
 } from "@/server/qualiopi/emargement/token-service";
+import {
+  envoyerLiensPourSession,
+  type EchecEnvoiLien,
+} from "@/server/qualiopi/emargement/envoi-liens";
+
+export type { EchecEnvoiLien };
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -147,6 +153,79 @@ export async function emettreLiensSessionAction(input: {
   });
 
   return { data: { liens, erreurPartielle } };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L'ENVOI — ce qui manquait
+// ─────────────────────────────────────────────────────────────────────────────
+
+const envoiSchema = z.object({
+  sessionId: z.string().uuid(),
+  /** Absent = tous les inscrits actifs de la session. */
+  enrollmentId: z.string().uuid().optional(),
+});
+
+/**
+ * Émet un lien pour les stagiaires visés ET LE LEUR ENVOIE.
+ *
+ * ## 🔴 Ce que cette action répare
+ *
+ * Constaté sur le premier dossier réel, AXI-SESS-2026-005 : la stagiaire n'a
+ * jamais pu émarger. L'en-tête de ce fichier annonce pourtant trois surfaces de
+ * délivrance, dont « **E-mail** — indispensable en distanciel ». Vérification
+ * faite sur les 11 gabarits Qualiopi et les 18 sites d'appel `enqueueEmail` du
+ * domaine : cette surface n'existait pas. Le commentaire décrivait une
+ * intention, pas du code — et personne ne pouvait s'en apercevoir, puisque
+ * l'écran affichait bien un lien.
+ *
+ * ## Pourquoi une action SÉPARÉE de `emettreLiensSessionAction`
+ *
+ * Réémettre révoque les jetons précédents. Envoyer automatiquement à chaque
+ * clic sur « Émettre les liens » enverrait donc une salve à chaque fois qu'un
+ * admin réaffiche l'écran ou corrige une journée — et la salve précédente
+ * deviendrait caduque sans que personne ne le dise. L'envoi doit être un geste
+ * distinct, décidé.
+ *
+ * ⚠️ Chaque envoi émet un jeton NEUF, donc **révoque le lien précédent du même
+ * stagiaire**. C'est la conséquence directe de « un seul jeton vivant par
+ * inscription » (`creerTokenInscription`), et l'écran doit le dire : un
+ * stagiaire qui avait déjà reçu son lien devra utiliser le nouveau.
+ *
+ * ## Ce qu'elle refuse, en le nommant
+ *
+ * Un envoi partiel qui rend « une erreur est survenue » laisse l'admin sans
+ * moyen de savoir QUI n'a rien reçu — sur une pièce probante, c'est le pire
+ * silence possible. Chaque échec porte donc le nom du stagiaire et son motif.
+ */
+export async function envoyerLiensEmargementAction(input: {
+  sessionId: string;
+  enrollmentId?: string;
+}): Promise<ActionResult<{ envoyes: number; echecs: EchecEnvoiLien[] }>> {
+  const session = await requireAdminWrite();
+
+  const parse = envoiSchema.safeParse(input);
+  if (!parse.success) return { error: "Données invalides" };
+
+  const r = await envoyerLiensPourSession({
+    sessionId: parse.data.sessionId,
+    enrollmentId: parse.data.enrollmentId,
+    origine: "console",
+  });
+
+  await logQualiopiActivity({
+    action: "qualiopi.emargement.liens.envoyer",
+    targetType: "TrainingSession",
+    targetId: parse.data.sessionId,
+    changes: {
+      envoyes: r.ok ? r.envoyes : 0,
+      echecs: r.ok ? r.echecs.length : 1,
+      cible: parse.data.enrollmentId ?? "tous",
+    },
+    session,
+  });
+
+  if (!r.ok) return { error: r.motif };
+  return { data: { envoyes: r.envoyes, echecs: r.echecs } };
 }
 
 /**

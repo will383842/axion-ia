@@ -25,6 +25,7 @@ export type NotificationEvent =
         budgetIndicative?: string;
         timingWeeks?: string;
         subType?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -42,6 +43,7 @@ export type NotificationEvent =
         subType?: string;
         budgetIndicative?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -57,6 +59,7 @@ export type NotificationEvent =
         companyName?: string;
         subType?: string;
         urgency?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -71,6 +74,7 @@ export type NotificationEvent =
         ville?: string;
         companyName?: string;
         scope?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -86,6 +90,7 @@ export type NotificationEvent =
         companyName?: string;
         budget?: string;
         timingWeeks?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -104,6 +109,7 @@ export type NotificationEvent =
         contactPhone?: string;
         outlet?: string;
         deadline?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -116,12 +122,18 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         position?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
     }
   | {
-      category: "JOB_APPLICATION_RECEIVED";
+      // `VIDEO_EDITOR_APPLICATION_RECEIVED` = même payload, mais catégorie SÉPARÉE
+      // (demande Will 2026-08-12) : les candidatures à l'offre monteur vidéo
+      // freelance ont leur propre groupe Telegram + doublon WhatsApp, pour ne pas
+      // être mélangées aux autres candidatures. Le choix de catégorie se fait au
+      // call-site sur le slug de l'offre (cf. `videoEditorNotificationCategory`).
+      category: "JOB_APPLICATION_RECEIVED" | "VIDEO_EDITOR_APPLICATION_RECEIVED";
       payload: {
         applicationId: string;
         contactName: string;
@@ -131,9 +143,51 @@ export type NotificationEvent =
         offerCategory?: string;
         city?: string;
         salaryExpectation?: string;
+        /** Début du texte de motivation (tronqué côté émetteur). */
+        motivationExcerpt?: string;
         hasCv: boolean;
         hasPhoto?: boolean;
         locale: "fr" | "en";
+      };
+    }
+  | {
+      // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
+      // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
+      // autres candidatures : salon Telegram dédié 🧲 + doublon WhatsApp, comme
+      // le monteur vidéo. Message volontairement COURT : les 6 champs qui
+      // permettent de juger depuis le téléphone, le reste vit en console.
+      category: "COMMERCIAL_APPLICATION_RECEIVED";
+      payload: {
+        submissionId: string;
+        contactName: string;
+        contactEmail: string;
+        contactPhone?: string;
+        ville?: string;
+        /** Zone souhaitée (labels lisibles) ou « Mobile — peu importe ». */
+        zone?: string;
+        /** Années d'expérience B2B (« 3-5 ans ») ou « aucune ». */
+        b2bYears?: string;
+        /** Disponibilité annoncée (« septembre 2026 »). */
+        availability?: string;
+        /** Utilise déjà l'IA au quotidien. */
+        usesAi: boolean;
+        locale: "fr" | "en";
+      };
+    }
+  | {
+      // Rappel hebdo du cron `formation-crons.offres-fraicheur` : offres
+      // d'emploi dont le datePosted (celui que Google for Jobs voit) dépasse le
+      // seuil de republication. La republication reste HUMAINE (bouton console) —
+      // jamais de bump automatique de date (fausse fraîcheur = spam Google).
+      category: "JOB_OFFERS_STALE";
+      payload: {
+        thresholdDays: number;
+        offers: Array<{
+          title: string;
+          daysOld: number;
+          /** "db" = republiable en console ; "statique" = page code (Claude). */
+          kind: "db" | "statique";
+        }>;
       };
     }
   | {
@@ -169,8 +223,27 @@ export type NotificationEvent =
         postalCode: string;
         /** Début de la description d'activité (aperçu). */
         activityExcerpt?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
+      };
+    }
+  | {
+      // Demande RGPD déposée depuis le portail stagiaire (2026-08-13).
+      //
+      // 🔴 Sévérité `warn`, et ce n'est pas de la prudence : le délai de
+      // réponse est d'UN MOIS et il court dès le dépôt. Avant cette
+      // catégorie, la demande n'était signalée à PERSONNE — elle pouvait
+      // dormir jusqu'à ce que la personne saisisse la CNIL.
+      category: "RGPD_REQUEST_SUBMITTED";
+      payload: {
+        demandeId: string;
+        /** `export` (art. 15) ou `suppression` (art. 17). */
+        type: string;
+        traineeNom: string;
+        traineeEmail: string;
+        /** Échéance légale, déjà formatée. */
+        echeance: string;
       };
     }
   | {
@@ -182,6 +255,7 @@ export type NotificationEvent =
         contactPhone?: string;
         eventName?: string;
         eventDate?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -194,6 +268,7 @@ export type NotificationEvent =
         contactEmail: string;
         contactPhone?: string;
         firm?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -207,6 +282,7 @@ export type NotificationEvent =
         contactPhone?: string;
         ville?: string;
         companyName?: string;
+        message?: string;
         source?: string;
         locale: "fr" | "en";
       };
@@ -263,6 +339,8 @@ export type NotificationEvent =
         /** Champs enrichis depuis l'API Calendly (2026-08-09). */
         inviteePhone?: string;
         cancelUrl?: string;
+        /** Réponses libres du formulaire Calendly (hors téléphone), « Q : R » concaténées. */
+        answersText?: string;
       };
     }
   | {
@@ -349,7 +427,47 @@ export type NotificationEvent =
   | {
       category: "MONITORING_ALERT";
       payload: { kind: string; details: Record<string, unknown> };
+    }
+  // === Synchro CRM (lot L5) ===
+  //
+  // Une seule catégorie pour les QUATRE anomalies de la synchro, et pas une par
+  // anomalie : c'est `kind` qui distingue, ce qui permet de router, de dédupliquer
+  // et de couper les quatre d'un seul geste. L'anti-bruit vit au call-site
+  // (`crm-sync/alerts.ts`) sous forme de clé de dédup HORAIRE par `kind` — une
+  // synchro en panne produit une alerte par heure, pas une par ligne.
+  | {
+      category: "CRM_SYNC_ALERT";
+      payload: {
+        kind: CrmSyncAlertKind;
+        /** Volume concerné (backlog, nombre de sources sans ligne d'outbox…). */
+        count?: number;
+        /** Message d'erreur ou précision libre. */
+        detail?: string;
+        /** Référence de l'enregistrement source, pour un abandon unitaire. */
+        subjectRef?: string;
+      };
     };
+
+/**
+ * Les quatre anomalies que la synchro sait signaler.
+ *
+ *  · `gave_up`          — une ligne d'outbox est DÉFINITIVEMENT abandonnée
+ *                         (refus 422 du CRM ou plafond de tentatives). C'est un
+ *                         lead qui n'arrivera jamais sans intervention humaine.
+ *  · `backlog`          — la file dépasse le seuil ferme du plan (50).
+ *  · `reconcile_gap`    — le batch quotidien a trouvé des enregistrements
+ *                         SOURCE sans ligne d'outbox (la fenêtre post-commit).
+ *  · `reconcile_failed` — le batch lui-même a échoué. Sans cette alerte, la
+ *                         garantie quotidienne s'éteindrait en silence.
+ */
+export type CrmSyncAlertKind =
+  | "gave_up"
+  | "backlog"
+  | "reconcile_gap"
+  | "reconcile_failed"
+  // Le balayage d'abonnés a atteint son plafond : la correspondance par
+  // empreinte n'est plus exhaustive — un optout CRM peut être raté.
+  | "scan_capped";
 
 export type NotificationCategory = NotificationEvent["category"];
 

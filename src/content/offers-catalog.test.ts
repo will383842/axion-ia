@@ -81,11 +81,14 @@ describe("T-33 catalogue — inversion ETI assumée (D-ETI-PRIX 🔒)", () => {
 });
 
 describe("T-33 catalogue — dérivation facettes (échantillon 5 verticales)", () => {
-  it("formation collective : intervention-claude → effectif 2-30, 1 jour, présentiel", () => {
+  it("formation collective : intervention-claude → effectif 2-15, 1 jour, présentiel", () => {
     const o = getOfferById("intervention-claude")!;
     expect(o.vertical).toBe<OfferVertical>("formation");
     expect(o.effectifMin).toBe(2);
-    expect(o.effectifMax).toBe(30);
+    // 2026-08-13 — 30 → 15 : l'effectif des collectives est harmonisé sur
+    // l'offre réelle (FORMATION_PRICE_MATRIX / catalogue V2, 2 à 15). Le 2-30
+    // venait de la génération « interventions », dont les pages redirigent.
+    expect(o.effectifMax).toBe(15);
     expect(o.dureeJours).toBe(1);
     expect(o.format).toContain("presentiel");
   });
@@ -97,12 +100,12 @@ describe("T-33 catalogue — dérivation facettes (échantillon 5 verticales)", 
     expect(o.vertical).toBe<OfferVertical>("un-a-un");
   });
 
-  it("demi-journée : intervention-4h → 4 h / 0.5 j, effectif 2-30", () => {
+  it("demi-journée : intervention-4h → 4 h / 0.5 j, effectif 2-15", () => {
     const o = getOfferById("intervention-4h")!;
     expect(o.dureeHeures).toBe(4);
     expect(o.dureeJours).toBe(0.5);
     expect(o.effectifMin).toBe(2);
-    expect(o.effectifMax).toBe(30);
+    expect(o.effectifMax).toBe(15); // idem : 30 → 15, cf. commentaire ci-dessus
   });
 
   it("audit : audit-cible déduit distanciel + mixte (sous-tiers)", () => {
@@ -143,7 +146,7 @@ describe("T-33 catalogue — dérivation facettes (échantillon 5 verticales)", 
 
 describe("T-33 helpers de parsing", () => {
   it("parseEffectif", () => {
-    expect(parseEffectif("2 à 30 personnes")).toEqual({ min: 2, max: 30 });
+    expect(parseEffectif("2 à 15 personnes")).toEqual({ min: 2, max: 15 });
     expect(parseEffectif("1 dirigeant (1-to-1)")).toEqual({ min: 1, max: 1 });
     expect(parseEffectif(undefined)).toEqual({});
   });

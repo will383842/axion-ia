@@ -106,12 +106,11 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
           <dt className="font-medium">Photo</dt>
           <dd>
             {a.hasPhoto ? (
-              <Link
+              <PhotoCandidat
                 href={`/fr/${adminPrefix}/contacts/candidatures/${a.id}/photo`}
-                className="admin-link"
-              >
-                Voir {a.photoOriginalName ?? ""}
-              </Link>
+                mimeType={a.photoMimeType}
+                nomOriginal={a.photoOriginalName}
+              />
             ) : (
               "non fournie"
             )}
@@ -151,5 +150,57 @@ export default async function ApplicationDetailPage({ params }: PageProps) {
         />
       </AdminCard>
     </AdminPageShell>
+  );
+}
+
+/**
+ * Photo du candidat : affichée quand le navigateur sait la rendre, proposée en
+ * téléchargement sinon.
+ *
+ * 🔴 Le téléversement accepte le HEIC — format par défaut des iPhone — qu'aucun
+ * navigateur hors Safari ne sait afficher, et que la route de consultation sert
+ * donc en `application/octet-stream`. Une balise `<img>` inconditionnelle
+ * produirait une image cassée : on aurait demandé une photo au candidat pour ne
+ * jamais la voir, sans qu'aucune erreur ne le signale.
+ */
+const TYPES_AFFICHABLES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+function PhotoCandidat({
+  href,
+  mimeType,
+  nomOriginal,
+}: {
+  href: string;
+  mimeType: string | null;
+  nomOriginal: string | null;
+}): React.ReactElement {
+  if (mimeType && TYPES_AFFICHABLES.has(mimeType)) {
+    return (
+      <Link href={href} className="inline-block">
+        {/* `next/image` est écarté : la route est authentifiée et hors
+            web-root, l'optimiseur ne peut pas la lire. Dimensions fixées pour
+            ne provoquer aucun décalage de mise en page au chargement. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={href}
+          alt={`Photo de candidature${nomOriginal ? ` (${nomOriginal})` : ""}`}
+          width={96}
+          height={96}
+          className="h-24 w-24 rounded-[var(--radius-admin-sm)] object-cover"
+        />
+      </Link>
+    );
+  }
+
+  return (
+    <>
+      <Link href={href} className="admin-link">
+        Télécharger {nomOriginal ?? "la photo"}
+      </Link>
+      <p className="admin-meta-small">
+        Format non affichable dans le navigateur{mimeType ? ` (${mimeType})` : ""} — souvent une
+        photo iPhone au format HEIC.
+      </p>
+    </>
   );
 }

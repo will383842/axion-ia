@@ -21,7 +21,7 @@
 // V1 visuel intact ; les ajouts sont passifs jusqu'à la PR 5/6.
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { redirect, notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { auth, signOut } from "@/auth";
@@ -44,12 +44,22 @@ import { prisma } from "@/lib/prisma";
 // supérieure en petites tailles, référence des dashboards modernes). Exposée
 // via la variable CSS `--font-admin`, appliquée par admin.css à
 // `.admin-layout-v2 / .admin-layout` (et au rail `.admin-rail`).
-// Self-host woff2 par next/font ; admin = noindex/force-dynamic (hors budget
-// Web Vitals des 15 pages publiques).
-const interAdmin = Inter({
-  subsets: ["latin"],
+// Self-host woff2 depuis `src/fonts/` ; admin = noindex/force-dynamic (hors
+// budget Web Vitals des 15 pages publiques).
+//
+// 2026-08-16 — bascule `next/font/google` → `next/font/local` : le build ne
+// dépend plus d'un fetch vivant vers fonts.gstatic.com. Voir le bandeau
+// d'explication dans `src/app/[locale]/layout.tsx` et l'ADR 0027. Un seul
+// fichier variable sert les quatre graisses, exactement comme le CSS que
+// Google renvoyait pour `Inter:wght@400;500;600;700`.
+const interAdmin = localFont({
+  src: [
+    { path: "../../../../fonts/inter-latin-var.woff2", weight: "400", style: "normal" },
+    { path: "../../../../fonts/inter-latin-var.woff2", weight: "500", style: "normal" },
+    { path: "../../../../fonts/inter-latin-var.woff2", weight: "600", style: "normal" },
+    { path: "../../../../fonts/inter-latin-var.woff2", weight: "700", style: "normal" },
+  ],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
   variable: "--font-admin",
 });
 
@@ -65,6 +75,21 @@ const getUnreadContactsCount = unstable_cache(
   },
   ["admin-contacts-unread-count"],
   { revalidate: 30, tags: ["admin:contacts-unread"] },
+);
+
+// Pastille « offres d'emploi à republier » (fraîcheur Google for Jobs,
+// 2026-08-13). Cache 5 min — le compteur ne bouge qu'à la republication ou au
+// vieillissement quotidien ; invalidation immédiate via revalidateTag
+// "admin:job-offers-stale" depuis les server actions offres-emploi.
+const getStaleJobPostingsCount = unstable_cache(
+  async (): Promise<number> => {
+    const { countStaleJobPostings } = await import("@/server/careers/freshness");
+    return countStaleJobPostings().catch(() => 0);
+  },
+  // Pas de préfixe « admin- » dans la clé : le test admin-design-tokens
+  // balaie toutes les chaînes `admin-*` comme des classes CSS candidates.
+  ["job-offers-stale-count"],
+  { revalidate: 300, tags: ["admin:job-offers-stale"] },
 );
 
 import {
@@ -191,6 +216,8 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
   // Pastilles console Qualiopi (refonte phase 1, 2026-08-01) : signatures en
   // attente + e-mails à valider + alertes non lues. Fail-soft interne → 0.
   let qualiopiCounts: QualiopiNavCounts = COMPTEURS_VIDES;
+  // Pastille « offres d'emploi à republier » (fraîcheur Google for Jobs).
+  let staleJobOffersCount = 0;
 
   if (showSidebar) {
     // Fetch failedJobsCount + DB-stored anomaly alerts in parallel.
@@ -208,6 +235,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       unreadCount,
       inboxActionCounts,
       qualiopiNavCounts,
+      staleJobsCount,
     ] = await Promise.all([
       getFailedJobsCount().catch(() => 0),
       prisma.contentGenConfig
@@ -222,6 +250,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
       getUnreadContactsCount(),
       getInboxActionCounts(),
       compterQualiopiNav().catch(() => COMPTEURS_VIDES),
+      getStaleJobPostingsCount().catch(() => 0),
     ]);
 
     failedJobsCount = failedCount;
@@ -229,6 +258,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
     unreadContactsCount = unreadCount;
     inboxCounts = inboxActionCounts;
     qualiopiCounts = qualiopiNavCounts;
+    staleJobOffersCount = staleJobsCount;
 
     // Build notification items from DB anomaly alerts.
     for (const row of anomalyRows) {
@@ -358,6 +388,7 @@ export default async function AdminLayout({ children, params }: AdminLayoutProps
             unreadContactsCount={unreadContactsCount}
             inboxCounts={inboxCounts}
             qualiopiCounts={qualiopiCounts}
+            staleJobOffersCount={staleJobOffersCount}
             userEmail={session.user.email ?? null}
             accountHref={adminBase}
             logoutAction={logoutAction}

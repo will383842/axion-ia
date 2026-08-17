@@ -3,7 +3,10 @@
 // noindex si draft/pourvue/expirée/non-tier1 ; offres suggérées ; CTA postuler.
 
 import type { Metadata } from "next";
-import Link from "next/link";
+// Link next-intl (et NON `next/link`) : sinon le retour hub, les offres
+// similaires et les liens verticales sortent locale-less → un 301 par lien
+// (audit GEO/AEO 2026-08-14, GEO-080).
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -13,16 +16,25 @@ import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { HeroBadge } from "@/components/marketing/HeroBadge";
+import { DarkTriadPanel } from "@/components/marketing/DarkTriadPanel";
+import { FaqBlock } from "@/components/sections/FaqBlock";
+import { CtaBlock } from "@/components/sections/CtaBlock";
+import { GraduationCap, Handshake, MessagesSquare } from "lucide-react";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
 import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 import { buildJobPostingJsonLd } from "@/lib/seo/job-posting";
 import { CAREER_VERTICALS } from "@/content/careers/categories";
 import { EMPLOYER_BRAND } from "@/content/careers/employer-brand";
-import { careerImage } from "@/content/careers/careers-images";
+import { careerImage, CAREERS_HERO } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
+import {
+  applicantCountryLabel,
+  contractTypeLabel,
+  normalizeApplicantCountries,
+} from "@/lib/careers/format";
 import {
   getJobOfferBySlug,
   isJobOfferIndexable,
@@ -30,6 +42,7 @@ import {
   listSuggestedOffers,
 } from "@/lib/careers/job-offers";
 import type { JobOffer } from "../../../../../prisma/generated/client";
+import { prefixerLiensInternes } from "@/lib/content/liens-internes";
 
 export const revalidate = 3600;
 
@@ -87,38 +100,88 @@ function buildOfferFaq(
   const items: Array<{ id: string; question: string; answer: string }> = [];
   const cityPart = o.city ? (isFr ? ` à ${o.city}` : ` in ${o.city}`) : "";
 
-  const modeAnswer =
-    o.workMode === "remote"
+  // Pays éligibles calculés AVANT la réponse télétravail : quand une offre à
+  // distance est ouverte hors de France (`applicant_countries`), dire « ouvert
+  // partout en France » contredit la réponse « pays » trois questions plus bas —
+  // et c'est la phrase que reprend un moteur de réponse.
+  const countries = normalizeApplicantCountries(o.applicantCountries);
+  const countryNames = countries.map((c) => applicantCountryLabel(c, isFr));
+
+  // Villes du poste (multi-lieux) : un poste à zone nationale ne doit pas
+  // répondre « en présentiel à Grenoble » — c'est la question n°1 d'un candidat
+  // hors Isère, et la réponse que reprennent les moteurs de réponse.
+  const faqCities = Array.isArray(o.jobLocations)
+    ? (o.jobLocations as Array<{ city?: string }>)
+        .map((l) => l.city)
+        .filter((c): c is string => Boolean(c))
+    : [];
+
+  const remoteScope =
+    countries.length > 1
       ? isFr
-        ? "Oui, ce poste est en télétravail (à distance), ouvert partout en France."
-        : "Yes, this role is fully remote, open across France."
-      : o.workMode === "hybrid"
+        ? `ouvert depuis ${countries.length} pays francophones (${countryNames.slice(0, 5).join(", ")}…)`
+        : `open from ${countries.length} French-speaking countries (${countryNames.slice(0, 5).join(", ")}…)`
+      : isFr
+        ? "ouvert partout en France"
+        : "open across France";
+  const modeAnswer =
+    faqCities.length > 1
+      ? isFr
+        ? `Le poste couvre toute la France — interventions organisées par secteurs autour de ${faqCities.length} villes (${faqCities.slice(0, 5).join(", ")}…)${o.city ? `, avec un rattachement à ${o.city}` : ""}.`
+        : `The role covers all of France — organised by sector around ${faqCities.length} cities (${faqCities.slice(0, 5).join(", ")}…)${o.city ? `, with a home base in ${o.city}` : ""}.`
+      : o.workMode === "remote"
         ? isFr
-          ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
-          : `This role is hybrid: partly on-site${cityPart} and partly remote.`
-        : isFr
-          ? `Ce poste est en présentiel${cityPart}.`
-          : `This role is on-site${cityPart}.`;
+          ? `Oui, ce poste est en télétravail (à distance), ${remoteScope}.`
+          : `Yes, this role is fully remote, ${remoteScope}.`
+        : o.workMode === "hybrid"
+          ? isFr
+            ? `Ce poste est en hybride : une partie en présentiel${cityPart} et une partie en télétravail.`
+            : `This role is hybrid: partly on-site${cityPart} and partly remote.`
+          : isFr
+            ? `Ce poste est en présentiel${cityPart}.`
+            : `This role is on-site${cityPart}.`;
   items.push({
     id: "teletravail",
-    question: isFr
-      ? `Le poste de ${title} est-il en télétravail ?`
-      : `Is the ${title} role remote?`,
+    question:
+      faqCities.length > 1
+        ? isFr
+          ? `Où s'exerce le poste de ${title} ?`
+          : `Where is the ${title} role based?`
+        : isFr
+          ? `Le poste de ${title} est-il en télétravail ?`
+          : `Is the ${title} role remote?`,
     answer: modeAnswer,
   });
 
-  const contract =
-    o.contractLabel ??
-    (o.employmentType === "FULL_TIME"
-      ? isFr
-        ? "CDI temps plein"
-        : "full-time permanent contract"
-      : o.employmentType);
-  items.push({
-    id: "contrat",
-    question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
-    answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
-  });
+  // Libellé traduit (SSOT `format.ts`) : sans lui, l'enum schema.org brut
+  // fuitait en façade (« Il s'agit d'un poste en CONTRACTOR »). `null` si le
+  // type est inconnu → on n'émet pas la question plutôt que d'afficher un code.
+  const contract = contractTypeLabel(o, isFr);
+  if (contract) {
+    items.push({
+      id: "contrat",
+      question: isFr ? "Quel est le type de contrat ?" : "What type of contract is it?",
+      answer: isFr ? `Il s'agit d'un poste en ${contract}.` : `This is a ${contract} position.`,
+    });
+  }
+
+  // Pays éligibles (AEO) : « Puis-je postuler depuis le Maroc ? » est LA question
+  // d'un candidat francophone hors de France devant une offre à distance.
+  if (countries.length > 1) {
+    const names = countryNames;
+    const listed = isFr
+      ? `${names.slice(0, -1).join(", ")} et ${names[names.length - 1]}`
+      : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+    items.push({
+      id: "pays",
+      question: isFr
+        ? "Depuis quels pays peut-on postuler à cette offre ?"
+        : "Which countries can I apply from?",
+      answer: isFr
+        ? `Les candidatures sont ouvertes depuis ${listed}. Le travail se fait intégralement à distance, en français.`
+        : `Applications are open from ${listed}. The role is fully remote and works in French.`,
+    });
+  }
 
   const sal = salaryLabel(o, isFr);
   if (sal) {
@@ -181,10 +244,25 @@ export async function generateMetadata({
     ),
     ...(offer.ogImagePath ? { ogImage: offer.ogImagePath } : {}),
   });
+  // Offre ouverte à plusieurs pays francophones → `og:locale:alternate` fr_XX.
+  // Le site reste mono-URL (une seule page, pas de duplicata par pays) : on ne
+  // touche donc PAS aux hreflang (qui exigent des URLs distinctes), on se
+  // contente de déclarer les variantes régionales du même contenu français.
+  const countries = normalizeApplicantCountries(offer.applicantCountries);
+  const withOg: Metadata =
+    countries.length > 1
+      ? {
+          ...base,
+          openGraph: {
+            ...base.openGraph,
+            alternateLocale: countries.filter((c) => c !== "FR").map((c) => `fr_${c}`),
+          },
+        }
+      : base;
   if (!isJobOfferIndexable(offer)) {
-    return { ...base, robots: { index: false, follow: true } };
+    return { ...withOg, robots: { index: false, follow: true } };
   }
-  return base;
+  return withOg;
 }
 
 export default async function JobOfferDetailPage({
@@ -203,7 +281,11 @@ export default async function JobOfferDetailPage({
 
   const title = isFr ? offer.titleFr : offer.titleEn;
   const summary = isFr ? offer.summaryFr : offer.summaryEn;
-  const bodyHtml = sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn);
+  // GEO-079/081 — reecriture des liens internes au rendu (cf. le module dedie).
+  const bodyHtml = prefixerLiensInternes(
+    sanitizeContentGenHtml(isFr ? offer.bodyFr : offer.bodyEn),
+    loc,
+  );
   const sal = salaryLabel(offer, isFr);
   const applyHref = `/carrieres/${offer.slug}/postuler`;
   const isClosed = isOfferClosed(offer);
@@ -211,12 +293,40 @@ export default async function JobOfferDetailPage({
   const perks: PerkItem[] = Array.isArray(offer.perks) ? (offer.perks as PerkItem[]) : [];
   const suggested = await listSuggestedOffers(offer, 4);
   // Zone d'emploi multi-villes (postes itinérants/territoriaux).
+  const eligibleCountries = normalizeApplicantCountries(offer.applicantCountries);
   const jobCities = Array.isArray(offer.jobLocations)
     ? (offer.jobLocations as Array<{ city?: string }>)
         .map((l) => l.city)
         .filter((c): c is string => Boolean(c))
     : [];
   const img = careerImage(offer.slug);
+
+  // Faits-clés du poste, en cartes (refonte 2026-08-12, réf. /methodologie) :
+  // l'ancienne ligne « 📄 CDI · 💶 41k–85k · 👥 » se perdait dans le texte.
+  const zoneLabel =
+    jobCities.length > 0
+      ? isFr
+        ? `France entière · ${jobCities.length} villes`
+        : `France-wide · ${jobCities.length} cities`
+      : offer.workMode === "remote"
+        ? isFr
+          ? "100 % à distance"
+          : "Fully remote"
+        : `${WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"] ?? ""}${offer.city ? ` · ${offer.city}` : ""}`;
+  // Contrat : libellé libre admin si présent, sinon dérivé de l'enum (SSOT
+  // contractTypeLabel) — sans repli, la carte manquait sur la moitié des offres.
+  const contractFact = offer.contractLabel ?? contractTypeLabel(offer, isFr);
+  const heroFacts = [
+    sal ? { label: isFr ? "Rémunération" : "Pay", value: sal } : null,
+    contractFact ? { label: isFr ? "Contrat" : "Contract", value: contractFact } : null,
+    { label: isFr ? "Zone" : "Area", value: zoneLabel },
+    offer.startDate
+      ? {
+          label: isFr ? "Démarrage" : "Start",
+          value: `${isFr ? "Dès le" : "From"} ${offer.startDate.toISOString().slice(0, 10)}`,
+        }
+      : null,
+  ].filter((f): f is { label: string; value: string } => f !== null);
 
   const jobPosting = buildJobPostingJsonLd(offer, loc);
   const webPage = buildWebPageJsonLd({
@@ -266,29 +376,60 @@ export default async function JobOfferDetailPage({
           ) : null}
 
           <div className="mt-6 grid items-start gap-8 lg:grid-cols-[1fr_0.85fr] lg:gap-12">
-            {/* Colonne gauche — texte */}
+            {/* Colonne gauche — texte. Refonte 2026-08-12 (réf. /methodologie) :
+                pastille d'eyebrow, titre display, faits-clés en cartes serif —
+                l'ancien rendu (« Sur site · Grenoble » + ligne d'emojis) faisait
+                vieillot et trop textuel (retour Will). */}
             <div>
-              <p className="text-terracotta text-sm font-semibold tracking-wide uppercase">
-                {WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"]}
-                {offer.city ? ` · ${offer.city}` : ""}
-              </p>
-              <h1 className="mt-2 font-serif text-4xl font-semibold sm:text-5xl">{title}</h1>
+              <HeroBadge className="mb-5 justify-start">
+                <span
+                  aria-hidden="true"
+                  className="bg-terracotta inline-block h-1.5 w-1.5 rounded-full"
+                />
+                {isFr ? "On recrute" : "We're hiring"}
+                <span aria-hidden="true" className="text-fg-muted">
+                  ·
+                </span>
+                {jobCities.length > 0
+                  ? isFr
+                    ? `France entière${offer.city ? ` · basé à ${offer.city}` : ""}`
+                    : `France-wide${offer.city ? ` · based in ${offer.city}` : ""}`
+                  : `${WORKMODE_LABELS[offer.workMode]?.[isFr ? "fr" : "en"] ?? ""}${offer.city ? ` · ${offer.city}` : ""}`}
+              </HeroBadge>
+              <h1 className="display-editorial text-fg">{title}</h1>
 
-              <div className="text-fg-muted mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                {offer.contractLabel ? <span>📄 {offer.contractLabel}</span> : null}
-                {sal ? <span>💶 {sal}</span> : null}
-                {offer.teamName ? <span>👥 {offer.teamName}</span> : null}
-                {offer.startDate ? (
-                  <span>
-                    🗓️ {isFr ? "Dès" : "From"} {offer.startDate.toISOString().slice(0, 10)}
-                  </span>
-                ) : null}
+              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {heroFacts.map((f) => (
+                  <div
+                    key={f.label}
+                    className="border-border bg-paper/80 shadow-subtle rounded-2xl border px-4 py-3"
+                  >
+                    <p className="text-fg-muted text-[11px] font-semibold tracking-wide uppercase">
+                      {f.label}
+                    </p>
+                    <p className="text-terracotta-deep mt-1 font-serif text-lg leading-snug font-semibold">
+                      {f.value}
+                    </p>
+                  </div>
+                ))}
               </div>
 
               {/* En bref — direct answer AEO / speakable */}
               <p data-speakable className="mt-5 text-lg">
                 {summary}
               </p>
+
+              {/* Pays éligibles — l'information que cherche un candidat hors de
+                  France sur une offre à distance. Texte brut (pas de JS) : lu
+                  aussi bien par les moteurs de réponse que par les humains. */}
+              {eligibleCountries.length > 1 ? (
+                <p data-speakable className="text-fg-muted mt-3 text-sm">
+                  {isFr ? "Candidatures ouvertes depuis " : "Open to applicants from "}
+                  <strong>
+                    {eligibleCountries.map((c) => applicantCountryLabel(c, isFr)).join(" · ")}
+                  </strong>
+                </p>
+              ) : null}
 
               {!isClosed ? (
                 <div className="mt-6">
@@ -381,7 +522,9 @@ export default async function JobOfferDetailPage({
                   {CAREER_VERTICALS.map((v) => (
                     <li key={v.href}>
                       <Link
-                        href={v.href}
+                        // `CAREER_VERTICALS.href` est un `string` : même
+                        // échappatoire de typage que `Cta.tsx`.
+                        href={v.href as never}
                         className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 underline underline-offset-2"
                       >
                         {isFr ? v.fr : v.en} →
@@ -410,19 +553,66 @@ export default async function JobOfferDetailPage({
         </Container>
       </Section>
 
+      {/* Parité images/texte (demande Will 2026-08-12) : entre la photo du hero
+          et les vignettes du bas, le corps (~2 500 c.) ne portait AUCUNE image.
+          Deux scènes d'équipe déjà curées du pool carrières — jamais la photo
+          de l'offre elle-même (filtre sur l'URL). */}
+      <Section tone="sand">
+        <Container>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {[
+              {
+                ...CAREERS_HERO,
+                altFr: "Travail d'équipe chez Axion-IA — collaboration sur ordinateurs portables",
+              },
+              {
+                ...careerImage("consultant-ia-generative"),
+                altFr: "Réunion d'équipe autour d'une table, ordinateurs ouverts",
+              },
+              {
+                ...careerImage("formateur-ia-itinerant"),
+                altFr: "Présentation devant une équipe en atelier",
+              },
+            ]
+              .filter((b) => b.url !== img.url)
+              .slice(0, 2)
+              .map((b) => (
+                <figure key={b.url}>
+                  <div className="border-border shadow-card relative aspect-[3/2] overflow-hidden rounded-3xl border">
+                    <Image
+                      src={b.url}
+                      alt={isFr ? b.altFr : b.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <UnsplashCredit
+                    photographerName={b.byName}
+                    photographerUrl={b.byUrl}
+                    className="text-right"
+                  />
+                </figure>
+              ))}
+          </div>
+        </Container>
+      </Section>
+
       {/* Où ce poste est ouvert — multi-villes (sous l'offre, plus dans le hero) */}
       {jobCities.length > 0 ? (
-        <Section tone="sand">
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Zone d'action" : "Coverage"}
+          title={isFr ? "Où ce poste est" : "Where this role is"}
+          titleEm={isFr ? "ouvert" : "open"}
+          description={
+            isFr
+              ? "Poste itinérant, organisé par secteurs : tu interviens chez nos clients partout en France — dans ces villes et leurs alentours."
+              : "Itinerant role, organised by sector: you work at our clients across France — in these cities and surroundings."
+          }
+        >
           <Container>
-            <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-              {isFr ? "Où ce poste est ouvert" : "Where this role is open"}
-            </h2>
-            <p className="text-fg-muted mt-2 max-w-2xl">
-              {isFr
-                ? "Poste itinérant, organisé par secteurs : tu interviens chez nos clients partout en France — dans ces villes et leurs alentours."
-                : "Itinerant role, organised by sector: you work at our clients across France — in these cities and surroundings."}
-            </p>
-            <ul className="mt-5 flex flex-wrap gap-2" role="list">
+            <ul className="flex flex-wrap gap-2" role="list">
               {jobCities.map((c) => (
                 <li
                   key={c}
@@ -436,64 +626,69 @@ export default async function JobOfferDetailPage({
         </Section>
       ) : null}
 
-      {/* Accompagnement — formation + intégration en 2 parties (tous les postes) */}
-      <Section tone="halo-cool">
+      {/* Accompagnement — panneau mocha (réf. /methodologie « Notre parti pris ») :
+          les 2 cartes blanches plates manquaient d'énergie (retour Will 2026-08-12). */}
+      <Section
+        eyebrow={isFr ? "Accompagnement" : "Support"}
+        title={isFr ? "Comment on t'" : "How we"}
+        titleEm={isFr ? "accompagne" : "support you"}
+      >
         <Container>
-          <div className="mx-auto max-w-3xl">
-            <h2 className="font-serif text-2xl font-semibold sm:text-3xl">
-              {isFr ? EMPLOYER_BRAND.onboardingTitleFr : EMPLOYER_BRAND.onboardingTitleEn}
-            </h2>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
-                <h3 className="font-serif text-lg font-semibold">
-                  {isFr ? EMPLOYER_BRAND.formationLabelFr : EMPLOYER_BRAND.formationLabelEn}
-                </h3>
-                <p className="text-fg-soft mt-2 leading-relaxed">
-                  {isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn}
-                </p>
-              </div>
-              <div className="border-border bg-paper shadow-subtle rounded-2xl border p-6">
-                <h3 className="font-serif text-lg font-semibold">
-                  {isFr ? EMPLOYER_BRAND.integrationLabelFr : EMPLOYER_BRAND.integrationLabelEn}
-                </h3>
-                <p className="text-fg-soft mt-2 leading-relaxed">
-                  {isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn}
-                </p>
-              </div>
-            </div>
-            {offer.category === "conseil" ? (
-              <p className="border-terracotta text-fg-soft mt-5 border-l-4 pl-4 leading-relaxed">
-                {isFr ? EMPLOYER_BRAND.formateurOnboardingFr : EMPLOYER_BRAND.formateurOnboardingEn}
-              </p>
-            ) : null}
-          </div>
+          <DarkTriadPanel
+            items={[
+              {
+                Icon: GraduationCap,
+                eyebrow: "01",
+                title: isFr ? "Ta formation" : "Your training",
+                description: isFr ? EMPLOYER_BRAND.formationFr : EMPLOYER_BRAND.formationEn,
+              },
+              {
+                Icon: Handshake,
+                eyebrow: "02",
+                title: isFr ? "Ton intégration" : "Your onboarding",
+                description: isFr ? EMPLOYER_BRAND.integrationFr : EMPLOYER_BRAND.integrationEn,
+              },
+              {
+                Icon: MessagesSquare,
+                eyebrow: "03",
+                title: isFr ? "Autonomie + franchise" : "Autonomy + straight talk",
+                description: isFr
+                  ? "Peu de réunions, beaucoup de confiance. On dit ce qui marche, ce qui ne marchera pas, et on livre."
+                  : "Few meetings, lots of trust. We say what works, what won't, and we ship.",
+              },
+            ]}
+          />
+          {offer.category === "conseil" ? (
+            <p className="border-terracotta text-fg-soft mx-auto mt-6 max-w-3xl border-l-4 pl-4 leading-relaxed">
+              {isFr ? EMPLOYER_BRAND.formateurOnboardingFr : EMPLOYER_BRAND.formateurOnboardingEn}
+            </p>
+          ) : null}
         </Container>
       </Section>
 
-      <Section>
-        <Container>
-          <h2 className="font-serif text-2xl font-semibold">
-            {isFr ? "Questions fréquentes" : "Frequently asked questions"}
-          </h2>
-          <div className="mt-6 max-w-3xl">
-            <FaqAccordion items={buildOfferFaq(offer, title, isFr)} />
-          </div>
-        </Container>
-      </Section>
+      <FaqBlock
+        tone="canvas"
+        eyebrow="FAQ"
+        title={isFr ? "Questions" : "Common"}
+        titleEm={isFr ? "fréquentes" : "questions"}
+        items={buildOfferFaq(offer, title, isFr)}
+      />
 
       {suggested.length >= 2 ? (
-        <Section tone="sand">
+        <Section
+          tone="sand"
+          eyebrow={isFr ? "Et aussi" : "Also"}
+          title={isFr ? "D'autres offres qui pourraient te" : "Other roles you might"}
+          titleEm={isFr ? "plaire" : "like"}
+        >
           <Container>
-            <h2 className="font-serif text-2xl font-semibold">
-              {isFr ? "D'autres offres qui pourraient te plaire" : "Other roles you might like"}
-            </h2>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2" role="list">
               {suggested.map((s) => {
                 const sImg = careerImage(s.slug);
                 return (
                   <li key={s.id}>
                     <Link
-                      href={`/carrieres/${s.slug}`}
+                      href={{ pathname: "/carrieres/[slug]", params: { slug: s.slug } }}
                       className="border-border hover:border-terracotta shadow-subtle hover:shadow-card flex items-center gap-4 rounded-xl border bg-white p-3 transition"
                     >
                       <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg">
@@ -518,6 +713,25 @@ export default async function JobOfferDetailPage({
             </ul>
           </Container>
         </Section>
+      ) : null}
+
+      {/* CTA final — bande mocha (réf. /methodologie « Prêt à démarrer ? ») :
+          la page se terminait sur les offres suggérées, sans dernier appel. */}
+      {!isClosed ? (
+        <CtaBlock
+          title={isFr ? "Prêt·e à nous" : "Ready to"}
+          titleEm={isFr ? "rejoindre ?" : "join us?"}
+          description={
+            isFr
+              ? "La candidature prend quelques minutes. Le CV est optionnel : ce qui compte, c'est ta motivation et ce que tu sais faire."
+              : "Applying takes a few minutes. A CV is optional — what matters is your motivation and skills."
+          }
+          cta={
+            <Cta href={applyHref} size="lg" track="career-apply-footer">
+              {isFr ? "Postuler maintenant" : "Apply now"} →
+            </Cta>
+          }
+        />
       ) : null}
 
       {!isClosed ? (

@@ -4,7 +4,7 @@
  * Chaque combinaison porte : douleur, bénéfice chiffré, avant/après, objection, lexique métier
  *
  * Usage : injecté dans GeneratorBaseInput.sectorPainContext AVANT le prompt LLM
- * Seedé dans KnowledgeBase via kb/sector-pain-matrix.ts
+ * Non seedé en base (KnowledgeBase) — injecté au prompt via prompt-augmentation.ts
  */
 
 export type Verticale =
@@ -126,7 +126,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous êtes expert-comptable et vous voulez intégrer l'IA dans votre pratique, mais vous ne savez pas par où commencer sans prendre de risque.",
     benefitMeasured:
-      "En 4 sessions d'1h, définir votre feuille de route IA personnelle et tester les 2 premiers outils sur vos vrais dossiers.",
+      "En une journée 1-to-1, définir votre feuille de route IA personnelle et tester les 2 premiers outils sur vos vrais dossiers.",
     beforeScenario:
       "Vous lisez des articles sur l'IA comptable depuis 6 mois. Vous avez testé 2-3 outils mais rien n'a vraiment collé avec votre façon de travailler.",
     afterScenario:
@@ -141,7 +141,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je n'ai pas le temps pour du coaching, j'ai déjà trop de travail.",
     objectionReply:
-      "4 sessions d'1h sur 2 mois. La 1ère session identifie les gains les plus rapides — vous récupérez du temps avant la fin du coaching.",
+      "Une journée 1-to-1, prolongeable en coaching régulier (une session par mois ou tous les deux mois). La journée identifie déjà les gains les plus rapides — vous récupérez du temps dès le départ.",
     kpiLabel: "heures/semaine récupérées dès le 1er mois",
     typicalBudgetSignal: "Moins cher qu'un logiciel comptable supplémentaire",
   },
@@ -760,7 +760,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous dirigez votre entreprise du bâtiment et vous sentez que l'IA pourrait vous faire gagner du temps, mais entre les chantiers vous n'avez ni le temps ni le recul pour vous y mettre.",
     benefitMeasured:
-      "En 4 sessions d'1h, repartir avec votre propre méthode IA sur les 2 tâches qui vous mangent le plus — chiffrage et suivi de vos affaires.",
+      "En une journée 1-to-1, repartir avec votre propre méthode IA sur les 2 tâches qui vous mangent le plus — chiffrage et suivi de vos affaires.",
     beforeScenario:
       "Vous êtes gérant et chef de chantier à la fois. Vous chiffrez vos appels d'offres le soir après les visites, vous suivez vos situations de travaux sur un tableur, et vous n'avancez jamais sur le fond de votre entreprise.",
     afterScenario:
@@ -778,7 +778,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     objection:
       "Le coaching c'est pour les start-up parisiennes, pas pour un patron de boîte du bâtiment comme moi.",
     objectionReply:
-      "On part de vos chantiers et de vos devis réels, pas de théorie. 4 sessions d'1h calées entre vos rendez-vous — et vous gagnez du temps avant la fin.",
+      "On part de vos chantiers et de vos devis réels, pas de théorie. Une journée 1-to-1 calée sur votre agenda, prolongeable en coaching régulier — et vous gagnez du temps dès la première session.",
     kpiLabel: "heures/semaine de dirigeant récupérées sur le chiffrage",
     typicalBudgetSignal: "Moins cher qu'une journée d'arrêt de chantier",
   },
@@ -816,7 +816,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous dirigez votre restaurant ou votre hôtel et vous courez du matin au soir, sans jamais le recul pour voir où l'IA pourrait vous soulager sur la gestion.",
     benefitMeasured:
-      "En 4 sessions d'1h, repartir avec votre propre méthode IA sur les 2 chantiers qui vous épuisent — planning des équipes et pilotage de la marge.",
+      "En une journée 1-to-1, repartir avec votre propre méthode IA sur les 2 chantiers qui vous épuisent — planning des équipes et pilotage de la marge.",
     beforeScenario:
       "Vous êtes en cuisine ou en salle toute la journée, puis vous faites le planning de la brigade le dimanche soir et vous calculez vos food cost à la calculatrice en fin de mois. Vous ne sortez jamais la tête du guidon.",
     afterScenario:
@@ -833,7 +833,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je suis un homme de métier, pas de bureau — l'informatique et moi ça fait deux.",
     objectionReply:
-      "On part de votre planning et de vos ratios réels, pas d'un logiciel à apprendre. 4 sessions d'1h le matin avant le service — concret, à votre rythme.",
+      "On part de votre planning et de vos ratios réels, pas d'un logiciel à apprendre. Une journée 1-to-1, ou un coaching régulier à votre rythme (une session par mois) — concret, calé sur vos contraintes de service.",
     kpiLabel: "heures/semaine de dirigeant récupérées sur la gestion",
     typicalBudgetSignal: "Moins cher qu'un soir de service perdu",
   },
@@ -927,7 +927,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous dirigez un cabinet ou une maison de santé et vous voyez l'IA arriver, mais vous ne savez pas par où l'introduire sans risquer le secret médical ni braquer votre équipe.",
     benefitMeasured:
-      "En 4 sessions d'1h, repartir avec une feuille de route IA adaptée à votre structure et 2 premiers usages testés sur vos propres flux — sans aucune donnée patient exposée.",
+      "En une journée 1-to-1, repartir avec une feuille de route IA adaptée à votre structure et 2 premiers usages testés sur vos propres flux — sans aucune donnée patient exposée.",
     beforeScenario:
       "Vous êtes médecin coordinateur d'une MSP. Vous lisez des articles sur l'IA en santé depuis des mois, deux confrères vous posent des questions, et vous n'avez aucune position claire à leur donner.",
     afterScenario:
@@ -944,7 +944,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je n'ai pas le temps pour du coaching, mes consultations débordent déjà.",
     objectionReply:
-      "4 sessions d'1h étalées sur 2 mois, en visio si besoin. La première vise déjà les gains de temps administratifs les plus rapides — vous en récupérez avant la fin.",
+      "Une journée 1-to-1, en visio si besoin, prolongeable en coaching régulier. Elle vise déjà les gains de temps administratifs les plus rapides — vous en récupérez dès le départ.",
     kpiLabel: "heures administratives/semaine récupérées par le praticien",
     typicalBudgetSignal: "Moins cher qu'un mois de prestation de secrétariat externalisé",
   },
@@ -982,7 +982,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous êtes avocat ou notaire associé et vous voulez intégrer l'IA à votre pratique, mais pas au prix du secret professionnel ni d'une erreur dans un acte.",
     benefitMeasured:
-      "En 4 sessions d'1h, définir votre feuille de route IA personnelle et tester 2 outils sur vos vrais dossiers — recherche et rédaction — sans exposer aucune donnée client.",
+      "En une journée 1-to-1, définir votre feuille de route IA personnelle et tester 2 outils sur vos vrais dossiers — recherche et rédaction — sans exposer aucune donnée client.",
     beforeScenario:
       "Vous êtes associé d'une étude notariale. Vous avez testé un ou deux outils sur des actes types, mais sans savoir s'ils respectent le secret professionnel ni jusqu'où vous pouvez leur confier un dossier.",
     afterScenario:
@@ -999,7 +999,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je n'ai pas le temps pour du coaching, mes dossiers passent avant.",
     objectionReply:
-      "4 sessions d'1h sur 2 mois, calées sur vos disponibilités. La première vise les tâches les plus chronophages — recherche et trames — pour vous rendre du temps dès le départ.",
+      "Une journée 1-to-1 calée sur vos disponibilités, prolongeable en coaching régulier. Elle vise les tâches les plus chronophages — recherche et trames — pour vous rendre du temps dès le départ.",
     kpiLabel: "heures de recherche et de rédaction récupérées par semaine",
     typicalBudgetSignal: "Moins cher qu'un abonnement annuel à une base documentaire juridique",
   },
@@ -1092,7 +1092,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous dirigez votre enseigne et vous sentez que l'IA peut vous aider sur le pilotage et le marketing, mais vous n'avez ni le temps ni le recul pour trancher entre tous les outils qu'on vous propose.",
     benefitMeasured:
-      "En 4 sessions d'1h, repartir avec votre feuille de route IA personnelle et 2 outils testés sur vos vrais chiffres — réassort, ticket moyen ou contenus click & collect.",
+      "En une journée 1-to-1, repartir avec votre feuille de route IA personnelle et 2 outils testés sur vos vrais chiffres — réassort, ticket moyen ou contenus click & collect.",
     beforeScenario:
       "Vous recevez chaque semaine un commercial qui vous vend « l'IA qui va tout changer pour le retail ». Vous avez signé pour deux outils l'an dernier, aucun n'a vraiment pris dans vos magasins.",
     afterScenario:
@@ -1109,7 +1109,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je n'ai pas le temps pour du coaching, je suis sur le terrain toute la semaine.",
     objectionReply:
-      "4 sessions d'1h étalées sur 2 mois, en visio entre deux ouvertures de magasin. La première séance cible les gains les plus rapides — vous récupérez du temps avant la fin du coaching.",
+      "Une journée 1-to-1, en visio entre deux ouvertures de magasin si besoin, prolongeable en coaching régulier. La journée cible les gains les plus rapides — vous récupérez du temps dès le départ.",
     kpiLabel: "chantiers IA prioritaires identifiés et lancés",
     typicalBudgetSignal: "Moins cher qu'un mois d'abonnement à un outil retail mal choisi",
   },
@@ -1147,7 +1147,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous dirigez un site industriel ou logistique et vous voulez intégrer l'IA dans votre pilotage supply chain, mais vous ne savez pas par où commencer sans embarquer un projet ERP à 18 mois.",
     benefitMeasured:
-      "En 4 sessions d'1h, définir votre feuille de route IA et tester 2 usages concrets sur vos vraies données — taux de service, prévision de charge ou suivi des OF.",
+      "En une journée 1-to-1, définir votre feuille de route IA et tester 2 usages concrets sur vos vraies données — taux de service, prévision de charge ou suivi des OF.",
     beforeScenario:
       "Vous lisez depuis des mois des articles sur « l'usine 4.0 » et « la supply chain prédictive ». Votre DSI vous parle d'un grand projet, vos chefs d'équipe n'y croient pas, et rien ne démarre.",
     afterScenario:
@@ -1397,7 +1397,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     painStatement:
       "Vous êtes DGS ou élu et vous devez arbitrer une stratégie IA pour votre collectivité, mais vous craignez de vous engager sur un outil mal cadré qui exposerait la responsabilité de la collectivité.",
     benefitMeasured:
-      "En 4 sessions d'1h, construire votre feuille de route IA souveraine et conforme — prête à présenter en délibération — et identifier les 2 premiers cas d'usage à faible risque.",
+      "En une journée 1-to-1, construire votre feuille de route IA souveraine et conforme — prête à présenter en délibération — et identifier les 2 premiers cas d'usage à faible risque.",
     beforeScenario:
       "Vous lisez des notes de l'AMF et des retours d'autres collectivités depuis des mois. Vos services testent des outils dans leur coin, sans cadre. Vous n'avez ni vision claire, ni argumentaire à porter devant le conseil municipal.",
     afterScenario:
@@ -1414,7 +1414,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
     ],
     objection: "Je n'ai pas le temps pour du coaching, mon agenda d'élu est déjà saturé.",
     objectionReply:
-      "4 sessions d'1h réparties sur 2 mois, en présentiel ou à distance. La 1ère session sécurise déjà votre position : vous repartez avec un cadre défendable en conseil avant la fin de l'accompagnement.",
+      "Une journée 1-to-1, en présentiel ou à distance, prolongeable en coaching régulier. La journée sécurise déjà votre position : vous repartez avec un cadre défendable en conseil.",
     kpiLabel: "cas d'usage IA validés et présentables en délibération",
     typicalBudgetSignal: "Le coût d'un outil mal cadré évité dès la première délibération",
   },
@@ -1445,7 +1445,7 @@ export const SECTOR_PAIN_MATRIX: SectorPainContext[] = [
       "L'assistant complète l'accueil, il ne le remplace pas : ceux qui préfèrent le guichet ou le téléphone y vont toujours, et comme il décharge les demandes simples, vos agents sont justement plus disponibles pour les administrés éloignés du numérique.",
     kpiLabel: "% de demandes courantes traitées en self-service",
     typicalBudgetSignal:
-      "Inscriptible au marché public via budget DSI ou subvention de transformation numérique (FNADT, France Relance)",
+      "Inscriptible au marché public via le budget DSI ou les dispositifs de transformation numérique des collectivités en vigueur — à vérifier au cas par cas avec la collectivité",
   },
 ];
 

@@ -88,6 +88,10 @@ export const PHASE_QUOTAS: Record<
 };
 
 export async function getCurrentExpansionPhase(): Promise<ExpansionState> {
+  // Fix 2026-08-15 (audit e2e, E5) — endpoint POST public sans garde sinon.
+  // Appelée uniquement depuis l'admin et depuis des actions déjà gardées
+  // (setCurrentExpansionPhase, assertWithinPhaseQuotas) — double garde inoffensive.
+  await requireAdmin();
   return readContentGenConfig<ExpansionState>("expansion_state", DEFAULT_STATE);
 }
 

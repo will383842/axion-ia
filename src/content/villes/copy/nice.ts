@@ -181,7 +181,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la French Tech Côte d'Azur ou par vos équipes en interne, sans prestation continue obligatoire. Si après la restitution vous estimez que le livrable n'apporte pas de valeur actionnable, audit remboursé intégralement (clause activable, jamais déclenchée à ce jour sur nos missions azuréennes).",
+          "Engagement contractuel : livrable remis dans les délais convenus à la signature. Conformité RGPD, hébergement données en UE par défaut, DPO sur demande. Le plan d'action remis est portable — exécutable par tout cabinet de la French Tech Côte d'Azur ou par vos équipes en interne, sans prestation continue obligatoire.",
       },
       en: {
         hero: "Axion-IA's AI audit maps what can be automated at your company and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: Nice and Grand Arénas micro-businesses and SMEs, Côte d'Azur hospitality and services mid-caps, Sophia Antipolis regional R&D headquarters.",

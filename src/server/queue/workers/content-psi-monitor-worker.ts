@@ -31,8 +31,28 @@ import { Worker, type Job } from "bullmq";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { alertWebVitalsBulk } from "@/server/content-gen/shared/content-gen-alerts";
+import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
 
 const QUEUE_NAME = "content-psi-monitor";
+
+/**
+ * Fix 2026-08-15 (audit e2e, F5) — durée de lock BullMQ alignée sur le PIRE CAS
+ * réaliste du job, calculé depuis les timeouts de CE fichier :
+ *
+ *   15 URLs × (fetch PSI timeout 90 s + throttle 2 s) = 1 380 s ≈ 23 min,
+ *   + persistance DB / chargement RUM (marge) → 30 min.
+ *
+ * L'ancien `lockDuration: 120_000` (2 min) était PLUS COURT que la durée
+ * typique du job (déjà > 2 min avec quelques fetches lents). BullMQ renouvelle
+ * certes les locks des jobs actifs (toutes les lockDuration/2), mais avec un
+ * lock de 2 min il suffit d'une fenêtre de 60 s sans renouvellement (event
+ * loop chargé, hoquet Redis) pour que le job soit marqué *stalled* et rejoué
+ * EN PARALLÈLE : doubles mesures, doubles alertes, quota Google consommé 2×.
+ * Un lock couvrant le pire cas rend le stall impossible même si tous les
+ * renouvellements échouent pendant le run — solution la plus simple et la plus
+ * sûre (pas de plomberie `job.extendLock` manuelle à entretenir).
+ */
+const PSI_JOB_LOCK_DURATION_MS = 30 * 60_000;
 
 /** 15 URLs stratégiques mesurées chaque lundi (top business + 3 pSEO pilotes). */
 const TARGET_URLS: ReadonlyArray<string> = [
@@ -208,6 +228,19 @@ async function processJob(_job: Job): Promise<void> {
     return;
   }
 
+  // Fix 2026-08-15 (audit e2e, F8) — ce worker consomme un quota externe
+  // (30 requêtes PSI Google/semaine) sans jamais consulter le kill switch
+  // global content-gen. En situation d'arrêt d'urgence, on ne dépense AUCUN
+  // quota externe : skip propre (pas d'échec bruyant), la mesure reprend au
+  // tick hebdomadaire suivant. Lecture fail-safe : DB illisible = arrêt.
+  const killSwitch = await readKillSwitchFailSafe();
+  if (killSwitch.active) {
+    console.warn(
+      `[content-psi-monitor] kill switch actif (${killSwitch.reason ?? "sans raison"}) — skip tick`,
+    );
+    return;
+  }
+
   const psiSamples: PsiSample[] = [];
   for (const url of TARGET_URLS) {
     const psi = await fetchPsi(url, apiKey);
@@ -302,7 +335,9 @@ export function startContentPsiMonitorWorker(): Worker {
   workerInstance = new Worker(QUEUE_NAME, processJob, {
     connection: { url: redisUrl },
     concurrency: 1,
-    lockDuration: 120_000,
+    // Fix 2026-08-15 (F5) : 2 min < durée typique du job (pire cas ~23 min) —
+    // cf. calcul détaillé sur PSI_JOB_LOCK_DURATION_MS en tête de fichier.
+    lockDuration: PSI_JOB_LOCK_DURATION_MS,
     limiter: { max: 2, duration: 24 * 3600_000 }, // 2/jour max (cron weekly mais safety)
   });
   workerInstance.on("failed", (job, err) => {

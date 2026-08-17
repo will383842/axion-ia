@@ -61,10 +61,15 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous savez ce qui entre et n'entre jamais dans un outil — votre liste rouge est écrite — et vous préparez un rendez-vous réel à partir des seules sources que vous avez ouvertes vous-même.",
-      objectifGlobalId: "obj-1",
-      // Les deux sequences de cadre et le tri en liste rouge portent la
-      // confidentialite (obj-5).
-      objectifsSecondairesIds: ["obj-5"],
+      // La préparation d'un rendez-vous réel sur les seules sources ouvertes —
+      // fiche, plan de découverte, hypothèses étiquetées, « non disponible dans
+      // les documents fournis » — et le contrôle croisé qui barre chez le
+      // binôme ce qui n'est pas sourcé en distinguant repris et inventé sont
+      // obj-2, qui occupe la démonstration, la seconde moitié de l'atelier et
+      // toute la vérification. Le tri des dix éléments en liste rouge et le
+      // régime d'usage de l'outil sont obj-1, servi en secondaire.
+      objectifGlobalId: "obj-2",
+      objectifsSecondairesIds: ["obj-1"],
       dureeMin: 5,
       notes: {
         script:
@@ -237,11 +242,13 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous sortez d'un entretien avec le compte rendu, le mail de suivi et la relance déjà écrits, et vous triez votre pipeline sur des critères tirés de l'affaire, jamais de la personne.",
+      // La dictée de trois minutes qui produit le compte rendu interne, le mail
+      // de suivi et les prochaines étapes datées, puis la relance à J+7, est
+      // obj-3. Le second temps de l'atelier et la vérification portent le tri du
+      // portefeuille sur des critères écrits avant le tri et la mesure des rangs
+      // déplacés : obj-4 en secondaire.
       objectifGlobalId: "obj-3",
-      // Le tri du pipeline sur criteres d'affaire porte la qualification
-      // (obj-4) ; la sequence cadre « qualifier sans profiler » et la regle
-      // redite a chaque atelier portent la confidentialite (obj-5).
-      objectifsSecondairesIds: ["obj-4", "obj-5"],
+      objectifsSecondairesIds: ["obj-4"],
       dureeMin: 5,
       notes: {
         script:
@@ -391,11 +398,16 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous avez écrit et prononcé votre réponse aux trois objections récurrentes de votre marché, et rédigé une proposition commerciale dont chaque promesse tient si le projet dérape.",
-      objectifGlobalId: "obj-2",
-      // Le jeu de role sur les trois objections recurrentes construit
-      // l'argumentaire (obj-1) ; la sequence cadre sur ce qui ne se chiffre
-      // jamais et les mentions contractuelles porte la confidentialite (obj-5).
-      objectifsSecondairesIds: ["obj-1", "obj-5"],
+      // La proposition commerciale de l'affaire en cours — promesses qui
+      // tiennent si le projet dérape, aucun chiffre sans source ouverte,
+      // mentions contractuelles recopiées depuis les conditions de vente,
+      // prochaine étape datée et attribuée — est obj-6 : c'est l'objet des
+      // prompts 2 et 3, du second temps d'atelier et des quatre points de la
+      // vérification. Le jeu de rôle face à l'acheteur qui n'a pas le droit
+      // d'être d'accord, sur le prix, le délai et le concurrent en place, sert
+      // obj-5 en secondaire.
+      objectifGlobalId: "obj-6",
+      objectifsSecondairesIds: ["obj-5"],
       dureeMin: 5,
       notes: {
         script:
@@ -563,10 +575,13 @@ export const IA_POUR_LES_COMMERCIAUX: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repérez sur votre propre marché le moment où l'outil se trompe avec aplomb, et votre grille de relecture avant envoi est construite sur vos propres erreurs — et déjà passée sur votre proposition.",
-      objectifGlobalId: "obj-5",
-      // La grille de relecture se passe sur la proposition redigee au module
-      // precedent et la corrige (obj-2).
-      objectifsSecondairesIds: ["obj-2"],
+      // La vérification d'une affirmation en trente secondes — source précise,
+      // ouverture, ce qui reste, ce qui se barre — puis la grille de relecture
+      // montée sur ses propres erreurs et passée le jour même sur la
+      // proposition, sont obj-7. Ce passage corrige la proposition rédigée au
+      // module précédent : obj-6 en secondaire.
+      objectifGlobalId: "obj-7",
+      objectifsSecondairesIds: ["obj-6"],
       dureeMin: 5,
       notes: {
         script:

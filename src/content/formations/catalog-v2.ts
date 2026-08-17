@@ -182,22 +182,34 @@ const BIEN_COMMENCER_4H: FormationV2 = {
   publicViseFr:
     "Tout collaborateur, toutes fonctions : de ceux qui n'ont jamais ouvert un outil d'IA à ceux qui en entendent parler partout sans savoir par où commencer. En 4 heures, l'équipe passe de « on en entend parler partout » à « je sais m'en servir » — une immersion dense et concrète, sans jargon, pour lever les blocages.",
   casUsageFr: [
-    { texteFr: "Une vision claire de ce que l'IA peut — et ne peut pas — faire pour son poste" },
     {
-      texteFr: "Les meilleurs outils du moment (ChatGPT, Claude, Gemini) et lequel utiliser quand",
+      texteFr:
+        "L'e-mail qu'on repousse depuis deux jours — Annoncer un retard à un client, refuser une demande, relancer sans braquer : produire une première version au bon ton, puis la corriger à la grille avant de l'envoyer.",
     },
     {
       texteFr:
-        "Les premières techniques pour obtenir des résultats utiles, pas des réponses génériques",
+        "Le document qu'on n'a pas le temps de lire — Déposer un rapport, un devis reçu ou un export dans l'outil, en tirer une synthèse, et reconnaître les trois cas où le dépôt échoue en silence : scan sans texte reconnu, fichier tronqué, tableau désaligné.",
     },
-    { texteFr: "Des cas d'usage directement applicables à son poste, dès le lendemain" },
+    {
+      texteFr:
+        "Le compte rendu de la réunion de ce matin — Transformer des notes éparses en compte rendu structuré : ce qui a été décidé, qui fait quoi, pour quand, relu et corrigé avant diffusion.",
+    },
+    {
+      texteFr:
+        "La réponse type à réadapter pour la dixième fois — Reprendre une trame standard du service et l'ajuster au dossier du destinataire, sans réécrire l'ensemble et sans perdre les mentions obligatoires.",
+    },
+    {
+      texteFr:
+        "Le tri de sa propre semaine — Passer en revue les tâches de son poste et les séparer en deux colonnes : celles qui se prêtent à l'IA, et celles qu'on ne lui confie pas, avec la raison écrite en face.",
+    },
   ],
   objectifsFr: [
-    "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
-    "Formuler une demande structurée (méthode AXION) donnant un résultat exploitable",
-    "Réaliser une tâche courante de son poste à l'aide de l'IA",
-    "Appliquer les règles de confidentialité : identifier les données à ne pas soumettre",
+    "Décrire en une phrase ce qu'une IA générative produit et ce qu'elle ne vérifie pas, et citer trois informations qui ne lui sont jamais soumises",
+    "Repérer, sur un texte généré portant sur son propre domaine, les affirmations inventées — chiffres, dates, noms — en établir le décompte, et constater l'effet d'un seul mot modifié dans la demande sur la réponse obtenue",
+    "Trancher huit situations « je peux le soumettre / je ne peux pas » en justifiant chacune par la règle applicable, et nommer le régime d'usage en vigueur dans son entreprise",
+    "Rédiger une demande structurée par les cinq leviers de la méthode AXION (Acteur, conteXte, Intention, Output, Normes) et identifier, grille en main, le levier manquant d'une demande rédigée par un tiers",
+    "Réaliser à l'aide de l'IA deux tâches réelles de son poste et exploiter un document déposé dans l'outil, en relançant chaque demande par ajout d'une seule précision plutôt qu'en la réécrivant",
+    "Contrôler une production avant diffusion à l'aide de la grille fournie — exactitude des chiffres, noms et dates, ton, structure, réutilisabilité — relever au moins un point à corriger, et signaler au destinataire qu'un écrit a été rédigé avec l'IA",
   ],
   beneficeDirigeantFr:
     "En une demi-journée, toute l'équipe a fait ses premiers pas : chacun connaît les bons outils, sait les utiliser sur une tâche réelle de son quotidien et repart avec les bons réflexes de confidentialité — sans désorganiser votre activité.",
@@ -208,6 +220,18 @@ const BIEN_COMMENCER_4H: FormationV2 = {
     apres:
       "Chacun a fait ses premiers pas, connaît les bons outils et sait les utiliser sur une tâche réelle de son quotidien.",
   },
+  resultatsFr: [
+    {
+      valeur: "63 %",
+      label: "du temps en atelier et en évaluation, sur ses propres tâches (programme minuté)",
+    },
+    {
+      valeur: "3",
+      label: "demandes AXION écrites, testées et emportées, relançables telles quelles",
+    },
+    { valeur: "2", label: "tâches réelles du poste traitées en séance" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
@@ -387,21 +411,39 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   publicViseFr:
     "Tout collaborateur, toutes fonctions. Le format d'une journée pour aller plus loin que la découverte : autant de pratique que de théorie, sur les cas d'usage réels de chaque participant. On ne repart pas avec des notes, mais avec des méthodes déjà testées sur son propre travail.",
   casUsageFr: [
-    { texteFr: "Tout l'essentiel de la version condensée, avec le temps de le mettre en pratique" },
-    { texteFr: "Des ateliers guidés sur les cas d'usage propres à chaque participant" },
-    { texteFr: "Des techniques approfondies pour des résultats fiables et réutilisables" },
     {
       texteFr:
-        "Un premier aperçu des usages avancés : traitement de documents, automatisation légère",
+        "Le compte rendu dicté en sortant de réunion — Dicter deux minutes de notes depuis son téléphone et en sortir un compte rendu structuré (décisions, actions, échéances) sans avoir touché un clavier.",
+    },
+    {
+      texteFr:
+        "Le rapport de vingt pages arrivé hier — Déposer le document, en tirer une synthèse, lui poser trois questions précises, puis vérifier chaque réponse contre les pages d'origine avant de la transmettre.",
+    },
+    {
+      texteFr:
+        "L'e-mail délicat — Annoncer un retard, refuser une demande, relancer un impayé : obtenir une première version au bon ton dès le deuxième essai, puis la passer à la grille en cinq points.",
+    },
+    {
+      texteFr:
+        "La note technique à rendre lisible — Réécrire un texte spécialisé pour un destinataire qui ne connaît pas le sujet, à longueur et format imposés, sans perdre les données qui engagent.",
+    },
+    {
+      texteFr:
+        "Le fichier « anonymisé » qui ne l'est pas — Reconnaître qu'un document dont on a retiré les noms reste ré-identifiable par croisement, et décider ce qui peut réellement entrer dans l'outil.",
+    },
+    {
+      texteFr:
+        "Le protocole de poste — Écrire noir sur blanc ce qu'on confie à l'IA, ce qu'on ne lui confie pas, ce qu'on relit avant d'envoyer et ce qu'on signale au destinataire : la page qui reste sur le bureau après la formation.",
     },
   ],
   objectifsFr: [
-    "Décrire ce qu'est une IA générative, ce qu'elle fait bien et ses limites",
-    "Identifier les tâches de son poste qui se prêtent à l'IA générative, et celles qui ne s'y prêtent pas",
-    "Formuler une demande structurée (méthode AXION) et l'itérer pour fiabiliser le résultat",
-    "Réaliser plusieurs tâches de son poste à l'aide de l'IA",
-    "Analyser un document : synthèse et points de vigilance",
-    "Appliquer les règles de confidentialité et vérifier une production avant diffusion",
+    "Décrire ce qu'une IA générative fait bien et ce qu'elle invente, repérer sur une production portant sur son propre domaine les affirmations fausses, et lui en faire justifier chacune",
+    "Nommer le régime d'usage applicable à son poste — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'entreprise — et classer douze situations réelles en « ça part / ça ne part pas / ça ne part qu'en environnement validé »",
+    "Citer les usages que le règlement européen sur l'IA interdit ou classe à haut risque en contexte professionnel, ainsi que l'obligation d'indiquer un contenu généré par IA",
+    "Rédiger une demande structurée par les cinq leviers AXION et la débloquer par la relance adaptée — préciser la contrainte, fournir un exemple de sortie, imposer le format, faire critiquer la réponse — plutôt qu'en la réécrivant",
+    "Déposer un document autorisé dans l'outil, en tirer une synthèse et trois réponses ciblées, puis retrouver dans le document source chaque affirmation produite",
+    "Produire un écrit exploitable à partir d'une dictée de deux minutes, puis à partir de notes de réunion, sans repasser au clavier",
+    "Rédiger son protocole de poste — régime d'usage, liste de ce qui ne sort jamais, grille de relecture en cinq points, mention au destinataire — et l'appliquer à une production réalisée dans la journée",
   ],
   beneficeDirigeantFr:
     "À la fin de la journée, chaque participant a testé plusieurs usages sur ses propres tâches et sait par où continuer seul — l'appropriation est faite pendant la formation, pas remise à plus tard.",
@@ -412,6 +454,15 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
     apres:
       "Chaque participant a testé plusieurs usages sur ses propres tâches et sait par où continuer seul.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label: "du temps en atelier et en évaluation, sur ses propres dossiers (programme minuté)",
+    },
+    { valeur: "1", label: "protocole de poste écrit, propre au poste de chaque participant" },
+    { valeur: "2", label: "notes produites à la voix, sans clavier" },
+    { valeur: "12", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable et connexion internet ; accès aux outils IA préparé avec vous en amont si besoin",
   programme: [
@@ -668,17 +719,39 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
   publicViseFr:
     "Collaborateurs de tous services qui utilisent déjà l'IA, mais chacun à sa façon, avec des résultats inégaux. Cette journée transforme des usages dispersés en une pratique commune, efficace et partagée — sur les vraies tâches de votre entreprise.",
   casUsageFr: [
-    { texteFr: "Des techniques avancées pour obtenir exactement ce qu'on attend de l'IA" },
-    { texteFr: "La rédaction, la synthèse et la recherche accélérées" },
-    { texteFr: "Des prompts réutilisables, construits pendant la formation" },
-    { texteFr: "Des ateliers sur les tâches réelles apportées par les participants" },
+    {
+      texteFr:
+        "Le compte rendu du lundi matin — Passer de notes brutes à un compte rendu diffusable en quelques minutes, au format que le service a fixé une fois pour toutes et que tout le monde applique.",
+    },
+    {
+      texteFr:
+        "Les quinze courriers de la même campagne — Produire une série homogène de relances, d'attestations ou de convocations à partir d'un tableau, puis la contrôler par échantillon plutôt que pièce à pièce.",
+    },
+    {
+      texteFr:
+        "La formule de tableur qu'on n'écrit jamais — Faire rédiger et expliquer une formule ou un croisement de colonnes en décrivant la structure du fichier, sans jamais y coller les données elles-mêmes.",
+    },
+    {
+      texteFr:
+        "La demande qui ne marche que pour son auteur — Transformer un prompt personnel en demande partagée qu'un collègue rejoue sur son propre cas et obtient le même résultat : le seul test qui vaut.",
+    },
+    {
+      texteFr:
+        "L'erreur qui se recopie quinze fois — Glisser un contrôle par échantillon dans une production en série, et retrouver la mention obligatoire manquante avant que le lot ne parte.",
+    },
+    {
+      texteFr:
+        "Le mode d'emploi du service — Écrire les règles communes : ce qui ne sort jamais, ce qui doit être signalé au destinataire, qui relit quoi et qui tranche en cas de doute.",
+    },
   ],
   objectifsFr: [
-    "Formuler des demandes structurées avancées (méthode AXION) adaptées à ses tâches",
-    "Accélérer la rédaction, la synthèse et la recherche d'informations à l'aide de l'IA",
-    "Construire et réutiliser des prompts sur ses tâches récurrentes",
-    "Vérifier et fiabiliser une production avant diffusion",
-    "Appliquer les règles de confidentialité",
+    "Nommer le régime d'usage de chacun de ses documents et appliquer la liste « ce qui ne sort jamais » arbitrée collectivement à partir de dix situations tranchées en séance",
+    "Relever le temps et le nombre d'allers-retours d'une tâche récurrente réalisée sans IA, puis comparer avec la même tâche outillée — l'écart constaté pouvant être nul",
+    "Rédiger une demande AXION avancée — contrainte chiffrée, exemple de sortie fourni, format imposé, critères de refus — jusqu'à obtenir le format exact attendu sans retouche",
+    "Vérifier qu'une demande est transmissible : la faire rejouer par un collègue sur son propre cas, sans son auteur, et réécrire sur place ce qui ne tient pas",
+    "Produire une série de quinze documents homogènes à partir d'un tableau, puis la contrôler par échantillon en retrouvant l'erreur qui s'y est dupliquée",
+    "Faire écrire une formule de tableur, expliquer un croisement et décrire une structure de données sans jamais soumettre les données elles-mêmes",
+    "Rédiger le mode d'emploi commun du service — liste « ce qui ne sort jamais », demandes AXION éprouvées par un tiers, procédure de série et son contrôle, tableau « qui relit quoi, qui tranche »",
   ],
   beneficeDirigeantFr:
     "Une équipe qui partage les mêmes bons réflexes et gagne un temps mesurable sur ses tâches récurrentes — au lieu d'un usage au cas par cas, dépendant de la personne.",
@@ -689,6 +762,19 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
     apres:
       "Une équipe qui partage les mêmes bons réflexes et gagne un temps mesurable sur ses tâches récurrentes.",
   },
+  resultatsFr: [
+    {
+      valeur: "60 %",
+      label:
+        "du temps en atelier et en évaluation, sur les tâches réelles apportées (programme minuté)",
+    },
+    {
+      valeur: "15",
+      label: "documents produits en série depuis un tableau, puis contrôlés par échantillon",
+    },
+    { valeur: "1", label: "mode d'emploi commun rédigé et validé par le service" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin — Module 1 : le cadre commun avant de toucher à quoi que ce soit",
@@ -918,17 +1004,40 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
   prerequisFr:
     "Aucun prérequis technique poussé. Une pratique régulière des outils bureautiques suffit ; aucune compétence en programmation n'est demandée.",
   casUsageFr: [
-    { texteFr: "La capacité à repérer les tâches qui méritent d'être automatisées" },
-    { texteFr: "La conception d'un premier processus automatisé simple" },
-    { texteFr: "Un panorama des outils compatibles avec votre environnement" },
-    { texteFr: "Une première réalisation, construite et testée sur un cas de votre activité" },
+    {
+      texteFr:
+        "Le rapport qu'on recompile chaque lundi — Préparer une fois la compilation d'un tableau de suivi, puis la rejouer chaque semaine sur un nouvel export, avec son point de relecture humaine et sa trace de validation.",
+    },
+    {
+      texteFr:
+        "Le tri de la boîte partagée — Classer les demandes entrantes par nature et par urgence selon des règles écrites, et faire remonter à un humain dès qu'un cas sort du cadre prévu.",
+    },
+    {
+      texteFr:
+        "Les quinze courriers d'une même campagne — Générer une série de documents homogènes à partir d'un tableau, puis la contrôler par échantillon plutôt que pièce à pièce.",
+    },
+    {
+      texteFr:
+        "L'extraction d'un lot de pièces reçues — Sortir les mêmes champs d'une série de documents (dates, montants, références) et faire signaler par la chaîne ce qui manque ou ne colle pas, au lieu de le découvrir après coup.",
+    },
+    {
+      texteFr:
+        "Le jeu d'entrées bancal — Faire tourner sa chaîne sur une ligne vide, une date au mauvais format et une colonne manquante avant de la croire fiable, et consigner chaque écart au journal de tests.",
+    },
+    {
+      texteFr:
+        "La tâche qu'on renonce à automatiser — Passer une idée au test des quatre questions et l'écarter, ou la faire remonter à la direction et au CSE, avant d'y consacrer une heure de travail.",
+    },
   ],
   objectifsFr: [
-    "Identifier les tâches répétitives automatisables dans son activité",
-    "Concevoir un processus automatisé simple assisté par l'IA",
-    "Choisir un outil adapté à son environnement",
-    "Construire et tester un premier prototype sur un cas réel",
-    "Appliquer les règles de confidentialité et de fiabilité",
+    "Situer le régime d'usage réellement en vigueur pour ses données — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'informatique — et écrire ce qu'il faudrait obtenir, et de qui, pour passer au régime supérieur",
+    "Démontrer qu'un fichier dont on a retiré les noms reste un traitement de données personnelles, et en tirer la conséquence sur ce qui peut alimenter une automatisation",
+    "Qualifier une tâche au test des quatre questions — données personnelles, effet sur une personne, décision sans relecture humaine, suivi de l'activité de salariés — et écrire en clair la conséquence déclenchée : information des salariés, consultation du CSE, analyse d'impact, ou renoncement",
+    "Classer une automatisation au feu vert, orange ou rouge et justifier ce classement au corrigé fourni",
+    "Cartographier ses tâches répétitives sur quatre critères — volume, répétition, stabilité des règles, coût de l'erreur — et rédiger la fiche de cadrage d'un cas : entrée, étapes, sortie attendue, point de relecture humaine, régime de données, outil retenu",
+    "Construire un prototype piloté par une instruction rédigée aux cinq leviers AXION, le faire tourner sur trois jeux d'entrées dont un volontairement bancal, et consigner chaque écart dans un journal de tests",
+    "Poser sur son prototype les quatre contrôles de fiabilité : le point de relecture humaine, le comportement en cas de sortie anormale, le signal d'alerte, la trace de qui a validé quoi et quand",
+    "Rédiger la fiche d'usage qui rend l'automatisation reprenable par un tiers, et le prouver en la faisant lancer par un binôme sans son auteur",
   ],
   beneficeDirigeantFr:
     "Une première automatisation en place à la fin des deux jours, et une méthode pour en repérer d'autres — les tâches refaites à la main chaque semaine commencent à disparaître.",
@@ -938,6 +1047,22 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
     avant: "Des tâches répétitives faites manuellement, semaine après semaine.",
     apres: "Une première automatisation en place et une méthode pour en repérer d'autres.",
   },
+  resultatsFr: [
+    {
+      valeur: "62 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "1",
+      label:
+        "prototype construit, éprouvé sur trois jeux d'entrées et rendu reprenable par un tiers",
+    },
+    {
+      valeur: "3",
+      label: "tâches candidates cartographiées, qualifiées et classées au feu tricolore",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA et aux données concernées par les cas pratiques",
   programme: [
@@ -1207,17 +1332,40 @@ const IA_POUR_LES_RH: FormationV2 = {
   publicViseFr:
     "Chargés et responsables RH, recrutement et administration du personnel. Entre les offres à rédiger, les candidatures à trier et l'administratif qui s'accumule, les équipes RH courent après le temps : cette journée met l'IA au service de leur quotidien, pour alléger les tâches répétitives et se recentrer sur la relation.",
   casUsageFr: [
-    { texteFr: "La rédaction d'offres et de fiches de poste en quelques minutes" },
-    { texteFr: "Le tri et la présynthèse des candidatures" },
-    { texteFr: "Des supports de communication interne prêts plus vite" },
-    { texteFr: "Les bons réflexes RGPD sur les données RH" },
+    {
+      texteFr:
+        "L'offre d'emploi qu'on repousse depuis une semaine — Reprendre une fiche de poste existante, en tirer une annonce publiable, puis la décliner en annonce courte de multidiffusion, message d'approche et publication interne — sans laisser passer une seule mention qui n'ait été vérifiée dans un document du dossier.",
+    },
+    {
+      texteFr:
+        "La pile de candidatures reçues sur une même offre — Poser sa grille de lecture à partir de la seule fiche de poste, champs interdits inscrits en en-tête, et présynthétiser chaque dossier champ par champ : ce qui est renseigné, ce qui ne l'est pas, et rien d'autre — jamais un classement.",
+    },
+    {
+      texteFr:
+        "Les candidats qu'on n'a jamais recontactés — Produire la réponse au candidat non retenu à partir d'une trame du service : un volume que personne n'a le temps de traiter à la main, sans aucune donnée sensible en jeu, et où une réponse relue vaut mieux qu'un silence.",
+    },
+    {
+      texteFr:
+        "La question de droit social posée dans le couloir — Ouvrir le texte applicable — convention collective, accord d'entreprise —, le fournir à l'outil, lui faire reformuler le passage utile, et citer la source qu'on a ouverte, jamais la réponse de l'outil.",
+    },
+    {
+      texteFr:
+        "L'entretien professionnel et l'arrivée du prochain collaborateur — Produire une trame d'entretien professionnel ou un support d'onboarding à partir des documents du service, relu à la grille — exactitude, mentions dues, ton — avant d'être diffusé.",
+    },
+    {
+      texteFr:
+        "Le dossier qu'il faudra pouvoir montrer — Ouvrir un dossier de poste avant toute utilisation de l'IA sur un recrutement, y ranger la grille de lecture, les trames d'écrits et les mentions d'information, et tenir le journal de relecture humaine — une ligne par production.",
+    },
   ],
   objectifsFr: [
-    "Rédiger offres et fiches de poste à l'aide de l'IA (méthode AXION)",
-    "Trier et présynthétiser des candidatures",
-    "Produire des supports de communication interne",
-    "Appliquer les règles RGPD aux données RH",
-    "Vérifier et fiabiliser une production avant diffusion",
+    "Qualifier chaque document RH dans son régime d'usage — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'entreprise — et justifier pourquoi en retirer le nom ne suffit pas à rendre un dossier anonyme",
+    "Repérer le critère interdit contenu dans une demande de tri de candidatures, réécrire trois demandes irrecevables en demandes défendables, et nommer pour chacune la trace de décision humaine à conserver",
+    "Structurer une demande d'écrit RH par les cinq leviers de la méthode AXION (Acteur, conteXte, Intention, Output, Normes) et faire entrer un document dans l'outil par dépôt, dictée ou photo, en appliquant la parade des trois échecs classiques",
+    "Produire un écrit RH publiable — offre d'emploi, support d'onboarding ou trame d'entretien professionnel — et décliner un même contenu source en trois formats",
+    "Contrôler une production à la grille fournie et barrer toute affirmation non vérifiée dans un document source — convention collective applicable, période d'essai, rémunération, avantages, statut cadre — ainsi que toute formulation discriminante réintroduite par l'outil",
+    "Construire à partir de la seule fiche de poste une grille de lecture portant ses champs interdits en en-tête, et présynthétiser trois candidatures sous cette grille, sans classement ni score",
+    "Compléter les champs variables de la mention d'information des candidats et de la note d'information au comité social et économique sur les trames fournies, et rédiger la réponse au candidat non retenu",
+    "Repérer, dans une réponse de droit social produite par l'IA, les affirmations fausses ou non sourcées, et consigner chaque relecture humaine au journal du dossier de poste — qui a relu, quand, ce qui a été modifié",
   ],
   beneficeDirigeantFr:
     "Un temps RH redirigé vers les entretiens et l'accompagnement : les tâches répétitives sont largement allégées, la fonction se recentre sur l'humain.",
@@ -1228,6 +1376,22 @@ const IA_POUR_LES_RH: FormationV2 = {
     apres:
       "Un temps redirigé vers les entretiens et l'accompagnement, des tâches répétitives largement allégées.",
   },
+  resultatsFr: [
+    {
+      valeur: "60 %",
+      label: "du temps en atelier et en évaluation, sur ses propres dossiers RH (programme minuté)",
+    },
+    {
+      valeur: "1",
+      label:
+        "dossier de poste défendable assemblé et nommé, avec son journal de relecture humaine ouvert",
+    },
+    {
+      valeur: "3",
+      label: "candidatures présynthétisées sous sa propre grille, champs interdits en en-tête",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr:
@@ -1463,17 +1627,40 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
   publicViseFr:
     "Chargés et responsables marketing, communication et contenu. La pression du contenu ne redescend jamais — posts, newsletters, campagnes : cette journée donne à l'équipe les moyens de produire plus vite, en interne, sans sacrifier la qualité ni exploser le budget.",
   casUsageFr: [
-    { texteFr: "La génération de contenus : posts, newsletters, visuels" },
-    { texteFr: "La déclinaison d'un message sur tous les formats" },
-    { texteFr: "L'analyse de campagnes assistée par l'IA" },
-    { texteFr: "Une veille concurrentielle plus rapide" },
+    {
+      texteFr:
+        "Le post qui pourrait être celui de n'importe quel concurrent — Faire produire une publication qui porte le ton, les cibles et les interdits de langage de l'entreprise, à partir d'un dossier de marque écrit plutôt que d'une consigne nue.",
+    },
+    {
+      texteFr:
+        "L'annonce à décliner avant vendredi — Partir d'une seule idée et en sortir la publication, la newsletter, le script vidéo et le communiqué, en sachant pour chacun ce que le format a obligé à retirer.",
+    },
+    {
+      texteFr:
+        "Le trimestre qui recommence à zéro chaque lundi — Poser douze semaines de calendrier éditorial — un sujet, un format et le nom d'un titulaire par ligne — puis vérifier qu'il tient au regard des heures réellement disponibles.",
+    },
+    {
+      texteFr:
+        "Les résultats de campagne à présenter au comité de direction — Rédiger le commentaire des chiffres du mois à partir de quatre valeurs saisies à la main, sans déposer l'export de campagne ni laisser l'outil recalculer un total.",
+    },
+    {
+      texteFr:
+        "Ce qu'un assistant IA raconte sur votre entreprise — Poser les trois questions qui révèlent comment la marque est décrite, relever les erreurs, et écrire en face ce qui se corrige sur ses propres pages.",
+    },
+    {
+      texteFr:
+        "L'avis client qu'on aimerait reprendre sur la page d'accueil — Trancher cas par cas ce qui se publie, ce qui se publie avec mention et ce qui ne se publie pas : témoignage reformulé, photo trouvée en ligne, newsletter à un fichier acheté.",
+    },
   ],
   objectifsFr: [
-    "Générer des contenus (posts, newsletters, visuels) à l'aide de l'IA",
-    "Décliner un message sur plusieurs formats",
-    "Analyser des résultats de campagne avec l'appui de l'IA",
-    "Mener une veille concurrentielle assistée",
-    "Vérifier et fiabiliser une production avant diffusion",
+    "Nommer le régime d'usage de l'outil retenu — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par l'entreprise — et énoncer ce qui n'y entre jamais, fichier de contacts et export de campagne compris",
+    "Constituer le dossier de marque sur la trame fournie — trois adjectifs de ton et trois contre-exemples, cibles et personas, interdits de langage, trois contenus déjà validés —, rédiger, dossier en contexte, une demande structurée par les cinq leviers AXION (Acteur, conteXte, Intention, Output, Normes), puis relancer le même brief avec le persona d'un pair et relever qui a disparu du texte",
+    "Décliner un message réel de l'entreprise sur trois formats à partir du dossier de marque plutôt que d'une consigne nue, et énoncer pour chaque format ce que la contrainte a obligé à retirer",
+    "Construire le calendrier éditorial du trimestre — douze semaines, un sujet, un format et le nom d'un titulaire par ligne — et établir s'il est tenable en le confrontant aux heures réellement annoncées par l'équipe",
+    "Rédiger le commentaire d'un résultat de campagne à partir de quatre valeurs saisies à la main, sans déposer d'export ni laisser l'outil calculer un total, puis arbitrer entre trois hypothèses de test à budget constant",
+    "Relever par écrit les erreurs commises par un assistant IA sur la description de sa marque et porter en regard ce qui se corrige sur ses propres pages, puis dégrossir une veille sur deux concurrents en marquant chaque affirmation « vérifiée » ou « à vérifier à la source »",
+    "Trancher les douze cas de diffusion fournis entre « je publie », « je publie avec mention » et « je ne publie pas », en citant la règle applicable — avis ou témoignage fabriqué, allégation invérifiable, mention due sur un contenu généré diffusé au public, consentement préalable avant une newsletter à des particuliers",
+    "Construire sa grille de relecture avant diffusion à partir des erreurs relevées en séance, la passer sur une production du jour, et désigner le titulaire du document remis ainsi que sa date de revue",
   ],
   beneficeDirigeantFr:
     "Une production de contenu interne accélérée et plus de campagnes testées à budget constant — sans dépendre systématiquement de prestataires.",
@@ -1483,6 +1670,22 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
     avant: "Une production de contenu lente, souvent dépendante de prestataires.",
     apres: "Une production interne accélérée et plus de campagnes testées à budget constant.",
   },
+  resultatsFr: [
+    {
+      valeur: "56 %",
+      label: "du temps en atelier et en évaluation, sur ses propres contenus (programme minuté)",
+    },
+    {
+      valeur: "12",
+      label: "semaines de calendrier éditorial planifiées, un titulaire nommé par ligne",
+    },
+    {
+      valeur: "12",
+      label:
+        "cas de diffusion tranchés « je publie / avec mention / je ne publie pas », corrigés en salle",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Le cadre et la voix de la marque",
@@ -1727,17 +1930,39 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
   publicViseFr:
     "Commerciaux terrain et sédentaires, responsables commerciaux. Un bon commercial passe trop d'heures à préparer, rédiger et relancer : cette journée met l'IA au service de leur efficacité, pour libérer du temps de terrain et accélérer chaque étape du cycle de vente.",
   casUsageFr: [
-    { texteFr: "La préparation de rendez-vous et d'argumentaires en un temps record" },
-    { texteFr: "La rédaction de propositions commerciales percutantes" },
-    { texteFr: "Des relances et un suivi client mieux tenus" },
-    { texteFr: "La qualification de prospects assistée par l'IA" },
+    {
+      texteFr:
+        "Le rendez-vous de jeudi qu'on prépare entre deux portes — Sortir une fiche de préparation et un plan de découverte en questions ouvertes à partir des seuls documents publics du prospect, avec la liste écrite de ce qui reste à lui demander.",
+    },
+    {
+      texteFr:
+        "Le compte rendu qu'on écrit à 21 h, ou qu'on n'écrit jamais — Dicter trois minutes en sortant du rendez-vous et obtenir d'un coup le compte rendu interne, le mail de suivi au client et les prochaines étapes datées.",
+    },
+    {
+      texteFr:
+        "La tournée de la semaine décidée par des critères jamais écrits — Trier son portefeuille sur des critères tirés de l'affaire et non de la personne, posés avant le tri, et voir de combien de rangs le classement bouge une fois corrigé.",
+    },
+    {
+      texteFr:
+        "L'objection prix qu'on subit toujours en rendez-vous — S'entraîner face à un acheteur qui n'a pas le droit d'être d'accord, sur les trois objections récurrentes de son marché, et repartir avec sa réponse écrite pour chacune.",
+    },
+    {
+      texteFr:
+        "La proposition qui promet plus que ce qu'on tiendra — Rédiger la proposition d'une affaire en cours, mentions contractuelles recopiées depuis les conditions de vente, et barrer chaque promesse qui ne tient plus si le projet prend trois semaines de retard.",
+    },
+    {
+      texteFr:
+        "L'argumentaire qui affirme « ce marché progresse de 12 % par an » — Demander la source précise, l'ouvrir, garder ce qu'elle porte et barrer le reste — avant que le chiffre ne parte sous sa signature.",
+    },
   ],
   objectifsFr: [
-    "Préparer rendez-vous et argumentaires à l'aide de l'IA",
-    "Rédiger des propositions commerciales structurées (méthode AXION)",
-    "Rédiger relances et suivis client",
-    "Qualifier des prospects avec l'appui de l'IA",
-    "Appliquer les règles de confidentialité",
+    "Classer dix éléments de son quotidien commercial — prix négocié, marge, contrat-cadre, fichier client, notes de rendez-vous, plaquette publique du prospect, nom du dirigeant, compte rendu interne — en « jamais », « avec précaution » et « librement », et nommer le régime d'usage de l'outil sur lequel il travaille",
+    "Préparer un rendez-vous réel à partir des seuls documents qu'il a ouverts lui-même — fiche de préparation, plan de découverte en questions ouvertes, hypothèses d'enjeux étiquetées comme telles, liste de ce qui reste à vérifier — en imposant à l'outil d'écrire « non disponible dans les documents fournis » plutôt que de combler, puis barrer sur la préparation d'un pair chaque affirmation non sourcée en distinguant ce qui a été repris d'un document de ce qui a été inventé",
+    "Produire, à partir d'une dictée de trois minutes prise en sortant d'un entretien, le compte rendu interne structuré, le mail de suivi au client et les prochaines étapes datées, puis rédiger la relance à J+7",
+    "Trier son portefeuille de la semaine sur des critères écrits avant le tri et tirés de l'affaire et non de la personne, remplacer tout critère qui décrit l'interlocuteur, et mesurer de combien de rangs le classement se déplace après correction",
+    "Traiter les trois objections récurrentes de son marché — le prix, le délai, le concurrent déjà en place — face à un acheteur simulé tenu de ne jamais être d'accord, et écrire sa réponse type pour chacune",
+    "Rédiger la proposition commerciale d'une affaire en cours dont chaque promesse tient si le projet prend du retard, dont aucun chiffre n'est avancé sans source ouverte, dont les mentions contractuelles sont recopiées depuis les conditions de vente de l'entreprise, et dont la prochaine étape est datée et attribuée",
+    "Vérifier une affirmation en trente secondes — demander la source précise, l'ouvrir, garder ce qu'elle porte, barrer le reste — puis construire sa grille de relecture avant envoi à partir des erreurs qu'il a lui-même laissé passer et la passer sur la proposition rédigée le jour même",
   ],
   beneficeDirigeantFr:
     "Plus d'heures consacrées au terrain et des propositions produites bien plus vite — le temps administratif cesse de grignoter le temps de vente.",
@@ -1747,6 +1972,21 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
     avant: "Un temps administratif qui grignote le temps de vente.",
     apres: "Plus d'heures consacrées au terrain, des propositions produites bien plus vite.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label: "du temps en atelier et en évaluation, sur ses propres affaires (programme minuté)",
+    },
+    {
+      valeur: "5",
+      label: "pièces du kit de rendez-vous montées sur une affaire réelle et emportées",
+    },
+    {
+      valeur: "3",
+      label: "objections récurrentes travaillées en jeu de rôle, réponse écrite pour chacune",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Le cadre et le kit de rendez-vous",
@@ -1985,17 +2225,40 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
   publicViseFr:
     "Comptables, contrôleurs de gestion, responsables administratifs et financiers. Analyses, contrôles, rapports : la finance manipule des volumes qui laissent peu de place à l'erreur et beaucoup de place à la lenteur — cette journée montre comment l'IA sécurise et accélère les tâches à faible valeur ajoutée.",
   casUsageFr: [
-    { texteFr: "L'analyse et la synthèse de documents financiers" },
-    { texteFr: "L'automatisation de rapprochements simples" },
-    { texteFr: "L'aide à la rédaction de rapports et tableaux de bord" },
-    { texteFr: "Des contrôles et vérifications assistés par l'IA" },
+    {
+      texteFr:
+        "Le rapport de trente pages à lire avant la réunion de demain — Rapport d'un commissaire aux comptes, liasse, contrat de prêt : en tirer une page de constats renvoyant chacun à sa page du document, plus les trois questions à poser à son émetteur.",
+    },
+    {
+      texteFr:
+        "La formule de tableur qu'on cherche depuis vingt minutes sur un forum — Décrire ses en-têtes de colonnes, obtenir la formule, le croisement et la marche à suivre — sans qu'une seule cellule ne quitte le fichier — puis la tester sur une ligne dont on connaît déjà le résultat.",
+    },
+    {
+      texteFr:
+        "La formule héritée que plus personne n'ose toucher — La faire expliquer ligne à ligne, en français, avec ce qu'elle renvoie dans chacun des cas possibles et le risque encouru si l'ordre des colonnes du plan de comptes change.",
+    },
+    {
+      texteFr:
+        "La clôture qui se refait de mémoire chaque mois — Produire la trame de contrôle du processus — arrêté des journaux, rapprochement bancaire, cut-off des factures non parvenues, comptes d'attente —, cochable point par point par quelqu'un qui n'a pas assisté à la clôture, et signée.",
+    },
+    {
+      texteFr:
+        "Le commentaire du reporting, toujours écrit en dernier — Faire dire à des indicateurs déjà calculés et déjà vérifiés ce qu'ils veulent dire : pour le dirigeant d'abord, puis pour les responsables d'atelier, sans un seul terme comptable.",
+    },
+    {
+      texteFr:
+        "Les factures échues que personne n'a le temps de relancer — Monter la séquence de relance à trois niveaux à partir de la trame du service — mentions dues comprises, jamais produites par l'outil — et l'appliquer dossier par dossier.",
+    },
   ],
   objectifsFr: [
-    "Analyser et synthétiser des documents financiers à l'aide de l'IA",
-    "Fiabiliser ses contrôles et rapprochements par une trame de contrôle déroulable",
-    "Produire rapports et tableaux de bord assistés",
-    "Contrôler et vérifier une production avant diffusion",
-    "Appliquer les règles de confidentialité aux données financières",
+    "Qualifier un document financier dans son régime d'usage avant de l'ouvrir dans un outil, et tenir la liste rouge de son service — fichier des écritures, balance nominative, éléments de paie, coordonnées bancaires — en sachant pourquoi en retirer les noms ne suffit pas",
+    "Établir la ligne de partage entre ce que l'IA rédige et ce qu'elle ne calcule pas — lettrage, totalisation, projection —, et repérer dans une note financière produite par l'IA les erreurs de chiffre et les affirmations non sourcées qu'elle contient",
+    "Produire la synthèse d'un document financier long — rapport, liasse, rapport d'un commissaire aux comptes, contrat de prêt — dont chaque affirmation renvoie à une page du document, et en tirer trois questions à poser à son émetteur",
+    "Obtenir une formule, un croisement ou une procédure de tableur en décrivant la seule structure de ses colonnes, sans qu'aucune donnée ne quitte le fichier, puis la tester sur un cas dont le résultat est déjà connu",
+    "Faire expliquer en français, ligne à ligne, une formule héritée avant toute réécriture, et nommer le risque qu'elle porte si l'ordre des colonnes de la table de référence change",
+    "Produire une trame de contrôle qu'une personne n'ayant pas assisté à la clôture peut dérouler, cocher et signer — chaque point vérifiable par oui ou par non, la borne « un écart signalé ne désigne jamais une personne » recopiée en tête",
+    "Rédiger le commentaire de gestion de ses indicateurs déjà calculés pour un lecteur nommé — direction, opérationnels, banque, associé —, puis le décliner pour un second niveau de lecture, sans recalcul et sans cause inventée",
+    "Compléter, à partir des trames fournies, une séquence de relance d'impayé à trois niveaux ou une note de synthèse au dirigeant, en reprenant les mentions dues de la trame et jamais de l'outil",
   ],
   beneficeDirigeantFr:
     "Des contrôles plus rapides, des rapports produits plus vite et moins d'erreurs de saisie — la fonction finance gagne en fiabilité en gagnant du temps.",
@@ -2006,6 +2269,19 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
     apres:
       "Des contrôles plus rapides, des rapports produits plus vite, moins d'erreurs de saisie.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label: "du temps en atelier et en évaluation, sur ses propres documents (programme minuté)",
+    },
+    { valeur: "1", label: "classeur de clôture assistée monté, nommé et confié à un titulaire" },
+    {
+      valeur: "2",
+      label:
+        "trames emportées : une trame de contrôle déroulable par un tiers, une séquence de relance à trois niveaux",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Le partage des rôles et l'analyse de documents",
@@ -2250,17 +2526,40 @@ const IA_POUR_LE_JURIDIQUE: FormationV2 = {
   publicViseFr:
     "Juristes, responsables administratifs et dirigeants qui gèrent le juridique. Relire un contrat, repérer une clause à risque, rédiger un courrier type : autant de tâches précises et chronophages — cette journée montre comment l'IA fait gagner du temps tout en renforçant la vigilance sur les points sensibles.",
   casUsageFr: [
-    { texteFr: "L'analyse et la synthèse de contrats" },
-    { texteFr: "Le repérage de clauses à risque" },
-    { texteFr: "La rédaction de courriers et de documents types" },
-    { texteFr: "Une veille réglementaire assistée (sans remplacer le conseil juridique)" },
+    {
+      texteFr:
+        "Le bail commercial reçu ce matin — Le déposer, en sortir sous sa propre grille les échéances, les clauses de responsabilité, de résiliation et de pénalité, chaque ligne appuyée sur la phrase recopiée du contrat ou marquée « absente », et la liste des questions à poser avant de rendre son avis.",
+    },
+    {
+      texteFr:
+        "L'accord de confidentialité qu'un client demande de signer sous 48 heures — Le qualifier avant tout dépôt, comparer ses clauses à ce que le service accepte d'ordinaire, faire ressortir ce qui manque et ce que le texte durcit, et préparer la réponse type à renvoyer.",
+    },
+    {
+      texteFr:
+        "La mise en demeure arrivée sans prévenir — En tirer trois listes dans l'ordre du courrier — ce que l'expéditeur demande, les délais invoqués, les pièces à réunir — sans laisser l'outil qualifier les faits ni citer le moindre texte.",
+    },
+    {
+      texteFr:
+        "Le courrier type qu'on réécrit pour la vingtième fois — Résiliation, réponse à réclamation, relance : produire la trame réutilisable du service à partir de la sienne, portant la mention de projet tant qu'elle n'a pas été validée.",
+    },
+    {
+      texteFr:
+        "Le texte réglementaire que tout le monde commente sans l'avoir ouvert — Copier l'article depuis sa source officielle, le fournir à l'outil, lui faire reformuler l'obligation qu'il crée avec la phrase d'appui recopiée — et citer le texte, jamais l'outil.",
+    },
+    {
+      texteFr:
+        "La question que la direction finit toujours par poser — « Qu'a-t-on le droit de faire avec l'IA ? » : y répondre par une note d'une page — ce que le service fait, ce qu'il ne fait pas, ce qui reste à trancher — et par trois articles de charte adaptés, avec la liste de ce qui manque pour les rendre opposables.",
+    },
   ],
   objectifsFr: [
-    "Synthétiser un contrat à l'aide de l'IA",
-    "Repérer des clauses à risque pour préparer sa relecture",
-    "Rédiger courriers et documents types",
-    "Mener une veille réglementaire assistée",
-    "Appliquer les règles de confidentialité (sans substituer le conseil juridique)",
+    "Qualifier tout document avant de l'ouvrir dans un outil — soumissible tel quel, soumissible après traitement, jamais soumissible —, justifier chaque classement par écrit, et nommer les deux verrous que l'anonymisation ne lève pas de la même façon : la protection des données personnelles d'une part, la clause de confidentialité qui vise le tiers et non le nom d'autre part",
+    "Repérer, dans les conditions d'utilisation de trois outils, les quatre clauses qui décident du régime d'usage — réutilisation des contenus, sous-traitance de données, localisation, durée de conservation — et conclure le régime de chacun, ou son ambiguïté",
+    "Construire une grille de points de vigilance ordonnée et pondérée selon sa position type — client, prestataire, bailleur, employeur — à partir de la liste de référence fournie",
+    "Produire la synthèse d'un contrat sous sa propre grille, chaque case appuyée sur la phrase recopiée du texte ou marquée « absente du contrat », après avoir contrôlé le dépôt du document par le test de la dernière clause",
+    "Relever dans une synthèse les quatre défauts qui la rendent inutilisable — clause manquée, affirmation sans citation à l'appui, point dur lissé, question qui n'a pas été posée — et en tirer la liste des questions à poser avant relecture",
+    "Produire un document type réutilisable — mise en demeure, courrier de résiliation, réponse à réclamation ou réponse à un accord de confidentialité reçu —, puis adapter au vocabulaire de son entreprise trois articles de charte d'usage de l'IA et cocher, dans la liste fournie, ce qui reste à faire pour les rendre opposables",
+    "Interroger et reformuler un texte réglementaire que l'on fournit soi-même en exigeant la phrase d'appui recopiée, et tenir la phrase de refus pour toute demande de recherche de droit qui sort de ce cadre",
+    "Repérer, dans une note juridique produite par l'IA, les références inventées et les approximations, réécrire chacune en formulation vérifiable en nommant la source à ouvrir, et rédiger la note d'une page à la direction : ce que le service fait, ce qu'il ne fait pas, ce qui reste à trancher",
   ],
   beneficeDirigeantFr:
     "Des dossiers traités plus vite et des points de vigilance repérés plus tôt — la rigueur juridique reste humaine, mais elle est mieux outillée.",
@@ -2270,6 +2569,21 @@ const IA_POUR_LE_JURIDIQUE: FormationV2 = {
     avant: "Une relecture et une rédaction chronophages, des risques parfois mal identifiés.",
     apres: "Des dossiers traités plus vite, des points de vigilance repérés plus tôt.",
   },
+  resultatsFr: [
+    {
+      valeur: "56 %",
+      label: "du temps en atelier et en évaluation, sur ses propres dossiers (programme minuté)",
+    },
+    {
+      valeur: "1",
+      label: "dossier de cadrage IA assemblé, avec sa note d'une page à la direction rédigée",
+    },
+    {
+      valeur: "5",
+      label: "documents du quotidien qualifiés et justifiés par écrit, corrigé en main",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Ce qu'on a le droit de soumettre, et à quel outil",
@@ -2515,7 +2829,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
   h1Fr: "Formation IA pour la production : optimiser l'ensemble des opérations (2 jours)",
   metaTitleFr: "Formation IA pour la production — 2 jours",
   metaDescriptionFr:
-    "Formation IA production, 2 jours scindables : suivi et reporting, planification, documentation qualité, automatisations de suivi. 3 600 € HT par groupe.",
+    "Formation IA production, 2 jours scindables : suivi et reporting, documentation qualité, fiches de non-conformité, automatisations. 3 600 € HT par groupe.",
   termesSemantiquesFr: [
     "formation IA production",
     "IA opérations",
@@ -2529,17 +2843,40 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
   prerequisFr:
     "Aucun prérequis technique poussé. Une pratique régulière des outils bureautiques suffit.",
   casUsageFr: [
-    { texteFr: "Le suivi et le reporting de production assistés par l'IA" },
-    { texteFr: "L'aide à la planification" },
-    { texteFr: "La documentation qualité et des procédures facilitée" },
-    { texteFr: "Les premiers cas d'automatisation sur des tâches de suivi ou de contrôle" },
+    {
+      texteFr:
+        "Le passage de consigne de fin de poste — Deux minutes dictées en marchant deviennent le compte rendu que l'équipe suivante lit en trois minutes — faits, décisions, à reprendre — et ce qui manque ressort en « à préciser » au lieu d'être comblé en silence.",
+    },
+    {
+      texteFr:
+        "Le mode opératoire qu'on raconte mieux qu'on ne l'écrit — L'opérateur décrit le geste, l'outil le met en forme sur trame ; les valeurs de réglage restent vides et se recopient à la main depuis la fiche visée.",
+    },
+    {
+      texteFr:
+        "La causerie sécurité préparée dix minutes avant — Remplir la trame à partir de l'aléa réellement survenu la semaine passée, les consignes restant des emplacements « à recopier — visa HSE » que la machine n'écrit pas.",
+    },
+    {
+      texteFr:
+        "Le commentaire du mois sur le TRS et les rebuts — Écrire le texte autour d'indicateurs déjà calculés par le système, chaque chiffre pointé contre sa source : on ne fait jamais calculer l'IA, on lui fait commenter.",
+    },
+    {
+      texteFr:
+        "Le relevé d'atelier qui prend la moitié du vendredi — Le remettre en forme en suivi hebdomadaire — sans conversion d'unité, sans total calculé — avec une rubrique « lignes douteuses » dont on nomme le lecteur et l'heure.",
+    },
+    {
+      texteFr:
+        "L'idée d'automatisation qu'il vaut mieux arrêter — Passer cadences, temps par poste ou rebuts par opérateur au test des quatre questions : une seule réponse « oui » stoppe le prototype et renvoie la question à la direction et au CSE.",
+    },
   ],
   objectifsFr: [
-    "Produire suivi et reporting de production à l'aide de l'IA",
-    "Commenter un plan de charge calculé par vos outils métiers, sans jamais l'ordonnancer",
-    "Rédiger documentation qualité et procédures",
-    "Identifier et prototyper une première automatisation de suivi",
-    "Appliquer les règles de confidentialité",
+    "Écrire la liste rouge de son atelier en trois colonnes — ne sort jamais, à neutraliser avant de coller, libre — et arbitrer avec un binôme les cas litigieux qu'elle fait apparaître",
+    "Rédiger une consigne de poste avec les cinq leviers de la méthode AXION (Acteur, conteXte, Intention, Output, Normes), puis la reprendre après contrôle d'un pair sur la grille fournie",
+    "Recopier tout point de sécurité et tout paramètre de réglage depuis le document validé, sans jamais les faire rédiger, et marquer l'emplacement du visa HSE avant tout classement ou affichage",
+    "Produire, à partir d'une dictée de deux à trois minutes prise au poste, le compte rendu de production sous trois rubriques — faits, décisions, à relancer — sans horaire, quantité ni porteur inventé",
+    "Faire mettre en forme le mode opératoire d'une opération réelle de son atelier, le faire relire par un pair et barrer toute étape que personne n'exécute",
+    "Compter, sur un texte produit à propos de son propre process, les erreurs de la machine, et nommer le signe qui trahit chacune des quatre erreurs types — dont la consigne de sécurité adoucie",
+    "Rédiger le commentaire du mois de ses indicateurs à partir de chiffres déjà calculés par ses outils, chaque chiffre pointé contre sa source, et commenter un plan de charge sans jamais l'ordonnancer",
+    "Passer une idée d'automatisation au test des quatre questions, puis faire tourner un suivi hebdomadaire sur son propre relevé d'atelier, éprouvé sur un cas limite, avec son signal de doute et sa procédure de retour arrière écrits",
   ],
   beneficeDirigeantFr:
     "Un suivi plus fiable, une documentation tenue à jour plus facilement et des décisions plus rapides — le terrain récupère le temps que prenait la paperasse.",
@@ -2550,6 +2887,23 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
     apres:
       "Un suivi plus fiable, une documentation tenue à jour plus facilement, des décisions plus rapides.",
   },
+  resultatsFr: [
+    {
+      valeur: "64 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "8",
+      label:
+        "pièces au classeur de bord d'atelier, de la liste rouge à la procédure de retour arrière",
+    },
+    {
+      valeur: "1",
+      label:
+        "suivi hebdomadaire éprouvé sur un cas limite, avec son signal de doute et son retour arrière écrits",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
   programme: [
@@ -2865,7 +3219,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
   h1Fr: "Formation IA pour les achats : optimiser achats et logistique au quotidien",
   metaTitleFr: "Formation IA pour les achats — 1 jour",
   metaDescriptionFr:
-    "Formation IA achats et logistique (1 jour, intra) : analyse de devis, cahiers des charges, suivi de commandes, anticipation des ruptures. 1 900 € HT par groupe.",
+    "Formation IA achats et logistique (1 jour, intra) : comparer des offres, cahiers des charges, suivi de commandes, relances fournisseurs. 1 900 € HT par groupe.",
   termesSemantiquesFr: [
     "formation IA achats",
     "IA logistique",
@@ -2877,17 +3231,40 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
   publicViseFr:
     "Acheteurs, responsables logistique et approvisionnement. Comparer des devis, rédiger un cahier des charges, suivre les commandes : le quotidien des achats est fait de tâches précises et répétitives — cette journée montre comment l'IA les accélère pour vous laisser le temps de la négociation.",
   casUsageFr: [
-    { texteFr: "L'analyse de devis et les comparatifs fournisseurs" },
-    { texteFr: "La rédaction de cahiers des charges" },
-    { texteFr: "Le suivi des commandes et les relances" },
-    { texteFr: "L'anticipation des ruptures assistée par l'IA" },
+    {
+      texteFr:
+        "Les trois devis reçus pour la même prestation — Aligner les postes ligne à ligne, faire ressortir en clair ce que l'un chiffre et que les autres ne mentionnent pas, recalculer les totaux au tableur, et sortir la liste des questions à reposer à chaque fournisseur avant toute comparaison de prix.",
+    },
+    {
+      texteFr:
+        "Le besoin décrit en deux lignes par un service — Le transformer en trame de consultation structurée — objet, périmètre, critères de choix, pièces à fournir, délai de réponse — au lieu de repartir d'un cahier des charges recopié d'un autre dossier.",
+    },
+    {
+      texteFr:
+        "La commande en retard et son fil de onze e-mails — En tirer une relance calibrée sur le niveau voulu : les faits, la demande, l'échéance — et rien qui engage l'entreprise au-delà du nécessaire, ni menace voilée ni excuse à la place du fournisseur.",
+    },
+    {
+      texteFr:
+        "La livraison non conforme qu'il faut acter aujourd'hui — Rédiger le courrier de réserve à réception, le confronter phrase à phrase au modèle validé du service, et relever les écarts à faire trancher par le juriste plutôt que d'improviser un écrit qui engage.",
+    },
+    {
+      texteFr:
+        "Le rendez-vous de renégociation de la semaine prochaine — Préparer ses réponses, sa limite basse et son plan B, puis s'entraîner face à un fournisseur qui refuse et campe sur ses objections, avant de le faire pour de vrai.",
+    },
+    {
+      texteFr:
+        "La décision d'achat qu'il faut faire remonter au décideur — Rédiger la note d'arbitrage d'une page — recommandation, deux risques, une question ouverte — dont chaque chiffre se retrouve dans la ligne du comparatif qui le porte, et ce qui manque écrit « à vérifier » plutôt que comblé.",
+    },
   ],
   objectifsFr: [
-    "Analyser devis et comparatifs fournisseurs à l'aide de l'IA",
-    "Structurer une trame de consultation fournisseur",
-    "Produire suivi de commandes et relances",
-    "Anticiper les ruptures avec l'appui de l'IA",
-    "Appliquer les règles de confidentialité",
+    "Trancher par écrit cinq cas de soumission de documents d'achat — devis d'artisan, tableau de prix négociés sans nom de fournisseur, cahier des charges déjà publié, fil de litige en cours, contrat-cadre signé — et tenir la liste rouge de son service en trois colonnes : jamais, seulement en offre entreprise, libre",
+    "Retrouver sur son propre compte le régime d'usage sous lequel il travaille et l'engagement de non-réutilisation des données — ou constater son absence — et le noter daté en tête de son dossier",
+    "Contrôler tout document déposé par le test des trois montants tirés au hasard et confrontés au document d'origine, et retraiter le document avant toute exploitation dès le premier écart",
+    "Poser et pondérer ses propres critères de comparaison — coût complet, délai, incoterm, pénalités de retard, garanties, panel existant — avant de lancer l'outil, et produire un comparatif de trois devis dont chaque total a été recalculé à la main",
+    "Transformer deux lignes de besoin en trame de consultation structurée : objet, périmètre, critères de choix, pièces à fournir, délai de réponse",
+    "Rédiger une séquence de relance fournisseur à trois niveaux — rappel courtois, relance ferme, escalade au responsable —, noms et références remplacés par des balises, sans chiffrage de préjudice, sans annonce de résiliation ni reconnaissance de responsabilité, et en produire la version en anglais destinée à un fournisseur étranger",
+    "Rédiger un courrier de réserve à réception, le confronter phrase à phrase aux modèles validés fournis pour en relever les écarts, et préparer un face-à-face fournisseur avec sa limite basse et son plan B écrits",
+    "Repérer dans une note de marché produite par l'IA le fournisseur inventé, la référence inventée et le prix plausible mais faux, puis rédiger une note d'arbitrage d'une page — recommandation, deux risques, une question ouverte — dont chaque chiffre est traçable jusqu'à la ligne du comparatif qui le porte",
   ],
   beneficeDirigeantFr:
     "Des décisions d'achat plus rapides et un meilleur suivi des commandes en cours — l'équipe garde son énergie pour la négociation.",
@@ -2897,6 +3274,19 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
     avant: "Des comparatifs longs à produire, un suivi dispersé.",
     apres: "Des décisions d'achat plus rapides, un meilleur suivi des commandes en cours.",
   },
+  resultatsFr: [
+    {
+      valeur: "58 %",
+      label: "du temps en atelier et en évaluation, sur ses propres cas d'achat (programme minuté)",
+    },
+    { valeur: "1", label: "dossier d'arbitrage fournisseur complet, prêt à partir au décideur" },
+    {
+      valeur: "3",
+      label:
+        "niveaux de relance écrits et emportés, plus un courrier de réserve confronté au modèle validé",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Le cadre d'usage : ce qui sort, ce qui ne sort jamais",
@@ -3149,17 +3539,40 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
   publicViseFr:
     "Conseillers clientèle, responsables support, SAV. Chaque minute compte dans la relation client, et la qualité ne doit jamais en pâtir : cette journée outille vos équipes pour répondre plus vite, plus juste, et de façon homogène quel que soit le conseiller.",
   casUsageFr: [
-    { texteFr: "Des réponses types et personnalisées assistées par l'IA" },
-    { texteFr: "Un traitement des réclamations facilité" },
-    { texteFr: "La synthèse rapide des échanges clients" },
-    { texteFr: "Une base de connaissances interne alimentée par l'IA" },
+    {
+      texteFr:
+        "Le ticket qu'on ne peut pas coller tel quel — Neutraliser une demande réelle avant de la confier à un outil, en repérant qu'un historique privé de son nom reste identifiable par sa commune, sa date et son numéro de dossier.",
+    },
+    {
+      texteFr:
+        "La réclamation agressive arrivée en deuxième relance — Obtenir un brouillon qui reconnaît le fait sans discuter le ton, porte les mentions obligatoires, et laisse « à arbitrer par le conseiller » tout délai ou geste commercial que personne n'a autorisé.",
+    },
+    {
+      texteFr:
+        "Le « sous 48 h » glissé dans une réponse pour rassurer — Repérer dans un brouillon l'engagement que personne n'a autorisé — délai, avoir, garantie — avant qu'il ne parte sous la signature du service.",
+    },
+    {
+      texteFr:
+        "Le dossier de vingt messages à reprendre au pied levé — Sortir les faits, les engagements déjà pris et la prochaine action, chaque ligne renvoyant au numéro du message qui l'établit — y compris celui du douzième message que personne ne compte.",
+    },
+    {
+      texteFr:
+        "Les deux cents demandes du trimestre qu'on n'a jamais lues ensemble — Regrouper les verbatims en cinq causes racines au maximum et en tirer la note d'une page qui remonte au responsable.",
+    },
+    {
+      texteFr:
+        "La réponse type que chacun réécrit à sa façon — Ranger ce qui marche en fiches de base de connaissances opposables : un motif et un seul, une réponse validée, une date de revue, un propriétaire nommé.",
+    },
   ],
   objectifsFr: [
-    "Rédiger des réponses types et personnalisées à l'aide de l'IA",
-    "Traiter une réclamation avec l'appui de l'IA",
-    "Synthétiser des échanges clients",
-    "Contribuer à une base de connaissances interne",
-    "Appliquer les règles de confidentialité",
+    "Classer l'outil réellement utilisé par son équipe dans l'un des trois régimes d'usage — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé par la direction — et écrire en une phrase ce qu'il a le droit d'y coller",
+    "Neutraliser trois demandes réellement reçues — une simple, une réclamation, une hors périmètre — en passant les six lignes de la liste rouge, et reconnaître sur les cinq extraits fournis qu'un historique privé de son nom reste identifiable par sa commune, sa date et son numéro de dossier",
+    "Rédiger un brouillon de réponse structuré par les cinq leviers AXION (Acteur, conteXte, Intention, Output, Normes) dont la ligne Normes porte le ton de la maison et les mentions obligatoires, et interdit expressément tout délai, remboursement, geste commercial ou garantie que personne n'a autorisés",
+    "Repérer dans un brouillon produit en séance l'engagement que personne n'a autorisé — le délai glissé pour rassurer, l'avoir promis sans validation — et en établir le décompte",
+    "Produire la fiche de reprise d'un dossier en cours en trois blocs — les faits, les engagements déjà pris, la prochaine action — chaque ligne renvoyant au numéro du message qui l'établit, répondre fiche en main sans relire le fil, puis conduire une troisième relance sans discuter le ton du client jusqu'à l'escalade rédigée sur la trame fournie",
+    "Regrouper un jeu de verbatims clients neutralisés en cinq causes racines au maximum et en tirer la note d'une page destinée au responsable",
+    "Rédiger une fiche de base de connaissances opposable à partir des réponses produites en séance : un motif et un seul, une réponse validée, une date de revue, un propriétaire nommé",
+    "Appliquer les quatre contrôles avant envoi — le fait, l'engagement, le ton, les mentions — à sa réponse la plus fréquente, et énoncer ce qui ne part jamais au client : un engagement non autorisé, un élément de dossier dans une réponse publique, un avis ou un témoignage fabriqué",
   ],
   beneficeDirigeantFr:
     "Des réponses plus rapides et plus homogènes, une satisfaction client mieux suivie — la qualité ne dépend plus de la personne qui répond.",
@@ -3169,6 +3582,18 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
     avant: "Des délais de réponse longs, une qualité variable selon les personnes.",
     apres: "Des réponses plus rapides et plus homogènes, une satisfaction client mieux suivie.",
   },
+  resultatsFr: [
+    {
+      valeur: "59 %",
+      label: "du temps en atelier et en évaluation, sur ses propres demandes (programme minuté)",
+    },
+    { valeur: "3", label: "demandes réelles neutralisées puis traitées de bout en bout" },
+    { valeur: "3", label: "fiches de base de connaissances rédigées, datées et attribuées" },
+    {
+      valeur: "10",
+      label: "questions d'évaluation des acquis, plus trois productions notées sur grille",
+    },
+  ],
   programme: [
     {
       titreFr:
@@ -3392,17 +3817,40 @@ const IA_POUR_L_IT: FormationV2 = {
   prerequisFr:
     "Aisance en développement ou en administration système utile. Les exercices s'adaptent au niveau et à l'environnement technique des participants.",
   casUsageFr: [
-    { texteFr: "L'assistance au code et à la documentation technique" },
-    { texteFr: "Le débogage assisté par l'IA" },
-    { texteFr: "La rédaction de spécifications facilitée" },
-    { texteFr: "Les premiers cas d'automatisation de tâches IT récurrentes" },
+    {
+      texteFr:
+        "La fonction héritée sans un seul test — Faire générer les tests d'une fonction existante, les exécuter et corriger jusqu'au vert, en vérifiant d'abord que le test sait rougir.",
+    },
+    {
+      texteFr:
+        "La revue de changement du vendredi — Passer un changement en revue assistée, relever la régression, le secret laissé en clair et le cas limite non traité, et compter ce qui est signalé à tort.",
+    },
+    {
+      texteFr:
+        "Le runbook d'astreinte qu'on n'écrit jamais — Passer de notes brutes ou d'une dictée à une procédure qu'un collègue exécute à 3 h du matin, avec sa vérification par étape et son retour arrière.",
+    },
+    {
+      texteFr:
+        "La demande métier reçue par e-mail — Transformer un besoin flou en spécification, critères d'acceptation et tickets bornés, avec le hors-périmètre écrit noir sur blanc.",
+    },
+    {
+      texteFr:
+        "La trace d'erreur de production — Passer d'une trace neutralisée à trois hypothèses testables, chacune vérifiée dans son propre environnement, sans jamais coller la trace telle quelle.",
+    },
+    {
+      texteFr:
+        "La tâche IT récurrente — Automatiser un tri de journaux, une revue de dépendances ou un rapport hebdomadaire, avec son jeu d'essai, son cas limite volontairement faux et sa procédure de retour arrière écrite avant la mise en service.",
+    },
   ],
   objectifsFr: [
-    "Utiliser l'IA en assistance au code et à la documentation technique",
-    "Déboguer avec l'appui de l'IA",
-    "Rédiger des spécifications assistées",
-    "Identifier et prototyper une automatisation de tâche IT récurrente",
-    "Appliquer les règles de confidentialité",
+    "Relever, dans les paramètres de son propre outil et sans rien lui soumettre, ce qui est journalisé, ce qui est retenu pour l'entraînement et ce qui est effaçable, puis en déduire le régime d'usage réel de son poste",
+    "Rédiger une règle de soumission qui autorise explicitement plutôt qu'elle n'interdit vaguement, la confronter à douze cas limites classés « soumettable / à neutraliser d'abord / jamais », et l'éprouver sur trois extraits pièges en relevant ce qui passe à tort",
+    "Situer la propriété d'une sortie produite avec l'IA : licence, contamination par du copyleft, titularité, cession au client",
+    "Structurer une demande technique aux cinq leviers AXION en écrivant ce que la ligne Normes doit interdire, puis faire générer les tests d'une fonction existante et les corriger jusqu'au vert",
+    "Conduire une revue assistée sur un changement porteur de défauts connus — une régression, un secret en clair, un cas limite non traité — les relever et compter les alertes injustifiées",
+    "Chiffrer le taux d'erreur d'une production IA sur son propre environnement — version, option, chemin, commande inventée — au lieu d'en débattre",
+    "Transformer une demande métier floue en spécification testable, critères d'acceptation et tickets bornés, et rédiger un runbook qu'un binôme exécute pas à pas sans son auteur",
+    "Qualifier une tâche IT avant de l'automatiser au regard des usages classés à haut risque par le règlement européen sur l'IA, construire l'automatisation avec son jeu d'essai, et écrire la procédure de retour arrière avant toute mise en service",
   ],
   beneficeDirigeantFr:
     "Un développement plus rapide et une documentation tenue à jour plus facilement — l'équipe IT livre plus sans s'épuiser sur les tâches récurrentes.",
@@ -3412,6 +3860,18 @@ const IA_POUR_L_IT: FormationV2 = {
     avant: "Une dette technique et une documentation qui prennent du retard.",
     apres: "Un développement plus rapide, une documentation tenue à jour plus facilement.",
   },
+  resultatsFr: [
+    {
+      valeur: "63 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "6",
+      label: "sections de runbook rédigées et emportées par chaque participant",
+    },
+    { valeur: "12", label: "cas limites de soumission tranchés, corrigé en main" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA, environnement de développement habituel",
   programme: [
@@ -3693,17 +4153,40 @@ const IA_POUR_LA_SANTE: FormationV2 = {
   publicViseFr:
     "Personnel administratif et soignant non-médical, direction d'établissement — cabinet, clinique, EHPAD, structure médico-sociale. Comptes-rendus, courriers, gestion des rendez-vous : la charge administrative empiète sur le temps de soin ; cette journée montre comment l'IA soulage ces tâches, dans le respect strict de la confidentialité des données de santé.",
   casUsageFr: [
-    { texteFr: "L'aide à la rédaction de comptes-rendus et de courriers" },
-    { texteFr: "La gestion administrative et la prise de rendez-vous assistées" },
-    { texteFr: "La synthèse rapide de documents" },
-    { texteFr: "Les bons réflexes de confidentialité des données de santé" },
+    {
+      texteFr:
+        "Le courrier à la famille qu'on repousse depuis trois jours — Confirmer ou reporter un rendez-vous, répondre à une inquiétude, écrire à un confrère : produire l'écrit à partir d'un cas rendu non identifiant, puis le relire à la grille — exactitude, ton, mentions attendues, traces résiduelles — avant envoi.",
+    },
+    {
+      texteFr:
+        "Le rapport de quarante pages que personne n'a le temps d'ouvrir — Charger un protocole, une recommandation ou un cahier des charges, lui poser trois questions, et renvoyer chaque réponse à sa page : la lecture devient une vérification ciblée au lieu d'un dossier repoussé.",
+    },
+    {
+      texteFr:
+        "La réponse à la tutelle ou à l'appel à projets — Bâtir la trame et l'argumentaire avec l'outil, insérer soi-même les chiffres depuis ses tableaux de bord, et recouper chaque affirmation avec le document source avant de signer.",
+    },
+    {
+      texteFr:
+        "La trame de projet personnalisé — Faire sortir de l'outil la structure et les formulations types, vides de toute personne — le contenu concernant le résident se remplit ensuite dans l'établissement, hors outil.",
+    },
+    {
+      texteFr:
+        "Le tri des écrits du service — Passer douze écrits du quotidien au filtre « je peux / à condition de / jamais », et savoir expliquer à un collègue pourquoi le planning nominatif n'entre jamais, même réduit aux initiales.",
+    },
+    {
+      texteFr:
+        "La fiche-procédure affichée au poste — Écrire, pour le geste le plus fréquent du service, la procédure d'une page portant sa liste de vérifications en en-tête — celle qui tient encore quand la personne formée est absente.",
+    },
   ],
   objectifsFr: [
-    "Rédiger comptes-rendus et courriers à l'aide de l'IA",
-    "Utiliser l'IA en appui aux écrits de gestion administrative et de coordination",
-    "Synthétiser des documents",
-    "Appliquer strictement les règles de confidentialité des données de santé",
-    "Vérifier une production avant diffusion",
+    "Renseigner et dater la fiche « le régime de mon poste » : le régime d'usage réellement en vigueur, les écrits qu'il admet, et le nom de la personne qui valide dans l'établissement",
+    "Classer douze écrits du quotidien en « je peux / à condition de / jamais », justifier chaque classement contre la fiche des trois régimes, et corriger ses erreurs au corrigé collectif",
+    "Énoncer la ligne rouge du métier — ni diagnostic, ni orientation, ni tri, ni priorisation d'un accès aux soins — et nommer la personne à qui remonte le doute au lieu de trancher seul",
+    "Neutraliser un extrait réel hors outil, stylo en main, jusqu'à disparition des quatre traces identifiantes — dates, lieu, entourage, singularité du cas — et faire compter les traces restantes par un binôme avant toute soumission",
+    "Produire, à partir du cas neutralisé, un écrit diffusable de son poste — courrier à une famille ou à un confrère, note de transmission, réponse à une administration — et le passer à la grille fournie avant diffusion",
+    "Interroger un document long de son établissement — protocole, recommandation, cahier des charges — en trois questions, et rattacher chaque réponse à sa page d'origine, vérifiée dans le document",
+    "Rédiger un écrit de pilotage — synthèse, trame de rapport d'activité, réponse à un appel à projets, trame de projet personnalisé vide de toute personne — et y relever, source en main, au moins une affirmation inventée ou déformée",
+    "Rédiger trois fiches-procédures du service portant chacune sa liste de vérifications en en-tête, et une feuille de route datée : trois usages, un usage écarté avec sa raison, la personne qui valide, la date de revue",
   ],
   beneficeDirigeantFr:
     "Un temps administratif réduit et plus de disponibilité pour le cœur de métier — sans jamais compromettre la confidentialité des données de santé.",
@@ -3713,6 +4196,23 @@ const IA_POUR_LA_SANTE: FormationV2 = {
     avant: "Une charge administrative qui empiète sur le temps de soin.",
     apres: "Un temps administratif réduit, plus de disponibilité pour le cœur de métier.",
   },
+  resultatsFr: [
+    {
+      valeur: "58 %",
+      label:
+        "du temps en atelier et en évaluation, sur les écrits de son propre poste (programme minuté)",
+    },
+    {
+      valeur: "3",
+      label:
+        "fiches-procédures du service rédigées, chacune avec sa liste de vérifications en en-tête",
+    },
+    {
+      valeur: "12",
+      label: "écrits du quotidien classés puis corrigés au regard des trois régimes d'usage",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr:
@@ -3966,11 +4466,11 @@ const IA_POUR_LE_BTP: FormationV2 = {
   h1Fr: "Formation IA pour le BTP : optimiser l'ensemble de son activité",
   metaTitleFr: "Formation IA pour le BTP — 1 jour",
   metaDescriptionFr:
-    "Formation IA BTP (1 jour, intra) : devis, comptes-rendus de chantier, suivi de planning, réponses aux appels d'offres. 2 200 € HT par groupe.",
+    "Formation IA BTP (1 jour, intra) : interroger un CCTP, rédiger un mémoire technique, comptes-rendus de chantier, vérifier ses sources. 2 200 € HT par groupe.",
   termesSemantiquesFr: [
     "formation IA BTP",
     "IA construction",
-    "devis BTP IA",
+    "mémoire technique BTP IA",
     "compte-rendu chantier IA",
     "appel d'offres IA",
     "IA conducteur de travaux",
@@ -3978,17 +4478,40 @@ const IA_POUR_LE_BTP: FormationV2 = {
   publicViseFr:
     "Conducteurs de travaux, chargés d'affaires, personnel administratif des entreprises du BTP. Sur un chantier, chaque heure passée sur la paperasse est une heure de perdue : cette journée montre comment l'IA accélère les devis, les comptes-rendus et le suivi, pour vous garder sur le terrain.",
   casUsageFr: [
-    { texteFr: "La rédaction de devis et de comptes-rendus de chantier" },
-    { texteFr: "Le suivi de planning facilité" },
-    { texteFr: "L'aide à la réponse aux appels d'offres" },
-    { texteFr: "La synthèse de documents techniques" },
+    {
+      texteFr:
+        "Le compte-rendu qui retenait au bureau le soir — Deux minutes dictées en sortant du chantier, ou la photo d'une page de carnet, deviennent un compte-rendu diffusable : présents, avancement par lot, blocages, décisions, actions avec un responsable et une échéance.",
+    },
+    {
+      texteFr:
+        "Le constat de retard écrit à chaud — Reprendre les mêmes faits en version datée et strictement factuelle, sans accusation ni qualification juridique, la référence au planning contractuel restant « à compléter » tant que la pièce du marché n'est pas sous les yeux.",
+    },
+    {
+      texteFr:
+        "Le CCTP de deux cents pages à trois jours de la remise — Poser trois questions au document et retrouver, pour chacune, la phrase exacte qui fonde la réponse — le doigt sur la ligne, jamais sur une réponse plausible.",
+    },
+    {
+      texteFr:
+        "La partie « moyens humains » du mémoire technique — Dégrossir la trame, puis surligner chaque effectif, chaque référence de chantier et chaque certification pour exiger la pièce qui la prouve : ce qui n'en a pas se barre avant l'envoi.",
+    },
+    {
+      texteFr:
+        "La causerie sécurité du lundi — Reformuler, pour la rendre lisible par l'équipe, un document DÉJÀ validé par l'entreprise — l'IA n'en crée jamais le contenu, et rien ne part sans le responsable sécurité.",
+    },
+    {
+      texteFr:
+        "La pièce qu'on allait envoyer sans relire — Passer un devis, un courrier ou un compte-rendu à la grille de contrôle avant envoi : chiffre sans source, mention manquante, nom de client, destinataire oublié — quatre lignes barrées en cinq minutes.",
+    },
   ],
   objectifsFr: [
-    "Rédiger devis et comptes-rendus de chantier à l'aide de l'IA",
-    "Rédiger les écrits qui tiennent le planning : constat de retard, relance, demande d'avenant",
-    "Préparer une réponse à un appel d'offres",
-    "Synthétiser des documents techniques",
-    "Appliquer les règles de confidentialité",
+    "Transformer des notes de chantier — deux minutes dictées, une page de carnet photographiée, un plan déposé — en compte-rendu structuré et diffusable, toute information absente des notes étant marquée « à compléter » plutôt qu'inventée",
+    "Nommer ce qui ne sort jamais de l'entreprise — prix de revient, marges, coefficients, bibliothèque de prix, DPGF, pièces de sous-traitance, coordonnées clients — et le contrôler sur la production d'un binôme",
+    "Rédiger un courrier de chantier qui engage — constat de retard, relance de sous-traitant, demande d'avenant — dont chaque fait est daté, prouvable et exempt d'accusation comme de qualification juridique",
+    "Recopier toute référence contractuelle depuis la pièce du marché, et barrer au stylo celles que l'outil a citées de mémoire",
+    "Interroger une pièce technique — CCTP, notice, règlement de consultation — en trois questions, et retrouver dans le document la phrase exacte qui fonde chaque réponse",
+    "Dégrossir une trame de mémoire technique, puis barrer toute affirmation chiffrée ou nominative — effectif, référence de chantier, certification, qualification, délai — que ne prouve aucune pièce de l'entreprise",
+    "Distinguer ce qui ne se produit jamais avec l'IA — plan de prévention, PPSPS, analyse de risques, consigne de sécurité, tri de candidats, d'intérimaires ou de compagnons — et n'en reformuler que des documents déjà validés par l'entreprise",
+    "Renseigner la grille de contrôle avant envoi sur trois pièces réelles — source de chaque fait, mentions vérifiées, ce qui ne sort pas, relecteur nommé — et écrire sa feuille de route : trois usages datés, un usage écarté par écrit",
   ],
   beneficeDirigeantFr:
     "Des documents produits plus vite et un meilleur suivi administratif des chantiers — les équipes restent sur le terrain, pas derrière un clavier.",
@@ -3998,6 +4521,22 @@ const IA_POUR_LE_BTP: FormationV2 = {
     avant: "Des devis et comptes-rendus chronophages, un suivi de chantier dispersé.",
     apres: "Des documents produits plus vite, un meilleur suivi administratif des chantiers.",
   },
+  resultatsFr: [
+    {
+      valeur: "60 %",
+      label:
+        "du temps en atelier et en évaluation, sur les pièces de son chantier en cours (programme minuté)",
+    },
+    {
+      valeur: "3",
+      label: "pièces réelles finalisées, chacune passée à la grille de contrôle avant envoi",
+    },
+    {
+      valeur: "1",
+      label: "feuille de route emportée : trois usages datés, un usage écarté par écrit",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr:
@@ -4239,17 +4778,40 @@ const IA_POUR_L_IMMOBILIER: FormationV2 = {
   publicViseFr:
     "Agents immobiliers, gestionnaires, personnel administratif des agences et cabinets. Rédiger une annonce, estimer un bien, relancer un prospect : le métier est fait de tâches répétitives qui s'accumulent — cette journée met l'IA au service de votre réactivité commerciale.",
   casUsageFr: [
-    { texteFr: "La rédaction d'annonces et de descriptifs de biens" },
-    { texteFr: "L'aide à l'estimation et aux comparatifs de marché" },
-    { texteFr: "Des réponses aux prospects plus rapides" },
-    { texteFr: "Le suivi des dossiers de vente ou de location" },
+    {
+      texteFr:
+        "L'annonce du bien rentré ce matin — Passer des pièces du dossier — diagnostics, mesurage, extrait de règlement de copropriété — à une annonce complète sur trame conforme, chaque mention reliée à la pièce qui la prouve.",
+    },
+    {
+      texteFr:
+        "La même annonce sur quatre supports — Portail, vitrine, réseaux sociaux, dossier de présentation : une seule demande, quatre sorties alignées — on corrige la source, jamais les quatre copies.",
+    },
+    {
+      texteFr:
+        "Le prospect qui écrit à 19 h — Répondre dans l'heure avec une trame à champs, personnalisée dans la messagerie : prénom, bien, créneau — les données du prospect n'entrent jamais dans l'outil.",
+    },
+    {
+      texteFr:
+        "Les notes d'assemblée générale à remettre au propre — Reconstruire le procès-verbal — ordre du jour, présents et pouvoirs, chaque résolution avec son résultat de vote — sans qu'aucune décision, aucun chiffre ni aucun nom ne soit ajouté.",
+    },
+    {
+      texteFr:
+        "L'estimation qu'il faudra défendre devant le vendeur — Structurer l'argumentaire autour de SES références de vente : l'outil met en forme, il ne produit ni prix au mètre carré ni valeur de marché.",
+    },
+    {
+      texteFr:
+        "La demande qu'on refuse — Reconnaître le « classe-moi ces trois dossiers de candidats » et y opposer une phrase écrite : on met le dossier en forme, le choix se fait et se motive à l'agence.",
+    },
   ],
   objectifsFr: [
-    "Rédiger annonces et descriptifs de biens à l'aide de l'IA",
-    "Utiliser l'IA en appui à l'estimation et aux comparatifs de marché",
-    "Rédiger des réponses aux prospects",
-    "Produire un suivi de dossiers de vente ou location",
-    "Appliquer les règles de confidentialité",
+    "Rédiger une annonce complète sur la trame conforme, chaque mention obligatoire étant renvoyée à la pièce du dossier qui la prouve — DPE et GES, surface du lot, nombre de lots et charges de copropriété, honoraires et charge du paiement",
+    "Barrer tout chiffre produit par l'IA — surface, classe DPE, charges, prix — et le recopier depuis le diagnostic, le mesurage ou le registre de l'agence",
+    "Repérer et reformuler toute formulation qui décrit l'occupant plutôt que le bien (« familial », « idéal jeunes actifs », « conviendra à… »), sur sa propre annonce comme sur celle d'un binôme",
+    "Décliner une annonce validée sur trois supports en une seule demande, et vérifier que les chiffres et les mentions restent identiques d'une déclinaison à l'autre",
+    "Construire trois réponses types à champs — premier contact, demande de visite, relance après visite — ne contenant aucune donnée de prospect, la personnalisation se faisant dans sa messagerie",
+    "Produire un écrit de gestion défendable à partir de ses pièces — procès-verbal d'assemblée générale, réponse à un copropriétaire, relance d'impayé, état des lieux mis au propre — et y surligner toute affirmation avancée sans preuve",
+    "Bâtir l'argumentaire d'estimation sur ses propres références de marché, sans laisser l'outil produire un prix au mètre carré ni une valeur",
+    "Reconnaître la demande de tri de candidats locataires et la refuser par écrit avec la phrase apprise, puis assembler le dossier de trames vérifiées de l'agence en désignant qui le tient à jour",
   ],
   beneficeDirigeantFr:
     "Des annonces produites plus vite et un meilleur suivi des prospects et des dossiers en cours — la réactivité commerciale devient un avantage concurrentiel.",
@@ -4260,6 +4822,23 @@ const IA_POUR_L_IMMOBILIER: FormationV2 = {
     apres:
       "Des annonces produites plus vite, un meilleur suivi des prospects et des dossiers en cours.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label:
+        "du temps en atelier et en évaluation, sur les biens et dossiers de son portefeuille (programme minuté)",
+    },
+    {
+      valeur: "4",
+      label:
+        "trames vérifiées emportées : annonce conforme, déclinaisons par support, réponses types, écrits de gestion",
+    },
+    {
+      valeur: "3",
+      label: "réponses types à champs, prêtes à personnaliser dans la messagerie",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — L'annonce qui vend et l'annonce qui expose",
@@ -4498,17 +5077,40 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
   publicViseFr:
     "Responsables de magasin, équipes vente et merchandising, commerce physique et e-commerce. Le commerce vit au rythme du contenu et de la relation client : cette journée montre comment l'IA accélère la production de fiches produits et le suivi des avis, pour vendre plus et mieux.",
   casUsageFr: [
-    { texteFr: "La rédaction de fiches produits et de contenus e-commerce" },
-    { texteFr: "Des réponses aux avis et messages clients facilitées" },
-    { texteFr: "L'aide à l'analyse des ventes" },
-    { texteFr: "Des supports de communication en point de vente" },
+    {
+      texteFr:
+        "La fiche technique fournisseur de trois lignes — En sortir une fiche produit publiable qui n'affirme rien que le document ne prouve, prix, disponibilité, garantie et retours laissés au magasin.",
+    },
+    {
+      texteFr:
+        "Les cinquante références qui attendent d'être mises en ligne — Produire une série de fiches au même format depuis un tableau produits nettoyé, puis la contrôler en tirant trois fiches au hasard plutôt qu'en relisant tout.",
+    },
+    {
+      texteFr:
+        "Le « déperlant » devenu « imperméable » — Barrer sur la fiche d'un collègue la caractéristique ajoutée, la norme citée de mémoire, l'origine embellie et l'allégation environnementale sans preuve.",
+    },
+    {
+      texteFr:
+        "Le même produit à écrire trois fois — site, place de marché, rayon — Décliner une seule matière sur les trois supports, affiche de rayon comprise, sans jamais la réécrire.",
+    },
+    {
+      texteFr:
+        "L'avis à une étoile auquel on répond à chaud — Rédiger la réponse publique qui referme — remerciement, position de l'enseigne, renvoi vers un canal privé — sans confirmer que la personne est cliente ni révéler une ligne de son dossier.",
+    },
+    {
+      texteFr:
+        "Le total des ventes par famille que l'outil se trompe à calculer — Faire écrire la formule de tableur à partir de la seule structure du tableau — noms de colonnes, types de valeurs — et laisser le calcul au tableur.",
+    },
   ],
   objectifsFr: [
-    "Rédiger fiches produits et contenus e-commerce à l'aide de l'IA",
-    "Rédiger des réponses aux avis et messages clients",
-    "Analyser des ventes avec l'appui de l'IA",
-    "Produire des supports de communication en point de vente",
-    "Appliquer les règles de confidentialité",
+    "Rédiger une fiche produit publiable à partir de la seule fiche technique fournisseur — prix, disponibilité, garantie et conditions de retour laissés marqués « à compléter par le magasin » — puis barrer, grille en main sur la fiche d'un pair, chaque affirmation que la fiche technique ne prouve pas : caractéristique ajoutée, norme citée de mémoire, origine embellie, allégation de santé ou d'environnement",
+    "Nettoyer un tableau produits de toute colonne de marge, de conditions d'achat ou de donnée client avant tout dépôt, énoncer pourquoi retirer les noms d'un fichier client ne le fait pas sortir du RGPD, et reconnaître qu'une formulation stéréotypée sur le genre, l'âge ou l'origine présente dans la trame se réplique à l'identique sur toute la série",
+    "Produire une série de fiches homogènes à partir de son propre tableau produits, puis décliner un même produit sur trois supports — site, place de marché et support de point de vente — sans le réécrire",
+    "Contrôler une série par échantillonnage — trois fiches tirées au hasard, quatre points vérifiés dont les formulations stéréotypées — et énoncer la règle qui s'applique lorsqu'une fiche de l'échantillon tombe",
+    "Énoncer l'interdiction de fabriquer ou de faire écrire par l'IA un avis, un témoignage ou une note, et la distinguer de ce qui est autorisé : répondre à un avis déjà publié",
+    "Rédiger une réponse publique à un avis — positif, négatif ou injustifié — qui ne confirme pas que la personne est cliente, ne mentionne ni commande, ni date, ni produit, ni montant, et n'engage l'enseigne sur aucun geste commercial, puis déclarer publiable ou renvoyée la réponse d'un pair en nommant le motif",
+    "Obtenir la formule de tableur ou le tableau croisé dont il a besoin en décrivant la seule structure de son tableau — noms de colonnes, types de valeurs — sans jamais en livrer le contenu, et le tester sur son propre fichier",
+    "Durcir une trame de la journée en consigne réutilisable et la valider par le test du rejeu — rejouée sur un autre produit, elle doit rendre exactement le même format — puis assembler le manuel de publication de l'enseigne et y inscrire trois usages datés, un usage explicitement écarté et le nom de la personne qui relit avant publication",
   ],
   beneficeDirigeantFr:
     "Une production de contenu accélérée et un meilleur suivi de la satisfaction client — les fiches sortent plus vite et les avis ne restent plus sans réponse.",
@@ -4518,6 +5120,18 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
     avant: "Des fiches produits et contenus produits lentement, des avis traités au fil de l'eau.",
     apres: "Une production de contenu accélérée, un meilleur suivi de la satisfaction client.",
   },
+  resultatsFr: [
+    {
+      valeur: "57 %",
+      label: "du temps en atelier et en évaluation, sur ses propres produits (programme minuté)",
+    },
+    {
+      valeur: "1",
+      label: "manuel de publication de l'enseigne assemblé, nommé et doté d'un relecteur désigné",
+    },
+    { valeur: "3", label: "avis clients traités — un positif, un négatif, un injustifié" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · Module 1 — Une fiche produit qui vend et qui n'invente rien",
@@ -4749,7 +5363,7 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
   h1Fr: "Formation IA pour l'hôtellerie-restauration : gagner en efficacité au quotidien",
   metaTitleFr: "Formation IA hôtellerie-restauration — 1 jour",
   metaDescriptionFr:
-    "Formation IA hôtellerie-restauration (1 jour, intra) : réponses aux avis, réservations, menus et supports, planification des équipes. 2 200 € HT par groupe.",
+    "Formation IA hôtellerie-restauration (1 jour, intra) : réponses aux avis, échanges clients, descriptifs de carte, allergènes. 2 200 € HT par groupe.",
   termesSemantiquesFr: [
     "formation IA hôtellerie",
     "IA restauration",
@@ -4761,17 +5375,40 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
   publicViseFr:
     "Direction d'établissement, personnel administratif et d'accueil — hôtels, restaurants, établissements CHR. Avis en ligne, réservations, communication : la relation client ne s'arrête jamais ; cette journée montre comment l'IA vous aide à répondre plus vite et mieux, tout en soignant votre image.",
   casUsageFr: [
-    { texteFr: "Des réponses aux avis et messages de réservation facilitées" },
-    { texteFr: "La rédaction de menus et de supports de communication" },
-    { texteFr: "L'aide à la planification des équipes" },
-    { texteFr: "Un suivi administratif courant allégé" },
+    {
+      texteFr:
+        "L'avis négatif tombé un dimanche soir — Une réponse publique dans le ton de la maison, prête en quelques minutes, qui ne confirme pas le séjour, ne nomme personne et déplace la suite vers l'accueil.",
+    },
+    {
+      texteFr:
+        "Les messages de réservation entre deux services — Demande particulière, relance après réservation non honorée : des trames à champs [NOM] et [DATES] qui se remplissent dans la messagerie, jamais dans l'outil.",
+    },
+    {
+      texteFr:
+        "La carte à traduire avant la saison — Descriptifs et traduction produits par l'outil, mentions réglementées recopiées à part depuis la fiche technique — la moutarde disparue d'une traduction, la salle l'a vue à l'écran.",
+    },
+    {
+      texteFr:
+        "La demande de groupe reçue ce matin — Devis mis en forme à partir de VOS prix, message d'envoi, relance à J+7 et réponses aux dix questions qui reviennent toujours — l'outil structure, il ne chiffre rien.",
+    },
+    {
+      texteFr:
+        "Ce que l'IA raconte sur votre établissement — Faire produire une présentation de la maison à partir du seul nom et de la ville, compter les erreurs, puis écrire la fiche d'identité qui servira de source à tous les écrits suivants.",
+    },
+    {
+      texteFr:
+        "Le tri des pièces de la maison — Dire, pièce par pièce — mail de confirmation, fiche technique, planning nominatif, texte du site —, ce qui se soumet, sous quel compte, et ce qui ne sort jamais.",
+    },
   ],
   objectifsFr: [
-    "Rédiger des réponses aux avis et messages de réservation à l'aide de l'IA",
-    "Rédiger menus et supports de communication",
-    "Préparer une trame de planning dépersonnalisée, les noms restant hors de l'outil",
-    "Produire un suivi administratif courant",
-    "Appliquer les règles de confidentialité",
+    "Classer chaque pièce de l'établissement dans son régime d'usage — compte grand public, offre entreprise avec engagement de non-réutilisation, environnement validé — ou en « ne sort jamais », et justifier son classement sur les dix pièces du corrigé",
+    "Tenir la liste rouge de l'établissement : coordonnées et séjours des clients, fiches techniques et allergènes, mentions réglementées, plannings nominatifs, identifiants de connexion — et dire au client quand une machine lui répond",
+    "Rédiger une réponse publique à un avis qui ne confirme aucun séjour, ne révèle ni date, ni chambre, ni montant, n'admet aucun fait non vérifié, ne nomme aucun salarié et n'annonce aucun geste commercial",
+    "Traiter un message de réservation — demande particulière, relance après réservation non honorée — sur une trame à champs, les données du client restant dans sa messagerie",
+    "Rédiger le descriptif de carte et sa traduction avec l'IA, puis recopier séparément, depuis la fiche technique validée et la liste officielle des quatorze allergènes, toute mention réglementée — allergènes, « fait maison », origine des viandes, appellations",
+    "Revalider une carte ligne à ligne, fiche technique en main, et renvoyer la pièce en correction dès qu'un seul écart d'allergène est trouvé",
+    "Monter une proposition de groupe complète — devis mis en forme à partir de ses propres prix, message d'envoi, relance à J+7, réponses aux questions récurrentes — sans qu'aucun montant ne vienne de l'outil",
+    "Repérer, sur une présentation générée de son propre établissement, ce que l'IA a inventé, puis renseigner la fiche d'identité — capacité réelle, horaires par saison, labels détenus, gammes de prix, prestations effectives — qui servira de source à ses écrits suivants",
   ],
   beneficeDirigeantFr:
     "Des réponses plus rapides et mieux soignées, des supports produits plus facilement — l'image de l'établissement est soignée sans y passer les soirées.",
@@ -4782,6 +5419,23 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
       "Une gestion des avis et réservations chronophage, une communication produite dans l'urgence.",
     apres: "Des réponses plus rapides et mieux soignées, des supports produits plus facilement.",
   },
+  resultatsFr: [
+    {
+      valeur: "60 %",
+      label:
+        "du temps en atelier et en évaluation, sur les avis et les supports de son établissement (programme minuté)",
+    },
+    {
+      valeur: "5",
+      label:
+        "textes prêts à l'emploi emportés : trois réponses d'avis et deux messages de réservation",
+    },
+    {
+      valeur: "1",
+      label: "fiche d'identité de l'établissement, faits vérifiés à fournir à chaque production",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr:
@@ -4994,17 +5648,40 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
   prerequisFr:
     "Aucun prérequis technique poussé. Une pratique régulière des outils bureautiques suffit.",
   casUsageFr: [
-    { texteFr: "Le suivi qualité et le reporting assistés par l'IA" },
-    { texteFr: "L'aide à la documentation de maintenance" },
-    { texteFr: "La synthèse des données de production" },
-    { texteFr: "La qualification des premiers dispositifs de suivi automatisable" },
+    {
+      texteFr:
+        "La non-conformité écrite en trois lignes dans le cahier de poste — La photo de la page, deux minutes dictées et le compte rendu du poste deviennent une fiche complète : fait daté et chiffré, hypothèses numérotées et présentées comme telles, action corrective vérifiable avec la preuve attendue.",
+    },
+    {
+      texteFr:
+        "Le questionnaire client de quarante pages — Traiter d'abord les questions qui coûtent le plus, chaque réponse portant le document, l'indice de version et la section qui la prouvent — et découvrir soi-même ses « non prouvé » avant que le client ne les découvre.",
+    },
+    {
+      texteFr:
+        "La revue d'écart avant l'audit — Interroger le référentiel réellement applicable exigence par exigence, formulation exacte recopiée, puis sortir le plan d'action daté : porteur par fonction, échéance, preuve attendue.",
+    },
+    {
+      texteFr:
+        "Le mode opératoire qu'on veut rendre plus clair — Le reprendre avec l'original ouvert à côté et sa fiche d'évolution de version — et surligner ce qui touche à la sécurité ou à un paramètre de process : ces lignes-là se recopient et repartent au visa.",
+    },
+    {
+      texteFr:
+        "Le projet d'automatiser un suivi — Passer cadences, rebuts par opérateur, temps par poste ou géolocalisation à la grille en quatre questions, puis écrire la décision : agrégation au niveau de la ligne, abandon, ou dossier d'information et de consultation à monter.",
+    },
+    {
+      texteFr:
+        "La procédure d'usage que l'auditeur ouvrira — Deux pages : périmètre autorisé, ce qui ne sort jamais, circuit de validation avant diffusion, traces conservées et où elles sont rangées, conduite à tenir en cas de doute — responsables désignés par fonction, jamais par prénom.",
+    },
   ],
   objectifsFr: [
-    "Produire suivi qualité et reporting à l'aide de l'IA",
-    "Rédiger de la documentation de maintenance",
-    "Synthétiser les enregistrements et indicateurs de production déjà validés",
-    "Qualifier ses premiers dispositifs de suivi automatisable et les prioriser",
-    "Appliquer les règles de confidentialité",
+    "Situer chaque pièce du système documentaire du site dans son régime d'usage — dépôt libre, environnement entreprise, ne sort pas — et justifier son classement pièce par pièce face au corrigé",
+    "Écrire la liste rouge du site — plans et nomenclatures, paramètres et gammes de fabrication, formulations, prix de revient, pièces couvertes par un accord client, données nominatives d'opérateurs — et y renvoyer par écrit tout cas litigieux au référent QSE",
+    "Transformer des notes brutes — page de cahier de poste photographiée, deux minutes dictées, compte rendu de poste déposé — en fiche de non-conformité qui sépare le fait de l'hypothèse, et en projet de réponse client sans engagement non validé",
+    "Mettre à jour un écrit maîtrisé du site, l'original sous les yeux, et produire sa fiche d'évolution de version : ce qui change, pourquoi, qui est impacté, qui valide, à quelle date",
+    "Recopier — jamais faire produire — mode opératoire de sécurité, consigne machine, fiche de données de sécurité et paramètre de process, et surligner les paragraphes à faire revalider par le référent QSE avant diffusion",
+    "Répondre à un questionnaire client ou à une grille d'audit en posant en face de chaque réponse le document, son indice de version et sa section, et marquer « non prouvé » toute réponse dont la pièce n'existe pas",
+    "Produire une revue d'écart citant chaque exigence dans sa formulation exacte, retrouvée dans le référentiel déposé, et le plan d'action daté qui en découle — un porteur par fonction, une échéance et une preuve attendue par ligne",
+    "Qualifier un dispositif de suivi à la grille en quatre questions, dire s'il porte sur l'activité ou sur des personnes, et rédiger la procédure d'usage de l'IA du site qui reprend la liste rouge, la règle de revalidation et la grille de qualification",
   ],
   beneficeDirigeantFr:
     "Un suivi plus structuré et une documentation qualité et maintenance tenue à jour plus facilement — le pilotage gagne en netteté, les équipes en temps.",
@@ -5015,6 +5692,22 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
     apres:
       "Un suivi plus structuré, une documentation qualité et maintenance tenue à jour plus facilement.",
   },
+  resultatsFr: [
+    {
+      valeur: "61 %",
+      label: "du temps en atelier et en évaluation sur les 14 h (programme minuté)",
+    },
+    {
+      valeur: "7",
+      label: "pièces emportées par site, de la liste rouge à la procédure d'usage de l'IA",
+    },
+    {
+      valeur: "3",
+      label:
+        "dispositifs de suivi du site qualifiés à la grille, avec la décision écrite pour chacun",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   materielFr:
     "Ordinateur portable, connexion internet, accès aux outils IA et aux données de production concernées",
   programme: [
@@ -5366,7 +6059,7 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
   h1Fr: "Formation IA pour le transport et la logistique : optimiser l'ensemble de l'activité",
   metaTitleFr: "Formation IA transport et logistique — 1 jour",
   metaDescriptionFr:
-    "Formation IA transport et logistique, 1 jour : planification de tournées, reporting, documents de transport, communication clients. 2 200 € HT par groupe.",
+    "Formation IA transport et logistique, 1 jour : écrits d'une tournée, réserves et réclamations, reporting d'exploitation. 2 200 € HT par groupe.",
   termesSemantiquesFr: [
     "formation IA transport",
     "IA logistique",
@@ -5378,17 +6071,40 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
   publicViseFr:
     "Exploitants, responsables logistique, personnel administratif des entreprises de transport et de logistique. Planification, suivi, documents de transport : le quotidien de l'exploitation est dense — cette journée montre comment l'IA fluidifie ces tâches pour gagner en réactivité.",
   casUsageFr: [
-    { texteFr: "Les écrits qui accompagnent la tournée" },
-    { texteFr: "Le suivi et le reporting d'activité" },
-    { texteFr: "La rédaction des écrits qui accompagnent le transport" },
-    { texteFr: "La communication avec clients et sous-traitants assistée par l'IA" },
+    {
+      texteFr:
+        "L'appel du conducteur noté sur un coin de bureau — Quarante secondes dictées au téléphone deviennent une consigne de livraison ordonnée — lieu, créneau, contact sur place, contrainte de quai, marchandise, point de vigilance — où ce qui manque porte « à confirmer ».",
+    },
+    {
+      texteFr:
+        "L'avarie signalée à 18 h 40 — Un courrier de réserve qui expose les faits datés, ne concède rien, et laisse entre crochets le délai que l'on retrouvera au contrat avant d'envoyer.",
+    },
+    {
+      texteFr:
+        "La commande recopiée trois fois — Instructions au conducteur, confirmation au client, courrier d'accompagnement : une seule demande, trois sorties, chaque chiffre remontant à sa ligne dans la commande d'origine.",
+    },
+    {
+      texteFr:
+        "Le sous-traitant qui n'a pas répondu — La demande d'affrètement et sa relance — l'écrit que personne n'envoie faute de temps, et celui qui rapporte le plus vite.",
+    },
+    {
+      texteFr:
+        "La synthèse d'exploitation du vendredi — Taux de service, aléas, litiges : le même fond en version direction et en version équipe, à partir des chiffres déjà calculés par vos outils, et sans commentaire sur une personne.",
+    },
+    {
+      texteFr:
+        "Le dossier qu'on croyait anonyme — Retirer les noms d'un compte rendu d'incident, puis constater qu'il suffit de trois questions — date, lieu de livraison, nature de la marchandise — pour retrouver le conducteur.",
+    },
   ],
   objectifsFr: [
-    "Rédiger les écrits qui accompagnent une tournée préparée par vos outils métiers",
-    "Produire suivi et reporting d'activité",
-    "Rédiger les écrits qui accompagnent le transport, sans jamais générer un document réglementé",
-    "Rédiger la communication avec clients et sous-traitants",
-    "Appliquer les règles de confidentialité",
+    "Classer une pièce d'exploitation avant tout dépôt — ordre de transport, CMR, relevé de temps de conduite nominatif, contrat client, dossier de contentieux — en nommant l'environnement autorisé, ou en refusant le dépôt",
+    "Traiter un dossier privé de ses noms comme une donnée personnelle, en montrant qu'un incident daté et localisé désigne son conducteur",
+    "Produire, à partir d'une dictée prise au téléphone, une consigne de livraison ordonnée — lieu, créneau, contact, contrainte de quai, marchandise, vigilance — où toute information absente porte « à confirmer »",
+    "Rédiger un courrier de réserve ou de réclamation exposant des faits datés et horodatés, sans admettre de responsabilité, même par une formule de politesse",
+    "Retrouver dans le contrat ouvert tout délai, article ou clause cité, et supprimer du courrier ceux que l'outil a produits de mémoire",
+    "Produire les écrits qui accompagnent une livraison — instructions au conducteur, confirmation au client, courrier d'accompagnement, demande d'affrètement et sa relance — en remontant chaque heure, adresse et contact à la commande d'origine",
+    "Refuser à l'assistant ce qui relève du TMS et du texte réglementaire : plan de tournée, répartition de chargement, affectation de conducteur, temps de conduite et de repos, document de transport réglementé",
+    "Rédiger la synthèse d'exploitation de la semaine en version direction et en version équipe, à partir d'indicateurs déjà calculés, sans faire porter le commentaire sur une personne — puis assembler le classeur d'exploitation, nommé et attribué à un titulaire",
   ],
   beneficeDirigeantFr:
     "Une planification facilitée et des documents produits plus rapidement — l'exploitation gagne en réactivité sur toute la chaîne.",
@@ -5398,6 +6114,24 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
     avant: "Une planification et un suivi manuels, des documents produits lentement.",
     apres: "Une planification facilitée, des documents et un reporting produits plus rapidement.",
   },
+  resultatsFr: [
+    {
+      valeur: "55 %",
+      label:
+        "du temps en atelier et en évaluation, sur les dossiers de son exploitation (programme minuté)",
+    },
+    {
+      valeur: "5",
+      label:
+        "écrits réutilisables emportés : deux courriers de litige, les consignes d'une tournée, une demande d'affrètement et sa relance",
+    },
+    {
+      valeur: "1",
+      label:
+        "classeur d'exploitation nommé, avec son titulaire et sa grille de contrôle avant diffusion",
+    },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr: "Matin · L'exploitation et l'IA : ce qui peut sortir, ce qui ne sort jamais",
@@ -5630,18 +6364,40 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
   publicViseFr:
     "Conseillers clientèle, gestionnaires de contrats, personnel administratif — banques, assurances, mutuelles, courtiers. La gestion de dossiers et la relation client demandent rigueur et rapidité : cette journée montre comment l'IA accélère le traitement tout en respectant la confidentialité des données financières.",
   casUsageFr: [
-    { texteFr: "La synthèse rapide de dossiers clients" },
-    { texteFr: "L'aide à la rédaction de courriers et de propositions" },
-    { texteFr: "Des réponses aux questions courantes facilitées" },
-    { texteFr: "Les bons réflexes de confidentialité des données financières" },
+    {
+      texteFr:
+        "Le dossier à préparer avant le rendez-vous — Une synthèse complète — faits, garanties en jeu, points à vérifier, pièces manquantes — obtenue sur les pièces déposées, dans le régime d'usage identifié le matin.",
+    },
+    {
+      texteFr:
+        "La question de garantie posée par un client — Interroger les conditions générales déposées et exiger la clause recopiée mot pour mot avec son numéro d'article : ce qui ne se retrouve pas dans le document est traité comme inexistant.",
+    },
+    {
+      texteFr:
+        "Le courrier d'acceptation ou de refus motivé — Motiver la décision — qui reste la vôtre — par des clauses recopiées, l'en-tête « Projet — à faire valider » restant en place jusqu'à validation.",
+    },
+    {
+      texteFr:
+        "Les trois questions qui reviennent chaque semaine — Des réponses types homogènes, chacune avec ses champs interdits, son valideur nommé et sa ligne de trace remplie en dix secondes : date, question, outil, rédacteur, valideur, source.",
+    },
+    {
+      texteFr:
+        "Le tri des pièces d'un dossier — Dire — relevé de compte, questionnaire médical rempli, constat amiable, tableau d'amortissement en main — ce qui se traite, dans quel environnement, ou pas du tout.",
+    },
+    {
+      texteFr:
+        "La demande d'avis sur une personne — La reconnaître et la refuser : le même dossier soumis deux fois à une ligne près — âge, situation familiale, quartier — a changé d'avis, à l'écran, sans que rien ne le signale.",
+    },
   ],
   objectifsFr: [
-    "Synthétiser un dossier client à l'aide de l'IA",
-    "Rédiger les courriers et réponses écrites aux clients",
-    "Rédiger des réponses aux questions courantes",
-    "Appliquer strictement les règles de confidentialité des données financières",
-    "Vérifier une production avant diffusion",
-    "Distinguer les usages autorisés des usages à haut risque, et savoir ce qui ne se délègue jamais",
+    "Qualifier chaque pièce d'un dossier avant d'ouvrir un outil — compte grand public, offre entreprise, environnement validé par la conformité, ou pas du tout — et justifier sa réponse pièce par pièce face au corrigé",
+    "Montrer qu'un dossier privé de son nom et de son numéro de contrat reste identifiant, et traiter toute pièce pseudonymisée comme une donnée personnelle",
+    "Écrire la liste rouge de son service et nommer par écrit le cas litigieux à faire trancher par la conformité",
+    "Reconnaître une décision qui ne se délègue pas — octroi, notation, tarification, sélection des risques — en la passant à la grille en quatre questions, et classer un cas douteux en « à faire trancher » plutôt que de trancher soi-même",
+    "Formuler ce que l'établissement doit au client lorsqu'un outil est intervenu dans son dossier : qui décide et signe, ce qui lui est dit, ce qui est tracé",
+    "Produire la synthèse d'un dossier et le courrier motivé qui l'accompagne, chaque garantie, franchise et délai étant recopié mot pour mot du document déposé avec sa référence d'article",
+    "Barrer, dans la production d'un binôme, toute référence contractuelle non retrouvée à la source, et vérifier la présence de l'en-tête « Projet — à faire valider avant envoi »",
+    "Produire trois réponses types aux questions récurrentes de son service, chacune portant ses champs interdits, sa validation humaine nommée et sa ligne de trace, puis assembler le protocole du service à soumettre à la conformité",
   ],
   beneficeDirigeantFr:
     "Des dossiers traités plus vite et des réponses aux clients plus réactives — la rigueur du secteur est préservée, la lenteur ne l'est pas.",
@@ -5651,6 +6407,20 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
     avant: "Un traitement de dossiers chronophage, des réponses parfois lentes.",
     apres: "Des dossiers traités plus vite, des réponses aux clients plus réactives.",
   },
+  resultatsFr: [
+    {
+      valeur: "58 %",
+      label:
+        "du temps en atelier et en évaluation, sur dossiers reconstitués et cas de son service (programme minuté)",
+    },
+    {
+      valeur: "4",
+      label:
+        "pages de protocole de service emportées : liste rouge, décisions qualifiées, réponses types tracées, feuille de route",
+    },
+    { valeur: "3", label: "réponses types tracées — rédacteur, outil, valideur nommé, date" },
+    { valeur: "10", label: "questions d'évaluation des acquis, corrigées en salle" },
+  ],
   programme: [
     {
       titreFr:
@@ -5894,7 +6664,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     "Aucun prérequis technique ni expérience de l'IA. Aucun compte à créer, aucun logiciel à installer : le séminaire est conçu pour qu'on y participe sans préparation. Chaque participant utilise son téléphone personnel pour le sondage et les QCM (évaluation individuelle et nominative) ; un ordinateur ou un téléphone par table suffit pour les temps collectifs.",
   casUsageFr: [
     {
-      texteFr: "Donner un socle commun IA à tous les services, en une journée",
+      texteFr:
+        "Le socle commun, en une journée — Réunir tous les services le même jour et repartir avec une règle écrite que chaque table a arbitrée sur douze situations réelles, puis défendue en plénière.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-1.webp",
       imageCredit: {
         name: "Product School",
@@ -5902,7 +6673,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Faire émerger les usages IA déjà présents dans l'entreprise",
+      texteFr:
+        "La photographie réelle des usages — Faire remonter, service par service et sans aucun nom, les outils d'IA déjà utilisés, y compris ceux que personne n'a validés, et le temps que coûtent chaque semaine les trois tâches les plus lourdes.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-2.webp",
       imageCredit: {
         name: "FORTYTWO",
@@ -5910,7 +6682,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Partager une méthode commune pour bien s'exprimer face à l'IA",
+      texteFr:
+        "Une méthode de demande partagée — Écrire par table deux demandes aux cinq leviers AXION sur des tâches réelles, puis vérifier qu'elles produisent le même résultat entre les mains d'une autre table.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-3.webp",
       imageCredit: {
         name: "Alexandre Pellaes",
@@ -5918,7 +6691,8 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
       },
     },
     {
-      texteFr: "Repartir avec des règles communes et des engagements par service",
+      texteFr:
+        "Les engagements par service — Repartir avec trois engagements écrits par service, annoncés devant les autres, un référent IA désigné devant tout le monde et le classeur de bord remis table par table.",
       imageSrc: "/illustrations/formations/fiches/seminaire-ia-toute-l-entreprise-1j/cas-4.webp",
       imageCredit: {
         name: "krakenimages",
@@ -5927,17 +6701,33 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
     },
   ],
   objectifsFr: [
-    "Comprendre le fonctionnement, les apports et les risques de l'IA générative, et disposer d'un socle commun de vocabulaire",
-    "Identifier les règles de sécurité et de confidentialité applicables à leurs usages, et le cadre légal qui s'impose à l'entreprise",
-    "Structurer une demande à l'IA grâce à la méthode AXION, partagée par tous",
-    "Situer les usages de l'IA déjà présents dans l'entreprise, service par service",
-    "Repérer les cas d'usage à fort potentiel dans leur propre périmètre",
-    "S'accorder sur des règles communes et des engagements concrets pour la suite",
+    "Distinguer une réponse assurée d'une réponse vérifiée, et nommer les trois risques montrés en direct : l'affirmation fausse mais crédible, le biais déclenché par un seul mot changé, la donnée déposée qu'on ne peut plus reprendre",
+    "Trancher douze situations en « ça peut sortir » / « ça ne sort jamais » / « ça ne se soumet pas du tout, c'est une décision sur une personne », et écrire la règle commune de sa table en une phrase",
+    "Citer les trois obligations qui pèsent sur l'employeur — information et consultation du comité social et économique, mention d'un contenu produit par IA transmis à un tiers, formation des équipes — et les usages mis hors jeu pour la journée",
+    "Recenser, service par service, les trois tâches les plus lourdes, le temps qu'elles coûtent chaque semaine et les usages de l'IA déjà en place, y compris ceux que personne n'a validés",
+    "Rédiger une demande aux cinq leviers AXION qui produit le même résultat entre les mains d'une autre table, et nommer le levier manquant lorsque ce n'est pas le cas",
+    "Transposer à son propre quotidien une astuce trouvée par un autre service, en la rangeant dans l'une des six familles de tâches transverses, et en produire la version diffusable",
+    "Formuler trois engagements écrits par service, en écartant les usages mis hors jeu le matin, et identifier le référent IA désigné pour la suite",
   ],
   beneficeDirigeantFr:
     "En une journée, toute l'entreprise partage un socle commun, rend visibles les usages IA déjà présents, et repart avec des règles et des engagements concrets par service — un vrai point de départ pour votre politique IA.",
   equationTempsFr:
     "1 journée réunissant toute l'entreprise → un socle commun, une cartographie réelle des usages, et une feuille de route collective formalisée le jour même.",
+  resultatsFr: [
+    {
+      valeur: "50",
+      label: "participants au maximum, réunis le même jour en tables de 6 à 8",
+    },
+    {
+      valeur: "56 %",
+      label: "du temps en travail par table et en évaluation (programme minuté)",
+    },
+    { valeur: "3", label: "engagements écrits par service, annoncés devant les autres" },
+    {
+      valeur: "10",
+      label: "questions d'évaluation individuelle, corrigées et commentées en salle",
+    },
+  ],
   modalites: ["presentiel"],
   programme: [
     {
@@ -5953,7 +6743,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
           temps: "5'",
           type: "objectif",
           titre:
-            "Ce que chacun saura faire à 17 h 30 : les six acquis de la journée affichés au mur, cochés au fil des séquences — nommer ce qu'on ne soumet jamais, écrire une demande qui marche sans son auteur, situer les usages de son service, transposer une astuce, écrire trois engagements",
+            "Ce que chacun saura faire à 17 h 30 : les acquis de la journée affichés au mur, cochés au fil des séquences — nommer ce qu'on ne soumet jamais, écrire une demande qui marche sans son auteur, situer les usages de son service, transposer une astuce, écrire trois engagements",
         },
         {
           temps: "20'",
@@ -6132,7 +6922,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
           temps: "5'",
           type: "synthese",
           titre:
-            "Bilan : les six acquis cochés au mur, le référent IA désigné devant tout le monde, et le classeur de bord remis table par table",
+            "Bilan : les acquis cochés au mur, le référent IA désigné devant tout le monde, et le classeur de bord remis table par table",
         },
       ],
     },

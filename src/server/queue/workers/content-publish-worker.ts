@@ -24,7 +24,12 @@
  * mais ne re-publie pas → action manuelle nécessaire.
  */
 
-import { Queue, Worker, type Job } from "bullmq";
+// Fix 2026-08-15 (D3 audit e2e) — DelayedError : contrat BullMQ v5 (^5.76.5)
+// après un `job.moveToDelayed(ts, job.token)` manuel. Sans ce throw, le worker
+// tentait de COMPLÉTER un job dont il avait rendu le lock → erreurs « job not
+// in active state » (cf. bullmq/dist/esm/classes/worker.js : DelayedError est
+// intercepté et n'émet PAS l'event `failed`).
+import { Queue, Worker, DelayedError, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { redis } from "@/lib/redis";
 import { slugify } from "@/lib/slug";
@@ -32,6 +37,13 @@ import { enrichOutputWithNewsArticleJsonLd } from "@/server/content-gen/generato
 import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { refreshCityCoverageForSlug } from "@/server/content-gen/cities/city-universe-sync";
 import { enqueueIndexingForTier1 } from "@/server/content-gen/indexing/enqueue";
+// Fix 2026-08-15 (D8) — chemin canonique de l'article (guides/actualites/blog)
+// partagé avec le ping indexing : un guide revalidé sous /fr/blog/guide-… (308)
+// ne rafraîchissait jamais la vraie page /fr/guides/….
+import { buildArticlePath } from "@/server/content-gen/indexing/url-builder";
+// Fix 2026-08-15 — options par défaut des files créées à la volée (retries +
+// backoff + retention), cf. module partagé job-options.
+import { CONTENT_GEN_JOB_OPTIONS } from "@/server/content-gen/queue/job-options";
 import { logStep, logStepError } from "@/server/content-gen/shared/generation-log";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 import { sendTelegram } from "@/lib/telegram";
@@ -69,7 +81,12 @@ function getFactCheckQueue(): Queue {
   if (factCheckQueue) return factCheckQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) throw new Error("REDIS_URL not set");
-  factCheckQueue = new Queue("content-fact-check", { connection: { url: redisUrl } });
+  factCheckQueue = new Queue("content-fact-check", {
+    connection: { url: redisUrl },
+    // Fix 2026-08-15 — sans defaultJobOptions, cette file ad-hoc héritait du
+    // défaut BullMQ (1 tentative, pas de retention bornée).
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return factCheckQueue;
 }
 
@@ -83,7 +100,11 @@ function getQaExtractQueue(): Queue {
   if (qaExtractQueue) return qaExtractQueue;
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) throw new Error("REDIS_URL not set");
-  qaExtractQueue = new Queue("content-qa-extract", { connection: { url: redisUrl } });
+  qaExtractQueue = new Queue("content-qa-extract", {
+    connection: { url: redisUrl },
+    // Fix 2026-08-15 — idem fact-check : retries + backoff + retention alignés.
+    defaultJobOptions: CONTENT_GEN_JOB_OPTIONS,
+  });
   return qaExtractQueue;
 }
 
@@ -139,8 +160,38 @@ function msUntilDripStart(): number {
   return now.getTime() + hoursUntil * 60 * 60 * 1000;
 }
 
+/**
+ * Fix 2026-08-15 (D4 audit e2e) — rend le slot du cap journalier.
+ *
+ * Symptôme : le compteur Redis `axion:pub:<jour>` était INCRémenté AVANT de
+ * savoir si la publication aurait lieu, et seul le dépassement de cap faisait
+ * DECR. Tous les autres chemins de sortie sans publication (revue non
+ * approuvée, quarantaine fact-check, quality gate, skip idempotent, throw
+ * quelconque) consommaient un slot À VIDE → le cap (150/j) pouvait être mangé
+ * par des rejeux/échecs sans qu'aucun article ne sorte.
+ *
+ * Best-effort : un échec du DECR ne doit pas masquer l'issue du pipeline —
+ * dans le pire cas le compteur sur-compte (comportement d'avant le fix).
+ */
+async function releaseDailySlot(redisKey: string): Promise<void> {
+  try {
+    await redis.decr(redisKey);
+  } catch (err) {
+    console.warn(
+      `[publish] releaseDailySlot failed for ${redisKey} (le cap sur-comptera d'un slot):`,
+      err instanceof Error ? err.message : String(err),
+    );
+  }
+}
+
+/** État partagé gates → pipeline : `published` bascule à true UNE SEULE FOIS,
+ *  juste après le commit de la transaction Article (Fix 2026-08-15 D4). */
+interface PublishState {
+  published: boolean;
+}
+
 async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
-  const { reviewQueueId, promoteToTier1 } = job.data;
+  const { reviewQueueId } = job.data;
 
   // Audit 2026-05-15 P1-8 — kill-switch hard-gate avant publish
   // (publish a un blast radius le plus élevé : Article inséré + IndexNow + ISR
@@ -168,7 +219,12 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
       }),
     );
     await job.moveToDelayed(nextWindowTs, job.token);
-    return;
+    // Fix 2026-08-15 (D3) — contrat BullMQ v5 : après un moveToDelayed manuel,
+    // le processor DOIT lever DelayedError. Le `return` nu d'avant faisait
+    // croire au worker que le job était terminé alors que son lock avait été
+    // rendu → « job not in active state ». DelayedError est intercepté par
+    // BullMQ (worker.js) : PAS d'event `failed`, pas de Sentry/Telegram.
+    throw new DelayedError();
   }
 
   // P0-4 — Daily cap check atomique via Redis INCR (P1.5 QW-2).
@@ -204,8 +260,39 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
       }),
     );
     await job.moveToDelayed(nextWindowTs, job.token);
-    return;
+    // Fix 2026-08-15 (D3) — même contrat que la fenêtre drip ci-dessus.
+    // NB : le DECR a déjà été fait juste au-dessus (ce chemin n'entre pas
+    // dans le try/finally D4 ci-dessous, pas de double-DECR possible).
+    throw new DelayedError();
   }
+
+  // Fix 2026-08-15 (D4) — le slot journalier est acquis (INCR ci-dessus) : à
+  // partir d'ici, TOUT chemin qui ne publie pas (early-return métier OU throw)
+  // doit le rendre, sinon le cap est consommé à vide. Le flag `published` est
+  // posé par executePublishPipeline juste après le commit de la transaction
+  // Article — les étapes best-effort post-publication (fact-check, revalidate,
+  // pings) qui échoueraient ensuite ne rendent PAS le slot : un article a bien
+  // été publié.
+  const publishState: PublishState = { published: false };
+  try {
+    await executePublishPipeline(job, publishState);
+  } finally {
+    if (!publishState.published) {
+      await releaseDailySlot(redisKey);
+    }
+  }
+}
+
+/**
+ * Cœur du pipeline de publication, extrait de `runPublishPipeline` (Fix
+ * 2026-08-15 D4) pour que l'acquisition/restitution du slot journalier vive
+ * dans un try/finally unique. Aucune logique métier modifiée par l'extraction.
+ */
+async function executePublishPipeline(
+  job: Job<PublishJobPayload>,
+  publishState: PublishState,
+): Promise<void> {
+  const { reviewQueueId, promoteToTier1 } = job.data;
 
   const review = await prisma.reviewQueue.findUnique({
     where: { id: reviewQueueId },
@@ -615,6 +702,16 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // ⚠️ INERTE tant que les creds GSC (`GSC_OAUTH_*`/`GSC_PROPERTY_URL`) sont absents
   // du worker : la source CTR renvoie `null` → le lifecycle noop. Brancher GSC =
   // prérequis opérationnel pour activer réellement l'élagage.
+  //
+  // Fix 2026-08-15 (D2 audit e2e) — CLARIFICATION : le tier calculé EN AMONT
+  // (gen-worker `finalIndexationTier` : soft-404 → tier_3, score < seuil →
+  // tier_2 ; improver idem) est DÉLIBÉRÉMENT ignoré ici depuis le 2026-06-17
+  // (décision Will ci-dessus). `promoteToTier1` transporté par le payload ne
+  // gate plus RIEN au niveau du tier : il ne sert plus qu'à la traçabilité et
+  // au gate du ping indexing plus bas. Les gardes de tier amont sont donc
+  // mortes côté publication — c'est VOULU (doctrine tout-indexable), mais les
+  // LOGS doivent le dire (cf. logStep « Tier amont ignoré » après l'insert) au
+  // lieu d'annoncer une publication tier-2/noindex qui n'existe pas.
   const indexationTier = "tier_1_indexable";
 
   // Sprint A-suite P6 — Item 3. Log correlationId pour traçabilité end-to-end.
@@ -863,12 +960,39 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     return a;
   });
 
+  // Fix 2026-08-15 (D4) — la transaction a commité : l'article EST publié
+  // (create ou refresh). Le slot journalier est définitivement consommé, même
+  // si une étape best-effort ci-dessous échoue.
+  publishState.published = true;
+
   await logStep(cgJob.id, "article_insert", "Article + ArticleTranslation FR inserted", {
     article_id: article.id,
     tier: indexationTier,
     slug: slugCandidate,
     is_news: isNews,
+    // Fix 2026-08-15 (D2c) — traçabilité : promoteToTier1 est loggué à côté du
+    // tier réellement appliqué pour rendre visible l'écart doctrine amont/aval.
+    promote_to_tier_1: promoteToTier1,
   });
+
+  // Fix 2026-08-15 (D2c) — mention EXPLICITE en console quand l'amont avait
+  // demandé tier-2 (promoteToTier1=false : score < seuil, soft-404, doctrine…)
+  // mais que l'article part quand même INDEXABLE (décision Will 2026-06-17
+  // « tout contenu publié = indexable », cf. bloc indexationTier ci-dessus).
+  // Sans cette ligne, le GenerationLog laissait croire à une publication
+  // noindex alors que l'article entrait dans le sitemap.
+  if (!promoteToTier1) {
+    await logStep(
+      cgJob.id,
+      "publish",
+      "⚠️ Tier amont ignoré : promoteToTier1=false mais article publié tier_1_indexable (décision Will 2026-06-17 tout-indexable)",
+      {
+        article_id: article.id,
+        tier_applied: indexationTier,
+        promote_to_tier_1: false,
+      },
+    );
+  }
 
   // Sprint External Links Database 2026-05-22 — Validation + tracking usage.
   // Best-effort post-publish : NE BLOQUE PAS la publication même si validation échoue
@@ -1022,19 +1146,69 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
   // P0-10 — best-effort post-transaction : l'article est déjà en DB et publié.
   // Un échec de l'enqueue d'indexation NE doit PAS rollback ni masquer la publication.
   // On log via console.warn + logStepError pour visibilité sans blast radius.
-  if (promoteToTier1) {
+  // Fix 2026-08-15 (audit e2e) — le ping n'est plus conditionné à
+  // `promoteToTier1`.
+  //
+  // Depuis la décision Will du 2026-06-17, TOUT article publié l'est en
+  // `tier_1_indexable` : il entre au sitemap et sert `index,follow`. Ne pas
+  // pinger un article sous le seuil ne le protégeait donc de rien — Google le
+  // découvrait de toute façon par le sitemap — mais retardait de plusieurs jours
+  // la découverte des articles concernés. Une incohérence pure : le sitemap
+  // disait « indexe-moi », le ping disait « pas la peine ».
+  //
+  // Les deux canaux restent gardés en aval par leurs propres verrous : IndexNow
+  // exige `INDEXNOW_KEY`, et l'API Google reste derrière son double opt-in
+  // (`GOOGLE_INDEXING_API_ENABLED` + `GOOGLE_INDEXING_ARTICLES`) avec son quota
+  // de 200/24 h. Aucun risque de dépense ni de dépassement ici.
+  //
+  // ⚠️ À savoir pour la suite : la protection anti-doorway que `promoteToTier1`
+  // était censé porter (soft-404, score < 50, doctrine) n'existe plus depuis
+  // juin — ni au tier, ni désormais au ping. Rétablir un vrai tier-2 reste une
+  // décision ouverte, à prendre côté doctrine d'indexation, pas ici.
+  {
     try {
-      await enqueueIndexingForTier1({
+      // Fix 2026-08-15 (D6 audit e2e) — le helper retourne des booléens
+      // (indexnowEnqueued/googleEnqueued) qui étaient IGNORÉS : on logguait
+      // « Indexing enqueued » même quand rien n'était enfilé (INDEXNOW_KEY
+      // absente, Redis en échec, slug non routable). Le catch ci-dessous était
+      // du code mort (le helper ne throw jamais). On journalise désormais la
+      // vérité : succès (partiel) vs échec explicite.
+      const indexing = await enqueueIndexingForTier1({
         articleId: article.id,
         slug: slugCandidate,
         isNews,
+        // Fix 2026-08-15 (D8) — signal guide pour la résolution de route.
+        templateVariant: cgJob.templateId ?? null,
         origin: "content-gen",
       });
-      await logStep(cgJob.id, "indexnow_ping", "Indexing enqueued (IndexNow + Google Indexing)", {
-        article_id: article.id,
-        slug: slugCandidate,
-        is_news: isNews,
-      });
+      if (indexing.indexnowEnqueued || indexing.googleEnqueued) {
+        await logStep(
+          cgJob.id,
+          "indexnow_ping",
+          `Indexing enqueued (IndexNow=${indexing.indexnowEnqueued ? "oui" : "non"}, Google=${indexing.googleEnqueued ? "oui" : "non"})`,
+          {
+            article_id: article.id,
+            slug: slugCandidate,
+            is_news: isNews,
+            url: indexing.url,
+            indexnow_enqueued: indexing.indexnowEnqueued,
+            google_enqueued: indexing.googleEnqueued,
+          },
+        );
+      } else {
+        await logStepError(
+          cgJob.id,
+          "indexnow_ping",
+          "Indexing NON enfilé (INDEXNOW_KEY absente, Redis indisponible ou slug non routable) — article publié SANS ping",
+          {
+            article_id: article.id,
+            slug: slugCandidate,
+            is_news: isNews,
+            indexnow_enqueued: false,
+            google_enqueued: false,
+          },
+        );
+      }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.warn(
@@ -1154,34 +1328,65 @@ async function runPublishPipeline(job: Job<PublishJobPayload>): Promise<void> {
     }
   }
 
-  const paths = [
-    `/fr/blog/${slugCandidate}`,
-    ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
-    "/fr/blog",
-    "/sitemap.xml",
-    "/sitemap-index.xml",
-    ...(isNews ? ["/sitemap-news.xml"] : []),
-    ...cityPaths,
-  ];
-  try {
-    await revalidateContent({ paths });
+  // Fix 2026-08-15 (D8 audit e2e) — chemin CANONIQUE de l'article via
+  // resolveArticleRoute (partagé avec le ping indexing) : un guide (slug
+  // `guide-*`) vit sous /fr/guides/… ; ne revalider que /fr/blog/guide-…
+  // (308 → guides) ne rafraîchissait JAMAIS la vraie page. L'ancien path
+  // /fr/blog/<slug> est conservé (revalidation inoffensive) pour ne rien
+  // régresser ; le Set dédoublonne (news : canonique = /fr/actualites/<slug>
+  // déjà présent dans la liste).
+  const canonicalArticlePath = buildArticlePath({
+    slug: slugCandidate,
+    isNews,
+    templateVariant: cgJob.templateId ?? null,
+  });
+  const isGuideRoute = canonicalArticlePath.startsWith("/fr/guides/");
+  const paths = Array.from(
+    new Set([
+      canonicalArticlePath,
+      `/fr/blog/${slugCandidate}`,
+      ...(isNews ? [`/fr/actualites/${slugCandidate}`, "/fr/actualites"] : []),
+      "/fr/blog",
+      ...(isGuideRoute ? ["/fr/guides"] : []),
+      "/sitemap.xml",
+      "/sitemap-index.xml",
+      ...(isNews ? ["/sitemap-news.xml"] : []),
+      ...cityPaths,
+    ]),
+  );
+  // Fix 2026-08-15 (D1 audit e2e) — le logStep « Revalidate paths via internal
+  // API » était écrit INCONDITIONNELLEMENT et le catch était du code mort
+  // (revalidateContent ne throw jamais) : le GenerationLog affichait « succès »
+  // même quand la revalidation ISR était totalement cassée en prod (secret
+  // absent/faux, 401/500, timeout). Le helper retourne désormais {ok, reason} :
+  // on ne loggue le succès QUE s'il est réel, et on escalade l'échec
+  // (console.error + Sentry via captureWorkerError + logStepError) SANS bloquer
+  // la publication (l'article est en ligne, l'ISR 1h finira par rattraper).
+  const revalResult = await revalidateContent({ paths });
+  if (revalResult?.ok) {
     await logStep(cgJob.id, "revalidate_path", "Revalidate paths via internal API", {
       paths,
       city_cascade_count: cityPaths.length,
       mentioned_cities: mentionedCities,
     });
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.warn(
-      `[publish] revalidateContent failed (best-effort) for article ${article.id}:`,
-      msg,
+  } else {
+    const reason = revalResult?.reason ?? "unknown";
+    console.error(
+      `[publish] revalidateContent FAILED (non bloquant) for article ${article.id}: ${reason}`,
+    );
+    captureWorkerError(
+      "publish",
+      QUEUE_NAME,
+      undefined,
+      new Error(`revalidate_failed:${reason} (article ${article.id})`),
     );
     await logStepError(
       cgJob.id,
       "revalidate_path",
-      `revalidateContent failed (best-effort): ${msg}`,
+      `Revalidation ISR ÉCHOUÉE (non bloquant, rattrapage ISR ≤ 1h) : ${reason}`,
       {
         article_id: article.id,
+        reason,
         paths,
       },
     );
@@ -1269,6 +1474,10 @@ async function processJob(job: Job<PublishJobPayload>): Promise<void> {
   try {
     await runPublishPipeline(job);
   } catch (err) {
+    // Fix 2026-08-15 (D3) — DelayedError = report volontaire (fenêtre drip /
+    // cap journalier), PAS un échec : re-throw tel quel pour que BullMQ
+    // l'intercepte (worker.js), sans marquer le ContentGenJob `failed`.
+    if (err instanceof DelayedError) throw err;
     const errMsg = err instanceof Error ? err.message : String(err);
     if (errMsg !== "kill_switch_active") {
       await markPublishJobFailed(job.data.reviewQueueId, errMsg);
@@ -1295,6 +1504,15 @@ export function startPublishWorker(): Worker<PublishJobPayload> {
     removeOnFail: { count: 5000 },
   });
   workerInstance.on("failed", (job, err) => {
+    // Fix 2026-08-15 (D3) — défense en profondeur : BullMQ v5 n'émet
+    // normalement PAS `failed` pour un DelayedError (intercepté dans
+    // worker.js), mais si une version/un chemin le laissait passer, un report
+    // volontaire de job ne doit déclencher NI Sentry NI Telegram NI marquage
+    // failed — même traitement que kill_switch_active.
+    if (err instanceof DelayedError || err?.name === "DelayedError") {
+      console.log(`[content-publish-worker] job ${job?.id} delayed (drip/cap), pas un échec`);
+      return;
+    }
     console.error(`[content-publish-worker] job ${job?.id} failed:`, err);
     // Sprint S+4-C (audit content-gen deep 2026-05-18 P1-7) — Sentry capture
     // additif à console.error + Telegram. Stack traces + tags + extras

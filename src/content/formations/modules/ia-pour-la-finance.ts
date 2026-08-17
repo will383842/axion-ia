@@ -59,9 +59,11 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
       enonce:
         "À la fin de ce module, vous qualifiez un document financier dans son régime d'usage avant de l'ouvrir dans un outil, vous en tirez une synthèse dont chaque affirmation renvoie à une page, et vous savez précisément ce que l'IA ne calculera pas.",
       objectifGlobalId: "obj-1",
-      // Le module pose aussi la liste rouge et les trois régimes d'usage : c'est
-      // lui qui installe les règles de confidentialité de toute la journée.
-      objectifsSecondairesIds: ["obj-5"],
+      // Le module sert aussi, en second, la ligne de partage entre ce que l'IA
+      // rédige et ce qu'elle ne calcule pas (atelier « faites-la se tromper »,
+      // obj-2) et la synthèse d'un document long rattachée page à page, avec ses
+      // trois questions à l'émetteur (démonstration et second temps, obj-3).
+      objectifsSecondairesIds: ["obj-2", "obj-3"],
       dureeMin: 10,
       notes: {
         script:
@@ -237,10 +239,12 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous obtenez une formule ou un croisement de tableur en décrivant seulement la structure de vos colonnes — aucune donnée ne quitte votre fichier — et vous produisez une trame de contrôle qu'une autre personne peut dérouler, cocher et signer.",
-      objectifGlobalId: "obj-2",
-      // Décrire une structure sans livrer de données est un geste de
-      // confidentialité autant que de méthode : le module sert aussi obj-5.
-      objectifsSecondairesIds: ["obj-5"],
+      objectifGlobalId: "obj-4",
+      // Deux autres objectifs sont servis ici : l'explication ligne à ligne
+      // d'une formule héritée, risque de réordonnancement des colonnes compris
+      // (démonstration 2, obj-5), et la trame de contrôle déroulable, cochable
+      // et signable (démonstration 3, second temps d'atelier, obj-6).
+      objectifsSecondairesIds: ["obj-5", "obj-6"],
       dureeMin: 5,
       notes: {
         script:
@@ -404,7 +408,11 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous faites dire à vos indicateurs déjà calculés ce qu'ils veulent dire, pour le lecteur que vous avez nommé — direction, opérationnels, banque, associé — et vous disposez d'une séquence de relance d'impayé prête à l'emploi.",
-      objectifGlobalId: "obj-3",
+      objectifGlobalId: "obj-7",
+      // Le second temps d'atelier complète, depuis les trames du kit, la
+      // séquence de relance d'impayé à trois niveaux ou la note de synthèse au
+      // dirigeant — mentions dues reprises de la trame, jamais de l'outil : obj-8.
+      objectifsSecondairesIds: ["obj-8"],
       dureeMin: 5,
       notes: {
         script:
@@ -562,7 +570,11 @@ export const IA_POUR_LA_FINANCE: EnrichissementFormation = [
     objectif: {
       enonce:
         "À la fin de ce module, vous repérez seul, sans aide, le moment où l'IA se trompe sur un chiffre — et vous repartez avec votre classeur de clôture assistée monté, nommé, et tenu par quelqu'un.",
-      objectifGlobalId: "obj-4",
+      // La chasse à l'erreur porte sur une note financière et un calcul produits
+      // par l'IA — quatre erreurs de chiffre et deux affirmations non sourcées :
+      // c'est le second volet d'obj-2, dont le premier (la ligne de partage) a
+      // été posé au module 1.
+      objectifGlobalId: "obj-2",
       dureeMin: 5,
       notes: {
         script:

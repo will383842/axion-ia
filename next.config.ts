@@ -160,6 +160,35 @@ const nextConfig: NextConfig = {
     // mémoire webpack au prix d'un build légèrement plus long. Cf. guide
     // node_modules/next/dist/docs/01-app/02-guides/memory-usage.md.
     webpackMemoryOptimizations: true,
+    // 🔴 Recovery build OOM 2026-08-12 — MÊME symptôme qu'en juin (heap 6144 Mo
+    // saturé en phase « Creating an optimized production build », deux builds
+    // consécutifs en échec), alors que TOUTES les parades de juin étaient déjà
+    // en place. Cause trouvée dans le guide mémoire officiel :
+    //
+    //   « [Le webpack build worker] est activé PAR DÉFAUT si votre application
+    //     n'a PAS de configuration webpack personnalisée [...]. Si vous avez une
+    //     configuration webpack personnalisée, activez-le explicitement via
+    //     `experimental.webpackBuildWorker: true`. »
+    //
+    // Or le correctif de juin a précisément AJOUTÉ une fonction `webpack()` (pour
+    // désactiver le cache) — ce qui a, du même geste, désactivé silencieusement
+    // le build worker. Le correctif anti-OOM avait donc désarmé la protection
+    // anti-OOM native de Next, et le gain net s'est effacé dès que la base de
+    // code a regrossi.
+    //
+    // Le worker isole la compilation dans un processus Node séparé : le pic de
+    // la compilation ne partage plus le heap du processus principal. C'est le
+    // levier qui manquait, et il ne touche PAS au plafond de 6144 Mo — plafond
+    // qu'il ne faut surtout pas relever, la phase SSG faisant déjà culminer le
+    // runner 16 Go à ~15-16 Go de RSS.
+    //
+    // ⚠️ La doc note une incompatibilité possible avec certains plugins webpack
+    // personnalisés. Ici la config custom se borne à `config.cache = false` :
+    // aucun plugin, donc risque faible.
+    // ⚠️ Incompatible avec `next build --experimental-debug-memory-usage` : si
+    // un jour il faut profiler la mémoire du build, désactiver ce flag le temps
+    // de la mesure.
+    webpackBuildWorker: true,
     // ViewTransition disabled until we actually wrap route transitions in
     // <ViewTransition>. The flag alone changes Next's navigation behavior
     // (waits for render before swap) and adds perceived latency without
@@ -487,6 +516,17 @@ const nextConfig: NextConfig = {
       {
         source: "/:locale(fr|en)/implantations/:region/:ville/sites-web-ia",
         destination: "/:locale/sites-web-augmentes",
+        permanent: true,
+      },
+      // Audit GEO/AEO 2026-08-14 (GEO-012) — `/implementations` (pluriel) est codé
+      // en dur dans les prompts générateurs et dans les citations KB, mais la seule
+      // route réelle est `/implementation` (singulier) : ~la moitié du corpus blog
+      // envoyait ses liens in-body sur un 404. Filet de redirect top-level.
+      // ⚠️ Ne matche QUE `implementations` : les 2 157 pages villes `/implantations/*`
+      // (« implAntations », sans `e`) ne sont pas capturées — segment littéral distinct.
+      {
+        source: "/:locale(fr|en)/implementations",
+        destination: "/:locale/implementation",
         permanent: true,
       },
       // EN miroir (path `/locations` au lieu de `/implantations`)

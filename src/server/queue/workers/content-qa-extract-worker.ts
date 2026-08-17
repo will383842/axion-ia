@@ -12,7 +12,8 @@
  *   (anti-doorway HCU strict — Will pourra promote tier-1 manuellement après
  *   enrichment V1.5).
  * - Pas de cosine similarity pour `similarQaIds[]` (V1.5+).
- * - revalidatePath() best-effort (no-op si pas de request context).
+ * - Revalidation /fr/faq via revalidateContent (API interne — Fix 2026-08-15 D7,
+ *   le revalidatePath direct était un no-op silencieux en worker bg).
  *
  * **Trigger** : enqueue depuis `content-publish-worker` après insert Article DB.
  *
@@ -22,7 +23,11 @@
  */
 
 import { Worker, type Job } from "bullmq";
-import { revalidatePath } from "next/cache";
+// Fix 2026-08-15 (D7 audit e2e) — `revalidatePath` de next/cache est un no-op
+// SILENCIEUX dans un worker BullMQ (aucun request context) : /fr/faq n'était
+// jamais rafraîchi après création des Q/R (visibles seulement à l'expiration
+// ISR). Même bug que P1-16 corrigé dans content-publish-worker → même helper.
+import { revalidateContent } from "@/server/content-gen/shared/revalidate-content";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
@@ -161,11 +166,19 @@ async function processJob(job: Job<QaExtractJobPayload>): Promise<void> {
     }
   }
 
-  // Revalidate route FAQ index (best-effort no-op silencieux en worker bg)
-  try {
-    revalidatePath("/fr/faq");
-  } catch {
-    // worker bg sans request context → no-op
+  // Revalidate route FAQ index via l'API interne (Fix 2026-08-15 D7). Toujours
+  // non bloquant (revalidateContent ne throw jamais), mais l'échec est désormais
+  // JOURNALISÉ (D1) au lieu d'être avalé par un catch vide.
+  if (created > 0) {
+    const revalResult = await revalidateContent({ paths: ["/fr/faq"] });
+    if (!revalResult.ok) {
+      await logStepError(
+        contentGenJobId,
+        "qa_extract",
+        `Revalidation /fr/faq échouée (${revalResult.reason ?? "unknown"}) — FAQ visibles à l'expiration ISR (non bloquant)`,
+        { created, reason: revalResult.reason ?? "unknown" },
+      );
+    }
   }
 
   await logStep(contentGenJobId, "qa_extract", `Q/R post-process done`, {

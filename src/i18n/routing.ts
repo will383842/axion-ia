@@ -13,6 +13,25 @@ export const routing = defineRouting({
   locales: ["fr", "en"],
   defaultLocale: "fr",
   localePrefix: "always",
+  // GEO-005 (audit GEO/AEO 2026-08-15) — next-intl émet par défaut un en-tête
+  // HTTP `Link: <…/fr/x>; hreflang="fr", <…/en/x>; hreflang="en", <…/x>;
+  // hreflang="x-default"` sur CHAQUE réponse HTML dès que `locales.length > 1`.
+  // Or EN est désactivé depuis 2026-05-16 : `/en/*` répond 301 → FR et l'URL
+  // sans préfixe redirige elle aussi. On annonçait donc à Google, sur 100 % des
+  // pages, un alternate `en` vers une redirection et un `x-default` différent de
+  // celui du HTML — signal contradictoire, gaspillage de crawl-budget,
+  // impressions résiduelles `/en/*` en GSC.
+  //
+  // Le hreflang reste porté par le HTML (`buildProductMetadata` dans
+  // `src/lib/seo.ts` + `src/app/[locale]/layout.tsx`), qui est déjà correctement
+  // gaté par `isEnLocaleDisabled()`. C'est le canal de référence : couper
+  // l'en-tête HTTP supprime la contradiction sans rien perdre.
+  //
+  // ⚠️ NE PAS « corriger » en retirant `en` de `locales` : la toggle EN doit
+  // rester (AGENTS.md). Si EN est un jour réactivé, le hreflang HTML se
+  // repeuple tout seul via `EN_LOCALE_ENABLED=true`.
+  // Garde : `src/i18n/__tests__/alternate-links-header.spec.ts`.
+  alternateLinks: false,
   pathnames: {
     "/": "/",
     "/design": "/design",
@@ -280,6 +299,17 @@ export const routing = defineRouting({
     // vérité unique = pricing.ts. Sert le nouvel onglet header « Tarifs ».
     "/tarifs": { fr: "/tarifs", en: "/pricing" },
     "/roi": "/roi",
+    // Simulateur de gains v2 (2026-08-12) — même moteur que `/roi`, servi sans
+    // en-tête ni pied de page pour le trafic payant. `noindex` : c'est la
+    // variante tunnel d'une page déjà indexée, pas une page de plus.
+    "/simulateur": "/simulateur",
+    // Page d'atterrissage publicitaire (VSL vidéo) — envoie sur `/simulateur`.
+    // `noindex` + hors sitemap : contenu redondant avec `/roi`, qui est la page
+    // canonique et indexée.
+    // ⚠️ À ne pas confondre avec `/interventions/gagner-du-temps`, ancienne
+    // formation collective retirée le 2026-06-12 et redirigée 301 vers
+    // `/formations` (cf. next.config.ts).
+    "/diagnostic": "/diagnostic",
     "/recherche": { fr: "/recherche", en: "/search" },
     "/guide-ia": { fr: "/guide-ia", en: "/ai-guide" },
     "/methodologie": { fr: "/methodologie", en: "/methodology" },
@@ -302,10 +332,22 @@ export const routing = defineRouting({
     // publiés (DB-driven, FR-only doctrine v1.2). Détail `/guides/[slug]` =
     // page rendue par `loadGuideForView` (HowTo JSON-LD si steps fiables).
     // Les guides individuels apparaissent aussi dans le sub-sitemap `blog`
-    // (continuité éditoriale Articles) ; le hub a son propre sub-sitemap
-    // `guides` (1 URL : le hub lui-même).
+    // (continuité éditoriale Articles). Le hub est émis par `pages.xml` — son
+    // sub-sitemap dédié a été retiré le 2026-08-16 (GEO-147, redondant à 1 URL).
     "/guides": { fr: "/guides", en: "/guides" },
     "/guides/[slug]": { fr: "/guides/[slug]", en: "/guides/[slug]" },
+
+    // GEO-131 (audit GEO/AEO 2026-08-14) — `/ressources` existe, répond 200 et
+    // est indexable, mais n'était déclarée dans AUCUN sitemap : la clé manquait
+    // ici, et `pages.xml` est construit en parcourant `routing.pathnames`.
+    // Vérifié en production le 2026-08-16 : `GET /fr/ressources` → 200, et
+    // 0 occurrence dans `sitemap/pages.xml`.
+    //
+    // Slug IDENTIQUE en EN, comme `/guides` juste au-dessus : c'est le motif qui
+    // évite d'avoir à déclarer une entrée dédiée dans `mapEnToFr` (le repli
+    // « slugs identiques » la couvre) et qui n'expose pas la route au bug de
+    // boucle 307 de next-intl, lequel ne frappe que les mappings `fr ≠ en`.
+    "/ressources": { fr: "/ressources", en: "/ressources" },
 
     // Banque d'images / Image bank (Sprint M? — axionia-image-bank skill v1.0).
     // CC BY 4.0, indexable Google Images / Bing / LLMs. Pages publiques uniquement
@@ -334,6 +376,11 @@ export const routing = defineRouting({
       en: "/gallery/[slug]/download",
     },
 
+    // Catalogue imprimé — page d'atterrissage du QR code imprimé en page 03 du
+    // catalogue papier (2026-08-15). L'URL courte `axion-ia.com/catalogue` est
+    // IMPRIMÉE : elle ne doit jamais changer. fr==en (EN redirigé 301→FR).
+    "/catalogue": { fr: "/catalogue", en: "/catalogue" },
+
     // Avis clients — système d'avis modérés soumis par les clients (2026-07-06).
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307 self-loop.
     // ⚠️ Routes STATIQUES + facettes (2 segments) déclarées AVANT `/avis/[slug]`
@@ -351,6 +398,14 @@ export const routing = defineRouting({
 
     "/confirmation": { fr: "/confirmation", en: "/confirmation" },
     "/desabonnement": { fr: "/desabonnement", en: "/unsubscribe" },
+    // Lot L4 — confirmation d'opposition à la conservation en vivier.
+    // ⚠️ Chemin IDENTIQUE en fr et en, volontairement : le bug next-intl v4.11 /
+    // Next 16.2 (boucle 307 auto-redirect, cf. AGENTS.md) ne se déclenche QUE
+    // sur les routes dont le mapping diffère entre locales. Un chemin unique
+    // met cette page hors d'atteinte du bug, sans rien attendre de son
+    // correctif — et le mot « vivier » n'a de toute façon pas à être traduit
+    // sur un site francophone.
+    "/vivier-opposition": { fr: "/vivier-opposition", en: "/vivier-opposition" },
     "/preferences-cookies": { fr: "/preferences-cookies", en: "/cookie-preferences" },
     "/mes-donnees": { fr: "/mes-donnees", en: "/my-data" },
     "/mes-donnees/export": { fr: "/mes-donnees/export", en: "/my-data/export" },

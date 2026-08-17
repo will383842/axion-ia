@@ -90,6 +90,7 @@ vi.mock("@/server/qualiopi/documents/templates/facture", () => ({
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn().mockResolvedValue({ userId: "admin-test-id" }),
+  requireHabilitation: vi.fn().mockResolvedValue({ userId: "admin-uuid", role: "super_admin" }),
   logQualiopiActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -535,7 +536,25 @@ describe("genererFactureFormationAction", () => {
     expect("data" in result).toBe(true);
   });
 
-  it("subrogation : destinataire forcé à 'opco' même si entreprise passé", async () => {
+  // 🔴 CE TEST VERROUILLAIT UN DÉFAUT — retourné le 16/08.
+  //
+  // Il s'appelait « subrogation : destinataire forcé à 'opco' même si
+  // entreprise passé » et exigeait que le choix de l'humain soit ÉCRASÉ. C'est
+  // exactement le comportement qui rendait **le reste à charge facturable à
+  // personne** : impossible d'émettre la seconde facture, celle de l'entreprise.
+  //
+  // Or la règle métier n'a jamais été douteuse (plan console, Lot 8, étape 6) :
+  // *l'OPCO paie sa part, le client le reste à charge*. Deux factures.
+  //
+  // 🔑 C'est le piège du test-photographie : il enregistrait ce que le code
+  // FAISAIT, pas ce qu'il DEVAIT faire — et lui donnait par là l'apparence d'une
+  // décision réfléchie. Le même piège a été trouvé le même jour sur `mixte`
+  // (« ne dit rien non plus sur un financement mixte »).
+  //
+  // Le test est retourné : sans dossier de financement, le destinataire demandé
+  // est RESPECTÉ. La subrogation reste bien tracée sur la facture — c'est un
+  // fait du dossier, pas un arbitrage de destinataire.
+  it("subrogation : le destinataire demandé est RESPECTÉ, plus jamais écrasé", async () => {
     mockPrisma.trainingSession.findUnique.mockResolvedValue(
       makeSession({
         financementType: "opco",
@@ -547,14 +566,18 @@ describe("genererFactureFormationAction", () => {
 
     await genererFactureFormationAction({
       sessionId: SESSION_UUID,
-      destinataire: "entreprise", // forcé → opco
+      destinataire: "entreprise",
       ventilation: "forfait",
     });
 
     const createCall = mockCall<{ data: Record<string, unknown> }>(
       mockPrisma.factureFormation.create,
     );
-    expect(createCall.data["destinataire"]).toBe("opco");
+    expect(
+      createCall.data["destinataire"],
+      "le destinataire a été écrasé : le reste à charge redevient infacturable",
+    ).toBe("entreprise");
+    // La subrogation reste tracée : elle décrit le dossier, pas le destinataire.
     expect(createCall.data["subrogation"]).toBe(true);
   });
 

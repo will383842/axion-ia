@@ -13,7 +13,7 @@
 // valeur chaque jour (worker de découverte) fait basculer noindex→indexable tout
 // seul → c'est ce qui rend l'onglet « vivant ». Déterministe pour un `now` donné.
 
-import { isVilleIndexable } from "@/content/villes";
+import { isVilleIndexable } from "@/content/villes/core";
 import { getIndexableRegions } from "@/content/regions";
 import { isNoindexStubRoute } from "@/lib/seo-noindex-routes";
 import { isGlossaryTermIndexable, GLOSSARY_MIN_INDEX_WORDS } from "@/content/glossary-extension";

@@ -48,6 +48,23 @@ import {
 import { STACK_TOOLS } from "@/content/stack-ia";
 import { STATIC_LOCALES } from "@/i18n/routing";
 import { buildProductJsonLd, buildBreadcrumbJsonLd, buildFaqSpeakableJsonLd } from "@/lib/seo";
+import type { Metadata } from "next";
+
+/**
+ * Rend le texte du titre, quelle que soit la forme renvoyée par Next.
+ *
+ * `Metadata["title"]` est une union : une string nue (le `title.template` du
+ * layout racine y appose « · Axion-IA »), ou `{ absolute }` quand la page
+ * court-circuite ce template parce que son titre porte DÉJÀ la marque.
+ * Assertion directe sur `meta.title` = test qui dépend de la forme, pas du
+ * contenu : `toContain` sur un objet ne teste RIEN et passe au vert.
+ */
+function texteDuTitre(meta: Metadata): string {
+  const t = meta.title;
+  if (typeof t === "string") return t;
+  if (t && typeof t === "object" && "absolute" in t) return String(t.absolute ?? "");
+  return "";
+}
 
 describe("/stack-ia/[tool] · generateStaticParams", () => {
   // EN désactivé (2026-05-16) → pré-rendu FR seul (STATIC_LOCALES). Le test suit
@@ -111,12 +128,33 @@ describe("/stack-ia/[tool] · generateMetadata", () => {
     const metaEn = await generateMetadata({
       params: Promise.resolve({ locale: "en", tool: "claude" }),
     });
-    expect(metaFr.title).toContain("Claude");
-    expect(metaFr.title).toContain("Axion-IA");
-    expect(metaEn.title).toContain("Claude");
-    expect(metaEn.title).toContain("Axion-IA");
+    expect(texteDuTitre(metaFr)).toContain("Claude");
+    expect(texteDuTitre(metaFr)).toContain("Axion-IA");
+    expect(texteDuTitre(metaEn)).toContain("Claude");
+    expect(texteDuTitre(metaEn)).toContain("Axion-IA");
     expect(typeof metaFr.description).toBe("string");
     expect((metaFr.description as string).length).toBeLessThanOrEqual(160);
+  });
+
+  // GEO-057 (audit GEO/AEO 2026-08-14) — cette route est l'une des trois
+  // familles où la marque sortait DEUX fois en SERP : son titre source est
+  // « … · cabinet Axion-IA », le bypass du `title.template` ne testait que le
+  // suffixe exact ` · Axion-IA`, donc le template du layout racine en ajoutait
+  // un second → « … · cabinet Axion-IA · Axion-IA ».
+  //
+  // C'est la correction qui a fait rougir l'assertion ci-dessus : le titre sort
+  // désormais en `{ absolute }`, et `toContain` sur un objet ne teste rien. Le
+  // helper le résout, et ce test-ci verrouille le fond, pas la forme.
+  it("🔴 n'écrit JAMAIS la marque deux fois dans le titre", async () => {
+    for (const locale of ["fr", "en"] as const) {
+      const meta = await generateMetadata({ params: Promise.resolve({ locale, tool: "claude" }) });
+      const titre = texteDuTitre(meta);
+      const occurrences = titre.split("Axion-IA").length - 1;
+      expect(
+        occurrences,
+        `titre ${locale} = « ${titre} » — la marque doit apparaître exactement une fois`,
+      ).toBe(1);
+    }
   });
 
   it("expose les alternates FR + EN dans canonical & languages", async () => {
