@@ -45,6 +45,9 @@ const CODES_ATTENDUS: string[] = [
   // que la clôture auto refuse justement de poser sans émargement).
   "session_bloquee_en_cours",
   "session_sans_dispositif_emargement",
+  // Les liens SONT partis et personne n'a signe : l'angle mort que les trois
+  // autres regles laissaient ouvert, et que le cron de 06:00 ouvrait lui-meme.
+  "emargement_aucune_signature",
   // Phase « Tout pour animer » (2026-08-05) : le slot `diaporama` du kit (LE
   // .pptx projeté) n'est pas déposé pour une session qui démarre sous 7 jours.
   // Jamais levée pour une formation sans kit résolvable (sur-mesure, dupliquée).

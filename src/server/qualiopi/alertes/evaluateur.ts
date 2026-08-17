@@ -249,6 +249,64 @@ function designerSession(s: {
  * (report, annulation) ne relève pas de cette alerte non plus — elle sera
  * couverte par sa propre trajectoire.
  */
+/**
+ * Session commencée, liens d'émargement VIVANTS, et pas une seule signature.
+ *
+ * 🔴 C'est l'angle mort que les trois autres règles laissaient ouvert, et il
+ * est ouvert PAR le cron de 06:00 : celui-ci crée les jetons, ce qui éteint
+ * `session_sans_dispositif_emargement` (qui exige l'absence de jeton vivant).
+ * La session disparaît alors de toute surveillance jusqu'à J+3.
+ *
+ * ⚠️ On teste l'ÉTAT réel — `emargementSigneAt` sur les inscriptions —, pas
+ * l'existence du dispositif. Avoir posé le dispositif n'est pas avoir émargé,
+ * et c'est exactement la confusion qui rendait la session invisible.
+ *
+ * La borne haute est `dateFin + 48 h` : au-delà, les jetons ont expiré, le
+ * geste n'est plus possible, et `session_bloquee_en_cours` prend le relais pour
+ * CONSTATER. Alerter après ferait crier une alerte qui ne sert plus à rien —
+ * et une alerte qui crie sans issue cesse d'être lue.
+ */
+async function regleEmargementAucuneSignature(now: Date): Promise<AlerteCandidate[]> {
+  const finJetons = new Date(now.getTime() - 48 * 60 * 60 * 1000);
+  const sessions = await prisma.trainingSession.findMany({
+    where: {
+      statut: { in: ["planifiee", "en_cours"] },
+      dateDebut: { lte: now },
+      // Fenêtre encore rattrapable : les jetons vivent 48 h après la fin.
+      dateFin: { gte: finJetons },
+      AND: [
+        // Il y a bien quelqu'un à faire signer.
+        { enrollments: { some: { statut: { notIn: ["abandon", "exclu"] } } } },
+        // Le dispositif EST en place — c'est ce qui distingue cette règle de
+        // `session_sans_dispositif_emargement`, sa jumelle en négatif.
+        {
+          enrollments: {
+            some: { emargementTokens: { some: { revokedAt: null, expiresAt: { gt: now } } } },
+          },
+        },
+        // Et personne n'a signé. `emargementSigneAt` est posé à la PREMIÈRE
+        // signature, quel que soit le canal (portail ou grille présentielle).
+        { enrollments: { none: { emargementSigneAt: { not: null } } } },
+      ],
+    },
+    select: { id: true, numero: true, titreSession: true, dateDebut: true, dateFin: true },
+    take: 100,
+  });
+
+  return sessions.map((s) => ({
+    code: "emargement_aucune_signature" as const,
+    niveau: "critique" as const,
+    titre: "Liens d'émargement partis, aucune signature",
+    message:
+      `Session ${s.numero}${s.titreSession ? ` — ${s.titreSession}` : ""} : les liens sont ` +
+      `en circulation depuis le ${s.dateDebut.toLocaleDateString("fr-FR")} et PERSONNE n'a signé. ` +
+      `Les jetons expirent 48 h après le ${s.dateFin.toLocaleDateString("fr-FR")} : après, ` +
+      `l'émargement ne sera plus rattrapable et l'écart devra être consigné (ind. 12).`,
+    cibleType: "TrainingSession" as const,
+    cibleId: s.id,
+  }));
+}
+
 async function regleSessionSansDispositifEmargement(now: Date): Promise<AlerteCandidate[]> {
   const sessions = await prisma.trainingSession.findMany({
     where: {
@@ -2078,6 +2136,7 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   { nom: "kit_sorties_non_pretes", fn: regleSortiesKitNonPretes },
   { nom: "session_bloquee_en_cours", fn: regleSessionBloqueeEnCours },
   { nom: "session_sans_dispositif_emargement", fn: regleSessionSansDispositifEmargement },
+  { nom: "emargement_aucune_signature", fn: regleEmargementAucuneSignature },
   { nom: "diaporama_manquant_session", fn: regleDiaporamaManquant },
   { nom: "satisfaction_manquante", fn: regleSatisfactionManquante },
   { nom: "evaluation_acquis_manquante", fn: regleEvaluationAcquisManquante },
