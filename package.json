@@ -101,7 +101,9 @@
     "adr:new": "tsx scripts/adr-new.ts",
     "verify:all": "pnpm typecheck && pnpm lint && pnpm i18n:check && pnpm anti-siren:check && pnpm anti-hex:check && pnpm use-client:check && pnpm contrast:check && pnpm radius:check && pnpm admin-nav:routes-check && pnpm image-bank:isolation-check && pnpm qualiopi:isolation-check && pnpm test",
     "prepare": "husky",
-    "notif:test-telegram": "tsx scripts/notif/test-telegram.ts"
+    "notif:test-telegram": "tsx scripts/notif/test-telegram.ts",
+    "a11y:admin": "playwright test --project=chromium --grep @a11y-admin",
+    "e2e:admin-nav": "playwright test --project=chromium --grep @admin-nav"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
