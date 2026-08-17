@@ -188,6 +188,10 @@ export default async function SessionHubPage({ params }: PageProps) {
           id: true,
           raisonSociale: true,
           numero: true,
+          // 🔴 Lot 1ter §5 — PARTICULIER ≠ PROFESSIONNEL, et ce n'est pas de
+          // l'ergonomie : un particulier signe un CONTRAT L.6353-3, pas une
+          // convention L.6353-1. Sans ce champ, l'écran proposait les deux.
+          type: true,
         },
       },
       _count: {
@@ -209,6 +213,16 @@ export default async function SessionHubPage({ params }: PageProps) {
 
   // ── Formateurs assignables (R9) — habilitation calculée sur la formation ───
   const allTrainers = await listTrainers({ actifOnly: true });
+  // Lot 1ter §2 — une lettre de mission suppose DEUX personnes. Le statut
+  // `dirigeant` existe dans le registre des formateurs ; on ne devine pas par
+  // comparaison de noms, ce qui serait faux au premier homonyme.
+  const formateurEstLeDirigeant =
+    trainingSession.formateurPrincipalId !== null &&
+    allTrainers.some(
+      (t) => t.id === trainingSession.formateurPrincipalId && t.statut === "dirigeant",
+    );
+  const clientType = trainingSession.client?.type ?? null;
+
   const formateurOptions = allTrainers.map((t) => ({
     id: t.id,
     label: `${t.prenom} ${t.nom}${t.statut === "sous_traitant" ? " (sous-traitant)" : ""}`,
@@ -775,6 +789,16 @@ export default async function SessionHubPage({ params }: PageProps) {
           sessionId={id}
           enrollments={enrollmentsLight}
           documentsExistants={documentsSerialized}
+          // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
+          // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
+          // sessions : Kit OPCO sur un financement direct, Contrat de formation
+          // (particulier) sur un client entreprise.
+          contexte={{
+            financement: trainingSession.financementType,
+            typeClient: clientType,
+            statut: trainingSession.statut,
+            formateurEstLeDirigeant,
+          }}
         />
 
         {/* Signature des pièces CONTRACTUELLES.

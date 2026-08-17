@@ -51,6 +51,11 @@ import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import {
+  motifRepli,
+  pieceMiseEnAvant,
+  type ContexteSession,
+} from "@/server/qualiopi/documents/pertinence-piece";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
 
@@ -113,6 +118,17 @@ export interface DocumentsSectionProps {
   sessionId: string;
   enrollments: EnrollmentInfo[];
   documentsExistants: DocumentGenereInfo[];
+  /**
+   * Lot 1ter §2/§5 — ce que ce dossier appelle réellement.
+   *
+   * 🔴 Sans lui, les ~20 boutons de génération s'affichaient TOUS, sur TOUTES
+   * les sessions : Kit OPCO sur un financement direct, Contrat de formation
+   * (particulier) sur un client entreprise, Convention tripartite OPCO sur une
+   * session sans OPCO. Le bruit n'est pas neutre — il produit des pièces à
+   * annuler. Une « Lettre de mission formateur » a dû être annulée au registre
+   * pour ce motif exact, sur le premier dossier réel.
+   */
+  contexte: ContexteSession;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -974,6 +990,7 @@ export function DocumentsSection({
   sessionId,
   enrollments,
   documentsExistants,
+  contexte,
 }: DocumentsSectionProps): React.ReactElement {
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>(
     enrollments[0]?.id ?? "",
@@ -1062,89 +1079,206 @@ export function DocumentsSection({
             émise, utilisez la liste « Documents générés » ci-dessous.
           </p>
         )}
-        <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
-          <ConventionDocButton
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("convention")}
-          />
-          {/*
-            Placé juste après la convention, et pas en fin de grille : c'est son
-            annexe pédagogique, la convention la référence nommément en section
-            « Documents annexés ». Les deux se génèrent ensemble ou la première
-            promet une pièce qui n'accompagne pas.
-          */}
-          <SessionDocButton
-            label="Programme de l'action"
-            action={genererProgrammeAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("programme")}
-          />
-          {/* Avec le programme, les deux pièces descriptives de l'art. R.6351-5 :
-              le programme dit CE QUI est enseigné, celle-ci dit QUAND, OÙ et
-              COMMENT (calendrier session_jours, rythme, lieu, encadrement). */}
-          <SessionDocButton
-            label="Organisation de l'action"
-            action={genererOrganisationActionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-          />
-          <SessionDocButton
-            label="Convention tripartite (OPCO)"
-            action={genererConventionTripartiteAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
-          />
-          <SessionDocButton
-            label="Feuille d'émargement"
-            action={genererEmargementAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("emargement")}
-          />
-          <SessionDocButton
-            label="Règlement intérieur"
-            action={genererReglementInterieurAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("reglement_interieur")}
-          />
-          <SessionDocButton
-            label="Livret d'accueil"
-            action={genererLivretAccueilAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("livret_accueil")}
-          />
-          <SessionDocButton
-            label="Questionnaire de positionnement"
-            action={genererPositionnementAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("positionnement")}
-          />
-          <SessionDocButton
-            label="Questionnaire de satisfaction"
-            action={genererSatisfactionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("satisfaction")}
-          />
-          <SessionDocButton
-            label="Kit OPCO"
-            action={genererKitOpcoAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("kit_opco")}
-          />
-          <LettreMissionButtons
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("lettre_mission")}
-          />
-        </div>
+        {/*
+          🔴 Lot 1ter §2/§5 — LE BRUIT DU BLOC DOCUMENTS.
+
+          Ces boutons étaient TOUS rendus, sur TOUTES les sessions. Sur un
+          financement direct entreprise, CINQ sur vingt concernaient le dossier
+          ouvert. Le reste n'était pas seulement inutile : il a produit des
+          pièces à ANNULER au registre — une « Lettre de mission formateur » a
+          dû l'être sur le premier dossier réel, parce que le
+          dirigeant-formateur ne peut pas se confier une mission à lui-même.
+
+          On ne SUPPRIME rien. Un dossier atypique existe, et un bouton
+          introuvable enverrait quelqu'un contourner l'outil. On met en avant ce
+          que ce dossier appelle, et on replie le reste EN DISANT POURQUOI :
+          une pièce reléguée sans explication ressemble à une pièce oubliée.
+
+          La règle vit dans `documents/pertinence-piece.ts` — pure et testée.
+        */}
+        {(() => {
+          const boutons: ReadonlyArray<{ type: string; el: React.ReactElement }> = [
+            {
+              type: "convention",
+              el: (
+                <ConventionDocButton
+                  key="convention"
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("convention")}
+                />
+              ),
+            },
+            {
+              // Place juste apres la convention, et pas en fin de grille : c'est son
+              // annexe pedagogique, la convention la reference nommement en section
+              // « Documents annexes ». Les deux se generent ensemble, ou la premiere
+              // promet une piece qui ne l'accompagne pas.
+              type: "programme",
+              el: (
+                <SessionDocButton
+                  key="programme"
+                  label="Programme de l'action"
+                  action={genererProgrammeAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("programme")}
+                />
+              ),
+            },
+            {
+              // Avec le programme, les deux pieces descriptives de l'art. R.6351-5 :
+              // le programme dit CE QUI est enseigne, celle-ci dit QUAND, OU et
+              // COMMENT (calendrier, rythme, lieu, encadrement).
+              type: "organisation_action",
+              el: (
+                <SessionDocButton
+                  key="organisation_action"
+                  label="Organisation de l'action"
+                  action={genererOrganisationActionAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                />
+              ),
+            },
+            {
+              type: "convention_tripartite",
+              el: (
+                <SessionDocButton
+                  key="convention_tripartite"
+                  label="Convention tripartite (OPCO)"
+                  action={genererConventionTripartiteAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
+                />
+              ),
+            },
+            {
+              type: "emargement",
+              el: (
+                <SessionDocButton
+                  key="emargement"
+                  label="Feuille d'émargement"
+                  action={genererEmargementAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("emargement")}
+                />
+              ),
+            },
+            {
+              type: "reglement_interieur",
+              el: (
+                <SessionDocButton
+                  key="reglement_interieur"
+                  label="Règlement intérieur"
+                  action={genererReglementInterieurAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("reglement_interieur")}
+                />
+              ),
+            },
+            {
+              type: "livret_accueil",
+              el: (
+                <SessionDocButton
+                  key="livret_accueil"
+                  label="Livret d'accueil"
+                  action={genererLivretAccueilAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("livret_accueil")}
+                />
+              ),
+            },
+            {
+              type: "positionnement",
+              el: (
+                <SessionDocButton
+                  key="positionnement"
+                  label="Questionnaire de positionnement"
+                  action={genererPositionnementAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("positionnement")}
+                />
+              ),
+            },
+            {
+              type: "satisfaction",
+              el: (
+                <SessionDocButton
+                  key="satisfaction"
+                  label="Questionnaire de satisfaction"
+                  action={genererSatisfactionAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("satisfaction")}
+                />
+              ),
+            },
+            {
+              type: "kit_opco",
+              el: (
+                <SessionDocButton
+                  key="kit_opco"
+                  label="Kit OPCO"
+                  action={genererKitOpcoAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("kit_opco")}
+                />
+              ),
+            },
+            {
+              type: "lettre_mission",
+              el: (
+                <LettreMissionButtons
+                  key="lettre_mission"
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("lettre_mission")}
+                />
+              ),
+            },
+          ];
+
+          const attendues = boutons.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          const autres = boutons.filter((b) => !pieceMiseEnAvant(b.type, contexte));
+
+          return (
+            <>
+              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                {attendues.map((b) => b.el)}
+              </div>
+
+              {autres.length > 0 && (
+                <details className="mt-[var(--space-admin-4)]">
+                  {/*
+                    Replié, jamais supprimé — et le NOMBRE est annoncé sur le
+                    résumé : un dépli qui ne dit pas ce qu'il contient ne se
+                    clique pas, et la pièce y reste introuvable.
+                  */}
+                  <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                    Autres pièces ({autres.length}) — hors du cas de ce dossier
+                  </summary>
+                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                    {autres.map((b) => (
+                      <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
+                        {b.el}
+                        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          {motifRepli(b.type, contexte)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </>
+          );
+        })()}
       </div>
 
       {/* ── 2. Documents par stagiaire ───────────────────────────────────── */}
