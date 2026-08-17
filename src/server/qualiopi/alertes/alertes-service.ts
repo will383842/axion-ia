@@ -56,6 +56,17 @@ function isStub(): boolean {
 /**
  * Crée une alerte en DB. Si une alerte (code, cibleId) non résolue existe déjà,
  * retourne `null` (dé-duplication silencieuse).
+ *
+ * 🔴 Le `findFirst` préalable est CONSERVÉ, mais il ne décide plus seul : depuis
+ * T3a, un index unique partiel garantit l'unicité en base. La lecture évite
+ * simplement une écriture inutile dans le cas courant ; le conflit, lui, est
+ * absorbé ci-dessous.
+ *
+ * Ce rattrapage n'est pas une précaution abstraite : `portail.ts` appelle cette
+ * fonction en `void creerOuDedup(...)`, sans `await`. Sans le `catch`, une
+ * course entre deux stagiaires signalant la même chose à la même seconde
+ * produirait un **rejet non traité** — c'est-à-dire, en pratique, un plantage de
+ * requête pour un doublon dont la réponse correcte est « ne rien faire ».
  */
 export async function creerOuDedup(input: AlerteInput): Promise<AlerteSysteme | null> {
   if (isStub()) return null;
@@ -69,17 +80,28 @@ export async function creerOuDedup(input: AlerteInput): Promise<AlerteSysteme | 
   });
   if (existing) return null;
 
-  return prisma.alerteSysteme.create({
-    data: {
-      code: input.code,
-      niveau: input.niveau,
-      titre: input.titre,
-      message: input.message,
-      ...(input.cibleType !== undefined ? { cibleType: input.cibleType } : {}),
-      ...(input.cibleId !== undefined ? { cibleId: input.cibleId } : {}),
-      metadata: (input.metadata ?? {}) as never,
-    },
-  });
+  try {
+    return await prisma.alerteSysteme.create({
+      data: {
+        code: input.code,
+        niveau: input.niveau,
+        titre: input.titre,
+        message: input.message,
+        ...(input.cibleType !== undefined ? { cibleType: input.cibleType } : {}),
+        ...(input.cibleId !== undefined ? { cibleId: input.cibleId } : {}),
+        metadata: (input.metadata ?? {}) as never,
+      },
+    });
+  } catch (err) {
+    // P2002 = violation de contrainte d'unicité. Quelqu'un a créé la même
+    // alerte entre notre lecture et notre écriture : le résultat voulu est
+    // atteint, il l'est juste par l'autre. On rend `null`, comme pour un
+    // doublon détecté à la lecture — TOUTE autre erreur remonte.
+    if (typeof err === "object" && err !== null && (err as { code?: string }).code === "P2002") {
+      return null;
+    }
+    throw err;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -158,23 +180,79 @@ export async function countNonLues(): Promise<number> {
 // synchroniserAlertes
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Ce qu'un passage du moteur a réellement fait — et ce qu'il a laissé de côté. */
+export interface SyntheseSynchronisation {
+  crees: number;
+  resolues: number;
+  /**
+   * Règles dont la moisson a été tronquée au plafond. 🔴 Remontée jusqu'ici
+   * exprès : une troncature qui ne quitte pas l'évaluateur n'est pas déclarée,
+   * elle est journalisée — et un journal que personne ne lit ne prévient
+   * personne. L'appelant (cron, action de console) doit pouvoir la relayer.
+   */
+  tronquees: { nom: string; trouvees: number; retenues: number }[];
+}
+
 /**
- * Évalue les alertes (via evaluerAlertes si disponible), crée les nouvelles
- * et résout automatiquement celles dont la condition a disparu.
+ * Évalue les alertes, crée les nouvelles et résout automatiquement celles dont
+ * la condition a disparu.
  *
- * Import dynamique d'evaluerAlertes pour éviter un cycle si evaluateur.ts
- * n'est pas encore livré (Agent A l'implémente séparément).
+ * T3a — un `createMany` et un `updateMany`, au lieu d'un aller-retour par
+ * alerte. La dé-duplication est désormais garantie par un index unique partiel
+ * (migration `20260816160000_alertes_dedup_garantie_base`) et non plus par une
+ * lecture-puis-écriture que deux passages concurrents pouvaient traverser.
  */
-export async function synchroniserAlertes(): Promise<{ crees: number; resolues: number }> {
-  if (isStub()) return { crees: 0, resolues: 0 };
+export async function synchroniserAlertes(): Promise<SyntheseSynchronisation> {
+  if (isStub()) return { crees: 0, resolues: 0, tronquees: [] };
 
-  const { candidates: candidats, reglesEnEchec } = await evaluerAlertesDetaille();
+  const {
+    candidates: candidats,
+    reglesEnEchec,
+    reglesTronquees: tronquees,
+  } = await evaluerAlertesDetaille();
 
-  let crees = 0;
-  for (const c of candidats) {
-    const created = await creerOuDedup(c);
-    if (created) crees++;
-  }
+  // ── T3a — une SALVE, plus un aller-retour par alerte ──────────────────────
+  //
+  // Avant : pour chaque candidate, un `findFirst` puis un `create`. À 400
+  // alertes ouvertes et 28 règles, le cron passait des centaines d'allers-
+  // retours à faire ce qu'une insertion sait faire seule — et la dé-duplication
+  // reposait sur une lecture-puis-écriture que deux passages concurrents
+  // pouvaient traverser tous les deux.
+  //
+  // `skipDuplicates` s'appuie sur l'index UNIQUE PARTIEL posé par la migration
+  // `20260816160000_alertes_dedup_garantie_base` : la base refuse le doublon,
+  // le moteur n'a plus à le chercher. La règle métier n'a pas bougé d'un mot ;
+  // c'est le nombre de requêtes qui change.
+  //
+  // ⚠️ Deux candidates identiques DANS LE MÊME lot : `ON CONFLICT DO NOTHING`
+  // ne dédoublonne pas à l'intérieur d'une même commande sur toutes les
+  // versions. On dédoublonne donc en mémoire avant d'insérer — c'est gratuit et
+  // ça ne dépend pas du comportement exact de Postgres.
+  const vus = new Set<string>();
+  const aInserer = candidats
+    .filter((c) => {
+      const cle = `${c.code}::${c.cibleId ?? "null"}`;
+      if (vus.has(cle)) return false;
+      vus.add(cle);
+      return true;
+    })
+    .map((c) => ({
+      code: c.code,
+      niveau: c.niveau,
+      titre: c.titre,
+      message: c.message,
+      ...(c.cibleType !== undefined ? { cibleType: c.cibleType } : {}),
+      ...(c.cibleId !== undefined ? { cibleId: c.cibleId } : {}),
+      // Pas de `metadata` : `AlerteCandidate` n'en porte pas, et la colonne a
+      // `@default("{}")`. L'ancien code passait `input.metadata ?? {}` sur un
+      // champ qu'aucune règle ne renseignait — une valeur par défaut recopiée
+      // à la main.
+    }));
+
+  const { count: crees } =
+    aInserer.length > 0
+      ? await prisma.alerteSysteme.createMany({ data: aInserer, skipDuplicates: true })
+      : { count: 0 };
 
   // 🔴 Une règle en échec (fail-soft) ne produit AUCUNE candidate : résoudre
   // « ce qui n'est plus signalé » effacerait alors en masse toutes les alertes
@@ -184,7 +262,7 @@ export async function synchroniserAlertes(): Promise<{ crees: number; resolues: 
     console.warn(
       `[alertes-service] résolution auto SUSPENDUE ce tour : ${reglesEnEchec.length} règle(s) en échec (${reglesEnEchec.join(", ")})`,
     );
-    return { crees, resolues: 0 };
+    return { crees, resolues: 0, tronquees };
   }
 
   // Résolution automatique : codes à resolutionAuto=true dont la condition
@@ -204,21 +282,24 @@ export async function synchroniserAlertes(): Promise<{ crees: number; resolues: 
     select: { id: true, code: true, cibleId: true },
   });
 
-  let resolues = 0;
-  for (const alerte of alertesOuvertes) {
-    const key = `${alerte.code}::${alerte.cibleId ?? "null"}`;
-    if (!actifSet.has(key)) {
-      try {
-        await resoudreAlerte(alerte.id);
-        resolues++;
-      } catch (err) {
-        console.error(
-          `[alertes-service] erreur résolution auto alerte ${alerte.id}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
-    }
-  }
+  // ── T3a — UN `updateMany`, plus un `update` par alerte ────────────────────
+  //
+  // Le `try/catch` par alerte du code précédent n'était pas une résilience : il
+  // avalait l'erreur et passait à la suivante, si bien qu'un incident de base
+  // laissait le compteur `resolues` mentir sur ce qui avait réellement été
+  // écrit. Une seule commande est à la fois plus rapide et plus honnête —
+  // elle réussit entièrement ou échoue franchement.
+  const aResoudre = alertesOuvertes
+    .filter((a) => !actifSet.has(`${a.code}::${a.cibleId ?? "null"}`))
+    .map((a) => a.id);
 
-  return { crees, resolues };
+  const { count: resolues } =
+    aResoudre.length > 0
+      ? await prisma.alerteSysteme.updateMany({
+          where: { id: { in: aResoudre } },
+          data: { resolue: true, resolueAt: new Date() },
+        })
+      : { count: 0 };
+
+  return { crees, resolues, tronquees };
 }

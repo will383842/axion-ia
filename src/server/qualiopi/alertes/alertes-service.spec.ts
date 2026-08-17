@@ -18,6 +18,7 @@ vi.mock("@/lib/prisma", () => ({
     alerteSysteme: {
       findFirst: vi.fn(),
       create: vi.fn(),
+      createMany: vi.fn(),
       update: vi.fn(),
       updateMany: vi.fn(),
       findMany: vi.fn(),
@@ -36,6 +37,7 @@ vi.mock("./evaluateur", () => {
     evaluerAlertesDetaille: vi.fn(async () => ({
       candidates: (await evaluerAlertes()) as unknown[],
       reglesEnEchec: [] as string[],
+      reglesTronquees: [] as { nom: string; trouvees: number; retenues: number }[],
     })),
   };
 });
@@ -80,6 +82,7 @@ const mp = prisma as unknown as {
   alerteSysteme: {
     findFirst: ReturnType<typeof vi.fn>;
     create: ReturnType<typeof vi.fn>;
+    createMany: ReturnType<typeof vi.fn>;
     update: ReturnType<typeof vi.fn>;
     updateMany: ReturnType<typeof vi.fn>;
     findMany: ReturnType<typeof vi.fn>;
@@ -128,12 +131,21 @@ describe("alertes-service — stub-aware", () => {
     process.env["DATABASE_URL"] = orig;
   });
 
-  it("synchroniserAlertes retourne { crees:0, resolues:0 } si stub", async () => {
+  // ⚠️ `try/finally` — et pas seulement par style. Les tests de ce bloc posent
+  // `DATABASE_URL=stub.invalid` puis le restaurent APRÈS l'assertion. Quand
+  // l'assertion échoue, la restauration ne s'exécute jamais : la variable reste
+  // sur le stub et TOUS les tests suivants du fichier court-circuitent. Constaté
+  // le 16/08 — une seule vraie défaillance en avait produit quinze fausses, et
+  // c'est la plus longue partie du diagnostic.
+  it("synchroniserAlertes ne touche à rien si stub", async () => {
     const orig = process.env["DATABASE_URL"];
     process.env["DATABASE_URL"] = "postgresql://stub:stub@stub.invalid:5432/stub";
-    const result = await synchroniserAlertes();
-    expect(result).toEqual({ crees: 0, resolues: 0 });
-    process.env["DATABASE_URL"] = orig;
+    try {
+      const result = await synchroniserAlertes();
+      expect(result).toEqual({ crees: 0, resolues: 0, tronquees: [] });
+    } finally {
+      process.env["DATABASE_URL"] = orig;
+    }
   });
 
   it("countNonLues retourne 0 si stub", async () => {
@@ -173,6 +185,33 @@ describe("creerOuDedup", () => {
     });
     expect(mp.alerteSysteme.create).toHaveBeenCalledOnce();
     expect(result).not.toBeNull();
+  });
+
+  // 🔴 T3a — la course que l'index unique rend DÉTECTABLE, et qu'il fallait
+  // donc absorber. `portail.ts` appelle `void creerOuDedup(...)` sans `await` :
+  // un rejet non traité y ferait planter la requête d'un stagiaire pour un
+  // doublon dont la bonne réponse est « ne rien faire ».
+  it("absorbe un conflit d'unicité concurrent (P2002) et rend null", async () => {
+    mp.alerteSysteme.findFirst.mockResolvedValue(null); // rien au moment de la lecture
+    mp.alerteSysteme.create.mockRejectedValue(
+      Object.assign(new Error("unique"), { code: "P2002" }),
+    );
+
+    await expect(
+      creerOuDedup({ code: "c", niveau: "info", titre: "T", message: "M" }),
+    ).resolves.toBeNull();
+  });
+
+  it("mais laisse remonter TOUTE autre erreur", async () => {
+    // Absorber sans distinguer transformerait une panne de base en silence.
+    mp.alerteSysteme.findFirst.mockResolvedValue(null);
+    mp.alerteSysteme.create.mockRejectedValue(
+      Object.assign(new Error("connexion perdue"), { code: "P1001" }),
+    );
+
+    await expect(
+      creerOuDedup({ code: "c", niveau: "info", titre: "T", message: "M" }),
+    ).rejects.toThrow("connexion perdue");
   });
 
   it("retourne null si doublon non résolu existe (code+cibleId identiques)", async () => {
@@ -349,12 +388,16 @@ describe("countNonLues", () => {
 describe("synchroniserAlertes", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mp.alerteSysteme.findFirst.mockResolvedValue(null); // pas de doublons
-    mp.alerteSysteme.create.mockImplementation((args: { data: { code: string } }) =>
-      Promise.resolve(makeAlerte({ code: args.data.code })),
+    // T3a — le moteur écrit désormais en SALVE. `createMany` renvoie ce que la
+    // base aurait inséré ; c'est elle, et non plus une lecture préalable, qui
+    // tranche les doublons (index unique partiel).
+    mp.alerteSysteme.createMany.mockImplementation((args: { data: unknown[] }) =>
+      Promise.resolve({ count: args.data.length }),
+    );
+    mp.alerteSysteme.updateMany.mockImplementation((args: { where: { id: { in: string[] } } }) =>
+      Promise.resolve({ count: args.where.id.in.length }),
     );
     mp.alerteSysteme.findMany.mockResolvedValue([]); // pas d'alertes à résoudre auto
-    mp.alerteSysteme.update.mockResolvedValue(makeAlerte());
   });
 
   it("retourne { crees, resolues } depuis evaluerAlertes", async () => {
@@ -372,14 +415,53 @@ describe("synchroniserAlertes", () => {
     expect(result.resolues).toBe(0);
   });
 
-  it("ne re-crée pas si doublon — crees=0", async () => {
+  // 🔴 La dé-duplication a CHANGÉ DE MAIN. Elle reposait sur un `findFirst`
+  // suivi d'un `create` : deux passages concurrents lisaient tous les deux
+  // « aucun doublon » et écrivaient tous les deux. Elle est désormais garantie
+  // par un index unique partiel, et `skipDuplicates` la fait respecter côté
+  // base. Ce test vérifie donc ce qui compte maintenant : que le moteur
+  // DEMANDE bien à la base d'ignorer les doublons, et qu'il rapporte ce que la
+  // base a réellement inséré — pas ce qu'il croyait insérer.
+  it("délègue la dé-duplication à la base, et rapporte ce qu'elle a inséré", async () => {
     mockEvaluerAlertes.mockResolvedValue([
       { code: "referent_handicap_absent", niveau: "critique", titre: "T", message: "M" },
     ]);
-    mp.alerteSysteme.findFirst.mockResolvedValue(makeAlerte()); // doublon existant
+    mp.alerteSysteme.createMany.mockResolvedValue({ count: 0 }); // la base a refusé le doublon
 
     const result = await synchroniserAlertes();
     expect(result.crees).toBe(0);
+    const args = mp.alerteSysteme.createMany.mock.calls[0]?.[0] as { skipDuplicates: boolean };
+    expect(args.skipDuplicates, "sans skipDuplicates, un doublon lèverait").toBe(true);
+  });
+
+  it("dé-duplique aussi À L'INTÉRIEUR d'un même lot", async () => {
+    // `ON CONFLICT DO NOTHING` ne protège pas contre deux lignes identiques
+    // dans la MÊME commande sur toutes les versions de Postgres. Deux règles
+    // peuvent parfaitement produire la même candidate.
+    mockEvaluerAlertes.mockResolvedValue([
+      { code: "opco_sans_accord", niveau: "important", titre: "T", message: "M", cibleId: "s-1" },
+      { code: "opco_sans_accord", niveau: "important", titre: "T", message: "M", cibleId: "s-1" },
+      { code: "opco_sans_accord", niveau: "important", titre: "T", message: "M", cibleId: "s-2" },
+    ]);
+    await synchroniserAlertes();
+    const args = mp.alerteSysteme.createMany.mock.calls[0]?.[0] as { data: unknown[] };
+    expect(args.data, "le lot contient deux fois la même alerte").toHaveLength(2);
+  });
+
+  it("🔴 UNE seule commande d'insertion, quel que soit le nombre d'alertes", async () => {
+    // C'est tout l'objet de T3a : à 400 alertes, le moteur faisait 800 allers-
+    // retours. Si ce test rougit, on est revenu à une écriture par alerte.
+    mockEvaluerAlertes.mockResolvedValue(
+      Array.from({ length: 120 }, (_, i) => ({
+        code: "opco_sans_accord",
+        niveau: "important" as const,
+        titre: "T",
+        message: "M",
+        cibleId: `s-${i}`,
+      })),
+    );
+    await synchroniserAlertes();
+    expect(mp.alerteSysteme.createMany).toHaveBeenCalledTimes(1);
     expect(mp.alerteSysteme.create).not.toHaveBeenCalled();
   });
 
@@ -393,8 +475,8 @@ describe("synchroniserAlertes", () => {
 
     const result = await synchroniserAlertes();
     expect(result.resolues).toBe(1);
-    expect(mp.alerteSysteme.update).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { id: "alert-to-resolve" } }),
+    expect(mp.alerteSysteme.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: { in: ["alert-to-resolve"] } } }),
     );
   });
 
@@ -409,8 +491,8 @@ describe("synchroniserAlertes", () => {
     // Aucune alerte auto-résolution ouverte → resolues = 0
     const result = await synchroniserAlertes();
     expect(result.resolues).toBe(0);
-    // Vérifie que update n'a pas été appelé
-    expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
+    // Rien à résoudre → aucune commande d'écriture, pas une commande vide.
+    expect(mp.alerteSysteme.updateMany).not.toHaveBeenCalled();
   });
 
   it("SUSPEND la résolution auto quand une règle a échoué (fail-soft ≠ disparu)", async () => {
@@ -419,13 +501,14 @@ describe("synchroniserAlertes", () => {
     (evaluerAlertesDetaille as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       candidates: [],
       reglesEnEchec: ["devis_expire_j7"],
+      reglesTronquees: [],
     });
     mp.alerteSysteme.findMany.mockResolvedValue([
       makeAlerte({ id: "alert-ouverte", code: "referent_handicap_absent", cibleId: null }),
     ]);
     const result = await synchroniserAlertes();
     expect(result.resolues).toBe(0);
-    expect(mp.alerteSysteme.update).not.toHaveBeenCalled();
+    expect(mp.alerteSysteme.updateMany).not.toHaveBeenCalled();
   });
 
   it("dé-duplique par (code, cibleId) pour la résolution auto", async () => {
@@ -448,13 +531,14 @@ describe("synchroniserAlertes", () => {
     ]);
 
     const result = await synchroniserAlertes();
-    // Seule ses-002 doit être résolue (ses-001 est encore dans les candidates)
+    // Seule ses-002 doit être résolue (ses-001 est encore dans les candidates).
+    // 🔴 La précision par (code, cibleId) est LA règle métier de ce bloc : c'est
+    // elle qui empêche de clore une alerte encore vraie. Le passage à un
+    // `updateMany` ne devait pas l'entamer d'un pouce.
     expect(result.resolues).toBe(1);
-    expect(mp.alerteSysteme.update).toHaveBeenCalledWith(
-      expect.objectContaining({ where: { id: "alert-ses-002" } }),
-    );
-    expect(mp.alerteSysteme.update).not.toHaveBeenCalledWith(
-      expect.objectContaining({ where: { id: "alert-ses-001" } }),
-    );
+    const args = mp.alerteSysteme.updateMany.mock.calls[0]?.[0] as {
+      where: { id: { in: string[] } };
+    };
+    expect(args.where.id.in).toEqual(["alert-ses-002"]);
   });
 });

@@ -8230,7 +8230,17 @@ model AlerteSysteme {
   @@index([resolue])
   @@index([niveau])
   @@index([cibleType, cibleId])
-  @@index([niveau, resolue, notifiedAt])
+  /// T3a — couvre le prédicat de dé-duplication ET celui de la résolution
+  /// automatique. Les index `code` seul et `resolue` seul ne couvraient ni l'un
+  /// ni l'autre.
+  @@index([code, cibleId, resolue])
+  /// ⚠️ Il existe en base un index UNIQUE PARTIEL que Prisma ne sait pas
+  /// exprimer : `alertes_systeme_dedup_ouverte_uniq`, sur
+  /// `(code, COALESCE(cible_id, uuid_zero)) WHERE resolue = false`
+  /// (migration `20260816160000_alertes_dedup_garantie_base`). C'est lui qui
+  /// rend la dé-duplication garantie plutôt qu'espérée, et qui autorise le
+  /// `createMany({ skipDuplicates })` du moteur. Ne pas le supprimer en croyant
+  /// à un résidu : son absence du schéma est une limite de Prisma, pas un oubli.
   @@map("alertes_systeme")
 }
 
