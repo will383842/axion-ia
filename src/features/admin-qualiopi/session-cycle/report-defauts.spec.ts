@@ -23,10 +23,24 @@ describe("🔴 pourChampDateHeure formate en LOCAL, jamais en UTC", () => {
     expect(pourChampDateHeure(d)).toBe("2026-01-05T07:05");
   });
 
-  it("il ne ressemble PAS à une sortie ISO en UTC", () => {
-    // Garde explicite contre le retour du réflexe `toISOString().slice(0,16)`.
+  it("il ne porte jamais le marqueur UTC", () => {
     const d = new Date(2026, 8, 3, 9, 0, 0);
     expect(pourChampDateHeure(d)).not.toContain("Z");
+  });
+
+  it("🔴 il DIFFÈRE de toISOString — sauf sous un fuseau UTC", () => {
+    // ⚠️ Cette assertion était écrite sans condition, et elle a ROUGI en CI :
+    // le runner tourne en UTC, où le formatage local et `toISOString` coïncident
+    // par construction. Un test qui ne peut passer que sur le poste de son
+    // auteur ne garde rien — il apprend juste à ignorer le rouge.
+    //
+    // On dit donc explicitement quand elle ne mesure rien, plutôt que de la
+    // laisser réussir à vide : lancée avec `TZ=Europe/Paris`, elle mord.
+    const d = new Date(2026, 8, 3, 9, 0, 0);
+    if (d.getTimezoneOffset() === 0) {
+      expect(pourChampDateHeure(d)).toBe(d.toISOString().slice(0, 16));
+      return;
+    }
     expect(pourChampDateHeure(d)).not.toBe(d.toISOString().slice(0, 16));
   });
 });
