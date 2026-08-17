@@ -23,6 +23,7 @@ import type {
   DocumentValidationStatutValue,
   TrainerDocumentTypeValue,
 } from "@/server/qualiopi/trainers/conformite";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 export interface TrainerDocumentView {
   id: string;
@@ -98,6 +99,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
   const [isPending, startTransition] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
 
   // Formulaire d'ajout.
   const [type, setType] = useState<TrainerDocumentTypeValue>("contrat_travail");
@@ -163,6 +165,7 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
 
   return (
     <div className="admin-card mb-[var(--space-admin-5)]">
+      {dialogue}
       <h2 className="admin-h2">Pièces justificatives</h2>
       <p className="admin-meta mb-[var(--space-admin-4)]">
         Une pièce ne compte pour la conformité qu&apos;une fois <strong>validée</strong>. Le rejet
@@ -318,16 +321,20 @@ export function TrainerDocumentsPanel(props: TrainerDocumentsPanelProps): React.
                           className="admin-button-ghost"
                           style={{ color: "var(--color-admin-warning)" }}
                           onClick={() => {
-                            if (
-                              window.confirm(
-                                "Supprimer définitivement cette pièce ? L'action reste tracée dans le journal.",
-                              )
-                            ) {
-                              run(
-                                () => deleteTrainerDocumentAction({ id: d.id }),
-                                "Pièce supprimée.",
-                              );
-                            }
+                            demander(
+                              {
+                                titre: "Supprimer définitivement cette pièce ?",
+                                description:
+                                  "Les pièces d'un formateur prouvent sa compétence à un auditeur (ind. 21). La suppression reste tracée au journal, mais la pièce, elle, ne revient pas.",
+                                destructif: true,
+                                libelleConfirmer: "Supprimer",
+                              },
+                              () =>
+                                run(
+                                  () => deleteTrainerDocumentAction({ id: d.id }),
+                                  "Pièce supprimée.",
+                                ),
+                            );
                           }}
                         >
                           Supprimer

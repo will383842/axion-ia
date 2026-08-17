@@ -22,6 +22,7 @@ import {
   creerDossierFinancementAction,
   transitionnerDossierAction,
 } from "@/server/actions/qualiopi/facturation-hub";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 type DossierStatut =
   "a_monter" | "envoye" | "accord_recu" | "refuse" | "facture" | "paiement_recu" | "clos";
@@ -109,6 +110,7 @@ export function DossiersFinancementPanel({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
   const [success, setSuccess] = useState<string | null>(null);
 
   // Création
@@ -186,10 +188,17 @@ export function DossiersFinancementPanel({
       return;
     }
     // « Clos » est terminal (aucune transition ne repart de clos) → confirmation.
-    if (
-      vers === "clos" &&
-      !window.confirm("Clore définitivement ce dossier ? Action irréversible.")
-    ) {
+    if (vers === "clos") {
+      demander(
+        {
+          titre: "Clore définitivement ce dossier de financement ?",
+          description:
+            "« Clos » est un état terminal : aucune transition n'en repart. Un dossier clos par erreur devra être recréé.",
+          destructif: true,
+          libelleConfirmer: "Clore",
+        },
+        () => doTransition(dossierId, vers),
+      );
       return;
     }
     doTransition(dossierId, vers);
@@ -202,6 +211,7 @@ export function DossiersFinancementPanel({
 
   return (
     <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-4)]">
+      {dialogue}
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
         <p className="text-[length:var(--text-admin-xs)] font-semibold tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
           Dossiers de financement en cours
