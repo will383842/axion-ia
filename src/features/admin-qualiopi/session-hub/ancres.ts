@@ -59,6 +59,11 @@ export const ANCRES_HUB_SESSION: readonly AncreHub[] = [
   // lirait comme « aucune obligation », le contraire de la vérité.
   { id: "checklist", libelle: "Où en est ce dossier", conditionnelle: true },
   { id: "cycle-de-vie", libelle: "Cycle de vie" },
+  // 🔴 « Dates », et jamais « Report » : les dates de déroulement sont un
+  // ATTRIBUT de la session, au même titre que le lieu. Le report est un
+  // ÉVÉNEMENT du cycle de vie, qui crée une seconde session. Les ranger côte à
+  // côte ferait choisir le mauvais geste pour une faute de frappe.
+  { id: "dates", libelle: "Dates" },
   { id: "lieu", libelle: "Lieu" },
   { id: "formateur", libelle: "Formateur" },
   // Rendue même quand la session n'est pas inter-entreprises : la section porte

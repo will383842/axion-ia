@@ -15,6 +15,20 @@ vi.mock("@/lib/security/ip-hash", () => ({
   hashIp: (ip: string | null | undefined) => (ip ? `hash-${ip}` : null),
 }));
 
+// 🔴 Mock MANQUANT depuis la PR 598 (lot L2 du chantier CRM), qui a ajoute
+// (cite sans diese : check-anti-hex.sh prend un numero de PR a trois
+//  chiffres pour une couleur hexadecimale a trois chiffres.)
+// `syncCalendlyEventToCrm` a la route sans l'ajouter ici. Sans ce mock, la
+// synchro partait POUR DE VRAI pendant le test : les deux cas ci-dessous
+// expiraient a 5 s, et « rate limit depasse » rendait 200 au lieu de 429.
+//
+// Consequence : le hook de PRE-PUSH de ce depot (qui lance la suite complete)
+// refusait TOUT push, pour tout le monde. Constate le 2026-08-17.
+const syncCalendlyMock = vi.fn();
+vi.mock("@/server/crm-sync", () => ({
+  syncCalendlyEventToCrm: (...args: unknown[]) => syncCalendlyMock(...args),
+}));
+
 const notifyMock = vi.fn();
 vi.mock("@/server/notifications", () => ({
   notify: (...args: unknown[]) => notifyMock(...args),

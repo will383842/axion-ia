@@ -51,7 +51,12 @@ export async function listTrainers(opts?: ListTrainersOpts): Promise<TrainerAvec
       orderBy: [{ nom: "asc" }, { prenom: "asc" }],
       ...(opts?.limit !== undefined ? { take: opts.limit } : {}),
       ...(opts?.offset !== undefined ? { skip: opts.offset } : {}),
-      include: { habilitations: { select: { formationId: true } } },
+      // 🔴 `retireAt: null` — seules les habilitations ACTIVES comptent. Sans
+      // ce filtre, un formateur dé-habilité continuerait d'apparaître habilité
+      // partout, et la garde `isTrainerHabilite` le laisserait animer.
+      include: {
+        habilitations: { where: { retireAt: null }, select: { formationId: true } },
+      },
     });
     return rows.map(({ habilitations, ...t }) => {
       const ids = habilitations.map((h) => h.formationId);
@@ -66,7 +71,9 @@ export async function listTrainers(opts?: ListTrainersOpts): Promise<TrainerAvec
 export async function getFormationIdsHabilites(trainerId: string): Promise<string[]> {
   try {
     const rows = await prisma.trainerHabilitation.findMany({
-      where: { trainerId },
+      // Même filtre que `listTrainers` : une habilitation retirée reste au
+      // registre pour l'auditeur, elle ne rend plus le formateur habilité.
+      where: { trainerId, retireAt: null },
       select: { formationId: true },
     });
     return rows.map((r) => r.formationId);

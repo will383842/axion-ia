@@ -22,6 +22,9 @@
 
 import { useTransition } from "react";
 import { exporterDossierSessionAction } from "@/server/actions/qualiopi/conformite";
+import { useState } from "react";
+import { VerdictExportBloc } from "./VerdictExportBloc";
+import { verdictExport, type VerdictExport } from "@/server/qualiopi/documents/verdict-export";
 
 function telechargerZip(base64: string, filename: string): void {
   const binaire = atob(base64);
@@ -43,12 +46,23 @@ function telechargerZip(base64: string, filename: string): void {
 
 export function DossierSessionButton({ sessionId }: { sessionId: string }): React.ReactElement {
   const [enCours, demarrer] = useTransition();
+  // 🔴 Le verdict RESTE à l'écran. Il partait dans un `window.alert` : non
+  // copiable, non relisible, effacé au premier clic — alors que le ZIP, lui,
+  // est déjà téléchargé. Le dossier partait chez l'auditeur avec son anomalie,
+  // et l'avertissement n'existait plus nulle part.
+  const [verdict, setVerdict] = useState<VerdictExport | null>(null);
 
   function exporter(): void {
+    setVerdict(null);
     demarrer(async () => {
       const res = await exporterDossierSessionAction({ sessionId });
       if ("error" in res) {
-        window.alert(`Erreur : ${res.error}`);
+        setVerdict({
+          ton: "danger",
+          titre: "L'export a échoué",
+          details: [res.error],
+          fichierAConsulter: null,
+        });
         return;
       }
 
@@ -66,32 +80,30 @@ export function DossierSessionButton({ sessionId }: { sessionId: string }): Reac
       // signifie « une signature a été modifiée après coup ». Une contresignature
       // FORMATEUR falsifiée compte tout autant (elle est exigée CAA Nantes
       // 20/04/2021) — l'alerte rouge se déclenche sur l'un OU l'autre (M6).
-      const anomaliesIntegrite = nbChainesAnormales + nbChainesContresignAnormales;
-      if (anomaliesIntegrite > 0) {
-        window.alert(
-          `${anomaliesIntegrite} chaîne${anomaliesIntegrite > 1 ? "s" : ""} de signatures/contresignatures présentent une ANOMALIE D'INTÉGRITÉ.\n\n` +
-            `Ouvrez « verification-integrite.json » dans le ZIP AVANT de remettre ce dossier à ` +
-            `un auditeur : une empreinte qui ne concorde pas signifie qu'une signature a été ` +
-            `modifiée après avoir été apposée.`,
-        );
-      } else if (incomplet) {
-        const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
-        window.alert(
-          `Attention : dossier INCOMPLET. Lisez « index.txt » avant de le remettre.${details}`,
-        );
-      }
+      setVerdict(
+        verdictExport({
+          incomplet,
+          nbChainesAnormales,
+          nbChainesContresignAnormales,
+          avertissements,
+          nomFichier: filename,
+        }),
+      );
     });
   }
 
   return (
-    <button
-      type="button"
-      onClick={exporter}
-      disabled={enCours}
-      className="admin-button-secondary"
-      aria-label="Télécharger le dossier d'audit de cette session (documents, feuille d'émargement, vérification d'intégrité)"
-    >
-      {enCours ? "Génération…" : "Dossier d'audit de la session"}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={exporter}
+        disabled={enCours}
+        className="admin-button-secondary"
+        aria-label="Télécharger le dossier d'audit de cette session (documents, feuille d'émargement, vérification d'intégrité)"
+      >
+        {enCours ? "Génération…" : "Dossier d'audit de la session"}
+      </button>
+      <VerdictExportBloc verdict={verdict} />
+    </>
   );
 }
