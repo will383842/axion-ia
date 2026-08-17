@@ -1558,7 +1558,7 @@ export function DocumentsSection({
                           </a>
                           <a
                             href={lienTelechargement(`/api/qualiopi/documents/${doc.id}`)}
-                            className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+                            className="admin-button-ghost"
                             aria-label={`Enregistrer ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
                           >
                             Enregistrer
@@ -1575,7 +1575,7 @@ export function DocumentsSection({
                               href={`/api/qualiopi/pieces/${doc.id}/exemplaire-signe`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+                              className="admin-button-ghost"
                               aria-label={`Ouvrir l'exemplaire signé de ${DOC_LABELS[doc.type] ?? doc.type} n° ${doc.numero}`}
                             >
                               Exemplaire signé
