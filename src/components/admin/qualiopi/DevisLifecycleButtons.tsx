@@ -16,6 +16,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { messageEnvoi, type TonMessage } from "@/server/qualiopi/financements/message-envoi";
 import {
   sendDevisAction,
   acceptDevisAction,
@@ -48,6 +49,11 @@ export function DevisLifecycleButtons({
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  // 🔴 Lot 3quinquies §2 — le TON du dernier message. Un envoi GARÉ pour
+  // validation n'est ni un succès ni une erreur : c'est un troisième cas,
+  // qui appelle un geste humain. Le confondre avec un succès envoie l'admin
+  // exactement là où il ne faut pas — il n'ira pas valider la corbeille.
+  const [ton, setTon] = useState<TonMessage>("succes");
   // Avertissement : action réussie côté statut, mais l'email n'est PAS parti
   // (pas d'email de contact, PDF absent, file d'attente indisponible). À NE PAS
   // afficher en vert « succès » — sinon l'admin croit le devis reçu par le client.
@@ -56,6 +62,7 @@ export function DevisLifecycleButtons({
   function resetMessages() {
     setError(null);
     setSuccessMsg(null);
+    setTon("succes");
     setWarningMsg(null);
   }
 
@@ -96,7 +103,13 @@ export function DevisLifecycleButtons({
       if ("error" in result) {
         setError(result.error);
       } else {
-        setSuccessMsg(`Devis renvoyé par email à ${result.data.to}.`);
+        // L'action calcule DÉJÀ la phrase juste (`note`) — on la relaie au
+        // lieu d'en inventer une autre : deux phrases pour le même fait
+        // divergent, et c'est celle de l'écran, la moins informée, qui
+        // gagnerait.
+        const m = messageEnvoi("Devis", result.data);
+        setTon(m.ton);
+        setSuccessMsg(m.texte);
         router.refresh();
       }
     });
@@ -224,7 +237,14 @@ export function DevisLifecycleButtons({
       {successMsg && (
         <p
           role="status"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          // 🔴 La couleur ne fait que DOUBLER le texte, qui dit déjà tout
+          // (WCAG 1.4.1) : « il attend votre validation » se lit en noir et
+          // blanc, et sur une page imprimée.
+          className={
+            ton === "attention"
+              ? "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning-fg)]"
+              : "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          }
         >
           {successMsg}
         </p>
