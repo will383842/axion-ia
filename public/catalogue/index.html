@@ -187,7 +187,12 @@
     // Le test portait sur s (page isolee) et non sur c (couverture). Depuis
     // que la 01 est isolee pour ouvrir le livre sur une belle page, elle
     // s'annoncait « dos de couverture ». On nomme ce qu'on montre.
-    if (g && g.c) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
+    // ATTENTION : la version KDP testait le NOM DE FICHIER (couv1.jpg). Ici les
+    // images s'appellent p01.jpg a p48.jpg, le test ne matchait JAMAIS, et la
+    // PREMIERE de couverture s'annoncait « dos de couverture ». On teste le rang
+    // courant, qui ne depend d'aucune convention de nommage.
+    // (pas de backtick dans ce commentaire : il vit dans un litteral gabarit.)
+    if (g && g.c) return i === 0 ? 'couverture' : 'dos de couverture';
     var isole = MOBILE() || seule(i) || seule(i + 1);
     if (isole) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
     if (g && g.n && d && d.n) return 'pages ' + g.n + '–' + d.n;
