@@ -100,14 +100,22 @@ export const WILLIAMS = {
     pays: "France",
   },
   /**
-   * Anniversaire sans millésime, forme `--MMJJ`.
+   * Date de naissance complète, forme ISO `AAAA-MM-JJ`.
    *
-   * C'est la forme qu'exporte Google Contacts pour une date sans année, et
-   * qu'iOS lit également. Omettre l'année est délibéré : une fiche remise à des
-   * inconnus n'a pas à porter une date de naissance complète, qui est une
-   * donnée d'identification.
+   * ⚠️ La forme sans millésime `--0225` a été essayée en premier, et RETIRÉE
+   * après constat sur un vrai téléphone le 2026-08-17 : le carnet d'adresses
+   * n'affiche pas une date sans année, il lui substitue une **année sentinelle**
+   * et la fiche annonçait « 25 février **1604** ». Un anniversaire faux est pire
+   * que pas d'anniversaire du tout — celui qui enregistre la fiche reçoit un
+   * rappel à une date absurde, et croit l'information fiable.
+   *
+   * Le compromis est donc arbitré dans l'autre sens : la date complète est une
+   * donnée d'identification, sur une fiche publique (`/williams-jullin.vcf`,
+   * `noindex` mais accessible à qui scanne la carte). Décision de Will,
+   * 2026-08-17. Pour revenir en arrière, remettre `--0225` en acceptant
+   * l'année sentinelle, ou retirer la ligne `BDAY` de `buildVCard()`.
    */
-  anniversaire: "--0225",
+  anniversaire: "1974-02-25",
   /**
    * Descriptif affiché sous la fiche dans le carnet d'adresses.
    *
@@ -128,7 +136,7 @@ export const WILLIAMS = {
    * valeur mouvante rendrait la sortie non reproductible d'un build à l'autre.
    * À incrémenter à la main lors d'une vraie mise à jour de la fiche.
    */
-  revision: "2026-08-16T00:00:00Z",
+  revision: "2026-08-17T00:00:00Z",
 } as const;
 
 /** Échappe une valeur de champ vCard (RFC 2426 §2.4.2). */
