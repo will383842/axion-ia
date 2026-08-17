@@ -36,6 +36,7 @@ import {
 } from "@/server/qualiopi/formations/formation-snapshot";
 import { lieuInputSchema, normaliserLieu } from "@/server/qualiopi/lieu/lieu-input";
 import { resoudreDureeReelleACloture } from "@/server/qualiopi/presence/duree-reelle";
+import { refusMotif } from "@/server/qualiopi/formations/transition-motif";
 
 // NB : le type `WriteSessionTransitionInput` n'est PAS ré-exporté ici (aucun
 // caller externe). Un `export type { … }` dans un module "use server" est
@@ -395,6 +396,20 @@ export async function transitionSessionAction(input: {
 
   const fromStatus = currentSession.statut;
   const toStatus = v.toStatus as TrainingSessionStatut;
+
+  // 🔴 Le motif des transitions terminales — constaté le 2026-08-17.
+  //
+  // Reporter exigeait un motif, ANNULER n'en exigeait aucun. Un clic sur un
+  // bouton rouge, et c'était fait. Or annuler est PLUS engageant que reporter :
+  // l'état est terminal, et la transition révoque en cascade les jetons
+  // d'émargement. Un auditeur qui demande « pourquoi cette session a-t-elle été
+  // annulée ? » n'obtenait aucune réponse : la donnée n'avait jamais été
+  // demandée.
+  //
+  // La règle vit dans un module PUR, lu par l'écran ET par le serveur : deux
+  // copies divergeraient, et l'utilisateur verrait un refus incompréhensible.
+  const refus = refusMotif(toStatus, v.reason);
+  if (refus !== null) return { error: refus };
 
   // Garde financement : si la cible est en_cours, vérifier les validations bloquantes.
   if (toStatus === "en_cours") {
