@@ -657,6 +657,7 @@ export default async function SessionHubPage({ params }: PageProps) {
           <SessionLifecycleButtons
             sessionId={id}
             statut={trainingSession.statut as TrainingSessionStatut}
+            baseSessions={base}
           />
         </div>
       </section>
