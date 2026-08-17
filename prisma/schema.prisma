@@ -4627,6 +4627,32 @@ model SiteRoute {
   gscPosition              Float?    @map("gsc_position")
   gscDataAt                DateTime? @map("gsc_data_at")
 
+  // ─── Aperçu de partage (Open Graph) — onglet « Aperçus de partage » ───
+  //
+  // Ce que la page SERT réellement, relevé par l'inspecteur sur le HTML de
+  // production. À ne pas confondre avec la SURCHARGE (`OgOverride`), qui est ce
+  // que Will décide : ici on constate, là-bas on décide.
+  //
+  // 🔑 `ogImageWidth`/`ogImageHeight` sont MESURÉS, pas recopiés des balises.
+  // C'est tout l'objet du recensement du 2026-08-17 : les 1 667 pages
+  // déclaraient 1200×630 pour des fichiers qui faisaient 1200×675 ou 1080×607.
+  // Une colonne qui recopierait la balise reproduirait le mensonge en base.
+  ogImage       String? @map("og_image") @db.VarChar(1000)
+  ogTitle       String? @map("og_title") @db.VarChar(500)
+  ogDescription String? @map("og_description") @db.Text
+  ogType        String? @map("og_type") @db.VarChar(30)
+  /// Dimensions ANNONCÉES par les balises `og:image:width` / `height`.
+  ogDeclaredWidth  Int? @map("og_declared_width")
+  ogDeclaredHeight Int? @map("og_declared_height")
+  /// Dimensions RÉELLES du fichier. L'écart avec les précédentes est un défaut.
+  ogImageWidth  Int? @map("og_image_width")
+  ogImageHeight Int? @map("og_image_height")
+  /// Code HTTP renvoyé par l'image elle-même : une image en 404 = aperçu vide.
+  ogImageStatus Int?    @map("og_image_status")
+  ogImageBytes  Int?    @map("og_image_bytes")
+  ogImageType   String? @map("og_image_type") @db.VarChar(60)
+  ogInspectedAt DateTime? @map("og_inspected_at")
+
   // ─── Cycle de vie « vivant » (découverte automatique) ───
   // lastSeenAt = dernier passage de l'énumérateur ; removedAt = soft-tombstone
   // quand une URL disparaît de la découverte (jamais de hard-delete).
@@ -4650,6 +4676,7 @@ model SiteRoute {
   @@index([gscIndexationRequested])
   @@index([category])
   @@index([removedAt])
+  @@index([ogInspectedAt])
   @@map("site_routes")
 }
 

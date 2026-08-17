@@ -29,6 +29,12 @@ export const ANOMALIE_LABELS: Record<string, string> = {
   no_jsonld: "Aucune donnée structurée",
   no_ai_disclaimer: "Mention IA absente",
   no_external_links: "Aucun lien externe",
+  // Aperçu de partage — recensement OG 2026-08-17.
+  og_image_absente: "Aperçu de partage sans image",
+  og_image_injoignable: "Image de partage injoignable",
+  og_image_trop_petite: "Image de partage trop petite pour LinkedIn",
+  og_dimensions_mensongeres: "Taille d'image annoncée fausse",
+  og_image_tierce: "Aperçu hébergé hors de notre domaine",
 };
 
 export function libelleGravite(gravite: string): string {

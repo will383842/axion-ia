@@ -1418,6 +1418,16 @@ export function buildAdminNav(adminPrefix: string): ReadonlyArray<AdminNavItem> 
     // l'application a TENTÉ, ZeptoMail ce que le relais a réellement REMIS —
     // l'écart entre les deux est l'information, et elle se lit côte à côte.
     { href: `${base}/site-explorer`, label: "Toutes les URLs", icon: "Map", group: "ops" },
+    // Recensement OG 2026-08-17 — il n'existait aucun endroit où VOIR ce que le
+    // site sert au partage d'un lien. L'entrée vit sous « Toutes les URLs »
+    // parce que c'est le même inventaire, relevé par le même inspecteur : une
+    // section séparée aurait dupliqué la liste, les filtres et le RBAC.
+    {
+      href: `${base}/site-explorer/apercus`,
+      label: "Aperçus de partage",
+      icon: "Share2",
+      group: "ops",
+    },
     { href: `${base}/infra`, label: "Infra & outils", icon: "Wrench", group: "ops" },
     {
       href: `${base}/infra/backups`,

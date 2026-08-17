@@ -15,6 +15,7 @@ import { Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { prisma } from "@/lib/prisma";
+import { extraireBalisesOg, mesurerImagePartage } from "@/server/site-explorer/og-inspection";
 import type { SiteRouteInspectorJobData } from "../types";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -140,6 +141,16 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
     const externalLinkCount = countExternalLinks(html);
     const hasAiDisclaimer = detectAiDisclaimer(html);
 
+    // Aperçu de partage — recensement OG 2026-08-17. On relève ce que la page
+    // DÉCLARE, puis on MESURE le fichier. L'écart entre les deux est le défaut
+    // qu'aucun écran ne montrait. `mesurerImagePartage` ne télécharge jamais
+    // nos cartes `/api/og` (Cloudflare ne les cache pas : ce serait un rendu
+    // Satori de 2 s par route et par passage).
+    const og = extraireBalisesOg(html);
+    const mesure = og.image
+      ? await mesurerImagePartage(og.image, SITE_URL)
+      : { status: null, width: null, height: null, bytes: null, contentType: null, mesuree: false };
+
     await prisma.siteRoute.update({
       where: { id: siteRouteId },
       data: {
@@ -154,6 +165,18 @@ async function inspectRoute(siteRouteId: string, urlPath: string): Promise<void>
         externalLinkCount,
         hasAiDisclaimer,
         lastInspectedAt: new Date(),
+        ogImage: og.image,
+        ogTitle: og.title,
+        ogDescription: og.description,
+        ogType: og.type,
+        ogDeclaredWidth: og.declaredWidth,
+        ogDeclaredHeight: og.declaredHeight,
+        ogImageWidth: mesure.width,
+        ogImageHeight: mesure.height,
+        ogImageStatus: mesure.status,
+        ogImageBytes: mesure.bytes,
+        ogImageType: mesure.contentType,
+        ogInspectedAt: new Date(),
       },
     });
   } catch (e) {
