@@ -59,13 +59,14 @@ const etapeDe = (p: ReturnType<typeof construireParcours>, cle: string) =>
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-describe("🔴 le dossier couvre les quatorze étapes du plan", () => {
+describe("🔴 le dossier couvre les quinze étapes du plan", () => {
   it("les rend toutes, dans l'ordre chronologique", () => {
     const p = construireParcours(dossier({ inscriptions: [inscription()] }));
     expect(p.etapes.map((e) => e.cle)).toEqual([
       "formateur_assigne",
       "convention_generee",
       "convention_signee",
+      "convention_contresignee",
       "positionnement_envoye",
       "positionnement_repondu",
       "convocation_envoyee",
@@ -144,19 +145,47 @@ describe("🔴 un seul côté signé ne vaut PAS signature", () => {
     annuleeAt: null,
   };
 
-  it("le client a signé, l'organisme n'a pas contresigné : l'étape reste ouverte", () => {
-    // La liste des parties vient de `partiesRequisesPour` (SSOT des dix
-    // circuits). La recompter ici la ferait diverger, et l'écran afficherait
-    // « convention signée » sur une pièce que l'organisme n'a jamais conclue.
+  it("le client a signé, l'organisme n'a pas contresigné : DEUX lignes, une seule verte", () => {
+    // 🔴 L'INTENTION D'ORIGINE EST PRÉSERVÉE, elle a changé de ligne.
+    //
+    // Avant, une seule étape « Convention signée par toutes les parties »
+    // portait les deux gestes, et l'assertion vérifiait qu'elle restait ROUGE
+    // sur une pièce signée d'un seul côté. Depuis la scission (Lot 3sexies),
+    // c'est la ligne du CONTRESEING qui doit rester rouge — et celle du client
+    // devient légitimement verte, puisqu'il a bel et bien signé.
+    //
+    // Ce qui ne doit PAS changer : rien, nulle part, ne doit laisser croire
+    // que la convention est conclue. C'est ce que ce test garde.
     const p = construireParcours(
       dossier({
         documents: [convention],
         signaturesParPiece: new Map([["doc1", [{ partie: "client" }]]]),
       }),
     );
-    const e = etapeDe(p, "convention_signee");
-    expect(e.etat).not.toBe("fait");
-    expect(e.avertissement).toContain("un seul côté signé");
+    expect(etapeDe(p, "convention_signee").etat).toBe("fait");
+
+    const contreseing = etapeDe(p, "convention_contresignee");
+    expect(contreseing.etat).not.toBe("fait");
+    // Et le message dit QUI doit agir : c'est le seul des deux gestes qui ne
+    // dépend de personne d'autre que nous.
+    expect(contreseing.avertissement).toContain("PAS nous");
+  });
+
+  it("🔴 contresignée AVANT la signature du client : le circuit est inversé", () => {
+    // L'organisme signe en DERNIER. Une pièce contresignée sans signature
+    // client signale un circuit mal joué — et, avant la scission, elle aurait
+    // fait passer l'étape unique pour « à moitié faite » sans dire de quel
+    // côté. Le contre-cas est celui qui prouve que les deux mesures sont bien
+    // indépendantes.
+    const p = construireParcours(
+      dossier({
+        documents: [convention],
+        signaturesParPiece: new Map([["doc1", [{ partie: "axionia" }]]]),
+      }),
+    );
+    expect(etapeDe(p, "convention_signee").etat).not.toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").etat).toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").avertissement).toContain("DERNIER");
   });
 
   it("toutes les parties ont signé : l'étape est faite", () => {
@@ -233,8 +262,13 @@ describe("🔴 fixture « dossier-invest-sun-1 » — les défauts réels rejou�
 
   const p = construireParcours(investSun);
 
-  it("la convention signée d'un seul côté n'est pas verte", () => {
-    expect(etapeDe(p, "convention_signee").etat).toBe("hors_delai");
+  it("🔴 le défaut réel : le client avait signé, NOUS jamais", () => {
+    // Dossier de production rejoué. La convention portait UNE signature, celle
+    // du client. Avant la scission, une seule ligne rouge disait « convention
+    // non signée » — sans dire de quel côté, donc sans dire que le geste
+    // manquant était le NÔTRE et qu'il ne dépendait de personne.
+    expect(etapeDe(p, "convention_signee").etat).toBe("fait");
+    expect(etapeDe(p, "convention_contresignee").etat).toBe("hors_delai");
   });
 
   it("l'émargement jamais signé est HORS DÉLAI — les jetons ont expiré", () => {
@@ -260,7 +294,7 @@ describe("🔴 fixture « dossier-invest-sun-1 » — les défauts réels rejou�
   });
 
   it("l'avancement n'inventé pas d'étapes : n sur N réels", () => {
-    expect(p.avancement.total).toBe(14);
+    expect(p.avancement.total).toBe(15);
     expect(p.avancement.fait).toBeLessThan(p.avancement.total);
   });
 });
@@ -434,9 +468,9 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     }),
   );
 
-  it("les quatorze étapes sont bien rendues", () => {
+  it("les quinze étapes sont bien rendues", () => {
     // Sans ceci, une liste vide ferait passer tout le bloc au vert.
-    expect(p.etapes).toHaveLength(14);
+    expect(p.etapes).toHaveLength(15);
   });
 
   it.each(p.etapes.map((e) => [e.cle, e] as const))(
