@@ -55,8 +55,12 @@ export default async function ImprimesPage({ params }: PageProps) {
           <a
             key={imprime.id}
             href={`/fr/${adminPrefix}/imprimes/${imprime.id}`}
-            className="admin-card"
-            style={{ display: "block", textDecoration: "none", color: "inherit" }}
+            // `admin-card` ne pose PAS `display` : une ancre resterait `inline`,
+            // son padding ne mettrait rien en page et le fond se peindrait
+            // par-dessus le contenu voisin. Mesuré en production le 2026-08-03.
+            // `admin-card-inline` porte le `display: block`.
+            className="admin-card admin-card-inline"
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <div
               style={{
