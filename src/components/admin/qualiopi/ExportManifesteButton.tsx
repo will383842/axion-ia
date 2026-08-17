@@ -15,11 +15,13 @@
  * Zéro appel DB côté client. Zéro hex dans les tokens admin.
  */
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   exporterManifesteAuditAction,
   exporterDossierZipAction,
 } from "@/server/actions/qualiopi/conformite";
+import { VerdictExportBloc } from "./VerdictExportBloc";
+import type { VerdictExport } from "@/server/qualiopi/documents/verdict-export";
 
 /** Déclenche un téléchargement de fichier côté navigateur depuis un Blob. */
 function triggerBlobDownload(blob: Blob, filename: string): void {
@@ -47,12 +49,24 @@ function base64ToUint8Array(base64: string): Uint8Array {
 export function ExportManifesteButton(): React.ReactElement {
   const [isPendingManifeste, startManifeste] = useTransition();
   const [isPendingZip, startZip] = useTransition();
+  // 🔴 Les trois `window.alert` de cet ecran disparaissaient au premier clic,
+  // alors que le ZIP etait deja telecharge : le dossier partait chez l'auditeur
+  // et l'avertissement n'existait plus nulle part. Ils nommaient pourtant un
+  // fichier a ouvrir et enumeraient les manques - rien de tout cela n'etait
+  // copiable.
+  const [verdict, setVerdict] = useState<VerdictExport | null>(null);
 
   function handleExportManifeste() {
+    setVerdict(null);
     startManifeste(async () => {
       const result = await exporterManifesteAuditAction();
       if ("error" in result) {
-        window.alert(`Erreur export manifeste : ${result.error}`);
+        setVerdict({
+          ton: "danger",
+          titre: "L'export du manifeste a echoue",
+          details: [result.error],
+          fichierAConsulter: null,
+        });
         return;
       }
 
@@ -73,10 +87,16 @@ export function ExportManifesteButton(): React.ReactElement {
   }
 
   function handleExportZip() {
+    setVerdict(null);
     startZip(async () => {
       const result = await exporterDossierZipAction();
       if ("error" in result) {
-        window.alert(`Erreur export dossier ZIP : ${result.error}`);
+        setVerdict({
+          ton: "danger",
+          titre: "L'export du dossier ZIP a echoue",
+          details: [result.error],
+          fichierAConsulter: null,
+        });
         return;
       }
 
@@ -92,14 +112,24 @@ export function ExportManifesteButton(): React.ReactElement {
 
       // [C3] Dossier incomplet : ALERTER explicitement. Un ZIP remis à l'auditeur
       //   peut ne contenir aucune preuve stagiaire (R2 absent / clés introuvables).
-      if (incomplet) {
-        const details = avertissements.length > 0 ? `\n\n- ${avertissements.join("\n- ")}` : "";
-        window.alert(
-          `Attention : dossier d'audit INCOMPLET — ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve${nbPreuvesAttendues > 1 ? "s" : ""} jointe${nbPreuvesAttendues > 1 ? "s" : ""}.` +
-            ` Vérifiez le fichier AVERTISSEMENTS.txt dans le ZIP avant de le remettre à l'auditeur.` +
-            details,
-        );
-      }
+      setVerdict(
+        incomplet
+          ? {
+              ton: "attention",
+              titre: `Dossier d'audit INCOMPLET - ${nbPreuvesJointes}/${nbPreuvesAttendues} preuve${nbPreuvesAttendues > 1 ? "s" : ""} jointe${nbPreuvesAttendues > 1 ? "s" : ""}`,
+              details:
+                avertissements.length > 0
+                  ? avertissements
+                  : ["Le detail des manques figure dans le fichier ci-dessous."],
+              fichierAConsulter: "AVERTISSEMENTS.txt",
+            }
+          : {
+              ton: "succes",
+              titre: `Dossier d'audit telecharge : ${nbPreuvesJointes}/${nbPreuvesAttendues} preuves jointes`,
+              details: [],
+              fichierAConsulter: null,
+            },
+      );
     });
   }
 
@@ -124,6 +154,12 @@ export function ExportManifesteButton(): React.ReactElement {
       >
         {isPendingZip ? "Génération ZIP…" : "Télécharger le dossier ZIP"}
       </button>
+
+      {/* `w-full` : le verdict passe sous les deux boutons plutôt que de se
+          serrer à côté — il porte parfois une liste de manques. */}
+      <div className="w-full">
+        <VerdictExportBloc verdict={verdict} />
+      </div>
     </div>
   );
 }
