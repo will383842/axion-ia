@@ -10,6 +10,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import type { supprimerBaremeOpcoAction } from "@/server/actions/qualiopi/baremes-opco";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 
 export interface BaremeOpcoRowActionsProps {
   id: string;
@@ -20,11 +21,22 @@ export function BaremeOpcoRowActions({ id, supprimerAction }: BaremeOpcoRowActio
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const { demander, dialogue } = useConfirmation();
 
   function handleDelete() {
-    if (!window.confirm("Supprimer cette version de barème ? (réservé aux erreurs de saisie)")) {
-      return;
-    }
+    demander(
+      {
+        titre: "Supprimer cette version de barème ?",
+        description:
+          "Réservé aux erreurs de saisie : un barème appliqué à un dossier ne doit pas disparaître du registre.",
+        destructif: true,
+        libelleConfirmer: "Supprimer",
+      },
+      () => supprimerVraiment(),
+    );
+  }
+
+  function supprimerVraiment() {
     setError(null);
     startTransition(async () => {
       const result = await supprimerAction({ id });
@@ -38,6 +50,7 @@ export function BaremeOpcoRowActions({ id, supprimerAction }: BaremeOpcoRowActio
 
   return (
     <div className="flex flex-col items-start gap-1">
+      {dialogue}
       <button
         type="button"
         onClick={handleDelete}
