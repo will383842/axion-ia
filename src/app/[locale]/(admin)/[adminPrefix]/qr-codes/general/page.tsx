@@ -1,4 +1,11 @@
-// Sous-onglet « Catalogue en ligne » de la barre latérale.
+// Sous-onglet « Carte de visite & divers » de la barre latérale.
+//
+// Cette page manquait. Les trois sous-onglets du catalogue existaient, mais la
+// catégorie `general` déclarait une `route` sans page ni entrée de menu : ses
+// QR — dont les DEUX de la carte de visite, `vc` et `wa` — n'apparaissaient que
+// dans la liste racine, noyés parmi 45 QR de catalogue. Ce n'était pas un défaut
+// d'organisation mais un tiroir manquant.
+//
 // Route statique et non `?category=` : le surlignage de la sidebar compare le
 // chemin, jamais la query string (voir QrCodesView).
 import { redirect } from "next/navigation";
@@ -8,7 +15,7 @@ import { qrCategoryByRoute } from "@/features/admin-qr-codes/categories";
 
 export const dynamic = "force-dynamic";
 
-const CAT = qrCategoryByRoute("catalogue")!;
+const CAT = qrCategoryByRoute("general")!;
 
 export default async function Page({
   params,

@@ -103,11 +103,16 @@ describe("vCard — contenu", () => {
     );
   });
 
-  it("donne l'anniversaire sans millésime", () => {
-    expect(field(lines, "BDAY")).toBe("--0225");
-    // Forme `--MMJJ` : le double tiret tient lieu d'année absente. Une fiche
-    // remise à des inconnus n'a pas à porter une date de naissance complète.
-    expect(field(lines, "BDAY")).toMatch(/^--\d{4}$/);
+  it("donne une date de naissance complète, avec son millésime", () => {
+    expect(field(lines, "BDAY")).toBe("1974-02-25");
+    // 🔴 L'année est OBLIGATOIRE ici, et cette garde existe pour ça. La forme
+    // sans millésime (`--0225`) a été servie en production le 2026-08-16 : le
+    // carnet d'adresses n'affiche pas une date sans année, il lui substitue une
+    // année sentinelle, et la fiche annonçait « 25 février 1604 ». Un
+    // anniversaire faux est pire que pas d'anniversaire — il déclenche un rappel
+    // à une date absurde, et il est cru.
+    expect(field(lines, "BDAY")).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(field(lines, "BDAY")).not.toMatch(/^--/);
   });
 
   it("échappe les virgules de la note", () => {
