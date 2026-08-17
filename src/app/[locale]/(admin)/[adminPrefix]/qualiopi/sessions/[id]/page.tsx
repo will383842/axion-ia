@@ -67,6 +67,8 @@ import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signatu
 import { champsIdentiteManquants } from "@/server/qualiopi/documents/conformite";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import type { TrainingSessionStatut } from "../../../../../../../../prisma/generated/client";
+import { AncresHubSession } from "@/features/admin-qualiopi/session-hub/AncresHubSession";
+import { ancresVisibles, CLASSE_ANCRE_SECTION } from "@/features/admin-qualiopi/session-hub/ancres";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -519,8 +521,18 @@ export default async function SessionHubPage({ params }: PageProps) {
         }
       />
 
+      {/* Sommaire interne : dix sections, aucun moyen d'en atteindre une sans
+          tout dérouler. Les ancres conditionnelles ne sont listées que si leur
+          section est réellement rendue — un lien mort apprend à ne plus faire
+          confiance à la barre. */}
+      <AncresHubSession
+        ancres={ancresVisibles(
+          preparationKit !== null && preparationKit.aPreparer ? ["preparation-kit"] : [],
+        )}
+      />
+
       {/* ── En-tête de la session ─────────────────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="infos" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Informations générales</h2>
         <div className="grid grid-cols-2 gap-[var(--space-admin-4)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] sm:grid-cols-4">
           {/* Formation */}
@@ -651,24 +663,25 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Cycle de vie ─────────────────────────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="cycle-de-vie" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Cycle de vie</h2>
         <div className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
           <SessionLifecycleButtons
             sessionId={id}
             statut={trainingSession.statut as TrainingSessionStatut}
+            baseSessions={base}
           />
         </div>
       </section>
 
       {/* ── Lieu de déroulement (convention L.6353-1 · Qualiopi off.9) ────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="lieu" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Lieu de déroulement</h2>
         <SessionLieuForm sessionId={id} initial={lieuValuesDepuisSession(trainingSession)} />
       </section>
 
       {/* ── Formateur principal (R9 — assignation bloquée si non habilité) ─── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="formateur" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Formateur principal</h2>
         <AssignFormateurForm
           sessionId={id}
@@ -678,7 +691,10 @@ export default async function SessionHubPage({ params }: PageProps) {
       </section>
 
       {/* ── Inter-entreprises (R-INTER — financement/facture par participant) ─ */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section
+        id="inter-entreprises"
+        className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+      >
         <h2 className={sectionHeadCls}>Inter-entreprises</h2>
         <InterEntreprisesSection
           sessionId={id}
@@ -692,7 +708,10 @@ export default async function SessionHubPage({ params }: PageProps) {
           Placé AVANT les sous-pages : c'est le premier geste après une vente,
           et le seul que rien ne rappelait jusqu'ici. */}
       {preparationKit !== null && preparationKit.aPreparer ? (
-        <section className="mb-[var(--space-admin-8)]">
+        <section
+          id="preparation-kit"
+          className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}
+        >
           <PreparationKitSession
             sessionId={id}
             etape={preparationKit.etape}
@@ -709,7 +728,7 @@ export default async function SessionHubPage({ params }: PageProps) {
       ) : null}
 
       {/* ── Navigation vers les sous-pages ──────────────────────────────── */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="sous-pages" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Sous-pages</h2>
         <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2 lg:grid-cols-4">
           <Link href={`${sessionBase}/emargement`} className={subLinkCls}>
@@ -743,7 +762,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        *         genererPortailAccesAction, revoquerPortailAccesAction.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="stagiaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Stagiaires</h2>
         <EnrollmentsSection
           sessionId={id}
@@ -767,7 +786,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        * Affiche les DocumentGenere existants + lien de téléchargement PDF.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="documents" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Documents</h2>
 
         {/* Dossier d'audit de la session — REMONTÉ ici (2026-08-05) : le bouton
@@ -913,7 +932,7 @@ export default async function SessionHubPage({ params }: PageProps) {
        * (saisirReponsesQuestionnaireAction) par stagiaire.
        * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        */}
-      <section className="mb-[var(--space-admin-8)]">
+      <section id="questionnaires" className={`mb-[var(--space-admin-8)] ${CLASSE_ANCRE_SECTION}`}>
         <h2 className={sectionHeadCls}>Questionnaires de satisfaction</h2>
         <QuestionnairesSection
           sessionId={id}

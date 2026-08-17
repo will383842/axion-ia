@@ -1,0 +1,343 @@
+{
+ "largeurPage": 1000,
+ "pages": [
+  {
+   "fichier": "p01.jpg",
+   "numero": "",
+   "cote": "couverture",
+   "seule": true,
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p02.jpg",
+   "numero": "02",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p03.jpg",
+   "numero": "03",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p04.jpg",
+   "numero": "04",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p05.jpg",
+   "numero": "05",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p06.jpg",
+   "numero": "06",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p07.jpg",
+   "numero": "07",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p08.jpg",
+   "numero": "08",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p09.jpg",
+   "numero": "09",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p10.jpg",
+   "numero": "10",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p11.jpg",
+   "numero": "11",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p12.jpg",
+   "numero": "12",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p13.jpg",
+   "numero": "13",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p14.jpg",
+   "numero": "14",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p15.jpg",
+   "numero": "15",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p16.jpg",
+   "numero": "16",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p17.jpg",
+   "numero": "17",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p18.jpg",
+   "numero": "18",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p19.jpg",
+   "numero": "19",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p20.jpg",
+   "numero": "20",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p21.jpg",
+   "numero": "21",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p22.jpg",
+   "numero": "22",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p23.jpg",
+   "numero": "23",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p24.jpg",
+   "numero": "24",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p25.jpg",
+   "numero": "25",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p26.jpg",
+   "numero": "26",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p27.jpg",
+   "numero": "27",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p28.jpg",
+   "numero": "28",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p29.jpg",
+   "numero": "29",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p30.jpg",
+   "numero": "30",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p31.jpg",
+   "numero": "31",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p32.jpg",
+   "numero": "32",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p33.jpg",
+   "numero": "33",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p34.jpg",
+   "numero": "34",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p35.jpg",
+   "numero": "35",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p36.jpg",
+   "numero": "36",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p37.jpg",
+   "numero": "37",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p38.jpg",
+   "numero": "38",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p39.jpg",
+   "numero": "39",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p40.jpg",
+   "numero": "40",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p41.jpg",
+   "numero": "41",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p42.jpg",
+   "numero": "42",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p43.jpg",
+   "numero": "43",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p44.jpg",
+   "numero": "44",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2696
+  },
+  {
+   "fichier": "p45.jpg",
+   "numero": "45",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p46.jpg",
+   "numero": "46",
+   "cote": "gauche",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p47.jpg",
+   "numero": "47",
+   "cote": "droite",
+   "l": 1909,
+   "h": 2699
+  },
+  {
+   "fichier": "p48.jpg",
+   "numero": "",
+   "cote": "dos de couverture",
+   "seule": true,
+   "l": 1909,
+   "h": 2699
+  }
+ ]
+}

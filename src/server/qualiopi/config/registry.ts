@@ -89,6 +89,79 @@ const email = (def = "") => ({
  * international ou un poste interne.
  */
 const tel = (def = "") => ({ schema: z.string().trim(), default: def });
+
+/**
+ * Identifiants légaux CHIFFRÉS — NDA, SIRET.
+ *
+ * 🔴 Le défaut, constaté le 2026-08-17 en recevant le récépissé de déclaration
+ * d'activité. `nda_numero` et `siret` étaient de simples `str()` : `z.string()
+ * .trim()` accepte **n'importe quoi**. C'est exactement la famille de défaut
+ * qui a laissé « Williams Jullin » s'installer dans un champ e-mail — sauf
+ * qu'ici la valeur ne s'affiche pas, elle **s'imprime sur des pièces
+ * opposables** : conventions, contrats, factures, attestations, BPF.
+ *
+ * Un SIRET fautif est pire encore : il est BLOQUANT au sens de
+ * `documents/conformite.ts`, donc le renseigner **lève le filigrane SPÉCIMEN**.
+ * Une coquille produit alors une facture d'apparence valable portant un numéro
+ * d'immatriculation qui n'est pas le nôtre (mention obligatoire, R.123-238).
+ *
+ * ⚠️ Les espaces INTERNES sont retirés avant contrôle, pas rejetés : un numéro
+ * recopié depuis un PDF administratif arrive presque toujours groupé
+ * (« 108 018 631 00011 »). Refuser cette forme ferait échouer la saisie la plus
+ * naturelle, et la validation serait vécue comme un obstacle plutôt qu'un
+ * filet. La valeur STOCKÉE, elle, est toujours compacte.
+ *
+ * La chaîne vide reste valide : ces clés sont facultatives tant que
+ * l'organisme n'a pas ses numéros, et refuser le vide empêcherait d'effacer une
+ * valeur erronée.
+ */
+const identifiantChiffre = (
+  longueur: number,
+  libelle: string,
+  /** Contrôle supplémentaire (clé de Luhn du SIRET). `null` = aucun. */
+  cle: ((v: string) => boolean) | null,
+) => ({
+  schema: z
+    .string()
+    // Espaces internes ET de bord : `replace` couvre les deux, `trim` seul non.
+    .transform((v) => v.replace(/\s+/g, ""))
+    .refine((v) => v === "" || new RegExp(`^\\d{${longueur}}$`).test(v), {
+      message: `${libelle} : ${longueur} chiffres attendus.`,
+    })
+    .refine((v) => v === "" || cle === null || cle(v), {
+      message: `${libelle} : clé de contrôle invalide — vérifier la saisie.`,
+    }),
+  default: "",
+});
+
+/**
+ * Clé de Luhn du SIRET.
+ *
+ * Le 14ᵉ chiffre est une clé de contrôle : elle attrape les inversions de deux
+ * chiffres voisins, la coquille la plus fréquente à la recopie.
+ *
+ * ⚠️ EXCEPTION LÉGALE : les établissements de La Poste — ceux dont le numéro
+ * d'entreprise vaut `356000000` — ne respectent
+ * pas Luhn — leur règle est « somme des chiffres divisible par 5 ». Elle est
+ * traitée, non par prudence rituelle, mais parce qu'une validation qui refuse
+ * un numéro VALABLE est plus grave que l'absence de validation : elle bloque
+ * une saisie légitime sans issue par l'interface.
+ */
+export function cleLuhnSiretValide(v: string): boolean {
+  if (v.startsWith("356000000")) {
+    return [...v].reduce((s, c) => s + Number(c), 0) % 5 === 0;
+  }
+  let somme = 0;
+  for (let i = 0; i < v.length; i++) {
+    let d = Number(v[v.length - 1 - i]);
+    if (i % 2 === 1) {
+      d *= 2;
+      if (d > 9) d -= 9;
+    }
+    somme += d;
+  }
+  return somme % 10 === 0;
+}
 const num = (def: number) => ({ schema: numSchema, default: def });
 const bool = (def: boolean) => ({ schema: boolSchema, default: def });
 
@@ -104,17 +177,25 @@ export const QUALIOPI_CONFIG_REGISTRY = {
   // toujours sur le défaut du registre. Sans valeur ici, la mention légale
   // n'existerait dans le HTML statique qu'après repeuplement ISR — une mention
   // obligatoire absente du rendu figé pendant une heure après chaque déploiement.
-  // C'est exactement le parti déjà pris par `LEGAL_IDENTITY_DEFAULTS` pour la
-  // forme juridique et le dirigeant : les identifiants légaux PERMANENTS se
-  // codent, les valeurs mouvantes se paramètrent.
   //
   // La saisie admin reste prioritaire (une ligne `SiteSetting` écrase le défaut).
   // ⚠️ Corollaire : si `qualiopi.nda_numero` existe en base avec une chaîne VIDE
   // — cas d'un formulaire enregistré avant l'attribution — c'est le vide qui
   // gagne, pas ce défaut. La migration `20260817120000_nda_declaration_activite`
   // efface cette ligne-là, et rien d'autre.
+  //
+  // 🔴 Il ne vaut PAS certification Qualiopi : le récépissé porte lui-même
+  // « cet enregistrement ne vaut pas agrément de l'État ». Ne pas confondre les
+  // deux surfaces.
+  //
+  // ⚠️ FUSION 2026-08-17 : les deux branches étaient COMPLÉMENTAIRES, pas
+  // concurrentes. L'une posait le vrai numéro en défaut de code, l'autre la
+  // validation de format (11 chiffres, pas de clé de contrôle — le NDA réel
+  // ÉCHOUE à Luhn, contrairement au SIRET). On garde les DEUX : le schéma
+  // valide, `default` porte la valeur.
   nda_numero: {
-    ...str(NDA_NUMERO),
+    ...identifiantChiffre(11, "NDA", null),
+    default: NDA_NUMERO,
     description: "N° de déclaration d'activité (NDA, 11 chiffres).",
   },
   // ── Médiation de la consommation (obligatoire dès qu'un PARTICULIER contracte) ──
@@ -168,7 +249,10 @@ export const QUALIOPI_CONFIG_REGISTRY = {
     ...str(),
     description: "Chemin du fichier logo officiel Qualiopi (kit certificateur).",
   },
-  siret: { ...str(), description: `SIRET ${BRAND.legalName}.` },
+  siret: {
+    ...identifiantChiffre(14, "SIRET", cleLuhnSiretValide),
+    description: `SIRET ${BRAND.legalName} (14 chiffres, clé de Luhn vérifiée).`,
+  },
   raison_sociale: {
     ...str(BRAND.legalName),
     // Dénomination immatriculée, pas la marque : le Kbis porte « AXION IA »

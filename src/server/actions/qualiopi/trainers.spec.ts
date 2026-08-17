@@ -13,6 +13,7 @@ const mockSessionUpdate = vi.fn();
 const mockSessionFormateurDeleteMany = vi.fn();
 const mockSessionFormateurUpsert = vi.fn();
 const mockHabilitationDeleteMany = vi.fn();
+const mockHabilitationUpdateMany = vi.fn();
 const mockHabilitationCreateMany = vi.fn();
 // 🔴 2026-07-26 — la garde anti-orphelins interroge le catalogue avant d'écrire.
 // Par défaut, toute formation demandée est réputée exister : les tests
@@ -25,7 +26,13 @@ vi.mock("@/lib/prisma", () => {
     upsert: (...args: unknown[]) => mockSessionFormateurUpsert(...args),
   };
   const trainerHabilitation = {
+    // ⚠️ `deleteMany` reste MOCKÉ bien que l'action ne doive plus l'appeler :
+    // sans lui, un retour au `deleteMany` ferait échouer la transaction et le
+    // test rougirait sur « Erreur lors de la mise à jour » — un message qui
+    // n'apprend rien. Mocké, l'assertion `not.toHaveBeenCalled()` NOMME la
+    // régression.
     deleteMany: (...args: unknown[]) => mockHabilitationDeleteMany(...args),
+    updateMany: (...args: unknown[]) => mockHabilitationUpdateMany(...args),
     createMany: (...args: unknown[]) => mockHabilitationCreateMany(...args),
   };
   const tx = {
@@ -102,6 +109,7 @@ beforeEach(() => {
   mockSessionFormateurDeleteMany.mockReset();
   mockSessionFormateurUpsert.mockReset();
   mockHabilitationDeleteMany.mockReset();
+  mockHabilitationUpdateMany.mockReset();
   mockHabilitationCreateMany.mockReset();
   // Catalogue sain par défaut : chaque id demandé existe.
   mockFormationFindMany.mockReset();
@@ -149,6 +157,7 @@ describe("createTrainerAction", () => {
 describe("setTrainerHabilitationsAction", () => {
   beforeEach(() => {
     mockHabilitationDeleteMany.mockReset().mockResolvedValue({ count: 0 });
+    mockHabilitationUpdateMany.mockReset().mockResolvedValue({ count: 0 });
     mockHabilitationCreateMany.mockReset().mockResolvedValue({ count: 1 });
   });
 
@@ -185,17 +194,47 @@ describe("setTrainerHabilitationsAction", () => {
   it("retire de la table les habilitations qui ne sont plus dans la liste", async () => {
     mockUpdate.mockResolvedValue({ id: TRAINER_ID });
     await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [FORMATION_ID] });
-    const delArg = mockHabilitationDeleteMany.mock.calls[0]?.[0] as {
-      where: { trainerId: string; formationId: { notIn: string[] } };
+    const arg = mockHabilitationUpdateMany.mock.calls[0]?.[0] as {
+      where: { trainerId: string; formationId: { notIn: string[] }; retireAt: null };
+      data: { retireAt: Date; retireById: string };
     };
-    expect(delArg.where.trainerId).toBe(TRAINER_ID);
-    expect(delArg.where.formationId.notIn).toEqual([FORMATION_ID]);
+    expect(arg.where.trainerId).toBe(TRAINER_ID);
+    expect(arg.where.formationId.notIn).toEqual([FORMATION_ID]);
   });
 
-  it("une liste VIDE efface la table sans tenter d'insérer", async () => {
+  it("🔴 RETIRE, il ne SUPPRIME pas : la ligne reste, datée et signée", async () => {
+    // Le défaut d'origine (Lot 9) : le retrait était un `deleteMany` muet. La
+    // ligne disparaissait, et avec elle la réponse à « depuis quand n'est-il
+    // plus habilité ? » — et la preuve de conformité des sessions PASSÉES qu'il
+    // a animées pendant qu'il l'était (ind. 21/22).
+    mockUpdate.mockResolvedValue({ id: TRAINER_ID });
+    await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [FORMATION_ID] });
+
+    expect(mockHabilitationDeleteMany).not.toHaveBeenCalled();
+
+    const arg = mockHabilitationUpdateMany.mock.calls[0]?.[0] as {
+      where: { retireAt: null };
+      data: { retireAt: Date; retireById: string };
+    };
+    expect(arg.data.retireAt).toBeInstanceOf(Date);
+    // Qui a retiré : un retrait anonyme ne se justifie pas devant un auditeur.
+    expect(arg.data.retireById).toBe("admin-uuid");
+    // 🔴 On ne re-retire pas ce qui l'est déjà : sans ce filtre, chaque
+    // enregistrement du formulaire réécrirait la date de retrait de TOUTES les
+    // habilitations passées, et l'historique mentirait à chaque clic.
+    expect(arg.where.retireAt).toBeNull();
+  });
+
+  it("une liste VIDE retire tout, sans tenter d'insérer", async () => {
     mockUpdate.mockResolvedValue({ id: TRAINER_ID });
     await setTrainerHabilitationsAction({ id: TRAINER_ID, formationsHabilitees: [] });
-    expect(mockHabilitationDeleteMany).toHaveBeenCalled();
+    expect(mockHabilitationUpdateMany).toHaveBeenCalled();
+    expect(mockHabilitationDeleteMany).not.toHaveBeenCalled();
+    const arg = mockHabilitationUpdateMany.mock.calls[0]?.[0] as {
+      where: { formationId: { notIn: string[] } };
+    };
+    // `notIn: []` retire bien TOUT — aucune formation n'est épargnée.
+    expect(arg.where.formationId.notIn).toEqual([]);
     expect(mockHabilitationCreateMany).not.toHaveBeenCalled();
   });
 });

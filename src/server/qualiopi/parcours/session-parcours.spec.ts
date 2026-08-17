@@ -475,3 +475,63 @@ describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
     expect(avecBorne.motifSansBorne).toBeUndefined();
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 AUCUN EMOJI DANS CE QUI EST RENDU À L'ÉCRAN
+//
+// Trouvé le 2026-08-17 par la vague d'agents, dans MON code du matin : la ligne
+// `geste` du suivi à froid portait un « 🔴 » — et « À traiter » rend
+// `etape.geste` tel quel. L'emoji était donc DÉJÀ affiché en production.
+//
+// Le dépôt l'interdit : lucide-react pour les icônes, et l'information s'écrit
+// en toutes lettres (un emoji n'a pas de texte alternatif, un lecteur d'écran
+// l'annonce « gros cercle rouge » au milieu d'une phrase).
+//
+// ⚠️ La règle ne vaut QUE pour les chaînes rendues. Un 🔴 en commentaire est
+// légitime — et abondant dans ce fichier. C'est pourquoi ce test lit les VALEURS
+// produites, pas le source : un test statique sur le fichier s'accuserait de ses
+// propres commentaires, piège déjà payé le 17/08 sur une autre garde.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 rien de ce qui s'affiche ne porte d'emoji", () => {
+  const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2190}-\u{21FF}\u{2B00}-\u{2BFF}\u{FE0F}]/u;
+
+  const p = construireParcours(
+    dossier({
+      session: {
+        statut: "realisee",
+        dateDebut: DEBUT,
+        dateFin: FIN,
+        formateurPrincipalId: "f1",
+        financementType: "direct",
+      },
+      maintenant: d("2026-09-20T09:00:00.000Z"),
+      inscriptions: [inscription()],
+    }),
+  );
+
+  it("les quatorze étapes sont bien là", () => {
+    // Sans ceci, une liste vide ferait passer tout le bloc au vert.
+    expect(p.etapes).toHaveLength(14);
+  });
+
+  it.each(p.etapes.map((e) => [e.cle, e] as const))(
+    "%s : ni le libellé, ni la mention, ni le geste, ni l'avertissement",
+    (_cle, etape) => {
+      for (const [champ, valeur] of [
+        ["libelle", etape.libelle],
+        ["mention", etape.mention],
+        ["geste", etape.geste],
+        ["avertissement", etape.avertissement ?? ""],
+        ["motifSansBorne", etape.motifSansBorne ?? ""],
+      ] as const) {
+        expect(
+          EMOJI.test(valeur),
+          `L'étape « ${etape.cle} » porte un emoji dans son champ « ${champ} », et ` +
+            `ce champ est RENDU À L'ÉCRAN. Un emoji n'a pas de texte alternatif : ` +
+            `un lecteur d'écran l'annonce au milieu de la phrase.`,
+        ).toBe(false);
+      }
+    },
+  );
+});

@@ -328,8 +328,24 @@ export async function setTrainerHabilitationsAction(
   try {
     await prisma.$transaction(async (tx) => {
       await tx.trainer.update({ where: { id }, data: { formationsHabilitees } });
-      await tx.trainerHabilitation.deleteMany({
-        where: { trainerId: id, formationId: { notIn: formationsHabilitees } },
+      // 🔴 RETIRER, jamais SUPPRIMER (2026-08-17).
+      //
+      // C'était un `deleteMany` : la ligne disparaissait, et avec elle la
+      // réponse à « depuis quand n'est-il plus habilité ? ». Pire — si une
+      // session a été ANIMÉE alors que le formateur était habilité, la
+      // supprimer aujourd'hui détruisait la preuve de conformité de cette
+      // session PASSÉE (ind. 21/22).
+      //
+      // `retireAt: null` dans le `where` : on ne re-retire pas ce qui l'est
+      // déjà, sinon chaque enregistrement du formulaire réécrirait la date de
+      // retrait et ferait mentir l'historique.
+      await tx.trainerHabilitation.updateMany({
+        where: {
+          trainerId: id,
+          formationId: { notIn: formationsHabilitees },
+          retireAt: null,
+        },
+        data: { retireAt: new Date(), retireById: session.userId },
       });
       if (formationsHabilitees.length > 0) {
         await tx.trainerHabilitation.createMany({
@@ -341,6 +357,12 @@ export async function setTrainerHabilitationsAction(
           // Réhabiliter une formation déjà habilitée ne doit ni échouer sur
           // l'unicité, ni réécrire `habiliteAt` (la traçabilité Qualiopi date de
           // la PREMIÈRE habilitation, pas du dernier enregistrement du formulaire).
+          //
+          // ⚠️ L'unicité est désormais PARTIELLE (`WHERE retire_at IS NULL`) :
+          // `skipDuplicates` ne saute donc que les habilitations ACTIVES. Une
+          // formation retirée puis re-cochée crée une NOUVELLE ligne — c'est
+          // voulu, la re-prononciation est un acte daté, et l'ancienne reste au
+          // registre avec son retrait.
           skipDuplicates: true,
         });
       }

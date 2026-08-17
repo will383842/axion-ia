@@ -58,6 +58,22 @@ export type TimingWeeks = (typeof TIMING_WEEKS)[number];
 // ---- Schema ---------------------------------------------------------------
 
 /**
+ * « Non renseigné » pour un `<select>` : la chaîne vide vaut `undefined`.
+ *
+ * Un menu déroulant facultatif porte toujours une option vide
+ * (`<option value="">—</option>`). Le formulaire envoie alors `""`, que
+ * `z.enum(...).optional()` REFUSE — il n'accepte que `undefined`. Sans cette
+ * traduction, un champ déclaré optionnel devient obligatoire, et le formulaire
+ * refuse de partir sans rien dire.
+ *
+ * La contrainte n'est pas assouplie : une valeur non vide reste vérifiée
+ * contre l'énumération.
+ */
+function emptyToUndefined<T extends z.ZodTypeAny>(schema: T) {
+  return z.preprocess((v) => (v === "" ? undefined : v), schema.optional());
+}
+
+/**
  * Schema unifié.
  *
  * - Champs base (6) : type, nom, email, telephone, ville, message — tous requis.
@@ -97,11 +113,28 @@ export const unifiedContactSchema = z.object({
     .max(2000, "2 000 caractères maximum."),
 
   // -- Avancé (5 champs optionnels, révélés via toggle)
+  //
+  // 🔴 `z.enum(...).optional()` accepte `undefined` — PAS la chaîne vide.
+  //
+  // Or le `<select>` de ces deux champs porte `<option value="">—</option>` :
+  // laisser le choix par défaut envoie `""`, que le schéma REFUSE. Un champ
+  // annoncé optionnel devenait donc impossible à laisser vide.
+  //
+  // Ce que voyait l'utilisateur, mesuré sur la PRODUCTION le 2026-08-17 :
+  // il remplit le formulaire, clique « Envoyer ma demande » — et **rien ne se
+  // passe**. Pas de message, pas d'explication : un simple liseré rouge sur un
+  // menu déroulant de la section « Aller plus loin (RECOMMANDÉ) », révélé un
+  // champ à la fois. Il faut deviner, deux fois de suite, qu'un champ présenté
+  // comme recommandé est en réalité bloquant.
+  //
+  // `emptyToUndefined` traduit le vide du formulaire en « non renseigné », ce
+  // que le schéma dit déjà vouloir. Aucun assouplissement : une valeur non
+  // vide reste contrainte à l'énumération.
   companyName: z.string().trim().max(255).optional(),
-  companySize: z.enum(COMPANY_SIZES).optional(),
+  companySize: emptyToUndefined(z.enum(COMPANY_SIZES)),
   companySector: z.string().trim().max(100).optional(),
   budgetIndicative: z.string().trim().max(80).optional(),
-  timingWeeks: z.enum(TIMING_WEEKS).optional(),
+  timingWeeks: emptyToUndefined(z.enum(TIMING_WEEKS)),
 
   // -- Métadonnées
   locale: z.enum(["fr", "en"]).default("fr"),
