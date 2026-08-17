@@ -18,6 +18,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { messageEnvoi, type TonMessage } from "@/server/qualiopi/financements/message-envoi";
 import {
   enregistrerPaiementFactureAction,
   genererAvoirAction,
@@ -77,6 +78,11 @@ export function FactureFormationActions({
   const [panel, setPanel] = useState<Panel>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  // 🔴 Lot 3quinquies §2 — un envoi GARÉ pour validation n'est ni un succès ni
+  // une erreur. Un admin qui lit « Facture envoyée » n'ira pas valider la
+  // corbeille : la facture reste bloquée, le client ne reçoit rien, et
+  // personne ne cherche — puisque l'écran a dit que c'était parti.
+  const [tonEnvoi, setTonEnvoi] = useState<TonMessage>("succes");
 
   // Paiement
   const [montantEur, setMontantEur] = useState<string>(
@@ -98,6 +104,9 @@ export function FactureFormationActions({
   function reset() {
     setError(null);
     setSuccess(null);
+    // Le ton se remet à zéro AVEC le message : le garder ferait teinter le
+    // succès suivant de l'avertissement précédent.
+    setTonEnvoi("succes");
   }
 
   function togglePanel(p: Panel) {
@@ -184,7 +193,11 @@ export function FactureFormationActions({
         setError(res.error);
         return;
       }
-      setSuccess(`Facture envoyée à ${res.data.to}.`);
+      // Même règle que le devis : la note de l'action l'emporte, et un
+      // envoi GARÉ ne s'annonce pas comme un envoi.
+      const m = messageEnvoi("Facture", res.data);
+      setTonEnvoi(m.ton);
+      setSuccess(m.texte);
       setPanel(null);
       router.refresh();
     });
@@ -476,7 +489,13 @@ export function FactureFormationActions({
       {success && (
         <p
           role="status"
-          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          // La couleur ne fait que DOUBLER le texte, qui dit déjà tout
+          // (WCAG 1.4.1).
+          className={
+            tonEnvoi === "attention"
+              ? "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning-fg)]"
+              : "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
+          }
         >
           {success}
         </p>
