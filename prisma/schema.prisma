@@ -6328,7 +6328,31 @@ model TrainerHabilitation {
   habiliteById String?   @map("habilite_by_id") @db.Uuid
   note         String?   @db.Text
 
-  @@unique([trainerId, formationId], map: "trainer_habilitation_unique")
+  /// 🔴 RETRAIT D'HABILITATION — historisé, jamais supprimé (2026-08-17).
+  ///
+  /// La dé-habilitation était un `deleteMany` : la ligne DISPARAISSAIT. À la
+  /// question « depuis quand ce formateur n'est-il plus habilité sur cette
+  /// formation ? », il n'y avait aucune réponse.
+  ///
+  /// Et le défaut allait plus loin qu'un manque d'historique : si une session a
+  /// été ANIMÉE alors que le formateur était habilité, retirer l'habilitation
+  /// aujourd'hui DÉTRUISAIT la preuve de conformité de cette session passée. Un
+  /// auditeur qui remonte un dossier de l'an dernier ne pouvait plus établir
+  /// que l'intervenant y était habilité (ind. 21/22).
+  ///
+  /// `null` = habilitation ACTIVE. L'index unique partiel ci-dessous ne porte
+  /// que sur les lignes actives : ré-habiliter après un retrait crée une
+  /// NOUVELLE ligne, et l'ancienne reste au registre avec sa date de retrait.
+  retireAt     DateTime? @map("retire_at")
+  retireById   String?   @map("retire_by_id") @db.Uuid
+  /// Pourquoi l'habilitation a été retirée. Écrit par l'humain qui la retire.
+  motifRetrait String?   @map("motif_retrait") @db.Text
+
+  /// ⚠️ L'unicité `(trainerId, formationId)` est devenue PARTIELLE — elle ne
+  /// vaut que `WHERE retire_at IS NULL`. Prisma ne sait pas la déclarer : elle
+  /// est créée en SQL par la migration `trainer_habilitation_retrait`. Cet
+  /// `@@index` la remplace côté schéma pour garder la lecture rapide.
+  @@index([trainerId, formationId])
   @@index([formationId])
   @@map("trainer_habilitations")
 }
