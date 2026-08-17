@@ -176,18 +176,41 @@ function piecesVivantes(
 const PARTIE_ORGANISME = "axionia";
 
 /**
- * La pièce porte-t-elle au moins UNE signature d'une partie EXTERNE ?
- *
- * 🔴 On ne peut pas se contenter de compter les signatures : l'organisme
- * pourrait avoir contresigné une pièce que le client n'a jamais signée, et
- * l'étape « signée par le client » passerait au vert sur la signature de
- * l'organisme lui-même. C'est le genre d'inversion qu'un auditeur repère.
+ * Les parties APPOSÉES sur une pièce.
  */
-function signeeParUneAutrePartie(
+function partiesApposees(
   piece: { readonly id: string },
   signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
+): ReadonlySet<string> {
+  return new Set((signaturesParPiece.get(piece.id) ?? []).map((s) => s.partie));
+}
+
+/**
+ * TOUTES les parties externes requises ont-elles signé ?
+ *
+ * 🔴 On interroge `partiesRequisesPour` — le SSOT des dix circuits — et on en
+ * retire l'organisme. On ne compte PAS « au moins une signature qui n'est pas la
+ * nôtre » : sur une convention TRIPARTITE, dont le circuit exige
+ * `["client", "financeur", "axionia"]`, cette approximation passerait au vert
+ * sur la seule signature du financeur, le client n'ayant rien signé.
+ *
+ * ⚠️ Recompter les parties ici les ferait diverger du SSOT au premier circuit
+ * ajouté — c'est l'avertissement que portait déjà l'ancienne version, et qui
+ * reste vrai après la scission.
+ */
+function signeeParToutesLesPartiesExternes(
+  piece: { readonly id: string; readonly type: string },
+  signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
 ): boolean {
-  return (signaturesParPiece.get(piece.id) ?? []).some((s) => s.partie !== PARTIE_ORGANISME);
+  const requises = partiesRequisesPour(piece.type);
+  if (requises === null || requises.length === 0) return false;
+  const externes = requises.filter((p) => p !== PARTIE_ORGANISME);
+  // Un circuit UNILATÉRAL (autorisation d'image : une seule partie, et c'est
+  // le tiers) n'a pas d'organisme à retirer — mais il n'a pas non plus de
+  // contreseing, et cette fonction ne le rencontre pas pour une convention.
+  if (externes.length === 0) return false;
+  const apposees = partiesApposees(piece, signaturesParPiece);
+  return externes.every((p) => apposees.has(p));
 }
 
 /** L'organisme a-t-il contresigné ? */
@@ -195,17 +218,7 @@ function contresigneeParOrganisme(
   piece: { readonly id: string },
   signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
 ): boolean {
-  return (signaturesParPiece.get(piece.id) ?? []).some((s) => s.partie === PARTIE_ORGANISME);
-}
-
-function pieceEntierementSignee(
-  piece: { readonly id: string; readonly type: string },
-  signaturesParPiece: SessionParcoursInput["signaturesParPiece"],
-): boolean {
-  const requises = partiesRequisesPour(piece.type);
-  if (requises === null || requises.length === 0) return false;
-  const apposees = new Set((signaturesParPiece.get(piece.id) ?? []).map((s) => s.partie));
-  return requises.every((p) => apposees.has(p));
+  return partiesApposees(piece, signaturesParPiece).has(PARTIE_ORGANISME);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -296,7 +309,7 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
   // silence. Ce qui change, c'est ce qu'elle mesure — la signature du client,
   // désormais nommée telle quelle.
   const conventionSigneeClient = conventions.some((c) =>
-    signeeParUneAutrePartie(c, signaturesParPiece),
+    signeeParToutesLesPartiesExternes(c, signaturesParPiece),
   );
   const conventionContresignee = conventions.some((c) =>
     contresigneeParOrganisme(c, signaturesParPiece),

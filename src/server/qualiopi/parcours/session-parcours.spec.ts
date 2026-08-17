@@ -171,6 +171,33 @@ describe("🔴 un seul côté signé ne vaut PAS signature", () => {
     expect(contreseing.avertissement).toContain("PAS nous");
   });
 
+  it("🔴 TRIPARTITE : le financeur seul ne suffit pas", () => {
+    // Le défaut que j'ai FAILLI introduire en scindant l'étape. Une première
+    // version testait « au moins une signature qui n'est pas la nôtre » : sur
+    // une convention tripartite, dont le circuit exige
+    // ["client", "financeur", "axionia"], elle serait passée au vert sur la
+    // seule signature du financeur — le client n'ayant rien signé.
+    //
+    // La liste des parties vient de `partiesRequisesPour`, le SSOT des dix
+    // circuits. La recompter ici la ferait diverger au premier circuit ajouté.
+    const tripartite = { ...convention, type: "convention_tripartite" };
+    const partiel = construireParcours(
+      dossier({
+        documents: [tripartite],
+        signaturesParPiece: new Map([["doc1", [{ partie: "financeur" }]]]),
+      }),
+    );
+    expect(etapeDe(partiel, "convention_signee").etat).not.toBe("fait");
+
+    const complet = construireParcours(
+      dossier({
+        documents: [tripartite],
+        signaturesParPiece: new Map([["doc1", [{ partie: "financeur" }, { partie: "client" }]]]),
+      }),
+    );
+    expect(etapeDe(complet, "convention_signee").etat).toBe("fait");
+  });
+
   it("🔴 contresignée AVANT la signature du client : le circuit est inversé", () => {
     // L'organisme signe en DERNIER. Une pièce contresignée sans signature
     // client signale un circuit mal joué — et, avant la scission, elle aurait
