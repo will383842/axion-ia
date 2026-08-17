@@ -1541,7 +1541,7 @@ export function DocumentsSection({
                       {doc.pdfUrl !== null && doc.pdfUrl !== undefined && doc.pdfUrl !== "" ? (
                         <span className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
                           {/* 🔴 L'étiquette disait « Télécharger » et le lien OUVRAIT.
-                              Depuis #686 la route sert la pièce en consultation
+                              Depuis la PR 686 la route sert la pièce en consultation
                               (`inline`) : l'intitulé décrivait l'ancien
                               comportement. Un bouton qui annonce autre chose que
                               ce qu'il fait est pire qu'un bouton absent — on

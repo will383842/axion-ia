@@ -248,7 +248,7 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
           >
             Ouvrir le PDF
           </a>
-          {/* 🔴 Depuis #686 la route sert la pièce en consultation : le seul
+          {/* 🔴 Depuis la PR 686 la route sert la pièce en consultation : le seul
               lien présent OUVRAIT en annonçant « télécharger », et plus rien
               n'offrait d'enregistrer. Une facture qu'on doit joindre à un
               courrier se télécharge — la lire ne suffit pas. */}
