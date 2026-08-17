@@ -51,6 +51,11 @@ import { genererFicheAdaptationAction } from "@/server/actions/qualiopi/exports-
 import { GenererFactureButton } from "@/components/admin/qualiopi/GenererFactureButton";
 import { PdfExportButton } from "@/components/admin/qualiopi/PdfExportButton";
 import { formatDateFrShort } from "@/lib/format-date-fr";
+import {
+  motifRepli,
+  pieceMiseEnAvant,
+  type ContexteSession,
+} from "@/server/qualiopi/documents/pertinence-piece";
 import type { DocumentType } from "../../../../prisma/generated/client";
 import { TriangleAlert } from "lucide-react";
 
@@ -109,10 +114,44 @@ export interface DocumentGenereInfo {
   rectifieMotif?: string | null;
 }
 
+/**
+ * Lot 1ter §3 — CE QU'ON REMONTE APRÈS AVOIR PRODUIT UNE PIÈCE.
+ *
+ * 🔴 Le bandeau affichait le NUMÉRO BRUT : « Dernier document généré :
+ * AXI-DOC-2026-032 ». Objection de Will : « ne jamais faire recopier un
+ * numéro — absurde dans un outil qui les connaît ». Il fallait relire la
+ * liste pour retrouver la pièce qu'on venait de produire.
+ *
+ * Trois champs, dans cet ordre d'importance :
+ *  - `libelle` : le nom MÉTIER, en premier. Dix PDF identifiés par des
+ *    numéros de série se confondent — Will a cherché le montant de la
+ *    convention dans la convocation ;
+ *  - `numero` : la référence au registre, en second ;
+ *  - `documentId` : ce qui rend la pièce OUVRABLE d'un clic. `null` quand
+ *    l'action n'en rend pas (attestation conditionnelle) — le bandeau
+ *    affiche alors le texte sans lien plutôt qu'un lien mort.
+ */
+export interface PieceProduite {
+  libelle: string;
+  numero: string | null;
+  documentId: string | null;
+}
+
 export interface DocumentsSectionProps {
   sessionId: string;
   enrollments: EnrollmentInfo[];
   documentsExistants: DocumentGenereInfo[];
+  /**
+   * Lot 1ter §2/§5 — ce que ce dossier appelle réellement.
+   *
+   * 🔴 Sans lui, les ~20 boutons de génération s'affichaient TOUS, sur TOUTES
+   * les sessions : Kit OPCO sur un financement direct, Contrat de formation
+   * (particulier) sur un client entreprise, Convention tripartite OPCO sur une
+   * session sans OPCO. Le bruit n'est pas neutre — il produit des pièces à
+   * annuler. Une « Lettre de mission formateur » a dû être annulée au registre
+   * pour ce motif exact, sur le premier dossier réel.
+   */
+  contexte: ContexteSession;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -347,7 +386,7 @@ interface SessionDocButtonProps {
     rectificationMotif?: string;
   }) => Promise<{ data: { documentId: string; numero: string } } | { error: string }>;
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /**
    * Date FR de la dernière génération de ce type de pièce pour la session.
    * Présente → le bouton passe en ghost « … — régénérer » : le primary reste
@@ -385,7 +424,11 @@ function SessionDocButton({
       } else {
         const msg = `${label} — n° ${result.data.numero} généré.`;
         setSuccess(msg);
-        onDone(result.data.numero);
+        onDone({
+          libelle: label,
+          numero: result.data.numero,
+          documentId: result.data.documentId,
+        });
         rect.fermer();
         router.refresh();
       }
@@ -521,7 +564,7 @@ function LettreMissionButtons({
   dejaGenereLe,
 }: {
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton — transmis au bouton « cette session ». */
   dejaGenereLe?: string | undefined;
 }): React.ReactElement {
@@ -588,7 +631,7 @@ function LettreMissionButtons({
         return;
       }
       setSuccess(`Lettre-cadre — n° ${res.data.numero} générée.`);
-      onDone(res.data.numero);
+      onDone({ libelle: "Lettre de mission cadre", numero: res.data.numero, documentId: null });
       setOuvert(false);
       setCandidates(null);
       router.refresh();
@@ -732,7 +775,7 @@ function ConventionDocButton({
   dejaGenereLe,
 }: {
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton. */
   dejaGenereLe?: string | undefined;
 }): React.ReactElement {
@@ -766,7 +809,11 @@ function ConventionDocButton({
       } else {
         const msg = `Convention de formation — n° ${result.data.numero} généré.`;
         setSuccess(msg);
-        onDone(result.data.numero);
+        onDone({
+          libelle: "Convention de formation",
+          numero: result.data.numero,
+          documentId: result.data.documentId,
+        });
         router.refresh();
       }
     });
@@ -844,7 +891,7 @@ interface EnrollmentDocButtonProps {
     | { error: string }
   >;
   enrollmentId: string;
-  onDone: (msg: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton — dernière génération pour LE stagiaire sélectionné. */
   dejaGenereLe?: string | undefined;
 }
@@ -900,7 +947,7 @@ function EnrollmentDocButton({
         msg = RESULTAT_ATTESTATION[r.resultat] ?? `Attestation : « ${r.resultat} ».`;
       }
       setSuccess(msg);
-      onDone(msg);
+      onDone({ libelle: msg, numero: null, documentId: null });
       rect.fermer();
       router.refresh();
     });
@@ -974,13 +1021,14 @@ export function DocumentsSection({
   sessionId,
   enrollments,
   documentsExistants,
+  contexte,
 }: DocumentsSectionProps): React.ReactElement {
   const [selectedEnrollmentId, setSelectedEnrollmentId] = useState<string>(
     enrollments[0]?.id ?? "",
   );
 
   // État global pour les messages de succès cross-groupe
-  const [lastSuccess, setLastSuccess] = useState<string | null>(null);
+  const [lastSuccess, setLastSuccess] = useState<PieceProduite | null>(null);
 
   // ── Styles ──────────────────────────────────────────────────────────────
 
@@ -995,8 +1043,8 @@ export function DocumentsSection({
 
   // ── Helpers ─────────────────────────────────────────────────────────────
 
-  function handleDone(msg: string) {
-    setLastSuccess(msg);
+  function handleDone(piece: PieceProduite) {
+    setLastSuccess(piece);
   }
 
   const hasEnrollments = enrollments.length > 0;
@@ -1062,89 +1110,206 @@ export function DocumentsSection({
             émise, utilisez la liste « Documents générés » ci-dessous.
           </p>
         )}
-        <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
-          <ConventionDocButton
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("convention")}
-          />
-          {/*
-            Placé juste après la convention, et pas en fin de grille : c'est son
-            annexe pédagogique, la convention la référence nommément en section
-            « Documents annexés ». Les deux se génèrent ensemble ou la première
-            promet une pièce qui n'accompagne pas.
-          */}
-          <SessionDocButton
-            label="Programme de l'action"
-            action={genererProgrammeAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("programme")}
-          />
-          {/* Avec le programme, les deux pièces descriptives de l'art. R.6351-5 :
-              le programme dit CE QUI est enseigné, celle-ci dit QUAND, OÙ et
-              COMMENT (calendrier session_jours, rythme, lieu, encadrement). */}
-          <SessionDocButton
-            label="Organisation de l'action"
-            action={genererOrganisationActionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-          />
-          <SessionDocButton
-            label="Convention tripartite (OPCO)"
-            action={genererConventionTripartiteAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
-          />
-          <SessionDocButton
-            label="Feuille d'émargement"
-            action={genererEmargementAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("emargement")}
-          />
-          <SessionDocButton
-            label="Règlement intérieur"
-            action={genererReglementInterieurAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("reglement_interieur")}
-          />
-          <SessionDocButton
-            label="Livret d'accueil"
-            action={genererLivretAccueilAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("livret_accueil")}
-          />
-          <SessionDocButton
-            label="Questionnaire de positionnement"
-            action={genererPositionnementAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("positionnement")}
-          />
-          <SessionDocButton
-            label="Questionnaire de satisfaction"
-            action={genererSatisfactionAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("satisfaction")}
-          />
-          <SessionDocButton
-            label="Kit OPCO"
-            action={genererKitOpcoAction}
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("kit_opco")}
-          />
-          <LettreMissionButtons
-            sessionId={sessionId}
-            onDone={handleDone}
-            dejaGenereLe={dernierSessionParType.get("lettre_mission")}
-          />
-        </div>
+        {/*
+          🔴 Lot 1ter §2/§5 — LE BRUIT DU BLOC DOCUMENTS.
+
+          Ces boutons étaient TOUS rendus, sur TOUTES les sessions. Sur un
+          financement direct entreprise, CINQ sur vingt concernaient le dossier
+          ouvert. Le reste n'était pas seulement inutile : il a produit des
+          pièces à ANNULER au registre — une « Lettre de mission formateur » a
+          dû l'être sur le premier dossier réel, parce que le
+          dirigeant-formateur ne peut pas se confier une mission à lui-même.
+
+          On ne SUPPRIME rien. Un dossier atypique existe, et un bouton
+          introuvable enverrait quelqu'un contourner l'outil. On met en avant ce
+          que ce dossier appelle, et on replie le reste EN DISANT POURQUOI :
+          une pièce reléguée sans explication ressemble à une pièce oubliée.
+
+          La règle vit dans `documents/pertinence-piece.ts` — pure et testée.
+        */}
+        {(() => {
+          const boutons: ReadonlyArray<{ type: string; el: React.ReactElement }> = [
+            {
+              type: "convention",
+              el: (
+                <ConventionDocButton
+                  key="convention"
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("convention")}
+                />
+              ),
+            },
+            {
+              // Place juste apres la convention, et pas en fin de grille : c'est son
+              // annexe pedagogique, la convention la reference nommement en section
+              // « Documents annexes ». Les deux se generent ensemble, ou la premiere
+              // promet une piece qui ne l'accompagne pas.
+              type: "programme",
+              el: (
+                <SessionDocButton
+                  key="programme"
+                  label="Programme de l'action"
+                  action={genererProgrammeAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("programme")}
+                />
+              ),
+            },
+            {
+              // Avec le programme, les deux pieces descriptives de l'art. R.6351-5 :
+              // le programme dit CE QUI est enseigne, celle-ci dit QUAND, OU et
+              // COMMENT (calendrier, rythme, lieu, encadrement).
+              type: "organisation_action",
+              el: (
+                <SessionDocButton
+                  key="organisation_action"
+                  label="Organisation de l'action"
+                  action={genererOrganisationActionAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                />
+              ),
+            },
+            {
+              type: "convention_tripartite",
+              el: (
+                <SessionDocButton
+                  key="convention_tripartite"
+                  label="Convention tripartite (OPCO)"
+                  action={genererConventionTripartiteAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("convention_tripartite")}
+                />
+              ),
+            },
+            {
+              type: "emargement",
+              el: (
+                <SessionDocButton
+                  key="emargement"
+                  label="Feuille d'émargement"
+                  action={genererEmargementAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("emargement")}
+                />
+              ),
+            },
+            {
+              type: "reglement_interieur",
+              el: (
+                <SessionDocButton
+                  key="reglement_interieur"
+                  label="Règlement intérieur"
+                  action={genererReglementInterieurAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("reglement_interieur")}
+                />
+              ),
+            },
+            {
+              type: "livret_accueil",
+              el: (
+                <SessionDocButton
+                  key="livret_accueil"
+                  label="Livret d'accueil"
+                  action={genererLivretAccueilAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("livret_accueil")}
+                />
+              ),
+            },
+            {
+              type: "positionnement",
+              el: (
+                <SessionDocButton
+                  key="positionnement"
+                  label="Questionnaire de positionnement"
+                  action={genererPositionnementAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("positionnement")}
+                />
+              ),
+            },
+            {
+              type: "satisfaction",
+              el: (
+                <SessionDocButton
+                  key="satisfaction"
+                  label="Questionnaire de satisfaction"
+                  action={genererSatisfactionAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("satisfaction")}
+                />
+              ),
+            },
+            {
+              type: "kit_opco",
+              el: (
+                <SessionDocButton
+                  key="kit_opco"
+                  label="Kit OPCO"
+                  action={genererKitOpcoAction}
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("kit_opco")}
+                />
+              ),
+            },
+            {
+              type: "lettre_mission",
+              el: (
+                <LettreMissionButtons
+                  key="lettre_mission"
+                  sessionId={sessionId}
+                  onDone={handleDone}
+                  dejaGenereLe={dernierSessionParType.get("lettre_mission")}
+                />
+              ),
+            },
+          ];
+
+          const attendues = boutons.filter((b) => pieceMiseEnAvant(b.type, contexte));
+          const autres = boutons.filter((b) => !pieceMiseEnAvant(b.type, contexte));
+
+          return (
+            <>
+              <div className="grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                {attendues.map((b) => b.el)}
+              </div>
+
+              {autres.length > 0 && (
+                <details className="mt-[var(--space-admin-4)]">
+                  {/*
+                    Replié, jamais supprimé — et le NOMBRE est annoncé sur le
+                    résumé : un dépli qui ne dit pas ce qu'il contient ne se
+                    clique pas, et la pièce y reste introuvable.
+                  */}
+                  <summary className="cursor-pointer text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+                    Autres pièces ({autres.length}) — hors du cas de ce dossier
+                  </summary>
+                  <div className="mt-[var(--space-admin-3)] grid grid-cols-1 gap-[var(--space-admin-3)] sm:grid-cols-2 lg:grid-cols-3">
+                    {autres.map((b) => (
+                      <div key={b.type} className="flex flex-col gap-[var(--space-admin-1)]">
+                        {b.el}
+                        <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                          {motifRepli(b.type, contexte)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
+            </>
+          );
+        })()}
       </div>
 
       {/* ── 2. Documents par stagiaire ───────────────────────────────────── */}
@@ -1253,7 +1418,26 @@ export function DocumentsSection({
           role="status"
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
-          Dernier document généré : {lastSuccess}
+          {/*
+            🔴 Le LIBELLÉ d'abord, le numéro ensuite, et un lien pour ouvrir.
+            Le bandeau affichait le numéro seul : il fallait relire la liste
+            pour retrouver la pièce qu'on venait de produire.
+          */}
+          Dernier document généré : <strong>{lastSuccess.libelle}</strong>
+          {lastSuccess.numero !== null ? ` — n° ${lastSuccess.numero}` : ""}
+          {lastSuccess.documentId !== null && (
+            <>
+              {" · "}
+              <a
+                href={`/api/qualiopi/documents/${lastSuccess.documentId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Ouvrir la pièce
+              </a>
+            </>
+          )}
         </p>
       )}
 
