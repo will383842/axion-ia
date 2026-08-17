@@ -21,11 +21,15 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, existsInR2, getSignedUrlR2, documentPdfKey } from "@/lib/r2-storage";
 import { nomFichierDocument } from "@/server/qualiopi/documents/nom-fichier";
+import { dispositionDemandee } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: NextRequest,
+  // 🔴 La requête SERT désormais : elle porte `?dl=1`, qui distingue
+  // « consulter » de « enregistrer ». Elle s'appelait `_req` parce que rien
+  // ne la lisait — et c'est précisément ce qui rendait le comportement fixe.
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const { id } = await params;
@@ -74,7 +78,9 @@ export async function GET(
         // `downloadFilename` force l'attachement : sans lui le PDF s'ouvrait
         // dans l'onglet sur l'URL R2 signée, et « Enregistrer » proposait le
         // numéro interne en guise de nom.
-        const signed = await getSignedUrlR2(key, 900, { downloadFilename: nomFichier });
+        const signed = await getSignedUrlR2(key, 900, {
+          fichier: { nom: nomFichier, disposition: dispositionDemandee(req.url) },
+        });
         return NextResponse.redirect(signed, 302);
       }
     } catch (err) {

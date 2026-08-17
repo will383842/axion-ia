@@ -9,7 +9,7 @@
 //   2. Read Invoice + booking (intervention type + bookingDate pour description)
 //   3. generateInvoicePdfBuffer
 //   4. Update Invoice.hashSha256 si pas encore set
-//   5. Return PDF stream avec Content-Disposition attachment
+//   5. Return PDF stream — inline par defaut, ?dl=1 pour enregistrer
 //
 // V1.5+ : upload Hetzner Storage Box + URL signée 90j stockée dans pdfUrl.
 
@@ -27,10 +27,11 @@ import {
   invoicePdfKey,
 } from "@/lib/r2-storage";
 import type { LegalSnapshot } from "@/lib/legal-snapshot";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const session = await auth();
@@ -98,7 +99,12 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         status: 200,
         headers: {
           "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename="${invoice.number}.pdf"`,
+          // Même règle que les pièces Qualiopi : une facture se consulte
+          // d'abord. `?dl=1` reste disponible pour l'enregistrer.
+          "Content-Disposition": enTeteContentDisposition(
+            dispositionDemandee(req.url),
+            `${invoice.number}.pdf`,
+          ),
           "Content-Length": String(archived.byteLength),
           "Cache-Control": "private, no-store",
           "X-Invoice-Hash-Sha256": invoice.hashSha256,
@@ -193,7 +199,14 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${invoice.number}.pdf"`,
+      // 🔴 SECOND point de sortie de cette route — le premier avait été corrigé,
+      // celui-ci non. C'est exactement ce que la garde statique de
+      // `lib/content-disposition.spec.ts` existe pour attraper : une route à
+      // deux sorties dont une seule applique la règle.
+      "Content-Disposition": enTeteContentDisposition(
+        dispositionDemandee(req.url),
+        `${invoice.number}.pdf`,
+      ),
       "Content-Length": String(result.sizeBytes),
       "Cache-Control": "private, no-store",
       "X-Invoice-Hash-Sha256": result.hashSha256,

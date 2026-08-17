@@ -22,11 +22,15 @@ import { NextResponse, type NextRequest } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { isR2Configured, existsInR2, getSignedUrlR2 } from "@/lib/r2-storage";
+import { dispositionDemandee } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: NextRequest,
+  // 🔴 La requête SERT désormais : elle porte `?dl=1`, qui distingue
+  // « consulter » de « enregistrer ». Elle s'appelait `_req` parce que rien
+  // ne la lisait — et c'est précisément ce qui rendait le comportement fixe.
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const { id } = await params;
@@ -68,7 +72,7 @@ export async function GET(
     try {
       if (await existsInR2(support.pdfKey).catch(() => false)) {
         const signed = await getSignedUrlR2(support.pdfKey, 900, {
-          downloadFilename: nomFichier,
+          fichier: { nom: nomFichier, disposition: dispositionDemandee(req.url) },
         });
         return NextResponse.redirect(signed, 302);
       }

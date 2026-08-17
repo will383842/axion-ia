@@ -35,12 +35,14 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { construireTirageEmargement } from "@/server/qualiopi/documents/emargement-tirage";
+import { dispositionDemandee, enTeteContentDisposition } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET(
-  _req: NextRequest,
+  // La requête SERT désormais : elle porte `?dl=1`.
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> {
   const session = await auth();
@@ -77,7 +79,12 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="${nomFichier}"`,
+      // 🔴 La pièce s'OUVRE par défaut ; `?dl=1` demande l'enregistrement.
+      // Constat de l'audit blanc : « aucune pièce du critère 1 n'a pu être
+      // ouverte ». Chaque clic déposait un PDF de plus dans les
+      // téléchargements de l'auditrice au lieu de l'afficher — et une preuve
+      // qu'on ne peut pas lire à l'écran n'est pas une preuve consultable.
+      "Content-Disposition": enTeteContentDisposition(dispositionDemandee(req.url), nomFichier),
       // Pièce nominative : jamais de cache partagé.
       "Cache-Control": "private, no-store",
     },

@@ -26,6 +26,7 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { enTeteContentDisposition, type DispositionFichier } from "./content-disposition";
 
 // ====================================================================
 // Configuration & gate
@@ -135,12 +136,23 @@ export async function getSignedUrlR2(
   expiresInSeconds: number = 90 * 24 * 3600,
   options?: {
     /**
-     * Force `Content-Disposition: attachment; filename="…"` dans la réponse R2.
-     * Sans lui, un PDF s'ouvre dans l'onglet sur une URL signée illisible, et le
-     * fichier enregistré s'appelle comme la clé de stockage (le numéro interne).
+     * Comment le navigateur doit traiter l'objet, et sous quel nom.
+     *
+     * 🔴 Cette option s'appelait `downloadFilename` et forçait
+     * `Content-Disposition: attachment` EN DUR. Le NOM mentait sur son effet :
+     * on croyait ne choisir qu'un nom de fichier, on imposait aussi un
+     * comportement — et personne ne relit une option dont le nom paraît anodin.
+     * À l'audit blanc Qualiopi, l'auditrice n'a pu ouvrir AUCUNE pièce.
+     *
+     * ⚠️ La disposition d'une pièce servie par REDIRECTION ne peut PAS être
+     * posée en en-tête par la route : la route répond 302, c'est R2 qui répond
+     * au navigateur, et R2 n'obéit qu'au paramètre SIGNÉ dans l'URL. Elle doit
+     * donc être décidée ICI. Un correctif qui poserait un en-tête sur la
+     * redirection n'aurait aucun effet — et passerait pour fait.
+     *
      * ⚠️ ASCII uniquement — le nom part tel quel dans un en-tête HTTP.
      */
-    downloadFilename?: string;
+    fichier?: { nom: string; disposition: DispositionFichier };
   },
 ): Promise<string> {
   const client = getClient();
@@ -149,9 +161,12 @@ export async function getSignedUrlR2(
     new GetObjectCommand({
       Bucket: getBucketName(),
       Key: key,
-      ...(options?.downloadFilename
+      ...(options?.fichier
         ? {
-            ResponseContentDisposition: `attachment; filename="${options.downloadFilename.replace(/["\\]/g, "")}"`,
+            ResponseContentDisposition: enTeteContentDisposition(
+              options.fichier.disposition,
+              options.fichier.nom,
+            ),
           }
         : {}),
     }),
