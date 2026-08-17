@@ -276,10 +276,17 @@
     if (enCours || i + pas() >= PAGES.length) return;
     tourner(1, function () { i += pas(); rendre(); });
   }
+  // pas() regarde i et i+1 : c'est le pas pour AVANCER. L'employer pour
+  // reculer fait passer par des vues que la marche avant ne produit jamais :
+  // depuis la 4e de couverture, on tombait sur la page 47 SEULE, alors qu'elle
+  // fait face a la 46. Le pas arriere est le miroir : il regarde ce qui est
+  // DERRIERE i, donc i-1 et i-2.
+  // (aucun backtick dans ce commentaire : il vit dans un litteral gabarit.)
+  function pasArriere() { return (MOBILE() || seule(i - 1) || seule(i - 2)) ? 1 : 2; }
   function precedent() {
     cacherAide();
     if (enCours || i <= 0) return;
-    tourner(-1, function () { i = Math.max(0, i - pas()); rendre(); });
+    tourner(-1, function () { i = Math.max(0, i - pasArriere()); rendre(); });
   }
 
   // Aller directement a une page imprimee. Un saut ne s'anime pas : on ne
@@ -301,9 +308,19 @@
     var k = indexDeLaPage(n);
     if (k < 0) return false;
     // On se cale sur le DEBUT de la double-page qui contient la page demandee,
-    // sinon demander la 21 afficherait 21|22 — un appariement que le livre n'a
+    // sinon demander la 45 afficherait 45|46 — un appariement que le livre n'a
     // pas. Les pages affichees seules gardent leur position.
-    if (!MOBILE() && !seule(k) && k % 2 === 1) k -= 1;
+    //
+    // ⚠️ LA PARITE PORTE SUR L'INDEX, PAS SUR LE FOLIO. PAGES[0] est la page 1,
+    // donc une double commence a un index IMPAIR : PAGES[1]|PAGES[2] = 2|3,
+    // PAGES[43]|PAGES[44] = 44|45. Un index PAIR est donc une page de droite,
+    // qu'il faut reculer d'un cran.
+    //
+    // Ce test etait ecrit k % 2 === 1, herite du feuilletoir KDP ou les
+    // couvertures sont des entrees separees et ou la parite est donc inversee.
+    // Ici il faisait exactement le contraire de ce que son propre commentaire
+    // annoncait : demander la 45 affichait 45|46.
+    if (!MOBILE() && !seule(k) && k % 2 === 0) k -= 1;
     i = k;
     cacherAide();
     rendre();
