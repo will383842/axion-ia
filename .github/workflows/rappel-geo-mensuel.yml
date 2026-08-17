@@ -1,0 +1,198 @@
+# Rappel mensuel WhatsApp — les 18 actions GEO hors-code.
+#
+# POURQUOI CE WORKFLOW EXISTE
+#
+# Les 45 correctifs de code de l'audit GEO/AEO plafonnent vers 72 %. Les ~700
+# points restants ne s'achètent avec aucune ligne de code : ils dépendent de 18
+# actions que seul un humain peut faire (corriger LinkedIn, revendiquer
+# Crunchbase, ouvrir une ligne téléphonique…). Décision Will du 2026-08-17 :
+# elles seront faites « dans deux ou trois mois », d'où ce rappel.
+#
+# ## Ce qui le rend utile plutôt qu'agaçant
+#
+# Il ne récite PAS la liste. Il VÉRIFIE d'abord, en direct, tout ce qui est
+# vérifiable depuis l'extérieur — et ne parle que de ce qui reste. Une action
+# faite disparaît du rappel sans que personne ait à cocher quoi que ce soit.
+#
+# Les actions non vérifiables de l'extérieur (LinkedIn exige une session,
+# Crunchbase rend 403, F6S a un bot-wall) se cochent à la main dans
+# `_SUIVI/GEO-ACTIONS.md`. Le workflow lit ce fichier.
+#
+# Quand tout est fait, il envoie un dernier message et le dit.
+#
+# ## 🔑 Le message tient sur un ÉCRAN
+#
+# Leçon payée sur les alertes Telegram (2026-08-16) : la contrainte n'est pas le
+# plafond de l'API, c'est la LECTURE. Un rappel qu'on ne lit pas ne rappelle
+# rien. Le message donne donc un compte et les DEUX prochaines actions, jamais
+# les dix-huit — le détail vit dans le fichier, dont le lien est joint.
+#
+# ## ⚠️ Note d'écriture
+#
+# Le message se construit LIGNE PAR LIGNE dans un fichier, jamais avec une
+# chaîne shell multi-lignes : dans un bloc `run: |`, une ligne qui repart en
+# colonne 0 ferme le bloc YAML. Payé en écrivant ce fichier.
+
+name: Rappel mensuel — actions GEO hors-code
+
+on:
+  schedule:
+    # Le 1er de chaque mois à 08:07 UTC. Minute décalée : les crons ronds sont
+    # saturés côté GitHub et se font décaler de plusieurs dizaines de minutes.
+    - cron: "7 8 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: rappel-geo-mensuel
+  cancel-in-progress: false
+
+jobs:
+  rappel:
+    name: Vérifier puis rappeler ce qui reste
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SITE: https://axion-ia.com
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: _SUIVI/GEO-ACTIONS.md
+          sparse-checkout-cone-mode: false
+
+      - name: Vérifier ce qui est vérifiable, puis composer le rappel
+        id: bilan
+        env:
+          BING_WMT_API_KEY: ${{ secrets.BING_WMT_API_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          RESTE=()
+          FAITES=0
+          note() { RESTE+=("$1"); }
+          ok() { FAITES=$((FAITES + 1)); }
+
+          # R-04 — le QR podcast repond-il ?
+          # 404 = l'enregistrement QrLink n'existe pas, et chaque flyer deja
+          # distribue envoie un prospect sur une page d'erreur.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -m 15 "${SITE}/qr/podcast" || echo 000)
+          if [ "$code" = "404" ]; then note "R-04 QR podcast (2 min)"; else ok; fi
+
+          # R-05 — la soumission GSC reussit-elle ?
+          # Le jeton en scope readonly rendait 403 : 0 succes sur 40 runs.
+          concl=$(gh run list --repo "${GITHUB_REPOSITORY}" --workflow gsc-submit-main-sitemap.yml --limit 1 --json conclusion --jq '.[0].conclusion' 2>/dev/null || echo "")
+          if [ "$concl" != "success" ]; then note "R-05 jeton GSC scope write (15 min)"; else ok; fi
+
+          # R-06 — Cloudflare respecte-t-il la fraicheur demandee ?
+          # L'origine demande s-maxage=600 ; l'edge reecrivait a 3600.
+          cc=$(curl -sI -m 15 "${SITE}/sitemap-index.xml" | tr -d '\r' | grep -i '^cache-control:' | grep -oE 'max-age=[0-9]+' | head -1 | cut -d= -f2)
+          if [ -z "${cc:-}" ] || [ "$cc" -gt 900 ] 2>/dev/null; then
+            note "R-06 Cache Rule Cloudflare .xml (10 min)"
+          else
+            ok
+          fi
+
+          # R-07 — la cle Bing est-elle posee ?
+          if [ -z "${BING_WMT_API_KEY:-}" ]; then note "R-07 cle API Bing Webmaster (10 min)"; else ok; fi
+
+          # R-08 — JaimeLesStartups pointe-t-il enfin vers le site ?
+          # Une mention nue vaut comme signal d'entite pour un LLM, zero pour le crawl.
+          if curl -s -m 20 "https://jaimelesstartups.fr/annonce-cofondateur/axion-ia/" | grep -qE 'href="[^"]*axion-ia\.com'; then
+            ok
+          else
+            note "R-08 lien sur JaimeLesStartups (10 min)"
+          fi
+
+          # R-10 — un telephone public existe-t-il ?
+          # Verrou de toute la vague 2 : sans « P », le NAP ne triangule pas.
+          if curl -s -m 20 "${SITE}/fr/contact" | grep -qE 'tel:\+?[0-9]'; then
+            ok
+          else
+            note "R-10 ligne pro + COMPANY_PHONE (payant) VERROU de R-11/12/13"
+          fi
+
+          # Les actions non verifiables de l'exterieur : on lit les cases cochees.
+          coche() { grep -qE "^- \[x\] \*\*$1 " _SUIVI/GEO-ACTIONS.md; }
+          LISTE="R-01|LinkedIn dit Paris (15 min)
+          R-02|Crunchbase + F6S, commencer par LIRE (45 min)
+          R-03|Les Pepites Tech (20 min)
+          R-11|Google Business Profile
+          R-12|Bing Places
+          R-13|PagesJaunes
+          R-14|3 a 5 comparatifs tiers
+          R-15|glossaire, arbitrer puis ecrire
+          R-16|pilote presse Isere/Drome
+          R-17|Wikidata EN DERNIER
+          R-18|avantages des 54 offres"
+          while IFS='|' read -r id libelle; do
+            id=$(printf '%s' "$id" | tr -d ' ')
+            [ -z "$id" ] && continue
+            if coche "$id"; then ok; else note "$id $libelle"; fi
+          done <<< "$LISTE"
+
+          TOTAL=$((FAITES + ${#RESTE[@]}))
+          echo "Bilan : $FAITES faites sur $TOTAL"
+          for r in "${RESTE[@]:-}"; do [ -n "$r" ] && echo "  reste : $r"; done
+
+          # Composition — ligne par ligne dans un fichier (cf. note d'ecriture).
+          LIEN="https://github.com/${GITHUB_REPOSITORY}/blob/main/_SUIVI/GEO-ACTIONS.md"
+          : > /tmp/msg.txt
+          if [ "${#RESTE[@]}" -eq 0 ]; then
+            echo "Axion-IA — actions GEO" >> /tmp/msg.txt
+            echo "Tout est fait : ${FAITES}/${TOTAL}." >> /tmp/msg.txt
+            echo "Ce rappel n'a plus lieu d'etre : desactivez le workflow rappel-geo-mensuel." >> /tmp/msg.txt
+          else
+            echo "Axion-IA — actions GEO" >> /tmp/msg.txt
+            echo "${#RESTE[@]} sur ${TOTAL} restent a faire." >> /tmp/msg.txt
+            echo "" >> /tmp/msg.txt
+            echo "Les 2 prochaines :" >> /tmp/msg.txt
+            [ -n "${RESTE[0]:-}" ] && echo "- ${RESTE[0]}" >> /tmp/msg.txt
+            [ -n "${RESTE[1]:-}" ] && echo "- ${RESTE[1]}" >> /tmp/msg.txt
+            AUTRES=$(( ${#RESTE[@]} - 2 ))
+            [ "$AUTRES" -gt 0 ] && echo "(+ ${AUTRES} autres)" >> /tmp/msg.txt
+            echo "" >> /tmp/msg.txt
+            echo "Detail et cases a cocher :" >> /tmp/msg.txt
+            echo "$LIEN" >> /tmp/msg.txt
+          fi
+
+          # Garde-fou de lisibilite : 800 caracteres, jamais plus.
+          MSG=$(cut -c1-800 /tmp/msg.txt | head -c 800)
+          { echo "message<<FIN_MSG"; printf '%s' "$MSG"; echo ""; echo "FIN_MSG"; } >> "$GITHUB_OUTPUT"
+          echo "restants=${#RESTE[@]}" >> "$GITHUB_OUTPUT"
+
+      - name: Envoyer le rappel WhatsApp
+        env:
+          APIKEY: ${{ secrets.WHATSAPP_CALLMEBOT_APIKEY }}
+          PHONE: ${{ secrets.WHATSAPP_NOTIFY_PHONE }}
+          MSG: ${{ steps.bilan.outputs.message }}
+        run: |
+          set -uo pipefail
+          if [ -z "${APIKEY:-}" ] || [ -z "${PHONE:-}" ]; then
+            echo "::warning::WHATSAPP_CALLMEBOT_APIKEY ou WHATSAPP_NOTIFY_PHONE absent des secrets GitHub — rappel NON envoye. Le bilan reste lisible ci-dessous."
+            printf '%s\n' "$MSG"
+            exit 0
+          fi
+          TEL=$(printf '%s' "$PHONE" | tr -d ' -')
+          TXT=$(printf '%s' "$MSG" | jq -sRr @uri)
+          code=$(curl -s -o /tmp/cmb.txt -w '%{http_code}' -m 30 "https://api.callmebot.com/whatsapp.php?phone=${TEL}&text=${TXT}&apikey=${APIKEY}" || echo 000)
+          echo "CallMeBot HTTP ${code}"
+          head -c 200 /tmp/cmb.txt 2>/dev/null || true
+          # Best-effort : un rappel manque ne doit pas faire rougir le depot.
+          if [ "$code" != "200" ]; then echo "::warning::Rappel WhatsApp non confirme (HTTP ${code})."; fi
+
+      - name: Recapitulatif lisible dans l'onglet Actions
+        if: always()
+        env:
+          MSG: ${{ steps.bilan.outputs.message }}
+          RESTANTS: ${{ steps.bilan.outputs.restants }}
+        run: |
+          {
+            echo "## Rappel GEO — ${RESTANTS} action(s) restante(s)"
+            echo ""
+            echo '```'
+            printf '%s\n' "$MSG"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
