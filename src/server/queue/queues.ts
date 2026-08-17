@@ -1583,6 +1583,24 @@ export async function bootRepeatableJobs(): Promise<void> {
         pattern: "0 * * * *",
         jobId: "formation-crons-convocation-j5-cron",
       },
+      // 2026-08-17 — positionnement (ind. 8) : envoi de ceux jamais partis,
+      // relance de ceux restés sans réponse. QUOTIDIEN à 07:30 UTC.
+      //
+      // ⚠️ Quotidien et pas horaire, contrairement à la convocation. La
+      // convocation est HORAIRE parce qu'elle a une échéance dure — la session
+      // démarre, et rien ne la rattrape ensuite. Le positionnement se réclame
+      // sur quinze jours : un passage par jour suffit, et vingt-quatre passages
+      // ne feraient qu'augmenter le risque d'envoyer deux fois si une trace de
+      // relance échouait à s'écrire.
+      //
+      // APRÈS les alertes de 07:00 : l'alerte « positionnement sans réponse »
+      // doit décrire l'état de la veille, pas celui d'il y a trente minutes.
+      // Inversés, on alerterait sur un envoi qu'on vient tout juste de faire.
+      {
+        type: "formation-crons.positionnement",
+        pattern: "30 7 * * *",
+        jobId: "formation-crons-positionnement-cron",
+      },
       // 2026-08-16 — liens de signature J-0, à 06:00 UTC (08:00 Paris l'été).
       //
       // AVANT le passage des alertes (07:00) : ainsi une session servie le matin
