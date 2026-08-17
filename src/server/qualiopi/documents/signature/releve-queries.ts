@@ -197,6 +197,21 @@ async function lireEtat(sessionId: string, lecteur: Lecteur): Promise<EtatSignat
     (piece.session?.formateurPrincipalId === lecteur.trainerId ||
       (piece.session?.sessionFormateurs.length ?? 0) > 0);
 
+  // 🔴 UN FORMATEUR NON RATTACHÉ NE VOIT RIEN, il ne se contente pas de ne
+  // pas pouvoir agir.
+  //
+  // Le rattachement ne conditionnait que `peutAgir`. Le numéro de la pièce et
+  // les NOMS des signataires étaient rendus à tout formateur connecté, pour
+  // n'importe quelle session — sûrs aujourd'hui seulement parce que l'unique
+  // appelant garde avant d'appeler.
+  //
+  // ⚠️ Même raisonnement que `lireFeuilleGroupe` : une sécurité qui repose sur
+  // l'ordre d'appel tient tant qu'il n'y a qu'un appelant. On rend `null`, ce
+  // que l'appelant traite déjà comme « pas de relévé » — indiscernable de
+  // l'absence de pièce, ce qui est exactement le bon niveau d'information pour
+  // quelqu'un qui n'anime pas cette session.
+  if (lecteur.pourPartie === "formateur" && !rattache) return null;
+
   const identite = await getOrganismeIdentite();
   const circuit = circuitPour("releve_connexion");
 

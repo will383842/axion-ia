@@ -106,12 +106,23 @@ describe("🔴 ce que le formateur peut faire", () => {
     expect(etat?.peutAgir).toBe(true);
   });
 
-  it("ne peut PAS signer s'il n'est rattaché à rien", async () => {
+  it("🔴 non rattaché : il ne voit RIEN, pas seulement « il ne peut pas agir »", async () => {
+    // L'assertion d'origine vérifiait `peutAgir === false`. Elle disait vrai,
+    // mais elle laissait passer ce qui compte : le numéro de la pièce et les
+    // NOMS des signataires étaient rendus quand même, à tout formateur
+    // connecté, pour n'importe quelle session.
+    //
+    // ⚠️ C'était sûr uniquement parce que l'unique appelant gardait AVANT
+    // d'appeler. Une sécurité qui repose sur l'ordre d'appel tient tant qu'il
+    // n'y a qu'un appelant — et le Lot 7 va en multiplier.
+    //
+    // `null` est indiscernable de « pas de relevé » : c'est exactement le bon
+    // niveau d'information pour quelqu'un qui n'anime pas cette session.
     mockPrisma.documentGenere.findFirst.mockResolvedValue(
       piece({ session: { formateurPrincipalId: null, sessionFormateurs: [] } }),
     );
     const etat = await lireEtatSignatureReleve(SESSION, TRAINER);
-    expect(etat?.peutAgir).toBe(false);
+    expect(etat).toBeNull();
   });
 
   it("🔴 ne peut PAS signer un SPÉCIMEN — et l'écran le sait AVANT le clic", async () => {
