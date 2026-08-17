@@ -118,9 +118,15 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
   it("listTrainers demande bien le compte des habilitations à Prisma", async () => {
     mockFindMany.mockResolvedValue([]);
     await listTrainers();
+    // ⚠️ Le `where: { retireAt: null }` s'est ajouté le 2026-08-17 : la
+    // dé-habilitation historise au lieu de supprimer, donc la lecture doit
+    // filtrer. L'intention de ce test — « le compte vient de Prisma, pas du
+    // tableau legacy » — est inchangée.
     expect(mockFindMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        include: { habilitations: { select: { formationId: true } } },
+        include: {
+          habilitations: { where: { retireAt: null }, select: { formationId: true } },
+        },
       }),
     );
   });
@@ -140,5 +146,30 @@ describe("listTrainers / getTrainer (stub-safe)", () => {
   it("getTrainer retourne null si la DB jette", async () => {
     mockFindUnique.mockRejectedValue(new Error("stub"));
     expect(await getTrainer("x")).toBeNull();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 UNE HABILITATION RETIRÉE RESTE AU REGISTRE — Lot 9, trouvé le 2026-08-17.
+//
+// La dé-habilitation était un `deleteMany` : la ligne DISPARAISSAIT. À la
+// question « depuis quand ce formateur n'est-il plus habilité ? », aucune
+// réponse. Et si une session avait été ANIMÉE alors qu'il était habilité,
+// retirer l'habilitation aujourd'hui détruisait la preuve de conformité de
+// cette session PASSÉE (ind. 21/22).
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 seules les habilitations ACTIVES rendent un formateur habilité", () => {
+  it("listTrainers ne compte QUE les non retirées", async () => {
+    mockFindMany.mockResolvedValue([{ id: "t1", habilitations: [{ formationId: "f-1" }] }]);
+    await listTrainers();
+    const args = mockFindMany.mock.calls.at(-1)![0] as {
+      include: { habilitations: { where?: { retireAt?: null } } };
+    };
+    expect(
+      args.include.habilitations.where,
+      "Sans ce filtre, un formateur dé-habilité continuerait d'apparaître " +
+        "habilité partout — et la garde le laisserait animer.",
+    ).toEqual({ retireAt: null });
   });
 });
