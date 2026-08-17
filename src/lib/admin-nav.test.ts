@@ -119,7 +119,11 @@ describe("buildAdminNav SSOT", () => {
     // parmi 45 QR de catalogue. Les 4 sous-onglets DÉRIVENT désormais de
     // `QR_CATEGORIES` : ce décompte suivra automatiquement toute catégorie
     // ajoutée, et `categories.spec.ts` refuse une route sans page. = 149.
-    expect(items.length).toBe(149);
+    // 2026-08-17 : 149 → 152. L'onglet isolé « Catalogue imprimé » est remplacé
+    // par le hub « Imprimés » et ses trois sous-onglets (catalogue A4, flyer A5,
+    // livre KDP), soit −1 +4 = +3. Les sous-onglets sont DÉRIVÉS de `IMPRIMES`
+    // (src/content/imprimes.ts) : ce décompte suivra tout imprimé ajouté.
+    expect(items.length).toBe(152);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
