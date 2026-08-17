@@ -64,6 +64,24 @@
   .nav button:disabled { opacity:.3; cursor:default; }
   .nav .compte { font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
     min-width:96px; text-align:center; }
+  /* Retour au debut et saut a un numero : sur 84 pages, tourner une par une
+     n'est pas une navigation. Les deux commandes sont dans la meme barre, pour
+     rester atteignables au pouce sur mobile. */
+  .nav .rond-sec { width:34px; height:34px; font-size:15px;
+    background:rgba(250,248,243,.16); color:var(--creme); }
+  .nav .rond-sec:hover { background:rgba(250,248,243,.28); }
+  .aller { display:flex; align-items:center; gap:6px; margin:0; }
+  .aller input { width:62px; height:34px; border-radius:999px; border:1px solid rgba(250,248,243,.24);
+    background:rgba(250,248,243,.1); color:var(--creme); font:inherit; font-size:13px;
+    font-weight:600; text-align:center; font-variant-numeric:tabular-nums; }
+  .aller input::placeholder { color:rgba(250,248,243,.5); font-weight:500; }
+  /* Les fleches natives du champ nombre volent la moitie d'une cible deja
+     petite au pouce : on les retire, le clavier numerique reste. */
+  .aller input::-webkit-outer-spin-button,
+  .aller input::-webkit-inner-spin-button { appearance:none; margin:0; }
+  .aller input[type=number] { -moz-appearance:textfield; }
+  .aller button { width:auto; height:34px; padding:0 13px; border-radius:999px; font-size:13px; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
   .aide { position:fixed; left:50%; transform:translateX(-50%); bottom:64px; z-index:30;
     padding:6px 14px; border-radius:999px; background:rgba(250,248,243,.12);
     font-size:12px; font-weight:600; transition:opacity .4s; }
@@ -78,7 +96,12 @@
     .feuille { display:none; }
     .barre { padding:8px 12px; }
     .barre h1 { font-size:14px; }
-    .nav { bottom:max(10px, env(safe-area-inset-bottom, 0px)); }
+    /* La barre porte maintenant six commandes : sans repli elle deborderait de
+       l'ecran sur un telephone etroit, et le bouton « Aller » sortirait du
+       champ tactile. */
+    .nav { bottom:max(10px, env(safe-area-inset-bottom, 0px));
+      flex-wrap:wrap; justify-content:center; max-width:94vw; row-gap:8px; }
+    .nav .compte { min-width:0; order:-1; width:100%; }
   }
 </style>
 
@@ -98,9 +121,15 @@
 </div>
 
 <div class="nav" role="group" aria-label="Navigation dans le catalogue">
+  <button type="button" class="rond-sec" id="debut" aria-label="Revenir à la couverture" title="Revenir à la couverture">&#8676;</button>
   <button type="button" id="prec" aria-label="Page précédente">&#8249;</button>
   <span class="compte" id="compte" aria-live="polite"></span>
   <button type="button" id="suiv" aria-label="Page suivante">&#8250;</button>
+  <form class="aller" id="aller">
+    <label class="sr" for="numPage">Aller à la page</label>
+    <input id="numPage" type="number" inputmode="numeric" min="1" max="84" step="1" placeholder="p." title="Aller à la page (1 à 84)">
+    <button type="submit" title="Aller à cette page">Aller</button>
+  </form>
 </div>
 <div class="aide" id="aide"></div>
 
@@ -112,6 +141,8 @@
   var livre = document.getElementById('livre');
   var pgG = document.getElementById('pgG'), pgD = document.getElementById('pgD');
   var bPrec = document.getElementById('prec'), bSuiv = document.getElementById('suiv');
+  var bDebut = document.getElementById('debut');
+  var formAller = document.getElementById('aller'), champPage = document.getElementById('numPage');
   var compte = document.getElementById('compte'), aide = document.getElementById('aide');
 
   var MOBILE = function () { return window.matchMedia('(max-width: 720px)').matches; };
@@ -158,6 +189,7 @@
     else { pgD.style.display = ''; pgD.src = url(i + 1); }
     compte.textContent = libelle();
     bPrec.disabled = i <= 0;
+    bDebut.disabled = i <= 0;
     bSuiv.disabled = i + pas() >= PAGES.length;
     precharger(i);
   }
@@ -215,12 +247,62 @@
     tourner(-1, function () { i = Math.max(0, i - pas()); rendre(); });
   }
 
+  // Aller directement a une page imprimee. Un saut ne s'anime pas : on ne
+  // tourne pas quarante feuilles, on repose le livre a l'endroit demande.
+  //
+  // Le numero saisi est celui IMPRIME sur la page, pas un index : on le cherche
+  // dans PAGES au lieu de calculer un decalage. Les couvertures n'en portent
+  // pas, elles ne sont donc jamais des cibles — et le jour ou la pagination
+  // bouge, ce code n'a pas a le savoir.
+  function indexDeLaPage(n) {
+    for (var j = 0; j < PAGES.length; j++) {
+      if (PAGES[j].n && parseInt(PAGES[j].n, 10) === n) return j;
+    }
+    return -1;
+  }
+
+  function allerA(n) {
+    if (enCours) return false;
+    var k = indexDeLaPage(n);
+    if (k < 0) return false;
+    // On se cale sur le DEBUT de la double-page qui contient la page demandee,
+    // sinon demander la 21 afficherait 21|22 — un appariement que le livre n'a
+    // pas. Les pages affichees seules gardent leur position.
+    if (!MOBILE() && !seule(k) && k % 2 === 1) k -= 1;
+    i = k;
+    cacherAide();
+    rendre();
+    return true;
+  }
+
+  function auDebut() { if (enCours) return; i = 0; cacherAide(); rendre(); }
+
   bSuiv.addEventListener('click', suivant);
   bPrec.addEventListener('click', precedent);
+  bDebut.addEventListener('click', auDebut);
+
+  formAller.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var n = parseInt(champPage.value, 10);
+    if (!allerA(n)) {
+      // Numero hors catalogue : on le dit par le champ lui-meme plutot que par
+      // une alerte, qui ferait perdre la page en cours de lecture.
+      champPage.setCustomValidity('Page 1 à ' + 84);
+      champPage.reportValidity();
+      return;
+    }
+    champPage.value = '';
+    champPage.blur();
+  });
+  champPage.addEventListener('input', function () { champPage.setCustomValidity(''); });
+
   document.addEventListener('keydown', function (e) {
+    // Le champ « aller a la page » garde ses touches : sans ce garde-fou, taper
+    // un numero au clavier tournerait les pages sous les doigts.
+    if (e.target === champPage) return;
     if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); suivant(); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); precedent(); }
-    else if (e.key === 'Home') { i = 0; rendre(); }
+    else if (e.key === 'Home') { e.preventDefault(); auDebut(); }
     else if (e.key === 'End') { i = Math.max(0, PAGES.length - pas()); rendre(); }
   });
 
@@ -244,7 +326,9 @@
     if (aideVue) return; aideVue = true;
     aide.style.opacity = '0'; setTimeout(function () { aide.style.display = 'none'; }, 400);
   }
-  aide.textContent = MOBILE() ? 'Balayez pour tourner · pincez pour zoomer' : 'Flèches ← → pour tourner les pages';
+  aide.textContent = MOBILE()
+    ? 'Balayez pour tourner · saisissez un numéro pour y aller'
+    : 'Flèches ← → pour tourner · saisissez un numéro pour y aller';
   setTimeout(cacherAide, 6000);
 
   var etaitMobile = MOBILE();
