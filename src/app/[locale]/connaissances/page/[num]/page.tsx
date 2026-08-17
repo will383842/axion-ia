@@ -64,8 +64,20 @@ interface Props {
  */
 function parseCanonicalPageNum(raw: string): number | "one" | null {
   if (raw === "1") return "one";
-  if (!/^[2-9]\d*$/.test(raw)) return null;
-  return parseInt(raw, 10);
+  // 🔴 AVANT : `/^[2-9]\d*$/`. Cette classe porte sur le PREMIER chiffre, pas sur
+  // la valeur : elle rejetait donc 10 à 19, 100 à 199… tout en acceptant 20 et 99.
+  // L'intention était « pas de zéro en tête, et >= 2 » ; l'écriture disait « ne
+  // commence pas par 1 ».
+  //
+  // Mesuré en production le 2026-08-17 sur /connaissances : 507 fiches publiques,
+  // soit 11 pages — mais `page/10` et `page/11` répondaient 404. Résultat :
+  // 9 pages atteignables × 48 = 432 fiches liées, et 75 restaient orphelines.
+  // Le compte était juste depuis le début ; c'est le ROUTEUR qui refusait la page.
+  // Cherché longtemps du côté des données (embargo, publishedAt, deprecated) —
+  // trois requêtes en base ont dû l'innocenter avant que je regarde la regex.
+  if (!/^[1-9]\d*$/.test(raw)) return null;
+  const n = parseInt(raw, 10);
+  return n >= 2 ? n : null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
