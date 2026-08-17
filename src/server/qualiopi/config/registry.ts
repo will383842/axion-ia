@@ -136,7 +136,8 @@ const identifiantChiffre = (
  * Le 14ᵉ chiffre est une clé de contrôle : elle attrape les inversions de deux
  * chiffres voisins, la coquille la plus fréquente à la recopie.
  *
- * ⚠️ EXCEPTION LÉGALE : les SIRET de La Poste (SIREN 356000000) ne respectent
+ * ⚠️ EXCEPTION LÉGALE : les établissements de La Poste — ceux dont le numéro
+ * d'entreprise vaut `356000000` — ne respectent
  * pas Luhn — leur règle est « somme des chiffres divisible par 5 ». Elle est
  * traitée, non par prudence rituelle, mais parce qu'une validation qui refuse
  * un numéro VALABLE est plus grave que l'absence de validation : elle bloque
