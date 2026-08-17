@@ -47,6 +47,15 @@ export interface ConventionData {
   modalite: "Présentiel" | "Distanciel" | "Mixte";
   lieu: string;
   effectif: number;
+  /**
+   * Lot 1ter §6 — les stagiaires NOMMÉS, déjà formatés par
+   * `documents/stagiaires-nommes.ts`. Vide ⇒ `stagiairesADesigner` est rendu.
+   */
+  stagiairesNommes?: readonly string[];
+  /** Phrase de substitution quand aucun stagiaire n'est inscrit. */
+  stagiairesADesigner?: string | null;
+  /** Mention d'écart entre l'effectif PRÉVU et les inscrits nommés. */
+  ecartEffectif?: string | null;
   // Conditions financières
   prixHt: number;
   acomptePercent?: number;
@@ -235,6 +244,33 @@ export function ConventionPdf({
             label="Effectif prévu"
             value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
           />
+          {/*
+            🔴 Lot 1ter §6 — LA CONVENTION NOMME LES STAGIAIRES.
+
+            Vérifié sur pièce réelle : `AXI-DOC-2026-032` portait « Effectif
+            prévu : 1 stagiaire » et ne nommait PERSONNE, alors que Simone Blanc
+            y était inscrite. Ce n'est pas un défaut d'affichage : la même
+            personne doit se retrouver sur l'émargement, l'évaluation et
+            l'attestation. Sans nom ici, la chaîne de preuve démarre dans le
+            flou — et c'est précisément ce rapprochement qu'un auditeur vient
+            faire.
+
+            Et si personne n'est inscrit, la pièce le DIT. Une convention muette
+            sur ce point se lit comme une convention sans stagiaire, ce qui
+            n'existe pas : le silence y est une affirmation fausse.
+          */}
+          <FieldRow
+            label="Stagiaires"
+            value={
+              data.stagiairesNommes && data.stagiairesNommes.length > 0
+                ? data.stagiairesNommes.join(" · ")
+                : (data.stagiairesADesigner ??
+                  "Stagiaires à désigner par le client — liste nominative annexée avant le démarrage de l'action.")
+            }
+          />
+          {data.ecartEffectif != null && (
+            <FieldRow label="Écart d'effectif" value={data.ecartEffectif} />
+          )}
           {/*
             🔴 Trois mentions EXIGÉES par l'article L.6353-1 et absentes de la
             convention jusqu'au 2026-08-02 : moyens pédagogiques et techniques,
