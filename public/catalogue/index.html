@@ -1,9 +1,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Catalogue Axion-IA — à feuilleter</title>
-<meta name="description" content="Le catalogue complet des offres Axion-IA : formations IA, coaching 1-to-1, audits et implémentation. Une double-page par offre.">
+<title>Catalogue Axion-IA 2026-2027 — à feuilleter</title>
+<meta name="description" content="Le catalogue Axion-IA 2026-2027, 48 pages : 21 formations et un séminaire, accompagnement 1-to-1, audit IA, implémentation et automatisation. À feuilleter en doubles pages.">
 <style>
-  :root { --creme:#faf8f3; --encre:#1a1613; --terracotta:#b23f16; --ratio:1.2943; }
+  :root { --creme:#faf8f3; --encre:#1a1613; --terracotta:#b23f16; --ratio:1.4123; }
   * { box-sizing: border-box; }
   html, body { margin:0; padding:0; height:100%; background:#14100e; color:var(--creme);
     font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; overscroll-behavior: none; }
@@ -127,7 +127,7 @@
   <button type="button" id="suiv" aria-label="Page suivante">&#8250;</button>
   <form class="aller" id="aller">
     <label class="sr" for="numPage">Aller à la page</label>
-    <input id="numPage" type="number" inputmode="numeric" min="1" max="86" step="1" placeholder="p." title="Aller à la page (1 à 86)">
+    <input id="numPage" type="number" inputmode="numeric" min="1" max="47" step="1" placeholder="p." title="Aller à la page (1 à 47)">
     <button type="submit" title="Aller à cette page">Aller</button>
   </form>
 </div>
@@ -140,7 +140,7 @@
   // ferme se regarde de face. Une page interieure isolee (la 01, la 84) n'est
   // pas centree : elle occupe la moitie qui lui revient, l'autre restant
   // blanche, parce que c'est la seule chose qui puisse exister sur papier.
-  var PAGES = [{"f":"couv1.jpg","n":"","s":true,"c":true},{"f":"p001.jpg","n":"01","s":true,"c":false},{"f":"p002.jpg","n":"02","s":false,"c":false},{"f":"p003.jpg","n":"03","s":false,"c":false},{"f":"p004.jpg","n":"04","s":false,"c":false},{"f":"p005.jpg","n":"05","s":false,"c":false},{"f":"p006.jpg","n":"06","s":false,"c":false},{"f":"p007.jpg","n":"07","s":false,"c":false},{"f":"p008.jpg","n":"08","s":false,"c":false},{"f":"p009.jpg","n":"09","s":false,"c":false},{"f":"p010.jpg","n":"10","s":false,"c":false},{"f":"p011.jpg","n":"11","s":false,"c":false},{"f":"p012.jpg","n":"12","s":false,"c":false},{"f":"p013.jpg","n":"13","s":false,"c":false},{"f":"p014.jpg","n":"14","s":false,"c":false},{"f":"p015.jpg","n":"15","s":false,"c":false},{"f":"p016.jpg","n":"16","s":false,"c":false},{"f":"p017.jpg","n":"17","s":false,"c":false},{"f":"p018.jpg","n":"18","s":false,"c":false},{"f":"p019.jpg","n":"19","s":false,"c":false},{"f":"p020.jpg","n":"20","s":false,"c":false},{"f":"p021.jpg","n":"21","s":false,"c":false},{"f":"p022.jpg","n":"22","s":false,"c":false},{"f":"p023.jpg","n":"23","s":false,"c":false},{"f":"p024.jpg","n":"24","s":false,"c":false},{"f":"p025.jpg","n":"25","s":false,"c":false},{"f":"p026.jpg","n":"26","s":false,"c":false},{"f":"p027.jpg","n":"27","s":false,"c":false},{"f":"p028.jpg","n":"28","s":false,"c":false},{"f":"p029.jpg","n":"29","s":false,"c":false},{"f":"p030.jpg","n":"30","s":false,"c":false},{"f":"p031.jpg","n":"31","s":false,"c":false},{"f":"p032.jpg","n":"32","s":false,"c":false},{"f":"p033.jpg","n":"33","s":false,"c":false},{"f":"p034.jpg","n":"34","s":false,"c":false},{"f":"p035.jpg","n":"35","s":false,"c":false},{"f":"p036.jpg","n":"36","s":false,"c":false},{"f":"p037.jpg","n":"37","s":false,"c":false},{"f":"p038.jpg","n":"38","s":false,"c":false},{"f":"p039.jpg","n":"39","s":false,"c":false},{"f":"p040.jpg","n":"40","s":false,"c":false},{"f":"p041.jpg","n":"41","s":false,"c":false},{"f":"p042.jpg","n":"42","s":false,"c":false},{"f":"p043.jpg","n":"43","s":false,"c":false},{"f":"p044.jpg","n":"44","s":false,"c":false},{"f":"p045.jpg","n":"45","s":false,"c":false},{"f":"p046.jpg","n":"46","s":false,"c":false},{"f":"p047.jpg","n":"47","s":false,"c":false},{"f":"p048.jpg","n":"48","s":false,"c":false},{"f":"p049.jpg","n":"49","s":false,"c":false},{"f":"p050.jpg","n":"50","s":false,"c":false},{"f":"p051.jpg","n":"51","s":false,"c":false},{"f":"p052.jpg","n":"52","s":false,"c":false},{"f":"p053.jpg","n":"53","s":false,"c":false},{"f":"p054.jpg","n":"54","s":false,"c":false},{"f":"p055.jpg","n":"55","s":false,"c":false},{"f":"p056.jpg","n":"56","s":false,"c":false},{"f":"p057.jpg","n":"57","s":false,"c":false},{"f":"p058.jpg","n":"58","s":false,"c":false},{"f":"p059.jpg","n":"59","s":false,"c":false},{"f":"p060.jpg","n":"60","s":false,"c":false},{"f":"p061.jpg","n":"61","s":false,"c":false},{"f":"p062.jpg","n":"62","s":false,"c":false},{"f":"p063.jpg","n":"63","s":false,"c":false},{"f":"p064.jpg","n":"64","s":false,"c":false},{"f":"p065.jpg","n":"65","s":false,"c":false},{"f":"p066.jpg","n":"66","s":false,"c":false},{"f":"p067.jpg","n":"67","s":false,"c":false},{"f":"p068.jpg","n":"68","s":false,"c":false},{"f":"p069.jpg","n":"69","s":false,"c":false},{"f":"p070.jpg","n":"70","s":false,"c":false},{"f":"p071.jpg","n":"71","s":false,"c":false},{"f":"p072.jpg","n":"72","s":false,"c":false},{"f":"p073.jpg","n":"73","s":false,"c":false},{"f":"p074.jpg","n":"74","s":false,"c":false},{"f":"p075.jpg","n":"75","s":false,"c":false},{"f":"p076.jpg","n":"76","s":false,"c":false},{"f":"p077.jpg","n":"77","s":false,"c":false},{"f":"p078.jpg","n":"78","s":false,"c":false},{"f":"p079.jpg","n":"79","s":false,"c":false},{"f":"p080.jpg","n":"80","s":false,"c":false},{"f":"p081.jpg","n":"81","s":false,"c":false},{"f":"p082.jpg","n":"82","s":false,"c":false},{"f":"p083.jpg","n":"83","s":false,"c":false},{"f":"p084.jpg","n":"84","s":false,"c":false},{"f":"p085.jpg","n":"85","s":false,"c":false},{"f":"p086.jpg","n":"86","s":false,"c":false},{"f":"couv4.jpg","n":"","s":true,"c":true}];
+  var PAGES = [{"f":"p01.jpg","n":"","s":true,"c":true},{"f":"p02.jpg","n":"02","s":false,"c":false},{"f":"p03.jpg","n":"03","s":false,"c":false},{"f":"p04.jpg","n":"04","s":false,"c":false},{"f":"p05.jpg","n":"05","s":false,"c":false},{"f":"p06.jpg","n":"06","s":false,"c":false},{"f":"p07.jpg","n":"07","s":false,"c":false},{"f":"p08.jpg","n":"08","s":false,"c":false},{"f":"p09.jpg","n":"09","s":false,"c":false},{"f":"p10.jpg","n":"10","s":false,"c":false},{"f":"p11.jpg","n":"11","s":false,"c":false},{"f":"p12.jpg","n":"12","s":false,"c":false},{"f":"p13.jpg","n":"13","s":false,"c":false},{"f":"p14.jpg","n":"14","s":false,"c":false},{"f":"p15.jpg","n":"15","s":false,"c":false},{"f":"p16.jpg","n":"16","s":false,"c":false},{"f":"p17.jpg","n":"17","s":false,"c":false},{"f":"p18.jpg","n":"18","s":false,"c":false},{"f":"p19.jpg","n":"19","s":false,"c":false},{"f":"p20.jpg","n":"20","s":false,"c":false},{"f":"p21.jpg","n":"21","s":false,"c":false},{"f":"p22.jpg","n":"22","s":false,"c":false},{"f":"p23.jpg","n":"23","s":false,"c":false},{"f":"p24.jpg","n":"24","s":false,"c":false},{"f":"p25.jpg","n":"25","s":false,"c":false},{"f":"p26.jpg","n":"26","s":false,"c":false},{"f":"p27.jpg","n":"27","s":false,"c":false},{"f":"p28.jpg","n":"28","s":false,"c":false},{"f":"p29.jpg","n":"29","s":false,"c":false},{"f":"p30.jpg","n":"30","s":false,"c":false},{"f":"p31.jpg","n":"31","s":false,"c":false},{"f":"p32.jpg","n":"32","s":false,"c":false},{"f":"p33.jpg","n":"33","s":false,"c":false},{"f":"p34.jpg","n":"34","s":false,"c":false},{"f":"p35.jpg","n":"35","s":false,"c":false},{"f":"p36.jpg","n":"36","s":false,"c":false},{"f":"p37.jpg","n":"37","s":false,"c":false},{"f":"p38.jpg","n":"38","s":false,"c":false},{"f":"p39.jpg","n":"39","s":false,"c":false},{"f":"p40.jpg","n":"40","s":false,"c":false},{"f":"p41.jpg","n":"41","s":false,"c":false},{"f":"p42.jpg","n":"42","s":false,"c":false},{"f":"p43.jpg","n":"43","s":false,"c":false},{"f":"p44.jpg","n":"44","s":false,"c":false},{"f":"p45.jpg","n":"45","s":false,"c":false},{"f":"p46.jpg","n":"46","s":false,"c":false},{"f":"p47.jpg","n":"47","s":false,"c":false},{"f":"p48.jpg","n":"","s":true,"c":true}];
   var BASE = 'pages-web/';
   var livre = document.getElementById('livre');
   var pgG = document.getElementById('pgG'), pgD = document.getElementById('pgD');
@@ -187,7 +187,12 @@
     // Le test portait sur s (page isolee) et non sur c (couverture). Depuis
     // que la 01 est isolee pour ouvrir le livre sur une belle page, elle
     // s'annoncait « dos de couverture ». On nomme ce qu'on montre.
-    if (g && g.c) return g.f === 'couv1.jpg' ? 'couverture' : 'dos de couverture';
+    // ATTENTION : la version KDP testait le NOM DE FICHIER (couv1.jpg). Ici les
+    // images s'appellent p01.jpg a p48.jpg, le test ne matchait JAMAIS, et la
+    // PREMIERE de couverture s'annoncait « dos de couverture ». On teste le rang
+    // courant, qui ne depend d'aucune convention de nommage.
+    // (pas de backtick dans ce commentaire : il vit dans un litteral gabarit.)
+    if (g && g.c) return i === 0 ? 'couverture' : 'dos de couverture';
     var isole = MOBILE() || seule(i) || seule(i + 1);
     if (isole) return g && g.n ? 'page ' + g.n : (i + 1) + ' / ' + PAGES.length;
     if (g && g.n && d && d.n) return 'pages ' + g.n + '–' + d.n;
@@ -317,7 +322,7 @@
     if (!allerA(n)) {
       // Numero hors catalogue : on le dit par le champ lui-meme plutot que par
       // une alerte, qui ferait perdre la page en cours de lecture.
-      champPage.setCustomValidity('Page 1 à ' + 86);
+      champPage.setCustomValidity('Page 1 à ' + 47);
       champPage.reportValidity();
       return;
     }
