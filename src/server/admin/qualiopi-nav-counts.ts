@@ -25,6 +25,7 @@ import { prisma } from "@/lib/prisma";
 import { compterEnAttente } from "@/server/email/outbox-service";
 import { countNonLues } from "@/server/qualiopi/alertes/alertes-service";
 import { compterPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
+import { compterEcheancesDepassees } from "@/server/qualiopi/parcours/echeances-service";
 
 export interface QualiopiNavCounts {
   /** Pièces dont une signature manque (partielle) ou n'a pas commencé (en_attente). */
@@ -43,6 +44,21 @@ export interface QualiopiNavCounts {
    * sur le sujet où l'oubli coûte le plus cher.
    */
   relances: number;
+  /**
+   * Étapes de dossier dont l'échéance est DÉPASSÉE, toutes sessions confondues
+   * (Lot 1 §1.4).
+   *
+   * 🔴 Manquait entièrement, et c'était le trou le plus large : la page
+   * « À traiter » IGNORAIT les sessions. Une convention non signée à J-3, une
+   * évaluation finale jamais saisie, un émargement vide — rien de tout cela ne
+   * se signalait avant d'ouvrir le dossier concerné. C'est la cause racine des
+   * défauts du premier dossier réel.
+   *
+   * ⚠️ Compte les échéances **dépassées** (`rattrapable` + `hors_delai`), jamais
+   * le volume : toute session à venir a des étapes en attente par construction,
+   * et une pastille qui ne descend pas à zéro cesse d'être regardée.
+   */
+  sessions: number;
   /** Somme — la pastille de « À traiter » et du pôle. */
   total: number;
 }
@@ -52,17 +68,18 @@ export const COMPTEURS_VIDES: QualiopiNavCounts = {
   emails: 0,
   alertes: 0,
   relances: 0,
+  sessions: 0,
   total: 0,
 };
 
 /**
- * Calcule les quatre compteurs en parallèle. Chacun est indépendamment
+ * Calcule les CINQ compteurs en parallèle. Chacun est indépendamment
  * fail-soft : une table indisponible ne doit jamais priver la sidebar des
  * autres chiffres — ni, surtout, faire tomber le layout admin entier.
  */
 export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
   const now = new Date();
-  const [signatures, emails, alertes, relances] = await Promise.all([
+  const [signatures, emails, alertes, relances, sessions] = await Promise.all([
     // 🔴 C'ÉTAIT UN `prisma.count` BRUT, ET IL MENTAIT. La page « À traiter »
     // retire les pièces REMPLACÉES (une convention non signée alors qu'une
     // autre, du même type et sur la même session, l'est intégralement) ; ce
@@ -86,12 +103,18 @@ export async function compterQualiopiNav(): Promise<QualiopiNavCounts> {
         },
       })
       .catch(() => 0),
+    // Lot 1 §1.4 — le MÊME service que la page « À traiter » et que la colonne
+    // « Dossier » de la liste des sessions. Un second calcul dirait un jour un
+    // autre chiffre pour la même chose, et c'est la promesse écrite en tête de
+    // ce fichier.
+    compterEcheancesDepassees({ maintenant: now }).catch(() => 0),
   ]);
   return {
     signatures,
     emails,
     alertes,
     relances,
-    total: signatures + emails + alertes + relances,
+    sessions,
+    total: signatures + emails + alertes + relances + sessions,
   };
 }

@@ -24,6 +24,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
   ArrowRight,
+  CalendarClock,
   CheckCheck,
   CircleAlert,
   Euro,
@@ -44,6 +45,7 @@ import { listAlertes } from "@/server/qualiopi/alertes/alertes-service";
 import { partieARelancer } from "@/server/qualiopi/documents/signature/relance-partie";
 import { listerPiecesEnAttente } from "@/server/qualiopi/documents/signature/pieces-en-attente";
 import { listerRetoursEnAttente } from "@/server/qualiopi/satisfaction/retours-en-attente";
+import { prochainesEcheances } from "@/server/qualiopi/parcours/echeances-service";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -88,12 +90,29 @@ export default async function ATraiterPage({ params }: PageProps) {
 
   const base = `/${locale}/${adminPrefix}`;
 
-  const [compteurs, signatures, alertesBrutes, retours] = await Promise.all([
+  const [compteurs, signatures, alertesBrutes, retours, parcours] = await Promise.all([
     compterQualiopiNav(),
     listerPiecesEnAttente(),
     listAlertes({ resolue: false, limit: 50 }).catch(() => []),
     listerRetoursEnAttente(),
+    // 🔴 Lot 1 §1.4 — cette page EXISTAIT et IGNORAIT les sessions. Il fallait
+    // ouvrir chaque dossier pour apprendre qu'une convention n'etait pas signee
+    // a J-3. Meme service que la pastille de nav : deux calculs diraient un
+    // jour deux chiffres, et un badge qui ment n'est plus jamais regarde.
+    prochainesEcheances().catch(() => ({
+      echeances: [],
+      parSession: new Map(),
+      troncature: null,
+    })),
   ]);
+
+  // On ne montre ici que ce qui PRESSE : echeance depassee, encore rattrapable
+  // ou deja hors delai. Les etapes « a faire » d'une session de decembre n'ont
+  // rien a faire sur la page de ce matin — les afficher rendrait la page
+  // illisible le jour ou dix sessions sont ouvertes.
+  const echeancesUrgentes = parcours.echeances.filter(
+    (e) => e.etape.etat === "hors_delai" || e.etape.etat === "rattrapable",
+  );
 
   // Les pièces déjà remplacées par une version signée ne sont pas des tâches :
   // le filtre est appliqué DANS `listerPiecesEnAttente`, avec le compteur de la
@@ -123,6 +142,7 @@ export default async function ATraiterPage({ params }: PageProps) {
     signatures.length === 0 &&
     compteurs.emails === 0 &&
     compteurs.relances === 0 &&
+    echeancesUrgentes.length === 0 &&
     critiques.length === 0 &&
     importantes.length === 0;
 
@@ -298,6 +318,71 @@ export default async function ATraiterPage({ params }: PageProps) {
           >
             Ouvrir la corbeille de validation
           </AdminButton>
+        </div>
+      )}
+
+      {/* Sessions — échéances (Lot 1 §1.4).
+          🔴 Le bloc qui manquait, et il manquait en entier : la page « À
+          traiter » ne parlait pas des sessions. Une convention non signée à
+          J-3, une évaluation finale jamais saisie, un émargement resté vide —
+          rien de tout cela n'apparaissait avant d'ouvrir le dossier concerné.
+          C'est la cause racine des défauts du premier dossier réel.
+
+          Placé EN PREMIER : ce sont les seules lignes de cette page dont
+          l'échéance est déjà passée. */}
+      {echeancesUrgentes.length > 0 && (
+        <div className={carte}>
+          <h2 className={titreCarte}>
+            <CalendarClock size={18} aria-hidden="true" className="shrink-0" />
+            Sessions — échéances dépassées{" "}
+            <span className={pastille}>{echeancesUrgentes.length}</span>
+          </h2>
+          {/* La chronologie EST un ordre : une liste ordonnée, pas une pile de
+              div. Le lecteur d'écran annonce « 1 sur 7 ». */}
+          <ol className="list-none p-0">
+            {echeancesUrgentes.slice(0, 20).map((e) => (
+              <li key={`${e.sessionId}-${e.etape.cle}`} className={ligne}>
+                <span className="min-w-0 text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
+                  <strong>{e.etape.libelle}</strong>{" "}
+                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                    — {e.numero} · {e.titre}
+                  </span>
+                  <br />
+                  {/* 🔴 L'état est dans le TEXTE, jamais dans la seule couleur
+                      (WCAG 1.4.1) : « rattrapable avant le … » et « hors délai :
+                      +N j » ne se confondent pas, même en noir et blanc. */}
+                  <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                    {e.etape.mention} · {e.etape.geste}
+                  </span>
+                </span>
+                <AdminButton
+                  href={`${base}/qualiopi/sessions/${e.sessionId}`}
+                  variant="secondary"
+                  size="sm"
+                >
+                  Ouvrir le dossier <ArrowRight size={14} aria-hidden="true" />
+                </AdminButton>
+              </li>
+            ))}
+          </ol>
+          {echeancesUrgentes.length > 20 && (
+            /* 🔴 Une liste coupée en silence se lit comme une liste complète.
+               On dit combien il en reste. */
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              {echeancesUrgentes.length - 20} autre
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} échéance
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} dépassée
+              {echeancesUrgentes.length - 20 > 1 ? "s" : ""} — voir la liste des sessions.
+            </p>
+          )}
+          {parcours.troncature !== null && (
+            /* Et si le SERVICE lui-même a tronqué, on le dit aussi : sinon la
+               page affirmerait la complétude d'un balayage plafonné. */
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Balayage plafonné à {parcours.troncature.plafond} sessions : cette liste peut être
+              incomplète.
+            </p>
+          )}
         </div>
       )}
 

@@ -25,6 +25,11 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminPagination } from "@/components/admin/ui/AdminPagination";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listSessionsForAdmin } from "@/server/qualiopi/presence/queries";
+import {
+  prochainesEcheances,
+  type ResultatEcheances,
+} from "@/server/qualiopi/parcours/echeances-service";
+import { LIBELLE_ETAT_DOSSIER } from "@/server/qualiopi/parcours/libelles";
 import { FENETRE_SESSIONS_MOIS, parsePageParam } from "@/server/qualiopi/presence/sessions-liste";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { SEUIL_PARTIELLE_PCT } from "@/server/qualiopi/presence/taux";
@@ -77,6 +82,20 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
     avecArchives,
   });
   const sessions = liste.rows;
+
+  // Lot 1 §1.4 — la colonne « Dossier ».
+  //
+  // 🔴 Bornée aux sessions DE CETTE PAGE, jamais au périmètre entier. La sonde
+  // `sessions_liste` mesure cette lecture (10 ms au volume cible, budget 450) ;
+  // balayer 300 sessions pour en afficher 25 la ferait exploser, et le Lot 0
+  // existe pour qu'on ne le découvre pas en production.
+  //
+  // Fail-soft : la colonne disparaît, la liste reste. Une liste de sessions
+  // indisponible parce qu'un indicateur secondaire a échoué serait un défaut
+  // bien pire que l'absence de l'indicateur.
+  const { parSession } = await prochainesEcheances({
+    sessionIds: sessions.map((s) => s.id),
+  }).catch((): ResultatEcheances => ({ parSession: new Map(), echeances: [], troncature: null }));
 
   // Même seuil que la grille d'émargement, le détail de session et l'attestation.
   // Il était figé à 80 ici : réglé à 90, une session à 85 % s'affichait verte dans
@@ -197,6 +216,7 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Inscrits</th>
                 <th className={headCls}>Taux présence</th>
+                <th className={headCls}>Dossier</th>
                 <th className={headCls}>Actions</th>
               </tr>
             </thead>
@@ -274,6 +294,31 @@ export default async function QualiopiSessionsPage({ params, searchParams }: Pag
                     ) : (
                       <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
                     )}
+                  </td>
+
+                  {/* Dossier (Lot 1 §1.4) — n/N étapes acquittées + pire état.
+                      🔴 L'état est ÉCRIT, la couleur ne fait que le doubler :
+                      une pastille seule ne dit rien à qui ne la perçoit pas, ni
+                      sur une page imprimée pour l'auditeur (WCAG 1.4.1). */}
+                  <td className={cellCls}>
+                    {(() => {
+                      const p = parSession.get(s.id);
+                      if (!p) {
+                        // Le service a échoué, ou la session est hors périmètre.
+                        // On ne fabrique pas un « à jour » rassurant.
+                        return <span className="text-[color:var(--color-admin-fg-muted)]">—</span>;
+                      }
+                      return (
+                        <>
+                          <div className="font-medium whitespace-nowrap">
+                            {LIBELLE_ETAT_DOSSIER[p.pire]}
+                          </div>
+                          <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                            {p.fait}/{p.total} étapes
+                          </div>
+                        </>
+                      );
+                    })()}
                   </td>
 
                   {/* Actions */}
