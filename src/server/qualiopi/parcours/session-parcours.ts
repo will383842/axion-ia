@@ -108,6 +108,22 @@ export interface EtapeParcours {
   readonly avancement?: { readonly fait: number; readonly total: number };
   /** Mise en garde propre à l'étape, quand il y en a une. */
   readonly avertissement?: string;
+  /**
+   * Pourquoi cette étape n'a AUCUNE borne de rattrapage — donc pourquoi elle ne
+   * peut jamais devenir `hors_delai`.
+   *
+   * 🔴 Trouvé le 2026-08-17 en auditant le Lot 5. Quatre étapes déclaraient
+   * `borne: null`, et `calculerEtat` rend alors `rattrapable` **pour toujours** :
+   * elles ne peuvent MATHÉMATIQUEMENT pas atteindre l'état terminal.
+   *
+   * C'est délibéré pour les quatre — évaluer ou attester en retard laisse un
+   * écart de date, pas une impossibilité, et les déclarer « hors délai » ferait
+   * RENONCER. Mais le code ne distinguait pas ce choix d'un oubli : **une borne
+   * oubliée ressemble exactement à une borne volontairement absente**. C'est le
+   * même défaut que `resolutionAuto: false` sans motif, corrigé ce matin au
+   * catalogue d'alertes — et corrigé ici de la même façon, au niveau du TYPE.
+   */
+  readonly motifSansBorne?: string;
 }
 
 export interface Parcours {
@@ -295,19 +311,30 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
 
   // ── 6. Convocation — la dérivation qui peut ne pas aboutir ────────────────
   const convoquees = actives.filter((e) => e.convocationEnvoyeeAt !== null).length;
+  const etatConvocation = convocation({
+    total: n,
+    envoyees: convoquees,
+    echeance: avant(debut, 5),
+    borne: debut,
+    maintenant,
+  });
   etapes.push({
     cle: "convocation_envoyee",
     libelle: "Convocation envoyée",
-    ...convocation({
-      total: n,
-      envoyees: convoquees,
-      echeance: avant(debut, 5),
-      borne: debut,
-      maintenant,
-    }),
+    ...etatConvocation,
     geste:
       "Automatique — le planificateur J-5, puis rattrapage tant que la colonne d'état est nulle (ind. 9).",
     avancement: { fait: convoquees, total: n },
+    // 🔴 `indetermine` n'est PAS terminal, et ne doit pas l'être : il dit qu'on
+    // ne sait pas, et seul un humain peut lever le doute en allant vérifier les
+    // envois. L'étape peut donc y rester indéfiniment — c'est voulu, et il faut
+    // le DIRE, sinon cela ressemble à une borne oubliée.
+    ...(etatConvocation.etat === "indetermine"
+      ? {
+          motifSansBorne:
+            "L'état « rattachement non établi » ne se résout pas avec le temps : `EmailLog` n'a aucun lien vers une session, et seule une vérification humaine des envois peut trancher. Une borne le ferait basculer en « hors délai », ce qui affirmerait un manquement qu'on n'a pas constaté.",
+        }
+      : {}),
   });
 
   // ── 7. Créneaux d'émargement ──────────────────────────────────────────────
@@ -371,7 +398,10 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       fait: n > 0 && evalues === n,
       faitLe: null,
       echeance: apres(fin, 2),
-      borne: null,
+      borne: {
+        sansBorne:
+          "Évaluer en retard laisse un écart de DATE, pas une impossibilité : l'évaluation reste valable et l'indicateur 11 reste atteignable. La déclarer « hors délai » ferait renoncer à un geste encore utile.",
+      },
       maintenant,
       avancement: { fait: evalues, total: n },
       geste: "Le formateur évalue ; la VALIDATION est un acte habilité (ind. 11).",
@@ -400,7 +430,10 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       fait: n > 0 && attestations.length >= n,
       faitLe: attestations[0]?.createdAt ?? null,
       echeance: apres(fin, 3),
-      borne: null,
+      borne: {
+        sansBorne:
+          "Une attestation s'émet avec des semaines de retard et reste opposable — c'est un droit du stagiaire (L.6353-1). L'écart est porté par la mention, jamais par un refus.",
+      },
       maintenant,
       avancement: { fait: Math.min(attestations.length, n), total: n },
       geste: "Acte HABILITÉ — attester engage l'organisme. Jamais automatique.",
@@ -452,7 +485,10 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       fait: n > 0 && chaud === n,
       faitLe: null,
       echeance: apres(fin, 7),
-      borne: null,
+      borne: {
+        sansBorne:
+          "Un retour à chaud recueilli tard vaut mieux qu'aucun retour : l'indicateur 30 compte les réponses, pas leur ponctualité.",
+      },
       maintenant,
       avancement: { fait: chaud, total: n },
       geste: "Automatique J+1, relance J+3 et J+10. Action ici : relancer (ind. 30).",
@@ -465,7 +501,10 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       fait: n > 0 && froid === n,
       faitLe: null,
       echeance: apres(fin, 37),
-      borne: null,
+      borne: {
+        sansBorne:
+          "Le suivi à froid reste utile longtemps après J+30. Le déclarer hors délai enverrait renoncer à un recueil encore possible — et c'est l'obligation la plus facilement oubliée du parcours.",
+      },
       maintenant,
       avancement: { fait: froid, total: n },
       geste: "Automatique J+30. 🔴 Recueilli AVANT J+30, il ne mesure pas le même objet.",
@@ -496,7 +535,15 @@ function etape(args: {
   fait: boolean;
   faitLe: Date | null;
   echeance: Date | null;
-  borne: Date | null;
+  /**
+   * Date après laquelle le geste ne produit plus un dossier conforme, OU une
+   * déclaration explicite d'absence de borne.
+   *
+   * 🔴 `Date | null` avant le 2026-08-17 : on ne pouvait pas distinguer « pas
+   * de borne, et c'est voulu » de « borne oubliée ». Désormais l'absence se
+   * DÉCLARE — le compilateur pose la question à celui qui ajoute une étape.
+   */
+  borne: Date | { readonly sansBorne: string };
   maintenant: Date;
   geste: string;
   avancement?: { fait: number; total: number };
@@ -504,12 +551,17 @@ function etape(args: {
   sansObjetSi?: boolean;
   motifSansObjet?: string;
 }): EtapeParcours {
+  // Une borne DÉCLARÉE absente vaut `null` pour le calcul — mais son motif
+  // survit jusqu'à l'écran, ce qui est toute la différence avec un oubli.
+  const borneEffective = args.borne instanceof Date ? args.borne : null;
+  const motifSansBorne = args.borne instanceof Date ? undefined : args.borne.sansBorne;
+
   const etat: EtatEtape = args.sansObjetSi
     ? "sans_objet"
     : calculerEtat({
         fait: args.fait,
         echeance: args.echeance,
-        borneRattrapage: args.borne,
+        borneRattrapage: borneEffective,
         maintenant: args.maintenant,
       });
   return {
@@ -519,7 +571,7 @@ function etape(args: {
     mention: mentionPour({
       etat,
       echeance: args.echeance,
-      borneRattrapage: args.borne,
+      borneRattrapage: borneEffective,
       faitLe: args.faitLe,
       maintenant: args.maintenant,
       ...(args.motifSansObjet !== undefined ? { motifSansObjet: args.motifSansObjet } : {}),
@@ -527,6 +579,7 @@ function etape(args: {
     geste: args.geste,
     ...(args.avancement !== undefined ? { avancement: args.avancement } : {}),
     ...(args.avertissement !== undefined ? { avertissement: args.avertissement } : {}),
+    ...(motifSansBorne !== undefined ? { motifSansBorne } : {}),
   };
 }
 

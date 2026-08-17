@@ -402,3 +402,76 @@ describe("🔴 les avertissements qui coûtent cher à oublier", () => {
     expect(etapeDe(p, "acces_portail").avertissement).toContain("global au stagiaire");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot 5 — « chaque étape possède un chemin vers l'état hors-délai »
+//
+// 🔴 L'exigence du plan, prise à la lettre, prescrit une RÉGRESSION : quatre
+// étapes n'ont volontairement aucune borne, parce qu'évaluer ou attester en
+// retard laisse un écart de DATE, pas une impossibilité. Leur imposer une borne
+// ferait renoncer à des gestes encore utiles.
+//
+// Ce que l'exigence voulait dire, et qui est juste : **aucune étape ne doit se
+// retrouver sans état terminal PAR OUBLI**. Le code ne distinguait pas les deux
+// `null` — une borne oubliée ressemblait exactement à une borne volontairement
+// absente. Désormais l'absence se DÉCLARE, et ce test balaie les quatorze clés.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 aucune étape n'est privée d'état terminal par OUBLI", () => {
+  // Un dossier qui exerce les quatorze étapes, longtemps après la fin : c'est
+  // le seul moment où toutes ont eu l'occasion de devenir terminales.
+  const p = construireParcours(
+    dossier({
+      session: {
+        statut: "realisee",
+        dateDebut: DEBUT,
+        dateFin: FIN,
+        formateurPrincipalId: "f1",
+        financementType: "direct",
+      },
+      maintenant: d("2027-01-15T09:00:00.000Z"),
+      inscriptions: [inscription()],
+    }),
+  );
+
+  it("les quatorze étapes sont bien rendues", () => {
+    // Sans ceci, une liste vide ferait passer tout le bloc au vert.
+    expect(p.etapes).toHaveLength(14);
+  });
+
+  it.each(p.etapes.map((e) => [e.cle, e] as const))(
+    "%s : soit elle atteint un état terminal, soit elle DIT pourquoi elle n'en a pas",
+    (_cle, etape) => {
+      // `hors_delai` et `fait` sont terminaux ; `sans_objet` sort du parcours.
+      const terminale =
+        etape.etat === "hors_delai" || etape.etat === "fait" || etape.etat === "sans_objet";
+      if (terminale) return;
+      expect(
+        etape.motifSansBorne,
+        `L'étape « ${etape.cle} » reste « ${etape.etat} » plus de quatre mois après la fin ` +
+          `de la session, sans déclarer pourquoi elle n'a pas de borne. Une borne oubliée ` +
+          `ressemble exactement à une borne volontairement absente : il faut la DIRE.`,
+      ).toMatch(/\S/);
+    },
+  );
+
+  it("les quatre absences déclarées portent une raison de FOND, pas un libellé", () => {
+    // Un motif d'une ligne creuse (« pas de borne ») satisferait le test
+    // précédent sans rien apprendre à personne.
+    const declarees = p.etapes.filter((e) => e.motifSansBorne !== undefined);
+    expect(declarees.length).toBeGreaterThanOrEqual(4);
+    for (const e of declarees) {
+      expect(
+        (e.motifSansBorne ?? "").length,
+        `Le motif de « ${e.cle} » est trop court pour expliquer quoi que ce soit.`,
+      ).toBeGreaterThan(60);
+    }
+  });
+
+  it("une étape AVEC borne n'invente pas de motif d'absence", () => {
+    // Sinon l'écran afficherait « pas de borne parce que … » sous une étape qui
+    // en a une — une contradiction visible.
+    const avecBorne = p.etapes.find((e) => e.cle === "convention_signee")!;
+    expect(avecBorne.motifSansBorne).toBeUndefined();
+  });
+});
