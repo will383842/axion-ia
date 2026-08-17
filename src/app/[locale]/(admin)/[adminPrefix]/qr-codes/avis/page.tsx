@@ -1,4 +1,4 @@
-// Sous-onglet « QR avis du catalogue » de la barre latérale.
+// Sous-onglet « Avis du catalogue » de la barre latérale.
 // Route statique et non `?category=` : le surlignage de la sidebar compare le
 // chemin, jamais la query string (voir QrCodesView).
 import { redirect } from "next/navigation";

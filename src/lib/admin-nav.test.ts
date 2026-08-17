@@ -111,7 +111,15 @@ describe("buildAdminNav SSOT", () => {
     // du site, cet écran les montre telles qu'elles partiront à l'impression.
     // Niveau 1 et non sous-onglet des QR : les QR ne sont qu'un composant du
     // livre. = 148.
-    expect(items.length).toBe(148);
+    // +1 (2026-08-17, « Carte de visite & divers ») : la catégorie `general`
+    // existait dans le SSOT `QR_CATEGORIES` depuis l'origine, mais n'avait NI
+    // page NI entrée ici — les entrées de niveau 2 étaient recopiées à la main,
+    // et la copie avait divergé. Les deux QR de la carte de visite (`vc`, `wa`)
+    // n'avaient donc aucun tiroir et ne se voyaient que dans la liste racine,
+    // parmi 45 QR de catalogue. Les 4 sous-onglets DÉRIVENT désormais de
+    // `QR_CATEGORIES` : ce décompte suivra automatiquement toute catégorie
+    // ajoutée, et `categories.spec.ts` refuse une route sans page. = 149.
+    expect(items.length).toBe(149);
   });
 
   it("prefixes all hrefs with /fr/<adminPrefix>", () => {
