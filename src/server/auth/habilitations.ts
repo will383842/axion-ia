@@ -85,6 +85,51 @@ export type RoleAdmin =
  * relancer, classer, tout consulter) via `requireAdminWrite`. C'est le sens même
  * de l'objectif « n'importe quelle secrétaire gère le système ».
  */
+/**
+ * 🔴 QUI PEUT POSER UN ACTE QUI N'ENGAGE RIEN — l'autre moitié de la frontière.
+ *
+ * ## Le défaut que cette constante ferme
+ *
+ * Trouvé le 2026-08-17 en ouvrant la porte d'audit du Lot 9, puis vérifié :
+ * `requireAdminWrite` (`actions/knowledge/_guards.ts`) testait une liste écrite
+ * en dur — `super_admin`, `admin`, `editor` — et **ni `responsable_qualite` ni
+ * `secretaire` n'y figuraient**.
+ *
+ * Les deux rôles créés le 15/08 par le Lot 10 étaient donc **inertes** : toute
+ * action gardée par `requireAdminWrite` leur répondait `forbidden`. Créer une
+ * session, inscrire un stagiaire, générer un brouillon, convoquer, relancer,
+ * classer — rien. Des comptes en LECTURE déguisés.
+ *
+ * Et le commentaire six lignes plus haut affirmait exactement l'inverse :
+ * *« `secretaire` n'est pas un rôle diminué : il peut tout faire de ce qui
+ * n'engage pas […] via `requireAdminWrite` »*. **La doctrine et le code se
+ * contredisaient**, et c'est la doctrine qui avait raison.
+ *
+ * ## Pourquoi la liste vit ICI et plus dans la garde
+ *
+ * Une liste de rôles écrite dans la garde est invisible depuis la matrice : on
+ * peut ajouter un rôle à `HABILITATIONS` — donc lui donner le droit d'attester —
+ * sans voir qu'il ne peut même pas créer une session. C'est arrivé. Ici, les
+ * deux moitiés de la frontière se lisent d'un seul regard, et un test vérifie
+ * qu'elles restent cohérentes.
+ *
+ * ⚠️ `reader` en est ABSENT, et c'est le seul rôle qui doit l'être : c'est le
+ * compte de consultation. `editor` y reste — produire un brouillon n'engage
+ * rien, c'est précisément la colonne déléguable.
+ */
+export const ROLES_ECRITURE: ReadonlyArray<RoleAdmin> = [
+  "super_admin",
+  "admin",
+  "responsable_qualite",
+  "secretaire",
+  "editor",
+];
+
+/** Ce rôle peut-il poser un acte qui n'engage pas l'organisme ? */
+export function peutEcrire(role: string | null | undefined): boolean {
+  return ROLES_ECRITURE.includes(role as RoleAdmin);
+}
+
 export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdmin>>> = {
   contresigner: ["super_admin", "admin"],
   attester: ["super_admin", "admin", "responsable_qualite"],

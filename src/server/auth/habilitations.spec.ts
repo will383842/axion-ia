@@ -17,6 +17,7 @@ import {
   HABILITATIONS,
   MOTIF_REFUS,
   actesAutorises,
+  peutEcrire,
   peutEngager,
   type ActeEngageant,
 } from "./habilitations";
@@ -103,5 +104,76 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "valider_evaluation",
     ];
     expect([...ACTES_ENGAGEANTS].sort()).toEqual(attendus.sort());
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 LES DEUX MOITIÉS DE LA FRONTIÈRE DOIVENT RESTER D'ACCORD
+//
+// Trouvé le 2026-08-17 : `requireAdminWrite` portait SA propre liste de rôles,
+// écrite en dur, et `responsable_qualite` / `secretaire` n'y figuraient pas.
+// Les deux rôles créés le 15/08 étaient donc INERTES — des comptes en lecture
+// déguisés — pendant que le commentaire du SSOT affirmait l'inverse.
+//
+// Ce que ces tests interdisent : que la matrice des actes ENGAGEANTS et la
+// liste des rôles qui peuvent ÉCRIRE puissent se contredire.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 qui engage doit d'abord pouvoir écrire", () => {
+  it.each([...new Set(Object.values(HABILITATIONS).flatMap((r) => [...r]))].sort())(
+    "%s : porte un acte engageant, donc il peut écrire",
+    (role) => {
+      // 🔴 L'absurdité que ce test rend impossible : un rôle autorisé à ATTESTER
+      // mais incapable de CRÉER UNE SESSION. C'est exactement l'état dans lequel
+      // `responsable_qualite` a vécu deux jours — habilité à attester par la
+      // matrice, refusé par la garde d'écriture.
+      expect(
+        peutEcrire(role),
+        `« ${role} » peut poser un acte qui ENGAGE l'organisme mais ne peut pas ` +
+          `poser un acte qui n'engage rien. Un rôle qui peut attester et ne peut ` +
+          `pas créer de session ne sert à personne.`,
+      ).toBe(true);
+    },
+  );
+});
+
+describe("🔴 la liste d'écriture dit ce qu'elle doit dire", () => {
+  it("les deux rôles du Lot 10 peuvent écrire", () => {
+    // Le cas exact du défaut. Sans eux, « n'importe quelle secrétaire gère le
+    // système » — l'objectif écrit en tête du SSOT — est faux.
+    expect(peutEcrire("secretaire")).toBe(true);
+    expect(peutEcrire("responsable_qualite")).toBe(true);
+  });
+
+  it("`reader` ne peut PAS écrire", () => {
+    // Le seul rôle qui doit rester dehors : c'est le compte de consultation.
+    // L'y faire entrer transformerait une lecture en écriture silencieuse.
+    expect(peutEcrire("reader")).toBe(false);
+  });
+
+  it("un rôle inconnu ne peut pas écrire", () => {
+    // Défaut fermé : un rôle absent de l'énum (session forgée, migration
+    // partielle) ne doit pas hériter du droit d'écrire.
+    expect(peutEcrire("un_role_qui_nexiste_pas")).toBe(false);
+    expect(peutEcrire(null)).toBe(false);
+    expect(peutEcrire(undefined)).toBe(false);
+  });
+
+  it("`secretaire` écrit, mais n'engage RIEN", () => {
+    // La frontière du Lot 10, dans les deux sens : le rôle est plein côté
+    // délégable, vide côté engageant. C'est ce qui le rend utilisable sans
+    // qu'il puisse conclure un contrat.
+    expect(peutEcrire("secretaire")).toBe(true);
+    expect(actesAutorises("secretaire")).toEqual([]);
+  });
+
+  it("`responsable_qualite` engage sur le domaine QUALITÉ, jamais sur le contractuel", () => {
+    const actes = actesAutorises("responsable_qualite");
+    expect(actes).toContain("attester");
+    expect(actes).toContain("valider_evaluation");
+    expect(actes).toContain("habiliter_formateur");
+    expect(actes).not.toContain("facturer");
+    expect(actes).not.toContain("conclure_devis");
+    expect(actes).not.toContain("contresigner");
   });
 });
