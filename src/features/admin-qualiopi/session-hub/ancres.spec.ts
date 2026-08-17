@@ -34,6 +34,18 @@ function sansCommentaires(src: string): string {
 
 const source = readFileSync(PAGE, "utf8");
 const code = sansCommentaires(source);
+const barre = sansCommentaires(
+  readFileSync(
+    join(process.cwd(), "src/features/admin-qualiopi/session-hub/AncresHubSession.tsx"),
+    "utf8",
+  ),
+);
+const constante = sansCommentaires(
+  readFileSync(join(process.cwd(), "src/lib/ancres-admin.ts"), "utf8"),
+);
+const entete = sansCommentaires(
+  readFileSync(join(process.cwd(), "src/components/admin/ui/AdminPageHeader.tsx"), "utf8"),
+);
 
 describe("le dépouillement des commentaires", () => {
   it("retire bien quelque chose", () => {
@@ -120,6 +132,51 @@ describe("ancresVisibles", () => {
   it("aucun identifiant en double", () => {
     const ids = ANCRES_HUB_SESSION.map((a) => a.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("🔴 le clavier atteint ce que la souris atteint", () => {
+  it("chaque section ancrée porte tabIndex={-1}", () => {
+    // Sans lui, cliquer une ancre DÉFILE mais ne déplace pas le focus : la
+    // tabulation suivante repart de la barre, pas de la section atteinte. On
+    // arrive quelque part sans y être.
+    //
+    // -1 et pas 0 : la section devient atteignable PAR L'ANCRE sans entrer
+    // dans l'ordre de tabulation — sinon on gagnerait dix arrêts parasites à
+    // chaque parcours au clavier de la page.
+    expect([...code.matchAll(/tabIndex=\{-1\}/g)]).toHaveLength(ANCRES_HUB_SESSION.length);
+  });
+
+  it("le lien d'évitement existe et vise la zone d'actions", () => {
+    // Les boutons d'action du hub sont précédés de dix sections et de la barre
+    // de sommaire : au clavier, les atteindre demandait une dizaine de
+    // tabulations.
+    //
+    // ⚠️ Le lien d'évitement GLOBAL de l'application ne convient pas : il
+    // pointe le `<main>` public, qui sur la console CONTIENT la topbar et la
+    // barre latérale — il n'évite donc rien.
+    expect(barre).toContain("Aller aux actions");
+    expect(barre).toContain("ID_ACTIONS_PAGE");
+  });
+
+  it("il est le PREMIER enfant de la barre, avant les ancres", () => {
+    // « Premier focusable » n'est pas une figure de style : placé après les dix
+    // liens, il ne rendrait plus aucun service.
+    expect(barre.indexOf("Aller aux actions")).toBeLessThan(barre.indexOf("ancres.map"));
+  });
+
+  it("il est invisible sauf au focus — il ne coûte rien à la souris", () => {
+    expect(barre).toContain(`className="sr-only `);
+    expect(barre).toContain("focus-visible:not-sr-only");
+  });
+
+  it("🔴 la cible du lien est un SEUL fragment, partagé", () => {
+    // L'en-tête porte l'identifiant, la barre le vise. Deux copies d'un même
+    // fragment divergent — et un lien d'évitement cassé est INVISIBLE : il ne
+    // se voit qu'au clavier, par quelqu'un qui n'a pas d'autre moyen d'avancer.
+    expect(constante).toContain("export const ID_ACTIONS_PAGE");
+    expect(entete).toMatch(/id=\{ID_ACTIONS_PAGE\}/);
+    expect(entete).toMatch(/tabIndex=\{-1\}/);
   });
 });
 
