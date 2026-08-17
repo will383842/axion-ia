@@ -2117,3 +2117,145 @@ describe("🔴 session_sans_dispositif_emargement — l'alerte qui se lève PEND
     expect(w.dateDebut).toHaveProperty("lte");
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot 1 §1.4 — les DEUX codes qui manquaient au parcours d'un dossier
+//
+// Sur les quatorze étapes de la checklist, douze avaient déjà leur code. Ces
+// deux-là, non — d'où le refus d'ajouter une alerte « échéance dépassée »
+// globale, qui aurait signalé les douze autres une seconde fois.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Discrimine les deux règles, qui lisent toutes deux `enrollment.findMany`. */
+function mockEnrollmentParType(
+  positionnement: unknown[],
+  froid: unknown[],
+  autres: unknown[] = [],
+): void {
+  mp.enrollment.findMany.mockImplementation(
+    ({ where }: { where?: { questionnaires?: { none?: { type?: string } } } }) => {
+      const type = where?.questionnaires?.none?.type;
+      if (type === "positionnement") return Promise.resolve(positionnement);
+      if (type === "satisfaction_froid") return Promise.resolve(froid);
+      return Promise.resolve(autres);
+    },
+  );
+}
+
+describe("🔴 evaluerAlertes — positionnement_sans_reponse (indicateur 8)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève l'alerte à moins de 2 jours du début", async () => {
+    mockEnrollmentParType(
+      [
+        {
+          id: "enr-1",
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-011", dateDebut: new Date() },
+          questionnaires: [{ envoyeAt: new Date() }],
+        },
+      ],
+      [],
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "positionnement_sans_reponse");
+    expect(a).toBeDefined();
+    expect(a!.cibleId).toBe("enr-1");
+    expect(a!.message).toContain("Simone");
+    expect(a!.message).toContain("AXI-SESS-2026-011");
+  });
+
+  it("« jamais envoyé » et « envoyé sans réponse » ne disent PAS la même chose", async () => {
+    // 🔴 Les confondre ferait relancer un stagiaire qui n'a jamais rien reçu.
+    // Le premier est un manquement de l'organisme (ind. 8), le second appelle
+    // une relance — deux gestes différents.
+    mockEnrollmentParType(
+      [
+        {
+          id: "jamais",
+          trainee: { nom: "Doe", prenom: "Jane" },
+          session: { numero: "S-1", dateDebut: new Date() },
+          questionnaires: [],
+        },
+        {
+          id: "envoye",
+          trainee: { nom: "Roe", prenom: "John" },
+          session: { numero: "S-2", dateDebut: new Date() },
+          questionnaires: [{ envoyeAt: new Date() }],
+        },
+      ],
+      [],
+    );
+    const alertes = await evaluerAlertes();
+    const jamais = alertes.find((x) => x.cibleId === "jamais")!;
+    const envoye = alertes.find((x) => x.cibleId === "envoye")!;
+    expect(jamais.message).toContain("JAMAIS");
+    expect(jamais.message).toContain("indicateur 8");
+    expect(envoye.message).toContain("Relancer");
+    expect(envoye.message).not.toContain("JAMAIS");
+  });
+
+  it("ne regarde QUE les sessions encore planifiées", async () => {
+    // ⚠️ Un positionnement se recueille AVANT la séance. Le signaler une fois
+    // la session commencée n'apporterait plus qu'un constat — et le plan est
+    // explicite : une alerte doit GARDER, pas CONSTATER.
+    await evaluerAlertes();
+    const appels = (
+      mp.enrollment.findMany.mock.calls as { where?: Record<string, unknown> }[][]
+    ).map((c) => c[0]?.where);
+    const appel = appels.find(
+      (w: Record<string, unknown> | undefined) =>
+        (w?.["questionnaires"] as { none?: { type?: string } } | undefined)?.none?.type ===
+        "positionnement",
+    ) as { session?: { statut?: string } } | undefined;
+    expect(appel?.session?.statut).toBe("planifiee");
+  });
+});
+
+describe("🔴 evaluerAlertes — suivi_froid_manquant (indicateur 30)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    setupEmptyMocks();
+  });
+
+  it("lève l'alerte au-delà de J+37", async () => {
+    mockEnrollmentParType(
+      [],
+      [
+        {
+          id: "enr-froid",
+          trainee: { nom: "Blanc", prenom: "Simone" },
+          session: { numero: "AXI-SESS-2026-003" },
+        },
+      ],
+    );
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "suivi_froid_manquant");
+    expect(a).toBeDefined();
+    expect(a!.cibleId).toBe("enr-froid");
+    expect(a!.message).toContain("indicateur 30");
+  });
+
+  it("🔴 porte une borne ARRIÈRE — sinon la liste devient un inventaire des regrets", async () => {
+    // Sans `gte`, chaque session réalisée depuis l'ouverture de l'organisme
+    // resterait candidate pour toujours. L'alerte cesserait de dire « fais-le
+    // maintenant » et se remplirait de lignes que personne ne peut solder.
+    await evaluerAlertes();
+    const appels = (
+      mp.enrollment.findMany.mock.calls as { where?: Record<string, unknown> }[][]
+    ).map((c) => c[0]?.where);
+    const appel = appels.find(
+      (w: Record<string, unknown> | undefined) =>
+        (w?.["questionnaires"] as { none?: { type?: string } } | undefined)?.none?.type ===
+        "satisfaction_froid",
+    ) as { session?: { dateFin?: { lte?: Date; gte?: Date } } } | undefined;
+    expect(appel?.session?.dateFin?.lte).toBeInstanceOf(Date);
+    expect(
+      appel?.session?.dateFin?.gte,
+      "Une fenêtre sans borne arrière ne se solde jamais.",
+    ).toBeInstanceOf(Date);
+  });
+});

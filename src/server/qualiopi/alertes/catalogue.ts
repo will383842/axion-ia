@@ -258,6 +258,48 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // ── Satisfaction ──────────────────────────────────────────────────────────
+  /**
+   * Lot 1 §1.4 — l'un des DEUX seuls codes qui manquaient au parcours.
+   *
+   * 🔴 Trouvé le 2026-08-17 en construisant la checklist : sur les quatorze
+   * étapes d'un dossier de session, douze avaient déjà leur code d'alerte. Le
+   * positionnement, non — alors qu'il porte l'indicateur 8 à lui seul, et que
+   * c'est l'étape ratée sur le premier dossier réel (répondu APRÈS le début de
+   * la formation, où il ne positionne plus rien).
+   *
+   * `administratif` : envoyer et relancer un questionnaire n'engage pas
+   * l'organisme. C'est la colonne déléguable de la matrice du Lot 10.
+   *
+   * `resolutionAuto: true`, contrairement à `satisfaction_manquante` : ici la
+   * cause disparaît AVANT la séance et le geste redevient sans objet dès que la
+   * session commence. Garder l'alerte ouverte ensuite n'apprendrait rien —
+   * l'écart, lui, est porté par la checklist du dossier, qui ne l'efface pas.
+   */
+  positionnement_sans_reponse: {
+    niveau: "important",
+    titre: "Questionnaire de positionnement sans réponse",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+  /**
+   * Lot 1 §1.4 — le second code manquant.
+   *
+   * Le recueil à froid est l'obligation la plus facilement oubliée du
+   * parcours : elle tombe un mois après la fin, quand le dossier a quitté tous
+   * les écrans. L'indicateur 30 exige pourtant un recueil TRACÉ.
+   *
+   * ⚠️ Même famille que `satisfaction_manquante`, et même raisonnement pour la
+   * résolution : la relance porte le rattrapage, l'alerte reste la trace qu'il
+   * a fallu relancer. C'est ce fait-là que l'auditeur regarde.
+   */
+  suivi_froid_manquant: {
+    niveau: "important",
+    titre: "Suivi à froid (J+30) sans réponse",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "Même raisonnement que `satisfaction_manquante` (SPEC_PART2 §6.5, « Non (relance auto) ») : la relance porte le rattrapage, l alerte reste la TRACE que le recueil à froid n a pas eu lieu spontanément. La refermer parce que le stagiaire a fini par répondre effacerait le fait qu il a fallu relancer — or c est ce fait que l auditeur regarde (ind. 30).",
+    guichet: "administratif",
+  },
   satisfaction_manquante: {
     niveau: "important",
     titre: "Questionnaire de satisfaction non rempli",

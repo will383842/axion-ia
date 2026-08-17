@@ -49,6 +49,10 @@ const CODES_ATTENDUS: string[] = [
   // .pptx projeté) n'est pas déposé pour une session qui démarre sous 7 jours.
   // Jamais levée pour une formation sans kit résolvable (sur-mesure, dupliquée).
   "diaporama_manquant_session",
+  // Lot 1 §1.4 — les deux seules étapes du parcours d'un dossier qui n'avaient
+  // AUCUN code d'alerte (les douze autres en avaient déjà un).
+  "positionnement_sans_reponse",
+  "suivi_froid_manquant",
   "satisfaction_manquante",
   "evaluation_acquis_manquante",
   "attestation_non_envoyee",
