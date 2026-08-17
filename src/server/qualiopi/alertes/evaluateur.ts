@@ -27,6 +27,12 @@ import {
 } from "@/server/qualiopi/trainers/documents";
 import { resolveInterventionSlugForFormation } from "@/server/qualiopi/vente/kit-formation";
 import type { AlerteNiveau } from "../../../../prisma/generated/client";
+import {
+  ATTENTE_JOURS,
+  MARGE_AVANT_SESSION_JOURS,
+  titreReclamation,
+  verdictSignature,
+} from "./seuil-signature";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Type de retour de l'évaluateur
@@ -1628,27 +1634,71 @@ async function regleMoteurAssembleAPublier(_now: Date): Promise<AlerteCandidate[
  * signature (statut dérivé recalculé). 7 jours SANS mouvement = ça traîne.
  */
 async function regleSignatureEnAttente(now: Date): Promise<AlerteCandidate[]> {
+  // 🔴 Le seuil était ABSOLU et aveugle à la session.
+  //
+  // On attendait sept jours quelle que soit la date de début. Une convention
+  // signée d'un seul côté pour une session qui commence dans trois jours
+  // n'alertait pas — elle aurait alerté quatre jours APRÈS le démarrage. Or la
+  // convention se conclut AVANT l'entrée en formation (L.6353-1) : passé le
+  // premier jour, l'alerte ne prévient plus, elle constate.
+  //
+  // On élargit donc la requête aux deux causes, puis on tranche par le module
+  // pur. ⚠️ Le critère « avant la session » ne peut pas REMPLACER l'attente :
+  // devis, sous-traitance et lettres de mission n'ont aucune session, et ne
+  // seraient plus surveillés du tout — un défaut silencieux, donc pire.
   const pieces = await prisma.documentGenere.findMany({
     where: {
       statutSignature: { in: ["en_attente", "partielle"] },
-      updatedAt: { lte: daysAgo(7, now) },
+      OR: [
+        { updatedAt: { lte: daysAgo(ATTENTE_JOURS, now) } },
+        {
+          session: {
+            dateDebut: { lte: new Date(now.getTime() + MARGE_AVANT_SESSION_JOURS * 86400000) },
+          },
+        },
+      ],
     },
-    select: { id: true, type: true, numero: true, statutSignature: true, updatedAt: true },
+    select: {
+      id: true,
+      type: true,
+      numero: true,
+      statutSignature: true,
+      updatedAt: true,
+      session: { select: { numero: true, dateDebut: true } },
+    },
   });
-  return pieces.map((p) => ({
-    code: p.statutSignature === "partielle" ? "signature_contreseing_du" : "signature_en_attente",
-    niveau: "important" as const,
-    titre:
-      p.statutSignature === "partielle"
-        ? "Pièce signée d'un seul côté depuis +7 jours"
-        : "Lien de signature sans signature depuis +7 jours",
-    message:
-      p.statutSignature === "partielle"
-        ? `La pièce ${p.numero} (${p.type}) porte une signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} mais il manque la contrepartie : contresigner ou relancer l'autre partie.`
-        : `La pièce ${p.numero} (${p.type}) attend sa première signature depuis le ${p.updatedAt.toLocaleDateString("fr-FR")} : relancer le signataire ou réémettre le lien.`,
-    cibleType: "DocumentGenere",
-    cibleId: p.id,
-  }));
+
+  const candidates: AlerteCandidate[] = [];
+  for (const p of pieces) {
+    const partielle = p.statutSignature === "partielle";
+    const verdict = verdictSignature({
+      modifieeLe: p.updatedAt,
+      dateDebut: p.session?.dateDebut ?? null,
+      maintenant: now,
+    });
+    if (!verdict.reclamer || verdict.motif === null) continue;
+
+    const depuis = p.updatedAt.toLocaleDateString("fr-FR");
+    const situation =
+      verdict.motif === "attente"
+        ? ""
+        : ` La session ${p.session?.numero ?? ""} commence le ${p.session?.dateDebut.toLocaleDateString("fr-FR") ?? ""}.`;
+
+    candidates.push({
+      code: partielle ? "signature_contreseing_du" : "signature_en_attente",
+      // Une session déjà commencée sans pièce conclue n'est plus « important » :
+      // l'écart est constitué, il ne se rattrape plus par une relance.
+      niveau:
+        verdict.motif === "session_commencee" ? ("critique" as const) : ("important" as const),
+      titre: titreReclamation({ motif: verdict.motif, partielle }),
+      message: partielle
+        ? `La pièce ${p.numero} (${p.type}) porte une signature depuis le ${depuis} mais il manque la contrepartie : contresigner ou relancer l'autre partie.${situation}`
+        : `La pièce ${p.numero} (${p.type}) attend sa première signature depuis le ${depuis} : relancer le signataire ou réémettre le lien.${situation}`,
+      cibleType: "DocumentGenere",
+      cibleId: p.id,
+    });
+  }
+  return candidates;
 }
 
 /**
