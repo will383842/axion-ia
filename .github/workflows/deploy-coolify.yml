@@ -791,7 +791,7 @@ jobs:
           # par `tests/unit/ci/deploy-warm-listes.spec.ts` : revalider sans
           # purger laisse la version amputée figée à l'edge pour s-maxage=3600.
           # Plafond Cloudflare Free : 30 URLs par appel de purge par liste — 14 ici.
-          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5"]'
+          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5","/fr/connaissances/page/2","/fr/connaissances/page/3","/fr/connaissances/page/4","/fr/connaissances/page/5"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
@@ -824,7 +824,7 @@ jobs:
           fi
           # ⚠️ MÊME ENSEMBLE QUE `PATHS` DU STEP PRÉCÉDENT, au préfixe près.
           # Verrouillé par `tests/unit/ci/deploy-warm-listes.spec.ts`.
-          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation","https://axion-ia.com/fr/blog/page/2","https://axion-ia.com/fr/blog/page/3","https://axion-ia.com/fr/blog/page/4","https://axion-ia.com/fr/blog/page/5"]'
+          FILES='["https://axion-ia.com/fr","https://axion-ia.com/fr/actualites","https://axion-ia.com/fr/connaissances","https://axion-ia.com/fr/ressources","https://axion-ia.com/fr/galerie","https://axion-ia.com/fr/diagnostic","https://axion-ia.com/fr/blog","https://axion-ia.com/fr/memo-isere","https://axion-ia.com/fr/mentions-legales","https://axion-ia.com/fr/conditions-generales","https://axion-ia.com/fr/sites-web-augmentes","https://axion-ia.com/fr/audit","https://axion-ia.com/fr/formations","https://axion-ia.com/fr/implementation","https://axion-ia.com/fr/blog/page/2","https://axion-ia.com/fr/blog/page/3","https://axion-ia.com/fr/blog/page/4","https://axion-ia.com/fr/blog/page/5","https://axion-ia.com/fr/connaissances/page/2","https://axion-ia.com/fr/connaissances/page/3","https://axion-ia.com/fr/connaissances/page/4","https://axion-ia.com/fr/connaissances/page/5"]'
           code=$(curl -sS -o /tmp/cfpurge.json -w "%{http_code}" -m 30 -X POST \
             -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
             -H "Content-Type: application/json" \
