@@ -11,7 +11,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -26,6 +26,7 @@ import { prisma } from "@/lib/prisma";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
 import { buildArticleJsonLd, buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
+import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { getServiceForEntrySlug } from "@/lib/knowledge/readers";
 import { ServiceOfferBlock } from "@/components/services/ServiceOfferBlock";
 import { sanitizeTiptapHtml } from "@/lib/knowledge/tiptap-sanitize";
@@ -106,7 +107,20 @@ export default async function ConnaissanceDetail({ params }: Props) {
   setRequestLocale(locale);
 
   const entry = await fetchPublicKbBySlug(slug);
-  if (!entry) notFound();
+  if (!entry) {
+    // GEO-082 — rattrapage par l'historique de slugs AVANT de rendre un 404.
+    //
+    // L'historique était écrit pour TOUS les types au renommage, mais lu par
+    // `/guides` seul : renommer une fiche ailleurs produisait un 404 sec, et
+    // le lien externe qui pointait dessus était perdu.
+    //
+    // Cette route est la route KB GÉNÉRIQUE — elle sert n'importe quel type.
+    // Elle ne peut donc pas nommer le type de l'ancienne URL, et n'a pas à le
+    // faire : le couple (locale, slug) suffit.
+    const hit = await findRedirectFromHistory({ oldSlug: slug, oldLocale: locale as Locale });
+    if (hit?.currentPath) permanentRedirect(hit.currentPath);
+    notFound();
+  }
 
   // KB V4.1 Service Binding — service rattaché (tag service:*) → CTA + Offer.
   const service = await getServiceForEntrySlug(slug);

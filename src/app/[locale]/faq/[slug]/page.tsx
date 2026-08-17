@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import {
   HelpCircle,
   Clock,
@@ -18,6 +18,7 @@ import {
   Check,
 } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
+import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
 import { Section } from "@/components/layout/Section";
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { Container } from "@/components/layout/Container";
@@ -121,7 +122,19 @@ export default async function FaqEntryPage({ params }: Props) {
   // `no-hardcoded-prices` interdit d'écrire un montant dans le corpus.
   const faqs = resolvePriceTokensDeep(await listFaqs(), locale as Locale);
   const entry = faqs.find((f) => f.slug === slug);
-  if (!entry) notFound();
+  if (!entry) {
+    // GEO-082 — rattrapage par l'historique de slugs avant de rendre un 404.
+    // L'historique etait ecrit pour TOUS les types au renommage, mais lu par
+    // `/guides` seul : renommer une FAQ produisait un 404 sec, et le lien
+    // externe qui pointait dessus etait perdu.
+    const hit = await findRedirectFromHistory({
+      oldSlug: slug,
+      oldLocale: locale as Locale,
+      oldType: "faq",
+    });
+    if (hit?.currentPath) permanentRedirect(hit.currentPath);
+    notFound();
+  }
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
