@@ -16,6 +16,7 @@ import { GenererListeFormateursButton } from "@/components/admin/qualiopi/Genere
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainers } from "@/server/qualiopi/trainers/trainers";
+import { AdminEmptyState } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -84,9 +85,15 @@ export default async function QualiopiFormateursPage({ params }: PageProps) {
       </div>
 
       {trainers.length === 0 ? (
-        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucun formateur enregistré. Créez le premier avec « Nouveau formateur ».
-        </p>
+        <AdminEmptyState
+          title="Aucun formateur enregistré"
+          description="Un formateur doit être habilité sur une formation avant de pouvoir l'animer (ind. 21)."
+          primaryAction={
+            <Link href={`${base}/new`} className="admin-button">
+              + Nouveau formateur
+            </Link>
+          }
+        />
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">

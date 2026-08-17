@@ -16,6 +16,7 @@ import { AdminBadge } from "@/components/admin/ui";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { listTrainees } from "@/server/qualiopi/trainees/trainees";
 import { Hash, Accessibility, ShieldCheck } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -70,9 +71,15 @@ export default async function QualiopiStagiairesPage({ params }: PageProps) {
       </div>
 
       {trainees.length === 0 ? (
-        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucun stagiaire enregistré. Créez le premier avec « Nouveau stagiaire ».
-        </p>
+        <AdminEmptyState
+          title="Aucun stagiaire enregistré"
+          description="Les stagiaires s'inscrivent ensuite à une session depuis le dossier de celle-ci."
+          primaryAction={
+            <Link href={`${base}/new`} className="admin-button">
+              + Nouveau stagiaire
+            </Link>
+          }
+        />
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
