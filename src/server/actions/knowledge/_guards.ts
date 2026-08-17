@@ -11,6 +11,7 @@
 "use server";
 
 import { auth } from "@/auth";
+import { peutEcrire } from "@/server/auth/habilitations";
 
 export interface AdminSession {
   readonly userId: string;
@@ -26,7 +27,14 @@ export async function requireAdminRead(): Promise<AdminSession> {
 
 export async function requireAdminWrite(): Promise<AdminSession> {
   const session = await requireAdminRead();
-  if (session.role !== "super_admin" && session.role !== "admin" && session.role !== "editor") {
+  // 🔴 La liste des rôles vit dans le SSOT (`auth/habilitations.ts`), pas ici.
+  //
+  // Écrite en dur, elle a laissé `responsable_qualite` et `secretaire` DEHORS
+  // du 15/08 au 17/08 : les deux rôles créés par le Lot 10 ne pouvaient écrire
+  // nulle part, alors que la doctrine du SSOT affirmait le contraire. Une garde
+  // qui porte sa propre liste ne peut pas rester d'accord avec la matrice qui
+  // la justifie — un test vérifie désormais qu'elles ne divergent plus.
+  if (!peutEcrire(session.role)) {
     throw new Error("forbidden");
   }
   return session;
