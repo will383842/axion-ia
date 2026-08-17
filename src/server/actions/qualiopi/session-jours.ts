@@ -24,6 +24,10 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
+import {
+  messageRefus,
+  verdictRequalification,
+} from "@/server/qualiopi/presence/requalification-jours";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -50,6 +54,16 @@ const jourSchema = z
 const saveSessionJoursSchema = z.object({
   sessionId: z.string().uuid(),
   jours: z.array(jourSchema).max(MAX_JOURS),
+  /**
+   * 🔴 Motif de REQUALIFICATION — exigé seulement quand des pièces s'appuient
+   * déjà sur les journées (feuille d'émargement émise, émargements signés,
+   * créneaux générés).
+   *
+   * Sur une session vierge il reste absent : corriger une coquille de date ne
+   * doit pas devenir une cérémonie — c'est le défaut D4 du plan, celui qui
+   * oblige aujourd'hui à créer une session pour une faute de frappe.
+   */
+  motifRequalification: z.string().trim().min(10).max(500).optional(),
 });
 
 /**
@@ -67,6 +81,12 @@ const saveSessionJoursSchema = z.object({
 export async function saveSessionJoursAction(input: {
   sessionId: string;
   jours: Array<{ date: string; heureDebut: string; heureFin: string }>;
+  /**
+   * Motif de REQUALIFICATION — exigé seulement quand des pièces s'appuient déjà
+   * sur les journées. Voir la garde plus bas et
+   * `presence/requalification-jours.ts`.
+   */
+  motifRequalification?: string;
 }): Promise<ActionResult<{ nbJours: number }>> {
   const session = await requireAdminWrite();
   const parsed = saveSessionJoursSchema.safeParse(input);
@@ -89,6 +109,48 @@ export async function saveSessionJoursAction(input: {
     select: { id: true },
   });
   if (!exists) return { error: "Session introuvable" };
+
+  // 🔴 GARDE DE REQUALIFICATION (2026-08-17).
+  //
+  // Cette action faisait `deleteMany` + `createMany` SANS regarder ce qui
+  // s'appuie déjà sur ces journées. Or elles ne sont pas une donnée de
+  // confort : la FEUILLE D'ÉMARGEMENT les imprime, et elle est opposable.
+  // Réécrire après émission faisait diverger la pièce et le dossier, en
+  // silence — l'auditeur qui rapproche les deux trouvait deux vérités.
+  //
+  // On n'INTERDIT pas : corriger une coquille doit rester possible (défaut D4).
+  // On refuse le changement SILENCIEUX. La règle est pure et testée dans
+  // `presence/requalification-jours.ts`.
+  const [avant, feuillesEmargement, emargementsSignes, creneaux] = await Promise.all([
+    prisma.sessionJour.findMany({
+      where: { sessionId: v.sessionId },
+      select: { date: true, heureDebut: true, heureFin: true },
+      orderBy: { date: "asc" },
+    }),
+    prisma.documentGenere.count({
+      where: { sessionId: v.sessionId, type: "emargement", annuleeAt: null },
+    }),
+    prisma.enrollment.count({
+      where: { sessionId: v.sessionId, emargementSigneAt: { not: null } },
+    }),
+    prisma.presenceCreneau.count({ where: { enrollment: { sessionId: v.sessionId } } }),
+  ]);
+
+  const verdict = verdictRequalification({
+    // `@db.Date` stocke minuit UTC : on retombe sur l'ISO du jour civil, la
+    // même convention que celle du formulaire.
+    avant: avant.map((j) => ({
+      date: j.date.toISOString().slice(0, 10),
+      heureDebut: j.heureDebut,
+      heureFin: j.heureFin,
+    })),
+    apres: v.jours,
+    preuves: { feuillesEmargement, emargementsSignes, creneaux },
+  });
+
+  if (verdict.motifRequis && (v.motifRequalification ?? "") === "") {
+    return { error: messageRefus(verdict.enJeu) };
+  }
 
   await prisma.$transaction(async (tx) => {
     await tx.sessionJour.deleteMany({ where: { sessionId: v.sessionId } });
@@ -113,7 +175,21 @@ export async function saveSessionJoursAction(input: {
     action: "qualiopi.session.jours.save",
     targetType: "TrainingSession",
     targetId: v.sessionId,
-    changes: { nbJours: v.jours.length, dates },
+    changes: {
+      nbJours: v.jours.length,
+      dates,
+      // Le motif et l'enjeu vont au JOURNAL, pas seulement à l'écran : c'est
+      // là que l'auditeur ira chercher pourquoi la pièce et le dossier ont
+      // divergé, et il doit y trouver une phrase écrite par un humain.
+      ...(verdict.motifRequis
+        ? {
+            requalification: {
+              motif: v.motifRequalification,
+              enJeu: verdict.enJeu,
+            },
+          }
+        : {}),
+    },
     session,
   });
 

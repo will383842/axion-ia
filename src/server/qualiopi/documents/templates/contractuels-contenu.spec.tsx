@@ -396,3 +396,95 @@ describe("🔴 contrat particulier — l'échéancier DATÉ figure au contrat (L
     expect(sans).not.toMatch(/\d{2}\/\d{2}\/2026 — Solde/);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Lot 1ter §6 — LA CONVENTION NOMME LES STAGIAIRES
+//
+// Défaut vérifié sur pièce réelle : `AXI-DOC-2026-032` portait « Effectif prévu :
+// 1 stagiaire » et ne nommait PERSONNE, alors que Simone Blanc y était inscrite.
+// La même personne doit se retrouver sur l'émargement, l'évaluation et
+// l'attestation — c'est ce rapprochement qu'un auditeur vient faire.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 ConventionPdf — les stagiaires sont NOMMÉS sur la pièce", () => {
+  it("le cas AXI-DOC-2026-032 : le nom apparaît dans le PDF rendu", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: {
+          ...CONVENTION,
+          effectif: 1,
+          stagiairesNommes: ["BLANC Simone (Responsable qualité)"],
+          stagiairesADesigner: null,
+          ecartEffectif: null,
+        } satisfies ConventionData,
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toContain("BLANC Simone");
+    expect(t).toContain("Responsable qualité");
+  });
+
+  it("plusieurs stagiaires : tous nommés, aucun perdu", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: {
+          ...CONVENTION,
+          stagiairesNommes: ["ARON Paul", "BLANC Simone", "ZOLA Émile"],
+          stagiairesADesigner: null,
+          ecartEffectif: null,
+        } satisfies ConventionData,
+        identite: IDENTITE,
+      }),
+    );
+    for (const nom of ["ARON Paul", "BLANC Simone", "ZOLA"]) {
+      expect(t, `« ${nom} » ne figure pas sur la convention rendue`).toContain(nom);
+    }
+  });
+
+  it("🔴 sans inscrit, la pièce le DIT — elle ne reste pas muette", () => {
+    // Une convention muette sur ce point se lit comme une convention sans
+    // stagiaire, ce qui n'existe pas : le silence y est une affirmation fausse.
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: {
+          ...CONVENTION,
+          stagiairesNommes: [],
+          stagiairesADesigner:
+            "Stagiaires à désigner par le client — liste nominative annexée avant le démarrage de l'action.",
+          ecartEffectif: null,
+        } satisfies ConventionData,
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toContain("à désigner par le client");
+  });
+
+  it("l'écart entre l'effectif prévu et les nommés est imprimé", () => {
+    // `nbParticipantsPrevus` est une PRÉVISION, le nombre d'inscrits un FAIT.
+    // Le taire laisserait l'auditeur découvrir seul que « 5 » n'en nomme que 2.
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, {
+        data: {
+          ...CONVENTION,
+          effectif: 5,
+          stagiairesNommes: ["ARON Paul", "BLANC Simone"],
+          stagiairesADesigner: null,
+          ecartEffectif:
+            "Effectif prévu : 5. 2 stagiaires nominativement désignés à ce jour ; le solde sera annexé avant le démarrage.",
+        } satisfies ConventionData,
+        identite: IDENTITE,
+      }),
+    );
+    expect(t).toContain("le solde sera annexé");
+  });
+
+  it("aucun champ fourni : la convention dit quand même quelque chose", () => {
+    // 🔴 Le repli du gabarit. Les appelants existants (tests, éventuels
+    // chemins non encore câblés) ne doivent pas produire une pièce MUETTE sur
+    // les stagiaires — c'est le défaut d'origine.
+    const t = collectPdfTextNormalized(
+      React.createElement(ConventionPdf, { data: CONVENTION, identite: IDENTITE }),
+    );
+    expect(t).toContain("à désigner par le client");
+  });
+});

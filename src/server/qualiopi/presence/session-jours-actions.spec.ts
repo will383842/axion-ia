@@ -21,7 +21,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     trainingSession: { findUnique: vi.fn() },
-    sessionJour: { deleteMany: vi.fn(), createMany: vi.fn() },
+    // 🔴 `findMany` ajouté avec la GARDE DE REQUALIFICATION (2026-08-17) :
+    // l'action lit désormais l'état AVANT pour savoir si les journées changent
+    // réellement, et ce qui s'appuie déjà dessus.
+    sessionJour: { deleteMany: vi.fn(), createMany: vi.fn(), findMany: vi.fn() },
+    documentGenere: { count: vi.fn() },
+    enrollment: { count: vi.fn() },
+    presenceCreneau: { count: vi.fn() },
     $transaction: vi.fn(),
   },
 }));
@@ -38,7 +44,14 @@ import { saveSessionJoursAction } from "@/server/actions/qualiopi/session-jours"
 
 const mockPrisma = prisma as unknown as {
   trainingSession: { findUnique: ReturnType<typeof vi.fn> };
-  sessionJour: { deleteMany: ReturnType<typeof vi.fn>; createMany: ReturnType<typeof vi.fn> };
+  sessionJour: {
+    deleteMany: ReturnType<typeof vi.fn>;
+    createMany: ReturnType<typeof vi.fn>;
+    findMany: ReturnType<typeof vi.fn>;
+  };
+  documentGenere: { count: ReturnType<typeof vi.fn> };
+  enrollment: { count: ReturnType<typeof vi.fn> };
+  presenceCreneau: { count: ReturnType<typeof vi.fn> };
   $transaction: ReturnType<typeof vi.fn>;
 };
 const mockGuard = requireAdminWrite as ReturnType<typeof vi.fn>;
@@ -59,6 +72,12 @@ beforeEach(() => {
   mockPrisma.trainingSession.findUnique.mockResolvedValue({ id: SESSION_ID });
   mockPrisma.sessionJour.deleteMany.mockResolvedValue({ count: 0 });
   mockPrisma.sessionJour.createMany.mockResolvedValue({ count: 0 });
+  // Par défaut : aucune journée déclarée, aucune preuve. C'est l'état d'une
+  // session vierge — celui où la correction doit rester libre.
+  mockPrisma.sessionJour.findMany.mockResolvedValue([]);
+  mockPrisma.documentGenere.count.mockResolvedValue(0);
+  mockPrisma.enrollment.count.mockResolvedValue(0);
+  mockPrisma.presenceCreneau.count.mockResolvedValue(0);
   mockPrisma.$transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
     cb(mockPrisma),
   );
@@ -158,5 +177,98 @@ describe("saveSessionJoursAction", () => {
     const arg = mockLog.mock.calls[0]?.[0] as { action: string; targetId: string };
     expect(arg.action).toBe("qualiopi.session.jours.save");
     expect(arg.targetId).toBe(SESSION_ID);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🔴 GARDE DE REQUALIFICATION — trouvée le 2026-08-17 en auditant le Lot 3.
+//
+// L'action faisait `deleteMany` + `createMany` SANS regarder ce qui s'appuie
+// déjà sur ces journées. Or la FEUILLE D'ÉMARGEMENT les imprime, et elle est
+// opposable : réécrire après émission faisait diverger la pièce et le dossier,
+// en silence.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("🔴 saveSessionJoursAction — requalification quand des preuves existent", () => {
+  const AVANT = [
+    { date: new Date("2026-06-10T00:00:00.000Z"), heureDebut: "09:00", heureFin: "17:00" },
+  ];
+
+  it("REFUSE de réécrire quand une feuille d'émargement est émise, sans motif", async () => {
+    mockPrisma.sessionJour.findMany.mockResolvedValue(AVANT);
+    mockPrisma.documentGenere.count.mockResolvedValue(1);
+
+    const res = await saveSessionJoursAction({
+      sessionId: SESSION_ID,
+      jours: [JOUR("2026-06-12")],
+    });
+
+    expect("error" in res).toBe(true);
+    const message = (res as { error: string }).error;
+    expect(message).toContain("opposable");
+    expect(message).toContain("motif de la requalification");
+    // 🔴 Et surtout : RIEN n'a été écrit. Un refus qui écrit quand même serait
+    // pire que pas de refus du tout.
+    expect(mockPrisma.$transaction).not.toHaveBeenCalled();
+    expect(mockPrisma.sessionJour.deleteMany).not.toHaveBeenCalled();
+  });
+
+  it("ACCEPTE avec un motif, et le verse au JOURNAL", async () => {
+    mockPrisma.sessionJour.findMany.mockResolvedValue(AVANT);
+    mockPrisma.documentGenere.count.mockResolvedValue(1);
+
+    const res = await saveSessionJoursAction({
+      sessionId: SESSION_ID,
+      jours: [JOUR("2026-06-12")],
+      motifRequalification: "Report du 10 au 12 juin à la demande du client, convenu par courriel.",
+    });
+
+    expect("data" in res).toBe(true);
+    expect(mockPrisma.$transaction).toHaveBeenCalled();
+    // Le motif ne doit pas rester à l'écran : c'est au journal que l'auditeur
+    // ira chercher pourquoi la pièce et le dossier ont divergé.
+    const journal = mockLog.mock.calls.at(-1)![0] as {
+      changes: { requalification?: { motif?: string; enJeu?: string[] } };
+    };
+    expect(journal.changes.requalification?.motif).toContain("Report du 10 au 12 juin");
+    expect(journal.changes.requalification?.enJeu?.join(" ")).toContain("feuille");
+  });
+
+  it("une session VIERGE se corrige sans motif — le défaut D4 n'est pas recréé", async () => {
+    // Interdire ici reproduirait le défaut que le plan dénonce : devoir créer
+    // une nouvelle session pour une faute de frappe.
+    mockPrisma.sessionJour.findMany.mockResolvedValue(AVANT);
+    const res = await saveSessionJoursAction({
+      sessionId: SESSION_ID,
+      jours: [JOUR("2026-06-12")],
+    });
+    expect("data" in res).toBe(true);
+    expect(mockPrisma.$transaction).toHaveBeenCalled();
+  });
+
+  it("réenregistrer À L'IDENTIQUE ne demande rien, même avec des preuves", async () => {
+    // 🔴 Exiger un motif sur un clic sans effet apprendrait à en inventer un —
+    // et un motif inventé au registre est pire qu'un motif absent.
+    mockPrisma.sessionJour.findMany.mockResolvedValue(AVANT);
+    mockPrisma.documentGenere.count.mockResolvedValue(3);
+    mockPrisma.enrollment.count.mockResolvedValue(2);
+
+    const res = await saveSessionJoursAction({
+      sessionId: SESSION_ID,
+      jours: [JOUR("2026-06-10")],
+    });
+    expect("data" in res).toBe(true);
+  });
+
+  it("un émargement SIGNÉ suffit à exiger le motif, même sans feuille émise", async () => {
+    mockPrisma.sessionJour.findMany.mockResolvedValue(AVANT);
+    mockPrisma.enrollment.count.mockResolvedValue(2);
+
+    const res = await saveSessionJoursAction({
+      sessionId: SESSION_ID,
+      jours: [JOUR("2026-06-12")],
+    });
+    expect("error" in res).toBe(true);
+    expect((res as { error: string }).error).toContain("signé");
   });
 });

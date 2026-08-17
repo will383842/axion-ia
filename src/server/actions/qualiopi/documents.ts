@@ -30,6 +30,45 @@
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { ecartEffectif, mentionStagiaires } from "@/server/qualiopi/documents/stagiaires-nommes";
+
+/**
+ * Lot 1ter §6 — les trois champs « stagiaires » d'une convention, d'un coup.
+ *
+ * Écrit ici plutôt qu'inséré deux fois : la convention bipartite et la
+ * tripartite doivent dire EXACTEMENT la même chose des mêmes personnes. Deux
+ * constructions recopiées divergeraient, et l'écart se lirait comme deux
+ * versions du même contrat.
+ */
+function mentionsStagiairesDe(session: {
+  nbParticipantsPrevus: number;
+  enrollments: ReadonlyArray<{
+    statut: string;
+    trainee: { nom: string; prenom: string; fonction: string | null };
+  }>;
+}): {
+  stagiairesNommes: readonly string[];
+  stagiairesADesigner: string | null;
+  ecartEffectif: string | null;
+} {
+  const mention = mentionStagiaires(
+    session.enrollments.map((e) => ({
+      nom: e.trainee.nom,
+      prenom: e.trainee.prenom,
+      fonction: e.trainee.fonction,
+      statut: e.statut,
+    })),
+  );
+  return {
+    stagiairesNommes: mention.nommes,
+    stagiairesADesigner: mention.aDesigner,
+    ecartEffectif: ecartEffectif({
+      prevu: session.nbParticipantsPrevus,
+      nomme: mention.effectifNomme,
+    }),
+  };
+}
+
 import { resolvePrincipalTrainerId } from "@/server/qualiopi/trainers/session-formateurs";
 import {
   requireAdminWrite,
@@ -260,6 +299,17 @@ export async function genererConventionAction(input: {
       modalite: true,
       ...LIEU_DOCUMENT_SELECT,
       nbParticipantsPrevus: true,
+      // 🔴 Lot 1ter §6 — la convention doit NOMMER les stagiaires. Vérifié sur
+      // `AXI-DOC-2026-032` : « Effectif prévu : 1 stagiaire », personne de
+      // nommé, alors que Simone Blanc y était inscrite. La même personne doit
+      // se retrouver sur l'émargement, l'évaluation et l'attestation.
+      enrollments: {
+        select: {
+          statut: true,
+          // `fonction` vit sur le stagiaire, pas sur l'inscription.
+          trainee: { select: { nom: true, prenom: true, fonction: true } },
+        },
+      },
       montantHtCents: true,
       formationSnapshot: true,
       formation: {
@@ -312,6 +362,10 @@ export async function genererConventionAction(input: {
           modalite: modaliteLabel(session.modalite),
           lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
+          // Lot 1ter §6 — les stagiaires sont NOMMÉS, et l'écart entre la
+          // prévision (`nbParticipantsPrevus`, saisie à la création) et les
+          // inscrits (un FAIT) est dit plutôt que laissé à découvrir.
+          ...mentionsStagiairesDe(session),
           prixHt: session.montantHtCents / 100,
           // Absent → le gabarit applique 30 % (usage commercial). `0` = payable
           // en totalité à réception de facture — le gabarit rend la mention, pas
@@ -372,6 +426,17 @@ export async function genererConventionTripartiteAction(input: {
       modalite: true,
       ...LIEU_DOCUMENT_SELECT,
       nbParticipantsPrevus: true,
+      // 🔴 Lot 1ter §6 — la convention doit NOMMER les stagiaires. Vérifié sur
+      // `AXI-DOC-2026-032` : « Effectif prévu : 1 stagiaire », personne de
+      // nommé, alors que Simone Blanc y était inscrite. La même personne doit
+      // se retrouver sur l'émargement, l'évaluation et l'attestation.
+      enrollments: {
+        select: {
+          statut: true,
+          // `fonction` vit sur le stagiaire, pas sur l'inscription.
+          trainee: { select: { nom: true, prenom: true, fonction: true } },
+        },
+      },
       montantHtCents: true,
       opcoSubrogation: true,
       numeroDossierOpco: true,
@@ -471,6 +536,10 @@ export async function genererConventionTripartiteAction(input: {
           modalite: modaliteLabel(session.modalite),
           lieu: resolveLieuDocument(session, identite),
           effectif: session.nbParticipantsPrevus,
+          // Lot 1ter §6 — les stagiaires sont NOMMÉS, et l'écart entre la
+          // prévision (`nbParticipantsPrevus`, saisie à la création) et les
+          // inscrits (un FAIT) est dit plutôt que laissé à découvrir.
+          ...mentionsStagiairesDe(session),
           prixHt,
           // `null` quand le montant n'est pas établi : le gabarit le DIT.
           montantPrisEnCharge: priseEnChargeCents !== null ? priseEnChargeCents / 100 : null,
