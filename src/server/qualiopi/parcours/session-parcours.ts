@@ -507,7 +507,11 @@ export function construireParcours(input: SessionParcoursInput): Parcours {
       },
       maintenant,
       avancement: { fait: froid, total: n },
-      geste: "Automatique J+30. 🔴 Recueilli AVANT J+30, il ne mesure pas le même objet.",
+      // ⚠️ Pas d'emoji ici : ce texte est RENDU À L'ÉCRAN (« À traiter » affiche
+      // `etape.geste`). Le dépôt interdit l'emoji dans l'UI — lucide-react, et
+      // l'information s'écrit en toutes lettres. Un 🔴 dans une chaîne de
+      // commentaire est légitime ; dans une chaîne rendue, c'est de l'UI.
+      geste: "Automatique J+30. Attention : recueilli AVANT J+30, il ne mesure pas le même objet.",
       sansObjetSi: n === 0,
       motifSansObjet: "Aucune inscription active",
     }),
