@@ -114,6 +114,29 @@ export interface DocumentGenereInfo {
   rectifieMotif?: string | null;
 }
 
+/**
+ * Lot 1ter §3 — CE QU'ON REMONTE APRÈS AVOIR PRODUIT UNE PIÈCE.
+ *
+ * 🔴 Le bandeau affichait le NUMÉRO BRUT : « Dernier document généré :
+ * AXI-DOC-2026-032 ». Objection de Will : « ne jamais faire recopier un
+ * numéro — absurde dans un outil qui les connaît ». Il fallait relire la
+ * liste pour retrouver la pièce qu'on venait de produire.
+ *
+ * Trois champs, dans cet ordre d'importance :
+ *  - `libelle` : le nom MÉTIER, en premier. Dix PDF identifiés par des
+ *    numéros de série se confondent — Will a cherché le montant de la
+ *    convention dans la convocation ;
+ *  - `numero` : la référence au registre, en second ;
+ *  - `documentId` : ce qui rend la pièce OUVRABLE d'un clic. `null` quand
+ *    l'action n'en rend pas (attestation conditionnelle) — le bandeau
+ *    affiche alors le texte sans lien plutôt qu'un lien mort.
+ */
+export interface PieceProduite {
+  libelle: string;
+  numero: string | null;
+  documentId: string | null;
+}
+
 export interface DocumentsSectionProps {
   sessionId: string;
   enrollments: EnrollmentInfo[];
@@ -363,7 +386,7 @@ interface SessionDocButtonProps {
     rectificationMotif?: string;
   }) => Promise<{ data: { documentId: string; numero: string } } | { error: string }>;
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /**
    * Date FR de la dernière génération de ce type de pièce pour la session.
    * Présente → le bouton passe en ghost « … — régénérer » : le primary reste
@@ -401,7 +424,11 @@ function SessionDocButton({
       } else {
         const msg = `${label} — n° ${result.data.numero} généré.`;
         setSuccess(msg);
-        onDone(result.data.numero);
+        onDone({
+          libelle: label,
+          numero: result.data.numero,
+          documentId: result.data.documentId,
+        });
         rect.fermer();
         router.refresh();
       }
@@ -537,7 +564,7 @@ function LettreMissionButtons({
   dejaGenereLe,
 }: {
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton — transmis au bouton « cette session ». */
   dejaGenereLe?: string | undefined;
 }): React.ReactElement {
@@ -604,7 +631,7 @@ function LettreMissionButtons({
         return;
       }
       setSuccess(`Lettre-cadre — n° ${res.data.numero} générée.`);
-      onDone(res.data.numero);
+      onDone({ libelle: "Lettre de mission cadre", numero: res.data.numero, documentId: null });
       setOuvert(false);
       setCandidates(null);
       router.refresh();
@@ -748,7 +775,7 @@ function ConventionDocButton({
   dejaGenereLe,
 }: {
   sessionId: string;
-  onDone: (numero: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton. */
   dejaGenereLe?: string | undefined;
 }): React.ReactElement {
@@ -782,7 +809,11 @@ function ConventionDocButton({
       } else {
         const msg = `Convention de formation — n° ${result.data.numero} généré.`;
         setSuccess(msg);
-        onDone(result.data.numero);
+        onDone({
+          libelle: "Convention de formation",
+          numero: result.data.numero,
+          documentId: result.data.documentId,
+        });
         router.refresh();
       }
     });
@@ -860,7 +891,7 @@ interface EnrollmentDocButtonProps {
     | { error: string }
   >;
   enrollmentId: string;
-  onDone: (msg: string) => void;
+  onDone: (piece: PieceProduite) => void;
   /** Cf. SessionDocButton — dernière génération pour LE stagiaire sélectionné. */
   dejaGenereLe?: string | undefined;
 }
@@ -916,7 +947,7 @@ function EnrollmentDocButton({
         msg = RESULTAT_ATTESTATION[r.resultat] ?? `Attestation : « ${r.resultat} ».`;
       }
       setSuccess(msg);
-      onDone(msg);
+      onDone({ libelle: msg, numero: null, documentId: null });
       rect.fermer();
       router.refresh();
     });
@@ -997,7 +1028,7 @@ export function DocumentsSection({
   );
 
   // État global pour les messages de succès cross-groupe
-  const [lastSuccess, setLastSuccess] = useState<string | null>(null);
+  const [lastSuccess, setLastSuccess] = useState<PieceProduite | null>(null);
 
   // ── Styles ──────────────────────────────────────────────────────────────
 
@@ -1012,8 +1043,8 @@ export function DocumentsSection({
 
   // ── Helpers ─────────────────────────────────────────────────────────────
 
-  function handleDone(msg: string) {
-    setLastSuccess(msg);
+  function handleDone(piece: PieceProduite) {
+    setLastSuccess(piece);
   }
 
   const hasEnrollments = enrollments.length > 0;
@@ -1387,7 +1418,26 @@ export function DocumentsSection({
           role="status"
           className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-success)]"
         >
-          Dernier document généré : {lastSuccess}
+          {/*
+            🔴 Le LIBELLÉ d'abord, le numéro ensuite, et un lien pour ouvrir.
+            Le bandeau affichait le numéro seul : il fallait relire la liste
+            pour retrouver la pièce qu'on venait de produire.
+          */}
+          Dernier document généré : <strong>{lastSuccess.libelle}</strong>
+          {lastSuccess.numero !== null ? ` — n° ${lastSuccess.numero}` : ""}
+          {lastSuccess.documentId !== null && (
+            <>
+              {" · "}
+              <a
+                href={`/api/qualiopi/documents/${lastSuccess.documentId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
+                Ouvrir la pièce
+              </a>
+            </>
+          )}
         </p>
       )}
 
