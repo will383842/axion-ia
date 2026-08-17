@@ -91,6 +91,37 @@ export const FOUNDER = {
     "Transformation digitale TPE PME ETI",
     "Conduite du changement",
   ] as const,
+  /**
+   * Chemin de la page d'autorité, SANS préfixe de locale, et locale unique où elle est
+   * servie. La route `[locale]/equipe/[slug]` 404 hors FR : le préfixe fait donc partie de
+   * l'identité de la page, il n'est pas cosmétique.
+   */
+  pagePath: "/equipe/williams",
+  pageLocale: "fr",
 } as const;
 
 export type Founder = typeof FOUNDER;
+
+/**
+ * URL absolue canonique de la fiche fondateur.
+ *
+ * Elle était recopiée en dur à une dizaine d'endroits (`lib/seo.ts`, `williams-person.ts`,
+ * `sitemap.ts`, `Footer.tsx`, les trois vues blog, `actualites`…). Recopiée, donc libre de
+ * diverger — et elle divergeait déjà : `buildPersonJsonLd` et `buildArticleJsonLd` posaient
+ * `/a-propos#will`, une ancre morte, pendant que la vraie fiche vivait sous
+ * `/fr/equipe/williams`.
+ */
+export function founderUrl(): string {
+  return `${BRAND.url}/${FOUNDER.pageLocale}${FOUNDER.pagePath}`;
+}
+
+/**
+ * Le `@id` canonique du nœud `Person` du fondateur — L'UNIQUE forme autorisée.
+ *
+ * Un `@id` n'est pas une URL de navigation : c'est le NOM que les moteurs et les modèles
+ * donnent à l'entité. Deux `@id` pour une personne ne font pas une entité mieux décrite,
+ * ils font deux personnes à moitié décrites. Tout ce qui parle de Williams — le nœud de la
+ * fiche, `Organization.founder`, l'auteur des articles, le `reviewedBy` des listings, et
+ * jusqu'au JSON-LD des livres fabriqués par BookForge — doit citer CETTE chaîne.
+ */
+export const FOUNDER_PERSON_ID = `${founderUrl()}#person` as const;
