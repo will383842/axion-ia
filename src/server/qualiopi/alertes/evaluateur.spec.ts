@@ -1612,13 +1612,33 @@ describe("evaluerAlertes — signatures_en_attente", () => {
     expect(a?.message).toContain("relancer");
   });
 
-  it("le filtre SQL exclut les pièces récemment actives (moins de 7 jours)", async () => {
+  it("le filtre SQL ramène les DEUX causes : attente écoulée OU session proche", async () => {
+    // 🔴 Ce test gardait `where.updatedAt.lte` — un seuil ABSOLU, aveugle à la
+    // date de début. Il avait raison de rougir le 2026-08-17 : le filtre a
+    // changé de forme parce que le seuil était faux, pas parce qu'on l'a
+    // contourné.
+    //
+    // ⚠️ Les deux branches comptent. Ne garder que « session proche » ferait
+    // disparaître de la surveillance les devis, sous-traitances et lettres de
+    // mission — qui n'ont aucune session. Un défaut silencieux, donc pire.
     await evaluerAlertes();
     const arg = mp.documentGenere.findMany.mock.calls[0]?.[0] as {
-      where: { statutSignature: { in: string[] }; updatedAt: Record<string, unknown> };
+      where: {
+        statutSignature: { in: string[] };
+        OR: Array<{
+          updatedAt?: Record<string, unknown>;
+          session?: { dateDebut?: Record<string, unknown> };
+        }>;
+      };
     };
     expect(arg.where.statutSignature.in).toStrictEqual(["en_attente", "partielle"]);
-    expect(arg.where.updatedAt["lte"]).toBeInstanceOf(Date);
+    expect(arg.where.OR).toHaveLength(2);
+
+    const parAttente = arg.where.OR.find((c) => c.updatedAt !== undefined);
+    expect(parAttente?.updatedAt?.["lte"]).toBeInstanceOf(Date);
+
+    const parSession = arg.where.OR.find((c) => c.session !== undefined);
+    expect(parSession?.session?.dateDebut?.["lte"]).toBeInstanceOf(Date);
   });
 });
 

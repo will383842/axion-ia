@@ -17,6 +17,7 @@ import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { opcoLabel } from "@/server/qualiopi/financements/opco-referentiel";
 import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
+import { AdminEmptyState } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -143,9 +144,15 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction. */}
       {clients.length === 0 ? (
-        <p className="text-[length:var(--text-admin-base)] text-[color:var(--color-admin-fg-soft)]">
-          Aucun client enregistré. Créez votre premier client depuis l&apos;action CRM.
-        </p>
+        <AdminEmptyState
+          title="Aucun client enregistré"
+          description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
+          primaryAction={
+            <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+              + Nouveau client
+            </Link>
+          }
+        />
       ) : (
         <div className="overflow-x-auto rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)]">
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
