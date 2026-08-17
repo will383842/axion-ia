@@ -58,8 +58,18 @@ export async function setQualiopiConfigAction(
 
   try {
     await setQualiopiConfig(key, coerced as never, session);
-  } catch {
-    return { error: `Valeur refusée pour « ${key} » (format invalide)` };
+  } catch (e) {
+    // 🔴 Le message du registre est RELAYÉ, pas avalé.
+    //
+    // Ce `catch` retournait « format invalide » quelle que soit la cause. Les
+    // schémas savent pourtant dire « SIRET : 14 chiffres attendus » ou « clé de
+    // contrôle invalide — vérifier la saisie ». Sans le relais, l'admin voit
+    // son enregistrement refusé sans savoir ce qu'on attend de lui : il
+    // ressaisit à l'identique, échoue encore, et finit par croire l'écran
+    // cassé. Une validation qui refuse sans expliquer coûte plus qu'elle
+    // n'apporte.
+    const motif = e instanceof z.ZodError ? e.issues[0]?.message : undefined;
+    return { error: motif ?? `Valeur refusée pour « ${key} » (format invalide)` };
   }
 
   return { data: { key } };
