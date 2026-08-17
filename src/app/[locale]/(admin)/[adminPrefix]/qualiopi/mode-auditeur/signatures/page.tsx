@@ -194,7 +194,21 @@ function LignePiece({
   return (
     <tr className="border-b border-[color:var(--color-admin-border)] align-top last:border-b-0">
       <td className="p-[var(--space-admin-3)]">
-        <span className="font-mono text-[length:var(--text-admin-xs)]">{piece.numero}</span>
+        {/* 🔴 Le numéro était un `span` : l'auditrice ne pouvait ouvrir AUCUNE
+            pièce depuis le registre. L'identifiant était pourtant là — il servait
+            de clé React, et de rien d'autre.
+            La page conseille elle-même de restreindre le registre à une session
+            « pour obtenir une vue exhaustive » ; encore faut-il pouvoir regarder
+            les pièces qu'elle liste. */}
+        <a
+          href={`/api/qualiopi/documents/${piece.documentGenereId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline underline-offset-2 hover:opacity-80"
+          aria-label={`Ouvrir la pièce ${piece.numero}`}
+        >
+          {piece.numero}
+        </a>
         <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           {LIBELLE_TYPE_PIECE[piece.type] ?? piece.type}
         </span>

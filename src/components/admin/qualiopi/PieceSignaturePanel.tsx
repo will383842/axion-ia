@@ -239,7 +239,7 @@ export function PieceSignaturePanel({
             href={`/api/qualiopi/pieces/${documentGenereId}/exemplaire-signe`}
             className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-accent)] underline underline-offset-4"
           >
-            Télécharger l&apos;exemplaire signé (PDF)
+            Ouvrir l&apos;exemplaire signé (PDF)
           </a>
           <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
             La pièce d&apos;origine, scellée, reste inchangée.

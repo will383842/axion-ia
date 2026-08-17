@@ -28,6 +28,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { RegenererFacturePdfButton } from "@/components/admin/qualiopi/RegenererFacturePdfButton";
 import { FactureFormationActions } from "@/components/admin/qualiopi/FactureFormationActions";
+import { lienTelechargement } from "@/lib/content-disposition";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -245,7 +246,17 @@ export default async function QualiopiFactureDetailPage({ params }: PageProps) {
             rel="noopener noreferrer"
             className="admin-button"
           >
-            Télécharger le PDF
+            Ouvrir le PDF
+          </a>
+          {/* 🔴 Depuis #686 la route sert la pièce en consultation : le seul
+              lien présent OUVRAIT en annonçant « télécharger », et plus rien
+              n'offrait d'enregistrer. Une facture qu'on doit joindre à un
+              courrier se télécharge — la lire ne suffit pas. */}
+          <a
+            href={lienTelechargement(`/api/qualiopi/documents/${facture.documentId}`)}
+            className="admin-button-ghost"
+          >
+            Enregistrer
           </a>
           {/* « Télécharger » sert le document STOCKÉ : une correction de données
               (destinataire, adresse client, date d'exécution) reste invisible au
