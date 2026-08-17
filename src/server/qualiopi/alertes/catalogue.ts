@@ -232,6 +232,30 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  // 🔴 L'ANGLE MORT QUE LES TROIS AUTRES LAISSAIENT OUVERT (2026-08-17).
+  //
+  // Les liens SONT partis, et personne n'a signé. Aucune des trois règles
+  // existantes ne le voit :
+  //   · R03 `emargement_manquant` exige `statut = "realisee"` ;
+  //   · R03ter `session_bloquee_en_cours` attend J+3 — un jour APRÈS
+  //     l'expiration des jetons ;
+  //   · `session_sans_dispositif_emargement` exige qu'AUCUN lien vivant
+  //     n'existe. Or le cron de 06:00 vient précisément d'en créer : elle est
+  //     donc éteinte PAR CONSTRUCTION sur les sessions qu'il a servies.
+  //
+  // Résultat : une session servie par le cron mais jamais signée restait
+  // muette jusqu'à J+3. Le dispositif était en place, et c'est justement ce
+  // qui empêchait de voir que personne ne s'en servait.
+  //
+  // ⚠️ Celle-ci se lève pendant que le rattrapage est ENCORE POSSIBLE : les
+  // jetons vivent jusqu'à 48 h après la fin, une signature reste recevable.
+  emargement_aucune_signature: {
+    niveau: "critique",
+    titre: "Liens d'émargement partis, aucune signature",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
+
   // ── Formateur ──────────────────────────────────────────────────────────────
   session_sans_formateur: {
     niveau: "important",
