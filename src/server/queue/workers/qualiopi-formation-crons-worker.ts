@@ -48,9 +48,9 @@ import {
   envoyerSuiviJ30,
   envoyerRelanceQuestionnaire,
   envoyerEnqueteEntreprise,
-  notifierAlerteInterne,
 } from "@/server/qualiopi/notifications/notifications-service";
 import { synchroniserAlertes } from "@/server/qualiopi/alertes/alertes-service";
+import { notifierAlertesGroupees } from "@/server/qualiopi/alertes/envoi-groupe";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types job
@@ -638,38 +638,26 @@ async function handleAlertes(): Promise<void> {
   try {
     const { crees, resolues } = await synchroniserAlertes();
 
-    // Notifie l'équipe interne des alertes CRITIQUES non encore notifiées —
-    // plus les DÉBLOCAGES du parcours vente (plan « Nouvelle vente » §1a) :
-    // un devis signé ou un cycle moteur terminé attendent une action admin,
-    // l'email évite de camper l'écran d'alertes. Seuil critique sinon
-    // (anti-spam) ; l'idempotence réelle vit dans notifierAlerteInterne
-    // (claim notifiedAt) — un doublon reste impossible même si findMany voit
-    // une alerte déjà en cours de notification.
-    const CODES_DEBLOCAGE = ["devis_signe_convention", "moteur_assemble_a_publier"];
-    const aNotifier = await prisma.alerteSysteme.findMany({
-      where: {
-        resolue: false,
-        notifiedAt: null,
-        OR: [{ niveau: "critique" }, { code: { in: CODES_DEBLOCAGE } }],
-      },
-      select: { id: true },
-    });
-    let notifiees = 0;
-    for (const a of aNotifier) {
-      try {
-        await notifierAlerteInterne(a.id);
-        notifiees++;
-      } catch (err) {
-        console.error(
-          `[formation-crons] alertes: erreur notif ${a.id}:`,
-          err instanceof Error ? err.message : String(err),
-        );
-      }
-    }
+    // Lot 14 (T3b) — notification GROUPÉE, par guichet.
+    //
+    // 🔴 Avant : une boucle qui appelait `notifierAlerteInterne` par alerte,
+    // vers une adresse unique. À 400 alertes ouvertes c'était 400 e-mails dans
+    // la même boîte — et une boîte qu'on n'ouvre plus ne garde rien. Désormais
+    // un message par (guichet, code), au destinataire dérivé de l'acte.
+    // Le périmètre notifié est INCHANGÉ (critiques + déblocages du parcours
+    // vente) : ce lot change le routage et le groupage, pas le seuil.
+    const envoi = await notifierAlertesGroupees();
 
     console.log(
-      `[formation-crons] alertes: ${crees} créées, ${resolues} résolues, ${notifiees} notifiée(s)`,
+      `[formation-crons] alertes: ${crees} créées, ${resolues} résolues, ` +
+        `${envoi.messages} message(s) pour ${envoi.alertes} alerte(s)` +
+        (envoi.sansGuichet > 0 ? `, ${envoi.sansGuichet} SANS GUICHET` : ""),
     );
+    // Un repli n'est jamais tu : le guichet nominal n'a pas été servi, et
+    // quelqu'un doit pouvoir l'apprendre autrement qu'en comparant des boîtes.
+    for (const repli of envoi.replis) {
+      console.warn(`[formation-crons] alertes: repli — ${repli}`);
+    }
   } catch (err) {
     console.error(
       "[formation-crons] alertes: erreur synchronisation:",
